@@ -23,10 +23,15 @@ sub conn {
     $self->{conn} = $val if $val;
     return $self->{conn};
 }
+sub throttle {
+    my($self, $val) = @_;
+    $self->{throttle} = $val if $val;
+    return $self->{throttle};
+}
 sub respond {
     my($self, %other_args) = @_;
     if($self->throttle and not %other_args) {
-        return unless ($self->progress % $self->throttle) == 0;
+        return unless ($self->{args}->{progress} % $self->throttle) == 0;
     }
     $self->conn->respond({ %{$self->{args}}, %other_args });
 }
@@ -103,6 +108,7 @@ use strict; use warnings;
 # ----------------------------------------------------------------------------
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenSRF::Utils::JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
@@ -172,6 +178,8 @@ sub create_lineitem_detail {
     my($mgr, %args) = @_;
     my $lid = Fieldmapper::acq::lineitem_detail->new;
     $lid->$_($args{$_}) for keys %args;
+    $mgr->editor->create_acq_lineitem_detail($lid) or return 0;
+    $mgr->add_lid;
 
     # create some default values
     unless($lid->barcode) {
@@ -188,9 +196,23 @@ sub create_lineitem_detail {
         $lid->location($loc);
     }
 
+    if(!$lid->circ_modifier and my $mod = get_default_circ_modifier($mgr, $lid->owning_lib)) {
+        $lid->circ_modifier($mod);
+    }
+
+    $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
     my $li = $mgr->editor->retrieve_acq_lineitem($lid->lineitem) or return 0;
-    return 0 unless update_lineitem($mgr, $li);
-    return $mgr->editor->create_acq_lineitem_detail($lid);
+    update_lineitem($mgr, $li) or return 0;
+    return $lid;
+}
+
+sub get_default_circ_modifier {
+    my($mgr, $org) = @_;
+    my $mod = $mgr->cache($org, "def_circ_mod");
+    return $mod if $mod;
+    $mod = $U->ou_ancestor_setting_value($org, 'acq.default_circ_modifier');
+    return $mgr->cache($org, "def_circ_mod", $mod) if $mod;
+    return undef;
 }
 
 sub delete_lineitem_detail {
@@ -225,7 +247,7 @@ sub set_lineitem_attr {
         $attr->$_($args{$_}) for keys %args;
         
         unless($attr->definition) {
-            my $find = "search_acq_" . $attr->$attr_type;
+            my $find = "search_acq_$attr_type";
             my $attr_def_id = $mgr->editor->$find({code => $attr->attr_name}, {idlist=>1})->[0] or return 0;
             $attr->definition($attr_def_id);
         }
@@ -349,7 +371,7 @@ sub create_lineitem_assets {
 
         my $volume = $mgr->cache($org, "cn.$label");
         unless($volume) {
-            $volume = create_volume($li, $lid) or return 0;
+            $volume = create_volume($mgr, $li, $lid) or return 0;
             $mgr->cache($org, "cn.$label", $volume);
         }
         create_copy($mgr, $volume, $lid) or return 0;
@@ -362,7 +384,7 @@ sub create_bib {
     my($mgr, $li) = @_;
 
     my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-        $mgr->editor, $li->marc, undef, undef, undef, 1); #$rec->bib_source
+        $mgr->editor, $li->marc, undef, undef, 1); #$rec->bib_source
 
     if($U->event_code($record)) {
         $mgr->editor->event($record);
@@ -539,7 +561,7 @@ sub upload_records {
     my $picklist = $data->{picklist};
     my $create_po = $data->{create_po};
     my $ordering_agency = $data->{ordering_agency};
-    my $purchase_order;
+    my $po;
 
     unless(-r $filename) {
         $logger->error("unable to read MARC file $filename");
@@ -558,7 +580,7 @@ sub upload_records {
     }
 
     if($create_po) {
-        my $po = create_purchase_order($mgr, 
+        $po = create_purchase_order($mgr, 
             ordering_agency => $ordering_agency,
             provider => $provider->id
         ) or return $mgr->editor->die_event;
@@ -574,54 +596,58 @@ sub upload_records {
 
 	while(1) {
 
-        my $r;
 	    my $err;
+        my $xml;
 		$count++;
-
-        try { 
-            $r = $batch->next;
-        } catch Error with { $err = shift; };
-
-        last unless $r;
-
-        if($err) {
-			$logger->warn("Proccessing of record $count in set $key failed with error $err.  Skipping this record");
-            next;
-		}
+        my $r;
 
 		try {
+            $r = $batch->next;
+        } catch Error with {
+            $err = shift;
+			$logger->warn("Proccessing of record $count in set $key failed with error $err.  Skipping this record");
+        };
 
-			(my $xml = $r->as_xml_record()) =~ s/\n//sog;
-			$xml =~ s/^<\?xml.+\?\s*>//go;
-			$xml =~ s/>\s+</></go;
-			$xml =~ s/\p{Cc}//go;
-			$xml = $U->entityize($xml);
-			$xml =~ s/[\x00-\x1f]//go;
+        next if $err;
+        last unless $r;
 
-            my %args = (
-                source_label => $provider->code,
-                provider => $provider->id,
-                marc => $xml,
-            );
-
-            $args{picklist} = $picklist->id if $picklist;
-            if($purchase_order) {
-                $args{purchase_order} = $purchase_order->id;
-                $args{state} = 'on-order';
-            }
-
-            my $li = create_lineitem($mgr, %args);
-            $mgr->respond;
-
-            import_lineitem_details($mgr, $ordering_agency, $li) 
-                or die $mgr->editor->event; # caught below
+		try {
+            ($xml = $r->as_xml_record()) =~ s/\n//sog;
+            $xml =~ s/^<\?xml.+\?\s*>//go;
+            $xml =~ s/>\s+</></go;
+            $xml =~ s/\p{Cc}//go;
+            $xml = $U->entityize($xml);
+            $xml =~ s/[\x00-\x1f]//go;
 
 		} catch Error with {
 			$err = shift;
-			$logger->warn("Error importing ACQ record $count : $err");
+			$logger->warn("Proccessing XML of record $count in set $key failed with error $err.  Skipping this record");
 		};
 
-        return $e->event if $err or $e->died;
+        next if $err or not $xml;
+
+        my %args = (
+            source_label => $provider->code,
+            provider => $provider->id,
+            marc => $xml,
+        );
+
+        $args{picklist} = $picklist->id if $picklist;
+        if($po) {
+            $args{purchase_order} = $po->id;
+            $args{state} = 'on-order';
+        }
+
+        my $li = create_lineitem($mgr, %args) or return $mgr->editor->die_event;
+        $mgr->respond;
+
+        import_lineitem_details($mgr, $ordering_agency, $li) or return $mgr->editor->die_event;
+        $mgr->respond;
+
+        if($li->purchase_order) {
+            create_lineitem_assets($mgr, $li->id) or return 0;
+        }
+        $mgr->respond;
 	}
 
 	$e->commit;
@@ -643,13 +669,14 @@ sub import_lineitem_details {
     my $idx = 1;
     while(1) {
         my $compiled = extract_lineitem_detail_data($mgr, $org_path, $holdings, $idx);
-        last unless $compiled;
+        last unless defined $compiled;
+        return 0 unless $compiled;
 
         for(1..$$compiled{quantity}) {
             create_lineitem_detail($mgr, 
                 lineitem => $li->id,
                 owning_lib => $$compiled{owning_lib},
-                cn_label => $$compiled{call_number}.
+                cn_label => $$compiled{call_number},
                 fund => $$compiled{fund},
                 circ_modifier => $$compiled{circ_modifier},
                 note => $$compiled{note}
@@ -668,23 +695,23 @@ sub import_lineitem_details {
         lineitem => $li->id
     ) or return 0;
 
-    if($li->purchase_order) {
-        create_lineitem_assets($mgr, $li->id) or return 0;
-    }
-
     return 1;
 }
 
+# return hash on success, 0 on error, undef on no more holdings
 sub extract_lineitem_detail_data {
     my($mgr, $org_path, $holdings, $index) = @_;
 
-    my @data_list = { grep { $_->holding eq $index } @$holdings };
+    my @data_list = grep { $_->{holding} eq $index } @$holdings;
+    return undef unless @data_list;
+
     my %compiled = map { $_->{attr} => $_->{data} } @data_list;
     my $base_org = $$org_path[0];
 
     my $killme = sub {
         my $msg = shift;
         $logger->error("Item import extraction error: $msg");
+        $logger->error("Holdings Data: " . OpenSRF::Utils::JSON->perl2JSON(\%compiled));
         $mgr->editor->rollback;
         $mgr->editor->event(OpenILS::Event->new('ACQ_IMPORT_ERROR', payload => $msg));
         return 0;
@@ -725,18 +752,28 @@ sub extract_lineitem_detail_data {
 
     # ---------------------------------------------------------------------
     # Circ Modifier
-    my $name = $compiled{circ_modifier};
-    return $killme->("no circ_modifier defined") unless $name;
-    my $mod = 
-        $mgr->cache($base_org, "mod.$name") ||
-            $mgr->editor->search_config_circ_modifier({code => $name, {idlist => 1}})->[0];
-    return $killme->("invlalid circ_modifier $name") unless $mod;
+    my $mod;
+    $code = $compiled{circ_modifier};
+
+    if($code) {
+
+        $mod = $mgr->cache($base_org, "mod.$code") ||
+            $mgr->editor->retrieve_config_circ_modifier($code);
+        return $killme->("invlalid circ_modifier $code") unless $mod;
+        $mgr->cache($base_org, "mod.$code", $mod);
+
+    } else {
+        # try the default
+        $mod = get_default_circ_modifier($mgr, $base_org)
+            or return $killme->("no circ_modifier defined");
+    }
+
     $compiled{circ_modifier} = $mod;
-    $mgr->cache($base_org, "mod.$name", $mod);
+
 
     # ---------------------------------------------------------------------
     # Shelving Location
-    $name = $compiled{copy_location};
+    my $name = $compiled{copy_location};
     return $killme->("no copy_location defined") unless $name;
     my $loc = $mgr->cache($base_org, "copy_loc.$name");
     unless($loc) {
