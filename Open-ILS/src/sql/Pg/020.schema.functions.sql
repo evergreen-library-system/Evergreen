@@ -145,7 +145,8 @@ CREATE OR REPLACE FUNCTION actor.org_unit_ancestors ( INT ) RETURNS SETOF actor.
 	  FROM	connectby('actor.org_unit'::text,'parent_ou'::text,'id'::text,'name'::text,$1::text,100,'.'::text)
 	  		AS t(keyid text, parent_keyid text, level int, branch text,pos int)
 		JOIN actor.org_unit a ON a.id::text = t.keyid::text
-	  ORDER BY  CASE WHEN a.parent_ou IS NULL THEN 0 ELSE 1 END, a.name;
+        JOIN actor.org_unit_type tp ON tp.id = a.ou_type 
+        ORDER BY tp.depth, a.name;
 $$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT,INT ) RETURNS SETOF actor.org_unit AS $$
