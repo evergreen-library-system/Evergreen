@@ -47,8 +47,8 @@ Example OpenSRF bootstrap configuration file for Evergreen
 
     <!-- Our domain should match that of the private router -->
     <domain>private.localhost</domain>
-    <username>osrf</username>
-    <passwd>osrf</passwd>
+    <username>opensrf</username>
+    <passwd>password</passwd>
     <port>5222</port>
 
     <!-- 
@@ -91,8 +91,8 @@ Example OpenSRF bootstrap configuration file for Evergreen
     </services>
 
     <!-- jabber login info -->
-    <username>osrf</username>
-    <passwd>osrf</passwd>
+    <username>opensrf</username>
+    <passwd>password</passwd>
     <port>5222</port>
     <loglevel>3</loglevel>
     <logfile>LOCALSTATEDIR/log/gateway.log</logfile>
@@ -126,7 +126,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
         <port>5222</port>
         <unixpath>LOCALSTATEDIR/sock/unix_sock</unixpath>
         <username>router</username>
-        <password>osrf</password>
+        <password>password</password>
         <resource>router</resource>
         <connect_timeout>10</connect_timeout>
         <max_reconnect_attempts>5</max_reconnect_attempts>
@@ -151,7 +151,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
         <server>private.localhost</server>
         <port>5222</port>
         <username>router</username>
-        <password>osrf</password>
+        <password>password</password>
         <resource>router</resource>
         <connect_timeout>10</connect_timeout>
         <max_reconnect_attempts>5</max_reconnect_attempts>
