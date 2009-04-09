@@ -365,7 +365,6 @@ int osrfAppChildInit() {
 
     osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", MODULENAME);
 
-    int attr;
     unsigned short type;
     int i = 0; 
     char* classname;
@@ -411,21 +410,21 @@ int osrfAppChildInit() {
 
                     /* determine the field type and storage attributes */
                     type = dbi_result_get_field_type(result, columnName);
-                    attr = dbi_result_get_field_attribs(result, columnName);
 
                     switch( type ) {
 
-                        case DBI_TYPE_INTEGER :
+						case DBI_TYPE_INTEGER : {
 
-                            if ( !osrfHashGet(_f, "primitive") )
-                                osrfHashSet(_f,"number", "primitive");
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"number", "primitive");
 
-                            if( attr & DBI_INTEGER_SIZE8 ) 
-                                osrfHashSet(_f,"INT8", "datatype");
-                            else 
-                                osrfHashSet(_f,"INT", "datatype");
-                            break;
-
+							int attr = dbi_result_get_field_attribs(result, columnName);
+							if( attr & DBI_INTEGER_SIZE8 ) 
+								osrfHashSet(_f,"INT8", "datatype");
+							else 
+								osrfHashSet(_f,"INT", "datatype");
+							break;
+						}
                         case DBI_TYPE_DECIMAL :
                             if ( !osrfHashGet(_f, "primitive") )
                                 osrfHashSet(_f,"number", "primitive");
@@ -1618,17 +1617,23 @@ static char* jsonNumberToDBString ( osrfHash* field, const jsonObject* value ) {
 	const char* numtype = get_datatype( field );
 
 	if ( !strncmp( numtype, "INT", 3 ) ) {
-		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
+		if (value->type == JSON_NUMBER)
+			//buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
+			buffer_fadd( val_buf, jsonObjectGetString( value ) );
 		else {
-			const char* val_str = jsonObjectGetString( value );
-			buffer_fadd( val_buf, "%ld", atol(val_str) );
+			//const char* val_str = jsonObjectGetString( value );
+			//buffer_fadd( val_buf, "%ld", atol(val_str) );
+			buffer_fadd( val_buf, jsonObjectGetString( value ) );
 		}
 
 	} else if ( !strcmp( numtype, "NUMERIC" ) ) {
-		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%f",  jsonObjectGetNumber(value) );
+		if (value->type == JSON_NUMBER)
+			//buffer_fadd( val_buf, "%f",  jsonObjectGetNumber(value) );
+			buffer_fadd( val_buf, jsonObjectGetString( value ) );
 		else {
-			const char* val_str = jsonObjectGetString( value );
-			buffer_fadd( val_buf, "%f", atof(val_str) );
+			//const char* val_str = jsonObjectGetString( value );
+			//buffer_fadd( val_buf, "%f", atof(val_str) );
+			buffer_fadd( val_buf, jsonObjectGetString( value ) );
 		}
 
 	} else {
