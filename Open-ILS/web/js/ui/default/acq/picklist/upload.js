@@ -92,22 +92,32 @@ function acqSendUploadForm(args) {
 
 
 function acqHandlePostUpload(key) {
+    console.log("UPLOADING");
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.process_upload_records'],
         {   async: true,
             params: [openils.User.authtoken, key],
             onresponse : function(r) {
+                console.log("ON RESPONSE");
                 var resp = openils.Util.readResponse(r);
-                if(resp.complete) {
-                    if(resp.picklist) {
-                        location.href = location.href + '/../view/' + resp.picklist.id();
+                console.log(js2JSON(resp));
+                if(resp) {
+                    if(resp.complete) {
+                        return; /* XXX */
+                        if(resp.picklist) {
+                            location.href = location.href + '/../view/' + resp.picklist.id();
+                        } else {
+                            location.href = location.href + '/../../po/view/' + resp.purchase_order.id();
+                        }
                     } else {
-                        location.href = location.href + '/../../po/view/' + resp.purchase_order.id();
+                        dojo.byId('acq-pl-upload-li-processed').innerHTML = resp.li;
+                        dojo.byId('acq-pl-upload-lid-processed').innerHTML = resp.lid;
                     }
-                } else {
-                    dojo.byId('acq-pl-upload-count').innerHTML = resp.count;
                 }
             },
+            oncomplete : function(r) {
+                console.log("ON COMPLETE");
+            }
         }
     );
 }

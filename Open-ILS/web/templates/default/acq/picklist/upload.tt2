@@ -41,11 +41,14 @@
     <br/>
     <br/>
     <div id="acq-pl-upload-progress" class='hidden'>
+        <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
         <div>
             <span>Processing...</span>
-            <span id='acq-pl-upload-count'></span>
+            <br/>
+            Lineitems Processed <span id='acq-pl-upload-li-processed'></span>
+            <br/>
+            Items Processed <span id='acq-pl-upload-lid-processed'></span>
         </div>
-        <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
     </div>
 </form>
 [% END %]
