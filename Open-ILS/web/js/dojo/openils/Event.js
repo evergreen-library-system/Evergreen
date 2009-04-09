@@ -32,7 +32,7 @@ if(!dojo._hasResource["openils.Event"]) {
         },
 
         toString : function() {
-            var s = 'Event: ' + this.code + ':' + this.textcode + ' -> ' + new String(this.desc);
+            var s = 'Event: ' + (this.code || '') + ':' + this.textcode + ' -> ' + new String(this.desc);
             if(this.ilsperm)
                 s += ' ' + this.ilsperm + '@' + this.ilspermloc;
             return s;
