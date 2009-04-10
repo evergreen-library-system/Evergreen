@@ -255,6 +255,145 @@ sub set_lineitem_attr {
     }
 }
 
+sub get_li_price {
+    my $li = shift;
+    my $attrs = $li->attributes;
+    my ($marc_estimated, $local_estimated, $local_actual, $prov_estimated, $prov_actual);
+
+    for my $attr (@$attrs) {
+        if($attr->attr_name eq 'estimated_price') {
+            $local_estimated = $attr->attr_value 
+                if $attr->attr_type eq 'lineitem_local_attr_definition';
+            $prov_estimated = $attr->attr_value 
+                if $attr->attr_type eq 'lineitem_prov_attr_definition';
+            $marc_estimated = $attr->attr_value
+                if $attr->attr_type eq 'lineitem_marc_attr_definition';
+
+        } elsif($attr->attr_name eq 'actual_price') {
+            $local_actual = $attr->attr_value     
+                if $attr->attr_type eq 'lineitem_local_attr_definition';
+            $prov_actual = $attr->attr_value 
+                if $attr->attr_type eq 'lineitem_prov_attr_definition';
+        }
+    }
+
+    return ($local_actual, 1) if $local_actual;
+    return ($prov_actual, 2) if $prov_actual;
+    return ($local_estimated, 1) if $local_estimated;
+    return ($prov_estimated, 2) if $prov_estimated;
+    return ($marc_estimated, 3);
+}
+
+
+# ----------------------------------------------------------------------------
+# Lineitem Debits
+# ----------------------------------------------------------------------------
+sub create_lineitem_debits {
+    my($mgr, $li, $price, $ptype) = @_; 
+
+    ($price, $ptype) = get_li_price($li) unless $price;
+
+    unless($price) {
+        $mgr->editor->event(OpenILS::Event->new('ACQ_LINEITEM_NO_PRICE', payload => $li->id));
+        $mgr->editor->rollback;
+        return 0;
+    }
+
+    unless($li->provider) {
+        $mgr->editor->event(OpenILS::Event->new('ACQ_LINEITEM_NO_PROVIDER', payload => $li->id));
+        $mgr->editor->rollback;
+        return 0;
+    }
+
+    my $lid_ids = $mgr->editor->search_acq_lineitem_detail(
+        {lineitem => $li->id}, 
+        {idlist=>1}
+    );
+
+    for my $lid_id (@$lid_ids) {
+
+        my $lid = $mgr->editor->retrieve_acq_lineitem_detail([
+            $lid_id,
+            {   flesh => 1, 
+                flesh_fields => {acqlid => ['fund']}
+            }
+        ]);
+
+        create_lineitem_detail_debit($mgr, $li, $lid, $price, $ptype) or return 0;
+    }
+
+    return 1;
+}
+
+
+# flesh li->provider
+# flesh lid->fund
+# ptype 1=local, 2=provider, 3=marc
+sub create_lineitem_detail_debit {
+    my($mgr, $li, $lid, $price, $ptype) = @_;
+
+    unless(ref $li and ref $li->provider) {
+       $li = $mgr->editor->retrieve_acq_lineitem([
+            $li,
+            {   flesh => 1,
+                flesh_fields => {jub => ['provider']},
+            }
+        ]);
+    }
+
+    unless(ref $lid and ref $lid->fund) {
+        $lid = $mgr->editor->retrieve_acq_lineitem_detail([
+            $lid,
+            {   flesh => 1, 
+                flesh_fields => {acqlid => ['fund']}
+            }
+        ]);
+    }
+
+    my $ctype = $lid->fund->currency_type;
+    my $amount = $price;
+
+    if($ptype == 2) { # price from vendor
+        $ctype = $li->provider->currency_type;
+        $amount = currency_conversion($mgr, $ctype, $lid->fund->currency_type, $price);
+    }
+
+    my $debit = create_fund_debit(
+        $mgr, 
+        fund => $lid->fund->id,
+        origin_amount => $price,
+        origin_currency_type => $ctype,
+        amount => $amount
+    ) or return 0;
+
+    $lid->fund_debit($debit->id);
+    $lid->fund($lid->fund->id);
+    $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
+    return $debit;
+}
+
+
+# ----------------------------------------------------------------------------
+# Fund Debit
+# ----------------------------------------------------------------------------
+sub create_fund_debit {
+    my($mgr, %args) = @_;
+    my $debit = Fieldmapper::acq::fund_debit->new;
+    $debit->debit_type('purchase');
+    $debit->encumbrance('t');
+    $debit->$_($args{$_}) for keys %args;
+    $mgr->add_debit($debit->amount);
+    return $mgr->editor->create_acq_fund_debit($debit);
+}
+
+sub currency_conversion {
+    my($mgr, $src_currency, $dest_currency, $amount) = @_;
+    my $result = $mgr->editor->json_query(
+        {from => ['acq.exchange_ratio', $src_currency, $dest_currency, $amount]});
+    return $result->[0]->{'acq.exchange_ratio'};
+}
+
+
 # ----------------------------------------------------------------------------
 # Picklist
 # ----------------------------------------------------------------------------
@@ -548,11 +687,14 @@ sub upload_records {
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
+
     my $mgr = OpenILS::Application::Acq::BatchManager->new(
-        editor => $e, conn => $conn, throttle => 5);
+        editor => $e, 
+        conn => $conn, 
+        throttle => 5
+    );
 
     my $cache = OpenSRF::Utils::Cache->new;
-    my $evt;
 
     my $data = $cache->get_cache("vandelay_import_spool_$key");
 	my $purpose = $data->{purpose};
@@ -561,7 +703,9 @@ sub upload_records {
     my $picklist = $data->{picklist};
     my $create_po = $data->{create_po};
     my $ordering_agency = $data->{ordering_agency};
+    my $create_assets = $data->{create_assets};
     my $po;
+    my $evt;
 
     unless(-r $filename) {
         $logger->error("unable to read MARC file $filename");
@@ -640,13 +784,15 @@ sub upload_records {
 
         my $li = create_lineitem($mgr, %args) or return $mgr->editor->die_event;
         $mgr->respond;
+        $li->provider($provider); # flesh it, we'll need it later
 
         import_lineitem_details($mgr, $ordering_agency, $li) or return $mgr->editor->die_event;
         $mgr->respond;
 
-        if($li->purchase_order) {
-            create_lineitem_assets($mgr, $li->id) or return 0;
+        if($create_assets) {
+            create_lineitem_assets($mgr, $li->id) or return $mgr->editor->die_event;
         }
+
         $mgr->respond;
 	}
 
@@ -668,12 +814,18 @@ sub import_lineitem_details {
 
     my $idx = 1;
     while(1) {
+        # create a lineitem detail for each copy in the data
+
         my $compiled = extract_lineitem_detail_data($mgr, $org_path, $holdings, $idx);
         last unless defined $compiled;
         return 0 unless $compiled;
 
+        # this takes the price of the last copy and uses it as the lineitem price
+        # need to determine if a given record would include different prices for the same item
+        $price = $$compiled{price};
+
         for(1..$$compiled{quantity}) {
-            create_lineitem_detail($mgr, 
+            my $lid = create_lineitem_detail($mgr, 
                 lineitem => $li->id,
                 owning_lib => $$compiled{owning_lib},
                 cn_label => $$compiled{call_number},
@@ -687,6 +839,7 @@ sub import_lineitem_details {
         $idx++;
     }
 
+    # set the price attr so we'll know the source of the price
     set_lineitem_attr(
         $mgr, 
         attr_name => 'estimated_price',
@@ -694,6 +847,12 @@ sub import_lineitem_details {
         attr_value => $price,
         lineitem => $li->id
     ) or return 0;
+
+    # if we're creating a purchase order, create the debits
+    if($li->purchase_order) {
+        create_lineitem_debits($mgr, $li, $price, 2) or return 0;
+        $mgr->respond;
+    }
 
     return 1;
 }
