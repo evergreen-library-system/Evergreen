@@ -112,6 +112,7 @@ function acqHandlePostUpload(key) {
                     } else {
                         dojo.byId('acq-pl-upload-li-processed').innerHTML = resp.li;
                         dojo.byId('acq-pl-upload-lid-processed').innerHTML = resp.lid;
+                        dojo.byId('acq-pl-upload-debits-processed').innerHTML = resp.debits_accrued;
                     }
                 }
             },

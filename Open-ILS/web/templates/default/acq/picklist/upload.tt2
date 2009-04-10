@@ -9,7 +9,13 @@
             <tr>
                 <td>Create Purchase Order</td>
                 <td>
-                    <input dojoType='dijit.form.CheckBox' jsId='acqPlUploadToPo' name='create_po'></input>
+                    <input dojoType='dijit.form.CheckBox' name='create_po'></input>
+                </td>
+            </tr>
+            <tr>
+                <td>Create Bibliographic, Callnumber, and Item Records</td>
+                <td>
+                    <input dojoType='dijit.form.CheckBox' name='create_assets'></input>
                 </td>
             </tr>
             <tr>
@@ -43,11 +49,23 @@
     <div id="acq-pl-upload-progress" class='hidden'>
         <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
         <div>
+            <br/>
             <span>Processing...</span>
             <br/>
-            Lineitems Processed <span id='acq-pl-upload-li-processed'></span>
-            <br/>
-            Items Processed <span id='acq-pl-upload-lid-processed'></span>
+            <table class='oils-generic-table'>
+                <tr>
+                    <td>Lineitems Processed</td>
+                    <td><span id='acq-pl-upload-li-processed'></span></td>
+                </tr>
+                <tr>
+                    <td>Items Processed</td>
+                    <td><span id='acq-pl-upload-lid-processed'></span></td>
+                </tr>
+                <tr>
+                    <td>Debits Encumbered</td>
+                    <td><span id='acq-pl-upload-debits-processed'></span></td>
+                </tr>
+            </table>
         </div>
     </div>
 </form>
