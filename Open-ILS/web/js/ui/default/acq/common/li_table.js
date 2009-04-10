@@ -141,7 +141,8 @@ function AcqLiTable() {
         dojo.query('[name=count]', row)[0].appendChild(document.createTextNode(li.item_count()));
 
         var priceInput = dojo.query('[name=estimated_price]', row)[0];
-        priceInput.value = liWrapper.findAttr('estimated_price', 'lineitem_local_attr_definition') || '';
+        var priceData = liWrapper.getPrice();
+        priceInput.value = (priceData) ? priceData.price : '';
         priceInput.onchange = function() { self.updateLiPrice(priceInput, li) };
 
         self.tbody.appendChild(row);
@@ -149,11 +150,14 @@ function AcqLiTable() {
     };
 
     self.updateLiPrice = function(input, li) {
+
         var price = input.value;
         var liWrapper = new openils.acq.Lineitem({lineitem:li});
-        var oldPrice = liWrapper.findAttr('estimated_price', 'lineitem_local_attr_definition') || null;
+        var oldPrice = liWrapper.getPrice() || null;
+
+        if(oldPrice) oldPrice = oldPrice.price;
         if(price == oldPrice) return;
-        console.log("setting price " + price + " for " + li.id());
+
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem_local_attr.set'],
             {   async : true,
