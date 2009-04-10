@@ -358,8 +358,9 @@ function myOPACDrawHolds(r) {
 
         $n(row, 'myopac_holds_selected_chkbx').checked = false;
 
+        var exp_date;
         if(h.expire_time()) {
-            var exp_date = dojo.date.stamp.fromISOString(h.expire_time());
+            exp_date = dojo.date.stamp.fromISOString(h.expire_time());
             $n(row, 'myopac_hold_expire_time').appendChild(
                 text(dojo.date.locale.format(exp_date, {selector:'date'})));
         }
@@ -367,7 +368,7 @@ function myOPACDrawHolds(r) {
 		unHideMe(row);
 
         var interval = fetchOrgSettingDefault(G.user.home_ou(), 'circ.hold_expire_alert_interval');
-        if(interval) {
+        if(interval && exp_date) {
             secs = interval_to_seconds(interval) * 1000;
             var diff = exp_date.getTime() - new Date().getTime();
             if(diff < secs)
