@@ -831,7 +831,8 @@ sub import_lineitem_details {
                 cn_label => $$compiled{call_number},
                 fund => $$compiled{fund},
                 circ_modifier => $$compiled{circ_modifier},
-                note => $$compiled{note}
+                note => $$compiled{note},
+                location => $$compiled{copy_location}
             ) or return 0;
         }
 
