@@ -70,6 +70,7 @@ sub spool_marc {
     my $picklist = $cgi->param('picklist') || '';
     my $create_po = $cgi->param('create_po') || '';
     my $ordering_agency = $cgi->param('ordering_agency') || '';
+    my $create_assets = $cgi->param('create_assets') || '';
 
     $logger->debug("purpose = $purpose, infile = $infile, bib_source = $bib_source ".
         "provider = $provider, picklist = $picklist, create_po = $create_po, ordering_agency = $ordering_agency");
@@ -114,6 +115,7 @@ sub spool_marc {
                 provider => $provider,
                 picklist => $picklist,
                 create_po => $create_po,
+                create_assets => $create_assets,
                 ordering_agency => $ordering_agency
             }
 	    );
