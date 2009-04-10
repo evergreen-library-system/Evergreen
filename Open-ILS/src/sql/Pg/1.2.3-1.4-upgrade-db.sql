@@ -1361,7 +1361,6 @@ CREATE TABLE config.circ_matrix_ruleset (
 	recurring_fine_rule	INT	NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
 	max_fine_rule		INT	NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED
 );
-INSERT INTO config.circ_matrix_ruleset (matchpoint,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,11,1,1);
 
 CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS INT AS $func$
 DECLARE
@@ -5728,4 +5727,11 @@ Added Log Comment
 </xsl:stylesheet>$$ WHERE name = 'mods32';
 
 COMMIT;
+
+INSERT INTO config.circ_matrix_ruleset (matchpoint,duration_rule,recurring_fine_rule,max_fine_rule)
+ SELECT  d.id, f.id, m.id
+   FROM  config.rule_circ_duration d
+               JOIN config.rule_recuring_fine f ON (f.name = d.name)
+               JOIN config.rule_max_fine m ON (f.name = m.name)
+   WHERE m.name = 'default';
 
