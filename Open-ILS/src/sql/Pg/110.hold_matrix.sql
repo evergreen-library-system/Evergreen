@@ -179,7 +179,7 @@ DECLARE
     hold_count        INT;
     hold_transit_prox    INT;
     frozen_hold_count    INT;
-    context_org_list    INT;
+    context_org_list    INT[];
     done            BOOL := FALSE;
 BEGIN
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
