@@ -25,4 +25,6 @@ ALTER TABLE asset.copy_tranparency_map RENAME COLUMN tansparency TO transparency
 ALTER TABLE asset.copy_tranparency_map RENAME TO copy_transparency_map;
 CREATE INDEX cp_tr_cp_idx ON asset.copy_transparency_map (transparency);
 
+ALTER VIEW action.billable_cirulations RENAME TO billable_circulations;
+
 COMMIT;

@@ -209,7 +209,7 @@ CREATE OR REPLACE VIEW action.open_circulation AS
 	  ORDER BY due_date;
 		
 
-CREATE OR REPLACE VIEW action.billable_cirulations AS
+CREATE OR REPLACE VIEW action.billable_circulations AS
 	SELECT	*
 	  FROM	action.circulation
 	  WHERE	xact_finish IS NULL;
