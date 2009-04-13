@@ -48,12 +48,12 @@ sub total {
 }
 sub purchase_order {
     my($self, $val) = @_;
-    $self->{purchase_order} = $val if $val;
+    $self->{args}->{purchase_order} = $val if $val;
     return $self;
 }
 sub picklist {
     my($self, $val) = @_;
-    $self->{picklist} = $val if $val;
+    $self->{args}->{picklist} = $val if $val;
     return $self;
 }
 sub add_lid {
@@ -417,6 +417,7 @@ sub update_picklist {
     $picklist = $mgr->editor->retrieve_acq_picklist($picklist) unless ref $picklist;
     $picklist->edit_time('now');
     $picklist->editor($mgr->editor->requestor->id);
+    $mgr->picklist($picklist);
     return $picklist if $mgr->editor->update_acq_picklist($picklist);
     return undef;
 }
@@ -455,6 +456,7 @@ sub update_purchase_order {
     $po = $mgr->editor->retrieve_acq_purchase_order($po) unless ref $po;
     $po->editor($mgr->editor->requestor->id);
     $po->edit_date('now');
+    $mgr->purchase_order($po);
     return $po if $mgr->editor->update_acq_purchase_order($po);
     return undef;
 }
@@ -844,7 +846,7 @@ sub import_lineitem_details {
     set_lineitem_attr(
         $mgr, 
         attr_name => 'estimated_price',
-        attr_type => 'lineitem_provider_attr_definition',
+        attr_type => 'lineitem_local_attr_definition',
         attr_value => $price,
         lineitem => $li->id
     ) or return 0;
