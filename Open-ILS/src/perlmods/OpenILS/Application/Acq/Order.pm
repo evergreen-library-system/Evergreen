@@ -12,7 +12,8 @@ sub new {
         debits_accrued => 0,
         purchase_order => undef,
         picklist => undef,
-        complete => 0
+        complete => 0,
+        total => 0
     };
     $self->{cache} = {};
     return $self;
@@ -31,9 +32,12 @@ sub throttle {
 sub respond {
     my($self, %other_args) = @_;
     if($self->throttle and not %other_args) {
-        return unless ($self->{args}->{progress} % $self->throttle) == 0;
+        return unless (
+            ($self->{args}->{progress} - $self->{last_respond_progress}) >= $self->throttle
+        );
     }
     $self->conn->respond({ %{$self->{args}}, %other_args });
+    $self->{last_respond_progress} = $self->{args}->{progress};
 }
 sub respond_complete {
     my($self, %other_args) = @_;
@@ -43,8 +47,8 @@ sub respond_complete {
 }
 sub total {
     my($self, $val) = @_;
-    $self->{total} = $val if defined $val;
-    return $self->{total};
+    $self->{args}->{total} = $val if defined $val;
+    return $self->{args}->{total};
 }
 sub purchase_order {
     my($self, $val) = @_;
@@ -147,6 +151,7 @@ sub update_lineitem {
     $li->edit_time('now');
     $li->editor($mgr->editor->requestor->id);
     return $li if $mgr->editor->update_acq_lineitem($li);
+    $mgr->add_lid;
     return undef;
 }
 
@@ -208,10 +213,10 @@ sub create_lineitem_detail {
 
 sub get_default_circ_modifier {
     my($mgr, $org) = @_;
-    my $mod = $mgr->cache($org, "def_circ_mod");
+    my $mod = $mgr->cache($org, 'def_circ_mod');
     return $mod if $mod;
     $mod = $U->ou_ancestor_setting_value($org, 'acq.default_circ_modifier');
-    return $mgr->cache($org, "def_circ_mod", $mod) if $mod;
+    return $mgr->cache($org, 'def_circ_mod', $mod) if $mod;
     return undef;
 }
 
@@ -440,7 +445,7 @@ sub delete_picklist {
     }
 
     # remove any picklist-specific object perms
-    my $ops = $mgr->editor->search_permission_usr_object_perm_map({object_type => 'acqpl', object_id => "".$picklist->id});
+    my $ops = $mgr->editor->search_permission_usr_object_perm_map({object_type => 'acqpl', object_id => ''.$picklist->id});
     for my $op (@$ops) {
         return 0 unless $mgr->editor->delete_usr_object_perm_map($op);
     }
@@ -455,7 +460,7 @@ sub update_purchase_order {
     my($mgr, $po) = @_;
     $po = $mgr->editor->retrieve_acq_purchase_order($po) unless ref $po;
     $po->editor($mgr->editor->requestor->id);
-    $po->edit_date('now');
+    $po->edit_time('now');
     $mgr->purchase_order($po);
     return $po if $mgr->editor->update_acq_purchase_order($po);
     return undef;
@@ -507,13 +512,16 @@ sub create_lineitem_assets {
     for my $lid_id (@{$li_details}) {
 
         my $lid = $mgr->editor->retrieve_acq_lineitem_detail($lid_id) or return 0;
+        next if $lid->eg_copy_id;
+
         my $org = $lid->owning_lib;
         my $label = $lid->cn_label;
+        my $bibid = $li->eg_bib_id;
 
-        my $volume = $mgr->cache($org, "cn.$label");
+        my $volume = $mgr->cache($org, "cn.$bibid.$label");
         unless($volume) {
             $volume = create_volume($mgr, $li, $lid) or return 0;
-            $mgr->cache($org, "cn.$label", $volume);
+            $mgr->cache($org, "cn.$bibid.$label", $volume);
         }
         create_copy($mgr, $volume, $lid) or return 0;
     }
@@ -873,7 +881,7 @@ sub extract_lineitem_detail_data {
     my $killme = sub {
         my $msg = shift;
         $logger->error("Item import extraction error: $msg");
-        $logger->error("Holdings Data: " . OpenSRF::Utils::JSON->perl2JSON(\%compiled));
+        $logger->error('Holdings Data: ' . OpenSRF::Utils::JSON->perl2JSON(\%compiled));
         $mgr->editor->rollback;
         $mgr->editor->event(OpenILS::Event->new('ACQ_IMPORT_ERROR', payload => $msg));
         return 0;
@@ -884,7 +892,7 @@ sub extract_lineitem_detail_data {
     # ---------------------------------------------------------------------
     # Fund
     my $code = $compiled{fund_code};
-    return $killme->("no fund code provided") unless $code;
+    return $killme->('no fund code provided') unless $code;
 
     my $fund = $mgr->cache($base_org, "fund.$code");
     unless($fund) {
@@ -903,7 +911,7 @@ sub extract_lineitem_detail_data {
     # ---------------------------------------------------------------------
     # Owning lib
     my $sn = $compiled{owning_lib};
-    return $killme->("no owning_lib defined") unless $sn;
+    return $killme->('no owning_lib defined') unless $sn;
     my $org_id = 
         $mgr->cache($base_org, "orgsn.$sn") ||
             $mgr->editor->search_actor_org_unit({shortname => $sn}, {idlist => 1})->[0];
@@ -927,7 +935,7 @@ sub extract_lineitem_detail_data {
     } else {
         # try the default
         $mod = get_default_circ_modifier($mgr, $base_org)
-            or return $killme->("no circ_modifier defined");
+            or return $killme->('no circ_modifier defined');
     }
 
     $compiled{circ_modifier} = $mod;
@@ -936,7 +944,7 @@ sub extract_lineitem_detail_data {
     # ---------------------------------------------------------------------
     # Shelving Location
     my $name = $compiled{copy_location};
-    return $killme->("no copy_location defined") unless $name;
+    return $killme->('no copy_location defined') unless $name;
     my $loc = $mgr->cache($base_org, "copy_loc.$name");
     unless($loc) {
         for my $org (@$org_path) {
@@ -950,6 +958,70 @@ sub extract_lineitem_detail_data {
     $mgr->cache($base_org, "copy_loc.$name", $loc);
 
     return \%compiled;
+}
+
+
+
+# ----------------------------------------------------------------------------
+# Workflow: Given an existing purchase order, import/create the bibs, 
+# callnumber and copy objects
+# ----------------------------------------------------------------------------
+
+__PACKAGE__->register_method(
+	method => 'create_po_assets',
+	api_name	=> 'open-ils.acq.purchase_order.assets.create',
+	signature => {
+        desc => q/Creates assets for each lineitem in the purchase order/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'The purchase order id', type => 'number'},
+        ],
+        return => {desc => 'Streams a total versus completed counts object, event on error'}
+    }
+);
+
+sub create_po_assets {
+    my($self, $conn, $auth, $po_id) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(
+        editor => $e, 
+        conn => $conn, 
+        throttle => 5
+    );
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('IMPORT_PURCHASE_ORDER_ASSETS', $po->ordering_agency);
+
+    my $li_ids = $e->search_acq_lineitem({purchase_order => $po_id}, {idlist => 1});
+
+    # it's ugly, but it's fast.  Get the total count of lineitem detail objects to process
+    my $lid_total = $e->json_query({
+        select => { acqlid => [{aggregate => 1, transform => 'count', column => 'id'}] }, 
+        from => {
+            acqlid => {
+                jub => {
+                    fkey => 'lineitem', 
+                    field => 'id', 
+                    join => {acqpo => {fkey => 'purchase_order', field => 'id'}}
+                }
+            }
+        }, 
+        where => {'+acqpo' => {id => $po_id}}
+    })->[0]->{id};
+
+    $mgr->total(scalar(@$li_ids) + $lid_total);
+
+    for my $li_id (@$li_ids) {
+        return $e->die_event unless create_lineitem_assets($mgr, $li_id);
+        $mgr->respond;
+    }
+
+    return $e->die_event unless update_purchase_order($mgr, $po);
+
+    $e->commit;
+    return $mgr->respond_complete;
 }
 
 
