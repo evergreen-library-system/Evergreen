@@ -47,24 +47,33 @@
     <br/>
     <br/>
     <div id="acq-pl-upload-progress" class='hidden'>
-        <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
+        <div id='acq-pl-upload-progress-bar'>
+            <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
+        </div>
         <div>
             <br/>
             <span>Processing...</span>
             <br/>
             <table class='oils-generic-table'>
-                <tr>
-                    <td>Lineitems Processed</td>
-                    <td><span id='acq-pl-upload-li-processed'></span></td>
-                </tr>
-                <tr>
-                    <td>Items Processed</td>
-                    <td><span id='acq-pl-upload-lid-processed'></span></td>
-                </tr>
-                <tr>
-                    <td>Debits Encumbered</td>
-                    <td><span id='acq-pl-upload-debits-processed'></span></td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>Lineitems Processed</td>
+                        <td><span id='acq-pl-upload-li-processed'></span></td>
+                    </tr>
+                    <tr>
+                        <td>Items Processed</td>
+                        <td><span id='acq-pl-upload-lid-processed'></span></td>
+                    </tr>
+                    <tr>
+                        <td>Debits Encumbered</td>
+                        <td><span id='acq-pl-upload-debits-processed'></span></td>
+                    </tr>
+                </tbody>
+                <tbody id='acq-pl-upload-complete' class='hidden'>
+                    <tr><td colspan='2'>Upload Complete!</td></tr>
+                    <tr><td colspan='2'><a id='acq-pl-upload-complete-po'>View Purchase Order</a></td></tr>
+                    <tr><td colspan='2'><a id='acq-pl-upload-complete-pl'>View Selection List</a></td></tr>
+                </tbody>
             </table>
         </div>
     </div>

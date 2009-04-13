@@ -92,33 +92,38 @@ function acqSendUploadForm(args) {
 
 
 function acqHandlePostUpload(key) {
-    console.log("UPLOADING");
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.process_upload_records'],
         {   async: true,
             params: [openils.User.authtoken, key],
             onresponse : function(r) {
-                console.log("ON RESPONSE");
                 var resp = openils.Util.readResponse(r);
                 console.log(js2JSON(resp));
-                if(resp) {
-                    if(resp.complete) {
-                        return; /* XXX */
-                        if(resp.picklist) {
-                            location.href = location.href + '/../view/' + resp.picklist.id();
-                        } else {
-                            location.href = location.href + '/../../po/view/' + resp.purchase_order.id();
-                        }
-                    } else {
-                        dojo.byId('acq-pl-upload-li-processed').innerHTML = resp.li;
-                        dojo.byId('acq-pl-upload-lid-processed').innerHTML = resp.lid;
-                        dojo.byId('acq-pl-upload-debits-processed').innerHTML = resp.debits_accrued;
+                if(!resp) return;
+                if(resp.complete) {
+                    openils.Util.hide('acq-pl-upload-complete-pl');
+                    openils.Util.hide('acq-pl-upload-complete-po');
+                    openils.Util.hide('acq-pl-upload-progress-bar');
+                    openils.Util.show('acq-pl-upload-complete');
+
+                    if(resp.picklist) {
+                        openils.Util.show('acq-pl-upload-complete-pl');
+                        dojo.byId('acq-pl-upload-complete-pl').setAttribute(
+                            'href', location.href + '/../view/' + resp.picklist.id());
+                    } 
+
+                    if(resp.purchase_order) {
+                        openils.Util.show('acq-pl-upload-complete-po');
+                        dojo.byId('acq-pl-upload-complete-po').setAttribute(
+                            'href', location.href + '/../../po/view/' + resp.purchase_order.id());
                     }
+
+                } else {
+                    dojo.byId('acq-pl-upload-li-processed').innerHTML = resp.li;
+                    dojo.byId('acq-pl-upload-lid-processed').innerHTML = resp.lid;
+                    dojo.byId('acq-pl-upload-debits-processed').innerHTML = resp.debits_accrued;
                 }
             },
-            oncomplete : function(r) {
-                console.log("ON COMPLETE");
-            }
         }
     );
 }
