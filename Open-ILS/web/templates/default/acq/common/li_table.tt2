@@ -12,14 +12,15 @@
                                 <td>
                                     <span>
                                         <select dojoType='dijit.form.FilteringSelect' value='_' jsId='acqLitLiActionsSelector'>
-                                            <option value='_'>--Actions--</option>
-                                            <option value='save_picklist'>Save Items To Selection List</option>
-                                            <option value='selector_ready'>Mark Ready for Selector</option>
-                                            <option value='order_ready'>Mark Ready for Order</option>
-                                            <option value='create_order'>Create Purchase Order</option>
-                                            <option value='receive_po'>Mark Purchase Order as Received</option>
-                                            <option value='print_po'>Print Purchase Order</option>
-                                            <option value='delete_selected'>Delete Selected Items</option>
+                                            <option mask='*'  value='_'>--Actions--</option>
+                                            <option mask='sr' value='save_picklist'>Save Items To Selection List</option>
+                                            <option mask='pl' value='selector_ready'>Mark Ready for Selector</option>
+                                            <option mask='pl' value='order_ready'>Mark Ready for Order</option>
+                                            <option mask='pl' value='create_order'>Create Purchase Order</option>
+                                            <option mask='po' value='receive_po'>Mark Purchase Order as Received</option>
+                                            <option mask='po' value='print_po'>Print Purchase Order</option>
+                                            <option mask='po' value='create_assets'>Create PO Assets</option>
+                                            <option mask='*'  value='delete_selected'>Delete Selected Items</option>
                                         </select>
                                     </span>
                                     <span id='acq-lit-generic-progress' class='hidden'>

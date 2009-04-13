@@ -10,6 +10,8 @@ dojo.require('openils.acq.Picklist');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('openils.widget.ProgressDialog');
+dojo.requireLocalization('openils.acq', 'acq');
+var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 
 function AcqLiTable() {
 
@@ -474,7 +476,32 @@ function AcqLiTable() {
             case 'receive_po':
                 this.receivePO();
                 break;
+
+            case 'create_assets':
+                this.createAssets();
+                break;
         }
+    }
+
+    this.createAssets = function() {
+        if(!this.isPO) return;
+        if(!confirm(localeStrings.CREATE_PO_ASSETS_CONFIRM)) return;
+        progressDialog.show();
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.purchase_order.assets.create'],
+            {   async: true,
+                params: [this.authtoken, this.isPO],
+                onresponse: function(r) {
+                    var resp = openils.Util.readResponse(r);
+                    if(!resp) return;
+                    if(resp.complete) {
+                        progressDialog.hide();
+                    } else {
+                        progressDialog.update({maximum:resp.total, progress:resp.progress});
+                    }
+                }
+            }
+        );
     }
 
     this.printPO = function() {
