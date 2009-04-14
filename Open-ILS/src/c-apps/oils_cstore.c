@@ -1844,10 +1844,25 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 	const char* field_transform = jsonObjectGetString( jsonObjectGetKeyConst( node, "transform" ) );
 	const char* transform_subcolumn = jsonObjectGetString( jsonObjectGetKeyConst( node, "result_field" ) );
 
-	if(transform_subcolumn)
+	if(transform_subcolumn) {
+		if( ! is_identifier( transform_subcolumn ) ) {
+			osrfLogError( OSRF_LOG_MARK, "%s: Invalid subfield name: \"%s\"\n",
+					MODULENAME, transform_subcolumn );
+			buffer_free( sql_buf );
+			return NULL;
+		}
 		OSRF_BUFFER_ADD_CHAR( sql_buf, '(' );    // enclose transform in parentheses
+	}
 
 	if (field_transform) {
+		
+		if( ! is_identifier( field_transform ) ) {
+			osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
+					MODULENAME, field_transform );
+			buffer_free( sql_buf );
+			return NULL;
+		}
+		
 		buffer_fadd( sql_buf, "%s(\"%s\".%s", field_transform, class, osrfHashGet(field, "name"));
 		const jsonObject* array = jsonObjectGetKeyConst( node, "params" );
 
@@ -1901,6 +1916,8 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field,
 	}
 
 	char* field_transform = searchFieldTransform( class, field, node );
+	if( ! field_transform )
+		return NULL;
 	char* value = NULL;
 	int extra_parens = 0;   // boolean
 
@@ -3359,10 +3376,10 @@ char* SELECT (
 		    if (!jsonObjectGetKeyConst(selhash,class_itr->key))
 			    continue;
 
-		    if ( snode->type == JSON_HASH ) {
+			if ( snode->type == JSON_HASH ) {
 
-		        jsonIterator* order_itr = jsonNewIterator( snode );
-			    while ( (onode = jsonIteratorNext( order_itr )) ) {
+				jsonIterator* order_itr = jsonNewIterator( snode );
+				while ( (onode = jsonIteratorNext( order_itr )) ) {
 
 					if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ))
 						continue;
@@ -3370,16 +3387,34 @@ char* SELECT (
 					const char* direction = NULL;
 					if ( onode->type == JSON_HASH ) {
 						if ( jsonObjectGetKeyConst( onode, "transform" ) ) {
-						    string = searchFieldTransform(
-							    class_itr->key,
-							    oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
-							    onode
-						    );
-					    } else {
-						    growing_buffer* field_buf = buffer_init(16);
-						    buffer_fadd(field_buf, "\"%s\".%s", class_itr->key, order_itr->key);
-						    string = buffer_release(field_buf);
-					    }
+							string = searchFieldTransform(
+								class_itr->key,
+								oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
+								onode
+							);
+							if( ! string ) {
+								osrfAppSessionStatus(
+									ctx->session,
+									OSRF_STATUS_INTERNALSERVERERROR,
+									"osrfMethodException",
+									ctx->request,
+									"Severe query error in ORDER BY clause -- see error log for more details"
+								);
+								jsonIteratorFree( order_itr );
+								jsonIteratorFree( class_itr );
+								free(core_class);
+								buffer_free(having_buf);
+								buffer_free(group_buf);
+								buffer_free(order_buf);
+								buffer_free(sql_buf);
+								if (defaultselhash) jsonObjectFree(defaultselhash);
+								return NULL;
+							}
+						} else {
+							growing_buffer* field_buf = buffer_init(16);
+							buffer_fadd(field_buf, "\"%s\".%s", class_itr->key, order_itr->key);
+							string = buffer_release(field_buf);
+						}
 
 						if ( (tmp_const = jsonObjectGetKeyConst( onode, "direction" )) ) {
 							const char* dir = jsonObjectGetString(tmp_const);
@@ -3678,6 +3713,21 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 									oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
 									onode
 								);
+								if( ! string ) {
+									osrfAppSessionStatus(
+										ctx->session,
+										OSRF_STATUS_INTERNALSERVERERROR,
+										"osrfMethodException",
+										ctx->request,
+										"Severe query error in ORDER BY clause -- see error log for more details"
+									);
+									jsonIteratorFree( order_itr );
+									jsonIteratorFree( class_itr );
+									buffer_free( order_buf );
+									buffer_free( sql_buf );
+									if( defaultselhash ) jsonObjectFree( defaultselhash );
+									return NULL;
+								}
 							} else {
 								growing_buffer* field_buf = buffer_init(16);
 								buffer_fadd(field_buf, "\"%s\".%s", class_itr->key, order_itr->key);
