@@ -143,7 +143,7 @@ CREATE TABLE action_trigger.event (
     update_process  INT,
     state           TEXT        NOT NULL DEFAULT 'pending' CHECK (state IN ('pending','invalid','found','collecting','collected','validating','valid','reacting','reacted','cleaning','complete','error')),
     template_output BIGINT      REFERENCES action_trigger.event_output (id),
-    error_output    BIGINT      REFERENCES action_trigger.event_output (id),
+    error_output    BIGINT      REFERENCES action_trigger.event_output (id)
 );
 
 CREATE TABLE action_trigger.event_params (
