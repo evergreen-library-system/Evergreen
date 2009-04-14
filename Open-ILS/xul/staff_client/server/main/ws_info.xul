@@ -162,6 +162,7 @@
 					switch(Number(robj.ilsevent)) {
 						case -1 : g.error.standard_network_error_alert(); break;
 						case 1703 /* WORKSTATION_NAME_EXISTS */ : /* handled with override request */ break;
+                        case 1001 /* NO_SESSION */ : /* handled with request dialog */ break;
 						default: g.error.standard_unexpected_error_alert(document.getElementById('commonStrings').getFormattedString('staff.main.gen_offline_widgets.registration.error', ['1']), robj); break;
 					}
 				} else {
@@ -184,18 +185,30 @@
 	]]>
 	</script>
 
-	<vbox flex="1" style="background: #993333">
-		<description>
-			&staff.main.ws_info.entry;
-		</description>
-		<hbox>
-			<label value="&staff.main.ws_info.name;" control="wsname"/>
-			<textbox id="wsname"  context="clipboard"/>
-		</hbox>
-		<vbox>
-			<hbox id="placeholder"/>
-			<button id="register_btn" label="&staff.main.ws_info.register_btn.label;" accesskey="&staff.main.ws_info.register_btn.accesskey;" oncommand="register();"/>
-		</vbox>
-	</vbox>
+    <vbox flex="1" class="my_overflow">
+        <description id="desc" hidden="true">
+            &staff.main.ws_info.entry;
+        </description>
+            <grid style="border: solid thick red;">
+                <columns>
+                    <column/>
+                    <column/>
+                </columns>
+                <rows>
+                    <row>
+                        <label value="&staff.main.ws_info.name;" control="wsname"/>
+                        <textbox id="wsname"  context="clipboard"/>
+                    </row>
+                    <row>
+                        <label value="&staff.main.ws_info.organization;" control="placeholder"/>
+                        <hbox id="placeholder" flex="1"/>
+                    </row>
+                    <row>
+                        <button id="register_btn" label="&staff.main.ws_info.register_btn.label;" accesskey="&staff.main.ws_info.register_btn.accesskey;" oncommand="register();"/>
+                        <button id="help_btn" label="&staff.main.ws_info.help_btn.label;" accesskey="&staff.main.ws_info.help_btn.accesskey;" oncommand="alert(document.getElementById('desc').textContent); document.getElementById('wsname').focus();"/>
+                    </row>
+                </rows>
+            </grid>
+    </vbox>
 </window>
 

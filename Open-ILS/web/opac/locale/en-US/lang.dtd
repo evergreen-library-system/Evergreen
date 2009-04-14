@@ -1838,10 +1838,13 @@
 <!ENTITY staff.circ.print_list.line_item.label "Line Item">
 <!ENTITY staff.circ.print_list.footer.label "Footer">
 <!ENTITY staff.main.data.loading "Loading data...">
-<!ENTITY staff.main.ws_info.entry "Enter a workstation name and library to register this client under:">
-<!ENTITY staff.main.ws_info.name "Name">
+<!ENTITY staff.main.ws_info.entry "Enter a workstation name and organization to register this client under.  This will be used for statistics and auditing, and for determining the 'place' where check-ins and check-outs occur.">
+<!ENTITY staff.main.ws_info.name "WS Name">
+<!ENTITY staff.main.ws_info.organization "Organization">
 <!ENTITY staff.main.ws_info.register_btn.label "Register">
 <!ENTITY staff.main.ws_info.register_btn.accesskey "R">
+<!ENTITY staff.main.ws_info.help_btn.label "Help">
+<!ENTITY staff.main.ws_info.help_btn.accesskey "H">
 <!ENTITY staff.cat.bib_brief.record_summary "Record Summary">
 <!ENTITY staff.cat.bib_brief.title "Title:">
 <!ENTITY staff.cat.bib_brief.view_marc "View MARC">
