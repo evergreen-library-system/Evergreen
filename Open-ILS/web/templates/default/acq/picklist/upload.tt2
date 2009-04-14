@@ -13,6 +13,7 @@
                 </td>
             </tr>
             <tr>
+                <!-- XXX CHECK IMPORT PERMS TO ENABLE -->
                 <td>Create Bibliographic, Callnumber, and Item Records</td>
                 <td>
                     <input dojoType='dijit.form.CheckBox' name='create_assets'></input>
@@ -51,22 +52,31 @@
             <div dojoType="dijit.ProgressBar" style="width:300px" indeterminate="true"></div>
         </div>
         <div>
-            <br/>
-            <span>Processing...</span>
-            <br/>
             <table class='oils-generic-table'>
                 <tbody>
                     <tr>
                         <td>Lineitems Processed</td>
-                        <td><span id='acq-pl-upload-li-processed'></span></td>
+                        <td><span id='acq-pl-upload-li-processed'>0</span></td>
                     </tr>
                     <tr>
                         <td>Items Processed</td>
-                        <td><span id='acq-pl-upload-lid-processed'></span></td>
+                        <td><span id='acq-pl-upload-lid-processed'>0</span></td>
                     </tr>
                     <tr>
                         <td>Debits Encumbered</td>
-                        <td><span id='acq-pl-upload-debits-processed'></span></td>
+                        <td><span id='acq-pl-upload-debits-processed'>0</span></td>
+                    </tr>
+                    <tr>
+                        <td>Bib Records Imported</td>
+                        <td><span id='acq-pl-upload-bibs-processed'>0</span></td>
+                    </tr>
+                    <tr>
+                        <td>Bib Records Indexed</td>
+                        <td><span id='acq-pl-upload-indexed-processed'>0</span></td>
+                    </tr>
+                    <tr>
+                        <td>Copies Created</td>
+                        <td><span id='acq-pl-upload-copies-processed'>0</span></td>
                     </tr>
                 </tbody>
                 <tbody id='acq-pl-upload-complete' class='hidden'>
