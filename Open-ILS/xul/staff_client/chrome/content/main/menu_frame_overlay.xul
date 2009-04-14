@@ -52,7 +52,9 @@
 		<menu id="main.menu.cat" />
 		<spacer flex="1" />
 		<menu id="main.menu.admin" />
+		<!--
 		<menu id="main.menu.help" />
+		-->
 	</menubar>
 </toolbox>
 
