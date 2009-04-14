@@ -356,7 +356,7 @@ function createMARCTextbox (element,attrs) {
 		else element.setChildren( box.value );
 
 		if (element.localName() != 'controlfield') {
-			if (event.charCode == 100 && event.ctrlKey) { // ctrl+d
+			if ((event.charCode == 100 || event.charCode == 105) && event.ctrlKey) { // ctrl+d or ctrl+i
 
 				var index_sf, target, move_data;
 				if (element.localName() == 'subfield') {
