@@ -1534,7 +1534,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
 	</class>
 	<class id="auricnm" controller="open-ils.cstore" oils_obj:fieldmapper="asset::uri_call_number_map" oils_persist:tablename="asset.uri_call_number_map" reporter:label="Electronic Access URI to Call Number Map">
-		<fields oils_persist:primary="id" oils_persist:sequence="asset.uri_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.uri_call_number_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
