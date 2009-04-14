@@ -441,6 +441,42 @@ function createMARCTextbox (element,attrs) {
 					row.nextSibling.firstChild.focus();
 				}
 
+			} else if (event.keyCode == 38 || event.keyCode == 40) { // up-arrow or down-arrow
+				if (event.ctrlKey) { // CTRL key: copy the field
+					var index;
+					if (element.localName() == 'subfield') index = element.parent();
+					if (element.localName() == 'code') index = element.parent().parent();
+					if (element.localName() == 'tag') index = element.parent();
+					if (element.localName() == 'ind1') index = element.parent();
+					if (element.localName() == 'ind2') index = element.parent();
+
+					var copyField = index.copy();
+
+					if (event.keyCode == 38) { // ctrl+up-arrow
+						index.parent().insertChildBefore( index, copyField );
+					} else {
+						index.parent().insertChildAfter( index, copyField );
+					}
+
+					var new_df = marcDatafield(copyField);
+
+					if (row.parentNode.lastChild === row) {
+						row.parentNode.appendChild( new_df );
+					} else {
+						if (event.keyCode == 38) { // ctrl+up-arrow
+							row.parentNode.insertBefore( new_df, row );
+						} else { // ctrl+down-arrow
+							row.parentNode.insertBefore( new_df, row.nextSibling );
+						}
+					}
+
+					new_df.firstChild.focus();
+
+					event.preventDefault();
+
+					return false;
+				}
+
 			} else if (event.keyCode == 46 && event.ctrlKey) { // ctrl+del
 
 				var index;
