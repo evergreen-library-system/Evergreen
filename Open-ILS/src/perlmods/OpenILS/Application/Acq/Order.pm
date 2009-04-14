@@ -1,4 +1,6 @@
 package OpenILS::Application::Acq::BatchManager;
+use OpenSRF::AppSession;
+use OpenSRF::EX qw/:try/;
 use strict; use warnings;
 
 sub new {
@@ -8,13 +10,16 @@ sub new {
         lid => 0,
         li => 0,
         copies => 0,
+        bibs => 0,
         progress => 0,
         debits_accrued => 0,
         purchase_order => undef,
         picklist => undef,
         complete => 0,
+        indexed => 0,
         total => 0
     };
+    $self->{ingest_queue} = [];
     $self->{cache} = {};
     return $self;
 }
@@ -78,6 +83,12 @@ sub add_copy {
     $self->{args}->{progress} += 1;
     return $self;
 }
+sub add_bib {
+    my $self = shift;
+    $self->{args}->{bibs} += 1;
+    $self->{args}->{progress} += 1;
+    return $self;
+}
 sub add_debit {
     my($self, $amount) = @_;
     $self->{args}->{debits_accrued} += $amount;
@@ -94,6 +105,40 @@ sub complete {
     $self->{args}->{complete} = 1;
     return $self;
 }
+
+sub ingest_ses {
+    my($self, $val) = @_;
+    $self->{ingest_ses} = $val if $val;
+    return $self->{ingest_ses};
+}
+
+sub push_ingest_queue {
+    my($self, $rec_id) = @_;
+
+    $self->ingest_ses(OpenSRF::AppSession->connect('open-ils.ingest'))
+        unless $self->ingest_ses;
+
+    my $req = $self->ingest_ses->request('open-ils.ingest.full.biblio.record', $rec_id);
+
+    push(@{$self->{ingest_queue}}, $req);
+}
+
+sub process_ingest_records {
+    my $self = shift;
+
+    for my $req (@{$self->{ingest_queue}}) {
+
+        try { 
+            $req->gather(1); 
+            $self->{args}->{indexed} += 1;
+            $self->{args}->{progress} += 1;
+        } otherwise {};
+
+        $self->respond;
+    }
+    $self->ingest_ses->disconnect;
+}
+
 
 sub cache {
     my($self, $org, $key, $val) = @_;
@@ -499,8 +544,10 @@ sub create_lineitem_assets {
     # -----------------------------------------------------------------
     # first, create the bib record if necessary
     # -----------------------------------------------------------------
+    my $new_bib = 0;
     unless($li->eg_bib_id) {
         create_bib($mgr, $li) or return 0;
+        $new_bib = 1;
     }
 
     my $li_details = $mgr->editor->search_acq_lineitem_detail({lineitem => $li_id}, {idlist=>1});
@@ -526,14 +573,21 @@ sub create_lineitem_assets {
         create_copy($mgr, $volume, $lid) or return 0;
     }
 
-    return 1;
+    return { li => $li, new_bib => $new_bib };
 }
 
 sub create_bib {
     my($mgr, $li) = @_;
 
     my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-        $mgr->editor, $li->marc, undef, undef, 1); #$rec->bib_source
+        $mgr->editor, 
+        $li->marc, 
+        undef, 
+        undef, 
+        1, # override tcn collisions
+        1, # no-ingest
+        undef # $rec->bib_source
+    ); 
 
     if($U->event_code($record)) {
         $mgr->editor->event($record);
@@ -542,6 +596,7 @@ sub create_bib {
     }
 
     $li->eg_bib_id($record->id);
+    $mgr->add_bib;
     return update_lineitem($mgr, $li);
 }
 
@@ -747,6 +802,7 @@ sub upload_records {
 	$batch->strict_off;
 
 	my $count = 0;
+    my @li_list;
 
 	while(1) {
 
@@ -799,16 +855,25 @@ sub upload_records {
         import_lineitem_details($mgr, $ordering_agency, $li) or return $mgr->editor->die_event;
         $mgr->respond;
 
-        if($create_assets) {
-            create_lineitem_assets($mgr, $li->id) or return $mgr->editor->die_event;
-        }
-
+        push(@li_list, $li->id);
         $mgr->respond;
 	}
 
 	$e->commit;
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $key);
+
+    if($create_assets) {
+        # create the bibs/volumes/copies and ingest the records
+        for my $li_id (@li_list) {
+            $e->xact_begin;
+            my $data = create_lineitem_assets($mgr, $li_id) or return $e->die_event;
+            $e->xact_commit;
+            $mgr->push_ingest_queue($data->{li}->eg_bib_id) if $data->{new_bib};
+            $mgr->respond;
+        }
+        $mgr->process_ingest_records;
+    }
 
     return $mgr->respond_complete;
 }
@@ -1021,6 +1086,8 @@ sub create_po_assets {
     return $e->die_event unless update_purchase_order($mgr, $po);
 
     $e->commit;
+    $mgr->process_ingest_records;
+
     return $mgr->respond_complete;
 }
 
