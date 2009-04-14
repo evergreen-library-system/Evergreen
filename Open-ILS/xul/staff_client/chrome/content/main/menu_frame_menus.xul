@@ -118,9 +118,13 @@
 <menu id="main.menu.edit" label="&staff.main.menu.edit.label;" accesskey="&staff.main.menu.edit.accesskey;">
 	<menupopup id="main.menu.edit.popup">
 		<menuitem label="&staff.main.menu.edit.buckets.copies;" command="cmd_edit_copy_buckets" accesskey="&staff.main.menu.edit.buckets.copies.accesskey;"/>
+        <!--
 		<menuitem label="&staff.main.menu.edit.buckets.volumes;" command="cmd_edit_volume_buckets" accesskey="&staff.main.menu.edit.buckets.volumes.accesskey;"/>
+        -->
 		<menuitem label="&staff.main.menu.edit.buckets.records;" command="cmd_edit_record_buckets" accesskey="&staff.main.menu.edit.buckets.records.accesskey;"/>
+        <!--
 		<menuitem label="&staff.main.menu.edit.buckets.users;" command="cmd_edit_user_buckets" accesskey="&staff.main.menu.edit.buckets.users.accesskey;"/>
+        -->
 		<menuseparator />
 		<menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
 	</menupopup>
@@ -162,7 +166,9 @@
 		<menuitem disabled="true" label="&staff.main.menu.cat.dedup.label;" accesskey="&staff.main.menu.cat.dedup.accesskey;" command="cmd_broken"/>
 		-->
 		<menuitem label="&staff.main.menu.cat.edit_copy_buckets.label;" command="cmd_edit_copy_buckets" accesskey="&staff.main.menu.cat.edit_copy_buckets.accesskey;"/>
+        <!--
 		<menuitem label="&staff.main.menu.cat.edit_volume_buckets.label;" command="cmd_edit_volume_buckets" accesskey="&staff.main.menu.cat.edit_volume_buckets.accesskey;"/>
+        -->
 		<menuitem label="&staff.main.menu.cat.edit_record_buckets.label;" command="cmd_edit_record_buckets" accesskey="&staff.main.menu.cat.edit_record_buckets.accesskey;"/>
 		<menuseparator />
 		<menuitem label="&staff.main.menu.cat.create_marc.label;" accesskey="&staff.main.menu.cat.create_marc.accesskey;" command="cmd_create_marc"/>
