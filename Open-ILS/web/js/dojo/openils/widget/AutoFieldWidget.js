@@ -102,6 +102,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     this.parentNode.appendChild(this.widget.domNode);
                 return;
             }
+            
+            if(!this.parentNode) // give it somewhere to live so that dojo won't complain
+                this.parentNode = document.createElement('div');
 
             this.onload = onload;
             if(this.widgetValue == null)
@@ -175,13 +178,14 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         // we want to display the value for our widget.  However, instead of displaying
         // an ID, for exmaple, display the value for the 'selector' field on the object
         // the ID points to
-        _tryLinkedDisplayField : function() {
+        _tryLinkedDisplayField : function(noAsync) {
 
             if(this.idlField.datatype == 'org_unit')
                 return false; // we already handle org_units, no need to re-fetch
 
             var linkInfo = this._getLinkSelector();
-            if(!linkInfo || !linkInfo.vfield) return false;
+            if(!(linkInfo && linkInfo.vfield && linkInfo.vfield.selector)) 
+                return false;
             var lclass = linkInfo.linkClass;
 
             // first try the object list cache
@@ -208,7 +212,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.async = true;
             var self = this;
             new openils.PermaCrud().retrieve(lclass, this.widgetValue, {   
-                async : true,
+                async : !this.forceSync,
                 oncomplete : function(r) {
                     var item = openils.Util.readResponse(r);
                     if(!self.cacheSingle[lclass])
@@ -281,7 +285,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
             } else {
                 new openils.PermaCrud().retrieveAll(linkClass, {   
-                    async : true,
+                    async : !this.forceSync,
                     oncomplete : function(r) {
                         var list = openils.Util.readResponse(r, false, true);
                         oncomplete(list);
@@ -352,7 +356,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var self = this;
             this.async = true;
             new openils.PermaCrud().retrieveAll('pgt', {
-                async : true,
+                async : !this.forceSync,
                 oncomplete : function(r) {
                     var list = openils.Util.readResponse(r, false, true);
                     if(!list) return;
