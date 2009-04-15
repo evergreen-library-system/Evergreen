@@ -174,9 +174,10 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 
 		while( node ) {
 			na.push(node);
-			node = null;
 			if (node.parent_ou())
 				node = fieldmapper.aou.findOrgUnit(node.parent_ou());
+			else
+				node = null;
 		}
 
 		return na.reverse();
