@@ -476,6 +476,41 @@ __PACKAGE__->register_method(
 	/
 );
 
+sub in_db_merge {
+	my( $self, $conn, $auth, $master, $records ) = @_;
+	my( $reqr, $evt ) = $U->checkses($auth);
+	return $evt if $evt;
+
+	my $editor = new_editor( requestor => $reqr, xact => 1 );
+
+    my $count = 0;
+    for my $source ( @$records ) {
+        #XXX we actually /will/ want to check perms for master and sources after record ownership exists
+
+        # This stored proc (asset.merge_record_assets(target,source)) has the side effects of
+        # moving call_number, title-type (and some volume-type) hold_request and uri-mapping
+        # objects from the source record to the target record, so must be called from within
+        # a transaction.
+
+        $count += $editor->json_query({
+            select => {
+                bre => [{
+                    alias => 'count',
+                    transform => 'asset.merge_record_assets',
+                    column => 'id',
+                    params => [$source]
+                }]
+            },
+            from   => 'bre',
+            where  => { id => $master }
+        })->[0]->{count}; # count of objects moved, of all types
+
+    }
+
+	$editor->commit;
+    return $count;
+}
+
 sub merge {
 	my( $self, $conn, $auth, $master, $records ) = @_;
 	my( $reqr, $evt ) = $U->checkses($auth);
