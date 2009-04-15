@@ -2,7 +2,7 @@
 -- Removes all traces of a purchase order, including the PO, lineitems, 
 -- lineitem_details, bibs, copies, callnumbers, and debits
 
-CREATE OR REPLACE FUNCTION acq.purge_po (po_id INT) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION acq.purge_po (po_id INT, purge_items BOOLEAN) RETURNS VOID AS $$
 DECLARE
     li RECORD;
 BEGIN
@@ -15,11 +15,17 @@ BEGIN
 
         DELETE FROM acq.fund_debit WHERE id in (
             SELECT fund_debit FROM acq.lineitem_detail WHERE lineitem = li.id);
-        DELETE FROM acq.lineitem_detail WHERE lineitem = li.id;
+
         IF li.picklist IS NULL THEN
+            IF purge_items THEN
+                DELETE FROM acq.lineitem_detail WHERE lineitem = li.id;
+            ELSE
+                UPDATE acq.lineitem_detail SET eg_copy_id = NULL WHERE lineitem = li.id;
+            END IF;
             DELETE FROM acq.lineitem_attr WHERE lineitem = li.id;
             DELETE from acq.lineitem WHERE id = li.id;
         ELSE
+            DELETE FROM acq.lineitem_detail WHERE lineitem = li.id;
             UPDATE acq.lineitem SET purchase_order = NULL, eg_bib_id = NULL, state = 'new' WHERE id = li.id;
         END IF;
     END LOOP;
