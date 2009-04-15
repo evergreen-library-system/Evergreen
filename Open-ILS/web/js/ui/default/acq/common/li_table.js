@@ -305,7 +305,7 @@ function AcqLiTable() {
 
     this._drawBatchCopyWidgets = function() {
         var row = this.copyBatchRow;
-        dojo.forEach(['fund', 'owning_lib', 'location'],
+        dojo.forEach(['fund', 'owning_lib', 'location', 'circ_modifier'],
             function(field) {
                 if(self.copyBatchRowDrawn) {
                     self.copyBatchWidgets[field].attr('value', null);
@@ -327,7 +327,7 @@ function AcqLiTable() {
 
     this.batchCopyUpdate = function() {
         var self = this;
-        var fields = ['fund', 'owning_lib', 'location'];
+        var fields = ['fund', 'owning_lib', 'location', 'circ_modifier'];
         for(var k in this.copyWidgetCache) {
             var cache = this.copyWidgetCache[k];
             dojo.forEach(fields, function(f) {
@@ -371,7 +371,7 @@ function AcqLiTable() {
         row.setAttribute('copy_id', copy.id());
         self.copyWidgetCache[copy.id()] = {};
 
-        dojo.forEach(['fund', 'owning_lib', 'location', 'barcode', 'cn_label'],
+        dojo.forEach(['fund', 'owning_lib', 'location', 'barcode', 'cn_label', 'circ_modifier', 'note'],
             function(field) {
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,

@@ -143,6 +143,7 @@
                     <td><div name='owning_lib'/></td>
                     <td><div name='location'/></td>
                     <td><div name='fund'/></td>
+                    <td><div name='circ_modifier'/></td>
                     <td colspan='3' style='text-align:left;'>
                         <div dojoType='dijit.form.Button' jsId='acqLitBatchUpdateCopies'>Batch Update</div>
                     </td>
@@ -168,18 +169,22 @@
                     <td style='margin-top:30px;'>Owning Branch</td>
                     <td>Shelving Location</td>
                     <td>Fund</td>
+                    <td>Circ Modifier</td>
                     <td>Barcode</td>
                     <td>Callnumber</td>
+                    <td>Notes</td>
                     <td/>
                 </tr>
             </tbody>
-            <tbody id='acq-lit-li-details-tbody'>
+            <tbody id='acq-lit-li-details-tbody' class='oils-generic-table'>
                 <tr id='acq-lit-li-details-row'>
                     <td><div name='owning_lib'/></td>
                     <td><div name='location'/></td>
                     <td><div name='fund'/></td>
+                    <td><div name='circ_modifier'/></td>
                     <td><div name='barcode'/></td>
                     <td><div name='cn_label'/></td>
+                    <td><div name='note'/></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
                 </tr>
             </tbody>
