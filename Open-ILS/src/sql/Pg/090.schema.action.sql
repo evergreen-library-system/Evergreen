@@ -356,7 +356,63 @@ DECLARE
 	target_cn     asset.call_number%ROWTYPE;
 	metarec       metabib.metarecord%ROWTYPE;
 	hold          action.hold_request%ROWTYPE;
+    uri_count     INT := 0;
+    counter       INT := 0;
+    uri_datafield TEXT;
+    uri_text      TEXT := '';
 BEGIN
+
+    -- move any 856 entries on records that have at least one MARC-mapped URI entry
+    SELECT  INTO uri_count COUNT(*)
+      FROM  asset.uri_call_number_map m
+            JOIN asset.call_number cn ON (m.call_number = cn.id)
+      WHERE cn.record = source_record;
+
+    IF uri_count > 0 THEN
+        
+        SELECT  COUNT(*) INTO counter
+          FROM  xpath_table(
+                    'id',
+                    'marc',
+                    'acq.lineitem',
+                    '//*[@tag="856"]',
+                    'id=' || lineitem
+                ) as t(i int,c text);
+    
+        FOR i IN 1 .. counter LOOP
+            SELECT  '<datafield xmlns="http://www.loc.gov/MARC21/slim" tag="856">' ||
+                        array_to_string(
+                            array_accum(
+                                '<subfield code="' || subfield || '">' ||
+                                regexp_replace(
+                                    regexp_replace(
+                                        regexp_replace(data,'&','&amp;','g'),
+                                        '>', '&gt;', 'g'
+                                    ),
+                                    '<', '&lt;', 'g'
+                                ) || '</subfield>'
+                            ), ''
+                        ) || '</datafield>' INTO uri_datafield
+              FROM  xpath_table(
+                        'id',
+                        'marc',
+                        'biblio.record_entry',
+                        '//*[@tag="856"][position()=' || i || ']/*/@code|' ||
+                        '//*[@tag="856"][position()=' || i || ']/*[@code]',
+                        'id=' || source_record
+                    ) as t(id int,subfield text,data text);
+
+            uri_text := uri_text || uri_datafield;
+        END LOOP;
+
+        IF uri_text <> '' THEN
+            UPDATE  biblio.record_entry
+              SET   marc = regexp_replace(marc,'(</[^>]*record>)', uri_text || E'\\1')
+              WHERE id = target_record;
+        END IF;
+
+    END IF;
+
 	-- Find and move metarecords to the target record
 	SELECT	INTO metarec *
 	  FROM	metabib.metarecord

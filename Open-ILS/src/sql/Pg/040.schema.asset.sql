@@ -166,6 +166,7 @@ CREATE TABLE asset.uri_call_number_map (
     call_number INT         NOT NULL REFERENCES asset.call_number (id),
     CONSTRAINT uri_cn_once UNIQUE (uri,call_number)
 );
+CREATE INDEX asset_uri_call_number_map_cn_idx ON asset.uri_call_number_map (call_number);
 
 CREATE TABLE asset.call_number_note (
 	id		BIGSERIAL			PRIMARY KEY,
