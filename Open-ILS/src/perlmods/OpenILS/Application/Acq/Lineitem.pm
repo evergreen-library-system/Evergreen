@@ -354,30 +354,6 @@ sub lineitem_search_ident {
 }
 
 
-__PACKAGE__->register_method(
-	method => 'create_lineitem_detail',
-	api_name	=> 'open-ils.acq.lineitem_detail.create',
-	signature => {
-        desc => q/Creates a new purchase order line item detail.  
-            Additionally creates the associated fund_debit/,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem_detail to create', type => 'object'},
-        ],
-        return => {desc => 'The purchase order line item detail id, Event on failure'}
-    }
-);
-
-sub create_lineitem_detail {
-    my($self, $conn, $auth, $li_detail, $options) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-    my $res = create_lineitem_detail_impl($self, $conn, $e, $li_detail, $options);
-    return $e->event if $e->died;
-    $e->commit;
-    return $res;
-}
-
 
 __PACKAGE__->register_method(
 	method => 'lineitem_detail_CUD_batch',
@@ -463,50 +439,6 @@ sub create_lineitem_detail_impl {
 }
 
 
-
-__PACKAGE__->register_method(
-	method => 'update_lineitem_detail',
-	api_name	=> 'open-ils.acq.lineitem_detail.update',
-	signature => {
-        desc => q/Updates a lineitem detail/,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem_detail to update', type => 'object'},
-        ],
-        return => {desc => '1 on success, Event on failure'}
-    }
-);
-
-sub update_lineitem_detail {
-    my($self, $conn, $auth, $li_detail) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-    my $res = update_lineitem_detail_impl($self, $conn, $e, $li_detail);
-    return $e->event if $e->died;
-    $e->commit;
-    return $res;
-}
-
-sub update_lineitem_detail_impl {
-    my($self, $conn, $e, $li_detail) = @_;
-
-    if($li_detail->fund) {
-        my $fund = $e->retrieve_acq_fund($li_detail->fund) or return $e->die_event;
-        return $e->die_event unless 
-            $e->allowed('MANAGE_FUND', $fund->org, $fund);
-    }
-
-    # XXX check lineitem perms
-
-    my $li = $e->retrieve_acq_lineitem($li_detail->lineitem)
-        or return $e->die_event;
-    my $evt = update_li_edit_time($e, $li);
-    return $evt if $evt;
-
-    $e->update_acq_lineitem_detail($li_detail) or return $e->die_event;
-    return 1;
-}
-
 sub update_li_edit_time {
     my ($e, $li) = @_;
     # some lineitem edits are allowed after approval time...
@@ -516,54 +448,6 @@ sub update_li_edit_time {
     $li->editor($e->requestor->id);
     $e->update_acq_lineitem($li) or return $e->die_event;
     return undef;
-}
-
-
-__PACKAGE__->register_method(
-	method => 'delete_lineitem_detail',
-	api_name	=> 'open-ils.acq.lineitem_detail.delete',
-	signature => {
-        desc => q/Deletes a lineitem detail/,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem_detail ID to delete', type => 'number'},
-        ],
-        return => {desc => '1 on success, Event on failure'}
-    }
-);
-
-sub delete_lineitem_detail {
-    my($self, $conn, $auth, $li_detail_id) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-    my $res = delete_lineitem_detail_impl($self, $conn, $e, $li_detail_id);
-    return $e->event if $e->died;
-    $e->commit;
-    return $res;
-}
-
-sub delete_lineitem_detail_impl {
-    my($self, $conn, $e, $li_detail_id) = @_;
-
-    my $li_detail = $e->retrieve_acq_lineitem_detail([
-        $li_detail_id,
-        {   flesh => 1,
-            flesh_fields => {acqlid => ['lineitem']}
-        }
-    ]) or return $e->die_event;
-
-    my $li = $li_detail->lineitem;
-
-    my $evt = update_li_edit_time($e, $li);
-    return $evt if $evt;
-
-    return OpenILS::Event->new('BAD_PARAMS') unless 
-        $li->state =~ /new|approved/;
-
-    # XXX check lineitem perms
-
-    $e->delete_acq_lineitem_detail($li_detail) or return $e->die_event;
-    return 1;
 }
 
 

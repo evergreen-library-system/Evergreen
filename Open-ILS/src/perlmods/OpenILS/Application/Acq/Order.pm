@@ -53,6 +53,7 @@ sub respond_complete {
 sub total {
     my($self, $val) = @_;
     $self->{args}->{total} = $val if defined $val;
+    $self->{args}->{maximum} = $self->{args}->{total};
     return $self->{args}->{total};
 }
 sub purchase_order {
@@ -1159,6 +1160,63 @@ sub create_purchase_order_api {
 
     return $mgr->respond_complete;
 }
+
+
+__PACKAGE__->register_method(
+	method => 'lineitem_detail_CUD_batch',
+	api_name => 'open-ils.acq.lineitem_detail.cud.batch',
+    stream => 1,
+	signature => {
+        desc => q/Creates a new purchase order line item detail.  
+            Additionally creates the associated fund_debit/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'List of lineitem_details to create', type => 'array'},
+        ],
+        return => {desc => 'Streaming response of current position in the array'}
+    }
+);
+
+sub lineitem_detail_CUD_batch {
+    my($self, $conn, $auth, $li_details) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(
+        editor => $e, 
+        conn => $conn, 
+        throttle => 5
+    );
+
+    # XXX perms
+
+    $mgr->total(scalar(@$li_details));
+    
+    my %li_cache;
+
+    for my $lid (@$li_details) {
+
+        my $li = $li_cache{$lid->lineitem} || $e->retrieve_acq_lineitem($lid->lineitem);
+
+        if($lid->isnew) {
+            create_lineitem_detail($mgr, %{$lid->to_bare_hash}) or return $e->die_event;
+
+        } elsif($lid->ischanged) {
+            $e->update_acq_lineitem_detail($lid) or return $e->die_event;
+
+        } elsif($lid->isdeleted) {
+            delete_lineitem_detail($mgr, $lid) or return $e->die_event;
+        }
+
+        $mgr->respond(li => $li);
+        $li_cache{$lid->lineitem} = $li;
+    }
+
+    $e->commit;
+    return $mgr->respond_complete;
+}
+
 
 
 1;
