@@ -305,7 +305,7 @@ function AcqLiTable() {
 
     this._drawBatchCopyWidgets = function() {
         var row = this.copyBatchRow;
-        dojo.forEach(['fund', 'owning_lib', 'location', 'circ_modifier'],
+        dojo.forEach(['fund', 'owning_lib', 'location', 'circ_modifier', 'cn_label'],
             function(field) {
                 if(self.copyBatchRowDrawn) {
                     self.copyBatchWidgets[field].attr('value', null);
@@ -327,7 +327,7 @@ function AcqLiTable() {
 
     this.batchCopyUpdate = function() {
         var self = this;
-        var fields = ['fund', 'owning_lib', 'location', 'circ_modifier'];
+        var fields = ['fund', 'owning_lib', 'location', 'circ_modifier', 'cn_label'];
         for(var k in this.copyWidgetCache) {
             var cache = this.copyWidgetCache[k];
             dojo.forEach(fields, function(f) {
