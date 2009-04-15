@@ -20,7 +20,7 @@ BEGIN
             DELETE FROM acq.lineitem_attr WHERE lineitem = li.id;
             DELETE from acq.lineitem WHERE id = li.id;
         ELSE
-            UPDATE acq.lineitem SET purchase_order = NULL WHERE id = li.id;
+            UPDATE acq.lineitem SET purchase_order = NULL, eg_bib_id = NULL, state = 'new' WHERE id = li.id;
         END IF;
     END LOOP;
 
