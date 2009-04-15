@@ -125,6 +125,7 @@ sub push_ingest_queue {
 
 sub process_ingest_records {
     my $self = shift;
+    return unless @{$self->{ingest_queue}};
 
     for my $req (@{$self->{ingest_queue}}) {
 
@@ -220,6 +221,22 @@ sub delete_lineitem {
 
     return $mgr->editor->delete_acq_lineitem($li);
 }
+
+# begins and commit transactions as it goes
+sub create_lineitem_list_assets {
+    my($mgr, $li_ids) = @_;
+    # create the bibs/volumes/copies and ingest the records
+    for my $li_id (@$li_ids) {
+        $mgr->editor->xact_begin;
+        my $data = create_lineitem_assets($mgr, $li_id) or return undef;
+        $mgr->editor->xact_commit;
+        $mgr->push_ingest_queue($data->{li}->eg_bib_id) if $data->{new_bib};
+        $mgr->respond;
+    }
+    $mgr->process_ingest_records;
+    return 1;
+}
+
 
 # ----------------------------------------------------------------------------
 # Lineitem Detail
@@ -864,15 +881,7 @@ sub upload_records {
     $cache->delete_cache('vandelay_import_spool_' . $key);
 
     if($create_assets) {
-        # create the bibs/volumes/copies and ingest the records
-        for my $li_id (@li_list) {
-            $e->xact_begin;
-            my $data = create_lineitem_assets($mgr, $li_id) or return $e->die_event;
-            $e->xact_commit;
-            $mgr->push_ingest_queue($data->{li}->eg_bib_id) if $data->{new_bib};
-            $mgr->respond;
-        }
-        $mgr->process_ingest_records;
+        create_lineitem_list_assets($mgr, \@li_list) or return $e->die_event;
     }
 
     return $mgr->respond_complete;
@@ -1078,15 +1087,75 @@ sub create_po_assets {
 
     $mgr->total(scalar(@$li_ids) + $lid_total);
 
-    for my $li_id (@$li_ids) {
-        return $e->die_event unless create_lineitem_assets($mgr, $li_id);
-        $mgr->respond;
+    create_lineitem_list_assets($mgr, $li_ids) or return $e->die_event;
+
+    $e->xact_begin;
+    update_purchase_order($mgr, $po) or return $e->die_event;
+    $e->commit;
+
+    return $mgr->respond_complete;
+}
+
+
+
+__PACKAGE__->register_method(
+	method => 'create_purchase_order_api',
+	api_name	=> 'open-ils.acq.purchase_order.create',
+	signature => {
+        desc => 'Creates a new purchase order',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'purchase_order to create', type => 'object'}
+        ],
+        return => {desc => 'The purchase order id, Event on failure'}
+    }
+);
+
+sub create_purchase_order_api {
+    my($self, $conn, $auth, $po, $args) = @_;
+    $args ||= {};
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(
+        editor => $e, 
+        conn => $conn, 
+        throttle => 5
+    );
+
+    # create the PO
+    my %pargs = (ordering_agency => $e->requestor->ws_ou);
+    $pargs{provider} = $po->provider if $po->provider;
+    $po = create_purchase_order($mgr, %pargs) or return $e->die_event;
+
+    my $li_ids = $$args{lineitems};
+
+    if($li_ids) {
+
+        for my $li_id (@$li_ids) { 
+
+            my $li = $e->retrieve_acq_lineitem([
+                $li_id,
+                {flesh => 1, flesh_fields => {jub => ['attributes']}}
+            ]) or return $e->die_event;
+
+            $li->provider($po->provider);
+            $li->purchase_order($po->id);
+            update_lineitem($mgr, $li) or return $e->die_event;
+            $mgr->respond;
+
+            create_lineitem_debits($mgr, $li) or return $e->die_event;
+        }
     }
 
-    return $e->die_event unless update_purchase_order($mgr, $po);
+    # commit before starting the asset creation
+    $e->xact_commit;
 
-    $e->commit;
-    $mgr->process_ingest_records;
+    if($li_ids and $$args{create_assets}) {
+        create_lineitem_list_assets($mgr, $li_ids) or return $e->die_event;
+    }
 
     return $mgr->respond_complete;
 }
