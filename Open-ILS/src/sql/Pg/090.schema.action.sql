@@ -476,6 +476,9 @@ BEGIN
 		moved_objects := moved_objects + 1;
 	END LOOP;
 
+    -- Finally, "delete" the source record
+    DELETE FROM biblio.record_entry WHERE id = source_record;
+
 	-- That's all, folks!
 	RETURN moved_objects;
 END;
