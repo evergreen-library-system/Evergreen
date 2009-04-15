@@ -2673,6 +2673,8 @@ char* SELECT (
 	// metadata about the core search class
 	osrfHash* core_meta = NULL;
 
+	osrfLogDebug(OSRF_LOG_MARK, "cstore SELECT locale: %s", locale);
+
 	// punt if there's no core class
 	if (!join_hash || ( join_hash->type == JSON_HASH && !join_hash->size )) {
 		osrfLogError(
@@ -4800,13 +4802,15 @@ static int is_identifier( const char* s) {
 
 	// Check each character until we reach white space or
 	// end-of-string.  Letters, digits, underscores, and 
-	// dollar signs are okay.  Control characters and other
+	// dollar signs are okay. With the exception of periods
+	// (as in schema.identifier), control characters and other
 	// punctuation characters are not okay.  Anything else
 	// is okay -- it could for example be part of a multibyte
 	// UTF8 character such as a letter with diacritical marks,
 	// and those are allowed.
 	do {
 		if( isalnum( (unsigned char) *s )
+			|| '.' == *s
 			|| '_' == *s
 			|| '$' == *s )
 			;  // Fine; keep going
