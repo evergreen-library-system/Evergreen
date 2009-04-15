@@ -234,6 +234,14 @@ function AcqLiTable() {
             dojo.query('[name=value]', row)[0].appendChild(document.createTextNode(attr.attr_value()));
             this.infoTbody.appendChild(row);
         }
+
+        if(li.eg_bib_id()) {
+            openils.Util.show('acq-lit-info-cat-link');
+            var link = dojo.byId('acq-lit-info-cat-link').getElementsByTagName('a')[0];
+            link.setAttribute('href',  link.getAttribute('href') + li.eg_bib_id());
+        } else {
+            openils.Util.hide('acq-lit-info-cat-link');
+        }
     };
 
     this.drawMarcHTML = function(li) {
@@ -486,7 +494,8 @@ function AcqLiTable() {
     this.createAssets = function() {
         if(!this.isPO) return;
         if(!confirm(localeStrings.CREATE_PO_ASSETS_CONFIRM)) return;
-        progressDialog.show();
+        this.show('acq-lit-create-po-progress');
+        var self = this;
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.assets.create'],
             {   async: true,
@@ -494,10 +503,15 @@ function AcqLiTable() {
                 onresponse: function(r) {
                     var resp = openils.Util.readResponse(r);
                     if(!resp) return;
+                    dojo.byId('acq-pl-lit-li-processed').innerHTML = resp.li;
+                    dojo.byId('acq-pl-lit-lid-processed').innerHTML = resp.lid;
+                    dojo.byId('acq-pl-lit-debits-processed').innerHTML = resp.debits_accrued;
+                    dojo.byId('acq-pl-lit-bibs-processed').innerHTML = resp.bibs;
+                    dojo.byId('acq-pl-lit-indexed-processed').innerHTML = resp.indexed;
+                    dojo.byId('acq-pl-lit-copies-processed').innerHTML = resp.copies;
                     if(resp.complete) {
-                        progressDialog.hide();
-                    } else {
-                        progressDialog.update({maximum:resp.total, progress:resp.progress});
+                        openils.Util.hide('acq-lit-create-po-progress');
+                        self.show('list');
                     }
                 }
             }
@@ -570,18 +584,21 @@ function AcqLiTable() {
                     po, 
                     {
                         lineitems : selected.map(function(li) { return li.id() }),
-                        create_assets : true,
-                        create_debits : true,
-                        circ_modifier : 'book', /* XXX */
+                        create_assets : fields.create_assets[0],
                     }
                 ],
+
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
-                    openils.Util.appendClear('acq-lit-po-encumbered', document.createTextNode(resp.total_debits));
-                    openils.Util.appendClear('acq-lit-po-copies', document.createTextNode(resp.total_copies));
-                    litPoTotalProgress.update({maximum:max, progress:resp.progress});
+                    if(!resp) return;
+                    dojo.byId('acq-pl-lit-li-processed').innerHTML = resp.li;
+                    dojo.byId('acq-pl-lit-lid-processed').innerHTML = resp.lid;
+                    dojo.byId('acq-pl-lit-debits-processed').innerHTML = resp.debits_accrued;
+                    dojo.byId('acq-pl-lit-bibs-processed').innerHTML = resp.bibs;
+                    dojo.byId('acq-pl-lit-indexed-processed').innerHTML = resp.indexed;
+                    dojo.byId('acq-pl-lit-copies-processed').innerHTML = resp.copies;
                     if(resp.complete) 
-                        location.href = oilsBasePath + '/eg/acq/po/view/' + resp.purchase_order;
+                        location.href = oilsBasePath + '/eg/acq/po/view/' + resp.purchase_order.id();
                 }
             }
         );

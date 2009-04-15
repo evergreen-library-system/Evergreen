@@ -97,6 +97,9 @@
                 <tr id='acq-lit-info-row'><td name='label'/><td name='value'/></tr>
             </tbody>
         </table>
+        <div style='margin-top:10px;' class='hidden' id='acq-lit-info-cat-link'>
+            View in the <a href='/opac/en-US/skin/default/xml/rdetail.xml?r='>Catalog</a>
+        </div>
         <div style='margin-top:40px;'>
             <h3>MARC Record</h3>
             <div>
@@ -185,18 +188,32 @@
 
     <div class='hidden' id='acq-lit-create-po-progress'>
         <table class='oils-generic-table'>
-            <tr>
-                <td>Encumbered Funds:</td>
-                <td><span id='acq-lit-po-encumbered'></span></td>
-            </tr>
-            <tr>
-                <td>Copies Created:</td>
-                <td><span id='acq-lit-po-copies'></span></td>
-            </tr>
-            <tr>
-                <td>Total Progress: </td>
-                <td><span dojoType="dijit.ProgressBar" style="width:300px" jsId="litPoTotalProgress"></span></td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td>Lineitems Processed</td>
+                    <td><span id='acq-pl-lit-li-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Items Processed</td>
+                    <td><span id='acq-pl-lit-lid-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Debits Encumbered</td>
+                    <td><span id='acq-pl-lit-debits-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Bib Records Imported</td>
+                    <td><span id='acq-pl-lit-bibs-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Bib Records Indexed</td>
+                    <td><span id='acq-pl-lit-indexed-processed'>0</span></td>
+                </tr>
+                <tr>
+                    <td>Copies Created</td>
+                    <td><span id='acq-pl-lit-copies-processed'>0</span></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
@@ -214,6 +231,10 @@
                 <tr>
                     <td>Selected Lineitems</td>
                     <td><input name='create_from' value='selected' dojoType='dijit.form.RadioButton'/></td>
+                </tr>
+                <tr>
+                    <td>Import Bibs and Create Copies</td>
+                    <td><input name='create_assets' dojoType='dijit.form.CheckBox'/></td>
                 </tr>
                 <tr>
                     <td colspan='2'>
