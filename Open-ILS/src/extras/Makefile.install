@@ -144,31 +144,31 @@ CENTOS_PERL = \
 	Text::CSV
 
 PGSQL_CLIENT_DEBS_8.1 = \
-	postgresql-client-8.1 \
-	postgresql-server-dev-8.1
+	postgresql-client-8.1
 
 PGSQL_SERVER_DEBS_8.1 = \
 	postgresql-8.1 \
 	postgresql-contrib-8.1 \
-	postgresql-plperl-8.1
+	postgresql-plperl-8.1 \
+	postgresql-server-dev-8.1
 
 PGSQL_CLIENT_DEBS_82 = \
-	postgresql-client \
-	postgresql-server-dev-8.2
+	postgresql-client
 
 PGSQL_SERVER_DEBS_82 = \
 	postgresql \
 	postgresql-contrib-8.2 \
-	postgresql-plperl-8.2
+	postgresql-plperl-8.2 \
+	postgresql-server-dev-8.2
 
 PGSQL_CLIENT_DEBS_83 = \
-	postgresql-client \
-	postgresql-server-dev-8.3
+	postgresql-client
 
 PGSQL_SERVER_DEBS_83 = \
 	postgresql \
 	postgresql-contrib-8.3 \
-	postgresql-plperl-8.3
+	postgresql-plperl-8.3 \
+	postgresql-server-dev-8.3
 
 GENTOOS = \
     yaz\
