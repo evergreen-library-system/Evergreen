@@ -2247,7 +2247,6 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				jsonIteratorFree(search_itr);
 				return NULL;
 			}
-			field = field;
 
 		} else if (!field && !fkey) {
 			osrfHash* _links = oilsIDL_links( leftclass );
@@ -2260,10 +2259,15 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				const char* other_class = osrfHashGet( curr_link, "class" );
 				if( other_class && !strcmp( other_class, class ) ) {
 
-					// Found a link between the classes
-					fkey = osrfHashIteratorKey( itr );
-					field = osrfHashGet( curr_link, "key" );
-					break;
+					// In the IDL, the parent class doesn't know then names of the child
+					// columns that are pointing to it, so don't use that end of the link
+					const char* reltype = osrfHashGet( curr_link, "reltype" );
+					if( reltype && strcmp( reltype, "has_many" ) ) {
+						// Found a link between the classes
+						fkey = osrfHashIteratorKey( itr );
+						field = osrfHashGet( curr_link, "key" );
+						break;
+					}
 				}
 			}
 			osrfHashIteratorFree( itr );
@@ -2280,10 +2284,15 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					const char* other_class = osrfHashGet( curr_link, "class" );
 					if( other_class && !strcmp( other_class, leftclass ) ) {
 
-						// Found a link between the classes
-						fkey = osrfHashIteratorKey( itr );
-						field = osrfHashGet( curr_link, "key" );
-						break;
+						// In the IDL, the parent class doesn't know then names of the child
+						// columns that are pointing to it, so don't use that end of the link
+						const char* reltype = osrfHashGet( curr_link, "reltype" );
+						if( reltype && strcmp( reltype, "has_many" ) ) {
+							// Found a link between the classes
+							field = osrfHashIteratorKey( itr );
+							fkey = osrfHashGet( curr_link, "key" );
+							break;
+						}
 					}
 				}
 				osrfHashIteratorFree( itr );
