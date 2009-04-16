@@ -16,18 +16,19 @@ BEGIN
         DELETE FROM acq.fund_debit WHERE id in (
             SELECT fund_debit FROM acq.lineitem_detail WHERE lineitem = li.id);
 
-        IF li.picklist IS NULL THEN
+        IF li.picklist IS NOT NULL THEN
             IF purge_items THEN
                 DELETE FROM acq.lineitem_detail WHERE lineitem = li.id;
             ELSE
-                UPDATE acq.lineitem_detail SET eg_copy_id = NULL WHERE lineitem = li.id;
+                UPDATE acq.lineitem_detail SET eg_copy_id = NULL, fund_debit = NULL WHERE lineitem = li.id;
             END IF;
-            DELETE FROM acq.lineitem_attr WHERE lineitem = li.id;
-            DELETE from acq.lineitem WHERE id = li.id;
+            UPDATE acq.lineitem SET purchase_order = NULL, eg_bib_id = NULL, state = 'new' WHERE id = li.id;
         ELSE
             DELETE FROM acq.lineitem_detail WHERE lineitem = li.id;
-            UPDATE acq.lineitem SET purchase_order = NULL, eg_bib_id = NULL, state = 'new' WHERE id = li.id;
+            DELETE FROM acq.lineitem_attr WHERE lineitem = li.id;
+            DELETE from acq.lineitem WHERE id = li.id;
         END IF;
+
     END LOOP;
 
     DELETE FROM acq.purchase_order WHERE id = po_id;
