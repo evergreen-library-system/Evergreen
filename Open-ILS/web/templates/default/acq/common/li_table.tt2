@@ -192,7 +192,7 @@
         </table>
     </div>
 
-    <div class='hidden' id='acq-lit-create-po-progress'>
+    <div class='hidden' id='acq-lit-progress-numbers'>
         <table class='oils-generic-table'>
             <tbody>
                 <tr>
@@ -216,7 +216,7 @@
                     <td><span id='acq-pl-lit-indexed-processed'>0</span></td>
                 </tr>
                 <tr>
-                    <td>Copies Created</td>
+                    <td>Copies Processed</td>
                     <td><span id='acq-pl-lit-copies-processed'>0</span></td>
                 </tr>
             </tbody>

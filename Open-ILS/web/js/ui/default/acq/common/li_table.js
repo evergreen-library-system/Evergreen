@@ -494,7 +494,7 @@ function AcqLiTable() {
     this.createAssets = function() {
         if(!this.isPO) return;
         if(!confirm(localeStrings.CREATE_PO_ASSETS_CONFIRM)) return;
-        this.show('acq-lit-create-po-progress');
+        this.show('acq-lit-progress-numbers');
         var self = this;
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.assets.create'],
@@ -502,17 +502,7 @@ function AcqLiTable() {
                 params: [this.authtoken, this.isPO],
                 onresponse: function(r) {
                     var resp = openils.Util.readResponse(r);
-                    if(!resp) return;
-                    dojo.byId('acq-pl-lit-li-processed').innerHTML = resp.li;
-                    dojo.byId('acq-pl-lit-lid-processed').innerHTML = resp.lid;
-                    dojo.byId('acq-pl-lit-debits-processed').innerHTML = resp.debits_accrued;
-                    dojo.byId('acq-pl-lit-bibs-processed').innerHTML = resp.bibs;
-                    dojo.byId('acq-pl-lit-indexed-processed').innerHTML = resp.indexed;
-                    dojo.byId('acq-pl-lit-copies-processed').innerHTML = resp.copies;
-                    if(resp.complete) {
-                        openils.Util.hide('acq-lit-create-po-progress');
-                        self.show('list');
-                    }
+                    self._updateProgressNumbers(resp, true);
                 }
             }
         );
@@ -529,7 +519,7 @@ function AcqLiTable() {
                     progressDialogInd.hide();
                     var evt = openils.Util.readResponse(r);
                     if(evt && evt.template_output()) {
-                        win = window.open('','', 'resizable,width=700,height=500,scrollbars=1');
+                        win = window.open('','', 'resizable,width=800,height=600,scrollbars=1');
                         win.document.body.innerHTML = evt.template_output().data();
                     }
                 }
@@ -540,34 +530,35 @@ function AcqLiTable() {
 
     this.receivePO = function() {
         if(!this.isPO) return;
-        progressDialog.show();
-        var maximum = 1;
-        dojo.forEach(this.liCache, function(){maximum += 1; });
-        dojo.forEach(this.copyCache, function(){maximum += 1; });
+        this.show('acq-lit-progress-numbers');
+        var self = this;
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.receive'],
             {   async: true,
                 params: [this.authtoken, this.isPO],
                 onresponse : function(r) {
-                    var stat = openils.Util.readResponse(r);
-                    
-                    // we don't know the total amount of items to be processed
-                    // since we only have 1 page of data
-                    if(stat.progress > maximum) maximum *= 2;
-
-                    progressDialog.update({maximum:maximum, progress:stat.progress});
-                    if(stat.complete) {
-                        // XXX
-                        location.href = location.href;
-                    }
+                    var resp = openils.Util.readResponse(r);
+                    self._updateProgressNumbers(resp, true);
                 },
             }
         );
     }
 
+    this._updateProgressNumbers = function(resp, reloadOnComplete) {
+        if(!resp) return;
+        dojo.byId('acq-pl-lit-li-processed').innerHTML = resp.li;
+        dojo.byId('acq-pl-lit-lid-processed').innerHTML = resp.lid;
+        dojo.byId('acq-pl-lit-debits-processed').innerHTML = resp.debits_accrued;
+        dojo.byId('acq-pl-lit-bibs-processed').innerHTML = resp.bibs;
+        dojo.byId('acq-pl-lit-indexed-processed').innerHTML = resp.indexed;
+        dojo.byId('acq-pl-lit-copies-processed').innerHTML = resp.copies;
+        if(resp.complete && reloadOnComplete) 
+            location.href = location.href;
+    }
+
 
     this._createPO = function(fields) {
-        this.show('acq-lit-create-po-progress');
+        this.show('acq-lit-progress-numbers');
         var po = new fieldmapper.acqpo();
         po.provider(this.createPoProviderSelector.attr('value'));
 
@@ -576,6 +567,7 @@ function AcqLiTable() {
 
         var max = selected.length * 3;
 
+        var self = this;
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.create'],
             {   async: true,
@@ -590,13 +582,7 @@ function AcqLiTable() {
 
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
-                    if(!resp) return;
-                    dojo.byId('acq-pl-lit-li-processed').innerHTML = resp.li;
-                    dojo.byId('acq-pl-lit-lid-processed').innerHTML = resp.lid;
-                    dojo.byId('acq-pl-lit-debits-processed').innerHTML = resp.debits_accrued;
-                    dojo.byId('acq-pl-lit-bibs-processed').innerHTML = resp.bibs;
-                    dojo.byId('acq-pl-lit-indexed-processed').innerHTML = resp.indexed;
-                    dojo.byId('acq-pl-lit-copies-processed').innerHTML = resp.copies;
+                    self._updateProgressNumbers(resp);
                     if(resp.complete) 
                         location.href = oilsBasePath + '/eg/acq/po/view/' + resp.purchase_order.id();
                 }
