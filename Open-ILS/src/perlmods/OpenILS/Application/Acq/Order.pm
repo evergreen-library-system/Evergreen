@@ -276,6 +276,22 @@ sub receive_lineitem {
     return check_purchase_order_received($mgr, $li->purchase_order);
 }
 
+sub rollback_receive_lineitem {
+    my($mgr, $li_id) = @_;
+    my $li = $mgr->editor->retrieve_acq_lineitem($li_id) or return 0;
+
+    my $lid_ids = $mgr->editor->search_acq_lineitem_detail(
+        {lineitem => $li_id, recv_time => {'!=' => undef}}, {idlist => 1});
+
+    for my $lid_id (@$lid_ids) {
+       rollback_receive_lineitem_detail($mgr, $lid_id, 1) or return 0; 
+    }
+
+    $mgr->add_li;
+    $li->state('on-order');
+    return update_lineitem($mgr, $li);
+}
+
 # ----------------------------------------------------------------------------
 # Lineitem Detail
 # ----------------------------------------------------------------------------
@@ -366,6 +382,39 @@ sub receive_lineitem_detail {
     return check_purchase_order_received($mgr, $li->purchase_order);
 }
 
+
+sub rollback_receive_lineitem_detail {
+    my($mgr, $lid_id) = @_;
+    my $e = $mgr->editor;
+
+    my $lid = $e->retrieve_acq_lineitem_detail([
+        $lid_id,
+        {   flesh => 1,
+            flesh_fields => {
+                acqlid => ['fund_debit']
+            }
+        }
+    ]) or return 0;
+
+    return 1 unless $lid->recv_time;
+
+    $lid->clear_recv_time;
+    $e->update_acq_lineitem_detail($lid) or return 0;
+
+    my $copy = $e->retrieve_asset_copy($lid->eg_copy_id) or return 0;
+    $copy->status(OILS_COPY_STATUS_ON_ORDER);
+    $copy->edit_date('now');
+    $copy->editor($e->requestor->id);
+    $e->update_asset_copy($copy) or return 0;
+
+    if($lid->fund_debit) {
+        $lid->fund_debit->encumbrance('t');
+        $e->update_acq_fund_debit($lid->fund_debit) or return 0;
+    }
+
+    $mgr->add_lid;
+    return $lid;
+}
 
 # ----------------------------------------------------------------------------
 # Lineitem Attr
@@ -1296,11 +1345,11 @@ sub lineitem_detail_CUD_batch {
 
 
 __PACKAGE__->register_method(
-	method => 'receive_po',
+	method => 'receive_po_api',
 	api_name	=> 'open-ils.acq.purchase_order.receive'
 );
 
-sub receive_po {
+sub receive_po_api {
     my($self, $conn, $auth, $po_id) = @_;
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->die_event unless $e->checkauth;
@@ -1400,5 +1449,118 @@ sub receive_lineitem_api {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'rollback_receive_po_api',
+	api_name	=> 'open-ils.acq.purchase_order.receive.rollback'
+);
+
+sub rollback_receive_po_api {
+    my($self, $conn, $auth, $po_id) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('RECEIVE_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $li_ids = $e->search_acq_lineitem({purchase_order => $po_id}, {idlist => 1});
+
+    for my $li_id (@$li_ids) {
+        rollback_receive_lineitem($mgr, $li_id) or return $e->die_event;
+        $mgr->respond;
+    }
+
+    $po->state('on-order');
+    update_purchase_order($mgr, $po) or return $e->die_event;
+
+    $e->commit;
+    return $mgr->respond_complete;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'rollback_receive_lineitem_detail_api',
+	api_name	=> 'open-ils.acq.lineitem_detail.receive.rollback',
+	signature => {
+        desc => 'Mark a lineitem_detail as received',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem detail ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub rollback_receive_lineitem_detail_api {
+    my($self, $conn, $auth, $lid_id) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $lid = $e->retrieve_acq_lineitem_detail([
+        $lid_id, {
+            flesh => 2,
+            flesh_fields => {
+                acqlid => ['lineitem'],
+                jub => ['purchase_order']
+            }
+        }
+    ]);
+    my $li = $lid->lineitem;
+    my $po = $li->purchase_order;
+
+    return $e->die_event unless $e->allowed('RECEIVE_PURCHASE_ORDER', $po->ordering_agency);
+    rollback_receive_lineitem_detail($mgr, $lid_id) or return $e->die_event;
+
+    $li->state('on-order');
+    $po->state('on-order');
+    udpate_lineitem($mgr, $li) or return $e->die_event;
+    udpate_purchase_order($mgr, $po) or return $e->die_event;
+
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+	method => 'rollback_receive_lineitem_api',
+	api_name	=> 'open-ils.acq.lineitem.receive.rollback',
+	signature => {
+        desc => 'Mark a lineitem as received',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem detail ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub rollback_receive_lineitem_api {
+    my($self, $conn, $auth, $li_id) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $li = $e->retrieve_acq_lineitem_detail([
+        $li_id, {
+            flesh => 1,
+            flesh_fields => {
+                jub => ['purchase_order']
+            }
+        }
+    ]);
+    my $po = $li->purchase_order;
+
+    return $e->die_event unless $e->allowed('RECEIVE_PURCHASE_ORDER', $po->ordering_agency);
+
+    rollback_receive_lineitem($mgr, $li_id) or return $e->die_event;
+
+    $po->state('on-order');
+    update_purchase_order($mgr, $po) or return $e->die_event;
+
+    $e->commit;
+    return 1;
+}
 
 1;

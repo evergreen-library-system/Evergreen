@@ -18,6 +18,7 @@
                                             <option mask='pl' value='order_ready'>Mark Ready for Order</option>
                                             <option mask='pl' value='create_order'>Create Purchase Order</option>
                                             <option mask='po' value='receive_po'>Mark Purchase Order as Received</option>
+                                            <option mask='po' value='rollback_receive_po'>Un-Receive Purchase Order</option>
                                             <option mask='po' value='print_po'>Print Purchase Order</option>
                                             <option mask='po' value='create_assets'>Create PO Assets</option>
                                             <option mask='*'  value='delete_selected'>Delete Selected Items</option>

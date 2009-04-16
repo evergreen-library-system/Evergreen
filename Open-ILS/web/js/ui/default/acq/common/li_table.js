@@ -485,6 +485,10 @@ function AcqLiTable() {
                 this.receivePO();
                 break;
 
+            case 'rollback_receive_po':
+                this.rollbackPoReceive();
+                break;
+
             case 'create_assets':
                 this.createAssets();
                 break;
@@ -534,6 +538,23 @@ function AcqLiTable() {
         var self = this;
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.receive'],
+            {   async: true,
+                params: [this.authtoken, this.isPO],
+                onresponse : function(r) {
+                    var resp = openils.Util.readResponse(r);
+                    self._updateProgressNumbers(resp, true);
+                },
+            }
+        );
+    }
+
+    this.rollbackPoReceive = function() {
+        if(!this.isPO) return;
+        if(!confirm(localeStrings.ROLLBACK_PO_RECEIVE_CONFIRM)) return;
+        this.show('acq-lit-progress-numbers');
+        var self = this;
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.purchase_order.receive.rollback'],
             {   async: true,
                 params: [this.authtoken, this.isPO],
                 onresponse : function(r) {
