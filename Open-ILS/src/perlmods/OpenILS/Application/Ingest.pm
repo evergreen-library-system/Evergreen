@@ -1352,7 +1352,7 @@ sub _extract_856_uris {
         $cn = $cn->clone if ($cn);
         $cn->clear_isnew if ($cn);
 
-	$cn ||= $cstore
+        $cn ||= $cstore
             ->request( 'open-ils.cstore.direct.asset.call_number.search' => { owning_lib => $org->id, record => $recid, label => '##URI##' } )
             ->gather(1);
 
@@ -1376,6 +1376,7 @@ sub _extract_856_uris {
     }
 
     $log->debug("Returning ".scalar(@objects)." URI nodes for record $recid");
+    $cstore->disconnect;
     return @objects;
 }
 
@@ -1551,3 +1552,4 @@ __PACKAGE__->register_method(
 
 1;
 
+# vim:et:ts=4:sw=4:
