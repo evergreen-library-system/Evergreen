@@ -1,6 +1,9 @@
+dojo.require('dojo.date.locale');
+dojo.require('dojo.date.stamp');
 dojo.require('dijit.form.Button');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.FilteringSelect');
+dojo.require('dijit.form.Textarea');
 dojo.require('dijit.ProgressBar');
 dojo.require('openils.User');
 dojo.require('openils.Util');
@@ -26,6 +29,8 @@ function AcqLiTable() {
     this.copyRow = this.copyTbody.removeChild(dojo.byId('acq-lit-li-details-row'));
     this.copyBatchRow = dojo.byId('acq-lit-li-details-batch-row');
     this.copyBatchWidgets = {};
+    this.liNotesTbody = dojo.byId('acq-lit-notes-tbody');
+    this.liNotesRow = this.liNotesTbody.removeChild(dojo.byId('acq-lit-notes-row'));
 
     dojo.connect(acqLitLiActionsSelector, 'onChange', 
         function() { 
@@ -43,9 +48,12 @@ function AcqLiTable() {
         self._savePl(acqLitSavePlDialog.getValues());
     }
 
+    dojo.byId('acq-lit-notes-new-button').onclick = function(){acqLitCreateLiNoteDialog.show();}
+
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-copies-back-button').onclick = function(){self.show('list')};
+    dojo.byId('acq-lit-notes-back-button').onclick = function(){self.show('list')};
 
     this.reset = function() {
         while(self.tbody.childNodes[0])
@@ -77,7 +85,8 @@ function AcqLiTable() {
         openils.Util.hide('acq-lit-table-div');
         openils.Util.hide('acq-lit-info-div');
         openils.Util.hide('acq-lit-li-details');
-        switch(div){
+        openils.Util.hide('acq-lit-notes-div');
+        switch(div) {
             case 'list':
                 openils.Util.show('acq-lit-table-div');
                 break;
@@ -86,6 +95,9 @@ function AcqLiTable() {
                 break;
             case 'copies':
                 openils.Util.show('acq-lit-li-details');
+                break;
+            case 'notes':
+                openils.Util.show('acq-lit-notes-div');
                 break;
             default:
                 if(div) 
@@ -125,7 +137,21 @@ function AcqLiTable() {
 
     this.addLineitem = function(li) {
         this.liCache[li.id()] = li;
-        if(!li.lineitem_notes()) li.lineitem_notes([]);
+
+        // sort the lineitem notes on create_time
+        if(li.lineitem_notes()) {
+            li.lineitem_notes(
+                li.lineitem_notes().sort(
+                    function(a, b) { 
+                        if(a.create_time() < b.create_time()) return 1;
+                        return -1;
+                    }
+                )
+            );
+        } else {
+            li.lineitem_notes([]);
+        }
+
         var liWrapper = new openils.acq.Lineitem({lineitem:li});
         var row = self.rowTemplate.cloneNode(true);
         row.setAttribute('li', li.id());
@@ -155,6 +181,110 @@ function AcqLiTable() {
     };
 
     this.drawLiNotes = function(li) {
+        var self = this;
+
+        while(this.liNotesTbody.childNodes[0])
+            this.liNotesTbody.removeChild(this.liNotesTbody.childNodes[0]);
+        this.show('notes');
+
+        acqLitCreateLiNoteSubmit.onClick = function() {
+            acqLitCreateLiNoteDialog.hide();
+            var value = acqLitCreateLiNoteDialog.getValues().note;
+            if(!value) return;
+            var note = new fieldmapper.acqlin();
+            note.isnew(true);
+            note.value(value);
+            li.lineitem_notes().push(note);
+            note.lineitem(li.id());
+            self.addLiNote(li, note);
+        }
+
+        dojo.byId('acq-lit-notes-save-button').onclick = function() {
+            self.updateLiNotes(li);
+        }
+
+        dojo.forEach(li.lineitem_notes(), function(note) { self.addLiNote(li, note) });
+    }
+
+    this.addLiNote = function(li, note) {
+        var self = this;
+        var row = self.liNotesRow.cloneNode(true);
+        dojo.query('[name=creator]', row)[0].innerHTML = note.creator() || ''; /* XXX */
+        dojo.query('[name=editor]', row)[0].innerHTML = note.editor() || ''; /* XXX */
+
+        if(note.create_time()) {
+            dojo.query('[name=create_time]', row)[0].innerHTML = 
+                dojo.date.locale.format(
+                    dojo.date.stamp.fromISOString(note.create_time()), 
+                    {formatLength:'short'});
+        }
+
+        if(note.edit_time()) {
+            dojo.query('[name=edit_time]', row)[0].innerHTML = 
+                dojo.date.locale.format(
+                    dojo.date.stamp.fromISOString(note.edit_time()), 
+                    {formatLength:'short'});
+        }
+
+        new openils.widget.AutoFieldWidget({
+            fmField : 'value',
+            fmObject : note,
+            parentNode : dojo.query('[name=value]', row)[0],
+            widgetClass : 'dijit.form.Textarea',
+        }).build(
+            function(w) {
+                dojo.connect(w, 'onChange', 
+                    function() {
+                        note.value(this.attr('value')); 
+                        note.ischanged(true);
+                    }
+                );
+            }
+        );
+
+        dojo.query('[name=delete]', row)[0].onclick = function() {
+            note.isdeleted(true);
+            self.liNotesTbody.removeChild(row);
+        };
+
+        self.liNotesTbody.appendChild(row);
+    }
+
+    this.updateLiNotes = function(li) {
+        progressDialog.show();
+
+        var notes = li.lineitem_notes().filter(
+            function(note) {
+                if(note.ischanged() || note.isnew() || note.isdeleted())
+                    return note;
+            }
+        );
+
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem_note.cud.batch'],
+            {   async : true,
+                params : [this.authtoken, notes],
+                onresponse : function(r) {
+                    var resp = openils.Util.readResponse(r);
+
+                    if(resp.complete) {
+                        progressDialog.hide();
+                        self.drawLiNotes(li);
+                        return;
+                    }
+
+                    progressDialog.update(resp);
+
+                    var newnote = resp.note;
+                    var oldnote = li.lineitem_notes().filter(function(n) { return (n.value() == newnote.value()) })[0];
+                    var notes = li.lineitem_notes().filter(function(n) { return (n.value() != newnote.value()) });
+
+                    if(!openils.Util.isTrue(oldnote.isdeleted())) 
+                        notes.push(newnote);
+                    li.lineitem_notes(notes);
+                },
+            }
+        );
     }
 
     this.updateLiPrice = function(input, li) {

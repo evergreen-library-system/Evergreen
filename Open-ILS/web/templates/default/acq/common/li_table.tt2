@@ -114,6 +114,53 @@
         </div>
     </div>
 
+    <!-- Lineitem notes table -->
+    <div id='acq-lit-notes-div' class='hidden'>
+
+        <div class='acq-lit-li-menu-bar'>
+            <table style='width:100%'>
+                <tr>
+                    <td style='text-align:left;'>
+                        <div dojoType='dijit.form.Button' id='acq-lit-notes-back-button'>&#x2196; Return</div>
+                    </td>
+                    <td style='text-align:right;'>
+                        <div dojoType='dijit.form.Button' id='acq-lit-notes-new-button'>New Note</div>
+                        <div dojoType='dijit.form.Button' id='acq-lit-notes-save-button'>Save Changes</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <table class='oils-generic-table'>
+            <thead><tr>
+                <th>Creator</th>
+                <th>Create Time</th>
+                <th>Editor</th>
+                <th>Edit Time</th>
+                <th>Value</th>
+                <th/>
+            </tr></thead>
+            <tbody id='acq-lit-notes-tbody'>
+                <tr id='acq-lit-notes-row'>
+                    <td><div name='creator'/></td>
+                    <td><div name='create_time'/></td>
+                    <td><div name='editor'/></td>
+                    <td><div name='edit_time'/></td>
+                    <td class='acq-lit-note-textarea'><div name='value'/></td>
+                    <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class='hidden'>
+        <div dojoType='dijit.Dialog' jsId='acqLitCreateLiNoteDialog'>
+            <div dojoType='dijit.form.Textarea' style='height:6em; width:40em;' name='note'></div>
+            <br/>
+            <div dojoType='dijit.form.Button' type='submit' jsId='acqLitCreateLiNoteSubmit'>Create</div>
+        </div>
+    </div>
+ 
     <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>
         <h2>Copies</h2>

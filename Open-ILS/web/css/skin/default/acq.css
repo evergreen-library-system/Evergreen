@@ -102,6 +102,7 @@
 #acq-lit-li-details-table th {padding:0px 3px 1px 3px; font-weight:bold;}
 #acq-lit-li-details-table .dijit {width:130px;}
 #acq-lit-li-details-table td input {width:100px;}
+.acq-lit-note-textarea div { padding: 2px 5px 2px 5px; }
 
 .acq-lit-li-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
 .acq-lit-table-spacer { height:20px; }
