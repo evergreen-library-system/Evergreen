@@ -156,14 +156,24 @@ function AcqLiTable() {
 
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
-        dojo.query('[name=count]', row)[0].innerHTML = li.item_count();
+        dojo.query('[name=count]', row)[0].innerHTML = li.item_count() || 0;
         dojo.query('[name=notes_count]', row)[0].innerHTML = li.lineitem_notes().length;
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
-        var priceInput = dojo.query('[name=estimated_price]', row)[0];
+        var priceInput = dojo.query('[name=price]', row)[0];
         var priceData = liWrapper.getPrice();
         priceInput.value = (priceData) ? priceData.price : '';
         priceInput.onchange = function() { self.updateLiPrice(priceInput, li) };
+
+        var recv_link = dojo.query('[name=receive_link]', row)[0];
+        if(li.state() == 'received') {
+            openils.Util.hide(recv_link)
+        } else {
+            recv_link.onclick = function() {
+                self.receiveLi(li);
+                openils.Util.hide(recv_link)
+            }
+        }
 
         self.tbody.appendChild(row);
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
@@ -534,6 +544,16 @@ function AcqLiTable() {
             }
         );
 
+        var recv_link = dojo.query('[name=receive]', row)[0];
+        if(copy.recv_time()) {
+            openils.Util.hide(recv_link);
+        } else {
+            recv_link.onclick = function() {
+                self.receiveLid(copy);
+                openils.Util.hide(recv_link);
+            }
+        }
+
         if(this.isPO) {
             openils.Util.hide(dojo.query('[name=delete]', row)[0].parentNode);
         } else {
@@ -679,6 +699,36 @@ function AcqLiTable() {
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
                     self._updateProgressNumbers(resp, true);
+                },
+            }
+        );
+    }
+
+    this.receiveLi = function(li) {
+        if(!this.isPO) return;
+        progressDialogInd.show();
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem.receive'],
+            {   async: true,
+                params: [this.authtoken, li.id()],
+                onresponse : function(r) {
+                    var resp = openils.Util.readResponse(r);
+                    progressDialogInd.hide();
+                },
+            }
+        );
+    }
+
+    this.receiveLid = function(li) {
+        if(!this.isPO) return;
+        progressDialogInd.show();
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem_detail.receive'],
+            {   async: true,
+                params: [this.authtoken, li.id()],
+                onresponse : function(r) {
+                    var resp = openils.Util.readResponse(r);
+                    progressDialogInd.hide();
                 },
             }
         );

@@ -46,7 +46,8 @@
                 <tr>
                     <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>
                     <td>Line Items</td>
-                    <td>Estimated Price</td>
+                    <td></td>
+                    <td>Price</td>
                     <td>Items</td>
                     <td>Notes</td>
                 </tr>
@@ -54,7 +55,7 @@
             <tbody id='acq-lit-tbody'>
                 <tr id='acq-lit-row' class='acq-lit-row'>
                     <td name='selector'><input type='checkbox' name='selectbox'/></td>
-                    <td style='width:100%;'>
+                    <td style='width:75%;'>
                         <table style='width:100%;'>
                             <tbody>
                                 <tr>
@@ -71,18 +72,15 @@
                                         <span attr='edition'></span>
                                         <span attr='pubdate'></span>
                                         <span attr='publisher'></span>
-                                        <span name='source_label'/>
+                                        <span name='source_label'></span>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </td>
-                    <td>
-                        <input type='text' size='8' name='estimated_price'/>
-                    </td>
-                    <td>
-                        <a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a>
-                    </td>
+                    <td><a name='receive_link' href='javascript:void(0);'>Mark&nbsp;Received</a></td>
+                    <td><input type='text' size='8' name='price'/></td>
+                    <td><a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>
                     <td>
                         <a name='noteslink' href='javascript:void(0);' 
                             style='margin-right:15px;'>Notes(<span name='notes_count'>0</span>)</a>
@@ -226,7 +224,7 @@
                     <td>Callnumber</td>
                     <td>Barcode</td>
                     <td>Notes</td>
-                    <td/>
+                    <td colspan='0'>
                 </tr>
             </tbody>
             <tbody id='acq-lit-li-details-tbody' class='oils-generic-table'>
@@ -238,6 +236,7 @@
                     <td><div name='cn_label'/></td>
                     <td><div name='barcode'/></td>
                     <td><div name='note'/></td>
+                    <td><a href='javascript:void(0);' name='receive'>Mark&nbsp;Received</a></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
                 </tr>
             </tbody>
