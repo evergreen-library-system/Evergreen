@@ -1,71 +1,41 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/permission/grp_penalty_threshold.js'> </script>
-<h1>Group Penalty Thresholds</h1><br/>
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/permission/grp_penalty_threshold.js'> </script>    
 
-<!-- grp, penalty, org_unit, threshold -->
-
-<div dojoType="dijit.form.DropDownButton">
-    <span>New Group Penalty Threshold</span>
-    <div dojoType="dijit.TooltipDialog" execute="GPT.create(arguments[0]);">
-        <script type='dojo/connect' event='onOpen'>
-            new openils.User().buildPermOrgSelector('ADMIN_GROUP_PENALTY_THRESHOLD', gptOwningOrg);
-            GPT.drawCspSelector();
-            GPT.grpSelector.drawGroups();
-        </script>
-        <table class='dijitTooltipTable'>
-            <tr>
-                <td><label for="grp">Group: </label></td>
-                <td>
-                    <select dojoType="openils.widget.PermGrpFilteringSelect" name="grp" jsId='GPT.grpSelector'/>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="org_unit">Context Org Unit: </label></td>
-                <td>
-                    <select dojoType="openils.widget.OrgUnitFilteringSelect" name="org_unit"
-                        jsId='gptOwningOrg' searchAttr='shortname' labelAttr='shortname'/>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="penalty">Penalty: </label></td>
-                <td>
-                    <select dojoType="dijit.form.FilteringSelect" jsId='GPT.penaltySelector' name="penalty"/>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="threshold">Threshold: </label></td>
-                <td><input dojoType="dijit.form.NumberTextBox" name="threshold"/></td>
-            </tr>
-            <tr>
-                <td colspan='2' align='center'>
-                    <button dojoType='dijit.form.Button' type="submit">Create</button>
-                </td>
-            </tr>
-        </table>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div>Penalty Threshold</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='gptGrid.showCreateDialog()'>New Penalty Threshold</button>
+        <button dojoType='dijit.form.Button' onClick='gptGrid.deleteSelected()'>Delete Selected</button>
     </div>
 </div>
-
-<button dojoType='dijit.form.Button' onClick="GPT.deleteFromGrid">Delete Selected</button>
- 
 <span>Context Org Unit</span>
-<select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='GPT.contextOrgSelector' 
-    searchAttr='shortname' labelAttr='shortname'> </select>
+
+<select dojoType="openils.widget.OrgUnitFilteringSelect" 
+        jsId='contextOrgSelector' 
+        searchAttr='shortname' 
+        labelAttr='shortname'> 
+</select>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table jsId="gptGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
-            <thead>
-                <tr>
-                    <th field="id">ID</th>
-                    <th field="grp" width='auto' get='GPT.getGroupName'>Group</th>
-                    <th field="org_unit" width='auto' get='GPT.getOrgInfo'>Context Org Unit</th>
-                    <th field="penalty" width='auto' get='GPT.getPenaltyInfo'>Penalty</th>
-                    <th field="threshold" width='auto'>threshold</th>
-                </tr>
-            </thead>
+        <table  jsId="gptGrid" 
+                dojoType="openils.widget.AutoGrid" 
+                fieldOrder="['id', 'grp', 'org_unit', 'penalty', 'threshold']"
+                defaultCellWidth='15'
+                query="{id: '*'}" 
+                fmClass='pgpt' 
+                editOnEnter='true'>
         </table>    
     </div>
 </div>
-
+    
+<script type='javascript/text'>
+    var org_id = openils.User.user.ws_ou();
+    console.log(org_id);
+    var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( function (i) { 
+    return i.id() } );
+    console.log(list);
+     
+</script>
 [% END %]
 
