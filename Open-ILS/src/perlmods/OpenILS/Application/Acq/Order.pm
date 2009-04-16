@@ -207,18 +207,10 @@ sub delete_lineitem {
     my($mgr, $li) = @_;
     $li = $mgr->editor->retrieve_acq_lineitem($li) unless ref $li;
 
-    if($li->picklist) {
-        return 0 unless update_picklist($mgr, $li->picklist);
-    }
-
-    if($li->purchase_order) {
-        return 0 unless update_purchase_order($mgr, $li->purchase_order);
-    }
-
     # delete the attached lineitem_details
     my $lid_ids = $mgr->editor->search_acq_lineitem_detail({lineitem => $li->id}, {idlist=>1});
     for my $lid_id (@$lid_ids) {
-        return 0 unless delete_lineitem_detail($mgr, undef, $lid_id);
+        return 0 unless delete_lineitem_detail($mgr, $lid_id);
     }
 
     return $mgr->editor->delete_acq_lineitem($li);
@@ -250,7 +242,7 @@ sub check_lineitem_received {
     my $non_recv = $mgr->editor->search_acq_lineitem_detail(
         {recv_time => undef, lineitem => $li_id}, {idlist=>1});
 
-    return 1 unless @$non_recv;
+    return 1 if @$non_recv;
 
     my $li = $mgr->editor->retrieve_acq_lineitem($li_id);
     $li->state('received');
@@ -1431,14 +1423,14 @@ sub receive_lineitem_api {
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
-    my $li = $e->retrieve_acq_lineitem_detail([
+    my $li = $e->retrieve_acq_lineitem([
         $li_id, {
             flesh => 1,
             flesh_fields => {
                 jub => ['purchase_order']
             }
         }
-    ]);
+    ]) or return $e->die_event;
 
     return $e->die_event unless $e->allowed(
         'RECEIVE_PURCHASE_ORDER', $li->purchase_order->ordering_agency);
