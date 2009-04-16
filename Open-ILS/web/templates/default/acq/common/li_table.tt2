@@ -131,22 +131,22 @@
             </table>
         </div>
 
-        <table class='oils-generic-table'>
+        <table class='oils-generic-table' style='width:90%;'>
             <thead><tr>
+                <th>Note</th>
                 <th>Creator</th>
                 <th>Create Time</th>
                 <th>Editor</th>
                 <th>Edit Time</th>
-                <th>Value</th>
                 <th/>
             </tr></thead>
             <tbody id='acq-lit-notes-tbody'>
                 <tr id='acq-lit-notes-row'>
+                    <td class='acq-lit-note-textarea'><div name='value'/></td>
                     <td><div name='creator'/></td>
                     <td><div name='create_time'/></td>
                     <td><div name='editor'/></td>
                     <td><div name='edit_time'/></td>
-                    <td class='acq-lit-note-textarea'><div name='value'/></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
                 </tr>
             </tbody>

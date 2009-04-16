@@ -138,19 +138,8 @@ function AcqLiTable() {
     this.addLineitem = function(li) {
         this.liCache[li.id()] = li;
 
-        // sort the lineitem notes on create_time
-        if(li.lineitem_notes()) {
-            li.lineitem_notes(
-                li.lineitem_notes().sort(
-                    function(a, b) { 
-                        if(a.create_time() < b.create_time()) return 1;
-                        return -1;
-                    }
-                )
-            );
-        } else {
-            li.lineitem_notes([]);
-        }
+        // sort the lineitem notes on edit_time
+        if(!li.lineitem_notes()) li.lineitem_notes([]);
 
         var liWrapper = new openils.acq.Lineitem({lineitem:li});
         var row = self.rowTemplate.cloneNode(true);
@@ -182,6 +171,15 @@ function AcqLiTable() {
 
     this.drawLiNotes = function(li) {
         var self = this;
+
+        li.lineitem_notes(
+            li.lineitem_notes().sort(
+                function(a, b) { 
+                    if(a.edit_time() < b.edit_time()) return 1;
+                    return -1;
+                }
+            )
+        );
 
         while(this.liNotesTbody.childNodes[0])
             this.liNotesTbody.removeChild(this.liNotesTbody.childNodes[0]);
