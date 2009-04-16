@@ -2213,7 +2213,17 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		const char* field = jsonObjectGetString( jsonObjectGetKeyConst( snode, "field" ) );
 
 		if (field && !fkey) {
-			fkey = (const char*)oilsIDLFindPath("/%s/links/%s/key", class, field);
+			// Look up the corresponding join column in the IDL.
+			// The link must be defined in the child table,
+			// and point to the right parent table.
+			osrfHash* idl_link = (osrfHash*) oilsIDLFindPath( "/%s/links/%s", class, field );
+			const char* reltype = NULL;
+			const char* other_class = NULL;
+			reltype = osrfHashGet( idl_link, "reltype" );
+			if( reltype && strcmp( reltype, "has_many" ) )
+				other_class = osrfHashGet( idl_link, "class" );
+			if( other_class && !strcmp( other_class, leftclass ) )
+				fkey = osrfHashGet( idl_link, "key" );
 			if (!fkey) {
 				osrfLogError(
 					OSRF_LOG_MARK,
@@ -2231,7 +2241,17 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			}
 
 		} else if (!field && fkey) {
-			field = (const char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, fkey );
+			// Look up the corresponding join column in the IDL.
+			// The link must be defined in the child table,
+			// and point to the right parent table.
+			osrfHash* idl_link = (osrfHash*) oilsIDLFindPath( "/%s/links/%s", leftclass, fkey );
+			const char* reltype = NULL;
+			const char* other_class = NULL;
+			reltype = osrfHashGet( idl_link, "reltype" );
+			if( reltype && strcmp( reltype, "has_many" ) )
+				other_class = osrfHashGet( idl_link, "class" );
+			if( other_class && !strcmp( other_class, class ) )
+				field = osrfHashGet( idl_link, "key" );
 			if (!field) {
 				osrfLogError(
 					OSRF_LOG_MARK,
