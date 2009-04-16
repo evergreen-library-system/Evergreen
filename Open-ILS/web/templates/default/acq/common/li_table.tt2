@@ -47,7 +47,8 @@
                     <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>
                     <td>Line Items</td>
                     <td>Estimated Price</td>
-                    <td>Copies</td>
+                    <td>Items</td>
+                    <td>Notes</td>
                 </tr>
             </tbody>
             <tbody id='acq-lit-tbody'>
@@ -80,8 +81,11 @@
                         <input type='text' size='8' name='estimated_price'/>
                     </td>
                     <td>
-                        <a name='copieslink' href='javascript:void(0);' 
-                            style='margin-right:20px;'>Copies(<span name='count'></span>)</a>
+                        <a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a>
+                    </td>
+                    <td>
+                        <a name='noteslink' href='javascript:void(0);' 
+                            style='margin-right:15px;'>Notes(<span name='notes_count'>0</span>)</a>
                     </td>
                 </tr>
             </tbody>

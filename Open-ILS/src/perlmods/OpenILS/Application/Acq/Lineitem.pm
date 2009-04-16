@@ -90,13 +90,14 @@ sub retrieve_lineitem {
 
     my $li;
 
-    if($$options{flesh_attrs}) {
-        $li = $e->retrieve_acq_lineitem([
-            $li_id, {flesh => 1, flesh_fields => {jub => ['attributes']}}])
-            or return $e->event;
-    } else {
-        $li = $e->retrieve_acq_lineitem($li_id) or return $e->event;
+    my $flesh = {};
+    if($$options{flesh_attrs} or $$options{flesh_notes}) {
+        $flesh = {flesh => 1, flesh_fields => {jub => []}};
+        push(@{$flesh->{flesh_fields}->{jub}}, 'lineitem_notes') if $$options{flesh_notes};
+        push(@{$flesh->{flesh_fields}->{jub}}, 'attributes') if $$options{flesh_attrs};
     }
+
+    $li = $e->retrieve_acq_lineitem([$li_id, $flesh]);
 
     if($$options{flesh_li_details}) {
         my $ops = {

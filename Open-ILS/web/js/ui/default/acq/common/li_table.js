@@ -125,6 +125,7 @@ function AcqLiTable() {
 
     this.addLineitem = function(li) {
         this.liCache[li.id()] = li;
+        if(!li.lineitem_notes()) li.lineitem_notes([]);
         var liWrapper = new openils.acq.Lineitem({lineitem:li});
         var row = self.rowTemplate.cloneNode(true);
         row.setAttribute('li', li.id());
@@ -140,7 +141,9 @@ function AcqLiTable() {
 
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
-        dojo.query('[name=count]', row)[0].appendChild(document.createTextNode(li.item_count()));
+        dojo.query('[name=count]', row)[0].innerHTML = li.item_count();
+        dojo.query('[name=notes_count]', row)[0].innerHTML = li.lineitem_notes().length;
+        dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
         var priceInput = dojo.query('[name=estimated_price]', row)[0];
         var priceData = liWrapper.getPrice();
@@ -151,7 +154,10 @@ function AcqLiTable() {
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
     };
 
-    self.updateLiPrice = function(input, li) {
+    this.drawLiNotes = function(li) {
+    }
+
+    this.updateLiPrice = function(input, li) {
 
         var price = input.value;
         var liWrapper = new openils.acq.Lineitem({lineitem:li});

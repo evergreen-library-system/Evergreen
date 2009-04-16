@@ -77,7 +77,7 @@ function loadLIs() {
         ['open-ils.acq', 'open-ils.acq.lineitem.picklist.retrieve'],
         {   async: true,
             params: [openils.User.authtoken, plId, 
-                {flesh_attrs:true, clear_marc:true, offset:plOffset, limit:plLimit}],
+                {flesh_notes:true, flesh_attrs:true, clear_marc:true, offset:plOffset, limit:plLimit}],
             onresponse: function(r) {
                 liTable.show('list');
                 liTable.addLineitem(openils.Util.readResponse(r));

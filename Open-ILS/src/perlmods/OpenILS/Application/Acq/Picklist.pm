@@ -333,6 +333,7 @@ __PACKAGE__->register_method(
                 "idlist", return a list of IDs instead of objects
                 "flesh_attrs", additionaly return the list of flattened attributes
                 "clear_marc", discards the raw MARC data to reduce data size
+                "flesh_notes", flesh lineitem notes
                 /, 
                 type => 'hash'}
         ],
@@ -393,8 +394,12 @@ sub retrieve_pl_lineitem {
         } 
 
         my $entry;
-        my $flesh = ($$options{flesh_attrs}) ? 
-            {flesh => 1, flesh_fields => {jub => ['attributes']}} : {};
+        my $flesh = {};
+        if($$options{flesh_attrs} or $$options{flesh_notes}) {
+            $flesh = {flesh => 1, flesh_fields => {jub => []}};
+            push(@{$flesh->{flesh_fields}->{jub}}, 'lineitem_notes') if $$options{flesh_notes};
+            push(@{$flesh->{flesh_fields}->{jub}}, 'attributes') if $$options{flesh_attrs};
+        }
 
         $entry = $e->retrieve_acq_lineitem([$id, $flesh]);
         my $details = $e->search_acq_lineitem_detail({lineitem => $id}, {idlist=>1});
