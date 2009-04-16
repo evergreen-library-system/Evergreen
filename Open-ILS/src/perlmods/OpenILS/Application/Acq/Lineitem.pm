@@ -624,4 +624,55 @@ sub get_lineitem_attr_defs {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'lineitem_note_CUD_batch',
+	api_name => 'open-ils.acq.lineitem_note.cud.batch',
+    stream => 1,
+	signature => {
+        desc => q/Manage lineitem notes/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'List of lineitem_notes to manage', type => 'array'},
+        ],
+        return => {desc => 'Streaming response of current position in the array'}
+    }
+);
+
+sub lineitem_note_CUD_batch {
+    my($self, $conn, $auth, $li_notes) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    # XXX perms
+
+    my $total = @$li_notes;
+    my $count = 0;
+
+    for my $note (@$li_notes) {
+
+        $note->editor($e->requestor->id);
+        $note->edit_time('now');
+
+        if($note->isnew) {
+            $note->creator($e->requestor->id);
+            $e->create_acq_lineitem_note($note) or return $e->die_event;
+
+        } elsif($note->isdeleted) {
+            $e->delete_acq_lineitem_note($note) or return $e->die_event;
+
+        } elsif($note->ischanged) {
+            $e->update_acq_lineitem_note($note) or return $e->die_event;
+        }
+
+        if(!$note->isdeleted) {
+            $note = $e->retrieve_acq_lineitem_note($note->id);
+        }
+
+        $conn->respond({maximum => $total, progress => ++$count, note => $note});
+    }
+
+    $e->commit;
+    return {complete => 1};
+}
+
 1;
