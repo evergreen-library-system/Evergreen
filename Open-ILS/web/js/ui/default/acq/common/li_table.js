@@ -372,7 +372,9 @@ function AcqLiTable() {
         if(li.eg_bib_id()) {
             openils.Util.show('acq-lit-info-cat-link');
             var link = dojo.byId('acq-lit-info-cat-link').getElementsByTagName('a')[0];
-            link.setAttribute('href',  link.getAttribute('href') + li.eg_bib_id());
+            var href = link.getAttribute('href');
+            if(href.match(/=$/))
+                link.setAttribute('href',  href + li.eg_bib_id());
         } else {
             openils.Util.hide('acq-lit-info-cat-link');
         }
