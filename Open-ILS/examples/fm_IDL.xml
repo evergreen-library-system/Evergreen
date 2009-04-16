@@ -5366,10 +5366,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Patron ZIP Code" name="patron_zip" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Legacy CAT1 Link" name="stat_cat_1" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Legacy CAT2 Link" name="stat_cat_2" oils_obj:array_position="28" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Dewey Range -- Tens" name="dewey_range_tens" oils_obj:array_position="29" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="Dewey Range -- Hundreds" name="dewey_range_hundreds" oils_obj:array_position="30" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="Dewey Block -- Tens" name="dewey_block_tens" oils_obj:array_position="31" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="Dewey Block -- Hundreds" name="dewey_block_hundreds" oils_obj:array_position="32" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Dewey Range - Tens" name="dewey_range_tens" oils_obj:array_position="29" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Dewey Range - Hundreds" name="dewey_range_hundreds" oils_obj:array_position="30" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Dewey Block - Tens" name="dewey_block_tens" oils_obj:array_position="31" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Dewey Block - Hundreds" name="dewey_block_hundreds" oils_obj:array_position="32" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Legacy CAT1 Value" name="stat_cat_1_value" oils_obj:array_position="33" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Legacy CAT2 Value" name="stat_cat_2_value" oils_obj:array_position="34" oils_persist:virtual="false" reporter:datatype="text"/>
 		</fields>
