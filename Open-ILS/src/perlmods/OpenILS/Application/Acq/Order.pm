@@ -21,6 +21,7 @@ sub new {
     };
     $self->{ingest_queue} = [];
     $self->{cache} = {};
+    $self->throttle(5) unless $self->throttle;
     return $self;
 }
 
@@ -238,6 +239,42 @@ sub create_lineitem_list_assets {
     return 1;
 }
 
+# ----------------------------------------------------------------------------
+# if all of the lineitem details for this lineitem have 
+# been received, mark the lineitem as received
+# returns 1 on non-received, li on received, 0 on error
+# ----------------------------------------------------------------------------
+sub check_lineitem_received {
+    my($mgr, $li_id) = @_;
+
+    my $non_recv = $mgr->editor->search_acq_lineitem_detail(
+        {recv_time => undef, lineitem => $li_id}, {idlist=>1});
+
+    return 1 unless @$non_recv;
+
+    my $li = $mgr->editor->retrieve_acq_lineitem($li_id);
+    $li->state('received');
+    return update_lineitem($mgr, $li);
+}
+
+sub receive_lineitem {
+    my($mgr, $li_id, $skip_complete_check) = @_;
+    my $li = $mgr->editor->retrieve_acq_lineitem($li_id) or return 0;
+
+    my $lid_ids = $mgr->editor->search_acq_lineitem_detail(
+        {lineitem => $li_id, recv_time => undef}, {idlist => 1});
+
+    for my $lid_id (@$lid_ids) {
+       receive_lineitem_detail($mgr, $lid_id, 1) or return 0; 
+    }
+
+    $mgr->add_li;
+    $li->state('received');
+    update_lineitem($mgr, $li) or return 0;
+    return 1 if $skip_complete_check;
+
+    return check_purchase_order_received($mgr, $li->purchase_order);
+}
 
 # ----------------------------------------------------------------------------
 # Lineitem Detail
@@ -287,6 +324,46 @@ sub delete_lineitem_detail {
     my($mgr, $lid) = @_;
     $lid = $mgr->editor->retrieve_acq_lineitem_detail($lid) unless ref $lid;
     return $mgr->editor->delete_acq_lineitem_detail($lid);
+}
+
+
+sub receive_lineitem_detail {
+    my($mgr, $lid_id, $skip_complete_check) = @_;
+    my $e = $mgr->editor;
+
+    my $lid = $e->retrieve_acq_lineitem_detail([
+        $lid_id,
+        {   flesh => 1,
+            flesh_fields => {
+                acqlid => ['fund_debit']
+            }
+        }
+    ]) or return 0;
+
+    return 1 if $lid->recv_time;
+
+    $lid->recv_time('now');
+    $e->update_acq_lineitem_detail($lid) or return 0;
+
+    my $copy = $e->retrieve_asset_copy($lid->eg_copy_id) or return 0;
+    $copy->status(OILS_COPY_STATUS_IN_PROCESS);
+    $copy->edit_date('now');
+    $copy->editor($e->requestor->id);
+    $e->update_asset_copy($copy) or return 0;
+
+    if($lid->fund_debit) {
+        $lid->fund_debit->encumbrance('f');
+        $e->update_acq_fund_debit($lid->fund_debit) or return 0;
+    }
+
+    $mgr->add_lid;
+
+    return 1 if $skip_complete_check;
+
+    my $li = check_lineitem_received($mgr, $lid->lineitem) or return 0;
+    return 1 if $li == 1; # li not received
+
+    return check_purchase_order_received($mgr, $li->purchase_order);
 }
 
 
@@ -543,6 +620,25 @@ sub create_purchase_order {
     return $mgr->editor->create_acq_purchase_order($po);
 }
 
+# ----------------------------------------------------------------------------
+# if all of the lineitems for this PO are received,
+# mark the PO as received
+# ----------------------------------------------------------------------------
+sub check_purchase_order_received {
+    my($mgr, $po_id) = @_;
+
+    my $non_recv_li = $mgr->editor->search_acq_lineitem(
+        {   purchase_order => $po_id,
+            state => {'!=' => 'received'}
+        }, {idlist=>1});
+
+    return 1 if @$non_recv_li;
+
+    my $po = $mgr->editor->retrieve_acq_purchase_order($po_id);
+    $po->state('received');
+    return update_purchase_order($mgr, $po);
+}
+
 
 # ----------------------------------------------------------------------------
 # Bib, Callnumber, and Copy data
@@ -770,12 +866,7 @@ sub upload_records {
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
-
-    my $mgr = OpenILS::Application::Acq::BatchManager->new(
-        editor => $e, 
-        conn => $conn, 
-        throttle => 5
-    );
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
     my $cache = OpenSRF::Utils::Cache->new;
 
@@ -1057,14 +1148,10 @@ __PACKAGE__->register_method(
 
 sub create_po_assets {
     my($self, $conn, $auth, $po_id) = @_;
+
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
-
-    my $mgr = OpenILS::Application::Acq::BatchManager->new(
-        editor => $e, 
-        conn => $conn, 
-        throttle => 5
-    );
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
     return $e->die_event unless $e->allowed('IMPORT_PURCHASE_ORDER_ASSETS', $po->ordering_agency);
@@ -1119,12 +1206,7 @@ sub create_purchase_order_api {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
-
-    my $mgr = OpenILS::Application::Acq::BatchManager->new(
-        editor => $e, 
-        conn => $conn, 
-        throttle => 5
-    );
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
     # create the PO
     my %pargs = (ordering_agency => $e->requestor->ws_ou);
@@ -1182,12 +1264,7 @@ sub lineitem_detail_CUD_batch {
 
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-
-    my $mgr = OpenILS::Application::Acq::BatchManager->new(
-        editor => $e, 
-        conn => $conn, 
-        throttle => 5
-    );
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
     # XXX perms
 
@@ -1215,6 +1292,111 @@ sub lineitem_detail_CUD_batch {
 
     $e->commit;
     return $mgr->respond_complete;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'receive_po',
+	api_name	=> 'open-ils.acq.purchase_order.receive'
+);
+
+sub receive_po {
+    my($self, $conn, $auth, $po_id) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('RECEIVE_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $li_ids = $e->search_acq_lineitem({purchase_order => $po_id}, {idlist => 1});
+
+    for my $li_id (@$li_ids) {
+        receive_lineitem($mgr, $li_id) or return $e->die_event;
+        $mgr->respond;
+    }
+
+    $po->state('received');
+    update_purchase_order($mgr, $po) or return $e->die_event;
+
+    $e->commit;
+    return $mgr->respond_complete;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'receive_lineitem_detail_api',
+	api_name	=> 'open-ils.acq.lineitem_detail.receive',
+	signature => {
+        desc => 'Mark a lineitem_detail as received',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem detail ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub receive_lineitem_detail_api {
+    my($self, $conn, $auth, $lid_id) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $lid = $e->retrieve_acq_lineitem_detail([
+        $lid_id, {
+            flesh => 2,
+            flesh_fields => {
+                acqlid => ['lineitem'],
+                jub => ['purchase_order']
+            }
+        }
+    ]);
+
+    return $e->die_event unless $e->allowed(
+        'RECEIVE_PURCHASE_ORDER', $lid->lineitem->purchase_order->ordering_agency);
+
+    receive_lineitem_detail($mgr, $lid_id) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+	method => 'receive_lineitem_api',
+	api_name	=> 'open-ils.acq.lineitem.receive',
+	signature => {
+        desc => 'Mark a lineitem as received',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem detail ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub receive_lineitem_api {
+    my($self, $conn, $auth, $li_id) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $li = $e->retrieve_acq_lineitem_detail([
+        $li_id, {
+            flesh => 1,
+            flesh_fields => {
+                jub => ['purchase_order']
+            }
+        }
+    ]);
+
+    return $e->die_event unless $e->allowed(
+        'RECEIVE_PURCHASE_ORDER', $li->purchase_order->ordering_agency);
+
+    receive_lineitem($mgr, $li_id) or return $e->die_event;
+    $e->commit;
+    return 1;
 }
 
 
