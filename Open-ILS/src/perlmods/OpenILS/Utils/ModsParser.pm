@@ -321,7 +321,7 @@ sub start_mods_batch {
 
 	if(!$mods_sheet) {
 		 my $xslt_doc = $parser->parse_file(
-			OpenSRF::Utils::SettingsClient->new->config_value(dirs => 'xsl') .  "/MARC21slim2MODS33.xsl");
+			OpenSRF::Utils::SettingsClient->new->config_value(dirs => 'xsl') .  "/MARC21slim2MODS32.xsl");
 		$mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
 	}
 
