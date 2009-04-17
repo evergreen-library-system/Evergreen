@@ -147,7 +147,7 @@ sub child_init {
     $list = [ map { (keys %$_)[0] } @$list ];
     push @$list, 'htmlholdings','html';
 
-    for my $browse_axis ( qw/title author subject topic series/ ) {
+    for my $browse_axis ( qw/title author subject topic series item-age/ ) {
         for my $record_browse_format ( @$list ) {
             {
                 my $__f = $record_browse_format;
@@ -1277,6 +1277,8 @@ sub string_browse {
 	my ($format,$axis,$site,$string,$page,$page_size) = split '/', $path;
 	#warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
 
+    return item_age_browse($apache) if ($axis eq 'item-age'); # short-circut to the item-age sub
+
 	$site ||= $cgi->param('searchOrg');
 	$page ||= $cgi->param('startPage') || 0;
 	$page_size ||= $cgi->param('count') || 9;
@@ -1307,6 +1309,61 @@ sub string_browse {
     (my $norm_format = $format) =~ s/-full$//o;
 
 	my ($header,$content) = $browse_types{$axis}{$norm_format}->($tree,$prev,$next,$format,$unapi,$base,$site);
+	print $header.$content;
+	return Apache2::Const::OK;
+}
+
+sub item_age_browse {
+	my $apache = shift;
+	return Apache2::Const::DECLINED if (-e $apache->filename);
+
+	my $cgi = new CGI;
+	my $year = (gmtime())[5] + 1900;
+
+	my $host = $cgi->virtual_host || $cgi->server_name;
+
+	my $add_path = 0;
+	if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+		my $rel_name = $cgi->url(-relative=>1);
+		$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+	}
+
+	my $url = $cgi->url(-path_info=>$add_path);
+	my $root = (split 'browse', $url)[0];
+	my $base = (split 'browse', $url)[0] . 'browse';
+	my $unapi = (split 'browse', $url)[0] . 'unapi';
+
+	my $path = $cgi->path_info;
+	$path =~ s/^\///og;
+
+	my ($format,$axis,$site,$page,$page_size) = split '/', $path;
+	#warn " >>> $format -> $axis -> $site -> $page -> $page_size ";
+
+	unless ($axis eq 'item-age') {
+		warn "something's wrong...";
+		warn " >>> $format -> $axis -> $site -> $page -> $page_size ";
+		return undef;
+	}
+
+	$site ||= $cgi->param('searchOrg');
+	$page ||= $cgi->param('startPage') || 1;
+	$page_size ||= $cgi->param('count') || 10;
+
+	$page = 1 if ($page !~ /^-?\d+$/ || $page < 1);
+
+	my $prev = join('/', $base,$format,$axis,$site,$page - 1,$page_size);
+	my $next = join('/', $base,$format,$axis,$site,$page + 1,$page_size);
+
+	my $recs = $supercat->request(
+		"open-ils.supercat.new_book_list",
+		$site,
+		$page_size,
+		$page
+	)->gather(1);
+
+    (my $norm_format = $format) =~ s/-full$//o;
+
+	my ($header,$content) = $browse_types{$axis}{$norm_format}->($recs,$prev,$next,$format,$unapi,$base,$site);
 	print $header.$content;
 	return Apache2::Const::OK;
 }
