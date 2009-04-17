@@ -1345,7 +1345,7 @@ sub item_age_browse {
 		return undef;
 	}
 
-	$site ||= $cgi->param('searchOrg');
+	$site ||= $cgi->param('searchOrg') || '-';
 	$page ||= $cgi->param('startPage') || 1;
 	$page_size ||= $cgi->param('count') || 10;
 
