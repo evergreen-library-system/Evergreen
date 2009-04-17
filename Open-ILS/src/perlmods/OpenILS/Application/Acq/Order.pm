@@ -622,7 +622,7 @@ sub delete_picklist {
     $lis = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => {'!=' => 'new'}});
     for my $li (@$lis) {
         $li->clear_picklist;
-        return 0 unless update_lineitem($li);
+        return 0 unless update_lineitem($mgr, $li);
     }
 
     # remove any picklist-specific object perms
