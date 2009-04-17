@@ -34,7 +34,7 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Funding Types</div>
+            <div>Funds</div>
             <div>
                 <button dojoType='dijit.form.Button' onClick='lfGrid.showCreateDialog()'>New Fund</button>
                 <button dojoType='dijit.form.Button' onClick='lfGrid.deleteSelected()'>Delete Selected</button>
