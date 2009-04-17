@@ -308,6 +308,23 @@ CREATE TABLE acq.distribution_formula_entry (
 				CHECK( owning_lib IS NOT NULL OR location IS NOT NULL ) 
 );
 
+CREATE TABLE acq.fund_tag (
+	id		SERIAL PRIMARY KEY,
+	owner	INT NOT NULL
+			REFERENCES actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED,
+	name	TEXT NOT NULL,
+	CONSTRAINT acqft_tag_once_per_owner UNIQUE (name, owner)
+);
+
+CREATE TABLE acq.fund_tag_map (
+	id			SERIAL PRIMARY KEY,
+	fund   		INTEGER NOT NULL REFERENCES acq.fund(id)
+				DEFERRABLE INITIALLY DEFERRED,
+	tag         INTEGER REFERENCES acq.fund_tag(id)
+				ON DELETE CASCADE
+				DEFERRABLE INITIALLY DEFERRED,
+	CONSTRAINT acqftm_fund_once_per_tag UNIQUE( fund, tag )
+);
 
 -- Functions
 

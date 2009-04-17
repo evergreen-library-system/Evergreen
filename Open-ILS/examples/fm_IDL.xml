@@ -4487,12 +4487,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="summary" oils_obj:array_position="9" oils_persist:virtual="true"/>
 			<field reporter:label="Allocations" name="allocations" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Debits" name="debits" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Tags" name="tags" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
             <link field="allocations" reltype="has_many" key="fund" map="" class="acqfa"/>
             <link field="debits" reltype="has_many" key="fund" map="" class="acqfdeb"/>
+            <link field="tags" reltype="has_many" key="fund" map="" class="acqftm"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -5698,6 +5700,59 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <link field="home_ou" reltype="has_a" key="id" map="" class="aou"/>
         </links>
     </class>
+	<class id="acqft" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_tag" oils_persist:tablename="acq.fund_tag">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_tag_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Fund Tag ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Fund Tag Owner" name="owner" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+			<field reporter:label="Fund Tag Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Map Entries" name="map_entries" oils_obj:array_position="6" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="map_entries" reltype="has_many" key="fund" map="" class="acqftm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_FUND_TAG" context_field="owner"/>
+				<retrieve permission="ADMIN_ACQ_FUND_TAG ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND" context_field="owner"/>
+				<update permission="ADMIN_ACQ_FUND_TAG" context_field="owner"/>
+			<delete permission="ADMIN_ACQ_FUND_TAG" context_field="owner"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="acqftm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_tag_map" oils_persist:tablename="acq.fund_tag_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_tag_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Map Entry ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Tag ID" name="tag" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+			<link field="tag" reltype="has_a" key="id" map="" class="acqft"/>
+			</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+    		<actions>
+				<create permission="ADMIN_ACQ_FUND_TAG">
+					<context link="tag" field="owner"/>
+				</create>
+				<retrieve permission="ADMIN_ACQ_FUND_TAG ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND">
+					<context link="tag" field="owner"/>
+				</retrieve>
+				<update permission="ADMIN_ACQ_FUND_TAG">
+					<context link="tag" field="owner"/>
+				</update>
+				<delete permission="ADMIN_ACQ_FUND_TAG">
+					<context link="tag" field="owner"/>
+				</delete>
+			</actions>
+		</permacrud>
+	</class>
 
 	<!-- ********************************************************************************************************************* -->
 
