@@ -1555,4 +1555,72 @@ sub rollback_receive_lineitem_api {
     return 1;
 }
 
+
+__PACKAGE__->register_method(
+	method => 'set_lineitem_price_api',
+	api_name	=> 'open-ils.acq.lineitem.price.set',
+	signature => {
+        desc => 'Set lineitem price.  If debits already exist, update them as well',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'lineitem ID', type => 'number'}
+        ],
+        return => {desc => 'status blob, Event on error'}
+    }
+);
+
+sub set_lineitem_price_api {
+    my($self, $conn, $auth, $li_id, $price, $currency) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    # XXX perms
+
+    my $li = $e->retrieve_acq_lineitem($li_id) or return $e->die_event;
+
+    # update the local attr for estimated price
+    set_lineitem_attr(
+        $mgr, 
+        attr_name => 'estimated_price',
+        attr_type => 'lineitem_local_attr_definition',
+        attr_value => $price,
+        lineitem => $li_id
+    ) or return $e->die_event;
+
+    my $lid_ids = $e->search_acq_lineitem_detail(
+        {lineitem => $li_id, fund_debit => {'!=' => undef}}, 
+        {idlist => 1}
+    );
+
+    for my $lid_id (@$lid_ids) {
+
+        my $lid = $e->retrieve_acq_lineitem_detail([
+            $lid_id, {
+            flesh => 1, flesh_fields => {acqlid => ['fund', 'fund_debit']}}
+        ]);
+
+        # onless otherwise specified, assume currency of new price is same as currency type of the fund
+        $currency ||= $lid->fund->currency_type;
+        my $amount = $price;
+
+        if($lid->fund->currency_type ne $currency) {
+            $amount = currency_conversion($mgr, $currency, $lid->fund->currency_type, $price);
+        }
+        
+        $lid->fund_debit->origin_currency_type($currency);
+        $lid->fund_debit->origin_amount($price);
+        $lid->fund_debit->amount($amount);
+
+        $e->update_acq_fund_debit($lid->fund_debit) or return $e->die_event;
+        $mgr->add_lid;
+        $mgr->respond;
+    }
+
+    $e->commit;
+    return $mgr->respond_complete;
+}
+
+
 1;
