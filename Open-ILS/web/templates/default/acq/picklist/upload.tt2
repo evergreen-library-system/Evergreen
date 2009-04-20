@@ -14,7 +14,7 @@
             </tr>
             <tr>
                 <!-- XXX CHECK IMPORT PERMS TO ENABLE -->
-                <td>Create Bibliographic, Callnumber, and Item Records</td>
+                <td>Load Bibs and Items into the ILS</td>
                 <td>
                     <input dojoType='dijit.form.CheckBox' name='create_assets'></input>
                 </td>
