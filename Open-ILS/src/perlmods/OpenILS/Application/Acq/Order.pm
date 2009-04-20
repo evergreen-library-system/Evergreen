@@ -314,8 +314,6 @@ sub create_lineitem_detail {
     }
 
     $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
-    my $li = $mgr->editor->retrieve_acq_lineitem($lid->lineitem) or return 0;
-    update_lineitem($mgr, $li) or return 0;
     return $lid;
 }
 
