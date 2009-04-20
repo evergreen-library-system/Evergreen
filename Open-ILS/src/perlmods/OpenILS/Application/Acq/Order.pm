@@ -613,13 +613,13 @@ sub delete_picklist {
     $picklist = $mgr->editor->retrieve_acq_picklist($picklist) unless ref $picklist;
 
     # delete all 'new' lineitems
-    my $lis = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => 'new'});
+    my $lis = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => 'new'}, {substream => 1});
     for my $li (@$lis) {
         return 0 unless delete_lineitem($mgr, $li);
     }
 
     # detach all non-'new' lineitems
-    $lis = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => {'!=' => 'new'}});
+    $lis = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => {'!=' => 'new'}, {substream => 1}});
     for my $li (@$lis) {
         $li->clear_picklist;
         return 0 unless update_lineitem($mgr, $li);
