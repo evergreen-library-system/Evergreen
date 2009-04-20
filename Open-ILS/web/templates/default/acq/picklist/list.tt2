@@ -50,8 +50,6 @@
         </div>
     </div>
 
-    <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">Delete Selected</button>
-
     <div dojoType="dijit.form.DropDownButton">
         <span>Clone Selected</span>
         <div dojoType="dijit.TooltipDialog" execute="cloneSelectedPl(arguments[0]);">
@@ -86,20 +84,26 @@
         </div>
     </div>
 
+    <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">Delete Selected</button>
+
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table jsId="plListGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'>
+        <table 
+                jsId="plListGrid" 
+                dojoType="openils.widget.AutoGrid" 
+                query="{id: '*'}" 
+                fieldOrder="['name', 'owner', 'entry_count', 'create_time', 'edit_time']"
+                suppressFields="['editor', 'creator']"
+                query="{id: '*'}"
+                defaultCellWidth='"auto"'
+                fmClass='acqpl'
+                editOnEnter='true'>
             <thead>
                 <tr>
-                    <th field="id">ID</th>
-                    <th field="name" width='auto' editable='true'
-                        cellType='dojox.grid.cells._Widget'
-                        widgetClass='dijit.form.TextBox' formatter='formatName'>Name</th>
-                    <th field="owner" get='getOwnerName'>Selector</th>
-                    <th field="create_time" width='auto' get='getDateTimeField'>Create Time</th>
-                    <th field="edit_time" width='auto' get='getDateTimeField'>Edit Time</th>
+                    <th field="name" formatter='formatName'/>
+                    <th field="owner" get='getOwnerName'/>
                     <th field="entry_count">Entry Count</th>
                 </tr>
             </thead>
@@ -108,5 +112,6 @@
 </div>
 
 <div class='hidden'><div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/></div>
+<div class='hidden'><div jsId='progressDialogInd' dojoType='openils.widget.ProgressDialog' indeterminate='true'/></div>
 
 [% END %]

@@ -1,4 +1,5 @@
-dojo.require('dojox.grid.DataGrid');
+//dojo.require('dojox.grid.DataGrid');
+dojo.require('openils.widget.AutoGrid');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
@@ -21,22 +22,15 @@ function loadGrid() {
     if(listAll)
         method = method.replace(/user/, 'user.all');
 
-    var store = new dojo.data.ItemFileWriteStore({data:acqpl.initStoreData()});
-    plListGrid.setStore(store);
-    plListGrid.render();
-
     fieldmapper.standardRequest(
         ['open-ils.acq', method],
-
         {   async: true,
-            params: [openils.User.authtoken, 
-                {flesh_lineitem_count:1, flesh_owner:1}],
-
+            params: [openils.User.authtoken, {flesh_lineitem_count:1, flesh_owner:1}],
             onresponse : function(r) {
-                if(pl = openils.Util.readResponse(r)) {
-                    plCache[pl.id()] = pl;
-                    store.newItem(acqpl.toStoreItem(pl));
-                }
+                var pl = openils.Util.readResponse(r);
+                if(!pl) return;
+                plCache[pl.id()] = pl;
+                plListGrid.store.newItem(acqpl.toStoreItem(pl));
             }, 
         }
     );
@@ -78,22 +72,23 @@ function getDateTimeField(rowIndex, item) {
     return dojo.date.locale.format(date, {formatLength:'short'});
 }
 function deleteFromGrid() {
-    var list = []
-    var selected = plListGrid.selection.getSelected();
-    for(var idx = 0; idx < selected.length; idx++) {
-        var item = selected[idx];
-        list.push(item.id);
-        plListGrid.store.deleteItem(item);
-    }
-    openils.acq.Picklist.deleteList(list);
+    progressDialogInd.show();
+    var list = [];
+    dojo.forEach(
+        plListGrid.getSelectedItems(), 
+        function(item) {
+            list.push(plListGrid.store.getValue(item, 'id'));
+            plListGrid.store.deleteItem(item);
+        }
+    );
+    openils.acq.Picklist.deleteList(list, function(){progressDialogInd.hide();});
 }
 
 function cloneSelectedPl(fields) {
 
-    var selected = plListGrid.selection.getSelected();
-    if(selected.length == 0 || !(fields.name)) return;
+    var item = plListGrid.getSelectedItems()[0];
+    if(!item) return;
 
-    var item = selected[0]; // clone the first selected
     var plId = plListGrid.store.getValue(item, 'id');
     var entryCount = Number(plListGrid.store.getValue(item, 'entry_count'));
 
@@ -125,11 +120,13 @@ function cloneSelectedPl(fields) {
 
 function loadLeadPlSelector() {
     var store = new dojo.data.ItemFileWriteStore({data:acqpl.initStoreData()}); 
-    var selected = plListGrid.selection.getSelected();
-    dojo.forEach(selected, function(item) { 
-        var pl = plCache[plListGrid.store.getValue(item, 'id')];
-        store.newItem(fieldmapper.acqpl.toStoreItem(pl));
-    });
+    dojo.forEach(
+        plListGrid.getSelectedItems(),
+        function(item) { 
+            var pl = plCache[plListGrid.store.getValue(item, 'id')];
+            store.newItem(fieldmapper.acqpl.toStoreItem(pl));
+        }
+    );
     plMergeLeadSelector.store = store;
     plMergeLeadSelector.startup();
 }
@@ -139,19 +136,21 @@ function mergeSelectedPl(fields) {
 
     var ids = [];
     var totalLi = 0;
-    var selected = plListGrid.selection.getSelected();
     var leadPl = plCache[fields.lead];
     var leadPlItem;
 
-    dojo.forEach(selected, function(item) { 
-        var id = plListGrid.store.getValue(item, 'id');
-        if(id == fields.lead) {
-            leadPlItem = item;
-            return;
+    dojo.forEach(
+        plListGrid.getSelectedItems(),
+        function(item) { 
+            var id = plListGrid.store.getValue(item, 'id');
+            if(id == fields.lead) {
+                leadPlItem = item;
+                return;
+            }
+            totalLi +=  new Number(plListGrid.store.getValue(item, 'entry_count'));
+            ids.push(id);
         }
-        totalLi +=  new Number(plListGrid.store.getValue(item, 'entry_count'));
-        ids.push(id);
-    });
+    );
 
     progressDialog.show();
     progressDialog.update({maximum:totalLi, progress:0});
@@ -171,11 +170,14 @@ function mergeSelectedPl(fields) {
                     plListGrid.store.setValue(leadPlItem, 'entry_count', leadPl.entry_count());
 
                     // remove the deleted lists from the grid
-                    dojo.forEach(selected, function(item) { 
-                        var id = plListGrid.store.getValue(item, 'id');
-                        if(id != fields.lead)
-                            plListGrid.store.deleteItem(item);
-                    });
+                    dojo.forEach(
+                        plListGrid.getSelectedItems(),
+                        function(item) { 
+                            var id = plListGrid.store.getValue(item, 'id');
+                            if(id != fields.lead)
+                                plListGrid.store.deleteItem(item);
+                        }
+                    );
                 }
             }
         }
