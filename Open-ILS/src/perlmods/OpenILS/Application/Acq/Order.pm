@@ -613,16 +613,20 @@ sub delete_picklist {
     $picklist = $mgr->editor->retrieve_acq_picklist($picklist) unless ref $picklist;
 
     # delete all 'new' lineitems
-    my $lis = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => 'new'}, {substream => 1});
-    for my $li (@$lis) {
+    my $li_ids = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => 'new'}, {idlist => 1});
+    for my $li_id (@$li_ids) {
+        my $li = $mgr->editor->retrieve_acq_lineitem($li_id);
         return 0 unless delete_lineitem($mgr, $li);
+        $mgr->respond;
     }
 
     # detach all non-'new' lineitems
-    $lis = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => {'!=' => 'new'}, {substream => 1}});
-    for my $li (@$lis) {
+    $li_ids = $mgr->editor->search_acq_lineitem({picklist => $picklist->id, state => {'!=' => 'new'}}, {idlist => 1});
+    for my $li_id (@$li_ids) {
+        my $li = $mgr->editor->retrieve_acq_lineitem($li_id);
         $li->clear_picklist;
         return 0 unless update_lineitem($mgr, $li);
+        $mgr->respond;
     }
 
     # remove any picklist-specific object perms
@@ -1712,6 +1716,31 @@ sub merge_picklist_api {
     }
 
     $e->commit;
+    return $mgr->respond_complete;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'delete_picklist_api',
+	api_name	=> 'open-ils.acq.picklist.delete',
+	signature => {
+        desc => q/Deletes a picklist.  It also deletes any lineitems in the "new" state.  
+            Other attached lineitems are detached'/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist ID to delete', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub delete_picklist_api {
+    my($self, $conn, $auth, $picklist_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+    my $pl = $e->retrieve_acq_picklist($picklist_id) or return $e->die_event;
+    delete_picklist($mgr, $pl) or return $e->die_event;
     return $mgr->respond_complete;
 }
 

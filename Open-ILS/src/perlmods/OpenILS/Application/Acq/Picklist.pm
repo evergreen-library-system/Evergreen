@@ -262,59 +262,6 @@ sub retrieve_all_user_picklist {
     return undef;
 }
 
-
-__PACKAGE__->register_method(
-	method => 'delete_picklist',
-	api_name	=> 'open-ils.acq.picklist.delete',
-	signature => {
-        desc => q/Deletes a picklist.  It also deletes any lineitems in the "new" state.  
-            Other attached lineitems are detached'/,
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'Picklist ID to delete', type => 'number'}
-        ],
-        return => {desc => '1 on success, Event on error'}
-    }
-);
-
-sub delete_picklist {
-    my($self, $conn, $auth, $picklist_id) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-
-    my $picklist = $e->retrieve_acq_picklist($picklist_id)
-        or return $e->die_event;
-    # don't let anyone delete someone else's picklist
-    if($picklist->owner != $e->requestor->id) {
-        return $e->die_event unless 
-            $e->allowed('DELETE_PICKLIST', $picklist->org_unit, $picklist);
-    }
-
-    # delete all 'new' lineitems
-    my $lis = $e->search_acq_lineitem({picklist => $picklist->id, state => 'new'});
-    for my $li (@$lis) {
-        $e->delete_acq_lineitem($li) or return $e->die_event;
-    }
-
-    # detach all non-'new' lineitems
-    $lis = $e->search_acq_lineitem({picklist => $picklist->id, state => {'!=' => 'new'}});
-    for my $li (@$lis) {
-        $li->clear_picklist;
-        $e->update_acq_lineitem($li) or return $e->die_event;
-    }
-
-    # remove any picklist-specific object perms
-    my $ops = $e->search_permission_usr_object_perm_map({object_type => 'acqpl', object_id => "".$picklist->id});
-    for my $op (@$ops) {
-        $e->delete_usr_object_perm_map($op) or return $e->die_event;
-    }
-
-
-    $e->delete_acq_picklist($picklist) or return $e->die_event;
-    $e->commit;
-    return 1;
-}
-
 __PACKAGE__->register_method(
 	method => 'retrieve_pl_lineitem',
 	api_name	=> 'open-ils.acq.lineitem.picklist.retrieve',
