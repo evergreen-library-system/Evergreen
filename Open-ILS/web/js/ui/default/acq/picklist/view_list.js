@@ -72,9 +72,7 @@ function getDateTimeField(rowIndex, item) {
     return dojo.date.locale.format(date, {formatLength:'short'});
 }
 function deleteFromGrid() {
-    progressDialog.setInd(true);
-    progressDialog.update();
-    progressDialog.show();
+    progressDialog.show(true);
     var list = [];
     dojo.forEach(
         plListGrid.getSelectedItems(), 
@@ -94,7 +92,6 @@ function cloneSelectedPl(fields) {
     var plId = plListGrid.store.getValue(item, 'id');
     var entryCount = Number(plListGrid.store.getValue(item, 'entry_count'));
 
-    progressDialog.setInd(false);
     progressDialog.show();
     progressDialog.update({maximum:entryCount, progress:0});
 
@@ -155,7 +152,6 @@ function mergeSelectedPl(fields) {
         }
     );
 
-    progressDialog.setInd(false);
     progressDialog.show();
     progressDialog.update({maximum:totalLi, progress:0});
 

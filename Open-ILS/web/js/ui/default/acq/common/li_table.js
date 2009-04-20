@@ -670,13 +670,13 @@ function AcqLiTable() {
 
     this.printPO = function() {
         if(!this.isPO) return;
-        progressDialogInd.show();
+        progressDialog.show(true);
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.format'],
             {   async: true,
                 params: [this.authtoken, this.isPO, 'html'],
                 oncomplete: function(r) {
-                    progressDialogInd.hide();
+                    progressDialog.hide();
                     var evt = openils.Util.readResponse(r);
                     if(evt && evt.template_output()) {
                         win = window.open('','', 'resizable,width=800,height=600,scrollbars=1');
@@ -706,14 +706,14 @@ function AcqLiTable() {
 
     this.receiveLi = function(li) {
         if(!this.isPO) return;
-        progressDialogInd.show();
+        progressDialog.show(true);
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.receive'],
             {   async: true,
                 params: [this.authtoken, li.id()],
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
-                    progressDialogInd.hide();
+                    progressDialog.hide();
                 },
             }
         );
@@ -721,14 +721,14 @@ function AcqLiTable() {
 
     this.receiveLid = function(li) {
         if(!this.isPO) return;
-        progressDialogInd.show();
+        progressDialog.show(true);
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem_detail.receive'],
             {   async: true,
                 params: [this.authtoken, li.id()],
                 onresponse : function(r) {
                     var resp = openils.Util.readResponse(r);
-                    progressDialogInd.hide();
+                    progressDialog.hide();
                 },
             }
         );

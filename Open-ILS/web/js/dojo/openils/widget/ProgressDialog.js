@@ -17,20 +17,25 @@ if(!dojo._hasResource['openils.widget.ProgressDialog']) {
             startup : function() {
                 this.inherited(arguments);
                 this.progress = new dijit.ProgressBar();
-                this.progress.indeterminate = this.indeterminate;
                 this.progress.startup();
                 openils.Util.addCSSClass(this.progress.domNode, 'oils-progress-dialog');
                 this.containerNode.appendChild(this.progress.domNode);
-                if(this.indeterminate) this.update();
             },
 
             update : function() {
                 this.progress.update.apply(this.progress, arguments);
             },
 
-            setInd : function(isInd) {
-                this.progress.indeterminate = this.indeterminate = isInd;
-            }
+            show : function(ind) {
+                if(ind || this.indeterminate) {
+                    this.progress.indeterminate = true;
+                    this.update();
+                } else {
+                    this.progress.indeterminate = false;
+                }
+                    
+                this.inherited(arguments);
+            },
         }
     );
 }
