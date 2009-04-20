@@ -26,6 +26,10 @@ if(!dojo._hasResource['openils.widget.ProgressDialog']) {
 
             update : function() {
                 this.progress.update.apply(this.progress, arguments);
+            },
+
+            setInd : function(isInd) {
+                this.progress.indeterminate = this.indeterminate = isInd;
             }
         }
     );

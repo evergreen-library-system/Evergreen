@@ -31,6 +31,7 @@
         }
     }
 </script>
+
 <div class='oils-acq-actions-div'>
 
     <div dojoType="dijit.form.DropDownButton">
@@ -85,7 +86,6 @@
     </div>
 
     <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">Delete Selected</button>
-
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
@@ -111,7 +111,8 @@
     </div>
 </div>
 
-<div class='hidden'><div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/></div>
-<div class='hidden'><div jsId='progressDialogInd' dojoType='openils.widget.ProgressDialog' indeterminate='true'/></div>
+<div class='hidden'>
+    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/>
+</div>
 
 [% END %]
