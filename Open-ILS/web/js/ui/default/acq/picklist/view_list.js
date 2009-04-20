@@ -3,15 +3,20 @@ dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require('dijit.form.TextBox');
+dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Button');
 dojo.require('dojox.grid.cells.dijit');
 dojo.require('openils.acq.Picklist');
 dojo.require('openils.Util');
+dojo.require('openils.widget.ProgressDialog');
 
 var listAll = false;
 var plCache = {};
 
 function loadGrid() {
+
+    dojo.connect(plMergeDialog, 'onOpen', function(){loadLeadPlSelector();});
+
     var method = 'open-ils.acq.picklist.user.retrieve';
     if(listAll)
         method = method.replace(/user/, 'user.all');
@@ -19,7 +24,6 @@ function loadGrid() {
     var store = new dojo.data.ItemFileWriteStore({data:acqpl.initStoreData()});
     plListGrid.setStore(store);
     plListGrid.render();
-    dojo.connect(store, 'onSet', plGridChanged);
 
     fieldmapper.standardRequest(
         ['open-ils.acq', method],
@@ -33,7 +37,7 @@ function loadGrid() {
                     plCache[pl.id()] = pl;
                     store.newItem(acqpl.toStoreItem(pl));
                 }
-            }
+            }, 
         }
     );
 }
@@ -66,47 +70,6 @@ function createPL(fields) {
         }
     );
 }
-function plGridChanged(item, attr, oldVal, newVal) {
-    var pl = plCache[plListGrid.store.getValue(item, 'id')];
-    console.log("changing pl " + pl.id() + " object: " + attr + " = " + newVal);
-    pl[attr](newVal);
-    pl.ischanged(true);
-    plSaveButton.setDisabled(false);
-}
-function saveChanges() {
-    plListGrid.doclick(0);   
-    var changedObjects = [];
-    for(var i in plCache){
-        var pl = plCache[i];
-        if(pl.ischanged())
-            changedObjects.push(pl);
-    }   
-    _saveChanges(changedObjects, 0);
-}
-function _saveChanges(changedObjects, idx) {
-    
-    if(idx >= changedObjects.length) {
-        // we've made it through the list
-        plSaveButton.setDisabled(true);
-        return;
-    }
-
-    var pl = changedObjects[idx];
-    var owner = pl.owner();
-    pl.owner(owner.id()); // un-flesh the owner object
-
-    fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.picklist.update'],
-        {   async: true,
-            params: [openils.User.authtoken, pl],
-            oncomplete: function(r) {
-                if(stat = openils.Util.readResponse(r)) {
-                    _saveChanges(changedObjects, ++idx);
-                }
-            }
-        }
-    );
-}
 
 function getDateTimeField(rowIndex, item) {
     if(!item) return '';
@@ -123,6 +86,90 @@ function deleteFromGrid() {
         plListGrid.store.deleteItem(item);
     }
     openils.acq.Picklist.deleteList(list);
+}
+
+function cloneSelectedPl(fields) {
+
+    var selected = plListGrid.selection.getSelected();
+    if(selected.length == 0 || !(fields.name)) return;
+
+    var item = selected[0]; // clone the first selected
+    progressDialog.show();
+    progressDialog.update({maximum:item.entry_count, progress:0});
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.picklist.clone'],
+        {   async: true,
+            params: [openils.User.authtoken, item.id, fields.name],
+            onresponse : function(r) {
+                var resp = openils.Util.readResponse(r);
+                if(!resp) return;
+                progressDialog.update({progress:resp.li});
+                if(resp.complete) {
+                    progressDialog.hide();
+                    var pl = resp.picklist;
+                    plCache[pl.id()] = pl;
+                    pl.owner(openils.User.user);
+                    plListGrid.store.newItem(fieldmapper.acqpl.toStoreItem(pl));
+                }
+            }
+        }
+    );
+}
+
+function loadLeadPlSelector() {
+    var store = new dojo.data.ItemFileWriteStore({data:acqpl.initStoreData()}); 
+    var selected = plListGrid.selection.getSelected();
+    dojo.forEach(selected, function(item) { 
+        var pl = plCache[plListGrid.store.getValue(item, 'id')];
+        store.newItem(fieldmapper.acqpl.toStoreItem(pl));
+    });
+    plMergeLeadSelector.store = store;
+    plMergeLeadSelector.startup();
+}
+
+function mergeSelectedPl(fields) {
+    if(!fields.lead) return;
+
+    var ids = [];
+    var totalLi = 0;
+    var selected = plListGrid.selection.getSelected();
+    var leadPl = plCache[fields.lead];
+
+    dojo.forEach(selected, function(item) { 
+        var id = plListGrid.store.getValue(item, 'id');
+        if(id == fields.lead) return;
+        totalLi +=  new Number(plListGrid.store.getValue(item, 'entry_count'));
+        ids.push(id);
+    });
+
+    progressDialog.show();
+    progressDialog.update({maximum:totalLi, progress:0});
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.picklist.merge'],
+        {   async: true,
+            params: [openils.User.authtoken, fields.lead, ids],
+            onresponse : function(r) {
+                var resp = openils.Util.readResponse(r);
+                if(!resp) return;
+                progressDialog.update({progress:resp.li});
+
+                if(resp.complete) {
+                    progressDialog.hide();
+                    leadPl.entry_count( leadPl.entry_count() + totalLi );
+
+                    // remove the deleted lists from the grid
+                    dojo.forEach(selected, function(item) { 
+                        var id = plListGrid.store.getValue(item, 'id');
+                        if(id != fields.lead)
+                            plListGrid.store.deleteItem(item);
+                    });
+                }
+            }
+        }
+    );
+
 }
 
 openils.Util.addOnLoad(loadGrid);

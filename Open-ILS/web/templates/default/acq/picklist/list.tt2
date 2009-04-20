@@ -32,13 +32,14 @@
     }
 </script>
 <div class='oils-acq-actions-div'>
-  <div dojoType="dijit.form.DropDownButton">
-    <span>New Selection List</span>
-    <div dojoType="dijit.TooltipDialog" execute="createPL(arguments[0]);">
-      <table class='dijitTooltipTable'>
-        <tr>
-          <td><label for="name">Name:</label></td>
-          <td><input dojoType="dijit.form.TextBox" name="name"/></td>
+
+    <div dojoType="dijit.form.DropDownButton">
+        <span>New Selection List</span>
+        <div dojoType="dijit.TooltipDialog" execute="createPL(arguments[0]);">
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="name">Name:</label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="name"/></td>
                 </tr>
                 <tr>
                     <td colspan='2' align='center'>
@@ -48,10 +49,43 @@
             </table>
         </div>
     </div>
-    <button dojoType='dijit.form.Button' onclick="saveChanges();" disabled='disabled' jsId="plSaveButton">Save Changes</button>
-    <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">
-        Delete Selected
-    </button>
+
+    <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">Delete Selected</button>
+
+    <div dojoType="dijit.form.DropDownButton">
+        <span>Clone Selected</span>
+        <div dojoType="dijit.TooltipDialog" execute="cloneSelectedPl(arguments[0]);">
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="name">New Name:</label></td>
+                    <td><input dojoType="dijit.form.TextBox" name="name"/></td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType='dijit.form.Button' type="submit">Clone</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.form.DropDownButton">
+        <span>Merge Selected</span>
+        <div dojoType="dijit.TooltipDialog" execute="mergeSelectedPl(arguments[0]);" jsId='plMergeDialog'>
+            <table class='dijitTooltipTable'>
+                <tr>
+                    <td><label for="name">Choose the Lead Selection List:</label></td>
+                    <td><input jsId='plMergeLeadSelector' dojoType="dijit.form.FilteringSelect" name="lead"/></td>
+                </tr>
+                <tr>
+                    <td colspan='2' align='center'>
+                        <button dojoType='dijit.form.Button' type="submit">Merge</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
@@ -72,5 +106,7 @@
         </table>
     </div>
 </div>
+
+<div class='hidden'><div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/></div>
 
 [% END %]
