@@ -188,12 +188,16 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 return false;
             var lclass = linkInfo.linkClass;
 
+            if(lclass == 'aou') {
+                this.widgetValue = fieldmapper.aou.findOrgUnit(this.widgetValue).shortname();
+                return;
+            }
+
             // first try the object list cache
             if(this.cache[lclass]) {
                 for(var k in this.cache[lclass]) {
                     var cc = this.cache[lclass][k];
                     if(cc[linkInfo.vfield.name]() == this.widgetValue) {
-                        console.log("serving " + this.idlField.name + " from list cache");
                         this.widgetValue = cc[linkInfo.vfield.selector]();
                         return;
                     }
@@ -202,7 +206,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
             // then try the single object cache
             if(this.cacheSingle[lclass] && this.cacheSingle[lclass][this.widgetValue]) {
-                console.log("serving " + this.idlField.name + " from cacheSingle");
                 this.widgetValue = this.cacheSingle[lclass][this.widgetValue];
                 return;
             }
@@ -260,6 +263,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
             if(linkClass == 'pgt')
                 return this._buildPermGrpSelector();
+            if(linkClass == 'aou')
+                return this._buildOrgSelector();
 
             this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
@@ -321,6 +326,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget.labelAttr = 'shortname';
             this.widget.parentField = 'parent_ou';
             var user = new openils.User();
+
             if(this.widgetValue == null) 
                 this.widgetValue = user.user.ws_ou();
             
