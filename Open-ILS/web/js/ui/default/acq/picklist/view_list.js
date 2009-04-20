@@ -94,22 +94,28 @@ function cloneSelectedPl(fields) {
     if(selected.length == 0 || !(fields.name)) return;
 
     var item = selected[0]; // clone the first selected
+    var plId = plListGrid.store.getValue(item, 'id');
+    var entryCount = Number(plListGrid.store.getValue(item, 'entry_count'));
+
     progressDialog.show();
-    progressDialog.update({maximum:item.entry_count, progress:0});
+    progressDialog.update({maximum:entryCount, progress:0});
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.picklist.clone'],
         {   async: true,
-            params: [openils.User.authtoken, item.id, fields.name],
+            params: [openils.User.authtoken, plId, fields.name],
+
             onresponse : function(r) {
                 var resp = openils.Util.readResponse(r);
                 if(!resp) return;
                 progressDialog.update({progress:resp.li});
+
                 if(resp.complete) {
                     progressDialog.hide();
                     var pl = resp.picklist;
                     plCache[pl.id()] = pl;
                     pl.owner(openils.User.user);
+                    pl.entry_count(entryCount);
                     plListGrid.store.newItem(fieldmapper.acqpl.toStoreItem(pl));
                 }
             }
@@ -135,10 +141,14 @@ function mergeSelectedPl(fields) {
     var totalLi = 0;
     var selected = plListGrid.selection.getSelected();
     var leadPl = plCache[fields.lead];
+    var leadPlItem;
 
     dojo.forEach(selected, function(item) { 
         var id = plListGrid.store.getValue(item, 'id');
-        if(id == fields.lead) return;
+        if(id == fields.lead) {
+            leadPlItem = item;
+            return;
+        }
         totalLi +=  new Number(plListGrid.store.getValue(item, 'entry_count'));
         ids.push(id);
     });
@@ -158,6 +168,7 @@ function mergeSelectedPl(fields) {
                 if(resp.complete) {
                     progressDialog.hide();
                     leadPl.entry_count( leadPl.entry_count() + totalLi );
+                    plListGrid.store.setValue(leadPlItem, 'entry_count', leadPl.entry_count());
 
                     // remove the deleted lists from the grid
                     dojo.forEach(selected, function(item) { 
@@ -169,7 +180,6 @@ function mergeSelectedPl(fields) {
             }
         }
     );
-
 }
 
 openils.Util.addOnLoad(loadGrid);
