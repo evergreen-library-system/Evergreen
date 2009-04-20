@@ -1662,8 +1662,9 @@ sub clone_picklist_api {
             # copy the lineitem details
             my $lid = $e->retrieve_acq_lineitem_detail($lid_id);
             create_lineitem_detail($mgr, %{$lid->to_bare_hash}, lineitem => $new_li->id) or return $e->die_event;
-            $mgr->respond;
         }
+
+        $mgr->respond;
     }
 
     $e->commit;
