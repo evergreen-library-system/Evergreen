@@ -72,7 +72,9 @@ function getDateTimeField(rowIndex, item) {
     return dojo.date.locale.format(date, {formatLength:'short'});
 }
 function deleteFromGrid() {
-    progressDialogInd.show();
+    progressDialog.setInd(true);
+    progressDialog.update();
+    progressDialog.show();
     var list = [];
     dojo.forEach(
         plListGrid.getSelectedItems(), 
@@ -81,7 +83,7 @@ function deleteFromGrid() {
             plListGrid.store.deleteItem(item);
         }
     );
-    openils.acq.Picklist.deleteList(list, function(){progressDialogInd.hide();});
+    openils.acq.Picklist.deleteList(list, function(){progressDialog.hide();});
 }
 
 function cloneSelectedPl(fields) {
@@ -92,6 +94,7 @@ function cloneSelectedPl(fields) {
     var plId = plListGrid.store.getValue(item, 'id');
     var entryCount = Number(plListGrid.store.getValue(item, 'entry_count'));
 
+    progressDialog.setInd(false);
     progressDialog.show();
     progressDialog.update({maximum:entryCount, progress:0});
 
@@ -152,6 +155,7 @@ function mergeSelectedPl(fields) {
         }
     );
 
+    progressDialog.setInd(false);
     progressDialog.show();
     progressDialog.update({maximum:totalLi, progress:0});
 
