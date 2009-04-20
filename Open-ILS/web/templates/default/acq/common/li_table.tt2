@@ -16,11 +16,13 @@
                                             <option mask='sr' value='save_picklist'>Save Items To Selection List</option>
                                             <option mask='pl' value='selector_ready'>Mark Ready for Selector</option>
                                             <option mask='pl' value='order_ready'>Mark Ready for Order</option>
-                                            <option mask='pl' value='create_order'>Create Purchase Order</option>
+                                            <option mask='po' value='' disabled='disabled'>------</option>
+                                            <option mask='po' value='create_order'>Create Purchase Order</option>
                                             <option mask='po' value='receive_po'>Mark Purchase Order as Received</option>
                                             <option mask='po' value='rollback_receive_po'>Un-Receive Purchase Order</option>
                                             <option mask='po' value='print_po'>Print Purchase Order</option>
-                                            <option mask='po' value='create_assets'>Create PO Assets</option>
+                                            <option mask='po' value='create_assets'>Load Bibs and Items</option>
+                                            <option mask='po' value='' disabled='disabled'>------</option>
                                             <option mask='*'  value='delete_selected'>Delete Selected Items</option>
                                         </select>
                                     </span>
@@ -104,9 +106,11 @@
             View in the <a href='/opac/en-US/skin/default/xml/rdetail.xml?r='>Catalog</a>
         </div>
         <div style='margin-top:40px;'>
-            <h3>MARC Record</h3>
+            <h3 id='acq-lit-marc-order-record-label'>MARC Order Record</h3>
+            <h3 id='acq-lit-marc-real-record-label'>MARC ILS Record</h3>
             <div>
-                <div dojoType='dijit.form.Button' jsId='acqLitEditMarc'>Edit MARC Record</div>
+                <div dojoType='dijit.form.Button' jsId='acqLitEditOrderMarc'>Edit MARC Order Record</div>
+                <div dojoType='dijit.form.Button' jsId='acqLitEditILSMarc'>Edit MARC ILS Record</div>
             </div>
             <div id='acq-lit-marc-div' style='margin-top:20px;'> </div>
         </div>

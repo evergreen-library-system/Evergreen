@@ -13,6 +13,8 @@ dojo.require('openils.acq.Picklist');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('openils.widget.ProgressDialog');
+dojo.require('openils.PermaCrud');
+
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 
@@ -354,7 +356,21 @@ function AcqLiTable() {
 
     this._drawInfo = function(li) {
 
-        acqLitEditMarc.onClick = function() { self.editMarc(li); }
+        acqLitEditOrderMarc.onClick = function() { self.editOrderMarc(li); }
+        acqLitEditILSMarc.onClick = function() { self.editILSMarc(li); }
+
+        if(li.eg_bib_id()) {
+            openils.Util.hide('acq-lit-marc-order-record-label');
+            openils.Util.hide(acqLitEditOrderMarc.domNode);
+            openils.Util.show('acq-lit-marc-real-record-label');
+            openils.Util.show(acqLitEditILSMarc.domNode);
+        } else {
+            openils.Util.show('acq-lit-marc-order-record-label');
+            openils.Util.show(acqLitEditOrderMarc.domNode);
+            openils.Util.hide('acq-lit-marc-real-record-label');
+            openils.Util.hide(acqLitEditILSMarc.domNode);
+        }
+
         this.drawMarcHTML(li);
         this.infoTbody = dojo.byId('acq-lit-info-tbody');
 
@@ -391,10 +407,14 @@ function AcqLiTable() {
     };
 
     this.drawMarcHTML = function(li) {
+        var params = [null, true, li.marc()];
+        if(li.eg_bib_id()) 
+            params = [li.eg_bib_id(), true];
+
         fieldmapper.standardRequest(
             ['open-ils.search', 'open-ils.search.biblio.record.html'],
             {   async: true,
-                params: [null, true, li.marc()],
+                params: params,
                 oncomplete: function(r) {
                     dojo.byId('acq-lit-marc-div').innerHTML = 
                         openils.Util.readResponse(r);
@@ -813,7 +833,7 @@ function AcqLiTable() {
         );
     }
 
-    this.editMarc = function(li) {
+    this.editOrderMarc = function(li) {
 
         /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
             to true in about:config */
@@ -844,6 +864,39 @@ function AcqLiTable() {
         };
     }
 
+
+    this.editILSMarc = function(li) {
+
+        /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
+            to true in about:config */
+
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+        win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+
+        var bib = new openils.PermaCrud().retrieve('bre', li.eg_bib_id());
+
+        var self = this;
+        win.xulG = {
+            record : {marc : li.marc()},
+            save : {
+                label: 'Save Record', // XXX I18N
+                func: function(xmlString) {
+                    bib.marc(xmlString);
+                    fieldmapper.standardRequest(
+                        ['open-ils.cat', 'open-ils.cat.biblio.record_entry.update'],
+                        {   async: true,
+                            params: [openils.User.authtoken, bib],
+                            oncomplete: function(r) {
+                                openils.Util.readResponse(r);
+                                win.close();
+                                self.drawInfo(li.id())
+                            }
+                        }
+                    );
+                },
+            }
+        };
+    }
 
     this._savePl = function(values) {
         var self = this;
