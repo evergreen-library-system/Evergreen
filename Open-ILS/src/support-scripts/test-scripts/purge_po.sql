@@ -26,6 +26,7 @@ BEGIN
         ELSE
             DELETE FROM acq.lineitem_detail WHERE lineitem = li.id;
             DELETE FROM acq.lineitem_attr WHERE lineitem = li.id;
+            DELETE from acq.lineitem_note WHERE lineitem = li.id;
             DELETE from acq.lineitem WHERE id = li.id;
         END IF;
 
