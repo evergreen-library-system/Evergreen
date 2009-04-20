@@ -917,6 +917,7 @@ sub retrieve_purchase_order_impl {
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
 
     if($$options{flesh_lineitems}) {
+
         my $items = $e->search_acq_lineitem([
             {purchase_order => $po_id},
             {
@@ -935,11 +936,42 @@ sub retrieve_purchase_order_impl {
         }
 
         $po->lineitems($items);
-    }
+        $po->lineitem_count(scalar(@$items));
 
-    if($$options{flesh_lineitem_count}) {
+    } elsif( $$options{flesh_lineitem_count} ) {
+
         my $items = $e->search_acq_lineitem({purchase_order => $po_id}, {idlist=>1});
         $po->lineitem_count(scalar(@$items));
+    }
+
+    if($$options{flesh_price_summary}) {
+
+        # fetch the fund debits for this purchase order
+        my $debits = $e->json_query({
+            select => {acqfdeb => ["encumbrance", "amount"]},
+            from => {
+                acqlid => {
+                    jub => {fkey => "lineitem", field => "id", 
+                        join => {acqpo => {fkey => "purchase_order", field => "id"}}
+                    },
+                acqfdeb => {fkey => "fund_debit", field =>"id"}
+                }
+            },
+            where => {'+acqpo' => {id => $po_id}}
+        });
+
+        my $enc = 0;
+        my $spent = 0;
+        for my $deb (@$debits) {
+            if($U->is_true($deb->{encumbrance})) {
+                $enc += $deb->{amount};
+            } else {
+                $spent += $deb->{amount};
+            }
+        }
+
+        $po->amount_encumbered($enc);
+        $po->amount_spent($spent);
     }
 
     return $po;
