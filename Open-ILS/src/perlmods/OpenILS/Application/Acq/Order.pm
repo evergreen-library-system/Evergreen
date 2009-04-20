@@ -1741,6 +1741,7 @@ sub delete_picklist_api {
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
     my $pl = $e->retrieve_acq_picklist($picklist_id) or return $e->die_event;
     delete_picklist($mgr, $pl) or return $e->die_event;
+    $e->commit;
     return $mgr->respond_complete;
 }
 
