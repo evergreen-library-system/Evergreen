@@ -13,10 +13,12 @@ function init() {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],
         {   async: true,
-            params: [openils.User.authtoken, poId],
+            params: [openils.User.authtoken, poId, {flesh_price_summary:true, flesh_lineitem_count:true}],
             oncomplete: function(r) {
                 PO = openils.Util.readResponse(r);
-                console.log('got PO');
+                dojo.byId('acq-po-view-total-li').innerHTML = PO.lineitem_count();
+                dojo.byId('acq-po-view-total-enc').innerHTML = PO.amount_encumbered();
+                dojo.byId('acq-po-view-total-spent').innerHTML = PO.amount_spent();
             }
         }
     );

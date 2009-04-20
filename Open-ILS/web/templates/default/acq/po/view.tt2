@@ -6,6 +6,11 @@
             <div>
                 Purchase Order
             </div>
+            <table class='oils-generic-table'>
+                <tr><td>Total Lineitems</td><td><span id='acq-po-view-total-li'/></td></tr>
+                <tr><td>Total Encumbered</td><td>$<span id='acq-po-view-total-enc'/></td></tr>
+                <tr><td>Total Spent</td><td>$<span id='acq-po-view-total-spent'/></td></tr>
+            </table>
         </div>
     </div>
     <script type="text/javascript">var poId = '[% ctx.page_args.0 %]';</script>
