@@ -307,9 +307,9 @@ function AcqLiTable() {
         if(price == oldPrice) return;
 
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.lineitem_local_attr.set'],
+            ['open-ils.acq', 'open-ils.acq.lineitem.price.set'],
             {   async : true,
-                params : [this.authtoken, li.id(), 'estimated_price', price],
+                params : [this.authtoken, li.id(), price],
                 oncomplete : function(r) {
                     openils.Util.readResponse(r);
                 }
