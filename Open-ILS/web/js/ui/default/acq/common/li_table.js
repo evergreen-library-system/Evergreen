@@ -421,6 +421,29 @@ function AcqLiTable() {
                 }
             }
         );
+
+        if(li.eg_bib_id()) {
+            if(this.canEditILSMarc === true) {
+                acqLitEditILSMarc.attr('disabled', false);
+            } else {
+                if(this.canEditILSMarc === false) {
+                    acqLitEditILSMarc.attr('disabled', true);
+                } else {
+                    var self = this;
+                    new openils.User().getPermOrgList('UPDATE_RECORD', 
+                        function(list) { 
+                            if(list.length > 0) {
+                                self.canEditILSMarc = true;
+                                acqLitEditILSMarc.attr('disabled', false);
+                            } else {
+                                self.canEditILSMarc = false;
+                                acqLitEditILSMarc.attr('disabled', true);
+                            }
+                        }
+                    );
+                }
+            }
+        }
     }
 
     this.drawCopies = function(liId) {

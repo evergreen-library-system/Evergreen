@@ -109,8 +109,8 @@
             <h3 id='acq-lit-marc-order-record-label'>MARC Order Record</h3>
             <h3 id='acq-lit-marc-real-record-label'>MARC ILS Record</h3>
             <div>
-                <div dojoType='dijit.form.Button' jsId='acqLitEditOrderMarc'>Edit MARC Order Record</div>
-                <div dojoType='dijit.form.Button' jsId='acqLitEditILSMarc'>Edit MARC ILS Record</div>
+                <div dojoType='dijit.form.Button' jsId='acqLitEditOrderMarc' class='hidden'>Edit MARC Order Record</div>
+                <div dojoType='dijit.form.Button' jsId='acqLitEditILSMarc' class='hidden' disabled='disabled'>Edit MARC ILS Record</div>
             </div>
             <div id='acq-lit-marc-div' style='margin-top:20px;'> </div>
         </div>
