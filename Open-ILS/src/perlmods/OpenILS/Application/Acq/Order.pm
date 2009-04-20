@@ -187,9 +187,7 @@ sub create_lineitem {
     $li->edit_time('now');
     $li->state('new');
     $li->$_($args{$_}) for keys %args;
-    if($li->picklist) {
-        return 0 unless update_picklist($mgr, $li->picklist);
-    }
+    $li->clear_id;
     $mgr->add_li;
     return $mgr->editor->create_acq_lineitem($li);
 }
@@ -198,8 +196,8 @@ sub update_lineitem {
     my($mgr, $li) = @_;
     $li->edit_time('now');
     $li->editor($mgr->editor->requestor->id);
+    $mgr->add_li;
     return $li if $mgr->editor->update_acq_lineitem($li);
-    $mgr->add_lid;
     return undef;
 }
 
@@ -213,6 +211,7 @@ sub delete_lineitem {
         return 0 unless delete_lineitem_detail($mgr, $lid_id);
     }
 
+    $mgr->add_li;
     return $mgr->editor->delete_acq_lineitem($li);
 }
 
@@ -291,6 +290,7 @@ sub create_lineitem_detail {
     my($mgr, %args) = @_;
     my $lid = Fieldmapper::acq::lineitem_detail->new;
     $lid->$_($args{$_}) for keys %args;
+    $lid->clear_id;
     $mgr->editor->create_acq_lineitem_detail($lid) or return 0;
     $mgr->add_lid;
 
@@ -568,6 +568,7 @@ sub create_fund_debit {
     $debit->debit_type('purchase');
     $debit->encumbrance('t');
     $debit->$_($args{$_}) for keys %args;
+    $debit->clear_id;
     $mgr->add_debit($debit->amount);
     return $mgr->editor->create_acq_fund_debit($debit);
 }
@@ -594,6 +595,7 @@ sub create_picklist {
     $picklist->org_unit($mgr->editor->requestor->ws_ou);
     $picklist->owner($mgr->editor->requestor->id);
     $picklist->$_($args{$_}) for keys %args;
+    $picklist->clear_id;
     $mgr->picklist($picklist);
     return $mgr->editor->create_acq_picklist($picklist);
 }
@@ -657,6 +659,7 @@ sub create_purchase_order {
     $po->create_time('now');
     $po->ordering_agency($mgr->editor->requestor->ws_ou);
     $po->$_($args{$_}) for keys %args;
+    $po->clear_id;
     $mgr->purchase_order($po);
     return $mgr->editor->create_acq_purchase_order($po);
 }
@@ -1621,6 +1624,98 @@ sub set_lineitem_price_api {
     $e->commit;
     return $mgr->respond_complete;
 }
+
+
+__PACKAGE__->register_method(
+	method => 'clone_picklist_api',
+	api_name	=> 'open-ils.acq.picklist.clone',
+	signature => {
+        desc => 'Clones a picklist, including lineitem and lineitem details',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist ID', type => 'number'},
+            {desc => 'New Picklist Name', type => 'string'}
+        ],
+        return => {desc => 'status blob, Event on error'}
+    }
+);
+
+sub clone_picklist_api {
+    my($self, $conn, $auth, $pl_id, $name) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $old_pl = $e->retrieve_acq_picklist($pl_id);
+    my $new_pl = create_picklist($mgr, %{$old_pl->to_bare_hash}, name => $name) or return $e->die_event;
+
+    my $li_ids = $e->search_acq_lineitem({picklist => $pl_id}, {idlist => 1});
+
+    for my $li_id (@$li_ids) {
+
+        # copy the lineitems
+        my $li = $e->retrieve_acq_lineitem($li_id);
+        my $new_li = create_lineitem($mgr, %{$li->to_bare_hash}, picklist => $new_pl->id) or return $e->die_event;
+
+        my $lid_ids = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist => 1});
+        for my $lid_id (@$lid_ids) {
+
+            # copy the lineitem details
+            my $lid = $e->retrieve_acq_lineitem_detail($lid_id);
+            create_lineitem_detail($mgr, %{$lid->to_bare_hash}, lineitem => $new_li->id) or return $e->die_event;
+            $mgr->respond;
+        }
+    }
+
+    $e->commit;
+    return $mgr->respond_complete;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'merge_picklist_api',
+	api_name	=> 'open-ils.acq.picklist.merge',
+	signature => {
+        desc => 'Merges 2 or more picklists into a single list',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Lead Picklist ID', type => 'number'},
+            {desc => 'List of subordinate picklist IDs', type => 'array'}
+        ],
+        return => {desc => 'status blob, Event on error'}
+    }
+);
+
+sub merge_picklist_api {
+    my($self, $conn, $auth, $lead_pl, $pl_list) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    # XXX perms on each picklist modified
+
+    # point all of the lineitems at the lead picklist
+    my $li_ids = $e->search_acq_lineitem({picklist => $pl_list}, {idlist => 1});
+
+    for my $li_id (@$li_ids) {
+        my $li = $e->retrieve_acq_lineitem($li_id);
+        $li->picklist($lead_pl);
+        update_lineitem($mgr, $li) or return $e->die_event;
+        $mgr->respond;
+    }
+
+    # now delete the subordinate lists
+    for my $pl_id (@$pl_list) {
+        my $pl = $e->retrieve_acq_picklist($pl_id);
+        $e->delete_acq_picklist($pl) or return $e->die_event;
+    }
+
+    $e->commit;
+    return $mgr->respond_complete;
+}
+
 
 
 1;
