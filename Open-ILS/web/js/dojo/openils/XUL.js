@@ -6,6 +6,10 @@ if(!dojo._hasResource["openils.XUL"]) {
     openils.XUL.isXUL = function() {
         return Boolean(window.IAMXUL);
     }
+
+    openils.XUL.buildId = function() {
+        return window.XUL_BUILD_ID || '';
+    }
     
     openils.XUL.getStash = function() {
         if(openils.XUL.isXUL()) {
