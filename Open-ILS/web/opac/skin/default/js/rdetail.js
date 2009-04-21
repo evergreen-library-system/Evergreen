@@ -536,7 +536,7 @@ function _rdetailRows(node) {
 		var loc = findOrgUnit(getLocation());
 
 		if( node ) {
-			if( !orgIsMine(node, loc) ) return;
+			if( !orgIsMine(node, loc) && !orgIsMine(loc,node) ) return;
 
 		} else {
 
