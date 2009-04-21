@@ -318,10 +318,12 @@ sub update_patron {
 
 	$logger->activity("user ".$user_obj->id." updating/creating  user ".$new_patron->id);
 
-	my $opatron;
-	if(!$patron->isnew) {
-		$opatron = new_editor()->retrieve_actor_user($new_patron->id);
-	}
+    my $tses = OpenSRF::AppSession->create('open-ils.trigger');
+	if($patron->isnew) {
+        $tses->request('open-ils.trigger.event.autocreate', 'au.create', $new_patron, $new_patron->home_ou);
+	} else {
+        $tses->request('open-ils.trigger.event.autocreate', 'au.update', $new_patron, $new_patron->home_ou);
+    }
 
 	$apputils->commit_db_session($session);
 
