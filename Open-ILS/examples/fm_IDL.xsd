@@ -47,6 +47,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <!-- define simple elements -->
 <xs:element name="field" nillable="true">
  <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="idl:description" minOccurs="0" maxOccurs="1"/>
+  </xs:sequence>
   <xs:attribute name="name"/>
   <xs:attribute ref="oils_obj:array_position"/>
   <xs:attribute ref="oils_persist:i18n"/>
@@ -90,6 +93,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="class">
  <xs:complexType>
   <xs:sequence>
+   <xs:element ref="idl:description" minOccurs="0" maxOccurs="1"/>
    <xs:element ref="oils_persist:source_definition" minOccurs="0" maxOccurs="unbounded"/>
    <xs:element ref="idl:fields"/>
    <xs:element ref="idl:links" minOccurs="0"/>
