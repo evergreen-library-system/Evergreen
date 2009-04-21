@@ -16,14 +16,13 @@
                                             <option mask='sr' value='save_picklist'>Save Items To Selection List</option>
                                             <option mask='pl' value='selector_ready'>Mark Ready for Selector</option>
                                             <option mask='pl' value='order_ready'>Mark Ready for Order</option>
-                                            <option mask='po' value='' disabled='disabled'>------</option>
+                                            <option mask='*'  value='delete_selected'>Delete Selected Items</option>
                                             <option mask='po' value='create_order'>Create Purchase Order</option>
+                                            <option mask='po' value='' disabled='disabled'>----PO----</option>
+                                            <option mask='po' value='create_assets'>Load Bibs and Items</option>
                                             <option mask='po' value='receive_po'>Mark Purchase Order as Received</option>
                                             <option mask='po' value='rollback_receive_po'>Un-Receive Purchase Order</option>
                                             <option mask='po' value='print_po'>Print Purchase Order</option>
-                                            <option mask='po' value='create_assets'>Load Bibs and Items</option>
-                                            <option mask='po' value='' disabled='disabled'>------</option>
-                                            <option mask='*'  value='delete_selected'>Delete Selected Items</option>
                                         </select>
                                     </span>
                                     <span id='acq-lit-generic-progress' class='hidden'>
@@ -126,43 +125,37 @@
                         <div dojoType='dijit.form.Button' id='acq-lit-notes-back-button'>&#x2196; Return</div>
                     </td>
                     <td style='text-align:right;'>
-                        <div dojoType='dijit.form.Button' id='acq-lit-notes-new-button'>New Note</div>
+                        <div dojoType="dijit.form.DropDownButton">
+                            <span>New Note</span>
+                            <div dojoType="dijit.TooltipDialog">
+                                <div>
+                                    <div jsId='acqLitCreateNoteText' dojoType='dijit.form.Textarea' style='height:5em; width:25em;' name='note'></div>
+                                </div>
+                                <button jsId='acqLitCreateLiNoteSubmit' dojoType='dijit.form.Button' type="submit">Create</button>
+                            </div>
+                        </div>
+
                         <div dojoType='dijit.form.Button' id='acq-lit-notes-save-button'>Save Changes</div>
                     </td>
                 </tr>
             </table>
         </div>
 
-        <table class='oils-generic-table' style='width:90%;'>
-            <thead><tr>
-                <th>Note</th>
-                <th>Creator</th>
-                <th>Create Time</th>
-                <th>Editor</th>
-                <th>Edit Time</th>
-                <th/>
-            </tr></thead>
-            <tbody id='acq-lit-notes-tbody'>
-                <tr id='acq-lit-notes-row'>
-                    <td class='acq-lit-note-textarea'><div name='value'/></td>
-                    <td><div name='creator'/></td>
-                    <td><div name='create_time'/></td>
-                    <td><div name='editor'/></td>
-                    <td><div name='edit_time'/></td>
-                    <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
-                </tr>
-            </tbody>
-        </table>
+        <ol id='acq-lit-notes-tbody'>
+            <li id='acq-lit-notes-row'>
+                <table style='width:100%;' class='oils-generic-table'>
+                    <tr>
+                        <td width='70%' align='left'><span style='font-size:120%' name='value'></span></td>
+                        <td align='right' style='padding-right:30px;'>
+                            <span name='edit_time'></span>
+                            <span style='padding-left:4px;'><a name='delete' href='javascript:void(0);' style='color:red;'>Delete</a></span>
+                        </td>
+                    </tr>
+                </div>
+            </li>
+        </ol>
     </div>
 
-    <div class='hidden'>
-        <div dojoType='dijit.Dialog' jsId='acqLitCreateLiNoteDialog'>
-            <div dojoType='dijit.form.Textarea' style='height:6em; width:40em;' name='note'></div>
-            <br/>
-            <div dojoType='dijit.form.Button' type='submit' jsId='acqLitCreateLiNoteSubmit'>Create</div>
-        </div>
-    </div>
- 
     <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>
         <h2>Copies</h2>
