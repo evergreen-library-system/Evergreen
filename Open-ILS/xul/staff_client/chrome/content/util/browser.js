@@ -118,10 +118,12 @@ util.browser.prototype = {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var cw = this.get_content();
 			cw.IAMXUL = true;
+            cw.XUL_BUILD_ID = '/xul/server/'.split(/\//)[2];
 			cw.xulG = obj.passthru_content_params || {};
 			cw.xulG.set_tab = window.xulG.set_tab;
 			cw.xulG.new_tab = window.xulG.new_tab;
 			cw.xulG.url_prefix = window.xulG.url_prefix;
+            cw.xulG.urls = window.urls;
 			try { s += ('******** cw = ' + cw + ' cw.xulG = ' + (cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }
 			obj.error.sdump('D_BROWSER',s);
 		} catch(E) {
