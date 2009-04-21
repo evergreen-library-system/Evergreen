@@ -361,18 +361,19 @@ sub preprocess {
 		}
     }
 
-    if (!$tcn_value || exists $used_tcns{$tcn_value}) {
-		$tcn_source = 's';
-		$tcn_number = $id;
-		$tcn_value = $tcn_source.$tcn_number;
-    }
-
 	# special case to catch possibly passed in full OCLC numbers and those derived from the 001 field
 	if ($tcn_value =~ /^oc(m|n)(\d+)$/o) {
 		$tcn_source = 'o';
 		$tcn_number = $2;
 		$tcn_value = $tcn_source.$tcn_number;
 	}
+
+    if (!$tcn_value || exists $used_tcns{$tcn_value}) {
+		$tcn_source = 's';
+		$tcn_number = $id;
+		$tcn_value = $tcn_source.$tcn_number;
+        $warn = 1;
+    }
 
 	# expand $tcn_source from code letter to full name
 	$tcn_source = do { $tcn_source_map{$tcn_source} || 'Unknown' };
