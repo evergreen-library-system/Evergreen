@@ -119,7 +119,8 @@ CREATE TABLE acq.fund_debit (
 	amount			NUMERIC	NOT NULL,
 	encumbrance		BOOL	NOT NULL DEFAULT TRUE,
 	debit_type		TEXT	NOT NULL,
-	xfer_destination	INT	REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED
+	xfer_destination	INT	REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
+	create_time     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE acq.fund_allocation (
@@ -130,6 +131,7 @@ CREATE TABLE acq.fund_allocation (
     percent     NUMERIC CHECK (percent IS NULL OR percent BETWEEN 0.0 AND 100.0),
     allocator   INT NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     note        TEXT,
+	create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
 );
 
