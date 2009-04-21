@@ -316,7 +316,7 @@ sub update_patron {
 	($new_patron, $evt) = _create_perm_maps($session, $user_session, $patron, $new_patron, $user_obj);
 	return $evt if $evt;
 
-	$logger->activity("user ".$user_obj->id." updating/creating  user ".$new_patron->id);
+	$apputils->commit_db_session($session);
 
     my $tses = OpenSRF::AppSession->create('open-ils.trigger');
 	if($patron->isnew) {
@@ -324,8 +324,6 @@ sub update_patron {
 	} else {
         $tses->request('open-ils.trigger.event.autocreate', 'au.update', $new_patron, $new_patron->home_ou);
     }
-
-	$apputils->commit_db_session($session);
 
 	return flesh_user($new_patron->id(), new_editor(requestor => $user_obj));
 }
