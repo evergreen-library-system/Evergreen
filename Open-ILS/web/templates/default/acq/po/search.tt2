@@ -15,65 +15,55 @@
 </script>
 
 
-<form dojoType='dijit.form.Form' action='' method=''>
+<form dojoType='dijit.form.Form' action='' method='' id='oils-acq-po-search-form'>
+
     <script type="dojo/method" event="onSubmit">
-        fields = this.getValues();
-        if(fields.provider == '')
-            delete fields.provider;
-        if(isNaN(fields.id))
-            delete fields.id;
-        doSearch(fields);
+        doSearch(this.getValues());
         return false; /* don't redirect */
     </script>
-    <table class='oils-acq-basic-form-table'>
-        <tr>
-            <td><label for='id'>ID</label></td>
-            <td><input dojoType='dijit.form.NumberTextBox' name='id'> </input></td>
-        </tr>
-        <tr>
-            <td><label for='provider'>Provider</label></td>
-            <td><select labelAttr='code' searchAttr='code' name='provider' 
-                        style='overflow-y:auto;' jsId="providerSelector" dojoType="dijit.form.FilteringSelect"> </select></td>
-        </tr>
-        <tr>
-            <td><label for='state'>State</label></td>
-            <td>
-                <select dojoType='dijit.form.FilteringSelect' name='state' value=''>
-                    <option value='new'>New</option>
-                    <option value='in-process'>In Process</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label for='ordering_agency'>Ordering Agency</label></td>
-            <td><select jsId='poSearchOrderingAgencySelect' labelAttr='shortname' searchAttr='shortname'
-                dojoType='openils.widget.OrgUnitFilteringSelect' name='ordering_agency'>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td style='text-align:center;'><div dojoType='dijit.form.Button' type='submit'>Search</div></td>
-        </tr>
-    </table>
+
+    <div class='oils-acq-basic-form-div'>
+
+        <label for='id'>ID</label>
+        <input dojoType='dijit.form.NumberTextBox' name='id'> </input>
+
+        <label for='provider'>Provider</label>
+        <input id='po-search-provider-selector'/>
+
+        <label for='state'>State</label></td>
+        <select dojoType='dijit.form.FilteringSelect' name='state' required='false'>
+            <option value='new'>New</option>
+            <option value='in-process'>In Process</option>
+        </select>
+
+        <label for='ordering_agency'>Ordering Agency</label>
+        <input id='po-search-agency-selector'/>
+
+        <span dojoType='dijit.form.Button' type='submit'>Search</span>
+    </div>
 </form>
+<br/>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
-        <table id="po-grid" jsId="poGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
+        <table 
+                id="po-grid" 
+                jsId="poGrid" 
+                dojoType="openils.widget.AutoGrid" 
+                query="{id: '*'}" 
+                fieldOrder="['id', 'owner', 'ordering_agency', 'provider', 'create_time', 'edit_time', 'state']"
+                suppressFields="['editor', 'creator']"
+                query="{id: '*'}"
+                defaultCellWidth='"auto"'
+                showSequenceFields='true'
+                fmClass='acqpo'> 
             <thead> 
                 <tr> 
                     <th field="id" get='getId'>ID</th> 
-                    <th field="owner" get='getPOOwner'>Owner</th> 
-                    <th field="ordering_agency" get='getOrgInfo'>Ordering Agency</th> 
-                    <th field="create_time" get='getDateTimeField' width='auto'>Create Time</th> 
-                    <th field="edit_time" get='getDateTimeField' width ='auto'>Edit Time</th> 
-                    <th field="provider" get='getProvider' width='auto'>Provider</th>
-                    <th field="state">State</th> 
+                    <th field="owner" get='getPOOwner'/>
                 </tr> 
             </thead> 
         </table>     
     </div> 
 </div>
-
-<script>dojo.style('po-grid', 'visibility', 'hidden');</script>
 [% END %]
 

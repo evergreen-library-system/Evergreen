@@ -2,29 +2,15 @@ dojo.require('dijit.form.Form');
 dojo.require('dijit.form.Button');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.NumberTextBox');
-dojo.require('dojox.grid.DataGrid');
 dojo.require('dojo.data.ItemFileWriteStore');
-dojo.require('openils.acq.Provider');
-dojo.require('fieldmapper.OrgUtils');
 dojo.require('dojo.date.locale');
 dojo.require('dojo.date.stamp');
 dojo.require('openils.User');
 dojo.require('openils.Util');
-dojo.require('openils.acq.PO');
-dojo.require('openils.widget.OrgUnitFilteringSelect');
+dojo.require('openils.widget.AutoGrid');
+dojo.require('openils.widget.AutoFieldWidget');
+dojo.require('openils.PermaCrud');
 
-
-function getOrgInfo(rowIndex, item) {
-    if(!item) return '';
-    var data = this.grid.store.getValue(item, 'ordering_agency')
-    return fieldmapper.aou.findOrgUnit(data).shortname();
-}
-
-function getProvider(rowIndex, item) {
-    if(!item) return '';
-    var data = this.grid.store.getValue(item, 'provider');
-    return openils.acq.Provider.retrieve(data).code();
-}
 
 function getPOOwner(rowIndex, item) {
     if(!item) return '';
@@ -32,50 +18,47 @@ function getPOOwner(rowIndex, item) {
     return new openils.User({id:data}).user.usrname();
 }
 
-function getDateTimeField(rowIndex, item) {
-    if(!item) return '';
-    var data = this.grid.store.getValue(item, this.field);
-    var date = dojo.date.stamp.fromISOString(data);
-    return dojo.date.locale.format(date, {formatLength:'medium'});
-}
-
 function doSearch(fields) {
-    if(!isNaN(fields.id)) 
-        fields = {id:fields.id};
-    else
+    
+    if(isNaN(fields.id)) {
         delete fields.id;
-
-    var store = new dojo.data.ItemFileWriteStore({data:acqpo.initStoreData()});
-    poGrid.setStore(store);
-    poGrid.render();
-
-    fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.purchase_order.search'],
-        {   async:1,
-            params: [openils.User.authtoken, fields],
-            onresponse : function(r) {
-                if(po = openils.Util.readResponse(r)) {
-                    openils.acq.PO.cache[po.id()] = po;
-                    store.newItem(acqpo.toStoreItem(po));
-                }
-                dojo.style('po-grid', 'visibility', 'visible');
-            } 
+        for(var k in fields) {
+            if(fields[k] == '' || fields[k] == null)
+                delete fields[k];
         }
-    );
+    } else {
+        // ID search trumps other searches
+        fields = {id:fields.id};
+    }
+
+    // no search fields
+    var some = false;
+    for(var k in fields) some = true;
+    if(!some) fields.id = {'!=' : null};
+
+    poGrid.resetStore();
+    poGrid.loadAll({order_by:{acqpo : 'edit_time DESC'}, limit: 30}, fields);
 }
 
 function loadForm() {
 
-    /* load the providers */
-    openils.acq.Provider.createStore(
-        function(store) {
-            providerSelector.store = 
-                new dojo.data.ItemFileReadStore({data:store});
-        },
-        'MANAGE_PROVIDER'
-    );
+    new openils.widget.AutoFieldWidget({
+        fmClass : 'acqpo', 
+        fmField : 'provider', 
+        parentNode : dojo.byId('po-search-provider-selector'),
+        orgLimitPerms : ['VIEW_PURCHASE_ORDER'],
+        dijitArgs : {name:'provider', required:false}
+    }).build();
 
-    new openils.User().buildPermOrgSelector('VIEW_PURCHASE_ORDER', poSearchOrderingAgencySelect);
+    new openils.widget.AutoFieldWidget({
+        fmClass : 'acqpo', 
+        fmField : 'ordering_agency', 
+        parentNode : dojo.byId('po-search-agency-selector'),
+        orgLimitPerms : ['VIEW_PURCHASE_ORDER'],
+        dijitArgs : {name:'ordering_agency', required:false}
+    }).build();
+
+    doSearch({ordering_agency : openils.User.user.ws_ou()});
 }
 
 openils.Util.addOnLoad(loadForm);

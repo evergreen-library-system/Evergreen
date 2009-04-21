@@ -7,7 +7,7 @@
 */
 
 .oils-acq-detail-content-pane {height:600px;width:100%}
-.oils-acq-basic-form-table td {padding:4px;}
+.oils-acq-basic-form-div {padding:4px; width:95%;}
 
 /* bib search */
 #oils-acq-search-container { width:100%; }
@@ -49,6 +49,7 @@
 /* list of pos */
 #oils-acq-po-list-table {width: 100%;}
 #oils-acq-po-list-table td {padding: 3px;}
+#oils-acq-po-search-form .dijit {width:130px;}
 
 /* a single po */
 #oils-acq-po-table { width: 100%; }
