@@ -256,6 +256,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         _buildLinkSelector : function() {
             var selectorInfo = this._getLinkSelector();
             if(!selectorInfo) return false;
+
             var linkClass = selectorInfo.linkClass;
             var vfield = selectorInfo.vfield;
 
@@ -266,13 +267,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(linkClass == 'aou')
                 return this._buildOrgSelector();
 
-            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
-            this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
-            this.widget.valueAttr = vfield.name;
-
             dojo.require('openils.PermaCrud');
             dojo.require('dojo.data.ItemFileReadStore');
             dojo.require('dijit.form.FilteringSelect');
+
+            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
+            this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
+            this.widget.valueAttr = vfield.name;
 
             var self = this;
             var oncomplete = function(list) {
