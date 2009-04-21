@@ -546,7 +546,7 @@ function _rdetailRows(node) {
 	if( rdetailShowLocal && getLocation() != globalOrgTree.id() ) {
 		var loc = findOrgUnit(getLocation());
 		if( node ) {
-			if( !orgIsMine(node, loc) ) return;
+			if( !orgIsMine(node, loc) && !orgIsMine(loc,node) ) return;
 		} else {
 			for( var i = 0; i < globalOrgTree.children().length; i++ ) {
 				var org = findOrgUnit(globalOrgTree.children()[i]);
