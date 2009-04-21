@@ -720,13 +720,19 @@ sub create_lineitem_assets {
     # for each lineitem_detail, create the volume if necessary, create 
     # a copy, and link them all together.
     # -----------------------------------------------------------------
+    my $first_cn;
     for my $lid_id (@{$li_details}) {
 
         my $lid = $mgr->editor->retrieve_acq_lineitem_detail($lid_id) or return 0;
         next if $lid->eg_copy_id;
 
+        # use the same callnumber label for all items within this lineitem
+        $lid->cn_label($first_cn) if $first_cn and not $lid->cn_label;
+
         # apply defaults if necessary
         return 0 unless complete_lineitem_detail($mgr, $lid);
+
+        $first_cn = $lid->cn_label unless $first_cn;
 
         my $org = $lid->owning_lib;
         my $label = $lid->cn_label;
