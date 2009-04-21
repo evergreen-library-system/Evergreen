@@ -4466,6 +4466,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Amount" name="amount" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Encumbrance" name="encumbrance" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Debit Type" name="debit_type" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Create Time" name="create_time" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="timestamp" />
 		</fields>
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
@@ -4635,6 +4636,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Percent" name="percent" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="float" />
 			<field reporter:label="Allocating User" name="allocator" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Note" name="note" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Create Time" name="create_time" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="timestamp" />
 		</fields>
 		<links>
 			<link field="allocator" reltype="has_a" key="id" map="" class="au"/>
