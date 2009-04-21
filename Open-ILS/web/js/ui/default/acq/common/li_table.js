@@ -14,9 +14,11 @@ dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.PermaCrud');
+dojo.require('openils.XUL');
 
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+const XUL_OPAC_WRAPPER = 'chrome://open_ils_staff_client/content/cat/opac.xul';
 
 function AcqLiTable() {
 
@@ -392,9 +394,29 @@ function AcqLiTable() {
         if(li.eg_bib_id()) {
             openils.Util.show('acq-lit-info-cat-link');
             var link = dojo.byId('acq-lit-info-cat-link').getElementsByTagName('a')[0];
-            var href = link.getAttribute('href');
-            if(href.match(/=$/))
-                link.setAttribute('href',  href + li.eg_bib_id());
+
+            if(openils.XUL.isXUL()) {
+
+                var makeRecTab = function() {
+				    xulG.new_tab(
+                        XUL_OPAC_WRAPPER,
+					    {tab_name: localeStrings.XUL_RECORD_DETAIL_PAGE, browser:false},
+					    {
+                            no_xulG : false, 
+                            show_nav_buttons : true, 
+                            show_print_button : true, 
+                            opac_url : xulG.url_prefix(xulG.urls.opac_rdetail + '?r=' + li.eg_bib_id())
+                        }
+                    );
+                }
+                link.setAttribute('href', 'javascript:void(0);');
+                link.onclick = makeRecTab;
+
+            } else {
+                var href = link.getAttribute('href');
+                if(href.match(/=$/))
+                    link.setAttribute('href',  href + li.eg_bib_id());
+            }
         } else {
             openils.Util.hide('acq-lit-info-cat-link');
         }
@@ -855,7 +877,7 @@ function AcqLiTable() {
         /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
             to true in about:config */
 
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+        if(!openils.XUL.enableXPConnect()) return;
         win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
 
         var self = this;
@@ -887,7 +909,7 @@ function AcqLiTable() {
         /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
             to true in about:config */
 
-        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+        if(!openils.XUL.enableXPConnect()) return;
         win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
 
         var bib = new openils.PermaCrud().retrieve('bre', li.eg_bib_id());

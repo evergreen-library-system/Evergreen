@@ -109,5 +109,5 @@
 .acq-lit-li-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
 .acq-lit-table-spacer { height:20px; }
 .acq-lit-row td[name="selector"] { width:1.5em; font-weight:bold; color:blue; font-size:110%;}
-border:1px solid #aaa;-moz-border-radius:3px 3px 3px 3px;
+#acq-lit-notes-tbody li { margin-bottom:10px; border:1px solid #aaa; -moz-border-radius: 5px 5px 5px 5px; }
 
