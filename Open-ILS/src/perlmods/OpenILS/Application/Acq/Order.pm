@@ -291,10 +291,14 @@ sub create_lineitem_detail {
     my $lid = Fieldmapper::acq::lineitem_detail->new;
     $lid->$_($args{$_}) for keys %args;
     $lid->clear_id;
-    $mgr->editor->create_acq_lineitem_detail($lid) or return 0;
     $mgr->add_lid;
+    return $mgr->editor->create_acq_lineitem_detail($lid);
+}
 
-    # create some default values
+
+# flesh out any required data with default values where appropriate
+sub complete_lineitem_detail {
+    my($mgr, $lid) = @_;
     unless($lid->barcode) {
         my $pfx = $U->ou_ancestor_setting_value($lid->owning_lib, 'acq.tmp_barcode_prefix') || 'ACQ';
         $lid->barcode($pfx.$lid->id);
@@ -720,6 +724,9 @@ sub create_lineitem_assets {
 
         my $lid = $mgr->editor->retrieve_acq_lineitem_detail($lid_id) or return 0;
         next if $lid->eg_copy_id;
+
+        # apply defaults if necessary
+        return 0 unless complete_lineitem_detail($mgr, $lid);
 
         my $org = $lid->owning_lib;
         my $label = $lid->cn_label;
