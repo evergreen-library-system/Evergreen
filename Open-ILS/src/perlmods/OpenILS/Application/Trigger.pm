@@ -526,7 +526,7 @@ sub grouped_events {
             if (my $group = $e->event->event_def->group_field) {
 
                 # split the grouping link steps
-                my @steps = split '.', $group;
+                my @steps = split /\./, $group;
 
                 # find the grouping object
                 my $node = $e->target;
