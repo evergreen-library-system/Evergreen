@@ -45,17 +45,17 @@ sub calculate_penalties {
         } else {
             $e->create_actor_user_standing_penalty($pen) or return $e->die_event;
 
-            my $csp_obj = $csp{$pen->{standing_penalty}} ||
-                $e->retrieve_config_standing_penalty( $pen->{standing_penalty} );
+            my $csp_obj = $csp{$pen->standing_penalty} ||
+                $e->retrieve_config_standing_penalty( $pen->standing_penalty );
 
             # cache for later
-            $csp{$pen->{standing_penalty}} = $csp_obj;
+            $csp{$pen->standing_penalty} = $csp_obj;
 
             $ses->request(
                 'open-ils.trigger.event.autocreate',
                 'penalty.' . $csp_obj->name,
                 $user,
-                $pen->{org_unit}
+                $pen->org_unit
             );
         }
     }
