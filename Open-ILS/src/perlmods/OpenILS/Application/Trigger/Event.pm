@@ -16,7 +16,7 @@ sub new {
     my $editor = shift;
     $class = ref($class) || $class;
 
-    return $id if (ref($id) && ref($id) == $class);
+    return $id if (ref($id) && ref($id) eq $class);
 
     my $standalone = $editor ? 0 : 1;
     $editor ||= new_editor();
