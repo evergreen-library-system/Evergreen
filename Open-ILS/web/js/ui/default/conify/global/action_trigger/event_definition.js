@@ -7,7 +7,9 @@ dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.Util');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.ProgressDialog');
+dojo.requireLocalization('openils.conify', 'conify');
 
+var localeStrings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 function loadEventDef() { 
     edGrid.loadAll({order_by:{atevdef : 'hook'}}); 
@@ -50,8 +52,9 @@ function loadTestTab() {
     circTestHookSelector.startup();
 
     var defs = pcrud.search('atevdef', {hook : hooks.map(function(i){return i.key()})});
-    circTestDefSelector.store = new dojo.data.ItemFileReadStore({data : atevdef.toStoreData(defs)});
-    circTestDefSelector.searchAttr = 'id';
+    var defData = atevdef.toStoreData(defs);
+    circTestDefSelector.store = new dojo.data.ItemFileReadStore({data : defData});
+    circTestDefSelector.searchAttr = 'name';
     circTestDefSelector.startup();
 
     dojo.connect(circTestHookSelector, 'onChange',
@@ -60,6 +63,30 @@ function loadTestTab() {
         }
     );
 }
+
+
+function eventDefGetter(rowIdx, item) {
+    if(!item) return '';
+    var def = this.grid.store.getValue(item, 'event_def');
+    return getDefName(def);
+}
+
+function getDefName(def) {
+
+    if(typeof def != 'object') {
+        edGrid.store.fetchItemByIdentity({
+            identity : def,
+            onItem : function(item) { def = new fieldmapper.atevdef().fromStoreItem(item); }
+        });
+    }
+
+    return dojo.string.substitute(
+        localeStrings.EVENT_DEF_LABEL, [
+            fieldmapper.aou.findOrgUnit(def.owner()).shortname(), 
+            def.name()
+        ]);
+}
+
 
 function evtTestCirc() {
     var def = circTestDefSelector.attr('value');

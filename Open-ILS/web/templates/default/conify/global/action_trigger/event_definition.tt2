@@ -15,7 +15,7 @@
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="edGrid" 
                     dojoType="openils.widget.AutoGrid" 
-                    fieldOrder="['id', 'owner', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'validator', 'reactor']"
+                    fieldOrder="['owner', 'name', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'validator', 'reactor']"
                     suppressFields="['template', 'cleanup_failure', 'cleanup_success']"
                     query="{id: '*'}" 
                     fmClass='atevdef'
@@ -29,7 +29,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Event Parameters' id='tab-atevparam'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Trigger Event Parameters</div>
-            <div><button dojoType='dijit.form.Button' onClick='tepGrid.showCreateDialog()'>New</button></div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='tepGrid.showCreateDialog()'>New</button>
+                <button dojoType='dijit.form.Button' onClick='tepGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="tepGrid" 
@@ -39,6 +42,9 @@
                     fmClass='atevparam'
                     defaultCellWidth='20'
                     editOnEnter='true'>
+                <thead>
+                    <tr><th field='event_def' get='eventDefGetter'/></tr>
+                </thead>
             </table>
         </div>
     </div>
@@ -46,7 +52,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Event Environment' id='tab-atenv'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Trigger Event Environment</div>
-            <div><button dojoType='dijit.form.Button' onClick='teeGrid.showCreateDialog()'>New</button></div>
+            <div>   
+                <button dojoType='dijit.form.Button' onClick='teeGrid.showCreateDialog()'>New</button>
+                <button dojoType='dijit.form.Button' onClick='teeGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="teeGrid" 
@@ -56,6 +65,9 @@
                     fmClass='atenv'
                     defaultCellWidth='20'
                     editOnEnter='true'>
+                <thead>
+                    <tr><th field='event_def' get='eventDefGetter'/></tr>
+                </thead>
             </table>
         </div>
     </div>
@@ -64,7 +76,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Hooks' id='tab-ath'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Trigger Hooks</div>
-            <div><button dojoType='dijit.form.Button' onClick='thGrid.showCreateDialog()'>New</button></div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='thGrid.showCreateDialog()'>New</button>
+                <button dojoType='dijit.form.Button' onClick='thGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="thGrid" 
@@ -72,7 +87,7 @@
                     fieldOrder="['key', 'core_type', 'description', 'passive']"
                     query="{key: '*'}" 
                     fmClass='ath'
-                    defaultCellWidth='12'
+                    defaultCellWidth='20'
                     editOnEnter='true'>
             </table>
         </div>
@@ -81,7 +96,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Reactors' id='tab-atreact'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Trigger Reactors</div>
-            <div><button dojoType='dijit.form.Button' onClick='trGrid.showCreateDialog()'>New</button></div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='trGrid.showCreateDialog()'>New</button>
+                <button dojoType='dijit.form.Button' onClick='trGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="trGrid" 
@@ -102,7 +120,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Validators' id='tab-atval'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Trigger Validators</div>
-            <div><button dojoType='dijit.form.Button' onClick='tvGrid.showCreateDialog()'>New</button></div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='tvGrid.showCreateDialog()'>New</button>
+                <button dojoType='dijit.form.Button' onClick='tvGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
             <table  jsId="tvGrid" 

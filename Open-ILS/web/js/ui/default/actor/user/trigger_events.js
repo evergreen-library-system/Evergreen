@@ -3,6 +3,10 @@ dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('openils.Util');
 dojo.require('openils.User');
 
+// need these to represent the event def name
+dojo.requireLocalization('openils.conify', 'conify');
+var localeStrings = dojo.i18n.getLocalization('openils.conify', 'conify');
+
 var evtCache = {};
 
 function init() {
@@ -38,6 +42,12 @@ function getField(rowIdx, item) {
     var evt = evtCache[this.grid.store.getValue(item, 'id')];
 
     switch(this.field) {
+        case 'event_def':
+            return dojo.string.substitute(
+                localeStrings.EVENT_DEF_LABEL, [
+                    fieldmapper.aou.findOrgUnit(evt.event_def().owner()).shortname(), 
+                    evt.event_def().name()
+                ]);
         case 'reactor':
             return evt.event_def().reactor().module();
         case 'validator':

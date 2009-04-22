@@ -15,11 +15,12 @@
     <table jsId="evtGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}">
         <thead> 
             <tr> 
-                <th field="state" get='getField' width='12em'>State</th> 
-                <th field="hook" get='getField' width='12em'>Hook</th> 
-                <th field="reactor" get='getField' width='12em'>Reactor</th> 
-                <th field="validator" get='getField' width='12em'>Validator</th> 
-                <th field="target" get='getField' width='12em'>Target</th> 
+                <th field="event_def" get='getField' width='auto'>Event Def.</th> 
+                <th field="hook" get='getField' width='auto'>Hook</th> 
+                <th field="reactor" get='getField' width='auto'>Reactor</th> 
+                <th field="validator" get='getField' width='auto'>Validator</th> 
+                <th field="target" get='getField' width='auto'>Target</th> 
+                <th field="state" get='getField' width='auto'>State</th> 
             </tr> 
         </thead> 
     </table>     
