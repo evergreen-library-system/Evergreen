@@ -100,6 +100,7 @@ CREATE TABLE action_trigger.event_definition (
     id              SERIAL      PRIMARY KEY,
     active          BOOL        NOT NULL DEFAULT TRUE,
     owner           INT         NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    name            TEXT        NOT NULL,
     hook            TEXT        NOT NULL REFERENCES action_trigger.hook (key) DEFERRABLE INITIALLY DEFERRED,
     validator       TEXT        NOT NULL REFERENCES action_trigger.validator (module) DEFERRABLE INITIALLY DEFERRED,
     reactor         TEXT        NOT NULL REFERENCES action_trigger.reactor (module) DEFERRABLE INITIALLY DEFERRED,
@@ -109,7 +110,8 @@ CREATE TABLE action_trigger.event_definition (
     delay_field     TEXT,                 -- for instance, xact_start on a circ hook ... look for fields on hook.core_type where datatype=timestamp? If not set, delay from now()
     group_field     TEXT,                 -- field from this.hook.core_type to batch event targets together on, fed into reactor a group at a time.
     template        TEXT,                 -- the TT block.  will have an 'environment' hash (or array of hashes, grouped events) built up by validator and collector(s), which can be modified.
-    CONSTRAINT ev_def_owner_hook_val_react_clean_delay_once UNIQUE (owner, hook, validator, reactor, delay, delay_field)
+    CONSTRAINT ev_def_owner_hook_val_react_clean_delay_once UNIQUE (owner, hook, validator, reactor, delay, delay_field),
+    CONSTRAINT ev_def_name_owner_once UNIQUE (owner, name)
 );
 
 CREATE TABLE action_trigger.environment (
