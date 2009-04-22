@@ -210,11 +210,13 @@ sub xact_begin {
     return $self->{xact_id} if $self->{xact_id};
     $self->session->connect unless $self->session->state == OpenSRF::AppSession::CONNECTED();
 	$self->log(D, "starting new database transaction");
-	my $stat = $self->request($self->app . '.transaction.begin') unless $self->{xact_id};
-	$self->log(E, "error starting database transaction") unless $stat;
-    $self->{xact_id} = $stat;
+	unless($self->{xact_id}) {
+	    my $stat = $self->request($self->app . '.transaction.begin');
+	    $self->log(E, "error starting database transaction") unless $stat;
+        $self->{xact_id} = $stat;
+    }
     $self->{xact} = 1;
-	return $stat;
+    return $self->{xact_id};
 }
 
 # -----------------------------------------------------------------------------
