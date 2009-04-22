@@ -421,7 +421,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             readOnly : true,
             forceSync : true
         });
-        autoWidget.build();
+        //autoWidget.build();
         return autoWidget.getDisplayString();
     }
 }
