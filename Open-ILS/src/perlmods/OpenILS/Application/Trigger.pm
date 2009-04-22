@@ -239,7 +239,7 @@ sub events_by_target {
             "+atevdef" => { active => 't' },
             "+atev" => { state => 'pending' }
         },
-        order_by => { "+atev" => [ 'run_time' ] },
+        order_by => { "+atev" => [ 'run_time', 'add_time' ] },
         distinct => 1
     };
 
@@ -501,7 +501,7 @@ sub pending_events {
     my $editor = new_editor();
 
     return $editor->search_action_trigger_event(
-        { state => 'pending', run_time => {'<' => 'now'} },
+        [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] } }]
         { idlist=> 1 }
     );
 }
