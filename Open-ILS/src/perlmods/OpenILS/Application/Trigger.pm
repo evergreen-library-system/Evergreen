@@ -458,6 +458,8 @@ sub fire_single_event {
         $e->react->cleanup;
     }
 
+    $e->editor->disconnect;
+
     return {
         valid     => $e->valid,
         reacted   => $e->reacted,
@@ -482,6 +484,8 @@ sub fire_event_group {
     if ($e->validate->valid) {
         $e->react->cleanup;
     }
+
+    $e->editor->disconnect;
 
     return {
         valid     => $e->valid,
@@ -547,6 +551,7 @@ sub grouped_events {
                 push @{ $groups{'*'} }, $e;
             }
         }
+        $e->editor->disconnect;
     }
 
     return \%groups;
