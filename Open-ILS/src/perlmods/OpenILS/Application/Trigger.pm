@@ -503,10 +503,10 @@ sub pending_events {
 
     my $editor = new_editor();
 
-    return $editor->search_action_trigger_event([
+    return $editor->search_action_trigger_event(
         { state => 'pending', run_time => {'<' => 'now'} },
         { idlist=> 1 }
-    ]);
+    );
 }
 __PACKAGE__->register_method(
     api_name => 'open-ils.trigger.event.find_pending',
