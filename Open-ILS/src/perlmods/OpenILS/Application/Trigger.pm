@@ -384,6 +384,20 @@ sub create_batch_events {
         }
 
         my $class = _fm_class_by_hint($hook_hash{$def->hook}->core_type);
+
+	# filter where this target has an event (and it's pending, for active hooks)
+	$$filter{'-and'} = [] if (!exists($$filter{'-and'}));
+	push @{ $filter->{'-and'} }, {
+		'-not-exists' => {
+			from  => 'atev',
+			where => {
+				event_def => $def->id,
+				target    => { '=' => { '+' . $hook_hash{$def->hook}->core_type => $class->Identity } },
+				($active ? (state  => 'pending') : ())
+			}
+		}
+	};
+
         $class =~ s/^Fieldmapper:://o;
         $class =~ s/::/_/go;
 
@@ -393,30 +407,9 @@ sub create_batch_events {
         for my $o (@$objects) {
 
             my $ident = $o->Identity;
-            my $ident_value = $o->$ident();
-
-            my $previous;
-            if ($active) {
-                # only allow one pending event of type $def for each target
-                $previous = $editor->search_action_trigger_event({
-                    event_def => $def->id,
-                    target    => $ident_value,
-                    state     => 'pending'
-                });
-
-            } else {
-                # only allow one event of type $def for each target
-                $previous = $editor->search_action_trigger_event({
-                    event_def => $def->id,
-                    target    => $ident_value
-                });
-
-            }
-
-            next if (ref($previous) && @$previous);
 
             my $event = Fieldmapper::action_trigger::event->new();
-            $event->target( $ident_value );
+            $event->target( $o->$ident() );
             $event->event_def( $def->id );
             $event->run_time( $run_time );
 
