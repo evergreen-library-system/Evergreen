@@ -2858,11 +2858,9 @@ char* SELECT (
 	// the query buffer
 	growing_buffer* sql_buf = buffer_init(128);
 
-	// temp buffer for the SELECT list
+	// temp buffers for the SELECT list and GROUP BY clause
 	growing_buffer* select_buf = buffer_init(128);
-	growing_buffer* order_buf = buffer_init(128);
 	growing_buffer* group_buf = buffer_init(128);
-	growing_buffer* having_buf = buffer_init(128);
 
 	int aggregate_found = 0;     // boolean
 
@@ -2917,9 +2915,7 @@ char* SELECT (
 				jsonIteratorFree( selclass_itr );
 				buffer_free( sql_buf );
 				buffer_free( select_buf );
-				buffer_free( order_buf );
 				buffer_free( group_buf );
-				buffer_free( having_buf );
 				if( defaultselhash ) jsonObjectFree( defaultselhash );
 				free( core_class );
 				return NULL;
@@ -2981,9 +2977,7 @@ char* SELECT (
 				jsonIteratorFree( selclass_itr );
 				buffer_free( sql_buf );
 				buffer_free( select_buf );
-				buffer_free( order_buf );
 				buffer_free( group_buf );
-				buffer_free( having_buf );
 				if( defaultselhash ) jsonObjectFree( defaultselhash );
 				free( core_class );
 				return NULL;
@@ -3033,9 +3027,7 @@ char* SELECT (
 						jsonIteratorFree( selclass_itr );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
-						buffer_free( order_buf );
 						buffer_free( group_buf );
-						buffer_free( having_buf );
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
 						free( core_class );
 						return NULL;
@@ -3060,9 +3052,7 @@ char* SELECT (
 						jsonIteratorFree( selclass_itr );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
-						buffer_free( order_buf );
 						buffer_free( group_buf );
-						buffer_free( having_buf );
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
 						free( core_class );
 						return NULL;
@@ -3114,9 +3104,7 @@ char* SELECT (
 						jsonIteratorFree( selclass_itr );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
-						buffer_free( order_buf );
 						buffer_free( group_buf );
-						buffer_free( having_buf );
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
 						free( core_class );
 						return NULL;
@@ -3141,9 +3129,7 @@ char* SELECT (
 						jsonIteratorFree( selclass_itr );
 						buffer_free( sql_buf );
 						buffer_free( select_buf );
-						buffer_free( order_buf );
 						buffer_free( group_buf );
-						buffer_free( having_buf );
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
 						free( core_class );
 						return NULL;
@@ -3175,9 +3161,7 @@ char* SELECT (
 							jsonIteratorFree( selclass_itr );
 							buffer_free( sql_buf );
 							buffer_free( select_buf );
-							buffer_free( order_buf );
 							buffer_free( group_buf );
-							buffer_free( having_buf );
 							if( defaultselhash ) jsonObjectFree( defaultselhash );
 							free( core_class );
 							return NULL;
@@ -3222,9 +3206,7 @@ char* SELECT (
 					jsonIteratorFree( selclass_itr );
 					buffer_free( sql_buf );
 					buffer_free( select_buf );
-					buffer_free( order_buf );
 					buffer_free( group_buf );
-					buffer_free( having_buf );
 					if( defaultselhash ) jsonObjectFree( defaultselhash );
 					free( core_class );
 					return NULL;
@@ -3300,9 +3282,7 @@ char* SELECT (
 			);
 		free( col_list );
 		buffer_free( sql_buf );
-		buffer_free( order_buf );
 		buffer_free( group_buf );
-		buffer_free( having_buf );
 		if( defaultselhash ) jsonObjectFree( defaultselhash );
 		free( core_class );
 		return NULL;	
@@ -3313,13 +3293,17 @@ char* SELECT (
 	free(col_list);
 	free(table);
 
-    if (!from_function) {
-	    // Now, walk the join tree and add that clause
-	    if ( join_hash ) {
-		    char* join_clause = searchJOIN( join_hash, core_meta );
+	char* order_by_list = NULL;
+	growing_buffer* having_buf = buffer_init(128);
+
+	if (!from_function) {
+
+		// Now, walk the join tree and add that clause
+		if ( join_hash ) {
+			char* join_clause = searchJOIN( join_hash, core_meta );
 			if( join_clause ) {
 				buffer_add(sql_buf, join_clause);
-		    	free(join_clause);
+				free(join_clause);
 			} else {
 				if (ctx)
 					osrfAppSessionStatus(
@@ -3330,7 +3314,6 @@ char* SELECT (
   						"Unable to construct JOIN clause(s)"
 					);
 				buffer_free( sql_buf );
-				buffer_free( order_buf );
 				buffer_free( group_buf );
 				buffer_free( having_buf );
 				if( defaultselhash ) jsonObjectFree( defaultselhash );
@@ -3362,7 +3345,6 @@ char* SELECT (
 			    free(core_class);
 			    buffer_free(having_buf);
 			    buffer_free(group_buf);
-			    buffer_free(order_buf);
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
 			    return NULL;
@@ -3392,28 +3374,88 @@ char* SELECT (
 			    free(core_class);
 			    buffer_free(having_buf);
 			    buffer_free(group_buf);
-			    buffer_free(order_buf);
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
 			    return NULL;
 		    }
-	    }
+		}
+
+		growing_buffer* order_buf = NULL;  // to collect ORDER BY list
 
 		// Build an ORDER BY clause, if there is one
-	    first = 1;
-	    jsonIterator* class_itr = jsonNewIterator( order_hash );
-	    while ( (snode = jsonIteratorNext( class_itr )) ) {
+		jsonIterator* class_itr = jsonNewIterator( order_hash );
+		while ( (snode = jsonIteratorNext( class_itr )) ) {
 
-		    if (!jsonObjectGetKeyConst(selhash,class_itr->key))
-			    continue;
+			if (!jsonObjectGetKeyConst(selhash,class_itr->key)) {
+				osrfLogError(OSRF_LOG_MARK, "%s: Invalid class \"%s\" referenced in ORDER BY clause",
+							 MODULENAME, class_itr->key );
+				if( ctx )
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Invalid class referenced in ORDER BY clause -- see error log for more details"
+					);
+				jsonIteratorFree( class_itr );
+				buffer_free( order_buf );
+				free(core_class);
+				buffer_free(having_buf);
+				buffer_free(group_buf);
+				buffer_free(sql_buf);
+				if (defaultselhash) jsonObjectFree(defaultselhash);
+				return NULL;
+			}
+
+			osrfHash* field_list_def = oilsIDLFindPath( "/%s/fields", class_itr->key );
 
 			if ( snode->type == JSON_HASH ) {
 
 				jsonIterator* order_itr = jsonNewIterator( snode );
 				while ( (onode = jsonIteratorNext( order_itr )) ) {
 
-					if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ))
-						continue;
+					osrfHash* field_def = osrfHashGet( field_list_def, order_itr->key );
+					if( !field_def ) {
+						osrfLogError(OSRF_LOG_MARK, "%s: Invalid field \"%s\" in ORDER BY clause",
+								MODULENAME, order_itr->key );
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Invalid field in ORDER BY clause -- see error log for more details"
+							);
+						jsonIteratorFree( order_itr );
+						jsonIteratorFree( class_itr );
+						buffer_free( order_buf );
+						free(core_class);
+						buffer_free(having_buf);
+						buffer_free(group_buf);
+						buffer_free(sql_buf);
+						if (defaultselhash) jsonObjectFree(defaultselhash);
+						return NULL;
+					} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+						osrfLogError(OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
+							 MODULENAME, order_itr->key );
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Virtual field in ORDER BY clause -- see error log for more details"
+							);
+						jsonIteratorFree( order_itr );
+						jsonIteratorFree( class_itr );
+						buffer_free( order_buf );
+						free(core_class);
+						buffer_free(having_buf);
+						buffer_free(group_buf);
+						buffer_free(sql_buf);
+						if (defaultselhash) jsonObjectFree(defaultselhash);
+						return NULL;
+					}
 
 					const char* direction = NULL;
 					if ( onode->type == JSON_HASH ) {
@@ -3424,7 +3466,7 @@ char* SELECT (
 								onode
 							);
 							if( ! string ) {
-								osrfAppSessionStatus(
+								if( ctx ) osrfAppSessionStatus(
 									ctx->session,
 									OSRF_STATUS_INTERNALSERVERERROR,
 									"osrfMethodException",
@@ -3466,42 +3508,80 @@ char* SELECT (
 						}
 					}
 
-				    if (first) {
-					    first = 0;
-				    } else {
-					    buffer_add(order_buf, ", ");
-				    }
+					if ( order_buf )
+						buffer_add(order_buf, ", ");
+					else
+						order_buf = buffer_init(128);
 
-				    buffer_add(order_buf, string);
-				    free(string);
+					buffer_add(order_buf, string);
+					free(string);
 
-				    if (direction) {
-					    buffer_add(order_buf, direction);
-				    }
+					if (direction) {
+						 buffer_add(order_buf, direction);
+					}
 
-			    } // end while
+				} // end while
                 // jsonIteratorFree(order_itr);
 
-		    } else if ( snode->type == JSON_ARRAY ) {
+			} else if ( snode->type == JSON_ARRAY ) {
 
-		        jsonIterator* order_itr = jsonNewIterator( snode );
-			    while ( (onode = jsonIteratorNext( order_itr )) ) {
+				jsonIterator* order_itr = jsonNewIterator( snode );
+				while ( (onode = jsonIteratorNext( order_itr )) ) {
 
 					const char* _f = jsonObjectGetString( onode );
 
-					if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, _f))
-						continue;
-
-					if (first) {
-						first = 0;
-					} else {
-						buffer_add(order_buf, ", ");
+					osrfHash* field_def = osrfHashGet( field_list_def, _f );
+					if( !field_def ) {
+						osrfLogError(OSRF_LOG_MARK, "%s: Invalid field \"%s\" in ORDER BY clause",
+								MODULENAME, _f );
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Invalid field in ORDER BY clause -- see error log for more details"
+							);
+						jsonIteratorFree( order_itr );
+						jsonIteratorFree( class_itr );
+						buffer_free( order_buf );
+						free(core_class);
+						buffer_free(having_buf);
+						buffer_free(group_buf);
+						buffer_free(sql_buf);
+						if (defaultselhash) jsonObjectFree(defaultselhash);
+						return NULL;
+					} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+						osrfLogError(OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
+								MODULENAME, _f );
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Virtual field in ORDER BY clause -- see error log for more details"
+							);
+						jsonIteratorFree( order_itr );
+						jsonIteratorFree( class_itr );
+						buffer_free( order_buf );
+						free(core_class);
+						buffer_free(having_buf);
+						buffer_free(group_buf);
+						buffer_free(sql_buf);
+						if (defaultselhash) jsonObjectFree(defaultselhash);
+						return NULL;
 					}
+
+					if ( order_buf )
+						buffer_add(order_buf, ", ");
+					else
+						order_buf = buffer_init(128);
 
 					buffer_add(order_buf, _f);
 
 				} // end while
-                // jsonIteratorFree(order_itr);
+				// jsonIteratorFree(order_itr);
 
 
 		    // IT'S THE OOOOOOOOOOOLD STYLE!
@@ -3525,10 +3605,12 @@ char* SELECT (
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
 			    jsonIteratorFree(class_itr);
 			    return NULL;
-		    }
-
-	    } // end while
+			}
+		} // end while
 		// jsonIteratorFree(class_itr);
+
+		if( order_buf )
+			order_by_list = buffer_release( order_buf );
 	}
 
 
@@ -3541,23 +3623,26 @@ char* SELECT (
 
 	free(string);
 
- 	string = buffer_release(having_buf);
+	if( having_buf ) {
+		string = buffer_release(having_buf);
  
- 	if ( *string ) {
-		OSRF_BUFFER_ADD( sql_buf, " HAVING " );
-		OSRF_BUFFER_ADD( sql_buf, string );
- 	}
+		if ( *string ) {
+			OSRF_BUFFER_ADD( sql_buf, " HAVING " );
+			OSRF_BUFFER_ADD( sql_buf, string );
+		}
 
-	free(string);
-
-	string = buffer_release(order_buf);
-
-	if ( *string ) {
-		OSRF_BUFFER_ADD( sql_buf, " ORDER BY " );
-		OSRF_BUFFER_ADD( sql_buf, string );
+		free(string);
 	}
 
-	free(string);
+	if( order_by_list ) {
+
+		if ( *order_by_list ) {
+			OSRF_BUFFER_ADD( sql_buf, " ORDER BY " );
+			OSRF_BUFFER_ADD( sql_buf, order_by_list );
+		}
+
+		free( order_by_list );
+	}
 
 	if ( limit ){
 		const char* str = jsonObjectGetString(limit);
