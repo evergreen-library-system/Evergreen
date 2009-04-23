@@ -1965,6 +1965,12 @@ sub attempt_checkin_hold_capture {
 sub do_hold_notify {
     my( $self, $holdid ) = @_;
 
+    my $e = new_editor(xact => 1);
+    my $hold = $e->retrieve_action_hold_request($holdid) or return $e->die_event;
+    $e->rollback;
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->request('open-ils.trigger.event.autocreate', 'hold.available', $hold, $hold->pickup_lib);
+
     $logger->info("circulator: running delayed hold notify process");
 
 #   my $notifier = OpenILS::Application::Circ::HoldNotify->new(
