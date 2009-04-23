@@ -151,6 +151,12 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 								prop_str,
 								"virtual"
 							);
+						} else {   // default to virtual
+							osrfHashSet(
+								field_def_hash,
+								"false",
+								"virtual"
+							);
 						}
 
 						if( (prop_str = (char*)xmlGetNsProp(_f, BAD_CAST "primitive", BAD_CAST PERSIST_NS)) ) {
