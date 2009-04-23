@@ -122,10 +122,15 @@ CREATE TABLE config.circ_matrix_matchpoint (
 CREATE TABLE config.circ_matrix_circ_mod_test (
     id          SERIAL     PRIMARY KEY,
     matchpoint  INT     NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    items_out   INT     NOT NULL,                            -- Total current active circulations must be less than this, NULL means skip (always pass)
-    circ_mod    TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE  DEFERRABLE INITIALLY DEFERRED-- circ_modifier type that the max out applies to
+    items_out   INT     NOT NULL -- Total current active circulations must be less than this, NULL means skip (always pass)
 );
 
+CREATE TABLE config.circ_matrix_circ_mod_test_map (
+    id      SERIAL  PRIMARY KEY,
+    circ_mod_test   INT NOT NULL REFERENCES config.circ_matrix_circ_mod_test (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    circ_mod        TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE  DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT cm_once_per_test UNIQUE (circ_mod_test, circ_mod)
+);
 
 CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS config.circ_matrix_matchpoint AS $func$
 DECLARE
@@ -224,6 +229,7 @@ DECLARE
     result            action.matrix_test_result;
     circ_test        config.circ_matrix_matchpoint%ROWTYPE;
     out_by_circ_mod        config.circ_matrix_circ_mod_test%ROWTYPE;
+    circ_mod_map        config.circ_matrix_circ_mod_test_map%ROWTYPE;
     penalty_type         TEXT;
     tmp_grp         INT;
     items_out        INT;
@@ -332,7 +338,7 @@ BEGIN
                AND circ_lib IN ( SELECT * FROM explode_array(context_org_list) )
             AND circ.checkin_time IS NULL
             AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
-            AND cp.circ_modifier = out_by_circ_mod.circ_mod;
+            AND cp.circ_modifier IN (SELECT circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = out_by_circ_mod.id);
         IF items_out >= out_by_circ_mod.items_out THEN
             result.fail_part := 'config.circ_matrix_circ_mod_test';
             result.success := FALSE;
