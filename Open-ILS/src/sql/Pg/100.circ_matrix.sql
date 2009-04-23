@@ -598,7 +598,7 @@ BEGIN
                   FROM  actor.usr_standing_penalty
                   WHERE usr = match_user
                         AND org_unit = max_fines.org_unit
-                        AND standing_penalty = 1
+                        AND standing_penalty = 4
                 LOOP
             RETURN NEXT existing_sp_row;
         END LOOP;
@@ -621,7 +621,7 @@ BEGIN
         IF current_fines >= max_fines.threshold THEN
             new_sp_row.usr := match_user;
             new_sp_row.org_unit := max_fines.org_unit;
-            new_sp_row.standing_penalty := 1;
+            new_sp_row.standing_penalty := 4;
             RETURN NEXT new_sp_row;
         END IF;
     END IF;
