@@ -59,6 +59,14 @@ my $_TT_helpers = {
     get_org_setting => sub {
         my($org_id, $setting) = @_;
         return $U->ou_ancestor_setting_value($org_id, $setting);
+    },
+
+    # returns fines summary information for open transactions
+    get_user_fines_summary => sub {
+        my $user_id = shift;
+        return $U->simplereq(
+            'open-ils.storage', 
+            'open-ils.storage.money.open_user_summary.search', $user_id);
     }
 };
 
