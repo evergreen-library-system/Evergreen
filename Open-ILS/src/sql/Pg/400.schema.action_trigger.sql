@@ -40,6 +40,7 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('transit.fin
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_request.success','ahr','A hold is succefully placed');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_request.failure','ahr','A hold is attempted by not succefully placed');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.capture','ahr','A targeted Item is captured for a hold');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.available','ahr','A held item is ready for pickup');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_transit.start','ahtc','A hold-captured Item is placed into transit');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_transit.finish','ahtc','A hold-captured Item is received from a transit');
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('checkout.due','circ','Checked out Item is Due',TRUE);
