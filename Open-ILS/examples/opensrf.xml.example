@@ -472,6 +472,24 @@ vim:et:ts=4:sw=4:
                 </unix_config>
             </open-ils.supercat>
 
+            <!-- server for accessing user info -->
+            <open-ils.trigger>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::Trigger</implementation>
+                <max_requests>93</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.trigger_unix.sock</unix_sock>
+                    <unix_pid>open-ils.trigger_unix.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.trigger_unix.log</unix_log>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+            </open-ils.trigger>
 
             <opensrf.math>
                 <keepalive>3</keepalive>
@@ -943,6 +961,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.reporter-store</appname>  
                 <appname>open-ils.permacrud</appname>  
                 <appname>open-ils.pcrud</appname>  
+                <appname>open-ils.trigger</appname>  
                 <appname>open-ils.fielder</appname>  
                 <appname>open-ils.vandelay</appname>  
             </activeapps>
