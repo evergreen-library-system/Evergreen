@@ -1,11 +1,11 @@
 dojo.require('dijit.layout.TabContainer');
-dojo.require('dijit.form.Textarea');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.TextBox');
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.Util');
 dojo.require('openils.PermaCrud');
+dojo.require('openils.widget.Textarea');
 dojo.require('openils.widget.ProgressDialog');
 dojo.requireLocalization('openils.conify', 'conify');
 
@@ -13,7 +13,9 @@ var localeStrings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 function loadEventDef() { 
     edGrid.loadAll({order_by:{atevdef : 'hook'}}); 
-    edGrid.overrideEditWidgetClass.template = 'dijit.form.Textarea';
+    openils.widget.Textarea.width = '600px';
+    openils.widget.Textarea.height = '600px';
+    edGrid.overrideEditWidgetClass.template = 'openils.widget.Textarea';
     dojo.connect(eventDefTabs,'selectChild', tabLoader);
 }
 
@@ -21,6 +23,7 @@ var loadedTabs = {'tab-atevdef' : true};
 function tabLoader(child) {
     if(loadedTabs[child.id]) return;
     loadedTabs[child.id] = true;
+
     switch(child.id) {
         case 'tab-atevparam': 
             tepGrid.loadAll({order_by:{atevparam : 'event_def'}}); 
