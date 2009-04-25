@@ -99,3 +99,4 @@ a:focus { background: #E0F0E0; color: #000000;}
 
 .hold_expire_warning { color:red; }
 
+#result_low_hits { border-top: 2px solid #A7EA9D }
