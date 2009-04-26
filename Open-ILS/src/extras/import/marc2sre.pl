@@ -70,14 +70,14 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	# but we can work out call numbers later in SQL by the record ID + call number text
 	if ($record_field) {
 		$record = $record_field->data;
-		$record =~ s/(\d+)/$1/;
+		$record =~ s/^.*?(\d+).*?$/$1/o;
 	}
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
 	$xml =~ s/^<\?xml.+\?\s*>//go;
 	$xml =~ s/>\s+</></go;
 	$xml =~ s/\p{Cc}//go;
-	$xml = OpenILS::Application::AppUtils->entityize($xml,'D');
+	$xml = OpenILS::Application::AppUtils->entityize($xml);
 	$xml =~ s/[\x00-\x1f]//go;
 
 	my $bib = new Fieldmapper::serial::record_entry;
