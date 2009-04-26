@@ -1,4 +1,4 @@
-package MFHD;
+package OpenILS::Utils::MFHD;
 use strict;
 use integer;
 use Carp;
