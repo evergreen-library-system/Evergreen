@@ -4,9 +4,9 @@ class Event(object):
     ''' Generic ILS event object '''
 
     def __init__(self, evt_hash={}):
-        if 'ilsevent' in evt_hash:
+        try:
             self.code = int(evt_hash['ilsevent'])
-        else:
+        except:
             self.code = -1
         self.text_code = evt_hash['textcode']
         self.desc = evt_hash.get('desc') or ''
