@@ -2307,17 +2307,25 @@ sub do_renew {
 
     # Make sure there is an open circ to renew that is not
     # marked as LOST, CLAIMSRETURNED, or LONGOVERDUE
-    my $circ = $self->editor->search_action_circulation(
-            { target_copy => $self->copy->id, stop_fines => undef } )->[0];
+    my $usrid = $self->patron->id if $self->patron;
+    my $circ;
+    if ($usrid) {
+        # If we have a patron, match them to the circ
+        $circ = $self->editor->search_action_circulation(
+            {target_copy => $self->copy->id, usr => $usrid,  stop_fines => undef})->[0];
+    } else {
+        $circ = $self->editor->search_action_circulation(
+            {target_copy => $self->copy->id, stop_fines => undef})->[0];
+    }
 
     if(!$circ) {
-        $circ = $self->editor->search_action_circulation(
-            { 
-                target_copy => $self->copy->id, 
-                stop_fines => OILS_STOP_FINES_MAX_FINES,
-                checkin_time => undef
-            } 
-        )->[0];
+        if ($usrid) {
+            $circ = $self->editor->search_action_circulation(
+                {target_copy => $self->copy->id, usr => $usrid, stop_fines => OILS_STOP_FINES_MAX_FINES, checkin_time => undef})->[0];
+        } else {
+            $circ = $self->editor->search_action_circulation(
+                {target_copy => $self->copy->id, stop_fines => OILS_STOP_FINES_MAX_FINES, checkin_time => undef})->[0];
+        }
     }
 
     return $self->bail_on_events($self->editor->event) unless $circ;
