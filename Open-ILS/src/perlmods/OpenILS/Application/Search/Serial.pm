@@ -78,9 +78,11 @@ sub bib_to_mfhd_hash {
 	
 	my $mfhd_hash;
 
-	# miker suggested this way, but I'm too stupid to get it to work
+	# XXX perhaps this? --miker
 #	my $e = OpenILS::Utils::CStoreEditor->new();
-#	my $mfhd = $e->search_serial_record_entry({bib=>$bib});
+#	my $mfhd = $e->search_serial_record_entry({ record => $bib });
+#	return $u->generate_svr( $mfhd->[0]->marc ) if (ref $mfhd);
+#	return undef;
 
 	my @mfhd = $U->cstorereq( "open-ils.cstore.json_query.atomic", {
 		select  => { sre => 'marc' },
