@@ -199,10 +199,10 @@ PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 			# catch problem ids
 			if (!$id) {
-				warn "\n!!! Record $count has missing or invalid id field $id_field, assinging new id.\n";
+				warn "\n!!! Record $count has missing or invalid id field $id_field, assigning new id.\n";
 				$id = '';
 			} elsif (exists $used_recids{$id}) {
-				warn "\n!!! Record $count has a duplicate id in field $id_field, assinging new id.\n";
+				warn "\n!!! Record $count has a duplicate id in field $id_field, assigning new id.\n";
 				$id = '';
 			} else {
 				$used_recids{$id} = 1;
@@ -261,7 +261,7 @@ PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$xml =~ s/^<\?xml.+\?\s*>//go;
 	$xml =~ s/>\s+</></go;
 	$xml =~ s/\p{Cc}//go;
-	$xml = OpenILS::Application::AppUtils->entityize($xml,'D');
+	$xml = OpenILS::Application::AppUtils->entityize($xml);
 	$xml =~ s/[\x00-\x1f]//go;
 
 	my $bib = new Fieldmapper::biblio::record_entry;
