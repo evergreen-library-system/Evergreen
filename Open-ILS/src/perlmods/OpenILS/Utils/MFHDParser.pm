@@ -65,7 +65,7 @@ sub mfhd_to_hash {
 	my $incomplete = []; # Laurentian extension to MFHD standard
 
 	my $marc = MARC::Record->new_from_xml($mfhd_xml);
-	my $mfhd = OpenILS::Utils::MFHD->new($marc);
+	my $mfhd = MFHD->new($marc);
 
 	foreach my $field ($marc->field('866')) {
 		my $textual_holdings = $self->format_textual_holdings($field);
