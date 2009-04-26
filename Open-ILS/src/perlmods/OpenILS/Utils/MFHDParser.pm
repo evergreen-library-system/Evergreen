@@ -1,168 +1,196 @@
-#!/usr/bin/perl -w
-use strict;
-use Date::Manip;
+package OpenILS::Utils::MFHDParser;
+use strict; use warnings;
 
-# Parse MFHD patterns for http://www.loc.gov/marc/holdings/hd853855.html
+use OpenSRF::EX qw/:try/;
+use Time::HiRes qw(time);
+use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Logger qw/$logger/;
 
-# Primary goal:
-# Expected input: a chunk of MFHD, a start date, and # of issuances to project
-# Expected output: a set of issuances projected forward from the start date,
-#   with issue/volume/dates/captions conforming to what the MFHD actually says
+use OpenILS::Utils::MFHD;
+use MARC::File::XML;
+use Data::Dumper;
 
-# The thought had been to use Date::Manip to generate the actual dates for
-# each issuance, like:
-#
-#   # To find the 2nd Tuesday of every month
-#   @date = ParseRecur("0:1*2:2:0:0:0",$base,$start,$stop);
+sub new { return bless( {}, shift() ); }
 
-# Secondary goal: generate automatic summary holdings
-#   (a la http://www.loc.gov/marc/holdings/hd863865.html)
+=head1 Subroutines
 
-# Compressability comes from first indicator
-sub parse_compressability {
-	my $c = shift || return undef;
+=over
 
-	my %compressability = (
-		'0' => 'Cannot compress or expand',
-		'1' => 'Can compress but cannot expand',
-		'2' => 'Can compress or expand',
-		'3' => 'Unknown',
-		'#' => 'Undefined'
-	);
+=item * format_textual_holdings($field)
 
-	if (exists $compressability{$c}) {
-		return $compressability{$c};
+=back
+
+Returns concatenated subfields $a with $z for textual holdings (866-868)
+
+=cut
+
+sub format_textual_holdings {
+	my ($self, $field) = @_;
+	my $holdings;
+	my $public_note;
+
+	$holdings = $field->subfield('a');
+	if (!$holdings) {
+		return undef;
 	}
-	# 'Unknown compressability indicator - expected one of (0,1,2,3,#)';
-	return undef;
+
+	$public_note = $field->subfield('z');
+	if ($public_note) {
+		return "$holdings - $public_note";
+	}
+	return $holdings;
 }
 
-# Caption evaluation comes from second indicator
-sub caption_evaluation {
-	my $ce = shift || return undef;
+=over
 
-	my %caption_evaluation = (
-		'0' => 'Captions verified; all levels present',
-		'1' => 'Captions verified; all levels may not be present',
-		'2' => 'Captions unverified; all levels present',
-		'3' => 'Captions unverified; all levels may not be present',
-		'#' => 'Undefined',
-	);
+=item * mfhd_to_hash($mfhd_xml)
 
-	if (exists $caption_evaluation{$ce}) {
-		return $caption_evaluation{$ce};
-	}
-	# 'Unknown caption evaluation indicator - expected one of (0,1,2,3,#)';
-	return undef;
-}
+=back
 
-# Start with frequency ($w)
-# then overlay number of pieces of issuance ($p)
-# then regularity pattern ($y)
-my %frequency = (
-	'a' => 'annual',
-	'b' => 'bimonthly',
-	'c' => 'semiweekly',
-	'd' => 'daily',
-	'e' => 'biweekly',
-	'f' => 'semiannual',
-	'g' => 'biennial',
-	'h' => 'triennial',
-	'i' => 'three times a week',
-	'j' => 'three times a month',
-	'k' => 'continuously updated',
-	'm' => 'monthly',
-	'q' => 'quarterly',
-	's' => 'semimonthly',
-	't' => 'three times a year',
-	'w' => 'weekly',
-	'x' => 'completely irregular',
-);
+Returns a Perl hash containing fields of interest from the MFHD record
 
-sub parse_frequency {
-	my $freq = shift || return undef;
+=cut
+sub mfhd_to_hash {
+	my ($self, $mfhd_xml) = @_;
 
-	if ($freq =~ m/^\d+$/) {
-		return "$freq times a year";
-	} elsif (exists $frequency{$freq}) {
-		return $frequency{$freq};
-	}
-	# unrecognized frequency specification
-	return undef;
-}
+	my $holdings = [];
+	my $supplements = [];
+	my $indexes = [];
+	my $current_holdings = [];
+	my $current_supplements = [];
+	my $current_indexes = [];
+	my $online = []; # Laurentian extension to MFHD standard
+	my $missing = []; # Laurentian extension to MFHD standard
+	my $incomplete = []; # Laurentian extension to MFHD standard
 
-# $x - Point at which the highest level increments or changes
-# Interpretation of two-digit numbers in the 01-12 range depends on the publishing frequency
-# More than one change can be passed in the subfield and are delimited by commas
-sub chronology_change {
-	my $chronology_change = shift || return undef;
-	my @c_changes = split /,/, $chronology_change;
-	foreach my $change (@c_changes) {
-		if ($change == 21) {
-			
+	my $marc = MARC::Record->new_from_xml($mfhd_xml);
+	my $mfhd = OpenILS::Utils::MFHD->new($marc);
+
+	foreach my $field ($marc->field('866')) {
+		my $textual_holdings = $self->format_textual_holdings($field);
+		if ($textual_holdings) {
+			push @$holdings, $textual_holdings;
 		}
 	}
-	return undef;
-}
-
-# Publication code : first character in regularity pattern ($y)
-sub parse_publication_code {
-	my $c = shift || return undef;
-
-	my %publication_code = (
-		'c' => 'combined',
-		'o' => 'omitted',
-		'p' => 'published',
-		'#' => 'undefined',
-	);
-
-	if (exists $publication_code{$c}) {
-		return $publication_code{$c};
+	foreach my $field ($marc->field('867')) {
+		my $textual_holdings = $self->format_textual_holdings($field);
+		if ($textual_holdings) {
+			push @$supplements, $textual_holdings;
+		}
 	}
-	return undef;
-}
-
-# Chronology code : part of regularity pattern ($y)
-sub parse_chronology_code {
-	my $c = shift || return undef;
-
-	my %chronology_code = (
-		'd' => 'Day',
-		'm' => 'Month',
-		's' => 'Season',
-		'w' => 'Week',
-		'y' => 'Year',
-		'e' => 'Enumeration',
-	);
-
-	if (exists $chronology_code{$c}) {
-		return $chronology_code{$c};
+	foreach my $field ($marc->field('868')) {
+		my $textual_holdings = $self->format_textual_holdings($field);
+		if ($textual_holdings) {
+			push @$indexes, $textual_holdings;
+		}
 	}
-	return undef;
+
+	foreach my $cap_id ($mfhd->captions('853')) {
+		my @curr_holdings = $mfhd->holdings('863', $cap_id);
+		next unless scalar @curr_holdings;
+		foreach (@curr_holdings) {
+			push @$current_holdings, $_->format();
+		}
+	}
+
+	foreach my $cap_id ($mfhd->captions('854')) {
+		my @curr_supplements = $mfhd->holdings('864', $cap_id);
+		next unless scalar @curr_supplements;
+		foreach (@curr_supplements) {
+			push @$current_supplements, $_->format();
+		}
+	}
+
+	foreach my $cap_id ($mfhd->captions('855')) {
+		my @curr_indexes = $mfhd->holdings('865', $cap_id);
+		next unless scalar @curr_indexes;
+		foreach (@curr_indexes) {
+			push @$current_indexes, $_->format();
+		}
+	}
+
+	# Laurentian extensions
+	foreach my $field ($marc->field('530')) {
+		my $online_stmt = $self->format_textual_holdings($field);
+		if ($online_stmt) {
+			push @$online, $online_stmt;
+		}
+	}
+
+	foreach my $field ($marc->field('590')) {
+		my $missing_stmt = $self->format_textual_holdings($field);
+		if ($missing_stmt) {
+			push @$missing, $missing_stmt;
+		}
+	}
+
+	foreach my $field ($marc->field('591')) {
+		my $incomplete_stmt = $self->format_textual_holdings($field);
+		if ($incomplete_stmt) {
+			push @$incomplete, $incomplete_stmt;
+		}
+	}
+
+	return { holdings => $holdings, current_holdings => $current_holdings,
+			supplements => $supplements, current_supplements => $current_supplements,
+			indexes => $indexes, current_indexes => $current_indexes,
+			missing => $missing, incomplete => $incomplete, };
 }
 
-sub parse_regularity_pattern {
-	my $pattern = shift;
-	my ($pc, $cc, $cd) = $pattern =~ m{^(\w)(\w)(.+)$};
-	
-	my $pub_code = parse_publication_code($pc);
-	my $chron_code = parse_chronology_code($cc);
-	my $chron_def = parse_chronology_definition($cd);
-	
-	return ($pub_code, $chron_code, $chron_def);
+=over
+
+=item * init_holdings_virtual_record()
+
+=back
+
+Initialize the serial virtual record (svr) instance
+
+=cut
+sub init_holdings_virtual_record {
+	my $record = Fieldmapper::serial::virtual_record->new;
+	$record->holdings([]);
+	$record->current_holdings([]);
+	$record->supplements([]);
+	$record->current_supplements([]);
+	$record->indexes([]);
+	$record->current_indexes([]);
+	$record->online([]);
+	$record->missing([]);
+	$record->incomplete([]);
+	return $record;
 }
 
-sub parse_chronology_definition {
-	my $chron_def = shift || return undef;
-	# Well, this is where it starts to get hard, doesn't it?
-	return $chron_def;
-}
+=over
 
-print parse_regularity_pattern("cddd");
-print "\n";
-print parse_regularity_pattern("38dd");
-print "\n";
+=item * init_holdings_virtual_record($mfhd)
+
+=back
+
+Given an MFHD record, return a populated svr instance
+
+=cut
+sub generate_svr {
+	my ($self, $mfhd) = @_;
+
+	if (!$mfhd) {
+		return undef;
+	}
+
+	my $record = init_holdings_virtual_record();
+	my $holdings = $self->mfhd_to_hash($mfhd);
+
+	$record->holdings($holdings->{holdings});
+	$record->current_holdings($holdings->{current_holdings});
+	$record->supplements($holdings->{supplements});
+	$record->current_supplements($holdings->{current_supplements});
+	$record->indexes($holdings->{indexes});
+	$record->current_indexes($holdings->{current_indexes});
+	$record->online($holdings->{online});
+	$record->missing($holdings->{missing});
+	$record->incomplete($holdings->{incomplete});
+
+	return $record;
+}
 
 1;
-
-# :vim:noet:ts=4:sw=4:

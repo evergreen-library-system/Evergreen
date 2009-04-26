@@ -15,6 +15,7 @@ use OpenILS::Application::Search::Authority;
 use OpenILS::Application::Search::Z3950;
 use OpenILS::Application::Search::Zips;
 use OpenILS::Application::Search::CNBrowse;
+use OpenILS::Application::Search::Serial;
 
 
 use OpenILS::Application::AppUtils;

@@ -2574,6 +2574,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+	<class id="svr" controller="open-ils.cstore" oils_obj:fieldmapper="serial::virtual_record" oils_persist:virtual="true" reporter:label="Serial Virtual Record">
+		<fields>
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="holdings" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="current_holdings" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="supplements" oils_obj:array_position="5" oils_persist:virtual="true" />
+			<field name="current_supplements" oils_obj:array_position="6" oils_persist:virtual="true" />
+			<field name="indexes" oils_obj:array_position="7" oils_persist:virtual="true" />
+			<field name="current_indexes" oils_obj:array_position="8" oils_persist:virtual="true" />
+			<field name="online" oils_obj:array_position="9" oils_persist:virtual="true" />
+			<field name="missing" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field name="incomplete" oils_obj:array_position="11" oils_persist:virtual="true" />
+		</fields>
+	</class>
 	<class id="sre" controller="open-ils.cstore" oils_obj:fieldmapper="serial::record_entry" oils_persist:tablename="serial.record_entry" reporter:label="Record Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.record_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
