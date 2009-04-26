@@ -1,0 +1,582 @@
+  <record>
+    <leader>01782cas a2200409   4500</leader>
+    <controlfield tag="001">21061</controlfield>
+    <controlfield tag="005">20041119231703.0</controlfield>
+    <controlfield tag="008">660524c19939999mduer p       0   |0eng b</controlfield>
+    <datafield tag="022" ind1=" " ind2=" ">
+      <subfield code="a">0009-7330</subfield>
+    </datafield>
+    <datafield tag="022" ind1=" " ind2=" ">
+      <subfield code="a">1524-4571</subfield>
+      <subfield code="9">EN</subfield>
+      <subfield code="0">(Electronic)</subfield>
+    </datafield>
+    <datafield tag="041" ind1="0" ind2="9">
+      <subfield code="a">eng</subfield>
+    </datafield>
+    <datafield tag="044" ind1=" " ind2=" ">
+      <subfield code="9">United States</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Circulation research</subfield>
+      <subfield code="h">[electronic resource]</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Baltimore, Md.</subfield>
+      <subfield code="b">Grune &amp; Stratton.</subfield>
+    </datafield>
+    <datafield tag="310" ind1=" " ind2=" ">
+      <subfield code="a">Biweekly,</subfield>
+      <subfield code="b">&lt;1998-&gt;</subfield>
+    </datafield>
+    <datafield tag="321" ind1=" " ind2=" ">
+      <subfield code="a">Bimonthly,</subfield>
+      <subfield code="b">1953-1961</subfield>
+    </datafield>
+    <datafield tag="321" ind1=" " ind2=" ">
+      <subfield code="a">Monthly,</subfield>
+      <subfield code="b">1962-&lt;1997&gt;</subfield>
+    </datafield>
+    <datafield tag="362" ind1="1" ind2=" ">
+      <subfield code="a">v. 95 no. 5-12 (2004) -</subfield>
+    </datafield>
+    <datafield tag="510" ind1="1" ind2=" ">
+      <subfield code="9">1</subfield>
+      <subfield code="a">Index medicus</subfield>
+      <subfield code="x">0019-3879</subfield>
+      <subfield code="b">v17n4,Oct. 1965-</subfield>
+    </datafield>
+    <datafield tag="510" ind1="1" ind2=" ">
+      <subfield code="9">1</subfield>
+      <subfield code="a">MEDLINE</subfield>
+      <subfield code="b">v17n4,Oct. 1965-</subfield>
+    </datafield>
+    <datafield tag="510" ind1="1" ind2=" ">
+      <subfield code="9">1</subfield>
+      <subfield code="a">PubMed</subfield>
+      <subfield code="b">v17n4,Oct. 1965-</subfield>
+    </datafield>
+    <datafield tag="510" ind1="0" ind2=" ">
+      <subfield code="a">OLDMEDLINE</subfield>
+    </datafield>
+    <datafield tag="525" ind1=" " ind2=" ">
+      <subfield code="a">Has occasional supplements, Aug. 1964-</subfield>
+    </datafield>
+    <datafield tag="525" ind1=" " ind2=" ">
+      <subfield code="a">Supplements for 1987-   also called: Circulation research monograph, no. 1-   ; some supplements also issued as: American Heart Association monograph, 1964-8.</subfield>
+    </datafield>
+    <datafield tag="550" ind1=" " ind2=" ">
+      <subfield code="a">Journal of the American Heart Association.</subfield>
+    </datafield>
+    <datafield tag="580" ind1=" " ind2=" ">
+      <subfield code="a">Includes v. &lt;9&gt;-11, 14-26 of: Hypertension (published as an issue of Circulation research, &lt;1961&gt;-1963, and as a supplement, 1966-1978), which is also available separately.</subfield>
+    </datafield>
+    <datafield tag="583" ind1=" " ind2=" ">
+      <subfield code="3">Vol. 65, no. 3 (SEP 1989)</subfield>
+      <subfield code="c">19900918</subfield>
+      <subfield code="f">Notice published</subfield>
+      <subfield code="l">Printed on acid-free paper</subfield>
+    </datafield>
+    <datafield tag="596" ind1=" " ind2=" ">
+      <subfield code="a">27</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2="2">
+      <subfield code="a">Cardiovascular System</subfield>
+    </datafield>
+    <datafield tag="655" ind1=" " ind2="7">
+      <subfield code="a">Periodicals</subfield>
+      <subfield code="2">mesh</subfield>
+    </datafield>
+    <datafield tag="710" ind1="2" ind2=" ">
+      <subfield code="a">American Heart Association.</subfield>
+    </datafield>
+    <datafield tag="730" ind1="0" ind2=" ">
+      <subfield code="a">Hypertension.</subfield>
+    </datafield>
+    <datafield tag="730" ind1="0" ind2=" ">
+      <subfield code="a">Circulation research monograph.</subfield>
+    </datafield>
+    <datafield tag="787" ind1="1" ind2=" ">
+      <subfield code="t">Hypertension</subfield>
+      <subfield code="x">0073-425X</subfield>
+    </datafield>
+    <datafield tag="787" ind1="1" ind2=" ">
+      <subfield code="t">American Heart Association monograph</subfield>
+      <subfield code="x">0065-8499</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2=" ">
+      <subfield code="z"> Available Online</subfield>
+      <subfield code="u">https://normedproxy.lakeheadu.ca/login?url=http://gateway.ovid.com/ovidweb.cgi?T=JS&amp;MODE=ovid&amp;NEWS=n&amp;PAGE=toc&amp;D=ovft&amp;AN=00003012-000000000-00000</subfield>
+    </datafield>
+    <datafield tag="901" ind1=" " ind2=" ">
+      <subfield code="a">a814607</subfield>
+      <subfield code="b">Sirsi_Auto</subfield>
+      <subfield code="c">814607</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00836cas a2200229 a 4500</leader>
+    <controlfield tag="001">01-0321871</controlfield>
+    <controlfield tag="003">CaOEAGC</controlfield>
+    <controlfield tag="005">20030131114944.0</controlfield>
+    <controlfield tag="008">020104c20029999mdu r1p       0   a0eng c</controlfield>
+    <datafield tag="022" ind1="0" ind2=" ">
+      <subfield code="a">1098-7126</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="0">
+      <subfield code="a">CIN Plus</subfield>
+      <subfield code="b">[electronic resource]</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Hagerstown, MD :</subfield>
+      <subfield code="b">Lippincott Williams &amp; Wilkins,</subfield>
+      <subfield code="c">c2002-</subfield>
+    </datafield>
+    <datafield tag="596" ind1=" " ind2=" ">
+      <subfield code="a">27</subfield>
+    </datafield>
+    <datafield tag="530" ind1="0" ind2=" ">
+      <subfield code="a">Online version of the print publication.</subfield>
+    </datafield>
+    <datafield tag="538" ind1=" " ind2=" ">
+      <subfield code="a">Mode of access: World Wide Web.</subfield>
+    </datafield>
+    <datafield tag="650" ind1="2" ind2="2">
+      <subfield code="a">Nursing</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="650" ind1="1" ind2="2">
+      <subfield code="a">Computers</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="650" ind1="2" ind2="2">
+      <subfield code="a">Internet</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="650" ind1="2" ind2="2">
+      <subfield code="a">Nursing Care</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2="0">
+      <subfield code="a">Nursing</subfield>
+      <subfield code="x">Data processing</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="856" ind1=" " ind2=" ">
+      <subfield code="z">Available online</subfield>
+      <subfield code="u">http://librweb.laurentian.ca/login?url=http://gateway.ovid.com/ovidweb.cgi?T=JS&amp;MODE=ovid&amp;NEWS=n&amp;PAGE=toc&amp;D=ovft&amp;AN=00128682-000000000-00000</subfield>
+    </datafield>
+    <datafield tag="901" ind1=" " ind2=" ">
+      <subfield code="a">a814610</subfield>
+      <subfield code="b">Sirsi_Auto</subfield>
+      <subfield code="c">814610</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01000cas a2200265   4500</leader>
+    <controlfield tag="008">070927c20uu9999onc 4 p      f      eng u</controlfield>
+    <datafield tag="022" ind1=" " ind2=" ">
+      <subfield code="a">1913-1607</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+      <subfield code="a">Q1</subfield>
+      <subfield code="b">.A1 N73</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">NRC newslink =</subfield>
+      <subfield code="b">Le CNRC a&#x300; l'oeuvre.</subfield>
+    </datafield>
+    <datafield tag="246" ind1="3" ind2="0">
+      <subfield code="a">Neswlink.</subfield>
+    </datafield>
+    <datafield tag="246" ind1="3" ind2=" ">
+      <subfield code="a">NRC news link.</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">v. :</subfield>
+      <subfield code="b">ill. ;</subfield>
+      <subfield code="c">42 cm.</subfield>
+    </datafield>
+    <datafield tag="310" ind1=" " ind2=" ">
+      <subfield code="a">Four times a year = Quatre nume&#x301;ros par anne&#x301;e.</subfield>
+    </datafield>
+    <datafield tag="599" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+      <subfield code="b">WIN 2009;</subfield>
+      <subfield code="b">WIN 2008;</subfield>
+      <subfield code="b">FALL 2008;</subfield>
+    </datafield>
+    <datafield tag="349" ind1=" " ind2=" ">
+      <subfield code="a">Depository Services Canada/Services de de&#x301;po&#x302;t</subfield>
+    </datafield>
+    <datafield tag="362" ind1="0" ind2=" ">
+      <subfield code="a">Spring 2007-  = Printemps 2007-</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+      <subfield code="a">Text in English and French bound back-to-back = Texte en franc&#x327;ais et en anglais dispose&#x301; te&#x302;te-be&#x302;che.</subfield>
+    </datafield>
+    <datafield tag="610" ind1="2" ind2="0">
+      <subfield code="a">National Research Council Canada</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="610" ind1="2" ind2="6">
+      <subfield code="a">Conseil national de recherches Canada</subfield>
+      <subfield code="v">Pe&#x301;riodiques.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2="0">
+      <subfield code="a">Science</subfield>
+      <subfield code="z">Canada</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2="6">
+      <subfield code="a">Sciences</subfield>
+      <subfield code="z">Canada</subfield>
+      <subfield code="v">Pe&#x301;riodiques.</subfield>
+    </datafield>
+    <datafield tag="710" ind1="2" ind2=" ">
+      <subfield code="a">National Research Council Canada.</subfield>
+    </datafield>
+    <datafield tag="710" ind1="2" ind2=" ">
+      <subfield code="a">Conseil national de recherches Canada.</subfield>
+    </datafield>
+    <datafield tag="596" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+    </datafield>
+    <datafield tag="901" ind1=" " ind2=" ">
+      <subfield code="a">a814666</subfield>
+      <subfield code="b">Sirsi_Auto</subfield>
+      <subfield code="c">814666</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01551cas a22003491a 4500</leader>
+    <controlfield tag="005">20080411161253.0</controlfield>
+    <controlfield tag="008">000411c20019999oncar4p      f0   a0fre d</controlfield>
+    <datafield tag="022" ind1=" " ind2=" ">
+      <subfield code="a">1700-8050</subfield>
+    </datafield>
+    <datafield tag="035" ind1=" " ind2=" ">
+      <subfield code="a">(Sirsi) a814871</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="d">UtOrBLW</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+      <subfield code="a">HD9698.C2</subfield>
+      <subfield code="b">A314</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Rapport annuel de la Commission canadienne de su&#x302;rete&#x301; nucle&#x301;aire.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Ottawa, Ont. :</subfield>
+      <subfield code="b">Commission canadienne de su&#x302;rete&#x301; nucle&#x301;aire,</subfield>
+      <subfield code="c">2001-</subfield>
+    </datafield>
+    <datafield tag="310" ind1=" " ind2=" ">
+      <subfield code="a">Annuel.</subfield>
+    </datafield>
+    <datafield tag="362" ind1="1" ind2=" ">
+      <subfield code="a">2000/2001-</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Titre de la couverture.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Publie&#x301; aussi en anglais sous le titre: Annual report : Canadian Nuclear Safety Commission.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Le&#x301;ge&#x300;re variante du titre.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Nume&#x301;ros 2001/2002-2002/2003 comprennent e&#x301;galement le Rapport sur les de&#x301;libe&#x301;rations publiques et les de&#x301;cisions; 2003/2004- comprennent le Rapport annuel du tribunal de la Commission.</subfield>
+    </datafield>
+    <datafield tag="515" ind1=" " ind2=" ">
+      <subfield code="a">L'anne&#x301;e d'activite&#x301; se termine le 31 mars.</subfield>
+    </datafield>
+    <datafield tag="530" ind1=" " ind2=" ">
+      <subfield code="a">Disponible aussi en ligne.</subfield>
+    </datafield>
+    <datafield tag="596" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+    </datafield>
+    <datafield tag="610" ind1="2" ind2="6">
+      <subfield code="a">Commission canadienne de su&#x302;rete&#x301; nucle&#x301;aire</subfield>
+      <subfield code="v">Pe&#x301;riodiques.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2="6">
+      <subfield code="a">E&#x301;nergie nucle&#x301;aire</subfield>
+      <subfield code="z">Canada</subfield>
+      <subfield code="v">Pe&#x301;riodiques.</subfield>
+    </datafield>
+    <datafield tag="710" ind1="2" ind2=" ">
+      <subfield code="a">Commission canadienne de su&#x302;rete&#x301; nucle&#x301;aire.</subfield>
+    </datafield>
+    <datafield tag="740" ind1="0" ind2="2">
+      <subfield code="a">Rapport annuel de la CCSN.</subfield>
+    </datafield>
+    <datafield tag="740" ind1="0" ind2="2">
+      <subfield code="a">Rapport sur les de&#x301;libe&#x301;rations publiques et les de&#x301;cisions.</subfield>
+    </datafield>
+    <datafield tag="740" ind1="0" ind2="2">
+      <subfield code="a">Rapport annuel du tribunal de la Commission.</subfield>
+    </datafield>
+    <datafield tag="780" ind1="0" ind2="0">
+      <subfield code="a">Canada. Commission de contro&#x302;le de l'e&#x301;nergie atomique. Rapport annuel de la CCEA.</subfield>
+    </datafield>
+    <datafield tag="599" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+      <subfield code="b">2004/2005;</subfield>
+    </datafield>
+    <datafield tag="349" ind1=" " ind2=" ">
+      <subfield code="a">Depository Services Canada/Services de de&#x301;po&#x302;t</subfield>
+    </datafield>
+    <datafield tag="901" ind1=" " ind2=" ">
+      <subfield code="a">a814871</subfield>
+      <subfield code="b">Sirsi_Auto</subfield>
+      <subfield code="c">814871</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01463cas a22003371a 4500</leader>
+    <controlfield tag="001">01-0309208</controlfield>
+    <controlfield tag="005">20020925085218.0</controlfield>
+    <controlfield tag="008">000411c20019999oncar4p      f0   a0eng d</controlfield>
+    <datafield tag="022" ind1="0" ind2=" ">
+      <subfield code="a">1700-8042</subfield>
+    </datafield>
+    <datafield tag="050" ind1=" " ind2="4">
+      <subfield code="a">HD9698.C2</subfield>
+      <subfield code="b">A3</subfield>
+    </datafield>
+    <datafield tag="245" ind1="1" ind2="0">
+      <subfield code="a">Annual report :</subfield>
+      <subfield code="b">Canadian Nuclear Safety Commission.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Ottawa, Ont. :</subfield>
+      <subfield code="b">Canadian Nuclear Safety Commission,</subfield>
+      <subfield code="c">2001-</subfield>
+    </datafield>
+    <datafield tag="310" ind1=" " ind2=" ">
+      <subfield code="a">Annual.</subfield>
+    </datafield>
+    <datafield tag="599" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+      <subfield code="b">2004/2005;</subfield>
+    </datafield>
+    <datafield tag="349" ind1=" " ind2=" ">
+      <subfield code="a">Depository Services Canada/Services de de&#x301;po&#x302;t</subfield>
+    </datafield>
+    <datafield tag="362" ind1="1" ind2=" ">
+      <subfield code="a">2000/2001-</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Title from cover.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Issued also in French under title: Rapport annuel de la Commission canadienne de su&#x302;rete&#x301; nucle&#x301;aire.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Title varies slightly.</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Issues for 2001/2002-2002/2003 include the Commission's Report on public proceedings and decisions, 2001/2002-2002/2003, on inverted pages; 2003/2004- include the Commission's Annual report of the Commission Tribunal, 2003/2004- , on inverted pages.</subfield>
+    </datafield>
+    <datafield tag="515" ind1=" " ind2=" ">
+      <subfield code="a">Report year ends Mar. 31.</subfield>
+    </datafield>
+    <datafield tag="530" ind1=" " ind2=" ">
+      <subfield code="a">Also available online.</subfield>
+    </datafield>
+    <datafield tag="596" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+    </datafield>
+    <datafield tag="610" ind1="2" ind2="0">
+      <subfield code="a">Canadian Nuclear Safety Commission</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="650" ind1=" " ind2="0">
+      <subfield code="a">Nuclear energy</subfield>
+      <subfield code="z">Canada</subfield>
+      <subfield code="v">Periodicals.</subfield>
+    </datafield>
+    <datafield tag="710" ind1="2" ind2=" ">
+      <subfield code="a">Canadian Nuclear Safety Commission.</subfield>
+    </datafield>
+    <datafield tag="740" ind1="0" ind2="2">
+      <subfield code="a">CNSC annual report.</subfield>
+    </datafield>
+    <datafield tag="740" ind1="0" ind2="2">
+      <subfield code="a">Report on public proceedings and decisions.</subfield>
+    </datafield>
+    <datafield tag="740" ind1="0" ind2="2">
+      <subfield code="a">Annual report of the Commission Tribunal.</subfield>
+    </datafield>
+    <datafield tag="780" ind1="0" ind2="0">
+      <subfield code="a">Canada. Atomic Energy Control Board. AECB annual report, 1493-5872.</subfield>
+    </datafield>
+    <datafield tag="901" ind1=" " ind2=" ">
+      <subfield code="a">a814872</subfield>
+      <subfield code="b">Sirsi_Auto</subfield>
+      <subfield code="c">814872</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00999cas a22002530a 4500</leader>
+    <controlfield tag="005">20080411161258.0</controlfield>
+    <controlfield tag="008">990623c19989999qucuu p            0fre  </controlfield>
+    <datafield tag="022" ind1=" " ind2=" ">
+      <subfield code="a">1481-5869</subfield>
+    </datafield>
+    <datafield tag="035" ind1=" " ind2=" ">
+      <subfield code="a">(Sirsi) s1481-5869</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">BNQ</subfield>
+      <subfield code="b">fre$dOOU</subfield>
+      <subfield code="d">UtOrBLW</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">n-cn-qu</subfield>
+    </datafield>
+    <datafield tag="099" ind1=" " ind2=" ">
+      <subfield code="a">FC 2901 .G56</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Globe :</subfield>
+      <subfield code="b">revue internationale d'e&#x301;tudes que&#x301;be&#x301;coises.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Montre&#x301;al, Que&#x301; :</subfield>
+      <subfield code="b">Programme d'E&#x301;tudes sur le Que&#x301;bec de l'Universite&#x301; McGill,</subfield>
+      <subfield code="c">1998-</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">v. :</subfield>
+      <subfield code="b">ill. ;</subfield>
+      <subfield code="c">25 cm.</subfield>
+    </datafield>
+    <datafield tag="362" ind1="0" ind2=" ">
+      <subfield code="a">[Vol. 1], no 1 (1998)-</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Chaque livraison porte e&#x301;galement un titre distinct.</subfield>
+    </datafield>
+    <datafield tag="515" ind1=" " ind2=" ">
+      <subfield code="a">La livraison no 1 (1999)-   e&#x301;galement nume&#x301;rote&#x301; vol. 2-</subfield>
+    </datafield>
+    <datafield tag="596" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+    </datafield>
+    <datafield tag="651" ind1=" " ind2="6">
+      <subfield code="a">Que&#x301;bec (Province)</subfield>
+      <subfield code="x">Recherche</subfield>
+      <subfield code="x">Pe&#x301;riodiques.</subfield>
+    </datafield>
+    <datafield tag="651" ind1=" " ind2="6">
+      <subfield code="a">Que&#x301;bec (Province)</subfield>
+      <subfield code="x">E&#x301;tude et enseignement (Supe&#x301;rieur)</subfield>
+      <subfield code="x">Pe&#x301;riodiques.</subfield>
+    </datafield>
+    <datafield tag="710" ind1="2" ind2=" ">
+      <subfield code="a">McGill University.</subfield>
+      <subfield code="b">Programme d'E&#x301;tudes sur le Que&#x301;bec.</subfield>
+    </datafield>
+    <datafield tag="599" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+      <subfield code="b">V. 11 NO. 2 2008;</subfield>
+      <subfield code="b">V. 10/11 NO. 2/1 2007/2008;</subfield>
+      <subfield code="b">V. 9 NO. 2 2006;</subfield>
+    </datafield>
+    <datafield tag="901" ind1=" " ind2=" ">
+      <subfield code="a">a815076</subfield>
+      <subfield code="b">Sirsi_Auto</subfield>
+      <subfield code="c">815076</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>01015cas a22003135a 4500</leader>
+    <controlfield tag="003">CaQMU</controlfield>
+    <controlfield tag="005">20080411161258.0</controlfield>
+    <controlfield tag="008">970127m19959999qucqr p           a0fre u</controlfield>
+    <datafield tag="010" ind1=" " ind2=" ">
+      <subfield code="a">cn 96301373</subfield>
+    </datafield>
+    <datafield tag="022" ind1="0" ind2=" ">
+      <subfield code="a">1203-2719</subfield>
+    </datafield>
+    <datafield tag="035" ind1=" " ind2=" ">
+      <subfield code="a">(Sirsi) a815094</subfield>
+    </datafield>
+    <datafield tag="035" ind1=" " ind2=" ">
+      <subfield code="a">(CaOEAGC)53426191</subfield>
+    </datafield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">CaOONL</subfield>
+      <subfield code="b">fre</subfield>
+      <subfield code="c">CaOONL</subfield>
+      <subfield code="d">UtOrBLW</subfield>
+    </datafield>
+    <datafield tag="041" ind1="0" ind2=" ">
+      <subfield code="a">freeng</subfield>
+    </datafield>
+    <datafield tag="042" ind1=" " ind2=" ">
+      <subfield code="a">nlc</subfield>
+      <subfield code="a">isds/c</subfield>
+    </datafield>
+    <datafield tag="043" ind1=" " ind2=" ">
+      <subfield code="a">n-cn-qu</subfield>
+    </datafield>
+    <datafield tag="055" ind1="0" ind2="1">
+      <subfield code="a">RC423</subfield>
+    </datafield>
+    <datafield tag="082" ind1="0" ind2=" ">
+      <subfield code="a">616.85/5/005</subfield>
+      <subfield code="2">20</subfield>
+    </datafield>
+    <datafield tag="245" ind1="0" ind2="0">
+      <subfield code="a">Fre&#x301;quences :</subfield>
+      <subfield code="b">revue de l'ordre des orthophonistes et audiologistes du Que&#x301;bec.</subfield>
+    </datafield>
+    <datafield tag="260" ind1=" " ind2=" ">
+      <subfield code="a">Montre&#x301;al, Que&#x301; :</subfield>
+      <subfield code="b">Ordre des orthophonistes et audiologistes du Que&#x301;bec,</subfield>
+      <subfield code="c">1993-</subfield>
+    </datafield>
+    <datafield tag="300" ind1=" " ind2=" ">
+      <subfield code="a">v. :</subfield>
+      <subfield code="b">ill. ;</subfield>
+      <subfield code="c">28 cm.</subfield>
+    </datafield>
+    <datafield tag="310" ind1=" " ind2=" ">
+      <subfield code="a">Trimestriel.</subfield>
+    </datafield>
+    <datafield tag="362" ind1="0" ind2=" ">
+      <subfield code="a">Vol. 6, no 1 (oct. 1993)-    .</subfield>
+    </datafield>
+    <datafield tag="500" ind1=" " ind2=" ">
+      <subfield code="a">Titre de la couv.</subfield>
+    </datafield>
+    <datafield tag="546" ind1=" " ind2=" ">
+      <subfield code="a">Texte en franc&#x327;ais, parfois en anglais.</subfield>
+    </datafield>
+    <datafield tag="596" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+    </datafield>
+    <datafield tag="710" ind1="2" ind2=" ">
+      <subfield code="a">Ordre des orthophonistes et audiologistes du Que&#x301;bec.</subfield>
+    </datafield>
+    <datafield tag="599" ind1=" " ind2=" ">
+      <subfield code="a">1</subfield>
+      <subfield code="b">V. 19 NO. 2 SEP 2007;</subfield>
+      <subfield code="b">V. 19 NO. 1 MAY 2007;</subfield>
+      <subfield code="b">V. 18 NO. 4 FEB 2007;</subfield>
+    </datafield>
+    <datafield tag="901" ind1=" " ind2=" ">
+      <subfield code="a">a815094</subfield>
+      <subfield code="b">Sirsi_Auto</subfield>
+      <subfield code="c">815094</subfield>
+    </datafield>
+  </record>
+

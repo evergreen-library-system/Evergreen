@@ -10,3 +10,5 @@ The following table lists the data sets we have collected for testing purposes.
 | music_5k.marc     | MARC21    | MARC8    | Unicorn GL3.1 | 5000 records  |
 | hebrew.marc       | MARC21    | MARC8    | III           | Hebrew scripts, 25 records |
 | nepali.marc       | MARC21    | UTF8     |               | Nepali scripts, 98 records, dual 245 and 100 fields (one for Nepali, one for phoneticization |
+| serials_marc21.xml| MARC21XML | UTF8     |               | A small set of MARC21 bibliographic records |
+| serials_mfhd.xml  | MARC21XML | UTF8     |               | MFHD records that map to the serials_marc21.xml records |

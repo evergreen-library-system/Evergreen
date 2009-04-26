@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<collection>
+  <record>
+    <leader>00267cy  a22000854  4500</leader>
+    <controlfield tag="001">a814607</controlfield>
+    <controlfield tag="001">44368</controlfield>
+    <controlfield tag="008">071210                eng 071210        </controlfield>
+    <datafield tag="852" ind1=" " ind2=" ">
+      <subfield code="b">HRSRH</subfield>
+      <subfield code="c">HRSRHL-PER</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="4">
+      <subfield code="z">OVID online</subfield>
+      <subfield code="u">http://www.novl.ca/templates/main_template_logon_template.asp?page_id=167&amp;section_id=1</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00267cy  a22000854  4500</leader>
+    <controlfield tag="001">a814610</controlfield>
+    <controlfield tag="001">44366</controlfield>
+    <controlfield tag="008">071210                eng 071210        </controlfield>
+    <datafield tag="852" ind1=" " ind2=" ">
+      <subfield code="b">HRSRH</subfield>
+      <subfield code="c">HRSRHL-PER</subfield>
+    </datafield>
+    <datafield tag="856" ind1="4" ind2="4">
+      <subfield code="z">OVID online</subfield>
+      <subfield code="u">http://www.novl.ca/templates/main_template_logon_template.asp?page_id=167&amp;section_id=1</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00369cy  a22001574  4500</leader>
+    <controlfield tag="001">a814666</controlfield>
+    <controlfield tag="001">44122</controlfield>
+    <controlfield tag="008">070928                eng 080724        </controlfield>
+    <datafield tag="852" ind1=" " ind2=" ">
+      <subfield code="b">DESMARAIS</subfield>
+      <subfield code="c">DESM-PER</subfield>
+    </datafield>
+    <datafield tag="853" ind1="2" ind2=" ">
+      <subfield code="8">1</subfield>
+      <subfield code="a">(year)</subfield>
+      <subfield code="b">(season)</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.1</subfield>
+      <subfield code="a">2007</subfield>
+      <subfield code="b">21</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.2</subfield>
+      <subfield code="a">2007</subfield>
+      <subfield code="b">22</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.3</subfield>
+      <subfield code="a">2007</subfield>
+      <subfield code="b">23</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.4</subfield>
+      <subfield code="a">2007</subfield>
+      <subfield code="b">24</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.5</subfield>
+      <subfield code="a">2008</subfield>
+      <subfield code="b">21</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.6</subfield>
+      <subfield code="a">2008</subfield>
+      <subfield code="b">22</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00405cy  a22001214  4500</leader>
+    <controlfield tag="001">a814871</controlfield>
+    <controlfield tag="001">44124</controlfield>
+    <controlfield tag="008">071002                eng 071002        </controlfield>
+    <datafield tag="852" ind1=" " ind2=" ">
+      <subfield code="b">DESMARAIS</subfield>
+      <subfield code="c">DESM-PER</subfield>
+      <subfield code="h">HD 9698 C2 A314 Per.</subfield>
+    </datafield>
+    <datafield tag="853" ind1="2" ind2=" ">
+      <subfield code="8">1</subfield>
+      <subfield code="a">(year)</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.1</subfield>
+      <subfield code="a">2004/2005</subfield>
+    </datafield>
+    <datafield tag="866" ind1=" " ind2=" ">
+      <subfield code="a">2000/2001 - 2003/2004</subfield>
+    </datafield>
+    <datafield tag="530" ind1=" " ind2=" ">
+      <subfield code="a">DISPONIBLE AUSSI EN LIGNE: Rapport annuel de la Commission canadienne de sûreté nucléaire [ressource électronique]</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00405cy  a22001334  4500</leader>
+    <controlfield tag="001">a814872</controlfield>
+    <controlfield tag="001">44123</controlfield>
+    <controlfield tag="008">071002                eng 071002        </controlfield>
+    <datafield tag="852" ind1=" " ind2=" ">
+      <subfield code="b">DESMARAIS</subfield>
+      <subfield code="c">DESM-PER</subfield>
+      <subfield code="h">HD 9698 C2 A3 Per.</subfield>
+    </datafield>
+    <datafield tag="853" ind1="2" ind2=" ">
+      <subfield code="8">1</subfield>
+      <subfield code="a">(year)</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.1</subfield>
+      <subfield code="a">2004/2005</subfield>
+    </datafield>
+    <datafield tag="866" ind1=" " ind2=" ">
+      <subfield code="a">2000/2001 - 2003/2004</subfield>
+    </datafield>
+    <datafield tag="530" ind1=" " ind2=" ">
+      <subfield code="a">ALSO AVAILABLE ONLINE: Annual report, Canadian Nuclear Safety Commission [electronic resource]</subfield>
+    </datafield>
+    <datafield tag="590" ind1=" " ind2=" ">
+      <subfield code="a">2002/2003</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00342cy  a22001334  4500</leader>
+    <controlfield tag="001">a815076</controlfield>
+    <controlfield tag="001">44137</controlfield>
+    <controlfield tag="008">071011                eng 080729        </controlfield>
+    <datafield tag="852" ind1=" " ind2=" ">
+      <subfield code="b">DESMARAIS</subfield>
+      <subfield code="c">DESM-PER</subfield>
+    </datafield>
+    <datafield tag="853" ind1="2" ind2=" ">
+      <subfield code="8">1</subfield>
+      <subfield code="a">v.</subfield>
+      <subfield code="b">no.</subfield>
+      <subfield code="u">4</subfield>
+      <subfield code="v">r</subfield>
+      <subfield code="i">(year)</subfield>
+    </datafield>
+    <datafield tag="853" ind1="2" ind2=" ">
+      <subfield code="8">2</subfield>
+      <subfield code="a">v.</subfield>
+      <subfield code="b">no.</subfield>
+      <subfield code="u">2</subfield>
+      <subfield code="v">r</subfield>
+      <subfield code="i">(year)</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.1</subfield>
+      <subfield code="a">9</subfield>
+      <subfield code="b">1</subfield>
+      <subfield code="i">2006</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.2</subfield>
+      <subfield code="a">9</subfield>
+      <subfield code="b">2</subfield>
+      <subfield code="i">2006</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">2.1</subfield>
+      <subfield code="a">10/11</subfield>
+      <subfield code="b">2/1</subfield>
+      <subfield code="i">2007/2008</subfield>
+    </datafield>
+  </record>
+  <record>
+    <leader>00314cy  a22001214  4500</leader>
+    <controlfield tag="001">a815094</controlfield>
+    <controlfield tag="001">44143</controlfield>
+    <controlfield tag="008">071018                eng 071018        </controlfield>
+    <datafield tag="852" ind1=" " ind2=" ">
+      <subfield code="b">DESMARAIS</subfield>
+      <subfield code="c">DESM-PER</subfield>
+    </datafield>
+    <datafield tag="853" ind1="2" ind2=" ">
+      <subfield code="8">1</subfield>
+      <subfield code="a">v.</subfield>
+      <subfield code="b">no.</subfield>
+      <subfield code="u">4</subfield>
+      <subfield code="v">r</subfield>
+      <subfield code="i">(year)</subfield>
+      <subfield code="j">(month)</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.1</subfield>
+      <subfield code="a">18</subfield>
+      <subfield code="b">4</subfield>
+      <subfield code="i">2007</subfield>
+      <subfield code="j">02</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.2</subfield>
+      <subfield code="a">19</subfield>
+      <subfield code="b">1</subfield>
+      <subfield code="i">2007</subfield>
+      <subfield code="j">05</subfield>
+    </datafield>
+    <datafield tag="863" ind1=" " ind2="1">
+      <subfield code="8">1.3</subfield>
+      <subfield code="a">19</subfield>
+      <subfield code="b">2</subfield>
+      <subfield code="i">2007</subfield>
+      <subfield code="j">09</subfield>
+    </datafield>
+  </record>
+</collection>
