@@ -79,7 +79,10 @@
                             </tbody>
                         </table>
                     </td>
-                    <td><a name='receive_link' href='javascript:void(0);'>Mark&nbsp;Received</a></td>
+                    <td>
+                        <a name='receive_link' href='javascript:void(0);'>Mark&nbsp;Received</a>
+                        <a class='hidden' name='real_copies_link' href='javascript:void(0);'>Update&nbsp;Barcodes</a>
+                    </td>
                     <td><input type='text' size='8' name='price'/></td>
                     <td><a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>
                     <td>
@@ -234,6 +237,49 @@
                     <td><div name='note'/></td>
                     <td><a href='javascript:void(0);' name='receive'>Mark&nbsp;Received</a></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Copies table -->
+    <div id='acq-lit-real-copies-div' class='hidden'>
+        <h2>Copies</h2>
+
+        <div class='acq-lit-li-menu-bar'>
+            <table style='width:100%'>
+                <tr>
+                    <td style='text-align:left;'>
+                        <div dojoType='dijit.form.Button' id='acq-lit-real-copies-back-button'>&#x2196; Return</div>
+                    </td>
+                    <td style='text-align:right;'>
+                        <span>
+                            <div dojoType='dijit.form.Button' jsId='acqLitSaveRealCopies'>Save Changes</div>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <table id='acq-lit-real-copies-table'>
+            <tbody style='font-weight:bold;'>
+                <tr>
+                    <td style='margin-top:30px;'>Owning Branch</td>
+                    <td>Shelving Location</td>
+                    <td>Circ Modifier</td>
+                    <td>Callnumber</td>
+                    <td>Barcode</td>
+                    <td colspan='0'>
+                </tr>
+            </tbody>
+            <tbody id='acq-lit-real-copies-tbody' class='oils-generic-table'>
+                <tr id='acq-lit-real-copies-row'>
+                    <td><div name='owning_lib'/></td>
+                    <td><div name='location'/></td>
+                    <td><div name='circ_modifier'/></td>
+                    <td><div name='label'/></td>
+                    <td><div name='barcode'/></td>
                 </tr>
             </tbody>
         </table>

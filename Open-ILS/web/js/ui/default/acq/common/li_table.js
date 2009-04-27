@@ -20,6 +20,10 @@ dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 const XUL_OPAC_WRAPPER = 'chrome://open_ils_staff_client/content/cat/opac.xul';
 
+function nodeByName(name, context) {
+    return dojo.query('[name='+name+']', context)[0];
+}
+
 function AcqLiTable() {
 
     var self = this;
@@ -35,6 +39,9 @@ function AcqLiTable() {
     this.copyBatchWidgets = {};
     this.liNotesTbody = dojo.byId('acq-lit-notes-tbody');
     this.liNotesRow = this.liNotesTbody.removeChild(dojo.byId('acq-lit-notes-row'));
+    this.realCopiesTbody = dojo.byId('acq-lit-real-copies-tbody');
+    this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
+    this.volCache = {};
 
     dojo.connect(acqLitLiActionsSelector, 'onChange', 
         function() { 
@@ -52,12 +59,14 @@ function AcqLiTable() {
         self._savePl(acqLitSavePlDialog.getValues());
     }
 
+
     //dojo.byId('acq-lit-notes-new-button').onclick = function(){acqLitCreateLiNoteDialog.show();}
 
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-copies-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-notes-back-button').onclick = function(){self.show('list')};
+    dojo.byId('acq-lit-real-copies-back-button').onclick = function(){self.show('list')};
 
     this.reset = function() {
         while(self.tbody.childNodes[0])
@@ -90,6 +99,7 @@ function AcqLiTable() {
         openils.Util.hide('acq-lit-info-div');
         openils.Util.hide('acq-lit-li-details');
         openils.Util.hide('acq-lit-notes-div');
+        openils.Util.hide('acq-lit-real-copies-div');
         switch(div) {
             case 'list':
                 openils.Util.show('acq-lit-table-div');
@@ -99,6 +109,9 @@ function AcqLiTable() {
                 break;
             case 'copies':
                 openils.Util.show('acq-lit-li-details');
+                break;
+            case 'real-copies':
+                openils.Util.show('acq-lit-real-copies-div');
                 break;
             case 'notes':
                 openils.Util.show('acq-lit-notes-div');
@@ -170,8 +183,16 @@ function AcqLiTable() {
         priceInput.onchange = function() { self.updateLiPrice(priceInput, li) };
 
         var recv_link = dojo.query('[name=receive_link]', row)[0];
+
         if(li.state() == 'received') {
+            // if the LI is received, hide the receive link and show the 'update barcodes' link
             openils.Util.hide(recv_link)
+            var real_copies_link = dojo.query('[name=real_copies_link]', row)[0];
+            openils.Util.show(real_copies_link);
+            real_copies_link.onclick = function() {
+                self.showRealCopies(li);
+            }
+
         } else {
             recv_link.onclick = function() {
                 self.receiveLi(li);
@@ -939,6 +960,86 @@ function AcqLiTable() {
             }
         );
     }
+
+    // grab the li-details for this lineitem, grab the linked copies and volumes, add them to the table
+    this.showRealCopies = function(li) {
+        this.show('real-copies');
+        var pcrud = new openils.PermaCrud({authtoken : this.authtoken});
+
+        var tabIndex = 1000;
+        var self = this;
+        this._fetchLineitem(li.id(), 
+            function(fullLi) {
+                li = self.liCache[li.id()] = fullLi;
+
+                pcrud.search(
+                    'acp', {
+                        id : li.lineitem_details().map(
+                            function(item) { return item.eg_copy_id() }
+                        )
+                    }, {
+                        async : true,
+                        streaming : true,
+                        onresponse : function(r) {
+                            var copy = openils.Util.readResponse(r);
+                            var volId = copy.call_number();
+                            var volume = self.volCache[volId];
+                            if(!volume) {
+                                volume = self.volCache[volId] = pcrud.retrieve('acn', volId);
+                            }
+                            self.addRealCopy(volume, copy, tabIndex++);
+                        }
+                    }
+                );
+            }
+        );
+    }
+
+    this.addRealCopy = function(volume, copy, tabIndex) {
+        var row = this.realCopiesRow.cloneNode(true);
+
+        var selectNode;
+        dojo.forEach(
+            ['owning_lib', 'location', 'circ_modifier', 'label', 'barcode'],
+            function(field) {
+                var isvol = (field == 'owning_lib' || field == 'label');
+                var widget = new openils.widget.AutoFieldWidget({
+                    fmField : field,
+                    fmObject : isvol ? volume : copy,
+                    parentNode : nodeByName(field, row),
+                    readOnly : (field != 'barcode')
+                });
+
+                var widgetDrawn = null;
+
+                if(field == 'barcode') {
+                    widgetDrawn = function(w, ww) {
+                        var node = w.domNode;
+                        node.setAttribute('tabindex', ''+tabIndex);
+
+                        // on enter, select the next barcode input
+                        dojo.connect(w, 'onKeyDown',
+                            function(e) {
+                                if(e.keyCode == dojo.keys.ENTER) {
+                                    var ti = node.getAttribute('tabindex');
+                                    var nextNode = dojo.query('[tabindex=' + String(Number(ti) + 1) + ']', self.realCopiesTbody)[0];
+                                    if(nextNode) nextNode.select();
+                                }
+                            }
+                        );
+
+                        if(self.realCopiesTbody.getElementsByTagName('TR').length == 0)
+                            selectNode = node;
+                    }
+                }
+
+                widget.build(widgetDrawn);
+            }
+        );
+
+        this.realCopiesTbody.appendChild(row);
+        if(selectNode) selectNode.select();
+    };
 }
 
 
