@@ -41,7 +41,6 @@ function AcqLiTable() {
     this.liNotesRow = this.liNotesTbody.removeChild(dojo.byId('acq-lit-notes-row'));
     this.realCopiesTbody = dojo.byId('acq-lit-real-copies-tbody');
     this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
-    this.volCache = {};
 
     dojo.connect(acqLitLiActionsSelector, 'onChange', 
         function() { 
@@ -187,16 +186,18 @@ function AcqLiTable() {
         if(li.state() == 'received') {
             // if the LI is received, hide the receive link and show the 'update barcodes' link
             openils.Util.hide(recv_link)
-            var real_copies_link = dojo.query('[name=real_copies_link]', row)[0];
-            openils.Util.show(real_copies_link);
-            real_copies_link.onclick = function() {
-                self.showRealCopies(li);
-            }
-
         } else {
             recv_link.onclick = function() {
                 self.receiveLi(li);
                 openils.Util.hide(recv_link)
+            }
+        }
+
+        if(li.eg_bib_id()) {
+            var real_copies_link = dojo.query('[name=real_copies_link]', row)[0];
+            openils.Util.show(real_copies_link);
+            real_copies_link.onclick = function() {
+                self.showRealCopies(li);
             }
         }
 
@@ -963,11 +964,20 @@ function AcqLiTable() {
 
     // grab the li-details for this lineitem, grab the linked copies and volumes, add them to the table
     this.showRealCopies = function(li) {
+        while(this.realCopiesTbody.childNodes[0])
+            this.realCopiesTbody.removeChild(this.realCopiesTbody.childNodes[0]);
         this.show('real-copies');
-        var pcrud = new openils.PermaCrud({authtoken : this.authtoken});
 
+        var pcrud = new openils.PermaCrud({authtoken : this.authtoken});
+        this.realCopyList = [];
+        this.volCache = {};
         var tabIndex = 1000;
         var self = this;
+
+        acqLitSaveRealCopies.onClick = function() {
+            self.saveRealCopies();
+        }
+
         this._fetchLineitem(li.id(), 
             function(fullLi) {
                 li = self.liCache[li.id()] = fullLi;
@@ -997,22 +1007,25 @@ function AcqLiTable() {
 
     this.addRealCopy = function(volume, copy, tabIndex) {
         var row = this.realCopiesRow.cloneNode(true);
+        this.realCopyList.push(copy);
 
         var selectNode;
         dojo.forEach(
             ['owning_lib', 'location', 'circ_modifier', 'label', 'barcode'],
+
             function(field) {
                 var isvol = (field == 'owning_lib' || field == 'label');
                 var widget = new openils.widget.AutoFieldWidget({
                     fmField : field,
                     fmObject : isvol ? volume : copy,
                     parentNode : nodeByName(field, row),
-                    readOnly : (field != 'barcode')
+                    readOnly : (field != 'barcode'),
                 });
 
                 var widgetDrawn = null;
 
                 if(field == 'barcode') {
+
                     widgetDrawn = function(w, ww) {
                         var node = w.domNode;
                         node.setAttribute('tabindex', ''+tabIndex);
@@ -1028,6 +1041,15 @@ function AcqLiTable() {
                             }
                         );
 
+                        dojo.connect(w, 'onChange', 
+                            function(val) { 
+                                if(!val || val == copy.barcode()) return;
+                                copy.ischanged(true);
+                                copy.barcode(val);
+                            }
+                        );
+
+
                         if(self.realCopiesTbody.getElementsByTagName('TR').length == 0)
                             selectNode = node;
                     }
@@ -1040,6 +1062,16 @@ function AcqLiTable() {
         this.realCopiesTbody.appendChild(row);
         if(selectNode) selectNode.select();
     };
+
+    this.saveRealCopies = function() {
+        var pcrud = new openils.PermaCrud({authtoken : this.authtoken});
+        progressDialog.show(true);
+        var list = this.realCopyList.filter(function(copy) { return copy.ischanged(); });
+        pcrud.update(list, {oncomplete: function() { 
+            progressDialog.hide();
+            self.show('list');
+        }});
+    }
 }
 
 

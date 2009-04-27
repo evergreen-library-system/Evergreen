@@ -48,9 +48,10 @@
                     <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>
                     <td>Line Items</td>
                     <td></td>
-                    <td>Price</td>
+                    <td></td>
                     <td>Items</td>
                     <td>Notes</td>
+                    <td>Price</td>
                 </tr>
             </tbody>
             <tbody id='acq-lit-tbody'>
@@ -79,16 +80,14 @@
                             </tbody>
                         </table>
                     </td>
-                    <td>
-                        <a name='receive_link' href='javascript:void(0);'>Mark&nbsp;Received</a>
-                        <a class='hidden' name='real_copies_link' href='javascript:void(0);'>Update&nbsp;Barcodes</a>
-                    </td>
-                    <td><input type='text' size='8' name='price'/></td>
+                    <td><a class='hidden' name='real_copies_link' href='javascript:void(0);'>Update&nbsp;Barcodes</a></td>
+                    <td><a name='receive_link' href='javascript:void(0);'>Mark&nbsp;Received</a></td>
                     <td><a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>
                     <td>
                         <a name='noteslink' href='javascript:void(0);' 
                             style='margin-right:15px;'>Notes(<span name='notes_count'>0</span>)</a>
                     </td>
+                    <td><input type='text' size='8' name='price'/></td>
                 </tr>
             </tbody>
         </table>
