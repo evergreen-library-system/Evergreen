@@ -85,6 +85,6 @@
     "SURVEY_QUESTION": "Question:",
     "SURVEY_ID": "Survey ID # ${0}",
     "SURVEY_FOOT_LABEL": "Questions & Answers",
-    'EVENT_DEF_LABEL' : '${0}: ${1}'
+    "EVENT_DEF_LABEL" : "${0}: ${1}"
 }
 
