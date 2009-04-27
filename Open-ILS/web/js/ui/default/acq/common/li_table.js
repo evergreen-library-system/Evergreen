@@ -353,18 +353,15 @@ function AcqLiTable() {
     this._drawInfo = function(li) {
 
         acqLitEditOrderMarc.onClick = function() { self.editOrderMarc(li); }
-        acqLitEditILSMarc.onClick = function() { self.editILSMarc(li); }
 
         if(li.eg_bib_id()) {
             openils.Util.hide('acq-lit-marc-order-record-label');
             openils.Util.hide(acqLitEditOrderMarc.domNode);
             openils.Util.show('acq-lit-marc-real-record-label');
-            openils.Util.show(acqLitEditILSMarc.domNode);
         } else {
             openils.Util.show('acq-lit-marc-order-record-label');
             openils.Util.show(acqLitEditOrderMarc.domNode);
             openils.Util.hide('acq-lit-marc-real-record-label');
-            openils.Util.hide(acqLitEditILSMarc.domNode);
         }
 
         this.drawMarcHTML(li);
@@ -437,29 +434,6 @@ function AcqLiTable() {
                 }
             }
         );
-
-        if(li.eg_bib_id()) {
-            if(this.canEditILSMarc === true) {
-                acqLitEditILSMarc.attr('disabled', false);
-            } else {
-                if(this.canEditILSMarc === false) {
-                    acqLitEditILSMarc.attr('disabled', true);
-                } else {
-                    var self = this;
-                    new openils.User().getPermOrgList('UPDATE_RECORD', 
-                        function(list) { 
-                            if(list.length > 0) {
-                                self.canEditILSMarc = true;
-                                acqLitEditILSMarc.attr('disabled', false);
-                            } else {
-                                self.canEditILSMarc = false;
-                                acqLitEditILSMarc.attr('disabled', true);
-                            }
-                        }
-                    );
-                }
-            }
-        }
     }
 
     this.drawCopies = function(liId) {
@@ -878,63 +852,34 @@ function AcqLiTable() {
             to true in about:config */
 
         if(!openils.XUL.enableXPConnect()) return;
-        win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
 
-        var self = this;
-        win.xulG = {
-            record : {marc : li.marc()},
-            save : {
-                label: 'Save Record', // XXX I18N
-                func: function(xmlString) {
-                    li.marc(xmlString);
-                    fieldmapper.standardRequest(
-                        ['open-ils.acq', 'open-ils.acq.lineitem.update'],
-                        {   async: true,
-                            params: [openils.User.authtoken, li],
-                            oncomplete: function(r) {
-                                openils.Util.readResponse(r);
-                                win.close();
-                                self.drawInfo(li.id())
+        if(openils.XUL.isXUL()) {
+            win = window.open('/xul/' + openils.XUL.buildId() + '/server/cat/marcedit.xul');
+        } else {
+
+            win = window.open('/xul/server/cat/marcedit.xul'); 
+            var self = this;
+            win.xulG = {
+                record : {marc : li.marc()},
+                save : {
+                    label: 'Save Record', // XXX I18N
+                    func: function(xmlString) {
+                        li.marc(xmlString);
+                        fieldmapper.standardRequest(
+                            ['open-ils.acq', 'open-ils.acq.lineitem.update'],
+                            {   async: true,
+                                params: [openils.User.authtoken, li],
+                                oncomplete: function(r) {
+                                    openils.Util.readResponse(r);
+                                    win.close();
+                                    self.drawInfo(li.id())
+                                }
                             }
-                        }
-                    );
-                },
-            }
-        };
-    }
-
-
-    this.editILSMarc = function(li) {
-
-        /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
-            to true in about:config */
-
-        if(!openils.XUL.enableXPConnect()) return;
-        win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
-
-        var bib = new openils.PermaCrud().retrieve('bre', li.eg_bib_id());
-
-        var self = this;
-        win.xulG = {
-            record : {marc : li.marc()},
-            save : {
-                label: 'Save Record', // XXX I18N
-                func: function(xmlString) {
-                    bib.marc(xmlString);
-                    fieldmapper.standardRequest(
-                        ['open-ils.cat', 'open-ils.cat.biblio.record_entry.update'],
-                        {   async: true,
-                            params: [openils.User.authtoken, bib],
-                            oncomplete: function(r) {
-                                openils.Util.readResponse(r);
-                                win.close();
-                                self.drawInfo(li.id())
-                            }
-                        }
-                    );
-                },
-            }
-        };
+                        );
+                    },
+                }
+            };
+        }
     }
 
     this._savePl = function(values) {
