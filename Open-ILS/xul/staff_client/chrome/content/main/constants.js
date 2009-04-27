@@ -311,7 +311,8 @@ const urls = {
 	'XUL_PATRON_BILL_WIZARD' : '/xul/server/patron/bill_wizard.xul',
 	'XUL_PATRON_DISPLAY' : '/xul/server/patron/display.xul',
 	'XUL_PATRON_HORIZ_DISPLAY' : '/xul/server/patron/display_horiz.xul',
-	'XUL_PATRON_EDIT' : '/xul/server/patron/ue.xhtml',
+	//'XUL_PATRON_EDIT' : '/xul/server/patron/ue.xhtml',
+	'XUL_PATRON_EDIT' : '/eg/actor/user/register',
 	'XUL_USER_PERM_EDITOR' : '/xul/server/patron/user_edit.xhtml',
 	'XUL_PATRON_HOLDS' : '/xul/server/patron/holds.xul',
 	'XUL_PATRON_INFO_NOTES' : '/xul/server/patron/info_notes.xul',
@@ -342,5 +343,8 @@ const urls = {
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : '/xul/server/main/test.xul',
     'VANDELAY' : '/vandelay/vandelay.xml', /* XXX how can we get the locale? */
-    'CONIFY' : '/conify/' + LOCALE + '/global/admin.html'
+    'CONIFY' : '/conify/' + LOCALE + '/global/admin.html',
+    'XUL_ACQ_PICKLIST' : '/eg/acq/picklist/list',
+    'XUL_ACQ_UPLOAD' : '/eg/acq/picklist/upload',
+    'XUL_ACQ_PO' : '/eg/acq/po/search',
 }

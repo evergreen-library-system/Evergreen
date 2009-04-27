@@ -756,6 +756,41 @@ main.menu.prototype = {
 					}
 				}
 			],
+
+			'cmd_acq_view_picklist' : [
+				['oncommand'],
+				function() {
+					obj.set_tab( 
+						obj.url_prefix(urls.XUL_ACQ_PICKLIST),
+						//{'tab_name' : offlineStrings.getString('menu.cmd_public_opac.tab'), 'browser' : false}, 
+						{'tab_name' : 'Selection Lists', 'browser' : false}, 
+						{'show_nav_buttons' : true, 'show_print_button' : true} 
+					);
+				}
+			],
+			'cmd_acq_view_po' : [
+				['oncommand'],
+				function() {
+					obj.set_tab( 
+						obj.url_prefix(urls.XUL_ACQ_PO),
+						//{'tab_name' : offlineStrings.getString('menu.cmd_public_opac.tab'), 'browser' : false}, 
+						{'tab_name' : 'Purchase Orders', 'browser' : false}, 
+						{'show_nav_buttons' : true, 'show_print_button' : true} 
+					);
+				}
+			],
+			'cmd_acq_upload' : [
+				['oncommand'],
+				function() {
+					obj.set_tab( 
+						obj.url_prefix(urls.XUL_ACQ_UPLOAD),
+						//{'tab_name' : offlineStrings.getString('menu.cmd_public_opac.tab'), 'browser' : false}, 
+						{'tab_name' : 'Load Order Record', 'browser' : false}, 
+						{'show_nav_buttons' : true, 'show_print_button' : true} 
+					);
+				}
+			],
+
 		};
 
 		JSAN.use('util.controller');

@@ -71,6 +71,7 @@
 		<menu id="main.menu.search" />
 		<menu id="main.menu.circ" />
 		<menu id="main.menu.cat" />
+		<menu id="main.menu.acq" />
 		<spacer flex="1" />
 		<menu id="main.menu.admin" />
         <!--

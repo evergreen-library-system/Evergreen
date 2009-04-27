@@ -74,6 +74,10 @@
 	<command id="cmd_broken" disabled="true" />
 	<command id="cmd_open_vandelay" />
 	<command id="cmd_open_conify" />
+    
+	<command id="cmd_acq_view_picklist" />
+	<command id="cmd_acq_upload" />
+	<command id="cmd_acq_view_po" />
 </commandset>
 
 
@@ -179,6 +183,17 @@
 		<menuitem label="&staff.main.menu.cat.retrieve_last_record.label;" accesskey="&staff.main.menu.cat.retrieve_last_record.accesskey;" command="cmd_retrieve_last_record" key="retrieve_last_record_key"/>
 	</menupopup>
 </menu>
+
+
+<!-- The Acquisitions menu on the main menu -->
+<menu id="main.menu.acq" label="&staff.main.menu.acq.label;">
+	<menupopup id="main.menu.acq.popup">
+		<menuitem label="&staff.main.menu.acq.picklist.label;" command="cmd_acq_view_picklist"/>
+		<menuitem label="&staff.main.menu.acq.upload.label;" command="cmd_acq_upload"/>
+		<menuitem label="&staff.main.menu.acq.po.label;" command="cmd_acq_view_po" />
+    </menupopup>
+</menu>
+
 
 <!-- The Search menu on the main menu -->
 <menu id="main.menu.search" label="&staff.main.menu.search.label;" accesskey="&staff.main.menu.search.accesskey;">
