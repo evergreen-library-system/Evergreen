@@ -1,0 +1,25 @@
+[% WRAPPER 'default/base.tt2' %]
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/brief_record.js'> </script>
+
+<h1>New Brief Record</h1><br/>
+<form dojoType='dijit.form.Form'>
+    <script type='dojo/method' event='onSubmit'>
+        return compileBriefRecord(this.getValues());
+    </script>
+    <table class='oils-generic-table'>
+        <tbody id='acq-brief-record-tbody'>
+            <tr id='acq-brief-record-row'>
+                <td><div name='name'/></td>
+                <td><div name='widget'/></td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td colspan='2' style='text-align:center;'>
+                    <button dojoType='dijit.form.Button' type='submit'>Submit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+[% END %]

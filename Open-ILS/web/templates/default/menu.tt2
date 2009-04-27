@@ -29,6 +29,10 @@
                             onClick="location.href = '[% ctx.base_uri %]/acq/picklist/upload';">
                             Load Records
                         </div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
+                            onClick="location.href = '[% ctx.base_uri %]/acq/picklist/brief_record';">
+                            New Brief Record
+                        </div>
                     </div>
                 </div>
 
