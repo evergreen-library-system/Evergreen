@@ -482,13 +482,12 @@ util.error.prototype = {
 		var maxlines = 30;
 		var ss = '';
 		var linefeeds = 0;
-		for (var i = 0; linefeeds < maxlines && i < s.length; i++) {
-			t = s.charAt(i);
-			if (t == "\n") {
+		for (var i=0, chr; linefeeds < maxlines && i < s.length; i++) {  
+			if ((chr = this.getWholeChar(s, i)) === false) {continue;}
+			if (chr == '\u000A') { // \n
 				linefeeds++;
 			}	
-			ss = ss + t;
-			i++;
+			ss = ss + chr;
 		}
 		
 		var rv = promptService.confirmEx(window,title, ss, flags, b1, b2, b3, c, check);
@@ -527,7 +526,33 @@ util.error.prototype = {
 			}
 		}
 		return r;
-	}
+	},
+
+	// Copied from https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String/charCodeAt
+	'getWholeChar' : function(str, i) {  
+		var code = str.charCodeAt(i);  
+		if (0xD800 <= code && code <= 0xDBFF) { // High surrogate(could change last hex to 0xDB7F to treat high private surrogates as single characters)  
+			if (str.length <= (i+1))  {  
+				throw 'High surrogate without following low surrogate';  
+			}  
+			var next = str.charCodeAt(i+1);  
+			if (0xDC00 > next || next > 0xDFFF) {  
+				throw 'High surrogate without following low surrogate';  
+			}  
+			return str[i]+str[i+1];  
+		}  
+		else if (0xDC00 <= code && code <= 0xDFFF) { // Low surrogate  
+			if (i === 0) {  
+				throw 'Low surrogate without preceding high surrogate';  
+			}  
+			var prev = str.charCodeAt(i-1);  
+			if (0xD800 > prev || prev > 0xDBFF) { //(could change last hex to 0xDB7F to treat high private surrogates as single characters)  
+				throw 'Low surrogate without preceding high surrogate';  
+			}  
+			return false; // We can pass over low surrogates now as the second component in a pair which we have already processed  
+		}  
+		return str[i];  
+	}  
 }
 
 dump('exiting util/error.js\n');
