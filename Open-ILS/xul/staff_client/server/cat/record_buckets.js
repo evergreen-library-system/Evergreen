@@ -875,7 +875,7 @@ cat.record_buckets.prototype = {
             if (y) y.value = $("catStrings").getString('staff.cat.record_buckets.submit.query_status');
             obj.network.simple_request(
                 'FM_BRE_ID_SEARCH_VIA_MULTICLASS_QUERY',
-                [ {}, x.value, 1 ],
+                [ { 'limit' : 100 }, x.value, 1 ],
                 function(req) {
                     try {
                         var resp = req.getResultObject();
