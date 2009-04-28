@@ -4,10 +4,14 @@
 <h1>New Brief Record</h1><br/>
 <form dojoType='dijit.form.Form'>
     <script type='dojo/method' event='onSubmit'>
-        return compileBriefRecord(this.getValues());
+        return saveBriefRecord(this.getValues());
     </script>
     <table class='oils-generic-table'>
         <tbody id='acq-brief-record-tbody'>
+            <tr>
+                <td>Add To Selection List</td>
+                <td><select dojoType='dijit.form.ComboBox' jsId='plSelector'/></td>
+            </tr>
             <tr id='acq-brief-record-row'>
                 <td><div name='name'/></td>
                 <td><div name='widget'/></td>
@@ -15,9 +19,8 @@
         </tbody>
         <tbody>
             <tr>
-                <td colspan='2' style='text-align:center;'>
-                    <button dojoType='dijit.form.Button' type='submit'>Submit</button>
-                </td>
+                <td><button dojoType='dijit.form.Button' type='submit'>Submit</button></td>
+                <td><button dojoType='dijit.form.Button' type='submit' jsId='marcEditButton'>Edit MARC</button></td>
             </tr>
         </tbody>
     </table>
