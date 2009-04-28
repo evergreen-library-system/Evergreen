@@ -696,7 +696,7 @@ g.special_exception[$('catStrings').getString('staff.cat.copy_editor.field.ownin
 		}
 	};
 g.special_exception[$('catStrings').getString('staff.cat.copy_editor.field.creator.label')] = function(label,value) {
-		if (value == null || value == '' || value == 'null') return;
+		if (!Number(value)) return;
 		g.network.simple_request(
 			'FM_AU_RETRIEVE_VIA_ID',
 			[ ses(), value ],
@@ -715,7 +715,7 @@ g.special_exception[$('catStrings').getString('staff.cat.copy_editor.field.creat
 		);
 	};
 g.special_exception[$('catStrings').getString('staff.cat.copy_editor.field.last_editor.label')] = function(label,value) {
-		if (value == null || value == '' || value == 'null') return;
+		if (!Number(value)) return;
 		g.network.simple_request(
 			'FM_AU_RETRIEVE_VIA_ID',
 			[ ses(), value ],
