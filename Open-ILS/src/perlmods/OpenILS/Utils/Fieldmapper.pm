@@ -5,7 +5,7 @@ use base 'OpenSRF::Application';
 use OpenSRF::Utils::Logger;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::System;
-use XML::Simple;
+use XML::LibXML;
 
 my $log = 'OpenSRF::Utils::Logger';
 
@@ -37,6 +37,134 @@ sub classes {
 	return keys %$fieldmap;
 }
 
+sub get_attribute {
+	my $attr_list = shift;
+	my $attr_name = shift;
+
+	my $attr = $attr_list->getNamedItem( $attr_name );
+	if( defined( $attr ) ) {
+		return $attr->getValue();
+	}
+	return undef;
+}
+
+sub load_fields {
+	my $field_list = shift;
+	my $fm = shift;
+
+	# Get attributes of the field list.  Since there is only one
+	# <field> per class, these attributes logically belong to the
+	# enclosing class, and that's where we load them.
+
+	my $field_attr_list = $field_list->attributes();
+
+	my $sequence  = get_attribute( $field_attr_list, 'oils_persist:sequence' );
+	if( ! defined( $sequence ) ) {
+		$sequence = '';
+	}
+	my $primary   = get_attribute( $field_attr_list, 'oils_persist:primary' );
+
+	# Load attributes into the Fieldmapper ----------------------
+
+	$$fieldmap{$fm}{ sequence } = $sequence;
+	$$fieldmap{$fm}{ identity } = $primary;
+
+	# Load each field -------------------------------------------
+
+	for my $field ( $field_list->childNodes() ) {    # For each <field>
+		if( $field->nodeName eq 'field' ) {
+	
+			my $attribute_list = $field->attributes();
+			
+			my $name     = get_attribute( $attribute_list, 'name' );
+			my $array_position = get_attribute( $attribute_list, 'oils_obj:array_position' );
+			my $virtual  = get_attribute( $attribute_list, 'oils_persist:virtual' );
+			if( ! defined( $virtual ) ) {
+				$virtual = "false";
+			}
+			my $selector = get_attribute( $attribute_list, 'reporter:selector' );
+
+			$$fieldmap{$fm}{fields}{ $name } =
+				{ virtual => ( $virtual eq 'true' ) ? 1 : 0,
+				  position => $array_position,
+				};
+
+			# The selector attribute, if present at all, attaches to only one
+			# of the fields in a given class.  So if we see it, we store it at
+			# the level of the enclosing class.
+
+			if( defined( $selector ) ) {
+				$$fieldmap{$fm}{selector} = $selector;
+			}
+		}
+	}
+}
+
+sub load_links {
+	my $link_list = shift;
+	my $fm = shift;
+
+	for my $link ( $link_list->childNodes() ) {    # For each <link>
+		if( $link->nodeName eq 'link' ) {
+			my $attribute_list = $link->attributes();
+			
+			my $field   = get_attribute( $attribute_list, 'field' );
+			my $reltype = get_attribute( $attribute_list, 'reltype' );
+			my $key     = get_attribute( $attribute_list, 'key' );
+			my $class   = get_attribute( $attribute_list, 'class' );
+
+			$$fieldmap{$fm}{links}{ $field } =
+				{ class   => $class,
+				  reltype => $reltype,
+				  key     => $key,
+				};
+		}
+	}
+}
+
+sub load_class {
+	my $class_node = shift;
+
+	# Get attributes ---------------------------------------------
+
+	my $attribute_list = $class_node->attributes();
+
+	my $fm               = get_attribute( $attribute_list, 'oils_obj:fieldmapper' );
+	$fm                  = 'Fieldmapper::' . $fm;
+	my $id               = get_attribute( $attribute_list, 'id' );
+	my $controller       = get_attribute( $attribute_list, 'controller' );
+	my $virtual          = get_attribute( $attribute_list, 'virtual' );
+	if( ! defined( $virtual ) ) {
+		$virtual = 'false';
+	}
+	my $tablename        = get_attribute( $attribute_list, 'oils_persist:tablename' );
+	if( ! defined( $tablename ) ) {
+		$tablename = '';
+	}
+	my $restrict_primary = get_attribute( $attribute_list, 'oils_persist:restrict_primary' );
+
+	# Load the attributes into the Fieldmapper --------------------
+
+	$log->debug("Building Fieldmapper class for [$fm] from IDL");
+
+	$$fieldmap{$fm}{ hint }             = $id;
+	$$fieldmap{$fm}{ virtual }          = ( $virtual eq 'true' ) ? 1 : 0;
+	$$fieldmap{$fm}{ table }            = $tablename;
+	$$fieldmap{$fm}{ controller }       = [ split ' ', $controller ];
+	$$fieldmap{$fm}{ restrict_primary } = $restrict_primary;
+
+	# Load fields and links
+
+	for my $child ( $class_node->childNodes() ) {
+		my $nodeName = $child->nodeName;
+		if( $nodeName eq 'fields' ) {
+			load_fields( $child, $fm );
+		} elsif( $nodeName eq 'links' ) {
+			load_links( $child, $fm );
+		}
+	}
+}
+
 import();
 sub import {
 	my $class = shift;
@@ -46,43 +174,17 @@ sub import {
 	return if (!OpenSRF::System->connected && !$args{IDL});
 
 	# parse the IDL ...
+	my $parser = XML::LibXML->new();
 	my $file = $args{IDL} || OpenSRF::Utils::SettingsClient->new->config_value( 'IDL' );
-	#my $idl = XMLin( $file, ForceArray => 0, KeyAttr => ['name', 'id'], ValueAttr => {link =>'key'} )->{class};
-	my $idl = XMLin( $file, ForceArray => 0, KeyAttr => ['name', 'id', 'field'] )->{class};
+	my $fmdoc = $parser->parse_file( $file );
+	my $rootnode = $fmdoc->documentElement();
 
-	for my $c ( keys %$idl ) {
-		next unless ($idl->{$c}{'oils_obj:fieldmapper'});
-		my $n = 'Fieldmapper::'.$idl->{$c}{'oils_obj:fieldmapper'};
-
-		$log->debug("Building Fieldmapper class for [$n] from IDL");
-
-		$$fieldmap{$n}{hint} = $c;
-		$$fieldmap{$n}{virtual} = ($idl->{$c}{'oils_persist:virtual'} && $idl->{$c}{'oils_persist:virtual'} eq 'true') ? 1 : 0;
-		$$fieldmap{$n}{table} = $idl->{$c}{'oils_persist:tablename'};
-		$$fieldmap{$n}{controller} = [ split ' ', $idl->{$c}{'controller'} ];
-		$$fieldmap{$n}{restrict_primary} = $idl->{$c}{'oils_persist:restrict_primary'};
-		$$fieldmap{$n}{sequence} = $idl->{$c}{fields}{'oils_persist:sequence'};
-		$$fieldmap{$n}{identity} = $idl->{$c}{fields}{'oils_persist:primary'};
-
-		for my $f ( keys %{ $idl->{$c}{fields}{field} } ) {
-			$$fieldmap{$n}{fields}{$f} =
-				{ virtual => ($idl->{$c}{fields}{field}{$f}{'oils_persist:virtual'} eq 'true') ? 1 : 0,
-				  position => $idl->{$c}{fields}{field}{$f}{'oils_obj:array_position'},
-				};
-
-			if ($idl->{$c}{fields}{field}{$f}{'reporter:selector'}) {
-				$$fieldmap{$n}{selector} = $idl->{$c}{fields}{field}{$f}{'reporter:selector'};
-			}
-		}
-		for my $f ( keys %{ $idl->{$c}{links}{link} } ) {
-			$$fieldmap{$n}{links}{$f} =
-				{ class => $idl->{$c}{links}{link}{$f}{class},
-				  reltype => $idl->{$c}{links}{link}{$f}{reltype},
-				  key => $idl->{$c}{links}{link}{$f}{key},
-				};
+	for my $child ( $rootnode->childNodes() ) {    # For each <class>
+		my $nodeName = $child->nodeName;
+		if( $nodeName eq 'class' ) {
+			load_class( $child );
 		}
 	}
-
 
 	#-------------------------------------------------------------------------------
 	# Now comes the evil!  Generate classes
