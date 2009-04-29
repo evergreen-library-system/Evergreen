@@ -119,6 +119,8 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 						);
 					}
 
+					unsigned int array_pos = 0;
+					char array_pos_buf[ 7 ];  // For up to 1,000,000 fields per class
 					xmlNodePtr _f = _cur->children;
 
 					while(_f) {
@@ -129,13 +131,9 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 						osrfHash* field_def_hash = osrfNewHash();
 
-						if( (prop_str = (char*)xmlGetNsProp(_f, BAD_CAST "array_position", BAD_CAST OBJECT_NS)) ) {
-							osrfHashSet(
-								field_def_hash,
-								prop_str,
-								"array_position"
-							);
-						}
+						// Insert array_position
+						snprintf( array_pos_buf, sizeof( array_pos_buf ), "%u", array_pos++ );
+						osrfHashSet( field_def_hash, strdup( array_pos_buf ), "array_position" );
 
 						if( (prop_str = (char*)xmlGetNsProp(_f, BAD_CAST "i18n", BAD_CAST PERSIST_NS)) ) {
 							osrfHashSet(

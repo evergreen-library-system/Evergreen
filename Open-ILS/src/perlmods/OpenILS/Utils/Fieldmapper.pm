@@ -71,13 +71,13 @@ sub load_fields {
 
 	# Load each field -------------------------------------------
 
+	my $array_position = 0;
 	for my $field ( $field_list->childNodes() ) {    # For each <field>
 		if( $field->nodeName eq 'field' ) {
 	
 			my $attribute_list = $field->attributes();
 			
 			my $name     = get_attribute( $attribute_list, 'name' );
-			my $array_position = get_attribute( $attribute_list, 'oils_obj:array_position' );
 			my $virtual  = get_attribute( $attribute_list, 'oils_persist:virtual' );
 			if( ! defined( $virtual ) ) {
 				$virtual = "false";
@@ -96,6 +96,8 @@ sub load_fields {
 			if( defined( $selector ) ) {
 				$$fieldmap{$fm}{selector} = $selector;
 			}
+
+			++$array_position;
 		}
 	}
 }
