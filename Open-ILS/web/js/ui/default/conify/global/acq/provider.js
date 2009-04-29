@@ -1,56 +1,103 @@
+dojo.require('dijit.layout.TabContainer');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('openils.PermaCrud');
 var provider;
-var contactIds = [];
+
 function draw() {
     if(providerId) {
         openils.Util.addCSSClass(dojo.byId('provider-list-div'), 'hidden');
+        console.log('in draw');
+        var pcrud = new openils.PermaCrud();
+        pcrud.retrieve('acqpro', providerId, {
+                oncomplete : function(r) {
+                    provider = openils.Util.readResponse(r);
+                    console.log('provider is' + js2JSON(provider));
+                    var pane = new openils.widget.EditPane({fmObject:provider}, dojo.byId('provider-summary-pane'));
+                    pane.startup();
+                    console.log("pane started");
+                    dojo.connect(providerTabs, 'selectChild', drawProviderSummary);                        
+                }
+ 
+            });
+      
         drawProviderSummary();
     } else {
+        console.log('in else block');
         openils.Util.addCSSClass(dojo.byId('provider-details-div'), 'hidden');
+        pListGrid.loadAll({order_by:{acqpro : 'name'}});       
         pListGrid.onPostCreate = function(fmObject) {
             location.href = location.href + '/' + fmObject.id();
         }
-        pListGrid.loadAll({order_by:{acqpro : 'name'}});
+        
     }
+   
 }
-openils.Util.addOnLoad(draw);
-
-function drawProviderSummary() {
-    openils.Util.removeCSSClass(dojo.byId('provider-details-div'), 'hidden');
-    var pcrud = new openils.PermaCrud();
-    pcrud.retrieve('acqpro', providerId, {
-        oncomplete : function(r) {
-            provider = openils.Util.readResponse(r);
-            var pane = new openils.widget.EditPane({fmObject:provider}, dojo.byId('provider-summary-pane'));
-            pane.startup();
-
-        }
-    });
-    paListGrid.overrideEditWidgets.provider = new
-        dijit.form.TextBox({style:'display:none', value: providerId});
-    paListGrid.loadAll({order_by:{acqpa : 'provider'}}, {provider : providerId});
-    pcListGrid.overrideEditWidgets.provider = new
-        dijit.form.TextBox({style:'display:none', value: providerId});
-    pcListGrid.loadAll(
-    {
-        order_by:{acqpc : 'name'},
-
-        oncomplete:  function(){
-            pcListGrid.store.fetch({
-                onComplete: function(items) {
-                    dojo.forEach(items, function(item) {
-                        contactIds.push(pcListGrid.store.getValue(item, 'id')); }
-                    );
-                    console.log("contact IDs are " + js2JSON(contactIds));
-                    pcaListGrid.overrideEditWidgets.contact = new
-                        dijit.form.FilteringSelect({store: pcListGrid.store});
-                    pcaListGrid.loadAll({order_by:{acqpca : 'contact'}}, {contact: contactIds});
+function drawProviderSummary(child) {
+    console.log(child);
+    openils.Util.addCSSClass(dojo.byId('provider-details-div'), 'visible');
+    console.log("hidden provider-details");
+  
+    var loadedTabs = {'provider-address' : true};
+    if(child){   
+        if(loadedTabs[child.id]) return;
+        loadedTabs[child.id] = true;
+        switch(child.id) {
+        case 'tab-pro-contact': 
+            pcListGrid.overrideEditWidgets.provider = new
+                dijit.form.TextBox({disabled: 'true', value: providerId});
+            openils.Util.removeCSSClass(dojo.byId('contact-addr-div'), 'hidden');
+            pcListGrid.resetStore();
+            pcListGrid.loadAll( {oncomplete:function(r){
+            var count = 0; 
+            pcListGrid.store.fetch( {onComplete:function(list) { 
+                        count =  list.length
+                            if(count>=1){
+                                var contactIds = [];                           
+                                dojo.forEach(list, function(item) {
+                                        contactIds.push(pcListGrid.store.getValue(item, 'id')); }
+                                    );
+                                openils.Util.addCSSClass(dojo.byId('contact-addr-div'), 'visible');
+                                pcaListGrid.overrideEditWidgets.contact = new
+                                dijit.form.FilteringSelect({store: pcListGrid.store});
+                                pcaListGrid.resetStore();
+                                pcaListGrid.loadAll({order_by:{acqpca : 'contact'}}, {contact: contactIds});
+                            }else{ 
+                                return;
+                            }            
+                    }
                 }
-            });
+                );
+                    }
+                }, {provider : providerId});
+            
+            break;
+        case 'tab-attr': 
+            padListGrid.overrideEditWidgets.provider = new
+                dijit.form.TextBox({disabled: 'true', value: providerId});
+            padListGrid.resetStore();
+            padListGrid.loadAll({order_by:{acqlipad : 'provider'}}, {provider : providerId});
+            break;
+        case 'tab-hold': 
+            phsListGrid.overrideEditWidgets.provider = new
+                dijit.form.TextBox({disabled: 'true', value: providerId});
+            phsListGrid.overrideEditWidgets.name = nameSelect;
+            phsListGrid.resetStore();
+            phsListGrid.loadAll({order_by:{acqphsm : 'provider'}}, {provider : providerId});
+            break;
+        default:
+            paListGrid.overrideEditWidgets.provider = new
+                dijit.form.TextBox({disabled: 'true', value: providerId});
+            paListGrid.resetStore();
+            paListGrid.loadAll({order_by:{acqpa:'provider'}}, {provider: providerId}); 
         }
-    }, {provider : providerId});
+        
+    } else {
+        paListGrid.overrideEditWidgets.provider = new
+            dijit.form.TextBox({disabled: 'true', value: providerId});
+        paListGrid.resetStore();
+        paListGrid.loadAll({order_by:{acqpa:'provider'}}, {provider: providerId}); 
+    }
 }
 
 function getProviderName(rowIndex, item) {
@@ -60,3 +107,4 @@ function getProviderName(rowIndex, item) {
         this.grid.store.getValue(item, 'name') + '</a>';
 }
 
+openils.Util.addOnLoad(draw);
