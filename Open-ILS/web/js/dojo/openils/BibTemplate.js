@@ -62,7 +62,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                 if (slot_handler) slot_handler = new Function('item', slot_handler);
                                 else slot_handler = new Function('item','return dojox.data.dom.textContent(item);');
                 
-                                slot.innerHTML += dojo.query(
+                                slot.innerHTML = dojo.query(
                                     slot.getAttribute('query'),
                                     bib
                                 ).map(slot_handler).join(' ');
