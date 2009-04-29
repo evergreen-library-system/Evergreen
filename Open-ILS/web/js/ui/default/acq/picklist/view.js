@@ -12,6 +12,7 @@ var liTable;
 
 function load() {
     liTable = new AcqLiTable();
+    liTable.isPL = plId;
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
         {   async: true,

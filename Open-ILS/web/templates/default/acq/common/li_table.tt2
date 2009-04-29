@@ -17,6 +17,7 @@
                                             <option mask='pl' value='selector_ready'>Mark Ready for Selector</option>
                                             <option mask='pl' value='order_ready'>Mark Ready for Order</option>
                                             <option mask='*'  value='delete_selected'>Delete Selected Items</option>
+                                            <option mask='*'  value='add_brief_record'>Add Brief Record</option>
                                             <option mask='po' value='' disabled='disabled'>----PO----</option>
                                             <option mask='sr|pl' value='create_order'>Create Purchase Order</option>
                                             <option mask='po' value='create_assets'>Load Bibs and Items</option>

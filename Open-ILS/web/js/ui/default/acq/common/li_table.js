@@ -703,6 +703,12 @@ function AcqLiTable() {
             case 'create_assets':
                 this.createAssets();
                 break;
+
+            case 'add_brief_record':
+                if(this.isPO)
+                    location.href = oilsBasePath + '/acq/picklist/brief_record?po=' + this.isPO;
+                else
+                    location.href = oilsBasePath + '/acq/picklist/brief_record?pl=' + this.isPL;
         }
     }
 

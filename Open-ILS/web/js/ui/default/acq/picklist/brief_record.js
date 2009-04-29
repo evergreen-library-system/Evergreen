@@ -8,25 +8,59 @@ dojo.require('openils.User');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.MarcXPathParser');
 dojo.require('openils.acq.Picklist');
+dojo.require('openils.CGI');
 
 var attrDefs = {};
+var paramPL = null;
+var paramPO = null;
 
 function drawBriefRecordForm(fields) {
 
     var tbody = dojo.byId('acq-brief-record-tbody');
     var rowTmpl = dojo.byId('acq-brief-record-row');
+    var cgi = new openils.CGI();
+    paramPL = cgi.param('pl');
+    paramPO = cgi.param('po');
 
-    fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.picklist.user.retrieve.atomic'],
-        {   async: true,
-            params: [openils.User.authtoken], 
-            oncomplete : function(r) {
-                var list = openils.Util.readResponse(r);
-                plSelector.store = 
-                    new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(list)});
+
+    if(paramPL) {
+        openils.Util.hide('acq-brief-record-po-row');
+
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
+            {   async: true,
+                params: [openils.User.authtoken, paramPL], 
+                oncomplete : function(r) {
+                    var pl = openils.Util.readResponse(r);
+                    plSelector.store = 
+                        new dojo.data.ItemFileReadStore({data:acqpl.toStoreData([pl])});
+                    plSelector.attr('value', pl.name());
+                    plSelector.attr('disabled', true);
+                }
             }
+        );
+
+    } else {
+
+        if(paramPO) {
+            openils.Util.hide('acq-brief-record-pl-row');
+            poNumber.attr('value', paramPO);
+
+        } else {
+            openils.Util.hide('acq-brief-record-po-row');
+            fieldmapper.standardRequest(
+                ['open-ils.acq', 'open-ils.acq.picklist.user.retrieve.atomic'],
+                {   async: true,
+                    params: [openils.User.authtoken], 
+                    oncomplete : function(r) {
+                        var list = openils.Util.readResponse(r);
+                        plSelector.store = 
+                            new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(list)});
+                    }
+                }
+            );
         }
-    );
+    }
 
 
     marcEditButton.onClick = function(fields) {
@@ -68,6 +102,20 @@ function drawBriefRecordForm(fields) {
 
 function saveBriefRecord(fields, editMarc) {
 
+    if(paramPL) {
+        fields.picklist = paramPL;
+        delete fields.po;
+        compileBriefRecord(fields, editMarc);
+        return false;
+    }
+
+    if(paramPO) {
+        fields.po = paramPO;
+        delete fields.picklist;
+        compileBriefRecord(fields, editMarc);
+        return false;
+    }
+
     // first, deal with the selection list
     var picklist = plSelector.attr('value');
 
@@ -88,14 +136,14 @@ function saveBriefRecord(fields, editMarc) {
                 openils.acq.Picklist.create(
                     {name:picklist, org_unit: openils.User.user.ws_ou()},
                     function(plId) { 
-                        dojo.mixin(fields, {picklist:plId});
+                        fields.picklist = plId;
                         compileBriefRecord(fields, editMarc);
                     }
                 );
 
             } else {
                 var id = plSelector.store.getValue(items[0], 'id');
-                dojo.mixin(fields, {picklist:id});
+                fields.picklist = id;
                 compileBriefRecord(fields, editMarc);
             }
         }
@@ -143,6 +191,7 @@ function compileBriefRecord(fields, editMarc) {
     var li = new fieldmapper.jub();
     li.marc(xmlString);
     li.picklist(fields.picklist);
+    if(fields.po) li.purchase_order(fields.po);
     li.selector(openils.User.user.id());
     li.creator(openils.User.user.id());
     li.editor(openils.User.user.id());
@@ -158,7 +207,9 @@ function compileBriefRecord(fields, editMarc) {
                     // XXX load marc editor
                 } else {
                     if(fields.picklist) 
-                        location.href = location.href + '/../view/' + fields.picklist;
+                        location.href = oilsBasePath + '/acq/picklist/view/' + fields.picklist;
+                    else
+                        location.href = oilsBasePath + '/acq/po/view/' + fields.po;
                 }
             }
         }
