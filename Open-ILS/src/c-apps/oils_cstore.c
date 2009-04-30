@@ -3369,36 +3369,8 @@ char* SELECT (
 				        "osrfMethodException",
 				        ctx->request,
 				        "Severe query error in HAVING predicate -- see error log for more details"
-			        );
-			    }
-			    free(core_class);
-			    buffer_free(having_buf);
-			    buffer_free(group_buf);
-			    buffer_free(sql_buf);
-			    if (defaultselhash) jsonObjectFree(defaultselhash);
-			    return NULL;
-		    }
-		}
-
-		growing_buffer* order_buf = NULL;  // to collect ORDER BY list
-
-		// Build an ORDER BY clause, if there is one
-		jsonIterator* class_itr = jsonNewIterator( order_hash );
-		while ( (snode = jsonIteratorNext( class_itr )) ) {
-
-			if (!jsonObjectGetKeyConst(selhash,class_itr->key)) {
-				osrfLogError(OSRF_LOG_MARK, "%s: Invalid class \"%s\" referenced in ORDER BY clause",
-							 MODULENAME, class_itr->key );
-				if( ctx )
-					osrfAppSessionStatus(
-						ctx->session,
-						OSRF_STATUS_INTERNALSERVERERROR,
-						"osrfMethodException",
-						ctx->request,
-						"Invalid class referenced in ORDER BY clause -- see error log for more details"
 					);
-				jsonIteratorFree( class_itr );
-				buffer_free( order_buf );
+				}
 				free(core_class);
 				buffer_free(having_buf);
 				buffer_free(group_buf);
@@ -3406,91 +3378,133 @@ char* SELECT (
 				if (defaultselhash) jsonObjectFree(defaultselhash);
 				return NULL;
 			}
+		}
 
-			osrfHash* field_list_def = oilsIDLFindPath( "/%s/fields", class_itr->key );
+		growing_buffer* order_buf = NULL;  // to collect ORDER BY list
 
-			if ( snode->type == JSON_HASH ) {
+		// Build an ORDER BY clause, if there is one
+		if( NULL == order_hash )
+			;  // No ORDER BY? do nothing
+		else if( JSON_HASH == order_hash->type )
+		{
+			jsonIterator* class_itr = jsonNewIterator( order_hash );
+			while ( (snode = jsonIteratorNext( class_itr )) ) {
 
-				jsonIterator* order_itr = jsonNewIterator( snode );
-				while ( (onode = jsonIteratorNext( order_itr )) ) {
+				if (!jsonObjectGetKeyConst(selhash,class_itr->key)) {
+					osrfLogError(OSRF_LOG_MARK, "%s: Invalid class \"%s\" referenced in ORDER BY clause",
+								 MODULENAME, class_itr->key );
+					if( ctx )
+						osrfAppSessionStatus(
+							ctx->session,
+							OSRF_STATUS_INTERNALSERVERERROR,
+							"osrfMethodException",
+							ctx->request,
+							"Invalid class referenced in ORDER BY clause -- see error log for more details"
+						);
+					jsonIteratorFree( class_itr );
+					buffer_free( order_buf );
+					free(core_class);
+					buffer_free(having_buf);
+					buffer_free(group_buf);
+					buffer_free(sql_buf);
+					if (defaultselhash) jsonObjectFree(defaultselhash);
+					return NULL;
+				}
 
-					osrfHash* field_def = osrfHashGet( field_list_def, order_itr->key );
-					if( !field_def ) {
-						osrfLogError(OSRF_LOG_MARK, "%s: Invalid field \"%s\" in ORDER BY clause",
-								MODULENAME, order_itr->key );
-						if( ctx )
-							osrfAppSessionStatus(
-								ctx->session,
-								OSRF_STATUS_INTERNALSERVERERROR,
-								"osrfMethodException",
-								ctx->request,
-								"Invalid field in ORDER BY clause -- see error log for more details"
-							);
-						jsonIteratorFree( order_itr );
-						jsonIteratorFree( class_itr );
-						buffer_free( order_buf );
-						free(core_class);
-						buffer_free(having_buf);
-						buffer_free(group_buf);
-						buffer_free(sql_buf);
-						if (defaultselhash) jsonObjectFree(defaultselhash);
-						return NULL;
-					} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
-						osrfLogError(OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
-							 MODULENAME, order_itr->key );
-						if( ctx )
-							osrfAppSessionStatus(
-								ctx->session,
-								OSRF_STATUS_INTERNALSERVERERROR,
-								"osrfMethodException",
-								ctx->request,
-								"Virtual field in ORDER BY clause -- see error log for more details"
-							);
-						jsonIteratorFree( order_itr );
-						jsonIteratorFree( class_itr );
-						buffer_free( order_buf );
-						free(core_class);
-						buffer_free(having_buf);
-						buffer_free(group_buf);
-						buffer_free(sql_buf);
-						if (defaultselhash) jsonObjectFree(defaultselhash);
-						return NULL;
-					}
+				osrfHash* field_list_def = oilsIDLFindPath( "/%s/fields", class_itr->key );
 
-					const char* direction = NULL;
-					if ( onode->type == JSON_HASH ) {
-						if ( jsonObjectGetKeyConst( onode, "transform" ) ) {
-							string = searchFieldTransform(
-								class_itr->key,
-								oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
-								onode
-							);
-							if( ! string ) {
-								if( ctx ) osrfAppSessionStatus(
+				if ( snode->type == JSON_HASH ) {
+
+					jsonIterator* order_itr = jsonNewIterator( snode );
+					while ( (onode = jsonIteratorNext( order_itr )) ) {
+
+						osrfHash* field_def = osrfHashGet( field_list_def, order_itr->key );
+						if( !field_def ) {
+							osrfLogError(OSRF_LOG_MARK, "%s: Invalid field \"%s\" in ORDER BY clause",
+									MODULENAME, order_itr->key );
+							if( ctx )
+								osrfAppSessionStatus(
 									ctx->session,
 									OSRF_STATUS_INTERNALSERVERERROR,
 									"osrfMethodException",
 									ctx->request,
-									"Severe query error in ORDER BY clause -- see error log for more details"
+									"Invalid field in ORDER BY clause -- see error log for more details"
 								);
-								jsonIteratorFree( order_itr );
-								jsonIteratorFree( class_itr );
-								free(core_class);
-								buffer_free(having_buf);
-								buffer_free(group_buf);
-								buffer_free(order_buf);
-								buffer_free(sql_buf);
-								if (defaultselhash) jsonObjectFree(defaultselhash);
-								return NULL;
-							}
-						} else {
-							growing_buffer* field_buf = buffer_init(16);
-							buffer_fadd(field_buf, "\"%s\".%s", class_itr->key, order_itr->key);
-							string = buffer_release(field_buf);
+							jsonIteratorFree( order_itr );
+							jsonIteratorFree( class_itr );
+							buffer_free( order_buf );
+							free(core_class);
+							buffer_free(having_buf);
+							buffer_free(group_buf);
+							buffer_free(sql_buf);
+							if (defaultselhash) jsonObjectFree(defaultselhash);
+							return NULL;
+						} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+							osrfLogError(OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
+								 MODULENAME, order_itr->key );
+							if( ctx )
+								osrfAppSessionStatus(
+									ctx->session,
+									OSRF_STATUS_INTERNALSERVERERROR,
+									"osrfMethodException",
+									ctx->request,
+									"Virtual field in ORDER BY clause -- see error log for more details"
+							);
+							jsonIteratorFree( order_itr );
+							jsonIteratorFree( class_itr );
+							buffer_free( order_buf );
+							free(core_class);
+							buffer_free(having_buf);
+							buffer_free(group_buf);
+							buffer_free(sql_buf);
+							if (defaultselhash) jsonObjectFree(defaultselhash);
+							return NULL;
 						}
 
-						if ( (tmp_const = jsonObjectGetKeyConst( onode, "direction" )) ) {
-							const char* dir = jsonObjectGetString(tmp_const);
+						const char* direction = NULL;
+						if ( onode->type == JSON_HASH ) {
+							if ( jsonObjectGetKeyConst( onode, "transform" ) ) {
+								string = searchFieldTransform(
+									class_itr->key,
+									oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
+									onode
+								);
+								if( ! string ) {
+									if( ctx ) osrfAppSessionStatus(
+										ctx->session,
+										OSRF_STATUS_INTERNALSERVERERROR,
+										"osrfMethodException",
+										ctx->request,
+										"Severe query error in ORDER BY clause -- see error log for more details"
+									);
+									jsonIteratorFree( order_itr );
+									jsonIteratorFree( class_itr );
+									free(core_class);
+									buffer_free(having_buf);
+									buffer_free(group_buf);
+									buffer_free(order_buf);
+									buffer_free(sql_buf);
+									if (defaultselhash) jsonObjectFree(defaultselhash);
+									return NULL;
+								}
+							} else {
+								growing_buffer* field_buf = buffer_init(16);
+								buffer_fadd(field_buf, "\"%s\".%s", class_itr->key, order_itr->key);
+								string = buffer_release(field_buf);
+							}
+
+							if ( (tmp_const = jsonObjectGetKeyConst( onode, "direction" )) ) {
+								const char* dir = jsonObjectGetString(tmp_const);
+								if (!strncasecmp(dir, "d", 1)) {
+									direction = " DESC";
+								} else {
+									direction = " ASC";
+								}
+							}
+
+						} else {
+							string = strdup(order_itr->key);
+							const char* dir = jsonObjectGetString(onode);
 							if (!strncasecmp(dir, "d", 1)) {
 								direction = " DESC";
 							} else {
@@ -3498,115 +3512,126 @@ char* SELECT (
 							}
 						}
 
-					} else {
-						string = strdup(order_itr->key);
-						const char* dir = jsonObjectGetString(onode);
-						if (!strncasecmp(dir, "d", 1)) {
-							direction = " DESC";
-						} else {
-							direction = " ASC";
+						if ( order_buf )
+							buffer_add(order_buf, ", ");
+						else
+							order_buf = buffer_init(128);
+
+						buffer_add(order_buf, string);
+						free(string);
+
+						if (direction) {
+							 buffer_add(order_buf, direction);
 						}
-					}
 
-					if ( order_buf )
-						buffer_add(order_buf, ", ");
-					else
-						order_buf = buffer_init(128);
+					} // end while
+    	            // jsonIteratorFree(order_itr);
 
-					buffer_add(order_buf, string);
-					free(string);
+				} else if ( snode->type == JSON_ARRAY ) {
 
-					if (direction) {
-						 buffer_add(order_buf, direction);
-					}
+					jsonIterator* order_itr = jsonNewIterator( snode );
+					while ( (onode = jsonIteratorNext( order_itr )) ) {
 
-				} // end while
-                // jsonIteratorFree(order_itr);
+						const char* _f = jsonObjectGetString( onode );
 
-			} else if ( snode->type == JSON_ARRAY ) {
+						osrfHash* field_def = osrfHashGet( field_list_def, _f );
+						if( !field_def ) {
+							osrfLogError(OSRF_LOG_MARK, "%s: Invalid field \"%s\" in ORDER BY clause",
+									MODULENAME, _f );
+							if( ctx )
+								osrfAppSessionStatus(
+									ctx->session,
+									OSRF_STATUS_INTERNALSERVERERROR,
+									"osrfMethodException",
+									ctx->request,
+									"Invalid field in ORDER BY clause -- see error log for more details"
+								);
+							jsonIteratorFree( order_itr );
+							jsonIteratorFree( class_itr );
+							buffer_free( order_buf );
+							free(core_class);
+							buffer_free(having_buf);
+							buffer_free(group_buf);
+							buffer_free(sql_buf);
+							if (defaultselhash) jsonObjectFree(defaultselhash);
+							return NULL;
+						} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+							osrfLogError(OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
+									MODULENAME, _f );
+							if( ctx )
+								osrfAppSessionStatus(
+									ctx->session,
+									OSRF_STATUS_INTERNALSERVERERROR,
+									"osrfMethodException",
+									ctx->request,
+									"Virtual field in ORDER BY clause -- see error log for more details"
+								);
+							jsonIteratorFree( order_itr );
+							jsonIteratorFree( class_itr );
+							buffer_free( order_buf );
+							free(core_class);
+							buffer_free(having_buf);
+							buffer_free(group_buf);
+							buffer_free(sql_buf);
+							if (defaultselhash) jsonObjectFree(defaultselhash);
+							return NULL;
+						}
 
-				jsonIterator* order_itr = jsonNewIterator( snode );
-				while ( (onode = jsonIteratorNext( order_itr )) ) {
+						if ( order_buf )
+							buffer_add(order_buf, ", ");
+						else
+							order_buf = buffer_init(128);
 
-					const char* _f = jsonObjectGetString( onode );
+						buffer_add(order_buf, _f);
 
-					osrfHash* field_def = osrfHashGet( field_list_def, _f );
-					if( !field_def ) {
-						osrfLogError(OSRF_LOG_MARK, "%s: Invalid field \"%s\" in ORDER BY clause",
-								MODULENAME, _f );
-						if( ctx )
-							osrfAppSessionStatus(
-								ctx->session,
-								OSRF_STATUS_INTERNALSERVERERROR,
-								"osrfMethodException",
-								ctx->request,
-								"Invalid field in ORDER BY clause -- see error log for more details"
-							);
-						jsonIteratorFree( order_itr );
-						jsonIteratorFree( class_itr );
-						buffer_free( order_buf );
-						free(core_class);
-						buffer_free(having_buf);
-						buffer_free(group_buf);
-						buffer_free(sql_buf);
-						if (defaultselhash) jsonObjectFree(defaultselhash);
-						return NULL;
-					} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
-						osrfLogError(OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
-								MODULENAME, _f );
-						if( ctx )
-							osrfAppSessionStatus(
-								ctx->session,
-								OSRF_STATUS_INTERNALSERVERERROR,
-								"osrfMethodException",
-								ctx->request,
-								"Virtual field in ORDER BY clause -- see error log for more details"
-							);
-						jsonIteratorFree( order_itr );
-						jsonIteratorFree( class_itr );
-						buffer_free( order_buf );
-						free(core_class);
-						buffer_free(having_buf);
-						buffer_free(group_buf);
-						buffer_free(sql_buf);
-						if (defaultselhash) jsonObjectFree(defaultselhash);
-						return NULL;
-					}
-
-					if ( order_buf )
-						buffer_add(order_buf, ", ");
-					else
-						order_buf = buffer_init(128);
-
-					buffer_add(order_buf, _f);
-
-				} // end while
+					} // end while
 				// jsonIteratorFree(order_itr);
+	
+	
+				// IT'S THE OOOOOOOOOOOLD STYLE!
+				} else {
+					osrfLogError(OSRF_LOG_MARK, 
+							"%s: Possible SQL injection attempt; direct order by is not allowed", MODULENAME);
+					if (ctx) {
+						osrfAppSessionStatus(
+							ctx->session,
+							OSRF_STATUS_INTERNALSERVERERROR,
+							"osrfMethodException",
+							ctx->request,
+							"Severe query error -- see error log for more details"
+						);
+					}
 
-
-		    // IT'S THE OOOOOOOOOOOLD STYLE!
-		    } else {
-			    osrfLogError(OSRF_LOG_MARK, "%s: Possible SQL injection attempt; direct order by is not allowed", MODULENAME);
-			    if (ctx) {
-			        osrfAppSessionStatus(
-				        ctx->session,
-				        OSRF_STATUS_INTERNALSERVERERROR,
-				        "osrfMethodException",
-				        ctx->request,
-				        "Severe query error -- see error log for more details"
-			        );
-			    }
-
-			    free(core_class);
-			    buffer_free(having_buf);
-			    buffer_free(group_buf);
-			    buffer_free(order_buf);
-			    buffer_free(sql_buf);
-			    if (defaultselhash) jsonObjectFree(defaultselhash);
-			    jsonIteratorFree(class_itr);
-			    return NULL;
-			}
-		} // end while
+					free(core_class);
+					buffer_free(having_buf);
+					buffer_free(group_buf);
+					buffer_free(order_buf);
+					buffer_free(sql_buf);
+					if (defaultselhash) jsonObjectFree(defaultselhash);
+					jsonIteratorFree(class_itr);
+					return NULL;
+				}
+			} // end while
+		} else {
+			osrfLogError(OSRF_LOG_MARK,
+				"%s: Malformed ORDER BY clause; expected JSON_HASH, found %s",
+	 			MODULENAME, json_type( order_hash->type ) );
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Malformed ORDER BY clause -- see error log for more details"
+				);
+			buffer_free( order_buf );
+			free(core_class);
+			buffer_free(having_buf);
+			buffer_free(group_buf);
+			buffer_free(sql_buf);
+			if (defaultselhash) jsonObjectFree(defaultselhash);
+			return NULL;
+		}
 		// jsonIteratorFree(class_itr);
 
 		if( order_buf )
