@@ -105,9 +105,13 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
             else links = [];
     
     
+            var position = 0;
             for(var i = 0; i < fields.length; i++) {
                 var field = fields[i];
                 var name = field.getAttribute('name');
+
+                if(name == 'isnew' || name == 'ischanged' || name == 'isdeleted') 
+                    continue;
 
                 var obj = {
                     field : field,
@@ -116,7 +120,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     datatype : field.getAttributeNS(this.NS_REPORTS,'datatype'),
                     primitive : field.getAttributeNS(this.NS_PERSIST,'primitive'),
                     selector : field.getAttributeNS(this.NS_REPORTS,'selector'),
-                    array_position : parseInt(field.getAttributeNS(this.NS_OBJ,'array_position')),
+                    array_position : position++,
                     type	: 'field',
                     virtual : (fields[i].getAttributeNS(this.NS_PERSIST, 'virtual') == 'true') 
                 };
@@ -124,8 +128,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 obj.label = obj.label || obj.name;
                 obj.datatype = obj.datatype || 'text';
 
-                if (obj.array_position > 2)
-                    window.fmclasses[classname].push(obj.name);
+                window.fmclasses[classname].push(obj.name);
     
                 var link = null;
                 for(var l = 0; l < links.length; l++) {
@@ -146,16 +149,19 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 map[obj.name] = obj;
             }
     
-            /*
-            data = data.sort(
-                function(a,b) {
-                    if( a.label > b.label ) return 1;
-                    if( a.label < b.name ) return -1;
-                    return 0;
+            dojo.forEach(['isnew', 'ischanged', 'isdeleted'],
+                function(name) {
+                    var obj = {
+                        name : name,
+                        array_position : position++,
+                        type : 'field',
+                        virtual : true
+                    };
+                    data.push(obj);
+                    map[obj.name] = obj;
                 }
             );
-            */
-    
+
             return { list : data, map : map };
         }
 

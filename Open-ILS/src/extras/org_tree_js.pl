@@ -86,7 +86,7 @@ sub build_tree_js {
 	for my $t (@$types) {
 		my ($u,$v,$d,$i,$n,$o,$p) = (val($t->can_have_users),val($t->can_have_vols),$t->depth,$t->id,val($t->name),val($t->opac_label),$t->parent);
 		$p ||= 'null';
-		$pile .= "new aout([null,null,null,null,$u,$v,$d,$i,$n,$o,$p]), ";
+		$pile .= "new aout([null,$u,$v,$d,$i,$n,$o,$p]), ";
 	}
 	$pile =~ s/, $//; # remove trailing comma
 		$pile .= ']; /* OU Types */';

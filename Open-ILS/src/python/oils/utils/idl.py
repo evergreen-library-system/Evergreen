@@ -78,6 +78,10 @@ class IDLParser(object):
     def parse_IDL(self):
         """Parses the IDL file and builds class, field, and link objects"""
 
+        # in case we're calling parse_IDL directly
+        if not IDLParser._global_parser:
+            IDLParser._global_parser = self
+
         doc = xml.dom.minidom.parse(self.idlFile)
         root = doc.documentElement
 
@@ -105,11 +109,11 @@ class IDLParser(object):
                 fields = [f for f in child.childNodes if f.nodeName == 'fields']
                 links = [f for f in child.childNodes if f.nodeName == 'links']
 
-                keys = self.parse_fields(obj, fields[0])
+                fields = self.parse_fields(obj, fields[0])
                 if len(links) > 0:
                     self.parse_links(obj, links[0])
 
-                osrf.net_obj.register_hint(obj.name, keys, 'array')
+                osrf.net_obj.register_hint(obj.name, [f.name for f in fields], 'array')
 
         doc.unlink()
 
@@ -129,22 +133,21 @@ class IDLParser(object):
     def parse_fields(self, idlobj, fields):
         """Takes the fields node and parses the included field elements"""
 
-        keys = []
-
         idlobj.primary = self._get_attr(fields, 'oils_persist:primary', OILS_NS_PERSIST)
         idlobj.sequence =  self._get_attr(fields, 'oils_persist:sequence', OILS_NS_PERSIST)
 
-        # pre-flesh the array of keys to accomodate random index insertions
-        for field in fields.childNodes:
-            if field.nodeType == field.ELEMENT_NODE:
-                keys.append(None)
-        
+        position = 0
         for field in [l for l in fields.childNodes if l.nodeName == 'field']:
+
+            name = self._get_attr(field, 'name')
+
+            if name in ['isnew', 'ischanged', 'isdeleted']: 
+                continue
 
             obj = IDLField(
                 idlobj,
-                name = self._get_attr(field, 'name'),
-                position = int(self._get_attr(field, 'oils_obj:array_position', OILS_NS_OBJ)),
+                name = name,
+                position = position,
                 virtual = self._get_attr(field, 'oils_persist:virtual', OILS_NS_PERSIST),
                 label = self._get_attr(field, 'reporter:label', OILS_NS_REPORTER),
                 rpt_datatype = self._get_attr(field, 'reporter:datatype', OILS_NS_REPORTER),
@@ -152,15 +155,19 @@ class IDLParser(object):
                 primitive = self._get_attr(field, 'oils_persist:primitive', OILS_NS_PERSIST)
             )
 
-            try:
-                keys[obj.position] = obj.name
-            except Exception, e:
-                osrf.log.log_error("parse_fields(): position out of range.  pos=%d : key-size=%d" % (obj.position, len(keys)))
-                raise e
-
             idlobj.fields.append(obj)
+            position += 1
 
-        return keys
+        for name in ['isnew', 'ischanged', 'isdeleted']: 
+            obj = IDLField(idlobj, 
+                name = name, 
+                position = position, 
+                virtual = 'true'
+            )
+            idlobj.fields.append(obj)
+            position += 1
+
+        return idlobj.fields
 
 
 

@@ -33,9 +33,7 @@ Fieldmapper.prototype.clone = function() {
 	}
 	return obj;
 }
-Fieldmapper.prototype.isnew = function(n) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; }
-Fieldmapper.prototype.ischanged = function(n) { if(arguments.length == 1) this.a[1] =n; return this.a[1]; }
-Fieldmapper.prototype.isdeleted = function(n) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; }
+
 function FMEX(message) { this.message = message; }
 FMEX.toString = function() { return "FieldmapperException: " + this.message + "\n"; }
 
@@ -51,8 +49,12 @@ for( var cl in fmclasses ) {
 
 	string += cl + "._isfieldmapper=true;";
 
+	fmclasses[cl].push('isnew');
+	fmclasses[cl].push('ischanged');
+	fmclasses[cl].push('isdeleted');
+
 	for( var pos in fmclasses[cl] ) {
-		var p = parseInt(pos) + 3;
+		var p = parseInt(pos);
 		var field = fmclasses[cl][pos];
 		string += cl + ".prototype." + field + 
 			"=function(n){if(arguments.length == 1)this.a[" + 

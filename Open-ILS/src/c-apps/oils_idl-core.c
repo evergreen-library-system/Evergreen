@@ -23,6 +23,7 @@ static xmlDocPtr idlDoc = NULL; // parse and store the IDL here
 /* parse and store the IDL here */
 static osrfHash* idlHash;
 
+static void add_std_fld( osrfHash* fields_hash, const char* field_name, unsigned pos );
 osrfHash* oilsIDL(void) { return idlHash; }
 osrfHash* oilsIDLInit( const char* idl_filename ) {
 
@@ -121,14 +122,34 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 					unsigned int array_pos = 0;
 					char array_pos_buf[ 7 ];  // For up to 1,000,000 fields per class
-					xmlNodePtr _f = _cur->children;
 
+					xmlNodePtr _f = _cur->children;
 					while(_f) {
 						if (strcmp( (char*)_f->name, "field" )) {
 							_f = _f->next;
 							continue;
 						}
 
+						// Get the field name.  If it's one of the three standard
+						// fields that we always generate, ignore it.
+						char* field_name = (char*)xmlGetProp(_f, BAD_CAST "name");
+						if( field_name ) {
+							osrfLogDebug(OSRF_LOG_MARK, 
+									"Found field %s for class %s", field_name, current_class_name );
+							if(    !strcmp( field_name, "isnew" )
+								|| !strcmp( field_name, "ischanged" )
+								|| !strcmp( field_name, "isdeleted" ) ) {
+								free( field_name );
+								_f = _f->next;
+								continue;
+							}
+						} else {
+							osrfLogDebug(OSRF_LOG_MARK,
+									"Found field with no name for class %s", current_class_name );
+							_f = _f->next;
+							continue;
+						}
+ 
 						osrfHash* field_def_hash = osrfNewHash();
 
 						// Insert array_position
@@ -165,25 +186,20 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							);
 						}
 
-						if( (prop_str = (char*)xmlGetProp(_f, BAD_CAST "name")) ) {
-							osrfHashSet(
-								field_def_hash,
-								prop_str,
-								"name"
-							);
-							osrfLogDebug(OSRF_LOG_MARK, 
-								"Found field %s for class %s", prop_str, current_class_name );
-						} else
-							osrfLogDebug(OSRF_LOG_MARK, 
-								"Found field with no name for class %s", current_class_name );
-
+						osrfHashSet( field_def_hash, field_name, "name" );
 						osrfHashSet(
 							current_fields_hash,
 							field_def_hash,
-							prop_str
+							field_name
 						);
 						_f = _f->next;
 					}
+
+					// Create three standard, stereotyped virtual fields for every class
+					add_std_fld( current_fields_hash, "isnew",     array_pos++ );
+					add_std_fld( current_fields_hash, "ischanged", array_pos++ );
+					add_std_fld( current_fields_hash, "isdeleted", array_pos   );
+
 				}
 
 				if (!strcmp( (char*)_cur->name, "links" )) {
@@ -418,6 +434,19 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 	return idlHash;
 }
+
+// Adds a standard virtual field to a fields hash
+static void add_std_fld( osrfHash* fields_hash, const char* field_name, unsigned pos ) {
+	char array_pos_buf[ 7 ];
+	osrfHash* std_fld_hash = osrfNewHash();
+
+	snprintf( array_pos_buf, sizeof( array_pos_buf ), "%u", pos );
+	osrfHashSet( std_fld_hash, strdup( array_pos_buf ), "array_position" );
+	osrfHashSet( std_fld_hash, "true", "virtual" );
+	osrfHashSet( std_fld_hash, strdup( field_name ), "name" );
+	osrfHashSet( fields_hash, std_fld_hash, field_name );
+}
+
 
 osrfHash* oilsIDLFindPath( const char* path, ... ) {
 	if(!path || strlen(path) < 1) return NULL;

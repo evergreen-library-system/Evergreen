@@ -78,6 +78,7 @@ sub load_fields {
 			my $attribute_list = $field->attributes();
 			
 			my $name     = get_attribute( $attribute_list, 'name' );
+			next if( $name eq 'isnew' || $name eq 'ischanged' || $name eq 'isdeleted' );
 			my $virtual  = get_attribute( $attribute_list, 'oils_persist:virtual' );
 			if( ! defined( $virtual ) ) {
 				$virtual = "false";
@@ -99,6 +100,16 @@ sub load_fields {
 
 			++$array_position;
 		}
+	}
+
+	# Load the standard 3 virtual fields ------------------------
+
+	for my $vfield ( qw/isnew ischanged isdeleted/ ) {
+		$$fieldmap{$fm}{fields}{ $vfield } =
+			{ position => $array_position,
+			  virtual => 1
+			};
+		++$array_position;
 	}
 }
 
@@ -198,12 +209,6 @@ sub import {
 			package $pkg;
 			use base 'Fieldmapper';
 		PERL
-
-		my $pos = 0;
-		for my $vfield ( qw/isnew ischanged isdeleted/ ) {
-			$$fieldmap{$pkg}{fields}{$vfield} = { position => $pos, virtual => 1 };
-			$pos++;
-		}
 
 		if (exists $$fieldmap{$pkg}{proto_fields}) {
 			for my $pfield ( sort keys %{ $$fieldmap{$pkg}{proto_fields} } ) {

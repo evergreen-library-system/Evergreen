@@ -150,8 +150,6 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
                     for (var f in fieldmapper.IDL.fmclasses[this.classname].fields) {
                         var field = fieldmapper.IDL.fmclasses[this.classname].fields[f];
                         var p = field.array_position;
-                        if (p <= 2) continue;
-
         				this._fields.push( field.name );
     					this[field.name]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
                     }
@@ -174,7 +172,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     				this.classname = this.declaredClass;
     				this._fields = fmclasses[this.classname];
     				for( var pos = 0; pos <  this._fields.length; pos++ ) {
-    					var p = parseInt(pos) + 3;
+    					var p = parseInt(pos);
     					var f = this._fields[pos];
     					this[f]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
     				}
