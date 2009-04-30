@@ -285,6 +285,8 @@ INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUE
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('pubdate','Publication Date','//*[@tag="260"]/*[@code="c"][1]');
 INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath ) VALUES ('edition','Edition','//*[@tag="250"]/*[@code="a"][1]');
 
+INSERT INTO acq.lineitem_local_attr_definition ( code, description ) VALUES ('estimated_price', 'Estimated Price');
+
 
 CREATE TABLE acq.distribution_formula (
 	id		SERIAL PRIMARY KEY,
