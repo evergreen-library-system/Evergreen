@@ -73,6 +73,34 @@
 				<td class='rdetail_item' id='rdetail_abstract'> </td>
 			</tr>
 
+            <!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
+                 *** summary screen with complex information, such as new search links on subjects. -->
+            <!--
+            <tr>
+                <td nowrap='nowrap' class='rdetail_desc'>Subjects</td>
+                <td type='opac/slot-data' query='datafield[tag=650]' class='rdetail_item'>
+                    <script type='opac/slot-format'><![CDATA[
+                        var cgi = new CGI();
+                        var other_params = [ 'd', 'l', 'r', 'av', 's', 'sd' ];
+                        var total = '';
+                        var output = [];
+                        var list = dojo.query( 'subfield', item );
+                        for (var i =0; i < list.length; i++) {
+                            total += dojox.data.dom.textContent(list[i]) + ' ';
+                            var current = '<a href="rresult.xml?rt=subject&t=' + total;
+                            for (var p in other_params) {
+                                if (cgi.param(other_params[p]))
+                                    current += '&' + other_params[p] + '=' + cgi.param(other_params[p]);
+                            }
+                            current += '">' + dojox.data.dom.textContent(list[i]) + '</a>'
+                            output.push(current);
+                        }
+                        return '<span>' + output.join(' &#x2d;&#x2d; ') + '</span><br/>';
+                    ]]></script>
+                </td>
+            </tr>
+            -->
+
 			<tr class='hide_me' id='rdetail_online_row'>
 				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.summary.online;</td>
 				<td class='rdetail_item' id='rdetail_online'> </td>
