@@ -229,6 +229,8 @@ const api = {
 	'PERM_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check' },
 	'PERM_MULTI_ORG_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check.multi_org' },
 	'PERM_RETRIEVE_HIGHEST_ORG' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.highest_org' },
+	'PERM_RETRIEVE_WORK_OU' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.has_work_perm_at' },
+	'BATCH_PERM_RETRIEVE_WORK_OU' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.has_work_perm_at.batch' },
 	'MARC_XML_RECORD_CREATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.create' },
 	'MARC_XML_RECORD_IMPORT' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.import' },
 	'MARC_XML_RECORD_REPLACE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.marc.replace' },

@@ -76,25 +76,28 @@
 				g.aout_hash[ g.aout_list[i].id() ] = g.aout_list[i];
 			}
 
-			var highest_org_id = g.network.simple_request(
-				'PERM_RETRIEVE_HIGHEST_ORG',
-				[ xulG.auth.session.key, g.user.id(), 'REGISTER_WORKSTATION']
+			var work_ous = g.network.simple_request(
+				'PERM_RETRIEVE_WORK_OU',
+				[ xulG.auth.session.key, 'REGISTER_WORKSTATION']
 			);
-			if (highest_org_id == -1 || highest_org_id == '-1') {
+			if (work_ous.length == 0) {
 				alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.workstation_registration_denied'));
 				xulG.auth.logoff();
 				return;
 			}
-			var perm_depth = findOrgDepth( highest_org_id );
+            g.my_libs = [];
+            for (var i = 0; i < work_ous.length; i++ ) {
+                var perm_depth = findOrgDepth( work_ous[i] );
 
-			g.my_libs_tree = g.network.simple_request(
-				'FM_AOU_DESCENDANTS_RETRIEVE',
-				[ g.user.home_ou(), perm_depth ]
-			);
-			if (!instanceOf(g.my_libs_tree,aou)) { /* FIXME - workaround for weird descendants call result */
-				g.my_libs_tree = g.my_libs_tree[0];
-			}
-			g.my_libs = util.fm_utils.flatten_ou_branch( g.my_libs_tree );
+                g.my_libs_tree = g.network.simple_request(
+                    'FM_AOU_DESCENDANTS_RETRIEVE',
+                    [ work_ous[i], perm_depth ]
+                );
+                if (!instanceOf(g.my_libs_tree,aou)) { /* FIXME - workaround for weird descendants call result */
+                    g.my_libs_tree = g.my_libs_tree[0];
+                }
+			    g.my_libs = g.my_libs.concat( util.fm_utils.flatten_ou_branch( g.my_libs_tree ) );
+            }
 
 			g.my_libs_shortname_hash = {};
 			g.my_libs_ou_hash = {};
