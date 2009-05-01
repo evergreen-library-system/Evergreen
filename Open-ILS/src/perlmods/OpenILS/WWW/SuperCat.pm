@@ -1594,24 +1594,24 @@ XML
 
 my $ex_doc;
 sub sru_search {
-    my $cgi = new CGI;
+	my $cgi = new CGI;
 
-    my $req = SRU::Request->newFromCGI( $cgi );
-    my $resp = SRU::Response->newFromRequest( $req );
+	my $req = SRU::Request->newFromCGI( $cgi );
+	my $resp = SRU::Response->newFromRequest( $req );
 
-    # Find the org_unit shortname, if passed as part of the URL
-    # http://example.com/opac/extras/sru/SHORTNAME
-    my $url = $cgi->path_info;
-    my ($shortname) = $url =~ m#/?(.*)#;
+	# Find the org_unit shortname, if passed as part of the URL
+	# http://example.com/opac/extras/sru/SHORTNAME
+	my $url = $cgi->path_info;
+	my ($shortname, $holdings) = $url =~ m#/?([^/]*)(/holdings)?#;
 
-    if ( $resp->type eq 'searchRetrieve' ) {
+	if ( $resp->type eq 'searchRetrieve' ) {
 		my $cql_query = $req->query;
 		my $search_string = $req->cql->toEvergreen;
 
 		# Ensure the search string overrides the default site
-        if ($shortname and $search_string !~ m#site:#) {
-                $search_string .= " site:$shortname";
-        }
+		if ($shortname and $search_string !~ m#site:#) {
+			$search_string .= " site:$shortname";
+		}
 
         my $offset = $req->startRecord;
         $offset-- if ($offset);
@@ -1628,12 +1628,59 @@ sub sru_search {
 
         my $bre = $supercat->request( 'open-ils.supercat.record.object.retrieve' => [ map { $_->[0] } @{$recs->{ids}} ] )->gather(1);
 
-        $resp->addRecord(
-            SRU::Response::Record->new(
-                recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
-                recordData => $_->marc
-            )
-        ) for @$bre;
+		foreach my $record (@$bre) {
+			my $marcxml = $record->marc;
+			# Make the beast conform to a VDX-supported format
+			# See http://vdxipedia.oclc.org/index.php/Holdings_Parsing
+			# Trying to implement LIBSOL_852_A format; so much for standards
+			if ($holdings) {
+				my $bib_holdings = $supercat->request('open-ils.supercat.record.basic_holdings.retrieve', $record->id, $shortname || '-')->gather(1);
+				my $marc = MARC::Record->new_from_xml($marcxml, 'UTF8', 'XML');
+
+				# Expects the record ID in the 001
+				$marc->delete_field($_) for ($marc->field('001'));
+				if (!$marc->field('001')) {
+					$marc->insert_fields_ordered(
+						MARC::Field->new( '001', $record->id )
+					);
+				}
+				foreach my $cn (keys %$bib_holdings) {
+					foreach my $cp (@{$bib_holdings->{$cn}->{'copies'}}) {
+						$marc->insert_fields_ordered(
+							MARC::Field->new(
+								'852', '4', '',
+								a => $cp->{'location'},
+								b => $bib_holdings->{$cn}->{'owning_lib'},
+								c => $cn,
+								d => $cp->{'circlib'},
+								g => $cp->{'barcode'},
+								n => $cp->{'status'},
+							)
+						);
+					}
+				}
+
+				$marc->delete_field( $_ ) for ($marc->field(901));
+				$marc->append_fields(
+					MARC::Field->new(
+						901, '', '', 
+						a => $record->tcn_value,
+						b => $record->tcn_source,
+						c => $record->id
+					)
+				);
+
+				$marcxml = $marc->as_xml();
+				$marcxml =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
+
+			}
+			$resp->addRecord(
+				SRU::Response::Record->new(
+					recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
+					recordData => $marcxml
+				)
+			);
+		}
 
         $resp->numberOfRecords($recs->{count});
 
