@@ -1575,13 +1575,13 @@ my $base_explain = <<XML;
 	</schemaInfo>
 
 	<configInfo>
-		<default type="numberOfRecords">10</default>
+		<default type="numberOfRecords">50</default>
 		<default type="contextSet">eg</default>
 		<default type="index">keyword</default>
 		<default type="relation">all</default>
 		<default type="sortSchema">marcxml</default>
 		<default type="retrieveSchema">marcxml</default>
-		<setting type="maximumRecords">10</setting>
+		<setting type="maximumRecords">50</setting>
 		<supports type="relationModifier">relevant</supports>
 		<supports type="relationModifier">stem</supports>
 		<supports type="relationModifier">fuzzy</supports>
@@ -1618,7 +1618,7 @@ sub sru_search {
         $offset ||= 0;
 
         my $limit = $req->maximumRecords;
-        $limit ||= 10;
+        $limit ||= 50;
 
         $log->info("SRU search string [$cql_query] converted to [$search_string]\n");
 
