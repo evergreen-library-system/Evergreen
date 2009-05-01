@@ -1599,9 +1599,19 @@ sub sru_search {
     my $req = SRU::Request->newFromCGI( $cgi );
     my $resp = SRU::Response->newFromRequest( $req );
 
+    # Find the org_unit shortname, if passed as part of the URL
+    # http://example.com/opac/extras/sru/SHORTNAME
+    my $url = $cgi->path_info;
+    my ($shortname) = $url =~ m#/?(.*)#;
+
     if ( $resp->type eq 'searchRetrieve' ) {
 		my $cql_query = $req->query;
 		my $search_string = $req->cql->toEvergreen;
+
+		# Ensure the search string overrides the default site
+        if ($shortname and $search_string !~ m#site:#) {
+                $search_string .= " site:$shortname";
+        }
 
         my $offset = $req->startRecord;
         $offset-- if ($offset);
@@ -1762,3 +1772,5 @@ sub sru_search {
 }
 
 1;
+
+# vim: noet:ts=4:sw=4
