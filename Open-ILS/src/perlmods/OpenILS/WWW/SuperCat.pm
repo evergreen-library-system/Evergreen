@@ -1677,7 +1677,8 @@ sub sru_search {
 			$resp->addRecord(
 				SRU::Response::Record->new(
 					recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
-					recordData => $marcxml
+					recordData => $marcxml,
+					recordPosition => ++$offset
 				)
 			);
 		}
