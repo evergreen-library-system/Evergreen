@@ -366,7 +366,7 @@ BEGIN
             SELECT  id INTO attr_set.location
               FROM  asset.copy_location
               WHERE LOWER(name) = LOWER(tmp_attr_set.cl)
-                    AND owning_lib = COALESCE(attr_set.owning_lib, attr_set.circ_lib); -- INT
+                    AND asset.copy_location.owning_lib = COALESCE(attr_set.owning_lib, attr_set.circ_lib); -- INT
     
             attr_set.circulate      :=
                 LOWER( SUBSTRING( tmp_attr_set.circ, 1, 1)) IN ('t','y','1')
