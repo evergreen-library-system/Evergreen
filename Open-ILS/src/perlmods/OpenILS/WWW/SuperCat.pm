@@ -42,7 +42,7 @@ $browse_types{call_number}{xml} = sub {
 	my $year = (gmtime())[5] + 1900;
 	my $content = '';
 
-	$content .= "<hold:volumes  xmlns:hold='http://open-ils.org/spec/holdings/v1'>";
+	$content .= "<volumes  xmlns='http://open-ils.org/spec/holdings/v1'>";
 
 	for my $cn (@$tree) {
 		(my $cn_class = $cn->class_name) =~ s/::/-/gso;
@@ -69,17 +69,17 @@ $browse_types{call_number}{xml} = sub {
 
 		my $rec_tag = "tag:open-ils.org,$year:$rec_class/".$cn->record->id.'/'.$cn->owning_lib->shortname;
 
-		$content .= "<hold:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>";
-		$content .= "<act:owning_lib xmlns:act='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>";
+		$content .= "<volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>";
+		$content .= "<owning_lib xmlns:act='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>";
 
 		my $r_doc = $parser->parse_string($cn->record->marc);
 		$r_doc->documentElement->setAttribute( id => $rec_tag );
 		$content .= $U->entityize($r_doc->documentElement->toString);
 
-		$content .= "</hold:volume>";
+		$content .= "</volume>";
 	}
 
-	$content .= '</hold:volumes>';
+	$content .= '</volumes>';
 	return ("Content-type: application/xml\n\n",$content);
 };
 

@@ -683,7 +683,7 @@ sub new_record_holdings {
 	$year += 1900;
 	$month += 1;
 
-	$client->respond("<holdings:volumes xmlns:holdings='http://open-ils.org/spec/holdings/v1'>");
+	$client->respond("<volumes xmlns='http://open-ils.org/spec/holdings/v1'>");
 
 	for my $cn (@{$tree->call_numbers}) {
         next unless ( $cn->deleted eq 'f' || $cn->deleted == 0 );
@@ -705,7 +705,7 @@ sub new_record_holdings {
 
 		my $cn_label = $cn->label;
 
-		my $xml = "<holdings:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><holdings:copies>";
+		my $xml = "<volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><copies>";
 		
 		for my $cp (@{$cn->copies}) {
 
@@ -721,34 +721,34 @@ sub new_record_holdings {
 			my $cp_lib = escape($cp->circ_lib->shortname);
 			my $cp_bc = escape($cp->barcode);
 
-			$xml .= "<holdings:copy id='$cp_tag' barcode='$cp_bc'><holdings:status>$cp_stat</holdings:status>".
-				"<holdings:location>$cp_loc</holdings:location><holdings:circlib>$cp_lib</holdings:circlib><holdings:copy_notes>";
+			$xml .= "<copy id='$cp_tag' barcode='$cp_bc'><status>$cp_stat</status>".
+				"<location>$cp_loc</location><circlib>$cp_lib</circlib><copy_notes>";
 
 			if ($cp->notes) {
 				for my $note ( @{$cp->notes} ) {
 					next unless ( $note->pub eq 't' );
-					$xml .= sprintf('<holdings:copy_note date="%s" title="%s">%s</holdings:copy_note>',$note->create_date, escape($note->title), escape($note->value));
+					$xml .= sprintf('<copy_note date="%s" title="%s">%s</copy_note>',$note->create_date, escape($note->title), escape($note->value));
 				}
 			}
 
-			$xml .= "</holdings:copy_notes><holdings:statcats>";
+			$xml .= "</copy_notes><statcats>";
 
 			if ($cp->stat_cat_entries) {
 				for my $sce ( @{$cp->stat_cat_entries} ) {
 					next unless ( $sce->stat_cat->opac_visible eq 't' );
-					$xml .= sprintf('<holdings:statcat name="%s">%s</holdings:statcat>',escape($sce->stat_cat->name) ,escape($sce->value));
+					$xml .= sprintf('<statcat name="%s">%s</statcat>',escape($sce->stat_cat->name) ,escape($sce->value));
 				}
 			}
 
-			$xml .= "</holdings:statcats></holdings:copy>";
+			$xml .= "</statcats></copy>";
 		}
 		
-		$xml .= "</holdings:copies></holdings:volume>";
+		$xml .= "</copies></volume>";
 
 		$client->respond($xml)
 	}
 
-	return "</holdings:volumes>";
+	return "</volumes>";
 }
 __PACKAGE__->register_method(
 	method    => 'new_record_holdings',
