@@ -1670,7 +1670,7 @@ sub sru_search {
 					)
 				);
 
-				$marcxml = $marc->as_xml();
+				$marcxml = $marc->as_xml_record();
 				$marcxml =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
 
 			}
