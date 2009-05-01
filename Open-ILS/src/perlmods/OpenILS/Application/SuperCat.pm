@@ -640,6 +640,123 @@ Returns a list of the requested org-scoped record ids held
 		}
 );
 
+__PACKAGE__->register_method(
+	method    => 'basic_record_holdings',
+	api_name  => 'open-ils.supercat.record.basic_holdings.retrieve',
+	api_level => 1,
+	argc      => 1,
+	stream    => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns a basic hash representation of the requested bibliographic record's holdings
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'bibId',
+				  desc => 'An OpenILS biblio::record_entry id',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'Hash of bib record holdings hierarchy (call numbers and copies)',
+			  type => 'string' }
+		}
+);
+sub basic_record_holdings {
+	my $self = shift;
+	my $client = shift;
+	my $bib = shift;
+	my $ou = shift;
+
+	#  holdings hold an array of call numbers, which hold an array of copies
+	#  holdings => [ label: { library, [ copies: { barcode, location, status, circ_lib } ] } ]
+	my %holdings;
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $tree = $_storage->request(
+		"open-ils.cstore.direct.biblio.record_entry.retrieve",
+		$bib,
+		{ flesh		=> 5,
+		  flesh_fields	=> {
+					bre	=> [qw/call_numbers/],
+		  			acn	=> [qw/copies owning_lib/],
+					acp	=> [qw/location status circ_lib/],
+				}
+		}
+	)->gather(1);
+
+	my $o_search = { shortname => uc($ou) };
+	if (!$ou || $ou eq '-') {
+		$o_search = { parent_ou => undef };
+	}
+
+	my $orgs = $_storage->request(
+		"open-ils.cstore.direct.actor.org_unit.search",
+		$o_search,
+		{ flesh		=> 3,
+		  flesh_fields	=> { aou	=> [qw/children/] }
+		}
+	)->gather(1);
+
+	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
+
+	$logger->debug("Searching for holdings at orgs [".join(',',@ou_ids)."], based on $ou");
+
+	for my $cn (@{$tree->call_numbers}) {
+        next unless ( $cn->deleted eq 'f' || $cn->deleted == 0 );
+
+		my $found = 0;
+		for my $c (@{$cn->copies}) {
+			next unless grep {$c->circ_lib->id == $_} @ou_ids;
+			next unless ( $c->deleted eq 'f' || $c->deleted == 0 );
+			$found = 1;
+			last;
+		}
+		next unless $found;
+
+		$holdings{$cn->label}{'owning_lib'} = $cn->owning_lib->shortname;
+
+		for my $cp (@{$cn->copies}) {
+
+			next unless grep { $cp->circ_lib->id == $_ } @ou_ids;
+			next unless ( $cp->deleted eq 'f' || $cp->deleted == 0 );
+
+
+			my $cp_stat = escape($cp->status->name);
+			my $cp_loc = escape($cp->location->name);
+			my $cp_lib = escape($cp->circ_lib->shortname);
+			my $cp_bc = escape($cp->barcode);
+
+			push @{$holdings{$cn->label}{'copies'}}, { barcode => $cp_bc, status => $cp_stat, location => $cp_loc, circlib => $cp_lib};
+
+		}
+	}
+
+	return \%holdings;
+}
+
+__PACKAGE__->register_method(
+	method    => 'new_record_holdings',
+	api_name  => 'open-ils.supercat.record.holdings_xml.retrieve',
+	api_level => 1,
+	argc      => 1,
+	stream    => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the XML representation of the requested bibliographic record's holdings
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'bibId',
+				  desc => 'An OpenILS biblio::record_entry id',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'Stream of bib record holdings hierarchy in XML',
+			  type => 'string' }
+		}
+);
+
 
 sub new_record_holdings {
 	my $self = shift;
@@ -1405,3 +1522,5 @@ Returns the ISBN list for the metarecord of the requested isbn
 );
 
 1;
+
+# vim: noet:ts=4:sw=4
