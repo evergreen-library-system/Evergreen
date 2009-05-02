@@ -3634,6 +3634,28 @@ char* SELECT (
 								}
 							}
 
+						} else if ( JSON_NULL == onode->type || JSON_ARRAY == onode->type ) {
+							osrfLogError( OSRF_LOG_MARK,
+								"%s: Expected JSON_STRING in ORDER BY clause; found %s",
+								MODULENAME, json_type( onode->type ) );
+							if( ctx )
+								osrfAppSessionStatus(
+									ctx->session,
+									OSRF_STATUS_INTERNALSERVERERROR,
+									"osrfMethodException",
+									ctx->request,
+									"Malformed ORDER BY clause -- see error log for more details"
+								);
+							jsonIteratorFree( order_itr );
+							jsonIteratorFree( class_itr );
+							free(core_class);
+							buffer_free(having_buf);
+							buffer_free(group_buf);
+							buffer_free(order_buf);
+							buffer_free(sql_buf);
+							if (defaultselhash) jsonObjectFree(defaultselhash);
+							return NULL;
+
 						} else {
 							string = strdup(order_itr->key);
 							const char* dir = jsonObjectGetString(onode);
