@@ -70,7 +70,7 @@ $browse_types{call_number}{xml} = sub {
 		my $rec_tag = "tag:open-ils.org,$year:$rec_class/".$cn->record->id.'/'.$cn->owning_lib->shortname;
 
 		$content .= "<volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>";
-		$content .= "<owning_lib xmlns:act='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>";
+		$content .= "<owning_lib xmlns='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>";
 
 		my $r_doc = $parser->parse_string($cn->record->marc);
 		$r_doc->documentElement->setAttribute( id => $rec_tag );
@@ -350,6 +350,8 @@ sub unapi {
 		$type = 'metarecord' if ($1 =~ /^metabib/o);
 		$type = 'isbn' if ($1 =~ /^isbn/o);
 		$type = 'call_number' if ($1 =~ /^call_number/o);
+		$type = 'acp' if ($1 =~ /^asset-copy/o);
+		$type = 'acn' if ($1 =~ /^asset-call_number/o);
 		$command = 'retrieve';
 		$command = 'browse' if ($type eq 'call_number');
 	}
@@ -422,7 +424,7 @@ sub unapi {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id&l=$lib_id&d=$lib_depth\n\n"
 			if ($type eq 'record');
 		return 302;
-	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format)) {
+	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format) && ($type ne 'acn' && $type ne 'acp')) {
 		my $feed = create_record_feed(
 			$type,
 			$format => [ $id ],
