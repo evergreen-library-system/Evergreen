@@ -1618,7 +1618,7 @@ sub sru_search {
         $offset ||= 0;
 
         my $limit = $req->maximumRecords;
-        $limit ||= 50;
+        $limit ||= 10;
 
         $log->info("SRU search string [$cql_query] converted to [$search_string]\n");
 
