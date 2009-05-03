@@ -1516,6 +1516,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false"  reporter:datatype="org_unit"/>
 			<field reporter:label="Bib Record" name="record" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Notes" name="notes" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="URI Maps" name="uri_maps" oils_obj:array_position="14" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="URIs" name="uris" oils_obj:array_position="15" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -1524,6 +1526,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="notes" reltype="has_many" key="call_number" map="" class="acnn"/>
 			<link field="copies" reltype="has_many" key="call_number" map="" class="acp"/>
+			<link field="uris" reltype="has_many" key="call_number" map="uri" class="auricnm"/>
+			<link field="uri_maps" reltype="has_many" key="call_number" map="" class="auricnm"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -1544,8 +1548,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Label" name="label" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Use Information" name="use_restriction" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Active" name="active" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Call Number Maps" name="call_number_maps" oils_obj:array_position="8" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Call Numbers" name="call_numbers" oils_obj:array_position="9" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
-		<links/>
+		<links>
+			<link field="call_numbers" reltype="has_many" key="uri" map="call_number" class="auricnm"/>
+			<link field="call_number_maps" reltype="has_many" key="uri" map="" class="auricnm"/>
+        </links>
 	</class>
 	<class id="auricnm" controller="open-ils.cstore" oils_obj:fieldmapper="asset::uri_call_number_map" oils_persist:tablename="asset.uri_call_number_map" reporter:label="Electronic Access URI to Call Number Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.uri_call_number_map_id_seq">

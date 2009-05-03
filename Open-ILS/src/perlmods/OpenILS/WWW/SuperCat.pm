@@ -352,6 +352,7 @@ sub unapi {
 		$type = 'call_number' if ($1 =~ /^call_number/o);
 		$type = 'acp' if ($1 =~ /^asset-copy/o);
 		$type = 'acn' if ($1 =~ /^asset-call_number/o);
+		$type = 'auri' if ($1 =~ /^asset-uri/o);
 		$command = 'retrieve';
 		$command = 'browse' if ($type eq 'call_number');
 	}
@@ -424,7 +425,7 @@ sub unapi {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id&l=$lib_id&d=$lib_depth\n\n"
 			if ($type eq 'record');
 		return 302;
-	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format) && ($type ne 'acn' && $type ne 'acp')) {
+	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format) && ($type ne 'acn' && $type ne 'acp' && $type ne 'auri')) {
 		my $feed = create_record_feed(
 			$type,
 			$format => [ $id ],

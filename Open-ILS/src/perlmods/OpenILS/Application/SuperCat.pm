@@ -267,7 +267,7 @@ sub cn_browse {
 	my $orgs = $_storage->request(
 		"open-ils.cstore.direct.actor.org_unit.search",
 		$o_search,
-		{ flesh		=> 3,
+		{ flesh		=> 100,
 		  flesh_fields	=> { aou	=> [qw/children/] }
 		}
 	)->gather(1);
@@ -362,7 +362,7 @@ sub new_books_by_item {
 		my $orgs = $_storage->request(
 			"open-ils.cstore.direct.actor.org_unit.search",
 			{ shortname => $ou },
-			{ flesh		=> 10,
+			{ flesh		=> 100,
 			  flesh_fields	=> { aou	=> [qw/children/] }
 			}
 		)->gather(1);
@@ -533,7 +533,7 @@ sub tag_sf_browse {
 		my $orgs = $_storage->request(
 			"open-ils.cstore.direct.actor.org_unit.search",
 			{ shortname => $ou },
-			{ flesh		=> 10,
+			{ flesh		=> 100,
 			  flesh_fields	=> { aou	=> [qw/children/] }
 			}
 		)->gather(1);
@@ -651,7 +651,51 @@ sub holding_data_formats {
 }
 __PACKAGE__->register_method( method => 'holding_data_formats', api_name => 'open-ils.supercat.acn.formats', api_level => 1 );
 __PACKAGE__->register_method( method => 'holding_data_formats', api_name => 'open-ils.supercat.acp.formats', api_level => 1 );
+__PACKAGE__->register_method( method => 'holding_data_formats', api_name => 'open-ils.supercat.auri.formats', api_level => 1 );
 
+
+__PACKAGE__->register_method(
+	method    => 'retrieve_uri',
+	api_name  => 'open-ils.supercat.auri.marcxml.retrieve',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns a fleshed call number object
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'uri_id',
+				  desc => 'An OpenILS asset::uri id',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'fleshed uri',
+			  type => 'object' }
+		}
+);
+sub retrieve_uri {
+	my $self = shift;
+	my $client = shift;
+	my $cpid = shift;
+	my $args = shift;
+
+    return OpenILS::Application::SuperCat::unAPI
+        ->new(OpenSRF::AppSession
+            ->create( 'open-ils.cstore' )
+            ->request(
+    	    	"open-ils.cstore.direct.asset.uri.retrieve",
+	    	    $cpid,
+    		    { flesh		=> 10,
+        		  flesh_fields	=> {
+	        	  			auri    => [qw/call_number_maps/],
+	        	  			acn	    => [qw/owning_lib record/],
+	        	  			auricnm	=> [qw/uri/],
+    				}
+	    	    })
+            ->gather(1))
+        ->as_xml($args);
+}
 
 __PACKAGE__->register_method(
 	method    => 'retrieve_copy',
@@ -728,9 +772,10 @@ sub retrieve_callnumber {
             ->request(
     	    	"open-ils.cstore.direct.asset.call_number.retrieve",
 	    	    $cnid,
-    		    { flesh		=> 2,
+    		    { flesh		=> 5,
         		  flesh_fields	=> {
-	        	  			acn	=> [qw/owning_lib record copies/],
+	        	  			acn	=> [qw/owning_lib record copies uri_maps/],
+	        	  			auricnm	=> [qw/uri/],
 		        			acp	=> [qw/location status circ_lib stat_cat_entries notes/],
     				}
 	    	    })
@@ -792,7 +837,7 @@ sub basic_record_holdings {
 	my $orgs = $_storage->request(
 		"open-ils.cstore.direct.actor.org_unit.search",
 		$o_search,
-		{ flesh		=> 3,
+		{ flesh		=> 100,
 		  flesh_fields	=> { aou	=> [qw/children/] }
 		}
 	)->gather(1);
@@ -871,7 +916,8 @@ sub new_record_holdings {
 		{ flesh		=> 5,
 		  flesh_fields	=> {
 					bre	=> [qw/call_numbers/],
-		  			acn	=> [qw/copies owning_lib/],
+		  			acn	=> [qw/copies owning_lib uri_maps/],
+		  			auricnm	=> [qw/uri/],
 					acp	=> [qw/location status circ_lib stat_cat_entries notes/],
 					asce	=> [qw/stat_cat/],
 				}
@@ -886,7 +932,7 @@ sub new_record_holdings {
 	my $orgs = $_storage->request(
 		"open-ils.cstore.direct.actor.org_unit.search",
 		$o_search,
-		{ flesh		=> 3,
+		{ flesh		=> 100,
 		  flesh_fields	=> { aou	=> [qw/children/] }
 		}
 	)->gather(1);
@@ -911,6 +957,10 @@ sub new_record_holdings {
 			$found = 1;
 			last;
 		}
+
+        if (!$found && ref($cn->uri_maps) && @{$cn->uri_maps}) {
+    		$found = 1 if (grep {$cn->owning_lib->id == $_} @ou_ids);
+        }
 		next unless $found;
 
         $client->respond(
@@ -1604,6 +1654,38 @@ sub obj {
     return $self->{obj};
 }
 
+package OpenILS::Application::SuperCat::unAPI::auri;
+use base qw/OpenILS::Application::SuperCat::unAPI/;
+
+sub as_xml {
+    my $self = shift;
+    my $args = shift;
+
+    my $xml = '<uri xmlns="http://open-ils.org/spec/holdings/v1" ';
+    $xml .= 'id="tag:open-ils.org:asset-uri/' . $self->obj->id . '" ';
+    $xml .= 'use_restriction="' . $self->escape( $self->obj->use_restriction ) . '" ';
+    $xml .= 'label="' . $self->escape( $self->obj->label ) . '" ';
+    $xml .= 'href="' . $self->escape( $self->obj->href ) . '">';
+
+    if (!$args->{no_volumes} && ref($self->obj->call_number_maps) && @{ $self->obj->call_number_maps }) {
+        $xml .= '<volumes>' . join(
+            '',
+            map {
+                OpenILS::Application::SuperCat::unAPI
+                    ->new( $_->call_number )
+                    ->as_xml({ %$args, no_uris=>1, no_copies=>1 })
+            } @{ $self->obj->call_number_maps }
+        ) . '</volumes>';
+
+    } else {
+        $xml .= '<volumes/>';
+    }
+
+    $xml .= '</uri>';
+
+    return $xml;
+}
+
 package OpenILS::Application::SuperCat::unAPI::acn;
 use base qw/OpenILS::Application::SuperCat::unAPI/;
 
@@ -1629,6 +1711,20 @@ sub as_xml {
 
     } else {
         $xml .= '<copies/>';
+    }
+
+    if (!$args->{no_uris} && ref($self->obj->uri_maps) && @{ $self->obj->uri_maps }) {
+        $xml .= '<uris>' . join(
+            '',
+            map {
+                OpenILS::Application::SuperCat::unAPI
+                    ->new( $_->uri )
+                    ->as_xml({ %$args, no_volumes=>1 })
+            } @{ $self->obj->uri_maps }
+        ) . '</uris>';
+
+    } else {
+        $xml .= '<uris/>';
     }
 
 
@@ -1664,11 +1760,12 @@ sub as_xml {
 
     $xml .= '<status>' . $self->escape( $self->obj->status->name  ) . '</status>';
     $xml .= '<location>' . $self->escape( $self->obj->location->name  ) . '</location>';
+    $xml .= '<circlib>' . $self->escape( $self->obj->circ_lib->name  ) . '</circlib>';
 
-    $xml .= '<circlib xmlns="http://open-ils.org/spec/actors/v1" ';
+    $xml .= '<circ_lib xmlns="http://open-ils.org/spec/actors/v1" ';
     $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->circ_lib->id . '" ';
     $xml .= 'shortname="'.$self->escape( $self->obj->circ_lib->shortname ) .'" ';
-    $xml .= 'name="'.$self->escape( $self->obj->circ_lib->name ) .'">' . $self->escape( $self->obj->circ_lib->name  ) . '</circlib>';
+    $xml .= 'name="'.$self->escape( $self->obj->circ_lib->name ) .'"/>';
 
 	$xml .= "<copy_notes>";
 	if (ref($self->obj->notes) && $self->obj->notes) {

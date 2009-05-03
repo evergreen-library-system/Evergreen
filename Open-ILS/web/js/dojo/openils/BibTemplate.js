@@ -28,7 +28,6 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
 
         render : function() {
             var all_slots = dojo.query('*[type^=opac/slot-data]', this.root);
-            var rec = location.href.split('?')[1];
         
             var slots = {};
             dojo.forEach(all_slots, function(s){
@@ -51,6 +50,8 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                         load: function (bib) {
 
                             dojo.forEach(slot_list, function (slot) {
+                                var joiner = slot.getAttribute('join') || ' ';
+
                                 var slot_handler = dojo.query(
                                     'script[type=opac/slot-format]',
                                     slot
@@ -65,7 +66,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                 slot.innerHTML = dojo.query(
                                     slot.getAttribute('query'),
                                     bib
-                                ).map(slot_handler).join(' ');
+                                ).map(slot_handler).join(joiner);
                 
                                 delete(slot_handler);
                             
