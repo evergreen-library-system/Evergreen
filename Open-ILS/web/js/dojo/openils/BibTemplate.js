@@ -24,6 +24,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         constructor : function(kwargs) {
             this.root = kwargs.root;
             this.record = kwargs.record;
+            this.org_unit = kwargs.org_unit || '-';
         },
 
         render : function() {
@@ -31,7 +32,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         
             var slots = {};
             dojo.forEach(all_slots, function(s){
-                var datatype = 'marcxml';
+                var datatype = 'marcxml-full';
         
                 if (s.getAttribute('type').indexOf('+') > -1) 
                     datatype = s.getAttribute('type').split('+').reverse()[0];
@@ -42,10 +43,10 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         
             for (var datatype in slots) {
 
-                (function (slot_list,dtype,rec) {
+                (function (slot_list,dtype,rec,org) {
 
                     dojo.xhrGet({
-                        url: '/opac/extras/unapi?id=tag:opac:biblio-record_entry/' + rec + '/-&format=' + datatype,
+                        url: '/opac/extras/unapi?id=tag:opac:biblio-record_entry/' + rec + '/' + org + '&format=' + datatype,
                         handleAs: 'xml',
                         load: function (bib) {
 
@@ -56,17 +57,19 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     'script[type=opac/slot-format]',
                                     slot
                                 ).orphan().map(
-                                    function(x){return x.textContent || x.innerText || x.innerHTML}
+                                    function(x){return dojox.data.dom.textContent(x)}
                                 ).join('');
                         
                 
                                 if (slot_handler) slot_handler = new Function('item', slot_handler);
                                 else slot_handler = new Function('item','return dojox.data.dom.textContent(item);');
                 
-                                slot.innerHTML = dojo.query(
+                                var item_list = dojo.query(
                                     slot.getAttribute('query'),
                                     bib
-                                ).map(slot_handler).join(joiner);
+                                );
+
+                                if (item_list.length) slot.innerHTML = item_list.map(slot_handler).join(joiner);
                 
                                 delete(slot_handler);
                             
@@ -74,7 +77,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                        }
                     });
 
-                })(slots[datatype],datatype,this.record);
+                })(slots[datatype],datatype,this.record,this.org_unit);
             
             }
 
