@@ -71,6 +71,12 @@
   </xsl:template>
 
   <xsl:template match="hold:volumes">
+    <xsl:if test="count(hold:volume/hold:uris/hold:uri) &gt; 0">
+    	<u>Links</u>
+        <ul>
+          <xsl:apply-templates select="hold:volume/hold:uris/hold:uri"/>
+        </ul>
+    </xsl:if>
     <xsl:if test="count(hold:volume/hold:copies/hold:copy) &gt; 0">
     	<u>Holdings</u>
         <ul>
@@ -93,6 +99,22 @@
        </b>
         <xsl:apply-templates select="hold:copies"/>
       </li>
+  </xsl:template>
+
+  <xsl:template match="hold:uri">
+        <li>
+            <a>
+            	 <xsl:attribute name="href">
+                	  <xsl:value-of select="@href"/>
+            	 </xsl:attribute>
+                 <xsl:value-of select="@label"/>
+	        </a>
+            <xsl:if test="@use_restriction != ''">
+                <span> (Use Restriction: </span>
+                <xsl:value-of select="@use_restriction"/>
+                <span>)</span>
+            </xsl:if>
+        </li>
   </xsl:template>
 
   <xsl:template match="hold:copies">
@@ -189,9 +211,10 @@
       <span class="DDC"><xsl:value-of select="marc:subfield[@code='a']"/></span>
     </xsl:if>
 
-    <xsl:if test="@tag='856'">
+    <xsl:if test="@tag='856' and not(marc:subfield[@code='9'])">
      <br/><xsl:apply-templates mode="link" select="marc:subfield" />
     </xsl:if>
+
   </xsl:template>
 
   <xsl:template match="marc:subfield" mode="link">
