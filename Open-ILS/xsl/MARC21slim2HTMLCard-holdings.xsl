@@ -73,12 +73,12 @@
   <xsl:template match="hold:volumes">
     <xsl:if test="count(hold:volume/hold:copies/hold:copy) &gt; 0">
     	<u>Holdings</u>
+        <ul>
+          <xsl:apply-templates select="hold:volume">
+            <xsl:sort select="@lib"/>
+          </xsl:apply-templates>
+        </ul>
     </xsl:if>
-    <ul>
-    <xsl:apply-templates select="hold:volume">
-      <xsl:sort select="@lib"/>
-    </xsl:apply-templates>
-    </ul>
   </xsl:template>
 
   <xsl:template match="hold:volume">
