@@ -1790,9 +1790,9 @@ sub as_xml {
     $xml .= 'id="tag:open-ils.org:asset-copy/' . $self->obj->id . '" ';
     $xml .= 'barcode="' . $self->escape( $self->obj->barcode  ) . '">';
 
-    $xml .= '<status>' . $self->escape( $self->obj->status->name  ) . '</status>';
-    $xml .= '<location>' . $self->escape( $self->obj->location->name  ) . '</location>';
-    $xml .= '<circlib>' . $self->escape( $self->obj->circ_lib->name  ) . '</circlib>';
+    $xml .= '<status ident="' . $self->obj->status->id . '">' . $self->escape( $self->obj->status->name  ) . '</status>';
+    $xml .= '<location ident="' . $self->obj->location->id . '">' . $self->escape( $self->obj->location->name  ) . '</location>';
+    $xml .= '<circlib ident="' . $self->obj->circ_lib->id . '">' . $self->escape( $self->obj->circ_lib->name  ) . '</circlib>';
 
     $xml .= '<circ_lib xmlns="http://open-ils.org/spec/actors/v1" ';
     $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->circ_lib->id . '" ';
