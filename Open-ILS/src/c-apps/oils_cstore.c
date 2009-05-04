@@ -3621,7 +3621,7 @@ char* SELECT (
 							if ( jsonObjectGetKeyConst( onode, "transform" ) ) {
 								string = searchFieldTransform(
 									class_itr->key,
-									oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
+									osrfHashGet( field_list_def, order_itr->key ),
 									onode
 								);
 								if( ! string ) {
@@ -3702,7 +3702,7 @@ char* SELECT (
 						}
 
 					} // end while
-    	            // jsonIteratorFree(order_itr);
+    	            jsonIteratorFree(order_itr);
 
 				} else if ( snode->type == JSON_ARRAY ) {
 
@@ -4021,17 +4021,15 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 					jsonIterator* order_itr = jsonNewIterator( snode );
 					while ( (onode = jsonIteratorNext( order_itr )) ) {
 
-						if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ))
+						osrfHash* field_def = oilsIDLFindPath( "/%s/fields/%s",
+								class_itr->key, order_itr->key );
+						if ( !field_def )
 							continue;
 
 						char* direction = NULL;
 						if ( onode->type == JSON_HASH ) {
 							if ( jsonObjectGetKeyConst( onode, "transform" ) ) {
-								string = searchFieldTransform(
-									class_itr->key,
-									oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
-									onode
-								);
+								string = searchFieldTransform( class_itr->key, field_def, onode );
 								if( ! string ) {
 									osrfAppSessionStatus(
 										ctx->session,
