@@ -518,8 +518,11 @@ function AcqLiTable() {
                         orgLimitPerms : ['CREATE_PICKLIST'],
                         dijitArgs : {required:false}
                     });
-                    widget.build();
-                    self.copyBatchWidgets[field] = widget.widget;
+                    widget.build(
+                        function(w, ww) {
+                            self.copyBatchWidgets[field] = w;
+                        }
+                    );
                 }
             }
         );
@@ -584,7 +587,10 @@ function AcqLiTable() {
                 });
                 widget.build(
                     // make sure we capture the value from any async widgets
-                    function(w, ww) { copy[field](ww.getFormattedValue()) }
+                    function(w, ww) { 
+                        copy[field](ww.getFormattedValue()) 
+                        self.copyWidgetCache[copy.id()][field] = w;
+                    }
                 );
                 dojo.connect(widget.widget, 'onChange', 
                     function(val) { 
@@ -595,7 +601,6 @@ function AcqLiTable() {
                         }
                     }
                 );
-                self.copyWidgetCache[copy.id()][field] = widget.widget;
             }
         );
 
