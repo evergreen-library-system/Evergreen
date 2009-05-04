@@ -1234,7 +1234,7 @@ sub create_record_feed {
 		next unless $node;
 
 		$xml = '';
-		if ($lib && $type eq 'marcxml' &&  $flesh) {
+		if ($lib && ($type eq 'marcxml' || $type eq 'atom') &&  $flesh) {
 			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib );
 			while ( !$r->complete ) {
 				$xml .= join('', map {$_->content} $r->recv);
