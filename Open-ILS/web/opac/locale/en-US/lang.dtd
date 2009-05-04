@@ -51,6 +51,12 @@
 <!ENTITY common.true "True">
 <!ENTITY common.false "False">
 
+<!ENTITY common.textbox.cut "Cut">
+<!ENTITY common.textbox.copy "Copy">
+<!ENTITY common.textbox.paste "Paste">
+<!ENTITY common.textbox.delete "Delete">
+<!ENTITY common.textbox.select_all "Select All">
+
 <!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
 <!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
 <!ENTITY ilsevent.1002 "User was not found in the database">
