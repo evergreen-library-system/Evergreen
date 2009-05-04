@@ -39,7 +39,8 @@ To-do list:
  xmlns:content="http://purl.org/rss/1.0/modules/content/"
  xmlns:dc="http://purl.org/dc/elements/1.1/"
  xmlns:xhtml="http://www.w3.org/1999/xhtml"
- exclude-result-prefixes="xsl opensearch opensearchOld atom rss9 rdf rss1 content dc xhtml"
+ xmlns:h="http://open-ils.org/spec/holdings/v1"
+ exclude-result-prefixes="xsl opensearch opensearchOld atom rss9 rdf rss1 content dc xhtml h"
  >
 	<xsl:output omit-xml-declaration="yes" method="html" doctype-public="-//W3C/DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/strict.dtd" encoding="UTF-8" media-type="text/html" />
 	
@@ -65,6 +66,9 @@ To-do list:
 	<xsl:variable name="t-nextlink">next &amp;#187;</xsl:variable>
 	<xsl:variable name="t-nomoreresults">No further results.</xsl:variable> <!-- shown when the page is beyond the last page of results -->
 	<xsl:variable name="t-noresults">Sorry, no results were found.</xsl:variable>
+	<xsl:variable name="t-totalcopies">Total copies: </xsl:variable>
+	<xsl:variable name="t-availcopies">Available copies: </xsl:variable>
+	<xsl:variable name="t-onlineresources">On-line resources: </xsl:variable>
 	<xsl:variable name="t-untitleditem">(untitled)</xsl:variable> <!-- text of untitled items when the title needs to be shown) -->
 	<xsl:variable name="t-entrylink">view full entry</xsl:variable> <!-- text of the link to the full entry (used with <content src="" /> in atom) -->
 	<xsl:variable name="t-authors">by</xsl:variable> <!-- label before one or more author/contributors (eg the 'by' in 'by Joe'); leave blank to not show authors -->
@@ -406,6 +410,36 @@ To-do list:
 		<!-- item rights -->
 		<xsl:variable name="itemrights" select="atom:rights[not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml'][1]" />
 		<xsl:if test="$itemrights"><dd class="rights"><xsl:call-template name="showtext"><xsl:with-param name="node" select="$itemrights" /></xsl:call-template></dd></xsl:if>
+
+        <!-- item count -->
+        <xsl:if test="h:volumes">
+            <xsl:if test="h:volumes/h:volume/h:copies/h:copy">
+                <dd>
+                    <xsl:value-of select="$t-availcopies"/><xsl:value-of select="count(h:volumes/h:volume/h:copies/h:copy/h:status[@ident='0' or @ident='7' or @ident='12'])"/>
+                    <span> / </span>
+                    <xsl:value-of select="$t-totalcopies"/><xsl:value-of select="count(h:volumes/h:volume/h:copies/h:copy)"/>
+                </dd>
+            </xsl:if>
+            <xsl:if test="h:volumes/h:volume/h:uris/h:uri">
+                <dd>
+                    <xsl:value-of select="$t-onlineresources"/>
+		    	    <xsl:for-each select="h:volumes/h:volume/h:uris/h:uri">
+                        <a>
+    			    	    <xsl:attribute name="href">
+	    			    	    <xsl:value-of select="@href" />
+    		    		    </xsl:attribute>
+    	    		    	<xsl:value-of select="@label" />
+                        </a>
+                        <xsl:if test="@use_restriction != ''">
+                            <span> -- </span>
+                            <xsl:value-of select="@use_restriction"/>
+                        </xsl:if>
+                        <span>; </span>
+	    	    	</xsl:for-each>
+                </dd>
+            </xsl:if>
+        </xsl:if>
+
 		<!-- item url -->
 		<xsl:if test="string-length($url)&gt;0">
 			<dd class="url">
