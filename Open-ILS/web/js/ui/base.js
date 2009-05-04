@@ -8,8 +8,9 @@ dojo.require('openils.Event');
 dojo.require('openils.Util');
 
 function oilsSetupUser() {
-    var authtoken = new openils.CGI().param('ses') || dojo.cookie('ses');
-    var workstation = dojo.cookie('oils.ws');
+    var cgi = new openils.CGI();
+    var authtoken = cgi.param('ses') || dojo.cookie('ses');
+    var workstation = cgi.param('ws') || dojo.cookie('ws');
     var user;
     if(authtoken) user = new openils.User({authtoken:authtoken});
     if(!authtoken || openils.Event.parse(user.user)) {
@@ -26,16 +27,21 @@ function oilsSetupUser() {
     }
     dojo.cookie('ses', authtoken, {path : oilsBasePath});
     openils.User.authtoken = authtoken;
-    openils.User.workstation = dojo.cookie('oils.ws');
+    openils.User.workstation = workstation;
 }
 
 function oilsDoLogin() {
+    var cgi = new openils.CGI();
+    var workstation = cgi.param('ws') || dojo.cookie('ws');
     var user = new openils.User();
-    user.login({
+    var args = {
         username: dojo.byId('oils-login-username').value,
         passwd: dojo.byId('oils-login-password').value,
-        type: 'staff' // hardcode for now
-    });
+        type: 'staff', // hardcode for now
+    };
+    if(workstation) 
+        args.workstation = workstation;
+    user.login(args);
     dojo.cookie('ses', user.authtoken, {path : oilsBasePath});
     location.href = location.href;
     return false;
