@@ -555,15 +555,28 @@ sub tag_sf_browse {
 					  subfield => $subfield,
 					  value => { '<' => lc($value) }
 					},
-				  '-exists'	=>
-					{ select=> { acp => [ 'id' ] },
-					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
-					  where	=>
-						{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
-						  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
-						},
-					  limit => 1
-					}
+                  '-or' => [
+		    		{ '-exists'	=>
+	    				{ select=> { acp => [ 'id' ] },
+    					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
+					      where	=>
+				    		{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
+			    			  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
+		    				},
+	    				  limit => 1
+    					}
+                    },
+                    { '-exists'	=>
+    					{ select=> { auri => [ 'id' ] },
+	    				  from	=> { acn => { auricnm => { field => 'call_number', fkey => 'id', join => { auri => { field => 'id', fkey => 'uri' } } } } },
+		    			  where	=>
+			    			{ '+acn' => { record => { '=' => { '+mfr' => 'record' } }, (@ou_ids) ? ( owning_lib => \@ou_ids) : () },
+				    		  '+auri' => { active => 't' }
+					    	},
+    					  limit => 1
+	    				}
+                    }
+                  ]
 				}, 
 			  order_by	=> { mfr => { value => 'desc' } },
 			  limit		=> $before_limit,
@@ -584,15 +597,28 @@ sub tag_sf_browse {
 					  subfield => $subfield,
 					  value => { '>=' => lc($value) }
 					},
-				  '-exists'	=>
-					{ select=> { acp => [ 'id' ] },
-					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
-					  where	=>
-						{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
-						  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
-						},
-					  limit => 1
-					}
+				  '-or' => [
+                    { '-exists'	=>
+    					{ select=> { acp => [ 'id' ] },
+	    				  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
+		    			  where	=>
+			    			{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
+				    		  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
+					    	},
+    					  limit => 1
+	    				}
+                    },
+                    { '-exists'	=>
+    					{ select=> { auri => [ 'id' ] },
+	    				  from	=> { acn => { auricnm => { field => 'call_number', fkey => 'id', join => { auri => { field => 'id', fkey => 'uri' } } } } },
+		    			  where	=>
+			    			{ '+acn' => { record => { '=' => { '+mfr' => 'record' } }, (@ou_ids) ? ( owning_lib => \@ou_ids) : () },
+				    		  '+auri' => { active => 't' }
+					    	},
+    					  limit => 1
+	    				},
+                    }
+                  ]
 				}, 
 			  order_by	=> { mfr => { value => 'asc' } },
 			  limit		=> $after_limit,
@@ -1667,18 +1693,20 @@ sub as_xml {
     $xml .= 'label="' . $self->escape( $self->obj->label ) . '" ';
     $xml .= 'href="' . $self->escape( $self->obj->href ) . '">';
 
-    if (!$args->{no_volumes} && ref($self->obj->call_number_maps) && @{ $self->obj->call_number_maps }) {
-        $xml .= '<volumes>' . join(
-            '',
-            map {
-                OpenILS::Application::SuperCat::unAPI
-                    ->new( $_->call_number )
-                    ->as_xml({ %$args, no_uris=>1, no_copies=>1 })
-            } @{ $self->obj->call_number_maps }
-        ) . '</volumes>';
+    if (!$args->{no_volumes}) {
+        if (ref($self->obj->call_number_maps) && @{ $self->obj->call_number_maps }) {
+            $xml .= '<volumes>' . join(
+                '',
+                map {
+                    OpenILS::Application::SuperCat::unAPI
+                        ->new( $_->call_number )
+                        ->as_xml({ %$args, no_uris=>1, no_copies=>1 })
+                } @{ $self->obj->call_number_maps }
+            ) . '</volumes>';
 
-    } else {
-        $xml .= '<volumes/>';
+        } else {
+            $xml .= '<volumes/>';
+        }
     }
 
     $xml .= '</uri>';
@@ -1699,32 +1727,36 @@ sub as_xml {
     $xml .= 'lib="' . $self->obj->owning_lib->shortname . '" ';
     $xml .= 'label="' . $self->obj->label . '">';
 
-    if (!$args->{no_copies} && ref($self->obj->copies) && @{ $self->obj->copies }) {
-        $xml .= '<copies>' . join(
-            '',
-            map {
-                OpenILS::Application::SuperCat::unAPI
-                    ->new( $_ )
-                    ->as_xml({ %$args, no_volume=>1 })
-            } @{ $self->obj->copies }
-        ) . '</copies>';
+    if (!$args->{no_copies}) {
+        if (ref($self->obj->copies) && @{ $self->obj->copies }) {
+            $xml .= '<copies>' . join(
+                '',
+                map {
+                    OpenILS::Application::SuperCat::unAPI
+                        ->new( $_ )
+                        ->as_xml({ %$args, no_volume=>1 })
+                } @{ $self->obj->copies }
+            ) . '</copies>';
 
-    } else {
-        $xml .= '<copies/>';
+        } else {
+            $xml .= '<copies/>';
+        }
     }
 
-    if (!$args->{no_uris} && ref($self->obj->uri_maps) && @{ $self->obj->uri_maps }) {
-        $xml .= '<uris>' . join(
-            '',
-            map {
-                OpenILS::Application::SuperCat::unAPI
-                    ->new( $_->uri )
-                    ->as_xml({ %$args, no_volumes=>1 })
-            } @{ $self->obj->uri_maps }
-        ) . '</uris>';
+    if (!$args->{no_uris}) {
+        if (ref($self->obj->uri_maps) && @{ $self->obj->uri_maps }) {
+            $xml .= '<uris>' . join(
+                '',
+                map {
+                    OpenILS::Application::SuperCat::unAPI
+                        ->new( $_->uri )
+                        ->as_xml({ %$args, no_volumes=>1 })
+                } @{ $self->obj->uri_maps }
+            ) . '</uris>';
 
-    } else {
-        $xml .= '<uris/>';
+        } else {
+            $xml .= '<uris/>';
+        }
     }
 
 
