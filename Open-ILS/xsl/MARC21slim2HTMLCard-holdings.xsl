@@ -97,6 +97,7 @@
          <xsl:value-of select="./@label"/>
 	</a>
        </b>
+            <abbr class="unapi-id"><xsl:attribute name="title"><xsl:value-of select="@id"/></xsl:attribute></abbr>
         <xsl:apply-templates select="hold:copies"/>
       </li>
   </xsl:template>
@@ -114,6 +115,7 @@
                 <xsl:value-of select="@use_restriction"/>
                 <span>)</span>
             </xsl:if>
+            <abbr class="unapi-id"><xsl:attribute name="title"><xsl:value-of select="@id"/></xsl:attribute></abbr>
         </li>
   </xsl:template>
 
@@ -126,13 +128,13 @@
   </xsl:template>
 
   <xsl:template match="hold:copy">
-      <li> <xsl:value-of select="@barcode"/>
+      <li> <xsl:value-of select="@barcode"/> <abbr class="unapi-id"><xsl:attribute name="title"><xsl:value-of select="@id"/></xsl:attribute></abbr>
         <ul>
-	  <li>Circulating from <b><xsl:value-of select="hold:circlib"/></b></li>
-	  <li>Located at <b><xsl:value-of select="hold:location"/></b></li>
-	  <li>Status is <b><xsl:value-of select="hold:status"/></b></li>
-	  <xsl:apply-templates select="hold:statcats"/>
-	</ul>
+    	  <li>Circulating from <b><xsl:value-of select="hold:circlib"/></b></li>
+	      <li>Located at <b><xsl:value-of select="hold:location"/></b></li>
+    	  <li>Status is <b><xsl:value-of select="hold:status"/></b></li>
+	      <xsl:apply-templates select="hold:statcats"/>
+    	</ul>
       </li>
   </xsl:template>
 
