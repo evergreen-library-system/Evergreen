@@ -42,6 +42,11 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
             if(!this.idlField) 
                 throw new Error("AutoFieldWidget could not determine which field to render.  We need more information.");
+
+            this.auth = openils.User.authtoken;
+            if(!this.cache[this.auth]) {
+                this.cache[this.auth] = {};
+            }
         },
 
         /**
@@ -193,15 +198,18 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 return;
             }
 
-            // first try the object list cache
-            if(this.cache[lclass]) {
-                for(var k in this.cache[lclass]) {
-                    var cc = this.cache[lclass][k];
-                    if(cc[linkInfo.vfield.name]() == this.widgetValue) {
-                        this.widgetValue = cc[linkInfo.vfield.selector]();
-                        return;
+            // first try the store cache
+            var self = this;
+            if(this.cache[this.auth][lclass]) {
+                var store = this.cache[this.auth][lclass];
+                var query = {};
+                query[linkInfo.vfield.name] = this.widgetValue;
+                store.fetch({query:query, onComplete:
+                    function(list) {
+                        self.widgetValue = store.getValue(list[0], linkInfo.vfield.selector);
                     }
-                }
+                });
+                return;
             }
 
             // then try the single object cache
@@ -266,6 +274,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 return this._buildPermGrpSelector();
             if(linkClass == 'aou')
                 return this._buildOrgSelector();
+            if(linkClass == 'acpl')
+                return this._buildCopyLocSelector();
+
 
             dojo.require('openils.PermaCrud');
             dojo.require('dojo.data.ItemFileReadStore');
@@ -280,14 +291,16 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 if(list) {
                     self.widget.store = 
                         new dojo.data.ItemFileReadStore({data:fieldmapper[linkClass].toStoreData(list)});
-                    self.cache[linkClass] = list;
+                    self.cache[self.auth][linkClass] = self.widget.store;
+                } else {
+                    self.widget.store = self.cache[self.auth][linkClass];
                 }
                 self.widget.startup();
                 self._widgetLoaded();
             };
 
-            if(this.cache[linkClass]) {
-                oncomplete(this.cache[linkClass]);
+            if(this.cache[self.auth][linkClass]) {
+                oncomplete();
 
             } else {
                 new openils.PermaCrud().retrieveAll(linkClass, {   
@@ -357,7 +370,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.cache.permGrpTree) {
                 this.widget.tree = this.cache.permGrpTree;
                 this.widget.startup();
-                return;
+                return true;
             } 
 
             var self = this;
@@ -379,6 +392,41 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         pnode.children().push(node);
                     }
                     self.widget.tree = self.cache.permGrpTree = root;
+                    self.widget.startup();
+                    self._widgetLoaded();
+                }
+            });
+
+            return true;
+        },
+
+        _buildCopyLocSelector : function() {
+            dojo.require('dijit.form.FilteringSelect');
+            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
+            this.widget.searchAttr = this.widget.labalAttr = 'name';
+            this.widget.valueAttr = 'id';
+
+            if(this.cache.copyLocStore) {
+                this.widget.store = this.cache.copyLocStore;
+                this.widget.startup();
+                this.async = false;
+                return true;
+            } 
+
+            // my orgs
+            var ws_ou = openils.User.user.ws_ou();
+            var orgs = fieldmapper.aou.findOrgUnit(ws_ou).orgNodeTrail().map(function (i) { return i.id() });
+            orgs = orgs.concat(fieldmapper.aou.descendantNodeList(ws_ou).map(function (i) { return i.id() }));
+
+            var self = this;
+            new openils.PermaCrud().search('acpl', {owning_lib : orgs}, {
+                async : !this.forceSync,
+                oncomplete : function(r) {
+                    var list = openils.Util.readResponse(r, false, true);
+                    if(!list) return;
+                    self.widget.store = 
+                        new dojo.data.ItemFileReadStore({data:fieldmapper.acpl.toStoreData(list)});
+                    self.cache.copyLocStore = self.widget.store;
                     self.widget.startup();
                     self._widgetLoaded();
                 }
