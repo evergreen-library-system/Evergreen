@@ -901,12 +901,7 @@ sub retrieve_purchase_order {
 sub po_perm_failure {
     my($e, $po_id, $fund_id) = @_;
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
-    my $provider = $e->retrieve_acq_provider($po->provider) or return $e->event;
-    return $e->event unless $e->allowed('MANAGE_PROVIDER', $provider->owner, $provider);
-    if($fund_id) {
-        my $fund = $e->retrieve_acq_fund($po->$fund_id);
-        return $e->event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
-    }
+    return $e->event unless $e->allowed('VIEW_PURCHASE_ORDER', $po->ordering_agency, $po);
     return undef;
 }
 
