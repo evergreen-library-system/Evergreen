@@ -1060,6 +1060,7 @@ Returns the XML representation of the requested bibliographic record's holdings
 sub escape {
 	my $self = shift;
 	my $text = shift;
+    return '' unless $text;
 	$text =~ s/&/&amp;/gsom;
 	$text =~ s/</&lt;/gsom;
 	$text =~ s/>/&gt;/gsom;
@@ -1785,10 +1786,15 @@ sub as_xml {
     my $self = shift;
     my $args = shift;
 
-    my $xml = '<copy xmlns="http://open-ils.org/spec/holdings/v1" ';
+    my $xml = '<copy xmlns="http://open-ils.org/spec/holdings/v1" '.
+        'id="tag:open-ils.org:asset-copy/' . $self->obj->id . '" ';
 
-    $xml .= 'id="tag:open-ils.org:asset-copy/' . $self->obj->id . '" ';
-    $xml .= 'barcode="' . $self->escape( $self->obj->barcode  ) . '">';
+    $xml .= $_ . '="' . $self->escape( $self->obj->$_  ) . '" ' for (qw/
+        create_date edit_date copy_number circulate deposit ref holdable deleted
+        deposit_amount price barcode circ_modifier circ_as_type opac_visible
+    /);
+
+    $xml .= '>';
 
     $xml .= '<status ident="' . $self->obj->status->id . '">' . $self->escape( $self->obj->status->name  ) . '</status>';
     $xml .= '<location ident="' . $self->obj->location->id . '">' . $self->escape( $self->obj->location->name  ) . '</location>';
