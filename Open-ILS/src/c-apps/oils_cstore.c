@@ -3417,18 +3417,9 @@ char* SELECT (
 						jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "class" ) );
 				const char* field =
 						jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "field" ) );
-				const char* direction =
-						jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "direction" ) );
-
-				if( !direction )
-					direction = "";
-				else if( direction[ 0 ] || 'D' == direction[ 0 ] )
-					direction = " DESC";
-				else
-					direction = " ASC";
 
 				if ( order_buf )
-					buffer_add(order_buf, ", ");
+					OSRF_BUFFER_ADD(order_buf, ", ");
 				else
 					order_buf = buffer_init(128);
 
@@ -3454,8 +3445,8 @@ char* SELECT (
 				}
 
 				if (!jsonObjectGetKeyConst( selhash,class ) ) {
-					osrfLogError(OSRF_LOG_MARK, "%s: Invalid class \"%s\" referenced in ORDER BY clause",
-								 MODULENAME, class );
+					osrfLogError(OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
+							"not in SELECT clause", MODULENAME, class );
 					if( ctx )
 						osrfAppSessionStatus(
 							ctx->session,
@@ -3510,8 +3501,40 @@ char* SELECT (
 					return NULL;
 				}
 
-				buffer_fadd( order_buf, "\"%s\".%s%s", class, field, direction );
+				if( jsonObjectGetKeyConst( order_spec, "transform" ) ) {
+					char* transform_str = searchFieldTransform( class, field_def, order_spec );
+					if( ! transform_str ) {
+						if( ctx )
+							osrfAppSessionStatus(
+								ctx->session,
+								OSRF_STATUS_INTERNALSERVERERROR,
+								"osrfMethodException",
+								ctx->request,
+								"Severe query error in ORDER BY clause -- see error log for more details"
+							);
+						buffer_free( order_buf );
+						free(core_class);
+						buffer_free(having_buf);
+						buffer_free(group_buf);
+						buffer_free(sql_buf);
+						if (defaultselhash) jsonObjectFree(defaultselhash);
+						return NULL;
+					}
+					
+					OSRF_BUFFER_ADD( order_buf, transform_str );
+					free( transform_str );
+				}
+				else
+					buffer_fadd( order_buf, "\"%s\".%s", class, field );
 
+				const char* direction =
+						jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "direction" ) );
+				if( direction ) {
+					if( direction[ 0 ] || 'D' == direction[ 0 ] )
+						OSRF_BUFFER_ADD( order_buf, " DESC" );
+					else
+						OSRF_BUFFER_ADD( order_buf, " ASC" );
+				}
 			}
 		} else if( JSON_HASH == order_hash->type ) {
 			// This hash is keyed on class name.  Each class has either
@@ -3667,15 +3690,15 @@ char* SELECT (
 						}
 
 						if ( order_buf )
-							buffer_add(order_buf, ", ");
+							OSRF_BUFFER_ADD(order_buf, ", ");
 						else
 							order_buf = buffer_init(128);
 
-						buffer_add(order_buf, string);
+						OSRF_BUFFER_ADD(order_buf, string);
 						free(string);
 
 						if (direction) {
-							 buffer_add(order_buf, direction);
+							 OSRF_BUFFER_ADD(order_buf, direction);
 						}
 
 					} // end while
@@ -3733,11 +3756,11 @@ char* SELECT (
 						}
 
 						if ( order_buf )
-							buffer_add(order_buf, ", ");
+							OSRF_BUFFER_ADD(order_buf, ", ");
 						else
 							order_buf = buffer_init(128);
 
-						buffer_add(order_buf, _f);
+						OSRF_BUFFER_ADD(order_buf, _f);
 
 					} // end while
 				// jsonIteratorFree(order_itr);
@@ -3961,7 +3984,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 	osrfLogDebug(OSRF_LOG_MARK, "%s pre-predicate SQL =  %s",
 				 MODULENAME, OSRF_BUFFER_C_STR(sql_buf));
 
-	buffer_add(sql_buf, " WHERE ");
+	OSRF_BUFFER_ADD(sql_buf, " WHERE ");
 
 	char* pred = searchWHERE( search_hash, meta, AND_OP_JOIN, ctx );
 	if (!pred) {
