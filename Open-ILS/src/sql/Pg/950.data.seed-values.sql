@@ -1209,7 +1209,10 @@ INSERT INTO permission.perm_list VALUES
     (189, 'MARK_ITEM_RESHELVING', oils_i18n_gettext(189, 'Allow a user to mark an item status as ''reshelving''', 'ppl', 'description')),
     (190, 'MARK_ITEM_ON_HOLDS_SHELF', oils_i18n_gettext(190, 'Allow a user to mark an item status as ''on holds shelf''', 'ppl', 'description')),
     (191, 'MARK_ITEM_ON_ORDER', oils_i18n_gettext(191, 'Allow a user to mark an item status as ''on order''', 'ppl', 'description')),
-    (192, 'MARK_ITEM_ILL', oils_i18n_gettext(192, 'Allow a user to mark an item status as ''inter-library loan''', 'ppl', 'description'));
+    (192, 'MARK_ITEM_ILL', oils_i18n_gettext(192, 'Allow a user to mark an item status as ''inter-library loan''', 'ppl', 'description')),
+    (193, 'group_application.user.staff.acq', oils_i18n_gettext(193, 'Allows a user to add/remove/edit users in the "ACQ" group', 'ppl', 'description')),
+    (194, 'CREATE_PURCHASE_ORDER', oils_i18n_gettext(194, 'Allows a user to create a purchase order', 'ppl', 'description'));
+    (195, 'VIEW_PURCHASE_ORDER', oils_i18n_gettext(195, 'Allows a user to view a purchase order', 'ppl', 'description'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 
@@ -1368,6 +1371,8 @@ INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, u
 	(4, oils_i18n_gettext(4, 'Catalogers', 'pgt', 'name'), 3, NULL, '3 years', TRUE, 'group_application.user.staff.cat');
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(5, oils_i18n_gettext(5, 'Circulators', 'pgt', 'name'), 3, NULL, '3 years', TRUE, 'group_application.user.staff.circ');
+INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
+	(6, oils_i18n_gettext(6, 'Acquisitions', 'pgt', 'name'), 3, NULL, '3 years', TRUE, 'group_application.user.staff.acq');
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(10, oils_i18n_gettext(10, 'Local System Administrator', 'pgt', 'name'), 3, 
 	oils_i18n_gettext(10, 'System maintenance, configuration, etc.', 'pgt', 'description'), '3 years', TRUE, 'group_application.user.staff.admin.local_admin');
