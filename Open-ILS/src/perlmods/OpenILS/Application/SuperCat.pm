@@ -715,8 +715,8 @@ sub retrieve_uri {
     		    { flesh		=> 10,
         		  flesh_fields	=> {
 	        	  			auri    => [qw/call_number_maps/],
+	        	  			auricnm	=> [qw/call_number/],
 	        	  			acn	    => [qw/owning_lib record/],
-	        	  			auricnm	=> [qw/uri/],
     				}
 	    	    })
             ->gather(1))
