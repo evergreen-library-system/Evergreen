@@ -308,12 +308,18 @@ sub get_bib_attr {
     my $circ = shift;
     my $attr = shift;
     my $copy = $circ->target_copy;
-    if($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) {
+    if($copy->call_number->id == OILS_PRECAT_CALL_NUMBER or $copy->call_number->record->id == OILS_PRECAT_RECORD) {
         return $copy->dummy_title || '' if $attr eq 'title';
         return $copy->dummy_author || '' if $attr eq 'author';
     } else {
         $last_mvr = $U->record_to_mvr($copy->call_number->record)
             unless $last_mvr and $last_mvr->doc_id == $copy->call_number->record->id;
+
+        unless($last_mvr) {
+            $logger->error("failed to create mvr for circ  " . $circ->id);
+            return '';
+        }
+
         return $last_mvr->title || '' if $attr eq 'title';
         return $last_mvr->author || '' if $attr eq 'author';
     }
