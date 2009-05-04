@@ -218,6 +218,8 @@ sub delete_lineitem {
 # begins and commit transactions as it goes
 sub create_lineitem_list_assets {
     my($mgr, $li_ids) = @_;
+    return undef if check_asset_create_perms($mgr, $li_ids);
+
     # create the bibs/volumes/copies and ingest the records
     for my $li_id (@$li_ids) {
         $mgr->editor->xact_begin;
@@ -229,6 +231,24 @@ sub create_lineitem_list_assets {
     $mgr->process_ingest_records;
     return 1;
 }
+
+# returns event on error, undef on success
+sub check_import_marc_perms {
+    my($mgr, $li_ids) = @_;
+
+    # if there are any order records that are not linked to 
+    # in-db bib records, verify staff has perms to import order records
+    my $order_li = $mgr->editor->search_acq_lineitem(
+        [{id => $li_ids, eg_bib_id => undef}, {limit => 1}], {idlist => 1})->[0];
+
+    if($order_li) {
+        return $mgr->editor->die_event unless 
+            $mgr->editor->allowed('IMPORT_ACQ_LINEITEM_BIB_RECORD');
+    }
+
+    return undef;
+}
+
 
 # ----------------------------------------------------------------------------
 # if all of the lineitem details for this lineitem have 
@@ -1213,7 +1233,6 @@ sub create_po_assets {
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('IMPORT_PURCHASE_ORDER_ASSETS', $po->ordering_agency);
 
     my $li_ids = $e->search_acq_lineitem({purchase_order => $po_id}, {idlist => 1});
 
