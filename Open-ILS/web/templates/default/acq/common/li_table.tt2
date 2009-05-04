@@ -320,6 +320,10 @@
         <div dojoType='dijit.Dialog' jsId='acqLitPoCreateDialog'>
             <table class='oils-generic-table'>
                 <tr>
+                    <td>Ordering Agency</td>
+                    <td><div name='ordering_agency' id='acq-lit-po-agency'/></td>
+                </tr>
+                <tr>
                     <td>Provider</td>
                     <td><div name='provider' id='acq-lit-po-provider'/></td>
                 </tr>

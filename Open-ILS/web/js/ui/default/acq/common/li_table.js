@@ -338,6 +338,7 @@ function AcqLiTable() {
     this.removeLineitem = function(liId) {
         this.tbody.removeChild(dojo.query('[li='+liId+']', this.tbody)[0]);
         delete this.liCache[liId];
+        //selected.push(self.liCache[i.parentNode.parentNode.getAttribute('li')]);
     }
 
     this.drawInfo = function(liId) {
@@ -678,12 +679,24 @@ function AcqLiTable() {
                         fmField : 'provider',
                         fmClass : 'acqpo',
                         parentNode : dojo.byId('acq-lit-po-provider'),
-                        orgLimitPerms : ['CREATE_PURCHASE_ORDER'],
                     });
                     widget.build(
                         function(w) { self.createPoProviderSelector = w; }
                     );
                 }
+
+                if(!this.createPoAgencySelector) {
+                    var widget = new openils.widget.AutoFieldWidget({
+                        fmField : 'ordering_agency',
+                        fmClass : 'acqpo',
+                        parentNode : dojo.byId('acq-lit-po-agency'),
+                        orgLimitPerms : ['CREATE_PURCHASE_ORDER'],
+                    });
+                    widget.build(
+                        function(w) { self.createPoAgencySelector = w; }
+                    );
+                }
+
          
                 acqLitPoCreateDialog.show();
                 break;
@@ -834,6 +847,7 @@ function AcqLiTable() {
         this.show('acq-lit-progress-numbers');
         var po = new fieldmapper.acqpo();
         po.provider(this.createPoProviderSelector.attr('value'));
+        po.ordering_agency(this.createPoAgencySelector.attr('value'));
 
         var selected = this.getSelected( (fields.create_from == 'all') );
         if(selected.length == 0) return;
