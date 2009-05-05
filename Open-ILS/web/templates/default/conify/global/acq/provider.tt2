@@ -16,7 +16,7 @@
         return 'Local Note';
         case 'price':
         return 'Price';
-        case 'circ-Modifier':
+        case 'circ_modifier':
         return 'Circulation Modifier';
         case 'copy_location':
         return 'Copy Location';
