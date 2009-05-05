@@ -3760,7 +3760,7 @@ char* SELECT (
 						else
 							order_buf = buffer_init(128);
 
-						OSRF_BUFFER_ADD(order_buf, _f);
+						buffer_fadd( order_buf, "\"%s\".%s", class_itr->key, _f);
 
 					} // end while
 				// jsonIteratorFree(order_itr);
