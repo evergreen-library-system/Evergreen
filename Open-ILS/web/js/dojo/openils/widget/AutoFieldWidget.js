@@ -203,7 +203,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.cache[this.auth][lclass]) {
                 var store = this.cache[this.auth][lclass];
                 var query = {};
-                query[linkInfo.vfield.name] = this.widgetValue;
+                query[linkInfo.vfield.name] = ''+this.widgetValue;
                 store.fetch({query:query, onComplete:
                     function(list) {
                         self.widgetValue = store.getValue(list[0], linkInfo.vfield.selector);
