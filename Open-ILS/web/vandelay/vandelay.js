@@ -978,7 +978,7 @@ function loadAttrEditorGrid() {
 
     var store = new dojo.data.ItemFileReadStore({data:_data});
     attrEditorGrid.setStore(store);
-    dojo.connect(attrEditorGrid, 'onRowClick', onAttrEditorClick);
+    dojo.connect(attrEditorGrid, 'onRowDblClick', onAttrEditorClick);
     attrEditorGrid.update();
 }
 
