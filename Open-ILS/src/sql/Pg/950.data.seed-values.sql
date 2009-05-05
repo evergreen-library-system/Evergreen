@@ -1663,3 +1663,188 @@ INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:circ.renew', 
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:circ.checkout', oils_i18n_gettext('folks:circ.checkout', 'Checkout Items', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:hold.view', oils_i18n_gettext('folks:hold.view', 'View Holds', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:hold.cancel', oils_i18n_gettext('folks:hold.cancel', 'Cancel Holds', 'cubt', 'label'));
+
+
+-- Trigger Event Definitions -------------------------------------------------
+
+-- Sample Overdue Notice --
+
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template) 
+    VALUES (1, 'f', 1, '7 Day Overdue Email Notification', 'checkout.due', 'CircIsOverdue', 'SendEmail', '7 days', 'due_date', 'usr', 
+$$
+[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Subject: Overdue Notification
+
+Dear [% user.family_name %], [% user.first_given_name %]
+Our records indicate the following items are overdue.
+
+[% FOR circ IN target %]
+    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
+    Barcode: [% circ.target_copy.barcode %] 
+    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
+    Total Owed For Transaction: [% circ.billable_transaction.summary.total_owed %]
+    Library: [% circ.circ_lib.name %]
+[% END %]
+
+$$);
+
+INSERT INTO action_trigger.environment (event_def, path) VALUES 
+    (1, 'target_copy.call_number.record.simple_record'),
+    (1, 'usr'),
+    (1, 'billable_transaction.summary'),
+    (1, 'circ_lib.billing_address');
+  
+
+-- Sample Mark Long-Overdue Item Lost --
+
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field) 
+    VALUES (2, 'f', 1, '90 Day Overdue Mark Lost', 'checkout.due', 'CircIsOverdue', 'MarkItemLost', '90 days', 'due_date');
+
+-- Sample Auto Mark Lost Notice --
+
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, group_field, template) 
+    VALUES (3, 'f', 1, '90 Day Overdue Mark Lost Notice', 'lost.auto', 'NOOP_True', 'SendEmail', 'usr',
+$$
+[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Subject: Overdue Items Marked Lost
+
+Dear [% user.family_name %], [% user.first_given_name %]
+The following items are 90 days overdue and have been marked LOST.
+
+[% FOR circ IN target %]
+    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
+    Barcode: [% circ.target_copy.barcode %] 
+    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
+    Total Owed For Transaction: [% circ.billable_transaction.summary.total_owed %]
+    Library: [% circ.circ_lib.name %]
+[% END %]
+
+$$);
+
+
+INSERT INTO action_trigger.environment (event_def, path) VALUES 
+    (3, 'target_copy.call_number.record.simple_record'),
+    (3, 'usr'),
+    (3, 'billable_transaction.summary'),
+    (3, 'circ_lib.billing_address');
+
+-- Sample Purchase Order HTML Template --
+
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, template) 
+    VALUES (4, 't', 1, 'PO HTML', 'format.po.html', 'NOOP_True', 'ProcessTemplate', 
+$$
+[%- USE date -%]
+[%-
+    # find a lineitem attribute by name and optional type
+    BLOCK get_li_attr;
+        FOR attr IN li.attributes;
+            IF attr.attr_name == attr_name;
+                IF !attr_type OR attr_type == attr.attr_type;
+                    attr.attr_value;
+                    LAST;
+                END;
+            END;
+        END;
+    END
+-%]
+
+<h2>Purchase Order [% target.id %]</h2>
+<br/>
+date <b>[% date.format(date.now, '%Y%m%d') %]</b>
+<br/>
+
+<style>
+    table td { padding:5px; border:1px solid #aaa;}
+    table { width:95%; border-collapse:collapse; }
+</style>
+<table id='vendor-table'>
+  <tr>
+    <td valign='top'>Vendor</td>
+    <td>
+      <div>[% target.provider.name %]</div>
+      <div>[% target.provider.addresses.0.street1 %]</div>
+      <div>[% target.provider.addresses.0.street2 %]</div>
+      <div>[% target.provider.addresses.0.city %]</div>
+      <div>[% target.provider.addresses.0.state %]</div>
+      <div>[% target.provider.addresses.0.country %]</div>
+      <div>[% target.provider.addresses.0.post_code %]</div>
+    </td>
+    <td valign='top'>Ship to / Bill to</td>
+    <td>
+      <div>[% target.ordering_agency.name %]</div>
+      <div>[% target.ordering_agency.billing_address.street1 %]</div>
+      <div>[% target.ordering_agency.billing_address.street2 %]</div>
+      <div>[% target.ordering_agency.billing_address.city %]</div>
+      <div>[% target.ordering_agency.billing_address.state %]</div>
+      <div>[% target.ordering_agency.billing_address.country %]</div>
+      <div>[% target.ordering_agency.billing_address.post_code %]</div>
+    </td>
+  </tr>
+</table>
+
+<br/><br/><br/>
+
+<table>
+  <thead>
+    <tr>
+      <th>PO#</th>
+      <th>ISBN or Item #</th>
+      <th>Title</th>
+      <th>Quantity</th>
+      <th>Unit Price</th>
+      <th>Line Total</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  [% FOR li IN target.lineitems %]
+
+  [% subtotal = 0 %]
+  <tr>
+    [% count = li.lineitem_details.size %]
+    [% price = PROCESS get_li_attr attr_name = 'estimated_price' %]
+    [% litotal = (price * count) %]
+    [% subtotal = subtotal + litotal %]
+    [% isbn = PROCESS get_li_attr attr_name = 'isbn' %]
+    [% ident = PROCESS get_li_attr attr_name = 'identifier' %]
+
+    <td>[% target.id %]</td>
+    <td>[% isbn || ident %]</td>
+    <td>[% PROCESS get_li_attr attr_name = 'title' %]</td>
+    <td>[% count %]</td>
+    <td>[% price %]</td>
+    <td>[% litotal %]</td>
+  </tr>
+  [% END %]
+  <tr>
+    <td/><td/><td/><td/>
+    <td>Sub Total</td>
+    <td>[% subtotal %]</td>
+  </tr>
+  </tbody>
+</table>
+
+<br/>
+
+Total Line Item Count: [% target.lineitems.size %]
+$$);
+
+INSERT INTO action_trigger.environment (event_def, path) VALUES 
+    (4, 'lineitems.lineitem_details.fund'),
+    (4, 'lineitems.lineitem_details.location'),
+    (4, 'lineitems.lineitem_details.owning_lib'),
+    (4, 'ordering_agency.mailing_address'),
+    (4, 'ordering_agency.billing_address'),
+    (4, 'provider.addresses'),
+    (4, 'lineitems.attributes');
+
+SELECT SETVAL('action_trigger.event_definition_id_seq'::TEXT, 100);
+
