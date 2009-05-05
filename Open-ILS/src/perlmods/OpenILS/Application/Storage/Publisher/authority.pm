@@ -112,6 +112,9 @@ sub find_authority_marc {
 
 	my $fts_where = $fts->sql_where_clause;
 	my $fts_words = join '%', $fts->words;
+
+    return undef unless ($fts_words);
+
 	my $fts_words_where = "f.value LIKE '$fts_words\%'";
 	my $fts_start_where = "f.value LIKE '$term\%'";
 	my $fts_eq_where = "f.value = '$term'";
