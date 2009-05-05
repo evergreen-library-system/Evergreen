@@ -31,7 +31,7 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
                 var self = this;
 
                 var onCancel = args.onCancel || this.editPane.onCancel;
-                var onSubmit = args.onSubmit || this.editPane.onSubmit;
+                var onSubmit = args.onPostSubmit || this.editPane.onPostSubmit;
 
                 this.editPane.onCancel = function() { 
                     if(onCancel) onCancel();
