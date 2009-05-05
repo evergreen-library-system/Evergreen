@@ -1805,9 +1805,9 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
   </thead>
   <tbody>
 
+  [% subtotal = 0 %]
   [% FOR li IN target.lineitems %]
 
-  [% subtotal = 0 %]
   <tr>
     [% count = li.lineitem_details.size %]
     [% price = PROCESS get_li_attr attr_name = 'estimated_price' %]
