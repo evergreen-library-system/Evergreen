@@ -12,7 +12,7 @@
                 <button dojoType='dijit.form.Button' onClick='edGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
             <table  jsId="edGrid" 
                     dojoType="openils.widget.AutoGrid" 
                     fieldOrder="['owner', 'name', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'validator', 'reactor']"
@@ -34,7 +34,7 @@
                 <button dojoType='dijit.form.Button' onClick='tepGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
             <table  jsId="tepGrid" 
                     dojoType="openils.widget.AutoGrid" 
                     fieldOrder="['id', 'event_def', 'param', 'value']"
@@ -57,7 +57,7 @@
                 <button dojoType='dijit.form.Button' onClick='teeGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
             <table  jsId="teeGrid" 
                     dojoType="openils.widget.AutoGrid" 
                     fieldOrder="['id', 'event_def', 'path', 'collector', 'label']"
@@ -81,7 +81,7 @@
                 <button dojoType='dijit.form.Button' onClick='thGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
             <table  jsId="thGrid" 
                     dojoType="openils.widget.AutoGrid" 
                     fieldOrder="['key', 'core_type', 'description', 'passive']"
@@ -101,7 +101,7 @@
                 <button dojoType='dijit.form.Button' onClick='trGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
             <table  jsId="trGrid" 
                     dojoType="openils.widget.AutoGrid" 
                     query="{module: '*'}" 
@@ -125,7 +125,7 @@
                 <button dojoType='dijit.form.Button' onClick='tvGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
             <table  jsId="tvGrid" 
                     dojoType="openils.widget.AutoGrid" 
                     query="{module: '*'}" 
@@ -147,7 +147,7 @@
             <div></div>
         </div>
         <br/>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
             <div style='border:1px solid #aaa;'>
                 <h2>Test Circulation</h2>
                 <table class='oils-generic-table'>
