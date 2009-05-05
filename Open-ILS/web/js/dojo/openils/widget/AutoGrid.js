@@ -29,7 +29,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 openils.widget.AutoGrid.gridCache[this.sequence] = this;
                 this.inherited(arguments);
                 this.initAutoEnv();
-                this.setStructure(this._compileStructure());
+                this.attr('structure', this._compileStructure());
                 this.setStore(this.buildAutoStore());
                 this.overrideEditWidgets = {};
                 this.overrideEditWidgetClass = {};
@@ -371,6 +371,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.editDialog.hide(); 
                 this.editDialog.destroy(); 
                 delete this.editDialog;
+                this.update();
             },
 
             hidePane : function() {
