@@ -24,6 +24,9 @@ function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
 }
 
+
+var liDetailFields = ['fund', 'owning_lib', 'location', 'collection_code', 'circ_modifier', 'cn_label'];
+
 function AcqLiTable() {
 
     var self = this;
@@ -172,9 +175,12 @@ function AcqLiTable() {
 
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
-        dojo.query('[name=count]', row)[0].innerHTML = li.item_count() || 0;
         dojo.query('[name=notes_count]', row)[0].innerHTML = li.lineitem_notes().length;
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
+
+        var countNode = nodeByName('count', row);
+        countNode.innerHTML = li.item_count() || 0;
+        countNode.id = 'acq-lit-copy-count-label-' + li.id();
 
         var priceInput = dojo.query('[name=price]', row)[0];
         var priceData = liWrapper.getPrice();
@@ -495,6 +501,10 @@ function AcqLiTable() {
                     params: [openils.User.authtoken],
                     oncomplete: function(r) {
                         self.distribForms = openils.Util.readResponse(r);
+                        if(!self.distribForms || self.distribForms.length == 0) {
+                            self.distribForms  = [];
+                            return onload();
+                        }
                         self.distribFormulaStore = 
                             new dojo.data.ItemFileReadStore(
                                 {data:acqdf.toStoreData(self.distribForms)});
@@ -507,7 +517,7 @@ function AcqLiTable() {
 
     this._drawBatchCopyWidgets = function() {
         var row = this.copyBatchRow;
-        dojo.forEach(['fund', 'owning_lib', 'location', 'circ_modifier', 'cn_label'],
+        dojo.forEach(liDetailFields, 
             function(field) {
                 if(self.copyBatchRowDrawn) {
                     self.copyBatchWidgets[field].attr('value', null);
@@ -532,10 +542,9 @@ function AcqLiTable() {
 
     this.batchCopyUpdate = function() {
         var self = this;
-        var fields = ['fund', 'owning_lib', 'location', 'circ_modifier', 'cn_label'];
         for(var k in this.copyWidgetCache) {
             var cache = this.copyWidgetCache[k];
-            dojo.forEach(fields, function(f) {
+            dojo.forEach(liDetailFields, function(f) {
                 var newval = self.copyBatchWidgets[f].attr('value');
                 if(newval) cache[f].attr('value', newval);
             });
@@ -576,14 +585,14 @@ function AcqLiTable() {
         row.setAttribute('copy_id', copy.id());
         self.copyWidgetCache[copy.id()] = {};
 
-        dojo.forEach(['fund', 'owning_lib', 'location', 'barcode', 'cn_label', 'circ_modifier', 'note'],
+        dojo.forEach(liDetailFields,
             function(field) {
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,
                     fmField : field,
                     fmClass : 'acqlid',
                     parentNode : dojo.query('[name='+field+']', row)[0],
-                    orgLimitPerms : ['CREATE_PICKLIST'],
+                    orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
                     readOnly : self.isPO
                 });
                 widget.build(
@@ -635,15 +644,20 @@ function AcqLiTable() {
         var self = this;
         var copies = [];
 
+
         openils.Util.show('acq-lit-update-copies-progress');
 
+        var total = 0;
         for(var id in this.copyCache) {
             var c = this.copyCache[id];
+            if(!c.isdeleted()) total++;
             if(c.isnew() || c.ischanged() || c.isdeleted()) {
                 if(c.id() < 0) c.id(null);
                 copies.push(c);
             }
         }
+
+        dojo.byId('acq-lit-copy-count-label-' + liId).innerHTML = total;
 
         if(copies.length == 0)
             return;

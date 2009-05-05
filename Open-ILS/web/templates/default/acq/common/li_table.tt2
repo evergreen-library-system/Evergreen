@@ -191,6 +191,7 @@
                 <tr id='acq-lit-li-details-batch-row'>
                     <td><div name='owning_lib'/></td>
                     <td><div name='location'/></td>
+                    <td><div name='collection_code'/></td>
                     <td><div name='fund'/></td>
                     <td><div name='circ_modifier'/></td>
                     <td><div name='cn_label'/></td>
@@ -218,6 +219,7 @@
                 <tr>
                     <td style='margin-top:30px;'>Owning Branch</td>
                     <td>Shelving Location</td>
+                    <td>Collection Code</td>
                     <td>Fund</td>
                     <td>Circ Modifier</td>
                     <td>Callnumber</td>
@@ -230,6 +232,7 @@
                 <tr id='acq-lit-li-details-row'>
                     <td><div name='owning_lib'/></td>
                     <td><div name='location'/></td>
+                    <td><div name='collection_code'/></td>
                     <td><div name='fund'/></td>
                     <td><div name='circ_modifier'/></td>
                     <td><div name='cn_label'/></td>
