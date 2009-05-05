@@ -27,6 +27,7 @@ dojo.require('dijit.Menu');
 dojo.require("dijit.Dialog");
 dojo.require("dojo.cookie");
 dojo.require("dojox.grid.Grid");
+dojo.require('dojox.grid.DataGrid');
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require('dojo.date.locale');
 dojo.require('dojo.date.stamp');
@@ -974,42 +975,37 @@ function onAttrEditorClose() {
 function loadAttrEditorGrid() {
     var _data = (ATTR_EDIT_GROUP == 'auth') ? 
 	vqarad.toStoreData(authAttrDefs) : vqbrad.toStoreData(bibAttrDefs) ;
-		 
+
     var store = new dojo.data.ItemFileReadStore({data:_data});
-    var model = new dojox.grid.data.DojoData(
-        null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
-    attrEditorGrid.setModel(model);
-    attrEditorGrid.setStructure(vlAttrGridLayout);
-    attrEditorGrid.onRowClick = onAttrEditorClick;
+    attrEditorGrid.setStore(store);
+    dojo.connect(attrEditorGrid, 'onRowClick', onAttrEditorClick);
     attrEditorGrid.update();
 }
 
-function attrGridGetTag(n) {
+function attrGridGetTag(n, item) {
     // grid helper: return the tags from the row's xpath column.
-    var xp = this.grid.model.getRow(n);
-    return xp && xpathParser.parse(xp.xpath).tags;
+    return item && xpathParser.parse(this.grid.store.getValue(item, 'xpath')).tags;
 }
 
-function attrGridGetSubfield(n) {
+function attrGridGetSubfield(n, item) {
     // grid helper: return the subfields from the row's xpath column.
-    var xp = this.grid.model.getRow(n);
-    return xp && xpathParser.parse(xp.xpath).subfields;
+    return item && xpathParser.parse(this.grid.store.getValue(item, 'xpath')).subfields;
 }
 
-function onAttrEditorClick(evt) {
-    var row = attrEditorGrid.model.getRow(evt.rowIndex);
-    ATTR_EDIT_ID = row.id;
+function onAttrEditorClick() {
+    var row = this.getItem(this.focus.rowIndex);
+    ATTR_EDIT_ID = this.store.getValue(row, 'id');
     ATTR_EDITOR_IN_UPDATE_MODE = true;
 
     // populate the popup editor.
-    dojo.byId('attr-editor-code').value = row.code;
-    dojo.byId('attr-editor-description').value = row.description;
-    var parsed_xpath = xpathParser.parse(row.xpath);
-    dojo.byId('attr-editor-tags').value = parsed_xpath.tags;
-    dojo.byId('attr-editor-subfields').value = parsed_xpath.subfields;
-    dojo.byId('attr-editor-identifier').value = (row.ident ? 'True':'False');
-    dojo.byId('attr-editor-xpath').value = row.xpath;
-    dojo.byId('attr-editor-remove').value = row.remove;
+    dijit.byId('attr-editor-code').attr('value', this.store.getValue(row, 'code'));
+    dijit.byId('attr-editor-description').attr('value', this.store.getValue(row, 'description'));
+    var parsed_xpath = xpathParser.parse(this.store.getValue(row, 'xpath'));
+    dijit.byId('attr-editor-tags').attr('value', parsed_xpath.tags);
+    dijit.byId('attr-editor-subfields').attr('value', parsed_xpath.subfields);
+    dijit.byId('attr-editor-identifier').attr('value', this.store.getValue(row, 'ident'));
+    dijit.byId('attr-editor-xpath').attr('value', this.store.getValue(row, 'xpath'));
+    dijit.byId('attr-editor-remove').attr('value', this.store.getValue(row, 'remove'));
 
     // set up UI for editing
     dojo.byId('vl-create-attr-editor-button').click();

@@ -81,22 +81,21 @@
         </table>
     </div>
 </div>
-<script>
-    var vlAttrGridLayout = [{
-        cells : [[
-        {name: '&vandelay.id;', field: 'id'},
-        {name: '&vandelay.code;', field:'code', width:'auto'},
-        {name: '&vandelay.descrip;', field: "description", width:'auto'}, 
-        {name: '&vandelay.tag;', get:attrGridGetTag},
-        {name: '&vandelay.subfield;', get: attrGridGetSubfield},
-        {name: '&vandelay.identifier;', field:'ident'},
-        {name: '&vandelay.xpath;', field:'xpath', width:'auto'},
-        {name: '&vandelay.remove;', field:'remove', width:'auto'}
-        ]]
-    }];
-</script>
-<div class='tall'>
-    <div dojoType='dojox.Grid' jsId='attrEditorGrid'> </div>
+<div style='height:600px;'>
+    <table dojoType='dojox.grid.DataGrid' jsId='attrEditorGrid' query="{id: '*'}"> 
+        <thead>
+            <tr>
+                <th field='id'>&vandelay.id;</th>
+                <th field='code' width='auto'>&vandelay.code;</th>
+                <th field='description' width='auto'>&vandelay.descrip;</th>
+                <th field='tag' get='attrGridGetTag'>&vandelay.tag;</th>
+                <th field='subfield' get='attrGridGetSubfield'>&vandelay.subfield;</th>
+                <th field='ident'>&vandelay.identifier;</th>
+                <th field='xpath' width='auto'>&vandelay.xpath;</th>
+                <th field='remove' width='auto'>&vandelay.remove;</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 
 
