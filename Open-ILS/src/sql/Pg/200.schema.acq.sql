@@ -215,6 +215,7 @@ CREATE TABLE acq.lineitem_detail (
     barcode     TEXT,
     cn_label    TEXT,
     note        TEXT,
+    collection_code TEXT,
     circ_modifier   TEXT    REFERENCES config.circ_modifier (code) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     owning_lib  INT         REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     location    INT         REFERENCES asset.copy_location (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
