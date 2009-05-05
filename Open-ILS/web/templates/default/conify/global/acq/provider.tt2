@@ -45,7 +45,8 @@
             <div>Provider</div>
             <div>
                 <button dojoType='dijit.form.Button' onClick='pListGrid.showCreateDialog()'>New Provider</button>
-                <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>Delete Selected</button> </div>
+                <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>Delete Selected</button> 
+            </div>
         </div>
     </div>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:90%'>
@@ -70,8 +71,10 @@
         
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div> Provider Address</div>
-            <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
-            <button dojoType='dijit.form.Button' onClick='paListGrid.deleteSelected()'>Delete Selected</button>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
+                <button dojoType='dijit.form.Button' onClick='paListGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
             <table  jsId="paListGrid"
@@ -87,8 +90,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Provider Contact' id='tab-pro-contact'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div> Provider Contact</div>
-            <button dojoType='dijit.form.Button' onClick='pcListGrid.showCreateDialog()'>New Contact</button>
-            <button dojoType='dijit.form.Button' onClick='pcListGrid.deleteSelected()'>Delete Selected</button>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='pcListGrid.showCreateDialog()'>New Contact</button>
+                <button dojoType='dijit.form.Button' onClick='pcListGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
             <table  jsId="pcListGrid"
@@ -104,8 +109,10 @@
     <div id='contact-addr-div'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Contact Address</div>
-            <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
-            <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
+                <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
             <table  jsId="pcaListGrid"
@@ -122,8 +129,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Attribute Definitions' id='tab-attr'>       
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div> Attribute Definitions</div>
-            <button dojoType='dijit.form.Button' onClick='padListGrid.showCreateDialog()'>New Attribute Definition</button>
-            <button dojoType='dijit.form.Button' onClick='padListGrid.deleteSelected()'>Delete Selected</button>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='padListGrid.showCreateDialog()'>New Attribute Definition</button>
+                <button dojoType='dijit.form.Button' onClick='padListGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
             <table  jsId="padListGrid"
@@ -141,8 +150,10 @@
     <div dojoType="dijit.layout.ContentPane" title='Holding Subfield' id='tab-hold'>       
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Holding Subfield</div>
-            <button dojoType='dijit.form.Button' onClick='phsListGrid.showCreateDialog()'>New Holding Subfield</button>
-            <button dojoType='dijit.form.Button' onClick='phsListGrid.deleteSelected()'>Delete Selected</button>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='phsListGrid.showCreateDialog()'>New Holding Subfield</button>
+                <button dojoType='dijit.form.Button' onClick='phsListGrid.deleteSelected()'>Delete Selected</button>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
             <table  jsId="phsListGrid"
