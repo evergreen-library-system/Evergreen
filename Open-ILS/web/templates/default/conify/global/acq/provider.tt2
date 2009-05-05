@@ -34,7 +34,7 @@
     <option value='local_note'>Local Note</option>
     <option value='price'>Price</option>
     <option value='circ_modifier'>Circulation Modifier</option>
-    <option value='copy_location'>Copy Locations</option>
+    <option value='copy_location'>Copy Location</option>
     <option value='collection_code'>Collection Code</option>
 </select>
 </div> 
