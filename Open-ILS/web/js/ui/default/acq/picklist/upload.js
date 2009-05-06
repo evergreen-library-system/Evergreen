@@ -109,13 +109,13 @@ function acqHandlePostUpload(key) {
                     if(resp.picklist) {
                         openils.Util.show('acq-pl-upload-complete-pl');
                         dojo.byId('acq-pl-upload-complete-pl').setAttribute(
-                            'href', location.href + '/../view/' + resp.picklist.id());
+                            'href', oilsBasePath + '/eg/acq/picklist/view/' + resp.picklist.id());
                     } 
 
                     if(resp.purchase_order) {
                         openils.Util.show('acq-pl-upload-complete-po');
                         dojo.byId('acq-pl-upload-complete-po').setAttribute(
-                            'href', location.href + '/../../po/view/' + resp.purchase_order.id());
+                            'href', oilsBasePath + '/eg/acq/po/view/' + resp.purchase_order.id());
                     }
 
                 } else {
