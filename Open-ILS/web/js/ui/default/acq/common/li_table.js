@@ -589,7 +589,6 @@ function AcqLiTable() {
 
         dojo.forEach(liDetailFields,
             function(field) {
-                console.log("adding widget for " + field);
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,
                     fmField : field,
@@ -601,7 +600,6 @@ function AcqLiTable() {
                 widget.build(
                     // make sure we capture the value from any async widgets
                     function(w, ww) { 
-                        console.log("built widget for " + field + ' : readonly = ' + ww.readOnly);
                         copy[field](ww.getFormattedValue()) 
                         self.copyWidgetCache[copy.id()][field] = w;
                     }
