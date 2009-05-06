@@ -25,6 +25,7 @@
 if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
     dojo.provide('openils.widget.GridColumnPicker');
     dojo.require('dijit.Menu');
+    dojo.require('dojox.widget.PlaceholderMenuItem');
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('openils.Util');
 
