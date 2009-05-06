@@ -14,19 +14,26 @@
     function resetVlQueueGridLayout() {
         vlQueueGridLayout = [{
             cells : [[
-                {name: '&lt;input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
-                    get: vlQueueGridDrawSelectBox, styles : 'text-align: center;' },
-                {   name: '&vandelay.view.marc;', 
+                {
+                    name: '&lt;input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
+                    get: vlQueueGridDrawSelectBox, 
+                    styles : 'text-align: center;',
+                    nonSelectable : true
+                }, {   
+                    name: '&vandelay.view.marc;', 
                     get: vlGetViewMARC, styles : 'text-align: center;',
-                    value:'&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, '+
-                        'function(){displayGlobalDiv(\'vl-queue-div\');});">&vandelay.view.marc;&lt;/a>'
-                },
-                {   name: '&vandelay.matches;', 
+                    value: '&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, '+
+                        'function(){displayGlobalDiv(\'vl-queue-div\');});">&vandelay.view.marc;&lt;/a>',
+                    nonSelectable : true
+                }, {   
+                    name: '&vandelay.matches;', 
                     get: vlGetViewMatches, styles : 'text-align: center;',
-                    value:'&lt;a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">&vandelay.matches;&lt;/a>'
-                },
-                {name: '&vandelay.import.time;', field:'import_time',  styles : 'text-align: center;',
-                    get:vlGetDateTimeField, selectableColumn:true}
+                    value:'&lt;a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">&vandelay.matches;&lt;/a>',
+                    nonSelectable : true
+                }, {
+                    name: '&vandelay.import.time;', field:'import_time',  styles : 'text-align: center;',
+                    get:vlGetDateTimeField, 
+                }
             ]]
         }];
     }

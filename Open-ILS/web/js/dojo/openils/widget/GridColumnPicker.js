@@ -52,13 +52,19 @@ if(!dojo._hasResource['openils.widget.GridColumnPicker']) {
 
                 dojo.forEach(this.getChildren(),
                     function(child) {
-                        for(var i in self.cells) {
-                            var name = self.cells[i].name;
-                            if(name == child.attr('label')) {
-                                child.field = {label:name, ident:self.cells[i].field};
-                                break;
-                            }   
-                        }
+                        dojo.forEach(self.cells,
+                            function(cell) {
+                                if(cell.name == child.attr('label')) {
+                                    if(cell.nonSelectable) {
+                                        console.log("removing child " + child.attr('label'));
+                                        self.removeChild(child);
+                                    } else {
+                                        child.field = {label:name, ident:cell.field};
+                                    }
+                                    return;
+                                }   
+                            }
+                        )
                     }
                 );
                 this.load();
