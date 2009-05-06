@@ -25,7 +25,8 @@ function nodeByName(name, context) {
 }
 
 
-var liDetailFields = ['fund', 'owning_lib', 'location', 'collection_code', 'circ_modifier', 'cn_label'];
+var liDetailBatchFields = ['fund', 'owning_lib', 'location', 'collection_code', 'circ_modifier', 'cn_label'];
+var liDetailFields = liDetailBatchFields.concat(['barcode', 'note']);
 
 function AcqLiTable() {
 
@@ -517,7 +518,7 @@ function AcqLiTable() {
 
     this._drawBatchCopyWidgets = function() {
         var row = this.copyBatchRow;
-        dojo.forEach(liDetailFields, 
+        dojo.forEach(liDetailBatchFields, 
             function(field) {
                 if(self.copyBatchRowDrawn) {
                     self.copyBatchWidgets[field].attr('value', null);
@@ -527,7 +528,8 @@ function AcqLiTable() {
                         fmClass : 'acqlid',
                         parentNode : dojo.query('[name='+field+']', row)[0],
                         orgLimitPerms : ['CREATE_PICKLIST'],
-                        dijitArgs : {required:false}
+                        dijitArgs : {required:false},
+                        forceSync : true
                     });
                     widget.build(
                         function(w, ww) {
@@ -544,7 +546,7 @@ function AcqLiTable() {
         var self = this;
         for(var k in this.copyWidgetCache) {
             var cache = this.copyWidgetCache[k];
-            dojo.forEach(liDetailFields, function(f) {
+            dojo.forEach(liDetailBatchFields, function(f) {
                 var newval = self.copyBatchWidgets[f].attr('value');
                 if(newval) cache[f].attr('value', newval);
             });
@@ -587,17 +589,19 @@ function AcqLiTable() {
 
         dojo.forEach(liDetailFields,
             function(field) {
+                console.log("adding widget for " + field);
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,
                     fmField : field,
                     fmClass : 'acqlid',
                     parentNode : dojo.query('[name='+field+']', row)[0],
                     orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
-                    readOnly : self.isPO
+                    readOnly : Boolean(copy.eg_copy_id())
                 });
                 widget.build(
                     // make sure we capture the value from any async widgets
                     function(w, ww) { 
+                        console.log("built widget for " + field + ' : readonly = ' + ww.readOnly);
                         copy[field](ww.getFormattedValue()) 
                         self.copyWidgetCache[copy.id()][field] = w;
                     }
