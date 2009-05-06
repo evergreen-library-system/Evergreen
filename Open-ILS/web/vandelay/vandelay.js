@@ -39,6 +39,7 @@ dojo.require('openils.Event');
 dojo.require('openils.Util');
 dojo.require('openils.MarcXPathParser');
 dojo.require('openils.GridColumnPicker');
+dojo.require('openils.widget.GridColumnPicker');
 
 
 var globalDivs = [
@@ -318,7 +319,7 @@ function retrieveQueuedRecords(type, queueId, onload) {
     currentOverlayRecordsMap = {};
     currentOverlayRecordsMapGid = {};
     selectableGridRecords = {};
-    resetVlQueueGridLayout();
+    //resetVlQueueGridLayout();
 
     if(!type) type = currentType;
     if(!queueId) queueId = currentQueueId;
@@ -328,10 +329,9 @@ function retrieveQueuedRecords(type, queueId, onload) {
     if(vlQueueGridShowMatches.checked)
         method = method.replace('records', 'records.matches');
 
-    //var limit = parseInt(vlQueueDisplayLimit.getValue());
     var sel = dojo.byId('vl-queue-display-limit-selector');
     var limit = parseInt(sel.options[sel.selectedIndex].value);
-    var offset = limit * parseInt(vlQueueDisplayPage.getValue()-1);
+    var offset = limit * parseInt(vlQueueDisplayPage.attr('value')-1);
 
     var params =  [authtoken, queueId, {clear_marc: 1, offset: offset, limit: limit}];
     if(vlQueueGridShowNonImport.checked)
@@ -520,29 +520,28 @@ function getRecAttrFromCode(rec, attrCode) {
     return null;
 }
 
-function vlGetViewMatches(rowIdx) {
-    var data = this.grid.model.getRow(rowIdx);
-    if(!data) return '';
-    var rec = queuedRecordsMap[data.id];
+function vlGetViewMatches(rowIdx, item) {
+    if(!item) return '';
+    var id = this.grid.store.getValue(item, 'id');
+    var rec = queuedRecordsMap[id];
     if(rec.matches().length > 0)
-        return this.value.replace('RECID', data.id);
+        return this.value.replace('RECID', id);
     return '';
 }
 
-function getAttrValue(rowIdx) {
-    var data = this.grid.model.getRow(rowIdx);
-    if(!data) return '';
+function getAttrValue(rowIdx, item) {
+    if(!item) return '';
     var attrCode = this.field.split('.')[1];
-    var rec = queuedRecordsMap[data.id];
+    var rec = queuedRecordsMap[this.grid.store.getValue(item, 'id')];
     var attr = getRecAttrFromCode(rec, attrCode);
     return (attr) ? attr.attr_value() : '';
 }
 
-function vlGetDateTimeField(rowIdx) {
-    data = this.grid.model.getRow(rowIdx);
-    if(!data) return '';
-    if(!data[this.field]) return '';
-    var date = dojo.date.stamp.fromISOString(data[this.field]);
+function vlGetDateTimeField(rowIdx, item) {
+    if(!item) return '';
+    var value = this.grid.store.getValue(item, this.field);
+    if(!value) return '';
+    var date = dojo.date.stamp.fromISOString(value);
     return dojo.date.locale.format(date, {selector:'date'});
 }
 
@@ -560,10 +559,9 @@ function vlGetCreator(rowIdx) {
     return user.usrname();
 }
 
-function vlGetViewMARC(rowIdx) {
-    data = this.grid.model.getRow(rowIdx);
-    if(data) 
-        return this.value.replace('RECID', data.id);
+function vlGetViewMARC(rowIdx, item) {
+    if(!item) return '';
+    return this.value.replace('RECID', this.grid.store.getValue(item, 'id'));
 }
 
 function vlGetOverlayTargetSelector(rowIdx) {
@@ -639,19 +637,22 @@ function buildRecordGrid(type) {
         storeData = vqar.toStoreData(queuedRecords);
 
     var store = new dojo.data.ItemFileReadStore({data:storeData});
-    var model = new dojox.grid.data.DojoData(
-        null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
-    vlQueueGrid.setModel(model);
+    vlQueueGrid.setStore(store);
+    vlQueueGrid.attr('structure', vlQueueGridLayout);
 
-
+    /*
     if(vlQueueGridColumePicker[type]) {
         vlQueueGrid.update();
     } else {
         vlQueueGridColumePicker[type] = 
-            new openils.GridColumnPicker(vlQueueGridColumePickerDialog, 
-                vlQueueGrid, vlQueueGridLayout, authtoken, 'vandelay.queue.'+type);
+            new vlQueueGridMenu.init({
+                grid : vlQueueGrid, 
+                authtoken : authtoken, 
+                persistPrefix : 'vandelay.queue.'+type
+            });
         vlQueueGridColumePicker[type].load();
     }
+    */
 }
 
 function vlQueueGridPrevPage() {
@@ -682,11 +683,11 @@ function vlDeleteQueue(type, queueId, onload) {
 }
 
 
-function vlQueueGridDrawSelectBox(rowIdx) {
-    var data = this.grid.model.getRow(rowIdx);
-    if(!data) return '';
-    var domId = 'vl-record-list-selected-' +data.id;
-    selectableGridRecords[domId] = data.id;
+function vlQueueGridDrawSelectBox(rowIdx, item) {
+    if(!item) return '';
+    var id = this.grid.store.getValue(item, 'id');
+    var domId = 'vl-record-list-selected-' + id;
+    selectableGridRecords[domId] = id;
     return "<div><input type='checkbox' id='"+domId+"'/></div>";
 }
 

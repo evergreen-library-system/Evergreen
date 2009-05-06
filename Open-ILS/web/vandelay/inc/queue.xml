@@ -13,7 +13,6 @@
     var vlQueueGridLayout;
     function resetVlQueueGridLayout() {
         vlQueueGridLayout = [{
-            //defaultCell: {styles: 'text-align: center;'},
             cells : [[
                 {name: '&lt;input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
                     get: vlQueueGridDrawSelectBox, styles : 'text-align: center;' },
@@ -129,8 +128,15 @@
     </div>
 
     <!-- Queue Grid -->
-    <div class='' style='height:87%;' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
-        <div dojoType='dojox.Grid' jsId='vlQueueGrid'> </div>
+    <div dojoType="openils.widget.GridColumnPicker" jsid="vlQueueGridMenu" style="display: none;" grid='vlQueueGrid'>
+        <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
+    </div>
+    <div style='height:600px' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+        <!--
+        <table dojoType='dojox.grid.DataGrid' jsId='vlQueueGrid' query="{id:'*'}" headerMenu='vlQueueGridMenu'> 
+        -->
+        <table dojoType='dojox.grid.DataGrid' jsId='vlQueueGrid' query="{id:'*'}"> 
+        </table>
     </div>
 </div>
 
