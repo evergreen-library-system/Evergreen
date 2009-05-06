@@ -118,7 +118,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.readOnly) {
                 dojo.require('dijit.layout.ContentPane');
                 this.widget = new dijit.layout.ContentPane(this.dijitArgs, this.parentNode);
-                this._tryLinkedDisplayField();
+                if(this.widgetValue !== null)
+                    this._tryLinkedDisplayField();
 
             } else if(this.widgetClass) {
                 dojo.require(this.widgetClass);
