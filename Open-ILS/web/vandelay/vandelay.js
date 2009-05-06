@@ -612,6 +612,18 @@ var valLastQueueType = null;
 function buildRecordGrid(type) {
     displayGlobalDiv('vl-queue-div');
 
+    if(type == 'bib') {
+        openils.Util.show('vl-bib-queue-grid-wrapper');
+        openils.Util.hide('vl-auth-queue-grid-wrapper');
+        vlQueueGrid = vlBibQueueGrid;
+        vlQueueGridMenu = vlBibQueueGridMenu;
+    } else {
+        openils.Util.show('vl-auth-queue-grid-wrapper');
+        openils.Util.hide('vl-bib-queue-grid-wrapper');
+        vlQueueGrid = vlAuthQueueGrid;
+        vlQueueGridMenu = vlAuthQueueGridMenu;
+    }
+
     if(valLastQueueType != type) {
         valLastQueueType = type;
         resetVlQueueGridLayout();
@@ -638,21 +650,19 @@ function buildRecordGrid(type) {
 
     var store = new dojo.data.ItemFileReadStore({data:storeData});
     vlQueueGrid.setStore(store);
-    vlQueueGrid.attr('structure', vlQueueGridLayout);
 
-    /*
     if(vlQueueGridColumePicker[type]) {
         vlQueueGrid.update();
     } else {
-        vlQueueGridColumePicker[type] = 
-            new vlQueueGridMenu.init({
-                grid : vlQueueGrid, 
-                authtoken : authtoken, 
-                persistPrefix : 'vandelay.queue.'+type
-            });
-        vlQueueGridColumePicker[type].load();
+        vlQueueGrid.attr('structure', vlQueueGridLayout);
+        vlQueueGridMenu.init({
+            grid : vlQueueGrid, 
+            authtoken : authtoken, 
+            prefix : 'vandelay.queue.'+type
+        });
+        vlQueueGridMenu.load();
+        vlQueueGridColumePicker[type] = vlQueueGridMenu;
     }
-    */
 }
 
 function vlQueueGridPrevPage() {
@@ -801,7 +811,6 @@ function batchUpload() {
     currentType = dijit.byId('vl-record-type').getValue();
 
     var handleProcessSpool = function() {
-        console.log('records uploaded and spooled');
         if(vlUploadQueueAutoImport.checked) {
             vlImportRecordQueue(currentType, currentQueueId, true,  
                 function() {
@@ -814,20 +823,17 @@ function batchUpload() {
     }
 
     var handleUploadMARC = function(key) {
-        console.log('marc uploaded');
         dojo.style(dojo.byId('vl-upload-status-processing'), 'display', 'block');
         processSpool(key, currentQueueId, currentType, handleProcessSpool);
     };
 
     var handleCreateQueue = function(queue) {
-        console.log('queue created ' + queue.name());
         currentQueueId = queue.id();
         uploadMARC(handleUploadMARC);
     };
     
     if(vlUploadQueueSelector.getValue() && !queueName) {
         currentQueueId = vlUploadQueueSelector.getValue();
-        console.log('adding records to existing queue ' + currentQueueId);
         uploadMARC(handleUploadMARC);
     } else {
         createQueue(queueName, currentType, handleCreateQueue);

@@ -33,28 +33,6 @@
 </script>
 <div id='vl-queue-div-grid' class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
 
-    <!-- column picker dialog -->
-    <div dojoType="dijit.Dialog" jsId='vlQueueGridColumePickerDialog' title="&vandelay.queue.column_picker.title;">
-        <table class='form_table'>
-            <thead>
-                <tr><th width='33%'>&vandelay.column;</th>
-                <th width='33%'>&vandelay.display;</th>
-                <th width='33%'>&vandelay.auto.width;</th></tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan='3' align='center'>
-                        <button jsId='vlQueueGridColumnPickerButton' 
-                            onclick='
-                                vlQueueGridColumePickerDialog.hide();
-                                vlQueueGridColumePicker[currentType].update(true);'
-                            dojoType='dijit.form.Button'>&vandelay.done;</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
     <!-- queue grid navigation row -->
     <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
         <table width='100%' style='margin-bottom:0px;'>
@@ -119,24 +97,29 @@
                     <span style='padding-right:10px;'>
                         <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page; &#187;</a>
                     </span>
-                    <span style='background:#e8e1cf;padding:3px 2px 2px 6px;-moz-border-radius:6px 0px 0px 0px;'>
-                        <a href='javascript:void(0);' onclick='vlQueueGridColumePickerDialog.show();'>&vandelay.select.cols;</a>
-                    </span>
                 </td>
             </tr>
         </table>
     </div>
 
     <!-- Queue Grid -->
-    <div dojoType="openils.widget.GridColumnPicker" jsid="vlQueueGridMenu" style="display: none;" grid='vlQueueGrid'>
-        <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
+    <div class='hidden' id='vl-bib-queue-grid-wrapper'>
+        <div dojoType="openils.widget.GridColumnPicker" jsid="vlBibQueueGridMenu" style="display: none;" grid='vlBibQueueGrid'>
+            <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
+        </div>
+        <div style='height:600px' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+            <table dojoType='dojox.grid.DataGrid' jsId='vlBibQueueGrid' query="{id:'*'}" headerMenu='vlBibQueueGridMenu'> 
+            </table>
+        </div>
     </div>
-    <div style='height:600px' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
-        <!--
-        <table dojoType='dojox.grid.DataGrid' jsId='vlQueueGrid' query="{id:'*'}" headerMenu='vlQueueGridMenu'> 
-        -->
-        <table dojoType='dojox.grid.DataGrid' jsId='vlQueueGrid' query="{id:'*'}"> 
-        </table>
+    <div class='hidden' id='vl-auth-queue-grid-wrapper'>
+        <div dojoType="openils.widget.GridColumnPicker" jsid="vlAuthQueueGridMenu" style="display: none;" grid='vlAuthQueueGrid'>
+            <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
+        </div>
+        <div style='height:600px' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+            <table dojoType='dojox.grid.DataGrid' jsId='vlAuthQueueGrid' query="{id:'*'}" headerMenu='vlAuthQueueGridMenu'> 
+            </table>
+        </div>
     </div>
 </div>
 
