@@ -1317,9 +1317,9 @@ sub _extract_856_uris {
         $use ||= $node->findvalue('*[local-name()="subfield" and @code="n"]/text()');
 
         # moving on to the URI owner
-        my $owner = $node->findvalue('*[local-name()="subfield" and @code="w"]/text()');
+        my $owner = $node->findvalue('*[local-name()="subfield" and @code="9"]/text()'); # Evergreen special sauce
+        $owner ||= $node->findvalue('*[local-name()="subfield" and @code="w"]/text()');
         $owner ||= $node->findvalue('*[local-name()="subfield" and @code="n"]/text()');
-        $owner ||= $node->findvalue('*[local-name()="subfield" and @code="9"]/text()'); # Evergreen special sauce
 
         $owner =~ s/^.*?\((\w+)\).*$/$1/o; # unwrap first paren-enclosed string and then ...
 
