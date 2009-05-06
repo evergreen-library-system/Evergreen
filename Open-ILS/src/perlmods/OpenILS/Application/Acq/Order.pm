@@ -1087,7 +1087,8 @@ sub import_lineitem_details {
                 fund => $$compiled{fund},
                 circ_modifier => $$compiled{circ_modifier},
                 note => $$compiled{note},
-                location => $$compiled{copy_location}
+                location => $$compiled{copy_location},
+                collection_code => $$compiled{collection_code}
             ) or return 0;
         }
 
@@ -1189,18 +1190,19 @@ sub extract_lineitem_detail_data {
     # ---------------------------------------------------------------------
     # Shelving Location
     my $name = $compiled{copy_location};
-    return $killme->('no copy_location defined') unless $name;
-    my $loc = $mgr->cache($base_org, "copy_loc.$name");
-    unless($loc) {
-        for my $org (@$org_path) {
-            $loc = $mgr->editor->search_asset_copy_location(
-                {owning_lib => $org, name => $name}, {idlist => 1})->[0];
-            last if $loc;
+    if($name) {
+        my $loc = $mgr->cache($base_org, "copy_loc.$name");
+        unless($loc) {
+            for my $org (@$org_path) {
+                $loc = $mgr->editor->search_asset_copy_location(
+                    {owning_lib => $org, name => $name}, {idlist => 1})->[0];
+                last if $loc;
+            }
         }
+        return $killme->("Invalid copy location $name") unless $loc;
+        $compiled{copy_location} = $loc;
+        $mgr->cache($base_org, "copy_loc.$name", $loc);
     }
-    return $killme->("Invalid copy location $name") unless $loc;
-    $compiled{copy_location} = $loc;
-    $mgr->cache($base_org, "copy_loc.$name", $loc);
 
     return \%compiled;
 }
