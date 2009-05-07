@@ -15,18 +15,17 @@
 dojo.require("dojo.parser");
 dojo.require("dojo.io.iframe"); 
 dojo.require("dijit.ProgressBar"); 
-dojo.require("dijit.form.Button"); 
 dojo.require("dijit.form.FilteringSelect"); 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dijit.layout.LayoutContainer");
 dojo.require('dijit.form.Button');
+dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.Toolbar');
 dojo.require('dijit.Tooltip');
 dojo.require('dijit.Menu');
 dojo.require("dijit.Dialog");
 dojo.require("dojo.cookie");
-dojo.require("dojox.grid.Grid");
 dojo.require('dojox.grid.DataGrid');
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require('dojo.date.locale');
@@ -38,7 +37,6 @@ dojo.require('openils.User');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
 dojo.require('openils.MarcXPathParser');
-dojo.require('openils.GridColumnPicker');
 dojo.require('openils.widget.GridColumnPicker');
 
 
@@ -395,8 +393,7 @@ function vlLoadMatchUI(recId) {
                 displayGlobalDiv('vl-match-div');
                 resetVlMatchGridLayout();
                 currentMatchedRecords = recs;
-                if(!vlMatchGrid.structure)
-                    vlMatchGrid.setStructure(vlMatchGridLayout);
+                vlMatchGrid.setStructure(vlMatchGridLayout);
 
                 // build the data store of records with match information
                 var dataStore = bre.toStoreData(recs, null, 
@@ -429,9 +426,7 @@ function vlLoadMatchUI(recId) {
 
 function vlPopulateMatchGrid(grid, data) {
     var store = new dojo.data.ItemFileReadStore({data:data});
-    var model = new dojox.grid.data.DojoData(
-        null, store, {rowsPerPage: 100, clientSort: true, query:{id:'*'}});
-    grid.setModel(model);
+    grid.setStore(store);
     grid.update();
 }
 
@@ -545,10 +540,9 @@ function vlGetDateTimeField(rowIdx, item) {
     return dojo.date.locale.format(date, {selector:'date'});
 }
 
-function vlGetCreator(rowIdx) {
-    data = this.grid.model.getRow(rowIdx);
-    if(!data) return '';
-    var id = data.creator;
+function vlGetCreator(rowIdx, item) {
+    if(!item) return '';
+    var id = this.grid.store.getValue(item, 'creator');
     if(userCache[id])
         return userCache[id].usrname();
     var user = fieldmapper.standardRequest(
@@ -564,16 +558,16 @@ function vlGetViewMARC(rowIdx, item) {
     return this.value.replace('RECID', this.grid.store.getValue(item, 'id'));
 }
 
-function vlGetOverlayTargetSelector(rowIdx) {
-    data = this.grid.model.getRow(rowIdx);
-    if(data) {
-        var value = this.value.replace(/GRIDID/g, data._id);
-        value = value.replace(/RECID/g, currentImportRecId);
-        value = value.replace(/ID/g, data.id);
-        if(data._id == currentOverlayRecordsMapGid[currentImportRecId])
-            return value.replace('/>', 'checked="checked"/>');
-        return value;
-    }
+function vlGetOverlayTargetSelector(rowIdx, item) {
+    if(!item) return '';
+    var _id = this.grid.store.getValue(item, '_id');
+    var id = this.grid.store.getValue(item, 'id');
+    var value = this.value.replace(/GRIDID/g, _id);
+    value = value.replace(/RECID/g, currentImportRecId);
+    value = value.replace(/ID/g, id);
+    if(_id == currentOverlayRecordsMapGid[currentImportRecId])
+        return value.replace('/>', 'checked="checked"/>');
+    return value;
 }
 
 /**

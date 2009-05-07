@@ -34,6 +34,7 @@
         onclick="displayGlobalDiv('vl-queue-div');">&#x2196; &vandelay.back.to.import.queue;</button>
 </div>
 <div class='tall'>
-    <div dojoType='dojox.Grid' jsId='vlMatchGrid'> </div>
+    <table dojoType='dojox.grid.DataGrid' jsId='vlMatchGrid' query='{id:"*"}'> 
+    </table>
 </div>
 
