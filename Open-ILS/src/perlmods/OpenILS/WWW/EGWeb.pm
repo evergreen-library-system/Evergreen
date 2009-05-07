@@ -72,8 +72,8 @@ sub load_context {
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
     $ctx->{locale} = 
-        $r->headers_in->get('Accept-Language') || # this will need some trimming
-        $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 'en-US';
+        $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
+        $r->headers_in->get('Accept-Language') || 'en-US'; #  this will need some trimming
     $r->log->debug('skin = ' . $ctx->{skin} . ' : theme = ' . 
         $ctx->{theme} . ' : locale = ' . $ctx->{locale});
     return $ctx;
