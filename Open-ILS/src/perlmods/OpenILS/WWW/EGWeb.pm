@@ -73,10 +73,21 @@ sub load_context {
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
     $ctx->{locale} = 
         $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
-        $r->headers_in->get('Accept-Language') || 'en-US'; #  this will need some trimming
+        parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en-US'; #  this will need some trimming
     $r->log->debug('skin = ' . $ctx->{skin} . ' : theme = ' . 
         $ctx->{theme} . ' : locale = ' . $ctx->{locale});
     return $ctx;
+}
+
+# turn Accept-Language into sometihng EG can understand
+sub parse_accept_lang {
+    my $al = shift;
+    return undef unless $al;
+    my ($locale) = split(/,/, $al);
+    ($locale) = split(/;/, $locale);
+    return undef unless $locale;
+    $locale =~ s/-(.*)/eval '-'.uc("$1")/e;
+    return $locale;
 }
 
 # Given a URI, finds the configured template and any extra page 
