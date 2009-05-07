@@ -218,7 +218,7 @@ sub delete_lineitem {
 # begins and commit transactions as it goes
 sub create_lineitem_list_assets {
     my($mgr, $li_ids) = @_;
-    return undef if check_asset_create_perms($mgr, $li_ids);
+    return undef if check_import_li_marc_perms($mgr, $li_ids);
 
     # create the bibs/volumes/copies and ingest the records
     for my $li_id (@$li_ids) {
@@ -233,7 +233,7 @@ sub create_lineitem_list_assets {
 }
 
 # returns event on error, undef on success
-sub check_import_marc_perms {
+sub check_import_li_marc_perms {
     my($mgr, $li_ids) = @_;
 
     # if there are any order records that are not linked to 
