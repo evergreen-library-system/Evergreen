@@ -1,7 +1,9 @@
 <oils_web>
 
     <!-- This should match the Apache Directory/Location[Match] configuration path -->
-    <base_uri>/eg</base_uri>
+    <base_path>/eg</base_path>
+
+    <web_dir>/openils/var/web</web_dir>
 
     <!-- when locating files that don't have explicit handlers defined, assume the
         files have the following filename extension -->
@@ -35,5 +37,6 @@
         <handler path='acq/currency_type/view' template='acq/financial/view_currency_type.tt2'/>
         <handler path='acq/provider/list' template='acq/financial/list_providers.tt2'/>
         <handler path='acq/provider/view' template='acq/financial/view_provider.tt2'/>
+        <handler path='vandelay/vandelay' template='vandelay/vandelay.tt2' as_xml='true'/>
     </handlers>
 </oils_web>

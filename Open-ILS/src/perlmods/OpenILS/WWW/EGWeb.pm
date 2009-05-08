@@ -2,6 +2,7 @@ package OpenILS::WWW::EGWeb;
 use strict; use warnings;
 use Template;
 use XML::Simple;
+use XML::LibXML;
 use File::stat;
 use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR);
 use Apache2::Log;
@@ -29,8 +30,8 @@ sub handler {
     my $r = shift;
     check_web_config($r); # option to disable this
     my $ctx = load_context($r);
-    my $base = $ctx->{base_uri};
-    my($template, $page_args) = find_template($r, $base, $ctx);
+    my $base = $ctx->{base_path};
+    my($template, $page_args, $as_xml) = find_template($r, $base, $ctx);
     return Apache2::Const::DECLINED unless $template;
 
     $template = $ctx->{skin} . "/$template";
@@ -38,7 +39,7 @@ sub handler {
     $r->content_type('text/html; encoding=utf8');
 
     my $tt = Template->new({
-        OUTPUT => ($ctx->{force_valid_xml}) ? sub { validate_as_xml($r, @_); } : $r,
+        OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
     });
 
@@ -50,10 +51,17 @@ sub handler {
     return Apache2::Const::OK;
 }
 
-sub validate_as_xml {
+sub parse_as_xml {
     my $r = shift;
+    my $ctx = shift;
     my $data = shift;
-    eval { XML::Simple->new->XMLin($data); };
+
+    eval { 
+        my $doc = XML::LibXML->new->parse_string($data); 
+        $data = $doc->documentElement->toStringC14N;
+        $data = $ctx->{final_dtd} . "\n" . $data;
+    };
+
     if($@) {
         my $err = "Invalid XML: $@";
         $r->log->error($err);
@@ -69,6 +77,8 @@ sub load_context {
     my $r = shift;
     my $cgi = CGI->new;
     my $ctx = $web_config->{ctx};
+    $ctx->{hostname} = $r->hostname;
+    $ctx->{base_url} = $cgi->url(-base => 1);
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
     $ctx->{locale} = 
@@ -104,17 +114,20 @@ sub find_template {
     my @parts = split('/', $path);
     my $template = '';
     my $page_args = [];
+    my $as_xml = $ctx->{force_valid_xml};
     my $handler = $web_config->{handlers};
+
     while(@parts) {
         my $part = shift @parts;
         next unless $part;
         my $t = $handler->{$part};
-        if(ref $t) {
-            $handler = $t;
-        } else {
-            $template = $t;
+        if(ref($t) eq 'PathConfig') {
+            $template = $t->{template};
+            $as_xml = ($t->{as_xml} and $t->{as_xml} =~ /true/io) || $as_xml;
             $page_args = [@parts];
             last;
+        } else {
+            $handler = $t;
         }
     }
 
@@ -151,7 +164,7 @@ sub find_template {
     }
 
     $r->log->debug("template = $template : page args = @$page_args");
-    return ($template, $page_args);
+    return ($template, $page_args, $as_xml);
 }
 
 # if the web configuration file has never been loaded or has
@@ -173,10 +186,11 @@ sub parse_config {
     my $handlers = {};
 
     $ctx->{media_prefix} = (ref $data->{media_prefix}) ? '' : $data->{media_prefix};
-    $ctx->{base_uri} = (ref $data->{base_uri}) ? '' : $data->{base_uri};
+    $ctx->{base_path} = (ref $data->{base_path}) ? '' : $data->{base_path};
     $ctx->{template_paths} = [];
     $ctx->{force_valid_xml} = ($data->{force_valid_xml} =~ /true/io) ? 1 : 0;
     $ctx->{default_template_extension} = $data->{default_template_extension} || 'tt2';
+    $ctx->{web_dir} = $data->{web_dir};
 
     my $tpaths = $data->{template_paths}->{path};
     $tpaths = [$tpaths] unless ref $tpaths;
@@ -190,7 +204,7 @@ sub parse_config {
             my $p = $parts[$i];
             unless(defined $h->{$p}) {
                 if($i == $pcount - 1) {
-                    $h->{$p} = $handler->{template};
+                    $h->{$p} = PathConfig->new(%$handler);
                     last;
                 } else {
                     $h->{$p} = {};
@@ -201,6 +215,12 @@ sub parse_config {
     }
 
     return {ctx => $ctx, handlers => $handlers};
+}
+
+package PathConfig;
+sub new {
+    my($class, %args) = @_;
+    return bless(\%args, $class);
 }
 
 
