@@ -8,7 +8,7 @@
             var sv = svCache[i];
             var id = sv.id();
             if (inDatum  == sv.name()){
-                return '<a href="[% ctx.base_uri %]/conify/global/action/survey/edit/'+id+'">'+inDatum+'</a>';
+                return '<a href="[% ctx.base_path %]/conify/global/action/survey/edit/'+id+'">'+inDatum+'</a>';
             }
         }
     }

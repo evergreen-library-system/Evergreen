@@ -10,7 +10,7 @@
     function getId(rowIndex, item) {
         if(!item) return;
         var data = this.grid.store.getValue(item, 'id');
-        return '<a href="[% ctx.base_uri %]/acq/po/view/' + data + '">'+data;
+        return '<a href="[% ctx.base_path %]/acq/po/view/' + data + '">'+data;
     }
 </script>
 

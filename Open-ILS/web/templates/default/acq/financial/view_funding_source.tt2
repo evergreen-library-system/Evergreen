@@ -5,7 +5,7 @@
         data = fsAllocationGrid.model.getRow(rowIndex);
         if(data) {
             var fund = openils.acq.Fund.retrieve(data.fund);
-            return '<a href="[% ctx.base_uri %]/acq/fund/view/'+fund.id()+'">'+fund.code()+'</a>';
+            return '<a href="[% ctx.base_path %]/acq/fund/view/'+fund.id()+'">'+fund.code()+'</a>';
         }
     }
 </script>

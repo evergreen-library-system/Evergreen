@@ -1,4 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+[%- ctx.final_dtd = 
+    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' -%]
+[%- IF !ctx.dtd; ctx.dtd = ctx.final_dtd; END -%]
+[% ctx.dtd %]
 <html xmlns='http://www.w3.org/1999/xhtml' lang='[% ctx.locale %]' xml:lang='[% ctx.locale %]'>
     <head>
         <title>[% ctx.page_title %]</title>
@@ -10,7 +13,7 @@
             djConfig="parseOnLoad: true, isDebug:true"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
         <script>
-            var oilsBasePath = '[% ctx.base_uri %]';
+            var oilsBasePath = '[% ctx.base_path %]';
         </script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/base.js"></script>
     </head>

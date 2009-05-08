@@ -9,7 +9,7 @@
         if(!item) return '';
         var name = this.grid.store.getValue(item, 'name');
         var id = this.grid.store.getValue(item, 'id');
-        return '<a href="[% ctx.base_uri %]/acq/funding_source/view/'+id+'">'+name+'</a>';
+        return '<a href="[% ctx.base_path %]/acq/funding_source/view/'+id+'">'+name+'</a>';
     }
 </script>
 

@@ -5,7 +5,7 @@
     if(!item) return ''; 
     var fs_id = this.grid.store.getValue(item, 'funding_source');
     var fs = openils.acq.FundingSource.retrieve(fs_id);
-    return '<a href="[% ctx.base_uri %]/acq/funding_source/view/'+fs.id()+'">'+fs.name()+'</a>';
+    return '<a href="[% ctx.base_path %]/acq/funding_source/view/'+fs.id()+'">'+fs.name()+'</a>';
     }
 </script>
 

@@ -49,7 +49,7 @@ pointing to the JUB model (and store) that you have created.
     JUBGrid.getPO = function(rowIndex) {
         var data = JUBGrid.jubGrid.model.getRow(rowIndex);
         if (!(data && data.purchase_order)) return '';
-        return "<a href='[% ctx.base_uri %]/acq/po/view/" + data.purchase_order+"'>"+data.purchase_order+"</a>";
+        return "<a href='[% ctx.base_path %]/acq/po/view/" + data.purchase_order+"'>"+data.purchase_order+"</a>";
     }
     JUBGrid.jubGridLayout = [{
         //noscroll: true,
