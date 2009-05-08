@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <meta>
+        <filters directoryPatterns="CVS" filePatterns=""
+            positiveFilePatterns="" showHiddenFiles="false"/>
+        <options/>
+    </meta>
+    <projectTree name="compugrammar.xpr">
+        <folder name="css">
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/css/sample1.css"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/css/sample1.xhtml"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/css/sample2.css"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/css/sample2.xhtml"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/css/sample3.css"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/css/sample3.xhtml"
+            />
+        </folder>
+        <folder name="fo">
+            <folder name="Basic Font Attributes">
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Basic%20Font%20Attributes/bold.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Basic%20Font%20Attributes/bold.xml"
+                />
+            </folder>
+            <folder name="Block Properties">
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Block%20Properties/borders.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Block%20Properties/borders.xml"
+                />
+            </folder>
+            <folder name="Character Sets">
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Character%20Sets/adobe-standard.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Character%20Sets/adobe-standard.xml"
+                />
+            </folder>
+            <folder name="Extended Font Attributes">
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Extended%20Font%20Attributes/aspect.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Extended%20Font%20Attributes/aspect.xml"
+                />
+            </folder>
+            <folder name="Invoice">
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Invoice/invoice.xml"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Invoice/invoice.xsd"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Invoice/invoice.xsl"
+                />
+            </folder>
+            <folder name="Miscellaneous">
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Miscellaneous/fontAttributes.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Miscellaneous/helloWorld.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Miscellaneous/leaders.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Miscellaneous/pageLayout.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Miscellaneous/table.fo"
+                />
+            </folder>
+            <folder name="Paragraph Attributes">
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Paragraph%20Attributes/pagebreak.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Paragraph%20Attributes/pagebreak.xml"
+                />
+            </folder>
+            <folder name="Text Block Attributes">
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Text%20Block%20Attributes/align.fo"/>
+                <file
+                    name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/Text%20Block%20Attributes/align.xml"
+                />
+            </folder>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/fo/macro.xsl"
+            />
+        </folder>
+        <folder name="nvdl">
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/nvdl/xhtml-xforms.nvdl"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/nvdl/xhtml-xforms.xml"
+            />
+        </folder>
+        <folder name="relaxng">
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/relaxng/personal.rnc"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/relaxng/personal.rng"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/relaxng/personal.xml"
+            />
+        </folder>
+        <folder name="schematron">
+            <folder name="1.5">
+                <folder name="attributes">
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/followed-bad.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/followed-good.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/followed.dtd"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/followed.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/length-bad.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/length-bad1.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/length-bad2.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/length-good.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/length.dtd"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/length.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/name-bad.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/name.dtd"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/name.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/present-bad.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/present.dtd"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/present.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/required-bad1.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/required-bad2.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/required-good.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/required.dtd"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/attributes/required.sch"
+                    />
+                </folder>
+                <folder name="author">
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/author/author.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/author/source1.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/author/source2.xml"
+                    />
+                </folder>
+                <folder name="paragraph">
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/paragraph/paragraph.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/paragraph/source1.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/paragraph/source2.xml"
+                    />
+                </folder>
+                <folder name="percent">
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/percent/percent-bad1.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/percent/percent-bad2.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/percent/percent-good.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/percent/percent.dtd"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/percent/percent.sch"
+                    />
+                </folder>
+                <folder name="po">
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/po/po-bad.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/po/po-schema.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/po/po.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/po/po.xsd"
+                    />
+                </folder>
+                <folder name="tournament">
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/tournament/tournament-schema.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/tournament/Tournament.rng"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/tournament/Tournament.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/1.5/tournament/Tournament.xsd"
+                    />
+                </folder>
+            </folder>
+            <folder name="iso">
+                <folder name="tournament">
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/iso/tournament/tournament-schema.sch"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/iso/tournament/Tournament.rng"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/iso/tournament/Tournament.xml"/>
+                    <file
+                        name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/schematron/iso/tournament/Tournament.xsd"
+                    />
+                </folder>
+            </folder>
+        </folder>
+        <folder name="svg">
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/svg/batik3D.svg"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/svg/sales.xml"/>
+            <file
+                name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/svg/sales.xsl"
+            />
+        </folder>
+        <folder
+            path="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/dita/"/>
+        <folder
+            path="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/docbook/"/>
+        <folder
+            path="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/ooxml/"/>
+        <folder
+            path="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/tei/"/>
+        <folder
+            path="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/xhtml/"/>
+        <file
+            name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/personal-schema.css"/>
+        <file
+            name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/personal-schema.xml"/>
+        <file
+            name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/personal.css"/>
+        <file
+            name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/personal.dtd"/>
+        <file
+            name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/personal.xml"/>
+        <file
+            name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/personal.xsd"/>
+        <file
+            name="../../Documents%20and%20Settings/KAREN%20SCHNEIDER/OxygenXMLAuthor/samples/personal.xsl"
+        />
+    </projectTree>
+</project>

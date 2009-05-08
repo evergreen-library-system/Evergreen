@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article xmlns="http://docbook.org/ns/docbook">
+
+	<artheader>
+		<title>Grammar of JSON Queries</title>
+		<author>
+			<firstname>Scott</firstname>
+			<surname>McKellar</surname>
+		</author>
+	</artheader>
+
+	<sect1><title>Introduction</title>
+		<para>
+			The format of this grammar approximates Extended Backus-Naur notation.  However it
+			is intended as input to human beings, not to parser generators such as Lex or
+			Yacc.  Do not expect formal rigor.  Sometimes narrative text will explain things
+			that are clumsy to express in formal notation.  More often, the text will restate
+			or summarize the formal productions.
+		</para>
+		<para>
+			Conventions:
+		</para>
+		<orderedlist>
+			<listitem>
+				The grammar is a series of productions.
+			</listitem>
+			<listitem>
+				A production consists of a name, followed by "::=", followed by a
+				definition for the name.  The name identifies a grammatical construct that can
+				appear on the right side of another production.
+			</listitem>
+			<listitem>
+				Literals (including punctuation) are enclosed in single quotes, or in double
+				quotes if case is not significant.
+			</listitem>
+			<listitem>
+				A single quotation mark within a literal is escaped with a preceding backslash.
+			</listitem>
+			<listitem>
+				If a construct can be defined more than one way, then the alternatives may appear
+				in separate productions; or, they may appear in the same production, separated by
+				pipe symbols.  The choice between these representations is of only cosmetic
+				significance.
+			</listitem>
+			<listitem>
+				A construct enclosed within square brackets is optional.
+			</listitem>
+			<listitem>
+				A construct enclosed within curly braces may be repeated zero or more times.
+			</listitem>
+			<listitem>
+				JSON allows arbitrary white space between tokens.  To avoid ugly clutter, this
+				grammar ignores the optional white space.
+			</listitem>
+			<listitem>
+				In many cases a production defines a JSON object, i.e. a list of name-value pairs,
+				separated by commas.  Since the order of these name/value pairs is not significant,
+				the grammar will not try to show all the possible sequences.  In general it will
+				present the required pairs first, if any, followed by any optional elements.
+			</listitem>
+		</orderedlist>
+
+		<para>
+			Since both EBNF and JSON use curly braces and square brackets, pay close attention to
+			whether these characters are in single quotes.  If they're in single quotes, they are
+			literal elements of the JSON notation.  Otherwise they are elements of the EBNF notation.
+		</para>
+	</sect1>
+
+	<sect1><title>Primitives</title>
+		<para>
+			We'll start by defining some primitives, to get them out of the way.  They're
+			mostly just what you would expect.
+		</para>
+
+		<productionset>
+			<production>
+				<lhs>
+					string
+				</lhs>
+				<rhs>
+					'”' chars '”'
+				</rhs>
+			</production>
+
+			<production>
+				<lhs>
+					chars
+				</lhs>
+				<rhs>
+					any valid sequence of UTF-8 characters, with certain special characters
+					escaped according to JSON rules
+				</rhs>
+			</production>
+
+			<production>
+				<lhs>
+					integer_literal
+				</lhs>
+				<rhs>
+					[ sign ] digit { digit }
+				</rhs>
+			</production>
+
+			<production>
+				<lhs>
+					sign
+				</lhs>
+				<rhs>
+					'+' | '-'
+				</rhs>
+			</production>
+
+			<production>
+				<lhs>
+					digit
+				</lhs>
+				digit =  '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+				<rhs>
+				</rhs>
+			</production>
+
+			<production>
+				<lhs>
+					integer_string
+				</lhs>
+				<rhs>
+					'”'  integer_literal  '”'
+				</rhs>
+			</production>
+
+			<production>
+				<lhs>
+					integer
+				</lhs>
+				<rhs>
+					integer_literal  |  integer_string
+				</rhs>
+			</production>
+
+			<production>
+				<lhs>
+					number
+				</lhs>
+				<rhs>
+					any valid character sequence that is numeric according to JSON rules
+				</rhs>
+			</production>
+
+		</productionset>
+
+		<para>
+			When json_query requires an integral value, it will usually accept a quoted string and
+			convert it to an integer by brute force – to zero if necessary.  Likewise it may
+			truncate a floating point number to an integral value.  Scientific notation will be
+			accepted but may not give the intended results.
+		</para>
+
+		<productionset>
+
+			<production>
+				<lhs>
+					boolean
+				</lhs>
+				<rhs>
+					'true'  |  'false'  |  string  |  number
+				</rhs>
+			</production>
+
+		</productionset>
+
+		<para>
+			The preferred way to encode a boolean is with the JSON reserved word true or false,
+			in lower case without quotation marks.  The string “<literal>true</literal>”, in
+			upper, lower, or mixed case, is another way to encode true.  Any other string
+			evaluates to false.
+		</para>
+		<para>
+			As an accommodation to perl, numbers may be used as booleans.  A numeric value of 1
+			means true, and any other numeric value means false.
+		</para>
+		<para>
+			Any other valid JSON value, such as an array, will be accepted as a boolean but interpreted
+			as false.
+		</para>
+		<para>
+			The last couple of primitives aren't really very primitive, but we introduce them here
+			for convenience:
+		</para>
+
+		<productionset>
+
+			<production>
+				<lhs>
+					class_name
+				</lhs>
+				<rhs>
+					string
+				</rhs>
+			</production>
+
+		</productionset>
+
+		<para>
+			A class_name is a special case of a string: the name of a class as defined
+			by the IDL.  The class may refer either to a database table or to a
+			source_definition, which is a subquery.
+		</para>
+
+		<productionset>
+
+			<production>
+				<lhs>
+					field_name
+				</lhs>
+				<rhs>
+					string
+				</rhs>
+			</production>
+
+		</productionset>
+
+		<para>
+			A field_name is another special case of a string: the name of a non-virtual
+			field as defined by the IDL.  A field_name is also a column name for the
+			table corresponding to the relevant class.
+		</para>
+
+	</sect1>
+
+	<sect1><title>Query</title>
+
+		<para>
+			The following production applies not only to the main query but also to
+			most subqueries.
+		</para>
+
+		<productionset>
+
+			<production>
+				<lhs>
+					query
+				</lhs>
+				<rhs>
+					'{'<sbr/>
+					'”from”'  ':'  from_list<sbr/>
+					[ ','  '”select”'    ':'  select_list ]<sbr/>
+					[ ','  '”where”'     ':'  where_condition ]<sbr/>
+					[ ','  '”having”'    ':'  where_condition ]<sbr/>
+					[ ','  '”order_by”'  ':'  order_by_list ]<sbr/>
+					[ ','  '”limit”'     ':'  integer ]<sbr/>
+					[ ','  '”offset”'    ':'  integer ]<sbr/>
+					[ ','  '”distinct”'  ':'  boolean ]<sbr/>
+					[ ','  '”no_i18n”'   ':'  boolean ]<sbr/>
+					'}'
+				</rhs>
+			</production>
+
+		</productionset>
+
+		<para>
+			Except for the <literal>“distinct”</literal> and <literal>“no_i18n”</literal>
+			entries, each name/value pair represents a major clause of the SELECT statement.
+			The name/value pairs may appear in any order.
+		</para>
+		<para>
+			There is no name/value pair for the GROUP BY clause, because json_query
+			generates it automatically according to information encoded elsewhere.
+		</para>
+		<para>
+			The <literal>“distinct”</literal> entry, if present and true, tells json_query
+			that it may have to create a GROUP BY clause.  If not present, it defaults to false.
+		</para>
+		<para>
+			The <literal>“no_i18n”</literal> entry, if present and true, tells json_query to
+			suppress internationalization.  If not present, it defaults to false.  (Note that
+			<literal>“no_i18n”</literal> contains the digit one, not the letter ell.)
+		</para>
+		<para>
+			The values for <literal>“limit”</literal> and <literal>“offset”</literal>
+			provide the arguments of the LIMIT and OFFSET clauses, respectively, of the
+			SQL statement.  Each value should be non-negative, if present, or else the
+			SQL won't work.
+		</para>
+
+	</sect1>
+
+</article>
