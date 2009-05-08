@@ -13,31 +13,31 @@
     }
 </script>
 
- <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Funding Sources</div>
-            <div>
-                <button dojoType='dijit.form.Button' onClick='fsGrid.showCreateDialog()'>New Funding Source</button>
-                <button dojoType='dijit.form.Button' onClick='fsGrid.deleteSelected()'>Delete Selected</button>
-            </div>
-        </div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 
-        <table  jsId="fsGrid"
-                dojoType="openils.widget.AutoGrid"
-                fieldOrder="['id', 'name', 'owner', 'code', 'currency_type', 'balance']"
-                query="{name: '*'}"
-                defaultCellWidth='20'
-                fmClass='acqfs'
-                editOnEnter='true'>
-            <thead>
-                <tr>
-                    <th field="name" get='getName'/>
-                    <th field="owner" get='getOrgInfo'/>
-                    <th field="balance" get='getBalanceInfo'/>
-                </tr>
-            </thead>
-        </table>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Funding Sources</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='fsGrid.showCreateDialog()'>New Funding Source</button>
+            <button dojoType='dijit.form.Button' onClick='fsGrid.deleteSelected()'>Delete Selected</button>
+        </div>
     </div>
+
+    <table  jsId="fsGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'name', 'owner', 'code', 'currency_type', 'balance']"
+            query="{name: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='acqfs'
+            editOnEnter='true'>
+        <thead>
+            <tr>
+                <th field="name" get='getName'/>
+                <th field="owner" get='getOrgInfo'/>
+                <th field="balance" get='getBalanceInfo'/>
+            </tr>
+        </thead>
+    </table>
 </div>
 
 

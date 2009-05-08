@@ -81,8 +81,8 @@
         </table>
     </div>
 </div>
-<div style='height:600px;'>
-    <table dojoType='dojox.grid.DataGrid' jsId='attrEditorGrid' query="{id: '*'}"> 
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table dojoType='dojox.grid.DataGrid' jsId='attrEditorGrid' query="{id: '*'}" autoHeight='true'> 
         <thead>
             <tr>
                 <th field='id'>&vandelay.id;</th>

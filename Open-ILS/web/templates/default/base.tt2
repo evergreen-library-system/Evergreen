@@ -15,13 +15,15 @@
         </div>
     </div>
     <div id="oils-base-main-block" dojoType="dijit.layout.LayoutContainer" layoutAlign="client">
+        <!--
         <div id="oils-base-navigate-block" dojoType="dijit.layout.ContentPane" layoutAlign="left">
         </div>
+        -->
         <div id="oils-base-content-block" dojoType="dijit.layout.ContentPane" layoutAlign="client">
             [% content %]
         </div>
     </div>
-    <div id="oils-base-footer-block" dojoType="dijit.layout.ContentPane" layoutAlign="bottom">
+    <div id="oils-base-footer-block">
         [% INCLUDE default/footer.tt2 %]
     </div>
 </div>

@@ -1,25 +1,7 @@
 [% WRAPPER 'default/base.tt2' %]
-<div id='oils-acq-list-header' class='container'>
-    <div id='oils-acq-picklist-my-list-header'>
-        <div id='oils-acq-list-header-label'>My Selection Lists</div>
-    </div>
-    <div id='oils-acq-picklist-all-list-header'>
-        <div id='oils-acq-list-header-label'>All Selection Lists</div>
-    </div>
-</div>
-
+[% ctx.page_title = 'Selection Lists' %]
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/view_list.js'> </script>
 
-<script>
-    if(location.href.match(/listall$/)) {
-        listAll = true;
-        dojo.style('oils-acq-picklist-my-list-header', 'visibility', 'hidden');
-        dojo.style('oils-acq-picklist-my-list-header', 'display', 'none');
-    } else {
-        dojo.style('oils-acq-picklist-all-list-header', 'visibility', 'hidden');
-        dojo.style('oils-acq-picklist-all-list-header', 'display', 'none');
-    }
-</script>
 <script>
     function formatName(inDatum) {
         for(var i in plCache){
@@ -32,7 +14,15 @@
     }
 </script>
 
-<div class='oils-acq-actions-div'>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div id='oils-acq-list-header' class='container'>
+        <div id='oils-acq-picklist-my-list-header'>
+            <div id='oils-acq-list-header-label'>My Selection Lists</div>
+        </div>
+    </div>
+</div>
+
+<div class='oils-acq-actions-div' dojoType="dijit.layout.ContentPane" layoutAlign="client">
 
     <div dojoType="dijit.form.DropDownButton">
         <span>New Selection List</span>
@@ -84,35 +74,32 @@
             </table>
         </div>
     </div>
-
     <button dojoType="dijit.form.Button" onclick="deleteFromGrid();">Delete Selected</button>
 </div>
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table 
-                jsId="plListGrid" 
-                dojoType="openils.widget.AutoGrid" 
-                query="{id: '*'}" 
-                fieldOrder="['name', 'owner', 'entry_count', 'create_time', 'edit_time']"
-                suppressFields="['editor', 'creator']"
-                query="{id: '*'}"
-                defaultCellWidth='"auto"'
-                fmClass='acqpl'
-                editOnEnter='true'>
-            <thead>
-                <tr>
-                    <th field="name" formatter='formatName'/>
-                    <th field="owner" get='getOwnerName'/>
-                    <th field="entry_count">Entry Count</th>
-                </tr>
-            </thead>
-        </table>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table 
+            autoHeight='true'
+            jsId="plListGrid" 
+            dojoType="openils.widget.AutoGrid" 
+            query="{id: '*'}" 
+            fieldOrder="['name', 'owner', 'entry_count', 'create_time', 'edit_time']"
+            suppressFields="['editor', 'creator']"
+            query="{id: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='acqpl'
+            editOnEnter='true'>
+        <thead>
+            <tr>
+                <th field="name" formatter='formatName'/>
+                <th field="owner" get='getOwnerName'/>
+                <th field="entry_count">Entry Count</th>
+            </tr>
+        </thead>
+    </table>
+    <div class='hidden'>
+        <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/>
     </div>
-</div>
-
-<div class='hidden'>
-    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/>
 </div>
 
 [% END %]

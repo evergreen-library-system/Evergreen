@@ -110,11 +110,11 @@
     </div>
 
     <!-- Queue Grid -->
-    <div class='hidden' id='vl-bib-queue-grid-wrapper'>
+    <div class='hidden tall' id='vl-bib-queue-grid-wrapper'>
         <div dojoType="openils.widget.GridColumnPicker" jsid="vlBibQueueGridMenu" style="display: none;" grid='vlBibQueueGrid'>
             <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
         </div>
-        <div style='height:600px' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+        <div class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
             <table dojoType='dojox.grid.DataGrid' jsId='vlBibQueueGrid' query="{id:'*'}" headerMenu='vlBibQueueGridMenu'> 
             </table>
         </div>
@@ -123,7 +123,7 @@
         <div dojoType="openils.widget.GridColumnPicker" jsid="vlAuthQueueGridMenu" style="display: none;" grid='vlAuthQueueGrid'>
             <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
         </div>
-        <div style='height:600px' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+        <div class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
             <table dojoType='dojox.grid.DataGrid' jsId='vlAuthQueueGrid' query="{id:'*'}" headerMenu='vlAuthQueueGridMenu'> 
             </table>
         </div>

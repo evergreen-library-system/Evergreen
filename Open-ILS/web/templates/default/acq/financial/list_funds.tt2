@@ -20,10 +20,7 @@
             }
         );
     }
-</script>
 
-  <!-- The main grid lives here -->
-<script>
     function getName(rowIndex, item) {
         if(!item) return;
         var name = this.grid.store.getValue(item, 'name');
@@ -32,32 +29,34 @@
     }
 </script>
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Funds</div>
-            <div>
-                <button dojoType='dijit.form.Button' onClick='lfGrid.showCreateDialog()'>New Fund</button>
-                <button dojoType='dijit.form.Button' onClick='lfGrid.deleteSelected()'>Delete Selected</button>
-            </div>
-        </div>
-        <label>Year</label>
-        <select dojoType='dijit.form.FilteringSelect' onchange='filterGrid();' style='width:100px;'
-                jsId='fundFilterYearSelect' labelAttr='year' searchAttr='year'> </select>
 
-
-        <table  jsId="lfGrid"
-                dojoType="openils.widget.AutoGrid"
-                fieldOrder="['id', 'name', 'code', 'year', 'org', 'currency_type', 'combined_balance']"
-                query="{id: '*'}"
-                defaultCellWidth='20'
-                fmClass='acqf'
-                editOnEnter='true'>
-            <thead>
-                <tr><th field='owner' get='getOrgInfo'/>
-                </tr>
-            </thead>
-        </table>
+<div class='oils-header-panel' dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div>Funds</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='lfGrid.showCreateDialog()'>New Fund</button>
+        <button dojoType='dijit.form.Button' onClick='lfGrid.deleteSelected()'>Delete Selected</button>
     </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    Year <select dojoType='dijit.form.FilteringSelect' onchange='filterGrid();'
+        jsId='fundFilterYearSelect' labelAttr='year' searchAttr='year'> </select>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="lfGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'name', 'code', 'year', 'org', 'currency_type', 'combined_balance']"
+            query="{id: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='acqf'
+            editOnEnter='true'>
+        <thead>
+            <tr><th field='owner' get='getOrgInfo'></th></tr>
+        </thead>
+    </table>
+    <div/>
 </div>
 
 
