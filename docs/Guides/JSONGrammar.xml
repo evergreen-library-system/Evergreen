@@ -45,14 +45,14 @@
 			<listitem>
 				<para>If a construct can be defined more than one way, then the alternatives may
 					appear in separate productions; or, they may appear in the same production,
-					separated by pipe symbols. The choice between these representations is of only
+					separated by pipe symbols ( | ). The choice between these representations is of only
 					cosmetic significance.</para>
 			</listitem>
 			<listitem>
-				<para>A construct enclosed within square brackets is optional.</para>
+				<para>A construct enclosed within [square brackets] is optional.</para>
 			</listitem>
 			<listitem>
-				<para>A construct enclosed within curly braces may be repeated zero or more
+				<para>A construct enclosed within {curly braces} may be repeated zero or more
 					times.</para>
 			</listitem>
 			<listitem>
@@ -186,11 +186,18 @@
 
 			<production xml:id="ebnf.query">
 				<lhs> query </lhs>
-				<rhs> '{'<sbr/> '"from"' ':' from_list<sbr/> [ ',' '"select"' ':' select_list
-					]<sbr/> [ ',' '"where"' ':' where_condition ]<sbr/> [ ',' '"having"' ':'
-					where_condition ]<sbr/> [ ',' '"order_by"' ':' order_by_list ]<sbr/> [ ','
-					'"limit"' ':' integer ]<sbr/> [ ',' '"offset"' ':' integer ]<sbr/> [ ','
-					'"distinct"' ':' boolean ]<sbr/> [ ',' '"no_i18n"' ':' boolean ]<sbr/> '}'
+				<rhs> 
+					'{'<sbr/> 
+					'"from"' ':' from_list<sbr/> 
+					[ ',' '"select"' ':' select_list ]<sbr/> 
+					[ ',' '"where"' ':' where_condition ]<sbr/> 
+					[ ',' '"having"' ':' where_condition ]<sbr/> 
+					[ ',' '"order_by"' ':' order_by_list ]<sbr/> 
+					[ ',' '"limit"' ':' integer ]<sbr/> 
+					[ ',' '"offset"' ':' integer ]<sbr/> 
+					[ ',' '"distinct"' ':' boolean ]<sbr/> 
+					[ ',' '"no_i18n"' ':' boolean ]<sbr/> 
+					'}'
 				</rhs>
 			</production>
 
