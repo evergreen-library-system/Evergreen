@@ -82,7 +82,7 @@ var vlBibSources = [];
   * Grab initial data
   */
 function vlInit() {
-    authtoken = dojo.cookie('ses') || cgi.param('ses');
+    authtoken = openils.User.authtoken;
     var initNeeded = 5; // how many async responses do we need before we're init'd 
     var initCount = 0; // how many async reponses we've received
 
@@ -137,7 +137,7 @@ function vlInit() {
 }
 
 
-dojo.addOnLoad(vlInit);
+openils.Util.addOnLoad(vlInit);
 
 
 // fetch the bib and authority attribute definitions

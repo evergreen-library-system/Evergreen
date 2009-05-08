@@ -22,7 +22,7 @@ table.dijitTooltipTable { border-collapse: separate; }
     color: red;
     font-weight:bold;
 }
-.tall { height:100%; }
+.tall { height:600px; }
 .wide { width:100%; }
 .hidden { display: none; }
 #toolbar { margin-top: 0px; }

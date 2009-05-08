@@ -1,0 +1,41 @@
+[% WRAPPER 'default/base.tt2' %]
+[% ctx.page_title = 'MARC Import/Export' %]
+[% ctx.dtd = '<!DOCTYPE html SYSTEM "'_ ctx.web_dir _'/opac/locale/' _ ctx.locale _ '/vandelay.dtd">' %]
+
+<script src='[% ctx.media_prefix %]/js/ui/default/vandelay/vandelay.js'> </script>
+<link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/vandelay.css'></link>
+<link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/css/theme/[% ctx.skin %]/vandelay.css'></link>
+
+
+<div dojoType="dijit.layout.LayoutContainer" orientation="vertical" class="tall">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='top' id="vl-nav-bar" style="visibility: hidden;">
+        [% INCLUDE 'default/vandelay/inc/toolbar.tt2' %]
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+        [% INCLUDE 'default/vandelay/inc/progress.tt2' %]
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-export-div' class='hidden content'>
+        [% INCLUDE 'default/vandelay/inc/export.tt2' %]
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-upload-div' class='hidden content'>
+        [% INCLUDE 'default/vandelay/inc/upload.tt2' %]
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-div' class='tall hidden content'>
+        [% INCLUDE 'default/vandelay/inc/queue.tt2' %]
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-match-div' class='tall hidden content'>
+        [% INCLUDE 'default/vandelay/inc/matches.tt2' %]
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-marc-html-div' class='tall hidden content'>
+        [% INCLUDE 'default/vandelay/inc/marchtml.tt2' %]
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-queue-select-div' class='tall hidden content'>
+        [% INCLUDE 'default/vandelay/inc/queueselect.tt2' %]
+    </div>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client"  id="vl-attr-editor-div" 
+            class='hidden attr-editor-detail-content-pane content' title='&vandelay.edit.attrs;'>
+        [% INCLUDE 'default/vandelay/inc/attrs.tt2' %]
+    </div>
+</div>
+
+[% END %]
