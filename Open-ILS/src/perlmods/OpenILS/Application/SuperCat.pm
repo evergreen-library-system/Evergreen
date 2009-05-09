@@ -891,11 +891,11 @@ sub basic_record_holdings {
 			next unless grep { $cp->circ_lib->id == $_ } @ou_ids;
 			next unless ( $cp->deleted eq 'f' || $cp->deleted == 0 );
 
-
-			my $cp_stat = $self->escape($cp->status->name);
-			my $cp_loc = $self->escape($cp->location->name);
-			my $cp_lib = $self->escape($cp->circ_lib->shortname);
-			my $cp_bc = $self->escape($cp->barcode);
+			# Ugly, but avoids (for now) returning 1 for each of these
+			my $cp_stat = escape($self, $cp->status->name);
+			my $cp_loc = escape($self, $cp->location->name);
+			my $cp_lib = escape($self, $cp->circ_lib->shortname);
+			my $cp_bc = escape($self, $cp->barcode);
 
 			push @{$holdings{$cn->label}{'copies'}}, { barcode => $cp_bc, status => $cp_stat, location => $cp_loc, circlib => $cp_lib};
 
