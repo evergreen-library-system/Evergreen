@@ -891,7 +891,12 @@ sub basic_record_holdings {
 			next unless grep { $cp->circ_lib->id == $_ } @ou_ids;
 			next unless ( $cp->deleted eq 'f' || $cp->deleted == 0 );
 
-			push @{$holdings{$cn->label}{'copies'}}, { barcode => $cp_bc, status => $cp_stat, location => $cp_loc, circlib => $cp_lib};
+			push @{$holdings{$cn->label}{'copies'}}, {
+                barcode => $cp->barcode,
+                status => $cp->status->name,
+                location => $cp->location->name,
+                circlib => $cp->circ_lib->shortname
+            };
 
 		}
 	}
