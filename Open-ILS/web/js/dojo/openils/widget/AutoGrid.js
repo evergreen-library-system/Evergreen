@@ -197,7 +197,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             _formatRowSelectInput : function(rowIdx) {
                 if(rowIdx === null || rowIdx === undefined) return '';
-                console.log("<input type='checkbox' name='autogrid.selector' row='" + rowIdx + "'/>");
                 return "<input type='checkbox' name='autogrid.selector' row='" + rowIdx + "'/>";
             },
 
