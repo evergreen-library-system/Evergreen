@@ -74,7 +74,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     // insert the selector column
                     pushEntry({
                         field : '+selector',
-                        get : function(rowIdx, item) { return self._buildRowSelectInput(rowIdx, item); },
+                        formatter : function(rowIdx) { return self._formatRowSelectInput(rowIdx); },
+                        get : function(rowIdx, item) { if(item) return rowIdx; },
                         width : this.selectorWidth,
                         name : '&#x2713'
                     });
@@ -194,8 +195,9 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 );
             },
 
-            _buildRowSelectInput : function(rowIdx, item) {
-                if(!item) return '';
+            _formatRowSelectInput : function(rowIdx) {
+                if(rowIdx === null || rowIdx === undefined) return '';
+                console.log("<input type='checkbox' name='autogrid.selector' row='" + rowIdx + "'/>");
                 return "<input type='checkbox' name='autogrid.selector' row='" + rowIdx + "'/>";
             },
 
