@@ -78,6 +78,32 @@
 	<command id="cmd_acq_view_picklist" />
 	<command id="cmd_acq_upload" />
 	<command id="cmd_acq_view_po" />
+
+    <!-- local admin menu commands -->
+    <command id="cmd_local_admin_fonts_and_sounds"/>
+    <command id="cmd_local_admin_printer"/>
+    <command id="cmd_local_admin_closed_dates"/>
+    <command id="cmd_local_admin_copy_locations"/>
+    <command id="cmd_local_admin_lib_settings"/>
+    <command id="cmd_local_admin_non_cat_types"/>
+    <command id="cmd_local_admin_stat_cats"/>
+    <command id="cmd_local_admin_standing_penalty"/>
+    <command id="cmd_local_admin_grp_penalty_threshold"/>
+    <command id="cmd_local_admin_idl_field_doc"/>
+    <command id="cmd_local_admin_action_trigger"/>
+    <command id="cmd_local_admin_survey"/>
+
+    <!-- server admin menu commands -->
+    <command id="cmd_server_admin_org_type"/>
+    <command id="cmd_server_admin_org_unit"/>
+    <command id="cmd_server_admin_grp_tree"/>
+    <command id="cmd_server_admin_perm_list"/>
+    <command id="cmd_server_admin_copy_status"/>
+    <command id="cmd_server_admin_marc_code"/>
+    <command id="cmd_server_admin_billing_type"/>
+    <command id="cmd_server_admin_z39_source"/>
+    <command id="cmd_server_admin_circ_mod"/>
+
 </commandset>
 
 
@@ -226,31 +252,31 @@
 		<menu id="main.menu.admin.local" label="&staff.main.menu.admin.local_admin.label;">
 			<menupopup id="main.menu.admin.local.popup">
 		        <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
-				<menuitem label="&staff.server.admin.index.fonts_and_sounds;"/>
-				<menuitem label="&staff.server.admin.index.printer;"/>
-				<menuitem label="&staff.server.admin.index.closed_dates;"/>
-				<menuitem label="&staff.server.admin.index.copy_locations;"/>
-				<menuitem label="&staff.server.admin.index.library_settings;"/>
-				<menuitem label="&staff.server.admin.index.non_cataloged_types;"/>
-				<menuitem label="&staff.server.admin.index.statistical_categories;"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;"/>
+				<menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
+				<menuitem label="&staff.server.admin.index.printer;" command="cmd_local_admin_printer"/>
+				<menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>
+				<menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>
+				<menuitem label="&staff.server.admin.index.library_settings;" command="cmd_local_admin_lib_settings"/>
+				<menuitem label="&staff.server.admin.index.non_cataloged_types;" command="cmd_local_admin_non_cat_types"/>
+				<menuitem label="&staff.server.admin.index.statistical_categories;" command="cmd_local_admin_stat_cats"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;" command="cmd_local_admin_standing_penalty"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;" command="cmd_local_admin_action_trigger"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>
             </menupopup>
         </menu>
 		<menu id="main.menu.admin.server" label="&staff.main.menu.admin.server_admin.label;">
 			<menupopup id="main.menu.admin.server.popup">
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_type.label;"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit.label;"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.grp_tree.label;"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.perm_list.label;"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.copy_status.label;"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.marc_code_maps.label;"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;"/>
-                <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_type.label;" command="cmd_server_admin_org_type"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit.label;" command="cmd_server_admin_org_unit"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.grp_tree.label;" command="cmd_server_admin_grp_tree"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.perm_list.label;" command="cmd_server_admin_perm_list"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.copy_status.label;" command="cmd_server_admin_copy_status"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.marc_code_maps.label;" command="cmd_server_admin_marc_code"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;" command="cmd_server_admin_billing_type"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;" command="cmd_server_admin_z39_source"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
             </menupopup>
         </menu>
 

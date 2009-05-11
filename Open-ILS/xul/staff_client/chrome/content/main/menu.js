@@ -429,6 +429,135 @@ main.menu.prototype = {
 				}
 			],
 
+            'cmd_local_admin_fonts_and_sounds' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_printer' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_closed_dates' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_copy_locations' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_lib_settings' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_non_cat_types' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_stat_cats' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_standing_penalty' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_grp_penalty_threshold' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_idl_field_doc' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_action_trigger' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_local_admin_survey' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+
+            'cmd_server_admin_org_type' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_server_admin_org_unit' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_server_admin_grp_tree' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_server_admin_perm_list' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_server_admin_copy_status' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_server_admin_marc_code' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_server_admin_billing_type' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_server_admin_z39_source' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+            'cmd_server_admin_circ_mod' : [
+                ['oncommand'],
+                function() { 
+                    alert(123);
+                }
+            ],
+
+
 			'cmd_open_conify' : [
 				['oncommand'],
 				function() { 
