@@ -7,10 +7,8 @@
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
 
 <script>
-    function getId(rowIndex, item) {
-        if(!item) return;
-        var data = this.grid.store.getValue(item, 'id');
-        return '<a href="[% ctx.base_path %]/acq/po/view/' + data + '">'+data;
+    function formatId(id) {
+        if(id) return '<a href="[% ctx.base_path %]/acq/po/view/' + id + '">'+id;
     }
 </script>
 
@@ -43,27 +41,27 @@
     </div>
 </form>
 <br/>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
-        <table 
-                id="po-grid" 
-                jsId="poGrid" 
-                dojoType="openils.widget.AutoGrid" 
-                query="{id: '*'}" 
-                fieldOrder="['id', 'owner', 'ordering_agency', 'provider', 'create_time', 'edit_time', 'state']"
-                suppressFields="['editor', 'creator']"
-                query="{id: '*'}"
-                defaultCellWidth='"auto"'
-                showSequenceFields='true'
-                fmClass='acqpo'> 
-            <thead> 
-                <tr> 
-                    <th field="id" get='getId'>ID</th> 
-                    <th field="owner" get='getPOOwner'/>
-                </tr> 
-            </thead> 
-        </table>     
-    </div> 
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table 
+            id="po-grid" 
+            autoHeight='true'
+            jsId="poGrid" 
+            dojoType="openils.widget.AutoGrid" 
+            query="{id: '*'}" 
+            fieldOrder="['id', 'owner', 'ordering_agency', 'provider', 'create_time', 'edit_time', 'state']"
+            suppressFields="['editor', 'creator']"
+            query="{id: '*'}"
+            defaultCellWidth='"auto"'
+            showSequenceFields='true'
+            fmClass='acqpo'> 
+        <thead> 
+            <tr> 
+                <th field="id" formatter='formatId'>ID</th> 
+                <th field="owner" get='getPOOwner'/>
+            </tr> 
+        </thead> 
+    </table>     
+    <div comment='dojo-needs-me'/>
 </div>
 [% END %]
 
