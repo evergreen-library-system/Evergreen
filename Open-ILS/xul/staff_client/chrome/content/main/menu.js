@@ -60,6 +60,25 @@ main.menu.prototype = {
             if (x) x.setAttribute('hidden','false');
         }
 
+        function open_conify_page(path, labelKey, old_school) {
+
+            // tab label
+            labelKey = labelKey || 'menu.cmd_open_conify.tab';
+            label = offlineStrings.getString(labelKey);
+
+            // URL
+            var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.EG_WEB_BASE + '/conify/global/' + path);
+            if(old_school)
+                loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.CONIFY + '/' + path + '.html');
+
+            obj.set_tab( 
+                loc, 
+                {'tab_name' : label, 'browser' : false }, 
+                {'no_xulG' : false, 'show_print_button' : false} 
+            );
+        }
+
+
 		var cmd_map = {
 			'cmd_broken' : [
 				['oncommand'],
@@ -473,88 +492,59 @@ main.menu.prototype = {
             ],
             'cmd_local_admin_standing_penalty' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('config/standing_penalty'); }
             ],
             'cmd_local_admin_grp_penalty_threshold' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('permission/grp_penalty_threshold'); }
             ],
             'cmd_local_admin_idl_field_doc' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('config/idl_field_doc'); }
             ],
             'cmd_local_admin_action_trigger' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('action_trigger/event_definition'); }
             ],
             'cmd_local_admin_survey' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('action/survey'); }
             ],
-
             'cmd_server_admin_org_type' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('actor/org_unit_type', null, true); }
             ],
             'cmd_server_admin_org_unit' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('actor/org_unit', null, true); }
             ],
             'cmd_server_admin_grp_tree' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('permission/grp_tree', null, true); }
             ],
             'cmd_server_admin_perm_list' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('permission/perm_list', null, true); }
             ],
             'cmd_server_admin_copy_status' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('config/copy_status', null, true); }
             ],
             'cmd_server_admin_marc_code' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('config/marc_code_maps', null, true); }
             ],
             'cmd_server_admin_billing_type' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('config/billing_type'); }
             ],
             'cmd_server_admin_z39_source' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('config/z3950_source'); }
             ],
             'cmd_server_admin_circ_mod' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_conify_page('config/circ_modifier'); }
             ],
 
 
@@ -562,7 +552,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + 
-                        window.escape(urls.CONIFY+'?ses='+window.escape(ses()));
+                        window.escape(urls.CONIFY+'/admin.html?ses='+window.escape(ses()));
 					obj.set_tab( 
 						loc, 
 						{'tab_name' : offlineStrings.getString('menu.cmd_open_conify.tab'), 'browser' : false }, 

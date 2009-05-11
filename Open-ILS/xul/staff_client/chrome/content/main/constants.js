@@ -343,9 +343,9 @@ const urls = {
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : '/xul/server/main/test.xul',
-    'VANDELAY' : '/vandelay/vandelay.xml', /* XXX how can we get the locale? */
-    'CONIFY' : '/conify/' + LOCALE + '/global/admin.html',
+    'CONIFY' : '/conify/' + LOCALE + '/global',
     'XUL_ACQ_PICKLIST' : '/eg/acq/picklist/list',
     'XUL_ACQ_UPLOAD' : '/eg/acq/picklist/upload',
     'XUL_ACQ_PO' : '/eg/acq/po/search',
+    'EG_WEB_BASE' : '/eg'
 }
