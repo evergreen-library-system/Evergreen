@@ -1,38 +1,49 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/circ_modifier.js'> </script>
 <h1>Circulation Modifier</h1> <br/>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <script type ="text/javascript">
+
+        dojo.require('dijit.form.FilteringSelect');
+        dojo.require('openils.widget.AutoGrid');
+
         function formatSIPMediaType(inDatum) {
-        switch (inDatum) {
-        case '000':
-        return 'Other';
-        case '001':
-        return 'Book';
-        case '002':
-        return 'Magazine';
-        case '003':
-        return 'Bound Journal';
-        case '004':
-        return 'Audio Tape';
-        case '005':
-        return 'Video Tape';
-        case '006':
-        return 'CD/CDROM';
-        case '007':
-        return 'Diskette';
-        case '008':
-        return 'Book with diskette';
-        case '009':
-        return 'Book with CD';
-        case '010':
-        return 'Book with audio tape';
-        }
+            switch (inDatum) {
+                case '000':
+                    return 'Other';
+                case '001':
+                    return 'Book';
+                case '002':
+                    return 'Magazine';
+                case '003':
+                    return 'Bound Journal';
+                case '004':
+                    return 'Audio Tape';
+                case '005':
+                    return 'Video Tape';
+                case '006':
+                    return 'CD/CDROM';
+                case '007':
+                    return 'Diskette';
+                case '008':
+                    return 'Book with diskette';
+                case '009':
+                    return 'Book with CD';
+                case '010':
+                    return 'Book with audio tape';
+            }
         }
 
+        openils.Util.addOnLoad(
+            function() {
+                cmGrid.overrideEditWidgets.sip2_media_type = sip2Selector;
+                cmGrid.loadAll({order_by:{ccm : 'name'}});
+            }
+        );
+
     </script>
-    <div class="hidden"> <select dojoType="dijit.form.FilteringSelect" jsId="sip2Selector">
+    <div class="hidden"> 
+        <select dojoType="dijit.form.FilteringSelect" jsId="sip2Selector">
             <option value='000'>Other</option>
             <option value='001' selected='selected'>Book</option>
             <option value='002'>Magazine</option>
@@ -65,13 +76,9 @@
                 editOnEnter='true'>
             <thead>
                 <tr>
-                    <th field="magnetic_media"
-                        options='No,Yes' values='f,t'
-                        formatter='formatMagneticMedia'/>
+                    <th field="magnetic_media" options='No,Yes' values='f,t'/>
                     <th field="sip2_media_type" formatter='formatSIPMediaType'/>
-
                 </tr>
-
             </thead>
         </table>
     </div>
