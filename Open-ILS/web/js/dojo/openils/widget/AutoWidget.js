@@ -40,16 +40,19 @@ if(!dojo._hasResource['openils.widget.AutoWidget']) {
 
             if(this.fieldOrder) {
 
-                for(var idx in this.fieldOrder) {
-                    var name = this.fieldOrder[idx];
-                    for(var idx2 in this.fmIDL.fields) {
-                        if(this.fmIDL.fields[idx2].name == name) {
-                            this.sortedFieldList.push(this.fmIDL.fields[idx2]);
-                            break;
+                var self = this;
+                dojo.forEach(this.fieldOrder,
+                    function(name) {
+                        var field = self.fmIDL.fields.filter(function(item) { return (item.name == name) } )[0];
+                        if(field) {
+                            self.sortedFieldList.push(field)
+                        } else {
+                            // non-IDL field
+                            self.sortedFieldList.push({name : name});
                         }
                     }
-                }
-                
+                );
+
                 // if the user-defined order does not list all fields, 
                 // shove the extras on the end.
                 var anonFields = [];
