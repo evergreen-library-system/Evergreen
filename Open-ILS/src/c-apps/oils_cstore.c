@@ -2666,6 +2666,40 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 	return buffer_release(sql_buf);
 }
 
+// Return 1 if the class is in the FROM clause, or 0 if not
+static int is_joined( jsonObject* from_clause, const char* class ) {
+
+	if( ! from_clause )
+		return 0;
+	else if( from_clause->type == JSON_STRING ) {
+		if( strcmp( class, jsonObjectGetString( from_clause ) ) )
+			return 0;
+		else
+			return 1;
+	} else if( from_clause->type != JSON_HASH ) {
+		return 0;
+	} else {      // Look at any subjoins
+		jsonIterator* class_itr = jsonNewIterator( from_clause );
+		jsonObject* curr_class;
+		int rc = 0;    // return code
+		while ( ( curr_class = jsonIteratorNext( class_itr ) ) ) {
+			if( ! strcmp( class_itr->key, class ) ) {
+				rc = 1;
+				break;
+			} else {
+				jsonObject* subjoin = jsonObjectGetKey( curr_class, "join" );
+				if( subjoin && is_joined( subjoin, class ) ) {
+					rc = 1;
+					break;
+				}
+			}
+		}
+		jsonIteratorFree( class_itr );
+
+		return rc;
+	}
+}
+
 char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
 		
@@ -2921,7 +2955,7 @@ char* SELECT (
 				return NULL;
 			}
 
-		    // Make sure the target relation is in the join tree.
+			// Make sure the target relation is in the FROM clause.
 			
 			// At this point join_hash is a step down from the join_hash we
 			// received as a parameter.  If the original was a JSON_STRING,
@@ -2932,34 +2966,9 @@ char* SELECT (
 			// that case from_function would be non-NULL, and we wouldn't
 			// be here.
 
-			int class_in_from_clause;    // boolean
-			
-		    if ( ! strcmp( core_class, cname ))
-				// This is the core class -- no problem
-				class_in_from_clause = 1;
-			else {
-				if (!join_hash) 
-					// There's only one class in the FROM clause, and this isn't it
-					class_in_from_clause = 0;
-				else if (join_hash->type == JSON_STRING) {
-					// There's only one class in the FROM clause
-					const char* str = jsonObjectGetString(join_hash);
-					if ( strcmp( str, cname ) )
-						class_in_from_clause = 0;    // This isn't it
-					else 
-						class_in_from_clause = 1;    // This is it
-				} else {
-					jsonObject* found = jsonObjectFindPath(join_hash, "//%s", cname);
-					if ( 0 == found->size )
-						class_in_from_clause = 0;   // Nowhere in the join tree
-					else
-						class_in_from_clause = 1;   // Found it
-					jsonObjectFree( found );
-				}
-			}
-
-			// If the class isn't in the FROM clause, bail out
-			if( ! class_in_from_clause ) {
+			// If the current class isn't the core class
+			// and it isn't in the join tree, bail out
+			if ( strcmp( core_class, cname ) && ! is_joined( join_hash, cname ) ) {
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: SELECT clause references class not in FROM clause: \"%s\"",
