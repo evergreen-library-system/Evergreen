@@ -100,11 +100,16 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     if(fields.filter(function(i){return (i.field == field.name)})[0]) 
                         continue;
 
-                    if(!this.showSequenceFields && field.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
-                        continue; 
                     var entry = existing.filter(function(i){return (i.field == field.name)})[0];
-                    if(entry) entry.name = field.label;
-                    else entry = {field:field.name, name:field.label};
+                    if(entry) {
+                        entry.name = field.label;
+                    } else {
+                        // unless specifically requested, hide sequence fields
+                        if(!this.showSequenceFields && field.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                            continue; 
+
+                        entry = {field:field.name, name:field.label};
+                    }
                     pushEntry(entry);
                 }
 
