@@ -2,7 +2,12 @@ dojo.require('dijit.layout.TabContainer');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('openils.PermaCrud');
+dojo.require('openils.MarcXPathParser');
+
+
 var provider;
+var xpathParser = new openils.MarcXPathParser();
+var subFields= [];
 
 function draw() {
     if(providerId) {
@@ -81,7 +86,7 @@ function drawProviderSummary(child) {
         case 'tab-hold': 
             phsListGrid.overrideEditWidgets.provider = new
                 dijit.form.TextBox({disabled: 'true', value: providerId});
-            phsListGrid.overrideEditWidgets.name = nameSelect;
+            phsListGrid.overrideEditWidgets.name = name;
             phsListGrid.resetStore();
             phsListGrid.loadAll({order_by:{acqphsm : 'provider'}}, {provider : providerId});
             break;
@@ -100,11 +105,20 @@ function drawProviderSummary(child) {
     }
 }
 
-function getProviderName(rowIndex, item) {
-    if(!item) return '';
-    return '<a href="' + location.href + '/' +
-        this.grid.store.getValue(item, 'id') + '">' +
-        this.grid.store.getValue(item, 'name') + '</a>';
+
+function getParsedTag(rowIndex, item) {
+    console.log("in getParsedTag");
+    console.log(item);
+    return item && xpathParser.parse(padListGrid.store.getValue(item, 'xpath')).tags;
 }
 
+
+function getParsedSubf(rowIndex, item) {
+
+    if(item) {
+        var subfields = xpathParser.parse(padListGrid.store.getValue(item, 'xpath')).subfields;
+        return subfields.join(',');
+    }
+    return'';
+}
 openils.Util.addOnLoad(draw);
