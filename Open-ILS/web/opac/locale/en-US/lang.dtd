@@ -617,7 +617,23 @@
 <!ENTITY staff.main.menu.admin.developer.accesskey "-">
 
 <!ENTITY staff.main.menu.admin.local_admin.label "Local Administration">
+<!ENTITY staff.main.menu.admin.local_admin.conify.action_trigger.label "Notifications / Action Triggers">
+<!ENTITY staff.main.menu.admin.local_admin.conify.survey.label "Surveys">
+<!ENTITY staff.main.menu.admin.local_admin.conify.idl_field_doc.label "Field Documentation">
+<!ENTITY staff.main.menu.admin.local_admin.conify.standing_penalty.label "Standing Penalties">
+<!ENTITY staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label "Group Penalty Thresholds">
+
 <!ENTITY staff.main.menu.admin.server_admin.label "Server Administration">
+<!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_type.label "Organization Types">
+<!ENTITY staff.main.menu.admin.server_admin.conify.org_unit.label "Organizational Units">
+<!ENTITY staff.main.menu.admin.server_admin.conify.grp_tree.label "Permission Groups">
+<!ENTITY staff.main.menu.admin.server_admin.conify.perm_list.label "Permissions">
+<!ENTITY staff.main.menu.admin.server_admin.conify.copy_status.label "Copy Statuses">
+<!ENTITY staff.main.menu.admin.server_admin.conify.marc_code_maps.label "MARC Codes">
+<!ENTITY staff.main.menu.admin.server_admin.conify.billing_type.label "Billing Types">
+<!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
+<!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
+
 
 <!ENTITY staff.main.menu.admin.developer.label "For developers...">
 <!ENTITY staff.main.menu.admin.download_patrons.accesskey "D">

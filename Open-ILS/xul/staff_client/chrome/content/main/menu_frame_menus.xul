@@ -233,10 +233,24 @@
 				<menuitem label="&staff.server.admin.index.library_settings;"/>
 				<menuitem label="&staff.server.admin.index.non_cataloged_types;"/>
 				<menuitem label="&staff.server.admin.index.statistical_categories;"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;"/>
             </menupopup>
         </menu>
 		<menu id="main.menu.admin.server" label="&staff.main.menu.admin.server_admin.label;">
 			<menupopup id="main.menu.admin.server.popup">
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_type.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.grp_tree.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.perm_list.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.copy_status.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.marc_code_maps.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;"/>
             </menupopup>
         </menu>
 
@@ -244,7 +258,9 @@
 		<menuitem label="&staff.main.menu.admin.local_admin.label;" accesskey="&staff.main.menu.admin.local_admin.accesskey;" command="cmd_local_admin"/>
 		<menuitem label="&staff.server.admin.index.conify;" command="cmd_open_conify"/>
 		<menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_adv_user_edit"/>
+        <!--
 		<menuitem label="&staff.main.menu.admin.survey_wizard.label;" accesskey="&staff.main.menu.admin.survey_wizard.accesskey;" command="cmd_survey_wizard"/>
+        -->
 		<menuitem label="&staff.main.menu.admin.toggle_buttonbar.label;" accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;" command="cmd_toggle_buttonbar"/>
 		<menuseparator />
 		<menu id="main.menu.admin.sub" accesskey="&staff.main.menu.admin.developer.accesskey;" label="&staff.main.menu.admin.developer.label;">
