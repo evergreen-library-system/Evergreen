@@ -222,10 +222,28 @@
 		<menuitem label="&staff.main.menu.admin.offline_xacts.label;" accesskey="&staff.main.menu.admin.offline_xacts.accesskey;" command="cmd_manage_offline_xacts"/>
 		<menuitem label="&staff.main.menu.admin.download_patrons.label;" accesskey="&staff.main.menu.admin.download_patrons.accesskey;" command="cmd_download_patrons"/>
 		<menuseparator />
+
+		<menu id="main.menu.admin.local" label="&staff.main.menu.admin.local_admin.label;">
+			<menupopup id="main.menu.admin.local.popup">
+		        <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
+				<menuitem label="&staff.server.admin.index.fonts_and_sounds;"/>
+				<menuitem label="&staff.server.admin.index.printer;"/>
+				<menuitem label="&staff.server.admin.index.closed_dates;"/>
+				<menuitem label="&staff.server.admin.index.copy_locations;"/>
+				<menuitem label="&staff.server.admin.index.library_settings;"/>
+				<menuitem label="&staff.server.admin.index.non_cataloged_types;"/>
+				<menuitem label="&staff.server.admin.index.statistical_categories;"/>
+            </menupopup>
+        </menu>
+		<menu id="main.menu.admin.server" label="&staff.main.menu.admin.server_admin.label;">
+			<menupopup id="main.menu.admin.server.popup">
+            </menupopup>
+        </menu>
+
+		<menuseparator />
 		<menuitem label="&staff.main.menu.admin.local_admin.label;" accesskey="&staff.main.menu.admin.local_admin.accesskey;" command="cmd_local_admin"/>
 		<menuitem label="&staff.server.admin.index.conify;" command="cmd_open_conify"/>
 		<menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_adv_user_edit"/>
-		<menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
 		<menuitem label="&staff.main.menu.admin.survey_wizard.label;" accesskey="&staff.main.menu.admin.survey_wizard.accesskey;" command="cmd_survey_wizard"/>
 		<menuitem label="&staff.main.menu.admin.toggle_buttonbar.label;" accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;" command="cmd_toggle_buttonbar"/>
 		<menuseparator />

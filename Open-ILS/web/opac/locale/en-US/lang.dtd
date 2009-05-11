@@ -615,6 +615,10 @@
 <!ENTITY staff.main.menu.admin.copy_location_edit.accesskey "L">
 <!ENTITY staff.main.menu.admin.copy_location_edit.label "Copy Location Editor">
 <!ENTITY staff.main.menu.admin.developer.accesskey "-">
+
+<!ENTITY staff.main.menu.admin.local_admin.label "Local Administration">
+<!ENTITY staff.main.menu.admin.server_admin.label "Server Administration">
+
 <!ENTITY staff.main.menu.admin.developer.label "For developers...">
 <!ENTITY staff.main.menu.admin.download_patrons.accesskey "D">
 <!ENTITY staff.main.menu.admin.download_patrons.label "Download Offline Patron List">
