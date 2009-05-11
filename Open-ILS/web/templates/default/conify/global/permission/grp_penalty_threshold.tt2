@@ -1,41 +1,41 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/permission/grp_penalty_threshold.js'> </script>    
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
     <div>Penalty Threshold</div>
     <div>
         <button dojoType='dijit.form.Button' onClick='gptGrid.showCreateDialog()'>New Penalty Threshold</button>
         <button dojoType='dijit.form.Button' onClick='gptGrid.deleteSelected()'>Delete Selected</button>
     </div>
 </div>
-<span>Context Org Unit</span>
 
-<select dojoType="openils.widget.OrgUnitFilteringSelect" 
-        jsId='contextOrgSelector' 
-        searchAttr='shortname' 
-        labelAttr='shortname'> 
-</select>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <span>Context Org Unit</span>
+    <select dojoType="openils.widget.OrgUnitFilteringSelect" 
+            jsId='contextOrgSelector' 
+            searchAttr='shortname' 
+            labelAttr='shortname'> 
+    </select>
+</div>
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="top">
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-        <table  jsId="gptGrid" 
-                dojoType="openils.widget.AutoGrid" 
-                fieldOrder="['id', 'grp', 'org_unit', 'penalty', 'threshold']"
-                defaultCellWidth='15'
-                query="{id: '*'}" 
-                fmClass='pgpt' 
-                editOnEnter='true'>
-        </table>    
-    </div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="gptGrid" 
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid" 
+            fieldOrder="['id', 'grp', 'org_unit', 'penalty', 'threshold']"
+            defaultCellWidth='15'
+            query="{id: '*'}" 
+            fmClass='pgpt' 
+            editOnEnter='true'>
+    </table>    
+    <div/>
 </div>
     
 <script type='javascript/text'>
     var org_id = openils.User.user.ws_ou();
-    console.log(org_id);
-    var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( function (i) { 
-    return i.id() } );
-    console.log(list);
-     
+    var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( 
+        function (i) { return i.id() } );
 </script>
+
 [% END %]
 
