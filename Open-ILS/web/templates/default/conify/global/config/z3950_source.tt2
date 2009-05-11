@@ -12,13 +12,15 @@
     </div>
 
     <table  jsId="zsGrid"
+            autoHeight='true'
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['name', 'label', 'host', 'port', 'db', 'record_format', 'transmission_format', 'auth']"
             query="{name: '*'}"
-            defaultCellWidth='15'
+            defaultCellWidth='"auto"'
             fmClass='czs'
             editOnEnter='true'>
     </table>
+    <div/>
 </div>
 
 [% END %]
