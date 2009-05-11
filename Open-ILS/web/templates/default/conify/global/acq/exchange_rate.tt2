@@ -14,8 +14,9 @@
         <button dojoType='dijit.form.Button' onClick='erGrid.deleteSelected()'>Delete Selected</button>
     </div>
 </div>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="erGrid"
+            autoHeight='true'
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['id', 'from_currency', 'to_currency', 'ratio']"
             defaultCellWidth='12'
@@ -23,6 +24,7 @@
             fmClass='acqexr'
             editOnEnter='true'>
     </table>
+    <div/>
 </div>
 [% END %]
 

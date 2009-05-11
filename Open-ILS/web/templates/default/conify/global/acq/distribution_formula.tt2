@@ -5,7 +5,7 @@
 
 <div id='formula-list-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
             <div>Distribution Formulas</div>
             <div>
                 <button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button>
@@ -13,6 +13,7 @@
             </div>
         </div>
         <table  jsId="fListGrid"
+                autoHeight='true'
                 dojoType="openils.widget.AutoGrid"
                 fieldOrder="['id', 'name', 'owner', 'item_count', 'skip_count']"
                 query="{id: '*'}"
@@ -32,18 +33,19 @@
 
 
 <div id='formula-entry-div'>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div id='formula-summary-pane'/>
     </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
             <div id="formula_head"></div>
             <div> 
                 <button dojoType='dijit.form.Button' onClick='dfeListGrid.showCreateDialog()'>New Formula Entry</button>
                 <button dojoType='dijit.form.Button' onClick='dfeListGrid.deleteSelected()'>Delete Selected</button> 
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
             <table  jsId="dfeListGrid"
+                    autoHeight='true'
                     dojoType="openils.widget.AutoGrid"
                     fieldOrder="['id','formula', 'owning_lib', 'location', 'item_count', 'position']"
                     suppressFields="['formula']"
@@ -57,6 +59,7 @@
                     </tr>
                 </thead>
             </table>
+            <div/>
         </div>
     </div>
 </div>
