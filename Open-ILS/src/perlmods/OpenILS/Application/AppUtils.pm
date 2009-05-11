@@ -1516,6 +1516,8 @@ sub fire_object_event {
     return 0 unless $resp and ($resp->{event} or $resp->{events});
     my $evt = $resp->{event} ? $resp->{event} : $resp->{events}->[0];
 
+    return 0 unless $evt;
+
     return $e->retrieve_action_trigger_event([
         $evt->id,
         {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
