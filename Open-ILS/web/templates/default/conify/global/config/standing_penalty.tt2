@@ -50,14 +50,11 @@
                 dojoType="openils.widget.AutoGrid"
                 fieldOrder="['id', 'name', 'label', 'block_list']"
                 query="{name: '*'}"
-                defaultCellWidth='15'
+                defaultCellWidth='"auto"'
                 fmClass='csp'
                 editOnEnter='true'>
             <thead>
-                <tr>
-                    <th field="id" formatter='formatId'/>
-                </tr>
-
+                <tr> <th field="id" formatter='formatId'/> </tr>
             </thead>
         </table>
     </div>

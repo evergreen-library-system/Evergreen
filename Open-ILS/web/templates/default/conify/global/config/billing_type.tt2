@@ -24,8 +24,7 @@
                 fmClass='cbt'
                 editOnEnter='true'>
             <thead>
-                <tr><th field='owner' get='getOrgInfo'/>
-                </tr>
+                <tr><th field='owner' get='getOrgInfo'/></tr>
             </thead>
         </table>
     </div>
