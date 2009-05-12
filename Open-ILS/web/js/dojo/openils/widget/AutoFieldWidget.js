@@ -41,7 +41,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
 
             if(!this.idlField) 
-                throw new Error("AutoFieldWidget could not determine which field to render.  We need more information.");
+                throw new Error("AutoFieldWidget could not determine which field to render.  We need more information. fmClass=" + 
+                    this.fmClass + ' fmField=' + this.fmField + ' fmObject=' + js2JSON(this.fmObject));
 
             this.auth = openils.User.authtoken;
             if(!this.cache[this.auth]) {
