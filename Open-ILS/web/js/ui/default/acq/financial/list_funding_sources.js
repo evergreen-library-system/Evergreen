@@ -19,8 +19,11 @@ function getOrgInfo(rowIndex, item) {
 
 function getBalanceInfo(rowIndex, item) {
     if(!item) return '';
-    var data = this.grid.store.getValue( item, 'id');   
-    return new String(openils.acq.FundingSource.cache[data].summary().balance);
+    var id = this.grid.store.getValue( item, 'id');   
+    var fs = openils.acq.FundingSource.cache[id];
+    if(fs && fs.summary())
+        return fs.summary().balance;
+    return 0;
 }
 
 function loadFSGrid() {
