@@ -78,6 +78,24 @@ main.menu.prototype = {
             );
         }
 
+        function open_admin_page(path, labelKey, addSes) {
+
+            // tab label
+            labelKey = labelKey || 'menu.cmd_open_conify.tab';
+            label = offlineStrings.getString(labelKey);
+
+            // URL
+            var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_LOCAL_ADMIN_BASE + '/' + path);
+            if(addSes) loc += window.escape('?ses=' + ses());
+
+            obj.set_tab( 
+                loc, 
+                {'tab_name' : label, 'browser' : false }, 
+                {'no_xulG' : false, 'show_print_button' : false} 
+            );
+        }
+
+
 
 		var cmd_map = {
 			'cmd_broken' : [
@@ -438,57 +456,62 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + 
-                        window.escape(urls.VANDELAY+'?ses='+window.escape(ses()));
+                        window.escape(urls.EG_WEB_BASE + '/vandelay/vandelay');
 					obj.set_tab( 
 						loc, 
 						{'tab_name' : offlineStrings.getString('menu.cmd_open_vandelay.tab'), 'browser' : false }, 
 						{'no_xulG' : false, 'show_print_button' : false } 
 					);
-
 				}
 			],
 
+			'cmd_local_admin_reports' : [
+				['oncommand'],
+				function() { 
+					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_REPORTS + '?ses=' + ses());
+					obj.set_tab( 
+						loc, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_local_admin_reports.tab'), 'browser' : false }, 
+						{'no_xulG' : false, 'show_print_button' : false } 
+					);
+				}
+			],
+
+            'cmd_local_admin_transit_list' : [
+                ['oncommand'],
+                function() { open_admin_page('transit_list.xul', 'menu.cmd_local_admin_transit_list.tab'); }
+            ],
+            'cmd_local_admin_cash_reports' : [
+                ['oncommand'],
+                function() { open_admin_page('cash_reports.xhtml', 'menu.cmd_local_admin_cash_reports.tab', true); }
+            ],
             'cmd_local_admin_fonts_and_sounds' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_admin_page('font_settings.xul', 'menu.cmd_local_admin_fonts_and_sounds.tab'); }
             ],
             'cmd_local_admin_printer' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_admin_page('printer_settings.html', 'menu.cmd_local_admin_printer.tab', true); }
             ],
             'cmd_local_admin_closed_dates' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_admin_page('closed_dates.xhtml', 'menu.cmd_local_admin_closed_dates.tab', true); }
             ],
             'cmd_local_admin_copy_locations' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_admin_page('copy_locations.xhtml', 'menu.cmd_local_admin_copy_locations.tab', true); }
             ],
             'cmd_local_admin_lib_settings' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_admin_page('org_unit_settings.xhtml', 'menu.cmd_local_admin_lib_settings.tab', true); }
             ],
             'cmd_local_admin_non_cat_types' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_admin_page('non_cat_types.xhtml', 'menu.cmd_local_admin_non_cat_types.tab', true); }
             ],
             'cmd_local_admin_stat_cats' : [
                 ['oncommand'],
-                function() { 
-                    alert(123);
-                }
+                function() { open_admin_page('stat_cat_editor.xhtml', 'menu.cmd_local_admin_stat_cats.tab', true); }
             ],
             'cmd_local_admin_standing_penalty' : [
                 ['oncommand'],
@@ -546,21 +569,6 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_conify_page('config/circ_modifier'); }
             ],
-
-
-			'cmd_open_conify' : [
-				['oncommand'],
-				function() { 
-					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + 
-                        window.escape(urls.CONIFY+'/admin.html?ses='+window.escape(ses()));
-					obj.set_tab( 
-						loc, 
-						{'tab_name' : offlineStrings.getString('menu.cmd_open_conify.tab'), 'browser' : false }, 
-						{'no_xulG' : false, 'show_print_button' : false } 
-					);
-
-				}
-			],
 
 			'cmd_reprint' : [
 				['oncommand'],

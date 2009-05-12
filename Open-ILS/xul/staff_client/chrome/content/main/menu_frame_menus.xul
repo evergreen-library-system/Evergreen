@@ -73,7 +73,6 @@
 	<command id="cmd_test" />
 	<command id="cmd_broken" disabled="true" />
 	<command id="cmd_open_vandelay" />
-	<command id="cmd_open_conify" />
     
 	<command id="cmd_acq_view_picklist" />
 	<command id="cmd_acq_upload" />
@@ -92,6 +91,9 @@
     <command id="cmd_local_admin_idl_field_doc"/>
     <command id="cmd_local_admin_action_trigger"/>
     <command id="cmd_local_admin_survey"/>
+    <command id="cmd_local_admin_reports"/>
+    <command id="cmd_local_admin_cash_reports"/>
+    <command id="cmd_local_admin_transit_list"/>
 
     <!-- server admin menu commands -->
     <command id="cmd_server_admin_org_type"/>
@@ -264,6 +266,9 @@
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;" command="cmd_local_admin_action_trigger"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>
+                <menuitem label="&staff.server.admin.index.reports;" command="cmd_local_admin_reports"/>
+                <menuitem label="&staff.server.admin.index.cash_reports;" command="cmd_local_admin_cash_reports"/>
+                <menuitem label="&staff.server.admin.index.transit_list;" command="cmd_local_admin_transit_list"/>
             </menupopup>
         </menu>
 		<menu id="main.menu.admin.server" label="&staff.main.menu.admin.server_admin.label;">
@@ -282,11 +287,7 @@
 
 		<menuseparator />
 		<menuitem label="&staff.main.menu.admin.local_admin.label;" accesskey="&staff.main.menu.admin.local_admin.accesskey;" command="cmd_local_admin"/>
-		<menuitem label="&staff.server.admin.index.conify;" command="cmd_open_conify"/>
 		<menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_adv_user_edit"/>
-        <!--
-		<menuitem label="&staff.main.menu.admin.survey_wizard.label;" accesskey="&staff.main.menu.admin.survey_wizard.accesskey;" command="cmd_survey_wizard"/>
-        -->
 		<menuitem label="&staff.main.menu.admin.toggle_buttonbar.label;" accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;" command="cmd_toggle_buttonbar"/>
 		<menuseparator />
 		<menu id="main.menu.admin.sub" accesskey="&staff.main.menu.admin.developer.accesskey;" label="&staff.main.menu.admin.developer.label;">

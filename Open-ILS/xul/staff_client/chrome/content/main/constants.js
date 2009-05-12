@@ -347,5 +347,7 @@ const urls = {
     'XUL_ACQ_PICKLIST' : '/eg/acq/picklist/list',
     'XUL_ACQ_UPLOAD' : '/eg/acq/picklist/upload',
     'XUL_ACQ_PO' : '/eg/acq/po/search',
-    'EG_WEB_BASE' : '/eg'
+    'EG_WEB_BASE' : '/eg',
+    'XUL_LOCAL_ADMIN_BASE' : '/xul/server/admin',
+    'XUL_REPORTS' : '/reports/oils_rpt.xhtml'
 }
