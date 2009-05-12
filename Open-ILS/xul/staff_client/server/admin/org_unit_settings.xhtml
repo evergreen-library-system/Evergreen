@@ -200,8 +200,11 @@
                     var osGridLayout = [{
                         defaultCell: {styles: 'text-align: center;'},
                         cells : [[
-                            {name: 'Edit', get: osGetEditLink, 
-                                value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchEditor(\'SETTING\');&quot;>Edit&lt;/a>'},
+                            {   name: 'Edit', 
+                                value: '&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;osLaunchEditor(\'SETTING\');&quot;>Edit&lt;/a>',
+                                get: osGetEditLink, 
+                                formatter : osFormatEditLink
+                            },
                             {name: 'Setting', get: osGetGridData, field:'label', width:'auto', styles:'text-align:left;'},
                             {name: 'Context', get: osGetGridData, field:'context'},
                             {name: 'Value', get: osGetGridData, field:'value', width:'auto'},

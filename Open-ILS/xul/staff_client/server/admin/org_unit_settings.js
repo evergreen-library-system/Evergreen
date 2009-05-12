@@ -155,7 +155,11 @@ function osGetGridData(rowIdx) {
 function osGetEditLink(rowIdx) {
     var data = this.grid.model.getRow(rowIdx);
     if(!data) return '';
-    return this.value.replace(/SETTING/, data.name);
+    return data.name;
+}
+
+function osFormatEditLink(name) {
+    return this.value.replace(/SETTING/, name);
 }
 
 function osLaunchEditor(name) {
