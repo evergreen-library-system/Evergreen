@@ -516,12 +516,18 @@ function getRecAttrFromCode(rec, attrCode) {
 }
 
 function vlGetViewMatches(rowIdx, item) {
-    if(!item) return '';
-    var id = this.grid.store.getValue(item, 'id');
-    var rec = queuedRecordsMap[id];
-    if(rec.matches().length > 0)
-        return this.value.replace('RECID', id);
-    return '';
+    if(item) {
+        var id = this.grid.store.getValue(item, 'id');
+        var rec = queuedRecordsMap[id];
+        if(rec.matches().length > 0)
+            return id;
+    }
+    return -1
+}
+
+function vlFormatViewMatches(id) {
+    if(id == -1) return '';
+    return '<a href="javascript:void(0);" onclick="vlLoadMatchUI(' + id + ');">' + this.name + '</a>';
 }
 
 function getAttrValue(rowIdx, item) {
@@ -554,21 +560,34 @@ function vlGetCreator(rowIdx, item) {
 }
 
 function vlGetViewMARC(rowIdx, item) {
-    if(!item) return '';
-    return this.value.replace('RECID', this.grid.store.getValue(item, 'id'));
+    return item && this.grid.store.getValue(item, 'id');
+}
+
+function vlFormatViewMARC(id) {
+    return '<a href="javascript:void(0);" onclick="vlLoadMARCHtml(' + id + ', false, '+
+        'function(){displayGlobalDiv(\'vl-queue-div\');});">' + this.name + '</a>';
 }
 
 function vlGetOverlayTargetSelector(rowIdx, item) {
-    if(!item) return '';
-    var _id = this.grid.store.getValue(item, '_id');
-    var id = this.grid.store.getValue(item, 'id');
-    var value = this.value.replace(/GRIDID/g, _id);
+    if(!item) return;
+    return this.grid.store.getValue(item, '_id') + ':' + this.grid.store.getValue(item, 'id');
+}
+
+function vlFormatOverlayTargetSelector(val) {
+    if(!val) return '';
+    var parts = val.split(':');
+    var _id = parts[0];
+    var id = parts[1];
+    var value = '<input type="checkbox" name="vl-overlay-target-RECID" '+
+        'onclick="vlHandleOverlayTargetSelected(ID, GRIDID);" gridid="GRIDID" match="ID"/>';
+    value = value.replace(/GRIDID/g, _id);
     value = value.replace(/RECID/g, currentImportRecId);
     value = value.replace(/ID/g, id);
     if(_id == currentOverlayRecordsMapGid[currentImportRecId])
         return value.replace('/>', 'checked="checked"/>');
     return value;
 }
+
 
 /**
   * see if the user has enabled overlays for the current match set and, 
@@ -603,6 +622,7 @@ function vlHandleOverlayTargetSelected(recId, gridId) {
 }
 
 var valLastQueueType = null;
+var vlQueueGridLayout = null;
 function buildRecordGrid(type) {
     displayGlobalDiv('vl-queue-div');
 
@@ -618,9 +638,11 @@ function buildRecordGrid(type) {
         vlQueueGridMenu = vlAuthQueueGridMenu;
     }
 
+
     if(valLastQueueType != type) {
         valLastQueueType = type;
-        resetVlQueueGridLayout();
+        //resetVlQueueGridLayout();
+        vlQueueGridLayout = vlQueueGrid.attr('structure');
         var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
         attrDefMap[type] = {};
         for(var i = 0; i < defs.length; i++) {
@@ -635,6 +657,12 @@ function buildRecordGrid(type) {
             vlQueueGridLayout[0].cells[0].push(col);
         }
     }
+
+    dojo.forEach(vlQueueGridLayout[0].cells[0], 
+        function(cell) { 
+            if(cell.field.match(/^\+/)) cell.nonSelectable=true;
+        }
+    );
 
     var storeData;
     if(type == 'bib')
@@ -688,8 +716,10 @@ function vlDeleteQueue(type, queueId, onload) {
 
 
 function vlQueueGridDrawSelectBox(rowIdx, item) {
-    if(!item) return '';
-    var id = this.grid.store.getValue(item, 'id');
+    return item &&  this.grid.store.getValue(item, 'id');
+}
+
+function vlQueueGridFormatSelectBox(id) {
     var domId = 'vl-record-list-selected-' + id;
     selectableGridRecords[domId] = id;
     return "<div><input type='checkbox' id='"+domId+"'/></div>";

@@ -7,8 +7,11 @@
                 {
                     name: '&vandelay.overlay.target;', 
                     get: vlGetOverlayTargetSelector,
+                    formatter : vlFormatOverlayTargetSelector,
+                    /*
                     value: '&lt;input type="checkbox" name="vl-overlay-target-RECID" '+
                         'onclick="vlHandleOverlayTargetSelected(ID, GRIDID);" gridid="GRIDID" match="ID"/>'
+                        */
                 },
                 {name:'&vandelay.source.match.point;', field:'src_matchpoint'},
                 {name:'&vandelay.dest.match.point;', field:'dest_matchpoint'},

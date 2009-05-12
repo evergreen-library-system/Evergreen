@@ -1,4 +1,4 @@
-<table class='wide'>
+<table class='wide' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <tr>
         <td align='left'>
             <h1>&vandelay.record.queue; <span style='font-style:italic;' id='vl-queue-summary-name'/></h1><br/>
@@ -9,37 +9,9 @@
         </td>
     </tr>
 </table>
-<script>
-    var vlQueueGridLayout;
-    function resetVlQueueGridLayout() {
-        vlQueueGridLayout = [{
-            cells : [[
-                {
-                    name: '&lt;input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"/>', 
-                    get: vlQueueGridDrawSelectBox, 
-                    styles : 'text-align: center;',
-                    nonSelectable : true
-                }, {   
-                    name: '&vandelay.view.marc;', 
-                    get: vlGetViewMARC, styles : 'text-align: center;',
-                    value: '&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, false, '+
-                        'function(){displayGlobalDiv(\'vl-queue-div\');});">&vandelay.view.marc;&lt;/a>',
-                    nonSelectable : true
-                }, {   
-                    name: '&vandelay.matches;', 
-                    get: vlGetViewMatches, styles : 'text-align: center;',
-                    value:'&lt;a href="javascript:void(0);" onclick="vlLoadMatchUI(RECID);">&vandelay.matches;&lt;/a>',
-                    nonSelectable : true
-                }, {
-                    name: '&vandelay.import.time;', field:'import_time',  styles : 'text-align: center;',
-                    get:vlGetDateTimeField, 
-                }
-            ]]
-        }];
-    }
-</script>
-<div id='vl-queue-div-grid' class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
 
+<br/>
+<div id='vl-queue-div-grid' class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <!-- queue grid navigation row -->
     <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
         <table width='100%' style='margin-bottom:0px;'>
@@ -109,24 +81,83 @@
         </table>
     </div>
 
-    <!-- Queue Grid -->
+    <!-- Bib Queue Grid -->
     <div class='hidden tall' id='vl-bib-queue-grid-wrapper'>
         <div dojoType="openils.widget.GridColumnPicker" jsid="vlBibQueueGridMenu" style="display: none;" grid='vlBibQueueGrid'>
             <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
         </div>
-        <div class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
-            <table dojoType='dojox.grid.DataGrid' jsId='vlBibQueueGrid' query="{id:'*'}" headerMenu='vlBibQueueGridMenu'> 
+        <div class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client' style='border:1px solid #FFF;'>
+            <table dojoType='dojox.grid.DataGrid' jsId='vlBibQueueGrid' query="{import_time:'*'}" headerMenu='vlBibQueueGridMenu' style='height:600px;'>
+                <thead>
+                    <tr>
+                        <th 
+                            field='+row_selector'
+                            get='vlQueueGridDrawSelectBox'
+                            formatter='vlQueueGridFormatSelectBox'
+                            styles='text-align: center;'
+                            nonSelectable='true'>
+                                <input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"></input>
+                        </th>
+                        <th
+                            field='+view_marc'
+                            get='vlGetViewMARC'
+                            formatter='vlFormatViewMARC' 
+                            styles='text-align: center;'
+                            nonSelectable='true'>&vandelay.view.marc;</th>
+                        <th
+                            field='+get_matches'
+                            get='vlGetViewMatches'
+                            formatter='vlFormatViewMatches'
+                            styles='text-align: center;'
+                            nonSelectable='true'>&vandelay.matches;</th>
+                        <th
+                            field='import_time'
+                            styles='text-align: center;'
+                            get='vlGetDateTimeField'>&vandelay.import.time;</th>
+                    </tr>
+                </thead>
             </table>
         </div>
     </div>
+
+    <!-- Auth Queue Grid -->
     <div class='hidden' id='vl-auth-queue-grid-wrapper'>
         <div dojoType="openils.widget.GridColumnPicker" jsid="vlAuthQueueGridMenu" style="display: none;" grid='vlAuthQueueGrid'>
             <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
         </div>
         <div class='tall' dojoType="dijit.layout.ContentPane" layoutAlign='client'>
             <table dojoType='dojox.grid.DataGrid' jsId='vlAuthQueueGrid' query="{id:'*'}" headerMenu='vlAuthQueueGridMenu'> 
+                <thead>
+                    <tr>
+                        <th 
+                            field='+row_selector'
+                            get='vlQueueGridDrawSelectBox'
+                            formatter='vlQueueGridFormatSelectBox'
+                            styles='text-align: center;'
+                            nonSelectable='true'>
+                                <input id="vl-queue-grid-row-selector" type="checkbox" onclick="vlToggleQueueGridSelect();"></input>
+                        </th>
+                        <th
+                            field='+view_marc'
+                            get='vlGetViewMARC'
+                            formatter='vlFormatViewMARC' 
+                            styles='text-align: center;'
+                            nonSelectable='true'>&vandelay.view.marc;</th>
+                        <th
+                            field='+get_matches'
+                            get='vlGetViewMatches'
+                            formatter='vlFormatViewMatches'
+                            styles='text-align: center;'
+                            nonSelectable='true'>&vandelay.matches;</th>
+                        <th
+                            field='import_time'
+                            styles='text-align: center;'
+                            get='vlGetDateTimeField'>&vandelay.import.time;</th>
+                    </tr>
+                </thead>
             </table>
         </div>
     </div>
+
 </div>
 
