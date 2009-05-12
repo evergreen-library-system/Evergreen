@@ -48,7 +48,7 @@ if(!dojo._hasResource['openils.widget.AutoWidget']) {
                             self.sortedFieldList.push(field)
                         } else {
                             // non-IDL field
-                            self.sortedFieldList.push({name : name});
+                            self.sortedFieldList.push({name : name, virtual:true});
                         }
                     }
                 );
