@@ -26,6 +26,7 @@ var _statusPositions = {};
 var rdetailShowLocal = true;
 var rdetailShowCopyLocation = true;
 var googleBookPreview = true;
+var displaySerialHoldings = true;
 
 
 var nextContainerIndex;
@@ -117,6 +118,12 @@ function rdetailDraw() {
 	req.callback(_rdetailDraw);
 	req.send();
 
+	if (displaySerialHoldings) {
+		var req = new Request(FETCH_MFHD_SUMMARY, getRid());
+		req.callback(_holdingsDraw);
+		req.send();
+	}
+
 	detachAllEvt("result", "idsReceived");
 	G.evt.result.hitCountReceived = [];
 	G.evt.result.recordReceived = [];
@@ -173,6 +180,60 @@ function rdetailShowAllCopies() {
 	hideMe(G.ui.rdetail.cp_info_none); 
 }
 
+/*
+ * This function could be written much more intelligently
+ * Limited brain power means that I'm brute-forcing it for now
+ */
+function _holdingsDraw(h) {
+	holdings = h.getResultObject();
+	if (!holdings) { return null; }
+
+	var hh = holdings.holdings();
+	var hch = holdings.current_holdings();
+	var hs = holdings.supplements();
+	var hcs = holdings.current_supplements();
+	var hi = holdings.indexes();
+	var hci = holdings.current_indexes();
+	var ho = holdings.online();
+	var hm = holdings.missing();
+	var hinc = holdings.incomplete();
+
+	if (	hh.length == 0 && hch.length == 0 && hs.length == 0 &&
+		hcs.length == 0 && hi.length == 0 && hci.length == 0 &&
+		ho.length == 0 && hm.length == 0 && hinc.length == 0
+	) {
+		return null;
+	}
+	
+	dojo.place("<table><caption  class='rdetail_header color_1'>Holdings summary</caption><tbody id='rdetail_holdings_tbody'></tbody></table>", "rdetail_details_table", "after");
+	if (hh.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Holdings</td><td  class='rdetail_item'>" + hh + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (hch.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Current holdings</td><td  class='rdetail_item'>" + hch + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (hs.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Supplements</td><td  class='rdetail_item'>" + hs + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (hcs.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Current supplements</td><td  class='rdetail_item'>" + hcs + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (hi.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Indexes</td><td  class='rdetail_item'>" + hi + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (hci.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Current indexes</td><td  class='rdetail_item'>" + hci + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (ho.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Online</td><td  class='rdetail_item'>" + ho + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (hm.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Missing</td><td  class='rdetail_item'>" + hm + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (hinc.length > 0) {
+		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Incomplete</td><td  class='rdetail_item'>" + hinc + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+}
 
 function _rdetailDraw(r) {
 	record = r.getResultObject();

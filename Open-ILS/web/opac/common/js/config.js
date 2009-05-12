@@ -291,6 +291,7 @@ var SEARCH_RS						= 'open-ils.search:open-ils.search.biblio.multiclass:1';
 var SEARCH_MRS_QUERY			= 'open-ils.search:open-ils.search.metabib.multiclass.query:1';
 var SEARCH_RS_QUERY             = 'open-ils.search:open-ils.search.biblio.multiclass.query:1';
 var FETCH_SEARCH_RIDS			= "open-ils.search:open-ils.search.biblio.record.class.search:1";
+var FETCH_MFHD_SUMMARY			= "open-ils.search:open-ils.search.serial.record.bib_to_mfhd.retrieve";
 var FETCH_MRMODS					= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
 var FETCH_MODS_FROM_COPY		= "open-ils.search:open-ils.search.biblio.mods_from_copy";
 var FETCH_MR_COPY_COUNTS		= "open-ils.search:open-ils.search.biblio.metarecord.copy_count:1";
