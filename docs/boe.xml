@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book version="5.0" xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <info>
+    <title>Evergreen Documentation</title>
+    <author>
+      <orgname>Evergreen Open Source Library Software</orgname>
+    </author>
+    <copyright>
+      <year>2009</year>
+      <holder>The Evergreen Project</holder>
+    </copyright>
+  </info>
+
+  <!-- xi:include  href="Intro/Introduction.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
+  <xi:include  href="Installation/Installation.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
+  <xi:include  href="Sysadmin/Administration.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" / -->
+  
+  <xi:include  href="StaffServices/StaffServices.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
+  <!-- xi:include  href="Customizing/Customizing.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" / -->
+  
+  <xi:include  href="TechRef/TechRef.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
+  <!-- xi:include  href="Guides/GuidesGlossaries.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
+  <xi:include  href="FAQs/FAQs.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
+  <xi:include  href="CommunityDocs/CommunityDocs.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" / -->
+
+</book>
+
