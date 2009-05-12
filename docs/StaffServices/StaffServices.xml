@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<chapter version="5.0" xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2003/XInclude"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+    <title>Evergreen Staff Services</title>
+
+  <xi:include  href="Cataloging/Cataloging.xml"  
+    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+
+</chapter>
