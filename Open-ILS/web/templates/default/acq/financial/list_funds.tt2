@@ -53,7 +53,9 @@
             fmClass='acqf'
             editOnEnter='true'>
         <thead>
-            <tr><th field='owner' get='getOrgInfo'></th></tr>
+            <tr>
+                <th field='combined_balance' get='getBalanceInfo'></th>
+            </tr>
         </thead>
     </table>
     <div/>
