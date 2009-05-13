@@ -285,10 +285,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     disableWidgetTest : this.disableWidgetTest,
                     onPostSubmit : function(r) {
                         var fmObject = openils.Util.readResponse(r);
-                        if(fmObject) 
-                            grid.store.newItem(fmObject.toStoreItem());
                         if(grid.onPostCreate)
                             grid.onPostCreate(fmObject);
+                        if(fmObject) 
+                            grid.store.newItem(fmObject.toStoreItem());
                         setTimeout(function(){
                             try {
                                 grid.selection.select(grid.rowCount-1);
