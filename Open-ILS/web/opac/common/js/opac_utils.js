@@ -1009,6 +1009,7 @@ function goHome() {
 
 function buildOrgSel(selector, org, offset, namecol) {
     if(!namecol) namecol = 'name';
+    if(!isXUL() && !isTrue(org.opac_visible())) return;
 	insertSelectorVal( selector, -1, 
 		org[namecol](), org.id(), null, findOrgDepth(org) - offset );
 	for( var c in org.children() )
