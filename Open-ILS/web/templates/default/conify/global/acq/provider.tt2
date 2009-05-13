@@ -1,45 +1,51 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/provider.js'> </script>
 
-<script> 
+<script type="text/javascript"> 
     var providerId = '[% ctx.page_args.0 %]';
 
-    function formatName(inDatum) {
-        switch (inDatum) {
-            case 'owning_lib':
-                return 'Owning Library';
-            case 'quantity':
-                return 'Quantity';
-            case 'call_number':
-                return 'Call Number';
-            case 'fund_code':
-                return 'Fund Code';
-            case 'local_note':
-                return 'Local Note';
-            case 'price':
-                return 'Price';
-            case 'circ-Modifier':
-                return 'Circulation Modifier';
-            case 'copy_location':
-                return 'Copy Location';
-            case 'collection_code':
-                return 'Collection Code';
-        }
-    }
 
-    function getProviderName(rowIndex, item) {
-        if(!item) return '';
-        var name = this.grid.store.getValue(item, 'name');
-        var id = this.grid.store.getValue(item, 'id');
-        return id + ':' + name;
-    }
 
-    function formatName(value) {
-        if(value) {
-            var vals = value.split(/:/);
-            return '<a href="[% ctx.base_path %]/conify/global/acq/provider/'+vals[0]+'">'+vals[1]+'</a>';
-        }
+function formatName(inDatum) {
+    switch (inDatum) {
+    case 'owning_lib':
+        return 'Owning Library';
+    case 'quantity':
+        return 'Quantity';
+    case 'call_number':
+        return 'Call Number';
+    case 'fund_code':
+        return 'Fund Code';
+    case 'local_note':
+        return 'Local Note';
+    case 'price':
+        return 'Price';
+    case 'circ_modifier':
+        return 'Circulation Modifier';
+    case 'copy_location':
+        return 'Copy Location';
+    case 'collection_code':
+        return 'Collection Code';
     }
+}
+
+function getProviderName(rowIndex, item) {
+    if(!item) return '';
+    var name = this.grid.store.getValue(item, 'name');
+    var id = this.grid.store.getValue(item, 'id');
+    return id + ':' + name;
+}
+
+function formatName(value) {
+    if(value) {
+        var vals = value.split(/:/);
+        return '<a href="[% ctx.base_path %]/conify/global/acq/provider/'+vals[0]+'">'+vals[1]+'</a>';
+    }
+}
+
+
+
+
 </script>
 
 
@@ -80,7 +86,7 @@
                 <tr><th field='name' get='getProviderName' formatter='formatName'/></tr>
             </thead>
         </table>
-        <div/>
+        <div></div>
     </div>
 </div>
 
@@ -95,7 +101,7 @@
             <div>
             <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
             <button dojoType='dijit.form.Button' onClick='paListGrid.deleteSelected()'>Delete Selected</button>
-        </div>
+            </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:100px'>
             <table  jsId="paListGrid"

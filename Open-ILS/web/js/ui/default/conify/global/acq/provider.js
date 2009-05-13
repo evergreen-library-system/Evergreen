@@ -29,7 +29,7 @@ function draw() {
         drawProviderSummary();
     } else {
         console.log('in else block');
-        openils.Util.addCSSClass(dojo.byId('provider-details-div'), 'hidden');
+        openils.Util.removeCSSClass(dojo.byId('provider-details-div'), 'hidden');
         pListGrid.loadAll({order_by:{acqpro : 'name'}});       
         pListGrid.onPostCreate = function(fmObject) {
             location.href = location.href + '/' + fmObject.id();
@@ -41,7 +41,8 @@ function draw() {
 function drawProviderSummary(child) {
     console.log(child);
     openils.Util.addCSSClass(dojo.byId('provider-details-div'), 'visible');
-    console.log("hidden provider-details");
+    console.log('added provider.list.div');
+    console.log("drawing provider-details-div");
   
     var loadedTabs = {'provider-address' : true};
     if(child){   
@@ -54,25 +55,25 @@ function drawProviderSummary(child) {
             openils.Util.removeCSSClass(dojo.byId('contact-addr-div'), 'hidden');
             pcListGrid.resetStore();
             pcListGrid.loadAll( {oncomplete:function(r){
-            var count = 0; 
-            pcListGrid.store.fetch( {onComplete:function(list) { 
-                        count =  list.length
-                            if(count>=1){
-                                var contactIds = [];                           
-                                dojo.forEach(list, function(item) {
-                                        contactIds.push(pcListGrid.store.getValue(item, 'id')); }
-                                    );
-                                openils.Util.addCSSClass(dojo.byId('contact-addr-div'), 'visible');
-                                pcaListGrid.overrideEditWidgets.contact = new
-                                dijit.form.FilteringSelect({store: pcListGrid.store});
-                                pcaListGrid.resetStore();
-                                pcaListGrid.loadAll({order_by:{acqpca : 'contact'}}, {contact: contactIds});
-                            }else{ 
-                                return;
-                            }            
-                    }
-                }
-                );
+                        var count = 0; 
+                        pcListGrid.store.fetch( {onComplete:function(list) { 
+                                    count =  list.length
+                                        if(count>=1){
+                                            var contactIds = [];                           
+                                            dojo.forEach(list, function(item) {
+                                                    contactIds.push(pcListGrid.store.getValue(item, 'id')); }
+                                                );
+                                            openils.Util.addCSSClass(dojo.byId('contact-addr-div'), 'visible');
+                                            pcaListGrid.overrideEditWidgets.contact = new
+                                            dijit.form.FilteringSelect({store: pcListGrid.store});
+                                            pcaListGrid.resetStore();
+                                            pcaListGrid.loadAll({order_by:{acqpca : 'contact'}}, {contact: contactIds});
+                                        }else{ 
+                                            return;
+                                        }            
+                                }
+                            }
+                            );
                     }
                 }, {provider : providerId});
             
