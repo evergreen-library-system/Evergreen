@@ -689,8 +689,7 @@ cat.z3950.prototype = {
 		}
 		xml += '</tr><tr valign="top">';
 		for (var i = 0; i < record_ids.length; i++) {
-			html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ record_ids[i] ]);
-			xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="data:text/html,' + window.escape(html) + '"/></td>';
+            xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="' + urls.XUL_MARC_VIEW + '?docid=' + record_ids[i] + ' "/></td>';
 		}
 		xml += '</tr></table></form>';
 		// data.temp_merge_top = top_xml; data.stash('temp_merge_top');
