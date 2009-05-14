@@ -2396,9 +2396,18 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		const jsonObject* join_filter = jsonObjectGetKeyConst( snode, "join" );
 		if (join_filter) {
 			char* jpred = searchJOIN( join_filter, idlClass );
-			OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
-			OSRF_BUFFER_ADD( join_buf, jpred );
-			free(jpred);
+			if( jpred ) {
+				OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
+				OSRF_BUFFER_ADD( join_buf, jpred );
+				free(jpred);
+			} else {
+				osrfLogError( OSRF_LOG_MARK, "%s: Invalid nested join.", MODULENAME );
+				jsonIteratorFree( search_itr );
+				buffer_free( join_buf );
+				if( freeable_hash )
+					jsonObjectFree( freeable_hash );
+				return NULL;
+			}
 		}
 	}
 
