@@ -3312,7 +3312,7 @@ char* SELECT (
 	free(table);
 
 	char* order_by_list = NULL;
-	growing_buffer* having_buf = buffer_init(128);
+	char* having_buf = NULL;
 
 	if (!from_function) {
 
@@ -3333,7 +3333,6 @@ char* SELECT (
 					);
 				buffer_free( sql_buf );
 				buffer_free( group_buf );
-				buffer_free( having_buf );
 				if( defaultselhash ) jsonObjectFree( defaultselhash );
 				free( core_class );
 				return NULL;
@@ -3361,7 +3360,6 @@ char* SELECT (
 			        );
 			    }
 			    free(core_class);
-			    buffer_free(having_buf);
 			    buffer_free(group_buf);
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3373,12 +3371,9 @@ char* SELECT (
 		if ( having_hash ) {
 
 			// and it's on the the WHERE clause
-			char* pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN, ctx );
+			having_buf = searchWHERE( having_hash, core_meta, AND_OP_JOIN, ctx );
 
-			if (pred) {
-				buffer_add( having_buf, pred );
-				free(pred);
-			} else {
+			if( ! having_buf ) {
 				if (ctx) {
 						osrfAppSessionStatus(
 						ctx->session,
@@ -3389,7 +3384,6 @@ char* SELECT (
 					);
 				}
 				free(core_class);
-				buffer_free(having_buf);
 				buffer_free(group_buf);
 				buffer_free(sql_buf);
 				if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3423,7 +3417,7 @@ char* SELECT (
 						);
 					buffer_free( order_buf );
 					free(core_class);
-					buffer_free(having_buf);
+					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
 					if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3454,7 +3448,7 @@ char* SELECT (
 						);
 					buffer_free( order_buf );
 					free(core_class);
-					buffer_free(having_buf);
+					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
 					if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3475,7 +3469,7 @@ char* SELECT (
 							"Invalid class referenced in ORDER BY clause -- see error log for more details"
 						);
 					free(core_class);
-					buffer_free(having_buf);
+					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
 					if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3495,7 +3489,7 @@ char* SELECT (
 							"Invalid field referenced in ORDER BY clause -- see error log for more details"
 						);
 					free(core_class);
-					buffer_free(having_buf);
+					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
 					if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3513,7 +3507,7 @@ char* SELECT (
 						);
 					buffer_free( order_buf );
 					free(core_class);
-					buffer_free(having_buf);
+					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
 					if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3533,7 +3527,7 @@ char* SELECT (
 							);
 						buffer_free( order_buf );
 						free(core_class);
-						buffer_free(having_buf);
+						free(having_buf);
 						buffer_free(group_buf);
 						buffer_free(sql_buf);
 						if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3577,7 +3571,7 @@ char* SELECT (
 					jsonIteratorFree( class_itr );
 					buffer_free( order_buf );
 					free(core_class);
-					buffer_free(having_buf);
+					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
 					if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3610,7 +3604,7 @@ char* SELECT (
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
 							free(core_class);
-							buffer_free(having_buf);
+							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(sql_buf);
 							if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3630,7 +3624,7 @@ char* SELECT (
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
 							free(core_class);
-							buffer_free(having_buf);
+							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(sql_buf);
 							if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3656,7 +3650,7 @@ char* SELECT (
 									jsonIteratorFree( order_itr );
 									jsonIteratorFree( class_itr );
 									free(core_class);
-									buffer_free(having_buf);
+									free(having_buf);
 									buffer_free(group_buf);
 									buffer_free(order_buf);
 									buffer_free(sql_buf);
@@ -3693,7 +3687,7 @@ char* SELECT (
 							jsonIteratorFree( order_itr );
 							jsonIteratorFree( class_itr );
 							free(core_class);
-							buffer_free(having_buf);
+							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(order_buf);
 							buffer_free(sql_buf);
@@ -3749,7 +3743,7 @@ char* SELECT (
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
 							free(core_class);
-							buffer_free(having_buf);
+							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(sql_buf);
 							if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3769,7 +3763,7 @@ char* SELECT (
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
 							free(core_class);
-							buffer_free(having_buf);
+							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(sql_buf);
 							if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3802,7 +3796,7 @@ char* SELECT (
 					}
 
 					free(core_class);
-					buffer_free(having_buf);
+					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(order_buf);
 					buffer_free(sql_buf);
@@ -3825,7 +3819,7 @@ char* SELECT (
 				);
 			buffer_free( order_buf );
 			free(core_class);
-			buffer_free(having_buf);
+			free(having_buf);
 			buffer_free(group_buf);
 			buffer_free(sql_buf);
 			if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3847,15 +3841,10 @@ char* SELECT (
 
 	free(string);
 
-	if( having_buf ) {
-		string = buffer_release(having_buf);
- 
-		if ( *string ) {
-			OSRF_BUFFER_ADD( sql_buf, " HAVING " );
-			OSRF_BUFFER_ADD( sql_buf, string );
-		}
-
-		free(string);
+	if( having_buf && *having_buf ) {
+		OSRF_BUFFER_ADD( sql_buf, " HAVING " );
+		OSRF_BUFFER_ADD( sql_buf, having_buf );
+		free( having_buf );
 	}
 
 	if( order_by_list ) {
