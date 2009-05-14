@@ -710,8 +710,17 @@
 
 <!ENTITY staff.main.menu.acq.label "Acquisitions">
 <!ENTITY staff.main.menu.acq.picklist.label "Selection Lists">
+<!ENTITY staff.main.menu.acq.bib_search.label "Title Search">
+<!ENTITY staff.main.menu.acq.brief_record.label "New Brief Record">
 <!ENTITY staff.main.menu.acq.upload.label "Load Order Record">
 <!ENTITY staff.main.menu.acq.po.label "Purchase Orders">
+
+<!ENTITY staff.main.menu.acq.fund.label "Funds">
+<!ENTITY staff.main.menu.acq.funding_source.label "Funding Sources">
+<!ENTITY staff.main.menu.acq.provider.label "Providers">
+<!ENTITY staff.main.menu.acq.distrib_formula.label "Distribution Formulas">
+<!ENTITY staff.main.menu.acq.currency_type.label "Currency Types">
+<!ENTITY staff.main.menu.acq.exchange_rate.label "Exchange Rates">
 
 <!ENTITY staff.main.menu.circ.barcode.retrieve_patron "Retrieve Patron by Barcode">
 <!ENTITY staff.main.menu.circ.barcode.retrieve_patron.accesskey "P">

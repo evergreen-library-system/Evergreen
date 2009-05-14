@@ -77,6 +77,15 @@
 	<command id="cmd_acq_view_picklist" />
 	<command id="cmd_acq_upload" />
 	<command id="cmd_acq_view_po" />
+	<command id="cmd_acq_bib_search" />
+	<command id="cmd_acq_new_brief_record" />
+    <command id="cmd_acq_view_fund" />
+    <command id="cmd_acq_view_funding_source" />
+    <command id="cmd_acq_view_provider" />
+    <command id="cmd_acq_view_currency_type" />
+    <command id="cmd_acq_view_exchange_rate" />
+    <command id="cmd_acq_view_distrib_formula" />
+
 
     <!-- local admin menu commands -->
     <command id="cmd_local_admin_fonts_and_sounds"/>
@@ -217,8 +226,18 @@
 <menu id="main.menu.acq" label="&staff.main.menu.acq.label;">
 	<menupopup id="main.menu.acq.popup">
 		<menuitem label="&staff.main.menu.acq.picklist.label;" command="cmd_acq_view_picklist"/>
+		<menuitem label="&staff.main.menu.acq.bib_search.label;" command="cmd_acq_bib_search"/>
 		<menuitem label="&staff.main.menu.acq.upload.label;" command="cmd_acq_upload"/>
+		<menuitem label="&staff.main.menu.acq.brief_record.label;" command="cmd_acq_new_brief_record"/>
+		<menuseparator />
 		<menuitem label="&staff.main.menu.acq.po.label;" command="cmd_acq_view_po" />
+		<menuseparator />
+		<menuitem label="&staff.main.menu.acq.fund.label;" command="cmd_acq_view_fund" />
+		<menuitem label="&staff.main.menu.acq.funding_source.label;" command="cmd_acq_view_funding_source" />
+		<menuitem label="&staff.main.menu.acq.provider.label;" command="cmd_acq_view_provider" />
+		<menuitem label="&staff.main.menu.acq.currency_type.label;" command="cmd_acq_view_currency_type" />
+		<menuitem label="&staff.main.menu.acq.exchange_rate.label;" command="cmd_acq_view_exchange_rate" />
+		<menuitem label="&staff.main.menu.acq.distrib_formula.label;" command="cmd_acq_view_distrib_formula" />
     </menupopup>
 </menu>
 

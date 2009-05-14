@@ -98,11 +98,10 @@ main.menu.prototype = {
             
             // tab label
             labelKey = labelKey || 'menu.cmd_open_conify.tab';
-            label = offlineStrings.getString(labelKey);
+            var label = offlineStrings.getString(labelKey);
 
             // URL
-            var loc = urls.XUL_REMOTE_BROWSER + '?url=' + 
-                window.escape(urls.EG_WEB_BASE + '/' + path);
+            var loc = urls.XUL_BROWSER + '?url=' + window.escape(obj.url_prefix(urls.EG_WEB_BASE) + '/' + path);
 
             obj.set_tab( 
                 loc, 
@@ -585,6 +584,38 @@ main.menu.prototype = {
 			'cmd_acq_upload' : [
 				['oncommand'],
 				function() { open_eg_web_page('acq/picklist/upload'); }
+			],
+			'cmd_acq_bib_search' : [
+				['oncommand'],
+				function() { open_eg_web_page('acq/picklist/bib_search'); }
+			],
+			'cmd_acq_new_brief_record' : [
+				['oncommand'],
+				function() { open_eg_web_page('acq/picklist/brief_record'); }
+			],
+            'cmd_acq_view_fund' : [
+				['oncommand'],
+				function() { open_eg_web_page('acq/fund/list'); }
+			],
+            'cmd_acq_view_funding_source' : [
+				['oncommand'],
+				function() { open_eg_web_page('acq/funding_source/list'); }
+			],
+            'cmd_acq_view_provider' : [
+				['oncommand'],
+				function() { open_eg_web_page('conify/global/acq/provider'); }
+			],
+            'cmd_acq_view_currency_type' : [
+				['oncommand'],
+				function() { open_eg_web_page('acq/currency_type/list'); }
+			],
+            'cmd_acq_view_exchange_rate' : [
+				['oncommand'],
+				function() { open_eg_web_page('conify/global/acq/exchange_rate'); }
+			],
+            'cmd_acq_view_distrib_formula' : [
+				['oncommand'],
+				function() { open_eg_web_page('conify/global/acq/distribution_formula'); }
 			],
 
 			'cmd_reprint' : [
