@@ -2401,7 +2401,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				OSRF_BUFFER_ADD( join_buf, jpred );
 				free(jpred);
 			} else {
-				osrfLogError( OSRF_LOG_MARK, "%s: Invalid nested join.", MODULENAME );
+				osrfLogError(  OSRF_LOG_MARK, "%s: Invalid nested join.", MODULENAME );
 				jsonIteratorFree( search_itr );
 				buffer_free( join_buf );
 				if( freeable_hash )
@@ -3366,27 +3366,26 @@ char* SELECT (
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
 			    return NULL;
-		    }
-        }
+			}
+		}
 
 		// Build a HAVING clause, if there is one
-	    if ( having_hash ) {
-		    buffer_add(sql_buf, " HAVING ");
+		if ( having_hash ) {
 
-		    // and it's on the the WHERE clause
-		    char* pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN, ctx );
+			// and it's on the the WHERE clause
+			char* pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN, ctx );
 
-		    if (pred) {
-				buffer_add(sql_buf, pred);
+			if (pred) {
+				buffer_add( having_buf, pred );
 				free(pred);
 			} else {
 				if (ctx) {
-			        osrfAppSessionStatus(
-				        ctx->session,
-				        OSRF_STATUS_INTERNALSERVERERROR,
-				        "osrfMethodException",
-				        ctx->request,
-				        "Severe query error in HAVING predicate -- see error log for more details"
+						osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Severe query error in HAVING predicate -- see error log for more details"
 					);
 				}
 				free(core_class);
@@ -3462,9 +3461,11 @@ char* SELECT (
 					return NULL;
 				}
 
-				if (!jsonObjectGetKeyConst( selhash,class ) ) {
+				if (    ! jsonObjectGetKeyConst( selhash, class )
+					 && strcmp( core_class, class )
+					 && ! is_joined( join_hash, class ) ) {
 					osrfLogError(OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
-							"not in SELECT clause", MODULENAME, class );
+							"not in FROM clause", MODULENAME, class );
 					if( ctx )
 						osrfAppSessionStatus(
 							ctx->session,
@@ -3560,7 +3561,9 @@ char* SELECT (
 			jsonIterator* class_itr = jsonNewIterator( order_hash );
 			while ( (snode = jsonIteratorNext( class_itr )) ) {
 
-				if (!jsonObjectGetKeyConst(selhash,class_itr->key)) {
+				if (   ! jsonObjectGetKeyConst( selhash,class_itr->key )
+					&& strcmp( core_class, class_itr->key )
+					&& ! is_joined( join_hash, class_itr->key ) ) {
 					osrfLogError(OSRF_LOG_MARK, "%s: Invalid class \"%s\" referenced in ORDER BY clause",
 								 MODULENAME, class_itr->key );
 					if( ctx )
