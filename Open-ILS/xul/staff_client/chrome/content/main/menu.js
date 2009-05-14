@@ -67,9 +67,9 @@ main.menu.prototype = {
             label = offlineStrings.getString(labelKey);
 
             // URL
-            var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.EG_WEB_BASE + '/conify/global/' + path);
+            var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix(urls.EG_WEB_BASE) + '/conify/global/' + path);
             if(old_school)
-                loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.CONIFY + '/' + path + '.html');
+                loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix(urls.CONIFY) + '/' + path + '.html');
 
             obj.set_tab( 
                 loc, 
@@ -85,7 +85,7 @@ main.menu.prototype = {
             label = offlineStrings.getString(labelKey);
 
             // URL
-            var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_LOCAL_ADMIN_BASE + '/' + path);
+            var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix(urls.XUL_LOCAL_ADMIN_BASE) + '/' + path);
             if(addSes) loc += window.escape('?ses=' + ses());
 
             obj.set_tab( 
@@ -335,7 +335,7 @@ main.menu.prototype = {
 										if (param_count++ == 0) url += '?'; else url += '&';
 										url += i + '=' + window.escape(p[i]);
 									}
-									var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape( url );
+									var loc = obj.url_prefix( urls.XUL_BROWSER ) + '?url=' + window.escape( obj.url_prefix(url) );
 									obj.new_tab(
 										loc, 
 										{}, 
@@ -351,8 +351,8 @@ main.menu.prototype = {
 								}
 
 					obj.data.stash_retrieve();
-					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( ses() ) );
+					var loc = obj.url_prefix( urls.XUL_BROWSER ) 
+						+ '?url=' + window.escape( obj.url_prefix(urls.XUL_PATRON_EDIT) + '?ses=' + window.escape( ses() ) );
 					obj.set_tab(
 						loc, 
 						{}, 
@@ -406,7 +406,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
+					var loc = urls.XUL_BROWSER + '?url=' + window.escape(
 						obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(ses())
 					);
 					obj.set_tab( loc, {'tab_name' : offlineStrings.getString('menu.cmd_browse_hold_pull_list.tab')}, { 'show_print_button' : true } );
@@ -432,8 +432,8 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					//obj.set_tab(obj.url_prefix(urls.XUL_LOCAL_ADMIN)+'?ses='+window.escape(ses())+'&session='+window.escape(ses()),{},{});
-					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
-						urls.XUL_LOCAL_ADMIN+'?ses='+window.escape(ses())+'&session='+window.escape(ses())
+					var loc = urls.XUL_BROWSER + '?url=' + window.escape(
+                        obj.url_prefix( urls.XUL_LOCAL_ADMIN+'?ses='+window.escape(ses())+'&session='+window.escape(ses()) )
 					);
 					obj.set_tab( 
 						loc, 
@@ -455,8 +455,8 @@ main.menu.prototype = {
 			'cmd_open_vandelay' : [
 				['oncommand'],
 				function() { 
-					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + 
-                        window.escape(urls.EG_WEB_BASE + '/vandelay/vandelay');
+					var loc = urls.XUL_BROWSER + '?url=' + 
+                        window.escape( obj.url_prefix(urls.EG_WEB_BASE) + '/vandelay/vandelay');
 					obj.set_tab( 
 						loc, 
 						{'tab_name' : offlineStrings.getString('menu.cmd_open_vandelay.tab'), 'browser' : false }, 
@@ -468,7 +468,7 @@ main.menu.prototype = {
 			'cmd_local_admin_reports' : [
 				['oncommand'],
 				function() { 
-					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_REPORTS + '?ses=' + ses());
+					var loc = urls.XUL_BROWSER + '?url=' + window.escape( obj.url_prefix(urls.XUL_REPORTS) + '?ses=' + ses());
 					obj.set_tab( 
 						loc, 
 						{'tab_name' : offlineStrings.getString('menu.cmd_local_admin_reports.tab'), 'browser' : false }, 
@@ -816,8 +816,8 @@ main.menu.prototype = {
 			'cmd_public_opac' : [
 				['oncommand'],
 				function() {
-					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
-						urls.remote
+					var loc = urls.XUL_BROWSER + '?url=' + window.escape(
+						obj.url_prefix(urls.remote)
 					);
 					obj.set_tab( 
 						loc, 
