@@ -32,12 +32,14 @@
     }
 </script>
 <h1>&vandelay.import.matches;</h1><br/>
-<div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <button dojoType='dijit.form.Button' 
         onclick="displayGlobalDiv('vl-queue-div');">&#x2196; &vandelay.back.to.import.queue;</button>
 </div>
-<div class='tall'>
-    <table dojoType='dojox.grid.DataGrid' jsId='vlMatchGrid' query='{id:"*"}'> 
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+    <table dojoType='dojox.grid.DataGrid' jsId='vlMatchGrid' query='{id:"*"}' autoHeight='true'> 
     </table>
 </div>
 
