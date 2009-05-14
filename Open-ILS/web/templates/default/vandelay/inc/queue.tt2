@@ -16,6 +16,7 @@
 
 <!-- queue grid navigation row -->
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
+
     <table width='100%' style='margin-bottom:0px;'>
         <tr>
             <td align='left' valign='bottom'>
@@ -52,7 +53,8 @@
 
                         <span>&vandelay.limit.to.non.imported;</span>
                         <span class='filter_span'>
-                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' checked='checked' onchange='retrieveQueuedRecords();'/>
+                            <input dojoType='dijit.form.CheckBox' jsId='vlQueueGridShowNonImport' 
+                                checked='checked' onchange='retrieveQueuedRecords();'/>
                         </span>
 
                         <span>&vandelay.results.per.page;</span>
@@ -83,12 +85,10 @@
     </table>
 </div>
 
+
 <!-- Bib Queue Grid -->
 <div class='' id='vl-bib-queue-grid-wrapper' dojoType='dijit.layout.ContentPane'>
-    <div dojoType="openils.widget.GridColumnPicker" jsid="vlBibQueueGridMenu" style="display: none;" grid='vlBibQueueGrid'>
-        <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
-    </div>
-    <table dojoType='dojox.grid.DataGrid' jsId='vlBibQueueGrid' query="{import_time:'*'}" headerMenu='vlBibQueueGridMenu' autoHeight='true' _style='height:600px;'>
+    <table dojoType='dojox.grid.DataGrid' jsId='vlBibQueueGrid' query="{id:'*'}" autoHeight='true'>
         <thead>
             <tr>
                 <th 
@@ -123,10 +123,7 @@
 
 <!-- Auth Queue Grid -->
 <div class='' id='vl-auth-queue-grid-wrapper' dojoType='dijit.layout.ContentPane'>
-    <div dojoType="openils.widget.GridColumnPicker" jsid="vlAuthQueueGridMenu" style="display: none;" grid='vlAuthQueueGrid'>
-        <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div>
-    </div>
-    <table dojoType='dojox.grid.DataGrid' jsId='vlAuthQueueGrid' query="{id:'*'}" headerMenu='vlAuthQueueGridMenu'> 
+    <table dojoType='dojox.grid.DataGrid' jsId='vlAuthQueueGrid' query="{id:'*'}"> 
         <thead>
             <tr>
                 <th 

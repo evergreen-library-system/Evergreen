@@ -630,18 +630,15 @@ function buildRecordGrid(type) {
         openils.Util.show('vl-bib-queue-grid-wrapper');
         openils.Util.hide('vl-auth-queue-grid-wrapper');
         vlQueueGrid = vlBibQueueGrid;
-        vlQueueGridMenu = vlBibQueueGridMenu;
     } else {
         openils.Util.show('vl-auth-queue-grid-wrapper');
         openils.Util.hide('vl-bib-queue-grid-wrapper');
         vlQueueGrid = vlAuthQueueGrid;
-        vlQueueGridMenu = vlAuthQueueGridMenu;
     }
 
 
     if(valLastQueueType != type) {
         valLastQueueType = type;
-        //resetVlQueueGridLayout();
         vlQueueGridLayout = vlQueueGrid.attr('structure');
         var defs = (type == 'bib') ? bibAttrDefs : authAttrDefs;
         attrDefMap[type] = {};
@@ -660,7 +657,8 @@ function buildRecordGrid(type) {
 
     dojo.forEach(vlQueueGridLayout[0].cells[0], 
         function(cell) { 
-            if(cell.field.match(/^\+/)) cell.nonSelectable=true;
+            if(cell.field.match(/^\+/)) 
+                cell.nonSelectable=true;
         }
     );
 
@@ -676,14 +674,11 @@ function buildRecordGrid(type) {
     if(vlQueueGridColumePicker[type]) {
         vlQueueGrid.update();
     } else {
-        vlQueueGrid.attr('structure', vlQueueGridLayout);
-        vlQueueGridMenu.init({
-            grid : vlQueueGrid, 
-            authtoken : authtoken, 
-            prefix : 'vandelay.queue.'+type
-        });
-        vlQueueGridMenu.load();
-        vlQueueGridColumePicker[type] = vlQueueGridMenu;
+
+        vlQueueGridColumePicker[type] =
+            new openils.widget.GridColumnPicker(
+                authtoken, 'vandelay.queue.'+type, vlQueueGrid, vlQueueGridLayout);
+        vlQueueGridColumePicker[type].load();
     }
 }
 
