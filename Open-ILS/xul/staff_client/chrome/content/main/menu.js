@@ -575,47 +575,47 @@ main.menu.prototype = {
             ],
 			'cmd_acq_view_picklist' : [
 				['oncommand'],
-				function() { open_eg_web_page('acq/picklist/list'); }
+				function() { open_eg_web_page('acq/picklist/list', 'menu.cmd_acq_view_picklist.tab'); }
 			],
 			'cmd_acq_view_po' : [
 				['oncommand'],
-				function() { open_eg_web_page('acq/po/search'); }
+				function() { open_eg_web_page('acq/po/search', 'menu.cmd_acq_view_po.tab'); }
 			],
 			'cmd_acq_upload' : [
 				['oncommand'],
-				function() { open_eg_web_page('acq/picklist/upload'); }
+				function() { open_eg_web_page('acq/picklist/upload', 'menu.cmd_acq_upload.tab'); }
 			],
 			'cmd_acq_bib_search' : [
 				['oncommand'],
-				function() { open_eg_web_page('acq/picklist/bib_search'); }
+				function() { open_eg_web_page('acq/picklist/bib_search', 'menu.cmd_acq_bib_search.tab'); }
 			],
 			'cmd_acq_new_brief_record' : [
 				['oncommand'],
-				function() { open_eg_web_page('acq/picklist/brief_record'); }
+				function() { open_eg_web_page('acq/picklist/brief_record', 'menu.cmd_acq_new_brief_record.tab'); }
 			],
             'cmd_acq_view_fund' : [
 				['oncommand'],
-				function() { open_eg_web_page('acq/fund/list'); }
+				function() { open_eg_web_page('acq/fund/list', 'menu.cmd_acq_view_fund.tab'); }
 			],
             'cmd_acq_view_funding_source' : [
 				['oncommand'],
-				function() { open_eg_web_page('acq/funding_source/list'); }
+				function() { open_eg_web_page('acq/funding_source/list', 'menu.cmd_acq_view_funding_source.tab'); }
 			],
             'cmd_acq_view_provider' : [
 				['oncommand'],
-				function() { open_eg_web_page('conify/global/acq/provider'); }
+				function() { open_eg_web_page('conify/global/acq/provider', 'menu.cmd_acq_view_provider.tab'); }
 			],
             'cmd_acq_view_currency_type' : [
 				['oncommand'],
-				function() { open_eg_web_page('acq/currency_type/list'); }
+				function() { open_eg_web_page('acq/currency_type/list', 'menu.cmd_acq_view_currency_type.tab'); }
 			],
             'cmd_acq_view_exchange_rate' : [
 				['oncommand'],
-				function() { open_eg_web_page('conify/global/acq/exchange_rate'); }
+				function() { open_eg_web_page('conify/global/acq/exchange_rate', 'menu.cmd_acq_view_exchange_rate.tab'); }
 			],
             'cmd_acq_view_distrib_formula' : [
 				['oncommand'],
-				function() { open_eg_web_page('conify/global/acq/distribution_formula'); }
+				function() { open_eg_web_page('conify/global/acq/distribution_formula', 'menu.cmd_acq_view_distrib_formula.tab'); }
 			],
 
 			'cmd_reprint' : [
