@@ -140,6 +140,8 @@ function main_init() {
 
                 cookieSvc.setCookieString(cookieUri, null, "ses="+G.data.session.key, null);
                 cookieSvc.setCookieString(cookieUriSSL, null, "ses="+G.data.session.key, null);
+                cookieSvc.setCookieString(cookieUri, null, "xul=1", null);
+                cookieSvc.setCookieString(cookieUriSSL, null, "xul=1", null);
 
             } catch(E) {
                 alert(offlineStrings.getFormattedString(main.session_cookie.error, [E]));
