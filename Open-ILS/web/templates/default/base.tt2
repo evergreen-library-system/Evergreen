@@ -23,8 +23,10 @@
             [% content %]
         </div>
     </div>
+    <!--
     <div id="oils-base-footer-block">
         [% INCLUDE default/footer.tt2 %]
     </div>
+    -->
 </div>
 [% END %]
