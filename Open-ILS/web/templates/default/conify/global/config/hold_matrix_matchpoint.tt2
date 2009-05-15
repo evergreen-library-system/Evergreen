@@ -14,14 +14,18 @@
     <div>Hold Policy Configuration</div>
     <div><button dojoType='dijit.form.Button' onClick='hmGrid.showCreatePane()'>New</button></div>
 </div>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="hmGrid" 
+            autoHeight='true'
             dojoType="openils.widget.AutoGrid" 
             fieldOrder="['id', 'user_home_ou', 'request_ou', 'pickup_ou', 'item_owning_ou', 'item_circ_ou', 'usr_grp', 'requestor_grp', 'circ_modifier']"
+            suppressFields="['holdable', 'max_holds', 'transit_range', 'include_frozen_holds', 'stop_blocked_user', 'age_hold_protect_rule' ]"
+            defaultCellWidth='"auto"'
             query="{id: '*'}" 
             fmClass='chmm' 
             editStyle='pane'
             editOnEnter='true'>
     </table>
+    <div/>
 </div>
 [% END %]
