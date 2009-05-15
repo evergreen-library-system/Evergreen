@@ -537,6 +537,16 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/action/survey'); }
             ],
+            'cmd_local_admin_circ_matrix_matchpoint' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/circ_matrix_matchpoint', 
+                    'menu.local_admin.circ_matrix_matchpoint.tab'); }
+            ],
+            'cmd_local_admin_hold_matrix_matchpoint' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/hold_matrix_matchpoint', 
+                    'menu.local_admin.hold_matrix_matchpoint.tab'); }
+            ],
             'cmd_server_admin_org_type' : [
                 ['oncommand'],
                 function() { open_conify_page('actor/org_unit_type', null); }

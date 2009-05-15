@@ -103,6 +103,8 @@
     <command id="cmd_local_admin_reports"/>
     <command id="cmd_local_admin_cash_reports"/>
     <command id="cmd_local_admin_transit_list"/>
+    <command id="cmd_local_admin_circ_matrix_matchpoint"/>
+    <command id="cmd_local_admin_hold_matrix_matchpoint"/>
 
     <!-- server admin menu commands -->
     <command id="cmd_server_admin_org_type"/>
@@ -288,6 +290,8 @@
                 <menuitem label="&staff.server.admin.index.reports;" command="cmd_local_admin_reports"/>
                 <menuitem label="&staff.server.admin.index.cash_reports;" command="cmd_local_admin_cash_reports"/>
                 <menuitem label="&staff.server.admin.index.transit_list;" command="cmd_local_admin_transit_list"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label;" command="cmd_local_admin_circ_matrix_matchpoint"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label;" command="cmd_local_admin_hold_matrix_matchpoint"/>
             </menupopup>
         </menu>
 		<menu id="main.menu.admin.server" label="&staff.main.menu.admin.server_admin.label;">
