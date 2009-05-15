@@ -782,7 +782,7 @@ function _myOPACSummaryShowUer(r) {
     }
 
 	var iv1 = user.ident_value()+'';
-	if (iv1.length > 4) iv1 = iv1.replace(new RegExp(iv1.substring(0,iv1.length - 4)), '***********');
+    if (iv1.length > 4 && iv1.match(/\d{4}/)) iv1 = iv1.substring(0,4) + '***********';
 
 	appendClear($('myopac_summary_prefix'),text(user.prefix()));
 	appendClear($('myopac_summary_first'),text(user.first_given_name()));
