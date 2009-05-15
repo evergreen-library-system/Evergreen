@@ -395,7 +395,7 @@ sub toSQL {
 	$val =~ s/'/\\'/go;
 
 	return "EXTRACT(YEAR FROM '$rtime'::TIMESTAMPTZ + '$val months')" .
-		" || '-' || LPAD(EXTRACT(MONTH FROM '$rtime'::TIMESTAMPTZ + '$val months'),2,'0')";
+		" || '-' || LPAD(EXTRACT(MONTH FROM '$rtime'::TIMESTAMPTZ + '$val months')::text,2,'0')";
 }
 
 
@@ -721,7 +721,7 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::month_trunc;
 sub toSQL {
 	my $self = shift;
 	return 'EXTRACT(YEAR FROM "' . $self->{_relation} . '"."' . $self->name . '")' .
-		' || \'-\' || LPAD(EXTRACT(MONTH FROM "' . $self->{_relation} . '"."' . $self->name . '"),2,\'0\')';
+		' || \'-\' || LPAD(EXTRACT(MONTH FROM "' . $self->{_relation} . '"."' . $self->name . '")::text,2,\'0\')';
 }
 
 sub is_aggregate { return 0 }
