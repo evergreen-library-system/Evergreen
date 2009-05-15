@@ -1214,7 +1214,8 @@ INSERT INTO permission.perm_list VALUES
     (194, 'CREATE_PURCHASE_ORDER', oils_i18n_gettext(194, 'Allows a user to create a purchase order', 'ppl', 'description')),
     (195, 'VIEW_PURCHASE_ORDER', oils_i18n_gettext(195, 'Allows a user to view a purchase order', 'ppl', 'description')),
     (196, 'IMPORT_ACQ_LINEITEM_BIB_RECORD', oils_i18n_gettext(196, 'Allows a user to import a bib record from the acq staging area (on-order record) into the ILS bib data set', 'ppl', 'description')),
-    (197, 'RECEIVE_PURCHASE_ORDER', oils_i18n_gettext(197, 'Allows a user to mark a purchase order, lineitem, or individual copy as received', 'ppl', 'description'));
+    (197, 'RECEIVE_PURCHASE_ORDER', oils_i18n_gettext(197, 'Allows a user to mark a purchase order, lineitem, or individual copy as received', 'ppl', 'description')),
+    (198, 'VIEW_ORG_SETTINGS', oils_i18n_gettext(198, 'Allows a user to view all org settings at the specified level', 'ppl', 'description'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 
@@ -1504,6 +1505,7 @@ INSERT INTO permission.grp_perm_map VALUES (93, 5, 48, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (94, 5, 53, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (133, 5, 102, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (138, 5, 104, 1, false);
+INSERT INTO permission.grp_perm_map VALUES (143, 3, 198, 1, false);
 
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
 
