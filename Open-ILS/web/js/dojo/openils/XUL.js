@@ -1,10 +1,11 @@
 if(!dojo._hasResource["openils.XUL"]) {
 
     dojo.provide("openils.XUL");
+    dojo.require('dojo.cookie');
     dojo.declare('openils.XUL', null, {});
 
     openils.XUL.isXUL = function() {
-        return Boolean(window.IAMXUL);
+        return Boolean(dojo.cookie('xul')) || Boolean(window.IAMXUL);
     }
 
     openils.XUL.buildId = function() {
