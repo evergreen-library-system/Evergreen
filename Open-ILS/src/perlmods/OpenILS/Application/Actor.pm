@@ -181,6 +181,38 @@ sub ou_settings {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "ranged_ou_settings",
+	api_name	=> "open-ils.actor.org_unit_setting.values.ranged.retrieve",
+);
+sub ranged_ou_settings {
+	my( $self, $client, $auth, $org_id ) = @_;
+
+	my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_ORG_SETTINGS', $org_id);
+
+    my %ranged_settings;
+    my $org_list = $U->get_org_ancestors($org_id);
+    my $settings = $e->search_actor_org_unit_setting({org_unit => $org_list});
+    $org_list = [ reverse @$org_list ];
+
+    # start at the context org and capture the setting value
+    # without clobbering settings we've already captured
+    for my $org_id (@$org_list) {
+        
+        my @sets = grep { $_->org_unit == $org_id } @$settings;
+
+        for my $set (@sets) {
+            $ranged_settings{$set->name} = OpenSRF::Utils::JSON->JSON2perl($set->value)
+                unless defined $ranged_settings{$set->name};
+        }
+    }
+
+	return \%ranged_settings;
+}
+
+
 
 __PACKAGE__->register_method(
     api_name => 'open-ils.actor.ou_setting.ancestor_default',
