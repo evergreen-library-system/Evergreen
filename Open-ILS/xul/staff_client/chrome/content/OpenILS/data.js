@@ -643,7 +643,7 @@ OpenILS.data.prototype = {
 		this.chain.push(
 			function() {
 				try {
-					var robj = obj.network.simple_request('FM_AOUS_RETRIEVE',[ obj.list.au[0].ws_ou() ]);
+					var robj = obj.network.simple_request('FM_AOUS_RETRIEVE',[ obj.session.key, obj.list.au[0].ws_ou() ]);
 					if (typeof robj.ilsevent != 'undefined') throw(robj);
 					obj.hash.aous = robj;
 					obj.data_progress('Retrieved org unit settings. ');
