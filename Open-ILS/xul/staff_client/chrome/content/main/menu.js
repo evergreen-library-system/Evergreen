@@ -1173,6 +1173,7 @@ main.menu.prototype = {
 
 		content_params.new_tab = function(a,b,c) { return obj.new_tab(a,b,c); };
 		content_params.set_tab = function(a,b,c) { return obj.set_tab(a,b,c); };
+		content_params.close_tab = function() { return obj.close_tab(); };
 		content_params.new_patron_tab = function(a,b) { return obj.new_patron_tab(a,b); };
 		content_params.set_patron_tab = function(a,b) { return obj.set_patron_tab(a,b); };
 		content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };

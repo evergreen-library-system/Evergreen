@@ -58,7 +58,7 @@ circ.offline.prototype = {
 						],
 						'cmd_exit' : [
 							['command'],
-							function() { window.close(); }
+							function() { try { xulG.close_tab(); } catch(E) { window.close(); } }
 						],
 					}
 				}
