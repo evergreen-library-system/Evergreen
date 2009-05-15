@@ -165,23 +165,6 @@ sub user_settings {
 
 
 __PACKAGE__->register_method(
-	method	=> "ou_settings",
-	api_name	=> "open-ils.actor.org_unit.settings.retrieve",
-);
-sub ou_settings {
-	my( $self, $client, $ouid ) = @_;
-	
-	$logger->info("Fetching org unit settings for org $ouid");
-
-	my $s = $apputils->simplereq(
-		'open-ils.cstore',
-		'open-ils.cstore.direct.actor.org_unit_setting.search.atomic', {org_unit => $ouid});
-
-	return { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
-}
-
-
-__PACKAGE__->register_method(
 	method	=> "ranged_ou_settings",
 	api_name	=> "open-ils.actor.org_unit_setting.values.ranged.retrieve",
 );
