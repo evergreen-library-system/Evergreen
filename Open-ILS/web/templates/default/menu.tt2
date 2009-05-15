@@ -1,5 +1,8 @@
-<div>
+<div id='oils-menu-div'>
     <script>
+        dojo.require('openils.XUL');
+        if(openils.XUL.isXUL()) 
+            openils.Util.hide('oils-menu-div')
         dojo.require('dijit.form.Button');
         dojo.require('dijit.Toolbar');
         dojo.require('dijit.Menu');
