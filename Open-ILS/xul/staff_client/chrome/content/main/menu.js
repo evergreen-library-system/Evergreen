@@ -648,7 +648,8 @@ main.menu.prototype = {
 						alert(offlineStrings.getString('menu.cmd_retrieve_last_patron.session.error'));
 						return;
 					}
-					var url = obj.url_prefix( urls.XUL_PATRON_DISPLAY ); // + '?id=' + window.escape( obj.data.last_patron ) );
+                    var horizontal_interface = String( obj.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+                    var url = obj.url_prefix( horizontal_interface ? urls.XUL_PATRON_HORIZ_DISPLAY : urls.XUL_PATRON_DISPLAY );
 					obj.set_tab( url, {}, { 'id' : obj.data.last_patron } );
 				}
 			],
