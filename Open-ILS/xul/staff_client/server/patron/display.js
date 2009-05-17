@@ -659,8 +659,11 @@ patron.display.prototype = {
             this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
             var x = document.getElementById('splitter_grippy'); 
             if (x && ! dont_hide_summary) {
-                var first_deck = x.parentNode.previousSibling;
-                if (! first_deck.collapsed) x.doCommand();
+                if (! this.summary_hidden_once_already ) {
+                    var first_deck = x.parentNode.previousSibling;
+                    if (! first_deck.collapsed) x.doCommand();
+                    this.summary_hidden_once_already = true;
+                }
             }
         } catch(E) {
             alert(E);
