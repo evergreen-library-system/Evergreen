@@ -657,9 +657,10 @@ patron.display.prototype = {
             this.controller.view.cmd_patron_bills.setAttribute('style','');
             this.controller.view.cmd_standing_penalties.setAttribute('style','');
             this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
-            var x = document.getElementById('left_deck_vbox'); 
+            var x = document.getElementById('splitter_grippy'); 
             if (x && ! dont_hide_summary) {
-                x.hidden = true;
+                var first_deck = x.parentNode.previousSibling;
+                if (! first_deck.collapsed) x.doCommand();
             }
         } catch(E) {
             alert(E);
