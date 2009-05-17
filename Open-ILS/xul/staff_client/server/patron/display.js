@@ -116,10 +116,7 @@ patron.display.prototype = {
                     'cmd_patron_toggle_summary' : [
                         ['command'],
                         function(ev) {
-                            var x = document.getElementById('left_deck_vbox'); 
-                            if (x) {
-                                x.hidden = ! x.hidden;
-                            }
+                            document.getElementById('splitter_grippy').doCommand();
                         }
                     ],
 					'cmd_search_form' : [

@@ -35,7 +35,7 @@
         <vbox id="left_deck_vbox" flex="1" persist="width"> 
             <deck id="patron_left_deck" persist="width"/>
         </vbox>
-        <splitter id="pdms1z" collapse="before" persist="state hidden"><grippy id="pdmsg1"/></splitter>
+        <splitter id="deck_splitter" collapse="before" persist="state hidden"><grippy id="splitter_grippy"/></splitter>
         <vbox id="right_deck_vbox" flex="3" persist="width">
             <deck id="patron_right_deck" persist="width"/>
         </vbox>
