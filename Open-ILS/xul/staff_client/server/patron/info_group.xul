@@ -185,7 +185,7 @@
 		function retrieve_patron() {
 			try {
 				if (! g.sel_list ) return;
-				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
+				if (typeof window.xulG == 'object' && typeof window.xulG.new_patron_tab == 'function') {
 					for (var i = 0; i < g.sel_list.length; i++) {	
 						try {
 							window.xulG.new_patron_tab(

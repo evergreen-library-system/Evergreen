@@ -193,7 +193,8 @@ patron.display.prototype = {
 										obj.bill_window.g.bills.refresh(true);
 									},
 									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab
+									'new_tab' : xulG.new_tab,
+									'new_patron_tab' : xulG.new_patron_tab
 								}
 							);
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -232,6 +233,7 @@ patron.display.prototype = {
 												'spawn_editor' : spawn_editor,
 												'url_prefix' : xulG.url_prefix,
 												'new_tab' : xulG.new_tab,
+									            'new_patron_tab' : xulG.new_patron_tab,
 												'params' : p
 											}
 										}
@@ -266,7 +268,8 @@ patron.display.prototype = {
 										'spawn_search' : spawn_search,
 										'spawn_editor' : spawn_editor,
 										'url_prefix' : xulG.url_prefix,
-										'new_tab' : xulG.new_tab
+										'new_tab' : xulG.new_tab,
+									    'new_patron_tab' : xulG.new_patron_tab
 									}
 								}
 							);
@@ -289,7 +292,8 @@ patron.display.prototype = {
 								{
 									'patron_id' : obj.patron.id(),
 									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab
+									'new_tab' : xulG.new_tab,
+									'new_patron_tab' : xulG.new_patron_tab
 								}
 							);
 						}
@@ -303,7 +307,8 @@ patron.display.prototype = {
 								{
 									'patron_id' : obj.patron.id(),
 									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab
+									'new_tab' : xulG.new_tab,
+									'new_patron_tab' : xulG.new_patron_tab
 								}
 							);
 						}
@@ -317,7 +322,8 @@ patron.display.prototype = {
 								{
 									'patron_id' : obj.patron.id(),
 									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab
+									'new_tab' : xulG.new_tab,
+									'new_patron_tab' : xulG.new_patron_tab
 								}
 							);
 						}
@@ -331,7 +337,8 @@ patron.display.prototype = {
 								{
 									'patron_id' : obj.patron.id(),
 									'url_prefix' : xulG.url_prefix,
-									'new_tab' : xulG.new_tab
+									'new_tab' : xulG.new_tab,
+									'new_patron_tab' : xulG.new_patron_tab
 								}
 							);
 						}
@@ -373,7 +380,8 @@ patron.display.prototype = {
                                             obj.refresh_all();
                                         },
                                         'url_prefix' : xulG.url_prefix,
-                                        'new_tab' : xulG.new_tab
+                                        'new_tab' : xulG.new_tab,
+									    'new_patron_tab' : xulG.new_patron_tab
                                     }
                                 );
                             } catch(E) {
