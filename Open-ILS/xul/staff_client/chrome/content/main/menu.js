@@ -60,6 +60,12 @@ main.menu.prototype = {
             if (x) x.setAttribute('hidden','false');
         }
 
+        var network_meter = String( obj.data.hash.aous['ui.network.progress_meter'] ) == 'true';
+        if (! network_meter) {
+            var x = document.getElementById('network_progress');
+            if (x) x.setAttribute('hidden','true');
+        }
+
         function open_conify_page(path, labelKey) {
 
             // tab label

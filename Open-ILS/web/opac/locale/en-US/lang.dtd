@@ -2747,3 +2747,5 @@
 <!ENTITY ui.circ.patron_summary.horizontal.desc "This replaces the vertical Patron Summary Sidebar.">
 <!ENTITY ui.general.button_bar "GUI: Above-Tab Button Bar">
 <!ENTITY ui.general.button_bar.desc "This enables a row of buttons and/or icons between the top-level menu system and the tabbed interfaces.">
+<!ENTITY ui.network.progress_meter "GUI: Network Activity Meter">
+<!ENTITY ui.network.progress_meter.desc "This enables a network activity indicator in the bottom status bar.">
