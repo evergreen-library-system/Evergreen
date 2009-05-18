@@ -3132,7 +3132,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Call Number/Volume" name="call_number" reporter:datatype="link"/>
 			<field reporter:label="Circulation Type (MARC)" name="circ_as_type" reporter:datatype="text"/>
 			<field reporter:label="Circulating Library" name="circ_lib"  reporter:datatype="org_unit"/>
-			<field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="text"/>
+			<field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="link"/>
 			<field reporter:label="Can Circulate" name="circulate" reporter:datatype="bool"/>
 			<field reporter:label="Copy Number on Volume" name="copy_number" reporter:datatype="text"/>
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
@@ -3173,6 +3173,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
 			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
+			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
