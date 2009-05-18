@@ -202,9 +202,9 @@ cat.z3950.prototype = {
                             ['command'],
                             function() {
                                 var x = document.getElementById('top_pane');
-                                x.hidden = ! x.hidden;
+                                document.getElementById('splitter_grippy2').doCommand();
 								var n = obj.controller.view.toggle_form_btn;
-                                if (x.hidden) {
+                                if (x.collapsed) {
                                     n.setAttribute('image',"/xul/server/skin/media/images/down_arrow.gif");
                                     n.setAttribute('label',$("catStrings").getString('staff.cat.z3950.unhide_top_pane.label'));
                                     n.setAttribute('accesskey',$("catStrings").getString('staff.cat.z3950.unhide_top_pane.accesskey'));
@@ -214,6 +214,22 @@ cat.z3950.prototype = {
                                     n.setAttribute('accesskey',$("catStrings").getString('staff.cat.z3950.hide_top_pane.accesskey'));
                                 }
                             },
+                        ],
+                        'splitter_grippy2' : [
+                            ['click'],
+                            function() {
+                                var x = document.getElementById('top_pane');
+                                var n = obj.controller.view.toggle_form_btn;
+                                if (x.collapsed) {
+                                    n.setAttribute('image',"/xul/server/skin/media/images/down_arrow.gif");
+                                    n.setAttribute('label',$("catStrings").getString('staff.cat.z3950.unhide_top_pane.label'));
+                                    n.setAttribute('accesskey',$("catStrings").getString('staff.cat.z3950.unhide_top_pane.accesskey'));
+                                } else {
+                                    n.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
+                                    n.setAttribute('label',$("catStrings").getString('staff.cat.z3950.hide_top_pane.label'));
+                                    n.setAttribute('accesskey',$("catStrings").getString('staff.cat.z3950.hide_top_pane.accesskey'));
+                                }
+                            }
                         ],
 						'service_rows' : [
 							['render'],
