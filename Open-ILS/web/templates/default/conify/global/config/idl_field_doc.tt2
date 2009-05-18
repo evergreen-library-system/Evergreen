@@ -11,11 +11,11 @@
     </tr>
 </table>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <table  jsId="fdocGrid" 
+    <table  jsId="fdocGrid"
             autoHeight='true'
-            dojoType="openils.widget.AutoGrid" 
+            dojoType="openils.widget.AutoGrid"
             fieldOrder="['id', 'fm_class', 'owner', 'field', 'string']"
-            query="{id: '*'}" 
+            query="{id: '*'}"
             fmClass='fdoc'
             defaultCellWidth='15'
             editOnEnter='true'>
@@ -23,8 +23,7 @@
             <tr><th field='string' width='auto'/></tr>
         </thead>
     </table>
-    <div/>
-</div>
+  </div>
 <div class='hidden'>
     <span dojoType='dijit.form.FilteringSelect' jsId='editClassSelector'></span>
     <span dojoType='dijit.form.FilteringSelect' jsId='editFieldSelector'></span>

@@ -1,6 +1,7 @@
 [% WRAPPER default/base.tt2 %]
 <script>
     dojo.require('openils.widget.AutoGrid');
+    dojo.require('dijit.form.FilteringSelect');
     openils.Util.addOnLoad(
         function() {
             erGrid.loadAll({order_by:{acqpro : 'name'}});
@@ -24,7 +25,6 @@
             fmClass='acqexr'
             editOnEnter='true'>
     </table>
-    <div/>
 </div>
 [% END %]
 

@@ -28,7 +28,6 @@
             fmClass='acqct'
             editOnEnter='true'>
     </table>
-    <div/>
 </div>
 [% END %]
 

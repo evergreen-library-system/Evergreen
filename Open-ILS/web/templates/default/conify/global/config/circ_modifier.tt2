@@ -82,7 +82,6 @@
             </tr>
         </thead>
     </table>
-    <div/>
-</div>
+ </div>
 
 [% END %]

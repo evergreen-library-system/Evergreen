@@ -86,7 +86,6 @@ function formatName(value) {
                 <tr><th field='name' get='getProviderName' formatter='formatName'/></tr>
             </thead>
         </table>
-        <div></div>
     </div>
 </div>
 

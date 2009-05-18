@@ -15,17 +15,16 @@
     <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>New</button></div>
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <table  jsId="cmGrid" 
+    <table  jsId="cmGrid"
             autoHeight='true'
-            dojoType="openils.widget.AutoGrid" 
+            dojoType="openils.widget.AutoGrid"
             fieldOrder="['id', 'active', 'org_unit', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format']"
             suppressFields="['circulate', 'duration_rule', 'max_fine_rule', 'recurring_fine_rule', 'script_test']"
             defaultCellWidth='"auto"'
-            query="{id: '*'}" 
-            fmClass='ccmm' 
+            query="{id: '*'}"
+            fmClass='ccmm'
             editStyle='pane'
             editOnEnter='true'>
     </table>
-    <div/>
-</div>
+  </div>
 [% END %]
