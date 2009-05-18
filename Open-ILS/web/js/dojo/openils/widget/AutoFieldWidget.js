@@ -3,6 +3,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
     dojo.require('openils.Util');
     dojo.require('openils.User');
     dojo.require('fieldmapper.IDL');
+    dojo.require('openils.PermaCrud');
 
     dojo.declare('openils.widget.AutoFieldWidget', null, {
 
@@ -221,7 +222,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
 
             // if those fail, fetch the linked object
-            dojo.require('openils.PermaCrud');
             this.async = true;
             var self = this;
             new openils.PermaCrud().retrieve(lclass, this.widgetValue, {   
@@ -280,7 +280,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 return this._buildCopyLocSelector();
 
 
-            dojo.require('openils.PermaCrud');
             dojo.require('dojo.data.ItemFileReadStore');
             dojo.require('dijit.form.FilteringSelect');
 
