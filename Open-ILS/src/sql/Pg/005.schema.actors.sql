@@ -497,6 +497,7 @@ CREATE TABLE actor.usr_standing_penalty (
 	standing_penalty	INT	NOT NULL REFERENCES config.standing_penalty (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	staff			INT	REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	set_date		TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
+	stop_date		TIMESTAMP WITH TIME ZONE,
 	note			TEXT
 );
 COMMENT ON TABLE actor.usr_standing_penalty IS $$

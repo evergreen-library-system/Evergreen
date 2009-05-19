@@ -321,6 +321,7 @@ BEGIN
                 JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
           WHERE usr = match_user
                 AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                 AND csp.block_list LIKE penalty_type LOOP
 
         result.fail_part := standing_penalty.name;
@@ -421,6 +422,7 @@ BEGIN
                   FROM  actor.usr_standing_penalty
                   WHERE usr = match_user
                         AND org_unit = max_fines.org_unit
+                        AND (stop_date IS NULL or stop_date > NOW())
                         AND standing_penalty = 1
                 LOOP
             RETURN NEXT existing_sp_row;
@@ -485,6 +487,7 @@ BEGIN
                   FROM  actor.usr_standing_penalty
                   WHERE usr = match_user
                         AND org_unit = max_overdue.org_unit
+                        AND (stop_date IS NULL or stop_date > NOW())
                         AND standing_penalty = 2
                 LOOP
             RETURN NEXT existing_sp_row;
@@ -543,6 +546,7 @@ BEGIN
                   FROM  actor.usr_standing_penalty
                   WHERE usr = match_user
                         AND org_unit = max_items_out.org_unit
+                        AND (stop_date IS NULL or stop_date > NOW())
                         AND standing_penalty = 3
                 LOOP
             RETURN NEXT existing_sp_row;
@@ -598,6 +602,7 @@ BEGIN
                   FROM  actor.usr_standing_penalty
                   WHERE usr = match_user
                         AND org_unit = max_fines.org_unit
+                        AND (stop_date IS NULL or stop_date > NOW())
                         AND standing_penalty = 4
                 LOOP
             RETURN NEXT existing_sp_row;

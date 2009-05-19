@@ -1897,11 +1897,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="ausp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_standing_penalty" oils_persist:tablename="actor.usr_standing_penalty" oils_persist:restrict_primary="100" reporter:label="User Standing Penalty">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_standing_penalty_id_seq">
 			<field name="id" reporter:datatype="id" reporter:label="ID" />
-			<field name="set_date"  reporter:datatype="timestamp" reporter:label="Set Date"/>
+			<field name="set_date" reporter:datatype="timestamp" reporter:label="Set Date"/>
 			<field name="usr" reporter:datatype="link" reporter:label="User"/>
 			<field name="staff" reporter:datatype="link" reporter:label="Staff"/>
 			<field name="standing_penalty" reporter:datatype="link" reporter:label="Standing Penalty"/>
 			<field name="org_unit" reporter:datatype="link" reporter:label="Org Unit"/>
+			<field name="stop_date" reporter:datatype="timestamp" reporter:label="Stop Date"/>
 			<field name="note" reporter:datatype="text" reporter:label="Note"/>
 		</fields>
 		<links>

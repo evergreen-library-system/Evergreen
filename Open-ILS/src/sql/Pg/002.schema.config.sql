@@ -125,6 +125,17 @@ INSERT INTO config.standing_penalty (id,name,label,block_list)
 	VALUES (3,'PATRON_EXCEEDS_CHECKOUT_COUNT','Patron exceeds max checked out item threshold','CIRC');
 INSERT INTO config.standing_penalty (id,name,label,block_list)
 	VALUES (4,'PATRON_EXCEEDS_COLLECTIONS_WARNING','Patron exceeds pre-collections warning fine threshold','CIRC|HOLD|RENEW');
+
+INSERT INTO config.standing_penalty (id,name,label) VALUES (20,'ALERT_NOTE','Alerting Note, no blocks');
+INSERT INTO config.standing_penalty (id,name,label) VALUES (21,'SILENT_NOTE','Note, no blocks');
+INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (22,'STAFF_C','Alerting block on Circ','CIRC');
+INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (23,'STAFF_CH','Alerting block on Circ and Hold','CIRC|HOLD');
+INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (24,'STAFF_CR','Alerting block on Circ and Renew','CIRC|RENEW');
+INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (25,'STAFF_CHR','Alerting block on Circ, Hold and Renew','CIRC|HOLD|RENEW');
+INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (26,'STAFF_HR','Alerting block on Hold and Renew','HOLD|RENEW');
+INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (27,'STAFF_H','Alerting block on Hold','HOLD');
+INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (28,'STAFF_R','Alerting block on Renew','RENEW');
+
 SELECT SETVAL('config.standing_penalty_id_seq', 100);
 
 CREATE TABLE config.xml_transform (
