@@ -56,9 +56,9 @@ sub new
 	    # Calendar change can have multiple comma-separated values
 	    $self->{_mfhdc_PATTERN}->{x} = [split /,/, $val];
 	} elsif ($key eq 'y') {
-	    $self->{_mfhdc_PATTERN}->{y} = []
+	    $self->{_mfhdc_PATTERN}->{y} = {}
 	      unless exists $self->{_mfhdc_PATTERN}->{y};
-	    push @{$self->{_mfhdc_PATTERN}->{y}}, $val;
+	    update_pattern($self, $val);
 	} elsif ($key eq 'o') {
 	    # Type of unit
 	    $self->{_mfhdc_UNIT} = $val;
@@ -91,8 +91,8 @@ sub new
     # if the frequency is a number, then the pattern better
     # have that number of values associated with it.
     if (exists($pat->{w}) && ($pat->{w} =~ /^\d+$/)
-	&& ($pat->{w} != scalar(@{$pat->{y}}))) {
-	carp("Caption::new: publication frequency '$pat->{w}' != publication pattern @{$pat->{y}}");
+	&& ($pat->{w} != scalar(@{$pat->{y}->{p}}))) {
+	carp("Caption::new: publication frequency '$pat->{w}' != publication pattern @{$pat->{y}->{p}}");
     }
 
 
@@ -103,11 +103,17 @@ sub new
 
     bless ($self, $class);
 
-    if (exists $pat->{y}) {
-	$self->decode_pattern;
-    }
-
     return $self;
+}
+
+sub update_pattern {
+    my $self = shift;
+    my $val = shift;
+    my $pathash = $self->{_mfhdc_PATTERN}->{y};
+    my ($pubcode, $pat) = unpack("a1a*", $val);
+
+    $pathash->{$pubcode} = [] unless exists $pathash->{$pubcode};
+    push @{$pathash->{$pubcode}}, $pat;
 }
 
 sub decode_pattern {
@@ -378,13 +384,11 @@ sub regularity_match {
     my @date = @_;
 
     # we can't match something that doesn't exist.
-    return 0 if !exists $self->{_mfhdc_PATTERN}->{y};
+    return 0 if !exists $self->{_mfhdc_PATTERN}->{y}->{$pubcode};
 
-    foreach my $regularity (@{$self->{_mfhdc_PATTERN}->{y}}) {
-	next unless $regularity =~ m/^$pubcode/;
-
-	my $chroncode= substr($regularity, 1, 1);
-	my @pats = split(/,/, substr($regularity, 2));
+    foreach my $regularity (@{$self->{_mfhdc_PATTERN}->{y}->{$pubcode}}) {
+	my $chroncode= substr($regularity, 0, 1);
+	my @pats = split(/,/, substr($regularity, 1));
 
 	if (!exists $dispatch{$chroncode}) {
 	    carp "Unrecognized chroncode '$chroncode'";
@@ -430,12 +434,12 @@ sub enum_is_combined {
     my $iss = shift;
     my $level = ord($subfield) - ord('a') + 1;
 
-    return 0 if !exists $self->{_mfhdc_PATTERN}->{y};
+    return 0 if !exists $self->{_mfhdc_PATTERN}->{y}->{c};
 
-    foreach my $regularity (@{$self->{_mfhdc_PATTERN}->{y}}) {
-	next unless $regularity =~ m/^ce$level/o;
+    foreach my $regularity (@{$self->{_mfhdc_PATTERN}->{y}->{c}}) {
+	next unless $regularity =~ m/^e$level/o;
 
-	my @pats = split(/,/, substr($regularity, 3));
+	my @pats = split(/,/, substr($regularity, 2));
 
 	foreach my $pat (@pats) {
 	    $pat =~ s|/.+||;	# if it's a combined issue, match the start
