@@ -25,11 +25,12 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($idfield, $count, $user, $password, $config, $marctype, @files, @trash_fields, $quiet) =
+my ($idfield, $count, $user, $password, $config, $marctype, $idsubfield, @files, @trash_fields, $quiet) =
 	('001', 1, 'admin', 'open-ils', '/openils/conf/opensrf_core.xml', 'USMARC');
 
 GetOptions(
 	'idfield=i'	=> \$idfield,
+	'idsubfield=a'	=> \$idsubfield,
 	'startid=i'	=> \$count,
 	'user=s'	=> \$user,
 	'password=s'	=> \$password,
@@ -62,7 +63,12 @@ my $rec;
 while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	next if ($rec == -1);
 	my $id = $count;
-	my $record_field = $rec->field($idfield);
+	my $record_field;
+	if ($idsubfield) {
+		$record_field = $rec->field($idfield, $idsubfield);
+	} else {
+		$record_field = $rec->field($idfield);
+	}
 	my $record = $count;
 
 	# On some systems, the 001 actually points to the record ID
