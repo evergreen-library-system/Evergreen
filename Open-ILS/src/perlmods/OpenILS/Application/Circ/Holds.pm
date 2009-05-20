@@ -1676,7 +1676,8 @@ sub all_rec_holds {
 	$e->checkauth or return $e->event;
 	$e->allowed('VIEW_HOLD') or return $e->event;
 
-	$args ||= { fulfillment_time => undef };
+	$args ||= {};
+    $args->{fulfillment_time} = undef; #  we don't want to see old fulfilled holds
 	$args->{cancel_time} = undef;
 
 	my $resp = { volume_holds => [], copy_holds => [], metarecord_holds => [] };
