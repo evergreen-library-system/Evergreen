@@ -27,6 +27,12 @@ if(!dojo._hasResource["openils.XUL"]) {
         return {};
     }
 
+    openils.XUL.newTab = function(path, tabInfo, options) {
+        if(xulG == undefined) 
+            throw new Error('xulG is not defined.  Cannot open tab');
+        xulG.new_tab(path, tabInfo, options);
+    }
+
     /** 
      * This can be used by privileged Firefox in addition to XUL.
      * To use use in Firefox directly, set signed.applets.codebase_principal_support to true in about:config
