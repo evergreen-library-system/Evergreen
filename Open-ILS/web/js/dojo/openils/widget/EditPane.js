@@ -6,6 +6,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
     dojo.require('dijit.layout.ContentPane');
     dojo.require('openils.Util');
     dojo.require('openils.PermaCrud');
+    dojo.require('dijit.form.Button');
 
     dojo.declare(
         'openils.widget.EditPane',
