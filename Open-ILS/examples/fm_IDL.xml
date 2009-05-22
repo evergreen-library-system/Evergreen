@@ -2285,7 +2285,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="incomplete" oils_persist:virtual="true" />
 		</fields>
 	</class>
-	<class id="sre" controller="open-ils.cstore" oils_obj:fieldmapper="serial::record_entry" oils_persist:tablename="serial.record_entry" reporter:label="Record Entry">
+	<class id="sre" controller="open-ils.pcrud open-ils.cstore" oils_obj:fieldmapper="serial::record_entry" oils_persist:tablename="serial.record_entry" reporter:label="Serial Record Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.record_entry_id_seq">
 			<field name="active" reporter:datatype="bool"/>
 			<field reporter:label="Bib Record" name="record" reporter:datatype="link"/>
@@ -2304,8 +2304,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_MFHD_RECORD" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_MFHD_RECORD" global_required="true"/>
+				<delete permission="DELETE_MFHD_RECORD" global_required="true"/>
+			</actions>
+		</permacrud>
 	</class>
-	<class id="sfr" controller="open-ils.cstore" oils_obj:fieldmapper="serial::full_rec" oils_persist:tablename="serial.full_rec" reporter:label="Full Record">
+	<class id="sfr" controller="open-ils.cstore" oils_obj:fieldmapper="serial::full_rec" oils_persist:tablename="serial.full_rec" reporter:label="Serial Full Record">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.full_rec_id_seq">
 			<field name="id" reporter:datatype="id" />
 			<field name="ind1" />

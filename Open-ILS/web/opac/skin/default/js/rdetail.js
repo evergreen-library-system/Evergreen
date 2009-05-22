@@ -180,6 +180,34 @@ function rdetailShowAllCopies() {
 	hideMe(G.ui.rdetail.cp_info_none); 
 }
 
+function OpenMarcEditWindow(pcrud, rec) {
+    /*
+        To run in Firefox directly, must set signed.applets.codebase_principal_support
+        to true in about:config
+    */
+    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+    win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+    dojo.require('openils.PermaCrud');
+
+    win.xulG = {
+        record : {marc : rec.marc()},
+        save : {
+            label: 'Save',
+            func: function(xmlString) {
+                rec.marc(xmlString);
+		rec.ischanged(true);
+		pcrud.update(rec);
+            },
+        }
+    };
+}
+
+function loadMarcEditor(recId) {
+	var pcrud = new openils.PermaCrud({"authtoken": G.user.session});
+	var recs = pcrud.search("sre", {"record": recId});
+	OpenMarcEditWindow(pcrud, recs[0]);
+}
+
 /*
  * This function could be written much more intelligently
  * Limited brain power means that I'm brute-forcing it for now
@@ -205,7 +233,7 @@ function _holdingsDraw(h) {
 		return null;
 	}
 	
-	dojo.place("<table><caption  class='rdetail_header color_1'>Holdings summary</caption><tbody id='rdetail_holdings_tbody'></tbody></table>", "rdetail_details_table", "after");
+	dojo.place("<table><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>Holdings summary</caption><tbody id='rdetail_holdings_tbody'></tbody></table>", "rdetail_details_table", "after");
 	if (hh.length > 0) {
 		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Holdings</td><td  class='rdetail_item'>" + hh + "</td></tr>", "rdetail_holdings_tbody", "last");
 	}
@@ -232,6 +260,11 @@ function _holdingsDraw(h) {
 	}
 	if (hinc.length > 0) {
 		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Incomplete</td><td  class='rdetail_item'>" + hinc + "</td></tr>", "rdetail_holdings_tbody", "last");
+	}
+	if (isXUL()) {
+		dojo.require('openils.Event');
+		dojo.require('openils.PermaCrud');
+		dojo.place("<span> - </span><a class='classic_link' href='javascript:loadMarcEditor(" + getRid() + ")'> Edit</a>", "mfhdHoldingsCaption", "last");
 	}
 }
 
