@@ -28,7 +28,7 @@ sub new {
     foreach my $subfield ($self->subfields) {
 	my ($key, $val) = @$subfield;
 
-	if (($caption->enumeration_is_chronology && $key =~ /[a-h]/) || $key =~ /[i-m]/) {
+	if (($caption && $caption->enumeration_is_chronology && $key =~ /[a-h]/) || $key =~ /[i-m]/) {
 	    # Chronology
 	    $self->{_mfhdh_SUBFIELDS}->{$key} = $val;
 	} elsif ($key =~ /[a-h]/) {
@@ -238,7 +238,7 @@ sub validate {
     my $self = shift;
 
     foreach my $key (keys %{$self->{_mfhdh_SUBFIELDS}}) {
-	if (!$self->{_mfhdh_CAPTION}->capfield($key)) {
+	if (!($self->{_mfhdh_CAPTION}) && $self->{_mfhdh_CAPTION}->capfield($key)) {
 	    return 0;
 	}
     }
