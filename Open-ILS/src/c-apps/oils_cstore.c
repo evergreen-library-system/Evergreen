@@ -2936,33 +2936,7 @@ char* SELECT (
 	    jsonIterator* selclass_itr = jsonNewIterator( selhash );
 	    while ( (selclass = jsonIteratorNext( selclass_itr )) ) {    // For each class
 
-		    // Make sure the class is defined in the IDL
 			const char* cname = selclass_itr->key;
-			osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
-		    if (!idlClass) {
-				osrfLogError(
-					OSRF_LOG_MARK,
-					"%s: Selected class \"%s\" not defined in IDL",
-					MODULENAME,
-					cname
-				);
-
-				if (ctx)
-					osrfAppSessionStatus(
-						ctx->session,
-						OSRF_STATUS_INTERNALSERVERERROR,
-						"osrfMethodException",
-						ctx->request,
-						"Selected class is not defined"
-					);
-				jsonIteratorFree( selclass_itr );
-				buffer_free( sql_buf );
-				buffer_free( select_buf );
-				buffer_free( group_buf );
-				if( defaultselhash ) jsonObjectFree( defaultselhash );
-				free( core_class );
-				return NULL;
-			}
 
 			// Make sure the target relation is in the FROM clause.
 			
@@ -3003,6 +2977,7 @@ char* SELECT (
 
 			// Look up some attributes of the current class, so that we 
 			// don't have to look them up again for each field
+			osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
 			osrfHash* class_field_set = osrfHashGet( idlClass, "fields" );
 			const char* class_pkey = osrfHashGet( idlClass, "primarykey" );
 			const char* class_tname = osrfHashGet( idlClass, "tablename" );
