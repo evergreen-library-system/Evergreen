@@ -133,6 +133,9 @@ BEGIN
     UPDATE asset.call_number SET editor = dest_usr WHERE editor = src_usr;
     UPDATE asset.call_number_note SET creator = dest_usr WHERE creator = src_usr;
 
+    -- serial.*
+    UPDATE serial.record_entry SET creator = dest_usr WHERE creator = src_usr;
+    UPDATE serial.record_entry SET editor = dest_usr WHERE editor = src_usr;
 
     -- reporter.*
     -- It's not uncommon to define the reporter schema in a replica 
