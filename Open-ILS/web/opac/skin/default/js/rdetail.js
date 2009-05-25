@@ -216,6 +216,11 @@ function _holdingsDraw(h) {
 	holdings = h.getResultObject();
 	if (!holdings) { return null; }
 
+	dojo.forEach(holdings, _holdingsDrawMFHD);
+
+}
+
+function _holdingsDrawMFHD(holdings, entryNum) {
 	var hh = holdings.holdings();
 	var hch = holdings.current_holdings();
 	var hs = holdings.supplements();
@@ -232,40 +237,29 @@ function _holdingsDraw(h) {
 	) {
 		return null;
 	}
-	
-	dojo.place("<table><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>Holdings summary</caption><tbody id='rdetail_holdings_tbody'></tbody></table>", "rdetail_details_table", "after");
-	if (hh.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Holdings</td><td  class='rdetail_item'>" + hh + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
-	if (hch.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Current holdings</td><td  class='rdetail_item'>" + hch + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
-	if (hs.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Supplements</td><td  class='rdetail_item'>" + hs + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
-	if (hcs.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Current supplements</td><td  class='rdetail_item'>" + hcs + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
-	if (hi.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Indexes</td><td  class='rdetail_item'>" + hi + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
-	if (hci.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Current indexes</td><td  class='rdetail_item'>" + hci + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
-	if (ho.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Online</td><td  class='rdetail_item'>" + ho + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
-	if (hm.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Missing</td><td  class='rdetail_item'>" + hm + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
-	if (hinc.length > 0) {
-		dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>Incomplete</td><td  class='rdetail_item'>" + hinc + "</td></tr>", "rdetail_holdings_tbody", "last");
-	}
+
+	dojo.place("<table><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>Holdings summary</caption><tbody id='rdetail_holdings_tbody_" + entryNum + "'></tbody></table>", "rdetail_details_table", "after");
+	if (hh.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Holdings', hh); }
+	if (hch.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Current holdings', hch); }
+	if (hs.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Supplements', hs); }
+	if (hcs.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Current supplements', hcs); }
+	if (hi.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Indexes', hi); }
+	if (hci.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Current indexes', hci); }
+	if (ho.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Online', ho); }
+	if (hm.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Missing volumes', hm); }
+	if (hinc.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Incomplete volumes', hm); }
+
 	if (isXUL()) {
 		dojo.require('openils.Event');
 		dojo.require('openils.PermaCrud');
 		dojo.place("<span> - </span><a class='classic_link' href='javascript:loadMarcEditor(" + getRid() + ")'> Edit</a>", "mfhdHoldingsCaption", "last");
 	}
+}
+
+function _holdingsDrawMFHDEntry(entryNum, entryName, entry) {
+	var commaRegex = /,/;
+	var flatEntry = entry.toString().replace(commaRegex, ', ');
+	dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>" + entryName + "</td><td class='rdetail_item'>" + flatEntry + "</td></tr>", "rdetail_holdings_tbody_" + entryNum, "last");
 }
 
 function _rdetailDraw(r) {
