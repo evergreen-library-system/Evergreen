@@ -356,6 +356,7 @@ DECLARE
 	target_cn     asset.call_number%ROWTYPE;
 	metarec       metabib.metarecord%ROWTYPE;
 	hold          action.hold_request%ROWTYPE;
+	ser_rec       serial.record_entry%ROWTYPE;
     uri_count     INT := 0;
     counter       INT := 0;
     uri_datafield TEXT;
@@ -472,6 +473,16 @@ BEGIN
 		UPDATE	action.hold_request
 		  SET	target = target_record
 		  WHERE	id = hold.id;
+
+		moved_objects := moved_objects + 1;
+	END LOOP;
+
+	-- Find serial records targeting the source record ...
+	FOR ser_rec IN SELECT * FROM serial.record_entry WHERE record = source_record LOOP
+		-- ... and move them to the target record
+		UPDATE	serial.record_entry
+		  SET	record = target_record
+		  WHERE	id = ser_rec.id;
 
 		moved_objects := moved_objects + 1;
 	END LOOP;
