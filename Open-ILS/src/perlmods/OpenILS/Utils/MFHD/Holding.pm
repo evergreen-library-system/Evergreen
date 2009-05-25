@@ -238,7 +238,7 @@ sub validate {
     my $self = shift;
 
     foreach my $key (keys %{$self->{_mfhdh_SUBFIELDS}}) {
-	if (!($self->{_mfhdh_CAPTION}) && $self->{_mfhdh_CAPTION}->capfield($key)) {
+	if (!$self->{_mfhdh_CAPTION} || !$self->{_mfhdh_CAPTION}->capfield($key)) {
 	    return 0;
 	}
     }
