@@ -23,15 +23,16 @@
 
 <div class='hidden'>
     <div id='circ-mod-editor' style='border:1px solid #aaa'>
-        <h3>Circ Mod Count Groups</h3>
+        <h3>Circ Modifier Count Groups</h3>
         <table class='oils-generic-table' name='circ-mod-group-table'>
             <tbody><tr>
                 <td>Total items out</td>
-                <td><div name='circ-mod-count'></div></td>
+                <td><input type='text' size='3' name='circ-mod-count'></div></td>
             </tr><tbody>
             <tbody name='circ-mod-entry-tbody'>
                 <tr name='circ-mod-entry-row'>
-                    <td colspan='2' name='circ-mod'/>
+                    <td name='circ-mod'/>
+                    <td><a name='remove-circ-mod' href='javascript:void(0);'>Remove</a></td>
                 </tr>
             </tbody>
             <tbody>
@@ -41,7 +42,11 @@
                 </tr>
             </tbody>
         </table>
+        <span name='add-circ-mod-group-span'>
         <a href='javascript:void(0);' name='add-circ-mod-group'>Create New Group</a>
+        </span>&nbsp;&nbsp;<span>
+        <a href='javascript:void(0);' onclick='applyCircModChanges()'>Apply Circ Modifier Changes</a>
+        </span>
     </div>
 </div>
 

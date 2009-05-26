@@ -5,6 +5,7 @@ dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.PermaCrud');
 
 var circModEditor = null;
+var circModGroupTables = [];
 
 function load(){
     cmGrid.loadAll({order_by:{ccmm:'circ_modifier'}});
@@ -19,6 +20,7 @@ function byName(name, ctxt) {
 function buildEditPaneAdditions(editPane) {
     var node = circModEditor.cloneNode(true);
     var tableTmpl = node.removeChild(byName('circ-mod-group-table', node));
+    circModGroupTables = [];
 
     byName('add-circ-mod-group', node).onclick = function() {
         addCircModGroup(node, tableTmpl)
@@ -32,26 +34,24 @@ function buildEditPaneAdditions(editPane) {
     editPane.domNode.appendChild(node);
 }
 
+
 function addCircModGroup(node, tableTmpl, group) {
 
     var table = tableTmpl.cloneNode(true);
     var circModRowTmpl = byName('circ-mod-entry-tbody', table).removeChild(byName('circ-mod-entry-row', table));
+    circModGroupTables.push(table);
 
-    // loop over mods
-    //
-    
-    function addMod(mod) {
+    function addMod(code, name) {
         var row = circModRowTmpl.cloneNode(true);
-        byName('circ-mod', row).innerHTML = mod;
+        byName('circ-mod', row).innerHTML = name;
+        byName('circ-mod', row).setAttribute('code', code);
         byName('circ-mod-entry-tbody', table).appendChild(row);
+        byName('remove-circ-mod', row).onclick = function() {
+            byName('circ-mod-entry-tbody', table).removeChild(row);
+        }
     }
 
-    new openils.widget.AutoFieldWidget({
-        fmClass : 'ccmcmt',
-        fmField : 'items_out',
-        fmObject : group,
-        parentNode : byName('circ-mod-count', table)
-    }).build();
+    byName('circ-mod-count', table).value = (group) ? group.items_out() : 0;
 
     var selector = new openils.widget.AutoFieldWidget({
         fmClass : 'ccmcmtm',
@@ -61,11 +61,26 @@ function addCircModGroup(node, tableTmpl, group) {
     selector.build();
 
     byName('add-circ-mod', table).onclick = function() {
-        addMod(selector.widget.attr('value'));
+        addMod(selector.widget.attr('value'), selector.widget.attr('displayedValue'));
     }
 
-    node.insertBefore(table, byName('add-circ-mod-group', node));
-    node.insertBefore(dojo.create('hr'), byName('add-circ-mod-group', node));
+    node.insertBefore(table, byName('add-circ-mod-group-span', node));
+    node.insertBefore(dojo.create('hr'), byName('add-circ-mod-group-span', node));
+}
+
+function applyCircModChanges() {
+
+    for(var idx in circModGroupTables) {
+        var table = circModGroupTables[idx];
+
+        var count = byName('circ-mod-count', table).value;
+        var mods = [];
+        dojo.forEach(dojo.query('[name=circ-mod]', table), function(td) { 
+            mods.push(td.getAttribute('code'));
+        });
+
+        alert(count + ' : ' + mods);
+    }
 }
 
 openils.Util.addOnLoad(load);
