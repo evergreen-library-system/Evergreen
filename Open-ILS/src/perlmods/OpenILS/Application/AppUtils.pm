@@ -1479,9 +1479,13 @@ sub fire_object_event {
     my $e = OpenILS::Utils::CStoreEditor->new;
     my $def;
 
+    my $auto_method = "open-ils.trigger.event.autocreate.by_definition";
+
     if($event_def) {
         $def = $e->retrieve_action_trigger_event_definition($event_def)
             or return $e->event;
+
+        $auto_method .= '.include_inactive';
 
     } else {
         # find the most appropriate event def depending on context org
@@ -1501,9 +1505,7 @@ sub fire_object_event {
     }
 
     my $event_id = $self->simplereq(
-        'open-ils.trigger',
-        'open-ils.trigger.event.autocreate.by_definition', 
-        $def->id, $object, $context_org);
+        'open-ils.trigger', $auto_method, $def->id, $object, $context_org);
 
     my $fire = 'open-ils.trigger.event.fire';
 
