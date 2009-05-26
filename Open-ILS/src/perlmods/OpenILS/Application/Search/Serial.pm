@@ -50,7 +50,7 @@ sub mfhd_to_hash {
 			"open-ils.cstore.direct.serial.record_entry.retrieve", $id )->gather(1);
 
 	my $u = OpenILS::Utils::MFHDParser->new();
-	my $mfhd_hash = $u->generate_svr( $request->marc );
+	my $mfhd_hash = $u->generate_svr( $request->id, $request->marc, $request->owning_lib );
 
 	$session->disconnect();
 	return $mfhd_hash;
@@ -81,7 +81,7 @@ sub bib_to_mfhd_hash {
 	# XXX perhaps this? --miker
 #	my $e = OpenILS::Utils::CStoreEditor->new();
 #	my $mfhd = $e->search_serial_record_entry({ record => $bib });
-#	return $u->generate_svr( $mfhd->[0]->marc ) if (ref $mfhd);
+#	return $u->generate_svr( $mfhd->[0] ) if (ref $mfhd);
 #	return undef;
 
 	my @mfhd = $U->cstorereq( "open-ils.cstore.json_query.atomic", {
@@ -122,6 +122,32 @@ sub bib_to_mfhd {
 	my $u = OpenILS::Utils::MFHDParser->new();
 	foreach (@$serials) {
 		push(@$mfhd, $u->generate_svr($_->marc));
+	}
+
+	return $mfhd;
+}
+
+__PACKAGE__->register_method(
+	method	=> "bib_to_mfhd",
+	api_name	=> "open-ils.search.serial.record.bib.retrieve",
+	argc		=> 1, 
+	note		=> "Given a bibliographic record ID, return MFHD holdings"
+);
+
+sub bib_to_mfhd {
+	my ($self, $client, $bib) = @_;
+	
+	my $mfhd;
+
+	my $e = OpenILS::Utils::CStoreEditor->new();
+	my $serials = $e->search_serial_record_entry({ record => $bib });
+	if (!ref $serials) {
+		return undef;
+	}
+
+	my $u = OpenILS::Utils::MFHDParser->new();
+	foreach (@$serials) {
+		push(@$mfhd, $u->generate_svr($_->id, $_->marc, $_->owning_lib));
 	}
 
 	return $mfhd;

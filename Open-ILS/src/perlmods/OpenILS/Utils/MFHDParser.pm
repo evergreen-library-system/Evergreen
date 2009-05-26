@@ -149,6 +149,8 @@ Initialize the serial virtual record (svr) instance
 =cut
 sub init_holdings_virtual_record {
 	my $record = Fieldmapper::serial::virtual_record->new;
+	$record->id();
+	$record->owning_lib();
 	$record->holdings([]);
 	$record->current_holdings([]);
 	$record->supplements([]);
@@ -171,7 +173,7 @@ Given an MFHD record, return a populated svr instance
 
 =cut
 sub generate_svr {
-	my ($self, $mfhd) = @_;
+	my ($self, $id, $mfhd, $owning_lib) = @_;
 
 	if (!$mfhd) {
 		return undef;
@@ -180,6 +182,8 @@ sub generate_svr {
 	my $record = init_holdings_virtual_record();
 	my $holdings = $self->mfhd_to_hash($mfhd);
 
+	$record->id($id);
+	$record->owning_lib($owning_lib);
 	$record->holdings($holdings->{holdings});
 	$record->current_holdings($holdings->{current_holdings});
 	$record->supplements($holdings->{supplements});

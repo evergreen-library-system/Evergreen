@@ -9,6 +9,7 @@ CREATE SCHEMA serial;
 CREATE TABLE serial.record_entry (
 	id		BIGSERIAL	PRIMARY KEY,
 	record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	owning_lib	INT		NOT NULL DEFAULT 1 REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	creator		INT		NOT NULL DEFAULT 1,
 	editor		INT		NOT NULL DEFAULT 1,
 	source		INT,
@@ -21,6 +22,7 @@ CREATE TABLE serial.record_entry (
 );
 CREATE INDEX serial_record_entry_creator_idx ON serial.record_entry ( creator );
 CREATE INDEX serial_record_entry_editor_idx ON serial.record_entry ( editor );
+CREATE INDEX serial_record_entry_owning_lib_idx ON serial.record_entry ( owning_lib, deleted );
 
 CREATE TABLE serial.full_rec (
 	id		BIGSERIAL	PRIMARY KEY,

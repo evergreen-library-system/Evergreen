@@ -204,7 +204,7 @@ function OpenMarcEditWindow(pcrud, rec) {
 
 function loadMarcEditor(recId) {
 	var pcrud = new openils.PermaCrud({"authtoken": G.user.session});
-	var recs = pcrud.search("sre", {"record": recId});
+	var recs = pcrud.search("sre", {"id": recId, "deleted": false});
 	OpenMarcEditWindow(pcrud, recs[0]);
 }
 
@@ -217,10 +217,12 @@ function _holdingsDraw(h) {
 	if (!holdings) { return null; }
 
 	dojo.forEach(holdings, _holdingsDrawMFHD);
-
 }
 
 function _holdingsDrawMFHD(holdings, entryNum) {
+	if (!orgIsMine(findOrgUnit(holdings.owning_lib()), findOrgUnit(getLocation()))) {
+		return null;
+	}
 	var hh = holdings.holdings();
 	var hch = holdings.current_holdings();
 	var hs = holdings.supplements();
@@ -252,13 +254,12 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 	if (isXUL()) {
 		dojo.require('openils.Event');
 		dojo.require('openils.PermaCrud');
-		dojo.place("<span> - </span><a class='classic_link' href='javascript:loadMarcEditor(" + getRid() + ")'> Edit</a>", "mfhdHoldingsCaption", "last");
+		dojo.place("<span> - </span><a class='classic_link' href='javascript:loadMarcEditor(" + holdings.id() + ")'> Edit</a>", "mfhdHoldingsCaption", "last");
 	}
 }
 
 function _holdingsDrawMFHDEntry(entryNum, entryName, entry) {
-	var commaRegex = /,/;
-	var flatEntry = entry.toString().replace(commaRegex, ', ');
+	var flatEntry = entry.toString().replace(/,/g, ', ');
 	dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>" + entryName + "</td><td class='rdetail_item'>" + flatEntry + "</td></tr>", "rdetail_holdings_tbody_" + entryNum, "last");
 }
 

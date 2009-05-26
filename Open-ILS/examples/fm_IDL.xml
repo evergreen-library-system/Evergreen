@@ -2274,6 +2274,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="svr" controller="open-ils.cstore" oils_obj:fieldmapper="serial::virtual_record" oils_persist:virtual="true" reporter:label="Serial Virtual Record">
 		<fields>
+			<field name="id" oils_persist:virtual="true" />
+			<field name="owning_lib" oils_persist:virtual="true" />
 			<field name="holdings" oils_persist:virtual="true" />
 			<field name="current_holdings" oils_persist:virtual="true" />
 			<field name="supplements" oils_persist:virtual="true" />
@@ -2298,18 +2300,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="last_xact_id" />
 			<field name="marc" />
 			<field name="source" />
+			<field reporter:label="Owning Org Unit" name="owning_lib" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
 			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_MFHD_RECORD" global_required="true"/>
+				<create permission="CREATE_MFHD_RECORD" context_field="owning_lib"/>
 				<retrieve/>
-				<update permission="UPDATE_MFHD_RECORD" global_required="true"/>
-				<delete permission="DELETE_MFHD_RECORD" global_required="true"/>
+				<update permission="UPDATE_MFHD_RECORD" context_field="owning_lib"/>
+				<delete permission="DELETE_MFHD_RECORD" context_field="owning_lib"/>
 			</actions>
 		</permacrud>
 	</class>
