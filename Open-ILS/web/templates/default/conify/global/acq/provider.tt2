@@ -63,7 +63,7 @@ function formatName(value) {
     </select>
 </div> 
 
-<div id='provider-list-div' style='height: 600px;'>
+<div id='provider-list-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Provider</div>
@@ -90,8 +90,8 @@ function formatName(value) {
 </div>
 
 <div id='provider-summary-pane'></div>     
-<div id='provider-details-div' style='height:600px;'>
-<div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='providerTabs'>
+<div id='provider-details-div'>
+<div dojoType="dijit.layout.TabContainer" style='height:100%' jsId='providerTabs'>
 
     <div dojoType="dijit.layout.ContentPane" title='Provider Address' select='true' id='provider-address'>
 
@@ -132,34 +132,33 @@ function formatName(value) {
                     editOnEnter='true'>
             </table>
         </div>
-
-    <div id='contact-addr-div'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Contact Address</div>
-            <div>
-            <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
-            <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
+      
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+                <div>Contact Address</div>
+                <div>
+                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
+                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
+                </div>
             </div>
-        </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
-            <table  jsId="pcaListGrid"
-                    dojoType="openils.widget.AutoGrid"
-                    fieldOrder="['id', 'address_type', 'contact', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
-                    query="{id: '*'}"
-                    fmClass='acqpca'
-                    defaultCellWidth='"auto"' 
-                    editOnEnter='true'>
-
-            </table>
-        </div>
-    </div>
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
+                <table  jsId="pcaListGrid"
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['id', 'address_type', 'contact', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+                        query="{id: '*'}"
+                        fmClass='acqpca'
+                        defaultCellWidth='"auto"' 
+                        editOnEnter='true'>
+                    
+                </table>
+            </div>
+       
     </div>
     <div dojoType="dijit.layout.ContentPane" title='Attribute Definitions' id='tab-attr'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div> Attribute Definitions</div>
             <div>
-            <button dojoType='dijit.form.Button' onClick='padListGrid.showCreateDialog()'>New Attribute Definition</button>
-            <button dojoType='dijit.form.Button' onClick='padListGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='padListGrid.showCreateDialog()'>New Attribute Definition</button>
+                <button dojoType='dijit.form.Button' onClick='padListGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>

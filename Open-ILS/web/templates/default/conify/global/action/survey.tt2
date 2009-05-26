@@ -1,6 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/action/survey.js'> </script>
-<h1>Survey List</h1><br/>
 
 <script>
     function formatName(inDatum) {
@@ -13,20 +12,19 @@
         }
     }
 </script>
+   <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Survey List</div>
+            <div>
+                <button dojoType='dijit.form.Button' onclick='svNewSurvey();'>Add New Survey</button>
+                <button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onclick='endSurvey();'>End Selected Surveys</button>
+            </div>
+        </div>
 
-<button dojoType='dijit.form.Button' onclick='svNewSurvey();'>Add New Survey</button>
-<button dojoType='dijit.form.Button' onclick='deleteFromGrid();'>Delete Selected</button>
-<button dojoType='dijit.form.Button' onclick='endSurvey();'>End Selected Surveys</button>
-<script>dojo.require('openils.widget.GridColumnPicker');</script>
-
-<!-- column picker menu-->
-<div dojoType="openils.widget.GridColumnPicker" jsid="svGridMenu" id="svGridMenu" style="display: none;" grid='svGrid'>
-    <div dojoType="dojox.widget.PlaceholderMenuItem" label="GridColumns"></div> 
-</div>
 <!-- grid -->
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'>
-    <table jsId="svGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" 
-           rowSelector='20px' columnReordering='true' headerMenu="svGridMenu">
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
+    <table jsId="svGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}">
         <thead>
             <tr>
                 <th field="id">Survey ID</th>

@@ -4,6 +4,7 @@ dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.CurrencyTextBox');
 dojo.require('dijit.Dialog');
+dojo.require('openils.DojoPatch');
 dojo.require('dojox.widget.PlaceholderMenuItem');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
@@ -18,13 +19,13 @@ var questionId;
 /** really need to put this in a shared location... */
 function getOrgInfo(rowIndex, item) {
     if(!item) return '';
-    var orgId = this.grid.store.getValue(item, this.field);
+    var orgId = svGrid.store.getValue(item, this.field);
     return fieldmapper.aou.findOrgUnit(orgId).shortname();
 }
 
 function getDateTimeField(rowIndex, item) {
     if(!item) return '';
-    var data = this.grid.store.getValue(item, this.field);
+    var data = svGrid.store.getValue(item, this.field);
     var date = dojo.date.stamp.fromISOString(data);
     return dojo.date.locale.format(date, {formatLength:'short'});
 }
@@ -52,7 +53,6 @@ function _endSurvey(list, idx) {
     var svId = svGrid.store.getValue(item, 'id');
     var pcrud = new openils.PermaCrud();
     var survey = pcrud.retrieve('asv', svId);
-    console.log(survey);
     var today = new Date();
     var date = dojo.date.stamp.toISOString(today);
     survey.end_date(date);
@@ -141,18 +141,17 @@ function svCreate(args) {
         sv.usr_summary('t')
         else
             sv.usr_summary('f');
-    console.log(sv.name());
+   
     var pcrud = new openils.PermaCrud();
     pcrud.create(sv,
                  {           
                      oncomplete: function(r) {
                          var obj = openils.Util.readResponse(r);
-                         if(!obj) return console.log('no obj');
+                         if(!obj) return '';
                          svGrid.store.newItem(asv.toStoreItem(obj));
                          svSurveyDialog.hide();
                          svId = obj.id();
                          document.location.href = "/eg/conify/global/action/survey/edit/"+svId;
-                         //redirect(svId);
                      }
                  }
                  );
@@ -183,7 +182,6 @@ function _deleteFromGrid(list, idx) {
                if(stat = openils.Util.readResponse(r)) {
                    console.log(stat);
                    svGrid.store.deleteItem(item); 
-                   // buildSVGrid();
                }
                _deleteFromGrid(list, ++idx);               
                
