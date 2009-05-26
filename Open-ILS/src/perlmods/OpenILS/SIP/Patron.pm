@@ -99,7 +99,7 @@ sub name {
 sub home_library {
     my $self = shift;
     my $lib = $self->{editor}->retrieve_actor_org_unit($self->{user}->home_ou)->shortname;
-	syslog('LOG_DEBUG', "OILS: Patron home library is $lib");
+	syslog('LOG_DEBUG', "OILS: Patron->home_library() = $lib");
     return $lib;
 }
 
@@ -315,6 +315,7 @@ sub too_many_billed {
 #
 sub hold_items {
     my ($self, $start, $end) = @_;
+	syslog('LOG_DEBUG', 'OILS: Patron->hold_items()');
 
 	 my $holds = $self->{editor}->search_action_hold_request(
 		{ usr => $self->{user}->id, fulfillment_time => undef, cancel_time => undef }
@@ -499,6 +500,7 @@ sub recall_items {
 sub unavail_holds {
 	my ($self, $start, $end) = @_;
 	my @holds;
+	syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
 	return (defined $start and defined $end) ? 
 		[ $holds[($start-1)..($end-1)] ] : \@holds;
 }
