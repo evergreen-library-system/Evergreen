@@ -7,9 +7,11 @@ dojo.require('openils.Util');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.Textarea');
 dojo.require('openils.widget.ProgressDialog');
+dojo.require('dojox.string.sprintf');
 dojo.requireLocalization('openils.conify', 'conify');
 
 var localeStrings = dojo.i18n.getLocalization('openils.conify', 'conify');
+var eventDef = null;
 
 function loadEventDef() { 
     edGrid.loadAll({order_by:{atevdef : 'hook'}}); 
@@ -19,6 +21,24 @@ function loadEventDef() {
     dojo.connect(eventDefTabs,'selectChild', tabLoader);
 }
 
+function loadEventDefData() { 
+    var pcrud = new openils.PermaCrud();
+    eventDef = pcrud.retrieve('atevdef', eventDefId);
+    var hook = pcrud.retrieve('ath', eventDef.hook());
+
+    if(hook.core_type() == 'circ') {
+        openils.Util.hide('at-test-none');
+        openils.Util.show('at-test-circ');
+    }
+
+    dojo.byId('at-event-def-name').innerHTML = eventDef.name();
+    teeGrid.loadAll({order_by:{atenv : 'path'}}, {event_def : eventDefId}); 
+    dojo.connect(eventDefTabs,'selectChild', tabLoader);
+
+    teeGrid.overrideEditWidgets.event_def = new dijit.form.TextBox({value: eventDefId, disabled : true});
+    tepGrid.overrideEditWidgets.event_def = new dijit.form.TextBox({value: eventDefId, disabled : true});
+}
+
 var loadedTabs = {'tab-atevdef' : true};
 function tabLoader(child) {
     if(loadedTabs[child.id]) return;
@@ -26,13 +46,10 @@ function tabLoader(child) {
 
     switch(child.id) {
         case 'tab-atevparam': 
-            tepGrid.loadAll({order_by:{atevparam : 'event_def'}}); 
+            tepGrid.loadAll({order_by:{atevparam : 'param'}}, {event_def : eventDefId}); 
             break;
         case 'tab-ath': 
             thGrid.loadAll({order_by:{ath : 'key'}}); 
-            break;
-        case 'tab-atenv': 
-            teeGrid.loadAll({order_by:{atenv : 'event_def'}}); 
             break;
         case 'tab-atreact': 
             trGrid.loadAll({order_by:{atreact : 'module'}}); 
@@ -40,61 +57,31 @@ function tabLoader(child) {
         case 'tab-atval': 
             tvGrid.loadAll({order_by:{atval : 'module'}}); 
             break;
+        /*
         case 'tab-test': 
             loadTestTab();
             break;
+        */
     }
 }
 
-function loadTestTab() {
-    var pcrud = new openils.PermaCrud();
-    var hooks = pcrud.search('ath', {core_type : 'circ'});
-
-    circTestHookSelector.store = new dojo.data.ItemFileReadStore({data : ath.toStoreData(hooks, 'key', {identifier:'key'})});
-    circTestHookSelector.searchAttr = 'key';
-    circTestHookSelector.startup();
-
-    var defs = pcrud.search('atevdef', {hook : hooks.map(function(i){return i.key()})});
-    var defData = atevdef.toStoreData(defs);
-    circTestDefSelector.store = new dojo.data.ItemFileReadStore({data : defData});
-    circTestDefSelector.searchAttr = 'name';
-    circTestDefSelector.startup();
-
-    dojo.connect(circTestHookSelector, 'onChange',
-        function() {
-            circTestDefSelector.query = {hook : this.attr('value')};
-        }
-    );
+function getEventDefNameLink(rowIdx, item) {
+    if(!item) return
+    return this.grid.store.getValue(item, 'id') + ':' + this.grid.store.getValue(item, 'name');
 }
 
-
-function eventDefGetter(rowIdx, item) {
-    if(!item) return '';
-    var def = this.grid.store.getValue(item, 'event_def');
-    return getDefName(def);
-}
-
-function getDefName(def) {
-
-    if(typeof def != 'object') {
-        edGrid.store.fetchItemByIdentity({
-            identity : def,
-            onItem : function(item) { def = new fieldmapper.atevdef().fromStoreItem(item); }
-        });
-    }
-
-    return dojo.string.substitute(
-        localeStrings.EVENT_DEF_LABEL, [
-            fieldmapper.aou.findOrgUnit(def.owner()).shortname(), 
-            def.name()
-        ]);
+function formatEventDefNameLink(data) {
+    if(!data) return;
+    var parts = data.split(/:/);
+    return dojox.string.sprintf(
+        '<a href="%s/conify/global/action_trigger/event_definition_data/%s">%s</a>',
+        oilsBasePath, parts[0], parts[1]);
 }
 
 
 function evtTestCirc() {
-    var def = circTestDefSelector.attr('value');
     var barcode = circTestBarcode.attr('value');
-    if(!(def && barcode)) return;
+    if(!barcode) return;
 
     progressDialog.show();
 
@@ -114,10 +101,9 @@ function evtTestCirc() {
     fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.trigger_event_by_def_and_barcode.fire'],
         {   async: true,
-            params: [openils.User.authtoken, def, barcode],
+            params: [openils.User.authtoken, eventDefId, barcode],
             oncomplete: handleResponse
         }
     );
 }
 
-openils.Util.addOnLoad(loadEventDef);

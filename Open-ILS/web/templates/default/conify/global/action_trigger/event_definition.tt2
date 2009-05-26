@@ -1,10 +1,11 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'> </script>
+<script>openils.Util.addOnLoad(loadEventDef)</script>
 
 <div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='eventDefTabs'>
 
-    <div dojoType="dijit.layout.ContentPane" title='Event Definitions' selected='true' id='tab-atevdef'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+    <div dojoType="dijit.layout.ContentPane" title='Event Parameters' id='tab-atevdef'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
             <div>Trigger Event Definitions</div>
             <div>
                 <button dojoType='dijit.form.Button' onClick='edGrid.showCreatePane()'>New</button>
@@ -22,58 +23,14 @@
                     defaultCellWidth='"auto"'
                     editStyle='pane'
                     editOnEnter='true'>
-            </table>
-        </div>
-    </div>
-
-    <div dojoType="dijit.layout.ContentPane" title='Event Parameters' id='tab-atevparam'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Trigger Event Parameters</div>
-            <div>
-                <button dojoType='dijit.form.Button' onClick='tepGrid.showCreateDialog()'>New</button>
-                <button dojoType='dijit.form.Button' onClick='tepGrid.deleteSelected()'>Delete Selected</button>
-            </div>
-        </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
-            <table  jsId="tepGrid" 
-                    dojoType="openils.widget.AutoGrid" 
-                    fieldOrder="['id', 'event_def', 'param', 'value']"
-                    query="{id: '*'}" 
-                    fmClass='atevparam'
-                    defaultCellWidth='20'
-                    editOnEnter='true'>
                 <thead>
-                    <tr><th field='event_def' get='eventDefGetter'/></tr>
+                    <tr><th field='name' get='getEventDefNameLink' formatter='formatEventDefNameLink'/></tr>
                 </thead>
             </table>
         </div>
     </div>
 
-    <div dojoType="dijit.layout.ContentPane" title='Event Environment' id='tab-atenv'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Trigger Event Environment</div>
-            <div>   
-                <button dojoType='dijit.form.Button' onClick='teeGrid.showCreateDialog()'>New</button>
-                <button dojoType='dijit.form.Button' onClick='teeGrid.deleteSelected()'>Delete Selected</button>
-            </div>
-        </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
-            <table  jsId="teeGrid" 
-                    dojoType="openils.widget.AutoGrid" 
-                    fieldOrder="['id', 'event_def', 'path', 'collector', 'label']"
-                    query="{id: '*'}" 
-                    fmClass='atenv'
-                    defaultCellWidth='20'
-                    editOnEnter='true'>
-                <thead>
-                    <tr><th field='event_def' get='eventDefGetter'/></tr>
-                </thead>
-            </table>
-        </div>
-    </div>
-
-
-    <div dojoType="dijit.layout.ContentPane" title='Hooks' id='tab-ath'>
+    <div dojoType="dijit.layout.ContentPane" title='Hooks' id='tab-ath' style='height:100%;'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Trigger Hooks</div>
             <div>
@@ -83,6 +40,7 @@
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
             <table  jsId="thGrid" 
+                    autoHeight='true'
                     dojoType="openils.widget.AutoGrid" 
                     fieldOrder="['key', 'core_type', 'description', 'passive']"
                     query="{key: '*'}" 
@@ -141,42 +99,6 @@
         </div>
     </div>
 
-    <div dojoType="dijit.layout.ContentPane" title='Test' id='tab-test'>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div>Event Definition Tests</div>
-            <div></div>
-        </div>
-        <br/>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px'>
-            <div style='border:1px solid #aaa;'>
-                <h2>Test Circulation</h2>
-                <table class='oils-generic-table'>
-                    <tr>
-                        <td>Trigger Hook</td>
-                        <td><div dojoType='dijit.form.FilteringSelect' jsId='circTestHookSelector'/></td>
-                    </tr>
-                    <tr>
-                        <td>Trigger Event Definition</td>
-                        <td><div dojoType='dijit.form.FilteringSelect' jsId='circTestDefSelector'/></td>
-                    </tr>
-                    <tr>
-                        <td>Barcode of Circulating Copy</td>
-                        <td><div dojoType='dijit.form.TextBox' jsId='circTestBarcode'/></td>
-                    </tr>
-                    <tr>
-                        <td colspan='2'><button dojoType='dijit.form.Button' onclick='evtTestCirc'>Go</button></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id='test-event-output' style='width:90%;margin:20px;border:1px solid #aaa;' class='hidden'>
-            </div>
-            <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' indeterminate='true'></div>
-        </div>
-    </div>
-
-</div>
 
 [% END %]
-
 
