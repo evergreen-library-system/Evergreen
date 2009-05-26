@@ -18,13 +18,15 @@
     <table  jsId="cmGrid"
             autoHeight='true'
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['id', 'active', 'org_unit', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format']"
+            fieldOrder="['org_unit', 'active', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format']"
             suppressFields="['circulate', 'duration_rule', 'max_fine_rule', 'recurring_fine_rule', 'script_test']"
             defaultCellWidth='"auto"'
             query="{id: '*'}"
             fmClass='ccmm'
             editStyle='pane'
-            editOnEnter='true'>
+            editOnEnter='true'
+            showColumnPicker='true'
+            columnPickerPrefix='"conify.config.circ_matrix_matchpoint"'>
     </table>
   </div>
 [% END %]
