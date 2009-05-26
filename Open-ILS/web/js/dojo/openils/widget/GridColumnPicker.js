@@ -144,9 +144,12 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
                         var selector = dojo.query('[name=selector]', row)[0];
                         var width = dojo.query('[name=width]', row)[0];
                         if(selector.checked && selector.getAttribute('ident') == cell.field+''+cell.name) {
-                            if(width.checked)
+                            if(width.checked) {
                                 cell.width = 'auto';
-                            else delete cell.width;
+                            } else {
+                                if(cell.width == 'auto')
+                                    cell.width;
+                            }
                             newCellList.push(cell);
                         }
                     }
@@ -218,9 +221,12 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
                 if(cell.selectableColumn) {
                     if(this._arrayHas(setting.columns, cell.field)) {
                         newCellList.push(cell);
-                        if(this._arrayHas(setting.auto, cell.field))
+                        if(this._arrayHas(setting.auto, cell.field)) {
                             cell.width = 'auto';
-                        else delete cell.width;
+                        } else {
+                            if(cell.width == 'auto')
+                                delete cell.width;
+                        }
                     }
                 }  else { // if it's not selectable, always show it
                     newCellList.push(cell); 

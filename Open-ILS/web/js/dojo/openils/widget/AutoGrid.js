@@ -5,6 +5,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.require('openils.widget.AutoFieldWidget');
     dojo.require('openils.widget.EditPane');
     dojo.require('openils.widget.EditDialog');
+    dojo.require('openils.widget.GridColumnPicker');
     dojo.require('openils.Util');
 
     dojo.declare(
@@ -19,6 +20,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             suppressFields : null,
             hideSelector : false,
             selectorWidth : '1.5',
+            showColumnPicker : false,
+            columnPickerPrefix : null,
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -31,8 +34,19 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.initAutoEnv();
                 this.attr('structure', this._compileStructure());
                 this.setStore(this.buildAutoStore());
+
+                if(this.showColumnPicker) {
+                    if(!this.columnPickerPrefix) {
+                        console.error("No columnPickerPrefix defined");
+                    } else {
+                        new openils.widget.GridColumnPicker(
+                            openils.User.authtoken, this.columnPickerPrefix, this).load();
+                    }
+                }
+
                 this.overrideEditWidgets = {};
                 this.overrideEditWidgetClass = {};
+
                 if(this.editOnEnter) 
                     this._applyEditOnEnter();
                 else if(this.singleEditStyle) 
@@ -77,7 +91,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         formatter : function(rowIdx) { return self._formatRowSelectInput(rowIdx); },
                         get : function(rowIdx, item) { if(item) return rowIdx; },
                         width : this.selectorWidth,
-                        name : '&#x2713'
+                        name : '&#x2713',
+                        nonSelectable : true
                     });
                 }
 
