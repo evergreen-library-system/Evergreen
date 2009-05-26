@@ -44,10 +44,10 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.availa
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_transit.start','ahtc','A hold-captured Item is placed into transit');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_transit.finish','ahtc','A hold-captured Item is received from a transit');
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('checkout.due','circ','Checked out Item is Due',TRUE);
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_FINES','au','Patron has exceeded allowed fines');
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_OVERDUE_COUNT','au','Patron has exceeded allowed overdue count');
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_CHECKOUT_COUNT','au','Patron has exceeded allowed checkout count');
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('penalty.PATRON_EXCEEDS_COLLECTIONS_WARNING','au','Patron has exceeded maximum fine amount for collections department warning');
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('penalty.PATRON_EXCEEDS_FINES','ausp','Patron has exceeded allowed fines',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('penalty.PATRON_EXCEEDS_OVERDUE_COUNT','ausp','Patron has exceeded allowed overdue count',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('penalty.PATRON_EXCEEDS_CHECKOUT_COUNT','ausp','Patron has exceeded allowed checkout count',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('penalty.PATRON_EXCEEDS_COLLECTIONS_WARNING','ausp','Patron has exceeded maximum fine amount for collections department warning',TRUE);
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.jedi','acqpo','Formats a Purchase Order as a JEDI document',TRUE);
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.html','acqpo','Formats a Purchase Order as an HTML document',TRUE);
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.pdf','acqpo','Formats a Purchase Order as a PDF document',TRUE);
