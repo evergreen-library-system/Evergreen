@@ -148,7 +148,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
                                 cell.width = 'auto';
                             } else {
                                 if(cell.width == 'auto')
-                                    cell.width;
+                                    delete cell.width;
                             }
                             newCellList.push(cell);
                         }
