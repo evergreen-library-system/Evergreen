@@ -196,6 +196,21 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 }
             },
 
+            getAllObjects : function() {
+                var objs = [];
+                var self = this;
+                this.store.fetch({
+                    onComplete : function(list) {
+                        dojo.forEach(list, 
+                            function(item) {
+                                objs.push(new fieldmapper[self.fmClass]().fromStoreItem(item));
+                            }
+                        )
+                    }
+                });
+                return objs;
+            },
+
             deleteSelected : function() {
                 var items = this.getSelectedItems();
                 var total = items.length;
@@ -367,6 +382,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.editPane = this._makeEditPane(storeItem, rowIndex, done, done);
                 this.editPane.startup();
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
+                if(this.onEditPane) this.onEditPane(this.editPane);
             },
 
             showClonePane : function() {
@@ -377,6 +393,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 dojo.style(this.domNode, 'display', 'none');
                 this.editPane = this._makeClonePane(this.getItem(row), row, done, done);
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
+                if(this.onEditPane) this.onEditPane(this.editPane);
             },
 
             showCreatePane : function() {
@@ -386,6 +403,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.editPane = this._makeCreatePane(done, done);
                 this.editPane.startup();
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
+                if(this.onEditPane) this.onEditPane(this.editPane);
             },
 
             hideDialog : function() {
