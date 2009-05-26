@@ -19,6 +19,7 @@ use DateTime::Format::ISO8601;
 use OpenILS::Application::AppUtils;
 
 use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::AppSession;
 use OpenILS::Utils::ModsParser;
 use OpenILS::Event;
 use OpenSRF::EX qw(:try);
@@ -881,6 +882,9 @@ sub mark_item {
         my $evt = handle_mark_damaged($e, $copy, $owning_lib, $args);
         return $evt if $evt;
 
+        my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+        $ses->request('open-ils.trigger.event.autocreate', 'damaged', $copy, $owning_lib);
+
 	} elsif ( $self->api_name =~ /bindery/ ) {
 		$perm = 'MARK_ITEM_BINDERY';
 		$stat = OILS_COPY_STATUS_BINDERY;
@@ -969,6 +973,10 @@ sub handle_mark_damaged {
 
         my $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($e, $circ->id);
         return $evt if $evt;
+
+        my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+        $ses->request('open-ils.trigger.event.autocreate', 'checkout.damaged', $circ, $circ->circ_lib);
+
         return undef;
 
     } else {
