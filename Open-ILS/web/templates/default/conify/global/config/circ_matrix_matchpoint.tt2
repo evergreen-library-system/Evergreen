@@ -1,15 +1,6 @@
 [% ctc.page_title = 'Circulation Policy Configuration' %]
 [% WRAPPER default/base.tt2 %]
-<script>
-    dojo.require('dijit.layout.ContentPane');
-    dojo.require('dijit.form.Button');
-    dojo.require('openils.widget.AutoGrid');
-    openils.Util.addOnLoad(
-        function(){
-            cmGrid.loadAll({order_by:{ccmm:'circ_modifier'}});
-        }
-    );
-</script>
+<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/circ_matrix_matchpoint.js'> </script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
     <div>Circulation Policy Configuration</div>
     <div><button dojoType='dijit.form.Button' onClick='cmGrid.showCreatePane()'>New</button></div>
@@ -28,5 +19,31 @@
             showColumnPicker='true'
             columnPickerPrefix='"conify.config.circ_matrix_matchpoint"'>
     </table>
-  </div>
+</div>
+
+<div class='hidden'>
+    <div id='circ-mod-editor' style='border:1px solid #aaa'>
+        <h3>Circ Mod Count Groups</h3>
+        <table class='oils-generic-table' name='circ-mod-group-table'>
+            <tbody><tr>
+                <td>Total items out</td>
+                <td><div name='circ-mod-count'></div></td>
+            </tr><tbody>
+            <tbody name='circ-mod-entry-tbody'>
+                <tr name='circ-mod-entry-row'>
+                    <td colspan='2' name='circ-mod'/>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td><div name='circ-mod-selector'></div></td>
+                    <td><a href='javascript:void(0);' name='add-circ-mod'>Add</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <a href='javascript:void(0);' name='add-circ-mod-group'>Create New Group</a>
+    </div>
+</div>
+
 [% END %]
+
