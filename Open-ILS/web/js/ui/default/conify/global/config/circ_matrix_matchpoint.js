@@ -50,6 +50,8 @@ function addCircModGroup(node, tableTmpl, group) {
     if(group) {
         entries = new openils.PermaCrud().search('ccmcmtm', {circ_mod_test : group.id()});
         table.setAttribute('group', group.id());
+        circModGroupCache[group.id()] = group;
+        circModEntryCache[group.id()] = entries;
     }
 
     function addMod(code, name) {
@@ -113,6 +115,26 @@ function applyCircModChanges() {
 
 
         } else {
+
+            var existing = circModEntryCache[group.id()];
+            dojo.forEach(mods, function(mod) {
+                
+                // new circ mod for this group
+                if(!existing.filter(function(i){ return (i.circ_mod() == mod)})[0]) {
+                    var entry = new fieldmapper.ccmcmtm();
+                    entry.isnew(true);
+                    entry.circ_mod(mod);
+                    entries.push(entry);
+                    entry.circ_mod_test(group.id());
+                }
+            });
+
+            dojo.forEach(existing, function(eMod) {
+                if(!mods.filter(function(i){ return (i == eMod.circ_mod()) })[0]) {
+                    eMod.isdeleted(true);
+                    entries.push(eMod);
+                }
+            });
         }
 
         group.items_out(count);
@@ -134,8 +156,39 @@ function applyCircModChanges() {
 
         } else {
 
+            pcrud.update(group, {
+                oncomplete : function(r) {
+                    openils.Util.readResponse(r);
+                    var newOnes = entries.filter(function(e) { return e.isnew() });
+                    var delOnes = entries.filter(function(e) { return e.isdeleted() });
+                    if(!delOnes.length && !newOnes.length) {
+                        progressDialog.hide();
+                        return;
+                    }
+                    if(newOnes.length) {
+                        pcrud.create(newOnes, {
+                            oncomplete : function() {
+                                if(delOnes.length) {
+                                    pcrud.delete(delOnes, {
+                                        oncomplete : function() {
+                                            progressDialog.hide();
+                                        }
+                                    });
+                                } else {
+                                    progressDialog.hide();
+                                }
+                            }
+                        });
+                    } else {
+                        pcrud.delete(delOnes, {
+                            oncomplete : function() {
+                                progressDialog.hide();
+                            }
+                        });
+                    }
+                }
+            });
         }
-
     }
 }
 
