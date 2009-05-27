@@ -25,7 +25,7 @@
                     <column/>
                 </columns>
                 <rows>
-                    <row>
+                    <row hidden='true'>
                         <label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
                         <label id="patron_date_of_birth" class="dob value" hide_value="true" persist="hide_value"/><!-- FIXME: persist doesn't work for this -->
                     </row>

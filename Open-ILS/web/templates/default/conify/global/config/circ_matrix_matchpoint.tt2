@@ -50,5 +50,7 @@
     </div>
 </div>
 
+<div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/></div>
+
 [% END %]
 

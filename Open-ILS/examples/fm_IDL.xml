@@ -921,7 +921,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="ccmcmt" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_circ_mod_test" oils_persist:tablename="config.circ_matrix_circ_mod_test" reporter:label="Circulation Matrix Circulation Modifier Subtest">
+	<class id="ccmcmt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_matrix_circ_mod_test" oils_persist:tablename="config.circ_matrix_circ_mod_test" reporter:label="Circulation Matrix Circulation Modifier Subtest">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_circ_mod_test_id_seq">
 			<field reporter:label="Test ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Matchpoint ID" name="matchpoint" reporter:datatype="link"/>
@@ -946,7 +946,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="ccmcmtm" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_circ_mod_test_map" oils_persist:tablename="config.circ_matrix_circ_mod_test_map" reporter:label="Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set">
+	<class id="ccmcmtm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_matrix_circ_mod_test_map" oils_persist:tablename="config.circ_matrix_circ_mod_test_map" reporter:label="Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_circ_mod_test_map_id_seq">
 			<field reporter:label="Entry ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Circulation Modifier Subtest ID" name="circ_mod_test" reporter:datatype="link"/>
