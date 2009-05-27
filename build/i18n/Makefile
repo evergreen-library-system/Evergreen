@@ -8,6 +8,7 @@ CHROME_PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
 SERVER_PROPSDIR=../../Open-ILS/xul/staff_client/server/locale
 DOJO_LOCALE := $(shell echo ${LOCALE} | tr '[:upper:]-' '[:lower:]/')
 DOJO_CON_SRC=../../Open-ILS/web/js/dojo/openils/conify/nls
+DOJO_OPAC_SRC=../../Open-ILS/web/js/dojo/openils/opac/nls
 DOJO_RPT_SRC=../../Open-ILS/web/js/dojo/openils/reports/nls
 FMIDLSRC=../../Open-ILS/examples/fm_IDL.xml
 FMIDLOUT=fm_IDL.pot
@@ -83,6 +84,7 @@ dtds2pot:
 
 dojo2pot:
 	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/conify.js --output $(POTSRC)/conify.js.pot
+	@scripts/dojo_resource.py --pot $(DOJO_OPAC_SRC)/opac.js --output $(POTSRC)/opac.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_RPT_SRC)/reports.js --output $(POTSRC)/reports.js.pot
 
 po2dojo:
@@ -156,5 +158,7 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(POOUTDIR)/$(FMIDLENT) $(REPORTDIR)/$(FMIDLENT)
 	mkdir -p $(DOJO_CON_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/conify.js $(DOJO_CON_SRC)/$(DOJO_LOCALE)/conify.js
+	mkdir -p $(DOJO_OPAC_SRC)/$(DOJO_LOCALE)
+	cp $(PROJECT)/$(LOCALE)/opac.js $(DOJO_OPAC_SRC)/$(DOJO_LOCALE)/opac.js
 	mkdir -p $(DOJO_RPT_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/reports.js $(DOJO_RPT_SRC)/$(DOJO_LOCALE)/reports.js

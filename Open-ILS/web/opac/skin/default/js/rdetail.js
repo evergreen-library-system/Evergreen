@@ -27,7 +27,13 @@ var rdetailShowLocal = true;
 var rdetailShowCopyLocation = true;
 var googleBookPreview = true;
 var displaySerialHoldings = true;
+var opac_strings;
 
+/* serials are currently the only use of Dojo strings in the OPAC */
+if (displaySerialHoldings) {
+	dojo.requireLocalization("openils.opac", "opac");
+	opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
+}
 
 var nextContainerIndex;
 
@@ -192,7 +198,7 @@ function OpenMarcEditWindow(pcrud, rec) {
 	win.xulG = {
 		record : {marc : rec.marc()},
 		save : {
-			label: 'Save MFHD',
+			label: opac_strings.SAVE_MFHD_LABEL,
 			func: function(xmlString) {
 				rec.marc(xmlString);
 				rec.ischanged(true);
@@ -242,21 +248,27 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		return null;
 	}
 
-	dojo.place("<table><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>Holdings summary</caption><tbody id='rdetail_holdings_tbody_" + entryNum + "'></tbody></table>", "rdetail_details_table", "after");
-	if (hh.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Holdings', hh); }
-	if (hch.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Current holdings', hch); }
-	if (hs.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Supplements', hs); }
-	if (hcs.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Current supplements', hcs); }
-	if (hi.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Indexes', hi); }
-	if (hci.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Current indexes', hci); }
-	if (ho.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Online', ho); }
-	if (hm.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Missing volumes', hm); }
-	if (hinc.length > 0) { _holdingsDrawMFHDEntry(entryNum, 'Incomplete volumes', hm); }
+	dojo.place("<table><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>" +
+		opac_strings.HOLDINGS_TABLE_CAPTION + "</caption><tbody id='rdetail_holdings_tbody_" +
+		entryNum + "'></tbody></table>", "rdetail_details_table", "after"
+	);
+	if (hh.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.HOLDINGS, hh); }
+	if (hch.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.CURRENT_HOLDINGS, hch); }
+	if (hs.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.SUPPLEMENTS, hs); }
+	if (hcs.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.CURRENT_SUPPLEMENTS, hcs); }
+	if (hi.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INDEXES, hi); }
+	if (hci.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.CURRENT_INDEXES, hci); }
+	if (ho.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.ONLINE_VOLUMES, ho); }
+	if (hm.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.MISSING_VOLUMES, hm); }
+	if (hinc.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INCOMPLETE_VOLUMES, hm); }
 
 	if (isXUL()) {
 		dojo.require('openils.Event');
 		dojo.require('openils.PermaCrud');
-		dojo.place("<span> - </span><a class='classic_link' href='javascript:loadMarcEditor(" + holdings.id() + ")'> Edit</a>", "mfhdHoldingsCaption", "last");
+		dojo.place("<span> - </span><a class='classic_link' href='javascript:loadMarcEditor(" +
+			holdings.id() + ")'>" + opac_strings.EDIT_LABEL + "</a>", 
+			"mfhdHoldingsCaption", "last"
+		);
 	}
 }
 
