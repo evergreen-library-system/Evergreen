@@ -181,31 +181,35 @@ function rdetailShowAllCopies() {
 }
 
 function OpenMarcEditWindow(pcrud, rec) {
-    /*
-        To run in Firefox directly, must set signed.applets.codebase_principal_support
-        to true in about:config
-    */
-    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-    win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
-    dojo.require('openils.PermaCrud');
+	/*
+	   To run in Firefox directly, must set signed.applets.codebase_principal_support
+	   to true in about:config
+	 */
+	netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+	win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+	dojo.require('openils.PermaCrud');
 
-    win.xulG = {
-        record : {marc : rec.marc()},
-        save : {
-            label: 'Save',
-            func: function(xmlString) {
-                rec.marc(xmlString);
-		rec.ischanged(true);
-		pcrud.update(rec);
-            },
-        }
-    };
+	win.xulG = {
+		record : {marc : rec.marc()},
+		save : {
+			label: 'Save MFHD',
+			func: function(xmlString) {
+				rec.marc(xmlString);
+				rec.ischanged(true);
+				pcrud.update(rec);
+			},
+		}
+	};
+	return null;
 }
 
 function loadMarcEditor(recId) {
 	var pcrud = new openils.PermaCrud({"authtoken": G.user.session});
-	var recs = pcrud.search("sre", {"id": recId, "deleted": false});
-	OpenMarcEditWindow(pcrud, recs[0]);
+	var rec = pcrud.retrieve("sre", recId);
+	if (rec) {
+		OpenMarcEditWindow(pcrud, rec);
+	}
+	return null;
 }
 
 /*
@@ -217,6 +221,7 @@ function _holdingsDraw(h) {
 	if (!holdings) { return null; }
 
 	dojo.forEach(holdings, _holdingsDrawMFHD);
+	return null;
 }
 
 function _holdingsDrawMFHD(holdings, entryNum) {
@@ -256,11 +261,13 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		dojo.require('openils.PermaCrud');
 		dojo.place("<span> - </span><a class='classic_link' href='javascript:loadMarcEditor(" + holdings.id() + ")'> Edit</a>", "mfhdHoldingsCaption", "last");
 	}
+	return null;
 }
 
 function _holdingsDrawMFHDEntry(entryNum, entryName, entry) {
 	var flatEntry = entry.toString().replace(/,/g, ', ');
 	dojo.place("<tr><td> </td><td nowrap='nowrap' class='rdetail_desc'>" + entryName + "</td><td class='rdetail_item'>" + flatEntry + "</td></tr>", "rdetail_holdings_tbody_" + entryNum, "last");
+	return null;
 }
 
 function _rdetailDraw(r) {
