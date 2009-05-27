@@ -1215,7 +1215,11 @@ INSERT INTO permission.perm_list VALUES
     (195, 'VIEW_PURCHASE_ORDER', oils_i18n_gettext(195, 'Allows a user to view a purchase order', 'ppl', 'description')),
     (196, 'IMPORT_ACQ_LINEITEM_BIB_RECORD', oils_i18n_gettext(196, 'Allows a user to import a bib record from the acq staging area (on-order record) into the ILS bib data set', 'ppl', 'description')),
     (197, 'RECEIVE_PURCHASE_ORDER', oils_i18n_gettext(197, 'Allows a user to mark a purchase order, lineitem, or individual copy as received', 'ppl', 'description')),
-    (198, 'VIEW_ORG_SETTINGS', oils_i18n_gettext(198, 'Allows a user to view all org settings at the specified level', 'ppl', 'description'));
+    (198, 'VIEW_ORG_SETTINGS', oils_i18n_gettext(198, 'Allows a user to view all org settings at the specified level', 'ppl', 'description')),
+    (199, 'CREATE_MFHD_RECORD', oils_i18n_gettext(199, 'Allows a user to create a new MFHD record', 'ppl', 'description')),
+    (200, 'UPDATE_MFHD_RECORD', oils_i18n_gettext(200, 'Allows a user to update an MFHD record', 'ppl', 'description')),
+    (201, 'DELETE_MFHD_RECORD', oils_i18n_gettext(201, 'Allows a user to delete an MFHD record', 'ppl', 'description'))
+;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 
@@ -1506,6 +1510,9 @@ INSERT INTO permission.grp_perm_map VALUES (94, 5, 53, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (133, 5, 102, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (138, 5, 104, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (143, 3, 198, 1, false);
+INSERT INTO permission.grp_perm_map VALUES (144, 4, 199, 1, false);
+INSERT INTO permission.grp_perm_map VALUES (145, 4, 200, 1, false);
+INSERT INTO permission.grp_perm_map VALUES (146, 4, 201, 1, false);
 
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
 
