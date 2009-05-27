@@ -930,6 +930,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="matchpoint" reltype="has_a" key="id" map="" class="ccmm"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="matchpoint" field="org_unit"/>
+                </create>
+                <retrieve/>
+                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="matchpoint" field="org_unit"/>
+                </update>
+                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT">
+                    <context link="matchpoint" field="org_unit"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="ccmcmtm" controller="open-ils.cstore" oils_obj:fieldmapper="config::circ_matrix_circ_mod_test_map" oils_persist:tablename="config.circ_matrix_circ_mod_test_map" reporter:label="Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set">
