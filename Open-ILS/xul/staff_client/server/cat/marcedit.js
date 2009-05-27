@@ -1209,7 +1209,7 @@ function marcLeader (leader) {
 function marcControlfield (field) {
 	tagname = field.@tag.toString().substr(2);
 	var row;
-	if (tagname == '6' || tagname == '7' || tagname == '8') {
+	if (tagname == '1' || tagname == '3' || tagname == '6' || tagname == '7' || tagname == '8') {
 		row = createRow(
 			{ class : 'marcControlfieldRow',
 			  tag : '_' + tagname },
