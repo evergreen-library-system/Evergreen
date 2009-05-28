@@ -237,7 +237,11 @@ function next_patron(cancel) {
 						g.error.sdump('D_ERROR','print: ' + E);
 						alert('print: ' + E);
 					}
-				}
+				} else {
+                    g.list.clear();
+                    var x = $('i_barcode'); x.value = '';
+                    x = $('p_barcode'); x.value = ''; x.focus();
+                }
 		}
 	} catch(E) {
 		dump(E+'\n'); alert(E);
