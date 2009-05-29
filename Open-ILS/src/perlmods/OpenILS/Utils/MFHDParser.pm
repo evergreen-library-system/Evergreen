@@ -54,6 +54,7 @@ Returns a Perl hash containing fields of interest from the MFHD record
 sub mfhd_to_hash {
 	my ($self, $mfhd_xml) = @_;
 
+	my $location;
 	my $holdings = [];
 	my $supplements = [];
 	my $indexes = [];
@@ -66,6 +67,12 @@ sub mfhd_to_hash {
 
 	my $marc = MARC::Record->new_from_xml($mfhd_xml);
 	my $mfhd = MFHD->new($marc);
+
+	foreach my $subfield_ref ($marc->field('852')->subfields) {
+		my ($subfield, $data) = @$subfield_ref;
+		$location .= $data . " -- ";
+	}
+	$location =~ s/ -- $//;
 
 	foreach my $field ($marc->field('866')) {
 		my $textual_holdings = $self->format_textual_holdings($field);
@@ -132,7 +139,7 @@ sub mfhd_to_hash {
 		}
 	}
 
-	return { holdings => $holdings, current_holdings => $current_holdings,
+	return { location => $location, holdings => $holdings, current_holdings => $current_holdings,
 			supplements => $supplements, current_supplements => $current_supplements,
 			indexes => $indexes, current_indexes => $current_indexes,
 			missing => $missing, incomplete => $incomplete, };
@@ -150,6 +157,7 @@ Initialize the serial virtual record (svr) instance
 sub init_holdings_virtual_record {
 	my $record = Fieldmapper::serial::virtual_record->new;
 	$record->id();
+	$record->location();
 	$record->owning_lib();
 	$record->holdings([]);
 	$record->current_holdings([]);
@@ -184,6 +192,7 @@ sub generate_svr {
 
 	$record->id($id);
 	$record->owning_lib($owning_lib);
+	$record->location($holdings->{location});
 	$record->holdings($holdings->{holdings});
 	$record->current_holdings($holdings->{current_holdings});
 	$record->supplements($holdings->{supplements});

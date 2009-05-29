@@ -249,8 +249,9 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 	}
 
 	dojo.place("<table><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>" +
-		opac_strings.HOLDINGS_TABLE_CAPTION + "</caption><tbody id='rdetail_holdings_tbody_" +
-		entryNum + "'></tbody></table>", "rdetail_details_table", "after"
+		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [holdings.location()]) +
+		"</caption><tbody id='rdetail_holdings_tbody_" + entryNum +
+		"'></tbody></table>", "rdetail_details_table", "after"
 	);
 	if (hh.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.HOLDINGS, hh); }
 	if (hch.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.CURRENT_HOLDINGS, hch); }

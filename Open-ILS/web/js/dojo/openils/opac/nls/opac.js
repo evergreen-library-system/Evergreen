@@ -5,7 +5,7 @@
 	"CURRENT_HOLDINGS": "Current holdings",
 	"CURRENT_INDEXES": "Current indexes",
 	"CURRENT_SUPPLEMENTS": "Current supplements",
-	"HOLDINGS_TABLE_CAPTION": "Holdings summary",
+	"HOLDINGS_TABLE_CAPTION": "Holdings summary (${0})",
 	"INCOMPLETE_VOLUMES": "Incomplete volumes",
 	"MISSING_VOLUMES": "Missing volumes",
 	"ONLINE_VOLUMES": "Online volumes",
