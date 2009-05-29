@@ -104,7 +104,7 @@ sub reset_group {
 	my $user = $e->retrieve_actor_user($userid) or return $e->die_event;
 
 	# ask for a new group id
-	my $groupid = $e->request('open-ils.storage.actor.user.group_id.new');
+	my $groupid = $U->storagereq('open-ils.storage.actor.user.group_id.new');
 
 	$user->usrgroup($groupid);
 	$user->master_account('t') if $leader;
