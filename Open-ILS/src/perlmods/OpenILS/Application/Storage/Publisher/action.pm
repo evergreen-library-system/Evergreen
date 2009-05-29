@@ -875,6 +875,8 @@ sub new_hold_copy_targeter {
 			$hold->remove_from_object_index();
 			$hold = action::hold_request->retrieve( $hold->id );
 
+			die "OK\n" if (!$hold or $hold->capture_time or $hold->cancel_time);
+
 			# remove old auto-targeting maps
 			my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
 			$_->delete for (@oldmaps);
@@ -883,9 +885,8 @@ sub new_hold_copy_targeter {
 				my $ex_time = $parser->parse_datetime( clense_ISO8601( $hold->expire_time ) );
 				$hold->update( { cancel_time => 'now' } ) if ( DateTime->compare($ex_time, DateTime->now) < 0 );
 				$self->method_lookup('open-ils.storage.transaction.commit')->run;
+				die "OK\n";
 			}
-
-			die "OK\n" if (!$hold or $hold->capture_time or $hold->cancel_time);
 
 			my $all_copies = [];
 
