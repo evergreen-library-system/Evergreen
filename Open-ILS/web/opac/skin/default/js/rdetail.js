@@ -340,7 +340,7 @@ function _rdetailDraw(r) {
 				}
 			}
 			$('rdetail_online').appendChild(elem('a', {href:href,'class':'classic_link'}, displayLabel));
-			if (!note && note != displayLabel) {
+			if (note && note != displayLabel) {
 				$('rdetail_online').appendChild(elem('span', {'class':'url_note'}, ' - ' + note));
 			}
 			$('rdetail_online').appendChild(elem('br'));
