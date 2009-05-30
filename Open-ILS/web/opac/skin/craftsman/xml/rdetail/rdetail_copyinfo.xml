@@ -18,6 +18,7 @@
 			<tr>
 				<td style='border: 1px solid #ddd;'>&rdetail.copyInfo.library;</td>
 				<td style='border: 1px solid #ddd;'>&rdetail.copyInfo.callnumber;</td>
+                <td  name='rdetail_copylocation_header' class='rdetail_copy_info_header_cell hide_me'>&rdetail.copyInfo.copylocation;</td>
 				<td style='border: 1px solid #ddd;'>&rdetail.copyInfo.actions;</td>
 				<td style='border: 1px solid #ddd;' nowrap='nowrap' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> 
 					<div name='rdetail_status_cell'> </div>&nbsp;
@@ -30,6 +31,7 @@
 					<a name='lib_print_link' class='hide_me'>&rdetail.copyInfo.print;</a>
 				</td>
 				<td name='rdetail_callnumber_cell' style='border: 1px solid #ddd;'> </td>
+                <td class="hide_me" name='rdetail_copylocation_cell'> </td>
 				<td name='rdetail_actions_cell' style='border: 1px solid #ddd;'> 
 					<div style='padding: 0 0 2px 0;'><a name='details'>&rdetail.copyInfo.details;</a></div>
 					<div><a name='browse'>&rdetail.copyInfo.browse;</a></div>
