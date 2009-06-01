@@ -254,7 +254,7 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		return null;
 	}
 
-	dojo.place("<table><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>" +
+	dojo.place("<table style='width: 100%;'><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>" +
 		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [holdings.location()]) +
 		"</caption><tbody id='rdetail_holdings_tbody_" + entryNum +
 		"'></tbody></table>", "rdetail_details_table", "after"
@@ -267,7 +267,7 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 	if (hci.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.CURRENT_INDEXES, hci); }
 	if (ho.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.ONLINE_VOLUMES, ho); }
 	if (hm.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.MISSING_VOLUMES, hm); }
-	if (hinc.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INCOMPLETE_VOLUMES, hm); }
+	if (hinc.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INCOMPLETE_VOLUMES, hinc); }
 
 	if (isXUL()) {
 		dojo.require('openils.Event');
