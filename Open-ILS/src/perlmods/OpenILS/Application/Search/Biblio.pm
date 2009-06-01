@@ -852,6 +852,8 @@ sub staged_search {
 
     $method .= '.staff' if $self->api_name =~ /staff$/;
     $method .= '.atomic';
+                
+    return {count => 0} unless ($search_hash and $search_hash->{searches});
 
     my $search_duration;
     my $user_offset = $search_hash->{offset} || 0; # user-specified offset
