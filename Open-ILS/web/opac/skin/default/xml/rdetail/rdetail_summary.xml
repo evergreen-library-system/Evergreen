@@ -155,7 +155,7 @@
             var here = findOrgUnit(getLocation());
             if (getDepth() > 0 || getDepth === 0 ) {
                 while (getDepth() < findOrgDepth(here))
-                    here = findOrgUnit( here.parent_ou );
+                    here = findOrgUnit( here.parent_ou() );
             }
 
             dojo.require('openils.BibTemplate');
