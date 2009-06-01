@@ -228,9 +228,15 @@ function _holdingsDraw(h) {
 }
 
 function _holdingsDrawMFHD(holdings, entryNum) {
-	if (!orgIsMine(findOrgUnit(holdings.owning_lib()), findOrgUnit(getLocation()))) {
-		return null;
-	}
+        var here = findOrgUnit(getLocation());
+        if (getDepth() > 0 || getDepth === 0 ) {
+                while (getDepth() < findOrgDepth(here))
+                here = findOrgUnit( here.parent_ou() );
+		if (!orgIsMine(findOrgUnit(here), findOrgUnit(holdings.owning_lib()))) {
+			return null;
+		}
+        }
+
 	var hh = holdings.holdings();
 	var hch = holdings.current_holdings();
 	var hs = holdings.supplements();
