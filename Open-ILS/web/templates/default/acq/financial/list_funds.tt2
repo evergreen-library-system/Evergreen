@@ -54,7 +54,7 @@
             editOnEnter='true'>
         <thead>
             <tr>
-                <th field='combined_balance' get='getBalanceInfo'></th>
+                <th field='combined_balance' name="Combined Balance"  get='getBalanceInfo'></th>
             </tr>
         </thead>
     </table>

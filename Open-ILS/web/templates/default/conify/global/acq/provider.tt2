@@ -43,9 +43,6 @@ function formatName(value) {
     }
 }
 
-
-
-
 </script>
 
 
@@ -90,7 +87,7 @@ function formatName(value) {
 </div>
 
 <div id='provider-summary-pane'></div>     
-<div id='provider-details-div'>
+<div id='provider-details-div' style='height:600px'>
 <div dojoType="dijit.layout.TabContainer" style='height:100%' jsId='providerTabs'>
 
     <div dojoType="dijit.layout.ContentPane" title='Provider Address' select='true' id='provider-address'>
@@ -171,9 +168,9 @@ function formatName(value) {
                 <thead>
                     <tr>
                         <th field="xpath" width='auto'/>
-                        <th field="tag" get='getParsedTag'/>
-                        <th field="subfield" get='getParsedSubf'/>
-                    </tr>
+                        <th field="tag" name="Tag" get='getParsedTag'/>
+                        <th field="subfield" name="Subfield" get='getParsedSubf'/>
+                    <tr>
                 </thead>
             </table>
         </div>
@@ -187,14 +184,13 @@ function formatName(value) {
             <button dojoType='dijit.form.Button' onClick='phsListGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:400px'>
             <table  jsId="phsListGrid"
                     dojoType="openils.widget.AutoGrid"
                     fieldOrder="['id', 'provider', 'name', 'subfield']"
                     query="{id: '*'}"
                     fmClass='acqphsm'
                     editOnEnter='true'>
-
             </table>
         </div>
     </div>
