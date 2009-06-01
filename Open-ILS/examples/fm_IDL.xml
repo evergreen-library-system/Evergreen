@@ -3825,17 +3825,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="acqpa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::provider_address" oils_persist:tablename="acq.provider_address" reporter:label="Provider Address">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_address_id_seq">
-			<field name="address_type"  reporter:datatype="text"/>
-			<field name="city"  reporter:datatype="text"/>
-			<field name="country"  reporter:datatype="text"/>
-			<field name="county"  reporter:datatype="text"/>
+			<field reporter:label="Address Type" name="address_type"  reporter:datatype="text"/>
+			<field reporter:label="City" name="city"  reporter:datatype="text"/>
+			<field reporter:label="Country" name="country"  reporter:datatype="text"/>
+			<field reporter:label="County" name="county"  reporter:datatype="text"/>
 			<field name="id" reporter:datatype="id"/>
-			<field name="provider" reporter:datatype="link"/>
-			<field name="post_code"  reporter:datatype="text"/>
-			<field name="state"  reporter:datatype="text"/>
-			<field name="street1"  reporter:datatype="text"/>
-			<field name="street2"  reporter:datatype="text"/>
-			<field name="valid" reporter:datatype="bool"/>
+			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
+			<field reporter:label="Post Code" name="post_code"  reporter:datatype="text"/>
+			<field reporter:label="State" name="state"  reporter:datatype="text"/>
+			<field reporter:label="Street 1" name="street1"  reporter:datatype="text"/>
+			<field reporter:label="Street 2" name="street2"  reporter:datatype="text"/>
+			<field reporter:label="Is Valid?" name="valid" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
@@ -3861,11 +3861,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="acqpc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::provider_contact" oils_persist:tablename="acq.provider_contact" reporter:label="Provider Contact">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_contact_id_seq">
 			<field name="id" reporter:datatype="id"/>
-			<field name="provider" reporter:datatype="link"/>
-			<field name="name" reporter:datatype="text"/>
-			<field name="role" reporter:datatype="text"/>
-			<field name="email" reporter:datatype="text"/>
-			<field name="phone" reporter:datatype="text"/>
+			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Role" name="role" reporter:datatype="text"/>
+			<field reporter:label="Email" name="email" reporter:datatype="text"/>
+			<field reporter:label="Phone" name="phone" reporter:datatype="text"/>
         </fields>
 		<links>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
