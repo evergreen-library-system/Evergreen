@@ -2426,6 +2426,7 @@ sub run_renew_permit {
         my $result = $runner->run or 
             throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
         $events = $result->{events};
+        $self->mk_script_runner;
     }
 
     $logger->activity("ciculator: circ_permit_renew for user ".
@@ -2434,7 +2435,6 @@ sub run_renew_permit {
     $self->push_events(OpenILS::Event->new($_)) for @$events;
 
     $logger->debug("circulator: re-creating script runner to be safe");
-    #$self->mk_script_runner;
 }
 
 
