@@ -38,6 +38,8 @@
 			oncommand="alert(
 				$('catStrings').getString('staff.cat.marcedit.help.add_row') + '\n' +
 				$('catStrings').getString('staff.cat.marcedit.help.insert_row') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.copy_row_up') + '\n' +
+				$('catStrings').getString('staff.cat.marcedit.help.copy_row_down') + '\n' +
 				$('catStrings').getString('staff.cat.marcedit.help.add_subfield') + '\n' +
 				$('catStrings').getString('staff.cat.marcedit.help.remove_row') + '\n' +
 				$('catStrings').getString('staff.cat.marcedit.help.remove_subfield') + '\n' +
