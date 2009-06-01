@@ -1328,7 +1328,7 @@ circ.util.hold_columns = function(modify,params) {
 				if (my.ahr.transit() && my.ahr.transit().dest_recv_time()) {
 					return my.ahr.transit().dest_recv_time().toString();
 				}
-				if (my.ahr.capture_time()) {
+				if (!my.ahr.transit() && my.ahr.capture_time()) {
 					return my.ahr.capture_time().toString();
 				}
 				return "";
