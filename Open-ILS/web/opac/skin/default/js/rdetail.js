@@ -196,14 +196,14 @@ function OpenMarcEditWindow(pcrud, rec) {
 	dojo.require('openils.PermaCrud');
 
 	win.xulG = {
-		record : {marc : rec.marc()},
-		save : {
-			label: opac_strings.SAVE_MFHD_LABEL,
-			func: function(xmlString) {
+		"record": {"marc": rec.marc()},
+		"save": {
+			"label": opac_strings.SAVE_MFHD_LABEL,
+			"func": function(xmlString) {
 				rec.marc(xmlString);
 				rec.ischanged(true);
 				pcrud.update(rec);
-			},
+			}
 		}
 	};
 }
