@@ -54,7 +54,7 @@ Returns a Perl hash containing fields of interest from the MFHD record
 sub mfhd_to_hash {
 	my ($self, $mfhd_xml) = @_;
 
-	my $location;
+	my $location = '';
 	my $holdings = [];
 	my $supplements = [];
 	my $indexes = [];
@@ -68,9 +68,11 @@ sub mfhd_to_hash {
 	my $marc = MARC::Record->new_from_xml($mfhd_xml);
 	my $mfhd = MFHD->new($marc);
 
-	foreach my $subfield_ref ($marc->field('852')->subfields) {
-		my ($subfield, $data) = @$subfield_ref;
-		$location .= $data . " -- ";
+	foreach my $field ($marc->field('852')) {
+		foreach my $subfield_ref ($field->subfields) {
+			my ($subfield, $data) = @$subfield_ref;
+			$location .= $data . " -- ";
+		}
 	}
 	$location =~ s/ -- $//;
 
