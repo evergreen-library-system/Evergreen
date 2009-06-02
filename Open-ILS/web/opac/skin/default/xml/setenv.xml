@@ -30,14 +30,29 @@
 
 <!--#endif-->
 
+<!--#if expr="$HTTPS"-->
+	<!--#set var="OILS_PROTOCOL" value="https"-->
+	<!--#if expr="$OILS_OPAC_BYPASS_STATIC_FOR_HTTPS=='yes'"-->
+		<!--#set var="OILS_OPAC_CSS_HOST" value=""-->
+		<!--#set var="OILS_OPAC_JS_HOST" value=""-->
+	<!--#endif-->
+<!--#else-->
+	<!--#set var="OILS_PROTOCOL" value="http"-->
+<!--#endif-->
 
-<!--#set var="OILS_BASE" value="http://${SERVER_NAME}/${OILS_OPAC_BASE}"-->
+<!--#if expr="$OILS_OPAC_STATIC_PROTOCOL"-->
+
+<!--#else-->
+	<!--#set var="OILS_OPAC_STATIC_PROTOCOL" value="$OILS_PROTOCOL"-->
+<!--#endif-->
+
+<!--#set var="OILS_BASE" value="${OILS_PROTOCOL}://${SERVER_NAME}/${OILS_OPAC_BASE}"-->
 <!--#set var="OILS_XML_BASE" value="${OILS_BASE}/common/xml"--> 
 
 
 <!-- Javascript host -->
 <!--#if expr="$OILS_OPAC_JS_HOST"-->
-    <!--#set var="OILS_OPAC_JS_HOST" value="http://${OILS_OPAC_JS_HOST}"-->
+    <!--#set var="OILS_OPAC_JS_HOST" value="${OILS_OPAC_STATIC_PROTOCOL}://${OILS_OPAC_JS_HOST}"-->
 <!--#else -->
     <!--#set var="OILS_OPAC_JS_HOST" value="$OILS_BASE"-->
 <!--#endif -->
@@ -45,7 +60,7 @@
 
 
 <!--#if expr="$OILS_OPAC_CSS_HOST"-->
-    <!--#set var="OILS_OPAC_CSS_HOST" value="http://${OILS_OPAC_CSS_HOST}"-->
+    <!--#set var="OILS_OPAC_CSS_HOST" value="${OILS_OPAC_STATIC_PROTOCOL}://${OILS_OPAC_CSS_HOST}"-->
 <!--#else -->
     <!--#set var="OILS_OPAC_CSS_HOST" value="$OILS_BASE"-->
 <!--#endif -->

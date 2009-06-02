@@ -30,6 +30,10 @@
 		<!--#if expr="$OILS_OPAC_IMAGES_HOST"-->
 			OILS_OPAC_IMAGES_HOST = '<!--#echo var="OILS_OPAC_IMAGES_HOST"-->extras/ac/jacket/';
 		<!--#endif -->
+		var OILS_OPAC_STATIC_PROTOCOL = null;
+		<!--#if expr="$OILS_OPAC_STATIC_PROTOCOL"-->
+			OILS_OPAC_STATIC_PROTOCOL = '<!--#echo var="OILS_OPAC_STATIC_PROTOCOL"-->';
+		<!--#endif -->
 
 		<!-- builds the "Now searching: <org_unit>" text on the home page -->
 		function home_init() {
