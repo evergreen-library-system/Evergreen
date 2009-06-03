@@ -67,8 +67,8 @@ while getopts  "c:u h" flag; do
 		"u")		PROXIMITY="REFRESH";;
 		"h")		usage && exit;;
 	esac;
-	shift $((OPTIND - 1))
 done
+shift $((OPTIND - 1))
 
 if [ -z "$CONFIG" ] && [[ ! -z "${1:-}" ]]; then
 	# Support "autogen.sh /path/to/opensrf_core.xml" for legacy invocation
