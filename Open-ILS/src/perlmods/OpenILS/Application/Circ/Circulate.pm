@@ -1999,9 +1999,10 @@ sub do_hold_notify {
 }
 
 sub retarget_holds {
-    $logger->info("circulator: retargeting prev_check_time=null holds after opportunistic capture");
+    my $self = shift;
+    $logger->info("circulator: retargeting holds @{$self->retarget} after opportunistic capture");
     my $ses = OpenSRF::AppSession->create('open-ils.storage');
-    $ses->request('open-ils.storage.action.hold_request.copy_targeter');
+    $ses->request('open-ils.storage.action.hold_request.copy_targeter', undef, $self->retarget);
     # no reason to wait for the return value
     return;
 }
