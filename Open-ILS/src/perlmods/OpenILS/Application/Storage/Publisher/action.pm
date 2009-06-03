@@ -892,9 +892,11 @@ sub new_hold_copy_targeter {
 
 			if ($hold->expire_time) {
 				my $ex_time = $parser->parse_datetime( clense_ISO8601( $hold->expire_time ) );
-				$hold->update( { cancel_cause => 1, cancel_time => 'now' } ) if ( DateTime->compare($ex_time, DateTime->now) < 0 );
-				$self->method_lookup('open-ils.storage.transaction.commit')->run;
-				die "OK\n";
+                if ( DateTime->compare($ex_time, DateTime->now) < 0 ) {
+                  $hold->update( { cancel_time => 'now' } );
+                  $self->method_lookup('open-ils.storage.transaction.commit')->run;
+                  die "OK\n";
+                }
 			}
 
 			my $all_copies = [];
