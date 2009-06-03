@@ -197,7 +197,7 @@ sub session {
 		$self->xact_begin if $self->{xact} or $always_xact;
 	}
 
-    $xact_ed_cache{$self->{xact_id}} = $self if $always_xact;
+    $xact_ed_cache{$self->{xact_id}} = $self if $always_xact and $self->{xact_id};
 	return $self->{session};
 }
 
