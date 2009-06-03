@@ -1525,7 +1525,7 @@ sub find_nearest_permitted_hold {
 		or return (undef, $editor->event);
 
 
-    my $retarget = 0;
+    my @retarget;
 
 	# re-target any other holds that already target this copy
 	for my $old_hold (@$old_holds) {
@@ -1536,10 +1536,10 @@ sub find_nearest_permitted_hold {
         $old_hold->clear_prev_check_time;
         $editor->update_action_hold_request($old_hold) 
             or return (undef, $editor->event);
-        $retarget = 1;
+        push(@retarget, $old_hold->id);
 	}
 
-	return ($best_hold, undef, $retarget);
+	return ($best_hold, undef, (@retarget) ? \@retarget : undef);
 }
 
 
