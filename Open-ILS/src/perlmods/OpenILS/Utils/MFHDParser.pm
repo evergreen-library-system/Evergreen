@@ -8,7 +8,7 @@ use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/$logger/;
 
 use OpenILS::Utils::MFHD;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'utf8');
 use Data::Dumper;
 
 sub new { return bless( {}, shift() ); }
