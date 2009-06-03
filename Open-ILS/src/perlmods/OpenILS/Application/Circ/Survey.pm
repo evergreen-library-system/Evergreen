@@ -37,8 +37,6 @@ sub add_survey {
 	my $session = $apputils->start_db_session();
 	my $err = undef; my $id;
 
-	warn "Creating new survey\n" . Dumper($survey) . "\n";
-
 
 	try {
 
@@ -72,7 +70,6 @@ sub _add_survey {
 			("Unable to create new survey " . $survey->name()); 
 	}
 
-	warn "Created new survey with id $id\n";
 	$survey->id($id);
 	return $survey;
 }
@@ -93,9 +90,6 @@ sub _add_questions {
 			$question->clear_id();
 
 	
-			warn "Creating new question: " . $question->question() . "\n";
-			warn Dumper $question;
-	
 			my $req = $session->request(
 				'open-ils.storage.direct.action.survey_question.create',
 				$question );
@@ -105,8 +99,6 @@ sub _add_questions {
 				throw OpenSRF::EX::ERROR
 					("Error creating new survey question " . $question->question() . "\n")
 			}
-	
-			warn "added new question with id $new_id\n";
 	
 			# now update the responses to this question
 			if($question->answers()) {
@@ -122,7 +114,6 @@ sub _add_questions {
 
 sub _add_answer {
 	my($session, $answer) = @_;
-	warn "Adding answer " . $answer->answer() . "\n";
 	$answer->clear_id();
 	my $req = $session->request(
 		"open-ils.storage.direct.action.survey_answer.create",
@@ -133,7 +124,6 @@ sub _add_answer {
 			("Error creating survey answer " . $answer->answer() );
 	}
 
-	warn "Added new answer with id $id\n";
 }
 
 
@@ -146,7 +136,6 @@ __PACKAGE__->register_method(
 sub get_required_surveys {
 	my( $self, $client, $user_session ) = @_;
 	
-	warn "Retrieving required surveys\n";
 
 	my $user_obj = $apputils->check_user_session($user_session); 
 	my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
@@ -154,10 +143,6 @@ sub get_required_surveys {
 		"open-ils.storage",
 		"open-ils.storage.action.survey.required.atomic",
 		$orgid );
-
-	if($surveys) {
-		warn "Retrieved " . scalar(@$surveys)." required surveys\n";
-	}
 
 	my @fleshed;
 	for my $survey (@$surveys) {
@@ -174,7 +159,6 @@ __PACKAGE__->register_method(
 sub get_survey_responses {
 	my( $self, $client, $user_session, $survey_id, $user_id ) = @_;
 	
-	warn "retrieing responses $user_session $survey_id $user_id\n";
 	if(!$user_id) {
 		my $user_obj = $apputils->check_user_session($user_session); 
 		$user_id = $user_obj->id;
@@ -184,8 +168,6 @@ sub get_survey_responses {
 		"open-ils.cstore",
 		"open-ils.cstore.direct.action.survey_response.search.atomic",
 		{ usr => $user_id, survey => $survey_id } );
-
-	warn "Surveys: " .  Dumper($res);
 
 	if( $res && ref($res) and $res->[0]) {
 		return [ sort { $a->id() <=> $b->id() } @$res ];
@@ -227,8 +209,6 @@ sub get_fleshed_survey {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
-	warn "Searching for survey $survey_id\n";
-
 	my $survey;
 	if( ref($survey_id) and 
 			(ref($survey_id) =~ /^Fieldmapper/)) {
@@ -246,7 +226,6 @@ sub get_fleshed_survey {
 	$survey->questions([]);
 	
 
-	warn "Grabbing survey questions\n";
 	my $qreq = $session->request(
 		"open-ils.storage.direct.action.survey_question.search.survey.atomic", 
 		$survey->id() );
@@ -261,7 +240,6 @@ sub get_fleshed_survey {
 			# add this question to the survey
 			push( @{$survey->questions()}, $question );
 	
-			warn "Grabbing question answers\n";
 
 			my $ans_req = $session->request(
 				"open-ils.storage.direct.action.survey_answer.search.question.atomic",
@@ -301,8 +279,6 @@ sub submit_survey {
 			("No survey object sent in update");
 	}
 
-	use Data::Dumper;
-	warn "Submitting survey " . Dumper($responses) . "\n";
 
 	if(!ref($responses)) { $responses = [$responses]; }
 
@@ -327,15 +303,11 @@ sub submit_survey {
 			$res->clear_usr();
 		}
 		
-		warn "Submitting response with question " . 
-			$res->question . " and group $group_id \n";
-
 		$res->response_group_id($group_id);
 		my $req = $session->request(
 			"open-ils.storage.direct.action.survey_response.create",
 			$res );
 		my $newid = $req->gather(1);
-		warn "New response id: $newid\n";
 
 		if(!$newid) {
 			throw OpenSRF::EX::ERROR
@@ -344,7 +316,6 @@ sub submit_survey {
 	}
 
 	$apputils->commit_db_session($session);
-	warn "survey response update completed\n";
 
 	return 1;
 }
@@ -357,7 +328,6 @@ __PACKAGE__->register_method(
 sub get_random_survey {
 	my( $self, $client, $user_session ) = @_;
 	
-	warn "retrieving random survey\n";
 	my $user_obj = $apputils->check_user_session($user_session); 
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
@@ -365,7 +335,6 @@ sub get_random_survey {
 		$user_obj->home_ou() );
 
 	my $random = int(rand(scalar(@$surveys)));
-	warn "Random survey index for process $$ is $random\n";
 	my $surv = $surveys->[$random];
 
 	return get_fleshed_survey($self, $client, $surv);
@@ -379,7 +348,6 @@ __PACKAGE__->register_method(
 sub get_random_survey_global {
 	my( $self, $client ) = @_;
 	
-	warn "retrieving random global survey\n";
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
 		"open-ils.storage.direct.action.survey.search.atomic",
@@ -387,7 +355,6 @@ sub get_random_survey_global {
 		{ owner => 1, opac => 't' } );
 
 	my $random = int(rand(scalar(@$surveys)));
-	warn "Random survey index for process $$ is $random\n";
 	my $surv = $surveys->[$random];
 
 	return get_fleshed_survey($self, $client, $surv);
