@@ -60,9 +60,26 @@
 			</tr>
 
 			<tr class='hide_me' id='rdetail_online_row'>
-				<td class='title'>&rdetail.summary.online;</td>
-				<td id='rdetail_online'> </td>
-			</tr>
+                                <!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
+                                     *** summary screen with complex information, such as location-specific URIs (856$9). -->
+                                <td nowrap='nowrap' class='rdetail_desc'>&rdetail.summary.online;
+                                        <span class='hide_me' type='opac/slot-data' query='datafield[tag=856] subfield[code=9]'>
+                                                <script type='opac/slot-format'><![CDATA[
+                                                        // There exists at least one localized URI. Clear all links.
+                                                        dojo.query('*:not([type^=opac])', 'rdetail_online').orphan();
+                                                        return '';
+                                                ]]></script>
+                                        </span>
+                                </td>
+                                <td class='rdetail_item' id='rdetail_online' type='opac/slot-data' query='volumes > volume > uris > uri' join=", ">
+                                        <script type='opac/slot-format'><![CDATA[
+                                                var link = '<a href="' + item.getAttribute('href') + '">' + item.getAttribute('label') + '</a>';
+                                                if (item.getAttribute('use_restriction'))
+                                                        link += ' (Use restriction: ' + item.getAttribute('use_restriction') + ')';
+                                                return link;
+                                        ]]></script>
+                                </td>
+                        </tr>
 		</tbody>
 	</table>
 	<!-- Empty span used for creating unAPI links -->
