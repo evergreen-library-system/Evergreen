@@ -894,11 +894,11 @@ sub new_hold_copy_targeter {
 
 			if ($hold->expire_time) {
 				my $ex_time = $parser->parse_datetime( clense_ISO8601( $hold->expire_time ) );
-                if ( DateTime->compare($ex_time, DateTime->now) < 0 ) {
-                  $hold->update( { cancel_time => 'now' } );
-                  $self->method_lookup('open-ils.storage.transaction.commit')->run;
-                  die "OK\n";
-                }
+				if ( DateTime->compare($ex_time, DateTime->now) < 0 ) {
+					$hold->update( { cancel_time => 'now' } );
+					$self->method_lookup('open-ils.storage.transaction.commit')->run;
+					die "OK\n";
+				}
 			}
 
 			my $all_copies = [];
@@ -993,7 +993,7 @@ sub new_hold_copy_targeter {
 			$log->debug( "\tMapping ".scalar(@$all_copies)." potential copies for hold ".$hold->id);
 			action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } ) for (@$all_copies);
 
-			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			#$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 			my @good_copies;
 			for my $c (@$all_copies) {
@@ -1015,7 +1015,7 @@ sub new_hold_copy_targeter {
 
 				# we passed all three, keep it
 				push @good_copies, $c if ($c);
-				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+				#$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			}
 
 			$log->debug("\t".scalar(@good_copies)." (non-current) copies available for targeting...");
@@ -1039,7 +1039,7 @@ sub new_hold_copy_targeter {
 				}
 			}
 
-			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			#$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			my $prox_list = [];
 			$$prox_list[0] =
 			[
@@ -1050,7 +1050,7 @@ sub new_hold_copy_targeter {
 
 			$all_copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
 
-			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			#$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			my $best = choose_nearest_copy($hold, $prox_list);
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
