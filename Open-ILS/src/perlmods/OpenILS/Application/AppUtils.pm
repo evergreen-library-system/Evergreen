@@ -773,13 +773,7 @@ sub fetch_stat_cat_entry {
 
 sub find_org {
 	my( $self, $org_tree, $orgid )  = @_;
-	if (!$org_tree) {
-		$logger->warn("find_org() did not receive a value for \$org_tree");
-		return undef;
-	} elsif (!$orgid) {
-		$logger->warn("find_org() did not receive a value for \$orgid");
-		return undef;
-    }
+    return undef unless $org_tree and defined $orgid;
 	return $org_tree if ( $org_tree->id eq $orgid );
 	return undef unless ref($org_tree->children);
 	for my $c (@{$org_tree->children}) {
