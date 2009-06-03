@@ -93,10 +93,11 @@ __PACKAGE__->register_method(
 
 sub overdue_circs {
 	my $grace = shift;
+    my $upper_interval = shift || '1 millennium';
 
 	my $c_t = action::circulation->table;
 
-	if ($grace) {
+	if ($grace && $grace =~ /^\d+$/o) {
     	$grace = " - ($grace * (fine_interval))";
     } else {
         $grace = '';
@@ -107,10 +108,11 @@ sub overdue_circs {
 		  FROM	$c_t
 		  WHERE	stop_fines IS NULL
 		  	AND due_date < ( CURRENT_TIMESTAMP $grace)
+            AND fine_interval < ?::INTERVAL
 	SQL
 
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
-	$sth->execute;
+	$sth->execute($upper_interval);
 
 	return ( map { action::circulation->construct($_) } $sth->fetchall_hash );
 
