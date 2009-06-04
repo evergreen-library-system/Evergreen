@@ -1,8 +1,8 @@
 {
 	"EDIT_LABEL": "Edit",
-	"HOLDINGS": "Holdings",
-	"INDEXES": "Indexes",
-	"CURRENT_HOLDINGS": "Current holdings",
+	"HOLDINGS": "Previous volumes",
+	"INDEXES": "Previous indexes",
+	"CURRENT_HOLDINGS": "Current volume",
 	"CURRENT_INDEXES": "Current indexes",
 	"CURRENT_SUPPLEMENTS": "Current supplements",
 	"HOLDINGS_TABLE_CAPTION": "Holdings summary (${0})",
@@ -10,5 +10,5 @@
 	"MISSING_VOLUMES": "Missing volumes",
 	"ONLINE_VOLUMES": "Online volumes",
 	"SAVE_MFHD_LABEL": "Save MFHD",
-	"SUPPLEMENTS": "Supplements"
+	"SUPPLEMENTS": "Previous supplements"
 }
