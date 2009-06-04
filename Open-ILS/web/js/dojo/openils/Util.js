@@ -225,19 +225,20 @@ if(!dojo._hasResource["openils.Util"]) {
         dojo.style(node, 'visibility', 'hidden');
     };
 
-    openils.Util.show = function(node) {
+    openils.Util.show = function(node, displayType) {
         if(typeof node == 'string')
             node = dojo.byId(node);
-        dojo.style(node, 'display', 'block');
+        displayType = displayType || 'block';
+        dojo.style(node, 'display', displayType);
         dojo.style(node, 'visibility', 'visible');
     };
 
     /** Toggles the display using show/hide, depending on the current value for CSS 'display' */
-    openils.Util.toggle = function(node) {
+    openils.Util.toggle = function(node, displayType) {
         if(typeof node == 'string')
             node = dojo.byId(node);
         if(dojo.style(node, 'display') == 'none')
-            openils.Util.show(node);
+            openils.Util.show(node, displayType);
         else
             openils.Util.hide(node);
     };
