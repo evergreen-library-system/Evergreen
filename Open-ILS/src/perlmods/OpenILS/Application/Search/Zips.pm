@@ -38,6 +38,7 @@ sub initialize {
 			stateid	=> $items[5],
 			county	=> $items[6],
 			areacode	=> $items[7],
+            alert   => $items[8]
 		};
 
 		next unless $items[4] eq '1';
