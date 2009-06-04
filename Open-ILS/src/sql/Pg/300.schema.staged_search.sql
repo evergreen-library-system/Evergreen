@@ -430,6 +430,7 @@ BEGIN
           WHERE NOT cn.deleted
                 AND cn.label = '##URI##'
                 AND uri.active
+                AND ( param_locations IS NULL OR array_upper(param_locations, 1) IS NULL )
                 AND cn.record IN ( SELECT * FROM search.explode_array( core_result.records ) )
                 AND cn.owning_lib IN ( SELECT * FROM search.explode_array( search_org_list ) )
           LIMIT 1;
