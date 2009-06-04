@@ -56,6 +56,8 @@
         border-right:1px dashed #d9e8f9;
     }
 
+    .pending-addr-row td { border:1px solid #aaa; }
+
     .uedit-addr-del-button {margin-left: 10px; color:red;}
 
     .dijitTextBoxFocused, .dijitFocused { border:1px dashed #3e3e3e; color: #303030; font-weight:bold;}
@@ -110,6 +112,18 @@
                 <button name='delete-button' class='uedit-addr-del-button'>X</button>
             </td>
         </tr>
+
+        <tr name='uedit-addr-pending-row' type='addr-template' class='pending-addr-row hidden'>
+            <td colspan='3'>
+                <span style='padding-right:10px;'>This is a pending address: </span>
+                <button name='approve-button'>Approve Address</button>
+                <div name='replaced-addr-div'>
+                    <span>This address replaces:</span>
+                    <div name='replaced-addr'></div>
+                </div>
+            </td>
+        </tr>
+
         <tr fmclass='aua' fmfield='address_type' type='addr-template' required='show'/>
         <tr fmclass='aua' fmfield='post_code' type='addr-template' required='required'/>
         <tr fmclass='aua' fmfield='street1' type='addr-template' required='required'/>

@@ -484,22 +484,86 @@ function uEditNewAddr(evt, id) {
     if(id == null) id = --uEditAddrVirtId;
     dojo.forEach(addrTemplateRows, 
         function(row) {
+
             row = tbody.insertBefore(row.cloneNode(true), dojo.byId('new-addr-row'));
             row.setAttribute('type', '');
             row.setAttribute('addr', id+'');
+
             if(row.getAttribute('fmclass')) {
                 fleshFMRow(row, 'aua', {addr:id});
+
+            } else if(row.getAttribute('name') == 'uedit-addr-pending-row') {
+
+                var addr =  patron.addresses().filter(
+                    function(i) { return (i.id() == id) })[0];
+                
+                // if it's a pending address, show the 'approve' button
+                if(addr && openils.Util.isTrue(addr.pending())) {
+                    openils.Util.show(row, 'table-row');
+                    dojo.query('[name=approve-button]', row)[0].onclick = 
+                        function() { uEditApproveAddress(addr); };
+
+                    if(addr.replaces()) {
+                        var div = dojo.query('[name=replaced-addr]', row)[0]
+                        div.innerHTML = addr.replaces();
+                    } else {
+                        openils.Util.hide(dojo.query('[name=replaced-addr-div]', row)[0]);
+                    }
+                }
+
             } else {
-               var btn = dojo.query('[name=delete-button]', row)[0];
-               if(btn) btn.onclick = function(){ uEditDeleteAddr(id) };
+                var btn = dojo.query('[name=delete-button]', row)[0];
+                if(btn) btn.onclick = function(){ uEditDeleteAddr(id) };
+            }
+        }
+    );
+}
+
+function uEditApproveAddress(addr) {
+    fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.pending_address.approve'],
+        {   async: true,
+            params:  [openils.User.authtoken, addr],
+
+            oncomplete : function(r) {
+                var oldId = openils.Util.readResponse(r);
+                    
+                // remove addrs from UI
+                dojo.forEach(
+                    patron.addresses(), 
+                    function(addr) { uEditDeleteAddr(addr.id(), true); }
+                );
+
+                if(oldId != null) {
+                    
+                    // remove the replaced address 
+                    if(oldId != addr.id()) {
+		                patron.addresses(
+                            patron.addresses().filter(
+				                function(i) { return (i.id() != oldId); }
+			                )
+		                );
+                    }
+                    
+                    // fix the the new address
+                    addr.id(oldId);
+                    addr.replaces(null);
+                    addr.pending('f');
+
+                }
+
+                // redraw addrs
+                loadAllAddrs();
             }
         }
     );
 }
 
 
-function uEditDeleteAddr(id) {
-    if(!confirm('Delete address ' + id)) return; /* XXX i18n */
+function uEditDeleteAddr(id, noAlert) {
+    if(!noAlert) {
+        if(!confirm('Delete address ' + id)) return; /* XXX i18n */
+    }
     var rows = dojo.query('tr[addr='+id+']', tbody);
     for(var i = 0; i < rows.length; i++)
         rows[i].parentNode.removeChild(rows[i]);
