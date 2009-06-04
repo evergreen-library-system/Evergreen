@@ -243,10 +243,13 @@ function fleshFMRow(row, fmcls, args) {
     return widget;
 }
 
-function findWidget(wtype, fmfield) {
+function findWidget(wtype, fmfield, callback) {
     return widgetPile.filter(
         function(i){
-            return (i._wtype == wtype && i._fmfield == fmfield);
+            if(i._wtype == wtype && i._fmfield == fmfield) {
+                if(callback) return callback(i);
+                return true;
+            }
         }
     ).pop();
 }
@@ -281,6 +284,30 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                                 'second', openils.Util.intervalToSeconds(interval)));
                         }
                         this.store.fetch({onComplete:found, query:{id:this.attr('value')}});
+                    }
+                );
+        }
+    }
+
+    if(fmclass = 'aua') {
+        switch(fmfield) {
+            case 'post_code':
+                dojo.connect(widget.widget, 'onChange',
+                    function(e) { 
+                        fieldmapper.standardRequest(
+                            ['open-ils.search', 'open-ils.search.zip'],
+                            {   async: true,
+                                params: [e],
+                                oncomplete : function(r) {
+                                    var res = openils.Util.readResponse(r);
+                                    var callback = function(w) { return w._addr == widget._addr; };
+                                    if(res.city) findWidget('aua', 'city', callback).widget.attr('value', res.city);
+                                    if(res.state) findWidget('aua', 'state', callback).widget.attr('value', res.state);
+                                    if(res.county) findWidget('aua', 'county', callback).widget.attr('value', res.county);
+                                    if(res.alert) alert(res.alert);
+                                }
+                            }
+                        );
                     }
                 );
         }
