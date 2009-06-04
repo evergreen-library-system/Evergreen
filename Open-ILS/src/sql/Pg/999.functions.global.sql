@@ -198,7 +198,7 @@ BEGIN
     -- address replaces an existing address
     DELETE FROM actor.usr_address WHERE id = -old_id;
     UPDATE actor.usr_address SET id = -id WHERE id = old_id;
-    UPDATE actor.usr_address SET replaces = NULL, id = old_id WHERE id = pending_id;
+    UPDATE actor.usr_address SET replaces = NULL, id = old_id, pending = 'f' WHERE id = pending_id;
     RETURN old_id;
 END
 $$ LANGUAGE plpgsql;
