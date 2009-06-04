@@ -63,6 +63,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     return dojo.date.stamp.toISOString(value);
                 case 'int':
                 case 'float':
+                case 'money':
                     if(isNaN(value)) value = 0;
                 default:
                     return (value === '') ? null : value;
