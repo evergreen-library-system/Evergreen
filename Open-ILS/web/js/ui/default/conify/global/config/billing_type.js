@@ -22,6 +22,11 @@ function getOrgInfo(rowIndex, item) {
 
 function btInit() {
 
+    btGrid.disableSelectorForRow = function(rowIdx) {
+        var item = btGrid.getItem(rowIdx);
+        return (btGrid.store.getValue(item, 'id') < 100);
+    }
+
     buildBTGrid();
     var connect = function() {
         dojo.connect(btContextOrgSelect, 'onChange',
