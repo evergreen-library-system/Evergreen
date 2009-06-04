@@ -53,9 +53,12 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     this._applySingleEditStyle();
 
                 if(!this.hideSelector) {
-                    var header = this.layout.cells[0].view.getHeaderCellNode(0);
-                    var self = this;
-                    header.onclick = function() { self.toggleSelectAll(); }
+                    dojo.connect(this, 'onHeaderCellClick', 
+                        function(e) {
+                            if(e.cell.index == 0)
+                                this.toggleSelectAll();
+                        }
+                    );
                 }
             },
 
@@ -180,7 +183,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var inputs = dojo.query('[name=autogrid.selector]', this.domNode);
                 for(var i = 0; i < inputs.length; i++) {
                     if(inputs[i].getAttribute('row') == rowIdx) {
-                        inputs[i].checked = true;
+                        if(!inputs[i].disabled)
+                            inputs[i].checked = true;
                         break;
                     }
                 }
@@ -227,7 +231,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             _formatRowSelectInput : function(rowIdx) {
                 if(rowIdx === null || rowIdx === undefined) return '';
-                return "<input type='checkbox' name='autogrid.selector' row='" + rowIdx + "'/>";
+                var s = "<input type='checkbox' name='autogrid.selector' row='" + rowIdx + "'";
+                if(this.disableSelectorForRow && this.disableSelectorForRow(rowIdx)) 
+                    s += " disabled='disabled'";
+                return s + "/>";
             },
 
             _applySingleEditStyle : function() {
