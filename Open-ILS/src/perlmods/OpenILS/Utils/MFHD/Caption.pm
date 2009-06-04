@@ -234,13 +234,11 @@ sub match_day {
 			       day   => $date[2]);
 	return ($dt->day_of_week == $daynames{$pat});
     } elsif (length($pat) == 2) {
-	# MM
-	return $pat == $date[3];
+	# DD
+	return $pat == $date[2];
     } elsif (length($pat) == 4) {
 	# MMDD
-	my ($mon, $day);
-	$mon = substr($pat, 0, 2);
-	$day = substr($pat, 2, 2);
+	my ($mon, $day) = unpack("a2a2", $pat);
 
 	return (($mon == $date[1]) && ($day == $date[2]));
     } else {
@@ -249,27 +247,108 @@ sub match_day {
     }
 }
 
-# Calcuate date of "n"th last "dayname" of month: second last Tuesday
-sub last_week_of_month {
+sub subsequent_day {
+    my $pat = shift;
+    my $cur = shift;
+    my $dt = DateTime->new(year  => $cur->[0],
+			   month => $cur->[1],
+			   day   => $cur->[2]);
+
+    if (exists $daynames{$pat}) {
+	# dd: published on the given weekday
+	my $dow = $dt->day_of_week;
+	my $corr = ($dow - $daynames{$pat} + 7) % 7;
+
+	if ($dow == $daynames{$pat}) {
+	    # the next one is one week hence
+	    $dt->add(days => 7);
+	} else {
+	    # the next one is later this week,
+	    # or it is next week (ie, on or after next Monday)
+	    # $corr will take care of it.
+	    $dt->add(days => $corr);
+	}
+    } elsif (length($pat) == 2) {
+	# DD: published on the give day of every month
+	if ($dt->day >= $pat) {
+	    # current date is on or after $pat: next one is next month
+	    $dt->set(day => $pat);
+	    $dt->add(months => 1);
+	    $cur->[0] = $dt->year;
+	    $cur->[1] = $dt->month;
+	    $cur->[2] = $dt->day;
+	}
+	# current date is before $pat: set month to pattern
+	# or we've adjusted the year to next year, now fix the month
+	$cur->[1] = $pat;
+    } elsif (length($pat) == 4) {
+	# MMDD: published on the given day of the given month
+	my ($mon, $day) = unpack("a2a2", $pat);
+
+	if (on_or_after($mon, $day, $cur->[1], $cur->[2])) {
+	    # Current date is on or after pattern; next one is next year
+	    $cur->[0] += 1;
+	}
+	# Year is now right. Either it's next year (because of on_or_before)
+	# or it's this year, because the current date is NOT on or after
+	# the pattern. Just fix the month and day
+	$cur->[1] = $mon;
+	$cur->[2] = $day;
+    } else {
+	carp "Invalid day pattern '$pat'";
+	return undef;
+    }
+
+    return $cur;
+}
+
+
+# Calculate date of 3rd Friday of the month (for example)
+# 1-5: count from beginning of month
+# 99-97: count back from end of month
+sub nth_week_of_month {
     my $dt = shift;
     my $week = shift;
     my $day = shift;
-    my $end_dt = DateTime->last_day_of_month(year  => $dt->year,
-					     month => $dt->month);
+    my ($nth_day, $dow, $day);
 
     $day = $daynames{$day};
-    while ($end_dt->day_of_week != $day) {
-	$end_dt->subtract(days => 1);
+
+    if (0 < $week && $week <= 5) {
+	$nth_day = DateTime->clone($dt)->set(day => 1);
+    } elsif ($week >= 97) {
+	$nth_day = DateTime->last_day_of_month(year  => $dt->year,
+					       month => $dt->month);
+    } else {
+	return undef;
     }
 
-    # 99: last week of month, 98: second last, etc.
-    for (my $i = 99 - $week; $i > 0; $i--) {
-	$end_dt->subtract(weeks => 1);
+    $dow = $nth_day->day_of_week();
+
+    if ($week <= 5) {
+	# count forwards
+	$nth_day->add(days => ($day - $dow + 7) % 7,
+		      weeks=> $week - 1);
+    } else {
+	# count backwards
+	$nth_day->subtract(days => ($day - $nth_day->day_of_week + 7) % 7);
+
+	# 99: last week of month, 98: second last, etc.
+	for (my $i = 99 - $week; $i > 0; $i--) {
+	    $nth_day->subtract(weeks => 1);
+	}
     }
 
-    return $end_dt;
+    # There is no nth "day" in the month!
+    return undef if ($dt->month != $nth_day->month);
+
+    return $nth_day;
 }
 
+#
+# Internal utility function to match the various different patterns
+# of month, week, and day
+#
 sub check_date {
     my $dt = shift;
     my $month = shift;
@@ -280,7 +359,8 @@ sub check_date {
 	# MMWW
 	return (($dt->month == $month)
 		&& (($dt->week_of_month == $weekno)
-		    || ($dt->week_of_month == last_day_of_month($dt, $weekno, 'th')->week_of_month)));
+		    || ($weekno >= 97
+			&& ($dt->week_of_month == nth_week_of_month($dt, $weekno, $day)->week_of_month))));
     }
 
     # simple cases first
@@ -291,8 +371,9 @@ sub check_date {
 
     if (!defined $month) {
 	# WWdd
-	return (($dt->weekday_of_month == $weekno)
-		|| ($dt->weekday_of_month == last_day_of_month($dt, $weekno, $day)->weekday_of_month));
+	return (($weekno == 0)	# Every week
+		|| ($dt->weekday_of_month == $weekno) # this week
+		|| (($weekno >= 97) && ($dt->weekday_of_month == nth_week_of_month($dt, $weekno, $day)->weekday_of_month)));
     }
 
     # MMWWdd
@@ -304,7 +385,7 @@ sub check_date {
     # It's the right day of the week
     # It's the right month
 
-    if ($weekno == $dt->weekday_of_month) {
+    if (($weekno == 0) ||($weekno == $dt->weekday_of_month)) {
 	# If this matches, then we're counting from the beginning
 	# of the month and it matches and we're done.
 	return 1;
@@ -312,7 +393,8 @@ sub check_date {
 
     # only case left is that the week number is counting from
     # the end of the month: eg, second last wednesday
-    return (last_week_of_month($weekno, $day)->weekday_of_month == $dt->weekday_of_month);
+    return (($weekno >= 97)
+	    && (nth_week_of_month($dt, $weekno, $day)->weekday_of_month == $dt->weekday_of_month));
 }
 
 sub match_week {
@@ -335,6 +417,83 @@ sub match_week {
 	carp "invalid week pattern '$pat'";
 	return 0;
     }
+}
+
+#
+# Use $pat to calcuate the date of the issue following $cur
+#
+sub subsequent_week {
+    my $pat = shift;
+    my $cur = shift;
+    my $candidate;
+    my $dt = DateTime->new(year => $cur->[0],
+			   month=> $cur->[1],
+			   day  => $cur->[2]);
+
+    if ($pat =~ m/^$weekpat$daypat$/) {
+	# WWdd: published on given weekday of given week of every month
+	my ($week, $day) = ($1, $2);
+
+	if ($week eq '00') {
+	    # Every week
+	    $candidate = DateTime->clone($dt);
+	    if ($dt->day_of_week == $daynames{$day}) {
+		# Current is right day, next one is a week hence
+		$candidate->add(days => 7);
+	    } else {
+		$candidate->add(days => ($dt->day_of_week - $daynames{$day} + 7) % 7);
+	    }
+	} else {
+	    # 3rd Friday of the month (eg)
+	    $candidate = nth_week_of_month($dt, $week, $day);
+	}
+
+	if ($candidate < $dt) {
+	    # If the n'th week of the month happens before the
+	    # current issue, then the next issue is published next
+	    # month, otherwise, it's published this month.
+	    # This will never happen for the "00: every week" pattern
+	    $candidate = DateTime->clone($dt)->add(months => 1)->set(day => 1);
+	    $candidate = nth_week_of_month($dt, $week, $day);
+	}
+    } elsif ($pat =~ m/^$monthpat$weekpat$daypat$/) {
+	# MMWWdd: published on given weekday of given week of given month
+	my ($month, $week, $day) = ($1, $2, $3);
+
+	$candidate = DateTime->new(year => $dt->year,
+				   month=> $month,
+				   day  => 1);
+	$candidate = nth_week_of_month($candidate, $week, $day);
+	if ($candidate < $dt) {
+	    # We've missed it for this year, next one that matches
+	    # will be next year
+	    $candidate->add(years => 1)->set(day => 1);
+	    $candidate = nth_week_of_month($candidate, $week, $day);
+	}
+    } elsif ($pat =~ m/^$monthpat$weekpat$/) {
+	# MMWW: published during given week of given month
+	my ($month, $week) = ($1, $2);
+
+	$candidate = nth_week_of_month(DateTime->new(year => $dt->year,
+						     month=> $month,
+						     day  => 1),
+				       $week,
+				       'th');
+	if ($candidate < $dt) {
+	    # Already past the pattern date this year, move to next year
+	    $candidate->add(years => 1)->set(day => 1);
+	    $candidate = nth_week_of_month($candidate, $week, 'th');
+	}
+    } else {
+	carp "invalid week pattern '$pat'";
+	return undef;
+    }
+
+    $cur->[0] = $candidate->year;
+    $cur->[1] = $candidate->month;
+    $cur->[2] = $candidate->day;
+
+    return $cur;
 }
 
 sub match_month {
@@ -583,6 +742,7 @@ sub next_date {
     my @cur;
     my @new;
     my $incr;
+    my @candidate;
 
     my $reg = $self->{_mfhdc_REGULARITY};
     my $pattern = $self->{_mfhdc_PATTERN};
@@ -597,6 +757,12 @@ sub next_date {
     # on the final date in the combined issue.
     $new[-1] =~ s|^[^/]+/||;
 
+    # XXX Insert new date generation code in here that uses publication
+    # patterns.
+
+###
+### Old code: only works for simple cases
+###
     # If $frequency is not one of the standard codes defined in %increments
     # then there has to be a $yp publication regularity pattern that
     # lists the dates of publication. Use that that list to find the next
@@ -636,7 +802,7 @@ sub next_date {
 	# if $carry is set, the date doesn't matter: we're not
 	# going to increment the v. number twice at year-change.
 	$next->{a} += $carry;
-    } elsif (defined $self->{_mfhdc_PATTERN}->{x}) {
+    } elsif (defined $pattern->{x}) {
 	$next->{a} += $self->calendar_increment(\@cur, @new);
     }
 }
