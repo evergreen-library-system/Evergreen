@@ -26,7 +26,7 @@ sub marc_xml_to_doc {
 
 
 sub import_authority_record {
-    my($e, $marc_xml, $source) = @_;
+    my($class, $e, $marc_xml, $source) = @_;
     
     my $marc_doc = marc_xml_to_doc($marc_xml);
     my $rec = Fieldmapper::authority::record_entry->new;
@@ -47,7 +47,7 @@ sub import_authority_record {
 
 
 sub overlay_authority_record {
-    my($e, $rec_id, $marc_xml, $source) = @_;
+    my($class, $e, $rec_id, $marc_xml, $source) = @_;
     
     my $marc_doc = marc_xml_to_doc($marc_xml);
     my $rec = $e->retrieve_authority_record_entry($rec_id) or return $e->die_event;
