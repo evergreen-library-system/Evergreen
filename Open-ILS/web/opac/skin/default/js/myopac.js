@@ -7,6 +7,7 @@ var fleshedUser = null;
 var fleshedContainers = {};
 var holdCache = {};
 var holdStatusCache = {};
+var allowPendingAddr = false;
 
 
 function clearNodes( node, keepArray ) {
@@ -17,13 +18,23 @@ function clearNodes( node, keepArray ) {
 }
 
 function myOPACInit() {
-	if(!(G.user && G.user.session)) initLogin();
-	else myOPACChangePage( "summary" );
+
+	if(!(G.user && G.user.session)) {
+        initLogin();
+
+    } else {
+
+        allowPendingAddr = fetchOrgSettingDefault(G.user.home_ou(), 'opac.allow_pending_address');
+        if(allowPendingAddr)
+            unHideMe($('myopac_pending_addr_td'));
+	    myOPACChangePage( "summary" );
+    }
 
     $('myopac_holds_thaw_date_input').onkeyup = 
         function(){holdsVerifyThawDateUI('myopac_holds_thaw_date_input'); }
     $('myopac_holds_thaw_date_input').onchange = 
         function(){holdsVerifyThawDateUI('myopac_holds_thaw_date_input'); }
+
 }
 
 function myopacReload() {
@@ -838,6 +849,8 @@ function _myOPACSummaryShowUer(r) {
     var addrs = user.addresses();
 	for( var a in addrs ) {
         var addr = addrs[a];
+        if(!allowPendingAddr && isTrue(addr.pending()))
+            continue;
         if(addr.replaces() != null) continue;
 		var row = template.cloneNode(true);
 		myOPACDrawAddr(row, addr, addrs);
@@ -875,7 +888,11 @@ function myOPACDrawAddr(row, addr, addrs) {
     appendClear($n(row, 'myopac_addr_state'),text(addr.state()));
     appendClear($n(row, 'myopac_addr_country'),text(addr.country()));
     appendClear($n(row, 'myopac_addr_zip'),text(addr.post_code()));
+
+    if(!allowPendingAddr) return;
+
     $n(row, 'myopac_addr_edit_link').onclick = function(){myopacEditAddress(addr)};
+    unHideMe($n(row, 'myopac_addr_edit_td'));
 
     /* if we have a replacement address, plop it into the table next to this addr */
     var repl = grep(addrs,
@@ -972,8 +989,7 @@ function myopacSaveAddress(row, addr, deleteMe) {
                     fleshedUser.addresses(addrs);
                 }
             }
-
-           alert('done');
+           alertId('myopac_addr_changes_saved');
         }
     );
     req.send();

@@ -1637,6 +1637,8 @@
 <!ENTITY staff.server.admin.org_settings.circ.restore_overdue_on_lost_return.desc "Restore overdue fines on lost item return">
 <!ENTITY staff.server.admin.org_settings.circ.lost_immediately_available "Circ: Lost items usable on checkin">
 <!ENTITY staff.server.admin.org_settings.circ.lost_immediately_available.desc "Lost items are usable on checkin instead of going \'home\' first">
+<!ENTITY staff.server.admin.org_settings.opac.allow_pending_address "OPAC: Allow pending addresses">
+<!ENTITY staff.server.admin.org_settings.opac.allow_pending_address.desc "If enabled, patrons can create and edit existing addresses.  Addresses are kept in a pending state until staff approves the changes">
 
 
 <!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">

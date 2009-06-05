@@ -173,7 +173,7 @@
         <thead>
             <tr>
                 <td>&myopac.summary.addresses;</td>
-                <td>&myopac.summary.addresses.pending;</td>
+                <td id='myopac_pending_addr_td' class='hide_me'>&myopac.summary.addresses.pending;</td>
             </tr>
         </thead>
 		<tbody id='myopac_addr_tbody'>
@@ -213,7 +213,7 @@
                             <td name='myopac_addr_zip'> </td>
                         </tr>
                         <tr>
-                            <td name='myopac_addr_edit_td' colspan='2'>
+                            <td name='myopac_addr_edit_td' colspan='2' class='hide_me'>
                                 <a class='classic_link' name='myopac_addr_edit_link' href='javascript:void(0);'>Edit Address</a>
                             </td>
                         </tr>
@@ -280,6 +280,7 @@
 	<div class='hide_me' id='myopac_password_success'>&myopac.summary.password.success;</div>
 	<div class='hide_me' id='myopac_password_failure'>&myopac.summary.password.failure;</div>
 	<span class='hide_me' id='myopac_invalid_username'>&myopac.summary.username.invalid;</span>
+	<span class='hide_me' id='myopac_addr_changes_saved'>Address Saved</span>
 </div>
 
 
