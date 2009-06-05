@@ -1,6 +1,24 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/distribution_formula.js'> </script>
-<script> var formulaId = '[% ctx.page_args.0 %]';</script>
+<script> var formulaId = '[% ctx.page_args.0 %]';
+
+function getFormulaName(rowIndex, item) {
+        if(!item) return '';
+        var name = this.grid.store.getValue(item, 'name');
+        var id = this.grid.store.getValue(item, 'id');
+        return id + ':' + name;
+    }
+
+function formatName(value) {
+        if(value) {
+            var vals = value.split(/:/);
+            return '<a href="'+location.href+ '/'+vals[0]+'">'+vals[1]+'</a>';
+        }
+}
+
+</script>
+
+
 
 
 <div id='formula-list-div'>
@@ -22,7 +40,7 @@
                 editOnEnter='true'>
             <thead>
                 <tr>
-                    <th field='name' get='getFormulaName'/>
+                    <th field='name' get='getFormulaName' formatter='formatName'/>
                     <th field='item_count' get='getItemCount'/>
                 </tr>
             </thead>
@@ -38,9 +56,9 @@
     </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
             <div id="formula_head"></div>
-            <div> 
+            <div>
                 <button dojoType='dijit.form.Button' onClick='dfeListGrid.showCreateDialog()'>New Formula Entry</button>
-                <button dojoType='dijit.form.Button' onClick='dfeListGrid.deleteSelected()'>Delete Selected</button> 
+                <button dojoType='dijit.form.Button' onClick='dfeListGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -55,11 +73,10 @@
                     editOnEnter='true'>
                 <thead>
                     <tr>
-                        <th field='formula' get='getFormulaId'/>
+                        <th field='formula' get='getFormulaId' formatter='formatName'/>
                     </tr>
                 </thead>
             </table>
-            <div/>
         </div>
     </div>
 </div>

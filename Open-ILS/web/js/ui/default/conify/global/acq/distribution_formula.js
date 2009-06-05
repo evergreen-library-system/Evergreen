@@ -51,10 +51,3 @@ function getItemCount(rowIndex, item) {
     return count;
 }
 
-function getFormulaName(rowIndex, item) {
-    if(!item) return '';
-    return '<a href="' + location.href + '/' +
-        this.grid.store.getValue(item, 'id') + '">' +
-        this.grid.store.getValue(item, 'name') + '</a>';
-}
-
