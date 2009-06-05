@@ -200,7 +200,14 @@ function rresultCollectISSNIds() {
 
 function rresultHandleList() {
 	var ids = new CGI().param(PARAM_RLIST);
-	if(ids) _rresultHandleIds(ids, ids.length);
+    var count;
+    if(!dojo.isArray(ids)) {
+        count = 1;
+        ids = [ids];
+    } else {
+        count = ids.length;
+    }
+	if(ids) _rresultHandleIds(ids, count);
 }
 
 var rresultTries = 0;
