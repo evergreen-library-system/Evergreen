@@ -612,11 +612,11 @@ sub import_record_list_impl {
             my $record;
             if(defined $overlay_target) {
                 $logger->info("vl: overlaying record $overlay_target");
-                $record = OpenILS::Utils::Cat::AuthCommon->overlay_authority_record(
+                $record = OpenILS::Application::Cat::AuthCommon->overlay_authority_record(
                     $overlay_target, $rec->marc); #$source);
             } else {
                 $logger->info("vl: importing new record");
-                $record = OpenILS::Utils::Cat::AuthCommon->import_authority_record(
+                $record = OpenILS::Application::Cat::AuthCommon->import_authority_record(
                     $rec->marc) #$source);
             }
 
