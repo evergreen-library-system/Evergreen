@@ -191,7 +191,16 @@ circ.util.offline_checkout_columns = function(modify,params) {
 			'primary' : false,
 			'hidden' : false,
 			'render' : function(my) { return my.due_date; }
+		},
+		{
+			'id' : 'due_time',
+			'label' : document.getElementById('commonStrings').getString('staff.circ_label_due_time'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : false,
+			'render' : function(my) { return my.due_time; }
 		}
+
 	];
 	if (modify) for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
@@ -341,6 +350,14 @@ circ.util.offline_renew_columns = function(modify,params) {
 			'primary' : false,
 			'hidden' : false,
 			'render' : function(my) { return my.due_date; }
+		},
+		{
+			'id' : 'due_time',
+			'label' : document.getElementById('commonStrings').getString('staff.circ_label_due_time'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : false,
+			'render' : function(my) { return my.due_time; }
 		}
 	];
 	if (modify) for (var i = 0; i < c.length; i++) {
@@ -883,6 +900,25 @@ circ.util.columns = function(modify,params) {
 				} else {
 					if (my.acp.circulations()) {
 						return my.acp.circulations()[0].due_date().substr(0,10);
+					} else {
+						return "";
+					}
+				}
+			}
+		},
+		{
+			'persist' : 'hidden width ordinal',
+			'id' : 'due_time',
+			'label' : document.getElementById('commonStrings').getString('staff.circ_label_due_time'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : true,
+			'render' : function(my) {
+				if (my.circ) {
+					return my.circ.due_date().substr(11,8);
+				} else {
+					if (my.acp.circulations()) {
+						return my.acp.circulations()[0].due_date().substr(11,8);
 					} else {
 						return "";
 					}
