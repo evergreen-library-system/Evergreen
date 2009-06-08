@@ -2682,6 +2682,10 @@ sub apply_penalty {
     # is it already applied?
     return 1 if $e->search_actor_user_standing_penalty(
         {   usr => $penalty->usr, 
+            '-or' => [
+                {stop_date => undef},
+                {stop_date => {'>' => 'now'}}
+            ],
             standing_penalty => $penalty->standing_penalty,
             org_unit => $penalty->org_unit
         })->[0];
@@ -2823,6 +2827,10 @@ sub new_flesh_user {
         $user->standing_penalties(
             $e->search_actor_user_standing_penalty([
                 {   usr => $id, 
+                    '-or' => [
+                        {stop_date => undef},
+                        {stop_date => {'>' => 'now'}}
+                    ],
                     org_unit => $U->get_org_ancestors($e->requestor->ws_ou)
                 },
                 {   flesh => 1,
