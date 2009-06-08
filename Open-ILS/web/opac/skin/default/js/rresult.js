@@ -207,7 +207,7 @@ function rresultHandleList() {
     } else {
         count = ids.length;
     }
-	if(ids) _rresultHandleIds(ids, count, getOffset());
+	if(ids) _rresultHandleIds(ids, count);
 }
 
 var rresultTries = 0;
@@ -245,7 +245,7 @@ function _rresultHandleIds(ids, count) {
 
 	HITCOUNT = parseInt(count);
 	runEvt('result', 'hitCountReceived');
-	runEvt('result', 'idsReceived', ids);
+	runEvt('result', 'idsReceived', ids, getOffset());
 }
 
 /*
