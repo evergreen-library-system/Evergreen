@@ -207,7 +207,7 @@ function rresultHandleList() {
     } else {
         count = ids.length;
     }
-	if(ids) _rresultHandleIds(ids, count);
+	if(ids) _rresultHandleIds(ids, count, getOffset());
 }
 
 var rresultTries = 0;
@@ -263,12 +263,11 @@ function rresultCollectRecords(ids) {
 */
 
 
-function rresultCollectRecords(ids) {
+function rresultCollectRecords(ids, base) {
 	runEvt("result", "preCollectRecords");
 	var x = 0;
 
-	//var base = getOffset();
-    var base = 0;
+	if (!base) base = 0;
 	if( rresultIsPaged )  base = 0;
 
 	for( var i = base; i!= getDisplayCount() + base; i++ ) {
