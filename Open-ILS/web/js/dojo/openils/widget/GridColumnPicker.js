@@ -197,9 +197,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
                 {   async: true,
                     params: [this.authtoken, null, setting],
                     oncomplete: function(r) {
-                        var stat = r.recv().content();
-                        if(e = openils.Event.parse(stat))
-                            return alert(e);
+                        var stat = openils.Util.readResponse(r);
                     }
                 }
             );
