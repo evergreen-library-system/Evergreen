@@ -83,7 +83,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var value = this.widgetValue;
             switch(this.idlField.datatype) {
                 case 'bool':
-                    return (value) ? 'True' : 'False'; // XXX i18n!
+                    return (openils.Util.isTrue(value)) ? 'True' : 'False'; // XXX i18n!
                 case 'timestamp':
                     dojo.require('dojo.date.locale');
                     dojo.require('dojo.date.stamp');
