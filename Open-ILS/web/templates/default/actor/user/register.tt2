@@ -135,7 +135,7 @@
         <tr fmclass='aua' fmfield='valid' type='addr-template' required='show'/>
         <tr fmclass='aua' fmfield='within_city_limits' type='addr-template' required='show'/>
 
-        <tr id='new-addr-row' class='newaddr-row'>
+        <tr id='new-addr-row' class='newaddr-row' required='show'>
             <td colspan='0' style='text-align:center;'>
                 <button dojoType='dijit.form.Button' onClick='uEditNewAddr'>New Address</button>
             </td>
@@ -155,7 +155,8 @@
     <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave'>Save</button>
     <button dojoType='dijit.form.Button' jsId='saveCloneButton' onClick='uEditSaveClone'>Save &amp; Clone</button>
     <div id='require-toggle'>
-        <a href='javascript:uEditToggleRequired();'>Show/Hide Required Fields</a>
+        <a href='javascript:uEditToggleRequired();' id='uedit-show-required'>Show Only Required Fields</a>
+        <a href='javascript:uEditToggleRequired();' id='uedit-show-all' class='hidden'>Show All Fields</a>
     </div>
 </div>
 

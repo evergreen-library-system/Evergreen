@@ -571,10 +571,12 @@ function uEditDeleteAddr(id, noAlert) {
 }
 
 function uEditToggleRequired() {
-    if((tbody.className +'').match(/hide-non-required/))
+    if((tbody.className +'').match(/hide-non-required/)) 
         openils.Util.removeCSSClass(tbody, 'hide-non-required');
     else
         openils.Util.addCSSClass(tbody, 'hide-non-required');
+    openils.Util.toggle('uedit-show-required');
+    openils.Util.toggle('uedit-show-all');
 }
 
 
