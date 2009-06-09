@@ -39,8 +39,13 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     if(!this.columnPickerPrefix) {
                         console.error("No columnPickerPrefix defined");
                     } else {
-                        new openils.widget.GridColumnPicker(
-                            openils.User.authtoken, this.columnPickerPrefix, this).load();
+                        var picker = new openils.widget.GridColumnPicker(
+                            openils.User.authtoken, this.columnPickerPrefix, this);
+                        if(openils.User.authtoken) {
+                            picker.load();
+                        } else {
+                            openils.Util.addOnLoad(function() { picker.load() });
+                        }
                     }
                 }
 
