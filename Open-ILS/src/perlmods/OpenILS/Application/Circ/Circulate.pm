@@ -866,17 +866,15 @@ sub run_indb_circ_test {
     my $dbfunc = ($self->is_renewal) ? 
         'action.item_user_renew_test' : 'action.item_user_circ_test';
 
-    my $results = ($self->matrix_test_result) ? 
-        $self->matrix_test_result : 
-            $self->editor->json_query(
-                {   from => [
-                        $dbfunc,
-                        $self->editor->requestor->ws_ou,
-                        ($self->is_precat or $self->is_noncat) ? undef : $self->copy->id, 
-                        $self->patron->id,
-                    ]
-                }
-            );
+    my $results = $self->editor->json_query(
+        {   from => [
+                $dbfunc,
+                $self->editor->requestor->ws_ou,
+                ($self->is_precat or $self->is_noncat) ? undef : $self->copy->id, 
+                $self->patron->id,
+            ]
+        }
+    );
 
     $self->circ_test_success($U->is_true($results->[0]->{success}));
 
