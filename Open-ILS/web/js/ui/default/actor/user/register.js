@@ -55,15 +55,16 @@ function load() {
         }
     }
 
-    uEditLoadUser(userId);
-
     orgSettings = fieldmapper.aou.fetchOrgSettingBatch(staff.ws_ou(), [
         'global.juvenile_age_threshold',
         'patron.password.use_phone',
+        'ui.patron.default_inet_access_level'
     ]);
     for(k in orgSettings)
         if(orgSettings[k])
             orgSettings[k] = orgSettings[k].value;
+
+    uEditLoadUser(userId);
 
     var list = pcrud.search('fdoc', {fm_class:fmClasses});
     for(var i in list) {
@@ -359,11 +360,10 @@ function uEditNewPatron() {
     card.isnew(1);
     patron.card(card);
     patron.cards([card]);
-    //patron.net_access_level(defaultNetLevel); XXX
+    patron.net_access_level(orgSettings['ui.patron.default_inet_access_level'] || 1);
     patron.stat_cat_entries([]);
     patron.survey_responses([]);
     patron.addresses([]);
-    //patron.home_ou(USER.ws_ou()); XXX
     uEditMakeRandomPw(patron);
 }
 
