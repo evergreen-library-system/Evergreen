@@ -9,7 +9,6 @@ dojo.require('dojox.widget.PlaceholderMenuItem');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.PermaCrud');
-dojo.require('openils.DojoPatch');
 dojo.require('openils.widget.GridColumnPicker');
 dojo.require('openils.widget.EditPane');
 dojo.requireLocalization('openils.conify', 'conify');
@@ -25,19 +24,22 @@ function drawSurvey(svyId) {
     var surveyTable = dojo.byId('edit-pane');
     var surveyHead = dojo.create('thead', {id: "survey_head"},  surveyTable);
     var headRow = dojo.create('tr', null,  surveyHead);
-    var headCell = dojo.create('td', {id: "head_cell", innerHTML: "<h3>" +dojo.string.substitute(localeStrings.SURVEY_ID, [svyId])+"</h3>" }, headRow);
+    var headCell = dojo.create('td', {id: "head_cell", innerHTML: "<h2>" +dojo.string.substitute(localeStrings.SURVEY_ID, [svyId])+"</h2>" }, headRow);
     var pcrud = new openils.PermaCrud();
     var survey = pcrud.retrieve('asv', svyId);
     startDate = dojo.date.stamp.fromISOString(survey.start_date());
     endDate = dojo.date.stamp.fromISOString(survey.end_date());
     var pane = new openils.widget.EditPane({fmObject : survey, hideActionButtons:false}, dojo.byId('edit-pane'));
+
     if ( endDate > today) {
-        var buttonBody = dojo.create( 'td', null, headRow);
+        var buttonBody = dojo.create( 'td', null, surveyHead);
         var endButton = new dijit.form.Button({label: localeStrings.END_SURVEY, onClick:function() {endSurvey(survey.id())} }, buttonBody);
     }   
+
     pane.fieldOrder = ['id', 'name', 'description', 'owner', 'start_date', 'end_date'];
     pane.onCancel = cancelEdit;
     pane.startup();
+
     var surveyFoot = dojo.create('tfoot', { id: "survey_foot"}, surveyTable);
     var footRow = dojo.create('tr', {id: "foot_row"}, surveyFoot);  
     var footLabel = dojo.create('td', {id: "foot_label", innerHTML: "<h3>"+localeStrings.SURVEY_FOOT_LABEL+"</h3>"}, footRow);
