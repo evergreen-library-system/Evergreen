@@ -225,17 +225,22 @@ function fleshFMRow(row, fmcls, args) {
             break;
     }
     
+    var required = row.getAttribute('required') == 'required';
     var widget = new openils.widget.AutoFieldWidget({
         idlField : fieldIdl,
         fmObject : fmObject,
         fmClass : fmcls,
         parentNode : span,
         widgetClass : wclass,
-        dijitArgs : {style: wstyle},
+        dijitArgs : {
+            style: wstyle, 
+            required : required
+        },
         orgLimitPerms : ['UPDATE_USER'],
     });
 
     widget.build();
+
     widget._wtype = fmcls;
     widget._fmfield = fmfield;
     widget._addr = args.addr;
