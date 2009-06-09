@@ -1,0 +1,4 @@
+{
+    'TRUE' : 'True',
+    'FALSE' : 'False'
+}
