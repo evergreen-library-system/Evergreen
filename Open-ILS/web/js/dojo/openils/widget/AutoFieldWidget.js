@@ -177,8 +177,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         if(this._buildLinkSelector()) break;
 
                     default:
-                        dojo.require('dijit.form.TextBox');
-                        this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                        if(this.dijitArgs && (this.dijitArgs.required || this.dijitArgs.regExp)) {
+                            dojo.require('dijit.form.ValidationTextBox');
+                            this.widget = new dijit.form.ValidationTextBox(this.dijitArgs, this.parentNode);
+                        } else {
+                            dojo.require('dijit.form.TextBox');
+                            this.widget = new dijit.form.TextBox(this.dijitArgs, this.parentNode);
+                        }
                 }
             }
 
