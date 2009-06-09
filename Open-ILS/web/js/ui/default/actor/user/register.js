@@ -265,6 +265,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                         un.widget.attr('value', this.attr('value'));
                 }
             );
+            return;
         }
     }
 
@@ -286,6 +287,27 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                         this.store.fetch({onComplete:found, query:{id:this.attr('value')}});
                     }
                 );
+                return;
+
+            case 'dob':
+                dojo.connect(widget.widget, 'onChange',
+                    function(newDob) {
+                        if(!newDob) return;
+                        var oldDob = patron.dob();
+                        if(dojo.date.stamp.fromISOString(oldDob) == newDob) return;
+
+                        var juvInterval = orgSettings['global.juvenile_age_threshold'] || '18 years';
+                        var juvWidget = findWidget('au', 'juvenile');
+                        var base = new Date();
+                        base.setTime(base.getTime() - Number(openils.Util.intervalToSeconds(juvInterval) + '000'));
+
+                        if(newDob <= base) // older than global.juvenile_age_threshold
+                            juvWidget.widget.attr('value', false);
+                        else
+                            juvWidget.widget.attr('value', true);
+                    }
+                );
+                return;
         }
     }
 
@@ -310,6 +332,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                         );
                     }
                 );
+                return;
         }
     }
 }
