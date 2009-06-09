@@ -70,7 +70,14 @@ sub retrieve_penalties {
     my($class, $e, $user_id, $context_org, @fatal_mask) = @_;
 
     my $penalties = $e->search_actor_user_standing_penalty([
-        {usr => $user_id, org_unit => $U->get_org_ancestors($context_org)},
+        {
+            usr => $user_id, 
+            org_unit => $U->get_org_ancestors($context_org),
+            '-or' => [
+                {stop_date => undef},
+                {stop_date => {'>' => 'now'}}
+            ],
+        },
         {flesh => 1, flesh_fields => {ausp => ['standing_penalty']}}
     ]);
 
