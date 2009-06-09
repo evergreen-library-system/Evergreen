@@ -1639,6 +1639,8 @@
 <!ENTITY staff.server.admin.org_settings.circ.lost_immediately_available.desc "Lost items are usable on checkin instead of going \'home\' first">
 <!ENTITY staff.server.admin.org_settings.opac.allow_pending_address "OPAC: Allow pending addresses">
 <!ENTITY staff.server.admin.org_settings.opac.allow_pending_address.desc "If enabled, patrons can create and edit existing addresses.  Addresses are kept in a pending state until staff approves the changes">
+<!ENTITY staff.server.admin.org_settings.ui.circ.show_billing_tab_on_bills "Show billing tab first when bills are present">
+<!ENTITY staff.server.admin.org_settings.ui.circ.show_billing_tab_on_bills.desc "If enabled and a patron has outstanding bills and the alert page is not required, show the billing tab by default, instead of the checkout tab, when a patron is loaded">
 
 
 <!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
