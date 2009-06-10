@@ -168,10 +168,11 @@
 	}
 
 	function get_bool(a) {
-		// Normal javascript interpretation except 'f' == false, per postgres, and 'F' == false
-		// So false includes 'f', '', 0, null, and undefined
+		// Normal javascript interpretation except 'f' == false, per postgres, and 'F' == false, and '0' == false (newer JSON is returning '0' instead of 0 in cases)
+		// So false includes 'f', '', '0', 0, null, and undefined
 		if (a == 'f') return false;
 		if (a == 'F') return false;
+		if (a == '0') return false;
 		if (a) return true; else return false;
 	}
 

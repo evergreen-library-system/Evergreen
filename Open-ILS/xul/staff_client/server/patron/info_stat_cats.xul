@@ -107,7 +107,7 @@
 				sp.appendChild(actsc_node);
 				actsc_node.hidden = false;
 				apply(actsc_node,'name',my_actsc[i].name());
-				if (my_actsc[i].opac_visible()) {
+				if (get_bool(my_actsc[i].opac_visible())) {
 					apply(actsc_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.opac_visible'));
 				} else {
 					apply(actsc_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.not_opac_visible'));
@@ -146,7 +146,7 @@
 				actsc_node.hidden = false;
 
 				apply(actsc_node,'name',sc.name());
-				if (sc.opac_visible()) {
+				if (get_bool(sc.opac_visible())) {
 					apply(actsc_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.opac_visible'));
 				} else {
 					apply(actsc_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.not_opac_visible'));

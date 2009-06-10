@@ -158,7 +158,7 @@ function scInsertCat( tbody, cat, type ) {
 	$n(row, 'sc_edit').onclick = function(){ scEdit(tbody, type, cat); };
 	$n(row, 'sc_owning_lib').appendChild( text( findOrgUnit(cat.owner()).name() ));
 
-	if( cat.opac_visible() ) unHideMe($n(row, 'sc_opac_visible'));
+	if( cat.opac_visible() != 0 && cat.opac_visible() != '0' ) unHideMe($n(row, 'sc_opac_visible'));
 	else unHideMe($n(row, 'sc_opac_invisible'));
 
 	tbody.appendChild(row);
@@ -324,7 +324,7 @@ function scEdit( tbody, type, cat ) {
 	name.focus();
 	name.select();
 
-	if( cat.opac_visible() ) {
+	if( cat.opac_visible() != 0 && cat.opac_visible() != '0' ) {
 		$n( $n(row, 'sc_edit_opac_vis'), 
 			'sc_edit_opac_visibility').checked = true;
 	} else {
@@ -359,7 +359,7 @@ function scEditGo( type, cat, row, selector ) {
 	if(!name) return false;
 
 	var isvisible = false;
-	if( cat.opac_visible() ) isvisible = true;
+	if( cat.opac_visible() != 0 && cat.opac_visible() != '0' ) isvisible = true;
 
 	if( (name == cat.name()) && (visible == isvisible) 
 		&& (newlib == cat.owner()) ) { return true; }
