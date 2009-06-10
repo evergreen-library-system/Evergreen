@@ -31,7 +31,7 @@
 				g.volumes = {};
 
 				for (var i = 0; i < g.barcodes.length; i++) {
-					var copy = g.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ g.barcodes[i] ] );
+					var copy = g.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE.authoritative', [ g.barcodes[i] ] );
 					if (typeof copy.ilsevent != 'undefined') throw(copy);
 					if (!g.volumes[ copy.call_number() ]) {
 						var volume = g.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ copy.call_number() ] );
