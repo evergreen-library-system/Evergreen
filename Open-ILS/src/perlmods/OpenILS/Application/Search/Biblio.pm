@@ -276,7 +276,9 @@ sub fleshed_copy_retrieve {
 
 __PACKAGE__->register_method(
 	method => 'fleshed_by_barcode',
-	api_name	=> "open-ils.search.asset.copy.fleshed2.find_by_barcode",);
+	api_name	=> "open-ils.search.asset.copy.fleshed2.find_by_barcode",
+    authoritative => 1,
+);
 sub fleshed_by_barcode {
 	my( $self, $conn, $barcode ) = @_;
 	my $e = new_editor();
@@ -289,7 +291,9 @@ sub fleshed_by_barcode {
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_retrieve2",
-	api_name	=> "open-ils.search.asset.copy.fleshed2.retrieve",);
+	api_name	=> "open-ils.search.asset.copy.fleshed2.retrieve",
+    authoritative => 1,
+);
 
 sub fleshed_copy_retrieve2 { 
 	my( $self, $client, $id ) = @_;
@@ -330,7 +334,8 @@ sub fleshed_copy_retrieve2 {
 
 __PACKAGE__->register_method(
 	method => 'flesh_copy_custom',
-	api_name => 'open-ils.search.asset.copy.fleshed.custom'
+	api_name => 'open-ils.search.asset.copy.fleshed.custom',
+    authoritative => 1,
 );
 
 sub flesh_copy_custom {
@@ -373,7 +378,8 @@ sub biblio_barcode_to_title {
 
 __PACKAGE__->register_method(
     method => 'title_id_by_item_barcode',
-    api_name => 'open-ils.search.bib_id.by_barcode'
+    api_name => 'open-ils.search.bib_id.by_barcode',
+    authoritative => 1,
 );
 
 sub title_id_by_item_barcode {
