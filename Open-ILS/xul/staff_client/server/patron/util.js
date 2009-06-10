@@ -6,7 +6,7 @@ patron.util = {};
 patron.util.EXPORT_OK	= [ 
 	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', /*'std_map_row_to_column',*/ 'std_map_row_to_columns',
 	'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id',
-    'merge'
+    'merge', 'ausp_columns'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
