@@ -30,6 +30,7 @@ var addrTemplateRows;
 var cgi;
 var cloneUser;
 
+
 if(!window.xulG) var xulG = null;
 
 
@@ -314,6 +315,24 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                     }
                 );
                 return;
+
+            case 'first_given_name':
+            case 'family_name':
+                dojo.connect(widget.widget, 'onChange',
+                    function(newVal) { uEditDupeSearch('name', newVal); });
+                return;
+
+            case 'email':
+                dojo.connect(widget.widget, 'onChange',
+                    function(newVal) { uEditDupeSearch('email', newVal); });
+                return;
+
+            case 'ident_value':
+            case 'ident_value2':
+                dojo.connect(widget.widget, 'onChange',
+                    function(newVal) { uEditDupeSearch('ident', newVal); });
+                return;
+
         }
     }
 
@@ -341,6 +360,41 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                 return;
         }
     }
+}
+
+function uEditDupeSearch(type, value) {
+    var search;
+    switch(type) {
+
+        case 'name':
+            var fname = findWidget('au', 'first_given_name').widget.attr('value');
+            var lname = findWidget('au', 'family_name').widget.attr('value');
+            if( !(fname && lname) ) return;
+            search = {
+                first_given_name : {value : fname, group : 0},
+                family_name : {value : lname, group : 0},
+            };
+            break;
+
+        case 'email':
+            search = {email : {value : value, group : 0}};
+            break;
+
+        case 'ident':
+            search = {ident : {value : value, group : 2}};
+            break;
+    }
+
+    fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.patron.search.advanced'],
+        {   async: true,
+            params: [openils.User.authtoken, search],
+            oncomplete : function(r) {
+                var resp = openils.Util.readResponse(r);
+                console.log(js2JSON(resp));
+            }
+        }
+    );
 }
 
 function getByName(node, name) {
