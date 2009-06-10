@@ -74,6 +74,7 @@ const api = {
 	'FM_ACP_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed2.retrieve', 'secure' : false },
 	//'FM_ACP_RETRIEVE_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.find_by_barcode' },
 	'FM_ACP_RETRIEVE_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed2.find_by_barcode', 'secure' : false },
+	'FM_ACP_RETRIEVE_VIA_BARCODE.authoritative' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed2.find_by_barcode.authoritative', 'secure' : false },
 	'FM_ACP_FLESHED_BATCH_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.batch.retrieve', 'secure' : false },
 	'FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.batch.retrieve.authoritative', 'secure' : false },
 	'FM_ACP_FLESHED_BATCH_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy.fleshed.batch.update' },
