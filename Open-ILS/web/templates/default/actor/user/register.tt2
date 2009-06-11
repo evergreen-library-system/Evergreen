@@ -35,6 +35,18 @@
         font-weight: bold;
         padding: 20px;
     }
+
+    #uedit-dupe-div {
+        position: fixed;
+        top:124px;
+        right:30px;
+        width:300px;
+        border:2px dashed #d9e8f9;
+        -moz-border-radius: 10px;
+        font-weight: bold;
+        padding: 20px;
+    }
+
     .uedit-help {
         width: 25px;
         border:1px solid #e0e0e0;
@@ -166,6 +178,13 @@
     <legend id='uedit-help-field'/>
     <div id='uedit-help-text'/>
 </fieldset>
+
+<!-- duplicate patron search results -->
+<div id='uedit-dupe-div' class='hidden'>
+    <div><a href='javascript:void(0);' id='uedit-dupe-names-link'></a></div>
+    <div><a href='javascript:void(0);' id='uedit-dupe-email-link'></a></div>
+    <div><a href='javascript:void(0);' id='uedit-dupe-ident-link'></a></div>
+</div>
 
 [% END %]
 

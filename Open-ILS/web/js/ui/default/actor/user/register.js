@@ -367,6 +367,7 @@ function uEditDupeSearch(type, value) {
     switch(type) {
 
         case 'name':
+            openils.Util.hide('uedit-dupe-names-link');
             var fname = findWidget('au', 'first_given_name').widget.attr('value');
             var lname = findWidget('au', 'family_name').widget.attr('value');
             if( !(fname && lname) ) return;
@@ -377,10 +378,12 @@ function uEditDupeSearch(type, value) {
             break;
 
         case 'email':
+            openils.Util.hide('uedit-dupe-email-link');
             search = {email : {value : value, group : 0}};
             break;
 
         case 'ident':
+            openils.Util.hide('uedit-dupe-ident-link');
             search = {ident : {value : value, group : 2}};
             break;
     }
@@ -391,7 +394,34 @@ function uEditDupeSearch(type, value) {
             params: [openils.User.authtoken, search],
             oncomplete : function(r) {
                 var resp = openils.Util.readResponse(r);
-                console.log(js2JSON(resp));
+
+                if(resp && resp.length > 0) {
+                    openils.Util.hide('uedit-help-div');
+                    openils.Util.show('uedit-dupe-div');
+                    var link;
+                    switch(type) {
+                        case 'name':
+                            link = dojo.byId('uedit-dupe-names-link');
+                            link.innerHTML = 'Found ' + resp.length + ' patrons with the same name';
+                            break;
+                        case 'email':
+                            link = dojo.byId('uedit-dupe-email-link');
+                            link.innerHTML = 'Found ' + resp.length + ' patrons with the same email';
+                            break;
+                        case 'ident':
+                            link = dojo.byId('uedit-dupe-ident-link');
+                            link.innerHTML = 'Found ' + resp.length + ' patrosn with the same identification';
+                            break;
+                    }
+
+                    openils.Util.show(link);
+                    link.onclick = function() {
+                        if(window.xulG)
+                            window.xulG.spawn_search(search);
+                        else
+                            console.log("running XUL patron search " + js2JSON(search));
+                    }
+                }
             }
         }
     );
@@ -403,7 +433,8 @@ function getByName(node, name) {
 
 
 function ueLoadContextHelp(fmcls, fmfield) {
-    openils.Util.removeCSSClass(dojo.byId('uedit-help-div'), 'hidden');
+    openils.Util.hide('uedit-dupe-div');
+    openils.Util.show('uedit-help-div');
     dojo.byId('uedit-help-field').innerHTML = fieldmapper.IDL.fmclasses[fmcls].field_map[fmfield].label;
     dojo.byId('uedit-help-text').innerHTML = fieldDoc[fmcls][fmfield].string();
 }
