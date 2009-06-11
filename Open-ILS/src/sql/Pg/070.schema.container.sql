@@ -63,6 +63,7 @@ CREATE TABLE container.copy_bucket_item (
     pos         INT,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+CREATE INDEX copy_bucket_item_bucket_idx ON container.copy_bucket_item (bucket);
 
 CREATE TABLE container.copy_bucket_item_note (
     id      SERIAL      PRIMARY KEY,
