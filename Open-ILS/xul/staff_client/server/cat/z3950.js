@@ -519,27 +519,27 @@ cat.z3950.prototype = {
             obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','false');
             obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','false');
             if (typeof results.length == 'undefined') results = [ results ];
+
+            var total_showing = 0;
+            var total_count = 0;
+            var tooltip_msg = '';
+
             for (var i = 0; i < results.length; i++) {
                 if (results[i].query) {
-                    x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-                    x.appendChild( document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.raw_query', [results[i].query])));
+                    tooltip_msg += $("catStrings").getFormattedString('staff.cat.z3950.handle_results.raw_query', [results[i].query]) + '\n';
                 }
                 if (results[i].count) {
                     if (results[i].records) {
-                        x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
                         var showing = obj.search_params.offset + results[i].records.length; 
-                        x.appendChild(
-                            document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.showing_results',
-								[(showing > results[i].count ? results[i].count : showing), results[i].count, results[i].service]))
-                        );
+                        total_showing += obj.search_params.offset + results[i].records.length; 
+                        total_count += results[i].count;
+                        tooltip_msg += $("catStrings").getFormattedString('staff.cat.z3950.handle_results.showing_results', [(showing > results[i].count ? results[i].count : showing), results[i].count, results[i].service]) + '\n';
                     }
                     if (obj.search_params.offset + obj.search_params.limit <= results[i].count) {
                         obj.controller.view.page_next.disabled = false;
                     }
                 } else {
-                        x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-                        x.appendChild(
-                            document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.num_of_results', [(results[i].count ? results[i].count : 0)])));
+                    tooltip_msg += $("catStrings").getFormattedString('staff.cat.z3950.handle_results.num_of_results', [(results[i].count ? results[i].count : 0)]) + '\n';
                 }
                 if (results[i].records) {
                     obj.result_set[ ++obj.number_of_result_sets ] = results[i];
@@ -569,6 +569,25 @@ cat.z3950.prototype = {
                     );
                 }
             }
+            if (total_showing) {
+                x = document.createElement('description'); 
+                x.setAttribute('crop','end');
+                x.setAttribute('tooltiptext',tooltip_msg);
+                obj.controller.view.result_message.appendChild(x);
+                x.appendChild(
+                    document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.showing_total_results',
+                        [(total_showing > total_count ? total_count : total_showing), total_count]))
+                );
+            } else {
+                x = document.createElement('description'); 
+                x.setAttribute('crop','end');
+                x.setAttribute('tooltiptext',tooltip_msg);
+                obj.controller.view.result_message.appendChild(x);
+                x.appendChild(
+                    document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.num_of_results', [(total_count ? total_count : 0)]))
+                );
+            }            
+
 		} catch(E) {
 			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.handle_results.search_result_error'),E);
 		}
