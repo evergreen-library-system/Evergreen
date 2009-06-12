@@ -10,7 +10,7 @@ SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
 
 install-exec-local: build
 
-build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp bundle
+build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp 
 	@echo To test the staff client:
 	@echo "  cd build/"
 	@echo "  xulrunner application.ini"
