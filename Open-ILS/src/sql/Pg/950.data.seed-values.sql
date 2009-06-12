@@ -1247,6 +1247,29 @@ INSERT INTO permission.perm_list (code) VALUES ('DELETE_IMPORT_TRASH_FIELD');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_IMPORT_ITEM');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_IMPORT_ITEM_ATTR_DEF');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_IMPORT_TRASH_FIELD');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING_ALL');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.lost_materials_processing_fee');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.default_item_price');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.auth.opac_timeout');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.auth.staff_timeout');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.org.bounced_emails');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.credit.allow');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.default_locale');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.void_overdue_on_lost');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.hold_stalling.soft');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.opac.barcode_regex');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.reshelving_complete.interval');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty');
+
 
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
