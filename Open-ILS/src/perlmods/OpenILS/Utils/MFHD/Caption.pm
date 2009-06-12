@@ -510,12 +510,39 @@ sub match_season {
     return ($pat eq $date[1]);
 }
 
+sub subsequent_season {
+    my $pat = shift;
+    my $cur = shift;
+
+    return undef if (($pat < 21) || ($pat > 24));
+
+    if ($cur->[1] >= $pat) {
+	# current season is on or past pattern season in this year,
+	# advance to next year
+	$cur->[0] += 1;
+    }
+    # Either we've advanced to the next year or the current season
+    # is before the pattern season in the current year. Either way,
+    # all that remains is to set the season properly
+    $cur->[1] = $pat;
+
+    return $cur;
+}
+
 sub match_year {
     my $pat = shift;
     my @date = @_;
 
     # XXX WRITE ME
     return 0;
+}
+
+sub subsequent_year {
+    my $pat = shift;
+    my $cur = shift;
+
+    # XXX WRITE ME
+    return undef;
 }
 
 sub match_issue {
@@ -526,6 +553,14 @@ sub match_issue {
     # ensures that when we're processing chronological patterns
     # we don't match an enumeration pattern.
     return 0;
+}
+
+sub subsequent_issue {
+    my $pat = shift;
+    my $cur = shift;
+
+    # Issue generation is handled separately
+    return undef;
 }
 
 my %dispatch = (
@@ -733,6 +768,15 @@ sub calendar_increment {
 	return $incr if $incr;
     }
 }
+
+my %generators = (
+		  'd' => \&subsequent_day,
+		  'e' => \&subsequent_issue, # not a chron code
+		  'w' => \&subsequent_week,
+		  'm' => \&subsequent_month,
+		  's' => \&subsequent_season,
+		  'y' => \&subsequent_year,
+);
 
 sub next_date {
     my $self = shift;
