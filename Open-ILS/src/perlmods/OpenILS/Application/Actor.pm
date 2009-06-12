@@ -3053,6 +3053,10 @@ sub merge_users {
     my $e = new_editor(xact => 1, authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
 
+    # disallow the merge if any subordinate accounts are in collections
+    my $colls = $e->search_money_collections_tracker({usr => $user_ids}, {idlist => 1});
+    return OpenILS::Event->new('MERGED_USER_IN_COLLECTIONS', payload => $user_ids) if @$colls;
+
     my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
     my $del_addrs = ($U->ou_ancestor_setting_value(
         $master_user->home_ou, 'circ.user_merge.delete_addresses', $e)) ? 't' : 'f';
