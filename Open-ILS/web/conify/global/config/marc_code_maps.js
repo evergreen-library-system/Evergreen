@@ -21,6 +21,7 @@ dojo.require('dojo.cookie');
 dojo.require('dojo.parser');
 dojo.require('dojo.string');
 dojo.require('dojo.data.ItemFileWriteStore');
+dojo.require('dijit.form.Form');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.ValidationTextBox');
 dojo.require('dijit.form.Textarea');
