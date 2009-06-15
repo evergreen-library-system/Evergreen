@@ -246,16 +246,17 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 	var ho = holdings.online();
 	var hm = holdings.missing();
 	var hinc = holdings.incomplete();
+	var hloc = holdings.location() || 'MFHD';
 
 	if (	hh.length == 0 && hch.length == 0 && hs.length == 0 &&
 		hcs.length == 0 && hi.length == 0 && hci.length == 0 &&
-		ho.length == 0 && hm.length == 0 && hinc.length == 0
+		ho.length == 0 && hm.length == 0 && hinc.length == 0 && !isXUL()
 	) {
 		return null;
 	}
 
 	dojo.place("<table style='width: 100%;'><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>" +
-		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [holdings.location()]) +
+		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [hloc]) +
 		"</caption><tbody id='rdetail_holdings_tbody_" + entryNum +
 		"'></tbody></table>", "rdetail_details_table", "after"
 	);
