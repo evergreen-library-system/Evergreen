@@ -852,7 +852,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Reference?" name="ref_flag" reporter:datatype="bool"/>
 			<field reporter:label="Holdable?" name="holdable" reporter:datatype="bool"/>
 			<field reporter:label="Range is from Owning Lib?" name="distance_is_from_owner" reporter:datatype="bool"/>
-			<field reporter:label="Transit Range" name="transit_range" reporter:datatype="int"/>
+			<field reporter:label="Transit Range" name="transit_range" reporter:datatype="link"/>
 			<field reporter:label="Max Holds" name="max_holds" reporter:datatype="int"/>
 			<field reporter:label="Max includes Frozen" name="include_frozen_holds" reporter:datatype="bool"/>
 			<field reporter:label="Copy Age Hold Protection Rule" name="age_hold_protect_rule" reporter:datatype="link"/>
@@ -870,6 +870,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
 			<link field="age_hold_protect_rule" reltype="has_a" key="id" map="" class="crahp"/>
+            <link field="transit_range" reltype="has_a" key="id" map="" class="aout"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
