@@ -10,7 +10,6 @@
             autoHeight='true'
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['org_unit', 'active', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format']"
-            suppressFields="['circulate', 'duration_rule', 'max_fine_rule', 'recurring_fine_rule', 'script_test']"
             defaultCellWidth='"auto"'
             query="{id: '*'}"
             fmClass='ccmm'
