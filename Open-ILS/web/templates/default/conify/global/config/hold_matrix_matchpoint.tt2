@@ -19,12 +19,13 @@
             autoHeight='true'
             dojoType="openils.widget.AutoGrid" 
             fieldOrder="['id', 'user_home_ou', 'request_ou', 'pickup_ou', 'item_owning_ou', 'item_circ_ou', 'usr_grp', 'requestor_grp', 'circ_modifier']"
-            suppressFields="['holdable', 'max_holds', 'transit_range', 'include_frozen_holds', 'stop_blocked_user', 'age_hold_protect_rule' ]"
             defaultCellWidth='"auto"'
             query="{id: '*'}" 
             fmClass='chmm' 
             editStyle='pane'
-            editOnEnter='true'>
+            editOnEnter='true'
+            showColumnPicker='true'
+            columnPickerPrefix='"conify.config.hold_matrix_matchpoint"'>
     </table>
     <div/>
 </div>
