@@ -210,5 +210,60 @@ COMMENT ON FUNCTION actor.approve_pending_address(INT) IS $$
  */
 $$;
 
-
+CREATE OR REPLACE FUNCTION container.clear_expired_circ_history_items( 
+	 ac_usr IN INTEGER
+) RETURNS VOID AS $$
+--
+-- Delete old circulation bucket items for a specified user.
+-- "Old" means older than the interval specified by a
+-- user-level setting, if it is so specified.
+--
+DECLARE
+    threshold TIMESTAMP WITH TIME ZONE;
+BEGIN
+	-- Sanity check
+	IF ac_usr IS NULL THEN
+		RETURN;
+	END IF;
+	-- Determine the threshold date that defines "old".  Subtract the
+	-- interval from the system date, then truncate to midnight.
+	SELECT
+		date_trunc( 
+			'day',
+			now() - CAST( translate( value, '"', '' ) AS INTERVAL )
+		)
+	INTO
+		threshold
+	FROM
+		actor.usr_setting
+	WHERE
+		usr = ac_usr
+		AND name = 'patron.max_reading_list_interval';
+	--
+	IF threshold is null THEN
+		-- No interval defined; don't delete anything
+		-- RAISE NOTICE 'No interval defined for user %', ac_usr;
+		return;
+	END IF;
+	--
+	-- RAISE NOTICE 'Date threshold: %', threshold;
+	--
+	-- Threshold found; do the delete
+	delete from container.copy_bucket_item
+	where
+		bucket in
+		(
+			select
+				id
+			from
+				container.copy_bucket
+			where
+				owner = ac_usr
+				and btype = 'circ_history'
+		)
+		and create_time < threshold;
+	--
+	RETURN;
+END;
+$$ LANGUAGE plpgsql;
 
