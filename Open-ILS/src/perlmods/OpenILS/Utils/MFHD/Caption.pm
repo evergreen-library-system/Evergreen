@@ -249,10 +249,10 @@ sub match_day {
 
 sub subsequent_day {
     my $pat = shift;
-    my $cur = shift;
-    my $dt = DateTime->new(year  => $cur->[0],
-			   month => $cur->[1],
-			   day   => $cur->[2]);
+    my @cur = @_;
+    my $dt = DateTime->new(year  => $cur[0],
+			   month => $cur[1],
+			   day   => $cur[2]);
 
     if (exists $daynames{$pat}) {
 	# dd: published on the given weekday
@@ -274,32 +274,36 @@ sub subsequent_day {
 	    # current date is on or after $pat: next one is next month
 	    $dt->set(day => $pat);
 	    $dt->add(months => 1);
-	    $cur->[0] = $dt->year;
-	    $cur->[1] = $dt->month;
-	    $cur->[2] = $dt->day;
+	    $cur[0] = $dt->year;
+	    $cur[1] = $dt->month;
+	    $cur[2] = $dt->day;
+	} else {
+	    # current date is before $pat: set day to pattern
+	    $cur[2] = $pat;
 	}
-	# current date is before $pat: set month to pattern
-	# or we've adjusted the year to next year, now fix the month
-	$cur->[1] = $pat;
     } elsif (length($pat) == 4) {
 	# MMDD: published on the given day of the given month
 	my ($mon, $day) = unpack("a2a2", $pat);
 
-	if (on_or_after($mon, $day, $cur->[1], $cur->[2])) {
+	if (on_or_after($mon, $day, $cur[1], $cur[2])) {
 	    # Current date is on or after pattern; next one is next year
-	    $cur->[0] += 1;
+	    $cur[0] += 1;
 	}
-	# Year is now right. Either it's next year (because of on_or_before)
+	# Year is now right. Either it's next year (because of on_or_after)
 	# or it's this year, because the current date is NOT on or after
 	# the pattern. Just fix the month and day
-	$cur->[1] = $mon;
-	$cur->[2] = $day;
+	$cur[1] = $mon;
+	$cur[2] = $day;
     } else {
 	carp "Invalid day pattern '$pat'";
 	return undef;
     }
 
-    return $cur;
+    foreach my $i (0..$#cur) {
+	$cur[$i] = '0' . (0+$cur[$i]) if $cur[$i] < 10;
+    }
+
+    return @cur;
 }
 
 
@@ -424,11 +428,11 @@ sub match_week {
 #
 sub subsequent_week {
     my $pat = shift;
-    my $cur = shift;
+    my @cur = @_;
     my $candidate;
-    my $dt = DateTime->new(year => $cur->[0],
-			   month=> $cur->[1],
-			   day  => $cur->[2]);
+    my $dt = DateTime->new(year => $cur[0],
+			   month=> $cur[1],
+			   day  => $cur[2]);
 
     if ($pat =~ m/^$weekpat$daypat$/) {
 	# WWdd: published on given weekday of given week of every month
@@ -489,11 +493,15 @@ sub subsequent_week {
 	return undef;
     }
 
-    $cur->[0] = $candidate->year;
-    $cur->[1] = $candidate->month;
-    $cur->[2] = $candidate->day;
+    $cur[0] = $candidate->year;
+    $cur[1] = $candidate->month;
+    $cur[2] = $candidate->day;
 
-    return $cur;
+    foreach my $i (0..$#cur) {
+	$cur[$i] = '0' . (0+$cur[$i]) if $cur[$i] < 10;
+    }
+
+    return @cur;
 }
 
 sub match_month {
@@ -512,21 +520,24 @@ sub match_season {
 
 sub subsequent_season {
     my $pat = shift;
-    my $cur = shift;
+    my @cur = @_;
 
-    return undef if (($pat < 21) || ($pat > 24));
+    if (($pat < 21) || ($pat > 24)) {
+	carp "Unexpected season '$pat'";
+	return undef;
+    }
 
-    if ($cur->[1] >= $pat) {
+    if ($cur[1] >= $pat) {
 	# current season is on or past pattern season in this year,
 	# advance to next year
-	$cur->[0] += 1;
+	$cur[0] += 1;
     }
     # Either we've advanced to the next year or the current season
     # is before the pattern season in the current year. Either way,
     # all that remains is to set the season properly
-    $cur->[1] = $pat;
+    $cur[1] = $pat;
 
-    return $cur;
+    return @cur;
 }
 
 sub match_year {
@@ -564,12 +575,21 @@ sub subsequent_issue {
 }
 
 my %dispatch = (
-		'd' => \&match_day,
-		'e' => \&match_issue, # not really a "chron" code
-		'w' => \&match_week,
-		'm' => \&match_month,
-		's' => \&match_season,
-		'y' => \&match_year,
+		d => \&match_day,
+		e => \&match_issue, # not really a "chron" code
+		w => \&match_week,
+		m => \&match_month,
+		s => \&match_season,
+		y => \&match_year,
+);
+
+my %generators = (
+		  d => \&subsequent_day,
+		  e => \&subsequent_issue, # not really a "chron" code
+		  w => \&subsequent_week,
+		  m => \&subsequent_month,
+		  s => \&subsequent_season,
+		  y => \&subsequent_year,
 );
 
 sub regularity_match {
@@ -605,6 +625,8 @@ sub is_omitted {
     my $self = shift;
     my @date = @_;
 
+#     printf("# is_omitted: testing date %s: %d\n", join('/', @date),
+# 	   $self->regularity_match('o', @date));
     return $self->regularity_match('o', @date);
 }
 
@@ -690,7 +712,6 @@ sub incr_date {
 		$new[0] += 1;
 		$new[1] -= 12;
 	    }
-	    $new[1] = '0' . $new[1] if ($new[1] < 10);
 	}
     } elsif (scalar(@new) == 3) {
 	# Year, Month, Day: now it gets complicated.
@@ -705,10 +726,12 @@ sub incr_date {
 	    $new[1] = $dt->month;
 	    $new[2] = $dt->day;
 	}
-	$new[1] = '0' . $new[1] if ($new[1] < 10);
-	$new[2] = '0' . $new[2] if ($new[2] < 10);
     } else {
 	warn("Don't know how to cope with @new");
+    }
+
+    foreach my $i (0..$#new) {
+	$new[$i] = '0' . (0+$new[$i]) if $new[$i] < 10;
     }
 
     return @new;
@@ -769,15 +792,6 @@ sub calendar_increment {
     }
 }
 
-my %generators = (
-		  'd' => \&subsequent_day,
-		  'e' => \&subsequent_issue, # not a chron code
-		  'w' => \&subsequent_week,
-		  'm' => \&subsequent_month,
-		  's' => \&subsequent_season,
-		  'y' => \&subsequent_year,
-);
-
 sub next_date {
     my $self = shift;
     my $next = shift;
@@ -793,52 +807,78 @@ sub next_date {
     my $freq = $pattern->{w};
 
     foreach my $i (0..$#keys) {
-	$new[$i] = $cur[$i] = $next->{$keys[$i]} if exists $next->{$keys[$i]};
+	$cur[$i] = $next->{$keys[$i]} if exists $next->{$keys[$i]};
     }
 
     # If the current issue has a combined date (eg, May/June)
     # get rid of the first date and base the calculation
     # on the final date in the combined issue.
-    $new[-1] =~ s|^[^/]+/||;
+    $cur[-1] =~ s|^[^/]+/||;
 
-    # XXX Insert new date generation code in here that uses publication
-    # patterns.
+    if (defined $pattern->{y}->{p}) {
+	# There is a $y publication pattern defined in the record:
+	# use it to calculate the next issue date.
 
-###
-### Old code: only works for simple cases
-###
-    # If $frequency is not one of the standard codes defined in %increments
-    # then there has to be a $yp publication regularity pattern that
-    # lists the dates of publication. Use that that list to find the next
-    # date following the current one.
-    # XXX: the code doesn't handle this case yet.
-    if (!defined($freq)) {
-	carp "Undefined frequency in next_date!";
-    } elsif (!exists $increments{$freq}) {
-	carp "Don't know how to deal with frequency '$freq'!";
-    } else {
-	#
-	# One of the standard defined issue frequencies
-	#
-	@new = incr_date($increments{$freq}, @new);
+	# XXX TODO: need to handle combined and omitted issues.
+	foreach my $pubpat (@{$pattern->{y}->{p}}) {
+	    my $chroncode = substr($pubpat, 0, 1);
+	    my @pats = split(/,/, substr($pubpat, 1));
 
-	while ($self->is_omitted(@new)) {
-	    @new = incr_date($increments{$freq}, @new);
+	    if (!exists $generators{$chroncode}) {
+		carp "Unrecognized chroncode '$chroncode'";
+		return undef;
+	    }
+
+	    foreach my $pat (@pats) {
+		@candidate = $generators{$chroncode}->($pat, @cur);
+		while ($self->is_omitted(@candidate)) {
+# 		    printf("# pubpat omitting date '%s'\n",
+# 			   join('/', @candidate));
+		    @candidate = $generators{$chroncode}->($pat, @candidate);
+		}
+
+# 		printf("# testing candidate date '%s'\n", join('/', @candidate));
+		if (!defined($new[0])
+		    || !on_or_after($candidate[0], $candidate[1], $new[0], $new[1])) {
+		    # first time through the loop
+		    # or @candidate is before @new => @candidate is the next
+		    # issue.
+		    @new = @candidate;
+# 		    printf("# selecting candidate date '%s'\n", join('/', @new));
+		}
+	    }
 	}
+    } else {
+	# There is no $y publication pattern defined, so use
+	# the $w frequency to figure out the next date
 
-	if ($self->is_combined(@new)) {
-	    my @second_date = incr_date($increments{$freq}, @new);
+	if (!defined($freq)) {
+	    carp "Undefined frequency in next_date!";
+	} elsif (!exists $increments{$freq}) {
+	    carp "Don't know how to deal with frequency '$freq'!";
+	} else {
+	    #
+	    # One of the standard defined issue frequencies
+	    #
+	    @new = incr_date($increments{$freq}, @cur);
 
-	    # I am cheating: This code assumes that only the smallest
-	    # time increment is combined. So, no "Apr 15/May 1" allowed.
-	    $new[-1] = $new[-1] . '/' . $second_date[-1];
+	    while ($self->is_omitted(@new)) {
+		@new = incr_date($increments{$freq}, @new);
+	    }
+
+	    if ($self->is_combined(@new)) {
+		my @second_date = incr_date($increments{$freq}, @new);
+
+		# I am cheating: This code assumes that only the smallest
+		# time increment is combined. So, no "Apr 15/May 1" allowed.
+		$new[-1] = $new[-1] . '/' . $second_date[-1];
+	    }
 	}
     }
 
     for my $i (0..$#new) {
 	$next->{$keys[$i]} = $new[$i];
     }
-
     # Figure out if we need to adust volume number
     # right now just use the $carry that was passed in.
     # in long run, need to base this on ($carry or date_change)
