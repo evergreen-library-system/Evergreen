@@ -296,6 +296,21 @@ CREATE INDEX hold_request_current_copy_idx ON action.hold_request (current_copy)
 CREATE INDEX hold_request_prev_check_time_idx ON action.hold_request (prev_check_time);
 
 
+CREATE TABLE action.hold_request_note (
+
+    id     BIGSERIAL PRIMARY KEY,
+    hold   BIGINT    NOT NULL REFERENCES action.hold_request (id)
+                              ON DELETE CASCADE
+                              DEFERRABLE INITIALLY DEFERRED,
+    title  TEXT      NOT NULL,
+    body   TEXT      NOT NULL,
+    slip   BOOL      NOT NULL DEFAULT FALSE,
+    pub    BOOL      NOT NULL DEFAULT FALSE
+
+);
+CREATE INDEX ahrn_hold_idx ON action.hold_request_note (hold);
+
+
 CREATE TABLE action.hold_notification (
 	id		SERIAL				PRIMARY KEY,
 	hold		INT				NOT NULL REFERENCES action.hold_request (id) DEFERRABLE INITIALLY DEFERRED,
