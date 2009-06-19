@@ -36,6 +36,10 @@ sub import_authority_record {
 	$rec->edit_date('now');
 	$rec->marc($U->entityize($marc_doc->documentElement->toString));
 
+    my ($arn, $evt) = find_arn($e, $marc_doc);
+    return $evt if $evt;
+    $rec->arn_value($arn);
+
     $rec = $e->create_authority_record_entry($rec) or return $e->die_event;
 
     # we don't care about the result, just fire off the request
@@ -62,6 +66,26 @@ sub overlay_authority_record {
     #$ses->request('open-ils.ingest.full.authority.record', $recid);
 
 	return $rec;
+}
+
+sub find_arn {
+    my($e, $marc_doc) = @_;
+
+    my $xpath = '//marc:controlfield[@tag="001"]';
+    my ($arn) = $marc_doc->documentElement->findvalue($xpath);
+
+    if(my $existing_rec = $e->search_authority_record_entry({arn_value => $arn, deleted => 'f'})->[0]) {
+        # this arn is taken
+        return (
+            undef, 
+            OpenILS::Event->new(
+                'AUTHORITY_RECORD_NUMBER_EXISTS', 
+                payload => {existing_record => $existing_rec, arn => $arn}
+            )
+        );
+    }
+
+    return ($arn);
 }
 
 1;
