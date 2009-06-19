@@ -666,6 +666,36 @@ sub update_hold_if_frozen {
         }
     }
 }
+__PACKAGE__->register_method(
+	method	=> "hold_note_CUD",
+	api_name	=> "open-ils.circ.hold_request.note.cud");
+
+sub hold_note_CUD {
+	my($self, $conn, $auth, $note) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $hold = $e->retrieve_action_hold_request($note->hold)
+        or return $e->die_event;
+
+    if($hold->usr ne $e->requestor->id) {
+        my $usr = $e->retrieve_actor_user($hold->usr);
+        return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
+    }
+
+    if($note->isnew) {
+        $e->create_action_hold_request_note($note) or return $e->die_event;
+    } elsif($note->ischanged) {
+        $e->update_action_hold_request_note($note) or return $e->die_event;
+    } elsif($note->isdeleted) {
+        $e->delete_action_hold_request_note($note) or return $e->die_event;
+    }
+
+    $e->commit;
+    return $note->id;
+}
+
 
 
 __PACKAGE__->register_method(
@@ -1117,7 +1147,7 @@ sub fetch_captured_holds {
                     $hold_id->{id},
                     {
                         flesh => 1,
-                        flesh_fields => {ahr => ['notifications', 'transit']},
+                        flesh_fields => {ahr => ['notifications', 'transit', 'notes']},
                         order_by => {anh => 'notify_time desc'}
                     }
                 ])
@@ -1749,7 +1779,7 @@ sub uber_hold {
 			$hold_id,
 			{
 				flesh => 1,
-				flesh_fields => { ahr => [ 'current_copy', 'usr' ] }
+				flesh_fields => { ahr => [ 'current_copy', 'usr', 'notes' ] }
 			}
 		]
 	) or return $e->event;
