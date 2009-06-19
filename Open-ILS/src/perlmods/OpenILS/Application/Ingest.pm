@@ -583,6 +583,77 @@ package OpenILS::Application::Ingest::Authority;
 use base qw/OpenILS::Application::Ingest/;
 use Unicode::Normalize;
 
+sub rw_authority_ingest_single_object {
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+
+    my ($blob) = $self->method_lookup("open-ils.ingest.full.authority.object.readonly")->run($auth);
+    return undef unless ($blob);
+
+    my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+
+    my $xact = $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+    my $tmp;
+
+    # update full_rec stuff ...
+    $tmp = $cstore->request(
+        'open-ils.cstore.direct.authority.full_rec.id_list.atomic',
+        { record => $auth->id }
+    )->gather(1);
+
+    $cstore->request( 'open-ils.cstore.direct.authority.full_rec.delete' => $_ )->gather(1) for (@$tmp);
+    $cstore->request( 'open-ils.cstore.direct.authority.full_rec.create' => $_ )->gather(1) for (@{ $blob->{full_rec} });
+
+    # XXX when we start extracting authority descriptors and adding sources ...
+    #
+    # update rec_descriptor stuff ...
+    #$tmp = $cstore->request(
+    #    'open-ils.cstore.direct.authority.record_descriptor.id_list.atomic',
+    #    { record => $auth->id }
+    #)->gather(1);
+    #
+    #$cstore->request( 'open-ils.cstore.direct.authority.record_descriptor.delete' => $_ )->gather(1) for (@$tmp);
+    #$cstore->request( 'open-ils.cstore.direct.authority.record_descriptor.create' => $blob->{descriptor} )->gather(1);
+    #$cstore->request( 'open-ils.cstore.direct.authority.record_entry.update' => $auth )->gather(1);
+
+    $cstore->request( 'open-ils.cstore.transaction.commit' )->gather(1) || return undef;;
+    $cstore->disconnect;
+
+    return $auth->id;
+}
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.authority.object",
+    method        => "rw_authority_ingest_single_object",
+    api_level    => 1,
+    argc        => 1,
+);                      
+
+sub rw_authority_ingest_single_record {
+    my $self = shift;
+    my $client = shift;
+    my $rec = shift;
+
+    OpenILS::Application::Ingest->post_init();
+    my $cstore = OpenSRF::AppSession->connect( 'open-ils.cstore' );
+    $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+
+    my $r = $cstore->request( 'open-ils.cstore.direct.authority.record_entry.retrieve' => $rec )->gather(1);
+
+    $cstore->request('open-ils.cstore.transaction.rollback')->gather(1);
+    $cstore->disconnect;
+
+    return undef unless ($r and @$r);
+
+    return ($self->method_lookup("open-ils.ingest.full.authority.object")->run($r))[0];
+}
+__PACKAGE__->register_method(  
+    api_name    => "open-ils.ingest.full.authority.record",
+    method        => "rw_authority_ingest_single_record",
+    api_level    => 1,
+    argc        => 1,
+);                      
+
 sub ro_authority_ingest_single_object {
     my $self = shift;
     my $client = shift;
