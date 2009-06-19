@@ -4731,6 +4731,77 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+    <class id="stgu" controller="open-ils.cstore" oils_obj:fieldmapper="staging::user_stage" oils_persist:tablename="staging.user_stage" reporter:label="User Stage">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.usr_stage_row_id_seq">
+            <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
+            <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
+            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Main (Profile) Permission Group" name="profile" reporter:datatype="text"/>
+            <field reporter:label="Email Address" name="email" reporter:datatype="text"/>
+            <field reporter:label="Password" name="passwd" reporter:datatype="text"/>
+            <field reporter:label="Primary Identification Type" name="ident_type" reporter:datatype="int"/>
+            <field reporter:label="First Name" name="first_given_name" reporter:datatype="text"/>
+            <field reporter:label="Middle Name" name="second_given_name" reporter:datatype="text"/>
+            <field reporter:label="Last Name" name="family_name" reporter:datatype="text"/>
+            <field reporter:label="Daytime Phone" name="day_phone" reporter:datatype="text"/>
+            <field reporter:label="Evening Phone" name="evening_phone" reporter:datatype="text"/>
+            <field reporter:label="Home Library" name="home_ou" reporter:datatype="int"/>
+            <field reporter:label="Date of Birth" name="dob" reporter:datatype="text"/>
+            <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
+        </fields>
+    </class>
+
+    <class id="stgc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="staging::card_stage" oils_persist:tablename="staging.card_stage" reporter:label="Card Stage">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.card_stage_row_id_seq">
+            <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
+            <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
+            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
+            <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
+        </fields>
+    </class>
+
+    <class id="stgma" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="staging::mailing_address_stage" oils_persist:tablename="staging.mailing_address_stage" reporter:label="Mailing Address Stage">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.mailing_address_stage_row_id_seq">
+            <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
+            <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
+            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Street (1)" name="street1" reporter:datatype="text"/>
+            <field reporter:label="Street (2)" name="street2" reporter:datatype="text"/>
+            <field reporter:label="City" name="city" reporter:datatype="text"/>
+            <field reporter:label="State" name="state" reporter:datatype="text"/>
+            <field reporter:label="Country" name="country" reporter:datatype="text"/>
+            <field reporter:label="Postal Code" name="post_code" reporter:datatype="text"/>
+            <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
+        </fields>
+    </class>
+
+    <class id="stgba" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="staging::billing_address_stage" oils_persist:tablename="staging.billing_address_stage" reporter:label="Billing Address Stage">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.billing_address_stage_row_id_seq">
+            <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
+            <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
+            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Street (1)" name="street1" reporter:datatype="text"/>
+            <field reporter:label="Street (2)" name="street2" reporter:datatype="text"/>
+            <field reporter:label="City" name="city" reporter:datatype="text"/>
+            <field reporter:label="State" name="state" reporter:datatype="text"/>
+            <field reporter:label="Country" name="country" reporter:datatype="text"/>
+            <field reporter:label="Postal Code" name="post_code" reporter:datatype="text"/>
+            <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
+        </fields>
+    </class>
+
+    <class id="stgsc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="staging::statcat_stage" oils_persist:tablename="staging.statcat_stage" reporter:label="Statistical Category Stage">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.statcat_stage_row_id_seq">
+            <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
+            <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
+            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Stat Cat ID" name="statcat" reporter:datatype="text"/>
+            <field reporter:label="Stat Cat Value" name="value" reporter:datatype="text"/>
+            <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
+        </fields>
+    </class>
+
 
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
