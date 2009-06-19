@@ -617,7 +617,7 @@ sub import_record_list_impl {
             } else {
                 $logger->info("vl: importing new record");
                 $record = OpenILS::Application::Cat::AuthCommon->import_authority_record(
-                    $rec->marc) #$source);
+                    $e, $rec->marc) #$source);
             }
 
             if($U->event_code($record)) {
