@@ -87,7 +87,7 @@ BEGIN
     PERFORM actor.usr_merge_rows('container.call_number_bucket', 'owner', src_usr, dest_usr);
     PERFORM actor.usr_merge_rows('container.copy_bucket', 'owner', src_usr, dest_usr);
     PERFORM actor.usr_merge_rows('container.user_bucket', 'owner', src_usr, dest_usr);
-    PERFORM actor.usr_merge_rows('container.user_bucket_item', 'target_user', src_usr, dest_usr);
+	UPDATE container.user_bucket_item SET target_user = dest_usr WHERE target_user = src_usr;
 
     -- vandelay.*
     PERFORM actor.usr_merge_rows('vandelay.queue', 'owner', src_usr, dest_usr);
@@ -141,17 +141,17 @@ BEGIN
     -- It's not uncommon to define the reporter schema in a replica 
     -- DB only, so don't assume these tables exist in the write DB.
     BEGIN
-        PERFORM actor.usr_merge_rows('reporter.template', 'owner', src_usr, dest_usr);
+    	UPDATE reporter.template SET owner = dest_usr WHERE owner = src_usr;
     EXCEPTION WHEN undefined_table THEN
         -- do nothing
     END;
     BEGIN
-        PERFORM actor.usr_merge_rows('reporter.report', 'owner', src_usr, dest_usr);
+    	UPDATE reporter.report SET owner = dest_usr WHERE owner = src_usr;
     EXCEPTION WHEN undefined_table THEN
         -- do nothing
     END;
     BEGIN
-        PERFORM actor.usr_merge_rows('reporter.schedule', 'runner', src_usr, dest_usr);
+    	UPDATE reporter.schedule SET runner = dest_usr WHERE runner = src_usr;
     EXCEPTION WHEN undefined_table THEN
         -- do nothing
     END;
