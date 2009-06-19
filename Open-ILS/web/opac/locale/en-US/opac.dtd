@@ -434,6 +434,7 @@ Please see a librarian to renew your account.">
 <!ENTITY opac.holds.xulRecipient "Enter recipient barcode">
 <!ENTITY opac.holds.recipient "Recipient">
 <!ENTITY opac.holds.placeHold "Place Hold">
+<!ENTITY opac.holds.exportRefWorks "Export to RefWorks">
 <!ENTITY opac.holds.contactPhone "Contact telephone number">
 <!ENTITY opac.holds.contactEmail "Contact email address">
 <!ENTITY opac.holds.pickupLocation "Pickup location">

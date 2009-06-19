@@ -368,6 +368,25 @@ function _rdetailDraw(r) {
 	$('rdetail_place_hold').setAttribute(
 			'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
 
+    var RW = $('rdetail_exp_refworks');
+    if (RW) {
+
+        var here = (findOrgUnit(getLocation())).name();
+        var org_name = here.replace(" ", "+");
+        var cgi = new CGI();
+        
+    	RW.setAttribute(
+                'href',
+                'http://www.refworks.com/express/expressimport.asp?vendor='
+                    + org_name
+                    + '&filter=MARC+Format&database=All+MARC+Formats&encoding=65001&url=http%3A%2F%2F'
+                    + cgi.server_name+'/opac/extras/supercat/marctxt/record/'
+                    + record.doc_id()
+        );
+
+    	RW.setAttribute('target', 'RefWorksMain');
+    }
+
 	$('rdetail_img_link').setAttribute('href', buildISBNSrc(cleanISBN(record.isbn()), 'large'));
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
 	runEvt("rdetail", "recordDrawn");
