@@ -267,3 +267,71 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+COMMENT ON FUNCTION container.clear_expired_circ_history_items( ) IS $$
+/*
+ * Delete old circulation bucket items for a specified user.
+ * "Old" means older than the interval specified by a
+ * user-level setting, if it is so specified.
+*/
+$$
+
+CREATE OR REPLACE FUNCTION container.clear_all_expired_circ_history_items( )
+RETURNS VOID AS $$
+--
+-- Delete expired circulation bucket items for all users that have
+-- a setting for patron.max_reading_list_interval.
+--
+DECLARE
+    today        TIMESTAMP WITH TIME ZONE;
+    threshold    TIMESTAMP WITH TIME ZONE;
+	usr_setting  RECORD;
+BEGIN
+	SELECT date_trunc( 'day', now() ) INTO today;
+	--
+	FOR usr_setting in
+		SELECT
+			usr,
+			value
+		FROM
+			actor.usr_setting
+		WHERE
+			name = 'patron.max_reading_list_interval'
+	LOOP
+		--
+		-- Make sure the setting is a valid interval
+		--
+		BEGIN
+			threshold := today - CAST( translate( usr_setting.value, '"', '' ) AS INTERVAL );
+		EXCEPTION
+			WHEN OTHERS THEN
+				RAISE NOTICE 'Invalid setting patron.max_reading_list_interval for user %: ''%''',
+					usr_setting.usr, usr_setting.value;
+				CONTINUE;
+		END;
+		--
+		--RAISE NOTICE 'User % threshold %', usr_setting.usr, threshold;
+		--
+    	DELETE FROM container.copy_bucket_item
+    	WHERE
+        	bucket IN
+        	(
+        	    SELECT
+        	        id
+        	    FROM
+        	        container.copy_bucket
+        	    WHERE
+        	        owner = usr_setting.usr
+        	        AND btype = 'circ_history'
+        	)
+        	AND create_time < threshold;
+	END LOOP;
+	--
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION container.clear_all_expired_circ_history_items( ) IS $$
+/*
+ * Delete expired circulation bucket items for all users that have
+ * a setting for patron.max_reading_list_interval.
+*/
+$$
