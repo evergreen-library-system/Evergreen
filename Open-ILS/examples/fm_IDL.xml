@@ -2645,6 +2645,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
 			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
+			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -2660,6 +2661,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="notes" reltype="might_have" key="hold" map="" class="ahrn"/>
 		</links>
 	</class>
 	<class id="ahrn" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_request_note" oils_persist:tablename="action.hold_request_note" reporter:label="Hold Request Note">
