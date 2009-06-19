@@ -267,13 +267,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION container.clear_expired_circ_history_items( ) IS $$
+COMMENT ON FUNCTION container.clear_expired_circ_history_items( INTEGER ) IS $$
 /*
  * Delete old circulation bucket items for a specified user.
  * "Old" means older than the interval specified by a
  * user-level setting, if it is so specified.
 */
-$$
+$$;
 
 CREATE OR REPLACE FUNCTION container.clear_all_expired_circ_history_items( )
 RETURNS VOID AS $$
