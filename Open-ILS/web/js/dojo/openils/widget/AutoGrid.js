@@ -447,7 +447,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     onresponse : function(r) {
                         var item = openils.Util.readResponse(r);
                         self.store.newItem(item.toStoreItem());
-                    },
+                    }
                 });
                 if(search)
                     new openils.PermaCrud().search(this.fmClass, search, opts);
@@ -471,31 +471,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             fmField: this.field,
             widgetValue : val,
             readOnly : true,
+            forceSync : true
         });
-
-        var syncTest = 0;
-        var self = this;
-
-        autoWidget.build(
-            function(w, ww) {
-                if(syncTest == 1) { //async
-                    var node = self.grid.views.views[0].getCellNode(rowIndex, self.index);
-                    if(node && !node.__autogrid_value_set) {
-                        node.innerHTML = ww.getDisplayString();
-                        node.__autogrid_value_set = true;
-                    }
-                }
-                syncTest = 2;
-            }
-        );
-
-        var val = '';
-
-        if(syncTest == 2) // sync
-            val = autoWidget.getDisplayString(); // sync
-
-        syncTest = 1;
-        return val;
-    };
+        //autoWidget.build();
+        return autoWidget.getDisplayString();
+    }
 }
 
