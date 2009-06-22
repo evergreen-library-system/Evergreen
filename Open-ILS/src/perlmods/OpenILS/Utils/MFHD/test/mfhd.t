@@ -204,3 +204,16 @@ __END__
 863 41 $818.2$a133$b1$i2008$j01$k01$x|a133|b2|i2008|j02|k01$zSkipping over missed date at beginning of year
 863 41 $818.3$a133$b2$i2008$j02$k01$x|a133|b3|i2008|j02|k15$zPublished semimonthly, going from 1st to 15th
 863 41 $818.4$a133$b3$i2008$j02$k15$x|a133|b4|i2008|j03|k01$zPublished semimonthly, going from 15th to 1st
+
+245 00 $aBimonthly: Feb, Apr, June, Aug, Oct, Dec
+853 20 $819$av.$bno.$u6$vr$i(year)$j(month)$wb$x02$ypm02,04,06,08,10,12
+863 41 $819.1$a1$b3$i1990$j06$x|a1|b4|i1990|j08$zMiddle of year, middle of vol.
+863 41 $819.2$a1$b5$i1990$j10$x|a1|b6|i1990|j12$zEnd of year, end of vol.
+863 41 $819.3$a1$b6$i1990$j12$x|a2|b1|i1991|j02$zWrap at end of year/vol.
+
+245 00 $aBimonthly, published 5 times with combined summer issue: Feb, Apr, June/Aug, Oct, Dec
+853 20 $820$av.$bno.$u5$vr$i(year)$j(month)$wb$x02$ypm02,04,10,12$ycm06/08
+863 41 $820.1$a1$b2$i1990$j04$x|a1|b3|i1990|j06/08$zTODO From Apr to Jun/Aug
+863 41 $820.2$a1$b3$i1990$j06/08$x|a1|b4|i1990|j10$zFrom Jun/Aug to Oct
+863 41 $820.3$a1$b5$i1990$j12$x|a2|b1|i1991|j02$zWrap at end of year/vol.
+
