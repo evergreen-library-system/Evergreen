@@ -324,6 +324,22 @@ sub match_month {
     return ($pat eq $date[1]);
 }
 
+sub subsequent_month {
+    my $pat = shift;
+    my @cur = @_;
+
+    if ($cur[1] >= $pat) {
+	# Current date is on or after the patter date, so the next
+	# occurence is next year
+	$cur[0] += 1;
+    }
+
+    # The year is right, just set the month to the pattern date.
+    $cur[1] = $pat;
+
+    return @cur;
+}
+
 sub match_season {
     my $pat = shift;
     my @date = @_;
