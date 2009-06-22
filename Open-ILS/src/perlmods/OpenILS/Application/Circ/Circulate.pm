@@ -2482,7 +2482,7 @@ sub append_reading_list {
         $bkt = Fieldmapper::container::copy_bucket->new;
         $bkt->owner($self->patron->id);
         $bkt->name('');
-        $bkt->btype('reading_list');
+        $bkt->btype('circ_history');
         $bkt->pub('f');
         $e->create_container_copy_bucket($bkt) or return $e->die_event;
     }
