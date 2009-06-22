@@ -161,13 +161,11 @@ sub biblio_record_replace_marc  {
 	return $e->die_event unless $e->allowed('CREATE_MARC', $e->requestor->ws_ou);
 
     my $no_ingest = 1;
+    my $fix_tcn = $self->api_name =~ /replace/o;
+    my $override = $self->api_name =~ /override/o;
 
     my $res = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
-        $e, $recid, $newxml, $source, 
-        $self->api_name =~ /replace/o,
-        $self->api_name =~ /override/o,
-	$no_ingest
-    );
+        $e, $recid, $newxml, $source, $fix_tcn, $override, $no_ingest);
 
     $e->commit unless $U->event_code($res);
 
