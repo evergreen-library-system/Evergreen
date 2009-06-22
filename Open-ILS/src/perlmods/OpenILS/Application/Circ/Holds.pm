@@ -1795,15 +1795,17 @@ sub uber_hold {
 	flesh_hold_notices([$hold], $e);
 	flesh_hold_transits([$hold]);
 
+    my $details = retrieve_hold_queue_status_impl($e, $hold);
+
 	return {
 		hold		=> $hold,
 		copy		=> $copy,
 		volume	=> $volume,
 		mvr		=> $mvr,
-		status	=> _hold_status($e, $hold),
 		patron_first => $user->first_given_name,
 		patron_last  => $user->family_name,
 		patron_barcode => $card->barcode,
+        %$details
 	};
 }
 
