@@ -212,9 +212,12 @@
                             <td>&myopac.summary.address.zip;</td>
                             <td name='myopac_addr_zip'> </td>
                         </tr>
+                        <tr name='myopac_invalid_addr_row' class='hide_me'>
+                            <td colspan='2'>&myopac.summary.address.invalid;</td>
+                        </tr>
                         <tr>
                             <td name='myopac_addr_edit_td' colspan='2' class='hide_me'>
-                                <a class='classic_link' name='myopac_addr_edit_link' href='javascript:void(0);'>Edit Address</a>
+                                <a class='classic_link' name='myopac_addr_edit_link' href='javascript:void(0);'>&myopac.summary.address.edit;</a>
                             </td>
                         </tr>
                     </table>

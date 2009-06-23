@@ -889,6 +889,9 @@ function myOPACDrawAddr(row, addr, addrs) {
     appendClear($n(row, 'myopac_addr_country'),text(addr.country()));
     appendClear($n(row, 'myopac_addr_zip'),text(addr.post_code()));
 
+    if(!isTrue(addr.valid()))
+        unHideMe($n(row, 'myopac_invalid_addr_row'));
+
     if(!allowPendingAddr) return;
 
     $n(row, 'myopac_addr_edit_link').onclick = function(){myopacEditAddress(addr)};

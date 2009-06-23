@@ -245,3 +245,8 @@ table { border-collapse: collapse; }
 #xul_recipient_me { margin-left: 25px; }
 #myopac_holds_thaw_date_form {padding: 10px; text-align: center;}
 #myopac_holds_freeze_select_thaw {margin-right: 100px; margin-left: 100px; }
+
+tr[name="myopac_invalid_addr_row"] td {
+    background:#e0e0e0;
+    color:red;
+}

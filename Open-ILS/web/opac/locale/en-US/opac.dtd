@@ -280,6 +280,9 @@ Please see a librarian to renew your account.">
 <!ENTITY myopac.summary.address.state "State">
 <!ENTITY myopac.summary.address.country "Country">
 <!ENTITY myopac.summary.address.zip "Zip">
+<!ENTITY myopac.summary.address.edit "Edit Address">
+<!ENTITY myopac.summary.address.invalid "Invalid Address">
+
 <!ENTITY myopac.summary.username.error "Please enter a username">
 <!ENTITY myopac.summary.username.dup "The requested username is not available.  Please choose a different username.">
 <!ENTITY myopac.summary.username.success "Username successfully updated">
