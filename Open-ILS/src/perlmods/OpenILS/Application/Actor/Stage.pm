@@ -55,7 +55,7 @@ sub user_stage_by_org {
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
     $org_id ||= $e->requestor->ws_ou;
-    return $e->event unless $e->allowed('VIEW_USER_STAGE', $org_id);
+    return $e->event unless $e->allowed('VIEW_USER', $org_id);
 
     $limit ||= 100;
     $offset ||= 0;
@@ -77,15 +77,55 @@ sub user_stage_by_org {
 
 sub flesh_user_stage {
     my($e, $row_id) = @_;
-    my $user = $e->retrieve_staging_user_stage($row_id);
+    my $user = $e->retrieve_staging_user_stage($row_id) or return undef;
     return {
         user => $user,
-        billing_address => $e->search_staging_billing_address_stage({usrname => $user->usrname})->[0],
-        mailing_address => $e->search_staging_mailing_address_stage({usrname => $user->usrname})->[0],
-        card => $e->search_staging_card_stage({usrname => $user->usrname})->[0],
-        statcat => $e->search_staging_statcat_stage({usrname => $user->usrname})->[0],
+        billing_addresses => $e->search_staging_billing_address_stage({usrname => $user->usrname}),
+        mailing_addresses => $e->search_staging_mailing_address_stage({usrname => $user->usrname}),
+        cards => $e->search_staging_card_stage({usrname => $user->usrname}),
+        statcats => $e->search_staging_statcat_stage({usrname => $user->usrname})
     };
 }
+
+
+
+__PACKAGE__->register_method (
+	method		=> 'delete_user_stage', 
+	api_name    => 'open-ils.actor.user.stage.delete',
+);
+
+sub delete_user_stage {
+    my($self, $conn, $auth, $row_id) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    my $data = flesh_user_stage($e, $row_id) or return $e->die_event;
+
+    return $e->die_event unless $e->allowed('UPDATE_USER', $data->{user}->home_ou);
+
+    $e->delete_staging_user_stage($data->{user}) or return $e->die_event;
+
+    for my $addr (@{$data->{mailing_addresses}}) {
+        $e->delete_staging_mailing_address_stage($addr) or return $e->die_event;
+    }
+
+    for my $addr (@{$data->{billing_addresses}}) {
+        $e->delete_staging_billing_address_stage($addr) or return $e->die_event;
+    }
+
+    for my $card (@{$data->{cards}}) {
+        $e->delete_staging_card_stage($card) or return $e->die_event;
+    }
+
+    for my $statcat (@{$data->{statcats}}) {
+        $e->delete_staging_statcat_stage($statcat) or return $e->die_event;
+    }
+
+    $e->commit;
+    return 1;
+}
+
+
 
 1;
 
