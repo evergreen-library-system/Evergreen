@@ -92,7 +92,8 @@ DEBS =  \
 	libspreadsheet-writeexcel-perl\
 	libtext-aspell-perl\
 	libtext-csv-perl\
-	libtext-csv-perl
+	libtext-csv-perl\
+	libuuid-perl
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
 EXTRA_DEBS = \
