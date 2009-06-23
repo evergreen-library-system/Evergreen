@@ -3314,43 +3314,5 @@ sub update_events {
     return {complete => 1};
 }
 
-
-
-__PACKAGE__->register_method (
-	method		=> 'create_user_stage',
-	api_name    => 'open-ils.actor.user.stage.create',
-);
-
-sub create_user_stage {
-    my($self, $conn, $user, $mail_addr, $bill_addr) = @_; # more?
-
-    return 0 unless $U->ou_ancestor_setting_value('opac.allow_pending_user');
-    return OpenILS::Event->new('BAD_PARAMS') unless $user;
-
-    my $e = new_editor(xact => 1);
-
-    my $uname = $U->create_uuid_string;
-    $user->usrname($uname);
-
-    $e->create_staging_user_stage($user) or return $e->die_event;
-
-    if($mail_addr) {
-        $mail_addr->usrname($uname);
-        $e->create_staging_mailing_address_stage($mail_addr) or return $e->die_event;
-    }
-
-    if($bill_addr) {
-        $bill_addr->usrname($uname);
-        $e->create_staging_billing_address_stage($bill_addr) or return $e->die_event;
-    }
-
-    $e->commit;
-    $conn->respond_complete($uname);
-
-    $U->create_trigger_event('stgu.create', $user, $user->home_ou);
-    return undef;
-}
-
-
 1;
 
