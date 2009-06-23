@@ -784,7 +784,7 @@ sub retrieve_hold_queue_status_impl {
         {idlist => 1} 
     );
 
-    my $qpos = 0;
+    my $qpos = 1;
     for my $hid (@$hold_ids) {
         $qpos++;
         last if $hid == $hold->id;
