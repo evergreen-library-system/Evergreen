@@ -13,6 +13,7 @@ use OpenILS::Utils::CStoreEditor;
 use OpenILS::Const qw/:const/;
 use Unicode::Normalize;
 use OpenSRF::Utils::SettingsClient;
+use UUID;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -1520,6 +1521,20 @@ sub fire_object_event {
     ]);
 }
 
+
+sub create_trigger_event {
+    my($self, $hook, $obj, $org_id) = @_
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->request('open-ils.trigger.event.autocreate', $hook, $obj, $org_id);
+}
+
+sub create_uuid_string {
+    my $uuid;
+    my $uuidstr;
+    UUID::generate($uuid);
+    UUID::unparse($uuid, $uuidstr);
+    return $uuidstr;
+}
 
 1;
 
