@@ -78,6 +78,7 @@
     <span dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore" 
         searchAttr="label" required="false" jsId='opacLocaleSelector'>
         <script>
+            dojo.addOnLoad(home_init);
             dojo.addOnLoad(function() {
                 opacLocaleSelector.setValue(locale);
                 dojo.connect(opacLocaleSelector, 'onChange', 
