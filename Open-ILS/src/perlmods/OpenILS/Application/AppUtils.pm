@@ -1523,7 +1523,7 @@ sub fire_object_event {
 
 
 sub create_trigger_event {
-    my($self, $hook, $obj, $org_id) = @_
+    my($self, $hook, $obj, $org_id) = @_;
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
     $ses->request('open-ils.trigger.event.autocreate', $hook, $obj, $org_id);
 }
