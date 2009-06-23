@@ -11,8 +11,7 @@
             href='[% ctx.media_prefix %]/css/theme/[% ctx.skin %].css'></link>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/dojo.js"
             djConfig="parseOnLoad: true, isDebug:false"></script>
-     <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/openils_dojo.js"
-            djConfig="parseOnLoad: true, isDebug:false"></script>
+        <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/openils_dojo.js"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
         <script>
             var oilsBasePath = '[% ctx.base_path %]';
