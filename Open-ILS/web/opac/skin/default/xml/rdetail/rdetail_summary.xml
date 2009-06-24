@@ -6,7 +6,7 @@
 		<tbody id='rdetail_details_tbody'>
 
 			<tr>
-				<td id='rdetail_image_cell' rowspan='10'>
+				<td id='rdetail_image_cell' rowspan='11'>
 					<a id='rdetail_img_link'>
 						<img style='border: none;' id='rdetail_image' 
                             onerror='
@@ -23,8 +23,7 @@
 				<td nowrap='nowrap' class='rdetail_desc'>&common.title;</td>		
                 <!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
                      *** summary screen with more and/or different information.  In this case, the raw MARC 245. -->
-                <!-- <td type='opac/slot-data' query='datafield[tag=245]' class='rdetail_item' id='rdetail_title'> </td> -->
-				<td class='rdetail_item' id='rdetail_title'> </td>
+                <td type='opac/slot-data' query='datafield[tag=245]' class='rdetail_item' id='rdetail_title'> </td>
 			</tr>
 
 			<tr>
@@ -75,7 +74,6 @@
 
             <!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
                  *** summary screen with complex information, such as new search links on subjects. -->
-            <!--
             <tr>
                 <td nowrap='nowrap' class='rdetail_desc'>Subjects</td>
                 <td type='opac/slot-data' query='datafield[tag=650]' class='rdetail_item'>
@@ -99,7 +97,6 @@
                     ]]></script>
                 </td>
             </tr>
-            -->
 
 			<tr class='hide_me' id='rdetail_online_row'>
 				<!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
