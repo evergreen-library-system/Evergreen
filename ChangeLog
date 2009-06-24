@@ -1,1 +1,249 @@
-#ChangeLog
+2009-03-27  miker
+
+	* : next 1.2-1.4 upgrade will include removal of errant slashes
+	  from old ingest
+
+2009-03-27  dbs
+
+	* : Backport 12486 from trunk: decrement a counter for the chunk
+	  size
+
+	* : Backport r12478 from trunk - fallback to a default record type
+	  if nothing valid turns up
+
+2009-03-29  dbs
+
+	* : Backport r12713 from trunk: make SlimPAC respect
+	  author/title/subject/series indexes
+
+2009-03-30  miker
+
+	* : pass the default search class correctly, instead of rewriting
+	  the query (possibly causing user confusion); require a valid
+	  class be passed to the middle layer code
+
+2009-03-31  dbs
+
+	* : Backport r12725 from trunk: fix closed dates editor
+
+	* : Backport r12717 from trunk: prevent apostrophes in search terms
+	  from breaking SlimPAC
+
+2009-04-02  dbs
+
+	* : Backport r12670 from trunk: prevent lengthy error messages from
+	  spilling off the bottom of the screen
+
+2009-04-03  dbs
+
+	* : Backport r12770 from trunk: Accomodate PostgreSQL 8.3's type
+	  strictness
+
+	* : Backport r12773 from trunk: Fix broken Z39.50 import due to
+	  XMLENT manipulating <script> elements
+	  
+	  Thanks to Jeff Godin <jeff@tcnet.org> for the patch!
+	  
+	  Developer's Certificate of Origin 1.1
+	  
+	  By making a contribution to this project, I certify that:
+	  
+	  (a) The contribution was created in whole or in part by me and I
+	  have the right to submit it under the open source license
+	  indicated in the file; or
+	  
+	  (b) The contribution is based upon previous work that, to the
+	  best
+	  of my knowledge, is covered under an appropriate open source
+	  license and I have the right under that license to submit that
+	  work with modifications, whether created in whole or in part
+	  by me, under the same open source license (unless I am
+	  permitted to submit under a different license), as indicated
+	  in the file; or
+	  
+	  (c) The contribution was provided directly to me by some other
+	  person who certified (a), (b) or (c) and I have not modified
+	  it.
+	  
+	  (d) I understand and agree that this project and the contribution
+	  are public and that a record of the contribution (including all
+	  personal information I submit with it, including my sign-off) is
+	  maintained indefinitely and may be redistributed consistent with
+	  this project or the open source license(s) involved.
+	  
+	  Signed-off-by: Jeff Godin <jeff@tcnet.org>
+
+2009-04-03  phasefx
+
+	* : sort item attribute editor templates alphabetically
+
+	* : Fix hold shelf display for solitary item. We expect an array
+	  here, but if the array only has one element, then RemoteRequest
+	  is just returning that element
+
+	* : "Hold Slip" accidentally replaced "Transit Slip" during
+	  i18n-ization
+
+2009-04-08  dbs
+
+	* : Backport r12816 from trunk: Fix
+	  open-ils.ingest.full.biblio.record_list
+	  * Pass a reference to the list, rather than a scalar
+	  * Fix the return value by returning a true count, rather than a
+	  sum of the processed IDs
+
+2009-04-09  dbs
+
+	* : Backport r12831 from trunk: Lots of people are stumbling over
+	  the opensrf (OpenSRF) vs. osrf (EG) username, so bring them into
+	  sync
+
+2009-04-09  phasefx
+
+	* : fix for nasty little copy/paste regression, trying to support
+	  null ilsevent's. This was preventing Force this Action dialogs
+	  for multiple overridable events
+
+2009-04-10  miker
+
+	* : updating upgrade scripts for 1.2-1.4 for deficiency noted by
+	  John Craig. Thanks, John!
+
+2009-04-21  miker
+
+	* : Patch from James Fournie fixing regression of copy display in
+	  deep hierarchies which was introduced by a partial fixed in
+	  r12470
+
+	* : backporting TCN duplicate detection fix from head
+
+2009-04-28  dbs
+
+	* : I was incrementing the counter twice in the "count linefeeds"
+	  loop. Stop doing that.
+	  Also, use a Unicode-safe algorithm for iterating over characters.
+
+2009-05-04  phasefx
+
+	* : entities for copy/paste context menus in xul textboxes
+
+2009-05-13  phasefx
+
+	* : backporting changeset 13151: Use the dedicated xul file for
+	  rendering MARC html instead of data: url'ing it. Fixes the
+	  mangling of double-daggers in record merging and overlaying
+	  displays
+
+2009-05-15  miker
+
+	* : avoid regex-izing user supplied strings
+
+2009-05-24  miker
+
+	* : Patch provided by Ben Ostrowsky to address authority matching
+	  in 1.4 and beyond. Matching requires more subfields, because it
+	  is more strict.
+
+2009-05-28  phasefx
+
+	* : offline interfaces were only clearing on 'Save these
+	  transactions' if receipt printing was enabled. doh, thought I had
+	  fixed that
+
+2009-05-29  erickson
+
+	* : storage call needs to go to storage
+
+2009-05-29  miker
+
+	* : be more strict about going away after short-circut code; check
+	  earlier for hold validity
+
+2009-05-30  miker
+
+	* : backporting fix for one-character thinko in baseline online
+	  resource display, discovered by Warren Layton -- thanks Warren!
+
+2009-06-01  erickson
+
+	* : old-school circ scripts require refreshed script runner on
+	  renewals
+
+	* : if no search terms are sent, exit early
+
+	* : make the input test a little more strict (require the presence
+	  of a search term)
+
+2009-06-02  phasefx
+
+	* : backport changeset 13280 and 13289 for hold list Available On
+	  columns
+
+2009-06-03  miker
+
+	* : regression in hold targeting where blanket expire_time is set
+
+2009-06-03  erickson
+
+	* : when retargeting alternate holds after opportunistic checkin
+	  capture, only retarget related holds not all holds with
+	  prev_check_time=null
+
+	* : silence 'uninitialized value in hash element' warnings
+
+	* : removed and old pile of 'warn' statements used for debugging
+
+	* : no need to warn when orgid is null in find_org(), that's not an
+	  uncommon occurrence. just return undef
+
+2009-06-05  erickson
+
+	* : repaired typo in module name
+
+	* : shift off the class param
+
+2009-06-05  miker
+
+	* : allow bookbag (rlist) display to work with just one record id
+
+2009-06-08  miker
+
+	* : allow rlist URLs to honor offset param
+
+	* : doh! applied to the wrong call
+
+2009-06-10  erickson
+
+	* : enabled authoritative for several methods
+
+2009-06-10  phasefx
+
+	* : have spine label interface use authoritative copy retrieval to
+	  prevent ASSET_COPY_NOT_FOUND race condition
+
+2009-06-11  erickson
+
+	* : backporting 12264 : added support for the global
+	  UPDATE_ORG_UNIT_SETTING_ALL permission, which overrides
+	  individual org-setting perms
+
+2009-06-11  miker
+
+	* : joins in the all_circulations reporting view were ...
+	  overzealous
+
+2009-06-12  phasefx
+
+	* : backporting changeset 13375 for z39.50 result summaries
+
+	* : porting the "top-margin label fix" from 1.2
+
+2009-06-12  erickson
+
+	* : patch from Ben Ostrowsky to add per-org-setting perms to seed
+	  data
+
+2009-06-15  miker
+
+	* .: Tagging 1.4.0.5
+
