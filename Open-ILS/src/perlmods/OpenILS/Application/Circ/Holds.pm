@@ -777,7 +777,7 @@ sub retrieve_hold_queue_status_impl {
             {   target => $hold->target, 
                 hold_type => $hold->hold_type,
                 cancel_time => undef,
-                capture_time => undef
+                fulfillment_time => undef
             },
             {order_by => {ahr => 'request_time asc'}}
         ], 
@@ -786,8 +786,8 @@ sub retrieve_hold_queue_status_impl {
 
     my $qpos = 1;
     for my $hid (@$hold_ids) {
-        $qpos++;
         last if $hid == $hold->id;
+        $qpos++;
     }
 
     my $potentials = $e->search_action_hold_copy_map({hold => $hold->id}, {idlist => 1});
