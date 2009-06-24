@@ -1813,6 +1813,42 @@ circ.util.hold_columns = function(modify,params) {
 			'hidden' : true,
 			'render' : function(my) { return my.acn.label(); }
 		},
+                {
+			'persist' : 'hidden width ordinal',
+			'id' : 'total_holds',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.total_holds'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : true,
+			'render' : function(my) { return my.total_holds; }
+		},
+                {
+			'persist' : 'hidden width ordinal',
+			'id' : 'queue_position',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.queue_position'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : true,
+			'render' : function(my) { return my.queue_position; }
+		},
+                {
+			'persist' : 'hidden width ordinal',
+			'id' : 'potential_copies',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.potential_copies'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : true,
+			'render' : function(my) { return my.potential_copies; }
+		},
+                {
+			'persist' : 'hidden width ordinal',
+			'id' : 'estimated_wait',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.estimated_wait'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : true,
+			'render' : function(my) { return my.estimated_wait; }
+		}
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {

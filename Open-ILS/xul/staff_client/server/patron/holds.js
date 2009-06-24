@@ -69,13 +69,17 @@ patron.holds.prototype = {
 									if (typeof blob.ilsevent != 'undefined') throw(blob);
 									row.my.ahr = blob.hold;
 									row.my.status = blob.status;
-                                    row.my.ahr.status( blob.status );
+                                                                        row.my.ahr.status( blob.status );
 									row.my.acp = blob.copy;
 									row.my.acn = blob.volume;
 									row.my.mvr = blob.mvr;
 									row.my.patron_family_name = blob.patron_last;
 									row.my.patron_first_given_name = blob.patron_first;
 									row.my.patron_barcode = blob.patron_barcode;
+                                                                        row.my.total_holds = blob.total_holds;
+                                                                        row.my.queue_position = blob.queue_position;
+                                                                        row.my.potential_copies = blob.potential_copies;
+                                                                        row.my.estimated_wait = blob.estimated_wait;
 
 									var copy_id = row.my.ahr.current_copy();
 									if (typeof copy_id == 'object') {
@@ -92,7 +96,7 @@ patron.holds.prototype = {
 									params.row_node.setAttribute('retrieve_id', 
 										js2JSON({
 											'copy_id':copy_id,
-                                            'barcode':row.my.acp ? row.my.acp.barcode() : null,
+                                                                                        'barcode':row.my.acp ? row.my.acp.barcode() : null,
 											'id':row.my.ahr.id(),
 											'type':row.my.ahr.hold_type(),
 											'target':row.my.ahr.target(),
