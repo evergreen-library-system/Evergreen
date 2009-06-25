@@ -449,16 +449,29 @@ sub fleshed_copy_update {
 	return $evt if $evt;
 	my $editor = new_editor(requestor => $reqr, xact => 1);
 	my $override = $self->api_name =~ /override/;
+    my $retarget_holds = [];
 	$evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
-        $editor, $override, undef, $copies, $delete_stats);
+        $editor, $override, undef, $copies, $delete_stats, $retarget_holds);
+
 	if( $evt ) { 
 		$logger->info("fleshed copy update failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
 		$editor->rollback; 
 		return $evt; 
 	}
+
 	$editor->commit;
 	$logger->info("fleshed copy update successfully updated ".scalar(@$copies)." copies");
+    reset_hold_list($auth, $retarget_holds);
+
 	return 1;
+}
+
+sub reset_hold_list {
+    my($auth, $hold_ids) = @_;
+    return unless @$hold_ids;
+    $logger->info("reseting holds after copy status change: @$hold_ids");
+    my $ses = OpenSRF::AppSession->create('open-ils.circ');
+    $ses->request('open-ils.circ.hold.reset.batch', $auth, $hold_ids);
 }
 
 
@@ -572,6 +585,7 @@ sub fleshed_volume_update {
 
 	my $override = ($self->api_name =~ /override/);
 	my $editor = new_editor( requestor => $reqr, xact => 1 );
+    my $retarget_holds = [];
 
 	for my $vol (@$volumes) {
 		$logger->info("vol-update: investigating volume ".$vol->id);
@@ -613,12 +627,13 @@ sub fleshed_volume_update {
 		if( $copies and @$copies and !$vol->isdeleted ) {
 			$_->call_number($vol->id) for @$copies;
 			$evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
-                $editor, $override, $vol, $copies, $delete_stats);
+                $editor, $override, $vol, $copies, $delete_stats, $retarget_holds);
 			return $evt if $evt;
 		}
 	}
 
 	$editor->finish;
+    reset_hold_list($auth, $retarget_holds);
 	return scalar(@$volumes);
 }
 

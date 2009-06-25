@@ -135,7 +135,7 @@ sub update_copy_stat_entries {
 
 
 sub update_copy {
-	my($class, $editor, $override, $vol, $copy) = @_;
+	my($class, $editor, $override, $vol, $copy, $retarget_holds) = @_;
 
 	my $evt;
 	my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
@@ -152,15 +152,47 @@ sub update_copy {
 		if ref $copy->age_protect;
 
 	$class->fix_copy_price($copy);
+    $class->check_hold_retarget($editor, $copy, $orig_copy, $retarget_holds);
 
 	return $editor->event unless $editor->update_asset_copy($copy);
 	return $class->remove_empty_objects($editor, $override, $orig_vol);
 }
 
+sub check_hold_retarget {
+    my($class, $editor, $copy, $orig_copy, $retarget_holds) = @_;
+    return unless $retarget_holds;
+
+    if( !($copy->isdeleted or $U->is_true($copy->deleted)) ) {
+        # see if a status change warrants a retarget
+
+        $orig_copy = $editor->retrieve_asset_copy($copy->id) unless $orig_copy;
+
+        if($orig_copy->status == $copy->status) {
+            # no status change, no retarget
+            return;
+        }
+
+        my $stat = $editor->retrieve_config_copy_status($copy->status);
+
+        # new status is holdable, no retarget. Later add logic to find potential 
+        # holds and retarget those to pick up the newly available copy
+        return if $U->is_true($stat->holdable); 
+    }
+
+    my $hold_ids = $editor->search_action_hold_request(
+        {   current_copy        => $copy->id, 
+            cancel_time         => undef, 
+            fulfillment_time    => undef 
+        }, {idlist => 1}
+    );
+
+    push(@$retarget_holds, @$hold_ids);
+}
+
 
 # this does the actual work
 sub update_fleshed_copies {
-	my($class, $editor, $override, $vol, $copies, $delete_stats) = @_;
+	my($class, $editor, $override, $vol, $copies, $delete_stats, $retarget_holds) = @_;
 
 	my $evt;
 	my $fetchvol = ($vol) ? 0 : 1;
@@ -193,7 +225,7 @@ sub update_fleshed_copies {
 		$copy->clear_stat_cat_entries;
 
 		if( $copy->isdeleted ) {
-			$evt = $class->delete_copy($editor, $override, $vol, $copy);
+			$evt = $class->delete_copy($editor, $override, $vol, $copy, $retarget_holds);
 			return $evt if $evt;
 
 		} elsif( $copy->isnew ) {
@@ -202,7 +234,7 @@ sub update_fleshed_copies {
 
 		} elsif( $copy->ischanged ) {
 
-			$evt = $class->update_copy( $editor, $override, $vol, $copy );
+			$evt = $class->update_copy( $editor, $override, $vol, $copy, $retarget_holds );
 			return $evt if $evt;
 		}
 
@@ -218,7 +250,7 @@ sub update_fleshed_copies {
 
 
 sub delete_copy {
-	my($class, $editor, $override, $vol, $copy ) = @_;
+	my($class, $editor, $override, $vol, $copy, $retarget_holds ) = @_;
 
    return $editor->event unless 
       $editor->allowed('DELETE_COPY', $class->copy_perm_org($vol, $copy));
@@ -248,6 +280,8 @@ sub delete_copy {
 		$editor->delete_action_transit_copy($t)
 			or return $editor->event;
 	}
+
+    $class->check_hold_retarget($editor, $copy, undef, $retarget_holds);
 
 	return $class->remove_empty_objects($editor, $override, $vol);
 }
