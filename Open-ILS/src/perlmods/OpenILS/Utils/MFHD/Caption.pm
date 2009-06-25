@@ -336,8 +336,8 @@ sub next_date {
     my @keys = @_;
     my @cur;
     my @new;
+    my @newend; # only used for combined issues
     my $incr;
-    my @candidate;
 
     my $reg = $self->{_mfhdc_REGULARITY};
     my $pattern = $self->{_mfhdc_PATTERN};
@@ -368,7 +368,8 @@ sub next_date {
 	    }
 
 	    foreach my $pat (@pats) {
-		@candidate = $genfunc->($pat, @cur);
+		my @candidate = $genfunc->($pat, @cur);
+
 		while ($self->is_omitted(@candidate)) {
 # 		    printf("# pubpat omitting date '%s'\n",
 # 			   join('/', @candidate));
@@ -384,6 +385,37 @@ sub next_date {
 		    @new = @candidate;
 # 		    printf("# selecting candidate date '%s'\n", join('/', @new));
 		}
+	    }
+	}
+
+	# Now check for combined issues, like "May/June"
+	foreach my $combpat (@{$pattern->{y}->{c}}) {
+	    my $chroncode = substr($combpat, 0, 1);
+	    my $genfunc = MFHD::Date::generator($chroncode);
+	    my @pats = split(/,/, substr($combpat, 1));
+
+	    foreach my $combined (@pats) {
+		my ($start, $end) = split('/', $combined, 2);
+		my @candidate = $genfunc->($start, @cur);
+
+		# We don't need to check for omitted issues because
+		# combined issues are always published. OR ARE THEY????
+		if (!defined($new[0])
+		    || !on_or_after($candidate[0], $candidate[1], $new[0], $new[1])) {
+		    # Haven't found a next issue at all yet, or
+		    # this one is before the best guess so far
+		    @new = @candidate;
+		    @newend = $genfunc->($end, @cur);
+		}
+	    }
+	}
+
+	if (defined($newend[0])) {
+	    # The best match was a combined issue
+	    foreach my $i (0..$#new) {
+		# don't combine identical fields
+		next if $new[$i] eq $newend[$i];
+		$new[$i] .= '/' . $newend[$i];
 	    }
 	}
     } else {
