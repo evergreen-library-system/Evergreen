@@ -176,10 +176,12 @@ function selfckLogoutPatron() {
     $('selfck-item-barcode-input').value = ''; // prevent browser caching
     $('selfck-patron-login-input').value = '';
     if(patron) {
-        selfckPrint();
+        var numItems = selfckPrint();
+        var sleepTime = 1000;
+        if(numItems > 0) sleepTime += (numItems / 2) * 1000;
         setTimeout(
             function() { location.href = location.href; },
-            3500 // give the browser time to send the page to the printer
+            sleepTime // give the browser time to send the page to the printer
         );
     }
 }
@@ -406,7 +408,12 @@ function selfckRenew() {
   * Sets the print date and prints the page
   */
 function selfckPrint() {
-    for(var x in successfulItems) { // make sure we've checked out at least one item
+
+    var numItems = 0;
+    for(var x in successfulItems)  
+        numItems++;
+
+    if(numItems > 0) {
         hideMe($('selfck-patron-checkout-container'));
         unHideMe($('selfck-print-queuing'));
         appendClear($('selfck-print-date'), text(new Date().toLocaleString()));
@@ -427,8 +434,9 @@ function selfckPrint() {
             }
         }
         window.print();
-        return;
     }
+
+    return numItems;
 }
 
 
