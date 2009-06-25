@@ -948,12 +948,38 @@ sub reset_hold {
 	my $reqr;
 	my ($hold, $evt) = $U->fetch_hold($holdid);
 	return $evt if $evt;
-	($reqr, $evt) = $U->checksesperm($auth, 'UPDATE_HOLD'); # XXX stronger permission
+	($reqr, $evt) = $U->checksesperm($auth, 'UPDATE_HOLD');
 	return $evt if $evt;
 	$evt = _reset_hold($self, $reqr, $hold);
 	return $evt if $evt;
 	return 1;
 }
+
+
+__PACKAGE__->register_method(
+	method	=> 'reset_hold_batch',
+	api_name	=> 'open-ils.circ.hold.reset.batch'
+);
+
+sub reset_hold_batch {
+    my($self, $conn, $auth, $hold_ids) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    for my $hold_id ($hold_ids) {
+
+        my $hold = $e->retrieve_action_hold_request(
+            [$hold_id, {flesh => 1, flesh_fields => {ahr => ['usr']}}]) 
+            or return $e->event;
+
+	    next unless $e->allowed('UPDATE_HOLD', $hold->usr->home_ou);
+        _reset_hold($self, $e->requestor, $hold);
+    }
+
+    return 1;
+}
+
 
 sub _reset_hold {
 	my ($self, $reqr, $hold) = @_;
