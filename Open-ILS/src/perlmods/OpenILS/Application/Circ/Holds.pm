@@ -1239,8 +1239,8 @@ sub check_title_hold {
         my $depth = $soft_boundary;
         while($depth >= $min_depth) {
             $logger->info("performing hold possibility check with soft boundary $depth");
-            return {success => 1, depth => $depth}
-                if do_possibility_checks($e, $patron, $request_lib, $depth, %params);
+            my @status = do_possibility_checks($e, $patron, $request_lib, $depth, %params);
+            return {success => 1, depth => $depth, local_avail => $status[1]} if $status[0];
             $depth--;
         }
         return {success => 0};
@@ -1248,8 +1248,9 @@ sub check_title_hold {
     } elsif(defined $hard_boundary and $$params{depth} < $hard_boundary) {
         # there is no soft boundary, enforce the hard boundary if it exists
         $logger->info("performing hold possibility check with hard boundary $hard_boundary");
-        if(do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params)) {
-            return {success => 1, depth => $hard_boundary}
+        my @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params);
+        if($status[0]) {
+            return {success => 1, depth => $hard_boundary, local_avail => $status[1]}
         } else {
             return {success => 0};
         }
@@ -1257,8 +1258,9 @@ sub check_title_hold {
     } else {
         # no boundaries defined, fall back to user specifed boundary or no boundary
         $logger->info("performing hold possibility check with no boundary");
-        if(do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params)) {
-            return {success => 1, depth => $hard_boundary};
+        my @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params);
+        if($status[0]) {
+            return {success => 1, depth => $hard_boundary, local_avail => $status[1]};
         } else {
             return {success => 0};
         }
@@ -1311,123 +1313,15 @@ sub do_possibility_checks {
 		my $maps = $e->search_metabib_source_map({metarecord=>$mrid});
 		my @recs = map { $_->source } @$maps;
 		for my $rec (@recs) {
-			return 1 if (_check_title_hold_is_possible(
-				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou));
+            my @status = _check_title_hold_is_possible(
+				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
+            return @status if $status[1];
 		}
-		return 0;	
+		return (0);	
 	}
 }
 
 my %prox_cache;
-
-sub _check_metarecord_hold_is_possible {
-	my( $mrid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
-   
-   my $e = new_editor();
-
-    # this monster will grab the id and circ_lib of all of the "holdable" copies for the given metarecord
-    my $copies = $e->json_query(
-        { 
-            select => { acp => ['id', 'circ_lib'] },
-            from => {
-                acp => {
-                    acn => {
-                        field => 'id',
-                        fkey => 'call_number',
-                        'join' => {
-                            mmrsm => {
-                                field => 'source',
-                                fkey => 'record',
-                               	filter => { metarecord => $mrid }
-                            }
-                        }
-                    },
-                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
-                    ccs => { field => 'id', filter => { holdable => 't'}, fkey => 'status' }
-                }
-            }, 
-            where => {
-                '+acp' => { circulate => 't', deleted => 'f', holdable => 't' }
-            }
-        }
-    );
-
-   return $e->event unless defined $copies;
-   $logger->info("metarecord possible found ".scalar(@$copies)." potential copies");
-   return 0 unless @$copies;
-
-   # -----------------------------------------------------------------------
-   # sort the copies into buckets based on their circ_lib proximity to 
-   # the patron's home_ou.  
-   # -----------------------------------------------------------------------
-
-   my $home_org = $patron->home_ou;
-   my $req_org = $request_lib->id;
-
-    $prox_cache{$home_org} = 
-        $e->search_actor_org_unit_proximity({from_org => $home_org})
-        unless $prox_cache{$home_org};
-    my $home_prox = $prox_cache{$home_org};
-
-   my %buckets;
-   my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
-   push( @{$buckets{ $hash{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
-
-   my @keys = sort { $a <=> $b } keys %buckets;
-
-
-   if( $home_org ne $req_org ) {
-      # -----------------------------------------------------------------------
-      # shove the copies close to the request_lib into the primary buckets 
-      # directly before the farthest away copies.  That way, they are not 
-      # given priority, but they are checked before the farthest copies.
-      # -----------------------------------------------------------------------
-
-        $prox_cache{$req_org} = 
-            $e->search_actor_org_unit_proximity({from_org => $req_org})
-            unless $prox_cache{$req_org};
-        my $req_prox = $prox_cache{$req_org};
-
-      my %buckets2;
-      my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
-      push( @{$buckets2{ $hash2{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
-
-      my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
-      my $new_key = $highest_key - 0.5; # right before the farthest prox
-      my @keys2 = sort { $a <=> $b } keys %buckets2;
-      for my $key (@keys2) {
-         last if $key >= $highest_key;
-         push( @{$buckets{$new_key}}, $_ ) for @{$buckets2{$key}};
-      }
-   }
-
-   @keys = sort { $a <=> $b } keys %buckets;
-
-   my %seen;
-   for my $key (@keys) {
-      my @cps = @{$buckets{$key}};
-
-      $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
-
-      for my $copyid (@cps) {
-
-         next if $seen{$copyid};
-         $seen{$copyid} = 1; # there could be dupes given the merged buckets
-         my $copy = $e->retrieve_asset_copy($copyid) or return $e->event;
-         $logger->debug("looking at bucket_key=$key, copy $copyid : circ_lib = " . $copy->circ_lib);
-
-         my $vol = $e->retrieve_asset_call_number(
-           [ $copy->call_number, { flesh => 1, flesh_fields => { acn => ['record'] } } ] );
-
-         return 1 if verify_copy_for_hold( 
-            $patron, $requestor, $vol->record, $copy, $pickup_lib, $request_lib );
-   
-      }
-   }
-
-   return 0;
-}
-
 sub create_ranged_org_filter {
     my($e, $selection_ou, $depth) = @_;
 
@@ -1485,9 +1379,8 @@ sub _check_title_hold_is_possible {
         }
     );
 
-   return $e->event unless defined $copies;
    $logger->info("title possible found ".scalar(@$copies)." potential copies");
-   return 0 unless @$copies;
+   return (0) unless @$copies;
 
    # -----------------------------------------------------------------------
    # sort the copies into buckets based on their circ_lib proximity to 
@@ -1549,7 +1442,7 @@ sub _check_title_hold_is_possible {
 
          next if $seen{$copyid};
          $seen{$copyid} = 1; # there could be dupes given the merged buckets
-         my $copy = $e->retrieve_asset_copy($copyid) or return $e->event;
+         my $copy = $e->retrieve_asset_copy($copyid);
          $logger->debug("looking at bucket_key=$key, copy $copyid : circ_lib = " . $copy->circ_lib);
 
          unless($title) { # grab the title if we don't already have it
@@ -1558,13 +1451,14 @@ sub _check_title_hold_is_possible {
             $title = $vol->record;
          }
    
-         return 1 if verify_copy_for_hold( 
+         my @status = verify_copy_for_hold( 
             $patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
-   
+
+        return @status if $status[0];
       }
    }
 
-   return 0;
+   return (0);
 }
 
 
@@ -1574,10 +1468,11 @@ sub _check_volume_hold_is_possible {
 	my $copies = new_editor->search_asset_copy({call_number => $vol->id, %org_filter});
 	$logger->info("checking possibility of volume hold for volume ".$vol->id);
 	for my $copy ( @$copies ) {
-		return 1 if verify_copy_for_hold( 
+        my @status = verify_copy_for_hold( 
 			$patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
+        return @status if $status[0];
 	}
-	return 0;
+	return (0);
 }
 
 
@@ -1585,7 +1480,7 @@ sub _check_volume_hold_is_possible {
 sub verify_copy_for_hold {
 	my( $patron, $requestor, $title, $copy, $pickup_lib, $request_lib ) = @_;
 	$logger->info("checking possibility of copy in hold request for copy ".$copy->id);
-	return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
+    my $permitted = OpenILS::Utils::PermitHold::permit_copy_hold(
 		{	patron				=> $patron, 
 			requestor			=> $requestor, 
 			copy				=> $copy,
@@ -1596,7 +1491,14 @@ sub verify_copy_for_hold {
             new_hold            => 1
 		} 
 	);
-	return 0;
+
+    return (
+        $permitted,
+        (
+	        ($copy->circ_lib == $request_lib) and 
+            ($copy->status == OILS_COPY_STATUS_AVAILABLE)
+        )
+    );
 }
 
 
