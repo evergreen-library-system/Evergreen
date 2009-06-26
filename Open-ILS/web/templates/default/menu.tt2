@@ -116,6 +116,8 @@
                                 onClick="location.href = '[% ctx.base_path %]/conify/global/action_trigger/event_definition';">Action Trigger</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
                              onClick="location.href = '[% ctx.base_path %]/conify/global/action/survey';">Surveys</div>
+                        <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
+                             onClick="location.href = '[% ctx.base_path %]/conify/global/config/org_unit_setting_type';">Org Unit Setting Types</div>
                     </div>
                 </div>
             </div>
