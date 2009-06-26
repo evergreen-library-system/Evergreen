@@ -228,47 +228,6 @@ sub ou_ancestor_setting_batch {
 
 
 
-__PACKAGE__->register_method (
-	method		=> "ou_setting_delete",
-	api_name		=> 'open-ils.actor.org_setting.delete',
-	signature	=> q/
-		Deletes a specific org unit setting for a specific location
-		@param authtoken The login session key
-		@param orgid The org unit whose setting we're changing
-		@param setting The name of the setting to delete
-		@return True value on success.
-	/
-);
-
-sub ou_setting_delete {
-	my( $self, $conn, $authtoken, $orgid, $setting ) = @_;
-	my( $reqr, $evt) = $U->checkses($authtoken);
-	return $evt if $evt;
-	$evt = $U->check_perms($reqr->id, $orgid, 'UPDATE_ORG_SETTING');
-	return $evt if $evt;
-
-	my $id = $U->cstorereq(
-		'open-ils.cstore.direct.actor.org_unit_setting.id_list', 
-		{ name => $setting, org_unit => $orgid } );
-
-	$logger->debug("Retrieved setting $id in org unit setting delete");
-
-	my $s = $U->cstorereq(
-		'open-ils.cstore.direct.actor.org_unit_setting.delete', $id );
-
-	$logger->activity("User ".$reqr->id." deleted org unit setting $id") if $s;
-	return $s;
-}
-
-
-
-
-
-
-
-
-
-
 
 __PACKAGE__->register_method(
 	method	=> "update_patron",
