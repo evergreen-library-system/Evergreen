@@ -1675,6 +1675,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link reporter:label="Circulations Performed as Staff" field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
 		</links>
 	</class>
+	<class id="coust" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::org_unit_setting_type" oils_persist:tablename="config.org_unit_setting_type" reporter:label="Organizational Unit Setting Type">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:datatype="text"/>
+			<field name="label" reporter:datatype="text"/>
+			<field name="description" reporter:datatype="text"/>
+			<field name="datatype" reporter:datatype="text"/>
+			<field name="fm_class" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="name" reltype="has_many" key="name" map="" class="aous"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ORG_UNIT_SETTING_TYPE" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_ORG_UNIT_SETTING_TYPE" global_required="true"/>
+				<delete permission="ADMIN_ORG_UNIT_SETTING_TYPE" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
 	<class id="aous" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit_setting" oils_persist:tablename="actor.org_unit_setting" reporter:label="Organizational Unit Setting">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_setting_id_seq">
 			<field name="id" />
@@ -1684,6 +1704,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="name" reltype="has_a" key="name" map="" class="coust"/>
 		</links>
 	</class>
 	<class id="acpn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_note" oils_persist:tablename="asset.copy_note" reporter:label="Copy Note">

@@ -1552,6 +1552,234 @@ INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,duration_rule,recurring_
 -- hold matrix - 110.hold_matrix.sql:
 INSERT INTO config.hold_matrix_matchpoint (requestor_grp) VALUES (1);
 
+-- org_unit setting types
+INSERT into config.org_unit_setting_type
+( name, label, description, datatype ) VALUES
+
+( 'auth.opac_timeout',
+  'OPAC Inactivity Timeout (in seconds)',
+  null,
+  'integer' ),
+
+( 'auth.staff_timeout',
+  'Staff Login Inactivity Timeout (in seconds)',
+  null,
+  'integer' ),
+
+( 'circ.lost_materials_processing_fee',
+  'Lost Materials Processing Fee',
+  null,
+  'currency' ),
+
+( 'cat.default_item_price',
+  'Default Item Price',
+  null,
+  'currency' ),
+
+( 'org.bounced_emails',
+  'Sending email address for patron notices',
+  null,
+  'string' ),
+
+( 'circ.hold_expire_alert_interval',
+  'Holds: Expire Alert Interval',
+  'Amount of time before a hold expires at which point the patron should be alerted',
+  'interval' ),
+
+( 'circ.hold_expire_interval',
+  'Holds: Expire Interval',
+  'Amount of time after a hold is placed before the hold expires.  Example "100 days"',
+  'interval' ),
+
+( 'global.credit.allow',
+  '',
+  'If enabled, patrons will be able to pay fines accrued at this location via credit card',
+  'bool' ),
+
+( 'global.default_locale',
+  'Allow Credit Card Payments',
+  null,
+  'string' ),
+
+( 'circ.void_overdue_on_lost',
+  'Void overdue fines when items are marked lost',
+  null,
+  'bool' ),
+
+( 'circ.hold_stalling.soft',
+  'Holds: Soft stalling interval',
+  'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"',
+  'interval' ),
+
+( 'circ.hold_stalling_hard',
+  'Holds: Hard stalling interval',
+  '',
+  'interval' ),
+
+( 'circ.hold_boundary.hard',
+  'Holds: Hard boundary',
+  null,
+  'integer' ),
+
+( 'circ.hold_boundary.soft',
+  'Holds: Soft boundary',
+  null,
+  'integer' ),
+
+( 'opac.barcode_regex',
+  'Patron barcode format',
+  'Regular expression defining the patron barcode format',
+  'string' ),
+
+( 'global.password_regex',
+  'Password format',
+  'Regular expression defining the password format',
+  'string' ),
+
+( 'circ.item_checkout_history.max',
+  'Maximum previous checkouts displayed',
+  'This is maximum number of previous circulations the staff client will display when investigating item details',
+  'integer' ),
+
+( 'circ.reshelving_complete.interval',
+  'Change reshelving status interval',
+  'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"',
+  'interval' ),
+
+( 'circ.hold_estimate_wait_interval',
+  'Holds: Estimated Wait (Days)',
+  'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the default/average number of days to assume an item will be checked out.',
+  'integer' ),
+
+( 'circ.selfcheck.patron_login_timeout',
+  'Selfcheck: Patron Login Timeout (in seconds)',
+  'Number of seconds of inactivity before the patron is logged out of the selfcheck interfacer',
+  'integer' ),
+
+( 'circ.selfcheck.alert_on_checkout_event',
+  'Selfcheck: Pop-up alert for errors',
+  'If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message',
+  'bool' ),
+
+( 'circ.selfcheck.require_patron_password',
+  'Selfcheck: Require patron password',
+  'If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface',
+  'bool' ),
+
+( 'global.juvenile_age_threshold',
+  'Juvenile Age Threshold',
+  'The age at which a user is no long considered a juvenile.  For example, "18 years".',
+  'interval' ),
+
+( 'cat.bib.keep_on_empty',
+  'Retain empty bib records',
+  'Retain a bib record even when all attached copies are deleted',
+  'bool' ),
+
+( 'cat.bib.alert_on_empty',
+  'Alert on empty bib records',
+  'Alert staff when the last copy for a record is being deleted',
+  'bool' ),
+
+( 'patron.password.use_phone',
+  'Patron: password from phone #',
+  'Use the last 4 digits of the patrons phone number as the default password when creating new users',
+  'bool' ),
+
+( 'circ.charge_on_damaged',
+  'Charge item price when marked damaged',
+  'Charge item price when marked damaged',
+  'bool' ),
+
+( 'circ.charge_lost_on_zero',
+  'Charge lost on zero',
+  '',
+  'bool' ),
+
+( 'circ.damaged_item_processing_fee',
+  'Charge processing fee for damaged items',
+  'Charge processing fee for damaged items',
+  'currency' ),
+
+( 'circ.void_lost_on_checkin',
+  'Circ: Void lost item billing when returned',
+  'Void lost item billing when returned',
+  'bool' ),
+
+( 'circ.max_accept_return_of_lost',
+  'Circ: Void lost max interval',
+  'Items that have been lost this long will not result in voided billings when returned.  E.g. ''6 months''',
+  'interval' ),
+
+( 'circ.void_lost_proc_fee_on_checkin',
+  'Circ: Void processing fee on lost item return',
+  'Void processing fee when lost item returned',
+  'bool' ),
+
+( 'circ.restore_overdue_on_lost_return',
+  'Circ: Restore overdues on lost item return',
+  'Restore overdue fines on lost item return',
+  'bool' ),
+
+( 'circ.lost_immediately_available',
+  'Circ: Lost items usable on checkin',
+  'Lost items are usable on checkin instead of going ''home'' first',
+  'bool' ),
+
+( 'opac.allow_pending_address',
+  'OPAC: Allow pending addresses',
+  'If enabled, patrons can create and edit existing addresses.  Addresses are kept in a pending state until staff approves the changes',
+  'bool' ),
+
+( 'ui.circ.show_billing_tab_on_bills',
+  'Show billing tab first when bills are present',
+  'If enabled and a patron has outstanding bills and the alert page is not required, show the billing tab by default, instead of the checkout tab, when a patron is loaded',
+  'bool' ),
+
+( 'ui.circ.patron_display_timeout_interval',
+  'GUI: Patron display timeout interval',
+  'Set this if you would like patron displays in the staff client to be closed after a certain interval of inactivity.  Example ''5 minutes''',
+  'interval' ),
+
+( 'acq.default_circ_modifier',
+  'Default circulation modifier',
+  null,
+  'string' ),
+
+( 'acq.tmp_barcode_prefix',
+  'Temporary barcode prefix',
+  null,
+  'string' ),
+
+( 'acq.tmp_callnumber_prefix',
+  'Temporary call number prefix',
+  null,
+  'string' ),
+
+( 'ui.circ.patron_summary.horizontal',
+  'Patron circulation summary is horizontal',
+  null,
+  'bool' ),
+
+( 'ui.general.button_bar',
+  'Button bar',
+  null,
+  'bool' ),
+
+( 'ui.patron.default_inet_access_level',
+  'Default level of patrons'' internet access',
+  null,
+  'integer' );
+
+-- Org_unit_setting_type(s) that need an fm_class:
+INSERT into config.org_unit_setting_type
+( name, label, description, datatype, fm_class ) VALUES
+( 'acq.default_copy_location',
+  'Default copy location',
+  null,
+  'link',
+  'acpl' );
+
 -- Staged Search (for default matchpoints)
 INSERT INTO search.relevance_adjustment (field, bump_type, multiplier) VALUES(1, 'first_word', 1.5);
 INSERT INTO search.relevance_adjustment (field, bump_type, multiplier) VALUES(1, 'full_match', 20);

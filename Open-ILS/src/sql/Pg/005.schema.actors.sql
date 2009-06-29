@@ -412,7 +412,7 @@ CREATE TABLE actor.usr_org_unit_opt_in (
 CREATE TABLE actor.org_unit_setting (
 	id		BIGSERIAL	PRIMARY KEY,
 	org_unit	INT		NOT NULL REFERENCES actor.org_unit ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	name		TEXT		NOT NULL,
+	name		TEXT	NOT NULL REFERENCES config.org_unit_setting_type DEFERRABLE INITIALLY DEFERRED,
 	value		TEXT		NOT NULL,
 	CONSTRAINT ou_once_per_key UNIQUE (org_unit,name)
 );

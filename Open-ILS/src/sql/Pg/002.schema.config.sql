@@ -523,6 +523,25 @@ CREATE TABLE config.billing_type (
     CONSTRAINT billing_type_once_per_lib UNIQUE (name, owner)
 );
 
+CREATE TABLE config.org_unit_setting_type (
+    name            TEXT    PRIMARY KEY,
+    label           TEXT    UNIQUE NOT NULL,
+    description     TEXT,
+    datatype        TEXT    NOT NULL DEFAULT 'string',
+    fm_class        TEXT,
+    --
+    -- define valid datatypes
+    --
+    CONSTRAINT coust_valid_datatype CHECK ( datatype IN
+    ( 'bool', 'integer', 'float', 'currency', 'interval',
+      'date', 'string', 'object', 'array', 'link' ) ),
+    --
+    -- fm_class is meaningful only for 'link' datatype
+    --
+    CONSTRAINT coust_no_empty_link CHECK
+    ( ( datatype =  'link' AND fm_class IS NOT NULL ) OR
+      ( datatype <> 'link' AND fm_class IS NULL ) )
+);
 
 COMMIT;
 
