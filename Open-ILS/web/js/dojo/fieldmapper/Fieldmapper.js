@@ -203,6 +203,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     	fieldmapper.rxpt.Identifier = 'xact';
     	fieldmapper.cxt.Identifier = 'name';
     	fieldmapper.amtr.Identifier = 'matchpoint';
+    	fieldmapper.coust.Identifier = 'name';
 
     }
 

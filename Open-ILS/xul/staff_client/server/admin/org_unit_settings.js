@@ -11,11 +11,13 @@ dojo.require('openils.CGI');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
+dojo.require('openils.PermaCrud');
 
 var authtoken;
 var contextOrg;
 var user;
 var workOrgs;
+var osSettings = {};
 
 function osInit(data) {
     authtoken = dojo.cookie('ses') || new openils.CGI().param('ses');
@@ -42,6 +44,19 @@ function osInit(data) {
 dojo.addOnLoad(osInit);
 
 function osDraw() {
+    var types = new openils.PermaCrud({authtoken:authtoken}).retrieveAll('coust');
+
+    dojo.forEach(types, 
+        function(type) {
+            osSettings[type.name()] = {
+                label : type.label(),
+                desc : type.description(),
+                type : type.datatype(),
+                fm_class : type.fm_class()
+            }
+        }
+    );
+    
     var names = [];
     for(var key in osSettings)
         names.push(key);
