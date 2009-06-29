@@ -45,6 +45,9 @@ $$;
 
 
 CREATE OR REPLACE FUNCTION actor.usr_merge( src_usr INT, dest_usr INT, del_addrs BOOLEAN, del_cards BOOLEAN, deactivate_cards BOOLEAN ) RETURNS VOID AS $$
+DECLARE
+	suffix TEXT;
+	bucket_row RECORD;
 BEGIN
 
     -- do some initial cleanup 
@@ -83,10 +86,91 @@ BEGIN
 
 
     -- container.*
-    PERFORM actor.usr_merge_rows('container.biblio_record_entry_bucket', 'owner', src_usr, dest_usr);
-    PERFORM actor.usr_merge_rows('container.call_number_bucket', 'owner', src_usr, dest_usr);
-    PERFORM actor.usr_merge_rows('container.copy_bucket', 'owner', src_usr, dest_usr);
-    PERFORM actor.usr_merge_rows('container.user_bucket', 'owner', src_usr, dest_usr);
+	
+	-- For each *_bucket table: transfer every bucket belonging to src_usr
+	-- into the custody of dest_usr.
+	--
+	-- In order to avoid colliding with an existing bucket owned by
+	-- the destination user, append the source user's id (in parenthesese)
+	-- to the name.  If you still get a collision, add successive
+	-- spaces to the name and keep trying until you succeed.
+	--
+	FOR bucket_row in
+		SELECT id, name
+		FROM   container.biblio_record_entry_bucket
+		WHERE  owner = src_usr
+	LOOP
+		suffix := ' (' || src_usr || ')';
+		LOOP
+			BEGIN
+				UPDATE  container.biblio_record_entry_bucket
+				SET     owner = dest_usr, name = name || suffix
+				WHERE   id = bucket_row.id;
+			EXCEPTION WHEN unique_violation THEN
+				suffix := suffix || ' ';
+				CONTINUE;
+			END;
+			EXIT;
+		END LOOP;
+	END LOOP;
+
+	FOR bucket_row in
+		SELECT id, name
+		FROM   container.call_number_bucket
+		WHERE  owner = src_usr
+	LOOP
+		suffix := ' (' || src_usr || ')';
+		LOOP
+			BEGIN
+				UPDATE  container.call_number_bucket
+				SET     owner = dest_usr, name = name || suffix
+				WHERE   id = bucket_row.id;
+			EXCEPTION WHEN unique_violation THEN
+				suffix := suffix || ' ';
+				CONTINUE;
+			END;
+			EXIT;
+		END LOOP;
+	END LOOP;
+
+	FOR bucket_row in
+		SELECT id, name
+		FROM   container.copy_bucket
+		WHERE  owner = src_usr
+	LOOP
+		suffix := ' (' || src_usr || ')';
+		LOOP
+			BEGIN
+				UPDATE  container.copy_bucket
+				SET     owner = dest_usr, name = name || suffix
+				WHERE   id = bucket_row.id;
+			EXCEPTION WHEN unique_violation THEN
+				suffix := suffix || ' ';
+				CONTINUE;
+			END;
+			EXIT;
+		END LOOP;
+	END LOOP;
+
+	FOR bucket_row in
+		SELECT id, name
+		FROM   container.user_bucket
+		WHERE  owner = src_usr
+	LOOP
+		suffix := ' (' || src_usr || ')';
+		LOOP
+			BEGIN
+				UPDATE  container.user_bucket
+				SET     owner = dest_usr, name = name || suffix
+				WHERE   id = bucket_row.id;
+			EXCEPTION WHEN unique_violation THEN
+				suffix := suffix || ' ';
+				CONTINUE;
+			END;
+			EXIT;
+		END LOOP;
+	END LOOP;
+
 	UPDATE container.user_bucket_item SET target_user = dest_usr WHERE target_user = src_usr;
 
     -- vandelay.*
