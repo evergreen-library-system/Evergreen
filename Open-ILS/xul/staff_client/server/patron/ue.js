@@ -134,6 +134,13 @@ function uEditBuild() {
     var groups = uEditFetchGroups();
     buildAppPermList(myPerms, groups);
 
+    // de-dupe the permission list
+    var perms = [];
+    for(var p in myPerms) 
+        if(perms.indexOf(myPerms[p]) == -1)
+           perms.push(myPerms[p]);
+    myPerms = perms;
+        
 	fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
 	uEditBuildLibSelector();
