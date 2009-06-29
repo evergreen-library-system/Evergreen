@@ -106,6 +106,8 @@ sub set_ou_settings {
 
 	for my $name (keys %$settings) {
         my $val = $$settings{$name};
+
+        my $type = $e->retrieve_config_org_unit_setting_type($name) or return $e->die_event;
         my $set = $e->search_actor_org_unit_setting({org_unit => $org_id, name => $name})->[0];
 
         unless($all_allowed) {
