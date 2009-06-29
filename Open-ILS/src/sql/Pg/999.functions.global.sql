@@ -48,6 +48,7 @@ CREATE OR REPLACE FUNCTION actor.usr_merge( src_usr INT, dest_usr INT, del_addrs
 DECLARE
 	suffix TEXT;
 	bucket_row RECORD;
+	picklist_row RECORD;
 BEGIN
 
     -- do some initial cleanup 
@@ -201,7 +202,27 @@ BEGIN
 
     -- acq.*
     UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
-    PERFORM actor.usr_merge_rows('acq.picklist', 'owner', src_usr, dest_usr);
+
+	-- transfer picklists the same way we transfer buckets (see above)
+	FOR picklist_row in
+		SELECT id, name
+		FROM   acq.picklist
+		WHERE  owner = src_usr
+	LOOP
+		suffix := ' (' || src_usr || ')';
+		LOOP
+			BEGIN
+				UPDATE  acq.picklist
+				SET     owner = dest_usr, name = name || suffix
+				WHERE   id = picklist_row.id;
+			EXCEPTION WHEN unique_violation THEN
+				suffix := suffix || ' ';
+				CONTINUE;
+			END;
+			EXIT;
+		END LOOP;
+	END LOOP;
+
     UPDATE acq.purchase_order SET owner = dest_usr WHERE owner = src_usr;
     UPDATE acq.po_note SET creator = dest_usr WHERE creator = src_usr;
     UPDATE acq.po_note SET editor = dest_usr WHERE editor = src_usr;
