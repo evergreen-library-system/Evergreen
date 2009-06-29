@@ -589,6 +589,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/circ_modifier'); }
             ],
+            'cmd_server_admin_org_unit_setting_type' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/org_unit_setting_type'); }
+            ],
 			'cmd_acq_view_picklist' : [
 				['oncommand'],
 				function() { open_eg_web_page('acq/picklist/list', 'menu.cmd_acq_view_picklist.tab'); }

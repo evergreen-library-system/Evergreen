@@ -635,6 +635,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.billing_type.label "Billing Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
+<!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
 
 
 <!ENTITY staff.main.menu.admin.developer.label "For developers...">
