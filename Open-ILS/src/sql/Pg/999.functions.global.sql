@@ -50,6 +50,7 @@ DECLARE
 	bucket_row RECORD;
 	picklist_row RECORD;
 	queue_row RECORD;
+	folder_row RECORD;
 BEGIN
 
     -- do some initial cleanup 
@@ -280,17 +281,71 @@ BEGIN
         -- do nothing
     END;
     BEGIN
-        PERFORM actor.usr_merge_rows('reporter.template_folder', 'owner', src_usr, dest_usr);
+		-- transfer folders the same way we transfer buckets (see above)
+		FOR folder_row in
+			SELECT id, name
+			FROM   reporter.template_folder
+			WHERE  owner = src_usr
+		LOOP
+			suffix := ' (' || src_usr || ')';
+			LOOP
+				BEGIN
+					UPDATE  reporter.template_folder
+					SET     owner = dest_usr, name = name || suffix
+					WHERE   id = folder_row.id;
+				EXCEPTION WHEN unique_violation THEN
+					suffix := suffix || ' ';
+					CONTINUE;
+				END;
+				EXIT;
+			END LOOP;
+		END LOOP;
     EXCEPTION WHEN undefined_table THEN
         -- do nothing
     END;
     BEGIN
-        PERFORM actor.usr_merge_rows('reporter.report_folder', 'owner', src_usr, dest_usr);
+		-- transfer folders the same way we transfer buckets (see above)
+		FOR folder_row in
+			SELECT id, name
+			FROM   reporter.report_folder
+			WHERE  owner = src_usr
+		LOOP
+			suffix := ' (' || src_usr || ')';
+			LOOP
+				BEGIN
+					UPDATE  reporter.report_folder
+					SET     owner = dest_usr, name = name || suffix
+					WHERE   id = folder_row.id;
+				EXCEPTION WHEN unique_violation THEN
+					suffix := suffix || ' ';
+					CONTINUE;
+				END;
+				EXIT;
+			END LOOP;
+		END LOOP;
     EXCEPTION WHEN undefined_table THEN
         -- do nothing
     END;
     BEGIN
-        PERFORM actor.usr_merge_rows('reporter.output_folder', 'owner', src_usr, dest_usr);
+		-- transfer folders the same way we transfer buckets (see above)
+		FOR folder_row in
+			SELECT id, name
+			FROM   reporter.output_folder
+			WHERE  owner = src_usr
+		LOOP
+			suffix := ' (' || src_usr || ')';
+			LOOP
+				BEGIN
+					UPDATE  reporter.output_folder
+					SET     owner = dest_usr, name = name || suffix
+					WHERE   id = folder_row.id;
+				EXCEPTION WHEN unique_violation THEN
+					suffix := suffix || ' ';
+					CONTINUE;
+				END;
+				EXIT;
+			END LOOP;
+		END LOOP;
     EXCEPTION WHEN undefined_table THEN
         -- do nothing
     END;
