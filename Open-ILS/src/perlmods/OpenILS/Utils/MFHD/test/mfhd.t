@@ -217,3 +217,8 @@ __END__
 863 41 $820.2$a1$b3$i1990$j06/08$x|a1|b4|i1990|j10$zFrom Jun/Aug to Oct
 863 41 $820.3$a1$b5$i1990$j12$x|a2|b1|i1991|j02$zWrap at end of year/vol.
 
+245 00 $aEconomist: pub. w on Sa, except combined iss on last two weeks of year
+853 20 $821$av.$bno.$u12$vc$i(year)$j(month)$k(day)$ww$x01,04,07,10$ypdsa$yow1299
+863 41 $821.1$a100$b1200$i2008$j12$k06$x|a100|b1201|i2008|j12|k13$zwithin vol.
+863 41 $821.2$a100$b1201$i2008$j12$k13$x|a100|b1202|i2008|j12|k20$zwithin vol. combined iss.
+863 41 $821.3$a100$b1202$i2008$j12$k20$x|a101|b1203|i2009|j01|k03$zvolume change over omitted iss.

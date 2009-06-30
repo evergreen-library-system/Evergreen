@@ -67,6 +67,8 @@ sub subsequent_day {
 			   month => $cur[1],
 			   day   => $cur[2]);
 
+#     printf("# subsequent_day: pat='%s' cur='%s'\n", $pat, join('/', @cur));
+
     if (exists $daynames{$pat}) {
 	# dd: published on the given weekday
 	my $dow = $dt->day_of_week;
@@ -81,15 +83,14 @@ sub subsequent_day {
 	    # $corr will take care of it.
 	    $dt->add(days => $corr);
 	}
+	@cur = ($dt->year, $dt->month, $dt->day);
     } elsif (length($pat) == 2) {
 	# DD: published on the give day of every month
 	if ($dt->day >= $pat) {
 	    # current date is on or after $pat: next one is next month
 	    $dt->set(day => $pat);
 	    $dt->add(months => 1);
-	    $cur[0] = $dt->year;
-	    $cur[1] = $dt->month;
-	    $cur[2] = $dt->day;
+	    @cur = ($dt->year, $dt->month, $dt->day);
 	} else {
 	    # current date is before $pat: set day to pattern
 	    $cur[2] = $pat;
@@ -115,6 +116,8 @@ sub subsequent_day {
     foreach my $i (0..$#cur) {
 	$cur[$i] = '0' . (0+$cur[$i]) if $cur[$i] < 10;
     }
+
+#     printf("subsequent_day: returning '%s'\n", join('/', @cur));
 
     return @cur;
 }
