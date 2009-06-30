@@ -49,6 +49,7 @@ DECLARE
 	suffix TEXT;
 	bucket_row RECORD;
 	picklist_row RECORD;
+	queue_row RECORD;
 BEGIN
 
     -- do some initial cleanup 
@@ -175,7 +176,25 @@ BEGIN
 	UPDATE container.user_bucket_item SET target_user = dest_usr WHERE target_user = src_usr;
 
     -- vandelay.*
-    PERFORM actor.usr_merge_rows('vandelay.queue', 'owner', src_usr, dest_usr);
+	-- transfer queues the same way we transfer buckets (see above)
+	FOR queue_row in
+		SELECT id, name
+		FROM   vandelay.queue
+		WHERE  owner = src_usr
+	LOOP
+		suffix := ' (' || src_usr || ')';
+		LOOP
+			BEGIN
+				UPDATE  vandelay.queue
+				SET     owner = dest_usr, name = name || suffix
+				WHERE   id = queue_row.id;
+			EXCEPTION WHEN unique_violation THEN
+				suffix := suffix || ' ';
+				CONTINUE;
+			END;
+			EXIT;
+		END LOOP;
+	END LOOP;
 
     -- money.*
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'usr', src_usr, dest_usr);
