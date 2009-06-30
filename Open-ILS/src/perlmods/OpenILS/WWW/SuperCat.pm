@@ -1618,8 +1618,8 @@ sub sru_search {
 	my ($shortname, $holdings) = $url =~ m#/?([^/]*)(/holdings)?#;
 
 	if ( $resp->type eq 'searchRetrieve' ) {
-		my $cql_query = $req->query;
-		my $search_string = $req->cql->toEvergreen;
+		my $cql_query = decode_utf8($req->query);
+		my $search_string = decode_utf8($req->cql->toEvergreen);
 
 		# Ensure the search string overrides the default site
 		if ($shortname and $search_string !~ m#site:#) {
