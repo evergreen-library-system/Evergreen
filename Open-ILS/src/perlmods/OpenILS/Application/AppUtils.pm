@@ -134,20 +134,13 @@ sub event_code {
 # throws an exception on error.
 # ---------------------------------------------------------------------------
 sub check_user_session {
-
 	my( $self, $user_session ) = @_;
 
 	my $content = $self->simplereq( 
 		'open-ils.auth', 
-		'open-ils.auth.session.retrieve', $user_session );
+		'open-ils.auth.session.retrieve', $user_session);
 
-	if(! $content or $self->event_code($content)) {
-		throw OpenSRF::EX::ERROR 
-			("Session [$user_session] cannot be authenticated" );
-	}
-
-	$logger->debug("Fetch user session $user_session found user " . $content->id );
-
+    return undef if (!$content) or $self->event_code($content);
 	return $content;
 }
 
@@ -331,18 +324,9 @@ sub fetch_user {
 
 sub checkses {
 	my( $self, $session ) = @_;
-	my $user; my $evt; my $e; 
-
-	$logger->debug("Checking user session $session");
-
-	try {
-		$user = $self->check_user_session($session);
-	} catch Error with { $e = 1; };
-
-	$logger->debug("Done checking user session $session " . (($e) ? "error = $e" : "") );
-
-	if( $e or !$user ) { $evt = OpenILS::Event->new('NO_SESSION'); }
-	return ( $user, $evt );
+	my $user = $self->check_user_session($session) or 
+        return (undef, OpenILS::Event->new('NO_SESSION'));
+    return ($user);
 }
 
 

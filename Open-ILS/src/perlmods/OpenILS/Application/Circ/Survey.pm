@@ -34,7 +34,9 @@ __PACKAGE__->register_method(
 sub add_survey {
 	my( $self, $client, $user_session, $survey ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
+	my($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
 	my $session = $apputils->start_db_session();
 	my $err = undef; my $id;
 
@@ -138,7 +140,9 @@ sub get_required_surveys {
 	my( $self, $client, $user_session ) = @_;
 	
 
-	my $user_obj = $apputils->check_user_session($user_session); 
+	my ($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
 	my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
@@ -161,7 +165,8 @@ sub get_survey_responses {
 	my( $self, $client, $user_session, $survey_id, $user_id ) = @_;
 	
 	if(!$user_id) {
-		my $user_obj = $apputils->check_user_session($user_session); 
+	    my ($user_obj, $evt) = $apputils->checkses($user_session); 
+        return $evt if $evt;
 		$user_id = $user_obj->id;
 	}
 
@@ -184,7 +189,9 @@ __PACKAGE__->register_method(
 sub get_all_surveys {
 	my( $self, $client, $user_session ) = @_;
 	
-	my $user_obj = $apputils->check_user_session($user_session); 
+    my ($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
 	my $orgid = $user_obj->ws_ou() ? $user_obj->ws_ou() : $user_obj->home_ou();
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
@@ -295,7 +302,8 @@ sub submit_survey {
 
 		if($self->api_name =~ /session/) {
 			if( ! ($id = $already_seen{$res->usr}) ) {
-				my $user_obj = $apputils->check_user_session($res->usr); 
+                my ($user_obj, $evt) = $apputils->checkses($res->usr);
+                return $evt if $evt;
 				$id = $user_obj->id;
 				$already_seen{$res->usr} = $id;
 			}
@@ -329,7 +337,9 @@ __PACKAGE__->register_method(
 sub get_random_survey {
 	my( $self, $client, $user_session ) = @_;
 	
-	my $user_obj = $apputils->check_user_session($user_session); 
+    my ($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
 	my $surveys = $apputils->simple_scalar_request(
 		"open-ils.storage",
 		"open-ils.storage.action.survey.opac.atomic",

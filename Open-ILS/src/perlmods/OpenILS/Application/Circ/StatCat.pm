@@ -50,7 +50,8 @@ sub retrieve_stat_cat_list {
 		$method = "open-ils.storage.fleshed.asset.stat_cat.retrieve.batch.atomic"; 
 	}
 
-	my $user_obj = $apputils->check_user_session($user_session); 
+	my($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
 
 	my $cats = $apputils->simple_scalar_request(
 				"open-ils.storage", $method, @sc);
@@ -77,7 +78,9 @@ sub retrieve_stat_cats {
 		$method = "open-ils.storage.ranged.fleshed.asset.stat_cat.all.atomic"; 
 	}
 
-	my $user_obj = $apputils->check_user_session($user_session); 
+	my($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
 	if(!$orgid) { $orgid = $user_obj->home_ou; }
 	my $cats = $apputils->simple_scalar_request(
 				"open-ils.storage", $method, $orgid );
@@ -93,7 +96,9 @@ __PACKAGE__->register_method(
 sub retrieve_ranged_intersect_stat_cats {
 	my( $self, $client, $user_session, $orglist ) = @_;
 
-	my $user_obj = $apputils->check_user_session($user_session); 
+	my($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
 	if(!$orglist) { $orglist = [ $user_obj->home_ou ]; }
 
 	# uniquify, yay!
@@ -119,7 +124,9 @@ sub retrieve_ranged_union_stat_cats {
 	use Data::Dumper;
 	warn "Retrieving stat_cats with method $method and orgs " . Dumper($orglist) . "\n";
 
-	my $user_obj = $apputils->check_user_session($user_session); 
+	my($user_obj, $evt) = $apputils->checkses($user_session); 
+    return $evt if $evt;
+
 	if(!$orglist) { $orglist = [ $user_obj->home_ou ]; }
 
 	# uniquify, yay!

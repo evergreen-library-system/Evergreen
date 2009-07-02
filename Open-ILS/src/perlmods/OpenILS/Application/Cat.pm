@@ -366,9 +366,9 @@ sub retrieve_copies {
 
 	# grabbing copy trees should be available for everyone..
 	if(!@org_ids and $user_session) {
-		my $user_obj = 
-			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-			@org_ids = ($user_obj->home_ou);
+        my($user_obj, $evt) = OpenILS::Application::AppUtils->checkses($user_session); 
+        return $evt if $evt;
+        @org_ids = ($user_obj->home_ou);
 	}
 
 	if( $self->api_name =~ /global/ ) {
