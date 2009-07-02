@@ -230,6 +230,9 @@ sub unapi {
 	my $uri = $cgi->param('id') || '';
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
+	my $skin = $cgi->param('skin') || 'default';
+	my $locale = $cgi->param('locale') || 'en-US';
+
 	my $format = $cgi->param('format');
 	my $flesh_feed = ($format =~ /-full$/o) ? 1 : 0;
 	(my $base_format = $format) =~ s/-full$//o;
@@ -422,9 +425,9 @@ sub unapi {
 	}
 
 	if ($format eq 'opac') {
-		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?m=$id&l=$lib_id&d=$lib_depth\n\n"
+		print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?m=$id&l=$lib_id&d=$lib_depth\n\n"
 			if ($type eq 'metarecord');
-		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id&l=$lib_id&d=$lib_depth\n\n"
+		print "Location: $root/../../$locale/skin/$skin/xml/rdetail.xml?r=$id&l=$lib_id&d=$lib_depth\n\n"
 			if ($type eq 'record');
 		return 302;
 	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format) && ($type ne 'acn' && $type ne 'acp' && $type ne 'auri')) {
@@ -511,6 +514,9 @@ sub supercat {
 	my ($id,$type,$format,$command) = reverse split '/', $path;
 	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 	(my $base_format = $format) =~ s/-full$//o;
+
+	my $skin = $cgi->param('skin') || 'default';
+	my $locale = $cgi->param('locale') || 'en-US';
 	
 	if ( $path =~ m{^/formats(?:/([^\/]+))?$}o ) {
 		print "Content-type: application/xml; charset=utf-8\n";
@@ -649,9 +655,9 @@ sub supercat {
 	}
 
 	if ($format eq 'opac') {
-		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?m=$id\n\n"
+		print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?m=$id\n\n"
 			if ($type eq 'metarecord');
-		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
+		print "Location: $root/../../$locale/skin/$skin/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
 
@@ -763,6 +769,9 @@ sub bookbag_feed {
 	my $base = (split 'bookbag', $url)[0] . '/bookbag';
 	my $unapi = (split 'feed', $url)[0] . '/unapi';
 
+	my $skin = $cgi->param('skin') || 'default';
+	my $locale = $cgi->param('locale') || 'en-US';
+
 	$root =~ s{(?<!http:)//}{/}go;
 	$base =~ s{(?<!http:)//}{/}go;
 	$unapi =~ s{(?<!http:)//}{/}go;
@@ -778,7 +787,7 @@ sub bookbag_feed {
 
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
 	if ($type eq 'opac') {
-		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?rt=list&" .
+		print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?rt=list&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
 			"\n\n";
 		return 302;
@@ -806,7 +815,7 @@ sub bookbag_feed {
 
 	$feed->link(
 		OPAC =>
-		$host . '/opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
+		$host . "/opac/$locale/skin/$skin/xml/rresult.xml?rt=list&" .
 			join('&', map { 'rl=' . $_->target_biblio_record_entry } @{$bucket->items} ),
 		'text/html'
 	);
@@ -837,6 +846,9 @@ sub changes_feed {
 	my $root = (split 'feed', $url)[0];
 	my $base = (split 'freshmeat', $url)[0] . '/freshmeat';
 	my $unapi = (split 'feed', $url)[0] . 'unapi';
+
+	my $skin = $cgi->param('skin') || 'default';
+	my $locale = $cgi->param('locale') || 'en-US';
 
 	my $path = $cgi->path_info;
 	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
@@ -875,7 +887,7 @@ sub changes_feed {
 
 	$feed->link(
 		OPAC =>
-		$host . '/opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
+		$host . "/opac/$locale/skin/$skin/xml/rresult.xml?rt=list&" .
 			join('&', map { 'rl=' . $_} @$list ),
 		'text/html'
 	);
