@@ -50,8 +50,8 @@ static jsonObject* doCreate ( osrfMethodContext*, int* );
 static jsonObject* doRetrieve ( osrfMethodContext*, int* );
 static jsonObject* doUpdate ( osrfMethodContext*, int* );
 static jsonObject* doDelete ( osrfMethodContext*, int* );
-static jsonObject* doFieldmapperSearch ( osrfMethodContext*, osrfHash*,
-        const jsonObject*, int* );
+static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
+		jsonObject* where_hash, jsonObject* query_hash, int* err );
 static jsonObject* oilsMakeFieldmapperFromResult( dbi_result, osrfHash* );
 static jsonObject* oilsMakeJSONFromResult( dbi_result );
 
@@ -766,17 +766,19 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
     }
     else if (!strcmp(methodtype, "search")) {
 
-        jsonObject* _p = jsonObjectClone( ctx->params );
+		jsonObject* where_clause;
+		jsonObject* rest_of_query;
+
 #ifdef PCRUD
-        jsonObjectFree(_p);
-        _p = jsonParseString("[]");
-        jsonObjectPush(_p, jsonObjectClone(jsonObjectGetIndex(ctx->params, 1)));
-        jsonObjectPush(_p, jsonObjectClone(jsonObjectGetIndex(ctx->params, 2)));
+		where_clause  = jsonObjectGetIndex( ctx->params, 1 );
+		rest_of_query = jsonObjectGetIndex( ctx->params, 2 );
+#else
+		where_clause  = jsonObjectGetIndex( ctx->params, 0 );
+		rest_of_query = jsonObjectGetIndex( ctx->params, 1 );
 #endif
 
-        obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
+		obj = doFieldmapperSearch( ctx, class_obj, where_clause, rest_of_query, &err );
 
-        jsonObjectFree(_p);
         if(err) return err;
 
         jsonObject* cur;
@@ -792,27 +794,33 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
     } else if (!strcmp(methodtype, "id_list")) {
 
-        jsonObject* _p = jsonObjectClone( ctx->params );
+		jsonObject* where_clause;
+		jsonObject* rest_of_query;
+
+		// We use the where clause without change.  But we need
+		// to massage the rest of the query, so we work with a copy
+		// of it instead of modifying the original.
 #ifdef PCRUD
-        jsonObjectFree(_p);
-        _p = jsonParseString("[]");
-        jsonObjectPush(_p, jsonObjectClone(jsonObjectGetIndex(ctx->params, 1)));
-        jsonObjectPush(_p, jsonObjectClone(jsonObjectGetIndex(ctx->params, 2)));
+		where_clause  = jsonObjectGetIndex( ctx->params, 1 );
+		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 2 ) );
+#else
+		where_clause  = jsonObjectGetIndex( ctx->params, 0 );
+		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 1 ) );
 #endif
 
-        if (jsonObjectGetIndex( _p, 1 )) {
-            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "select" );
-            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "no_i18n" );
-            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh" );
-            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh_columns" );
-        } else {
-            jsonObjectSetIndex( _p, 1, jsonNewObjectType(JSON_HASH) );
-        }
+		if ( rest_of_query ) {
+			jsonObjectRemoveKey( rest_of_query, "select" );
+			jsonObjectRemoveKey( rest_of_query, "no_i18n" );
+			jsonObjectRemoveKey( rest_of_query, "flesh" );
+			jsonObjectRemoveKey( rest_of_query, "flesh_columns" );
+		} else {
+			rest_of_query = jsonNewObjectType( JSON_HASH );
+		}
 
-		jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "no_i18n", jsonNewBoolObject( 1 ) );
+		jsonObjectSetKey( rest_of_query, "no_i18n", jsonNewBoolObject( 1 ) );
 
-        jsonObjectSetKey(
-            jsonObjectGetIndex( _p, 1 ),
+		jsonObjectSetKey(
+			rest_of_query,
             "select",
             jsonParseStringFmt(
                 "{ \"%s\":[\"%s\"] }",
@@ -821,10 +829,10 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
             )
         );
 
-        obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
+		obj = doFieldmapperSearch( ctx, class_obj, where_clause, rest_of_query, &err );
 
-        jsonObjectFree(_p);
-        if(err) return err;
+		jsonObjectFree( rest_of_query );
+		if(err) return err;
 
         jsonObject* cur;
         jsonIterator* itr = jsonNewIterator( obj );
@@ -969,8 +977,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
 
         // check for perm at top of org tree
-        jsonObject* _tmp_params = jsonParseString("[{\"parent_ou\":null}]");
-		jsonObject* _list = doFieldmapperSearch(ctx, osrfHashGet( oilsIDL(), "aou" ), _tmp_params, &err);
+        jsonObject* _tmp_params = jsonParseString("{\"parent_ou\":null}");
+		jsonObject* _list = doFieldmapperSearch(ctx, osrfHashGet( oilsIDL(), "aou" ),
+				_tmp_params, NULL, &err);
 
         jsonObject* _tree_top = jsonObjectGetIndex(_list, 0);
 
@@ -1012,16 +1021,12 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         }
 
         if (fetch) {
-            jsonObject* _tmp_params = jsonParseStringFmt("[{\"%s\":\"%s\"}]", pkey, pkey_value);
-   	    	jsonObject* _list = doFieldmapperSearch(
-                ctx,
-                class,
-                _tmp_params,
-                &err
-            );
-    
-            param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
-    
+            jsonObject* _tmp_params = jsonParseStringFmt("{\"%s\":\"%s\"}", pkey, pkey_value);
+			jsonObject* _list = doFieldmapperSearch(
+					ctx, class, _tmp_params, NULL, &err );
+
+			param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+
             jsonObjectFree(_tmp_params);
             jsonObjectFree(_list);
         }
@@ -1092,17 +1097,13 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                     char* foreign_pkey_value = oilsFMGetString(param, osrfHashGet(fcontext, "fkey"));
 
                     jsonObject* _tmp_params = jsonParseStringFmt(
-                        "[{\"%s\":\"%s\"}]",
+                        "{\"%s\":\"%s\"}",
                         foreign_pkey,
                         foreign_pkey_value
                     );
-    
-            		jsonObject* _list = doFieldmapperSearch(
-                        ctx,
-                        osrfHashGet( oilsIDL(), class_name ),
-                        _tmp_params,
-                        &err
-                    );
+
+					jsonObject* _list = doFieldmapperSearch(
+						ctx, osrfHashGet( oilsIDL(), class_name ), _tmp_params, NULL, &err );
 
                     jsonObject* _fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
                     jsonObjectFree(_tmp_params);
@@ -1122,17 +1123,18 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                             foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
 
                             _tmp_params = jsonParseStringFmt(
-                                "[{\"%s\":\"%s\"}]",
+                                "{\"%s\":\"%s\"}",
                                 foreign_pkey,
                                 foreign_pkey_value
                             );
 
-                    		_list = doFieldmapperSearch(
-                                ctx,
-                                osrfHashGet( oilsIDL(), osrfHashGet( foreign_link_hash, "class" ) ),
-                                _tmp_params,
-                                &err
-                            );
+							_list = doFieldmapperSearch(
+								ctx,
+								osrfHashGet( oilsIDL(), osrfHashGet( foreign_link_hash, "class" ) ),
+								_tmp_params,
+								NULL,
+								&err
+							);
 
                             _fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
                             jsonObjectFree(_tmp_params);
@@ -1512,26 +1514,20 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		}
 		else {
 
-			jsonObject* fake_params = jsonNewObjectType(JSON_ARRAY);
-			jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH));
+			jsonObject* where_clause = jsonNewObjectType( JSON_HASH );
+			jsonObjectSetKey( where_clause, pkey, jsonNewObject(id) );
 
-			jsonObjectSetKey(
-				jsonObjectGetIndex(fake_params, 0),
-				pkey,
-				jsonNewObject(id)
-			);
+			jsonObject* list = doFieldmapperSearch( ctx, meta, where_clause, NULL, err );
 
-			jsonObject* list = doFieldmapperSearch( ctx,meta, fake_params, err);
+			jsonObjectFree( where_clause );
 
 			if(*err) {
-				jsonObjectFree( fake_params );
 				obj = jsonNULL;
 			} else {
 				obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
 			}
 
 			jsonObjectFree( list );
-			jsonObjectFree( fake_params );
 		}
 
 		free(id);
@@ -1567,29 +1563,24 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 		id
 	);
 
-	jsonObject* fake_params = jsonNewObjectType(JSON_ARRAY);
-	jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH));
-
-	jsonObjectSetKey(
-		jsonObjectGetIndex(fake_params, 0),
-		osrfHashGet(meta, "primarykey"),
-		jsonObjectClone(jsonObjectGetIndex(ctx->params, id_pos))
+	jsonObject* key_param = jsonNewObjectType( JSON_HASH );
+	jsonObjectSetKey( 
+		key_param,
+		osrfHashGet( meta, "primarykey" ),
+		jsonObjectClone( jsonObjectGetIndex(ctx->params, id_pos) )
 	);
 
-
-	if (order_hash) jsonObjectPush(fake_params, jsonObjectClone(order_hash) );
-
-	jsonObject* list = doFieldmapperSearch( ctx,meta, fake_params, err);
+	jsonObject* list = doFieldmapperSearch( ctx, meta, key_param, order_hash, err );
 
 	if(*err) {
-		jsonObjectFree( fake_params );
+		jsonObjectFree( key_param );
 		return jsonNULL;
 	}
 
 	jsonObject* obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
 
 	jsonObjectFree( list );
-	jsonObjectFree( fake_params );
+	jsonObjectFree( key_param );
 
 #ifdef PCRUD
 	if(!verifyObjectPCRUD(ctx, obj)) {
@@ -4201,7 +4192,7 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 }
 
 static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
-		const jsonObject* params, int* err ) {
+		jsonObject* where_hash, jsonObject* query_hash, int* err ) {
 
 	// XXX for now...
 	dbhandle = writehandle;
@@ -4213,16 +4204,14 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 
 	const jsonObject* _tmp;
 	jsonObject* obj;
-	jsonObject* search_hash = jsonObjectGetIndex(params, 0);
-	jsonObject* order_hash = jsonObjectGetIndex(params, 1);
 
-	char* sql = buildSELECT( search_hash, order_hash, meta, ctx );
+	char* sql = buildSELECT( where_hash, query_hash, meta, ctx );
 	if (!sql) {
 		osrfLogDebug(OSRF_LOG_MARK, "Problem building query, returning NULL");
 		*err = -1;
 		return NULL;
 	}
-	
+
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
 
 	dbi_result result = dbi_conn_query(dbhandle, sql);
@@ -4271,14 +4260,14 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	dbi_result_free(result);
 	free(sql);
 
-	if (res_list->size && order_hash) {
-		_tmp = jsonObjectGetKeyConst( order_hash, "flesh" );
+	if (res_list->size && query_hash) {
+		_tmp = jsonObjectGetKeyConst( query_hash, "flesh" );
 		if (_tmp) {
 			int x = (int)jsonObjectGetNumber(_tmp);
 			if (x == -1 || x > max_flesh_depth) x = max_flesh_depth;
 
 			const jsonObject* temp_blob;
-			if ((temp_blob = jsonObjectGetKeyConst( order_hash, "flesh_fields" )) && x > 0) {
+			if ((temp_blob = jsonObjectGetKeyConst( query_hash, "flesh_fields" )) && x > 0) {
 
 				jsonObject* flesh_blob = jsonObjectClone( temp_blob );
 				const jsonObject* flesh_fields = jsonObjectGetKeyConst( flesh_blob, core_class );
@@ -4357,12 +4346,6 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 							osrfHashGet(kid_link, "reltype")
 						);
 
-						jsonObject* fake_params = jsonNewObjectType(JSON_ARRAY);
-						jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH)); // search hash
-						jsonObjectPush(fake_params, jsonNewObjectType(JSON_HASH)); // order/flesh hash
-
-						osrfLogDebug(OSRF_LOG_MARK, "Creating dummy params object...");
-
 						const char* search_key = jsonObjectGetString(
 							jsonObjectGetIndex(
 								cur,
@@ -4375,41 +4358,44 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 							continue;
 						}
 
+						osrfLogDebug(OSRF_LOG_MARK, "Creating param objects...");
+
+						// construct WHERE clause
+						jsonObject* where_clause  = jsonNewObjectType(JSON_HASH);
 						jsonObjectSetKey(
-							jsonObjectGetIndex(fake_params, 0),
+							where_clause,
 							osrfHashGet(kid_link, "key"),
 							jsonNewObject( search_key )
 						);
 
-						jsonObjectSetKey(
-							jsonObjectGetIndex(fake_params, 1),
-							"flesh",
+						// construct the rest of the query
+						jsonObject* rest_of_query = jsonNewObjectType(JSON_HASH);
+						jsonObjectSetKey( rest_of_query, "flesh",
 							jsonNewNumberObject( (double)(x - 1 + link_map->size) )
 						);
 
 						if (flesh_blob)
-							jsonObjectSetKey( jsonObjectGetIndex(fake_params, 1), "flesh_fields", jsonObjectClone(flesh_blob) );
+							jsonObjectSetKey( rest_of_query, "flesh_fields", jsonObjectClone(flesh_blob) );
 
-						if (jsonObjectGetKeyConst(order_hash, "order_by")) {
-							jsonObjectSetKey(
-								jsonObjectGetIndex(fake_params, 1),
-								"order_by",
-								jsonObjectClone(jsonObjectGetKeyConst(order_hash, "order_by"))
+						if (jsonObjectGetKeyConst(query_hash, "order_by")) {
+							jsonObjectSetKey( rest_of_query, "order_by",
+								jsonObjectClone(jsonObjectGetKeyConst(query_hash, "order_by"))
 							);
 						}
 
-						if (jsonObjectGetKeyConst(order_hash, "select")) {
-							jsonObjectSetKey(
-								jsonObjectGetIndex(fake_params, 1),
-								"select",
-								jsonObjectClone(jsonObjectGetKeyConst(order_hash, "select"))
+						if (jsonObjectGetKeyConst(query_hash, "select")) {
+							jsonObjectSetKey( rest_of_query, "select",
+								jsonObjectClone(jsonObjectGetKeyConst(query_hash, "select"))
 							);
 						}
 
-						jsonObject* kids = doFieldmapperSearch(ctx, kid_idl, fake_params, err);
+						jsonObject* kids = doFieldmapperSearch( ctx, kid_idl,
+							where_clause, rest_of_query, err);
+
+						jsonObjectFree( where_clause );
+						jsonObjectFree( rest_of_query );
 
 						if(*err) {
-							jsonObjectFree( fake_params );
 							osrfStringArrayFree(link_fields);
 							jsonIteratorFree(itr);
 							jsonObjectFree(res_list);
@@ -4478,7 +4464,6 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 						}
 
 						jsonObjectFree( kids );
-						jsonObjectFree( fake_params );
 
 						osrfLogDebug(OSRF_LOG_MARK, "Fleshing of %s complete", osrfHashGet(kid_link, "field"));
 						osrfLogDebug(OSRF_LOG_MARK, "%s", jsonObjectToJSON(cur));
