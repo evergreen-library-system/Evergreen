@@ -22,6 +22,7 @@ import optparse
 import polib
 import re
 import sys
+import os.path
 
 class SQL(basel10n.BaseL10N):
     """
@@ -80,14 +81,16 @@ class SQL(basel10n.BaseL10N):
                     occurid = re.compile(r':').sub("%3A", fi18n.group('id'))
 
                     if (msgid in serts):
-                        serts[msgid].occurrences.append((fq_field, occurid))
+                        serts[msgid].occurrences.append((os.path.basename(source), num))
+                        serts[msgid].tcomment = ' '.join((serts[msgid].tcomment, 'id::%s__%s' % (fq_field, occurid)))
                     else:
                         poe = polib.POEntry()
-                        poe.occurrences = [(fq_field, occurid)]
+                        poe.tcomment = 'id::%s__%s' % (fq_field, occurid)
+                        poe.occurrences = [(os.path.basename(source), num)]
                         poe.msgid = msgid
                         serts[msgid] = poe
-            except:
-                print "Error in line %d of SQL source file" % (num) 
+            except Exception, exc:
+                print "Error in line %d of SQL source file: %s" % (num, exc) 
 
         for poe in serts.values():
             self.pot.append(poe)
@@ -100,18 +103,22 @@ class SQL(basel10n.BaseL10N):
 
         insert = "INSERT INTO config.i18n_core (fq_field, identity_value," \
             " translation, string) VALUES ('%s', '%s', '%s', '%s');"
+        idregex = re.compile(r'^id::(?P<class>.*?)__(?P<id>.*?)$')
         for entry in self.pot:
-            for fq_field in entry.occurrences:
+            for id_value in entry.tcomment.split():
                 # Escape SQL single-quotes to avoid b0rkage
                 msgstr = re.compile(r'\'').sub("''", entry.msgstr)
 
+                identifier = idregex.search(id_value)
+                if identifier is None:
+                    continue
                 # And unescape any colons in the occurence ID
-                occurid = re.compile(r'%3A').sub(':', fq_field[1])
+                occurid = re.compile(r'%3A').sub(':', identifier.group('id'))
 
                 if msgstr == '':
                     # Don't generate a stmt for an untranslated string
                     break
-                self.sql.append(insert % (fq_field[0], occurid, locale, msgstr))
+                self.sql.append(insert % (identifier.group('class'), occurid, locale, msgstr))
 
 def main():
     """
