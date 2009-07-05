@@ -187,6 +187,7 @@ int osrfAppInitialize() {
     osrfLogDebug(OSRF_LOG_MARK,
 		"At least %d methods will be generated", classes->size * global_method_count);
 
+	// For each class in IDL...
     while ( (classname = osrfStringArrayGetString(classes, c_index++)) ) {
         osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", classname);
 
@@ -202,24 +203,29 @@ int osrfAppInitialize() {
 			continue;
 		}
 
-        // Look up some other attributes of the current class
-        const char* idlClass_fieldmapper = osrfHashGet(idlClass, "fieldmapper");
-		const char* readonly = osrfHashGet(idlClass, "readonly");
+		// Look up some other attributes of the current class
+		const char* idlClass_fieldmapper = osrfHashGet(idlClass, "fieldmapper");
+		if( !idlClass_fieldmapper ) {
+			osrfLogDebug( OSRF_LOG_MARK, "Skipping class \"%s\"; no fieldmapper in IDL", classname );
+			continue;
+		}
+
 #ifdef PCRUD
-        osrfHash* idlClass_permacrud = osrfHashGet(idlClass, "permacrud");
+		osrfHash* idlClass_permacrud = osrfHashGet(idlClass, "permacrud");
+		if (!idlClass_permacrud) {
+			osrfLogDebug( OSRF_LOG_MARK, "Skipping class \"%s\"; no permacrud in IDL", classname );
+			continue;
+		}
 #endif
+		const char* readonly = osrfHashGet(idlClass, "readonly");
 
         int i;
-        for( i = 0; i < global_method_count; ++i ) {
+        for( i = 0; i < global_method_count; ++i ) {  // for each global method
             const char* method_type = global_method[ i ];
             osrfLogDebug(OSRF_LOG_MARK,
                 "Using files to build %s class methods for %s", method_type, classname);
 
-            if (!idlClass_fieldmapper) continue;
-
 #ifdef PCRUD
-            if (!idlClass_permacrud) continue;
-
             const char* tmp_method = method_type;
             if ( *tmp_method == 'i' || *tmp_method == 's') {
                 tmp_method = "retrieve";
@@ -275,9 +281,11 @@ int osrfAppInitialize() {
                     );
 
             free(method);
-        }
-    }
+        } // end for each global method
+    } // end for each class in IDL
 
+	osrfStringArrayFree( classes );
+	
     return 0;
 }
 
