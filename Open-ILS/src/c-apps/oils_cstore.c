@@ -84,6 +84,7 @@ static int is_good_operator( const char* op );
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
+static jsonObject* single_hash( const char* key, const char* value );
 #endif
 
 static int child_initialized = 0;   /* boolean */
@@ -1021,7 +1022,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         }
 
         if (fetch) {
-            jsonObject* _tmp_params = jsonParseStringFmt("{\"%s\":\"%s\"}", pkey, pkey_value);
+			jsonObject* _tmp_params = single_hash( pkey, pkey_value );
 			jsonObject* _list = doFieldmapperSearch(
 					ctx, class, _tmp_params, NULL, &err );
 
@@ -1096,11 +1097,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                     char* foreign_pkey = osrfHashGet(fcontext, "field");
                     char* foreign_pkey_value = oilsFMGetString(param, osrfHashGet(fcontext, "fkey"));
 
-                    jsonObject* _tmp_params = jsonParseStringFmt(
-                        "{\"%s\":\"%s\"}",
-                        foreign_pkey,
-                        foreign_pkey_value
-                    );
+					jsonObject* _tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
 
 					jsonObject* _list = doFieldmapperSearch(
 						ctx, osrfHashGet( oilsIDL(), class_name ), _tmp_params, NULL, &err );
@@ -1119,14 +1116,10 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
                             osrfHash* foreign_link_hash = oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
 
-                            foreign_pkey_value = oilsFMGetString(_fparam, flink);
-                            foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
+							foreign_pkey_value = oilsFMGetString(_fparam, flink);
+							foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
 
-                            _tmp_params = jsonParseStringFmt(
-                                "{\"%s\":\"%s\"}",
-                                foreign_pkey,
-                                foreign_pkey_value
-                            );
+							_tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
 
 							_list = doFieldmapperSearch(
 								ctx,
@@ -1300,6 +1293,24 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     osrfStringArrayFree(context_org_array);
 
     return OK;
+}
+
+/*
+Utility function: create a JSON_HASH with a single key/value pair.
+This function is equivalent to:
+
+	jsonParseStringFmt( "{\"%s\":\"%s\"}", key, value )
+
+...but faster because it doesn't create and parse a JSON string.
+*/
+static jsonObject* single_hash( const char* key, const char* value ) {
+	// Sanity checks
+	if( ! key ) key = "";
+	if( ! value ) value = "";
+
+	jsonObject* hash = jsonNewObjectType( JSON_HASH );
+	jsonObjectSetKey( hash, key, jsonNewObject( value ) );
+	return hash;
 }
 #endif
 
@@ -3683,13 +3694,13 @@ char* SELECT (
 						}
 
 					} // end while
-    	            jsonIteratorFree(order_itr);
+					jsonIteratorFree(order_itr);
 
 				} else if ( snode->type == JSON_ARRAY ) {
 
 					// Array is a list of fields from the current class
-					jsonIterator* order_itr = jsonNewIterator( snode );
-					while ( (onode = jsonIteratorNext( order_itr )) ) {
+					unsigned long order_idx = 0;
+					while(( onode = jsonObjectGetIndex( snode, order_idx++ ) )) {
 
 						const char* _f = jsonObjectGetString( onode );
 
@@ -3705,7 +3716,6 @@ char* SELECT (
 									ctx->request,
 									"Invalid field in ORDER BY clause -- see error log for more details"
 								);
-							jsonIteratorFree( order_itr );
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
 							free(core_class);
@@ -3725,7 +3735,6 @@ char* SELECT (
 									ctx->request,
 									"Virtual field in ORDER BY clause -- see error log for more details"
 								);
-							jsonIteratorFree( order_itr );
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
 							free(core_class);
@@ -3744,9 +3753,7 @@ char* SELECT (
 						buffer_fadd( order_buf, "\"%s\".%s", class_itr->key, _f);
 
 					} // end while
-				// jsonIteratorFree(order_itr);
-	
-	
+
 				// IT'S THE OOOOOOOOOOOLD STYLE!
 				} else {
 					osrfLogError(OSRF_LOG_MARK, 
@@ -3771,6 +3778,7 @@ char* SELECT (
 					return NULL;
 				}
 			} // end while
+			jsonIteratorFree( class_itr );
 		} else {
 			osrfLogError(OSRF_LOG_MARK,
 				"%s: Malformed ORDER BY clause; expected JSON_HASH or JSON_ARRAY, found %s",
@@ -3791,7 +3799,6 @@ char* SELECT (
 			if (defaultselhash) jsonObjectFree(defaultselhash);
 			return NULL;
 		}
-		// jsonIteratorFree(class_itr);
 
 		if( order_buf )
 			order_by_list = buffer_release( order_buf );
