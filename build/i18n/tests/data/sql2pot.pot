@@ -11,62 +11,187 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: config.bib_source:3
-msgid "oclc"
-msgstr ""
-
-#: config.bib_source:4
+# id::cbs.source__2
+#: sqlsource.sql:5
 msgid "System Local"
 msgstr ""
 
-#: config.bib_source:5
+# id::crcd.name__4
+#: sqlsource.sql:63
+msgid "3_days_1_renew"
+msgstr ""
+
+# id::cit.name__3
+#: sqlsource.sql:53
+msgid "Other"
+msgstr ""
+
+# id::i18n_l.name__fr-CA
+#: sqlsource.sql:95
+msgid "French (Canada)"
+msgstr ""
+
+# id::cbs.source__1
+#: sqlsource.sql:3
+msgid "oclc"
+msgstr ""
+
+# id::ccpbt.label__staff_client id::cbrebt.label__staff_client
+#: sqlsource.sql:102 sqlsource.sql:105
+msgid "General Staff Client container"
+msgstr ""
+
+# id::cblvl.value__d
+#: sqlsource.sql:82
+msgid "Subunit"
+msgstr ""
+
+# id::cblvl.value__b
+#: sqlsource.sql:80
+msgid "Serial component part"
+msgstr ""
+
+# id::crcd.name__2
+#: sqlsource.sql:59
+msgid "28_days_2_renew"
+msgstr ""
+
+# id::crcd.name__6
+#: sqlsource.sql:67
+msgid "35_days_1_renew"
+msgstr ""
+
+# id::cbs.source__3
+#: sqlsource.sql:7
 msgid "Project Gutenberg"
 msgstr ""
 
-#: config.standing:7
-msgid "Good"
+# id::crcd.name__1
+#: sqlsource.sql:57
+msgid "7_days_0_renew"
 msgstr ""
 
-#: config.standing:8
+# id::i18n_l.name__en-US
+#: sqlsource.sql:89
+msgid "English (US)"
+msgstr ""
+
+# id::ccpbt.label__misc id::ccnbt.label__misc id::cbrebt.label__misc
+#: sqlsource.sql:101 sqlsource.sql:103 sqlsource.sql:104
+msgid "Miscellaneous"
+msgstr ""
+
+# id::cblvl.value__c
+#: sqlsource.sql:81
+msgid "Collection"
+msgstr ""
+
+# id::cblvl.value__i
+#: sqlsource.sql:83
+msgid "Integrating resource"
+msgstr ""
+
+# id::vqbrad.description__4
+#: sqlsource.sql:78
+msgid "Pagination"
+msgstr ""
+
+# id::cnct.name__1
+#: sqlsource.sql:45
+msgid "Paperback Book"
+msgstr ""
+
+# id::i18n_l.description__es-US
+#: sqlsource.sql:99
+msgid "American Spanish"
+msgstr ""
+
+# id::i18n_l.name__en-CA
+#: sqlsource.sql:92
+msgid "English (Canada)"
+msgstr ""
+
+# id::i18n_l.name__es-US
+#: sqlsource.sql:98
+msgid "Spanish (US)"
+msgstr ""
+
+# id::i18n_l.description__en-CA
+#: sqlsource.sql:93
+msgid "Canadian English"
+msgstr ""
+
+# id::crcd.name__3
+#: sqlsource.sql:61
+msgid "3_months_0_renew"
+msgstr ""
+
+# id::cst.value__2
+#: sqlsource.sql:10
 msgid "Barred"
 msgstr ""
 
-#: config.audience_map:31
-msgid "Unknown or unspecified"
+# id::cst.value__1
+#: sqlsource.sql:9
+msgid "Good"
 msgstr ""
 
-#: config.audience_map:32
-msgid "Preschool"
+# id::vqbrad.description__3
+#: sqlsource.sql:77
+msgid "Language of work"
 msgstr ""
 
-#: config.audience_map:33
-msgid "Primary"
-msgstr ""
-
-#: config.audience_map:34
-msgid "Pre-adolescent"
-msgstr ""
-
-#: config.audience_map:35
-msgid "Adolescent"
-msgstr ""
-
-#: config.audience_map:36
-msgid "Adult"
-msgstr ""
-
-#: config.audience_map:37
-msgid "Specialized"
-msgstr ""
-
-#: config.audience_map:38
-msgid "General"
-msgstr ""
-
-#: config.audience_map:39
-msgid "Juvenile"
-msgstr ""
-
-#: asset.copy_location:48
+# id::acpl.name__1
+#: sqlsource.sql:72
 msgid "Stacks"
+msgstr ""
+
+# id::i18n_l.description__en-US
+#: sqlsource.sql:90
+msgid "American English"
+msgstr ""
+
+# id::crcd.name__7
+#: sqlsource.sql:69
+msgid "7_days_2_renew"
+msgstr ""
+
+# id::cblvl.value__m
+#: sqlsource.sql:84
+msgid "Monograph/Item"
+msgstr ""
+
+# id::cit.name__1
+#: sqlsource.sql:49
+msgid "Drivers License"
+msgstr ""
+
+# id::vqbrad.description__1
+#: sqlsource.sql:76
+msgid "Author of work"
+msgstr ""
+
+# id::i18n_l.description__fr-CA
+#: sqlsource.sql:96
+msgid "Canadian French"
+msgstr ""
+
+# id::vqbrad.description__1
+#: sqlsource.sql:75
+msgid "Title of work"
+msgstr ""
+
+# id::cit.name__2
+#: sqlsource.sql:51
+msgid "SSN"
+msgstr ""
+
+# id::cblvl.value__s
+#: sqlsource.sql:85
+msgid "Serial"
+msgstr ""
+
+# id::crcd.name__5
+#: sqlsource.sql:65
+msgid "2_months_2_renew"
 msgstr ""
