@@ -89,7 +89,7 @@ class SQL(basel10n.BaseL10N):
                         poe.occurrences = [(os.path.basename(source), num)]
                         poe.msgid = msgid
                         serts[msgid] = poe
-            except Exception as exc:
+            except Exception, exc:
                 print "Error in line %d of SQL source file: %s" % (num, exc) 
 
         for poe in serts.values():
