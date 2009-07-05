@@ -167,8 +167,6 @@ int osrfAppInitialize() {
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 						   "rollbackSavepoint", "", 1, 0 );
 
-    buffer_free(method_name);
-
 	static const char* global_method[] = {
 		"create",
 		"retrieve",
@@ -185,7 +183,7 @@ int osrfAppInitialize() {
     osrfStringArray* classes = osrfHashKeys( oilsIDL() );
     osrfLogDebug(OSRF_LOG_MARK, "%d classes loaded", classes->size );
     osrfLogDebug(OSRF_LOG_MARK,
-		"At least %d methods will be generated", classes->size * global_method_count);
+		"At most %d methods will be generated", classes->size * global_method_count);
 
 	// For each class in IDL...
     while ( (classname = osrfStringArrayGetString(classes, c_index++)) ) {
@@ -237,10 +235,7 @@ int osrfAppInitialize() {
                     ( *method_type == 'c' || *method_type == 'u' || *method_type == 'd')
                ) continue;
 
-            osrfHash* method_meta = osrfNewHash();
-            osrfHashSet(method_meta, idlClass, "class");
-
-            method_name =  buffer_init(64);
+            buffer_reset( method_name );
 #ifdef PCRUD
             buffer_fadd(method_name, "%s.%s.%s", MODULENAME, method_type, classname);
 #else
@@ -260,17 +255,19 @@ int osrfAppInitialize() {
             free(_fm);
 #endif
 
-            char* method = buffer_release(method_name);
-
-            osrfHashSet( method_meta, method, "methodname" );
-            osrfHashSet( method_meta, strdup(method_type), "methodtype" );
+            char* method = buffer_data(method_name);
 
             int flags = 0;
             if (*method_type == 'i' || *method_type == 's') {
                 flags = flags | OSRF_METHOD_STREAMING;
             }
 
-            osrfAppRegisterExtendedMethod(
+			osrfHash* method_meta = osrfNewHash();
+			osrfHashSet( method_meta, idlClass, "class");
+			osrfHashSet( method_meta, method, "methodname" );
+			osrfHashSet( method_meta, strdup(method_type), "methodtype" );
+
+			osrfAppRegisterExtendedMethod(
                     MODULENAME,
                     method,
                     "dispatchCRUDMethod",
@@ -284,6 +281,7 @@ int osrfAppInitialize() {
         } // end for each global method
     } // end for each class in IDL
 
+	buffer_free( method_name );
 	osrfStringArrayFree( classes );
 	
     return 0;
@@ -374,7 +372,6 @@ int osrfAppChildInit() {
 
     osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", MODULENAME);
 
-    unsigned short type;
     int i = 0; 
     char* classname;
     osrfStringArray* classes = osrfHashKeys( oilsIDL() );
@@ -408,26 +405,25 @@ int osrfAppChildInit() {
             int columnIndex = 1;
             const char* columnName;
             osrfHash* _f;
-            while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
+            while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
 
                 osrfLogInternal(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
 
                 /* fetch the fieldmapper index */
                 if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
 
-                    osrfLogDebug(OSRF_LOG_MARK, "Found [%s] in IDL hash...", (char*)columnName);
+					osrfLogDebug(OSRF_LOG_MARK, "Found [%s] in IDL hash...", (char*)columnName);
 
-                    /* determine the field type and storage attributes */
-                    type = dbi_result_get_field_type(result, columnName);
+					/* determine the field type and storage attributes */
 
-                    switch( type ) {
+					switch( dbi_result_get_field_type_idx(result, columnIndex) ) {
 
 						case DBI_TYPE_INTEGER : {
 
 							if ( !osrfHashGet(_f, "primitive") )
 								osrfHashSet(_f,"number", "primitive");
 
-							int attr = dbi_result_get_field_attribs(result, columnName);
+							int attr = dbi_result_get_field_attribs_idx(result, columnIndex);
 							if( attr & DBI_INTEGER_SIZE8 ) 
 								osrfHashSet(_f,"INT8", "datatype");
 							else 
@@ -469,8 +465,9 @@ int osrfAppChildInit() {
                             osrfHashGet(_f, "datatype")
                             );
                 }
-            }
-            dbi_result_free(result);
+				++columnIndex;
+			} // end while loop for traversing result
+			dbi_result_free(result);
         } else {
             osrfLogDebug(OSRF_LOG_MARK, "No data found for class [%s]...", (char*)classname);
         }
@@ -4807,15 +4804,15 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 	const char* columnName;
 
 	/* cycle through the column list */
-	while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
+	while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
 
 		osrfLogInternal(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
 
 		fmIndex = -1; // reset the position
 		
 		/* determine the field type and storage attributes */
-		type = dbi_result_get_field_type(result, columnName);
-		attr = dbi_result_get_field_attribs(result, columnName);
+		type = dbi_result_get_field_type_idx(result, columnIndex);
+		attr = dbi_result_get_field_attribs_idx(result, columnIndex);
 
 		/* fetch the fieldmapper index */
 		if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
@@ -4832,7 +4829,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 			continue;
 		}
 
-		if (dbi_result_field_is_null(result, columnName)) {
+		if (dbi_result_field_is_null_idx(result, columnIndex)) {
 			jsonObjectSetIndex( object, fmIndex, jsonNewObject(NULL) );
 		} else {
 
@@ -4842,16 +4839,16 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 					if( attr & DBI_INTEGER_SIZE8 ) 
 						jsonObjectSetIndex( object, fmIndex, 
-							jsonNewNumberObject(dbi_result_get_longlong(result, columnName)));
+							jsonNewNumberObject(dbi_result_get_longlong_idx(result, columnIndex)));
 					else 
 						jsonObjectSetIndex( object, fmIndex, 
-							jsonNewNumberObject(dbi_result_get_int(result, columnName)));
+							jsonNewNumberObject(dbi_result_get_int_idx(result, columnIndex)));
 
 					break;
 
 				case DBI_TYPE_DECIMAL :
 					jsonObjectSetIndex( object, fmIndex, 
-							jsonNewNumberObject(dbi_result_get_double(result, columnName)));
+							jsonNewNumberObject(dbi_result_get_double_idx(result, columnIndex)));
 					break;
 
 				case DBI_TYPE_STRING :
@@ -4860,7 +4857,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 					jsonObjectSetIndex(
 						object,
 						fmIndex,
-						jsonNewObject( dbi_result_get_string(result, columnName) )
+						jsonNewObject( dbi_result_get_string_idx(result, columnIndex) )
 					);
 
 					break;
@@ -4870,7 +4867,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 					memset(dt_string, '\0', sizeof(dt_string));
 					memset(&gmdt, '\0', sizeof(gmdt));
 
-					_tmp_dt = dbi_result_get_datetime(result, columnName);
+					_tmp_dt = dbi_result_get_datetime_idx(result, columnIndex);
 
 
 					if (!(attr & DBI_DATETIME_DATE)) {
@@ -4890,9 +4887,10 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 				case DBI_TYPE_BINARY :
 					osrfLogError( OSRF_LOG_MARK, 
-						"Can't do binary at column %s : index %d", columnName, columnIndex - 1);
+						"Can't do binary at column %s : index %d", columnName, columnIndex);
 			}
 		}
+		++columnIndex;
 	}
 
 	return object;
@@ -4914,17 +4912,17 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 	const char* columnName;
 
 	/* cycle through the column list */
-	while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
+	while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
 
 		osrfLogInternal(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
 
 		fmIndex = -1; // reset the position
 		
 		/* determine the field type and storage attributes */
-		type = dbi_result_get_field_type(result, columnName);
-		attr = dbi_result_get_field_attribs(result, columnName);
+		type = dbi_result_get_field_type_idx(result, columnIndex);
+		attr = dbi_result_get_field_attribs_idx(result, columnIndex);
 
-		if (dbi_result_field_is_null(result, columnName)) {
+		if (dbi_result_field_is_null_idx(result, columnIndex)) {
 			jsonObjectSetKey( object, columnName, jsonNewObject(NULL) );
 		} else {
 
@@ -4933,17 +4931,21 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 				case DBI_TYPE_INTEGER :
 
 					if( attr & DBI_INTEGER_SIZE8 ) 
-						jsonObjectSetKey( object, columnName, jsonNewNumberObject(dbi_result_get_longlong(result, columnName)) );
+						jsonObjectSetKey( object, columnName,
+								jsonNewNumberObject(dbi_result_get_longlong_idx(result, columnIndex)) );
 					else 
-						jsonObjectSetKey( object, columnName, jsonNewNumberObject(dbi_result_get_int(result, columnName)) );
+						jsonObjectSetKey( object, columnName,
+								jsonNewNumberObject(dbi_result_get_int_idx(result, columnIndex)) );
 					break;
 
 				case DBI_TYPE_DECIMAL :
-					jsonObjectSetKey( object, columnName, jsonNewNumberObject(dbi_result_get_double(result, columnName)) );
+					jsonObjectSetKey( object, columnName,
+							jsonNewNumberObject(dbi_result_get_double_idx(result, columnIndex)) );
 					break;
 
 				case DBI_TYPE_STRING :
-					jsonObjectSetKey( object, columnName, jsonNewObject(dbi_result_get_string(result, columnName)) );
+					jsonObjectSetKey( object, columnName,
+							jsonNewObject(dbi_result_get_string_idx(result, columnIndex)) );
 					break;
 
 				case DBI_TYPE_DATETIME :
@@ -4951,7 +4953,7 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 					memset(dt_string, '\0', sizeof(dt_string));
 					memset(&gmdt, '\0', sizeof(gmdt));
 
-					_tmp_dt = dbi_result_get_datetime(result, columnName);
+					_tmp_dt = dbi_result_get_datetime_idx(result, columnIndex);
 
 
 					if (!(attr & DBI_DATETIME_DATE)) {
@@ -4970,10 +4972,11 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 
 				case DBI_TYPE_BINARY :
 					osrfLogError( OSRF_LOG_MARK, 
-						"Can't do binary at column %s : index %d", columnName, columnIndex - 1);
+						"Can't do binary at column %s : index %d", columnName, columnIndex );
 			}
 		}
-	}
+		++columnIndex;
+	} // end while loop traversing result
 
 	return object;
 }
