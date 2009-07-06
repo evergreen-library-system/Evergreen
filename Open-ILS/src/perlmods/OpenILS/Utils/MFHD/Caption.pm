@@ -5,7 +5,6 @@ use Carp;
 
 use Data::Dumper;
 
-use DateTime;
 use OpenILS::Utils::MFHD::Date;
 
 use base 'MARC::Field';
