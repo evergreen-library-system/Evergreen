@@ -785,20 +785,19 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 		obj = doFieldmapperSearch( ctx, class_obj, where_clause, rest_of_query, &err );
 
-        if(err) return err;
+		if(err) return err;
 
-        jsonObject* cur;
-        jsonIterator* itr = jsonNewIterator( obj );
-        while ((cur = jsonIteratorNext( itr ))) {
+		jsonObject* cur = 0;
+		unsigned long res_idx = 0;
+		while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
 #ifdef PCRUD
-            if(!verifyObjectPCRUD(ctx, cur)) continue;
+			if(!verifyObjectPCRUD(ctx, cur)) continue;
 #endif
-            osrfAppRespond( ctx, cur );
-        }
-        jsonIteratorFree(itr);
-        osrfAppRespondComplete( ctx, NULL );
+			osrfAppRespond( ctx, cur );
+		}
+		osrfAppRespondComplete( ctx, NULL );
 
-    } else if (!strcmp(methodtype, "id_list")) {
+	} else if (!strcmp(methodtype, "id_list")) {
 
 		jsonObject* where_clause;
 		jsonObject* rest_of_query;
@@ -840,19 +839,18 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		jsonObjectFree( rest_of_query );
 		if(err) return err;
 
-        jsonObject* cur;
-        jsonIterator* itr = jsonNewIterator( obj );
-        while ((cur = jsonIteratorNext( itr ))) {
+		jsonObject* cur;
+		unsigned long res_idx = 0;
+		while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
 #ifdef PCRUD
-            if(!verifyObjectPCRUD(ctx, cur)) continue;
+			if(!verifyObjectPCRUD(ctx, cur)) continue;
 #endif
-            osrfAppRespond(
-                    ctx,
-                    oilsFMGetObject( cur, osrfHashGet( class_obj, "primarykey" ) )
-                    );
-        }
-        jsonIteratorFree(itr);
-        osrfAppRespondComplete( ctx, NULL );
+			osrfAppRespond(
+				ctx,
+				oilsFMGetObject( cur, osrfHashGet( class_obj, "primarykey" ) )
+				);
+		}
+		osrfAppRespondComplete( ctx, NULL );
 
     } else {
         osrfAppRespondComplete( ctx, obj );
@@ -4304,8 +4302,8 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 				}
 
 				jsonObject* cur;
-				jsonIterator* itr = jsonNewIterator( res_list );
-				while ((cur = jsonIteratorNext( itr ))) {
+				unsigned long res_idx = 0;
+				while ((cur = jsonObjectGetIndex( res_list, res_idx++ ) )) {
 
 					int i = 0;
 					char* link_field;
@@ -4409,7 +4407,6 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 
 						if(*err) {
 							osrfStringArrayFree(link_fields);
-							jsonIteratorFree(itr);
 							jsonObjectFree(res_list);
 							jsonObjectFree(flesh_blob);
 							return jsonNULL;
@@ -4423,8 +4420,8 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 							kids = jsonNewObjectType(JSON_ARRAY);
 
 							jsonObject* _k_node;
-							jsonIterator* _k = jsonNewIterator( X );
-							while ((_k_node = jsonIteratorNext( _k ))) {
+							unsigned long res_idx = 0;
+							while ((_k_node = jsonObjectGetIndex( X, res_idx++ ) )) {
 								jsonObjectPush(
 									kids,
 									jsonObjectClone(
@@ -4448,8 +4445,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 										)
 									)
 								);
-							}
-							jsonIteratorFree(_k);
+							} // end while loop traversing X
 						}
 
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_a" )) || !(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) {
@@ -4481,10 +4477,9 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 						osrfLogDebug(OSRF_LOG_MARK, "%s", jsonObjectToJSON(cur));
 
 					}
-				}
+				} // end while loop traversing res_list
 				jsonObjectFree( flesh_blob );
 				osrfStringArrayFree(link_fields);
-				jsonIteratorFree(itr);
 			}
 		}
 	}
