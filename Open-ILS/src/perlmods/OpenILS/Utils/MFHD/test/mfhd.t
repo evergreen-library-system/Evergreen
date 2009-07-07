@@ -222,3 +222,9 @@ __END__
 863 41 $821.1$a100$b1200$i2008$j12$k06$x|a100|b1201|i2008|j12|k13$zwithin vol.
 863 41 $821.2$a100$b1201$i2008$j12$k13$x|a100|b1202|i2008|j12|k20$zwithin vol. combined iss.
 863 41 $821.3$a100$b1202$i2008$j12$k20$x|a101|b1203|i2009|j01|k03$zvolume change over omitted iss.
+
+245 00 $aMFHD example: monthly, pub. 2nd Wed of month except in April: 2nd Thu; May:1st Wednesday.
+853 20 $822$av.$bno.$u12$vr$i(year)$j(month)$k(day)$wm$x01$ypw02we$ypw0402th,0501we$yow0402we,0502we
+863 41 $822.1$a1$b2$i2009$j02$k11$x|a1|b3|i2009|j03|k11$zpublished on 2nd Wed in Mar
+863 41 $822.2$a1$b3$i2009$j03$k11$x|a1|b4|i2009|j04|k09$zpublished on 2nd Thu in Apr
+863 41 $822.3$a1$b4$i2009$j04$k09$x|a1|b5|i2009|j05|k06$zpublished on 1st Wed in May

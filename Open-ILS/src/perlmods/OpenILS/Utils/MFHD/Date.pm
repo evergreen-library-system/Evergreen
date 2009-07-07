@@ -130,12 +130,12 @@ sub nth_week_of_month {
     my $dt = shift;
     my $week = shift;
     my $day = shift;
-    my ($nth_day, $dow, $day);
+    my ($nth_day, $dow);
 
-    $day = $daynames{$day};
+#     printf("# nth_week_of_month(dt, '%s', '%s')\n", $week, $day);
 
     if (0 < $week && $week <= 5) {
-	$nth_day = DateTime->clone($dt)->set(day => 1);
+	$nth_day = $dt->clone->set(day => 1);
     } elsif ($week >= 97) {
 	$nth_day = DateTime->last_day_of_month(year  => $dt->year,
 					       month => $dt->month);
@@ -145,13 +145,22 @@ sub nth_week_of_month {
 
     $dow = $nth_day->day_of_week();
 
+    # If a particular day was passed in (eg, we want 3rd friday)
+    # then use that day for the calculations, otherwise, just use
+    # the day of the week of the original date (the date $dt).
+    if (defined($day)) {
+	$day = $daynames{$day};
+    } else {
+	$day = $dt->day_of_week;
+    }
+
     if ($week <= 5) {
 	# count forwards
 	$nth_day->add(days => ($day - $dow + 7) % 7,
 		      weeks=> $week - 1);
     } else {
 	# count backwards
-	$nth_day->subtract(days => ($day - $nth_day->day_of_week + 7) % 7);
+	$nth_day->subtract(days => ($day - $dow + 7) % 7);
 
 	# 99: last week of month, 98: second last, etc.
 	for (my $i = 99 - $week; $i > 0; $i--) {
@@ -174,6 +183,8 @@ sub check_date {
     my $month = shift;
     my $weekno = shift;
     my $day = shift;
+
+#     printf("check_date('%s', '%s', '%s')\n", $month, $weekno, $day || '');
 
     if (!defined $day) {
 	# MMWW
@@ -246,17 +257,28 @@ sub subsequent_week {
     my $pat = shift;
     my @cur = @_;
     my $candidate;
-    my $dt = DateTime->new(year => $cur[0],
-			   month=> $cur[1],
-			   day  => $cur[2]);
+    my $dt;
 
-    if ($pat =~ m/^$weekpat$daypat$/) {
+#     printf("# subsequent_week('%s', '%s', '%s', '%s')\n", $pat, @cur);
+
+    $dt = DateTime->new(year => $cur[0],
+			month=> $cur[1],
+			day  => $cur[2]);
+
+    if ($pat =~ m/^$weekpat$daypat$/o) {
 	# WWdd: published on given weekday of given week of every month
 	my ($week, $day) = ($1, $2);
+
+# 	printf("# subsequent_week: matched /WWdd/: week='%s', day='%s'\n",
+# 	       $week, $day);
 
 	if ($week eq '00') {
 	    # Every week
 	    $candidate = DateTime->clone($dt);
+
+# 	    printf("# subsequent_week: DateTime->clone() failed\n")
+# 	      if !defined($candidate);
+
 	    if ($dt->day_of_week == $daynames{$day}) {
 		# Current is right day, next one is a week hence
 		$candidate->add(days => 7);
@@ -268,13 +290,17 @@ sub subsequent_week {
 	    $candidate = nth_week_of_month($dt, $week, $day);
 	}
 
-	if ($candidate < $dt) {
-	    # If the n'th week of the month happens before the
+	if ($candidate <= $dt) {
+	    # If the n'th week of the month happens on before the
 	    # current issue, then the next issue is published next
 	    # month, otherwise, it's published this month.
 	    # This will never happen for the "00: every week" pattern
-	    $candidate = DateTime->clone($dt)->add(months => 1)->set(day => 1);
-	    $candidate = nth_week_of_month($dt, $week, $day);
+# 	    printf("# subsequent_week: candidate (%s) occurs on or before current date (%s)\n",
+# 		   join('/', $candidate->year, $candidate->month, $candidate->day),
+# 		   join('/', $dt->year, $dt->month, $dt->day));
+	    $candidate->set(day => 1);
+	    $candidate->add(months => 1);
+	    $candidate = nth_week_of_month($candidate, $week, $day);
 	}
     } elsif ($pat =~ m/^$monthpat$weekpat$daypat$/) {
 	# MMWWdd: published on given weekday of given week of given month
@@ -284,7 +310,7 @@ sub subsequent_week {
 				   month=> $month,
 				   day  => 1);
 	$candidate = nth_week_of_month($candidate, $week, $day);
-	if ($candidate < $dt) {
+	if ($candidate <= $dt) {
 	    # We've missed it for this year, next one that matches
 	    # will be next year
 	    $candidate->add(years => 1)->set(day => 1);
@@ -299,7 +325,7 @@ sub subsequent_week {
 						     day  => 1),
 				       $week,
 				       'th');
-	if ($candidate < $dt) {
+	if ($candidate <= $dt) {
 	    # Already past the pattern date this year, move to next year
 	    $candidate->add(years => 1)->set(day => 1);
 	    $candidate = nth_week_of_month($candidate, $week, 'th');
