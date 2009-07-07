@@ -5,13 +5,12 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- STYLESHEETS -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -24,10 +23,10 @@
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
-        <script type="text/javascript">
+	<script type="text/javascript">
 		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
 	</script>
-        <scripts id="openils_util_scripts"/>
+	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
@@ -35,7 +34,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
