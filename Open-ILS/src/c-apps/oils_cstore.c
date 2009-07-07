@@ -869,6 +869,10 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 
     if (!param->classname || (strcmp( osrfHashGet(class, "classname"), param->classname ))) {
 
+		const char* temp_classname = param->classname;
+		if( ! temp_classname )
+			temp_classname = "(null)";
+
         growing_buffer* msg = buffer_init(128);
         buffer_fadd(
                 msg,
@@ -876,7 +880,7 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
                 MODULENAME,
                 osrfHashGet(meta, "methodtype"),
                 osrfHashGet(class, "classname"),
-                param->classname
+                temp_classname
                 );
 
         char* m = buffer_release(msg);
@@ -926,22 +930,20 @@ static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 
 static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) {
 
-    dbhandle = writehandle;
+	dbhandle = writehandle;
 
-    osrfHash* meta = (osrfHash*) ctx->method->userData;
-    osrfHash* class = osrfHashGet( meta, "class" );
-    char* method_type = strdup( osrfHashGet(meta, "methodtype") );
-    int fetch = 0;
+	osrfHash* meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class = osrfHashGet( meta, "class" );
+	const char* method_type = osrfHashGet( meta, "methodtype" );
+	int fetch = 0;
 
-    if ( ( *method_type == 's' || *method_type == 'i' ) ) {
-        free(method_type);
-        method_type = strdup("retrieve"); // search and id_list are equivelant to retrieve for this
-    } else if ( *method_type == 'u' || *method_type == 'd' ) {
-        fetch = 1; // MUST go to the db for the object for update and delete
-    }
+	if ( ( *method_type == 's' || *method_type == 'i' ) ) {
+		method_type = "retrieve"; // search and id_list are equivalant to retrieve for this
+	} else if ( *method_type == 'u' || *method_type == 'd' ) {
+		fetch = 1; // MUST go to the db for the object for update and delete
+	}
 
-    osrfHash* pcrud = osrfHashGet( osrfHashGet(class, "permacrud"), method_type );
-    free(method_type);
+	osrfHash* pcrud = osrfHashGet( osrfHashGet(class, "permacrud"), method_type );
 
     if (!pcrud) {
         // No permacrud for this method type on this class
@@ -1026,10 +1028,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
         if (fetch) {
 			jsonObject* _tmp_params = single_hash( pkey, pkey_value );
-			jsonObject* _list = doFieldmapperSearch(
-					ctx, class, _tmp_params, NULL, &err );
+			jsonObject* _list = doFieldmapperSearch( ctx, class, _tmp_params, NULL, &err );
 
-			param = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+			param = jsonObjectExtractIndex(_list, 0);
 
             jsonObjectFree(_tmp_params);
             jsonObjectFree(_list);
@@ -1553,7 +1554,10 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 }
 
-
+/*
+ * Fetch one row from a specified table, using a specified value
+ * for the primary key
+*/
 static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
     int id_pos = 0;
@@ -1564,37 +1568,36 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
     order_pos = 2;
 #endif
 
-	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
+	osrfHash* class_def = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 
-	const char* id = jsonObjectGetString(jsonObjectGetIndex(ctx->params, id_pos));
-	jsonObject* order_hash = jsonObjectGetIndex(ctx->params, order_pos);
+	const jsonObject* id_obj = jsonObjectGetIndex(ctx->params, id_pos);  // key value
 
 	osrfLogDebug(
 		OSRF_LOG_MARK,
 		"%s retrieving %s object with primary key value of %s",
 		MODULENAME,
-		osrfHashGet(meta, "fieldmapper"),
-		id
+		osrfHashGet( class_def, "fieldmapper" ),
+		jsonObjectGetString( id_obj )
 	);
 
-	jsonObject* key_param = jsonNewObjectType( JSON_HASH );
+	// Build a WHERE clause based on the key value
+	jsonObject* where_clause = jsonNewObjectType( JSON_HASH );
 	jsonObjectSetKey( 
-		key_param,
-		osrfHashGet( meta, "primarykey" ),
-		jsonObjectClone( jsonObjectGetIndex(ctx->params, id_pos) )
+		where_clause,
+		osrfHashGet( class_def, "primarykey" ),
+		jsonObjectClone( id_obj )
 	);
 
-	jsonObject* list = doFieldmapperSearch( ctx, meta, key_param, order_hash, err );
+	jsonObject* rest_of_query = jsonObjectGetIndex(ctx->params, order_pos);
 
-	if(*err) {
-		jsonObjectFree( key_param );
+	jsonObject* list = doFieldmapperSearch( ctx, class_def, where_clause, rest_of_query, err );
+
+	jsonObjectFree( where_clause );
+	if(*err)
 		return jsonNULL;
-	}
 
-	jsonObject* obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
-
+	jsonObject* obj = jsonObjectExtractIndex( list, 0 );
 	jsonObjectFree( list );
-	jsonObjectFree( key_param );
 
 #ifdef PCRUD
 	if(!verifyObjectPCRUD(ctx, obj)) {
