@@ -1495,7 +1495,7 @@ sub verify_copy_for_hold {
     return (
         $permitted,
         (
-	        ($copy->circ_lib == $request_lib) and 
+	        ($copy->circ_lib == $pickup_lib) and 
             ($copy->status == OILS_COPY_STATUS_AVAILABLE)
         )
     );
