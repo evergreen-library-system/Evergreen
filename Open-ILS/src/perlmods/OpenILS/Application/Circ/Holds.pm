@@ -31,7 +31,8 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::Circ::Transit;
 use OpenILS::Application::Actor::Friends;
-
+use DateTime;
+use DateTime::Format::ISO8601;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
@@ -710,6 +711,7 @@ __PACKAGE__->register_method(
 	Returns 2 for 'waiting for copy capture'
 	Returns 3 for 'in transit'
 	Returns 4 for 'arrived'
+	Returns 5 for 'hold-shelf-delay'
 	NOTE
 
 sub retrieve_hold_status {
@@ -740,7 +742,24 @@ sub _hold_status {
 	}
 
 	return 3 if $copy->status == OILS_COPY_STATUS_IN_TRANSIT;
-	return 4 if $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
+
+	if($copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF) {
+
+        my $hs_wait_interval = $U->ou_ancestor_setting_value($hold->pickup_lib, 'circ.hold_shelf_status_delay');
+        return 4 unless $hs_wait_interval;
+
+        # if a hold_shelf_status_delay interval is defined and start_time plus 
+        # the interval is greater than now, consider the hold to be in the virtual 
+        # "on its way to the holds shelf" status. Return 5.
+
+        my $transit = $e->search_action_hold_transit({hold => $hold->id})->[0];
+        my $start_time = ($transit) ? $transit->dest_recv_time : $hold->capture_time;
+        $start_time = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($start_time));
+        my $end_time = $start_time->add(seconds => OpenSRF::Utils::interval_to_seconds($hs_wait_interval));
+
+        return 5 if $end_time > DateTime->now;
+        return 4;
+    }
 
 	return -1;
 }
