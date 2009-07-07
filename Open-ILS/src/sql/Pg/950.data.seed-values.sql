@@ -1766,6 +1766,11 @@ INSERT into config.org_unit_setting_type
   null,
   'bool' ),
 
+( 'circ.hold_shelf_status_delay',
+  'Hold Shelf Status Delay',
+  'The purpose is to provide an interval of time after an item goes into the on-holds-shelf status before it appears to patrons that it is actually on the holds shelf.  This gives staff time to process the item before it shows as ready-for-pickup.',
+  'interval' ),
+
 ( 'ui.patron.default_inet_access_level',
   'Default level of patrons'' internet access',
   null,
