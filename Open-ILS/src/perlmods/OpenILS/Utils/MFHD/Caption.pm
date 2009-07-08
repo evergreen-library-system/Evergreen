@@ -273,19 +273,34 @@ sub enum_is_combined {
 }
 
 
-# Test to see if $m1/$d1 is on or after $m2/$d2
-# if $d2 is undefined, test is based on just months
+# Test to see if $dt1 is on or after $dt2
+# if length(@{$dt2} == 2, then just month/day are compared
+# if length(@{$dt2} == 1, then just the months are compared
 sub on_or_after {
-    my ($m1, $d1, $m2, $d2) = @_;
+    my $dt1 = shift;
+    my $dt2 = shift;
 
-    return (($m1 > $m2)
-	    || ($m1 == $m2 && ((!defined $d2) || ($d1 >= $d2))));
+#     printf("# on_or_after(%s, %s): ", join('/', @{$dt1}), join('/', @{$dt2}));
+
+    foreach my $i (0..(scalar(@{$dt2})-1)) {
+	if ($dt1->[$i] > $dt2->[$i]) {
+	    # $dt1 occurs AFTER $dt2
+	    return 1;
+	} elsif ($dt1->[$i] < $dt2->[$i]) {
+	    # $dt1 occurs BEFORE $dt2
+	    return 0;
+	}
+	# both are still equal, keep going
+    }
+
+    # We fell out of the loop with them being equal, so it's 'on'
+    return 1;
 }
 
 sub calendar_increment {
     my $self = shift;
     my $cur = shift;
-    my @new = @_;
+    my $new = shift;
     my $cal_change = $self->calendar_change;
     my $month;
     my $day;
@@ -293,7 +308,7 @@ sub calendar_increment {
     my $new_on_or_after;
 
     # A calendar change is defined, need to check if it applies
-    if ((scalar(@new) == 2 && $new[1] > 20) || (scalar(@new) == 1)) {
+    if ((scalar(@{$new}) == 2 && $new->[1] > 20) || (scalar(@{$new}) == 1)) {
 	carp "Can't calculate date change for ", $self->as_string;
 	return;
     }
@@ -307,10 +322,14 @@ sub calendar_increment {
 	    ($month, $day) = unpack("a2a2", $change);
 	}
 
-	if ($cur->[0] == $new[0]) {
+	printf("# calendar_increment('%s', '%s'): change on '%s/%s'\n",
+	       join('/', @{$cur}), join('/', @{$new}),
+	       $month, defined($day) ? $day : 'UNDEF');
+
+	if ($cur->[0] == $new->[0]) {
 	    # Same year, so a 'simple' month/day comparison will be fine
-	    $incr = (!on_or_after($cur->[1], $cur->[2], $month, $day)
-		     && on_or_after($new[1], $new[2], $month, $day));
+	    $incr = (!on_or_after([$cur->[1], $cur->[2]], [$month, $day])
+		     && on_or_after([$new->[1], $new->[2]], [$month, $day]));
 	} else {
 	    # @cur is in the year before @new. There are
 	    # two possible cases for the calendar change date that
@@ -321,11 +340,13 @@ sub calendar_increment {
 	    #  -------|------|------X------|------|
 	    #       @cur    (1)   Jan 1   (2)   @new
 
-	    $incr = (on_or_after($new[1], $new[2], $month, $day)
-		     || !on_or_after($cur->[1], $cur->[2], $month, $day));
+	    $incr = (on_or_after([$new->[1], $new->[2]], [$month, $day])
+		     || !on_or_after([$cur->[1], $cur->[2]], [$month, $day]));
 	}
 	return $incr if $incr;
     }
+
+    return 0;
 }
 
 sub next_date {
@@ -367,6 +388,7 @@ sub next_date {
 	    }
 
 	    foreach my $pat (@pats) {
+		printf("# next_date: generating with pattern '%s'\n", $pat);
 		my @candidate = $genfunc->($pat, @cur);
 
 		while ($self->is_omitted(@candidate)) {
@@ -375,14 +397,15 @@ sub next_date {
 		    @candidate = $genfunc->($pat, @candidate);
 		}
 
-# 		printf("# testing candidate date '%s'\n", join('/', @candidate));
+		printf("# testing new candidate '%s' against '%s'\n",
+		       join('/', @candidate), join('/', @new));
 		if (!defined($new[0])
-		    || !on_or_after($candidate[0], $candidate[1], $new[0], $new[1])) {
+		    || !on_or_after(\@candidate, \@new)) {
 		    # first time through the loop
 		    # or @candidate is before @new => @candidate is the next
 		    # issue.
 		    @new = @candidate;
-# 		    printf("# selecting candidate date '%s'\n", join('/', @new));
+		    printf("# selecting candidate date '%s'\n", join('/', @new));
 		}
 	    }
 	}
@@ -400,7 +423,7 @@ sub next_date {
 		# We don't need to check for omitted issues because
 		# combined issues are always published. OR ARE THEY????
 		if (!defined($new[0])
-		    || !on_or_after($candidate[0], $candidate[1], $new[0], $new[1])) {
+		    || !on_or_after(\@candidate, \@new)) {
 		    # Haven't found a next issue at all yet, or
 		    # this one is before the best guess so far
 		    @new = @candidate;
@@ -456,7 +479,7 @@ sub next_date {
 	# going to increment the v. number twice at year-change.
 	$next->{a} += $carry;
     } elsif (defined $pattern->{x}) {
-	$next->{a} += $self->calendar_increment(\@cur, @new);
+	$next->{a} += $self->calendar_increment(\@cur, \@new);
     }
 }
 
