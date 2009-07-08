@@ -428,6 +428,11 @@ vim:et:ts=4:sw=4:
                     <min_spare_children>1</min_spare_children>
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
+                <!-- set this to 'true' to have barcode search also search patron records by unique ID -->
+                <app_settings>
+                    <id_as_barcode>false</id_as_barcode>
+                </app_settings>
+
             </open-ils.actor>
 
 

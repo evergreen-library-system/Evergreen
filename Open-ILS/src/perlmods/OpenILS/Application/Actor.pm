@@ -2975,18 +2975,32 @@ sub retrieve_usr_id_via_barcode_or_usrname {
     my($self, $conn, $auth, $barcode, $username) = @_;
     my $e = new_editor(authtoken => $auth);
 	return $e->die_event unless $e->checkauth;
+    my $id_as_barcode= OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.actor' => app_settings => 'id_as_barcode');
     my $user;
     my $user_by_barcode;
     my $user_by_username;
+    $logger->info("$id_as_barcode is the ID as BARCODE");
     if($barcode) {
         my $card = $e->search_actor_card([
             {barcode => $barcode},
-            {flesh => 1, flesh_fields => {ac => ['usr']}}])->[0] or return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
-        $user_by_barcode = $card->usr;
-        $user = $user_by_barcode;
+            {flesh => 1, flesh_fields => {ac => ['usr']}}])->[0];
+        if ($id_as_barcode =~ /^t/i) {
+            if (!$card) {
+                $user = $e->retrieve_actor_user($barcode);
+                return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ) if(!$user);
+            }else {
+                $user_by_barcode = $card->usr;
+                $user = $user_by_barcode;
+            }
+        }else {
+            return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ) if(!$card);
+            $user_by_barcode = $card->usr;
+            $user = $user_by_barcode;
+        }
     }
+
     if ($username) {
-        $user_by_username = $e->search_actor_user({usrname => $username})->[0] or return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
+        $user_by_username = $e->search_actor_user({usrname => $username})->[0] or return OpenILS::Event->new( 'ACTOR_USR_NOT_FOUND' );
 
         $user = $user_by_username;
     }
