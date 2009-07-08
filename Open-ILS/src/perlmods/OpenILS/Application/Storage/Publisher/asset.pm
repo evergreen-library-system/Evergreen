@@ -449,6 +449,7 @@ sub ranged_asset_copy_location {
                   FROM  $ctable c
                         JOIN $descendants d
                                 ON (d.id = c.owning_lib)
+                 ORDER BY name
 	SQL
         
         my $sth = asset::copy_location->db_Main->prepare($sql);
