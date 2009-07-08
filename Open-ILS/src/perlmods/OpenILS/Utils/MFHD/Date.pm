@@ -274,7 +274,7 @@ sub subsequent_week {
 
 	if ($week eq '00') {
 	    # Every week
-	    $candidate = DateTime->clone($dt);
+	    $candidate = $dt->clone;
 
 # 	    printf("# subsequent_week: DateTime->clone() failed\n")
 # 	      if !defined($candidate);
