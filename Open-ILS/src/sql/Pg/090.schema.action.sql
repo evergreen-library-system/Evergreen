@@ -313,8 +313,10 @@ CREATE INDEX ahrn_hold_idx ON action.hold_request_note (hold);
 
 CREATE TABLE action.hold_notification (
 	id		SERIAL				PRIMARY KEY,
-	hold		INT				NOT NULL REFERENCES action.hold_request (id) DEFERRABLE INITIALLY DEFERRED,
-	notify_staff	INT				REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	hold		INT				NOT NULL REFERENCES action.hold_request (id)
+									ON DELETE CASCADE
+									DEFERRABLE INITIALLY DEFERRED,
+	notify_staff	INT			REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	notify_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	method		TEXT				NOT NULL, -- email address or phone number
 	note		TEXT
