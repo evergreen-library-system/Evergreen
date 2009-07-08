@@ -488,7 +488,17 @@ cat.copy_buckets.prototype = {
 									copies[i].isdeleted(1);
 								}
 
-								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
+								var robj = obj.network.simple_request(
+									'FM_ACP_FLESHED_BATCH_UPDATE',
+									[ ses(), copies, true],
+									null, // no callback
+									{
+										'title' : document.getElementById('catStrings').getString('staff.cat.copy_buckets.batch.error'),
+										'overridable_events' : [
+											1208 /* TITLE_LAST_COPY */
+										]
+									}
+								);
 								if (typeof robj.ilsevent != 'undefined') {
 									switch(Number(robj.ilsevent)) {
 										case 1227 /* COPY_DELETE_WARNING */ : 
