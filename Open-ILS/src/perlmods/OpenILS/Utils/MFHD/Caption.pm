@@ -322,9 +322,9 @@ sub calendar_increment {
 	    ($month, $day) = unpack("a2a2", $change);
 	}
 
-	printf("# calendar_increment('%s', '%s'): change on '%s/%s'\n",
-	       join('/', @{$cur}), join('/', @{$new}),
-	       $month, defined($day) ? $day : 'UNDEF');
+# 	printf("# calendar_increment('%s', '%s'): change on '%s/%s'\n",
+# 	       join('/', @{$cur}), join('/', @{$new}),
+# 	       $month, defined($day) ? $day : 'UNDEF');
 
 	if ($cur->[0] == $new->[0]) {
 	    # Same year, so a 'simple' month/day comparison will be fine
@@ -388,7 +388,7 @@ sub next_date {
 	    }
 
 	    foreach my $pat (@pats) {
-		printf("# next_date: generating with pattern '%s'\n", $pat);
+# 		printf("# next_date: generating with pattern '%s'\n", $pat);
 		my @candidate = $genfunc->($pat, @cur);
 
 		while ($self->is_omitted(@candidate)) {
@@ -397,15 +397,15 @@ sub next_date {
 		    @candidate = $genfunc->($pat, @candidate);
 		}
 
-		printf("# testing new candidate '%s' against '%s'\n",
-		       join('/', @candidate), join('/', @new));
+# 		printf("# testing new candidate '%s' against '%s'\n",
+# 		       join('/', @candidate), join('/', @new));
 		if (!defined($new[0])
 		    || !on_or_after(\@candidate, \@new)) {
 		    # first time through the loop
 		    # or @candidate is before @new => @candidate is the next
 		    # issue.
 		    @new = @candidate;
-		    printf("# selecting candidate date '%s'\n", join('/', @new));
+# 		    printf("# selecting candidate date '%s'\n", join('/', @new));
 		}
 	    }
 	}
