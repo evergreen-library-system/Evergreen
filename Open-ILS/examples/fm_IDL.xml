@@ -2807,6 +2807,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
+			<field reporter:label="User Summary" name="usr_summary" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>

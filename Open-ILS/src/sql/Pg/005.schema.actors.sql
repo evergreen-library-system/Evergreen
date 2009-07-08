@@ -184,6 +184,7 @@ CREATE TABLE actor.stat_cat (
 	owner		INT     NOT NULL,
 	name		TEXT    NOT NULL,
 	opac_visible	BOOL NOT NULL DEFAULT FALSE,
+	usr_summary     BOOL NOT NULL DEFAULT FALSE,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
 COMMENT ON TABLE actor.stat_cat IS $$
