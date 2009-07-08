@@ -228,3 +228,11 @@ __END__
 863 41 $822.1$a1$b2$i2009$j02$k11$x|a1|b3|i2009|j03|k11$zpublished on 2nd Wed in Mar
 863 41 $822.2$a1$b3$i2009$j03$k11$x|a1|b4|i2009|j04|k09$zpublished on 2nd Thu in Apr
 863 41 $822.3$a1$b4$i2009$j04$k09$x|a1|b5|i2009|j05|k06$zpublished on 1st Wed in May
+
+245 00 $aMFHD example: pub. every Mon, Thu, except on New Years, July 4, Labor Day, Thanksgiving, Christmas
+853 20 $823$av.$bno.$uvar$vr$i(year)$j(month)$k(day)$wc$x07$ypw00mo,00th$yod0101,0704,1225$yow0901mo,1104th
+863 41 $823.1$a1$b100$i2009$j02$k02$x|a1|b101|i2009|j02|k05$znormal: Mon to Thu
+863 41 $823.2$a1$b101$i2009$j02$k05$x|a1|b102|i2009|j02|k09$znormal: Thu to Mon
+863 41 $823.3$a1$b150$i2009$j06$k29$x|a2|b151|i2009|j07|k02$znormal: calendar change
+863 41 $823.4$a2$b180$i2009$j09$k03$x|a2|b181|i2009|j09|k10$zSkip Labor Day
+863 41 $823.5$a2$b200$i2009$j11$k23$x|a2|b201|i2009|j11|k30$zSkip (US) Thanksgiving
