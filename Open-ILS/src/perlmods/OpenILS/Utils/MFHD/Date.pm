@@ -72,7 +72,7 @@ sub subsequent_day {
     if (exists $daynames{$pat}) {
 	# dd: published on the given weekday
 	my $dow = $dt->day_of_week;
-	my $corr = ($dow - $daynames{$pat} + 7) % 7;
+	my $corr = ($daynames{$pat} - $dow + 7) % 7;
 
 	if ($dow == $daynames{$pat}) {
 	    # the next one is one week hence
@@ -276,14 +276,11 @@ sub subsequent_week {
 	    # Every week
 	    $candidate = $dt->clone;
 
-# 	    printf("# subsequent_week: DateTime->clone() failed\n")
-# 	      if !defined($candidate);
-
 	    if ($dt->day_of_week == $daynames{$day}) {
 		# Current is right day, next one is a week hence
 		$candidate->add(days => 7);
 	    } else {
-		$candidate->add(days => ($dt->day_of_week - $daynames{$day} + 7) % 7);
+		$candidate->add(days => ($daynames{$day} - $dt->day_of_week + 7) % 7);
 	    }
 	} else {
 	    # 3rd Friday of the month (eg)
@@ -305,6 +302,9 @@ sub subsequent_week {
     } elsif ($pat =~ m/^$monthpat$weekpat$daypat$/) {
 	# MMWWdd: published on given weekday of given week of given month
 	my ($month, $week, $day) = ($1, $2, $3);
+
+# 	printf("# subsequent_week: matched /MMWWdd/: month='%s', week='%s', day='%s'\n",
+# 	       $month, $week, $day);
 
 	$candidate = DateTime->new(year => $dt->year,
 				   month=> $month,
