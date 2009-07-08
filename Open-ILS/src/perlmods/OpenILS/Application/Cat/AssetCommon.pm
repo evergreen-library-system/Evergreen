@@ -414,14 +414,14 @@ sub remove_empty_objects {
             $editor->update_asset_call_number($vol) or return $editor->event;
         }
 
+        return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) 
+            if $aoe and not $override;
+
         unless($koe) {
             # delete the bib record if the keep-on-empty setting is not set
             my $evt = OpenILS::Application::Cat::BibCommon->delete_rec($editor, $vol->record);
             return $evt if $evt;
         }
-
-        # return the empty alert if the alert-on-empty setting is set
-        return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) if $aoe;
 	}
 
 	return undef;
