@@ -1771,6 +1771,11 @@ INSERT into config.org_unit_setting_type
   'The purpose is to provide an interval of time after an item goes into the on-holds-shelf status before it appears to patrons that it is actually on the holds shelf.  This gives staff time to process the item before it shows as ready-for-pickup.',
   'interval' ),
 
+( 'circ.patron_invalid_address_apply_penalty',
+  'Invalid patron address penalty',
+  'When set, if a patron address is set to invalid, a penalty is applied.',
+  'bool' ),
+
 ( 'ui.patron.default_inet_access_level',
   'Default level of patrons'' internet access',
   null,
