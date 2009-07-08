@@ -106,7 +106,7 @@ sub _bucket_flesh {
             {bucket => $bucket_id}, 
             {   order_by => {$fmclass => "pos"},
                 flesh => 1, 
-                flesh_fields => {cbrebi => ['notes']}
+                flesh_fields => {$fmclass => ['notes']}
             }
         )
     );
