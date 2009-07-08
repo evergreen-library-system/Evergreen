@@ -100,7 +100,7 @@ sub handler {
     } catch Error with { 
         $err = shift; 
         decr_error_countdown();
-        $logger->error("added content handler failed: $method($key) => $err");
+        $logger->debug("added content handler failed: $method($key) => $err");
     };
 
     return Apache2::Const::NOT_FOUND if $err;
