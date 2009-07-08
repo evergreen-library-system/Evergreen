@@ -501,6 +501,9 @@ cat.copy_buckets.prototype = {
 								);
 								if (typeof robj.ilsevent != 'undefined') {
 									switch(Number(robj.ilsevent)) {
+										case 1208 /* TITLE_LAST_COPY */ :
+											// ignore this
+										break;
 										case 1227 /* COPY_DELETE_WARNING */ : 
 											var copy;
 											for (var i = 0; i < copies.length; i++) { if (copies[i].id()==robj.payload) copy = function(a){return a;}(copies[i]); }
