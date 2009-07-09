@@ -69,19 +69,9 @@ sub calculate_penalties {
 sub retrieve_penalties {
     my($class, $e, $user_id, $context_org, @fatal_mask) = @_;
 
-    my $penalties = $e->search_actor_user_standing_penalty([
-        {
-            usr => $user_id, 
-            org_unit => $U->get_org_ancestors($context_org),
-            '-or' => [
-                {stop_date => undef},
-                {stop_date => {'>' => 'now'}}
-            ],
-        },
-        {flesh => 1, flesh_fields => {ausp => ['standing_penalty']}}
-    ]);
-
     my(@info, @fatal);
+    my $penalties = $class->retrieve_usr_penalties($e, $user_id, $context_org);
+
     for my $p (@$penalties) {
         my $pushed = 0;
         if($p->standing_penalty->block_list) {
@@ -99,4 +89,24 @@ sub retrieve_penalties {
     return {fatal_penalties => \@fatal, info_penalties => \@info};
 }
 
+
+# Returns a list of actor_user_standing_penalty objects
+sub retrieve_usr_penalties {
+    my($class, $e, $user_id, $context_org) = @_;
+
+    return $e->search_actor_user_standing_penalty([
+        {
+            usr => $user_id, 
+            org_unit => $U->get_org_ancestors($context_org),
+            '-or' => [
+                {stop_date => undef},
+                {stop_date => {'>' => 'now'}}
+            ],
+        },
+        {flesh => 1, flesh_fields => {ausp => ['standing_penalty']}}
+    ]);
+}
+
 1;
+
+
