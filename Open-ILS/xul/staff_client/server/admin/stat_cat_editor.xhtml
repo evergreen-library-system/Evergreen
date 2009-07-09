@@ -129,6 +129,7 @@
 							<td>&staff.server.admin.stat_cat.name.label;</td>
 							<td>&staff.server.admin.stat_cat.owning_library.label;</td>
 							<td>&staff.server.admin.stat_cat.opac_visibility.label;</td>
+							<td id='sc_usr_summary_label'>&staff.server.admin.stat_cat.usr_summary.label;</td>
 							<td>&staff.server.admin.stat_cat.entries.label;</td>
 							<td>&staff.server.admin.stat_cat.add_entry;</td>
 							<td>&staff.server.admin.stat_cat.edit;</td>
@@ -144,7 +145,10 @@
 								<span class='hide_me' name='sc_opac_visible'>&staff.server.admin.stat_cat.on;</span> 
 								<span class='hide_me' name='sc_opac_invisible'>&staff.server.admin.stat_cat.off;</span> 
 							</td>
-	
+							<td name='sc_usr_summary_td'>
+								<span class='hide_me' name='sc_usr_summary_on'>&staff.server.admin.stat_cat.on;</span> 
+								<span class='hide_me' name='sc_usr_summary'>&staff.server.admin.stat_cat.off;</span> 
+                            </td>
 							<td>
                                 <select class='selector' name='sc_entries_selector'>
                                     <option>&staff.server.admin.stat_cat.none;</option>
@@ -194,6 +198,9 @@
 						<input type='radio' name='sc_edit_opac_visibility'> </input>
 					</span>
 				</td>
+                <td name='sc_edit_usr_summary_td'>
+                    <input type='checkbox' name='sc_edit_usr_summary'/>
+                </td>
 				<td colspan='4'>
 					<span class='padded'>
 						<input  type='submit' value='&staff.server.admin.stat_cat.edit_submit;' name='sc_edit_submit'/>

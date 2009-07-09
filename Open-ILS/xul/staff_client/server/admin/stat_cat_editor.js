@@ -140,6 +140,11 @@ function scDraw( type, cats ) {
 	hideMe($('sc_none'));
 	unHideMe($('sc_table'));
 
+    if(type == 'actor') 
+        unHideMe($('sc_usr_summary_label'));
+    else
+        hideMe($('sc_usr_summary_label'));
+
 	scCounter = 0;
 	for( var c in cats ) scInsertCat( tbody, cats[c], type );
 }
@@ -158,8 +163,20 @@ function scInsertCat( tbody, cat, type ) {
 	$n(row, 'sc_edit').onclick = function(){ scEdit(tbody, type, cat); };
 	$n(row, 'sc_owning_lib').appendChild( text( findOrgUnit(cat.owner()).name() ));
 
-	if( cat.opac_visible() != 0 && cat.opac_visible() != '0' ) unHideMe($n(row, 'sc_opac_visible'));
-	else unHideMe($n(row, 'sc_opac_invisible'));
+    if(isTrue(cat.opac_visible()))
+	    unHideMe($n(row, 'sc_opac_visible'));
+	else 
+        unHideMe($n(row, 'sc_opac_invisible'));
+
+    if(type == 'actor') {
+        if(isTrue(cat.usr_summary()))
+	        unHideMe($n(row, 'sc_usr_summary_on'));
+	    else 
+            unHideMe($n(row, 'sc_usr_summary'));
+
+    } else {
+        hideMe($n(row, 'sc_usr_summary_td'));
+    }
 
 	tbody.appendChild(row);
 	scEntryCounter = 0;
@@ -303,6 +320,13 @@ function scEdit( tbody, type, cat ) {
 
 	$n(row, 'sc_edit_name').value = cat.name();
 
+    if(type == 'actor') {
+        var cb = $n(row, 'sc_edit_usr_summary');
+        cb.checked = isTrue(cat.usr_summary()); 
+    } else {
+        hideMe($n(row, 'sc_edit_usr_summary_td'));
+    }
+
 	var name = $n(row, 'sc_edit_cancel');
 	name.onclick = function() { tbody.removeChild(row); };
 
@@ -361,14 +385,20 @@ function scEditGo( type, cat, row, selector ) {
 	var isvisible = false;
 	if( cat.opac_visible() != 0 && cat.opac_visible() != '0' ) isvisible = true;
 
-	if( (name == cat.name()) && (visible == isvisible) 
-		&& (newlib == cat.owner()) ) { return true; }
+    var usr_summary = $n(row, 'sc_edit_usr_summary').checked;
+
+	if( (name == cat.name()) && 
+        (visible == isvisible) && 
+        (newlib == cat.owner()) && 
+        (usr_summary == isTrue(cat.usr_summary())) )
+            return true; 
 
 	cat.name( name );
 	cat.owner( newlib );
 	cat.entries(null);
 	cat.opac_visible(0);
 	if( visible ) cat.opac_visible(1);
+    cat.usr_summary( (usr_summary) ? 1 : 0 );
 
 	var req = new Request( SC_UPDATE.replace(/TYPE/,type), session, cat );
 	req.send(true);
