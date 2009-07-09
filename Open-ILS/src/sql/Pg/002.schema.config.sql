@@ -112,10 +112,11 @@ COMMENT ON TABLE config.standing IS $$
 $$;
 
 CREATE TABLE config.standing_penalty (
-	id		SERIAL	PRIMARY KEY,
+	id			SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE,
 	label		TEXT	NOT NULL,
-	block_list	TEXT
+	block_list	TEXT,
+	org_depth	INTEGER
 );
 INSERT INTO config.standing_penalty (id,name,label,block_list)
 	VALUES (1,'PATRON_EXCEEDS_FINES','Patron exceeds fine threshold','CIRC|HOLD|RENEW');
