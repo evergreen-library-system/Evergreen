@@ -18,6 +18,7 @@ Requires polib from http://polib.googlecode.com
 # GNU General Public License for more details.
 
 import basel10n
+import codecs
 import optparse
 import polib
 import sys
@@ -182,7 +183,7 @@ def main():
         pot.loadpo(options.entity)
         pot.create_entity()
         if options.outfile:
-            outfile = open(options.outfile, 'w')
+            outfile = codecs.open(options.outfile, encoding='utf-8', mode='w')
             for entity in pot.definitions: 
                 outfile.write(entity + "\n")
         else:
@@ -192,7 +193,7 @@ def main():
     elif options.convert:
         pot.get_strings(options.convert)
         if options.outfile:
-            outfile = open(options.outfile, 'w')
+            outfile = codecs.open(options.outfile, encoding='utf-8', mode='w')
             outfile.write(pot.idl)
         else:
             sys.stdout.write(pot.idl)
