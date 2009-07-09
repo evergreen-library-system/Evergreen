@@ -28,6 +28,7 @@ allowed by http://api.dojotoolkit.org/jsdoc/dojo/1.2/dojo.string.substitute
 # GNU General Public License for more details.
 
 import basel10n
+import codecs
 import optparse
 import polib
 import re
@@ -57,7 +58,7 @@ class DojoResource (basel10n.BaseL10N):
         # Avoid generating duplicate entries by keeping track of msgids
         msgids = dict()
 
-        bundle = simplejson.load(open(source, 'r'))
+        bundle = simplejson.load(codecs.open(source, encoding='utf-8', mode='r'))
 
         for key, value in bundle.iteritems():
             if value in msgids:
@@ -115,7 +116,7 @@ def main():
         pot.loadpo(options.create)
         pot.create_bundle()
         if options.outfile:
-            outfile = open(options.outfile, 'w')
+            outfile = codecs.open(options.outfile, encoding='utf-8', mode='w')
             simplejson.dump(pot.msgs, outfile, indent=4)
         else:
             print(simplejson.dumps(pot.msgs, indent=4))

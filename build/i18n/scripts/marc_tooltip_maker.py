@@ -279,6 +279,7 @@ def process_tag(tag):
     return field
 
 if __name__ == '__main__':
+    import codecs
     import copy
     import os
     import re
@@ -292,7 +293,7 @@ if __name__ == '__main__':
         if (not re.compile(r'^040010-1\d\d\d-f.html').search(filename)):
             continue
         print filename
-        devnull = open('/dev/null', 'w')
+        devnull = codecs.open('/dev/null', encoding='utf-8', mode='w')
         file = subprocess.Popen(
             ('tidy', '-asxml', '-n', '-q', '-utf8', filename),
             stdout=subprocess.PIPE, stderr=devnull).communicate()[0]
@@ -310,6 +311,6 @@ if __name__ == '__main__':
             if (field):
                 ALL_MY_FIELDS.add_field(field)
 
-    MARCOUT = open('marcedit-tooltips-fr.xml', 'w')
+    MARCOUT = codecs.open('marcedit-tooltips-fr.xml', encoding='utf-8', mode='w')
     MARCOUT.write(ALL_MY_FIELDS.to_xml().encode('UTF-8'))
     MARCOUT.close()

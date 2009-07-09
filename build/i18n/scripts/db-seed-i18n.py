@@ -152,7 +152,7 @@ def main():
         if not options.outfile:
             outfile = sys.stdout
         else:
-            outfile = open(options.outfile, 'w')
+            outfile = codecs.open(options.outfile, encoding='utf-8', mode='w')
         for insert in pot.sql: 
             outfile.write(insert + "\n")
     else:
