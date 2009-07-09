@@ -1308,24 +1308,22 @@ sub get_org_ancestors {
 
 sub get_org_full_path {
 	my($self, $org_id, $depth) = @_;
-	$depth ||= 0;
 
-	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query({
-		select => {
+    my $query = {
+        select => {
 			aou => [{
 				transform => 'actor.org_unit_full_path',
 				column => 'id',
 				result_field => 'id',
-				params => [$depth]
 			}],
 		},
 		from => 'aou',
 		where => {id => $org_id}
-	});
+	};
 
-	my @orgs;
-	push(@orgs, $_->{id}) for @$org_list;
-	return \@orgs;
+    $query->{select}->{aou}->[0]->{params} = [$depth] if defined $depth;
+	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query($query);
+    return [ map {$_->{id}} @$org_list ];
 }
 
 # returns the user's configured locale as a string.  Defaults to en-US if none is configured.
