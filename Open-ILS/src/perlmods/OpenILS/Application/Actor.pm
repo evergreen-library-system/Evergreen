@@ -135,9 +135,6 @@ sub set_ou_settings {
     return 1;
 }
 
-my $fetch_user_settings;
-my $fetch_ou_settings;
-
 __PACKAGE__->register_method(
 	method	=> "user_settings",
 	api_name	=> "open-ils.actor.patron.settings.retrieve",
@@ -241,7 +238,6 @@ sub update_patron {
 	my $session = $apputils->start_db_session();
 	my $err = undef;
 
-
 	$logger->info("Creating new patron...") if $patron->isnew; 
 	$logger->info("Updating Patron: " . $patron->id) unless $patron->isnew;
 
@@ -294,6 +290,9 @@ sub update_patron {
 
 	$apputils->commit_db_session($session);
 
+    $evt = apply_invalid_addr_penalty($patron);
+    return $evt if $evt;
+
     my $tses = OpenSRF::AppSession->create('open-ils.trigger');
 	if($patron->isnew) {
         $tses->request('open-ils.trigger.event.autocreate', 'au.create', $new_patron, $new_patron->home_ou);
@@ -302,6 +301,46 @@ sub update_patron {
     }
 
 	return flesh_user($new_patron->id(), new_editor(requestor => $user_obj));
+}
+
+sub apply_invalid_addr_penalty {
+    my $patron = shift;
+    my $e = new_editor(xact => 1);
+
+    # grab the invalid address penalty if set
+    my $penalties = OpenILS::Utils::Penalty->retrieve_usr_penalties($e, $patron->id, $patron->home_ou);
+
+    my ($addr_penalty) = grep 
+        { $_->standing_penalty->name eq 'INVALID_PATRON_ADDRESS' } @$penalties;
+    
+    # do we enforce invalid address penalty
+    my $enforce = $U->ou_ancestor_setting_value(
+        $patron->home_ou, 'circ.patron_invalid_address_apply_penalty') || 0;
+
+    my $addrs = $e->search_actor_user_address({usr => $patron->id, valid => 'f'}, {idlist => 1});
+    my $addr_count = scalar(@$addrs);
+
+    if($addr_count == 0 and $addr_penalty) {
+
+        # regardless of any settings, remove the penalty when the user has no invalid addresses
+        $e->delete_actor_user_standing_penalty($addr_penalty) or return $e->die_event;
+        $e->commit;
+
+    } elsif($enforce and $addr_count > 0 and !$addr_penalty) {
+        
+        my $penalty = Fieldmapper::actor::user_standing_penalty->new;
+        $penalty->usr($patron->id);
+        $penalty->org_unit($patron->home_ou); # TODO: use depth
+        $penalty->standing_penalty(29); # INVALID_PATRON_ADDRESS (TODO: make me a constant, please)
+
+        $e->create_actor_user_standing_penalty($penalty) or return $e->die_event;
+        $e->commit;
+
+    } else {
+        $e->rollback;
+    }
+
+    return undef;
 }
 
 
