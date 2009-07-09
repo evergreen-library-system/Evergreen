@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import codecs
 import xml.dom.minidom
 import optparse
 
@@ -77,7 +76,7 @@ def main():
         merged = merge_events(options.master, options.localization)
 
     if options.outfile:
-        outfile = codecs.open(options.outfile, encoding='utf-8', mode='w')
+        outfile = open(options.outfile, 'w')
         if options.pretty:
             outfile.write(merged.toprettyxml(encoding='utf-8'))
         else:
