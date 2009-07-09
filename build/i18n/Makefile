@@ -89,6 +89,7 @@ dojo2pot:
 
 po2dojo:
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.js.po --output $(PROJECT)/$(LOCALE)/conify.js
+	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/opac.js.po --output $(PROJECT)/$(LOCALE)/opac.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/reports.js.po --output $(PROJECT)/$(LOCALE)/reports.js
 
 ils2pot:
