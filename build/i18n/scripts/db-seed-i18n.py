@@ -18,6 +18,7 @@ Requires polib from http://polib.googlecode.com
 # GNU General Public License for more details.
 
 import basel10n
+import codecs
 import optparse
 import polib
 import re
@@ -59,7 +60,7 @@ class SQL(basel10n.BaseL10N):
         serts = dict()
 
         # Iterate through the source SQL grabbing table names and l10n strings
-        sourcefile = open(source)
+        sourcefile = codecs.open(source, encoding='utf-8')
         for line in sourcefile:
             try:
                 num = num + 1
