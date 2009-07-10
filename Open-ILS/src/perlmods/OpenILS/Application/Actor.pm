@@ -328,10 +328,15 @@ sub apply_invalid_addr_penalty {
 
     } elsif($enforce and $addr_count > 0 and !$addr_penalty) {
         
+        my $ptype = $e->retrieve_config_standing_penalty(29) or return $e->die_event;
+        my $depth = $ptype->org_depth;
+        my $ctx_org = $U->org_unit_ancestor_at_depth($patron->home_ou, $depth) if defined $depth;
+        $ctx_org = $patron->home_ou unless defined $ctx_org;
+        
         my $penalty = Fieldmapper::actor::user_standing_penalty->new;
         $penalty->usr($patron->id);
-        $penalty->org_unit($patron->home_ou); # TODO: use depth
-        $penalty->standing_penalty(29); # INVALID_PATRON_ADDRESS (TODO: make me a constant, please)
+        $penalty->org_unit($ctx_org);
+        $penalty->standing_penalty(OILS_PENALTY_INVALID_PATRON_ADDRESS);
 
         $e->create_actor_user_standing_penalty($penalty) or return $e->die_event;
         $e->commit;
