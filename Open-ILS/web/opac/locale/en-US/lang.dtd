@@ -1667,6 +1667,7 @@
 <!ENTITY staff.server.admin.stat_cat.name.label "Statistical Category Name">
 <!ENTITY staff.server.admin.stat_cat.owning_library.label "Owning Library">
 <!ENTITY staff.server.admin.stat_cat.opac_visibility.label "OPAC Visibility">
+<!ENTITY staff.server.admin.stat_cat.usr_summary.label "Show in Summary">
 <!ENTITY staff.server.admin.stat_cat.entries.label "Entries">
 <!ENTITY staff.server.admin.stat_cat.add_entry "Add Entry">
 <!ENTITY staff.server.admin.stat_cat.edit "Edit">
