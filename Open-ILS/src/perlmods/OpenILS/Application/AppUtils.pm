@@ -1326,6 +1326,14 @@ sub get_org_full_path {
     return [ map {$_->{id}} @$org_list ];
 }
 
+# returns the ID of the org unit ancestor at the specified depth
+sub org_unit_ancestor_at_depth {
+    my($class, $org_id, $depth) = @_;
+    my $resp = OpenILS::Utils::CStoreEditor->new->json_query(
+        {from => ['actor.org_unit_ancestor_at_depth', $org_id, $depth]})->[0];
+    return ($resp) ? $resp->{id} : undef;
+}
+
 # returns the user's configured locale as a string.  Defaults to en-US if none is configured.
 sub get_user_locale {
 	my($self, $user_id, $e) = @_;
