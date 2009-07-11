@@ -79,11 +79,13 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
 	oilsEvent* evt = NULL;
 
 	if (orgid == -1) {
+		jsonObject* where_clause = jsonParseString( "{\"parent_ou\":null}" );
 		jsonObject* org = oilsUtilsQuickReq(
-            "open-ils.cstore", 
-            "open-ils.cstore.direct.actor.org_unit.search",
-            jsonParseString("{\"parent_ou\":null}")
-        );
+			"open-ils.cstore",
+			"open-ils.cstore.direct.actor.org_unit.search",
+			where_clause
+		);
+		jsonObjectFree( where_clause );
 
         orgid = (int)jsonObjectGetNumber( oilsFMGetObject( org, "id" ) );
 
@@ -155,8 +157,9 @@ jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 	jsonObject* params = jsonParseStringFmt("{\"barcode\":\"%s\"}", barcode);
 	jsonObject* card = oilsUtilsQuickReq(
 		"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
+	jsonObjectFree(params);
 
-	if(!card) { jsonObjectFree(params); return NULL; }
+	if(!card) return NULL;
 
 	char* usr = oilsFMGetString(card, "usr");
 	jsonObjectFree(card);
@@ -164,7 +167,6 @@ jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 	double iusr = strtod(usr, NULL);
 	free(usr);
 
-	jsonObjectFree(params);
 	params = jsonParseStringFmt("[%f]", iusr);
 	jsonObject* user = oilsUtilsQuickReq(
 		"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params);
