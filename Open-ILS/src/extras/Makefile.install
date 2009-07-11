@@ -63,7 +63,7 @@ LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 # We need a recent version of Yaz
 # Debian Lenny and Ubuntu 8.10 come with 3.0.34
-YAZ=yaz-3.0.38
+YAZ=yaz-3.0.47
 YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
 
 # Business::OnlinePayment is not packaged on CentOS/RHEL
@@ -203,6 +203,7 @@ DEB_APACHE_DISMODS = \
 # Chronically unpackaged CPAN modules
 CPAN_MODULES = \
     Business::CreditCard::Object \
+    Net::Z3950::Simple2ZOOM \
     SRU
 
 # Intrepid and Lenny have libmarc-charset-perl, libmarc-xml-perl, libnet-z3950-zoom-perl
