@@ -305,7 +305,8 @@ CREATE TABLE action.hold_request_note (
     title  TEXT      NOT NULL,
     body   TEXT      NOT NULL,
     slip   BOOL      NOT NULL DEFAULT FALSE,
-    pub    BOOL      NOT NULL DEFAULT FALSE
+    pub    BOOL      NOT NULL DEFAULT FALSE,
+    staff  BOOL      NOT NULL DEFAULT FALSE  -- created by staff
 
 );
 CREATE INDEX ahrn_hold_idx ON action.hold_request_note (hold);

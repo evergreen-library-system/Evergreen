@@ -2694,6 +2694,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Body" name="body" reporter:datatype="text"/>
 			<field reporter:label="Slip?" name="slip" reporter:datatype="bool"/>
 			<field reporter:label="Pub?" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Staff?" name="staff" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
