@@ -80,4 +80,11 @@ function getKeys (hash) {
         return k;
 }
 
-
+/* This just lets us return an array consistent with the filterBy* functions */
+function nodelistToArray (nodes) {
+        var aResponse = [];
+        for ( var i = 0; i < nodes.length; i++ ) {
+                aResponse.push(nodes[i]);
+        }
+        return aResponse;
+}
