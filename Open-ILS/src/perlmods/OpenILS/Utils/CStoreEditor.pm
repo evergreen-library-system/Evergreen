@@ -762,6 +762,8 @@ sub json_query {
 	my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
     my $method = $self->app.'.json_query.atomic';
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
+
+    $self->timeout($$options{timeout});
 	$self->clear_event;
     my $obj;
     my $err;
