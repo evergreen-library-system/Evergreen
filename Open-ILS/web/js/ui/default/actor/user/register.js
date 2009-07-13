@@ -12,6 +12,10 @@ dojo.require('dojo.date');
 dojo.require('openils.CGI');
 dojo.require('openils.XUL');
 
+dojo.requireLocalization('openils.actor', 'register');
+var localeStrings = dojo.i18n.getLocalization('openils.actor', 'register');
+
+
 var pcrud;
 var fmClasses = ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva'];
 var fieldDoc = {};
@@ -333,6 +337,13 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                     function(newVal) { uEditDupeSearch('ident', newVal); });
                 return;
 
+            case 'day_phone':
+            case 'evening_phone':
+            case 'other_phone':
+                dojo.connect(widget.widget, 'onChange',
+                    function(newVal) { uEditDupeSearch('phone', newVal); });
+                return;
+
         }
     }
 
@@ -347,6 +358,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                                 params: [e],
                                 oncomplete : function(r) {
                                     var res = openils.Util.readResponse(r);
+                                    if(!res) return;
                                     var callback = function(w) { return w._addr == widget._addr; };
                                     if(res.city) findWidget('aua', 'city', callback).widget.attr('value', res.city);
                                     if(res.state) findWidget('aua', 'state', callback).widget.attr('value', res.state);
@@ -355,6 +367,24 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                                 }
                             }
                         );
+                    }
+                );
+                return;
+
+            case 'street1':
+            case 'street2':
+            case 'city':
+                dojo.connect(widget.widget, 'onChange',
+                    function(e) {
+                        var callback = function(w) { return w._addr == widget._addr; };
+                        var args = {
+                            street1 : findWidget('aua', 'street1', callback).widget.attr('value'),
+                            street2 : findWidget('aua', 'street2', callback).widget.attr('value'),
+                            city : findWidget('aua', 'city', callback).widget.attr('value'),
+                            post_code : findWidget('aua', 'post_code', callback).widget.attr('value')
+                        };
+                        if(args.street1 && args.city && args.post_code)
+                            uEditDupeSearch('address', args); 
                     }
                 );
                 return;
@@ -386,31 +416,59 @@ function uEditDupeSearch(type, value) {
             openils.Util.hide('uedit-dupe-ident-link');
             search = {ident : {value : value, group : 2}};
             break;
+
+        case 'phone':
+            openils.Util.hide('uedit-dupe-phone-link');
+            search = {phone : {value : value, group : 2}};
+            break;
+
+        case 'address':
+            openils.Util.hide('uedit-dupe-address-link');
+            search = {};
+            dojo.forEach(['street1', 'street2', 'city', 'post_code'],
+                function(field) {
+                    if(value[field])
+                        search[field] = {value : value[field], group: 1};
+                }
+            );
+            break;
     }
 
+    // find possible duplicate patrons
     fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.patron.search.advanced'],
         {   async: true,
             params: [openils.User.authtoken, search],
             oncomplete : function(r) {
                 var resp = openils.Util.readResponse(r);
+                resp = resp.filter(function(id) { return (id != patron.id()); });
 
                 if(resp && resp.length > 0) {
+
                     openils.Util.hide('uedit-help-div');
                     openils.Util.show('uedit-dupe-div');
                     var link;
+
                     switch(type) {
                         case 'name':
                             link = dojo.byId('uedit-dupe-names-link');
-                            link.innerHTML = 'Found ' + resp.length + ' patrons with the same name';
+                            link.innerHTML = dojo.string.substitute(localeStrings.DUPE_PATRON_NAME, [resp.length]);
                             break;
                         case 'email':
                             link = dojo.byId('uedit-dupe-email-link');
-                            link.innerHTML = 'Found ' + resp.length + ' patrons with the same email';
+                            link.innerHTML = dojo.string.substitute(localeStrings.DUPE_PATRON_EMAIL, [resp.length]);
                             break;
                         case 'ident':
                             link = dojo.byId('uedit-dupe-ident-link');
-                            link.innerHTML = 'Found ' + resp.length + ' patrosn with the same identification';
+                            link.innerHTML = dojo.string.substitute(localeStrings.DUPE_PATRON_IDENT, [resp.length]);
+                            break;
+                        case 'phone':
+                            link = dojo.byId('uedit-dupe-phone-link');
+                            link.innerHTML = dojo.string.substitute(localeStrings.DUPE_PATRON_PHONE, [resp.length]);
+                            break;
+                        case 'address':
+                            link = dojo.byId('uedit-dupe-address-link');
+                            link.innerHTML = dojo.string.substitute(localeStrings.DUPE_PATRON_ADDR, [resp.length]);
                             break;
                     }
 
