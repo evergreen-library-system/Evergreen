@@ -240,7 +240,7 @@ function populateDetailTree (tcNode, c, item) {
 	var fullpath = item.getAttribute('fullpath');
 	var reltype = item.getAttribute('reltype');
 
-	var fields = filterByAttributeNS(c.getElementsByTagName('field'),persistNS, 'virtual','false');
+	var fields = nodelistToArray(c.getElementsByTagName('field'));
 	fields.sort( sortLabels );
 
 	var id = c.getAttribute('id');
