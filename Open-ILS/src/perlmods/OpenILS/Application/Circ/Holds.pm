@@ -683,6 +683,7 @@ sub hold_note_CUD {
     if($hold->usr ne $e->requestor->id) {
         my $usr = $e->retrieve_actor_user($hold->usr);
         return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
+        $note->staff('t') if $note->isnew;
     }
 
     if($note->isnew) {
