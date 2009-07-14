@@ -1,12 +1,21 @@
 /* */
 
-
 detachAllEvt('common', 'run');
 attachEvt("common", "run", rdetailDraw);
 attachEvt("rdetail", "recordDrawn", rdetailBuildStatusColumns);
 attachEvt("rdetail", "recordDrawn", rdetailBuildInfoRows);
 attachEvt("rdetail", "recordDrawn", rdetailGetPageIds);
 
+/* Per-skin configuration settings */
+var rdetailLocalOnly = true;
+var rdetailShowLocal = true;
+var rdetailShowCopyLocation = true;
+var rdetailGoogleBookPreview = true;
+var rdetailDisplaySerialHoldings = true;
+var rdetailEnableRefWorks = true;
+var rdetailRefWorksHost = 'http://www.refworks.com';
+
+/* vars vars vars */
 var record = null;
 var cp_statuses = null;
 var recordsCache = [];
@@ -17,32 +26,13 @@ var statusRow = null;
 var numStatuses = null;
 var defaultCN;
 var callnumberCache = {};
-var rdetailLocalOnly = true;
 var globalCNCache = {};
 var localTOC;
 var cachedRecords;
 var _statusPositions = {};
-
-var rdetailShowLocal = true;
-var rdetailShowCopyLocation = true;
-var googleBookPreview = true;
-var displaySerialHoldings = true;
 var opac_strings;
 
-/* serials are currently the only use of Dojo strings in the OPAC */
-if (displaySerialHoldings) {
-	dojo.requireLocalization("openils.opac", "opac");
-	opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
-}
-
 var nextContainerIndex;
-
-function rdetailReload() {
-	var args = {};
-	args[PARAM_LOCATION] = getNewSearchLocation();
-	args[PARAM_DEPTH] = depthSelGetDepth();
-	goTo(buildOPACLink(args));
-}
 
 var nextRecord;
 var prevRecord;
@@ -52,7 +42,18 @@ var rdetailNext = null;
 var rdetailStart = null;
 var rdetailEnd = null;
 
+/* serials are currently the only use of Dojo strings in the OPAC */
+if (rdetailDisplaySerialHoldings) {
+	dojo.requireLocalization("openils.opac", "opac");
+	opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
+}
 
+function rdetailReload() {
+	var args = {};
+	args[PARAM_LOCATION] = getNewSearchLocation();
+	args[PARAM_DEPTH] = depthSelGetDepth();
+	goTo(buildOPACLink(args));
+}
 
 /* looks to see if we have a next and/or previous record in the
    record cache, if so, set up the nav links */
@@ -124,7 +125,7 @@ function rdetailDraw() {
 	req.callback(_rdetailDraw);
 	req.send();
 
-	if (displaySerialHoldings) {
+	if (rdetailDisplaySerialHoldings) {
 		var req = new Request(FETCH_MFHD_SUMMARY, getRid());
 		req.callback(_holdingsDraw);
 		req.send();
@@ -368,24 +369,26 @@ function _rdetailDraw(r) {
 	$('rdetail_place_hold').setAttribute(
 			'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
 
-    var RW = $('rdetail_exp_refworks');
-    if (RW) {
+	var RW = $('rdetail_exp_refworks');
+	if (RW && rdetailEnableRefWorks) {
 
-        var here = (findOrgUnit(getLocation())).name();
-        var org_name = here.replace(" ", "+");
-        var cgi = new CGI();
-        
-    	RW.setAttribute(
-                'href',
-                'http://www.refworks.com/express/expressimport.asp?vendor='
-                    + org_name
-                    + '&filter=MARC+Format&database=All+MARC+Formats&encoding=65001&url=http%3A%2F%2F'
-                    + cgi.server_name+'/opac/extras/supercat/marctxt/record/'
-                    + record.doc_id()
-        );
+		var here = (findOrgUnit(getLocation())).name();
+		var org_name = here.replace(" ", "+");
+		var cgi = new CGI();
 
-    	RW.setAttribute('target', 'RefWorksMain');
-    }
+		RW.setAttribute(
+			'href',
+			rdetailRefWorksHost + '/express/expressimport.asp?vendor='
+			+ org_name
+			+ '&filter=MARC+Format&database=All+MARC+Formats&encoding=65001&url=http%3A%2F%2F'
+			+ cgi.server_name + '/opac/extras/supercat/marctxt/record/'
+			+ record.doc_id()
+	       );
+
+		RW.setAttribute('target', 'RefWorksMain');
+
+		unHideMe($('rdetail_exp_refworks_span'));
+	}
 
 	$('rdetail_img_link').setAttribute('href', buildISBNSrc(cleanISBN(record.isbn()), 'large'));
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
@@ -933,7 +936,7 @@ function _rdetailSortStatuses(a, b) {
  * Check for a Google Book preview 
  */
 function rdetailCheckForGBPreview() {
-	if (!googleBookPreview) return;
+	if (!rdetailGoogleBookPreview) return;
 	searchForGBPreview( cleanISBN(record.isbn()) );
 }
 
