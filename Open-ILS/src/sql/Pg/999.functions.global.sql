@@ -459,14 +459,14 @@ BEGIN
 	UPDATE asset.copy_note SET creator = dest_usr WHERE creator = src_usr;
 
 	-- auditor.*
-	DELETE FROM auditor.usr_address_history WHERE id = src_usr;
-	DELETE FROM auditor.usr_history WHERE id = src_usr;
+	DELETE FROM auditor.actor_usr_address_history WHERE id = src_usr;
+	DELETE FROM auditor.actor_usr_history WHERE id = src_usr;
 	UPDATE auditor.asset_call_number_history SET creator = dest_usr WHERE creator = src_usr;
 	UPDATE auditor.asset_call_number_history SET editor  = dest_usr WHERE editor  = src_usr;
 	UPDATE auditor.asset_copy_history SET creator = dest_usr WHERE creator = src_usr;
 	UPDATE auditor.asset_copy_history SET editor  = dest_usr WHERE editor  = src_usr;
-	UPDATE auditor.asset_biblio_record_entry_history SET creator = dest_usr WHERE creator = src_usr;
-	UPDATE auditor.asset_biblio_record_entry_history SET editor  = dest_usr WHERE editor  = src_usr;
+	UPDATE auditor.biblio_record_entry_history SET creator = dest_usr WHERE creator = src_usr;
+	UPDATE auditor.biblio_record_entry_history SET editor  = dest_usr WHERE editor  = src_usr;
 
 	-- biblio.*
 	UPDATE biblio.record_entry SET creator = dest_usr WHERE creator = src_usr;
