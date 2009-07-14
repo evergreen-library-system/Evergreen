@@ -1258,75 +1258,104 @@ sub bail_on_events {
 
 sub handle_checkout_holds {
    my $self    = shift;
-
    my $copy    = $self->copy;
    my $patron  = $self->patron;
 
-    my $holds   = $self->editor->search_action_hold_request(
-        { 
-            current_copy        => $copy->id , 
-            cancel_time         => undef, 
-            fulfillment_time    => undef 
-        }
-    );
+   my $e = $self->editor;
+   $self->fulfilled_holds([]);
 
-   my @fulfilled;
+    my $hold = $e->search_action_hold_request({   
+        current_copy        => $copy->id , 
+        cancel_time         => undef, 
+        fulfillment_time    => undef,
+        '-or' => [
+            {expire_time => undef},
+            {expire_time => {'>' => 'now'}}
+        ]
+    })->[0];
 
-   # XXX We should only fulfill one hold here...
-   # XXX If a hold was transited to the user who is checking out
-   # the item, we need to make sure that hold is what's grabbed
-   if(@$holds) {
-
-      # for now, just sort by id to get what should be the oldest hold
-      $holds = [ sort { $a->id <=> $b->id } @$holds ];
-      my @myholds = grep { $_->usr eq $patron->id } @$holds;
-      my @altholds   = grep { $_->usr ne $patron->id } @$holds;
-
-      if(@myholds) {
-         my $hold = $myholds[0];
-
-         $logger->debug("circulator: related hold found in checkout: " . $hold->id );
-
-         # if the hold was never officially captured, capture it.
-         $hold->capture_time('now') unless $hold->capture_time;
-
-            # just make sure it's set correctly
-         $hold->current_copy($copy->id); 
-
-         $hold->fulfillment_time('now');
-            $hold->fulfillment_staff($self->editor->requestor->id);
-            $hold->fulfillment_lib($self->editor->requestor->ws_ou);
-
-            return $self->bail_on_events($self->editor->event)
-                unless $self->editor->update_action_hold_request($hold);
-
-            $holdcode->delete_hold_copy_maps($self->editor, $hold->id);
-
-         push( @fulfilled, $hold->id );
-      }
-
-      # If there are any holds placed for other users that point to this copy,
-      # then we need to un-target those holds so the targeter can pick a new copy
-      for(@altholds) {
-
-         $logger->info("circulator: un-targeting hold ".$_->id.
+    if($hold and $hold->usr != $patron->id) {
+        # reset the hold since the copy is now checked out
+    
+        $logger->info("circulator: un-targeting hold ".$hold->id.
             " because copy ".$copy->id." is getting checked out");
 
-            # - make the targeter process this hold at next run
-         $_->clear_prev_check_time; 
+        $hold->clear_prev_check_time; 
+        $hold->clear_current_copy;
+        $hold->clear_capture_time;
 
-            # - clear out the targetted copy
-         $_->clear_current_copy;
-         $_->clear_capture_time;
+        return $self->bail_on_event($e->event)
+            unless $e->update_action_hold_request($hold);
 
-            return $self->bail_on_event($self->editor->event)
-                unless $self->editor->update_action_hold_request($_);
-      }
-   }
+        $hold = undef;
+    }
 
-    $self->fulfilled_holds(\@fulfilled);
+    $hold = $self->find_related_uncaptured_hold($copy, $patron) unless $hold;
+
+    $logger->debug("circulator: checkout filfilling hold " . $hold->id);
+
+    # if the hold was never officially captured, capture it.
+    $hold->capture_time('now') unless $hold->capture_time;
+    $hold->fulfillment_time('now');
+    $hold->fulfillment_staff($e->requestor->id);
+    $hold->fulfillment_lib($e->requestor->ws_ou);
+
+    return $self->bail_on_events($e->event)
+        unless $e->update_action_hold_request($hold);
+
+    $holdcode->delete_hold_copy_maps($e, $hold->id);
+    return $self->fulfilled_holds([$hold->id]);
 }
 
+
+# ------------------------------------------------------------------------------
+# If the circ.checkout_fill_related_hold setting is turned on and no hold for
+# the patron directly targets the checked out item, see if there is another hold 
+# (with hold_type T or V) for the patron that could be fulfilled by the checked 
+# out item.  Fulfill the oldest hold and only fulfill 1 of them.
+# ------------------------------------------------------------------------------
+sub find_related_uncaptured_hold {
+    my($self, $copy, $patron) = @_;
+    my $e = $self->editor;
+
+    return undef if $self->volume->id == OILS_PRECAT_CALL_NUMBER; 
+
+    return undef unless $U->ou_ancestor_setting_value(        
+        $self->requestor->ws_ou, 'circ.checkout_fills_related_hold', $e);
+
+    my $args = {
+        cancel_time => undef, 
+        fulfillment_time => undef,
+        usr => $patron->id,
+        order_by => {ahr => 'request_time asc'},
+        '-or' => [
+            {expire_time => undef},
+            {expire_time => {'>' => 'now'}}
+        ]
+    };
+
+    $args->{hold_type} = 'V';
+    $args->{target} = $self->volume->id;
+    my $v_hold = $e->search_action_hold_request([$args, {limit => 1}])->[0];
+
+    $args->{hold_type} = 'T';
+    $args->{target} = $self->title->id;
+    my $t_hold = $e->search_action_hold_request([$args, {limit => 1}])->[0];
+
+    if($t_hold and $v_hold) {
+
+        my $t_date = DateTime::Format::ISO8601->new->parse_datetime(
+            clense_ISO8601($t_hold->request_time));
+
+        my $v_date = DateTime::Format::ISO8601->new->parse_datetime(
+            clense_ISO8601($v_hold->request_time));
+
+        return $t_hold if $t_date < $v_date;
+        return $v_hold;
+    } 
+
+    return $t_hold || $v_hold;
+}
 
 
 sub run_checkout_scripts {
