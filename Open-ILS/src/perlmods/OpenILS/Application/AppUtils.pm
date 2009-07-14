@@ -1090,7 +1090,7 @@ sub fetch_org_tree {
 		[
 			{"parent_ou" => undef },
 			{
-				flesh				=> 2,
+				flesh				=> -1,
 				flesh_fields	=> { aou =>  ['children'] },
 				order_by       => { aou => 'name'}
 			}
