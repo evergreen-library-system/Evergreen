@@ -744,4 +744,57 @@ sub new {
 package OpenILS::WWW::SuperCat::Feed::htmlholdings::item;
 use base 'OpenILS::WWW::SuperCat::Feed::htmlcard::item';
 
+
+package OpenILS::WWW::SuperCat::Feed::marctxt;
+use base 'OpenILS::WWW::SuperCat::Feed::marcxml';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::new;
+	$self->{type} = 'text/plain';
+	$self->{xsl} = "/MARC21slim2MARCtxt.xsl";
+	return $self;
+}
+
+
+our ($_parser, $_xslt, $xslt_file);
+
+sub toString {
+	my $self = shift;
+	my $base = $self->base || '';
+	my $root = $self->root || '';
+	my $search = $self->search || '';
+	my $class = $self->class || '';
+	my $lib = $self->lib || '-';
+
+	$self->composeDoc;
+
+        $_parser ||= new XML::LibXML;
+        $_xslt ||= new XML::LibXSLT;
+
+	$xslt_file ||=
+                OpenSRF::Utils::SettingsClient
+       	                ->new
+               	        ->config_value( dirs => 'xsl' ).
+                $self->{xsl};
+
+        # parse the MARC text xslt ...
+        my $marctxt_xslt = $_xslt->parse_stylesheet( $_parser->parse_file($xslt_file) );
+
+	my $new_doc = $marctxt_xslt->transform(
+		$self->{doc},
+		base_dir => "'$root'",
+		lib => "'$lib'",
+		searchTerms => "'$search'",
+		searchClass => "'$class'",
+	);
+
+	return $marctxt_xslt->output_string($new_doc); 
+}
+
+
+package OpenILS::WWW::SuperCat::Feed::marctxt::item;
+use base 'OpenILS::WWW::SuperCat::Feed::marcxml::item';
+
+
 1;

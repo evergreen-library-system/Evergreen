@@ -145,7 +145,7 @@ sub child_init {
 		->gather(1);
 
     $list = [ map { (keys %$_)[0] } @$list ];
-    push @$list, 'htmlholdings','html';
+    push @$list, 'htmlholdings','html', 'marctxt';
 
     for my $browse_axis ( qw/title author subject topic series item-age/ ) {
         for my $record_browse_format ( @$list ) {
@@ -259,6 +259,7 @@ sub unapi {
 	<format name='htmlholdings' type='text/html'/>
 	<format name='html-full' type='text/html'/>
 	<format name='htmlholdings-full' type='text/html'/>
+	<format name='marctxt' type='text/plain'/>
 				FORMATS
 			} elsif ($type eq 'metarecord') {
 				$body .= <<"				FORMATS";
@@ -313,6 +314,7 @@ sub unapi {
 	<format name='htmlholdings' type='text/html'/>
 	<format name='html-full' type='text/html'/>
 	<format name='htmlholdings-full' type='text/html'/>
+	<format name='marctxt' type='text/plain'/>
 			FORMATS
 
 
@@ -405,7 +407,7 @@ sub unapi {
 	       @{ $supercat->request("open-ils.supercat.$type.formats")->gather(1) }
 	     and !grep
 	       { $_ eq $base_format }
-	       qw/opac html htmlholdings/
+	       qw/opac html htmlholdings marctxt/
 	) {
 		print "Content-type: text/html; charset=utf-8\n\n";
 		$apache->custom_response( 406, <<"		HTML");
@@ -547,6 +549,10 @@ sub supercat {
 				   <format>
 				     <name>html-full</name>
 				     <type>text/html</type>
+				   </format>
+				   <format>
+				     <name>marctxt</name>
+				     <type>text/plain</type>
 				   </format>";
 			}
 
@@ -612,6 +618,10 @@ sub supercat {
 			   <format>
 			     <name>html-full</name>
 			     <type>text/html</type>
+			   </format>
+			   <format>
+			     <name>marctxt</name>
+			     <type>text/plain</type>
 			   </format>";
 
 		for my $h (@$list) {
@@ -1222,7 +1232,7 @@ sub create_record_feed {
 	$feed->unapi($unapi) if ($flesh);
 
 	$type = 'atom' if ($type eq 'html');
-	$type = 'marcxml' if ($type eq 'htmlholdings');
+	$type = 'marcxml' if (($type eq 'htmlholdings') || ($type eq 'marctxt'));
 
 	#$records = $supercat->request( "open-ils.supercat.record.object.retrieve", $records )->gather(1);
 
