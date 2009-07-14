@@ -52,6 +52,9 @@
 				</td>
 
 				<td align='right' style='padding-right: 7px;' width='33%'>
+					<span id='rdetail_exp_refworks_span' class='hide_me' style='padding-right: 7px;'>
+						<a id='rdetail_exp_refworks'>&opac.holds.exportRefWorks;</a>
+					</span>
 					<span style='padding-right: 7px;'>
 						<a id='rdetail_place_hold' class='classic_link'>&opac.holds.placeHold;</a>
 					</span>
