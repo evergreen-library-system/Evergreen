@@ -92,7 +92,7 @@ static int child_initialized = 0;   /* boolean */
 static dbi_conn writehandle; /* our MASTER db connection */
 static dbi_conn dbhandle; /* our CURRENT db connection */
 //static osrfHash * readHandles;
-static jsonObject* jsonNULL = NULL; // 
+static jsonObject* const jsonNULL = NULL; // 
 static int max_flesh_depth = 100;
 
 /* called when this process is about to exit */
@@ -932,9 +932,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 	dbhandle = writehandle;
 
-	osrfHash* meta = (osrfHash*) ctx->method->userData;
-	osrfHash* class = osrfHashGet( meta, "class" );
-	const char* method_type = osrfHashGet( meta, "methodtype" );
+	osrfHash* method_metadata = (osrfHash*) ctx->method->userData;
+	osrfHash* class = osrfHashGet( method_metadata, "class" );
+	const char* method_type = osrfHashGet( method_metadata, "methodtype" );
 	int fetch = 0;
 
 	if ( ( *method_type == 's' || *method_type == 'i' ) ) {
@@ -953,7 +953,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             msg,
             "%s: %s on class %s has no permacrud IDL entry",
             MODULENAME,
-            osrfHashGet(meta, "methodtype"),
+            osrfHashGet(method_metadata, "methodtype"),
             osrfHashGet(class, "classname")
         );
 
@@ -980,24 +980,24 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     int err = 0;
     char* pkey_value = NULL;
 	if ( str_is_true( osrfHashGet(pcrud, "global_required") ) ) {
-	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
+		osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
 
-        // check for perm at top of org tree
-        jsonObject* _tmp_params = jsonParseString("{\"parent_ou\":null}");
+		// check for perm at top of org tree
+		jsonObject* _tmp_params = single_hash( "parent_ou", NULL );
 		jsonObject* _list = doFieldmapperSearch(ctx, osrfHashGet( oilsIDL(), "aou" ),
 				_tmp_params, NULL, &err);
+		jsonObjectFree(_tmp_params);
 
-        jsonObject* _tree_top = jsonObjectGetIndex(_list, 0);
+		jsonObject* _tree_top = jsonObjectGetIndex(_list, 0);
 
-        if (!_tree_top) {
-            jsonObjectFree(_tmp_params);
-            jsonObjectFree(_list);
-    
-            growing_buffer* msg = buffer_init(128);
+		if (!_tree_top) {
+			jsonObjectFree(_list);
+
+			growing_buffer* msg = buffer_init(128);
 			OSRF_BUFFER_ADD( msg, MODULENAME );
 			OSRF_BUFFER_ADD( msg,
 				": Internal error, could not find the top of the org tree (parent_ou = NULL)" );
-    
+
             char* m = buffer_release(msg);
             osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
             free(m);
@@ -1008,12 +1008,11 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         osrfStringArrayAdd( context_org_array, oilsFMGetString( _tree_top, "id" ) );
 	    osrfLogDebug( OSRF_LOG_MARK, "top of the org tree is %s", osrfStringArrayGetString(context_org_array, 0) );
 
-        jsonObjectFree(_tmp_params);
         jsonObjectFree(_list);
 
     } else {
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, fetching context org ids" );
-	    char* pkey = osrfHashGet(class, "primarykey");
+	    const char* pkey = osrfHashGet(class, "primarykey");
         jsonObject *param = NULL;
 
         if (obj->classname) {
@@ -1026,15 +1025,14 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	        osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value of %s and retrieving from the database", pkey_value );
         }
 
-        if (fetch) {
+		if (fetch) {
 			jsonObject* _tmp_params = single_hash( pkey, pkey_value );
 			jsonObject* _list = doFieldmapperSearch( ctx, class, _tmp_params, NULL, &err );
+			jsonObjectFree(_tmp_params);
 
 			param = jsonObjectExtractIndex(_list, 0);
-
-            jsonObjectFree(_tmp_params);
-            jsonObjectFree(_list);
-        }
+			jsonObjectFree(_list);
+		}
 
         if (!param) {
             osrfLogDebug( OSRF_LOG_MARK, "Object not found in the database with primary key %s of %s", pkey, pkey_value );
@@ -1305,12 +1303,15 @@ This function is equivalent to:
 
 	jsonParseStringFmt( "{\"%s\":\"%s\"}", key, value )
 
+or, if value is NULL:
+
+	jsonParseStringFmt( "{\"%s\":null}", key )
+
 ...but faster because it doesn't create and parse a JSON string.
 */
 static jsonObject* single_hash( const char* key, const char* value ) {
-	// Sanity checks
+	// Sanity check
 	if( ! key ) key = "";
-	if( ! value ) value = "";
 
 	jsonObject* hash = jsonNewObjectType( JSON_HASH );
 	jsonObjectSetKey( hash, key, jsonNewObject( value ) );
@@ -1718,7 +1719,7 @@ static char* searchINPredicate (const char* class, osrfHash* field,
 			if ( in_item->type != JSON_STRING && in_item->type != JSON_NUMBER ) {
 				osrfLogError(OSRF_LOG_MARK, "%s: Expected string or number within IN list; found %s",
 						MODULENAME, json_type( in_item->type ) );
-									buffer_free(sql_buf);
+				buffer_free(sql_buf);
 				return NULL;
 			}
 			
