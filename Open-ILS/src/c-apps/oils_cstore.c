@@ -824,15 +824,15 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 		jsonObjectSetKey( rest_of_query, "no_i18n", jsonNewBoolObject( 1 ) );
 
-		jsonObjectSetKey(
-			rest_of_query,
-            "select",
-            jsonParseStringFmt(
-                "{ \"%s\":[\"%s\"] }",
-                osrfHashGet( class_obj, "classname" ),
-                osrfHashGet( class_obj, "primarykey" )
-            )
-        );
+		// Build a SELECT list containing just the primary key,
+		// i.e. like { "classname":["keyname"] }
+		jsonObject* col_list_obj = jsonNewObjectType( JSON_ARRAY );
+		jsonObjectPush( col_list_obj,     // Load array with name of primary key
+			jsonNewObject( osrfHashGet( class_obj, "primarykey" ) ) );
+		jsonObject* select_clause = jsonNewObjectType( JSON_HASH );
+		jsonObjectSetKey( select_clause, osrfHashGet( class_obj, "classname" ), col_list_obj );
+
+		jsonObjectSetKey( rest_of_query, "select", select_clause );
 
 		obj = doFieldmapperSearch( ctx, class_obj, where_clause, rest_of_query, &err );
 
