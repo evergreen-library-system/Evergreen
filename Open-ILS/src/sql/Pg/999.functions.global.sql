@@ -419,7 +419,6 @@ BEGIN
 	UPDATE acq.purchase_order SET editor = dest_usr WHERE editor = src_usr;
 
 	-- action.*
-
 	DELETE FROM action.circulation WHERE usr = src_usr;
 	UPDATE action.circulation SET circ_staff = dest_usr WHERE circ_staff = src_usr;
 	UPDATE action.circulation SET checkin_staff = dest_usr WHERE checkin_staff = src_usr;
@@ -458,6 +457,16 @@ BEGIN
 	UPDATE asset.copy SET creator = dest_usr WHERE creator = src_usr;
 	UPDATE asset.copy SET editor = dest_usr WHERE editor = src_usr;
 	UPDATE asset.copy_note SET creator = dest_usr WHERE creator = src_usr;
+
+	-- auditor.*
+	DELETE FROM auditor.usr_address_history WHERE id = src_usr;
+	DELETE FROM auditor.usr_history WHERE id = src_usr;
+	UPDATE auditor.asset_call_number_history SET creator = dest_usr WHERE creator = src_usr;
+	UPDATE auditor.asset_call_number_history SET editor  = dest_usr WHERE editor  = src_usr;
+	UPDATE auditor.asset_copy_history SET creator = dest_usr WHERE creator = src_usr;
+	UPDATE auditor.asset_copy_history SET editor  = dest_usr WHERE editor  = src_usr;
+	UPDATE auditor.asset_biblio_record_entry_history SET creator = dest_usr WHERE creator = src_usr;
+	UPDATE auditor.asset_biblio_record_entry_history SET editor  = dest_usr WHERE editor  = src_usr;
 
 	-- biblio.*
 	UPDATE biblio.record_entry SET creator = dest_usr WHERE creator = src_usr;
