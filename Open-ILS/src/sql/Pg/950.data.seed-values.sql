@@ -1776,6 +1776,11 @@ INSERT into config.org_unit_setting_type
   'When set, if a patron address is set to invalid, a penalty is applied.',
   'bool' ),
 
+( 'circ.checkout_fills_related_hold',
+  'Checkout Fills Related Hold',
+  'When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it',
+  'bool'),
+
 ( 'ui.patron.default_inet_access_level',
   'Default level of patrons'' internet access',
   null,
