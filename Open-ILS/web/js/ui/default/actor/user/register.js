@@ -474,6 +474,7 @@ function uEditDupeSearch(type, value) {
 
                     openils.Util.show(link);
                     link.onclick = function() {
+                        search.search_sort = js2JSON(["penalties", "family_name", "first_given_name"]);
                         if(window.xulG)
                             window.xulG.spawn_search(search);
                         else
