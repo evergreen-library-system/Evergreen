@@ -474,10 +474,17 @@ sub patron_search {
 	my $ws_ou = shift;
 	my $ws_ou_depth = shift || 0;
 
+    my $penalty_sort = 0;
+
 	my $strict_opt_in = OpenSRF::Utils::SettingsClient->new->config_value( share => user => 'opt_in' );
 
 	$sort = ['family_name','first_given_name'] unless ($$sort[0]);
 	push @$sort,'id';
+
+    if ($$sort[0] eq 'penalties') {
+        shift @$sort;
+        $penalty_sort = 1;
+    }
 
 	# group 0 = user
 	# group 1 = address
@@ -565,6 +572,7 @@ sub patron_search {
 
 	my $order_by = join ', ', map { 'LOWER(CAST(users.'. (split / /,$_)[0] . ' AS text)) ' . (split / /,$_)[1] } @$sort;
 	my $distinct_list = join ', ', map { 'LOWER(CAST(users.'. (split / /,$_)[0] . ' AS text))' } @$sort;
+    my $group_list = $distinct_list;
 
 	if ($inactive) {
 		$inactive = '';
@@ -583,19 +591,32 @@ sub patron_search {
 		$opt_in_where = "AND (oi.id IS NOT NULL OR users.home_ou = $ws_ou)";
 	}
 
+	my $penalty_join = '';
+    if ($penalty_sort) {
+        $distinct_list = 'COUNT(penalties.id), ' . $distinct_list;
+        $order_by = 'COUNT(penalties.id) DESC, ' . $order_by;
+        unshift @$sort, 'COUNT(penalties.id)';
+	    $penalty_join = <<"        SQL";
+            LEFT JOIN actor.usr_standing_penalty penalties
+                ON (users.id = penalties.usr AND (penalties.stop_date IS NULL OR penalties.stop_date > NOW()))
+        SQL
+    }
+
 	my $descendants = "actor.org_unit_descendants($ws_ou, $ws_ou_depth)";
 
 	$select = "JOIN ($select) AS search ON (search.id = users.id)" if ($select);
 	$select = <<"	SQL";
-		SELECT	DISTINCT $distinct_list
+		SELECT	$distinct_list
 		  FROM	$u_table AS users $card
 			JOIN $descendants d ON (d.id = users.home_ou)
 			$select
 			$opt_in_join
 			$clone_select
+            $penalty_join
 		  WHERE	users.deleted = FALSE
 			$inactive
 			$opt_in_where
+		  GROUP BY $group_list
 		  ORDER BY $order_by
 		  LIMIT $limit
 	SQL
@@ -607,109 +628,6 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	method		=> 'patron_search',
 );
-
-=comment not gonna use it...
-
-sub fleshed_search {
-	my $self = shift;
-	my $client = shift;
-	my $searches = shift;
-
-	return undef unless (defined $searches);
-
-	for my $usr ( actor::user->search( $searches ) ) {
-		next unless $usr;
-		$client->respond( flesh_user( $usr ) );
-	}
-	return undef;
-}
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.fleshed.actor.user.search',
-	api_level	=> 1,
-	method		=> 'fleshed_search',
-	stream		=> 1,
-	cachable	=> 1,
-);
-
-sub fleshed_search_like {
-	my $self = shift;
-	my $client = shift;
-	my $searches = shift;
-
-	return undef unless (defined $searches);
-
-	for my $usr ( actor::user->search_like( $searches ) ) {
-		next unless $usr;
-		$client->respond( flesh_user( $usr ) );
-	}
-	return undef;
-}
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.fleshed.actor.user.search_like',
-	api_level	=> 1,
-	method		=> 'user_by_barcode',
-	stream		=> 1,
-	cachable	=> 1,
-);
-
-sub retrieve_fleshed_user {
-	my $self = shift;
-	my $client = shift;
-	my @ids = shift;
-
-	return undef unless @ids;
-
-	@ids = ($ids[0]) unless ($self->api_name =~ /batch/o); 
-
-	$client->respond( flesh_user( actor::user->retrieve( $_ ) ) ) for ( @ids );
-
-	return undef;
-}
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.fleshed.actor.user.retrieve',
-	api_level	=> 1,
-	method		=> 'retrieve_fleshed_user',
-	cachable	=> 1,
-);
-__PACKAGE__->register_method(
-	api_name	=> 'open-ils.storage.fleshed.actor.user.batch.retrieve',
-	api_level	=> 1,
-	method		=> 'retrieve_fleshed_user',
-	stream		=> 1,
-	cachable	=> 1,
-);
-
-sub flesh_user {
-	my $usr = shift;
-
-
-	my $standing = $usr->standing;
-	my $profile = $usr->profile;
-	my $ident_type = $usr->ident_type;
-		
-	my $maddress = $usr->mailing_address;
-	my $baddress = $usr->billing_address;
-	my $card = $usr->card;
-
-	my @addresses = $usr->addresses;
-	my @cards = $usr->cards;
-
-	my $usr_fm = $usr->to_fieldmapper;
-	$usr_fm->standing( $standing->to_fieldmapper );
-	$usr_fm->profile( $profile->to_fieldmapper );
-	$usr_fm->ident_type( $ident_type->to_fieldmapper );
-
-	$usr_fm->card( $card->to_fieldmapper );
-	$usr_fm->mailing_address( $maddress->to_fieldmapper ) if ($maddress);
-	$usr_fm->billing_address( $baddress->to_fieldmapper ) if ($baddress);
-
-	$usr_fm->cards( [ map { $_->to_fieldmapper } @cards ] );
-	$usr_fm->addresses( [ map { $_->to_fieldmapper } @addresses ] );
-
-	return $usr_fm;
-}
-
-=cut
 
 sub org_unit_list {
 	my $self = shift;
