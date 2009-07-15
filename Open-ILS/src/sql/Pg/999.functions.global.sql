@@ -967,7 +967,7 @@ COMMENT ON FUNCTION container.clear_all_expired_circ_history_items( ) IS $$
 $$
 
 
-CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $$
+CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
 	moved_objects INT := 0;
 	source_cn     asset.call_number%ROWTYPE;
@@ -1111,5 +1111,5 @@ BEGIN
 	-- That's all, folks!
 	RETURN moved_objects;
 END;
-$$ LANGUAGE plpgsql;
+$func$ LANGUAGE plpgsql;
 
