@@ -184,6 +184,8 @@
     <div><a href='javascript:void(0);' id='uedit-dupe-names-link'></a></div>
     <div><a href='javascript:void(0);' id='uedit-dupe-email-link'></a></div>
     <div><a href='javascript:void(0);' id='uedit-dupe-ident-link'></a></div>
+    <div><a href='javascript:void(0);' id='uedit-dupe-phone-link'></a></div>
+    <div><a href='javascript:void(0);' id='uedit-dupe-address-link'></a></div>
 </div>
 
 [% END %]
