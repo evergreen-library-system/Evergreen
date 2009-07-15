@@ -14,6 +14,12 @@ patron.search_form.prototype = {
 
 		var obj = this;
 
+        // The bulk of params.query is getting parsed/rendered by obj.controller.init below, and will be reconstituted from possibly modified XUL elements upon Submit.
+        // But we're going to let search_limit and search_sort be configurable now by those spawning this interface, and let's assume there are no corresponding widgets for now.  
+        // I'm going to place them into the "obj" scope for this instance.
+        obj.search_limit = params.param2;
+        obj.search_sort = JSON2js( params.param3 ); // Let's assume this is encoded as JSON
+
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 
@@ -329,12 +335,12 @@ patron.search_form.prototype = {
 			}
 		}
 		if (typeof obj.on_submit == 'function') {
-			obj.on_submit(query);
+			obj.on_submit(query,obj.search_limit,obj.search_sort);
 		}
 		if (typeof window.xulG == 'object' 
 			&& typeof window.xulG.on_submit == 'function') {
 			obj.error.sdump('D_PATRON','patron.search_form: Calling external .on_submit()\n');
-			window.xulG.on_submit(query);
+			window.xulG.on_submit(query,obj.search_limit,obj.search_sort);
 		} else {
 			obj.error.sdump('D_PATRON','patron.search_form: No external .on_query()\n');
 		}

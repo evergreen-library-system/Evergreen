@@ -56,7 +56,7 @@
 				}
 
 				JSAN.use('patron.search_result'); g.search_result = new patron.search_result();
-				g.search_result.init( { 'query' : query } );
+				g.search_result.init( { 'query' : query, 'search_limit' : xulG.search_limit, 'search_sort' : xulG.search_sort } );
 	
 			} catch(E) {
 				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/search_result.xul', E]);

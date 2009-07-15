@@ -19,6 +19,8 @@ patron.search_result.prototype = {
 		var obj = this;
 
 		obj.query = params['query'];
+        obj.search_limit = params['search_limit'];
+        obj.search_sort = params['search_sort'];
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
@@ -183,7 +185,12 @@ patron.search_result.prototype = {
 		try {
 			var results = [];
 
-			var params = [ ses(), search_hash, obj.result_cap + 1, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ];
+			var params = [ 
+                ses(), 
+                search_hash, 
+                typeof obj.search_limit != 'undefined' && typeof obj.search_limit != 'null' ? obj.search_limit : obj.result_cap + 1, 
+                typeof obj.search_sort != 'undefined' ? obj.search_sort : [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] 
+            ];
 			if (inactive) {
 				params.push(1);
 				if (document.getElementById('active')) {
@@ -203,9 +210,9 @@ patron.search_result.prototype = {
 					alert($("patronStrings").getString('staff.patron.search_result.search.no_patrons_found'));
 					return;
 				}
-				if (results.length == obj.result_cap+1) {
+				if (results.length == typeof obj.search_limit != 'undefined' && typeof obj.search_limit != 'null' ? obj.search_limit : obj.result_cap+1) {
 					results.pop();
-					alert($("patronStrings").getFormattedString('staff.patron.search_result.search.capped_results', [obj.result_cap]));
+					alert($("patronStrings").getFormattedString('staff.patron.search_result.search.capped_results', [typeof obj.search_limit != 'undefined' && typeof obj.search_limit != 'null' ? obj.search_limit : obj.result_cap]));
 				}
 			} else {
 				alert($("patronStrings").getString('staff.patron.search_result.search.enter_search_terms'));

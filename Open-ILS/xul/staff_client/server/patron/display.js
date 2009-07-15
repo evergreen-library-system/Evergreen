@@ -698,7 +698,7 @@ patron.display.prototype = {
 						obj.render_search_form(params);
 					}, 0);
 				},
-				'on_submit' : function(query) {
+				'on_submit' : function(query,search_limit,search_sort) {
 					obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			        obj.controller.view.cmd_patron_merge.setAttribute('disabled','true');
 					var list_frame = obj.right_deck.reset_iframe(
@@ -706,6 +706,8 @@ patron.display.prototype = {
 						{},
 						{
 							'query' : query,
+							'search_limit' : search_limit,
+							'search_sort' : search_sort,
 							'on_select' : function(list) {
 								if (!list) return;
 								if (list.length < 1) return;
