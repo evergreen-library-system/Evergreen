@@ -964,7 +964,7 @@ COMMENT ON FUNCTION container.clear_all_expired_circ_history_items( ) IS $$
  * Delete expired circulation bucket items for all users that have
  * a setting for patron.max_reading_list_interval.
 */
-$$
+$$;
 
 
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
