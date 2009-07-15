@@ -84,6 +84,7 @@ static int is_good_operator( const char* op );
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
+static char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
 #endif
 
@@ -983,34 +984,16 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
 
 		// check for perm at top of org tree
-		jsonObject* _tmp_params = single_hash( "parent_ou", NULL );
-		jsonObject* _list = doFieldmapperSearch(ctx, osrfHashGet( oilsIDL(), "aou" ),
-				_tmp_params, NULL, &err);
-		jsonObjectFree(_tmp_params);
+		char* org_tree_root_id = org_tree_root( ctx );
+		if( org_tree_root_id ) {
+			osrfStringArrayAdd( context_org_array, org_tree_root_id );
+			osrfLogDebug( OSRF_LOG_MARK, "top of the org tree is %s", org_tree_root_id );
+		} else  {
+			osrfStringArrayFree( context_org_array );
+			return 0;
+		}
 
-		jsonObject* _tree_top = jsonObjectGetIndex(_list, 0);
-
-		if (!_tree_top) {
-			jsonObjectFree(_list);
-
-			growing_buffer* msg = buffer_init(128);
-			OSRF_BUFFER_ADD( msg, MODULENAME );
-			OSRF_BUFFER_ADD( msg,
-				": Internal error, could not find the top of the org tree (parent_ou = NULL)" );
-
-            char* m = buffer_release(msg);
-            osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
-            free(m);
-
-            return 0;
-        }
-
-        osrfStringArrayAdd( context_org_array, oilsFMGetString( _tree_top, "id" ) );
-	    osrfLogDebug( OSRF_LOG_MARK, "top of the org tree is %s", osrfStringArrayGetString(context_org_array, 0) );
-
-        jsonObjectFree(_list);
-
-    } else {
+	} else {
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, fetching context org ids" );
 	    const char* pkey = osrfHashGet(class, "primarykey");
         jsonObject *param = NULL;
@@ -1297,7 +1280,59 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
     return OK;
 }
 
-/*
+/**
+ * Look up the root of the org_unit tree.  If you find it, return
+ * a string containing the id, which the caller is responsible for freeing.
+ * Otherwise return NULL.
+ */
+static char* org_tree_root( osrfMethodContext* ctx ) {
+
+	static char cached_root_id[ 32 ] = "";  // extravagantly large buffer
+	static time_t last_lookup_time = 0;
+	time_t current_time = time( NULL );
+
+	if( cached_root_id[ 0 ] && ( current_time - last_lookup_time < 3600 ) ) {
+		// We successfully looked this up less than an hour ago.
+		// It's not likely to have changed since then.
+		return strdup( cached_root_id );
+	}
+	last_lookup_time = current_time;
+
+	int err = 0;
+	jsonObject* where_clause = single_hash( "parent_ou", NULL );
+	jsonObject* result = doFieldmapperSearch(
+		ctx, osrfHashGet( oilsIDL(), "aou" ), where_clause, NULL, &err );
+	jsonObjectFree( where_clause );
+
+	jsonObject* tree_top = jsonObjectGetIndex( result, 0 );
+
+	if (! tree_top) {
+		jsonObjectFree( result );
+
+		growing_buffer* msg = buffer_init(128);
+		OSRF_BUFFER_ADD( msg, MODULENAME );
+		OSRF_BUFFER_ADD( msg,
+				": Internal error, could not find the top of the org tree (parent_ou = NULL)" );
+
+		char* m = buffer_release(msg);
+		osrfAppSessionStatus( ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, m );
+		free(m);
+
+		cached_root_id[ 0 ] = '\0';
+		return NULL;
+	}
+
+	char* root_org_unit_id = oilsFMGetString( tree_top, "id" );
+	osrfLogDebug( OSRF_LOG_MARK, "Top of the org tree is %s", root_org_unit_id );
+
+	jsonObjectFree( result );
+
+	strcpy( cached_root_id, root_org_unit_id );
+	return root_org_unit_id;
+}
+
+/**
 Utility function: create a JSON_HASH with a single key/value pair.
 This function is equivalent to:
 
