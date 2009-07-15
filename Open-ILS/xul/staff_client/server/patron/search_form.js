@@ -17,8 +17,8 @@ patron.search_form.prototype = {
         // The bulk of params.query is getting parsed/rendered by obj.controller.init below, and will be reconstituted from possibly modified XUL elements upon Submit.
         // But we're going to let search_limit and search_sort be configurable now by those spawning this interface, and let's assume there are no corresponding widgets for now.  
         // I'm going to place them into the "obj" scope for this instance.
-        obj.search_limit = params.search_limit;
-        obj.search_sort = JSON2js( params.search_sort ); // Let's assume this is encoded as JSON
+        obj.search_limit = params.query.search_limit;
+        obj.search_sort = JSON2js( params.query.search_sort ); // Let's assume this is encoded as JSON
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
