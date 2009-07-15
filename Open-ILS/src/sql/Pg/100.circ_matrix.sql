@@ -166,7 +166,7 @@ BEGIN
                     CASE WHEN m.usr_age_upper_bound    IS NOT NULL THEN 0.5 ELSE 0 END DESC LOOP
 
             IF current_mp.circ_modifier IS NOT NULL THEN
-                CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier;
+                CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
             END IF;
 
             IF current_mp.marc_type IS NOT NULL THEN

@@ -93,7 +93,7 @@ BEGIN
             current_mp_weight := 5.0;
 
             IF current_mp.circ_modifier IS NOT NULL THEN
-                CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier;
+                CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
             END IF;
 
             IF current_mp.marc_type IS NOT NULL THEN
