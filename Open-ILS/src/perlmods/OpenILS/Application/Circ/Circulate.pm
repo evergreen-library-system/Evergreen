@@ -1290,11 +1290,15 @@ sub handle_checkout_holds {
         $hold = undef;
     }
 
-    $hold = $self->find_related_uncaptured_hold($copy, $patron) unless $hold;
+    unless($hold) {
+        $hold = $self->find_related_user_hold($copy, $patron) or return;
+        $logger->info("circulator: found related hold to fulfill in checkout");
+    }
 
-    $logger->debug("circulator: checkout filfilling hold " . $hold->id);
+    $logger->debug("circulator: checkout fulfilling hold " . $hold->id);
 
     # if the hold was never officially captured, capture it.
+    $hold->current_copy($copy->id);
     $hold->capture_time('now') unless $hold->capture_time;
     $hold->fulfillment_time('now');
     $hold->fulfillment_staff($e->requestor->id);
@@ -1314,33 +1318,37 @@ sub handle_checkout_holds {
 # (with hold_type T or V) for the patron that could be fulfilled by the checked 
 # out item.  Fulfill the oldest hold and only fulfill 1 of them.
 # ------------------------------------------------------------------------------
-sub find_related_uncaptured_hold {
+sub find_related_user_hold {
     my($self, $copy, $patron) = @_;
     my $e = $self->editor;
 
     return undef if $self->volume->id == OILS_PRECAT_CALL_NUMBER; 
 
     return undef unless $U->ou_ancestor_setting_value(        
-        $self->requestor->ws_ou, 'circ.checkout_fills_related_hold', $e);
+        $e->requestor->ws_ou, 'circ.checkout_fills_related_hold', $e);
 
-    my $args = {
-        cancel_time => undef, 
-        fulfillment_time => undef,
-        usr => $patron->id,
-        order_by => {ahr => 'request_time asc'},
-        '-or' => [
-            {expire_time => undef},
-            {expire_time => {'>' => 'now'}}
-        ]
-    };
+    my $args = [
+        {   
+            cancel_time => undef, 
+            fulfillment_time => undef,
+            usr => $patron->id,
+            '-or' => [
+                {expire_time => undef},
+                {expire_time => {'>' => 'now'}}
+            ]
+        }, {
+            order_by => {ahr => 'request_time asc'}, 
+            limit => 1
+        }
+    ];
 
-    $args->{hold_type} = 'V';
-    $args->{target} = $self->volume->id;
-    my $v_hold = $e->search_action_hold_request([$args, {limit => 1}])->[0];
+    $args->[0]->{hold_type} = 'V';
+    $args->[0]->{target} = $self->volume->id;
+    my $v_hold = $e->search_action_hold_request($args)->[0];
 
-    $args->{hold_type} = 'T';
-    $args->{target} = $self->title->id;
-    my $t_hold = $e->search_action_hold_request([$args, {limit => 1}])->[0];
+    $args->[0]->{hold_type} = 'T';
+    $args->[0]->{target} = $self->title->id;
+    my $t_hold = $e->search_action_hold_request($args)->[0];
 
     if($t_hold and $v_hold) {
 
