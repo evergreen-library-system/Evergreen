@@ -175,11 +175,19 @@ sub rw_biblio_ingest_single_object {
             }
         }
 
+        # Check for an existing CN-URI map
+        $tmp = $cstore->request(
+            'open-ils.cstore.direct.asset.uri_call_number_map.id_list',
+            { call_number => $u->{call_number}->id, uri => $u->{uri}->id }
+        )->gather(1);
+
+        next if ($tmp);
+
         my $umap = Fieldmapper::asset::uri_call_number_map->new;
         $umap->uri($u->{uri}->id);
         $umap->call_number($u->{call_number}->id);
 
-        $cstore->request( 'open-ils.cstore.direct.asset.uri_call_number_map.create' => $umap )->gather(1) if (!$tmp);
+        $cstore->request( 'open-ils.cstore.direct.asset.uri_call_number_map.create' => $umap )->gather(1);
     }
 
     # update full_rec stuff ...
