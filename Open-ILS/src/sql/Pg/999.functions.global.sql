@@ -724,32 +724,27 @@ BEGIN
 	--
 	perform actor.usr_purge_data( src_usr, dest_usr );
 	--
-	-- Find the root org_unit(s).  This would be simpler if we could assume
-	-- that there is only one root.  Theoretically, someday, maybe, there
-	-- could be multiple roots, so we go to some extra trouble to get
-	-- the right ones.
+	-- Find the root grp_tree and the root org_unit.  This would be simpler if we 
+	-- could assume that there is only one root.  Theoretically, someday, maybe,
+	-- there could be multiple roots, so we take extra trouble to get the right ones.
 	--
 	SELECT
 		id
 	INTO
 		new_profile
 	FROM
-		actor.org_unit_ancestors( old_profile )
+		permission.grp_ancestors( old_profile )
+	WHERE
+		parent is null;
+	--
+	SELECT
+		id
+	INTO
+		new_home_ou
+	FROM
+		actor.org_unit_ancestors( old_home_ou )
 	WHERE
 		parent_ou is null;
-	--
-	IF old_home_ou = old_profile THEN
-		new_home_ou := new_profile;
-	ELSE
-		SELECT
-			id
-		INTO
-			new_home_ou
-		FROM
-			actor.org_unit_ancestors( old_home_ou )
-		WHERE
-			parent_ou is null;
-	END IF;
 	--
 	-- Truncate date of birth
 	--
