@@ -2679,23 +2679,24 @@ __PACKAGE__->register_method(
 
 sub apply_penalty {
 	my($self, $conn, $auth, $penalty) = @_;
+
 	my $e = new_editor(authtoken=>$auth, xact => 1);
 	return $e->die_event unless $e->checkauth;
+
     my $user = $e->retrieve_actor_user($penalty->usr) or return $e->die_event;
     return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
 
-    # is it already applied?
-    return 1 if $e->search_actor_user_standing_penalty(
-        {   usr => $penalty->usr, 
-            '-or' => [
-                {stop_date => undef},
-                {stop_date => {'>' => 'now'}}
-            ],
-            standing_penalty => $penalty->standing_penalty,
-            org_unit => $penalty->org_unit
-        })->[0];
+    my $ptype = $e->retrieve_config_standing_penalty($penalty->standing_penalty) or return $e->die_event;
+    
+    my $ctx_org = 
+        (defined $ptype->org_depth) ?
+        $U->org_unit_ancestor_at_depth($penalty->org_unit, $ptype->org_depth) :
+        $penalty->org_unit;
 
+    $penalty->org_unit($ctx_org);
+    $penalty->staff($e->requestor->id);
     $e->create_actor_user_standing_penalty($penalty) or return $e->die_event;
+
     $e->commit;
     return $penalty->id;
 }
