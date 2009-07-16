@@ -222,6 +222,7 @@ CREATE TABLE container.user_bucket_item (
     pos         INT,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+CREATE INDEX user_bucket_item_target_user_idx ON container.user_bucket_item ( target_user );
 
 CREATE TABLE container.user_bucket_item_note (
     id      SERIAL      PRIMARY KEY,

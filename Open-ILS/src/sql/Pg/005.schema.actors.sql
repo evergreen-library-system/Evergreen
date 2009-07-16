@@ -144,6 +144,7 @@ CREATE TABLE actor.usr_note (
 	value		TEXT				NOT NULL
 );
 CREATE INDEX actor_usr_note_usr_idx ON actor.usr_note (usr);
+CREATE INDEX actor_usr_note_creator_idx ON actor.usr_note ( creator );
 
 CREATE TABLE actor.usr_setting (
 	id	BIGSERIAL	PRIMARY KEY,
@@ -409,6 +410,7 @@ CREATE TABLE actor.usr_org_unit_opt_in (
 	opt_in_ws	INT				NOT NULL REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT usr_opt_in_once_per_org_unit UNIQUE (usr,org_unit)
 );
+CREATE INDEX usr_org_unit_opt_in_staff_idx ON actor.usr_org_unit_opt_in ( staff );
 
 CREATE TABLE actor.org_unit_setting (
 	id		BIGSERIAL	PRIMARY KEY,
@@ -523,6 +525,7 @@ COMMENT ON TABLE actor.usr_standing_penalty IS $$
 $$;
 
 CREATE INDEX actor_usr_standing_penalty_usr_idx ON actor.usr_standing_penalty (usr);
+CREATE INDEX actor_usr_standing_penalty_staff_idx ON actor.usr_standing_penalty ( staff );
 
 
 COMMIT;

@@ -134,7 +134,7 @@ CREATE TABLE acq.fund_allocation (
 	create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
 );
-
+CREATE INDEX fund_alloc_allocator_idx ON acq.fund_allocation ( allocator );
 
 CREATE TABLE acq.picklist (
 	id		SERIAL				PRIMARY KEY,
@@ -147,6 +147,9 @@ CREATE TABLE acq.picklist (
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT name_once_per_owner UNIQUE (name,owner)
 );
+CREATE INDEX acq_picklist_owner_idx   ON acq.picklist ( owner );
+CREATE INDEX acq_picklist_creator_idx ON acq.picklist ( creator );
+CREATE INDEX acq_picklist_editor_idx  ON acq.picklist ( editor );
 
 CREATE TABLE acq.purchase_order (
 	id		SERIAL				PRIMARY KEY,
@@ -162,6 +165,8 @@ CREATE TABLE acq.purchase_order (
 CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
 CREATE INDEX po_provider_idx ON acq.purchase_order (provider);
 CREATE INDEX po_state_idx ON acq.purchase_order (state);
+CREATE INDEX po_creator_idx  ON acq.purchase_order ( creator );
+CREATE INDEX po_editor_idx   ON acq.purchase_order ( editor );
 
 CREATE TABLE acq.po_note (
 	id		SERIAL				PRIMARY KEY,
@@ -173,6 +178,8 @@ CREATE TABLE acq.po_note (
 	value		TEXT				NOT NULL
 );
 CREATE INDEX po_note_po_idx ON acq.po_note (purchase_order);
+CREATE INDEX acq_po_note_creator_idx  ON acq.po_note ( creator );
+CREATE INDEX acq_po_note_editor_idx   ON acq.po_note ( editor );
 
 CREATE TABLE acq.lineitem (
 	id                  BIGSERIAL                   PRIMARY KEY,
@@ -194,6 +201,9 @@ CREATE TABLE acq.lineitem (
 );
 CREATE INDEX li_po_idx ON acq.lineitem (purchase_order);
 CREATE INDEX li_pl_idx ON acq.lineitem (picklist);
+CREATE INDEX li_creator_idx   ON acq.lineitem ( creator );
+CREATE INDEX li_editor_idx    ON acq.lineitem ( editor );
+CREATE INDEX li_selector_idx  ON acq.lineitem ( selector );
 
 CREATE TABLE acq.lineitem_note (
 	id		SERIAL				PRIMARY KEY,
@@ -205,6 +215,8 @@ CREATE TABLE acq.lineitem_note (
 	value		TEXT				NOT NULL
 );
 CREATE INDEX li_note_li_idx ON acq.lineitem_note (lineitem);
+CREATE INDEX li_note_creator_idx  ON acq.lineitem_note ( creator );
+CREATE INDEX li_note_editor_idx   ON acq.lineitem_note ( editor );
 
 CREATE TABLE acq.lineitem_detail (
     id          BIGSERIAL	PRIMARY KEY,
@@ -252,6 +264,7 @@ CREATE TABLE acq.lineitem_usr_attr_definition (
 	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq'),
 	usr		INT	NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (acq.lineitem_attr_definition);
+CREATE INDEX li_usr_attr_def_usr_idx  ON acq.lineitem_usr_attr_definition ( usr );
 
 CREATE TABLE acq.lineitem_local_attr_definition (
 	id		BIGINT	PRIMARY KEY DEFAULT NEXTVAL('acq.lineitem_attr_definition_id_seq')

@@ -29,6 +29,7 @@ CREATE TABLE money.collections_tracker (
 	enter_time	TIMESTAMP WITH TIME ZONE
 );
 CREATE UNIQUE INDEX m_c_t_usr_collector_location_once_idx ON money.collections_tracker (usr, collector, location);
+CREATE INDEX m_c_t_collector_idx                          ON money.collections_tracker ( collector );
 
 CREATE TABLE money.billable_xact (
 	id          BIGSERIAL			PRIMARY KEY,

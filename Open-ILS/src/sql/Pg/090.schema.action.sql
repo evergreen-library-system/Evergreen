@@ -28,6 +28,7 @@ CREATE TABLE action.in_house_use (
 	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+CREATE INDEX action_in_house_use_staff_idx      ON action.in_house_use ( staff );
 
 CREATE TABLE action.non_cataloged_circulation (
 	id		SERIAL				PRIMARY KEY,
@@ -37,6 +38,8 @@ CREATE TABLE action.non_cataloged_circulation (
 	item_type	INT				NOT NULL REFERENCES config.non_cataloged_type (id) DEFERRABLE INITIALLY DEFERRED,
 	circ_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+CREATE INDEX action_non_cat_circ_patron_idx ON action.non_cataloged_circulation ( patron );
+CREATE INDEX action_non_cat_circ_staff_idx  ON action.non_cataloged_circulation ( staff );
 
 CREATE TABLE action.non_cat_in_house_use (
 	id		SERIAL				PRIMARY KEY,
@@ -45,6 +48,7 @@ CREATE TABLE action.non_cat_in_house_use (
 	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+CREATE INDEX non_cat_in_house_use_staff_idx ON action.non_cat_in_house_use ( staff );
 
 CREATE TABLE action.survey (
 	id		SERIAL				PRIMARY KEY,
@@ -84,6 +88,8 @@ CREATE TABLE action.survey_response (
 	answer_date		TIMESTAMP WITH TIME ZONE,
 	effective_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+CREATE INDEX action_survey_response_usr_idx ON action.survey_response ( usr );
+
 CREATE OR REPLACE FUNCTION action.survey_response_answer_date_fixup () RETURNS TRIGGER AS '
 BEGIN
 	NEW.answer_date := NOW();
@@ -125,6 +131,9 @@ CREATE INDEX circ_outstanding_idx ON action.circulation (usr) WHERE checkin_time
 CREATE INDEX circ_checkin_time ON "action".circulation (checkin_time) WHERE checkin_time IS NOT NULL;
 CREATE INDEX circ_circ_lib_idx ON "action".circulation (circ_lib);
 CREATE INDEX circ_open_date_idx ON "action".circulation (xact_start) WHERE xact_finish IS NULL;
+CREATE INDEX circ_all_usr_idx       ON action.circulation ( usr );
+CREATE INDEX circ_circ_staff_idx    ON action.circulation ( circ_staff );
+CREATE INDEX circ_checkin_staff_idx ON action.circulation ( checkin_staff );
 
 CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_create ();
 CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_update ();
@@ -294,6 +303,8 @@ CREATE INDEX hold_request_usr_idx ON action.hold_request (usr);
 CREATE INDEX hold_request_pickup_lib_idx ON action.hold_request (pickup_lib);
 CREATE INDEX hold_request_current_copy_idx ON action.hold_request (current_copy);
 CREATE INDEX hold_request_prev_check_time_idx ON action.hold_request (prev_check_time);
+CREATE INDEX hold_request_fulfillment_staff_idx ON action.hold_request ( fulfillment_staff );
+CREATE INDEX hold_request_requestor_idx         ON action.hold_request ( requestor );
 
 
 CREATE TABLE action.hold_request_note (
@@ -323,6 +334,7 @@ CREATE TABLE action.hold_notification (
 	note		TEXT
 );
 CREATE INDEX ahn_hold_idx ON action.hold_notification (hold);
+CREATE INDEX ahn_notify_staff_idx ON action.hold_notification ( notify_staff );
 
 CREATE TABLE action.hold_copy_map (
 	id		SERIAL	PRIMARY KEY,

@@ -64,6 +64,8 @@ CREATE TABLE asset.copy (
 CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted IS FALSE;
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number);
+CREATE INDEX cp_creator_idx  ON asset.copy ( creator );
+CREATE INDEX cp_editor_idx   ON asset.copy ( editor );
 CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id;
 
 CREATE TABLE asset.copy_transparency (
@@ -132,6 +134,7 @@ CREATE TABLE asset.copy_note (
 	title		TEXT				NOT NULL,
 	value		TEXT				NOT NULL
 );
+CREATE INDEX asset_copy_note_creator_idx ON asset.copy_note ( creator );
 
 CREATE TABLE asset.uri (
     id  SERIAL  PRIMARY KEY,
@@ -177,6 +180,7 @@ CREATE TABLE asset.call_number_note (
 	title		TEXT				NOT NULL,
 	value		TEXT				NOT NULL
 );
+CREATE INDEX asset_call_number_note_creator_idx ON asset.call_number_note ( creator );
 
 CREATE VIEW stats.fleshed_copy AS 
         SELECT  cp.*,
