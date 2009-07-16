@@ -294,7 +294,11 @@ sub retrieve_holds_by_id {
 	my $holds = $e->search_action_hold_request(
 		[
 			{ id =>  $hold_id , fulfillment_time => undef }, 
-			{ order_by => { ahr => "request_time" } }
+			{ 
+                order_by => { ahr => "request_time" },
+                flesh => 1,
+                flesh_fields => {ahr => ['notes']}
+            }
 		]
 	);
 
