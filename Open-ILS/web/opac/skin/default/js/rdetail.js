@@ -253,7 +253,12 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		hcs.length == 0 && hi.length == 0 && hci.length == 0 &&
 		ho.length == 0 && hm.length == 0 && hinc.length == 0 && !isXUL()
 	) {
-		return null;
+		/* 
+		 * If we have a record, but nothing to show for it, then the
+		 * record is likely empty or corrupt. This gives cataloguers a
+                 * chance to add holdings or correct the record
+		 */
+		hh = 'PLACEHOLDER';
 	}
 
 	dojo.place("<table style='width: 100%;'><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>" +
