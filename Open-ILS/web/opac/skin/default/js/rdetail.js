@@ -12,7 +12,7 @@ var rdetailShowLocal = true;
 var rdetailShowCopyLocation = true;
 var rdetailGoogleBookPreview = true;
 var rdetailDisplaySerialHoldings = true;
-var rdetailEnableRefWorks = true;
+var rdetailEnableRefWorks = false;
 var rdetailRefWorksHost = 'http://www.refworks.com';
 
 /* vars vars vars */
