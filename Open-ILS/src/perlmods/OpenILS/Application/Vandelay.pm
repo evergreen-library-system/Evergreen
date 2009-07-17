@@ -848,16 +848,6 @@ __PACKAGE__->register_method(
     stream      => 1,
 	record_type	=> 'bib'
 );
-
-sub import_record_asset_list {
-    my($self, $conn, $auth, $rec_ids) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
-    my $err = import_record_asset_list_impl($conn, $rec_ids, $e->requestor);
-    return $err if $err;
-    return {complete => 1};
-}
-
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.bib_record.queue.asset.import",
 	method		=> 'import_record_queue_assets',
@@ -868,21 +858,21 @@ __PACKAGE__->register_method(
 );
 
 sub import_record_list_assets {
-    my($self, $conn, $auth, $rec_ids) = @_;
+    my($self, $conn, $auth, $import_def, $rec_ids) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
-    my $err = import_record_asset_list_impl($conn, $rec_ids, $e->requestor);
+    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
     return $err if $err;
     return {complete => 1};
 }
 
 sub import_record_queue_assets {
-    my($self, $conn, $auth, $q_id) = @_;
+    my($self, $conn, $auth, $import_def, $q_id) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
     my $rec_ids = $e->search_vandelay_queued_bib_record(
         {queue => $q_id, import_time => {'!=' => undef}}, {idlist => 1});
-    my $err = import_record_asset_list_impl($conn, $rec_ids, $e->requestor);
+    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
     return $err if $err;
     return {complete => 1};
 }
@@ -891,7 +881,7 @@ sub import_record_queue_assets {
 # Given a list of queued record IDs, imports all items attached to those records
 # --------------------------------------------------------------------------------
 sub import_record_asset_list_impl {
-    my($conn, $rec_ids, $requestor) = @_;
+    my($conn, $import_def, $rec_ids, $requestor) = @_;
 
     my $total = @$rec_ids;
     my $try_count = 0;
@@ -901,7 +891,7 @@ sub import_record_asset_list_impl {
     for my $rec_id (@$rec_ids) {
         my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
         next unless $rec and $rec->import_time;
-        my $item_ids = $roe->search_vandelay_import_item({record => $rec->id}, {idlist=>1});
+        my $item_ids = $roe->search_vandelay_import_item({definition => $import_def, record => $rec->id}, {idlist=>1});
 
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);

@@ -30,10 +30,23 @@
             </td>
         </tr>
         <tr>
+            <td>Import Attached Holdings</td>
+            <td colspan='4'>
+                <input jsId='vlUploadQueueHoldingsImport' dojoType='dijit.form.CheckBox'/>
+            </td>
+        </tr>
+        <tr>
+            <td>Holdings Import Profile</td>
+            <td>
+                <input jsId='vlUploadQueueHoldingsImportProfile'
+                    dojoType='dijit.form.FilteringSelect' labelAttr='name' searchAttr='name'/>
+            </td>
+        </tr>
+        <tr>
             <td>&vandelay.import.bib_sources;</td>
             <td>
-                <select name='bib_source' jsId='vlUploadSourceSelector' dojoType='dijit.form.FilteringSelect' labelAttr='source' searchAttr='source'>
-                </select>
+                <select name='bib_source' jsId='vlUploadSourceSelector' 
+                    dojoType='dijit.form.FilteringSelect' labelAttr='source' searchAttr='source'/>
             </td>
         </tr>
         <tr>
