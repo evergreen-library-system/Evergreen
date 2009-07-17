@@ -232,7 +232,12 @@ sub process_spool {
 
     $logger->info("vandelay spooling $fingerprint purpose=$purpose file=$filename");
 
-    my $marctype = 'USMARC'; # ?
+    my $marctype = 'USMARC'; 
+
+    open F, $filename;
+    $marctype = 'XML' if (getc(F) =~ /^\D/o);
+    close F;
+
 	my $batch = new MARC::Batch ($marctype, $filename);
 	$batch->strict_off;
 
