@@ -128,7 +128,7 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 /** Verifies that the user has permission to login with the 
  * given type.  If the permission fails, an oilsEvent is returned
  * to the caller.
- * @return -1 if the permission check failed, 0 if ther permission
+ * @return -1 if the permission check failed, 0 if the permission
  * is granted
  */
 static int oilsAuthCheckLoginPerm( 
@@ -181,18 +181,17 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	osrfLogInternal(OSRF_LOG_MARK, "oilsAuth retrieved real password: [%s]", realPassword);
 	osrfLogDebug(OSRF_LOG_MARK,  "oilsAuth retrieved seed from cache: %s", seed );
 	char* maskedPw = md5sum( "%s%s", seed, realPassword );
-	if(!maskedPw) {
-		free(realPassword);
-		free(seed);
+	free(realPassword);
+	free(seed);
+
+	if(!maskedPw)
 		return -1;
-	}
+
 	osrfLogDebug(OSRF_LOG_MARK,  "oilsAuth generated masked password %s. "
 			"Testing against provided password %s", maskedPw, password );
 
 	if( !strcmp( maskedPw, password ) ) ret = 1;
 
-	free(realPassword);
-	free(seed);
 	free(maskedPw);
 
 	return ret;
@@ -305,7 +304,7 @@ static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
 
 	osrfCachePutObject( authKey, cacheObj, timeout ); 
 	jsonObjectFree(cacheObj);
-	osrfLogInternal(OSRF_LOG_MARK, "oilsAuthComplete(): Placed user object into cache");
+	osrfLogInternal(OSRF_LOG_MARK, "oilsAuthHandleLoginOK(): Placed user object into cache");
 	jsonObject* payload = jsonParseStringFmt(
 		"{ \"authtoken\": \"%s\", \"authtime\": %f }", authToken, timeout );
 
@@ -387,8 +386,15 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	oilsEvent* response = NULL;
 	jsonObject* userObj = NULL;
 
-	if(uname) userObj = oilsUtilsFetchUserByUsername( uname ); 
-	else if(barcode) userObj = oilsUtilsFetchUserByBarcode( barcode );
+	if(uname) {
+		userObj = oilsUtilsFetchUserByUsername( uname );
+		if( userObj && JSON_NULL == userObj->type ) {
+			jsonObjectFree( userObj );
+			userObj = NULL;         // username not found
+		}
+	}
+	else if(barcode)
+		 userObj = oilsUtilsFetchUserByBarcode( barcode );
 	
 	if(!userObj) { 
 		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
