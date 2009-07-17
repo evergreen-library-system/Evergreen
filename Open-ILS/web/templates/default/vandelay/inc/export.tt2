@@ -1,5 +1,5 @@
 <h1>&vandelay.export.records;</h1><br/>
-<form method="POST" enctype="multipart/form-data" action='/exporter'>
+<form method="POST" enctype="multipart/form-data" action='https://[% ctx.hostname %]/exporter'>
     <table class='form_table'>
         <tr class='export_tr_border'>
             <td>&vandelay.export.use_field_no;</td>
