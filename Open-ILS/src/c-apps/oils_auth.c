@@ -370,7 +370,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	const char* type		= jsonObjectGetString(jsonObjectGetKeyConst(args, "type"));
 	double orgloc			= jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org"));
 	const char* workstation = jsonObjectGetString(jsonObjectGetKeyConst(args, "workstation"));
-	char* barcode			= jsonObjectToSimpleString(jsonObjectGetKeyConst(args, "barcode"));
+	const char* barcode		= jsonObjectGetString(jsonObjectGetKeyConst(args, "barcode"));
 
 	const char* ws = (workstation) ? workstation : "";
 
@@ -378,7 +378,6 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	if(!type) type = OILS_AUTH_STAFF;
 
 	if( !( (uname || barcode) && password) ) {
-		free(barcode);
 		return osrfAppRequestRespondException( ctx->session, ctx->request, 
 			"username/barcode and password required for method: %s", ctx->method->name );
 	}
@@ -398,10 +397,10 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	
 	if(!userObj) { 
 		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
-		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s", uname, barcode, ws );
+		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s",
+				uname, (barcode ? barcode : "(none)"), ws );
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 		oilsEventFree(response);
-		free(barcode);
 		return 0;
 	}
 
@@ -413,18 +412,20 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	if( passOK < 0 ) {
 		jsonObjectFree(userObj);
-		free(barcode);
 		return passOK;
 	}
 
 	/* first see if their account is inactive */
 	char* active = oilsFMGetString(userObj, "active");
 	if( !oilsUtilsIsDBTrue(active) ) {
-		response = oilsNewEvent(OSRF_LOG_MARK, "PATRON_INACTIVE");
+		if( passOK )
+			response = oilsNewEvent( OSRF_LOG_MARK, "PATRON_INACTIVE" );
+		else
+			response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
+
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 		oilsEventFree(response);
 		jsonObjectFree(userObj);
-		free(barcode);
 		free(active);
 		return 0;
 	}
@@ -435,7 +436,6 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 		oilsEventFree(response);
 		jsonObjectFree(userObj);
-		free(barcode);
 		return 0;
 	}
 
@@ -443,7 +443,6 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	/* check to see if the user is even allowed to login */
 	if( oilsAuthCheckLoginPerm( ctx, userObj, type ) == -1 ) {
 		jsonObjectFree(userObj);
-		free(barcode);
 		return 0;
 	}
 	
@@ -456,7 +455,6 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			jsonObjectFree(userObj);
 			osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 			oilsEventFree(response);
-			free(barcode);
 			return 0;
 		}
 
@@ -477,13 +475,13 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	} else {
 		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
-		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s", uname, barcode, ws );
+		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s",
+				uname, (barcode ? barcode : "(none)"), ws );
 	}
 
 	jsonObjectFree(userObj);
 	osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 	oilsEventFree(response);
-	free(barcode);
 
 	if(freeable_uname) free(freeable_uname);
 
