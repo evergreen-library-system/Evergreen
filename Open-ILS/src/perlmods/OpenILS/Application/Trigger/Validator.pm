@@ -4,6 +4,7 @@ use DateTime;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw/:logger/;
+use OpenILS::Const qw/:const/;
 sub fourty_two { return 42 }
 sub NOOP_True { return 1 }
 sub NOOP_False { return 0 }
@@ -33,16 +34,15 @@ sub HoldIsAvailable {
     my $self = shift;
     my $env = shift;
 
-    my $t = $env->{target}->transit;
+    my $hold = $env->{target};
 
-    die "Transit object exists, but is not fleshed.  Add 'transit' to the environment in order to use this Validator."
-        if ($t && !ref($t));
+    return 1 if 
+        !$hold->cancel_time and
+        $hold->capture_time and 
+        $hold->current_copy and
+        $hold->current_copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
 
-    if ($t) {
-        return (defined($env->{target}->capture_time) && defined($t->dest_recv_time)) ? 1 : 0;
-    }
-
-    return defined($env->{target}->capture_time) ? 1 : 0;
+    return 0;
 }
 
 1;
