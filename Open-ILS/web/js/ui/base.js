@@ -25,7 +25,7 @@ function oilsSetupUser() {
         });
         return;
     }
-    dojo.cookie('ses', authtoken, {path : oilsBasePath});
+    dojo.cookie('ses', authtoken, {path:'/'});
     openils.User.authtoken = authtoken;
     openils.User.workstation = workstation;
 }
@@ -42,7 +42,7 @@ function oilsDoLogin() {
     if(workstation) 
         args.workstation = workstation;
     user.login(args);
-    dojo.cookie('ses', user.authtoken, {path : oilsBasePath});
+    dojo.cookie('ses', user.authtoken, {path : '/'});
     location.href = location.href;
     return false;
 }
