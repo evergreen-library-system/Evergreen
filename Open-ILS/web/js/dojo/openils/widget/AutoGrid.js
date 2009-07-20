@@ -470,10 +470,19 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             fmClass: this.grid.fmClass,
             fmField: this.field,
             widgetValue : val,
-            readOnly : true,
-            forceSync : true
+            readOnly : true
         });
-        //autoWidget.build();
+
+        var _this = this;
+        autoWidget.build(
+            function(w, ww) {
+                var node = _this.grid.getCell(_this.index).view.getCellNode(rowIndex, _this.index);
+                if(node) {
+                    node.innerHTML = ww.getDisplayString();
+                }
+            }
+        );
+
         return autoWidget.getDisplayString();
     }
 }
