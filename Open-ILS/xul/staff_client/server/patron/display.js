@@ -460,7 +460,7 @@ patron.display.prototype = {
                             function penalty_interface() {
                                 try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_messages" ) ); } catch(E) {};
 							    obj.reset_nav_styling('cmd_standing_penalties');
-                                return obj.right_deck.reset_iframe(
+                                return obj.right_deck.set_iframe(
                                     urls.XUL_STANDING_PENALTIES,
                                     {},
                                     {
