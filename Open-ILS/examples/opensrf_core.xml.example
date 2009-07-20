@@ -136,7 +136,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
         <logfile>syslog</logfile>
         <syslog>local2</syslog>
       -->
-      <loglevel>3</loglevel>
+      <loglevel>2</loglevel>
     </router>
     <router>
       <!-- private router -->
@@ -161,7 +161,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
         <logfile>syslog</logfile>
         <syslog>local2</syslog>
       -->
-      <loglevel>3</loglevel>
+      <loglevel>2</loglevel>
     </router>
   </routers>
   <!-- ======================================================================================== -->
