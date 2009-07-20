@@ -5,7 +5,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
     dojo.require('fieldmapper.IDL');
     dojo.require('openils.PermaCrud');
 	dojo.requireLocalization("openils.widget", "AutoFieldWidget");
-    var localeStrings = dojo.i18n.getLocalization("openils.widget", "AutoFieldWidget");
 
     dojo.declare('openils.widget.AutoFieldWidget', null, {
 
@@ -85,7 +84,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var value = this.widgetValue;
             switch(this.idlField.datatype) {
                 case 'bool':
-                    return (openils.Util.isTrue(value)) ? localeStrings.TRUE : localeStrings.FALSE;
+                    return (openils.Util.isTrue(value)) ? 
+                        openils.widget.AutoFieldWidget.localeStrings.TRUE : 
+                        openils.widget.AutoFieldWidget.localeStrings.FALSE;
                 case 'timestamp':
                     dojo.require('dojo.date.locale');
                     dojo.require('dojo.date.stamp');
@@ -444,5 +445,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             return true;
         }
     });
+
+    openils.widget.AutoFieldWidget.localeStrings = dojo.i18n.getLocalization("openils.widget", "AutoFieldWidget");
 }
 
