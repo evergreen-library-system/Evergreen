@@ -2683,7 +2683,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
-			<link field="notes" reltype="might_have" key="hold" map="" class="ahrn"/>
+			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 		</links>
 	</class>
 	<class id="ahrn" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_request_note" oils_persist:tablename="action.hold_request_note" reporter:label="Hold Request Note">
