@@ -1467,6 +1467,8 @@ sub build_checkout_circ_object {
    $circ->target_copy( $copy->id );
    $circ->usr( $patron->id );
    $circ->circ_lib( $self->circ_lib );
+   $circ->workstation($self->editor->requestor->wsid) 
+    if defined $self->editor->requestor->wsid;
 
    if( $self->is_renewal ) {
       $circ->opac_renewal('t') if $self->opac_renewal;
@@ -1477,14 +1479,14 @@ sub build_checkout_circ_object {
    }
 
 
-   # if the user provided an overiding checkout time,
-   # (e.g. the checkout really happened several hours ago), then
-   # we apply that here.  Does this need a perm??
+    # if the user provided an overiding checkout time,
+    # (e.g. the checkout really happened several hours ago), then
+    # we apply that here.  Does this need a perm??
     $circ->xact_start(clense_ISO8601($self->checkout_time))
         if $self->checkout_time;
 
-   # if a patron is renewing, 'requestor' will be the patron
-   $circ->circ_staff($self->editor->requestor->id);
+    # if a patron is renewing, 'requestor' will be the patron
+    $circ->circ_staff($self->editor->requestor->id);
     $circ->due_date( $self->create_due_date($circ->duration) ) if $circ->duration;
 
     $self->circ($circ);
