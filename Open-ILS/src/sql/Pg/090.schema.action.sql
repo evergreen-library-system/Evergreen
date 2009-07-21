@@ -123,7 +123,10 @@ CREATE TABLE action.circulation (
 	duration_rule		TEXT				NOT NULL, -- name of "circ duration" rule
 	recuring_fine_rule	TEXT				NOT NULL, -- name of "circ fine" rule
 	max_fine_rule		TEXT				NOT NULL, -- name of "max fine" rule
-	stop_fines		TEXT				CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE'))
+	stop_fines		TEXT				CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE')),
+	workstation         INT        REFERENCES actor.org_unit(id)
+	                               ON DELETE SET NULL
+								   DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (money.billable_xact);
 ALTER TABLE action.circulation ADD PRIMARY KEY (id);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
