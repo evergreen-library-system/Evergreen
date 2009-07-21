@@ -124,7 +124,7 @@ CREATE TABLE action.circulation (
 	recuring_fine_rule	TEXT				NOT NULL, -- name of "circ fine" rule
 	max_fine_rule		TEXT				NOT NULL, -- name of "max fine" rule
 	stop_fines		TEXT				CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE')),
-	workstation         INT        REFERENCES actor.org_unit(id)
+	workstation         INT        REFERENCES actor.workstation(id)
 	                               ON DELETE SET NULL
 								   DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (money.billable_xact);
