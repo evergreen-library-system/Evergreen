@@ -87,7 +87,7 @@ sub bib_to_mfhd_hash {
 	my @mfhd = $U->cstorereq( "open-ils.cstore.json_query.atomic", {
 		select  => { sre => 'marc' },
 		from    => 'sre',
-		where   => { record => $bib },
+		where   => { record => $bib, deleted => 'f' },
 		distinct => 1
 	});
 	
@@ -114,7 +114,7 @@ sub bib_to_mfhd {
 	my $mfhd;
 
 	my $e = OpenILS::Utils::CStoreEditor->new();
-	my $serials = $e->search_serial_record_entry({ record => $bib });
+	my $serials = $e->search_serial_record_entry({ record => $bib, deleted => 'f' });
 	if (!ref $serials) {
 		return undef;
 	}
