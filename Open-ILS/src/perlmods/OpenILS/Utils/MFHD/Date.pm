@@ -380,6 +380,8 @@ sub subsequent_season {
     my $pat = shift;
     my @cur = @_;
 
+#     printf("# subsequent_season: pat='%s', cur='%s'\n", $pat, join('/',@cur));
+
     if (($pat < 21) || ($pat > 24)) {
 	carp "Unexpected season '$pat'";
 	return undef;
