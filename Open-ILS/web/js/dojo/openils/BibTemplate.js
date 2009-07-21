@@ -53,14 +53,16 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                             dojo.forEach(slot_list, function (slot) {
                                 var joiner = slot.getAttribute('join') || ' ';
 
-                                var slot_handler = dojo.query(
-                                    'script[type=opac/slot-format]',
-                                    slot
-                                ).orphan().map(
-                                    function(x){return dojox.data.dom.textContent(x)}
-                                ).join('');
-                        
-                
+                                var slot_handler = dojo.map(
+                                    dojo.query('script[type=opac/slot-format]', slot).orphan(),
+                                    function(x){
+                                        if(dojo.isIE) return x.innerHTML;
+                                        return dojox.data.dom.textContent(x)
+                                    }
+                                );
+
+                                slot_handler = slot_handler.join('');
+
                                 if (slot_handler) slot_handler = new Function('item', slot_handler);
                                 else slot_handler = new Function('item','return dojox.data.dom.textContent(item);');
                 
@@ -69,10 +71,10 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     bib
                                 );
 
-                                if (item_list.length) slot.innerHTML = item_list.map(slot_handler).join(joiner);
-                
+                                if (item_list.length) slot.innerHTML = dojo.map(item_list, slot_handler).join(joiner);
+
                                 delete(slot_handler);
-                            
+
                             });
                        }
                     });
