@@ -873,8 +873,9 @@ sub create_serial_record_xml {
 
 	my $e = new_editor(xact=>1, authtoken=>$login);
 	return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_MFHD_RECORD', $owning_lib);
+	return $e->die_event unless $e->allowed('CREATE_MFHD_RECORD', $owning_lib);
 
+	# Auto-populate the location field of a placeholder MFHD record with the library name
 	my $aou = $e->retrieve_actor_org_unit($owning_lib) or return $e->die_event;
 
 	my $mfhd = Fieldmapper::serial::record_entry->new;
@@ -886,51 +887,24 @@ sub create_serial_record_xml {
 	$mfhd->create_date('now');
 	$mfhd->edit_date('now');
 	$mfhd->owning_lib($owning_lib);
-	$xml = "<record xsi:schemaLocation=\"http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.loc.gov/MARC21/slim\"> <leader>00307cy  a22001094  4500</leader> <controlfield tag=\"001\">42153</controlfield> <controlfield tag=\"005\">20090601182414.0</controlfield> <controlfield tag=\"008\">051011                eng 090309</controlfield> <datafield tag=\"852\" ind1=\" \" ind2=\" \"> <subfield code=\"b\">" . $aou->name . "</subfield> </datafield></record>";
+
+	# If the caller did not pass in MFHD XML, create a placeholder record.
+	# The placeholder will only contain the name of the owning library.
+	# The goal is to generate common patterns for the caller in the UI that
+	# then get passed in here.
+	if (!$xml) {
+		$xml = "<record xsi:schemaLocation=\"http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.loc.gov/MARC21/slim\"> <leader>00307cy  a22001094  4500</leader> <controlfield tag=\"001\">42153</controlfield> <controlfield tag=\"005\">20090601182414.0</controlfield> <controlfield tag=\"008\">051011                eng 090309</controlfield> <datafield tag=\"852\" ind1=\" \" ind2=\" \"> <subfield code=\"b\">" . $aou->name . "</subfield> </datafield></record>";
+	}
 	my $marcxml = XML::LibXML->new->parse_string($xml);
 	$marcxml->documentElement->setNamespace("http://www.loc.gov/MARC21/slim", "marc", 1 );
 	$marcxml->documentElement->setNamespace("http://www.loc.gov/MARC21/slim");
 
 	$mfhd->marc($U->entityize($marcxml->documentElement->toString));
 
-    $e->create_serial_record_entry($mfhd) or return $e->die_event;
+	$e->create_serial_record_entry($mfhd) or return $e->die_event;
 
 	$e->commit;
 	return $mfhd->id;
-}
-
-__PACKAGE__->register_method(
-	method	=> "delete_serial_record",
-	api_name	=> "open-ils.cat.serial.record.delete.override",
-	signature	=> q/@see open-ils.cat.serial.record.delete/);
-
-__PACKAGE__->register_method(
-	method		=> "delete_serial_record",
-	api_name		=> "open-ils.cat.serial.record.delete",
-	signature	=> q/
-		Deletes a serial record with the given ID
-	/
-);
-
-sub delete_serial_record {
-	my( $self, $client, $login, $mfhd_id ) = @_;
-
-	my $override = 1 if $self->api_name =~ /override/; # not currently used
-
-	my $e = new_editor(xact=>1, authtoken=>$login);
-	return $e->die_event unless $e->checkauth;
-
-	my $record = $e->retrieve_serial_record_entry($mfhd_id)
-		or return $e->die_event;
-
-    return $e->die_event unless $e->allowed('DELETE_MFHD_RECORD', $record->owning_lib);
-
-	$record->deleted('t');
-	$record->edit_date('now');
-	$e->update_serial_record_entry($record) or return $e->die_event;
-
-	$e->commit;
-	return 1;
 }
 
 1;

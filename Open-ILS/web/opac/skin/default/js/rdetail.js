@@ -304,10 +304,13 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		var mfhd_edit = new dijit.Menu({});
 		new dijit.MenuItem({onClick: function(){loadMarcEditor(holdings.id())}, label:opac_strings.EDIT_MFHD_RECORD}).placeAt(mfhd_edit, "first");
 		new dijit.MenuItem({onClick:function(){
-			var req = new Request(DELETE_MFHD_RECORD, G.user.session, holdings.id());
-			var res = req.send();
-			alert(dojo.string.substitute(opac_strings.DELETED_MFHD_RECORD, [holdings.id()]));
-		}, label:"Delete"}).placeAt(mfhd_edit, "last");
+			var pcrud = new openils.PermaCrud({"authtoken": G.user.session});
+			var mfhd_rec = pcrud.retrieve("sre", holdings.id());
+			if (mfhd_rec) {
+				pcrud.delete(mfhd_rec);
+				alert(dojo.string.substitute(opac_strings.DELETED_MFHD_RECORD, [holdings.id()]));
+			}
+		}, label:opac_strings.DELETE_MFHD}).placeAt(mfhd_edit, "last");
 		// new dijit.MenuItem({onClick:function(){alert("Edit properties " + holdings.id());}, label:opac_strings.EDIT_PROPERTIES}).placeAt(mfhd_edit, "last");
 		var mfhd_mb = new dijit.form.DropDownButton({dropDown: mfhd_edit, label:opac_strings.EDIT_MFHD_MENU, style:"float:right"});
 		mfhd_mb.placeAt("mfhdHoldingsCaption" + entryNum, "last");

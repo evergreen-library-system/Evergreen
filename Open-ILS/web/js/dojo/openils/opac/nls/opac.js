@@ -1,8 +1,9 @@
 {
-	"CREATE_MFHD": "Add MFHD record",
+	"CREATE_MFHD": "Add MFHD Record",
 	"CREATED_MFHD_RECORD": "Created MFHD record for ${0}",
+	"DELETE_MFHD": "Delete Record",
 	"DELETED_MFHD_RECORD": "Deleted MFHD record ${0}",
-	"EDIT_MFHD_RECORD": "Edit MFHD Record",
+	"EDIT_MFHD_RECORD": "Edit Record",
 	"EDIT_MFHD_MENU": "Edit Holdings",
 	"EDIT_PROPERTIES": "Edit Propeties",
 	"HOLDINGS": "Previous volumes",
