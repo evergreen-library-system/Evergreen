@@ -44,10 +44,8 @@ var rdetailEnd = null;
 
 /* serials are currently the only use of Dojo strings in the OPAC */
 if (rdetailDisplaySerialHoldings) {
-	if (isXUL()) {
-		dojo.require("dijit.Menu");
-		dojo.require("dijit.form.Button");
-	}
+	dojo.require("dijit.Menu");
+	dojo.require("dijit.form.Button");
 	dojo.requireLocalization("openils.opac", "opac");
 	opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
 }
