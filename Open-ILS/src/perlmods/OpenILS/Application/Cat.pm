@@ -853,5 +853,92 @@ sub find_or_create_volume {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "create_serial_record_xml",
+	api_name	=> "open-ils.cat.serial.record.xml.create.override",
+	signature	=> q/@see open-ils.cat.serial.record.xml.create/);
+
+__PACKAGE__->register_method(
+	method		=> "create_serial_record_xml",
+	api_name		=> "open-ils.cat.serial.record.xml.create",
+	signature	=> q/
+		Inserts a new serial record with the given XML
+	/
+);
+
+sub create_serial_record_xml {
+	my( $self, $client, $login, $source, $owning_lib, $record, $xml ) = @_;
+
+	my $override = 1 if $self->api_name =~ /override/;
+
+	my( $user_obj, $evt ) = $U->checksesperm($login, 'CREATE_MFHD_RECORD');
+	return $evt if $evt;
+
+	$logger->activity("user ".$user_obj->id." creating new MFHD record");
+
+	my $e = new_editor(xact=>1, authtoken=>$login);
+	return $e->die_event unless $e->checkauth;
+
+	my $aou = $e->retrieve_actor_org_unit($owning_lib) or return $e->die_event;
+
+	my $mfhd = Fieldmapper::serial::record_entry->new;
+
+	$mfhd->source(1) if $source;
+	$mfhd->record($record);
+	$mfhd->creator($e->requestor->id);
+	$mfhd->editor($e->requestor->id);
+	$mfhd->create_date('now');
+	$mfhd->edit_date('now');
+	$mfhd->owning_lib($owning_lib);
+	$xml = "<record xsi:schemaLocation=\"http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.loc.gov/MARC21/slim\"> <leader>00307cy  a22001094  4500</leader> <controlfield tag=\"001\">42153</controlfield> <controlfield tag=\"005\">20090601182414.0</controlfield> <controlfield tag=\"008\">051011                eng 090309</controlfield> <datafield tag=\"852\" ind1=\" \" ind2=\" \"> <subfield code=\"b\">" . $aou->name . "</subfield> </datafield></record>";
+	my $marcxml = XML::LibXML->new->parse_string($xml);
+	$marcxml->documentElement->setNamespace("http://www.loc.gov/MARC21/slim", "marc", 1 );
+	$marcxml->documentElement->setNamespace("http://www.loc.gov/MARC21/slim");
+
+	$mfhd->marc($U->entityize($marcxml->documentElement->toString));
+
+    	my $mfhd_record = $e->create_serial_record_entry($mfhd) or return $e->die_event;
+	$logger->info("MFHD created new record ".$mfhd_record->id);
+
+	$e->commit unless $U->event_code($e);
+	return $e;
+}
+
+__PACKAGE__->register_method(
+	method	=> "delete_serial_record",
+	api_name	=> "open-ils.cat.serial.record.delete.override",
+	signature	=> q/@see open-ils.cat.serial.record.delete/);
+
+__PACKAGE__->register_method(
+	method		=> "delete_serial_record",
+	api_name		=> "open-ils.cat.serial.record.delete",
+	signature	=> q/
+		Deletes a serial record with the given ID
+	/
+);
+
+sub delete_serial_record {
+	my( $self, $client, $login, $mfhd_id ) = @_;
+
+	my $override = 1 if $self->api_name =~ /override/;
+
+	my( $user_obj, $evt ) = $U->checksesperm($login, 'DELETE_MFHD_RECORD');
+	return $evt if $evt;
+
+	$logger->activity("user ".$user_obj->id." deleting MFHD record " . $mfhd_id);
+
+	my $e = new_editor(xact=>1, authtoken=>$login);
+	return $e->die_event unless $e->checkauth;
+
+	my $record = $e->retrieve_serial_record_entry($mfhd_id)
+		or return $e->die_event;
+
+	$record->deleted('t');
+	$record->edit_date('now');
+	$e->update_serial_record_entry($record) or return $e->die_event;
+
+	$e->commit unless $U->event_code($e);
+	return $e;
+}
 
 1;
