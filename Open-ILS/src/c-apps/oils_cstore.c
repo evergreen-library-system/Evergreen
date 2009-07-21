@@ -29,6 +29,44 @@
 #define AND_OP_JOIN     0
 #define OR_OP_JOIN      1
 
+struct ClassInfoStruct;
+typedef struct ClassInfoStruct ClassInfo;
+
+#define ALIAS_STORE_SIZE 16
+#define CLASS_NAME_STORE_SIZE 16
+
+struct ClassInfoStruct {
+	char* alias;
+	char* class_name;
+	char* source_def;
+	osrfHash* class_def;      // Points into IDL
+	osrfHash* fields;         // Points into IDL
+	osrfHash* links;          // Points into IDL
+
+	// The remaining members are private and internal.  Client code should not
+	// access them directly.
+	
+	ClassInfo* next;          // Supports linked list of joined classes
+	int in_use;               // boolean
+
+	// We usually store the alias and class name in the following arrays, and
+	// point the corresponding pointers at them.  When the string is too big
+	// for the array (which will probably never happen in practice), we strdup it.
+
+	char alias_store[ ALIAS_STORE_SIZE + 1 ];
+	char class_name_store[ CLASS_NAME_STORE_SIZE + 1 ];
+};
+
+struct QueryFrameStruct;
+typedef struct QueryFrameStruct QueryFrame;
+
+struct QueryFrameStruct {
+	ClassInfo core;
+	ClassInfo* join_list;  // linked list of classes joined to the core class
+	QueryFrame* next;      // implements stack as linked list
+	int in_use;            // boolean
+};
+
 int osrfAppChildInit();
 int osrfAppInitialize();
 void osrfAppChildExit();
@@ -80,6 +118,13 @@ static const char* get_primitive( osrfHash* field );
 static const char* get_datatype( osrfHash* field );
 static int is_identifier( const char* s);
 static int is_good_operator( const char* op );
+static void pop_query_frame( void );
+static void push_query_frame( void );
+static int add_query_core( const char* alias, const char* class_name );
+static ClassInfo* search_alias( const char* target );
+static ClassInfo* search_all_alias( const char* target );
+static ClassInfo* add_joined_class( const char* alias, const char* classname );
+static void clear_query_stack( void );
 
 #ifdef PCRUD
 static jsonObject* verifyUserPCRUD( osrfMethodContext* );
@@ -95,6 +140,10 @@ static dbi_conn dbhandle; /* our CURRENT db connection */
 //static osrfHash * readHandles;
 static jsonObject* const jsonNULL = NULL; // 
 static int max_flesh_depth = 100;
+
+// The following points the top of a stack of QueryFrames.  It's a little
+// confusing because the top level of the query is at the bottom of the stack.
+static QueryFrame* curr_query = NULL;
 
 /* called when this process is about to exit */
 void osrfAppChildExit() {
@@ -1213,7 +1262,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 if (result) {
     	            osrfLogDebug(
                         OSRF_LOG_MARK,
-                        "Recieved a result for object permission [%s] for user %d on object %s (class %s) at org %d",
+                        "Received a result for object permission [%s] for user %d on object %s (class %s) at org %d",
                         perm,
                         userid,
                         pkey_value,
@@ -1729,6 +1778,7 @@ static char* searchINPredicate (const char* class, osrfHash* field,
             jsonObjectGetKey( node, "offset" ),
             SUBSELECT
         );
+		pop_query_frame();
 
 		if( subpred ) {
 			buffer_add(sql_buf, subpred);
@@ -2211,23 +2261,22 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 	const jsonObject* working_hash;
 	jsonObject* freeable_hash = NULL;
 
-	if (join_hash->type == JSON_STRING) {
-		// create a wrapper around a copy of the original
+	if (join_hash->type == JSON_HASH) {
+		working_hash = join_hash;
+	} else if (join_hash->type == JSON_STRING) {
+		// turn it into a JSON_HASH by creating a wrapper
+		// around a copy of the original
 		const char* _tmp = jsonObjectGetString( join_hash );
 		freeable_hash = jsonNewObjectType(JSON_HASH);
 		jsonObjectSetKey(freeable_hash, _tmp, NULL);
 		working_hash = freeable_hash;
-	}
-	else {
-		if( join_hash->type != JSON_HASH ) {
-			osrfLogError(
-				OSRF_LOG_MARK,
-				"%s: JOIN failed; expected JSON object type not found",
-				MODULENAME
-			);
-			return NULL;
-		}
-		working_hash = join_hash;
+	} else {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: JOIN failed; expected JSON object type not found",
+			MODULENAME
+		);
+		return NULL;
 	}
 
 	growing_buffer* join_buf = buffer_init(128);
@@ -2238,11 +2287,12 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 	while ( (snode = jsonIteratorNext( search_itr )) ) {
 		const char* class = search_itr->key;
-		osrfHash* idlClass = osrfHashGet( oilsIDL(), class );
-		if( !idlClass ) {
+		const char* table_alias = NULL;      // stubbed out for now
+		const ClassInfo* class_info = add_joined_class( table_alias, class );
+		if( !class_info ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
-				"%s: JOIN failed.  No class \"%s\" defined in IDL",
+				"%s: JOIN failed.  Class \"%s\" not resolved in IDL",
 				MODULENAME,
 				search_itr->key
 			);
@@ -2252,6 +2302,9 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 				jsonObjectFree( freeable_hash );
 			return NULL;
 		}
+		osrfHash* idlClass = class_info->class_def;
+		osrfHash* links    = class_info->links;
+		const char* table  = class_info->source_def;
 
 		const char* fkey = jsonObjectGetString( jsonObjectGetKeyConst( snode, "fkey" ) );
 		const char* field = jsonObjectGetString( jsonObjectGetKeyConst( snode, "field" ) );
@@ -2260,7 +2313,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			// Look up the corresponding join column in the IDL.
 			// The link must be defined in the child table,
 			// and point to the right parent table.
-			osrfHash* idl_link = (osrfHash*) oilsIDLFindPath( "/%s/links/%s", class, field );
+			osrfHash* idl_link = (osrfHash*) osrfHashGet( links, field );
 			const char* reltype = NULL;
 			const char* other_class = NULL;
 			reltype = osrfHashGet( idl_link, "reltype" );
@@ -2288,7 +2341,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			// Look up the corresponding join column in the IDL.
 			// The link must be defined in the child table,
 			// and point to the right parent table.
-			osrfHash* idl_link = (osrfHash*) oilsIDLFindPath( "/%s/links/%s", leftclass, fkey );
+			osrfHash* left_links = (osrfHash*) osrfHashGet( leftmeta, "links" );
+			osrfHash* idl_link = (osrfHash*) osrfHashGet( left_links, fkey );
 			const char* reltype = NULL;
 			const char* other_class = NULL;
 			reltype = osrfHashGet( idl_link, "reltype" );
@@ -2313,11 +2367,11 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			}
 
 		} else if (!field && !fkey) {
-			osrfHash* _links = oilsIDL_links( leftclass );
+			osrfHash* left_links = (osrfHash*) osrfHashGet( leftmeta, "links" );
 
 			// For each link defined for the left class:
 			// see if the link references the joined class
-			osrfHashIterator* itr = osrfNewHashIterator( _links );
+			osrfHashIterator* itr = osrfNewHashIterator( left_links );
 			osrfHash* curr_link = NULL;
 			while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
 				const char* other_class = osrfHashGet( curr_link, "class" );
@@ -2338,11 +2392,10 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 			if (!field || !fkey) {
 				// Do another such search, with the classes reversed
-				_links = oilsIDL_links( class );
 
 				// For each link defined for the joined class:
 				// see if the link references the left class
-				osrfHashIterator* itr = osrfNewHashIterator( _links );
+				osrfHashIterator* itr = osrfNewHashIterator( links );
 				osrfHash* curr_link = NULL;
 				while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
 					const char* other_class = osrfHashGet( curr_link, "class" );
@@ -2394,19 +2447,10 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			buffer_add(join_buf, " INNER JOIN");
 		}
 
-		char* table = getSourceDefinition(idlClass);
-		if( !table ) {
-			jsonIteratorFree( search_itr );
-			buffer_free( join_buf );
-			if( freeable_hash )
-				jsonObjectFree( freeable_hash );
-			return NULL;
-		}
-
 		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s",
 					table, class, class, field, leftclass, fkey);
-		free(table);
 
+		// Add any other join conditions as specified by "filter"
 		const jsonObject* filter = jsonObjectGetKeyConst( snode, "filter" );
 		if (filter) {
 			const char* filter_op = jsonObjectGetString( jsonObjectGetKeyConst( snode, "filter_op" ) );
@@ -2436,7 +2480,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		}
 
 		buffer_add(join_buf, " ) ");
-		
+
+		// Recursively add a nested join, if one is present
 		const jsonObject* join_filter = jsonObjectGetKeyConst( snode, "join" );
 		if (join_filter) {
 			char* jpred = searchJOIN( join_filter, idlClass );
@@ -2635,6 +2680,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     jsonObjectGetKey( node, "offset" ),
                     SUBSELECT
                 );
+				pop_query_frame();
 
 				if( subpred ) {
 					buffer_fadd(sql_buf, "EXISTS ( %s )", subpred);
@@ -2655,6 +2701,7 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
                     jsonObjectGetKey( node, "offset" ),
                     SUBSELECT
                 );
+				pop_query_frame();
 
 				if( subpred ) {
 					buffer_fadd(sql_buf, "NOT EXISTS ( %s )", subpred);
@@ -2719,40 +2766,6 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 	return buffer_release(sql_buf);
 }
 
-// Return 1 if the class is in the FROM clause, or 0 if not
-static int is_joined( jsonObject* from_clause, const char* class ) {
-
-	if( ! from_clause )
-		return 0;
-	else if( from_clause->type == JSON_STRING ) {
-		if( strcmp( class, jsonObjectGetString( from_clause ) ) )
-			return 0;
-		else
-			return 1;
-	} else if( from_clause->type != JSON_HASH ) {
-		return 0;
-	} else {      // Look at any subjoins
-		jsonIterator* class_itr = jsonNewIterator( from_clause );
-		jsonObject* curr_class;
-		int rc = 0;    // return code
-		while ( ( curr_class = jsonIteratorNext( class_itr ) ) ) {
-			if( ! strcmp( class_itr->key, class ) ) {
-				rc = 1;
-				break;
-			} else {
-				jsonObject* subjoin = jsonObjectGetKey( curr_class, "join" );
-				if( subjoin && is_joined( subjoin, class ) ) {
-					rc = 1;
-					break;
-				}
-			}
-		}
-		jsonIteratorFree( class_itr );
-
-		return rc;
-	}
-}
-
 char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
 		
@@ -2767,9 +2780,6 @@ char* SELECT (
 ) {
 	const char* locale = osrf_message_get_last_locale();
 
-	// in case we don't get a select list
-	jsonObject* defaultselhash = NULL;
-
 	// general tmp objects
 	const jsonObject* tmp_const;
 	jsonObject* selclass = NULL;
@@ -2782,12 +2792,6 @@ char* SELECT (
 	int first = 1;
 	int gfirst = 1;
 	//int hfirst = 1;
-
-	// the core search class
-	char* core_class = NULL;
-
-	// metadata about the core search class
-	osrfHash* core_meta = NULL;
 
 	osrfLogDebug(OSRF_LOG_MARK, "cstore SELECT locale: %s", locale);
 
@@ -2809,12 +2813,32 @@ char* SELECT (
 		return NULL;
 	}
 
+	// Push a node onto the stack for the current query.  Every level of
+	// subquery gets its own QueryFrame on the Stack.
+	push_query_frame();
+
+	// the core search class
+	const char* core_class = NULL;
+
 	// get the core class -- the only key of the top level FROM clause, or a string
 	if (join_hash->type == JSON_HASH) {
 		jsonIterator* tmp_itr = jsonNewIterator( join_hash );
 		snode = jsonIteratorNext( tmp_itr );
-		
-		core_class = strdup( tmp_itr->key );
+
+		// Populate the current QueryFrame with information
+		// about the core class
+		if( add_query_core( NULL, tmp_itr->key ) ) {
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Unable to look up core class"
+				);
+			return NULL;
+		}
+		core_class = curr_query->core.class_name;
 		join_hash = snode;
 		
 		jsonObject* extra = jsonIteratorNext( tmp_itr );
@@ -2837,17 +2861,30 @@ char* SELECT (
 					ctx->request,
 					"Malformed FROM clause in JSON query"
 				);
-			free( core_class );
 			return NULL;	// Malformed join_hash; extra entry
 		}
 	} else if (join_hash->type == JSON_ARRAY) {
+		// We're selecting from a function, not from a table
 		from_function = 1;
-		core_class = jsonObjectToSimpleString( jsonObjectGetIndex(join_hash, 0) );
+		core_class = jsonObjectGetString( jsonObjectGetIndex(join_hash, 0) );
 		selhash = NULL;
 
 	} else if (join_hash->type == JSON_STRING) {
-		core_class = jsonObjectToSimpleString( join_hash );
+		// Populate the current QueryFrame with information
+		// about the core class
+		core_class = jsonObjectGetString( join_hash );
 		join_hash = NULL;
+		if( add_query_core( NULL, core_class ) ) {
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Unable to look up core class"
+				);
+			return NULL;
+		}
 	}
 	else {
 		osrfLogError(
@@ -2864,52 +2901,30 @@ char* SELECT (
 				ctx->request,
 				"Ill-formed FROM clause in JSON query"
 			);
-		free( core_class );
 		return NULL;
 	}
 
-	if (!from_function) {
-		// Get the IDL class definition for the core class
-		core_meta = osrfHashGet( oilsIDL(), core_class );
-		if( !core_meta ) {    // Didn't find it?
-			osrfLogError(
-				OSRF_LOG_MARK,
-				"%s: SELECT clause references undefined class: \"%s\"",
-				MODULENAME,
-				core_class
-			);
-			if( ctx )
-				osrfAppSessionStatus(
-					ctx->session,
-					OSRF_STATUS_INTERNALSERVERERROR,
-					"osrfMethodException",
-					ctx->request,
-					"SELECT clause references undefined class in JSON query"
-				);
-			free( core_class );
-			return NULL;
-		}
+	// Build the join clause, if any, while filling out the list
+	// of joined classes in the current QueryFrame.
+	char* join_clause = NULL;
+	if( join_hash && ! from_function ) {
 
-		// Make sure the class isn't virtual
-		if( str_is_true( osrfHashGet( core_meta, "virtual" ) ) ) {
-			osrfLogError(
-				OSRF_LOG_MARK,
-				"%s: Core class is virtual: \"%s\"",
-				MODULENAME,
-				core_class
-			);
-			if( ctx )
+		join_clause = searchJOIN( join_hash, curr_query->core.class_def );
+		if( ! join_clause ) {
+			if (ctx)
 				osrfAppSessionStatus(
 					ctx->session,
 					OSRF_STATUS_INTERNALSERVERERROR,
 					"osrfMethodException",
 					ctx->request,
-					"FROM clause references virtual class in JSON query"
+					"Unable to construct JOIN clause(s)"
 				);
-			free( core_class );
 			return NULL;
 		}
 	}
+
+	// For in case we don't get a select list
+	jsonObject* defaultselhash = NULL;
 
 	// if the select list is empty, or the core class field list is '*',
 	// build the default select list ...
@@ -2932,7 +2947,7 @@ char* SELECT (
 				ctx->request,
 				"Malformed SELECT clause in JSON query"
 			);
-		free( core_class );
+		free( join_clause );
 		return NULL;
 	} else if ( (tmp_const = jsonObjectGetKeyConst( selhash, core_class )) && tmp_const->type == JSON_STRING ) {
 		const char* _x = jsonObjectGetString( tmp_const );
@@ -2960,7 +2975,7 @@ char* SELECT (
 		jsonObject* _tmp = jsonObjectGetKey( selhash, core_class );
 		if ( _tmp && !_tmp->size ) {
 
-			osrfHash* core_fields = osrfHashGet( core_meta, "fields" );
+			osrfHash* core_fields = curr_query->core.fields;
 
 			osrfHashIterator* field_itr = osrfNewHashIterator( core_fields );
 			osrfHash* field_def;
@@ -2995,7 +3010,8 @@ char* SELECT (
 
 			// If the current class isn't the core class
 			// and it isn't in the join tree, bail out
-			if ( strcmp( core_class, cname ) && ! is_joined( join_hash, cname ) ) {
+			ClassInfo* class_info = search_alias( cname );
+			if( ! class_info ) {
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: SELECT clause references class not in FROM clause: \"%s\"",
@@ -3015,14 +3031,13 @@ char* SELECT (
 				buffer_free( select_buf );
 				buffer_free( group_buf );
 				if( defaultselhash ) jsonObjectFree( defaultselhash );
-				free( core_class );
+				free( join_clause );
 				return NULL;
 			}
 
-			// Look up some attributes of the current class, so that we 
-			// don't have to look them up again for each field
-			osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
-			osrfHash* class_field_set = osrfHashGet( idlClass, "fields" );
+			// Capture some attributes of the current class
+			osrfHash* idlClass = class_info->class_def;
+			osrfHash* class_field_set = class_info->fields;
 			const char* class_pkey = osrfHashGet( idlClass, "primarykey" );
 			const char* class_tname = osrfHashGet( idlClass, "tablename" );
 			
@@ -3066,7 +3081,7 @@ char* SELECT (
 						buffer_free( select_buf );
 						buffer_free( group_buf );
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
-						free( core_class );
+						free( join_clause );
 						return NULL;
 					} else if ( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
 						// Virtual field not allowed
@@ -3091,7 +3106,7 @@ char* SELECT (
 						buffer_free( select_buf );
 						buffer_free( group_buf );
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
-						free( core_class );
+						free( join_clause );
 						return NULL;
 					}
 
@@ -3143,7 +3158,7 @@ char* SELECT (
 						buffer_free( select_buf );
 						buffer_free( group_buf );
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
-						free( core_class );
+						free( join_clause );
 						return NULL;
 					} else if ( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
 						// No such field in current class
@@ -3168,7 +3183,7 @@ char* SELECT (
 						buffer_free( select_buf );
 						buffer_free( group_buf );
 						if( defaultselhash ) jsonObjectFree( defaultselhash );
-						free( core_class );
+						free( join_clause );
 						return NULL;
 					}
 
@@ -3200,7 +3215,7 @@ char* SELECT (
 							buffer_free( select_buf );
 							buffer_free( group_buf );
 							if( defaultselhash ) jsonObjectFree( defaultselhash );
-							free( core_class );
+							free( join_clause );
 							return NULL;
 						}
 					} else {
@@ -3245,7 +3260,7 @@ char* SELECT (
 					buffer_free( select_buf );
 					buffer_free( group_buf );
 					if( defaultselhash ) jsonObjectFree( defaultselhash );
-					free( core_class );
+					free( join_clause );
 					return NULL;
 				}
 
@@ -3306,8 +3321,8 @@ char* SELECT (
 	char* col_list = buffer_release(select_buf);
 	char* table = NULL;
 	if (from_function) table = searchValueTransform(join_hash);
-	else table = getSourceDefinition(core_meta);
-	
+	else table = strdup( curr_query->core.source_def );
+
 	if( !table ) {
 		if (ctx)
 			osrfAppSessionStatus(
@@ -3321,49 +3336,32 @@ char* SELECT (
 		buffer_free( sql_buf );
 		buffer_free( group_buf );
 		if( defaultselhash ) jsonObjectFree( defaultselhash );
-		free( core_class );
+		free( join_clause );
 		return NULL;	
 	}
-	
+
 	// Put it all together
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\" ", col_list, table, core_class );
 	free(col_list);
 	free(table);
+
+	// Append the join clause, if any
+	if( join_clause ) {
+		buffer_add(sql_buf, join_clause);
+		free(join_clause);
+	}
 
 	char* order_by_list = NULL;
 	char* having_buf = NULL;
 
 	if (!from_function) {
 
-		// Now, walk the join tree and add that clause
-		if ( join_hash ) {
-			char* join_clause = searchJOIN( join_hash, core_meta );
-			if( join_clause ) {
-				buffer_add(sql_buf, join_clause);
-				free(join_clause);
-			} else {
-				if (ctx)
-					osrfAppSessionStatus(
-						ctx->session,
-						OSRF_STATUS_INTERNALSERVERERROR,
-						"osrfMethodException",
-						ctx->request,
-  						"Unable to construct JOIN clause(s)"
-					);
-				buffer_free( sql_buf );
-				buffer_free( group_buf );
-				if( defaultselhash ) jsonObjectFree( defaultselhash );
-				free( core_class );
-				return NULL;
-			}
-	    }
-
 		// Build a WHERE clause, if there is one
 	    if ( search_hash ) {
 		    buffer_add(sql_buf, " WHERE ");
 
 		    // and it's on the WHERE clause
-		    char* pred = searchWHERE( search_hash, core_meta, AND_OP_JOIN, ctx );
+			char* pred = searchWHERE( search_hash, curr_query->core.class_def, AND_OP_JOIN, ctx );
 
 		    if (pred) {
 				buffer_add(sql_buf, pred);
@@ -3378,7 +3376,6 @@ char* SELECT (
 				        "Severe query error in WHERE predicate -- see error log for more details"
 			        );
 			    }
-			    free(core_class);
 			    buffer_free(group_buf);
 			    buffer_free(sql_buf);
 			    if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3390,7 +3387,7 @@ char* SELECT (
 		if ( having_hash ) {
 
 			// and it's on the the WHERE clause
-			having_buf = searchWHERE( having_hash, core_meta, AND_OP_JOIN, ctx );
+			having_buf = searchWHERE( having_hash, curr_query->core.class_def, AND_OP_JOIN, ctx );
 
 			if( ! having_buf ) {
 				if (ctx) {
@@ -3402,7 +3399,6 @@ char* SELECT (
 						"Severe query error in HAVING predicate -- see error log for more details"
 					);
 				}
-				free(core_class);
 				buffer_free(group_buf);
 				buffer_free(sql_buf);
 				if (defaultselhash) jsonObjectFree(defaultselhash);
@@ -3435,7 +3431,6 @@ char* SELECT (
 							"Malformed ORDER BY clause -- see error log for more details"
 						);
 					buffer_free( order_buf );
-					free(core_class);
 					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
@@ -3466,7 +3461,6 @@ char* SELECT (
 							"Malformed ORDER BY clause -- see error log for more details"
 						);
 					buffer_free( order_buf );
-					free(core_class);
 					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
@@ -3474,9 +3468,8 @@ char* SELECT (
 					return NULL;
 				}
 
-				if (    ! jsonObjectGetKeyConst( selhash, class )
-					 && strcmp( core_class, class )
-					 && ! is_joined( join_hash, class ) ) {
+				ClassInfo* order_class_info = search_alias( class );
+				if( ! order_class_info ) {
 					osrfLogError(OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
 							"not in FROM clause", MODULENAME, class );
 					if( ctx )
@@ -3487,7 +3480,6 @@ char* SELECT (
 							ctx->request,
 							"Invalid class referenced in ORDER BY clause -- see error log for more details"
 						);
-					free(core_class);
 					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
@@ -3495,7 +3487,7 @@ char* SELECT (
 					return NULL;
 				}
 
-				osrfHash* field_def = oilsIDLFindPath( "/%s/fields/%s", class, field );
+				osrfHash* field_def = osrfHashGet( order_class_info->fields, field );
 				if( !field_def ) {
 					osrfLogError(OSRF_LOG_MARK, "%s: Invalid field \"%s\".%s referenced in ORDER BY clause",
 						 MODULENAME, class, field );
@@ -3507,7 +3499,6 @@ char* SELECT (
 							ctx->request,
 							"Invalid field referenced in ORDER BY clause -- see error log for more details"
 						);
-					free(core_class);
 					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
@@ -3525,7 +3516,6 @@ char* SELECT (
 							"Virtual field in ORDER BY clause -- see error log for more details"
 						);
 					buffer_free( order_buf );
-					free(core_class);
 					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
@@ -3545,7 +3535,6 @@ char* SELECT (
 								"Severe query error in ORDER BY clause -- see error log for more details"
 							);
 						buffer_free( order_buf );
-						free(core_class);
 						free(having_buf);
 						buffer_free(group_buf);
 						buffer_free(sql_buf);
@@ -3574,9 +3563,8 @@ char* SELECT (
 			jsonIterator* class_itr = jsonNewIterator( order_hash );
 			while ( (snode = jsonIteratorNext( class_itr )) ) {
 
-				if (   ! jsonObjectGetKeyConst( selhash,class_itr->key )
-					&& strcmp( core_class, class_itr->key )
-					&& ! is_joined( join_hash, class_itr->key ) ) {
+				ClassInfo* order_class_info = search_alias( class_itr->key );
+				if( ! order_class_info ) {
 					osrfLogError(OSRF_LOG_MARK, "%s: Invalid class \"%s\" referenced in ORDER BY clause",
 								 MODULENAME, class_itr->key );
 					if( ctx )
@@ -3589,7 +3577,6 @@ char* SELECT (
 						);
 					jsonIteratorFree( class_itr );
 					buffer_free( order_buf );
-					free(core_class);
 					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(sql_buf);
@@ -3597,7 +3584,7 @@ char* SELECT (
 					return NULL;
 				}
 
-				osrfHash* field_list_def = oilsIDLFindPath( "/%s/fields", class_itr->key );
+				osrfHash* field_list_def = order_class_info->fields;
 
 				if ( snode->type == JSON_HASH ) {
 
@@ -3622,7 +3609,6 @@ char* SELECT (
 							jsonIteratorFree( order_itr );
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
-							free(core_class);
 							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(sql_buf);
@@ -3642,7 +3628,6 @@ char* SELECT (
 							jsonIteratorFree( order_itr );
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
-							free(core_class);
 							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(sql_buf);
@@ -3668,7 +3653,6 @@ char* SELECT (
 									);
 									jsonIteratorFree( order_itr );
 									jsonIteratorFree( class_itr );
-									free(core_class);
 									free(having_buf);
 									buffer_free(group_buf);
 									buffer_free(order_buf);
@@ -3705,7 +3689,6 @@ char* SELECT (
 								);
 							jsonIteratorFree( order_itr );
 							jsonIteratorFree( class_itr );
-							free(core_class);
 							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(order_buf);
@@ -3760,7 +3743,6 @@ char* SELECT (
 								);
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
-							free(core_class);
 							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(sql_buf);
@@ -3779,7 +3761,6 @@ char* SELECT (
 								);
 							jsonIteratorFree( class_itr );
 							buffer_free( order_buf );
-							free(core_class);
 							free(having_buf);
 							buffer_free(group_buf);
 							buffer_free(sql_buf);
@@ -3810,7 +3791,6 @@ char* SELECT (
 						);
 					}
 
-					free(core_class);
 					free(having_buf);
 					buffer_free(group_buf);
 					buffer_free(order_buf);
@@ -3834,7 +3814,6 @@ char* SELECT (
 					"Malformed ORDER BY clause -- see error log for more details"
 				);
 			buffer_free( order_buf );
-			free(core_class);
 			free(having_buf);
 			buffer_free(group_buf);
 			buffer_free(sql_buf);
@@ -3884,12 +3863,11 @@ char* SELECT (
 
 	if (!(flags & SUBSELECT)) OSRF_BUFFER_ADD_CHAR(sql_buf, ';');
 
-	free(core_class);
 	if (defaultselhash) jsonObjectFree(defaultselhash);
 
 	return buffer_release(sql_buf);
 
-}
+} // end of SELECT()
 
 static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
@@ -3999,6 +3977,22 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 	free(col_list);
 	free(table);
 
+	// Clear the query stack (as a fail-safe precaution against possible
+	// leftover garbage); then push the first query frame onto the stack.
+	clear_query_stack();
+	push_query_frame();
+	if( add_query_core( NULL, core_class ) ) {
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Unable to build query frame for core class"
+			);
+		return NULL;
+	}
+
 	if ( join_hash ) {
 		char* join_clause = searchJOIN( join_hash, meta );
 		OSRF_BUFFER_ADD_CHAR(sql_buf, ' ');
@@ -4022,6 +4016,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 			);
 		buffer_free(sql_buf);
 		if(defaultselhash) jsonObjectFree(defaultselhash);
+		clear_query_stack();
 		return NULL;
 	} else {
 		buffer_add(sql_buf, pred);
@@ -4068,6 +4063,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 									buffer_free( order_buf );
 									buffer_free( sql_buf );
 									if( defaultselhash ) jsonObjectFree( defaultselhash );
+									clear_query_stack();
 									return NULL;
 								}
 							} else {
@@ -4153,6 +4149,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 	}
 
 	if (defaultselhash) jsonObjectFree(defaultselhash);
+	clear_query_stack();
 
 	OSRF_BUFFER_ADD_CHAR(sql_buf, ';');
 	return buffer_release(sql_buf);
@@ -4164,7 +4161,7 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	osrfLogDebug(OSRF_LOG_MARK, "Recieved query request");
+	osrfLogDebug(OSRF_LOG_MARK, "Received query request");
 
 	int err = 0;
 
@@ -4193,12 +4190,13 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 			jsonObjectGetKey( hash, "offset" ),
 			flags
 	);
+	clear_query_stack();
 
 	if (!sql) {
 		err = -1;
 		return err;
 	}
-	
+
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 
@@ -5202,4 +5200,394 @@ static int is_good_operator( const char* op ) {
 		++s;
 	}
 	return 1;
+}
+
+/* ----------------------------------------------------------------------------------
+The following machinery supports a stack of query frames for use by SELECT().
+
+A query frame caches information about one level of a SELECT query.  When we enter
+a subquery, we push another query frame onto the stack, and pop it off when we leave.
+
+The query frame stores information about the core class, and about any joined classes
+in the FROM clause.
+
+The main purpose is to map table aliases to classes and tables, so that a query can
+join to the same table more than once.  A secondary goal is to reduce the number of
+lookups in the IDL by caching the results.
+ ----------------------------------------------------------------------------------*/
+
+#define STATIC_CLASS_INFO_COUNT 3
+
+static ClassInfo static_class_info[ STATIC_CLASS_INFO_COUNT ];
+
+/* ---------------------------------------------------------------------------
+ Allocate a ClassInfo as raw memory.  Except for the in_use flag, we don't
+ initialize it here.
+ ---------------------------------------------------------------------------*/
+static ClassInfo* allocate_class_info( void ) {
+	// In order to reduce the number of mallocs and frees, we return a static
+	// instance of ClassInfo, if we can find one that we're not already using.
+	// We rely on the fact that the compiler will implicitly initialize the
+	// static instances so that in_use == 0.
+
+	int i;
+	for( i = 0; i < STATIC_CLASS_INFO_COUNT; ++i ) {
+		if( ! static_class_info[ i ].in_use ) {
+			static_class_info[ i ].in_use = 1;
+			return static_class_info + i;
+		}
+	}
+
+	// The static ones are all in use.  Malloc one.
+
+	return safe_malloc( sizeof( ClassInfo ) );
+}
+
+/* --------------------------------------------------------------------------
+ Free any malloc'd memory owned by a ClassInfo; return it to a pristine state
+---------------------------------------------------------------------------*/
+static void clear_class_info( ClassInfo* info ) {
+	// Sanity check
+	if( ! info )
+		return;
+
+	// Free any malloc'd strings
+
+	if( info->alias != info->alias_store )
+		free( info->alias );
+
+	if( info->class_name != info->class_name_store )
+		free( info->class_name );
+
+	free( info->source_def );
+
+	info->alias = info->class_name = info->source_def = NULL;
+	info->next = NULL;
+}
+
+/* --------------------------------------------------------------------------
+ Deallocate a ClassInfo and everything it owns
+---------------------------------------------------------------------------*/
+static void free_class_info( ClassInfo* info ) {
+	// Sanity check
+	if( ! info )
+		return;
+
+	clear_class_info( info );
+
+	// If it's one of the static instances, just mark it as not in use
+
+	int i;
+	for( i = 0; i < STATIC_CLASS_INFO_COUNT; ++i ) {
+		if( info == static_class_info + i ) {
+			static_class_info[ i ].in_use = 0;
+			return;
+		}
+	}
+
+	// Otherwise it must have been malloc'd, so free it
+
+	free( info );
+}
+
+/* --------------------------------------------------------------------------
+ Populate an already-allocated ClassInfo.  Return 0 if successful, 1 if not.
+---------------------------------------------------------------------------*/
+static int build_class_info( ClassInfo* info, const char* alias, const char* class ) {
+	// Sanity checks
+	if( ! info ){
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: No ClassInfo available to populate", MODULENAME );
+		info->alias = info->class_name = info->source_def = NULL;
+		info->class_def = info->fields = info->links = NULL;
+		return 1;
+	}
+
+	if( ! class ) {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: No class name provided for lookup", MODULENAME );
+		info->alias = info->class_name = info->source_def = NULL;
+		info->class_def = info->fields = info->links = NULL;
+		return 1;
+	}
+
+	// Alias defaults to class name if not supplied
+	if( ! alias || ! alias[ 0 ] )
+		alias = class;
+
+	// Look up class info in the IDL
+	osrfHash* class_def = osrfHashGet( oilsIDL(), class );
+	if( ! class_def ) {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: Class %s not defined in IDL", MODULENAME, class );
+		info->alias = info->class_name = info->source_def = NULL;
+		info->class_def = info->fields = info->links = NULL;
+		return 1;
+	} else if( str_is_true( osrfHashGet( class_def, "virtual" ) ) ) {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: Class %s is defined as virtual", MODULENAME, class );
+		info->alias = info->class_name = info->source_def = NULL;
+		info->class_def = info->fields = info->links = NULL;
+		return 1;
+	}
+
+	osrfHash* links = osrfHashGet( class_def, "links" );
+	if( ! links ) {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: No links defined in IDL for class %s", MODULENAME, class );
+		info->alias = info->class_name = info->source_def = NULL;
+		info->class_def = info->fields = info->links = NULL;
+		return 1;
+	}
+
+	osrfHash* fields = osrfHashGet( class_def, "fields" );
+	if( ! fields ) {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: No fields defined in IDL for class %s", MODULENAME, class );
+		info->alias = info->class_name = info->source_def = NULL;
+		info->class_def = info->fields = info->links = NULL;
+		return 1;
+	}
+
+	char* source_def = getSourceDefinition( class_def );
+	if( ! source_def )
+		return 1;
+
+	// We got everything we need, so populate the ClassInfo
+	if( strlen( alias ) > ALIAS_STORE_SIZE )
+		info->alias = strdup( alias );
+	else {
+		strcpy( info->alias_store, alias );
+		info->alias = info->alias_store;
+	}
+
+	if( strlen( class ) > CLASS_NAME_STORE_SIZE )
+		info->class_name = strdup( class );
+	else {
+		strcpy( info->class_name_store, class );
+		info->class_name = info->class_name_store;
+	}
+
+	info->source_def = source_def;
+
+	info->class_def = class_def;
+	info->links     = links;
+	info->fields    = fields;
+	
+	return 0;
+}
+
+#define STATIC_FRAME_COUNT 3
+
+static QueryFrame static_frame[ STATIC_FRAME_COUNT ];
+
+/* ---------------------------------------------------------------------------
+ Allocate a ClassInfo as raw memory.  Except for the in_use flag, we don't
+ initialize it here.
+ ---------------------------------------------------------------------------*/
+static QueryFrame* allocate_frame( void ) {
+	// In order to reduce the number of mallocs and frees, we return a static
+	// instance of QueryFrame, if we can find one that we're not already using.
+	// We rely on the fact that the compiler will implicitly initialize the
+	// static instances so that in_use == 0.
+
+	int i;
+	for( i = 0; i < STATIC_FRAME_COUNT; ++i ) {
+		if( ! static_frame[ i ].in_use ) {
+			static_frame[ i ].in_use = 1;
+			return static_frame + i;
+		}
+	}
+
+	// The static ones are all in use.  Malloc one.
+
+	return safe_malloc( sizeof( QueryFrame ) );
+}
+
+/* --------------------------------------------------------------------------
+ Free a QueryFrame, and all the memory it owns.
+---------------------------------------------------------------------------*/
+static void free_query_frame( QueryFrame* frame ) {
+	// Sanity check
+	if( ! frame )
+		return;
+
+	clear_class_info( &frame->core );
+
+	// Free the join list
+	ClassInfo* temp;
+	ClassInfo* info = frame->join_list;
+	while( info ) {
+		temp = info->next;
+		free_class_info( info );
+		info = temp;
+	}
+
+	frame->join_list = NULL;
+	frame->next = NULL;
+
+	// If the frame is a static instance, just mark it as unused
+	int i;
+	for( i = 0; i < STATIC_FRAME_COUNT; ++i ) {
+		if( frame == static_frame + i ) {
+			static_frame[ i ].in_use = 0;
+			return;
+		}
+	}
+
+	// Otherwise it must have been malloc'd, so free it
+
+	free( frame );
+}
+
+/* --------------------------------------------------------------------------
+ Search a given QueryFrame for a specified alias.  If you find it, return
+ a pointer to the corresponding ClassInfo.  Otherwise return NULL.
+---------------------------------------------------------------------------*/
+static ClassInfo* search_alias_in_frame( QueryFrame* frame, const char* target ) {
+	if( ! frame || ! target ) return NULL;
+
+	ClassInfo* found_class = NULL;
+
+	if( !strcmp( target, frame->core.alias ) )
+		return &(frame->core);
+	else {
+		ClassInfo* curr_class = frame->join_list;
+		while( curr_class ) {
+			if( strcmp( target, curr_class->alias ) )
+				curr_class = curr_class->next;
+			else {
+				found_class = curr_class;
+				break;
+			}
+		}
+	}
+
+	return found_class;
+}
+
+/* --------------------------------------------------------------------------
+ Push a new (blank) QueryFrame onto the stack.
+---------------------------------------------------------------------------*/
+static void push_query_frame( void ) {
+	QueryFrame* frame = allocate_frame();
+	frame->join_list = NULL;
+	frame->next = curr_query;
+
+	// Initialize the ClassInfo for the core class
+	ClassInfo* core = &frame->core;
+	core->alias = core->class_name = core->source_def = NULL;
+	core->class_def = core->fields = core->links = NULL;
+
+	curr_query = frame;
+}
+
+/* --------------------------------------------------------------------------
+ Pop a QueryFrame off the stack and destroy it
+---------------------------------------------------------------------------*/
+static void pop_query_frame( void ) {
+	// Sanity check
+	if( ! curr_query )
+		return;
+
+	QueryFrame* popped = curr_query;
+	curr_query = popped->next;
+
+	free_query_frame( popped );
+}
+
+/* --------------------------------------------------------------------------
+ Populate the ClassInfo for the core class.  Return 0 if successful, 1 if not.
+---------------------------------------------------------------------------*/
+static int add_query_core( const char* alias, const char* class_name ) {
+
+	// Sanity checks
+	if( ! curr_query ) {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: No QueryFrame available for class %s", MODULENAME, class_name );
+		return 1;
+	} else if( curr_query->core.alias ) {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: Core class %s already populated as %s",
+					  MODULENAME, curr_query->core.class_name, curr_query->core.alias );
+		return 1;
+	}
+
+	build_class_info( &curr_query->core, alias, class_name );
+	if( curr_query->core.alias )
+		return 0;
+	else {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: Unable to look up core class %s", MODULENAME, class_name );
+		return 1;
+	}
+}
+
+/* --------------------------------------------------------------------------
+ Search the current QueryFrame for a specified alias.  If you find it,
+ return a pointer to the corresponding ClassInfo.  Otherwise return NULL.
+---------------------------------------------------------------------------*/
+static ClassInfo* search_alias( const char* target ) {
+	return search_alias_in_frame( curr_query, target );
+}
+
+/* --------------------------------------------------------------------------
+ Search all levels of query for a specified alias, starting with the
+ current query.  If you find it, return a pointer to the corresponding
+ ClassInfo.  Otherwise return NULL.
+---------------------------------------------------------------------------*/
+static ClassInfo* search_all_alias( const char* target ) {
+	ClassInfo* found_class = NULL;
+	QueryFrame* curr_frame = curr_query;
+	while( curr_frame ) {
+		if(( found_class = search_alias_in_frame( curr_frame, target ) ))
+			break;
+		else
+			curr_frame = curr_frame->next;
+	}
+
+	return found_class;
+}
+
+/* --------------------------------------------------------------------------
+ Add a class to the list of classes joined to the current query.
+---------------------------------------------------------------------------*/
+static ClassInfo* add_joined_class( const char* alias, const char* classname ) {
+
+	if( ! classname || ! *classname ) {    // sanity check
+		osrfLogError( OSRF_LOG_MARK, "Can't join a class with no class name" );
+		return NULL;
+	}
+
+	if( ! alias )
+		alias = classname;
+
+	const ClassInfo* conflict = search_alias( alias );
+	if( conflict ) {
+		osrfLogError( OSRF_LOG_MARK,
+					  "%s ERROR: Table alias \"%s\" conflicts with class \"%s\"",
+					  MODULENAME, alias, conflict->class_name );
+		return NULL;
+	}
+	
+	ClassInfo* info = allocate_class_info();
+
+	if( build_class_info( info, alias, classname ) ) {
+		free_class_info( info );
+		return NULL;
+	}
+
+	// Add the new ClassInfo to the join list of the current QueryFrame
+	info->next = curr_query->join_list;
+	curr_query->join_list = info;
+
+	return info;
+}
+
+/* --------------------------------------------------------------------------
+ Destroy all nodes on the query stack.
+---------------------------------------------------------------------------*/
+static void clear_query_stack( void ) {
+	while( curr_query )
+		pop_query_frame();
 }
