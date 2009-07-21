@@ -852,24 +852,20 @@ __PACKAGE__->register_method(
 );
 
 sub create_serial_record_xml {
-	my( $self, $client, $login, $source, $owning_lib, $record, $xml ) = @_;
+	my( $self, $client, $login, $source, $owning_lib, $record_id, $xml ) = @_;
 
-	my $override = 1 if $self->api_name =~ /override/;
-
-	my( $user_obj, $evt ) = $U->checksesperm($login, 'CREATE_MFHD_RECORD');
-	return $evt if $evt;
-
-	$logger->activity("user ".$user_obj->id." creating new MFHD record");
+	my $override = 1 if $self->api_name =~ /override/; # not currently used
 
 	my $e = new_editor(xact=>1, authtoken=>$login);
 	return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('CREATE_MFHD_RECORD', $owning_lib);
 
 	my $aou = $e->retrieve_actor_org_unit($owning_lib) or return $e->die_event;
 
 	my $mfhd = Fieldmapper::serial::record_entry->new;
 
-	$mfhd->source(1) if $source;
-	$mfhd->record($record);
+	$mfhd->source($source) if $source;
+	$mfhd->record($record_id);
 	$mfhd->creator($e->requestor->id);
 	$mfhd->editor($e->requestor->id);
 	$mfhd->create_date('now');
@@ -882,11 +878,10 @@ sub create_serial_record_xml {
 
 	$mfhd->marc($U->entityize($marcxml->documentElement->toString));
 
-    	my $mfhd_record = $e->create_serial_record_entry($mfhd) or return $e->die_event;
-	$logger->info("MFHD created new record ".$mfhd_record->id);
+    $e->create_serial_record_entry($mfhd) or return $e->die_event;
 
-	$e->commit unless $U->event_code($e);
-	return $e;
+	$e->commit;
+	return $mfhd->id;
 }
 
 __PACKAGE__->register_method(
@@ -905,12 +900,7 @@ __PACKAGE__->register_method(
 sub delete_serial_record {
 	my( $self, $client, $login, $mfhd_id ) = @_;
 
-	my $override = 1 if $self->api_name =~ /override/;
-
-	my( $user_obj, $evt ) = $U->checksesperm($login, 'DELETE_MFHD_RECORD');
-	return $evt if $evt;
-
-	$logger->activity("user ".$user_obj->id." deleting MFHD record " . $mfhd_id);
+	my $override = 1 if $self->api_name =~ /override/; # not currently used
 
 	my $e = new_editor(xact=>1, authtoken=>$login);
 	return $e->die_event unless $e->checkauth;
@@ -918,12 +908,14 @@ sub delete_serial_record {
 	my $record = $e->retrieve_serial_record_entry($mfhd_id)
 		or return $e->die_event;
 
+    return $e->die_event unless $e->allowed('DELETE_MFHD_RECORD', $record->owning_lib);
+
 	$record->deleted('t');
 	$record->edit_date('now');
 	$e->update_serial_record_entry($record) or return $e->die_event;
 
-	$e->commit unless $U->event_code($e);
-	return $e;
+	$e->commit;
+	return 1;
 }
 
 1;
