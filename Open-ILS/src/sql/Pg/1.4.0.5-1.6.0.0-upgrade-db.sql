@@ -3503,6 +3503,34 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (4, 'provider.addresses'),
     (4, 'lineitems.attributes');
 
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template)
+    VALUES (5, 'f', 1, 'Hold Ready for Pickup Email Notification', 'hold.available', 'HoldIsAvailable', 'SendEmail', '30 minutes', 'capture_time', 'usr',
+$$
+[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Subject: Hold Available Notification
+
+Dear [% user.family_name %], [% user.first_given_name %]
+The item(s) you requested are available for pickup from the Library.
+
+[% FOR hold IN target %]
+    Title: [% hold.current_copy.call_number.record.simple_record.title %]
+    Author: [% hold.current_copy.call_number.record.simple_record.author %]
+    Call Number: [% hold.current_copy.call_number.label %]
+    Barcode: [% hold.current_copy.barcode %]
+    Library: [% hold.pickup_lib.name %]
+[% END %]
+
+$$);
+
+INSERT INTO action_trigger.environment (event_def, path) VALUES
+    (5, 'current_copy.call_number.record.simple_record'),
+    (5, 'usr'),
+    (5, 'pickup_lib.billing_address');
+
+
 SELECT SETVAL('action_trigger.event_definition_id_seq'::TEXT, 100);
 
 
