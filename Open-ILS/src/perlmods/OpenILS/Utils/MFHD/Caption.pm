@@ -284,9 +284,11 @@ sub on_or_after {
 
     foreach my $i (0..(scalar(@{$dt2})-1)) {
 	if ($dt1->[$i] > $dt2->[$i]) {
+# 	    printf("after - pass\n");
 	    # $dt1 occurs AFTER $dt2
 	    return 1;
 	} elsif ($dt1->[$i] < $dt2->[$i]) {
+# 	    printf("before - fail\n");
 	    # $dt1 occurs BEFORE $dt2
 	    return 0;
 	}
@@ -294,6 +296,7 @@ sub on_or_after {
     }
 
     # We fell out of the loop with them being equal, so it's 'on'
+#     printf("on - pass\n");
     return 1;
 }
 
@@ -308,9 +311,9 @@ sub calendar_increment {
     my $new_on_or_after;
 
     # A calendar change is defined, need to check if it applies
-    if ((scalar(@{$new}) == 2 && $new->[1] > 20) || (scalar(@{$new}) == 1)) {
+    if (scalar(@{$new}) == 1) {
 	carp "Can't calculate date change for ", $self->as_string;
-	return;
+	return 0;
     }
 
     foreach my $change (@{$cal_change}) {
@@ -376,8 +379,7 @@ sub next_date {
 	# There is a $y publication pattern defined in the record:
 	# use it to calculate the next issue date.
 
-	# XXX TODO: need to handle combined issues.
-	foreach my $pubpat (@{$pattern->{y}->{p}}) {
+	foreach my $pubpat (@{$pattern->{y}->{p}}, @{$pattern->{y}->{c}}) {
 	    my $chroncode = substr($pubpat, 0, 1);
 	    my $genfunc = MFHD::Date::generator($chroncode);
 	    my @pats = split(/,/, substr($pubpat, 1));
@@ -388,46 +390,42 @@ sub next_date {
 	    }
 
 	    foreach my $pat (@pats) {
+		my $combined = $pat =~ m|/|;
+		my ($start, $end);
+		my @candidate;
+
 # 		printf("# next_date: generating with pattern '%s'\n", $pat);
-		my @candidate = $genfunc->($pat, @cur);
+
+		if ($combined) {
+		    ($start, $end) = split('/', $pat, 2);
+		} else {
+		    ($start, $end) = (undef, undef);
+		}
+
+		@candidate = $genfunc->($start || $pat, @cur);
 
 		while ($self->is_omitted(@candidate)) {
 # 		    printf("# pubpat omitting date '%s'\n",
 # 			   join('/', @candidate));
-		    @candidate = $genfunc->($pat, @candidate);
+		    @candidate = $genfunc->($start || $pat, @candidate);
 		}
 
 # 		printf("# testing new candidate '%s' against '%s'\n",
 # 		       join('/', @candidate), join('/', @new));
+
 		if (!defined($new[0])
 		    || !on_or_after(\@candidate, \@new)) {
 		    # first time through the loop
-		    # or @candidate is before @new => @candidate is the next
-		    # issue.
+		    # or @candidate is before @new =>
+		    # @candidate is the next issue.
 		    @new = @candidate;
+		    if (defined $end) {
+			@newend = $genfunc->($end, @cur);
+		    } else {
+			$newend[0] = undef;
+		    }
+
 # 		    printf("# selecting candidate date '%s'\n", join('/', @new));
-		}
-	    }
-	}
-
-	# Now check for combined issues, like "May/June"
-	foreach my $combpat (@{$pattern->{y}->{c}}) {
-	    my $chroncode = substr($combpat, 0, 1);
-	    my $genfunc = MFHD::Date::generator($chroncode);
-	    my @pats = split(/,/, substr($combpat, 1));
-
-	    foreach my $combined (@pats) {
-		my ($start, $end) = split('/', $combined, 2);
-		my @candidate = $genfunc->($start, @cur);
-
-		# We don't need to check for omitted issues because
-		# combined issues are always published. OR ARE THEY????
-		if (!defined($new[0])
-		    || !on_or_after(\@candidate, \@new)) {
-		    # Haven't found a next issue at all yet, or
-		    # this one is before the best guess so far
-		    @new = @candidate;
-		    @newend = $genfunc->($end, @cur);
 		}
 	    }
 	}
