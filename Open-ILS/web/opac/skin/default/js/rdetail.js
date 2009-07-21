@@ -44,6 +44,10 @@ var rdetailEnd = null;
 
 /* serials are currently the only use of Dojo strings in the OPAC */
 if (rdetailDisplaySerialHoldings) {
+	if (isXUL()) {
+		dojo.require("dijit.Menu");
+		dojo.require("dijit.form.Button");
+	}
 	dojo.requireLocalization("openils.opac", "opac");
 	opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
 }
@@ -129,6 +133,17 @@ function rdetailDraw() {
 		var req = new Request(FETCH_MFHD_SUMMARY, getRid());
 		req.callback(_holdingsDraw);
 		req.send();
+		if (isXUL()) {
+			var here = findOrgUnit(getLocation());
+			dojo.place("<div id='mfhd_ad_menu></div>", "rdetail_details_table", "after");
+			var mfhd_add = new dijit.Menu({style:"float: right;"});
+			new dijit.MenuItem({onClick:function(){
+				var req = new Request(CREATE_MFHD_RECORD, G.user.session, 1, here.id(), getRid());
+				var res = req.send();
+				alert(dojo.string.substitute(opac_strings.CREATED_MFHD_RECORD, [here.name()]));
+			}, label:opac_strings.CREATE_MFHD}).placeAt(mfhd_add);
+			mfhd_add.placeAt(mfhd_ad_menu);
+		}
 	}
 
 	detachAllEvt("result", "idsReceived");
@@ -226,9 +241,11 @@ function _holdingsDraw(h) {
 	if (!holdings) { return null; }
 
 	dojo.forEach(holdings, _holdingsDrawMFHD);
+
 }
 
 function _holdingsDrawMFHD(holdings, entryNum) {
+
         var here = findOrgUnit(getLocation());
         if (getDepth() > 0 || getDepth === 0 ) {
                 while (getDepth() < findOrgDepth(here))
@@ -251,17 +268,22 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 
 	if (	hh.length == 0 && hch.length == 0 && hs.length == 0 &&
 		hcs.length == 0 && hi.length == 0 && hci.length == 0 &&
-		ho.length == 0 && hm.length == 0 && hinc.length == 0 && !isXUL()
+		ho.length == 0 && hm.length == 0 && hinc.length == 0
 	) {
-		/* 
-		 * If we have a record, but nothing to show for it, then the
-		 * record is likely empty or corrupt. This gives cataloguers a
-                 * chance to add holdings or correct the record
-		 */
-		hh = 'PLACEHOLDER';
+
+		if (isXUL()) {
+			/* 
+			 * If we have a record, but nothing to show for it, then the
+			 * record is likely empty or corrupt. This gives cataloguers a
+			 * chance to add holdings or correct the record
+			 */
+			hh = 'PLACEHOLDER';
+		} else {
+			return null;
+		}
 	}
 
-	dojo.place("<table style='width: 100%;'><caption id='mfhdHoldingsCaption' class='rdetail_header color_1'>" +
+	dojo.place("<table style='width: 100%;'><caption id='mfhdHoldingsCaption" + entryNum + "' class='rdetail_header color_1'>" +
 		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [hloc]) +
 		"</caption><tbody id='rdetail_holdings_tbody_" + entryNum +
 		"'></tbody></table>", "rdetail_details_table", "after"
@@ -279,10 +301,17 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 	if (isXUL()) {
 		dojo.require('openils.Event');
 		dojo.require('openils.PermaCrud');
-		dojo.place("<span> - </span><a class='classic_link' href='javascript:loadMarcEditor(" +
-			holdings.id() + ")'>" + opac_strings.EDIT_LABEL + "</a>", 
-			"mfhdHoldingsCaption", "last"
-		);
+		var mfhd_edit = new dijit.Menu({});
+		new dijit.MenuItem({onClick: function(){loadMarcEditor(holdings.id())}, label:opac_strings.EDIT_MFHD_RECORD}).placeAt(mfhd_edit, "first");
+		new dijit.MenuItem({onClick:function(){
+			var req = new Request(DELETE_MFHD_RECORD, G.user.session, holdings.id());
+			var res = req.send();
+			alert(dojo.string.substitute(opac_strings.DELETED_MFHD_RECORD, [holdings.id()]));
+		}, label:"Delete"}).placeAt(mfhd_edit, "last");
+		// new dijit.MenuItem({onClick:function(){alert("Edit properties " + holdings.id());}, label:opac_strings.EDIT_PROPERTIES}).placeAt(mfhd_edit, "last");
+		var mfhd_mb = new dijit.form.DropDownButton({dropDown: mfhd_edit, label:opac_strings.EDIT_MFHD_MENU, style:"float:right"});
+		mfhd_mb.placeAt("mfhdHoldingsCaption" + entryNum, "last");
+		mfhd_edit.startup();
 	}
 }
 
