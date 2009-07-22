@@ -3904,6 +3904,7 @@ INSERT INTO permission.perm_list (code, description) VALUES ('DELETE_PROVIDER', 
 INSERT INTO permission.perm_list (code, description) VALUES ('VIEW_PROVIDER', 'Allow a user to view a provider');
 INSERT INTO permission.perm_list (code, description) VALUES ('UPDATE_PROVIDER', 'Allow a user to update a provider');
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_FUNDING_SOURCE', 'Allow a user to create/view/update/delete a funding source');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_ACQ_FUND', 'Allow a user to create/view/update/delete a fund');
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_FUND', 'Allow a user to create/view/update/delete a fund');
 INSERT INTO permission.perm_list (code, description) VALUES ('MANAGE_FUNDING_SOURCE', 'Allow a user to view/credit/debit a funding source');
 INSERT INTO permission.perm_list (code, description) VALUES ('MANAGE_FUND', 'Allow a user to view/credit/debit a fund');
@@ -3927,6 +3928,7 @@ INSERT INTO permission.perm_list (code, description) VALUES ('MARK_ITEM_ON_HOLDS
 INSERT INTO permission.perm_list (code, description) VALUES ('MARK_ITEM_ON_ORDER', 'Allow a user to mark an item status as ''on order''');
 INSERT INTO permission.perm_list (code, description) VALUES ('MARK_ITEM_ILL', 'Allow a user to mark an item status as ''inter-library loan''');
 INSERT INTO permission.perm_list (code, description) VALUES ('group_application.user.staff.acq', 'Allows a user to add/remove/edit users in the "ACQ" group');
+INSERT INTO permission.perm_list (code, description) VALUES ('group_application.user.staff.acq_admin', 'Allows a user to add/remove/edit users in the "Acquisitions Administrator" group');
 INSERT INTO permission.perm_list (code, description) VALUES ('CREATE_PURCHASE_ORDER', 'Allows a user to create a purchase order');
 INSERT INTO permission.perm_list (code, description) VALUES ('VIEW_PURCHASE_ORDER', 'Allows a user to view a purchase order');
 INSERT INTO permission.perm_list (code, description) VALUES ('IMPORT_ACQ_LINEITEM_BIB_RECORD', 'Allows a user to import a bib record from the acq staging area (on-order record) into the ILS bib data set');
@@ -3946,6 +3948,7 @@ INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.patron.password.use_phone');
 
 INSERT INTO permission.grp_tree (name, parent, description, perm_interval, usergroup, application_perm) VALUES ('Acquisitions', 3, NULL, '3 years', TRUE, 'group_application.user.staff.acq');
+INSERT INTO permission.grp_tree (name, parent, description, perm_interval, usergroup, application_perm) VALUES ('Acquisitions Administrators', (SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), NULL, '3 years', TRUE, 'group_application.user.staff.acq_admin');
 
 -- You can't log into the staff client without this
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_ORG_SETTINGS'), 1, false);
@@ -3953,6 +3956,24 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SE
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MFHD_RECORD'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
+
+-- Add basic acquisitions permissions to the Acquisitions group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'GENERAL_ACQ'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PICKLIST'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'CREATE_PICKLIST'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'CREATE_PURCHASE_ORDER'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PURCHASE_ORDER'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'RECEIVE_PURCHASE_ORDER'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PROVIDER'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_COPY'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_VOLUME'), 1, false);
+
+-- Add acquisitions administration permissions to the Acquisitions group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions Administrators'), (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_PROVIDER'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions Administrators'), (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_FUNDING_SOURCE'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions Administrators'), (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_ACQ_FUND'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions Administrators'), (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_FUND'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions Administrators'), (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_CURRENCY_TYPE'), 1, false);
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
 
