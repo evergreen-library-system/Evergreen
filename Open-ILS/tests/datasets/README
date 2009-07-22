@@ -20,6 +20,6 @@ The following table lists the data sets we have collected for testing purposes.
     - PERL5LIB=/openils/lib/perl5/ perl ../../src/extras/import/marc2bre.pl --marctype XML --start 1 --idfield 901 --idsubfield a serials_marc21.xml | perl ../../src/extras/import/direct_ingest.pl  | perl ../../src/extras/import/pg_loader.pl -or bre -or mrd -or mfr -or mtfe -or mafe -or msfe -or mkfe -or msefe -a mrd -a mfr -a mtfe -a mafe -a msfe -a mkfe -a msefe | psql -U evergreen -h localhost
 
   - Then load the MFHD records
-    - PERL5LIB=/openils/lib/perl5/ perl ../../src/extras/import/marc2sre.pl --marctype XML --password demo123 serials_mfhd.xml | perl ../../src/extras/import/direct_ingest.pl --serial | perl ../../src/extras/import/pg_loader.pl -or sre -or sfr -a sfr > mfhd21.sql
+    - PERL5LIB=/openils/lib/perl5/ perl ../../src/extras/import/marc2sre.pl --marctype XML --password demo123 serials_mfhd.xml | perl ../../src/extras/import/direct_ingest.pl --serial | perl ../../src/extras/import/pg_loader.pl -or sre > mfhd21.sql
     - psql -f mfhd21.sql
 
