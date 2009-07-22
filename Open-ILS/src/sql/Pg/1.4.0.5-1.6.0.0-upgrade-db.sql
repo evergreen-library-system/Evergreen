@@ -2531,26 +2531,6 @@ CREATE INDEX serial_record_entry_creator_idx ON serial.record_entry ( creator );
 CREATE INDEX serial_record_entry_editor_idx ON serial.record_entry ( editor );
 CREATE INDEX serial_record_entry_owning_lib_idx ON serial.record_entry ( owning_lib, deleted );
 
-CREATE TABLE serial.full_rec (
-    id      BIGSERIAL   PRIMARY KEY,
-    record      BIGINT      NOT NULL REFERENCES serial.record_entry(id) DEFERRABLE INITIALLY DEFERRED,
-    tag     CHAR(3)     NOT NULL,
-    ind1        TEXT,
-    ind2        TEXT,
-    subfield    TEXT,
-    value       TEXT        NOT NULL,
-    index_vector    tsvector    NOT NULL
-);
-CREATE INDEX serial_full_rec_record_idx ON serial.full_rec (record);
-CREATE INDEX serial_full_rec_tag_part_idx ON serial.full_rec (SUBSTRING(tag FROM 2));
-CREATE TRIGGER serial_full_rec_fti_trigger
-    BEFORE UPDATE OR INSERT ON serial.full_rec
-    FOR EACH ROW EXECUTE PROCEDURE tsearch2(index_vector, value);
-
-CREATE INDEX serial_full_rec_index_vector_idx ON serial.full_rec USING GIST (index_vector);
-/* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
-CREATE INDEX serial_full_rec_value_tpo_index ON serial.full_rec (value text_pattern_ops);
-
 CREATE TABLE serial.subscription (
     id      SERIAL  PRIMARY KEY,
     callnumber  BIGINT  REFERENCES asset.call_number (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
