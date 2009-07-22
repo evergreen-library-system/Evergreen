@@ -145,7 +145,7 @@ sub child_init {
 		->gather(1);
 
     $list = [ map { (keys %$_)[0] } @$list ];
-    push @$list, 'htmlholdings','html', 'marctxt';
+    push @$list, 'htmlholdings','html', 'marctxt', 'ris';
 
     for my $browse_axis ( qw/title author subject topic series item-age/ ) {
         for my $record_browse_format ( @$list ) {
@@ -260,6 +260,7 @@ sub unapi {
 	<format name='html-full' type='text/html'/>
 	<format name='htmlholdings-full' type='text/html'/>
 	<format name='marctxt' type='text/plain'/>
+	<format name='ris' type='text/plain'/>
 				FORMATS
 			} elsif ($type eq 'metarecord') {
 				$body .= <<"				FORMATS";
@@ -315,6 +316,7 @@ sub unapi {
 	<format name='html-full' type='text/html'/>
 	<format name='htmlholdings-full' type='text/html'/>
 	<format name='marctxt' type='text/plain'/>
+	<format name='ris' type='text/plain'/>
 			FORMATS
 
 
@@ -407,7 +409,7 @@ sub unapi {
 	       @{ $supercat->request("open-ils.supercat.$type.formats")->gather(1) }
 	     and !grep
 	       { $_ eq $base_format }
-	       qw/opac html htmlholdings marctxt/
+	       qw/opac html htmlholdings marctxt ris/
 	) {
 		print "Content-type: text/html; charset=utf-8\n\n";
 		$apache->custom_response( 406, <<"		HTML");
@@ -553,6 +555,10 @@ sub supercat {
 				   <format>
 				     <name>marctxt</name>
 				     <type>text/plain</type>
+				   </format>
+				   <format>
+				     <name>ris</name>
+				     <type>text/plain</type>
 				   </format>";
 			}
 
@@ -621,6 +627,10 @@ sub supercat {
 			   </format>
 			   <format>
 			     <name>marctxt</name>
+			     <type>text/plain</type>
+			   </format>
+			   <format>
+			     <name>ris</name>
 			     <type>text/plain</type>
 			   </format>";
 
@@ -1232,7 +1242,7 @@ sub create_record_feed {
 	$feed->unapi($unapi) if ($flesh);
 
 	$type = 'atom' if ($type eq 'html');
-	$type = 'marcxml' if (($type eq 'htmlholdings') || ($type eq 'marctxt'));
+	$type = 'marcxml' if (($type eq 'htmlholdings') || ($type eq 'marctxt') || ($type eq 'ris'));
 
 	#$records = $supercat->request( "open-ils.supercat.record.object.retrieve", $records )->gather(1);
 
