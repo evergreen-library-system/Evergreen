@@ -2373,20 +2373,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="sfr" controller="open-ils.cstore" oils_obj:fieldmapper="serial::full_rec" oils_persist:tablename="serial.full_rec" reporter:label="Serial Full Record">
-		<fields oils_persist:primary="id" oils_persist:sequence="serial.full_rec_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="ind1" />
-			<field name="ind2" />
-			<field name="record" />
-			<field name="subfield" />
-			<field name="tag" />
-			<field name="value" />
-		</fields>
-		<links>
-			<link field="record" reltype="has_a" key="id" map="" class="sre"/>
-		</links>
-	</class>
 	<class id="ssub" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription" reporter:label="Subscription">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_id_seq">
 			<field name="active" reporter:datatype="bool"/>
