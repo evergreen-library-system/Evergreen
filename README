@@ -1,13 +1,13 @@
-README for Evergreen 2.0
+README for Evergreen 1.6
 
 Installing prerequisites:
 ========================
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (1.0 or later).
-You can download OpenSRF 1.0.2 from
-http://evergreen-ils.org/downloads/OpenSRF-1.0.2.tar.gz
+1. Begin by installing the most recent version of OpenSRF (1.1 or later).
+You can download OpenSRF releases from
+http://evergreen-ils.org/downloads
 
 2. On Debian and Ubuntu, the easiest way to install the rest of the
 prerequisites for Evergreen is to use the Makefile.install prerequisite
@@ -29,9 +29,7 @@ Configuration and compilation instructions:
 ==========================================
 
 For the time being, we are still installing everything in the /openils/
-directory (with the exception of the Perl modules, which are installed
-into system directories). Issue the following commands to configure and
-build Evergreen:
+directory. Issue the following commands to configure and build Evergreen:
 
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
@@ -42,12 +40,28 @@ Installation instructions:
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
-make STAFF_CLIENT_BUILD_ID=rel_2_0_0_0 install
+make STAFF_CLIENT_BUILD_ID=rel_1_6_0_0 install
 
 This will install Evergreen, including example configuration files in
 /openils/conf/ that you can use as templates for your own configuration files.
 The STAFF_CLIENT_BUILD_ID variable stamps the server-side and client-side files
 for the staff client to ensure that they match.
+
+Install Dojo Toolkit:
+====================
+
+Evergreen uses the Dojo Toolkit to support its Web and staff client interfaces.
+
+Download the Dojo Toolkit (Dojo + Dijit + DojoX) from
+http://dojotoolkit.org/downloads
+
+Issue the following commands as the root user to fetch, extract, and copy the
+files into the correct directory, adjusting the version number to match the
+version of the Dojo Toolkit that you downloaded:
+
+wget http://download.dojotoolkit.org/release-1.3.2/dojo-release-1.3.2.tar.gz
+tar -C /openils/var/web/js -xzf dojo-release-1.3.2.tar.gz
+cp -r /openils/var/web/js/dojo-release-1.3.2/* /openils/var/web/js/dojo/.
 
 Change ownership of the Evergreen files:
 =======================================
