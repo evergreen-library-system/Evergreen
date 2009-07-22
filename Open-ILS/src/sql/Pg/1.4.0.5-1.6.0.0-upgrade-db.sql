@@ -7476,3 +7476,5 @@ ALTER TABLE config.circ_matrix_matchpoint ALTER COLUMN duration_rule SET NOT NUL
 ALTER TABLE config.circ_matrix_matchpoint ALTER COLUMN recurring_fine_rule SET NOT NULL;
 ALTER TABLE config.circ_matrix_matchpoint ALTER COLUMN max_fine_rule SET NOT NULL;
 
+-- We're updating the IDL, so flush cached mods slim records to avoid field mismatches
+UPDATE metabib.metarecord SET mods = NULL;
