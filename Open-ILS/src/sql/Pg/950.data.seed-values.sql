@@ -928,7 +928,7 @@ INSERT INTO permission.perm_list VALUES
 INSERT INTO permission.perm_list VALUES 
     (29, 'UPDATE_USER', oils_i18n_gettext(29, 'Allow a user to edit a user''s record', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
-    (30, 'DELETE_USER', oils_i18n_gettext(30, 'Allow a user to mark a user as deleted', 'ppl', 'description'));
+    (30, 'DELETE_USER', oils_i18n_gettext(30, 'Allow a user to delete another user, including all associated transactions', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
     (31, 'VIEW_USER', oils_i18n_gettext(31, 'Allow a user to view another user''s Patron Record', 'ppl', 'description'));
 INSERT INTO permission.perm_list VALUES 
