@@ -121,6 +121,10 @@ function initSearchBoxes() {
 
     var types = getObjectKeys(search.searches);
 
+    // if we have browser cached data, clear it before populating from cookie
+    if (search.searches[types[0]].term)
+        clearSearchBoxes();
+
     /* pre-add the needed rows */
     while($('adv_global_tbody').getElementsByTagName('tr').length - 1 < types.length)
         advAddGblRow();
