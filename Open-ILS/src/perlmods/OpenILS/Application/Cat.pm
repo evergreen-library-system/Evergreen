@@ -476,7 +476,7 @@ sub reset_hold_list {
 
 
 __PACKAGE__->register_method(
-	method => 'merge',
+	method => 'in_db_merge',
 	api_name	=> 'open-ils.cat.biblio.records.merge',
 	signature	=> q/
 		Merges a group of records
@@ -489,10 +489,10 @@ __PACKAGE__->register_method(
 
 sub in_db_merge {
 	my( $self, $conn, $auth, $master, $records ) = @_;
-	my( $reqr, $evt ) = $U->checkses($auth);
-	return $evt if $evt;
 
-	my $editor = new_editor( requestor => $reqr, xact => 1 );
+	my $editor = new_editor( authtoken => $auth, xact => 1 );
+    return $editor->die_event unless $editor->checkauth;
+    return $editor->die_event unless $editor->allowed('MERGE_BIB_RECORDS'); # TODO see below about record ownership
 
     my $count = 0;
     for my $source ( @$records ) {
@@ -520,53 +520,6 @@ sub in_db_merge {
 
 	$editor->commit;
     return $count;
-}
-
-sub merge {
-	my( $self, $conn, $auth, $master, $records ) = @_;
-	my( $reqr, $evt ) = $U->checkses($auth);
-	return $evt if $evt;
-	my $editor = new_editor( requestor => $reqr, xact => 1 );
-	my $v = OpenILS::Application::Cat::Merge::merge_records($editor, $master, $records);
-	return $v if $v;
-	$editor->commit;
-    # tell the client the merge is complete, then merge the holds
-    $conn->respond_complete(1);
-    merge_holds($master, $records);
-	return undef;
-}
-
-sub merge_holds {
-    my($master, $records) = @_;
-    return unless $master and @$records;
-    return if @$records == 1 and $master == $$records[0];
-
-    my $e = new_editor(xact=>1);
-    my $holds = $e->search_action_hold_request(
-        {   cancel_time => undef, 
-            fulfillment_time => undef,
-            hold_type => 'T',
-            target => $records
-        },
-        {idlist=>1}
-    );
-
-    for my $hold_id (@$holds) {
-
-        my $hold = $e->retrieve_action_hold_request($hold_id);
-
-        $logger->info("Changing hold ".$hold->id.
-            " target from ".$hold->target." to $master in record merge");
-
-        $hold->target($master);
-        unless($e->update_action_hold_request($hold)) {
-            my $evt = $e->event;
-            $logger->error("Error updating hold ". $evt->textcode .":". $evt->desc .":". $evt->stacktrace); 
-        }
-    }
-
-    $e->commit;
-    return undef;
 }
 
 
