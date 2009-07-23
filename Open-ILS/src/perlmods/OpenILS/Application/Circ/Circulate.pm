@@ -1518,7 +1518,7 @@ sub make_precat_copy {
     my $copy = $self->copy;
 
    if($copy) {
-      $logger->debug("ciculator: Pre-cat copy already exists in checkout: ID=" . $copy->id);
+      $logger->debug("circulator: Pre-cat copy already exists in checkout: ID=" . $copy->id);
 
       $copy->editor($self->editor->requestor->id);
       $copy->edit_date('now');
@@ -1566,7 +1566,7 @@ sub checkout_noncat {
    my $count    = $self->noncat_count || 1;
    my $cotime   = clense_ISO8601($self->checkout_time) || "";
 
-   $logger->info("ciculator: circ creating $count noncat circs with checkout time $cotime");
+   $logger->info("circulator: circ creating $count noncat circs with checkout time $cotime");
 
    for(1..$count) {
 
@@ -1981,18 +1981,18 @@ sub do_hold_notify {
 
     if(!$notifier->event) {
 
-        $logger->info("ciculator: attempt at sending hold notification for hold $holdid");
+        $logger->info("circulator: attempt at sending hold notification for hold $holdid");
 
         my $stat = $notifier->send_email_notify;
         if( $stat == '1' ) {
-            $logger->info("ciculator: hold notify succeeded for hold $holdid");
+            $logger->info("circulator: hold notify succeeded for hold $holdid");
             return;
         } 
 
-        $logger->warn("ciculator:  * hold notify failed for hold $holdid");
+        $logger->warn("circulator:  * hold notify failed for hold $holdid");
 
     } else {
-        $logger->info("ciculator: Not sending hold notification since the patron has no email address");
+        $logger->info("circulator: Not sending hold notification since the patron has no email address");
     }
 }
 
@@ -2428,7 +2428,7 @@ sub run_renew_permit {
         $self->mk_script_runner;
     }
 
-    $logger->activity("ciculator: circ_permit_renew for user ".
+    $logger->activity("circulator: circ_permit_renew for user ".
       $self->patron->id." returned events: @$events") if @$events;
 
     $self->push_events(OpenILS::Event->new($_)) for @$events;
