@@ -3334,5 +3334,32 @@ sub update_events {
     return {complete => 1};
 }
 
+
+__PACKAGE__->register_method (
+	method		=> 'really_delete_user',
+	api_name    => 'open-ils.actor.user.delete',
+    signature   => q/
+        It anonymizes all personally identifiable information in actor.usr. By calling actor.usr_purge_data() 
+        it also purges related data from other tables, sometimes by transferring it to a designated destination user.
+        The usrname field (along with first_given_name and family_name) is updated to id '-PURGED-' now().
+        dest_usr_id is only required when deleting a user that performs staff functions.
+    /
+);
+
+sub really_delete_user {
+    my($self, $conn, $auth, $user_id, $dest_user_id) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('DELETE_USER', $user->home_ou);
+    my $stat = $e->json_query(
+        {from => ['actor.usr_delete', $user_id, $dest_user_id]})->[0] 
+        or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+
+
 1;
 
