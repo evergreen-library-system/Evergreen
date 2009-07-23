@@ -699,7 +699,7 @@ $$;
  
 
 ALTER TABLE asset.copy_tranparency_map RENAME TO copy_transparency_map;
-ALTER TABLE asset.copy_tranparency_map RENAME COLUMN tansparency TO transparency;
+ALTER TABLE asset.copy_transparency_map RENAME COLUMN tansparency TO transparency;
 
 CREATE TABLE asset.uri (
     id  SERIAL  PRIMARY KEY,
