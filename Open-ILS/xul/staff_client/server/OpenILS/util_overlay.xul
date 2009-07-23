@@ -7,14 +7,14 @@
 
 	<scripts id="openils_util_scripts">
 		<script>dump('starting openils_util_overlay\n');</script>
+		<script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
+		<script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
 		<script type="text/javascript" src="/xul/server/main/constants.js" />
 		<script type="text/javascript" src="/xul/server/util/clipboard.js" />
 		<script type="text/javascript" src="/opac/common/js/utils.js" />
 		<script type="text/javascript" src="/opac/common/js/CGI.js" />
 		<script type="text/javascript" src="/opac/common/js/md5.js" />
-		<script type="text/javascript" src="/opac/common/js/JSON_v1.js" />
-		<script type="text/javascript" src="/opac/common/js/fmall.js" />
-		<script type="text/javascript" src="/opac/common/js/fmgen.js" />
 		<script type="text/javascript" src="/opac/common/js/RemoteRequest.js" />
 		<script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js' />
 		<script type="text/javascript" src="/opac/common/js/org_utils.js" />   

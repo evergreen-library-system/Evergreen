@@ -24,12 +24,11 @@
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- BEHAVIOR -->
 	<script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
 	</script>
 	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-    <script type="text/javascript" src="/js/dojo/dojo/dojo.js"/>
 	<script type="text/javascript" src="dojo_template.js"/>
 
     <label value="retrieving coust's with dojo and PermaCrud..."/>
