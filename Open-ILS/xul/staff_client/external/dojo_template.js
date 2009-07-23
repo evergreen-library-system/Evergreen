@@ -9,16 +9,7 @@ function my_init() {
         JSAN.use('util.error'); error = new util.error();
         error.sdump('D_TRACE','my_init() for main_test.xul');
 
-        /* these were not working as <script> tags.  Maybe someone else can try? */
-        var url="/js/dojo/dojo/dojo.js"; var js = JSAN._loadJSFromUrl( url ); eval(js);
-        url="/js/dojo/DojoSRF.js"; js = JSAN._loadJSFromUrl( url ); eval(js);
-        url="/js/dojo/fieldmapper/Fieldmapper.js"; js = JSAN._loadJSFromUrl( url ); eval(js);
-        url="/js/dojo/fieldmapper/hash.js"; js = JSAN._loadJSFromUrl( url ); eval(js);
-        url="/js/dojo/fieldmapper/OrgUtils.js"; js = JSAN._loadJSFromUrl( url ); eval(js);
-        url="/js/dojo/openils/Event.js"; js = JSAN._loadJSFromUrl( url ); eval(js);
-        url="/js/dojo/openils/Util.js"; js = JSAN._loadJSFromUrl( url ); eval(js);
-        url="/js/dojo/openils/User.js"; js = JSAN._loadJSFromUrl( url ); eval(js);
-        url="/js/dojo/openils/PermaCrud.js"; js = JSAN._loadJSFromUrl( url ); eval(js);
+        dojo.require('openils.PermaCrud');
 
         var types = new openils.PermaCrud(
             {
