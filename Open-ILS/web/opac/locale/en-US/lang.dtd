@@ -710,7 +710,7 @@
 <!ENTITY staff.main.menu.cat.z39_50_import.accesskey "Z">
 <!ENTITY staff.main.menu.cat.z39_50_import.label "Import Record from Z39.50">
 
-<!ENTITY staff.main.menu.acq.label "Acquisitions">
+<!ENTITY staff.main.menu.acq.label "Acquisitions (Preview)">
 <!ENTITY staff.main.menu.acq.picklist.label "Selection Lists">
 <!ENTITY staff.main.menu.acq.bib_search.label "Title Search">
 <!ENTITY staff.main.menu.acq.brief_record.label "New Brief Record">
