@@ -206,6 +206,7 @@ const api = {
 	'FM_MG_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.create' },
 	'FM_MG_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.retrieve' },
 	'FM_MOBTS_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance' },
+	'FM_MOBTS_HAVING_BALANCE.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance.authoritative' },
 	'FM_MOBTS_TOTAL_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance.total' },
 	'FM_MOBTS_COUNT_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance.count' },
 	'FM_MOBTS_OPEN' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions' },
