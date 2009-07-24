@@ -33,8 +33,12 @@
 
 	<commandset id="penalty_cmds">
 		<command id="cmd_apply_penalty" />
-		<command id="cmd_remove_penalty" />
-		<command id="cmd_edit_penalty" />
+		<command id="cmd_remove_penalty" disabled="true"/>
+		<command id="cmd_edit_penalty" disabled="true"/>
+		<command id="cmd_show_all" />
+		<command id="cmd_show_note" />
+		<command id="cmd_show_alert" />
+		<command id="cmd_show_block" />
 	</commandset>
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -43,23 +47,39 @@
 		<caption id="penalty_caption" label="&staff.patron_display.penalty.caption;"/>
         <vbox flex="0">
             <hbox flex="1">
-                <menubar>
-                    <menu label="&staff.patron_display.penalty.menu.apply.label;" accesskey="&staff.patron_display.penalty.menu.apply.accesskey;">
-                        <menupopup id="csp_list">
-                        </menupopup>
-                    </menu>
-                </menubar>
-                <spacer flex="1"/>
-                <progressmeter id="progress" flex="1" hidden="true" mode="undetermined"/>
-                <spacer flex="1"/>
-                <menubar>
-                    <menu label="&staff.patron_display.penalty.menu.actions.label;" accesskey="&staff.patron_display.penalty.menu.actions.accesskey;">
-                        <menupopup>
-                            <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron-display.menu.actions.remove.accesskey;"/>
-                            <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron-display.menu.actions.edit.accesskey;"/>
-                        </menupopup>
-                    </menu>
-                </menubar>
+                <toolbox flex="1">
+                    <toolbar>
+                        <toolbaritem> <!-- why not a toolbarbutton?  I like the way this looks better -->
+                            <button id="apply_btn" 
+                                command="cmd_apply_penalty" 
+                                label="&staff.patron_display.penalty.menu.apply.label;" 
+                                accesskey="&staff.patron_display.penalty.menu.apply.accesskey;" 
+                                style="-moz-user-focus: normal" />
+                        </toolbaritem>
+                        <toolbarseparator />
+                        <!--
+                        <toolbarbutton command="cmd_show_all" label="All" accesskey="A" type="radio" group="radio" style="-moz-user-focus: normal" checked="true"/>
+                        <toolbarbutton command="cmd_show_note" label="Note" accesskey="N" type="radio" group="radio" style="-moz-user-focus: normal"/>
+                        <toolbarbutton command="cmd_show_alert" label="Alert" accesskey="t" type="radio" group="radio" style="-moz-user-focus: normal"/>
+                        <toolbarbutton command="cmd_show_block" label="Block" accesskey="k" type="radio" group="radio" style="-moz-user-focus: normal"/>
+                        <toolbarseparator />
+                        -->
+                        <toolbarspring />
+                        <toolbaritem>
+                            <progressmeter id="progress" flex="1" hidden="true" mode="undetermined"/>
+                        </toolbaritem>
+                        <toolbarbutton 
+                            label="&staff.patron_display.penalty.menu.actions.label;" 
+                            accesskey="&staff.patron_display.penalty.menu.actions.accesskey;" 
+                            type="menu" style="-moz-user-focus: normal" 
+                            oncommand="this.focus(); this.firstChild.showPopup()">
+                            <menupopup>
+                                <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron-display.menu.actions.remove.accesskey;"/>
+                                <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron-display.menu.actions.edit.accesskey;"/>
+                            </menupopup>
+                        </toolbarbutton>
+                    </toolbar>
+                </toolbox>
             </hbox>
         </vbox>
         <tree id="ausp_list" flex="1" enableColumnDrag="true" context="ausp_actions"/>

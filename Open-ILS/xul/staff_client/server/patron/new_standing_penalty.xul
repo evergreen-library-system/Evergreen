@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Dialog: Apply Standing Penalty to Patron -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- PRESENTATION -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="new_penalty_win" 
+    onload="try { new_penalty_init(); font_helper(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    title="&staff.patron_display.apply_penalty_dialog.title;">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;</script>
+	<scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="new_standing_penalty.js"/>
+
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- CONTENT -->
+    <dialogheader title="&staff.patron_display.apply_penalty_dialog.header;" description="&staff.patron_display.apply_penalty_dialog.description;" />
+    <toolbox flex="1">
+        <toolbar>
+            <toolbarbutton id="note_btn" 
+                type="radio" group="radio" style="-moz-user-focus: normal" 
+                label="&staff.patron_display.apply_penalty_dialog.radio_btn.note.label;" accesskey="&staff.patron_display.apply_penalty_dialog.radio_btn.note.accesskey;" 
+                checked="true"/>
+            <toolbarbutton id="alert_btn" 
+                type="radio" group="radio" style="-moz-user-focus: normal" 
+                label="&staff.patron_display.apply_penalty_dialog.radio_btn.alert.label;" accesskey="&staff.patron_display.apply_penalty_dialog.radio_btn.alert.accesskey;" />
+            <toolbarbutton id="block_btn" 
+                type="radio" group="radio" style="-moz-user-focus: normal" 
+                label="&staff.patron_display.apply_penalty_dialog.radio_btn.block.label;" accesskey="&staff.patron_display.apply_penalty_dialog.radio_btn.block.accesskey;" />
+            <toolbarspring/>
+            <toolbaritem>
+                <menulist id="csp_menulist" label="">
+                    <menupopup id="csp_menupopup" value="21"/> <!-- default SILENT_NOTE -->
+                </menulist>
+            </toolbaritem>
+        </toolbar>
+    </toolbox>
+    <textbox id="note_tb" multiline="true" />
+    <hbox>
+        <spacer flex="1"/>
+        <button id="cancel_btn" label="&staff.patron_display.apply_penalty_dialog.cancel_btn.label;" accesskey="&staff.patron_display.apply_penalty_dialog.cancel_btn.accesskey;" />
+        <button id="apply_btn" label="&staff.patron_display.apply_penalty_dialog.apply_btn.label;" accesskey="&staff.patron_display.apply_penalty_dialog.apply_btn.label;" />
+    </hbox>
+</window>
+

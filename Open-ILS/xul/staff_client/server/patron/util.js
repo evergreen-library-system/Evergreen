@@ -272,7 +272,7 @@ patron.util.ausp_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_name', 'label' : commonStrings.getString('staff.csp_name_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.csp.name(); }
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.csp.name(); }
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_label', 'label' : commonStrings.getString('staff.csp_label_label'), 'flex' : 1,

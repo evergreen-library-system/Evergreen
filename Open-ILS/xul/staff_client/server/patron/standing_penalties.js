@@ -1,7 +1,10 @@
 var list; var data; var error; var net; var rows;
 
+function default_focus() { document.getElementById('apply_btn').focus(); } // parent interfaces often call this
+
 function penalty_init() {
     try {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
 
         commonStrings = document.getElementById('commonStrings');
         patronStrings = document.getElementById('patronStrings');
@@ -26,10 +29,11 @@ function penalty_init() {
         JSAN.use('util.widgets');
 
         init_list();
-        build_penalty_menu();
+        document.getElementById('cmd_apply_penalty').addEventListener('command', handle_apply_penalty, false);
         document.getElementById('cmd_remove_penalty').addEventListener('command', handle_remove_penalty, false);
         document.getElementById('cmd_edit_penalty').addEventListener('command', handle_edit_penalty, false);
         populate_list();
+        default_focus();
 
     } catch(E) {
         var err_prefix = 'standing_penalties.js -> penalty_init() : ';
@@ -67,8 +71,10 @@ function handle_selection (ev) { // handler for list row selection event
     var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
     if (ids.length > 0) {
         document.getElementById('cmd_remove_penalty').setAttribute('disabled','false');
+        document.getElementById('cmd_edit_penalty').setAttribute('disabled','false');
     } else {
         document.getElementById('cmd_remove_penalty').setAttribute('disabled','true');
+        document.getElementById('cmd_edit_penalty').setAttribute('disabled','true');
     }
 }
 
@@ -96,58 +102,37 @@ function populate_list() {
     }
 }
 
-function build_penalty_menu() {
+function handle_apply_penalty(ev) {
     try {
-
-        var csp_list = document.getElementById('csp_list');
-        util.widgets.remove_children(csp_list);
-        for (var i = 0; i < data.list.csp.length; i++) {
-            if (data.list.csp[i].id() > 100) {
-                var menuitem = document.createElement('menuitem'); csp_list.appendChild(menuitem);
-                menuitem.setAttribute('label',data.list.csp[i].label());
-                menuitem.setAttribute('value',data.list.csp[i].id());
-                menuitem.setAttribute('id','csp_'+data.list.csp[i].id());
-                menuitem.addEventListener(
-                    'command',
-                    handle_menuitem,
-                    false
-                );
-            }
-        }
-
-    } catch(E) {
-        var err_prefix = 'standing_penalties.js -> build_penalty_menu() : ';
-        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
-    }
-}
-
-function handle_menuitem(ev) {
-    try {
-
-        var id = ev.target.getAttribute('value');
-
-        var note = window.prompt(
-            patronStrings.getString('staff.patron.standing_penalty.note_prompt'),
-            '',
-            patronStrings.getString('staff.patron.standing_penalty.note_title')
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
+        JSAN.use('util.window');
+        var win = new util.window();
+        var my_xulG = win.open(
+            urls.XUL_NEW_STANDING_PENALTY,
+            'new_standing_penalty',
+            'chrome,resizable,modal',
+            {}
         );
+
+        if (!my_xulG.id) { alert('cancelled'); return 0; }
 
         var penalty = new ausp();
         penalty.usr( xulG.patron.id() );
         penalty.isnew( 1 );
-        penalty.standing_penalty( id );
+        penalty.standing_penalty( my_xulG.id );
         penalty.org_unit( ses('ws_ou') );
-        penalty.note( note );
+        penalty.note( my_xulG.note );
         net.simple_request(
             'FM_AUSP_APPLY', 
             [ ses(), penalty ],
-            generate_request_handler_for_penalty_apply( penalty, id )
+            generate_request_handler_for_penalty_apply( penalty, my_xulG.id )
         );
 
         document.getElementById('progress').hidden = false;
 
     } catch(E) {
-        var err_prefix = 'standing_penalties.js -> handle_menuitem() : ';
+        alert('error: ' + E);
+        var err_prefix = 'standing_penalties.js -> handle_apply_penalty() : ';
         if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
     }
 }
@@ -187,7 +172,7 @@ function generate_request_handler_for_penalty_apply(penalty,id) {
         }
     };
 }
-        
+ 
 function handle_remove_penalty(ev) {
     try {
 
@@ -244,37 +229,60 @@ function generate_penalty_remove_function(id) {
 function handle_edit_penalty(ev) {
     try {
 
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
+        JSAN.use('util.window');
+        var win = new util.window();
+
         var sel = list.retrieve_selection();
         var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
         if (ids.length > 0) {
-            var note = window.prompt(
-                patronStrings.getString( 'staff.patron.standing_penalty.note_prompt.' + (ids.length == 1 ? 'singular' : 'plural') ),
-                '',
-                patronStrings.getString( 'staff.patron.standing_penalty.note_prompt.title' )
-            );
-            if (note == null) { return; } /* cancel */
             for (var i = 0; i < ids.length; i++) {
                 var penalty = util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.id() == ids[i]; } );
-                penalty.note( note ); /* this is for rendering, and propogates by reference to the object associated with the row in the GUI */
-            } 
-            document.getElementById('progress').hidden = false;
-            net.simple_request( 
-                'FM_AUSP_UPDATE_NOTE', [ ses(), ids, note ],
-                function(reqObj) {
-                    var req = reqObj.getResultObject();
-                    if (typeof req.ilsevent != 'undefined' || String(req) != '1') {
-                        error.standard_unexpected_error_alert(patronStrings.getString('staff.patron.standing_penalty.update_error'),req);
-                    } else {
-                        for (var i = 0; i < ids.length; i++) {
-                            list.refresh_row( rows[ ids[i] ] );
+                alert('penalty = ' + js2JSON(penalty));
+                var my_xulG = win.open(
+                    urls.XUL_EDIT_STANDING_PENALTY,
+                    'new_standing_penalty',
+                    'chrome,resizable,modal',
+                    { 
+                        'id' : typeof penalty.standing_penalty() == 'object' ? penalty.standing_penalty().id() : penalty.standing_penalty(), 
+                        'note' : penalty.note() 
+                    }
+                );
+                if (my_xulG.modify) {
+                    document.getElementById('progress').hidden = false;
+                    penalty.note( my_xulG.note ); /* this is for rendering, and propogates by reference to the object associated with the row in the GUI */
+                    penalty.standing_penalty( my_xulG.id );
+                    penalty.ischanged( 1 );
+                    dojo.require('openils.PermaCrud');
+                    var pcrud = new openils.PermaCrud( { authtoken :ses() });
+                    pcrud.apply( penalty, {
+                        timeout : 10, // makes it synchronous
+                        onerror : function(r) {
+                            try {
+                                document.getElementById('progress').hidden = true;
+                                var res = openils.Util.readResponse(r,true);
+                                error.standard_unexpected_error_alert(patronStrings.getString('staff.patron.standing_penalty.update_error'),res);
+                            } catch(E) {
+                                alert(E);
+                            }
+                        },
+                        oncomplete : function(r) {
+                            try {
+                                var res = openils.Util.readResponse(r,true);
+                                list.refresh_row( rows[ ids[i] ] );
+                                document.getElementById('progress').hidden = true;
+                            } catch(E) {
+                                alert(E);
+                            }
                         }
-                    }
-                    if (xulG && typeof xulG.refresh == 'function') {
-                        xulG.refresh();
-                    }
-                    document.getElementById('progress').hidden = true;
+                    });
                 }
-            );
+            } 
+            /*
+            if (xulG && typeof xulG.refresh == 'function') {
+                xulG.refresh();
+            }
+            */
         }
 
     } catch(E) {

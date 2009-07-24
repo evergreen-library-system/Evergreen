@@ -35,6 +35,9 @@ const my_constants = {
 }
 
 const api = {
+    'PCRUD_XACT_BEGIN' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.transaction.begin' },
+    'PCRUD_XACT_COMMIT' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.transaction.commit' },
+    'PCRUD_XACT_ROLLBACK' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.transaction.rollback' },
 	'TEST_SECURE' : { 'app' : 'open-ils.actor', 'method' : 'opensrf.system.time' },
 	'TEST_UNSECURE' : { 'app' : 'open-ils.actor', 'method' : 'opensrf.system.time', 'secure' : false },
 	'AUTH_INIT' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.init' },
@@ -154,6 +157,7 @@ const api = {
 	'FM_AUS_UPDATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.settings.update' },
 	'FM_AUSP_APPLY' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalty.apply' },
 	'FM_AUSP_REMOVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalty.remove' },
+    'FM_AUSP_PCRUD_UPDATE' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.update.ausp', 'secure' : false },
 	'FM_AUSP_UPDATE_NOTE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalty.note.update' },
 	'FM_BRE_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve', 'secure' : false },
 	'FM_BRE_RETRIEVE_VIA_ID.authoritative' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve.authoritative', 'secure' : false },
@@ -334,6 +338,8 @@ const urls = {
 	'XUL_SPINE_LABEL' : '/xul/server/cat/spine_labels.xul',
 	'XUL_STANDALONE' : 'chrome://open_ils_staff_client/content/circ/offline.xul',
 	'XUL_STANDING_PENALTIES' : '/xul/server/patron/standing_penalties.xul',
+	'XUL_NEW_STANDING_PENALTY' : '/xul/server/patron/new_standing_penalty.xul',
+	'XUL_EDIT_STANDING_PENALTY' : '/xul/server/patron/edit_standing_penalty.xul',
 	'XUL_STAT_CAT_EDIT' : '/xul/server/admin/stat_cat_editor.xhtml',
 	'XUL_SURVEY_WIZARD' : 'chrome://open_ils_staff_client/content/admin/survey_wizard.xul',
 	'XUL_USER_BUCKETS' : '/xul/server/patron/user_buckets.xul',

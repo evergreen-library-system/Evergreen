@@ -1217,15 +1217,41 @@
 <!ENTITY staff.patron_display.standing.label 'Standing:'>
 <!ENTITY staff.patron_display.status.caption 'Status'>
 <!ENTITY staff.patron_display_interface_label "Patron">
-<!ENTITY staff.patron_display.penalty.caption "Staff-Generated Blocks / Standing Penalties">
-<!ENTITY staff.patron_display.penalty.menu.actions.label "Actions for these Penalties">
+<!ENTITY staff.patron_display.penalty.caption "Staff-Generated Penalties/Messages">
+<!ENTITY staff.patron_display.penalty.menu.actions.label "Actions for these Penalties/Messages">
 <!ENTITY staff.patron_display.penalty.menu.actions.accesskey "P">
-<!ENTITY staff.patron_display.penalty.menu.apply.label "Apply New Penalty">
-<!ENTITY staff.patron_display.penalty.menu.apply.accesskey "N">
-<!ENTITY staff.patron_display.penalty.menu.actions.remove.label "Remove from Patron">
+<!ENTITY staff.patron_display.penalty.menu.apply.label "Apply Standing Penalty/Message">
+<!ENTITY staff.patron_display.penalty.menu.apply.accesskey "S">
+<!ENTITY staff.patron_display.penalty.menu.actions.remove.label "Remove Penalty/Message">
 <!ENTITY staff.patron_display.penalty.menu.actions.remove.accesskey "R">
-<!ENTITY staff.patron_display.penalty.menu.actions.edit.label "Edit Note">
-<!ENTITY staff.patron_display.penalty.menu.actions.edit.accesskey "E">
+<!ENTITY staff.patron_display.penalty.menu.actions.edit.label "Modify Penalty/Message">
+<!ENTITY staff.patron_display.penalty.menu.actions.edit.accesskey "M">
+<!ENTITY staff.patron_display.apply_penalty_dialog.title "Apply Standing Penalty/Message">
+<!ENTITY staff.patron_display.apply_penalty_dialog.header "Apply Standing Penalty/Message">
+<!ENTITY staff.patron_display.apply_penalty_dialog.description "Notes, Alerts, Blocks">
+<!ENTITY staff.patron_display.apply_penalty_dialog.radio_btn.note.label "Note">
+<!ENTITY staff.patron_display.apply_penalty_dialog.radio_btn.note.accesskey "N">
+<!ENTITY staff.patron_display.apply_penalty_dialog.radio_btn.alert.label "Alert">
+<!ENTITY staff.patron_display.apply_penalty_dialog.radio_btn.alert.accesskey "t">
+<!ENTITY staff.patron_display.apply_penalty_dialog.radio_btn.block.label "Block">
+<!ENTITY staff.patron_display.apply_penalty_dialog.radio_btn.block.accesskey "k">
+<!ENTITY staff.patron_display.apply_penalty_dialog.cancel_btn.label "Cancel">
+<!ENTITY staff.patron_display.apply_penalty_dialog.cancel_btn.accesskey "C">
+<!ENTITY staff.patron_display.apply_penalty_dialog.apply_btn.label "Apply">
+<!ENTITY staff.patron_display.apply_penalty_dialog.apply_btn.accesskey "A">
+<!ENTITY staff.patron_display.edit_penalty_dialog.title "Modify Standing Penalty/Message">
+<!ENTITY staff.patron_display.edit_penalty_dialog.header "Modify Standing Penalty/Message">
+<!ENTITY staff.patron_display.edit_penalty_dialog.description "Notes, Alerts, Blocks">
+<!ENTITY staff.patron_display.edit_penalty_dialog.radio_btn.note.label "Note">
+<!ENTITY staff.patron_display.edit_penalty_dialog.radio_btn.note.accesskey "N">
+<!ENTITY staff.patron_display.edit_penalty_dialog.radio_btn.alert.label "Alert">
+<!ENTITY staff.patron_display.edit_penalty_dialog.radio_btn.alert.accesskey "t">
+<!ENTITY staff.patron_display.edit_penalty_dialog.radio_btn.block.label "Block">
+<!ENTITY staff.patron_display.edit_penalty_dialog.radio_btn.block.accesskey "k">
+<!ENTITY staff.patron_display.edit_penalty_dialog.cancel_btn.label "Cancel">
+<!ENTITY staff.patron_display.edit_penalty_dialog.cancel_btn.accesskey "C">
+<!ENTITY staff.patron_display.edit_penalty_dialog.apply_btn.label "Modify">
+<!ENTITY staff.patron_display.edit_penalty_dialog.apply_btn.accesskey "M">
 <!ENTITY staff.patron_editor_interface_label "Patron Edit">
 <!ENTITY staff.patron_interface_label "Patron ">
 <!ENTITY staff.patron_navbar.bills 'Bills'>
