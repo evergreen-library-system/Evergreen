@@ -82,10 +82,11 @@ sub process_request {
     # and pull the data directly from the socket
     eval {
         local $SIG{ALRM} = sub { die "alarm\n" }; 
-        alarm $wait_time;
-        while(my $n = $socket->sysread($buf, $bufsize)) {
+        do {
+            alarm $wait_time;
+            last unless $socket->sysread($buf, $bufsize);
             $data .= $buf;
-        }
+        } while(1);
         alarm 0;
     };
 
