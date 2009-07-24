@@ -39,7 +39,7 @@ patron.bills.prototype = {
 					obj.SHOW_ME_THE_BILLS,
 					[ ses(), obj.patron_id ]
 				);
-				//alert('obj.bills = ' + js2JSON(obj.bills));
+                if (typeof obj.bills.ilsevent != 'undefined' || typeof obj.bills == 'null') { throw(obj.bills); }
 
 				for (var i = 0; i < obj.bills.length; i++) {
 					if (instanceOf(obj.bills[i],mobts)) {
@@ -668,6 +668,7 @@ patron.bills.prototype = {
 						obj.SHOW_ME_THE_BILLS,	
 						[ ses(), obj.patron_id ]
 					);
+                    if (typeof obj.bills.ilsevent != 'undefined' || typeof obj.bills == 'null') { throw(obj.bills); }
 					for (var i = 0; i < obj.bills.length; i++) {
 						if (instanceOf(obj.bills[i],mobts)) {
 							obj.bills[i] = { 'transaction' : obj.bills[i] }
