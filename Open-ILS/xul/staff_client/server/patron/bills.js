@@ -23,10 +23,7 @@ patron.bills.prototype = {
 
 	'current_payments' : [],
 
-	'SHOW_ME_THE_BILLS' : 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative',
-	//'SHOW_ME_THE_BILLS' : 'FM_MBTS_IDS_RETRIEVE_ALL_STILL_OPEN',
-	//'SHOW_ME_THE_BILLS' : 'FM_MOBTS_HAVING_BALANCE',
-	/*'SHOW_ME_THE_BILLS' : 'FM_MOBTS_OPEN',*/
+    'SHOW_ME_THE_BILLS' : 'FM_MOBTS_HAVING_BALANCE.authoritative',
 
 	'refresh' : function(dont_show_me_the_money) {
 		var obj = this;
