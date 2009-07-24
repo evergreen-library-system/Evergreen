@@ -1430,6 +1430,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "user_transactions",
 	api_name	=> "open-ils.actor.user.transactions.have_balance",
+    authoritative => 1,
 	notes		=> <<"	NOTES");
 	Returns a list of all open user transactions (mbts objects) that have a balance
 	Params are login_session, user_id
@@ -1461,6 +1462,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "user_transactions",
 	api_name	=> "open-ils.actor.user.transactions.have_balance.fleshed",
+    authoritative => 1,
 	notes		=> <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transaction that has a balance (mbts objects), circ is the attached 
@@ -1494,6 +1496,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "user_transactions",
 	api_name	=> "open-ils.actor.user.transactions.have_balance.count",
+    authoritative => 1,
 	notes		=> <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transaction that has a balance (mbts objects), circ is the attached 
@@ -1505,6 +1508,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "user_transactions",
 	api_name	=> "open-ils.actor.user.transactions.have_balance.total",
+    authoritative => 1,
 	notes		=> <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transaction that has a balance (mbts objects), circ is the attached 
