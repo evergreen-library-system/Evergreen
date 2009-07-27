@@ -183,7 +183,7 @@
                         );
                     }
 				);
-				apply(node,'method',g.notifications[i].method ? g.notifications[i].method() : '');
+				apply(node,'method',g.notifications[i].method() ? g.notifications[i].method() : '');
 				apply(node,'note',g.notifications[i].note() ? g.notifications[i].note() : '');
 				apply(node,'notify_time',g.notifications[i].notify_time() ? g.notifications[i].notify_time().toString().substr(0,10) : '');
 			}
