@@ -643,6 +643,7 @@ cat.copy_buckets.prototype = {
                                             );
                                             var url = urls.XUL_COPY_STATUS;
                                             xulG.new_tab( url, {}, { 'barcodes' : barcodes });
+									        setTimeout(function(){obj.list2.on_all_fleshed = null;},0);
                                         } catch(E) {
                                             obj.error.standard_unexpected_error_alert('export to copy status',E);
                                         }
