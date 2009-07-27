@@ -2689,6 +2689,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="UPDATE_HOLD"><context link="hold" field="request_lib"/></create>
+				<retrieve permission="VIEW_USER"><context link="hold" field="request_lib"/></retrieve>
+				<update permission="UPDATE_HOLD"><context link="hold" field="request_lib"/></update>
+				<delete permission="UPDATE_HOLD"><context link="hold" field="request_lib"/></delete>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="aou" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit" reporter:label="Organizational Unit" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_id_seq">
