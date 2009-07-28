@@ -1519,6 +1519,7 @@ INSERT INTO permission.grp_perm_map VALUES (145, 4, 200, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (146, 4, 201, 1, false);
 
 -- Add basic acquisitions permissions to the Acquisitions group
+SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (6, (SELECT id FROM permission.perm_list WHERE code = 'GENERAL_ACQ'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (6, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PICKLIST'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (6, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_PICKLIST'), 1, false);
@@ -1535,8 +1536,6 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (7, (SE
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (7, (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_ACQ_FUND'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (7, (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_FUND'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (7, (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_CURRENCY_TYPE'), 1, false);
-
-SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
 
 -- Admin user account
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, 'admin', 'open-ils', 'Administrator', 'System Account', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
