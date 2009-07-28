@@ -33,6 +33,7 @@ use OpenILS::Application::Circ::Transit;
 use OpenILS::Application::Actor::Friends;
 use DateTime;
 use DateTime::Format::ISO8601;
+use OpenSRF::Utils qw/:datetime/;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
@@ -757,7 +758,7 @@ sub _hold_status {
         # the interval is greater than now, consider the hold to be in the virtual 
         # "on its way to the holds shelf" status. Return 5.
 
-        my $transit = $e->search_action_hold_transit({hold => $hold->id})->[0];
+        my $transit = $e->search_action_hold_transit_copy({hold => $hold->id})->[0];
         my $start_time = ($transit) ? $transit->dest_recv_time : $hold->capture_time;
         $start_time = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($start_time));
         my $end_time = $start_time->add(seconds => OpenSRF::Utils::interval_to_seconds($hs_wait_interval));
