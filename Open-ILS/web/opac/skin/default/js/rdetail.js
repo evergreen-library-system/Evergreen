@@ -305,7 +305,7 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 			var pcrud = new openils.PermaCrud({"authtoken": G.user.session});
 			var mfhd_rec = pcrud.retrieve("sre", holdings.id());
 			if (mfhd_rec) {
-				pcrud.delete(mfhd_rec);
+				pcrud.eliminate(mfhd_rec);
 				alert(dojo.string.substitute(opac_strings.DELETED_MFHD_RECORD, [holdings.id()]));
 			}
 		}, label:opac_strings.DELETE_MFHD}).placeAt(mfhd_edit, "last");
