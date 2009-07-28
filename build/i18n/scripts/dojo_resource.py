@@ -7,8 +7,8 @@ Requires polib from http://polib.googlecode.com
 
 Source event definitions are structured as follows:
 {
-    MSG_ID1: "This is a message with 1 variable - ${0}.",
-    MSG_ID2: "This is a message with two variables: ${0} and ${1}."
+    "MSG_ID1": "This is a message with 1 variable - ${0}.",
+    "MSG_ID2": "This is a message with two variables: ${0} and ${1}."
 }
 
 Note that this is a deliberately limited subset of the variable substitution
