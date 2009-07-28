@@ -119,7 +119,7 @@ class SQL(basel10n.BaseL10N):
                 if msgstr == '':
                     # Don't generate a stmt for an untranslated string
                     break
-                self.sql.append(insert % (identifier.group('class'), occurid, locale, msgstr))
+                self.sql.append(unicode(insert % (identifier.group('class'), occurid, locale, msgstr), 'utf_8'))
 
 def main():
     """

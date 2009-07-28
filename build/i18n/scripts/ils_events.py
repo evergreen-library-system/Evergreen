@@ -98,9 +98,9 @@ class ILSEvents(basel10n.BaseL10N):
 
                 if entry.msgstr == '':
                     # No translation available; use the en-US definition
-                    self.definitions.append(event % (int(numcode), textcode, self.locale, entry.msgid))
+                    self.definitions.append(unicode(event % (int(numcode), textcode, self.locale, entry.msgid), 'utf_8'))
                 else:
-                    self.definitions.append(event % (int(numcode), textcode, self.locale, entry.msgstr))
+                    self.definitions.append(unicode(event % (int(numcode), textcode, self.locale, entry.msgstr), 'utf_8'))
 
 class ILSEventHandler(xml.sax.handler.ContentHandler):
     """
