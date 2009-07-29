@@ -268,38 +268,45 @@ patron.util.ausp_columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_id', 'label' : commonStrings.getString('staff.csp_id_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.csp.id(); }
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return typeof my.csp == 'object' ? my.csp.id() : my.csp; }
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_name', 'label' : commonStrings.getString('staff.csp_name_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.csp.name(); }
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return typeof my.csp == 'object' ? my.csp.name() : data.hash.csp[ my.csp ].name(); }
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_label', 'label' : commonStrings.getString('staff.csp_label_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.csp.label(); }
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return typeof my.csp == 'object' ? my.csp.label() : data.hash.csp[ my.csp ].label(); }
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_block_list', 'label' : commonStrings.getString('staff.csp_block_list_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.csp.block_list(); }
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return typeof my.csp == 'object' ? my.csp.block_list() : data.hash.csp[ my.csp ].block_list(); }
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_block_circ', 'label' : commonStrings.getString('staff.csp_block_circ_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { 
-                return String( my.csp.block_list() ).match('CIRC') ? commonStrings.getString('staff.csp_block_circ_yes') : commonStrings.getString('staff.csp_block_circ_no'); 
+                var my_csp = typeof my.csp == 'object' ? my.csp : data.hash.csp[ my.csp ];
+                return String( my_csp.block_list() ).match('CIRC') ? commonStrings.getString('staff.csp_block_circ_yes') : commonStrings.getString('staff.csp_block_circ_no'); 
             }
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_block_renew', 'label' : commonStrings.getString('staff.csp_block_renew_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { 
-                return String( my.csp.block_list() ).match('RENEW') ? commonStrings.getString('staff.csp_block_renew_yes') : commonStrings.getString('staff.csp_block_renew_no'); 
+                var my_csp = typeof my.csp == 'object' ? my.csp : data.hash.csp[ my.csp ];
+                return String( my_csp.block_list() ).match('RENEW') ? commonStrings.getString('staff.csp_block_renew_yes') : commonStrings.getString('staff.csp_block_renew_no'); 
 
             }
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'csp_block_hold', 'label' : commonStrings.getString('staff.csp_block_hold_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { 
-                return String( my.csp.block_list() ).match('HOLD') ?  commonStrings.getString('staff.csp_block_hold_yes') : commonStrings.getString('staff.csp_block_hold_no'); 
+                var my_csp = typeof my.csp == 'object' ? my.csp : data.hash.csp[ my.csp ];
+                return String( my_csp.block_list() ).match('HOLD') ?  commonStrings.getString('staff.csp_block_hold_yes') : commonStrings.getString('staff.csp_block_hold_no'); 
             }
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'ausp_id', 'label' : commonStrings.getString('staff.ausp_id_label'), 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.ausp ? my.ausp.id() : ''; }
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'ausp_staff', 'label' : commonStrings.getString('staff.ausp_staff_label'), 'flex' : 1,
