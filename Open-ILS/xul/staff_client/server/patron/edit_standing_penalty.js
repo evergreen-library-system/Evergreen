@@ -30,6 +30,7 @@ function edit_penalty_init() {
         }
 
         /* set widget values */
+        document.getElementById('note_tb').value = xul_param('note',{'modal_xulG':true});
         document.getElementById('csp_menupopup').setAttribute('value',xul_param('id',{'modal_xulG':true}));
         if (xul_param('id',{'modal_xulG':true})==21) { // SILENT_NOTE
             document.getElementById('note_btn').checked = true;
