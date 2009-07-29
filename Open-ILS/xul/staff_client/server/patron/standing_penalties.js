@@ -93,8 +93,7 @@ function populate_list() {
                     }
                 }
             };
-            rows[ xulG.patron.standing_penalties()[i].id() ] = function(p){ return p; }(row_params); // careful with vars in loops
-            list.append( row_params );
+            rows[ xulG.patron.standing_penalties()[i].id() ] = list.append( row_params );
         };
 
     } catch(E) {
@@ -160,8 +159,7 @@ function generate_request_handler_for_penalty_apply(penalty,id) {
                         }
                     }
                 };
-                rows[ penalty.id() ] = row_params;
-                list.append( row_params );
+                rows[ penalty.id() ] = list.append( row_params );
             }
             /*
             if (xulG && typeof xulG.refresh == 'function') {
