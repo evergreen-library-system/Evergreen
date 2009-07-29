@@ -58,7 +58,7 @@
     </toolbox>
     <textbox id="note_tb" multiline="true" />
     <hbox>
-        <hbox id="initials_box">
+        <hbox id="initials_box" hidden="true">
             <label control="initials_tb" 
                 value="&staff.patron_display.edit_penalty_dialog.initials_entry.label;" 
                 accesskey="&staff.patron_display.edit_penalty_dialog.initials_entry.accesskey;"/>
