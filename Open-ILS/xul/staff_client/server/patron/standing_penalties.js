@@ -81,7 +81,7 @@ function handle_selection (ev) { // handler for list row selection event
 function populate_list() {
     try {
 
-        rows = [];
+        rows = {};
         list.clear();
         for (var i = 0; i < xulG.patron.standing_penalties().length; i++) {
             var row_params = {
@@ -93,7 +93,8 @@ function populate_list() {
                     }
                 }
             };
-            rows[ xulG.patron.standing_penalties()[i].id() ] = list.append( row_params );
+            rows[ xulG.patron.standing_penalties()[i].id() ] = function(p){ return p; }(row_params); // careful with vars in loops
+            list.append( row_params );
         };
 
     } catch(E) {
@@ -159,7 +160,8 @@ function generate_request_handler_for_penalty_apply(penalty,id) {
                         }
                     }
                 };
-                rows[ req ] = list.append( row_params );
+                rows[ penalty.id() ] = row_params;
+                list.append( row_params );
             }
             if (xulG && typeof xulG.refresh == 'function') {
                 xulG.refresh();
@@ -268,7 +270,10 @@ function handle_edit_penalty(ev) {
                         oncomplete : function(r) {
                             try {
                                 var res = openils.Util.readResponse(r,true);
-                                list.refresh_row( rows[ ids[i] ] );
+                                var row_params = rows[ ids[i] ];
+                                row_params.row.my.ausp = penalty;
+                                row_params.row.my.csp = penalty.standing_penalty();
+                                list.refresh_row( row_params );
                                 document.getElementById('progress').hidden = true;
                             } catch(E) {
                                 alert(E);
