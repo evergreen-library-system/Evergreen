@@ -40,8 +40,7 @@
         <toolbar>
             <toolbarbutton id="note_btn" 
                 type="radio" group="radio" style="-moz-user-focus: normal" 
-                label="&staff.patron_display.edit_penalty_dialog.radio_btn.note.label;" accesskey="&staff.patron_display.edit_penalty_dialog.radio_btn.note.accesskey;" 
-                checked="true"/>
+                label="&staff.patron_display.edit_penalty_dialog.radio_btn.note.label;" accesskey="&staff.patron_display.edit_penalty_dialog.radio_btn.note.accesskey;" />
             <toolbarbutton id="alert_btn" 
                 type="radio" group="radio" style="-moz-user-focus: normal" 
                 label="&staff.patron_display.edit_penalty_dialog.radio_btn.alert.label;" accesskey="&staff.patron_display.edit_penalty_dialog.radio_btn.alert.accesskey;" />
