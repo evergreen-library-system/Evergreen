@@ -449,7 +449,7 @@ util.error.prototype = {
 			c	= Text for confirmation checkbox.  null for no confirm
 		*/
 
-		dump('yns_alert:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
+		dump('yns_alert_original:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 		this.sound.bad();
@@ -492,7 +492,7 @@ util.error.prototype = {
 		
 		var rv = promptService.confirmEx(window,title, ss, flags, b1, b2, b3, c, check);
 		if (c && !check.value) {
-			return this.yns_alert(ss,title,b1,b2,b3,c);
+			return this.yns_alert_original(ss,title,b1,b2,b3,c);
 		}
 		return rv;
 	},
