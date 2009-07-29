@@ -238,7 +238,6 @@ function handle_edit_penalty(ev) {
         if (ids.length > 0) {
             for (var i = 0; i < ids.length; i++) {
                 var penalty = util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.id() == ids[i]; } );
-                alert('penalty = ' + js2JSON(penalty));
                 var my_xulG = win.open(
                     urls.XUL_EDIT_STANDING_PENALTY,
                     'new_standing_penalty',
