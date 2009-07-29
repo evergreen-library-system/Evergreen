@@ -1227,6 +1227,8 @@
 <!ENTITY staff.patron_display.penalty.menu.actions.remove.accesskey "R">
 <!ENTITY staff.patron_display.penalty.menu.actions.edit.label "Modify Penalty/Message">
 <!ENTITY staff.patron_display.penalty.menu.actions.edit.accesskey "M">
+<!ENTITY staff.patron_display.penalty.menu.actions.archive.label "Archive Penalty/Message">
+<!ENTITY staff.patron_display.penalty.menu.actions.archive.accesskey "A">
 <!ENTITY staff.patron_display.apply_penalty_dialog.title "Apply Standing Penalty/Message">
 <!ENTITY staff.patron_display.apply_penalty_dialog.header "Apply Standing Penalty/Message">
 <!ENTITY staff.patron_display.apply_penalty_dialog.description "Notes, Alerts, Blocks">

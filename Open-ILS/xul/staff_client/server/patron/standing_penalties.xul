@@ -35,6 +35,7 @@
 		<command id="cmd_apply_penalty" />
 		<command id="cmd_remove_penalty" disabled="true"/>
 		<command id="cmd_edit_penalty" disabled="true"/>
+		<command id="cmd_archive_penalty" disabled="true"/>
 		<command id="cmd_retrieve_archived_penalties" />
 		<command id="cmd_show_all" />
 		<command id="cmd_show_note" />
@@ -75,6 +76,7 @@
                             <menupopup>
                                 <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron-display.menu.actions.remove.accesskey;"/>
                                 <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron-display.menu.actions.edit.accesskey;"/>
+                                <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron-display.menu.actions.archive.accesskey;"/>
                             </menupopup>
                         </toolbarbutton>
                     </toolbar>
@@ -114,6 +116,7 @@
         <popup id="ausp_actions" position="at_pointer">
             <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron-display.menu.actions.remove.accesskey;"/>
             <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron-display.menu.actions.edit.accesskey;"/>
+            <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron-display.menu.actions.archive.accesskey;"/>
         </popup>
     </popupset>
 

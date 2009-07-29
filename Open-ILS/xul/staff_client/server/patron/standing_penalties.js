@@ -34,6 +34,7 @@ function penalty_init() {
         document.getElementById('cmd_apply_penalty').addEventListener('command', handle_apply_penalty, false);
         document.getElementById('cmd_remove_penalty').addEventListener('command', handle_remove_penalty, false);
         document.getElementById('cmd_edit_penalty').addEventListener('command', handle_edit_penalty, false);
+        document.getElementById('cmd_archive_penalty').addEventListener('command', handle_archive_penalty, false);
         document.getElementById('cmd_retrieve_archived_penalties').addEventListener('command', handle_retrieve_archived_penalties, false);
         populate_list();
         default_focus();
@@ -97,9 +98,11 @@ function generate_handle_selection(which_list) {
             if (ids.length > 0) {
                 document.getElementById('cmd_remove_penalty').setAttribute('disabled','false');
                 document.getElementById('cmd_edit_penalty').setAttribute('disabled','false');
+                document.getElementById('cmd_archive_penalty').setAttribute('disabled','false');
             } else {
                 document.getElementById('cmd_remove_penalty').setAttribute('disabled','true');
                 document.getElementById('cmd_edit_penalty').setAttribute('disabled','true');
+                document.getElementById('cmd_archive_penalty').setAttribute('disabled','true');
             }
         }
     };
@@ -299,6 +302,7 @@ function handle_edit_penalty(ev) {
                         oncomplete : function(r) {
                             try {
                                 var res = openils.Util.readResponse(r,true);
+                                /* FIXME - test for success */
                                 var row_params = rows[ ids[i] ];
                                 row_params.row.my.ausp = penalty;
                                 row_params.row.my.csp = penalty.standing_penalty();
@@ -320,6 +324,62 @@ function handle_edit_penalty(ev) {
 
     } catch(E) {
         var err_prefix = 'standing_penalties.js -> handle_edit_penalty() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+}
+
+function handle_archive_penalty(ev) {
+    try {
+        var outstanding_requests = 0;
+        var sel = list.retrieve_selection();
+        var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
+        if (ids.length > 0) {
+            document.getElementById('progress').hidden = false;
+            for (var i = 0; i < ids.length; i++) {
+                outstanding_requests++;
+                var penalty = util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.id() == ids[i]; } );
+                penalty.ischanged( 1 );
+                penalty.stop_date( util.date.formatted_date(new Date(),'%F') );
+                dojo.require('openils.PermaCrud');
+                var pcrud = new openils.PermaCrud( { authtoken :ses() });
+                pcrud.apply( penalty, {
+                    onerror : function(r) {
+                        try {
+                            var res = openils.Util.readResponse(r,true);
+                            error.standard_unexpected_error_alert(patronStrings.getString('staff.patron.standing_penalty.update_error'),res);
+                        } catch(E) {
+                            alert(E);
+                        }
+                        if (--outstanding_requests==0) {
+                            document.getElementById('progress').hidden = true;
+                        }
+                    },
+                    oncomplete : function(r) {
+                        try {
+                            var res = openils.Util.readResponse(r,true);
+                            /* FIXME - test for success */
+                            var node = rows[ ids[i] ].my_node;
+                            var parentNode = node.parentNode;
+                            parentNode.removeChild( node );
+                            delete(rows[ ids[i] ]);
+                        } catch(E) {
+                            alert(E);
+                        }
+                        if (--outstanding_requests==0) {
+                            document.getElementById('progress').hidden = true;
+                        }
+                    }
+                });
+            } 
+            /*
+            if (xulG && typeof xulG.refresh == 'function') {
+                xulG.refresh();
+            }
+            */
+        }
+
+    } catch(E) {
+        var err_prefix = 'standing_penalties.js -> handle_archive_penalty() : ';
         if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
     }
 }
