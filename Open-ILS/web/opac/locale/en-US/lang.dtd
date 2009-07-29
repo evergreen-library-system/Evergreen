@@ -1198,6 +1198,8 @@
 <!ENTITY staff.patron_display.verify_password.accesskey 'P'>
 <!ENTITY staff.patron_display.toggle_summary.label 'Toggle Summary'>
 <!ENTITY staff.patron_display.toggle_summary.accesskey 'T'>
+<!ENTITY staff.patron_display.delete_patron.label 'Delete Patron Account'>
+<!ENTITY staff.patron_display.delete_patron.accesskey 'D'>
 <!ENTITY staff.patron_display.mailing.city.label 'Mailing City:'>
 <!ENTITY staff.patron_display.mailing.post_code.label 'Mailing ZIP:'>
 <!ENTITY staff.patron_display.mailing.state.label 'Mailing State:'>

@@ -106,6 +106,7 @@
 		<command id="cmd_patron_retrieve" />
 		<command id="cmd_patron_merge" />
 		<command id="cmd_patron_toggle_summary" />
+		<command id="cmd_patron_delete" />
 		<command id="cmd_search_form" />
 		<command id="cmd_verify_credentials" />
 		<command id="cmd_perm_editor" />

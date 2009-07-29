@@ -149,6 +149,7 @@ const api = {
     'FM_AU_MERGE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.merge' },
 	'FM_AU_NEW_USERGROUP' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.usergroup.new' },
 	'FM_AU_UPDATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.update' },
+	'FM_AU_DELETE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.delete' },
 	'FM_AUN_RETRIEVE_ALL' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.retrieve.all', 'cacheable' : false, 'ttl' : 60000 },
 	'FM_AUN_RETRIEVE_ALL.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.retrieve.all.authoritative', 'cacheable' : false, 'ttl' : 60000 },
 	'FM_AUN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.create' },

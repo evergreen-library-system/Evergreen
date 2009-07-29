@@ -95,8 +95,9 @@
                                     <menuitem label="&staff.patron.info.group.label;" accesskey="&staff.patron.info.group.accesskey;" command="cmd_patron_info_groups"/>
                                     <menuitem label="&staff.patron_display.verify_password.label;" accesskey="&staff.patron_display.verify_password.accesskey;" command="cmd_verify_credentials"/>
                                     <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_perm_editor"/>
+                                    <menuitem label="&staff.patron_display.toggle_summary.label;" accesskey="&staff.patron_display.toggle_summary.accesskey;" command="cmd_patron_toggle_summary"/>
+                                    <menuitem label="&staff.patron_display.delete_patron.label;" accesskey="&staff.patron_display.delete_patron.accesskey;" command="cmd_patron_delete"/>
                                     <menuitem label="&staff.patron.display_overlay.exit.label;" accesskey="&staff.patron.display_overlay.exit.accesskey;" command="cmd_patron_exit"/>
-                                    <menuitem label="&staff.patron_display.toggle_summary.label;" accesskey="&staff.patron_display.toggle_summary.label;" command="cmd_patron_toggle_summary"/>
                                 </menupopup>
                             </button>
                         </row>

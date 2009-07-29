@@ -119,6 +119,39 @@ patron.display.prototype = {
                             document.getElementById('splitter_grippy').doCommand();
                         }
                     ],
+                    'cmd_patron_delete' : [
+                        ['command'],
+                        function(ev) {
+                            try {
+                                if (get_bool( obj.patron.super_user() )) {
+                                    alert($("patronStrings").getString('staff.patron.display.cmd_patron_delete.deny_deletion_of_super_user'));
+                                    return;
+                                }
+                                if (obj.patron.id() == obj.OpenILS.data.list.au[0].id()) {
+                                    alert($("patronStrings").getString('staff.patron.display.cmd_patron_delete.deny_deletion_of_self'));
+                                    return;
+                                }
+                                var rv = obj.error.yns_alert_original(
+                                    $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dialog.message'),
+                                    $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dialog.title'),
+                                    $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dialog.okay'),
+                                    $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dialog.cancel'),
+                                    null,
+                                    $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dialog.confirmation')
+                                );
+                                //alert('rv = ' + rv + ' (' + typeof rv + ')');
+                                if (rv == 0) {
+                                    obj.network.simple_request(
+                                        'FM_AU_DELETE',
+                                        [ ses(), obj.patron.id() ]
+                                    );
+                                }
+                                obj.refresh_all();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('Error in server/patron/display.js -> cmd_patron_delete: ',E);
+                            }
+                        }
+                    ],
 					'cmd_search_form' : [
 						['command'],
 						function(ev) {
