@@ -163,9 +163,11 @@ function generate_request_handler_for_penalty_apply(penalty,id) {
                 rows[ penalty.id() ] = row_params;
                 list.append( row_params );
             }
+            /*
             if (xulG && typeof xulG.refresh == 'function') {
                 xulG.refresh();
             }
+            */
             document.getElementById('progress').hidden = true;
 
         } catch(E) {
@@ -188,9 +190,11 @@ function handle_remove_penalty(ev) {
         } 
         funcs.push(
             function() {
+                /*
                 if (xulG && typeof xulG.refresh == 'function') {
                     xulG.refresh();
                 }
+                */
                 document.getElementById('progress').hidden = true;
             }
         );
