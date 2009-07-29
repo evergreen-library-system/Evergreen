@@ -58,9 +58,15 @@
     </toolbox>
     <textbox id="note_tb" multiline="true" />
     <hbox>
+        <hbox id="initials_box">
+            <label control="initials_tb" 
+                value="&staff.patron_display.apply_penalty_dialog.initials_entry.label;" 
+                accesskey="&staff.patron_display.apply_penalty_dialog.initials_entry.accesskey;"/>
+            <textbox id="initials_tb" />
+        </hbox>
         <spacer flex="1"/>
         <button id="cancel_btn" label="&staff.patron_display.apply_penalty_dialog.cancel_btn.label;" accesskey="&staff.patron_display.apply_penalty_dialog.cancel_btn.accesskey;" />
-        <button id="apply_btn" label="&staff.patron_display.apply_penalty_dialog.apply_btn.label;" accesskey="&staff.patron_display.apply_penalty_dialog.apply_btn.label;" />
+        <button id="apply_btn" label="&staff.patron_display.apply_penalty_dialog.apply_btn.label;" accesskey="&staff.patron_display.apply_penalty_dialog.apply_btn.accesskey;" />
     </hbox>
 </window>
 

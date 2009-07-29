@@ -1782,6 +1782,11 @@ INSERT into config.org_unit_setting_type
   null,
   'bool' ),
 
+( 'ui.circ.standing_penalty.require_initials',
+  'Require staff initials for entry/edit of standing penalties.',
+  null,
+  'bool' ),
+
 ( 'ui.general.button_bar',
   'Button bar',
   null,

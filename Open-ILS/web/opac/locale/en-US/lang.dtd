@@ -1239,6 +1239,8 @@
 <!ENTITY staff.patron_display.apply_penalty_dialog.cancel_btn.accesskey "C">
 <!ENTITY staff.patron_display.apply_penalty_dialog.apply_btn.label "Apply">
 <!ENTITY staff.patron_display.apply_penalty_dialog.apply_btn.accesskey "A">
+<!ENTITY staff.patron_display.apply_penalty_dialog.initials_entry.label "Initials">
+<!ENTITY staff.patron_display.apply_penalty_dialog.initials_entry.accesskey "I">
 <!ENTITY staff.patron_display.edit_penalty_dialog.title "Modify Standing Penalty/Message">
 <!ENTITY staff.patron_display.edit_penalty_dialog.header "Modify Standing Penalty/Message">
 <!ENTITY staff.patron_display.edit_penalty_dialog.description "Notes, Alerts, Blocks">
@@ -1252,6 +1254,8 @@
 <!ENTITY staff.patron_display.edit_penalty_dialog.cancel_btn.accesskey "C">
 <!ENTITY staff.patron_display.edit_penalty_dialog.apply_btn.label "Modify">
 <!ENTITY staff.patron_display.edit_penalty_dialog.apply_btn.accesskey "M">
+<!ENTITY staff.patron_display.edit_penalty_dialog.initials_entry.label "Initials">
+<!ENTITY staff.patron_display.edit_penalty_dialog.initials_entry.accesskey "I">
 <!ENTITY staff.patron_editor_interface_label "Patron Edit">
 <!ENTITY staff.patron_interface_label "Patron ">
 <!ENTITY staff.patron_navbar.bills 'Bills'>

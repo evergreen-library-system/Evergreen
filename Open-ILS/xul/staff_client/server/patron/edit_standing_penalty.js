@@ -24,6 +24,11 @@ function edit_penalty_init() {
 
         build_penalty_menu();
 
+        var show_initials = String( data.hash.aous['ui.circ.standing_penalty.require_initials'] ) == 'true';
+        if (show_initials) {
+            document.getElementById('initials_box').hidden = false;
+        }
+
         /* set widget values */
         document.getElementById('csp_menupopup').setAttribute('value',xul_param('id',{'modal_xulG':true}));
         if (xul_param('id',{'modal_xulG':true})==21) { // SILENT_NOTE
@@ -81,10 +86,19 @@ function edit_penalty_init() {
         document.getElementById('apply_btn').addEventListener(
             'command', 
             function() {
+                var note = document.getElementById('note_tb').value;
+                if (!document.getElementById('initials_box').hidden) {
+                    var initials_tb = document.getElementById('initials_tb');
+                    if (initials_tb.value == '') {
+                        initials_tb.focus(); return;
+                    } else {
+                        note = note + ' - ' + initials_tb.value;
+                    }
+                }
                 update_modal_xulG(
                     {
                         'id' : document.getElementById('csp_menupopup').getAttribute('value'),
-                        'note' : document.getElementById('note_tb').value,
+                        'note' : note,
                         'modify' : 1
                     }
                 )
