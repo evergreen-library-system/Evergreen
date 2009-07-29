@@ -35,6 +35,7 @@
 		<command id="cmd_apply_penalty" />
 		<command id="cmd_remove_penalty" disabled="true"/>
 		<command id="cmd_edit_penalty" disabled="true"/>
+		<command id="cmd_retrieve_archived_penalties" />
 		<command id="cmd_show_all" />
 		<command id="cmd_show_note" />
 		<command id="cmd_show_alert" />
@@ -49,13 +50,11 @@
             <hbox flex="1">
                 <toolbox flex="1">
                     <toolbar>
-                        <toolbaritem> <!-- why not a toolbarbutton?  I like the way this looks better -->
-                            <button id="apply_btn" 
-                                command="cmd_apply_penalty" 
-                                label="&staff.patron_display.penalty.menu.apply.label;" 
-                                accesskey="&staff.patron_display.penalty.menu.apply.accesskey;" 
-                                style="-moz-user-focus: normal" />
-                        </toolbaritem>
+                        <toolbarbutton id="apply_btn" 
+                            command="cmd_apply_penalty" 
+                            label="&staff.patron_display.penalty.menu.apply.label;" 
+                            accesskey="&staff.patron_display.penalty.menu.apply.accesskey;" 
+                            style="-moz-user-focus: normal" />
                         <toolbarseparator />
                         <!--
                         <toolbarbutton command="cmd_show_all" label="All" accesskey="A" type="radio" group="radio" style="-moz-user-focus: normal" checked="true"/>
@@ -82,7 +81,33 @@
                 </toolbox>
             </hbox>
         </vbox>
-        <tree id="ausp_list" flex="1" enableColumnDrag="true" context="ausp_actions"/>
+        <tree id="ausp_list" flex="1" enableColumnDrag="true" context="ausp_actions" />
+	</groupbox>
+    <splitter id="list_splitter" collapse="after" persist="state hidden"><grippy id="splitter_grippy"/></splitter>
+	<groupbox id="archived_penalty_groupbox" flex="1" class="my_overflow">
+		<caption id="penalty_caption" label="&staff.patron_display.archived_penalty.caption;"/>
+        <vbox flex="0">
+            <toolbox flex="1">
+                <toolbar>
+                    <toolbarspring/>
+                    <toolbaritem>
+                        <progressmeter id="archived_progress" flex="1" hidden="true" mode="undetermined"/>
+                    </toolbaritem>
+                    <toolbaritem>
+                        <label value="&staff.patron_display.archived_penalty.start_date.label;" accesskey="&staff.patron_display.archived_penalty.start_date.accesskey;" control="date1"/>
+                        <datepicker id="date1" type="popup" />
+                        <label value="&staff.patron_display.archived_penalty.end_date.label;" accesskey="&staff.patron_display.archived_penalty.end_date.accesskey;" control="date2"/>
+                        <datepicker id="date2" type="popup" />
+                    </toolbaritem>
+                    <toolbarbutton id="retrieve_btn" 
+                        label="&staff.patron_display.archived_penalty.retrieve.label;" 
+                        accesskey="&staff.patron_display.archived_penalty.retrieve.accesskey;" 
+                        command="cmd_retrieve_archived_penalties"
+                        style="-moz-user-focus: normal" />
+                </toolbar>
+            </toolbox>
+        </vbox>
+        <tree id="archived_ausp_list" flex="1" enableColumnDrag="true" />
 	</groupbox>
 
     <popupset id="csp_popupset">

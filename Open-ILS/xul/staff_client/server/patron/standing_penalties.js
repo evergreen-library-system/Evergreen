@@ -1,4 +1,4 @@
-var list; var data; var error; var net; var rows;
+var list; var archived_list; var data; var error; var net; var rows; var archived_rows;
 
 function default_focus() { document.getElementById('apply_btn').focus(); } // parent interfaces often call this
 
@@ -29,9 +29,12 @@ function penalty_init() {
         JSAN.use('util.widgets');
 
         init_list();
+        init_archived_list();
+        document.getElementById('date1').year = document.getElementById('date1').year - 1;
         document.getElementById('cmd_apply_penalty').addEventListener('command', handle_apply_penalty, false);
         document.getElementById('cmd_remove_penalty').addEventListener('command', handle_remove_penalty, false);
         document.getElementById('cmd_edit_penalty').addEventListener('command', handle_edit_penalty, false);
+        document.getElementById('cmd_retrieve_archived_penalties').addEventListener('command', handle_retrieve_archived_penalties, false);
         populate_list();
         default_focus();
 
@@ -50,7 +53,7 @@ function init_list() {
                 'columns' : patron.util.ausp_columns({}),
                 'map_row_to_columns' : patron.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row,
-                'on_select' : handle_selection
+                'on_select' : generate_handle_selection(list)
             } 
         );
 
@@ -60,22 +63,46 @@ function init_list() {
     }
 }
 
+function init_archived_list() {
+    try {
+
+        archived_list = new util.list( 'archived_ausp_list' );
+        archived_list.init( 
+            {
+                'columns' : patron.util.ausp_columns({}),
+                'map_row_to_columns' : patron.util.std_map_row_to_columns(),
+                'retrieve_row' : retrieve_row, // We're getting fleshed objects for now, but if we move to just ausp.id's, then we'll need to put a per-id fetcher in here
+                'on_select' : generate_handle_selection(archived_list)
+            } 
+        );
+
+    } catch(E) {
+        var err_prefix = 'standing_penalties.js -> init_archived_list() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+}
+
+
 function retrieve_row (params) { // callback function for fleshing rows in a list
     params.row_node.setAttribute('retrieve_id',params.row.my.ausp.id()); 
     params.on_retrieve(params.row); 
     return params.row; 
 }
 
-function handle_selection (ev) { // handler for list row selection event
-    var sel = list.retrieve_selection();
-    var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
-    if (ids.length > 0) {
-        document.getElementById('cmd_remove_penalty').setAttribute('disabled','false');
-        document.getElementById('cmd_edit_penalty').setAttribute('disabled','false');
-    } else {
-        document.getElementById('cmd_remove_penalty').setAttribute('disabled','true');
-        document.getElementById('cmd_edit_penalty').setAttribute('disabled','true');
-    }
+function generate_handle_selection(which_list) {
+    return function (ev) { // handler for list row selection event
+        var sel = which_list.retrieve_selection();
+        var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
+        if (which_list == list) { // top list
+            if (ids.length > 0) {
+                document.getElementById('cmd_remove_penalty').setAttribute('disabled','false');
+                document.getElementById('cmd_edit_penalty').setAttribute('disabled','false');
+            } else {
+                document.getElementById('cmd_remove_penalty').setAttribute('disabled','true');
+                document.getElementById('cmd_edit_penalty').setAttribute('disabled','true');
+            }
+        }
+    };
 }
 
 function populate_list() {
@@ -114,7 +141,7 @@ function handle_apply_penalty(ev) {
             {}
         );
 
-        if (!my_xulG.id) { alert('cancelled'); return 0; }
+        if (!my_xulG.id) { return 0; }
 
         var penalty = new ausp();
         penalty.usr( xulG.patron.id() );
@@ -293,6 +320,63 @@ function handle_edit_penalty(ev) {
 
     } catch(E) {
         var err_prefix = 'standing_penalties.js -> handle_edit_penalty() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+}
+
+function handle_retrieve_archived_penalties() {
+    try {
+        document.getElementById('archived_progress').hidden = false;
+        archived_list.clear(); archived_rows = {};
+        JSAN.use('util.date');
+        dojo.require('openils.PermaCrud');
+        var pcrud = new openils.PermaCrud( { authtoken :ses() });
+        pcrud.search(
+            'ausp',
+            {
+                usr : xulG.patron.id(),
+                stop_date : {
+                    'between' : [ 
+                        document.getElementById('date1').value, 
+                        document.getElementById('date2').value == util.date.formatted_date(new Date(),'%F') ? 'now' : document.getElementById('date2').value
+                    ]
+                }
+            },
+            {
+                async : true,
+                streaming : true,
+                onerror : function(r) {
+                    try {
+                        var res = openils.Util.readResponse(r,true);
+                        error.standard_unexpected_error_alert(patronStrings.getString('staff.patron.standing_penalty.retrieve_error'),res);
+                    } catch(E) {
+                        error.standard_unexpected_error_alert(patronStrings.getString('staff.patron.standing_penalty.retrieve_error'),r);
+                    }
+                },
+                oncomplete : function() {
+                    document.getElementById('archived_progress').hidden = true;
+                },
+                onresponse : function(r) {
+                    try {
+                        var my_ausp = openils.Util.readResponse(r);
+                        var row_params = {
+                            'row' : {
+                                'my' : {
+                                    'ausp' : my_ausp,
+                                    'csp' : my_ausp.standing_penalty(),
+                                    'au' : xulG.patron,
+                                }
+                            }
+                        };
+                        archived_rows[ my_ausp.id() ] = archived_list.append( row_params );
+                    } catch(E) {
+                        error.standard_unexpected_error_alert(patronStrings.getString('staff.patron.standing_penalty.retrieve_error'),E);
+                    }
+                }
+            }
+        );
+    } catch(E) {
+        var err_prefix = 'standing_penalties.js -> handle_retrieve_archived_penalties() : ';
         if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
     }
 }

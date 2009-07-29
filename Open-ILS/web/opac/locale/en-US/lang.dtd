@@ -1218,6 +1218,7 @@
 <!ENTITY staff.patron_display.status.caption 'Status'>
 <!ENTITY staff.patron_display_interface_label "Patron">
 <!ENTITY staff.patron_display.penalty.caption "Staff-Generated Penalties/Messages">
+<!ENTITY staff.patron_display.archived_penalty.caption "Archived Penalties/Messages">
 <!ENTITY staff.patron_display.penalty.menu.actions.label "Actions for these Penalties/Messages">
 <!ENTITY staff.patron_display.penalty.menu.actions.accesskey "P">
 <!ENTITY staff.patron_display.penalty.menu.apply.label "Apply Standing Penalty/Message">
@@ -1256,6 +1257,12 @@
 <!ENTITY staff.patron_display.edit_penalty_dialog.apply_btn.accesskey "M">
 <!ENTITY staff.patron_display.edit_penalty_dialog.initials_entry.label "Initials">
 <!ENTITY staff.patron_display.edit_penalty_dialog.initials_entry.accesskey "I">
+<!ENTITY staff.patron_display.archived_penalty.start_date.label "Start Date:">
+<!ENTITY staff.patron_display.archived_penalty.start_date.accesskey "">
+<!ENTITY staff.patron_display.archived_penalty.end_date.label "End Date:">
+<!ENTITY staff.patron_display.archived_penalty.end_date.accesskey "">
+<!ENTITY staff.patron_display.archived_penalty.retrieve.label "Retrieve Archived Penalties">
+<!ENTITY staff.patron_display.archived_penalty.retrieve.accesskey "R">
 <!ENTITY staff.patron_editor_interface_label "Patron Edit">
 <!ENTITY staff.patron_interface_label "Patron ">
 <!ENTITY staff.patron_navbar.bills 'Bills'>
