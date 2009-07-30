@@ -317,7 +317,8 @@ sub apply_invalid_addr_penalty {
     my $enforce = $U->ou_ancestor_setting_value(
         $patron->home_ou, 'circ.patron_invalid_address_apply_penalty') || 0;
 
-    my $addrs = $e->search_actor_user_address({usr => $patron->id, valid => 'f'}, {idlist => 1});
+    my $addrs = $e->search_actor_user_address(
+        {usr => $patron->id, valid => 'f', id => {'>' => 0}}, {idlist => 1});
     my $addr_count = scalar(@$addrs);
 
     if($addr_count == 0 and $addr_penalty) {
