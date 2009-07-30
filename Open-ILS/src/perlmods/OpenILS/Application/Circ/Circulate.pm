@@ -832,7 +832,8 @@ sub run_patron_permit_scripts {
 
     } else {
 
-        # --------------------------------------------------------------------- # Now run the patron permit script 
+        # --------------------------------------------------------------------- 
+        # # Now run the patron permit script 
         # ---------------------------------------------------------------------
         $runner->load($self->circ_permit_patron);
         my $result = $runner->run or 
@@ -1327,42 +1328,56 @@ sub find_related_user_hold {
     return undef unless $U->ou_ancestor_setting_value(        
         $e->requestor->ws_ou, 'circ.checkout_fills_related_hold', $e);
 
-    my $args = [
-        {   
-            cancel_time => undef, 
-            fulfillment_time => undef,
-            usr => $patron->id,
+    # find the oldest unfulfilled hold that has not yet hit the holds shelf.
+    my $args = {
+        select => {ahr => ['id']}, 
+        from => {
+            ahr => {
+                acp => {
+                    field => 'id', 
+                    fkey => 'current_copy',
+                    type => 'left' # there may be no current_copy
+                }
+            }
+        }, 
+        where => {
+            '+ahr' => {
+                usr => $patron->id,
+                fulfillment_time => undef,
+                cancel_time => undef,
+               '-or' => [
+                    {expire_time => undef},
+                    {expire_time => {'>' => 'now'}}
+                ]
+            },
             '-or' => [
-                {expire_time => undef},
-                {expire_time => {'>' => 'now'}}
-            ]
-        }, {
-            order_by => {ahr => 'request_time asc'}, 
-            limit => 1
-        }
-    ];
+                {
+                    '+ahr' => { 
+                        hold_type => 'V',
+                        target => $self->volume->id
+                    }
+                },
+                { 
+                    '+ahr' => { 
+                        hold_type => 'T',
+                        target => $self->title->id
+                    }
+                },
+            ],
+            '+acp' => {
+                '-or' => [
+                    {id => undef}, # left-join copy may be nonexistent
+                    {status => {'!=' => OILS_COPY_STATUS_ON_HOLDS_SHELF}},
+                ]
+            }
+        },
+        order_by => {ahr => {request_time => {direction => 'asc'}}},
+        limit => 1
+    };
 
-    $args->[0]->{hold_type} = 'V';
-    $args->[0]->{target} = $self->volume->id;
-    my $v_hold = $e->search_action_hold_request($args)->[0];
-
-    $args->[0]->{hold_type} = 'T';
-    $args->[0]->{target} = $self->title->id;
-    my $t_hold = $e->search_action_hold_request($args)->[0];
-
-    if($t_hold and $v_hold) {
-
-        my $t_date = DateTime::Format::ISO8601->new->parse_datetime(
-            clense_ISO8601($t_hold->request_time));
-
-        my $v_date = DateTime::Format::ISO8601->new->parse_datetime(
-            clense_ISO8601($v_hold->request_time));
-
-        return $t_hold if $t_date < $v_date;
-        return $v_hold;
-    } 
-
-    return $t_hold || $v_hold;
+    my $hold_info = $e->json_query($args)->[0];
+    return $e->retrieve_action_hold_request($hold_info->{id}) if $hold_info;
+    return undef;
 }
 
 
