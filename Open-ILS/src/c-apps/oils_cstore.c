@@ -2627,8 +2627,22 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 				}
 
 				if ( node->type == JSON_STRING ) {
-					// It's the name of a column
-					buffer_fadd(sql_buf, " \"%s\".%s ", alias_info->alias, jsonObjectGetString( node ) );
+					// It's the name of a column; make sure it belongs to the class
+					const char* fieldname = jsonObjectGetString( node );
+					if( ! osrfHashGet( alias_info->fields, fieldname ) ) {
+						osrfLogError(
+							OSRF_LOG_MARK,
+							"%s: Invalid column name \"%s\" in WHERE clause for table alias \"%s\"",
+							MODULENAME,
+							fieldname,
+							alias_info->alias
+						);
+						jsonIteratorFree( search_itr );
+						buffer_free( sql_buf );
+						return NULL;
+					}
+
+					buffer_fadd(sql_buf, " \"%s\".%s ", alias_info->alias, fieldname );
 				} else {
 					// It's something more complicated
 					char* subpred = searchWHERE( node, alias_info, AND_OP_JOIN, ctx );
@@ -3354,7 +3368,6 @@ char* SELECT (
 	char* table = NULL;
 	if (from_function) table = searchValueTransform(join_hash);
 	else table = strdup( curr_query->core.source_def );
-
 
 	if( !table ) {
 		if (ctx)
