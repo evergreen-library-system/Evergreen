@@ -5217,10 +5217,10 @@ Determine whether to accept a character string as a comparison operator.
 Return 1 if it's good, or 0 if it's bad.
 
 We don't validate it for real.  We just make sure that it doesn't contain
-any semicolons or white space (with a special exception for the
-"SIMILAR TO" operator).  The idea is to block certain kinds of SQL
-injection.  If it has no semicolons or white space but it's still not a
-valid operator, then the database will complain.
+any semicolons or white space (with special exceptions for a few specific
+operators).   The idea is to block certain kinds of SQL injection.  If it
+has no semicolons or white space but it's still not a valid operator, then
+the database will complain.
 
 Another approach would be to compare the string against a short list of
 approved operators.  We don't do that because we want to allow custom
@@ -5233,9 +5233,13 @@ static int is_good_operator( const char* op ) {
 	const char* s = op;
 	while( *s ) {
 		if( isspace( (unsigned char) *s ) ) {
-			// Special exception for SIMILAR TO.  Someday we might make
-			// exceptions for IS DISTINCT FROM and IS NOT DISTINCT FROM.
+			// Special exceptions for SIMILAR TO, IS DISTINCT FROM,
+			// and IS NOT DISTINCT FROM.
 			if( !strcasecmp( op, "similar to" ) )
+				return 1;
+			else if( !strcasecmp( op, "is distinct from" ) )
+				return 1;
+			else if( !strcasecmp( op, "is not distinct from" ) )
 				return 1;
 			else
 				return 0;
