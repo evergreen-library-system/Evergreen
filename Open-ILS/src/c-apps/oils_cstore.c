@@ -2397,7 +2397,6 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 
 			if (!field || !fkey) {
 				// Do another such search, with the classes reversed
-				//_links = oilsIDL_links( class );
 
 				// For each link defined for the joined class:
 				// see if the link references the left class
@@ -3050,10 +3049,19 @@ char* SELECT (
 			osrfHash* class_field_set = class_info->fields;
 			const char* class_pkey = osrfHashGet( idlClass, "primarykey" );
 			const char* class_tname = osrfHashGet( idlClass, "tablename" );
-			
-		    // stitch together the column list ...
-		    jsonIterator* select_itr = jsonNewIterator( selclass );
-		    while ( (selfield = jsonIteratorNext( select_itr )) ) {   // for each SELECT column
+
+			if( 0 == selclass->size ) {
+				osrfLogWarning(
+					OSRF_LOG_MARK,
+					"%s: No columns selected from \"%s\"",
+					MODULENAME,
+					cname
+				);
+			}
+
+			// stitch together the column list for the current table alias...
+			jsonIterator* select_itr = jsonNewIterator( selclass );
+			while ( (selfield = jsonIteratorNext( select_itr )) ) {   // for each SELECT column
 
 				// If we need a separator comma, add one
 				if (first) {
@@ -3312,20 +3320,41 @@ char* SELECT (
 			    }
 #endif
 
-			    sel_pos++;
-		    } // end while -- iterating across SELECT columns
+				sel_pos++;
+			} // end while -- iterating across SELECT columns
 
-            jsonIteratorFree(select_itr);
-	    } // end while -- iterating across classes
+			jsonIteratorFree(select_itr);
+		} // end while -- iterating across classes
 
-        jsonIteratorFree(selclass_itr);
-    }
+		jsonIteratorFree(selclass_itr);
+	}
 
 
 	char* col_list = buffer_release(select_buf);
+
+	// Make sure the SELECT list isn't empty.  This can happen if we try to 
+	// build a default SELECT clause from a non-core table.
+
+	if( ! *col_list ) {
+		if (ctx)
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"SELECT list is empty"
+		);
+		free( col_list );
+		buffer_free( group_buf );
+		if( defaultselhash ) jsonObjectFree( defaultselhash );
+		free( join_clause );
+		return NULL;	
+	}
+
 	char* table = NULL;
 	if (from_function) table = searchValueTransform(join_hash);
 	else table = strdup( curr_query->core.source_def );
+
 
 	if( !table ) {
 		if (ctx)
