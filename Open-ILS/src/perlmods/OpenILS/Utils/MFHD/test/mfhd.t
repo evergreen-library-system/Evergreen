@@ -247,3 +247,12 @@ __END__
 853 20 $824$av.$bno.$u3$vr$i(year)$j(season)$wq$x21$yps21,22/23,24
 863 41 $824.1$a1$b1$i2009$j21$x|a1|b2|i2009|j22/23$zSpring to Summer/Fall
 863 41 $824.2$a1$b2$i2009$j22/23$x|a1|b3|i2009|j24$zSummer/Fall to Winter
+
+# Item is published 6 times/year whose enumeration "skips" numbers
+# at the second level using only odd numbers that restart
+# at the turn of the calendar year.
+# (From www.loc.gov/marc/chrono_patterns.html)
+245 00 $aFunky enumeration
+853 20 $825$av.$bno.$u6$vr$i(year)$j(month)$wb$ype21,3,5,7,9,11
+863 41 $825.1$a1$b1$i1990$j01$x|a1|b3|i1990|j03$zJan to Mar
+863 41 $825.2$a1$b11$i1990$j11$x|a2|b1|i1991|j01$zNov to Jan, year & vol wrap
