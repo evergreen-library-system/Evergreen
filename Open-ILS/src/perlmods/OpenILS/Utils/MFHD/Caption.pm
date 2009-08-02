@@ -384,6 +384,8 @@ sub next_date {
 	    my $genfunc = MFHD::Date::generator($chroncode);
 	    my @pats = split(/,/, substr($pubpat, 1));
 
+	    next if $chroncode eq 'e';
+
 	    if (!defined $genfunc) {
 		carp "Unrecognized chroncode '$chroncode'";
 		return undef;
@@ -438,10 +440,11 @@ sub next_date {
 		$new[$i] .= '/' . $newend[$i];
 	    }
 	}
-    } else {
-	# There is no $y publication pattern defined, so use
-	# the $w frequency to figure out the next date
+    }
 
+    if (scalar @new == 0) {
+	# There was no suitable publication pattern defined,
+	# so use the $w frequency to figure out the next date
 	if (!defined($freq)) {
 	    carp "Undefined frequency in next_date!";
 	} elsif (!MFHD::Date::can_increment($freq)) {
@@ -506,6 +509,23 @@ sub next_alt_enum {
     }
 }
 
+# Check caption for $ype subfield, specifying that there's a
+# particular publication pattern for the given level of enumeration
+# returns the pattern string or undef
+sub enum_pubpat {
+    my $self = shift;
+    my $level = shift;
+
+    return undef if !exists $self->{_mfhdc_PATTERN}->{y}->{p};
+
+    foreach my $reg (@{$self->{_mfhdc_PATTERN}->{y}->{p}}) {
+	if ($reg =~ m/^e$level/o) {
+	    return substr($reg, 2);
+	}
+    }
+    return undef;
+}
+
 sub next_enum {
     my $self = shift;
     my $next = shift;
@@ -523,15 +543,10 @@ sub next_enum {
     #
     $carry = 0;
     foreach my $key (reverse('b'..'f')) {
-	next if !exists $next->{$key};
+	my $level;
+	my $pubpat;
 
-	if (!$self->capstr($key)) {
-	    # Just assume that it increments continuously and give up
-	    warn "Holding data exists for $key, but no caption specified";
-	    $next->{$key} += 1;
-	    $carry = 0;
-	    last;
-	}
+	next if !exists $next->{$key};
 
 	# If the current issue has a combined issue number (eg, 2/3)
 	# get rid of the first issue number and base the calculation
@@ -540,27 +555,82 @@ sub next_enum {
 	    $next->{$key} =~ s|^[^/]+/||;
 	}
 
-	my $cap = $self->capfield($key);
-	if ($cap->{RESTART} && $cap->{COUNT}
-	    && ($next->{$key} eq $cap->{COUNT})) {
-	    $next->{$key} = 1;
+	$level = ord($key) - ord('a') + 1; # enumeration level
+
+	$pubpat = $self->enum_pubpat($level);
+
+	if ($pubpat) {
+# 	    printf("# next_enum: found pubpat '%s' for subfield '%s'\n",
+# 		   $pubpat, $key);
+	    my @pats = split(/,/, $pubpat);
+
+	    # If we fall out the bottom of the loop, then $carry
+	    # will still be 1, and we will reset the current
+	    # level to the first value in @pats and increment
+	    # then next higher level.
 	    $carry = 1;
+
+	    foreach my $pat (@pats) {
+		my $combined = $pat =~ m|/|;
+		my $end;
+
+# 		printf("# next_enum: checking current '%s' against pat '%s'\n",
+# 		       $next->{$key}, $pat);
+
+		if ($combined) {
+		    ($pat, $end) = split('/', $pat, 2);
+		} else {
+		    $end = undef;
+		}
+
+		if ($pat > $next->{$key}) {
+		    $carry = 0;
+		    $next->{$key} = $pat;
+		    $next->{$key} .= '/' . $end if $end;
+# 		    printf("# next_enum: selecting new issue no. %s\n", $next->{$key});
+		    last; # We've found the correct next issue number
+		}
+	    }
+	    if ($carry) {
+		$next->{$key} = $pats[0];
+	    } else {
+		last; # exit the top level loop because we're done
+	    }
+
 	} else {
-	    # If I don't need to "carry" beyond here, then I just increment
-	    # this level of the enumeration and stop looping, since the
-	    # "next" hash has been initialized with the current values
+	    # No enumeration publication pattern specified for this level,
+	    # just keed adding one.
 
-	    $next->{$key} += 1;
-	    $carry = 0;
+	    if (!$self->capstr($key)) {
+		# Just assume that it increments continuously and give up
+		warn "Holding data exists for $key, but no caption specified";
+		$next->{$key} += 1;
+		$carry = 0;
+		last;
+	    }
+
+	    my $cap = $self->capfield($key);
+	    if ($cap->{RESTART} && $cap->{COUNT}
+		&& ($next->{$key} eq $cap->{COUNT})) {
+		$next->{$key} = 1;
+		$carry = 1;
+	    } else {
+		# If I don't need to "carry" beyond here, then I just increment
+		# this level of the enumeration and stop looping, since the
+		# "next" hash has been initialized with the current values
+
+		$next->{$key} += 1;
+		$carry = 0;
+	    }
+
+	    # You can't have a combined issue that spans two volumes: no.12/1
+	    # is forbidden
+	    if ($self->enum_is_combined($key, $next->{$key})) {
+		$next->{$key} .= '/' . ($next->{$key} + 1);
+	    }
+
+	    last if !$carry;
 	}
-
-	# You can't have a combined issue that spans two volumes: no.12/1
-	# is forbidden
-	if ($self->enum_is_combined($key, $next->{$key})) {
-	    $next->{$key} .= '/' . ($next->{$key} + 1);
-	}
-
-	last if !$carry;
     }
 
     # The easy part is done. There are two things left to do:
