@@ -228,18 +228,20 @@ int osrfAppInitialize() {
 	const int global_method_count
 		= sizeof( global_method ) / sizeof ( global_method[0] );
 	
-    int c_index = 0; 
-    char* classname;
-    osrfStringArray* classes = osrfHashKeys( oilsIDL() );
-    osrfLogDebug(OSRF_LOG_MARK, "%d classes loaded", classes->size );
-    osrfLogDebug(OSRF_LOG_MARK,
-		"At most %d methods will be generated", classes->size * global_method_count);
+	unsigned long class_count = osrfHashGetCount( oilsIDL() );
+	osrfLogDebug(OSRF_LOG_MARK, "%lu classes loaded", class_count );
+	osrfLogDebug(OSRF_LOG_MARK,
+		"At most %lu methods will be generated",
+		(unsigned long) (class_count * global_method_count) );
+
+	osrfHashIterator* class_itr = osrfNewHashIterator( oilsIDL() );
+	osrfHash* idlClass = NULL;
 
 	// For each class in IDL...
-    while ( (classname = osrfStringArrayGetString(classes, c_index++)) ) {
-        osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", classname);
+	while( (idlClass = osrfHashIteratorNext( class_itr ) ) ) {
 
-        osrfHash* idlClass = osrfHashGet(oilsIDL(), classname);
+		const char* classname = osrfHashIteratorKey( class_itr );
+        osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", classname);
 
         if (!osrfStringArrayContains( osrfHashGet(idlClass, "controller"), MODULENAME )) {
             osrfLogInfo(OSRF_LOG_MARK, "%s is not listed as a controller for %s, moving on", MODULENAME, classname);
@@ -332,7 +334,7 @@ int osrfAppInitialize() {
     } // end for each class in IDL
 
 	buffer_free( method_name );
-	osrfStringArrayFree( classes );
+	osrfHashIteratorFree( class_itr );
 	
     return 0;
 }
@@ -422,12 +424,11 @@ int osrfAppChildInit() {
 
     osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", MODULENAME);
 
-    int i = 0; 
-    char* classname;
-    osrfStringArray* classes = osrfHashKeys( oilsIDL() );
+	osrfHashIterator* class_itr = osrfNewHashIterator( oilsIDL() );
+	osrfHash* class = NULL;
 
-    while ( (classname = osrfStringArrayGetString(classes, i++)) ) {
-        osrfHash* class = osrfHashGet( oilsIDL(), classname );
+	while( (class = osrfHashIteratorNext( class_itr ) ) ) {
+		const char* classname = osrfHashIteratorKey( class_itr );
         osrfHash* fields = osrfHashGet( class, "fields" );
 
 		if( str_is_true( osrfHashGet(class, "virtual") ) ) {
@@ -518,13 +519,12 @@ int osrfAppChildInit() {
 				++columnIndex;
 			} // end while loop for traversing result
 			dbi_result_free(result);
-        } else {
-            osrfLogDebug(OSRF_LOG_MARK, "No data found for class [%s]...", (char*)classname);
-        }
-    }
+		} else {
+			osrfLogDebug(OSRF_LOG_MARK, "No data found for class [%s]...", (char*)classname);
+		}
+	} // end for each class in IDL
 
-    osrfStringArrayFree(classes);
-
+	osrfHashIteratorFree( class_itr );
 	child_initialized = 1;
     return 0;
 }
