@@ -1108,18 +1108,18 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
             }
         }
 
-        osrfStringArray* class_list;
 
-        if (foreign_context) {
-            class_list = osrfHashKeys( foreign_context );
-	        osrfLogDebug( OSRF_LOG_MARK, "%d foreign context classes(s) specified", class_list->size);
+		if (foreign_context) {
+			unsigned long class_count = osrfHashGetCount( foreign_context );
+			osrfLogDebug( OSRF_LOG_MARK, "%d foreign context classes(s) specified", class_count);
 
-            if (class_list->size > 0) {
-    
-                int i = 0;
-                char* class_name = NULL;
-            	while ( (class_name = osrfStringArrayGetString(class_list, i++)) ) {
-                    osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
+			if (class_count > 0) {
+
+				osrfHash* fcontext = NULL;
+				osrfHashIterator* class_itr = osrfNewHashIterator( foreign_context );
+				while( (fcontext = osrfHashIteratorNext( class_itr ) ) ) {
+					const char* class_name = osrfHashIteratorKey( class_itr );
+					osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
 
 	                osrfLogDebug(
                         OSRF_LOG_MARK,
@@ -1191,7 +1191,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         );
 
                         free(m);
-                        osrfStringArrayFree(class_list);
+                        osrfHashIteratorFree(class_itr);
                         free(foreign_pkey_value);
                         jsonObjectFree(param);
 
@@ -1211,17 +1211,17 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                             foreign_field,
                             osrfStringArrayGetString(context_org_array, context_org_array->size - 1)
                         );
-                    }
+					}
 
-                    jsonObjectFree(_fparam);
-                }
-    
-                osrfStringArrayFree(class_list);
-            }
-        }
+					jsonObjectFree(_fparam);
+				}
 
-        jsonObjectFree(param);
-    }
+				osrfHashIteratorFree( class_itr );
+			}
+		}
+
+		jsonObjectFree(param);
+	}
 
     char* context_org = NULL;
     char* perm = NULL;
@@ -1479,13 +1479,12 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 	buffer_add(val_buf,"VALUES (");
 
 
-	int i = 0;
 	int first = 1;
-	char* field_name;
-	osrfStringArray* field_list = osrfHashKeys( fields );
-	while ( (field_name = osrfStringArrayGetString(field_list, i++)) ) {
+	osrfHash* field = NULL;
+	osrfHashIterator* field_itr = osrfNewHashIterator( fields );
+	while( (field = osrfHashIteratorNext( field_itr ) ) ) {
 
-		osrfHash* field = osrfHashGet( fields, field_name );
+		const char* field_name = osrfHashIteratorKey( field_itr );
 
 		if( str_is_true( osrfHashGet( field, "virtual" ) ) )
 			continue;
@@ -1552,6 +1551,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		
 	}
 
+	osrfHashIteratorFree( field_itr );
 
 	OSRF_BUFFER_ADD_CHAR( col_buf, ')' );
 	OSRF_BUFFER_ADD_CHAR( val_buf, ')' );
