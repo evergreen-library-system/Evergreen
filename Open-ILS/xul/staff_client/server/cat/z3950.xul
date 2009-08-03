@@ -127,9 +127,10 @@
                         </rows>
                     </grid>
                     <hbox>
+                        <button id="raw_search" label="&staff.cat.z3950.raw_search.label;" accesskey="&staff.cat.z3950.raw_search.accesskey;" disabled="true"/> 
                         <spacer flex="1"/>
                         <button id="clear" label="&staff.cat.z3950.clear.label;" accesskey="&staff.cat.z3950.clear.accesskey;"/>
-                        <button id="search" label="&staff.cat.z3950.search.label;" accesskey="&staff.cat.z3950.search.accesskey;"/>
+                        <button id="search" label="&staff.cat.z3950.search.label;" accesskey="&staff.cat.z3950.search.accesskey;" disabled="true"/>
                     </hbox>
                 </groupbox>
                 <splitter id="x_splitter" collapse="after" persist="state hidden"><grippy/></splitter>
