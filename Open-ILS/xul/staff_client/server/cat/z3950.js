@@ -184,6 +184,17 @@ cat.z3950.prototype = {
 								obj.initial_search();
 							},
 						],
+                        'raw_search' : [ 
+                            ['command'], 
+                            function() { 
+                                var raw = window.prompt(
+                                    $("catStrings").getString('staff.cat.z3950.initial_search.raw_prompt.msg'),
+                                    $("catStrings").getString('staff.cat.z3950.initial_search.raw_prompt.default_value'),
+                                    $("catStrings").getString('staff.cat.z3950.initial_search.raw_prompt.title')
+                                ); 
+                                if (raw) obj.initial_raw_search(raw); 
+                            } 
+                        ], 
 						'page_next' : [
 							['command'],
 							function() {
@@ -239,12 +250,21 @@ cat.z3950.prototype = {
 
 										function handle_switch(node) {
                                             try {
+                                                $('search').setAttribute('disabled','true'); $('raw_search').setAttribute('disabled','true');
                                                 obj.active_services = [];
                                                 var snl = document.getElementsByAttribute('mytype','service_class');
                                                 for (var i = 0; i < snl.length; i++) {
                                                     var n = snl[i];
                                                     if (n.nodeName == 'checkbox') {
                                                         if (n.checked) obj.active_services.push( n.getAttribute('service') );
+                                                    }
+                                                }
+                                                if (obj.active_services.length > 0) {
+                                                    $('search').setAttribute('disabled','false'); 
+                                                }
+                                                if (obj.active_services.length == 1) {
+                                                    if (obj.active_services[0] != 'native-evergreen-catalog') { 
+                                                        $('raw_search').setAttribute('disabled','false');
                                                     }
                                                 }
                                                 var nl = document.getElementsByAttribute('mytype','search_class');
@@ -450,13 +470,13 @@ cat.z3950.prototype = {
 			obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','true');
 			obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','true');
 
-			obj.search_params.service = []; 
-			obj.search_params.username = [];
-			obj.search_params.password = [];
+			obj.search_params.service_array = []; 
+			obj.search_params.username_array = [];
+			obj.search_params.password_array = [];
             for (var i = 0; i < obj.active_services.length; i++) {
-                obj.search_params.service.push( obj.active_services[i] );
-                obj.search_params.username.push( document.getElementById( obj.active_services[i]+'_username' ).value );
-                obj.search_params.password.push( document.getElementById( obj.active_services[i]+'_password' ).value );
+                obj.search_params.service_array.push( obj.active_services[i] );
+                obj.search_params.username_array.push( document.getElementById( obj.active_services[i]+'_username' ).value );
+                obj.search_params.password_array.push( document.getElementById( obj.active_services[i]+'_password' ).value );
             }
 			obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
 			obj.search_params.offset = 0;
@@ -480,6 +500,51 @@ cat.z3950.prototype = {
 		}
 	},
 
+    'initial_raw_search' : function(raw) {
+        try {
+            var obj = this;
+            obj.result_set = []; obj.number_of_result_sets = 0;
+            JSAN.use('util.widgets');
+            util.widgets.remove_children( obj.controller.view.result_message );
+            var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+            if (obj.active_services.length < 1) {
+			    x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.no_search_selection')));
+                return;
+            }
+            if (obj.active_services.length > 1) {
+			    x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.too_many_selections')));
+                return;
+            }
+            if (obj.active_services[0] == 'native-evergreen-catalog') {
+			    x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog')));
+                return;
+            }
+			x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.searching')));
+			obj.search_params = {}; obj.list.clear();
+			obj.controller.view.page_next.disabled = true;
+			obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','true');
+			obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','true');
+			obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','true');
+
+			obj.search_params.service_array = []; 
+			obj.search_params.username_array = [];
+			obj.search_params.password_array = [];
+            for (var i = 0; i < obj.active_services.length; i++) {
+                obj.search_params.service_array.push( obj.active_services[i] );
+                obj.search_params.username_array.push( document.getElementById( obj.active_services[i]+'_username' ).value );
+                obj.search_params.password_array.push( document.getElementById( obj.active_services[i]+'_password' ).value );
+            }
+			obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
+			obj.search_params.offset = 0;
+
+            obj.search_params.query = raw;
+
+            obj.search();
+        } catch(E) {
+			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.initial_search.failed_search'),E);
+        }
+    },
+
 	'page_next' : function() {
 		try {
 			var obj = this;
@@ -500,8 +565,14 @@ cat.z3950.prototype = {
 			var method;
 			if (typeof obj.search_params.query == 'undefined') {
 				method = 'FM_BLOB_RETRIEVE_VIA_Z3950_SEARCH';
+                obj.search_params.service = obj.search_params.service_array;
+                obj.search_params.username = obj.search_params.username_array;
+                obj.search_params.password = obj.search_params.password_array;
 			} else {
 				method = 'FM_BLOB_RETRIEVE_VIA_Z3950_RAW_SEARCH';
+                obj.search_params.service = obj.search_params.service_array[0];
+                obj.search_params.username = obj.search_params.username_array[0];
+                obj.search_params.password = obj.search_params.password_array[0];
 			}
 			obj.network.simple_request(
 				method,
