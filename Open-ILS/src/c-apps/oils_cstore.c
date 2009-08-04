@@ -3938,19 +3938,21 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 		selhash = defaultselhash;
 	}
 	
+	// If there's no SELECT list for the core class, build one
 	if ( !jsonObjectGetKeyConst(selhash,core_class) ) {
-		jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
-		jsonObject* flist = jsonObjectGetKey( selhash, core_class );
+		jsonObject* field_list = jsonNewObjectType( JSON_ARRAY );
 		
-		int i = 0;
-		char* field;
-
-		osrfStringArray* keys = osrfHashKeys( fields );
-		while ( (field = osrfStringArrayGetString(keys, i++)) ) {
-			if( ! str_is_true( osrfHashGet( osrfHashGet( fields, field ), "virtual" ) ) )
-				jsonObjectPush( flist, jsonNewObject( field ) );
+		// Add every non-virtual field to the field list
+		osrfHash* field_def = NULL;
+		osrfHashIterator* field_itr = osrfNewHashIterator( fields );
+		while( ( field_def = osrfHashIteratorNext( field_itr ) ) ) {
+			if( ! str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+				const char* field = osrfHashIteratorKey( field_itr );
+				jsonObjectPush( field_list, jsonNewObject( field ) );
+			}
 		}
-		osrfStringArrayFree(keys);
+		osrfHashIteratorFree( field_itr );
+		jsonObjectSetKey( selhash, core_class, field_list );
 	}
 
 	int first = 1;
@@ -4617,9 +4619,10 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
         // Set the last_xact_id
 	int index = oilsIDL_ntop( target->classname, "last_xact_id" );
 	if (index > -1) {
-		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d", trans_id, target->classname, index);
+		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d",
+				trans_id, target->classname, index);
 		jsonObjectSetIndex(target, index, jsonNewObject(trans_id));
-	}       
+	}
 
 	char* pkey = osrfHashGet(meta, "primarykey");
 	osrfHash* fields = osrfHashGet(meta, "fields");
@@ -4638,16 +4641,17 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 	growing_buffer* sql = buffer_init(128);
 	buffer_fadd(sql,"UPDATE %s SET", osrfHashGet(meta, "tablename"));
 
-	int i = 0;
 	int first = 1;
-	char* field_name;
-	osrfStringArray* field_list = osrfHashKeys( fields );
-	while ( (field_name = osrfStringArrayGetString(field_list, i++)) ) {
+	osrfHash* field_def = NULL;
+	osrfHashIterator* field_itr = osrfNewHashIterator( fields );
+	while( (field_def = osrfHashIteratorNext( field_itr ) ) ) {
 
-		osrfHash* field = osrfHashGet( fields, field_name );
+		// Skip virtual fields, and the primary key
+		if( str_is_true( osrfHashGet( field_def, "virtual") ) )
+			continue;
 
-		if(!( strcmp( field_name, pkey ) )) continue;
-		if( str_is_true( osrfHashGet(osrfHashGet(fields,field_name), "virtual") ) )
+		const char* field_name = osrfHashIteratorKey( field_itr );
+		if( ! strcmp( field_name, pkey ) )
 			continue;
 
 		const jsonObject* field_object = oilsFMGetObject( target, field_name );
@@ -4665,20 +4669,22 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 				value_is_numeric = 1;
 		}
 
-		osrfLogDebug( OSRF_LOG_MARK, "Updating %s object with %s = %s", osrfHashGet(meta, "fieldmapper"), field_name, value);
+		osrfLogDebug( OSRF_LOG_MARK, "Updating %s object with %s = %s",
+				osrfHashGet(meta, "fieldmapper"), field_name, value);
 
 		if (!field_object || field_object->type == JSON_NULL) {
-			if ( !(!( strcmp( osrfHashGet(meta, "classname"), "au" ) ) && !( strcmp( field_name, "passwd" ) )) ) { // arg at the special case!
+			if ( !(!( strcmp( osrfHashGet(meta, "classname"), "au" ) )
+					&& !( strcmp( field_name, "passwd" ) )) ) { // arg at the special case!
 				if (first) first = 0;
 				else OSRF_BUFFER_ADD_CHAR(sql, ',');
 				buffer_fadd( sql, " %s = NULL", field_name );
 			}
-			
-		} else if ( value_is_numeric || !strcmp( get_primitive( field ), "number") ) {
+
+		} else if ( value_is_numeric || !strcmp( get_primitive( field_def ), "number") ) {
 			if (first) first = 0;
 			else OSRF_BUFFER_ADD_CHAR(sql, ',');
 
-			const char* numtype = get_datatype( field );
+			const char* numtype = get_datatype( field_def );
 			if ( !strncmp( numtype, "INT", 3 ) ) {
 				buffer_fadd( sql, " %s = %ld", field_name, atol(value) );
 			} else if ( !strcmp( numtype, "NUMERIC" ) ) {
@@ -4698,6 +4704,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 					);
 					free(value);
 					free(id);
+					osrfHashIteratorFree( field_itr );
 					buffer_free(sql);
 					*err = -1;
 					return jsonNULL;
@@ -4723,6 +4730,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 				);
 				free(value);
 				free(id);
+				osrfHashIteratorFree( field_itr );
 				buffer_free(sql);
 				*err = -1;
 				return jsonNULL;
@@ -4730,8 +4738,10 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		}
 
 		free(value);
-		
-	}
+
+	} // end while
+
+	osrfHashIteratorFree( field_itr );
 
 	jsonObject* obj = jsonNewObject(id);
 
