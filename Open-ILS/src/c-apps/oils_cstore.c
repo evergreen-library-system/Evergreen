@@ -3959,7 +3959,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 	jsonIterator* class_itr = jsonNewIterator( selhash );
 	while ( (snode = jsonIteratorNext( class_itr )) ) {
 
-		char* cname = class_itr->key;
+		const char* cname = class_itr->key;
 		osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
 		if (!idlClass) continue;
 
