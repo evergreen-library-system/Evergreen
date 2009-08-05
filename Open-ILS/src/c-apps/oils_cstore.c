@@ -2550,19 +2550,18 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 	int first = 1;
 	if ( search_hash->type == JSON_ARRAY ) {
 		osrfLogDebug(OSRF_LOG_MARK, "%s: In WHERE clause, condition type is JSON_ARRAY", MODULENAME);
-		jsonIterator* search_itr = jsonNewIterator( search_hash );
-		if( !jsonIteratorHasNext( search_itr ) ) {
+		if( 0 == search_hash->size ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s: Invalid predicate structure: empty JSON array",
 				MODULENAME
 			);
-			jsonIteratorFree( search_itr );
 			buffer_free( sql_buf );
 			return NULL;
 		}
 
-		while ( (node = jsonIteratorNext( search_itr )) ) {
+		unsigned long i = 0;
+		while((node = jsonObjectGetIndex( search_hash, i++ ) )) {
 			if (first) {
 				first = 0;
 			} else {
@@ -2574,7 +2573,6 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 
 			char* subpred = searchWHERE( node, class_info, opjoin_type, ctx );
 			if( ! subpred ) {
-				jsonIteratorFree( search_itr );
 				buffer_free( sql_buf );
 				return NULL;
 			}
@@ -2582,7 +2580,6 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 			buffer_fadd(sql_buf, "( %s )", subpred);
 			free(subpred);
 		}
-		jsonIteratorFree(search_itr);
 
 	} else if ( search_hash->type == JSON_HASH ) {
 		osrfLogDebug(OSRF_LOG_MARK, "%s: In WHERE clause, condition type is JSON_HASH", MODULENAME);
