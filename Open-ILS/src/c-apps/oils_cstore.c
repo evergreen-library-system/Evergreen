@@ -2790,6 +2790,38 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 	return buffer_release(sql_buf);
 }
 
+/* Build a JSON_ARRAY of field names for a given table alias
+ */
+static jsonObject* defaultSelectList( const char* table_alias ) {
+
+	if( ! table_alias )
+		table_alias = "";
+
+	ClassInfo* class_info = search_all_alias( table_alias );
+	if( ! class_info ) {
+		osrfLogError(  
+			OSRF_LOG_MARK,
+			"%s: Can't build default SELECT clause for \"%s\"; no such table alias",
+			MODULENAME,
+			table_alias
+		);
+		return NULL;
+	}
+
+	jsonObject* array = jsonNewObjectType( JSON_ARRAY );
+	osrfHash* field_def = NULL;
+	osrfHashIterator* field_itr = osrfNewHashIterator( class_info->fields );
+	while( ( field_def = osrfHashIteratorNext( field_itr ) ) ) {
+		const char* field_name = osrfHashIteratorKey( field_itr );
+		if( ! str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+			jsonObjectPush( array, jsonNewObject( field_name ) );
+		}
+	}
+	osrfHashIteratorFree( field_itr );
+
+	return array;
+}
+
 char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
 		
@@ -2950,12 +2982,29 @@ char* SELECT (
 	// For in case we don't get a select list
 	jsonObject* defaultselhash = NULL;
 
-	// if the select list is empty, or the core class field list is '*',
-	// build the default select list ...
+	// if there is no select list, build a default select list ...
 	if (!selhash) {
+		jsonObject* default_list = defaultSelectList( core_class );
+		if( ! default_list ) {
+			if (ctx) {
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Unable to build default SELECT clause in JSON query"
+				);
+				free( join_clause );
+				return NULL;
+			}
+		}
+
 		selhash = defaultselhash = jsonNewObjectType(JSON_HASH);
-		jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
-	} else if( selhash->type != JSON_HASH ) {
+		jsonObjectSetKey( selhash, core_class, default_list );
+	} 
+
+	// The SELECT clause can be encoded only by a hash
+	if( selhash->type != JSON_HASH ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Expected JSON_HASH for SELECT clause; found %s",
@@ -2973,11 +3022,39 @@ char* SELECT (
 			);
 		free( join_clause );
 		return NULL;
-	} else if ( (tmp_const = jsonObjectGetKeyConst( selhash, core_class )) && tmp_const->type == JSON_STRING ) {
-		const char* _x = jsonObjectGetString( tmp_const );
-		if (!strncmp( "*", _x, 1 )) {
-			jsonObjectRemoveKey( selhash, core_class );
-			jsonObjectSetKey( selhash, core_class, jsonNewObjectType(JSON_ARRAY) );
+	}
+
+	// If you see a null or wild card specifier for the core class, or an
+	// empty array, replace it with a default SELECT list
+	tmp_const = jsonObjectGetKeyConst( selhash, core_class );
+	if ( tmp_const ) {
+		int default_needed = 0;   // boolean
+		if( JSON_STRING == tmp_const->type
+			&& !strcmp( "*", jsonObjectGetString( tmp_const ) ))
+				default_needed = 1;
+		else if( JSON_NULL == tmp_const->type )
+			default_needed = 1;
+		else if( JSON_ARRAY == tmp_const->type && 0 == tmp_const->size )
+			default_needed = 1;
+
+		if( default_needed ) {
+			// Build a default SELECT list
+			jsonObject* default_list = defaultSelectList( core_class );
+			if( ! default_list ) {
+				if (ctx) {
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Can't build default SELECT clause in JSON query"
+					);
+					free( join_clause );
+					return NULL;
+				}
+			}
+
+			jsonObjectSetKey( selhash, core_class, default_list );
 		}
 	}
 
@@ -2992,24 +3069,7 @@ char* SELECT (
 		OSRF_BUFFER_ADD_CHAR( select_buf, '*' );
 	else {
 
-		// If we need to build a default list, prepare to do so
-		jsonObject* _tmp = jsonObjectGetKey( selhash, core_class );
-		if ( _tmp && !_tmp->size ) {
-
-			osrfHash* core_fields = curr_query->core.fields;
-
-			osrfHashIterator* field_itr = osrfNewHashIterator( core_fields );
-			osrfHash* field_def;
-			while( ( field_def = osrfHashIteratorNext( field_itr ) ) ) {
-				if( ! str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
-					// This field is not virtual, so add it to the list
-					jsonObjectPush( _tmp, jsonNewObject( osrfHashIteratorKey( field_itr ) ) );
-				}
-			}
-			osrfHashIteratorFree( field_itr );
-		}
-
-		// Now build the actual select list
+		// Build the SELECT list as SQL
 	    int sel_pos = 1;
 	    first = 1;
 	    gfirst = 1;
@@ -3047,6 +3107,30 @@ char* SELECT (
 						ctx->request,
 						"Selected class not in FROM clause in JSON query"
 					);
+				jsonIteratorFree( selclass_itr );
+				buffer_free( select_buf );
+				buffer_free( group_buf );
+				if( defaultselhash ) jsonObjectFree( defaultselhash );
+				free( join_clause );
+				return NULL;
+			}
+
+			if( selclass->type != JSON_ARRAY ) {
+				osrfLogError(
+					OSRF_LOG_MARK,
+					"%s: Malformed SELECT list for class \"%s\"; not an array",
+					MODULENAME,
+					cname
+				);
+				if( ctx )
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Selected class not in FROM clause in JSON query"
+					);
+
 				jsonIteratorFree( selclass_itr );
 				buffer_free( select_buf );
 				buffer_free( group_buf );
@@ -3343,10 +3427,11 @@ char* SELECT (
 
 	char* col_list = buffer_release(select_buf);
 
-	// Make sure the SELECT list isn't empty.  This can happen if we try to 
-	// build a default SELECT clause from a non-core table.
+	// Make sure the SELECT list isn't empty.  This can happen, for example,
+	// if we try to build a default SELECT clause from a non-core table.
 
 	if( ! *col_list ) {
+		osrfLogError(OSRF_LOG_MARK, "%s: SELECT clause is empty", MODULENAME );
 		if (ctx)
 			osrfAppSessionStatus(
 				ctx->session,
