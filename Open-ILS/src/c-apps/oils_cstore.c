@@ -2839,7 +2839,6 @@ char* SELECT (
 	// general tmp objects
 	const jsonObject* tmp_const;
 	jsonObject* selclass = NULL;
-	jsonObject* selfield = NULL;
 	jsonObject* snode = NULL;
 	jsonObject* onode = NULL;
 
@@ -3089,8 +3088,7 @@ char* SELECT (
 			// that case from_function would be non-NULL, and we wouldn't
 			// be here.
 
-			// If the current class isn't the core class
-			// and it isn't in the join tree, bail out
+			// If the current table alias isn't in scope, bail out
 			ClassInfo* class_info = search_alias( cname );
 			if( ! class_info ) {
 				osrfLogError(
@@ -3155,8 +3153,9 @@ char* SELECT (
 			}
 
 			// stitch together the column list for the current table alias...
-			jsonIterator* select_itr = jsonNewIterator( selclass );
-			while ( (selfield = jsonIteratorNext( select_itr )) ) {   // for each SELECT column
+			unsigned long field_idx = 0;
+			jsonObject* selfield = NULL;
+			while((selfield = jsonObjectGetIndex( selclass, field_idx++ ) )) {
 
 				// If we need a separator comma, add one
 				if (first) {
@@ -3165,7 +3164,7 @@ char* SELECT (
 					OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
 				}
 
-				// ... if it's a string, just toss it on the pile
+				// if the field specification is a string, add it to the list
 				if (selfield->type == JSON_STRING) {
 
 					// Look up the field in the IDL
@@ -3188,7 +3187,6 @@ char* SELECT (
 								ctx->request,
 								"Selected column not defined in JSON query"
 							);
-						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
 						buffer_free( select_buf );
 						buffer_free( group_buf );
@@ -3212,7 +3210,6 @@ char* SELECT (
 								ctx->request,
 								"Selected column may not be virtual in JSON query"
 							);
-						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
 						buffer_free( select_buf );
 						buffer_free( group_buf );
@@ -3263,7 +3260,6 @@ char* SELECT (
 								ctx->request,
 								"Selected column is not defined in JSON query"
 							);
-						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
 						buffer_free( select_buf );
 						buffer_free( group_buf );
@@ -3287,7 +3283,6 @@ char* SELECT (
 								ctx->request,
 								"Selected column is virtual in JSON query"
 							);
-						jsonIteratorFree( select_itr );
 						jsonIteratorFree( selclass_itr );
 						buffer_free( select_buf );
 						buffer_free( group_buf );
@@ -3318,7 +3313,6 @@ char* SELECT (
 									ctx->request,
 									"Unable to generate transform function in JSON query"
 								);
-							jsonIteratorFree( select_itr );
 							jsonIteratorFree( selclass_itr );
 							buffer_free( select_buf );
 							buffer_free( group_buf );
@@ -3362,7 +3356,6 @@ char* SELECT (
 							ctx->request,
 							"Ill-formed SELECT item in JSON query"
 						);
-					jsonIteratorFree( select_itr );
 					jsonIteratorFree( selclass_itr );
 					buffer_free( select_buf );
 					buffer_free( group_buf );
@@ -3418,7 +3411,6 @@ char* SELECT (
 				sel_pos++;
 			} // end while -- iterating across SELECT columns
 
-			jsonIteratorFree(select_itr);
 		} // end while -- iterating across classes
 
 		jsonIteratorFree(selclass_itr);
