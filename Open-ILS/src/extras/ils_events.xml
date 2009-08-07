@@ -633,6 +633,9 @@
 	<event code='1712' textcode='AUTH_QUEUE_EXISTS'>
 		<desc xml:lang="en-US">An authority record queue with the same name already exists</desc>
 	</event>
+	<event code='1713' textcode='AUTHORITY_RECORD_NUMBER_EXISTS'>
+		<desc xml:lang="en-US">An authority record with the same identifier already exists</desc>
+	</event>
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
