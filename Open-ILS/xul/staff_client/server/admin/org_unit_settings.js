@@ -78,7 +78,17 @@ function buildMergedOrgSelector(orgList) {
             fieldmapper.aou.descendantNodeList(orgList[i]));
     }
 
-    var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(orgNodeList)});
+    // dedeuplicate the list of org units
+    var newList = [];
+    dojo.forEach(orgNodeList, 
+        function(node) {
+            if(!newList.filter(
+                    function(node2) { return (node2.id() == node.id()); })[0])
+                newList.push(node);
+        }
+    );
+
+    var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(newList)});
     osContextSelector.store = store;
     osContextSelector.startup();
     osContextSelector.setValue(user.user.ws_ou());
