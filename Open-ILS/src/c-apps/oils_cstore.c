@@ -3033,8 +3033,6 @@ char* SELECT (
 				default_needed = 1;
 		else if( JSON_NULL == tmp_const->type )
 			default_needed = 1;
-		else if( JSON_ARRAY == tmp_const->type && 0 == tmp_const->size )
-			default_needed = 1;
 
 		if( default_needed ) {
 			// Build a default SELECT list
