@@ -76,12 +76,17 @@ sub load_MARC_rec {
 }
 
 my $rec;
+my @captions;
 
 while ($rec = load_MARC_rec) {
     $rec = MFHD->new($rec);
 
-    foreach my $cap_id ($rec->captions('853')) {
-	my @holdings = $rec->holdings('863', $cap_id);
+    foreach my $cap  (sort {$a->tag <=> $b->tag} $rec->field('85.')) {
+	my $htag;
+	my @holdings;
+
+	($htag = $cap->tag) =~ s/^85/86/;
+	@holdings = $rec->holdings($htag, $cap->subfield('8'));
 
 	next unless scalar @holdings;
 	foreach my $field (@holdings) {
@@ -256,3 +261,15 @@ __END__
 853 20 $825$av.$bno.$u6$vr$i(year)$j(month)$wb$ype21,3,5,7,9,11
 863 41 $825.1$a1$b1$i1990$j01$x|a1|b3|i1990|j03$zJan to Mar
 863 41 $825.2$a1$b11$i1990$j11$x|a2|b1|i1991|j01$zNov to Jan, year & vol wrap
+
+
+# Monthly, one volume per year, issue numbering restarts in January
+# Annual supplement published in September, annual index published in
+# February
+245 00 $aSupplements and Indexes: Oh My
+853 20 $826$av.$bno.$u12$vr$i(year)$j(month)$wm
+854 20 $827$av.$i(year)$j(month)$wa$ypm09$oSupplement
+855 20 $828$av.$i(year)$j(month)$ypm02$oIndex
+863 41 $826.1$a1$b1$i1990$j01$x|a1|b2|i1990|j02$znormal issue
+864 41 $827.1$a1$i1990$j09$x|a2|i1991|j09$zAnnual supplement
+865 41 $828.1$a1$i1990$j02$x|a2|i1991|j02$zAnnual Index
