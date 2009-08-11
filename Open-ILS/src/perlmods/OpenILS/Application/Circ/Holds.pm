@@ -818,7 +818,7 @@ sub retrieve_hold_queue_status_impl {
     my $potentials = $e->search_action_hold_copy_map({hold => $hold->id}, {idlist => 1});
     my $num_potentials = scalar(@$potentials);
 
-    my $user_org = $e->json_query({select => {au => 'home_ou'}, from => 'au', where => {id => $hold->usr}})->[0]->{home_ou};
+    my $user_org = $e->json_query({select => {au => ['home_ou']}, from => 'au', where => {id => $hold->usr}})->[0]->{home_ou};
     my $default_hold_interval = $U->ou_ancestor_setting_value($user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL);
     my $estimated_wait = $qpos * ($default_hold_interval / $num_potentials) if $default_hold_interval;
 
