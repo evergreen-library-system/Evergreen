@@ -541,7 +541,15 @@ sub next_enum {
     # 1) we hit the correct number of items in $b (ie, 5th iss of quarterly)
     # 2) it's the right time of the year.
     #
-    $carry = 0;
+
+    # If there's a subfield b, then we will go through the loop at
+    # least once. If there's no subfield b, then there's only a single
+    # level of enumeration, so we just add one to it and we're done.
+    if (exists $next->{b}) {
+	$carry = 0;
+    } else {
+	$carry = 1;
+    }
     foreach my $key (reverse('b'..'f')) {
 	my $level;
 	my $pubpat;
@@ -608,6 +616,8 @@ sub next_enum {
 		$carry = 0;
 		last;
 	    }
+
+# 	    printf("# next_enum: no publication pattern, using frequency\n");
 
 	    my $cap = $self->capfield($key);
 	    if ($cap->{RESTART} && $cap->{COUNT}
