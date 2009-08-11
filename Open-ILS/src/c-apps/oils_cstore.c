@@ -2982,7 +2982,7 @@ char* SELECT (
 	jsonObject* defaultselhash = NULL;
 
 	// if there is no select list, build a default select list ...
-	if (!selhash) {
+	if (!selhash && !from_function) {
 		jsonObject* default_list = defaultSelectList( core_class );
 		if( ! default_list ) {
 			if (ctx) {
@@ -3003,7 +3003,7 @@ char* SELECT (
 	} 
 
 	// The SELECT clause can be encoded only by a hash
-	if( selhash->type != JSON_HASH ) {
+	if( !from_function && selhash->type != JSON_HASH ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Expected JSON_HASH for SELECT clause; found %s",
