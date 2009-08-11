@@ -1501,6 +1501,28 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 			value = jsonObjectToSimpleString( field_object );
 		}
 
+		if( ! value ) {
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_BADREQUEST,
+				"osrfMethodException",
+				ctx->request,
+				"No value available for column"
+			);
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: NULL value for field %s of class %s",
+				MODULENAME,
+				field_name,
+				osrfHashGet(meta, "classname")
+			);
+			osrfHashIteratorFree( field_itr );
+			buffer_free( val_buf );
+			buffer_free( col_buf );
+			buffer_free( table_buf );
+			*err = -1;
+			return jsonNULL;
+		}
 
 		if (first) {
 			first = 0;
