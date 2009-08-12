@@ -30,8 +30,32 @@
 <html xmlns='http://www.w3.org/1999/xhtml'>
 
     <head>
-        <script>var config = {css:{}}</script>
-		<!--#include virtual="../../skin/default/xml/common/js_common.xml"-->
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/utils.js'></script>
+	    <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/config.js'></script>
+	    <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/CGI.js'></script>
+	    <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/Cookies.js'></script>
+	    <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/md5.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/JSON_v1.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/fmcore.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/fmgen.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/opac_utils.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/<!--#echo var="locale"-->/OrgTree.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/OrgLasso.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/org_utils.js'></script>
+        <script language='javascript' type='text/javascript' 
+            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/RemoteRequest.js'></script>
         <script language='javascript' type='text/javascript' 
             src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'></script>
         <script language='javascript' type='text/javascript' 
