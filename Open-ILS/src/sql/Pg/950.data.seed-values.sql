@@ -1807,6 +1807,11 @@ INSERT into config.org_unit_setting_type
   'When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it',
   'bool'),
 
+( 'circ.selfcheck.auto_override_checkout_events',
+  'Selfcheck override events list',
+  'List of checkout/renewal events that the selfcheck interface should automatically override instead instead of alerting and stopping the transaction',
+  'array' ),
+
 ( 'ui.patron.default_inet_access_level',
   'Default level of patrons'' internet access',
   null,
