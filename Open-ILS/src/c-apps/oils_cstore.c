@@ -1497,6 +1497,11 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 				field_object,
 				(char*)oilsIDLFindPath("/%s/primarykey", field_object->classname)
 			);
+		} else if( JSON_BOOL == field_object->type ) {
+			if( jsonBoolIsTrue( field_object ) )
+				value = strdup( "t" );
+			else
+				value = strdup( "f" );
 		} else {
 			value = jsonObjectToSimpleString( field_object );
 		}
@@ -4733,7 +4738,12 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 			value = oilsFMGetString(
 				field_object,
 				(char*)oilsIDLFindPath("/%s/primarykey", field_object->classname)
-            );
+			);
+		} else if( JSON_BOOL == field_object->type ) {
+			if( jsonBoolIsTrue( field_object ) )
+				value = strdup( "t" );
+			else
+				value = strdup( "f" );
 		} else {
 			value = jsonObjectToSimpleString( field_object );
 			if( field_object && JSON_NUMBER == field_object->type )
