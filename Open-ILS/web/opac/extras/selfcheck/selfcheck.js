@@ -37,9 +37,11 @@ var orgUnit;
 var orgUnitAddress;
 var orgUnitHours;
 var alertOnCheckoutEvent = false;
+var overrideCircEvents = [];
 var SET_PATRON_TIMEOUT = 'circ.selfcheck.patron_login_timeout';
 var SET_BARCODE_REGEX = 'opac.barcode_regex';
 var SET_ALERT_ON_CHECKOUT_EVENT = 'circ.selfcheck.alert_on_checkout_event';
+var SET_AUTO_OVERRIDE_EVENTS = 'circ.selfcheck.auto_override_checkout_events';
 
 
 function selfckInit() {
@@ -53,13 +55,15 @@ function selfckInit() {
 
     // fetch the relevent org-unit setting
     var settings = fetchBatchOrgSetting(orgUnit.id(), 
-        [SET_PATRON_TIMEOUT, SET_BARCODE_REGEX, SET_ALERT_ON_CHECKOUT_EVENT]);
+        [SET_PATRON_TIMEOUT, SET_BARCODE_REGEX, SET_ALERT_ON_CHECKOUT_EVENT, SET_AUTO_OVERRIDE_EVENTS]);
     if(settings[SET_PATRON_TIMEOUT])
         patronTimeout = parseInt(settings[SET_PATRON_TIMEOUT].value) * 1000;
     if(settings[SET_BARCODE_REGEX])
         patronBarcodeRegex = new RegExp(settings[SET_BARCODE_REGEX].value);
     if(settings[SET_ALERT_ON_CHECKOUT_EVENT])
         alertOnCheckoutEvent = (settings[SET_ALERT_ON_CHECKOUT_EVENT].value) ? true : false;
+    if(settings[SET_AUTO_OVERRIDE_EVENTS])
+        overrideCircEvents = settings[SET_AUTO_OVERRIDE_EVENTS].value;
 
     if(!staff) {
         // should not happen when behind the proxy
@@ -247,7 +251,7 @@ function selfckCheckPatronBarcode(itemBc) {
 /**
   * Sends the checkout request
   */
-function selfckCheckout() {
+function selfckCheckout(override) {
     if(pendingXact) return;
     selfckResetTimer();
     pendingXact = true;
@@ -270,7 +274,7 @@ function selfckCheckout() {
     }
 
     var coReq = new Request(
-        'open-ils.circ:open-ils.circ.checkout.full',
+        'open-ils.circ:open-ils.circ.checkout.full' + ((override) ? '.override' : ''),
         G.user.session, {patron_id:patron.id(), copy_barcode:itemBarcode});
 
 	coReq.request.alertEvent = false;
@@ -308,6 +312,26 @@ function selfckHandleCoResult(r) {
 
     } else {
         pendingXact = false;
+
+        if(!evt.length) evt = [evt];
+        if(overrideCircEvents.length) {
+
+            // see if the events we received are all in the list of 
+            // events to override
+            var override = true;
+            for(var i = 0; i < evt.length; i++) {
+                var match = overrideCircEvents.filter(
+                    function(e) { return (e == evt[i].textcode); })[0];
+                if(!match) {
+                    override = false;
+                    break;
+                }
+            }
+
+            if(override)
+                return selfckCheckout(true);
+        }
+
         selfckShowMsgNode(evt);
         $('selfck-item-barcode-input').select();
     }
