@@ -93,7 +93,9 @@ DEBS =  \
 	libtext-aspell-perl\
 	libtext-csv-perl\
 	libtext-csv-perl\
-	libuuid-perl
+	libuuid-perl\
+	libxml-simple-perl\
+	libxml-libxml-perl
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
 EXTRA_DEBS = \
