@@ -109,6 +109,8 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             var order_by = {};
             if (opts.order_by) order_by.order_by = opts.order_by;
             if (opts.select) order_by.select = opts.select;
+            if (opts.limit) order_by.limit = opts.limit;
+            if (opts.offset) order_by.offset = opts.offset;
             
             var method = 'open-ils.pcrud.search.' + fm_class;
             if(!opts.streaming) method += '.atomic';
@@ -153,6 +155,8 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             var order_by = {};
             if (opts.order_by) order_by.order_by = opts.order_by;
             if (opts.select) order_by.select = opts.select;
+            if (opts.limit) order_by.limit = opts.limit;
+            if (opts.offset) order_by.offset = opts.offset;
 
             var method = 'open-ils.pcrud.search.' + fm_class;
             if(!opts.streaming) method += '.atomic';

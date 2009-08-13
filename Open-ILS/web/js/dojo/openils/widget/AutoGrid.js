@@ -1,6 +1,7 @@
 if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.provide('openils.widget.AutoGrid');
     dojo.require('dojox.grid.DataGrid');
+    dojo.require('dijit.layout.ContentPane');
     dojo.require('openils.widget.AutoWidget');
     dojo.require('openils.widget.AutoFieldWidget');
     dojo.require('openils.widget.EditPane');
@@ -22,6 +23,9 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             selectorWidth : '1.5',
             showColumnPicker : false,
             columnPickerPrefix : null,
+            displayLimit : 15,
+            displayOffset : 0,
+            showPaginator : false,
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -64,6 +68,43 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                 this.toggleSelectAll();
                         }
                     );
+                }
+
+                if(this.showPaginator) {
+                    var self = this;
+                    this.paginator = new dijit.layout.ContentPane();
+
+
+                    var back = dojo.create('a', {
+                        innerHTML : 'Back', 
+                        style : 'padding-right:6px;',
+                        href : 'javascript:void(0);', 
+                        onclick : function() { 
+                            self.resetStore();
+                            self.cachedQueryOpts.offset = self.displayOffset -= self.displayLimit;
+                            self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                        }
+                    });
+
+                    var forw = dojo.create('a', {
+                        innerHTML : 'Next', 
+                        style : 'padding-right:6px;',
+                        href : 'javascript:void(0);', 
+                        onclick : function() { 
+                            self.resetStore();
+                            self.cachedQueryOpts.offset = self.displayOffset += self.displayLimit;
+                            self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                        }
+                    });
+
+                    dojo.place(this.paginator.domNode, this.domNode, 'before');
+                    dojo.place(back, this.paginator.domNode);
+                    dojo.place(forw, this.paginator.domNode);
+                    this.loadProgressIndicator = dojo.create('img', {
+                        src:'/opac/images/progressbar_green.gif',
+                        style:'height:16px;width:16px;'
+                    });
+                    dojo.place(this.loadProgressIndicator, this.paginator.domNode);
                 }
             },
 
@@ -439,16 +480,28 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             loadAll : function(opts, search) {
                 dojo.require('openils.PermaCrud');
-                if(!opts) opts = {};
+                if(this.loadProgressIndicator)
+                    dojo.style(this.loadProgressIndicator, 'visibility', 'visible');
                 var self = this;
+                opts = dojo.mixin(
+                    {limit : this.displayLimit, offset : this.displayOffset}, 
+                    opts || {}
+                );
                 opts = dojo.mixin(opts, {
                     async : true,
                     streaming : true,
                     onresponse : function(r) {
                         var item = openils.Util.readResponse(r);
                         self.store.newItem(item.toStoreItem());
+                    },
+                    oncomplete : function() {
+                        if(self.loadProgressIndicator) 
+                            dojo.style(self.loadProgressIndicator, 'visibility', 'hidden');
                     }
                 });
+
+                this.cachedQuerySearch = search;
+                this.cachedQueryOpts = opts;
                 if(search)
                     new openils.PermaCrud().search(this.fmClass, search, opts);
                 else

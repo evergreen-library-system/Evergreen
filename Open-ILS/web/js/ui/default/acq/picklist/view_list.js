@@ -53,11 +53,13 @@ function createPL(fields) {
                 ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
                 {   async: true,
                     params: [openils.User.authtoken, plId,
-                        {flesh_lineitem_count:1, flesh_username:1}],
+                        {flesh_lineitem_count:1, flesh_owner:1}],
 
                     oncomplete: function(r) {
-                        if(pl = openils.Util.readResponse(r)) 
+                        if(pl = openils.Util.readResponse(r)) {
+                           plCache[pl.id()] = pl;
                            plListGrid.store.newItem(acqpl.toStoreData([pl]).items[0]);
+                        }
                     }
                 }
             );
