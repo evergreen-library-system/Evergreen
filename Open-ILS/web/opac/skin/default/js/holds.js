@@ -817,7 +817,7 @@ function holdCreateHold( recurse, hold ) {
 
 function holdProcessResult( hold, res, recurse ) {
 
-	if( res == '1' ) {
+	if( res && res > -1 ) {
 		alert($('holds_success').innerHTML);
 		holdArgs = null;
 

@@ -72,103 +72,92 @@ __PACKAGE__->register_method(
 );
 
 sub create_hold {
-	my( $self, $conn, $auth, @holds ) = @_;
+	my( $self, $conn, $auth, $hold ) = @_;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->event unless $e->checkauth;
 
+    return -1 unless $hold;
 	my $override = 1 if $self->api_name =~ /override/;
 
-	my $holds = (ref($holds[0] eq 'ARRAY')) ? $holds[0] : [@holds];
+    my @events;
 
-#	my @copyholds;
+    my $requestor = $e->requestor;
+    my $recipient = $requestor;
 
-	for my $hold (@$holds) {
+    if( $requestor->id ne $hold->usr ) {
+        # Make sure the requestor is allowed to place holds for 
+        # the recipient if they are not the same people
+        $recipient = $e->retrieve_actor_user($hold->usr) or return $e->event;
+        $e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->event;
+    }
 
-		next unless $hold;
-		my @events;
+    # Now make sure the recipient is allowed to receive the specified hold
+    my $pevt;
+    my $porg = $recipient->home_ou;
+    my $rid = $e->requestor->id;
+    my $t = $hold->hold_type;
 
-		my $requestor = $e->requestor;
-		my $recipient = $requestor;
+    # See if a duplicate hold already exists
+    my $sargs = {
+        usr			=> $recipient->id, 
+        hold_type	=> $t, 
+        fulfillment_time => undef, 
+        target		=> $hold->target,
+        cancel_time	=> undef,
+    };
 
+    $sargs->{holdable_formats} = $hold->holdable_formats if $t eq 'M';
+        
+    my $existing = $e->search_action_hold_request($sargs); 
+    push( @events, OpenILS::Event->new('HOLD_EXISTS')) if @$existing;
 
-		if( $requestor->id ne $hold->usr ) {
-			# Make sure the requestor is allowed to place holds for 
-			# the recipient if they are not the same people
-			$recipient = $e->retrieve_actor_user($hold->usr) or return $e->event;
-			$e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->event;
-		}
+    if( $t eq OILS_HOLD_TYPE_METARECORD ) 
+        { $pevt = $e->event unless $e->allowed('MR_HOLDS', $porg); }
 
-		# Now make sure the recipient is allowed to receive the specified hold
-		my $pevt;
-		my $porg		= $recipient->home_ou;
-		my $rid		= $e->requestor->id;
-		my $t			= $hold->hold_type;
+    if( $t eq OILS_HOLD_TYPE_TITLE ) 
+        { $pevt = $e->event unless $e->allowed('TITLE_HOLDS', $porg);  }
 
-		# See if a duplicate hold already exists
-		my $sargs = {
-			usr			=> $recipient->id, 
-			hold_type	=> $t, 
-			fulfillment_time => undef, 
-			target		=> $hold->target,
-			cancel_time	=> undef,
-		};
+    if( $t eq OILS_HOLD_TYPE_VOLUME ) 
+        { $pevt = $e->event unless $e->allowed('VOLUME_HOLDS', $porg); }
 
-		$sargs->{holdable_formats} = $hold->holdable_formats if $t eq 'M';
-			
-		my $existing = $e->search_action_hold_request($sargs); 
-		push( @events, OpenILS::Event->new('HOLD_EXISTS')) if @$existing;
+    if( $t eq OILS_HOLD_TYPE_COPY ) 
+        { $pevt = $e->event unless $e->allowed('COPY_HOLDS', $porg); }
 
-		if( $t eq OILS_HOLD_TYPE_METARECORD ) 
-			{ $pevt = $e->event unless $e->allowed('MR_HOLDS', $porg); }
+    return $pevt if $pevt;
 
-		if( $t eq OILS_HOLD_TYPE_TITLE ) 
-			{ $pevt = $e->event unless $e->allowed('TITLE_HOLDS', $porg);  }
-
-		if( $t eq OILS_HOLD_TYPE_VOLUME ) 
-			{ $pevt = $e->event unless $e->allowed('VOLUME_HOLDS', $porg); }
-
-		if( $t eq OILS_HOLD_TYPE_COPY ) 
-			{ $pevt = $e->event unless $e->allowed('COPY_HOLDS', $porg); }
-
-		return $pevt if $pevt;
-
-		if( @events ) {
-			if( $override ) {
-				for my $evt (@events) {
-					next unless $evt;
-					my $name = $evt->{textcode};
-					return $e->event unless $e->allowed("$name.override", $porg);
-				}
-			} else {
-				return \@events;
-			}
-		}
-
-        # set the configured expire time
-        unless($hold->expire_time) {
-            my $interval = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_HOLD_EXPIRE);
-            if($interval) {
-                my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
-                $hold->expire_time($U->epoch2ISO8601($date->epoch));
+    if( @events ) {
+        if( $override ) {
+            for my $evt (@events) {
+                next unless $evt;
+                my $name = $evt->{textcode};
+                return $e->event unless $e->allowed("$name.override", $porg);
             }
+        } else {
+            return \@events;
         }
+    }
 
-		$hold->requestor($e->requestor->id); 
-		$hold->request_lib($e->requestor->ws_ou);
-		$hold->selection_ou($hold->pickup_lib) unless $hold->selection_ou;
-		$hold = $e->create_action_hold_request($hold) or return $e->event;
-	}
+    # set the configured expire time
+    unless($hold->expire_time) {
+        my $interval = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_HOLD_EXPIRE);
+        if($interval) {
+            my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
+            $hold->expire_time($U->epoch2ISO8601($date->epoch));
+        }
+    }
+
+    $hold->requestor($e->requestor->id); 
+    $hold->request_lib($e->requestor->ws_ou);
+    $hold->selection_ou($hold->pickup_lib) unless $hold->selection_ou;
+    $hold = $e->create_action_hold_request($hold) or return $e->event;
 
 	$e->commit;
 
-	$conn->respond_complete(1);
+	$conn->respond_complete($hold->id);
 
-    for(@holds) {
-        next if $U->is_true($_->frozen);
-	    $U->storagereq(
-		    'open-ils.storage.action.hold_request.copy_targeter', 
-		    undef, $_->id );
-    }
+    $U->storagereq(
+        'open-ils.storage.action.hold_request.copy_targeter', 
+        undef, $hold->id ) unless $U->is_true($hold->frozen);
 
 	return undef;
 }
@@ -815,8 +804,12 @@ sub retrieve_hold_queue_status_impl {
         $qpos++;
     }
 
-    my $potentials = $e->search_action_hold_copy_map({hold => $hold->id}, {idlist => 1});
-    my $num_potentials = scalar(@$potentials);
+    # total count of potential copies
+    my $num_potentials = $e->json_query({
+        select => {ahcm => [{column => 'id', transform => 'count', alias => 'count'}]},
+        from => 'ahcm',
+        where => {hold => $hold->id}
+    })->[0];
 
     my $user_org = $e->json_query({select => {au => ['home_ou']}, from => 'au', where => {id => $hold->usr}})->[0]->{home_ou};
     my $default_hold_interval = $U->ou_ancestor_setting_value($user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL);
