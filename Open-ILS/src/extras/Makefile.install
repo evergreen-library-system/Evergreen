@@ -87,7 +87,6 @@ DEBS =  \
 	libemail-send-perl\
 	libgd-graph3d-perl\
 	libmarc-record-perl\
-	libmodule-install-perl\
 	libole-storage-lite-perl\
 	libpq-dev\
 	libspreadsheet-writeexcel-perl\
@@ -140,7 +139,6 @@ CENTOS_PERL = \
 	DateTime::Format::Builder \
 	GD::Graph3d \
 	MARC::Record \
-	Module::Install\
 	Net::Z3950::ZOOM \
 	Spreadsheet::WriteExcel \
 	Text::Aspell \
@@ -190,7 +188,6 @@ GENTOOS = \
 
 GENTOO_PERL = \
     MARC::Record \
-    Module::Install\
     Net::Z3950::ZOOM \
     Text::CSV
 
