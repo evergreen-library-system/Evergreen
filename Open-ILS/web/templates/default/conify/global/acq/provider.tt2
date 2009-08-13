@@ -78,6 +78,7 @@ function formatName(value) {
                 defaultCellWidth='"auto"'
                 autoHeight='true'
                 fmClass='acqpro'
+                showPaginator='true'
                 editOnEnter='true'>
             <thead>
                 <tr><th field='name' get='getProviderName' formatter='formatName'/></tr>
