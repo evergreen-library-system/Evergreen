@@ -23,9 +23,16 @@
 #  endif
 #endif
 
-#define SUBSELECT	4
-#define DISABLE_I18N	2
-#define SELECT_DISTINCT	1
+// The next four macros are OR'd together as needed to form a set
+// of bitflags.  SUBCOMBO enables an extra pair of parentheses when
+// nesting one UNION, INTERSECT or EXCEPT inside another.
+// SUBSELECT tells us we're in a subquery, so don't add the
+// terminal semicolon yet.
+#define SUBCOMBO    8
+#define SUBSELECT   4
+#define DISABLE_I18N    2
+#define SELECT_DISTINCT 1
+
 #define AND_OP_JOIN     0
 #define OR_OP_JOIN      1
 
@@ -105,6 +112,7 @@ static char* searchPredicate ( const ClassInfo*, osrfHash*, jsonObject*, osrfMet
 static char* searchJOIN ( const jsonObject*, const ClassInfo* left_info );
 static char* searchWHERE ( const jsonObject*, const ClassInfo*, int, osrfMethodContext* );
 static char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
+char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
 
 char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, int );
 
@@ -1769,31 +1777,19 @@ static char* searchINPredicate (const char* class_alias, osrfHash* field,
 		buffer_add(sql_buf, "IN (");
 	}
 
-    if (node->type == JSON_HASH) {
-        // subquery predicate
-        char* subpred = SELECT(
-            ctx,
-            jsonObjectGetKey( node, "select" ),
-            jsonObjectGetKey( node, "from" ),
-            jsonObjectGetKey( node, "where" ),
-            jsonObjectGetKey( node, "having" ),
-            jsonObjectGetKey( node, "order_by" ),
-            jsonObjectGetKey( node, "limit" ),
-            jsonObjectGetKey( node, "offset" ),
-            SUBSELECT
-        );
-		pop_query_frame();
-
-		if( subpred ) {
-			buffer_add(sql_buf, subpred);
-			free(subpred);
-		} else {
+	if (node->type == JSON_HASH) {
+		// subquery predicate
+		char* subpred = buildQuery( ctx, node, SUBSELECT );
+		if( ! subpred ) {
 			buffer_free( sql_buf );
 			return NULL;
 		}
 
-    } else if (node->type == JSON_ARRAY) {
-        // literal value list
+		buffer_add(sql_buf, subpred);
+		free(subpred);
+
+	} else if (node->type == JSON_ARRAY) {
+		// literal value list
     	int in_item_index = 0;
     	int in_item_first = 1;
     	const jsonObject* in_item;
@@ -2688,19 +2684,7 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 					buffer_fadd(sql_buf, " NOT ( %s )", subpred);
 					free( subpred );
 				} else if ( !strcasecmp("-exists",search_itr->key) ) {
-					char* subpred = SELECT(
-						ctx,
-						jsonObjectGetKey( node, "select" ),
-						jsonObjectGetKey( node, "from" ),
-						jsonObjectGetKey( node, "where" ),
-						jsonObjectGetKey( node, "having" ),
-						jsonObjectGetKey( node, "order_by" ),
-						jsonObjectGetKey( node, "limit" ),
-						jsonObjectGetKey( node, "offset" ),
-						SUBSELECT
-					);
-					pop_query_frame();
-
+					char* subpred = buildQuery( ctx, node, SUBSELECT );
 					if( ! subpred ) {
 						jsonIteratorFree( search_itr );
 						buffer_free( sql_buf );
@@ -2710,19 +2694,7 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 					buffer_fadd(sql_buf, "EXISTS ( %s )", subpred);
 					free(subpred);
 				} else if ( !strcasecmp("-not-exists",search_itr->key) ) {
-					char* subpred = SELECT(
-						ctx,
-						jsonObjectGetKey( node, "select" ),
-						jsonObjectGetKey( node, "from" ),
-						jsonObjectGetKey( node, "where" ),
-						jsonObjectGetKey( node, "having" ),
-						jsonObjectGetKey( node, "order_by" ),
-						jsonObjectGetKey( node, "limit" ),
-						jsonObjectGetKey( node, "offset" ),
-						SUBSELECT
-					);
-					pop_query_frame();
-
+					char* subpred = buildQuery( ctx, node, SUBSELECT );
 					if( ! subpred ) {
 						jsonIteratorFree( search_itr );
 						buffer_free( sql_buf );
@@ -2826,6 +2798,303 @@ static jsonObject* defaultSelectList( const char* table_alias ) {
 	return array;
 }
 
+// Translate a jsonObject into a UNION, INTERSECT, or EXCEPT query.
+// The jsonObject must be a JSON_HASH with an single entry for "union", 
+// "intersect", or "except".  The data associated with this key must be an
+// array of hashes, each hash being a query.
+// Also allowed but currently ignored: entries for "order_by" and "alias".
+static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
+	// Sanity check
+	if( ! combo || combo->type != JSON_HASH )
+		return NULL;      // should be impossible; validated by caller
+
+	const jsonObject* query_array = NULL;   // array of subordinate queries
+	const char* op = NULL;     // name of operator, e.g. UNION
+	const char* alias = NULL;  // alias for the query (needed for ORDER BY)
+	int op_count = 0;          // for detecting conflicting operators
+	int excepting = 0;         // boolean
+	int all = 0;               // boolean
+	jsonObject* order_obj = NULL;
+
+	// Identify the elements in the hash
+	jsonIterator* query_itr = jsonNewIterator( combo );
+	jsonObject* curr_obj = NULL;
+	while( (curr_obj = jsonIteratorNext( query_itr ) ) ) {
+		if( ! strcmp( "union", query_itr->key ) ) {
+			++op_count;
+			op = " UNION ";
+			query_array = curr_obj;
+		} else if( ! strcmp( "intersect", query_itr->key ) ) {
+			++op_count;
+			op = " INTERSECT ";
+			query_array = curr_obj;
+		} else if( ! strcmp( "except", query_itr->key ) ) {
+			++op_count;
+			op = " EXCEPT ";
+			excepting = 1;
+			query_array = curr_obj;
+		} else if( ! strcmp( "order_by", query_itr->key ) ) {
+			osrfLogWarning(
+				OSRF_LOG_MARK,
+				"%s: ORDER BY not supported for UNION, INTERSECT, or EXCEPT",
+				MODULENAME
+			);
+			order_obj = curr_obj;
+		} else if( ! strcmp( "alias", query_itr->key ) ) {
+			if( curr_obj->type != JSON_STRING ) {
+				jsonIteratorFree( query_itr );
+				return NULL;
+			}
+			alias = jsonObjectGetString( curr_obj );
+		} else if( ! strcmp( "all", query_itr->key ) ) {
+			if( obj_is_true( curr_obj ) )
+				all = 1;
+		} else {
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Malformed query; unexpected entry in query object"
+				);
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: Unexpected entry for \"%s\" in%squery",
+				MODULENAME,
+				query_itr->key,
+				op
+			);
+			jsonIteratorFree( query_itr );
+			return NULL;
+		}
+	}
+	jsonIteratorFree( query_itr );
+
+	// More sanity checks
+	if( ! query_array ) {
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Expected UNION, INTERSECT, or EXCEPT operator not found"
+			);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Expected UNION, INTERSECT, or EXCEPT operator not found",
+			MODULENAME
+		);
+		return NULL;        // should be impossible...
+	} else if( op_count > 1 ) {
+		if( ctx )
+				osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Found more than one of UNION, INTERSECT, and EXCEPT in same query"
+			);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Found more than one of UNION, INTERSECT, and EXCEPT in same query",
+			MODULENAME
+		);
+		return NULL;
+	} if( query_array->type != JSON_ARRAY ) {
+		if( ctx )
+				osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Malformed query: expected array of queries under UNION, INTERSECT or EXCEPT"
+			);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Expected JSON_ARRAY of queries for%soperator; found %s",
+			MODULENAME,
+			op,
+			json_type( query_array->type )
+		);
+		return NULL;
+	} if( query_array->size < 2 ) {
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"UNION, INTERSECT or EXCEPT requires multiple queries as operands"
+			);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s:%srequires multiple queries as operands",
+			MODULENAME,
+			op
+		);
+		return NULL;
+	} else if( excepting && query_array->size > 2 ) {
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"EXCEPT operator has too many queries as operands"
+			);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s:EXCEPT operator has too many queries as operands",
+			MODULENAME
+		);
+		return NULL;
+	} else if( order_obj && ! alias ) {
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"ORDER BY requires an alias for a UNION, INTERSECT, or EXCEPT"
+			);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s:ORDER BY requires an alias for a UNION, INTERSECT, or EXCEPT",
+			MODULENAME
+		);
+		return NULL;
+	}
+
+	// So far so good.  Now build the SQL.
+	growing_buffer* sql = buffer_init( 256 );
+
+	// If we nested inside another UNION, INTERSECT, or EXCEPT,
+	// Add a layer of parentheses
+	if( flags & SUBCOMBO )
+		OSRF_BUFFER_ADD( sql, "( " );
+
+	// Traverse the query array.  Each entry should be a hash.
+	int first = 1;   // boolean
+	int i = 0;
+	jsonObject* query = NULL;
+	while((query = jsonObjectGetIndex( query_array, i++ ) )) {
+		if( query->type != JSON_HASH ) {
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Malformed query under UNION, INTERSECT or EXCEPT"
+				);
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: Malformed query under%s -- expected JSON_HASH, found %s",
+				MODULENAME,
+				op,
+				json_type( query->type )
+			);
+			buffer_free( sql );
+			return NULL;
+		}
+
+		if( first )
+			first = 0;
+		else {
+			OSRF_BUFFER_ADD( sql, op );
+			if( all )
+				OSRF_BUFFER_ADD( sql, "ALL " );
+		}
+
+		char* query_str = buildQuery( ctx, query, SUBSELECT | SUBCOMBO );
+		if( ! query_str ) {
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: Error building query under%s",
+				MODULENAME,
+				op
+			);
+			buffer_free( sql );
+			return NULL;
+		}
+
+		OSRF_BUFFER_ADD( sql, query_str );
+	}
+
+	if( flags & SUBCOMBO )
+		OSRF_BUFFER_ADD_CHAR( sql, ')' );
+
+	if ( !(flags & SUBSELECT) )
+		OSRF_BUFFER_ADD_CHAR( sql, ';' );
+
+	return buffer_release( sql );
+}
+
+// Translate a jsonObject into a SELECT, UNION, INTERSECT, or EXCEPT query.
+// The jsonObject must be a JSON_HASH with an entry for "from", "union", "intersect",
+// or "except" to indicate the type of query.
+char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags ) {
+	// Sanity checks
+	if( ! query ) {
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Malformed query; no query object"
+			);
+		osrfLogError( OSRF_LOG_MARK, "%s: Null pointer to query object", MODULENAME );
+		return NULL;
+	} else if( query->type != JSON_HASH ) {
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Malformed query object"
+			);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Query object is %s instead of JSON_HASH",
+			MODULENAME,
+			json_type( query->type )
+		);
+		return NULL;
+	}
+
+	// Determine what kind of query it purports to be, and dispatch accordingly.
+	if( jsonObjectGetKey( query, "union" ) ||
+		jsonObjectGetKey( query, "intersect" ) ||
+		jsonObjectGetKey( query, "except" ) ) {
+		return doCombo( ctx, query, flags );
+	} else {
+		// It is presumably a SELECT query
+
+		// Push a node onto the stack for the current query.  Every level of
+		// subquery gets its own QueryFrame on the Stack.
+		push_query_frame();
+
+		// Build an SQL SELECT statement
+		char* sql = SELECT(
+			ctx,
+			jsonObjectGetKey( query, "select" ),
+			jsonObjectGetKey( query, "from" ),
+			jsonObjectGetKey( query, "where" ),
+			jsonObjectGetKey( query, "having" ),
+			jsonObjectGetKey( query, "order_by" ),
+			jsonObjectGetKey( query, "limit" ),
+			jsonObjectGetKey( query, "offset" ),
+			flags
+		);
+		pop_query_frame();
+		return sql;
+	}
+}
+
 char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
 		
@@ -2871,10 +3140,6 @@ char* SELECT (
 			);
 		return NULL;
 	}
-
-	// Push a node onto the stack for the current query.  Every level of
-	// subquery gets its own QueryFrame on the Stack.
-	push_query_frame();
 
 	// the core search class
 	const char* core_class = NULL;
@@ -4302,17 +4567,8 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 		flags |= DISABLE_I18N;
 
 	osrfLogDebug(OSRF_LOG_MARK, "Building SQL ...");
-	char* sql = SELECT(
-			ctx,
-			jsonObjectGetKey( hash, "select" ),
-			jsonObjectGetKey( hash, "from" ),
-			jsonObjectGetKey( hash, "where" ),
-			jsonObjectGetKey( hash, "having" ),
-			jsonObjectGetKey( hash, "order_by" ),
-			jsonObjectGetKey( hash, "limit" ),
-			jsonObjectGetKey( hash, "offset" ),
-			flags
-	);
+	clear_query_stack();       // a possibly needless precaution
+	char* sql = buildQuery( ctx, hash, flags );
 	clear_query_stack();
 
 	if (!sql) {

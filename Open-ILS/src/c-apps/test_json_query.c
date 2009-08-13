@@ -52,18 +52,7 @@ Scott McKellar <scott@esilibrary.com>
 
 // Prototypes for two functions in oils_cstore.c, which
 // are not defined in any header
-char* SELECT (
-		/* method context */ osrfMethodContext* ctx,
-		
-		/* SELECT   */ jsonObject* selhash,
-		/* FROM     */ jsonObject* join_hash,
-		/* WHERE    */ jsonObject* search_hash,
-		/* HAVING   */ jsonObject* having_hash,
-		/* ORDER BY */ jsonObject* order_hash,
-		/* LIMIT    */ jsonObject* limit,
-		/* OFFSET   */ jsonObject* offset,
-		/* flags    */ int flags
-);
+char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
 void set_cstore_dbi_conn( dbi_conn conn );
 
 static int obj_is_true( const jsonObject* obj );
@@ -201,17 +190,7 @@ static int test_json_query( const char* json_query ) {
 	if ( obj_is_true( jsonObjectGetKey( hash, "no_i18n" ) ) )
 		flags |= DISABLE_I18N;
 
-	char* sql_query = SELECT(
-		NULL,
-		jsonObjectGetKey( hash, "select" ),
-		jsonObjectGetKey( hash, "from" ),
-		jsonObjectGetKey( hash, "where" ),
-		jsonObjectGetKey( hash, "having" ),
-		jsonObjectGetKey( hash, "order_by" ),
-		jsonObjectGetKey( hash, "limit" ),
-		jsonObjectGetKey( hash, "offset" ),
-		flags
-	);
+	char* sql_query = buildQuery( NULL, hash, flags );
 
 	if ( !sql_query ) {
 		fprintf( stderr, "Invalid query\n" );
