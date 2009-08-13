@@ -820,6 +820,8 @@ function holdProcessResult( hold, res, recurse ) {
 	if( res && res > -1 ) {
 		alert($('holds_success').innerHTML);
 		holdArgs = null;
+        if(isXUL() && typeof xulG.opac_hold_placed == 'function')
+            xulG.opac_hold_placed(res);
 
 	} else {
 
