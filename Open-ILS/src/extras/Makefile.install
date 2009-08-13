@@ -74,6 +74,7 @@ APT_TOOL=aptitude
 
 # Debian dependencies
 DEBS =  \
+	apache2.2-common\
 	aspell\
 	aspell-en\
 	libbusiness-creditcard-perl\
@@ -86,6 +87,7 @@ DEBS =  \
 	libdatetime-timezone-perl\
 	libemail-send-perl\
 	libgd-graph3d-perl\
+	liblog-log4perl-perl\
 	libmarc-record-perl\
 	libole-storage-lite-perl\
 	libpq-dev\
