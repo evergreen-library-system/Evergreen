@@ -18,7 +18,7 @@ function my_init() {
         g.error.sdump('D_TRACE','my_init() for hold_notices.xul');
 
         g.ahr_id = xul_param('ahr_id');
-      
+
         g.ahr = g.network.simple_request('FM_AHR_RETRIEVE',[ ses(), g.ahr_id ]);
         if (typeof g.ahr.ilsevent != 'undefined') { throw(g.ahr); }
         g.ahr = g.ahr[0];
@@ -30,7 +30,7 @@ function my_init() {
         var x = document.getElementById('bib_brief_box'); while (x.firstChild) x.removeChild(x.lastChild);
         var bib_brief = document.createElement('iframe'); x.appendChild(bib_brief);
         bib_brief.setAttribute('flex',1);
-        bib_brief.setAttribute('src',urls.XUL_BIB_BRIEF); 
+        bib_brief.setAttribute('src',urls.XUL_BIB_BRIEF);
         get_contentWindow(bib_brief).xulG = { 'docid' : g.ahr.target() };
 
         refresh();
@@ -42,31 +42,31 @@ function my_init() {
 
 function render_patron() {
     if (g.ahr.usr()) {
-        JSAN.use('patron.util'); 
+        JSAN.use('patron.util');
         var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.ahr.usr() );
-				
-        $('patron_name').setAttribute('value', 
-                                      ( au_obj.prefix() ? au_obj.prefix() + ' ' : '') + 
-                                      au_obj.family_name() + ', ' + 
+
+        $('patron_name').setAttribute('value',
+                                      ( au_obj.prefix() ? au_obj.prefix() + ' ' : '') +
+                                      au_obj.family_name() + ', ' +
                                       au_obj.first_given_name() + ' ' +
                                       ( au_obj.second_given_name() ? au_obj.second_given_name() + ' ' : '' ) +
                                       ( au_obj.suffix() ? au_obj.suffix() : '')
-                                      + ' : ' + au_obj.card().barcode() 
+                                      + ' : ' + au_obj.card().barcode()
                                       );
     }
 }
 
 function a_list_of_one() {
     JSAN.use('circ.util');
-    var columns = circ.util.hold_columns( 
-                                         { 
+    var columns = circ.util.hold_columns(
+                                         {
                                              'status' : { 'hidden' : true },
                                              'request_time' : { 'hidden' : false },
                                              'pickup_lib_shortname' : { 'hidden' : false },
                                              'current_copy' : { 'hidden' : false },
                                              'phone_notify' : { 'hidden' : false },
                                              'email_notify' : { 'hidden' : false },
-                                         } 
+                                         }
                                           );
     JSAN.use('util.list'); g.list = new util.list('holds_list');
     g.list.init(
@@ -127,7 +127,7 @@ function retrieve_notifications() {
 function retrieve_notes() {
     try{
         g.ahr_id = xul_param('ahr_id');
-     
+
         g.notes = new openils.PermaCrud(
                                       {
                                           authtoken :ses()
@@ -135,7 +135,7 @@ function retrieve_notes() {
                                        ).search('ahrn', {hold:g.ahr_id});
     }
     catch(E){alert(E);}
-    
+
 }
 
 function apply(node,field,value) {
@@ -162,7 +162,7 @@ function render_notifications() {
         util.widgets.apply(node,'name','notify_time',
                            function(n){
                                n.setAttribute(
-                                              "tooltiptext", 
+                                              "tooltiptext",
                                               $("patronStrings").getFormattedString('staff.patron.hold_notices.tooltiptext',[g.notifications[i].id(), g.notifications[i].hold(), g.notifications[i].notify_staff()])
                                               );
                            }
@@ -175,24 +175,24 @@ function render_notifications() {
 }
 
 function render_notes() {
- 
+
     JSAN.use('util.widgets'); util.widgets.remove_children('notes_panel');
     var notep = $('notes_panel');
-    
+
     for (var i = 0; i < g.notes.length; i++) {
-        
+
         // template
         var notenode = $('note_template').cloneNode(true); notep.appendChild(notenode); notenode.hidden = false;
-        
-        /* alert('notenode = ' 
-              + notenode + ' title = ' + g.notes[i].title() + ' note = ' + 
-              g.notes[i].body() + ' pub = ' + g.notes[i].pub() + ' slip = ' + 
+
+        /* alert('notenode = '
+              + notenode + ' title = ' + g.notes[i].title() + ' note = ' +
+              g.notes[i].body() + ' pub = ' + g.notes[i].pub() + ' slip = ' +
               g.notes[i].slip() );*/
 
-        apply(notenode,'title',g.notes[i].title() ? g.notes[i].title() : 'NO TITLE');
-        apply(notenode,'note',g.notes[i].body() ? g.notes[i].body() : 'NO NOTE');
-        apply(notenode,'pub',g.notes[i].pub() ? g.notes[i].pub() : 'NOT PUBLIC');
-        apply(notenode,'slip',g.notes[i].slip() ? g.notes[i].slip() : 'NOT PRINTING ON SLIP');
+        apply(notenode,'title',g.notes[i].title() ? g.notes[i].title() : '');
+        apply(notenode,'note',g.notes[i].body() ? g.notes[i].body() : '');
+        apply(notenode,'pub',g.notes[i].pub() ? g.notes[i].pub() : '');
+        apply(notenode,'slip',g.notes[i].slip() ? g.notes[i].slip() : '');
     }
 }
 function new_notification() {
@@ -234,7 +234,7 @@ function new_note() {
      newNote.body(document.getElementById('hold_note_text').value);
      newNote.hold(g.ahr_id);
      newNote.title(document.getElementById('hold_note_title').value);
-     
+
      if($('pub_bool').checked){
          newNote.pub("t");
      }else {
@@ -246,10 +246,10 @@ function new_note() {
          newNote.slip("f");
      }
      newNote.staff("t");
-     
+
      new openils.PermaCrud({authtoken :ses()}).create(newNote);
 
-     } 
+     }
      catch(E) {
          alert('new_note FAILED');
      }
