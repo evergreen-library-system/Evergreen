@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	  <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+          ]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="hold_notices_win" persist="sizemode width height"
+	onload="try{ my_init(); font_helper(); } catch(E) { alert(E); }" title="&staff.patron.hold_details.title;"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {}; </script>
+    <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/patron/hold_details.js" />
+
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+
+    <vbox id="v1" flex="1" persist="height">
+        <label id="patron_name" class="patronNameLarge"/>
+        <vbox id="bib_brief_box" height="200"/>
+    </vbox> 
+    <spacer flex="1"/>
+    <vbox id="v2" flex="1" persist="height">
+        <vbox flex="1">
+            <tree id="holds_list" enableColumnDrag="true" height="100"/>
+        </vbox>
+    </vbox>
+    <groupbox style="border: 2px black" id="notification_template">
+	<hbox>
+	    <description name="method" label="&staff.patron.hold_notices.method.label;" style="font-weight: bold"/>
+	    <description name="notify_time" style="font-weight: bold"/>
+	</hbox>
+	<description name="note"/>
+    </groupbox>
+    
+    <groupbox id="note_template" style="border: 2px black">
+        <hbox orient="vertical">
+            <description name="title" style="font-weight: bold"/>
+            <description name="note"/>
+	    <description name="pub" label="&staff.patron.hold_note.public.label;" style="font-weight: bold"/>
+            <description name="slip" label="&staff.patron.hold_note.print.label;" style="font-weight: bold"/>
+        </hbox>
+    </groupbox>
+
+    <tabbox>
+        <tabs>
+            <tab label="Add/View Notes"/>
+            <tab label="Add/View Notifications"/>
+        </tabs>
+        <tabpanels>
+            <tabpanel id="notes" orient="vertical" overflow="scroll">
+                <vbox persist="height" class="my_overflow" id="notes_panel">
+                </vbox>
+                
+                <textbox id="hold_note_title" multiline="false" value="circStrings-ADD NOTE TITLE HERE" onfocus="$('hold_note_title').value=''; $('hold_note_title').onfocus=''"/>
+                
+                <textbox id="hold_note_text" multiline="true" value="circStrings-Enter Notes Here." onfocus="$('hold_note_text').value=''; $('hold_note_text').onfocus=''"/>
+                <hbox>  
+                    <checkbox id="pub_bool" label="circStrings--Public Note" checked="{true | *false}" />
+                    <checkbox id="print_bool"  label="circStrings--Print Note" checked="{true | *false}" />
+                </hbox>
+                <hbox>
+                    <button label="circStrings--Add New Note" accesskey="" oncommand="new_note()"/>
+                    <button label="&staff.patron.hold_notices.close_window.label;" accesskey="&staff.patron.hold_notices.close_window.accesskey;" oncommand="window.close()"/>
+                </hbox>               
+                
+            </tabpanel>
+            <tabpanel id="notification" orient="vertical">
+                <vbox persist="height" class="my_overflow" id="notifications_panel">
+                </vbox>
+                <button label="&staff.patron.hold_notices.add_record_notification.label;" accesskey="&staff.patron.hold_notices.add_record_notification.accesskey;" oncommand="new_notification()"/>
+                <button label="&staff.patron.hold_notices.close_window.label;" accesskey="&staff.patron.hold_notices.close_window.accesskey;" oncommand="window.close()"/>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+    
+
+</window>
+
