@@ -75,34 +75,7 @@
 	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale' -->/patron.properties"/>
 
-	<commandset id="holds_cmds">
-		<command id="sel_mark_items_damaged" disabled="true"/>
-		<command id="sel_mark_items_missing" disabled="true"/>
-		<command id="sel_copy_details" disabled="true"/>
-		<command id="sel_patron" disabled="true"/>
-		<command id="sel_clip" />
-        <command id="cmd_csv_to_clipboard" />
-		<command id="cmd_csv_to_printer" />
-		<command id="cmd_csv_to_file" />
-
-		<command id="cmd_holds_print" />
-		<command id="cmd_show_catalog" />
-		<command id="cmd_retrieve_patron" />
-		<command id="cmd_show_notifications" />
-		<command id="cmd_holds_edit_pickup_lib" />
-		<command id="cmd_holds_edit_phone_notify" />
-		<command id="cmd_holds_edit_email_notify" />
-		<command id="cmd_holds_edit_thaw_date" />
-		<command id="cmd_holds_edit_expire_time" />
-		<command id="cmd_holds_activate" />
-		<command id="cmd_holds_suspend" />
-		<command id="cmd_holds_edit_selection_depth" />
-		<command id="cmd_broken" disabled="true" hidden="true"/>
-		<command id="cmd_holds_retarget"/>
-		<command id="cmd_holds_cancel" />
-		<command id="cmd_search_opac" />
-		<command id="save_columns" />
-	</commandset>
+        <commandset id="holds_cmds" />
 
 	<popupset id="holds_popupset"/>
 
