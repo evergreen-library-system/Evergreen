@@ -41,8 +41,8 @@ patron.holds.prototype = {
 		obj.tree_id = params['tree_id'];
 
 		JSAN.use('circ.util');
-		var columns = circ.util.hold_columns( 
-			{ 
+		var columns = circ.util.hold_columns(
+			{
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'request_time' : { 'hidden' : false },
 				'pickup_lib_shortname' : { 'hidden' : false },
@@ -51,7 +51,7 @@ patron.holds.prototype = {
 				'capture_time' : { 'hidden' : false },
 				'notify_time' : { 'hidden' : false },
 				'notify_count' : { 'hidden' : false }
-			} 
+			}
 		);
 
 		JSAN.use('util.list'); obj.list = new util.list( obj.tree_id || 'holds_list');
@@ -80,6 +80,7 @@ patron.holds.prototype = {
                                                                         row.my.queue_position = blob.queue_position;
                                                                         row.my.potential_copies = blob.potential_copies;
                                                                         row.my.estimated_wait = blob.estimated_wait;
+                                                                        row.my.ahrn_count = blob.hold.notes().length;
 
 									var copy_id = row.my.ahr.current_copy();
 									if (typeof copy_id == 'object') {
@@ -93,7 +94,7 @@ patron.holds.prototype = {
 									}
 
 									obj.holds_map[ row.my.ahr.id() ] = row.my.ahr;
-									params.row_node.setAttribute('retrieve_id', 
+									params.row_node.setAttribute('retrieve_id',
 										js2JSON({
 											'copy_id':copy_id,
                                                                                         'barcode':row.my.acp ? row.my.acp.barcode() : null,
@@ -137,7 +138,7 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_activate.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','false');
-						obj.controller.view.cmd_show_notifications.setAttribute('disabled','false');
+						obj.controller.view.cmd_show_details.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
@@ -155,7 +156,7 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
-						obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
+						obj.controller.view.cmd_show_details.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
@@ -163,7 +164,7 @@ patron.holds.prototype = {
 				}
 			}
 		);
-		
+
 		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
 			{
@@ -207,13 +208,36 @@ patron.holds.prototype = {
 							}
 						}
 					],
-					'cmd_holds_print' : [
+
+                                            ///////////////////////////////////////////////////////////////////THIS IS MY CURRENT CODE
+                                         'cmd_hold_note' : [
+                                                            ['command'],
+                                                            function() {
+                                                                try {
+                                                                    JSAN.use('util.window'); var win = new util.window();
+                                                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
+									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+									win.open(
+                                                                                 xulG.url_prefix(urls.XUL_HOLD_NOTE), // + '?ahr_id=' + obj.retrieve_ids[i].id,
+                                                                                 'hold_note_' + obj.retrieve_ids[i].id,
+                                                                                 'chrome,resizable',
+                                                                                 { 'ahrn_id' : obj.retrieve_ids[i].id }
+                                                                                 );
+                                                                    }
+                                                                } catch(E) {
+                                                                    obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.show_note.error_rendering_note'),E);
+                                                                }
+                                                            }
+                                         ],
+
+                                            //////////////////////////////////////////////////////////////////////////////////
+                                         'cmd_holds_print' : [
 						['command'],
 						function() {
 							try {
 								JSAN.use('patron.util');
-								var params = { 
-									'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+								var params = {
+									'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id),
 									'template' : 'holds'
 								};
 								obj.list.print(params);
@@ -226,7 +250,7 @@ patron.holds.prototype = {
 					'cmd_csv_to_printer' : [ ['command'], function() { obj.list.dump_csv_to_printer(); } ],
 					'cmd_csv_to_file' : [ ['command'], function() { obj.list.dump_csv_to_file( { 'defaultFileName' : 'holds.txt' } ); } ],
 
-					'cmd_show_notifications' : [
+					'cmd_show_details' : [
 						['command'],
 						function() {
 							try {
@@ -234,7 +258,7 @@ patron.holds.prototype = {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {
 									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
 									win.open(
-										xulG.url_prefix(urls.XUL_HOLD_NOTICES), // + '?ahr_id=' + obj.retrieve_ids[i].id,
+										xulG.url_prefix(urls.XUL_HOLD_DETAILS), // + '?ahr_id=' + obj.retrieve_ids[i].id,
 										'hold_notices_' + obj.retrieve_ids[i].id,
 										'chrome,resizable',
 										{ 'ahr_id' : obj.retrieve_ids[i].id }
@@ -249,10 +273,10 @@ patron.holds.prototype = {
 						['command'],
 						function() {
 							try {
-								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
+								JSAN.use('util.widgets'); JSAN.use('util.functional');
 								var ws_type = obj.data.hash.aout[ obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].ou_type() ];
 								var list = util.functional.map_list(
-									util.functional.filter_list(	
+									util.functional.filter_list(
 										obj.data.list.aout,
 										function(o) {
 											if (o.depth() > ws_type.depth()) return false;
@@ -260,13 +284,13 @@ patron.holds.prototype = {
 											return (o.id() == ws_type.id());
 										}
 									),
-									function(o) { 
+									function(o) {
 										return [
 											o.opac_label(),
 											o.id(),
 											false,
 											( o.depth() * 2),
-										]; 
+										];
 									}
 								);
 								ml = util.widgets.make_menulist( list, obj.data.list.au[0].ws_ou() );
@@ -295,7 +319,7 @@ patron.holds.prototype = {
 								);
 								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
 								var selection = fancy_prompt_data.selection;
-                
+
 								var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;}).join(', ');
 								var msg = '';
 								if(obj.retrieve_ids.length > 1) {
@@ -303,7 +327,7 @@ patron.holds.prototype = {
 								} else {
 									msg = $("patronStrings").getformattedString('staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular', [hold_list, obj.data.hash.aout[selection].opac_label()])
 								}
-                    
+
 								var r = obj.error.yns_alert(msg,
 										$("patronStrings").getString('staff.patron.holds.holds_edit_selection_depth.modify_holds_title'),
 										$("commonStrings").getString('common.yes'),
@@ -331,8 +355,8 @@ patron.holds.prototype = {
 						['command'],
 						function() {
 							try {
-								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
-                                
+								JSAN.use('util.widgets'); JSAN.use('util.functional');
+
                                 var deny_edit_because_of_transit = false;
                                 for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                     var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
@@ -345,14 +369,14 @@ patron.holds.prototype = {
 
 								var list = util.functional.map_list(
 									obj.data.list.aou,
-									function(o) { 
+									function(o) {
 										var sname = o.shortname(); for (i = sname.length; i < 20; i++) sname += ' ';
 										return [
 											o.name() ? sname + ' ' + o.name() : o.shortname(),
 											o.id(),
 											( obj.data.hash.aout[ o.ou_type() ].can_have_users() == 0),
 											( obj.data.hash.aout[ o.ou_type() ].depth() * 2),
-										]; 
+										];
 									}
 								);
 								ml = util.widgets.make_menulist( list, obj.data.list.au[0].ws_ou() );
@@ -381,7 +405,7 @@ patron.holds.prototype = {
 								);
 								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
 								var pickup_lib = fancy_prompt_data.lib;
-                
+
 								var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;}).join(', ');
 								var msg = '';
 								if(obj.retrieve_ids.length > 1) {
@@ -513,7 +537,7 @@ patron.holds.prototype = {
 										msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.disable_email.singular', [hold_list]);
 									}
 								}
-										
+
 								var r = obj.error.yns_alert(msg,
 										$("patronStrings").getString('staff.patron.holds.holds_edit_email_notify.mod_holds_title'),
 										$("commonStrings").getString('common.yes'),
@@ -540,7 +564,7 @@ patron.holds.prototype = {
 						['command'],
 						function() {
 							try {
-                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', '); 
+                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
 								var r = obj.error.yns_alert(
                                     obj.retrieve_ids.length > 1 ?
                                     document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt.plural',[hold_list]) :
@@ -557,9 +581,9 @@ patron.holds.prototype = {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
                                         if ( get_bool( hold.frozen() ) ) {
                                             already_suspended.push( hold.id() );
-                                            continue; 
+                                            continue;
                                         }
-										hold.frozen('t'); 
+										hold.frozen('t');
 										hold.thaw_date(null);
 										hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
@@ -582,7 +606,7 @@ patron.holds.prototype = {
 						['command'],
 						function() {
 							try {
-                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', '); 
+                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
 								var r = obj.error.yns_alert(
                                     obj.retrieve_ids.length > 1 ?
                                     document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt.plural',[hold_list]) :
@@ -599,9 +623,9 @@ patron.holds.prototype = {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
                                         if ( ! get_bool( hold.frozen() ) ) {
                                             already_activated.push( hold.id() );
-                                            continue; 
+                                            continue;
                                         }
-										hold.frozen('f'); 
+										hold.frozen('f');
 										hold.thaw_date(null);
 										hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
@@ -628,7 +652,7 @@ patron.holds.prototype = {
                                 function check_date(value) {
                                     try {
                                         if (! util.date.check('YYYY-MM-DD',value) ) { throw(document.getElementById('circStrings').getString('staff.circ.holds.activation_date.invalid_date')); }
-                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) { 
+                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) {
                                             throw(document.getElementById('circStrings').getString('staff.circ.holds.activation_date.too_early.error'));
                                         }
                                         return true;
@@ -649,7 +673,7 @@ patron.holds.prototype = {
                                     thaw_date = window.prompt(msg,value,title);
                                     if (thaw_date) {
                                         invalid = ! check_date(thaw_date);
-                                    } else { 
+                                    } else {
                                         invalid = false;
                                     }
                                 }
@@ -677,7 +701,7 @@ patron.holds.prototype = {
                                 function check_date(value) {
                                     try {
                                         if (! util.date.check('YYYY-MM-DD',value) ) { throw(document.getElementById('circStrings').getString('staff.circ.holds.expire_time.invalid_date')); }
-                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) { 
+                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) {
                                             throw(document.getElementById('circStrings').getString('staff.circ.holds.expire_time.too_early.error'));
                                         }
                                         return true;
@@ -698,7 +722,7 @@ patron.holds.prototype = {
                                     expire_time = window.prompt(msg,value,title);
                                     if (expire_time) {
                                         invalid = ! check_date(expire_time);
-                                    } else { 
+                                    } else {
                                         invalid = false;
                                     }
                                 }
@@ -829,7 +853,7 @@ patron.holds.prototype = {
 									var patron_id = obj.retrieve_ids[i].usr;
 									if (seen[patron_id]) continue; seen[patron_id] = true;
 									xulG.new_patron_tab(
-										{}, 
+										{},
 										{ 'id' : patron_id }
 									);
 								}
@@ -850,7 +874,7 @@ patron.holds.prototype = {
 										case 'M' :
 											opac_url = xulG.url_prefix( urls.opac_rresult ) + '?m=' + htarget;
 										break;
-										case 'T' : 
+										case 'T' :
 											opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + htarget;
 										break;
 										case 'V' :
@@ -863,7 +887,7 @@ patron.holds.prototype = {
 											if (typeof my_acp.call_number() == 'object') {
 												my_acn = my.acp.call_number();
 											} else {
-												my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', 
+												my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE.authoritative',
 													[ my_acp.call_number() ]);
 											}
 											opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
@@ -873,13 +897,13 @@ patron.holds.prototype = {
 											continue;
 										break;
 									}
-									var content_params = { 
+									var content_params = {
 										'session' : ses(),
 										'authtime' : ses('authtime'),
 										'opac_url' : opac_url
 									};
 									xulG.new_tab(
-										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+										xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
 										{'tab_name': htype == 'M' ? 'Catalog' : $("patronStrings").getString('staff.patron.holds.show_catalog.retrieving_title') },
 										content_params
 									);
@@ -910,11 +934,11 @@ patron.holds.prototype = {
                         ['command'],
                         function(ev) {
                             try {
-                                var content_params = { 
+                                var content_params = {
                                     'show_nav_buttons' : false,
                                     'show_print_button' : true,
-                                    'passthru_content_params' : { 
-                                        'authtoken' : ses(), 
+                                    'passthru_content_params' : {
+                                        'authtoken' : ses(),
                                         'authtime' : ses('authtime'),
                                         'window_open' : function(a,b,c) {
                                             try {
@@ -939,7 +963,7 @@ patron.holds.prototype = {
 				}
 			}
 		);
-        
+
         obj.determine_hold_interface_type();
         var x_fetch_more = document.getElementById('fetch_more');
         var x_lib_type_menu = document.getElementById('lib_type_menu');
@@ -986,7 +1010,7 @@ patron.holds.prototype = {
 				obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
 				obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
-                obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
+                obj.controller.view.cmd_show_details.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
                 obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
@@ -1023,13 +1047,13 @@ patron.holds.prototype = {
 			var method; var params = [ ses() ];
             switch(obj.hold_interface_type) {
                 case 'patron' :
-				    method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU.authoritative'; 
-    				params.push( obj.patron_id ); 
+				    method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU.authoritative';
+    				params.push( obj.patron_id );
     				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
                 break;
                 case 'record' :
-				    method = 'FM_AHR_RETRIEVE_ALL_VIA_BRE'; 
-    				params.push( obj.docid ); 
+				    method = 'FM_AHR_RETRIEVE_ALL_VIA_BRE';
+    				params.push( obj.docid );
                     var x_lib_filter = document.getElementById('lib_filter_checkbox');
                     var x_lib_type_menu = document.getElementById('lib_type_menu');
                     if (x_lib_filter) {
@@ -1043,14 +1067,14 @@ patron.holds.prototype = {
                     }
     				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
                 break;
-                case 'shelf' : 
+                case 'shelf' :
 				    method = 'FM_AHR_ID_LIST_ONSHELF_RETRIEVE';
-                    params.push( obj.filter_lib || obj.data.list.au[0].ws_ou() ); 
+                    params.push( obj.filter_lib || obj.data.list.au[0].ws_ou() );
     				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
                 break;
-                case 'pull' : 
+                case 'pull' :
                 default:
-				    method = 'FM_AHR_ID_LIST_PULL_LIST'; 
+				    method = 'FM_AHR_ID_LIST_PULL_LIST';
     				params.push( obj.pull_from_shelf_interface.current.limit ); params.push( obj.pull_from_shelf_interface.current.offset );
 				    //obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
                 break;
@@ -1123,7 +1147,7 @@ patron.holds.prototype = {
 			rows.push( gen_list_append(holds[i]) );
 		}
 		exec.chain( rows );
-	
+
 		if (!dont_show_me_the_list_change) {
 			if (window.xulG && typeof window.xulG.on_list_change == 'function') {
 				try { window.xulG.on_list_change(holds); } catch(E) { this.error.sdump('D_ERROR',E); }
@@ -1148,7 +1172,7 @@ patron.holds.prototype = {
 			util.widgets.remove_children( x );
 
             JSAN.use('util.file');
-			var file = new util.file('offline_ou_list'); 
+			var file = new util.file('offline_ou_list');
 			if (file._file.exists()) {
 				var list_data = file.get_object(); file.close();
 				var ml = util.widgets.make_menulist( list_data[0], obj.data.list.au[0].ws_ou() );

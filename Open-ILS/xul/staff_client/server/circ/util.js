@@ -1851,6 +1851,15 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false,
 			'hidden' : true,
 			'render' : function(my) { return my.estimated_wait; }
+		},
+{
+			'persist' : 'hidden width ordinal',
+			'id' : 'hold_note',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_note'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : true,
+			'render' : function(my) { return my.ahrn_count; }
 		}
 	];
 	for (var i = 0; i < c.length; i++) {
