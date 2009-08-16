@@ -25,14 +25,29 @@ function getBalanceInfo(rowIndex, item) {
     return 0;
 }
 
-function loadFundGrid() {
+function loadFundGrid(year) {
     var yearStore = {identifier:'year', name:'year', items:[]};
     var yearsAdded = {}; /* don't duplicate the years in the selector */
+    lfGrid.resetStore();
+
+    if(!year) year = new Date().getFullYear().toString();
+
+    lfGrid.dataLoader = function() { loadFundGrid(year); };
 
     fieldmapper.standardRequest(
        [ 'open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
        {    async: true,
-            params: [openils.User.authtoken, null, {flesh_summary:1}],
+
+            params: [
+                openils.User.authtoken, 
+                {year:year}, 
+                {
+                    flesh_summary:1, 
+                    limit: lfGrid.displayLimit,
+                    offset: lfGrid.displayOffset
+                }
+            ],
+
             onresponse : function(r) {
                 if(lf = openils.Util.readResponse(r)) {
                    openils.acq.Fund.cache[lf.id()] = lf;
@@ -44,28 +59,29 @@ function loadFundGrid() {
                     }
                 }
             },
+
             oncomplete : function(r) {
-                // sort the unique list of years and set the selector to "now" if possible
                 yearStore.items = yearStore.items.sort().reverse();
                 fundFilterYearSelect.store = new dojo.data.ItemFileReadStore({data:yearStore});
                 var today = new Date().getFullYear().toString();
+
                 if(today in yearsAdded)
                     fundFilterYearSelect.setValue(today);
+
+                lfGrid.hideLoadProgressIndicator();
+
+                dojo.connect(
+                    fundFilterYearSelect, 
+                    'onChange', 
+                    function() {
+                        loadFundGrid(fundFilterYearSelect.getValue());
+                    }
+                );
             }
         }
     );
 }
 
-function filterGrid() {
-    var year = fundFilterYearSelect.getValue();
-    console.log(year);
-    if(year) 
-        lfGrid.setQuery({year:year});
-    else
-        lfGrid.setQuery({id:'*'});
-    
-    lfGrid.update();
-}
 
 openils.Util.addOnLoad(loadFundGrid);
 

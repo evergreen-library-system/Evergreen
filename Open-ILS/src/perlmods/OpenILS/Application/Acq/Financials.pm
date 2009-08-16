@@ -286,19 +286,31 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_org_funds {
-    my($self, $conn, $auth, $org_id_list, $options) = @_;
+    my($self, $conn, $auth, $filter, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    $filter ||= {};
     $options ||= {};
 
     my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUND';
     return OpenILS::Event->new('BAD_PARAMS') 
         unless $limit_perm =~ /(ADMIN|MANAGE|VIEW)_FUND/;
 
-    my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
+    $filter->{org}  = $filter->{org} || 
         $U->user_has_work_perm_at($e, $limit_perm, {descendants =>1});
-    return undef unless @$org_ids;
-    my $funds = $e->search_acq_fund({org => $org_ids});
+    return undef unless @{$filter->{org}};
+
+
+    my $query = [
+        $filter,
+        {
+            limit => $$options{limit} || 50,
+            offset => $$options{offset} || 0,
+            order_by => $$options{order_by} || {acqf => 'name'}
+        }
+    ];
+
+    my $funds = $e->search_acq_fund($query);
 
     for my $fund (@$funds) {
         $fund->summary(retrieve_fund_summary_impl($e, $fund))
