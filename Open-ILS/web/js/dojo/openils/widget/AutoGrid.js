@@ -38,6 +38,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.initAutoEnv();
                 this.attr('structure', this._compileStructure());
                 this.setStore(this.buildAutoStore());
+                this.cachedQueryOpts = {};
 
                 if(this.showColumnPicker) {
                     if(!this.columnPickerPrefix) {
@@ -82,7 +83,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         onclick : function() { 
                             self.resetStore();
                             self.cachedQueryOpts.offset = self.displayOffset -= self.displayLimit;
-                            self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                            if(self.dataLoader)
+                                self.dataLoader()
+                            else
+                                self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
                         }
                     });
 
@@ -93,7 +97,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         onclick : function() { 
                             self.resetStore();
                             self.cachedQueryOpts.offset = self.displayOffset += self.displayLimit;
-                            self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                            if(self.dataLoader)
+                                self.dataLoader()
+                            else
+                                self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
                         }
                     });
 
@@ -106,6 +113,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     });
                     dojo.place(this.loadProgressIndicator, this.paginator.domNode);
                 }
+            },
+
+            hideLoadProgressIndicator : function() {
+                dojo.style(this.loadProgressIndicator, 'visibility', 'hidden');
+            },
+
+            showLoadProgressIndicator : function() {
+                dojo.style(this.loadProgressIndicator, 'visibility', 'visible');
             },
 
             /* Don't allow sorting on the selector column */
