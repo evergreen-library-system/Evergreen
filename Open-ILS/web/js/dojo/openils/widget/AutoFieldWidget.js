@@ -33,6 +33,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.fmObject) 
                 this.fmClass = this.fmObject.classname;
             this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+            this.suppressLinkedFields = args.suppressLinkedFields || [];
 
             if(!this.idlField) {
                 this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
@@ -199,6 +200,10 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
             if(this.idlField.datatype == 'org_unit')
                 return false; // we already handle org_units, no need to re-fetch
+
+            // user opted to bypass fetching this linked data
+            if(this.suppressLinkedFields.indexOf(this.idlField.name) > -1)
+                return false;
 
             var linkInfo = this._getLinkSelector();
             if(!(linkInfo && linkInfo.vfield && linkInfo.vfield.selector)) 

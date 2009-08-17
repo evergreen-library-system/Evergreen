@@ -26,6 +26,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             displayLimit : 15,
             displayOffset : 0,
             showPaginator : false,
+            suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -538,7 +539,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             fmClass: this.grid.fmClass,
             fmField: this.field,
             widgetValue : val,
-            readOnly : true
+            readOnly : true,
+            suppressLinkedFields : this.grid.suppressLinkedFields
         });
 
         var _this = this;
