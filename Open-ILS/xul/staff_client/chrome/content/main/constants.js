@@ -296,7 +296,7 @@ const urls = {
 	'XUL_HOLD_CAPTURE' : '/xul/server/circ/hold_capture.xul',
 	'XUL_HOLD_PULL_LIST' : '/xul/server/admin/hold_pull_list.xhtml',
 	'XUL_HOLDS_BROWSER' : '/xul/server/patron/holds.xul',
-	'XUL_HOLD_NOTICES' : '/xul/server/patron/hold_notices.xul',
+	'XUL_HOLD_DETAILS' : '/xul/server/patron/hold_details.xul',
 	'XUL_IN_HOUSE_USE' : '/xul/server/circ/in_house_use.xul',
 	'XUL_LIST_CLIPBOARD' : '/xul/server/util/list_clipboard.xul',
 	'XUL_LOCAL_ADMIN' : '/xul/server/admin/index.xhtml',
