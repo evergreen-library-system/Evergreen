@@ -60,6 +60,7 @@ sub fielder_fetch {
 
     my $query = $obj->{query};
     my $fields = $obj->{fields};
+    my $distinct = $obj->{distinct} ? 1 : 0;
 
     my $obj_class = $self->{class_hint};
     my $fm_class = $self->{class_name};
@@ -82,7 +83,8 @@ sub fielder_fetch {
     my $res = new_editor()->json_query({
         select  => { $obj_class => $fields },
         from    => $obj_class,
-        where   => $query
+        where   => $query,
+        distinct=> $distinct
     });
 
     for my $value (@$res) {
