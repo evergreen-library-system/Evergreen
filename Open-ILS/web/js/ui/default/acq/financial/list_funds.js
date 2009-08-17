@@ -25,13 +25,15 @@ function getBalanceInfo(rowIndex, item) {
     return 0;
 }
 
+function initPage() {
+    loadYearSelector();
+    loadFundGrid();
+}
+
 function loadFundGrid(year) {
-    var yearStore = {identifier:'year', name:'year', items:[]};
-    var yearsAdded = {}; /* don't duplicate the years in the selector */
+
     lfGrid.resetStore();
-
-    if(!year) year = new Date().getFullYear().toString();
-
+    year = year || new Date().getFullYear().toString();
     lfGrid.dataLoader = function() { loadFundGrid(year); };
 
     fieldmapper.standardRequest(
@@ -52,29 +54,40 @@ function loadFundGrid(year) {
                 if(lf = openils.Util.readResponse(r)) {
                    openils.acq.Fund.cache[lf.id()] = lf;
                    lfGrid.store.newItem(acqf.toStoreItem(lf));
-                    var year = lf.year();
-                    if(!(year in yearsAdded)) {
-                        yearStore.items.push({year:year});
-                        yearsAdded[year] = 1;
-                    }
                 }
             },
 
             oncomplete : function(r) {
+                lfGrid.hideLoadProgressIndicator();
+            }
+        }
+    );
+}
+
+function loadYearSelector() {
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.fund.org.years.retrieve'],
+        {   async : true,
+            params : [openils.User.authtoken],
+            oncomplete : function(r) {
+
+                var yearList = openils.Util.readResponse(r);
+                if(!yearList) return;
+                yearList = yearList.map(function(year){return {year:year+''};}); // dojo wants strings
+
+                var yearStore = {identifier:'year', name:'year', items:yearList};
                 yearStore.items = yearStore.items.sort().reverse();
                 fundFilterYearSelect.store = new dojo.data.ItemFileReadStore({data:yearStore});
-                var today = new Date().getFullYear().toString();
 
-                if(today in yearsAdded)
-                    fundFilterYearSelect.setValue(today);
-
-                lfGrid.hideLoadProgressIndicator();
+                // default to this year
+                fundFilterYearSelect.setValue(new Date().getFullYear().toString());
 
                 dojo.connect(
                     fundFilterYearSelect, 
                     'onChange', 
                     function() {
-                        loadFundGrid(fundFilterYearSelect.getValue());
+                        loadFundGrid(fundFilterYearSelect.attr('value'));
                     }
                 );
             }
@@ -82,6 +95,5 @@ function loadFundGrid(year) {
     );
 }
 
-
-openils.Util.addOnLoad(loadFundGrid);
+openils.Util.addOnLoad(initPage);
 

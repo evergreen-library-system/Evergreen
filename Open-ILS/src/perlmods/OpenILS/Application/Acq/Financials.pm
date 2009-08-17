@@ -285,6 +285,11 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+	method => 'retrieve_org_funds',
+	api_name	=> 'open-ils.acq.fund.org.years.retrieve');
+
+
 sub retrieve_org_funds {
     my($self, $conn, $auth, $filter, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
@@ -300,7 +305,6 @@ sub retrieve_org_funds {
         $U->user_has_work_perm_at($e, $limit_perm, {descendants =>1});
     return undef unless @{$filter->{org}};
 
-
     my $query = [
         $filter,
         {
@@ -309,6 +313,19 @@ sub retrieve_org_funds {
             order_by => $$options{order_by} || {acqf => 'name'}
         }
     ];
+
+    if($self->api_name =~ /years/) {
+        # return the distinct set of fund years covered by the selected funds
+        my $data = $e->json_query({
+            select => {
+                acqf => [{column => 'year', transform => 'distinct'}]
+            }, 
+            from => 'acqf', 
+            where => $filter}
+        );
+
+        return [map { $_->{year} } @$data];
+    }
 
     my $funds = $e->search_acq_fund($query);
 
