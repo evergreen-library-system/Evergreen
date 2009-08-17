@@ -1,4 +1,5 @@
 [% WRAPPER default/base.tt2 %]
+[% ctx.page_title = 'Purchase Orders' %]
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>PO Search</div>
 </div>
@@ -29,10 +30,25 @@
         <input id='po-search-provider-selector'/>
 
         <label for='state'>State</label></td>
-        <select dojoType='dijit.form.FilteringSelect' name='state' required='false'>
-            <option value='new'>New</option>
-            <option value='in-process'>In Process</option>
-        </select>
+        <script>
+            var stateStore = new dojo.data.ItemFileReadStore({
+                data : {
+                    identifier:"value",
+                    label: "name",
+                    items: [
+                        {name:"New", value:'new'},
+                        {name:"In Process", value:'in-process'}
+                    ]
+                }
+            });
+        </script>
+        <input dojoType='dijit.form.FilteringSelect' 
+            name='state' 
+            required='false' 
+            store='stateStore' 
+            labelAttr='name' 
+            valueAttr='value' 
+            searchAttr='name'/>
 
         <label for='ordering_agency'>Ordering Agency</label>
         <input id='po-search-agency-selector'/>
@@ -49,15 +65,18 @@
             dojoType="openils.widget.AutoGrid" 
             query="{id: '*'}" 
             fieldOrder="['id', 'owner', 'ordering_agency', 'provider', 'create_time', 'edit_time', 'state']"
-            suppressFields="['editor', 'creator']"
+            suppressFields="['owner', 'editor', 'creator']"
             query="{id: '*'}"
             defaultCellWidth='"auto"'
             showSequenceFields='true'
+            showPaginator='true'
             fmClass='acqpo'> 
         <thead> 
             <tr> 
                 <th field="id" formatter='formatId'>ID</th> 
+                <!--
                 <th field="owner" get='getPOOwner'/>
+                -->
             </tr> 
         </thead> 
     </table>     

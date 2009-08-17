@@ -37,7 +37,7 @@ function doSearch(fields) {
     if(!some) fields.id = {'!=' : null};
 
     poGrid.resetStore();
-    poGrid.loadAll({order_by:{acqpo : 'edit_time DESC'}, limit: 30}, fields);
+    poGrid.loadAll({order_by:{acqpo : 'edit_time DESC'}}, fields);
 }
 
 function loadForm() {
