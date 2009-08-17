@@ -1,4 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
+[% ctx.page_title = 'Funds' %]
 
 <!-- load the page-specific JS -->
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funds.js'> </script>
@@ -34,6 +35,4 @@
     </table>
 </div>
 
-
 [% END %]
-
