@@ -1952,8 +1952,8 @@
 <!ENTITY staff.circ.holds.show_last_few_circulations.accesskey "L">
 <!ENTITY staff.circ.holds.retrieve_patron "Retrieve Patron">
 <!ENTITY staff.circ.holds.retrieve_patron.accesskey "P">
-<!ENTITY staff.circ.holds.show_notices "Show Notices">
-<!ENTITY staff.circ.holds.show_notices.accesskey "N">
+<!ENTITY staff.circ.holds.show_details "Show Hold Details">
+<!ENTITY staff.circ.holds.show_details.accesskey "N">
 <!ENTITY staff.circ.holds.edit_pickup_library "Edit Pickup Library">
 <!ENTITY staff.circ.holds.edit_pickup_library.accesskey "L">
 <!ENTITY staff.circ.holds.edit_phone_notification "Edit Phone Notification">
@@ -2456,7 +2456,7 @@
 <!ENTITY staff.patron.bills_overlay.unselected.value "Un-Selected:">
 <!ENTITY staff.patron.bills_overlay.voided.value "Voided:">
 <!ENTITY staff.patron.bills_overlay.auto_print.label "Auto-Print">
-<!ENTITY staff.patron.hold_notices.title "Hold Notices">
+<!ENTITY staff.patron.hold_details.title "Hold Details">
 <!ENTITY staff.patron.hold_notices.add_record_notification.label "Add Record of Notification">
 <!ENTITY staff.patron.hold_notices.add_record_notification.accesskey "A">
 <!ENTITY staff.patron.hold_notices.close_window.label "Close">
