@@ -369,7 +369,7 @@ sub request {
                 $err = $resp;
 		        $self->log(E, "request error $method : $argstr : $err");
             } else {
-                $val = $resp->content;
+                $val = $resp->content if $resp;
             }
         }
 
