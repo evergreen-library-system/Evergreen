@@ -1234,7 +1234,7 @@ function marcControlfield (field) {
 				{ value : field.text(),
 				  class : 'plain marcEditableControlfield',
 				  name : 'CONTROL' + tagname,
-				  oncontext : 'return false();',
+				  context : 'clipboard',
 				  size : 50,
 				  maxlength : 50 } )
 			);
@@ -1605,7 +1605,7 @@ function getAuthorityContextMenu (target, sf) {
 
 	if (!authority_tag_map[sf.parent().@tag]) {
 		sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.not_authority_field.label') } ) );
-		target.setAttribute('context', menu_id);
+		target.setAttribute('context', 'clipboard');
 		return false;
 	}
 
