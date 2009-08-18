@@ -1870,7 +1870,7 @@ circ.util.hold_columns = function(modify,params) {
 	                'hidden' : true,
 	                'render' : function(my) {
 
-                        if (my.ahr.usr() == my.ahr.requestor()){
+                        if (my.ahr.usr() != my.ahr.requestor()){
                             return document.getElementById('circStrings').getString('staff.circ.utils.yes');
                         }else {
                             return document.getElementById('circStrings').getString('staff.circ.utils.no');
