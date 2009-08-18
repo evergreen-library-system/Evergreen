@@ -431,7 +431,7 @@ cat.z3950.prototype = {
 		var obj = this;
 		var nl = document.getElementsByAttribute('mytype','search_class');
 		for (var i = 0; i < nl.length; i++) { nl[i].value = ''; nl[i].setAttribute('value',''); }
-		//obj.focus(obj.controller.view.service_menu.value);
+		obj.focus();
 	},
 
 	'search_params' : {},
