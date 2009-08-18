@@ -786,21 +786,31 @@ sub retrieve_hold_queue_status_impl {
     my $e = shift;
     my $hold = shift;
 
-    my $hold_ids = $e->search_action_hold_request(
-        [
-            {   target => $hold->target, 
-                hold_type => $hold->hold_type,
-                cancel_time => undef,
-                fulfillment_time => undef
-            },
-            {order_by => {ahr => 'request_time asc'}}
-        ], 
-        {idlist => 1} 
-    );
+    # The holds queue is defined as the set of holds that share at 
+    # least one potential copy with the context hold
+    my $q_holds = $e->json_query({
+         select => { 
+            ahcm => ['hold'], 
+            # fetch request_time since it's in the order_by and we're asking for distinct values
+            ahr => ['request_time']
+        },
+        from => {ahcm => 'ahr'},
+        order_by => {ahr => ['request_time']},
+        distinct => 1,
+        where => {
+            target_copy => {
+                in => {
+                    select => {ahcm => ['target_copy']},
+                    from => 'ahcm',
+                    where => {hold => $hold->id}
+                } 
+            } 
+        }, 
+    });
 
     my $qpos = 1;
-    for my $hid (@$hold_ids) {
-        last if $hid == $hold->id;
+    for my $h (@$q_holds) {
+        last if $h->{hold} == $hold->id;
         $qpos++;
     }
 
@@ -816,7 +826,7 @@ sub retrieve_hold_queue_status_impl {
     my $estimated_wait = $qpos * ($default_hold_interval / $num_potentials) if $default_hold_interval;
 
     return {
-        total_holds => scalar(@$hold_ids),
+        total_holds => scalar(@$q_holds),
         queue_position => $qpos,
         potential_copies => $num_potentials,
         status => _hold_status($e, $hold),
