@@ -117,7 +117,7 @@ circ.util.show_last_few_circs = function(selection_list) {
 };
 
 circ.util.offline_checkout_columns = function(modify,params) {
-	
+
 	var c = [
 		{
 			'id' : 'timestamp',
@@ -234,7 +234,7 @@ circ.util.offline_checkout_columns = function(modify,params) {
 };
 
 circ.util.offline_checkin_columns = function(modify,params) {
-	
+
 	var c = [
 		{
 			'id' : 'timestamp',
@@ -301,7 +301,7 @@ circ.util.offline_checkin_columns = function(modify,params) {
 };
 
 circ.util.offline_renew_columns = function(modify,params) {
-	
+
 	var c = [
 		{
 			'id' : 'timestamp',
@@ -392,7 +392,7 @@ circ.util.offline_renew_columns = function(modify,params) {
 };
 
 circ.util.offline_inhouse_use_columns = function(modify,params) {
-	
+
 	var c = [
 		{
 			'id' : 'timestamp',
@@ -468,7 +468,7 @@ circ.util.offline_inhouse_use_columns = function(modify,params) {
 };
 
 circ.util.columns = function(modify,params) {
-	
+
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 	JSAN.use('util.network'); var network = new util.network();
 	JSAN.use('util.money');
@@ -1155,7 +1155,7 @@ circ.util.columns = function(modify,params) {
 };
 
 circ.util.transit_columns = function(modify,params) {
-	
+
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
 	var c = [
@@ -1300,7 +1300,7 @@ circ.util.transit_columns = function(modify,params) {
 };
 
 circ.util.hold_columns = function(modify,params) {
-	
+
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
 	var c = [
@@ -1521,13 +1521,13 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal',
-			'id' : 'current_copy_location', 
+			'id' : 'current_copy_location',
 			'label' : document.getElementById('commonStrings').getString('staff.ahr_current_copy_location_label'),
             'flex' : 1,
-			'primary' : false, 
-            'hidden' : true, 
-            'render' : function(my) { 
-                if (!my.acp) { return ""; } else { if (Number(my.acp.location())>=0) return data.lookup("acpl", my.acp.location() ).name(); else return my.acp.location().name(); } 
+			'primary' : false,
+            'hidden' : true,
+            'render' : function(my) {
+                if (!my.acp) { return ""; } else { if (Number(my.acp.location())>=0) return data.lookup("acpl", my.acp.location() ).name(); else return my.acp.location().name(); }
             }
 		},
 		{
@@ -1860,8 +1860,24 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false,
 			'hidden' : true,
 			'render' : function(my) { return my.ahrn_count; }
-		}
-	];
+              },
+              {
+			'persist' : 'hidden width ordinal',
+			'id' : 'staff_hold',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.staff_hold'),
+			'flex' : 1,
+			'primary' : false,
+	                'hidden' : true,
+	                'render' : function(my) {
+
+                        if (my.ahr.usr() == my.ahr.requestor()){
+                            return document.getElementById('circStrings').getString('staff.circ.utils.yes');
+                        }else {
+                            return document.getElementById('circStrings').getString('staff.circ.utils.no');
+		            }
+                        }
+                  }
+	      ];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
 			for (var j in modify[ c[i].id ]) {
@@ -1897,7 +1913,7 @@ circ.util.std_map_row_to_column = function(error_value) {
 	return function(row,col) {
 		// row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
 		// col contains one of the objects listed above in columns
-		
+
 		// mimicking some of the obj in circ.checkin and circ.checkout where map_row_to_column is usually defined
 		var obj = {};
 		JSAN.use('util.error'); obj.error = new util.error();
@@ -1921,7 +1937,7 @@ circ.util.std_map_row_to_columns = function(error_value) {
 	return function(row,cols) {
 		// row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
 		// cols contains all of the objects listed above in columns
-		
+
 		var obj = {};
 		JSAN.use('util.error'); obj.error = new util.error();
 		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
@@ -1984,7 +2000,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
                 }
                 return null;
             }
-        } 
+        }
 
 		var check = network.request(
 			api.CHECKIN_VIA_BARCODE.app,
@@ -2357,7 +2373,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			);
 			params.capture = rv == 0 ? 'nocapture' : 'capture';
 
-			return circ.util.checkin_via_barcode(session,params,backdate,auto_print,false); 
+			return circ.util.checkin_via_barcode(session,params,backdate,auto_print,false);
 
 		} else /* NETWORK TIMEOUT */ if (check.ilsevent == -1) {
 			error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.suggest_offline'));
