@@ -1,1 +1,425 @@
-#ChangeLog
+2009-03-27  miker
+
+	* Open-ILS/src/sql/Pg/1.2.3-1.4-upgrade-db.sql,
+	  Open-ILS/src/sql/Pg/1.2.4-1.4-upgrade-db.sql: next 1.2-1.4
+	  upgrade will include removal of errant slashes from old ingest
+
+2009-03-27  dbs
+
+	* Open-ILS/xul/staff_client/chrome/content/util/exec.js: Backport
+	  12486 from trunk: decrement a counter for the chunk size
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Backport r12478
+	  from trunk - fallback to a default record type if nothing valid
+	  turns up
+
+2009-03-29  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/WWW/SuperCat.pm: Backport r12713
+	  from trunk: make SlimPAC respect author/title/subject/series
+	  indexes
+
+2009-03-30  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Biblio.pm,
+	  Open-ILS/src/perlmods/OpenILS/WWW/SuperCat.pm: pass the default
+	  search class correctly, instead of rewriting the query (possibly
+	  causing user confusion); require a valid class be passed to the
+	  middle layer code
+
+2009-03-31  dbs
+
+	* Open-ILS/xul/staff_client/server/admin/closed_dates.xhtml:
+	  Backport r12725 from trunk: fix closed dates editor
+
+	* Open-ILS/src/perlmods/OpenILS/WWW/SuperCat.pm: Backport r12717
+	  from trunk: prevent apostrophes in search terms from breaking
+	  SlimPAC
+
+2009-04-02  dbs
+
+	* Open-ILS/xul/staff_client/chrome/content/util/error.js: Backport
+	  r12670 from trunk: prevent lengthy error messages from spilling
+	  off the bottom of the screen
+
+2009-04-03  dbs
+
+	* Open-ILS/src/cgi-bin/lib-setup.cgi: Backport r12770 from trunk:
+	  Accomodate PostgreSQL 8.3's type strictness
+
+	* Open-ILS/xul/staff_client/server/cat/marc_view.html: Backport
+	  r12773 from trunk: Fix broken Z39.50 import due to XMLENT
+	  manipulating <script> elements
+	  
+	  Thanks to Jeff Godin <jeff@tcnet.org> for the patch!
+	  
+	  Developer's Certificate of Origin 1.1
+	  
+	  By making a contribution to this project, I certify that:
+	  
+	  (a) The contribution was created in whole or in part by me and I
+	  have the right to submit it under the open source license
+	  indicated in the file; or
+	  
+	  (b) The contribution is based upon previous work that, to the
+	  best
+	  of my knowledge, is covered under an appropriate open source
+	  license and I have the right under that license to submit that
+	  work with modifications, whether created in whole or in part
+	  by me, under the same open source license (unless I am
+	  permitted to submit under a different license), as indicated
+	  in the file; or
+	  
+	  (c) The contribution was provided directly to me by some other
+	  person who certified (a), (b) or (c) and I have not modified
+	  it.
+	  
+	  (d) I understand and agree that this project and the contribution
+	  are public and that a record of the contribution (including all
+	  personal information I submit with it, including my sign-off) is
+	  maintained indefinitely and may be redistributed consistent with
+	  this project or the open source license(s) involved.
+	  
+	  Signed-off-by: Jeff Godin <jeff@tcnet.org>
+
+2009-04-03  phasefx
+
+	* Open-ILS/xul/staff_client/server/cat/copy_editor.js: sort item
+	  attribute editor templates alphabetically
+
+	* Open-ILS/xul/staff_client/server/patron/holds.js: Fix hold shelf
+	  display for solitary item. We expect an array here, but if the
+	  array only has one element, then RemoteRequest is just returning
+	  that element
+
+	* Open-ILS/xul/staff_client/server/circ/util.js,
+	  Open-ILS/xul/staff_client/server/locale/en-US/circ.properties:
+	  "Hold Slip" accidentally replaced "Transit Slip" during
+	  i18n-ization
+
+2009-04-08  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Ingest.pm: Backport
+	  r12816 from trunk: Fix open-ils.ingest.full.biblio.record_list
+	  * Pass a reference to the list, rather than a scalar
+	  * Fix the return value by returning a true count, rather than a
+	  sum of the processed IDs
+
+2009-04-09  dbs
+
+	* Open-ILS/examples/opensrf_core.xml.example: Backport r12831 from
+	  trunk: Lots of people are stumbling over the opensrf (OpenSRF)
+	  vs. osrf (EG) username, so bring them into sync
+
+2009-04-09  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/util/network.js: fix for
+	  nasty little copy/paste regression, trying to support null
+	  ilsevent's. This was preventing Force this Action dialogs for
+	  multiple overridable events
+
+2009-04-10  miker
+
+	* Open-ILS/src/sql/Pg/1.2.3-1.4-upgrade-db.sql,
+	  Open-ILS/src/sql/Pg/1.2.4-1.4-upgrade-db.sql: updating upgrade
+	  scripts for 1.2-1.4 for deficiency noted by John Craig. Thanks,
+	  John!
+
+2009-04-21  miker
+
+	* Open-ILS/web/opac/skin/default/js/rdetail.js: Patch from James
+	  Fournie fixing regression of copy display in deep hierarchies
+	  which was introduced by a partial fixed in r12470
+
+	* Open-ILS/src/extras/import/marc2bre.pl: backporting TCN duplicate
+	  detection fix from head
+
+2009-04-28  dbs
+
+	* Open-ILS/xul/staff_client/chrome/content/util/error.js: I was
+	  incrementing the counter twice in the "count linefeeds" loop.
+	  Stop doing that.
+	  Also, use a Unicode-safe algorithm for iterating over characters.
+
+2009-05-04  phasefx
+
+	* Open-ILS/web/opac/locale/en-US/lang.dtd: entities for copy/paste
+	  context menus in xul textboxes
+
+2009-05-13  phasefx
+
+	* Open-ILS/xul/staff_client/server/cat/record_buckets.js,
+	  Open-ILS/xul/staff_client/server/cat/z3950.js: backporting
+	  changeset 13151: Use the dedicated xul file for rendering MARC
+	  html instead of data: url'ing it. Fixes the mangling of
+	  double-daggers in record merging and overlaying displays
+
+2009-05-15  miker
+
+	* Open-ILS/web/opac/skin/default/js/myopac.js: avoid regex-izing
+	  user supplied strings
+
+2009-05-24  miker
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Patch provided
+	  by Ben Ostrowsky to address authority matching in 1.4 and beyond.
+	  Matching requires more subfields, because it is more strict.
+
+2009-05-28  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/circ/offline_checkin.js,
+	  Open-ILS/xul/staff_client/chrome/content/circ/offline_checkout.js,
+	  Open-ILS/xul/staff_client/chrome/content/circ/offline_in_house_use.js,
+	  Open-ILS/xul/staff_client/chrome/content/circ/offline_renew.js:
+	  offline interfaces were only clearing on 'Save these
+	  transactions' if receipt printing was enabled. doh, thought I had
+	  fixed that
+
+2009-05-29  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Actor/UserGroups.pm:
+	  storage call needs to go to storage
+
+2009-05-29  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/action.pm:
+	  be more strict about going away after short-circut code; check
+	  earlier for hold validity
+
+2009-05-30  miker
+
+	* Open-ILS/web/opac/skin/default/js/rdetail.js: backporting fix for
+	  one-character thinko in baseline online resource display,
+	  discovered by Warren Layton -- thanks Warren!
+
+2009-06-01  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm:
+	  old-school circ scripts require refreshed script runner on
+	  renewals
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Biblio.pm: if no
+	  search terms are sent, exit early
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Biblio.pm: make
+	  the input test a little more strict (require the presence of a
+	  search term)
+
+2009-06-02  phasefx
+
+	* Open-ILS/xul/staff_client/server/circ/util.js: backport changeset
+	  13280 and 13289 for hold list Available On columns
+
+2009-06-03  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/action.pm:
+	  regression in hold targeting where blanket expire_time is set
+
+2009-06-03  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm,
+	  Open-ILS/src/perlmods/OpenILS/Application/Circ/Holds.pm: when
+	  retargeting alternate holds after opportunistic checkin capture,
+	  only retarget related holds not all holds with
+	  prev_check_time=null
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/CStoreEditor.pm: silence
+	  'uninitialized value in hash element' warnings
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Survey.pm: removed
+	  and old pile of 'warn' statements used for debugging
+
+	* Open-ILS/src/perlmods/OpenILS/Application/AppUtils.pm: no need to
+	  warn when orgid is null in find_org(), that's not an uncommon
+	  occurrence. just return undef
+
+2009-06-05  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Vandelay.pm: repaired
+	  typo in module name
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Cat/AuthCommon.pm:
+	  shift off the class param
+
+2009-06-05  miker
+
+	* Open-ILS/web/opac/skin/default/js/rresult.js: allow bookbag
+	  (rlist) display to work with just one record id
+
+2009-06-08  miker
+
+	* Open-ILS/web/opac/skin/default/js/rresult.js: allow rlist URLs to
+	  honor offset param
+
+	* Open-ILS/web/opac/skin/default/js/rresult.js: doh! applied to the
+	  wrong call
+
+2009-06-10  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Biblio.pm:
+	  enabled authoritative for several methods
+
+2009-06-10  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/main/constants.js,
+	  Open-ILS/xul/staff_client/server/cat/spine_labels.js: have spine
+	  label interface use authoritative copy retrieval to prevent
+	  ASSET_COPY_NOT_FOUND race condition
+
+2009-06-11  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Actor.pm: backporting
+	  12264 : added support for the global UPDATE_ORG_UNIT_SETTING_ALL
+	  permission, which overrides individual org-setting perms
+
+2009-06-11  miker
+
+	* Open-ILS/src/sql/Pg/090.schema.action.sql: joins in the
+	  all_circulations reporting view were ... overzealous
+
+2009-06-12  phasefx
+
+	* Open-ILS/xul/staff_client/server/cat/z3950.js,
+	  Open-ILS/xul/staff_client/server/locale/en-US/cat.properties:
+	  backporting changeset 13375 for z39.50 result summaries
+
+	* Open-ILS/xul/staff_client/server/cat/spine_labels.js,
+	  Open-ILS/xul/staff_client/server/skin/print.css: porting the
+	  "top-margin label fix" from 1.2
+
+2009-06-12  erickson
+
+	* Open-ILS/src/sql/Pg/950.data.seed-values.sql: patch from Ben
+	  Ostrowsky to add per-org-setting perms to seed data
+
+2009-06-19  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Vandelay.pm: fixed
+	  missing param to authority import call
+
+2009-06-22  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Cat.pm: define fix_tcn
+	  and override parameters before call to
+	  biblio_record_replace_marc, because of some unexpected (by me,
+	  anyway) handling of =~ in a parameter list
+
+2009-06-23  phasefx
+
+	* Open-ILS/xul/staff_client/server/patron/holds.js: the middle
+	  layer lets staff change the pickup lib of a hold already on the
+	  holds shelf if they have the UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF
+	  permission. It'll create a new transit. So let the staff client
+	  allow it too
+
+2009-06-25  erickson
+
+	* Open-ILS/web/opac/extras/selfcheck/selfcheck.js: adjust the
+	  arbitrary print sleep based on the number of items that need
+	  printing. this prevents chopping of the data as it's being queued
+	  to the printer
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Holds.pm:
+	  backporting 13208 (fulfilled holds with status -1). missed
+	  1.4.0.5, but in case there's a 1.4.0.6...
+
+2009-07-03  dbs
+
+	* Open-ILS/examples/apache/eg.conf: Remove dangling semicolon from
+	  PerlChildInitHandler
+	  
+	  Thanks to Jeff Godin for pointing this out!
+
+2009-07-05  dbs
+
+	* build/i18n/scripts/db-seed-i18n.py,
+	  build/i18n/tests/data/po2sql.sql,
+	  build/i18n/tests/data/sql2pot.pot,
+	  build/i18n/tests/data/sqlsource.po,
+	  build/i18n/tests/data/sqlsource.sql: Merge r13500, r13503 from
+	  trunk to fix database i18n script and tests
+
+2009-07-08  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Cat/AssetCommon.pm: if
+	  alerting on empty bibs and not overriding, return the alert. if
+	  overriding or not alerting, do the delete (if keep on empty if
+	  not set)
+
+2009-07-09  dbs
+
+	* build/i18n/scripts/db-seed-i18n.py: Merge 13541 from trunk: set
+	  explicit encoding for database i18n input
+
+2009-07-13  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/CStoreEditor.pm: capture the
+	  timeout argument to json_query
+
+2009-07-23  erickson
+
+	* Open-ILS/src/sql/Pg/1.2.3-1.4-upgrade-db.sql: fixed order of
+	  oils_i18n_gettext params in upgrade script.
+
+	* Open-ILS/src/sql/Pg/950.data.seed-values.sql: fixed what appears
+	  to be a typo in the oils_i18n_gettext pkey param for 'author of
+	  work' entry
+
+2009-07-24  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Actor.pm: added
+	  authoritative option so some billing methods
+
+2009-07-24  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/main/constants.js,
+	  Open-ILS/xul/staff_client/server/patron/bills.js: backporting
+	  changeset 13735: faster method for bill retrieval
+
+2009-07-27  phasefx
+
+	* Open-ILS/xul/staff_client/server/cat/copy_buckets.js: bug fix:
+	  Item Status, once spawned from the Copy Buckets interface, would
+	  keep spawning on every bucket change
+
+2009-08-03  phasefx
+
+	* Open-ILS/web/opac/locale/en-US/lang.dtd,
+	  Open-ILS/xul/staff_client/server/cat/z3950.js,
+	  Open-ILS/xul/staff_client/server/cat/z3950.xul,
+	  Open-ILS/xul/staff_client/server/locale/en-US/cat.properties:
+	  Backport changeset 13791 from trunk: restore raw z39.50 PQN
+	  search feature
+
+2009-08-07  erickson
+
+	* Open-ILS/src/extras/ils_events.xml: added event for
+	  authority-record-number-exists. not required in 1.6+
+
+2009-08-10  erickson
+
+	* Open-ILS/xul/staff_client/server/admin/org_unit_settings.js:
+	  deduplicate the list of context orgs to prevent errors inserting
+	  into dojo store
+
+2009-08-18  phasefx
+
+	* Open-ILS/xul/staff_client/server/cat/z3950.js,
+	  Open-ILS/xul/staff_client/server/cat/z3950.xul: backport
+	  changeset 13857: fixed regression with default search field not
+	  being refocused after using the Clear Form button. Also have the
+	  default field come into focus when the whole tab leaves focus and
+	  is later revisited.
+
+2009-08-19  phasefx
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js,
+	  Open-ILS/xul/staff_client/server/cat/marcedit.xul: backport part
+	  of changeset 12252 for font_helper support, but really as a
+	  pre-requisite to porting the new clipboard context menus
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js,
+	  Open-ILS/xul/staff_client/server/cat/marcedit.xul: backport part
+	  of changeset 13842 for working clipboard context menus in marc
+	  editor
+
