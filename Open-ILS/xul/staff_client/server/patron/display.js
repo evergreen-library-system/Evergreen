@@ -407,10 +407,12 @@ patron.display.prototype = {
                                         'patron_id' : obj.patron.id(),
                                         'patron_barcode' : obj.patron.card().barcode(),
                                         'on_list_change' : function(h) {
-                                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                            //obj.summary_window.g.summary.controller.render('patron_holds');
-                                            //obj.summary_window.g.summary.controller.render('patron_standing_penalties');
-                                            obj.refresh_all();
+                                            try {
+                                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                                obj.summary_window.g.summary.controller.render('patron_holds');
+                                            } catch(E) {
+                                                alert(E);
+                                            }
                                         },
                                         'url_prefix' : xulG.url_prefix,
                                         'new_tab' : xulG.new_tab,

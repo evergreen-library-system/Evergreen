@@ -948,6 +948,24 @@ patron.holds.prototype = {
                                                 obj.error.standard_unexpected_error_alert('window_open',E);
                                             }
                                         },
+                                        'opac_hold_placed' : function(hold) {
+                                            try {
+                                                obj.list.append(
+                                                    {
+                                                        'row' : {
+                                                            'my' : {
+                                                                'hold_id' : typeof hold == 'object' ? hold.id() : hold
+                                                            }
+                                                        }
+                                                    }
+                                                );
+                                                if (window.xulG && typeof window.xulG.on_list_change == 'function') {
+                                                    window.xulG.on_list_change(); 
+                                                }
+                                            } catch(E) {
+                                                obj.error.standard_unexpected_error_alert('holds.js, opac_hold_placed(): ',E);
+                                            }
+                                        },
                                         'patron_barcode' : obj.patron_barcode
                                     },
                                     'url_prefix' : xulG.url_prefix,
@@ -1033,13 +1051,20 @@ patron.holds.prototype = {
 		}
     },
 
-    'clear_and_retrieve' : function(dont_show_me_the_list_change) {
-        this.list.clear();
-        this.pull_from_shelf_interface.current.offset = this.pull_from_shelf_interface._default.offset;
-        this.retrieve(dont_show_me_the_list_change);
+    'clear_and_retrieve' : function() {
+        try {
+            this.list.clear();
+            this.pull_from_shelf_interface.current.offset = this.pull_from_shelf_interface._default.offset;
+            this.retrieve();
+            if (window.xulG && typeof window.xulG.on_list_change == 'function') {
+                window.xulG.on_list_change(); 
+            }
+        } catch(E) {
+            this.error.standard_unexpected_error_alert('holds.js, clear_and_retrieve(): ',E);
+        }
     },
 
-	'retrieve' : function(dont_show_me_the_list_change) {
+	'retrieve' : function() {
 		var obj = this; var holds = [];
 		if (window.xulG && window.xulG.holds) {
 			holds = window.xulG.holds;
@@ -1109,50 +1134,49 @@ patron.holds.prototype = {
             if (x_fetch_more) x_fetch_more.disabled = true;
         } else {
             if (x_fetch_more) x_fetch_more.disabled = false;
-            obj.render(holds,dont_show_me_the_list_change);
+            obj.render(holds);
         }
 
     },
 
-    'render' : function(holds,dont_show_me_the_list_change) {
-        var obj = this;
+    'render' : function(holds) {
+        try {
+            var obj = this;
 
-		function list_append(hold_id) {
-			obj.list.append(
-				{
-					'row' : {
-						'my' : {
-							'hold_id' : hold_id
-						}
-					}
-				}
-			);
-		}
+            function list_append(hold_id) {
+                obj.list.append(
+                    {
+                        'row' : {
+                            'my' : {
+                                'hold_id' : hold_id
+                            }
+                        }
+                    }
+                );
+            }
 
-		function gen_list_append(hold) {
-			return function() {
-				if (typeof obj.controller.view.lib_menu == 'undefined') {
-					list_append(typeof hold == 'object' ? hold.id() : hold);
-				} else {
-					list_append(typeof hold == 'object' ? hold.id() : hold);
-				}
-			};
-		}
+            function gen_list_append(hold) {
+                return function() {
+                    if (typeof obj.controller.view.lib_menu == 'undefined') {
+                        list_append(typeof hold == 'object' ? hold.id() : hold);
+                    } else {
+                        list_append(typeof hold == 'object' ? hold.id() : hold);
+                    }
+                };
+            }
 
-		//obj.list.clear();
+            //obj.list.clear();
 
-		JSAN.use('util.exec'); var exec = new util.exec(2);
-		var rows = [];
-		for (var i in holds) {
-			rows.push( gen_list_append(holds[i]) );
-		}
-		exec.chain( rows );
+            JSAN.use('util.exec'); var exec = new util.exec(2);
+            var rows = [];
+            for (var i in holds) {
+                rows.push( gen_list_append(holds[i]) );
+            }
+            exec.chain( rows );
 
-		if (!dont_show_me_the_list_change) {
-			if (window.xulG && typeof window.xulG.on_list_change == 'function') {
-				try { window.xulG.on_list_change(holds); } catch(E) { this.error.sdump('D_ERROR',E); }
-			}
-		}
+        } catch(E) {
+			this.error.standard_unexpected_error_alert('holds.js, render():',E);
+        }
 	},
 
 	'render_lib_menus' : function(types) {
