@@ -28,6 +28,7 @@
         </patron>
         <location>
             <name>[% escape_xml(lib.name) %]</name>
+            <shortname>[% escape_xml(lib.shortname) %]</shortname>
             <phone>[% lib.phone %]</phone>
             <addr_street1>[% escape_xml(lib_addr.street1) %]</addr_street1>
             <addr_street2>[% escape_xml(lib_addr.street2) %]</addr_street2>
