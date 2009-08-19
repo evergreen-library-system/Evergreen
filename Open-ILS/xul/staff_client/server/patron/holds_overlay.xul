@@ -44,7 +44,7 @@
 	    <menuitem command="sel_patron" label="&staff.circ.holds.show_last_few_circulations;" accesskey="&staff.circ.holds.show_last_few_circulations.accesskey;"/>
 	    <menuseparator />
 	    <menuitem label="&staff.circ.holds.retrieve_patron;" command="cmd_retrieve_patron" accesskey="&staff.circ.holds.retrieve_patron.accesskey;"/>
-	    <menuitem label="blah" command="cmd_show_details" accesskey="&staff.circ.holds.show_details.accesskey;" />
+	    <menuitem label="&staff.circ.holds.show_details;" command="cmd_show_details" accesskey="&staff.circ.holds.show_details.accesskey;" />
 	    <menuseparator />
 	    <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
 	    <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
