@@ -42,6 +42,11 @@ sub create_active_events_for_object {
         }
     );
 
+    unless(@$hooks) {
+        $editor->rollback;
+        return undef;
+    }
+
     my %hook_hash = map { ($_->key, $_) } @$hooks;
 
     my $orgs = $editor->json_query({ from => [ 'actor.org_unit_ancestors' => $location ] });
