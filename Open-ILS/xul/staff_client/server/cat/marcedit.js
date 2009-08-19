@@ -80,6 +80,12 @@ function xml_escape_unicode ( str ) {
 
 function my_init() {
 	try {
+
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+        JSAN.errorLevel = "die"; // none, warn, or die
+        JSAN.addRepository('/xul/server/');
+
 		// Fake xulG for standalone...
 		try {
 			window.xulG.record;
@@ -224,7 +230,6 @@ function my_init() {
 		req.send(null);
 
 		loadRecord(xml_record);
-
 
 	} catch(E) {
 		alert('FIXME, MARC Editor, my_init: ' + E);
