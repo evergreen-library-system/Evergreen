@@ -1914,11 +1914,12 @@ sub attempt_checkin_hold_capture {
 
     $self->retarget($retarget);
 
-    $logger->info("circulator: found permitted hold ".
-        $hold->id . " for copy, capturing...");
+    $logger->info("circulator: found permitted hold ".$hold->id." for copy, capturing...");
 
     $hold->current_copy($copy->id);
     $hold->capture_time('now');
+    $hold->shelf_time('now') 
+        if $hold->pickup_lib == $self->editor->requestor->ws_ou;
 
     # prevent DB errors caused by fetching 
     # holds from storage, and updating through cstore
@@ -2061,21 +2062,28 @@ sub process_received_transit {
         return $self->bail_on_events($evt);
     }
 
-   # The transit is received, set the receive time
-   $transit->dest_recv_time('now');
+    # The transit is received, set the receive time
+    $transit->dest_recv_time('now');
     $self->bail_on_events($self->editor->event)
         unless $self->editor->update_action_transit_copy($transit);
 
     my $hold_transit = $self->editor->retrieve_action_hold_transit_copy($transit->id);
 
-   $logger->info("circulator: Recovering original copy status in transit: ".$transit->copy_status);
-   $copy->status( $transit->copy_status );
+    $logger->info("circulator: Recovering original copy status in transit: ".$transit->copy_status);
+    $copy->status( $transit->copy_status );
     $self->update_copy();
     return if $self->bail_out;
 
     my $ishold = 0;
     if($hold_transit) { 
-        #$self->do_hold_notify($hold_transit->hold);
+        my $hold = $self->editor->retrieve_action_hold_request($hold_transit->hold);
+
+        # hold has arrived at destination, set shelf time
+        $hold->shelf_time('now');
+        $self->bail_on_events($self->editor->event)
+            unless $self->editor->update_action_hold_request($hold);
+        return if $self->bail_out;
+
         $self->notify_hold($hold_transit->hold);
         $ishold = 1;
     }

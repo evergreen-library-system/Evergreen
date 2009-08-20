@@ -1878,7 +1878,7 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template)
-    VALUES (5, 'f', 1, 'Hold Ready for Pickup Email Notification', 'hold.available', 'HoldIsAvailable', 'SendEmail', '30 minutes', 'capture_time', 'usr',
+    VALUES (5, 'f', 1, 'Hold Ready for Pickup Email Notification', 'hold.available', 'HoldIsAvailable', 'SendEmail', '30 minutes', 'shelf_time', 'usr',
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
