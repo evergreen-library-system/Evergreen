@@ -174,33 +174,76 @@ ALTER TABLE reporter.materialized_simple_record ADD PRIMARY KEY (id);
 
 CREATE VIEW reporter.super_simple_record AS SELECT * FROM reporter.materialized_simple_record;
 
+CREATE OR REPLACE FUNCTION reporter.simple_rec_update (r_id BIGINT, deleted BOOL) RETURNS BOOL AS $$
+DECLARE
+    new_data    RECORD;
+BEGIN
+
+    DELETE FROM reporter.materialized_simple_record WHERE id = r_id;
+
+    IF NOT deleted THEN
+        INSERT INTO reporter.materialized_simple_record SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record WHERE id = NEW.record;
+    END IF;
+
+    RETURN TRUE;
+
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_update (r_id BIGINT) RETURNS BOOL AS $$
+    SELECT reporter.simple_rec_update($1, FALSE);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_delete (r_id BIGINT) RETURNS BOOL AS $$
+    SELECT reporter.simple_rec_update($1, TRUE);
+$$ LANGUAGE SQL;
+
 CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
 DECLARE
     r_id        BIGINT;
-    new_data    RECORD;
+    deleted     BOOL;
 BEGIN
     IF TG_OP IN ('DELETE') THEN
         r_id := OLD.record;
+        deleted := TRUE;
     ELSE
         r_id := NEW.record;
+        deleted := FALSE;
     END IF;
 
-    SELECT * INTO new_data FROM reporter.materialized_simple_record WHERE id = r_id FOR UPDATE;
-    DELETE FROM reporter.materialized_simple_record WHERE id = r_id;
+    PERFORM reporter.simple_rec_update(r_id, deleted);
 
-    IF TG_OP IN ('DELETE') THEN
+    IF deleted THEN
         RETURN OLD;
     ELSE
-        INSERT INTO reporter.materialized_simple_record SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record WHERE id = NEW.record;
         RETURN NEW;
     END IF;
 
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER zzz_update_materialized_simple_record_tgr
-    AFTER INSERT OR UPDATE OR DELETE ON metabib.real_full_rec
-    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
+--
+-- Disabling this by default for now, but we'll keep it around
+--
+--CREATE TRIGGER zzz_update_materialized_simple_record_tgr
+--    AFTER INSERT OR UPDATE OR DELETE ON metabib.real_full_rec
+--    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_bib_sync () RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.deleted THEN
+        DELETE FROM reporter.materialized_simple_record WHERE id = NEW.id;
+        RETURN NEW;
+    ELSE
+        RETURN NEW;
+    END IF;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER zzz_update_materialized_simple_rec_delete_tgr
+    AFTER UPDATE ON biblio.record_entry
+    FOR EACH ROW EXECUTE PROCEDURE reporter.reporter.simple_rec_bib_sync();
+
 
 CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
     DROP TRIGGER zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
