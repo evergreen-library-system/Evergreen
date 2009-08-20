@@ -286,7 +286,8 @@ CREATE TABLE action.hold_request (
 	phone_notify		TEXT,
 	email_notify		BOOL				NOT NULL DEFAULT TRUE,
 	frozen			BOOL				NOT NULL DEFAULT FALSE,
-	thaw_date		TIMESTAMP WITH TIME ZONE
+	thaw_date		TIMESTAMP WITH TIME ZONE,
+	shelf_time		TIMESTAMP WITH TIME ZONE
 );
 
 CREATE INDEX hold_request_target_idx ON action.hold_request (target);
