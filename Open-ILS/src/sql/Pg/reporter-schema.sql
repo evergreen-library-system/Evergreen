@@ -175,14 +175,12 @@ ALTER TABLE reporter.materialized_simple_record ADD PRIMARY KEY (id);
 CREATE VIEW reporter.super_simple_record AS SELECT * FROM reporter.materialized_simple_record;
 
 CREATE OR REPLACE FUNCTION reporter.simple_rec_update (r_id BIGINT, deleted BOOL) RETURNS BOOL AS $$
-DECLARE
-    new_data    RECORD;
 BEGIN
 
     DELETE FROM reporter.materialized_simple_record WHERE id = r_id;
 
     IF NOT deleted THEN
-        INSERT INTO reporter.materialized_simple_record SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record WHERE id = NEW.record;
+        INSERT INTO reporter.materialized_simple_record SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record WHERE id = r_id;
     END IF;
 
     RETURN TRUE;
