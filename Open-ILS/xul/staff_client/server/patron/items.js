@@ -275,7 +275,7 @@ patron.items.prototype = {
 					l.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.items.items_renew.renewing',[bc]));
 					x.appendChild(l);
 				}
-				var renew = circ.util.renew_via_barcode( barcode, obj.patron_id, 
+				var renew = circ.util.renew_via_barcode( bc, obj.patron_id, 
 					function(r) {
                         try {
                             if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
@@ -297,7 +297,7 @@ patron.items.prototype = {
                             }
                             obj.refresh(circ_id);
                         } catch(E) {
-   					       obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew.err_in_renew_via_barcode',[barcode]), E);
+   					       obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew.err_in_renew_via_barcode',[bc]), E);
                         }
 					} 
 				);
