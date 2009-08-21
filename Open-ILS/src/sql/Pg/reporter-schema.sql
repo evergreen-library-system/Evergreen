@@ -240,7 +240,7 @@ $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER zzz_update_materialized_simple_rec_delete_tgr
     AFTER UPDATE ON biblio.record_entry
-    FOR EACH ROW EXECUTE PROCEDURE reporter.reporter.simple_rec_bib_sync();
+    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_bib_sync();
 
 
 CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
