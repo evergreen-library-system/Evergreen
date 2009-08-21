@@ -26,6 +26,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             displayLimit : 15,
             displayOffset : 0,
             showPaginator : false,
+            showLoadFilter : false,
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
 
             /* by default, don't show auto-generated (sequence) fields */
@@ -78,7 +79,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
 
                     var back = dojo.create('a', {
-                        innerHTML : 'Back', 
+                        innerHTML : 'Back',  // TODO i18n
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
@@ -92,7 +93,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     });
 
                     var forw = dojo.create('a', {
-                        innerHTML : 'Next', 
+                        innerHTML : 'Next',  // TODO i18n
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
@@ -108,8 +109,31 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     dojo.place(this.paginator.domNode, this.domNode, 'before');
                     dojo.place(back, this.paginator.domNode);
                     dojo.place(forw, this.paginator.domNode);
+
+                    if(this.showLoadFilter) {
+                        dojo.require('openils.widget.PCrudFilterDialog');
+                        dojo.place(
+                            dojo.create('a', {
+                                innerHTML : 'Filter', // TODO i18n
+                                style : 'padding-right:6px;',
+                                href : 'javascript:void(0);', 
+                                onclick : function() { 
+                                    var dialog = new openils.widget.PCrudFilterDialog({fmClass:self.fmClass})
+                                    dialog.onApply = function(filter) {
+                                        self.resetStore();
+                                        self.loadAll(self.cachedQueryOpts, filter);
+                                    };
+                                    dialog.startup();
+                                    dialog.show();
+                                }
+                            }),
+                            this.paginator.domNode
+                        );
+                    }
+
+                    // progress image
                     this.loadProgressIndicator = dojo.create('img', {
-                        src:'/opac/images/progressbar_green.gif',
+                        src:'/opac/images/progressbar_green.gif', // TODO configured path
                         style:'height:16px;width:16px;'
                     });
                     dojo.place(this.loadProgressIndicator, this.paginator.domNode);
@@ -540,18 +564,25 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             fmField: this.field,
             widgetValue : val,
             readOnly : true,
+            forceSync : true, // prevents many simultaneous requests for the same data
             suppressLinkedFields : this.grid.suppressLinkedFields
         });
 
+        autoWidget.build();
+
+        /*
+        // With proper caching, this should not be necessary to prevent grid render flickering
         var _this = this;
         autoWidget.build(
             function(w, ww) {
-                var node = _this.grid.getCell(_this.index).view.getCellNode(rowIndex, _this.index);
-                if(node) {
-                    node.innerHTML = ww.getDisplayString();
-                }
+                try {
+                    var node = _this.grid.getCell(_this.index).view.getCellNode(rowIndex, _this.index);
+                    if(node) 
+                        node.innerHTML = ww.getDisplayString();
+                } catch(E) {}
             }
         );
+        */
 
         return autoWidget.getDisplayString();
     }
