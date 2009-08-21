@@ -9,8 +9,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
     dojo.declare('openils.widget.AutoFieldWidget', null, {
 
         async : false,
-        cache : {},
-        cacheSingle : {},
 
         /**
          * args:
@@ -48,9 +46,10 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     this.fmClass + ' fmField=' + this.fmField + ' fmObject=' + js2JSON(this.fmObject));
 
             this.auth = openils.User.authtoken;
-            if(!this.cache[this.auth]) {
-                this.cache[this.auth] = {};
-            }
+            this.cache = openils.widget.AutoFieldWidget.cache;
+            this.cache[this.auth] = this.cache[this.auth] || {};
+            this.cache[this.auth].single = this.cache[this.auth].single || {};
+            this.cache[this.auth].list = this.cache[this.auth].list || {};
         },
 
         /**
@@ -217,8 +216,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
             // first try the store cache
             var self = this;
-            if(this.cache[this.auth][lclass]) {
-                var store = this.cache[this.auth][lclass];
+            if(this.cache[this.auth].list[lclass]) {
+                var store = this.cache[this.auth].list[lclass];
                 var query = {};
                 query[linkInfo.vfield.name] = ''+this.widgetValue;
                 store.fetch({query:query, onComplete:
@@ -230,10 +229,12 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
 
             // then try the single object cache
-            if(this.cacheSingle[lclass] && this.cacheSingle[lclass][this.widgetValue]) {
-                this.widgetValue = this.cacheSingle[lclass][this.widgetValue];
+            if(this.cache[this.auth].single[lclass] && this.cache[this.auth].single[lclass][this.widgetValue]) {
+                this.widgetValue = this.cache[this.auth].single[lclass][this.widgetValue];
                 return;
             }
+
+            console.log("Fetching sync object " + lclass + " : " + this.widgetValue);
 
             // if those fail, fetch the linked object
             this.async = true;
@@ -242,10 +243,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 async : !this.forceSync,
                 oncomplete : function(r) {
                     var item = openils.Util.readResponse(r);
-                    if(!self.cacheSingle[lclass])
-                        self.cacheSingle[lclass] = {};
-                    self.widgetValue = item[linkInfo.vfield.selector]();
-                    self.cacheSingle[lclass][self.widgetValue] = item;
+                    var newvalue = item[linkInfo.vfield.selector]();
+
+                    if(!self.cache[self.auth].single[lclass])
+                        self.cache[self.auth].single[lclass] = {};
+                    self.cache[self.auth].single[lclass][self.widgetValue] = newvalue;
+
+                    self.widgetValue = newvalue;
                     self.widget.startup();
                     self._widgetLoaded();
                 }
@@ -306,15 +310,15 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 if(list) {
                     self.widget.store = 
                         new dojo.data.ItemFileReadStore({data:fieldmapper[linkClass].toStoreData(list)});
-                    self.cache[self.auth][linkClass] = self.widget.store;
+                    self.cache[self.auth].list[linkClass] = self.widget.store;
                 } else {
-                    self.widget.store = self.cache[self.auth][linkClass];
+                    self.widget.store = self.cache[self.auth].list[linkClass];
                 }
                 self.widget.startup();
                 self._widgetLoaded();
             };
 
-            if(this.cache[self.auth][linkClass]) {
+            if(this.cache[self.auth].list[linkClass]) {
                 oncomplete();
 
             } else {
@@ -452,5 +456,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
     });
 
     openils.widget.AutoFieldWidget.localeStrings = dojo.i18n.getLocalization("openils.widget", "AutoFieldWidget");
+    openils.widget.AutoFieldWidget.cache = {};
 }
 
