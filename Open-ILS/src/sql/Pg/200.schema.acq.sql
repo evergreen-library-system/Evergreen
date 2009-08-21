@@ -107,8 +107,9 @@ CREATE TABLE acq.fund (
     name            TEXT    NOT NULL,
     year            INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
     currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
-    code            TEXT    UNIQUE,
-    CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
+    code            TEXT,
+    CONSTRAINT name_once_per_org_year UNIQUE (org,name,year),
+    CONSTRAINT code_once_per_org_year UNIQUE (org, code, year)
 );
 
 CREATE TABLE acq.fund_debit (
