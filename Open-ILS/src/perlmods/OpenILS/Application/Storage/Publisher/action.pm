@@ -768,20 +768,19 @@ sub generate_fines {
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
-            if(0) { # caluclate penalties inline.  Needs to be tested.
-                OpenILS::Utils::Penalty->calculate_penalties(
-                    undef, $c->usr->to_fieldmapper->id.'', $c->circ_lib->to_fieldmapper->id.'');
+			if(0) { # caluclate penalties inline.  Needs to be tested.
+				OpenILS::Utils::Penalty->calculate_penalties(
+					undef, $c->usr->to_fieldmapper->id.'', $c->circ_lib->to_fieldmapper->id.'');
+			} else {
 
-            } else {
-
-			    $penalty->request(
+				$penalty->request(
 				    'open-ils.penalty.patron_penalty.calculate',
 				    { patron	=> $c->usr->to_fieldmapper,
 				    update	=> 1,
 				    background	=> 1,
 				    }
 			    )->gather(1);
-            }
+			}
 
 		} catch Error with {
 			my $e = shift;
