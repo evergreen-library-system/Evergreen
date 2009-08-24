@@ -2079,9 +2079,21 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				if (Number(bill.balance_owed()) == 0) { return; }
 				if (document.getElementById('no_change_label')) {
 					var m = document.getElementById('no_change_label').getAttribute('value');
-					document.getElementById('no_change_label').setAttribute('value', m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [params.barcode, util.money.sanitize(bill.balance_owed())]) + '  ');
+					document.getElementById('no_change_label').setAttribute(
+                        'value', 
+                        m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [params.barcode, util.money.sanitize(bill.balance_owed())]) + '  '
+                    );
 					document.getElementById('no_change_label').setAttribute('hidden','false');
 				}
+				if (document.getElementById('fine_tally')) {
+					var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
+                    document.getElementById('fine_tally').setAttribute('amount',amount);
+                    document.getElementById('fine_tally').setAttribute(
+                        'value',
+                        document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
+                    );
+					document.getElementById('fine_tally').setAttribute('hidden','false');
+                }
 			});
 		}
 

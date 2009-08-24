@@ -97,6 +97,7 @@
 			</menu>
 			</menubar>
 		</hbox>
+        <label id="fine_tally" value="" amount="0.00" style="color: red" hidden="true" />
 	</vbox>
 
 </hbox>
