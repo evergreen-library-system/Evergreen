@@ -161,13 +161,80 @@ CREATE TABLE acq.purchase_order (
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	provider	INT				NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
-	state		TEXT				NOT NULL DEFAULT 'new'
+	state			TEXT					NOT NULL DEFAULT 'new',
+	order_date		TIMESTAMP WITH TIME ZONE,
+	name			TEXT					NOT NULL
 );
 CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
 CREATE INDEX po_provider_idx ON acq.purchase_order (provider);
 CREATE INDEX po_state_idx ON acq.purchase_order (state);
 CREATE INDEX po_creator_idx  ON acq.purchase_order ( creator );
 CREATE INDEX po_editor_idx   ON acq.purchase_order ( editor );
+CREATE INDEX acq_po_org_name_order_date_idx ON acq.purchase_order( ordering_agency, name, order_date );
+
+-- The name should default to the id, as text.  We can't reference a column
+-- in a DEFAULT clause, so we use a trigger:
+
+CREATE OR REPLACE FUNCTION acq.purchase_order_name_default () RETURNS TRIGGER 
+AS $$
+BEGIN
+	IF NEW.name IS NULL THEN
+		NEW.name := NEW.id::TEXT;
+	END IF;
+
+	RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER po_name_default_trg
+  BEFORE INSERT OR UPDATE ON acq.purchase_order
+  FOR EACH ROW EXECUTE PROCEDURE acq.purchase_order_name_default ();
+
+-- The order name should be unique for a given ordering agency on a given order date
+-- (truncated to midnight), but only where the order_date is not NULL.  Conceptually
+-- this rule requires a check constraint with a subquery.  However you can't have a
+-- subquery in a CHECK constraint, so we fake it with a trigger.
+
+CREATE OR REPLACE FUNCTION acq.po_org_name_date_unique () RETURNS TRIGGER 
+AS $$
+DECLARE
+	collision INT;
+BEGIN
+	--
+	-- If order_date is not null, then make sure we don't have a collision
+	-- on order_date (truncated to day), org, and name
+	--
+	IF NEW.order_date IS NULL THEN
+		RETURN NEW;
+	END IF;
+	--
+	-- In the WHERE clause, we compare the order_dates without regard to time of day.
+	-- We use a pair of inequalities instead of comparing truncated dates so that the
+	-- query can do an indexed range scan.
+	--
+	SELECT 1 INTO collision
+	FROM acq.purchase_order
+	WHERE
+		ordering_agency = NEW.ordering_agency
+		AND name = NEW.name
+		AND order_date >= date_trunc( 'day', NEW.order_date )
+		AND order_date <  date_trunc( 'day', NEW.order_date ) + '1 day'::INTERVAL
+		AND id <> NEW.id;
+	--
+	IF collision IS NULL THEN
+		-- okay, no collision
+		RETURN NEW;
+	ELSE
+		-- collision; nip it in the bud
+		RAISE EXCEPTION 'Colliding purchase orders: ordering_agency %, date %, name ''%''',
+			NEW.ordering_agency, NEW.order_date, NEW.name;
+	END IF;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER po_org_name_date_unique_trg
+  BEFORE INSERT OR UPDATE ON acq.purchase_order
+  FOR EACH ROW EXECUTE PROCEDURE acq.po_org_name_date_unique ();
 
 CREATE TABLE acq.po_note (
 	id		SERIAL				PRIMARY KEY,
