@@ -4,7 +4,7 @@
 
 <div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='eventDefTabs'>
 
-    <div dojoType="dijit.layout.ContentPane" title='Event Parameters' id='tab-atevdef'>
+    <div dojoType="dijit.layout.ContentPane" title='Event Definitions' id='tab-atevdef'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
             <div>Trigger Event Definitions</div>
             <div>
