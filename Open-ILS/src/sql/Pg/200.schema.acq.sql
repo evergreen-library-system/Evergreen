@@ -34,9 +34,10 @@ CREATE TABLE acq.provider (
     name                TEXT    NOT NULL,
     owner               INT     NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
     currency_type       TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
-    code                TEXT    UNIQUE,
+    code                TEXT    NOT NULL,
     holding_tag         TEXT,
-    CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner)
+    CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
+	CONSTRAINT code_once_per_owner UNIQUE (code, owner)
 );
 
 CREATE TABLE acq.provider_holding_subfield_map (
