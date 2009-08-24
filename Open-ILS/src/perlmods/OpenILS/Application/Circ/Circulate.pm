@@ -1676,6 +1676,9 @@ sub do_checkin {
             " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
     }
 
+    # run the fine generator against this circ, if this circ is there
+    $self->generate_fines if ($self->circ);
+
     # if the circ is marked as 'claims returned', add the event to the list
     $self->push_events(OpenILS::Event->new('CIRC_CLAIMS_RETURNED'))
         if ($self->circ and $self->circ->stop_fines 
@@ -2151,6 +2154,27 @@ sub process_received_transit {
     return $hold_transit;
 }
 
+
+sub generate_fines {
+   my $self = shift;
+   my $evt;
+   my $obt;
+
+   my $st = OpenSRF::AppSession->connect(
+      'open-ils.storage'
+   )->request(
+      'open-ils.storage.action.circulation.overdue.generate_fines',
+      undef,
+      $self->circ->id
+   )->wait_complete;
+
+   $st->disconnect;
+
+   # refresh the circ in case the fine generator set the stop_fines field
+   $self->circ($self->editor->retrieve_action_circulation($self->circ->id));
+
+   return undef;
+}
 
 sub checkin_handle_circ {
    my $self = shift;
