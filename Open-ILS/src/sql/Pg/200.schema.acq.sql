@@ -400,6 +400,24 @@ CREATE TABLE acq.fund_tag_map (
 	CONSTRAINT acqftm_fund_once_per_tag UNIQUE( fund, tag )
 );
 
+CREATE TABLE acq.fiscal_calendar (
+	id              SERIAL         PRIMARY KEY,
+	name            TEXT           NOT NULL
+);
+
+CREATE TABLE acq.fiscal_year (
+	id              SERIAL         PRIMARY KEY,
+	calendar        INT            NOT NULL
+	                               REFERENCES acq.fiscal_calendar
+	                               ON DELETE CASCADE
+	                               DEFERRABLE INITIALLY DEFERRED,
+	year            INT            NOT NULL,
+	year_begin      TIMESTAMPTZ    NOT NULL,
+	year_end        TIMESTAMPTZ    NOT NULL,
+	CONSTRAINT acq_fy_logical_key  UNIQUE ( calendar, year ),
+    CONSTRAINT acq_fy_physical_key UNIQUE ( calendar, year_begin )
+);
+
 -- Functions
 
 CREATE TYPE acq.flat_lineitem_holding_subfield AS (lineitem int, holding int, subfield text, data text);
@@ -585,6 +603,73 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION acq.exchange_ratio ( TEXT, TEXT, NUMERIC ) RETURNS NUMERIC AS $$
     SELECT $3 * acq.exchange_ratio($1, $2);
 $$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION acq.find_bad_fy()
+/*
+	Examine the acq.fiscal_year table, comparing successive years.
+	Report any inconsistencies, i.e. years that overlap, have gaps
+    between them, or are out of sequence.
+*/
+RETURNS SETOF RECORD AS $$
+DECLARE
+	first_row  BOOLEAN;
+	curr_year  RECORD;
+	prev_year  RECORD;
+	return_rec RECORD;
+BEGIN
+	first_row := true;
+	FOR curr_year in
+		SELECT
+			id,
+			calendar,
+			year,
+			year_begin,
+			year_end
+		FROM
+			acq.fiscal_year
+		ORDER BY
+			calendar,
+			year_begin
+	LOOP
+		--
+		IF first_row THEN
+			first_row := FALSE;
+		ELSIF curr_year.calendar    = prev_year.calendar THEN
+			IF curr_year.year_begin > prev_year.year_end THEN
+				-- This ugly kludge works around the fact that older
+				-- versions of PostgreSQL don't support RETURN QUERY SELECT
+				FOR return_rec IN SELECT
+					prev_year.id,
+					prev_year.year,
+					'Gap between fiscal years'::TEXT
+				LOOP
+					RETURN NEXT return_rec;
+				END LOOP;
+			ELSIF curr_year.year_begin < prev_year.year_end THEN
+				FOR return_rec IN SELECT
+					prev_year.id,
+					prev_year.year,
+					'Overlapping fiscal years'::TEXT
+				LOOP
+					RETURN NEXT return_rec;
+				END LOOP;
+			ELSIF curr_year.year < prev_year.year THEN
+				FOR return_rec IN SELECT
+					prev_year.id,
+					prev_year.year,
+					'Fiscal years out of order'::TEXT
+				LOOP
+					RETURN NEXT return_rec;
+				END LOOP;
+			END IF;
+		END IF;
+		--
+		prev_year := curr_year;
+	END LOOP;
+	--
+	RETURN;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE VIEW acq.funding_source_credit_total AS
     SELECT  funding_source,

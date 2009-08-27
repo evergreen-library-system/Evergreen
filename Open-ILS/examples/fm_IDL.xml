@@ -3910,6 +3910,54 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="acqfc" controller="open-ils.cstore" oils_obj:fieldmapper="acq::fiscal_calendar" oils_persist:tablename="acq.fiscal_calendar" reporter:label="Fiscal Calendar">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.fiscal_calendar_id_seq">
+			<field reporter:label="Fiscal Calendar ID" name="id" reporter:datatype="id" reporter:selector='id'/>
+			<field reporter:label="Fiscal Calendar Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Years" name="years" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+            <link field="years" reltype="has_many" map="" key="calendar" class="acqfy"/>
+		</links>
+		<!--
+			For now, we don't have pcrud as one of the controllers, so the permacrud section is moot.
+			But here's what it should look like if we ever do use pcrud.
+		-->
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_FISCAL_YEAR" global_required="true"/>
+				<retrieve permission="ADMIN_ACQ_FISCAL_YEAR" global_required="true"/>
+				<update permission="ADMIN_ACQ_FISCAL_YEAR" global_required="true"/>
+				<delete permission="ADMIN_ACQ_FISCAL_YEAR" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="acqfy" controller="open-ils.cstore" oils_obj:fieldmapper="acq::fiscal_year" oils_persist:tablename="acq.fiscal_year" reporter:label="Fiscal Year">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.fiscal_year_id_seq">
+			<field reporter:label="Fiscal Year ID" name="id" reporter:datatype="id" reporter:selector='id'/>
+			<field reporter:label="Calendar" name="calendar" reporter:datatype="link"/>
+			<field reporter:label="Fiscal Year" name="year" reporter:datatype="int"/>
+			<field reporter:label="Year Begin" name="year_begin" reporter:datatype="timestamp"/>
+			<field reporter:label="Year End" name="year_end" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+			<link field="calendar" reltype="has_a" key="id" map="" class="acqfc"/>
+		</links>
+		<!--
+			For now, we don't have pcrud as one of the controllers, so the permacrud section is moot.
+			But here's what it should look like if we ever do use pcrud.
+		-->
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_FISCAL_YEAR" global_required="true"/>
+				<retrieve permission="ADMIN_ACQ_FISCAL_YEAR" global_required="true"/>
+				<update permission="ADMIN_ACQ_FISCAL_YEAR" global_required="true"/>
+				<delete permission="ADMIN_ACQ_FISCAL_YEAR" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source" reporter:label="Funding Source">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_id_seq">
 			<field reporter:label="Funding Source ID" name="id" reporter:datatype="id" reporter:selector='code'/>
