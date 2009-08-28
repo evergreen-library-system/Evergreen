@@ -333,7 +333,7 @@ sub rw_biblio_ingest_single_object {
     $cstore->request( 'open-ils.cstore.direct.metabib.metarecord_source_map.create' => $mrm )->gather(1);
     $cstore->request( 'open-ils.cstore.direct.biblio.record_entry.update' => $bib )->gather(1);
 
-    $cstore->request( 'open-ils.cstore.json_query.atomic' => { from => [ 'reporter.simple_rec_update', $bib ] } )->gather(1);
+    $cstore->request( 'open-ils.cstore.json_query.atomic' => { from => [ 'reporter.simple_rec_update', $bib->id ] } )->gather(1);
 
     $cstore->request( 'open-ils.cstore.transaction.commit' )->gather(1) || return undef;;
     $cstore->disconnect;
