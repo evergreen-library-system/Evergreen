@@ -385,7 +385,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                 } catch (E) {}
                             },200
                         );
-                        if(onPostSubmit) onPostSubmit();
+                        if(onPostSubmit) 
+                            onPostSubmit();
                     },
                     onCancel : function() {
                         setTimeout(function(){
@@ -419,7 +420,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                             } catch (E) {}
                         },200);
                         if(onPostSubmit)
-                            onPostSubmit();
+                            onPostSubmit(fmObject);
                     },
                     onCancel : function() {
                         if(onCancel) onCancel();
@@ -430,7 +431,15 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 return pane;
             },
 
-            // .startup() is called within
+            /**
+             * Creates an EditPane with a copy of the data from the provided store
+             * item for cloning said item
+             * @param {Object} storeItem Dojo data item
+             * @param {Number} rowIndex The Grid row index of the item to be cloned
+             * @param {Function} onPostSubmit Optional callback for post-submit behavior
+             * @param {Function} onCancel Optional callback for clone cancelation
+             * @return {Object} The clone EditPane
+             */
             _makeClonePane : function(storeItem, rowIndex, onPostSubmit, onCancel) {
                 var clonePane = this._makeCreatePane(onPostSubmit, onCancel);
                 var origPane = this._makeEditPane(storeItem, rowIndex);
@@ -478,13 +487,20 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 if(this.onEditPane) this.onEditPane(this.editPane);
             },
 
-            showClonePane : function() {
+            showClonePane : function(onPostSubmit) {
                 var self = this;
                 var done = function() { self.hidePane(); };
+
+                                    
                 var row = this.getFirstSelectedRow();
                 if(!row) return;
+
+                var postSubmit = (onPostSubmit) ? 
+                    function(result) { onPostSubmit(self.getItem(row), result); self.hidePane(); } :
+                    done;
+
                 dojo.style(this.domNode, 'display', 'none');
-                this.editPane = this._makeClonePane(this.getItem(row), row, done, done);
+                this.editPane = this._makeClonePane(this.getItem(row), row, postSubmit, done);
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
                 if(this.onEditPane) this.onEditPane(this.editPane);
             },
