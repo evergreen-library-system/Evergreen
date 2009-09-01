@@ -286,6 +286,9 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 }
             },
 
+            /**
+             * @return {Array} List of every fieldmapper object in the data store
+             */
             getAllObjects : function() {
                 var objs = [];
                 var self = this;
@@ -301,16 +304,18 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 return objs;
             },
 
+            /**
+             * Deletes the underlying object for all selected rows
+             */
             deleteSelected : function() {
                 var items = this.getSelectedItems();
                 var total = items.length;
                 var self = this;
                 dojo.require('openils.PermaCrud');
-                var pcrud = new openils.PermaCrud();
                 dojo.forEach(items,
                     function(item) {
                         var fmObject = new fieldmapper[self.fmClass]().fromStoreItem(item);
-                        pcrud['delete'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
+                        new openils.PermaCrud()['delete'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
                     }
                 );
             },
@@ -468,6 +473,9 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.editDialog.show();
             },
 
+            /**
+             * Generates an EditDialog for object creation and displays it to the user
+             */
             showCreateDialog : function() {
                 var self = this;
                 var done = function() { self.hideDialog(); };
