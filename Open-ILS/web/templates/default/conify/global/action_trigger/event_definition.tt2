@@ -1,6 +1,8 @@
 [% WRAPPER default/base.tt2 %]
+[% ctx.page_title = 'Event Definitions' %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'> </script>
 <script>openils.Util.addOnLoad(loadEventDef)</script>
+
 
 <div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='eventDefTabs'>
 
@@ -9,7 +11,7 @@
             <div>Trigger Event Definitions</div>
             <div>
                 <button dojoType='dijit.form.Button' onClick='edGrid.showCreatePane()'>New</button>
-                <button dojoType='dijit.form.Button' onClick='edGrid.showClonePane()'>Clone Selected</button>
+                <button dojoType='dijit.form.Button' onClick='edGrid.showClonePane(cloneEventEnv)'>Clone Selected</button>
                 <button dojoType='dijit.form.Button' onClick='edGrid.deleteSelected()'>Delete Selected</button>
             </div>
         </div>
@@ -99,6 +101,9 @@
         </div>
     </div>
 
+</div>
+
+<div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' indeterminate='true'></div>
 
 [% END %]
 

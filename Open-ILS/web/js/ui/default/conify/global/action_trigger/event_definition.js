@@ -21,6 +21,37 @@ function loadEventDef() {
     dojo.connect(eventDefTabs,'selectChild', tabLoader);
 }
 
+/**
+ * After an event def is cloned, see if the user wants to also clone the event def environment
+ * @param {Object} oldItem Grid store item that was cloned
+ * @param {Object} newObject Newly created fieldmapper object
+ */
+function cloneEventEnv(oldItem, newObject) {
+    if(!confirm('Clone event definition environment as well?')) return; // TODO i18n
+    progressDialog.show(true);
+    var pcrud = new openils.PermaCrud();
+
+    // fetch the env list for the cloned object
+    var env_list = pcrud.search('atenv', {event_def : edGrid.store.getValue(oldItem, 'id')});
+
+    if(env_list && env_list.length) {
+        
+        // clone the environment 
+        env_list = env_list.map(
+            function(item) { 
+                item.id(null);
+                item.event_def(newObject.id()); 
+                return item; 
+            }
+        );
+    
+        // create the cloned environment list
+        pcrud.create(env_list);
+    }
+
+    progressDialog.hide();
+}
+
 function loadEventDefData() { 
     var pcrud = new openils.PermaCrud();
     eventDef = pcrud.retrieve('atevdef', eventDefId);
