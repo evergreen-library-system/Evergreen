@@ -115,7 +115,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
             
             if(!this.parentNode) // give it somewhere to live so that dojo won't complain
-                this.parentNode = document.createElement('div');
+                this.parentNode = dojo.create('div');
 
             this.onload = onload;
             if(this.widgetValue == null)
@@ -338,9 +338,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          * For widgets that run asynchronously, provide a callback for finishing up
          */
         _widgetLoaded : function(value) {
-            if(this.readOnly) {
-                this.baseWidgetValue(this.getDisplayString());
-            } else {
+            if(!this.readOnly) {
                 this.baseWidgetValue(this.widgetValue);
                 if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
                     this.widget.attr('disabled', true); 
