@@ -310,7 +310,6 @@
         </menu>
 
 		<menuseparator />
-		<menuitem label="&staff.main.menu.admin.local_admin.label;" accesskey="&staff.main.menu.admin.local_admin.accesskey;" command="cmd_local_admin"/>
 		<menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_adv_user_edit"/>
 		<menuitem label="&staff.main.menu.admin.toggle_buttonbar.label;" accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;" command="cmd_toggle_buttonbar"/>
 		<menuseparator />
@@ -320,6 +319,7 @@
 				<menuitem label="&staff.main.menu.admin.non_cat_type_edit.label;" accesskey="&staff.main.menu.admin.non_cat_type_edit.accesskey;" command="cmd_non_cat_type_edit"/>
 				<menuitem label="&staff.main.menu.admin.copy_location_edit.label;" accesskey="&staff.main.menu.admin.copy_location_edit.accesskey;" command="cmd_copy_location_edit"/>
 				<menuitem label="&staff.main.menu.admin.browse_holds.label;" command="cmd_browse_holds" accesskey="&staff.main.menu.admin.browse_holds.accesskey;"/>
+		        <menuitem label="&staff.main.menu.admin.local_admin.label;" accesskey="&staff.main.menu.admin.local_admin.accesskey;" command="cmd_local_admin"/>
 				<menuseparator />
 				<menuitem label="&staff.main.menu.admin.public_opac.label;" command="cmd_public_opac" accesskey="&staff.main.menu.admin.public_opac.accesskey;"/>
 				<menuitem label="&staff.main.menu.admin.cmd_test.label;" old_accesskey="T" command="cmd_test"/>
