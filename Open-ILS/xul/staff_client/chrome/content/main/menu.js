@@ -95,7 +95,7 @@ main.menu.prototype = {
             obj.set_tab( 
                 loc, 
                 {'tab_name' : label, 'browser' : false }, 
-                {'no_xulG' : false, 'show_print_button' : false, show_nav_buttons:true} 
+                {'no_xulG' : false, 'show_print_button' : false, 'show_nav_buttons' : true } 
             );
         }
 
@@ -552,6 +552,16 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/hold_matrix_matchpoint', 
                     'menu.local_admin.hold_matrix_matchpoint.tab'); }
+            ],
+            'cmd_local_admin_work_log' : [
+                ['oncommand'],
+                function() { 
+                    obj.set_tab(
+                        urls.XUL_WORK_LOG,
+                        { 'tab_name' : offlineStrings.getString('menu.local_admin.work_log.tab') },
+                        {}
+                    );
+                }
             ],
             'cmd_server_admin_org_type' : [
                 ['oncommand'],

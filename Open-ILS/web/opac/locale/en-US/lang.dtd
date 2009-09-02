@@ -171,6 +171,16 @@
 <!ENTITY staff.admin.survey.save_question.label "Save this Question">
 <!ENTITY staff.admin.survey.staff_client.label "Staff Client:">
 <!ENTITY staff.admin.survey.start.label "Start:">
+<!ENTITY staff.admin.work_log.list1.header "Most Recent Staff Actions">
+<!ENTITY staff.admin.work_log.list2.header "Most Recently Affected Patrons and Last Action for each">
+<!ENTITY staff.admin.work_log.refresh_btn.label "Refresh">
+<!ENTITY staff.admin.work_log.refresh_btn.accesskey "R">
+<!ENTITY staff.admin.work_log.list1.retrieve_item_btn.label "Retrieve Item">
+<!ENTITY staff.admin.work_log.list1.retrieve_item_btn.accesskey "I">
+<!ENTITY staff.admin.work_log.list1.retrieve_patron_btn.label "Retrieve Patron">
+<!ENTITY staff.admin.work_log.list1.retrieve_patron_btn.accesskey "P">
+<!ENTITY staff.admin.work_log.list2.retrieve_patron_btn.label "Retrieve Patron">
+<!ENTITY staff.admin.work_log.list2.retrieve_patron_btn.accesskey "n">
 <!ENTITY staff.auth.login_header "Log in">
 <!ENTITY staff.auth.logoff_prompt "Log off">
 <!ENTITY staff.auth.logoff_prompt.accesskey "f">
@@ -624,6 +634,8 @@
 <!ENTITY staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label "Group Penalty Thresholds">
 <!ENTITY staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label "Circulation Policies">
 <!ENTITY staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label "Hold Policies">
+<!ENTITY staff.main.menu.admin.local_admin.work_log.label "Work Log">
+<!ENTITY staff.main.menu.admin.local_admin.work_log.accesskey "W">
 
 <!ENTITY staff.main.menu.admin.server_admin.label "Server Administration">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_type.label "Organization Types">

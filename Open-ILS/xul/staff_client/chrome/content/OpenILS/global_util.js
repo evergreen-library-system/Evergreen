@@ -3,6 +3,8 @@
 	function ses(a) {
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		switch(a) {
+            case 'staff_id' : return data.list.au[0].id(); break;
+            case 'staff_usrname' : return data.list.au[0].usrname(); break;
             case 'ws_ou' :
                 return data.list.au[0].ws_ou();
             break;

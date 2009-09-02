@@ -349,6 +349,7 @@ const urls = {
 	'XUL_VOLUME_BUCKETS' : '/xul/server/cat/volume_buckets.xul',
 	'XUL_VOLUME_COPY_CREATOR' : '/xul/server/cat/volume_copy_creator.xul',
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
+    'XUL_WORK_LOG' : '/xul/server/admin/work_log.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
 	'TEST_XUL' : '/xul/server/main/test.xul',

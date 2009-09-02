@@ -7,7 +7,7 @@ circ.util = {};
 circ.util.EXPORT_OK	= [
 	'offline_checkout_columns', 'offline_checkin_columns', 'offline_renew_columns', 'offline_inhouse_use_columns',
 	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_columns',
-	'show_last_few_circs', 'abort_transits', 'transit_columns', 'renew_via_barcode'
+	'show_last_few_circs', 'abort_transits', 'transit_columns', 'work_log_columns', 'renew_via_barcode'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
@@ -1150,6 +1150,62 @@ circ.util.columns = function(modify,params) {
 			}
 			c = new_c;
 		}
+	}
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
+};
+
+circ.util.work_log_columns = function(modify,params) {
+
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+	var c = [
+		{
+			'persist' : 'hidden width ordinal',
+			'id' : 'message',
+			'label' : document.getElementById('circStrings').getString('staff.circ.work_log_column.message'),
+			'flex' : 3,
+			'primary' : true,
+			'hidden' : false,
+			'render' : function(my) { return my.message; }
+		},
+		{
+			'persist' : 'hidden width ordinal',
+			'id' : 'when',
+			'label' : document.getElementById('circStrings').getString('staff.circ.work_log_column.when'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : false,
+			'render' : function(my) { return String( my.when ); }
+		}
+
+	];
+	for (var i = 0; i < c.length; i++) {
+		if (modify[ c[i].id ]) {
+			for (var j in modify[ c[i].id ]) {
+				c[i][j] = modify[ c[i].id ][j];
+			}
+		}
+	}
+	if (params) {
+		if (params.just_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < params.just_these.length; i++) {
+				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
+				new_c.push( function(y){ return y; }( x ) );
+			}
+			c = new_c;
+		}
+		if (params.except_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
+		}
+
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 };

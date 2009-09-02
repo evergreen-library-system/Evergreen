@@ -44,6 +44,7 @@ patron.display.prototype = {
 				{ 
 					'set_tab' : xulG.set_tab,
 					'patron_id' : obj.patron.id(),
+                    'patron' : obj.patron,
 					'check_stop_checkouts' : function() { return obj.check_stop_checkouts(); },
 					'on_list_change' : function(checkout) {
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");

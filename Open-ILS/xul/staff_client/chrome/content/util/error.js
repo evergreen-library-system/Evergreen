@@ -552,7 +552,55 @@ util.error.prototype = {
 			return false; // We can pass over low surrogates now as the second component in a pair which we have already processed  
 		}  
 		return str[i];  
-	}  
+	},
+
+    'work_log' : function(msg,row_data) {
+        try {
+            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+            var max_entries = data.hash.aous['ui.admin.work_log.max_entries'] || 20;
+            if (! data.work_log) data.work_log = [];
+            if (! row_data) row_data = {};
+            row_data.message = msg;
+            row_data.when = new Date();
+            var ds = { 
+                retrieve_id: js2JSON( { 'au_id' : row_data.au_id, 'au_barcode' : row_data.au_barcode, 'au_family_name' : row_data.au_family_name, 'acp_id' : row_data.acp_id, 'acp_barcode' : row_data.acp_barcode } ), 
+                row: { my: row_data },
+                to_top: true
+            };
+            data.work_log.push( ds );
+            if (data.work_log.length > max_entries) data.work_log.shift();
+            data.stash('work_log');
+            if (row_data.au_id) {
+               this.patron_log(msg,row_data); 
+            }
+        } catch(E) {
+            try { this.standard_unexpected_error_alert('error in error.js, work_log(): ',E); } catch(F) { alert(E); }
+        }
+    },
+
+    'patron_log' : function(msg,row_data) {
+        try {
+            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+            var max_entries = data.hash.aous['ui.admin.patron_log.max_entries'] || 10;
+            if (! data.patron_log) data.patron_log = [];
+            if (! row_data) row_data = {};
+            row_data.message = msg;
+            row_data.when = new Date();
+            var ds = { 
+                retrieve_id: js2JSON( { 'au_id' : row_data.au_id, 'au_barcode' : row_data.au_barcode, 'au_family_name' : row_data.au_family_name, 'acp_id' : row_data.acp_id, 'acp_barcode' : row_data.acp_barcode } ), 
+                row: { my: row_data },
+                to_top: true
+            };
+            if (data.patron_log.length > 0) {
+                if ( data.patron_log[ data.patron_log.length -1 ].row.my.au_id == row_data.au_id ) data.patron_log.pop();
+            }
+            data.patron_log.push( ds );
+            if (data.patron_log.length > max_entries) data.patron_log.shift();
+            data.stash('patron_log');
+        } catch(E) {
+            try { this.standard_unexpected_error_alert('error in error.js, patron_log(): ',E); } catch(F) { alert(E); }
+        }
+    } 
 }
 
 dump('exiting util/error.js\n');
