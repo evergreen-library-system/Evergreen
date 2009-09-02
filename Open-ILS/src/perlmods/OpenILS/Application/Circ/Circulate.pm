@@ -1257,6 +1257,10 @@ sub bail_on_events {
     $self->bail_out(1);
 }
 
+
+# ------------------------------------------------------------------------------
+# When an item is checked out, see if we can fulfill a hold for this patron
+# ------------------------------------------------------------------------------
 sub handle_checkout_holds {
    my $self    = shift;
    my $copy    = $self->copy;
@@ -1264,6 +1268,9 @@ sub handle_checkout_holds {
 
    my $e = $self->editor;
    $self->fulfilled_holds([]);
+
+   # pre/non-cats can't fulfill a hold
+   return if $self->is_precat or $self->is_noncat;
 
     my $hold = $e->search_action_hold_request({   
         current_copy        => $copy->id , 
