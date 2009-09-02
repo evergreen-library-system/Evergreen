@@ -174,7 +174,7 @@
 <!ENTITY staff.admin.work_log.list1.header "Most Recent Staff Actions">
 <!ENTITY staff.admin.work_log.list2.header "Most Recently Affected Patrons and Last Action for each">
 <!ENTITY staff.admin.work_log.refresh_btn.label "Refresh">
-<!ENTITY staff.admin.work_log.refresh_btn.accesskey "R">
+<!ENTITY staff.admin.work_log.refresh_btn.accesskey "">
 <!ENTITY staff.admin.work_log.list1.retrieve_item_btn.label "Retrieve Item">
 <!ENTITY staff.admin.work_log.list1.retrieve_item_btn.accesskey "I">
 <!ENTITY staff.admin.work_log.list1.retrieve_patron_btn.label "Retrieve Patron">
