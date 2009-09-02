@@ -2160,9 +2160,9 @@ sub generate_fines {
    my $evt;
    my $obt;
 
-   my $st = OpenSRF::AppSession->connect(
-      'open-ils.storage'
-   )->request(
+   my $st = OpenSRF::AppSession->connect('open-ils.storage');
+
+   $st->request(
       'open-ils.storage.action.circulation.overdue.generate_fines',
       undef,
       $self->circ->id
