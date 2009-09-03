@@ -11,7 +11,7 @@
 
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="try { my_init(); font_helper(); } catch(E) { alert(E); }">
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }">
 
 <scripts id="openils_util_scripts"/>
 <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
@@ -24,11 +24,11 @@
 <groupbox flex="0">
 	<caption label="&staff.cat.marcedit.options.label;"/>
 	<hbox flex="1">
-		<checkbox persist="checked" accesskey="&staff.cat.marcedit.stackSubfields.accesskey;" label="&staff.cat.marcedit.stackSubfields.label;" oncommand="stackSubfields(this);" checked="false" id="stackSubfields"/>
-        <checkbox persist="checked" accesskey="&staff.cat.marcedit.fastItemAdd.accesskey;" label="&staff.cat.marcedit.fastItemAdd.label;" oncommand="fastItemAdd_toggle(this);" checked="false" id="fastItemAdd_checkbox"/>
+		<checkbox oils_persist="checked" accesskey="&staff.cat.marcedit.stackSubfields.accesskey;" label="&staff.cat.marcedit.stackSubfields.label;" oncommand="stackSubfields(this);" checked="false" id="stackSubfields"/>
+        <checkbox oils_persist="checked" accesskey="&staff.cat.marcedit.fastItemAdd.accesskey;" label="&staff.cat.marcedit.fastItemAdd.label;" oncommand="fastItemAdd_toggle(this);" checked="false" id="fastItemAdd_checkbox"/>
         <hbox id="fastItemAdd_textboxes">
             <label control="fastItemAdd_callnumber" accesskey="&staff.cat.marcedit.fastItemAdd_callnumber.accesskey;" value="&staff.cat.marcedit.fastItemAdd_callnumber.label;" />
-            <textbox context="clipboard" id="fastItemAdd_callnumber" persist="value" onchange="this.setAttribute('value',this.value);"/>
+            <textbox context="clipboard" id="fastItemAdd_callnumber" oils_persist="value" onchange="this.setAttribute('value',this.value);"/>
             <label control="fastItemAdd_barcode" accesskey="&staff.cat.marcedit.fastItemAdd_barcode.accesskey;" value="&staff.cat.marcedit.fastItemAdd_barcode.label;" />
             <textbox context="clipboard" id="fastItemAdd_barcode"/>
         </hbox>
@@ -61,7 +61,7 @@
 				<label id="recordTypeLabel" context="recordTypeMenu"/>
 			</caption>
 			<vbox flex="0">
-				<grid flex="0" id="leaderGrid" type="BKS" hidden="false" persist="hidden">
+				<grid flex="0" id="leaderGrid" type="BKS" hidden="false" oils_persist="hidden">
 					<columns>
 						<column flex="1"/>
 						<column flex="1"/>

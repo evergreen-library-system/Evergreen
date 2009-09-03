@@ -17,7 +17,7 @@
 </box>
 
 <vbox id="cmvb1" flex="1">
-    <tabbox id="record_buckets_tabbox" flex="1" persist="selectedIndex">
+    <tabbox id="record_buckets_tabbox" flex="1" oils_persist="selectedIndex">
         <tabs>
             <tab id="record_query_tab" label="&staff.cat.record_buckets_overlay.record_query_tab.label;"
 									accesskey="&staff.cat.record_buckets_overlay.record_query_tab.accesskey;"/>

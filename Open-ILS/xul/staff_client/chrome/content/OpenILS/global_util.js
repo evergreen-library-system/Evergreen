@@ -37,6 +37,45 @@
 		}
 	}
 
+    function persist_helper() {
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+            var nodes = document.getElementsByAttribute('oils_persist','*');
+            for (var i = 0; i < nodes.length; i++) {
+                var base_key = 'oils_persist_' + String(location.hostname + location.pathname + '_' + nodes[i].getAttribute('id')).replace('/','_','g') + '_';
+                var attribute_list = nodes[i].getAttribute('oils_persist').split(' ');
+                for (var j = 0; j < attribute_list.length; j++) {
+                    var key = base_key + attribute_list[j];
+                    var value = prefs.prefHasUserValue(key) ? prefs.getCharPref(key) : null;
+                    dump('persist_helper: retrieving key = ' + key + ' value = ' + value + ' for ' + nodes[i].nodeName + '\n');
+                    if (value) nodes[i].setAttribute( attribute_list[j], value );
+                }
+                if (nodes[i].nodeName == 'checkbox' && attribute_list.indexOf('checked') > -1) nodes[i].addEventListener(
+                    'command',
+                    function(bk) {
+                        return function(ev) {
+                            try {
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                var key = bk + 'checked';
+                                var value = ev.target.checked;
+                                ev.target.setAttribute( 'checked', value );
+                                prefs.setCharPref( key, value );
+                                dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox\n');
+                            } catch(E) {
+                                alert('Error in persist_helper(), checkbox command event listener: ' + E);
+                            }
+                        };
+                    }(base_key), 
+                    false
+                );
+                // TODO: Need to add event listeners for window resizing, splitter repositioning, grippy state, etc.
+            }
+        } catch(E) {
+            alert('Error in persist_helper(): ' + E);
+        }
+    }
+
 	function getKeys(o) {
 		var keys = [];
 		for (var k in o) keys.push(k);

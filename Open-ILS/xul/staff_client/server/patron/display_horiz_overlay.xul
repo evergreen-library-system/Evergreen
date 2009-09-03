@@ -32,12 +32,12 @@
 		<label class="hideme invalid_address_indicator" value="&staff.patron.display_overlay.invalid_address.value;"/>
 	</hbox>
 	<vbox id="PatronNotNavBar" flex="1" class="my_bg">
-        <hbox id="left_deck_vbox" flex="1" persist="height"> 
-            <deck id="patron_left_deck" persist="height"/>
+        <hbox id="left_deck_vbox" flex="1" oils_persist="height"> 
+            <deck id="patron_left_deck" oils_persist="height"/>
         </hbox>
-        <splitter id="deck_splitter" collapse="before" persist="state hidden"><grippy id="splitter_grippy"/></splitter>
-        <hbox id="right_deck_vbox" flex="8" persist="height">
-            <deck id="patron_right_deck" persist="height"/>
+        <splitter id="deck_splitter" collapse="before" oils_persist="state hidden"><grippy id="splitter_grippy"/></splitter>
+        <hbox id="right_deck_vbox" flex="8" oils_persist="height">
+            <deck id="patron_right_deck" oils_persist="height"/>
         </hbox>
 	</vbox>
 </vbox>

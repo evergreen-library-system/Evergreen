@@ -19,8 +19,8 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="hold_notices_win" persist="sizemode width height"
-	onload="try{ my_init(); font_helper(); } catch(E) { alert(E); }" title="&staff.patron.hold_details.title;"
+<window id="hold_notices_win" oils_persist="sizemode width height"
+	onload="try{ my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" title="&staff.patron.hold_details.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -34,12 +34,12 @@
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
     <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
-    <vbox id="v1" flex="1" persist="height">
+    <vbox id="v1" flex="1" oils_persist="height">
         <label id="patron_name" class="patronNameLarge"/>
         <vbox id="bib_brief_box" height="200"/>
     </vbox> 
     <spacer flex="1"/>
-    <vbox id="v2" flex="1" persist="height">
+    <vbox id="v2" flex="1" oils_persist="height">
         <vbox flex="1">
             <tree id="holds_list" enableColumnDrag="true" height="100"/>
         </vbox>
@@ -68,7 +68,7 @@
         </tabs>
         <tabpanels>
             <tabpanel id="notes" orient="vertical" overflow="scroll">
-                <vbox persist="height" class="my_overflow" id="notes_panel">
+                <vbox oils_persist="height" class="my_overflow" id="notes_panel">
                 </vbox>
                 
                 <textbox id="hold_note_title" multiline="false" value="circStrings-ADD NOTE TITLE HERE" onfocus="$('hold_note_title').value=''; $('hold_note_title').onfocus=''"/>
@@ -85,7 +85,7 @@
                 
             </tabpanel>
             <tabpanel id="notification" orient="vertical">
-                <vbox persist="height" class="my_overflow" id="notifications_panel">
+                <vbox oils_persist="height" class="my_overflow" id="notifications_panel">
                 </vbox>
                 <button label="&staff.patron.hold_notices.add_record_notification.label;" accesskey="&staff.patron.hold_notices.add_record_notification.accesskey;" oncommand="new_notification()"/>
                 <button label="&staff.patron.hold_notices.close_window.label;" accesskey="&staff.patron.hold_notices.close_window.accesskey;" oncommand="window.close()"/>

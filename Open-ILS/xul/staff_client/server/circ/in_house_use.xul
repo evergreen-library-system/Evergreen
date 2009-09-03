@@ -20,7 +20,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="in_house_use_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -121,8 +121,8 @@
 			label="&staff.circ.in_house_use.print.label;" 
 			command="cmd_in_house_use_print"
 			accesskey=""/>
-		<checkbox id="trim_list" label="&staff.circ.in_house_use.trim_list.label;" checked="true" persist="checked"/> 
-		<checkbox id="strict_barcode" label="&staff.circ.in_house_use.strict_barcode.label;" checked="false" persist="checked"/> 
+		<checkbox id="trim_list" label="&staff.circ.in_house_use.trim_list.label;" checked="true" oils_persist="checked"/> 
+		<checkbox id="strict_barcode" label="&staff.circ.in_house_use.strict_barcode.label;" checked="false" oils_persist="checked"/> 
 		<spacer id="pcii3s" flex="1"/>
 	</hbox>
 
