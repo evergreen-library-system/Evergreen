@@ -12,6 +12,7 @@ util.clipboard.cut = function() {
     try {
         netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         var n = document.popupNode;
+        if (n.getAttribute('readonly')=='true') return;
         var v = n.value;
         var start = n.selectionStart;
         var end = n.selectionEnd;
@@ -48,6 +49,7 @@ util.clipboard.paste = function() {
     try {
         netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         var n = document.popupNode;
+        if (n.getAttribute('readonly')=='true') return;
         var v = n.value;
         var start = n.selectionStart;
         var end = n.selectionEnd;
