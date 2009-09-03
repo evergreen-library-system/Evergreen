@@ -54,7 +54,6 @@ circ.copy_status.prototype = {
 						);
 						obj.error.sdump('D_TRACE','circ/copy_status: selection list = ' + js2JSON(obj.selection_list) );
 						if (obj.selection_list.length == 0) {
-							obj.controller.view.cmd_alt_view.setAttribute('disabled','true');
 							obj.controller.view.sel_checkin.setAttribute('disabled','true');
 							obj.controller.view.cmd_replace_barcode.setAttribute('disabled','true');
 							obj.controller.view.sel_edit.setAttribute('disabled','true');
@@ -78,7 +77,6 @@ circ.copy_status.prototype = {
 							obj.controller.view.cmd_mark_library.setAttribute('disabled','true');
 							obj.controller.view.cmd_transfer_volume.setAttribute('disabled','true');
 						} else {
-							obj.controller.view.cmd_alt_view.setAttribute('disabled','false');
 							obj.controller.view.sel_checkin.setAttribute('disabled','false');
 							obj.controller.view.cmd_replace_barcode.setAttribute('disabled','false');
 							obj.controller.view.sel_edit.setAttribute('disabled','false');
@@ -145,13 +143,15 @@ circ.copy_status.prototype = {
                                     n.setAttribute('toggle','0');
                                     n.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.copy_status.alt_view.label'));
                                     n.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.copy_status.alt_view.accesskey'));
-                                    //document.getElementById('results').focus();
+                                    obj.controller.view.copy_status_barcode_entry_textbox.focus();
                                 } else {
                                     document.getElementById('deck').selectedIndex = 1;
                                     n.setAttribute('toggle','1');
                                     n.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.copy_status.list_view.label'));
                                     n.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.copy_status.list_view.accesskey'));
                                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                                    obj.controller.view.copy_status_barcode_entry_textbox.focus();
+                                    if (obj.selection_list.length == 0) return;
                                     var f = obj.browser.get_content();
                                     xulG.barcode = obj.selection_list[0].barcode; 
                                     f.xulG = xulG;

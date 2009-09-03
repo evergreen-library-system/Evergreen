@@ -101,7 +101,7 @@
 		<command id="cmd_copy_status_submit_barcode" />
 		<command id="cmd_copy_status_upload_file" />
 		<command id="cmd_copy_status_print" />
-        <command id="cmd_alt_view" disabled="true" />
+        <command id="cmd_alt_view" />
 		<command id="save_columns" />
 		<command id="sel_copy_details" disabled="true"/>
 		<command id="sel_mark_items_damaged" disabled="true"/>
