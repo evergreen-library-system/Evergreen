@@ -13,7 +13,7 @@ use OpenILS::Utils::CStoreEditor;
 use OpenILS::Const qw/:const/;
 use Unicode::Normalize;
 use OpenSRF::Utils::SettingsClient;
-use UUID;
+use UUID::Tiny;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -1519,11 +1519,7 @@ sub create_trigger_event {
 }
 
 sub create_uuid_string {
-    my $uuid;
-    my $uuidstr;
-    UUID::generate($uuid);
-    UUID::unparse($uuid, $uuidstr);
-    return $uuidstr;
+    return create_UUID_as_string();
 }
 
 1;

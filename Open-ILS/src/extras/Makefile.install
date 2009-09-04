@@ -101,8 +101,7 @@ DEBS =  \
 	libtext-csv-perl\
 	libtext-csv-perl\
 	libuniversal-require-perl\
-	libunix-syslog-perl\
-	libuuid-perl
+	libunix-syslog-perl
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
 EXTRA_DEBS = \
@@ -214,6 +213,7 @@ DEB_APACHE_DISMODS = \
 CPAN_MODULES = \
     Business::CreditCard::Object \
     Net::Z3950::Simple2ZOOM \
+	UUID::Tiny \
     SRU
 
 # Intrepid and Lenny have libmarc-charset-perl, libmarc-xml-perl, libnet-z3950-zoom-perl
