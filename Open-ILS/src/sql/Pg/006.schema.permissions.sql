@@ -45,7 +45,7 @@ CREATE TABLE permission.grp_penalty_threshold (
     org_unit    INT             NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     penalty     INT             NOT NULL REFERENCES config.standing_penalty (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     threshold   NUMERIC(8,2)    NOT NULL,
-    CONSTRAINT penalty_grp_once UNIQUE (grp,penalty)
+    CONSTRAINT penalty_grp_once UNIQUE (grp,penalty,org_unit)
 );
 
 CREATE TABLE permission.grp_perm_map (
