@@ -155,6 +155,10 @@ function AcqLiTable() {
         td.appendChild(document.createTextNode(val));
     };
 
+    /**
+     * Inserts a single lineitem into the growing table of lineitems
+     * @param {Object} li The lineitem object to insert
+     */
     this.addLineitem = function(li) {
         this.liCache[li.id()] = li;
 
@@ -183,6 +187,10 @@ function AcqLiTable() {
         countNode.innerHTML = li.item_count() || 0;
         countNode.id = 'acq-lit-copy-count-label-' + li.id();
 
+        // lineitem state
+        nodeByName('li_state', row).innerHTML = li.state(); // TODO i18n state labels
+
+        // lineitem price
         var priceInput = dojo.query('[name=price]', row)[0];
         var priceData = liWrapper.getPrice();
         priceInput.value = (priceData) ? priceData.price : '';
@@ -190,17 +198,18 @@ function AcqLiTable() {
 
         var recv_link = dojo.query('[name=receive_link]', row)[0];
 
-        if(li.state() == 'received') {
-            // if the LI is received, hide the receive link and show the 'update barcodes' link
-            openils.Util.hide(recv_link)
-        } else {
+        if(li.state == 'on-order') {
             recv_link.onclick = function() {
                 self.receiveLi(li);
                 openils.Util.hide(recv_link)
             }
+        } else {
+            openils.Util.hide(recv_link);
         }
 
-        if(li.eg_bib_id()) {
+        // TODO we should allow editing before receipt, in which case the
+        // test should be "if 1 or more real (acp) copies exist
+        if(li.state() == 'received') {
             var real_copies_link = dojo.query('[name=real_copies_link]', row)[0];
             openils.Util.show(real_copies_link);
             real_copies_link.onclick = function() {
@@ -212,6 +221,9 @@ function AcqLiTable() {
         self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
     };
 
+    /**
+     * Draws and shows the lineitem notes pane
+     */
     this.drawLiNotes = function(li) {
         var self = this;
 
@@ -245,6 +257,9 @@ function AcqLiTable() {
         dojo.forEach(li.lineitem_notes(), function(note) { self.addLiNote(li, note) });
     }
 
+    /**
+     * Draws a single lineitem note in the notes pane
+     */
     this.addLiNote = function(li, note) {
         if(note.isdeleted()) return;
         var self = this;
@@ -266,6 +281,9 @@ function AcqLiTable() {
         self.liNotesTbody.appendChild(row);
     }
 
+    /**
+     * Updates any new/changed/deleted notes on the server
+     */
     this.updateLiNotes = function(li, newNote) {
 
         var notes;

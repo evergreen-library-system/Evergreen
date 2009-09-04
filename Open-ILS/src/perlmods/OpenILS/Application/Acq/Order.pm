@@ -683,6 +683,7 @@ sub create_purchase_order {
     $po->owner($mgr->editor->requestor->id);
     $po->edit_time('now');
     $po->create_time('now');
+    $po->state('pending');
     $po->ordering_agency($mgr->editor->requestor->ws_ou);
     $po->$_($args{$_}) for keys %args;
     $po->clear_id;
@@ -979,7 +980,8 @@ sub upload_records {
     if($create_po) {
         $po = create_purchase_order($mgr, 
             ordering_agency => $ordering_agency,
-            provider => $provider->id
+            provider => $provider->id,
+            state => 'on-order'
         ) or return $mgr->editor->die_event;
     }
 
@@ -1306,6 +1308,7 @@ sub create_purchase_order_api {
 
             $li->provider($po->provider);
             $li->purchase_order($po->id);
+            $li->state('pending-order');
             update_lineitem($mgr, $li) or return $e->die_event;
             $mgr->respond;
 
@@ -1779,6 +1782,49 @@ sub delete_picklist_api {
     return $mgr->respond_complete;
 }
 
+
+
+__PACKAGE__->register_method(
+	method => 'activate_purchase_order',
+	api_name	=> 'open-ils.acq.purchase_order.activate',
+	signature => {
+        desc => q/Activates a purchase order.  This updates the status of the PO
+            and Lineitems to 'on-order'.  Activated PO's are ready for EDI delivery
+            if appropriate./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Purchase ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub activate_purchase_order {
+    my($self, $conn, $auth, $po_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
+
+    $po->state('on-order');
+    update_purchase_order($mgr, $po) or return $e->die_event;
+
+    my $query = [
+        {purchase_order => $po_id, state => 'pending-order'},
+        {limit => 1}
+    ];
+
+    while( my $li = $e->search_acq_lineitem($query)->[0] ) {
+        $li->state('on-order');
+        update_lineitem($mgr, $li) or return $e->die_event;
+        $mgr->respond;
+    }
+
+    $e->commit;
+    return 1;
+}
 
 
 1;
