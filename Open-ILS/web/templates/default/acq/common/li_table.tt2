@@ -52,6 +52,7 @@
                     <td></td>
                     <td>Items</td>
                     <td>Notes</td>
+                    <td>Status</td>
                     <td>Price</td>
                 </tr>
             </tbody>
@@ -88,6 +89,7 @@
                         <a name='noteslink' href='javascript:void(0);' 
                             style='margin-right:15px;'>Notes(<span name='notes_count'>0</span>)</a>
                     </td>
+                    <td><span name='li_state'></span></td>
                     <td><input type='text' size='8' name='price'/></td>
                 </tr>
             </tbody>

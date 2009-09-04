@@ -22,6 +22,10 @@ function init() {
                 dojo.byId('acq-po-view-total-li').innerHTML = PO.lineitem_count();
                 dojo.byId('acq-po-view-total-enc').innerHTML = PO.amount_encumbered();
                 dojo.byId('acq-po-view-total-spent').innerHTML = PO.amount_spent();
+                dojo.byId('acq-po-view-state').innerHTML = PO.state(); // TODO i18n
+
+                if(PO.state() == 'pending') 
+                    openils.Util.show('acq-po-activate');
             }
         }
     );
@@ -36,6 +40,23 @@ function init() {
             }
         }
     );
+}
+
+function activatePo() {
+    progressDialog.show(true);
+    try {
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.purchase_order.activate'],
+            {   async: true,
+                params: [openils.User.authtoken, PO.id()],
+                oncomplete : function() {
+                    location.href = location.href;
+                }
+            }
+        );
+    } catch(E) {
+        progressDialog.hide();
+    }
 }
 
 function updatePoName() {
