@@ -574,11 +574,11 @@ sub import_record_list_impl {
             if(defined $overlay_target) {
                 $logger->info("vl: overlaying record $overlay_target");
                 $record = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
-                    $e, $overlay_target, $rec->marc, undef, undef, undef, 1); #$rec->bib_source
+                    $e, $overlay_target, $rec->marc); #$rec->bib_source
             } else {
                 $logger->info("vl: importing new record");
                 $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-                    $e, $rec->marc, undef, undef, undef, 1); #$rec->bib_source
+                    $e, $rec->marc); #$rec->bib_source
             }
 
             if($U->event_code($record)) {
