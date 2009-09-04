@@ -597,7 +597,7 @@ sub create_lineitem_assets_impl {
     unless($li->eg_bib_id) {
 
        my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-            $e, $li->marc, undef, undef, undef, 1); #$rec->bib_source
+            $e, $li->marc); #$rec->bib_source
 
         if($U->event_code($record)) {
             $e->rollback;

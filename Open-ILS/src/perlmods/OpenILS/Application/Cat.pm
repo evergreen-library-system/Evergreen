@@ -160,12 +160,11 @@ sub biblio_record_replace_marc  {
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_MARC', $e->requestor->ws_ou);
 
-    my $no_ingest = 1;
     my $fix_tcn = $self->api_name =~ /replace/o;
     my $override = $self->api_name =~ /override/o;
 
     my $res = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
-        $e, $recid, $newxml, $source, $fix_tcn, $override, $no_ingest);
+        $e, $recid, $newxml, $source, $fix_tcn, $override);
 
     $e->commit unless $U->event_code($res);
 
@@ -257,7 +256,7 @@ sub biblio_record_xml_import {
 
 	my $override = $self->api_name =~ /override/;
     my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-        $e, $xml, $source, $auto_tcn, $override, 1);
+        $e, $xml, $source, $auto_tcn, $override);
 
     return $record if $U->event_code($record);
 

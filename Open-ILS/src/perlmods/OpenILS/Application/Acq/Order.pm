@@ -776,11 +776,9 @@ sub create_bib {
     my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
         $mgr->editor, 
         $li->marc, 
-        undef, 
+        undef, # bib source
         undef, 
         1, # override tcn collisions
-        1, # no-ingest
-        undef # $rec->bib_source
     ); 
 
     if($U->event_code($record)) {
