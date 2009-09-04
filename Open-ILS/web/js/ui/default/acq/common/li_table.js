@@ -198,7 +198,7 @@ function AcqLiTable() {
 
         var recv_link = dojo.query('[name=receive_link]', row)[0];
 
-        if(li.state == 'on-order') {
+        if(li.state() == 'on-order') {
             recv_link.onclick = function() {
                 self.receiveLi(li);
                 openils.Util.hide(recv_link)
