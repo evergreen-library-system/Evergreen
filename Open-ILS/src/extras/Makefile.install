@@ -70,7 +70,8 @@ YAZ_HOST=http://ftp.indexdata.dk/pub/yaz
 PAY_ONLINE=Business-OnlinePayment-3.00_08.tar.gz
 PAY_ONLINE_HOST=http://ftp.perl.org/pub/CPAN/authors/id/I/IV/IVAN/
 
-APT_TOOL=aptitude
+APT_TOOL=aptitude -yq
+
 
 # Debian dependencies
 DEBS =  \
