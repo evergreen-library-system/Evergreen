@@ -255,11 +255,17 @@ sub biblio_record_xml_import {
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('IMPORT_MARC', $e->requestor->ws_ou);
 
-    my $res = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-        $e, $xml, $source, $auto_tcn, $self->api_name =~ /override/);
+    my $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
+        $e, $xml, $source, $auto_tcn, $self->api_name =~ /override/, 1);
 
-    $e->commit unless $U->event_code($res);
-    return $res;
+    return $record if $U->event_code($record);
+
+    $e->commit;
+
+    my $ses = OpenSRF::AppSession->create('open-ils.ingest');
+    $ses->request('open-ils.ingest.full.biblio.record', $record->id);
+
+    return $record;
 }
 
 __PACKAGE__->register_method(
