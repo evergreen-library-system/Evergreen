@@ -7,6 +7,8 @@
                 Purchase Order
             </div>
             <table class='oils-generic-table'>
+                <tr><td>ID</td><td><a id='acq-po-view-id'/></td></tr>
+                <tr><td>Name</td><td><a id='acq-po-view-name' href='javascript:void(0);' onclick='updatePoName()'/></td></tr>
                 <tr><td>Total Lineitems</td><td><span id='acq-po-view-total-li'/></td></tr>
                 <tr><td>Total Encumbered</td><td>$<span id='acq-po-view-total-enc'/></td></tr>
                 <tr><td>Total Spent</td><td>$<span id='acq-po-view-total-spent'/></td></tr>
