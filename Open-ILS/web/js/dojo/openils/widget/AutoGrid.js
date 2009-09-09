@@ -85,6 +85,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         onclick : function() { 
                             self.resetStore();
                             self.cachedQueryOpts.offset = self.displayOffset -= self.displayLimit;
+                            if(self.displayOffset < 0)
+                                self.cachedQueryOpts.offset = self.displayOffset = 0;
                             if(self.dataLoader)
                                 self.dataLoader()
                             else
