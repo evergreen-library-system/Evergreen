@@ -301,7 +301,8 @@ BEGIN
         sort_desc := NOT COALESCE(param_sort_desc, FALSE);
     END IF;
 
-    select_clause := select_clause || current_rank || ' AS rank';
+    select_clause := select_clause || current_rank || ' AS rank, ' ||
+			$$ COALESCE( FIRST(NULLIF(REGEXP_REPLACE(mrd.date1, E'\\D+', '0', 'g'),'')), '0' )::INT  AS tie_break $$;
 
     -- now add the other qualifiers
     IF param_audience IS NOT NULL AND array_upper(param_audience, 1) > 0 THEN
@@ -349,7 +350,8 @@ BEGIN
     END IF;
 
     core_rel_query := select_clause || from_clause || where_clause ||
-                        ' GROUP BY 1 ORDER BY 4' || CASE WHEN sort_desc THEN ' DESC' ELSE ' ASC' END || ';';
+                        ' GROUP BY 1 ORDER BY 4 ' || CASE WHEN sort_desc THEN 'DESC' ELSE 'ASC' END || ', 5 DESC;';
+
     --RAISE NOTICE 'Base Query:  %', core_rel_query;
 
     IF param_search_ou > 0 THEN
