@@ -215,10 +215,10 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.acq.fund.delete',
 	signature => {
         desc => 'Deletes a fund',
-        params => {
+        params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'fund ID', type => 'number'}
-        },
+        ],
         return => {desc => '1 on success, Event on failure'}
     }
 );
