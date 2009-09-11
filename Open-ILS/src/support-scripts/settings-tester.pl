@@ -96,6 +96,20 @@ my $osrfxml = $xmlparser->parse_file($settings_config);
 print "\nChecking database connections\n";
 # Check database connections
 my @databases = $osrfxml->findnodes('//database');
+
+# If we have no database connections, this is probably the OpenSRF version
+# of opensrf.xml
+if (!@databases) {
+	my $de = "* WARNING: There are no database connections defined in " .
+		"opensrf.xml. These are defined in services such as " .
+		"open-ils.cstore and open-ils.reporter. Please ensure that " .
+		"your opensrf_core.xml and opensrf.xml configuration files " .
+		"are based on the examples shipped with Evergreen instead of " .
+		"OpenSRF.\n";
+	$output .= $de;
+	warn $de;
+}
+
 foreach my $database (@databases) {
 	my $db_name = $database->findvalue("./db");	
 	if (!$db_name) {
@@ -107,8 +121,12 @@ foreach my $database (@databases) {
 	my $db_pw = $database->findvalue("./pw");	
 	if (!$db_pw && $database->parentNode->parentNode->nodeName eq 'reporter') {
 		$db_pw = $database->findvalue("./password");
-		warn "* WARNING: Deprecated <password> element used for the <reporter> entry.  " .
-			"Please use <pw> instead.\n" if ($db_pw);
+		if ($db_pw) {
+			my $de = "* WARNING: Deprecated <password> element used for the " .
+				"<reporter> entry. Please use <pw> instead.\n";
+			$output .= $de;
+			warn $de;
+		}
 	}
 
 	my $osrf_xpath;
@@ -190,6 +208,17 @@ foreach my $host (@hosts) {
 	$output .= $result;
 }
 
+# Check for oils_web.xml, required for acquisitions and many administration
+# interfaces as of Evergreen 1.6
+if (!-t '/openils/conf/oils_web.xml') {
+	my $de = "* WARNING: As of Evergreen 1.6, /openils/conf/oils_web.xml " .
+		"is a required configuration file. Copying " .
+		"/openils/conf/oils_web.xml.example should resolve this " .
+		"problem.\n";
+	$output .= $de;
+	warn $de;
+}
+
 
 if ($gather) {
 	get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
@@ -201,31 +230,29 @@ sub test_db_connect {
 	my $dsn = "dbi:Pg:dbname=$db_name;host=$db_host;port=$db_port";
 	my $de = undef;
 	my ($dbh, $encoding, $langs);
-	try {
-		$dbh = DBI->connect($dsn, $db_user, $db_pw);
-		unless($dbh) {
-			$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
-			warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
-		}
+	$dbh = DBI->connect($dsn, $db_user, $db_pw);
 
-		# Get server encoding
-		my $sth = $dbh->prepare("SHOW server_encoding");
-		$sth->execute;
-		$sth->bind_col(1, \$encoding);
-		$sth->fetch;
-		$sth->finish;
+	# Short-circuit if we didn't connect successfully
+	unless($dbh) {
+		$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
+		warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
+		return $de;
+	}
 
-		# Get list of server languages
-		$sth = $dbh->prepare("SELECT lanname FROM pg_catalog.pg_language");
-		$sth->execute;
-		$langs = $sth->fetchall_arrayref([0]);
-		$sth->finish;
+	# Get server encoding
+	my $sth = $dbh->prepare("SHOW server_encoding");
+	$sth->execute;
+	$sth->bind_col(1, \$encoding);
+	$sth->fetch;
+	$sth->finish;
 
-		$dbh->disconnect;
-	} catch Error with {
-		$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
-		warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
-	};
+	# Get list of server languages
+	$sth = $dbh->prepare("SELECT lanname FROM pg_catalog.pg_language");
+	$sth->execute;
+	$langs = $sth->fetchall_arrayref([0]);
+	$sth->finish;
+
+	$dbh->disconnect;
 	print "* $osrf_xpath :: Successfully connected to database $dsn\n" unless ($de);
 
 	# Check encoding
