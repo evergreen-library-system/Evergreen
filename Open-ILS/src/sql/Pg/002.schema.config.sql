@@ -489,6 +489,21 @@ CREATE TABLE config.z3950_source (
     auth                BOOL    NOT NULL DEFAULT TRUE
 );
 
+COMMENT ON TABLE config.z3950_source IS $$
+Z39.50 Sources
+
+Each row in this table represents a database searchable via Z39.50.
+$$;
+
+COMMENT ON COLUMN config.z3950_source.record_format IS $$
+Z39.50 element set.
+$$;
+
+COMMENT ON COLUMN config.z3950_source.transmission_format IS $$
+Z39.50 preferred record syntax..
+$$;
+
+
 CREATE TABLE config.z3950_attr (
     id          SERIAL  PRIMARY KEY,
     source      TEXT    NOT NULL REFERENCES config.z3950_source (name) DEFERRABLE INITIALLY DEFERRED,
