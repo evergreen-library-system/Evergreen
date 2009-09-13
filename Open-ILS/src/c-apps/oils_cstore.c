@@ -1104,7 +1104,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         if (local_context->size > 0) {
 	        osrfLogDebug( OSRF_LOG_MARK, "%d class-local context field(s) specified", local_context->size);
             int i = 0;
-            char* lcontext = NULL;
+            const char* lcontext = NULL;
             while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
                 osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
 	            osrfLogDebug(
@@ -1151,7 +1151,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                     osrfStringArray* jump_list = osrfHashGet(fcontext, "jump");
 
                     if (_fparam && jump_list) {
-                        char* flink = NULL;
+                        const char* flink = NULL;
                         int k = 0;
                         while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
                             free(foreign_pkey_value);
@@ -1209,7 +1209,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                     free(foreign_pkey_value);
     
                     int j = 0;
-                    char* foreign_field = NULL;
+                    const char* foreign_field = NULL;
                     while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), j++)) ) {
                         osrfStringArrayAdd( context_org_array, oilsFMGetString( _fparam, foreign_field ) );
 	                    osrfLogDebug(
@@ -1231,8 +1231,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		jsonObjectFree(param);
 	}
 
-    char* context_org = NULL;
-    char* perm = NULL;
+    const char* context_org = NULL;
+    const char* perm = NULL;
     int OK = 0;
 
     if (permission->size == 0) {
@@ -4722,7 +4722,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 				while ((cur = jsonObjectGetIndex( res_list, res_idx++ ) )) {
 
 					int i = 0;
-					char* link_field;
+					const char* link_field;
 					
 					while ( (link_field = osrfStringArrayGetString(link_fields, i++)) ) {
 
