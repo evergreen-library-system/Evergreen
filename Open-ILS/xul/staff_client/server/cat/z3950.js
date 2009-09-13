@@ -345,18 +345,27 @@ cat.z3950.prototype = {
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 										obj.services = robj;
                                         var x = document.getElementById('service_rows');
-										for (var i in obj.services) {
+                                        var services = new Array();
+                                        for (var i in obj.services) {
+                                            var label;
+                                            if (obj.services[i].label) {
+                                                label = obj.services[i].label;
+                                            } else if (obj.services[i].name) {
+                                                label = obj.services[i].name;
+                                            } else {
+                                                label = i;
+                                            }
+                                            var j = [label, i];
+                                            services.push(j);
+                                        }
+                                        services.sort();
+                                        for (var j=0; j < services.length; j++) {
+                                            var i = services[j][1];
                                             try {
                                                 if (i == 'native-evergreen-catalog') continue;
                                                 var r = document.createElement('row'); x.appendChild(r);
                                                 var cb = document.createElement('checkbox'); 
-                                                    if (obj.services[i].label) {
-                                                        cb.setAttribute('label',obj.services[i].label);
-                                                    } else if (obj.services[i].name) {
-                                                        cb.setAttribute('label',obj.services[i].name);
-                                                    } else {
-                                                        cb.setAttribute('label',i);
-                                                    }
+                                                    cb.setAttribute('label',services[j][0]);
                                                     cb.setAttribute('tooltiptext',i + ' : ' + obj.services[i].db + '@' + obj.services[i].host + ':' + obj.services[i].port); 
                                                     cb.setAttribute('mytype','service_class'); cb.setAttribute('service',i);
                                                     cb.setAttribute('id',i+'_service'); r.appendChild(cb);
