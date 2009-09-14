@@ -51,24 +51,29 @@
                     dump('persist_helper: retrieving key = ' + key + ' value = ' + value + ' for ' + nodes[i].nodeName + '\n');
                     if (value) nodes[i].setAttribute( attribute_list[j], value );
                 }
-                if (nodes[i].nodeName == 'checkbox' && attribute_list.indexOf('checked') > -1) nodes[i].addEventListener(
-                    'command',
-                    function(bk) {
-                        return function(ev) {
-                            try {
-                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                var key = bk + 'checked';
-                                var value = ev.target.checked;
-                                ev.target.setAttribute( 'checked', value );
-                                prefs.setCharPref( key, value );
-                                dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox\n');
-                            } catch(E) {
-                                alert('Error in persist_helper(), checkbox command event listener: ' + E);
-                            }
-                        };
-                    }(base_key), 
-                    false
-                );
+                if (nodes[i].nodeName == 'checkbox' && attribute_list.indexOf('checked') > -1) {
+                    var evt = document.createEvent("Events");
+                    evt.initEvent( 'command', true, true );
+                    nodes[i].dispatchEvent(evt);
+                    nodes[i].addEventListener(
+                        'command',
+                        function(bk) {
+                            return function(ev) {
+                                try {
+                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                    var key = bk + 'checked';
+                                    var value = ev.target.checked;
+                                    ev.target.setAttribute( 'checked', value );
+                                    prefs.setCharPref( key, value );
+                                    dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox\n');
+                                } catch(E) {
+                                    alert('Error in persist_helper(), checkbox command event listener: ' + E);
+                                }
+                            };
+                        }(base_key), 
+                        false
+                    );
+                }
                 // TODO: Need to add event listeners for window resizing, splitter repositioning, grippy state, etc.
             }
         } catch(E) {
