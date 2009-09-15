@@ -26,7 +26,6 @@ build_dir:
 	@cp -fR build/chrome/content/util/ build/server/
 	@cp -fR build/chrome/content/auth/ build/server/
 	@cp build/chrome/content/main/constants.js build/server/main/constants.js
-	@cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
 	@cp build/chrome/content/main/bindings.xml build/server/main/bindings.xml
 	@cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	@cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
@@ -34,7 +33,6 @@ build_dir:
 
 # Convert chrome to remote for server localization
 chrome2remote:
-	@sed -i 's/chrome:\/\/open_ils_staff_client\/locale\//\/xul\/server\/locale\/<\!--#echo var=locale-->\//' build/server/main/simple_auth.xul
 	@for loc in $(CHROME_LOCALES); do \
 		cp -fr chrome/locale/$$loc build/server/locale/. ; \
 	done;
