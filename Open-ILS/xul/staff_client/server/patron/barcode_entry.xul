@@ -168,7 +168,8 @@
 
 		function spawn_checkout(barcode) {
 			try {
-				var loc = urls.XUL_PATRON_DISPLAY; // + '?barcode=' + window.escape(barcode);
+                var horizontal_interface = String( g.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
+                var loc = xulG.url_prefix( horizontal_interface ? urls.XUL_PATRON_HORIZ_DISPLAY : urls.XUL_PATRON_DISPLAY );
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
 					window.xulG.set_tab( loc, {}, { 'barcode' : barcode } );
 				} else {
