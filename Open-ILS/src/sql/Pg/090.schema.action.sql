@@ -385,6 +385,28 @@ CREATE TABLE action.unfulfilled_hold_list (
 	circ_lib	INT				NOT NULL,
 	fail_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
+CREATE INDEX uhr_hold_idx ON action.unfulfilled_hold_list (hold);
+
+CREATE OR REPLACE VIEW action.unfulfilled_hold_loops AS
+    SELECT  u.hold,
+            c.circ_lib,
+            count(*)
+      FROM  action.unfulfilled_hold_list u
+            JOIN asset.copy c ON (c.id = u.current_copy)
+      GROUP BY 1,2;
+
+CREATE OR REPLACE VIEW action.unfulfilled_hold_min_loop AS
+    SELECT  hold,
+            min(count)
+      FROM  action.unfulfilled_hold_loops
+      GROUP BY 1;
+
+CREATE OR REPLACE VIEW action.unfulfilled_hold_innermost_loop AS
+    SELECT  DISTINCT l.*
+      FROM  action.unfulfilled_hold_loops l
+            JOIN action.unfulfilled_hold_min_loop m USING (hold)
+      WHERE l.count = m.min;
+
 
 COMMIT;
 
