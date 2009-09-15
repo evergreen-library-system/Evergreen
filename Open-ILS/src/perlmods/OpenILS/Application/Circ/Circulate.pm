@@ -896,6 +896,9 @@ sub run_indb_circ_test {
 
 sub do_inspect {
     my $self = shift;
+
+    return OpenILS::Event->new('ASSET_COPY_NOT_FOUND') unless $self->copy;
+
     $self->run_indb_circ_test;
 
     my $results = {
