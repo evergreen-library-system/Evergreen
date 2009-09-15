@@ -126,6 +126,9 @@ CREATE TABLE action.circulation (
 	stop_fines		TEXT				CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE')),
 	workstation         INT        REFERENCES actor.workstation(id)
 	                               ON DELETE SET NULL
+								   DEFERRABLE INITIALLY DEFERRED,
+	checkin_workstation INT        REFERENCES actor.workstation(id)
+	                               ON DELETE SET NULL
 								   DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (money.billable_xact);
 ALTER TABLE action.circulation ADD PRIMARY KEY (id);

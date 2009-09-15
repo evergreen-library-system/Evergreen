@@ -734,6 +734,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="circulations" reltype="has_many" key="workstation" map="" class="circ"/>
+			<link field="circulation_checkins" reltype="has_many" key="checkin_workstation" map="" class="circ"/>
 		</links>
 	</class>
 
@@ -2075,6 +2076,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Check Out Date/Time" name="xact_start" reporter:datatype="timestamp" />
 			<field reporter:label="Record Creation Date/Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
+			<field reporter:label="Checkin Workstation" name="checkin_workstation" reporter:datatype="link"/>
 			<field reporter:label="Transaction Billings" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transaction Payments" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Base Transaction" name="billable_transaction" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -2099,6 +2101,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
 			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
 			<link field="workstation" reltype="might_have" key="id" map="" class="aws"/>
+			<link field="checkin_workstation" reltype="might_have" key="id" map="" class="aws"/>
 		</links>
 	</class>
 	<class id="combcirc" controller="open-ils.cstore" oils_obj:fieldmapper="action::all_circulation" oils_persist:tablename="action.all_circulation" reporter:core="true" reporter:label="Combined Aged and Active Circulations" oils_persist:readonly="true">
