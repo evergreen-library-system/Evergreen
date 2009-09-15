@@ -370,6 +370,7 @@ my @AUTOLOAD_FIELDS = qw/
     checkout_time
     dummy_title
     dummy_author
+    dummy_isbn
     circ_lib
     barcode
     duration_level
@@ -1100,6 +1101,7 @@ sub handle_claims_returned {
 
         $CR->checkin_time('now');   
         $CR->checkin_lib($self->editor->requestor->ws_ou);
+        $CR->checkin_workstation($self->editor->requestor->wsid);
         $CR->checkin_staff($self->editor->requestor->id);
 
         $evt = $self->editor->event 
@@ -1588,13 +1590,13 @@ sub make_precat_copy {
     my $copy = $self->copy;
 
    if($copy) {
-      $logger->debug("circulator: Pre-cat copy already exists in checkout: ID=" . $copy->id);
+        $logger->debug("circulator: Pre-cat copy already exists in checkout: ID=" . $copy->id);
 
-      $copy->editor($self->editor->requestor->id);
-      $copy->edit_date('now');
-      $copy->dummy_title($self->dummy_title);
-      $copy->dummy_author($self->dummy_author);
-
+        $copy->editor($self->editor->requestor->id);
+        $copy->edit_date('now');
+        $copy->dummy_title($self->dummy_title || '');
+        $copy->dummy_isbn($self->dummy_isbn || '');
+        $copy->dummy_author($self->dummy_author || '');
         $self->update_copy();
         return;
    }
@@ -1613,6 +1615,7 @@ sub make_precat_copy {
 
    $copy->dummy_title($self->dummy_title || "");
    $copy->dummy_author($self->dummy_author || "");
+   $copy->dummy_isbn($self->dummy_isbn || "");
 
     unless( $self->copy($self->editor->create_asset_copy($copy)) ) {
         $self->bail_out(1);
@@ -2223,6 +2226,7 @@ sub checkin_handle_circ {
 
     $circ->checkin_staff($self->editor->requestor->id);
     $circ->checkin_lib($self->editor->requestor->ws_ou);
+    $circ->checkin_workstation($self->editor->requestor->wsid);
 
     my $circ_lib = (ref $self->copy->circ_lib) ?  
         $self->copy->circ_lib->id : $self->copy->circ_lib;
