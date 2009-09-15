@@ -893,6 +893,10 @@ sub run_indb_circ_test {
     return $self->matrix_test_result($results);
 }
 
+# ---------------------------------------------------------------------
+# given a use and copy, this will calculate the circulation policy
+# parameters.  Only works with in-db circ.
+# ---------------------------------------------------------------------
 sub do_inspect {
     my $self = shift;
 
@@ -912,17 +916,19 @@ sub do_inspect {
         push(@{$results->{failure_events}}, 
             $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}}) 
                 for @{$self->matrix_test_result};
-        return $results;
     }
 
-    my $duration_rule = $self->circ_matrix_matchpoint->duration_rule;
-    my $recurring_fine_rule = $self->circ_matrix_matchpoint->recurring_fine_rule;
-    my $max_fine_rule = $self->circ_matrix_matchpoint->max_fine_rule;
+    if($self->circ_matrix_matchpoint) {
+        my $duration_rule = $self->circ_matrix_matchpoint->duration_rule;
+        my $recurring_fine_rule = $self->circ_matrix_matchpoint->recurring_fine_rule;
+        my $max_fine_rule = $self->circ_matrix_matchpoint->max_fine_rule;
+    
+        my $policy = $self->get_circ_policy(
+            $duration_rule, $recurring_fine_rule, $max_fine_rule);
+    
+        $$results{$_} = $$policy{$_} for keys %$policy;
+    }
 
-    my $policy = $self->get_circ_policy(
-        $duration_rule, $recurring_fine_rule, $max_fine_rule);
-
-    $$results{$_} = $$policy{$_} for keys %$policy;
     return $results;
 }
 
