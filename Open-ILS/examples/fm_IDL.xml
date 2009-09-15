@@ -3219,6 +3219,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Creating User" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
+			<field reporter:label="Dummy ISBN" name="dummy_isbn" reporter:datatype="text"/>
 			<field reporter:label="Is Deposit Required" name="deposit" reporter:datatype="bool"/>
 			<field reporter:label="Deposit Amount" name="deposit_amount" reporter:datatype="money" />
 			<field reporter:label="Precat Dummy Author" name="dummy_author" reporter:datatype="text"/>
