@@ -38,5 +38,5 @@ export DBI_LIBS = @DBI_LIBS@
 export OPENSRF_HEADERS = @OPENSRF_HEADERS@
 export OPENSRF_LIBS = @OPENSRF_LIBS@
 
-SUBDIRS = Open-ILS/src
+SUBDIRS = Open-ILS/src Open-ILS/web Open-ILS/xul/staff_client
 

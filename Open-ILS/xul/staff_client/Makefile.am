@@ -4,11 +4,20 @@
 #---------------------------------------------------------
 
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
+
 OPENSRF_JSLIBS = "$(OPENSRF_LIBS)/javascript"
 CHROME_LOCALES = $$(ls -1 chrome/locale)
 SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
 
-install-exec-local: build
+#------------------------------
+# Build ILS XUL CLIENT/SERVER
+#------------------------------
+
+if BUILDILSCLIENT
+OILSSERVER_INST = server-xul
+endif
+
+install-exec-local: $(OILSSERVER_INST)
 
 build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp 
 	@echo To test the staff client:
@@ -75,3 +84,12 @@ custom_skins:
 	@for skin in $(SKIN_CSS); do \
 		if [ ! -f "$$skin" ]; then ( touch build/"$$skin" ); fi \
 	done;
+
+server-xul: build
+	@echo $@
+	mkdir -p $(WEBDIR)
+	mkdir -p $(WEBDIR)/xul/
+	@echo "BUILD_ID = $(STAFF_CLIENT_BUILD_ID)"
+	@echo "Copying xul into $(WEBDIR)/xul/$(STAFF_CLIENT_BUILD_ID)"
+	mkdir -p "$(WEBDIR)/xul/$(STAFF_CLIENT_BUILD_ID)"
+	cp -R @top_srcdir@/Open-ILS/xul/staff_client/build/server "${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}/"
