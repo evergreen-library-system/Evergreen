@@ -756,7 +756,12 @@ sub copy_details {
 	my $circ = $e->search_action_circulation(
 		[
 			{ target_copy => $copy_id },
-			{ order_by => { circ => 'xact_start desc' }, limit => 1 }
+			{ 
+                flesh => 1,
+                flesh_fields => {circ => ['checkin_workstation']},
+                order_by => { circ => 'xact_start desc' }, 
+                limit => 1 
+            }
 		]
 	)->[0];
 

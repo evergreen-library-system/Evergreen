@@ -2100,8 +2100,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="circ_type" reltype="might_have" key="id" map="" class="rcirct"/>
 			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
 			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
-			<link field="workstation" reltype="might_have" key="id" map="" class="aws"/>
-			<link field="checkin_workstation" reltype="might_have" key="id" map="" class="aws"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="checkin_workstation" reltype="has_a" key="id" map="" class="aws"/>
 		</links>
 	</class>
 	<class id="combcirc" controller="open-ils.cstore" oils_obj:fieldmapper="action::all_circulation" oils_persist:tablename="action.all_circulation" reporter:core="true" reporter:label="Combined Aged and Active Circulations" oils_persist:readonly="true">
