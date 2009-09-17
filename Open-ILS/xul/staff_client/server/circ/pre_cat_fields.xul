@@ -24,7 +24,6 @@
 <window id="pre_cat_fields" title="&staff.circ.pre_cat.window.title;"
 	orient="vertical" style="overflow: auto"
 	onload="try{my_init();font_helper(); }catch(E){alert(E);}"
-	onunload="try{my_finish();}catch(E){alert(E);}"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -49,19 +48,44 @@
 			JSAN.use('OpenILS.data'); g.data = new OpenILS.data();
 			g.data.init({'via':'stash'});
 
+            g.data.precat_dummy_title = '';
+            g.data.precat_dummy_author = '';
+            g.data.precat_dummy_isbn = '';
+            g.data.precat_submit = 'cancel';
+            g.data.stash('precat_submit');
+
+            JSAN.use('util.widgets'); JSAN.use('util.functional');
+            var x = util.widgets.make_menulist( 
+                [ [ $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null"), "<HACK:KLUDGE:NULL>" ] ].concat( 
+                    util.functional.map_list( g.data.list.circ_modifier, function(obj) { return [ obj, obj ]; } ).sort() 
+                ) 
+            );
+            x.setAttribute('id','dummy_circ_modifier');
+            document.getElementById('placeholder').appendChild(x);
+            if (g.data.precat_circ_modifier) {
+                x.setAttribute('value', g.data.precat_circ_modifier);
+                x.value = g.data.precat_circ_modifier;
+            }
 			document.getElementById('dummy_title').focus();
 		}
 
 		function my_finish() {
-			/* FIXME -- need unique temp space name */
-			/* FIXME -- We need to blank dummy_title on a forced window close */
-			g.data.stash('dummy_title','dummy_author');
+            g.data.precat_dummy_title = document.getElementById('dummy_title').value;
+            g.data.precat_dummy_author = document.getElementById('dummy_author').value;
+            g.data.precat_dummy_isbn = document.getElementById('dummy_isbn').value;
+            var cm = document.getElementById('dummy_circ_modifier').value;
+            if (cm == '<HACK:KLUDGE:NULL>') cm = null;
+            g.data.precat_circ_modifier = cm;
+            g.data.precat_submit = 'go';
+			g.data.stash('precat_dummy_title','precat_dummy_author','precat_dummy_isbn','precat_circ_modifier','precat_submit');
+            window.close();
 		}
 
 	]]>
 	</script>
 
 	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
 
 	<groupbox>
 		<caption label="&staff.circ.pre_cat.caption.label;"/>
@@ -69,19 +93,27 @@
 			<columns><column /><column flex="1"/></columns>
 			<rows>
 				<row>
-					<label value="&staff.circ.pre_cat.dummy_title.value;" control="dummy_title"/>
-					<textbox id="dummy_title" onchange="g.data.dummy_title = event.target.value;" context="clipboard"/>
+					<label value="&staff.circ.pre_cat.dummy_title.label;" accesskey="&staff.circ.pre_cat.dummy_title.accesskey;" control="dummy_title"/>
+					<textbox id="dummy_title" context="clipboard"/>
 				</row>
 				<row>
-					<label value="&staff.circ.pre_cat.dummy_author.value;" control="dummy_author"/>
-					<textbox id="dummy_author" onchange="g.data.dummy_author = event.target.value;" context="clipboard"/>
+					<label value="&staff.circ.pre_cat.dummy_author.label;" accesskey="&staff.circ.pre_cat.dummy_author.accesskey;" control="dummy_author"/>
+					<textbox id="dummy_author" context="clipboard"/>
+				</row>
+				<row>
+					<label value="&staff.circ.pre_cat.dummy_isbn.label;" accesskey="&staff.circ.pre_cat.dummy_isbn.accesskey;" control="dummy_isbn"/>
+					<textbox id="dummy_isbn" context="clipboard"/>
+				</row>
+				<row>
+					<label value="&staff.circ.pre_cat.dummy_circ_modifier.label;" accesskey="&staff.circ.pre_cat.dummy_circ_modifier.accesskey;" control="dummy_circ_modifier"/>
+                    <box id="placeholder" />
 				</row>
 			</rows>
 		</grid>
 		<hbox>
 			<spacer flex="1"/>
-			<button label="&staff.circ.pre_cat.cancel.label;" oncommand="g.data.dummy_title = ''; window.close()" accesskey="&staff.circ.pre_cat.cancel.accesskey;"/>
-			<button label="&staff.circ.pre_cat.checkout.label;" oncommand="window.close();" accesskey="&staff.circ.pre_cat.checkout.accesskey;"/>
+			<button label="&staff.circ.pre_cat.cancel.label;" oncommand="window.close()" accesskey="&staff.circ.pre_cat.cancel.accesskey;"/>
+			<button label="&staff.circ.pre_cat.checkout.label;" oncommand="my_finish();" accesskey="&staff.circ.pre_cat.checkout.accesskey;"/>
 		</hbox>
 	</groupbox>
 

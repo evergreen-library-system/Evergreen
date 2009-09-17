@@ -1907,8 +1907,14 @@
 <!ENTITY staff.circ.in_house_use.save_cols_btn.label "Save Columns">
 <!ENTITY staff.circ.pre_cat.window.title "Pre-Catalog Fields">
 <!ENTITY staff.circ.pre_cat.caption.label "Pre-Catalog Field Entry">
-<!ENTITY staff.circ.pre_cat.dummy_title.value "Title">
-<!ENTITY staff.circ.pre_cat.dummy_author.value "Author">
+<!ENTITY staff.circ.pre_cat.dummy_title.label "Title">
+<!ENTITY staff.circ.pre_cat.dummy_title.accesskey "T">
+<!ENTITY staff.circ.pre_cat.dummy_author.label "Author">
+<!ENTITY staff.circ.pre_cat.dummy_author.accesskey "A">
+<!ENTITY staff.circ.pre_cat.dummy_isbn.label "ISBN">
+<!ENTITY staff.circ.pre_cat.dummy_isbn.accesskey "I">
+<!ENTITY staff.circ.pre_cat.dummy_circ_modifier.label "Circ Modifier">
+<!ENTITY staff.circ.pre_cat.dummy_circ_modifier.accesskey "M">
 <!ENTITY staff.circ.pre_cat.cancel.label "Cancel">
 <!ENTITY staff.circ.pre_cat.cancel.accesskey "C">
 <!ENTITY staff.circ.pre_cat.checkout.label "Check Out">

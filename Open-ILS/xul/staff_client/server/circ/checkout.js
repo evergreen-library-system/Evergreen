@@ -658,11 +658,13 @@ circ.checkout.prototype = {
 						obj.data.stash_retrieve();
 
 						params.permit_key = permit.payload;
-						params.dummy_title = obj.data.dummy_title;
-						params.dummy_author = obj.data.dummy_author;
+						params.dummy_title = obj.data.precat_dummy_title;
+						params.dummy_author = obj.data.precat_dummy_author;
+						params.dummy_isbn = obj.data.precat_dummy_isbn;
+						params.circ_modifier = obj.data.precat_circ_modifier;
 						params.precat = 1;
 
-						if (params.dummy_title !== '') { 
+						if (obj.data.precat_submit == 'go') { 
 							//obj._checkout( params ); No real request method here anymore
 							obj.checkout( params );
 						} else {
