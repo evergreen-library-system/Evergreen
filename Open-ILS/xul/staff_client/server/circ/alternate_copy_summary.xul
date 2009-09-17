@@ -152,18 +152,18 @@
                                 <textbox name="circ_mod" readonly="true" context="clipboard"/>
                                 <label value="Rolling Counter" />
                                 <textbox name="rolling_counter" readonly="true" context="clipboard"/>
-                                <label value="Remaining Renewals" />
-                                <textbox name="remaining_renewals" readonly="true" context="clipboard"/>
+                                <label value="Checkin Workstation" />
+                                <textbox name="checkin_workstation" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <spacer />
                                 <spacer />
                                 <spacer />
                                 <spacer />
-                                <spacer />
-                                <spacer />
                                 <label value="Hold Shelf Location" />
                                 <textbox name="hold_shelf_loc" readonly="true" context="clipboard"/>
+                                <label value="Remaining Renewals" />
+                                <textbox name="remaining_renewals" readonly="true" context="clipboard"/>
                             </row>
                         </rows>
                     </grid>

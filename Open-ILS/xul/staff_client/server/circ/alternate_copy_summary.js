@@ -120,6 +120,7 @@ function load_item() {
 
     if (details.circ) {
         set("checkin_lib", details.circ.checkin_lib()); 
+        set("checkin_workstation", details.circ.checkin_workstation()); 
         set("checkin_staff", details.circ.checkin_staff()); 
         set("checkin_time", details.circ.checkin_time()); 
         set("circ_lib" , details.circ.circ_lib()); 
