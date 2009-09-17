@@ -1603,22 +1603,40 @@ sub make_precat_copy {
         return;
    }
 
-   $logger->info("circulator: Creating a new precataloged ".
+    $logger->info("circulator: Creating a new precataloged ".
         "copy in checkout with barcode " . $self->copy_barcode);
 
-   $copy = Fieldmapper::asset::copy->new;
-   $copy->circ_lib($self->circ_lib);
-   $copy->creator($self->editor->requestor->id);
-   $copy->editor($self->editor->requestor->id);
-   $copy->barcode($self->copy_barcode);
-   $copy->call_number(OILS_PRECAT_CALL_NUMBER); 
-   $copy->loan_duration(OILS_PRECAT_COPY_LOAN_DURATION);
-   $copy->fine_level(OILS_PRECAT_COPY_FINE_LEVEL);
+    $copy = Fieldmapper::asset::copy->new;
+    $copy->circ_lib($self->circ_lib);
+    $copy->creator($self->editor->requestor->id);
+    $copy->editor($self->editor->requestor->id);
+    $copy->barcode($self->copy_barcode);
+    $copy->call_number(OILS_PRECAT_CALL_NUMBER); 
+    $copy->loan_duration(OILS_PRECAT_COPY_LOAN_DURATION);
+    $copy->fine_level(OILS_PRECAT_COPY_FINE_LEVEL);
 
-   $copy->dummy_title($self->dummy_title || "");
-   $copy->dummy_author($self->dummy_author || "");
-   $copy->dummy_isbn($self->dummy_isbn || "");
-   $copy->circ_modifier($self->circ_modifier);
+    $copy->dummy_title($self->dummy_title || "");
+    $copy->dummy_author($self->dummy_author || "");
+    $copy->dummy_isbn($self->dummy_isbn || "");
+    $copy->circ_modifier($self->circ_modifier);
+
+
+    # See if we need to override the circ_lib for the copy with a configured circ_lib
+    # Setting is shortname of the org unit
+    my $precat_circ_lib = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.pre_cat_copy_circ_lib', $self->editor);
+
+    if($precat_circ_lib) {
+        my $org = $self->editor->search_actor_org_unit({shortname => $precat_circ_lib})->[0];
+
+        if(!$org) {
+            $self->bail_on_events($self->editor->event);
+            return;
+        }
+
+        $copy->circ_lib($org->id);
+    }
+
 
     unless( $self->copy($self->editor->create_asset_copy($copy)) ) {
         $self->bail_out(1);
@@ -1928,7 +1946,7 @@ sub checkin_handle_precat {
    my $copy    = $self->copy;
 
    if( $self->is_precat and ($copy->status != OILS_COPY_STATUS_CATALOGING) ) {
-      $copy->status(OILS_COPY_STATUS_CATALOGING);
+        $copy->status(OILS_COPY_STATUS_CATALOGING);
         $self->update_copy();
         $self->checkin_changed(1);
         $self->push_events(OpenILS::Event->new('ITEM_NOT_CATALOGED'));
