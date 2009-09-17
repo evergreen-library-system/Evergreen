@@ -371,6 +371,7 @@ my @AUTOLOAD_FIELDS = qw/
     dummy_title
     dummy_author
     dummy_isbn
+    circ_modifier
     circ_lib
     barcode
     duration_level
@@ -1594,9 +1595,10 @@ sub make_precat_copy {
 
         $copy->editor($self->editor->requestor->id);
         $copy->edit_date('now');
-        $copy->dummy_title($self->dummy_title || '');
-        $copy->dummy_isbn($self->dummy_isbn || '');
-        $copy->dummy_author($self->dummy_author || '');
+        $copy->dummy_title($self->dummy_title || $copy->dummy_title || '');
+        $copy->dummy_isbn($self->dummy_isbn || $copy->dummy_isbn || '');
+        $copy->dummy_author($self->dummy_author || $copy->dummy_author || '');
+        $copy->circ_modifier($self->circ_modifier || $copy->circ_modifier);
         $self->update_copy();
         return;
    }
@@ -1616,6 +1618,7 @@ sub make_precat_copy {
    $copy->dummy_title($self->dummy_title || "");
    $copy->dummy_author($self->dummy_author || "");
    $copy->dummy_isbn($self->dummy_isbn || "");
+   $copy->circ_modifier($self->circ_modifier);
 
     unless( $self->copy($self->editor->create_asset_copy($copy)) ) {
         $self->bail_out(1);
