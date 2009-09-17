@@ -6,6 +6,7 @@ use XML::LibXML;
 use File::stat;
 use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR);
 use Apache2::Log;
+use OpenSRF::EX qw(:try);
 
 use constant OILS_HTTP_COOKIE_SKIN => 'oils:skin';
 use constant OILS_HTTP_COOKIE_THEME => 'oils:theme';
@@ -56,20 +57,22 @@ sub parse_as_xml {
     my $ctx = shift;
     my $data = shift;
 
-    eval { 
+    my $success = 0;
+
+    try { 
         my $doc = XML::LibXML->new->parse_string($data); 
         $data = $doc->documentElement->toStringC14N;
         $data = $ctx->{final_dtd} . "\n" . $data;
-    };
-
-    if($@) {
-        my $err = "Invalid XML: $@";
+        $success = 1;
+    } otherwise {
+	my $e = shift;
+        my $err = "Invalid XML: $e";
         $r->log->error($err);
         $r->content_type('text/plain; encoding=utf8');
         $r->print("\n$err\n\n$data");
-    } else {
-        $r->print($data);
-    }
+    };
+
+    $r->print($data) if ($success);
 }
 
 
