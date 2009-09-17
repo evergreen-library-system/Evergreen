@@ -989,6 +989,8 @@ sub new_hold_copy_targeter {
 			my $copy_count = @$all_copies;
 
 			# map the potentials, so that we can pick up checkins
+			# XXX Loop-based targeting may require that /only/ copies from this loop should be added to
+			# XXX the potentials list.  If this is the cased, hold_copy_map creation will move down further.
 			$log->debug( "\tMapping ".scalar(@$all_copies)." potential copies for hold ".$hold->id);
 			action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } ) for (@$all_copies);
 
@@ -1038,7 +1040,6 @@ sub new_hold_copy_targeter {
 				}
 			}
 
-			#$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			my $prox_list = [];
 			$$prox_list[0] =
 			[
@@ -1048,13 +1049,84 @@ sub new_hold_copy_targeter {
 			];
 
 			$all_copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
+			# $all_copies is now a list of copies not at the pickup library
 
-			#$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			my $best = choose_nearest_copy($hold, $prox_list);
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 			if (!$best) {
 				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$all_copies)." copies");
+
+				my $max_loops = $actor->request(
+					'open-ils.actor.ou_setting.ancestor_default' => $lib => 'circ.holds.max_org_unit_target_loops'
+				)->gather(1);
+
+				if (defined($max_loops)) {
+					my %circ_lib_map =  map ( $_->circ_lib => 1 ) @$all_copies;
+					my $circ_lib_list = [keys %circ_lib_map];
+	
+					my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+	
+					# Grab the "biggest" loop for this hold so far
+					my $current_loop = $cstore->request(
+						'open-ils.cstore.json_query',
+						{ distinct => 1,
+						  select => { aufhmxl => [max] },
+						  from => 'aufhmxl',
+						  where => { hold => $hold->id}
+						}
+					)->gather(1);
+	
+					$current_loop = $current_loop->{max} if ($current_loop);
+					$current_loop ||= 1;
+	
+					my $exclude_list = $cstore->request(
+						'open-ils.cstore.json_query.atomic',
+						{ distinct => 1,
+						  select => { aufhol => [circ_lib] },
+						  from => 'aufhol',
+						  where => { hold => $hold->id}
+						}
+					)->gather(1);
+	
+					my @keepers;
+					if ($exclude_list && @$exclude_list) {
+						$exclude_list = [map ($_->{circ_lib}) @$exclude_list];
+						# check to see if we've used up every library in the potentials list
+						for my $l ( @$circ_lib_list ) {
+							my $keep = 1;
+							for my $ex ( @$exclude_list ) {
+								if ($ex eq $l) {
+									$keep = 0;
+									last;
+								}
+							}
+							push(@keepers, $l) if ($keep);
+						}
+					} else {
+						@keepers = @$circ_lib_list;
+					}
+	
+					$current_loop++ if (!@keepers);
+	
+					if ($max_loops && $max_loops <= $current_loop) {
+						# We haven't exceeded max_loops yet
+						my @keeper_copies;
+						for my $cp ( @$all_copies ) {
+							push (@keeper_copies, $cp) if ( grep { $_ eq $cp->circ_lib } @keepers );
+						}
+					} else {
+						# We have, and should remove potentials and cancel the hold
+						my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
+						$_->delete for (@oldmaps);
+	
+						$hold->update( { cancel_time => 'now' } );
+						$self->method_lookup('open-ils.storage.transaction.commit')->run;
+						die "OK\n";
+					}
+				}
+
+				$self->{target_weight} = {};
 				$prox_list = create_prox_list( $self, $hold->pickup_lib, $all_copies );
 
 				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
@@ -1273,12 +1345,12 @@ sub hold_copy_targeter {
 	delete $$self{user_filter};
 	return undef;
 }
-__PACKAGE__->register_method(
-	api_name        => 'open-ils.storage.action.hold_request.copy_targeter',
-	api_level       => 0,
-	stream		=> 1,
-	method          => 'hold_copy_targeter',
-);
+#__PACKAGE__->register_method(
+#	api_name        => 'open-ils.storage.action.hold_request.copy_targeter',
+#	api_level       => 0,
+#	stream		=> 1,
+#	method          => 'hold_copy_targeter',
+#);
 
 
 sub copy_hold_capture {
@@ -1376,12 +1448,22 @@ sub create_prox_list {
 	my $lib = shift;
 	my $copies = shift;
 
+	my $actor = OpenSRF::AppSession->create('open-ils.actor');
+
 	my @prox_list;
 	for my $cp (@$copies) {
 		my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp, $lib );
 		next unless (defined($prox));
+
+		# Fetch the weighting value for hold targeting, defaulting to 1
+		$self->{target_weight} ||= $actor->request(
+			'open-ils.actor.ou_setting.ancestor_default' => $lib => 'circ.holds.org_unit_target_weight'
+		)->gather(1) || 1;
+
 		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
-		push @{$prox_list[$prox]}, $cp;
+		for my $w ( 1 .. $self->{target_weight} ) {
+			push @{$prox_list[$prox]}, $cp;
+		}
 	}
 	return \@prox_list;
 }

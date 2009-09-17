@@ -214,7 +214,8 @@ CPAN_MODULES = \
     Business::CreditCard::Object \
     Net::Z3950::Simple2ZOOM \
 	UUID::Tiny \
-    SRU
+    SRU \
+    Safe
 
 # Intrepid and Lenny have libmarc-charset-perl, libmarc-xml-perl, libnet-z3950-zoom-perl
 CPAN_MODULES_MARC = \

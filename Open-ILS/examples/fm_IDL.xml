@@ -4879,6 +4879,104 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </fields>
     </class>
 
+    <class id="aufhl" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_loops" oils_persist:tablename="action.unfulfilled_hold_loops" oils_persist:readonly="true">
+		<oils_persist:source_definition>
+
+	    SELECT  u.hold,
+	            c.circ_lib,
+	            count(*)
+	      FROM  action.unfulfilled_hold_list u
+	            JOIN asset.copy c ON (c.id = u.current_copy)
+	      GROUP BY 1,2
+
+		</oils_persist:source_definition>
+        <fields>
+            <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
+            <field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="link"/>
+            <field reporter:label="Loop Count" name="count" reporter:datatype="int"/>
+        </fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+    </class>
+
+    <class id="aufhml" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_min_loop" oils_persist:tablename="action.unfulfilled_hold_min_loop" oils_persist:readonly="true">
+		<oils_persist:source_definition>
+
+	    SELECT  hold,
+	            min(count)
+	      FROM  action.unfulfilled_hold_loops
+	      GROUP BY 1
+
+		</oils_persist:source_definition>
+        <fields>
+            <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
+            <field reporter:label="Min Loop" name="min" reporter:datatype="int"/>
+        </fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+		</links>
+    </class>
+
+    <class id="aufhil" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_innermost_loop" oils_persist:tablename="action.unfulfilled_hold_innermost_loop" oils_persist:readonly="true">
+		<oils_persist:source_definition>
+
+	    SELECT  DISTINCT l.*
+	      FROM  action.unfulfilled_hold_loops l
+	            JOIN action.unfulfilled_hold_min_loop m USING (hold)
+	      WHERE l.count = m.min
+
+		</oils_persist:source_definition>
+        <fields>
+            <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
+            <field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="link"/>
+            <field reporter:label="Loop Count" name="count" reporter:datatype="int"/>
+        </fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+    </class>
+
+    <class id="aufhmxl" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_max_loop" oils_persist:tablename="action.unfulfilled_hold_max_loop" oils_persist:readonly="true">
+		<oils_persist:source_definition>
+
+	    SELECT  hold,
+	            max(count)
+	      FROM  action.unfulfilled_hold_loops
+	      GROUP BY 1
+
+		</oils_persist:source_definition>
+        <fields>
+            <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
+            <field reporter:label="Max Loop" name="max" reporter:datatype="int"/>
+        </fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+		</links>
+    </class>
+
+    <class id="aufhol" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_outermost_loop" oils_persist:tablename="action.unfulfilled_hold_outermost_loop" oils_persist:readonly="true">
+		<oils_persist:source_definition>
+
+	    SELECT  DISTINCT l.*
+	      FROM  action.unfulfilled_hold_loops l
+	            JOIN action.unfulfilled_hold_max_loop m USING (hold)
+	      WHERE l.count = m.max
+
+		</oils_persist:source_definition>
+        <fields>
+            <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
+            <field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="link"/>
+            <field reporter:label="Loop Count" name="count" reporter:datatype="int"/>
+        </fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+    </class>
+
 
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
