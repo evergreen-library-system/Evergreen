@@ -866,8 +866,7 @@ g.panes_and_field_names = {
 		$('catStrings').getString('staff.cat.copy_editor.field.circulation_modifier.label'),
 		{	
 			render: 'fm.circ_modifier() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : fm.circ_modifier()',
-			/*input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',*/
-			input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.circ_modifier, function(obj) { return [ obj, obj ]; } ).sort() ); x.setAttribute("editable","true"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null"), "<HACK:KLUDGE:NULL>" ] ].concat( util.functional.map_list( g.data.list.circ_modifier, function(obj) { return [ obj, obj ]; } ).sort() ) ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 ],
