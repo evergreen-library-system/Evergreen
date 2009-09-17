@@ -984,7 +984,10 @@ circ.util.columns = function(modify,params) {
 			'flex' : 1,
 			'primary' : false,
 			'hidden' : true,
-			'render' : function(my) { return my.mvr.isbn(); }
+			'render' : function(my) { 
+                try { return my.mvr.isbn(); }
+                catch(E) { return my.acp.dummy_isbn(); }
+            }
 		},
 		{
 			'persist' : 'hidden width ordinal',
