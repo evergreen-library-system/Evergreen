@@ -76,7 +76,33 @@
 				alert(err_msg);
 			}
 		}
-		
+
+        function copy_mailing_address() {
+            var a = g.summary.patron.mailing_address();
+            if (!a) return;
+            copy_to_clipboard(
+                (a.street1() ? a.street1() : "") + "\t" + 
+                (a.street2() ? a.street2() : "") + "\t" +  
+                (a.county() ? a.county() : "") + "\t" + 
+                (a.city() ? a.city() : "") + "\t" +  
+                (a.post_code() ? a.post_code() : "") + "\t" + 
+                (a.country() ? a.country() : "")
+            );
+        }
+        
+        function copy_billing_address() {
+            var a = g.summary.patron.billing_address();
+            if (!a) return;
+            copy_to_clipboard(
+                (a.street1() ? a.street1() : "") + "\t" + 
+                (a.street2() ? a.street2() : "") + "\t" +  
+                (a.county() ? a.county() : "") + "\t" + 
+                (a.city() ? a.city() : "") + "\t" +  
+                (a.post_code() ? a.post_code() : "") + "\t" + 
+                (a.country() ? a.country() : "")
+            );
+        }
+	
 		function post_overlay() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");

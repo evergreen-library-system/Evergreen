@@ -213,6 +213,10 @@
 		<label id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" class="address state mailing"/>
 		<label id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" class="address post_code mailing"/>
 	</hbox>
+    <hbox>
+        <spacer flex="1" />
+        <label value="&staff.patron_display.mailing.copy;" onclick="copy_mailing_address();" class="click_link"/>
+    </hbox>
 </groupbox>
 
 <groupbox id="PatronSummaryContact_physical_address" orient="vertical">
@@ -224,6 +228,10 @@
 		<label id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" class="address state physical"/>
 		<label id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" class="address post_code physical"/>
 	</hbox>
+    <hbox>
+        <spacer flex="1" />
+        <label value="&staff.patron_display.physical.copy;" onclick="copy_billing_address();" class="click_link"/>
+    </hbox>
 </groupbox>
 
 </overlay>
