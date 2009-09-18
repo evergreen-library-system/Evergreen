@@ -914,7 +914,7 @@ sub do_inspect {
         push(@{$results->{failure_codes}}, 
             $_->{fail_part}) for @{$self->matrix_test_result};
         push(@{$results->{failure_events}}, 
-            $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}}) 
+            $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}) 
                 for @{$self->matrix_test_result};
     }
 
@@ -2431,7 +2431,7 @@ sub run_renew_permit {
     if(!$self->legacy_script_support) {
         my $results = $self->run_indb_circ_test;
         unless($self->circ_test_success) {
-            push(@$events, $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}}) for @$results;
+            push(@$events, $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}) for @$results;
         }
 
     } else {
