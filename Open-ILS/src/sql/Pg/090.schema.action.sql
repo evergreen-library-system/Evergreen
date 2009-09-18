@@ -129,7 +129,8 @@ CREATE TABLE action.circulation (
 								   DEFERRABLE INITIALLY DEFERRED,
 	checkin_workstation INT        REFERENCES actor.workstation(id)
 	                               ON DELETE SET NULL
-								   DEFERRABLE INITIALLY DEFERRED
+								   DEFERRABLE INITIALLY DEFERRED,
+	checkin_scan_time   TIMESTAMP WITH TIME ZONE
 ) INHERITS (money.billable_xact);
 ALTER TABLE action.circulation ADD PRIMARY KEY (id);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;

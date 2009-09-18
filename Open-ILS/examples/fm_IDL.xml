@@ -2077,6 +2077,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Record Creation Date/Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
 			<field reporter:label="Checkin Workstation" name="checkin_workstation" reporter:datatype="link"/>
+			<field reporter:label="Checkin Scan Date/Time" name="checkin_scan_time" reporter:datatype="timestamp" />
 			<field reporter:label="Transaction Billings" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transaction Payments" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Base Transaction" name="billable_transaction" oils_persist:virtual="true" reporter:datatype="link"/>
