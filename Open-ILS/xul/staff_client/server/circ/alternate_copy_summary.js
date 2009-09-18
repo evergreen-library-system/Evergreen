@@ -32,6 +32,26 @@ function load_item() {
         var details = network.simple_request('FM_ACP_DETAILS_VIA_BARCODE.authoritative', [ ses(), xulG.barcode ]);
         // Should get back .mvr, .copy, .volume, .transit, .circ, .hold
 
+        set('title', '');
+        set('author', '');
+        set('doc_id', '');
+        set('doc_type', '');
+        set('pubdate', '');
+        set('isbn', '');
+        set('publisher', '');
+        set('tcn', '');
+        set('subject', '');
+        set('types_of_resource', '');
+        set('call_numbers', '');
+        set('edition', '');
+        set('online_loc', '');
+        set('synopsis', '');
+        set('physical_description', '');
+        set('toc', '');
+        set('copy_count', '');
+        set('series', '');
+        set('serials', '');
+
         if (details.mvr) {
             set('title',details.mvr.title()); 
             set('author',details.mvr.author());
@@ -57,6 +77,40 @@ function load_item() {
             set('author',details.copy.dummy_author()); 
             set('isbn',details.copy.dummy_isbn());
         }
+
+        set("stat_cat_entries", '');
+        set("age_protect", '');
+        set("alert_message", '');
+        set("barcode", '');
+        set("call_number", '');
+        set("circ_as_type", '');
+        set("circ_lib" , '');
+        set("circ_modifier", '');
+        set("circulate", '');
+        set("copy_number", '');
+        set("create_date", '');
+        set("creator", '');
+        set("deleted", '');
+        set("deposit", '');
+        set("deposit_amount", '');
+        set("dummy_author", '');
+        set("dummy_title", '');
+        set("edit_date", '');
+        set("editor", '');
+        set("fine_level", '');
+        set("holdable", '');
+        set("copy_id", '');
+        set("loan_duration", '');
+        set("location", '');
+        set("opac_visible", '');
+        set("price", '');
+        set("ref", '');
+        set("status", '');
+        set("notes", '');
+        set("stat_cat_entry_copy_maps", '');
+        set("circulations", '');
+        set("total_circ_count", '');
+        set("holds", '');
 
         if (details.copy) {
             set("stat_cat_entries", details.copy.stat_cat_entries()); 
@@ -94,6 +148,20 @@ function load_item() {
             set("holds", details.copy.holds()); 
         }
 
+        set("copies", '');
+        set("create_date", '');
+        set("creator", '');
+        set("deleted", '');
+        set("edit_date", '');
+        set("editor", '');
+        set("volume_id", '');
+        set("label", '');
+        set("owning_lib" , '');
+        set("record", '');
+        set("notes", '');
+        set("uri_maps", '');
+        set("uris", '');
+
         if (details.volume) {
             set("copies", details.volume.copies()); 
             set("create_date", details.volume.create_date()); 
@@ -110,6 +178,17 @@ function load_item() {
             set("uris", details.volume.uris()); 
         }
 
+        set("copy_status", '');
+        set("dest", '');
+        set("dest_recv_time", '');
+        set("transit_id", '');
+        set("persistant_transfer", '');
+        set("prev_hop", '');
+        set("source", '');
+        set("source_send_time", '');
+        set("target_copy", '');
+        set("hold_transit_copy", '');
+
         if (details.transit) {
             set("copy_status", details.transit.copy_status()); 
             set("dest", details.transit.dest()); 
@@ -123,12 +202,44 @@ function load_item() {
             set("hold_transit_copy", details.transit.hold_transit_copy()); 
         }
 
+        set("checkin_lib", '');
+        set("checkin_workstation",""); 
+        set("checkin_staff", '');
+        set("checkin_time", '');
+        set("circ_lib" , '');
+        set("circ_staff", '');
+        set("desk_renewal", '');
+        set("due_date", '');
+        set("duration", '');
+        set("duration_rule", '');
+        set("fine_interval", '');
+        set("circ_id", '');
+        set("max_fine", '');
+        set("max_fine_rule", '');
+        set("opac_renewal", '');
+        set("phone_renewal", '');
+        set("recuring_fine", '');
+        set("recuring_fine_rule", '');
+        set("renewal_remaining", '');
+        set("stop_fines", '');
+        set("stop_fines_time", '');
+        set("target_copy", '');
+        set("usr", '');
+        set("xact_finish", '');
+        set("xact_start", '');
+        set("create_time", '');
+        set("workstation", '');
+        set("billings", '');
+        set("payments", '');
+        set("billable_transaction", '');
+        set("circ_type", '');
+        set("billing_total", '');
+        set("payment_total", '');
+
         if (details.circ) {
             set("checkin_lib", details.circ.checkin_lib()); 
             if (details.circ.checkin_workstation()) {
                 set("checkin_workstation", details.circ.checkin_workstation().name()); 
-            } else {
-                set("checkin_workstation",""); 
             }
             set("checkin_staff", details.circ.checkin_staff()); 
             set("checkin_time", details.circ.checkin_time()); 
@@ -162,6 +273,41 @@ function load_item() {
             set("billing_total", details.circ.billing_total()); 
             set("payment_total", details.circ.payment_total()); 
         }
+
+        set("status", '');
+        set("transit", '');
+        set("capture_time", '');
+        set("current_copy", '');
+        set("email_notify", '');
+        set("expire_time", '');
+        set("fulfillment_lib", '');
+        set("fulfillment_staff", '');
+        set("fulfillment_time", '');
+        set("hold_type", '');
+        set("holdable_formats", '');
+        set("hold_id", '');
+        set("phone_notify", '');
+        set("pickup_lib", '');
+        set("prev_check_time", '');
+        set("request_lib", '');
+        set("request_time", '');
+        set("requestor", '');
+        set("selection_depth", '');
+        set("selection_ou", '');
+        set("target", '');
+        set("usr", '');
+        set("cancel_time", '');
+        set("notify_time", '');
+        set("notify_count", '');
+        set("notifications", '');
+        set("bib_rec", '');
+        set("eligible_copies", '');
+        set("frozen", '');
+        set("thaw_date", '');
+        set("shelf_time", '');
+        set("cancel_cause", '');
+        set("cancel_note", '');
+        set("notes", '');
 
         if (details.hold) {
             set("status", details.hold.status()); 
