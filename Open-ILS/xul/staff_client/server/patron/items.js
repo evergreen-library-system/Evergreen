@@ -444,15 +444,33 @@ patron.items.prototype = {
 			if (backdate) {
 				backdate = util.date.formatted_date(backdate + ' 00:00:00','%{iso8601}');
 				var barcodes = util.functional.map_list(retrieve_ids,function(o){return o.barcode;});
+                var do_not_move_these = {};
 				for (var i = 0; i < barcodes.length; i++) {
 					var robj = obj.network.simple_request(
 						'MARK_ITEM_CLAIM_RETURNED', 
-						[ ses(), { barcode: barcodes[i], backdate: backdate } ]
+						[ ses(), { barcode: barcodes[i], backdate: backdate } ],
+                        null,
+                        {
+                            'title' : $("patronStrings").getString('staff.patron.items.set_claim_returned_failure'),
+                            'overridable_events' : [
+                                'PATRON_EXCEEDS_CLAIMS_RETURN_COUNT'                                
+                            ]
+                        }
 					);
-					if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
+					if (typeof robj.ilsevent != 'undefined') { 
+                        if (robj.ilsevent != 0 && robj.textcode != 'PATRON_EXCEEDS_CLAIMS_RETURN_COUNT' ) {
+                            do_not_move_these[ barcodes[i] ] = true;
+                            obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_claimed_returned.not_marked_claimed_returned'),E);
+                        }
+                        if (robj.textcode == 'PATRON_EXCEEDS_CLAIMS_RETURN_COUNT') {
+                            do_not_move_these[ barcodes[i] ] = true;
+                        }
+                    }
 				}
 			}
-			for (var i = 0; i < retrieve_ids.length; i++) obj.refresh(retrieve_ids[i].circ_id,true);
+			for (var i = 0; i < retrieve_ids.length; i++) {
+                obj.refresh(retrieve_ids[i].circ_id, !do_not_move_these[ retrieve_ids[i].barcode ]);
+            }
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_claimed_returned.not_marked_claimed_returned'),E);
 		}
