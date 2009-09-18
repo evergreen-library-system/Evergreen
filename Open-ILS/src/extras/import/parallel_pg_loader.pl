@@ -88,9 +88,6 @@ while ( my $rec = <> ) {
 		my $fields = join(',', @{ $fieldcache{$hint}{fields} });
 		$main_out->print( "DELETE FROM $fieldcache{$hint}{table};\n" ) if (grep {$_ eq $hint } @wipe);
 		# Speed up loading of bib records
-		if ($hint eq 'mfr') {
-			$main_out->print("\nSELECT reporter.disable_materialized_simple_record_trigger();\n");
-		}
 		$main_out->print( "COPY $fieldcache{$hint}{table} ($fields) FROM '$pwd/$output.$hint.sql';\n" );
 
 	}
@@ -131,6 +128,7 @@ for my $hint (@order) {
 
 if (grep /^mfr$/, %out_files) {
 	$main_out->print("SELECT reporter.enable_materialized_simple_record_trigger();\n");
+	$main_out->print("SELECT reporter.disable_materialized_simple_record_trigger();\n");
 }
 
 $main_out->print("COMMIT;\n\n") unless $nocommit;
