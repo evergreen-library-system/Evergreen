@@ -452,12 +452,24 @@ util.network.prototype = {
 			var result = obj.get_result(req);
 			if (!result) return req;
 
-			if ( (typeof result.ilsevent != 'undefined') && (override_params.overridable_events.indexOf( result.ilsevent == null ? null : Number(result.ilsevent) ) != -1) ) {
+			if ( 
+                (typeof result.ilsevent != 'undefined') && 
+                (
+                    (override_params.overridable_events.indexOf( result.ilsevent == null ? null : Number(result.ilsevent) ) != -1) ||
+                    (override_params.overridable_events.indexOf( result.textcode ) != -1)
+                )
+            ) {
 				req = override([result]);
 			} else {
 				var found_good = false; var found_bad = false;
 				for (var i = 0; i < result.length; i++) {
-					if ( (result[i].ilsevent != 'undefined') && (override_params.overridable_events.indexOf( result[i].ilsevent == null ? null : Number(result[i].ilsevent) ) != -1) ) {
+					if ( 
+                        (result[i].ilsevent != 'undefined') && 
+                        (
+                            (override_params.overridable_events.indexOf( result[i].ilsevent == null ? null : Number(result[i].ilsevent) ) != -1) ||
+                            (override_params.overridable_events.indexOf( result[i].textcode ) != -1) 
+                        )
+                    ) {
 						found_good = true;
 					} else {
 						found_bad = true;
