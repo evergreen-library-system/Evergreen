@@ -29,6 +29,7 @@ function set(name,value) {
 function load_item() {
     try {
         if (! xulG.barcode) return;
+
         var details = network.simple_request('FM_ACP_DETAILS_VIA_BARCODE.authoritative', [ ses(), xulG.barcode ]);
         // Should get back .mvr, .copy, .volume, .transit, .circ, .hold
 
@@ -345,6 +346,14 @@ function load_item() {
             set("cancel_note", details.hold.cancel_note()); 
             set("notes", details.hold.notes()); 
         } 
+
+        var x = document.getElementById('cat_deck');
+        if (x) {
+            JSAN.use('util.deck');
+            var d = new util.deck('cat_deck');
+            d.reset_iframe( urls.XUL_MARC_VIEW, {}, { 'docid' : details.mvr ? details.mvr.doc_id() : -1 } );
+        }
+
     } catch(E) {
         alert(E);
     }

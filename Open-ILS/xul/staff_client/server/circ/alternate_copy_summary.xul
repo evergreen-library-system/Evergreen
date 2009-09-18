@@ -182,7 +182,9 @@
                 </tabpanel>
                 <tabpanel />
                 <tabpanel />
-                <tabpanel />
+                <tabpanel>
+                    <deck id="cat_deck" flex="1"/>
+                </tabpanel>
             </tabpanels>
         </tabbox>
     </groupbox>
