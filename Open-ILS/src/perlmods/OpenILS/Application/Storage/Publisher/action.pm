@@ -1064,7 +1064,7 @@ sub new_hold_copy_targeter {
 				)->gather(1);
 
 				if (defined($max_loops)) {
-					my %circ_lib_map =  map ( $_->circ_lib => 1 ) @$all_copies;
+					my %circ_lib_map =  map { $_->circ_lib => 1 } @$all_copies;
 					my $circ_lib_list = [keys %circ_lib_map];
 	
 					my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
@@ -1093,7 +1093,7 @@ sub new_hold_copy_targeter {
 	
 					my @keepers;
 					if ($exclude_list && @$exclude_list) {
-						$exclude_list = [map ($_->{circ_lib}) @$exclude_list];
+						$exclude_list = [map {$_->{circ_lib}} @$exclude_list];
 						# check to see if we've used up every library in the potentials list
 						for my $l ( @$circ_lib_list ) {
 							my $keep = 1;
