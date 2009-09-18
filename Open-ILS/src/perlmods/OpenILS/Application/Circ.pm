@@ -270,13 +270,28 @@ sub new_set_circ_lost {
 __PACKAGE__->register_method(
 	method	=> "set_circ_claims_returned",
 	api_name	=> "open-ils.circ.circulation.set_claims_returned",
-	signature	=> q/
-        Sets the circ for the given item as claims returned
-        If a backdate is provided, overdue fines will be voided
-        back to the backdate
-		@param auth
-		@param args : barcode, backdate
-	/
+	signature => {
+        desc => q/Sets the circ for a given item as claims returned
+                If a backdate is provided, overdue fines will be voided
+                back to the backdate/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Arguments, including "barcode" and optional "backdate"', type => 'object'}
+        ],
+        return => {desc => q/1 on success, failure event on error, and 
+            PATRON_EXCEEDS_CLAIMS_RETURN_COUNT if the patron exceeds the 
+            configured claims return maximum/}
+    }
+);
+
+__PACKAGE__->register_method(
+	method	=> "set_circ_claims_returned",
+	api_name	=> "open-ils.circ.circulation.set_claims_returned.override",
+	signature => {
+        desc => q/This adds support for overrideing the configured max 
+                claims returned amount. 
+                @see open-ils.circ.circulation.set_claims_returned./,
+    }
 );
 
 sub set_circ_claims_returned {
@@ -297,6 +312,35 @@ sub set_circ_claims_returned {
     my $circ = $e->search_action_circulation(
         {checkin_time => undef, target_copy => $copy->id})->[0]
             or return $e->die_event;
+
+    my $patron = $e->retrieve_actor_user($circ->usr);
+    my $max_count = $U->ou_ancestor_setting_value(
+        $circ->circ_lib, 'circ.max_patron_claim_return_count', $e);
+
+    # If the patron has too instances of many claims returned, 
+    # require an override to continue.  A configured max of 
+    # 0 means all attempts require an override
+    if(defined $max_count and $patron->claims_returned_count >= $max_count) {
+
+        if($self->api_name =~ /override/) {
+
+            # see if we're allowed to override
+            return $e->die_event unless 
+                $e->allowed('SET_CIRC_CLAIMS_RETURNED.override', $circ->circ_lib);
+
+        } else {
+
+            # exit early and return the max claims return event
+            $e->rollback;
+            return OpenILS::Event->new(
+                'PATRON_EXCEEDS_CLAIMS_RETURN_COUNT', 
+                payload => {
+                    patron_count => $patron->claims_returned_count,
+                    max_count => $max_count
+                }
+            );
+        }
+    }
 
     $e->allowed('SET_CIRC_CLAIMS_RETURNED', $circ->circ_lib) 
         or return $e->die_event;
