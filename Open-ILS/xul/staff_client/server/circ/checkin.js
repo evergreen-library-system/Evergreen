@@ -193,19 +193,7 @@ circ.checkin.prototype = {
 						function(ev) {
 							if (ev.target.nodeName == 'datepicker') {
 								try {
-									var flag = false;
-									var darray = ev.target.value.split('-');
-									var year = darray[0]; var month = darray[1]; var day = darray[2]; 
-									if ( (!year) || (year.length != 4) || (!Number(year)) ) flag = true;
-									if ( (!month) || (month.length !=2) || (!Number(month)) ) flag = true;
-									if ( (!day) || (day.length !=2) || (!Number(day)) ) flag = true;
-									if (flag) {
-										throw('invalid date format');
-									}
-									var d = new Date( year, month - 1, day );
-									if (d.toString() == 'Invalid Date') throw(document.getElementById('circStrings').getString('staff.circ.invalid_date'));
-									if ( d > new Date() ) throw(document.getElementById('circStrings').getString('staff.circ.future_date'));
-									ev.target.value = util.date.formatted_date(d,'%F');
+									if ( ev.target.dateValue > new Date() ) throw(document.getElementById('circStrings').getString('staff.circ.future_date'));
 									var x = document.getElementById('background');
 									if (x) {
 										if ( ev.target.value == util.date.formatted_date(new Date(),'%F') ) {
@@ -218,9 +206,18 @@ circ.checkin.prototype = {
 									}
 
 								} catch(E) {
+									var x = document.getElementById('background');
+									if (x) {
+                                        x.setAttribute('style','background-color: green');
+                                        document.getElementById('background-text').setAttribute('value',document.getElementById('circStrings').getString('staff.circ.process_item'));
+                                    }
 									dump('checkin:effective_date: ' + E + '\n');
-									alert(document.getElementById('circStrings').getFormattedString('staff.circ.backdate.exception', [E]));
-									ev.target.value = util.date.formatted_date(new Date(),'%F');
+                                    ev.target.disabled = true;
+									//alert(document.getElementById('circStrings').getFormattedString('staff.circ.backdate.exception', [E]));
+                                    ev.target.value = util.date.formatted_date(new Date(),'%F');
+                                    ev.target.disabled = false;
+			                        JSAN.use('util.sound'); var sound = new util.sound(); sound.bad();
+                                    
 								}
 							}
 						}
