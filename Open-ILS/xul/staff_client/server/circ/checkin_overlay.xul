@@ -72,8 +72,8 @@
 	<vbox>
 		<hbox>
 			<hbox id="checkin_effective_date_hbox">
-				<label id="checkin_effective_date_label" value="&staff.circ.checkin_overlay.effective_date.label;" control="checkin_effective_date_textbox" accesskey="&staff.circ.checkin_overlay.effective_date.accesskey;"/>
-				<textbox id="checkin_effective_date_textbox" context="clipboard"/>
+				<label id="checkin_effective_date_label" value="&staff.circ.checkin_overlay.effective_date.label;" control="checkin_effective_datepicker" accesskey="&staff.circ.checkin_overlay.effective_date.accesskey;"/>
+				<datepicker id="checkin_effective_datepicker" type="popup" context="clipboard"/>
 			</hbox>
 			<menubar>
 			<menu label="&staff.circ.checkin_overlay.actions.label;" accesskey="&staff.circ.checkin_overlay.actions.accesskey;">

@@ -183,15 +183,15 @@ circ.checkin.prototype = {
 						['render'],
 						function(e) {
 							return function() {
-								obj.controller.view.checkin_effective_date_textbox.value =
+								obj.controller.view.checkin_effective_datepicker.value =
 									util.date.formatted_date(new Date(),'%F');
 							};
 						}
 					],
-					'checkin_effective_date_textbox' : [
+					'checkin_effective_datepicker' : [
 						['change'],
 						function(ev) {
-							if (ev.target.nodeName == 'textbox') {
+							if (ev.target.nodeName == 'datepicker') {
 								try {
 									var flag = false;
 									var darray = ev.target.value.split('-');
@@ -296,7 +296,7 @@ circ.checkin.prototype = {
 			if (barcode) {
 				if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
 			}
-			var backdate = obj.controller.view.checkin_effective_date_textbox.value;
+			var backdate = obj.controller.view.checkin_effective_datepicker.value;
 			var auto_print = document.getElementById('checkin_auto');
 			if (auto_print) auto_print = auto_print.checked;
 			JSAN.use('circ.util');
