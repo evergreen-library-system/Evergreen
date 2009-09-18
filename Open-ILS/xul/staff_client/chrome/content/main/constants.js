@@ -275,6 +275,7 @@ const urls = {
 	'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
 	'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
 	'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
+	'XUL_RENEW' : '/xul/server/circ/renew.xul',
 	'XUL_CHECKOUT' : '/xul/server/circ/checkout.xul',
 	'XUL_CIRC_BRIEF' : '/xul/server/circ/circ_brief.xul',
 	'XUL_CIRC_SUMMARY' : '/xul/server/circ/circ_summary.xul',

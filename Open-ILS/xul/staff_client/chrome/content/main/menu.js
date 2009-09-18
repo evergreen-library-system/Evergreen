@@ -394,6 +394,13 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN),{},{});
 				}
 			],
+			'cmd_circ_renew' : [
+				['oncommand'],
+				function() { 
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_RENEW),{},{});
+				}
+			],
 			'cmd_circ_checkout' : [
 				['oncommand'],
 				function() { 

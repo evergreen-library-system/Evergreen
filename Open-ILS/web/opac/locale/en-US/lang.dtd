@@ -350,6 +350,8 @@
 <!ENTITY staff.checkin.done_label.accesskey 'D'>
 <!ENTITY staff.checkin.print_receipt.label 'Print List'>
 <!ENTITY staff.checkin.print_receipt.accesskey ''>
+<!ENTITY staff.renew.print_receipt.label 'Print List'>
+<!ENTITY staff.renew.print_receipt.accesskey ''>
 <!ENTITY staff.checkin.reprint_receipt_label 'Re-Print Last List'>
 <!ENTITY staff.checkin.reprint_receipt_label.accesskey 'L'>
 <!ENTITY staff.checkin_interface_label "Check In">
@@ -418,6 +420,13 @@
 <!ENTITY staff.circ.checkin.scan.accesskey 'a'>
 <!ENTITY staff.circ.checkin.submit.label 'Submit'>
 <!ENTITY staff.circ.checkin.submit.accesskey 'S'>
+
+<!ENTITY staff.circ.renew.caption 'Renew'>
+<!ENTITY staff.circ.renew.scan.label 'Enter Barcode:'>
+<!ENTITY staff.circ.renew.scan.accesskey 'a'>
+<!ENTITY staff.circ.renew.submit.label 'Submit'>
+<!ENTITY staff.circ.renew.submit.accesskey 'S'>
+
 <!ENTITY staff.circ.context_cancel_hold "Cancel Hold">
 <!ENTITY staff.circ.context_checkin "Check In">
 <!ENTITY staff.circ.context_edit "Edit Copy">
@@ -744,6 +753,8 @@
 <!ENTITY staff.main.menu.circ.checkin.accesskey "C">
 <!ENTITY staff.main.menu.circ.checkin.label "Check In Items">
 <!ENTITY staff.main.menu.circ.checkout.accesskey "O">
+<!ENTITY staff.main.menu.circ.renew.label "Renew Items">
+<!ENTITY staff.main.menu.circ.renew.accesskey "n">
 <!ENTITY staff.main.menu.circ.checkout.label "Check Out Items">
 <!ENTITY staff.main.menu.circ.claimed_returned.key "C">
 <!ENTITY staff.main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'>
@@ -1775,6 +1786,32 @@
 <!ENTITY staff.circ.checkin_overlay.do_not_alert_on_precat.label "Ignore Pre-cataloged Items">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto.label "Auto-Print Hold and Transit Slips">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto.accesskey "P">
+<!ENTITY staff.circ.renew_overlay.background_text "Renew Item">
+<!ENTITY staff.circ.renew_overlay.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.circ.renew_overlay.sel_clip.accesskey "C">
+<!ENTITY staff.circ.renew_overlay.sel_bucket.label "Add to Item Bucket">
+<!ENTITY staff.circ.renew_overlay.sel_bucket.accesskey "A">
+<!ENTITY staff.circ.renew_overlay.sel_opac.label "Show in Catalog">
+<!ENTITY staff.circ.renew_overlay.sel_opac.accesskey "S">
+<!ENTITY staff.circ.renew_overlay.sel_copy_details.label "Show Item Details">
+<!ENTITY staff.circ.renew_overlay.sel_copy_details.accesskey "I">
+<!ENTITY staff.circ.renew_overlay.sel_patron.label "Show Last Few Circulations">
+<!ENTITY staff.circ.renew_overlay.sel_patron.accesskey "L">
+<!ENTITY staff.circ.renew_overlay.sel_last_patron.label "Retrieve Last Patron who circulated item">
+<!ENTITY staff.circ.renew_overlay.sel_last_patron.accesskey "R">
+<!ENTITY staff.circ.renew_overlay.sel_edit.label "Edit Item Attributes">
+<!ENTITY staff.circ.renew_overlay.sel_edit.accesskey "E">
+<!ENTITY staff.circ.renew_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
+<!ENTITY staff.circ.renew_overlay.sel_mark_items_damaged.accesskey "D">
+<!ENTITY staff.circ.renew_overlay.sel_transit_abort.label "Abort Transit">
+<!ENTITY staff.circ.renew_overlay.sel_spine.label "Print Spine Label">
+<!ENTITY staff.circ.renew_overlay.sel_spine.accesskey "P">
+<!ENTITY staff.circ.renew_overlay.save_columns.label "Save Columns">
+<!ENTITY staff.circ.renew_overlay.actions.label "Actions for Selected Items">
+<!ENTITY staff.circ.renew_overlay.actions.accesskey "S">
+<!ENTITY staff.circ.renew_overlay.renew_export.label "Export">
+<!ENTITY staff.circ.renew_overlay.trim_list.label "Trim List (20 rows)">
+<!ENTITY staff.circ.renew_overlay.strict_barcode.label "Strict Barcode">
 <!ENTITY staff.circ.checkout_overlay.duedate_menu.label "Normal">
 <!ENTITY staff.circ.checkout_overlay.duedate_menu.accesskey "u">
 <!ENTITY staff.circ.checkout_overlay.barcode.accesskey "C">

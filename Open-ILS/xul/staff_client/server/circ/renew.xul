@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/circ.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="/xul/server/circ/renew_overlay.xul"?>
+
+<window id="renew_win" 
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for renew.xul');
+
+                var tab_name = document.getElementById('circStrings').getString('staff.circ.renew.tab.label');
+
+				JSAN.use('circ.renew'); g.renew = new circ.renew();
+				g.renew.init( 
+					{ 
+					} 
+				);
+	
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+					try { window.xulG.set_tab_name(tab_name); } catch(E) { alert(E); }
+				}
+
+			} catch(E) {
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ.renew.xul', E]);
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function default_focus() { try { setTimeout( function() { document.getElementById('renew_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
+	]]>
+	</script>
+
+	<popupset id="copy_status_popupset"/>
+
+	<commandset id="renew_cmds">
+		<command id="cmd_renew_submit_barcode" />
+		<command id="cmd_renew_print" />
+		<command id="cmd_csv_to_clipboard" />
+		<command id="cmd_csv_to_printer" />
+		<command id="cmd_csv_to_file" />
+		<command id="save_columns" />
+		
+		<command id="sel_clip" disabled="true"/>
+		<command id="sel_edit" disabled="true"/>
+		<command id="sel_opac" disabled="true"/>
+		<command id="sel_patron" disabled="true"/>
+		<command id="sel_last_patron" disabled="true"/>
+		<command id="sel_copy_details" disabled="true"/>
+		<command id="sel_bucket" disabled="true"/>
+		<command id="sel_spine" disabled="true"/>
+		<command id="sel_transit_abort" disabled="true"/>
+		<command id="sel_mark_items_damaged" disabled="true"/>
+
+	</commandset>
+
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+
+	<box id="renew_main" />
+
+</window>
+
