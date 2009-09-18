@@ -269,6 +269,12 @@ OpenILS.data.prototype = {
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode% Due: %due_date%\r\n',
 					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n'
 				}, 
+				'renew' : {
+					'type' : 'items',
+					'header' : 'Welcome to %LIBRARY%!<br/>\r\nYou have renewed the following items:<hr/><ol>',
+					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode% Due: %due_date%\r\n',
+					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n'
+				}, 
 				'checkout' : {
 					'type' : 'items',
 					'header' : 'Welcome to %LIBRARY%!<br/>\r\nYou checked out the following items:<hr/><ol>',
