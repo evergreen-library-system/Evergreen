@@ -808,6 +808,8 @@ sub new_hold_copy_targeter {
 
 	local $OpenILS::Application::Storage::WRITE = 1;
 
+	$self->{target_weight} = {};
+
 	my $holds;
 
 	try {
@@ -1126,7 +1128,6 @@ sub new_hold_copy_targeter {
 					}
 				}
 
-				$self->{target_weight} = {};
 				$prox_list = create_prox_list( $self, $hold->pickup_lib, $all_copies );
 
 				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
