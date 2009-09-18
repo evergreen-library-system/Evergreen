@@ -186,6 +186,9 @@ cat.util.show_in_opac = function(selection_list) {
 				alert($("catStrings").getFormattedString('staff.cat.util.show_in_opac.unknown_barcode', [selection_list[i].barcode]));
 				continue;
 			}
+            if (doc_id == -1 ) {
+                continue; /* pre-cat */
+            }
 			if (typeof seen[doc_id] != 'undefined') {
 				continue;
 			}
