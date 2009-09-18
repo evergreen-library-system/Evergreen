@@ -1815,7 +1815,12 @@ INSERT into config.org_unit_setting_type
 ( 'ui.patron.default_inet_access_level',
   'Default level of patrons'' internet access',
   null,
-  'integer' );
+  'integer' ),
+
+( 'circ.max_patron_claim_return_count',
+    'Max Patron Claims Returned Count',
+    'When this count is exceeded, a staff override is required to mark the item as claims returned',
+    'integer' );
 
 -- Org_unit_setting_type(s) that need an fm_class:
 INSERT into config.org_unit_setting_type
