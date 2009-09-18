@@ -61,16 +61,21 @@ vim:noet:sw=4:ts=4:
 
 				JSAN.use('util.network'); g.network = new util.network();
 
-				g.network.request(
-					api.MARC_HTML_RETRIEVE.app,
-					api.MARC_HTML_RETRIEVE.method,
-					[ docid ],
-					function(req) {
-						marc_html = req.getResultObject();
-						if (noprint||typeof xulG == 'undefined') marc_html = marc_html.replace(/<button.+?button>/, '');
-						document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + marc_html);
-					}
-				);
+                if (docid > -1) {
+                    g.network.request(
+                        api.MARC_HTML_RETRIEVE.app,
+                        api.MARC_HTML_RETRIEVE.method,
+                        [ docid ],
+                        function(req) {
+                            var marc_html = req.getResultObject();
+                            if (noprint||typeof xulG == 'undefined') marc_html = marc_html.replace(/<button.+?button>/, '');
+                            document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + marc_html);
+                        }
+                    );
+                } else {
+                    var marc_html = '<h1>' + document.getElementById('catStrings').getString('bib.no_marc') + '</h1>';
+                    document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + marc_html);
+                }
 
 			} catch(E) {
 				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/marc_view.xul', E]);
@@ -81,6 +86,8 @@ vim:noet:sw=4:ts=4:
 
 	]]>
 	</script>
+
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 
 	<groupbox flex="1">
 		<caption label="&staff.cat.marc_view.title;"/>
