@@ -1101,6 +1101,7 @@ sub handle_claims_returned {
     if($self->override) {
 
         $CR->checkin_time('now');   
+        $CR->checkin_scan_time('now');   
         $CR->checkin_lib($self->editor->requestor->ws_ou);
         $CR->checkin_workstation($self->editor->requestor->wsid);
         $CR->checkin_staff($self->editor->requestor->id);
@@ -2244,6 +2245,9 @@ sub checkin_handle_circ {
 
     # Set the checkin vars since we have the item
     $circ->checkin_time( ($self->backdate) ? $self->backdate : 'now' );
+
+    # capture the true scan time for back-dated checkins
+    $circ->checkin_scan_time('now');
 
     $circ->checkin_staff($self->editor->requestor->id);
     $circ->checkin_lib($self->editor->requestor->ws_ou);
