@@ -2198,4 +2198,25 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VA
     'string'
 );
 
+-- max claims returned count setting
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
+    'circ.max_patron_claim_return_count',
+    'Max Patron Claims Returned Count',
+    'When this count is exceeded, a staff override is required to mark the item as claims returned',
+    'integer'
+);
+
+-- perm to override max claims returned
+INSERT INTO permission.perm_list (code, description) VALUES (
+    'SET_CIRC_CLAIMS_RETURNED.override',
+    'Allows staff to override the max claims returned value for a patron'
+);
+
+-- Circ auto-renew interval setting
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
+    'circ.checkout_auto_renew_age',
+    'Checkout auto renew age',
+    'When an item has been checked out for at least this amount of time, an attempt to check out the item to the patron that it is already checked out to will simply renew the circulation',
+    'interval'
+);
 
