@@ -2157,9 +2157,47 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 		}
 
 		var msg = '';
+        var print_data = { 
+            'error' : '',
+            'error_msg' : '',
+            'cancelled' : '',
+            'route_to' : '',
+            'route_to_msg' : '',
+            'route_to_org_fullname' : '',
+            'street1' : '',
+            'street2' : '',
+            'city_state_zip' : '',
+            'city' : '',
+            'state' : '',
+            'county' : '',
+            'country' : '',
+            'post_code' : '',
+            'item_barcode' : '',
+            'item_barcode_msg' : '',
+            'item_title' : '',
+            'item_title_msg' : '',
+            'item_author' : '',
+            'item_author_msg' : '',
+            'hold_for_msg' : '',
+            'hold_for_alias' : '',
+            'hold_for_family_name' : '',
+            'hold_for_first_given_name' : '',
+            'hold_for_second_given_name' : '',
+            'user_barcode' : '',
+            'user_barcode_msg' : '',
+            'notify_by_phone' : '',
+            'notify_by_phone_msg' : '',
+            'notify_by_email' : '',
+            'notify_by_email_msg' : '',
+            'request_date' : '',
+            'request_date_msg' : '',
+            'slip_date' : '',
+            'slip_date_msg' : ''
+        };
 
 		if (check.payload && check.payload.cancelled_hold_transit) {
-			msg += document.getElementById('circStrings').getString('staff.circ.utils.transit_hold_cancelled');
+			print_data.cancelled = document.getElementById('circStrings').getString('staff.circ.utils.transit_hold_cancelled');
+            msg += print_data.cancelled;
 			msg += '\n\n';
 		}
 
@@ -2167,8 +2205,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
 			try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); }
 			catch(E) {
-				msg += document.getElementById('commonStrings').getString('common.error');
-				msg += '\nFIXME: ' + E + '\n';
+				print_data.error_msg = document.getElementById('commonStrings').getString('common.error');
+				print_data.error_msg += '\nFIXME: ' + E + '\n';
+                msg += print_data.error_msg;
 			}
 			if (check.ilsevent == 3 /* NO_CHANGE */) {
 				//msg = 'This item is already checked in.\n';
@@ -2180,16 +2219,20 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			}
 			if (check.ilsevent == 1202 /* ITEM_NOT_CATALOGED */ && check.copy.status() != 11) {
 				var copy_status = (data.hash.ccs[ check.copy.status() ] ? data.hash.ccs[ check.copy.status() ].name() : check.copy.status().name() );
-				msg = document.getElementById('commonStrings').getString('common.error');
-				msg += '\nFIXME --';
-				msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.item_not_cataloged', [copy_status]);
-				msg + '\n';
+				var err_msg = document.getElementById('commonStrings').getString('common.error');
+				err_msg += '\nFIXME --';
+				err_msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.item_not_cataloged', [copy_status]);
+				err_msg += '\n';
+                msg += err_msg;
+                print_data.error_msg += err_msg;
 			}
 			switch(Number(check.copy.status())) {
 				case 0: /* AVAILABLE */
 				case 7: /* RESHELVING */
 					if (msg) {
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+						print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                        print_data.route_to = check.route_to;
+                        msg += print_data.route_to_msg;
 						msg += '\n';
 					}
 				break;
@@ -2197,55 +2240,84 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					check.route_to = 'HOLDS SHELF';
 					if (check.payload.hold) {
 						if (check.payload.hold.pickup_lib() != data.list.au[0].ws_ou()) {
-							msg += document.getElementById('commonStrings').getString('common.error');
-							msg += '\nFIXME: ';
-							msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_error');
-							msg += '\n';
+							var err_msg = document.getElementById('commonStrings').getString('common.error');
+							err_msg += '\nFIXME: ';
+							err_msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_error');
+							err_msg += '\n';
+                            msg += err_msg;
+                            print_data.error_msg += err_msg;
 						} else {
-							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
-							msg += '.\n';
+							print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                            print_data.route_to = check.route_to;
+                            msg += print_data.route_to_msg;
+							msg += '\n';
 						}
 					} else {
-						msg += document.getElementById('commonStrings').getString('common.error');
-						msg += '\nFIXME: ';
-						msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_status_error');
-						msg += '\n';
+						var err_msg = document.getElementById('commonStrings').getString('common.error');
+						err_msg += '\nFIXME: ';
+						err_msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_status_error');
+						err_msg += '\n';
+                        msg += err_msg;
+                        print_data.error_msg += err_msg;
 					}
 					JSAN.use('util.date');
 					if (check.payload.hold) {
 						JSAN.use('patron.util');
 						msg += '\n';
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [check.payload.copy.barcode()]);
+						print_data.item_barcode_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [check.payload.copy.barcode()]);
+                        print_data.item_barcode = check.payload.copy.barcode();
+                        msg += print_data.item_barcode_msg;
 						msg += '\n';
 						var payload_title  = (check.payload.record ? check.payload.record.title() : check.payload.copy.dummy_title() );
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.title', [payload_title]);
+						print_data.item_title_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.title', [payload_title]);
+                        print_data.item_title = payload_title;
+                        msg += print_data.item_title_msg;
 						msg += '\n';
 						var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
+                        print_data.user = au_obj;
 						msg += '\n';
                         if (au_obj.alias()) {
-    						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
+    						print_data.hold_for_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
+                            print_data.hold_for_alias = au_obj.alias();
+                            msg += print_data.hold_for_msg;
                         } else {
-    						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron',  [au_obj.family_name(), au_obj.first_given_name(), au_obj.second_given_name()]);
+    						print_data.hold_for_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron',  [au_obj.family_name() ? au_obj.family_name() : '', au_obj.first_given_name() ? au_obj.first_given_name() : '', au_obj.second_given_name() ? au_obj.second_given_name() : '']);
+                            msg += print_data.hold_for_msg;
+                            print_data.hold_for_family_name = au_obj.family_name() ? au_obj.family_name() : '';
+                            print_data.hold_for_first_given_name = au_obj.first_given_name() ? au_obj.first_given_name() : '';
+                            print_data.hold_for_second_given_name = au_obj.second_given_name() ? au_obj.second_given_name() : '';
                         }
 						msg += '\n';
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [au_obj.card().barcode()]);
+						print_data.user_barcode_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [au_obj.card().barcode()]);
+                        print_data.user_barcode = au_obj.card().barcode();
+                        msg += print_data.user_barcode_msg;
 						msg += '\n';
 						if (check.payload.hold.phone_notify()) {
-							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.phone_notify', [check.payload.hold.phone_notify()]);
+							print_data.notify_by_phone_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.phone_notify', [check.payload.hold.phone_notify()]);
+                            print_data.notify_by_phone = check.payload.hold.phone_notify();
+                            msg += print_data.notify_by_phone_msg;
 							msg += '\n';
 						}
 						if (get_bool(check.payload.hold.email_notify())) {
 							var payload_email = au_obj.email() ? au_obj.email() : '';
-							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.email_notify', [payload_email]);
+							print_data.notify_by_email_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.email_notify', [payload_email]);
+                            print_data.notify_by_email = payload_email;
+                            msg += print_data.notify_by_email_msg;
 							msg += '\n';
 						}
 						msg += '\n';
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [util.date.formatted_date(check.payload.hold.request_time(),'%F')]);
+                        print_data.request_date = util.date.formatted_date(check.payload.hold.request_time(),'%F');
+						print_data.request_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [print_data.request_date]);
+                        msg += print_data.request_date_msg;
 						msg += '\n';
 					}
 					var rv = 0;
-					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.slip_date', [util.date.formatted_date(new Date(),'%F')]);
+                    print_data.slip_date = util.date.formatted_date(new Date(),'%F');
+					print_data.slip_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.slip_date', [print_data.slip_date]);
+                    msg += print_data.slip_date_msg;
 					msg += '\n';
+                    print_data.payload = check.payload;
+
 					if (!auto_print) {
 						rv = error.yns_alert_formatted(
 							msg,
@@ -2260,8 +2332,25 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					if (rv == 0) {
 						try {
 							JSAN.use('util.print'); var print = new util.print();
-							msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
-							print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
+                            var old_template = String( data.hash.aous['ui.circ.old_harcoded_slip_template'] ) == 'true';
+                            if (old_template) {
+                                msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
+                                print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
+                            } else {
+                                var template = 'hold_slip';
+                                var params = {
+                                    'patron' : print_data.user,
+                                    'lib' : data.hash.aou[ check.payload.hold.pickup_lib() ],
+                                    'staff' : data.list.au[0],
+                                    'header' : data.print_list_templates[ template ].header,
+                                    'line_item' : data.print_list_templates[ template ].line_item,
+                                    'footer' : data.print_list_templates[ template ].footer,
+                                    'type' : data.print_list_templates[ template ].type,
+                                    'list' : [ {} ],
+                                    'data' : print_data
+                                };
+                                print.tree_list( params );
+                            }
 						} catch(E) {
 							var err_msg = document.getElementById('commonStrings').getString('common.error');
 							err_msg += '\nFIXME: ' + E + '\n';
@@ -2279,18 +2368,24 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				break;
 				case 6: /* IN TRANSIT */
 					check.route_to = 'TRANSIT SHELF??';
-					msg += document.getElementById('commonStrings').getString('common.error');
-					msg += "\nFIXME -- I didn't think we could get here.\n";
+                    print_data.route_to;
+					var err_msg = document.getElementById('commonStrings').getString('common.error');
+					err_msg += "\nFIXME -- I didn't think we could get here.\n";
+                    print_data.error_msg += err_msg;
+                    msg += err_msg;
 				break;
 				case 11: /* CATALOGING */
 					check.route_to = 'CATALOGING';
+                    print_data.route_to;
 					if (document.getElementById('do_not_alert_on_precat')) {
 						var x = document.getElementById('do_not_alert_on_precat');
 						if (! x.checked) {
-							msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+							print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                            msg += print_data.route_to_msg;
 						}
 					} else {
-						msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+						print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                        msg += print_data.route_to_msg;
 					}
 					if (document.getElementById('no_change_label')) {
 						var m = document.getElementById('no_change_label').getAttribute('value');
@@ -2303,9 +2398,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					msg += document.getElementById('commonStrings').getString('common.error');
 					var copy_status = data.hash.ccs[check.copy.status()] ? data.hash.ccs[check.copy.status()].name() : check.copy.status().name();
 					msg += '\n';
-					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.copy_status.error', [copy_status]);
+					var error_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.copy_status.error', [copy_status]);
+                    print_data.error_msg += error_msg;
+                    msg += error_msg;
 					msg += '\n';
-					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+					print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                    msg += print_data.route_to_msg;
 				break;
 			}
 			if (msg) {
@@ -2322,7 +2420,11 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 
 			var lib = data.hash.aou[ check.org ];
 			check.route_to = lib.shortname();
-			msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.destination', [check.route_to]);
+            print_data.route_to = check.route_to;
+            print_data.route_to_org = lib;
+			print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.destination', [check.route_to]);
+            print_data.route_to_org_fullname = lib.name();
+            msg += print_data.route_to_msg;
 			msg += '\n\n';
 			msg += lib.name();
 			msg += '\n';
@@ -2330,55 +2432,89 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				if (lib.holds_address() ) {
 					var a = network.simple_request('FM_AOA_RETRIEVE',[ lib.holds_address() ]);
 					if (typeof a.ilsevent != 'undefined') throw(a);
-					if (a.street1()) msg += a.street1() + '\n';
-					if (a.street2()) msg += a.street2() + '\n';
-					msg += (a.city() ? a.city() + ', ' : '') + (a.state() ? a.state() + ' ' : '') + (a.post_code() ? a.post_code() : '') + '\n';
+					if (a.street1()) { msg += a.street1() + '\n'; print_data.street1 = a.street1(); }
+					if (a.street2()) { msg += a.street2() + '\n'; print_data.street2 = a.street2(); }
+					print_data.city_state_zip = (a.city() ? a.city() + ', ' : '') + (a.state() ? a.state() + ' ' : '') + (a.post_code() ? a.post_code() : '');
+                    print_data.city = a.city();
+                    print_data.state = a.state();
+                    print_data.county = a.county();
+                    print_data.country = a.country();
+                    print_data.post_code = a.post_code();
+                    msg += print_data.city_state_zip + '\n';
 				} else {
-					msg += document.getElementById('circStrings').getString('staff.circ.utils.route_to.no_address');
+					print_data.street1 = document.getElementById('circStrings').getString('staff.circ.utils.route_to.no_address');
+                    print_data.no_address = true;
+                    msg += print_data.street1;
 					msg += '\n';
 				}
 			} catch(E) {
-				msg += document.getElementById('circStrings').getString('staff.circ.utils.route_to.no_address.error');
-				msg += '\n';
+				var err_msg = document.getElementById('circStrings').getString('staff.circ.utils.route_to.no_address.error');
+                print_data.error_msg += err_msg + '\n';
+				msg += err_msg + '\n';
 				error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.route_to.no_address.error'), E);
 			}
 			msg += '\n';
-			msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [check.payload.copy.barcode()]);
+			print_data.item_barcode_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [check.payload.copy.barcode()]);
+            print_data.item_barcode = check.payload.copy.barcode();
+            msg += print_data.item_barcode_msg;
 			msg += '\n';
 			var payload_title  = (check.payload.record ? check.payload.record.title() : check.payload.copy.dummy_title() );
-			msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.title', [payload_title]);
+			print_data.item_title_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.title', [payload_title]);
+            print_data.item_title = payload_title;
+            msg += print_data.item_title_msg;
 			msg += '\n';
 			var payload_author = (check.payload.record ? check.payload.record.author() :check.payload.copy.dummy_author());
-			msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.author', [payload_author]);
+			print_data.item_author_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.author', [payload_author]);
+            print_data.item_author = payload_author;
+            msg += print_data.item_author_msg;
 			msg += '\n';
 			JSAN.use('util.date');
 			if (check.payload.hold) {
 				JSAN.use('patron.util');
 				var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
+                print_data.user = au_obj;
 				msg += '\n';
                 if (au_obj.alias()) {
-                    msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
+                    print_data.hold_for_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
+                    print_data.hold_for_alias = au_obj.alias();
+                    msg += print_data.hold_for_msg;
                 } else {
-    				msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron', [au_obj.family_name(), au_obj.first_given_name(), au_obj.second_given_name()]);
+                    print_data.hold_for_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron',  [au_obj.family_name() ? au_obj.family_name() : '', au_obj.first_given_name() ? au_obj.first_given_name() : '', au_obj.second_given_name() ? au_obj.second_given_name() : '']);
+                    msg += print_data.hold_for_msg;
+                    print_data.hold_for_family_name = au_obj.family_name() ? au_obj.family_name() : '';
+                    print_data.hold_for_first_given_name = au_obj.first_given_name() ? au_obj.first_given_name() : '';
+                    print_data.hold_for_second_given_name = au_obj.second_given_name() ? au_obj.second_given_name() : '';
                 }
 				msg += '\n';
-				msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [au_obj.card().barcode()]);
+                print_data.user_barcode_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.barcode', [au_obj.card().barcode()]);
+                print_data.user_barcode = au_obj.card().barcode();
+                msg += print_data.user_barcode_msg;
 				msg += '\n';
 				if (check.payload.hold.phone_notify()) {
-					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.phone_notify', [check.payload.hold.phone_notify()]);
+                    print_data.notify_by_phone_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.phone_notify', [check.payload.hold.phone_notify()]);
+                    print_data.notify_by_phone = check.payload.hold.phone_notify();
+                    msg += print_data.notify_by_phone_msg;
 					msg += '\n';
 				}
 				if (get_bool(check.payload.hold.email_notify())) {
 					var payload_email = au_obj.email() ? au_obj.email() : '';
-					msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.email_notify', [payload_email]);
+                    print_data.notify_by_email_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.email_notify', [payload_email]);
+                    print_data.notify_by_email = payload_email;
+                    msg += print_data.notify_by_email_msg;
 					msg += '\n';
 				}
 				msg += '\n';
-				msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [util.date.formatted_date(check.payload.hold.request_time(),'%F')]);
+                print_data.request_date = util.date.formatted_date(check.payload.hold.request_time(),'%F');
+                print_data.request_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [print_data.request_date]);
+                msg += print_data.request_date_msg;
 				msg += '\n';
 			}
 			var rv = 0;
-			msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.slip_date', [util.date.formatted_date(new Date(),'%F')]);
+            print_data.slip_date = util.date.formatted_date(new Date(),'%F');
+            print_data.slip_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.slip_date', [print_data.slip_date]);
+            msg += print_data.slip_date_msg;
+            print_data.payload = check.payload;
+
 			if (!auto_print) {
 				rv = error.yns_alert_formatted(
 					msg,
@@ -2390,13 +2526,28 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					'/xul/server/skin/media/images/turtle.gif'
 				);
 			}
-
 			if (rv == 0) {
 				try {
 					JSAN.use('util.print'); var print = new util.print();
-					//print.simple( msg, { 'no_prompt' : true, 'content_type' : 'text/plain' } );
-					msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
-					print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
+                    var old_template = String( data.hash.aous['ui.circ.old_harcoded_slip_template'] ) == 'true';
+                    if (old_template) {
+                        msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
+                        print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
+                    } else {
+                        var template = check.payload.hold ? 'hold_transit_slip' : 'transit_slip';
+                        var params = {
+                            'patron' : print_data.user,
+                            'lib' : data.hash.aou[ check.payload.hold ? check.payload.hold.pickup_lib() : check.payload.transit.source() ],
+                            'staff' : data.list.au[0],
+                            'header' : data.print_list_templates[ template ].header,
+                            'line_item' : data.print_list_templates[ template ].line_item,
+                            'footer' : data.print_list_templates[ template ].footer,
+                            'type' : data.print_list_templates[ template ].type,
+                            'list' : [ {} ],
+                            'data' : print_data 
+                        };
+                        print.tree_list( params );
+                    }
 				} catch(E) {
 					var err_msg = document.getElementById('commonStrings').getString('common.error');
 					err_msg += '\nFIXME: ' + E + '\n';

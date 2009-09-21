@@ -346,7 +346,25 @@ OpenILS.data.prototype = {
 					'header' : 'Welcome to %LIBRARY%!<br/>\r\nYou have the following titles on hold:<hr/><ol>',
 					'line_item' : '<li>%title%\r\n',
 					'footer' : '</ol><hr />%SHORTNAME% %TODAY_TRIM%<br/>\r\nYou were helped by %STAFF_FIRSTNAME%<br/>\r\n<br/>\r\n'
-				}
+				},
+                'hold_slip' : {
+					'type' : 'holds',
+					'header' : 'This item needs to be routed to <b>HOLDS SHELF</b>:<br/>\r\n',
+                    'line_item' : 'Barcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\n<br/>\r\n%hold_for_msg%<br/>\r\nBarcode: %PATRON_BARCODE%<br/>\r\nNotify by phone: %notify_by_phone%<br/>\r\nNotify by email: %notify_by_email%<br/>\r\n<br/>\r\nRequest date: <br/>\r\n',
+                    'footer' : 'Slip Date: %TODAY_TRIM%<br/>\r\nPrinted by %STAFF_FIRSTNAME% at %SHORTNAME%<br/>\r\n<br/>\r\n'
+                },
+                'transit_slip' : {
+					'type' : 'transits',
+					'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\n%route_to_org_fullname%<br/>\r\n%street1%<br/>\r\n%street2%<br/>\r\n%city_state_zip%<br/>\r\n<br/>\r\n',
+                    'line_item' : 'Barcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\nAuthor: %item_author%<br>\r\n<br/>\r\n',
+                    'footer' : 'Slip Date: %TODAY_TRIM%<br/>\r\nPrinted by %STAFF_FIRSTNAME% at %SHORTNAME%<br/>\r\n<br/>\r\n'
+                },
+                'hold_transit_slip' : {
+					'type' : 'transits',
+					'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\n%route_to_org_fullname%<br/>\r\n%street1%<br/>\r\n%street2%<br/>\r\n%city_state_zip%<br/>\r\n<br/>\r\n',
+                    'line_item' : 'Barcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\nAuthor: %item_author%<br>\r\n<br/>\r\n%hold_for_msg%<br/>\r\nBarcode: %PATRON_BARCODE%<br/>\r\nNotify by phone: %notify_by_phone%<br/>\r\nNotify by email: %notify_by_email%<br/>\r\n<br/>\r\nRequest date: <br/>\r\n',
+                    'footer' : 'Slip Date: %TODAY_TRIM%<br/>\r\nPrinted by %STAFF_FIRSTNAME% at %SHORTNAME%<br/>\r\n<br/>\r\n'
+                }
 			}; 
 
 			obj.stash( 'print_list_templates', 'print_list_types' );
