@@ -86,9 +86,19 @@ sub query_services {
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
 
+	return fetch_service_defs();
+}
+
+# -------------------------------------------------------------------
+# What services do we have config info for?
+# -------------------------------------------------------------------
+sub fetch_service_defs {
+
+    $sclient = OpenSRF::Utils::SettingsClient->new();
     my $hash = $sclient->config_value('z3950', 'services');
 
     # overlay config file values with in-db values
+    my $e = new_editor();
     if($e->can('search_config_z3950_source')) {
 
         my $sources = $e->search_config_z3950_source(
@@ -139,6 +149,7 @@ sub query_services {
         }
     };
 
+    %services = %$hash; # cache these internally so we can actually use the db-configured sources
     return $hash;
 }
 
@@ -147,11 +158,9 @@ sub query_services {
 # -------------------------------------------------------------------
 # Load the pre-defined Z server configs
 # -------------------------------------------------------------------
-sub initialize {
-	$sclient = OpenSRF::Utils::SettingsClient->new();
-	$default_service = $sclient->config_value("z3950", "default" );
-	my $servs = $sclient->config_value("z3950", "services" );
-	$services{$_} = $$servs{$_} for keys %$servs;
+sub child_init {
+    fetch_service_defs();
+    $default_service = $sclient->config_value("z3950", "default" );
 }
 
 
