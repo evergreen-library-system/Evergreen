@@ -800,6 +800,8 @@ sub do_copy_checks {
             my $payload; # event payload
 
             if($old_circ->usr == $self->patron->id) {
+                
+                $payload = {old_circ => $old_circ};
 
                 # If there is an open circulation on the checkout item and an auto-renew 
                 # interval is defined, inform the caller that they should go 
@@ -816,10 +818,7 @@ sub do_copy_checks {
                     my $checkout_time = DateTime::Format::ISO8601->new->parse_datetime( clense_ISO8601($old_circ->xact_start) );
 
                     if(DateTime->now > $checkout_time->add(seconds => $intvl_seconds)) {
-                        $payload = {
-                            old_circ => $old_circ,
-                            auto_renew => 1
-                        }
+                        $payload->{auto_renew} = 1;
                     }
                 }
             }
