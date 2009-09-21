@@ -790,12 +790,44 @@ sub do_copy_checks {
 
     # no claims returned circ was found, check if there is any open circ
     unless( $self->is_renewal ) {
+
         my $circs = $self->editor->search_action_circulation(
             { target_copy => $copy->id, checkin_time => undef }
         );
 
-        return $self->bail_on_events(
-            OpenILS::Event->new('OPEN_CIRCULATION_EXISTS')) if @$circs;
+        if(my $old_circ = $circs->[0]) { # an open circ was found
+
+            my $payload; # event payload
+
+            if($old_circ->usr == $self->patron->id) {
+
+                # If there is an open circulation on the checkout item and an auto-renew 
+                # interval is defined, inform the caller that they should go 
+                # ahead and renew the item instead of warning about open circulations.
+    
+                my $auto_renew_intvl = $U->ou_ancestor_setting_value(        
+                    $self->editor->requestor->ws_ou, 
+                    'circ.checkout_auto_renew_age', 
+                    $self->editor
+                );
+
+                if($auto_renew_intvl) {
+                    my $intvl_seconds = OpenSRF::Utils->interval_to_seconds($auto_renew_intvl);
+                    my $checkout_time = DateTime::Format::ISO8601->new->parse_datetime( clense_ISO8601($old_circ->xact_start) );
+
+                    if(DateTime->now > $checkout_time->add(seconds => $intvl_seconds)) {
+                        $payload = {
+                            old_circ => $old_circ,
+                            auto_renew => 1
+                        }
+                    }
+                }
+            }
+
+            return $self->bail_on_events(
+                OpenILS::Event->new('OPEN_CIRCULATION_EXISTS', payload => $payload)
+            );
+        }
     }
 }
 
