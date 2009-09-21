@@ -2198,14 +2198,6 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VA
     'string'
 );
 
--- max claims returned count setting
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
-    'circ.max_patron_claim_return_count',
-    'Max Patron Claims Returned Count',
-    'When this count is exceeded, a staff override is required to mark the item as claims returned',
-    'integer'
-);
-
 -- perm to override max claims returned
 INSERT INTO permission.perm_list (code, description) VALUES (
     'SET_CIRC_CLAIMS_RETURNED.override',
