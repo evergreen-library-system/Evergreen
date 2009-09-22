@@ -185,6 +185,41 @@ patron.holds.prototype = {
 							circ.util.show_last_few_circs(obj.retrieve_ids);
 						}
 					],
+                    'alt_view_btn' : [
+                        ['render'],
+                        function(e) {
+                            e.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.label'));
+                            e.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.accesskey'));
+                        }
+                    ],
+                    'cmd_alt_view' : [
+                        ['command'],
+                        function(ev) {
+                            try {
+                                var n = obj.controller.view.alt_view_btn;
+                                if (n.getAttribute('toggle') == '1') {
+                                    document.getElementById('deck').selectedIndex = 0;
+                                    n.setAttribute('toggle','0');
+                                    n.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.label'));
+                                    n.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.holds.alt_view.accesskey'));
+                                } else {
+                                    document.getElementById('deck').selectedIndex = 1;
+                                    n.setAttribute('toggle','1');
+                                    n.setAttribute('label', document.getElementById("circStrings").getString('staff.circ.holds.list_view.label'));
+                                    n.setAttribute('accesskey', document.getElementById("circStrings").getString('staff.circ.holds.list_view.accesskey'));
+                                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                                    if (obj.retrieve_ids.length == 0) return;
+                                    var f = obj.browser.get_content();
+                                    xulG.ahr_id = obj.retrieve_ids[0].id;
+                                    xulG.patron_rendered_elsewhere = (obj.hold_interface_type == 'patron');
+                                    f.xulG = xulG;
+                                    f.fetch_and_render_all();
+                                }
+                            } catch(E) {
+                                alert('Error in holds.js, cmd_alt_view handler: ' + E);
+                            }
+                        },
+                    ],
 					'sel_mark_items_damaged' : [
 						['command'],
 						function() {
@@ -209,29 +244,7 @@ patron.holds.prototype = {
 						}
 					],
 
-                                            ///////////////////////////////////////////////////////////////////THIS IS MY CURRENT CODE
-                                         'cmd_hold_note' : [
-                                                            ['command'],
-                                                            function() {
-                                                                try {
-                                                                    JSAN.use('util.window'); var win = new util.window();
-                                                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
-									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-									win.open(
-                                                                                 xulG.url_prefix(urls.XUL_HOLD_NOTE), // + '?ahr_id=' + obj.retrieve_ids[i].id,
-                                                                                 'hold_note_' + obj.retrieve_ids[i].id,
-                                                                                 'chrome,resizable',
-                                                                                 { 'ahrn_id' : obj.retrieve_ids[i].id }
-                                                                                 );
-                                                                    }
-                                                                } catch(E) {
-                                                                    obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.show_note.error_rendering_note'),E);
-                                                                }
-                                                            }
-                                         ],
-
-                                            //////////////////////////////////////////////////////////////////////////////////
-                                         'cmd_holds_print' : [
+                    'cmd_holds_print' : [
 						['command'],
 						function() {
 							try {
@@ -250,25 +263,6 @@ patron.holds.prototype = {
 					'cmd_csv_to_printer' : [ ['command'], function() { obj.list.dump_csv_to_printer(); } ],
 					'cmd_csv_to_file' : [ ['command'], function() { obj.list.dump_csv_to_file( { 'defaultFileName' : 'holds.txt' } ); } ],
 
-					'cmd_show_details' : [
-						['command'],
-						function() {
-							try {
-								JSAN.use('util.window'); var win = new util.window();
-								for (var i = 0; i < obj.retrieve_ids.length; i++) {
-									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-									win.open(
-										xulG.url_prefix(urls.XUL_HOLD_DETAILS), // + '?ahr_id=' + obj.retrieve_ids[i].id,
-										'hold_notices_' + obj.retrieve_ids[i].id,
-										'chrome,resizable',
-										{ 'ahr_id' : obj.retrieve_ids[i].id }
-									);
-								}
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.show_notifications.error_rendering_notifs'),E);
-							}
-						}
-					],
 					'cmd_holds_edit_selection_depth' : [
 						['command'],
 						function() {
@@ -1034,6 +1028,20 @@ patron.holds.prototype = {
                 obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
             }, 0
         );
+
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+        JSAN.use('util.browser');
+        obj.browser = new util.browser();
+        obj.browser.init(
+            {
+                'url' : urls.XUL_HOLD_DETAILS,
+                'push_xulG' : true,
+                'alt_print' : false,
+                'browser_id' : 'hold_detail_frame',
+                'passthru_content_params' : xulG,
+            }
+        );
+
 	},
 
     'determine_hold_interface_type' : function() {

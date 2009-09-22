@@ -2009,8 +2009,6 @@
 <!ENTITY staff.circ.holds.show_last_few_circulations.accesskey "L">
 <!ENTITY staff.circ.holds.retrieve_patron "Retrieve Patron">
 <!ENTITY staff.circ.holds.retrieve_patron.accesskey "P">
-<!ENTITY staff.circ.holds.show_details "Show Hold Details">
-<!ENTITY staff.circ.holds.show_details.accesskey "N">
 <!ENTITY staff.circ.holds.edit_pickup_library "Edit Pickup Library">
 <!ENTITY staff.circ.holds.edit_pickup_library.accesskey "L">
 <!ENTITY staff.circ.holds.edit_phone_notification "Edit Phone Notification">
@@ -2516,9 +2514,13 @@
 <!ENTITY staff.patron.hold_details.title "Hold Details">
 <!ENTITY staff.patron.hold_notices.add_record_notification.label "Add Record of Notification">
 <!ENTITY staff.patron.hold_notices.add_record_notification.accesskey "A">
-<!ENTITY staff.patron.hold_notices.close_window.label "Close">
-<!ENTITY staff.patron.hold_notices.close_window.accesskey "C">
 <!ENTITY staff.patron.hold_notices.method.label "Method:">
+<!ENTITY staff.patron.holds.notices_tab.label "Notifications">
+<!ENTITY staff.patron.holds.notices_tab.accesskey "N">
+<!ENTITY staff.patron.holds.notes_tab.label "Notes">
+<!ENTITY staff.patron.holds.notes_tab.accesskey "e">
+<!ENTITY staff.patron.holds.add_note.label "Add Note">
+<!ENTITY staff.patron.holds.add_note.accesskey "A">
 <!ENTITY staff.patron.holds_overlay.pickup_lib.label "Pickup Library">
 <!ENTITY staff.patron.holds_overlay.request_lib.label "Requesting Library">
 <!ENTITY staff.patron.holds_overlay.fulfillment_lib.label "Fulfilling Library">
