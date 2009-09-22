@@ -36,7 +36,7 @@ __PACKAGE__->columns(Essential => qw/field_class name xpath weight format search
 
 package config::identification_type;
 use base qw/config/;
-__PACKAGE__->table('config_identifaction_type');
+__PACKAGE__->table('config_identification_type');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/name/);
 #-------------------------------------------------------------------------------
