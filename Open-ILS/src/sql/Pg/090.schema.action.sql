@@ -133,6 +133,10 @@ CREATE TABLE action.circulation (
 	checkin_scan_time   TIMESTAMP WITH TIME ZONE
 ) INHERITS (money.billable_xact);
 ALTER TABLE action.circulation ADD PRIMARY KEY (id);
+ALTER TABLE action.circulation
+	ADD COLUMN parent_circ BIGINT
+	REFERENCES action.circulation( id )
+	DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
 CREATE INDEX circ_outstanding_idx ON action.circulation (usr) WHERE checkin_time IS NULL;
 CREATE INDEX circ_checkin_time ON "action".circulation (checkin_time) WHERE checkin_time IS NOT NULL;
@@ -141,6 +145,8 @@ CREATE INDEX circ_open_date_idx ON "action".circulation (xact_start) WHERE xact_
 CREATE INDEX circ_all_usr_idx       ON action.circulation ( usr );
 CREATE INDEX circ_circ_staff_idx    ON action.circulation ( circ_staff );
 CREATE INDEX circ_checkin_staff_idx ON action.circulation ( checkin_staff );
+CREATE UNIQUE INDEX circ_parent_idx ON action.circulation ( parent_circ ) WHERE parent_circ IS NOT NULL;
+
 
 CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_create ();
 CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_update ();
@@ -198,14 +204,14 @@ BEGIN
 		circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, due_date,
 		stop_fines_time, checkin_time, create_time, duration, fine_interval, recuring_fine,
 		max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recuring_fine_rule,
-		max_fine_rule, stop_fines)
+	    max_fine_rule, stop_fines, checkin_workstation, checkin_scan_time, parent_circ)
 	  SELECT
 		id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
 		copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
 		circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, due_date,
 		stop_fines_time, checkin_time, create_time, duration, fine_interval, recuring_fine,
 		max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recuring_fine_rule,
-		max_fine_rule, stop_fines
+		max_fine_rule, stop_fines, checkin_workstation, checkin_scan_time, parent_circ
 	    FROM action.all_circulation WHERE id = OLD.id;
 
 	RETURN OLD;

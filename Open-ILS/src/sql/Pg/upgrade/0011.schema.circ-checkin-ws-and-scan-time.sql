@@ -1,4 +1,4 @@
-BEGIN
+BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0011.schema.circ-checkin-ws-and-scan-time.sql');
 
