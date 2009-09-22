@@ -54,14 +54,9 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                 var joiner = slot.getAttribute('join') || ' ';
 
                                 var slot_handler = dojo.map(
-                                    dojo.query('script[type=opac/slot-format]', slot).orphan(),
-                                    function(x){
-                                        if(dojo.isIE) return x.innerHTML;
-                                        return dojox.data.dom.textContent(x)
-                                    }
-                                );
-
-                                slot_handler = slot_handler.join('');
+                                    dojo.query( 'script[type=opac/slot-format]', slot ).orphan(),
+                                    function(x){ return dojox.data.dom.textContent(x) || x.innerHTML }
+                                ).join('');
 
                                 if (slot_handler) slot_handler = new Function('item', slot_handler);
                                 else slot_handler = new Function('item','return dojox.data.dom.textContent(item);');
