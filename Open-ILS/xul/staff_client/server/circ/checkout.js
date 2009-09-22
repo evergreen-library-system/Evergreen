@@ -231,6 +231,14 @@ circ.checkout.prototype = {
 						['command'],
 						function() {
 							try {
+                                var no_print_prompting = obj.data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+                                if (no_print_prompting) {
+                                    if (no_print_prompting.indexOf( "Checkout" ) > -1) {
+										obj.list.clear();
+										xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{}); 
+                                        return;
+                                    }
+                                }
 								if (document.getElementById('checkout_auto').checked) {
 									obj.print(true,function() { 
 										obj.list.clear();

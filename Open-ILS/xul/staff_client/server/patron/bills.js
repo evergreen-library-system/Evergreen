@@ -517,6 +517,10 @@ patron.bills.prototype = {
 					obj.data.voided_billings = []; obj.data.stash('voided_billings');
 					obj.refresh();
 					try {
+                        var no_print_prompting = obj.data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+                        if (no_print_prompting) {
+                            if (no_print_prompting.indexOf( "Bill Pay" ) > -1) return; // Skip print attempt
+                        }
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						obj.data.stash_retrieve();
 						var template = 'bill_payment';

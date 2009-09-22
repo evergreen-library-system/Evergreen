@@ -2312,6 +2312,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 						msg += '\n';
 					}
 					var rv = 0;
+                    var no_print_prompting = data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+                    if (no_print_prompting) {
+                        if (no_print_prompting.indexOf( "Hold Slip" ) > -1) {
+                            rv = -1; auto_print = true; // DO NOT PRINT and skip dialog
+                        }
+                    }
                     print_data.slip_date = util.date.formatted_date(new Date(),'%F');
 					print_data.slip_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.slip_date', [print_data.slip_date]);
                     msg += print_data.slip_date_msg;
@@ -2510,6 +2516,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 				msg += '\n';
 			}
 			var rv = 0;
+            var no_print_prompting = data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+            if (no_print_prompting) {
+                if (no_print_prompting.indexOf( check.payload.hold ? "Hold/Transit Slip" : "Transit Slip" ) > -1) {
+                    rv = -1; auto_print = true; // DO NOT PRINT and skip dialog
+                }
+            }
             print_data.slip_date = util.date.formatted_date(new Date(),'%F');
             print_data.slip_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.slip_date', [print_data.slip_date]);
             msg += print_data.slip_date_msg;
