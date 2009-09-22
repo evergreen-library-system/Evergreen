@@ -2,6 +2,7 @@ dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('dijit.form.Textarea');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.ComboBox');
+dojo.require('dijit.form.NumberSpinner');
 dojo.require('fieldmapper.IDL');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoGrid');
@@ -33,6 +34,7 @@ var tbody;
 var addrTemplateRows;
 var cgi;
 var cloneUser;
+var claimReturnedPermList;
 
 
 if(!window.xulG) var xulG = null;
@@ -93,6 +95,7 @@ function load() {
     else loadAllAddrs();
     loadStatCats();
     loadSurveys();
+    checkClaimsReturnCountPerm();
 }
 
 function uEditLoadUser(userId) {
@@ -195,6 +198,7 @@ function fleshFMRow(row, fmcls, args) {
     var fmfield = row.getAttribute('fmfield');
     var wclass = row.getAttribute('wclass');
     var wstyle = row.getAttribute('wstyle');
+    var wconstraints = row.getAttribute('wconstraints');
     var fieldIdl = fieldmapper.IDL.fmclasses[fmcls].field_map[fmfield];
     if(!args) args = {};
 
@@ -229,7 +233,17 @@ function fleshFMRow(row, fmcls, args) {
                 function(i) { return (i.id() == args.addr) })[0];
             break;
     }
-    
+
+    var dijitArgs = {
+        style: wstyle, 
+        required : required,
+        constraints : (wconstraints) ? eval('('+wconstraints+')') : {} // the ()'s prevent Invalid Label errors with eval
+    };
+
+    var value = row.getAttribute('wvalue');
+    if(value !== null)
+        dijitArgs.value = value;
+
     var required = row.getAttribute('required') == 'required';
     var widget = new openils.widget.AutoFieldWidget({
         idlField : fieldIdl,
@@ -237,10 +251,7 @@ function fleshFMRow(row, fmcls, args) {
         fmClass : fmcls,
         parentNode : span,
         widgetClass : wclass,
-        dijitArgs : {
-            style: wstyle, 
-            required : required
-        },
+        dijitArgs : dijitArgs,
         orgLimitPerms : ['UPDATE_USER'],
     });
 
@@ -263,6 +274,26 @@ function findWidget(wtype, fmfield, callback) {
             }
         }
     ).pop();
+}
+
+/**
+ * if the user does not have the UPDATE_PATRON_CLAIM_RETURN_COUNT, 
+ * they are not allowed to directly alter the claim return count. 
+ * This function checks the perm and disable/enables the widget.
+ */
+function checkClaimsReturnCountPerm() {
+    new openils.User().getPermOrgList(
+        'UPDATE_PATRON_CLAIM_RETURN_COUNT',
+        function(orgList) { 
+            var cr = findWidget('au', 'claims_returned_count');
+            if(orgList.indexOf(patron.home_ou()) == -1) 
+                cr.widget.attr('disabled', true);
+            else
+                cr.widget.attr('disabled', false);
+        },
+        true, 
+        true
+    );
 }
 
 function attachWidgetEvents(fmcls, fmfield, widget) {
@@ -342,6 +373,11 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
             case 'other_phone':
                 dojo.connect(widget.widget, 'onChange',
                     function(newVal) { uEditDupeSearch('phone', newVal); });
+                return;
+
+            case 'home_ou':
+                dojo.connect(widget.widget, 'onChange',
+                    function(newVal) { checkClaimsReturnCountPerm(); });
                 return;
 
         }
