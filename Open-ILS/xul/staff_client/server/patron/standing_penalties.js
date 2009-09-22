@@ -342,7 +342,6 @@ function handle_archive_penalty(ev) {
             for (var i = 0; i < ids.length; i++) {
                 outstanding_requests++;
                 var penalty = util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.id() == ids[i]; } );
-alert(js2JSON(penalty));
                 penalty.ischanged( 1 );
                 penalty.stop_date( util.date.formatted_date(new Date(),'%F') );
                 dojo.require('openils.PermaCrud');
