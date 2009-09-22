@@ -896,8 +896,17 @@ sub new_hold_copy_targeter {
 			if ($hold->expire_time) {
 				my $ex_time = $parser->parse_datetime( clense_ISO8601( $hold->expire_time ) );
 				if ( DateTime->compare($ex_time, DateTime->now) < 0 ) {
-					$hold->update( { cancel_time => 'now' } );
+
+					# cancel cause = un-targeted expiration
+					$hold->update( { cancel_time => 'now', cancel_cause => 1 } ); 
 					$self->method_lookup('open-ils.storage.transaction.commit')->run;
+
+					# tell A/T the hold was cancelled
+					my $fm_hold = $hold->to_fieldmapper;
+					my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+					$ses->request('open-ils.trigger.event.autocreate', 
+						'hold_request.cancel.expire_no_target', $fm_hold, $fm_hold->pickup_lib);
+
 					die "OK\n";
 				}
 			}
