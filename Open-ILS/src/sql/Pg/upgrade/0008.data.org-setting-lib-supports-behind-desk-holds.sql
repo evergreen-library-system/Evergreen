@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0008.data.org-setting-lib-supports-behind-desk-holds.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0008');
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.holds.behind_desk_pickup_supported',

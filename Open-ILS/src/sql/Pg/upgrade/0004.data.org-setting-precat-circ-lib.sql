@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0004.data.org-setting-precat-circ-lib.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0004');
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.pre_cat_copy_circ_lib',

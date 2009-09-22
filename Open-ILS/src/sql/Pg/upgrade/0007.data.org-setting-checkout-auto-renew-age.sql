@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0007.data.org-setting-checkout-auto-renew-age.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0007');
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.checkout_auto_renew_age',

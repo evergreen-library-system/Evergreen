@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0010.schema.asset-copy-dummy-isbn.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0010');
 
 ALTER TABLE asset.copy
 ADD COLUMN dummy_isbn TEXT;

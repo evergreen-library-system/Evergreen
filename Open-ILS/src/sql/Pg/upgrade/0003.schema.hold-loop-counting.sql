@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0003.schema.hold-loop-counting.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0003');
 
 CREATE OR REPLACE VIEW action.unfulfilled_hold_loops AS
     SELECT  u.hold,

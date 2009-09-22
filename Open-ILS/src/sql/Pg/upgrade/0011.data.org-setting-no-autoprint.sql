@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0011.data.org-setting-no-autoprint.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0011');
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.staff_client.do_not_auto_attempt_print',

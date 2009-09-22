@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0005.data.org-setting-max-claims-return-count.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0005');
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.max_patron_claim_return_count',

@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0012.schema.circ-parent-circ.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0012');
 
 ALTER TABLE action.circulation
 ADD COLUMN parent_circ BIGINT

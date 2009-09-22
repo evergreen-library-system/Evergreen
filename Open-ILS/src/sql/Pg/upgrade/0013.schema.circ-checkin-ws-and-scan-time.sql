@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0013.schema.circ-checkin-ws-and-scan-time.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0013');
 
 ALTER TABLE action.circulation
 ADD COLUMN checkin_workstation INT

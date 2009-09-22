@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0009.data.action-trigger-hold-cancel-hook.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0009');
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'hold_request.cancel.expire_no_target',

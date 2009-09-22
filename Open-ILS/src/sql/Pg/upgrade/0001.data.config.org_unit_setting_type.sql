@@ -2,7 +2,7 @@ BEGIN;
 
 -- Org Unit Settings for configuring org unit weights and org unit max-loops for hold targeting
 
-INSERT INTO config.upgrade_log (version) VALUES ('0001.data.config.org_unit_setting_type.sql');
+INSERT INTO config.upgrade_log (version) VALUES ('0001');
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
     'circ.holds.org_unit_target_weight',
