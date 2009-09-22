@@ -1121,9 +1121,17 @@ sub new_hold_copy_targeter {
 						# We have, and should remove potentials and cancel the hold
 						my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
 						$_->delete for (@oldmaps);
-	
-						$hold->update( { cancel_time => 'now' } );
+
+						# cancel cause = un-targeted expiration
+						$hold->update( { cancel_time => 'now', cancel_cause => 1 } ); 
 						$self->method_lookup('open-ils.storage.transaction.commit')->run;
+
+						# tell A/T the hold was cancelled
+						my $fm_hold = $hold->to_fieldmapper;
+						my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+						$ses->request('open-ils.trigger.event.autocreate', 
+							'hold_request.cancel.expire_no_target', $fm_hold, $fm_hold->pickup_lib);
+
 						die "OK\n";
 					}
 				}
