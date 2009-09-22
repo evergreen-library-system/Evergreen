@@ -466,7 +466,33 @@ circ.checkout.prototype = {
 						}
 		
 					} else {
-						throw(checkout);
+                        // Should get here with failed renewals
+                        switch(Number(checkout.ilsevent)) {
+                            case null /* custom event */ : 
+                            case 5000 /* PERM_FAILURE */: 
+                            case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : 
+                            case 1213 /* PATRON_BARRED */ : 
+                            case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : 
+                            case 1224 /* PATRON_ACCOUNT_EXPIRED */ : 
+                            case 1232 /* ITEM_DEPOSIT_REQUIRED */ : 
+                            case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ : 
+                            case 1234 /* ITEM_DEPOSIT_PAID */ : 
+                            case 1500 /* ACTION_CIRCULATION_NOT_FOUND */ : 
+                            case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : 
+                            case 7003 /* COPY_CIRC_NOT_ALLOWED */ : 
+                            case 7004 /* COPY_NOT_AVAILABLE */ : 
+                            case 7006 /* COPY_IS_REFERENCE */ : 
+                            case 7007 /* COPY_NEEDED_FOR_HOLD */ : 
+                            case 7008 /* MAX_RENEWALS_REACHED */ : 
+                            case 7009 /* CIRC_CLAIMS_RETURNED */ : 
+                            case 7010 /* COPY_ALERT_MESSAGE */ : 
+                            case 7013 /* PATRON_EXCEEDS_FINES */ : 
+					            x.setAttribute('style','color: red');
+            					x.setAttribute('value', document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed', [params.barcode]));
+            					if (typeof params.noncat == 'undefined') { obj.items_out_count--; }
+                            break;
+                            default: throw(checkout);
+                        }
 					}
 		
 				} catch(E) {
@@ -797,39 +823,93 @@ circ.checkout.prototype = {
 						case 1702 /* OPEN_CIRCULATION_EXISTS */ :
 							msg += test_permit[i].desc + '\n';
 							found_handled = true;
+                            var foreign_circ = true;
+                            var my_circ; 
 
-							var my_copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[params.barcode]);
-							if (typeof my_copy.ilsevent != 'undefined') { throw(my_copy); }
-							var my_circ = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',[ses(),my_copy.id(),1]);
-							if (typeof my_circ.ilsevent != 'undefined') { throw(my_copy); }
-							my_circ = my_circ[0];
-							var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
-							JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
-							if (due_date) {
-								if (today > due_date) {
-									msg += (document.getElementById('circStrings').getFormattedString('staff.circ.checkout.item_due', [due_date]) + '\n');
-								}
-							}
+                            var payload = test_permit[i].payload;
+                            if (payload) {
+                                if (typeof payload.old_circ == 'object') {
+                                    foreign_circ = false;
+                                    my_circ = payload.old_circ;
+                                }
+                            }
+
+                            if (foreign_circ) {
+                                var my_copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[params.barcode]);
+                                if (typeof my_copy.ilsevent != 'undefined') { throw(my_copy); }
+                                my_circ = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',[ses(),my_copy.id(),1]);
+                                if (typeof my_circ.ilsevent != 'undefined') { throw(my_copy); }
+                                my_circ = my_circ[0];
+                            }
+
 							if (! stop_checkout ) {
-								var r = obj.error.yns_alert(
-									msg,
-									document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
-									document.getElementById('circStrings').getString('staff.circ.cancel'),
-									document.getElementById('circStrings').getString('staff.circ.checkout.normal_checkin_then_checkout'),
-									due_date ? (today > due_date ? document.getElementById('circStrings').getString('staff.circ.checkout.forgiving_checkin_then_checkout') : null) : null,
-									document.getElementById('circStrings').getString('staff.circ.confirm.msg')
-								);
-								JSAN.use('circ.util');
-								switch(r) {
-									case 1:
-										circ.util.checkin_via_barcode( ses(), { 'barcode' : params.barcode, 'noop' : 1 } );
-										obj.checkout(params);
-									break;
-									case 2:
-										circ.util.checkin_via_barcode( ses(), { 'barcode' : params.barcode, 'noop' : 1 }, due_date );
-										obj.checkout(params);
-									break;
-								}
+
+                                var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
+                                JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
+                                if (due_date) {
+                                    if (today > due_date) {
+                                        msg += (document.getElementById('circStrings').getFormattedString('staff.circ.checkout.item_due', [due_date]) + '\n');
+                                    }
+                                }
+
+                                if (foreign_circ) { // OFFER CANCEL, NORMAL CHECKIN, AND POSSIBLY FORGIVING-BACKDATED CHECKIN
+                                    var r = obj.error.yns_alert(
+                                        msg,
+                                        document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+                                        document.getElementById('circStrings').getString('staff.circ.cancel'),
+                                        document.getElementById('circStrings').getString('staff.circ.checkout.normal_checkin_then_checkout'),
+                                        due_date ? (today > due_date ? document.getElementById('circStrings').getString('staff.circ.checkout.forgiving_checkin_then_checkout') : null) : null,
+                                        document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+                                    );
+                                    JSAN.use('circ.util');
+                                    switch(r) {
+                                        case 1:
+                                            circ.util.checkin_via_barcode( ses(), { 'barcode' : params.barcode, 'noop' : 1 } );
+                                            obj.checkout(params);
+                                        break;
+                                        case 2:
+                                            circ.util.checkin_via_barcode( ses(), { 'barcode' : params.barcode, 'noop' : 1 }, due_date );
+                                            obj.checkout(params);
+                                        break;
+                                    }
+                                } else { // EITHER AUTO-RENEW OR OFFER CANCEL, NORMAL CHECKIN, AND RENEW
+                                    if (payload.auto_renew) {
+                                        circ.util.renew_via_barcode( params.barcode, obj.patron_id, function(r) {
+                                            try {
+                                                params.renewal = true;
+                                                obj._checkout( params, r[0] ); 
+                                            } catch(E) {
+                                                alert('Error in checkout.js, RENEW 1: ' + E);
+                                            }
+                                        } );
+                                    } else {
+                                        var r = obj.error.yns_alert(
+                                            msg,
+                                            document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+                                            document.getElementById('circStrings').getString('staff.circ.cancel'),
+                                            document.getElementById('circStrings').getString('staff.circ.checkout.normal_checkin_then_checkout'),
+                                            document.getElementById('circStrings').getString('staff.circ.checkout.offer_renewal'),
+                                            document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+                                        );
+                                        JSAN.use('circ.util');
+                                        switch(r) {
+                                            case 1:
+                                                circ.util.checkin_via_barcode( ses(), { 'barcode' : params.barcode, 'noop' : 1 } );
+                                                obj.checkout(params);
+                                            break;
+                                            case 2:
+                                                circ.util.renew_via_barcode( params.barcode, obj.patron_id, function(r) {
+                                                    try {
+                                                        params.renewal = true;
+                                                        obj._checkout( params, r[0] ); 
+                                                    } catch(E) {
+                                                        alert('Error in checkout.js, RENEW 2: ' + E);
+                                                    }
+                                                } );
+                                            break;
+                                        }
+                                    }
+                                }
 							} else {
 								obj.error.yns_alert(
 									msg,
