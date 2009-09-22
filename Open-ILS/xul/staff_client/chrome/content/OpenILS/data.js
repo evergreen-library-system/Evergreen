@@ -349,7 +349,7 @@ OpenILS.data.prototype = {
 				},
                 'hold_slip' : {
 					'type' : 'holds',
-					'header' : 'This item needs to be routed to <b>HOLDS SHELF</b>:<br/>\r\n',
+					'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\n',
                     'line_item' : 'Barcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\n<br/>\r\n%hold_for_msg%<br/>\r\nBarcode: %PATRON_BARCODE%<br/>\r\nNotify by phone: %notify_by_phone%<br/>\r\nNotify by email: %notify_by_email%<br/>\r\n<br/>\r\nRequest date: <br/>\r\n',
                     'footer' : 'Slip Date: %TODAY_TRIM%<br/>\r\nPrinted by %STAFF_FIRSTNAME% at %SHORTNAME%<br/>\r\n<br/>\r\n'
                 },
