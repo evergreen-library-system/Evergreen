@@ -179,7 +179,11 @@ function generate_request_handler_for_penalty_apply(penalty,id) {
                 );
             } else {
                 penalty.id(req);
-                xulG.patron.standing_penalties( xulG.patron.standing_penalties().concat( penalty ) );
+                JSAN.use('patron.util'); JSAN.use('util.functional');
+                //xulG.patron.standing_penalties( xulG.patron.standing_penalties().concat( penalty ) ); // Not good enough for pcrud
+                xulG.patron = patron.util.retrieve_fleshed_au_via_id( ses(), xulG.patron.id() ); // So get the real deal instead
+                penalty = util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.id() == req; } );
+
                 var row_params = {
                     'row' : {
                         'my' : {
@@ -338,6 +342,7 @@ function handle_archive_penalty(ev) {
             for (var i = 0; i < ids.length; i++) {
                 outstanding_requests++;
                 var penalty = util.functional.find_list( xulG.patron.standing_penalties(), function(o) { return o.id() == ids[i]; } );
+alert(js2JSON(penalty));
                 penalty.ischanged( 1 );
                 penalty.stop_date( util.date.formatted_date(new Date(),'%F') );
                 dojo.require('openils.PermaCrud');

@@ -583,7 +583,7 @@ patron.util.retrieve_fleshed_au_via_id = function(session, id) {
 	JSAN.use('util.network');
 	var network = new util.network();
 	var patron_obj = network.simple_request(
-		'FM_AU_FLESHED_RETRIEVE_VIA_ID',
+		'FM_AU_FLESHED_RETRIEVE_VIA_ID.authoritative',
 		[ session, id ]
 	);
 	patron.util.set_penalty_css(patron_obj);
