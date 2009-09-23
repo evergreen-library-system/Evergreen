@@ -138,7 +138,7 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_activate.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','false');
-						obj.controller.view.cmd_show_details.setAttribute('disabled','false');
+						obj.controller.view.cmd_alt_view.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
@@ -156,7 +156,7 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
-						obj.controller.view.cmd_show_details.setAttribute('disabled','true');
+						obj.controller.view.cmd_alt_view.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
@@ -1022,7 +1022,7 @@ patron.holds.prototype = {
 				obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
 				obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
-                obj.controller.view.cmd_show_details.setAttribute('disabled','true');
+                obj.controller.view.cmd_alt_view.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
                 obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
