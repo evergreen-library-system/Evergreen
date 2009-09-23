@@ -32,6 +32,10 @@ sub initialize {
 	OpenILS::Application::Search::Zips->initialize();
 	OpenILS::Application::Search::Biblio->initialize();
 }
+
+sub child_init {
+	OpenILS::Application::Search::Z3950->child_init;
+}
 	
 
 
