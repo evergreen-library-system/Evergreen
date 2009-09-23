@@ -2157,6 +2157,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 		}
 
 		var msg = '';
+        var print_list = [];
         var print_data = { 
             'error' : '',
             'error_msg' : '',
@@ -2320,6 +2321,30 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 							msg += '\n';
 						}
 						msg += '\n';
+                        var notes = check.payload.hold.notes();
+                        print_data.notes_raw = notes;
+                        for (var i = 0; i < notes.length; i++) {
+                            if ( get_bool( notes[i].slip() ) ) {
+                                var temp_msg;
+                                if ( get_bool( notes[i].staff() ) ) {
+                                    temp_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.notes.staff_note', [ notes[i].title(), notes[i].body() ]);
+                                } else {
+                                    temp_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.notes.patron_note', [ notes[i].title(), notes[i].body() ]);
+                                }
+                                msg += temp_msg + '\n';
+                                print_list.push(
+                                    {
+                                        'formatted_note' : temp_msg,
+                                        'note_title' : notes[i].title(),
+                                        'note_body' : notes[i].body(),
+                                        'note_public' : notes[i].pub(),
+                                        'note_by_staff' : notes[i].staff()
+                                    }
+                                );
+                            }
+                        }
+						msg += '\n';
+						msg += '\n';
                         print_data.request_date = util.date.formatted_date(check.payload.hold.request_time(),'%F');
 						print_data.request_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [print_data.request_date]);
                         msg += print_data.request_date_msg;
@@ -2366,7 +2391,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                                     'line_item' : data.print_list_templates[ template ].line_item,
                                     'footer' : data.print_list_templates[ template ].footer,
                                     'type' : data.print_list_templates[ template ].type,
-                                    'list' : [ {} ],
+                                    'list' : print_list,
                                     'data' : print_data
                                 };
                                 print.tree_list( params );
@@ -2524,6 +2549,30 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					msg += '\n';
 				}
 				msg += '\n';
+                var notes = check.payload.hold.notes();
+                print_data.notes_raw = notes;
+                for (var i = 0; i < notes.length; i++) {
+                    if ( get_bool( notes[i].slip() ) ) {
+                        var temp_msg;
+                        if ( get_bool( notes[i].staff() ) ) {
+                            temp_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.notes.staff_note', [ notes[i].title(), notes[i].body() ]);
+                        } else {
+                            temp_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.notes.patron_note', [ notes[i].title(), notes[i].body() ]);
+                        }
+                        msg += temp_msg + '\n';
+                        print_list.push(
+                            {
+                                'formatted_note' : temp_msg,
+                                'note_title' : notes[i].title(),
+                                'note_body' : notes[i].body(),
+                                'note_public' : notes[i].pub(),
+                                'note_by_staff' : notes[i].staff()
+                            }
+                        );
+                    }
+                }
+                msg += '\n';
+                msg += '\n';
                 print_data.request_date = util.date.formatted_date(check.payload.hold.request_time(),'%F');
                 print_data.request_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [print_data.request_date]);
                 msg += print_data.request_date_msg;
@@ -2569,7 +2618,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             'line_item' : data.print_list_templates[ template ].line_item,
                             'footer' : data.print_list_templates[ template ].footer,
                             'type' : data.print_list_templates[ template ].type,
-                            'list' : [ {} ],
+                            'list' : print_list,
                             'data' : print_data 
                         };
                         print.tree_list( params );
