@@ -174,6 +174,7 @@ DECLARE
     transit_range_ou_type    actor.org_unit_type%ROWTYPE;
     transit_source        actor.org_unit%ROWTYPE;
     item_object        asset.copy%ROWTYPE;
+    ou_skip              actor.org_unit_setting%ROWTYPE;
     result            action.matrix_test_result;
     hold_test        config.hold_matrix_matchpoint%ROWTYPE;
     hold_count        INT;
@@ -208,6 +209,17 @@ BEGIN
     -- Fail if we couldn't find a copy
     IF item_object.id IS NULL THEN
         result.fail_part := 'no_item';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+        RETURN;
+    END IF;
+
+    SELECT INTO ou_skip * FROM actor.org_unit_setting WHERE name = 'circ.holds.target_skip_me' AND org_unit = item_object.circ_lib;
+
+    -- Fail if the circ_lib for the item has circ.holds.target_skip_me set to true
+    IF ou_skip.id IS NOT NULL AND ou_skip.value = 'true' THEN
+        result.fail_part := 'circ.holds.target_skip_me';
         result.success := FALSE;
         done := TRUE;
         RETURN NEXT result;
