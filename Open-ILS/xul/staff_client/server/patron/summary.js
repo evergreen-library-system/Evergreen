@@ -261,7 +261,7 @@ patron.summary.prototype = {
 											if (e5) e5.setAttribute('value', robj.lost	);
                                             if (under_btn) under_btn.setAttribute('value', 
                                                 String( robj.out + robj.overdue + robj.claims_returned + robj.long_overdue) + 
-                                                ( robj.overdue > 0 || robj.claims_returned > 0 || robj.long_overdue > 0 ? '*' : '' )
+                                                ( robj.overdue > 0 ? '*' : '' )
                                             );
 										} catch(E) {
 											alert(E);
