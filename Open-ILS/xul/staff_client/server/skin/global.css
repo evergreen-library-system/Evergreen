@@ -35,6 +35,7 @@ messagecatalog { -moz-binding: url('/xul/server/main/bindings.xml#messagecatalog
 .ALL_FONTS_18PT * { font-size: 18pt !important; }
 
 description { -moz-user-select: text; }
+label { -moz-user-select: text; }
 
 *|textarea:focus { background-color: #DDFFDD; }
 *|input:focus { background-color: #DDFFDD; }
