@@ -149,8 +149,8 @@ sub complete_reshelving {
 			   FROM $cp cp 
                     LEFT JOIN $setting setting
                         ON (cp.circ_lib = setting.org_unit AND setting.name = 'circ.reshelving_complete.interval')
-                    LEFT JOIN $circ circ ON (circ.target_copy = cp.id AND circ.id IS NULL)
-              WHERE cp.status = 7
+                    LEFT JOIN $circ circ ON (circ.target_copy = cp.id)
+              WHERE cp.status = 7 AND circ.id IS NULL
                     AND cp.create_date < NOW() - CAST( COALESCE( BTRIM( setting.value,'"' ), ? )  AS INTERVAL)
           )
 	SQL
