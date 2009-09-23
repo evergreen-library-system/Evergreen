@@ -1499,16 +1499,19 @@ sub apply_modified_due_date {
 
 sub create_due_date {
     my( $self, $duration ) = @_;
+
     # if there is a raw time component (e.g. from postgres), 
     # turn it into an interval that interval_to_seconds can parse
     $duration =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
-   my ($sec,$min,$hour,$mday,$mon,$year) =
-      gmtime(OpenSRF::Utils->interval_to_seconds($duration) + int(time()));
-   $year += 1900; $mon += 1;
-   my $due_date = sprintf(
-      '%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
-      $year, $mon, $mday, $hour, $min, $sec);
-   return $due_date;
+
+    # for now, use the server timezone.  TODO: use workstation org timezone
+    my $due_date = DateTime->now(time_zone => 'local');
+
+    # add the circ duration
+    $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($duration));
+
+    # return ISO8601 time with timezone
+    return $due_date->strftime('%FT%T%z');
 }
 
 
