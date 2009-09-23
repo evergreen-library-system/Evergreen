@@ -2458,7 +2458,7 @@ sub checkin_flesh_events {
             $self->events([grep { $_->{textcode} eq 'ITEM_NOT_CATALOGED' } @{$self->events}]);
     }
 
-    my $record = U->record_to_mvr($self->title) if($self->title and !$self->is_precat);
+    my $record = $U->record_to_mvr($self->title) if($self->title and !$self->is_precat);
 
     my $hold;
     if($self->hold and !$self->hold->cancel_time) {
