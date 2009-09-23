@@ -2458,21 +2458,24 @@ sub checkin_flesh_events {
             $self->events([grep { $_->{textcode} eq 'ITEM_NOT_CATALOGED' } @{$self->events}]);
     }
 
+    my $record = U->record_to_mvr($self->title) if($self->title and !$self->is_precat);
+
+    my $hold;
+    if($self->hold and !$self->hold->cancel_time) {
+        $hold = $self->hold;
+        $hold->notes($self->editor->search_action_hold_request_note({hold => $hold->id}));
+    }
 
     for my $evt (@{$self->events}) {
 
-        my $payload          = {};
-        $payload->{copy}     = $U->unflesh_copy($self->copy);
-        $payload->{record}   = $U->record_to_mvr($self->title) if($self->title and !$self->is_precat);
-        $payload->{circ}     = $self->circ;
-        $payload->{transit}  = $self->transit;
+        my $payload         = {};
+        $payload->{copy}    = $U->unflesh_copy($self->copy);
+        $payload->{record}  = $record,
+        $payload->{circ}    = $self->circ;
+        $payload->{transit} = $self->transit;
         $payload->{cancelled_hold_transit} = 1 if $self->cancelled_hold_transit;
-
-        # $self->hold may or may not have been replaced with a 
-        # valid hold after processing a cancelled hold
-        $payload->{hold} = $self->hold unless (not $self->hold or $self->hold->cancel_time);
-
-        $evt->{payload} = $payload;
+        $payload->{hold}    = $hold;
+        $evt->{payload}     = $payload;
     }
 }
 
