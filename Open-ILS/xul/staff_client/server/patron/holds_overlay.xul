@@ -87,7 +87,7 @@
 
     <hbox id="holds_top_ui" flex="1">
         <button id="place_hold_btn" hidden="true" label="&staff.patron.holds_overlay.place_hold.label;" accesskey="&staff.patron.holds_overlay.place_hold.accesskey;" command="cmd_search_opac" />
-        <checkbox id="lib_filter_checkbox" oils_persist="checked" checked="true" hidden="true" label="&staff.patron.holds_overlay.lib_filter_checkbox.label;"/>
+        <checkbox id="lib_filter_checkbox" oils_persist="checked" oils_persist_no_poke="true" checked="true" hidden="true" label="&staff.patron.holds_overlay.lib_filter_checkbox.label;"/>
         <menulist id="lib_type_menu" hidden="true" oils_persist="value">
             <menupopup>
                 <menuitem id="pickup_lib" value="pickup_lib" label="&staff.patron.holds_overlay.pickup_lib.label;"/>
