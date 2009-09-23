@@ -787,20 +787,31 @@ patron.holds.prototype = {
 								} else {
 									msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_hold_message.singular', [hold_list]);
 								}
-								var r = obj.error.yns_alert(msg,
+
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                JSAN.use('util.window');
+                                var win = new util.window();
+                                var my_xulG = win.open(
+                                    urls.XUL_HOLD_CANCEL,
+                                    'hold_cancel',
+                                    'chrome,resizable,modal',
+                                    {}
+                                );
+								/*var r = obj.error.yns_alert(msg,
 										$("patronStrings").getString('staff.patron.holds.holds_cancel.cancel_hold_title'),
 										$("commonStrings").getString('common.yes'),
 										$("commonStrings").getString('common.no'),
 										null,
 										$("commonStrings").getString('common.check_to_confirm')
-								);
-								if (r == 0) {
+								);*/
+
+                                if (my_xulG.proceed) { 
                                     var transits = [];
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         if (obj.holds_map[ obj.retrieve_ids[i].id ].hold.transit()) {
                                             transits.push( obj.retrieve_ids[i].barcode );
                                         }
-										var robj = obj.network.simple_request('FM_AHR_CANCEL',[ ses(), obj.retrieve_ids[i].id]);
+										var robj = obj.network.simple_request('FM_AHR_CANCEL',[ ses(), obj.retrieve_ids[i].id, my_xulG.cancel_reason, my_xulG.note]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
                                     if (transits.length > 0) {

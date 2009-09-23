@@ -2037,6 +2037,13 @@
 <!ENTITY staff.circ.holds.cancel.accesskey "C">
 <!ENTITY staff.circ.holds.save_columns "Save Columns">
 <!ENTITY staff.circ.holds.save_columns.accesskey "">
+<!ENTITY staff.hold_list.cancel_hold_dialog.title "Cancel Hold">
+<!ENTITY staff.hold_list.cancel_hold_dialog.header "Cancel Hold">
+<!ENTITY staff.hold_list.cancel_hold_dialog.description "Reason and Notes">
+<!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.label "Cancel">
+<!ENTITY staff.hold_list.cancel_hold_dialog.cancel_btn.accesskey "C">
+<!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.label "Apply">
+<!ENTITY staff.hold_list.cancel_hold_dialog.apply_btn.accesskey "A">
 <!ENTITY staff.cat.copy_browser.actions.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.cat.copy_browser.actions.sel_clip.accesskey "C">
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label "Add Items to Buckets">
