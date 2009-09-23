@@ -2199,6 +2199,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" reporter:datatype="timestamp" />
 			<field reporter:label="Check Out Date/Time" name="xact_start" reporter:datatype="timestamp" />
 			<field reporter:label="Record Creation Date/Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
+			<field reporter:label="Checkin Workstation" name="checkin_workstation" reporter:datatype="link"/>
+			<field reporter:label="Checkin Scan Date/Time" name="checkin_scan_time" reporter:datatype="timestamp" />
+			<field reporter:label="Parent Circulation" name="parent_circ" reporter:datatype="link"/>
 			<field reporter:label="Transaction Billings" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transaction Payments" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Base Transaction" name="billable_transaction" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -2234,6 +2238,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_bib_record" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="checkin_workstation" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="parent_circ" reltype="might_have" key="id" map="" class="circ"/>
+			<link field="renewals" reltype="has_many" key="parent_circ" map="" class="circ"/>
 		</links>
 	</class>
 	<class id="ccnbi" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item" reporter:label="Call Number Bucket Item">
