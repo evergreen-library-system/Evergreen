@@ -41,10 +41,16 @@ function fetch_and_render_all() {
         a_list_of_one();
 
         var x = document.getElementById('bib_brief_box'); while (x.firstChild) x.removeChild(x.lastChild);
-        var bib_brief = document.createElement('iframe'); x.appendChild(bib_brief);
-        bib_brief.setAttribute('flex',1);
-        bib_brief.setAttribute('src',urls.XUL_BIB_BRIEF); 
-        get_contentWindow(bib_brief).xulG = { 'docid' : g.blob.mvr.doc_id() };
+        if (xulG.bib_rendered_elsewhere) {
+            // No bib summary     
+            x.hidden = true;
+        } else {
+            x.hidden = false;
+            var bib_brief = document.createElement('iframe'); x.appendChild(bib_brief);
+            bib_brief.setAttribute('flex',1);
+            bib_brief.setAttribute('src',urls.XUL_BIB_BRIEF); 
+            get_contentWindow(bib_brief).xulG = { 'docid' : g.blob.mvr.doc_id() };
+        }
 
         retrieve_notes(); render_notes();
 

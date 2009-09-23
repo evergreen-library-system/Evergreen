@@ -213,6 +213,7 @@ patron.holds.prototype = {
                                     xulG.ahr_id = obj.retrieve_ids[0].id;
                                     xulG.blob = obj.holds_map[ xulG.ahr_id ];
                                     xulG.patron_rendered_elsewhere = (obj.hold_interface_type == 'patron');
+                                    xulG.bib_rendered_elsewhere = (obj.hold_interface_type == 'record');
                                     f.xulG = xulG;
                                     f.fetch_and_render_all();
                                 }
