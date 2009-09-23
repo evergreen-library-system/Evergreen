@@ -794,8 +794,8 @@ INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (21, 'biblios', 'lccn', oils_i18n_gettext(21, 'LCCN', 'cza', 'label'), 9, 1);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (22, 'biblios', 'author', oils_i18n_gettext(22, 'Author', 'cza', 'label'), 1003, 6);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (23, 'biblios', 'title', oils_i18n_gettext(23, 'Title', 'cza', 'label'), 4, 6);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format, truncation)
+	VALUES (23, 'biblios', 'title', oils_i18n_gettext(23, 'Title', 'cza', 'label'), 4, 6, 1);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (24, 'biblios', 'issn', oils_i18n_gettext(24, 'ISSN', 'cza', 'label'), 8, 1);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
