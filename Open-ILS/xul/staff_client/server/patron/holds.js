@@ -93,7 +93,7 @@ patron.holds.prototype = {
 										copy_id = row.my.acp.id();
 									}
 
-									obj.holds_map[ row.my.ahr.id() ] = row.my.ahr;
+									obj.holds_map[ row.my.ahr.id() ] = blob;
 									params.row_node.setAttribute('retrieve_id',
 										js2JSON({
 											'copy_id':copy_id,
@@ -211,6 +211,7 @@ patron.holds.prototype = {
                                     if (obj.retrieve_ids.length == 0) return;
                                     var f = obj.browser.get_content();
                                     xulG.ahr_id = obj.retrieve_ids[0].id;
+                                    xulG.blob = obj.holds_map[ xulG.ahr_id ];
                                     xulG.patron_rendered_elsewhere = (obj.hold_interface_type == 'patron');
                                     f.xulG = xulG;
                                     f.fetch_and_render_all();
@@ -331,7 +332,7 @@ patron.holds.prototype = {
 								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
-										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
 										hold.selection_depth( obj.data.hash.aout[selection].depth() ); hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
@@ -353,7 +354,7 @@ patron.holds.prototype = {
 
                                 var deny_edit_because_of_transit = false;
                                 for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                    var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                    var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
                                     if (hold.status() == 3 /* In-Transit */) deny_edit_because_of_transit = true;
                                 }
                                 if (deny_edit_because_of_transit) {
@@ -416,7 +417,7 @@ patron.holds.prototype = {
 								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
-										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
 										hold.pickup_lib(  pickup_lib ); hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
@@ -474,7 +475,7 @@ patron.holds.prototype = {
 								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
-										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
 										hold.phone_notify(  phone ); hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
@@ -541,7 +542,7 @@ patron.holds.prototype = {
 								);
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
-										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
 										hold.email_notify(  email ); hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
@@ -572,7 +573,7 @@ patron.holds.prototype = {
 								if (r == 0) {
                                     var already_suspended = [];
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
-										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
                                         if ( get_bool( hold.frozen() ) ) {
                                             already_suspended.push( hold.id() );
                                             continue;
@@ -614,7 +615,7 @@ patron.holds.prototype = {
 								if (r == 0) {
                                     var already_activated = [];
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
-										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
                                         if ( ! get_bool( hold.frozen() ) ) {
                                             already_activated.push( hold.id() );
                                             continue;
@@ -673,7 +674,7 @@ patron.holds.prototype = {
                                 }
                                 if (thaw_date || thaw_date == '') {
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
                                         hold.frozen('t');
                                         hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
@@ -722,7 +723,7 @@ patron.holds.prototype = {
                                 }
                                 if (expire_time || expire_time == '') {
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
                                         hold.expire_time(  expire_time == '' ? null : util.date.formatted_date(expire_time + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
                                         hold = obj.flatten_copy(hold);
                                         var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
@@ -795,7 +796,7 @@ patron.holds.prototype = {
 								if (r == 0) {
                                     var transits = [];
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        if (obj.holds_map[ obj.retrieve_ids[i].id ].transit()) {
+                                        if (obj.holds_map[ obj.retrieve_ids[i].id ].hold.transit()) {
                                             transits.push( obj.retrieve_ids[i].barcode );
                                         }
 										var robj = obj.network.simple_request('FM_AHR_CANCEL',[ ses(), obj.retrieve_ids[i].id]);

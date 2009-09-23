@@ -44,7 +44,7 @@ function fetch_and_render_all() {
         var bib_brief = document.createElement('iframe'); x.appendChild(bib_brief);
         bib_brief.setAttribute('flex',1);
         bib_brief.setAttribute('src',urls.XUL_BIB_BRIEF); 
-        get_contentWindow(bib_brief).xulG = { 'docid' : g.ahr.target() };
+        get_contentWindow(bib_brief).xulG = { 'docid' : g.blob.mvr.doc_id() };
 
         retrieve_notes(); render_notes();
 
@@ -58,9 +58,14 @@ function fetch_and_render_all() {
 function fetch_hold(id) {
     try {
         g.ahr_id = xulG.ahr_id;
-        g.ahr = g.network.simple_request('FM_AHR_RETRIEVE',[ ses(), g.ahr_id ]);
-        if (typeof g.ahr.ilsevent != 'undefined') { throw(g.ahr); }
-        g.ahr = g.ahr[0];
+        g.blob = xulG.blob;
+        if (g.blob) {
+            g.ahr = xulG.blob.hold;
+        } else {
+            g.blob = g.network.simple_request('FM_AHR_BLOB_RETRIEVE',[ ses(), g.ahr_id ]);
+            if (typeof g.ahr.ilsevent != 'undefined') { throw(g.ahr); }
+            g.ahr = g.blob.hold;
+        }
     } catch(E) {
         alert('Error in hold_details.js, fetch_hold(): ' + E);
     }
@@ -101,28 +106,6 @@ function init_list() {
             'map_row_to_columns' : circ.util.std_map_row_to_columns(),
             'retrieve_row' : function(params) {
                 var row = params.row;
-                try {
-                    switch(row.my.ahr.hold_type()) {
-                        case 'M' :
-                            row.my.mvr = g.network.request(
-                                api.MODS_SLIM_METARECORD_RETRIEVE.app,
-                                api.MODS_SLIM_METARECORD_RETRIEVE.method,
-                                [ row.my.ahr.target() ]
-                            );
-                        break;
-                        default:
-                            row.my.mvr = g.network.simple_request(
-                                'MODS_SLIM_RECORD_RETRIEVE.authoritative',
-                                [ row.my.ahr.target() ]
-                            );
-                            if (row.my.ahr.current_copy()) {
-                                row.my.acp = g.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]);
-                            }
-                        break;
-                    }
-                } catch(E) {
-                    g.error.sdump('D_ERROR','retrieve_row: ' + E );
-                }
                 if (typeof params.on_retrieve == 'function') {
                     params.on_retrieve(row);
                 }
@@ -139,6 +122,10 @@ function a_list_of_one() {
             'row' : {
                 'my' : {
                     'ahr' : g.ahr,
+                    'acp' : g.blob.copy,
+                    'acn' : g.blob.volume,
+                    'mvr' : g.blob.mvr,
+                    'blob' : g.blob
                 }
             },
             'no_auto_select' : true,
