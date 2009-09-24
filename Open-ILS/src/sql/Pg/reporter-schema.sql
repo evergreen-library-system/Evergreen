@@ -158,8 +158,8 @@ SELECT	r.id,
 	FIRST(author.value) AS author,
 	publisher.value AS publisher,
 	SUBSTRING(pubdate.value FROM $$\d+$$) AS pubdate,
-	ARRAY_ACCUM( SUBSTRING(isbn.value FROM $$^\S+$$) ) AS isbn,
-	ARRAY_ACCUM( SUBSTRING(issn.value FROM $$^\S+$$) ) AS issn
+	ARRAY_ACCUM( DISTINCT SUBSTRING(isbn.value FROM $$^\S+$$) ) AS isbn,
+	ARRAY_ACCUM( DISTINCT SUBSTRING(issn.value FROM $$^\S+$$) ) AS issn
   FROM	biblio.record_entry r
 	LEFT JOIN metabib.full_rec title ON (r.id = title.record AND title.tag = '245' AND title.subfield = 'a')
 	LEFT JOIN metabib.full_rec author ON (r.id = author.record AND author.tag IN ('100','110','111') AND author.subfield = 'a')
