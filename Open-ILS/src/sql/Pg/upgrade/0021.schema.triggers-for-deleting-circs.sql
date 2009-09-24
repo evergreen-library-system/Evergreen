@@ -1,5 +1,3 @@
-U    Open-ILS/src/sql/Pg/110.hold_matrix.sql
-
 BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0021');
