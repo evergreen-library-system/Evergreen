@@ -24,6 +24,7 @@ patron.search_result.prototype = {
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
+        var obscure_dob = String( obj.OpenILS.data.hash.aous['circ.obscure_dob'] ) == 'true';
 
 		JSAN.use('util.list'); obj.list = new util.list('patron_list');
 
@@ -35,7 +36,7 @@ patron.search_result.prototype = {
 				'family_name' : { 'hidden' : 'false' },
 				'first_given_name' : { 'hidden' : 'false' },
 				'second_given_name' : { 'hidden' : 'false' },
-				'dob' : { 'hidden' : 'false' }
+				'dob' : { 'hidden' : obscure_dob }
 			},
 			{
 				'except_these' : [

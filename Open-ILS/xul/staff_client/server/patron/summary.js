@@ -28,6 +28,7 @@ patron.summary.prototype = {
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
+        var obscure_dob = String( obj.OpenILS.data.hash.aous['circ.obscure_dob'] ) == 'true';
 
 		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
@@ -318,7 +319,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
                                 var hide_value = e.getAttribute('hide_value');
-                                if ( hide_value == 'true' ) {
+                                if ( obscure_dob && hide_value == 'true' ) {
                                     e.setAttribute( 'hidden_value',
                                         obj.patron.dob() ?
                                         obj.patron.dob().substr(0,10) :
@@ -340,7 +341,11 @@ patron.summary.prototype = {
                                 var x = document.getElementById('PatronSummaryContact_date_of_birth_label');
                                 if (x) {
                                     var click_to_hide_dob = x.getAttribute('click_to_hide_dob');
-                                    if (click_to_hide_dob == 'true') {
+                                    if (!obscure_dob || click_to_hide_dob != 'true') {
+                                        removeCSSClass(x,'click_link');
+                                    } 
+                                    if (obscure_dob && click_to_hide_dob == 'true') {
+                                        addCSSClass(x,'click_link');
                                         x.onclick = function() {
                                             hide_value = e.getAttribute('hide_value');
                                             e.setAttribute('hide_value', hide_value == 'true' ? 'false' : 'true'); 

@@ -1825,7 +1825,12 @@ INSERT into config.org_unit_setting_type
 ( 'circ.max_patron_claim_return_count',
     'Max Patron Claims Returned Count',
     'When this count is exceeded, a staff override is required to mark the item as claims returned',
-    'integer' );
+    'integer' ),
+
+( 'circ.obscure_dob',
+    'Obscure the Date of Birth field',
+    'When true, the Date of Birth column in patron lists will default to Not Visible, and in the Patron Summary sidebar the value will display as <Hidden> unless the field label is clicked.',
+    'bool' );
 
 -- Org_unit_setting_type(s) that need an fm_class:
 INSERT into config.org_unit_setting_type

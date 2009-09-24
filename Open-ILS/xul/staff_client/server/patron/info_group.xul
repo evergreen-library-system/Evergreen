@@ -64,6 +64,7 @@
 		function tree_init() {
 				JSAN.use('OpenILS.data'); g.OpenILS = {}; 
 				g.OpenILS.data = new OpenILS.data(); g.OpenILS.data.init({'via':'stash'});
+                var obscure_dob = String( g.OpenILS.data.hash.aous['circ.obscure_dob'] ) == 'true';
 
 				JSAN.use('util.list'); g.list = new util.list('patron_list');
 
@@ -75,7 +76,7 @@
 						'family_name' : { 'hidden' : 'false' },
 						'first_given_name' : { 'hidden' : 'false' },
 						'second_given_name' : { 'hidden' : 'false' },
-						'dob' : { 'hidden' : 'false' },
+						'dob' : { 'hidden' : obscure_dob },
 						'master_account' : { 'hidden' : 'false' },
 					}
 				);
