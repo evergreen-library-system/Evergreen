@@ -10,7 +10,7 @@
 
 ${LIBTOOLIZE} --force --copy
 ${ACLOCAL}
-${AUTOMAKE} --add-missing
+${AUTOMAKE} --add-missing --copy
 
 
 ${AUTOCONF}
