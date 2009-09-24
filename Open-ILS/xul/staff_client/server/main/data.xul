@@ -8,10 +8,6 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!-- xulrunner 1.9 doesn't like this mixing of chrome and remote
-<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
-<?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
--->
 <!-- Load these just to cache them -->
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
