@@ -83,9 +83,6 @@
                     <column/>
                 </columns>
                 <rows>
-                    <row hidden="true">
-                        <description id="patron_standing" />
-                    </row>
                     <row id="pdsgr1">
                         <description id="patron_profile" class="profile value"/>
                     </row>

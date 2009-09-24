@@ -19,15 +19,6 @@
 		<caption id="psagbc" label="&staff.patron.summary_overlay.psagbc.alert.label;" class="shrinkable_groupbox"/>
 		<description id="patron_alert"/>
 	</groupbox>
-	<groupbox id="PatronSummaryStanding_groupbox" flex="0" class="standing">
-		<caption id="pssgbc" label="&staff.patron.summary_overlay.pssgbc.standing.label;" class="shrinkable_groupbox"/>
-        <vbox id="pssgbvb">
-            <grid><columns><column/><column/></columns>
-                <rows id="patron_standing_penalties"/>
-            </grid>
-        </vbox>
-        <spacer/>
-	</groupbox>
 	<groupbox id="PatronSummaryStatus_groupbox" flex="0" class="status"/>
 	<!--
 	<groupbox id="PatronSummarySurvey_groupbox" flex="0">
