@@ -10,3 +10,7 @@
 
 groupbox.standing { max-height: 7em; min-height: 7em; }
 groupbox.standing vbox { max-height: 5em; min-height: 5em; overflow: auto }
+
+.subgroup.label { border-left: solid thin gray; border-top: solid thin gray; border-bottom: solid thin gray; }
+.subgroup.value { }
+

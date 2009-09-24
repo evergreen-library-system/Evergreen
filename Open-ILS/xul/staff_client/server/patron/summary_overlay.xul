@@ -74,9 +74,9 @@
 				value="&staff.patron_display.holds.label;" />
 			<description id="patron_holds" class="holds value"/>
 		</row><row>
-			<label id="PatronSummaryStatus_holds_available_label" class="text_right holds_ready label"
-				value="&staff.patron_display.holds_available.label;"  style="background: grey"/>
-			<description id="patron_holds_available" class="holds_ready label value" style="background: grey"/>
+			<label id="PatronSummaryStatus_holds_available_label" class="text_right holds_ready label subgroup"
+				value="&staff.patron_display.holds_available.label;"  />
+			<description id="patron_holds_available" class="holds_ready value subgroup" />
 		</row>
 		<row id="pdsgr2" class="hide_patron_credit" hidden="true">
 			<label id="PatronSummaryStatus_credit_label" class="text_left credit label"
@@ -93,17 +93,17 @@
 			<description id="patron_checkouts" class="items_out value"/>
 		</row>
 		<row>
-			<label id="PatronSummaryStatus_checkouts_overdue_label" class="text_right items_overdue label"
-				value="&staff.patron_display.checkouts_overdue.label;" style="background: grey"/>
-			<description id="patron_overdue" class="items_overdue value" style="background: grey"/>
+			<label id="PatronSummaryStatus_checkouts_overdue_label" class="text_right items_overdue label subgroup"
+				value="&staff.patron_display.checkouts_overdue.label;" />
+			<description id="patron_overdue" class="items_overdue value subgroup" />
 		</row>
 		<row id="pdsgr5">
-			<label id="PatronSummaryStatus_long_overdue_label" value="&staff.patron.summary_overlay.overdue.value;" class="text_right items_long_overdue label" style="background: grey"/>
-			<description id="patron_long_overdue" class="items_long_overdue value" style="background: grey"/>
+			<label id="PatronSummaryStatus_long_overdue_label" value="&staff.patron.summary_overlay.overdue.value;" class="text_right items_long_overdue label subgroup" />
+			<description id="patron_long_overdue" class="items_long_overdue value subgroup" />
 		</row>
 		<row id="pdsgr7">
-			<label id="PatronSummaryStatus_claimed_returned_label" value="&staff.patron.summary_overlay.claimed_returned.value;" class="text_right items_long_overdue label" style="background: grey"/>
-			<description id="patron_claimed_returned" class="items_claimed_returned value" style="background: grey"/>
+			<label id="PatronSummaryStatus_claimed_returned_label" value="&staff.patron.summary_overlay.claimed_returned.value;" class="text_right items_long_overdue label subgroup" />
+			<description id="patron_claimed_returned" class="items_claimed_returned value subgroup" />
 		</row>
 		<row id="pdsgr6">
 			<label id="PatronSummaryStatus_lost_label" value="&staff.patron.summary_overlay.lost_label.value;" class="text_left items_lost label"/>
