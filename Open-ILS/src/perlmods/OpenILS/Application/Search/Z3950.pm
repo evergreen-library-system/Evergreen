@@ -94,7 +94,6 @@ sub query_services {
 # -------------------------------------------------------------------
 sub fetch_service_defs {
 
-    $sclient = OpenSRF::Utils::SettingsClient->new();
     my $hash = $sclient->config_value('z3950', 'services');
 
     # overlay config file values with in-db values
@@ -159,7 +158,7 @@ sub fetch_service_defs {
 # Load the pre-defined Z server configs
 # -------------------------------------------------------------------
 sub child_init {
-    fetch_service_defs();
+    $sclient = OpenSRF::Utils::SettingsClient->new();
     $default_service = $sclient->config_value("z3950", "default" );
 }
 
@@ -168,6 +167,8 @@ sub child_init {
 # High-level class based search. 
 # -------------------------------------------------------------------
 sub do_class_search {
+
+    	fetch_service_defs() unless (scalar(keys(%services)));
 
 	my $self			= shift;
 	my $conn			= shift;
@@ -249,6 +250,8 @@ sub do_class_search {
 # -------------------------------------------------------------------
 sub do_service_search {
 
+    	fetch_service_defs() unless (scalar(keys(%services)));
+
 	my $self			= shift;
 	my $conn			= shift;
 	my $auth			= shift;
@@ -271,6 +274,8 @@ sub do_service_search {
 # data must be provided to this method
 # -------------------------------------------------------------------
 sub do_search {
+
+    	fetch_service_defs() unless (scalar(keys(%services)));
 
 	my $self	= shift;
 	my $conn	= shift;
@@ -344,6 +349,9 @@ sub do_search {
 # and mvr objects
 # -------------------------------------------------------------------
 sub process_results {
+
+    	fetch_service_defs() unless (scalar(keys(%services)));
+
 	my $results	= shift;
 	my $limit	= shift || 10;
 	my $offset	= shift || 0;
@@ -419,6 +427,8 @@ sub process_results {
 # Compiles the class based search query
 # -------------------------------------------------------------------
 sub compile_query {
+
+    	fetch_service_defs() unless (scalar(keys(%services)));
 
 	my $seperator	= shift;
 	my $service		= shift;
