@@ -83,7 +83,7 @@ if ($daemon) {
 
 DAEMON:
 
-$dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
+$dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_expand_array => 0, pg_enable_utf8 => 1, RaiseError => 1});
 
 $current_time = DateTime->from_epoch( epoch => time() )->strftime('%FT%T%z');
 
@@ -156,7 +156,7 @@ for my $r ( @reports ) {
 	# This is the child (runner) process;
 	daemonize("Clark Kent reporting: $r->{report}->{name}");
 
-	$dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
+	$dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_expand_array => 0, pg_enable_utf8 => 1, RaiseError => 1});
 
 	try {
 		$dbh->do(<<'		SQL',{}, $r->{id});
