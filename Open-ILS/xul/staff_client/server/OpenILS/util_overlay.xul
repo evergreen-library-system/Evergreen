@@ -11,7 +11,28 @@
 		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
 		<script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
 		<script type="text/javascript" src="/xul/server/main/constants.js" />
-		<script type="text/javascript" src="/xul/server/util/clipboard.js" />
+		<script type="text/javascript" src="/xul/server/OpenILS/data.js" />
+        <script type="text/javascript" src="/xul/server/util/barcode.js" />
+        <script type="text/javascript" src="/xul/server/util/browser.js" />
+        <script type="text/javascript" src="/xul/server/util/clipboard.js" />
+        <script type="text/javascript" src="/xul/server/util/controller.js" />
+        <script type="text/javascript" src="/xul/server/util/date.js" />
+        <script type="text/javascript" src="/xul/server/util/date.js" />
+        <script type="text/javascript" src="/xul/server/util/deck.js" />
+        <script type="text/javascript" src="/xul/server/util/error.js" />
+        <script type="text/javascript" src="/xul/server/util/exec.js" />
+        <script type="text/javascript" src="/xul/server/util/file.js" />
+        <script type="text/javascript" src="/xul/server/util/fm_utils.js" />
+        <script type="text/javascript" src="/xul/server/util/functional.js" />
+        <script type="text/javascript" src="/xul/server/util/list.js" />
+        <script type="text/javascript" src="/xul/server/util/money.js" />
+        <script type="text/javascript" src="/xul/server/util/mozilla.js" />
+        <script type="text/javascript" src="/xul/server/util/network.js" />
+        <script type="text/javascript" src="/xul/server/util/print.js" />
+        <script type="text/javascript" src="/xul/server/util/sound.js" />
+        <script type="text/javascript" src="/xul/server/util/text.js" />
+        <script type="text/javascript" src="/xul/server/util/widgets.js" />
+        <script type="text/javascript" src="/xul/server/util/window.js" />
 		<script type="text/javascript" src="/opac/common/js/utils.js" />
 		<script type="text/javascript" src="/opac/common/js/CGI.js" />
 		<script type="text/javascript" src="/opac/common/js/md5.js" />
