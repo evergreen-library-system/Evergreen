@@ -318,6 +318,30 @@ util.widgets.set_text = function(n,t) {
 	}
 }
 
+util.widgets.get_text = function(n) {
+	n = util.widgets.get(n);
+	switch(n.nodeName) {
+		case 'button' :
+		case 'caption' :
+			return n.getAttribute('label');
+		break;
+		case 'label' : 
+			return n.getAttribute('value'); 
+		break;
+		case 'description' : 
+		case 'H1': case 'H2': case 'H3': case 'H4': case 'SPAN': case 'P': case 'BLOCKQUOTE':
+			return n.textContent;
+		break;
+		case 'textbox' :
+			return n.value;
+		break;
+		default:
+			alert("FIXME: util.widgets.get_text doesn't know how to handle " + n.nodeName);
+            return null;
+		break;
+	}
+}
+
 util.widgets.save_attributes = function (file,ids_attrs) {
 	try {
 		var blob = {};
