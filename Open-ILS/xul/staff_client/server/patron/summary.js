@@ -9,6 +9,7 @@ patron.summary = function (params) {
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.window'); this.window = new util.window();
 	JSAN.use('util.network'); this.network = new util.network();
+    JSAN.use('util.widgets');
 	this.w = window;
 }
 
@@ -40,14 +41,8 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() {
-								JSAN.use('util.widgets');
-								util.widgets.remove_children( e );
+								util.widgets.set_text( e, obj.patron.alert_message() || '' );
 								if (obj.patron.alert_message()) {
-									e.appendChild(
-										document.createTextNode(
-											obj.patron.alert_message()
-										)
-									);
 									e.parentNode.hidden = false;
 								} else {
 									e.parentNode.hidden = true;
@@ -59,7 +54,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() {
-								e.setAttribute('value',obj.patron.usrname());
+								util.widgets.set_text(e,obj.patron.usrname());
 							};
 						}
 					],
@@ -67,7 +62,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.OpenILS.data.hash.pgt[
 										obj.patron.profile()
 									].name()
@@ -79,7 +74,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									patronStrings.getString('staff.patron.summary.patron_net_access') + 
 									' ' + obj.OpenILS.data.hash.cnal[
 										obj.patron.net_access_level()
@@ -92,13 +87,12 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() {
-								JSAN.use('util.widgets');
 								util.widgets.remove_children(e);
 								var penalties = obj.patron.standing_penalties();
                                 if (penalties.length == 0) {
 									var row = document.createElement('row');
 									var label = document.createElement('label');
-                                    label.setAttribute('value',patronStrings.getString('staff.patron.summary.standing_penalty.none'));
+                                    util.widgets.set_text(label,patronStrings.getString('staff.patron.summary.standing_penalty.none'));
                                     addCSSClass(label,'NO_PENALTY');
 									row.appendChild(label);
 									e.appendChild(row);
@@ -108,8 +102,8 @@ patron.summary.prototype = {
 									var row = document.createElement('row');
 									var label = document.createElement('label');
 
-									//x.setAttribute('value',penalties[i].penalty_type());
-									label.setAttribute('value',penalties[i].standing_penalty().label());
+									//util.widgets.set_text(e,penalties[i].penalty_type());
+									util.widgets.set_text(label,penalties[i].standing_penalty().label());
 									row.appendChild(label);
 
     								var button = document.createElement('button');
@@ -174,7 +168,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								JSAN.use('util.money');
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									'$' + 
 									util.money.sanitize(
 										obj.patron.credit_forward_balance()
@@ -187,12 +181,12 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value','...');
+								util.widgets.set_text(e,'...');
                                 var under_btn; 
                                 if (xulG) {
                                     if (xulG.display_window) {
                                         under_btn = xulG.display_window.document.getElementById('under_bills');
-                                        if (under_btn) under_btn.setAttribute('value','...');
+                                        if (under_btn) util.widgets.set_text(under_btn,'...');
                                     }
                                 }
 								obj.network.simple_request(
@@ -201,8 +195,8 @@ patron.summary.prototype = {
 									function(req) {
 										JSAN.use('util.money');
 										var robj = req.getResultObject();
-										e.setAttribute('value', patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
-										if (under_btn) under_btn.setAttribute('value', 
+										util.widgets.set_text(e, patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
+										if (under_btn) util.widgets.set_text(under_btn, 
                                             patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
 									}
 								);
@@ -214,7 +208,7 @@ patron.summary.prototype = {
 										JSAN.use('util.money');
 										var list = req.getResultObject();
 										if (typeof list.ilsevent != 'undefined') {
-											e.setAttribute('value', '??? See Bills');
+											util.widgets.set_text(e, '??? See Bills');
 											return;
 										}
 										var sum = 0;
@@ -224,7 +218,7 @@ patron.summary.prototype = {
 										} 
 										if (sum > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
 										JSAN.use('util.money');
-										e.setAttribute('value', '$' + util.money.sanitize( util.money.cents_as_dollars( sum ) ));
+										util.widgets.set_text(e, '$' + util.money.sanitize( util.money.cents_as_dollars( sum ) ));
 									}
 								);
 								*/
@@ -235,17 +229,17 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value','...');
-								var e2 = document.getElementById( 'patron_overdue' ); if (e2) e2.setAttribute('value','...');
-								var e3 = document.getElementById( 'patron_claimed_returned' ); if (e3) e3.setAttribute('value','...');
-								var e4 = document.getElementById( 'patron_long_overdue' ); if (e4) e4.setAttribute('value','...');
-								var e5 = document.getElementById( 'patron_lost' ); if (e5) e5.setAttribute('value','...');
-								var e6 = document.getElementById( 'patron_noncat' ); if (e6) e6.setAttribute('value','...');
+								util.widgets.set_text(e,'...');
+								var e2 = document.getElementById( 'patron_overdue' ); if (e2) util.widgets.set_text(e2,'...');
+								var e3 = document.getElementById( 'patron_claimed_returned' ); if (e3) util.widgets.set_text(e3,'...');
+								var e4 = document.getElementById( 'patron_long_overdue' ); if (e4) util.widgets.set_text(e4,'...');
+								var e5 = document.getElementById( 'patron_lost' ); if (e5) util.widgets.set_text(e5,'...');
+								var e6 = document.getElementById( 'patron_noncat' ); if (e6) util.widgets.set_text(e6,'...');
                                 var under_btn; 
                                 if (xulG) {
                                     if (xulG.display_window) {
                                         under_btn = xulG.display_window.document.getElementById('under_items');
-                                        if (under_btn) under_btn.setAttribute('value','...');
+                                        if (under_btn) util.widgets.set_text(under_btn,'...');
                                     }
                                 }
 								obj.network.simple_request(
@@ -254,12 +248,12 @@ patron.summary.prototype = {
 									function(req) {
 										try {
 											var robj = req.getResultObject();
-											e.setAttribute('value', robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
-											if (e2) e2.setAttribute('value', robj.overdue	);
-											if (e3) e3.setAttribute('value', robj.claims_returned	);
-											if (e4) e4.setAttribute('value', robj.long_overdue	);
-											if (e5) e5.setAttribute('value', robj.lost	);
-                                            if (under_btn) under_btn.setAttribute('value', 
+											util.widgets.set_text(e, robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
+											if (e2) util.widgets.set_text(e2, robj.overdue	);
+											if (e3) util.widgets.set_text(e3, robj.claims_returned	);
+											if (e4) util.widgets.set_text(e4, robj.long_overdue	);
+											if (e5) util.widgets.set_text(e5, robj.lost	);
+                                            if (under_btn) util.widgets.set_text(under_btn, 
                                                 String( robj.out + robj.overdue + robj.claims_returned + robj.long_overdue) + 
                                                 ( robj.overdue > 0 ? '*' : '' )
                                             );
@@ -273,7 +267,7 @@ patron.summary.prototype = {
 									[ ses(), obj.patron.id() ],
 									function(req) {
 										var robj = req.getResultObject();
-										if (e6) e6.setAttribute('value',robj.length);
+										if (e6) util.widgets.set_text(e6,robj.length);
 									}
 								);
 							};
@@ -291,27 +285,27 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value','...');
+								util.widgets.set_text(e,'...');
 								var e2 = document.getElementById('patron_holds_available');
-								if (e2) e2.setAttribute('value','...');
+								if (e2) util.widgets.set_text(e2,'...');
                                 var under_btn; 
                                 if (xulG) {
                                     if (xulG.display_window) {
                                         under_btn = xulG.display_window.document.getElementById('under_holds');
-                                        if (under_btn) under_btn.setAttribute('value','...');
+                                        if (under_btn) util.widgets.set_text(under_btn,'...');
                                     }
                                 }
 								obj.network.simple_request(
 									'FM_AHR_COUNT_RETRIEVE.authoritative',
 									[ ses(), obj.patron.id() ],
 									function(req) {
-										e.setAttribute('value',
+										util.widgets.set_text(e,
 											req.getResultObject().total
 										);
-										if (e2) e2.setAttribute('value',
+										if (e2) util.widgets.set_text(e2,
 											req.getResultObject().ready
 										);
-                                        if (under_btn) under_btn.setAttribute( 'value', req.getResultObject().ready + '/' + req.getResultObject().total );
+                                        if (under_btn) util.widgets.set_text(under_btn, req.getResultObject().ready + '/' + req.getResultObject().total );
 									}
 								);
 							};
@@ -329,7 +323,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.card().barcode()
 								);
 							};
@@ -344,7 +338,7 @@ patron.summary.prototype = {
 									obj.patron.ident_type()
 								];
 								if (ident) ident_string = ident.name()
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									ident_string
 								);
 							};
@@ -356,7 +350,7 @@ patron.summary.prototype = {
 							return function() { 
 								var val = obj.patron.ident_value();
 								val = val.replace(/.+(\d\d\d\d)$/,'xxxx$1');
-								e.setAttribute('value', val);
+								util.widgets.set_text(e, val);
 							};
 						}
 					],
@@ -369,7 +363,7 @@ patron.summary.prototype = {
 									obj.patron.ident_type2()
 								];
 								if (ident) ident_string = ident.name()
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									ident_string
 								);
 							};
@@ -381,7 +375,7 @@ patron.summary.prototype = {
 							return function() { 
 								var val = obj.patron.ident_value2();
 								val = val.replace(/.+(\d\d\d\d)$/,'xxxx$1');
-								e.setAttribute('value', val);
+								util.widgets.set_text(e, val);
 							};
 						}
 					],
@@ -389,7 +383,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									patronStrings.getString('staff.patron.summary.expires_on') + ' ' + (
 										obj.patron.expire_date() ?
 										obj.patron.expire_date().substr(0,10) :
@@ -404,14 +398,25 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
                                 var hide_value = e.getAttribute('hide_value');
-								e.setAttribute( hide_value == 'true' ? 'hidden_value' : 'value',
-									obj.patron.dob() ?
-									obj.patron.dob().substr(0,10) :
-                                    patronStrings.getString('staff.patron.field.unset') 
-								);
-                                e.setAttribute( hide_value == 'false' ? 'hidden_value' : 'value',
-                                    patronStrings.getString('staff.patron.field.hidden') 
-                                );
+                                if ( hide_value == 'true' ) {
+                                    e.setAttribute( 'hidden_value',
+                                        obj.patron.dob() ?
+                                        obj.patron.dob().substr(0,10) :
+                                        patronStrings.getString('staff.patron.field.unset') 
+                                    );
+                                    util.widgets.set_text(e,
+                                        patronStrings.getString('staff.patron.field.hidden') 
+                                    );
+                                } else {
+                                    util.widgets.set_text(e,
+                                        obj.patron.dob() ?
+                                        obj.patron.dob().substr(0,10) :
+                                        patronStrings.getString('staff.patron.field.unset') 
+                                    );
+                                    e.setAttribute( 'hidden_value',
+                                        patronStrings.getString('staff.patron.field.hidden') 
+                                    );
+                                }
                                 var x = document.getElementById('PatronSummaryContact_date_of_birth_label');
                                 if (x) {
                                     var click_to_hide_dob = x.getAttribute('click_to_hide_dob');
@@ -419,9 +424,9 @@ patron.summary.prototype = {
                                         x.onclick = function() {
                                             hide_value = e.getAttribute('hide_value');
                                             e.setAttribute('hide_value', hide_value == 'true' ? 'false' : 'true'); 
-                                            var value = e.getAttribute('value');
+                                            var value = util.widgets.get_text(e);
                                             var hidden_value = e.getAttribute('hidden_value');
-                                            e.setAttribute('value',hidden_value);
+                                            util.widgets.set_text(e,hidden_value);
                                             e.setAttribute('hidden_value',value);
                                         }
                                     }
@@ -433,7 +438,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.day_phone()
 								);
 							};
@@ -443,7 +448,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.evening_phone()
 								);
 							};
@@ -453,7 +458,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.other_phone()
 								);
 							};
@@ -463,7 +468,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.email()
 								);
 							};
@@ -473,7 +478,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.alias()
 								);
 							};
@@ -493,7 +498,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.OpenILS.data.hash.aou[
 										obj.patron.home_ou()
 									].shortname()
@@ -510,7 +515,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.OpenILS.data.hash.aou[
 										obj.patron.home_ou()
 									].shortname()
@@ -527,7 +532,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.mailing_address().street1()
 								);
 								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
@@ -538,7 +543,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.mailing_address().street2()
 								);
 								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
@@ -549,7 +554,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.mailing_address().city()
 								);
 								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
@@ -560,7 +565,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.mailing_address().state()
 								);
 								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
@@ -571,7 +576,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.mailing_address().post_code()
 								);
 								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
@@ -582,7 +587,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.billing_address().street1()
 								);
 								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
@@ -593,7 +598,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.billing_address().street2()
 								);
 								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
@@ -604,7 +609,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.billing_address().city()
 								);
 								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
@@ -615,7 +620,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.billing_address().state()
 								);
 								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
@@ -626,7 +631,7 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
+								util.widgets.set_text(e,
 									obj.patron.billing_address().post_code()
 								);
 								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
@@ -666,7 +671,6 @@ patron.summary.prototype = {
 			}
 			//alert('shrink_state retrieved as ' + shrink_state);
 			if (shrink_state != 'false' && shrink_state) {
-				JSAN.use('util.widgets');
 				//alert('clicking the widget');
 				util.widgets.click( arrow );
 			}
@@ -706,7 +710,7 @@ patron.summary.prototype = {
 
 								obj.patron = robj;
 								JSAN.use('patron.util');
-								document.getElementById('patron_name').setAttribute('value',
+								util.widgets.set_text('patron_name',
 									( obj.patron.prefix() ? obj.patron.prefix() + ' ' : '') + 
 									obj.patron.family_name() + ', ' + 
 									obj.patron.first_given_name() + ' ' +
