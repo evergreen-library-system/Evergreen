@@ -1508,14 +1508,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="org_unit" oils_persist:virtual="true" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
-			<link field="org_unit" reltype="might_have" key="id" map="" class="aou"/>
+			<link field="id" reltype="might_have" key="id" map="" class="aou"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_HOURS_OF_OPERATION" context_field="org_unit"/>
+                <create permission="CREATE_HOURS_OF_OPERATION" context_field="id"/>
                 <retrieve/>
-                <update permission="UPDATE_HOURS_OF_OPERATION" context_field="org_unit"/>
-                <delete permission="DELETE_HOURS_OF_OPERATION" context_field="org_unit"/>
+                <update permission="UPDATE_HOURS_OF_OPERATION" context_field="id"/>
+                <delete permission="DELETE_HOURS_OF_OPERATION" context_field="id"/>
             </actions>
         </permacrud>
 	</class>
