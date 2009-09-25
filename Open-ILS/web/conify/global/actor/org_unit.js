@@ -42,7 +42,7 @@ var ses = cookieManager.read('ses') || cgi.param('ses');
 var pCRUD = new OpenSRF.ClientSession('open-ils.pcrud');
 var pcrud = new openils.PermaCrud({ authtoken : ses });
 
-var current_ou, current_ou_hoo, ou_list_store
+var current_ou, current_ou_hoo, ou_list_store, hoo_id;
 var dirtyStore = [];
 var virgin_ou_id = -1;
 
@@ -65,7 +65,7 @@ function save_org () {
 	var modified_ou = new aou().fromStoreItem( current_ou );
 	modified_ou.ischanged( 1 );
 
-    pcrud.apply( modified_ou, {
+	pcrud.update( modified_ou, {
         timeout : 10, // makes it synchronous
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
@@ -87,46 +87,33 @@ function save_org () {
 }
 	
 function hoo_load () {
-	// empty result not coming through ...
-	current_ou_hoo = new aouhoo().fromHash({id:ou_list_store.getValue( current_ou, 'id' )});
-	current_ou_hoo.isnew(1);
+	save_hoo_button.disabled = false;
 
-	pCRUD.request({
-		method : 'open-ils.pcrud.retrieve.aouhoo',
-		params : [ ses, ou_list_store.getValue( current_ou, 'id' ) ],
-		onerror : function (r) { 
-			throw dojo.string.substitute(aou_strings.ERROR_FETCHING_HOURS, [ou_list_store.getValue( current_ou, 'name' )]);
-		},
-		oncomplete : function (r) {
-			current_ou_hoo = null;
-
-			var res = r.recv();
-			if (res) {
-				if (res.content()) current_ou_hoo = res.content();
-			}
-
-			if (!current_ou_hoo) {
-				current_ou_hoo = new aouhoo().fromHash({id:ou_list_store.getValue( current_ou, 'id' )});
-				current_ou_hoo.isnew(1);
-				for (var i = 0; i < 7; i++) {
-					current_ou_hoo['dow_' + i + '_open']('09:00:00');
-					current_ou_hoo['dow_' + i + '_close']('17:00:00');
-				}
-			}
-
-			for (var i = 0; i < 7; i++) {
-				window['dow_' + i + '_open'].setValue(
-					dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_open']() )
-				);
-				window['dow_' + i + '_close'].setValue(
-					dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_close']() )
-				);
-			}
-
-			highlighter.hoo_pane.green.play();
+	hoo_id = pcrud.search( 'aouhoo',{id:ou_list_store.getValue( current_ou, 'id' )});
+	if (hoo_id.length == 0) {
+		current_ou_hoo = new aouhoo().fromHash({id:ou_list_store.getValue( current_ou, 'id' )});
+		for (var i = 0; i < 7; i++) {
+			current_ou_hoo['dow_' + i + '_open']('09:00:00');
+			current_ou_hoo['dow_' + i + '_close']('17:00:00');
 		}
-	}).send();
+	} else {
+		current_ou_hoo = pcrud.retrieve( 'aouhoo', ou_list_store.getValue( current_ou, 'id' ), {
+			onerror : function (r) {
+				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_HOURS,[ou_list_store.getValue( current_ou, 'name' )]);
+			}
+		});
+	}
 
+	for (var i = 0; i < 7; i++) {
+		window['dow_' + i + '_open'].setValue(
+			dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_open']() )
+		);
+		window['dow_' + i + '_close'].setValue(
+			dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_close']() )
+		);
+	}
+
+	highlighter.hoo_pane.green.play();
 }
 
 function addr_load () {
