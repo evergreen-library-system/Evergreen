@@ -353,47 +353,37 @@
 										var modified_ou = new aou().fromStoreItem( current_ou );
 										modified_ou.isdeleted( 1 );
 	
-										pCRUD.request({
-											method : 'open-ils.pcrud.delete.aou',
+										pcrud.eliminate( modified_ou, {
 											timeout : 10,
-											params : [ ses, modified_ou ],
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
 												status_update(dojo.string.substitute(aou_strings.ERROR_DELETING, [old_name]));
 											},
 											oncomplete : function (r) {
-												var res = r.recv();
-												if ( res && res.content() ) {
-	
-													ou_list_store.fetch({
-														query : { id : ou_list_store.getValue( current_ou, 'id' ) },
-														queryOptions : { deep : true },
-														onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-														scope : ou_list_store
-													});
-	
-													current_ou = null;
-	
-													new_kid_button.disabled = true;
-													save_ou_button.disabled = true;
-													delete_ou_button.disabled = true;
-			
-													var main_settings_fields = [ 'name', 'shortname', 'email', 'phone', 'ou_type', 'parent_ou' ];
-													for ( var i in main_settings_fields ) {
-														var field = main_settings_fields[i];
-														window["editor_pane_" + field].setValue( '' ); // unset the value
-														window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
-													}
-			
-													highlighter.editor_pane.green.play();
-													status_update(dojo.string.substitute(aou_strings.STATUS_DELETED, [old_name]));
-												} else {
-													highlighter.editor_pane.red.play();
-													status_update(dojo.string.substitute(aou_strings.ERROR_DELETING, [old_name]));
+												ou_list_store.fetch({
+													query : { id : ou_list_store.getValue( current_ou, 'id' ) },
+													queryOptions : { deep : true },
+													onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+													scope : ou_list_store
+												});
+
+												current_ou = null;
+
+												new_kid_button.disabled = true;
+												save_ou_button.disabled = true;
+												delete_ou_button.disabled = true;
+
+												var main_settings_fields = [ 'name', 'shortname', 'email', 'phone', 'ou_type', 'parent_ou' ];
+												for ( var i in main_settings_fields ) {
+													var field = main_settings_fields[i];
+													window["editor_pane_" + field].setValue( '' ); // unset the value
+													window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
 												}
+
+												highlighter.editor_pane.green.play();
+												status_update(dojo.string.substitute(aou_strings.STATUS_DELETED, [old_name]));
 											}
-										}).send();
-	
+										});
 									}
 ]]>
 								</script>
@@ -418,10 +408,8 @@
 	
 								var new_obj;
 	
-								pCRUD.request({
-									method : 'open-ils.pcrud.create.aou',
+								pcrud.create( new_fm_obj, {
 									timeout : 10,
-									params : [ ses, new_fm_obj ],
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
 										status_update( aou_strings.ERROR_CREATING_CHILD_AOU );
@@ -437,8 +425,8 @@
 											highlighter.editor_pane.red.play();
 											status_update( aou_strings.ERROR_CREATING_CHILD_AOU );
 										}
-									},
-								}).send();
+									}
+								});
 	
 								highlighter.editor_pane.green.play();
 								highlighter.ou_tree.green.play();
@@ -490,30 +478,38 @@
 						</table>
 	
 						<button jsId="save_hoo_button" dojoType="dijit.form.Button" label="&conify.save_button.label;">
+                            <script type="dojo/connect" event="startup">
+                                this.disabled = true;
+                            </script>
 							<script type="dojo/connect" event="onClick">
 <![CDATA[
-								var method_name = 'open-ils.pcrud.update.aouhoo';
-								if (current_ou_hoo.isnew() == 1) method_name = 'open-ils.pcrud.create.aouhoo';
-	
-								pCRUD.request({
-									method : method_name,
-									params : [ ses, current_ou_hoo ],
-									onerror : function (r) {
-										highlighter.editor_pane.red.play();
-										status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
-									},
-									oncomplete : function (r) {
-										var res = r.recv();
-										if ( res && res.content() ) {
-											current_ou_hoo.isnew(0);
-											highlighter.editor_pane.green.play();
-											status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
-										} else {
-											highlighter.editor_pane.red.play();
+								if (hoo_id.length == 0) {
+									pcrud.create( current_ou_hoo, {
+										timeout : 10,
+										onerror : function (r) {
+											highlighter.hoo_pane.red.play();
 											status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
-										}
-									},
-								}).send();
+										},
+										oncomplete : function (r) {
+											hoo_id = pcrud.search( 'aouhoo',{id:ou_list_store.getValue( current_ou, 'id' )});
+											highlighter.hoo_pane.green.play();
+											status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
+										},
+									});
+								} else {
+									pcrud.update( current_ou_hoo, {
+										timeout : 10,
+										onerror : function (r) {
+											highlighter.hoo_pane.red.play();
+											status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
+										},
+										oncomplete : function (r) {
+											highlighter.hoo_pane.green.play();
+											status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
+										},
+									});
+								}
+	
 ]]>
 							</script>
 						</button>
