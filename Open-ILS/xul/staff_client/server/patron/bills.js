@@ -866,7 +866,6 @@ patron.bills.prototype = {
 							xact_type.appendChild( xt_value );
 
 					try {
-                    alert('my.mobts.xact_type() == ' + my.mobts.xact_type());
 					switch(my.mobts.xact_type()) {
 						case 'circulation':
 							xt_label.setAttribute( 'value', $("patronStrings").getString('staff.patron.bills.info_box.label_value.title') );
