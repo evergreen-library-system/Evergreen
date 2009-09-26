@@ -873,6 +873,7 @@ INSERT INTO config.billing_type (id, name, owner) VALUES
 
 SELECT SETVAL('config.billing_type_id_seq'::TEXT, 100);
 
+INSERT INTO config.billing_type (name, owner) VALUES ( oils_i18n_gettext('Misc', 'Misc', 'cbt', 'name'), 1);
 
 --006.data.permissions.sql:
 INSERT INTO permission.perm_list VALUES 
