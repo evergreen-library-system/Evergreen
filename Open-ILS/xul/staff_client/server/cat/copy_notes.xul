@@ -206,12 +206,12 @@
 		<groupbox flex="1" style="background-color: black;"/>
 		<groupbox flex="1" style="background-color: #FFDE00; -moz-border-radius-topright: 35px;" >
 			<hbox>
-				<description name="title" style="font-weight: bold"/>
+				<description name="title" class="copyable" style="font-weight: bold"/>
 				<spacer flex="1"/>
-				<description name="create_date" style="font-weight: bold"/>
-				<description name="pub" style="font-weight: bold"/>
+				<description name="create_date" class="copyable" style="font-weight: bold"/>
+				<description name="pub" class="copyable" style="font-weight: bold"/>
 			</hbox>
-			<description name="value"/>
+			<description class="copyable" name="value"/>
 		</groupbox>
 	</stack>
 

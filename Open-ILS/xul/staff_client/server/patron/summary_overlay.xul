@@ -14,7 +14,7 @@
 </box>
 
 <vbox id="patron_info_sidebar" flex="1">
-	<description id="patron_name" hidden="true" class="patronNameLarge"/>
+	<description id="patron_name" hidden="true" class="copyable patronNameLarge"/>
 	<groupbox id="PatronSummaryAlert_groupbox" flex="0" hidden="true" class="alert">
 		<caption id="psagbc" label="&staff.patron.summary_overlay.psagbc.alert.label;" class="shrinkable_groupbox"/>
 		<description id="patron_alert"/>
@@ -36,16 +36,16 @@
 			<description id="patron_standing" />
 		</row>
 		<row id="pdsgr1">
-			<description id="patron_profile" class="profile value"/>
+			<description id="patron_profile" class="copyable profile value"/>
 		</row>
 		<row id="pdsgr5">
-			<description id="patron_library" class="homelib value"/>
+			<description id="patron_library" class="copyable homelib value"/>
 		</row>
 		<row id="pdsgr5a">
-			<description id="patron_net_access" class="net_access value"/>
+			<description id="patron_net_access" class="copyable net_access value"/>
 		</row>
 		<row id="pdsgr5aa">
-			<description id="patron_date_of_exp" class="expire_date value"/>
+			<description id="patron_date_of_exp" class="copyable expire_date value"/>
 		</row>
 	</rows></grid>
 	<grid id="PatronSummaryStatus_grid" flex="1"/>
@@ -61,48 +61,48 @@
 	</columns>
 	<rows id="pdsgr" flex="1">
 		<row id="pdsgr4">
-			<label id="PatronSummaryStatus_holds_label" class="text_left holds label"
+			<label id="PatronSummaryStatus_holds_label" class="copyable text_left holds label"
 				value="&staff.patron_display.holds.label;" />
-			<description id="patron_holds" class="holds value"/>
+			<description id="patron_holds" class="copyable holds value"/>
 		</row><row>
-			<label id="PatronSummaryStatus_holds_available_label" class="text_right holds_ready label subgroup"
+			<label id="PatronSummaryStatus_holds_available_label" class="copyable text_right holds_ready label subgroup"
 				value="&staff.patron_display.holds_available.label;"  />
-			<description id="patron_holds_available" class="holds_ready value subgroup" />
+			<description id="patron_holds_available" class="copyable holds_ready value subgroup" />
 		</row>
 		<row id="pdsgr2" class="hide_patron_credit" hidden="true">
-			<label id="PatronSummaryStatus_credit_label" class="text_left credit label"
+			<label id="PatronSummaryStatus_credit_label" class="copyable text_left credit label"
 				value="&staff.patron_display.credit.label;" />
-			<description id="patron_credit" class="credit value"/>
+			<description id="patron_credit" class="copyable credit value"/>
 		</row><row>
-			<label id="PatronSummaryStatus_bills_label" class="text_left bill label"
+			<label id="PatronSummaryStatus_bills_label" class="copyable text_left bill label"
 				value="&staff.patron_display.bills.label;" />
-			<description id="patron_bill" class="bill value"/>
+			<description id="patron_bill" class="copyable bill value"/>
 		</row>
 		<row id="pdsgr3">
-			<label id="PatronSummaryStatus_checkouts_label" class="text_left items_out label"
+			<label id="PatronSummaryStatus_checkouts_label" class="copyable text_left items_out label"
 				value="&staff.patron_display.checkouts.label;" />
-			<description id="patron_checkouts" class="items_out value"/>
+			<description id="patron_checkouts" class="copyable items_out value"/>
 		</row>
 		<row>
-			<label id="PatronSummaryStatus_checkouts_overdue_label" class="text_right items_overdue label subgroup"
+			<label id="PatronSummaryStatus_checkouts_overdue_label" class="copyable text_right items_overdue label subgroup"
 				value="&staff.patron_display.checkouts_overdue.label;" />
-			<description id="patron_overdue" class="items_overdue value subgroup" />
+			<description id="patron_overdue" class="copyable items_overdue value subgroup" />
 		</row>
 		<row id="pdsgr5">
-			<label id="PatronSummaryStatus_long_overdue_label" value="&staff.patron.summary_overlay.overdue.value;" class="text_right items_long_overdue label subgroup" />
-			<description id="patron_long_overdue" class="items_long_overdue value subgroup" />
+			<label id="PatronSummaryStatus_long_overdue_label" value="&staff.patron.summary_overlay.overdue.value;" class="copyable text_right items_long_overdue label subgroup" />
+			<description id="patron_long_overdue" class="copyable items_long_overdue value subgroup" />
 		</row>
 		<row id="pdsgr7">
-			<label id="PatronSummaryStatus_claimed_returned_label" value="&staff.patron.summary_overlay.claimed_returned.value;" class="text_right items_long_overdue label subgroup" />
-			<description id="patron_claimed_returned" class="items_claimed_returned value subgroup" />
+			<label id="PatronSummaryStatus_claimed_returned_label" value="&staff.patron.summary_overlay.claimed_returned.value;" class="copyable text_right items_long_overdue label subgroup" />
+			<description id="patron_claimed_returned" class="copyable items_claimed_returned value subgroup" />
 		</row>
 		<row id="pdsgr6">
-			<label id="PatronSummaryStatus_lost_label" value="&staff.patron.summary_overlay.lost_label.value;" class="text_left items_lost label"/>
-			<description id="patron_lost" class="items_lost value"/>
+			<label id="PatronSummaryStatus_lost_label" value="&staff.patron.summary_overlay.lost_label.value;" class="copyable text_left items_lost label"/>
+			<description id="patron_lost" class="copyable items_lost value"/>
 		</row>
 		<row id="pdsgr6a">
-			<label id="PatronSummaryStatus_noncat_label" value="&staff.patron.summary_overlay.noncat_label.value;" class="text_left items_noncat label"/>
-			<description id="patron_noncat" class="items_noncat value"/>
+			<label id="PatronSummaryStatus_noncat_label" value="&staff.patron.summary_overlay.noncat_label.value;" class="copyable text_left items_noncat label"/>
+			<description id="patron_noncat" class="copyable items_noncat value"/>
 		</row>
 	</rows>
 </grid>
@@ -129,29 +129,29 @@
 	</columns>
 	<rows id="pdsgr" flex="1">
 		<row id="pdsgr0">
-			<label id="PatronSummaryContact_library_card_label" class="text_left card label"
+			<label id="PatronSummaryContact_library_card_label" class="copyable text_left card label"
 				value="&staff.patron_display.library_card.label;"/>
-			<description id="patron_card" class="card value click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
+			<description id="patron_card" class="copyable card value click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
 		</row>
 		<row id="pdsgr1">
-			<label id="PatronSummaryContact_ident_label" class="text_left"
+			<label id="PatronSummaryContact_ident_label" class="copyable text_left"
 				value="&staff.patron_display.ident1.label;"/>
 			<vbox id="pdsgr0h">
-				<description id="patron_ident_type_1" class="ident ident_type ident1 value"/>
-				<description id="patron_ident_value_1" class="ident ident_value ident1 value"/>
+				<description id="patron_ident_type_1" class="copyable ident ident_type ident1 value"/>
+				<description id="patron_ident_value_1" class="copyable ident ident_value ident1 value"/>
 			</vbox>
 		</row>
 		<row id="pdsgr2">
-			<label id="PatronSummaryContact_ident_label2" class="text_left"
+			<label id="PatronSummaryContact_ident_label2" class="copyable text_left"
 				value="&staff.patron_display.ident2.label;"/>
 			<vbox id="pdsgr0ah">
-				<description id="patron_ident_type_2" class="ident ident_type ident2 value"/>
-				<description id="patron_ident_value_2" class="ident ident_value ident2 value"/>
+				<description id="patron_ident_type_2" class="copyable ident ident_type ident2 value"/>
+				<description id="patron_ident_value_2" class="copyable ident ident_value ident2 value"/>
 			</vbox>
 		</row>
 		<row id="pdsgr3">
-            <label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
-            <description id="patron_date_of_birth" class="dob value" hide_value="true" oils_persist="hide_value"/>
+            <label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="copyable text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
+            <description id="patron_date_of_birth" class="copyable dob value" hide_value="true" oils_persist="hide_value"/>
 		</row>
 		<row id="pdsgr4"><label id="pdsgr4l" value=" "/></row>
 	</rows>
@@ -164,30 +164,30 @@
 	</columns>
 	<rows id="pdcgpr" flex="1">
 		<row id="pdcgpr1">
-			<label id="PatronSummaryContact_day_phone_label" class="text_left phone label day_phone"
+			<label id="PatronSummaryContact_day_phone_label" class="copyable text_left phone label day_phone"
 				value="&staff.patron_display.day_phone.label;" />
-			<description id="patron_day_phone" class="phone value day_phone"/> 
+			<description id="patron_day_phone" class="copyable phone value day_phone"/> 
 		</row>
 		<row id="pdcgpr2">
-			<label id="PatronSummaryContact_evening_phone_label" class="text_left phone label evening_phone"
+			<label id="PatronSummaryContact_evening_phone_label" class="copyable text_left phone label evening_phone"
 				value="&staff.patron_display.evening_phone.label;" />
-			<description id="patron_evening_phone" class="phone value evening_phone"/>
+			<description id="patron_evening_phone" class="copyable phone value evening_phone"/>
 		</row>
 		<row id="pdcgpr3">
-			<label id="PatronSummaryContact_other_phone_label" class="text_left phone label other_phone"
+			<label id="PatronSummaryContact_other_phone_label" class="copyable text_left phone label other_phone"
 				value="&staff.patron_display.other_phone.label;" />
-			<description id="patron_other_phone" class="phone value other_phone"/> 
+			<description id="patron_other_phone" class="copyable phone value other_phone"/> 
 		</row>
 		<row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
 		<row id="pdsgpr4a">
-			<label id="PatronSummaryContact_usrname_label" class="text_left usrname label"
+			<label id="PatronSummaryContact_usrname_label" class="copyable text_left usrname label"
 				value="&staff.patron.summary_overlay.opac_login.value;" />
-			<description id="patron_usrname" class="usrname value"/>
+			<description id="patron_usrname" class="copyable usrname value"/>
 		</row>
 		<row id="pdcgpr5">
-			<label id="PatronSummaryContact_email_label" class="text_left email label"
+			<label id="PatronSummaryContact_email_label" class="copyable text_left email label"
 				value="&staff.patron_display.email.label;" />
-			<description id="patron_email" class="email value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
+			<description id="patron_email" class="copyable email value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
 		</row>
 		<row id="pdsgpr6"><label id="pdsgpr6l" value=" "/></row>
 
@@ -196,31 +196,31 @@
 
 <groupbox id="PatronSummaryContact_mailing_address" orient="vertical">
 	<caption id="pdcmac" label="&staff.patron_display.mailing_address;" class="shrinkable_groupbox"/>
-	<description id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" class="address street street1 mailing value"/>
-	<description id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" class="address street street2 mailing value"/>
+	<description id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" class="copyable address street street1 mailing value"/>
+	<description id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" class="copyable address street street2 mailing value"/>
 	<hbox id="pdcmah">
-		<description id="patron_mailing_address_city" tooltiptext="&staff.patron_display.mailing.city.label;" class="address city mailing value"/>
-		<description id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" class="address state mailing value"/>
-		<description id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" class="address post_code mailing value"/>
+		<description id="patron_mailing_address_city" tooltiptext="&staff.patron_display.mailing.city.label;" class="copyable address city mailing value"/>
+		<description id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" class="copyable address state mailing value"/>
+		<description id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" class="copyable address post_code mailing value"/>
 	</hbox>
     <hbox>
         <spacer flex="1" />
-        <label value="&staff.patron_display.mailing.copy;" onclick="copy_mailing_address();" class="click_link"/>
+        <label value="&staff.patron_display.mailing.copy;" onclick="copy_mailing_address();" class="copyable click_link"/>
     </hbox>
 </groupbox>
 
 <groupbox id="PatronSummaryContact_physical_address" orient="vertical">
 	<caption id="pdcpac" label="&staff.patron_display.physical_address;" class="shrinkable_groupbox"/>
-	<description id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" class="address street street1 physical value" />
-	<description id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;"  class="address street street2 physical value"/>
+	<description id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" class="copyable address street street1 physical value" />
+	<description id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;"  class="copyable address street street2 physical value"/>
 	<hbox id="pdcpah">
-		<description id="patron_physical_address_city" tooltiptext="&staff.patron_display.physical.city.label;" class="address city physical value"/>
-		<description id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" class="address state physical value"/>
-		<description id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" class="address post_code physical value"/>
+		<description id="patron_physical_address_city" tooltiptext="&staff.patron_display.physical.city.label;" class="copyable address city physical value"/>
+		<description id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" class="copyable address state physical value"/>
+		<description id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" class="copyable address post_code physical value"/>
 	</hbox>
     <hbox>
         <spacer flex="1" />
-        <label value="&staff.patron_display.physical.copy;" onclick="copy_billing_address();" class="click_link"/>
+        <label value="&staff.patron_display.physical.copy;" onclick="copy_billing_address();" class="copyable click_link"/>
     </hbox>
 </groupbox>
 
