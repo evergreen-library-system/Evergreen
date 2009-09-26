@@ -2674,6 +2674,8 @@ sub make_trigger_events {
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
     $ses->request('open-ils.trigger.event.autocreate', 'checkout', $self->circ, $self->circ_lib) if $self->is_checkout;
     $ses->request('open-ils.trigger.event.autocreate', 'checkin', $self->circ, $self->circ_lib) if $self->is_checkin;
+    $ses->request('open-ils.trigger.event.autocreate', 'renewal',  $self->circ, $self->circ_lib) if $self->is_renewal;
+
     # ignore response
 }
 
@@ -2739,4 +2741,4 @@ sub checkin_handle_lost_now_found_restore_od {
     }
 }
 
-
+1;

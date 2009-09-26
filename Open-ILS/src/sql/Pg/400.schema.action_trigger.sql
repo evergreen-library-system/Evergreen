@@ -37,8 +37,8 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('missing','a
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('missing.found','acp','Missing Item checked in');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('transit.start','acp','An Item is placed into transit');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('transit.finish','acp','An Item is received from a transit');
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_request.success','ahr','A hold is succefully placed');
-INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_request.failure','ahr','A hold is attempted by not succefully placed');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_request.success','ahr','A hold is successfully placed');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_request.failure','ahr','A hold is attempted but not successfully placed');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.capture','ahr','A targeted Item is captured for a hold');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.available','ahr','A held item is ready for pickup');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold_transit.start','ahtc','A hold-captured Item is placed into transit');
@@ -53,6 +53,8 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('for
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.pdf','acqpo','Formats a Purchase Order as a PDF document',TRUE);
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('damaged','acp','Item marked damaged');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('checkout.damaged','circ','A circulating item is marked damaged and the patron is fined');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('renewal','circ','Item renewed to user');
+
 -- and much more, I'm sure
 
 -- Specialized collection modules.  Given an FM object, gather some info and return a scalar or ref.
@@ -89,7 +91,7 @@ INSERT INTO action_trigger.reactor (module,description) VALUES ('MarkItemLost','
 INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyCircFee','Applies a billing with a pre-defined amount to a circulation');
 INSERT INTO action_trigger.reactor (module,description) VALUES ('ProcessTemplate', 'Processes the configured template');
 
--- After an event is reacted to (either succes or failure) a cleanup module is run against the resulting environment
+-- After an event is reacted to (either success or failure) a cleanup module is run against the resulting environment
 CREATE TABLE action_trigger.cleanup (
     module      TEXT    PRIMARY KEY, -- All live under the OpenILS::Trigger::Cleanup:: namespace
     description TEXT    
