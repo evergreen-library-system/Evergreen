@@ -471,39 +471,6 @@ sub link {
 	}
 }
 
-
-#----------------------------------------------------------
-
-package OpenILS::WWW::SuperCat::Feed::mods32;
-use base 'OpenILS::WWW::SuperCat::Feed::mods';
-
-sub new {
-	my $class = shift;
-	my $self = $class->SUPER::build('<mods:modsCollection version="3.2" xmlns:mods="http://www.loc.gov/mods/v3"/>');
-	$self->{type} = 'application/xml';
-	$self->{item_xpath} = '/mods:modsCollection';
-	return $self;
-}
-
-package OpenILS::WWW::SuperCat::Feed::mods32::item;
-use base 'OpenILS::WWW::SuperCat::Feed::mods::item';
-
-#----------------------------------------------------------
-
-package OpenILS::WWW::SuperCat::Feed::mods33;
-use base 'OpenILS::WWW::SuperCat::Feed::mods';
-
-sub new {
-	my $class = shift;
-	my $self = $class->SUPER::build('<mods:modsCollection version="3.3" xmlns:mods="http://www.loc.gov/mods/v3"/>');
-	$self->{type} = 'application/xml';
-	$self->{item_xpath} = '/mods:modsCollection';
-	return $self;
-}
-
-package OpenILS::WWW::SuperCat::Feed::mods33::item;
-use base 'OpenILS::WWW::SuperCat::Feed::mods::item';
-
 #----------------------------------------------------------
 
 package OpenILS::WWW::SuperCat::Feed::mods3;
@@ -553,6 +520,39 @@ sub link {
 		$linkid++;
 	}
 }
+
+
+#----------------------------------------------------------
+
+package OpenILS::WWW::SuperCat::Feed::mods32;
+use base 'OpenILS::WWW::SuperCat::Feed::mods3';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::build('<mods:modsCollection version="3.2" xmlns:mods="http://www.loc.gov/mods/v3"/>');
+	$self->{type} = 'application/xml';
+	$self->{item_xpath} = '/mods:modsCollection';
+	return $self;
+}
+
+package OpenILS::WWW::SuperCat::Feed::mods32::item;
+use base 'OpenILS::WWW::SuperCat::Feed::mods3::item';
+
+#----------------------------------------------------------
+
+package OpenILS::WWW::SuperCat::Feed::mods33;
+use base 'OpenILS::WWW::SuperCat::Feed::mods3';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::build('<mods:modsCollection version="3.3" xmlns:mods="http://www.loc.gov/mods/v3"/>');
+	$self->{type} = 'application/xml';
+	$self->{item_xpath} = '/mods:modsCollection';
+	return $self;
+}
+
+package OpenILS::WWW::SuperCat::Feed::mods33::item;
+use base 'OpenILS::WWW::SuperCat::Feed::mods3::item';
 
 
 #----------------------------------------------------------
