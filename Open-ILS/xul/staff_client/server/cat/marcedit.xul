@@ -77,106 +77,106 @@
 					</columns>
 					<rows>
 						<row>
-							<label name="Type" set="BKS SER VIS MIX MAP SCO REC COM" value="Type" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Type" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="ELvl" set="BKS SER VIS MIX MAP SCO REC COM" value="ELvl" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Srce" set="BKS SER VIS MIX MAP SCO REC COM" value="Srce" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Srce" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Audn" set="BKS VIS SCO REC COM" value="Audn" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Audn" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Ctrl" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctrl" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Ctrl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Lang" set="BKS SER VIS MIX MAP SCO REC COM" value="Lang" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Lang" maxlength="3" size="3" oninput="updateFixedFields(this);"/>
+							<label name="Type" control="Type_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Type" />
+							<textbox id="Type_tb" context="clipboard" class="plain" name="Type" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="ELvl" control="ELvl_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="ELvl" />
+							<textbox id="Elvl_tb" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Srce" control="Srce_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Srce" />
+							<textbox id="Srce_tb" context="clipboard" class="plain" name="Srce" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Audn" control="Audn_tb" set="BKS VIS SCO REC COM" value="Audn" />
+							<textbox id="Audn_tb" context="clipboard" class="plain" name="Audn" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Ctrl" control="Ctrl_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctrl" />
+							<textbox id="Ctrl_tb" context="clipboard" class="plain" name="Ctrl" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Lang" control="Lang_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Lang" />
+							<textbox id="Lang_tb" context="clipboard" class="plain" name="Lang" maxlength="3" size="3" oninput="updateFixedFields(this);" onfocus="this.select();"/>
 						</row>
 						<row>
-							<label name="BLvl" set="BKS SER VIS MIX MAP SCO REC COM" value="BLvl" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="BLvl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Form" set="BKS SER VIS MIX MAP SCO REC" value="Form" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Form" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Conf" set="BKS SER" value="Conf" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Conf" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Biog" set="BKS" value="Biog" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Biog" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="MRec" set="BKS SER VIS MIX MAP SCO REC COM" value="MRec" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="MRec" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Ctry" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctry" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Ctry" maxlength="3" size="3" oninput="updateFixedFields(this);"/>
+							<label name="BLvl" control="BLvl_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="BLvl" />
+							<textbox id="BLvl_tb" context="clipboard" class="plain" name="BLvl" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Form" control="Form_tb" set="BKS SER VIS MIX MAP SCO REC" value="Form" />
+							<textbox id="Form_tb" context="clipboard" class="plain" name="Form" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Conf" control="Conf_tb" set="BKS SER" value="Conf" />
+							<textbox id="Conf_tb" context="clipboard" class="plain" name="Conf" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Biog" control="Biog_tb" set="BKS" value="Biog" />
+							<textbox id="Biog_tb" context="clipboard" class="plain" name="Biog" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="MRec" control="MRec_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="MRec" />
+							<textbox id="MRec_tb" context="clipboard" class="plain" name="MRec" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Ctry" control="Ctry_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctry" />
+							<textbox id="Ctry_tb" context="clipboard" class="plain" name="Ctry" maxlength="3" size="3" oninput="updateFixedFields(this);" onfocus="this.select();"/>
 						</row>
 						<row>
-							<label name="S/L" set="SER" value="S/L" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="S/L" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Cont" set="BKS SER" value="Cont" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Cont" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
-							<label name="GPub" set="BKS SER VIS MAP COM" value="GPub" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="GPub" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="LitF" set="BKS" value="LitF" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="LitF" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Indx" set="BKS MAP" value="Indx" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Indx" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Alph" set="SER" value="Alph" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Alph" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="S/L" control="s_l_tb" set="SER" value="S/L" />
+							<textbox id="s_l_tb" context="clipboard" class="plain" name="S/L" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Cont" control="Cont_tb" set="BKS SER" value="Cont" />
+							<textbox id="Cont_tb" context="clipboard" class="plain" name="Cont" maxlength="4" size="4" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="GPub" control="GPub_tb" set="BKS SER VIS MAP COM" value="GPub" />
+							<textbox id="GPub_tb" context="clipboard" class="plain" name="GPub" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="LitF" control="LitF_tb" set="BKS" value="LitF" />
+							<textbox id="LitF_tb" context="clipboard" class="plain" name="LitF" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Indx" control="Indx_tb" set="BKS MAP" value="Indx" />
+							<textbox id="Indx_tb" context="clipboard" class="plain" name="Indx" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Alph" control="Alph_tb" set="SER" value="Alph" />
+							<textbox id="Alph_tb" context="clipboard" class="plain" name="Alph" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
 						</row>
 						<row>
-							<label name="Desc" set="BKS SER VIS MIX MAP SCO REC COM" value="Desc" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Desc" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Ills" set="BKS" value="Ills" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Ills" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
-							<label name="Fest" set="BKS" value="Fest" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Fest" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="DtSt" set="BKS SER VIS MIX MAP SCO REC COM" value="DtSt" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="DtSt" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Date1" set="BKS SER VIS MIX MAP SCO REC COM" value="Date1" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Date1" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
-							<label name="Date2" set="BKS SER VIS MIX MAP SCO REC COM" value="Date2" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Date2" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
+							<label name="Desc" control="Desc_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Desc" />
+							<textbox id="Desc_tb" context="clipboard" class="plain" name="Desc" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Ills" control="Ills_tb" set="BKS" value="Ills" />
+							<textbox id="Ills_tb" context="clipboard" class="plain" name="Ills" maxlength="4" size="4" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Fest" control="Fest_tb" set="BKS" value="Fest" />
+							<textbox id="Fest_tb" context="clipboard" class="plain" name="Fest" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="DtSt" control="DtSt_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="DtSt" />
+							<textbox id="DtSt_tb" context="clipboard" class="plain" name="DtSt" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Date1" control="Date1_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Date1" />
+							<textbox id="Date1_tb" context="clipboard" class="plain" name="Date1" maxlength="4" size="4" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Date2" control="Date2_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Date2" />
+							<textbox id="Date2_tb" context="clipboard" class="plain" name="Date2" maxlength="4" size="4" oninput="updateFixedFields(this);" onfocus="this.select();"/>
 						</row>
 						<row>
-							<label name="SrTp" set="SER" value="SrTp" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="SrTp" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Regl" set="SER" value="Regl" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Regl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Orig" set="SER" value="Orig" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Orig" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Freq" set="SER" value="Freq" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Freq" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="EntW" set="SER" value="EntW" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="EntW" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="SrTp" control="SrTp_tb" set="SER" value="SrTp" />
+							<textbox id="SrTp_tb" context="clipboard" class="plain" name="SrTp" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Regl" control="Regl_tb" set="SER" value="Regl" />
+							<textbox id="Regl_tb" context="clipboard" class="plain" name="Regl" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Orig" control="Orig_tb" set="SER" value="Orig" />
+							<textbox id="Orig_tb" context="clipboard" class="plain" name="Orig" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Freq" control="Freq_tb" set="SER" value="Freq" />
+							<textbox id="Freq_tb" context="clipboard" class="plain" name="Freq" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="EntW" control="EntW_tb" set="SER" value="EntW" />
+							<textbox id="EntW_tb" context="clipboard" class="plain" name="EntW" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
 						</row>
 						<row>
-							<label name="TrAr" set="SCO REC" value="TrAr" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="TrAr" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Part" set="SCO REC" value="Part" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Part" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="LTxt" set="SCO REC" value="LTxt" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="LTxt" maxlength="2" size="2" oninput="updateFixedFields(this);"/>
-							<label name="FMus" set="SCO REC" value="FMus" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="FMus" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="AccM" set="SCO REC" value="AccM" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="AccM" maxlength="6" size="6" oninput="updateFixedFields(this);"/>
-							<label name="Comp" set="SCO REC" value="Comp" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Comp" maxlength="2" size="2" oninput="updateFixedFields(this);"/>
+							<label name="TrAr" control="TrAr_tb" set="SCO REC" value="TrAr" />
+							<textbox id="TrAr_tb" context="clipboard" class="plain" name="TrAr" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Part" control="Part_tb" set="SCO REC" value="Part" />
+							<textbox id="Part_tb" context="clipboard" class="plain" name="Part" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="LTxt" control="LTxt_tb" set="SCO REC" value="LTxt" />
+							<textbox id="LTxt_tb" context="clipboard" class="plain" name="LTxt" maxlength="2" size="2" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="FMus" control="FMus_tb" set="SCO REC" value="FMus" />
+							<textbox id="FMus_tb" context="clipboard" class="plain" name="FMus" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="AccM" control="AccM_tb" set="SCO REC" value="AccM" />
+							<textbox id="AccM_tb" context="clipboard" class="plain" name="AccM" maxlength="6" size="6" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Comp" control="Comp_tb" set="SCO REC" value="Comp" />
+							<textbox id="Comp_tb" context="clipboard" class="plain" name="Comp" maxlength="2" size="2" oninput="updateFixedFields(this);" onfocus="this.select();"/>
 						</row>
 						<row>
-							<label name="SpFm" set="MAP" value="SpFm" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="SpFm" maxlength="2" size="2" oninput="updateFixedFields(this);"/>
-							<label name="Relf" set="MAP" value="Relf" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Relf" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
-							<label name="Proj" set="MAP" value="Proj" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Proj" maxlength="2" size="2" oninput="updateFixedFields(this);"/>
-							<label name="CrTp" set="MAP" value="CrTp" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="CrTp" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="SpFm" control="SpFm_tb" set="MAP" value="SpFm" />
+							<textbox id="SpFm_tb" context="clipboard" class="plain" name="SpFm" maxlength="2" size="2" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Relf" control="Relf_tb" set="MAP" value="Relf" />
+							<textbox id="Relf_tb" context="clipboard" class="plain" name="Relf" maxlength="4" size="4" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Proj" control="Proj_tb" set="MAP" value="Proj" />
+							<textbox id="Proj_tb" context="clipboard" class="plain" name="Proj" maxlength="2" size="2" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="CrTp" control="CrTp_tb" set="MAP" value="CrTp" />
+							<textbox id="CrTp_tb" context="clipboard" class="plain" name="CrTp" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
 						</row>
 						<row>
-							<label name="TMat" set="VIS" value="TMat" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="TMat" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Time" set="VIS" value="Time" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Time" maxlength="3" size="3" oninput="updateFixedFields(this);"/>
-							<label name="Tech" set="VIS" value="Tech" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="Tech" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="File" set="COM" value="File" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox context="clipboard" class="plain" name="File" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="TMat" control="TMat_tb" set="VIS" value="TMat" />
+							<textbox id="TMat_tb" context="clipboard" class="plain" name="TMat" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Time" control="Time_tb" set="VIS" value="Time" />
+							<textbox id="Time_tb" context="clipboard" class="plain" name="Time" maxlength="3" size="3" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="Tech" control="Tech_tb" set="VIS" value="Tech" />
+							<textbox id="Tech_tb" context="clipboard" class="plain" name="Tech" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+							<label name="File" control="File_tb" set="COM" value="File" />
+							<textbox id="File_tb" context="clipboard" class="plain" name="File" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
 						</row>
 					</rows>
 				</grid>
