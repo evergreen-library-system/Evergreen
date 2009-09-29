@@ -5140,7 +5140,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-    <class id="circbyyr" controller="open-ils.cstore" oils_obj:fieldmapper="action::circ_counts_by_year" oils_persist:readonly="true">
+    <class id="circbyyr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::circ_counts_by_year" oils_persist:readonly="true">
 		<oils_persist:source_definition>
 
 	SELECT id, SUM(count) AS count, year, is_renewal FROM (
@@ -5183,6 +5183,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
     </class>
 
 	<class id="rodcirc" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::overdue_circs" oils_persist:tablename="reporter.overdue_circs" reporter:core="true" reporter:label="Overdue Circulation">
