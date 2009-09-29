@@ -339,7 +339,8 @@ UPDATE permission.perm_list SET id = id + 1000 WHERE code NOT IN (
     'UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty',
     'UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty',
     'UPDATE_ORG_UNIT_SETTING.patron.password.use_phone',
-    'SET_CIRC_CLAIMS_RETURNED.override'
+    'SET_CIRC_CLAIMS_RETURNED.override',
+    'UPDATE_PATRON_CLAIM_RETURN_COUNT'
 );
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, GREATEST( (SELECT MAX(id) FROM permission.perm_list), 1000 ));
