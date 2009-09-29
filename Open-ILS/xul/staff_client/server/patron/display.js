@@ -435,13 +435,11 @@ patron.display.prototype = {
 								//+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
+                                    'display_window' : window,
 									'patron_id' : obj.patron.id(),
 									'url_prefix' : xulG.url_prefix,
 									'on_money_change' : function(b) {
-										//alert('test');
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-										//obj.summary_window.g.summary.retrieve(true);
-										//obj.items_window.g.items.retrieve(true);
 										obj.refresh_all();
 									}
 								}

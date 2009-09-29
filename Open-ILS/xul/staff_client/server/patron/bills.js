@@ -183,15 +183,9 @@ patron.bills.prototype = {
 								['command'],
 								function() { 
 									try {
-										JSAN.use('util.window');
-										var win = new util.window();
-										//obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
-										var my_xulG = win.open(
+                                        xulG.display_window.g.patron.right_deck.reset_iframe( 
 											urls.XUL_PATRON_BILL_HISTORY,
-												//+ '?patron_id=' + window.escape(obj.patron_id),
-											'billhistory',
-											//'chrome,resizable,modal'
-											'chrome,resizable',
+											{},
 											{
 												'patron_id' : obj.patron_id,
 												'refresh' : function() { obj.refresh(); }
@@ -206,15 +200,9 @@ patron.bills.prototype = {
 								['command'],
 								function() { 
 									try {
-										JSAN.use('util.window');
-										var win = new util.window();
-										//obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
-										var my_xulG = win.open(
+                                        xulG.display_window.g.patron.right_deck.reset_iframe( 
 											urls.XUL_PATRON_BILL_HISTORY,
-												//+ '?current=1&patron_id=' + window.escape(obj.patron_id),
-											'billhistory',
-											//'chrome,resizable,modal'
-											'chrome,resizable',
+                                            {},
 											{
 												'current' : 1,
 												'patron_id' : obj.patron_id,

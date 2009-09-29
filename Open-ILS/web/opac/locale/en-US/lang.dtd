@@ -2433,8 +2433,6 @@
 <!ENTITY staff.patron.bill_history.show_in_catalog.accesskey "S">
 <!ENTITY staff.patron.bill_history.print.label "Print">
 <!ENTITY staff.patron.bill_history.print.accesskey "P">
-<!ENTITY staff.patron.bill_history.close_window.label "Close Window">
-<!ENTITY staff.patron.bill_history.close_window.accesskey "c">
 <!ENTITY staff.patron.bills_overlay.still_checked_out.label "Red Items are still Checked Out">
 <!ENTITY staff.patron.bills_overlay.uncheck_all.label "Uncheck All">
 <!ENTITY staff.patron.bills_overlay.check_all.label "Check All">

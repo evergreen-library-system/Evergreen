@@ -1,24 +1,5 @@
 function $(id) { return document.getElementById(id); }
 
-function retrieve_patron() {
-    g.patron_id = xul_param('patron_id');
-
-    if (g.patron_id) {
-        JSAN.use('patron.util'); 
-        g.au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.patron_id );
-        
-        $('patron_name').setAttribute('value', 
-            ( g.au_obj.prefix() ? g.au_obj.prefix() + ' ' : '') + 
-            g.au_obj.family_name() + ', ' + 
-            g.au_obj.first_given_name() + ' ' +
-            ( g.au_obj.second_given_name() ? g.au_obj.second_given_name() + ' ' : '' ) +
-            ( g.au_obj.suffix() ? g.au_obj.suffix() : '')
-            + ' : ' + g.au_obj.card().barcode() 
-        );
-    }
-
-}
-
 function retrieve_mbts_for_list() {
     //var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
     var method = 'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY.authoritative';
@@ -33,7 +14,6 @@ function retrieve_mbts_for_list() {
         g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again'),null);
     } else {
         //g.mbts_ids.reverse();
-        var funcs = [];
     
                 function gen_func(r) {
                     return function() {
@@ -63,103 +43,24 @@ function retrieve_mbts_for_list() {
     
         for (var i = 0; i < g.mbts_ids.length; i++) {
             dump('i = ' + i + ' g.mbts_ids[i] = ' + g.mbts_ids[i] + '\n');
-            funcs.push( gen_func(g.mbts_ids[i]) );
+            g.funcs.push( gen_func(g.mbts_ids[i]) );
         }
-        JSAN.use('util.exec'); var exec = new util.exec(4);
-        exec.on_error = function(E) { alert(E); return true; }
-        exec.chain(funcs);
     }
 }
 
-function retrieve_specific_mbts() {
-    if (g.mbts_id) g.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),g.mbts_id],
-        function(req) {
-            try {
-                g.mbts = req.getResultObject();
-                if (g.mbts.ilsevent) {
-                    switch(Number(g.mbts.ilsevent)) {
-                        case -1: g.error.standard_network_error_alert('mbts_id = ' + g.mbts_id); break;
-                        default: g.error.standard_unexpected_error_alert('mbts_id = ' + g.mbts_id,g.mbts); break;
-                    }
-                } else {
-                    $('mbts_id').value = g.mbts_id;
-                    $('mbts_xact_type').value = g.mbts.xact_type();
-                    $('mbts_xact_start').value = g.mbts.xact_start().toString().substr(0,19);
-                    $('mbts_xact_finish').value = g.mbts.xact_finish() ? g.mbts.xact_finish().toString().substr(0,19) : '';
-                    $('mbts_total_owed').value = g.mbts.total_owed() ? util.money.sanitize( g.mbts.total_owed() ) : '';
-                    $('mbts_total_paid').value = g.mbts.total_paid() ? util.money.sanitize( g.mbts.total_paid() ) : '';
-                    $('mbts_balance_owed').value = g.mbts.balance_owed() ? util.money.sanitize( g.mbts.balance_owed() ) : '';
-                }
-            } catch(E) {
-                g.error.sdump('D_ERROR',E);
-            }
-        }
-    );
-}
-
-function retrieve_circ() {
-    JSAN.use('util.widgets');
-    util.widgets.remove_children('title');
-    $('title_label').hidden = true;
-    $('checked_out_label').hidden = true;
-    $('due_label').hidden = true;
-    $('checked_in_label').hidden = true;
-    $('checked_out').value = '';
-    $('checked_in').value = '';
-    $('due').value = '';
-    $('copy_summary').hidden=true;
-
-    g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.mbts_id ],
-        function (req) {
-            var r_circ = req.getResultObject();
-            if (instanceOf(r_circ,circ)) {
-
-                $('title_label').hidden = false;
-                $('checked_out_label').hidden = false;
-                $('due_label').hidden = false;
-                $('checked_in_label').hidden = false;
-                $('checked_out').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
-                $('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
-                $('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
-
-                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                $('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + r_circ.target_copy());
-                //get_contentWindow($('copy_summary')).xulG = { 'copy_id' : r_circ.target_copy() };
-                $('copy_summary').hidden=false;
-
-                g.network.simple_request(
-                    'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative',
-                    [ r_circ.target_copy() ],
-                    function (rreq) {
-                        var r_mvr = rreq.getResultObject();
-                        if (instanceOf(r_mvr,mvr)) {
-                            $('title').appendChild( document.createTextNode( String(r_mvr.title()).substr(0,50) ) );
-                        } else {
-                            g.network.simple_request(
-                                'FM_ACP_RETRIEVE',
-                                [ r_circ.target_copy() ],
-                                function (rrreq) {
-                                    var r_acp = rrreq.getResultObject();
-                                    if (instanceOf(r_acp,acp)) {
-                                        $('title').appendChild( document.createTextNode( r_acp.dummy_title() ) );
-                                    }
-                                }
-                            );
-                        }
-                    }
-                );
-
-            }
-        }
-    );
-}
-
 function init_lists() {
-    JSAN.use('util.list'); 
+    JSAN.use('util.list'); JSAN.use('circ.util'); 
     g.bill_list = new util.list('bill_tree');
 
     g.bill_list.init( {
-        'columns' : patron.util.mbts_columns({}),
+        'columns' : 
+            patron.util.mbts_columns({
+                'xact_finish' : { 'hidden' : xul_param('current') ? true : false }
+            }).concat( 
+            circ.util.columns({ 
+                'title' : { 'hidden' : false, 'flex' : '3' }
+            }) 
+        ),
         'map_row_to_columns' : patron.util.std_map_row_to_columns(' '),
         'on_select' : function(ev) {
             JSAN.use('util.functional');
@@ -171,27 +72,31 @@ function init_lists() {
             $('add').disabled = g.bill_list_selection.length == 0;
             $('summary').hidden = g.bill_list_selection.length == 0;
             $('copy_summary').hidden = g.bill_list_selection.length == 0;
-            g.mbts_id = g.bill_list_selection[0];
-            retrieve_specific_mbts();
-            retrieve_circ();
         },
         'retrieve_row' : function(params) {
             var id = params.retrieve_id;
             var row = params.row;
             if (id) {
                 if (typeof row.my == 'undefined') row.my = {};
-                if ( typeof row.my.mbts == 'undefined' ) {
-                    var mbts_obj = g.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),id]);
-                    row.my.mbts = mbts_obj;
+                if (typeof row.my.mbts == 'undefined' ) {
+                    g.network.simple_request('BLOB_MBTS_DETAILS_RETRIEVE',[ses(),id], function(req) {
+                        var blob = req.getResultObject();
+                        row.my.mbts = blob.transaction;
+                        row.my.circ = blob.circ;
+                        row.my.acp = blob.copy;
+                        row.my.mvr = blob.record;
+                        if (typeof params.on_retrieve == 'function') {
+                            params.on_retrieve(row);
+                        }
+                    } );
                 }
-            }
-            if (typeof params.on_retrieve == 'function') {
-                params.on_retrieve(row);
             }
             return row;
         },
     } );
 
+    $('bill_list_actions').appendChild( g.bill_list.render_list_actions() );
+    g.bill_list.set_list_actions();
 }
 
 function my_init() {
@@ -211,7 +116,17 @@ function my_init() {
 
         g.error.sdump('D_TRACE','my_init() for bill_history.xul');
 
-        retrieve_patron();
+        if (xul_param('current')) {
+            $('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.current_bills'));
+            document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.current_bills');
+        } else {
+            $('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.bill_history'));
+            document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.bill_history');
+        }
+
+        g.funcs = [];
+
+        g.patron_id = xul_param('patron_id');
 
         init_lists();
 
@@ -229,14 +144,9 @@ function my_init() {
             false
         );
 
-        if (xul_param('current')) {
-            $('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.current_bills'));
-            document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.current_bills');
-        } else {
-            $('caption').setAttribute('label',$("patronStrings").getString('staff.patron.bill_history.my_init.bill_history'));
-            document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.bill_history');
-        }
-
+        JSAN.use('util.exec'); var exec = new util.exec(20); 
+        exec.on_error = function(E) { alert(E); return true; }
+        exec.timer(g.funcs,100);
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill_history.xul', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
