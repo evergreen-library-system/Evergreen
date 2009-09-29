@@ -168,14 +168,14 @@ function handle_add() {
     if (r == 0) {
         JSAN.use('util.window');
         var win = new util.window();
-        var w = win.open(
-            urls.XUL_PATRON_BILL_WIZARD,
-                //+ '?patron_id=' + window.escape(g.patron_id)
-                //+ '&xact_id=' + window.escape( g.bill_list_selection[0] ),
-            'billwizard',
-            'chrome,resizable,modal',
-            { 'patron_id' : g.patron_id, 'xact_id' : g.bill_list_selection[0] }
-        );
+        for (var i = 0; i < g.bill_list_selection.length; i++) {
+            var w = win.open(
+                urls.XUL_PATRON_BILL_WIZARD,
+                'billwizard',
+                'chrome,resizable,modal',
+                { 'patron_id' : g.patron_id, 'xact_id' : g.bill_list_selection[i] }
+            );
+        }
         g.bill_list.clear();
         retrieve_mbts_for_list();
         if (typeof window.refresh == 'function') window.refresh();
@@ -185,21 +185,21 @@ function handle_add() {
 
 function handle_details() {
     JSAN.use('util.window'); var win = new util.window();
-    var my_xulG = win.open(
-        urls.XUL_PATRON_BILL_DETAILS,
-        //+ '?patron_id=' + window.escape(g.patron_id)
-        //+ '&mbts_id=' + window.escape( g.bill_list_selection[0] ),
-        'test_billdetails',
-        'chrome,resizable',
-        {
-            'patron_id' : g.patron_id,
-            'mbts_id' : g.bill_list_selection[0],
-            'refresh' : function() { 
-                if (typeof window.refresh == 'function') window.refresh();
-                if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
-            }, 
-        }
-    );
+    for (var i = 0; i < g.bill_list_selection.length; i++) {
+        var my_xulG = win.open(
+            urls.XUL_PATRON_BILL_DETAILS,
+            'test_billdetails_' + g.bill_list_selection[i],
+            'chrome,resizable',
+            {
+                'patron_id' : g.patron_id,
+                'mbts_id' : g.bill_list_selection[i],
+                'refresh' : function() { 
+                    if (typeof window.refresh == 'function') window.refresh();
+                    if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
+                }, 
+            }
+        );
+    }
 }
 
 function print_bills() {
