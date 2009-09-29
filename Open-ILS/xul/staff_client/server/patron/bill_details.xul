@@ -51,6 +51,7 @@
 				<hbox>
                     <hbox id="bill_list_actions" />
 					<spacer flex="1"/>
+					<button id="edit_bill_note" label="&staff.patron.bill_details.edit_notes.label;" disabled="true"/>
 					<button id="void" label="&staff.patron.bill_details.void_selection.label;" disabled="true"/>
 				</hbox>
 			</groupbox>

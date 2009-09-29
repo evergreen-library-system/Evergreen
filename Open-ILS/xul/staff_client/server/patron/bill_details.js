@@ -129,6 +129,7 @@ function init_lists() {
                 function(o) { return o.getAttribute('retrieve_id'); }
             );
             $('void').disabled = g.bill_list_selection.length == 0;
+            $('edit_bill_note').disabled = g.bill_list_selection.length == 0;
         },
     } );
 
@@ -224,10 +225,41 @@ function my_init() {
             false
         );
 
+        $('edit_bill_note').addEventListener(
+            'command',
+            handle_edit_bill_note,
+            false
+        );
+
     } catch(E) {
         try { g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bill_details.my_init.error'),E); } catch(F) { alert(E); }
     }
 }
+
+function handle_edit_bill_note() {
+    try {
+        var mb_list = util.functional.map_list(g.bill_list_selection, function(o){return g.mb_list[o].id();}); 
+        if (mb_list.length == 0) return;
+        var new_note = window.prompt(
+            $("patronStrings").getString('staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt'),
+            $("patronStrings").getString('staff.patron.bill_details.handle_edit_bill_note.note_dialog.default_value'),
+            $("patronStrings").getString('staff.patron.bill_details.handle_edit_bill_note.note_dialog.title')
+        );
+        if (new_note) {
+            var r = g.network.simple_request('FM_MB_NOTE_EDIT',[ ses(), new_note ].concat(mb_list));
+            if (r == 1 /* success */) {
+                g.bill_list.clear();
+                retrieve_mb();
+            } else {
+                if (r.ilsevent != 5000 /* PERM_FAILURE */) {
+                    alert( $("patronStrings").getString('staff.patron.bill_details.handle_edit_bill_note.failure') );
+                }
+            } 
+        }
+    } catch(E) {
+        try { g.error.standard_unexpected_error_alert('bill_details.xul, handle_edit_bill_note:',E); } catch(F) { alert(E); }
+    }
+};
 
 function handle_void() {
     try {

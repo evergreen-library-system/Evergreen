@@ -2418,10 +2418,8 @@
 <!ENTITY staff.patron.bill_check_info.submit.label "Submit this Information">
 <!ENTITY staff.patron.bill_check_info.submit.accesskey "S">
 <!ENTITY staff.patron.bill_details.bills.label "Bills">
-<!ENTITY staff.patron.bill_details.save_columns.label "Save Columns">
-<!ENTITY staff.patron.bill_details.copy_to_clipboard.label "Copy to Clipboard">
-<!ENTITY staff.patron.bill_details.print_export.label "Print Export">
 <!ENTITY staff.patron.bill_details.void_selection.label "Void selected billings">
+<!ENTITY staff.patron.bill_details.edit_notes.label "Edit note">
 <!ENTITY staff.patron.bill_details.payments.label "Payments">
 <!ENTITY staff.patron.bill_details.show_in_catalog.label "Show in Catalog">
 <!ENTITY staff.patron.bill_details.show_in_catalog.accesskey "S">
