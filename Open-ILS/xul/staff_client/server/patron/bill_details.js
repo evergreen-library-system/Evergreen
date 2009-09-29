@@ -132,6 +132,9 @@ function init_lists() {
         },
     } );
 
+    $('bill_list_actions').appendChild( g.bill_list.render_list_actions() );
+    g.bill_list.set_list_actions();
+
     g.payment_list.init( {
         'columns' : patron.util.mp_columns({}),
         'map_row_to_columns' : patron.util.std_map_row_to_columns(),
@@ -143,6 +146,9 @@ function init_lists() {
             );
         },
     } );
+
+    $('payment_list_actions').appendChild( g.payment_list.render_list_actions() );
+    g.payment_list.set_list_actions();
 }
 
 function retrieve_mb() {
