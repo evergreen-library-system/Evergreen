@@ -3,7 +3,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch/lenny), Ubuntu (gutsy/hardy/intrepid), and Gentoo.
+# Currently supports Debian (etch/lenny), Ubuntu (gutsy/hardy/intrepid/karmic), and Gentoo.
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -17,6 +17,8 @@
 # 	make -f Makefile.install ubuntu-hardy
 # 	- or -
 # 	make -f Makefile.install ubuntu-intrepid
+# 	- or -
+# 	make -f Makefile.install ubuntu-karmic
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
@@ -179,6 +181,15 @@ PGSQL_SERVER_DEBS_83 = \
 	postgresql-plperl-8.3 \
 	postgresql-server-dev-8.3
 
+PGSQL_CLIENT_DEBS_84 = \
+	postgresql-client
+
+PGSQL_SERVER_DEBS_84 = \
+	postgresql \
+	postgresql-contrib-8.4 \
+	postgresql-plperl-8.4 \
+	postgresql-server-dev-8.4
+
 GENTOOS = \
     yaz\
     aspell-en\
@@ -213,7 +224,7 @@ DEB_APACHE_DISMODS = \
 CPAN_MODULES = \
     Business::CreditCard::Object \
     Net::Z3950::Simple2ZOOM \
-	UUID::Tiny \
+    UUID::Tiny \
     SRU \
     Safe
 
@@ -246,8 +257,10 @@ rhel: centos
 ubuntu-gutsy: hardy generic_ubuntu 
 ubuntu-hardy: hardy generic_ubuntu
 ubuntu-intrepid: intrepid generic_ubuntu
+ubuntu-karmic: karmic generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc
 intrepid: install_pgsql_client_debs_83 install_extra_debs
+karmic: install_pgsql_client_debs_84 install_extra_debs
 generic_ubuntu: install_debs install debian_sys_config
 
 # - COMMON TARGETS ---------------------------------------------------------
@@ -313,6 +326,12 @@ debian_sys_config:
 # Install the debian-specific dependencies
 install_debs:
 	$(APT_TOOL) install $(DEBS)
+
+install_pgsql_client_debs_84:
+	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_84)
+
+install_pgsql_server_debs_84:
+	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_84)
 
 install_pgsql_client_debs_83:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_83)
