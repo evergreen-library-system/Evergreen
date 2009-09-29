@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('0026');
+
 UPDATE permission.perm_list SET id = id + 1000 WHERE code NOT IN ( 
     'EVERYTHING',
     'OPAC_LOGIN',
