@@ -412,7 +412,7 @@ __PACKAGE__->register_method(
 	method		=>	'edit_bill_note',
 	api_name		=> 'open-ils.circ.money.billing.note.edit',
 	signature	=> q/
-		Voids a bill
+		Edits the note for a bill
 		@param authtoken Login session key
         @param note The replacement note for the bills we're editing
 		@param billids Single bill id or array of bill id's for the bills whose notes we want to edit.
