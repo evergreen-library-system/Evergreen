@@ -361,6 +361,52 @@ sub set_circ_claims_returned {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "post_checkin_backdate_circ",
+	api_name	=> "open-ils.circ.post_checkin_backdate",
+	signature => {
+        desc => q/Back-date an already checked in circulation/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Circ ID', type => 'number'},
+            {desc => 'ISO8601 backdate', type => 'string'},
+        ],
+        return => {desc => q/1 on success, failure event on error/}
+    }
+);
+
+sub post_checkin_backdate_circ {
+    my( $self, $conn, $auth, $circ_id, $backdate ) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $circ = $e->retrieve_action_circulation($circ_id)
+        or return $e->die_event;
+
+    # anyone with checkin perms can backdate (more restrictive?)
+    return $e->die_event unless $e->allowed('COPY_CHECKIN', $circ->circ_lib);
+
+    # don't allow back-dating an open circulation
+    return OpenILS::Event->new('BAD_PARAMS') unless 
+        $backdate and $circ->checkin_time;
+
+    # update the checkin and stop_fines times to reflect the new backdate
+    $circ->stop_fines_time(clense_ISO8601($backdate));
+    $circ->checkin_time(clense_ISO8601($backdate));
+    $e->update_action_circulation($circ) or return $e->die_event;
+
+    # now void the overdues "erased" by the back-dating
+    my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($e, $circ, $backdate);
+    return $evt if $evt;
+
+    # If the circ was closed before and the balance owned !=0, re-open the transaction
+    $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($e, $circ->id);
+    return $evt if $evt;
+
+    $e->commit;
+    return 1;
+}
 
 
 
