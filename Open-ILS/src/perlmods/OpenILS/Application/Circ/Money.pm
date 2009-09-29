@@ -357,7 +357,7 @@ __PACKAGE__->register_method(
 	signature	=> q/
 		Voids a bill
 		@param authtoken Login session key
-		@param billid Id for the bill to void.  This parameter may be repeated for reference other bills.
+		@param billid Id for the bill to void.  This parameter may be repeated to reference other bills.
 		@return 1 on success, Event on error
 	/
 );
@@ -428,14 +428,10 @@ sub edit_bill_note {
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('UPDATE_BILL_NOTE');
 
-    my %users;
     for my $billid (@billids) {
 
 	    my $bill = $e->retrieve_money_billing($billid)
 		    or return $e->die_event;
-
-        my $xact = $e->retrieve_money_billable_transaction($bill->xact)
-            or return $e->die_event;
 
 	    $bill->note($note);
         # FIXME: Does this get audited?  Need some way so that the original creator of the bill does not get credit/blame for the new note.
@@ -447,6 +443,40 @@ sub edit_bill_note {
 	return 1;
 }
 
+__PACKAGE__->register_method(
+	method		=>	'edit_payment_note',
+	api_name		=> 'open-ils.circ.money.payment.note.edit',
+	signature	=> q/
+		Edits the note for a payment
+		@param authtoken Login session key
+        @param note The replacement note for the payments we're editing
+		@param paymentid Id for the payment to edit the note of.  This parameter may be repeated to reference other payments.
+		@return 1 on success, Event on error
+	/
+);
+
+
+sub edit_payment_note {
+	my( $s, $c, $authtoken, $note, @paymentids ) = @_;
+
+	my $e = new_editor( authtoken => $authtoken, xact => 1 );
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('UPDATE_PAYMENT_NOTE');
+
+    for my $paymentid (@paymentids) {
+
+	    my $payment = $e->retrieve_money_payment($paymentid)
+		    or return $e->die_event;
+
+	    $payment->note($note);
+        # FIXME: Does this get audited?  Need some way so that the original taker of the payment does not get credit/blame for the new note.
+    
+	    $e->update_money_payment($payment) or return $e->die_event;
+    }
+
+	$e->commit;
+	return 1;
+}
 
 sub _check_open_xact {
 	my( $editor, $xactid, $xact ) = @_;

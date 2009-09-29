@@ -79,6 +79,9 @@ CREATE OR REPLACE VIEW money.payment_view AS
 	  FROM	money.payment p
 	  	JOIN pg_class c ON (p.tableoid = c.oid);
 
+CREATE OR REPLACE RULE money_payment_view_update AS ON UPDATE TO money.payment_view DO INSTEAD 
+    UPDATE money.payment SET xact = NEW.xact, payment_ts = NEW.payment_ts, voided = NEW.voided, amount = NEW.amount, note = NEW.note WHERE id = NEW.id;
+
 CREATE OR REPLACE VIEW money.transaction_billing_type_summary AS
 	SELECT	xact,
 		billing_type AS last_billing_type,

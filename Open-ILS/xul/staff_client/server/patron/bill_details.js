@@ -145,6 +145,7 @@ function init_lists() {
                 g.payment_list.retrieve_selection(),
                 function(o) { return o.getAttribute('retrieve_id'); }
             );
+            $('edit_payment_note').disabled = g.payment_list_selection.length == 0;
         },
     } );
 
@@ -173,19 +174,19 @@ function retrieve_mb() {
 }
 
 function retrieve_mp() {
-    var mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), g.mbts_id ]);
+    g.mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), g.mbts_id ]);
     //g.error.sdump('D_DEBUG',g.error.pretty_print( js2JSON(mp_list) ));
 
     var mp_funcs = [];
 
-    function gen_mp_func(r) {
+    function gen_mp_func(i,r) {
         return function() {
-            g.payment_list.append( { 'retrieve_id' : r.id(), 'row' : { my : { 'mp' : r } } } );
+            g.payment_list.append( { 'retrieve_id' : i, 'row' : { my : { 'mp' : r } } } );
         }
     }
 
-    for (var i = 0; i < mp_list.length; i++) {
-        mp_funcs.push( gen_mp_func(mp_list[i]) );
+    for (var i = 0; i < g.mp_list.length; i++) {
+        mp_funcs.push( gen_mp_func(i,g.mp_list[i]) );
     }
 
     JSAN.use('util.exec');
@@ -231,6 +232,12 @@ function my_init() {
             false
         );
 
+        $('edit_payment_note').addEventListener(
+            'command',
+            handle_edit_payment_note,
+            false
+        );
+
     } catch(E) {
         try { g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bill_details.my_init.error'),E); } catch(F) { alert(E); }
     }
@@ -258,6 +265,31 @@ function handle_edit_bill_note() {
         }
     } catch(E) {
         try { g.error.standard_unexpected_error_alert('bill_details.xul, handle_edit_bill_note:',E); } catch(F) { alert(E); }
+    }
+};
+
+function handle_edit_payment_note() {
+    try {
+        var mp_list = util.functional.map_list(g.payment_list_selection, function(o){return g.mp_list[o].id();}); 
+        if (mp_list.length == 0) return;
+        var new_note = window.prompt(
+            $("patronStrings").getString('staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt'),
+            $("patronStrings").getString('staff.patron.bill_details.handle_edit_payment_note.note_dialog.default_value'),
+            $("patronStrings").getString('staff.patron.bill_details.handle_edit_payment_note.note_dialog.title')
+        );
+        if (new_note) {
+            var r = g.network.simple_request('FM_MP_NOTE_EDIT',[ ses(), new_note ].concat(mp_list));
+            if (r == 1 /* success */) {
+                g.payment_list.clear();
+                retrieve_mp();
+            } else {
+                if (r.ilsevent != 5000 /* PERM_FAILURE */) {
+                    alert( $("patronStrings").getString('staff.patron.bill_details.handle_edit_payment_note.failure') );
+                }
+            } 
+        }
+    } catch(E) {
+        try { g.error.standard_unexpected_error_alert('bill_details.xul, handle_edit_payment_note:',E); } catch(F) { alert(E); }
     }
 };
 

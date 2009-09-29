@@ -64,6 +64,7 @@
 				<hbox>
                     <hbox id="payment_list_actions" />
 					<spacer flex="1"/>
+					<button id="edit_payment_note" label="&staff.patron.bill_details.edit_notes.label;" disabled="true"/>
 				</hbox>
 			</groupbox>
 

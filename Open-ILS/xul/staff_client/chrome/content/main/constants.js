@@ -211,6 +211,7 @@ const api = {
 	'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.history.have_bill.authoritative' },
 	'FM_MP_RETRIEVE_VIA_MBTS_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment.retrieve.all' },
 	'FM_MP_RETRIEVE_VIA_MBTS_ID.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment.retrieve.all.authoritative' },
+	'FM_MP_NOTE_EDIT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment.note.edit' },
 	'FM_MG_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.create' },
 	'FM_MG_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.retrieve' },
 	'FM_MOBTS_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance' },
