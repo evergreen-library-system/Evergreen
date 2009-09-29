@@ -357,7 +357,7 @@ __PACKAGE__->register_method(
 	signature	=> q/
 		Voids a bill
 		@param authtoken Login session key
-		@param billid The id of the bill to void
+		@param billids Array of bill id's for the bills to void
 		@return 1 on success, Event on error
 	/
 );
