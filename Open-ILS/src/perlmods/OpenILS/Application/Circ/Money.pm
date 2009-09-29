@@ -357,7 +357,7 @@ __PACKAGE__->register_method(
 	signature	=> q/
 		Voids a bill
 		@param authtoken Login session key
-		@param billids Single bill id or array of bill id's for the bills to void
+		@param billid Id for the bill to void.  This parameter may be repeated for reference other bills.
 		@return 1 on success, Event on error
 	/
 );
@@ -415,7 +415,7 @@ __PACKAGE__->register_method(
 		Edits the note for a bill
 		@param authtoken Login session key
         @param note The replacement note for the bills we're editing
-		@param billids Single bill id or array of bill id's for the bills whose notes we want to edit.
+		@param billid Id for the bill to edit the note of.  This parameter may be repeated to reference other bills.
 		@return 1 on success, Event on error
 	/
 );
