@@ -1952,14 +1952,14 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.user.transactions.history",
 	argc		=> 1,
 	notes		=> <<"	NOTES");
-	Returns a list of billable transaction ids for a user, optionally by type
+	Returns a list of billable transactions for a user, optionally by type
 	NOTES
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history.have_charge",
 	argc		=> 1,
 	notes		=> <<"	NOTES");
-	Returns a list of billable transaction ids for a user that have an initial charge, optionally by type
+	Returns a list of billable transactions for a user that have an initial charge, optionally by type
 	NOTES
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
@@ -1967,14 +1967,14 @@ __PACKAGE__->register_method(
     authoritative => 1,
 	argc		=> 1,
 	notes		=> <<"	NOTES");
-	Returns a list of billable transaction ids for a user that have a balance, optionally by type
+	Returns a list of billable transactions for a user that have a balance, optionally by type
 	NOTES
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history.still_open",
 	argc		=> 1,
 	notes		=> <<"	NOTES");
-	Returns a list of billable transaction ids for a user that are not finished
+	Returns a list of billable transactions for a user that are not finished
 	NOTES
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
@@ -1982,8 +1982,46 @@ __PACKAGE__->register_method(
     authoritative => 1,
 	argc		=> 1,
 	notes		=> <<"	NOTES");
+	Returns a list of billable transactions for a user that has billings
+	NOTES
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.ids",
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of billable transaction ids for a user, optionally by type
+	NOTES
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.have_charge.ids",
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of billable transaction ids for a user that have an initial charge, optionally by type
+	NOTES
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.have_balance.ids",
+    authoritative => 1,
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of billable transaction ids for a user that have a balance, optionally by type
+	NOTES
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.still_open.ids",
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of billable transaction ids for a user that are not finished
+	NOTES
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.have_bill.ids",
+    authoritative => 1,
+	argc		=> 1,
+	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that has billings
 	NOTES
+
 
 sub user_transaction_history {
 	my( $self, $conn, $auth, $userid, $type ) = @_;
@@ -2030,7 +2068,11 @@ sub user_transaction_history {
 		@mbts = grep { int($_->total_owed * 100) != 0 } @mbts;
 	}
 
-	return [@mbts];
+    if ($api =~ /\.ids/) {
+    	return [map {$_->id} @mbts];
+    } else {
+        return [@mbts];
+    }
 }
 
 
