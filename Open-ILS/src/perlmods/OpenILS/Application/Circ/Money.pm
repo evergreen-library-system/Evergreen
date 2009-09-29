@@ -408,6 +408,45 @@ sub void_bill {
 	return 1;
 }
 
+__PACKAGE__->register_method(
+	method		=>	'edit_bill_note',
+	api_name		=> 'open-ils.circ.money.billing.note.edit',
+	signature	=> q/
+		Voids a bill
+		@param authtoken Login session key
+        @param note The replacement note for the bills we're editing
+		@param billids Array of bill id's for the bills whose notes we want to edit.
+		@return 1 on success, Event on error
+	/
+);
+
+
+sub edit_bill_note {
+	my( $s, $c, $authtoken, $note, @billids ) = @_;
+
+	my $e = new_editor( authtoken => $authtoken, xact => 1 );
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('UPDATE_BILL_NOTE');
+
+    my %users;
+    for my $billid (@billids) {
+
+	    my $bill = $e->retrieve_money_billing($billid)
+		    or return $e->die_event;
+
+        my $xact = $e->retrieve_money_billable_transaction($bill->xact)
+            or return $e->die_event;
+
+	    $bill->note($note);
+        # FIXME: Does this get audited?  Need some way so that the original creator of the bill does not get credit/blame for the new note.
+    
+	    $e->update_money_billing($bill) or return $e->die_event;
+    }
+
+	$e->commit;
+	return 1;
+}
+
 
 sub _check_open_xact {
 	my( $editor, $xactid, $xact ) = @_;
