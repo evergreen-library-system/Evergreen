@@ -5143,9 +5143,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
     <class id="circbyyr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::circ_counts_by_year" oils_persist:readonly="true">
 		<oils_persist:source_definition>
 
-	SELECT id, SUM(count) AS count, year, is_renewal FROM (
+	SELECT copy, SUM(count) AS count, year, is_renewal FROM (
 		SELECT
-			cp.id,
+			cp.id as copy,
 			COUNT(circ.id),
 			EXTRACT(YEAR FROM circ.xact_start) AS year,
 			(phone_renewal OR desk_renewal OR opac_renewal) as is_renewal
@@ -5155,7 +5155,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		GROUP BY 1, 3, 4
 		UNION
 		SELECT
-			cp.id,
+			cp.id as copy,
 			COUNT(circ.id),
 			EXTRACT(YEAR FROM circ.xact_start) AS year,
 			(phone_renewal OR desk_renewal OR opac_renewal) as is_renewal
@@ -5165,7 +5165,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		GROUP BY 1, 3, 4
 		UNION
 		SELECT
-			id,
+			id as copy,
 			circ_count,
 			-1 AS year,
 			false as is_renewal
@@ -5175,13 +5175,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 		</oils_persist:source_definition>
         <fields>
-            <field reporter:label="Copy ID" name="id" reporter:datatype="link"/>
+            <field reporter:label="Copy ID" name="copy" reporter:datatype="link"/>
             <field reporter:label="Count" name="count" reporter:datatype="int"/>
             <field reporter:label="Year" name="year" reporter:datatype="int"/>
             <field reporter:label="Renewal" name="is_renewal" reporter:datatype="bool"/>
         </fields>
 		<links>
-			<link field="id" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="copy" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
