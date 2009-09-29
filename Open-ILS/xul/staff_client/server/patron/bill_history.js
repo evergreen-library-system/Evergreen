@@ -1,5 +1,30 @@
 function $(id) { return document.getElementById(id); }
 
+function tally_selected() {
+    try {
+        JSAN.use('util.money');
+        var selected_billed = 0;
+        var selected_paid = 0;
+
+        for (var i = 0; i < g.bill_list_selection.length; i++) {
+            var bill = g.bill_map[g.bill_list_selection[i]];
+            if (!bill) {
+                $('billed_tally').setAttribute('value', '???');
+                $('paid_tally').setAttribute('value', '???');
+                return;
+            }
+            var to = util.money.dollars_float_to_cents_integer( bill.transaction.total_owed() );
+            var tp = util.money.dollars_float_to_cents_integer( bill.transaction.total_paid() );
+            selected_billed += to;
+            selected_paid += tp;
+        }
+        $('billed_tally').setAttribute('value', '$' + util.money.cents_as_dollars( selected_billed ) );
+        $('paid_tally').setAttribute('value', '$' + util.money.cents_as_dollars( selected_paid ) );
+    } catch(E) {
+        alert('Error in bill_history.js, tally_selected(): ' + E);
+    }
+}
+
 function retrieve_mbts_for_list() {
     //var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
     var method = 'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY.authoritative';
@@ -50,6 +75,9 @@ function retrieve_mbts_for_list() {
 
 function init_lists() {
     JSAN.use('util.list'); JSAN.use('circ.util'); 
+
+    g.bill_list_selection = [];
+
     g.bill_list = new util.list('bill_tree');
 
     g.bill_list.init( {
@@ -68,6 +96,7 @@ function init_lists() {
                 g.bill_list.retrieve_selection(),
                 function(o) { return o.getAttribute('retrieve_id'); }
             );
+            tally_selected();
             $('details').disabled = g.bill_list_selection.length == 0;
             $('add').disabled = g.bill_list_selection.length == 0;
             $('summary').hidden = g.bill_list_selection.length == 0;
@@ -85,9 +114,11 @@ function init_lists() {
                         row.my.circ = blob.circ;
                         row.my.acp = blob.copy;
                         row.my.mvr = blob.record;
+                        g.bill_map[ id ] = blob;
                         if (typeof params.on_retrieve == 'function') {
                             params.on_retrieve(row);
-                        }
+                        };
+                        tally_selected();
                     } );
                 }
             }
@@ -124,7 +155,7 @@ function my_init() {
             document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.bill_history');
         }
 
-        g.funcs = [];
+        g.funcs = []; g.bill_map = {};
 
         g.patron_id = xul_param('patron_id');
 
