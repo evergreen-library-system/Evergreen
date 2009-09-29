@@ -1203,18 +1203,19 @@ sub test_batch_circ_events {
 
 __PACKAGE__->register_method(
 	method	=> "user_payments_list",
-	api_name	=> "open-ils.circ.user_payments.list",
+	api_name	=> "open-ils.circ.user_payments.filtered.batch",
     stream => 1,
 	signature => {
         desc => q/Returns a fleshed, date-limited set of all payments a user
                 has made.  By default, ordered by payment date.  Optionally
-                ordered by any other column in the top-level "mp" object/,
+                ordered by other columns in the top-level "mp" object/,
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'User ID', type => 'number'},
             {desc => 'Order by column(s), optional.  Array of "mp" class columns', type => 'array'}
         ],
-        return => {desc => q/List of "mp" objects, fleshed with the billable transaction and the related fully-realized payment object (e.g money.cash_payment)/}
+        return => {desc => q/List of "mp" objects, fleshed with the billable transaction 
+            and the related fully-realized payment object (e.g money.cash_payment)/}
     }
 );
 
@@ -1240,7 +1241,7 @@ sub user_payments_list {
         }, 
         where => {
             '+mbt' => {usr => $user_id}, 
-            '+mp' => {payment_ts => {'<' => 'now'}}
+            '+mp' => {payment_ts => {between => [$start_date, $end_date]}}
         },
         order_by => {mp => $order_by}
     });
