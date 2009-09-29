@@ -1605,7 +1605,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.user.transaction.fleshed.retrieve",
 	argc		=> 1,
 	notes		=> <<"	NOTES");
-	Returns a fleshedtransaction record
+	Returns a fleshed transaction record
 	NOTES
 __PACKAGE__->register_method(
 	method	=> "user_transaction_retrieve",
@@ -1617,7 +1617,7 @@ __PACKAGE__->register_method(
 sub user_transaction_retrieve {
 	my( $self, $client, $login_session, $bill_id ) = @_;
 
-	# XXX I think I'm deprecated... make sure
+	# I think I'm deprecated... make sure.   phasefx says, "No, I'll use you :)
 
 	my $trans = $apputils->simple_scalar_request( 
 		"open-ils.cstore",
@@ -1639,7 +1639,7 @@ sub user_transaction_retrieve {
 
 	my $circ = $apputils->simple_scalar_request(
 			"open-ils.cstore",
-			"open-ils..direct.action.circulation.retrieve",
+			"open-ils.cstore.direct.action.circulation.retrieve",
 			$trans->id );
 
 	return {transaction => $trans} unless $circ;
@@ -1654,17 +1654,17 @@ sub user_transaction_retrieve {
 	$logger->debug("Found the circ title");
 
 	my $mods;
+    my $copy = $apputils->simple_scalar_request(
+        "open-ils.cstore",
+        "open-ils.cstore.direct.asset.copy.retrieve",
+        $circ->target_copy );
+
 	try {
 		my $u = OpenILS::Utils::ModsParser->new();
 		$u->start_mods_batch($title->marc());
 		$mods = $u->finish_mods_batch();
 	} otherwise {
 		if ($title->id == OILS_PRECAT_RECORD) {
-			my $copy = $apputils->simple_scalar_request(
-				"open-ils.cstore",
-				"open-ils.cstore.direct.asset.copy.retrieve",
-				$circ->target_copy );
-
 			$mods = new Fieldmapper::metabib::virtual_record;
 			$mods->doc_id(OILS_PRECAT_RECORD);
 			$mods->title($copy->dummy_title);
@@ -1674,7 +1674,7 @@ sub user_transaction_retrieve {
 
 	$logger->debug("MODSized the circ title");
 
-	return {transaction => $trans, circ => $circ, record => $mods };
+	return {transaction => $trans, circ => $circ, record => $mods, copy => $copy };
 }
 
 

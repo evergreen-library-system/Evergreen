@@ -48,6 +48,7 @@ const api = {
 	'BILL_PAY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment' },
 	'BLOB_AU_PARTS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.retrieve.parts', 'cacheable' : true, 'ttl' : 120000 },
 	'BLOB_MARC_CALLNUMBERS_RETRIEVE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.marc_cn.retrieve', 'secure' : false },
+    'BLOB_MBTS_DETAILS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transaction.fleshed.retrieve', 'secure' : false },
 	'BLOB_MOBTS_CIRC_MVR_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance.fleshed' },
 	'BLOB_MOBTS_CIRC_MVR_OPEN' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.fleshed' },
 	'BUCKET_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.container.create' },
