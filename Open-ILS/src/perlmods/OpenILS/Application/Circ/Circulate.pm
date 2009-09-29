@@ -110,7 +110,9 @@ __PACKAGE__->register_method(
         @param authtoken The login session key
         @param params Hash of named parameters including:
             barcode - The copy barcode
-            force       - If true, copies in bad statuses will be checked in and give good statuses
+            force   - If true, copies in bad statuses will be checked in and give good statuses
+            noop    - don't capture holds or put items into transit
+            void_overdues - void all overdues for the circulation (aka amnesty)
             ...
     /
 );
@@ -403,6 +405,7 @@ my @AUTOLOAD_FIELDS = qw/
     rental_billing
     capture
     noop
+    void_overdues
 /;
 
 
@@ -2262,6 +2265,12 @@ sub checkin_handle_circ {
    if($self->backdate) {
         $self->checkin_handle_backdate;
         return if $self->bail_out;
+   }
+
+   if($self->void_overdues) {
+        my $evt = OpenILS::Application::Circ::CircCommon->void_overdues(
+            $self->editor, $circ, undef, 'System: Amnesty Checkin'); # TODO i18n for system-generated notes
+        return $self->bail_on_events($evt) if $evt;
    }
 
    if(!$circ->stop_fines) {

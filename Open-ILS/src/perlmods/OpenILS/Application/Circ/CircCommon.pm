@@ -21,7 +21,7 @@ my $U = "OpenILS::Application::AppUtils";
 # provided, then we only void back to the backdate
 # -----------------------------------------------------------------
 sub void_overdues {
-    my($class, $e, $circ, $backdate) = @_;
+    my($class, $e, $circ, $backdate, $note) = @_;
 
     my $bill_search = { 
         xact => $circ->id, 
@@ -56,8 +56,8 @@ sub void_overdues {
         $bill->voided('t');
         $bill->void_time('now');
         $bill->voider($e->requestor->id);
-        my $n = $bill->note || "";
-        $bill->note("$n\nSystem: VOIDED FOR BACKDATE");
+        my $n = ($bill->note) ? sprintf("%s\n", $bill->note) : "";
+        $bill->note(sprintf("$n%s", ($note) ? $note : "System: VOIDED FOR BACKDATE"));
         $e->update_money_billing($bill) or return $e->die_event;
     }
 
