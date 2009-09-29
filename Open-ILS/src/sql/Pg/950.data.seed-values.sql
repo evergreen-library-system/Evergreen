@@ -1369,7 +1369,13 @@ INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.bib
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.patron.password.use_phone');
 
+-- perm to override max claims returned
+INSERT INTO permission.perm_list (code, description) VALUES (
+    'SET_CIRC_CLAIMS_RETURNED.override',
+    'Allows staff to override the max claims returned value for a patron'
+);
 
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(1, oils_i18n_gettext(1, 'Users', 'pgt', 'name'), NULL, NULL, '3 years', FALSE, 'group_application.user');
@@ -2207,12 +2213,6 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VA
     'Pre-cat Item Circ Lib',
     'Override the default circ lib of "here" with a pre-configured circ lib for pre-cat items.  The value should be the "shortname" (aka policy name) of the org unit',
     'string'
-);
-
--- perm to override max claims returned
-INSERT INTO permission.perm_list (code, description) VALUES (
-    'SET_CIRC_CLAIMS_RETURNED.override',
-    'Allows staff to override the max claims returned value for a patron'
 );
 
 -- Circ auto-renew interval setting
