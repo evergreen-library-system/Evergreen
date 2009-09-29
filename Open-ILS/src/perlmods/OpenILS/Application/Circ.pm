@@ -1201,6 +1201,79 @@ sub test_batch_circ_events {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "user_payments_list",
+	api_name	=> "open-ils.circ.user_payments.list",
+    stream => 1,
+	signature => {
+        desc => q/Returns a fleshed, date-limited set of all payments a user
+                has made.  By default, ordered by payment date.  Optionally
+                ordered by any other column in the top-level "mp" object/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'User ID', type => 'number'},
+            {desc => 'Order by column(s), optional.  Array of "mp" class columns', type => 'array'}
+        ],
+        return => {desc => q/List of "mp" objects, fleshed with the billable transaction and the related fully-realized payment object (e.g money.cash_payment)/}
+    }
+);
+
+sub user_payments_list {
+    my($self, $conn, $auth, $user_id, $start_date, $end_date, $order_by) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $user->home_ou);
+
+    $order_by ||= ['payment_ts'];
+
+    # all payments by user, between start_date and end_date
+    my $payments = $e->json_query({
+        select => {mp => ['id']}, 
+        from => {
+            mp => {
+                mbt => {
+                    fkey => 'xact', field => 'id'}
+            }
+        }, 
+        where => {
+            '+mbt' => {usr => $user_id}, 
+            '+mp' => {payment_ts => {'<' => 'now'}}
+        },
+        order_by => {mp => $order_by}
+    });
+
+    for my $payment_id (@$payments) {
+        my $payment = $e->retrieve_money_payment([
+            $payment_id->{id}, 
+            {   
+                flesh => 2,
+                flesh_fields => {
+                    mp => [
+                        'xact',
+                        'cash_payment',
+                        'credit_card_payment',
+                        'credit_payment',
+                        'check_payment',
+                        'work_payment',
+                        'forgive_payment',
+                        'goods_payment'
+                    ],
+                    mbt => [
+                        'circulation', 
+                        'grocery'
+                    ]
+                }
+            }
+        ]);
+        $conn->respond($payment);
+    }
+
+    return undef;
+}
+
 
 # {"select":{"acp":["id"],"circ":[{"aggregate":true,"transform":"count","alias":"count","column":"id"}]},"from":{"acp":{"circ":{"field":"target_copy","fkey":"id","type":"left"},"acn"{"field":"id","fkey":"call_number"}}},"where":{"+acn":{"record":200057}}
 
