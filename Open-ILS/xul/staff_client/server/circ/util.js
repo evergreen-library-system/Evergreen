@@ -2110,17 +2110,16 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 		}
 
         function checkin_callback(req) {
+            JSAN.use('util.error'); var error = new util.error();
             try {
                 var check = req.getResultObject();
                 var r = circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check);
                 if (typeof params.checkin_result == 'function') {
-                    try { params.checkin_result(r); }
-                    catch(E) { error.sdump('D_ERROR','params.checkin_result() = ' + E); };
+                    try { params.checkin_result(r); } catch(E) { error.sdump('D_ERROR','params.checkin_result() = ' + E); };
                 }
 				if (typeof async == 'function') async(check);
 				return check;
             } catch(E) {
-                JSAN.use('util.error'); var error = new util.error();
                 error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.error', ['1']), E);
                 if (typeof params.enable_textbox == 'function') {
                     try { params.enable_textbox(); }
