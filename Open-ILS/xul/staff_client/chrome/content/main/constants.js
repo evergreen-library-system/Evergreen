@@ -186,6 +186,7 @@ const api = {
 	'FM_CIRC_COUNT_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count', 'cacheable' : true, 'ttl' : 60000 },
 	'FM_CIRC_COUNT_RETRIEVE_VIA_USER.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count.authoritative', 'cacheable' : true, 'ttl' : 60000 },
 	'FM_CIRC_COUNT_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.count' },
+    'FM_CIRC_IMPROVED_COUNT_VIA_COPY' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.circbyyr.atomic' },
 	'FM_CIRC_EDIT_DUE_DATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.due_date.update' },
     'FM_CIRC_BACKDATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.post_checkin_backdate' },
 	'FM_CIT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve', 'secure' : false },

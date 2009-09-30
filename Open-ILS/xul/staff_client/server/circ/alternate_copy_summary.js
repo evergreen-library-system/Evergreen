@@ -28,6 +28,13 @@ function set(name,value) {
     }
 }
 
+function set_tooltip(name,value) { 
+    var nodes = document.getElementsByAttribute('name',name); 
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].setAttribute('tooltiptext',value);
+    }
+}
+
 function load_item() {
     try {
         if (! xulG.barcode) return;
@@ -113,6 +120,7 @@ function load_item() {
         set("stat_cat_entry_copy_maps", '');
         set("circulations", '');
         set("total_circ_count", '');
+        set_tooltip("total_circ_count", '');
         set("holds", '');
 
         if (details.copy) {
@@ -147,8 +155,28 @@ function load_item() {
             set("notes", details.copy.notes()); 
             set("stat_cat_entry_copy_maps", details.copy.stat_cat_entry_copy_maps()); 
             set("circulations", details.copy.circulations()); 
-            set("total_circ_count", details.copy.total_circ_count()); 
             set("holds", details.copy.holds()); 
+
+            network.simple_request('FM_CIRC_IMPROVED_COUNT_VIA_COPY', [ses(), { 'copy' : details.copy.id() } ], function(req) {
+                var r = req.getResultObject();
+                var total = 0; var tooltip = ''; var year = {};
+                for (var i = 0; i < r.length; i++) {
+                    total += Number( r[i].count() );
+                    if (typeof year[ r[i].year() ] == 'undefined') year[ r[i].year() ] = 0;
+                    year[ r[i].year() ] += r[i].count(); // Add original circs and renewals together
+                }
+                set( 'total_circ_count', total );
+                var keys = []; for (var i in year) { keys.push( i ); }; keys.sort();
+                for (var i = 0; i < keys.length; i++) {
+                    tooltip += document.getElementById('circStrings').getFormattedString( 
+                        'staff.circ.copy_details.circ_count_by_year', [ 
+                            keys[i] == -1 ? document.getElementById('circStrings').getString('staff.circ.copy_details.circ_count_by_year.legacy_label') : keys[i], 
+                            year[keys[i]]
+                        ] 
+                    ) + '\n';
+                }
+                set_tooltip( 'total_circ_count', tooltip );
+            } );
         }
 
         set("copies", '');

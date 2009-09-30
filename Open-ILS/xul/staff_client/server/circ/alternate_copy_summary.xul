@@ -31,6 +31,8 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script type="text/javascript" src="alternate_copy_summary.js"/>
 
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
+
     <groupbox flex="1">
 
         <caption label="Alternate View" />
@@ -141,7 +143,7 @@
                                 <label value="Holdable" />
                                 <textbox name="holdable" readonly="true" context="clipboard"/>
                                 <label value="Total Circs" />
-                                <textbox name="total_circs" readonly="true" context="clipboard"/>
+                                <textbox name="total_circ_count" readonly="true" context="clipboard"/>
                                 <label value="Checkin Scan Time" />
                                 <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
                             </row>
