@@ -35,7 +35,7 @@ circ.checkin.prototype = {
 				'except_these' : [ 'uses', 'checkin_time_full' ]
 			}
 		).concat(
-            patron.util.columns( {} )
+            patron.util.columns( { 'family_name' : { 'hidden' : 'false' } } )
 
         ).concat(
             patron.util.mbts_columns( {}, { 'except_these' : [ 'total_paid', 'total_owed', 'xact_start', 'xact_finish', 'xact_type' ] } )
@@ -318,6 +318,14 @@ circ.checkin.prototype = {
                             document.getElementById('fine_tally').setAttribute('hidden','false');
                         }
                     });
+
+                    if (row.my.circ) {
+                        obj.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID.authoritative', [ses(),row.my.circ.usr()], function(req) {
+                            var au_obj = req.getResultObject();
+                            row.my.au = au_obj;
+                            if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
+                        } );
+                    }
                 }
             } catch(E) {
                 alert('Error in checkin.js, list_retrieve_row(): ' + E);
