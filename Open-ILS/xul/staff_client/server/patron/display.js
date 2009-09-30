@@ -142,12 +142,30 @@ patron.display.prototype = {
                                 );
                                 //alert('rv = ' + rv + ' (' + typeof rv + ')');
                                 if (rv == 0) {
-                                    obj.network.simple_request(
-                                        'FM_AU_DELETE',
-                                        [ ses(), obj.patron.id() ]
-                                    );
+                                    var params = [ ses(), obj.patron.id() ];
+                                    var staff_check = obj.network.simple_request('PERM_RETRIEVE_WORK_OU',[ ses(), 'STAFF_LOGIN', obj.patron.id() ]);
+                                    if (staff_check.length > 0) {
+                                        var dest_barcode = window.prompt(
+                                            $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dest_user.prompt'),
+                                            $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dest_user.default_value'),
+                                            $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dest_user.title')
+                                        );
+                                        if (!dest_barcode) return;
+                                        JSAN.use('patron.util');
+                                        var dest_usr = patron.util.retrieve_fleshed_au_via_barcode( ses(), dest_barcode );
+                                        if (typeof dest_usr.ilsevent != 'undefined') {
+                                            alert( $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dest_user.failure') );
+                                            return;
+                                        }
+                                        if (dest_usr.id() == obj.patron.id()) {
+                                            alert( $("patronStrings").getString('staff.patron.display.cmd_patron_delete.dest_user.self_reference_failure') );
+                                            return;
+                                        }
+                                        params.push( dest_usr.id() );
+                                    }
+                                    obj.network.simple_request( 'FM_AU_DELETE', params );
+                                    obj.refresh_all();
                                 }
-                                obj.refresh_all();
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('Error in server/patron/display.js -> cmd_patron_delete: ',E);
                             }
