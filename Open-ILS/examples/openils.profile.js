@@ -36,7 +36,8 @@ dependencies ={
                    "dojox.form.CheckedMultiSelect",
                    "dijit.form.TimeTextBox",
                    "dijit.form.CheckBox",
-                   "dijit.layout.TabContainer"
+                   "dijit.layout.TabContainer",
+                   "dojo.io.script"
                    ]
 }
 
