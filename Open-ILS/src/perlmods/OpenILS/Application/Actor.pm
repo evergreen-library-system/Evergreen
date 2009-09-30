@@ -151,10 +151,21 @@ sub user_settings {
         return $e->event unless $e->allowed('VIEW_USER', $patron->home_ou);
     }
 
-    if($setting) {
+    sub get_setting {
+        my($e, $user_id, $setting) = @_;
         my $val = $e->search_actor_user_setting({usr => $user_id, name => $setting})->[0];
-        return '' unless $val;
+        return '' unless $val; # XXX this should really return undef, but needs testing
         return OpenSRF::Utils::JSON->JSON2perl($val->value);
+    }
+
+    if($setting) {
+        if(ref $setting eq 'ARRAY') {
+            my %settings;
+            $settings{$_} = get_setting($e, $user_id, $_) for @$setting;
+            return \%settings;
+        } else {
+            return get_setting($e, $user_id, $setting);    
+        }
     } else {
         my $s = $e->search_actor_user_setting({usr => $user_id});
 	    return { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
