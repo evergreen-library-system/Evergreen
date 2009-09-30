@@ -269,14 +269,14 @@ function load_item() {
         set("payment_total", '');
 
         if (details.circ) {
-            set("checkin_lib", typeof details.circ.checkin_lib() == 'object' ? details.circ.checkin_lib().shortname() : data.hash.aou[ details.circ.checkin_lib() ].shortname() ); 
+            try { set("checkin_lib", typeof details.circ.checkin_lib() == 'object' ? details.circ.checkin_lib().shortname() : data.hash.aou[ details.circ.checkin_lib() ].shortname() );  } catch(E) {};
             if (details.circ.checkin_workstation()) {
                 set("checkin_workstation", details.circ.checkin_workstation().name()); 
             }
             set("checkin_staff", details.circ.checkin_staff()); 
             set("checkin_time", details.circ.checkin_time()); 
             set("checkin_scan_time", details.circ.checkin_scan_time()); 
-            set("circ_circ_lib" , typeof details.circ.circ_lib() == 'object' ? details.circ.circ_lib().shortname() : data.hash.aou[ details.circ.circ_lib() ].shortname() ); 
+            try { set("circ_circ_lib" , typeof details.circ.circ_lib() == 'object' ? details.circ.circ_lib().shortname() : data.hash.aou[ details.circ.circ_lib() ].shortname() );  } catch(E) {};
             set("circ_staff", details.circ.circ_staff()); 
             set("desk_renewal", details.circ.desk_renewal()); 
             set("due_date", details.circ.due_date()); 
@@ -349,16 +349,16 @@ function load_item() {
             set("current_copy", details.hold.current_copy()); 
             set("email_notify", details.hold.email_notify()); 
             set("expire_time", details.hold.expire_time()); 
-            set("fulfillment_lib" , typeof details.hold.fulfillment_lib() == 'object' ? details.hold.fulfillment_lib().shortname() : data.hash.aou[ details.hold.fulfillment_lib() ].shortname() ); 
+            try { set("fulfillment_lib" , typeof details.hold.fulfillment_lib() == 'object' ? details.hold.fulfillment_lib().shortname() : data.hash.aou[ details.hold.fulfillment_lib() ].shortname() );  } catch(E) {}
             set("fulfillment_staff", details.hold.fulfillment_staff()); 
             set("fulfillment_time", details.hold.fulfillment_time()); 
             set("hold_type", details.hold.hold_type()); 
             set("holdable_formats", details.hold.holdable_formats()); 
             set("hold_id", details.hold.id()); 
             set("phone_notify", details.hold.phone_notify()); 
-            set("pickup_lib" , typeof details.hold.pickup_lib() == 'object' ? details.hold.pickup_lib().shortname() : data.hash.aou[ details.hold.pickup_lib() ].shortname() ); 
+            try { set("pickup_lib" , typeof details.hold.pickup_lib() == 'object' ? details.hold.pickup_lib().shortname() : data.hash.aou[ details.hold.pickup_lib() ].shortname() );  } catch(E) {}
             set("prev_check_time", details.hold.prev_check_time()); 
-            set("request_lib" , typeof details.hold.request_lib() == 'object' ? details.hold.request_lib().shortname() : data.hash.aou[ details.hold.request_lib() ].shortname() ); 
+            try { set("request_lib" , typeof details.hold.request_lib() == 'object' ? details.hold.request_lib().shortname() : data.hash.aou[ details.hold.request_lib() ].shortname() ); } catch(E) {}
             set("request_time", details.hold.request_time()); 
             set("requestor", details.hold.requestor()); 
             set("selection_depth", details.hold.selection_depth()); 
