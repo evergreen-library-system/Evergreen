@@ -2200,7 +2200,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			document.getElementById('no_change_label').setAttribute('hidden','true');
 		}
 
-		if (check.circ) {
+		if (check.circ && ( document.getElementById('no_change_label') || document.getElementById('fine_tally') ) ) {
 			network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),check.circ.id()], function(req) {
 				JSAN.use('util.money');
 				var bill = req.getResultObject();
