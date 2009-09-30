@@ -968,39 +968,24 @@ function _rdetailSortStatuses(a, b) {
 }
 
 /**
- * Check for a Google Book preview 
+ * Check for a Google Book preview after the main page loads
  */
 function rdetailCheckForGBPreview() {
 	if (!rdetailGoogleBookPreview) return;
-	searchForGBPreview( cleanISBN(record.isbn()) );
+        dojo.addOnLoad(function() {
+		searchForGBPreview( cleanISBN(record.isbn()) );
+	});
 }
 
 /**
  *
- * @param {DOM object} query The form element containing the
- *                     input parameters "isbns"
+ * @param {DOM object} isbn The form element containing the input parameters "isbns"
  */
 function searchForGBPreview( isbn ) {
-
-	// Delete any previous Google Booksearch JSON queries.
-	var GBPJsonScript = document.getElementById("GBPJsonScript");
-	if (GBPJsonScript) {
-		GBPJsonScript.parentNode.removeChild(GBPJsonScript);
-	}
-
-	// Add a script element with the src as the user's Google Booksearch query. 
-	// JSON output is specified by including the alt=json-in-script argument
-	// and the callback function is also specified as a URI argument.
-	var GBPScriptElement = document.createElement("script");
-
-	GBPScriptElement.setAttribute("id", "GBPJsonScript");
-	GBPScriptElement.setAttribute("src",
-			"http://books.google.com/books?bibkeys=" + 
-			isbn + "&jscmd=viewapi&callback=GBPreviewCallback");
-	GBPScriptElement.setAttribute("type", "text/javascript");
-
-	// make the request to Google booksearch
-	document.documentElement.firstChild.appendChild(GBPScriptElement);
+	dojo.require("dojo.io.script");
+	dojo.io.script.get({"url": "https://www.google.com/jsapi"});
+	dojo.io.script.get({"url": "http://books.google.com/books/api.js", "content": {"key": "notsupplied", "callback": "google.loader.callbacks.books"}});
+	dojo.io.script.get({"url": "http://books.google.com/books", "content": { "bibkeys": isbn, "jscmd": "viewapi", "callback": "GBPreviewCallback"}});
 }
 
 /**
@@ -1009,7 +994,7 @@ function searchForGBPreview( isbn ) {
  *
  * XXX I18N of text needed
  *
- * @param {JSON} booksInfo is the JSON object pulled from the Google books service.
+ * @param {JSON} GBPBookInfo is the JSON object pulled from the Google books service.
  */
 function GBPreviewCallback(GBPBookInfo) {
 	var GBPreviewDiv = document.getElementById("rdetail_preview_div");
