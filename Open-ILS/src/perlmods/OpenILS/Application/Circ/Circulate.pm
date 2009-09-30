@@ -2482,6 +2482,16 @@ sub checkin_flesh_events {
         $hold->notes($self->editor->search_action_hold_request_note({hold => $hold->id}));
     }
 
+    if($self->circ) {
+        # if we checked in a circulation, flesh the billing summary data
+        $self->circ->billable_transaction(
+            $self->editor->retrieve_billable_transaction([
+                $self->circ->id,
+                {flesh => 1, flesh_fields => {mbt => ['summary']}}
+            ])
+        );
+    }
+
     for my $evt (@{$self->events}) {
 
         my $payload         = {};
