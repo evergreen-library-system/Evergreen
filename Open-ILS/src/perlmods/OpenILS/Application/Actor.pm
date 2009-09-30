@@ -1322,16 +1322,22 @@ __PACKAGE__->register_method(
         params => [
 		    {desc => 'authtoken', type => 'string'},
             {desc => 'permission name', type => 'string'},
+            {desc => q/user id, optional.  If present, check perms for 
+                this user instead of the logged in user/, type => 'number'},
         ],
         return => {desc => 'An array of org IDs'}
     }
 );
 
 sub user_has_work_perm_at {
-    my($self, $conn, $auth, $perm) = @_;
+    my($self, $conn, $auth, $perm, $user_id) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $U->user_has_work_perm_at($e, $perm);
+    if(defined $user_id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+        return $e->event unless $e->allowed('VIEW_PERMISSION', $user->home_ou);
+    }
+    return $U->user_has_work_perm_at($e, $perm, undef, $user_id);
 }
 
 __PACKAGE__->register_method(
@@ -1341,9 +1347,13 @@ __PACKAGE__->register_method(
 );
 
 sub user_has_work_perm_at_batch {
-    my($self, $conn, $auth, $perms) = @_;
+    my($self, $conn, $auth, $perms, $user_id) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
+    if(defined $user_id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+        return $e->event unless $e->allowed('VIEW_PERMISSION', $user->home_ou);
+    }
     my $map = {};
     $map->{$_} = $U->user_has_work_perm_at($e, $_) for @$perms;
     return $map;
