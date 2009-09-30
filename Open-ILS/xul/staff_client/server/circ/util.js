@@ -7,7 +7,7 @@ circ.util = {};
 circ.util.EXPORT_OK	= [
 	'offline_checkout_columns', 'offline_checkin_columns', 'offline_renew_columns', 'offline_inhouse_use_columns',
 	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_columns',
-	'show_last_few_circs', 'abort_transits', 'transit_columns', 'work_log_columns', 'renew_via_barcode'
+	'show_last_few_circs', 'abort_transits', 'transit_columns', 'work_log_columns', 'renew_via_barcode', 'backdate_post_checkin'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
@@ -81,6 +81,47 @@ circ.util.show_copy_details = function(copy_id) {
 
 	} catch(E) {
 		obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.retrieve_copy.failure'),E);
+	}
+};
+
+circ.util.backdate_post_checkin = function(circ_id) {
+	var obj = {};
+	JSAN.use('util.error'); obj.error = new util.error();
+	JSAN.use('util.window'); obj.win = new util.window();
+	JSAN.use('util.network'); obj.network = new util.network();
+	JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+    JSAN.use('util.sound'); obj.sound = new util.sound();
+
+    var circStrings = document.getElementById('circStrings');
+
+	if (typeof circ_id == 'object' && circ_id != null) circ_id = circ_id.id();
+
+	try {
+		var url = xulG.url_prefix( urls.XUL_BACKDATE );
+        obj.data.temp_circ_id = circ_id; obj.data.stash('temp_circ_id');
+		var my_xulG = obj.win.open( url, 'backdate_post_checkin', 'chrome,resizable,modal', {} );
+
+		if (typeof my_xulG.proceed == 'undefined') return;
+
+        var r = obj.network.simple_request( 'FM_CIRC_BACKDATE', [ ses(), circ_id, my_xulG.backdate ] );
+        if (r == 1) {
+            obj.sound.circ_good();
+            var x = $('no_change_label');
+            if (x) {
+                x.hidden = false;
+                x.setAttribute('value', circStrings.getFormattedString('staff.circ.backdate.success',[circ_id,my_xulG.backdate]));
+            }
+        } else {
+            obj.sound.circ_bad();
+            var x = $('no_change_label');
+            if (x) {
+                x.hidden = false;
+                x.setAttribute('value', circStrings.getFormattedString('staff.circ.backdate.failed',[circ_id,r.textcode]));
+            }
+        }
+
+	} catch(E) {
+		obj.error.standard_unexpected_error_alert(circStrings.getString('staff.circ.utils.retrieve_copy.failure'),E);
 	}
 };
 

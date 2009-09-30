@@ -22,6 +22,7 @@
 		<menuitem command="sel_last_patron" label="&staff.circ.checkin_overlay.sel_last_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_last_patron.accesskey;"/>
 		<menuseparator/>
 		<menuitem command="sel_edit" label="&staff.circ.checkin_overlay.sel_edit.label;" accesskey="&staff.circ.checkin_overlay.sel_edit.accesskey;" />
+		<menuitem command="sel_backdate" label="&staff.circ.checkin_overlay.sel_backdate.label;" accesskey="&staff.circ.checkin_overlay.sel_backdate.accesskey;" />
 		<menuseparator />
 		<menuitem command="sel_mark_items_damaged" label="&staff.circ.checkin_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey;"/>
 		<menuseparator />
@@ -86,6 +87,7 @@
 					<menuitem command="sel_last_patron" label="&staff.circ.checkin_overlay.sel_last_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_last_patron.accesskey;"/>
 					<menuseparator/>
 					<menuitem command="sel_edit" label="&staff.circ.checkin_overlay.sel_edit.label;" accesskey="&staff.circ.checkin_overlay.sel_edit.accesskey;" />
+		            <menuitem command="sel_backdate" label="&staff.circ.checkin_overlay.sel_backdate.label;" accesskey="&staff.circ.checkin_overlay.sel_backdate.accesskey;" />
 					<menuseparator />
 					<menuitem command="sel_mark_items_damaged" label="&staff.circ.checkin_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey;"/>
 					<menuseparator />

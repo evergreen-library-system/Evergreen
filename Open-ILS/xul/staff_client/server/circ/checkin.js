@@ -52,6 +52,7 @@ circ.checkin.prototype = {
 						obj.error.sdump('D_TRACE', 'circ/copy_status: selection list = ' + js2JSON(obj.selection_list) );
 						if (obj.selection_list.length == 0) {
 							obj.controller.view.sel_edit.setAttribute('disabled','true');
+							obj.controller.view.sel_backdate.setAttribute('disabled','true');
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
 							obj.controller.view.sel_patron.setAttribute('disabled','true');
 							obj.controller.view.sel_last_patron.setAttribute('disabled','true');
@@ -63,6 +64,7 @@ circ.checkin.prototype = {
 							obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.sel_edit.setAttribute('disabled','false');
+							obj.controller.view.sel_backdate.setAttribute('disabled','false');
 							obj.controller.view.sel_opac.setAttribute('disabled','false');
 							obj.controller.view.sel_patron.setAttribute('disabled','false');
 							obj.controller.view.sel_last_patron.setAttribute('disabled','false');
@@ -153,6 +155,22 @@ circ.checkin.prototype = {
 							JSAN.use('circ.util');
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								circ.util.show_copy_details( obj.selection_list[i].copy_id );
+							}
+						}
+					],
+					'sel_backdate' : [
+						['command'],
+						function() {
+							JSAN.use('circ.util');
+							for (var i = 0; i < obj.selection_list.length; i++) {
+                                var circ_id = obj.selection_list[i].circ_id; 
+                                var copy_id = obj.selection_list[i].copy_id; 
+                                if (!circ_id) {
+                                    var blob = obj.network.simple_request('FM_ACP_DETAILS',[ses(),copy_id]);
+                                    if (blob.circ) circ_id = blob.circ.id();
+                                }
+                                if (!circ_id) continue;
+								circ.util.backdate_post_checkin( circ_id );
 							}
 						}
 					],
@@ -345,7 +363,7 @@ circ.checkin.prototype = {
 				|| checkin.ilsevent == 7009 /* CIRC_CLAIMS_RETURNED */ 
 				|| checkin.ilsevent == 7011 /* COPY_STATUS_LOST */ 
 				|| checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) return obj.on_failure();
-			var retrieve_id = js2JSON( { 'copy_id' : checkin.copy.id(), 'barcode' : checkin.copy.barcode(), 'doc_id' : (typeof checkin.record != 'undefined' ? ( typeof checkin.record.ilsevent == 'undefined' ? checkin.record.doc_id() : null ) : null ) } );
+			var retrieve_id = js2JSON( { 'circ_id' : checkin.circ ? checkin.circ.id() : null , 'copy_id' : checkin.copy.id(), 'barcode' : checkin.copy.barcode(), 'doc_id' : (typeof checkin.record != 'undefined' ? ( typeof checkin.record.ilsevent == 'undefined' ? checkin.record.doc_id() : null ) : null ) } );
 			if (checkin.circ && checkin.circ.checkin_time() == 'now') checkin.circ.checkin_time(backdate);
 			if (document.getElementById('trim_list')) {
 				var x = document.getElementById('trim_list');

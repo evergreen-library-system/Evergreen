@@ -421,6 +421,13 @@
 <!ENTITY staff.circ.checkin.submit.label 'Submit'>
 <!ENTITY staff.circ.checkin.submit.accesskey 'S'>
 
+<!ENTITY staff.circ.backdate_post_checkin.header 'Backdate'>
+<!ENTITY staff.circ.backdate_post_checkin.description 'Backdate Already-Checked-In Circulation'>
+<!ENTITY staff.circ.backdate_post_checkin.cancel_btn.label 'Cancel'>
+<!ENTITY staff.circ.backdate_post_checkin.cancel_btn.accesskey 'C'>
+<!ENTITY staff.circ.backdate_post_checkin.apply_btn.label 'Apply'>
+<!ENTITY staff.circ.backdate_post_checkin.apply_btn.accesskey 'A'>
+
 <!ENTITY staff.circ.renew.caption 'Renew'>
 <!ENTITY staff.circ.renew.scan.label 'Enter Barcode:'>
 <!ENTITY staff.circ.renew.scan.accesskey 'a'>
@@ -1768,6 +1775,8 @@
 <!ENTITY staff.circ.checkin_overlay.sel_last_patron.accesskey "R">
 <!ENTITY staff.circ.checkin_overlay.sel_edit.label "Edit Item Attributes">
 <!ENTITY staff.circ.checkin_overlay.sel_edit.accesskey "E">
+<!ENTITY staff.circ.checkin_overlay.sel_backdate.label "Backdate Post-Checkin">
+<!ENTITY staff.circ.checkin_overlay.sel_backdate.accesskey "B">
 <!ENTITY staff.circ.checkin_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
 <!ENTITY staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey "D">
 <!ENTITY staff.circ.checkin_overlay.sel_transit_abort.label "Abort Transit">

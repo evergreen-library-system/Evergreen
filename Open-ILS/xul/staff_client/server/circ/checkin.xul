@@ -85,6 +85,7 @@
 		
 		<command id="sel_clip" disabled="true"/>
 		<command id="sel_edit" disabled="true"/>
+		<command id="sel_backdate" disabled="true"/>
 		<command id="sel_opac" disabled="true"/>
 		<command id="sel_patron" disabled="true"/>
 		<command id="sel_last_patron" disabled="true"/>

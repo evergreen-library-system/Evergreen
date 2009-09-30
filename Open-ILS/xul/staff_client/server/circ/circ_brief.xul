@@ -85,8 +85,13 @@
 					g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
 				} else {
 					g.circ = g.data.temp_circ; g.data.temp_circ = null; g.data.stash('temp_circ');
-					g.circ_id = g.circ.id();
-					circ_callback( { 'getResultObject' : function() { return g.circ; } } );
+					g.circ_id = g.data.temp_circ_id; g.data.temp_circ_id = null; g.data.stash('temp_circ_id');
+					if (!g.circ_id) g.circ_id = g.circ.id();
+                    if (g.circ) {
+                        circ_callback( { 'getResultObject' : function() { return g.circ; } } );
+                    } else {
+					    g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
+                    }
 				}
 
 			} catch(E) {
