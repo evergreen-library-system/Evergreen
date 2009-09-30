@@ -2107,5 +2107,11 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'A hold is cancelled by the patron'
 );
 
-
+-- hold targeter skip me
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VALUES (
+    'circ.holds.target_skip_me',
+    'Skip For Hold Targeting',
+    'When true, don''t target any copies at this org unit for holds',
+    'bool'
+);
 
