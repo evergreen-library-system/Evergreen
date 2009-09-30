@@ -19,7 +19,7 @@ circ.checkin.prototype = {
 
 		var obj = this;
 
-		JSAN.use('circ.util');
+		JSAN.use('circ.util'); JSAN.use('patron.util');
 		var columns = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
@@ -34,13 +34,20 @@ circ.checkin.prototype = {
 			{
 				'except_these' : [ 'uses', 'checkin_time_full' ]
 			}
-		);
+		).concat(
+            patron.util.columns( {} )
+
+        ).concat(
+            patron.util.mbts_columns( {}, { 'except_these' : [ 'total_paid', 'total_owed', 'xact_start', 'xact_finish', 'xact_type' ] } )
+
+        ).sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 
 		JSAN.use('util.list'); obj.list = new util.list('checkin_list');
 		obj.list.init(
 			{
 				'columns' : columns,
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                'retrieve_row' : obj.gen_list_retrieve_row_func(),
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');
@@ -278,6 +285,46 @@ circ.checkin.prototype = {
 		this.controller.view.checkin_barcode_entry_textbox.focus();
 
 	},
+
+    'gen_list_retrieve_row_func' : function() {
+        var obj = this;
+        return function(params) {
+            try {
+                var row = params.row;
+                if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
+
+                if (row.my.circ && ( document.getElementById('no_change_label') || document.getElementById('fine_tally') ) ) {
+                    obj.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),row.my.circ.id()], function(req) {
+                        JSAN.use('util.money');
+                        var bill = req.getResultObject();
+                        row.my.mbts = bill;
+                        if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
+                        if (Number(bill.balance_owed()) == 0) { return; }
+                        if (document.getElementById('no_change_label')) {
+                            var m = document.getElementById('no_change_label').getAttribute('value');
+                            document.getElementById('no_change_label').setAttribute(
+                                'value', 
+                                m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
+                            );
+                            document.getElementById('no_change_label').setAttribute('hidden','false');
+                        }
+                        if (document.getElementById('fine_tally')) {
+                            var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
+                            document.getElementById('fine_tally').setAttribute('amount',amount);
+                            document.getElementById('fine_tally').setAttribute(
+                                'value',
+                                document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
+                            );
+                            document.getElementById('fine_tally').setAttribute('hidden','false');
+                        }
+                    });
+                }
+            } catch(E) {
+                alert('Error in checkin.js, list_retrieve_row(): ' + E);
+            }
+            return row;
+        };
+    },
 
 	'test_barcode' : function(bc) {
 		var obj = this;

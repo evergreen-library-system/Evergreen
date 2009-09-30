@@ -1711,7 +1711,7 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal',
-			'id' : 'id',
+			'id' : 'ahr_id',
 			'label' : document.getElementById('commonStrings').getString('staff.ahr_id_label'),
 			'flex' : 1,
 			'primary' : false,
@@ -2198,31 +2198,6 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 		if (document.getElementById('no_change_label')) {
 			document.getElementById('no_change_label').setAttribute('value','');
 			document.getElementById('no_change_label').setAttribute('hidden','true');
-		}
-
-		if (check.circ && ( document.getElementById('no_change_label') || document.getElementById('fine_tally') ) ) {
-			network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),check.circ.id()], function(req) {
-				JSAN.use('util.money');
-				var bill = req.getResultObject();
-				if (Number(bill.balance_owed()) == 0) { return; }
-				if (document.getElementById('no_change_label')) {
-					var m = document.getElementById('no_change_label').getAttribute('value');
-					document.getElementById('no_change_label').setAttribute(
-                        'value', 
-                        m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [params.barcode, util.money.sanitize(bill.balance_owed())]) + '  '
-                    );
-					document.getElementById('no_change_label').setAttribute('hidden','false');
-				}
-				if (document.getElementById('fine_tally')) {
-					var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
-                    document.getElementById('fine_tally').setAttribute('amount',amount);
-                    document.getElementById('fine_tally').setAttribute(
-                        'value',
-                        document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
-                    );
-					document.getElementById('fine_tally').setAttribute('hidden','false');
-                }
-			});
 		}
 
 		var msg = '';
