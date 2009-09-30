@@ -406,6 +406,7 @@ my @AUTOLOAD_FIELDS = qw/
     capture
     noop
     void_overdues
+    parent_circ
 /;
 
 
@@ -1539,6 +1540,9 @@ sub build_checkout_circ_object {
    $circ->workstation($self->editor->requestor->wsid) 
     if defined $self->editor->requestor->wsid;
 
+    # renewals maintain a link to the parent circulation
+    $circ->parent_circ($self->parent_circ);
+
    if( $self->is_renewal ) {
       $circ->opac_renewal('t') if $self->opac_renewal;
       $circ->phone_renewal('t') if $self->phone_renewal;
@@ -2542,6 +2546,7 @@ sub do_renew {
 
     # -----------------------------------------------------------------
 
+    $self->parent_circ($circ->id);
     $self->renewal_remaining( $circ->renewal_remaining - 1 );
     $self->circ($circ);
 
