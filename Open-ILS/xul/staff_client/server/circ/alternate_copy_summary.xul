@@ -113,7 +113,7 @@
                                 <label value="Publisher" />
                                 <textbox name="publisher" readonly="true" context="clipboard"/>
                                 <label value="Checkout Date" />
-                                <textbox name="checkout_date" readonly="true" context="clipboard"/>
+                                <textbox name="xact_start" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="Date Created" />
@@ -123,7 +123,7 @@
                                 <label value="Pub Date" />
                                 <textbox name="pubdate" readonly="true" context="clipboard"/>
                                 <label value="Checkout Library" />
-                                <textbox name="checkout_lib" readonly="true" context="clipboard"/>
+                                <textbox name="circ_circ_lib" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="Copy ID" />
@@ -132,8 +132,8 @@
                                 <textbox name="opac_visible" readonly="true" context="clipboard"/>
                                 <label value="Edition" />
                                 <textbox name="edition" readonly="true" context="clipboard"/>
-                                <label value="Checkin Date" />
-                                <textbox name="checkin_date" readonly="true" context="clipboard"/>
+                                <label value="Checkin Time" />
+                                <textbox name="checkin_time" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="TCN" />
@@ -142,8 +142,8 @@
                                 <textbox name="holdable" readonly="true" context="clipboard"/>
                                 <label value="Total Circs" />
                                 <textbox name="total_circs" readonly="true" context="clipboard"/>
-                                <label value="Checkin Library" />
-                                <textbox name="checkin_lib" readonly="true" context="clipboard"/>
+                                <label value="Checkin Scan Time" />
+                                <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <spacer />
@@ -152,18 +152,18 @@
                                 <textbox name="circ_mod" readonly="true" context="clipboard"/>
                                 <label value="Rolling Counter" />
                                 <textbox name="rolling_counter" readonly="true" context="clipboard"/>
-                                <label value="Checkin Workstation" />
-                                <textbox name="checkin_workstation" readonly="true" context="clipboard"/>
+                                <label value="Checkin Library" />
+                                <textbox name="checkin_lib" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <spacer />
-                                <spacer />
                                 <spacer />
                                 <spacer />
                                 <label value="Hold Shelf Location" />
                                 <textbox name="hold_shelf_loc" readonly="true" context="clipboard"/>
                                 <label value="Remaining Renewals" />
                                 <textbox name="remaining_renewals" readonly="true" context="clipboard"/>
+                                <label value="Checkin Workstation" />
+                                <textbox name="checkin_workstation" readonly="true" context="clipboard"/>
                             </row>
                         </rows>
                     </grid>

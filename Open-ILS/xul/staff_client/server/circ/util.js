@@ -926,7 +926,7 @@ circ.util.columns = function(modify,params) {
 			'flex' : 1,
 			'primary' : false,
 			'hidden' : true,
-			'render' : function(my) { return my.circ.xact_finish(); }
+			'render' : function(my) { return my.circ ? my.circ.xact_finish() : ( my.acp.circulations() ? my.acp.circulations()[0].xact_finish() : ""); },
 		},
 		{
 			'persist' : 'hidden width ordinal',
@@ -1166,7 +1166,35 @@ circ.util.columns = function(modify,params) {
 			'primary' : false,
 			'hidden' : true,
 			'render' : function(my) { return my.acp.alert_message(); }
-		}
+		},
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'checkin_workstation',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_workstation'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+			'render' : function(my) { return my.circ ? ( typeof my.circ.checkin_workstation() == 'object' ? my.circ.checkin_workstation().name() : my.circ.checkin_workstation() ) : ( my.acp.circulations() ? ( typeof my.acp.circulations()[0].checkin_workstation() == 'object' ? my.acp.circulations().checkin_workstation().name() : my.acp.circulations().checkin_workstation() ) : ""); },
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'checkin_scan_time',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_scan_time'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+			'render' : function(my) { return my.circ ? my.circ.checkin_scan_time().substr(0,10) : ( my.acp.circulations() ? my.acp.circulations()[0].checkin_scan_time().substr(0,10) : ""); },
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'checkin_scan_timestamp',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_scan_timestamp'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+			'render' : function(my) { return my.circ ? my.circ.checkin_scan_time() : ( my.acp.circulations() ? my.acp.circulations()[0].checkin_scan_time() : ""); },
+        }
+
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {

@@ -1,5 +1,6 @@
 var error; 
 var network;
+var data;
 
 function my_init() {
     try {
@@ -11,6 +12,7 @@ function my_init() {
         error.sdump('D_TRACE','my_init() for alternate_copy_summary.xul');
 
         JSAN.use('util.network'); network = new util.network();
+        JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
 
         setTimeout( function() { load_item(); }, 1000 ); // timeout so xulG gets a chance to get pushed in
 
@@ -85,7 +87,7 @@ function load_item() {
         set("barcode", '');
         set("call_number", '');
         set("circ_as_type", '');
-        set("circ_lib" , '');
+        set("copy_circ_lib" , '');
         set("circ_modifier", '');
         set("circulate", '');
         set("copy_number", '');
@@ -120,7 +122,7 @@ function load_item() {
             set("barcode", details.copy.barcode()); 
             set("call_number", details.copy.call_number()); 
             set("circ_as_type", details.copy.circ_as_type()); 
-            set("circ_lib" , details.copy.circ_lib()); 
+            set("copy_circ_lib" , details.copy.circ_lib()); 
             set("circ_modifier", details.copy.circ_modifier()); 
             set("circulate", details.copy.circulate()); 
             set("copy_number", details.copy.copy_number()); 
@@ -207,7 +209,8 @@ function load_item() {
         set("checkin_workstation",""); 
         set("checkin_staff", '');
         set("checkin_time", '');
-        set("circ_lib" , '');
+        set("checkin_scan_time", '');
+        set("circ_circ_lib" , '');
         set("circ_staff", '');
         set("desk_renewal", '');
         set("due_date", '');
@@ -238,13 +241,14 @@ function load_item() {
         set("payment_total", '');
 
         if (details.circ) {
-            set("checkin_lib", details.circ.checkin_lib()); 
+            set("checkin_lib", typeof details.circ.checkin_lib() == 'object' ? details.circ.checkin_lib().shortname() : data.hash.aou[ details.circ.checkin_lib() ].shortname() ); 
             if (details.circ.checkin_workstation()) {
                 set("checkin_workstation", details.circ.checkin_workstation().name()); 
             }
             set("checkin_staff", details.circ.checkin_staff()); 
             set("checkin_time", details.circ.checkin_time()); 
-            set("circ_lib" , details.circ.circ_lib()); 
+            set("checkin_scan_time", details.circ.checkin_scan_time()); 
+            set("circ_circ_lib" , typeof details.circ.circ_lib() == 'object' ? details.circ.circ_lib().shortname() : data.hash.aou[ details.circ.circ_lib() ].shortname() ); 
             set("circ_staff", details.circ.circ_staff()); 
             set("desk_renewal", details.circ.desk_renewal()); 
             set("due_date", details.circ.due_date()); 
@@ -317,20 +321,20 @@ function load_item() {
             set("current_copy", details.hold.current_copy()); 
             set("email_notify", details.hold.email_notify()); 
             set("expire_time", details.hold.expire_time()); 
-            set("fulfillment_lib", details.hold.fulfillment_lib()); 
+            set("fulfillment_lib" , typeof details.hold.fulfillment_lib() == 'object' ? details.hold.fulfillment_lib().shortname() : data.hash.aou[ details.hold.fulfillment_lib() ].shortname() ); 
             set("fulfillment_staff", details.hold.fulfillment_staff()); 
             set("fulfillment_time", details.hold.fulfillment_time()); 
             set("hold_type", details.hold.hold_type()); 
             set("holdable_formats", details.hold.holdable_formats()); 
             set("hold_id", details.hold.id()); 
             set("phone_notify", details.hold.phone_notify()); 
-            set("pickup_lib", details.hold.pickup_lib()); 
+            set("pickup_lib" , typeof details.hold.pickup_lib() == 'object' ? details.hold.pickup_lib().shortname() : data.hash.aou[ details.hold.pickup_lib() ].shortname() ); 
             set("prev_check_time", details.hold.prev_check_time()); 
-            set("request_lib", details.hold.request_lib()); 
+            set("request_lib" , typeof details.hold.request_lib() == 'object' ? details.hold.request_lib().shortname() : data.hash.aou[ details.hold.request_lib() ].shortname() ); 
             set("request_time", details.hold.request_time()); 
             set("requestor", details.hold.requestor()); 
             set("selection_depth", details.hold.selection_depth()); 
-            set("selection_ou", details.hold.selection_ou()); 
+            set("selection_ou" , typeof details.hold.selection_ou() == 'object' ? details.hold.selection_ou().shortname() : data.hash.aou[ details.hold.selection_ou() ].shortname() ); 
             set("target", details.hold.target()); 
             set("usr", details.hold.usr()); 
             set("cancel_time", details.hold.cancel_time()); 
