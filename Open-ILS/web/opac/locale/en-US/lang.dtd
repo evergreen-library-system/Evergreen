@@ -1795,6 +1795,8 @@
 <!ENTITY staff.circ.checkin_overlay.do_not_alert_on_precat.label "Ignore Pre-cataloged Items">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto.label "Auto-Print Hold and Transit Slips">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto.accesskey "P">
+<!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.label "Checkin Modifiers">
+<!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey "M">
 <!ENTITY staff.circ.renew_overlay.background_text "Renew Item">
 <!ENTITY staff.circ.renew_overlay.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.circ.renew_overlay.sel_clip.accesskey "C">

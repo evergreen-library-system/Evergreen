@@ -313,7 +313,7 @@ circ.checkin.prototype = {
 			}
 			var backdate = obj.controller.view.checkin_effective_datepicker.value;
 			var auto_print = document.getElementById('checkin_auto');
-			if (auto_print) auto_print = auto_print.checked;
+			if (auto_print) auto_print = auto_print.getAttribute('checked') == 'true';
 			JSAN.use('circ.util');
 			circ.util.checkin_via_barcode(
 				ses(), 

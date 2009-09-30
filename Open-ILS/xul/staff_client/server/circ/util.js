@@ -2493,7 +2493,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     print_data.route_to;
 					if (document.getElementById('do_not_alert_on_precat')) {
 						var x = document.getElementById('do_not_alert_on_precat');
-						if (! x.checked) {
+						if (x.getAttribute('checked') != 'true') {
 							print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
                             msg += print_data.route_to_msg;
 						}

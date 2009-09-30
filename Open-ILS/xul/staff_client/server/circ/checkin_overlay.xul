@@ -124,9 +124,16 @@
 		accesskey="&staff.checkin.print_receipt.accesskey;"/>
 	<checkbox id="trim_list" label="&staff.circ.checkin_overlay.trim_list.label;" checked="true" oils_persist="checked"/> 
 	<checkbox id="strict_barcode" label="&staff.circ.checkin_overlay.strict_barcode.label;" checked="false" oils_persist="checked"/> 
-	<checkbox id="do_not_alert_on_precat" label="&staff.circ.checkin_overlay.do_not_alert_on_precat.label;" oils_persist="checked"/> 
 	<spacer id="pcii3s" flex="1"/>
-	<checkbox id="checkin_auto" label="&staff.circ.checkin_overlay.checkin_auto.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto.accesskey;" oils_persist="checked"/> 
+    <button id="checkin_modifiers" oncommand="this.firstChild.showPopup();"
+        label="&staff.circ.checkin_overlay.checkin_modifiers_btn.label;"
+        accesskey="&staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey;"
+        type="menu" allowevents="true">
+        <menupopup id="checkin_modifiers_popup">
+            <menuitem type="checkbox" id="do_not_alert_on_precat" label="&staff.circ.checkin_overlay.do_not_alert_on_precat.label;" oils_persist="checked"/> 
+            <menuitem type="checkbox" id="checkin_auto" label="&staff.circ.checkin_overlay.checkin_auto.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto.accesskey;" oils_persist="checked"/> 
+        </menupopup>
+    </button>
 </hbox>
 
 </overlay>
