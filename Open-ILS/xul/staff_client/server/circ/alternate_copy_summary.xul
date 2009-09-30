@@ -122,8 +122,8 @@
                                 <textbox name="date_created" readonly="true" context="clipboard"/>
                                 <label value="Reference" />
                                 <textbox name="reference" readonly="true" context="clipboard"/>
-                                <label value="Pub Date" />
-                                <textbox name="pubdate" readonly="true" context="clipboard"/>
+                                <label value="Total Circs" />
+                                <textbox name="total_circ_count" readonly="true" context="clipboard"/>
                                 <label value="Checkout Library" />
                                 <textbox name="circ_circ_lib" readonly="true" context="clipboard"/>
                             </row>
@@ -132,8 +132,8 @@
                                 <textbox name="copy_id" readonly="true" context="clipboard"/>
                                 <label value="OPAC Visible" />
                                 <textbox name="opac_visible" readonly="true" context="clipboard"/>
-                                <label value="Edition" />
-                                <textbox name="edition" readonly="true" context="clipboard"/>
+                                <label value="Total Circs - Current Year" />
+                                <textbox name="total_circ_count_curr_year" readonly="true" context="clipboard"/>
                                 <label value="Checkin Time" />
                                 <textbox name="checkin_time" readonly="true" context="clipboard"/>
                             </row>
@@ -142,8 +142,8 @@
                                 <textbox name="tcn" readonly="true" context="clipboard"/>
                                 <label value="Holdable" />
                                 <textbox name="holdable" readonly="true" context="clipboard"/>
-                                <label value="Total Circs" />
-                                <textbox name="total_circ_count" readonly="true" context="clipboard"/>
+                                <label value="Total Circs - Prev Year" />
+                                <textbox name="total_circ_count_prev_year" readonly="true" context="clipboard"/>
                                 <label value="Checkin Scan Time" />
                                 <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
                             </row>

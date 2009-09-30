@@ -121,6 +121,8 @@ function load_item() {
         set("circulations", '');
         set("total_circ_count", '');
         set_tooltip("total_circ_count", '');
+        set("total_circ_count_prev_year", '');
+        set("total_circ_count_curr_year", '');
         set("holds", '');
 
         if (details.copy) {
@@ -163,9 +165,13 @@ function load_item() {
                 for (var i = 0; i < r.length; i++) {
                     total += Number( r[i].count() );
                     if (typeof year[ r[i].year() ] == 'undefined') year[ r[i].year() ] = 0;
-                    year[ r[i].year() ] += r[i].count(); // Add original circs and renewals together
+                    year[ r[i].year() ] += Number( r[i].count() ); // Add original circs and renewals together
                 }
                 set( 'total_circ_count', total );
+                var curr_year = (new Date()).getFullYear();
+                var prev_year = curr_year - 1;
+                set( 'total_circ_count_curr_year', year[ curr_year ] || 0 );
+                set( 'total_circ_count_prev_year', year[ prev_year ] || 0 );
                 var keys = []; for (var i in year) { keys.push( i ); }; keys.sort();
                 for (var i = 0; i < keys.length; i++) {
                     tooltip += document.getElementById('circStrings').getFormattedString( 
