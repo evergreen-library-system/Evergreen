@@ -30,6 +30,8 @@ var widgetPile = [];
 var uEditCardVirtId = -1;
 var uEditAddrVirtId = -1;
 var orgSettings = {};
+var userSettings = {};
+var userSettingsToUpdate = {};
 var tbody;
 var addrTemplateRows;
 var cgi;
@@ -65,12 +67,14 @@ function load() {
     orgSettings = fieldmapper.aou.fetchOrgSettingBatch(staff.ws_ou(), [
         'global.juvenile_age_threshold',
         'patron.password.use_phone',
-        'ui.patron.default_inet_access_level'
+        'ui.patron.default_inet_access_level',
+        'circ.holds.behind_desk_pickup_supported'
     ]);
     for(k in orgSettings)
         if(orgSettings[k])
             orgSettings[k] = orgSettings[k].value;
 
+    uEditFetchUserSettings(userId);
     uEditLoadUser(userId);
 
     var list = pcrud.search('fdoc', {fm_class:fmClasses});
@@ -98,6 +102,13 @@ function load() {
     checkClaimsReturnCountPerm();
 }
 
+function uEditFetchUserSettings(userId) {
+    userSettings = fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve'],
+        {params : [openils.User.authtoken, userId, ['circ.holds_behind_desk']]});
+}
+
+
 function uEditLoadUser(userId) {
     if(!userId) return uEditNewPatron();
     patron = fieldmapper.standardRequest(
@@ -111,9 +122,38 @@ function loadStaticFields() {
         var row = tbody.childNodes[idx];
         if(row.nodeType != row.ELEMENT_NODE) continue;
         var fmcls = row.getAttribute('fmclass');
-        if(!fmcls) continue;
-        fleshFMRow(row, fmcls);
+        if(fmcls) {
+            fleshFMRow(row, fmcls);
+        } else {
+            if(row.getAttribute('user_setting'))
+                fleshUserSettingRow(row, row.getAttribute('user_setting'))
+        }
     }
+}
+
+function fleshUserSettingRow(row, userSetting) {
+    switch(userSetting) {
+        case 'circ.holds_behind_desk':
+            if(orgSettings['circ.holds.behind_desk_pickup_supported']) {
+                openils.Util.show('uedit-settings-divider', 'table-row');
+                openils.Util.show(row, 'table-row');
+                if(userSettings[userSetting]) 
+                    holdsBehindShelfBox.attr('checked', true);
+
+                // if the setting changes, add it to the list of settings that need updating
+                dojo.connect(
+                    holdsBehindShelfBox, 
+                    'onChange', 
+                    function(newVal) { userSettingsToUpdate['circ.holds_behind_desk'] = newVal; }
+                );
+            } 
+    }
+}
+
+function uEditUpdateUserSettings(userId) {
+    return fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.patron.settings.update'],
+        {params : [openils.User.authtoken, userId, userSettingsToUpdate]});
 }
 
 function loadAllAddrs() {
@@ -646,7 +686,10 @@ function _uEditSave(doClone) {
             params: [openils.User.authtoken, patron],
             oncomplete: function(r) {
                 newPatron = openils.Util.readResponse(r);
-                if(newPatron) uEditFinishSave(newPatron, doClone);
+                if(newPatron) {
+                    uEditUpdateUserSettings(newPatron.id());
+                    uEditFinishSave(newPatron, doClone);
+                }
             }
         }
     );

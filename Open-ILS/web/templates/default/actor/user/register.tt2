@@ -115,6 +115,13 @@
         <tr fmclass='au' fmfield='claims_returned_count' wclass='dijit.form.NumberSpinner' wconstraints="{min:0,places:0}" wvalue='0'/>
         <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
 
+        <tr class='divider hidden' id='uedit-settings-divider'><td colspan='0'>User Settings</td></tr>
+        <tr user_setting='circ.holds_behind_desk'class='hidden'>
+            <td/>
+            <td>Holds Behind Shelf</td>
+            <td><div dojoType='dijit.form.CheckBox' jsId='holdsBehindShelfBox'/></td>
+        </tr>
+
         <!-- Address -->
         <tr name='uedit-addr-divider' class='divider' type='addr-template' required='show'>
             <td colspan='2'>Address</td>
