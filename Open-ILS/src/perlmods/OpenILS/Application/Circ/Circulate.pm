@@ -2492,6 +2492,21 @@ sub checkin_flesh_events {
         );
     }
 
+    if($self->patron) {
+        # flesh some patron fields before returning
+        $self->patron(
+            $self->editor->retrieve_actor_user([
+                $self->patron->id,
+                {
+                    flesh => 1,
+                    flesh_fields => {
+                        au => ['card', 'billing_address', 'mailing_address']
+                    }
+                }
+            ])
+        );
+    }
+
     for my $evt (@{$self->events}) {
 
         my $payload         = {};
