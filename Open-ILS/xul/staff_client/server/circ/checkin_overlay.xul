@@ -130,8 +130,14 @@
         accesskey="&staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey;"
         type="menu" allowevents="true">
         <menupopup id="checkin_modifiers_popup">
-            <menuitem type="checkbox" id="do_not_alert_on_precat" label="&staff.circ.checkin_overlay.do_not_alert_on_precat.label;" oils_persist="checked"/> 
-            <menuitem type="checkbox" id="checkin_auto" label="&staff.circ.checkin_overlay.checkin_auto.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto.accesskey;" oils_persist="checked"/> 
+            <menuitem type="checkbox" id="do_not_alert_on_precat" oils_persist="checked"
+                label="&staff.circ.checkin_overlay.do_not_alert_on_precat.label;" accesskey="&staff.circ.checkin_overlay.do_not_alert_on_precat.accesskey;"/>
+            <menuitem type="checkbox" id="suppress_holds_and_transits" oils_persist="checked"
+                label="&staff.circ.checkin_overlay.suppress_holds_and_transits.label;" accesskey="&staff.circ.checkin_overlay.suppress_holds_and_transits.accesskey;"/>
+            <menuitem type="checkbox" id="amnesty_mode" oils_persist="checked"
+                label="&staff.circ.checkin_overlay.amnesty_mode.label;" accesskey="&staff.circ.checkin_overlay.amnesty_mode.accesskey;"/>
+            <menuitem type="checkbox" id="checkin_auto" oils_persist="checked"
+                label="&staff.circ.checkin_overlay.checkin_auto.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto.accesskey;"/>
         </menupopup>
     </button>
 </hbox>

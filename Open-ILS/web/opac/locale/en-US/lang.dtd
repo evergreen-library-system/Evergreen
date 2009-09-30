@@ -1793,6 +1793,11 @@
 <!ENTITY staff.circ.checkin_overlay.trim_list.label "Trim List (20 rows)">
 <!ENTITY staff.circ.checkin_overlay.strict_barcode.label "Strict Barcode">
 <!ENTITY staff.circ.checkin_overlay.do_not_alert_on_precat.label "Ignore Pre-cataloged Items">
+<!ENTITY staff.circ.checkin_overlay.do_not_alert_on_precat.accesskey "I">
+<!ENTITY staff.circ.checkin_overlay.suppress_holds_and_transits.label "Suppress Holds and Transits">
+<!ENTITY staff.circ.checkin_overlay.suppress_holds_and_transits.accesskey "S">
+<!ENTITY staff.circ.checkin_overlay.amnesty_mode.label "Amnesty Mode / Forgive Fines">
+<!ENTITY staff.circ.checkin_overlay.amnesty_mode.accesskey "A">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto.label "Auto-Print Hold and Transit Slips">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto.accesskey "P">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.label "Checkin Modifiers">

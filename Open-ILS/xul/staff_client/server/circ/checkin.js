@@ -315,29 +315,36 @@ circ.checkin.prototype = {
 			var auto_print = document.getElementById('checkin_auto');
 			if (auto_print) auto_print = auto_print.getAttribute('checked') == 'true';
 			JSAN.use('circ.util');
+            var params = { 
+                'barcode' : barcode,
+                'disable_textbox' : function() { 
+                    obj.controller.view.checkin_barcode_entry_textbox.disabled = true; 
+                    obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'true'); 
+                },
+                'enable_textbox' : function() { 
+                    obj.controller.view.checkin_barcode_entry_textbox.disabled = false; 
+                    obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
+                },
+                'checkin_result' : function(checkin) {
+                    obj.controller.view.checkin_barcode_entry_textbox.disabled = false;
+                    obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
+                    obj.checkin2(checkin,backdate);
+                }
+            }; 
+			var suppress_holds_and_transits = document.getElementById('suppress_holds_and_transits');
+			if (suppress_holds_and_transits) suppress_holds_and_transits = suppress_holds_and_transits.getAttribute('checked') == 'true';
+            if (suppress_holds_and_transits) params.noop = 1;
+			var amnesty_mode = document.getElementById('amnesty_mode');
+			if (amnesty_mode) amnesty_mode = amnesty_mode.getAttribute('checked') == 'true';
+            if (amnesty_mode) params.void_overdues = 1;
 			circ.util.checkin_via_barcode(
 				ses(), 
-                { 
-                    'barcode' : barcode,
- 					'disable_textbox' : function() { 
-						obj.controller.view.checkin_barcode_entry_textbox.disabled = true; 
-						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'true'); 
-					},
-					'enable_textbox' : function() { 
-						obj.controller.view.checkin_barcode_entry_textbox.disabled = false; 
-						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
-					},
-					'checkin_result' : function(checkin) {
-						obj.controller.view.checkin_barcode_entry_textbox.disabled = false;
-						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
-						obj.checkin2(checkin,backdate);
-					}
-                }, 
+                params,
                 backdate, 
                 auto_print
 			);
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.exception', [E]));
+			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.exception', [E]), E);
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}
