@@ -597,7 +597,7 @@ patron.util.retrieve_fleshed_au_via_barcode = function(session, id) {
 		'FM_AU_RETRIEVE_VIA_BARCODE.authoritative',
 		[ session, id ]
 	);
-	patron.util.set_penalty_css(patron_obj);
+	if (typeof patron_obj.ilsevent == 'undefined') patron.util.set_penalty_css(patron_obj);
 	return patron_obj;
 }
 
