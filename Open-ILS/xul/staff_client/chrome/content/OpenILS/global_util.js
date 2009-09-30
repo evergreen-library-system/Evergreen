@@ -51,7 +51,7 @@
                     dump('persist_helper: retrieving key = ' + key + ' value = ' + value + ' for ' + nodes[i].nodeName + '\n');
                     if (value) nodes[i].setAttribute( attribute_list[j], value );
                 }
-                if (nodes[i].nodeName == 'checkbox' && attribute_list.indexOf('checked') > -1) {
+                if ( (nodes[i].nodeName == 'checkbox' || nodes[i].nodeName == 'menuitem') && attribute_list.indexOf('checked') > -1) {
                     if (nodes[i].disabled == false && nodes[i].hidden == false) {
                         var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
                         if (no_poke && no_poke == 'true') {
@@ -69,12 +69,17 @@
                                 try {
                                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                     var key = bk + 'checked';
-                                    var value = ev.target.checked;
+                                    var value;
+                                    if (ev.target.nodeName == 'checkbox') {
+                                        value = ev.target.checked;
+                                    } else {
+                                        value = ev.target.getAttribute('checked'); // menuitem with type="checkbox"
+                                    }
                                     ev.target.setAttribute( 'checked', value );
                                     prefs.setCharPref( key, value );
-                                    dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox\n');
+                                    dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem\n');
                                 } catch(E) {
-                                    alert('Error in persist_helper(), checkbox command event listener: ' + E);
+                                    alert('Error in persist_helper(), checkbox/menuitem command event listener: ' + E);
                                 }
                             };
                         }(base_key), 

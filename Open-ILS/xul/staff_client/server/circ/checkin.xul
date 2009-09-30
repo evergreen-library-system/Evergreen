@@ -20,7 +20,7 @@
 <?xul-overlay href="/xul/server/circ/checkin_overlay.xul"?>
 
 <window id="checkin_win" 
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+	onload="try { my_init(); font_helper(); persist_helper(); document.getElementById('checkin_modifiers_popup').hidePopup(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
