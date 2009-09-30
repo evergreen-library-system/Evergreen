@@ -848,7 +848,14 @@ sub copy_details {
 			{ target_copy => $copy_id },
 			{ 
                 flesh => 1,
-                flesh_fields => {circ => ['checkin_workstation']},
+                flesh_fields => {
+                    circ => [
+                        'checkin_workstation', 
+                        'duration_rule', 
+                        'max_fine_rule', 
+                        'recuring_fine_rule'
+                    ]
+                },
                 order_by => { circ => 'xact_start desc' }, 
                 limit => 1 
             }
