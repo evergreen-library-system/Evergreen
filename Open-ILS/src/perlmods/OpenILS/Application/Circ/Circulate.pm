@@ -2501,6 +2501,7 @@ sub checkin_flesh_events {
         $payload->{transit} = $self->transit;
         $payload->{cancelled_hold_transit} = 1 if $self->cancelled_hold_transit;
         $payload->{hold}    = $hold;
+        $payload->{patron}  = $self->patron;
         $evt->{payload}     = $payload;
     }
 }
