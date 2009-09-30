@@ -19,7 +19,7 @@ patron.util.mbts_columns = function(modify,params) {
 
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : commonStrings.getString('staff.mbts_id_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mbts_id', 'label' : commonStrings.getString('staff.mbts_id_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.id(); }
 		},
 		{
@@ -117,7 +117,7 @@ patron.util.mb_columns = function(modify,params) {
 
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : commonStrings.getString('staff.mb_id_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mb_id', 'label' : commonStrings.getString('staff.mb_id_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.id(); }
 		},
 		{
@@ -391,7 +391,7 @@ patron.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.barred() ) ? "Yes" : "No"; }
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : document.getElementById('commonStrings').getString('staff.au_id_label'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'au_id', 'label' : document.getElementById('commonStrings').getString('staff.au_id_label'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.id(); }
 		},
 		{ 
