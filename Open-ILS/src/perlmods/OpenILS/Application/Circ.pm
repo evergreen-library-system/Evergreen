@@ -1283,6 +1283,61 @@ sub user_payments_list {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_circ_chain",
+	api_name	=> "open-ils.circ.renewal_chain.retrieve_by_circ",
+    stream => 1,
+	signature => {
+        desc => q/Given a circulation, this returns all circulation objects
+                that are part of the same chain of renewals./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Circ ID', type => 'number'},
+        ],
+        return => {desc => q/List of circ objects, orderd by oldest circ first/}
+    }
+);
+
+sub retrieve_circ_chain {
+    my($self, $conn, $auth, $circ_id) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    # grab the base circ and all parent (previous) circs by fleshing
+    my $base_circ = $e->retrieve_action_circulation([
+        $circ_id,
+        {
+            flesh => -1,
+            flesh_fields => {circ => ['parent_circ']}
+        }
+    ]) or return $e->event;
+
+    return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $base_circ->circ_lib);
+
+    # send each circ to the caller, starting with the oldest circulation
+    my @chain;
+    my $circ = $base_circ;
+    while($circ) {
+        push(@chain, $circ);
+
+        # unflesh for consistency
+        my $parent = $circ->parent_circ;
+        $circ->parent_circ($parent->id) if $parent; 
+
+        $circ = $parent;
+    }
+    $conn->respond($_) for reverse(@chain);
+
+    # base circ may not be the end of the chain.  see if there are any subsequent circs
+    $circ = $base_circ;
+    $conn->respond($circ) while ($circ = $e->search_action_circulation({parent_circ => $circ->id})->[0]);
+
+    return undef;
+}
+
+
+
 # {"select":{"acp":["id"],"circ":[{"aggregate":true,"transform":"count","alias":"count","column":"id"}]},"from":{"acp":{"circ":{"field":"target_copy","fkey":"id","type":"left"},"acn"{"field":"id","fkey":"call_number"}}},"where":{"+acn":{"record":200057}}
 
 
