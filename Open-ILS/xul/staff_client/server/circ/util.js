@@ -2191,6 +2191,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 		if (check.payload && check.payload.copy) { check.copy = check.payload.copy; }
 		if (check.payload && check.payload.record) { check.record = check.payload.record; }
 		if (check.payload && check.payload.circ) { check.circ = check.payload.circ; }
+		if (check.payload && check.payload.patron) { check.patron = check.payload.patron; }
 
 		if (!check.route_to) { check.route_to = '   '; }
 

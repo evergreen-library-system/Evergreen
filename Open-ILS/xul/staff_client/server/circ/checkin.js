@@ -293,40 +293,28 @@ circ.checkin.prototype = {
                 var row = params.row;
                 if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
 
-                if (row.my.circ && ( document.getElementById('no_change_label') || document.getElementById('fine_tally') ) ) {
-                    obj.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),row.my.circ.id()], function(req) {
-                        JSAN.use('util.money');
-                        var bill = req.getResultObject();
-                        row.my.mbts = bill;
-                        if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
-                        if (Number(bill.balance_owed()) == 0) { return; }
-                        if (document.getElementById('no_change_label')) {
-                            var m = document.getElementById('no_change_label').getAttribute('value');
-                            document.getElementById('no_change_label').setAttribute(
-                                'value', 
-                                m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
-                            );
-                            document.getElementById('no_change_label').setAttribute('hidden','false');
-                        }
-                        if (document.getElementById('fine_tally')) {
-                            var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
-                            document.getElementById('fine_tally').setAttribute('amount',amount);
-                            document.getElementById('fine_tally').setAttribute(
-                                'value',
-                                document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
-                            );
-                            document.getElementById('fine_tally').setAttribute('hidden','false');
-                        }
-                    });
-
-                    if (row.my.circ) {
-                        obj.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID.authoritative', [ses(),row.my.circ.usr()], function(req) {
-                            var au_obj = req.getResultObject();
-                            row.my.au = au_obj;
-                            if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
-                        } );
+                if (row.my.mbts && ( document.getElementById('no_change_label') || document.getElementById('fine_tally') ) ) {
+                    var bill = row.my.mbts;
+                    if (Number(bill.balance_owed()) == 0) { return; }
+                    if (document.getElementById('no_change_label')) {
+                        var m = document.getElementById('no_change_label').getAttribute('value');
+                        document.getElementById('no_change_label').setAttribute(
+                            'value', 
+                            m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
+                        );
+                        document.getElementById('no_change_label').setAttribute('hidden','false');
+                    }
+                    if (document.getElementById('fine_tally')) {
+                        var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
+                        document.getElementById('fine_tally').setAttribute('amount',amount);
+                        document.getElementById('fine_tally').setAttribute(
+                            'value',
+                            document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
+                        );
+                        document.getElementById('fine_tally').setAttribute('hidden','false');
                     }
                 }
+
             } catch(E) {
                 alert('Error in checkin.js, list_retrieve_row(): ' + E);
             }
@@ -437,15 +425,16 @@ circ.checkin.prototype = {
 					'row' : {
 						'my' : {
 							'circ' : checkin.circ,
+							'mbts' : checkin.circ ? checkin.circ.billable_transaction().summary() : null,
 							'mvr' : checkin.record,
 							'acp' : checkin.copy,
+							'au' : checkin.patron,
 							'status' : checkin.status,
 							'route_to' : checkin.route_to,
 							'message' : checkin.message
 						}
 					},
 					'to_top' : true
-				//I could override map_row_to_column here
 				}
 			);
 			obj.list.node.view.selection.select(0);
