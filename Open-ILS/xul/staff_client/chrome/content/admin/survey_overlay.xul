@@ -21,9 +21,7 @@
 		<rows id="page1_grid1_rows">
 			<row id="page1_grid1_row1">
 				<label id="page1_row1_label1" value="&staff.admin.survey.available.label;" class="wizard_label"/>
-				<menulist id="lib_menulist">
-					<menupopup id="lib_menupopup"/>
-				</menulist>
+                <hbox id="placeholder" />
 			</row>
 
 			<row id="page1_grid1_row2">
