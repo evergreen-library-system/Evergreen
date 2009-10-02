@@ -325,6 +325,7 @@
 				<menuitem label="&staff.main.menu.admin.copy_location_edit.label;" accesskey="&staff.main.menu.admin.copy_location_edit.accesskey;" command="cmd_copy_location_edit"/>
 				<menuitem label="&staff.main.menu.admin.browse_holds.label;" command="cmd_browse_holds" accesskey="&staff.main.menu.admin.browse_holds.accesskey;"/>
 		        <menuitem label="&staff.main.menu.admin.local_admin.label;" accesskey="&staff.main.menu.admin.local_admin.accesskey;" command="cmd_local_admin"/>
+		        <menuitem label="&staff.main.menu.admin.survey_wizard.label;" accesskey="&staff.main.menu.admin.survey_wizard.accesskey;" command="cmd_survey_wizard"/>
 				<menuseparator />
 				<menuitem label="&staff.main.menu.admin.public_opac.label;" command="cmd_public_opac" accesskey="&staff.main.menu.admin.public_opac.accesskey;"/>
 				<menuitem label="&staff.main.menu.admin.cmd_test.label;" old_accesskey="T" command="cmd_test"/>

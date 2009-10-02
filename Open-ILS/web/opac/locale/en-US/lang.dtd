@@ -688,7 +688,7 @@
 <!ENTITY staff.main.menu.admin.stat_cat_edit.accesskey "C">
 <!ENTITY staff.main.menu.admin.stat_cat_edit.label "Statistical Category Editor">
 <!ENTITY staff.main.menu.admin.survey_wizard.accesskey "S">
-<!ENTITY staff.main.menu.admin.survey_wizard.label "Survey Wizard">
+<!ENTITY staff.main.menu.admin.survey_wizard.label "Old Survey Wizard">
 <!ENTITY staff.main.menu.admin.template_edit.accesskey "R">
 <!ENTITY staff.main.menu.admin.template_edit.label "Receipt Template Editor">
 <!ENTITY staff.main.menu.admin.user_edit.accesskey "U">
