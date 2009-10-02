@@ -583,6 +583,7 @@ function uEditNewPatron() {
     card = new ac();
     card.id(uEditCardVirtId);
     card.isnew(1);
+    patron.active(1);
     patron.card(card);
     patron.cards([card]);
     patron.net_access_level(orgSettings['ui.patron.default_inet_access_level'] || 1);
