@@ -84,7 +84,7 @@
             <!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
                  *** summary screen with complex information, such as new search links on subjects. -->
             <tr>
-                <td nowrap='nowrap' class='rdetail_desc'>Subjects</td>
+                <td nowrap='nowrap' class='rdetail_desc'>&rdetail.summary.subjects;</td>
                 <td type='opac/slot-data' query='datafield[tag=650]' class='rdetail_item'>
                     <script type='opac/slot-format'><![CDATA[
                         var cgi = new CGI();
