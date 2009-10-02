@@ -25,7 +25,7 @@ static int rollbackTransaction ( );
 
 static osrfHash* mnames = NULL;
 static osrfAppSession* session = NULL;
-static char* trans_id = NULL;
+static const char* trans_id = NULL;
 
 int main (int argc, char **argv) {
 	if( argc < 4 ) {
