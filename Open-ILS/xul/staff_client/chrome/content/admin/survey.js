@@ -4,53 +4,64 @@ var SURVEY = {};
 var last_answer;
 var last_button;
 
-function populate_lib_list_with_branch(menulist,menupopup,defaultlib,branch,id_flag) {
-	JSAN.use('util.fm_utils');
-	var default_menuitem;
-	if (typeof defaultlib == 'object') {
-		defaultlib = defaultlib.id();	
-	}
-	var popup = menupopup;
-	if (typeof(popup)!='object') popup = document.getElementById(menupopup);
-	if (popup) {
-		//empty_widget(popup);
-		var padding_flag = true;
-		var flat_branch = util.fm_utils.flatten_ou_branch( branch );
-		for (var i in flat_branch) {
-			var menuitem = document.createElement('menuitem');
-			var padding = '';
-			var depth = g.OpenILS.data.hash.aout[ flat_branch[i].ou_type() ].depth();
-			if (padding_flag) {
-				for (var j = 0; j < depth; j++) { 
-					padding = padding + '  '; 
-				}
-			}
-			menuitem.setAttribute('label', padding + flat_branch[i].name() );
-			menuitem.setAttribute('value', flat_branch[i].id() );
-			if (id_flag) menuitem.setAttribute('id', 'libitem' + flat_branch[i].id() );
-			if (defaultlib == flat_branch[i].id()) {
-				default_menuitem = menuitem;
-			}
-			popup.appendChild(menuitem);
-		}
-		var list = menulist;
-		if (typeof(list)!='object') { list = document.getElementById(menulist); }
-		if (list && defaultlib && default_menuitem) {
-			if (list) { list.selectedItem = default_menuitem; }
-		}
-	} else {
-			var err = ('populate_lib_list_with_branch: Could not find ' + menupopup + '\n');
-			dump(err);
-			alert(err);
-	}
+function render_lib_menu() {
+    try {
+        JSAN.use('util.functional'); JSAN.use('util.fm_utils'); JSAN.use('util.widgets');
+
+        var work_ous = g.network.simple_request(
+            'PERM_RETRIEVE_WORK_OU',
+            [ ses(), 'CREATE_SURVEY']
+        );
+        if (work_ous.length == 0) {
+            alert(document.getElementById('offlineStrings').getString('menu.cmd_survey_wizard.inadequate_perm'));
+            window.close();
+            return;
+        }
+        var my_libs = [];
+        for (var i = 0; i < work_ous.length; i++ ) {
+            var perm_depth = g.OpenILS.data.hash.aout[ g.OpenILS.data.hash.aou[ work_ous[i] ].ou_type() ].depth();
+
+            var my_libs_tree = g.network.simple_request(
+                'FM_AOU_DESCENDANTS_RETRIEVE',
+                [ work_ous[i], perm_depth ]
+            );
+            if (!instanceOf(my_libs_tree,aou)) { /* FIXME - workaround for weird descendants call result */
+                my_libs_tree = my_libs_tree[0];
+            }
+            my_libs = my_libs.concat( util.fm_utils.flatten_ou_branch( my_libs_tree ) );
+        }
+
+        var x = document.getElementById('placeholder');
+        util.widgets.remove_children( x );
+
+        var default_lib = my_libs[0].id(); 
+
+        var ml = util.widgets.make_menulist( 
+            util.functional.map_list( 
+                my_libs,
+                function(obj) { 
+                    return [ 
+                        obj.shortname(), 
+                        obj.id(), 
+                        false,
+                        ( g.OpenILS.data.hash.aout[ obj.ou_type() ].depth() )
+                    ]; 
+                }
+            ),
+            default_lib
+        );
+        ml.setAttribute('id','lib_menulist');
+
+        x.appendChild( ml );
+    } catch(E) {
+        alert('Error in survey.js, render_lib_menu(): ' + E);
+    }
 }
 
 
 function survey_init() {
 	dump('survey_init()\n');
-	var user_ou = g.OpenILS.data.list.au[0].home_ou();
-	var user_branch = g.OpenILS.data.hash.aou[ user_ou ];
-	populate_lib_list_with_branch('lib_menulist','lib_menupopup',user_ou,user_branch); 
+	render_lib_menu();
 	SURVEY['asv'] = new asv(); SURVEY['asv'].isnew('1');
 	SURVEY['num_of_questions'] = 0;
 	document.getElementById('survey_name').focus();
