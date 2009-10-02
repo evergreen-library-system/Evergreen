@@ -542,6 +542,7 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY rdetail.loading "Loading copy infomation...">
 <!ENTITY rdetail.noneAvailable " * There are no copies in this location">
 <!ENTITY rdetail.summary.online "Online Resources">
+<!ENTITY rdetail.summary.subjects "Subjects">
 
 <!ENTITY result.sort_by "Sort Results by Relevance">
 <!ENTITY result.sort_by.title "Sort Results by Title">
