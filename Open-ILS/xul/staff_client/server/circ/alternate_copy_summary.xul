@@ -35,7 +35,7 @@
 
     <groupbox flex="1">
 
-        <caption label="Alternate View" />
+        <caption label="&staff.circ.alternate_copy_summary.Alternate_View;" />
 
         <grid id="grid0" flex="0">
             <columns>
@@ -46,21 +46,21 @@
             </columns>
             <rows>
                 <row>
-                    <label value="Title" />
+                    <label value="&staff.circ.alternate_copy_summary.Title;" />
                     <textbox name="title" readonly="true" context="clipboard"/>
                     <spacer />
                     <spacer />
                 </row>
                 <row>
-                    <label value="Author" />
+                    <label value="&staff.circ.alternate_copy_summary.Author;" />
                     <textbox name="author" readonly="true" context="clipboard"/>
-                    <label value="Edition" />
+                    <label value="&staff.circ.alternate_copy_summary.Edition;" />
                     <textbox name="edition" readonly="true" context="clipboard"/>
                 </row>
                 <row>
-                    <label value="Call Number" />
+                    <label value="&staff.circ.alternate_copy_summary.Call_Number;" />
                     <textbox name="call_number" readonly="true" context="clipboard"/>
-                    <label value="Pub Date" />
+                    <label value="&staff.circ.alternate_copy_summary.Pub_Date;" />
                     <textbox name="pubdate" readonly="true" context="clipboard"/>
                 </row>
             </rows>
@@ -68,10 +68,10 @@
 
         <tabbox flex="1">
             <tabs>
-                <tab label="Quick Summary" />
-                <tab label="Circulation History" />
-                <tab label="Holds/Transit" />
-                <tab label="Cataloging Info" />
+                <tab label="&staff.circ.alternate_copy_summary.Quick_Summary;" />
+                <tab label="&staff.circ.alternate_copy_summary.Circulation_History;" />
+                <tab label="&staff.circ.alternate_copy_summary.Holds_Transit;" />
+                <tab label="&staff.circ.alternate_copy_summary.Cataloging_Info;" />
             </tabs>
             <tabpanels flex="1">
                 <tabpanel orient="vertical">
@@ -88,83 +88,83 @@
                         </columns>
                         <rows>
                             <row>
-                                <label value="Barcode" />
+                                <label value="&staff.circ.alternate_copy_summary.Barcode;" />
                                 <textbox name="barcode" readonly="true" context="clipboard"/>
-                                <label value="Owning Library" />
+                                <label value="&staff.circ.alternate_copy_summary.Owning_Library;" />
                                 <textbox name="owning_lib" readonly="true" context="clipboard"/>
-                                <label value="Call Number" />
+                                <label value="&staff.circ.alternate_copy_summary.Call_Number;" />
                                 <textbox name="call_number" readonly="true" context="clipboard"/>
-                                <label value="Status" />
+                                <label value="&staff.circ.alternate_copy_summary.Status;" />
                                 <textbox name="status" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="Price" />
+                                <label value="&staff.circ.alternate_copy_summary.Price;" />
                                 <textbox name="price" readonly="true" context="clipboard"/>
-                                <label value="Copy Location" />
+                                <label value="&staff.circ.alternate_copy_summary.Copy_Location;" />
                                 <textbox name="location" readonly="true" context="clipboard"/>
-                                <label value="Author" />
+                                <label value="&staff.circ.alternate_copy_summary.Author;" />
                                 <textbox name="author" readonly="true" context="clipboard"/>
-                                <label value="Due Date" />
+                                <label value="&staff.circ.alternate_copy_summary.Due_Date;" />
                                 <textbox name="due_date" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="ISBN" />
+                                <label value="&staff.circ.alternate_copy_summary.ISBN;" />
                                 <textbox name="isbn" readonly="true" context="clipboard"/>
-                                <label value="Loan Duration" />
+                                <label value="&staff.circ.alternate_copy_summary.Loan_Duration;" />
                                 <textbox name="loan_duration" readonly="true" context="clipboard"/>
-                                <label value="Publisher" />
+                                <label value="&staff.circ.alternate_copy_summary.Publisher;" />
                                 <textbox name="publisher" readonly="true" context="clipboard"/>
-                                <label value="Checkout Date" />
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Date;" />
                                 <textbox name="xact_start" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="Date Created" />
+                                <label value="&staff.circ.alternate_copy_summary.Date_Created;" />
                                 <textbox name="date_created" readonly="true" context="clipboard"/>
-                                <label value="Reference" />
+                                <label value="&staff.circ.alternate_copy_summary.Reference;" />
                                 <textbox name="reference" readonly="true" context="clipboard"/>
-                                <label value="Total Circs" />
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs;" />
                                 <textbox name="total_circ_count" readonly="true" context="clipboard"/>
-                                <label value="Checkout Library" />
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Library;" />
                                 <textbox name="circ_circ_lib" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="Copy ID" />
+                                <label value="&staff.circ.alternate_copy_summary.Copy_ID;" />
                                 <textbox name="copy_id" readonly="true" context="clipboard"/>
-                                <label value="OPAC Visible" />
+                                <label value="&staff.circ.alternate_copy_summary.OPAC_Visible;" />
                                 <textbox name="opac_visible" readonly="true" context="clipboard"/>
-                                <label value="Total Circs - Current Year" />
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs___Current_Year;" />
                                 <textbox name="total_circ_count_curr_year" readonly="true" context="clipboard"/>
-                                <label value="Checkin Time" />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time;" />
                                 <textbox name="checkin_time" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <label value="TCN" />
+                                <label value="&staff.circ.alternate_copy_summary.TCN;" />
                                 <textbox name="tcn" readonly="true" context="clipboard"/>
-                                <label value="Holdable" />
+                                <label value="&staff.circ.alternate_copy_summary.Holdable;" />
                                 <textbox name="holdable" readonly="true" context="clipboard"/>
-                                <label value="Total Circs - Prev Year" />
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs___Prev_Year;" />
                                 <textbox name="total_circ_count_prev_year" readonly="true" context="clipboard"/>
-                                <label value="Checkin Scan Time" />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time;" />
                                 <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <spacer />
                                 <spacer />
-                                <label value="Circ Modifier" />
+                                <label value="&staff.circ.alternate_copy_summary.Circ_Modifier;" />
                                 <textbox name="circ_mod" readonly="true" context="clipboard"/>
-                                <label value="Rolling Counter" />
+                                <label value="&staff.circ.alternate_copy_summary.Rolling_Counter;" />
                                 <textbox name="rolling_counter" readonly="true" context="clipboard"/>
-                                <label value="Checkin Library" />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Library;" />
                                 <textbox name="checkin_lib" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <spacer />
                                 <spacer />
-                                <label value="Hold Shelf Location" />
+                                <label value="&staff.circ.alternate_copy_summary.Hold_Shelf_Location;" />
                                 <textbox name="hold_shelf_loc" readonly="true" context="clipboard"/>
-                                <label value="Remaining Renewals" />
+                                <label value="&staff.circ.alternate_copy_summary.Remaining_Renewals;" />
                                 <textbox name="remaining_renewals" readonly="true" context="clipboard"/>
-                                <label value="Checkin Workstation" />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Workstation;" />
                                 <textbox name="checkin_workstation" readonly="true" context="clipboard"/>
                             </row>
                         </rows>
@@ -176,7 +176,7 @@
                         </columns>
                         <rows>
                             <row>
-                                <label value="Alert" />
+                                <label value="&staff.circ.alternate_copy_summary.Alert;" />
                                 <textbox name="alert_message" multiline="true"  context="clipboard"/>
                             </row>
                         </rows>
