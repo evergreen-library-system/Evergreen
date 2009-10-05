@@ -53,6 +53,9 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 			return fieldmapper.aou.OrgCache[id].org;
 
 		var o = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_unit.retrieve'],[null,id]);
+        if(!(o && o.id)) {
+            throw new Error("fieldmapper.aou.LoadOrg(): No org unit found with ID " + id);
+        }
 		o.children = fieldmapper.aou.OrgCache[o.id()].children;
 		fieldmapper.aou.OrgCache[o.id()] = { loaded : true, org : o };
 		return o;

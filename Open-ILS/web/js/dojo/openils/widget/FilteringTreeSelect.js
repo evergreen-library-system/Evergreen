@@ -34,40 +34,33 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                     return;
                 }
                 if(!dojo.isArray(this.tree)) this.tree = [this.tree];
+                this.className = this.tree[0].classname;
                 this.dataList = [];
                 var self = this;
                 dojo.forEach(this.tree, function(node) { self._makeNodeList(node); });
                 if(this.dataList.length > 0) {
-                    this.store = new dojo.data.ItemFileReadStore(
-                        {data:fieldmapper[this.dataList[0].classname].toStoreData(this.dataList)});
+                    var storeData = fieldmapper[this.className].initStoreData();
+                    storeData.items = this.dataList;
+                    this.store = new dojo.data.ItemFileReadStore({data:storeData});
                 }
                 this.inherited(arguments);
             },
 
-            // Compile the tree down to a depth-first list of nodes
-            _makeNodeList : function(node) {
-                this.dataList.push(node);
+            // Compile the tree down to a depth-first list of dojo data items
+            _makeNodeList : function(node, depth) {
+                if(!depth) depth = 0;
+                var storeItem = node.toStoreItem();
+                storeItem._depth = depth++;
+                this.dataList.push(storeItem);
                 for(var i in node[this.childField]()) 
-                    this._makeNodeList(node[this.childField]()[i]);
+                    this._makeNodeList(node[this.childField]()[i], depth);
             },
 
             // For each item, find the depth at display time by searching up the tree.
             _getMenuLabelFromItem : function(item) {
-                var pad = -this.defaultPad;
-                var self = this;
-
-                function processItem(list) {
-                    if(!list.length) return;
-                    var pitem = list[0];
-                    pad += self.defaultPad;
-                    var parentId = self.store.getValue(pitem, self.parentField);
-                    self.store.fetch({onComplete:processItem, query:{id:''+parentId}});
-                }
-                processItem([item]);
-
                 return {
                     html: true,
-                    label: '<div style="padding-left:'+pad+'px;">' +
+                    label: '<div style="padding-left:'+ (item._depth * this.defaultPad) +'px;">' +
                         this.store.getValue(item, this.labelAttr) + '</div>'
                 }
             }
