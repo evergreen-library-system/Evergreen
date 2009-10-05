@@ -15,9 +15,10 @@ my %entity_hash = ();
 open FILE, $filename;
 while (my $line = <FILE>) {
 
-    while ($line =~ /(label|value)="(.+?)"/g) {
+    while ($line =~ /(accesskey|label|value)="(.+?)"/g) {
+        my $attr = $1;
         my $value = $2; if ( $value =~ /^&.+;$/ ) { next; } # Already an entity
-        my $entity = $value; $entity =~ s/\W/_/g; $entity = $entity_prefix . $entity;
+        my $entity = $value; $entity =~ s/\W/_/g; $entity = $entity_prefix . $entity . ( $attr eq "accesskey" ? ".accesskey" : ".label" );
         $line =~ s/$value/&$entity;/g;
         print STDERR qq^<!ENTITY $entity "$value">\n^;
     }
