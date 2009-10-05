@@ -61,6 +61,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 case 'bool':
                     return (value) ? 't' : 'f'
                 case 'timestamp':
+                    if(!value) return null;
                     return dojo.date.stamp.toISOString(value);
                 case 'int':
                 case 'float':
