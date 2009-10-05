@@ -2880,42 +2880,42 @@
 <!ENTITY ui.general.button_bar.desc "This enables a row of buttons and/or icons between the top-level menu system and the tabbed interfaces.">
 <!ENTITY ui.network.progress_meter "GUI: Network Activity Meter">
 <!ENTITY ui.network.progress_meter.desc "This enables a network activity indicator in the bottom status bar.">
-<!ENTITY staff.circ.alternate_copy_summary.Alert "Alert">
-<!ENTITY staff.circ.alternate_copy_summary.Alternate_View "Alternate View">
-<!ENTITY staff.circ.alternate_copy_summary.Author "Author">
-<!ENTITY staff.circ.alternate_copy_summary.Barcode "Barcode">
-<!ENTITY staff.circ.alternate_copy_summary.Call_Number "Call Number">
-<!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info "Cataloging Info">
-<!ENTITY staff.circ.alternate_copy_summary.Checkin_Library "Checkin Library">
-<!ENTITY staff.circ.alternate_copy_summary.Checkin_Scan_Time "Checkin Scan Time">
-<!ENTITY staff.circ.alternate_copy_summary.Checkin_Time "Checkin Time">
-<!ENTITY staff.circ.alternate_copy_summary.Checkin_Workstation "Checkin Workstation">
-<!ENTITY staff.circ.alternate_copy_summary.Checkout_Date "Checkout Date">
-<!ENTITY staff.circ.alternate_copy_summary.Checkout_Library "Checkout Library">
-<!ENTITY staff.circ.alternate_copy_summary.Circ_Modifier "Circ Modifier">
-<!ENTITY staff.circ.alternate_copy_summary.Circulation_History "Circulation History">
-<!ENTITY staff.circ.alternate_copy_summary.Copy_ID "Copy ID">
-<!ENTITY staff.circ.alternate_copy_summary.Copy_Location "Copy Location">
-<!ENTITY staff.circ.alternate_copy_summary.Date_Created "Date Created">
-<!ENTITY staff.circ.alternate_copy_summary.Due_Date "Due Date">
-<!ENTITY staff.circ.alternate_copy_summary.Edition "Edition">
-<!ENTITY staff.circ.alternate_copy_summary.Holdable "Holdable">
-<!ENTITY staff.circ.alternate_copy_summary.Hold_Shelf_Location "Hold Shelf Location">
-<!ENTITY staff.circ.alternate_copy_summary.Holds_Transit "Holds/Transit">
-<!ENTITY staff.circ.alternate_copy_summary.ISBN "ISBN">
-<!ENTITY staff.circ.alternate_copy_summary.Loan_Duration "Loan Duration">
-<!ENTITY staff.circ.alternate_copy_summary.OPAC_Visible "OPAC Visible">
-<!ENTITY staff.circ.alternate_copy_summary.Owning_Library "Owning Library">
-<!ENTITY staff.circ.alternate_copy_summary.Price "Price">
-<!ENTITY staff.circ.alternate_copy_summary.Pub_Date "Pub Date">
-<!ENTITY staff.circ.alternate_copy_summary.Publisher "Publisher">
-<!ENTITY staff.circ.alternate_copy_summary.Quick_Summary "Quick Summary">
-<!ENTITY staff.circ.alternate_copy_summary.Reference "Reference">
-<!ENTITY staff.circ.alternate_copy_summary.Remaining_Renewals "Remaining Renewals">
-<!ENTITY staff.circ.alternate_copy_summary.Rolling_Counter "Rolling Counter">
-<!ENTITY staff.circ.alternate_copy_summary.Status "Status">
-<!ENTITY staff.circ.alternate_copy_summary.TCN "TCN">
-<!ENTITY staff.circ.alternate_copy_summary.Title "Title">
-<!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Current_Year "Total Circs - Current Year">
-<!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Prev_Year "Total Circs - Prev Year">
-<!ENTITY staff.circ.alternate_copy_summary.Total_Circs "Total Circs">
+<!ENTITY staff.circ.alternate_copy_summary.Alert.label "Alert">
+<!ENTITY staff.circ.alternate_copy_summary.Alternate_View.label "Alternate View">
+<!ENTITY staff.circ.alternate_copy_summary.Author.label "Author">
+<!ENTITY staff.circ.alternate_copy_summary.Barcode.label "Barcode">
+<!ENTITY staff.circ.alternate_copy_summary.Call_Number.label "Call Number">
+<!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info.label "Cataloging Info">
+<!ENTITY staff.circ.alternate_copy_summary.Checkin_Library.label "Checkin Library">
+<!ENTITY staff.circ.alternate_copy_summary.Checkin_Scan_Time.label "Checkin Scan Time">
+<!ENTITY staff.circ.alternate_copy_summary.Checkin_Time.label "Checkin Time">
+<!ENTITY staff.circ.alternate_copy_summary.Checkin_Workstation.label "Checkin Workstation">
+<!ENTITY staff.circ.alternate_copy_summary.Checkout_Date.label "Checkout Date">
+<!ENTITY staff.circ.alternate_copy_summary.Checkout_Library.label "Checkout Library">
+<!ENTITY staff.circ.alternate_copy_summary.Circ_Modifier.label "Circ Modifier">
+<!ENTITY staff.circ.alternate_copy_summary.Circulation_History.label "Circulation History">
+<!ENTITY staff.circ.alternate_copy_summary.Copy_ID.label "Copy ID">
+<!ENTITY staff.circ.alternate_copy_summary.Copy_Location.label "Copy Location">
+<!ENTITY staff.circ.alternate_copy_summary.Date_Created.label "Date Created">
+<!ENTITY staff.circ.alternate_copy_summary.Due_Date.label "Due Date">
+<!ENTITY staff.circ.alternate_copy_summary.Edition.label "Edition">
+<!ENTITY staff.circ.alternate_copy_summary.Holdable.label "Holdable">
+<!ENTITY staff.circ.alternate_copy_summary.Hold_Shelf_Location.label "Hold Shelf Location">
+<!ENTITY staff.circ.alternate_copy_summary.Holds_Transit.label "Holds/Transit">
+<!ENTITY staff.circ.alternate_copy_summary.ISBN.label "ISBN">
+<!ENTITY staff.circ.alternate_copy_summary.Loan_Duration.label "Loan Duration">
+<!ENTITY staff.circ.alternate_copy_summary.OPAC_Visible.label "OPAC Visible">
+<!ENTITY staff.circ.alternate_copy_summary.Owning_Library.label "Owning Library">
+<!ENTITY staff.circ.alternate_copy_summary.Price.label "Price">
+<!ENTITY staff.circ.alternate_copy_summary.Pub_Date.label "Pub Date">
+<!ENTITY staff.circ.alternate_copy_summary.Publisher.label "Publisher">
+<!ENTITY staff.circ.alternate_copy_summary.Quick_Summary.label "Quick Summary">
+<!ENTITY staff.circ.alternate_copy_summary.Reference.label "Reference">
+<!ENTITY staff.circ.alternate_copy_summary.Remaining_Renewals.label "Remaining Renewals">
+<!ENTITY staff.circ.alternate_copy_summary.Rolling_Counter.label "Rolling Counter">
+<!ENTITY staff.circ.alternate_copy_summary.Status.label "Status">
+<!ENTITY staff.circ.alternate_copy_summary.TCN.label "TCN">
+<!ENTITY staff.circ.alternate_copy_summary.Title.label "Title">
+<!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label "Total Circs - Current Year">
+<!ENTITY staff.circ.alternate_copy_summary.Total_Circs.label "Total Circs">
+<!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label "Total Circs - Prev Year">
