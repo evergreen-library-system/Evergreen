@@ -224,7 +224,7 @@ static int sendCommand ( const char* json ) {
 	osrfLogDebug(OSRF_LOG_MARK, "Calling %s -> %s for %s", CSTORE, method_name, item->classname);
 
 	// make the param array
-	jsonObject* params = jsonParseString("[]");
+	jsonObject* params = jsonNewObjectType( JSON_ARRAY );
 	jsonObjectSetIndex( params, 0, item );
 	jsonObjectSetIndex( params, 1, jsonParseString("{\"quiet\":\"true\"}") );
 
