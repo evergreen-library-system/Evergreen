@@ -643,6 +643,13 @@ function _uEditSave(doClone) {
                         addr.ischanged(1);
                 }
                 addr[w._fmfield](val);
+
+                if(dojo.byId('uedit-billing-address-' + addr.id()).checked) 
+                    patron.billing_address(addr.id());
+
+                if(dojo.byId('uedit-mailing-address-' + addr.id()).checked)
+                    patron.mailing_address(addr.id());
+
                 break;
 
             case 'survey':
@@ -733,7 +740,10 @@ function uEditRefreshXUL(newuser) {
 
 
 function uEditNewAddr(evt, id) {
-    if(id == null) id = --uEditAddrVirtId;
+
+    if(id == null) 
+        id = --uEditAddrVirtId; // new address
+
     dojo.forEach(addrTemplateRows, 
         function(row) {
 
@@ -762,6 +772,21 @@ function uEditNewAddr(evt, id) {
                         openils.Util.hide(dojo.query('[name=replaced-addr-div]', row)[0]);
                     }
                 }
+
+            } else if(row.getAttribute('name') == 'uedit-addr-divider') {
+                // link up the billing/mailing address and give the inputs IDs so we can acces the later
+                
+                // billing address
+                var ba = getByName(row, 'billing_address');
+                ba.id = 'uedit-billing-address-' + id;
+                if(patron.billing_address() && patron.billing_address().id() == id)
+                    ba.checked = true;
+
+                // mailing address
+                var ma = getByName(row, 'mailing_address');
+                ma.id = 'uedit-mailing-address-' + id;
+                if(patron.mailing_address() && patron.mailing_address().id() == id)
+                    ma.checked = true;
 
             } else {
                 var btn = dojo.query('[name=delete-button]', row)[0];
