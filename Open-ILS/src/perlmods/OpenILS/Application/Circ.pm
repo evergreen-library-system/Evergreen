@@ -375,11 +375,41 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+	method	=> "post_checkin_backdate_circ",
+	api_name	=> "open-ils.circ.post_checkin_backdate.batch",
+    stream => 1,
+	signature => {
+        desc => q/@see open-ils.circ.post_checkin_backdate.  Batch mode/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'List of Circ ID', type => 'array'},
+            {desc => 'ISO8601 backdate', type => 'string'},
+        ],
+        return => {desc => q/Set of: 1 on success, failure event on error/}
+    }
+);
+
+
 sub post_checkin_backdate_circ {
     my( $self, $conn, $auth, $circ_id, $backdate ) = @_;
-
-    my $e = new_editor(authtoken=>$auth, xact=>1);
+    my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    if($self->api_name =~ /batch/) {
+        $conn->respond(post_checkin_backdate_circ_impl($e, $_, $backdate)) for $circ_id;
+    } else {
+        $conn->respond_complete(post_checkin_backdate_circ_impl($e, $circ_id, $backdate));
+    }
+
+    $e->disconnect;
+    return undef;
+}
+
+
+sub post_checkin_backdate_circ_impl {
+    my($e, $circ_id, $backdate) = @_;
+
+    $e->xact_begin;
 
     my $circ = $e->retrieve_action_circulation($circ_id)
         or return $e->die_event;
@@ -404,7 +434,7 @@ sub post_checkin_backdate_circ {
     $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($e, $circ->id);
     return $evt if $evt;
 
-    $e->commit;
+    $e->xact_commit;
     return 1;
 }
 
