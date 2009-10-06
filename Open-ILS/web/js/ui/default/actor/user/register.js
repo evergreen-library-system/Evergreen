@@ -797,6 +797,9 @@ function uEditNewAddr(evt, id, mkLinks) {
     if(id == null) 
         id = --uEditAddrVirtId; // new address
 
+    var addr =  patron.addresses().filter(
+        function(i) { return (i.id() == id) })[0];
+
     dojo.forEach(addrTemplateRows, 
         function(row) {
 
@@ -813,9 +816,6 @@ function uEditNewAddr(evt, id, mkLinks) {
 
             } else if(row.getAttribute('name') == 'uedit-addr-pending-row') {
 
-                var addr =  patron.addresses().filter(
-                    function(i) { return (i.id() == id) })[0];
-                
                 // if it's a pending address, show the 'approve' button
                 if(addr && openils.Util.isTrue(addr.pending())) {
                     openils.Util.show(row, 'table-row');
@@ -827,6 +827,43 @@ function uEditNewAddr(evt, id, mkLinks) {
                         div.innerHTML = addr.replaces();
                     } else {
                         openils.Util.hide(dojo.query('[name=replaced-addr-div]', row)[0]);
+                    }
+                }
+
+            } else if(row.getAttribute('name') == 'uedit-addr-owner-row') {
+                // address is owned by someone else.  provide option to load the
+                // user in a different tab
+                
+                if(addr && addr.usr() != patron.id()) {
+                    openils.Util.show(row, 'table-row');
+                    var link = getByName(row, 'addr-owner');
+
+                    // fetch the linked user so we can present their name in the UI
+                    var addrUser;
+                    if(cloneUserObj && cloneUserObj.id() == addr.usr()) {
+                        addrUser = [
+                            cloneUserObj.first_given_name(), 
+                            cloneUserObj.second_given_name(), 
+                            cloneUserObj.family_name()
+                        ];
+                    } else {
+                        addrUser = fieldmapper.standardRequest(
+                            ['open-ils.actor', 'open-ils.actor.user.retrieve.parts'],
+                            {params: [
+                                openils.User.authtoken, 
+                                addr.usr(), 
+                                ['first_given_name', 'second_given_name', 'family_name']
+                            ]}
+                        );
+                    }
+
+                    link.innerHTML = addrUser[0] + ' ' + addrUser[1] + ' ' + addrUser[2]; // TODO i18n
+                    link.onclick = function() {
+                        if(openils.XUL.isXUL()) { 
+                            window.xulG.spawn_editor({ses:openils.User.authtoken, usr:addr.usr()})
+                        } else {
+                            parent.location.href = location.href.replace(/clone=\d+/, 'usr=' + addr.usr());
+                        }
                     }
                 }
 
