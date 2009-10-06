@@ -22,5 +22,4 @@
 <style type="text/css">
 	@import '/js/dojo/dojo/resources/dojo.css';
 	@import '/js/dojo/dijit/themes/tundra/tundra.css';
-	@import '/js/dojo/dijit/themes/tundra/tundra_rtl.css';
 </style>
