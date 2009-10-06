@@ -1724,8 +1724,8 @@ sub as_xml {
     my $xml = '<volume xmlns="http://open-ils.org/spec/holdings/v1" ';
 
     $xml .= 'id="tag:open-ils.org:asset-call_number/' . $self->obj->id . '" ';
-    $xml .= 'lib="' . $self->obj->owning_lib->shortname . '" ';
-    $xml .= 'label="' . $self->obj->label . '">';
+    $xml .= 'lib="' . $self->escape( $self->obj->owning_lib->shortname ) . '" ';
+    $xml .= 'label="' . $self->escape( $self->obj->label ) . '">';
 
     if (!$args->{no_copies}) {
         if (ref($self->obj->copies) && @{ $self->obj->copies }) {
