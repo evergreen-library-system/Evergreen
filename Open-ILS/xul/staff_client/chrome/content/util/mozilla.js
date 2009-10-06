@@ -1,5 +1,6 @@
 dump('entering util/mozilla.js\n');
 
+netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
