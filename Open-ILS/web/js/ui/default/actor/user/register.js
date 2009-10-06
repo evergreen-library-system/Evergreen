@@ -857,7 +857,7 @@ function uEditNewAddr(evt, id, mkLinks) {
                         );
                     }
 
-                    link.innerHTML = addrUser[0] + ' ' + addrUser[1] + ' ' + addrUser[2]; // TODO i18n
+                    link.innerHTML = (addrUser.map(function(name) { return (name) ? name+' ' : '' })+'').replace(/,/g,''); // TODO i18n
                     link.onclick = function() {
                         if(openils.XUL.isXUL()) { 
                             window.xulG.spawn_editor({ses:openils.User.authtoken, usr:addr.usr()})
