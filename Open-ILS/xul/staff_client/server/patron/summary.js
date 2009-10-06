@@ -114,35 +114,29 @@ patron.summary.prototype = {
 									'FM_MOUS_RETRIEVE.authoritative',
 									[ ses(), obj.patron.id() ],
 									function(req) {
-										JSAN.use('util.money');
-										var robj = req.getResultObject();
-										util.widgets.set_text(e, patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
-										if (under_btn) util.widgets.set_text(under_btn, 
-                                            patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
+                                        try {
+                                            JSAN.use('util.money');
+                                            var robj = req.getResultObject();
+                                            util.widgets.set_text(e, patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
+                                            if (under_btn) util.widgets.set_text(under_btn, 
+                                                patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
+                                            var show_billing_tab_on_bills = String( obj.OpenILS.data.hash.aous['ui.circ.show_billing_tab_on_bills'] ) == 'true';
+                                            if (show_billing_tab_on_bills && Number(robj.balance_owed()) > 0) {
+                                                if (xulG) {
+                                                    if (xulG.display_window) {
+                                                        xulG.display_window.util.widgets.dispatch('command','cmd_patron_bills');
+                                                    }
+                                                }
+                                            }
+                                            obj.bills_summary = robj;
+                                            if (obj.holds_summary && obj.bills_summary) 
+                                                if (typeof window.xulG == 'object' && typeof window.xulG.stop_sign_page == 'function')
+                                                    window.xulG.stop_sign_page( obj.patron, { 'holds_summary' : obj.holds_summary, 'bills_summary' : obj.bills_summary } ); 
+                                        } catch(E) {
+                                            alert('Error in summary.js, patron_bill callback: ' + E);
+                                        }
 									}
 								);
-								/*
-								obj.network.simple_request(
-									'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative',
-									[ ses(), obj.patron.id() ],
-									function(req) {
-										JSAN.use('util.money');
-										var list = req.getResultObject();
-										if (typeof list.ilsevent != 'undefined') {
-											util.widgets.set_text(e, '??? See Bills');
-											return;
-										}
-										var sum = 0;
-										for (var i = 0; i < list.length; i++) {
-											var robj = typeof list[i] == 'object' ? list[i] : obj.network.simple_request('FM_MBTS_RETRIEVE.authoritative',[ses(),list[i]]);
-											sum += util.money.dollars_float_to_cents_integer( robj.balance_owed() );
-										} 
-										if (sum > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
-										JSAN.use('util.money');
-										util.widgets.set_text(e, '$' + util.money.sanitize( util.money.cents_as_dollars( sum ) ));
-									}
-								);
-								*/
 							};
 						}
 					],
@@ -220,13 +214,18 @@ patron.summary.prototype = {
 									'FM_AHR_COUNT_RETRIEVE.authoritative',
 									[ ses(), obj.patron.id() ],
 									function(req) {
+                                        var robj = req.getResultObject();
 										util.widgets.set_text(e,
-											req.getResultObject().total
+											robj.total
 										);
 										if (e2) util.widgets.set_text(e2,
-											req.getResultObject().ready
+											robj.ready
 										);
                                         if (under_btn) util.widgets.set_text(under_btn, req.getResultObject().ready + '/' + req.getResultObject().total );
+                                        obj.holds_summary = robj;
+                                        if (obj.holds_summary && obj.bills_summary) 
+				                            if (typeof window.xulG == 'object' && typeof window.xulG.stop_sign_page == 'function')
+                                                window.xulG.stop_sign_page( obj.patron, { 'holds_summary' : obj.holds_summary, 'bills_summary' : obj.bills_summary } ); 
 									}
 								);
 							};

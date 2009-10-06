@@ -8,6 +8,7 @@ patron.display = function (params) {
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.window'); this.window = new util.window();
 	JSAN.use('util.network'); this.network = new util.network();
+    JSAN.use('util.widgets'); 
 	this.w = window;
 }
 
@@ -34,49 +35,6 @@ patron.display.prototype = {
 		JSAN.use('util.deck'); 
 		obj.right_deck = new util.deck('patron_right_deck');
 		obj.left_deck = new util.deck('patron_left_deck');
-
-		function spawn_checkout_interface() {
-	            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_checkout" ) ); } catch(E) {};
-                obj.reset_nav_styling('cmd_patron_checkout',true);
-			var frame = obj.right_deck.set_iframe(
-				urls.XUL_CHECKOUT,
-				{},
-				{ 
-					'set_tab' : xulG.set_tab,
-					'patron_id' : obj.patron.id(),
-                    'patron' : obj.patron,
-					'check_stop_checkouts' : function() { return obj.check_stop_checkouts(); },
-					'on_list_change' : function(checkout) {
-						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-						var x = obj.summary_window.g.summary.controller.view.patron_checkouts;
-						var n = Number(x.getAttribute('value'));
-						x.setAttribute('value',n+1);
-					},
-					'on_list_change_old' : function(checkout) {
-					
-						/* this stops noncats from getting pushed into Items Out */
-						if (!checkout.circ.id()) return; 
-
-						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-						obj.summary_window.g.summary.controller.render('patron_checkouts');
-						obj.summary_window.g.summary.controller.render('patron_standing_penalties');
-						if (obj.items_window) {
-							obj.items_window.g.items.list.append(
-								{
-									'row' : {
-										'my' : {
-											'circ_id' : checkout.circ.id()
-										}
-									}
-								}
-							)
-						}
-					}
-				}
-			);
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			obj.checkout_window = get_contentWindow(frame);
-		}
 
 		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
@@ -576,115 +534,8 @@ patron.display.prototype = {
 					'barcode' : obj.barcode,
 					'id' : obj.id,
                     'refresh' : function() { obj.refresh_all(); },
-					'on_finished' : function(patron) {
-
-						obj.patron = patron; obj.controller.render();
-
-						obj.controller.view.cmd_patron_refresh.setAttribute('disabled','false');
-						obj.controller.view.cmd_patron_checkout.setAttribute('disabled','false');
-						obj.controller.view.cmd_patron_items.setAttribute('disabled','false');
-						obj.controller.view.cmd_patron_holds.setAttribute('disabled','false');
-						obj.controller.view.cmd_patron_bills.setAttribute('disabled','false');
-						obj.controller.view.cmd_patron_edit.setAttribute('disabled','false');
-
-						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-							try { 
-								window.xulG.set_tab_name(
-									$("patronStrings").getString('staff.patron.display.tab_name')
-										+ ' ' + patron.family_name() + ', ' + patron.first_given_name() + ' ' 
-										+ (patron.second_given_name() ? patron.second_given_name() : '' ) 
-								); 
-							} catch(E) { 
-								obj.error.sdump('D_ERROR',E);
-							}
-						}
-
-						if (!obj._checkout_spawned) {
-							spawn_checkout_interface();
-							obj._checkout_spawned = true;
-						}
-
-						obj.network.simple_request(
-							'FM_AHR_COUNT_RETRIEVE.authoritative',
-							[ ses(), patron.id() ],
-							function(req) {
-								try {
-									var msg = ''; obj.stop_checkouts = false;
-									if (patron.alert_message())
-										msg += $("patronStrings").getFormattedString('staff.patron.display.init.network_request.alert_message', [patron.alert_message()]);
-									//alert('obj.barcode = ' + obj.barcode);
-									if (obj.barcode) {
-										if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
-											//alert('card #'+i+' == ' + js2JSON(patron.cards()[i]));
-											if ( (patron.cards()[i].barcode()==obj.barcode) && ( ! get_bool(patron.cards()[i].active()) ) ) {
-												msg += $("patronStrings").getString('staff.patron.display.init.network_request.inactive_card');
-												obj.stop_checkouts = true;
-											}
-										}
-									}
-									if (get_bool(patron.barred())) {
-										msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_barred');
-										obj.stop_checkouts = true;
-									}
-									if (!get_bool(patron.active())) {
-										msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_inactive');
-										obj.stop_checkouts = true;
-									}
-									if (patron.expire_date()) {
-										var now = new Date();
-										now = now.getTime()/1000;
-
-										var expire_parts = patron.expire_date().substr(0,10).split('-');
-										expire_parts[1] = expire_parts[1] - 1;
-
-										var expire = new Date();
-										expire.setFullYear(expire_parts[0], expire_parts[1], expire_parts[2]);
-										expire = expire.getTime()/1000
-
-										if (expire < now) {
-											msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expired');
-										obj.stop_checkouts = true;
-										}
-									}
-								    var penalties = obj.patron.standing_penalties();
-								    for (var i = 0; i < penalties.length; i++) {
-                                        if (penalties[i].standing_penalty().block_list()) {
-                                            msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
-                                        }
-                                    }
-									var holds = req.getResultObject();
-									if (holds.ready && holds.ready > 0) {
-										msg += $("patronStrings").getFormattedString('staff.patron.display.init.holds_ready', [holds.ready]);
-									}
-									if (msg) {
-										if (msg != obj.old_msg) {
-											//obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
-											document.documentElement.firstChild.focus();
-											var data_url = window.escape("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>'
-												+ $("patronStrings").getString('staff.patron.display.init.network_request.window_title') + '</h1><blockquote><p>' + msg + '</p>\r\n\r\n<pre>'
-												+ $("patronStrings").getString('staff.patron.display.init.network_request.window_message') + '</pre></blockquote>');
-											obj.right_deck.set_iframe('data:text/html,'+data_url,{},{});
-											obj.old_msg = msg;
-                                            obj.msg_url = data_url;
-										} else {
-											obj.error.sdump('D_TRACE',$("patronStrings").getFormattedString('staff.patron.display.init.network_request.dump_error_message', [msg]));
-										}
-									}
-									if (obj.stop_checkouts && obj.checkout_window) {
-										setTimeout( function() {
-											try {
-												netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-												obj.checkout_window.g.checkout.check_disable();
-											} catch(E) { }
-										}, 1000);
-									}
-								} catch(E) {
-									obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.display.init.network_request.error_showing_alert'),E);
-								}
-							}
-						);
-
-					},
+					'on_finished' : obj.gen_patron_summary_finish_func(),
+                    'stop_sign_page' : obj.gen_patron_stop_sign_page_func(),
 					'on_error' : function(E) {
 						try {
 							var error;
@@ -843,6 +694,167 @@ patron.display.prototype = {
 		try { obj.summary_window.refresh(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }
 		try { obj.refresh_deck(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }
 	},
+
+    'gen_patron_summary_finish_func' : function() {
+        var obj = this;
+
+        function spawn_checkout_interface() {
+            try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_checkout" ) ); } catch(E) {};
+            obj.reset_nav_styling('cmd_patron_checkout',true);
+            var frame = obj.right_deck.set_iframe(
+                urls.XUL_CHECKOUT,
+                {},
+                { 
+                    'set_tab' : xulG.set_tab,
+                    'patron_id' : obj.patron.id(),
+                    'patron' : obj.patron,
+                    'check_stop_checkouts' : function() { return obj.check_stop_checkouts(); },
+                    'on_list_change' : function(checkout) {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        var x = obj.summary_window.g.summary.controller.view.patron_checkouts;
+                        var n = Number(x.getAttribute('value'));
+                        x.setAttribute('value',n+1);
+                    },
+                    'on_list_change_old' : function(checkout) {
+                    
+                        /* this stops noncats from getting pushed into Items Out */
+                        if (!checkout.circ.id()) return; 
+
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        obj.summary_window.g.summary.controller.render('patron_checkouts');
+                        obj.summary_window.g.summary.controller.render('patron_standing_penalties');
+                        if (obj.items_window) {
+                            obj.items_window.g.items.list.append(
+                                {
+                                    'row' : {
+                                        'my' : {
+                                            'circ_id' : checkout.circ.id()
+                                        }
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+            );
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            obj.checkout_window = get_contentWindow(frame);
+        }
+
+        return function(patron,params) {
+            try {
+                obj.patron = patron; obj.controller.render();
+
+                obj.controller.view.cmd_patron_refresh.setAttribute('disabled','false');
+                obj.controller.view.cmd_patron_checkout.setAttribute('disabled','false');
+                obj.controller.view.cmd_patron_items.setAttribute('disabled','false');
+                obj.controller.view.cmd_patron_holds.setAttribute('disabled','false');
+                obj.controller.view.cmd_patron_bills.setAttribute('disabled','false');
+                obj.controller.view.cmd_patron_edit.setAttribute('disabled','false');
+
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    try { 
+                        window.xulG.set_tab_name(
+                            $("patronStrings").getString('staff.patron.display.tab_name')
+                                + ' ' + patron.family_name() + ', ' + patron.first_given_name() + ' ' 
+                                + (patron.second_given_name() ? patron.second_given_name() : '' ) 
+                        ); 
+                    } catch(E) { 
+                        obj.error.sdump('D_ERROR',E);
+                    }
+                }
+
+                if (!obj._checkout_spawned) {
+                    spawn_checkout_interface();
+                    obj._checkout_spawned = true;
+                }
+
+                if (obj.stop_checkouts && obj.checkout_window) {
+                    setTimeout( function() {
+                        try {
+                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                            obj.checkout_window.g.checkout.check_disable();
+                        } catch(E) { }
+                    }, 1000);
+                }
+                            
+            } catch(E) {
+                alert('Error in patron_summary_finish_func(): ' + E);
+            }
+        };
+    },
+
+    'gen_patron_stop_sign_page_func' : function() {
+        var obj = this;
+        // FIXME - replace this generated "stop sign" page with a dedicated XUL file or template
+        return function(patron,params) {
+            try {
+                var msg = ''; obj.stop_checkouts = false;
+                if (patron.alert_message())
+                    msg += $("patronStrings").getFormattedString('staff.patron.display.init.network_request.alert_message', [patron.alert_message()]);
+                //alert('obj.barcode = ' + obj.barcode);
+                if (obj.barcode) {
+                    if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
+                        //alert('card #'+i+' == ' + js2JSON(patron.cards()[i]));
+                        if ( (patron.cards()[i].barcode()==obj.barcode) && ( ! get_bool(patron.cards()[i].active()) ) ) {
+                            msg += $("patronStrings").getString('staff.patron.display.init.network_request.inactive_card');
+                            obj.stop_checkouts = true;
+                        }
+                    }
+                }
+                if (get_bool(patron.barred())) {
+                    msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_barred');
+                    obj.stop_checkouts = true;
+                }
+                if (!get_bool(patron.active())) {
+                    msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_inactive');
+                    obj.stop_checkouts = true;
+                }
+                if (patron.expire_date()) {
+                    var now = new Date();
+                    now = now.getTime()/1000;
+
+                    var expire_parts = patron.expire_date().substr(0,10).split('-');
+                    expire_parts[1] = expire_parts[1] - 1;
+
+                    var expire = new Date();
+                    expire.setFullYear(expire_parts[0], expire_parts[1], expire_parts[2]);
+                    expire = expire.getTime()/1000
+
+                    if (expire < now) {
+                        msg += $("patronStrings").getString('staff.patron.display.init.network_request.account_expired');
+                    obj.stop_checkouts = true;
+                    }
+                }
+                var penalties = obj.patron.standing_penalties();
+                for (var i = 0; i < penalties.length; i++) {
+                    if (penalties[i].standing_penalty().block_list()) {
+                        msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
+                    }
+                }
+                var holds = params.holds_summary;
+                if (holds.ready && holds.ready > 0) {
+                    msg += $("patronStrings").getFormattedString('staff.patron.display.init.holds_ready', [holds.ready]);
+                }
+                if (msg) {
+                    if (msg != obj.old_msg) {
+                        //obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
+                        document.documentElement.firstChild.focus();
+                        var data_url = window.escape("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>'
+                            + $("patronStrings").getString('staff.patron.display.init.network_request.window_title') + '</h1><blockquote><p>' + msg + '</p>\r\n\r\n<pre>'
+                            + $("patronStrings").getString('staff.patron.display.init.network_request.window_message') + '</pre></blockquote>');
+                        obj.right_deck.set_iframe('data:text/html,'+data_url,{},{});
+                        obj.old_msg = msg;
+                        obj.msg_url = data_url;
+                    } else {
+                        obj.error.sdump('D_TRACE',$("patronStrings").getFormattedString('staff.patron.display.init.network_request.dump_error_message', [msg]));
+                    }
+                }
+            } catch(E) {
+                alert('Error in patron_stop_sign_page_func(): ' + E);
+            }
+        };
+    }
 }
 
 dump('exiting patron/display.js\n');
