@@ -42,7 +42,7 @@ messagecatalog { -moz-binding: url('/xul/server/main/bindings.xml#messagecatalog
 .outline_me { -moz-outline: solid; }
 .clipboard_outline_me { -moz-outline: dotted thin gray; }
 
-.click_link { text-decoration: underline; color: blue; -moz-user-focus: normal; }
+.click_link { text-decoration: underline; color: blue; -moz-user-focus: normal; cursor: pointer; }
 
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
