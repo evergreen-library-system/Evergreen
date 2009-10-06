@@ -38,6 +38,7 @@ var tbody;
 var addrTemplateRows;
 var cgi;
 var cloneUser;
+var cloneUserObj;
 var claimReturnedPermList;
 
 
@@ -77,7 +78,15 @@ function load() {
             orgSettings[k] = orgSettings[k].value;
 
     uEditFetchUserSettings(userId);
-    uEditLoadUser(userId);
+
+    if(userId) {
+        patron = uEditLoadUser(userId);
+    } else {
+        patron = uEditNewPatron();
+        if(cloneUser) 
+            uEditCopyCloneData(patron);
+    }
+
 
     var list = pcrud.search('fdoc', {fm_class:fmClasses});
     for(var i in list) {
@@ -96,13 +105,42 @@ function load() {
     surveyQuestionTemplate = tbody.removeChild(dojo.byId('survey-question-row-template'));
 
     loadStaticFields();
-    if(patron.isnew()) 
+    if(patron.isnew() && patron.addresses().length == 0) 
         uEditNewAddr(null, uEditAddrVirtId, true);
     else loadAllAddrs();
     loadStatCats();
     loadSurveys();
     checkClaimsReturnCountPerm();
 }
+
+/*
+ * clone the home org, phone numbers, and billing/mailing address
+ */
+function uEditCopyCloneData(patron) {
+    cloneUserObj = uEditLoadUser(cloneUser);
+
+    dojo.forEach( [
+        'home_ou', 
+        'day_phone', 
+        'evening_phone', 
+        'other_phone',
+        'billing_address',
+        'mailing_address' ], 
+        function(field) {
+            patron[field](cloneUserObj[field]());
+        }
+    );
+
+    // don't grab all addresses().  the only ones we can link to are billing/mailing
+    if(patron.billing_address())
+        patron.addresses().push(patron.billing_address());
+
+    if(patron.mailing_address() && (
+            patron.addresses().length == 0 || 
+            patron.mailing_address().id() != patron.billing_address().id()) )
+        patron.addresses().push(patron.mailing_address());
+}
+
 
 function uEditFetchUserSettings(userId) {
     userSettings = fieldmapper.standardRequest(
@@ -112,12 +150,12 @@ function uEditFetchUserSettings(userId) {
 
 
 function uEditLoadUser(userId) {
-    if(!userId) return uEditNewPatron();
-    patron = fieldmapper.standardRequest(
+    var patron = fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve'],
         {params : [openils.User.authtoken, userId]}
     );
     openils.Event.parse_and_raise(patron);
+    return patron;
 }
 
 function loadStaticFields() {
@@ -268,19 +306,23 @@ function fleshFMRow(row, fmcls, args) {
     wtd.appendChild(span);
 
     var fmObject = null;
+    var disabled = false;
     switch(fmcls) {
         case 'au' : fmObject = patron; break;
         case 'ac' : fmObject = patron.card(); break;
         case 'aua' : 
             fmObject = patron.addresses().filter(
                 function(i) { return (i.id() == args.addr) })[0];
+            if(fmObject && fmObject.usr() != patron.id())
+                disabled = true;
             break;
     }
 
     var dijitArgs = {
         style: wstyle, 
         required : required,
-        constraints : (wconstraints) ? eval('('+wconstraints+')') : {} // the ()'s prevent Invalid Label errors with eval
+        constraints : (wconstraints) ? eval('('+wconstraints+')') : {}, // the ()'s prevent Invalid Label errors with eval
+        disabled : disabled
     };
 
     var value = row.getAttribute('wvalue');
@@ -594,6 +636,7 @@ function uEditNewPatron() {
     patron.survey_responses([]);
     patron.addresses([]);
     uEditMakeRandomPw(patron);
+    return patron;
 }
 
 function uEditMakeRandomPw(patron) {
@@ -708,7 +751,7 @@ function _uEditSave(doClone) {
 
 function uEditFinishSave(newPatron, doClone) {
 
-    if(doClone &&cloneUser == null)
+    if(doClone && cloneUser == null)
         cloneUser = newPatron.id();
 
 	if( doClone ) {
@@ -718,7 +761,7 @@ function uEditFinishSave(newPatron, doClone) {
             uEditRefresh();
 
 		} else {
-			location.href = href.replace(/\?.*/, '') + '?clone=' + cloneUser;
+			location.href = location.href.replace(/\?.*/, '') + '?clone=' + cloneUser;
 		}
 
 	} else {
