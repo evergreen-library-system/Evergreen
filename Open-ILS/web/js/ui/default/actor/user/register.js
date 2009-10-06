@@ -12,6 +12,8 @@ dojo.require('dijit.form.Button');
 dojo.require('dojo.date');
 dojo.require('openils.CGI');
 dojo.require('openils.XUL');
+dojo.require('openils.Util');
+dojo.require('openils.Event');
 
 dojo.requireLocalization('openils.actor', 'register');
 var localeStrings = dojo.i18n.getLocalization('openils.actor', 'register');
@@ -95,7 +97,7 @@ function load() {
 
     loadStaticFields();
     if(patron.isnew()) 
-        uEditNewAddr(null, uEditAddrVirtId);
+        uEditNewAddr(null, uEditAddrVirtId, true);
     else loadAllAddrs();
     loadStatCats();
     loadSurveys();
@@ -115,6 +117,7 @@ function uEditLoadUser(userId) {
         ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve'],
         {params : [openils.User.authtoken, userId]}
     );
+    openils.Event.parse_and_raise(patron);
 }
 
 function loadStaticFields() {
@@ -739,7 +742,14 @@ function uEditRefreshXUL(newuser) {
 }
 
 
-function uEditNewAddr(evt, id) {
+/**
+ * Create a new address and insert it into the DOM
+ * @param evt ignored
+ * @param id The address id
+ * @param mkLinks If true, set the new address as the 
+ *  mailing/billing address for the user
+ */
+function uEditNewAddr(evt, id, mkLinks) {
 
     if(id == null) 
         id = --uEditAddrVirtId; // new address
@@ -752,7 +762,11 @@ function uEditNewAddr(evt, id) {
             row.setAttribute('addr', id+'');
 
             if(row.getAttribute('fmclass')) {
-                fleshFMRow(row, 'aua', {addr:id});
+                var widget = fleshFMRow(row, 'aua', {addr:id});
+
+                // make new addresses valid by default
+                if(id < 0 && row.getAttribute('fmfield') == 'valid') 
+                    widget.widget.attr('value', true); 
 
             } else if(row.getAttribute('name') == 'uedit-addr-pending-row') {
 
@@ -779,13 +793,13 @@ function uEditNewAddr(evt, id) {
                 // billing address
                 var ba = getByName(row, 'billing_address');
                 ba.id = 'uedit-billing-address-' + id;
-                if(patron.billing_address() && patron.billing_address().id() == id)
+                if(mkLinks || (patron.billing_address() && patron.billing_address().id() == id))
                     ba.checked = true;
 
                 // mailing address
                 var ma = getByName(row, 'mailing_address');
                 ma.id = 'uedit-mailing-address-' + id;
-                if(patron.mailing_address() && patron.mailing_address().id() == id)
+                if(mkLinks || (patron.mailing_address() && patron.mailing_address().id() == id))
                     ma.checked = true;
 
             } else {
