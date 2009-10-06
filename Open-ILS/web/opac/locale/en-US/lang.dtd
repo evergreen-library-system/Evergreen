@@ -642,7 +642,6 @@
 <!ENTITY staff.main.menu.admin.copy_location_edit.label "Copy Location Editor">
 <!ENTITY staff.main.menu.admin.developer.accesskey "-">
 
-<!ENTITY staff.main.menu.admin.local_admin.label "Local Administration">
 <!ENTITY staff.main.menu.admin.local_admin.conify.action_trigger.label "Notifications / Action Triggers">
 <!ENTITY staff.main.menu.admin.local_admin.conify.survey.label "Surveys">
 <!ENTITY staff.main.menu.admin.local_admin.conify.idl_field_doc.label "Field Documentation">
@@ -674,7 +673,7 @@
 <!ENTITY staff.main.menu.admin.key "i">
 <!ENTITY staff.main.menu.admin.label "Admin">
 <!ENTITY staff.main.menu.admin.local_admin.accesskey "L">
-<!ENTITY staff.main.menu.admin.local_admin.label "Local System Administration">
+<!ENTITY staff.main.menu.admin.local_admin.label "Local Administration">
 <!ENTITY staff.main.menu.admin.non_cat_type_edit.accesskey "n">
 <!ENTITY staff.main.menu.admin.non_cat_type_edit.label "Non-Cataloged Type Editor">
 <!ENTITY staff.main.menu.admin.offline_xacts.accesskey "T">
@@ -798,8 +797,6 @@
 <!ENTITY staff.main.menu.circ.place_hold.label "Place Hold">
 <!ENTITY staff.main.menu.circ.quick_add.key "Q">
 <!ENTITY staff.main.menu.circ.quick_add.label "Quick Add">
-<!ENTITY staff.main.menu.circ.renew.key "n">
-<!ENTITY staff.main.menu.circ.renew.label "Renew">
 <!ENTITY staff.main.menu.circ.reprint.accesskey "L">
 <!ENTITY staff.main.menu.circ.reprint.label "Re-Print Last">
 <!ENTITY staff.main.menu.circ.special.key "S">
