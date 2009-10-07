@@ -473,7 +473,9 @@ function buildTitleLink(rec, link) {
 	args[PARAM_OFFSET] = 0;
 	args[PARAM_MRID] = rec.doc_id();
 	args[PARAM_RTYPE] = RTYPE_MRID;
+    var linkText = link.innerHTML; // IE
 	link.setAttribute("href", buildOPACLink(args));
+    link.innerHTML = linkText; // IE
 }
 
 function buildTitleDetailLink(rec, link) {
@@ -481,9 +483,13 @@ function buildTitleDetailLink(rec, link) {
 	link.appendChild(text(normalize(truncate(rec.title(), 65))));
 	var args = {};
 	args.page = RDETAIL;
-	//args[PARAM_OFFSET] = 0;
 	args[PARAM_RID] = rec.doc_id();
+    // in IE, if the link text contains a '@', it replaces the innerHTML text 
+    // with the value of the href attribute.  Wait, what?  Yes.  Capture the
+    // innerHTML and put it back into place after the href is set
+    var linkText = link.innerHTML; // IE
 	link.setAttribute("href", buildOPACLink(args));
+    link.innerHTML = linkText; // IE
 }
 
 /* 'type' is one of STYPE_AUTHOR, STYPE_SUBJECT, ... found in config.js 
