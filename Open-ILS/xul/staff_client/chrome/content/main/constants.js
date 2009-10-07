@@ -94,6 +94,7 @@ const api = {
 	'FM_ACTSC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.all', 'secure' : false },
 	'FM_AHN_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_notification.create' },
 	'FM_AHN_RETRIEVE_VIA_AHR' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_notification.retrieve_by_hold' },
+	'FM_AHN_RETRIEVE_VIA_AHR.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_notification.retrieve_by_hold.authoritative' },
 	'FM_AHR_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve_by_id' },
 	'FM_AHR_BLOB_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.details.retrieve' },
 	'FM_AHR_BLOB_RETRIEVE.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.details.retrieve.authoritative' },

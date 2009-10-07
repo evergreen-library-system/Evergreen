@@ -900,6 +900,7 @@ sub hold_pull_list {
 __PACKAGE__->register_method (
 	method		=> 'fetch_hold_notify',
 	api_name		=> 'open-ils.circ.hold_notification.retrieve_by_hold',
+    authoritative => 1,
 	signature	=> q/ 
 		Returns a list of hold notification objects based on hold id.
 		@param authtoken The loggin session key

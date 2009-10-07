@@ -140,7 +140,7 @@ function a_list_of_one() {
 }
 
 function retrieve_notifications() {
-    g.notifications = g.network.simple_request('FM_AHN_RETRIEVE_VIA_AHR',[ ses(), g.ahr_id ]).reverse();
+    g.notifications = g.network.simple_request('FM_AHN_RETRIEVE_VIA_AHR.authoritative',[ ses(), g.ahr_id ]).reverse();
 }
 
 function retrieve_notes() {
