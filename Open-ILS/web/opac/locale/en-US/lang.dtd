@@ -2002,16 +2002,24 @@
 <!ENTITY staff.main.ws_info.help_btn.label "Help">
 <!ENTITY staff.main.ws_info.help_btn.accesskey "H">
 <!ENTITY staff.cat.bib_brief.record_summary "Record Summary">
-<!ENTITY staff.cat.bib_brief.title "Title:">
+<!ENTITY staff.cat.bib_brief.title.label "Title:">
+<!ENTITY staff.cat.bib_brief.title.accesskey "">
 <!ENTITY staff.cat.bib_brief.view_marc "View MARC">
-<!ENTITY staff.cat.bib_brief.author "Author:">
-<!ENTITY staff.cat.bib_brief.edition "Edition:">
-<!ENTITY staff.cat.bib_brief.pub_date "Publication Date:">
+<!ENTITY staff.cat.bib_brief.author.label "Author:">
+<!ENTITY staff.cat.bib_brief.author.accesskey "">
+<!ENTITY staff.cat.bib_brief.edition.label "Edition:">
+<!ENTITY staff.cat.bib_brief.edition.accesskey "">
+<!ENTITY staff.cat.bib_brief.pub_date.label "Publication Date:">
+<!ENTITY staff.cat.bib_brief.pub_date.accesskey "">
 <!-- "TCN" is an abbreviation for "title control number" -->
-<!ENTITY staff.cat.bib_brief.title_control_number "TCN:">
-<!ENTITY staff.cat.bib_brief.created_by "Created By:">
-<!ENTITY staff.cat.bib_brief.last_edited_by "Last Edited By:">
-<!ENTITY staff.cat.bib_brief.last_edited_on "Last Edited On:">
+<!ENTITY staff.cat.bib_brief.title_control_number.label "TCN:">
+<!ENTITY staff.cat.bib_brief.title_control_number.accesskey "">
+<!ENTITY staff.cat.bib_brief.created_by.label "Created By:">
+<!ENTITY staff.cat.bib_brief.created_by.accesskey "">
+<!ENTITY staff.cat.bib_brief.last_edited_by.label "Last Edited By:">
+<!ENTITY staff.cat.bib_brief.last_edited_by.accesskey "">
+<!ENTITY staff.cat.bib_brief.last_edited_on.label "Last Edited On:">
+<!ENTITY staff.cat.bib_brief.last_edited_on.accesskey "">
 <!ENTITY staff.circ.holds.copy_to_clipboard "Copy to Clipboard">
 <!ENTITY staff.circ.holds.copy_to_clipboard.accesskey "C">
 <!ENTITY staff.circ.holds.show_in_catalog "Show in Catalog">
@@ -2879,16 +2887,13 @@
 <!ENTITY ui.network.progress_meter.desc "This enables a network activity indicator in the bottom status bar.">
 <!ENTITY staff.circ.alternate_copy_summary.Alert.label "Alert">
 <!ENTITY staff.circ.alternate_copy_summary.Alternate_View.label "Alternate View">
-<!ENTITY staff.circ.alternate_copy_summary.Author.label "Author">
 <!ENTITY staff.circ.alternate_copy_summary.Barcode.label "Barcode">
 <!ENTITY staff.circ.alternate_copy_summary.Call_Number.label "Call Number">
 <!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info.label "Cataloging Info">
-<!ENTITY staff.circ.alternate_copy_summary.Checkin_Library.label "Checkin Library">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Scan_Time.label "Checkin Scan Time">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Time.label "Checkin Time">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Workstation.label "Checkin Workstation">
 <!ENTITY staff.circ.alternate_copy_summary.Checkout_Date.label "Checkout Date">
-<!ENTITY staff.circ.alternate_copy_summary.Checkout_Library.label "Checkout Library">
 <!ENTITY staff.circ.alternate_copy_summary.Circ_Modifier.label "Circ Modifier">
 <!ENTITY staff.circ.alternate_copy_summary.Circulation_History.label "Circulation History">
 <!ENTITY staff.circ.alternate_copy_summary.Copy_ID.label "Copy ID">
@@ -2912,7 +2917,6 @@
 <!ENTITY staff.circ.alternate_copy_summary.Rolling_Counter.label "Rolling Counter">
 <!ENTITY staff.circ.alternate_copy_summary.Status.label "Status">
 <!ENTITY staff.circ.alternate_copy_summary.TCN.label "TCN">
-<!ENTITY staff.circ.alternate_copy_summary.Title.label "Title">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label "Total Circs - Current Year">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs.label "Total Circs">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label "Total Circs - Prev Year">

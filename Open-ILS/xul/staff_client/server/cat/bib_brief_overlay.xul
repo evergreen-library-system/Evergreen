@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+<overlay id="bib_brief_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	    <script type="text/javascript" src="/xul/server/cat/bib_brief_overlay.js"/>
+
+        <grid id="bib_brief_grid" flex="0">
+            <columns>
+                <column />
+                <column flex="1" />
+                <column />
+                <column />
+                <column />
+                <column />
+                <column />
+                <column />
+            </columns>
+            <rows id="bib_brief_grid_rows">
+                <row id="bib_brief_grid_row1" position="1">
+                    <label value="&staff.cat.bib_brief.title.label;" accesskey="&staff.cat.bib_brief.title.accesskey;" control="title"/>
+                    <textbox id="title" name="title" readonly="true" context="clipboard"/>
+                    <label value="&staff.cat.bib_brief.edition.label;" accesskey="&staff.cat.bib_brief.edition.accesskey;" control="edition"/>
+                    <textbox id="edition" name="edition" readonly="true" context="clipboard"/>
+                    <label value="&staff.cat.bib_brief.created_by.label;" accesskey="&staff.cat.bib_brief.created_by.accesskey;" control="creator"/>
+                    <textbox id="creator" name="creator" readonly="true" context="clipboard"/>
+                    <label value="&staff.cat.bib_brief.last_edited_by.label;" accesskey="&staff.cat.bib_brief.last_edited_by.accesskey;" control="editor"/>
+                    <textbox id="editor" name="editor" readonly="true" context="clipboard"/>
+                </row>
+                <row position="2">
+                    <label value="&staff.cat.bib_brief.author.label;" accesskey="&staff.cat.bib_brief.author.accesskey;" control="author"/>
+                    <textbox id="author" name="author" readonly="true" context="clipboard"/>
+                    <label value="&staff.cat.bib_brief.pub_date.label;" accesskey="&staff.cat.bib_brief.pub_date.accesskey;" control="pubdate"/>
+                    <textbox id="pubdate" name="pubdate" readonly="true" context="clipboard"/>
+                    <label value="&staff.cat.bib_brief.title_control_number.label;" accesskey="&staff.cat.bib_brief.title_control_number.accesskey;" control="tcn"/>
+                    <textbox id="tcn" name="tcn" readonly="true" context="clipboard"/>
+                    <label value="&staff.cat.bib_brief.last_edited_on.label;" accesskey="&staff.cat.bib_brief.last_edited_on.accesskey;" control="edit_date"/>
+                    <textbox id="edit_date" name="edit_date" readonly="true" context="clipboard"/>
+                </row>
+            </rows>
+        </grid>
+</overlay>

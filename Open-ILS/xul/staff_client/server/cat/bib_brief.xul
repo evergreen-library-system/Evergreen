@@ -19,10 +19,10 @@ vim: noet:sw=4:ts=4:
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="/xul/server/cat/bib_brief_overlay.xul"?>
 
 <window id="cat_bib_brief_win" 
 	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -33,214 +33,14 @@ vim: noet:sw=4:ts=4:
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-
-		var docid;
-
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for cat_bib_brief.xul');
-
-				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-
-				docid = xul_param('docid');
-
-				var key = location.pathname + location.search + location.hash;
-				if (!docid && typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
-					var xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
-					if (typeof xulG == 'object') {
-						docid = xulG.docid;
-					}
-				}
-
-				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('util.date');
-
-				document.getElementById('caption').setAttribute('tooltiptext',document.getElementById('catStrings').getFormattedString('staff.cat.bib_brief.record_id', [docid]));
-
-				if (docid > -1) {
-
-					data.last_record = docid; data.stash('last_record');
-
-					g.network.simple_request(
-						'MODS_SLIM_RECORD_RETRIEVE.authoritative',
-						[ docid ],
-						function (req) {
-							var mods = req.getResultObject();
-							
-							if (mods.title()) document.getElementById('title').appendChild(
-								document.createTextNode(String(mods.title()).substr(0,50))
-							);
-							if (mods.author()) document.getElementById('author').appendChild(
-								document.createTextNode(mods.author())
-							);
-							if (mods.edition()) document.getElementById('edition').appendChild(
-								document.createTextNode(mods.edition())
-							);
-							if (mods.pubdate()) document.getElementById('pubdate').appendChild(
-								document.createTextNode(mods.pubdate())
-							);
-							if (mods.tcn()) document.getElementById('tcn').appendChild(
-								document.createTextNode(mods.tcn())
-							);
-	
-							if (window.xulG && typeof window.xulG.set_tab_name == 'function') {
-								try {
-									window.xulG.set_tab_name(mods.tcn());
-								} catch(E) {
-									g.error.sdump('D_ERROR','bib_brief.xul, set_tab: ' + E);
-								}
-							}
-	
-							g.network.simple_request(
-								'FM_BRE_RETRIEVE_VIA_ID.authoritative',
-								[ ses(), [ docid ] ],
-								function (req) {
-									try {
-										var meta = req.getResultObject();
-										if (typeof meta.ilsevent != 'undefined') throw(meta);
-										meta = meta[0];
-										document.getElementById('tcn_source').appendChild(
-											document.createTextNode(meta.tcn_source())
-										);
-										g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),meta.creator().id()],
-											function(rreq) {
-												var creator_au = rreq.getResultObject();
-												document.getElementById('creator_bc').appendChild(
-													document.createTextNode(creator_au.card().barcode())
-												);
-											}
-										);
-										g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),meta.editor().id()],
-											function(rreq) {
-												var editor_au = rreq.getResultObject();
-												document.getElementById('editor_bc').appendChild(
-													document.createTextNode(editor_au.card().barcode())
-												);
-											}
-										);
-										document.getElementById('creator').appendChild(
-											document.createTextNode('('+data.hash.aou[meta.creator().home_ou()].shortname()+') ')
-										);
-										document.getElementById('creator_bc').setAttribute('au_id',meta.creator().id());
-										document.getElementById('editor').appendChild(
-											document.createTextNode('('+data.hash.aou[meta.editor().home_ou()].shortname()+') ')
-										);
-										document.getElementById('editor_bc').setAttribute('au_id',meta.editor().id());
-										document.getElementById('edit_date').appendChild(
-											document.createTextNode(
-												util.date.formatted_date(meta.edit_date(),"%D")
-											)
-										);
-										var t = document.getElementById('caption').getAttribute('label');
-										if (get_bool( meta.deleted() )) { 
-											t += ' ' + document.getElementById('catStrings').getString('staff.cat.bib_brief.deleted') + ' '; 
-											document.getElementById('caption').setAttribute('style','background: red; color: white;');
-										}
-										if ( ! get_bool( meta.active() ) ) { 
-											t += ' ' + document.getElementById('catStrings').getString('staff.cat.bib_brief.inactive') + ' '; 
-											document.getElementById('caption').setAttribute('style','background: red; color: white;');
-										}
-										document.getElementById('caption').setAttribute('label',t);
-									} catch(E) {
-										g.error.standard_unexpected_error_alert('meta retrieve',E);
-									}
-								}
-							);
-						}
-					);
-
-				} else {
-					var t = document.getElementById('caption').getAttribute('label');
-					t += ' ' + document.getElementById('catStrings').getString('staff.cat.bib_brief.noncat') + ' '; 
-					document.getElementById('caption').setAttribute('style','background: red; color: white;');
-					document.getElementById('caption').setAttribute('label',t);
-				}
-
-			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/bib_brief.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
-
-		function view_marc() {
-			try {
-				JSAN.use('util.window'); var win = new util.window();
-				if (docid < 0) {
-					alert(document.getElementById("catStrings").getString('staff.cat.bib_brief.noncat.alert'));
-				} else {
-					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-					//win.open( urls.XUL_MARC_VIEW + '?noprint=1&docid=' + docid, 'marc_view', 'chrome,resizable,modal,width=400,height=400');
-					win.open( urls.XUL_MARC_VIEW, 'marc_view', 'chrome,resizable,modal,width=400,height=400',{'noprint':1,'docid':docid});
-				}
-			} catch(E) {
-                g.error.standard_unexpected_error_alert('spawning marc display',E);
-			}
-		}
-
-		function spawn_patron(span) {
-            try {
-                if (typeof window.xulG == 'object' && typeof window.xulG.set_patron_tab == 'function') {
-                    window.xulG.set_patron_tab( {}, { 'id' : span.getAttribute('au_id') } );
-                } else {
-					copy_to_clipboard( span.textContent );
-				}
-            } catch(E) {
-                g.error.standard_unexpected_error_alert('spawning patron display',E);
-            }
-		}
-
-	]]>
-	</script>
+	<script type="text/javascript" src="/xul/server/cat/bib_brief.js"/>
 
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
 
-	<groupbox id="groupbox" flex="1" style="overflow: auto; min-height: 100px;">
-		<caption label="&staff.cat.bib_brief.record_summary;" id="caption"/>
-			<html:table width="90%">
-				<html:tr valign="top">
-					<html:td colspan="3">
-						<html:span style="font-weight: bold;">&staff.cat.bib_brief.title; </html:span><html:span id="title" />
-					</html:td>
-					<html:td>
-						(<html:a href="javascript:view_marc();" style="text-decoration: underline; color: blue;">&staff.cat.bib_brief.view_marc;</html:a>)
-					</html:td>
-				</html:tr>
-				<html:tr valign="top">
-					<html:td colspan="2">
-						<html:span style="font-weight: bold;">&staff.cat.bib_brief.author; </html:span><html:span id="author" />
-					</html:td>
-					<html:td>
-						<html:span style="font-weight: bold;">&staff.cat.bib_brief.edition; </html:span><html:span id="edition" />
-					</html:td>
-					<html:td>
-						<html:span style="font-weight: bold;">&staff.cat.bib_brief.pub_date; </html:span><html:span id="pubdate" />
-					</html:td>
-				</html:tr>
-				<html:tr valign="top">
-					<html:td>
-						<html:span style="font-weight: bold;">&staff.cat.bib_brief.title_control_number; (</html:span><html:span id="tcn_source"/><html:span style="font-weight: bold;">) </html:span><html:span id="tcn" style="text-decoration: underline; color: blue;" onclick="copy_to_clipboard(event)"/>
-					</html:td>
-					<html:td>
-						<html:span style="font-weight: bold;">&staff.cat.bib_brief.created_by; </html:span><html:span id="creator" />
-						<html:span id="creator_bc" style="text-decoration: underline; color: blue;" onclick="try{spawn_patron(this);}catch(E){alert(E);}"/>
-					</html:td>
-					<html:td>
-						<html:span style="font-weight: bold;">&staff.cat.bib_brief.last_edited_by; </html:span><html:span id="editor" />
-						<html:span id="editor_bc" style="text-decoration: underline; color: blue;" onclick="try{spawn_patron(this);}catch(E){alert(E);}"/>
-					</html:td>
-					<html:td>
-						<html:span style="font-weight: bold;">&staff.cat.bib_brief.last_edited_on; </html:span><html:span id="edit_date" />
-					</html:td>
-				</html:tr>
-			</html:table>
+	<groupbox id="groupbox" flex="1">
+		<caption id="caption"><label value="&staff.cat.bib_brief.record_summary;"/>(<label value="&staff.cat.bib_brief.view_marc;" class="click_link" onclick="view_marc();"/>)</caption>
+        <grid id="bib_brief_grid" />
 	</groupbox>
 
 </window>

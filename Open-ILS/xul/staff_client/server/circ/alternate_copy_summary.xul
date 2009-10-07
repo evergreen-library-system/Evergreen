@@ -16,6 +16,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="/xul/server/cat/bib_brief_overlay.xul"?>
 
 <window id="alt_copy_summary_win" 
 	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
@@ -29,7 +30,7 @@
 	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="alternate_copy_summary.js"/>
+    <script type="text/javascript" src="alternate_copy_summary.js"/>
 
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
 
@@ -37,31 +38,12 @@
 
         <caption label="&staff.circ.alternate_copy_summary.Alternate_View.label;" />
 
-        <grid id="grid0" flex="0">
-            <columns>
-                <column />
-                <column flex="1" />
-                <column />
-                <column />
-            </columns>
-            <rows>
+        <!-- Most of this gets filled in by bib_brief_overlay.xul -->
+        <grid id="bib_brief_grid"> 
+            <rows id="bib_brief_grid_rows">
                 <row>
-                    <label value="&staff.circ.alternate_copy_summary.Title.label;" />
-                    <textbox name="title" readonly="true" context="clipboard"/>
-                    <spacer />
-                    <spacer />
-                </row>
-                <row>
-                    <label value="&staff.circ.alternate_copy_summary.Author.label;" />
-                    <textbox name="author" readonly="true" context="clipboard"/>
-                    <label value="&staff.circ.alternate_copy_summary.Edition.label;" />
-                    <textbox name="edition" readonly="true" context="clipboard"/>
-                </row>
-                <row>
-                    <label value="&staff.circ.alternate_copy_summary.Call_Number.label;" />
+                    <label value="&staff.circ.alternate_copy_summary.Call_Number.label;" accesskey="&staff.circ.alternate_copy_summary.call_number.accesskey;" control="call_number"/>
                     <textbox name="call_number" readonly="true" context="clipboard"/>
-                    <label value="&staff.circ.alternate_copy_summary.Pub_Date.label;" />
-                    <textbox name="pubdate" readonly="true" context="clipboard"/>
                 </row>
             </rows>
         </grid>
@@ -102,8 +84,8 @@
                                 <textbox name="price" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Copy_Location.label;" />
                                 <textbox name="location" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Author.label;" />
-                                <textbox name="author" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <spacer />
                                 <label value="&staff.circ.alternate_copy_summary.Due_Date.label;" />
                                 <textbox name="due_date" readonly="true" context="clipboard"/>
                             </row>
@@ -112,20 +94,18 @@
                                 <textbox name="isbn" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Loan_Duration.label;" />
                                 <textbox name="loan_duration" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Publisher.label;" />
-                                <textbox name="publisher" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <spacer />
                                 <label value="&staff.circ.alternate_copy_summary.Checkout_Date.label;" />
                                 <textbox name="xact_start" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="&staff.circ.alternate_copy_summary.Date_Created.label;" />
-                                <textbox name="date_created" readonly="true" context="clipboard"/>
+                                <textbox name="copy_create_date" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Reference.label;" />
                                 <textbox name="reference" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Total_Circs.label;" />
                                 <textbox name="total_circ_count" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Checkout_Library.label;" />
-                                <textbox name="circ_circ_lib" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="&staff.circ.alternate_copy_summary.Copy_ID.label;" />
@@ -154,8 +134,6 @@
                                 <textbox name="circ_mod" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Rolling_Counter.label;" />
                                 <textbox name="rolling_counter" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Checkin_Library.label;" />
-                                <textbox name="checkin_lib" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <spacer />

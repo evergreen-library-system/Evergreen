@@ -42,6 +42,8 @@ function load_item() {
         var details = network.simple_request('FM_ACP_DETAILS_VIA_BARCODE.authoritative', [ ses(), xulG.barcode ]);
         // Should get back .mvr, .copy, .volume, .transit, .circ, .hold
 
+        if (typeof bib_brief_overlay == 'function') bib_brief_overlay( { 'mvr' : details.mvr, 'acp' : details.copy } );
+/*
         set('title', '');
         set('author', '');
         set('doc_id', '');
@@ -87,7 +89,7 @@ function load_item() {
             set('author',details.copy.dummy_author()); 
             set('isbn',details.copy.dummy_isbn());
         }
-
+*/
         set("stat_cat_entries", '');
         set("age_protect", '');
         set("alert_message", '');
@@ -98,15 +100,15 @@ function load_item() {
         set("circ_modifier", '');
         set("circulate", '');
         set("copy_number", '');
-        set("create_date", '');
-        set("creator", '');
+        set("copy_create_date", '');
+        set("copy_creator", '');
         set("deleted", '');
         set("deposit", '');
         set("deposit_amount", '');
         set("dummy_author", '');
         set("dummy_title", '');
-        set("edit_date", '');
-        set("editor", '');
+        set("copy_edit_date", '');
+        set("copy_editor", '');
         set("fine_level", '');
         set("holdable", '');
         set("copy_id", '');
@@ -136,15 +138,15 @@ function load_item() {
             set("circ_modifier", details.copy.circ_modifier()); 
             set("circulate", details.copy.circulate()); 
             set("copy_number", details.copy.copy_number()); 
-            set("create_date", details.copy.create_date()); 
-            set("creator", details.copy.creator()); 
+            set("copy_create_date", details.copy.create_date()); 
+            set("copy_creator", details.copy.creator()); 
             set("deleted", details.copy.deleted()); 
             set("deposit", details.copy.deposit()); 
             set("deposit_amount", details.copy.deposit_amount()); 
             set("dummy_author", details.copy.dummy_author()); 
             set("dummy_title", details.copy.dummy_title()); 
-            set("edit_date", details.copy.edit_date()); 
-            set("editor", details.copy.editor()); 
+            set("copy_edit_date", details.copy.edit_date()); 
+            set("copy_editor", details.copy.editor()); 
             set("fine_level", details.copy.fine_level()); 
             set("holdable", details.copy.holdable()); 
             set("copy_id", details.copy.id()); 
@@ -186,11 +188,11 @@ function load_item() {
         }
 
         set("copies", '');
-        set("create_date", '');
-        set("creator", '');
+        set("volume_create_date", '');
+        set("volume_creator", '');
         set("deleted", '');
-        set("edit_date", '');
-        set("editor", '');
+        set("volume_edit_date", '');
+        set("volume_editor", '');
         set("volume_id", '');
         set("label", '');
         set("owning_lib" , '');
@@ -201,11 +203,11 @@ function load_item() {
 
         if (details.volume) {
             set("copies", details.volume.copies()); 
-            set("create_date", details.volume.create_date()); 
-            set("creator", details.volume.creator()); 
+            set("volume_create_date", details.volume.create_date()); 
+            set("volume_creator", details.volume.creator()); 
             set("deleted", details.volume.deleted()); 
-            set("edit_date", details.volume.edit_date()); 
-            set("editor", details.volume.editor()); 
+            set("volume_edit_date", details.volume.edit_date()); 
+            set("volume_editor", details.volume.editor()); 
             set("volume_id", details.volume.id()); 
             set("label", details.volume.label()); 
             set("owning_lib" , details.volume.owning_lib()); 
