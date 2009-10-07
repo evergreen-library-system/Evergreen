@@ -3,8 +3,13 @@ dump('entering OpenILS/data.js\n');
 if (typeof OpenILS == 'undefined') OpenILS = {};
 OpenILS.data = function () {
 
-	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('util.network'); this.network = new util.network();
+    try {
+        JSAN.use('util.error'); this.error = new util.error();
+        JSAN.use('util.network'); this.network = new util.network();
+    } catch(E) {
+        alert(location.href + '\nError in OpenILS.data constructor: ' + E);
+        throw(E);
+    }
 
 	return this;
 }

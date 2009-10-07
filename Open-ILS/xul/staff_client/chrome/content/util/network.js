@@ -6,10 +6,17 @@ var offlineStrings;
 if (typeof util == 'undefined') util = {};
 util.network = function () {
 
-	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('util.sound'); this.sound = new util.sound();
+    try {
 
-    offlineStrings = document.getElementById('offlineStrings');
+        JSAN.use('util.error'); this.error = new util.error();
+        JSAN.use('util.sound'); this.sound = new util.sound();
+
+        offlineStrings = document.getElementById('offlineStrings');
+
+    } catch(E) {
+        alert('error in util.network constructor: ' + E);
+        throw(E);
+    }
 
 	return this;
 };

@@ -1,21 +1,34 @@
 	function $(id) { return document.getElementById(id); }
 
-	function ses(a) {
-		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-		switch(a) {
-            case 'staff_id' : return data.list.au[0].id(); break;
-            case 'staff_usrname' : return data.list.au[0].usrname(); break;
-            case 'ws_ou' :
-                return data.list.au[0].ws_ou();
-            break;
-			case 'authtime' :
-				return data.session.authtime;
-			break;
-			case 'key':
-			default:
-				return data.session.key;
-			break;
-		}
+	function ses(a,params) {
+        try {
+            if (!params) params = {};
+            var data;
+            if (params.data) {
+                data = params.data; data.stash_retrieve();
+            } else {
+                // This has been breaking in certain contexts, with an internal instantiation of util.error failing because of util.error being an object instead of the constructor function it should be
+                JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
+            }
+
+            switch(a) {
+                case 'staff_id' : return data.list.au[0].id(); break;
+                case 'staff_usrname' : return data.list.au[0].usrname(); break;
+                case 'ws_ou' :
+                    return data.list.au[0].ws_ou();
+                break;
+                case 'authtime' :
+                    return data.session.authtime;
+                break;
+                case 'key':
+                default:
+                    return data.session.key;
+                break;
+            }
+        } catch(E) {
+            alert(location.href + '\nError in global_utils.js, ses(): ' + E);
+            throw(E);
+        }
 	}
 
 	function font_helper() {

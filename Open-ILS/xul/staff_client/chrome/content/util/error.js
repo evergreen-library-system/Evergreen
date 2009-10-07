@@ -3,20 +3,26 @@ dump('entering util/error.js\n');
 if (typeof util == 'undefined') util = {};
 util.error = function () {
 
-	try {
-		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
-			.getService(Components.interfaces.nsIConsoleService);
-	} catch(E) {
-		this.consoleDump = false;
-		dump('util.error constructor: ' + E + '\n');
-	}
+    try {
 
-	this.sdump_last_time = new Date();
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            this.consoleService = Components.classes['@mozilla.org/consoleservice;1']
+                .getService(Components.interfaces.nsIConsoleService);
+        } catch(E) {
+            this.consoleDump = false;
+            dump('util.error constructor: ' + E + '\n');
+        }
 
-	this.OpenILS = {};
+        this.sdump_last_time = new Date();
 
-	JSAN.use('util.sound'); this.sound = new util.sound();
+        this.OpenILS = {};
+
+        JSAN.use('util.sound'); this.sound = new util.sound();
+
+    } catch(E) {
+        alert('Error in util.error constructor: ' + E);
+    }
 
 	return this;
 };
