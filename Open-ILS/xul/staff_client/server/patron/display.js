@@ -181,7 +181,7 @@ patron.display.prototype = {
 						['command'],
                         function(ev) {
     			            obj.reset_nav_styling('cmd_patron_checkout');
-                            spawn_checkout_interface();
+                            obj.spawn_checkout_interface();
                         }
 					],
 					'cmd_patron_items' : [
@@ -695,10 +695,9 @@ patron.display.prototype = {
 		try { obj.refresh_deck(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }
 	},
 
-    'gen_patron_summary_finish_func' : function() {
+    'spawn_checkout_interface' : function() {
         var obj = this;
-
-        function spawn_checkout_interface() {
+        try {
             try { document.getElementById("PatronNavBarScrollbox").ensureElementIsVisible( document.getElementById("PatronNavBar_checkout" ) ); } catch(E) {};
             obj.reset_nav_styling('cmd_patron_checkout',true);
             var frame = obj.right_deck.set_iframe(
@@ -739,7 +738,13 @@ patron.display.prototype = {
             );
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.checkout_window = get_contentWindow(frame);
+        } catch(E) {
+            alert('Error in spawn_checkout_interface(): ' + E);
         }
+    },
+
+    'gen_patron_summary_finish_func' : function() {
+        var obj = this;
 
         return function(patron,params) {
             try {
@@ -765,7 +770,7 @@ patron.display.prototype = {
                 }
 
                 if (!obj._checkout_spawned) {
-                    spawn_checkout_interface();
+                    obj.spawn_checkout_interface();
                     obj._checkout_spawned = true;
                 }
 
