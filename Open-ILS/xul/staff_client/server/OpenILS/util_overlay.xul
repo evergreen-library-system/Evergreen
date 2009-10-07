@@ -6,7 +6,7 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<scripts id="openils_util_scripts">
-		<script>dump('starting openils_util_overlay\n');</script>
+		<script>dump('starting openils_util_overlay in ' + location.href + '\n');</script>
 		<script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
 		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
 		<script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
@@ -16,7 +16,6 @@
         <script type="text/javascript" src="/xul/server/util/browser.js" />
         <script type="text/javascript" src="/xul/server/util/clipboard.js" />
         <script type="text/javascript" src="/xul/server/util/controller.js" />
-        <script type="text/javascript" src="/xul/server/util/date.js" />
         <script type="text/javascript" src="/xul/server/util/date.js" />
         <script type="text/javascript" src="/xul/server/util/deck.js" />
         <script type="text/javascript" src="/xul/server/util/error.js" />
