@@ -190,14 +190,6 @@ sub make_payments {
 
 	} # all payment objects have been created and inserted. 
 
-    if($type eq 'credit_card_payment') {
-        # TODO send to credit card processor
-        # amount == $total_paid
-        # user == $user_id
-        # other args == $cc_args (hash)
-        # $e->rollback if processing fails.  This will undo everything.
-    }
-
 	my $evt = _update_patron_credit($e, $patron, $credit);
 	return $evt if $evt;
 
@@ -205,6 +197,14 @@ sub make_payments {
         # calculate penalties for each of the affected orgs
         $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $user_id, $org_id);
         return $evt if $evt;
+    }
+
+    if($type eq 'credit_card_payment') {
+        # TODO send to credit card processor
+        # amount == $total_paid
+        # user == $user_id
+        # other args == $cc_args (hash, see api docs)
+        # $e->rollback if processing fails.  This will undo everything.
     }
 
     $e->commit;
