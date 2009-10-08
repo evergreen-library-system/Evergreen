@@ -8,6 +8,8 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Application::Trigger::ModRunner;
 
+use Safe;
+
 my $log = 'OpenSRF::Utils::Logger';
 
 sub new {
@@ -348,6 +350,8 @@ sub update_state {
     return $ok || undef;
 }
 
+my $current_environment;
+
 sub build_environment {
     my $self = shift;
     return $self if ($self->environment->{complete});
@@ -356,12 +360,18 @@ sub build_environment {
 
     try {
    
+        my $compartment = new Safe;
+        $compartment->permit(':default',':load');
+        $compartment->share('$current_environment');
+
         $self->environment->{EventProcessor} = $self;
         $self->environment->{target} = $self->target;
         $self->environment->{event} = $self->event;
         $self->environment->{template} = $self->event->event_def->template;
 
-        $self->environment->{params}{ $_->param } = eval $_->value for ( @{$self->event->event_def->params} );
+	$current_environment = $self->environment;
+
+        $self->environment->{params}{ $_->param } = $compartment->reval($_->value) for ( @{$self->event->event_def->params} );
     
         for my $e ( @{$self->event->event_def->env} ) {
             my (@label, @path);
