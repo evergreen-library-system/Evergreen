@@ -44,11 +44,13 @@ __PACKAGE__->register_method(
                     userid
                     patron_credit
                     note
-                    cc_type
-                    cc_number
-                    cc_expire_month
-                    cc_expire_year
-                    cc_approval_code
+                    cc_args : {
+                        type
+                        number
+                        expire_month
+                        expire_year
+                        approval_code
+                    }
                     check_number
                     payments: [ 
                         [trans_id, amt], 
@@ -71,12 +73,8 @@ sub make_payments {
 	my $credit = $payments->{patron_credit} || 0;
 	my $drawer = $e->requestor->wsid;
 	my $note = $payments->{note};
-	my $cc_type = $payments->{cc_type};
-	my $cc_number = $payments->{cc_number};
-	my $cc_expire_month = $payments->{cc_expire_month};
-	my $cc_expire_year = $payments->{cc_expire_year};
-	my $cc_approval_code = $payments->{cc_approval_code};
 	my $check_number = $payments->{check_number};
+    my $cc_args = $payments->{cc_args};
 	my $total_paid = 0;
     my %orgs;
 
@@ -87,7 +85,6 @@ sub make_payments {
     unless($type eq 'credit_card_payment' and $user_id == $e->requestor->id) {
 	    return $e->die_event unless $e->allowed('CREATE_PAYMENT', $patron->home_ou);
     }
-
 
     # first collect the transactions and make sure the transaction
     # user matches the requested user
@@ -163,15 +160,14 @@ sub make_payments {
 
 		if ($payobj->has_field('accepting_usr')) { $payobj->accepting_usr($e->requestor->id); }
 		if ($payobj->has_field('cash_drawer')) { $payobj->cash_drawer($drawer); }
-		if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_type); }
+		if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_args->{type}); }
+		if ($payobj->has_field('check_number')) { $payobj->check_number($check_number); }
 
         # Store the last 4 digits?
-		#if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_number); }
-		#if ($payobj->has_field('approval_code')) { $payobj->approval_code($cc_approval_code); }
-
-		if ($payobj->has_field('expire_month')) { $payobj->expire_month($cc_expire_month); }
-		if ($payobj->has_field('expire_year')) { $payobj->expire_year($cc_expire_year); }
-		if ($payobj->has_field('check_number')) { $payobj->check_number($check_number); }
+		#if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_args->{number}); }
+		#if ($payobj->has_field('approval_code')) { $payobj->approval_code($cc_args->{approval_code}); }
+		if ($payobj->has_field('expire_month')) { $payobj->expire_month($cc_args->{expire_month}); }
+		if ($payobj->has_field('expire_year')) { $payobj->expire_year($cc_args->{expire_year}); }
 		
 		# update the transaction if it's done 
 		if( (my $cred = ($trans->balance_owed - $amount)) <= 0 ) {
@@ -198,6 +194,7 @@ sub make_payments {
         # TODO send to credit card processor
         # amount == $total_paid
         # user == $user_id
+        # other args == $cc_args (hash)
         # $e->rollback if processing fails.  This will undo everything.
     }
 
