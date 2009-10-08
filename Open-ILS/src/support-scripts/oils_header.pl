@@ -21,7 +21,7 @@ use UNIVERSAL::require;
 
 
 # Some useful objects
-our $cache = "OpenSRF::Utils::Cache";
+our $cache    = "OpenSRF::Utils::Cache";
 our $apputils = "OpenILS::Application::AppUtils";
 our $memcache;
 our $user;
@@ -29,23 +29,23 @@ our $authtoken;
 our $authtime;
 
 # Some constants for our services
-our $AUTH		= 'open-ils.auth';
-our $STORAGE	= 'open-ils.storage';
-our $SEARCH		= 'open-ils.search';
-our $CIRC		= 'open-ils.circ';
-our $CAT			= 'open-ils.cat';
-our $MATH		= 'opensrf.math';
-our $SETTINGS	= 'opensrf.settings';
-our $ACTOR		= 'open-ils.actor';
+our $AUTH     = 'open-ils.auth';
+our $STORAGE  = 'open-ils.storage';
+our $SEARCH   = 'open-ils.search';
+our $CIRC     = 'open-ils.circ';
+our $CAT      = 'open-ils.cat';
+our $MATH     = 'opensrf.math';
+our $SETTINGS = 'opensrf.settings';
+our $ACTOR    = 'open-ils.actor';
 
-sub AUTH		{ return $AUTH; }
-sub STORAGE { return $STORAGE; }
-sub SEARCH	{ return $SEARCH; }
-sub CIRC		{ return $CIRC; }
-sub CAT		{ return $CAT; }
-sub MATH		{ return $MATH; }
+sub AUTH     { return $AUTH;     }
+sub STORAGE  { return $STORAGE;  }
+sub SEARCH   { return $SEARCH;   }
+sub CIRC     { return $CIRC;     }
+sub CAT      { return $CAT;      }
+sub MATH     { return $MATH;     }
 sub SETTINGS { return $SETTINGS; }
-sub ACTOR	{ return $ACTOR; }
+sub ACTOR    { return $ACTOR;    }
 
 
 #----------------------------------------------------------------

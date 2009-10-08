@@ -2,6 +2,8 @@
 # Copyright (C) 2008 Niles Ingalls 
 # Niles Ingalls <nilesi@zionsville.lib.in.us>
 # Bill Erickson <erickson@esilibrary.com>
+# Joe Atzberger <atz@esilibrary.com>
+# Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,45 +19,100 @@ package OpenILS::Application::CreditCard;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
-use DateTime;
-use DateTime::Format::ISO8601;
-use OpenILS::Application::AppUtils;
-use OpenSRF::Utils qw/:datetime/;
-use OpenILS::Event;
-use OpenSRF::EX qw(:try);
-use OpenSRF::Utils::Logger qw(:logger);
-use OpenILS::Utils::Fieldmapper;
-use OpenILS::Utils::CStoreEditor q/:funcs/;
-use OpenILS::Const qw/:const/;
-use OpenSRF::Utils::SettingsClient;
 use Business::CreditCard;
-use Business::CreditCard::Object;
 use Business::OnlinePayment;
+
+use OpenILS::Event;
+use OpenSRF::Utils::Logger qw/:logger/;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use OpenILS::Application::AppUtils;
 my $U = "OpenILS::Application::AppUtils";
 
+my @ALLOWED_PROCESSORS = qw/AuthorizeNet PayPal/;
+
+# Given the argshash from process_payment(), this helper function just finds
+# a function in the current namespace named "bop_args_{processor}" and calls
+# it with $argshash as an argument, returning the result, or returning an
+# empty hash if it can't find such a function.
+sub get_bop_args_filler {
+    no strict 'refs';
+
+    my $argshash = shift;
+    my $funcname = "bop_args_" . $argshash->{processor};
+    return &{$funcname}($argshash) if defined &{$funcname};
+    return ();
+}
+
+# Provide default arguments for calls using the AuthorizeNet processor
+sub bop_args_AuthorizeNet {
+    my $argshash = shift;
+    if ($argshash->{server}) {
+        return (
+            # One might provide "test.authorize.net" here.
+            Server => $argshash->{server},
+        );
+    }
+    else {
+        return ();
+    }
+}
+
+# Provide default arguments for calls using the PayPal processor
+sub bop_args_PayPal {
+    my $argshash = shift;
+    return (
+        Username => $argshash->{login},
+        Password => $argshash->{password},
+        Signature => $argshash->{signature}
+    );
+}
 
 __PACKAGE__->register_method(
     method    => 'process_payment',
     api_name  => 'open-ils.credit.process',
     signature => {
-        desc   => 'Creates a new provider',
+        desc   => 'Process a payment via a supported processor (AuthorizeNet, Paypal)',
         params => [
-            { desc => 'Authentication token', type => 'string' },
-            { desc => q/Hash of arguments.  Options include:
-                XXX add docs as API stablilizes...
+            { desc => q/Hash of arguments with these keys:
+                patron_id: Not a barcode, but a patron's internal ID
+                processor: the transaction "clearing house" (e.g. PayPal)
+                    login: supplied by processor to institution for their API
+                 password: supplied by processor to institution for their API
+                       cc: credit card number
+                     cvv2: 3 or 4 digits from back of card
+                   amount: transaction value
+                 testmode: optional (default: NO, i.e. a REAL transaction), note this is different than targeting the processor's test server
+                   action: optional (default: Normal Authorization)
+                signature: optional (required by some processor APIs)
+               first_name: optional (default: patron's first_given_name field)
+                last_name: optional (default: patron's family_name field)
+                  address: optional (default: patron's street1 field)
+                     city: optional (default: patron's city field)
+                    state: optional (default: patron's state field)
+                      zip: optional (default: patron's zip field)
+                  country: optional (some processor APIs. 2 letter code.)
+              description: optional
+                   server: optional (for testing some APIs, i.e. AuthorizeNet)
                 /, type => 'hash' }
         ],
-        return => { desc => 'Hash of status information', type=>'hash' }
+        return => { desc => 'Hash of status information', type =>'hash' }
     }
 );
 
 sub process_payment {
-    my $self     = shift;
-    my $client   = shift;
-    my $argshash = shift;
+    my ($self, $client, $argshash) = @_; # $client is unused in this sub
 
-    my $e = new_editor();
-    my $patron = $e->retrieve_actor_user(
+    # Confirm required arguments.
+    return OpenILS::Event->new('BAD_PARAMS')
+      unless $argshash
+         and $argshash->{login}
+         and $argshash->{password}
+         and $argshash->{processor}
+         and $argshash->{cc};
+
+     # A valid patron_id is also required.
+     my $e = new_editor();
+     my $patron = $e->retrieve_actor_user(
         [
             $argshash->{patron_id},
             {
@@ -65,164 +122,132 @@ sub process_payment {
         ]
     ) or return $e->event;
 
-    return OpenILS::Event->new('BAD_PARAMS')
-      unless $argshash->{login}
-          and $argshash->{password}
-          and $argshash->{action};
-
-    if ( $argshash->{processor} eq 'PayPal' ) {    
-        #  XXX not ready for prime time
-        return handle_paypal($e, $argshash, $patron);
-
-    } elsif ( $argshash->{processor} eq 'AuthorizeNet' ) {
-        return handle_authorizenet($e, $argshash, $patron);
-    }
-}
-
-sub handle_paypal {
-    my($e, $argshash, $patron) = @_;
-
-    require Business::PayPal::API;
-    require Business::OnlinePayment::PayPal;
-    my $card = Business::CreditCard::Object->new( $argshash->{cc} );
-
-    $logger->debug("applying paypal payment");
-
-    if ( !$card->is_valid ) {
-        return {
-            statusText       => "should return address:(patron_id):",
-            processor        => $argshash->{processor},
-            testmode         => $argshash->{testmode},
-            card             => $card->number(),
-            expiration       => $argshash->{expiration},
-            name             => $patron->first_given_name,
-            patron_id        => $patron->id,
-            patron_patron_id => $patron->mailing_address,
-            statusCode       => 500
-        };
-    }
-
-    my $type = $card->type();
-
-    if ( substr( $type, -5, 5 ) =~ / card/ ) {
-        $type = substr( $type, 0, -5 );
-    }
-
-    my $transaction = Business::OnlinePayment->new(
-        $argshash->{processor},
-        "Username"  => $argshash->{PayPal_Username},
-        "Password"  => $argshash->{PayPal_Password},
-        "Signature" => $argshash->{PayPal_Signature}
-    );
-
-    $transaction->content(
-        action      => $argshash->{action},
-        amount      => $argshash->{amount},
-        type        => "$type",
-        card_number => $card->number(),
-        expiration  => $argshash->{expiration},
-        cvv2        => $argshash->{cvv2},
-        name => $patron->first_given_name . ' ' . $patron->family_name,
-        address => $patron->mailing_address->street1,
-        city    => $patron->mailing_address->city,
-        state   => $patron->mailing_address->state,
-        zip     => $patron->mailing_address->post_code
-    );
-
-    $transaction->test_transaction(1); # XXX
-    $transaction->submit;
-
-    if ( $transaction->is_success ) {
-        return {
-            statusText => "Card approved: ".$transaction->authorization,
-            statusCode    => 200,
-            approvalCode  => $transaction->authorization,
-            CorrelationID => $transaction->correlationid
-        };
-
+    if (grep { $_ eq $argshash->{processor} } @ALLOWED_PROCESSORS) {
+        return dispatch($argshash, $patron);
     } else {
-        return {
-            statusText => "Card declined: " . $transaction->error_message,
-            statusCode => 500
-
-        };
+        return OpenILS::Event->new('BAD_PARAMS');   # no supported processor
     }
 }
 
-sub handle_authorizenet {
-    my($e, $argshash, $patron) = @_;
+sub prepare_bop_content {
+    my ($argshash, $patron, $cardtype) = @_;
 
-    require Business::OnlinePayment::AuthorizeNet;
-    my $card = Business::CreditCard::Object->new( $argshash->{cc} );
+    my %content;
+    foreach (qw/
+        login
+        password
+        description
+        first_name
+        last_name
+        amount
+        expiration
+        cvv2
+        address
+        city
+        state
+        zip
+        country/) {
+        if (exists $argshash->{$_}) {
+            $content{$_} = $argshash->{$_};
+        }
+    }
+    
+    $content{action}       = $argshash->{action} || "Normal Authorization";
+    $content{type}         = $cardtype;      #'American Express', 'VISA', 'MasterCard'
+    $content{card_number}  = $argshash->{cc};
+    $content{customer_id}  = $patron->id;
+    
+    $content{first_name} ||= $patron->first_given_name;
+    $content{last_name}  ||= $patron->family_name;
 
-    $logger->debug("applying authorize.net payment");
+    $content{FirstName}    = $content{first_name};   # kludge mcugly for PP
+    $content{LastName}     = $content{last_name};
 
-    if ( ! $card->is_valid ) {
-        $logger->warn("authorize.net card number is invalid");
 
+    # Especially for the following fields, do we need to support different
+    # mapping of fields for different payment processors, particularly ones
+    # in other countries?
+    $content{address}    ||= $patron->mailing_address->street1;
+    $content{city}       ||= $patron->mailing_address->city;
+    $content{state}      ||= $patron->mailing_address->state;
+    $content{zip}        ||= $patron->mailing_address->post_code;
+
+    %content;
+}
+
+sub dispatch {
+    my ($argshash, $patron) = @_;
+    
+    # The validate() sub is exported by Business::CreditCard.
+    if (!validate($argshash->{cc})) {
+        # Although it might help a troubleshooter, it's probably not a good
+        # idea to put the credit card number in the log file.
+        $logger->warn("Credit card number invalid");
+
+        # The idea of returning a hashref with statusText and statusCode
+        # comes from an older version handle_authorizenet(), but I'm not
+        # sure it's the best thing to do, really.
         return {
-            statusText       => "should return address:(patron_id):",
-            processor        => $argshash->{processor},
-            testmode         => $argshash->{testmode},
-            card             => $card->number(),
-            expiration       => $argshash->{expiration},
-            name             => $patron->first_given_name,
-            patron_id        => $patron->id,
-            patron_patron_id => $patron->mailing_address,
-            statusCode       => 500
+            statusText => "Credit card number invalid",
+            statusCode => 500
         };
     }
 
-    my $type = $card->type();
+    # cardtype() also comes from Business::CreditCard.  It is not certain that
+    # a) the card type returned by this method will be suitable input for
+    #   a payment processor, nor that
+    # b) it is even necessary to supply this argument to processors in all
+    #   cases.  Testing this with several processors would be a good idea.
+    (my $cardtype = cardtype($argshash->{cc})) =~ s/ card//;
 
-    if ( substr( $type, -5, 5 ) =~ / card/ ) {
-        $type = substr( $type, 0, -5 );
-    }
-
-    my $transaction = new Business::OnlinePayment( 
-        $argshash->{processor}, 'test_transaction' => $argshash->{testmode});
-
-    $transaction->content(
-        type        => "$type", #'American Express', 'VISA', 'MasterCard'
-        login       => $argshash->{login},
-        password    => $argshash->{password},
-        action      => $argshash->{action},
-        description => $argshash->{description},
-        amount      => $argshash->{amount},
-        card_number => $card->number(),
-        expiration  => $argshash->{expiration},
-        cvv2        => $argshash->{cvv2},
-        first_name  => $patron->first_given_name,
-        last_name   => $patron->family_name,
-        address     => $patron->mailing_address->street1,
-        city        => $patron->mailing_address->city,
-        state       => $patron->mailing_address->state,
-        zip         => $patron->mailing_address->post_code,
-        customer_id => $patron->id
+    $logger->debug(
+        "applying payment via processor '" . $argshash->{processor} . "'"
     );
 
+    # Find B:OP constructor arguments specific to our payment processor.
+    my %bop_args = get_bop_args_filler($argshash);
+
+    # We're assuming that all B:OP processors accept this argument to the
+    # contstructor.
+    $bop_args{test_transaction} = $argshash->{testmode};
+
+    my $transaction = new Business::OnlinePayment(
+        $argshash->{processor}, %bop_args
+    );
+
+    $transaction->content(prepare_bop_content($argshash, $patron, $cardtype));
     $transaction->submit();
 
-    if ( $transaction->is_success() ) {
-        $logger->info("authorize.net payment succeeded");
-        return {
-            statusText => "Card approved: "
-              . $transaction->authorization,
-            statusCode      => 200,
-            approvalCode    => $transaction->authorization,
-            server_response => $transaction->server_response
+    # The data structures that we return based on success or failure are still
+    # basically from earlier code.  These might should be improved/reduced.
+    if ($transaction->is_success()) {
+        $logger->info($argshash->{processor} . " payment succeeded");
 
+        my $retval = {
+            statusText => "Transaction approved: " . $transaction->authorization,
+            statusCode => 200,
+            approvalCode => $transaction->authorization,
+            server_response => $transaction->server_response
         };
 
-    } else {
-        $logger->info("authorize.net card declined");
+        # These result fields may be important in PayPal xactions? Not sure.
+        foreach (qw/correlationid avs_code cvv2_code/) {
+            if ($transaction->can($_)) {
+                $retval->{$_} = $transaction->$_;
+            }
+        }
+        return $retval;
+    }
+    else {
+        $logger->info($argshash->{processor} . " payment failed");
         return {
-            statusText => "Card decliined: " . $transaction->error_message,
-            statusCode      => 500,
-            approvalCode    => $transaction->error_message,
+            statusText => "Transaction declined: " . $transaction->error_message,
+            statusCode => 500,
+            errorMessage => $transaction->error_message,
             server_response => $transaction->server_response
         };
     }
+
 }
 
 
@@ -232,7 +257,6 @@ __PACKAGE__->register_method(
     signature => {
         desc   => q/Returns the total amount of the patron can pay via credit card/,
         params => [
-            { desc => 'Authentication token',      type => 'string' },
             { desc => 'Authentication token', type => 'string' },
             { desc => 'User id', type => 'number' }
         ],
@@ -267,16 +291,15 @@ sub retrieve_payable_balance {
     });
 
     my %hash;
-    my @orgs;
     for my $org ( @$circ_orgs, @$groc_orgs ) {
         my $o = $org->{billing_location};
         $o = $org->{circ_lib} unless $o;
-        next if $hash{$org};
+        next if $hash{$o};    # was $hash{$org}, but that doesn't make sense.  $org is a hashref and $o gets added in the next line.
         $hash{$o} = $U->ou_ancestor_setting_value($o, 'global.credit.allow', $e);
     }
 
     my @credit_orgs = map { $hash{$_} ? ($_) : () } keys %hash;
-    $logger->debug("credit: relevent orgs that allow credit payments => @credit_orgs");
+    $logger->debug("credit: relevant orgs that allow credit payments => @credit_orgs");
 
     my $xact_summaries =
       OpenILS::Application::AppUtils->simplereq('open-ils.actor',

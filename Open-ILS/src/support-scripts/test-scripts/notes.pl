@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 require '../oils_header.pl';
-use vars qw/ $user $authtoken /;
+use vars qw/ $user $authtoken /;    # FIXME: $user not used?
 use strict; use warnings;
 use Time::HiRes qw/time/;
 use Data::Dumper;
@@ -12,12 +12,12 @@ use OpenSRF::Utils::JSON;
 
 err("usage: $0 <config> <username> <password> <patronid> <title> <text>") unless $ARGV[5];
 
-my $config		= shift; # - bootstrap config
-my $username	= shift; # - oils login username
-my $password	= shift; # - oils login password
-my $patronid	= shift;
-my $title		= shift;
-my $text			= shift;
+my $config   = shift;  # - bootstrap config
+my $username = shift;  # - oils login username
+my $password = shift;  # - oils login password
+my $patronid = shift;
+my $title    = shift;
+my $text     = shift;
 
 
 sub go {
