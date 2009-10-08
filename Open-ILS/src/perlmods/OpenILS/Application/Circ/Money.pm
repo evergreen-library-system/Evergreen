@@ -30,82 +30,123 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
 
 __PACKAGE__->register_method(
-	method	=> "make_payments",
-	api_name	=> "open-ils.circ.money.payment",
-	notes		=> <<"	NOTE");
-	Pass in a structure like so:
-		{ 
-			cash_drawer: <string>, 
-			payment_type : <string>, 
-			note : <string>, 
-			userid : <id>,
-			payments: [ 
-				[trans_id, amt], 
-				[...]
-			], 
-			patron_credit : <credit amt> 
-		}
-	login must have CREATE_PAYMENT priveleges.
-	If any payments fail, all are reverted back.
-	NOTE
+	method => "make_payments",
+	api_name => "open-ils.circ.money.payment",
+    signature => {
+        desc => q/Create payments for a given user and set of transactions,
+	        login must have CREATE_PAYMENT priveleges.
+	        If any payments fail, all are reverted back./,
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => q/Arguments Hash, supporting the following params:
+                { 
+                    payment_type
+                    userid
+                    patron_credit
+                    note
+                    cc_type
+                    cc_number
+                    cc_expire_month
+                    cc_expire_year
+                    cc_approval_code
+                    check_number
+                    payments: [ 
+                        [trans_id, amt], 
+                        [...]
+                    ], 
+                }/, type => 'hash'
+            },
+        ]
+    }
+);
 
 sub make_payments {
-	my($self, $client, $login, $payments) = @_;
-	my($user, $trans, $evt);
+	my($self, $client, $auth, $payments) = @_;
 
-	my $e = new_editor(authtoken => $login, xact => 1);
+	my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
-    my $patron = $e->retrieve_actor_user($payments->{userid}) or return $e->die_event;
-	return $e->die_event unless $e->allowed('CREATE_PAYMENT', $patron->home_ou);
 
-	my $type		= $payments->{payment_type};
-	my $credit	= $payments->{patron_credit} || 0;
-	my $drawer	= $e->requestor->wsid;
-	my $userid	= $payments->{userid};
-	my $note		= $payments->{note};
-	my $cc_type = $payments->{cc_type} || 'n/a';
-	my $cc_number		= $payments->{cc_number} || 'n/a';
-	my $expire_month	= $payments->{expire_month};
-	my $expire_year	= $payments->{expire_year};
-	my $approval_code = $payments->{approval_code} || 'n/a';
-	my $check_number	= $payments->{check_number} || 'n/a';
-
+	my $type = $payments->{payment_type};
+	my $user_id = $payments->{userid};
+	my $credit = $payments->{patron_credit} || 0;
+	my $drawer = $e->requestor->wsid;
+	my $note = $payments->{note};
+	my $cc_type = $payments->{cc_type};
+	my $cc_number = $payments->{cc_number};
+	my $cc_expire_month = $payments->{cc_expire_month};
+	my $cc_expire_year = $payments->{cc_expire_year};
+	my $cc_approval_code = $payments->{cc_approval_code};
+	my $check_number = $payments->{check_number};
 	my $total_paid = 0;
-
     my %orgs;
+
+    my $patron = $e->retrieve_actor_user($user_id) or return $e->die_event;
+
+    # A user is allowed to make credit card payments on his/her own behalf
+    # All other scenarious require permission
+    unless($type eq 'credit_card_payment' and $user_id == $e->requestor->id) {
+	    return $e->die_event unless $e->allowed('CREATE_PAYMENT', $patron->home_ou);
+    }
+
+
+    # first collect the transactions and make sure the transaction
+    # user matches the requested user
+    my %xacts;
+    for my $pay (@{$payments->{payments}}) {
+
+        my $xact_id = $pay->[0];
+        my $xact = $e->retrieve_money_billable_transaction_summary($xact_id)
+            or return $e->die_event;
+        
+        if($xact->usr != $user_id) {
+            $e->rollback;
+            return OpenILS::Event->new('BAD_PARAMS', note => q/user does not match transaction/);
+        }
+
+        $xacts{$xact_id} = $xact;
+    }
 
 	for my $pay (@{$payments->{payments}}) {
 
-		my $transid = $pay->[0];
+        my $transid = $pay->[0];
 		my $amount = $pay->[1];
 		$amount =~ s/\$//og; # just to be safe
+        my $trans = $xacts{$transid};
 
 		$total_paid += $amount;
 
         $orgs{$U->xact_org($transid, $e)} = 1;
-
-		$trans = fetch_mbts($self, $client, $login, $transid);
-		return $trans if $U->event_code($trans);
 
         # making payment with existing patron credit
 		$credit -= $amount if $type eq 'credit_payment';
 
 		# A negative payment is a refund.  
 		if( $amount < 0 ) {
+
+            # Negative credit card payments are not allowed
+            if($type eq 'credit_card_payment') {
+                $e->rollback;
+				return OpenILS::Event->new(
+                    'BAD_PARAMS', 
+                    note => q/Negative credit card payments not allowed/
+                );
+            }
+
 			# If the refund causes the transaction balance to exceed 0 dollars, 
 			# we are in effect loaning the patron money.  This is not allowed.
 			if( ($trans->balance_owed - $amount) > 0 ) {
+                $e->rollback;
 				return OpenILS::Event->new('REFUND_EXCEEDS_BALANCE');
 			}
 
 			# Otherwise, make sure the refund does not exceed desk payments
 			# This is also not allowed
 			my $desk_total = 0;
-			my $desk_payments = $e->search_money_desk_payment(
-				{ xact => $transid, voided => 'f' });
+			my $desk_payments = $e->search_money_desk_payment({xact => $transid, voided => 'f'});
 			$desk_total += $_->amount for @$desk_payments;
 
 			if( (-$amount) > $desk_total ) {
+                $e->rollback;
 				return OpenILS::Event->new(
 					'REFUND_EXCEEDS_DESK_PAYMENTS', 
 					payload => { allowed_refund => $desk_total, submitted_refund => -$amount } );
@@ -123,10 +164,13 @@ sub make_payments {
 		if ($payobj->has_field('accepting_usr')) { $payobj->accepting_usr($e->requestor->id); }
 		if ($payobj->has_field('cash_drawer')) { $payobj->cash_drawer($drawer); }
 		if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_type); }
-		if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_number); }
-		if ($payobj->has_field('expire_month')) { $payobj->expire_month($expire_month); }
-		if ($payobj->has_field('expire_year')) { $payobj->expire_year($expire_year); }
-		if ($payobj->has_field('approval_code')) { $payobj->approval_code($approval_code); }
+
+        # Store the last 4 digits?
+		#if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_number); }
+		#if ($payobj->has_field('approval_code')) { $payobj->approval_code($cc_approval_code); }
+
+		if ($payobj->has_field('expire_month')) { $payobj->expire_month($cc_expire_month); }
+		if ($payobj->has_field('expire_year')) { $payobj->expire_year($cc_expire_year); }
 		if ($payobj->has_field('check_number')) { $payobj->check_number($check_number); }
 		
 		# update the transaction if it's done 
@@ -147,14 +191,22 @@ sub make_payments {
 
         my $method = "create_money_$type";
         $e->$method($payobj) or return $e->die_event;
-	}
 
-	$evt = _update_patron_credit($e, $patron, $credit);
+	} # all payment objects have been created and inserted. 
+
+    if($type eq 'credit_card_payment') {
+        # TODO send to credit card processor
+        # amount == $total_paid
+        # user == $user_id
+        # $e->rollback if processing fails.  This will undo everything.
+    }
+
+	my $evt = _update_patron_credit($e, $patron, $credit);
 	return $evt if $evt;
 
     for my $org_id (keys %orgs) {
         # calculate penalties for each of the affected orgs
-        $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $userid, $org_id);
+        $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $user_id, $org_id);
         return $evt if $evt;
     }
 
