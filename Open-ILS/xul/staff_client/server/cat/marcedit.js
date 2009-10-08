@@ -525,13 +525,13 @@ function createMARCTextbox (element,attrs) {
 					return false;
 				}
 			} else if (event.keyCode == 64 && event.ctrlKey) { // ctrl + F6
-				createControlField('006','');
+				createControlField('006','                                        ');
 				loadRecord(xml_record);
 			} else if (event.keyCode == 65 && event.ctrlKey) { // ctrl + F7
-				createControlField('007','');
+				createControlField('007','                                        ');
 				loadRecord(xml_record);
 			} else if (event.keyCode == 66 && event.ctrlKey) { // ctrl + F8
-				createControlField('008','');
+				createControlField('008','                                        ');
 				loadRecord(xml_record);
 			}
 			return true;
@@ -1168,7 +1168,18 @@ function updateFixedFields (element) {
 	for (var i in ff_pos[name]) {
 
 		if (!ff_pos[name][i][rtype]) continue;
-		if (!parts[i]) continue;
+		if (!parts[i]) {
+			// we're missing the required field.  Add it now.
+
+			var newfield;
+			if (i == '_6') newfield = '006';
+			else if (i == '_7') newfield = '007';
+			else if (i == '_8') newfield = '008';
+			else continue;
+
+			createControlField(newfield,'                                        ');
+			parts[i] = _record.controlfield.(@tag==newfield);
+		}
 
 		var before = parts[i].substr(0, ff_pos[name][i][rtype].start);
 		var after = parts[i].substr(ff_pos[name][i][rtype].start + ff_pos[name][i][rtype].len);
