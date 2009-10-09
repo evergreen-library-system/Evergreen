@@ -202,20 +202,20 @@
                     </td>
                 </tr>
             </tbody>
-            <!--
-            <tbody><tr>
-                <td colspan='0'>
-                    <a href='javascript:void(0);' 
-                        onclick='openils.Util.toggle("acq-lit-distrib-formula-tbody");'>Distribution Formulas</a>
-                </td>
-            </tr></tbody>
-            -->
-            <tbody id='acq-lit-distrib-formula-tbody' class='hidden'>
+
+            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
+
+            <tbody id='acq-lit-distrib-formula-tbody'>
                 <tr id='acq-lit-distrib-form-row'>
-                    <td name='selector'/>
-                    <td name='setbutton'/>
+                    <td colspan='0'>
+                        <span>Distribution Formulas</span>
+                        <div name='selector'></div>
+                        <div name='set_button'></div>
+                        <div name='rel_button'></div>
+                    </td>
                 </tr>
             </tbody>
+
             <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
             <tbody style='font-weight:bold;'>
                 <tr>

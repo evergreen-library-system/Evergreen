@@ -501,6 +501,7 @@ function AcqLiTable() {
 
         this._fetchDistribFormulas(
             function() {
+                self._addDistribFormulaRow();
                 openils.acq.Lineitem.fetchAttrDefs(
                     function() { 
                         self._fetchLineitem(liId, function(li){self._drawCopies(li);}); 
@@ -508,6 +509,106 @@ function AcqLiTable() {
                 );
             }
         );
+    };
+
+    /**
+     * Insert a new row into the distribution formula selection form
+     */
+    this._addDistribFormulaRow = function() {
+        var self = this;
+
+        if(!self.distribFormulaStore) {
+            // no formulas, hide the form
+            openils.Util.hide('acq-lit-distrib-formula-tbody');
+            return;
+        }
+
+        if(!this.distribFormulaTemplate) 
+            this.distribFormulaTemplate = 
+                dojo.byId('acq-lit-distrib-formula-tbody').removeChild(dojo.byId('acq-lit-distrib-form-row'));
+
+        var row = dojo.byId('acq-lit-distrib-formula-tbody').appendChild(this.distribFormulaTemplate.cloneNode(true));
+
+        var selector = new dijit.form.FilteringSelect(
+            {store : self.distribFormulaStore}, 
+            nodeByName('selector', row)
+        );
+
+        var apply = new dijit.form.Button(
+            {label : 'Apply'},  // TODO i18n
+            nodeByName('set_button', row)
+        ); 
+
+        var release = new dijit.form.Button(
+            {label : 'Release', disabled: true}, // TODO i18n
+            nodeByName('rel_button', row)  
+        );
+
+        dojo.connect(apply, 'onClick', 
+            function() {
+                var form_id = selector.attr('value');
+                if(!form_id) return;
+                apply.attr('disabled', true);
+                release.attr('disabled', false);
+                self._applyDistribFormula(form_id);
+            }
+        );
+
+        dojo.connect(release, 'onClick', 
+            function() {
+                apply.attr('disabled', false);
+                release.attr('disabled', true);
+            }
+        );
+    };
+
+    /**
+     * Applies a distrib formula to the current set of copies
+     */
+    this._applyDistribFormula = function(formula) {
+        if(!formula) return;
+
+        formula = this.distribForms.filter(
+            function(form) {
+                return form.id() == formula;
+            }
+        )[0];
+
+        var copyRows = dojo.query('tr', self.copyTbody);
+
+        for(var rowIndex = 0; rowIndex < copyRows.length; rowIndex++) {
+            
+            var row = copyRows[rowIndex];
+            var copy_id = row.getAttribute('copy_id');
+            var copyWidgets = this.copyWidgetCache[copy_id];
+            var entryIndex = 0;
+            var entry = null;
+
+            // find the correct entry for the current row
+            dojo.forEach(formula.entries(), 
+                function(e) {
+                    if(!entry) {
+                        entryIndex += e.item_count();
+                        if(entryIndex > rowIndex)
+                            entry = e;
+                    }
+                }
+            );
+
+            if(entry) {
+                
+                //console.log("rowIndex = " + rowIndex + ", entry = " + entry.id() + ", entryIndex=" + 
+                //  entryIndex + ", owning_lib = " + entry.owning_lib() + ", location = " + entry.location());
+    
+                dojo.forEach(
+                    ['owning_lib', 'location'], 
+                    function(field) {
+                        if(entry[field]()) 
+                            copyWidgets[field].attr('value', (entry[field]()));
+                    }
+                );
+            }
+        }
     };
 
     this._fetchDistribFormulas = function(onload) {
