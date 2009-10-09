@@ -2,3 +2,17 @@
 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
+
+.checkin_screen_normal { background-color: green; }
+.checkin_screen_backdating { background-color: red; }
+.checkin_screen_do_not_alert_on_precat { }
+.checkin_screen_suppress_holds_and_transits { }
+.checkin_screen_amnesty_mode { }
+.checkin_screen_checkin_auto_print_slips { }
+
+#background-text { font-size: x-large; font-weight: bold; }
+#do_not_alert_on_precat_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
+#suppress_holds_and_transits_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
+#amnesty_mode_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
+#checkin_auto_print_slips_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
+

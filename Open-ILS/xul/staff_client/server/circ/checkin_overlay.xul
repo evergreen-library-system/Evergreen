@@ -38,16 +38,15 @@
 </box>
 
 <vbox id="cmvb1" flex="1">
-	<hbox id="background" style="background-color: green;">
+	<hbox id="background" class="checkin_screen_normal">
 		<spacer flex="1"/>
 		<vbox>
-			<hbox align="center"><label id="background-text" value="&staff.circ.checkin_overlay.background_text;" style="font-size: x-large; font-weight: bold;"/></hbox>
-			<hbox align="center"><label id="hold_capture_blurb" hidden="true" value="&staff.circ.checkin_overlay.background_text.hold_capture;" style="font-size: large; font-weight: bold;"/></hbox>
+			<hbox align="center"><label id="background-text" value="&staff.circ.checkin_overlay.background_text;" /></hbox>
             <vbox align="center">
-                <description id="do_not_alert_on_precat_indicator" hidden="true" style="font-size: large; font-weight: bold;">&staff.circ.checkin_overlay.do_not_alert_on_precat.label;</description>
-                <description id="suppress_holds_and_transits_indicator" hidden="true" style="font-size: large; font-weight: bold;">&staff.circ.checkin_overlay.suppress_holds_and_transits.label;</description>
-                <description id="amnesty_mode_indicator" hidden="true" style="font-size: large; font-weight: bold;">&staff.circ.checkin_overlay.amnesty_mode.label;</description>
-                <description id="checkin_auto_indicator" hidden="true" style="font-size: large; font-weight: bold;">&staff.circ.checkin_overlay.checkin_auto.label;</description>
+                <description id="do_not_alert_on_precat_indicator" hidden="true">&staff.circ.checkin_overlay.do_not_alert_on_precat.label;</description>
+                <description id="suppress_holds_and_transits_indicator" hidden="true">&staff.circ.checkin_overlay.suppress_holds_and_transits.label;</description>
+                <description id="amnesty_mode_indicator" hidden="true">&staff.circ.checkin_overlay.amnesty_mode.label;</description>
+                <description id="checkin_auto_print_slips_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_auto_print_slips.label;</description>
             </vbox>
 		</vbox>
 		<spacer flex="1"/>
@@ -136,18 +135,14 @@
         accesskey="&staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey;"
         type="menu" allowevents="false">
         <menupopup id="checkin_modifiers_popup">
-            <menuitem type="checkbox" id="do_not_alert_on_precat" oils_persist="checked" 
-                oncommand="document.getElementById('do_not_alert_on_precat_indicator').hidden = this.getAttribute('checked') != 'true'; document.getElementById('checkin_barcode_entry_textbox').focus();"
+            <menuitem type="checkbox" id="do_not_alert_on_precat" oils_persist="checked" command="cmd_do_not_alert_on_precat" oncommand="alert('here too');"
                 label="&staff.circ.checkin_overlay.do_not_alert_on_precat.label;" accesskey="&staff.circ.checkin_overlay.do_not_alert_on_precat.accesskey;"/>
-            <menuitem type="checkbox" id="suppress_holds_and_transits" oils_persist="checked" 
-                oncommand="document.getElementById('suppress_holds_and_transits_indicator').hidden = this.getAttribute('checked') != 'true'; document.getElementById('checkin_barcode_entry_textbox').focus();"
+            <menuitem type="checkbox" id="suppress_holds_and_transits" oils_persist="checked" command="cmd_suppress_holds_and_transits"
                 label="&staff.circ.checkin_overlay.suppress_holds_and_transits.label;" accesskey="&staff.circ.checkin_overlay.suppress_holds_and_transits.accesskey;"/>
-            <menuitem type="checkbox" id="amnesty_mode" oils_persist="checked" 
-                oncommand="document.getElementById('amnesty_mode_indicator').hidden = this.getAttribute('checked') != 'true'; document.getElementById('checkin_barcode_entry_textbox').focus();"
+            <menuitem type="checkbox" id="amnesty_mode" oils_persist="checked" command="cmd_amnesty_mode"
                 label="&staff.circ.checkin_overlay.amnesty_mode.label;" accesskey="&staff.circ.checkin_overlay.amnesty_mode.accesskey;"/>
-            <menuitem type="checkbox" id="checkin_auto" oils_persist="checked" 
-                oncommand="document.getElementById('checkin_auto_indicator').hidden = this.getAttribute('checked') != 'true'; document.getElementById('checkin_barcode_entry_textbox').focus();"
-                label="&staff.circ.checkin_overlay.checkin_auto.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto.accesskey;"/>
+            <menuitem type="checkbox" id="checkin_auto_print_slips" oils_persist="checked" command="cmd_checkin_auto_print_slips"
+                label="&staff.circ.checkin_overlay.checkin_auto_print_slips.label;" accesskey="&staff.circ.checkin_overlay.checkin_auto_print_slips.accesskey;"/>
         </menupopup>
     </button>
 </hbox>

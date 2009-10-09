@@ -42,11 +42,12 @@
 
 				var tab_name;
 				if (xul_param('hold_capture')) {
-					document.getElementById('checkin_auto').checked = true;
-					document.getElementById('checkin_auto').hidden = true;
+					var cb1 = document.getElementById('checkin_auto_print_slips'); cb1.hidden = true; cb1.checked = true;
+					var cb1_ind = document.getElementById('checkin_auto_print_slips_indicator'); cb1_ind.hidden = false;
+					var cb2 = document.getElementById('suppress_holds_and_transits'); cb2.hidden = true; cb2.checked = false;
+					var cb2_ind = document.getElementById('suppress_holds_and_transits_indicator'); cb2_ind.hidden = true;
 					document.getElementById('checkin_effective_date_hbox').hidden = true;
 					document.getElementById('caption').setAttribute('label',document.getElementById('circStrings').getString('staff.circ.checkin.hold_capture'));
-					document.getElementById('hold_capture_blurb').hidden = false;
 					tab_name = document.getElementById('circStrings').getString('staff.circ.checkin.hold_capture');
 				} else {
 					tab_name = document.getElementById('circStrings').getString('staff.circ.checkin.check_in.tab');
@@ -95,6 +96,10 @@
 		<command id="sel_transit_abort" disabled="true"/>
 		<command id="sel_mark_items_damaged" disabled="true"/>
 
+		<command id="cmd_do_not_alert_on_precat" />
+		<command id="cmd_suppress_holds_and_transits" />
+		<command id="cmd_amnesty_mode" />
+		<command id="cmd_checkin_auto_print_slips" />
 	</commandset>
 
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>

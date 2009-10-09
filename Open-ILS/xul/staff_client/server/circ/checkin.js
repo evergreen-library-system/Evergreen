@@ -222,18 +222,28 @@ circ.checkin.prototype = {
 									var x = document.getElementById('background');
 									if (x) {
 										if ( ev.target.value == util.date.formatted_date(new Date(),'%F') ) {
-											x.setAttribute('style','background-color: green');
+                                            //addCSSClass(x,'checkin_screen_normal');
+                                            removeCSSClass(x,'checkin_screen_backdating');
+                                            removeCSSClass(document.getElementById('background'),'checkin_screen_do_not_alert_on_precat');
+                                            removeCSSClass(document.getElementById('background'),'checkin_screen_suppress_holds_and_transits');
+                                            removeCSSClass(document.getElementById('background'),'checkin_screen_amnesty_mode');
+                                            removeCSSClass(document.getElementById('background'),'checkin_screen_checkin_auto_print_slips');
 											document.getElementById('background-text').setAttribute('value',document.getElementById('circStrings').getString('staff.circ.process_item'));
 										} else {
-											x.setAttribute('style','background-color: red');
+                                            addCSSClass(x,'checkin_screen_backdating');
+                                            //removeCSSClass(x,'checkin_screen_normal');
 											document.getElementById('background-text').setAttribute('value',document.getElementById('circStrings').getFormattedString('staff.circ.backdated_checkin', [ev.target.value]));
 										}
 									}
-
 								} catch(E) {
 									var x = document.getElementById('background');
 									if (x) {
-                                        x.setAttribute('style','background-color: green');
+                                        //addCSSClass(x,'checkin_screen_normal');
+                                        removeCSSClass(x,'checkin_screen_backdating');
+                                        removeCSSClass(document.getElementById('background'),'checkin_screen_do_not_alert_on_precat');
+                                        removeCSSClass(document.getElementById('background'),'checkin_screen_suppress_holds_and_transits');
+                                        removeCSSClass(document.getElementById('background'),'checkin_screen_amnesty_mode');
+                                        removeCSSClass(document.getElementById('background'),'checkin_screen_checkin_auto_print_slips');
                                         document.getElementById('background-text').setAttribute('value',document.getElementById('circStrings').getString('staff.circ.process_item'));
                                     }
 									dump('checkin:effective_date: ' + E + '\n');
@@ -277,6 +287,50 @@ circ.checkin.prototype = {
 					'cmd_csv_to_file' : [ ['command'], function() { 
                         obj.list.dump_csv_to_file( { 'defaultFileName' : 'checked_in.txt' } ); 
                         obj.controller.view.checkin_barcode_entry_textbox.focus();
+                    } ],
+                    'cmd_do_not_alert_on_precat' : [ ['command'], function(ev) {
+                        dump('in cmd_do_not_alert_on_precat\n');
+                        var bg = document.getElementById('background');
+                        var cb = document.getElementById('do_not_alert_on_precat');
+                        var ind = document.getElementById('do_not_alert_on_precat_indicator');
+                        var cn = 'checkin_screen_do_not_alert_on_precat';
+                        if (cb.getAttribute('checked') == 'true') { addCSSClass(bg,cn); } else { removeCSSClass(bg,cn); }
+                        ind.hidden = cb.getAttribute('checked') != 'true'; 
+                        document.getElementById('checkin_barcode_entry_textbox').focus();
+                        return true;
+                    } ],
+                    'cmd_suppress_holds_and_transits' : [ ['command'], function(ev) {
+                        dump('in cmd_suppress_holds_and_transits\n');
+                        var bg = document.getElementById('background');
+                        var cb = document.getElementById('suppress_holds_and_transits');
+                        var ind = document.getElementById('suppress_holds_and_transits_indicator');
+                        var cn = 'checkin_screen_suppress_holds_and_transits';
+                        if (cb.getAttribute('checked') == 'true') { addCSSClass(bg,cn); } else { removeCSSClass(bg,cn); }
+                        ind.hidden = cb.getAttribute('checked') != 'true'; 
+                        document.getElementById('checkin_barcode_entry_textbox').focus();
+                        return true;
+                    } ],
+                    'cmd_amnesty_mode' : [ ['command'], function(ev) {
+                        dump('in cmd_amnesty_mode\n');
+                        var bg = document.getElementById('background');
+                        var cb = document.getElementById('amnesty_mode');
+                        var ind = document.getElementById('amnesty_mode_indicator');
+                        var cn = 'checkin_screen_amnesty_mode';
+                        if (cb.getAttribute('checked') == 'true') { addCSSClass(bg,cn); } else { removeCSSClass(bg,cn); }
+                        ind.hidden = cb.getAttribute('checked') != 'true'; 
+                        document.getElementById('checkin_barcode_entry_textbox').focus();
+                        return true;
+                    } ],
+                    'cmd_checkin_auto_print_slips' : [ ['command'], function(ev) {
+                        dump('in cmd_checkin_auto_print_slips\n');
+                        var bg = document.getElementById('background');
+                        var cb = document.getElementById('checkin_auto_print_slips');
+                        var ind = document.getElementById('checkin_auto_print_slips_indicator');
+                        var cn = 'checkin_screen_checkin_auto_print_slips';
+                        if (cb.getAttribute('checked') == 'true') { addCSSClass(bg,cn); } else { removeCSSClass(bg,cn); }
+                        ind.hidden = cb.getAttribute('checked') != 'true'; 
+                        document.getElementById('checkin_barcode_entry_textbox').focus();
+                        return true;
                     } ]
 				}
 			}
@@ -355,7 +409,7 @@ circ.checkin.prototype = {
 				if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
 			}
 			var backdate = obj.controller.view.checkin_effective_datepicker.value;
-			var auto_print = document.getElementById('checkin_auto');
+			var auto_print = document.getElementById('checkin_auto_print_slips');
 			if (auto_print) auto_print = auto_print.getAttribute('checked') == 'true';
 			JSAN.use('circ.util');
             var params = { 

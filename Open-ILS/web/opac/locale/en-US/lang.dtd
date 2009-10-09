@@ -1781,7 +1781,6 @@
 <!ENTITY staff.circ.checkin_overlay.sel_spine.accesskey "P">
 <!ENTITY staff.circ.checkin_overlay.save_columns.label "Save Columns">
 <!ENTITY staff.circ.checkin_overlay.background_text "Check In or Process Item">
-<!ENTITY staff.circ.checkin_overlay.background_text.hold_capture "Auto-Print Hold and Transit Slips">
 <!ENTITY staff.circ.checkin_overlay.effective_date.label "Effective Date:">
 <!ENTITY staff.circ.checkin_overlay.effective_date.accesskey "D">
 <!ENTITY staff.circ.checkin_overlay.actions.label "Actions for Selected Items">
@@ -1795,8 +1794,8 @@
 <!ENTITY staff.circ.checkin_overlay.suppress_holds_and_transits.accesskey "S">
 <!ENTITY staff.circ.checkin_overlay.amnesty_mode.label "Amnesty Mode / Forgive Fines">
 <!ENTITY staff.circ.checkin_overlay.amnesty_mode.accesskey "A">
-<!ENTITY staff.circ.checkin_overlay.checkin_auto.label "Auto-Print Hold and Transit Slips">
-<!ENTITY staff.circ.checkin_overlay.checkin_auto.accesskey "P">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_print_slips.label "Auto-Print Hold and Transit Slips">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto_print_slips.accesskey "P">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.label "Checkin Modifiers">
 <!ENTITY staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey "M">
 <!ENTITY staff.circ.renew_overlay.background_text "Renew Item">
