@@ -51,6 +51,7 @@
             query="{name: '*'}"
             defaultCellWidth='"auto"'
             fmClass='coust'
+            showPaginator='true'
             editOnEnter='true'>
         <thead>
             <tr>
