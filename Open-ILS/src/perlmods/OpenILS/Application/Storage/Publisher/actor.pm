@@ -551,11 +551,13 @@ sub patron_search {
 	my $ou_table = actor::org_unit->table;
 
 	my $u_select = "SELECT id as id FROM $u_table u WHERE $usr_where";
-	my $a_select = "SELECT usr as id FROM $a_table a WHERE $addr_where";
+	my $a_select = "SELECT u.id as id FROM $a_table a JOIN $u_table u ON (u.mailing_address = a.id OR u.billing_address = a.id) WHERE $addr_where";
+
 	my $clone_select = '';
-	$clone_select = "JOIN (SELECT cu.id as id FROM $a_table ca ".
-			   "JOIN $u_table cu ON (cu.mailing_address = ca.id OR cu.billing_address = ca.id) ".
-			   "WHERE $addr_where) AS clone ON (clone.id = users.id)" if ($addr_where);
+
+	#$clone_select = "JOIN (SELECT cu.id as id FROM $a_table ca ".
+	#		   "JOIN $u_table cu ON (cu.mailing_address = ca.id OR cu.billing_address = ca.id) ".
+	#		   "WHERE $addr_where) AS clone ON (clone.id = users.id)" if ($addr_where);
 
 	my $select = '';
 	if ($usr_where) {
