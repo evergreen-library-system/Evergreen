@@ -249,7 +249,7 @@ function handle_edit_bill_note() {
         if (mb_list.length == 0) return;
         var new_note = window.prompt(
             $("patronStrings").getString('staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt'),
-            $("patronStrings").getString('staff.patron.bill_details.handle_edit_bill_note.note_dialog.default_value'),
+            util.functional.map_list(g.bill_list_selection, function(o){return g.mb_list[o].note();}).join(", "),           
             $("patronStrings").getString('staff.patron.bill_details.handle_edit_bill_note.note_dialog.title')
         );
         if (new_note) {
@@ -274,7 +274,7 @@ function handle_edit_payment_note() {
         if (mp_list.length == 0) return;
         var new_note = window.prompt(
             $("patronStrings").getString('staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt'),
-            $("patronStrings").getString('staff.patron.bill_details.handle_edit_payment_note.note_dialog.default_value'),
+            util.functional.map_list(g.payment_list_selection, function(o){return g.mp_list[o].note();}).join(", "),           
             $("patronStrings").getString('staff.patron.bill_details.handle_edit_payment_note.note_dialog.title')
         );
         if (new_note) {
