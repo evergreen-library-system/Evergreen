@@ -135,7 +135,7 @@
         accesskey="&staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey;"
         type="menu" allowevents="false">
         <menupopup id="checkin_modifiers_popup">
-            <menuitem type="checkbox" id="do_not_alert_on_precat" oils_persist="checked" command="cmd_do_not_alert_on_precat" oncommand="alert('here too');"
+            <menuitem type="checkbox" id="do_not_alert_on_precat" oils_persist="checked" command="cmd_do_not_alert_on_precat"
                 label="&staff.circ.checkin_overlay.do_not_alert_on_precat.label;" accesskey="&staff.circ.checkin_overlay.do_not_alert_on_precat.accesskey;"/>
             <menuitem type="checkbox" id="suppress_holds_and_transits" oils_persist="checked" command="cmd_suppress_holds_and_transits"
                 label="&staff.circ.checkin_overlay.suppress_holds_and_transits.label;" accesskey="&staff.circ.checkin_overlay.suppress_holds_and_transits.accesskey;"/>
