@@ -492,6 +492,7 @@ function AcqLiTable() {
 
         acqLitSaveCopies.onClick = function() { self.saveCopyChanges(liId) };
         acqLitBatchUpdateCopies.onClick = function() { self.batchCopyUpdate() };
+        acqLitCopyCountInput.attr('value', '0');
 
         while(this.copyTbody.childNodes[0])
             this.copyTbody.removeChild(this.copyTbody.childNodes[0]);
@@ -572,11 +573,29 @@ function AcqLiTable() {
     };
 
     this._drawCopies = function(li) {
+        var self = this;
+
+        // this button sets the total number of copies for a given lineitem
         acqLitAddCopyCount.onClick = function() { 
             var count = acqLitCopyCountInput.attr('value');
-            for(var i = 0; i < count; i++)
+
+            // add new rows
+            while(self.copyCount() < count)
                 self.addCopy(li); 
+            
+            // delete rows if necessary
+            var diff = self.copyCount() - count;
+            if(diff > 0) {
+                var rows = dojo.query('tr', self.copyTbody).reverse().slice(0, diff);
+                if(confirm(dojo.string.substitute(localeStrings.DELETE_LI_COPIES_CONFIRM, [diff]))) {
+                    dojo.forEach(rows, function(row) {self.deleteCopy(row); });
+                } else {
+                    acqLitCopyCountInput.attr('value', self.copyCount()+'');
+                }
+            }
         }
+
+
         if(li.lineitem_details().length > 0) {
             dojo.forEach(li.lineitem_details(),
                 function(copy) {
@@ -587,6 +606,15 @@ function AcqLiTable() {
             self.addCopy(li);
         }
     };
+
+    this.copyCount = function() {
+        var count = 0;
+        for(var id in this.copyCache) {
+            if(!this.copyCache[id].isdeleted())
+                count++;
+        }
+        return count;
+    }
 
     this.virtCopyId = -1;
     this.addCopy = function(li, copy) {
@@ -604,6 +632,8 @@ function AcqLiTable() {
         this.copyCache[copy.id()] = copy;
         row.setAttribute('copy_id', copy.id());
         self.copyWidgetCache[copy.id()] = {};
+
+        acqLitCopyCountInput.attr('value', self.copyCount()+'');
 
         dojo.forEach(liDetailFields,
             function(field) {

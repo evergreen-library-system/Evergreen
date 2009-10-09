@@ -170,9 +170,9 @@
                     <td style='text-align:left;'>
                         <div dojoType='dijit.form.Button' id='acq-lit-copies-back-button'>&#x2196; Return</div>
                         <span style='margin-left:10px;padding-left:10px;border-left:2px solid #aaa;'>
-                            Add items:
+                            Item Count: 
                             <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
-                                constraints="{min:1,max:1000,places:0}" style='width:40px' value='1'></input> 
+                                constraints="{min:0,max:1000,places:0}" style='width:40px' value='0'></input> 
                             <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
                         </span>
                     </td>
