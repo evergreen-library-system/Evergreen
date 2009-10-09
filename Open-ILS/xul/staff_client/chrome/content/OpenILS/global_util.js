@@ -65,39 +65,77 @@
                     if (value) nodes[i].setAttribute( attribute_list[j], value );
                 }
                 if ( (nodes[i].nodeName == 'checkbox' || nodes[i].nodeName == 'menuitem') && attribute_list.indexOf('checked') > -1) {
+                    var cmd = nodes[i].getAttribute('command');
+                    var cmd_el = document.getElementById(cmd);
                     if (nodes[i].disabled == false && nodes[i].hidden == false) {
                         var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
                         if (no_poke && no_poke == 'true') {
                             // Timing issue for some checkboxes; don't poke them with an event
+                            dump('\tpersist_helper: not poking element with key = ' + key + '\n');
                         } else {
-                            var evt = document.createEvent("Events");
-                            evt.initEvent( 'command', true, true );
-                            nodes[i].dispatchEvent(evt);
+                            if (cmd_el) {
+                                dump('\tpersist_helper: poking @command element for element with key = ' + key + '\n');
+                                var evt = document.createEvent("Events");
+                                evt.initEvent( 'command', true, true );
+                                cmd_el.dispatchEvent(evt);
+                            } else {
+                                dump('\tpersist_helper: poking element with key = ' + key + '\n');
+                                var evt = document.createEvent("Events");
+                                evt.initEvent( 'command', true, true );
+                                nodes[i].dispatchEvent(evt);
+                            }
                         }
                     }
-                    nodes[i].addEventListener(
-                        'command',
-                        function(bk) {
-                            return function(ev) {
-                                try {
-                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                    var key = bk + 'checked';
-                                    var value;
-                                    if (ev.target.nodeName == 'checkbox') {
-                                        value = ev.target.checked;
-                                    } else {
-                                        value = ev.target.getAttribute('checked'); // menuitem with type="checkbox"
+                    if (cmd_el) {
+                        cmd_el.addEventListener(
+                            'command',
+                            function (bk,explicit_original_node) {
+                                return function(ev) {
+                                    try {
+                                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                        if (ev.explicitOriginalTarget != explicit_original_node) return;
+                                        var key = bk + 'checked';
+                                        var value;
+                                        if (ev.explicitOriginalTarget.nodeName == 'checkbox') {
+                                            value = ev.explicitOriginalTarget.checked;
+                                        } else {
+                                            value = ev.explicitOriginalTarget.getAttribute('checked'); // menuitem with type="checkbox"
+                                        }
+                                        ev.explicitOriginalTarget.setAttribute( 'checked', value );
+                                        prefs.setCharPref( key, value );
+                                        dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem via <command>\n');
+                                    } catch(E) {
+                                        alert('Error in persist_helper(), checkbox/menuitem -> command, command event listener: ' + E);
                                     }
-                                    ev.target.setAttribute( 'checked', value );
-                                    prefs.setCharPref( key, value );
-                                    dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem\n');
-                                } catch(E) {
-                                    alert('Error in persist_helper(), checkbox/menuitem command event listener: ' + E);
-                                }
-                            };
-                        }(base_key), 
-                        false
-                    );
+                                };
+                            }( base_key, nodes[i] ),
+                            false
+                        );
+                    } else {
+                        nodes[i].addEventListener(
+                            'command',
+                            function(bk) {
+                                return function(ev) {
+                                    try {
+                                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                        var key = bk + 'checked';
+                                        var value;
+                                        if (ev.target.nodeName == 'checkbox') {
+                                            value = ev.target.checked;
+                                        } else {
+                                            value = ev.target.getAttribute('checked'); // menuitem with type="checkbox"
+                                        }
+                                        ev.target.setAttribute( 'checked', value );
+                                        prefs.setCharPref( key, value );
+                                        dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem\n');
+                                    } catch(E) {
+                                        alert('Error in persist_helper(), checkbox/menuitem command event listener: ' + E);
+                                    }
+                                };
+                            }(base_key), 
+                            false
+                        );
+                    }
                 }
                 // TODO: Need to add event listeners for window resizing, splitter repositioning, grippy state, etc.
             }
