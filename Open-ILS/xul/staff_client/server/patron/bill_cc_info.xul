@@ -43,7 +43,7 @@
 			g.error.sdump('D_TRACE','my_init() for patron_display.xul');
 			g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
 			g.OpenILS.data.init({'via':'stash'});
-			g.payment_blob = { 'cancelled' : true };
+			g.payment_blob = { 'cc_args' : {}, 'cancelled' : true };
 			g.OpenILS.data.temp = js2JSON( g.payment_blob );
 			g.OpenILS.data.stash('temp');
 
@@ -69,7 +69,7 @@
 			<rows>
 				<row>
 					<label value="&staff.patron.bill_cc_info.type.label;"/>
-					<menulist id="cc_type" oncommand="g.payment_blob.cc_type = this.value;">
+					<menulist id="cc_type" oncommand="g.payment_blob.cc_args.type = this.value;">
 						<menupopup>
 							<menuitem label="&staff.patron.bill_cc_info.visa.label;" value="Visa"/>
 							<menuitem label="&staff.patron.bill_cc_info.mastercard.label;" value="Mastercard"/>
@@ -81,19 +81,19 @@
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.cc_number.value;"/>
-					<textbox id="cc_number" onchange="g.payment_blob.cc_number = event.target.value" context="clipboard"/>
+					<textbox id="cc_number" onchange="g.payment_blob.cc_args.number = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.month_expire.value;"/>
-					<textbox id="expire_month" onchange="g.payment_blob.expire_month = event.target.value" context="clipboard"/>
+					<textbox id="expire_month" onchange="g.payment_blob.cc_args.expire_month = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.year_expire.value;"/>
-					<textbox id="expire_year" onchange="g.payment_blob.expire_year = event.target.value" context="clipboard"/>
+					<textbox id="expire_year" onchange="g.payment_blob.cc_args.expire_year = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.approval_code.value;"/>
-					<textbox id="approval_code" onchange="g.payment_blob.approval_code = event.target.value" context="clipboard"/>
+					<textbox id="approval_code" onchange="g.payment_blob.cc_args.approval_code = event.target.value" context="clipboard"/>
 				</row>
 				<row>
 					<label value="&staff.patron.bill_cc_info.note.value;"/>
