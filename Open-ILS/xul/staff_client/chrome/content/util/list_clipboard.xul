@@ -19,8 +19,8 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="util_list_clipboard_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	width="300" height="300" persist="width height"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+	width="300" height="300" oils_persist="width height"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

@@ -22,7 +22,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_copy_summary_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -186,7 +186,7 @@
 
 	<groupbox id="groupbox" flex="1" style="overflow: none; min-height: 80;">
 		<caption label="&staff.cat.copy_summary.label;" id="caption"/>
-		<deck id="item_deck" persist="selectedIndex">
+		<deck id="item_deck" oils_persist="selectedIndex">
 			<tree id="item_summary_list" enableColumnDrag="true" flex="1"/>
 			<grid>
 				<columns>
