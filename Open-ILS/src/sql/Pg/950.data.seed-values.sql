@@ -767,6 +767,8 @@ INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (9, 'loc', 'item_type', oils_i18n_gettext(9, 'Item Type', 'cza', 'label'), 1001, 1);
 
+UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'loc';
+
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (10, 'oclc', 'tcn', oils_i18n_gettext(10, 'Title Control Number', 'cza', 'label'), 12, 1);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
