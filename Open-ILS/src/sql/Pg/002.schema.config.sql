@@ -51,7 +51,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0030'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0031'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -561,6 +561,39 @@ CREATE TABLE config.org_unit_setting_type (
     ( ( datatype =  'link' AND fm_class IS NOT NULL ) OR
       ( datatype <> 'link' AND fm_class IS NULL ) )
 );
+
+
+-- Some handy functions, based on existing ones, to provide optional ingest normalization
+
+CREATE OR REPLACE FUNCTION public.left_trunc( TEXT, INT ) RETURNS TEXT AS $func$
+        SELECT SUBSTRING($1,$2);
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.right_trunc( TEXT, INT ) RETURNS TEXT AS $func$
+        SELECT SUBSTRING($1,1,$2);
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.split_date_range( TEXT ) RETURNS TEXT AS $func$
+        SELECT REGEXP_REPLACE( $1, E'(\\d{4})-(\\d{4})', E'\\1 \\2', 'g' );
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+-- And ... a table in which to register them
+
+CREATE TABLE config.index_normalizer (
+        id              SERIAL  PRIMARY KEY,
+        name            TEXT    UNIQUE NOT NULL,
+        func            TEXT    NOT NULL,
+        param_count     INT     NOT NULL DEFAULT 0
+);
+
+CREATE TABLE config.metabib_field_index_norm_map (
+        id      SERIAL  PRIMARY KEY,
+        field   INT     NOT NULL REFERENCES config.metabib_field (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+        norm    INT     NOT NULL REFERENCES config.index_normalizer (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+        params  TEXT,
+        pos     INT     NOT NULL DEFAULT 0
+);
+
 
 COMMIT;
 
