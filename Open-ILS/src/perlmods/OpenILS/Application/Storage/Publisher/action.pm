@@ -775,7 +775,8 @@ sub generate_fines {
 
 				$penalty->request(
 				    'open-ils.penalty.patron_penalty.calculate',
-				    { patron	=> $c->usr->to_fieldmapper,
+				    { patronid	=> ''.$c->usr,
+				    context_org	=> ''.$c->circ_lib,
 				    update	=> 1,
 				    background	=> 1,
 				    }
