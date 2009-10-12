@@ -819,7 +819,7 @@ ALTER TABLE money.billing ADD CONSTRAINT btype_fkey FOREIGN KEY (btype) REFERENC
 
 
 CREATE TABLE money.materialized_billable_xact_summary AS
-	SELECT * FROM money.billable_xact_summary WHERE 1=0;
+	SELECT * FROM money.billable_xact_summary;
 
 CREATE INDEX money_mat_summary_id_idx ON money.materialized_billable_xact_summary (id);
 CREATE INDEX money_mat_summary_usr_idx ON money.materialized_billable_xact_summary (usr);
