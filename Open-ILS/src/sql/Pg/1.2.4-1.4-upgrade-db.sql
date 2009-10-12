@@ -15,7 +15,6 @@
  */
 
 
-
 ALTER TABLE auditor.asset_copy_history ALTER COLUMN price DROP NOT NULL; -- Price is nullable in 1.4+, auditor triggers complain when it's not informed of this
 
 -- Get rid of embedded slashes from old ingest
@@ -507,7 +506,6 @@ ALTER TABLE money.credit_card_payment ALTER expire_year DROP NOT NULL;
 ALTER TABLE money.credit_card_payment ALTER approval_code DROP NOT NULL;
 
 
-ALTER TABLE asset.copy_location ADD COLUMN hold_verify BOOL NOT NULL DEFAULT FALSE;
 ALTER TABLE asset.copy_location ADD CONSTRAINT acl_name_once_per_lib UNIQUE (name, owning_lib);
 ALTER TABLE asset.copy ALTER price DROP NOT NULL;
 ALTER TABLE asset.copy ALTER price DROP DEFAULT;
