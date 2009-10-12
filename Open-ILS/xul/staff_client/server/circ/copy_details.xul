@@ -20,8 +20,8 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="circ_copy_details_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	width="800" height="600" persist="width height"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+	width="800" height="600" oils_persist="width height"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

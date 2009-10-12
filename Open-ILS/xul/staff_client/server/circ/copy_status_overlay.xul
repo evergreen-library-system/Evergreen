@@ -169,8 +169,8 @@
     <hbox id="list_actions"/>
 
 	<button id="copy_status_print" label="&staff.circ.copy_status_overlay.copy_status_print.label;" command="cmd_copy_status_print" accesskey="&staff.circ.copy_status_overlay.copy_status_print.accesskey;"/>
-    <checkbox id="trim_list" label="&staff.circ.copy_status_overlay.trim_list.label;" checked="true" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" />
-	<checkbox id="strict_barcode" label="&staff.circ.copy_status_overlay.strict_barcode.label;" checked="false" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
+    <checkbox id="trim_list" label="&staff.circ.copy_status_overlay.trim_list.label;" checked="true" oils_persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" />
+	<checkbox id="strict_barcode" label="&staff.circ.copy_status_overlay.strict_barcode.label;" checked="false" oils_persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
 	<spacer flex="1"/>
 </hbox>
 

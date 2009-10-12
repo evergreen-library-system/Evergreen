@@ -19,8 +19,8 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_copy_editor_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	width="800" height="580" persist="width height"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+	width="800" height="580" oils_persist="width height"
 	title="&staff.cat.copy_editor.window.label;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

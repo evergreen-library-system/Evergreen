@@ -19,8 +19,8 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_volume_editor_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	title="&staff.cat.volume_editor.title;" height="400" width="300" persist="height,width"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+	title="&staff.cat.volume_editor.title;" height="400" width="300" oils_persist="height width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

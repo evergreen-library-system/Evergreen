@@ -63,9 +63,9 @@
 		accesskey="&staff.circ.checkout_overlay.export.accesskey;"/>
 	<button id="clip_button" disabled="true" command="sel_clip" label="&staff.circ.checkout_overlay.sel_clip.label;" />
 	<button id="save_col_btn" command="save_columns" label="&staff.circ.checkout_overlay.save_columns.label;" />
-	<checkbox id="strict_barcode" label="&staff.circ.checkout_overlay.strict_barcode.label;" checked="false" persist="checked"/> 
+	<checkbox id="strict_barcode" label="&staff.circ.checkout_overlay.strict_barcode.label;" checked="false" oils_persist="checked"/> 
 	<spacer id="pcii3s" flex="1"/>
-	<checkbox id="checkout_auto" persist="checked"
+	<checkbox id="checkout_auto" oils_persist="checked"
 		label="&staff.patron_display.checkout.auto_print.label;" 
 		accesskey_old="&staff.patron_display.checkout.auto_print.accesskey;"/> 
 	<button id="checkout_done" 

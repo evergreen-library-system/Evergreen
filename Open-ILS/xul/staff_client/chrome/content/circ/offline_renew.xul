@@ -16,7 +16,7 @@
 <?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_offline.xul"?>
 
 <window id="offline_checkout_win" sizemode="maximized"
-	onload="try { my_init(); } catch(E) { alert(E); }"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -50,7 +50,7 @@
 				<hbox>
 					<spacer flex="1"/>
 					<description>&common.check_barcode.description;</description>
-					<checkbox id="strict_p_barcode" persist="checked"/>
+					<checkbox id="strict_p_barcode" oils_persist="checked"/>
 				</hbox>
 				<hbox>
 					<label value="&common.step3.label;" style="font-weight: bold" accesskey="&common.step3.accesskey;" control="duedate"/>
@@ -83,7 +83,7 @@
 				<hbox>
 					<spacer flex="1"/>
 					<description>&common.check_barcode.description;</description>
-					<checkbox id="strict_i_barcode" persist="checked"/>
+					<checkbox id="strict_i_barcode" oils_persist="checked"/>
 				</hbox>
 				<hbox>
 					<label value="&common.step5.label;" style="font-weight: bold"/>
@@ -96,7 +96,7 @@
 				<hbox>
 					<spacer flex="1"/>
 					<description>&staff.circ.offline.print.description;</description>
-					<checkbox id="print_receipt" persist="checked"/>
+					<checkbox id="print_receipt" oils_persist="checked"/>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
