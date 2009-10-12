@@ -31,8 +31,8 @@ sub patron_penalty {
 	my( $self, $conn, $args ) = @_;
 	$conn->respond_complete(1) if $$args{background};
     my $e = new_editor(xact => 1);
-    OpenILS::Utils::Penalty->calculate_penalties($e, $args->{patronid});
-    my $p = OpenILS::Utils::Penalty->retrieve_penalties($e, $args->{patronid});
+    OpenILS::Utils::Penalty->calculate_penalties($e, $args->{patronid}, $args->{context_org});
+    my $p = OpenILS::Utils::Penalty->retrieve_penalties($e, $args->{patronid}, $args->{context_org});
     $e->commit;
     return $p
 }
