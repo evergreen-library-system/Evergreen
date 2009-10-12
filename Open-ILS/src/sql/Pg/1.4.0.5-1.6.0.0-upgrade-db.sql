@@ -7569,3 +7569,5 @@ ALTER TABLE config.circ_matrix_matchpoint ALTER COLUMN max_fine_rule SET NOT NUL
 
 -- We're updating the IDL, so flush cached mods slim records to avoid field mismatches
 UPDATE metabib.metarecord SET mods = NULL;
+UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'loc';
+
