@@ -239,7 +239,7 @@
 							<tr>
 								<th>&conify.org_unit.editor_pane.main_email;</th>
 								<td>
-									<span id="editor_pane_email" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_email" regExp="^\w+\@\w+(?:\.\w+)+$">
+									<span id="editor_pane_email" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_email" regExp="^\w+(?:\.\w+)*\@\w+(?:\.\w+)+$">
 										<script type="dojo/connect" event="onChange">
 											if (current_ou) ou_list_store.setValue( current_ou, "email", this.getValue() );
 										</script>
