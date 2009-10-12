@@ -810,10 +810,10 @@ CREATE TABLE container.user_bucket_item_note (
 
 -----------------------------
 
-INSERT INTO config.billing_type (name,owner) SELECT DISTINCT billing_type, 1 FROM money.billing WHERE billing_type NOT IN (SELECT name FROM config.billing_type);
+INSERT INTO config.billing_type (name,owner) SELECT DISTINCT billing_type, 1 FROM money.billing WHERE LOWER(billing_type) NOT IN (SELECT LOWER(name) FROM config.billing_type);
 ALTER TABLE money.billing ADD COLUMN btype INT;
 
-UPDATE money.billing SET btype = config.billing_type.id FROM config.billing_type WHERE config.billing_type.name = money.billing.billing_type;
+UPDATE money.billing SET btype = config.billing_type.id FROM config.billing_type WHERE LOWER(config.billing_type.name) = LOWER(money.billing.billing_type);
 ALTER TABLE money.billing ALTER COLUMN btype SET NOT NULL;
 ALTER TABLE money.billing ADD CONSTRAINT btype_fkey FOREIGN KEY (btype) REFERENCES config.billing_type (id) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
