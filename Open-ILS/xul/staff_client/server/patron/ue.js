@@ -158,6 +158,9 @@ function uEditBuild() {
 
 	patron = fetchFleshedUser(usr);
 	if(!patron) patron = uEditNewPatron(); 
+    
+    // jscalendar doesn't like the date format.  trim the time data
+    if(patron.dob()) patron.dob( patron.dob().replace(/T.*/, '') );
 	
 	uEditDraw( 
 		uEditFetchIdentTypes(),
