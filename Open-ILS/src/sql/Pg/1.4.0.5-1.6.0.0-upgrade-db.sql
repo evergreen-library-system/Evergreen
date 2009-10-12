@@ -941,7 +941,7 @@ BEGIN
 		  SET	last_billing_ts = prev_billing.billing_ts,
 			last_billing_note = prev_billing.note,
 			last_billing_type = prev_billing.billing_type
-		  WHERE	id = NEW.xact;
+		  WHERE	id = OLD.xact;
 	END IF;
 
 	IF NOT OLD.voided THEN
