@@ -1,3 +1,6 @@
+-- ARG! need to rid ourselves of the broken table definition ... this mechanism is not ideal, sorry.
+DROP TABLE config.index_normalizer CASCADE;
+
 BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0032'); -- miker
@@ -24,6 +27,7 @@ $func$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE TABLE config.index_normalizer (
 	id		SERIAL	PRIMARY KEY,
+	name		TEXT	UNIQUE NOT NULL,
 	name		TEXT	UNIQUE NOT NULL,
 	func		TEXT	NOT NULL,
 	param_count	INT	NOT NULL DEFAULT 0
