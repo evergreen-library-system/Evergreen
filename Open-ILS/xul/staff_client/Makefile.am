@@ -65,6 +65,9 @@ stamp:
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.js' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.xml' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
 
+bell:
+	@perl -e 'print "Ringing bell..." . chr(7) . "\n";'
+
 bundle:
 	@rm -f build/build.tar
 	@tar cf build.tar build/
