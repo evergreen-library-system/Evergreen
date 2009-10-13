@@ -94,7 +94,7 @@
                         var list = dojo.query( 'subfield', item );
                         for (var i =0; i < list.length; i++) {
                             total += dojox.data.dom.textContent(list[i]) + ' ';
-                            var current = '<a href="rresult.xml?rt=subject&t=' + total;
+                            var current = '<a href="rresult.xml?rt=subject&tp=subject&t=' + total;
                             for (var p in other_params) {
                                 if (cgi.param(other_params[p]))
                                     current += '&' + other_params[p] + '=' + cgi.param(other_params[p]);
