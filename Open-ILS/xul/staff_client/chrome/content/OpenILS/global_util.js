@@ -56,7 +56,8 @@
             var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
             var nodes = document.getElementsByAttribute('oils_persist','*');
             for (var i = 0; i < nodes.length; i++) {
-                var base_key = 'oils_persist_' + String(location.hostname + location.pathname + '_' + nodes[i].getAttribute('id')).replace('/','_','g') + '_';
+                var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
+                var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + nodes[i].getAttribute('id')).replace('/','_','g') + '_';
                 var attribute_list = nodes[i].getAttribute('oils_persist').split(' ');
                 for (var j = 0; j < attribute_list.length; j++) {
                     var key = base_key + attribute_list[j];
