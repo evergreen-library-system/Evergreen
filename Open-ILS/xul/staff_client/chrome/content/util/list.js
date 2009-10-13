@@ -875,6 +875,7 @@ util.list.prototype = {
 
 			for (var i = 0; i < this.columns.length; i++) {
 				var treecell = document.createElement('treecell');
+                if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
 				var label = '';
 				if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
 					treecell.setAttribute('label',label);
@@ -898,7 +899,7 @@ util.list.prototype = {
 					label = this.map_row_to_column(params.row,this.columns[i]);
 	
 				}
-				treecell.setAttribute('label',label ? label : '');
+				if (this.columns[i].type == 'checkbox') { treecell.setAttribute('value',label); } else { treecell.setAttribute('label',label ? label : ''); }
 				treerow.appendChild( treecell );
 				s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
 			}
@@ -917,7 +918,12 @@ util.list.prototype = {
 			}
 			for (var i = 0; i < labels.length; i++) {
 				var treecell = document.createElement('treecell');
-				treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
+                if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
+                if ( this.columns[i].type == 'checkbox') {
+                    treecell.setAttribute('value', labels[i]);
+                } else {
+				    treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
+                }
 				treerow.appendChild( treecell );
 				s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
 			}

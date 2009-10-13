@@ -6,6 +6,11 @@
 messagecatalog { -moz-binding: url('/xul/server/main/bindings.xml#messagecatalog'); }
 .shrinkable_groupbox { font-weight: bold; -moz-binding: url('/xul/server/main/bindings.xml#caption'); }
 
+treechildren::-moz-tree-checkbox(checked) {
+    /* css for checked cells */
+    list-style-image: url("chrome://global/skin/checkbox/cbox-check.gif");
+}
+
 /*
 * { font-size-adjust: .5; }
 */
