@@ -111,6 +111,12 @@ util.list.prototype = {
 			this.node.appendChild(treechildren);
 			this.treechildren = treechildren;
 		}
+        if (typeof params.on_sort == 'function') {
+            this.on_sort = params.on_sort;
+        }
+        if (typeof params.on_checkbox_toggle == 'function') {
+            this.on_checkbox_toggle = params.on_checkbox_toggle;
+        }
         this.node.addEventListener(
             'select',
             function(ev) {
@@ -1318,6 +1324,7 @@ util.list.prototype = {
 						for (var i = 0; i < rows.length; i++) {
 							obj.treechildren.appendChild( rows[i].node );
 						}
+                        if (typeof obj.on_sort == 'function') obj.on_sort();
 					} catch(E) {
 						obj.error.standard_unexpected_error_alert('sorting',E); 
 					}
@@ -1345,6 +1352,7 @@ util.list.prototype = {
                 var treecell = treerow.childNodes[ col_pos ];
                 treecell.setAttribute('value',(toggle == 'on'));
             }
+            if (typeof obj.on_checkbox_toggle == 'function') obj.on_checkbox_toggle(toggle);
         } catch(E) {
             obj.error.standard_unexpected_error_alert('pre toggle', E);
         }
