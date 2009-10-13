@@ -11,6 +11,14 @@ treechildren::-moz-tree-checkbox(checked) {
     list-style-image: url("chrome://global/skin/checkbox/cbox-check.gif");
 }
 
+treechildren::-moz-tree-row(selected) {
+    background-color: lightblue;
+}
+
+treechildren::-moz-tree-cell-text(selected,focus) {
+    color: black;
+}
+
 /*
 * { font-size-adjust: .5; }
 */
