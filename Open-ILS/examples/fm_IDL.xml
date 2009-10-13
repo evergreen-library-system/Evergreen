@@ -471,6 +471,46 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
+    <class id="cin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::index_normalizer" oils_persist:tablename="config.index_normalizer" reporter:label="Indexing Normalizer" oils_persist:field_safe="true">
+        <fields oils_persist:primary="id">
+            <field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
+            <field reporter:label="Description" name="description"  reporter:datatype="text" oils_persist:i18n="true"/>
+            <field reporter:label="Function" name="func"  reporter:datatype="text"/>
+            <field reporter:label="Required Parameter Count" name="param_count"  reporter:datatype="int"/>
+        </fields>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+                <delete permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
+
+	<class id="cmfinm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_field_index_norm_map" oils_persist:tablename="config.metabib_field_index_norm_map" reporter:label="Metabib Field to Indexing Normalizer Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.uri_call_number_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Metabib Field" name="field" reporter:datatype="link"/>
+			<field reporter:label="Normalizer" name="norm" reporter:datatype="link"/>
+			<field reporter:label="Parameters (JSON Array)" name="params" reporter:datatype="text"/>
+			<field reporter:label="Order of Application" name="pos" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+			<link field="norm" reltype="has_a" key="id" map="" class="cin"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+                <delete permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
     <class id="czs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_source" oils_persist:tablename="config.z3950_source" reporter:label="Z39.50 Source">
         <fields oils_persist:primary="name">
             <field reporter:label="Z39.50 Source" name="name" reporter:datatype="id"/>
