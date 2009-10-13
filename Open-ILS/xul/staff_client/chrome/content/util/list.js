@@ -63,28 +63,45 @@ util.list.prototype = {
 					treecol.setAttribute(j,this.columns[i][j]);
 				}
 				treecols.appendChild(treecol);
-				treecol.addEventListener(
-					'click', 
-					function(ev) {
-						function do_it() {
-							var sortDir = ev.target.getAttribute('sortDir') || 'desc';
-							if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
-							ev.target.setAttribute('sortDir',sortDir);
-							obj._sort_tree(ev.target,sortDir);
-						}
+                if (this.columns[i].type == 'checkbox') {
+                    treecol.addEventListener(
+                        'click',
+                        function(ev) {
+                            setTimeout(
+                                function() {
+                                    var toggle = ev.target.getAttribute('toggleAll') || 'on';
+                                    if (toggle == 'off') toggle = 'on'; else toggle = 'off';
+                                    ev.target.setAttribute('toggleAll',toggle);
+                                    obj._toggle_checkbox_column(ev.target,toggle);
+                                }, 0
+                            );
+                        },
+                        false
+                    );
+                } else {
+                    treecol.addEventListener(
+                        'click', 
+                        function(ev) {
+                            function do_it() {
+                                var sortDir = ev.target.getAttribute('sortDir') || 'desc';
+                                if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
+                                ev.target.setAttribute('sortDir',sortDir);
+                                obj._sort_tree(ev.target,sortDir);
+                            }
 
-						if (obj.row_count.total != obj.row_count.fleshed && (obj.row_count.total - obj.row_count.fleshed) > 50) {
-							var r = window.confirm(document.getElementById('offlineStrings').getFormattedString('list.row_fetch_warning',[obj.row_count.fleshed,obj.row_count.total]));
+                            if (obj.row_count.total != obj.row_count.fleshed && (obj.row_count.total - obj.row_count.fleshed) > 50) {
+                                var r = window.confirm(document.getElementById('offlineStrings').getFormattedString('list.row_fetch_warning',[obj.row_count.fleshed,obj.row_count.total]));
 
-							if (r) {
-								setTimeout( do_it, 0 );
-							}
-						} else {
-								setTimeout( do_it, 0 );
-						}
-					},
-					false
-				);
+                                if (r) {
+                                    setTimeout( do_it, 0 );
+                                }
+                            } else {
+                                    setTimeout( do_it, 0 );
+                            }
+                        },
+                        false
+                    );
+                }
 				var splitter = document.createElement('splitter');
 				splitter.setAttribute('class','tree-splitter');
 				treecols.appendChild(splitter);
@@ -1310,6 +1327,28 @@ util.list.prototype = {
 			obj.error.standard_unexpected_error_alert('pre sorting', E);
 		}
 	},
+
+    '_toggle_checkbox_column' : function(col,toggle) {
+        var obj = this;
+        try {
+            if (obj.node.getAttribute('no_toggle')) {
+                return;
+            }
+            var col_pos;
+            for (var i = 0; i < obj.columns.length; i++) { 
+                if (obj.columns[i].id == col.id) col_pos = function(a){return a;}(i); 
+            }
+            var treeitems = obj.treechildren.childNodes;
+            for (var i = 0; i < treeitems.length; i++) {
+                var treeitem = treeitems[i];
+                var treerow = treeitem.firstChild;
+                var treecell = treerow.childNodes[ col_pos ];
+                treecell.setAttribute('value',(toggle == 'on'));
+            }
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('pre toggle', E);
+        }
+    },
 
 	'render_list_actions' : function(params) {
 		var obj = this;
