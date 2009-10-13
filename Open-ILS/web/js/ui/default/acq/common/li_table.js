@@ -183,6 +183,11 @@ function AcqLiTable() {
         dojo.query('[name=notes_count]', row)[0].innerHTML = li.lineitem_notes().length;
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
+        if(li.purchase_order() && !this.isPO) {
+            openils.Util.show(nodeByName('po', row), 'inline');
+            nodeByName('po_link', row).setAttribute('href', oilsBasePath + '/acq/po/view/' + li.purchase_order());
+        }
+
         var countNode = nodeByName('count', row);
         countNode.innerHTML = li.item_count() || 0;
         countNode.id = 'acq-lit-copy-count-label-' + li.id();

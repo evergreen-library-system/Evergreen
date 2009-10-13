@@ -64,7 +64,10 @@
                             <tbody>
                                 <tr>
                                     <td rowspan='2' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></img></td>
-                                    <td style='width:70%;font-weight:bold;'><a attr='title' href='javascript:void(0);'></a></td>
+                                    <td style='width:70%;font-weight:bold;'>
+                                        <a attr='title' href='javascript:void(0);'></a>
+                                        <span name='po' class='hidden'>(<a name='po_link' href='javascript:void(0);'>PO</a>)</span>
+                                    </td>
                                     <td rowspan='2' style='text-align:right'>
                                     </td>
                                 </tr>
