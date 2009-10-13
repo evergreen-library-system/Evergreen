@@ -124,7 +124,10 @@ patron.summary.prototype = {
                                             if (show_billing_tab_on_bills && Number(robj.balance_owed()) > 0) {
                                                 if (xulG) {
                                                     if (xulG.display_window) {
-                                                        xulG.display_window.util.widgets.dispatch('command','cmd_patron_bills');
+                                                        if (! obj.show_billing_tab_on_bills_done_once ) {
+                                                            xulG.display_window.util.widgets.dispatch('command','cmd_patron_bills');
+                                                            obj.show_billing_tab_on_bills_done_once = 1;
+                                                        }
                                                     }
                                                 }
                                             }
