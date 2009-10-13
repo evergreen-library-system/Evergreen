@@ -201,7 +201,7 @@ patron.bills.prototype = {
 								function() { 
 									try {
                                         xulG.display_window.g.patron.right_deck.reset_iframe( 
-											urls.XUL_PATRON_BILL_HISTORY,
+											urls.XUL_PATRON_BILL_ALTERNATE_VIEW,
                                             {},
 											{
 												'current' : 1,
