@@ -8,6 +8,8 @@ INSERT INTO config.upgrade_log (version) VALUES ('0030'); -- dbs
 INSERT INTO config.metabib_field (field_class, name, format, xpath ) VALUES
     ( 'subject', 'complete', 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
 
+CREATE INDEX metabib_subject_field_entry_source_idx ON metabib.subject_field_entry (source);
+
 INSERT INTO metabib.subject_field_entry (source, field, value)
     SELECT source, (
             SELECT id 
@@ -26,7 +28,6 @@ INSERT INTO metabib.subject_field_entry (source, field, value)
         SELECT source
         FROM metabib.subject_field_entry
         GROUP BY source
-    ) AS groupee
-    ORDER BY source;
+    ) AS groupee;
 
 COMMIT;
