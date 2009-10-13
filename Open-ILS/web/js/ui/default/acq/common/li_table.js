@@ -506,7 +506,6 @@ function AcqLiTable() {
 
         this._fetchDistribFormulas(
             function() {
-                self._addDistribFormulaRow();
                 openils.acq.Lineitem.fetchAttrDefs(
                     function() { 
                         self._fetchLineitem(liId, function(li){self._drawCopies(li);}); 
@@ -634,6 +633,7 @@ function AcqLiTable() {
                         self.distribFormulaStore = 
                             new dojo.data.ItemFileReadStore(
                                 {data:acqdf.toStoreData(self.distribForms)});
+                        self._addDistribFormulaRow();
                         onload();
                     }
                 }
