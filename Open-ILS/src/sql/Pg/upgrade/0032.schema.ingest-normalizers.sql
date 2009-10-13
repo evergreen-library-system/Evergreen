@@ -28,7 +28,7 @@ $func$ LANGUAGE SQL STRICT IMMUTABLE;
 CREATE TABLE config.index_normalizer (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	UNIQUE NOT NULL,
-	name		TEXT	UNIQUE NOT NULL,
+	description	TEXT	UNIQUE NOT NULL,
 	func		TEXT	NOT NULL,
 	param_count	INT	NOT NULL DEFAULT 0
 );
