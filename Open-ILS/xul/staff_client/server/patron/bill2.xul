@@ -59,6 +59,119 @@
             <hbox>
                 <grid>
                     <columns>
+                        <column/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row><label value="Total Owed:" class="big_emphasis1" /><label id="total_owed2" class="big_emphasis1"/></row>
+                        <row><label value="Total Checked:" class="big_emphasis1" /><label id="checked_owed2" class="big_emphasis1"/></row>
+                    </rows>
+                </grid>
+                <spacer flex="1"/>
+                <groupbox>
+                    <caption label="Pay Bill"/>
+                    <grid>
+                        <columns>
+                            <column/>
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <label value="Payment Type:" class="emphasis1" accesskey="T" control="payment_type"/>
+                                <menulist id="payment_type">
+                                    <menupopup id="payment_type_menupopup">
+                                        <menuitem id="payment_type_menuitem1" label="&staff.patron.bills_overlay.cash.label;" value="cash_payment"/>
+                                        <menuitem id="payment_type_menuitem2" label="&staff.patron.bills_overlay.check.label;" value="check_payment"/>
+                                        <menuitem id="payment_type_menuitem3" label="&staff.patron.bills_overlay.credit_card.label;" value="credit_card_payment"/>
+                                        <menuitem id="payment_type_menuitem4" label="Patron Credit" value="credit_payment" />
+                                        <menuitem id="payment_type_menuitem5" label="&staff.patron.bills_overlay.word.label;" value="work_payment"/>
+                                        <menuitem id="payment_type_menuitem6" label="&staff.patron.bills_overlay.forgive.label;" value="forgive_payment"/>
+                                        <menuitem id="payment_type_menuitem7" label="&staff.patron.bills_overlay.goods.label;" value="goods_payment"/>
+                                    </menupopup>
+                                </menulist>
+                            </row>
+                            <row>
+                                <label value="Payment Received:" class="emphasis1" />
+                                <hbox><textbox id="payment" size="6"/></hbox>
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox>
+		                <checkbox id="annotate_payment" label="&staff.patron.bills_overlay.annotate_payment.label;" accesskey="n" oils_persist="checked" checked="false" oncommand="default_focus();"/>
+                        <button label="See Distribution" accesskey="D" oncommand="default_focus();"/>
+                        <button label="Apply Payment" accesskey="P"/>
+                    </hbox>
+                </groupbox>
+            </hbox>
+            <splitter />
+            <hbox>
+                <button label="Bill Patron" accesskey="" />
+                <button label="History" accesskey="" />
+                <spacer flex="1"/>
+                <menubar>
+                    <menu label="Actions for Selected Rows" accesskey="A">
+                        <menupopup>
+                            <menuitem command="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" oncommand="alert('Not Yet Implemented');"/>
+                            <menuitem command="voidall" label="Void All Billings" accesskey="V" />
+                            <menuitem command="refund" label="Refund" accesskey="R" />
+                            <menuitem command="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="A" />
+                            <menuitem command="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;"/>
+                        </menupopup>
+                    </menu>
+                </menubar>
+            </hbox>
+            <tree id="bill_tree" flex="1" enableColumnDrag="true" seltype="multiple" editable="true" context="actions_popup"/>
+            <hbox>
+                <hbox id="bill_list_actions" />
+                <button label="Check All" oncommand="g.bill_list._toggle_checkbox_column({'id':'select'},'on');"/>
+                <button label="Uncheck All" oncommand="g.bill_list._toggle_checkbox_column({'id':'select'},'off');"/>
+                <button id="print" label="Print Bills" oncommand="print_bills();"/>
+                <spacer flex="1"/>
+                <button label="Receipt Options" type="menu">
+                    <menupopup>
+                        <menuitem type="checkbox" label="Receipt Upon Payment" checked="true"/>
+                        <menuitem type="checkbox" label="Printer Prompt" />
+                        <hbox style="border: solid thin black">
+                            <vbox pack="center">
+                                <label value="Number of Copies:" />
+                            </vbox>
+                            <vbox pack="center">
+                                <textbox id="num_of_receipts" value="1" type="number" min="0" size="2"/>
+                            </vbox>
+                        </hbox>
+                    </menupopup>
+                </button>
+            </hbox>
+            <splitter />
+            <hbox>
+                <vbox>
+                    <hbox>
+                        <label value='&staff.patron.bill_interface.voided_this_session.label;' class="emphasis1"/><label id="currently_voided" value="$0.00"/>
+                        <label value='Credit Available:' class="emphasis1"/><label id="credit_forward" value="$0.00"/>
+                    </hbox>
+                    <hbox><label value='Change Due Upon Payment:' class="big_emphasis1"/><label id="change_due" value="$0.00" class="big_emphasis1"/></hbox>
+                </vbox>
+                <spacer flex="1"/>
+                <grid>
+                    <columns>
+                        <column />
+                        <column />
+                    </columns>
+                    <rows>
+                        <row>
+                            <spacer />
+                            <label id="pending_payment_label" value="Payment" class="emphasis1" />
+                            <label id="pending_change_label" value="Change" class="emphasis1" />
+                        </row>
+                        <row>
+                            <label id="pending_label" value="Pending" class="emphasis1" />
+                            <hbox><textbox id="pending_payment" readonly="true" context="clipboard" size="6" value='$0.00'/></hbox>
+                            <hbox><textbox id="pending_change" readonly="true" context="clipboard" size="6" value='$0.00'/></hbox>
+                        </row>
+                    </rows>
+                </grid>
+                <grid>
+                    <columns>
                         <column />
                         <column />
                     </columns>
@@ -71,43 +184,18 @@
                         </row>
                         <row>
                             <label id="total_label" value="Total:" control="total_owed" class="emphasis1"/>
-                            <textbox id="total_owed" readonly="true" context="clipboard"/>
-                            <textbox id="total_billed" readonly="true" context="clipboard"/>
-                            <textbox id="total_paid" readonly="true" context="clipboard"/>
+                            <hbox><textbox id="total_owed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="total_billed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="total_paid" readonly="true" context="clipboard" size="6"/></hbox>
                         </row>
                         <row>
                             <label id="checked_label" value="Checked:" control="checked_owed" class="emphasis2"/>
-                            <textbox id="checked_owed" readonly="true" context="clipboard"/>
-                            <textbox id="checked_billed" readonly="true" context="clipboard"/>
-                            <textbox id="checked_paid" readonly="true" context="clipboard"/>
+                            <hbox><textbox id="checked_owed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="checked_billed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="checked_paid" readonly="true" context="clipboard" size="6"/></hbox>
                         </row>
                     </rows>
                 </grid>
-            </hbox>
-            <hbox>
-                <label value='&staff.patron.bill_interface.voided_this_session.label;' class="emphasis2"/>
-                <label id="paid_tally" />
-                <spacer flex="1"/>
-                <button label="Bill Patron" accesskey="" />
-                <button label="History" accesskey="" />
-                <menubar>
-                    <menu label="Actions for Selected Rows" accesskey="A">
-                        <menupopup>
-                            <menuitem command="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" oncommand="alert('Not Yet Implemented');"/>
-                            <menuitem command="voidall" label="Void All Billings" accesskey="V" />
-                            <menuitem command="refund" label="Refund" accesskey="R" />
-                            <menuitem command="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="A" />
-                            <menuitem command="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;"/>
-                        </menupopup>
-                    </menu>
-                </menubar>
-
-            </hbox>
-            <tree id="bill_tree" flex="1" enableColumnDrag="true" seltype="multiple" editable="true" context="actions_popup"/>
-            <hbox>
-                <hbox id="bill_list_actions" />
-                <button id="print" label="&staff.patron.bill_interface.print.label;" accesskey="&staff.patron.bill_interface.print.accesskey;" oncommand="print_bills();"/>
-                <spacer flex="1"/>
             </hbox>
         </groupbox>
 	</vbox>

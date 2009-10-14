@@ -16,5 +16,6 @@
 #amnesty_mode_indicator { border: thick solid white; background-color: red; color: white; font-size: large; font-weight: bold; padding: 10px; padding-bottom: 25px; margin: 10px; }
 #checkin_auto_print_slips_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
 
+.big_emphasis1 { font-weight: bold; font-size: x-large; }
 .emphasis1 { font-weight: bold; }
 .emphasis2 { font-weight: normal; }

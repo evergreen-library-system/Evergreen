@@ -1,5 +1,9 @@
 function $(id) { return document.getElementById(id); }
 
+function default_focus() {
+    try { $('payment').focus(); } catch(E) { alert('Error in default_focus(): ' + E); }
+}
+
 function tally_selected() {
     try {
         JSAN.use('util.money');
@@ -45,9 +49,11 @@ function tally_all() {
             var bill = g.bill_map[retrieve_ids[i]];
             if (!bill) {
                 $('checked_owed').setAttribute('value', '???');
+                $('checked_owed2').setAttribute('value', '???');
                 $('checked_billed').setAttribute('value', '???');
                 $('checked_paid').setAttribute('value', '???');
                 $('total_owed').setAttribute('value', '???');
+                $('total_owed2').setAttribute('value', '???');
                 $('total_billed').setAttribute('value', '???');
                 $('total_paid').setAttribute('value', '???');
                 return;
@@ -67,9 +73,11 @@ function tally_all() {
         $('checked_billed').setAttribute('value', '$' + util.money.cents_as_dollars( checked_billed ) );
         $('checked_paid').setAttribute('value', '$' + util.money.cents_as_dollars( checked_paid ) );
         $('checked_owed').setAttribute('value', '$' + util.money.cents_as_dollars( checked_balance ) );
+        $('checked_owed2').setAttribute('value', '$' + util.money.cents_as_dollars( checked_balance ) );
         $('total_billed').setAttribute('value', '$' + util.money.cents_as_dollars( total_billed ) );
         $('total_paid').setAttribute('value', '$' + util.money.cents_as_dollars( total_paid ) );
         $('total_owed').setAttribute('value', '$' + util.money.cents_as_dollars( total_balance ) );
+        $('total_owed2').setAttribute('value', '$' + util.money.cents_as_dollars( total_balance ) );
     } catch(E) {
         alert('Error in bill2.js, tally_all(): ' + E);
     }
@@ -117,12 +125,18 @@ function init_lists() {
             ].concat(
                 patron.util.mbts_columns({
                     'xact_finish' : { 'hidden' : xul_param('current') ? true : false }
-                }).concat( 
-                    circ.util.columns({ 
-                        'title' : { 'hidden' : false, 'flex' : '3' }
-                    }) 
-                )
-        ),
+                }
+            ).concat( 
+                circ.util.columns({ 
+                    'title' : { 'hidden' : false, 'flex' : '3' }
+                }
+            ).concat( 
+                [
+                    {
+                        'id' : 'payment_pending', 'editable' : false, 'label' : 'Payment Pending', 'sort_type' : 'money', 'render' : function(my) { return '$0.00'; }, 
+                    }
+                ]
+            ))),
         'map_row_to_columns' : patron.util.std_map_row_to_columns(' '),
         'on_select' : function(ev) {
             JSAN.use('util.functional');
@@ -243,6 +257,9 @@ function my_init() {
         JSAN.use('util.exec'); var exec = new util.exec(20); 
         exec.on_error = function(E) { alert(E); return true; }
         exec.timer(g.funcs,100);
+
+        default_focus();
+
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill2.xul', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
