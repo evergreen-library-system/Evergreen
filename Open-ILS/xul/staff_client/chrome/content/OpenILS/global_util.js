@@ -50,9 +50,16 @@
                     if (value) nodes[i].setAttribute( attribute_list[j], value );
                 }
                 if (nodes[i].nodeName == 'checkbox' && attribute_list.indexOf('checked') > -1) {
-                    var evt = document.createEvent("Events");
-                    evt.initEvent( 'command', true, true );
-                    nodes[i].dispatchEvent(evt);
+                    if (nodes[i].disabled == false && nodes[i].hidden == false) {
+                        var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
+                        if (no_poke && no_poke == 'true') {
+                            // Timing issue for some checkboxes; don't poke them with an event
+                        } else {
+                            var evt = document.createEvent("Events");
+                            evt.initEvent( 'command', true, true );
+                            nodes[i].dispatchEvent(evt);
+                        }
+                    }
                     nodes[i].addEventListener(
                         'command',
                         function(bk) {
