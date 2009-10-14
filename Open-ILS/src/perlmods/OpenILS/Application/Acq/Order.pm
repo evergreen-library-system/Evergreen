@@ -973,6 +973,7 @@ sub upload_records {
             return $e->die_event unless 
                 $e->allowed('CREATE_PICKLIST', $picklist->org_unit, $picklist);
         }
+        $mgr->picklist($picklist);
     }
 
     if($create_po) {
