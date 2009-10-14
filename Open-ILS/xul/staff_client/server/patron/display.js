@@ -428,14 +428,11 @@ patron.display.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
+								JSAN.use('patron.util'); 
 								e.setAttribute('value',
-									( obj.patron.prefix() ? obj.patron.prefix() + ' ' : '') + 
-									obj.patron.family_name() + ', ' + 
-									obj.patron.first_given_name() + ' ' +
-									( obj.patron.second_given_name() ? obj.patron.second_given_name() + ' ' : '' ) +
-									( obj.patron.suffix() ? obj.patron.suffix() : '')
+                                    patron.util.format_name( obj.patron )
 								);
-								JSAN.use('patron.util'); patron.util.set_penalty_css(obj.patron);
+                                patron.util.set_penalty_css(obj.patron);
 							};
 						}
 					],
