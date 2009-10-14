@@ -29,7 +29,8 @@ circ.renew.prototype = {
 				'status' : { 'hidden' : false },
 				'alert_message' : { 'hidden' : false },
 				'due_date' : { 'hidden' : false },
-				'due_time' : { 'hidden' : false }
+				'due_time' : { 'hidden' : false },
+				'renewal_remaining' : { 'hidden' : false },
 			},
 			{
 				'except_these' : [ 'uses', 'checkin_time_full' ]
