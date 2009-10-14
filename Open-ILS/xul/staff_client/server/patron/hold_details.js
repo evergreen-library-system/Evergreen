@@ -266,8 +266,8 @@ function new_note() {
             note.pub( get_bool( fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
             note.slip( get_bool( fancy_prompt_data.slip ) ? get_db_true() : get_db_false() );
             note.staff( true );
-            //var r = g.network.simple_request('FM_AHN_CREATE',[ ses(), notification ]); if (typeof r.ilsevent != 'undefined') throw(r);
-            g.pcrud.create(note);
+            var r = g.network.simple_request('FM_AHRN_CREATE',[ ses(), note ]); if (typeof r.ilsevent != 'undefined') throw(r);
+            //g.pcrud.create(note);
             setTimeout(function(){fetch_and_render_all();},0);
         }
     } catch(E) {

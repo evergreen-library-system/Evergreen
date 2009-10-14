@@ -958,6 +958,34 @@ sub create_hold_notify {
    return $note->id;
 }
 
+__PACKAGE__->register_method (
+	method		=> 'create_hold_note',
+	api_name		=> 'open-ils.circ.hold_note.create',
+	signature	=> q/
+		Creates a new hold request note object
+		@param authtoken The login session key
+		@param note The hold note object to create
+		@return ID of the new object on success, Event on error
+		/
+);
+
+sub create_hold_note {
+   my( $self, $conn, $auth, $note ) = @_;
+   my $e = new_editor(authtoken=>$auth, xact=>1);
+   return $e->die_event unless $e->checkauth;
+
+   my $hold = $e->retrieve_action_hold_request($note->hold)
+      or return $e->die_event;
+   my $patron = $e->retrieve_actor_user($hold->usr) 
+      or return $e->die_event;
+
+   return $e->die_event unless 
+      $e->allowed('UPDATE_HOLD', $patron->home_ou); # FIXME: Using permcrud perm listed in fm_IDL.xml for ahrn.  Probably want something more specific
+
+   $e->create_action_hold_request_note($note) or return $e->die_event;
+   $e->commit;
+   return $note->id;
+}
 
 __PACKAGE__->register_method(
 	method	=> 'reset_hold',

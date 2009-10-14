@@ -92,6 +92,7 @@ const api = {
 	'FM_ACPN_DELETE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.delete', 'secure' : false },
 	'FM_ACTSC_RETRIEVE_BATCH' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.batch', 'secure' : false },
 	'FM_ACTSC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.all', 'secure' : false },
+	'FM_AHRN_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_note.create' },
 	'FM_AHN_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_notification.create' },
 	'FM_AHN_RETRIEVE_VIA_AHR' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_notification.retrieve_by_hold' },
 	'FM_AHN_RETRIEVE_VIA_AHR.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_notification.retrieve_by_hold.authoritative' },
