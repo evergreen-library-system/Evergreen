@@ -161,6 +161,7 @@ function uEditBuild() {
     
     // jscalendar doesn't like the date format.  trim the time data
     if(patron.dob()) patron.dob( patron.dob().replace(/T.*/, '') );
+    if(patron.expire_date()) patron.expire_date( patron.expire_date().replace(/T.*/, '') );
 	
 	uEditDraw( 
 		uEditFetchIdentTypes(),
