@@ -83,12 +83,7 @@ function render_patron() {
         var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.ahr.usr() );
         
         $('patron_name').setAttribute('value', 
-            ( au_obj.prefix() ? au_obj.prefix() + ' ' : '') + 
-            au_obj.family_name() + ', ' + 
-            au_obj.first_given_name() + ' ' +
-            ( au_obj.second_given_name() ? au_obj.second_given_name() + ' ' : '' ) +
-            ( au_obj.suffix() ? au_obj.suffix() : '')
-            + ' : ' + au_obj.card().barcode() 
+            patron.util.format_name( au_obj ) + ' : ' + au_obj.card().barcode() 
         );
     }
 }

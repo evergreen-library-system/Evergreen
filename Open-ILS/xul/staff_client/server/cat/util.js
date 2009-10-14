@@ -321,12 +321,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
                                     auto_checkin = true; 
                                     JSAN.use('patron.util');
                                     var patron_obj = patron.util.retrieve_fleshed_au_via_id( ses(), my_circ.usr() );
-                                    var patron_name = ( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') +
-                                        patron_obj.family_name() + ', ' +
-                                        patron_obj.first_given_name() + ' ' +
-                                        ( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
-                                        ( patron_obj.suffix() ? patron_obj.suffix() : '')
-                                        + ' : ' + patron_obj.card().barcode()
+                                    var patron_name = patron.util.format_name( patron_obj ) + ' : ' + patron_obj.card().barcode();
                                     var msg = $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.item_circulating_to_patron', [ 
                                         copies[i].barcode(),
                                         patron_name,
@@ -360,12 +355,8 @@ cat.util.mark_item_damaged = function(copy_ids) {
                                     JSAN.use('util.money');
                                     var circ_obj = robj.payload.circ;
                                     var patron_obj = circ_obj.usr();
-                                    var patron_name = ( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') +
-                                        patron_obj.family_name() + ', ' +
-                                        patron_obj.first_given_name() + ' ' +
-                                        ( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
-                                        ( patron_obj.suffix() ? patron_obj.suffix() : '')
-                                        + ' : ' + patron_obj.card().barcode()
+                                    JSAN.use('patron.util');
+                                    var patron_name = patron.util.format_name( patron_obj ) + ' : ' + patron_obj.card().barcode();
 
                                     var r1 = error.yns_alert(
                                         $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.charge_patron_prompt.message', [ 

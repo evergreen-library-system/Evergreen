@@ -72,8 +72,9 @@
 						g.patron_id = r_circ.usr(); $('add_billing').disabled = false;
 						g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
 							var r_au = preq.getResultObject();
-							$('patron_name').value = r_au.family_name() + ', ' + r_au.first_given_name() + ' ' + (r_au.second_given_name() ? r_au.second_given_name() + ' : ' + r_au.card().barcode() : '');
-							JSAN.use('patron.util'); patron.util.set_penalty_css(r_au);
+							JSAN.use('patron.util'); 
+							$('patron_name').value = patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode();
+                            patron.util.set_penalty_css(r_au);
 						});
 
 					} catch(E) {

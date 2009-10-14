@@ -8,12 +8,7 @@ function retrieve_patron() {
         g.au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.patron_id );
         
         $('patron_name').setAttribute('value', 
-            ( g.au_obj.prefix() ? g.au_obj.prefix() + ' ' : '') + 
-            g.au_obj.family_name() + ', ' + 
-            g.au_obj.first_given_name() + ' ' +
-            ( g.au_obj.second_given_name() ? g.au_obj.second_given_name() + ' ': '' ) +
-            ( g.au_obj.suffix() ? g.au_obj.suffix() : '')
-            + ' : ' + g.au_obj.card().barcode() 
+            patron.util.format_name( g.au_obj ) + ' : ' + g.au_obj.card().barcode() 
         );
     }
 
