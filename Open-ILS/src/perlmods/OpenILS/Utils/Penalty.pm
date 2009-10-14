@@ -17,10 +17,10 @@ my $U = "OpenILS::Application::AppUtils";
 sub calculate_penalties {
     my($class, $e, $user_id, $context_org) = @_;
 
-    my $rollback = 0;
+    my $commit = 0;
     unless($e) {
         $e = new_editor(xact =>1);
-        $rollback = 1;
+        $commit = 1;
     }
 
     my $penalties = $e->json_query({from => ['actor.calculate_system_penalties',$user_id, $context_org]});
@@ -60,7 +60,7 @@ sub calculate_penalties {
         }
     }
 
-    $e->rollback if $rollback;
+    $e->commit if $commit;
     return undef;
 }
 
