@@ -6,7 +6,7 @@ patron.util = {};
 patron.util.EXPORT_OK	= [ 
 	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', /*'std_map_row_to_column',*/ 'std_map_row_to_columns',
 	'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id',
-    'merge', 'ausp_columns', 'format_name'
+    'merge', 'ausp_columns'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
@@ -806,16 +806,6 @@ patron.util.merge = function(record_ids) {
         try { error.standard_unexpected_error_alert('Error in patron.util.merge',E); } catch(F) { alert('patron.util.merge: ' + E + '\n'); }
         return false;
     }
-}
-
-patron.util.format_name = function(patron_obj) {
-    var patron_name = ( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') +
-        patron_obj.family_name() + ', ' +
-        patron_obj.first_given_name() + ' ' +
-        ( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
-        ( patron_obj.suffix() ? patron_obj.suffix() : '') +
-        ( patron_obj.alias() ? ' (' + patron_obj.alias() + ')' : '');
-    return patron_name;
 }
 
 dump('exiting patron/util.js\n');

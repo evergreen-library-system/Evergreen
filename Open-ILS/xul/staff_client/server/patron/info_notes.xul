@@ -166,7 +166,12 @@
 								p.simple(
 									'<hr/>'
 									+ '<p>'+ $("patronStrings").getString('staff.patron.info_notes.render_notes.pertaining_to') + ' ' + 
-										patron.util.format_name( patron_obj ) + ' : ' 
+										( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') + 
+										patron_obj.family_name() + ', ' + 
+										patron_obj.first_given_name() + ' ' +
+										( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
+										( patron_obj.suffix() ? patron_obj.suffix() : '')
+										+ ' : ' 
 									+ patron_obj.card().barcode() + '</p>'
 									+ '<p><b>"' + g.notes[id].title() + '"</b>'
 									+ $("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.created_on', [g.notes[id].create_date().toString().substr(0,10), staff_obj[0], g.data.hash.aou[ staff_obj[3] ].shortname()]) 

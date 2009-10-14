@@ -638,7 +638,11 @@ patron.summary.prototype = {
 								obj.patron = robj;
 								JSAN.use('patron.util');
 								util.widgets.set_text('patron_name',
-                                    patron.util.format_name( obj.patron )
+									( obj.patron.prefix() ? obj.patron.prefix() + ' ' : '') + 
+									obj.patron.family_name() + ', ' + 
+									obj.patron.first_given_name() + ' ' +
+									( obj.patron.second_given_name() ? obj.patron.second_given_name() + ' ' : '' ) +
+									( obj.patron.suffix() ? obj.patron.suffix() : '')
 								);
 								patron.util.set_penalty_css(obj.patron);
 								JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
