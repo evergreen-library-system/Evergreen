@@ -3,7 +3,7 @@
 # vim:noet:ts=4:sw=4:
 #
 # Copyright (C) 2008 Equinox Software, Inc.
-# Copyright (C) 2008 Laurentian University
+# Copyright (C) 2008-2009 Laurentian University
 # Author: Kevin Beswick <kevinbeswick00@gmail.com>
 # Author: Dan Scott <dscott@laurentian.ca>
 #
@@ -49,20 +49,19 @@ sub update_config {
 		foreach my $service (@$services) {
 			foreach my $key (keys %$settings) {
 				next unless $settings->{$key};
-				my(@node) = $opensrf_config->findnodes("//$service//database/$key/text()");
-				foreach(@node) {
+				my @node;
+
+				if ($service eq 'state_store') {
+					(@node) = $opensrf_config->findnodes("//state_store/$key/text()");
+				} else {
+					(@node) = $opensrf_config->findnodes("//$service//database/$key/text()");
+				}
+
+				foreach (@node) {
 					$_->setData($settings->{$key});
 				}
 			}
 
-		}
-	}
-	else {
-		foreach my $key (keys %$settings) {
-			my(@node) = $opensrf_config->findnodes("//database/$key/text()");
-			foreach(@node) {
-				$_->setData($settings->{$key});
-			}
 		}
 	}
 
@@ -72,7 +71,7 @@ sub update_config {
 		print "Backed up original configuration file to '$config_file.$timestamp'\n";
 	} else {
 		print STDERR "Unable to write to '$config_file.$timestamp'; bailed out.\n";
-    }
+	}
 
 	$opensrf_config->toFile($config_file) or
 		die "ERROR: Failed to update the configuration file '$config_file'\n";
@@ -82,7 +81,7 @@ sub update_config {
 sub create_db_bootstrap {
 	my ($setup, $settings) = @_;
 
-    open(FH, '>', $setup) or die "Could not write database setup to $setup\n";
+	open(FH, '>', $setup) or die "Could not write database setup to $setup\n";
 
 	print "Writing database bootstrapping configuration to $setup\n";
 
@@ -93,14 +92,14 @@ sub create_db_bootstrap {
 	printf FH "\$main::config{pw} = '%s';\n", $settings->{pw};
 	
 	print FH "\$main::config{index} = 'config.cgi';\n";
-    close(FH);
+	close(FH);
 }
 
 # write out the offline config
 sub create_offline_config {
 	my ($setup, $settings) = @_;
 
-    open(FH, '>', $setup) or die "Could not write offline database setup to $setup\n";
+	open(FH, '>', $setup) or die "Could not write offline database setup to $setup\n";
 
 	print "Writing offline database configuration to $setup\n";
 
@@ -113,7 +112,7 @@ sub create_offline_config {
 	printf FH "\$main::config{usr} = '%s';\n", $settings->{user};
 	printf FH "\$main::config{pw} = '%s';\n", $settings->{pw};
 
-    close(FH);
+	close(FH);
 }
 # Extracts database settings from opensrf.xml
 sub get_settings {
@@ -173,7 +172,7 @@ GetOptions("create-schema" => \$cschema,
 );
 
 if (grep(/^all$/, @services)) {
-	@services = qw/reporter open-ils.cstore open-ils.pcrud open-ils.storage open-ils.reporter-store/;
+	@services = qw/reporter open-ils.cstore open-ils.pcrud open-ils.storage open-ils.reporter-store state_store/;
 }
 
 my $eg_config = File::Spec->catfile($script_dir, '../extras/eg_config');
@@ -266,6 +265,7 @@ SERVICE OPTIONS
             * open-ils.pcrud
             * open-ils.storage
             * open-ils.reporter-store
+            * state_store
     
 DATABASE CONFIGURATION OPTIONS
     --user            username for the database 
