@@ -768,13 +768,19 @@ sub generate_fines {
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
-            if(0) { # caluclate penalties inline.  Needs to be tested.
-                OpenILS::Utils::Penalty->calculate_penalties(
-                    undef, $c->usr->to_fieldmapper->id.'', $c->circ_lib->to_fieldmapper->id.'');
+			if(1) { 
 
-            } else {
+                # Caluclate penalties inline
+				OpenILS::Utils::Penalty->calculate_penalties(
+					undef, $c->usr->to_fieldmapper->id.'', $c->circ_lib->to_fieldmapper->id.'');
 
-			    $penalty->request(
+			} else {
+
+                # Calculate penalties with an aysnc call to the penalty server.  This approach
+                # may lead to duplicate penalties since multiple penalty processes for a
+                # given user may be running at the same time. Leave this here for reference 
+                # in case we later find that asyc calls are needed in some environments.
+				$penalty->request(
 				    'open-ils.penalty.patron_penalty.calculate',
 				    { patronid	=> ''.$c->usr,
 				    context_org	=> ''.$c->circ_lib,
