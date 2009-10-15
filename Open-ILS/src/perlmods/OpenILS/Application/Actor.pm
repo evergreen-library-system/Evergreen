@@ -95,6 +95,23 @@ sub update_user_setting {
 __PACKAGE__->register_method(
 	method	=> "set_ou_settings",
 	api_name	=> "open-ils.actor.org_unit.settings.update",
+    signature => {
+        desc => q/
+            Updates the value for a given org unit setting.  The permission to update an org unit setting
+            is either the UPDATE_ORG_UNIT_SETTING_ALL, a specific UPDATE_ORG_UNIT_SETTING.<setting_name>
+            permission, or a permission the maps to a prefix of the setting name.  For example, if the setting
+            was called "foo.bar.baz" the user could update the setting if he\she had the following perms:
+            UPDATE_ORG_UNIT_SETTING.foo
+            UPDATE_ORG_UNIT_SETTING.foo.bar
+            UPDATE_ORG_UNIT_SETTING.foo.bar.baz/,
+        params => [
+		    {desc => 'authtoken', type => 'string'},
+            {desc => 'org unit id', type => 'number'},
+            {desc => q/Hash of setting name-value pairs/, type => 'hash'},
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+
 );
 sub set_ou_settings {
 	my( $self, $client, $auth, $org_id, $settings ) = @_;
@@ -109,7 +126,17 @@ sub set_ou_settings {
         my $set = $e->search_actor_org_unit_setting({org_unit => $org_id, name => $name})->[0];
 
         unless($all_allowed) {
-            return $e->die_event unless $e->allowed("UPDATE_ORG_UNIT_SETTING.$name", $org_id);
+            my $allowed = 0;
+            my $perm = 'UPDATE_ORG_UNIT_SETTING';
+            for my $part (split(/\./, $name)) {
+                $perm = "$perm.$part";
+                if($e->allowed($perm, $org_id)) {
+                    $allowed = 1;
+                    last;
+                }
+            }
+
+            return $e->die_event unless $allowed;
         }
 
         if(defined $val) {
