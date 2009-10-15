@@ -412,6 +412,7 @@ util.list.prototype = {
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
 		treerow.setAttribute('retrieve_id',params.retrieve_id);
+        if (params.row_properties) treerow.setAttribute('properties',params.row_properties);
 
 		s += ('tree = ' + this.node + '  treechildren = ' + treechildren_node + '\n');
 		s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
