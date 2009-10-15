@@ -284,7 +284,7 @@ CREATE TYPE metabib.field_entry_template AS (
         value           TEXT
 );
 
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid INT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
 DECLARE
 	bib		biblio.record_entry%ROWTYPE;
 	idx		config.metabib_field%ROWTYPE;
@@ -343,7 +343,7 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 -- default to a space joiner
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( INT ) RETURNS SETOF metabib.field_entry_template AS $func$
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS SETOF metabib.field_entry_template AS $func$
 	SELECT * FROM biblio.extract_metabib_field_entry($1, ' ');
 $func$ LANGUAGE SQL;
 
