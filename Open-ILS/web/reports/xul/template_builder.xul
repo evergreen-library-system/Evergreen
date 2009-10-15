@@ -54,12 +54,6 @@
 <script src="transforms.js" type="application/x-javascript; e4x=1"/>
 <script src="operators.js" type="application/x-javascript; e4x=1"/>
 
-<script type="text/javascript">
-<![CDATA[
-	dojo.addOnLoad(loadIDL);
-]]>
-</script>
-
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/calendar.js"/>
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/lang/calendar-en.js"/>
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/calendar-setup.js"/>
