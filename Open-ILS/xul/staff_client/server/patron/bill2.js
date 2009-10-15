@@ -43,6 +43,7 @@ function tally_all() {
         var total_billed = 0;
         var total_paid = 0;
         var total_balance = 0;
+        var refunds_owed = 0;
 
         var retrieve_ids = g.bill_list.dump_retrieve_ids();
         for (var i = 0; i < retrieve_ids.length; i++) {
@@ -56,6 +57,7 @@ function tally_all() {
                 $('total_owed2').setAttribute('value', '???');
                 $('total_billed').setAttribute('value', '???');
                 $('total_paid').setAttribute('value', '???');
+                $('refunds_owed').setAttribute('value', '???');
                 return;
             }
             var to = util.money.dollars_float_to_cents_integer( bill.transaction.total_owed() );
@@ -64,6 +66,7 @@ function tally_all() {
             total_billed += to;
             total_paid += tp;
             total_balance += bo;
+            if ( bo < 0 ) refunds_owed += bo;
             if (g.check_map[retrieve_ids[i]]) {
                 checked_billed += to;
                 checked_paid += tp;
@@ -78,6 +81,7 @@ function tally_all() {
         $('total_paid').setAttribute('value', '$' + util.money.cents_as_dollars( total_paid ) );
         $('total_owed').setAttribute('value', '$' + util.money.cents_as_dollars( total_balance ) );
         $('total_owed2').setAttribute('value', '$' + util.money.cents_as_dollars( total_balance ) );
+        $('refunds_owed').setAttribute('value', '$' + util.money.cents_as_dollars( Math.abs( refunds_owed ) ) );
     } catch(E) {
         alert('Error in bill2.js, tally_all(): ' + E);
     }
@@ -191,12 +195,15 @@ function init_lists() {
                         row.my.circ = blob.circ;
                         row.my.acp = blob.copy;
                         row.my.mvr = blob.record;
-                        g.bill_map[ id ] = blob;
-                        g.check_map[ id ] = row.my.checked;
                         if (typeof params.on_retrieve == 'function') {
-                            if ( Number( row.my.mbts.balance_owed() ) < 0 ) params.row_node.firstChild.setAttribute('properties','refundable');
+                            if ( Number( row.my.mbts.balance_owed() ) < 0 ) {
+                                params.row_node.firstChild.setAttribute('properties','refundable');
+                                row.my.checked = false;
+                            }
                             params.on_retrieve(row);
                         };
+                        g.bill_map[ id ] = blob;
+                        g.check_map[ id ] = row.my.checked;
                         tally_selected();
                         tally_all();
                     } );
@@ -258,6 +265,25 @@ function my_init() {
         JSAN.use('util.exec'); var exec = new util.exec(20); 
         exec.on_error = function(E) { alert(E); return true; }
         exec.timer(g.funcs,100);
+
+        $('credit_forward').setAttribute('value','???');
+        if (!g.patron) {
+            g.network.simple_request(
+                'FM_AU_FLESHED_RETRIEVE_VIA_ID.authoritative',
+                [ ses(), g.patron_id ],
+                function(req) {
+                    try {
+                        g.patron = req.getResultObject();
+                        if (typeof g.patron.ilsevent != 'undefined') throw(g.patron);
+                        $('credit_forward').setAttribute('value','$' + util.money.sanitize( g.patron.credit_forward_balance() ));
+                    } catch(E) {
+                        alert('Error in bill2.js, retrieve patron callback: ' + E);
+                    }
+                }
+            );
+        } else {
+            $('credit_forward').setAttribute('value','$' + util.money.sanitize( g.patron.credit_forward_balance() ));
+        }
 
         default_focus();
 

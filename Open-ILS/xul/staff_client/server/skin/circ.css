@@ -21,5 +21,6 @@ treechildren::-moz-tree-row(refundable) {
 #checkin_auto_print_slips_indicator { background-color: -moz-dialog; color: -moz-dialog-text; font-size: large; font-weight: bold; }
 
 .big_emphasis1 { font-weight: bold; font-size: x-large; }
+.big_emphasis2 { font-weight: bold; font-size: large; }
 .emphasis1 { font-weight: bold; }
 .emphasis2 { font-weight: normal; }

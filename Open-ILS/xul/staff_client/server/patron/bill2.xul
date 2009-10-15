@@ -57,14 +57,25 @@
         <groupbox orient="vertical" flex="1">
             <caption id="caption" label="&staff.patron.bill_interface.caption.label;"/>
             <hbox>
-                <grid>
-                    <columns>
+                <grid flex="1">
+                    <columns flex="1">
+                        <column/>
+                        <column/>
+                        <column flex="1"/>
                         <column/>
                         <column/>
                     </columns>
                     <rows>
-                        <row><label value="Total Owed:" class="big_emphasis1" /><label id="total_owed2" class="big_emphasis1"/></row>
-                        <row><label value="Total Checked:" class="big_emphasis1" /><label id="checked_owed2" class="big_emphasis1"/></row>
+                        <row>
+                            <vbox pack="center"><label value="Total Owed:" class="big_emphasis1" /></vbox><vbox pack="center"><label id="total_owed2" class="big_emphasis1"/></vbox>
+                            <spacer flex="1"/>
+                            <vbox pack="center"><label value="Refunds Available:" class="big_emphasis2"/></vbox><vbox pack="center"><label id="refunds_owed" class="big_emphasis2"/></vbox>
+                        </row>
+                        <row>
+                            <vbox pack="center"><label value="Total Checked:" class="big_emphasis1" /></vbox><vbox pack="center"><label id="checked_owed2" class="big_emphasis1"/></vbox>
+                            <spacer flex="1"/>
+                            <vbox pack="center"><label value='Credit Available:' class="big_emphasis2"/></vbox><vbox pack="center"><label id="credit_forward" class="big_emphasis2"/></vbox>
+                        </row>
                     </rows>
                 </grid>
                 <spacer flex="1"/>
@@ -147,7 +158,6 @@
                 <vbox>
                     <hbox>
                         <label value='&staff.patron.bill_interface.voided_this_session.label;' class="emphasis1"/><label id="currently_voided" value="$0.00"/>
-                        <label value='Credit Available:' class="emphasis1"/><label id="credit_forward" value="$0.00"/>
                     </hbox>
                     <hbox><label value='Change Due Upon Payment:' class="big_emphasis1"/><label id="change_due" value="$0.00" class="big_emphasis1"/></hbox>
                 </vbox>
