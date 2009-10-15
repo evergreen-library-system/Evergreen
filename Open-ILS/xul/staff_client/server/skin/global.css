@@ -12,7 +12,7 @@ treechildren::-moz-tree-checkbox(checked) {
 }
 
 treechildren::-moz-tree-row(selected) {
-    background-color: lightblue;
+    background-color: lightblue ! important;
 }
 
 treechildren::-moz-tree-cell-text(selected,focus) {
