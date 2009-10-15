@@ -3,6 +3,10 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
+treechildren::-moz-tree-row(refundable) {
+    background-color: pink;
+}
+
 .checkin_screen_normal { background-color: green; }
 .checkin_screen_backdating { background-color: red; }
 .checkin_screen_do_not_alert_on_precat { }

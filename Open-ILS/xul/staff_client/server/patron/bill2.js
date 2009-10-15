@@ -194,6 +194,7 @@ function init_lists() {
                         g.bill_map[ id ] = blob;
                         g.check_map[ id ] = row.my.checked;
                         if (typeof params.on_retrieve == 'function') {
+                            if ( Number( row.my.mbts.balance_owed() ) < 0 ) params.row_node.firstChild.setAttribute('properties','refundable');
                             params.on_retrieve(row);
                         };
                         tally_selected();
