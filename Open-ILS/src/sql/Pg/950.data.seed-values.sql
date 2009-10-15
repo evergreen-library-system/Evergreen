@@ -1227,7 +1227,8 @@ INSERT INTO permission.perm_list VALUES
     (345,'UPDATE_PATRON_CLAIM_RETURN_COUNT', oils_i18n_gettext(345,'Allows staff to manually change a patron''s claims returned count', 'ppl', 'description')),
 
     (346,'UPDATE_BILL_NOTE', oils_i18n_gettext(346,'Allows staff to edit the note for a bill on a transaction', 'ppl', 'description')),
-    (347,'UPDATE_PAYMENT_NOTE', oils_i18n_gettext(346,'Allows staff to edit the note for a payment on a transaction', 'ppl', 'description'));
+    (347,'UPDATE_PAYMENT_NOTE', oils_i18n_gettext(347,'Allows staff to edit the note for a payment on a transaction', 'ppl', 'description')),
+    (348, 'UPDATE_RECORD', oils_i18n_gettext(348, 'Allow a user to update and undelete records.', 'ppl', 'description'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -1378,6 +1379,7 @@ INSERT INTO permission.grp_perm_map VALUES (143, 3, 198, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (144, 4, 199, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (145, 4, 200, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (146, 4, 201, 1, false);
+INSERT INTO permission.grp_perm_map VALUES (147, 4, 348, 1, false);
 
 -- Add basic acquisitions permissions to the Acquisitions group
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
