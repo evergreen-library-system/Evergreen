@@ -1297,6 +1297,7 @@ INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_ADDRESS');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_TYPE');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_CLOSING');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_PERM');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_RECORD');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_RELEVANCE_ADJUSTMENT');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_SURVEY');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_TRANSIT');
@@ -1519,6 +1520,8 @@ INSERT INTO permission.grp_perm_map VALUES (143, 3, 198, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (144, 4, 199, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (145, 4, 200, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (146, 4, 201, 1, false);
+
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
 
 -- Add basic acquisitions permissions to the Acquisitions group
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
