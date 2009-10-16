@@ -32,6 +32,8 @@ function AcqLiTable() {
 
     var self = this;
     this.liCache = {};
+    this.plCache = {};
+    this.poCache = {};
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
     this.selectors = [];
@@ -60,6 +62,14 @@ function AcqLiTable() {
     acqLitSavePlButton.onClick = function() {
         acqLitSavePlDialog.hide();
         self._savePl(acqLitSavePlDialog.getValues());
+    }
+
+    acqLitCancelLiStateButton.onClick = function() {
+        acqLitChangeLiStateDialog.hide();
+    }
+    acqLitSaveLiStateButton.onClick = function() {
+        acqLitChangeLiStateDialog.hide();
+        self._updateLiState(acqLitChangeLiStateDialog.getValues(), acqLitChangeLiStateDialog.attr('state'));
     }
 
 
@@ -183,9 +193,36 @@ function AcqLiTable() {
         dojo.query('[name=notes_count]', row)[0].innerHTML = li.lineitem_notes().length;
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
+        // show which PO this lineitem is a member of
         if(li.purchase_order() && !this.isPO) {
-            openils.Util.show(nodeByName('po', row), 'inline');
-            nodeByName('po_link', row).setAttribute('href', oilsBasePath + '/acq/po/view/' + li.purchase_order());
+            var po = 
+                this.poCache[li.purchase_order()] =
+                this.poCache[li.purchase_order()] ||
+                fieldmapper.standardRequest(
+                    ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],
+                    {params: [this.authtoken, li.purchase_order()]});
+            if(po) {
+                openils.Util.show(nodeByName('po', row), 'inline');
+                var link = nodeByName('po_link', row);
+                link.setAttribute('href', oilsBasePath + '/acq/po/view/' + li.purchase_order());
+                link.innerHTML = 'PO: ' + po.name(); // TODO i18n
+            }
+        }
+
+        // show which picklist this lineitem is a member of
+        if(li.picklist() && this.isPO) {
+            var pl = 
+                this.plCache[li.picklist()] = 
+                this.plCache[li.picklist()] || 
+                fieldmapper.standardRequest(
+                    ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
+                    {params: [this.authtoken, li.picklist()]});
+            if(pl) {
+                openils.Util.show(nodeByName('pl', row), 'inline');
+                var link = nodeByName('pl_link', row);
+                link.setAttribute('href', oilsBasePath + '/acq/picklist/view/' + li.picklist());
+                link.innerHTML = 'PL: '+pl.name(); // TODO i18n
+            }
         }
 
         var countNode = nodeByName('count', row);
@@ -194,6 +231,7 @@ function AcqLiTable() {
 
         // lineitem state
         nodeByName('li_state', row).innerHTML = li.state(); // TODO i18n state labels
+        openils.Util.addCSSClass(row, 'oils-acq-li-state-' + li.state());
 
         // lineitem price
         var priceInput = dojo.query('[name=price]', row)[0];
@@ -876,6 +914,12 @@ function AcqLiTable() {
                 acqLitSavePlDialog.show();
                 break;
 
+            case 'selector_ready':
+            case 'order_ready':
+                acqLitChangeLiStateDialog.attr('state', action.replace('_', '-'));
+                acqLitChangeLiStateDialog.show();
+                break;
+
             case 'print_po':
                 this.printPO();
                 break;
@@ -1123,10 +1167,21 @@ function AcqLiTable() {
         }
     }
 
+    this._updateLiState = function(values, state) {
+        var self = this;
+        var selected = this.getSelected( (values.which == 'all') );
+        if(!selected.length) return;
+        dojo.forEach(selected, function(li) {li.state(state);});
+        self._updateLiList(null, selected, 0, 
+            // TODO consider inline updates for efficiency
+            function() { location.href = location.href }
+        );
+    }
+
     this._updateLiList = function(pl, list, idx, oncomplete) {
         if(idx >= list.length) return oncomplete();
         var li = list[idx];
-        li.picklist(pl);
+        if(pl != null) li.picklist(pl);
         litGenericProgress.update({maximum: list.length, progress: idx});
         new openils.acq.Lineitem({lineitem:li}).update(
             function(r) {

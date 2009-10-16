@@ -66,6 +66,7 @@
                                     <td rowspan='2' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></img></td>
                                     <td style='width:70%;font-weight:bold;'>
                                         <a attr='title' href='javascript:void(0);'></a>
+                                        <span name='pl' class='hidden'>(<a name='pl_link' href='javascript:void(0);'></a>)</span>
                                         <span name='po' class='hidden'>(<a name='po_link' href='javascript:void(0);'>PO</a>)</span>
                                     </td>
                                     <td rowspan='2' style='text-align:right'>
@@ -141,7 +142,6 @@
                                 <button jsId='acqLitCreateLiNoteSubmit' dojoType='dijit.form.Button' type="submit">Create</button>
                             </div>
                         </div>
-
                         <div dojoType='dijit.form.Button' id='acq-lit-notes-save-button'>Save Changes</div>
                     </td>
                 </tr>
@@ -385,6 +385,26 @@
             </tr>
         </table>
     </div>
+
+    <div dojoType="dijit.Dialog" jsId='acqLitChangeLiStateDialog'>
+        <table class='dijitTooltipTable'>
+            <tr>
+                <td>
+                    <input dojoType="dijit.form.RadioButton" name="which" type='radio' checked='checked' value='selected'/>
+                    <label for="name">Mark selected</label>
+                    <input dojoType="dijit.form.RadioButton" name="which" type='radio' value='all'/>
+                    <label for="name">Mark all</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button dojoType='dijit.form.Button' type="submit" jsId='acqLitCancelLiStateButton'>Cancel</button>
+                    <button dojoType='dijit.form.Button' type="submit" jsId='acqLitSaveLiStateButton'>Go</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 
     <div class='hidden'>
         <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>

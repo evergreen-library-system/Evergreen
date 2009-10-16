@@ -28,6 +28,14 @@
 .oils-acq-lineitem-delete-link { font-size: 85%; }
 #oils-acq-picklist-header-subtable tr { border: none; }
 
+/* When viewing a list of lineitems, these colors indicate what state the lineitem is in */
+.oils-acq-li-state-new td { background-color: #FFFFEE; }
+.oils-acq-li-state-selector-ready td { background-color: #FFEEEE; }
+.oils-acq-li-state-order-ready td { background-color: #EEEEEE; }
+.oils-acq-li-state-pending-order td { background-color: #EEEEDD; }
+.oils-acq-li-state-on-order td { background-color: #EEDDDD; }
+.oils-acq-li-state-received td { background-color: #DDDDDD; }
+
 /* po display */
 #oils-acq-po-table thead tr { border: 1px solid #A1A1A1; }
 #oils-acq-po-header {border: 1px solid #85C777;}
