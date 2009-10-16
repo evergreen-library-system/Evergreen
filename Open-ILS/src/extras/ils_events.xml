@@ -736,6 +736,19 @@
 	<event code='2003' textcode='INTERNAL_SERVER_ERROR'>
 		<desc xml:lang="en-US">There was an internal server error</desc>
 	</event>
+
+    <!-- CREDIT EVENTS -->
+	<event code='4001' textcode='CREDIT_PROCESSOR_NOT_ENABLED'>
+		<desc xml:lang="en-US">Credit card processor not enabled</desc>
+	</event>
+	<event code='4002' textcode='CREDIT_PROCESSOR_BAD_PARAMS'>
+		<desc xml:lang="en-US">Not enough parameters to use credit card processor</desc>
+	</event>
+	<event code='4003' textcode='CREDIT_PROCESSOR_NOT_ALLOWED'>
+		<desc xml:lang="en-US">The credit card processor you have named is not allowed.</desc>
+	</event>
+
+
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc xml:lang="en-US">Permission Denied</desc>
 	</event>
