@@ -43,6 +43,8 @@ INSERT INTO config.metabib_field ( field_class, name, format, xpath ) VALUES
 --  ( field_class, name, xpath ) VALUES ( 'subject', 'genre', 'mods32', $$//mods32:mods/mods32:genre$$ );
 INSERT INTO config.metabib_field ( field_class, name, format, xpath ) VALUES 
     ( 'keyword', 'keyword', 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */;
+INSERT INTO config.metabib_field ( field_class, name, format, xpath ) VALUES
+    ( 'subject', 'complete', 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
 
 INSERT INTO config.non_cataloged_type ( id, owning_lib, name ) VALUES ( 1, 1, oils_i18n_gettext(1, 'Paperback Book', 'cnct', 'name') );
 SELECT SETVAL('config.non_cataloged_type_id_seq'::TEXT, 100);
