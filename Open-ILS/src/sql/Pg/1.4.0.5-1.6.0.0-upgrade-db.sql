@@ -3930,7 +3930,45 @@ CREATE TRIGGER zzz_update_materialized_simple_rec_delete_tgr
     AFTER UPDATE ON biblio.record_entry
     FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_bib_sync();
 
+-- Add a complete subject index
+INSERT INTO config.metabib_field ( field_class, name, format, xpath ) VALUES
+    ( 'subject', 'complete', 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
 
+CREATE INDEX metabib_subject_field_entry_source_idx ON metabib.subject_field_entry (source);
+
+-- Insert all of the existing subject values into our new complete index
+INSERT INTO metabib.subject_field_entry (source, field, value)
+    SELECT source, (
+            SELECT id 
+            FROM config.metabib_field
+            WHERE field_class = 'subject' AND name = 'complete'
+        ), 
+        ARRAY_TO_STRING ( 
+            ARRAY (
+                SELECT value 
+                FROM metabib.subject_field_entry msfe
+                WHERE msfe.source = groupee.source
+                ORDER BY source 
+            ), ' ' 
+        ) AS grouped
+    FROM ( 
+        SELECT source
+        FROM metabib.subject_field_entry
+        GROUP BY source
+    ) AS groupee;
+
+-- Add values that weren't in the existing subject indices - primarily genres
+UPDATE metabib.subject_field_entry msfe SET value = msfe.value || ' ' || mfr.value
+    FROM metabib.full_rec mfr
+    WHERE tag LIKE '65%'
+    AND subfield = 'v'
+    AND mfr.record = msfe.source
+    AND field IN (
+        SELECT id
+            FROM config.metabib_field
+            WHERE field_class = 'subject'
+            AND name = 'complete'
+    );
 
 ---------!!!!!!!!!!!!!!!!!!!!!!---------------
 --  Must go after COMMIT!!

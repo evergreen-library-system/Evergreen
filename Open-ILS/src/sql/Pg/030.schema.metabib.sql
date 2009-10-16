@@ -69,6 +69,7 @@ CREATE TRIGGER metabib_subject_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('subject');
 
 CREATE INDEX metabib_subject_field_entry_index_vector_idx ON metabib.subject_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_subject_field_entry_source_idx ON metabib.subject_field_entry (source);
 
 
 CREATE TABLE metabib.keyword_field_entry (
