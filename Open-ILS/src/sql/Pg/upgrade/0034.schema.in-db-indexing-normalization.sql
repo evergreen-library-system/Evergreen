@@ -12,13 +12,20 @@ BEGIN
         IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
                 FOR normalizer IN
 			SELECT	n.func AS func,
+				n.param_count AS param_count,
 				m.params AS params
 			  FROM	config.index_normalizer n
 				JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
 			  WHERE	field = NEW.field
 			  ORDER BY m.pos
 		LOOP
-			EXECUTE 'SELECT ' || normalizer.func || '(' || quote_literal( value ) || ',' || BTRIM(normalizer.params,'[]') || ')' INTO value;
+			EXECUTE 'SELECT ' || normalizer.func || '(' ||
+					quote_literal( value ) || 
+					CASE
+						WHEN normalizer.param_count > 0 THEN ',' || BTRIM(normalizer.params,'[]')
+						ELSE ''
+					END || 
+				')' INTO value;
 		END LOOP;
         END IF;
 
