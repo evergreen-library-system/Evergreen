@@ -810,16 +810,16 @@ CREATE TABLE container.user_bucket_item_note (
 
 -----------------------------
 
-INSERT INTO config.billing_type (name,owner) SELECT DISTINCT billing_type, 1 FROM money.billing WHERE billing_type NOT IN (SELECT name FROM config.billing_type);
+INSERT INTO config.billing_type (name,owner) SELECT DISTINCT billing_type, 1 FROM money.billing WHERE LOWER(billing_type) NOT IN (SELECT LOWER(name) FROM config.billing_type);
 ALTER TABLE money.billing ADD COLUMN btype INT;
 
-UPDATE money.billing SET btype = config.billing_type.id FROM config.billing_type WHERE config.billing_type.name = money.billing.billing_type;
+UPDATE money.billing SET btype = config.billing_type.id FROM config.billing_type WHERE LOWER(config.billing_type.name) = LOWER(money.billing.billing_type);
 ALTER TABLE money.billing ALTER COLUMN btype SET NOT NULL;
 ALTER TABLE money.billing ADD CONSTRAINT btype_fkey FOREIGN KEY (btype) REFERENCES config.billing_type (id) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
 
 CREATE TABLE money.materialized_billable_xact_summary AS
-	SELECT * FROM money.billable_xact_summary WHERE 1=0;
+	SELECT * FROM money.billable_xact_summary;
 
 CREATE INDEX money_mat_summary_id_idx ON money.materialized_billable_xact_summary (id);
 CREATE INDEX money_mat_summary_usr_idx ON money.materialized_billable_xact_summary (usr);
@@ -941,7 +941,7 @@ BEGIN
 		  SET	last_billing_ts = prev_billing.billing_ts,
 			last_billing_note = prev_billing.note,
 			last_billing_type = prev_billing.billing_type
-		  WHERE	id = NEW.xact;
+		  WHERE	id = OLD.xact;
 	END IF;
 
 	IF NOT OLD.voided THEN
@@ -3859,6 +3859,116 @@ $$;
 
 COMMIT;
 
+CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
+ SELECT cp.id, COALESCE(sum(c.circ_count), 0::bigint) + COALESCE(count(circ.id), 0::bigint) + COALESCE(count(acirc.id), 0::bigint) AS circ_count
+   FROM asset."copy" cp
+   LEFT JOIN extend_reporter.legacy_circ_count c USING (id)
+   LEFT JOIN "action".circulation circ ON circ.target_copy = cp.id
+   LEFT JOIN "action".aged_circulation acirc ON acirc.target_copy = cp.id
+  GROUP BY cp.id;
+
+SELECT reporter.disable_materialized_simple_record_trigger();
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_update (r_id BIGINT, deleted BOOL) RETURNS BOOL AS $$
+BEGIN
+
+    DELETE FROM reporter.materialized_simple_record WHERE id = r_id;
+
+    IF NOT deleted THEN
+        INSERT INTO reporter.materialized_simple_record SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record WHERE id = r_id;
+    END IF;
+
+    RETURN TRUE;
+
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_update (r_id BIGINT) RETURNS BOOL AS $$
+    SELECT reporter.simple_rec_update($1, FALSE);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_delete (r_id BIGINT) RETURNS BOOL AS $$
+    SELECT reporter.simple_rec_update($1, TRUE);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
+DECLARE
+    r_id        BIGINT;
+    deleted     BOOL;
+BEGIN
+    IF TG_OP IN ('DELETE') THEN
+        r_id := OLD.record;
+        deleted := TRUE;
+    ELSE
+        r_id := NEW.record;
+        deleted := FALSE;
+    END IF;
+
+    PERFORM reporter.simple_rec_update(r_id, deleted);
+
+    IF deleted THEN
+        RETURN OLD;
+    ELSE
+        RETURN NEW;
+    END IF;
+
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_bib_sync () RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.deleted THEN
+        DELETE FROM reporter.materialized_simple_record WHERE id = NEW.id;
+        RETURN NEW;
+    ELSE
+        RETURN NEW;
+    END IF;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER zzz_update_materialized_simple_rec_delete_tgr
+    AFTER UPDATE ON biblio.record_entry
+    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_bib_sync();
+
+-- Add a complete subject index
+INSERT INTO config.metabib_field ( field_class, name, format, xpath ) VALUES
+    ( 'subject', 'complete', 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
+
+CREATE INDEX metabib_subject_field_entry_source_idx ON metabib.subject_field_entry (source);
+
+-- Insert all of the existing subject values into our new complete index
+INSERT INTO metabib.subject_field_entry (source, field, value)
+    SELECT source, (
+            SELECT id 
+            FROM config.metabib_field
+            WHERE field_class = 'subject' AND name = 'complete'
+        ), 
+        ARRAY_TO_STRING ( 
+            ARRAY (
+                SELECT value 
+                FROM metabib.subject_field_entry msfe
+                WHERE msfe.source = groupee.source
+                ORDER BY source 
+            ), ' ' 
+        ) AS grouped
+    FROM ( 
+        SELECT source
+        FROM metabib.subject_field_entry
+        GROUP BY source
+    ) AS groupee;
+
+-- Add values that weren't in the existing subject indices - primarily genres
+UPDATE metabib.subject_field_entry msfe SET value = msfe.value || ' ' || mfr.value
+    FROM metabib.full_rec mfr
+    WHERE tag LIKE '65%'
+    AND subfield = 'v'
+    AND mfr.record = msfe.source
+    AND field IN (
+        SELECT id
+            FROM config.metabib_field
+            WHERE field_class = 'subject'
+            AND name = 'complete'
+    );
 
 ---------!!!!!!!!!!!!!!!!!!!!!!---------------
 --  Must go after COMMIT!!
@@ -7505,3 +7615,5 @@ ALTER TABLE config.circ_matrix_matchpoint ALTER COLUMN max_fine_rule SET NOT NUL
 
 -- We're updating the IDL, so flush cached mods slim records to avoid field mismatches
 UPDATE metabib.metarecord SET mods = NULL;
+UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'loc';
+
