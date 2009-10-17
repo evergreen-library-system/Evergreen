@@ -1,15 +1,17 @@
 The following table lists the data sets we have collected for testing purposes.
 
 ^ File name         ^ Format    ^ Encoding ^ Source system ^ Description            ^
+| auth-1066.mrc     | MARC21    | UTF8     | Aleph         | Dutch authority records from IISH (missing 0 in leader 22) |
+| auth-subset100.mrc| MARC21    | UTF8     | Aleph         | Dutch authority records from IISH (missing 0 in leader 22) |
 | FSL.marc          | MARC21    | UTF8     | Aleph         | Armenian and Cyrillic scripts, collected from the Fundamental Science Library in Yerevan, Armenia |
-| oss.marc          | MARC21    | MARC8    | Unicorn GL3.1 |   |
+| hebrew.marc       | MARC21    | MARC8    | III           | Hebrew scripts, 25 records |
 | lul_fre_100.marc  | MARC21    | MARC8    | Unicorn GL3.1 | 100 records, French, pre-1923  |
 | lul_fre_500.marc  | MARC21    | MARC8    | Unicorn GL3.1 | 500 records, French, pre-1923  |
 | jazz_1k.marc      | MARC21    | MARC8    | Unicorn GL3.1 | 1000 records  |
 | map_data.marc     | MARC21    | UTF8     | Voyager (LoC) | 3 records with some geospatial metadata  |
 | music_5k.marc     | MARC21    | MARC8    | Unicorn GL3.1 | 5000 records  |
-| hebrew.marc       | MARC21    | MARC8    | III           | Hebrew scripts, 25 records |
 | nepali.marc       | MARC21    | UTF8     |               | Nepali scripts, 98 records, dual 245 and 100 fields (one for Nepali, one for phoneticization |
+| oss.marc          | MARC21    | MARC8    | Unicorn GL3.1 |   |
 | serials_marc21.xml| MARC21XML | UTF8     |               | A small set of MARC21 bibliographic records |
 | serials_mfhd.xml  | MARC21XML | UTF8     |               | MFHD records that map to the serials_marc21.xml records |
 
