@@ -125,7 +125,8 @@ table { border-collapse: collapse; }
 .rdetail_desc { padding: 2px; padding-left: 2px; padding-right: 2px;}
 .rdetail_item { width: 75%; padding-left: 10px; }
 #rdetail_image { padding-right: 10px; }
-#rdetail_copy_info_table { padding: 4px; width: 100%; border-collapse: collapse; }
+#rdetail_copy_info_table { padding: 4px; width: 100%; border-collapse: collapse; font-size: 8pt; }
+#rdetail_copy_info_table td { padding: 3px; }
 .rdetail_copy_info_header_cell { padding: 2px; }
 .rdetail_copy_count_cell { text-align: center; }
 

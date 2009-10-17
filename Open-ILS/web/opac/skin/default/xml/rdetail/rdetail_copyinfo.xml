@@ -13,10 +13,6 @@
 		</span>
 	</div>
 
-	<style>
-		#rdetail_copy_info_table { font-size: 8pt; }
-		#rdetail_copy_info_table td { padding: 3px; }
-	</style>
 	<table id='rdetail_copy_info_table' class='data_grid'>
 		<thead>
 
