@@ -20,11 +20,11 @@ function _apc(root,node) { root.appendChild(node); }
 function SlimTree(context, handle, rootimg) { 
 	
 	if(!stimgopen) {
-		stimgopen	= elem('img',{src:stpicopen,border:0});
-		stimgclose	= elem('img',{src:stpicclose,border:0});
-		stimgblank	= elem('img',{src:stpicblank,border:0});
-		stimgline	= elem('img',{src:stpicline,border:0});
-		stimgjoin	= elem('img',{src:stpicjoin,border:0, style:'display:inline;'});
+		stimgopen       = elem('img',{src:stpicopen,border:0, style:'height:13px;width:31px;'});
+		stimgclose      = elem('img',{src:stpicclose,border:0, style:'height:13px;width:31px;'});
+		stimgblank      = elem('img',{src:stpicblank,border:0, style:'height:18px;width:18px;'});
+		stimgline       = elem('img',{src:stpicline,border:0, style:'height:18px;width:18px;'});
+		stimgjoin       = elem('img',{src:stpicjoin,border:0, style:'display:inline;height:18px;width:18px;'});
 	}
 
 	this.context	= context; 
