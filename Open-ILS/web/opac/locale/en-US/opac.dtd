@@ -137,6 +137,7 @@ Are you sure you wish to continue?">
 <!ENTITY myopac.bookbag.create "Create a new Bookbag">
 <!ENTITY myopac.bookbag.naming "Enter the name of the new Bookbag: ">
 <!ENTITY myopac.bookbag.share "Share this Bookbag">
+<!ENTITY myopac.bookbag.refworks "Export to RefWorks">
 <!ENTITY myopac.bookbag.no.items "The selected bookbag contains no items...">
 <!ENTITY myopac.bookbag.remove "Remove this item?">
 <!ENTITY myopac.remove.link "remove">
