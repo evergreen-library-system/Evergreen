@@ -116,13 +116,5 @@ CREATE OR REPLACE FUNCTION oils_i18n_gettext( TEXT, TEXT, TEXT, TEXT ) RETURNS T
     SELECT $2;
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$
-        SELECT SUBSTRING( $1 FROM $_$^\S+$_$);
-$$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION public.naco_normalize_keep_comma( TEXT ) RETURNS TEXT AS $func$
-        SELECT public.naco_normalize($1,'a');
-$func$ LANGUAGE SQL STRICT IMMUTABLE;
-
 COMMIT;
 

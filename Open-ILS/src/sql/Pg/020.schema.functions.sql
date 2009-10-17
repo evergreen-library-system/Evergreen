@@ -79,6 +79,14 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT ) RETURNS TEXT AS $func$
 	SELECT public.naco_normalize($1,'');
 $func$ LANGUAGE 'sql' STRICT IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$
+        SELECT SUBSTRING( $1 FROM $_$^\S+$_$);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION public.naco_normalize_keep_comma( TEXT ) RETURNS TEXT AS $func$
+        SELECT public.naco_normalize($1,'a');
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
 CREATE OR REPLACE FUNCTION public.normalize_space( TEXT ) RETURNS TEXT AS $$
     SELECT regexp_replace(regexp_replace(regexp_replace($1, E'\\n', ' ', 'g'), E'(?:^\\s+)|(\\s+$)', '', 'g'), E'\\s+', ' ', 'g');
 $$ LANGUAGE SQL;
