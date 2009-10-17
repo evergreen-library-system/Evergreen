@@ -8,6 +8,8 @@ var fleshedContainers = {};
 var holdCache = {};
 var holdStatusCache = {};
 var allowPendingAddr = false;
+var myopacEnableRefWorks = false;
+var myopacRefWorksHost = 'http://www.refworks.com';
 
 
 function clearNodes( node, keepArray ) {
@@ -1172,7 +1174,23 @@ function myOPACShowBookbags(force) {
 			link = $n(row, 'myopac_bb_make_unpublished');
 			link.setAttribute('href', 'javascript:myOPACMakeBBPublished("'+cont.id()+'", true);');
 			unHideMe(link);
+                        
+			var RW = $n(row, 'myopac_bb_exp_refworks');
+			if (RW && myopacEnableRefWorks) {
+				var here = (findOrgUnit(getLocation())).name();
+				var org_name = here.replace(" ", "+");
+				var cgi = new CGI();
 
+				RW.setAttribute('href',
+				myopacRefWorksHost + '/express/expressimport.asp?vendor='
+					+ org_name
+					+ '&filter=MARC+Format&database=All+MARC+Formats&encoding=65001&url=http%3A%2F%2F'
+					+ cgi.server_name + '/opac/extras/feed/bookbag/marctxt-full/'
+					+ cont.id()
+				);
+				RW.setAttribute('target', 'RefWorksMain');
+				unHideMe($n(row, 'myopac_bb_exp_refworks'));
+			}
 		} else { 
 			unHideMe($n(row, 'myopac_bb_published_no')); 
 			var link = $n(row, 'myopac_bb_make_published');
