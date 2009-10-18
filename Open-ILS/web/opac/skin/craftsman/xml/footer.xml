@@ -12,7 +12,7 @@
 				<td align='right'>
 					<span>&footer.copyright;</span>
 					<span>
-						<a href='http://open-ils.org'><img src='../../../../images/eg_tiny_logo.gif' alt='' style='display: inline; float: right; margin-left: 5px;' /></a>
+						<a href='http://open-ils.org'><img src='../../../../images/eg_tiny_logo.gif' alt='' style='display: inline; float: right; margin-left: 5px; width: 112px; height: 19px;' /></a>
 						<div style='float: right; padding: 5px 0 0 0;'>&footer.logo;</div>
 						<div class='clear'></div>
 					</span>

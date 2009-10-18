@@ -56,17 +56,17 @@
 
 									<div name='result_table_format_cell'>
 										<div class='tool-icons'>
-											<a name='text_link'><img src='../../../../images/tor/book-icon.gif' class='dim' /></a>
-											<a name='sound recording-nonmusical_link'><img src='../../../../images/tor/nonmusic-icon.gif' class='dim' /></a>
-											<a name='moving image_link'><img src='../../../../images/tor/mov-icon.gif' class='dim' /></a>
-											<a name='software, multimedia_link'><img src='../../../../images/tor/software-icon.gif' class='dim' /></a>
-											<a name='sound recording-musical_link'><img src='../../../../images/tor/sound-icon.gif' class='dim' /></a>
-											<a name='cartographic_link'><img src='../../../../images/tor/earth-icon.gif' class='dim' /></a>
-											<a name='mixed material_link'><img src='../../../../images/tor/mix-icon.gif' class='dim' /></a>
-											<a name='notated music_link'><img src='../../../../images/tor/mussymbol-icon.gif' class='dim' /></a>
-											<a name='sound recording_link'><img src='../../../../images/tor/recsound-icon.gif' class='dim' /></a>
-											<a name='still image_link'><img src='../../../../images/tor/pic-icon.gif' class='dim' /></a>
-											<a name='three dimensional object_link'><img src='../../../../images/tor/threed-icon.gif' class='dim' /></a>
+											<a name='text_link'><img src='../../../../images/tor/book-icon.gif' style='width: 23px; height: 22px;' class='dim' /></a>
+											<a name='sound recording-nonmusical_link'><img src='../../../../images/tor/nonmusic-icon.gif' style='width: 22px; height: 18px;' class='dim' /></a>
+											<a name='moving image_link'><img src='../../../../images/tor/mov-icon.gif' style='width: 23px; height: 22px;' class='dim' /></a>
+											<a name='software, multimedia_link'><img src='../../../../images/tor/software-icon.gif' style='width: 17px; height: 20px;' class='dim' /></a>
+											<a name='sound recording-musical_link'><img src='../../../../images/tor/sound-icon.gif' style='width: 30px; height: 18px;' class='dim' /></a>
+											<a name='cartographic_link'><img src='../../../../images/tor/earth-icon.gif' style='width: 19px; height: 18px;' class='dim' /></a>
+											<a name='mixed material_link'><img src='../../../../images/tor/mix-icon.gif' style='width: 23px; height: 22px;' class='dim' /></a>
+											<a name='notated music_link'><img src='../../../../images/tor/mussymbol-icon.gif' style='width: 17px; height: 19px;' class='dim' /></a>
+											<a name='sound recording_link'><img src='../../../../images/tor/recsound-icon.gif' style='width: 30px; height: 18px;' class='dim' /></a>
+											<a name='still image_link'><img src='../../../../images/tor/pic-icon.gif' style='width: 23px; height: 25px;' class='dim' /></a>
+											<a name='three dimensional object_link'><img src='../../../../images/tor/threed-icon.gif' style='width: 21px; height: 21px;' class='dim' /></a>
 											<div class='clear'></div>
 										</div>
 										<span class='hide_me' style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'> 

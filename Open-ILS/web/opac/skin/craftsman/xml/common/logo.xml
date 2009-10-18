@@ -1,2 +1,2 @@
 <script language='javascript' type='text/javascript'>config.ids.common.top_logo = "top_left_logo";</script>
-<img src='<!--#echo var="OILS_BASE"-->/images/logo.gif' alt='' class='logo' />
+<img style='height: 95px; width: 260px;' src='<!--#echo var="OILS_BASE"-->/images/logo.gif' alt='' class='logo' />
