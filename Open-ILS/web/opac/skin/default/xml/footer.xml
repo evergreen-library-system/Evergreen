@@ -29,6 +29,6 @@
             <span>&footer.copyright;</span>
         </div>
         <div id='footer_logo'>&footer.logo;
-            <a href='http://open-ils.org'><img style='border:none;' src='../../../../images/eg_tiny_logo.jpg'/></a>
+            <a href='http://open-ils.org'><img style='border:none; width: 94px; height: 16px;' src='../../../../images/eg_tiny_logo.jpg'/></a>
         </div>
 </div>

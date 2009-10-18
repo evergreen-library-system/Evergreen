@@ -30,7 +30,7 @@
 
 	<div id='loading_alt' class='hide_me canvas' style='margin-top: 6px;'>
 		<div style='margin-top: 30px; margin-bottom: 30px; text-align: center; font-weight: 700;' class='color_3'>
-			<img src='../../../../images/progressbar_green.gif' style='margin: 5px;' />
+			<img src='../../../../images/progressbar_green.gif' style='margin: 5px; height: 32px; width: 32px;' />
 		</div>
 	</div>
 
