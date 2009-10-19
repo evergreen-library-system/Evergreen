@@ -87,6 +87,20 @@ function tally_all() {
     }
 }
 
+function check_all_refunds() {
+    try {
+        for (var i in g.bill_map) {
+            if ( Number( g.bill_map[i].transaction.balance_owed() ) < 0 ) {
+                var row_params = g.row_map[i];
+                //row_params.row.my.checked = true;
+                g.bill_list.refresh_row(row_params);
+            }
+        }
+    } catch(E) {
+        alert('Error in bill2.js, check_all_refunds(): ' + E);
+    }
+}
+
 function retrieve_mbts_for_list() {
     var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative';
     g.mbts_ids = g.network.simple_request(method,[ses(),g.patron_id]);
@@ -184,32 +198,36 @@ function init_lists() {
             }
         },
         'retrieve_row' : function(params) {
-            var id = params.retrieve_id;
-            var row = params.row;
-            if (id) {
-                if (typeof row.my == 'undefined') row.my = {};
-                if (typeof row.my.mbts == 'undefined' ) {
-                    g.network.simple_request('BLOB_MBTS_DETAILS_RETRIEVE',[ses(),id], function(req) {
-                        var blob = req.getResultObject();
-                        row.my.mbts = blob.transaction;
-                        row.my.circ = blob.circ;
-                        row.my.acp = blob.copy;
-                        row.my.mvr = blob.record;
-                        if (typeof params.on_retrieve == 'function') {
-                            if ( Number( row.my.mbts.balance_owed() ) < 0 ) {
-                                params.row_node.firstChild.setAttribute('properties','refundable');
-                                row.my.checked = false;
-                            }
-                            params.on_retrieve(row);
-                        };
-                        g.bill_map[ id ] = blob;
-                        g.check_map[ id ] = row.my.checked;
-                        tally_selected();
-                        tally_all();
-                    } );
+            try {
+                var id = params.retrieve_id;
+                var row = params.row;
+                if (id) {
+                    if (typeof row.my == 'undefined') row.my = {};
+                    if (typeof row.my.mbts == 'undefined' ) {
+                        g.network.simple_request('BLOB_MBTS_DETAILS_RETRIEVE',[ses(),id], function(req) {
+                            var blob = req.getResultObject();
+                            row.my.mbts = blob.transaction;
+                            row.my.circ = blob.circ;
+                            row.my.acp = blob.copy;
+                            row.my.mvr = blob.record;
+                            if (typeof params.on_retrieve == 'function') {
+                                if ( Number( row.my.mbts.balance_owed() ) < 0 ) {
+                                    params.row_node.firstChild.setAttribute('properties','refundable');
+                                    row.my.checked = false;
+                                }
+                                params.on_retrieve(row);
+                            };
+                            g.bill_map[ id ] = blob;
+                            g.check_map[ id ] = row.my.checked;
+                            tally_selected();
+                            tally_all();
+                        } );
+                    }
                 }
+                return row;
+            } catch(E) {
+                alert('Error in bill2.js, retrieve_row(): ' + E);
             }
-            return row;
         }
     } );
 

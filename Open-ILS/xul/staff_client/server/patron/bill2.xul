@@ -136,6 +136,7 @@
                 <hbox id="bill_list_actions" />
                 <button label="Check All" oncommand="g.bill_list._toggle_checkbox_column({'id':'select'},'on');"/>
                 <button label="Uncheck All" oncommand="g.bill_list._toggle_checkbox_column({'id':'select'},'off');"/>
+                <button label="Check All Refunds" oncommand="check_all_refunds();"/>
                 <button id="print" label="Print Bills" oncommand="print_bills();"/>
                 <spacer flex="1"/>
                 <button label="Receipt Options" type="menu">
