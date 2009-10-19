@@ -682,7 +682,17 @@ util.list.prototype = {
 			//dump('detect_visible  obj.node = ' + obj.node + '\n');
 			/* FIXME - this is a hack.. if the implementation of tree changes, this could break */
 			try {
-				var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(obj.node)[1] )[1];
+                /*var s = ''; var A = document.getAnonymousNodes(obj.node);
+                for (var i in A) {
+                    var B = A[i];
+                    s += '\t' + (typeof B.nodeName != 'undefined' ? B.nodeName : B ) + '\n'; 
+                    if (typeof B.childNodes != 'undefined') for (var j = 0; j < B.childNodes.length; j++) {
+                        var C = B.childNodes[j];
+                        s += '\t\t' + C.nodeName + '\n';
+                    }
+                }
+                obj.error.sdump('D_XULRUNNER','document.getAnonymousNodes(' + obj.node.nodeName + ') = \n' + s + '\n');*/
+				var scrollbar = document.getAnonymousNodes(obj.node)[2].firstChild;
 				var curpos = scrollbar.getAttribute('curpos');
 				var maxpos = scrollbar.getAttribute('maxpos');
 				//alert('curpos = ' + curpos + ' maxpos = ' + maxpos + ' obj.curpos = ' + obj.curpos + ' obj.maxpos = ' + obj.maxpos + '\n');
