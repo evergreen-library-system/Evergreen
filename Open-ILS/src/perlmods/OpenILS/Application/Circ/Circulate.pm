@@ -387,7 +387,6 @@ my @AUTOLOAD_FIELDS = qw/
     transit
     checkin_changed
     force
-    old_circ
     permit_override
     pending_checkouts
     cancelled_hold_transit
@@ -1229,15 +1228,26 @@ sub do_checkout {
     OpenILS::Utils::Penalty->calculate_penalties($self->editor, $self->patron->id, $self->circ_lib);
 
     my $record = $U->record_to_mvr($self->title) unless $self->is_precat;
+    
+    my $pcirc;
+    if($self->is_renewal) {
+        # flesh the billing summary for the checked-in circ
+        $pcirc = $self->editor->retrieve_action_circulation([
+            $self->parent_circ,
+            {flesh => 2, flesh_fields => {circ => ['billable_transaction'], mbt => ['summary']}}
+        ]);
+    }
+
     $self->push_events(
         OpenILS::Event->new('SUCCESS',
             payload  => {
-                copy              => $U->unflesh_copy($self->copy),
-                circ              => $self->circ,
-                record            => $record,
-                holds_fulfilled   => $self->fulfilled_holds,
-                deposit_billing      => $self->deposit_billing,
-                rental_billing       => $self->rental_billing
+                copy             => $U->unflesh_copy($self->copy),
+                circ             => $self->circ,
+                record           => $record,
+                holds_fulfilled  => $self->fulfilled_holds,
+                deposit_billing  => $self->deposit_billing,
+                rental_billing   => $self->rental_billing,
+                parent_circ      => $pcirc
             }
         )
     );
