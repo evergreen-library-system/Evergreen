@@ -103,6 +103,8 @@ sub make_payments {
         $xacts{$xact_id} = $xact;
     }
 
+    my @payment_objs;
+
 	for my $pay (@{$payments->{payments}}) {
 
         my $transid = $pay->[0];
@@ -187,6 +189,7 @@ sub make_payments {
 
         my $method = "create_money_$type";
         $e->$method($payobj) or return $e->die_event;
+        push(@payment_objs, $payobj);
 
 	} # all payment objects have been created and inserted. 
 
@@ -217,21 +220,25 @@ sub make_payments {
                 "ou" => $this_ou
             }
         );
-        # senator: Should failures and/or declines be logged somewhere?  Is
-        # some other cog taking care of this?  Actually, what about the
-        # successes, too?  There's an approval code from the payment processor
-        # that could go somewhere...
+
         if (exists $response->{ilsevent}) {
             $e->rollback;
             return $response;
         }
         if ($response->{statusCode} != 200) {
             $e->rollback;
+            $logger->info("Credit card payment for user $user_id failed with message: " . $response->{statusText});
             return OpenILS::Event->new(
                 'CREDIT_PROCESSOR_DECLINED_TRANSACTION',
                 note => $response->{statusText}
             );
         }
+
+        for my $payment (@payment_objs) {
+            $payment->approval_code($response->{approvalCode});
+            $e->update_money_credit_card_payment($payment) or return $e->die_event;
+        }
+        $logger->info("Credit card payment for user $user_id succeeded");
     }
 
     $e->commit;
