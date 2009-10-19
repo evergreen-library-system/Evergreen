@@ -16,6 +16,7 @@ $0 [-h] --login=UserName --password==MyPass [OPTIONS] [Transaction data]
 Required Arguments:
     -l --login      Assigned by your processor API (specified in -t)
     -p --password   Assigned by your processor API (specified in -t)
+    -o --org-unit   What library/branch is making this payment (numeric)
 
 Options:
     -t --target       Payment processor (default PayPal)
@@ -48,11 +49,12 @@ my $expires   = '12-2014';
 my $id        = 5;
 
 ### Empties
-my ($login, $password, $signature, $help, $amount, $server);
+my ($login, $password, $ou, $signature, $help, $amount, $server);
 
 GetOptions(
     'config_file=s' => \$config,
     'target=s'      => \$processor,
+    'org-unit=i'    => \$ou,
     'login=s'       => \$login,
     'password=s'    => \$password,
     's|signature=s' => \$signature,
@@ -66,7 +68,7 @@ GetOptions(
 
 $help and print usage and exit;
 
-unless ($login and $processor and $password) {
+unless ($login and $processor and $password and $ou) {
     print usage;
     exit;
 }
@@ -81,6 +83,7 @@ Attempting transaction:
         login => $login,
      password => $password,
     signature => $signature,
+           ou => $ou,
        amount => $amount,
            cc => $number,
    expiration => $expires,
@@ -99,6 +102,7 @@ my( $user, $evt ) = simplereq('open-ils.credit', 'open-ils.credit.process',
         login => $login,
      password => $password,
     signature => $signature,
+           ou => $ou,
        amount => $amount,
            cc => $number,
    expiration => $expires,

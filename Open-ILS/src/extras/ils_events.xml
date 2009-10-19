@@ -745,7 +745,16 @@
 		<desc xml:lang="en-US">Not enough parameters to use credit card processor</desc>
 	</event>
 	<event code='4003' textcode='CREDIT_PROCESSOR_NOT_ALLOWED'>
-		<desc xml:lang="en-US">The credit card processor you have named is not allowed.</desc>
+		<desc xml:lang="en-US">The credit card processor you have named is not allowed</desc>
+	</event>
+	<event code='4004' textcode='CREDIT_PROCESSOR_NOT_SPECIFIED'>
+		<desc xml:lang="en-US">No credit card processor specified either in org unit settings or in call to credit service API method.</desc>
+	</event>
+	<event code='4010' textcode='CREDIT_PROCESSOR_NO_DEFAULT_SELECTED'>
+		<desc xml:lang="en-US">No default credit processor is selected</desc>
+	</event>
+	<event code='4020' textcode='CREDIT_PROCESSOR_DECLINED_TRANSACTION'>
+		<desc xml:lang="en-US">The credit card processor has declined the transaction.</desc>
 	</event>
 
 
