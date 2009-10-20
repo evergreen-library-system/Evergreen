@@ -845,6 +845,16 @@ circ.util.columns = function(modify,params) {
 			'editable' : false, 'render' : function(my) { return my.acp.circ_modifier(); }
 		},
 		{
+			'id' : 'status_changed_time',
+            'fm_class' : 'acp',
+			'label' : document.getElementById('circStrings').getString('staff.circ.utils.status_changed_time'),
+			'flex' : 1,
+			'primary' : false,
+			'hidden' : true,
+			'editable' : false, 'render' : function(my) { return my.acp.status_changed_time(); },
+			'persist' : 'hidden width ordinal'
+		},
+		{
 			'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
 			'id' : 'checkout_lib',
