@@ -25,8 +25,7 @@ function bib_brief_overlay(params) {
             if (typeof robj.ilsevent != 'undefined') throw(robj); 
             params.mvr = robj;
         }
-        if (! params.mvr) { alert('early mvr return!'); return; }
-        if (! params.mvr_id) params.mvr_id = params.mvr.doc_id();
+        if (params.mvr && !params.mvr_id) params.mvr_id = params.mvr.doc_id();
 
         // Ditto with the bre
         if ( (params.bre_id || params.mvr_id) && ! params.bre) {
@@ -34,7 +33,6 @@ function bib_brief_overlay(params) {
             if (typeof robj.ilsevent != 'undefined') throw(robj); 
             params.bre = robj[0];
         }
-        if (! params.bre) { alert('early bre return!'); return; }
 
         JSAN.use('util.widgets');
         function set(name,value) { 
