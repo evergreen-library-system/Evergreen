@@ -273,6 +273,7 @@ sub nearest_hold {
             AND h.frozen IS FALSE
 		ORDER BY
 			p.prox,
+            CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END,
 			h.selection_depth DESC,
 			h.request_time
 		LIMIT $limit

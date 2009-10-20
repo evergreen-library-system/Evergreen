@@ -2713,6 +2713,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
 			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
+			<field reporter:label="Top of Queue" name="cut_in_line" reporter:datatype="bool" />
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
