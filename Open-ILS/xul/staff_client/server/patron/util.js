@@ -813,8 +813,7 @@ patron.util.format_name = function(patron_obj) {
         patron_obj.family_name() + ', ' +
         patron_obj.first_given_name() + ' ' +
         ( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
-        ( patron_obj.suffix() ? patron_obj.suffix() : '') +
-        ( patron_obj.alias() ? ' (' + patron_obj.alias() + ')' : '');
+        ( patron_obj.suffix() ? patron_obj.suffix() : ''); 
     return patron_name;
 }
 
