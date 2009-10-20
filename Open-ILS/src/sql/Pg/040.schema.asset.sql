@@ -60,7 +60,8 @@ CREATE TABLE asset.copy (
 	alert_message	TEXT,
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE,
 	deleted		BOOL				NOT NULL DEFAULT FALSE,
-	dummy_isbn      TEXT
+	dummy_isbn      TEXT,
+	status_changed_time TIMESTAMP WITH TIME ZONE
 );
 CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted IS FALSE;
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
@@ -68,6 +69,20 @@ CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_creator_idx  ON asset.copy ( creator );
 CREATE INDEX cp_editor_idx   ON asset.copy ( editor );
 CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id;
+
+CREATE OR REPLACE FUNCTION asset.acp_status_changed()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.status <> OLD.status THEN
+        NEW.status_changed_time := now();
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER acp_status_changed_trig
+    BEFORE UPDATE ON asset.copy
+    FOR EACH ROW EXECUTE PROCEDURE asset.acp_status_changed();
 
 CREATE TABLE asset.copy_transparency (
 	id		SERIAL		PRIMARY KEY,
