@@ -1080,6 +1080,7 @@ sub _reset_hold {
 
 	$hold->clear_capture_time;
 	$hold->clear_current_copy;
+	$hold->clear_shelf_time;
 
 	$e->update_action_hold_request($hold) or return $e->event;
 	$e->commit;
@@ -1837,6 +1838,7 @@ sub find_hold_mvr {
 		$volume = $e->retrieve_asset_call_number($copy->call_number);
 	}
 
+    # TODO return metarcord mvr for M holds
 	my $title = $e->retrieve_biblio_record_entry($tid);
 	return ( $U->record_to_mvr($title), $volume, $copy );
 }
