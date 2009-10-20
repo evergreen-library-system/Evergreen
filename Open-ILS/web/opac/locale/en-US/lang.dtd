@@ -2910,6 +2910,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Copy_ID.label "Copy ID">
 <!ENTITY staff.circ.alternate_copy_summary.Copy_Location.label "Copy Location">
 <!ENTITY staff.circ.alternate_copy_summary.Date_Created.label "Date Created">
+<!ENTITY staff.circ.alternate_copy_summary.Status_Changed_Time.label "Status Changed">
 <!ENTITY staff.circ.alternate_copy_summary.Due_Date.label "Due Date">
 <!ENTITY staff.circ.alternate_copy_summary.Edition.label "Edition">
 <!ENTITY staff.circ.alternate_copy_summary.Holdable.label "Holdable">

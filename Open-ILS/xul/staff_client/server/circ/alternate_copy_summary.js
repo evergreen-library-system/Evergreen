@@ -101,6 +101,7 @@ function load_item() {
         set("circulate", '');
         set("copy_number", '');
         set("copy_create_date", '');
+        set("status_changed_time", '');
         set("copy_creator", '');
         set("deleted", '');
         set("deposit", '');
@@ -139,6 +140,7 @@ function load_item() {
             set("circulate", details.copy.circulate()); 
             set("copy_number", details.copy.copy_number()); 
             set("copy_create_date", details.copy.create_date()); 
+            set("status_changed_time", details.copy.status_changed_time()); 
             set("copy_creator", details.copy.creator()); 
             set("deleted", details.copy.deleted()); 
             set("deposit", details.copy.deposit()); 
