@@ -114,21 +114,17 @@ circ.checkout.prototype = {
 							}
 						}
 					],
-					'checkout_duedate_menu' : [
+					'checkout_duedate_datepicker' : [
 						['change'],
 						function(ev) { 
 							try {
-								obj.check_date(ev.target);
-								ev.target.parentNode.setAttribute('style','');
+								if (obj.check_date(ev.target)) {
+								    ev.target.parentNode.setAttribute('style','');
+                                } else {
+                                    ev.target.parentNode.setAttribute('style','background-color: red');
+                                }
 							} catch(E) {
-								ev.target.parentNode.setAttribute('style','background-color: red');
-								alert(E + '\n' + document.getElementById('circStrings').getString('staff.circ.checkout.date.exception'));
-								try {
-									ev.target.inputField.select();
-									ev.target.inputField.focus();
-								} catch(EX) { /* this should work, let me try on other platforms */ 
-									obj.error.sdump('D_ERROR','menulist.inputField: ' + EX);
-								}
+                                alert('Error in checkout.js, checkout_duedate_datepicker @change: ' + E);
 							}
 						}
 					],
@@ -333,23 +329,17 @@ circ.checkout.prototype = {
 	},
 
 	'check_date' : function(node) {
+        var obj = this;
 		JSAN.use('util.date');
 		try {
-			if (node.value == 'Normal') { return true; }
-			var pattern = node.value.match(/Today \+ (\d+) days/);
-			if (pattern) {
-				var today = new Date();
-				var todayPlus = new Date(); todayPlus.setTime( today.getTime() + 24*60*60*1000*pattern[1] );
-				node.value = util.date.formatted_date(todayPlus,"%F");
-			}
-			if (! util.date.check('YYYY-MM-DD',node.value) ) { 
-				throw(document.getElementById('circStrings').getString('staff.circ.invalid_date'));
-			}
+            obj.controller.view.checkout_barcode_entry_textbox.setAttribute('disabled','false');
+            obj.controller.view.checkout_barcode_entry_textbox.disabled = false;
+            obj.controller.view.cmd_checkout_submit.setAttribute('disabled','false');
+            obj.controller.view.cmd_checkout_submit.disabled = false;
 			if (util.date.check_past('YYYY-MM-DD',node.value) ) {
-				throw(document.getElementById('circStrings').getString('staff.circ.checkout.date.too_early.error'));
-			}
-			if ( util.date.formatted_date(new Date(),'%F') == node.value) {
-				throw(document.getElementById('circStrings').getString('staff.circ.checkout.date.too_early.error'));
+				obj.controller.view.checkout_barcode_entry_textbox.setAttribute('disabled','true');
+				obj.controller.view.cmd_checkout_submit.setAttribute('disabled','true');
+                return false;
 			}
 			return true;
 		} catch(E) {
@@ -568,10 +558,19 @@ circ.checkout.prototype = {
 	'checkout' : function(params) {
 		var obj = this;
 
-		try { obj.check_date(obj.controller.view.checkout_duedate_menu); } catch(E) { return; }
-		if (obj.controller.view.checkout_duedate_menu.value != 'Normal') {
-			params.due_date = obj.controller.view.checkout_duedate_menu.value;
-		}
+        if (document.getElementById('checkout_duedate_checkbox').checked) {
+            if (! obj.check_date(obj.controller.view.checkout_duedate_datepicker)) return;
+            var tp = document.getElementById('checkout_duedate_timepicker');
+            var dp = obj.controller.view.checkout_duedate_datepicker;
+            var tp_date = tp.dateValue;
+            var dp_date = dp.dateValue;
+            tp_date.setFullYear( dp_date.getFullYear() );
+            tp_date.setMonth( dp_date.getMonth() );
+            tp_date.setDate( dp_date.getDate() );
+
+            JSAN.use('util.date');
+            params.due_date = util.date.formatted_date(tp_date,'%{iso8601}');
+        }
 
 		if (typeof obj.on_checkout == 'function') { obj.on_checkout(params); }
 

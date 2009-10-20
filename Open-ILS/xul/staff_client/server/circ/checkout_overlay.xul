@@ -39,16 +39,9 @@
 		accesskey="&staff.patron_display.checkout.submit.accesskey;"/>
 	<spacer flex="1"/>
 	<hbox id="duedate_hbox">
-		<label value="&staff.circ.checkout_overlay.duedate_menu.label;" accesskey="&staff.circ.checkout_overlay.duedate_menu.accesskey;" control="checkout_duedate_menu"/>
-		<menulist id="checkout_duedate_menu" editable="true">
-			<menupopup>
-				<menuitem label="&common.date_helper.normal;" selected="true"/>
-				<menuitem label="&common.date_helper.3_days;" />
-				<menuitem label="&common.date_helper.7_days;" />
-				<menuitem label="&common.date_helper.14_days;" />
-				<menuitem label="&common.date_helper.30_days;" />
-			</menupopup>
-		</menulist>
+		<checkbox id="checkout_duedate_checkbox" label="&staff.circ.checkout_overlay.duedate.label;" accesskey="&staff.circ.checkout_overlay.duedate.accesskey;" oncommand="if (this.checked) { this.nextSibling.focus(); } else { document.getElementById('checkout_barcode_entry_textbox').focus(); }"/>
+		<datepicker id="checkout_duedate_datepicker" type="popup" />
+		<timepicker id="checkout_duedate_timepicker" type="popup" />
 	</hbox>
 </hbox>
 

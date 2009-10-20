@@ -1824,8 +1824,8 @@
 <!ENTITY staff.circ.renew_overlay.renew_export.label "Export">
 <!ENTITY staff.circ.renew_overlay.trim_list.label "Trim List (20 rows)">
 <!ENTITY staff.circ.renew_overlay.strict_barcode.label "Strict Barcode">
-<!ENTITY staff.circ.checkout_overlay.duedate_menu.label "Normal">
-<!ENTITY staff.circ.checkout_overlay.duedate_menu.accesskey "u">
+<!ENTITY staff.circ.checkout_overlay.duedate.label "Specific Due Date">
+<!ENTITY staff.circ.checkout_overlay.duedate.accesskey "u">
 <!ENTITY staff.circ.checkout_overlay.barcode.accesskey "C">
 <!ENTITY staff.circ.checkout_overlay.export.accesskey "">
 <!ENTITY staff.circ.checkout_overlay.export.label "Export">
