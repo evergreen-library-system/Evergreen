@@ -67,6 +67,7 @@ econst OILS_STOP_FINES_LOST           => 'LOST';
 econst OILS_STOP_FINES_CLAIMSRETURNED => 'CLAIMSRETURNED';
 econst OILS_STOP_FINES_LONGOVERDUE    => 'LONGOVERDUE';
 econst OILS_STOP_FINES_MAX_FINES      => 'MAXFINES';
+econst OILS_STOP_FINES_CLAIMS_NEVERCHECKEDOUT => 'CLAIMSNEVERCHECKEDOUT';
 econst OILS_UNLIMITED_CIRC_DURATION   => 'unlimited';
 
 # ---------------------------------------------------------------------

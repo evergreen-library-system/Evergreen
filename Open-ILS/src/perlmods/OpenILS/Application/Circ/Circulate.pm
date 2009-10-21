@@ -174,6 +174,7 @@ sub run_method {
     # --------------------------------------------------------------------------
     $circulator->is_renewal(1) if $api =~ /renew/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
+    $circulator->noop if $circulator->claims_never_checked_out;
 
     if($legacy_script_support and not $circulator->is_checkin) {
         $circulator->mk_script_runner();
@@ -407,6 +408,7 @@ my @AUTOLOAD_FIELDS = qw/
     void_overdues
     parent_circ
     return_patron
+    claims_never_checked_out
 /;
 
 
@@ -1893,7 +1895,17 @@ sub do_checkin {
         }
     }
 
-    $self->reshelve_copy;
+    if($self->claims_never_checked_out and 
+            $U->ou_ancestor_setting_value($self->circ->circ_lib, 'circ.claim_never_checked_out.mark_missing')) {
+
+        # the item was not supposed to be checked out to the user and should now be marked as missing
+        $self->copy->status(OILS_COPY_STATUS_MISSING);
+        $self->update_copy;
+
+    } else {
+        $self->reshelve_copy;
+    }
+
     return if $self->bail_out;
 
     unless($self->checkin_changed) {
@@ -2277,6 +2289,18 @@ sub checkin_handle_circ {
    my $evt;
    my $obt;
 
+    if($self->claims_never_checked_out) {
+
+        # backdate to void any fines accrued on the circ
+        $self->backdate($circ->xact_start);
+
+        # update the patrons never-checked-out count
+        $self->patron->claims_never_checked_out_count(
+            $self->patron->claims_never_checked_out_count + 1);
+        $self->editor->update_actor_user($self->patron) or 
+            $self->bail_on_events($self->editor->event);
+    }
+
    # backdate the circ if necessary
    if($self->backdate) {
         $self->checkin_handle_backdate;
@@ -2292,7 +2316,8 @@ sub checkin_handle_circ {
    if(!$circ->stop_fines) {
       $circ->stop_fines(OILS_STOP_FINES_CHECKIN);
       $circ->stop_fines(OILS_STOP_FINES_RENEW) if $self->is_renewal;
-      $circ->stop_fines_time('now') unless $self->backdate;
+      $circ->stop_fines(OILS_STOP_FINES_CLAIMS_NEVERCHECKEDOUT) if $self->claims_never_checked_out;
+      $circ->stop_fines_time('now');
       $circ->stop_fines_time($self->backdate) if $self->backdate;
    }
 
