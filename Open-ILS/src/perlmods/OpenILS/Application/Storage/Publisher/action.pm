@@ -1,6 +1,6 @@
 package OpenILS::Application::Storage::Publisher::action;
-#use base qw/OpenILS::Application::Storage::Publisher/;
-#use OpenSRF::Utils::Logger qw/:level/;
+use base qw/OpenILS::Application::Storage::Publisher/;
+use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
