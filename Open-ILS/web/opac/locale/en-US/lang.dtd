@@ -1217,6 +1217,7 @@
 <!ENTITY staff.patron_display.home_ou.label 'Home Library:'>
 <!ENTITY staff.patron_display.ident1.label 'ID 1:'>
 <!ENTITY staff.patron_display.ident2.label 'ID 2:'>
+<!ENTITY staff.patron_display.hold_alias.label 'Holds Alias:'>
 <!ENTITY staff.patron_display.items.print_receipt.label 'Print Receipt'>
 <!ENTITY staff.patron_display.items.print_receipt.accesskey 'P'>
 <!ENTITY staff.patron_display.items_claimed_returned.label 'Items Claimed Returned:'>

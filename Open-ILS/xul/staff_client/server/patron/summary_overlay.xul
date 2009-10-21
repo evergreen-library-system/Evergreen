@@ -149,6 +149,10 @@
 				<description id="patron_ident_value_2" class="copyable ident ident_value ident2 value"/>
 			</vbox>
 		</row>
+        <row>
+            <label id="PatronSummaryContact_hold_alias_label" class="copyable text_left" value="&staff.patron_display.hold_alias.label;"/>
+            <description id="patron_hold_alias" class="copyable hold_alias value" />
+        </row>
 		<row id="pdsgr3">
             <label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="copyable text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
             <description id="patron_date_of_birth" class="copyable dob value" hide_value="true" oils_persist="hide_value"/>

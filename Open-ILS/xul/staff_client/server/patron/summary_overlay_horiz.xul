@@ -35,6 +35,10 @@
                         <description id="patron_card" class="copyable card value click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
                     </row>
                     <row>
+                        <label id="PatronSummaryContact_hold_alias_label" class="copyable text_left" value="&staff.patron_display.hold_alias.label;"/>
+                        <description id="patron_hold_alias" class="copyable hold_alias value" />
+                    </row>
+                    <row>
                         <label id="PatronSummaryContact_usrname_label" class="copyable text_left usrname label"
                             value="&staff.patron.summary_overlay.opac_login.value;" />
                         <description id="patron_usrname" class="copyable usrname value"/>

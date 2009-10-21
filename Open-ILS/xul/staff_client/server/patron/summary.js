@@ -316,6 +316,16 @@ patron.summary.prototype = {
 							};
 						}
 					],
+                    'patron_hold_alias' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                util.widgets.set_text(e,
+                                    obj.patron.alias() ? obj.patron.alias() : ''
+                                );
+                            }
+                        }
+                    ],
 					'patron_date_of_birth' : [
 						['render'],
 						function(e) {
