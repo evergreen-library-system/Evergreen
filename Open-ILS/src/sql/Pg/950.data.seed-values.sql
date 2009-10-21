@@ -2255,4 +2255,13 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm)
 		config.index_normalizer i
 	  WHERE	i.func IN ('naco_normalize','split_date_range');
 
+-- claims returned mark item missing 
+INSERT INTO
+    config.org_unit_setting_type ( name, label, description, datatype )
+    VALUES (
+        'circ.claim_return.mark_missing',
+        'Claim Return: Mark copy as missing', 
+        'When a circ is marked as claims-returned, also mark the copy as missing',
+        'bool'
+    );
 
