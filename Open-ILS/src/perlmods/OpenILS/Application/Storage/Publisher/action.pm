@@ -1,6 +1,6 @@
 package OpenILS::Application::Storage::Publisher::action;
-use base qw/OpenILS::Application::Storage::Publisher/;
-use OpenSRF::Utils::Logger qw/:level/;
+#use base qw/OpenILS::Application::Storage::Publisher/;
+#use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
@@ -879,8 +879,35 @@ sub new_hold_copy_targeter {
 		  close_end => { '>=', 'now' } }
 	);
 
+    if ($check_expire) {
+
+        # $check_expire, if it exists, was already converted to seconds
+    	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time() + $check_expire);
+	    $year += 1900;
+    	$mon += 1;
+
+	    my $next_check_time = sprintf(
+    		'%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
+	    	$year, $mon, $mday, $hour, $min, $sec
+    	);
+
+
+	    my @closed_at_next = actor::org_unit::closed_date->search_where(
+		    { close_start => { '<=', $next_check_time },
+    		  close_end => { '>=', $next_check_time } }
+	    );
+
+        my @new_closed;
+        for my $c_at_n (@closed_at_next) {
+            if (grep { ''.$_->org_unit eq ''.$c_at_n->org_unit } @closed) {
+                push @new_closed, $c_at_n;
+            }
+        }
+        @closed = @new_closed;
+    }
 
 	my @successes;
+	my $actor = OpenSRF::AppSession->create('open-ils.actor');
 
 	for my $hold (@$holds) {
 		try {
@@ -1078,7 +1105,7 @@ sub new_hold_copy_targeter {
 				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$all_copies)." copies");
 
 				my $max_loops = $actor->request(
-					'open-ils.actor.ou_setting.ancestor_default' => $lib => 'circ.holds.max_org_unit_target_loops'
+					'open-ils.actor.ou_setting.ancestor_default' => $hold->pickup_lib => 'circ.holds.max_org_unit_target_loops'
 				)->gather(1);
 
 				if (defined($max_loops)) {
@@ -1091,7 +1118,7 @@ sub new_hold_copy_targeter {
 					my $current_loop = $cstore->request(
 						'open-ils.cstore.json_query',
 						{ distinct => 1,
-						  select => { aufhmxl => [max] },
+						  select => { aufhmxl => ['max'] },
 						  from => 'aufhmxl',
 						  where => { hold => $hold->id}
 						}
@@ -1314,7 +1341,7 @@ sub hold_copy_targeter {
 	
 			if (!scalar(@good_copies)) {
 				$client->respond("\tNo (non-current) copies available to fill the hold.\n");
-				if ( $old_best && grep {$c->id == $hold->current_copy} @$copies ) {
+				if ( $old_best && grep {$_->id == $hold->current_copy} @$copies ) {
 					$client->respond("\tPushing current_copy back onto the targeting list\n");
 					push @good_copies, asset::copy->retrieve( $old_best );
 				} else {
