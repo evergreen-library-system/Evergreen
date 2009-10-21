@@ -1228,7 +1228,8 @@ INSERT INTO permission.perm_list VALUES
 
     (346,'UPDATE_BILL_NOTE', oils_i18n_gettext(346,'Allows staff to edit the note for a bill on a transaction', 'ppl', 'description')),
     (347,'UPDATE_PAYMENT_NOTE', oils_i18n_gettext(347,'Allows staff to edit the note for a payment on a transaction', 'ppl', 'description')),
-    (348, 'UPDATE_RECORD', oils_i18n_gettext(348, 'Allow a user to update and undelete records.', 'ppl', 'description'));
+    (348, 'UPDATE_RECORD', oils_i18n_gettext(348, 'Allow a user to update and undelete records.', 'ppl', 'description')),
+    (349, 'UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT', oils_i18n_gettext(349,'Allows staff to manually change a patron''s claims never checkout out count', 'ppl', 'description'));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 

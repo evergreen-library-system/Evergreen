@@ -39,7 +39,6 @@ var addrTemplateRows;
 var cgi;
 var cloneUser;
 var cloneUserObj;
-var claimReturnedPermList;
 
 
 if(!window.xulG) var xulG = null;
@@ -111,6 +110,7 @@ function load() {
     loadStatCats();
     loadSurveys();
     checkClaimsReturnCountPerm();
+    checkClaimsNoCheckoutCountPerm();
 }
 
 /*
@@ -381,6 +381,23 @@ function checkClaimsReturnCountPerm() {
     );
 }
 
+
+function checkClaimsNoCheckoutCountPerm() {
+    new openils.User().getPermOrgList(
+        'UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT',
+        function(orgList) { 
+            var cr = findWidget('au', 'claims_never_checked_out_count');
+            if(orgList.indexOf(patron.home_ou()) == -1) 
+                cr.widget.attr('disabled', true);
+            else
+                cr.widget.attr('disabled', false);
+        },
+        true, 
+        true
+    );
+}
+
+
 function attachWidgetEvents(fmcls, fmfield, widget) {
 
     if(fmcls == 'ac') {
@@ -462,7 +479,11 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
 
             case 'home_ou':
                 dojo.connect(widget.widget, 'onChange',
-                    function(newVal) { checkClaimsReturnCountPerm(); });
+                    function(newVal) { 
+                        checkClaimsReturnCountPerm(); 
+                        checkClaimsNoCheckoutCountPerm();
+                    }
+                );
                 return;
 
         }

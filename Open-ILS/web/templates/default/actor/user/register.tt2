@@ -113,6 +113,7 @@
         <tr fmclass='au' fmfield='barred'/>
         <tr fmclass='au' fmfield='master_account'/>
         <tr fmclass='au' fmfield='claims_returned_count' wclass='dijit.form.NumberSpinner' wconstraints="{min:0,places:0}" wvalue='0'/>
+        <tr fmclass='au' fmfield='claims_never_checked_out_count' wclass='dijit.form.NumberSpinner' wconstraints="{min:0,places:0}" wvalue='0'/>
         <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
 
         <tr class='divider hidden' id='uedit-settings-divider'><td colspan='0'>User Settings</td></tr>
