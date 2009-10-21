@@ -4743,9 +4743,12 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
 						}
 							
+                        /* This causes 'might_have' fleshing to flesh the base object onto itself as 
+                         * opposed to the linked object when fleshing a self-referential foreign key
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) { // might_have
 							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
 						}
+                        */
 
 						osrfStringArray* link_map = osrfHashGet( kid_link, "map" );
 
