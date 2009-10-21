@@ -19,7 +19,7 @@ circ.renew.prototype = {
 
 		var obj = this;
 
-		JSAN.use('circ.util');
+		JSAN.use('circ.util'); JSAN.use('patron.util');
 		var columns = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
@@ -30,12 +30,18 @@ circ.renew.prototype = {
 				'alert_message' : { 'hidden' : false },
 				'due_date' : { 'hidden' : false },
 				'due_time' : { 'hidden' : false },
-				'renewal_remaining' : { 'hidden' : false },
+				'renewal_remaining' : { 'hidden' : false }
 			},
 			{
 				'except_these' : [ 'uses', 'checkin_time_full' ]
 			}
-		);
+		).concat(
+            patron.util.columns( { 'family_name' : { 'hidden' : 'false' } } )
+
+        ).concat(
+            patron.util.mbts_columns( {}, { 'except_these' : [ 'total_paid', 'total_owed', 'xact_start', 'xact_finish', 'xact_type' ] } )
+
+        ).sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 
 		JSAN.use('util.list'); obj.list = new util.list('renew_list');
 		obj.list.init(
@@ -301,22 +307,47 @@ circ.renew.prototype = {
 				var x = document.getElementById('trim_list');
 				if (x.checked) { obj.list.trim_list = 20; } else { obj.list.trim_list = null; }
 			}
-			obj.list.append(
-				{
-					'retrieve_id' : retrieve_id,
-					'row' : {
-						'my' : {
-							'circ' : renew.circ,
-							'mvr' : renew.record,
-							'acp' : renew.copy,
-							'status' : renew.status,
-							'route_to' : renew.route_to,
-							'message' : renew.message
-						}
-					},
-					'to_top' : true
-				}
-			);
+
+            var params = {
+                'retrieve_id' : retrieve_id,
+                'row' : {
+                    'my' : {
+                        'circ' : renew.circ,
+                        'mbts' : renew.parent_circ ? renew.parent_circ.billable_transaction().summary() : null,
+                        'mvr' : renew.record,
+                        'acp' : renew.copy,
+                        'status' : renew.status,
+                        'route_to' : renew.route_to,
+                        'message' : renew.message
+                    }
+                },
+                'to_top' : true
+            };
+			obj.list.append( params );
+
+            if (params.row.my.mbts && ( document.getElementById('no_change_label') || document.getElementById('fine_tally') ) ) {
+                JSAN.use('util.money');
+                var bill = params.row.my.mbts;
+                if (Number(bill.balance_owed()) == 0) { return; }
+                if (document.getElementById('no_change_label')) {
+                    var m = document.getElementById('no_change_label').getAttribute('value');
+                    document.getElementById('no_change_label').setAttribute(
+                        'value', 
+                        m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [params.row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
+                    );
+                    document.getElementById('no_change_label').setAttribute('hidden','false');
+                }
+                if (document.getElementById('fine_tally')) {
+                    var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
+                    document.getElementById('fine_tally').setAttribute('amount',amount);
+                    document.getElementById('fine_tally').setAttribute(
+                        'value',
+                        document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
+                    );
+                    document.getElementById('fine_tally').setAttribute('hidden','false');
+                }
+            }
+
 			obj.list.node.view.selection.select(0);
 
 			JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
