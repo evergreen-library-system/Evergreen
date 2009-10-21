@@ -315,6 +315,7 @@ circ.renew.prototype = {
                         'mbts' : renew.parent_circ ? renew.parent_circ.billable_transaction().summary() : null,
                         'mvr' : renew.record,
                         'acp' : renew.copy,
+                        'au' : renew.patron,
                         'status' : renew.status,
                         'route_to' : renew.route_to,
                         'message' : renew.message
@@ -327,23 +328,24 @@ circ.renew.prototype = {
             if (params.row.my.mbts && ( document.getElementById('no_change_label') || document.getElementById('fine_tally') ) ) {
                 JSAN.use('util.money');
                 var bill = params.row.my.mbts;
-                if (Number(bill.balance_owed()) == 0) { return; }
-                if (document.getElementById('no_change_label')) {
-                    var m = document.getElementById('no_change_label').getAttribute('value');
-                    document.getElementById('no_change_label').setAttribute(
-                        'value', 
-                        m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [params.row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
-                    );
-                    document.getElementById('no_change_label').setAttribute('hidden','false');
-                }
-                if (document.getElementById('fine_tally')) {
-                    var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
-                    document.getElementById('fine_tally').setAttribute('amount',amount);
-                    document.getElementById('fine_tally').setAttribute(
-                        'value',
-                        document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
-                    );
-                    document.getElementById('fine_tally').setAttribute('hidden','false');
+                if (Number(bill.balance_owed()) != 0) {
+                    if (document.getElementById('no_change_label')) {
+                        var m = document.getElementById('no_change_label').getAttribute('value');
+                        document.getElementById('no_change_label').setAttribute(
+                            'value', 
+                            m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [params.row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
+                        );
+                        document.getElementById('no_change_label').setAttribute('hidden','false');
+                    }
+                    if (document.getElementById('fine_tally')) {
+                        var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
+                        document.getElementById('fine_tally').setAttribute('amount',amount);
+                        document.getElementById('fine_tally').setAttribute(
+                            'value',
+                            document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
+                        );
+                        document.getElementById('fine_tally').setAttribute('hidden','false');
+                    }
                 }
             }
 
@@ -373,16 +375,24 @@ circ.renew.prototype = {
 	},
 
 	'on_renew' : function() {
-		this.controller.view.renew_barcode_entry_textbox.disabled = false;
-		this.controller.view.renew_barcode_entry_textbox.select();
-		this.controller.view.renew_barcode_entry_textbox.value = '';
-		this.controller.view.renew_barcode_entry_textbox.focus();
+        try {
+            this.controller.view.renew_barcode_entry_textbox.disabled = false;
+            this.controller.view.renew_barcode_entry_textbox.select();
+            this.controller.view.renew_barcode_entry_textbox.value = '';
+            this.controller.view.renew_barcode_entry_textbox.focus();
+        } catch(E) {
+            alert('Error in renew.js, on_renew(): ' + E);
+        }
 	},
 
 	'on_failure' : function() {
-		this.controller.view.renew_barcode_entry_textbox.disabled = false;
-		this.controller.view.renew_barcode_entry_textbox.select();
-		this.controller.view.renew_barcode_entry_textbox.focus();
+        try {
+            this.controller.view.renew_barcode_entry_textbox.disabled = false;
+            this.controller.view.renew_barcode_entry_textbox.select();
+            this.controller.view.renew_barcode_entry_textbox.focus();
+        } catch(E) {
+            alert('Error in renew.js, on_failure(): ' + E);
+        }
 	},
 	
 	'spawn_copy_editor' : function() {
