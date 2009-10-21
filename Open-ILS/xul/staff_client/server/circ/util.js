@@ -2875,6 +2875,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 
 		function renew_callback(req) {
 			try {
+		        JSAN.use('util.error'); var error = new util.error();
 				var renew = req.getResultObject();
 				if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
 				for (var j = 0; j < renew.length; j++) {
@@ -2890,6 +2891,22 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
                         case 1233 /* ITEM_RENTAL_FEE_REQUIRED */ : break;
 					    case 1234 /* ITEM_DEPOSIT_PAID */ : break;
 						case 1500 /* ACTION_CIRCULATION_NOT_FOUND */ : break;
+                        case 1502 /* ASSET_COPY_NOT_FOUND */ : 
+                            var mis_scan_msg = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [params.barcode]);
+                            error.yns_alert(
+                                mis_scan_msg,
+                                document.getElementById('circStrings').getString('staff.circ.alert'),
+                                null,
+                                document.getElementById('circStrings').getString('staff.circ.utils.msg.ok'),
+                                null,
+                                document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+                            );
+                            if (document.getElementById('no_change_label')) {
+                                var m = document.getElementById('no_change_label').getAttribute('value');
+                                document.getElementById('no_change_label').setAttribute('value',m + mis_scan_msg + '  ');
+                                document.getElementById('no_change_label').setAttribute('hidden','false');
+                            }
+                        break;
 						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
 						case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
 						case 7004 /* COPY_NOT_AVAILABLE */ : break;
