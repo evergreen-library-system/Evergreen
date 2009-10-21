@@ -873,7 +873,7 @@ circ.checkout.prototype = {
                                     }
                                 } else { // EITHER AUTO-RENEW OR OFFER CANCEL, NORMAL CHECKIN, AND RENEW
                                     if (payload.auto_renew) {
-                                        circ.util.renew_via_barcode( params.barcode, obj.patron_id, function(r) {
+                                        circ.util.renew_via_barcode( { 'barcode': params.barcode, 'patron' : obj.patron_id }, function(r) {
                                             try {
                                                 params.renewal = true;
                                                 obj._checkout( params, r[0] ); 
@@ -897,7 +897,7 @@ circ.checkout.prototype = {
                                                 obj.checkout(params);
                                             break;
                                             case 2:
-                                                circ.util.renew_via_barcode( params.barcode, obj.patron_id, function(r) {
+                                                circ.util.renew_via_barcode( { 'barcode' : params.barcode, 'patron' : obj.patron_id }, function(r) {
                                                     try {
                                                         params.renewal = true;
                                                         obj._checkout( params, r[0] ); 

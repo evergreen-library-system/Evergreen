@@ -275,7 +275,7 @@ patron.items.prototype = {
 					l.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.items.items_renew.renewing',[bc]));
 					x.appendChild(l);
 				}
-				var renew = circ.util.renew_via_barcode( bc, obj.patron_id, 
+				var renew = circ.util.renew_via_barcode( { 'barcode' : bc, 'patron' : obj.patron_id },
 					function(r) {
                         try {
                             if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {

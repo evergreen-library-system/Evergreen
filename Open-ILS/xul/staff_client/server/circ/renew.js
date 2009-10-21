@@ -261,8 +261,7 @@ circ.renew.prototype = {
 			if (auto_print) auto_print = auto_print.checked;
 			JSAN.use('circ.util');
 			var renew = circ.util.renew_via_barcode(
-                barcode,
-                null,
+                { 'barcode' : barcode, 'return_patron' : true },
                 function( r ) {
                     obj.renew_followup( r, barcode );
                 }

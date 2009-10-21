@@ -268,7 +268,7 @@ circ.copy_status.prototype = {
 								var test = obj.selection_list[i].renewable;
 								var barcode = obj.selection_list[i].barcode;
 								if (test == 't') {
-									circ.util.renew_via_barcode( barcode );
+									circ.util.renew_via_barcode( { 'barcode' : barcode } );
 									funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								} else {
 									alert(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.sel_renew.not_circulating', [barcode]));

@@ -2877,14 +2877,11 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 	}
 };
 
-circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
+circ.util.renew_via_barcode = function ( params, async ) {
 	try {
 		var obj = {};
 		JSAN.use('util.network'); obj.network = new util.network();
 		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.stash_retrieve();
-
-		var params = { barcode: barcode };
-		if (patron_id) params.patron = patron_id;
 
 		function renew_callback(req) {
 			try {
@@ -2938,7 +2935,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 				return renew;
 			} catch(E) {
 				JSAN.use('util.error'); var error = new util.error();
-				error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.renew_failed.error', [barcode]), E);
+				error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.renew_failed.error', [params.barcode]), E);
 				return null;
 			}
 		}
@@ -2968,31 +2965,31 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 					7013 /* PATRON_EXCEEDS_FINES */,
 				],
 				'text' : {
-					'1212' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
-					'1213' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
-					'1215' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
+					'1212' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
+					'1213' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
+					'1215' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
                     '1232' : function(r) {
-                        return document.getElementById('circStrings').getFormattedString('staff.circ.renew.override.item_deposit_required.warning.barcode', [barcode]);
+                        return document.getElementById('circStrings').getFormattedString('staff.circ.renew.override.item_deposit_required.warning.barcode', [params.barcode]);
                     },
                     '1233' : function(r) {
-                        return document.getElementById('circStrings').getFormattedString('staff.circ.renew.override.item_rental_fee_required.warning.barcode', [barcode]);
+                        return document.getElementById('circStrings').getFormattedString('staff.circ.renew.override.item_rental_fee_required.warning.barcode', [params.barcode]);
                     },
 					'1234' : function(r) {
 						return document.getElementById('circStrings').getFormattedString('staff.circ.utils.checkin.override.item_deposit_paid.warning');
 					},
-					'7002' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
-					'7003' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
+					'7002' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
+					'7003' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
 					'7004' : function(r) {
-						return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.status', [barcode, typeof r.payload.status() == 'object' ? r.payload.status().name() : obj.data.hash.ccs[ r.payload.status() ].name()]);
+						return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.status', [params.barcode, typeof r.payload.status() == 'object' ? r.payload.status().name() : obj.data.hash.ccs[ r.payload.status() ].name()]);
 					},
-					'7006' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
-					'7007' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
-					'7008' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
-					'7009' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); },
+					'7006' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
+					'7007' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
+					'7008' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
+					'7009' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
 					'7010' : function(r) {
-						return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.msg', [barcode, r.payload]);
+						return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode.msg', [params.barcode, r.payload]);
 					},
-					'7013' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [barcode]); }
+					'7013' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); }
 				}
 			}
 		);
@@ -3002,7 +2999,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.renew_failed.error', [barcode]), E);
+		error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.renew_failed.error', [params.barcode]), E);
 		return null;
 	}
 };
