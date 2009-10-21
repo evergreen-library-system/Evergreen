@@ -406,6 +406,7 @@ my @AUTOLOAD_FIELDS = qw/
     noop
     void_overdues
     parent_circ
+    return_patron
 /;
 
 
@@ -1247,7 +1248,8 @@ sub do_checkout {
                 holds_fulfilled  => $self->fulfilled_holds,
                 deposit_billing  => $self->deposit_billing,
                 rental_billing   => $self->rental_billing,
-                parent_circ      => $pcirc
+                parent_circ      => $pcirc,
+                patron           => ($self->return_patron) ? $self->patron : undef
             }
         )
     );
