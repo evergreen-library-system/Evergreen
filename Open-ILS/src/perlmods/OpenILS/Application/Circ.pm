@@ -357,6 +357,17 @@ sub set_circ_claims_returned {
 
     $e->update_action_circulation($circ) or return $e->die_event;
     $e->commit;
+
+
+    # see if we need to also mark the copy as missing
+    if($U->ou_ancestor_setting_value($circ->circ_lib, 'circ.claim_return.mark_missing')) {
+	    return $apputils->simplereq(
+		    'open-ils.circ',
+            'open-ils.circ.mark_item_missing',
+            $auth, $copy->id
+        );
+    }
+
     return 1;
 }
 
