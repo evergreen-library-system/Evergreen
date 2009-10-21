@@ -108,21 +108,30 @@ circ.util.backdate_post_checkin = function(circ_ids) {
 		if (typeof my_xulG.proceed == 'undefined') return;
 
         var r = obj.network.simple_request( 'FM_CIRC_BACKDATE_BATCH', [ ses(), circ_ids, my_xulG.backdate ] );
-        if (r == 1) {
-            obj.sound.circ_good();
-            var x = $('no_change_label');
-            if (x) {
-                x.hidden = false;
-                x.setAttribute('value', circStrings.getFormattedString('staff.circ.backdate.success',[circ_ids.join(","),my_xulG.backdate]));
+        if (typeof r.ilsevent != 'undefined') throw(r);
+        var bad_sound = false;
+        dojo.forEach(
+            r,
+            function(element,idx,list) {
+                if (element == 1) {
+                    var x = $('no_change_label');
+                    if (x) {
+                        x.hidden = false;
+                        var m = x.getAttribute('value');
+                        x.setAttribute('value', (m ? m + ' : ' : '' ) + circStrings.getFormattedString('staff.circ.backdate.success',[circ_ids[idx],my_xulG.backdate]));
+                    }
+                } else {
+                    bad_sound = true;
+                    var x = $('no_change_label');
+                    if (x) {
+                        x.hidden = false;
+                        var m = x.getAttribute('value');
+                        x.setAttribute('value', (m ? m + ' : ' : '' ) + circStrings.getFormattedString('staff.circ.backdate.failure',[circ_ids[idx],r.textcode]));
+                    }
+                }
             }
-        } else {
-            obj.sound.circ_bad();
-            var x = $('no_change_label');
-            if (x) {
-                x.hidden = false;
-                x.setAttribute('value', circStrings.getFormattedString('staff.circ.backdate.failed',[circ_ids.join(","),r.textcode]));
-            }
-        }
+        );
+        if (bad_sound) obj.sound.circ_bad(); else obj.sound.circ_good();
 
 	} catch(E) {
 		obj.error.standard_unexpected_error_alert(circStrings.getString('staff.circ.utils.retrieve_copy.failure'),E);
