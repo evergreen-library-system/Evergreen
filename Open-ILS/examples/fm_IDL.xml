@@ -1650,6 +1650,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Physical Address" name="billing_address" reporter:datatype="link"/>
 			<field reporter:label="Current Library Card" name="card" reporter:datatype="link"/>
 			<field reporter:label="Claims-returned Count" name="claims_returned_count" reporter:datatype="int" />
+			<field reporter:label="Claims Never Checked Out Count" name="claims_never_checked_out_count" reporter:datatype="int" />
 			<field reporter:label="Record Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="User Credit Balance" name="credit_forward_balance" reporter:datatype="money" />
 			<field reporter:label="Daytime Phone" name="day_phone"  reporter:datatype="text"/>

@@ -64,7 +64,8 @@ CREATE TABLE actor.usr (
 	last_xact_id		TEXT				NOT NULL DEFAULT 'none',
 	alert_message		TEXT,
 	create_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
-	expire_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT (now() + '3 years'::INTERVAL)
+	expire_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT (now() + '3 years'::INTERVAL),
+	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0
 );
 COMMENT ON TABLE actor.usr IS $$
 /*
