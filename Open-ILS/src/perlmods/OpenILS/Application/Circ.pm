@@ -396,7 +396,9 @@ sub post_checkin_backdate_circ {
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     if($self->api_name =~ /batch/) {
-        $conn->respond(post_checkin_backdate_circ_impl($e, $_, $backdate)) for $circ_id;
+        foreach my $c (@$circ_id) {
+            $conn->respond(post_checkin_backdate_circ_impl($e, $c, $backdate)) 
+        }
     } else {
         $conn->respond_complete(post_checkin_backdate_circ_impl($e, $circ_id, $backdate));
     }
