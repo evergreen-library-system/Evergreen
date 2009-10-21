@@ -169,6 +169,7 @@ circ.checkin.prototype = {
 						['command'],
 						function() {
 							JSAN.use('circ.util');
+                            var circ_ids = [];
 							for (var i = 0; i < obj.selection_list.length; i++) {
                                 var circ_id = obj.selection_list[i].circ_id; 
                                 var copy_id = obj.selection_list[i].copy_id; 
@@ -177,8 +178,9 @@ circ.checkin.prototype = {
                                     if (blob.circ) circ_id = blob.circ.id();
                                 }
                                 if (!circ_id) continue;
-								circ.util.backdate_post_checkin( circ_id );
+                                circ_ids.push( circ_id );
 							}
+                            circ.util.backdate_post_checkin( circ_ids );
 						}
 					],
 					'sel_mark_items_damaged' : [

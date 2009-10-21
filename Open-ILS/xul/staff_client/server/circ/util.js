@@ -84,7 +84,7 @@ circ.util.show_copy_details = function(copy_id) {
 	}
 };
 
-circ.util.backdate_post_checkin = function(circ_id) {
+circ.util.backdate_post_checkin = function(circ_ids) {
 	var obj = {};
 	JSAN.use('util.error'); obj.error = new util.error();
 	JSAN.use('util.window'); obj.win = new util.window();
@@ -94,29 +94,33 @@ circ.util.backdate_post_checkin = function(circ_id) {
 
     var circStrings = document.getElementById('circStrings');
 
-	if (typeof circ_id == 'object' && circ_id != null) circ_id = circ_id.id();
+    dojo.forEach(
+        circ_ids,
+        function(element,idx,list) {
+            if (typeof element == 'object' && element != null) list[idx] = element.id();
+        }
+    );
 
 	try {
 		var url = xulG.url_prefix( urls.XUL_BACKDATE );
-        obj.data.temp_circ_id = circ_id; obj.data.stash('temp_circ_id');
-		var my_xulG = obj.win.open( url, 'backdate_post_checkin', 'chrome,resizable,modal', {} );
+		var my_xulG = obj.win.open( url, 'backdate_post_checkin', 'chrome,resizable,modal', { 'circ_ids' : circ_ids } );
 
 		if (typeof my_xulG.proceed == 'undefined') return;
 
-        var r = obj.network.simple_request( 'FM_CIRC_BACKDATE', [ ses(), circ_id, my_xulG.backdate ] );
+        var r = obj.network.simple_request( 'FM_CIRC_BACKDATE_BATCH', [ ses(), circ_ids, my_xulG.backdate ] );
         if (r == 1) {
             obj.sound.circ_good();
             var x = $('no_change_label');
             if (x) {
                 x.hidden = false;
-                x.setAttribute('value', circStrings.getFormattedString('staff.circ.backdate.success',[circ_id,my_xulG.backdate]));
+                x.setAttribute('value', circStrings.getFormattedString('staff.circ.backdate.success',[circ_ids.join(","),my_xulG.backdate]));
             }
         } else {
             obj.sound.circ_bad();
             var x = $('no_change_label');
             if (x) {
                 x.hidden = false;
-                x.setAttribute('value', circStrings.getFormattedString('staff.circ.backdate.failed',[circ_id,r.textcode]));
+                x.setAttribute('value', circStrings.getFormattedString('staff.circ.backdate.failed',[circ_ids.join(","),r.textcode]));
             }
         }
 

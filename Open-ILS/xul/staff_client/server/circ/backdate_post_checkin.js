@@ -27,8 +27,16 @@ function backdate_post_checkin_init() {
 
         $('checkin_effective_datepicker').value = util.date.formatted_date(new Date(),'%F');
 
-        $('circ_brief').setAttribute('src', urls.XUL_CIRC_BRIEF);
-        get_contentWindow($('circ_brief')).xulG = { 'circ_id' : xul_param('circ_id',{'modal_xulG':true}) };
+        var x = $('circ_brief_area');
+        var circ_ids = xul_param('circ_ids',{'modal_xulG':true});
+        dojo.forEach(
+            circ_ids,
+            function(element,idx,list) {
+                var iframe = document.createElement('iframe'); x.appendChild(iframe);
+                iframe.setAttribute('src', urls.XUL_CIRC_BRIEF);
+                get_contentWindow(iframe).xulG = { 'circ_id' : element };
+            }
+        );
 
         /* set widget behavior */
         $('cancel_btn').addEventListener(

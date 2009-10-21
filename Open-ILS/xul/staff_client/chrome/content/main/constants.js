@@ -191,6 +191,7 @@ const api = {
     'FM_CIRC_IMPROVED_COUNT_VIA_COPY' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.circbyyr.atomic' },
 	'FM_CIRC_EDIT_DUE_DATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.due_date.update' },
     'FM_CIRC_BACKDATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.post_checkin_backdate' },
+    'FM_CIRC_BACKDATE_BATCH' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.post_checkin_backdate.batch.atomic' },
 	'FM_CIT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve', 'secure' : false },
 	'FM_CITM_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.item_type_map.retrieve.all', 'secure' : false },
 	'FM_CNAL_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.net_access_level.retrieve.all', 'secure' : false },
