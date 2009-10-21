@@ -2187,7 +2187,7 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 	'Normalize date range',
 	'Split date ranges in the form of "XXXX-YYYY" into "XXXX YYYY" for proper index.',
 	'split_date_range',
-	1
+	0
 );
 
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
