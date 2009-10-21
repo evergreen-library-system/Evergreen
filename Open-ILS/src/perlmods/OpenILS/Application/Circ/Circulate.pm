@@ -2289,17 +2289,7 @@ sub checkin_handle_circ {
    my $evt;
    my $obt;
 
-    if($self->claims_never_checked_out) {
-
-        # backdate to void any fines accrued on the circ
-        $self->backdate($circ->xact_start);
-
-        # update the patrons never-checked-out count
-        $self->patron->claims_never_checked_out_count(
-            $self->patron->claims_never_checked_out_count + 1);
-        $self->editor->update_actor_user($self->patron) or 
-            $self->bail_on_events($self->editor->event);
-    }
+   $self->backdate($circ->xact_start) if $self->claims_never_checked_out;
 
    # backdate the circ if necessary
    if($self->backdate) {

@@ -298,6 +298,9 @@ BEGIN
 		IF NEW.stop_fines = 'CLAIMSRETURNED' THEN
 			UPDATE actor.usr SET claims_returned_count = claims_returned_count + 1 WHERE id = NEW.usr;
 		END IF;
+		IF NEW.stop_fines = 'CLAIMSNEVERCHECKEDOUT' THEN
+			UPDATE actor.usr SET claims_never_checked_out_count = claims_never_checked_out_count + 1 WHERE id = NEW.usr;
+		END IF;
 		IF NEW.stop_fines = 'LOST' THEN
 			UPDATE asset.copy SET status = 3 WHERE id = NEW.target_copy;
 		END IF;
