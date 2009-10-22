@@ -15,6 +15,7 @@
 # ---------------------------------------------------------------------------
 */
 
+dojo.require('fieldmapper.AutoIDL');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.widget.TranslatorPopup');
 dojo.require('dojo.parser');
