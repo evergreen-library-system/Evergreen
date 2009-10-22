@@ -115,3 +115,7 @@ listitem { border-bottom: solid thin black; }
  */
 .edit_hold_range { display: none; }
 .edit_hold_focus { display: none; }
+
+.oils_event { color: red; }
+
+

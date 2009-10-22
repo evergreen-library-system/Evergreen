@@ -428,7 +428,7 @@ util.network.prototype = {
 						var t3 = String((override_params.text[r[i].ilsevent] ? override_params.text[r[i].ilsevent](r[i]) : '')).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 						var t4 = String(r[i].desc).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 						xml += '<row>' + 
-							'<description style="color: red" tooltiptext="' + t1 + '">' + t2 + '</description>' + 
+							'<description class="oils_event" tooltiptext="' + t1 + '">' + t2 + '</description>' + 
 							'<description>' + t3 + '</description>' + 
 							'</row><row>' + '<description>' + t4 + '</description>' + '</row>';
 					}
