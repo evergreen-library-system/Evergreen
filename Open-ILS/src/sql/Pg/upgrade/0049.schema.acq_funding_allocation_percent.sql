@@ -16,7 +16,7 @@ CREATE TABLE acq.fund_allocation_percent
     fund_code            TEXT,
     percent              NUMERIC           NOT NULL,
     allocator            INTEGER           NOT NULL REFERENCES actor.usr
-                                               DEFERRABLE_INITIALLY DEFERRED,
+                                               DEFERRABLE INITIALLY DEFERRED,
     note                 TEXT,
     create_time          TIMESTAMPTZ       NOT NULL DEFAULT now(),
     CONSTRAINT logical_key UNIQUE( funding_source, org, fund_code ),
@@ -114,7 +114,7 @@ INSERT INTO acq.fund_allocation_percent
     WHERE
         fa.percent is not null
     ORDER BY
-        fund.org,
+        fund.org;
 
 -- Temporary function to convert percentages to amounts in acq.fund_allocation
 
