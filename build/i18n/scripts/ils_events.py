@@ -33,6 +33,7 @@ This generates an updated file with the following structure:
 # GNU General Public License for more details.
 
 import basel10n
+import codecs
 import optparse
 import polib
 import re
@@ -204,7 +205,7 @@ def main():
         pot.loadpo(options.create)
         pot.create_events()
         if options.outfile:
-            outfile = open(options.outfile, 'w')
+            outfile = codecs.open(options.outfile, encoding='utf-8', mode='w')
             outfile.write(head)
             for event in pot.definitions: 
                 outfile.write(event + "\n")
