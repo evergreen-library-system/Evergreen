@@ -1097,6 +1097,9 @@ sub handle_mark_damaged {
     my $proc_fee = $U->ou_ancestor_setting_value(
         $owning_lib, 'circ.damaged_item_processing_fee', $e) || 0;
 
+    my $void_overdue = $U->ou_ancestor_setting_value(
+        $owning_lib, 'circ.damaged.void_ovedue', $e) || 0;
+
     return undef unless $charge_price or $proc_fee;
 
     my $copy_price = ($charge_price) ? $U->get_copy_price($e, $copy) : 0;
@@ -1113,6 +1116,13 @@ sub handle_mark_damaged {
         if($proc_fee) {
             my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
                 $e, $proc_fee, 8, 'Damaged Item Processing Fee', $circ->id);
+            return $evt if $evt;
+        }
+
+        # the assumption is that you would not void the overdues unless you 
+        # were also charging for the item and/or applying a processing fee
+        if($void_overdue) {
+            my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($e, $circ);
             return $evt if $evt;
         }
 
