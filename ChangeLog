@@ -1,1 +1,97 @@
-#ChangeLog
+2009-08-20  phasefx
+
+	* backport changeset 13889 for fixing regression with renewing
+	  multiple items at once in staff client
+
+2009-09-04  erickson
+
+	* on marc record import, call ingest after the create xact has been
+	  committed
+
+	* capture override as a var because using =~ in an arg list is
+	  non-good
+
+2009-09-22  dbs
+
+	* Backport r14098 from trunk: fix typo in CDBI/config.pm (courtesy
+	  Jason Stephenson)
+
+2009-09-24  miker
+
+	* backporting 1.4 version of r13983: turn off array expansion in
+	  DBD::Pg (new feature that is on by default, and we do not want
+	  it)
+
+	* SQL thinko causing over-zealous reshelving of copies not yet out
+	  of their delay time. Problem spotted and fix suggested by Bill
+	  Ott of GRPL.
+
+	* backporting 1.4 version of r14159: Correcting reporting view
+	  definition with regard to ISBN and ISSN extraction
+
+2009-10-02  phasefx
+
+	* backporting changeset 14244: Make the old survey wizard use work
+	  locations instead of home lib
+
+2009-10-07  erickson
+
+	* created workaround for confusing IE bug caused by titles with
+	  @'s, which resulted in URLs where the title should be
+
+2009-10-08  miker
+
+	* Backporting r14305 to fix <controlfield> creation and use (when
+	  missing) bug:
+	  
+	  When we add a <controlfield> element we need to set it to be 40
+	  characters
+	  long, and full of spaces, otherwise the Fixed Field editor cannot
+	  properly
+	  set the positions.
+	  
+	  Additionally, when a Fixed Field is edited but there is no
+	  backing
+	  <controlfield> element (say, trying to set the Audn when there is
+	  no 008)
+	  then we will add the needed <controlfield>.
+
+2009-10-09  miker
+
+	* foward-porting 1.2 changeset r9281 for cloned patron address
+	  searching
+
+2009-10-12  miker
+
+	* only need to send address search params once now
+
+	* Patch from Laura Cassell to make the email regexp a bit more
+	  forgiving.
+	  Specifically, this allows the name portion of the address to
+	  contain
+	  period separated chunks.
+
+2009-10-15  miker
+
+	* backporting trunk fix for pathological historical circ report
+	  query plan
+
+2009-10-19  erickson
+
+	* back-porting 14326 for canadian post code support in user editor
+
+2009-10-21  erickson
+
+	* repaired bug in cstore 'might_have' fleshing which lead to
+	  fleshing the same object into itself
+
+	* rolling back 14518, cstore might_have change. thinko
+
+2009-10-22  dbs
+
+	* Backport codecs-aware i18n scripts for use with polib 0.4.2
+
+2009-10-22  miker
+
+	* .: tagging the next (hopefully the last) 1.4.0 release, 1.4.0.7
+
