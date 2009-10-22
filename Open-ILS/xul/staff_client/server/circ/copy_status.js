@@ -34,7 +34,7 @@ circ.copy_status.prototype = {
 			},
 			{
 				'except_these' : [
-					'checkin_time', 'checkin_time_full', 'route_to', 'message', 'uses', 'xact_finish'
+					'route_to', 'message', 'uses'
 				]
 			}
 		);
