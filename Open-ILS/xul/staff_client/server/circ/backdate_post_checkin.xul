@@ -20,7 +20,7 @@
 <window id="backdate_post_checkin_win" 
     onload="try { backdate_post_checkin_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    height="250" width="800" oils_perist="height width"
+    oils_perist="height width"
     title="&staff.hold_list.cancel_hold_dialog.title;">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -37,6 +37,7 @@
 	<!-- CONTENT -->
     <dialogheader title="&staff.circ.backdate_post_checkin.header;" description="&staff.circ.backdate_post_checkin.description;" />
     <vbox class="my_overflow" id="circ_brief_area" flex="1"/>
+    <progressmeter type="determined" id="progress" />
     <hbox>
         <label id="checkin_effective_date_label" value="&staff.circ.checkin_overlay.effective_date.label;" control="checkin_effective_datepicker" accesskey="&staff.circ.checkin_overlay.effective_date.accesskey;"/>
         <datepicker id="checkin_effective_datepicker" type="popup" context="clipboard"/>

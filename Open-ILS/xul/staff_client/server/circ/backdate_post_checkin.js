@@ -1,4 +1,4 @@
-var data; var error; 
+var data; var error; var network; var sound;
 
 function $(id) { return document.getElementById(id); }
 
@@ -23,20 +23,19 @@ function backdate_post_checkin_init() {
 
         JSAN.use('util.error'); error = new util.error();
 
-        JSAN.use('util.date');
+        JSAN.use('util.network'); network = new util.network();
+
+        JSAN.use('util.sound'); sound = new util.sound();
+
+        JSAN.use('util.date'); 
+
+        dojo.require('openils.Util');
 
         $('checkin_effective_datepicker').value = util.date.formatted_date(new Date(),'%F');
 
         var x = $('circ_brief_area');
         var circ_ids = xul_param('circ_ids',{'modal_xulG':true});
-        dojo.forEach(
-            circ_ids,
-            function(element,idx,list) {
-                var iframe = document.createElement('iframe'); x.appendChild(iframe);
-                iframe.setAttribute('src', urls.XUL_CIRC_BRIEF);
-                get_contentWindow(iframe).xulG = { 'circ_id' : element };
-            }
-        );
+        if (x) x.appendChild( document.createTextNode( $('circStrings').getFormattedString('staff.circ.backdate.circ_ids.prompt',[circ_ids.length,circ_ids.join(',')]) ) );
 
         /* set widget behavior */
         $('cancel_btn').addEventListener(
@@ -44,15 +43,7 @@ function backdate_post_checkin_init() {
         );
         $('apply_btn').addEventListener(
             'command', 
-            function() {
-                update_modal_xulG(
-                    {
-                        'backdate' : $('checkin_effective_datepicker').value,
-                        'proceed' : 1
-                    }
-                )
-                window.close();
-            }, 
+            gen_handle_apply(circ_ids),
             false
         );
 
@@ -87,3 +78,48 @@ function backdate_post_checkin_init() {
 
 }
 
+function gen_handle_apply(circ_ids) {
+    return function handle_apply(ev) {
+        try {
+            var backdate = $('checkin_effective_datepicker').value;
+            var progressmeter = $('progress');
+
+            var idx = -1;
+            var bad_circs = [];
+
+            fieldmapper.standardRequest(
+                [ api.FM_CIRC_BACKDATE_BATCH.app, api.FM_CIRC_BACKDATE_BATCH.method ],
+                {   async: true,
+                    params: [ses(), circ_ids, backdate],
+                    onresponse: function(r) {
+                        idx++; progressmeter.value = Number( progressmeter.value ) + 100/circ_ids.length;
+                        var result = r.recv().content();
+                        if (result != 1) {
+                            bad_circs.push( { 'circ_id' : circ_ids[ idx ], 'result' : result } );
+                        }
+                    },
+                    oncomplete: function() {
+                        if (bad_circs.length > 0) {
+                            sound.circ_bad(); 
+                            alert( $('circStrings').getFormattedString('staff.circ.backdate.circ_ids.failed',[ bad_circs.length, bad_circs.join(',') ]) );
+                        } else {
+                            sound.circ_good();
+                        }
+
+                        update_modal_xulG(
+                            {
+                                'backdate' : backdate,
+                                'bad_circs' : bad_circs,
+                                'complete' : 1
+                            }
+                        )
+                        window.close();
+                    }
+                }
+            );
+
+        } catch(E) {
+            alert('Error in backdate.js, handle_apply(): ' + E);
+        }
+    };
+}
