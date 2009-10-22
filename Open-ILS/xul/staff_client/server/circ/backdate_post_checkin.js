@@ -35,7 +35,12 @@ function backdate_post_checkin_init() {
 
         var x = $('circ_brief_area');
         var circ_ids = xul_param('circ_ids',{'modal_xulG':true});
-        if (x) x.appendChild( document.createTextNode( $('circStrings').getFormattedString('staff.circ.backdate.circ_ids.prompt',[circ_ids.length,circ_ids.join(',')]) ) );
+        if (x) {
+            var d = document.createElement('description');
+            var t = document.createTextNode( $('circStrings').getFormattedString('staff.circ.backdate.circ_ids.prompt',[circ_ids.length,circ_ids.join(',')]) ); 
+            x.appendChild( d );
+            d.appendChild( t );
+        }
 
         /* set widget behavior */
         $('cancel_btn').addEventListener(
