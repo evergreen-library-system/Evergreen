@@ -20,7 +20,7 @@
 <window id="backdate_post_checkin_win" 
     onload="try { backdate_post_checkin_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    oils_perist="height width"
+    oils_persist="height width"
     title="&staff.hold_list.cancel_hold_dialog.title;">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
