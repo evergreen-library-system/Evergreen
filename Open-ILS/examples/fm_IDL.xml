@@ -1690,6 +1690,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Billable Transactions" name="billable_transactions" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Checkins" name="checkins" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations Performed as Staff" name="performed_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="demographic" reltype="might_have" key="id" map="" class="rud"/>
@@ -1717,8 +1718,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link reporter:label="Check-ins Performed as Staff" field="checkins" reltype="has_many" key="checkin_staff" map="" class="circ"/>
 			<link field="cards" reltype="has_many" key="usr" map="" class="ac"/>
 			<link reporter:label="Circulations Performed as Staff" field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
+			<link field="fund_alloc_pcts" reltype="has_many" key="allocator" map="" class="acqfap"/>
 		</links>
 	</class>
+
 	<class id="coust" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::org_unit_setting_type" oils_persist:tablename="config.org_unit_setting_type" reporter:label="Organizational Unit Setting Type">
 		<fields oils_persist:primary="name">
 			<field name="name" reporter:datatype="text"/>
@@ -2778,6 +2781,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Addresses" name="addresses" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Checkins" name="checkins" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Workstations" name="workstations" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>
@@ -2796,6 +2800,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="workstations" reltype="has_many" key="owning_lib" map="" class="aws"/>
 			<link field="distribution_formulas" reltype="has_many" key="owner" map="" class="acqdf"/>
 			<link field="distribution_formula_entries" reltype="has_many" key="owning_lib" map="" class="acqdfe"/>
+			<link field="fund_alloc_pcts" reltype="has_many" key="org" map="" class="acqfap"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -4078,12 +4083,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="summary" oils_persist:virtual="true"/>
 			<field reporter:label="Allocations" name="allocations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credits" name="credits" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
             <link field="allocations" reltype="has_many" map="" key="funding_source" class="acqfa"/>
             <link field="credits" reltype="has_many" key="funding_source" map="" class="acqfscred"/>
+			<link field="fund_alloc_pcts" reltype="has_many" key="funding_source" map="" class="acqfap"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -4261,6 +4268,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
 		</links>
 	</class>
+
+    <class id="acqfap" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_allocation_percent" oils_persist:tablename="acq.fund_allocation_percent" reporter:label="Fund Allocation Percent">
+        <fields oils_persist:primary="id" oils_persist:sequence="acq.fund_allocation_percent_id_seq">
+            <field reporter:label="Allocation ID" name="id" reporter:datatype="id" />
+            <field reporter:label="Funding Source" name="funding_source" reporter:datatype="link" />
+            <field reporter:label="Org Unit" name="org" reporter:datatype="org_unit" />
+            <field reporter:label="" name="fund_code" reporter:datatype="text" />
+            <field reporter:label="Percent" name="percent" reporter:datatype="float" />
+            <field reporter:label="Allocating User" name="allocator" reporter:datatype="link" />
+            <field reporter:label="Note" name="note" reporter:datatype="text" />
+            <field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp" />
+        </fields>
+        <links>
+            <link field="allocator" reltype="has_a" key="id" map="" class="au"/>
+            <link field="org" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
+        </links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_FUND_ALLOCATION_PERCENT" global_required="true"/>
+				<retrieve permission="VIEW_ACQ_FUND_ALLOCATION_PERCENT" global_required="true"/>
+				<update permission="ADMIN_ACQ_FUND_ALLOCATION_PERCENT" global_required="true"/>
+				<delete permission="ADMIN_ACQ_FUND_ALLOCATION_PERCENT" global_required="true"/>
+			</actions>
+		</permacrud>
+    </class>
 
 	<class id="acqpl" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist" oils_persist:tablename="acq.picklist" reporter:label="Pick List">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_id_seq">
