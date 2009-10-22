@@ -71,9 +71,11 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 			return obj;
 		},
 
+/*
 		isnew : function(n) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; },
 		ischanged : function(n) { if(arguments.length == 1) this.a[1] =n; return this.a[1]; },
 		isdeleted : function(n) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; }
+*/
 	});
 
 	fieldmapper._request = function ( meth, staff, params ) {
@@ -160,6 +162,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     	}
 
     // ... otherwise we need to get the oldschool fmall.js stuff, which will lack .structure
+    // XXX This is now deprecated in preference to fieldmapper.AutoIDL
     } else {
     	if (!window.fmclasses)
             dojo.require("fieldmapper.fmall", true);
@@ -171,6 +174,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     				if (!this.a) this.a = [];
     				this.classname = this.declaredClass;
     				this._fields = fmclasses[this.classname];
+                    this._fields.push('isnew', 'ischanged', 'isdeleted');
     				for( var pos = 0; pos <  this._fields.length; pos++ ) {
     					var p = parseInt(pos);
     					var f = this._fields[pos];
