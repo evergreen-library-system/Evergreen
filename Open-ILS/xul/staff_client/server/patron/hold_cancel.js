@@ -17,7 +17,7 @@ function hold_cancel_init() {
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('..');
 
-		JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
+        JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
 
         JSAN.use('util.error'); error = new util.error();
         JSAN.use('util.widgets');

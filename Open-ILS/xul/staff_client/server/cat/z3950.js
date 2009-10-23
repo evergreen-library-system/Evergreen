@@ -4,18 +4,18 @@ function $(id) { return document.getElementById(id); }
 
 if (typeof cat == 'undefined') cat = {};
 cat.z3950 = function (params) {
-	try {
-		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		JSAN.use('util.error'); this.error = new util.error();
-		JSAN.use('util.network'); this.network = new util.network();
-	} catch(E) {
-		dump('cat.z3950: ' + E + '\n');
-	}
+    try {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        JSAN.use('util.error'); this.error = new util.error();
+        JSAN.use('util.network'); this.network = new util.network();
+    } catch(E) {
+        dump('cat.z3950: ' + E + '\n');
+    }
 }
 
 cat.z3950.prototype = {
 
-	'creds_version' : 2,
+    'creds_version' : 2,
 
     'number_of_result_sets' : 0,
 
@@ -23,92 +23,92 @@ cat.z3950.prototype = {
 
     'limit' : 10,
 
-	'init' : function( params ) {
+    'init' : function( params ) {
 
-		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			JSAN.use('util.widgets');
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            JSAN.use('util.widgets');
 
-			var obj = this;
+            var obj = this;
 
             JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
-			obj.load_creds();
+            obj.load_creds();
 
-			JSAN.use('circ.util');
-			var columns = circ.util.columns(
-				{
-					'tcn' : { 'hidden' : false },
-					'isbn' : { 'hidden' : false },
-					'title' : { 'hidden' : false, 'flex' : '1' },
-					'author' : { 'hidden' : false },
-					'edition' : { 'hidden' : false },
-					'pubdate' : { 'hidden' : false },
-					'publisher' : { 'hidden' : false },
-					'service' : { 'hidden' : false }
-				}
+            JSAN.use('circ.util');
+            var columns = circ.util.columns(
+                {
+                    'tcn' : { 'hidden' : false },
+                    'isbn' : { 'hidden' : false },
+                    'title' : { 'hidden' : false, 'flex' : '1' },
+                    'author' : { 'hidden' : false },
+                    'edition' : { 'hidden' : false },
+                    'pubdate' : { 'hidden' : false },
+                    'publisher' : { 'hidden' : false },
+                    'service' : { 'hidden' : false }
+                }
             );
 
-			JSAN.use('util.list'); obj.list = new util.list('results');
-			obj.list.init(
-				{
-					'columns' : columns,
-					'map_row_to_columns' : circ.util.std_map_row_to_columns(),
-					'on_select' : function(ev) {
-						try {
-							JSAN.use('util.functional');
-							var sel = obj.list.retrieve_selection();
-							document.getElementById('sel_clip').setAttribute('disabled', sel.length < 1);
-							var list = util.functional.map_list(
-								sel,
-								function(o) { return o.getAttribute('retrieve_id'); }
-							);
-							obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
-							obj.controller.view.marc_import.disabled = false;
-							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
-		                    obj.data.init({'via':'stash'});
-                    		if (obj.data.marked_record) {
-				    			obj.controller.view.marc_import_overlay.disabled = false;
+            JSAN.use('util.list'); obj.list = new util.list('results');
+            obj.list.init(
+                {
+                    'columns' : columns,
+                    'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+                    'on_select' : function(ev) {
+                        try {
+                            JSAN.use('util.functional');
+                            var sel = obj.list.retrieve_selection();
+                            document.getElementById('sel_clip').setAttribute('disabled', sel.length < 1);
+                            var list = util.functional.map_list(
+                                sel,
+                                function(o) { return o.getAttribute('retrieve_id'); }
+                            );
+                            obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
+                            obj.controller.view.marc_import.disabled = false;
+                            obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
+                            obj.data.init({'via':'stash'});
+                            if (obj.data.marked_record) {
+                                obj.controller.view.marc_import_overlay.disabled = false;
                             } else {
-				    			obj.controller.view.marc_import_overlay.disabled = true;
+                                obj.controller.view.marc_import_overlay.disabled = true;
                             }
-			    			obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
-							obj.controller.view.marc_view_btn.disabled = false;
-							obj.controller.view.marc_view_btn.setAttribute('retrieve_id',list[0]);
-						} catch(E) {
-							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_list_init.list_construction_error'),E);
-						}
-					},
-				}
-			);
+                            obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
+                            obj.controller.view.marc_view_btn.disabled = false;
+                            obj.controller.view.marc_view_btn.setAttribute('retrieve_id',list[0]);
+                        } catch(E) {
+                            obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_list_init.list_construction_error'),E);
+                        }
+                    },
+                }
+            );
 
-			JSAN.use('util.controller'); obj.controller = new util.controller();
-			obj.controller.init(
-				{
-					control_map : {
-						'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
-						'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
-						'cmd_z3950_csv_to_clipboard' : [ ['command'], function() { obj.list.dump_csv_to_clipboard(); } ],
+            JSAN.use('util.controller'); obj.controller = new util.controller();
+            obj.controller.init(
+                {
+                    control_map : {
+                        'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
+                        'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
+                        'cmd_z3950_csv_to_clipboard' : [ ['command'], function() { obj.list.dump_csv_to_clipboard(); } ],
                         'cmd_z3950_csv_to_printer' : [ ['command'], function() { obj.list.dump_csv_to_printer(); } ], 
                         'cmd_z3950_csv_to_file' : [ ['command'], function() { obj.list.dump_csv_to_file( { 'defaultFileName' : 'z3950_results.txt' } ); } ],
-						'cmd_broken' : [
-							['command'],
-							function() { alert('Not Yet Implemented'); }
-						],
-						'result_message' : [['render'],function(e){return function(){};}],
-						'clear' : [
-							['command'],
-							function() {
-								obj.clear();
-							}
-						],
-						'save_creds' : [
-							['command'],
-							function() {
-								obj.save_creds();
+                        'cmd_broken' : [
+                            ['command'],
+                            function() { alert('Not Yet Implemented'); }
+                        ],
+                        'result_message' : [['render'],function(e){return function(){};}],
+                        'clear' : [
+                            ['command'],
+                            function() {
+                                obj.clear();
+                            }
+                        ],
+                        'save_creds' : [
+                            ['command'],
+                            function() {
+                                obj.save_creds();
                                 setTimeout( function() { obj.focus(); }, 0 );
-							}
-						],
+                            }
+                        ],
                         'marc_view_btn' : [
                             ['render'],
                             function(e) {
@@ -116,39 +116,39 @@ cat.z3950.prototype = {
                                 e.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.marc_view.accesskey'));
                             }
                         ],
-						'marc_view' : [
-							['command'],
-							function(ev) {
-								try {
-									var n = obj.controller.view.marc_view_btn;
-									if (n.getAttribute('toggle') == '1') {
-										document.getElementById('deck').selectedIndex = 0;
-										n.setAttribute('toggle','0');
-										n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.marc_view.label'));
-										n.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.marc_view.accesskey'));
-										document.getElementById('results').focus();
-									} else {
-										document.getElementById('deck').selectedIndex = 1;
-										n.setAttribute('toggle','1');
-										n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.results_view.label'));
-										n.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.results_view.accesskey'));
-										netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-										var f = get_contentWindow(document.getElementById('marc_frame'));
+                        'marc_view' : [
+                            ['command'],
+                            function(ev) {
+                                try {
+                                    var n = obj.controller.view.marc_view_btn;
+                                    if (n.getAttribute('toggle') == '1') {
+                                        document.getElementById('deck').selectedIndex = 0;
+                                        n.setAttribute('toggle','0');
+                                        n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.marc_view.label'));
+                                        n.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.marc_view.accesskey'));
+                                        document.getElementById('results').focus();
+                                    } else {
+                                        document.getElementById('deck').selectedIndex = 1;
+                                        n.setAttribute('toggle','1');
+                                        n.setAttribute('label', $("catStrings").getString('staff.cat.z3950.results_view.label'));
+                                        n.setAttribute('accesskey', $("catStrings").getString('staff.cat.z3950.results_view.accesskey'));
+                                        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                                        var f = get_contentWindow(document.getElementById('marc_frame'));
                                         var retrieve_id = n.getAttribute('retrieve_id');
                                         var result_idx = retrieve_id.split('-')[0];
                                         var record_idx = retrieve_id.split('-')[1];
-										f.xulG = { 'marcxml' : obj.result_set[result_idx].records[ record_idx ].marcxml };
-										f.my_init();
-										f.document.body.firstChild.focus();
-									}
-								} catch(E) {
-			                        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_view_error'),E);
-								}
-							},
-						],
-						'marc_import' : [
-							['command'],
-							function() {
+                                        f.xulG = { 'marcxml' : obj.result_set[result_idx].records[ record_idx ].marcxml };
+                                        f.my_init();
+                                        f.document.body.firstChild.focus();
+                                    }
+                                } catch(E) {
+                                    obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_view_error'),E);
+                                }
+                            },
+                        ],
+                        'marc_import' : [
+                            ['command'],
+                            function() {
                                 try {
                                     var retrieve_id = obj.controller.view.marc_import.getAttribute('retrieve_id');
                                     var result_idx = retrieve_id.split('-')[0];
@@ -158,14 +158,14 @@ cat.z3950.prototype = {
                                         obj.result_set[ result_idx ].records[ record_idx ].service /* FIXME: we want biblio_source here */
                                     );
                                 } catch(E) {
-			                        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_import_error'),E);
+                                    obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_import_error'),E);
                                 }
-							},
-						],
-						'marc_import_overlay' : [ 
-							['command'],
-							function() {
-								try {
+                            },
+                        ],
+                        'marc_import_overlay' : [ 
+                            ['command'],
+                            function() {
+                                try {
                                     var retrieve_id = obj.controller.view.marc_import_overlay.getAttribute('retrieve_id');
                                     var result_idx = retrieve_id.split('-')[0];
                                     var record_idx = retrieve_id.split('-')[1];
@@ -173,17 +173,17 @@ cat.z3950.prototype = {
                                         obj.result_set[ result_idx ].records[ record_idx ].marcxml,
                                         obj.result_set[ result_idx ].records[ record_idx ].service /* FIXME: we want biblio_source here */
                                     );
-								} catch(E) {
-			                        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_import_overlay_error'),E);
-								}
-							},
-						],
-						'search' : [
-							['command'],
-							function() {
-								obj.initial_search();
-							},
-						],
+                                } catch(E) {
+                                    obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.marc_import_overlay_error'),E);
+                                }
+                            },
+                        ],
+                        'search' : [
+                            ['command'],
+                            function() {
+                                obj.initial_search();
+                            },
+                        ],
                         'raw_search' : [ 
                             ['command'], 
                             function() { 
@@ -195,12 +195,12 @@ cat.z3950.prototype = {
                                 if (raw) obj.initial_raw_search(raw); 
                             } 
                         ], 
-						'page_next' : [
-							['command'],
-							function() {
-								obj.page_next();
-							},
-						],
+                        'page_next' : [
+                            ['command'],
+                            function() {
+                                obj.page_next();
+                            },
+                        ],
                         'toggle_form_btn' : [
                             ['render'],
                             function(e) {
@@ -214,7 +214,7 @@ cat.z3950.prototype = {
                             function() {
                                 var x = document.getElementById('top_pane');
                                 document.getElementById('splitter_grippy2').doCommand();
-								var n = obj.controller.view.toggle_form_btn;
+                                var n = obj.controller.view.toggle_form_btn;
                                 if (x.collapsed) {
                                     n.setAttribute('image',"/xul/server/skin/media/images/down_arrow.gif");
                                     n.setAttribute('label',$("catStrings").getString('staff.cat.z3950.unhide_top_pane.label'));
@@ -242,13 +242,13 @@ cat.z3950.prototype = {
                                 }
                             }
                         ],
-						'service_rows' : [
-							['render'],
-							function(e) {
-								return function() {
-									try {
+                        'service_rows' : [
+                            ['render'],
+                            function(e) {
+                                return function() {
+                                    try {
 
-										function handle_switch(node) {
+                                        function handle_switch(node) {
                                             try {
                                                 $('search').setAttribute('disabled','true'); $('raw_search').setAttribute('disabled','true');
                                                 obj.active_services = [];
@@ -332,18 +332,18 @@ cat.z3950.prototype = {
                                                     }
                                                 }
                                             } catch(E) {
-										        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.search_fields_error'),E);
+                                                obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.search_fields_error'),E);
                                             }
-										}
+                                        }
 
                                         document.getElementById('native-evergreen-catalog_service').addEventListener('command',handle_switch,false);
 
-										var robj = obj.network.simple_request(
-											'RETRIEVE_Z3950_SERVICES',
-											[ ses() ]
-										);
-										if (typeof robj.ilsevent != 'undefined') throw(robj);
-										obj.services = robj;
+                                        var robj = obj.network.simple_request(
+                                            'RETRIEVE_Z3950_SERVICES',
+                                            [ ses() ]
+                                        );
+                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
+                                        obj.services = robj;
                                         var x = document.getElementById('service_rows');
                                         var services = new Array();
                                         for (var i in obj.services) {
@@ -384,7 +384,7 @@ cat.z3950.prototype = {
                                         }
                                         //obj.services[ 'native-evergreen-catalog' ] = { 'attrs' : { 'author' : {}, 'title' : {} } };
                                         setTimeout(
-											function() { 
+                                            function() { 
                                                 if (obj.creds.hosts[ obj.data.server_unadorned ]) {
                                                     for (var i = 0; i < obj.creds.hosts[ obj.data.server_unadorned ].default_services.length; i++) {
                                                         var x = document.getElementById(obj.creds.hosts[ obj.data.server_unadorned ].default_services[i]+'_service');
@@ -395,19 +395,19 @@ cat.z3950.prototype = {
                                                     if (x) x.checked = true;
                                                 }
                                                 handle_switch();
-											},0
-										);
-									} catch(E) {
-										obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.z39_service_error'),E);
-									}
-								}
-							}
-						],
-					}
-				}
-			);
+                                            },0
+                                        );
+                                    } catch(E) {
+                                        obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.obj_controller_init.z39_service_error'),E);
+                                    }
+                                }
+                            }
+                        ],
+                    }
+                }
+            );
 
-			obj.controller.render();
+            obj.controller.render();
 
             setTimeout( function() { obj.focus(); }, 0 );
 
@@ -415,7 +415,7 @@ cat.z3950.prototype = {
                 function() {
                     obj.data.init({'via':'stash'});
                     if (obj.data.marked_record) {
-						var sel = obj.list.retrieve_selection();
+                        var sel = obj.list.retrieve_selection();
                         if (sel.length > 0) { obj.controller.view.marc_import_overlay.disabled = false; }
                         if ($("overlay_tcn_indicator")) {
                             if (obj.data.marked_record_mvr) {
@@ -433,81 +433,81 @@ cat.z3950.prototype = {
                 }, 2000
             );
 
-		} catch(E) {
-			this.error.sdump('D_ERROR','cat.z3950.init: ' + E + '\n');
-		}
-	},
+        } catch(E) {
+            this.error.sdump('D_ERROR','cat.z3950.init: ' + E + '\n');
+        }
+    },
 
-	'focus' : function() {
-		var obj = this;
+    'focus' : function() {
+        var obj = this;
         var focus_me; var or_focus_me;
         for (var i = 0; i < obj.active_services.length; i++) {
             if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ]) {
-		        var x = obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ].default_attr;
+                var x = obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ].default_attr;
                 if (x) { focus_me = x; break; }
             }
             if (obj.services[ obj.active_services[i] ]) for (var i in obj.services[ obj.active_services[i] ].attr) { or_focus_me = i; }
         }
         if (! focus_me) focus_me = or_focus_me;
-		var xx = document.getElementById(focus_me+'_input'); if (xx) xx.focus();
-	},
+        var xx = document.getElementById(focus_me+'_input'); if (xx) xx.focus();
+    },
 
-	'clear' : function() {
-		var obj = this;
-		var nl = document.getElementsByAttribute('mytype','search_class');
-		for (var i = 0; i < nl.length; i++) { nl[i].value = ''; nl[i].setAttribute('value',''); }
-		obj.focus();
-	},
+    'clear' : function() {
+        var obj = this;
+        var nl = document.getElementsByAttribute('mytype','search_class');
+        for (var i = 0; i < nl.length; i++) { nl[i].value = ''; nl[i].setAttribute('value',''); }
+        obj.focus();
+    },
 
-	'search_params' : {},
+    'search_params' : {},
 
-	'initial_search' : function() {
-		try {
-			var obj = this;
+    'initial_search' : function() {
+        try {
+            var obj = this;
             obj.result_set = []; obj.number_of_result_sets = 0;
-			JSAN.use('util.widgets');
-			util.widgets.remove_children( obj.controller.view.result_message );
-			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+            JSAN.use('util.widgets');
+            util.widgets.remove_children( obj.controller.view.result_message );
+            var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
             if (obj.active_services.length < 1) {
-			    x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.no_search_selection')));
+                x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.no_search_selection')));
                 return;
             }
-			x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.searching')));
-			obj.search_params = {}; obj.list.clear();
-			obj.controller.view.page_next.disabled = true;
-			obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','true');
-			obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','true');
-			obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','true');
+            x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.searching')));
+            obj.search_params = {}; obj.list.clear();
+            obj.controller.view.page_next.disabled = true;
+            obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','true');
+            obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','true');
+            obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','true');
 
-			obj.search_params.service_array = []; 
-			obj.search_params.username_array = [];
-			obj.search_params.password_array = [];
+            obj.search_params.service_array = []; 
+            obj.search_params.username_array = [];
+            obj.search_params.password_array = [];
             for (var i = 0; i < obj.active_services.length; i++) {
                 obj.search_params.service_array.push( obj.active_services[i] );
                 obj.search_params.username_array.push( document.getElementById( obj.active_services[i]+'_username' ).value );
                 obj.search_params.password_array.push( document.getElementById( obj.active_services[i]+'_password' ).value );
             }
-			obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
-			obj.search_params.offset = 0;
+            obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
+            obj.search_params.offset = 0;
 
-			obj.search_params.search = {};
-			var nl = document.getElementsByAttribute('mytype','search_class');
-			var count = 0;
-			for (var i = 0; i < nl.length; i++) {
-				if (nl[i].disabled) continue;
-				if (nl[i].value == '') continue;
-				count++;
-				obj.search_params.search[ nl[i].getAttribute('search_class') ] = nl[i].value;
-			}
-			if (count>0) {
-				obj.search();
-			} else {
-				util.widgets.remove_children( obj.controller.view.result_message );
-			}
-		} catch(E) {
-			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.initial_search.failed_search'),E);
-		}
-	},
+            obj.search_params.search = {};
+            var nl = document.getElementsByAttribute('mytype','search_class');
+            var count = 0;
+            for (var i = 0; i < nl.length; i++) {
+                if (nl[i].disabled) continue;
+                if (nl[i].value == '') continue;
+                count++;
+                obj.search_params.search[ nl[i].getAttribute('search_class') ] = nl[i].value;
+            }
+            if (count>0) {
+                obj.search();
+            } else {
+                util.widgets.remove_children( obj.controller.view.result_message );
+            }
+        } catch(E) {
+            this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.initial_search.failed_search'),E);
+        }
+    },
 
     'initial_raw_search' : function(raw) {
         try {
@@ -517,100 +517,100 @@ cat.z3950.prototype = {
             util.widgets.remove_children( obj.controller.view.result_message );
             var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
             if (obj.active_services.length < 1) {
-			    x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.no_search_selection')));
+                x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.no_search_selection')));
                 return;
             }
             if (obj.active_services.length > 1) {
-			    x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.too_many_selections')));
+                x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.too_many_selections')));
                 return;
             }
             if (obj.active_services[0] == 'native-evergreen-catalog') {
-			    x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog')));
+                x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog')));
                 return;
             }
-			x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.searching')));
-			obj.search_params = {}; obj.list.clear();
-			obj.controller.view.page_next.disabled = true;
-			obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','true');
-			obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','true');
-			obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','true');
+            x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.initial_search.searching')));
+            obj.search_params = {}; obj.list.clear();
+            obj.controller.view.page_next.disabled = true;
+            obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','true');
+            obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','true');
+            obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','true');
 
-			obj.search_params.service_array = []; 
-			obj.search_params.username_array = [];
-			obj.search_params.password_array = [];
+            obj.search_params.service_array = []; 
+            obj.search_params.username_array = [];
+            obj.search_params.password_array = [];
             for (var i = 0; i < obj.active_services.length; i++) {
                 obj.search_params.service_array.push( obj.active_services[i] );
                 obj.search_params.username_array.push( document.getElementById( obj.active_services[i]+'_username' ).value );
                 obj.search_params.password_array.push( document.getElementById( obj.active_services[i]+'_password' ).value );
             }
-			obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
-			obj.search_params.offset = 0;
+            obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
+            obj.search_params.offset = 0;
 
             obj.search_params.query = raw;
 
             obj.search();
         } catch(E) {
-			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.initial_search.failed_search'),E);
+            this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.initial_search.failed_search'),E);
         }
     },
 
-	'page_next' : function() {
-		try {
-			var obj = this;
-			JSAN.use('util.widgets');
-			util.widgets.remove_children( obj.controller.view.result_message );
-			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-			x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.page_next.more_results')));
-			obj.search_params.offset += obj.search_params.limit;
-			obj.search();
-		} catch(E) {
-			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.page_next.subsequent_search_error'),E);
-		}
-	},
+    'page_next' : function() {
+        try {
+            var obj = this;
+            JSAN.use('util.widgets');
+            util.widgets.remove_children( obj.controller.view.result_message );
+            var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+            x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.page_next.more_results')));
+            obj.search_params.offset += obj.search_params.limit;
+            obj.search();
+        } catch(E) {
+            this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.page_next.subsequent_search_error'),E);
+        }
+    },
 
-	'search' : function() {
-		try {
-			var obj = this;
-			var method;
-			if (typeof obj.search_params.query == 'undefined') {
-				method = 'FM_BLOB_RETRIEVE_VIA_Z3950_SEARCH';
+    'search' : function() {
+        try {
+            var obj = this;
+            var method;
+            if (typeof obj.search_params.query == 'undefined') {
+                method = 'FM_BLOB_RETRIEVE_VIA_Z3950_SEARCH';
                 obj.search_params.service = obj.search_params.service_array;
                 obj.search_params.username = obj.search_params.username_array;
                 obj.search_params.password = obj.search_params.password_array;
-			} else {
-				method = 'FM_BLOB_RETRIEVE_VIA_Z3950_RAW_SEARCH';
+            } else {
+                method = 'FM_BLOB_RETRIEVE_VIA_Z3950_RAW_SEARCH';
                 obj.search_params.service = obj.search_params.service_array[0];
                 obj.search_params.username = obj.search_params.username_array[0];
                 obj.search_params.password = obj.search_params.password_array[0];
-			}
-			obj.network.simple_request(
-				method,
-				[ ses(), obj.search_params ],
-				function(req) {
-					obj.handle_results(req.getResultObject())
-				}
-			);
-			document.getElementById('deck').selectedIndex = 0;
-		} catch(E) {
-			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.search.search_error'),E);
-		}
-	},
+            }
+            obj.network.simple_request(
+                method,
+                [ ses(), obj.search_params ],
+                function(req) {
+                    obj.handle_results(req.getResultObject())
+                }
+            );
+            document.getElementById('deck').selectedIndex = 0;
+        } catch(E) {
+            this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.search.search_error'),E);
+        }
+    },
 
-	'handle_results' : function(results) {
-		var obj = this;
-		try {
-			JSAN.use('util.widgets');
-			util.widgets.remove_children( obj.controller.view.result_message ); var x;
-			if (results == null) {
-				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-				x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.handle_results.null_server_error')));
-				return;
-			}
-			if (typeof results.ilsevent != 'undefined') {
-				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-				x.appendChild( document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.server_error', [results.textcode, results.desc])));
-				return;
-			}
+    'handle_results' : function(results) {
+        var obj = this;
+        try {
+            JSAN.use('util.widgets');
+            util.widgets.remove_children( obj.controller.view.result_message ); var x;
+            if (results == null) {
+                x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+                x.appendChild( document.createTextNode($("catStrings").getString('staff.cat.z3950.handle_results.null_server_error')));
+                return;
+            }
+            if (typeof results.ilsevent != 'undefined') {
+                x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+                x.appendChild( document.createTextNode($("catStrings").getFormattedString('staff.cat.z3950.handle_results.server_error', [results.textcode, results.desc])));
+                return;
+            }
             obj.controller.view.cmd_z3950_csv_to_file.setAttribute('disabled','false');
             obj.controller.view.cmd_z3950_csv_to_clipboard.setAttribute('disabled','false');
             obj.controller.view.cmd_z3950_csv_to_printer.setAttribute('disabled','false');
@@ -684,32 +684,32 @@ cat.z3950.prototype = {
                 );
             }            
 
-		} catch(E) {
-			this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.handle_results.search_result_error'),E);
-		}
-	},
+        } catch(E) {
+            this.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.handle_results.search_result_error'),E);
+        }
+    },
 
-	'replace_tab_with_opac' : function(doc_id) {
-		var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
-		var content_params = { 
-			'session' : ses(),
-			'authtime' : ses('authtime'),
-			'opac_url' : opac_url,
-		};
-		xulG.set_tab(
-			xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-			{'tab_name': $("catStrings").getString('staff.cat.z3950.replace_tab_with_opac.tab_name')}, 
-			content_params
-		);
-	},
+    'replace_tab_with_opac' : function(doc_id) {
+        var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+        var content_params = { 
+            'session' : ses(),
+            'authtime' : ses('authtime'),
+            'opac_url' : opac_url,
+        };
+        xulG.set_tab(
+            xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+            {'tab_name': $("catStrings").getString('staff.cat.z3950.replace_tab_with_opac.tab_name')}, 
+            content_params
+        );
+    },
 
-	'spawn_marc_editor' : function(my_marcxml,biblio_source) {
-		var obj = this;
-		xulG.new_tab(
-			xulG.url_prefix(urls.XUL_MARC_EDIT), 
-			{ 'tab_name' : 'MARC Editor' }, 
-			{ 
-				'record' : { 'marc' : my_marcxml },
+    'spawn_marc_editor' : function(my_marcxml,biblio_source) {
+        var obj = this;
+        xulG.new_tab(
+            xulG.url_prefix(urls.XUL_MARC_EDIT), 
+            { 'tab_name' : 'MARC Editor' }, 
+            { 
+                'record' : { 'marc' : my_marcxml },
                 'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
                     try {
                         JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
@@ -717,43 +717,43 @@ cat.z3950.prototype = {
                         alert(E);
                     }
                 },
-				'save' : {
-					'label' : 'Import Record',
-					'func' : function (new_marcxml) {
-						try {
-							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, biblio_source ]);
-							if (typeof r.ilsevent != 'undefined') {
-								switch(Number(r.ilsevent)) {
-									case 1704 /* TCN_EXISTS */ :
-										var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.same_tcn', [r.payload.tcn]);
-										var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.title');
-										var btn1 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn1_overlay');
-										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.btn2_import', [r.payload.new_tcn]);
-										if (btn2) {
-											obj.data.init({'via':'stash'});
-											var robj = obj.network.simple_request(
-												'PERM_CHECK',[
-													ses(),
-													obj.data.list.au[0].id(),
-													obj.data.list.au[0].ws_ou(),
-													[ 'ALLOW_ALT_TCN' ]
-												]
-											);
-											if (typeof robj.ilsevent != 'undefined') {
-												obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.permission_error'),E);
-											}
-											if (robj.length != 0) btn2 = null;
-										}
-										var btn3 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn3_cancel_import');
-										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,$("catStrings").getString('staff.cat.z3950.spawn_marc_editor.confirm_action'));
-										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
-										switch(p) {
-											case 0:
-												var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml, biblio_source ]);
-												if (typeof r3.ilsevent != 'undefined') {
-													throw(r3);
-												} else {
-													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_overlay'));
+                'save' : {
+                    'label' : 'Import Record',
+                    'func' : function (new_marcxml) {
+                        try {
+                            var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, biblio_source ]);
+                            if (typeof r.ilsevent != 'undefined') {
+                                switch(Number(r.ilsevent)) {
+                                    case 1704 /* TCN_EXISTS */ :
+                                        var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.same_tcn', [r.payload.tcn]);
+                                        var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.title');
+                                        var btn1 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn1_overlay');
+                                        var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.btn2_import', [r.payload.new_tcn]);
+                                        if (btn2) {
+                                            obj.data.init({'via':'stash'});
+                                            var robj = obj.network.simple_request(
+                                                'PERM_CHECK',[
+                                                    ses(),
+                                                    obj.data.list.au[0].id(),
+                                                    obj.data.list.au[0].ws_ou(),
+                                                    [ 'ALLOW_ALT_TCN' ]
+                                                ]
+                                            );
+                                            if (typeof robj.ilsevent != 'undefined') {
+                                                obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.permission_error'),E);
+                                            }
+                                            if (robj.length != 0) btn2 = null;
+                                        }
+                                        var btn3 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn3_cancel_import');
+                                        var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,$("catStrings").getString('staff.cat.z3950.spawn_marc_editor.confirm_action'));
+                                        obj.error.sdump('D_ERROR','option ' + p + 'chosen');
+                                        switch(p) {
+                                            case 0:
+                                                var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml, biblio_source ]);
+                                                if (typeof r3.ilsevent != 'undefined') {
+                                                    throw(r3);
+                                                } else {
+                                                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_overlay'));
                                                     return {
                                                         'id' : r3.id(),
                                                         'on_complete' : function() {
@@ -764,18 +764,18 @@ cat.z3950.prototype = {
                                                             }
                                                         }
                                                     };
-												}
-											break;
-											case 1:
-												var r2 = obj.network.request(
-													api.MARC_XML_RECORD_IMPORT.app,
-													api.MARC_XML_RECORD_IMPORT.method + '.override',
-													[ ses(), new_marcxml, biblio_source ]
-												);
-												if (typeof r2.ilsevent != 'undefined') {
-													throw(r2);
-												} else {
-													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn'));
+                                                }
+                                            break;
+                                            case 1:
+                                                var r2 = obj.network.request(
+                                                    api.MARC_XML_RECORD_IMPORT.app,
+                                                    api.MARC_XML_RECORD_IMPORT.method + '.override',
+                                                    [ ses(), new_marcxml, biblio_source ]
+                                                );
+                                                if (typeof r2.ilsevent != 'undefined') {
+                                                    throw(r2);
+                                                } else {
+                                                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn'));
                                                     return {
                                                         'id' : r2.id(),
                                                         'on_complete' : function() {
@@ -786,161 +786,20 @@ cat.z3950.prototype = {
                                                             }
                                                         }
                                                     };
-												}
-											break;
-											case 2:
-											default:
-												alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_cancelled'));
-											break;
-										}
-									break;
-									default:
-										throw(r);
-									break;
-								}
-							} else {
-								alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import'));
-								return {
-                                    'id' : r.id(),
-                                    'on_complete' : function() {
-                                        try {
-                                            obj.replace_tab_with_opac(r.id());
-                                        } catch(E) {
-                                            alert(E);
+                                                }
+                                            break;
+                                            case 2:
+                                            default:
+                                                alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_cancelled'));
+                                            break;
                                         }
-                                    }
-                                };
-							}
-						} catch(E) {
-							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_error'),E);
-						}
-					}
-				}
-			} 
-		);
-	},
-
-	'confirm_overlay' : function(record_ids) {
-		var obj = this; // JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-		var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
-		top_xml += '<description>'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.description')+'</description>';
-		top_xml += '<hbox><button id="lead" disabled="false" label="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.lead.label')+'" name="fancy_submit"';
-		top_xml += ' accesskey="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.lead.accesskey')+'"/>';
-		top_xml += ' <button label="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.cancel.label')+'" accesskey="'+
-						$("catStrings").getString('staff.cat.z3950.confirm_overlay.cancel.accesskey')+'" name="fancy_cancel"/></hbox></vbox>';
-
-		var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
-		xml += '<table width="100%"><tr valign="top">';
-		for (var i = 0; i < record_ids.length; i++) {
-			xml += '<td nowrap="nowrap"><iframe src="' + urls.XUL_BIB_BRIEF; 
-			xml += '?docid=' + record_ids[i] + '"/></td>';
-		}
-		xml += '</tr><tr valign="top">';
-		for (var i = 0; i < record_ids.length; i++) {
-            xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="' + urls.XUL_MARC_VIEW + '?docid=' + record_ids[i] + ' "/></td>';
-		}
-		xml += '</tr></table></form>';
-		// data.temp_merge_top = top_xml; data.stash('temp_merge_top');
-		// data.temp_merge_mid = xml; data.stash('temp_merge_mid');
-		JSAN.use('util.window'); var win = new util.window();
-		var fancy_prompt_data = win.open(
-			urls.XUL_FANCY_PROMPT,
-			// + '?xml_in_stash=temp_merge_mid'
-			// + '&top_xml_in_stash=temp_merge_top'
-			// + '&title=' + window.escape('Record Overlay'),
-			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-			{ 'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.z3950.confirm_overlay.title') }
-		);
-		//data.stash_retrieve();
-		if (fancy_prompt_data.fancy_status == 'incomplete') { alert($("catStrings").getString('staff.cat.z3950.confirm_overlay.aborted')); return false; }
-		return true;
-	},
-
-	'spawn_marc_editor_for_overlay' : function(my_marcxml,biblio_source) {
-		var obj = this;
-		obj.data.init({'via':'stash'});
-		if (!obj.data.marked_record) {
-			alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.try_again'));
-			return;
-		}
-
-		xulG.new_tab(
-			xulG.url_prefix(urls.XUL_MARC_EDIT), 
-			{ 'tab_name' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name') },
-			{ 
-				'record' : { 'marc' : my_marcxml },
-                'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
-                    try {
-                        JSAN.use('cat.util'); cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
-                    } catch(E) {
-                        alert(E);
-                    }
-                },
-				'save' : {
-					'label' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label'),
-					'func' : function (new_marcxml) {
-						try {
-							if (! obj.confirm_overlay( [ obj.data.marked_record ] ) ) { return; }
-							var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]);
-							if (typeof r.ilsevent != 'undefined') {
-								switch(Number(r.ilsevent)) {
-									case 1704 /* TCN_EXISTS */ :
-										var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn', [r.payload.tcn]);
-										var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision');
-										var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay', [r.payload.new_tcn]);
-										if (btn1) {
-											var robj = obj.network.simple_request(
-												'PERM_CHECK',[
-													ses(),
-													obj.data.list.au[0].id(),
-													obj.data.list.au[0].ws_ou(),
-													[ 'ALLOW_ALT_TCN' ]
-												]
-											);
-											if (typeof robj.ilsevent != 'undefined') {
-												obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error'),E);
-											}
-											if (robj.length != 0) btn1 = null;
-										}
-										var btn2 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel');
-										var p = obj.error.yns_alert(msg,title,btn1,btn2,null, $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action'));
-										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
-										switch(p) {
-											case 0:
-												var r2 = obj.network.request(
-													api.MARC_XML_RECORD_REPLACE.app,
-													api.MARC_XML_RECORD_REPLACE.method + '.override',
-													[ ses(), obj.data.marked_record, new_marcxml, biblio_source ]
-												);
-												if (typeof r2.ilsevent != 'undefined') {
-													throw(r2);
-												} else {
-													alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN'));
-													return {
-                                                        'id' : r2.id(),
-                                                        'on_complete' : function() {
-                                                            try {
-                                                                obj.replace_tab_with_opac(r2.id());
-                                                            } catch(E) {
-                                                                alert(E);
-                                                            }
-                                                        }
-                                                    };
-												}
-											break;
-											case 1:
-											default:
-												alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay'));
-											break;
-										}
-									break;
-									default:
-										throw(r);
-									break;
-								}
-							} else {
-								alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay'));
+                                    break;
+                                    default:
+                                        throw(r);
+                                    break;
+                                }
+                            } else {
+                                alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import'));
                                 return {
                                     'id' : r.id(),
                                     'on_complete' : function() {
@@ -951,39 +810,180 @@ cat.z3950.prototype = {
                                         }
                                     }
                                 };
-							}
-						} catch(E) {
-							obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error'),E);
-						}
-					}
-				}
-			} 
-		);
-	},
+                            }
+                        } catch(E) {
+                            obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_error'),E);
+                        }
+                    }
+                }
+            } 
+        );
+    },
+
+    'confirm_overlay' : function(record_ids) {
+        var obj = this; // JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+        var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
+        top_xml += '<description>'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.description')+'</description>';
+        top_xml += '<hbox><button id="lead" disabled="false" label="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.lead.label')+'" name="fancy_submit"';
+        top_xml += ' accesskey="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.lead.accesskey')+'"/>';
+        top_xml += ' <button label="'+$("catStrings").getString('staff.cat.z3950.confirm_overlay.cancel.label')+'" accesskey="'+
+                        $("catStrings").getString('staff.cat.z3950.confirm_overlay.cancel.accesskey')+'" name="fancy_cancel"/></hbox></vbox>';
+
+        var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
+        xml += '<table width="100%"><tr valign="top">';
+        for (var i = 0; i < record_ids.length; i++) {
+            xml += '<td nowrap="nowrap"><iframe src="' + urls.XUL_BIB_BRIEF; 
+            xml += '?docid=' + record_ids[i] + '"/></td>';
+        }
+        xml += '</tr><tr valign="top">';
+        for (var i = 0; i < record_ids.length; i++) {
+            xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="' + urls.XUL_MARC_VIEW + '?docid=' + record_ids[i] + ' "/></td>';
+        }
+        xml += '</tr></table></form>';
+        // data.temp_merge_top = top_xml; data.stash('temp_merge_top');
+        // data.temp_merge_mid = xml; data.stash('temp_merge_mid');
+        JSAN.use('util.window'); var win = new util.window();
+        var fancy_prompt_data = win.open(
+            urls.XUL_FANCY_PROMPT,
+            // + '?xml_in_stash=temp_merge_mid'
+            // + '&top_xml_in_stash=temp_merge_top'
+            // + '&title=' + window.escape('Record Overlay'),
+            'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+            { 'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.z3950.confirm_overlay.title') }
+        );
+        //data.stash_retrieve();
+        if (fancy_prompt_data.fancy_status == 'incomplete') { alert($("catStrings").getString('staff.cat.z3950.confirm_overlay.aborted')); return false; }
+        return true;
+    },
+
+    'spawn_marc_editor_for_overlay' : function(my_marcxml,biblio_source) {
+        var obj = this;
+        obj.data.init({'via':'stash'});
+        if (!obj.data.marked_record) {
+            alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.try_again'));
+            return;
+        }
+
+        xulG.new_tab(
+            xulG.url_prefix(urls.XUL_MARC_EDIT), 
+            { 'tab_name' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name') },
+            { 
+                'record' : { 'marc' : my_marcxml },
+                'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
+                    try {
+                        JSAN.use('cat.util'); cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
+                    } catch(E) {
+                        alert(E);
+                    }
+                },
+                'save' : {
+                    'label' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label'),
+                    'func' : function (new_marcxml) {
+                        try {
+                            if (! obj.confirm_overlay( [ obj.data.marked_record ] ) ) { return; }
+                            var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]);
+                            if (typeof r.ilsevent != 'undefined') {
+                                switch(Number(r.ilsevent)) {
+                                    case 1704 /* TCN_EXISTS */ :
+                                        var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn', [r.payload.tcn]);
+                                        var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision');
+                                        var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay', [r.payload.new_tcn]);
+                                        if (btn1) {
+                                            var robj = obj.network.simple_request(
+                                                'PERM_CHECK',[
+                                                    ses(),
+                                                    obj.data.list.au[0].id(),
+                                                    obj.data.list.au[0].ws_ou(),
+                                                    [ 'ALLOW_ALT_TCN' ]
+                                                ]
+                                            );
+                                            if (typeof robj.ilsevent != 'undefined') {
+                                                obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error'),E);
+                                            }
+                                            if (robj.length != 0) btn1 = null;
+                                        }
+                                        var btn2 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel');
+                                        var p = obj.error.yns_alert(msg,title,btn1,btn2,null, $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action'));
+                                        obj.error.sdump('D_ERROR','option ' + p + 'chosen');
+                                        switch(p) {
+                                            case 0:
+                                                var r2 = obj.network.request(
+                                                    api.MARC_XML_RECORD_REPLACE.app,
+                                                    api.MARC_XML_RECORD_REPLACE.method + '.override',
+                                                    [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]
+                                                );
+                                                if (typeof r2.ilsevent != 'undefined') {
+                                                    throw(r2);
+                                                } else {
+                                                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN'));
+                                                    return {
+                                                        'id' : r2.id(),
+                                                        'on_complete' : function() {
+                                                            try {
+                                                                obj.replace_tab_with_opac(r2.id());
+                                                            } catch(E) {
+                                                                alert(E);
+                                                            }
+                                                        }
+                                                    };
+                                                }
+                                            break;
+                                            case 1:
+                                            default:
+                                                alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay'));
+                                            break;
+                                        }
+                                    break;
+                                    default:
+                                        throw(r);
+                                    break;
+                                }
+                            } else {
+                                alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay'));
+                                return {
+                                    'id' : r.id(),
+                                    'on_complete' : function() {
+                                        try {
+                                            obj.replace_tab_with_opac(r.id());
+                                        } catch(E) {
+                                            alert(E);
+                                        }
+                                    }
+                                };
+                            }
+                        } catch(E) {
+                            obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error'),E);
+                        }
+                    }
+                }
+            } 
+        );
+    },
 
 
-	'load_creds' : function() {
-		var obj = this;
-		try {
-			obj.creds = { 'version' : g.save_version, 'services' : {}, 'hosts' : {} };
-			/*
-				{
-					'version' : xx,
-					'default_service' : xx,
-					'services' : {
+    'load_creds' : function() {
+        var obj = this;
+        try {
+            obj.creds = { 'version' : g.save_version, 'services' : {}, 'hosts' : {} };
+            /*
+                {
+                    'version' : xx,
+                    'default_service' : xx,
+                    'services' : {
 
-						'xx' : {
-							'username' : xx,
-							'password' : xx,
-							'default_attr' : xx,
-						},
+                        'xx' : {
+                            'username' : xx,
+                            'password' : xx,
+                            'default_attr' : xx,
+                        },
 
-						'xx' : {
-							'username' : xx,
-							'password' : xx,
-							'default_attr' : xx,
-						},
-					},
+                        'xx' : {
+                            'username' : xx,
+                            'password' : xx,
+                            'default_attr' : xx,
+                        },
+                    },
                     // new in version 2
                     'hosts' : {
                         'xxxx' : {
@@ -1004,56 +1004,56 @@ cat.z3950.prototype = {
                             },
                         }
                     }
-				}
-			*/
-			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-			JSAN.use('util.file'); var file = new util.file('z3950_store');
-			if (file._file.exists()) {
-				var creds = file.get_object(); file.close();
-				if (typeof creds.version != 'undefined') {
-					if (creds.version >= obj.creds_version) {  /* so apparently, this guy is assuming that future versions will be backwards compatible */
+                }
+            */
+            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            JSAN.use('util.file'); var file = new util.file('z3950_store');
+            if (file._file.exists()) {
+                var creds = file.get_object(); file.close();
+                if (typeof creds.version != 'undefined') {
+                    if (creds.version >= obj.creds_version) {  /* so apparently, this guy is assuming that future versions will be backwards compatible */
                         if (typeof creds.hosts == 'undefined') creds.hosts = {};
-						obj.creds = creds;
-					}
-				}
-			}
-		} catch(E) {
-			obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.load_creds.z3950_cred_error'),E);
-		}
-	},
+                        obj.creds = creds;
+                    }
+                }
+            }
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.load_creds.z3950_cred_error'),E);
+        }
+    },
 
-	'save_creds' : function () {
-		try {
-			var obj = this;
+    'save_creds' : function () {
+        try {
+            var obj = this;
             if (typeof obj.creds.hosts == 'undefined') obj.creds.hosts = {};
             if (typeof obj.creds.hosts[ obj.data.server_unadorned ] == 'undefined') obj.creds.hosts[ obj.data.server_unadorned ] = { 'services' : {} };
             obj.creds.hosts[ obj.data.server_unadorned ].default_services = obj.active_services;
             for (var i = 0; i < obj.creds.hosts[ obj.data.server_unadorned ].default_services.length; i++) {
-			    var service = obj.creds.hosts[ obj.data.server_unadorned ].default_services[i];
-    			if (typeof obj.creds.hosts[ obj.data.server_unadorned ].services[ service ] == 'undefined') {
+                var service = obj.creds.hosts[ obj.data.server_unadorned ].default_services[i];
+                if (typeof obj.creds.hosts[ obj.data.server_unadorned ].services[ service ] == 'undefined') {
                     obj.creds.hosts[ obj.data.server_unadorned ].services[ service ] = {}
-    			}
-    			obj.creds.hosts[ obj.data.server_unadorned ].services[service].username = document.getElementById(service + '_username').value;
-    			obj.creds.hosts[ obj.data.server_unadorned ].services[service].password = document.getElementById(service + '_password').value;
-    			if (obj.default_attr) {
-    				obj.creds.hosts[ obj.data.server_unadorned ].services[service].default_attr = obj.default_attr;
-    			}
+                }
+                obj.creds.hosts[ obj.data.server_unadorned ].services[service].username = document.getElementById(service + '_username').value;
+                obj.creds.hosts[ obj.data.server_unadorned ].services[service].password = document.getElementById(service + '_password').value;
+                if (obj.default_attr) {
+                    obj.creds.hosts[ obj.data.server_unadorned ].services[service].default_attr = obj.default_attr;
+                }
             }
-			obj.creds.version = obj.creds_version;
-			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-			JSAN.use('util.file'); var file = new util.file('z3950_store');
-			file.set_object(obj.creds);
-			file.close();
-		} catch(E) {
-			obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.save_creds.z3950_cred_error'),E);
-		}
-	},
+            obj.creds.version = obj.creds_version;
+            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            JSAN.use('util.file'); var file = new util.file('z3950_store');
+            file.set_object(obj.creds);
+            file.close();
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.save_creds.z3950_cred_error'),E);
+        }
+    },
 
-	'handle_enter' : function(ev) {
-		var obj = this;
-		if (ev.target.tagName != 'textbox') return;
-		if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.initial_search(); }, 0);
-	},
+    'handle_enter' : function(ev) {
+        var obj = this;
+        if (ev.target.tagName != 'textbox') return;
+        if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.initial_search(); }, 0);
+    },
 }
 
 dump('exiting cat.z3950.js\n');

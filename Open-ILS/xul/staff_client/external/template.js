@@ -2,39 +2,39 @@ dump('entering example.template.js\n');
 
 if (typeof example == 'undefined') example = {};
 example.template = function (params) {
-	try {
-		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		JSAN.use('util.error'); this.error = new util.error();
-	} catch(E) {
-		dump('example.template: ' + E + '\n');
-	}
+    try {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        JSAN.use('util.error'); this.error = new util.error();
+    } catch(E) {
+        dump('example.template: ' + E + '\n');
+    }
 }
 
 example.template.prototype = {
 
-	'init' : function( params ) {
+    'init' : function( params ) {
 
-		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-			var obj = this;
+            var obj = this;
 
-			JSAN.use('util.controller'); obj.controller = new util.controller();
-			obj.controller.init(
-				{
-					control_map : {
-						'cmd_broken' : [
-							['command'],
-							function() { alert('Not Yet Implemented'); }
-						],
-					}
-				}
-			);
+            JSAN.use('util.controller'); obj.controller = new util.controller();
+            obj.controller.init(
+                {
+                    control_map : {
+                        'cmd_broken' : [
+                            ['command'],
+                            function() { alert('Not Yet Implemented'); }
+                        ],
+                    }
+                }
+            );
 
-		} catch(E) {
-			this.error.sdump('D_ERROR','example.template.init: ' + E + '\n');
-		}
-	},
+        } catch(E) {
+            this.error.sdump('D_ERROR','example.template.init: ' + E + '\n');
+        }
+    },
 }
 
 dump('exiting example.template.js\n');

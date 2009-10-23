@@ -4,46 +4,46 @@ dump('entering cat.copy_buckets.js\n');
 if (typeof cat == 'undefined') cat = {};
 cat.copy_buckets = function (params) {
 
-	JSAN.use('util.error'); this.error = new util.error();
-	JSAN.use('util.network'); this.network = new util.network();
-	JSAN.use('util.date');
-	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+    JSAN.use('util.error'); this.error = new util.error();
+    JSAN.use('util.network'); this.network = new util.network();
+    JSAN.use('util.date');
+    JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 }
 
 cat.copy_buckets.prototype = {
-	'selection_list1' : [],
-	'selection_list2' : [],
-	'bucket_id_name_map' : {},
+    'selection_list1' : [],
+    'selection_list2' : [],
+    'bucket_id_name_map' : {},
     'copy_hash' : {},
 
-	'render_pending_copies' : function() {
-		var obj = this;
-		obj.list1.clear();
-		for (var i = 0; i < obj.copy_ids.length; i++) {
-			var item = obj.prep_item_for_list( obj.copy_ids[i] );
-			if (item) obj.list1.append( item );
-		}
-	},
+    'render_pending_copies' : function() {
+        var obj = this;
+        obj.list1.clear();
+        for (var i = 0; i < obj.copy_ids.length; i++) {
+            var item = obj.prep_item_for_list( obj.copy_ids[i] );
+            if (item) obj.list1.append( item );
+        }
+    },
 
-	'init' : function( params ) {
+    'init' : function( params ) {
 
-		var obj = this;
+        var obj = this;
 
-		obj.copy_ids = params['copy_ids'] || [];
+        obj.copy_ids = params['copy_ids'] || [];
 
-		JSAN.use('circ.util');
-		var columns = circ.util.columns( 
-			{ 
-				'barcode' : { 'hidden' : false },
-				'title' : { 'hidden' : false },
-				'location' : { 'hidden' : false },
-				'call_number' : { 'hidden' : false },
-				'status' : { 'hidden' : false },
-				'deleted' : { 'hidden' : false },
-			} 
-		);
+        JSAN.use('circ.util');
+        var columns = circ.util.columns( 
+            { 
+                'barcode' : { 'hidden' : false },
+                'title' : { 'hidden' : false },
+                'location' : { 'hidden' : false },
+                'call_number' : { 'hidden' : false },
+                'status' : { 'hidden' : false },
+                'deleted' : { 'hidden' : false },
+            } 
+        );
 
-		JSAN.use('util.list'); 
+        JSAN.use('util.list'); 
 
         function retrieve_row(params) {
             var row = params.row;
@@ -75,73 +75,73 @@ cat.copy_buckets.prototype = {
             return row;
         }
 
-		obj.list1 = new util.list('pending_copies_list');
-		obj.list1.init(
-			{
-				'columns' : columns,
-				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+        obj.list1 = new util.list('pending_copies_list');
+        obj.list1.init(
+            {
+                'columns' : columns,
+                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row,
-				'on_select' : function(ev) {
-					try {
-						JSAN.use('util.functional');
-						var sel = obj.list1.retrieve_selection();
-						obj.selection_list1 = util.functional.map_list(
-							sel,
-							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
-						);
-						obj.error.sdump('D_TRACE','circ/copy_buckets: selection list 1 = ' + js2JSON(obj.selection_list1) );
-						if (obj.selection_list1.length == 0) {
-							obj.controller.view.copy_buckets_sel_add.disabled = true;
-						} else {
-							obj.controller.view.copy_buckets_sel_add.disabled = false;
-						}
-					} catch(E) {
-						alert('FIXME: ' + E);
-					}
-				},
+                'on_select' : function(ev) {
+                    try {
+                        JSAN.use('util.functional');
+                        var sel = obj.list1.retrieve_selection();
+                        obj.selection_list1 = util.functional.map_list(
+                            sel,
+                            function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
+                        );
+                        obj.error.sdump('D_TRACE','circ/copy_buckets: selection list 1 = ' + js2JSON(obj.selection_list1) );
+                        if (obj.selection_list1.length == 0) {
+                            obj.controller.view.copy_buckets_sel_add.disabled = true;
+                        } else {
+                            obj.controller.view.copy_buckets_sel_add.disabled = false;
+                        }
+                    } catch(E) {
+                        alert('FIXME: ' + E);
+                    }
+                },
 
-			}
-		);
+            }
+        );
 
-		obj.render_pending_copies();
-	
-		obj.list2 = new util.list('copies_in_bucket_list');
-		obj.list2.init(
-			{
-				'columns' : columns,
-				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
+        obj.render_pending_copies();
+    
+        obj.list2 = new util.list('copies_in_bucket_list');
+        obj.list2.init(
+            {
+                'columns' : columns,
+                'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : retrieve_row,
-				'on_select' : function(ev) {
-					try {
-						JSAN.use('util.functional');
-						var sel = obj.list2.retrieve_selection();
-						obj.selection_list2 = util.functional.map_list(
-							sel,
-							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
-						);
-						obj.error.sdump('D_TRACE','circ/copy_buckets: selection list 2 = ' + js2JSON(obj.selection_list2) );
-						if (obj.selection_list2.length == 0) {
-							obj.controller.view.copy_buckets_delete_item.disabled = true;
-							obj.controller.view.copy_buckets_delete_item.setAttribute('disabled','true');
-							obj.controller.view.copy_buckets_export.disabled = true;
-							obj.controller.view.copy_buckets_export.setAttribute('disabled','true');
-						} else {
-							obj.controller.view.copy_buckets_delete_item.disabled = false;
-							obj.controller.view.copy_buckets_delete_item.setAttribute('disabled','false');
-							obj.controller.view.copy_buckets_export.disabled = false;
-							obj.controller.view.copy_buckets_export.setAttribute('disabled','false');
-						}
-					} catch(E) {
-						alert('FIXME: ' + E);
-					}
-				},
-			}
-		);
-		
-		JSAN.use('util.controller'); obj.controller = new util.controller();
-		obj.controller.init(
-			{
-				'control_map' : {
+                'on_select' : function(ev) {
+                    try {
+                        JSAN.use('util.functional');
+                        var sel = obj.list2.retrieve_selection();
+                        obj.selection_list2 = util.functional.map_list(
+                            sel,
+                            function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
+                        );
+                        obj.error.sdump('D_TRACE','circ/copy_buckets: selection list 2 = ' + js2JSON(obj.selection_list2) );
+                        if (obj.selection_list2.length == 0) {
+                            obj.controller.view.copy_buckets_delete_item.disabled = true;
+                            obj.controller.view.copy_buckets_delete_item.setAttribute('disabled','true');
+                            obj.controller.view.copy_buckets_export.disabled = true;
+                            obj.controller.view.copy_buckets_export.setAttribute('disabled','true');
+                        } else {
+                            obj.controller.view.copy_buckets_delete_item.disabled = false;
+                            obj.controller.view.copy_buckets_delete_item.setAttribute('disabled','false');
+                            obj.controller.view.copy_buckets_export.disabled = false;
+                            obj.controller.view.copy_buckets_export.setAttribute('disabled','false');
+                        }
+                    } catch(E) {
+                        alert('FIXME: ' + E);
+                    }
+                },
+            }
+        );
+        
+        JSAN.use('util.controller'); obj.controller = new util.controller();
+        obj.controller.init(
+            {
+                'control_map' : {
                     'list_actions1' : [
                         ['render'],
                         function(e) {
@@ -168,117 +168,117 @@ cat.copy_buckets.prototype = {
                             };
                         }
                     ],
-					'copy_bucket_barcode_entry_textbox' : [
-						['keypress'],
-						function(ev) {
-							if (ev.keyCode && ev.keyCode == 13) {
-								obj.scan_barcode();
-							}
-						}
-					],
+                    'copy_bucket_barcode_entry_textbox' : [
+                        ['keypress'],
+                        function(ev) {
+                            if (ev.keyCode && ev.keyCode == 13) {
+                                obj.scan_barcode();
+                            }
+                        }
+                    ],
                     'cmd_copy_bucket_submit_barcode' : [
                         ['command'],
                         function() {
                             obj.scan_barcode();
                         }
                     ],
-					'copy_buckets_menulist_placeholder' : [
-						['render'],
-						function(e) {
-							return function() {
-								JSAN.use('util.widgets'); JSAN.use('util.functional');
-								var items = [
-									[$('catStrings').getString('staff.cat.copy_buckets.menulist.render.choose_bucket'),''],
-									[$('catStrings').getString('staff.cat.copy_buckets.menulist.render.retrieve_bucket'),-1]
-								].concat(
-									util.functional.map_list(
-										obj.network.simple_request(
-											'BUCKET_RETRIEVE_VIA_USER',
-											[ ses(), obj.data.list.au[0].id() ]
-										).copy,
-										function(o) {
-											obj.bucket_id_name_map[ o.id() ] = o.name();
-											return [ o.name(), o.id() ];
-										}
-									).sort( 
-				                        function( a, b ) {
-				                            if (a[0] < b[0]) return -1;
-				                            if (a[0] > b[0]) return 1;
-				                            return 0;
-				                        }
-									)
-								);
-								obj.error.sdump('D_TRACE','items = ' + js2JSON(items));
-								util.widgets.remove_children( e );
-								var ml = util.widgets.make_menulist(
-									items
-								);
-								e.appendChild( ml );
-								ml.setAttribute('id','bucket_menulist');
-								ml.setAttribute('accesskey','');
+                    'copy_buckets_menulist_placeholder' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                JSAN.use('util.widgets'); JSAN.use('util.functional');
+                                var items = [
+                                    [$('catStrings').getString('staff.cat.copy_buckets.menulist.render.choose_bucket'),''],
+                                    [$('catStrings').getString('staff.cat.copy_buckets.menulist.render.retrieve_bucket'),-1]
+                                ].concat(
+                                    util.functional.map_list(
+                                        obj.network.simple_request(
+                                            'BUCKET_RETRIEVE_VIA_USER',
+                                            [ ses(), obj.data.list.au[0].id() ]
+                                        ).copy,
+                                        function(o) {
+                                            obj.bucket_id_name_map[ o.id() ] = o.name();
+                                            return [ o.name(), o.id() ];
+                                        }
+                                    ).sort( 
+                                        function( a, b ) {
+                                            if (a[0] < b[0]) return -1;
+                                            if (a[0] > b[0]) return 1;
+                                            return 0;
+                                        }
+                                    )
+                                );
+                                obj.error.sdump('D_TRACE','items = ' + js2JSON(items));
+                                util.widgets.remove_children( e );
+                                var ml = util.widgets.make_menulist(
+                                    items
+                                );
+                                e.appendChild( ml );
+                                ml.setAttribute('id','bucket_menulist');
+                                ml.setAttribute('accesskey','');
 
-								function change_bucket(ev) {
-									var bucket_id = ev.target.value;
-									if (bucket_id < 0 ) {
-										bucket_id = window.prompt($('catStrings').getString('staff.cat.copy_buckets.menulist.change_bucket.prompt'));
-										ev.target.value = bucket_id;
-										ev.target.setAttribute('value',bucket_id);
-									}
-									if (!bucket_id) return;
-									var bucket = obj.network.simple_request(
-										'BUCKET_FLESH',
-										[ ses(), 'copy', bucket_id ]
-									);
-									if (typeof bucket.ilsevent != 'undefined') {
-										if (bucket.ilsevent == 1506 /* CONTAINER_NOT_FOUND */) {
-											alert($('catStrings').getFormattedString('staff.cat.copy_buckets.menulist.change_bucket.undefined', [bucket_id]));
-										} else {
-											obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.menulist.change_bucket.error'),bucket);
-										}
-										return;
-									}
-									try {
-										var x = document.getElementById('info_box');
-										x.setAttribute('hidden','false');
-										x = document.getElementById('bucket_number');
-										x.setAttribute('value',bucket.id());
-										x = document.getElementById('bucket_name');
-										x.setAttribute('value',bucket.name());
-										x = document.getElementById('bucket_owner');
-										var s = bucket.owner(); JSAN.use('patron.util');
-										if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); 
-										x.setAttribute('value',s.card().barcode() + " @ " + obj.data.hash.aou[ s.home_ou() ].shortname());
+                                function change_bucket(ev) {
+                                    var bucket_id = ev.target.value;
+                                    if (bucket_id < 0 ) {
+                                        bucket_id = window.prompt($('catStrings').getString('staff.cat.copy_buckets.menulist.change_bucket.prompt'));
+                                        ev.target.value = bucket_id;
+                                        ev.target.setAttribute('value',bucket_id);
+                                    }
+                                    if (!bucket_id) return;
+                                    var bucket = obj.network.simple_request(
+                                        'BUCKET_FLESH',
+                                        [ ses(), 'copy', bucket_id ]
+                                    );
+                                    if (typeof bucket.ilsevent != 'undefined') {
+                                        if (bucket.ilsevent == 1506 /* CONTAINER_NOT_FOUND */) {
+                                            alert($('catStrings').getFormattedString('staff.cat.copy_buckets.menulist.change_bucket.undefined', [bucket_id]));
+                                        } else {
+                                            obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.menulist.change_bucket.error'),bucket);
+                                        }
+                                        return;
+                                    }
+                                    try {
+                                        var x = document.getElementById('info_box');
+                                        x.setAttribute('hidden','false');
+                                        x = document.getElementById('bucket_number');
+                                        x.setAttribute('value',bucket.id());
+                                        x = document.getElementById('bucket_name');
+                                        x.setAttribute('value',bucket.name());
+                                        x = document.getElementById('bucket_owner');
+                                        var s = bucket.owner(); JSAN.use('patron.util');
+                                        if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); 
+                                        x.setAttribute('value',s.card().barcode() + " @ " + obj.data.hash.aou[ s.home_ou() ].shortname());
 
-									} catch(E) {
-										alert(E);
-									}
-									var items = bucket.items() || [];
-									obj.list2.clear();
-									for (var i = 0; i < items.length; i++) {
-										var item = obj.prep_item_for_list( 
-											items[i].target_copy(),
-											items[i].id()
-										);
-										if (item) obj.list2.append( item );
-									}
-								}
+                                    } catch(E) {
+                                        alert(E);
+                                    }
+                                    var items = bucket.items() || [];
+                                    obj.list2.clear();
+                                    for (var i = 0; i < items.length; i++) {
+                                        var item = obj.prep_item_for_list( 
+                                            items[i].target_copy(),
+                                            items[i].id()
+                                        );
+                                        if (item) obj.list2.append( item );
+                                    }
+                                }
 
-								ml.addEventListener( 'change_bucket', change_bucket , false);
-								ml.addEventListener( 'command', function() {
-									JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
-								}, false);
-								obj.controller.view.bucket_menulist = ml;
-								JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
-								document.getElementById('refresh').addEventListener( 'command', function() {
-									JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
-								}, false);
-							};
-						},
-					],
+                                ml.addEventListener( 'change_bucket', change_bucket , false);
+                                ml.addEventListener( 'command', function() {
+                                    JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
+                                }, false);
+                                obj.controller.view.bucket_menulist = ml;
+                                JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
+                                document.getElementById('refresh').addEventListener( 'command', function() {
+                                    JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
+                                }, false);
+                            };
+                        },
+                    ],
 
-					'copy_buckets_add' : [
-						['command'],
-						function() {
+                    'copy_buckets_add' : [
+                        ['command'],
+                        function() {
                             try {
                                 var bucket_id = obj.controller.view.bucket_menulist.value;
                                 if (!bucket_id) return;
@@ -304,334 +304,334 @@ cat.copy_buckets.prototype = {
                             } catch(E) {
                                 alert(E);
                             }
-						}
-					],
-					'copy_buckets_sel_add' : [
-						['command'],
-						function() {                                                        
-							var bucket_id = obj.controller.view.bucket_menulist.value;
-							if (!bucket_id) return;
-							for (var i = 0; i < obj.selection_list1.length; i++) {
+                        }
+                    ],
+                    'copy_buckets_sel_add' : [
+                        ['command'],
+                        function() {                                                        
+                            var bucket_id = obj.controller.view.bucket_menulist.value;
+                            if (!bucket_id) return;
+                            for (var i = 0; i < obj.selection_list1.length; i++) {
                                 var acp_id = obj.selection_list1[i][0];
-								//var barcode = obj.selection_list1[i][1];
-								var bucket_item = new ccbi();
-								bucket_item.isnew('1');
-								bucket_item.bucket(bucket_id);
-								bucket_item.target_copy( acp_id );
-								try {
-									var robj = obj.network.simple_request('BUCKET_ITEM_CREATE',
-										[ ses(), 'copy', bucket_item ]);
+                                //var barcode = obj.selection_list1[i][1];
+                                var bucket_item = new ccbi();
+                                bucket_item.isnew('1');
+                                bucket_item.bucket(bucket_id);
+                                bucket_item.target_copy( acp_id );
+                                try {
+                                    var robj = obj.network.simple_request('BUCKET_ITEM_CREATE',
+                                        [ ses(), 'copy', bucket_item ]);
 
-									if (typeof robj == 'object') throw robj;
+                                    if (typeof robj == 'object') throw robj;
 
-									var item = obj.prep_item_for_list( acp_id, robj );
-									if (!item) continue;
+                                    var item = obj.prep_item_for_list( acp_id, robj );
+                                    if (!item) continue;
 
-									obj.list2.append( item );
-								} catch(E) {
-									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_sel_add.error'), E);
-								}
-							}
+                                    obj.list2.append( item );
+                                } catch(E) {
+                                    obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_sel_add.error'), E);
+                                }
+                            }
 
-						}
-					],
-					'copy_buckets_export' : [
-						['command'],
-						function() {                                                        
-							for (var i = 0; i < obj.selection_list2.length; i++) {
-								var acp_id = obj.selection_list2[i][0];
-								//var barcode = obj.selection_list1[i][1];
-								//var bucket_item_id = obj.selection_list1[i][2];
-								var item = obj.prep_item_for_list( acp_id );
-								if (item) {
-									obj.list1.append( item );
-									obj.copy_ids.push( acp_id );
-								}
-							}
-						}
-					],
+                        }
+                    ],
+                    'copy_buckets_export' : [
+                        ['command'],
+                        function() {                                                        
+                            for (var i = 0; i < obj.selection_list2.length; i++) {
+                                var acp_id = obj.selection_list2[i][0];
+                                //var barcode = obj.selection_list1[i][1];
+                                //var bucket_item_id = obj.selection_list1[i][2];
+                                var item = obj.prep_item_for_list( acp_id );
+                                if (item) {
+                                    obj.list1.append( item );
+                                    obj.copy_ids.push( acp_id );
+                                }
+                            }
+                        }
+                    ],
 
-					'copy_buckets_delete_item' : [
-						['command'],
-						function() {
-							for (var i = 0; i < obj.selection_list2.length; i++) {
-								try {
-									//var acp_id = obj.selection_list2[i][0];
-									//var barcode = obj.selection_list2[i][1];
-									var bucket_item_id = obj.selection_list2[i][2];
-									var robj = obj.network.simple_request('BUCKET_ITEM_DELETE',
-										[ ses(), 'copy', bucket_item_id ]);
-									if (typeof robj == 'object') throw robj;
-								} catch(E) {
-									obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_item.error'), E);
-								}
-							}
-							setTimeout(
-								function() {
-									JSAN.use('util.widgets'); 
-									util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
-								}, 0
-							);
-						}
-					],
-					'copy_buckets_delete_bucket' : [
-						['command'],
-						function() {
-							try {
-								var bucket = obj.controller.view.bucket_menulist.value;
-								var name = obj.bucket_id_name_map[ bucket ];
-								var conf = window.confirm($('catStrings').getFormattedString('staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm', [name]));
-								if (!conf) return;
-								obj.list2.clear();
-								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
-								if (typeof robj == 'object') throw robj;
-								obj.controller.render('copy_buckets_menulist_placeholder');
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_bucket.error'),E);
-							}
-						}
-					],
-					'copy_buckets_new_bucket' : [
-						['command'],
-						function() {
-							try {
-								var name = prompt(
-									$('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.prompt'),
-									'',
-									$('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.title')
-								);
+                    'copy_buckets_delete_item' : [
+                        ['command'],
+                        function() {
+                            for (var i = 0; i < obj.selection_list2.length; i++) {
+                                try {
+                                    //var acp_id = obj.selection_list2[i][0];
+                                    //var barcode = obj.selection_list2[i][1];
+                                    var bucket_item_id = obj.selection_list2[i][2];
+                                    var robj = obj.network.simple_request('BUCKET_ITEM_DELETE',
+                                        [ ses(), 'copy', bucket_item_id ]);
+                                    if (typeof robj == 'object') throw robj;
+                                } catch(E) {
+                                    obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_item.error'), E);
+                                }
+                            }
+                            setTimeout(
+                                function() {
+                                    JSAN.use('util.widgets'); 
+                                    util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+                                }, 0
+                            );
+                        }
+                    ],
+                    'copy_buckets_delete_bucket' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var bucket = obj.controller.view.bucket_menulist.value;
+                                var name = obj.bucket_id_name_map[ bucket ];
+                                var conf = window.confirm($('catStrings').getFormattedString('staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm', [name]));
+                                if (!conf) return;
+                                obj.list2.clear();
+                                var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
+                                if (typeof robj == 'object') throw robj;
+                                obj.controller.render('copy_buckets_menulist_placeholder');
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_delete_bucket.error'),E);
+                            }
+                        }
+                    ],
+                    'copy_buckets_new_bucket' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var name = prompt(
+                                    $('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.prompt'),
+                                    '',
+                                    $('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.title')
+                                );
 
-								if (name) {
-									var bucket = new ccb();
-									bucket.btype('staff_client');
-									bucket.owner( obj.data.list.au[0].id() );
-									bucket.name( name );
+                                if (name) {
+                                    var bucket = new ccb();
+                                    bucket.btype('staff_client');
+                                    bucket.owner( obj.data.list.au[0].id() );
+                                    bucket.name( name );
 
-									var robj = obj.network.simple_request('BUCKET_CREATE',[ses(),'copy',bucket]);
+                                    var robj = obj.network.simple_request('BUCKET_CREATE',[ses(),'copy',bucket]);
 
-									if (typeof robj == 'object') {
-										if (robj.ilsevent == 1710 /* CONTAINER_EXISTS */) {
-											alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists'));
-											return;
-										}
-										throw robj;
-									}
+                                    if (typeof robj == 'object') {
+                                        if (robj.ilsevent == 1710 /* CONTAINER_EXISTS */) {
+                                            alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists'));
+                                            return;
+                                        }
+                                        throw robj;
+                                    }
 
-									obj.controller.render('copy_buckets_menulist_placeholder');
-									obj.controller.view.bucket_menulist.value = robj;
-									setTimeout(
-										function() {
-											JSAN.use('util.widgets'); 
-											util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
-										}, 0
-									);
-								}
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.error'),E);
-							}
-						}
-					],
-					'copy_buckets_batch_copy_edit' : [
-						['command'],
-						function() {
-							try {
+                                    obj.controller.render('copy_buckets_menulist_placeholder');
+                                    obj.controller.view.bucket_menulist.value = robj;
+                                    setTimeout(
+                                        function() {
+                                            JSAN.use('util.widgets'); 
+                                            util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+                                        }, 0
+                                    );
+                                }
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_new_bucket.error'),E);
+                            }
+                        }
+                    ],
+                    'copy_buckets_batch_copy_edit' : [
+                        ['command'],
+                        function() {
+                            try {
 
-								obj.list2.select_all();
-							
-								JSAN.use('util.widgets'); JSAN.use('util.functional');
+                                obj.list2.select_all();
+                            
+                                JSAN.use('util.widgets'); JSAN.use('util.functional');
 
-								var list = util.functional.map_list(
-									obj.list2.dump_retrieve_ids(),
-									function (o) {
-										return JSON2js(o)[0]; // acp_id
-									}
-								);
+                                var list = util.functional.map_list(
+                                    obj.list2.dump_retrieve_ids(),
+                                    function (o) {
+                                        return JSON2js(o)[0]; // acp_id
+                                    }
+                                );
 
-								JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
+                                JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
 
-								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
-								setTimeout(
-									function() {
-										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
-									}, 0
-								);
-							} catch(E) {
-								alert( js2JSON(E) );
-							}
-						}
-					],
-					'copy_buckets_batch_copy_delete' : [
-						['command'],
-						function() {
-							try {
-							
-								obj.list2.select_all();
+                                obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
+                                setTimeout(
+                                    function() {
+                                        util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+                                    }, 0
+                                );
+                            } catch(E) {
+                                alert( js2JSON(E) );
+                            }
+                        }
+                    ],
+                    'copy_buckets_batch_copy_delete' : [
+                        ['command'],
+                        function() {
+                            try {
+                            
+                                obj.list2.select_all();
 
-								JSAN.use('util.widgets'); JSAN.use('util.functional');
+                                JSAN.use('util.widgets'); JSAN.use('util.functional');
 
-								var list = util.functional.map_list(
-									obj.list2.dump_retrieve_ids(),
-									function (o) {
-										return JSON2js(o)[0]; // acp_id
-									}
-								);
+                                var list = util.functional.map_list(
+                                    obj.list2.dump_retrieve_ids(),
+                                    function (o) {
+                                        return JSON2js(o)[0]; // acp_id
+                                    }
+                                );
 
-								var copies = util.functional.map_list(
-									list,
-									function (acp_id) {
-										return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
-									}
-								);
+                                var copies = util.functional.map_list(
+                                    list,
+                                    function (acp_id) {
+                                        return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
+                                    }
+                                );
 
-								for (var i = 0; i < copies.length; i++) {
-									copies[i].ischanged(1);
-									copies[i].isdeleted(1);
-								}
+                                for (var i = 0; i < copies.length; i++) {
+                                    copies[i].ischanged(1);
+                                    copies[i].isdeleted(1);
+                                }
 
-								var robj = obj.network.simple_request(
-									'FM_ACP_FLESHED_BATCH_UPDATE',
-									[ ses(), copies, true],
-									null, // no callback
-									{
-										'title' : document.getElementById('catStrings').getString('staff.cat.copy_buckets.batch.error'),
-										'overridable_events' : [
-											1208 /* TITLE_LAST_COPY */
-										]
-									}
-								);
-								if (typeof robj.ilsevent != 'undefined') {
-									switch(Number(robj.ilsevent)) {
-										case 1208 /* TITLE_LAST_COPY */ :
-											// ignore this
-										break;
-										case 1227 /* COPY_DELETE_WARNING */ : 
-											var copy;
-											for (var i = 0; i < copies.length; i++) { if (copies[i].id()==robj.payload) copy = function(a){return a;}(copies[i]); }
-											/* The copy in question is not in an ideal status for deleting */
-											var err = '*** ' + robj.desc + ' ***\n';
-											/* The barcode for the item is {1} */
-											err += $('catStrings').getFormattedString('cat.barcode_for_item',[ copy.barcode() ]) + '\n';
-											/* The whole batch operation failed */
-											err += $('catStrings').getString('cat.batch_operation_failed') + '\n';
-											alert(err);
-										break;
-										default:
-											obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.batch.error'), robj);
-									}
-								}
+                                var robj = obj.network.simple_request(
+                                    'FM_ACP_FLESHED_BATCH_UPDATE',
+                                    [ ses(), copies, true],
+                                    null, // no callback
+                                    {
+                                        'title' : document.getElementById('catStrings').getString('staff.cat.copy_buckets.batch.error'),
+                                        'overridable_events' : [
+                                            1208 /* TITLE_LAST_COPY */
+                                        ]
+                                    }
+                                );
+                                if (typeof robj.ilsevent != 'undefined') {
+                                    switch(Number(robj.ilsevent)) {
+                                        case 1208 /* TITLE_LAST_COPY */ :
+                                            // ignore this
+                                        break;
+                                        case 1227 /* COPY_DELETE_WARNING */ : 
+                                            var copy;
+                                            for (var i = 0; i < copies.length; i++) { if (copies[i].id()==robj.payload) copy = function(a){return a;}(copies[i]); }
+                                            /* The copy in question is not in an ideal status for deleting */
+                                            var err = '*** ' + robj.desc + ' ***\n';
+                                            /* The barcode for the item is {1} */
+                                            err += $('catStrings').getFormattedString('cat.barcode_for_item',[ copy.barcode() ]) + '\n';
+                                            /* The whole batch operation failed */
+                                            err += $('catStrings').getString('cat.batch_operation_failed') + '\n';
+                                            alert(err);
+                                        break;
+                                        default:
+                                            obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.batch.error'), robj);
+                                    }
+                                }
 
-								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
-								setTimeout(
-									function() {
-										JSAN.use('util.widgets'); 
-										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
-									}, 0
-								);
-							} catch(E) {
-								alert( js2JSON(E) );
-							}
-						}
-					],
+                                obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
+                                setTimeout(
+                                    function() {
+                                        JSAN.use('util.widgets'); 
+                                        util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+                                    }, 0
+                                );
+                            } catch(E) {
+                                alert( js2JSON(E) );
+                            }
+                        }
+                    ],
 
-					'copy_buckets_transfer_to_volume' : [
-						['command'],
-						function() {
-							try {
-								obj.list2.select_all();
+                    'copy_buckets_transfer_to_volume' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.list2.select_all();
 
-								obj.data.stash_retrieve();
-								if (!obj.data.marked_volume) {
-									alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume'));
-									return;
-								}
+                                obj.data.stash_retrieve();
+                                if (!obj.data.marked_volume) {
+                                    alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume'));
+                                    return;
+                                }
 
-								var copy_ids = util.functional.map_list(
-									obj.list2.dump_retrieve_ids(),
-									function (o) {
-										return JSON2js(o)[0]; // acp_id
-									}
-								)
+                                var copy_ids = util.functional.map_list(
+                                    obj.list2.dump_retrieve_ids(),
+                                    function (o) {
+                                        return JSON2js(o)[0]; // acp_id
+                                    }
+                                )
 
-								var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
+                                var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_volume ]);
 
-								var msg = $('catStrings').getFormattedString(
-									'staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm',
-									[
-										obj.controller.view.bucket_menulist.getAttribute('label'),
-										volume.label(),
-										obj.data.hash.aou[ volume.owning_lib() ].shortname()
-									]
-								);
+                                var msg = $('catStrings').getFormattedString(
+                                    'staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm',
+                                    [
+                                        obj.controller.view.bucket_menulist.getAttribute('label'),
+                                        volume.label(),
+                                        obj.data.hash.aou[ volume.owning_lib() ].shortname()
+                                    ]
+                                );
 
-								JSAN.use('cat.util'); cat.util.transfer_copies( { 
-									'copy_ids' : copy_ids, 
-									'message' : msg, 
-									'docid' : volume.record(),
-									'volume_label' : volume.label(),
-									'owning_lib' : volume.owning_lib(),
-								} );
+                                JSAN.use('cat.util'); cat.util.transfer_copies( { 
+                                    'copy_ids' : copy_ids, 
+                                    'message' : msg, 
+                                    'docid' : volume.record(),
+                                    'volume_label' : volume.label(),
+                                    'owning_lib' : volume.owning_lib(),
+                                } );
 
-								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
-								setTimeout(
-									function() {
-										JSAN.use('util.widgets'); 
-										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
-									}, 0
-								);
-								
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error'), E);
-							}
-						}
-					],
-					'cmd_broken' : [
-						['command'],
-						function() { alert($('commonStrings').getString('common.unimplemented')); }
-					],
-					'cmd_copy_buckets_print' : [
-						['command'],
-						function() {
-							JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-							obj.list2.on_all_fleshed = function() {
-								try {
-									dump( js2JSON( obj.list2.dump_with_keys() ) + '\n' );
-									data.stash_retrieve();
-									var lib = data.hash.aou[ data.list.au[0].ws_ou() ];
-									lib.children(null);
-									var p = { 
-										'lib' : lib,
-										'staff' : data.list.au[0],
-										'header' : data.print_list_templates.item_status.header,
-										'line_item' : data.print_list_templates.item_status.line_item,
-										'footer' : data.print_list_templates.item_status.footer,
-										'type' : data.print_list_templates.item_status.type,
-										'list' : obj.list2.dump_with_keys(),
-									};
-									JSAN.use('util.print'); var print = new util.print();
-									print.tree_list( p );
-									setTimeout(function(){obj.list2.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list2.full_retrieve();
-						}
-					],
-					'cmd_copy_buckets_export' : [
-						['command'],
-						function() {
-							obj.list2.dump_csv_to_clipboard();
-						}
-					],
-					'cmd_copy_buckets_reprint' : [
-						['command'],
-						function() {
-						}
-					],
-					'cmd_export_to_copy_status' : [
-						['command'],
-						function() {
-							try {
+                                obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
+                                setTimeout(
+                                    function() {
+                                        JSAN.use('util.widgets'); 
+                                        util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+                                    }, 0
+                                );
+                                
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error'), E);
+                            }
+                        }
+                    ],
+                    'cmd_broken' : [
+                        ['command'],
+                        function() { alert($('commonStrings').getString('common.unimplemented')); }
+                    ],
+                    'cmd_copy_buckets_print' : [
+                        ['command'],
+                        function() {
+                            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+                            obj.list2.on_all_fleshed = function() {
+                                try {
+                                    dump( js2JSON( obj.list2.dump_with_keys() ) + '\n' );
+                                    data.stash_retrieve();
+                                    var lib = data.hash.aou[ data.list.au[0].ws_ou() ];
+                                    lib.children(null);
+                                    var p = { 
+                                        'lib' : lib,
+                                        'staff' : data.list.au[0],
+                                        'header' : data.print_list_templates.item_status.header,
+                                        'line_item' : data.print_list_templates.item_status.line_item,
+                                        'footer' : data.print_list_templates.item_status.footer,
+                                        'type' : data.print_list_templates.item_status.type,
+                                        'list' : obj.list2.dump_with_keys(),
+                                    };
+                                    JSAN.use('util.print'); var print = new util.print();
+                                    print.tree_list( p );
+                                    setTimeout(function(){obj.list2.on_all_fleshed = null;},0);
+                                } catch(E) {
+                                    alert(E); 
+                                }
+                            }
+                            obj.list2.full_retrieve();
+                        }
+                    ],
+                    'cmd_copy_buckets_export' : [
+                        ['command'],
+                        function() {
+                            obj.list2.dump_csv_to_clipboard();
+                        }
+                    ],
+                    'cmd_copy_buckets_reprint' : [
+                        ['command'],
+                        function() {
+                        }
+                    ],
+                    'cmd_export_to_copy_status' : [
+                        ['command'],
+                        function() {
+                            try {
                                 obj.list2.on_all_fleshed =
                                     function() {
                                         try {
@@ -643,32 +643,32 @@ cat.copy_buckets.prototype = {
                                             );
                                             var url = urls.XUL_COPY_STATUS;
                                             xulG.new_tab( url, {}, { 'barcodes' : barcodes });
-									        setTimeout(function(){obj.list2.on_all_fleshed = null;},0);
+                                            setTimeout(function(){obj.list2.on_all_fleshed = null;},0);
                                         } catch(E) {
                                             obj.error.standard_unexpected_error_alert('export to copy status',E);
                                         }
                                     }
                                 obj.list2.full_retrieve();
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.cmd_export_to_copy_status.error'), E);
-							}
-						}
-					],
-				}
-			}
-		);
-		this.controller.render();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.cmd_export_to_copy_status.error'), E);
+                            }
+                        }
+                    ],
+                }
+            }
+        );
+        this.controller.render();
 
-		if (typeof xulG == 'undefined') {
-			obj.controller.view.cmd_export_to_copy_status.disabled = true;
-			obj.controller.view.cmd_export_to_copy_status.setAttribute('disabled',true);
-		}
-	
-	},
+        if (typeof xulG == 'undefined') {
+            obj.controller.view.cmd_export_to_copy_status.disabled = true;
+            obj.controller.view.cmd_export_to_copy_status.setAttribute('disabled',true);
+        }
+    
+    },
 
-	'prep_item_for_list' : function(acp_id,bucket_item_id) {
-		var obj = this;
-		try {
+    'prep_item_for_list' : function(acp_id,bucket_item_id) {
+        var obj = this;
+        try {
             var item = {
                 'retrieve_id' : js2JSON( [ acp_id, null, bucket_item_id ] ),
                 'row' : {
@@ -680,12 +680,12 @@ cat.copy_buckets.prototype = {
                 }
             };
             return item;
-		} catch(E) {
-			obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.prep_item_for_list.error'), E);
-			return null;
-		}
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets.prep_item_for_list.error'), E);
+            return null;
+        }
 
-	},
+    },
 
     'scan_barcode' : function() {
         var obj = this;
@@ -733,7 +733,7 @@ cat.copy_buckets.prototype = {
             obj.controller.view.copy_bucket_barcode_entry_textbox.focus();
             alert(E);
         }
-    }	
+    }    
 }
 
 dump('exiting cat.copy_buckets.js\n');

@@ -18,83 +18,83 @@ util.network = function () {
         throw(E);
     }
 
-	return this;
+    return this;
 };
 
 util.network.prototype = {
 
-	'link_id' : 0,
+    'link_id' : 0,
 
     'network_timeout' : 55, /* seconds */
 
-	'NETWORK_FAILURE' : null,
+    'NETWORK_FAILURE' : null,
 
-	'simple_request' : function(method_id,params,f,override_params) {
-		//var obj = this;
-		//var sparams = js2JSON(params);
-		//obj.error.sdump('D_SES','simple_request '+ method_id +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
-		//	'\noverride_params = ' + override_params + '\n');
-		if (typeof api[method_id] == 'undefined') {
-			throw( offlineStrings.getFormattedString('network.method_not_found.error', [method_id]) );
-		}
-		var secure = true; if (typeof api[method_id].secure != 'undefined') secure = api[method_id].secure;
-		return this.request(api[method_id].app,api[method_id].method,params,f,override_params,{ 'secure' : secure, 'method_id' : method_id });
-	},
+    'simple_request' : function(method_id,params,f,override_params) {
+        //var obj = this;
+        //var sparams = js2JSON(params);
+        //obj.error.sdump('D_SES','simple_request '+ method_id +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
+        //    '\noverride_params = ' + override_params + '\n');
+        if (typeof api[method_id] == 'undefined') {
+            throw( offlineStrings.getFormattedString('network.method_not_found.error', [method_id]) );
+        }
+        var secure = true; if (typeof api[method_id].secure != 'undefined') secure = api[method_id].secure;
+        return this.request(api[method_id].app,api[method_id].method,params,f,override_params,{ 'secure' : secure, 'method_id' : method_id });
+    },
 
-	'get_result' : function (req) {
-		var obj = this;
-		var result;
+    'get_result' : function (req) {
+        var obj = this;
+        var result;
         var fake_ilsevent_for_network_errors = { 'ilsevent' : -1, 'textcode' : offlineStrings.getString('network.server_or_method.error') }; 
-		try {
+        try {
             if (req.cancelled) {
                 result = fake_ilsevent_for_network_errors;
             } else {
-    			result = req.getResultObject();	
+                result = req.getResultObject();    
             }
-		} catch(E) {
-			try {
-				if (instanceOf(E, NetworkFailure)) {
-					obj.NETWORK_FAILURE = E;
-				} else {
-					try { obj.NETWORK_FAILURE = js2JSON(E); } catch(F) { dump(F + '\n'); obj.NETWORK_FAILURE = E; };
-				}
-			} catch(I) { 
-				obj.NETWORK_FAILURE = offlineStrings.getString('network.unknown_status');
-			}
+        } catch(E) {
+            try {
+                if (instanceOf(E, NetworkFailure)) {
+                    obj.NETWORK_FAILURE = E;
+                } else {
+                    try { obj.NETWORK_FAILURE = js2JSON(E); } catch(F) { dump(F + '\n'); obj.NETWORK_FAILURE = E; };
+                }
+            } catch(I) { 
+                obj.NETWORK_FAILURE = offlineStrings.getString('network.unknown_status');
+            }
             result = fake_ilsevent_for_network_errors;
         }
-		return result;
-	},
+        return result;
+    },
 
-	'request' : function (app,name,params,f,override_params,_params) {
+    'request' : function (app,name,params,f,override_params,_params) {
 
-		var obj = this;
-		
-		//var sparams = js2JSON(params);
-		//obj.error.sdump('D_SES','request '+ app + ' ' + name +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
-		//	'\noverride_params = ' + override_params + '\n_params = ' + _params + '\n');
+        var obj = this;
+        
+        //var sparams = js2JSON(params);
+        //obj.error.sdump('D_SES','request '+ app + ' ' + name +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
+        //    '\noverride_params = ' + override_params + '\n_params = ' + _params + '\n');
 
-		try { 
+        try { 
 
-			var request =  this._request(app,name,params,f,override_params,_params);
-			if (request) {
-				return this.get_result(request);
-			} else {
-				return null;
-			}
-	
-		} catch(E) {
-			alert('1: ' + E); 
-		}
-	},
+            var request =  this._request(app,name,params,f,override_params,_params);
+            if (request) {
+                return this.get_result(request);
+            } else {
+                return null;
+            }
+    
+        } catch(E) {
+            alert('1: ' + E); 
+        }
+    },
 
-	'_request' : function (app,name,params,f,override_params,_params) {
-		var obj = this;
-		try {
-			var sparams = js2JSON(params);
-			obj.error.sdump('D_SES','_request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
-				'\noverride_params = ' + override_params + '\n_params = ' + _params +
-				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
+    '_request' : function (app,name,params,f,override_params,_params) {
+        var obj = this;
+        try {
+            var sparams = js2JSON(params);
+            obj.error.sdump('D_SES','_request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
+                '\noverride_params = ' + override_params + '\n_params = ' + _params +
+                '\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
 
             if (document.getElementById('network_progress')) {
                 if (g && g.menu && g.menu.network_meter && typeof g.menu.network_meter.inc == 'function') g.menu.network_meter.inc(app,name);
@@ -102,21 +102,21 @@ util.network.prototype = {
                 if (xulG && xulG.network_meter && typeof xulG.network_meter.inc == 'function') xulG.network_meter.inc(app,name);
             }
 
-			var request = new RemoteRequest( app, name );
-			if (_params && _params.secure) {
-				request.setSecure(true);
-			} else {
-				request.setSecure(false);
-			}
-			for(var index in params) {
-				request.addParam(params[index]);
-			}
+            var request = new RemoteRequest( app, name );
+            if (_params && _params.secure) {
+                request.setSecure(true);
+            } else {
+                request.setSecure(false);
+            }
+            for(var index in params) {
+                request.addParam(params[index]);
+            }
 
-            var start_timer = (new Date).getTime();	
-			if (f)  {
-				request.setCompleteCallback(
-					function(req) {
-						try {
+            var start_timer = (new Date).getTime();    
+            if (f)  {
+                request.setCompleteCallback(
+                    function(req) {
+                        try {
                             var duration = ( (new Date).getTime() - start_timer )/1000;
                             if ( obj.get_result(req) == null && duration > obj.network_timeout ) req.cancelled = true;
 
@@ -126,38 +126,38 @@ util.network.prototype = {
                                 if (xulG && xulG.network_meter && typeof xulG.network_meter.dec == 'function') xulG.network_meter.dec(app,name);
                             }
 
-							var json_string = js2JSON(obj.get_result(req));
-							obj.error.sdump('D_SES_RESULT','asynced result #' 
-								+ obj.link_id + '\n\n' 
-								+ (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) 
-								+ '\n\nOriginal Request:\n\n' 
-								+ 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
-							req = obj.rerequest_on_session_timeout(app,name,params,req,override_params,_params);
-							req = obj.rerequest_on_perm_failure(app,name,params,req,override_params,_params);
-							if (override_params) {
-								req = obj.rerequest_on_override(app,name,params,req,override_params,_params);
-							}
-							req = obj.check_for_offline(app,name,params,req,override_params,_params);
-							f(req);
-							obj.NETWORK_FAILURE = null;
-						} catch(E) {
-							try {
-								E.ilsevent = -2;
-								E.textcode = offlineStrings.getString('network.server_or_method.error');
-							} catch(F) {}
-							f( { 'getResultObject' : function() { return E; } } );
-						}
-					}
-				);
-				try {
-					request.send(false);
-				} catch(E) {
-					throw(E);
-				}
-				return null;
-			} else {
-				try {
-					request.send(true);
+                            var json_string = js2JSON(obj.get_result(req));
+                            obj.error.sdump('D_SES_RESULT','asynced result #' 
+                                + obj.link_id + '\n\n' 
+                                + (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) 
+                                + '\n\nOriginal Request:\n\n' 
+                                + 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
+                            req = obj.rerequest_on_session_timeout(app,name,params,req,override_params,_params);
+                            req = obj.rerequest_on_perm_failure(app,name,params,req,override_params,_params);
+                            if (override_params) {
+                                req = obj.rerequest_on_override(app,name,params,req,override_params,_params);
+                            }
+                            req = obj.check_for_offline(app,name,params,req,override_params,_params);
+                            f(req);
+                            obj.NETWORK_FAILURE = null;
+                        } catch(E) {
+                            try {
+                                E.ilsevent = -2;
+                                E.textcode = offlineStrings.getString('network.server_or_method.error');
+                            } catch(F) {}
+                            f( { 'getResultObject' : function() { return E; } } );
+                        }
+                    }
+                );
+                try {
+                    request.send(false);
+                } catch(E) {
+                    throw(E);
+                }
+                return null;
+            } else {
+                try {
+                    request.send(true);
                     var duration = ( (new Date).getTime() - start_timer )/1000;
                     if ( obj.get_result(request) == null && duration > obj.network_timeout ) request.cancelled = true;
 
@@ -167,35 +167,35 @@ util.network.prototype = {
                         if (xulG && xulG.network_meter && typeof xulG.network_meter.dec == 'function') xulG.network_meter.dec(app,name);
                     }
 
-				} catch(E) {
-					throw(E);
-				}
-				var result = obj.get_result(request);
-				var json_string = js2JSON(result);
-				this.error.sdump('D_SES_RESULT','synced result #' 
-					+ obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) 
-					+ '\n\nOriginal Request:\n\n' 
-					+ 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
-				request = obj.rerequest_on_session_timeout(app,name,params,request,override_params,_params);
-				request = obj.rerequest_on_perm_failure(app,name,params,request,override_params,_params);
-				if (override_params) {
-					request = obj.rerequest_on_override(app,name,params,request,override_params,_params);
-				}
-				request = obj.check_for_offline(app,name,params,request,override_params,_params);
-				obj.NETWORK_FAILURE = null;
-				return request;
-			}
+                } catch(E) {
+                    throw(E);
+                }
+                var result = obj.get_result(request);
+                var json_string = js2JSON(result);
+                this.error.sdump('D_SES_RESULT','synced result #' 
+                    + obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) 
+                    + '\n\nOriginal Request:\n\n' 
+                    + 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
+                request = obj.rerequest_on_session_timeout(app,name,params,request,override_params,_params);
+                request = obj.rerequest_on_perm_failure(app,name,params,request,override_params,_params);
+                if (override_params) {
+                    request = obj.rerequest_on_override(app,name,params,request,override_params,_params);
+                }
+                request = obj.check_for_offline(app,name,params,request,override_params,_params);
+                obj.NETWORK_FAILURE = null;
+                return request;
+            }
 
-		} catch(E) {
-			alert('2: ' + E);
-			if (instanceOf(E,perm_ex)) {
-				alert('in util.network, _request : permission exception: ' + js2JSON(E));
-			}
-			throw(E);
-		}
-	},
+        } catch(E) {
+            alert('2: ' + E);
+            if (instanceOf(E,perm_ex)) {
+                alert('in util.network, _request : permission exception: ' + js2JSON(E));
+            }
+            throw(E);
+        }
+    },
 
-	'check_for_offline' : function (app,name,params,req,override_params,_params) {
+    'check_for_offline' : function (app,name,params,req,override_params,_params) {
         try {
             var obj = this;
             var result = obj.get_result(req);
@@ -269,64 +269,64 @@ util.network.prototype = {
                 }
             }
         } catch(E) {
-			alert('4: ' + E);
+            alert('4: ' + E);
             throw(E);
         }
-	},
+    },
 
-	'reset_titlebars' : function(data) {
-		var obj = this;
-		data.stash_retrieve();
-		try {
-			JSAN.use('util.window'); var win =  new util.window();
-			var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
-			var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-			var enumerator = windowManagerInterface.getEnumerator(null);
+    'reset_titlebars' : function(data) {
+        var obj = this;
+        data.stash_retrieve();
+        try {
+            JSAN.use('util.window'); var win =  new util.window();
+            var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+            var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+            var enumerator = windowManagerInterface.getEnumerator(null);
 
-			var w; // set title on all appshell windows
-			while ( w = enumerator.getNext() ) {
-				if (w.document.title.match(/^\d/)) {
-					w.document.title = 
-						win.appshell_name_increment() 
-						+ ': ' + data.list.au[0].usrname() 
-						+ '@' + data.ws_name;
-						+ '.' + data.server_unadorned 
-				}
-			}
-		} catch(E) {
-			obj.error.standard_unexpected_error_alert(offlineStrings.getString('network.window_title.error'),E);
-		}
-	},
+            var w; // set title on all appshell windows
+            while ( w = enumerator.getNext() ) {
+                if (w.document.title.match(/^\d/)) {
+                    w.document.title = 
+                        win.appshell_name_increment() 
+                        + ': ' + data.list.au[0].usrname() 
+                        + '@' + data.ws_name;
+                        + '.' + data.server_unadorned 
+                }
+            }
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert(offlineStrings.getString('network.window_title.error'),E);
+        }
+    },
 
-	'get_new_session' : function(name,xulG,text) {
-		var obj = this;
-		try {
+    'get_new_session' : function(name,xulG,text) {
+        var obj = this;
+        try {
 
-		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-		var url = urls.XUL_AUTH_SIMPLE;
-		if (typeof xulG != 'undefined' && typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
-		JSAN.use('util.window'); var win = new util.window();
-		var my_xulG = win.open(
-			url,
-			//+ '?login_type=staff'
-			//+ '&desc_brief=' + window.escape( text ? 'Session Expired' : 'Operator Change' )
-			//+ '&desc_full=' + window.escape( text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'),
-			//'simple_auth' + (new Date()).toString(),
-			offlineStrings.getString('network.new_session.authorize'),
-			'chrome,resizable,modal,width=700,height=500',
-			{
-				'login_type' : 'staff',
-				'desc_brief' : text ? offlineStrings.getString('network.new_session.expired') : offlineStrings.getString('network.new_session.operator_change'),
-				'desc_full' : text ? offlineStrings.getString('network.new_session.expired.prompt') : offlineStrings.getString('network.new_session.operator_change.prompt')
-				//'simple_auth' : (new Date()).toString(),
-			}
-		);
-		JSAN.use('OpenILS.data');
-		var data = new OpenILS.data(); data.init({'via':'stash'});
-		if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
-			data.session.key = data.temporary_session.key; 
-			data.session.authtime = data.temporary_session.authtime; 
-			data.stash('session');
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+        var url = urls.XUL_AUTH_SIMPLE;
+        if (typeof xulG != 'undefined' && typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
+        JSAN.use('util.window'); var win = new util.window();
+        var my_xulG = win.open(
+            url,
+            //+ '?login_type=staff'
+            //+ '&desc_brief=' + window.escape( text ? 'Session Expired' : 'Operator Change' )
+            //+ '&desc_full=' + window.escape( text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'),
+            //'simple_auth' + (new Date()).toString(),
+            offlineStrings.getString('network.new_session.authorize'),
+            'chrome,resizable,modal,width=700,height=500',
+            {
+                'login_type' : 'staff',
+                'desc_brief' : text ? offlineStrings.getString('network.new_session.expired') : offlineStrings.getString('network.new_session.operator_change'),
+                'desc_full' : text ? offlineStrings.getString('network.new_session.expired.prompt') : offlineStrings.getString('network.new_session.operator_change.prompt')
+                //'simple_auth' : (new Date()).toString(),
+            }
+        );
+        JSAN.use('OpenILS.data');
+        var data = new OpenILS.data(); data.init({'via':'stash'});
+        if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
+            data.session.key = data.temporary_session.key; 
+            data.session.authtime = data.temporary_session.authtime; 
+            data.stash('session');
             try {
                 var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
                 var cookieUri = ios.newURI("http://" + data.server_unadorned, null, null);
@@ -339,177 +339,177 @@ util.network.prototype = {
             } catch(E) {
                 alert(offineStrings.getFormattedString('main.session_cookie.error', [E]));
             }
-			if (! data.list.au ) data.list.au = [];
-			data.list.au[0] = JSON2js( data.temporary_session.usr );
-			data.stash('list');
-			obj.reset_titlebars(data);
-			return true;
+            if (! data.list.au ) data.list.au = [];
+            data.list.au[0] = JSON2js( data.temporary_session.usr );
+            data.stash('list');
+            obj.reset_titlebars(data);
+            return true;
         } else {
             obj.error.sdump('D_TRACE','No new session key after simple_auth in util/network\n');
         }
-		return false;
+        return false;
 
-		} catch(E) {
-			obj.error.standard_unexpected_error_alert('util.network.get_new_session',E);
-		}
-	},
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('util.network.get_new_session',E);
+        }
+    },
 
-	'rerequest_on_session_timeout' : function(app,name,params,req,override_params,_params) {
-		try {
-			var obj = this;
-			var robj = obj.get_result(req);
-			if (robj != null && robj.ilsevent && robj.ilsevent == 1001) {
+    'rerequest_on_session_timeout' : function(app,name,params,req,override_params,_params) {
+        try {
+            var obj = this;
+            var robj = obj.get_result(req);
+            if (robj != null && robj.ilsevent && robj.ilsevent == 1001) {
 
-				if (obj.get_new_session(name,undefined,true)) {
-					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-					params[0] = data.session.key;
-					req = obj._request(app,name,params,null,override_params,_params);
-				}
-			}
-		} catch(E) {
-			this.error.standard_unexpected_error_alert('rerequest_on_session_timeout',E);
-		}
-		return req;
-	},
-	
-	'rerequest_on_perm_failure' : function(app,name,params,req,override_params,_params) {
-		try {
-			var obj = this;
-			var robj = obj.get_result(req);
-			if (robj != null && robj.ilsevent && robj.ilsevent == 5000) {
-				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-				if (location.href.match(/^chrome/)) {
-					//alert('Permission denied.');
-				} else {
-					JSAN.use('util.window'); var win = new util.window();
-					var my_xulG = win.open(
-						urls.XUL_AUTH_SIMPLE,
-						//+ '?login_type=temp'
-						//+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
-						//+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
-						//'simple_auth' + (new Date()).toString(),
-						offlineStrings.getFormattedString('network.permission.authorize'),
-						'chrome,resizable,modal,width=700,height=500',
-						{
-							'login_type' : 'temp',
-							'desc_brief' : offlineStrings.getFormattedString('network.permission.description.brief', [robj.ilsperm]),
-							'desc_full' : offlineStrings.getFormattedString('network.permission.description.full', [name])
-							//'simple_auth' : (new Date()).toString(),
-						}
-					);
-					JSAN.use('OpenILS.data');
-					//var data = new OpenILS.data(); data.init({'via':'stash'});
-					if (typeof my_xulG.temporary_session != 'undefined' && my_xulG.temporary_session != '') {
-						params[0] = my_xulG.temporary_session.key;
-						req = obj._request(app,name,params,null,override_params,_params);
-					}
-				}
-			}
-		} catch(E) {
-			this.error.sdump('D_ERROR',E);
-		}
-		return req;
-	},
+                if (obj.get_new_session(name,undefined,true)) {
+                    JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+                    params[0] = data.session.key;
+                    req = obj._request(app,name,params,null,override_params,_params);
+                }
+            }
+        } catch(E) {
+            this.error.standard_unexpected_error_alert('rerequest_on_session_timeout',E);
+        }
+        return req;
+    },
+    
+    'rerequest_on_perm_failure' : function(app,name,params,req,override_params,_params) {
+        try {
+            var obj = this;
+            var robj = obj.get_result(req);
+            if (robj != null && robj.ilsevent && robj.ilsevent == 5000) {
+                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+                if (location.href.match(/^chrome/)) {
+                    //alert('Permission denied.');
+                } else {
+                    JSAN.use('util.window'); var win = new util.window();
+                    var my_xulG = win.open(
+                        urls.XUL_AUTH_SIMPLE,
+                        //+ '?login_type=temp'
+                        //+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
+                        //+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
+                        //'simple_auth' + (new Date()).toString(),
+                        offlineStrings.getFormattedString('network.permission.authorize'),
+                        'chrome,resizable,modal,width=700,height=500',
+                        {
+                            'login_type' : 'temp',
+                            'desc_brief' : offlineStrings.getFormattedString('network.permission.description.brief', [robj.ilsperm]),
+                            'desc_full' : offlineStrings.getFormattedString('network.permission.description.full', [name])
+                            //'simple_auth' : (new Date()).toString(),
+                        }
+                    );
+                    JSAN.use('OpenILS.data');
+                    //var data = new OpenILS.data(); data.init({'via':'stash'});
+                    if (typeof my_xulG.temporary_session != 'undefined' && my_xulG.temporary_session != '') {
+                        params[0] = my_xulG.temporary_session.key;
+                        req = obj._request(app,name,params,null,override_params,_params);
+                    }
+                }
+            }
+        } catch(E) {
+            this.error.sdump('D_ERROR',E);
+        }
+        return req;
+    },
 
-	'rerequest_on_override' : function (app,name,params,req,override_params,_params) {
-		var obj = this;
-		try {
-			if (!override_params.text) override_params.text = {};
-			function override(r) {
-				try {
-					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-					obj.sound.bad();
-					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
-						'<groupbox><caption label="' + offlineStrings.getString('network.override.exceptions') + '"/>' + 
-						'<grid><columns><column/><column/></columns><rows>';
-					for (var i = 0; i < r.length; i++) {
-						var t1 = String(r[i].ilsevent).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-						var t2 = String(r[i].textcode).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-						var t3 = String((override_params.text[r[i].ilsevent] ? override_params.text[r[i].ilsevent](r[i]) : '')).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-						var t4 = String(r[i].desc).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-						xml += '<row>' + 
-							'<description class="oils_event" tooltiptext="' + t1 + '">' + t2 + '</description>' + 
-							'<description>' + t3 + '</description>' + 
-							'</row><row>' + '<description>' + t4 + '</description>' + '</row>';
-					}
-					xml += '</rows></grid></groupbox><groupbox><caption label="' + offlineStrings.getString('network.override.override') +'"/><hbox>' + 
-						'<description>' + offlineStrings.getString('network.override.force.prompt') + '</description>' + 
-						'<button accesskey="' + offlineStrings.getString('common.no.accesskey') + '" label="' + offlineStrings.getString('common.no') + '" name="fancy_cancel"/>' + 
-						'<button id="override" accesskey="' + offlineStrings.getString('common.yes.accesskey') + '" label="' + offlineStrings.getString('common.yes') + '" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
-					//JSAN.use('OpenILS.data');
-					//var data = new OpenILS.data(); data.init({'via':'stash'});
-					//data.temp_override_xml = xml; data.stash('temp_override_xml');
-					JSAN.use('util.window'); var win = new util.window();
-					var fancy_prompt_data = win.open(
-						urls.XUL_FANCY_PROMPT,
-						//+ '?xml_in_stash=temp_override_xml'
-						//+ '&title=' + window.escape(override_params.title),
-						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-						{ 'xml' : xml, 'title' : override_params.title }
-					);
-					if (fancy_prompt_data.fancy_status == 'complete') {
-						req = obj._request(app,name + '.override',params);
-					}
-					return req;
-				} catch(E) {
-					alert('in util.network, rerequest_on_override, override:' + E);
-				}
-			}
+    'rerequest_on_override' : function (app,name,params,req,override_params,_params) {
+        var obj = this;
+        try {
+            if (!override_params.text) override_params.text = {};
+            function override(r) {
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+                    obj.sound.bad();
+                    var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
+                        '<groupbox><caption label="' + offlineStrings.getString('network.override.exceptions') + '"/>' + 
+                        '<grid><columns><column/><column/></columns><rows>';
+                    for (var i = 0; i < r.length; i++) {
+                        var t1 = String(r[i].ilsevent).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                        var t2 = String(r[i].textcode).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                        var t3 = String((override_params.text[r[i].ilsevent] ? override_params.text[r[i].ilsevent](r[i]) : '')).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                        var t4 = String(r[i].desc).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                        xml += '<row>' + 
+                            '<description class="oils_event" tooltiptext="' + t1 + '">' + t2 + '</description>' + 
+                            '<description>' + t3 + '</description>' + 
+                            '</row><row>' + '<description>' + t4 + '</description>' + '</row>';
+                    }
+                    xml += '</rows></grid></groupbox><groupbox><caption label="' + offlineStrings.getString('network.override.override') +'"/><hbox>' + 
+                        '<description>' + offlineStrings.getString('network.override.force.prompt') + '</description>' + 
+                        '<button accesskey="' + offlineStrings.getString('common.no.accesskey') + '" label="' + offlineStrings.getString('common.no') + '" name="fancy_cancel"/>' + 
+                        '<button id="override" accesskey="' + offlineStrings.getString('common.yes.accesskey') + '" label="' + offlineStrings.getString('common.yes') + '" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
+                    //JSAN.use('OpenILS.data');
+                    //var data = new OpenILS.data(); data.init({'via':'stash'});
+                    //data.temp_override_xml = xml; data.stash('temp_override_xml');
+                    JSAN.use('util.window'); var win = new util.window();
+                    var fancy_prompt_data = win.open(
+                        urls.XUL_FANCY_PROMPT,
+                        //+ '?xml_in_stash=temp_override_xml'
+                        //+ '&title=' + window.escape(override_params.title),
+                        'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+                        { 'xml' : xml, 'title' : override_params.title }
+                    );
+                    if (fancy_prompt_data.fancy_status == 'complete') {
+                        req = obj._request(app,name + '.override',params);
+                    }
+                    return req;
+                } catch(E) {
+                    alert('in util.network, rerequest_on_override, override:' + E);
+                }
+            }
 
-			var result = obj.get_result(req);
-			if (!result) return req;
+            var result = obj.get_result(req);
+            if (!result) return req;
 
-			if ( 
+            if ( 
                 (typeof result.ilsevent != 'undefined') && 
                 (
                     (override_params.overridable_events.indexOf( result.ilsevent == null ? null : Number(result.ilsevent) ) != -1) ||
                     (override_params.overridable_events.indexOf( result.textcode ) != -1)
                 )
             ) {
-				req = override([result]);
-			} else {
-				var found_good = false; var found_bad = false;
-				for (var i = 0; i < result.length; i++) {
-					if ( 
+                req = override([result]);
+            } else {
+                var found_good = false; var found_bad = false;
+                for (var i = 0; i < result.length; i++) {
+                    if ( 
                         (result[i].ilsevent != 'undefined') && 
                         (
                             (override_params.overridable_events.indexOf( result[i].ilsevent == null ? null : Number(result[i].ilsevent) ) != -1) ||
                             (override_params.overridable_events.indexOf( result[i].textcode ) != -1) 
                         )
                     ) {
-						found_good = true;
-					} else {
-						found_bad = true;
-					}
-				}
-				if (found_good && (!found_bad)) req = override(result);
-			}
+                        found_good = true;
+                    } else {
+                        found_bad = true;
+                    }
+                }
+                if (found_good && (!found_bad)) req = override(result);
+            }
 
-			return req;
-		} catch(E) {
-			throw(E);
-		}
-	},
+            return req;
+        } catch(E) {
+            throw(E);
+        }
+    },
 
     'ping' : function() {
         try {
             JSAN.use('util.file'); JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-			var file = new util.file('ping.bat');
+            var file = new util.file('ping.bat');
             var path = file._file.path;
-			file.write_content('truncate+exec',
+            file.write_content('truncate+exec',
                 '#!/bin/sh\n' +
                 'ping -n 15 ' + data.server_unadorned + ' > "' + path + '.txt"\n' + /* windows */
                 'ping -c 15 ' + data.server_unadorned + ' >> "' + path + '.txt"\n'  /* unix */
             );
             file.close();
-			file = new util.file('ping.bat');
+            file = new util.file('ping.bat');
 
-			var process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
-			process.init(file._file);
+            var process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
+            process.init(file._file);
 
-			var args = [];
+            var args = [];
 
-			dump('process.run = ' + process.run(true, args, args.length) + '\n');
+            dump('process.run = ' + process.run(true, args, args.length) + '\n');
 
             file.close();
 
@@ -526,7 +526,7 @@ util.network.prototype = {
 
 /*
 function sample_callback(request) {
-	var result = request.getResultObject();
+    var result = request.getResultObject();
 }
 */
 

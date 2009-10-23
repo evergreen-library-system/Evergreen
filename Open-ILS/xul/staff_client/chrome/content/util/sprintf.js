@@ -19,53 +19,53 @@ String.prototype.sprintf = function () {
 
   var pad = function(str,ch,len) { var ps='';
       for(var i=0; i<Math.abs(len); i++) {
-		  ps+=ch;
-	  }
+          ps+=ch;
+      }
       return len>0?str+ps:ps+str;
   };
   var processFlags = function(flags,width,rs,arg) { 
       var pn = function(flags,arg,rs) {
           if(arg>=0) { 
               if(flags.indexOf(' ')>=0) {
-				  rs = ' ' + rs;
-			  } else if(flags.indexOf('+')>=0) {
-				  rs = '+' + rs;
-			  }
+                  rs = ' ' + rs;
+              } else if(flags.indexOf('+')>=0) {
+                  rs = '+' + rs;
+              }
           } else {
               rs = '-' + rs;
-		  }
+          }
           return rs;
       };
       var iWidth = parseInt(width,10);
       if(width.charAt(0) == '0') {
           var ec=0;
           if(flags.indexOf(' ')>=0 || flags.indexOf('+')>=0) {
-			  ec++;
-		  }
+              ec++;
+          }
           if(rs.length<(iWidth-ec)) {
-			  rs = pad(rs,'0',rs.length-(iWidth-ec));
-		  }
+              rs = pad(rs,'0',rs.length-(iWidth-ec));
+          }
           return pn(flags,arg,rs);
       }
       rs = pn(flags,arg,rs);
       if(rs.length<iWidth) {
           if(flags.indexOf('-')<0) {
-			  rs = pad(rs,' ',rs.length-iWidth);
-		  } else {
-			  rs = pad(rs,' ',iWidth - rs.length);
-		  }
+              rs = pad(rs,' ',rs.length-iWidth);
+          } else {
+              rs = pad(rs,' ',iWidth - rs.length);
+          }
       }    
       return rs;
   };
   var converters = [];
   converters.c = function(flags,width,precision,arg) { 
       if (typeof(arg) == 'number') {
-		  return String.fromCharCode(arg);
-	  } else if (typeof(arg) == 'string') {
-		  return arg.charAt(0);
-	  } else {
-		  return '';
-	  }
+          return String.fromCharCode(arg);
+      } else if (typeof(arg) == 'string') {
+          return arg.charAt(0);
+      } else {
+          return '';
+      }
   };
   converters.d = function(flags,width,precision,arg) { 
       return converters.i(flags,width,precision,arg); 
@@ -77,8 +77,8 @@ String.prototype.sprintf = function () {
       var iPrecision=parseInt(precision, 10);
       var rs = ((Math.abs(arg)).toString().split('.'))[0];
       if(rs.length<iPrecision) {
-		  rs=pad(rs,' ',iPrecision - rs.length);
-	  }
+          rs=pad(rs,' ',iPrecision - rs.length);
+      }
       return processFlags(flags,width,rs,arg); 
   };
   converters.E = function(flags,width,precision,arg) {
@@ -87,23 +87,23 @@ String.prototype.sprintf = function () {
   converters.e = function(flags,width,precision,arg) {
       iPrecision = parseInt(precision, 10);
       if(isNaN(iPrecision)) {
-		  iPrecision = 6;
-	  }
+          iPrecision = 6;
+      }
       rs = (Math.abs(arg)).toExponential(iPrecision);
       if(rs.indexOf('.')<0 && flags.indexOf('#')>=0) {
-		  rs = rs.replace(/^(.*)(e.*)$/,'$1.$2');
-	  }
+          rs = rs.replace(/^(.*)(e.*)$/,'$1.$2');
+      }
       return processFlags(flags,width,rs,arg);        
   };
   converters.f = function(flags,width,precision,arg) { 
       iPrecision = parseInt(precision, 10);
       if(isNaN(iPrecision)) {
-		  iPrecision = 6;
-	  }
+          iPrecision = 6;
+      }
       rs = (Math.abs(arg)).toFixed(iPrecision);
       if(rs.indexOf('.')<0 && flags.indexOf('#')>=0) {
-		  rs = rs + '.';
-	  }
+          rs = rs + '.';
+      }
       return processFlags(flags,width,rs,arg);
   };
   converters.G = function(flags,width,precision,arg) { 
@@ -121,11 +121,11 @@ String.prototype.sprintf = function () {
           rsf = rsfp.length < rsf.length ? rsfp : rsf;
       }
       if(rse.indexOf('.')<0 && flags.indexOf('#')>=0) {
-		  rse = rse.replace(/^(.*)(e.*)$/,'$1.$2');
-	  }
+          rse = rse.replace(/^(.*)(e.*)$/,'$1.$2');
+      }
       if(rsf.indexOf('.')<0 && flags.indexOf('#')>=0) {
-		  rsf = rsf + '.';
-	  }
+          rsf = rsf + '.';
+      }
       rs = rse.length<rsf.length ? rse : rsf;
       return processFlags(flags,width,rs,arg);        
   };  
@@ -133,11 +133,11 @@ String.prototype.sprintf = function () {
       var iPrecision=parseInt(precision, 10);
       var rs = Math.round(Math.abs(arg)).toString(8);
       if(rs.length<iPrecision) {
-		  rs=pad(rs,' ',iPrecision - rs.length);
-	  }
+          rs=pad(rs,' ',iPrecision - rs.length);
+      }
       if(flags.indexOf('#')>=0) {
-		  rs='0'+rs;
-	  }
+          rs='0'+rs;
+      }
       return processFlags(flags,width,rs,arg); 
   };
   converters.X = function(flags,width,precision,arg) { 
@@ -148,19 +148,19 @@ String.prototype.sprintf = function () {
       arg = Math.abs(arg);
       var rs = Math.round(arg).toString(16);
       if(rs.length<iPrecision) {
-		  rs=pad(rs,' ',iPrecision - rs.length);
-	  }
+          rs=pad(rs,' ',iPrecision - rs.length);
+      }
       if(flags.indexOf('#')>=0) {
-		  rs='0x'+rs;
-	  }
+          rs='0x'+rs;
+      }
       return processFlags(flags,width,rs,arg); 
   };
   converters.s = function(flags,width,precision,arg) { 
       var iPrecision=parseInt(precision, 10);
       var rs = arg;
       if(rs.length > iPrecision) {
-		  rs = rs.substring(0,iPrecision);
-	  }
+          rs = rs.substring(0,iPrecision);
+      }
       return processFlags(flags,width,rs,0);
   };
 
@@ -170,9 +170,9 @@ String.prototype.sprintf = function () {
   for(var i = 1; i<farr.length; i++) { 
       fps=fpRE.exec(farr[i]);
       if(!fps) {
-		  continue;
-	  }
-	  var my_i = fps[2] ? fps[2] : i;
+          continue;
+      }
+      var my_i = fps[2] ? fps[2] : i;
       if(arguments[my_i-1]) {
           retstr+=converters[fps[5]](fps[1],fps[3],fps[4],arguments[my_i-1]);
       }

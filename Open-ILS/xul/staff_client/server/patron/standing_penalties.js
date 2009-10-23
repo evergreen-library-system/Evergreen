@@ -18,7 +18,7 @@ function penalty_init() {
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('..');
 
-		JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
+        JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
         XML_HTTP_SERVER = data.server_unadorned;
 
         JSAN.use('util.error'); error = new util.error();
