@@ -11,19 +11,18 @@
 	<!--#include virtual="/opac/locale/${locale}/reports.dtd"-->
 ]>
 
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="loadIDL()">
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
 <!-- Load dojo -->
 <script type="text/javascript">
 <![CDATA[
 	var djConfig= {
 		isDebug: false,
-		parseOnLoad: false
+		parseOnLoad: true
 	}
 ]]>
 </script>
 <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
-<script type="text/javascript" src="/js/dojo/dojo/openils_dojo.js"></script>
 <script type="text/javascript">
 <![CDATA[
 	dojo.require('dojo.parser');
@@ -53,6 +52,12 @@
 <script src="template-config.js" type="application/x-javascript; e4x=1"/>
 <script src="transforms.js" type="application/x-javascript; e4x=1"/>
 <script src="operators.js" type="application/x-javascript; e4x=1"/>
+
+<script type="text/javascript"> 
+<![CDATA[ 
+    dojo.addOnLoad(loadIDL); 
+]]> 
+</script>
 
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/calendar.js"/>
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/lang/calendar-en.js"/>
