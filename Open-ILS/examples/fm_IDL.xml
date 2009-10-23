@@ -2372,10 +2372,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name"  reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Is OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Owning Org Unit" name="owning_lib"  reporter:datatype="org_unit"/>
+			<field reporter:label="Copy Location Orders" name="orders" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="distribution_formula_entries" reltype="has_many" key="location" map="" class="acqdfe"/>
+			<link field="orders" reltype="has_many" key="location" map="" class="acplo"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -2804,6 +2806,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Checkins" name="checkins" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Workstations" name="workstations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Copy Location Orders" name="copy_location_orders" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>
@@ -2823,6 +2826,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="distribution_formulas" reltype="has_many" key="owner" map="" class="acqdf"/>
 			<link field="distribution_formula_entries" reltype="has_many" key="owning_lib" map="" class="acqdfe"/>
 			<link field="fund_alloc_pcts" reltype="has_many" key="org" map="" class="acqfap"/>
+			<link field="copy_location_orders" reltype="has_many" key="org" map="" class="acplo"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
