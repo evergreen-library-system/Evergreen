@@ -607,6 +607,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "batch_update_hold",
 	api_name	=> "open-ils.circ.hold.update.batch",
+    stream => 1,
 	notes		=> <<"	NOTE");
 	Updates the specified hold.  The login session
 	is the requestor and if the requestor is different from the usr field
@@ -625,19 +626,22 @@ sub update_hold {
 
 sub batch_update_hold {
 	my($self, $client, $auth, $hold_list, $values_list) = @_;
-    my $e = new_editor(authtoken=>$auth, xact => 1);
+    my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
     my $count = ($hold_list) ? scalar(@$hold_list) : scalar(@$values_list);
     $hold_list ||= [];
     $values_list ||= [];
+
     for my $idx (0..$count-1) {
+        $e->xact_begin;
         my $resp = update_hold_impl($self, $e, $hold_list->[$idx], $values_list->[$idx]);
-        return $resp if $U->event_code($resp);
+        $e->xact_commit unless $U->event_code($resp);
+        $client->respond($resp);
     }
 
-    $e->commit;
-    return 1;
+    $e->disconnect;
+    return undef;
 }
 
 sub update_hold_impl {
