@@ -2386,6 +2386,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+
+    <class id="acplo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_order" oils_persist:tablename="asset.copy_location_order" reporter:label="Copy/Shelving Location Order">
+        <fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_order_id_seq">
+            <field reporter:label="Location Order ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Location ID" name="location" reporter:datatype="link"/>
+            <field reporter:label="Org Unit" name="org" reporter:datatype="org_unit"/>
+            <field reporter:label="Position" name="position" reporter:datatype="int"/>
+        </fields>
+        <links>
+            <link field="location" reltype="has_a" key="id" map="" class="acpl"/>
+            <link field="org" reltype="has_a" key="id" map="" class="aou"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+				<create permission="ADMIN_COPY_LOCATION_ORDER" context_field="org"/>
+                <retrieve/>
+				<update permission="ADMIN_COPY_LOCATION_ORDER" context_field="org"/>
+				<delete permission="ADMIN_COPY_LOCATION_ORDER" context_field="org"/>
+            </actions>
+        </permacrud>
+    </class>
+
 	<class id="svr" controller="open-ils.cstore" oils_obj:fieldmapper="serial::virtual_record" oils_persist:virtual="true" reporter:label="Serial Virtual Record">
 		<fields>
 			<field name="id" oils_persist:virtual="true" />
