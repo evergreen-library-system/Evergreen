@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -18,163 +18,163 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="font_settings_win" 
-	onload="try { my_init(); } catch(E) { alert(E); }" style="background: white;"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); } catch(E) { alert(E); }" style="background: white;"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
     <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
     <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
 
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for font_settings.xul');
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for font_settings.xul');
 
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
-				document.getElementById('sound').checked = typeof g.data.no_sound == 'undefined' || g.data.no_sound == 'false' || g.data.no_sound == false ? false : true;
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+                document.getElementById('sound').checked = typeof g.data.no_sound == 'undefined' || g.data.no_sound == 'false' || g.data.no_sound == false ? false : true;
 
-			} catch(E) {
-				try { g.error.standard_unexpected_error_alert('admin/font_settings.xul',E); } catch(F) { alert(E); }
-			}
-		}
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('admin/font_settings.xul',E); } catch(F) { alert(E); }
+            }
+        }
 
-		function save() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-				JSAN.use('util.file'); var file = new util.file('global_font_adjust');
-				file.set_object(g.data.global_font_adjust);
-				file.close();
-				alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.save'));
-			} catch(E) {
-				try { g.error.standard_unexpected_error_alert('saving in admin/font_settings.xul',E); } catch(F) { alert(E); }
-			}
-		}
+        function save() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                JSAN.use('util.file'); var file = new util.file('global_font_adjust');
+                file.set_object(g.data.global_font_adjust);
+                file.close();
+                alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.save'));
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('saving in admin/font_settings.xul',E); } catch(F) { alert(E); }
+            }
+        }
 
-		function adjust(my_class) {
-			var status_msg = {
-				'ALL_FONTS_SMALLER': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER'),
-				'ALL_FONTS_DEFAULT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT'),
-				'ALL_FONTS_LARGER': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_LARGER'),
-				'ALL_FONTS_XX_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL'),
-				'ALL_FONTS_X_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL'),
-				'ALL_FONTS_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_SMALL'),
-				'ALL_FONTS_MEDIUM': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM'),
-				'ALL_FONTS_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_LARGE'),
-				'ALL_FONTS_X_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_X_LARGE'),
-				'ALL_FONTS_XX_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_XX_LARGE'),
-				'ALL_FONTS_5PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_5PT'),
-				'ALL_FONTS_6PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_6PT'),
-				'ALL_FONTS_7PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_7PT'),
-				'ALL_FONTS_8PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_8PT'),
-				'ALL_FONTS_9PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_9PT'),
-				'ALL_FONTS_10PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_10PT'),
-				'ALL_FONTS_11PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_11PT'),
-				'ALL_FONTS_12PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_12PT'),
-				'ALL_FONTS_13PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_13PT'),
-				'ALL_FONTS_14PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_14PT'),
-				'ALL_FONTS_15PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_15PT'),
-				'ALL_FONTS_16PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_16PT'),
-				'ALL_FONTS_17PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_17PT'),
-				'ALL_FONTS_18PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_18PT')
-			};
+        function adjust(my_class) {
+            var status_msg = {
+                'ALL_FONTS_SMALLER': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER'),
+                'ALL_FONTS_DEFAULT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT'),
+                'ALL_FONTS_LARGER': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_LARGER'),
+                'ALL_FONTS_XX_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL'),
+                'ALL_FONTS_X_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL'),
+                'ALL_FONTS_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_SMALL'),
+                'ALL_FONTS_MEDIUM': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM'),
+                'ALL_FONTS_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_LARGE'),
+                'ALL_FONTS_X_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_X_LARGE'),
+                'ALL_FONTS_XX_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_XX_LARGE'),
+                'ALL_FONTS_5PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_5PT'),
+                'ALL_FONTS_6PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_6PT'),
+                'ALL_FONTS_7PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_7PT'),
+                'ALL_FONTS_8PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_8PT'),
+                'ALL_FONTS_9PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_9PT'),
+                'ALL_FONTS_10PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_10PT'),
+                'ALL_FONTS_11PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_11PT'),
+                'ALL_FONTS_12PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_12PT'),
+                'ALL_FONTS_13PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_13PT'),
+                'ALL_FONTS_14PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_14PT'),
+                'ALL_FONTS_15PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_15PT'),
+                'ALL_FONTS_16PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_16PT'),
+                'ALL_FONTS_17PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_17PT'),
+                'ALL_FONTS_18PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_18PT')
+            };
 
-			try {
-				g.data.global_font_adjust = my_class; g.data.stash('global_font_adjust');
-				alert(status_msg[my_class]);
-			} catch(E) {
-				try { g.error.standard_unexpected_error_alert('setting font in admin/font_settings.xul',E); } catch(F) { alert(E); }
-			}
-		}
+            try {
+                g.data.global_font_adjust = my_class; g.data.stash('global_font_adjust');
+                alert(status_msg[my_class]);
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('setting font in admin/font_settings.xul',E); } catch(F) { alert(E); }
+            }
+        }
 
-		function toggle_sound() {
-			try {
-				var bool = document.getElementById('sound').checked;
-				g.data.no_sound = bool; g.data.stash('no_sound');
-				if (bool) {
-					alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound.disabled'));
-				} else {
-					alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound.enabled'));
-				}
-			} catch(E) {
-				try { g.error.standard_unexpected_error_alert('setting sound in admin/font_settings.xul',E); } catch(F) { alert(E); }
-			}
-		}
+        function toggle_sound() {
+            try {
+                var bool = document.getElementById('sound').checked;
+                g.data.no_sound = bool; g.data.stash('no_sound');
+                if (bool) {
+                    alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound.disabled'));
+                } else {
+                    alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound.enabled'));
+                }
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('setting sound in admin/font_settings.xul',E); } catch(F) { alert(E); }
+            }
+        }
 
-		function save_sound() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-				JSAN.use('util.file'); var file = new util.file('no_sound');
-				file.write_content( 'truncate', String( document.getElementById('sound').checked ) );
-				file.close();
-				alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound'));
-			} catch(E) {
-				try { g.error.standard_unexpected_error_alert('saving in admin/font_settings.xul',E); } catch(F) { alert(E); }
-			}
-		}
+        function save_sound() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                JSAN.use('util.file'); var file = new util.file('no_sound');
+                file.write_content( 'truncate', String( document.getElementById('sound').checked ) );
+                file.close();
+                alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound'));
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('saving in admin/font_settings.xul',E); } catch(F) { alert(E); }
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="adminStrings" src='/xul/server/locale/<!--#echo var="locale"-->/admin.properties'/>
+    <messagecatalog id="adminStrings" src='/xul/server/locale/<!--#echo var="locale"-->/admin.properties'/>
 
-	<groupbox orient="vertical">
-		<caption label="&staff.server.admin.font.sound.caption;"/>
-		<hbox>
-			<checkbox id="sound" label="&staff.server.admin.font.sound.checkbox;" oncommand="toggle_sound();"/>
-			<button label="&staff.server.admin.save_disk;" oncommand="save_sound();"/>
-		</hbox>
-	</groupbox>
+    <groupbox orient="vertical">
+        <caption label="&staff.server.admin.font.sound.caption;"/>
+        <hbox>
+            <checkbox id="sound" label="&staff.server.admin.font.sound.checkbox;" oncommand="toggle_sound();"/>
+            <button label="&staff.server.admin.save_disk;" oncommand="save_sound();"/>
+        </hbox>
+    </groupbox>
 
-	<groupbox>
-		<caption label="&staff.server.admin.font.global.caption;"/>
-		<hbox>
-			<vbox>
-				<button class="ALL_FONTS_SMALLER" label="&staff.server.admin.font.smaller;" oncommand="adjust('ALL_FONTS_SMALLER');"/>
-				<button class="ALL_FONTS_DEFAULT" label="&staff.server.admin.font.default;" oncommand="adjust('ALL_FONTS_DEFAULT');"/>
-				<button class="ALL_FONTS_LARGER" label="&staff.server.admin.font.larger;" oncommand="adjust('ALL_FONTS_LARGER');"/>
-			</vbox>
-			<vbox>
-				<button class="ALL_FONTS_XX_SMALL" label="&staff.server.admin.font.xxsmall;" oncommand="adjust('ALL_FONTS_XX_SMALL');"/>
-				<button class="ALL_FONTS_X_SMALL" label="&staff.server.admin.font.xsmall;" oncommand="adjust('ALL_FONTS_X_SMALL');"/>
-				<button class="ALL_FONTS_SMALL" label="&staff.server.admin.font.small;" oncommand="adjust('ALL_FONTS_SMALL');"/>
-				<button class="ALL_FONTS_MEDIUM" label="&staff.server.admin.font.medium;" oncommand="adjust('ALL_FONTS_MEDIUM');"/>
-				<button class="ALL_FONTS_LARGE" label="&staff.server.admin.font.large;" oncommand="adjust('ALL_FONTS_LARGE');"/>
-				<button class="ALL_FONTS_X_LARGE" label="&staff.server.admin.font.xlarge;" oncommand="adjust('ALL_FONTS_X_LARGE');"/>
-				<button class="ALL_FONTS_XX_LARGE" label="&staff.server.admin.font.xxlarge;" oncommand="adjust('ALL_FONTS_XX_LARGE');"/>
-			</vbox>
-			<vbox>
-				<button class="ALL_FONTS_5PT" label="&staff.server.admin.font.5pt;" oncommand="adjust('ALL_FONTS_5PT');"/>
-				<button class="ALL_FONTS_6PT" label="&staff.server.admin.font.6pt;" oncommand="adjust('ALL_FONTS_6PT');"/>
-				<button class="ALL_FONTS_7PT" label="&staff.server.admin.font.7pt;" oncommand="adjust('ALL_FONTS_7PT');"/>
-				<button class="ALL_FONTS_8PT" label="&staff.server.admin.font.8pt;" oncommand="adjust('ALL_FONTS_8PT');"/>
-				<button class="ALL_FONTS_9PT" label="&staff.server.admin.font.9pt;" oncommand="adjust('ALL_FONTS_9PT');"/>
-				<button class="ALL_FONTS_10PT" label="&staff.server.admin.font.10pt;" oncommand="adjust('ALL_FONTS_10PT');"/>
-				<button class="ALL_FONTS_11PT" label="&staff.server.admin.font.11pt;" oncommand="adjust('ALL_FONTS_11PT');"/>
-				<button class="ALL_FONTS_12PT" label="&staff.server.admin.font.12pt;" oncommand="adjust('ALL_FONTS_12PT');"/>
-				<button class="ALL_FONTS_13PT" label="&staff.server.admin.font.13pt;" oncommand="adjust('ALL_FONTS_13PT');"/>
-				<button class="ALL_FONTS_14PT" label="&staff.server.admin.font.14pt;" oncommand="adjust('ALL_FONTS_14PT');"/>
-				<button class="ALL_FONTS_15PT" label="&staff.server.admin.font.15pt;" oncommand="adjust('ALL_FONTS_15PT');"/>
-				<button class="ALL_FONTS_16PT" label="&staff.server.admin.font.16pt;" oncommand="adjust('ALL_FONTS_16PT');"/>
-				<button class="ALL_FONTS_17PT" label="&staff.server.admin.font.17pt;" oncommand="adjust('ALL_FONTS_17PT');"/>
-				<button class="ALL_FONTS_18PT" label="&staff.server.admin.font.18pt;" oncommand="adjust('ALL_FONTS_18PT');"/>
-			</vbox>
-			<vbox>
-				<button label="&staff.server.admin.font.restore;" flex="1" oncommand="adjust('ALL_FONTS_DEFAULT');"/>
-				<button label="&staff.server.admin.save_disk;" flex="1" oncommand="save();"/>
-			</vbox>
-		</hbox>
-	</groupbox>
+    <groupbox>
+        <caption label="&staff.server.admin.font.global.caption;"/>
+        <hbox>
+            <vbox>
+                <button class="ALL_FONTS_SMALLER" label="&staff.server.admin.font.smaller;" oncommand="adjust('ALL_FONTS_SMALLER');"/>
+                <button class="ALL_FONTS_DEFAULT" label="&staff.server.admin.font.default;" oncommand="adjust('ALL_FONTS_DEFAULT');"/>
+                <button class="ALL_FONTS_LARGER" label="&staff.server.admin.font.larger;" oncommand="adjust('ALL_FONTS_LARGER');"/>
+            </vbox>
+            <vbox>
+                <button class="ALL_FONTS_XX_SMALL" label="&staff.server.admin.font.xxsmall;" oncommand="adjust('ALL_FONTS_XX_SMALL');"/>
+                <button class="ALL_FONTS_X_SMALL" label="&staff.server.admin.font.xsmall;" oncommand="adjust('ALL_FONTS_X_SMALL');"/>
+                <button class="ALL_FONTS_SMALL" label="&staff.server.admin.font.small;" oncommand="adjust('ALL_FONTS_SMALL');"/>
+                <button class="ALL_FONTS_MEDIUM" label="&staff.server.admin.font.medium;" oncommand="adjust('ALL_FONTS_MEDIUM');"/>
+                <button class="ALL_FONTS_LARGE" label="&staff.server.admin.font.large;" oncommand="adjust('ALL_FONTS_LARGE');"/>
+                <button class="ALL_FONTS_X_LARGE" label="&staff.server.admin.font.xlarge;" oncommand="adjust('ALL_FONTS_X_LARGE');"/>
+                <button class="ALL_FONTS_XX_LARGE" label="&staff.server.admin.font.xxlarge;" oncommand="adjust('ALL_FONTS_XX_LARGE');"/>
+            </vbox>
+            <vbox>
+                <button class="ALL_FONTS_5PT" label="&staff.server.admin.font.5pt;" oncommand="adjust('ALL_FONTS_5PT');"/>
+                <button class="ALL_FONTS_6PT" label="&staff.server.admin.font.6pt;" oncommand="adjust('ALL_FONTS_6PT');"/>
+                <button class="ALL_FONTS_7PT" label="&staff.server.admin.font.7pt;" oncommand="adjust('ALL_FONTS_7PT');"/>
+                <button class="ALL_FONTS_8PT" label="&staff.server.admin.font.8pt;" oncommand="adjust('ALL_FONTS_8PT');"/>
+                <button class="ALL_FONTS_9PT" label="&staff.server.admin.font.9pt;" oncommand="adjust('ALL_FONTS_9PT');"/>
+                <button class="ALL_FONTS_10PT" label="&staff.server.admin.font.10pt;" oncommand="adjust('ALL_FONTS_10PT');"/>
+                <button class="ALL_FONTS_11PT" label="&staff.server.admin.font.11pt;" oncommand="adjust('ALL_FONTS_11PT');"/>
+                <button class="ALL_FONTS_12PT" label="&staff.server.admin.font.12pt;" oncommand="adjust('ALL_FONTS_12PT');"/>
+                <button class="ALL_FONTS_13PT" label="&staff.server.admin.font.13pt;" oncommand="adjust('ALL_FONTS_13PT');"/>
+                <button class="ALL_FONTS_14PT" label="&staff.server.admin.font.14pt;" oncommand="adjust('ALL_FONTS_14PT');"/>
+                <button class="ALL_FONTS_15PT" label="&staff.server.admin.font.15pt;" oncommand="adjust('ALL_FONTS_15PT');"/>
+                <button class="ALL_FONTS_16PT" label="&staff.server.admin.font.16pt;" oncommand="adjust('ALL_FONTS_16PT');"/>
+                <button class="ALL_FONTS_17PT" label="&staff.server.admin.font.17pt;" oncommand="adjust('ALL_FONTS_17PT');"/>
+                <button class="ALL_FONTS_18PT" label="&staff.server.admin.font.18pt;" oncommand="adjust('ALL_FONTS_18PT');"/>
+            </vbox>
+            <vbox>
+                <button label="&staff.server.admin.font.restore;" flex="1" oncommand="adjust('ALL_FONTS_DEFAULT');"/>
+                <button label="&staff.server.admin.save_disk;" flex="1" oncommand="save();"/>
+            </vbox>
+        </hbox>
+    </groupbox>
 
 </window>
 

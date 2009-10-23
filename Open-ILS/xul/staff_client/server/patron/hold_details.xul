@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,31 +19,31 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="hold_notices_win" width="700" height="550" oils_persist="sizemode width height"
-	onload="try{ my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" title="&staff.patron.hold_notices.title;"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try{ my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" title="&staff.patron.hold_notices.title;"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="hold_details.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="hold_details.js"/>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
-	<stack hidden="true" id="notification_template" flex="1">
-		<groupbox flex="1" style="background-color: black;"/>
-		<groupbox flex="1" style="background-color: #FFDE00; -moz-border-radius-topright: 35px;" >
-			<hbox>
-				<description name="method" label="&staff.patron.hold_notices.method.label;" style="font-weight: bold"/>
-				<spacer flex="1"/>
-				<description name="notify_time" style="font-weight: bold"/>
-			</hbox>
-			<description name="note"/>
-		</groupbox>
-	</stack>
+    <stack hidden="true" id="notification_template" flex="1">
+        <groupbox flex="1" style="background-color: black;"/>
+        <groupbox flex="1" style="background-color: #FFDE00; -moz-border-radius-topright: 35px;" >
+            <hbox>
+                <description name="method" label="&staff.patron.hold_notices.method.label;" style="font-weight: bold"/>
+                <spacer flex="1"/>
+                <description name="notify_time" style="font-weight: bold"/>
+            </hbox>
+            <description name="note"/>
+        </groupbox>
+    </stack>
 
     <stack hidden="true" id="note_template" flex="1">
         <groupbox flex="1" style="background-color: black;"/>
@@ -72,7 +72,7 @@
             <tree id="holds_list" flex="1" enableColumnDrag="true" style="min-height: 4em;"/>
             <spacer/>
         </vbox>
-	</vbox>
+    </vbox>
 
     <splitter><grippy/></splitter>
 

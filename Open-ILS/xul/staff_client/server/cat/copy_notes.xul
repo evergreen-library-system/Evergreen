@@ -14,7 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -22,201 +22,201 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="copy_notes_win" width="700" height="550"
-	onload="try{ my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try{ my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
 
-		function $(id) { return document.getElementById(id); }
+        function $(id) { return document.getElementById(id); }
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { 
-					throw( $("commonStrings").getString('common.jsan.missing') );
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { 
+                    throw( $("commonStrings").getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
 
-				JSAN.use('util.error'); g.error = new util.error();
-				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('util.date'); JSAN.use('util.money'); 
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+                JSAN.use('util.error'); g.error = new util.error();
+                JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('util.date'); JSAN.use('util.money'); 
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				g.error.sdump('D_TRACE','my_init() for copy_notes.xul');
+                g.error.sdump('D_TRACE','my_init() for copy_notes.xul');
 
-				g.copy_id = xul_param('copy_id',{'modal_xulG':true});
+                g.copy_id = xul_param('copy_id',{'modal_xulG':true});
 
-				refresh();
+                refresh();
 
-			} catch(E) {
-				var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/copy_notes.xul', js2JSON(E)]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/copy_notes.xul', js2JSON(E)]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-		function refresh() {
-			retrieve_notes(); render_notes();
-		}
+        function refresh() {
+            retrieve_notes(); render_notes();
+        }
 
-		function retrieve_notes() {
-			g.notes = g.network.simple_request('FM_ACPN_RETRIEVE_ALL',[ { 'authtoken' : ses(), 'itemid' : g.copy_id } ]).reverse();
-		}
+        function retrieve_notes() {
+            g.notes = g.network.simple_request('FM_ACPN_RETRIEVE_ALL',[ { 'authtoken' : ses(), 'itemid' : g.copy_id } ]).reverse();
+        }
 
-		function apply(node,field,value) {
-			util.widgets.apply(
-				node,'name',field,
-				function(n) {
-					switch(n.nodeName) {
-						case 'description' : n.appendChild( document.createTextNode( value ) ); break;
-						case 'label' : n.value = value; break;
-						default : n.value = value; break;
-					}
-				}
-			);
-		}
+        function apply(node,field,value) {
+            util.widgets.apply(
+                node,'name',field,
+                function(n) {
+                    switch(n.nodeName) {
+                        case 'description' : n.appendChild( document.createTextNode( value ) ); break;
+                        case 'label' : n.value = value; break;
+                        default : n.value = value; break;
+                    }
+                }
+            );
+        }
 
-		function render_notes() {
-			JSAN.use('util.widgets'); util.widgets.remove_children('notes_panel');
-			var np = $('notes_panel');
-				var hbox = document.createElement('hbox'); np.appendChild(hbox);
-					var btn = document.createElement('button'); hbox.appendChild(btn);
-						btn.setAttribute('label', $('catStrings').getString('staff.cat.copy_notes.render_notes.label'));
-						btn.setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_notes.render_notes.accesskey'));
-						btn.setAttribute('oncommand','new_note()');
+        function render_notes() {
+            JSAN.use('util.widgets'); util.widgets.remove_children('notes_panel');
+            var np = $('notes_panel');
+                var hbox = document.createElement('hbox'); np.appendChild(hbox);
+                    var btn = document.createElement('button'); hbox.appendChild(btn);
+                        btn.setAttribute('label', $('catStrings').getString('staff.cat.copy_notes.render_notes.label'));
+                        btn.setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_notes.render_notes.accesskey'));
+                        btn.setAttribute('oncommand','new_note()');
 
-			for (var i = 0; i < g.notes.length; i++) {
+            for (var i = 0; i < g.notes.length; i++) {
 
-				/* template */
-				var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
-				apply(node,'create_date',g.notes[i].create_date().toString().substr(0,10));
-				util.widgets.apply(node,'name','create_date',
-					function(n) {
-						n.setAttribute(
-							"tooltiptext",
-							$('catStrings').getString('staff.cat.copy_notes.widgets_apply.note_id') + " "
-							+ g.notes[i].id() + " " 
-							+ $('catStrings').getString('staff.cat.copy_notes.widgets_apply.creator_id') + " "
-							+ g.notes[i].creator()
-						);
-					}
-				);
-				apply(node,'title',g.notes[i].title());
-				apply(node,'pub',get_bool( g.notes[i].pub() ) ? $('catStrings').getString('staff.cat.copy_notes.widgets.public') : $('catStrings').getString('staff.cat.copy_notes.widgets.private'));
-				apply(node,'value',g.notes[i].value());
-				apply(node,'id',g.notes[i].id());
-				apply(node,'creator',g.notes[i].creator());
+                /* template */
+                var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
+                apply(node,'create_date',g.notes[i].create_date().toString().substr(0,10));
+                util.widgets.apply(node,'name','create_date',
+                    function(n) {
+                        n.setAttribute(
+                            "tooltiptext",
+                            $('catStrings').getString('staff.cat.copy_notes.widgets_apply.note_id') + " "
+                            + g.notes[i].id() + " " 
+                            + $('catStrings').getString('staff.cat.copy_notes.widgets_apply.creator_id') + " "
+                            + g.notes[i].creator()
+                        );
+                    }
+                );
+                apply(node,'title',g.notes[i].title());
+                apply(node,'pub',get_bool( g.notes[i].pub() ) ? $('catStrings').getString('staff.cat.copy_notes.widgets.public') : $('catStrings').getString('staff.cat.copy_notes.widgets.private'));
+                apply(node,'value',g.notes[i].value());
+                apply(node,'id',g.notes[i].id());
+                apply(node,'creator',g.notes[i].creator());
 
-				/* button bar */
-				var hb = document.createElement('hbox'); np.appendChild(hb);
-					var btn1 = document.createElement('button'); hb.appendChild(btn1);
-						btn1.setAttribute('label', $('catStrings').getString('staff.cat.copy_notes.delete_note.label'));
-						btn1.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
+                /* button bar */
+                var hb = document.createElement('hbox'); np.appendChild(hb);
+                    var btn1 = document.createElement('button'); hb.appendChild(btn1);
+                        btn1.setAttribute('label', $('catStrings').getString('staff.cat.copy_notes.delete_note.label'));
+                        btn1.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
 
-						btn1.addEventListener(
-							'command',
-							function(id){ return function() { 
-								var r = g.error.yns_alert(
-									$('catStrings').getFormattedString('staff.cat.copy_notes.delete_note.prompt.msg', [g.notes[id].title(), g.notes[id].create_date().toString().substr(0,10)]),
-									$('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.title'),
-									$('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.yes'),
-									$('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.no'),
-									null,
-									$('commonStrings').getString('common.confirm')
-								); 
-								if (r == 0) {
-									g.network.simple_request('FM_ACPN_DELETE',[ses(),g.notes[id].id()]);
-									setTimeout(function() { 
-										alert($('catStrings').getString('staff.cat.copy_notes.delete_note.success'));
-										refresh(); },0
-									);
-								}
-							} }(i),
-							false
-						);
-					var spacer = document.createElement('spacer'); hb.appendChild(spacer); spacer.flex = 1;
-					var btn2 = document.createElement('button'); hb.appendChild(btn2);
-						btn2.setAttribute('label', $('catStrings').getString('staff.cat.copy_notes.delete_note.close_window'));
-						btn2.setAttribute('oncommand','window.close();');
-			}
+                        btn1.addEventListener(
+                            'command',
+                            function(id){ return function() { 
+                                var r = g.error.yns_alert(
+                                    $('catStrings').getFormattedString('staff.cat.copy_notes.delete_note.prompt.msg', [g.notes[id].title(), g.notes[id].create_date().toString().substr(0,10)]),
+                                    $('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.title'),
+                                    $('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.yes'),
+                                    $('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.no'),
+                                    null,
+                                    $('commonStrings').getString('common.confirm')
+                                ); 
+                                if (r == 0) {
+                                    g.network.simple_request('FM_ACPN_DELETE',[ses(),g.notes[id].id()]);
+                                    setTimeout(function() { 
+                                        alert($('catStrings').getString('staff.cat.copy_notes.delete_note.success'));
+                                        refresh(); },0
+                                    );
+                                }
+                            } }(i),
+                            false
+                        );
+                    var spacer = document.createElement('spacer'); hb.appendChild(spacer); spacer.flex = 1;
+                    var btn2 = document.createElement('button'); hb.appendChild(btn2);
+                        btn2.setAttribute('label', $('catStrings').getString('staff.cat.copy_notes.delete_note.close_window'));
+                        btn2.setAttribute('oncommand','window.close();');
+            }
 
-		}
-		
-		function new_note() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
-				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"> \
-					<caption label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.label') + '"/> \
-					<grid flex="1"><columns><column/><column flex="1"/></columns> \
-						<rows> \
-							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.public') + '"/><checkbox id="pub" name="fancy_data" checked="false"/></row> \
-							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.title') + '"/><textbox id="title" name="fancy_data" context="clipboard"/></row> \
-							<row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.note') + '"/><textbox multiline="true" id="note" name="fancy_data" context="clipboard"/></row> \
-							<row><spacer/><hbox> \
-								<button label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.cancel.label') + '" name="fancy_cancel" accesskey="' + $('catStrings').getString('staff.cat.copy_notes.new_note.cancel.accesskey') + '"/> \
-								<button label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.label') + '" accesskey="' + $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.accesskey') + '" name="fancy_submit"/></hbox></row> \
-						</rows></grid></groupbox>';
-				//g.data.init({'via':'stash'});
-				//g.data.temp_note_xml = xml; g.data.stash('temp_note_xml');
-				JSAN.use('util.window'); var win = new util.window();
-				var fancy_prompt_data = win.open(
-					urls.XUL_FANCY_PROMPT,
-					//+ '?xml_in_stash=temp_note_xml'
-					//+ '&focus=' + window.escape('title')
-					//+ '&title=' + window.escape('Add Note'),
-					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-					{ 'xml' : xml, 'focus' : 'title', 'title' : $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.label') }
-				);
-				//g.data.init({'via':'stash'});
-				if (fancy_prompt_data.fancy_status == 'complete') {
-					//alert(js2JSON(g.data.fancy_prompt_data));
-					var note = new acpn();
-					note.isnew(1);
-					note.title( fancy_prompt_data.title );
-					note.value( fancy_prompt_data.note );
-					note.pub( get_bool( fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
-					note.owning_copy( g.copy_id );
-					var r = g.network.simple_request('FM_ACPN_CREATE',[ ses(), note ]);
-					if (typeof r.ilsevent != 'undefined') throw(r);
-					setTimeout(function() {
-						alert($('catStrings').getString('staff.cat.copy_notes.new_note.success'));
-						refresh();},0
-					);
-				}
-			} catch(E) {
-				g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_notes.new_note.error'),E);
-			}
-		}
+        }
+        
+        function new_note() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
+                var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"> \
+                    <caption label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.label') + '"/> \
+                    <grid flex="1"><columns><column/><column flex="1"/></columns> \
+                        <rows> \
+                            <row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.public') + '"/><checkbox id="pub" name="fancy_data" checked="false"/></row> \
+                            <row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.title') + '"/><textbox id="title" name="fancy_data" context="clipboard"/></row> \
+                            <row><label value="' + $('catStrings').getString('staff.cat.copy_notes.new_note.note') + '"/><textbox multiline="true" id="note" name="fancy_data" context="clipboard"/></row> \
+                            <row><spacer/><hbox> \
+                                <button label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.cancel.label') + '" name="fancy_cancel" accesskey="' + $('catStrings').getString('staff.cat.copy_notes.new_note.cancel.accesskey') + '"/> \
+                                <button label="' + $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.label') + '" accesskey="' + $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.accesskey') + '" name="fancy_submit"/></hbox></row> \
+                        </rows></grid></groupbox>';
+                //g.data.init({'via':'stash'});
+                //g.data.temp_note_xml = xml; g.data.stash('temp_note_xml');
+                JSAN.use('util.window'); var win = new util.window();
+                var fancy_prompt_data = win.open(
+                    urls.XUL_FANCY_PROMPT,
+                    //+ '?xml_in_stash=temp_note_xml'
+                    //+ '&focus=' + window.escape('title')
+                    //+ '&title=' + window.escape('Add Note'),
+                    'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+                    { 'xml' : xml, 'focus' : 'title', 'title' : $('catStrings').getString('staff.cat.copy_notes.new_note.add_note.label') }
+                );
+                //g.data.init({'via':'stash'});
+                if (fancy_prompt_data.fancy_status == 'complete') {
+                    //alert(js2JSON(g.data.fancy_prompt_data));
+                    var note = new acpn();
+                    note.isnew(1);
+                    note.title( fancy_prompt_data.title );
+                    note.value( fancy_prompt_data.note );
+                    note.pub( get_bool( fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
+                    note.owning_copy( g.copy_id );
+                    var r = g.network.simple_request('FM_ACPN_CREATE',[ ses(), note ]);
+                    if (typeof r.ilsevent != 'undefined') throw(r);
+                    setTimeout(function() {
+                        alert($('catStrings').getString('staff.cat.copy_notes.new_note.success'));
+                        refresh();},0
+                    );
+                }
+            } catch(E) {
+                g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_notes.new_note.error'),E);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<stack hidden="true" id="note_template" flex="1">
-		<groupbox flex="1" style="background-color: black;"/>
-		<groupbox flex="1" style="background-color: #FFDE00; -moz-border-radius-topright: 35px;" >
-			<hbox>
-				<description name="title" class="copyable" style="font-weight: bold"/>
-				<spacer flex="1"/>
-				<description name="create_date" class="copyable" style="font-weight: bold"/>
-				<description name="pub" class="copyable" style="font-weight: bold"/>
-			</hbox>
-			<description class="copyable" name="value"/>
-		</groupbox>
-	</stack>
+    <stack hidden="true" id="note_template" flex="1">
+        <groupbox flex="1" style="background-color: black;"/>
+        <groupbox flex="1" style="background-color: #FFDE00; -moz-border-radius-topright: 35px;" >
+            <hbox>
+                <description name="title" class="copyable" style="font-weight: bold"/>
+                <spacer flex="1"/>
+                <description name="create_date" class="copyable" style="font-weight: bold"/>
+                <description name="pub" class="copyable" style="font-weight: bold"/>
+            </hbox>
+            <description class="copyable" name="value"/>
+        </groupbox>
+    </stack>
 
-	<vbox flex="1" class="my_overflow" id="notes_panel">
-	</vbox>
+    <vbox flex="1" class="my_overflow" id="notes_panel">
+    </vbox>
 
 
 </window>

@@ -22,166 +22,166 @@ vim:noet:sw=4:ts=4:
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_copy_browser" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="/xul/server/cat/copy_browser.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { 
-					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for cat_copy_browser.xul');
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/cat/copy_browser.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { 
+                    throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for cat_copy_browser.xul');
 
-				JSAN.use('cat.copy_browser'); g.copy_browser = new cat.copy_browser();
+                JSAN.use('cat.copy_browser'); g.copy_browser = new cat.copy_browser();
 
-				g.copy_browser.init( { 'docid' : xul_param('docid') } );
+                g.copy_browser.init( { 'docid' : xul_param('docid') } );
 
-				//if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-				//	try { window.xulG.set_tab_name('Holdings Maintenance'); } catch(E) { alert(E); }
-				//}
+                //if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                //    try { window.xulG.set_tab_name('Holdings Maintenance'); } catch(E) { alert(E); }
+                //}
 
-			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/copy_browser.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/copy_browser.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<commandset id="cat_copy_browser">
-		<command id="save_columns" />
-		<command id="cmd_broken" />
-		<command id="sel_copy_details"/>
-		<command id="sel_patron"/>
-		<command id="sel_clip" />
-		<command id="cmd_clear" />
-		<command id="cmd_show_my_libs" />
-		<command id="cmd_show_all_libs" />
-		<command id="cmd_show_libs_with_copies" />
+    <commandset id="cat_copy_browser">
+        <command id="save_columns" />
+        <command id="cmd_broken" />
+        <command id="sel_copy_details"/>
+        <command id="sel_patron"/>
+        <command id="sel_clip" />
+        <command id="cmd_clear" />
+        <command id="cmd_show_my_libs" />
+        <command id="cmd_show_all_libs" />
+        <command id="cmd_show_libs_with_copies" />
 
-		<command id="sel_mark_items_damaged" />
-		<command id="sel_mark_items_missing" />
-		<command id="cmd_add_items"/>
-		<command id="cmd_add_items_to_buckets"/>
-		<command id="cmd_edit_items"/>
-		<command id="cmd_replace_barcode"/>
-		<command id="cmd_delete_items"/>
-		<command id="cmd_transfer_items"/>
-		<command id="cmd_print_spine_labels"/>
-		<command id="cmd_add_volumes"/>
-		<command id="cmd_edit_volumes"/>
-		<command id="cmd_delete_volumes"/>
-		<command id="cmd_mark_volume"/>
-		<command id="cmd_mark_library"/>
-		<command id="cmd_transfer_volume"/>
-		<command id="cmd_refresh_list"/>
-	</commandset>
+        <command id="sel_mark_items_damaged" />
+        <command id="sel_mark_items_missing" />
+        <command id="cmd_add_items"/>
+        <command id="cmd_add_items_to_buckets"/>
+        <command id="cmd_edit_items"/>
+        <command id="cmd_replace_barcode"/>
+        <command id="cmd_delete_items"/>
+        <command id="cmd_transfer_items"/>
+        <command id="cmd_print_spine_labels"/>
+        <command id="cmd_add_volumes"/>
+        <command id="cmd_edit_volumes"/>
+        <command id="cmd_delete_volumes"/>
+        <command id="cmd_mark_volume"/>
+        <command id="cmd_mark_library"/>
+        <command id="cmd_transfer_volume"/>
+        <command id="cmd_refresh_list"/>
+    </commandset>
 
-	<popupset>
-		<popup id="copy_browser_actions">
-			<menuitem command="sel_clip" label="&staff.cat.copy_browser.actions.sel_clip.label;" accesskey="&staff.cat.copy_browser.actions.sel_clip.accesskey;"/>
-			<menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey;"/>
-			<menuitem command="sel_copy_details" label="&staff.cat.copy_browser.actions.sel_copy_details.label;" accesskey="&staff.cat.copy_browser.actions.sel_copy_details.label;" />
-			<menuitem command="sel_patron" label="&staff.cat.copy_browser.actions.sel_patron.label;" accesskey="&staff.cat.copy_browser.actions.sel_patron.accesskey;"/>
-			<menuseparator/>
-			<menuitem command="cmd_edit_items" label="&staff.cat.copy_browser.actions.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_items.accesskey;"/>
-			<menuitem command="cmd_transfer_items" label="&staff.cat.copy_browser.actions.cmd_transfer_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_transfer_items.accesskey;"/>
-			<menuseparator/>
-			<menuitem command="cmd_add_volumes" label="&staff.cat.copy_browser.actions.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_volumes.accesskey;"/>
-			<menuitem command="cmd_mark_library" label="&staff.cat.copy_browser.actions.cmd_mark_library.label;" accesskey="&staff.cat.copy_browser.actions.cmd_mark_library.accesskey;"/>
-			<menuseparator/>
-			<menuitem command="cmd_add_items" label="&staff.cat.copy_browser.actions.cmd_add_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items.accesskey;"/>
-			<menuitem command="cmd_edit_volumes" label="&staff.cat.copy_browser.actions.cmd_edit_volumes.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_volumes.accesskey;"/>
-			<menuitem command="cmd_mark_volume" label="&staff.cat.copy_browser.actions.cmd_mark_volume.label;" accesskey="&staff.cat.copy_browser.actions.cmd_mark_volume.accesskey;"/>
-			<menuitem command="cmd_transfer_volume" label="&staff.cat.copy_browser.actions.cmd_transfer_volume.label;" accesskey="&staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey;"/>
-			<menuseparator/>
-			<menuitem command="cmd_delete_items" label="&staff.cat.copy_browser.actions.cmd_delete_items.label;" accesskey=""/>
-			<menuitem command="cmd_delete_volumes" label="&staff.cat.copy_browser.actions.cmd_delete_volumes.label;" accesskey=""/>
-			<menuseparator/>
-			<menuitem command="sel_mark_items_damaged" label="&staff.cat.copy_browser.actions.sel_mark_items_damaged.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey;"/>
-			<menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.actions.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey;"/>
-			<menuseparator/>
-			<menuitem command="cmd_print_spine_labels" label="&staff.cat.copy_browser.actions.cmd_print_spine_labels.label;" accesskey="&staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey;"/>
-			<menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.actions.cmd_replace_barcode.label;" accesskey=""/>
-			<menuitem command="save_columns" label="&staff.cat.copy_browser.actions.save_columns.label;"/>
-			<menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.actions.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.actions.cmd_refresh_list.accesskey;"/>
-		</popup>
-	</popupset>
+    <popupset>
+        <popup id="copy_browser_actions">
+            <menuitem command="sel_clip" label="&staff.cat.copy_browser.actions.sel_clip.label;" accesskey="&staff.cat.copy_browser.actions.sel_clip.accesskey;"/>
+            <menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey;"/>
+            <menuitem command="sel_copy_details" label="&staff.cat.copy_browser.actions.sel_copy_details.label;" accesskey="&staff.cat.copy_browser.actions.sel_copy_details.label;" />
+            <menuitem command="sel_patron" label="&staff.cat.copy_browser.actions.sel_patron.label;" accesskey="&staff.cat.copy_browser.actions.sel_patron.accesskey;"/>
+            <menuseparator/>
+            <menuitem command="cmd_edit_items" label="&staff.cat.copy_browser.actions.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_items.accesskey;"/>
+            <menuitem command="cmd_transfer_items" label="&staff.cat.copy_browser.actions.cmd_transfer_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_transfer_items.accesskey;"/>
+            <menuseparator/>
+            <menuitem command="cmd_add_volumes" label="&staff.cat.copy_browser.actions.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_volumes.accesskey;"/>
+            <menuitem command="cmd_mark_library" label="&staff.cat.copy_browser.actions.cmd_mark_library.label;" accesskey="&staff.cat.copy_browser.actions.cmd_mark_library.accesskey;"/>
+            <menuseparator/>
+            <menuitem command="cmd_add_items" label="&staff.cat.copy_browser.actions.cmd_add_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items.accesskey;"/>
+            <menuitem command="cmd_edit_volumes" label="&staff.cat.copy_browser.actions.cmd_edit_volumes.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_volumes.accesskey;"/>
+            <menuitem command="cmd_mark_volume" label="&staff.cat.copy_browser.actions.cmd_mark_volume.label;" accesskey="&staff.cat.copy_browser.actions.cmd_mark_volume.accesskey;"/>
+            <menuitem command="cmd_transfer_volume" label="&staff.cat.copy_browser.actions.cmd_transfer_volume.label;" accesskey="&staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey;"/>
+            <menuseparator/>
+            <menuitem command="cmd_delete_items" label="&staff.cat.copy_browser.actions.cmd_delete_items.label;" accesskey=""/>
+            <menuitem command="cmd_delete_volumes" label="&staff.cat.copy_browser.actions.cmd_delete_volumes.label;" accesskey=""/>
+            <menuseparator/>
+            <menuitem command="sel_mark_items_damaged" label="&staff.cat.copy_browser.actions.sel_mark_items_damaged.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_damaged.accesskey;"/>
+            <menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.actions.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey;"/>
+            <menuseparator/>
+            <menuitem command="cmd_print_spine_labels" label="&staff.cat.copy_browser.actions.cmd_print_spine_labels.label;" accesskey="&staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey;"/>
+            <menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.actions.cmd_replace_barcode.label;" accesskey=""/>
+            <menuitem command="save_columns" label="&staff.cat.copy_browser.actions.save_columns.label;"/>
+            <menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.actions.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.actions.cmd_refresh_list.accesskey;"/>
+        </popup>
+    </popupset>
 
-	<groupbox flex="1" class="my_overflow">
-		<caption label="&staff.cat.copy_browser.holdings_maintenance.caption;"/>
-		<hbox><label id="legend" style="font-size: large" class="has_copies" value="&staff.cat.copy_browser.holdings_maintenance.legend;" hidden="true"/></hbox>
-		<hbox>
-			<hbox id="x_lib_menu"/>
-			<spacer flex="1"/>
-			<label value="&staff.cat.copy_browser.holdings_maintenance.consortial_total;"/><label id="consortial_total"/>
-			<label value="&staff.cat.copy_browser.holdings_maintenance.consortial_available;"/><label id="consortial_available"/>
-		</hbox>
-		<hbox>
-			<checkbox id="show_acns" label="&staff.cat.copy_browser.holdings_maintenance.show_acns;" />
-			<checkbox id="show_acps" label="&staff.cat.copy_browser.holdings_maintenance.show_acps;" />
-			<button id="refresh_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
-			<button label="&staff.cat.copy_browser.holdings_maintenance.show_libs.label;" command="cmd_show_libs_with_copies" accesskey="&staff.cat.copy_browser.holdings_maintenance.show_libs.accesskey;"/>
-			<!-- <button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>-->
-			<!--
-			<button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
-			-->
-			<spacer flex="1"/>
-			<menubar>
-				<menu label="&staff.cat.copy_browser.holdings_maintenance.actions.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.actions.accesskey;">
-					<menupopup>
-						<menuitem command="sel_clip" label="&staff.cat.copy_browser.holdings_maintenance.sel_clip.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey;"/>
-						<menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey;"/>
-						<menuitem command="sel_copy_details" label="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey;" />
-						<menuitem command="sel_patron" label="&staff.cat.copy_browser.holdings_maintenance.sel_patron.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey;"/>
-						<menuseparator/>
-						<menuitem command="cmd_edit_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey;"/>
-						<menuitem command="cmd_transfer_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey;"/>
-						<menuseparator/>
-						<menuitem command="cmd_add_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey;"/>
-						<menuitem command="cmd_mark_library" label="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey;"/>
-						<menuseparator/>
-						<menuitem command="cmd_add_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_items.accesskey;"/>
-						<menuitem command="cmd_edit_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.accesskey;"/>
-						<menuitem command="cmd_mark_volume" label="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey;"/>
-						<menuitem command="cmd_transfer_volume" label="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey;"/>
-						<menuseparator/>
-						<menuitem command="cmd_delete_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label;" accesskey=""/>
-						<menuitem command="cmd_delete_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label;" accesskey=""/>
-						<menuseparator/>
-						<menuitem command="sel_mark_items_damaged" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey;"/>
-						<menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey;"/>
-						<menuseparator/>
-						<menuitem command="cmd_print_spine_labels" label="&staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey;"/>
-						<menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label;" accesskey=""/>
-						<menuitem command="save_columns" label="&staff.cat.copy_browser.holdings_maintenance.save_columns.label;"/>
-						<menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey;"/>
-					</menupopup>
-				</menu>
-			</menubar>
-		</hbox>
-		<tree id="copy_tree" flex="1" enableColumnDrag="true" context="copy_browser_actions"/>
-	</groupbox>
+    <groupbox flex="1" class="my_overflow">
+        <caption label="&staff.cat.copy_browser.holdings_maintenance.caption;"/>
+        <hbox><label id="legend" style="font-size: large" class="has_copies" value="&staff.cat.copy_browser.holdings_maintenance.legend;" hidden="true"/></hbox>
+        <hbox>
+            <hbox id="x_lib_menu"/>
+            <spacer flex="1"/>
+            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_total;"/><label id="consortial_total"/>
+            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_available;"/><label id="consortial_available"/>
+        </hbox>
+        <hbox>
+            <checkbox id="show_acns" label="&staff.cat.copy_browser.holdings_maintenance.show_acns;" />
+            <checkbox id="show_acps" label="&staff.cat.copy_browser.holdings_maintenance.show_acps;" />
+            <button id="refresh_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
+            <button label="&staff.cat.copy_browser.holdings_maintenance.show_libs.label;" command="cmd_show_libs_with_copies" accesskey="&staff.cat.copy_browser.holdings_maintenance.show_libs.accesskey;"/>
+            <!-- <button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>-->
+            <!--
+            <button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
+            -->
+            <spacer flex="1"/>
+            <menubar>
+                <menu label="&staff.cat.copy_browser.holdings_maintenance.actions.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.actions.accesskey;">
+                    <menupopup>
+                        <menuitem command="sel_clip" label="&staff.cat.copy_browser.holdings_maintenance.sel_clip.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_clip.accesskey;"/>
+                        <menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey;"/>
+                        <menuitem command="sel_copy_details" label="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey;" />
+                        <menuitem command="sel_patron" label="&staff.cat.copy_browser.holdings_maintenance.sel_patron.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey;"/>
+                        <menuseparator/>
+                        <menuitem command="cmd_edit_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey;"/>
+                        <menuitem command="cmd_transfer_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey;"/>
+                        <menuseparator/>
+                        <menuitem command="cmd_add_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey;"/>
+                        <menuitem command="cmd_mark_library" label="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey;"/>
+                        <menuseparator/>
+                        <menuitem command="cmd_add_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_items.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_items.accesskey;"/>
+                        <menuitem command="cmd_edit_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.accesskey;"/>
+                        <menuitem command="cmd_mark_volume" label="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey;"/>
+                        <menuitem command="cmd_transfer_volume" label="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey;"/>
+                        <menuseparator/>
+                        <menuitem command="cmd_delete_items" label="&staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label;" accesskey=""/>
+                        <menuitem command="cmd_delete_volumes" label="&staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label;" accesskey=""/>
+                        <menuseparator/>
+                        <menuitem command="sel_mark_items_damaged" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey;"/>
+                        <menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey;"/>
+                        <menuseparator/>
+                        <menuitem command="cmd_print_spine_labels" label="&staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey;"/>
+                        <menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label;" accesskey=""/>
+                        <menuitem command="save_columns" label="&staff.cat.copy_browser.holdings_maintenance.save_columns.label;"/>
+                        <menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey;"/>
+                    </menupopup>
+                </menu>
+            </menubar>
+        </hbox>
+        <tree id="copy_tree" flex="1" enableColumnDrag="true" context="copy_browser_actions"/>
+    </groupbox>
 
 </window>
 

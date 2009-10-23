@@ -5,13 +5,13 @@
 <overlay id="openils_util_overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<scripts id="openils_util_scripts">
-		<script>dump('starting openils_util_overlay in ' + location.href + '\n');</script>
-		<script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
-		<script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
-		<script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
-		<script type="text/javascript" src="/xul/server/main/constants.js" />
-		<script type="text/javascript" src="/xul/server/OpenILS/data.js" />
+    <scripts id="openils_util_scripts">
+        <script>dump('starting openils_util_overlay in ' + location.href + '\n');</script>
+        <script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
+        <script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
+        <script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
+        <script type="text/javascript" src="/xul/server/main/constants.js" />
+        <script type="text/javascript" src="/xul/server/OpenILS/data.js" />
         <script type="text/javascript" src="/xul/server/util/barcode.js" />
         <script type="text/javascript" src="/xul/server/util/browser.js" />
         <script type="text/javascript" src="/xul/server/util/clipboard.js" />
@@ -32,13 +32,13 @@
         <script type="text/javascript" src="/xul/server/util/text.js" />
         <script type="text/javascript" src="/xul/server/util/widgets.js" />
         <script type="text/javascript" src="/xul/server/util/window.js" />
-		<script type="text/javascript" src="/opac/common/js/utils.js" />
-		<script type="text/javascript" src="/opac/common/js/CGI.js" />
-		<script type="text/javascript" src="/opac/common/js/md5.js" />
-		<script type="text/javascript" src="/opac/common/js/RemoteRequest.js" />
-		<script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js' />
-		<script type="text/javascript" src="/opac/common/js/org_utils.js" />   
-		<script type="text/javascript" src="global_util.js" />   
+        <script type="text/javascript" src="/opac/common/js/utils.js" />
+        <script type="text/javascript" src="/opac/common/js/CGI.js" />
+        <script type="text/javascript" src="/opac/common/js/md5.js" />
+        <script type="text/javascript" src="/opac/common/js/RemoteRequest.js" />
+        <script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js' />
+        <script type="text/javascript" src="/opac/common/js/org_utils.js" />   
+        <script type="text/javascript" src="global_util.js" />   
         <menupopup id="clipboard">
             <menuitem label="&common.textbox.cut;" oncommand="util.clipboard.cut()" />
             <menuitem label="&common.textbox.copy;" oncommand="util.clipboard.copy()" />
@@ -46,11 +46,11 @@
             <menuitem label="&common.textbox.delete;" oncommand="document.popupNode.value = ''" />
             <menuitem label="&common.textbox.select_all;" oncommand="document.popupNode.select()" />
         </menupopup>
-		<messagecatalog id="commonStrings" src='/xul/server/locale/<!--#echo var="locale"-->/common.properties'/>
-		<messagecatalog id="offlineStrings" src='/xul/server/locale/<!--#echo var="locale"-->/offline.properties'/>
-		<messagecatalog id="authStrings" src='/xul/server/locale/<!--#echo var="locale"-->/auth.properties'/>
-		<script>dump('finished openils_util_overlay\n');</script>
-	</scripts>
+        <messagecatalog id="commonStrings" src='/xul/server/locale/<!--#echo var="locale"-->/common.properties'/>
+        <messagecatalog id="offlineStrings" src='/xul/server/locale/<!--#echo var="locale"-->/offline.properties'/>
+        <messagecatalog id="authStrings" src='/xul/server/locale/<!--#echo var="locale"-->/auth.properties'/>
+        <script>dump('finished openils_util_overlay\n');</script>
+    </scripts>
 
 </overlay>
 

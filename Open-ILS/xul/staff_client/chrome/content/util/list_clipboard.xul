@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+    <!--#include virtual="/opac/locale/en-US/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,90 +19,90 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="util_list_clipboard_win" 
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	width="300" height="300" oils_persist="width height"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    width="300" height="300" oils_persist="width height"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
 
-		function $(id) { return document.getElementById(id); }
-		function $c(n) { return document.createElement(n); }
+        function $(id) { return document.getElementById(id); }
+        function $c(n) { return document.createElement(n); }
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for util_list_clipboard.xul');
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for util_list_clipboard.xul');
 
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
-				if (! g.data.list_clipboard ) {
-					window.close();
-				} else {
-					for (var i = 0; i < g.data.list_clipboard.length; i++) {
-						var data_row = g.data.list_clipboard[i];
-						make_grid(data_row);
-					}
-				}
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+                if (! g.data.list_clipboard ) {
+                    window.close();
+                } else {
+                    for (var i = 0; i < g.data.list_clipboard.length; i++) {
+                        var data_row = g.data.list_clipboard[i];
+                        make_grid(data_row);
+                    }
+                }
 
-			} catch(E) {
-				try { g.error.standard_unexpected_error_alert('util/list_clipboard.xul',E); } catch(F) { alert(E); }
-			}
-		}
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('util/list_clipboard.xul',E); } catch(F) { alert(E); }
+            }
+        }
 
-		function make_grid(data_row) {
-			try {
-				var vbox = $c('vbox'); vbox.setAttribute('flex','1'); $('area').appendChild(vbox);
-				var grid = $c('grid'); grid.setAttribute('flex','1'); grid.setAttribute('style','border: solid black');  vbox.appendChild(grid);
-				var columns = $c('columns'); grid.appendChild(columns);
-				var c1 = $c('column'); c1.setAttribute('flex','1'); columns.appendChild(c1);
-				var c2 = $c('column'); c2.setAttribute('flex','1'); columns.appendChild(c2);
-				var rows = $c('rows'); grid.appendChild(rows);
-				var data_row2 = [];
-				for (j in data_row) {
-					data_row2.push( { 'label' : j, 'value' : data_row[j] } );
-				}
-				data_row2.sort( function(a,b) { if ( a.label < b.label ) return -1; else return 1; } );
-				for (var j = 0; j < data_row2.length; j++) {
-					var label = data_row2[j].label;
-					var value = data_row2[j].value;
-					if (value == '???' || value == '' || value == 'undefined') continue;
-					var row = $c('row'); 
-					var l1 = $c('label'); l1.setAttribute('value',label); row.appendChild(l1);
-					var l2 = $c('label'); l2.setAttribute('value',value); 
-					l2.setAttribute('style','text-decoration: underline; color: blue; -moz-user-focus: normal'); 
-					l2.setAttribute('onfocus','this.setAttribute("class","clipboard_outline_me")');
-					l2.setAttribute('onblur','this.setAttribute("class","")');
-					l2.setAttribute('onclick','copy_to_clipboard(event); window.close();');
-					row.appendChild(l2);
-					rows.appendChild(row);
-					if (!g.focus) { g.focus = true; l2.focus(); }
-				}
-			} catch(E) {
-				try { g.error.standard_unexpected_error_alert('util/list_clipboard.xul, make_grid',E); } catch(F) { alert(E); }
-			}
-		}
+        function make_grid(data_row) {
+            try {
+                var vbox = $c('vbox'); vbox.setAttribute('flex','1'); $('area').appendChild(vbox);
+                var grid = $c('grid'); grid.setAttribute('flex','1'); grid.setAttribute('style','border: solid black');  vbox.appendChild(grid);
+                var columns = $c('columns'); grid.appendChild(columns);
+                var c1 = $c('column'); c1.setAttribute('flex','1'); columns.appendChild(c1);
+                var c2 = $c('column'); c2.setAttribute('flex','1'); columns.appendChild(c2);
+                var rows = $c('rows'); grid.appendChild(rows);
+                var data_row2 = [];
+                for (j in data_row) {
+                    data_row2.push( { 'label' : j, 'value' : data_row[j] } );
+                }
+                data_row2.sort( function(a,b) { if ( a.label < b.label ) return -1; else return 1; } );
+                for (var j = 0; j < data_row2.length; j++) {
+                    var label = data_row2[j].label;
+                    var value = data_row2[j].value;
+                    if (value == '???' || value == '' || value == 'undefined') continue;
+                    var row = $c('row'); 
+                    var l1 = $c('label'); l1.setAttribute('value',label); row.appendChild(l1);
+                    var l2 = $c('label'); l2.setAttribute('value',value); 
+                    l2.setAttribute('style','text-decoration: underline; color: blue; -moz-user-focus: normal'); 
+                    l2.setAttribute('onfocus','this.setAttribute("class","clipboard_outline_me")');
+                    l2.setAttribute('onblur','this.setAttribute("class","")');
+                    l2.setAttribute('onclick','copy_to_clipboard(event); window.close();');
+                    row.appendChild(l2);
+                    rows.appendChild(row);
+                    if (!g.focus) { g.focus = true; l2.focus(); }
+                }
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('util/list_clipboard.xul, make_grid',E); } catch(F) { alert(E); }
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<description style="font-weight: bold">Choose the data to copy into the clipboard:</description>
+    <description style="font-weight: bold">Choose the data to copy into the clipboard:</description>
 
-	<hbox id="area" flex="1" style="overflow: scroll">
-	</hbox>
+    <hbox id="area" flex="1" style="overflow: scroll">
+    </hbox>
 
-	<hbox><spacer flex="1"/><button label="Close" accesskey="C" oncommand="window.close()"/></hbox>
+    <hbox><spacer flex="1"/><button label="Close" accesskey="C" oncommand="window.close()"/></hbox>
 
 </window>
 

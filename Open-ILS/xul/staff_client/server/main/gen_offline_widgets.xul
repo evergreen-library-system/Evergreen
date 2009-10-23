@@ -13,7 +13,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -21,33 +21,33 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="gen_offline_menus_win" 
-	onload="try { my_init(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
 
         function my_init() {
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-			if (typeof JSAN == 'undefined') {
-				throw(document.getElementById('commonStrings').getString('common.jsan.missing'));
-			}
-			/////////////////////////////////////////////////////////////////////////////
+            if (typeof JSAN == 'undefined') {
+                throw(document.getElementById('commonStrings').getString('common.jsan.missing'));
+            }
+            /////////////////////////////////////////////////////////////////////////////
 
-			JSAN.errorLevel = "die"; // none, warn, or die
-			JSAN.addRepository('/xul/server/');
+            JSAN.errorLevel = "die"; // none, warn, or die
+            JSAN.addRepository('/xul/server/');
 
-			JSAN.use('util.error'); g.error = new util.error();
-			JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-			JSAN.use('util.network'); g.network = new util.network();
+            JSAN.use('util.error'); g.error = new util.error();
+            JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+            JSAN.use('util.network'); g.network = new util.network();
 
             gen_offline_menus_init();
 
@@ -56,189 +56,189 @@
             g.data.stash('user_org_unit_opt_in_enabled');
         }
 
-		function gen_offline_menus_init() {
+        function gen_offline_menus_init() {
 
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-			JSAN.use('util.functional');
+            JSAN.use('util.functional');
 
-			save_object('offline_ou_list', build_ou_list());
+            save_object('offline_ou_list', build_ou_list());
 
-			save_object('offline_pgt_list', build_pgt_list());
+            save_object('offline_pgt_list', build_pgt_list());
 
-			save_object('offline_cit_list', build_cit_list());
+            save_object('offline_cit_list', build_cit_list());
 
-			save_object('offline_cnct_list', build_cnct_list());
+            save_object('offline_cnct_list', build_cnct_list());
 
-			save_object('offline_asv_list', build_asv_list());
+            save_object('offline_asv_list', build_asv_list());
 
-			var server_time = g.network.request('open-ils.actor','opensrf.system.time',[]);
-			var local_time = parseInt( new Date().getTime() / 1000 );
+            var server_time = g.network.request('open-ils.actor','opensrf.system.time',[]);
+            var local_time = parseInt( new Date().getTime() / 1000 );
 
-			var delta = server_time - local_time;
+            var delta = server_time - local_time;
 
-			JSAN.use('util.file'); var file = new util.file('pending_xacts');
-			if (file._file.exists()) {
-				file.close();
-			} else {
-				file.close();
-				save_object('offline_delta', [ delta ]);
-			}
+            JSAN.use('util.file'); var file = new util.file('pending_xacts');
+            if (file._file.exists()) {
+                file.close();
+            } else {
+                file.close();
+                save_object('offline_delta', [ delta ]);
+            }
 
-			save_object('print_list_templates',g.data.print_list_templates);
+            save_object('print_list_templates',g.data.print_list_templates);
 
-			$('placeholder').setAttribute('value', document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.synced'));
+            $('placeholder').setAttribute('value', document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.synced'));
 
-		}
+        }
 
-		function $(id) {
-			return document.getElementById(id);
-		}
+        function $(id) {
+            return document.getElementById(id);
+        }
 
-		function save_object(filename,obj) {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			JSAN.use('util.file'); var file = new util.file(filename);
-			file.set_object(obj); file.close();
-		}
+        function save_object(filename,obj) {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            JSAN.use('util.file'); var file = new util.file(filename);
+            file.set_object(obj); file.close();
+        }
 
-		function build_ou_list() {
-			JSAN.use('util.fm_utils');
-			return [
-				util.functional.map_list( 
-					/*util.fm_utils.flatten_ou_branch(g.data.tree.aou)*/ g.data.list.aou,
-					function(obj) { 
-						var sname = obj.shortname();
-						for (i = sname.length; i < 20; i++) {
-							sname += ' ';
-						}
-						return [ 
-							obj.name() ? sname + ' ' + obj.name() : obj.shortname(),
-							obj.id(), 
-							( ! get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_users() ) ),
-							( g.data.hash.aout[ obj.ou_type() ].depth() * 2),
-						]; 
-					}
-				),
-				g.data.list.au[0].ws_ou()
-			];
-		}
+        function build_ou_list() {
+            JSAN.use('util.fm_utils');
+            return [
+                util.functional.map_list( 
+                    /*util.fm_utils.flatten_ou_branch(g.data.tree.aou)*/ g.data.list.aou,
+                    function(obj) { 
+                        var sname = obj.shortname();
+                        for (i = sname.length; i < 20; i++) {
+                            sname += ' ';
+                        }
+                        return [ 
+                            obj.name() ? sname + ' ' + obj.name() : obj.shortname(),
+                            obj.id(), 
+                            ( ! get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_users() ) ),
+                            ( g.data.hash.aout[ obj.ou_type() ].depth() * 2),
+                        ]; 
+                    }
+                ),
+                g.data.list.au[0].ws_ou()
+            ];
+        }
 
-		function build_pgt_list() {
-			var list = []; var added = {};
+        function build_pgt_list() {
+            var list = []; var added = {};
 
-			function walk(n) {
-				if (
-					(n.application_perm() == 'group_application.user.patron') ||
-					(n.application_perm() == null) ||
-					(n.application_perm() == '')
-				) {
-					if (typeof added[n.id()] == 'undefined') {
-						list.push(n); added[n.id()] = true;
-						var children = n.children();
-						if (children) for (var i = 0; i < children.length; i++) {
-							walk(children[i]);
-						}
-					}
-				} else if (n.parent() == null) {
-					var children = n.children();
-					if (children) for (var i = 0; i < children.length; i++) {
-						walk(children[i]);
-					}
-				}
-			}
+            function walk(n) {
+                if (
+                    (n.application_perm() == 'group_application.user.patron') ||
+                    (n.application_perm() == null) ||
+                    (n.application_perm() == '')
+                ) {
+                    if (typeof added[n.id()] == 'undefined') {
+                        list.push(n); added[n.id()] = true;
+                        var children = n.children();
+                        if (children) for (var i = 0; i < children.length; i++) {
+                            walk(children[i]);
+                        }
+                    }
+                } else if (n.parent() == null) {
+                    var children = n.children();
+                    if (children) for (var i = 0; i < children.length; i++) {
+                        walk(children[i]);
+                    }
+                }
+            }
 
-			walk(g.data.tree.pgt);
+            walk(g.data.tree.pgt);
 
-			return [
-				util.functional.map_list( 
-					list,
-					function(obj) { return [ 
-						obj.description() ? obj.name() + ' : ' + obj.description() : obj.name(), 
-						obj.id() 
-					]; }
-				)
-			];
-		}
+            return [
+                util.functional.map_list( 
+                    list,
+                    function(obj) { return [ 
+                        obj.description() ? obj.name() + ' : ' + obj.description() : obj.name(), 
+                        obj.id() 
+                    ]; }
+                )
+            ];
+        }
 
-		function build_cit_list() {
-			return [
-				util.functional.map_list( 
-					g.data.list.cit,
-					function(obj) { return [ 
-						obj.name(), 
-						obj.id() 
-					]; }
-				)
-			];
-		}
+        function build_cit_list() {
+            return [
+                util.functional.map_list( 
+                    g.data.list.cit,
+                    function(obj) { return [ 
+                        obj.name(), 
+                        obj.id() 
+                    ]; }
+                )
+            ];
+        }
 
-		function build_cnct_list() {
-			JSAN.use('util.fm_utils');
-			return [
-				util.functional.map_list(
-					util.functional.filter_list(
-						g.data.list.cnct,
-						function(o) {
-							return util.fm_utils.compare_aou_a_is_b_or_ancestor(o.owning_lib(), g.data.list.au[0].ws_ou());
-						}
-					).sort(
+        function build_cnct_list() {
+            JSAN.use('util.fm_utils');
+            return [
+                util.functional.map_list(
+                    util.functional.filter_list(
+                        g.data.list.cnct,
+                        function(o) {
+                            return util.fm_utils.compare_aou_a_is_b_or_ancestor(o.owning_lib(), g.data.list.au[0].ws_ou());
+                        }
+                    ).sort(
 
-						function(a,b) {
-							try { 
-								return util.fm_utils.sort_func_aou_by_depth_and_then_string(
-									[ a.owning_lib(), a.name() ],
-									[ b.owning_lib(), b.name() ]
-								);
-							} catch(E) {
-								alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.noncat_sort.error') + E);
-								return 0;
-							}
-						}
+                        function(a,b) {
+                            try { 
+                                return util.fm_utils.sort_func_aou_by_depth_and_then_string(
+                                    [ a.owning_lib(), a.name() ],
+                                    [ b.owning_lib(), b.name() ]
+                                );
+                            } catch(E) {
+                                alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.noncat_sort.error') + E);
+                                return 0;
+                            }
+                        }
 
-					),
-					function(o) {
-						return [ g.data.hash.aou[ o.owning_lib() ].shortname() + ' : ' + o.name(), js2JSON( [ o.id(), o.circ_duration() ] ) ];
-					}
-				)
-			];
-		}
+                    ),
+                    function(o) {
+                        return [ g.data.hash.aou[ o.owning_lib() ].shortname() + ' : ' + o.name(), js2JSON( [ o.id(), o.circ_duration() ] ) ];
+                    }
+                )
+            ];
+        }
 
-		function build_asv_list() {
-			var obj = {};
-			/* loop through required surveys */
-			for (var i = 0; i < g.data.list.my_asv.length; i++) {
-				dump('i = ' + i + '\n');
-				var survey = g.data.list.my_asv[i];
-				obj[ survey.name() ] = {};
-				obj[ survey.name() ][ 'description' ] = survey.description();
-				obj[ survey.name() ][ 'questions' ] = [];
+        function build_asv_list() {
+            var obj = {};
+            /* loop through required surveys */
+            for (var i = 0; i < g.data.list.my_asv.length; i++) {
+                dump('i = ' + i + '\n');
+                var survey = g.data.list.my_asv[i];
+                obj[ survey.name() ] = {};
+                obj[ survey.name() ][ 'description' ] = survey.description();
+                obj[ survey.name() ][ 'questions' ] = [];
 
-				/* loop through survey questions */
-				for (var j = 0; j < survey.questions().length; j++) {
-					dump('\tj = ' + j + '\n');
-					var question = survey.questions()[j];
-					var q = {};
-					q[ 'question' ] = question.question();
-					q[ 'answers' ] = util.functional.map_list( 
-						question.answers(),
-						function(obj) { return [ 
-							obj.answer(), 
-							'[' + obj.id() + ',' 
-							+ obj.question() + ',' 
-							+ question.survey() + ']'
-						]; }
-					);
-					obj[ survey.name() ][ 'questions' ].push( q );
-				}
-			}
-			return obj;
-		}
+                /* loop through survey questions */
+                for (var j = 0; j < survey.questions().length; j++) {
+                    dump('\tj = ' + j + '\n');
+                    var question = survey.questions()[j];
+                    var q = {};
+                    q[ 'question' ] = question.question();
+                    q[ 'answers' ] = util.functional.map_list( 
+                        question.answers(),
+                        function(obj) { return [ 
+                            obj.answer(), 
+                            '[' + obj.id() + ',' 
+                            + obj.question() + ',' 
+                            + question.survey() + ']'
+                        ]; }
+                    );
+                    obj[ survey.name() ][ 'questions' ].push( q );
+                }
+            }
+            return obj;
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<vbox flex="1">
-		<label id="placeholder"/>
-	</vbox>
+    <vbox flex="1">
+        <label id="placeholder"/>
+    </vbox>
 </window>
 

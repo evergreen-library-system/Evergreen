@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -18,44 +18,44 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_volume_copy_creator_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	width="800" height="580"
-	title="&staff.cat.volume_copy_creator.title;"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    width="800" height="580"
+    title="&staff.cat.volume_copy_creator.title;"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">
-	var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; 
-	</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+    var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; 
+    </script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="volume_copy_creator.js"/>
-	
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="volume_copy_creator.js"/>
+    
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
     <vbox id="summary_box"/>
-	<groupbox flex="1" class="my_overflow">
-		<caption id="caption" label="&staff.cat.volume_copy_creator.label;"/>
-		<hbox style="border-bottom: solid black thin">
-			<hbox id="marc_cn"/>
-			<spacer flex="1" />
-			<checkbox id="check_barcodes" label="&staff.cat.volume_copy_creator.check_barcodes.label;" oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.check_barcodes.accesskey;"/>
-			<checkbox id="print_labels" label="&staff.cat.volume_copy_creator.print_labels.label;"  oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.print_labels.accesskey;"/>
-			<button id="Create" accesskey="&staff.cat.volume_copy_creator.create.accesskey;" label="&staff.cat.volume_copy_creator.create.label;" disabled="true" oncommand="g.stash_and_close();"/>
-		</hbox>
-		<grid flex="1">
-			<columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
-			<rows id="rows">
-				<row>
-					<label value="&staff.cat.volume_copy_creator.library_label.value;" style="font-weight: bold"/>
-					<label value="&staff.cat.volume_copy_creator.num_of_volumes_label.value;" style="font-weight: bold"/>
-				</row>
-			</rows>
-		</grid>
-	</groupbox>
+    <groupbox flex="1" class="my_overflow">
+        <caption id="caption" label="&staff.cat.volume_copy_creator.label;"/>
+        <hbox style="border-bottom: solid black thin">
+            <hbox id="marc_cn"/>
+            <spacer flex="1" />
+            <checkbox id="check_barcodes" label="&staff.cat.volume_copy_creator.check_barcodes.label;" oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.check_barcodes.accesskey;"/>
+            <checkbox id="print_labels" label="&staff.cat.volume_copy_creator.print_labels.label;"  oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.print_labels.accesskey;"/>
+            <button id="Create" accesskey="&staff.cat.volume_copy_creator.create.accesskey;" label="&staff.cat.volume_copy_creator.create.label;" disabled="true" oncommand="g.stash_and_close();"/>
+        </hbox>
+        <grid flex="1">
+            <columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
+            <rows id="rows">
+                <row>
+                    <label value="&staff.cat.volume_copy_creator.library_label.value;" style="font-weight: bold"/>
+                    <label value="&staff.cat.volume_copy_creator.num_of_volumes_label.value;" style="font-weight: bold"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
 
 </window>
 

@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -18,19 +18,19 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="work_log_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
-	</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
+    <scripts id="openils_util_scripts"/>
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="work_log.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="work_log.js"/>
 
     <vbox flex="1">
         <toolbox>

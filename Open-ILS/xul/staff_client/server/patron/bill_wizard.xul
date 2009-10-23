@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -20,55 +20,55 @@
 <?xul-overlay href="/xul/server/patron/bill_summary_overlay.xul"?>
 
 <window id="patron_bill" title="&staff.patron.bill_wizard.title;"
-	orient="vertical" style="overflow: auto"
-	onload="try { patron_bill_init(); font_helper(); } catch(E) { alert(E); }" width="700" height="550"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    orient="vertical" style="overflow: auto"
+    onload="try { patron_bill_init(); font_helper(); } catch(E) { alert(E); }" width="700" height="550"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="/xul/server/patron/bill_wizard.js"/>
-	
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/patron/bill_wizard.js"/>
+    
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
-	<vbox flex="1">
+    <vbox flex="1">
 
-			<label id="patron_name" class="patronNameLarge"/>
+            <label id="patron_name" class="patronNameLarge"/>
 
-			<groupbox orient="vertical" flex="1" id="summary" hidden="true"/>
+            <groupbox orient="vertical" flex="1" id="summary" hidden="true"/>
 
-			<groupbox flex="1">
-				<caption label="&staff.patron.bill_wizard.create_bill.label;"/>
-				<grid>
-					<columns> <column flex="0" /> <column flex="0" /> </columns>
-					<rows id="page1_rows">
-						<row><label value="&staff.patron.bill_wizard.location.value;"/><textbox id="billing_location" disabled="true" context="clipboard" /></row>
-						<row><label value="&staff.patron.bill_wizard.transaction_type.value;"/>
-							<menulist id="xact_type">
-								<menupopup>
-									<menuitem label="&staff.patron.bill_wizard.grocery.label;" value="grocery" selected="true"/>
-									<menuitem label="&staff.patron.bill_wizard.circulation.label;" value="circulation" disabled="true"/>
-								</menupopup>
-							</menulist>
-						</row>
-						<row><label value="&staff.patron.bill_wizard.billing_type.label;"/>
-							<hbox id="menu_placeholder"/>
-						</row>
-						<row><label value="&staff.patron.bill_wizard.amount.value;"/><textbox id="bill_amount" context="clipboard" /></row>
-						<row><label value="&staff.patron.bill_wizard.note.value;"/><textbox id="bill_note" multiline="true" rows="5" context="clipboard" /></row>
-					</rows>
-				</grid>
-				<spacer flex="1"/>
-				<hbox>
-					<spacer flex="1"/>
-					<button label="&staff.patron.bill_wizard.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_wizard.cancel.accesskey;"/>
-					<button label="&staff.patron.bill_wizard.submit.label;" oncommand="patron_bill_finish(); window.close();" accesskey="&staff.patron.bill_wizard.submit.accesskey;"/>
-				</hbox>
-			</groupbox>
-	</vbox>
+            <groupbox flex="1">
+                <caption label="&staff.patron.bill_wizard.create_bill.label;"/>
+                <grid>
+                    <columns> <column flex="0" /> <column flex="0" /> </columns>
+                    <rows id="page1_rows">
+                        <row><label value="&staff.patron.bill_wizard.location.value;"/><textbox id="billing_location" disabled="true" context="clipboard" /></row>
+                        <row><label value="&staff.patron.bill_wizard.transaction_type.value;"/>
+                            <menulist id="xact_type">
+                                <menupopup>
+                                    <menuitem label="&staff.patron.bill_wizard.grocery.label;" value="grocery" selected="true"/>
+                                    <menuitem label="&staff.patron.bill_wizard.circulation.label;" value="circulation" disabled="true"/>
+                                </menupopup>
+                            </menulist>
+                        </row>
+                        <row><label value="&staff.patron.bill_wizard.billing_type.label;"/>
+                            <hbox id="menu_placeholder"/>
+                        </row>
+                        <row><label value="&staff.patron.bill_wizard.amount.value;"/><textbox id="bill_amount" context="clipboard" /></row>
+                        <row><label value="&staff.patron.bill_wizard.note.value;"/><textbox id="bill_note" multiline="true" rows="5" context="clipboard" /></row>
+                    </rows>
+                </grid>
+                <spacer flex="1"/>
+                <hbox>
+                    <spacer flex="1"/>
+                    <button label="&staff.patron.bill_wizard.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_wizard.cancel.accesskey;"/>
+                    <button label="&staff.patron.bill_wizard.submit.label;" oncommand="patron_bill_finish(); window.close();" accesskey="&staff.patron.bill_wizard.submit.accesskey;"/>
+                </hbox>
+            </groupbox>
+    </vbox>
 </window>
 
 

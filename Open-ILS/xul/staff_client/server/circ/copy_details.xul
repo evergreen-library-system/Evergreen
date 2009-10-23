@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,210 +19,210 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="circ_copy_details_win" 
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	width="800" height="600" oils_persist="width height"
-	xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    width="800" height="600" oils_persist="width height"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function $(id) { return document.getElementById(id); }
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
 
-		var xulG = {};
+        var xulG = {};
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { 
-					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for circ_copy_details.xul');
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { 
+                    throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for circ_copy_details.xul');
 
-				g.copy_id = xul_param('copy_id',{'modal_xulG':true});
+                g.copy_id = xul_param('copy_id',{'modal_xulG':true});
 
-				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('util.date');
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+                JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('util.date');
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				// uber method
-				var robj = g.network.simple_request('FM_ACP_DETAILS', [ ses(), g.copy_id ] );
-				if (typeof robj.ilsevent != 'undefined') {
-					throw(robj);
-				}
-				if (robj.copy) {
-					g.copy = robj.copy;
-				} else {
-					throw(robj);
-				}
-				g.hold = robj.hold; g.transit = robj.transit; g.circ = robj.circ; g.callnumber = robj.volume;
-				var tt_msg = '';
-				if (g.hold) {
-					tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.hold', [g.hold.id()]);
-					$('hold_caption').setAttribute('tooltiptext', tt_msg);
-				}
-				if (g.transit) {
-					tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.transit', [g.transit.id()]);
-					$('transit_caption').setAttribute('tooltiptext', tt_msg);
-				}
-				if (g.circ) {
-					tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.circ', [g.circ.id()]);
-					$('circ_caption').setAttribute('tooltiptext', tt_msg);
-				}
+                // uber method
+                var robj = g.network.simple_request('FM_ACP_DETAILS', [ ses(), g.copy_id ] );
+                if (typeof robj.ilsevent != 'undefined') {
+                    throw(robj);
+                }
+                if (robj.copy) {
+                    g.copy = robj.copy;
+                } else {
+                    throw(robj);
+                }
+                g.hold = robj.hold; g.transit = robj.transit; g.circ = robj.circ; g.callnumber = robj.volume;
+                var tt_msg = '';
+                if (g.hold) {
+                    tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.hold', [g.hold.id()]);
+                    $('hold_caption').setAttribute('tooltiptext', tt_msg);
+                }
+                if (g.transit) {
+                    tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.transit', [g.transit.id()]);
+                    $('transit_caption').setAttribute('tooltiptext', tt_msg);
+                }
+                if (g.circ) {
+                    tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.circ', [g.circ.id()]);
+                    $('circ_caption').setAttribute('tooltiptext', tt_msg);
+                }
 
-				//g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ g.copy.call_number() ]);
-				//if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
+                //g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ g.copy.call_number() ]);
+                //if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
                 var tb = $('top_box'); while (tb.firstChild) tb.removeChild(tb.lastChild);
                 var top = document.createElement('iframe'); tb.appendChild(top);
-				top.setAttribute('src',urls.XUL_BIB_BRIEF);
-				top.setAttribute('flex','1');
-				get_contentWindow(top).xulG = { 'docid' : g.callnumber.record() };
-				//g.data.temp_copy = g.copy; g.data.stash('temp_copy'); 
-				//g.data.temp_callnumber = g.callnumber; g.data.stash('temp_callnumber'); 
+                top.setAttribute('src',urls.XUL_BIB_BRIEF);
+                top.setAttribute('flex','1');
+                get_contentWindow(top).xulG = { 'docid' : g.callnumber.record() };
+                //g.data.temp_copy = g.copy; g.data.stash('temp_copy'); 
+                //g.data.temp_callnumber = g.callnumber; g.data.stash('temp_callnumber'); 
                 var ib = $('item_summary_box'); while(ib.firstChild) ib.removeChild(ib.lastChild);
                 var item_summary = document.createElement('iframe'); ib.appendChild(item_summary);
-				item_summary.setAttribute('src',urls.XUL_COPY_SUMMARY);
-				item_summary.setAttribute('flex','1');
-				get_contentWindow(item_summary).xulG = { 'copy' : g.copy, 'callnumber' : g.callnumber };
+                item_summary.setAttribute('src',urls.XUL_COPY_SUMMARY);
+                item_summary.setAttribute('flex','1');
+                get_contentWindow(item_summary).xulG = { 'copy' : g.copy, 'callnumber' : g.callnumber };
 
-				$('r_last').disabled = true;
-				if (g.circ) {
-					$('r_last').disabled = false;
-					g.data.temp_circ = g.circ; g.data.stash('temp_circ');
+                $('r_last').disabled = true;
+                if (g.circ) {
+                    $('r_last').disabled = false;
+                    g.data.temp_circ = g.circ; g.data.stash('temp_circ');
                     var cb = $('circ_box'); while(cb.firstChild) cb.removeChild(cb.lastChild);
                     var circ_frame = document.createElement('iframe'); cb.appendChild(circ_frame);
-					circ_frame.setAttribute('src',urls.XUL_CIRC_BRIEF);
-				    circ_frame.setAttribute('flex','1');
-					get_contentWindow(circ_frame).xulG = { 'no_border' : 1 };
-					if (g.circ.checkin_time()) {
-						$('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.last_circ'));
-					} else {
-						$('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.current_circ'));
-					}
-				} else {
-					$('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.no_circ'));
-				}
+                    circ_frame.setAttribute('src',urls.XUL_CIRC_BRIEF);
+                    circ_frame.setAttribute('flex','1');
+                    get_contentWindow(circ_frame).xulG = { 'no_border' : 1 };
+                    if (g.circ.checkin_time()) {
+                        $('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.last_circ'));
+                    } else {
+                        $('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.current_circ'));
+                    }
+                } else {
+                    $('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.no_circ'));
+                }
 
-				if (g.transit) {
-					JSAN.use('circ.util'); var columns = circ.util.transit_columns({});
+                if (g.transit) {
+                    JSAN.use('circ.util'); var columns = circ.util.transit_columns({});
 
-					JSAN.use('util.list'); g.list = new util.list('transit');
-					g.list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
-					g.list.append( { 'row' : { 'my' : { 'atc' : g.transit, } } });
-	
-				} else {
-					$('transit_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.not_transit'));
-					$('transit').hidden = true;
-				}
+                    JSAN.use('util.list'); g.list = new util.list('transit');
+                    g.list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
+                    g.list.append( { 'row' : { 'my' : { 'atc' : g.transit, } } });
+    
+                } else {
+                    $('transit_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.not_transit'));
+                    $('transit').hidden = true;
+                }
 
 
-				$('r_hold').disabled = true;
-				if (g.hold) {
-					$('r_hold').disabled = false;
-					var status_robj = g.network.simple_request('FM_AHR_STATUS',[ ses(), g.hold.id() ]);
-					JSAN.use('circ.util');
-					var columns = circ.util.hold_columns( 
-						{ 
-							'request_time' : { 'hidden' : false },
-							'pickup_lib_shortname' : { 'hidden' : false },
-							'hold_type' : { 'hidden' : true },
-							'current_copy' : { 'hidden' : true },
-							'capture_time' : { 'hidden' : true },
-							'email_notify' : { 'hidden' : false },
-							'phone_notify' : { 'hidden' : false },
-						} 
-					);
+                $('r_hold').disabled = true;
+                if (g.hold) {
+                    $('r_hold').disabled = false;
+                    var status_robj = g.network.simple_request('FM_AHR_STATUS',[ ses(), g.hold.id() ]);
+                    JSAN.use('circ.util');
+                    var columns = circ.util.hold_columns( 
+                        { 
+                            'request_time' : { 'hidden' : false },
+                            'pickup_lib_shortname' : { 'hidden' : false },
+                            'hold_type' : { 'hidden' : true },
+                            'current_copy' : { 'hidden' : true },
+                            'capture_time' : { 'hidden' : true },
+                            'email_notify' : { 'hidden' : false },
+                            'phone_notify' : { 'hidden' : false },
+                        } 
+                    );
 
-					JSAN.use('util.list'); g.list = new util.list('hold');
-					g.list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
-					g.list.append( { 'row' : { 'my' : { 'ahr' : g.hold, 'acp' : g.copy, 'status' : status_robj, } } });
-	
-					JSAN.use('patron.util'); 
-					var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.hold.usr() );
-					$('patron_name').setAttribute('value', $('circStrings').getFormattedString('staff.circ.copy_details.user_details', [au_obj.family_name(), au_obj.first_given_name(), au_obj.card().barcode()]) );
+                    JSAN.use('util.list'); g.list = new util.list('hold');
+                    g.list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
+                    g.list.append( { 'row' : { 'my' : { 'ahr' : g.hold, 'acp' : g.copy, 'status' : status_robj, } } });
+    
+                    JSAN.use('patron.util'); 
+                    var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.hold.usr() );
+                    $('patron_name').setAttribute('value', $('circStrings').getFormattedString('staff.circ.copy_details.user_details', [au_obj.family_name(), au_obj.first_given_name(), au_obj.card().barcode()]) );
 
-				} else {
-					if (g.copy.status() == 8 /* ON HOLDS SHELF */) {
-						$('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.bad_hold_status'));
-					} else {
-						$('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.no_hold'));
-					}
-					$('hold').hidden = true;
-				}
+                } else {
+                    if (g.copy.status() == 8 /* ON HOLDS SHELF */) {
+                        $('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.bad_hold_status'));
+                    } else {
+                        $('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.no_hold'));
+                    }
+                    $('hold').hidden = true;
+                }
 
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('Error in copy_details.xul, my_init()',E);
-			}
-		}
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('Error in copy_details.xul, my_init()',E);
+            }
+        }
 
-		function retrieve_last_patron() {
-			try {
-				//g.data.fancy_prompt_data = js2JSON( [ g.circ.usr() ] );
-				//g.data.stash('fancy_prompt_data');
-				xulG.retrieve_these_patrons = [ g.circ.usr() ];
-				update_modal_xulG(xulG);
-				window.close();
-			} catch(E) {
-				alert(E);
-			}
-		}
+        function retrieve_last_patron() {
+            try {
+                //g.data.fancy_prompt_data = js2JSON( [ g.circ.usr() ] );
+                //g.data.stash('fancy_prompt_data');
+                xulG.retrieve_these_patrons = [ g.circ.usr() ];
+                update_modal_xulG(xulG);
+                window.close();
+            } catch(E) {
+                alert(E);
+            }
+        }
 
-		function retrieve_hold_patron() {
-			try {
-				//g.data.fancy_prompt_data = js2JSON( [ g.hold.usr() ] );
-				//g.data.stash('fancy_prompt_data');
-				xulG.retrieve_these_patrons = [ g.hold.usr() ];
-				update_modal_xulG(xulG);
-				window.close();
-			} catch(E) {
-				alert(E);
-			}
-		}
+        function retrieve_hold_patron() {
+            try {
+                //g.data.fancy_prompt_data = js2JSON( [ g.hold.usr() ] );
+                //g.data.stash('fancy_prompt_data');
+                xulG.retrieve_these_patrons = [ g.hold.usr() ];
+                update_modal_xulG(xulG);
+                window.close();
+            } catch(E) {
+                alert(E);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<vbox flex="1" style="overflow: auto;">
-		<vbox id="top_box" flex="1" style="border: none; overflow: none; min-height: 80;"/>
-		<splitter><grippy/></splitter>
-		<vbox id="item_summary_box" flex="1" style="border: none; overflow: none; min-height: 80;"/>
-		<splitter><grippy/></splitter>
-		<groupbox flex="1" id="holds" style="overflow: none; min-height: 80;">
-			<caption id="hold_caption" label="&staff.circ.copy_details.hold_caption;"/>
-			<label id="patron_name" class="patronNameLarge"/>
-			<tree id="hold" flex="1" enableColumnDrag="true"/>
-			<spacer FIXME="label and tree get swapped without this"/>
-		</groupbox>
-		<splitter><grippy/></splitter>
-		<groupbox flex="1" id="transits" style="overflow: none; min-height: 80;">
-			<caption id="transit_caption" label="&staff.circ.copy_details.transit_caption;"/>
-			<tree id="transit" flex="1" enableColumnDrag="true"/>
-		</groupbox>
-		<splitter><grippy/></splitter>
-		<groupbox flex="1" id="circs" style="overflow: none; min-height: 80;">
-			<caption id="circ_caption" label="&staff.circ.copy_details.circ_caption;" style="font-weight: bold"/>
+    <vbox flex="1" style="overflow: auto;">
+        <vbox id="top_box" flex="1" style="border: none; overflow: none; min-height: 80;"/>
+        <splitter><grippy/></splitter>
+        <vbox id="item_summary_box" flex="1" style="border: none; overflow: none; min-height: 80;"/>
+        <splitter><grippy/></splitter>
+        <groupbox flex="1" id="holds" style="overflow: none; min-height: 80;">
+            <caption id="hold_caption" label="&staff.circ.copy_details.hold_caption;"/>
+            <label id="patron_name" class="patronNameLarge"/>
+            <tree id="hold" flex="1" enableColumnDrag="true"/>
+            <spacer FIXME="label and tree get swapped without this"/>
+        </groupbox>
+        <splitter><grippy/></splitter>
+        <groupbox flex="1" id="transits" style="overflow: none; min-height: 80;">
+            <caption id="transit_caption" label="&staff.circ.copy_details.transit_caption;"/>
+            <tree id="transit" flex="1" enableColumnDrag="true"/>
+        </groupbox>
+        <splitter><grippy/></splitter>
+        <groupbox flex="1" id="circs" style="overflow: none; min-height: 80;">
+            <caption id="circ_caption" label="&staff.circ.copy_details.circ_caption;" style="font-weight: bold"/>
             <vbox id="circ_box" flex="1" style="min-height: 80"/>
-		</groupbox>
-	</vbox>
-	<hbox>
-		<button id="r_last" label="&staff.circ.copy_details.r_last.label;" accesskey="&staff.circ.copy_details.r_last.accesskey;" oncommand="retrieve_last_patron();"/>
-		<button id="r_hold" label="&staff.circ.copy_details.r_hold.label;" accesskey="&staff.circ.copy_details.r_hold.accesskey;" oncommand="retrieve_hold_patron();"/>
-		<spacer flex="1"/>
-		<button id="done" label="&staff.circ.copy_details.done.label;" accesskey="&staff.circ.copy_details.done.accesskey;" oncommand="window.close();"/>
-	</hbox>
+        </groupbox>
+    </vbox>
+    <hbox>
+        <button id="r_last" label="&staff.circ.copy_details.r_last.label;" accesskey="&staff.circ.copy_details.r_last.accesskey;" oncommand="retrieve_last_patron();"/>
+        <button id="r_hold" label="&staff.circ.copy_details.r_hold.label;" accesskey="&staff.circ.copy_details.r_hold.accesskey;" oncommand="retrieve_hold_patron();"/>
+        <spacer flex="1"/>
+        <button id="done" label="&staff.circ.copy_details.done.label;" accesskey="&staff.circ.copy_details.done.accesskey;" oncommand="window.close();"/>
+    </hbox>
 
 </window>
 

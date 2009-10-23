@@ -1,88 +1,88 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	  <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+      <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
           ]>
 <overlay id="holds_overlay" 
-	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <script>dump('loading holds_overlay.xul\n');</script>
 
 
     <commandset id="holds_cmds">
-	<command id="sel_mark_items_damaged" disabled="true"/>
-	<command id="sel_mark_items_missing" disabled="true"/>
-	<command id="sel_copy_details" disabled="true"/>
-	<command id="sel_patron" disabled="true"/>
-	<command id="sel_clip" />
+    <command id="sel_mark_items_damaged" disabled="true"/>
+    <command id="sel_mark_items_missing" disabled="true"/>
+    <command id="sel_copy_details" disabled="true"/>
+    <command id="sel_patron" disabled="true"/>
+    <command id="sel_clip" />
         <command id="cmd_csv_to_clipboard" />
-	<command id="cmd_csv_to_printer" />
-	<command id="cmd_csv_to_file" />
-	<command id="cmd_holds_print" />
-	<command id="cmd_show_catalog" />
-	<command id="cmd_retrieve_patron" />
-	<command id="cmd_holds_edit_pickup_lib" />
-	<command id="cmd_holds_edit_phone_notify" />
-	<command id="cmd_holds_edit_email_notify" />
-	<command id="cmd_holds_edit_thaw_date" />
-	<command id="cmd_holds_edit_expire_time" />
-	<command id="cmd_holds_activate" />
-	<command id="cmd_holds_suspend" />
-	<command id="cmd_holds_edit_selection_depth" />
-	<command id="cmd_broken" disabled="true" hidden="true"/>
-	<command id="cmd_holds_retarget"/>
-	<command id="cmd_holds_cancel" />
-	<command id="cmd_search_opac" />
-	<command id="save_columns" />
-	<command id="cmd_alt_view" />
+    <command id="cmd_csv_to_printer" />
+    <command id="cmd_csv_to_file" />
+    <command id="cmd_holds_print" />
+    <command id="cmd_show_catalog" />
+    <command id="cmd_retrieve_patron" />
+    <command id="cmd_holds_edit_pickup_lib" />
+    <command id="cmd_holds_edit_phone_notify" />
+    <command id="cmd_holds_edit_email_notify" />
+    <command id="cmd_holds_edit_thaw_date" />
+    <command id="cmd_holds_edit_expire_time" />
+    <command id="cmd_holds_activate" />
+    <command id="cmd_holds_suspend" />
+    <command id="cmd_holds_edit_selection_depth" />
+    <command id="cmd_broken" disabled="true" hidden="true"/>
+    <command id="cmd_holds_retarget"/>
+    <command id="cmd_holds_cancel" />
+    <command id="cmd_search_opac" />
+    <command id="save_columns" />
+    <command id="cmd_alt_view" />
     </commandset>
 
     <popupset id="holds_popupset">
-	<popup id="holds_actions" position="at_pointer"> 
-	    <menuitem command="sel_clip" label="&staff.circ.holds.copy_to_clipboard;" accesskey="&staff.circ.holds.copy_to_clipboard.accesskey;" />
-	    <menuitem label="&staff.circ.holds.show_in_catalog;" command="cmd_show_catalog" accesskey="&staff.circ.holds.show_in_catalog.accesskey;"/>
-	    <menuitem command="sel_copy_details" label="&staff.circ.holds.show_item_details;" accesskey="&staff.circ.holds.show_item_details.accesskey;" />
-	    <menuitem command="sel_patron" label="&staff.circ.holds.show_last_few_circulations;" accesskey="&staff.circ.holds.show_last_few_circulations.accesskey;"/>
-	    <menuseparator />
-	    <menuitem label="&staff.circ.holds.retrieve_patron;" command="cmd_retrieve_patron" accesskey="&staff.circ.holds.retrieve_patron.accesskey;"/>
-	    <menuseparator />
-	    <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.edit_hold_range;" class="edit_hold_range" command="cmd_holds_edit_selection_depth" accesskey="&staff.circ.holds.edit_hold_range.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.edit_hold_focus;" class="edit_hold_focus" command="cmd_broken" accesskey="&staff.circ.holds.edit_hold_focus.accesskey;"/>
-	    <menuseparator />
-	    <menuitem command="sel_mark_items_damaged" label="&staff.circ.holds.mark_item_damaged;" accesskey="&staff.circ.holds.mark_item_damaged.accesskey;"/>
-	    <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.retarget;" command="cmd_holds_retarget" accesskey="&staff.circ.holds.retarget.accesskey;"/>
-	    <menuitem label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
-	    <menuseparator />
-	    <menuitem command="save_columns" label="&staff.circ.holds.save_columns;" accesskey="&staff.circ.holds.save_columns.accesskey;"/>
-	</popup>
+    <popup id="holds_actions" position="at_pointer"> 
+        <menuitem command="sel_clip" label="&staff.circ.holds.copy_to_clipboard;" accesskey="&staff.circ.holds.copy_to_clipboard.accesskey;" />
+        <menuitem label="&staff.circ.holds.show_in_catalog;" command="cmd_show_catalog" accesskey="&staff.circ.holds.show_in_catalog.accesskey;"/>
+        <menuitem command="sel_copy_details" label="&staff.circ.holds.show_item_details;" accesskey="&staff.circ.holds.show_item_details.accesskey;" />
+        <menuitem command="sel_patron" label="&staff.circ.holds.show_last_few_circulations;" accesskey="&staff.circ.holds.show_last_few_circulations.accesskey;"/>
+        <menuseparator />
+        <menuitem label="&staff.circ.holds.retrieve_patron;" command="cmd_retrieve_patron" accesskey="&staff.circ.holds.retrieve_patron.accesskey;"/>
+        <menuseparator />
+        <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
+        <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
+        <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
+        <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
+        <menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date.accesskey;"/>
+        <menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
+        <menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
+        <menuitem label="&staff.circ.holds.edit_hold_range;" class="edit_hold_range" command="cmd_holds_edit_selection_depth" accesskey="&staff.circ.holds.edit_hold_range.accesskey;"/>
+        <menuitem label="&staff.circ.holds.edit_hold_focus;" class="edit_hold_focus" command="cmd_broken" accesskey="&staff.circ.holds.edit_hold_focus.accesskey;"/>
+        <menuseparator />
+        <menuitem command="sel_mark_items_damaged" label="&staff.circ.holds.mark_item_damaged;" accesskey="&staff.circ.holds.mark_item_damaged.accesskey;"/>
+        <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
+        <menuitem label="&staff.circ.holds.retarget;" command="cmd_holds_retarget" accesskey="&staff.circ.holds.retarget.accesskey;"/>
+        <menuitem label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
+        <menuseparator />
+        <menuitem command="save_columns" label="&staff.circ.holds.save_columns;" accesskey="&staff.circ.holds.save_columns.accesskey;"/>
+    </popup>
     </popupset>
 
 
     <box id="holds_main" flex="1" orient="vertical" class="my_overflow">
-	<vbox id="cmvb1" flex="1"/>
+    <vbox id="cmvb1" flex="1"/>
     </box>
 
     <vbox id="cmvb1" flex="1">
-	<groupbox id="cmgb1" flex="1" orient="vertical">
-	    <caption label="&staff.patron_navbar.holds;" />
-	    <vbox flex="0">
-		<hbox id="holds_top_ui" />
-	    </vbox>
+    <groupbox id="cmgb1" flex="1" orient="vertical">
+        <caption label="&staff.patron_navbar.holds;" />
+        <vbox flex="0">
+        <hbox id="holds_top_ui" />
+        </vbox>
         <deck id="deck" flex="1">
             <tree id="holds_list" flex="1" enableColumnDrag="true" context="holds_actions"/>
             <browser id="hold_detail_frame" src="" flex="1" />
         </deck>
-	    <vbox flex="0">
-		<hbox id="holds_bottom_ui" />
-	    </vbox>
-	</groupbox>
+        <vbox flex="0">
+        <hbox id="holds_bottom_ui" />
+        </vbox>
+    </groupbox>
     </vbox>
 
     <hbox id="holds_top_ui" flex="1">
@@ -100,7 +100,7 @@
         </menulist>
         <vbox id="lib_menu_placeholder" hidden="true"/>
         <button id="fetch_more" label="&staff.patron.holds_overlay.fetch_more.label;" accesskey="&staff.patron.holds_overlay.fetch_more.accesskey;" hidden="true"/>
-	<spacer flex="1"/>
+    <spacer flex="1"/>
         <button id="alt_view_btn" command="cmd_alt_view" />
         <menubar>
             <menu label="&staff.patron.holds_overlay.actions_for_holds.label;" accesskey="&staff.patron.holds_overlay.actions_for_holds.accesskey;">
@@ -115,7 +115,7 @@
                     <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
                     <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
-		    <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
+            <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date.accesskey;"/>
                     <menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
                     <menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
@@ -147,8 +147,8 @@
             </menupopup>
         </button>
 
-	<button id="holds_print" label="&staff.patron.holds_overlay.print.label;" command="cmd_holds_print" accesskey="&staff.patron.holds_overlay.print.accesskey;" />
-	<spacer flex="1"/>
+    <button id="holds_print" label="&staff.patron.holds_overlay.print.label;" command="cmd_holds_print" accesskey="&staff.patron.holds_overlay.print.accesskey;" />
+    <spacer flex="1"/>
     </hbox>
 
 </overlay>

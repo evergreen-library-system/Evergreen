@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,22 +19,22 @@
 
 <window id="backdate_post_checkin_win" 
     onload="try { backdate_post_checkin_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     oils_persist="height width"
     title="&staff.hold_list.cancel_hold_dialog.title;">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;</script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="backdate_post_checkin.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="backdate_post_checkin.js"/>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- CONTENT -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- CONTENT -->
     <dialogheader title="&staff.circ.backdate_post_checkin.header;" description="&staff.circ.backdate_post_checkin.description;" />
     <vbox class="my_overflow" id="circ_brief_area" flex="1"/>
     <progressmeter type="determined" id="progress" />

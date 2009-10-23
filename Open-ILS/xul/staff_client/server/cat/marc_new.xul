@@ -2,7 +2,7 @@
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Example Template for remote xul -->
 <!--
-	vim:noet:sw=4:ts=4:
+    vim:noet:sw=4:ts=4:
 -->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -13,7 +13,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -21,75 +21,75 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="example_template_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		var catStrings;
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        var catStrings;
 
-		function $(id) { return document.getElementById(id); }
+        function $(id) { return document.getElementById(id); }
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-				/* load translatable strings for cataloging interfaces */
+                /* load translatable strings for cataloging interfaces */
                 catStrings = document.getElementById('catStrings');
 
-				if (typeof JSAN == 'undefined') { 
-					throw( $('commonStrings').getString('common.jsan.missing') );
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for example_template.xul');
+                if (typeof JSAN == 'undefined') { 
+                    throw( $('commonStrings').getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for example_template.xul');
 
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name(catStrings.getString('staff.cat.marc_new.tab_name')); } catch(E) { alert(E); }
-				}
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    try { window.xulG.set_tab_name(catStrings.getString('staff.cat.marc_new.tab_name')); } catch(E) { alert(E); }
+                }
 
-				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('util.widgets');
-				JSAN.use('util.functional');
+                JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('util.widgets');
+                JSAN.use('util.functional');
 
-				var templates = g.network.simple_request('MARC_XML_TEMPLATE_LIST',[]);
-				if (typeof templates.ilsevent != 'undefined') throw(templates);
-				var ml = util.widgets.make_menulist(
-					util.functional.map_list(
-						templates.sort(),
-						function(el) {
-							return [ el /* The menu entry label */, el /* The menu entry value */ ];
-						}
-					)
-				);
-				$('menu_placeholder').appendChild(ml);
+                var templates = g.network.simple_request('MARC_XML_TEMPLATE_LIST',[]);
+                if (typeof templates.ilsevent != 'undefined') throw(templates);
+                var ml = util.widgets.make_menulist(
+                    util.functional.map_list(
+                        templates.sort(),
+                        function(el) {
+                            return [ el /* The menu entry label */, el /* The menu entry value */ ];
+                        }
+                    )
+                );
+                $('menu_placeholder').appendChild(ml);
 
-				$('load').addEventListener(
-					'command',
-					function(ev) {
+                $('load').addEventListener(
+                    'command',
+                    function(ev) {
 
-						var template_name;
-						try {
+                        var template_name;
+                        try {
 
-							template_name = $('menu_placeholder').firstChild.value;
-							var marc = g.network.simple_request(
-								'MARC_XML_TEMPLATE_RETRIEVE',
-								[ template_name ]
-							);
-							if (typeof marc.ilsevent != 'undefined') throw(marc);
-	
-							var url = urls.XUL_MARC_EDIT;
-							var params = {
-								'record' : { 'marc' : marc },
+                            template_name = $('menu_placeholder').firstChild.value;
+                            var marc = g.network.simple_request(
+                                'MARC_XML_TEMPLATE_RETRIEVE',
+                                [ template_name ]
+                            );
+                            if (typeof marc.ilsevent != 'undefined') throw(marc);
+    
+                            var url = urls.XUL_MARC_EDIT;
+                            var params = {
+                                'record' : { 'marc' : marc },
                                 'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
                                     try {
                                         JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
@@ -97,25 +97,25 @@
                                         alert(E);
                                     }
                                 },
-								'save' : {
-									'label' : catStrings.getString('staff.cat.marc_new.create_record.label'),
-									'func' : function(new_marcxml) {
-										try {
-											var robj = g.network.simple_request(
-												'MARC_XML_RECORD_IMPORT',
-												[ ses(), new_marcxml, catStrings.getString('staff.cat.marc_new.system_local.label'), 1 ]
-											);
-											if (typeof robj.ilsevent != 'undefined') throw(robj);
-											alert(catStrings.getString('staff.cat.marc_new.record_created.label'));
+                                'save' : {
+                                    'label' : catStrings.getString('staff.cat.marc_new.create_record.label'),
+                                    'func' : function(new_marcxml) {
+                                        try {
+                                            var robj = g.network.simple_request(
+                                                'MARC_XML_RECORD_IMPORT',
+                                                [ ses(), new_marcxml, catStrings.getString('staff.cat.marc_new.system_local.label'), 1 ]
+                                            );
+                                            if (typeof robj.ilsevent != 'undefined') throw(robj);
+                                            alert(catStrings.getString('staff.cat.marc_new.record_created.label'));
 
-											/* Replace tab with OPAC-view of record */
+                                            /* Replace tab with OPAC-view of record */
 
-											var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + robj.id();
-											var content_params = {
-												'session' : ses(),
-												'authtime' : ses('authtime'),
-												'opac_url' : opac_url
-											};
+                                            var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + robj.id();
+                                            var content_params = {
+                                                'session' : ses(),
+                                                'authtime' : ses('authtime'),
+                                                'opac_url' : opac_url
+                                            };
                                             return { 
                                                 'id' : robj.id(), 
                                                 'on_complete' : function() {
@@ -131,53 +131,53 @@
                                                 }
                                             };
 
-										} catch(E) {
-											g.error.standard_unexpected_error_alert(
-												catStrings.getString('staff.cat.marc_new.creating_record.error'), E
-											);
-										}
-									}
-								}
-							};
+                                        } catch(E) {
+                                            g.error.standard_unexpected_error_alert(
+                                                catStrings.getString('staff.cat.marc_new.creating_record.error'), E
+                                            );
+                                        }
+                                    }
+                                }
+                            };
                             var marc_editor = document.createElement('iframe');
                             $('marc_editor_box').appendChild(marc_editor);
-							marc_editor.setAttribute('flex','1');
-							marc_editor.setAttribute('src',url);
-							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-							get_contentWindow(marc_editor).xulG = params;
+                            marc_editor.setAttribute('flex','1');
+                            marc_editor.setAttribute('src',url);
+                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                            get_contentWindow(marc_editor).xulG = params;
 
-							/* hide template widgets */
-							$('actions').hidden = true;
+                            /* hide template widgets */
+                            $('actions').hidden = true;
 
-							window.xulG.set_tab_name(template_name);
+                            window.xulG.set_tab_name(template_name);
 
-						} catch(E) {
-							g.error.standard_unexpected_error_alert(
-								catStrings.getFormattedString('staff.cat.marc_new.loading_template.error', [template_name]), E
-							);
-						}
+                        } catch(E) {
+                            g.error.standard_unexpected_error_alert(
+                                catStrings.getFormattedString('staff.cat.marc_new.loading_template.error', [template_name]), E
+                            );
+                        }
 
-					},
-					false
-				);
+                    },
+                    false
+                );
 
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('cat/marc_new.xul',E);
-			}
-		}
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('cat/marc_new.xul',E);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<vbox id="marc_editor_box" flex="1">
-		<hbox id="actions">
-			<hbox id="menu_placeholder" />
-			<button id="load" label="&staff.cat.marc_new.load.label;" accesskey="&staff.cat.marc_new.load.accesskey;"/>
-		</hbox>
-	</vbox>
+    <vbox id="marc_editor_box" flex="1">
+        <hbox id="actions">
+            <hbox id="menu_placeholder" />
+            <button id="load" label="&staff.cat.marc_new.load.label;" accesskey="&staff.cat.marc_new.load.accesskey;"/>
+        </hbox>
+    </vbox>
 
 </window>
 

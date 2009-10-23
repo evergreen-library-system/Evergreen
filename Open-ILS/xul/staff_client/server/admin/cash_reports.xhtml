@@ -1,96 +1,96 @@
 <?xml version='1.0' encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<head>
-		<title>&staff.server.admin.cash.title;</title>
-		<script language='javascript' src='/opac/common/js/utils.js'> </script>
-		<script language='javascript' src='/opac/common/js//config.js'> </script>
-		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
-	
-		<script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
-		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
-		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/init.js'> </script>
-		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-		<script language='javascript' src='adminlib.js'> </script>
-		<script language='javascript' src='cash_reports.js'> </script>
+    <head>
+        <title>&staff.server.admin.cash.title;</title>
+        <script language='javascript' src='/opac/common/js/utils.js'> </script>
+        <script language='javascript' src='/opac/common/js//config.js'> </script>
+        <script language='javascript' src='/opac/common/js/CGI.js'> </script>
+        <script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+    
+        <script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
+        <script language='javascript' src='/opac/common/js/fmall.js'> </script>
+        <script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+        <script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+        <script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+        <script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
+        <script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+        <script language='javascript' src='/opac/common/js/init.js'> </script>
+        <script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+        <script language='javascript' src='adminlib.js'> </script>
+        <script language='javascript' src='cash_reports.js'> </script>
 
-		<script language='javascript' src='/opac/common/js/sorttable.js'> </script>
+        <script language='javascript' src='/opac/common/js/sorttable.js'> </script>
 
-		<script language='javascript' src='/opac/common/js/fm_table.js'> </script>
-		<script language='javascript' src='/opac/common/js/fm_table_conf.js'> </script>
+        <script language='javascript' src='/opac/common/js/fm_table.js'> </script>
+        <script language='javascript' src='/opac/common/js/fm_table_conf.js'> </script>
 
-		<link rel="stylesheet" type="text/css" media="all" 
-			href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
-		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
-		<script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
-		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
-
-
-		<link type='text/css' rel='stylesheet' href='admin.css' />
-		<link type='text/css' rel='stylesheet' href="/opac/common/css/fm_table.css"/>
-	</head>
-
-	<body onload='crInit();'>
-
-		<div class='welcome_box'>
-			<span>&staff.server.admin.cash.welcome;</span><b><span id='user'/></b>
-		</div>
-
-		<center>
-
-			<span style='padding-left: 15px;'>&staff.server.admin.cash.start_date;</span>
-			<input type='text' id='cr_start' size='10' maxlength='10'> </input>
-			<button style='padding: 0px;' id='cr_start_trigger'>
-				<img src="/opac/common/js/jscalendar/img.gif" 
-					style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;" 
-					title="&staff.server.admin.cash.date.select;"
-					onmouseover="this.style.background='red';" 
-					onmouseout="this.style.background=''" />
-			</button>
-
-			<span style='padding-left: 15px;'>&staff.server.admin.cash.end_date;</span>
-			<input type='text' id='cr_end' size='10' maxlength='10'> </input>
-			<button style='padding: 0px;' id='cr_end_trigger'>
-				<img src="/opac/common/js/jscalendar/img.gif" 
-					style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;" 
-					title="&staff.server.admin.cash.date.select;"
-					onmouseover="this.style.background='red';" 
-					onmouseout="this.style.background=''" />
-			</button>
-
-			<div class='pad' style='padding-left: 10px; font-size: 8pt;'>&staff.server.admin.cash.date_format;</div>
-
-			<div>&staff.server.admin.cash.view; <select id='cr_orgs' style='width:auto;'/></div>
-			<div><button onclick='crDrawRange();'>&staff.server.admin.cash.submit;</button></div>
+        <link rel="stylesheet" type="text/css" media="all" 
+            href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
+        <script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
+        <script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
+        <script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
 
 
-			<div id='cr_desk_payments_div'>
-				<h2>&staff.server.admin.cash.desk;</h2>
-				<div id='cr_desk_payments'/>
-			</div>
-			
-			<br/><hr/><br/>
+        <link type='text/css' rel='stylesheet' href='admin.css' />
+        <link type='text/css' rel='stylesheet' href="/opac/common/css/fm_table.css"/>
+    </head>
 
-			<div id='cr_user_payments_div'>
-				<h2>&staff.server.admin.cash.user;</h2>
-				<div id='cr_user_payments'/>
-			</div>
+    <body onload='crInit();'>
 
-		</center>
-	</body>
+        <div class='welcome_box'>
+            <span>&staff.server.admin.cash.welcome;</span><b><span id='user'/></b>
+        </div>
+
+        <center>
+
+            <span style='padding-left: 15px;'>&staff.server.admin.cash.start_date;</span>
+            <input type='text' id='cr_start' size='10' maxlength='10'> </input>
+            <button style='padding: 0px;' id='cr_start_trigger'>
+                <img src="/opac/common/js/jscalendar/img.gif" 
+                    style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;" 
+                    title="&staff.server.admin.cash.date.select;"
+                    onmouseover="this.style.background='red';" 
+                    onmouseout="this.style.background=''" />
+            </button>
+
+            <span style='padding-left: 15px;'>&staff.server.admin.cash.end_date;</span>
+            <input type='text' id='cr_end' size='10' maxlength='10'> </input>
+            <button style='padding: 0px;' id='cr_end_trigger'>
+                <img src="/opac/common/js/jscalendar/img.gif" 
+                    style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;" 
+                    title="&staff.server.admin.cash.date.select;"
+                    onmouseover="this.style.background='red';" 
+                    onmouseout="this.style.background=''" />
+            </button>
+
+            <div class='pad' style='padding-left: 10px; font-size: 8pt;'>&staff.server.admin.cash.date_format;</div>
+
+            <div>&staff.server.admin.cash.view; <select id='cr_orgs' style='width:auto;'/></div>
+            <div><button onclick='crDrawRange();'>&staff.server.admin.cash.submit;</button></div>
+
+
+            <div id='cr_desk_payments_div'>
+                <h2>&staff.server.admin.cash.desk;</h2>
+                <div id='cr_desk_payments'/>
+            </div>
+            
+            <br/><hr/><br/>
+
+            <div id='cr_user_payments_div'>
+                <h2>&staff.server.admin.cash.user;</h2>
+                <div id='cr_user_payments'/>
+            </div>
+
+        </center>
+    </body>
 </html>
 
 

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="patron_display_overlay" 
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script>dump('loading patron/display_overlay.xul\n');</script>
 
@@ -11,27 +11,27 @@
 
 <box id="patron_display_main" flex="1" orient="vertical">
 <vbox id="pdm2" flex="1">
-	<hbox id="pdm2hb1">
-		<hbox>
-			<label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" value="&staff.patron.display_overlay.none_selected.value;" flex="1"/>
-		</hbox>
-		<deck id="PatronNavBar" flex="1" class="my_overflow" />
-	</hbox>
-	<hbox id="pdm2hb1a">
-		<label class="hideme barred_indicator" value="&staff.patron.display_overlay.barred.value;"/>
-		<label class="hideme expired_indicator" value="&staff.patron.display_overlay.expired.value;"/>
-		<label class="hideme inactive_indicator" value="&staff.patron.display_overlay.inactive.value;"/>
-		<label class="hideme juvenile_indicator" value="&staff.patron.display_overlay.juvenile.value;"/>
-		<label class="hideme alert_indicator" value="&staff.patron.display_overlay.alert.value;"/>
-		<label class="hideme note_indicator" value="&staff.patron.display_overlay.see_notes.value;"/>
-		<label class="hideme max_bills_indicator" value="&staff.patron.display_overlay.max_bills.value;"/>
-		<label class="hideme max_overdues_indicator" value="&staff.patron.display_overlay.max_overdues.value;"/>
-		<label class="hideme bills_indicator" value="&staff.patron.display_overlay.has_bills.value;"/>
-		<label class="hideme overdues_indicator" value="&staff.patron.display_overlay.has_overdues.value;"/>
-		<label class="hideme invalid_dob_indicator" value="&staff.patron.display_overlay.invalid_dob.value;"/>
-		<label class="hideme invalid_address_indicator" value="&staff.patron.display_overlay.invalid_address.value;"/>
-	</hbox>
-	<hbox id="PatronNotNavBar" flex="1" class="my_bg">
+    <hbox id="pdm2hb1">
+        <hbox>
+            <label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" value="&staff.patron.display_overlay.none_selected.value;" flex="1"/>
+        </hbox>
+        <deck id="PatronNavBar" flex="1" class="my_overflow" />
+    </hbox>
+    <hbox id="pdm2hb1a">
+        <label class="hideme barred_indicator" value="&staff.patron.display_overlay.barred.value;"/>
+        <label class="hideme expired_indicator" value="&staff.patron.display_overlay.expired.value;"/>
+        <label class="hideme inactive_indicator" value="&staff.patron.display_overlay.inactive.value;"/>
+        <label class="hideme juvenile_indicator" value="&staff.patron.display_overlay.juvenile.value;"/>
+        <label class="hideme alert_indicator" value="&staff.patron.display_overlay.alert.value;"/>
+        <label class="hideme note_indicator" value="&staff.patron.display_overlay.see_notes.value;"/>
+        <label class="hideme max_bills_indicator" value="&staff.patron.display_overlay.max_bills.value;"/>
+        <label class="hideme max_overdues_indicator" value="&staff.patron.display_overlay.max_overdues.value;"/>
+        <label class="hideme bills_indicator" value="&staff.patron.display_overlay.has_bills.value;"/>
+        <label class="hideme overdues_indicator" value="&staff.patron.display_overlay.has_overdues.value;"/>
+        <label class="hideme invalid_dob_indicator" value="&staff.patron.display_overlay.invalid_dob.value;"/>
+        <label class="hideme invalid_address_indicator" value="&staff.patron.display_overlay.invalid_address.value;"/>
+    </hbox>
+    <hbox id="PatronNotNavBar" flex="1" class="my_bg">
         <vbox id="left_deck_vbox" flex="1" oils_persist="width"> 
             <deck id="patron_left_deck" oils_persist="width"/>
         </vbox>
@@ -39,7 +39,7 @@
         <vbox id="right_deck_vbox" flex="3" oils_persist="width">
             <deck id="patron_right_deck" oils_persist="width"/>
         </vbox>
-	</hbox>
+    </hbox>
 </vbox>
 </box>
 
@@ -50,8 +50,8 @@
 </deck>
 
 <deck id="PatronNavBar">
-	<hbox id="PatronNavBar0" flex="1"/>
-	<hbox id="PatronNavBar1" flex="1"/>
+    <hbox id="PatronNavBar0" flex="1"/>
+    <hbox id="PatronNavBar1" flex="1"/>
 </deck>
 
 <hbox id="PatronNavBar1" flex="1">
@@ -121,10 +121,10 @@
 <hbox id="PatronNavBar0" flex="1">
     <vbox flex="1">
         <hbox flex="1">
-        	<spacer flex="1"/>
-        	<button id="pnb1b2" label="&staff.patron.display_overlay.merge_patrons.label;" accesskey="&staff.patron.display_overlay.merge_patrons.accesskey;" command="cmd_patron_merge"/>
-        	<button id="pnb1b0" label="&staff.patron.display_overlay.search_form.label;" accesskey="&staff.patron.display_overlay.search_form.accesskey;" command="cmd_search_form"/>
-        	<button id="pnb1b1" label="&staff.patron.display_overlay.retrieve_patron.label;" accesskey="&staff.patron.display_overlay.retrieve_patron.accesskey;" command="cmd_patron_retrieve"/>
+            <spacer flex="1"/>
+            <button id="pnb1b2" label="&staff.patron.display_overlay.merge_patrons.label;" accesskey="&staff.patron.display_overlay.merge_patrons.accesskey;" command="cmd_patron_merge"/>
+            <button id="pnb1b0" label="&staff.patron.display_overlay.search_form.label;" accesskey="&staff.patron.display_overlay.search_form.accesskey;" command="cmd_search_form"/>
+            <button id="pnb1b1" label="&staff.patron.display_overlay.retrieve_patron.label;" accesskey="&staff.patron.display_overlay.retrieve_patron.accesskey;" command="cmd_patron_retrieve"/>
         </hbox>
         <label value=" "/>
     </vbox>

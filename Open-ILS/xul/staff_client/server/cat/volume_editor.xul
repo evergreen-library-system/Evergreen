@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -18,99 +18,99 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_volume_editor_win" 
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	title="&staff.cat.volume_editor.title;" height="400" width="300" oils_persist="height width"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    title="&staff.cat.volume_editor.title;" height="400" width="300" oils_persist="height width"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
 
-		var xulG = {};
+        var xulG = {};
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for cat/volume_editor.xul');
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for cat/volume_editor.xul');
 
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('util.network'); g.network = new util.network();
 
-				JSAN.use('util.functional');
+                JSAN.use('util.functional');
 
-				g.volumes = xul_param('volumes',{'stash_name':'volumes_temp','clear_xpcom':true,'modal_xulG':true}); //JSON2js( g.data.volumes_temp );
-				//g.data.volumes_temp = ''; g.data.stash('volumes_temp');
+                g.volumes = xul_param('volumes',{'stash_name':'volumes_temp','clear_xpcom':true,'modal_xulG':true}); //JSON2js( g.data.volumes_temp );
+                //g.data.volumes_temp = ''; g.data.stash('volumes_temp');
 
-				var rows = document.getElementById('rows');
+                var rows = document.getElementById('rows');
 
-				for (var i = 0; i < g.volumes.length; i++) {
-					var row = document.createElement('row'); rows.appendChild(row);
-					var lib_label = document.createElement('label'); row.appendChild(lib_label);
-					var tb = document.createElement('textbox'); row.appendChild(tb);
+                for (var i = 0; i < g.volumes.length; i++) {
+                    var row = document.createElement('row'); rows.appendChild(row);
+                    var lib_label = document.createElement('label'); row.appendChild(lib_label);
+                    var tb = document.createElement('textbox'); row.appendChild(tb);
 
-					var lib_id = g.volumes[i].owning_lib();
-					var last_lib_seen;
+                    var lib_id = g.volumes[i].owning_lib();
+                    var last_lib_seen;
 
-					if (last_lib_seen != lib_id ) {
-						lib_label.setAttribute('value',g.data.hash.aou[ lib_id ].shortname() );
-						last_lib_seen = lib_id;
-					}
+                    if (last_lib_seen != lib_id ) {
+                        lib_label.setAttribute('value',g.data.hash.aou[ lib_id ].shortname() );
+                        last_lib_seen = lib_id;
+                    }
 
-					tb.setAttribute('value',g.volumes[i].label());
-					tb.setAttribute('onchange','try { var v = g.volumes['+i+']; v.ischanged("1"); v.label( this.value ); } catch(E) { alert(E); }');
-				}
+                    tb.setAttribute('value',g.volumes[i].label());
+                    tb.setAttribute('onchange','try { var v = g.volumes['+i+']; v.ischanged("1"); v.label( this.value ); } catch(E) { alert(E); }');
+                }
 
-			} catch(E) {
-				var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/volume_editor.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/volume_editor.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
+                alert(err_msg);
+            }
+        }
 
-		g.stash_and_close = function() {
-			try {
-				//g.data.volumes_temp = js2JSON( g.volumes );
-				//g.error.sdump('D_CAT','in modal window, g.data.volumes_temp = \n' + g.data.volumes_temp + '\n');
-				//g.data.stash('volumes_temp');
-				xulG.volumes = g.volumes;
+        g.stash_and_close = function() {
+            try {
+                //g.data.volumes_temp = js2JSON( g.volumes );
+                //g.error.sdump('D_CAT','in modal window, g.data.volumes_temp = \n' + g.data.volumes_temp + '\n');
+                //g.data.stash('volumes_temp');
+                xulG.volumes = g.volumes;
                 xulG.update_these_volumes = 1;
-				update_modal_xulG(xulG);
-				window.close();
-			} catch(E) {
-				alert('FIXME: volume editor -> ' + E);
-			}
-		}
+                update_modal_xulG(xulG);
+                window.close();
+            } catch(E) {
+                alert('FIXME: volume editor -> ' + E);
+            }
+        }
 
-	]]>
-	</script>
-	
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    ]]>
+    </script>
+    
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<groupbox flex="1" style="overflow: auto">
-		<caption id="caption" label="&staff.cat.volume_editor.caption.label;"/>
-		<hbox>
-			<button label="&staff.cat.volume_editor.cancel.label;" oncommand="window.close();"/>
-			<spacer flex="1" />
-			<button label="&staff.cat.volume_editor.modify.label;" oncommand="g.stash_and_close();"/>
-		</hbox>
-		<grid flex="1">
-			<columns> <column /> <column /> <column flex="1"/> </columns>
-			<rows id="rows" />
-		</grid>
-	</groupbox>
+    <groupbox flex="1" style="overflow: auto">
+        <caption id="caption" label="&staff.cat.volume_editor.caption.label;"/>
+        <hbox>
+            <button label="&staff.cat.volume_editor.cancel.label;" oncommand="window.close();"/>
+            <spacer flex="1" />
+            <button label="&staff.cat.volume_editor.modify.label;" oncommand="g.stash_and_close();"/>
+        </hbox>
+        <grid flex="1">
+            <columns> <column /> <column /> <column flex="1"/> </columns>
+            <rows id="rows" />
+        </grid>
+    </groupbox>
 
 </window>
 

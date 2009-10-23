@@ -17,104 +17,104 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="util_browser_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for util_browser.xul');
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for util_browser.xul');
 
-				var name = xul_param('tab_name') || xul_param('name') || null;
-				var url; try { url = xul_param('url'); } catch(E) { dump(E + '\n'); };
-				if (!url) url = urls.browser;
+                var name = xul_param('tab_name') || xul_param('name') || null;
+                var url; try { url = xul_param('url'); } catch(E) { dump(E + '\n'); };
+                if (!url) url = urls.browser;
 
-				if (!g.browser) {
-					JSAN.use('util.browser'); g.browser = new util.browser();
-				}
+                if (!g.browser) {
+                    JSAN.use('util.browser'); g.browser = new util.browser();
+                }
 
-				var push_xulG = true;
-				if (xul_param('no_xulG')) push_xulG = false;
+                var push_xulG = true;
+                if (xul_param('no_xulG')) push_xulG = false;
 
-				var alt_print = false;
-				if (xul_param('alternate_print')) alt_print = true;
+                var alt_print = false;
+                if (xul_param('alternate_print')) alt_print = true;
 
-				var p = { 
-					'url' : url,
-					'push_xulG' : push_xulG,
-					'alt_print' : alt_print,
-				} 
-				if (typeof window.xulG == 'object' && typeof window.xulG.passthru_content_params == 'object') {
-					p.passthru_content_params = window.xulG.passthru_content_params;
-				}
-				if (typeof window.xulG == 'object' && typeof window.xulG.on_url_load == 'function') {
-					p.on_url_load = window.xulG.on_url_load;
-				}
+                var p = { 
+                    'url' : url,
+                    'push_xulG' : push_xulG,
+                    'alt_print' : alt_print,
+                } 
+                if (typeof window.xulG == 'object' && typeof window.xulG.passthru_content_params == 'object') {
+                    p.passthru_content_params = window.xulG.passthru_content_params;
+                }
+                if (typeof window.xulG == 'object' && typeof window.xulG.on_url_load == 'function') {
+                    p.on_url_load = window.xulG.on_url_load;
+                }
 
-				g.browser.init( p );
+                g.browser.init( p );
 
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					if (name) try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
-				}
-				if (xul_param('show_nav_buttons')) {
-					document.getElementById('back').hidden = false;
-					document.getElementById('forward').hidden = false;
-				}
-				if (xul_param('show_print_button')) {
-					document.getElementById('browser_print').hidden = false;
-				}
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    if (name) try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
+                }
+                if (xul_param('show_nav_buttons')) {
+                    document.getElementById('back').hidden = false;
+                    document.getElementById('forward').hidden = false;
+                }
+                if (xul_param('show_print_button')) {
+                    document.getElementById('browser_print').hidden = false;
+                }
 
-				if (xul_param('title')) {
-					try { document.title = xul_param('title'); } catch(E) {}
-					try { window.title = xul_param('title'); } catch(E) {}
-				}
+                if (xul_param('title')) {
+                    try { document.title = xul_param('title'); } catch(E) {}
+                    try { window.title = xul_param('title'); } catch(E) {}
+                }
 
-			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" + E + '\n';
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+                    "system administrator or software developer the following:\n" + E + '\n';
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<commandset id="util_browser_cmds">
-		<command id="cmd_broken" />
-		<command id="cmd_print" />
-		<command id="cmd_back" />
-		<command id="cmd_forward" />
-	</commandset>
+    <commandset id="util_browser_cmds">
+        <command id="cmd_broken" />
+        <command id="cmd_print" />
+        <command id="cmd_back" />
+        <command id="cmd_forward" />
+    </commandset>
 
-	<vbox flex="1">
-		<hbox>
-			<button id="back" label="Go Back" command="cmd_back" accesskey="b" disabled="true" hidden="true"/>
-			<button id="forward" label="Go Forward" command="cmd_forward" accesskey="d" disabled="true" hidden="true"/>
-			<spacer flex="1"/>
-			<button id="browser_print" label="Print Page" oldcommand="cmd_print" hidden="true"
-				oncommand="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (g.browser.alt_print) { JSAN.use('util.print'); var p = new util.print(); p.NSPrint(g.browser.get_content(),false,{}); } else { g.browser.get_content().print(); }"
-			/>
+    <vbox flex="1">
+        <hbox>
+            <button id="back" label="Go Back" command="cmd_back" accesskey="b" disabled="true" hidden="true"/>
+            <button id="forward" label="Go Forward" command="cmd_forward" accesskey="d" disabled="true" hidden="true"/>
+            <spacer flex="1"/>
+            <button id="browser_print" label="Print Page" oldcommand="cmd_print" hidden="true"
+                oncommand="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (g.browser.alt_print) { JSAN.use('util.print'); var p = new util.print(); p.NSPrint(g.browser.get_content(),false,{}); } else { g.browser.get_content().print(); }"
+            />
 
-		</hbox>
-		<browser id="browser_browser" flex="1" type="content"/>
-	</vbox>
+        </hbox>
+        <browser id="browser_browser" flex="1" type="content"/>
+    </vbox>
 
 </window>
 

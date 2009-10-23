@@ -13,7 +13,7 @@ vim:noet:sw=4:ts=4:
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -21,44 +21,44 @@ vim:noet:sw=4:ts=4:
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_marc_view_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { 
-					throw( document.getElementById('commonStrings').getString('common.jsan.missing') );
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for cat/marc_view.xul');
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { 
+                    throw( document.getElementById('commonStrings').getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for cat/marc_view.xul');
 
-				var docid = xul_param('docid');
-				var noprint = xul_param('noprint');
+                var docid = xul_param('docid');
+                var noprint = xul_param('noprint');
 
-				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-				var key = location.pathname + location.search + location.hash;
-				if (!docid && typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
-					var modal_xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
-					if (typeof modal_xulG == 'object') {
-						docid = modal_xulG.docid;
-						if (modal_xulG.noprint) noprint = modal_xulG.noprint;
-					}
-				}
+                JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+                var key = location.pathname + location.search + location.hash;
+                if (!docid && typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
+                    var modal_xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
+                    if (typeof modal_xulG == 'object') {
+                        docid = modal_xulG.docid;
+                        if (modal_xulG.noprint) noprint = modal_xulG.noprint;
+                    }
+                }
 
-				JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('util.network'); g.network = new util.network();
 
                 if (docid > -1) {
                     g.network.request(
@@ -76,22 +76,22 @@ vim:noet:sw=4:ts=4:
                     document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + marc_html);
                 }
 
-			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/marc_view.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['cat/marc_view.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 
-	<groupbox flex="1">
-		<caption label="&staff.cat.marc_view.title;"/>
-		<iframe id="marc_frame" flex="1"/>
-	</groupbox>
+    <groupbox flex="1">
+        <caption label="&staff.cat.marc_view.title;"/>
+        <iframe id="marc_frame" flex="1"/>
+    </groupbox>
 
 </window>
 

@@ -13,7 +13,7 @@ vim: noet:sw=4:ts=4:
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -22,26 +22,26 @@ vim: noet:sw=4:ts=4:
 <?xul-overlay href="/xul/server/cat/bib_brief_overlay.xul"?>
 
 <window id="cat_bib_brief_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="/xul/server/cat/bib_brief.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/cat/bib_brief.js"/>
 
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
 
-	<groupbox id="groupbox" flex="1">
-		<caption id="caption"><label value="&staff.cat.bib_brief.record_summary;"/>(<label value="&staff.cat.bib_brief.view_marc;" class="click_link" onclick="view_marc();"/>)</caption>
+    <groupbox id="groupbox" flex="1">
+        <caption id="caption"><label value="&staff.cat.bib_brief.record_summary;"/>(<label value="&staff.cat.bib_brief.view_marc;" class="click_link" onclick="view_marc();"/>)</caption>
         <grid id="bib_brief_grid" />
-	</groupbox>
+    </groupbox>
 
 </window>
 

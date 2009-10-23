@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -18,139 +18,139 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="admin_transit_list_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for admin_transit_list.xul');
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for admin_transit_list.xul');
 
-				JSAN.use('admin.transit_list');
-				g.transit_list = new admin.transit_list();
-				g.transit_list.init();
+                JSAN.use('admin.transit_list');
+                g.transit_list = new admin.transit_list();
+                g.transit_list.init();
 
-			} catch(E) {
-				try { g.error.standard_unexpected_error_alert('admin/transit_list.xul',E); } catch(F) { alert(E); }
-			}
-		}
+            } catch(E) {
+                try { g.error.standard_unexpected_error_alert('admin/transit_list.xul',E); } catch(F) { alert(E); }
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="adminStrings" src='/xul/server/locale/<!--#echo var="locale"-->/admin.properties'/>
-	<messagecatalog id="circStrings" src='/xul/server/locale/<!--#echo var="locale"-->/circ.properties'/>
-	<messagecatalog id="catStrings" src='/xul/server/locale/<!--#echo var="locale"-->/cat.properties'/>
+    <messagecatalog id="adminStrings" src='/xul/server/locale/<!--#echo var="locale"-->/admin.properties'/>
+    <messagecatalog id="circStrings" src='/xul/server/locale/<!--#echo var="locale"-->/circ.properties'/>
+    <messagecatalog id="catStrings" src='/xul/server/locale/<!--#echo var="locale"-->/cat.properties'/>
 
-	<vbox flex="1" class="my_overflow">
-		<hbox>
-			<groupbox id="lib_hbox" orient="horizontal">
-				<caption label="&staff.server.admin.transit.filter.caption;" class="shrinkable_groupbox"/> 
-				<vbox>
-					<label value="&staff.server.admin.transit.library.label;" class="header"/>
-					<hbox>
-						<menulist id="transit_direction">
-							<menupopup>
-								<menuitem label="&staff.server.admin.transit.to.label;" value="transit_to" selected="true"/>
-								<menuitem label="&staff.server.admin.transit.from.label;" value="transit_from" />
-							</menupopup>
-						</menulist>
-						<hbox id="libmenu_placeholder"/>
-					</hbox>
-					<label value="&staff.server.admin.transit.date.label;" class="header"/> 
-					<hbox>
-						<menulist id="sdate" editable="true">
-							<menupopup>
-								<menuitem label="&staff.server.admin.transit.date.today;" selected="true"/>
-								<menuitem label="&staff.server.admin.transit.date.week;" />
-								<menuitem label="&staff.server.admin.transit.date.2weeks;" />
-								<menuitem label="&staff.server.admin.transit.date.3weeks;" />
-								<menuitem label="&staff.server.admin.transit.date.30days;" />
-								<menuitem label="&staff.server.admin.transit.date.start;" />
-							</menupopup>
-						</menulist>
-						<menulist id="edate" editable="true">
-							<menupopup>
-								<menuitem label="&staff.server.admin.transit.date.today;" selected="true"/>
-								<menuitem label="&staff.server.admin.transit.date.week;" />
-								<menuitem label="&staff.server.admin.transit.date.2weeks;" />
-								<menuitem label="&staff.server.admin.transit.date.3weeks;" />
-								<menuitem label="&staff.server.admin.transit.date.30days;" />
-							</menupopup>
-						</menulist>
-					</hbox>
-				</vbox>
-				<button label="&staff.server.admin.transit.retrieve.label;" accesskey="&staff.server.admin.transit.retrieve.accesskey;" command="cmd_kick_off"/>
-			</groupbox>
-		</hbox>
+    <vbox flex="1" class="my_overflow">
+        <hbox>
+            <groupbox id="lib_hbox" orient="horizontal">
+                <caption label="&staff.server.admin.transit.filter.caption;" class="shrinkable_groupbox"/> 
+                <vbox>
+                    <label value="&staff.server.admin.transit.library.label;" class="header"/>
+                    <hbox>
+                        <menulist id="transit_direction">
+                            <menupopup>
+                                <menuitem label="&staff.server.admin.transit.to.label;" value="transit_to" selected="true"/>
+                                <menuitem label="&staff.server.admin.transit.from.label;" value="transit_from" />
+                            </menupopup>
+                        </menulist>
+                        <hbox id="libmenu_placeholder"/>
+                    </hbox>
+                    <label value="&staff.server.admin.transit.date.label;" class="header"/> 
+                    <hbox>
+                        <menulist id="sdate" editable="true">
+                            <menupopup>
+                                <menuitem label="&staff.server.admin.transit.date.today;" selected="true"/>
+                                <menuitem label="&staff.server.admin.transit.date.week;" />
+                                <menuitem label="&staff.server.admin.transit.date.2weeks;" />
+                                <menuitem label="&staff.server.admin.transit.date.3weeks;" />
+                                <menuitem label="&staff.server.admin.transit.date.30days;" />
+                                <menuitem label="&staff.server.admin.transit.date.start;" />
+                            </menupopup>
+                        </menulist>
+                        <menulist id="edate" editable="true">
+                            <menupopup>
+                                <menuitem label="&staff.server.admin.transit.date.today;" selected="true"/>
+                                <menuitem label="&staff.server.admin.transit.date.week;" />
+                                <menuitem label="&staff.server.admin.transit.date.2weeks;" />
+                                <menuitem label="&staff.server.admin.transit.date.3weeks;" />
+                                <menuitem label="&staff.server.admin.transit.date.30days;" />
+                            </menupopup>
+                        </menulist>
+                    </hbox>
+                </vbox>
+                <button label="&staff.server.admin.transit.retrieve.label;" accesskey="&staff.server.admin.transit.retrieve.accesskey;" command="cmd_kick_off"/>
+            </groupbox>
+        </hbox>
 
-		<groupbox flex="1">
-			<caption label="&staff.server.admin.transit.list.label;" />
-			<hbox>
-				<button label="&staff.server.admin.transit.list.print;" command="cmd_print_list" />
-				<spacer flex="1"/>
-				<menubar>
-					<menu label="&staff.server.admin.transit.list.actions;" accesskey="&staff.server.admin.transit.list.actions.accesskey;">
-						<menupopup>
-							<menuitem command="sel_clip" label="&staff.server.admin.transit.list.copy.label;" accesskey="&staff.server.admin.transit.list.copy.accesskey;" />
-							<menuitem command="sel_bucket" label="&staff.server.admin.transit.list.add.label;" accesskey="&staff.server.admin.transit.list.add.accesskey;"/>
-							<menuitem command="sel_opac" label="&staff.server.admin.transit.list.show.label;" accesskey="&staff.server.admin.transit.list.show.accesskey;" />
-							<menuitem command="sel_copy_details" label="&staff.server.admin.transit.list.details.label;" accesskey="&staff.server.admin.transit.list.details.accesskey;" />
-							<menuitem command="sel_patron" label="&staff.server.admin.transit.list.circs.label;" accesskey="&staff.server.admin.transit.list.circs.accesskey;"/>
-							<menuseparator />
-							<menuitem command="sel_edit" label="&staff.server.admin.transit.list.edit.label;" accesskey="&staff.server.admin.transit.list.edit.accesskey;" />
-							<menuitem command="sel_transit_abort" label="&staff.server.admin.transit.list.abort.label;" />
-							<menuseparator />
-							<menuitem command="save_columns" label="&staff.server.admin.transit.list.save.label;"/>
-						</menupopup>
-					</menu>
-				</menubar>
-			</hbox>
-			<tree id="transit_list" flex="1" enableColumnDrag="true" context="transit_list_actions"/>
-		</groupbox>
-	</vbox>
+        <groupbox flex="1">
+            <caption label="&staff.server.admin.transit.list.label;" />
+            <hbox>
+                <button label="&staff.server.admin.transit.list.print;" command="cmd_print_list" />
+                <spacer flex="1"/>
+                <menubar>
+                    <menu label="&staff.server.admin.transit.list.actions;" accesskey="&staff.server.admin.transit.list.actions.accesskey;">
+                        <menupopup>
+                            <menuitem command="sel_clip" label="&staff.server.admin.transit.list.copy.label;" accesskey="&staff.server.admin.transit.list.copy.accesskey;" />
+                            <menuitem command="sel_bucket" label="&staff.server.admin.transit.list.add.label;" accesskey="&staff.server.admin.transit.list.add.accesskey;"/>
+                            <menuitem command="sel_opac" label="&staff.server.admin.transit.list.show.label;" accesskey="&staff.server.admin.transit.list.show.accesskey;" />
+                            <menuitem command="sel_copy_details" label="&staff.server.admin.transit.list.details.label;" accesskey="&staff.server.admin.transit.list.details.accesskey;" />
+                            <menuitem command="sel_patron" label="&staff.server.admin.transit.list.circs.label;" accesskey="&staff.server.admin.transit.list.circs.accesskey;"/>
+                            <menuseparator />
+                            <menuitem command="sel_edit" label="&staff.server.admin.transit.list.edit.label;" accesskey="&staff.server.admin.transit.list.edit.accesskey;" />
+                            <menuitem command="sel_transit_abort" label="&staff.server.admin.transit.list.abort.label;" />
+                            <menuseparator />
+                            <menuitem command="save_columns" label="&staff.server.admin.transit.list.save.label;"/>
+                        </menupopup>
+                    </menu>
+                </menubar>
+            </hbox>
+            <tree id="transit_list" flex="1" enableColumnDrag="true" context="transit_list_actions"/>
+        </groupbox>
+    </vbox>
 
-	<popupset id="transit_list_popupset">
-		<popup id="transit_list_actions" position="at_pointer"> 
-			<menuitem command="sel_clip" label="&staff.server.admin.transit.list.copy.label;" accesskey="&staff.server.admin.transit.list.copy.accesskey;" />
-			<menuitem command="sel_bucket" label="&staff.server.admin.transit.list.add.label;" accesskey="&staff.server.admin.transit.list.add.accesskey;"/>
-			<menuitem command="sel_opac" label="&staff.server.admin.transit.list.show.label;" accesskey="&staff.server.admin.transit.list.show.accesskey;" />
-			<menuitem command="sel_copy_details" label="&staff.server.admin.transit.list.details.label;" accesskey="&staff.server.admin.transit.list.details.accesskey;" />
-			<menuitem command="sel_patron" label="&staff.server.admin.transit.list.circs.label;" accesskey="&staff.server.admin.transit.list.circs.accesskey;"/>
-			<menuseparator />
-			<menuitem command="sel_edit" label="&staff.server.admin.transit.list.edit.label;" accesskey="&staff.server.admin.transit.list.edit.accesskey;" />
-			<menuitem command="sel_transit_abort" label="&staff.server.admin.transit.list.abort.label;" />
-			<menuseparator />
-			<menuitem command="save_columns" label="&staff.server.admin.transit.list.save.label;"/>
-		</popup>
-	</popupset>
+    <popupset id="transit_list_popupset">
+        <popup id="transit_list_actions" position="at_pointer"> 
+            <menuitem command="sel_clip" label="&staff.server.admin.transit.list.copy.label;" accesskey="&staff.server.admin.transit.list.copy.accesskey;" />
+            <menuitem command="sel_bucket" label="&staff.server.admin.transit.list.add.label;" accesskey="&staff.server.admin.transit.list.add.accesskey;"/>
+            <menuitem command="sel_opac" label="&staff.server.admin.transit.list.show.label;" accesskey="&staff.server.admin.transit.list.show.accesskey;" />
+            <menuitem command="sel_copy_details" label="&staff.server.admin.transit.list.details.label;" accesskey="&staff.server.admin.transit.list.details.accesskey;" />
+            <menuitem command="sel_patron" label="&staff.server.admin.transit.list.circs.label;" accesskey="&staff.server.admin.transit.list.circs.accesskey;"/>
+            <menuseparator />
+            <menuitem command="sel_edit" label="&staff.server.admin.transit.list.edit.label;" accesskey="&staff.server.admin.transit.list.edit.accesskey;" />
+            <menuitem command="sel_transit_abort" label="&staff.server.admin.transit.list.abort.label;" />
+            <menuseparator />
+            <menuitem command="save_columns" label="&staff.server.admin.transit.list.save.label;"/>
+        </popup>
+    </popupset>
 
-	<commandset id="transit_list_cmds">
-		<command id="cmd_print_list" />
-		<command id="save_columns" />
-		<command id="sel_copy_details" disabled="true"/>
-		<command id="sel_patron" disabled="true"/>
-		<command id="sel_edit" disabled="true"/>
-		<command id="sel_opac" disabled="true"/>
-		<command id="sel_bucket" disabled="true"/>
-		<command id="sel_transit_abort" disabled="true"/>
-		<command id="sel_clip" disabled="true"/>
-		<command id="cmd_kick_off"/>
-	</commandset>
+    <commandset id="transit_list_cmds">
+        <command id="cmd_print_list" />
+        <command id="save_columns" />
+        <command id="sel_copy_details" disabled="true"/>
+        <command id="sel_patron" disabled="true"/>
+        <command id="sel_edit" disabled="true"/>
+        <command id="sel_opac" disabled="true"/>
+        <command id="sel_bucket" disabled="true"/>
+        <command id="sel_transit_abort" disabled="true"/>
+        <command id="sel_clip" disabled="true"/>
+        <command id="cmd_kick_off"/>
+    </commandset>
 
 </window>
 

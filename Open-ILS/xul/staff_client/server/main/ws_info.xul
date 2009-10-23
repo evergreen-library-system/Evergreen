@@ -13,7 +13,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -21,66 +21,66 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="wsinfo_win" 
-	onload="try { wsinfo_init(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { wsinfo_init(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'/>
-	<script type="text/javascript" src="/opac/common/js/org_utils.js"/>
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
+    <script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'/>
+    <script type="text/javascript" src="/opac/common/js/org_utils.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
 
-		function wsinfo_init() {
+        function wsinfo_init() {
 
-			document.getElementById('register_btn').disabled = true;
-			document.getElementById('wsname').disabled = true;
-			document.getElementById('wsname').value = document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.please_wait');
+            document.getElementById('register_btn').disabled = true;
+            document.getElementById('wsname').disabled = true;
+            document.getElementById('wsname').value = document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.please_wait');
 
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-			if (typeof JSAN == 'undefined') {
-				throw(document.getElementById("commonStrings").getString('common.jsan.missing'));
-			}
-			/////////////////////////////////////////////////////////////////////////////
+            if (typeof JSAN == 'undefined') {
+                throw(document.getElementById("commonStrings").getString('common.jsan.missing'));
+            }
+            /////////////////////////////////////////////////////////////////////////////
 
-			JSAN.errorLevel = "die"; // none, warn, or die
-			JSAN.addRepository('/xul/server/');
+            JSAN.errorLevel = "die"; // none, warn, or die
+            JSAN.addRepository('/xul/server/');
 
-			JSAN.use('util.error'); g.error = new util.error();
-			JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-			JSAN.use('util.network'); g.network = new util.network();
-			JSAN.use('util.widgets');
-			JSAN.use('util.functional');
-			JSAN.use('util.fm_utils');
+            JSAN.use('util.error'); g.error = new util.error();
+            JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+            JSAN.use('util.network'); g.network = new util.network();
+            JSAN.use('util.widgets');
+            JSAN.use('util.functional');
+            JSAN.use('util.fm_utils');
 
-			g.user = g.network.simple_request( 'FM_AU_RETRIEVE_VIA_SESSION', [ xulG.auth.session.key ] );
+            g.user = g.network.simple_request( 'FM_AU_RETRIEVE_VIA_SESSION', [ xulG.auth.session.key ] );
 
-			g.my_lib = g.user.home_ou();
+            g.my_lib = g.user.home_ou();
 
-			g.aout_list = g.network.simple_request(
-				'FM_AOUT_RETRIEVE',
-				[ ]
-			);
-			g.aout_hash = {};
-			for (var i = 0; i < g.aout_list.length; i++) {
-				g.aout_hash[ g.aout_list[i].id() ] = g.aout_list[i];
-			}
+            g.aout_list = g.network.simple_request(
+                'FM_AOUT_RETRIEVE',
+                [ ]
+            );
+            g.aout_hash = {};
+            for (var i = 0; i < g.aout_list.length; i++) {
+                g.aout_hash[ g.aout_list[i].id() ] = g.aout_list[i];
+            }
 
-			var work_ous = g.network.simple_request(
-				'PERM_RETRIEVE_WORK_OU',
-				[ xulG.auth.session.key, 'REGISTER_WORKSTATION']
-			);
-			if (work_ous.length == 0) {
-				alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.workstation_registration_denied'));
-				xulG.auth.logoff();
-				return;
-			}
+            var work_ous = g.network.simple_request(
+                'PERM_RETRIEVE_WORK_OU',
+                [ xulG.auth.session.key, 'REGISTER_WORKSTATION']
+            );
+            if (work_ous.length == 0) {
+                alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.workstation_registration_denied'));
+                xulG.auth.logoff();
+                return;
+            }
             g.my_libs = [];
             for (var i = 0; i < work_ous.length; i++ ) {
                 var perm_depth = findOrgDepth( work_ous[i] );
@@ -92,97 +92,97 @@
                 if (!instanceOf(g.my_libs_tree,aou)) { /* FIXME - workaround for weird descendants call result */
                     g.my_libs_tree = g.my_libs_tree[0];
                 }
-			    g.my_libs = g.my_libs.concat( util.fm_utils.flatten_ou_branch( g.my_libs_tree ) );
+                g.my_libs = g.my_libs.concat( util.fm_utils.flatten_ou_branch( g.my_libs_tree ) );
             }
 
-			g.my_libs_shortname_hash = {};
-			g.my_libs_ou_hash = {};
-			for (var i = 0; i < g.my_libs.length; i++) {
-				g.my_libs_shortname_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
-				g.my_libs_ou_hash[ g.my_libs[i].id() ] = function(o){return o;}(g.my_libs[i]);
-			}
+            g.my_libs_shortname_hash = {};
+            g.my_libs_ou_hash = {};
+            for (var i = 0; i < g.my_libs.length; i++) {
+                g.my_libs_shortname_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
+                g.my_libs_ou_hash[ g.my_libs[i].id() ] = function(o){return o;}(g.my_libs[i]);
+            }
 
-			g.tb = document.getElementById('wsname');
+            g.tb = document.getElementById('wsname');
 
-			render_menulist();
+            render_menulist();
 
-			document.getElementById('register_btn').disabled = false;
-			document.getElementById('wsname').disabled = false;
-			document.getElementById('wsname').value = '';
+            document.getElementById('register_btn').disabled = false;
+            document.getElementById('wsname').disabled = false;
+            document.getElementById('wsname').value = '';
 
-			document.getElementById('wsname').focus();
-		}
+            document.getElementById('wsname').focus();
+        }
 
-		function render_menulist() {
-			var x = document.getElementById('placeholder');
-			util.widgets.remove_children( x );
+        function render_menulist() {
+            var x = document.getElementById('placeholder');
+            util.widgets.remove_children( x );
 
-			var default_lib = g.my_lib; 
-			if ( !get_bool( g.aout_hash[ g.my_libs_ou_hash[ default_lib ].ou_type() ].can_have_users() ) ) {
-				default_lib = null;
-			}
+            var default_lib = g.my_lib; 
+            if ( !get_bool( g.aout_hash[ g.my_libs_ou_hash[ default_lib ].ou_type() ].can_have_users() ) ) {
+                default_lib = null;
+            }
 
-			g.ml = util.widgets.make_menulist( 
-				util.functional.map_list( 
-					util.fm_utils.flatten_ou_branch( g.my_libs_tree ),
-					function(obj) { 
-						if (!default_lib) {
-							if ( get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ) default_lib = obj.id();
-						}
-						return [ 
-							obj.shortname(), 
-							obj.id(), 
-							( !get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ),
-							( g.aout_hash[ obj.ou_type() ].depth() )
-						]; 
-					}
-				),
-				default_lib
-			);
+            g.ml = util.widgets.make_menulist( 
+                util.functional.map_list( 
+                    util.fm_utils.flatten_ou_branch( g.my_libs_tree ),
+                    function(obj) { 
+                        if (!default_lib) {
+                            if ( get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ) default_lib = obj.id();
+                        }
+                        return [ 
+                            obj.shortname(), 
+                            obj.id(), 
+                            ( !get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ),
+                            ( g.aout_hash[ obj.ou_type() ].depth() )
+                        ]; 
+                    }
+                ),
+                default_lib
+            );
 
-			x.appendChild( g.ml );
-		}
+            x.appendChild( g.ml );
+        }
 
-		function register() {
-			try {
-				var robj = g.network.simple_request(
-					'AUTH_WORKSTATION',
-					[ xulG.auth.session.key, g.my_libs_shortname_hash[ g.ml.value ] + '-' + g.tb.value, g.ml.value ],
-					null,
-					{
-						'title' : document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.registration.override'),
-						'overridable_events' : [ 
-							1703 /* WORKSTATION_NAME_EXISTS */
-						]
-					}
-				);
+        function register() {
+            try {
+                var robj = g.network.simple_request(
+                    'AUTH_WORKSTATION',
+                    [ xulG.auth.session.key, g.my_libs_shortname_hash[ g.ml.value ] + '-' + g.tb.value, g.ml.value ],
+                    null,
+                    {
+                        'title' : document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.registration.override'),
+                        'overridable_events' : [ 
+                            1703 /* WORKSTATION_NAME_EXISTS */
+                        ]
+                    }
+                );
 
-				if (typeof robj.ilsevent != 'undefined') {
-					switch(Number(robj.ilsevent)) {
-						case -1 : g.error.standard_network_error_alert(); break;
-						case 1703 /* WORKSTATION_NAME_EXISTS */ : /* handled with override request */ break;
+                if (typeof robj.ilsevent != 'undefined') {
+                    switch(Number(robj.ilsevent)) {
+                        case -1 : g.error.standard_network_error_alert(); break;
+                        case 1703 /* WORKSTATION_NAME_EXISTS */ : /* handled with override request */ break;
                         case 1001 /* NO_SESSION */ : /* handled with request dialog */ break;
-						default: g.error.standard_unexpected_error_alert(document.getElementById('commonStrings').getFormattedString('staff.main.gen_offline_widgets.registration.error', ['1']), robj); break;
-					}
-				} else {
-					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
-					g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
-						'name' : g.my_libs_shortname_hash[ g.ml.value ] + '-' + g.tb.value, 
-						'owning_lib' : g.ml.value,
-						'lib_shortname' : g.my_libs_shortname_hash[ g.ml.value ]
-					};
-					xulG.file.get('ws_info');
-					xulG.file.set_object(g.data.ws_info);
-					alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.registration.success'));
-					xulG.auth.logoff();
-				}
-			} catch(E) {
-				g.error.standard_unexpected_error_alert(document.getElementById('commonStrings').getFormattedString('staff.main.gen_offline_widgets.registration.error', ['2']) ,E);
-			}
-		}
+                        default: g.error.standard_unexpected_error_alert(document.getElementById('commonStrings').getFormattedString('staff.main.gen_offline_widgets.registration.error', ['1']), robj); break;
+                    }
+                } else {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
+                    g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
+                        'name' : g.my_libs_shortname_hash[ g.ml.value ] + '-' + g.tb.value, 
+                        'owning_lib' : g.ml.value,
+                        'lib_shortname' : g.my_libs_shortname_hash[ g.ml.value ]
+                    };
+                    xulG.file.get('ws_info');
+                    xulG.file.set_object(g.data.ws_info);
+                    alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.registration.success'));
+                    xulG.auth.logoff();
+                }
+            } catch(E) {
+                g.error.standard_unexpected_error_alert(document.getElementById('commonStrings').getFormattedString('staff.main.gen_offline_widgets.registration.error', ['2']) ,E);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
     <vbox flex="1" class="my_overflow">
         <description id="desc" hidden="true">

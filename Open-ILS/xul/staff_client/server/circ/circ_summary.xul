@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,138 +19,138 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="circ_circ_brief_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	width="750" height="550"
-	xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    width="750" height="550"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function $(id) { return document.getElementById(id); }
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
 
-		var xulG = {};
+        var xulG = {};
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') {
-					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') {
+                    throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
 
-				g.copy_id = xul_param('copy_id',{'modal_xulG':true});
+                g.copy_id = xul_param('copy_id',{'modal_xulG':true});
 
-				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('util.date');
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+                JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('util.date');
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				g.copy = g.network.simple_request('FM_ACP_RETRIEVE',[ g.copy_id ]);
-				if (typeof g.copy.ilsevent != 'undefined') throw(g.copy);
-				g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ g.copy.call_number() ]);
-				if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
+                g.copy = g.network.simple_request('FM_ACP_RETRIEVE',[ g.copy_id ]);
+                if (typeof g.copy.ilsevent != 'undefined') throw(g.copy);
+                g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ g.copy.call_number() ]);
+                if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
                 var tv = $('top_vbox'); while(tv.firstChild) tv.removeChild(tv.lastChild);
                 var top = document.createElement('iframe'); tv.appendChild(top);
-				top.setAttribute('src',urls.XUL_BIB_BRIEF);
+                top.setAttribute('src',urls.XUL_BIB_BRIEF);
                 top.setAttribute('flex','1');
-				get_contentWindow(top).xulG = { 'docid' : g.callnumber.record() };
+                get_contentWindow(top).xulG = { 'docid' : g.callnumber.record() };
                 var mv = $('mid_vbox'); while(mv.firstChild) mv.removeChild(mv.lastChild);
                 var mid = document.createElement('iframe'); mv.appendChild(mid);
-				mid.setAttribute('src',urls.XUL_COPY_SUMMARY);
+                mid.setAttribute('src',urls.XUL_COPY_SUMMARY);
                 mid.setAttribute('flex','1');
-				get_contentWindow(mid).xulG = { 'copy_id' : g.copy.id() };
+                get_contentWindow(mid).xulG = { 'copy_id' : g.copy.id() };
 
-				show_circs();
+                show_circs();
 
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('Error in circ_brief.xul, my_init()',E);
-			}
-		}
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('Error in circ_brief.xul, my_init()',E);
+            }
+        }
 
-		function show_circs() {
-			try {
-				$('r_last').disabled = true; $('r_all').disabled = true;	
-				g.circs = g.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',
-					[ ses(), g.copy_id ]);
-				if (g.circs == null || typeof g.circs.ilsevent != 'undefined') throw(circs);
-				if (g.circs.length == 0) return;
-				//g.circs = g.circs.reverse(); /* put the most recent at the top */
-				$('r_last').disabled = false; $('r_all').disabled = false;	
+        function show_circs() {
+            try {
+                $('r_last').disabled = true; $('r_all').disabled = true;    
+                g.circs = g.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',
+                    [ ses(), g.copy_id ]);
+                if (g.circs == null || typeof g.circs.ilsevent != 'undefined') throw(circs);
+                if (g.circs.length == 0) return;
+                //g.circs = g.circs.reverse(); /* put the most recent at the top */
+                $('r_last').disabled = false; $('r_all').disabled = false;    
 
-				var gb = $('circs');
-				for (var j = 0; j < g.circs.length; j++) {
-					var iframe = document.createElement('iframe');
-					iframe.setAttribute('style','overflow: none; min-height: 100px;');
-					iframe.setAttribute('flex','1');
-					gb.appendChild(iframe);
-					iframe.setAttribute('src', urls.XUL_CIRC_BRIEF); // + '?circ_id=' + g.circs[j].id() );
-					get_contentWindow(iframe).xulG = { 'circ_id' : g.circs[j].id() };
-				}
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('error showing circs',E);
-			}
-		}
+                var gb = $('circs');
+                for (var j = 0; j < g.circs.length; j++) {
+                    var iframe = document.createElement('iframe');
+                    iframe.setAttribute('style','overflow: none; min-height: 100px;');
+                    iframe.setAttribute('flex','1');
+                    gb.appendChild(iframe);
+                    iframe.setAttribute('src', urls.XUL_CIRC_BRIEF); // + '?circ_id=' + g.circs[j].id() );
+                    get_contentWindow(iframe).xulG = { 'circ_id' : g.circs[j].id() };
+                }
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('error showing circs',E);
+            }
+        }
 
-		function retrieve_last() {
-			try {
-				//g.data.fancy_prompt_data = js2JSON( [ g.circs[0].usr() ] );
-				//g.data.stash('fancy_prompt_data');
-				xulG.retrieve_these_patrons = [ g.circs[0].usr() ];
-				update_modal_xulG(xulG);
-				window.close();
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('retrieve_last',E);
-			}
-		}
+        function retrieve_last() {
+            try {
+                //g.data.fancy_prompt_data = js2JSON( [ g.circs[0].usr() ] );
+                //g.data.stash('fancy_prompt_data');
+                xulG.retrieve_these_patrons = [ g.circs[0].usr() ];
+                update_modal_xulG(xulG);
+                window.close();
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('retrieve_last',E);
+            }
+        }
 
-		function retrieve_all() {
-			try {
-				var patrons = []; var p_hash = {};
-				for (var i = 0; i < g.circs.length; i++) {
-					var usr = g.circs[i].usr();
-					if (typeof p_hash[usr] != 'undefined') { continue; }
-					p_hash[usr] = true;
-					patrons.push( function(a){return a;}(usr) );
-				}
-				//g.data.fancy_prompt_data = js2JSON(patrons);
-				//g.data.stash('fancy_prompt_data');
-				xulG.retrieve_these_patrons = patrons;
-				update_modal_xulG(xulG);
-				window.close();
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('retrieve_all',E);
-			}
-		}
+        function retrieve_all() {
+            try {
+                var patrons = []; var p_hash = {};
+                for (var i = 0; i < g.circs.length; i++) {
+                    var usr = g.circs[i].usr();
+                    if (typeof p_hash[usr] != 'undefined') { continue; }
+                    p_hash[usr] = true;
+                    patrons.push( function(a){return a;}(usr) );
+                }
+                //g.data.fancy_prompt_data = js2JSON(patrons);
+                //g.data.stash('fancy_prompt_data');
+                xulG.retrieve_these_patrons = patrons;
+                update_modal_xulG(xulG);
+                window.close();
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('retrieve_all',E);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<vbox flex="1" class="my_overflow">
+    <vbox flex="1" class="my_overflow">
         <vbox id="top_vbox" flex="1" class="my_overflow"/>
-		<splitter><grippy/></splitter>
+        <splitter><grippy/></splitter>
         <vbox id="mid_vbox" flex="1" class="my_overflow"/>
-		<splitter><grippy/></splitter>
-		<groupbox flex="1" id="circs" class="my_overflow">
-			<caption label="&staff.circ.circ_summary.caption;"/>
-		</groupbox>
-		<hbox>
-			<button id="r_last" label="&staff.circ.circ_summary.retrieve_last.label;" accesskey="&staff.circ.circ_summary.retrieve_last.accesskey;" oncommand="retrieve_last();"/>
-			<button id="r_all" label="&staff.circ.circ_summary.retrieve_all.label;" accesskey="&staff.circ.circ_summary.retrieve_all.accesskey;" oncommand="retrieve_all();"/>
-			<spacer flex="1"/>
-			<button label="&staff.circ.circ_summary.done.label;" accesskey="&staff.circ.circ_summary.done.accesskey;" oncommand="window.close();"/>
-		</hbox>
-	</vbox>
+        <splitter><grippy/></splitter>
+        <groupbox flex="1" id="circs" class="my_overflow">
+            <caption label="&staff.circ.circ_summary.caption;"/>
+        </groupbox>
+        <hbox>
+            <button id="r_last" label="&staff.circ.circ_summary.retrieve_last.label;" accesskey="&staff.circ.circ_summary.retrieve_last.accesskey;" oncommand="retrieve_last();"/>
+            <button id="r_all" label="&staff.circ.circ_summary.retrieve_all.label;" accesskey="&staff.circ.circ_summary.retrieve_all.accesskey;" oncommand="retrieve_all();"/>
+            <spacer flex="1"/>
+            <button label="&staff.circ.circ_summary.done.label;" accesskey="&staff.circ.circ_summary.done.accesskey;" oncommand="window.close();"/>
+        </hbox>
+    </vbox>
 
 </window>
 

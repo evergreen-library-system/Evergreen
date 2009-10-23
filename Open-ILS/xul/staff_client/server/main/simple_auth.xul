@@ -14,7 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -22,148 +22,148 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="simple_auth_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
 
         var offlineStrings = document.getElementById('offlineStrings');
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { 
-					throw( offlineStrings.getString('common.jsan.missing'));
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for simple_auth.xul');
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { 
+                    throw( offlineStrings.getString('common.jsan.missing'));
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for simple_auth.xul');
 
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-				g.data.temporary_session = ''; g.data.stash('temporary_session');
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+                g.data.temporary_session = ''; g.data.stash('temporary_session');
 
-				$('server').value = g.data.server_unadorned;
+                $('server').value = g.data.server_unadorned;
 
-				addCSSClass(document.documentElement,xul_param('login_type',{'modal_xulG':true}))
+                addCSSClass(document.documentElement,xul_param('login_type',{'modal_xulG':true}))
 
-				if (xul_param('desc_brief',{'modal_xulG':true})) {
-					$('desc').hidden = false;
-					$('desc_brief').appendChild( document.createTextNode( xul_param('desc_brief',{'modal_xulG':true}) ) );
-				}
-				if (xul_param('desc_full',{'modal_xulG':true})) {
-					$('desc').hidden = false;
-					$('desc_full').appendChild( document.createTextNode( xul_param('desc_full',{'modal_xulG':true}) ) );
-				}
+                if (xul_param('desc_brief',{'modal_xulG':true})) {
+                    $('desc').hidden = false;
+                    $('desc_brief').appendChild( document.createTextNode( xul_param('desc_brief',{'modal_xulG':true}) ) );
+                }
+                if (xul_param('desc_full',{'modal_xulG':true})) {
+                    $('desc').hidden = false;
+                    $('desc_full').appendChild( document.createTextNode( xul_param('desc_full',{'modal_xulG':true}) ) );
+                }
 
-				$('username').focus();
+                $('username').focus();
 
-				$('username').addEventListener('keypress',handle_keypress,false);
-				$('password').addEventListener('keypress',handle_keypress,false);
+                $('username').addEventListener('keypress',handle_keypress,false);
+                $('password').addEventListener('keypress',handle_keypress,false);
 
-			} catch(E) {
-				var err_msg =  offlineStrings.getFormattedString('common.exception', ['simple_auth.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg =  offlineStrings.getFormattedString('common.exception', ['simple_auth.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-		function $(id) { return document.getElementById(id); }
+        function $(id) { return document.getElementById(id); }
 
-		function handle_keypress(ev) {
-			if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
-			switch(ev.target) {
-				case $('username') : $('password').focus(); break;
-				case $('password') : authorize(); break;
-				default: break;
-			}
-		}
+        function handle_keypress(ev) {
+            if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
+            switch(ev.target) {
+                case $('username') : $('password').focus(); break;
+                case $('password') : authorize(); break;
+                default: break;
+            }
+        }
 
-		function authorize() {
-			try {
-				JSAN.use('auth.session');
-				g.session = new auth.session(
-					{
-						'name_prompt' : $('username'),
-						'password_prompt' : $('password'),
-						'server_prompt' : $('server'),
-					},
-					xul_param('login_type',{'modal_xulG':true}) || 'temp'
-				);
-				g.session.on_init = function() { 
-					try {
-						JSAN.use('util.network'); var n = new util.network();
-						var staff = n.simple_request('FM_AU_RETRIEVE_VIA_SESSION',[ g.session.key ]);
-						g.data.temporary_session = {  // old way because of local chrome still out there
-							'key' : g.session.key, 
-							'authtime' : g.session.authtime, 
-							'usr' : js2JSON(staff)
-						}
-						g.data.stash('temporary_session');
-						var my_xulG = { // new way, to minimize the use of global spaces
-							'temporary_session' : g.data.temporary_session
-						};
-						update_modal_xulG(my_xulG);
-						window.close();
-					} catch(E) {
-						g.error.standard_unexpected_error_alert('simple_auth.session.on_init',E);
-					}
-				}
-				g.session.on_init_error = function() { 
-					$('password').value = '';
-					$('username').focus();
-					$('username').select();
-				 }
-				g.session.init();
-			} catch(E) {
-				alert(E);
-			}
-		}
+        function authorize() {
+            try {
+                JSAN.use('auth.session');
+                g.session = new auth.session(
+                    {
+                        'name_prompt' : $('username'),
+                        'password_prompt' : $('password'),
+                        'server_prompt' : $('server'),
+                    },
+                    xul_param('login_type',{'modal_xulG':true}) || 'temp'
+                );
+                g.session.on_init = function() { 
+                    try {
+                        JSAN.use('util.network'); var n = new util.network();
+                        var staff = n.simple_request('FM_AU_RETRIEVE_VIA_SESSION',[ g.session.key ]);
+                        g.data.temporary_session = {  // old way because of local chrome still out there
+                            'key' : g.session.key, 
+                            'authtime' : g.session.authtime, 
+                            'usr' : js2JSON(staff)
+                        }
+                        g.data.stash('temporary_session');
+                        var my_xulG = { // new way, to minimize the use of global spaces
+                            'temporary_session' : g.data.temporary_session
+                        };
+                        update_modal_xulG(my_xulG);
+                        window.close();
+                    } catch(E) {
+                        g.error.standard_unexpected_error_alert('simple_auth.session.on_init',E);
+                    }
+                }
+                g.session.on_init_error = function() { 
+                    $('password').value = '';
+                    $('username').focus();
+                    $('username').select();
+                 }
+                g.session.init();
+            } catch(E) {
+                alert(E);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<commandset id="simple_auth_cmds">
-		<command id="cmd_broken" />
-	</commandset>
+    <commandset id="simple_auth_cmds">
+        <command id="cmd_broken" />
+    </commandset>
 
-	<vbox id="simple_auth_main" flex="1">
-	<groupbox id="desc" hidden="true">
-		<caption label="&staff.main.simple_auth.exception.label;"/>
-		<description id="desc_brief" style="color: red"/>
-		<description id="desc_full"/>
-	</groupbox>
-	<groupbox>
-		<caption label="&staff.main.simple_auth.authorization.label;"/>
-		<grid>
-			<columns><column /><column /></columns>
-			<rows>
-				<row>
-					<label value="&common.username.label;" control="username" accesskey="&common.username.accesskey;"/>
-					<textbox id="username" />
-				</row>
-				<row>
-					<label value="&staff.auth.password_prompt;" control="password" accesskey="&staff.auth.password_prompt.accesskey;"/>
-					<textbox id="password" type="password"/>
-				</row>
-				<row>
-					<button label="&common.cancel;" accesskey="&common.cancel.accesskey;" oncommand="window.close()"/>
-					<button label="&staff.main.simple_auth.authorize.label;" accesskey="&staff.main.simple_auth.authorize.accesskey;" oncommand="authorize()"/>
-				</row>
-			</rows>
-		</grid>
-		<label id="server" hidden="true"/>
-	</groupbox>
-	<spacer flex="1"/>
-	</vbox>
+    <vbox id="simple_auth_main" flex="1">
+    <groupbox id="desc" hidden="true">
+        <caption label="&staff.main.simple_auth.exception.label;"/>
+        <description id="desc_brief" style="color: red"/>
+        <description id="desc_full"/>
+    </groupbox>
+    <groupbox>
+        <caption label="&staff.main.simple_auth.authorization.label;"/>
+        <grid>
+            <columns><column /><column /></columns>
+            <rows>
+                <row>
+                    <label value="&common.username.label;" control="username" accesskey="&common.username.accesskey;"/>
+                    <textbox id="username" />
+                </row>
+                <row>
+                    <label value="&staff.auth.password_prompt;" control="password" accesskey="&staff.auth.password_prompt.accesskey;"/>
+                    <textbox id="password" type="password"/>
+                </row>
+                <row>
+                    <button label="&common.cancel;" accesskey="&common.cancel.accesskey;" oncommand="window.close()"/>
+                    <button label="&staff.main.simple_auth.authorize.label;" accesskey="&staff.main.simple_auth.authorize.accesskey;" oncommand="authorize()"/>
+                </row>
+            </rows>
+        </grid>
+        <label id="server" hidden="true"/>
+    </groupbox>
+    <spacer flex="1"/>
+    </vbox>
 </window>
 

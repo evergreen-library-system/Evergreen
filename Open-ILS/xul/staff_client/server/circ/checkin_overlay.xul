@@ -2,110 +2,110 @@
 
 <!-- LOCALIZATION -->
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <overlay id="checkin_overlay" 
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script>dump('loading checkin_overlay.xul\n');</script>
 
 <commandset id="checkin_cmds" />
 
 <popupset id="copy_status_popupset">
-	<popup id="copy_status_actions" position="at_pointer"> 
-		<menuitem command="sel_clip" label="&staff.circ.checkin_overlay.sel_clip.label;" accesskey="&staff.circ.checkin_overlay.sel_clip.accesskey;" />
-		<menuitem command="sel_bucket" label="&staff.circ.checkin_overlay.sel_bucket.label;" accesskey="&staff.circ.checkin_overlay.sel_bucket.accesskey;"/>
-		<menuitem command="sel_opac" label="&staff.circ.checkin_overlay.sel_opac.label;" accesskey="&staff.circ.checkin_overlay.sel_opac.accesskey;" />
-		<menuitem command="sel_copy_details" label="&staff.circ.checkin_overlay.sel_copy_details.label;" accesskey="&staff.circ.checkin_overlay.sel_copy_details.accesskey;" />
-		<menuitem command="sel_patron" label="&staff.circ.checkin_overlay.sel_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_patron.accesskey;"/>
-		<menuitem command="sel_last_patron" label="&staff.circ.checkin_overlay.sel_last_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_last_patron.accesskey;"/>
-		<menuseparator/>
-		<menuitem command="sel_edit" label="&staff.circ.checkin_overlay.sel_edit.label;" accesskey="&staff.circ.checkin_overlay.sel_edit.accesskey;" />
-		<menuitem command="sel_backdate" label="&staff.circ.checkin_overlay.sel_backdate.label;" accesskey="&staff.circ.checkin_overlay.sel_backdate.accesskey;" />
-		<menuseparator />
-		<menuitem command="sel_mark_items_damaged" label="&staff.circ.checkin_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey;"/>
-		<menuseparator />
-		<menuitem command="sel_transit_abort" label="&staff.circ.checkin_overlay.sel_transit_abort.label;" />
-		<menuseparator />
-		<menuitem command="sel_spine" label="&staff.circ.checkin_overlay.sel_spine.label;" accesskey="&staff.circ.checkin_overlay.sel_spine.accesskey;"/>
-		<menuitem command="save_columns" label="&staff.circ.checkin_overlay.save_columns.label;"/>
-	</popup>
+    <popup id="copy_status_actions" position="at_pointer"> 
+        <menuitem command="sel_clip" label="&staff.circ.checkin_overlay.sel_clip.label;" accesskey="&staff.circ.checkin_overlay.sel_clip.accesskey;" />
+        <menuitem command="sel_bucket" label="&staff.circ.checkin_overlay.sel_bucket.label;" accesskey="&staff.circ.checkin_overlay.sel_bucket.accesskey;"/>
+        <menuitem command="sel_opac" label="&staff.circ.checkin_overlay.sel_opac.label;" accesskey="&staff.circ.checkin_overlay.sel_opac.accesskey;" />
+        <menuitem command="sel_copy_details" label="&staff.circ.checkin_overlay.sel_copy_details.label;" accesskey="&staff.circ.checkin_overlay.sel_copy_details.accesskey;" />
+        <menuitem command="sel_patron" label="&staff.circ.checkin_overlay.sel_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_patron.accesskey;"/>
+        <menuitem command="sel_last_patron" label="&staff.circ.checkin_overlay.sel_last_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_last_patron.accesskey;"/>
+        <menuseparator/>
+        <menuitem command="sel_edit" label="&staff.circ.checkin_overlay.sel_edit.label;" accesskey="&staff.circ.checkin_overlay.sel_edit.accesskey;" />
+        <menuitem command="sel_backdate" label="&staff.circ.checkin_overlay.sel_backdate.label;" accesskey="&staff.circ.checkin_overlay.sel_backdate.accesskey;" />
+        <menuseparator />
+        <menuitem command="sel_mark_items_damaged" label="&staff.circ.checkin_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey;"/>
+        <menuseparator />
+        <menuitem command="sel_transit_abort" label="&staff.circ.checkin_overlay.sel_transit_abort.label;" />
+        <menuseparator />
+        <menuitem command="sel_spine" label="&staff.circ.checkin_overlay.sel_spine.label;" accesskey="&staff.circ.checkin_overlay.sel_spine.accesskey;"/>
+        <menuitem command="save_columns" label="&staff.circ.checkin_overlay.save_columns.label;"/>
+    </popup>
 </popupset>
 
 <box id="checkin_main" flex="1" orient="vertical" class="my_overflow">
-	<vbox id="cmvb1" flex="1"/>
+    <vbox id="cmvb1" flex="1"/>
 </box>
 
 <vbox id="cmvb1" flex="1">
-	<hbox id="background" class="checkin_screen_normal">
-		<spacer flex="1"/>
-		<vbox>
-			<hbox align="center"><label id="background-text" value="&staff.circ.checkin_overlay.background_text;" /></hbox>
+    <hbox id="background" class="checkin_screen_normal">
+        <spacer flex="1"/>
+        <vbox>
+            <hbox align="center"><label id="background-text" value="&staff.circ.checkin_overlay.background_text;" /></hbox>
             <vbox align="center">
                 <description id="do_not_alert_on_precat_indicator" hidden="true">&staff.circ.checkin_overlay.do_not_alert_on_precat.label;</description>
                 <description id="suppress_holds_and_transits_indicator" hidden="true">&staff.circ.checkin_overlay.suppress_holds_and_transits.label;</description>
                 <description id="amnesty_mode_indicator" hidden="true">&staff.circ.checkin_overlay.amnesty_mode.label;</description>
                 <description id="checkin_auto_print_slips_indicator" hidden="true">&staff.circ.checkin_overlay.checkin_auto_print_slips.label;</description>
             </vbox>
-		</vbox>
-		<spacer flex="1"/>
-	</hbox>
-	<groupbox id="cmgb1" flex="2">
-		<caption id="caption" label="&staff.circ.checkin.caption;" />
-		<hbox id="checkin_top_ui" />
-		<tree id="checkin_list" flex="1" enableColumnDrag="true" context="copy_status_actions" />
-		<hbox id="checkin_bottom_ui" />
-	</groupbox>
+        </vbox>
+        <spacer flex="1"/>
+    </hbox>
+    <groupbox id="cmgb1" flex="2">
+        <caption id="caption" label="&staff.circ.checkin.caption;" />
+        <hbox id="checkin_top_ui" />
+        <tree id="checkin_list" flex="1" enableColumnDrag="true" context="copy_status_actions" />
+        <hbox id="checkin_bottom_ui" />
+    </groupbox>
 </vbox>
 
 <hbox id="checkin_top_ui">
-	<vbox>
-		<hbox>
-			<label id="checkin_scan_barcode_label" 
-				value="&staff.circ.checkin.scan.label;" 
-				accesskey="&staff.circ.checkin.scan.accesskey;" 
-				control="checkin_barcode_entry_textbox"/>
-			<textbox id="checkin_barcode_entry_textbox" context="clipboard"/>
-			<button id="checkin_submit_barcode_button" 
-				label="&staff.circ.checkin.submit.label;" 
-				command="cmd_checkin_submit_barcode"
-				oldaccesskey="&staff.circ.checkin.submit.accesskey;"/>
-		</hbox>
-		<label id="no_change_label" value="" style="color: red" hidden="true"/>
-	</vbox>
-	<spacer flex="1"/>
-	<vbox>
-		<hbox>
-			<hbox id="checkin_effective_date_hbox">
-				<label id="checkin_effective_date_label" value="&staff.circ.checkin_overlay.effective_date.label;" control="checkin_effective_datepicker" accesskey="&staff.circ.checkin_overlay.effective_date.accesskey;"/>
-				<datepicker id="checkin_effective_datepicker" type="popup" context="clipboard"/>
-			</hbox>
-			<menubar>
-			<menu label="&staff.circ.checkin_overlay.actions.label;" accesskey="&staff.circ.checkin_overlay.actions.accesskey;">
-				<menupopup>
-					<menuitem command="sel_clip" label="&staff.circ.checkin_overlay.sel_clip.label;" accesskey="&staff.circ.checkin_overlay.sel_clip.accesskey;" />
-					<menuitem command="sel_bucket" label="&staff.circ.checkin_overlay.sel_bucket.label;" accesskey="&staff.circ.checkin_overlay.sel_bucket.accesskey;"/>
-					<menuitem command="sel_opac" label="&staff.circ.checkin_overlay.sel_opac.label;" accesskey="&staff.circ.checkin_overlay.sel_opac.accesskey;" />
-					<menuitem command="sel_copy_details" label="&staff.circ.checkin_overlay.sel_copy_details.label;" accesskey="&staff.circ.checkin_overlay.sel_copy_details.accesskey;" />
-					<menuitem command="sel_patron" label="&staff.circ.checkin_overlay.sel_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_patron.accesskey;"/>
-					<menuitem command="sel_last_patron" label="&staff.circ.checkin_overlay.sel_last_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_last_patron.accesskey;"/>
-					<menuseparator/>
-					<menuitem command="sel_edit" label="&staff.circ.checkin_overlay.sel_edit.label;" accesskey="&staff.circ.checkin_overlay.sel_edit.accesskey;" />
-		            <menuitem command="sel_backdate" label="&staff.circ.checkin_overlay.sel_backdate.label;" accesskey="&staff.circ.checkin_overlay.sel_backdate.accesskey;" />
-					<menuseparator />
-					<menuitem command="sel_mark_items_damaged" label="&staff.circ.checkin_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey;"/>
-					<menuseparator />
-					<menuitem command="sel_transit_abort" label="&staff.circ.checkin_overlay.sel_transit_abort.label;" />
-					<menuseparator />
-					<menuitem command="sel_spine" label="&staff.circ.checkin_overlay.sel_spine.label;" accesskey="&staff.circ.checkin_overlay.sel_spine.accesskey;"/>
-					<menuitem command="save_columns" label="&staff.circ.checkin_overlay.save_columns.label;"/>
-				</menupopup>
-			</menu>
-			</menubar>
-		</hbox>
+    <vbox>
+        <hbox>
+            <label id="checkin_scan_barcode_label" 
+                value="&staff.circ.checkin.scan.label;" 
+                accesskey="&staff.circ.checkin.scan.accesskey;" 
+                control="checkin_barcode_entry_textbox"/>
+            <textbox id="checkin_barcode_entry_textbox" context="clipboard"/>
+            <button id="checkin_submit_barcode_button" 
+                label="&staff.circ.checkin.submit.label;" 
+                command="cmd_checkin_submit_barcode"
+                oldaccesskey="&staff.circ.checkin.submit.accesskey;"/>
+        </hbox>
+        <label id="no_change_label" value="" style="color: red" hidden="true"/>
+    </vbox>
+    <spacer flex="1"/>
+    <vbox>
+        <hbox>
+            <hbox id="checkin_effective_date_hbox">
+                <label id="checkin_effective_date_label" value="&staff.circ.checkin_overlay.effective_date.label;" control="checkin_effective_datepicker" accesskey="&staff.circ.checkin_overlay.effective_date.accesskey;"/>
+                <datepicker id="checkin_effective_datepicker" type="popup" context="clipboard"/>
+            </hbox>
+            <menubar>
+            <menu label="&staff.circ.checkin_overlay.actions.label;" accesskey="&staff.circ.checkin_overlay.actions.accesskey;">
+                <menupopup>
+                    <menuitem command="sel_clip" label="&staff.circ.checkin_overlay.sel_clip.label;" accesskey="&staff.circ.checkin_overlay.sel_clip.accesskey;" />
+                    <menuitem command="sel_bucket" label="&staff.circ.checkin_overlay.sel_bucket.label;" accesskey="&staff.circ.checkin_overlay.sel_bucket.accesskey;"/>
+                    <menuitem command="sel_opac" label="&staff.circ.checkin_overlay.sel_opac.label;" accesskey="&staff.circ.checkin_overlay.sel_opac.accesskey;" />
+                    <menuitem command="sel_copy_details" label="&staff.circ.checkin_overlay.sel_copy_details.label;" accesskey="&staff.circ.checkin_overlay.sel_copy_details.accesskey;" />
+                    <menuitem command="sel_patron" label="&staff.circ.checkin_overlay.sel_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_patron.accesskey;"/>
+                    <menuitem command="sel_last_patron" label="&staff.circ.checkin_overlay.sel_last_patron.label;" accesskey="&staff.circ.checkin_overlay.sel_last_patron.accesskey;"/>
+                    <menuseparator/>
+                    <menuitem command="sel_edit" label="&staff.circ.checkin_overlay.sel_edit.label;" accesskey="&staff.circ.checkin_overlay.sel_edit.accesskey;" />
+                    <menuitem command="sel_backdate" label="&staff.circ.checkin_overlay.sel_backdate.label;" accesskey="&staff.circ.checkin_overlay.sel_backdate.accesskey;" />
+                    <menuseparator />
+                    <menuitem command="sel_mark_items_damaged" label="&staff.circ.checkin_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey;"/>
+                    <menuseparator />
+                    <menuitem command="sel_transit_abort" label="&staff.circ.checkin_overlay.sel_transit_abort.label;" />
+                    <menuseparator />
+                    <menuitem command="sel_spine" label="&staff.circ.checkin_overlay.sel_spine.label;" accesskey="&staff.circ.checkin_overlay.sel_spine.accesskey;"/>
+                    <menuitem command="save_columns" label="&staff.circ.checkin_overlay.save_columns.label;"/>
+                </menupopup>
+            </menu>
+            </menubar>
+        </hbox>
         <label id="fine_tally" value="" amount="0.00" style="color: red" hidden="true" />
-	</vbox>
+    </vbox>
 
 </hbox>
 
@@ -115,21 +115,21 @@
         accesskey="&staff.generic.list_actions.accesskey;" 
         type="menu" allowevents="true">
         <menupopup id="list_actions_popup">
-        	<menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" disabled="true" />
-    	    <menuitem command="cmd_csv_to_printer" label="&staff.generic.list_actions.csv_to_printer.label;" accesskey="&staff.generic.list_actions.csv_to_printer.accesskey;" />
-        	<menuitem command="cmd_csv_to_clipboard" label="&staff.generic.list_actions.csv_to_clipboard.label;" accesskey="&staff.generic.list_actions.csv_to_clipboard.accesskey;" />
-        	<menuitem command="cmd_csv_to_file" label="&staff.generic.list_actions.csv_to_file.label;" accesskey="&staff.generic.list_actions.csv_to_file.accesskey;" />
-	        <menuitem command="save_columns" label="&staff.generic.list_actions.save_columns.label;" accesskey="&staff.generic.list_actions.save_columns.accesskey;" />
+            <menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" disabled="true" />
+            <menuitem command="cmd_csv_to_printer" label="&staff.generic.list_actions.csv_to_printer.label;" accesskey="&staff.generic.list_actions.csv_to_printer.accesskey;" />
+            <menuitem command="cmd_csv_to_clipboard" label="&staff.generic.list_actions.csv_to_clipboard.label;" accesskey="&staff.generic.list_actions.csv_to_clipboard.accesskey;" />
+            <menuitem command="cmd_csv_to_file" label="&staff.generic.list_actions.csv_to_file.label;" accesskey="&staff.generic.list_actions.csv_to_file.accesskey;" />
+            <menuitem command="save_columns" label="&staff.generic.list_actions.save_columns.label;" accesskey="&staff.generic.list_actions.save_columns.accesskey;" />
         </menupopup>
     </button>
 
-	<button id="checkin_print" 
-		label="&staff.checkin.print_receipt.label;" 
-		command="cmd_checkin_print"
-		accesskey="&staff.checkin.print_receipt.accesskey;"/>
-	<checkbox id="trim_list" label="&staff.circ.checkin_overlay.trim_list.label;" checked="true" oils_persist="checked"/> 
-	<checkbox id="strict_barcode" label="&staff.circ.checkin_overlay.strict_barcode.label;" checked="false" oils_persist="checked"/> 
-	<spacer id="pcii3s" flex="1"/>
+    <button id="checkin_print" 
+        label="&staff.checkin.print_receipt.label;" 
+        command="cmd_checkin_print"
+        accesskey="&staff.checkin.print_receipt.accesskey;"/>
+    <checkbox id="trim_list" label="&staff.circ.checkin_overlay.trim_list.label;" checked="true" oils_persist="checked"/> 
+    <checkbox id="strict_barcode" label="&staff.circ.checkin_overlay.strict_barcode.label;" checked="false" oils_persist="checked"/> 
+    <spacer id="pcii3s" flex="1"/>
     <button id="checkin_modifiers" oncommand="this.firstChild.showPopup();"
         label="&staff.circ.checkin_overlay.checkin_modifiers_btn.label;"
         accesskey="&staff.circ.checkin_overlay.checkin_modifiers_btn.accesskey;"

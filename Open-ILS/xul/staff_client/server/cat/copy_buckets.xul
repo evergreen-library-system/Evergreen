@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -20,77 +20,77 @@
 <?xul-overlay href="/xul/server/cat/copy_buckets_overlay.xul"?>
 
 <window id="copy_buckets_win" title="&staff.cat.copy_buckets.window_title;"
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" height="600" width="800" oils_persist="height width"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" height="600" width="800" oils_persist="height width"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for copy_buckets.xul');
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for copy_buckets.xul');
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				var copy_ids = xul_param(
-					'copy_ids',{
-						'concat' : true,
-						'JSON2js_if_cgi' : true,
-						'JSON2js_if_xpcom' : true,
-						'stash_name':'cb_temp_copy_ids',
-						'clear_xpcom' : true,
-					}
-				);
+                var copy_ids = xul_param(
+                    'copy_ids',{
+                        'concat' : true,
+                        'JSON2js_if_cgi' : true,
+                        'JSON2js_if_xpcom' : true,
+                        'stash_name':'cb_temp_copy_ids',
+                        'clear_xpcom' : true,
+                    }
+                );
 
-				JSAN.use('cat.copy_buckets'); g.copy_buckets = new cat.copy_buckets();
-				g.copy_buckets.init( 
-					{ 
-						'copy_ids' : copy_ids,
-					} 
-				);
-	
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name(document.getElementById("catStrings").getString('cat.copy_buckets.tab')); } catch(E) { alert(E); }
-				}
+                JSAN.use('cat.copy_buckets'); g.copy_buckets = new cat.copy_buckets();
+                g.copy_buckets.init( 
+                    { 
+                        'copy_ids' : copy_ids,
+                    } 
+                );
+    
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    try { window.xulG.set_tab_name(document.getElementById("catStrings").getString('cat.copy_buckets.tab')); } catch(E) { alert(E); }
+                }
 
-			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ["cat/copy_buckets.xul", E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ["cat/copy_buckets.xul", E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-		function default_focus() { try { setTimeout( function() { document.getElementById('copy_bucket_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
-	]]>
-	</script>
+        function default_focus() { try { setTimeout( function() { document.getElementById('copy_bucket_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
+    ]]>
+    </script>
 
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
 
-	<commandset id="copy_buckets_cmds">
-		<command id="cmd_copy_bucket_submit_barcode" />
-		<command id="cmd_export_to_copy_status" />
-		<command id="copy_buckets_new_bucket" />
-		<command id="copy_buckets_delete_bucket" />
-		<command id="copy_buckets_delete_item" />
-		<command id="copy_buckets_add" />
-		<command id="copy_buckets_sel_add" />
-		<command id="copy_buckets_export" />
-		<command id="copy_buckets_transfer_to_volume" />
-		<command id="copy_buckets_batch_copy_edit" />
-		<command id="copy_buckets_batch_copy_delete" />
-	</commandset>
+    <commandset id="copy_buckets_cmds">
+        <command id="cmd_copy_bucket_submit_barcode" />
+        <command id="cmd_export_to_copy_status" />
+        <command id="copy_buckets_new_bucket" />
+        <command id="copy_buckets_delete_bucket" />
+        <command id="copy_buckets_delete_item" />
+        <command id="copy_buckets_add" />
+        <command id="copy_buckets_sel_add" />
+        <command id="copy_buckets_export" />
+        <command id="copy_buckets_transfer_to_volume" />
+        <command id="copy_buckets_batch_copy_edit" />
+        <command id="copy_buckets_batch_copy_delete" />
+    </commandset>
 
-	<box id="copy_buckets_main" />
+    <box id="copy_buckets_main" />
 
 </window>
 

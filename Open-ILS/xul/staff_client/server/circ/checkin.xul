@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -20,92 +20,92 @@
 <?xul-overlay href="/xul/server/circ/checkin_overlay.xul"?>
 
 <window id="checkin_win" 
-	onload="try { my_init(); font_helper(); persist_helper(); document.getElementById('checkin_modifiers_popup').hidePopup(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); document.getElementById('checkin_modifiers_popup').hidePopup(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for checkin.xul');
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for checkin.xul');
 
-				var tab_name;
-				if (xul_param('hold_capture')) {
-					var cb1 = document.getElementById('checkin_auto_print_slips'); cb1.hidden = true; cb1.checked = true;
-					var cb1_ind = document.getElementById('checkin_auto_print_slips_indicator'); cb1_ind.hidden = false;
-					var cb2 = document.getElementById('suppress_holds_and_transits'); cb2.hidden = true; cb2.checked = false;
-					var cb2_ind = document.getElementById('suppress_holds_and_transits_indicator'); cb2_ind.hidden = true;
-					document.getElementById('checkin_effective_date_hbox').hidden = true;
-					document.getElementById('caption').setAttribute('label',document.getElementById('circStrings').getString('staff.circ.checkin.hold_capture'));
-					tab_name = document.getElementById('circStrings').getString('staff.circ.checkin.hold_capture');
-				} else {
-					tab_name = document.getElementById('circStrings').getString('staff.circ.checkin.check_in.tab');
-				}
+                var tab_name;
+                if (xul_param('hold_capture')) {
+                    var cb1 = document.getElementById('checkin_auto_print_slips'); cb1.hidden = true; cb1.checked = true;
+                    var cb1_ind = document.getElementById('checkin_auto_print_slips_indicator'); cb1_ind.hidden = false;
+                    var cb2 = document.getElementById('suppress_holds_and_transits'); cb2.hidden = true; cb2.checked = false;
+                    var cb2_ind = document.getElementById('suppress_holds_and_transits_indicator'); cb2_ind.hidden = true;
+                    document.getElementById('checkin_effective_date_hbox').hidden = true;
+                    document.getElementById('caption').setAttribute('label',document.getElementById('circStrings').getString('staff.circ.checkin.hold_capture'));
+                    tab_name = document.getElementById('circStrings').getString('staff.circ.checkin.hold_capture');
+                } else {
+                    tab_name = document.getElementById('circStrings').getString('staff.circ.checkin.check_in.tab');
+                }
 
-				JSAN.use('circ.checkin'); g.checkin = new circ.checkin();
-				g.checkin.init( 
-					{ 
-					} 
-				);
-	
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name(tab_name); } catch(E) { alert(E); }
-				}
+                JSAN.use('circ.checkin'); g.checkin = new circ.checkin();
+                g.checkin.init( 
+                    { 
+                    } 
+                );
+    
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    try { window.xulG.set_tab_name(tab_name); } catch(E) { alert(E); }
+                }
 
-			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ.checkin.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ.checkin.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-		function default_focus() { try { setTimeout( function() { document.getElementById('checkin_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
-	]]>
-	</script>
+        function default_focus() { try { setTimeout( function() { document.getElementById('checkin_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
+    ]]>
+    </script>
 
-	<popupset id="copy_status_popupset"/>
+    <popupset id="copy_status_popupset"/>
 
-	<commandset id="checkin_cmds">
-		<command id="cmd_checkin_submit_barcode" />
-		<command id="cmd_checkin_print" />
-		<command id="cmd_csv_to_clipboard" />
-		<command id="cmd_csv_to_printer" />
-		<command id="cmd_csv_to_file" />
-		<command id="save_columns" />
-		
-		<command id="sel_clip" disabled="true"/>
-		<command id="sel_edit" disabled="true"/>
-		<command id="sel_backdate" disabled="true"/>
-		<command id="sel_opac" disabled="true"/>
-		<command id="sel_patron" disabled="true"/>
-		<command id="sel_last_patron" disabled="true"/>
-		<command id="sel_copy_details" disabled="true"/>
-		<command id="sel_bucket" disabled="true"/>
-		<command id="sel_spine" disabled="true"/>
-		<command id="sel_transit_abort" disabled="true"/>
-		<command id="sel_mark_items_damaged" disabled="true"/>
+    <commandset id="checkin_cmds">
+        <command id="cmd_checkin_submit_barcode" />
+        <command id="cmd_checkin_print" />
+        <command id="cmd_csv_to_clipboard" />
+        <command id="cmd_csv_to_printer" />
+        <command id="cmd_csv_to_file" />
+        <command id="save_columns" />
+        
+        <command id="sel_clip" disabled="true"/>
+        <command id="sel_edit" disabled="true"/>
+        <command id="sel_backdate" disabled="true"/>
+        <command id="sel_opac" disabled="true"/>
+        <command id="sel_patron" disabled="true"/>
+        <command id="sel_last_patron" disabled="true"/>
+        <command id="sel_copy_details" disabled="true"/>
+        <command id="sel_bucket" disabled="true"/>
+        <command id="sel_spine" disabled="true"/>
+        <command id="sel_transit_abort" disabled="true"/>
+        <command id="sel_mark_items_damaged" disabled="true"/>
 
-		<command id="cmd_do_not_alert_on_precat" />
-		<command id="cmd_suppress_holds_and_transits" />
-		<command id="cmd_amnesty_mode" />
-		<command id="cmd_checkin_auto_print_slips" />
-	</commandset>
+        <command id="cmd_do_not_alert_on_precat" />
+        <command id="cmd_suppress_holds_and_transits" />
+        <command id="cmd_amnesty_mode" />
+        <command id="cmd_checkin_auto_print_slips" />
+    </commandset>
 
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
 
-	<box id="checkin_main" />
+    <box id="checkin_main" />
 
 </window>
 

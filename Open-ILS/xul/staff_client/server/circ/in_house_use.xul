@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,90 +19,90 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="in_house_use_win" 
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') {
-					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for in_house_use.xul');
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') {
+                    throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for in_house_use.xul');
 
-				JSAN.use('circ.in_house_use'); g.in_house_use = new circ.in_house_use();
-				g.in_house_use.init( 
-					{ 
-					} 
-				);
-	
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try {
-						window.xulG.set_tab_name(document.getElementById('circStrings').getString('staff.circ.in_house_use.tab_name'));
-					} catch(E) {
-						alert(E);
-					}
-				}
+                JSAN.use('circ.in_house_use'); g.in_house_use = new circ.in_house_use();
+                g.in_house_use.init( 
+                    { 
+                    } 
+                );
+    
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    try {
+                        window.xulG.set_tab_name(document.getElementById('circStrings').getString('staff.circ.in_house_use.tab_name'));
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
 
-			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ.in_house_use.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ.in_house_use.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-		function default_focus() { try { setTimeout( function() { document.getElementById('in_house_use_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
-	]]>
-	</script>
+        function default_focus() { try { setTimeout( function() { document.getElementById('in_house_use_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
+    ]]>
+    </script>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<commandset id="in_house_use_cmds">
-		<command id="sel_clip" disabled="true" />
-		<command id="cmd_csv_to_clipboard" />
-		<command id="cmd_csv_to_printer" />
-		<command id="cmd_csv_to_file" />
-		<command id="cmd_in_house_use_submit_barcode" />
-		<command id="cmd_in_house_use_print" />
-		<command id="save_columns" />
-	</commandset>
+    <commandset id="in_house_use_cmds">
+        <command id="sel_clip" disabled="true" />
+        <command id="cmd_csv_to_clipboard" />
+        <command id="cmd_csv_to_printer" />
+        <command id="cmd_csv_to_file" />
+        <command id="cmd_in_house_use_submit_barcode" />
+        <command id="cmd_in_house_use_print" />
+        <command id="save_columns" />
+    </commandset>
 
 <box id="in_house_use_main" flex="1" orient="vertical" class="my_overflow">
 <vbox id="cmvb1" flex="1">
 <hbox id="background" style="background-color: purple; color: white;">
-	<spacer flex="1"/>
-	<label value="&staff.circ.in_house_use.main.label;" style="font-size: x-large; font-weight: bold;"/>
-	<spacer flex="1"/>
+    <spacer flex="1"/>
+    <label value="&staff.circ.in_house_use.main.label;" style="font-size: x-large; font-weight: bold;"/>
+    <spacer flex="1"/>
 </hbox>
 <groupbox id="cmgb1" flex="2">
 
-	<caption label="&staff.circ.in_house_use.cmgb1.caption;" />
+    <caption label="&staff.circ.in_house_use.cmgb1.caption;" />
 
-	<hbox id="in_house_use_top_ui">
-		<label id="in_house_use_multiplier_label" value="&staff.circ.in_house_use.multiplier.label;" control="in_house_use_multiplier_textbox" accesskey="&staff.circ.in_house_use.multiplier.accesskey;" hidden="false"/>
-		<textbox id="in_house_use_multiplier_textbox" value="1" hidden="false" size="2" cols="2" context="clipboard"/>
-		<hbox id="in_house_use_menu_placeholder" flex="0"/>
-		<textbox id="in_house_use_barcode_entry_textbox" context="clipboard"/>
-		<button id="in_house_use_submit_barcode_button" 
-			label="&staff.circ.in_house_use.submit.label;"
-			command="cmd_in_house_use_submit_barcode"
-			accesskey="&staff.circ.in_house_use.submit.accesskey;"/>
-	</hbox>
+    <hbox id="in_house_use_top_ui">
+        <label id="in_house_use_multiplier_label" value="&staff.circ.in_house_use.multiplier.label;" control="in_house_use_multiplier_textbox" accesskey="&staff.circ.in_house_use.multiplier.accesskey;" hidden="false"/>
+        <textbox id="in_house_use_multiplier_textbox" value="1" hidden="false" size="2" cols="2" context="clipboard"/>
+        <hbox id="in_house_use_menu_placeholder" flex="0"/>
+        <textbox id="in_house_use_barcode_entry_textbox" context="clipboard"/>
+        <button id="in_house_use_submit_barcode_button" 
+            label="&staff.circ.in_house_use.submit.label;"
+            command="cmd_in_house_use_submit_barcode"
+            accesskey="&staff.circ.in_house_use.submit.accesskey;"/>
+    </hbox>
 
-	<tree id="in_house_use_list" flex="1" enableColumnDrag="true" />
+    <tree id="in_house_use_list" flex="1" enableColumnDrag="true" />
 
-	<hbox id="in_house_use_bottom_ui">
+    <hbox id="in_house_use_bottom_ui">
         <button id="list_actions" oncommand="this.firstChild.showPopup();"
             label="&staff.generic.list_actions.label;" 
             accesskey="&staff.generic.list_actions.accesskey;" 
@@ -116,14 +116,14 @@
             </menupopup>
         </button>
 
-		<button id="in_house_use_print" 
-			label="&staff.circ.in_house_use.print.label;" 
-			command="cmd_in_house_use_print"
-			accesskey=""/>
-		<checkbox id="trim_list" label="&staff.circ.in_house_use.trim_list.label;" checked="true" oils_persist="checked"/> 
-		<checkbox id="strict_barcode" label="&staff.circ.in_house_use.strict_barcode.label;" checked="false" oils_persist="checked"/> 
-		<spacer id="pcii3s" flex="1"/>
-	</hbox>
+        <button id="in_house_use_print" 
+            label="&staff.circ.in_house_use.print.label;" 
+            command="cmd_in_house_use_print"
+            accesskey=""/>
+        <checkbox id="trim_list" label="&staff.circ.in_house_use.trim_list.label;" checked="true" oils_persist="checked"/> 
+        <checkbox id="strict_barcode" label="&staff.circ.in_house_use.strict_barcode.label;" checked="false" oils_persist="checked"/> 
+        <spacer id="pcii3s" flex="1"/>
+    </hbox>
 
 </groupbox>
 </vbox>

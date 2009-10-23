@@ -1,261 +1,261 @@
 <?xml version='1.0' encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<head>
-		<title>&staff.server.admin.stat_cat.title;</title>
-		<script language='javascript' src='/opac/common/js/utils.js'> </script>
-		<script language='javascript' src='/opac/common/js//config.js'> </script> 
-		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
-	
-		<script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
-		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
-		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/init.js'> </script>
-		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-		<script language='javascript' src='adminlib.js'> </script>
-		<script language='javascript' src='stat_cat_editor.js'> </script>
-		<link type='text/css' rel='stylesheet' href='admin.css'/>
-	</head>
+    <head>
+        <title>&staff.server.admin.stat_cat.title;</title>
+        <script language='javascript' src='/opac/common/js/utils.js'> </script>
+        <script language='javascript' src='/opac/common/js//config.js'> </script> 
+        <script language='javascript' src='/opac/common/js/CGI.js'> </script>
+        <script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+    
+        <script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
+        <script language='javascript' src='/opac/common/js/fmall.js'> </script>
+        <script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+        <script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+        <script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+        <script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
+        <script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+        <script language='javascript' src='/opac/common/js/init.js'> </script>
+        <script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+        <script language='javascript' src='adminlib.js'> </script>
+        <script language='javascript' src='stat_cat_editor.js'> </script>
+        <link type='text/css' rel='stylesheet' href='admin.css'/>
+    </head>
 
-	<body onload='try{scEditorInit();}catch(e){alert(js2JSON(e));}'>
-
-
-		<div style='position:absolute; top: 5px; right: 5px;'>
-			<span>&staff.server.admin.stat_cat.greeting;</span><b><span id='sc_user'/></b>
-		</div>
-
-		<center>
-			<div style='font-weight: bold; font-size: 12pt;'>&staff.server.admin.stat_cat.heading;</div>
-		</center>
-
-		<hr/> 
+    <body onload='try{scEditorInit();}catch(e){alert(js2JSON(e));}'>
 
 
-		<center>
-			<br/>
+        <div style='position:absolute; top: 5px; right: 5px;'>
+            <span>&staff.server.admin.stat_cat.greeting;</span><b><span id='sc_user'/></b>
+        </div>
+
+        <center>
+            <div style='font-weight: bold; font-size: 12pt;'>&staff.server.admin.stat_cat.heading;</div>
+        </center>
+
+        <hr/> 
 
 
-			<table class='data_grid data_grid_center' width='80%'>
-				<thead>
-					<tr>
-						<td colspan='4'>&staff.server.admin.stat_cat.create;</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>&staff.server.admin.stat_cat.name;</td>
-						<td>
-							<input type='text' id='sc_new_name'> </input>
-							<script>$('sc_new_name').focus();</script>
-						</td>
-						<td>&staff.server.admin.stat_cat.owning_library;</td>
-						<td>
-							<select id='sc_owning_lib_selector'>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>&staff.server.admin.stat_cat.opac_visibility;</td>
-						<td>	
-							<span>&staff.server.admin.stat_cat.on;</span>
-							<input type='radio' name='opac_visibility' id='sc_make_opac_visible'> </input>
-							<span>&staff.server.admin.stat_cat.off;</span>
-							<input type='radio' name='opac_visibility' checked='checked'> </input>
-						</td>
-						<td>&staff.server.admin.stat_cat.type;</td>
-						<td>
-							<select id='sc_type_selector'>
-								<option value='asset' selected='selected'>&staff.server.admin.stat_cat.copy;</option>
-								<option value='actor'>&staff.server.admin.stat_cat.patron;</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td colspan='4'>
-							<input type='submit' value='&staff.server.admin.stat_cat.create.submit;' onclick='scNew();' id='sc_new'/>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+        <center>
+            <br/>
 
-			<br/>
-			<hr/>
-			<br/>
+
+            <table class='data_grid data_grid_center' width='80%'>
+                <thead>
+                    <tr>
+                        <td colspan='4'>&staff.server.admin.stat_cat.create;</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>&staff.server.admin.stat_cat.name;</td>
+                        <td>
+                            <input type='text' id='sc_new_name'> </input>
+                            <script>$('sc_new_name').focus();</script>
+                        </td>
+                        <td>&staff.server.admin.stat_cat.owning_library;</td>
+                        <td>
+                            <select id='sc_owning_lib_selector'>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&staff.server.admin.stat_cat.opac_visibility;</td>
+                        <td>    
+                            <span>&staff.server.admin.stat_cat.on;</span>
+                            <input type='radio' name='opac_visibility' id='sc_make_opac_visible'> </input>
+                            <span>&staff.server.admin.stat_cat.off;</span>
+                            <input type='radio' name='opac_visibility' checked='checked'> </input>
+                        </td>
+                        <td>&staff.server.admin.stat_cat.type;</td>
+                        <td>
+                            <select id='sc_type_selector'>
+                                <option value='asset' selected='selected'>&staff.server.admin.stat_cat.copy;</option>
+                                <option value='actor'>&staff.server.admin.stat_cat.patron;</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='4'>
+                            <input type='submit' value='&staff.server.admin.stat_cat.create.submit;' onclick='scNew();' id='sc_new'/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+            <hr/>
+            <br/>
 
             &staff.server.admin.copy_locations.editor.library.filter; <select disabled='disabled' id='sc_org_filter'> </select>
             <br/><br/>
 
-			<div id='loading' class='has_color'><h2>&staff.server.admin.stat_cat.loading_status;</h2></div>
+            <div id='loading' class='has_color'><h2>&staff.server.admin.stat_cat.loading_status;</h2></div>
 
-			<table width='98%'>
-				<tbody>
-					<tr>
-						<td width='20%'> </td>
-						<td id='sc_show_copy' width='30%' class='has_color'
-							align='center'><a href='javascript:scShow("asset");'>&staff.server.admin.stat_cat.copy_stat_cats;</a></td>
-						<td id='sc_show_actor' width='30%' 
-							align='center'><a href='javascript:scShow("actor");'>&staff.server.admin.stat_cat.patron_stat_cats;</a></td>
-						<td width='20%'> </td>
-					</tr>
-				</tbody>
-			</table>
+            <table width='98%'>
+                <tbody>
+                    <tr>
+                        <td width='20%'> </td>
+                        <td id='sc_show_copy' width='30%' class='has_color'
+                            align='center'><a href='javascript:scShow("asset");'>&staff.server.admin.stat_cat.copy_stat_cats;</a></td>
+                        <td id='sc_show_actor' width='30%' 
+                            align='center'><a href='javascript:scShow("actor");'>&staff.server.admin.stat_cat.patron_stat_cats;</a></td>
+                        <td width='20%'> </td>
+                    </tr>
+                </tbody>
+            </table>
 
 
 
-			<br/>
-			<div>&staff.server.admin.stat_cat.info_prompt;</div>
-			<br/>
+            <br/>
+            <div>&staff.server.admin.stat_cat.info_prompt;</div>
+            <br/>
 
-			<div style='padding: 20px;' id='sc_none' class='hide_me'><b>&staff.server.admin.stat_cat.none_defined;</b></div>
+            <div style='padding: 20px;' id='sc_none' class='hide_me'><b>&staff.server.admin.stat_cat.none_defined;</b></div>
 
-			<!--
-			<div style='overflow: auto; max-height: 200px;'>
-			-->
-				<table width='95%' class='hide_me data_grid data_grid_center' id='sc_table'>
-					<thead>
-						<tr>
-							<td>&staff.server.admin.stat_cat.name.label;</td>
-							<td>&staff.server.admin.stat_cat.owning_library.label;</td>
-							<td>&staff.server.admin.stat_cat.opac_visibility.label;</td>
-							<td id='sc_usr_summary_label'>&staff.server.admin.stat_cat.usr_summary.label;</td>
-							<td>&staff.server.admin.stat_cat.entries.label;</td>
-							<td>&staff.server.admin.stat_cat.add_entry;</td>
-							<td>&staff.server.admin.stat_cat.edit;</td>
-						</tr>
-					</thead>
-	
-					<tbody id='sc_tbody'>
-						<tr id='sc_tr'>
-							<td><b name='sc_name'> </b></td>
-							<td name='sc_owning_lib'> </td>
-	
-							<td>
-								<span class='hide_me' name='sc_opac_visible'>&staff.server.admin.stat_cat.on;</span> 
-								<span class='hide_me' name='sc_opac_invisible'>&staff.server.admin.stat_cat.off;</span> 
-							</td>
-							<td name='sc_usr_summary_td'>
-								<span class='hide_me' name='sc_usr_summary_on'>&staff.server.admin.stat_cat.on;</span> 
-								<span class='hide_me' name='sc_usr_summary'>&staff.server.admin.stat_cat.off;</span> 
+            <!--
+            <div style='overflow: auto; max-height: 200px;'>
+            -->
+                <table width='95%' class='hide_me data_grid data_grid_center' id='sc_table'>
+                    <thead>
+                        <tr>
+                            <td>&staff.server.admin.stat_cat.name.label;</td>
+                            <td>&staff.server.admin.stat_cat.owning_library.label;</td>
+                            <td>&staff.server.admin.stat_cat.opac_visibility.label;</td>
+                            <td id='sc_usr_summary_label'>&staff.server.admin.stat_cat.usr_summary.label;</td>
+                            <td>&staff.server.admin.stat_cat.entries.label;</td>
+                            <td>&staff.server.admin.stat_cat.add_entry;</td>
+                            <td>&staff.server.admin.stat_cat.edit;</td>
+                        </tr>
+                    </thead>
+    
+                    <tbody id='sc_tbody'>
+                        <tr id='sc_tr'>
+                            <td><b name='sc_name'> </b></td>
+                            <td name='sc_owning_lib'> </td>
+    
+                            <td>
+                                <span class='hide_me' name='sc_opac_visible'>&staff.server.admin.stat_cat.on;</span> 
+                                <span class='hide_me' name='sc_opac_invisible'>&staff.server.admin.stat_cat.off;</span> 
                             </td>
-							<td>
+                            <td name='sc_usr_summary_td'>
+                                <span class='hide_me' name='sc_usr_summary_on'>&staff.server.admin.stat_cat.on;</span> 
+                                <span class='hide_me' name='sc_usr_summary'>&staff.server.admin.stat_cat.off;</span> 
+                            </td>
+                            <td>
                                 <select class='selector' name='sc_entries_selector'>
                                     <option>&staff.server.admin.stat_cat.none;</option>
                                 </select>
                             </td>
-							<td><a href='javascript:void(0);' name='sc_new_entry'>&staff.server.admin.stat_cat.add.label;</a></td>
-							<td><a href='javascript:void(0);' name='sc_edit'>&staff.server.admin.stat_cat.edit;</a></td>
-						</tr>
-					</tbody>
-				</table>
-			<!--
-			</div>
-			-->
-	
-		
+                            <td><a href='javascript:void(0);' name='sc_new_entry'>&staff.server.admin.stat_cat.add.label;</a></td>
+                            <td><a href='javascript:void(0);' name='sc_edit'>&staff.server.admin.stat_cat.edit;</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            <!--
+            </div>
+            -->
+    
+        
 
-			
-		</center>
+            
+        </center>
 
 
-		<!-- Text spans  / template +++++++++++++++++++++++++++++++++++++  -->
-		<span class='hide_me' id='sc_new_entry_text'>&staff.server.admin.stat_cat.add.prompt;</span>
+        <!-- Text spans  / template +++++++++++++++++++++++++++++++++++++  -->
+        <span class='hide_me' id='sc_new_entry_text'>&staff.server.admin.stat_cat.add.prompt;</span>
 
-		<span class='hide_me' id='sc_delete_confirm'>
-			&staff.server.admin.stat_cat.delete.confirm;
-		</span>
+        <span class='hide_me' id='sc_delete_confirm'>
+            &staff.server.admin.stat_cat.delete.confirm;
+        </span>
 
-		<span class='hide_me' id='sc_entry_delete_confirm'>
-			&staff.server.admin.stat_cat.entry_delete.confirm;
-		</span>
+        <span class='hide_me' id='sc_entry_delete_confirm'>
+            &staff.server.admin.stat_cat.entry_delete.confirm;
+        </span>
 
-		<table class='hide_me'>
-			<tr class='insert_row' id='sc_edit_row'>
-				<td><input name='sc_edit_name'> </input></td>
-				<td>
-					<span class='hide_me' name='sc_edit_show_owning_lib'> </span>
-					<select class='hide_me' name='sc_edit_owning_lib'> </select>
-				</td>
+        <table class='hide_me'>
+            <tr class='insert_row' id='sc_edit_row'>
+                <td><input name='sc_edit_name'> </input></td>
+                <td>
+                    <span class='hide_me' name='sc_edit_show_owning_lib'> </span>
+                    <select class='hide_me' name='sc_edit_owning_lib'> </select>
+                </td>
 
-				<td>
-					<span>&staff.server.admin.stat_cat.on;</span>
-					<span name='sc_edit_opac_vis'>
-						<input type='radio' name='sc_edit_opac_visibility'> </input>
-					</span>
-					<span>&staff.server.admin.stat_cat.off;</span>
-					<span name='sc_edit_opac_invis'>
-						<input type='radio' name='sc_edit_opac_visibility'> </input>
-					</span>
-				</td>
+                <td>
+                    <span>&staff.server.admin.stat_cat.on;</span>
+                    <span name='sc_edit_opac_vis'>
+                        <input type='radio' name='sc_edit_opac_visibility'> </input>
+                    </span>
+                    <span>&staff.server.admin.stat_cat.off;</span>
+                    <span name='sc_edit_opac_invis'>
+                        <input type='radio' name='sc_edit_opac_visibility'> </input>
+                    </span>
+                </td>
                 <td name='sc_edit_usr_summary_td'>
                     <input type='checkbox' name='sc_edit_usr_summary'/>
                 </td>
-				<td colspan='4'>
-					<span class='padded'>
-						<input  type='submit' value='&staff.server.admin.stat_cat.edit_submit;' name='sc_edit_submit'/>
-					</span>
-					<span class='padded'>
-						<input  type='submit' value='&staff.server.admin.stat_cat.edit_delete;' name='sc_edit_delete'/>
-					</span>
-					<input type='submit' name='sc_edit_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
-				</td>
-			</tr>
+                <td colspan='4'>
+                    <span class='padded'>
+                        <input  type='submit' value='&staff.server.admin.stat_cat.edit_submit;' name='sc_edit_submit'/>
+                    </span>
+                    <span class='padded'>
+                        <input  type='submit' value='&staff.server.admin.stat_cat.edit_delete;' name='sc_edit_delete'/>
+                    </span>
+                    <input type='submit' name='sc_edit_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
+                </td>
+            </tr>
 
-			<tr class='insert_row' id='sc_edit_entry_row'>
-				<td colspan='7'>
-					<span class='padded'>
-						<span>&staff.server.admin.stat_cat.edit_entry_owner;</span><b name='sc_edit_entry_owner'/>
-					</span>
-					<span class='padded'>
-						<input type='text' name='sc_edit_entry_name' class='padded'/>
-					</span>
-					<span class='padded'>
-						<input type='submit' name='sc_edit_entry_name_submit' value='&staff.server.admin.stat_cat.edit_entry_name_submit;' class='padded'/>
-					</span>
-					<span class='padded'>
-						<input type='submit' name='sc_edit_entry_delete' value='&staff.server.admin.stat_cat.edit_entry_delete;' class='padded'/>
-					</span>
-					<span class='padded'>
-						<input type='submit' name='sc_edit_entry_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
-					</span>
-				</td>
-			</tr>
+            <tr class='insert_row' id='sc_edit_entry_row'>
+                <td colspan='7'>
+                    <span class='padded'>
+                        <span>&staff.server.admin.stat_cat.edit_entry_owner;</span><b name='sc_edit_entry_owner'/>
+                    </span>
+                    <span class='padded'>
+                        <input type='text' name='sc_edit_entry_name' class='padded'/>
+                    </span>
+                    <span class='padded'>
+                        <input type='submit' name='sc_edit_entry_name_submit' value='&staff.server.admin.stat_cat.edit_entry_name_submit;' class='padded'/>
+                    </span>
+                    <span class='padded'>
+                        <input type='submit' name='sc_edit_entry_delete' value='&staff.server.admin.stat_cat.edit_entry_delete;' class='padded'/>
+                    </span>
+                    <span class='padded'>
+                        <input type='submit' name='sc_edit_entry_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
+                    </span>
+                </td>
+            </tr>
 
-			<tr class='insert_row' id='sc_new_entry_row'>
-				<td colspan='7'> 
-					<span>&staff.server.admin.stat_cat.new_entry_name;</span>
-					<span class='padded'>
-						<input type='text' name='sc_new_entry_name'/>
-					</span>
-					<span class='padded'>
-						<select name='sc_new_entry_lib'> </select>
-					</span>
-					<span class='padded'>
-						<input type='submit' name='sc_new_entry_create' value='&staff.server.admin.stat_cat.new_entry_create;'/>
-					</span>
-					<span class='padded'>
-						<input type='submit' name='sc_new_entry_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
-					</span>
-				</td>
-			</tr>
-		</table>
+            <tr class='insert_row' id='sc_new_entry_row'>
+                <td colspan='7'> 
+                    <span>&staff.server.admin.stat_cat.new_entry_name;</span>
+                    <span class='padded'>
+                        <input type='text' name='sc_new_entry_name'/>
+                    </span>
+                    <span class='padded'>
+                        <select name='sc_new_entry_lib'> </select>
+                    </span>
+                    <span class='padded'>
+                        <input type='submit' name='sc_new_entry_create' value='&staff.server.admin.stat_cat.new_entry_create;'/>
+                    </span>
+                    <span class='padded'>
+                        <input type='submit' name='sc_new_entry_cancel' value='&staff.server.admin.stat_cat.cancel;'/>
+                    </span>
+                </td>
+            </tr>
+        </table>
 
-	</body>
+    </body>
 
-	<span class='hide_me' id='sc_update_success'>
-		&staff.server.admin.stat_cat.update_success;
-	</span>
+    <span class='hide_me' id='sc_update_success'>
+        &staff.server.admin.stat_cat.update_success;
+    </span>
 
 </html>
 

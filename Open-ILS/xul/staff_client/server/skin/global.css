@@ -68,13 +68,13 @@ Enable for the windows build.  This slows linux down too much.
 */
 
 .nav { 
-	-moz-appearance: none;
-	margin: 0px;
-	min-width: 6.3em;
-	color: #000000;
-	font-family: arial, san-serif;
-	font-weight: bold;
-	height: 26px;
+    -moz-appearance: none;
+    margin: 0px;
+    min-width: 6.3em;
+    color: #000000;
+    font-family: arial, san-serif;
+    font-weight: bold;
+    height: 26px;
 }
 
 .my_overflow { overflow: auto; }

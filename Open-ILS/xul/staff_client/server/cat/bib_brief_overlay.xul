@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="bib_brief_overlay" 
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	    <script type="text/javascript" src="/xul/server/cat/bib_brief_overlay.js"/>
+        <script type="text/javascript" src="/xul/server/cat/bib_brief_overlay.js"/>
 
         <grid id="bib_brief_grid" flex="0">
             <columns>

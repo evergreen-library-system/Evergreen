@@ -13,7 +13,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -21,31 +21,31 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="pre_cat_fields" title="&staff.circ.pre_cat.window.title;"
-	orient="vertical" style="overflow: auto"
-	onload="try{my_init();font_helper(); }catch(E){alert(E);}"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    orient="vertical" style="overflow: auto"
+    onload="try{my_init();font_helper(); }catch(E){alert(E);}"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 
-	<script>
-	<![CDATA[
+    <script>
+    <![CDATA[
 
-		function my_init() {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			if (typeof JSAN == 'undefined') {
-				throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
-			}
-			JSAN.errorLevel = "die"; // none, warn, or die
-			JSAN.addRepository('/xul/server/');
-			JSAN.use('util.error'); g.error = new util.error();
-			g.error.sdump('D_TRACE','my_init() for pre_cat_fields.xul');
-			JSAN.use('OpenILS.data'); g.data = new OpenILS.data();
-			g.data.init({'via':'stash'});
+        function my_init() {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            if (typeof JSAN == 'undefined') {
+                throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+            }
+            JSAN.errorLevel = "die"; // none, warn, or die
+            JSAN.addRepository('/xul/server/');
+            JSAN.use('util.error'); g.error = new util.error();
+            g.error.sdump('D_TRACE','my_init() for pre_cat_fields.xul');
+            JSAN.use('OpenILS.data'); g.data = new OpenILS.data();
+            g.data.init({'via':'stash'});
 
             g.data.precat_dummy_title = '';
             g.data.precat_dummy_author = '';
@@ -65,10 +65,10 @@
                 x.setAttribute('value', g.data.precat_circ_modifier);
                 x.value = g.data.precat_circ_modifier;
             }
-			document.getElementById('dummy_title').focus();
-		}
+            document.getElementById('dummy_title').focus();
+        }
 
-		function my_finish() {
+        function my_finish() {
             g.data.precat_dummy_title = document.getElementById('dummy_title').value;
             g.data.precat_dummy_author = document.getElementById('dummy_author').value;
             g.data.precat_dummy_isbn = document.getElementById('dummy_isbn').value;
@@ -76,45 +76,45 @@
             if (cm == '<HACK:KLUDGE:NULL>') cm = null;
             g.data.precat_circ_modifier = cm;
             g.data.precat_submit = 'go';
-			g.data.stash('precat_dummy_title','precat_dummy_author','precat_dummy_isbn','precat_circ_modifier','precat_submit');
+            g.data.stash('precat_dummy_title','precat_dummy_author','precat_dummy_isbn','precat_circ_modifier','precat_submit');
             window.close();
-		}
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
 
-	<groupbox>
-		<caption label="&staff.circ.pre_cat.caption.label;"/>
-		<grid>
-			<columns><column /><column flex="1"/></columns>
-			<rows>
-				<row>
-					<label value="&staff.circ.pre_cat.dummy_title.label;" accesskey="&staff.circ.pre_cat.dummy_title.accesskey;" control="dummy_title"/>
-					<textbox id="dummy_title" context="clipboard"/>
-				</row>
-				<row>
-					<label value="&staff.circ.pre_cat.dummy_author.label;" accesskey="&staff.circ.pre_cat.dummy_author.accesskey;" control="dummy_author"/>
-					<textbox id="dummy_author" context="clipboard"/>
-				</row>
-				<row>
-					<label value="&staff.circ.pre_cat.dummy_isbn.label;" accesskey="&staff.circ.pre_cat.dummy_isbn.accesskey;" control="dummy_isbn"/>
-					<textbox id="dummy_isbn" context="clipboard"/>
-				</row>
-				<row>
-					<label value="&staff.circ.pre_cat.dummy_circ_modifier.label;" accesskey="&staff.circ.pre_cat.dummy_circ_modifier.accesskey;" control="dummy_circ_modifier"/>
+    <groupbox>
+        <caption label="&staff.circ.pre_cat.caption.label;"/>
+        <grid>
+            <columns><column /><column flex="1"/></columns>
+            <rows>
+                <row>
+                    <label value="&staff.circ.pre_cat.dummy_title.label;" accesskey="&staff.circ.pre_cat.dummy_title.accesskey;" control="dummy_title"/>
+                    <textbox id="dummy_title" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.circ.pre_cat.dummy_author.label;" accesskey="&staff.circ.pre_cat.dummy_author.accesskey;" control="dummy_author"/>
+                    <textbox id="dummy_author" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.circ.pre_cat.dummy_isbn.label;" accesskey="&staff.circ.pre_cat.dummy_isbn.accesskey;" control="dummy_isbn"/>
+                    <textbox id="dummy_isbn" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.circ.pre_cat.dummy_circ_modifier.label;" accesskey="&staff.circ.pre_cat.dummy_circ_modifier.accesskey;" control="dummy_circ_modifier"/>
                     <box id="placeholder" />
-				</row>
-			</rows>
-		</grid>
-		<hbox>
-			<spacer flex="1"/>
-			<button label="&staff.circ.pre_cat.cancel.label;" oncommand="window.close()" accesskey="&staff.circ.pre_cat.cancel.accesskey;"/>
-			<button label="&staff.circ.pre_cat.checkout.label;" oncommand="my_finish();" accesskey="&staff.circ.pre_cat.checkout.accesskey;"/>
-		</hbox>
-	</groupbox>
+                </row>
+            </rows>
+        </grid>
+        <hbox>
+            <spacer flex="1"/>
+            <button label="&staff.circ.pre_cat.cancel.label;" oncommand="window.close()" accesskey="&staff.circ.pre_cat.cancel.accesskey;"/>
+            <button label="&staff.circ.pre_cat.checkout.label;" oncommand="my_finish();" accesskey="&staff.circ.pre_cat.checkout.accesskey;"/>
+        </hbox>
+    </groupbox>
 
 </window>
 

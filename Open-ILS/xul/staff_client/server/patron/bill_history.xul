@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -21,21 +21,21 @@
 <!--<?xul-overlay href="/xul/server/patron/bill_summary_overlay.xul"?>-->
 
 <window id="bill_history_win" width="700" height="550" oils_persist="sizemode width height"
-	onload="try{ my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try{ my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="bill_history.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="bill_history.js"/>
 
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
 
-	<vbox flex="1" class="my_overflow">
+    <vbox flex="1" class="my_overflow">
         <groupbox orient="vertical" flex="1">
             <caption id="caption" label="&staff.patron.bill_history.caption.label;"/>
             <hbox>
@@ -54,7 +54,7 @@
                 <button id="details" label="&staff.patron.bill_history.full_details.label;" disabled="true" accesskey="&staff.patron.bill_history.full_details.accesskey;"/>
             </hbox>
         </groupbox>
-	</vbox>
+    </vbox>
 
 </window>
 

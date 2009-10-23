@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -18,81 +18,81 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_copy_editor_win" 
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	width="800" height="580" oils_persist="width height"
-	title="&staff.cat.copy_editor.window.label;"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    width="800" height="580" oils_persist="width height"
+    title="&staff.cat.copy_editor.window.label;"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="copy_editor.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="copy_editor.js"/>
 
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
 
     <vbox id="brief_display_box"/>
 
-	<groupbox flex="1" class="my_overflow">
-		<caption id="caption" label="&staff.cat.copy_editor.groupbox1.label;"/>
+    <groupbox flex="1" class="my_overflow">
+        <caption id="caption" label="&staff.cat.copy_editor.groupbox1.label;"/>
 
-		<hbox id="top_nav">
-			<hbox style="background: grey">
-				<vbox><spacer flex="1"/><label value="&staff.cat.copy_editor.templates.label;" style="font-weight: bold"/><spacer flex="1"/></vbox>
-				<hbox id="template_placeholder"/>
-				<button id="apply_template" label="&staff.cat.copy_editor.templates.apply_template.label;" accesskey="&staff.cat.copy_editor.templates.apply_template.accesskey;" oncommand="g.apply_template()"/>
-				<button id="delete_template" label="&staff.cat.copy_editor.templates.delete_template.label;" oncommand="g.delete_template()"/>
-				<button id="import_templates" label="&staff.cat.copy_editor.templates.import_template.label;" oncommand="g.import_templates()"/>
-				<button id="export_templates" label="&staff.cat.copy_editor.templates.export_template.label;" oncommand="g.export_templates()"/>
-				<button id="save_template" label="&staff.cat.copy_editor.templates.save_template.label;" oncommand="g.save_template()"/>
-			</hbox>
-			<spacer flex="1"/>
-			<button label="&staff.cat.copy_editor.templates.reset.label;" accesskey="&staff.cat.copy_editor.templates.reset.accesskey;" oncommand="g.reset()"/>
-		</hbox>
+        <hbox id="top_nav">
+            <hbox style="background: grey">
+                <vbox><spacer flex="1"/><label value="&staff.cat.copy_editor.templates.label;" style="font-weight: bold"/><spacer flex="1"/></vbox>
+                <hbox id="template_placeholder"/>
+                <button id="apply_template" label="&staff.cat.copy_editor.templates.apply_template.label;" accesskey="&staff.cat.copy_editor.templates.apply_template.accesskey;" oncommand="g.apply_template()"/>
+                <button id="delete_template" label="&staff.cat.copy_editor.templates.delete_template.label;" oncommand="g.delete_template()"/>
+                <button id="import_templates" label="&staff.cat.copy_editor.templates.import_template.label;" oncommand="g.import_templates()"/>
+                <button id="export_templates" label="&staff.cat.copy_editor.templates.export_template.label;" oncommand="g.export_templates()"/>
+                <button id="save_template" label="&staff.cat.copy_editor.templates.save_template.label;" oncommand="g.save_template()"/>
+            </hbox>
+            <spacer flex="1"/>
+            <button label="&staff.cat.copy_editor.templates.reset.label;" accesskey="&staff.cat.copy_editor.templates.reset.accesskey;" oncommand="g.reset()"/>
+        </hbox>
 
-		<hbox flex="1" style="overflow: scroll">
-			<vbox flex="1">
-				<label value="&staff.cat.copy_editor.identification.label;" style="font-weight: bold; font-size: large"/>
-				<vbox id="left_pane" flex="1"/>
-			</vbox>
-			<splitter><grippy /></splitter>
-			<vbox flex="1">
-				<button style="font-weight: bold; font-size: normal" label="&staff.cat.copy_editor.identification.location.label;" accesskey="&staff.cat.copy_editor.identification.location.accesskey;" oncommand="document.getElementById('right_pane').firstChild.firstChild.focus();"/>
-				<vbox id="right_pane" flex="1"/>
-			</vbox>
-			<splitter><grippy /></splitter>
-			<vbox flex="1">
-				<button style="font-weight: bold; font-size: normal" label="&staff.cat.copy_editor.identification.circulation.label;" accesskey="&staff.cat.copy_editor.identification.circulation.accesskey;" oncommand="document.getElementById('right_pane2').firstChild.firstChild.focus();"/>
-				<vbox id="right_pane2" flex="1"/>
-			</vbox>
-			<splitter><grippy /></splitter>
-			<vbox flex="1">
-				<button style="font-weight: bold; font-size: normal" label="&staff.cat.copy_editor.identification.miscellaneous.label;" accesskey="&staff.cat.copy_editor.identification.miscellaneous.accesskey;" oncommand="document.getElementById('right_pane3').firstChild.firstChild.focus();"/>
-				<vbox id="right_pane3" flex="1"/>
-			</vbox>
-			<splitter><grippy /></splitter>
-			<vbox flex="1">
-				<button style="font-weight: bold; font-size: normal" label="&staff.cat.copy_editor.identification.statistics.label;" accesskey="&staff.cat.copy_editor.identification.statistics.accesskey;" oncommand="document.getElementById('right_pane4').firstChild.firstChild.focus();"/>
+        <hbox flex="1" style="overflow: scroll">
+            <vbox flex="1">
+                <label value="&staff.cat.copy_editor.identification.label;" style="font-weight: bold; font-size: large"/>
+                <vbox id="left_pane" flex="1"/>
+            </vbox>
+            <splitter><grippy /></splitter>
+            <vbox flex="1">
+                <button style="font-weight: bold; font-size: normal" label="&staff.cat.copy_editor.identification.location.label;" accesskey="&staff.cat.copy_editor.identification.location.accesskey;" oncommand="document.getElementById('right_pane').firstChild.firstChild.focus();"/>
+                <vbox id="right_pane" flex="1"/>
+            </vbox>
+            <splitter><grippy /></splitter>
+            <vbox flex="1">
+                <button style="font-weight: bold; font-size: normal" label="&staff.cat.copy_editor.identification.circulation.label;" accesskey="&staff.cat.copy_editor.identification.circulation.accesskey;" oncommand="document.getElementById('right_pane2').firstChild.firstChild.focus();"/>
+                <vbox id="right_pane2" flex="1"/>
+            </vbox>
+            <splitter><grippy /></splitter>
+            <vbox flex="1">
+                <button style="font-weight: bold; font-size: normal" label="&staff.cat.copy_editor.identification.miscellaneous.label;" accesskey="&staff.cat.copy_editor.identification.miscellaneous.accesskey;" oncommand="document.getElementById('right_pane3').firstChild.firstChild.focus();"/>
+                <vbox id="right_pane3" flex="1"/>
+            </vbox>
+            <splitter><grippy /></splitter>
+            <vbox flex="1">
+                <button style="font-weight: bold; font-size: normal" label="&staff.cat.copy_editor.identification.statistics.label;" accesskey="&staff.cat.copy_editor.identification.statistics.accesskey;" oncommand="document.getElementById('right_pane4').firstChild.firstChild.focus();"/>
                 <menu label="&staff.cat.copy_editor.stat_cat_lib_filter_menu.label;" id="stat_cat_lib_filter_menu">
                     <menupopup />
                 </menu>
-				<vbox id="right_pane4" flex="1"/>
-			</vbox>
-		</hbox>
+                <vbox id="right_pane4" flex="1"/>
+            </vbox>
+        </hbox>
 
-		<hbox id="nav">
-			<spacer flex="1"/>
-			<button id="copy_notes" label="&staff.cat.copy_editor.copy_notes.label;" accesskey="&staff.cat.copy_editor.copy_notes.accesskey;" oncommand="g.copy_notes();"/>
-			<button id="save" label="&staff.cat.copy_editor.save.label;" hidden="true" accesskey="&staff.cat.copy_editor.save.accesskey;" oncommand="g.stash_and_close();"/>
-			<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>
-		</hbox>
+        <hbox id="nav">
+            <spacer flex="1"/>
+            <button id="copy_notes" label="&staff.cat.copy_editor.copy_notes.label;" accesskey="&staff.cat.copy_editor.copy_notes.accesskey;" oncommand="g.copy_notes();"/>
+            <button id="save" label="&staff.cat.copy_editor.save.label;" hidden="true" accesskey="&staff.cat.copy_editor.save.accesskey;" oncommand="g.stash_and_close();"/>
+            <button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>
+        </hbox>
 
-		<spacer/>
-	</groupbox>
+        <spacer/>
+    </groupbox>
 
 </window>
 

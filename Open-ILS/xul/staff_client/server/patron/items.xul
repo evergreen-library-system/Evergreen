@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -20,96 +20,96 @@
 <?xul-overlay href="/xul/server/patron/items_overlay.xul"?>
 
 <window id="items_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="/xul/server/patron/items.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				try { g.error.sdump('D_TRACE','my_init() for items.xul'); } catch(E) { dump(E); }
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/patron/items.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                try { g.error.sdump('D_TRACE','my_init() for items.xul'); } catch(E) { dump(E); }
 
-				JSAN.use('patron.items'); g.items = new patron.items();
-				g.items.init( 
-					{ 
-						'patron_id' : xul_param('patron_id'), 
-					} 
-				);
-				
-				window.refresh = function (p) { g.items.retrieve(p); }
+                JSAN.use('patron.items'); g.items = new patron.items();
+                g.items.init( 
+                    { 
+                        'patron_id' : xul_param('patron_id'), 
+                    } 
+                );
+                
+                window.refresh = function (p) { g.items.retrieve(p); }
 
-				default_focus();
+                default_focus();
 
-			} catch(E) {
-				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/items.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/items.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-		function default_focus() { try { var x = document.getElementById('noncat'); x.focus(); } catch(E) { try { g.error.sdump('D_ERROR','item.xul, default_focus: ' + E); } catch(F) { dump(E); } } }
+        function default_focus() { try { var x = document.getElementById('noncat'); x.focus(); } catch(E) { try { g.error.sdump('D_ERROR','item.xul, default_focus: ' + E); } catch(F) { dump(E); } } }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
-	<commandset id="items_cmds">
-		<command id="save_columns" />
-		<command id="sel_bucket" disabled="true"/>
-		<command id="sel_clip" />
-		<command id="sel_copy_details"/>
-		<command id="sel_patron"/>
-		<command id="cmd_items_print" />
-		<command id="cmd_items_export" />
-		<command id="cmd_items_renew" />
-		<command id="cmd_items_renew_all" />
-		<command id="cmd_items_claimed_returned" />
-		<command id="cmd_items_checkin" />
-		<command id="cmd_items_edit" />
-		<command id="cmd_items_mark_lost" />
-		<command id="cmd_show_catalog" />
-		<command id="cmd_add_billing" />
-		<command id="sel_mark_items_damaged" disabled="true"/>
-		<command id="sel_mark_items_missing" disabled="true"/>
-		
-		<command id="cmd_show_noncats" />
+    <commandset id="items_cmds">
+        <command id="save_columns" />
+        <command id="sel_bucket" disabled="true"/>
+        <command id="sel_clip" />
+        <command id="sel_copy_details"/>
+        <command id="sel_patron"/>
+        <command id="cmd_items_print" />
+        <command id="cmd_items_export" />
+        <command id="cmd_items_renew" />
+        <command id="cmd_items_renew_all" />
+        <command id="cmd_items_claimed_returned" />
+        <command id="cmd_items_checkin" />
+        <command id="cmd_items_edit" />
+        <command id="cmd_items_mark_lost" />
+        <command id="cmd_show_catalog" />
+        <command id="cmd_add_billing" />
+        <command id="sel_mark_items_damaged" disabled="true"/>
+        <command id="sel_mark_items_missing" disabled="true"/>
+        
+        <command id="cmd_show_noncats" />
 
-		<command id="save_columns2" />
-		<command id="sel_bucket2" disabled="true"/>
-		<command id="sel_clip2" />
-		<command id="sel_copy_details2"/>
-		<command id="sel_patron2"/>
-		<command id="cmd_items_print2" />
-		<command id="cmd_items_export2" />
-		<command id="cmd_items_renew2" />
-		<command id="cmd_items_claimed_returned2" />
-		<command id="cmd_items_checkin2" />
-		<command id="cmd_items_edit2" />
-		<command id="cmd_items_mark_lost2" />
-		<command id="cmd_show_catalog2" />
-		<command id="cmd_add_billing2" />
-		<command id="sel_mark_items_damaged2" disabled="true"/>
-		<command id="sel_mark_items_missing2" disabled="true"/>
-	</commandset>
+        <command id="save_columns2" />
+        <command id="sel_bucket2" disabled="true"/>
+        <command id="sel_clip2" />
+        <command id="sel_copy_details2"/>
+        <command id="sel_patron2"/>
+        <command id="cmd_items_print2" />
+        <command id="cmd_items_export2" />
+        <command id="cmd_items_renew2" />
+        <command id="cmd_items_claimed_returned2" />
+        <command id="cmd_items_checkin2" />
+        <command id="cmd_items_edit2" />
+        <command id="cmd_items_mark_lost2" />
+        <command id="cmd_show_catalog2" />
+        <command id="cmd_add_billing2" />
+        <command id="sel_mark_items_damaged2" disabled="true"/>
+        <command id="sel_mark_items_missing2" disabled="true"/>
+    </commandset>
 
-	<popupset id="items_popupset"/>
+    <popupset id="items_popupset"/>
 
-	<box id="items_main" />
+    <box id="items_main" />
 
 </window>
 

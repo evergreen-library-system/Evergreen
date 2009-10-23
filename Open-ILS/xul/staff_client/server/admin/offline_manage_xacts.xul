@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,87 +19,87 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="admin_offline_manage_xacts_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for admin_offline_manage_xacts.xul');
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for admin_offline_manage_xacts.xul');
 
-				JSAN.use('admin.offline_manage_xacts'); g.admin = new admin.offline_manage_xacts();
-				g.admin.init({});
+                JSAN.use('admin.offline_manage_xacts'); g.admin = new admin.offline_manage_xacts();
+                g.admin.init({});
 
-			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['admin/offline_manage_xacts.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['admin/offline_manage_xacts.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-	]]>
-	</script>
-	<messagecatalog id="adminStrings" src="/xul/server/locale/<!--#echo var='locale'-->/admin.properties"/>
+    ]]>
+    </script>
+    <messagecatalog id="adminStrings" src="/xul/server/locale/<!--#echo var='locale'-->/admin.properties"/>
 
-	<vbox id="admin_offline_manage_xacts_main" flex="1">
+    <vbox id="admin_offline_manage_xacts_main" flex="1">
 
-		<groupbox flex="1">
-			<caption label="&staff.server.admin.offline.xacts.caption;"/>
-			<hbox>
-				<button id="refresh" label="&common.refresh;" accesskey="&staff.server.admin.offline.xacts.refresh.accesskey;"/>
-				<button id="create" label="&staff.server.admin.offline.xacts.create.label;" disabled="true"/>
-				<button id="execute" label="&staff.server.admin.offline.xacts.execute.label;" disabled="true"/>
-				<spacer flex="1"/>
-				<button id="upload" label="&staff.server.admin.offline.xacts.upload.label;" disabled="true"/>
-			</hbox>
-			<tree id="session_tree" enableColumnDrag="true" seltype="single" flex="1"/>
-		</groupbox>
-			<splitter><grippy/></splitter>
-		<deck flex="1" id="deck">
-			<label value=" "/>
-			<groupbox flex="1">
-				<caption id="status_caption" label="&staff.server.admin.offline.xacts.status.label;"/>
-				<description style="background-color: lightgreen">
+        <groupbox flex="1">
+            <caption label="&staff.server.admin.offline.xacts.caption;"/>
+            <hbox>
+                <button id="refresh" label="&common.refresh;" accesskey="&staff.server.admin.offline.xacts.refresh.accesskey;"/>
+                <button id="create" label="&staff.server.admin.offline.xacts.create.label;" disabled="true"/>
+                <button id="execute" label="&staff.server.admin.offline.xacts.execute.label;" disabled="true"/>
+                <spacer flex="1"/>
+                <button id="upload" label="&staff.server.admin.offline.xacts.upload.label;" disabled="true"/>
+            </hbox>
+            <tree id="session_tree" enableColumnDrag="true" seltype="single" flex="1"/>
+        </groupbox>
+            <splitter><grippy/></splitter>
+        <deck flex="1" id="deck">
+            <label value=" "/>
+            <groupbox flex="1">
+                <caption id="status_caption" label="&staff.server.admin.offline.xacts.status.label;"/>
+                <description style="background-color: lightgreen">
                 &staff.server.admin.offline.xacts.status.desc;
-				</description>
-				<tree id="script_tree" enableColumnDrag="true" seltype="single" flex="1"/>
-			</groupbox>
-			<groupbox flex="1">
-				<caption id="errors_caption" label="&staff.server.admin.offline.xacts.errors.label;"/>
-				<description style="background-color: orange">
+                </description>
+                <tree id="script_tree" enableColumnDrag="true" seltype="single" flex="1"/>
+            </groupbox>
+            <groupbox flex="1">
+                <caption id="errors_caption" label="&staff.server.admin.offline.xacts.errors.label;"/>
+                <description style="background-color: orange">
                 &staff.server.admin.offline.xacts.errors.desc;
-				</description>
-				<vbox flex="1">
-					<hbox>
-						<button id='export_btn' label="&staff.server.admin.offline.xacts.export.label;" />
-						<button id='print_export_btn' label="&staff.server.admin.offline.xacts.print.label;" />
-						<spacer flex="1"/>
-						<button id='retrieve_item' label="&staff.server.admin.offline.xacts.get_item.label;" disabled="true"/>
-						<button id='retrieve_patron' label="&staff.server.admin.offline.xacts.get_patron.label;" disabled="true"/>
-						<button id='retrieve_details' label="&staff.server.admin.offline.xacts.get_details.label;" disabled="true"/>
-					</hbox>
-					<tree id="error_tree" enableColumnDrag="true" seltype="multiple" flex="1"/>
-				</vbox>
-			</groupbox>
-			<groupbox flex="1">
-				<caption id="errors_caption" label="&staff.server.admin.offline.xacts.errors.caption;"/>
-			</groupbox>
-		</deck>
-		<hbox id="iframe_placeholder" hidden="false" flex="0"/>
+                </description>
+                <vbox flex="1">
+                    <hbox>
+                        <button id='export_btn' label="&staff.server.admin.offline.xacts.export.label;" />
+                        <button id='print_export_btn' label="&staff.server.admin.offline.xacts.print.label;" />
+                        <spacer flex="1"/>
+                        <button id='retrieve_item' label="&staff.server.admin.offline.xacts.get_item.label;" disabled="true"/>
+                        <button id='retrieve_patron' label="&staff.server.admin.offline.xacts.get_patron.label;" disabled="true"/>
+                        <button id='retrieve_details' label="&staff.server.admin.offline.xacts.get_details.label;" disabled="true"/>
+                    </hbox>
+                    <tree id="error_tree" enableColumnDrag="true" seltype="multiple" flex="1"/>
+                </vbox>
+            </groupbox>
+            <groupbox flex="1">
+                <caption id="errors_caption" label="&staff.server.admin.offline.xacts.errors.caption;"/>
+            </groupbox>
+        </deck>
+        <hbox id="iframe_placeholder" hidden="false" flex="0"/>
 
-	</vbox>
+    </vbox>
 
 </window>
 

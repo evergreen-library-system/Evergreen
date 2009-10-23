@@ -10,7 +10,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -18,34 +18,34 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="penalty_win" onload="try { penalty_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;</script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="standing_penalties.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="standing_penalties.js"/>
 
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
 
-	<commandset id="penalty_cmds">
-		<command id="cmd_apply_penalty" />
-		<command id="cmd_remove_penalty" disabled="true"/>
-		<command id="cmd_edit_penalty" disabled="true"/>
-		<command id="cmd_archive_penalty" disabled="true"/>
-		<command id="cmd_retrieve_archived_penalties" />
-		<command id="cmd_show_all" />
-		<command id="cmd_show_note" />
-		<command id="cmd_show_alert" />
-		<command id="cmd_show_block" />
-	</commandset>
+    <commandset id="penalty_cmds">
+        <command id="cmd_apply_penalty" />
+        <command id="cmd_remove_penalty" disabled="true"/>
+        <command id="cmd_edit_penalty" disabled="true"/>
+        <command id="cmd_archive_penalty" disabled="true"/>
+        <command id="cmd_retrieve_archived_penalties" />
+        <command id="cmd_show_all" />
+        <command id="cmd_show_note" />
+        <command id="cmd_show_alert" />
+        <command id="cmd_show_block" />
+    </commandset>
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- CONTENT -->
-	<groupbox id="penalty_groupbox" flex="1" class="my_overflow">
-		<caption id="penalty_caption" label="&staff.patron_display.penalty.caption;"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- CONTENT -->
+    <groupbox id="penalty_groupbox" flex="1" class="my_overflow">
+        <caption id="penalty_caption" label="&staff.patron_display.penalty.caption;"/>
         <vbox flex="0">
             <hbox flex="1">
                 <toolbox flex="1">
@@ -83,10 +83,10 @@
             </hbox>
         </vbox>
         <tree id="ausp_list" flex="1" enableColumnDrag="true" context="ausp_actions" />
-	</groupbox>
+    </groupbox>
     <splitter id="list_splitter" collapse="after" oils_persist="state hidden"><grippy id="splitter_grippy"/></splitter>
-	<groupbox id="archived_penalty_groupbox" flex="1" class="my_overflow">
-		<caption id="penalty_caption" label="&staff.patron_display.archived_penalty.caption;"/>
+    <groupbox id="archived_penalty_groupbox" flex="1" class="my_overflow">
+        <caption id="penalty_caption" label="&staff.patron_display.archived_penalty.caption;"/>
         <vbox flex="0">
             <toolbox flex="1">
                 <toolbar>
@@ -109,7 +109,7 @@
             </toolbox>
         </vbox>
         <tree id="archived_ausp_list" flex="1" enableColumnDrag="true" />
-	</groupbox>
+    </groupbox>
 
     <popupset id="csp_popupset">
         <popup id="ausp_actions" position="at_pointer">

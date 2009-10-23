@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,143 +19,143 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="circ_circ_brief_win" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-	xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
 
-				g.circ_id = xul_param('circ_id');
+                g.circ_id = xul_param('circ_id');
 
-				var caption = xul_param('caption'); if (caption) $('caption').setAttribute('label',caption);
-				if (xul_param('no_border')) $('gb').setAttribute('style','border: none');
+                var caption = xul_param('caption'); if (caption) $('caption').setAttribute('label',caption);
+                if (xul_param('no_border')) $('gb').setAttribute('style','border: none');
 
-				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('util.date');
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+                JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('util.date');
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				function circ_callback(req) {
-					try {
-						var r_circ = req.getResultObject();
-						$('circ_lib').value = r_circ.circ_lib() ? g.data.hash.aou[ r_circ.circ_lib() ].shortname() : '';
-						$('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,16).replace(/T/,' ') : '';
-						$('due_date').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
-						$('circ_lib').setAttribute('tooltiptext', document.getElementById('circStrings').getFormattedString('staff.circ.circ_brief.staff_out_id', [r_circ.circ_staff()]) );
-						$('checkin_lib').value = r_circ.checkin_lib() ? g.data.hash.aou[ r_circ.checkin_lib() ].shortname() : '';
-						$('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,16).replace(/T/,' ') : '';
-						$('checkin_lib').setAttribute('tooltiptext', document.getElementById('circStrings').getFormattedString('staff.circ.circ_brief.staff_in_id', [r_circ.checkin_staff()]) );
-						$('id').value = r_circ.id() ? r_circ.id() : '';
-						$('stop_fines').value = r_circ.stop_fines() ? r_circ.stop_fines() : '';
-						$('stop_fines_time').value = r_circ.stop_fines_time() ? r_circ.stop_fines_time().toString().substr(0,16).replace(/T/,' ') : '';
-						var r = '';
-						if (get_bool( r_circ.desk_renewal() ) ) r += 'DESK ';
-						if (get_bool(r_circ.opac_renewal() ) ) r += 'OPAC ';
-						if (get_bool(r_circ.phone_renewal() ) ) r += 'PHONE ';
-						$('renewal').value = r || document.getElementById('circStrings').getString('staff.circ.checkout.no.btn');
-						g.patron_id = r_circ.usr(); $('add_billing').disabled = false;
-						g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
-							var r_au = preq.getResultObject();
-							JSAN.use('patron.util'); 
-							$('patron_name').value = patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode();
+                function circ_callback(req) {
+                    try {
+                        var r_circ = req.getResultObject();
+                        $('circ_lib').value = r_circ.circ_lib() ? g.data.hash.aou[ r_circ.circ_lib() ].shortname() : '';
+                        $('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,16).replace(/T/,' ') : '';
+                        $('due_date').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+                        $('circ_lib').setAttribute('tooltiptext', document.getElementById('circStrings').getFormattedString('staff.circ.circ_brief.staff_out_id', [r_circ.circ_staff()]) );
+                        $('checkin_lib').value = r_circ.checkin_lib() ? g.data.hash.aou[ r_circ.checkin_lib() ].shortname() : '';
+                        $('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,16).replace(/T/,' ') : '';
+                        $('checkin_lib').setAttribute('tooltiptext', document.getElementById('circStrings').getFormattedString('staff.circ.circ_brief.staff_in_id', [r_circ.checkin_staff()]) );
+                        $('id').value = r_circ.id() ? r_circ.id() : '';
+                        $('stop_fines').value = r_circ.stop_fines() ? r_circ.stop_fines() : '';
+                        $('stop_fines_time').value = r_circ.stop_fines_time() ? r_circ.stop_fines_time().toString().substr(0,16).replace(/T/,' ') : '';
+                        var r = '';
+                        if (get_bool( r_circ.desk_renewal() ) ) r += 'DESK ';
+                        if (get_bool(r_circ.opac_renewal() ) ) r += 'OPAC ';
+                        if (get_bool(r_circ.phone_renewal() ) ) r += 'PHONE ';
+                        $('renewal').value = r || document.getElementById('circStrings').getString('staff.circ.checkout.no.btn');
+                        g.patron_id = r_circ.usr(); $('add_billing').disabled = false;
+                        g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
+                            var r_au = preq.getResultObject();
+                            JSAN.use('patron.util'); 
+                            $('patron_name').value = patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode();
                             patron.util.set_penalty_css(r_au);
-						});
+                        });
 
-					} catch(E) {
-						g.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.circ_brief.failure'), E);
-					}
-				}
+                    } catch(E) {
+                        g.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.circ_brief.failure'), E);
+                    }
+                }
 
-				if (g.circ_id) {
-					g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
-				} else {
-					g.circ = g.data.temp_circ; g.data.temp_circ = null; g.data.stash('temp_circ');
-					g.circ_id = g.data.temp_circ_id; g.data.temp_circ_id = null; g.data.stash('temp_circ_id');
-					if (!g.circ_id) g.circ_id = g.circ.id();
+                if (g.circ_id) {
+                    g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
+                } else {
+                    g.circ = g.data.temp_circ; g.data.temp_circ = null; g.data.stash('temp_circ');
+                    g.circ_id = g.data.temp_circ_id; g.data.temp_circ_id = null; g.data.stash('temp_circ_id');
+                    if (!g.circ_id) g.circ_id = g.circ.id();
                     if (g.circ) {
                         circ_callback( { 'getResultObject' : function() { return g.circ; } } );
                     } else {
-					    g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
+                        g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
                     }
-				}
+                }
 
-			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ/circ_brief.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ/circ_brief.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-		function $(id) { return document.getElementById(id); }
+        function $(id) { return document.getElementById(id); }
 
-		g.add_billing = function() {
-			JSAN.use('util.window');
-			var win = new util.window();
-			var w = win.open(
-				urls.XUL_PATRON_BILL_WIZARD,
-					//+ '?patron_id=' + window.escape(g.patron_id)
-					//+ '&xact_id=' + window.escape( g.circ_id ),
-				'billwizard',
-				'chrome,resizable,modal',
-				{ 'patron_id' : g.patron_id, 'xact_id' : g.circ_id }
-			);
-		}
+        g.add_billing = function() {
+            JSAN.use('util.window');
+            var win = new util.window();
+            var w = win.open(
+                urls.XUL_PATRON_BILL_WIZARD,
+                    //+ '?patron_id=' + window.escape(g.patron_id)
+                    //+ '&xact_id=' + window.escape( g.circ_id ),
+                'billwizard',
+                'chrome,resizable,modal',
+                { 'patron_id' : g.patron_id, 'xact_id' : g.circ_id }
+            );
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<groupbox id="gb" flex="1" style="overflow: auto;">
-		<caption id="caption"/>
-		<hbox>
-			<label id="patron_name" class="patronNameLarge" flex="1"/>
-			<label value="&staff.circ.circ_brief.patron_id.label;"/><label id="id"/>
-			<button id="add_billing" disabled="true" label="&staff.circ.circ_brief.add_billing.label;" oncommand="g.add_billing();"/>
-		</hbox>
-		<grid flex="1">
-			<columns>
-				<column/>
-				<column flex="1"/>
-				<column/>
-				<column flex="1"/>
-				<column/>
-				<column flex="1"/>
-				<column/>
-				<column flex="1"/>
-			</columns>
-			<rows>
-				<row>
-					<label style="font-weight: bold" value="&staff.circ.circ_brief.xact_start.label;"/><label id="xact_start"/>
-					<label style="font-weight: bold" value="&staff.circ.circ_brief.due_date.label;"/><label id="due_date"/>
-					<label style="font-weight: bold" value="&staff.circ.circ_brief.stop_fines_time.label;"/><label id="stop_fines_time"/>
-					<label style="font-weight: bold" value="&staff.circ.circ_brief.checkin_time.label;"/><label id="checkin_time"/>
-				</row>
-				<row>
-					<label style="font-weight: bold" value="&staff.circ.circ_brief.circ_lib.label;"/><label id="circ_lib"/>
-					<label style="font-weight: bold" value="&staff.circ.circ_brief.renewal.label;"/><label id="renewal"/>
-					<label style="font-weight: bold" value="&staff.circ.circ_brief.stop_fines.label;"/><label id="stop_fines"/>
-					<label style="font-weight: bold" value="&staff.circ.circ_brief.checkin_lib.label;"/><label id="checkin_lib"/>
-				</row>
-			</rows>
-		</grid>
-	</groupbox>
+    <groupbox id="gb" flex="1" style="overflow: auto;">
+        <caption id="caption"/>
+        <hbox>
+            <label id="patron_name" class="patronNameLarge" flex="1"/>
+            <label value="&staff.circ.circ_brief.patron_id.label;"/><label id="id"/>
+            <button id="add_billing" disabled="true" label="&staff.circ.circ_brief.add_billing.label;" oncommand="g.add_billing();"/>
+        </hbox>
+        <grid flex="1">
+            <columns>
+                <column/>
+                <column flex="1"/>
+                <column/>
+                <column flex="1"/>
+                <column/>
+                <column flex="1"/>
+                <column/>
+                <column flex="1"/>
+            </columns>
+            <rows>
+                <row>
+                    <label style="font-weight: bold" value="&staff.circ.circ_brief.xact_start.label;"/><label id="xact_start"/>
+                    <label style="font-weight: bold" value="&staff.circ.circ_brief.due_date.label;"/><label id="due_date"/>
+                    <label style="font-weight: bold" value="&staff.circ.circ_brief.stop_fines_time.label;"/><label id="stop_fines_time"/>
+                    <label style="font-weight: bold" value="&staff.circ.circ_brief.checkin_time.label;"/><label id="checkin_time"/>
+                </row>
+                <row>
+                    <label style="font-weight: bold" value="&staff.circ.circ_brief.circ_lib.label;"/><label id="circ_lib"/>
+                    <label style="font-weight: bold" value="&staff.circ.circ_brief.renewal.label;"/><label id="renewal"/>
+                    <label style="font-weight: bold" value="&staff.circ.circ_brief.stop_fines.label;"/><label id="stop_fines"/>
+                    <label style="font-weight: bold" value="&staff.circ.circ_brief.checkin_lib.label;"/><label id="checkin_lib"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
 
 </window>
 

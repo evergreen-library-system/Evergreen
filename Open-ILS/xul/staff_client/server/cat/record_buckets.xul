@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -20,117 +20,117 @@
 <?xul-overlay href="/xul/server/cat/record_buckets_overlay.xul"?>
 
 <window id="record_buckets_win" title="&staff.cat.record_buckets.title;"
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" height="300" width="300" oils_persist="height width"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" height="300" width="300" oils_persist="height width"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
         var catStrings;
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-				/* ugly hack so we don't have to upgrade the chrome for quick buckets */
-				if (typeof xulG == 'undefined') location.href = String(location.href).replace(/record_buckets.xul/,'record_buckets_quick.xul');
+                /* ugly hack so we don't have to upgrade the chrome for quick buckets */
+                if (typeof xulG == 'undefined') location.href = String(location.href).replace(/record_buckets.xul/,'record_buckets_quick.xul');
 
-				/* load translatable strings into easily referenced variables */
+                /* load translatable strings into easily referenced variables */
                 catStrings = document.getElementById('catStrings');
                 commonStrings = document.getElementById('commonStrings');
 
                 if (typeof JSAN == 'undefined') { throw( commonStrings.getString('common.jsan.missing') ); }
 
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for record_buckets.xul');
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for record_buckets.xul');
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				var record_ids = xul_param(
-					'record_ids',{
-						'concat' : true,
-						'JSON2js_if_cgi' : true,
-						'JSON2js_if_xpcom' : true,
-						'stash_name':'rb_temp_record_ids',
-						'clear_xpcom' : true,
-					}
-				);
+                var record_ids = xul_param(
+                    'record_ids',{
+                        'concat' : true,
+                        'JSON2js_if_cgi' : true,
+                        'JSON2js_if_xpcom' : true,
+                        'stash_name':'rb_temp_record_ids',
+                        'clear_xpcom' : true,
+                    }
+                );
 
-				JSAN.use('cat.record_buckets'); g.record_buckets = new cat.record_buckets();
-				g.record_buckets.init( 
-					{ 
-						'record_ids' : record_ids,
-					} 
-				);
-	
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name(catStrings.getString('staff.cat.record_buckets.tab_name')); } catch(E) { alert(E); }
-				}
+                JSAN.use('cat.record_buckets'); g.record_buckets = new cat.record_buckets();
+                g.record_buckets.init( 
+                    { 
+                        'record_ids' : record_ids,
+                    } 
+                );
+    
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    try { window.xulG.set_tab_name(catStrings.getString('staff.cat.record_buckets.tab_name')); } catch(E) { alert(E); }
+                }
 
-			} catch(E) {
-				var err_msg = commonStrings.getFormattedString('common.exception', ['cat/record_buckets.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = commonStrings.getFormattedString('common.exception', ['cat/record_buckets.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale' -->/circ.properties"/>
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 
-	<commandset id="record_buckets_cmds">
-		<command id="sel_clip0" disabled="true"/>
-		<command id="sel_clip1" disabled="true"/>
-		<command id="sel_clip2" disabled="true"/>
-		<command id="save_columns0" />
-		<command id="save_columns1" />
-		<command id="save_columns2" />
+    <commandset id="record_buckets_cmds">
+        <command id="sel_clip0" disabled="true"/>
+        <command id="sel_clip1" disabled="true"/>
+        <command id="sel_clip2" disabled="true"/>
+        <command id="save_columns0" />
+        <command id="save_columns1" />
+        <command id="save_columns2" />
 
-		<command id="cmd_record_query_csv_to_printer" />
-		<command id="cmd_record_query_csv_to_clipboard" />
-		<command id="cmd_record_query_csv_to_file" />
+        <command id="cmd_record_query_csv_to_printer" />
+        <command id="cmd_record_query_csv_to_clipboard" />
+        <command id="cmd_record_query_csv_to_file" />
 
-		<command id="cmd_pending_buckets_csv_to_printer" />
-		<command id="cmd_pending_buckets_csv_to_clipboard" />
-		<command id="cmd_pending_buckets_csv_to_file" />
+        <command id="cmd_pending_buckets_csv_to_printer" />
+        <command id="cmd_pending_buckets_csv_to_clipboard" />
+        <command id="cmd_pending_buckets_csv_to_file" />
 
-		<command id="cmd_record_buckets_new_bucket" />
-		<command id="cmd_record_buckets_delete_bucket" disabled="true"/>
-		<command id="cmd_record_buckets_refresh" disabled="true"/>
+        <command id="cmd_record_buckets_new_bucket" />
+        <command id="cmd_record_buckets_delete_bucket" disabled="true"/>
+        <command id="cmd_record_buckets_refresh" disabled="true"/>
 
-    	<command id="cmd_record_buckets_delete_item" />
-    	<command id="cmd_record_buckets_to_pending_buckets" />
+        <command id="cmd_record_buckets_delete_item" />
+        <command id="cmd_record_buckets_to_pending_buckets" />
 
-		<command id="cmd_record_buckets_csv_to_printer" />
-		<command id="cmd_record_buckets_csv_to_clipboard" />
-		<command id="cmd_record_buckets_csv_to_file" />
-		
+        <command id="cmd_record_buckets_csv_to_printer" />
+        <command id="cmd_record_buckets_csv_to_clipboard" />
+        <command id="cmd_record_buckets_csv_to_file" />
+        
         <command id="cmd_add_all_query_to_pending" />
         <command id="cmd_add_sel_query_to_pending" />
 
         <command id="cmd_add_all_pending_to_record_bucket" />
         <command id="cmd_add_sel_pending_to_record_bucket" />
 
-		<command id="cmd_merge_records" disabled="true" />
-		<command id="cmd_export_records_usmarc" />
-		<command id="cmd_export_records_unimarc" />
-		<command id="cmd_export_records_xml" />
-		<command id="cmd_export_records_bre" />
-		<command id="cmd_delete_records" disabled="true" />
-		<command id="cmd_sel_opac" disabled="true" />
-		
+        <command id="cmd_merge_records" disabled="true" />
+        <command id="cmd_export_records_usmarc" />
+        <command id="cmd_export_records_unimarc" />
+        <command id="cmd_export_records_xml" />
+        <command id="cmd_export_records_bre" />
+        <command id="cmd_delete_records" disabled="true" />
+        <command id="cmd_sel_opac" disabled="true" />
+        
         <command id="cmd_submit_query" />
-	</commandset>
+    </commandset>
 
-	<box id="record_buckets_main" />
+    <box id="record_buckets_main" />
 
 </window>
 

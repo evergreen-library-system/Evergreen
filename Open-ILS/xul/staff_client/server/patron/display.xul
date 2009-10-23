@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -20,99 +20,99 @@
 <?xul-overlay href="/xul/server/patron/display_overlay.xul"?>
 
 <window id="patron_display_win" 
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="/xul/server/patron/display.js"/>
-	<script>
-	<![CDATA[
-		function $(id) { return document.getElementById(id); }
-	
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for patron_display.xul');
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/patron/display.js"/>
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
+    
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for patron_display.xul');
 
-				JSAN.use('patron.display'); g.patron = new patron.display();
-				g.patron.init( { 
-					'barcode' : xul_param('barcode'),
-					'id' : xul_param('id'),
-					'query' : xul_param('query'),
-					'doit' : xul_param('doit')
-				} );
+                JSAN.use('patron.display'); g.patron = new patron.display();
+                g.patron.init( { 
+                    'barcode' : xul_param('barcode'),
+                    'id' : xul_param('id'),
+                    'query' : xul_param('query'),
+                    'doit' : xul_param('doit')
+                } );
 
-			//document.documentElement.style.setProperty('font-size-adjust','1','important');
+            //document.documentElement.style.setProperty('font-size-adjust','1','important');
 
-			} catch(E) {
-				var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/display.xul', E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/display.xul', E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-		function default_focus() {
-			setTimeout(
-				function() {
-					try {
-						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-						var node = g.patron.right_deck.node.selectedPanel;
-						if (node && get_contentWindow(node) && typeof get_contentWindow(node).default_focus == 'function') {
-							get_contentWindow(node).default_focus();
-						} else {
-							var node = g.patron.left_deck.node.selectedPanel;
-							if (node && get_contentWindow(node) && typeof get_contentWindow(node).default_focus == 'function') {
-								get_contentWindow(node).default_focus();
-							}
-						}
-					} catch(E) {
-						g.error.sdump('D_ERROR','default_focus(): ' + js2JSON(E));
-					}
-				}, 0
-			);
-		}
+        function default_focus() {
+            setTimeout(
+                function() {
+                    try {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        var node = g.patron.right_deck.node.selectedPanel;
+                        if (node && get_contentWindow(node) && typeof get_contentWindow(node).default_focus == 'function') {
+                            get_contentWindow(node).default_focus();
+                        } else {
+                            var node = g.patron.left_deck.node.selectedPanel;
+                            if (node && get_contentWindow(node) && typeof get_contentWindow(node).default_focus == 'function') {
+                                get_contentWindow(node).default_focus();
+                            }
+                        }
+                    } catch(E) {
+                        g.error.sdump('D_ERROR','default_focus(): ' + js2JSON(E));
+                    }
+                }, 0
+            );
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
-	<commandset id="patron_display_cmds">
-		<command id="cmd_patron_refresh" />
-		<command id="cmd_patron_checkout" />
-		<command id="cmd_patron_items" />
-		<command id="cmd_patron_holds" />
-		<command id="cmd_patron_bills" />
-		<command id="cmd_patron_edit" />
-		<command id="cmd_patron_info_notes" />
-		<command id="cmd_patron_info_stats" />
-		<command id="cmd_patron_info_surveys" />
-		<command id="cmd_patron_info_groups" />
-		<command id="cmd_patron_other" />
-		<command id="cmd_patron_alert" />
-		<command id="cmd_patron_exit" />
-		<command id="cmd_patron_retrieve" />
-		<command id="cmd_patron_merge" />
-		<command id="cmd_patron_toggle_summary" />
-		<command id="cmd_patron_delete" />
-		<command id="cmd_search_form" />
-		<command id="cmd_verify_credentials" />
-		<command id="cmd_perm_editor" />
-		<command id="cmd_standing_penalties" />
-	</commandset>
+    <commandset id="patron_display_cmds">
+        <command id="cmd_patron_refresh" />
+        <command id="cmd_patron_checkout" />
+        <command id="cmd_patron_items" />
+        <command id="cmd_patron_holds" />
+        <command id="cmd_patron_bills" />
+        <command id="cmd_patron_edit" />
+        <command id="cmd_patron_info_notes" />
+        <command id="cmd_patron_info_stats" />
+        <command id="cmd_patron_info_surveys" />
+        <command id="cmd_patron_info_groups" />
+        <command id="cmd_patron_other" />
+        <command id="cmd_patron_alert" />
+        <command id="cmd_patron_exit" />
+        <command id="cmd_patron_retrieve" />
+        <command id="cmd_patron_merge" />
+        <command id="cmd_patron_toggle_summary" />
+        <command id="cmd_patron_delete" />
+        <command id="cmd_search_form" />
+        <command id="cmd_verify_credentials" />
+        <command id="cmd_perm_editor" />
+        <command id="cmd_standing_penalties" />
+    </commandset>
 
-	<box id="patron_display_main" class="my_overflow" />
+    <box id="patron_display_main" class="my_overflow" />
 
 </window>
 

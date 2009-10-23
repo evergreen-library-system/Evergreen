@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -19,94 +19,94 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="patron_bill" title="&staff.patron.bill_cc_info.title;"
-	orient="vertical" style="overflow: auto"
-	onload="try{info_init(); font_helper();}catch(E){alert(E);}"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    orient="vertical" style="overflow: auto"
+    onload="try{info_init(); font_helper();}catch(E){alert(E);}"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 
-	<script>
-	<![CDATA[
-		function $(id) { return document.getElementById(id); }
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
 
-		function info_init() {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
-			JSAN.errorLevel = "die"; // none, warn, or die
-			JSAN.addRepository('/xul/server/');
-			JSAN.use('util.error'); g.error = new util.error();
-			g.error.sdump('D_TRACE','my_init() for patron_display.xul');
-			g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
-			g.OpenILS.data.init({'via':'stash'});
-			g.payment_blob = { 'cc_args' : {}, 'cancelled' : true };
-			g.OpenILS.data.temp = js2JSON( g.payment_blob );
-			g.OpenILS.data.stash('temp');
+        function info_init() {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+            JSAN.errorLevel = "die"; // none, warn, or die
+            JSAN.addRepository('/xul/server/');
+            JSAN.use('util.error'); g.error = new util.error();
+            g.error.sdump('D_TRACE','my_init() for patron_display.xul');
+            g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
+            g.OpenILS.data.init({'via':'stash'});
+            g.payment_blob = { 'cc_args' : {}, 'cancelled' : true };
+            g.OpenILS.data.temp = js2JSON( g.payment_blob );
+            g.OpenILS.data.stash('temp');
 
-			document.getElementById('cc_number').focus();
-		}
+            document.getElementById('cc_number').focus();
+        }
 
-		function info_finish() {
-			/* FIXME -- need unique temp space name */
-			delete( g.payment_blob.cancelled );
-			g.OpenILS.data.temp = js2JSON( g.payment_blob );
-			g.OpenILS.data.stash('temp');
-		}
+        function info_finish() {
+            /* FIXME -- need unique temp space name */
+            delete( g.payment_blob.cancelled );
+            g.OpenILS.data.temp = js2JSON( g.payment_blob );
+            g.OpenILS.data.stash('temp');
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
 
-	<groupbox>
-		<caption label="&staff.patron.bill_cc_info.info.label;"/>
-		<grid>
-			<columns> <column flex="0" /> <column flex="0" /> </columns>
-			<rows>
-				<row>
-					<label value="&staff.patron.bill_cc_info.type.label;"/>
-					<menulist id="cc_type" oncommand="g.payment_blob.cc_args.type = this.value;">
-						<menupopup>
-							<menuitem label="&staff.patron.bill_cc_info.visa.label;" value="Visa"/>
-							<menuitem label="&staff.patron.bill_cc_info.mastercard.label;" value="Mastercard"/>
-							<menuitem label="&staff.patron.bill_cc_info.american_express.label;" value="American Express"/>
-							<menuitem label="&staff.patron.bill_cc_info.discover.label;" value="Discover"/>
-							<menuitem label="&staff.patron.bill_cc_info.other.label;" value="Other"/>
-						</menupopup>
-					</menulist>
-				</row>
-				<row>
-					<label value="&staff.patron.bill_cc_info.cc_number.value;"/>
-					<textbox id="cc_number" onchange="g.payment_blob.cc_args.number = event.target.value" context="clipboard"/>
-				</row>
-				<row>
-					<label value="&staff.patron.bill_cc_info.month_expire.value;"/>
-					<textbox id="expire_month" onchange="g.payment_blob.cc_args.expire_month = event.target.value" context="clipboard"/>
-				</row>
-				<row>
-					<label value="&staff.patron.bill_cc_info.year_expire.value;"/>
-					<textbox id="expire_year" onchange="g.payment_blob.cc_args.expire_year = event.target.value" context="clipboard"/>
-				</row>
-				<row>
-					<label value="&staff.patron.bill_cc_info.approval_code.value;"/>
-					<textbox id="approval_code" onchange="g.payment_blob.cc_args.approval_code = event.target.value" context="clipboard"/>
-				</row>
-				<row>
-					<label value="&staff.patron.bill_cc_info.note.value;"/>
-					<textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true" context="clipboard"/>
-				</row>
-			</rows>
-		</grid>
-		<hbox>
-			<spacer flex="1"/>
-			<button label="&staff.patron.bill_cc_info.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_cc_info.cancel.accesskey;"/>
-			<button label="&staff.patron.bill_cc_info.submit.label;" oncommand="info_finish(); window.close();" accesskey="&staff.patron.bill_cc_info.submit.accesskey;"/>
-		</hbox>
-	</groupbox>
+    <groupbox>
+        <caption label="&staff.patron.bill_cc_info.info.label;"/>
+        <grid>
+            <columns> <column flex="0" /> <column flex="0" /> </columns>
+            <rows>
+                <row>
+                    <label value="&staff.patron.bill_cc_info.type.label;"/>
+                    <menulist id="cc_type" oncommand="g.payment_blob.cc_args.type = this.value;">
+                        <menupopup>
+                            <menuitem label="&staff.patron.bill_cc_info.visa.label;" value="Visa"/>
+                            <menuitem label="&staff.patron.bill_cc_info.mastercard.label;" value="Mastercard"/>
+                            <menuitem label="&staff.patron.bill_cc_info.american_express.label;" value="American Express"/>
+                            <menuitem label="&staff.patron.bill_cc_info.discover.label;" value="Discover"/>
+                            <menuitem label="&staff.patron.bill_cc_info.other.label;" value="Other"/>
+                        </menupopup>
+                    </menulist>
+                </row>
+                <row>
+                    <label value="&staff.patron.bill_cc_info.cc_number.value;"/>
+                    <textbox id="cc_number" onchange="g.payment_blob.cc_args.number = event.target.value" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.patron.bill_cc_info.month_expire.value;"/>
+                    <textbox id="expire_month" onchange="g.payment_blob.cc_args.expire_month = event.target.value" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.patron.bill_cc_info.year_expire.value;"/>
+                    <textbox id="expire_year" onchange="g.payment_blob.cc_args.expire_year = event.target.value" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.patron.bill_cc_info.approval_code.value;"/>
+                    <textbox id="approval_code" onchange="g.payment_blob.cc_args.approval_code = event.target.value" context="clipboard"/>
+                </row>
+                <row>
+                    <label value="&staff.patron.bill_cc_info.note.value;"/>
+                    <textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true" context="clipboard"/>
+                </row>
+            </rows>
+        </grid>
+        <hbox>
+            <spacer flex="1"/>
+            <button label="&staff.patron.bill_cc_info.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_cc_info.cancel.accesskey;"/>
+            <button label="&staff.patron.bill_cc_info.submit.label;" oncommand="info_finish(); window.close();" accesskey="&staff.patron.bill_cc_info.submit.accesskey;"/>
+        </hbox>
+    </groupbox>
 
 </window>
 

@@ -16,85 +16,85 @@
 <?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_offline.xul"?>
 
 <window id="offline_win" sizemode="maximized"
-	onload="try { my_init(); } catch(E) { alert(E); }"
-	xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); } catch(E) { alert(E); }"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		var offlineStrings;
+    <script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        var offlineStrings;
 
-		function my_init() {
-			try {
-				offlineStrings = document.getElementById('offlineStrings');
+        function my_init() {
+            try {
+                offlineStrings = document.getElementById('offlineStrings');
 
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw(offlineStrings.getString('common.jsan.missing')); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('..');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for offline.xul');
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        if (typeof JSAN == 'undefined') { throw(offlineStrings.getString('common.jsan.missing')); }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('..');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for offline.xul');
 
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name(offlineStrings.getString('circ.standalone')); } catch(E) { alert(E); }
-				}
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                    try { window.xulG.set_tab_name(offlineStrings.getString('circ.standalone')); } catch(E) { alert(E); }
+                }
 
-				g.cgi = new CGI();
+                g.cgi = new CGI();
 
-				JSAN.use('circ.offline'); g.offline = new circ.offline();
+                JSAN.use('circ.offline'); g.offline = new circ.offline();
 
-				g.offline.init();
+                g.offline.init();
 
 
-				JSAN.use('util.date');
-				
-				function update_clock() {
-					/* I18N to-do: enable localized date formats */
-					var today = util.date.formatted_date(new Date(),"%F %H:%M:%s");
-					document.getElementById('today').setAttribute('label',today);
-					setTimeout(update_clock,1);
-				}
+                JSAN.use('util.date');
+                
+                function update_clock() {
+                    /* I18N to-do: enable localized date formats */
+                    var today = util.date.formatted_date(new Date(),"%F %H:%M:%s");
+                    document.getElementById('today').setAttribute('label',today);
+                    setTimeout(update_clock,1);
+                }
 
-				update_clock();
+                update_clock();
 
-			} catch(E) {
-				var err_msg = offlineStrings.getFormattedString('common.exception', ["circ/offline.xul", E]);
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
+            } catch(E) {
+                var err_msg = offlineStrings.getFormattedString('common.exception', ["circ/offline.xul", E]);
+                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                alert(err_msg);
+            }
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
     <messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
-	<groupbox flex="1" class="my_overflow">
-		<caption label="&staff.circ.offline.main.label;"/>
-		<hbox id="nav">
-			<button id="today" onclick="alert('&common.unimplemented;');" tooltiptext="&staff.circ.offline.server_time.tooltiptext;"/>
-			<spacer flex="1"/>
-			<button id="cmd_checkout" label="&staff.circ.offline.cmd_checkout.label;" accesskey="&staff.circ.offline.cmd_checkout.accesskey;"/>
-			<button id="cmd_renew" label="&staff.circ.offline.cmd_renew.label;" accesskey="&staff.circ.offline.cmd_renew.accesskey;"/>
-			<button id="cmd_in_house_use" label="&staff.circ.offline.cmd_in_house_use.label;" accesskey="&staff.circ.offline.cmd_in_house_use.accesskey;"/>
-			<button id="cmd_checkin" label="&staff.circ.offline.cmd_checkin.label;" accesskey="&staff.circ.offline.cmd_checkin.accesskey;"/>
-			<button id="cmd_register_patron" label="&staff.circ.offline.cmd_register_patron.label;" accesskey="&staff.circ.offline.cmd_register_patron.accesskey;"/>
-			<button id="cmd_print_last_receipt" label="&staff.circ.offline.cmd_print_last_receipt.label;" accesskey="&staff.circ.offline.cmd_print_last_receipt.accesskey;"/>
-			<button id="cmd_exit" label="&staff.circ.offline.cmd_exit.label;" accesskey="&staff.circ.offline.cmd_exit.accesskey;"/>
-		</hbox>
-		<deck id="main" style="border: solid thin red; background-color: #FFAAAA;" flex="1">
-			<vbox flex="1">
-			</vbox>
-		</deck>
-	</groupbox>
+    <groupbox flex="1" class="my_overflow">
+        <caption label="&staff.circ.offline.main.label;"/>
+        <hbox id="nav">
+            <button id="today" onclick="alert('&common.unimplemented;');" tooltiptext="&staff.circ.offline.server_time.tooltiptext;"/>
+            <spacer flex="1"/>
+            <button id="cmd_checkout" label="&staff.circ.offline.cmd_checkout.label;" accesskey="&staff.circ.offline.cmd_checkout.accesskey;"/>
+            <button id="cmd_renew" label="&staff.circ.offline.cmd_renew.label;" accesskey="&staff.circ.offline.cmd_renew.accesskey;"/>
+            <button id="cmd_in_house_use" label="&staff.circ.offline.cmd_in_house_use.label;" accesskey="&staff.circ.offline.cmd_in_house_use.accesskey;"/>
+            <button id="cmd_checkin" label="&staff.circ.offline.cmd_checkin.label;" accesskey="&staff.circ.offline.cmd_checkin.accesskey;"/>
+            <button id="cmd_register_patron" label="&staff.circ.offline.cmd_register_patron.label;" accesskey="&staff.circ.offline.cmd_register_patron.accesskey;"/>
+            <button id="cmd_print_last_receipt" label="&staff.circ.offline.cmd_print_last_receipt.label;" accesskey="&staff.circ.offline.cmd_print_last_receipt.accesskey;"/>
+            <button id="cmd_exit" label="&staff.circ.offline.cmd_exit.label;" accesskey="&staff.circ.offline.cmd_exit.accesskey;"/>
+        </hbox>
+        <deck id="main" style="border: solid thin red; background-color: #FFAAAA;" flex="1">
+            <vbox flex="1">
+            </vbox>
+        </deck>
+    </groupbox>
 
 </window>
 

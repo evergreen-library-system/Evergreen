@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="record_buckets_overlay" 
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script>dump('loading record_buckets_overlay.xul\n');</script>
 
@@ -13,18 +13,18 @@
 <commandset id="record_buckets_cmds" />
 
 <box id="record_buckets_main" flex="1" orient="vertical" class="my_overflow">
-	<vbox id="cmvb1" flex="1"/>
+    <vbox id="cmvb1" flex="1"/>
 </box>
 
 <vbox id="cmvb1" flex="1">
     <tabbox id="record_buckets_tabbox" flex="1" oils_persist="selectedIndex">
         <tabs>
             <tab id="record_query_tab" label="&staff.cat.record_buckets_overlay.record_query_tab.label;"
-									accesskey="&staff.cat.record_buckets_overlay.record_query_tab.accesskey;"/>
+                                    accesskey="&staff.cat.record_buckets_overlay.record_query_tab.accesskey;"/>
             <tab id="pending_records_tab" label="&staff.cat.record_buckets_overlay.pending_records_tab.label;"
-									accesskey="&staff.cat.record_buckets_overlay.pending_records_tab.accesskey;"/>
+                                    accesskey="&staff.cat.record_buckets_overlay.pending_records_tab.accesskey;"/>
             <tab id="bucket_view_tab" label="&staff.cat.record_buckets_overlay.bucket_view_tab.label;"
-								 accesskey="&staff.cat.record_buckets_overlay.bucket_view_tab.accesskey;" />
+                                 accesskey="&staff.cat.record_buckets_overlay.bucket_view_tab.accesskey;" />
         </tabs>
         <tabpanels flex="1">
             <tabpanel id="record_query_panel">
@@ -84,99 +84,99 @@
 </hbox>
 
 <hbox id="record_query_bottom_ui">
-	<button id="record_query_list_actions" oncommand="this.firstChild.showPopup();"
+    <button id="record_query_list_actions" oncommand="this.firstChild.showPopup();"
         label="&staff.cat.record_buckets_overlay.query_list_actions.label;" 
         accesskey="&staff.cat.record_buckets_overlay.query_list_actions.accesskey;" 
         type="menu" allowevents="true">
         <menupopup id="record_query_list_actions_popup">
-        	<menuitem command="sel_clip0" label="&staff.cat.record_buckets_overlay.menuitem.sel_clip0.label;" disabled="true" />
-    	    <menuitem command="cmd_record_query_csv_to_printer" label="&staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label;" />
-        	<menuitem command="cmd_record_query_csv_to_clipboard" label="&staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label;" accesskey=""/>
-        	<menuitem command="cmd_record_query_csv_to_file" label="&staff.cat.record_buckets_overlay.menuitem.query_csv_to_file.label;" accesskey=""/>
-	        <menuitem command="save_columns0" label="&staff.cat.record_buckets_overlay.menuitem.save_columns0.label;" />
+            <menuitem command="sel_clip0" label="&staff.cat.record_buckets_overlay.menuitem.sel_clip0.label;" disabled="true" />
+            <menuitem command="cmd_record_query_csv_to_printer" label="&staff.cat.record_buckets_overlay.menuitem.query_csv_to_printer.label;" />
+            <menuitem command="cmd_record_query_csv_to_clipboard" label="&staff.cat.record_buckets_overlay.menuitem.query_csv_to_clipboard.label;" accesskey=""/>
+            <menuitem command="cmd_record_query_csv_to_file" label="&staff.cat.record_buckets_overlay.menuitem.query_csv_to_file.label;" accesskey=""/>
+            <menuitem command="save_columns0" label="&staff.cat.record_buckets_overlay.menuitem.save_columns0.label;" />
         </menupopup>
     </button>
-	<spacer flex="1"/>
-	<button command="cmd_add_all_query_to_pending"
+    <spacer flex="1"/>
+    <button command="cmd_add_all_query_to_pending"
       label="&staff.cat.record_buckets_overlay.add_all_query_to_pending.label;"
-		  accesskey="" image="/xul/server/skin/media/images/right_arrow.png"/>
-	<button command="cmd_add_sel_query_to_pending"
-	  label="&staff.cat.record_buckets_overlay.add_sel_query_to_pending.label;"
-		accesskey="" image="/xul/server/skin/media/images/right_arrow.png"/>
+          accesskey="" image="/xul/server/skin/media/images/right_arrow.png"/>
+    <button command="cmd_add_sel_query_to_pending"
+      label="&staff.cat.record_buckets_overlay.add_sel_query_to_pending.label;"
+        accesskey="" image="/xul/server/skin/media/images/right_arrow.png"/>
 </hbox>
 
 <hbox id="pending_buckets_bottom_ui">
-	<button id="pending_buckets_list_actions" oncommand="this.firstChild.showPopup();"
+    <button id="pending_buckets_list_actions" oncommand="this.firstChild.showPopup();"
       label="&staff.cat.record_buckets_overlay.pending_buckets_list_actions.label;"
       accesskey="&staff.cat.record_buckets_overlay.pending_buckets_list_actions.accesskey;"
       type="menu" allowevents="true">
         <menupopup id="pending_buckets_list_actions_popup">
-        	<menuitem command="sel_clip1" label="&staff.cat.record_buckets_overlay.menuitem.sel_clip1.label;" disabled="true" />
-    	    <menuitem command="cmd_pending_buckets_csv_to_printer" label="&staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.label;" />
-        	<menuitem command="cmd_pending_buckets_csv_to_clipboard" label="&staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.label;" accesskey=""/>
-        	<menuitem command="cmd_pending_buckets_csv_to_file" label="&staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_file.label;" accesskey=""/>
-	        <menuitem command="save_columns1" label="&staff.cat.record_buckets_overlay.menuitem.save_columns1.label;" />
+            <menuitem command="sel_clip1" label="&staff.cat.record_buckets_overlay.menuitem.sel_clip1.label;" disabled="true" />
+            <menuitem command="cmd_pending_buckets_csv_to_printer" label="&staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_printer.label;" />
+            <menuitem command="cmd_pending_buckets_csv_to_clipboard" label="&staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_clipboard.label;" accesskey=""/>
+            <menuitem command="cmd_pending_buckets_csv_to_file" label="&staff.cat.record_buckets_overlay.menuitem.pending_buckets_csv_to_file.label;" accesskey=""/>
+            <menuitem command="save_columns1" label="&staff.cat.record_buckets_overlay.menuitem.save_columns1.label;" />
         </menupopup>
     </button>
-	<spacer flex="1"/>
-	<button command="cmd_add_all_pending_to_record_bucket"
+    <spacer flex="1"/>
+    <button command="cmd_add_all_pending_to_record_bucket"
       label="&staff.cat.record_buckets_overlay.add_all_pending_to_record_bucket.label;"
       accesskey="&staff.cat.record_buckets_overlay.add_all_pending_to_record_bucket.accesskey;"
       image="/xul/server/skin/media/images/right_arrow.png"/>
-	<button command="cmd_add_sel_pending_to_record_bucket"
+    <button command="cmd_add_sel_pending_to_record_bucket"
       label="&staff.cat.record_buckets_overlay.add_sel_pending_to_record_bucket.label;"
       accesskey="" image="/xul/server/skin/media/images/right_arrow.png"/>
 </hbox>
 
 <hbox id="record_buckets_top_ui">
-	<button command="cmd_record_buckets_delete_item"
+    <button command="cmd_record_buckets_delete_item"
       label="&staff.cat.record_buckets_overlay.record_buckets_del_item.label;"
       disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
-	<button command="cmd_record_buckets_to_pending_buckets"
+    <button command="cmd_record_buckets_to_pending_buckets"
       label="&staff.cat.record_buckets_overlay.record_buckets_to_pending_buckets.label;"
       disabled="true" image="/xul/server/skin/media/images/left_arrow.png"/>
 </hbox>
 
 <hbox id="info_box" hidden="true" style="font-size: large;">
-	<label value="&staff.cat.record_buckets_overlay.info_box.label;"/>
-	<label id="bucket_number" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
-	<label id="bucket_name" style="color: blue;"/>
-	<label value="&staff.cat.record_buckets_overlay.bucket_owner.label;"/>
-	<label id="bucket_owner" style="color: blue;"/>
+    <label value="&staff.cat.record_buckets_overlay.info_box.label;"/>
+    <label id="bucket_number" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
+    <label id="bucket_name" style="color: blue;"/>
+    <label value="&staff.cat.record_buckets_overlay.bucket_owner.label;"/>
+    <label id="bucket_owner" style="color: blue;"/>
 </hbox>
 
 <hbox id="record_buckets_bottom_ui">
-	<button id="record_buckets_list_actions" oncommand="this.firstChild.showPopup();"
+    <button id="record_buckets_list_actions" oncommand="this.firstChild.showPopup();"
       label="&staff.cat.record_buckets_overlay.record_buckets_list_actions.label;"
       accesskey="&staff.cat.record_buckets_overlay.record_buckets_list_actions.accesskey;"
       type="menu" allowevents="true" disabled="true">
         <menupopup id="record_buckets_list_actions_popup">
-	        <menuitem command="sel_clip2"
-						label="&staff.cat.record_buckets_overlay.menuitem.sel_clip2.label;" disabled="true" />
-    	    <menuitem command="cmd_record_buckets_csv_to_printer"
-						label="&staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label;" />
-						<menuitem command="cmd_record_buckets_csv_to_clipboard"
-							label="&staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.label;" />
-						<menuitem command="cmd_record_buckets_csv_to_file"
-							label="&staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_file.label;" accesskey=""/>
-	        <menuitem command="save_columns2" label="&staff.cat.record_buckets_overlay.menuitem.save_columns2.label;" />
+            <menuitem command="sel_clip2"
+                        label="&staff.cat.record_buckets_overlay.menuitem.sel_clip2.label;" disabled="true" />
+            <menuitem command="cmd_record_buckets_csv_to_printer"
+                        label="&staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_printer.label;" />
+                        <menuitem command="cmd_record_buckets_csv_to_clipboard"
+                            label="&staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_clipboard.label;" />
+                        <menuitem command="cmd_record_buckets_csv_to_file"
+                            label="&staff.cat.record_buckets_overlay.menuitem.record_buckets_csv_to_file.label;" accesskey=""/>
+            <menuitem command="save_columns2" label="&staff.cat.record_buckets_overlay.menuitem.save_columns2.label;" />
         </menupopup>
     </button>
-	<spacer flex="1"/>
-	<hbox style="background: grey">
-		<vbox><spacer flex="1"/><label value="&staff.cat.record_buckets_overlay.box.label;" style="font-weight: bold"/><spacer flex="1"/></vbox>
-		<button command="cmd_sel_opac" label="&staff.cat.record_buckets_overlay.sel_opac.label;" accesskey=""/>
-		<button command="cmd_delete_records" label="&staff.cat.record_buckets_overlay.del_records.label;"/>
-		<button command="cmd_merge_records" label="&staff.cat.record_buckets_overlay.merge_records.label;"/>
-		<button id="record_buckets_export_records" label="&staff.cat.record_buckets_overlay.export_records.label;" type="menu" allowevents="true" disabled="true">
-			<menupopup id="record_buckets_export_record_types" allowevents="true">
-				<menuitem command="cmd_export_records_usmarc" label="&staff.cat.record_buckets_overlay.menuitem.export_usmarc.label;"/>
-				<menuitem command="cmd_export_records_unimarc" label="&staff.cat.record_buckets_overlay.menuitem.export_unimarc.label;"/>
-				<menuitem command="cmd_export_records_xml" label="&staff.cat.record_buckets_overlay.menuitem.export_xml.label;"/>
-				<menuitem command="cmd_export_records_bre" label="&staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label;"/>
-			</menupopup>
-		</button>
-	</hbox>
+    <spacer flex="1"/>
+    <hbox style="background: grey">
+        <vbox><spacer flex="1"/><label value="&staff.cat.record_buckets_overlay.box.label;" style="font-weight: bold"/><spacer flex="1"/></vbox>
+        <button command="cmd_sel_opac" label="&staff.cat.record_buckets_overlay.sel_opac.label;" accesskey=""/>
+        <button command="cmd_delete_records" label="&staff.cat.record_buckets_overlay.del_records.label;"/>
+        <button command="cmd_merge_records" label="&staff.cat.record_buckets_overlay.merge_records.label;"/>
+        <button id="record_buckets_export_records" label="&staff.cat.record_buckets_overlay.export_records.label;" type="menu" allowevents="true" disabled="true">
+            <menupopup id="record_buckets_export_record_types" allowevents="true">
+                <menuitem command="cmd_export_records_usmarc" label="&staff.cat.record_buckets_overlay.menuitem.export_usmarc.label;"/>
+                <menuitem command="cmd_export_records_unimarc" label="&staff.cat.record_buckets_overlay.menuitem.export_unimarc.label;"/>
+                <menuitem command="cmd_export_records_xml" label="&staff.cat.record_buckets_overlay.menuitem.export_xml.label;"/>
+                <menuitem command="cmd_export_records_bre" label="&staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label;"/>
+            </menupopup>
+        </button>
+    </hbox>
 </hbox>
 
 </overlay>

@@ -2,98 +2,98 @@
 
 <!-- LOCALIZATION -->
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <overlay id="renew_overlay" 
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script>dump('loading renew_overlay.xul\n');</script>
 
 <commandset id="renew_cmds" />
 
 <popupset id="copy_status_popupset">
-	<popup id="copy_status_actions" position="at_pointer"> 
-		<menuitem command="sel_clip" label="&staff.circ.renew_overlay.sel_clip.label;" accesskey="&staff.circ.renew_overlay.sel_clip.accesskey;" />
-		<menuitem command="sel_bucket" label="&staff.circ.renew_overlay.sel_bucket.label;" accesskey="&staff.circ.renew_overlay.sel_bucket.accesskey;"/>
-		<menuitem command="sel_opac" label="&staff.circ.renew_overlay.sel_opac.label;" accesskey="&staff.circ.renew_overlay.sel_opac.accesskey;" />
-		<menuitem command="sel_copy_details" label="&staff.circ.renew_overlay.sel_copy_details.label;" accesskey="&staff.circ.renew_overlay.sel_copy_details.accesskey;" />
-		<menuitem command="sel_patron" label="&staff.circ.renew_overlay.sel_patron.label;" accesskey="&staff.circ.renew_overlay.sel_patron.accesskey;"/>
-		<menuitem command="sel_last_patron" label="&staff.circ.renew_overlay.sel_last_patron.label;" accesskey="&staff.circ.renew_overlay.sel_last_patron.accesskey;"/>
-		<menuseparator/>
-		<menuitem command="sel_edit" label="&staff.circ.renew_overlay.sel_edit.label;" accesskey="&staff.circ.renew_overlay.sel_edit.accesskey;" />
-		<menuseparator />
-		<menuitem command="sel_mark_items_damaged" label="&staff.circ.renew_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.renew_overlay.sel_mark_items_damaged.accesskey;"/>
-		<menuseparator />
-		<menuitem command="sel_transit_abort" label="&staff.circ.renew_overlay.sel_transit_abort.label;" />
-		<menuseparator />
-		<menuitem command="sel_spine" label="&staff.circ.renew_overlay.sel_spine.label;" accesskey="&staff.circ.renew_overlay.sel_spine.accesskey;"/>
-		<menuitem command="save_columns" label="&staff.circ.renew_overlay.save_columns.label;"/>
-	</popup>
+    <popup id="copy_status_actions" position="at_pointer"> 
+        <menuitem command="sel_clip" label="&staff.circ.renew_overlay.sel_clip.label;" accesskey="&staff.circ.renew_overlay.sel_clip.accesskey;" />
+        <menuitem command="sel_bucket" label="&staff.circ.renew_overlay.sel_bucket.label;" accesskey="&staff.circ.renew_overlay.sel_bucket.accesskey;"/>
+        <menuitem command="sel_opac" label="&staff.circ.renew_overlay.sel_opac.label;" accesskey="&staff.circ.renew_overlay.sel_opac.accesskey;" />
+        <menuitem command="sel_copy_details" label="&staff.circ.renew_overlay.sel_copy_details.label;" accesskey="&staff.circ.renew_overlay.sel_copy_details.accesskey;" />
+        <menuitem command="sel_patron" label="&staff.circ.renew_overlay.sel_patron.label;" accesskey="&staff.circ.renew_overlay.sel_patron.accesskey;"/>
+        <menuitem command="sel_last_patron" label="&staff.circ.renew_overlay.sel_last_patron.label;" accesskey="&staff.circ.renew_overlay.sel_last_patron.accesskey;"/>
+        <menuseparator/>
+        <menuitem command="sel_edit" label="&staff.circ.renew_overlay.sel_edit.label;" accesskey="&staff.circ.renew_overlay.sel_edit.accesskey;" />
+        <menuseparator />
+        <menuitem command="sel_mark_items_damaged" label="&staff.circ.renew_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.renew_overlay.sel_mark_items_damaged.accesskey;"/>
+        <menuseparator />
+        <menuitem command="sel_transit_abort" label="&staff.circ.renew_overlay.sel_transit_abort.label;" />
+        <menuseparator />
+        <menuitem command="sel_spine" label="&staff.circ.renew_overlay.sel_spine.label;" accesskey="&staff.circ.renew_overlay.sel_spine.accesskey;"/>
+        <menuitem command="save_columns" label="&staff.circ.renew_overlay.save_columns.label;"/>
+    </popup>
 </popupset>
 
 <box id="renew_main" flex="1" orient="vertical" class="my_overflow">
-	<vbox id="cmvb1" flex="1"/>
+    <vbox id="cmvb1" flex="1"/>
 </box>
 
 <vbox id="cmvb1" flex="1">
-	<hbox id="background" style="background-color: orange;">
-		<spacer flex="1"/>
-		<vbox>
-			<label id="background-text" value="&staff.circ.renew_overlay.background_text;" style="font-size: x-large; font-weight: bold;"/>
-		</vbox>
-		<spacer flex="1"/>
-	</hbox>
-	<groupbox id="cmgb1" flex="2">
-		<caption id="caption" label="&staff.circ.renew.caption;" />
-		<hbox id="renew_top_ui" />
-		<tree id="renew_list" flex="1" enableColumnDrag="true" context="copy_status_actions" />
-		<hbox id="renew_bottom_ui" />
-	</groupbox>
+    <hbox id="background" style="background-color: orange;">
+        <spacer flex="1"/>
+        <vbox>
+            <label id="background-text" value="&staff.circ.renew_overlay.background_text;" style="font-size: x-large; font-weight: bold;"/>
+        </vbox>
+        <spacer flex="1"/>
+    </hbox>
+    <groupbox id="cmgb1" flex="2">
+        <caption id="caption" label="&staff.circ.renew.caption;" />
+        <hbox id="renew_top_ui" />
+        <tree id="renew_list" flex="1" enableColumnDrag="true" context="copy_status_actions" />
+        <hbox id="renew_bottom_ui" />
+    </groupbox>
 </vbox>
 
 <hbox id="renew_top_ui">
-	<vbox>
-		<hbox>
-			<label id="renew_scan_barcode_label" 
-				value="&staff.circ.renew.scan.label;" 
-				accesskey="&staff.circ.renew.scan.accesskey;" 
-				control="renew_barcode_entry_textbox"/>
-			<textbox id="renew_barcode_entry_textbox" context="clipboard"/>
-			<button id="renew_submit_barcode_button" 
-				label="&staff.circ.renew.submit.label;" 
-				command="cmd_renew_submit_barcode"
-				oldaccesskey="&staff.circ.renew.submit.accesskey;"/>
-		</hbox>
-		<label id="no_change_label" value="" style="color: red" hidden="true"/>
-	</vbox>
-	<spacer flex="1"/>
-	<vbox>
-		<hbox>
-			<menubar>
-			<menu label="&staff.circ.renew_overlay.actions.label;" accesskey="&staff.circ.renew_overlay.actions.accesskey;">
-				<menupopup>
-					<menuitem command="sel_clip" label="&staff.circ.renew_overlay.sel_clip.label;" accesskey="&staff.circ.renew_overlay.sel_clip.accesskey;" />
-					<menuitem command="sel_bucket" label="&staff.circ.renew_overlay.sel_bucket.label;" accesskey="&staff.circ.renew_overlay.sel_bucket.accesskey;"/>
-					<menuitem command="sel_opac" label="&staff.circ.renew_overlay.sel_opac.label;" accesskey="&staff.circ.renew_overlay.sel_opac.accesskey;" />
-					<menuitem command="sel_copy_details" label="&staff.circ.renew_overlay.sel_copy_details.label;" accesskey="&staff.circ.renew_overlay.sel_copy_details.accesskey;" />
-					<menuitem command="sel_patron" label="&staff.circ.renew_overlay.sel_patron.label;" accesskey="&staff.circ.renew_overlay.sel_patron.accesskey;"/>
-					<menuitem command="sel_last_patron" label="&staff.circ.renew_overlay.sel_last_patron.label;" accesskey="&staff.circ.renew_overlay.sel_last_patron.accesskey;"/>
-					<menuseparator/>
-					<menuitem command="sel_edit" label="&staff.circ.renew_overlay.sel_edit.label;" accesskey="&staff.circ.renew_overlay.sel_edit.accesskey;" />
-					<menuseparator />
-					<menuitem command="sel_mark_items_damaged" label="&staff.circ.renew_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.renew_overlay.sel_mark_items_damaged.accesskey;"/>
-					<menuseparator />
-					<menuitem command="sel_transit_abort" label="&staff.circ.renew_overlay.sel_transit_abort.label;" />
-					<menuseparator />
-					<menuitem command="sel_spine" label="&staff.circ.renew_overlay.sel_spine.label;" accesskey="&staff.circ.renew_overlay.sel_spine.accesskey;"/>
-					<menuitem command="save_columns" label="&staff.circ.renew_overlay.save_columns.label;"/>
-				</menupopup>
-			</menu>
-			</menubar>
-		</hbox>
+    <vbox>
+        <hbox>
+            <label id="renew_scan_barcode_label" 
+                value="&staff.circ.renew.scan.label;" 
+                accesskey="&staff.circ.renew.scan.accesskey;" 
+                control="renew_barcode_entry_textbox"/>
+            <textbox id="renew_barcode_entry_textbox" context="clipboard"/>
+            <button id="renew_submit_barcode_button" 
+                label="&staff.circ.renew.submit.label;" 
+                command="cmd_renew_submit_barcode"
+                oldaccesskey="&staff.circ.renew.submit.accesskey;"/>
+        </hbox>
+        <label id="no_change_label" value="" style="color: red" hidden="true"/>
+    </vbox>
+    <spacer flex="1"/>
+    <vbox>
+        <hbox>
+            <menubar>
+            <menu label="&staff.circ.renew_overlay.actions.label;" accesskey="&staff.circ.renew_overlay.actions.accesskey;">
+                <menupopup>
+                    <menuitem command="sel_clip" label="&staff.circ.renew_overlay.sel_clip.label;" accesskey="&staff.circ.renew_overlay.sel_clip.accesskey;" />
+                    <menuitem command="sel_bucket" label="&staff.circ.renew_overlay.sel_bucket.label;" accesskey="&staff.circ.renew_overlay.sel_bucket.accesskey;"/>
+                    <menuitem command="sel_opac" label="&staff.circ.renew_overlay.sel_opac.label;" accesskey="&staff.circ.renew_overlay.sel_opac.accesskey;" />
+                    <menuitem command="sel_copy_details" label="&staff.circ.renew_overlay.sel_copy_details.label;" accesskey="&staff.circ.renew_overlay.sel_copy_details.accesskey;" />
+                    <menuitem command="sel_patron" label="&staff.circ.renew_overlay.sel_patron.label;" accesskey="&staff.circ.renew_overlay.sel_patron.accesskey;"/>
+                    <menuitem command="sel_last_patron" label="&staff.circ.renew_overlay.sel_last_patron.label;" accesskey="&staff.circ.renew_overlay.sel_last_patron.accesskey;"/>
+                    <menuseparator/>
+                    <menuitem command="sel_edit" label="&staff.circ.renew_overlay.sel_edit.label;" accesskey="&staff.circ.renew_overlay.sel_edit.accesskey;" />
+                    <menuseparator />
+                    <menuitem command="sel_mark_items_damaged" label="&staff.circ.renew_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.renew_overlay.sel_mark_items_damaged.accesskey;"/>
+                    <menuseparator />
+                    <menuitem command="sel_transit_abort" label="&staff.circ.renew_overlay.sel_transit_abort.label;" />
+                    <menuseparator />
+                    <menuitem command="sel_spine" label="&staff.circ.renew_overlay.sel_spine.label;" accesskey="&staff.circ.renew_overlay.sel_spine.accesskey;"/>
+                    <menuitem command="save_columns" label="&staff.circ.renew_overlay.save_columns.label;"/>
+                </menupopup>
+            </menu>
+            </menubar>
+        </hbox>
         <label id="fine_tally" value="" amount="0.00" style="color: red" hidden="true" />
-	</vbox>
+    </vbox>
 
 </hbox>
 
@@ -103,21 +103,21 @@
         accesskey="&staff.generic.list_actions.accesskey;" 
         type="menu" allowevents="true">
         <menupopup id="list_actions_popup">
-        	<menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" disabled="true" />
-    	    <menuitem command="cmd_csv_to_printer" label="&staff.generic.list_actions.csv_to_printer.label;" accesskey="&staff.generic.list_actions.csv_to_printer.accesskey;" />
-        	<menuitem command="cmd_csv_to_clipboard" label="&staff.generic.list_actions.csv_to_clipboard.label;" accesskey="&staff.generic.list_actions.csv_to_clipboard.accesskey;" />
-        	<menuitem command="cmd_csv_to_file" label="&staff.generic.list_actions.csv_to_file.label;" accesskey="&staff.generic.list_actions.csv_to_file.accesskey;" />
-	        <menuitem command="save_columns" label="&staff.generic.list_actions.save_columns.label;" accesskey="&staff.generic.list_actions.save_columns.accesskey;" />
+            <menuitem command="sel_clip" label="&staff.generic.list_actions.sel_clip.label;" accesskey="&staff.generic.list_actions.sel_clip.accesskey;" disabled="true" />
+            <menuitem command="cmd_csv_to_printer" label="&staff.generic.list_actions.csv_to_printer.label;" accesskey="&staff.generic.list_actions.csv_to_printer.accesskey;" />
+            <menuitem command="cmd_csv_to_clipboard" label="&staff.generic.list_actions.csv_to_clipboard.label;" accesskey="&staff.generic.list_actions.csv_to_clipboard.accesskey;" />
+            <menuitem command="cmd_csv_to_file" label="&staff.generic.list_actions.csv_to_file.label;" accesskey="&staff.generic.list_actions.csv_to_file.accesskey;" />
+            <menuitem command="save_columns" label="&staff.generic.list_actions.save_columns.label;" accesskey="&staff.generic.list_actions.save_columns.accesskey;" />
         </menupopup>
     </button>
 
-	<button id="renew_print" 
-		label="&staff.renew.print_receipt.label;" 
-		command="cmd_renew_print"
-		accesskey="&staff.renew.print_receipt.accesskey;"/>
-	<checkbox id="trim_list" label="&staff.circ.renew_overlay.trim_list.label;" checked="true" oils_persist="checked"/> 
-	<checkbox id="strict_barcode" label="&staff.circ.renew_overlay.strict_barcode.label;" checked="false" oils_persist="checked"/> 
-	<spacer id="pcii3s" flex="1"/>
+    <button id="renew_print" 
+        label="&staff.renew.print_receipt.label;" 
+        command="cmd_renew_print"
+        accesskey="&staff.renew.print_receipt.accesskey;"/>
+    <checkbox id="trim_list" label="&staff.circ.renew_overlay.trim_list.label;" checked="true" oils_persist="checked"/> 
+    <checkbox id="strict_barcode" label="&staff.circ.renew_overlay.strict_barcode.label;" checked="false" oils_persist="checked"/> 
+    <spacer id="pcii3s" flex="1"/>
 </hbox>
 
 </overlay>

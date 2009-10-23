@@ -14,7 +14,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -22,154 +22,154 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="copy_buckets_win" title="&staff.cat.copy_buckets_quick.title;"
-	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" oils_persist="height width"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" oils_persist="height width"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
-	<scripts id="openils_util_scripts"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function $(id) { return document.getElementById(id); }
-		function $c(n) { return document.createElement(n); }
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
+        function $c(n) { return document.createElement(n); }
 
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				if (typeof JSAN == 'undefined') {
-					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
-				}
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for copy_buckets.xul');
-				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+        function my_init() {
+            try {
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') {
+                    throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+                }
+                JSAN.errorLevel = "die"; // none, warn, or die
+                JSAN.addRepository('/xul/server/');
+                JSAN.use('util.error'); g.error = new util.error();
+                g.error.sdump('D_TRACE','my_init() for copy_buckets.xul');
+                JSAN.use('util.network'); g.network = new util.network();
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				g.copy_ids = xul_param(
-					'copy_ids',{
-						'concat' : true,
-						'JSON2js_if_cgi' : true,
-						'JSON2js_if_xpcom' : true,
-						'stash_name':'cb_temp_copy_ids',
-						'clear_xpcom' : true,
-					}
-				);
+                g.copy_ids = xul_param(
+                    'copy_ids',{
+                        'concat' : true,
+                        'JSON2js_if_cgi' : true,
+                        'JSON2js_if_xpcom' : true,
+                        'stash_name':'cb_temp_copy_ids',
+                        'clear_xpcom' : true,
+                    }
+                );
 
-				$('desc').appendChild(
-					document.createTextNode( 
-						(g.copy_ids.length == 1 ?
-							$('catStrings').getString('staff.cat.copy_buckets_quick.bucket_prompt') :
-							$('catStrings').getFormattedString('staff.cat.copy_buckets_quick.bucket_prompt.plural', [g.copy_ids.length]) 
-						) 
-					)
-				);
-				var robj = g.network.simple_request('BUCKET_RETRIEVE_VIA_USER',[ ses(), g.data.list.au[0].id() ]);
-				if (typeof robj.ilsevent != 'undefined') throw(robj);
+                $('desc').appendChild(
+                    document.createTextNode( 
+                        (g.copy_ids.length == 1 ?
+                            $('catStrings').getString('staff.cat.copy_buckets_quick.bucket_prompt') :
+                            $('catStrings').getFormattedString('staff.cat.copy_buckets_quick.bucket_prompt.plural', [g.copy_ids.length]) 
+                        ) 
+                    )
+                );
+                var robj = g.network.simple_request('BUCKET_RETRIEVE_VIA_USER',[ ses(), g.data.list.au[0].id() ]);
+                if (typeof robj.ilsevent != 'undefined') throw(robj);
 
-				for (var i = 0; i < robj.copy.length; i++) {
-					var listitem = $c('listitem');
-					listitem.setAttribute('label', robj.copy[i].name());
-					listitem.setAttribute('id', robj.copy[i].id());
-					$('bucket_list').appendChild(listitem);
-				}
+                for (var i = 0; i < robj.copy.length; i++) {
+                    var listitem = $c('listitem');
+                    listitem.setAttribute('label', robj.copy[i].name());
+                    listitem.setAttribute('id', robj.copy[i].id());
+                    $('bucket_list').appendChild(listitem);
+                }
 
-				try { $('bucket_list').selectedIndex = 0; } catch(E) { }
+                try { $('bucket_list').selectedIndex = 0; } catch(E) { }
 
-				$('bucket_list').focus();
+                $('bucket_list').focus();
 
-			} catch(E) {
-				try { 
-					g.error.standard_unexpected_error_alert('Trying to init copy_buckets_quick.xul',E); 
-				} catch(F) { 
-					alert(E); 
-				}
-			}
-		}
+            } catch(E) {
+                try { 
+                    g.error.standard_unexpected_error_alert('Trying to init copy_buckets_quick.xul',E); 
+                } catch(F) { 
+                    alert(E); 
+                }
+            }
+        }
 
-		g.new_bucket = function() {
-			try {
-				var name = prompt(
-					$('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt'),
-					'',
-					$('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title')
-				);
-				if (name) {
-					var bucket = new ccb();
-					bucket.btype('staff_client');
-					bucket.owner( g.data.list.au[0].id() );
-					bucket.name( name );
+        g.new_bucket = function() {
+            try {
+                var name = prompt(
+                    $('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt'),
+                    '',
+                    $('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title')
+                );
+                if (name) {
+                    var bucket = new ccb();
+                    bucket.btype('staff_client');
+                    bucket.owner( g.data.list.au[0].id() );
+                    bucket.name( name );
 
-					var bucket_id = g.network.simple_request('BUCKET_CREATE',[ses(),'copy',bucket]);
-					if (typeof bucket_id == 'object') throw bucket_id;
+                    var bucket_id = g.network.simple_request('BUCKET_CREATE',[ses(),'copy',bucket]);
+                    if (typeof bucket_id == 'object') throw bucket_id;
 
-					g.add_to_bucket(bucket_id);
-				}
-			} catch(E) {
-				g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error'), E);
-			}
-		}
+                    g.add_to_bucket(bucket_id);
+                }
+            } catch(E) {
+                g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error'), E);
+            }
+        }
 
-		g.add_to_bucket = function(b) {
-			var bucket_id;
-			if (b) {
-				bucket_id = b;
-			} else {
-				try {
-					if ($('bucket_list').selectedItem) bucket_id = $('bucket_list').selectedItem.getAttribute('id');
-				} catch(E) {
-				}
-			}
-			if (!bucket_id) return;
-			for (var i = 0; i < g.copy_ids.length; i++) {
-				var bucket_item = new ccbi();
-				bucket_item.isnew('1');
-				bucket_item.bucket(bucket_id);
-				bucket_item.target_copy( g.copy_ids[i] );
-				try {
-					var robj = g.network.simple_request('BUCKET_ITEM_CREATE', [ ses(), 'copy', bucket_item ]);
-					if (typeof robj == 'object') throw robj;
+        g.add_to_bucket = function(b) {
+            var bucket_id;
+            if (b) {
+                bucket_id = b;
+            } else {
+                try {
+                    if ($('bucket_list').selectedItem) bucket_id = $('bucket_list').selectedItem.getAttribute('id');
+                } catch(E) {
+                }
+            }
+            if (!bucket_id) return;
+            for (var i = 0; i < g.copy_ids.length; i++) {
+                var bucket_item = new ccbi();
+                bucket_item.isnew('1');
+                bucket_item.bucket(bucket_id);
+                bucket_item.target_copy( g.copy_ids[i] );
+                try {
+                    var robj = g.network.simple_request('BUCKET_ITEM_CREATE', [ ses(), 'copy', bucket_item ]);
+                    if (typeof robj == 'object') throw robj;
 
-				} catch(E) {
-					g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_buckets_quick.addition.error', [bucket_id, g.copy_ids[i]]), E);
-				}
-			}
-			window.close();
-		}
+                } catch(E) {
+                    g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_buckets_quick.addition.error', [bucket_id, g.copy_ids[i]]), E);
+                }
+            }
+            window.close();
+        }
 
-		g.advanced = function() {
-			JSAN.use('util.window'); var win = new util.window();
-			g.data.cb_temp_copy_ids = js2JSON( g.copy_ids ); g.data.stash('cb_temp_copy_ids');
-			win.open(urls.XUL_COPY_BUCKETS,'adv_copy_buckets','chrome,resizable,modal');
-			window.close();
-		}
+        g.advanced = function() {
+            JSAN.use('util.window'); var win = new util.window();
+            g.data.cb_temp_copy_ids = js2JSON( g.copy_ids ); g.data.stash('cb_temp_copy_ids');
+            win.open(urls.XUL_COPY_BUCKETS,'adv_copy_buckets','chrome,resizable,modal');
+            window.close();
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+    <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-	<vbox flex="1" style="overflow: auto">
-	<groupbox flex="1">
-		<caption label="&staff.cat.copy_buckets_quick.item_buckets.label;"/>
-		<description id="desc"/>
-		<listbox id="bucket_list" rows="5" flex="1" style="overflow: auto"/>
-		<hbox>
-			<button label="&staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.accesskey;" oncommand="g.add_to_bucket()"/>
-			<button label="&staff.cat.copy_buckets_quick.item_buckets.new_bucket.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey;" oncommand="g.new_bucket()"/>
-		</hbox>
-		<hbox>
-			<!--
-			<button label="Advanced" accesskey="v" oncommand="g.advanced()"/>
-			-->
-			<button label="&staff.cat.copy_buckets_quick.item_buckets.cancel.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey;" oncommand="window.close()"/>
-		</hbox>
-	</groupbox>
-	</vbox>
+    <vbox flex="1" style="overflow: auto">
+    <groupbox flex="1">
+        <caption label="&staff.cat.copy_buckets_quick.item_buckets.label;"/>
+        <description id="desc"/>
+        <listbox id="bucket_list" rows="5" flex="1" style="overflow: auto"/>
+        <hbox>
+            <button label="&staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.add_to_bucket.accesskey;" oncommand="g.add_to_bucket()"/>
+            <button label="&staff.cat.copy_buckets_quick.item_buckets.new_bucket.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.new_bucket.accesskey;" oncommand="g.new_bucket()"/>
+        </hbox>
+        <hbox>
+            <!--
+            <button label="Advanced" accesskey="v" oncommand="g.advanced()"/>
+            -->
+            <button label="&staff.cat.copy_buckets_quick.item_buckets.cancel.label;" accesskey="&staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey;" oncommand="window.close()"/>
+        </hbox>
+    </groupbox>
+    </vbox>
 
 </window>
 
