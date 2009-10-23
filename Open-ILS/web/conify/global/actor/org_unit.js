@@ -40,10 +40,9 @@ dojo.requireLocalization("openils.conify", "conify");
 var cgi = new CGI();
 var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
-var pCRUD = new OpenSRF.ClientSession('open-ils.pcrud');
 var pcrud = new openils.PermaCrud({ authtoken : ses });
 
-var current_ou, current_ou_hoo, ou_list_store, hoo_id;
+var current_ou, current_ou_hoo, ou_list_store;
 var dirtyStore = [];
 var virgin_ou_id = -1;
 
@@ -54,208 +53,111 @@ var aou_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 var highlighter = {};
 
 function status_update (markup) {
-	if (parent !== window && parent.status_update) parent.status_update( markup );
+    if (parent !== window && parent.status_update) parent.status_update( markup );
 }
 
 function save_org () {
 
-	new_kid_button.disabled = false;
-	save_ou_button.disabled = false;
-	delete_ou_button.disabled = false;
+    new_kid_button.disabled = false;
+    save_ou_button.disabled = false;
+    delete_ou_button.disabled = false;
 
-	var modified_ou = new aou().fromStoreItem( current_ou );
-	modified_ou.ischanged( 1 );
+    var modified_ou = new aou().fromStoreItem( current_ou );
+    modified_ou.ischanged ( 1 );
 
-	pcrud.update( modified_ou, {
+    pcrud.apply( modified_ou, {
         timeout : 10, // makes it synchronous
-		onerror : function (r) {
-			highlighter.editor_pane.red.play();
-			status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-		},
-		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				ou_list_store.setValue( current_ou, 'ischanged', 0 );
-				highlighter.editor_pane.green.play();
-				status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVE, [ou_list_store.getValue( current_ou, 'name' )] ) );
-			} else {
-				highlighter.editor_pane.red.play();
-				status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
-			}
-		},
+        onerror : function (r) {
+            highlighter.editor_pane.red.play();
+            status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+        },
+        oncomplete : function (r) {
+            var res = r.recv();
+            if ( res && res.content() ) {
+                ou_list_store.setValue( current_ou, 'ischanged', 0 );
+                highlighter.editor_pane.green.play();
+                status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVE, [ou_list_store.getValue( current_ou, 'name' )] ) );
+            } else {
+                highlighter.editor_pane.red.play();
+                status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_DATA, [ou_list_store.getValue( current_ou, 'name' )] ) );
+            }
+        },
     });
 
 }
-	
+    
 function hoo_load () {
-	save_hoo_button.disabled = false;
+    save_hoo_button.disabled = false;
 
-	hoo_id = pcrud.search( 'aouhoo',{id:ou_list_store.getValue( current_ou, 'id' )});
-	if (hoo_id.length == 0) {
-		current_ou_hoo = new aouhoo().fromHash({id:ou_list_store.getValue( current_ou, 'id' )});
-		for (var i = 0; i < 7; i++) {
-			current_ou_hoo['dow_' + i + '_open']('09:00:00');
-			current_ou_hoo['dow_' + i + '_close']('17:00:00');
-		}
-	} else {
-		current_ou_hoo = pcrud.retrieve( 'aouhoo', ou_list_store.getValue( current_ou, 'id' ), {
-			onerror : function (r) {
-				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_HOURS,[ou_list_store.getValue( current_ou, 'name' )]);
-			}
-		});
-	}
+    var hours_list = pcrud.search( 'aouhoo',{id:ou_list_store.getValue( current_ou, 'id' )});
 
-	for (var i = 0; i < 7; i++) {
-		window['dow_' + i + '_open'].setValue(
-			dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_open']() )
-		);
-		window['dow_' + i + '_close'].setValue(
-			dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_close']() )
-		);
-	}
+    if (hours_list.length) {
+        current_ou_hoo = hours_list[0];
+        current_ou_hoo.ischanged(1); // XXX why?
+    } else {
+        current_ou_hoo = new aouhoo().fromHash({
+            isnew   : 1,
+            id      : ou_list_store.getValue( current_ou, 'id' )
+        });
+        for (var i = 0; i < 7; i++) {
+            current_ou_hoo['dow_' + i + '_open']('09:00:00');
+            current_ou_hoo['dow_' + i + '_close']('17:00:00');
+        }
+    }
 
-	highlighter.hoo_pane.green.play();
+    for (var i = 0; i < 7; i++) {
+        window['dow_' + i + '_open'].setValue(
+            dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_open']() )
+        );
+        window['dow_' + i + '_close'].setValue(
+            dojo.date.stamp.fromISOString( 'T' + current_ou_hoo['dow_' + i + '_close']() )
+        );
+    }
+
+    highlighter.hoo_pane.green.play();
 }
 
+
 function addr_load () {
-	// empty result not coming through ...
 
-	save_ill_address.disabled = false;
-	save_holds_address.disabled = false;
-	save_mailing_address.disabled = false;
-	save_billing_address.disabled = false;
+    save_ill_address.disabled = false;
+    save_holds_address.disabled = false;
+    save_mailing_address.disabled = false;
+    save_billing_address.disabled = false;
 
-	if (ou_list_store.getValue( current_ou, 'billing_address' )) {
-		pCRUD.request({
-			method : 'open-ils.pcrud.retrieve.aoa',
-			params : [ ses, ou_list_store.getValue( current_ou, 'billing_address' ) ],
-			onerror : function (r) {
-				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )]);
-			},
-			oncomplete : function (r) {
-				current_billing_address = null;
+    atype_list = ['billing','mailing','holds','ill'];
+    for (var addr_idx in atype_list) {
 
-				var res = r.recv();
-				if (res) {
-					if (res.content()) current_billing_address = res.content();
-				}
+        var atype = atype_list[addr_idx];
+        var cur_var_name =  'current_' + atype + '_address';
 
-				if (!current_billing_address) {
-					current_billing_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
-					current_billing_address.isnew(1);
-				}
+        var this_addr = pcrud.search( 'aoa',{id:ou_list_store.getValue( current_ou, atype + '_address')});
 
-				set_addr_inputs('billing');
-				highlighter.addresses_pane.green.play();
-			}
-		}).send();
-	} else {
-		current_billing_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
-		current_billing_address.isnew(1);
-		set_addr_inputs('billing');
-	}
+        if (this_addr.length) {
+            window[cur_var_name] = this_addr[0];
+            window[cur_var_name].ischanged( 1 ); // XXX why?
+        } else {
+            window[cur_var_name] = new aoa().fromHash({
+                isnew       :   1,
+                org_unit    :   ou_list_store.getValue( current_ou, 'id' )
+            });
+        }
+        set_addr_inputs(atype);
+    }
 
-	if (ou_list_store.getValue( current_ou, 'mailing_address' )) {
-		pCRUD.request({
-			method : 'open-ils.pcrud.retrieve.aoa',
-			params : [ ses, ou_list_store.getValue( current_ou, 'mailing_address' ) ],
-			onerror : function (r) {
-				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_MAILING, [ou_list_store.getValue( current_ou, 'name' )]);
-			},
-			oncomplete : function (r) {
-				current_mailing_address = null;
-
-				var res = r.recv();
-				if (res) {
-					if (res.content()) current_mailing_address = res.content();
-				}
-
-				if (!current_mailing_address) {
-					current_mailing_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
-					current_mailing_address.isnew(1);
-				}
-
-				set_addr_inputs('mailing');
-				highlighter.addresses_pane.green.play();
-			}
-		}).send();
-	} else {
-		current_mailing_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
-		current_mailing_address.isnew(1);
-		set_addr_inputs('mailing');
-	}
-
-	if (ou_list_store.getValue( current_ou, 'holds_address' )) {
-		pCRUD.request({
-			method : 'open-ils.pcrud.retrieve.aoa',
-			params : [ ses, ou_list_store.getValue( current_ou, 'holds_address' ) ],
-			onerror : function (r) {
-				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )]);
-			},
-			oncomplete : function (r) {
-				current_holds_address = null;
-
-				var res = r.recv();
-				if (res) {
-					if (res.content()) current_holds_address = res.content();
-				}
-
-				if (!current_holds_address) {
-					current_holds_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
-					current_holds_address.isnew(1);
-				}
-
-				set_addr_inputs('holds');
-				highlighter.addresses_pane.green.play();
-			}
-		}).send();
-	} else {
-		current_holds_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
-		current_holds_address.isnew(1);
-		set_addr_inputs('holds');
-	}
-
-	if (ou_list_store.getValue( current_ou, 'ill_address' )) {
-		pCRUD.request({
-			method : 'open-ils.pcrud.retrieve.aoa',
-			params : [ ses, ou_list_store.getValue( current_ou, 'ill_address' ) ],
-			onerror : function (r) {
-				throw dojo.string.substitute(aou_strings.ERROR_FETCHING_ILL, [ou_list_store.getValue( current_ou, 'name' )]);
-			},
-			oncomplete : function (r) {
-				current_ill_address = null;
-
-				var res = r.recv();
-				if (res) {
-					if (res.content()) current_ill_address = res.content();
-				}
-
-				if (!current_ill_address) {
-					current_ill_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
-					current_ill_address.isnew(1);
-				}
-
-				set_addr_inputs('ill');
-				highlighter.addresses_pane.green.play();
-			}
-		}).send();
-	} else {
-		current_ill_address = new aoa().fromHash({org_unit:ou_list_store.getValue( current_ou, 'id' )});
-		current_ill_address.isnew(1);
-		set_addr_inputs('ill');
-	}
+    highlighter.addresses_pane.green.play();
 
 }
 
 function set_addr_inputs (type) {
-	window[type + '_addr_valid'].setChecked( window['current_' + type + '_address'].valid() == 't' ? true : false );
-	window[type + '_addr_type'].setValue( window['current_' + type + '_address'].address_type() || '' );
-	window[type + '_addr_street1'].setValue( window['current_' + type + '_address'].street1() || '' );
-	window[type + '_addr_street2'].setValue( window['current_' + type + '_address'].street2() || '' );
-	window[type + '_addr_city'].setValue( window['current_' + type + '_address'].city() || '' );
-	window[type + '_addr_county'].setValue( window['current_' + type + '_address'].county() || '' );
-	window[type + '_addr_country'].setValue( window['current_' + type + '_address'].country() || '' );
-	window[type + '_addr_state'].setValue( window['current_' + type + '_address'].state() || '' );
-	window[type + '_addr_post_code'].setValue( window['current_' + type + '_address'].post_code() || '' );
+    window[type + '_addr_valid'].setChecked( window['current_' + type + '_address'].valid() == 't' ? true : false );
+    window[type + '_addr_type'].setValue( window['current_' + type + '_address'].address_type() || '' );
+    window[type + '_addr_street1'].setValue( window['current_' + type + '_address'].street1() || '' );
+    window[type + '_addr_street2'].setValue( window['current_' + type + '_address'].street2() || '' );
+    window[type + '_addr_city'].setValue( window['current_' + type + '_address'].city() || '' );
+    window[type + '_addr_county'].setValue( window['current_' + type + '_address'].county() || '' );
+    window[type + '_addr_country'].setValue( window['current_' + type + '_address'].country() || '' );
+    window[type + '_addr_state'].setValue( window['current_' + type + '_address'].state() || '' );
+    window[type + '_addr_post_code'].setValue( window['current_' + type + '_address'].post_code() || '' );
 }
 
