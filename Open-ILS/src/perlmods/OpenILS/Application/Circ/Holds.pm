@@ -492,7 +492,7 @@ sub uncancel_hold {
 
     # if configured to reset the request time, also reset the expire time
     if($U->ou_ancestor_setting_value(
-        $hold->request_lib, 'circ.hold_reset_request_time_on_uncancel', $e)) {
+        $hold->request_lib, 'circ.holds.uncancel.reset_request_time', $e)) {
 
         $hold->request_time('now');
         my $interval = $U->ou_ancestor_setting_value($hold->request_lib, OILS_SETTING_HOLD_EXPIRE);
