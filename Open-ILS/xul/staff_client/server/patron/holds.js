@@ -40,6 +40,8 @@ patron.holds.prototype = {
         obj.shelf = params['shelf'];
         obj.tree_id = params['tree_id'];
 
+        var progressmeter = document.getElementById('progress');
+
         JSAN.use('circ.util');
         var columns = circ.util.hold_columns(
             {
@@ -316,12 +318,12 @@ patron.holds.prototype = {
                                 if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
                                 var selection = fancy_prompt_data.selection;
 
-                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;}).join(', ');
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg = '';
                                 if(obj.retrieve_ids.length > 1) {
-                                    msg = $("patronStrings").getformattedString('staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural', [hold_list, obj.data.hash.aout[selection].opac_label()])
+                                    msg = $("patronStrings").getformattedString('staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural', [hold_list.join(', '), obj.data.hash.aout[selection].opac_label()])
                                 } else {
-                                    msg = $("patronStrings").getformattedString('staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular', [hold_list, obj.data.hash.aout[selection].opac_label()])
+                                    msg = $("patronStrings").getformattedString('staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular', [hold_list.join(', '), obj.data.hash.aout[selection].opac_label()])
                                 }
 
                                 var r = obj.error.yns_alert(msg,
@@ -332,14 +334,7 @@ patron.holds.prototype = {
                                         $("commonStrings").getString('common.check_to_confirm')
                                 );
                                 if (r == 0) {
-                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
-                                        hold.selection_depth( obj.data.hash.aout[selection].depth() ); hold.ischanged('1');
-                                        hold = obj.flatten_copy(hold);
-                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
-                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
-                                    }
-                                    obj.clear_and_retrieve(true);
+                                    circ.util.batch_hold_update(hold_list, { 'selection_depth' : obj.data.hash.aout[selection].depth() }, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } });
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
@@ -402,12 +397,12 @@ patron.holds.prototype = {
                                 if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
                                 var pickup_lib = fancy_prompt_data.lib;
 
-                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;}).join(', ');
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg = '';
                                 if(obj.retrieve_ids.length > 1) {
-                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural',[hold_list, obj.data.hash.aou[pickup_lib].shortname()]);
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural',[hold_list.join(', '), obj.data.hash.aou[pickup_lib].shortname()]);
                                 } else {
-                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular',[hold_list, obj.data.hash.aou[pickup_lib].shortname()]);
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular',[hold_list.join(', '), obj.data.hash.aou[pickup_lib].shortname()]);
                                 }
                                 var r = obj.error.yns_alert(msg,
                                         $("patronStrings").getString('staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title'),
@@ -417,14 +412,7 @@ patron.holds.prototype = {
                                         $("commonStrings").getString('common.check_to_confirm')
                                 );
                                 if (r == 0) {
-                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
-                                        hold.pickup_lib(  pickup_lib ); hold.ischanged('1');
-                                        hold = obj.flatten_copy(hold);
-                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
-                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
-                                    }
-                                    obj.clear_and_retrieve(true);
+                                    circ.util.batch_hold_update(hold_list, { 'pickup_lib' : pickup_lib }, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } });
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
@@ -460,12 +448,12 @@ patron.holds.prototype = {
                                 if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
                                 var phone = fancy_prompt_data.phone;
 
-                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;}).join(', ');
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg = '';
                                 if(obj.retrieve_ids.length > 1) {
-                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.plural',[hold_list, phone]);
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.plural',[hold_list.join(', '), phone]);
                                 } else {
-                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.singular',[hold_list, phone]);
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.singular',[hold_list.join(', '), phone]);
                                 }
                                 var r = obj.error.yns_alert(msg,
                                         $("patronStrings").getString('staff.patron.holds.holds_edit_phone_notify.modifying_holds_title'),
@@ -475,14 +463,7 @@ patron.holds.prototype = {
                                         $("commonStrings").getString('common.check_to_confirm')
                                 );
                                 if (r == 0) {
-                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
-                                        hold.phone_notify(  phone ); hold.ischanged('1');
-                                        hold = obj.flatten_copy(hold);
-                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
-                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
-                                    }
-                                    obj.clear_and_retrieve(true);
+                                    circ.util.batch_hold_update(hold_list, { 'phone_notify' : phone }, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } });
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
@@ -518,19 +499,19 @@ patron.holds.prototype = {
                                 if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
                                 var email = fancy_prompt_data.fancy_submit == 'email' ? get_db_true() : get_db_false();
 
-                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg = '';
                                 if(get_bool(email)) {
                                     if(obj.retrieve_ids.length > 1) {
-                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.enable_email.plural', [hold_list]);
+                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.enable_email.plural', [hold_list.join(', ')]);
                                     } else {
-                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.enable_email.singular', [hold_list]);
+                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.enable_email.singular', [hold_list.join(', ')]);
                                     }
                                 } else {
                                     if(obj.retrieve_ids.length > 1) {
-                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.disable_email.plural', [hold_list]);
+                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.disable_email.plural', [hold_list.join(', ')]);
                                     } else {
-                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.disable_email.singular', [hold_list]);
+                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_edit_email_notify.disable_email.singular', [hold_list.join(', ')]);
                                     }
                                 }
 
@@ -542,14 +523,7 @@ patron.holds.prototype = {
                                         $("commonStrings").getString('common.check_to_confirm')
                                 );
                                 if (r == 0) {
-                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
-                                        hold.email_notify(  email ); hold.ischanged('1');
-                                        hold = obj.flatten_copy(hold);
-                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
-                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
-                                    }
-                                    obj.clear_and_retrieve(true);
+                                    circ.util.batch_hold_update(hold_list, { 'email_notify' : email }, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } });
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
@@ -560,11 +534,11 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             try {
-                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var r = obj.error.yns_alert(
                                     obj.retrieve_ids.length > 1 ?
-                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt.plural',[hold_list]) :
-                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt',[hold_list]),
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt.plural',[hold_list.join(', ')]) :
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.suspend.prompt',[hold_list.join(', ')]),
                                     document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds'),
                                     document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.yes'),
                                     document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.no'),
@@ -572,26 +546,23 @@ patron.holds.prototype = {
                                     document.getElementById('commonStrings').getString('common.confirm')
                                 );
                                 if (r == 0) {
-                                    var already_suspended = [];
+                                    var already_suspended = []; var filtered_hold_list = [];
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
                                         if ( get_bool( hold.frozen() ) ) {
                                             already_suspended.push( hold.id() );
                                             continue;
                                         }
-                                        hold.frozen('t');
-                                        hold.thaw_date(null);
-                                        hold.ischanged('1');
-                                        hold = obj.flatten_copy(hold);
-                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
-                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
+                                        filtered_hold_list.push( hold.id() );
                                     }
-                                    if (already_suspended.length == 1) {
-                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_suspended',[already_suspended[0]]) );
-                                    } else if (already_suspended.length > 1) {
-                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_suspended.plural',[already_suspended.join(', ')]) );
-                                    }
-                                    obj.clear_and_retrieve(true);
+                                    circ.util.batch_hold_update(filtered_hold_list, { 'frozen' : 't', 'thaw_date' : null }, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { 
+                                        if (already_suspended.length == 1) {
+                                            alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_suspended',[already_suspended[0]]) );
+                                        } else if (already_suspended.length > 1) {
+                                            alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_suspended.plural',[already_suspended.join(', ')]) );
+                                        }
+                                        obj.clear_and_retrieve(true); 
+                                    } });
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_suspended'),E);
@@ -602,11 +573,11 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             try {
-                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var r = obj.error.yns_alert(
                                     obj.retrieve_ids.length > 1 ?
-                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt.plural',[hold_list]) :
-                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt',[hold_list]),
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt.plural',[hold_list.join(', ')]) :
+                                    document.getElementById('circStrings').getFormattedString('staff.circ.holds.activate.prompt',[hold_list.join(', ')]),
                                     document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds'),
                                     document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.yes'),
                                     document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds.no'),
@@ -614,26 +585,23 @@ patron.holds.prototype = {
                                     document.getElementById('commonStrings').getString('common.confirm')
                                 );
                                 if (r == 0) {
-                                    var already_activated = [];
+                                    var already_activated = []; var filtered_hold_list = [];
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
                                         if ( ! get_bool( hold.frozen() ) ) {
                                             already_activated.push( hold.id() );
                                             continue;
                                         }
-                                        hold.frozen('f');
-                                        hold.thaw_date(null);
-                                        hold.ischanged('1');
-                                        hold = obj.flatten_copy(hold);
-                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
-                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
+                                        filtered_hold_list.push( hold.id() );
                                     }
-                                    if (already_activated.length == 1) {
-                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_activated',[already_activated[0]]) );
-                                    } else if (already_activated.length > 1) {
-                                        alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_activated.plural',[already_activated.join(', ')]) );
-                                    }
-                                    obj.clear_and_retrieve(true);
+                                    circ.util.batch_hold_update(filtered_hold_list, { 'frozen' : 'f', 'thaw_date' : null }, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { 
+                                        if (already_activated.length == 1) {
+                                            alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_activated',[already_activated[0]]) );
+                                        } else if (already_activated.length > 1) {
+                                            alert( document.getElementById('circStrings').getFormattedString('staff.circ.holds.already_activated.plural',[already_activated.join(', ')]) );
+                                        }
+                                        obj.clear_and_retrieve(true); 
+                                    } });
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_activated'),E);
@@ -658,9 +626,9 @@ patron.holds.prototype = {
                                     }
                                 }
 
-                                var hold_ids = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
-                                var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_ids]);
-                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_ids]);
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
+                                var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_list.join(', ')]);
+                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_list.join(', ')]);
                                 var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
                                 var value = 'YYYY-MM-DD';
                                 var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
@@ -674,15 +642,11 @@ patron.holds.prototype = {
                                     }
                                 }
                                 if (thaw_date || thaw_date == '') {
-                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
-                                        hold.frozen('t');
-                                        hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
-                                        hold = obj.flatten_copy(hold);
-                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
-                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
-                                    }
-                                    obj.clear_and_retrieve(true);
+                                    circ.util.batch_hold_update(
+                                        hold_list, 
+                                        { 'frozen' : 't', 'thaw_date' : thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') }, 
+                                        { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } }
+                                    );
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_modified'),E);
@@ -707,9 +671,9 @@ patron.holds.prototype = {
                                     }
                                 }
 
-                                var hold_ids = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
-                                var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_ids]);
-                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_ids]);
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
+                                var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_list.join(', ')]);
+                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_list.join(', ')]);
                                 var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
                                 var value = 'YYYY-MM-DD';
                                 var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
@@ -723,14 +687,11 @@ patron.holds.prototype = {
                                     }
                                 }
                                 if (expire_time || expire_time == '') {
-                                    for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        var hold = obj.holds_map[ obj.retrieve_ids[i].id ].hold;
-                                        hold.expire_time(  expire_time == '' ? null : util.date.formatted_date(expire_time + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
-                                        hold = obj.flatten_copy(hold);
-                                        var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
-                                        if (typeof robj.ilsevent != 'undefined') throw(robj);
-                                    }
-                                    obj.clear_and_retrieve(true);
+                                    circ.util.batch_hold_update(
+                                        hold_list, 
+                                        { 'expire_time' : expire_time == '' ? null : util.date.formatted_date(expire_time + ' 00:00:00','%{iso8601}') }, 
+                                        { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } }
+                                    );
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_modified'),E);
@@ -746,12 +707,12 @@ patron.holds.prototype = {
                             try {
                                 JSAN.use('util.functional');
 
-                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg = '';
                                 if(obj.retrieve_ids.length > 1) {
-                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_retarget.reset_hold_message.plural',[hold_list]);
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_retarget.reset_hold_message.plural',[hold_list.join(', ')]);
                                 } else {
-                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_retarget.reset_hold_message.singular',[hold_list]);
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_retarget.reset_hold_message.singular',[hold_list.join(', ')]);
                                 }
                                 var r = obj.error.yns_alert(msg,
                                         $("patronStrings").getString('staff.patron.holds.holds_retarget.reset_hold_title'),
@@ -780,12 +741,12 @@ patron.holds.prototype = {
                             try {
                                 JSAN.use('util.functional');
 
-                                var hold_list = util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ');
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg = '';
                                 if(obj.retrieve_ids.length > 1 ) {
-                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_hold_message.plural', [hold_list]);
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_hold_message.plural', [hold_list.join(', ')]);
                                 } else {
-                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_hold_message.singular', [hold_list]);
+                                    msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cancel.cancel_hold_message.singular', [hold_list.join(', ')]);
                                 }
 
                                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");

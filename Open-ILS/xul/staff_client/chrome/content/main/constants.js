@@ -115,6 +115,7 @@ const api = {
     'FM_AHR_CANCEL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.cancel' },
     'FM_AHR_UNCANCEL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.uncancel' },
     'FM_AHR_UPDATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.update' },
+    'FM_AHR_UPDATE_BATCH' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.update.batch' },
     'FM_AHR_RESET' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.reset' },
     'FM_AHR_STATUS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.status.retrieve' },
     'FM_AHRCC_PCRUD_SEARCH' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.search.ahrcc.atomic', 'secure' : false },

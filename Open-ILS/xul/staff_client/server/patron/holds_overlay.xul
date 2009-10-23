@@ -101,6 +101,7 @@
         <vbox id="lib_menu_placeholder" hidden="true"/>
         <button id="fetch_more" label="&staff.patron.holds_overlay.fetch_more.label;" accesskey="&staff.patron.holds_overlay.fetch_more.accesskey;" hidden="true"/>
     <spacer flex="1"/>
+        <progressmeter id="progress" type="determined" hidden="true" />
         <button id="alt_view_btn" command="cmd_alt_view" />
         <menubar>
             <menu label="&staff.patron.holds_overlay.actions_for_holds.label;" accesskey="&staff.patron.holds_overlay.actions_for_holds.accesskey;">

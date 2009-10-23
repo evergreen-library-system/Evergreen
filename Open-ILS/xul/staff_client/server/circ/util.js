@@ -7,7 +7,7 @@ circ.util = {};
 circ.util.EXPORT_OK    = [
     'offline_checkout_columns', 'offline_checkin_columns', 'offline_renew_columns', 'offline_inhouse_use_columns',
     'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_columns',
-    'show_last_few_circs', 'abort_transits', 'transit_columns', 'work_log_columns', 'renew_via_barcode', 'backdate_post_checkin'
+    'show_last_few_circs', 'abort_transits', 'transit_columns', 'work_log_columns', 'renew_via_barcode', 'backdate_post_checkin', 'batch_hold_update'
 ];
 circ.util.EXPORT_TAGS    = { ':all' : circ.util.EXPORT_OK };
 
@@ -2975,6 +2975,48 @@ circ.util.renew_via_barcode = function ( params, async ) {
         JSAN.use('util.error'); var error = new util.error();
         error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.renew_failed.error', [params.barcode]), E);
         return null;
+    }
+};
+
+circ.util.batch_hold_update = function ( hold_ids, field_changes, params ) {
+    try {
+        JSAN.use('util.sound'); var sound = new util.sound();
+        var change_list = []; var idx = -1; var bad_holds = [];
+        dojo.forEach(
+            hold_ids,
+            function(el) {
+                change_list.push( function(id,fc){ var clone = JSON2js(js2JSON(fc)); clone.id = id; return clone; }(el,field_changes) ); // Is there a better way to do this?
+            }
+        );
+        if (params.progressmeter) { params.progressmeter.value = 0; params.progressmeter.hidden = false; }
+        fieldmapper.standardRequest(
+            [ api.FM_AHR_UPDATE_BATCH.app, api.FM_AHR_UPDATE_BATCH.method ],
+            {   async: true,
+                params: [ses(), null, change_list],
+                onresponse: function(r) {
+                    idx++; 
+                    if (params.progressmeter) { params.progressmeter.value = Number( params.progressmeter.value ) + 100/hold_ids.length; }
+                    var result = r.recv().content();
+                    if (result != hold_ids[ idx ]) {
+                        bad_holds.push( { 'hold_id' : hold_ids[ idx ], 'result' : result } );
+                    }
+                },
+                oncomplete: function() {
+                    if (bad_holds.length > 0) {
+                        sound.circ_bad();
+                        alert( $('circStrings').getFormattedString('staff.circ.hold_update.hold_ids.failed',[ bad_holds.length ]) );
+                    } else {
+                        sound.circ_good();
+                    }
+                    if (typeof params.oncomplete == 'function') {
+                        params.oncomplete( bad_holds );
+                    }
+                    if (params.progressmeter) { params.progressmeter.value = 0; params.progressmeter.hidden = true; }
+                }
+            }
+        );
+    } catch(E) {
+        alert('Error in circ.util.js, circ.util.batch_hold_update(): ' + E);
     }
 };
 
