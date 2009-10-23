@@ -81,7 +81,7 @@
 
                             ou_list_store.onSet = function (item, attr, o, n) {
                                 if (attr == 'ischanged') return;
-                                if (n == o) return;
+                                if ((n == o) || ((o == null) && (n == ''))) return;
                                 this.setValue( item, 'ischanged', 1);
                             };
 
@@ -103,7 +103,7 @@
 
                                     if (confirmation) {
                                         for (var i in dirtyStore) {
-                                            window.current_ou = window.dirtyStore[i];
+                                            current_ou = window.dirtyStore[i];
                                             save_org(true);
                                         }
                                     }
@@ -349,26 +349,39 @@
 	
 									if (confirm(dojo.string.substitute(aou_strings.CONFIRM_DELETE, [current_ou.name]))) {
 										ou_list_store.setValue( current_ou, 'isdeleted', 1 );
-	
+
 										var modified_ou = new aou().fromStoreItem( current_ou );
 										modified_ou.isdeleted( 1 );
-	
-										pcrud.eliminate( modified_ou, {
+
+                                        var objs = [];
+                                        objs.push(modified_ou);
+										if (!current_billing_address.isnew()) {
+                                            current_billing_address.isdeleted( 1 );
+                                            objs.push(current_billing_address);
+                                        }
+										if (!current_mailing_address.isnew()) {
+                                            current_mailing_address.isdeleted( 1 );
+                                            objs.push(current_mailing_address);
+                                        }
+										if (!current_holds_address.isnew()) {
+                                            current_holds_address.isdeleted( 1 );
+                                            objs.push(current_holds_address);
+                                        }
+										if (!current_ill_address.isnew()) {
+                                            current_ill_address.isdeleted( 1 );
+                                            objs.push(current_ill_address);
+                                        }
+                                        if (!current_ou_hoo.isnew()) {
+                                            current_ou_hoo.isdeleted( 1 );
+                                            objs.push(current_ou_hoo);
+                                        }
+                                        pcrud.apply(objs, {
 											timeout : 10,
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
 												status_update(dojo.string.substitute(aou_strings.ERROR_DELETING, [old_name]));
 											},
 											oncomplete : function (r) {
-												ou_list_store.fetch({
-													query : { id : ou_list_store.getValue( current_ou, 'id' ) },
-													queryOptions : { deep : true },
-													onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-													scope : ou_list_store
-												});
-
-												current_ou = null;
-
 												new_kid_button.disabled = true;
 												save_ou_button.disabled = true;
 												delete_ou_button.disabled = true;
@@ -379,6 +392,20 @@
 													window["editor_pane_" + field].setValue( '' ); // unset the value
 													window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
 												}
+
+												ou_list_store.fetch({
+													query : { id : ou_list_store.getValue( current_ou, 'id' ) },
+													queryOptions : { deep : true },
+													onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { } },
+													scope : ou_list_store
+												});
+
+                                                current_billing_address = null;
+                                                current_mailing_address = null;
+                                                current_holds_address = null;
+                                                current_ill_address = null;
+                                                current_ou_hoo = null;
+												current_ou = null;
 
 												highlighter.editor_pane.green.play();
 												status_update(dojo.string.substitute(aou_strings.STATUS_DELETED, [old_name]));
@@ -399,15 +426,13 @@
 <![CDATA[
 								var new_fm_obj = new aou().fromHash({
 									isnew			: 1,
-									name			: aou_strings.LABEL_NEW_BRANCH,
+									name			: aou_strings.LABEL_NEW_BRANCH + virgin_ou_id,
 									opac_visible	: 'f',
 									shortname		: ou_list_store.getValue( current_ou, 'shortname' ) + '-NEW' + virgin_ou_id--,
 									parent_ou		: ou_list_store.getValue( current_ou, 'id' ),
 									ou_type			: ou_list_store.getValue( current_ou, 'ou_type' )
 								});
-	
-								var new_obj;
-	
+
 								pcrud.create( new_fm_obj, {
 									timeout : 10,
 									onerror : function (r) {
@@ -483,33 +508,23 @@
                             </script>
 							<script type="dojo/connect" event="onClick">
 <![CDATA[
-								if (hoo_id.length == 0) {
-									pcrud.create( current_ou_hoo, {
-										timeout : 10,
-										onerror : function (r) {
-											highlighter.hoo_pane.red.play();
-											status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
-										},
-										oncomplete : function (r) {
-											hoo_id = pcrud.search( 'aouhoo',{id:ou_list_store.getValue( current_ou, 'id' )});
-											highlighter.hoo_pane.green.play();
-											status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
-										},
-									});
-								} else {
-									pcrud.update( current_ou_hoo, {
-										timeout : 10,
-										onerror : function (r) {
-											highlighter.hoo_pane.red.play();
-											status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
-										},
-										oncomplete : function (r) {
-											highlighter.hoo_pane.green.play();
-											status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
-										},
-									});
-								}
-	
+                                if (!current_ou_hoo.isnew()) {
+                                    current_ou_hoo.ischanged( 1 );
+                                }
+
+                                pcrud.apply( current_ou_hoo, {
+                                    timeout : 10,
+                                    onerror : function (r) {
+                                        highlighter.hoo_pane.red.play();
+                                        status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                    },
+                                    oncomplete : function (r) {
+                                        current_ou_hoo.isnew( 0 );
+                                        current_ou_hoo.ischanged( 0 );
+                                        highlighter.hoo_pane.green.play();
+                                        status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOO, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                    },
+                                });
 ]]>
 							</script>
 						</button>
@@ -521,10 +536,10 @@
 						<div id="billing_address_pane" dojoType="dijit.layout.TabContainer" style="margin-top:10px">
 	
 							<script type="dojo/method">
-								window.current_billing_address = null;
-								window.current_mailing_address = null;
-								window.current_holds_address = null;
-								window.current_ill_address = null;
+								current_billing_address = null;
+								current_mailing_address = null;
+								current_holds_address = null;
+								current_ill_address = null;
 							</script>
 	
 							<div id="billing_address" dojoType="dijit.layout.ContentPane" title="&conify.org_unit.addresses_pane.physical.title;">
@@ -567,33 +582,31 @@
 									</script>
 									<script type="dojo/connect" event="onClick">
 <![CDATA[
-										var method_name = 'open-ils.pcrud.update.aoa';
-										if (current_billing_address.isnew() == 1) method_name = 'open-ils.pcrud.create.aoa';
-	
-										pCRUD.request({
-											method : method_name,
-											params : [ ses, current_billing_address ],
-											onerror : function (r) {
-												highlighter.addresses_pane.red.play();
-												status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
-											},
-											oncomplete : function (r) {
-												var res = r.recv();
-												if ( res && res.content() ) {
-													if (current_billing_address.isnew() == 1) {
-														current_billing_address = res.content();
-														ou_list_store.setValue( current_ou, 'billing_address', current_billing_address.id() );
-														save_org();
-													}
-													current_billing_address.isnew(0);
-													highlighter.addresses_pane.green.play();
-													status_update( dojo.string.subsitute( aou_strings.SUCCESS_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
-												} else {
-													highlighter.addresses_pane.red.play();
-													status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
-												}
-											},
-										}).send();
+                                        if (!current_billing_address.isnew()) {
+                                            current_billing_address.ischanged( 1 );
+                                        }
+
+                                        pcrud.apply( current_billing_address, {
+                                            timeout : 10,
+                                            onerror : function (r) {
+                                                highlighter.addresses_pane.red.play();
+                                                status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                            },
+                                            oncomplete : function (r) {
+                                                var res = r.recv();
+                                                if (res && res.content()
+                                                    && (current_billing_address.isnew() == 1)) {
+                                                    current_billing_address = res.content();
+
+                                                    ou_list_store.setValue( current_ou, "billing_address", current_billing_address.id());
+                                                    save_org();
+                                                }
+                                                current_billing_address.isnew( 0 );
+                                                current_billing_address.ischanged( 0 );
+                                                highlighter.addresses_pane.green.play();
+                                                status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_PHYSICAL, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                            },
+                                        });
 ]]>
 									</script>
 								</button>
@@ -636,33 +649,31 @@
 									</script>
 									<script type="dojo/connect" event="onClick">
 <![CDATA[
-										var method_name = 'open-ils.pcrud.update.aoa';
-										if (current_holds_address.isnew() == 1) method_name = 'open-ils.pcrud.create.aoa';
-	
-										pCRUD.request({
-											method : method_name,
-											params : [ ses, current_holds_address ],
-											onerror : function (r) {
-												highlighter.addresses_pane.red.play();
-												throw dojo.string.substitute( aou_strings.ERROR_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] );
-											},
-											oncomplete : function (r) {
-												var res = r.recv();
-												if ( res && res.content() ) {
-													if (current_holds_address.isnew() == 1) {
-														current_holds_address = res.content();
-														ou_list_store.setValue( current_ou, 'holds_address', current_holds_address.id() );
-														save_org();
-													}
-													current_holds_address.isnew(0);
-													highlighter.addresses_pane.green.play();
-													status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] ) );
-												} else {
-													highlighter.addresses_pane.red.play();
-													throw dojo.string.substitute( aou_strings.ERROR_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] );
-												}
-											},
-										}).send();
+                                        if (!current_holds_address.isnew()) {
+                                            current_holds_address.ischanged( 1 );
+                                        }
+
+                                        pcrud.apply( current_holds_address, {
+                                            timeout : 10,
+                                            onerror : function (r) {
+                                                highlighter.addresses_pane.red.play();
+                                                status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                            },
+                                            oncomplete : function (r) {
+                                                var res = r.recv();
+                                                if (res && res.content()
+                                                    && (current_holds_address.isnew() == 1)) {
+                                                    current_holds_address = res.content();
+
+                                                    ou_list_store.setValue( current_ou, "holds_address", current_holds_address.id());
+                                                    save_org();
+                                                }
+                                                current_holds_address.isnew( 0 );
+                                                current_holds_address.ischanged( 0 );
+                                                highlighter.addresses_pane.green.play();
+                                                status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_HOLDS, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                            },
+                                        });
 ]]>
 									</script>
 								</button>
@@ -704,33 +715,31 @@
 									</script>
 									<script type="dojo/connect" event="onClick">
 <![CDATA[
-										var method_name = 'open-ils.pcrud.update.aoa';
-										if (current_mailing_address.isnew() == 1) method_name = 'open-ils.pcrud.create.aoa';
-	
-										pCRUD.request({
-											method : method_name,
-											params : [ ses, current_mailing_address ],
-											onerror : function (r) {
-												highlighter.addresses_pane.red.play();
-												throw dojo.string.substitute( aou_strings.ERROR_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] );
-											},
-											oncomplete : function (r) {
-												var res = r.recv();
-												if ( res && res.content() ) {
-													if (current_mailing_address.isnew() == 1) {
-														current_mailing_address = res.content();
-														ou_list_store.setValue( current_ou, 'mailing_address', current_mailing_address.id() );
-														save_org();
-													}
-													current_mailing_address.isnew(0);
-													highlighter.addresses_pane.green.play();
-													status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] ) );
-												} else {
-													highlighter.addresses_pane.red.play();
-													throw dojo.string.substitute( aou_strings.ERROR_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] );
-												}
-											},
-										}).send();
+                                        if (!current_mailing_address.isnew()) {
+                                            current_mailing_address.ischanged( 1 );
+                                        }
+
+                                        pcrud.apply( current_mailing_address, {
+                                            timeout : 10,
+                                            onerror : function (r) {
+                                                highlighter.addresses_pane.red.play();
+                                                status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                            },
+                                            oncomplete : function (r) {
+                                                var res = r.recv();
+                                                if (res && res.content()
+                                                    && (current_mailing_address.isnew() == 1)) {
+                                                    current_mailing_address = res.content();
+
+                                                    ou_list_store.setValue( current_ou, "mailing_address", current_mailing_address.id());
+                                                    save_org();
+                                                }
+                                                current_mailing_address.isnew( 0 );
+                                                current_mailing_address.ischanged( 0 );
+                                                highlighter.addresses_pane.green.play();
+                                                status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_MAILING, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                            },
+                                        });
 ]]>
 									</script>
 								</button>
@@ -772,33 +781,31 @@
 									</script>
 									<script type="dojo/connect" event="onClick">
 <![CDATA[
-										var method_name = 'open-ils.pcrud.update.aoa';
-										if (current_ill_address.isnew() == 1) method_name = 'open-ils.pcrud.create.aoa';
-	
-										pCRUD.request({
-											method : method_name,
-											params : [ ses, current_ill_address ],
-											onerror : function (r) {
-												highlighter.addresses_pane.red.play();
-												throw dojo.string.substitute( aou_strings.ERROR_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] );
-											},
-											oncomplete : function (r) {
-												var res = r.recv();
-												if ( res && res.content() ) {
-													if (current_ill_address.isnew() == 1) {
-														current_ill_address = res.content();
-														ou_list_store.setValue( current_ou, 'ill_address', current_ill_address.id() );
-														save_org();
-													}
-													current_ill_address.isnew(0);
-													highlighter.addresses_pane.green.play();
-													status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] ) );
-												} else {
-													highlighter.addresses_pane.red.play();
-													throw dojo.string.substitute( aou_strings.ERROR_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] );
-												}
-											},
-										}).send();
+                                        if (!current_ill_address.isnew()) {
+                                            current_ill_address.ischanged( 1 );
+                                        }
+
+                                        pcrud.apply( current_ill_address, {
+                                            timeout : 10,
+                                            onerror : function (r) {
+                                                highlighter.addresses_pane.red.play();
+                                                status_update( dojo.string.substitute( aou_strings.ERROR_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                            },
+                                            oncomplete : function (r) {
+                                                var res = r.recv();
+                                                if (res && res.content()
+                                                    && (current_ill_address.isnew() == 1)) {
+                                                    current_ill_address = res.content();
+
+                                                    ou_list_store.setValue( current_ou, "ill_address", current_ill_address.id());
+                                                    save_org();
+                                                }
+                                                current_ill_address.isnew( 0 );
+                                                current_ill_address.ischanged( 0 );
+                                                highlighter.addresses_pane.green.play();
+                                                status_update( dojo.string.substitute( aou_strings.SUCCESS_SAVING_ILL, [ou_list_store.getValue( current_ou, 'name' )] ) );
+                                            },
+                                        });
 ]]>
 									</script>
 								</button>
