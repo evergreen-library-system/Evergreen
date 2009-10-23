@@ -342,17 +342,40 @@ sub retrieve_holds {
 		{order_by => {ahr => "request_time"}}
 	]);
 
-    if($$options{canceled}) {
-        my $count = $$options{cancel_count} || 
-            $U->ou_ancestor_setting_value($e->requestor->ws_ou, 
-                'circ.canceled_hold_display_count', $e) || 5;
+    my $cancel_age;
+    my $cancel_count = 
+        $U->ou_ancestor_setting_value(
+            $e->requestor->ws_ou, 'circ.holds.canceled.display_count', $e);
 
+    unless($cancel_count) {
+        $cancel_age = $U->ou_ancestor_setting_value(
+            $e->requestor->ws_ou, 'circ.holds.canceled.display_age', $e);
+    }
+
+    if($cancel_count) {
+
+        # find at most cancel_count canceled holds
         my $canceled = $e->search_action_hold_request([
 		    {   usr =>  $user_id , 
 			    fulfillment_time => undef,
 			    cancel_time => {'!=' => undef},
 		    }, 
-		    {order_by => {ahr => "cancel_time desc"}, limit => $count}
+		    {order_by => {ahr => "cancel_time desc"}, limit => $cancel_count}
+	    ]);
+        push(@$holds, @$canceled);
+
+    } elsif($cancel_age) {
+
+        # find all of the canceled holds that were canceled within the configured time frame
+        my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($cancel_age));
+        $date = $U->epoch2ISO8601($date->epoch);
+
+        my $canceled = $e->search_action_hold_request([
+		    {   usr =>  $user_id , 
+			    fulfillment_time => undef,
+			    cancel_time => {'>=' => $date},
+		    }, 
+		    {order_by => {ahr => "cancel_time desc"}}
 	    ]);
         push(@$holds, @$canceled);
     }
