@@ -1,3 +1,5 @@
+BEGIN;
+
 INSERT INTO config.upgrade_log (version) VALUES ('0052');
 
 CREATE TABLE asset.copy_location_order

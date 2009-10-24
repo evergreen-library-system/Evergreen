@@ -76,6 +76,7 @@ INSERT INTO action_trigger.validator (module,description) VALUES ('NOOP_False','
 INSERT INTO action_trigger.validator (module,description) VALUES ('CircIsOpen','Check that the circulation is still open');
 INSERT INTO action_trigger.validator (module,description) VALUES ('HoldIsAvailable','Check that an item is on the hold shelf');
 INSERT INTO action_trigger.validator (module,description) VALUES ('CircIsOverdue','Check that the circulation is overdue');
+INSERT INTO action_trigger.validator (module,description) VALUES ('MaxPassiveDelayAge','Check that the event is not too far past the delay_field time -- requires a max_delay_age interval parameter');
 
 -- After an event passes validation (action_trigger.validator), the reactor processes it.
 CREATE TABLE action_trigger.reactor (

@@ -16,6 +16,19 @@ sub CircIsOpen {
     return defined($env->{target}->checkin_time) ? 0 : 1;
 }
 
+sub MaxPassiveDelayAge {
+    my $self = shift;
+    my $env = shift;
+    my $target = $env->{target};
+    my $delay_field = $env->{event}->event_def->delay_field;
+
+    my $delay_field_ts = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($target->$delay_field()));
+    $delay_field_ts->add( seconds => interval_to_seconds( $env->{params}->{max_delay_age} ) );
+
+    return 0 if $delay_field_ts > DateTime->now;
+    return 1;
+}
+
 sub CircIsOverdue {
     my $self = shift;
     my $env = shift;
