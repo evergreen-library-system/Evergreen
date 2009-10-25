@@ -7,7 +7,7 @@ use OpenSRF::EX qw/:try/;
 
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
-use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils qw/:datetime/;
 
 use DateTime;
@@ -359,6 +359,7 @@ sub create_batch_events {
         { hook   => [ keys %hook_hash ], active => 't' },
     );
 
+    my $first_loop = 1;
     for my $def ( @$defs ) {
 
         my $date = DateTime->now->subtract( seconds => interval_to_seconds($def->delay) );
@@ -390,31 +391,36 @@ sub create_batch_events {
 
         my $class = _fm_class_by_hint($hook_hash{$def->hook}->core_type);
 
-	# filter where this target has an event (and it's pending, for active hooks)
-	$$filter{'-and'} = [] if (!exists($$filter{'-and'}));
-	push @{ $filter->{'-and'} }, {
-		'-not-exists' => {
-			from  => 'atev',
-			where => {
-				event_def => $def->id,
-				target    => { '=' => { '+' . $hook_hash{$def->hook}->core_type => $class->Identity } },
-				($active ? (state  => 'pending') : ())
-			}
-		}
-	};
+        # filter where this target has an event (and it's pending, for active hooks)
+        if($first_loop) {
+            $$filter{'-and'} = [] if (!exists($$filter{'-and'}));
+            $first_loop = 0;
+        } else {
+            # remove the pre-existing event check for the previous event def
+            pop @{ $filter->{'-and'} };
+        }
+
+        push @{ $filter->{'-and'} }, {
+            '-not-exists' => {
+                from  => 'atev',
+                where => {
+                    event_def => $def->id,
+                    target    => { '=' => { '+' . $hook_hash{$def->hook}->core_type => $class->Identity } },
+                    ($active ? (state  => 'pending') : ())
+                }
+            }
+        };
 
         $class =~ s/^Fieldmapper:://o;
         $class =~ s/::/_/go;
 
         my $method = 'search_'. $class;
-        my $objects = $editor->$method( $filter );
+        my $object_ids = $editor->$method( $filter, {idlist => 1, timeout => 1800} );
 
-        for my $o (@$objects) {
-
-            my $ident = $o->Identity;
+        for my $o_id (@$object_ids) {
 
             my $event = Fieldmapper::action_trigger::event->new();
-            $event->target( $o->$ident() );
+            $event->target( $o_id );
             $event->event_def( $def->id );
             $event->run_time( $run_time );
 
