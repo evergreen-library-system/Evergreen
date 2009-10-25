@@ -5,7 +5,7 @@ use Carp;
 
 use Data::Dumper;
 
-use DateTime;
+use OpenILS::Utils::MFHD::Date;
 
 use base 'MARC::Field';
 
@@ -197,381 +197,6 @@ sub enumeration_is_chronology {
     return (exists $self->{_mfhdc_PATTERN}->{w});
 }
 
-my %daynames = (
-		'mo' => 1,
-		'tu' => 2,
-		'we' => 3,
-		'th' => 4,
-		'fr' => 5,
-		'sa' => 6,
-		'su' => 7,
-	       );
-
-my $daypat = '(mo|tu|we|th|fr|sa|su)';
-my $weekpat = '(99|98|97|00|01|02|03|04|05)';
-my $weeknopat;
-my $monthpat = '(01|02|03|04|05|06|07|08|09|10|11|12)';
-my $seasonpat = '(21|22|23|24)';
-
-# Initialize $weeknopat to be '(01|02|03|...|51|52|53)'
-$weeknopat = '(';
-foreach my $weekno (1..52) {
-    $weeknopat .= sprintf('%02d|', $weekno);
-}
-$weeknopat .= '53)';
-
-sub match_day {
-    my $pat = shift;
-    my @date = @_;
-    # Translate daynames into day of week for DateTime
-    # also used to check if dayname is valid.
-
-    if (exists $daynames{$pat}) {
-	# dd
-	# figure out day of week for date and compare
-	my $dt = DateTime->new(year  => $date[0],
-			       month => $date[1],
-			       day   => $date[2]);
-	return ($dt->day_of_week == $daynames{$pat});
-    } elsif (length($pat) == 2) {
-	# DD
-	return $pat == $date[2];
-    } elsif (length($pat) == 4) {
-	# MMDD
-	my ($mon, $day) = unpack("a2a2", $pat);
-
-	return (($mon == $date[1]) && ($day == $date[2]));
-    } else {
-	carp "Invalid day pattern '$pat'";
-	return 0;
-    }
-}
-
-sub subsequent_day {
-    my $pat = shift;
-    my $cur = shift;
-    my $dt = DateTime->new(year  => $cur->[0],
-			   month => $cur->[1],
-			   day   => $cur->[2]);
-
-    if (exists $daynames{$pat}) {
-	# dd: published on the given weekday
-	my $dow = $dt->day_of_week;
-	my $corr = ($dow - $daynames{$pat} + 7) % 7;
-
-	if ($dow == $daynames{$pat}) {
-	    # the next one is one week hence
-	    $dt->add(days => 7);
-	} else {
-	    # the next one is later this week,
-	    # or it is next week (ie, on or after next Monday)
-	    # $corr will take care of it.
-	    $dt->add(days => $corr);
-	}
-    } elsif (length($pat) == 2) {
-	# DD: published on the give day of every month
-	if ($dt->day >= $pat) {
-	    # current date is on or after $pat: next one is next month
-	    $dt->set(day => $pat);
-	    $dt->add(months => 1);
-	    $cur->[0] = $dt->year;
-	    $cur->[1] = $dt->month;
-	    $cur->[2] = $dt->day;
-	}
-	# current date is before $pat: set month to pattern
-	# or we've adjusted the year to next year, now fix the month
-	$cur->[1] = $pat;
-    } elsif (length($pat) == 4) {
-	# MMDD: published on the given day of the given month
-	my ($mon, $day) = unpack("a2a2", $pat);
-
-	if (on_or_after($mon, $day, $cur->[1], $cur->[2])) {
-	    # Current date is on or after pattern; next one is next year
-	    $cur->[0] += 1;
-	}
-	# Year is now right. Either it's next year (because of on_or_before)
-	# or it's this year, because the current date is NOT on or after
-	# the pattern. Just fix the month and day
-	$cur->[1] = $mon;
-	$cur->[2] = $day;
-    } else {
-	carp "Invalid day pattern '$pat'";
-	return undef;
-    }
-
-    return $cur;
-}
-
-
-# Calculate date of 3rd Friday of the month (for example)
-# 1-5: count from beginning of month
-# 99-97: count back from end of month
-sub nth_week_of_month {
-    my $dt = shift;
-    my $week = shift;
-    my $day = shift;
-    my ($nth_day, $dow, $day);
-
-    $day = $daynames{$day};
-
-    if (0 < $week && $week <= 5) {
-	$nth_day = DateTime->clone($dt)->set(day => 1);
-    } elsif ($week >= 97) {
-	$nth_day = DateTime->last_day_of_month(year  => $dt->year,
-					       month => $dt->month);
-    } else {
-	return undef;
-    }
-
-    $dow = $nth_day->day_of_week();
-
-    if ($week <= 5) {
-	# count forwards
-	$nth_day->add(days => ($day - $dow + 7) % 7,
-		      weeks=> $week - 1);
-    } else {
-	# count backwards
-	$nth_day->subtract(days => ($day - $nth_day->day_of_week + 7) % 7);
-
-	# 99: last week of month, 98: second last, etc.
-	for (my $i = 99 - $week; $i > 0; $i--) {
-	    $nth_day->subtract(weeks => 1);
-	}
-    }
-
-    # There is no nth "day" in the month!
-    return undef if ($dt->month != $nth_day->month);
-
-    return $nth_day;
-}
-
-#
-# Internal utility function to match the various different patterns
-# of month, week, and day
-#
-sub check_date {
-    my $dt = shift;
-    my $month = shift;
-    my $weekno = shift;
-    my $day = shift;
-
-    if (!defined $day) {
-	# MMWW
-	return (($dt->month == $month)
-		&& (($dt->week_of_month == $weekno)
-		    || ($weekno >= 97
-			&& ($dt->week_of_month == nth_week_of_month($dt, $weekno, $day)->week_of_month))));
-    }
-
-    # simple cases first
-    if ($daynames{$day} != $dt->day_of_week) {
-	# if it's the wrong day of the week, rest doesn't matter
-	return 0;
-    }
-
-    if (!defined $month) {
-	# WWdd
-	return (($weekno == 0)	# Every week
-		|| ($dt->weekday_of_month == $weekno) # this week
-		|| (($weekno >= 97) && ($dt->weekday_of_month == nth_week_of_month($dt, $weekno, $day)->weekday_of_month)));
-    }
-
-    # MMWWdd
-    if ($month != $dt->month) {
-	# If it's the wrong month, then we're done
-	return 0;
-    }
-
-    # It's the right day of the week
-    # It's the right month
-
-    if (($weekno == 0) ||($weekno == $dt->weekday_of_month)) {
-	# If this matches, then we're counting from the beginning
-	# of the month and it matches and we're done.
-	return 1;
-    }
-
-    # only case left is that the week number is counting from
-    # the end of the month: eg, second last wednesday
-    return (($weekno >= 97)
-	    && (nth_week_of_month($dt, $weekno, $day)->weekday_of_month == $dt->weekday_of_month));
-}
-
-sub match_week {
-    my $pat = shift;
-    my @date = @_;
-    my $dt = DateTime->new(year  => $date[0],
-			   month => $date[1],
-			   day   => $date[2]);
-
-    if ($pat =~ m/^$weekpat$daypat$/) {
-	# WWdd: 03we = Third Wednesday
-	return check_date($dt, undef, $1, $2);
-    } elsif ($pat =~ m/^$monthpat$weekpat$daypat$/) {
-	# MMWWdd: 0599tu Last Tuesday in May XXX WRITE ME
-	return check_date($dt, $1, $2, $3);
-    } elsif ($pat =~ m/^$monthpat$weekpat$/) {
-	# MMWW: 1204: Fourth week in December XXX WRITE ME
-	return check_date($dt, $1, $2, undef);
-    } else {
-	carp "invalid week pattern '$pat'";
-	return 0;
-    }
-}
-
-#
-# Use $pat to calcuate the date of the issue following $cur
-#
-sub subsequent_week {
-    my $pat = shift;
-    my $cur = shift;
-    my $candidate;
-    my $dt = DateTime->new(year => $cur->[0],
-			   month=> $cur->[1],
-			   day  => $cur->[2]);
-
-    if ($pat =~ m/^$weekpat$daypat$/) {
-	# WWdd: published on given weekday of given week of every month
-	my ($week, $day) = ($1, $2);
-
-	if ($week eq '00') {
-	    # Every week
-	    $candidate = DateTime->clone($dt);
-	    if ($dt->day_of_week == $daynames{$day}) {
-		# Current is right day, next one is a week hence
-		$candidate->add(days => 7);
-	    } else {
-		$candidate->add(days => ($dt->day_of_week - $daynames{$day} + 7) % 7);
-	    }
-	} else {
-	    # 3rd Friday of the month (eg)
-	    $candidate = nth_week_of_month($dt, $week, $day);
-	}
-
-	if ($candidate < $dt) {
-	    # If the n'th week of the month happens before the
-	    # current issue, then the next issue is published next
-	    # month, otherwise, it's published this month.
-	    # This will never happen for the "00: every week" pattern
-	    $candidate = DateTime->clone($dt)->add(months => 1)->set(day => 1);
-	    $candidate = nth_week_of_month($dt, $week, $day);
-	}
-    } elsif ($pat =~ m/^$monthpat$weekpat$daypat$/) {
-	# MMWWdd: published on given weekday of given week of given month
-	my ($month, $week, $day) = ($1, $2, $3);
-
-	$candidate = DateTime->new(year => $dt->year,
-				   month=> $month,
-				   day  => 1);
-	$candidate = nth_week_of_month($candidate, $week, $day);
-	if ($candidate < $dt) {
-	    # We've missed it for this year, next one that matches
-	    # will be next year
-	    $candidate->add(years => 1)->set(day => 1);
-	    $candidate = nth_week_of_month($candidate, $week, $day);
-	}
-    } elsif ($pat =~ m/^$monthpat$weekpat$/) {
-	# MMWW: published during given week of given month
-	my ($month, $week) = ($1, $2);
-
-	$candidate = nth_week_of_month(DateTime->new(year => $dt->year,
-						     month=> $month,
-						     day  => 1),
-				       $week,
-				       'th');
-	if ($candidate < $dt) {
-	    # Already past the pattern date this year, move to next year
-	    $candidate->add(years => 1)->set(day => 1);
-	    $candidate = nth_week_of_month($candidate, $week, 'th');
-	}
-    } else {
-	carp "invalid week pattern '$pat'";
-	return undef;
-    }
-
-    $cur->[0] = $candidate->year;
-    $cur->[1] = $candidate->month;
-    $cur->[2] = $candidate->day;
-
-    return $cur;
-}
-
-sub match_month {
-    my $pat = shift;
-    my @date = @_;
-
-    return ($pat eq $date[1]);
-}
-
-sub match_season {
-    my $pat = shift;
-    my @date = @_;
-
-    return ($pat eq $date[1]);
-}
-
-sub subsequent_season {
-    my $pat = shift;
-    my $cur = shift;
-
-    return undef if (($pat < 21) || ($pat > 24));
-
-    if ($cur->[1] >= $pat) {
-	# current season is on or past pattern season in this year,
-	# advance to next year
-	$cur->[0] += 1;
-    }
-    # Either we've advanced to the next year or the current season
-    # is before the pattern season in the current year. Either way,
-    # all that remains is to set the season properly
-    $cur->[1] = $pat;
-
-    return $cur;
-}
-
-sub match_year {
-    my $pat = shift;
-    my @date = @_;
-
-    # XXX WRITE ME
-    return 0;
-}
-
-sub subsequent_year {
-    my $pat = shift;
-    my $cur = shift;
-
-    # XXX WRITE ME
-    return undef;
-}
-
-sub match_issue {
-    my $pat = shift;
-    my @date = @_;
-
-    # We handle enumeration patterns separately. This just
-    # ensures that when we're processing chronological patterns
-    # we don't match an enumeration pattern.
-    return 0;
-}
-
-sub subsequent_issue {
-    my $pat = shift;
-    my $cur = shift;
-
-    # Issue generation is handled separately
-    return undef;
-}
-
-my %dispatch = (
-		'd' => \&match_day,
-		'e' => \&match_issue, # not really a "chron" code
-		'w' => \&match_week,
-		'm' => \&match_month,
-		's' => \&match_season,
-		'y' => \&match_year,
-);
-
 sub regularity_match {
     my $self = shift;
     my $pubcode = shift;
@@ -582,9 +207,10 @@ sub regularity_match {
 
     foreach my $regularity (@{$self->{_mfhdc_PATTERN}->{y}->{$pubcode}}) {
 	my $chroncode= substr($regularity, 0, 1);
+	my $matchfunc = MFHD::Date::dispatch($chroncode);
 	my @pats = split(/,/, substr($regularity, 1));
 
-	if (!exists $dispatch{$chroncode}) {
+	if (!defined $matchfunc) {
 	    carp "Unrecognized chroncode '$chroncode'";
 	    return 0;
 	}
@@ -592,7 +218,7 @@ sub regularity_match {
 	# XXX WRITE ME
 	foreach my $pat (@pats) {
 	    $pat =~ s|/.+||;	# If it's a combined date, match the start
-	    if ($dispatch{$chroncode}->($pat, @date)) {
+	    if ($matchfunc->($pat, @date)) {
 		return 1;
 	    }
 	}
@@ -605,6 +231,8 @@ sub is_omitted {
     my $self = shift;
     my @date = @_;
 
+#     printf("# is_omitted: testing date %s: %d\n", join('/', @date),
+# 	   $self->regularity_match('o', @date));
     return $self->regularity_match('o', @date);
 }
 
@@ -645,88 +273,37 @@ sub enum_is_combined {
 }
 
 
-my %increments = (
-		  a => {years => 1}, # annual
-		  b => {months => 2}, # bimonthly
-		  c => {days => 3}, # semiweekly
-		  d => {days => 1}, # daily
-		  e => {weeks => 2}, # biweekly
-		  f => {months => 6}, # semiannual
-		  g => {years => 2},  # biennial
-		  h => {years => 3},  # triennial
-		  i => {days => 2}, # three times / week
-		  j => {days => 10}, # three times /month
-		  # k => continuous
-		  m => {months => 1}, # monthly
-		  q => {months => 3}, # quarterly
-		  s => {days => 15},  # semimonthly
-		  t => {months => 4}, # three times / year
-		  w => {weeks => 1},  # weekly
-		  # x => completely irregular
-);
+# Test to see if $dt1 is on or after $dt2
+# if length(@{$dt2} == 2, then just month/day are compared
+# if length(@{$dt2} == 1, then just the months are compared
+sub on_or_after {
+    my $dt1 = shift;
+    my $dt2 = shift;
 
-sub incr_date {
-    my $incr = shift;
-    my @new = @_;
+#     printf("# on_or_after(%s, %s): ", join('/', @{$dt1}), join('/', @{$dt2}));
 
-    if (scalar(@new) == 1) {
-	# only a year is specified. Next date is easy
-	$new[0] += $incr->{years} || 1;
-    } elsif (scalar(@new) == 2) {
-	# Year and month or season
-	if ($new[1] > 20) {
-	    # season
-	    $new[1] += ($incr->{months}/3) || 1;
-	    if ($new[1] > 24) {
-		# carry
-		$new[0] += 1;
-		$new[1] -= 4;	# 25 - 4 == 21 == Spring after Winter
-	    }
-	} else {
-	    # month
-	    $new[1] += $incr->{months} || 1;
-	    if ($new[1] > 12) {
-		# carry
-		$new[0] += 1;
-		$new[1] -= 12;
-	    }
-	    $new[1] = '0' . $new[1] if ($new[1] < 10);
+    foreach my $i (0..(scalar(@{$dt2})-1)) {
+	if ($dt1->[$i] > $dt2->[$i]) {
+# 	    printf("after - pass\n");
+	    # $dt1 occurs AFTER $dt2
+	    return 1;
+	} elsif ($dt1->[$i] < $dt2->[$i]) {
+# 	    printf("before - fail\n");
+	    # $dt1 occurs BEFORE $dt2
+	    return 0;
 	}
-    } elsif (scalar(@new) == 3) {
-	# Year, Month, Day: now it gets complicated.
-
-	if ($new[2] =~ /^[0-9]+$/) {
-	    # A single number for the day of month, relatively simple
-	    my $dt = DateTime->new(year => $new[0],
-				   month=> $new[1],
-				   day  => $new[2]);
-	    $dt->add(%{$incr});
-	    $new[0] = $dt->year;
-	    $new[1] = $dt->month;
-	    $new[2] = $dt->day;
-	}
-	$new[1] = '0' . $new[1] if ($new[1] < 10);
-	$new[2] = '0' . $new[2] if ($new[2] < 10);
-    } else {
-	warn("Don't know how to cope with @new");
+	# both are still equal, keep going
     }
 
-    return @new;
-}
-
-# Test to see if $m1/$d1 is on or after $m2/$d2
-# if $d2 is undefined, test is based on just months
-sub on_or_after {
-    my ($m1, $d1, $m2, $d2) = @_;
-
-    return (($m1 > $m2)
-	    || ($m1 == $m2 && ((!defined $d2) || ($d1 >= $d2))));
+    # We fell out of the loop with them being equal, so it's 'on'
+#     printf("on - pass\n");
+    return 1;
 }
 
 sub calendar_increment {
     my $self = shift;
     my $cur = shift;
-    my @new = @_;
+    my $new = shift;
     my $cal_change = $self->calendar_change;
     my $month;
     my $day;
@@ -734,9 +311,9 @@ sub calendar_increment {
     my $new_on_or_after;
 
     # A calendar change is defined, need to check if it applies
-    if ((scalar(@new) == 2 && $new[1] > 20) || (scalar(@new) == 1)) {
+    if (scalar(@{$new}) == 1) {
 	carp "Can't calculate date change for ", $self->as_string;
-	return;
+	return 0;
     }
 
     foreach my $change (@{$cal_change}) {
@@ -748,10 +325,14 @@ sub calendar_increment {
 	    ($month, $day) = unpack("a2a2", $change);
 	}
 
-	if ($cur->[0] == $new[0]) {
+# 	printf("# calendar_increment('%s', '%s'): change on '%s/%s'\n",
+# 	       join('/', @{$cur}), join('/', @{$new}),
+# 	       $month, defined($day) ? $day : 'UNDEF');
+
+	if ($cur->[0] == $new->[0]) {
 	    # Same year, so a 'simple' month/day comparison will be fine
-	    $incr = (!on_or_after($cur->[1], $cur->[2], $month, $day)
-		     && on_or_after($new[1], $new[2], $month, $day));
+	    $incr = (!on_or_after([$cur->[1], $cur->[2]], [$month, $day])
+		     && on_or_after([$new->[1], $new->[2]], [$month, $day]));
 	} else {
 	    # @cur is in the year before @new. There are
 	    # two possible cases for the calendar change date that
@@ -762,21 +343,14 @@ sub calendar_increment {
 	    #  -------|------|------X------|------|
 	    #       @cur    (1)   Jan 1   (2)   @new
 
-	    $incr = (on_or_after($new[1], $new[2], $month, $day)
-		     || !on_or_after($cur->[1], $cur->[2], $month, $day));
+	    $incr = (on_or_after([$new->[1], $new->[2]], [$month, $day])
+		     || !on_or_after([$cur->[1], $cur->[2]], [$month, $day]));
 	}
 	return $incr if $incr;
     }
-}
 
-my %generators = (
-		  'd' => \&subsequent_day,
-		  'e' => \&subsequent_issue, # not a chron code
-		  'w' => \&subsequent_week,
-		  'm' => \&subsequent_month,
-		  's' => \&subsequent_season,
-		  'y' => \&subsequent_year,
-);
+    return 0;
+}
 
 sub next_date {
     my $self = shift;
@@ -785,60 +359,119 @@ sub next_date {
     my @keys = @_;
     my @cur;
     my @new;
+    my @newend; # only used for combined issues
     my $incr;
-    my @candidate;
 
     my $reg = $self->{_mfhdc_REGULARITY};
     my $pattern = $self->{_mfhdc_PATTERN};
     my $freq = $pattern->{w};
 
     foreach my $i (0..$#keys) {
-	$new[$i] = $cur[$i] = $next->{$keys[$i]} if exists $next->{$keys[$i]};
+	$cur[$i] = $next->{$keys[$i]} if exists $next->{$keys[$i]};
     }
 
     # If the current issue has a combined date (eg, May/June)
     # get rid of the first date and base the calculation
     # on the final date in the combined issue.
-    $new[-1] =~ s|^[^/]+/||;
+    $cur[-1] =~ s|^[^/]+/||;
 
-    # XXX Insert new date generation code in here that uses publication
-    # patterns.
+    if (defined $pattern->{y}->{p}) {
+	# There is a $y publication pattern defined in the record:
+	# use it to calculate the next issue date.
 
-###
-### Old code: only works for simple cases
-###
-    # If $frequency is not one of the standard codes defined in %increments
-    # then there has to be a $yp publication regularity pattern that
-    # lists the dates of publication. Use that that list to find the next
-    # date following the current one.
-    # XXX: the code doesn't handle this case yet.
-    if (!defined($freq)) {
-	carp "Undefined frequency in next_date!";
-    } elsif (!exists $increments{$freq}) {
-	carp "Don't know how to deal with frequency '$freq'!";
-    } else {
-	#
-	# One of the standard defined issue frequencies
-	#
-	@new = incr_date($increments{$freq}, @new);
+	foreach my $pubpat (@{$pattern->{y}->{p}}, @{$pattern->{y}->{c}}) {
+	    my $chroncode = substr($pubpat, 0, 1);
+	    my $genfunc = MFHD::Date::generator($chroncode);
+	    my @pats = split(/,/, substr($pubpat, 1));
 
-	while ($self->is_omitted(@new)) {
-	    @new = incr_date($increments{$freq}, @new);
+	    next if $chroncode eq 'e';
+
+	    if (!defined $genfunc) {
+		carp "Unrecognized chroncode '$chroncode'";
+		return undef;
+	    }
+
+	    foreach my $pat (@pats) {
+		my $combined = $pat =~ m|/|;
+		my ($start, $end);
+		my @candidate;
+
+# 		printf("# next_date: generating with pattern '%s'\n", $pat);
+
+		if ($combined) {
+		    ($start, $end) = split('/', $pat, 2);
+		} else {
+		    ($start, $end) = (undef, undef);
+		}
+
+		@candidate = $genfunc->($start || $pat, @cur);
+
+		while ($self->is_omitted(@candidate)) {
+# 		    printf("# pubpat omitting date '%s'\n",
+# 			   join('/', @candidate));
+		    @candidate = $genfunc->($start || $pat, @candidate);
+		}
+
+# 		printf("# testing new candidate '%s' against '%s'\n",
+# 		       join('/', @candidate), join('/', @new));
+
+		if (!defined($new[0])
+		    || !on_or_after(\@candidate, \@new)) {
+		    # first time through the loop
+		    # or @candidate is before @new =>
+		    # @candidate is the next issue.
+		    @new = @candidate;
+		    if (defined $end) {
+			@newend = $genfunc->($end, @cur);
+		    } else {
+			$newend[0] = undef;
+		    }
+
+# 		    printf("# selecting candidate date '%s'\n", join('/', @new));
+		}
+	    }
 	}
 
-	if ($self->is_combined(@new)) {
-	    my @second_date = incr_date($increments{$freq}, @new);
+	if (defined($newend[0])) {
+	    # The best match was a combined issue
+	    foreach my $i (0..$#new) {
+		# don't combine identical fields
+		next if $new[$i] eq $newend[$i];
+		$new[$i] .= '/' . $newend[$i];
+	    }
+	}
+    }
 
-	    # I am cheating: This code assumes that only the smallest
-	    # time increment is combined. So, no "Apr 15/May 1" allowed.
-	    $new[-1] = $new[-1] . '/' . $second_date[-1];
+    if (scalar @new == 0) {
+	# There was no suitable publication pattern defined,
+	# so use the $w frequency to figure out the next date
+	if (!defined($freq)) {
+	    carp "Undefined frequency in next_date!";
+	} elsif (!MFHD::Date::can_increment($freq)) {
+	    carp "Don't know how to deal with frequency '$freq'!";
+	} else {
+	    #
+	    # One of the standard defined issue frequencies
+	    #
+	    @new = MFHD::Date::incr_date($freq, @cur);
+
+	    while ($self->is_omitted(@new)) {
+		@new = MFHD::Date::incr_date($freq, @new);
+	    }
+
+	    if ($self->is_combined(@new)) {
+		my @second_date = MFHD::Date::incr_date($freq, @new);
+
+		# I am cheating: This code assumes that only the smallest
+		# time increment is combined. So, no "Apr 15/May 1" allowed.
+		$new[-1] = $new[-1] . '/' . $second_date[-1];
+	    }
 	}
     }
 
     for my $i (0..$#new) {
 	$next->{$keys[$i]} = $new[$i];
     }
-
     # Figure out if we need to adust volume number
     # right now just use the $carry that was passed in.
     # in long run, need to base this on ($carry or date_change)
@@ -847,7 +480,7 @@ sub next_date {
 	# going to increment the v. number twice at year-change.
 	$next->{a} += $carry;
     } elsif (defined $pattern->{x}) {
-	$next->{a} += $self->calendar_increment(\@cur, @new);
+	$next->{a} += $self->calendar_increment(\@cur, \@new);
     }
 }
 
@@ -876,6 +509,23 @@ sub next_alt_enum {
     }
 }
 
+# Check caption for $ype subfield, specifying that there's a
+# particular publication pattern for the given level of enumeration
+# returns the pattern string or undef
+sub enum_pubpat {
+    my $self = shift;
+    my $level = shift;
+
+    return undef if !exists $self->{_mfhdc_PATTERN}->{y}->{p};
+
+    foreach my $reg (@{$self->{_mfhdc_PATTERN}->{y}->{p}}) {
+	if ($reg =~ m/^e$level/o) {
+	    return substr($reg, 2);
+	}
+    }
+    return undef;
+}
+
 sub next_enum {
     my $self = shift;
     my $next = shift;
@@ -891,17 +541,20 @@ sub next_enum {
     # 1) we hit the correct number of items in $b (ie, 5th iss of quarterly)
     # 2) it's the right time of the year.
     #
-    $carry = 0;
-    foreach my $key (reverse('b'..'f')) {
-	next if !exists $next->{$key};
 
-	if (!$self->capstr($key)) {
-	    # Just assume that it increments continuously and give up
-	    warn "Holding data exists for $key, but no caption specified";
-	    $next->{$key} += 1;
-	    $carry = 0;
-	    last;
-	}
+    # If there's a subfield b, then we will go through the loop at
+    # least once. If there's no subfield b, then there's only a single
+    # level of enumeration, so we just add one to it and we're done.
+    if (exists $next->{b}) {
+	$carry = 0;
+    } else {
+	$carry = 1;
+    }
+    foreach my $key (reverse('b'..'f')) {
+	my $level;
+	my $pubpat;
+
+	next if !exists $next->{$key};
 
 	# If the current issue has a combined issue number (eg, 2/3)
 	# get rid of the first issue number and base the calculation
@@ -910,27 +563,84 @@ sub next_enum {
 	    $next->{$key} =~ s|^[^/]+/||;
 	}
 
-	my $cap = $self->capfield($key);
-	if ($cap->{RESTART} && $cap->{COUNT}
-	    && ($next->{$key} eq $cap->{COUNT})) {
-	    $next->{$key} = 1;
+	$level = ord($key) - ord('a') + 1; # enumeration level
+
+	$pubpat = $self->enum_pubpat($level);
+
+	if ($pubpat) {
+# 	    printf("# next_enum: found pubpat '%s' for subfield '%s'\n",
+# 		   $pubpat, $key);
+	    my @pats = split(/,/, $pubpat);
+
+	    # If we fall out the bottom of the loop, then $carry
+	    # will still be 1, and we will reset the current
+	    # level to the first value in @pats and increment
+	    # then next higher level.
 	    $carry = 1;
+
+	    foreach my $pat (@pats) {
+		my $combined = $pat =~ m|/|;
+		my $end;
+
+# 		printf("# next_enum: checking current '%s' against pat '%s'\n",
+# 		       $next->{$key}, $pat);
+
+		if ($combined) {
+		    ($pat, $end) = split('/', $pat, 2);
+		} else {
+		    $end = undef;
+		}
+
+		if ($pat > $next->{$key}) {
+		    $carry = 0;
+		    $next->{$key} = $pat;
+		    $next->{$key} .= '/' . $end if $end;
+# 		    printf("# next_enum: selecting new issue no. %s\n", $next->{$key});
+		    last; # We've found the correct next issue number
+		}
+	    }
+	    if ($carry) {
+		$next->{$key} = $pats[0];
+	    } else {
+		last; # exit the top level loop because we're done
+	    }
+
 	} else {
-	    # If I don't need to "carry" beyond here, then I just increment
-	    # this level of the enumeration and stop looping, since the
-	    # "next" hash has been initialized with the current values
+	    # No enumeration publication pattern specified for this level,
+	    # just keed adding one.
 
-	    $next->{$key} += 1;
-	    $carry = 0;
+	    if (!$self->capstr($key)) {
+		# Just assume that it increments continuously and give up
+		warn "Holding data exists for $key, but no caption specified";
+		$next->{$key} += 1;
+		$carry = 0;
+		last;
+	    }
+
+# 	    printf("# next_enum: no publication pattern, using frequency\n");
+
+	    my $cap = $self->capfield($key);
+	    if ($cap->{RESTART} && $cap->{COUNT}
+		&& ($next->{$key} eq $cap->{COUNT})) {
+		$next->{$key} = 1;
+		$carry = 1;
+	    } else {
+		# If I don't need to "carry" beyond here, then I just increment
+		# this level of the enumeration and stop looping, since the
+		# "next" hash has been initialized with the current values
+
+		$next->{$key} += 1;
+		$carry = 0;
+	    }
+
+	    # You can't have a combined issue that spans two volumes: no.12/1
+	    # is forbidden
+	    if ($self->enum_is_combined($key, $next->{$key})) {
+		$next->{$key} .= '/' . ($next->{$key} + 1);
+	    }
+
+	    last if !$carry;
 	}
-
-	# You can't have a combined issue that spans two volumes: no.12/1
-	# is forbidden
-	if ($self->enum_is_combined($key, $next->{$key})) {
-	    $next->{$key} .= '/' . ($next->{$key} + 1);
-	}
-
-	last if !$carry;
     }
 
     # The easy part is done. There are two things left to do:
