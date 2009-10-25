@@ -1644,6 +1644,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="User Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Demographic Info" name="demographic" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Billable Transactions" name="billable_transactions" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Money Summary" name="money_summary" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Open Billable Transactions" name="open_billable_transactions_summary" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Checkins" name="checkins" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations Performed as Staff" name="performed_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
@@ -1666,6 +1668,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="permissions" reltype="has_many" key="usr" map="perm" class="pupm"/>
 			<link field="settings" reltype="has_many" key="usr" map="" class="aus"/>
 			<link reporter:label="Billable Transactions" field="billable_transactions" reltype="has_many" key="usr" map="" class="mbt"/>
+			<link field="open_billable_transactions_summary" reltype="has_many" key="usr" map="" class="mobts"/>
+			<link field="money_summary" reltype="might_have" key="usr" map="" class="mus"/>
 			<link field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
 			<link field="addresses" reltype="has_many" key="usr" map="" class="aua"/>
 			<link field="survey_responses" reltype="has_many" key="usr" map="" class="asvr"/>
