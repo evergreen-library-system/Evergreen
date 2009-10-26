@@ -126,7 +126,7 @@
 		</productionset>
 
 		<para> When json_query requires an integral value, it will usually accept a quoted string
-			and convert it to an integer by brute force – to zero if necessary. Likewise it may
+			and convert it to an integer by brute force -- to zero if necessary. Likewise it may
 			truncate a floating point number to an integral value. Scientific notation will be
 			accepted but may not give the intended results. </para>
 
@@ -216,7 +216,7 @@
 
 	<sect2><title>FROM Clause</title>
 		<para>
-			The object identified by <literal>“from”</literal> encodes the FROM clause of
+			The object identified by <literal>"from"</literal> encodes the FROM clause of
 			the SQL.  The associated value may be a string, an array, or a JSON object.
 		</para>
 
@@ -253,7 +253,7 @@
 		<para>
 			If from_list is a JSON array, then it represents a table-like function from
 			which the SQL statement will select rows, using a SELECT clause consisting
-			of “SELECT *” (regardless of the select_list supplied by the method parameter).
+			of "SELECT *" (regardless of the select_list supplied by the method parameter).
 		</para>
 		<para>
 			The first entry in the array is the name of the function.  It must be a string
@@ -306,12 +306,12 @@
 				<rhs>
 					class_name  ':'<sbr/>
 					'{'<sbr/>
-					[  '”type”'      ':'  string      ]<sbr/>
-					[  '”field”'     ':'  field_name  ]<sbr/>
-					[  '”fkey”'      ':'  field_name  ]<sbr/>
-					[  '”filter”'    ':'  where_condition  ]<sbr/>
-					[  '”filter_op”' ':'  string      ]<sbr/>
-					[  '”join”'      ':'  join_list   ]<sbr/>
+					[  '"type"'      ':'  string      ]<sbr/>
+					[  '"field"'     ':'  field_name  ]<sbr/>
+					[  '"fkey"'      ':'  field_name  ]<sbr/>
+					[  '"filter"'    ':'  where_condition  ]<sbr/>
+					[  '"filter_op"' ':'  string      ]<sbr/>
+					[  '"join"'      ':'  join_list   ]<sbr/>
 					'}'
 				</rhs>
 			</production>
@@ -319,24 +319,24 @@
 		</productionset>
 
 		<para>
-			The data portion of the <literal>“join_type”</literal> entry tells json_query
+			The data portion of the <literal>"join_type"</literal> entry tells json_query
 			whether to use a left join, right join, full join, or inner join.  The values
-			<literal>“left”</literal>, <literal>“right”</literal>, and <literal>“full”</literal>,
+			<literal>"left"</literal>, <literal>"right"</literal>, and <literal>"full"</literal>,
 			in upper, lower, or mixed case, have the obvious meanings.  If the
-			<literal>“join_type”</literal> entry has any other value, or is not present,
+			<literal>"join_type"</literal> entry has any other value, or is not present,
 			json_query constructs an inner join.
 		</para>
 		<para>
-			The <literal>“field”</literal> and <literal>“fkey”</literal> attributes specify the
-			columns to be equated in the join condition.  The <literal>“field”</literal>
+			The <literal>"field"</literal> and <literal>"fkey"</literal> attributes specify the
+			columns to be equated in the join condition.  The <literal>"field"</literal>
 			attribute refers to the column in the joined table, i.e. the one named by the
-			<literal>join_def</literal>.  The <literal>“fkey”</literal> attribute refers to the
+			<literal>join_def</literal>.  The <literal>"fkey"</literal> attribute refers to the
 			corresponding column in the other table, i.e. the one named outside the
-			<literal>join_def</literal> – either the top-level table or a table named by some
+			<literal>join_def</literal> -- either the top-level table or a table named by some
 			other <literal>join_def</literal>.
 		</para>
 		<para>
-			It may be tempting to suppose that <literal>“fkey”</literal> stands for “foreign key”,
+			It may be tempting to suppose that <literal>"fkey"</literal> stands for "foreign key",
 			and therefore refers to a column in the child table that points to the key of a
 			parent table.  Resist the temptation; the labels are arbitrary.  The json_query
 			method doesn't care which table is the parent and which is the child.
@@ -374,9 +374,9 @@
 		</informalexample>
 
 		<para>
-			Note in this example that <literal>“fkey”</literal> refers to a column of the
-			class <literal>“aou”</literal>, and <literal>“field”</literal> refers to a
-			column of the class <literal>“asv”</literal>.
+			Note in this example that <literal>"fkey"</literal> refers to a column of the
+			class <literal>"aou"</literal>, and <literal>"field"</literal> refers to a
+			column of the class <literal>"asv"</literal>.
 		</para>
 		<para>
 			If you specify only one of the two columns, json_query will try to identify the
@@ -396,32 +396,32 @@
 			method always uses a simple equality condition.
 		</para>
 		<para>
-			Using a <literal>“filter”</literal> entry in the join_def, you can apply one
+			Using a <literal>"filter"</literal> entry in the join_def, you can apply one
 			or more additional conditions to the JOIN clause, typically to restrict the
 			join to certain rows of the joined table.  The data associated with the
-			<literal>“filter”</literal> key is the same sort of
+			<literal>"filter"</literal> key is the same sort of
 			<literal>where_condition</literal> that you use for a WHERE clause
 			(discussed below).
 		</para>
 		<para>
-			If the string associated with the <literal>“filter_op”</literal> entry is
-			<literal>“OR”</literal> in upper, lower, or mixed case, then the json_query
+			If the string associated with the <literal>"filter_op"</literal> entry is
+			<literal>"OR"</literal> in upper, lower, or mixed case, then the json_query
 			method uses OR to connect the standard join condition to any additional
-			conditions supplied by a <literal>“filter”</literal> entry.
+			conditions supplied by a <literal>"filter"</literal> entry.
 		</para>
 		<para>
 			(Note that if the <literal>where_condition</literal> supplies multiple
 			conditions, they will be connected by AND.  You will probably want to move
-			them down a layer – enclose them in parentheses, in effect – to avoid a
+			them down a layer -- enclose them in parentheses, in effect -- to avoid a
 			confusing mixture of ANDs and ORs.)
 		</para>
 		<para>
-			If the <literal>“filter_op”</literal> entry carries any other value, or if
+			If the <literal>"filter_op"</literal> entry carries any other value, or if
 			it is absent, then the json_query method uses AND.  In the absence of a
-			<literal>“filter”</literal> entry, <literal>“filter_op”</literal> has no effect.
+			<literal>"filter"</literal> entry, <literal>"filter_op"</literal> has no effect.
 		</para>
 		<para>
-			A <literal>“join”</literal> entry in a <literal>join_def</literal> specifies
+			A <literal>"join"</literal> entry in a <literal>join_def</literal> specifies
 			another layer of join.  The class named in the subjoin is joined to the class
 			named by the <literal>join_def</literal> to which it is subordinate.  By this
 			means you can encode multiple joins in a hierarchy.
@@ -430,7 +430,7 @@
 
 	<sect2><title>SELECT Clause</title>
 		<para>
-			If a query does not contain an entry for <literal>“select”</literal>, json_query
+			If a query does not contain an entry for <literal>"select"</literal>, json_query
 			will construct a default SELECT clause.  The default includes every non-virtual
 			field from the top-level class of the FROM clause, as defined by the IDL.  The
 			result is similar to SELECT *, except:
@@ -473,7 +473,7 @@
 
 			<production xml:id="ebnf.field_list_0">
 				<lhs> field_list </lhs>
-				<rhs> 'null'  |  '”*”' </rhs>
+				<rhs> 'null'  |  '"*"' </rhs>
 			</production>
 
 		</productionset>
@@ -481,7 +481,7 @@
 		<para>
 			If a field_list is either the JSON reserved word <literal>null</literal>
 			(in lower case) or an asterisk in double quotes, json_query constructs a
-			default SELECT list – provided that the class is the top-level class of the
+			default SELECT list -- provided that the class is the top-level class of the
 			query.  If the class belongs to a join somewhere, json_query ignores the
 			<literal>field_list</literal>.
 		</para>
@@ -501,7 +501,7 @@
 
 		<para>
 			If the array is empty, json_query will construct a default SELECT list for
-			the class – again, provided that the class is the top-level class in the query.
+			the class -- again, provided that the class is the top-level class in the query.
 		</para>
 		<para>
 			In the simplest case, a field specification may name a non-virtual field
@@ -529,7 +529,7 @@
 			</listitem>
 			<listitem>
 				<para>in the field definition for the field in the IDL, the tag
-				<literal>“il8n”</literal> is present and true;</para>
+				<literal>"il8n"</literal> is present and true;</para>
 			</listitem>
 			<listitem>
 				<para>the query does <emphasis>not</emphasis> include the
@@ -547,9 +547,9 @@
 				<lhs> field_spec </lhs>
 				<rhs>
 					'{'<sbr/>
-					'”column”'  ':'  <sbr/>
-					[ ',' '”alias”'  ':'  string  ]<sbr/>
-					[ ',' '”aggregate”'  ':'  boolean  ]<sbr/>
+					'"column"'  ':'  <sbr/>
+					[ ',' '"alias"'  ':'  string  ]<sbr/>
+					[ ',' '"aggregate"'  ':'  boolean  ]<sbr/>
 					[ ',' transform_spec  ]<sbr/>
 					'}'
 				</rhs>
@@ -558,19 +558,19 @@
 		</productionset>
 
 		<para>
-			The <literal>“column”</literal> entry provides the column name, which must
+			The <literal>"column"</literal> entry provides the column name, which must
 			be defined as non-virtual in the IDL.
 		</para>
 		<para>
-			The <literal>“alias”</literal> entry provides a column alias.  If no alias
+			The <literal>"alias"</literal> entry provides a column alias.  If no alias
 			is specified, json_query uses the column name as its own alias.
 		</para>
 		<para>
-			The <literal>“aggregate”</literal> entry has no effect on the SELECT clause
+			The <literal>"aggregate"</literal> entry has no effect on the SELECT clause
 			itself.  Rather, it affects the construction of a GROUP BY class.  If there
-			is an <literal>“aggregate”</literal> entry for any field, then json_query builds
+			is an <literal>"aggregate"</literal> entry for any field, then json_query builds
 			a GROUP BY clause listing every column that is <emphasis>not</emphasis> tagged
-			for aggregation (or that carries an <literal>“aggregate”</literal> entry with
+			for aggregation (or that carries an <literal>"aggregate"</literal> entry with
 			a value of false).  If <emphasis>all</emphasis> columns are tagged for
 			aggregation, then json_query omits the GROUP BY clause.
 		</para>
@@ -580,9 +580,9 @@
 			<production xml:id="ebnf.transform_spec_0">
 				<lhs> transform_spec </lhs>
 				<rhs>
-					'”transform”'  ':'  string  ]<sbr/>
-					[ ',' '”result_field”  ':'  string  ]<sbr/>
-					[ ',' '”params”  ':' param_list  ]
+					'"transform"'  ':'  string  ]<sbr/>
+					[ ',' '"result_field"  ':'  string  ]<sbr/>
+					[ ',' '"params"  ':' param_list  ]
 				</rhs>
 			</production>
 
@@ -591,20 +591,20 @@
 		<para>
 			When a <literal>transform_spec</literal> is present, json_query selects the
 			return value of a function instead of selecting the column directly.  The entry
-			for <literal>“transform”</literal> provides the name of the function, and the
-			column name (as specified by the <literal>“column”</literal> tag), qualified by
+			for <literal>"transform"</literal> provides the name of the function, and the
+			column name (as specified by the <literal>"column"</literal> tag), qualified by
 			the class name, is the argument to the function.  For example, you might use such
 			a function to format a date or time, or otherwise transform a column value.
 			You might also use an aggregate function such as SUM, COUNT, or MAX (possibly
-			together with the <literal>“aggregate”</literal> tag).
+			together with the <literal>"aggregate"</literal> tag).
 		</para>
 		<para>
-			The <literal>“result_field”</literal> entry, when present, specifies a subcolumn
+			The <literal>"result_field"</literal> entry, when present, specifies a subcolumn
 			of the function's return value.  The resulting SQL encloses the function call
 			in parentheses, and follows it with a period and the subcolumn name.
 		</para>
 		<para>
-			The <literal>“params”</literal> entry, if present, provides a possibly empty
+			The <literal>"params"</literal> entry, if present, provides a possibly empty
 			array of additional parameter values, either strings, numbers, or nulls:
 		</para>
 
@@ -652,7 +652,7 @@
 		<para> JSON requires that every key string be unique within an object.  This requirement
 			imposes some awkward limitations on a JSON query.  For example, you might want to
 			express two conditions for the same column: id &gt; 10 and id != 25.  Since each of
-			those conditions would have the same key string, namely “id”, you can't put them
+			those conditions would have the same key string, namely "id", you can't put them
 			into the same JSON object. </para>
 		<para> The solution is to put such conflicting conditions in separate JSON objects, and
 			put the objects into an array: </para>
@@ -736,7 +736,7 @@
 
 		<para> The resulting SQL is enclosed in parentheses, and qualifies the columns with
 			the specified class name.  This syntax provides a mechanism to shift the class
-			context – i.e. to refer to one class in a context that would otherwise refer to
+			context -- i.e. to refer to one class in a context that would otherwise refer to
 			a different class. </para>
 		<para> Ordinarily the class name must be a valid non-virtual class defined in the IDL,
 			and applicable to the associated <literal>where_condition</literal>.  There is at
@@ -756,14 +756,14 @@
 			</programlisting>
 		</informalexample>
 
-		<para> ...even though neither <literal>“abc”</literal>, nor <literal>“xyz”</literal>,
-			nor <literal>“frobozz”</literal> is defined in the IDL.  The class name
-			<literal>“abc”</literal> isn't used at all because the <literal>“+xyz”</literal>
+		<para> ...even though neither <literal>"abc"</literal>, nor <literal>"xyz"</literal>,
+			nor <literal>"frobozz"</literal> is defined in the IDL.  The class name
+			<literal>"abc"</literal> isn't used at all because the <literal>"+xyz"</literal>
 			operator overrides it.  Such a query won't fail until json_query tries
 			to execute it in the database. </para>
 		<para> The other operators that may occur at this level all begin with a minus sign,
 			and they all represent familiar SQL operators.  For example, the
-			<literal>“-or”</literal> operator joins the conditions within a
+			<literal>"-or"</literal> operator joins the conditions within a
 			<literal>where_condition</literal> by OR (instead of the default AND), and
 			encloses them all in parentheses: </para>
 
@@ -771,29 +771,29 @@
 
 			<production xml:id="ebnf.condition_2">
 				<lhs> condition </lhs>
-				<rhs> '”-or”' ':' where_condition </rhs>
+				<rhs> '"-or"' ':' where_condition </rhs>
 			</production>
 
 		</productionset>
 
-		<para> In fact the <literal>“-or”</literal> operator is the only way to get OR into
+		<para> In fact the <literal>"-or"</literal> operator is the only way to get OR into
 			the WHERE clause. </para>
-		<para> The <literal>“-and”</literal> operator is similar, except that it uses AND: </para>
+		<para> The <literal>"-and"</literal> operator is similar, except that it uses AND: </para>
 
 		<productionset>
 
 			<production xml:id="ebnf.condition_3">
 				<lhs> condition </lhs>
-				<rhs> '”-and”' ':'  where_condition </rhs>
+				<rhs> '"-and"' ':'  where_condition </rhs>
 			</production>
 
 		</productionset>
 
-		<para> Arguably the <literal>“-and”</literal> operator is redundant, because you can
+		<para> Arguably the <literal>"-and"</literal> operator is redundant, because you can
 			get the same effect by wrapping the subordinate <literal>where_condition</literal>
 			in a JSON array.  Either technique merely adds a layer of parentheses, since AND
 			connects successive conditions by default. </para>
-		<para> The <literal>“-not”</literal> operator expands the subordinate
+		<para> The <literal>"-not"</literal> operator expands the subordinate
 			<literal>where_condition</literal> within parentheses, and prefaces the result
 			with NOT: </para>
 
@@ -801,24 +801,24 @@
 
 			<production xml:id="ebnf.condition_4">
 				<lhs> condition </lhs>
-				<rhs> '”-not”' ':'  where_condition </rhs>
+				<rhs> '"-not"' ':'  where_condition </rhs>
 			</production>
 
 		</productionset>
 
-		<para> The <literal>“-exists”</literal> or <literal>“-not-exists”</literal> operator
+		<para> The <literal>"-exists"</literal> or <literal>"-not-exists"</literal> operator
 			constructs a subquery within an EXISTS  or NOT EXISTS clause, respectively: </para>
 
 		<productionset>
 
 			<production xml:id="ebnf.condition_5">
 				<lhs> condition </lhs>
-				<rhs> '”-exists”' ':' query </rhs>
+				<rhs> '"-exists"' ':' query </rhs>
 			</production>
 
 			<production xml:id="ebnf.condition_6">
 				<lhs> condition </lhs>
-				<rhs> '”-not-exists”' ':' query </rhs>
+				<rhs> '"-not-exists"' ':' query </rhs>
 			</production>
 
 		</productionset>
@@ -826,7 +826,7 @@
 		<para> The remaining kinds of <literal>condition</literal> all have a
 			<literal>field_name</literal> on the left and some kind of <literal>predicate</literal>
 			on the right.  A <literal>predicate</literal> places a constraint on the value of
-			the column – or, in some cases, on the value of the column as transformed by some
+			the column -- or, in some cases, on the value of the column as transformed by some
 			function call: </para>
 
 		<productionset>
@@ -886,14 +886,14 @@
 
 		<para> Strictly speaking, json_query accepts any <literal>compare_op</literal>
 			that doesn't contain semicolons or white space (or
-			<literal>“similar to”</literal> as a special exception).  As a result, it
-			is possible – and potentially useful – to use a custom operator like
-			<literal>“&gt;100*”</literal> in order to insert an expression that would
+			<literal>"similar to"</literal> as a special exception).  As a result, it
+			is possible -- and potentially useful -- to use a custom operator like
+			<literal>"&gt;100*"</literal> in order to insert an expression that would
 			otherwise be difficult or impossible to create through a JSON query.  The ban
 			on semicolons and white space prevents certain kinds of SQL injection. </para>
 		<para> Note that json_query does <emphasis>not</emphasis> accept two operators that
-			PostgreSQL <emphasis>does</emphasis> accept: <literal>“is distinct from”</literal>
-			and <literal>“is not distinct from”</literal>. </para>
+			PostgreSQL <emphasis>does</emphasis> accept: <literal>"is distinct from"</literal>
+			and <literal>"is not distinct from"</literal>. </para>
 		<para> You can also compare a column to a null value: </para>
 
 		<productionset>
@@ -905,7 +905,7 @@
 
 		</productionset>
 
-		<para> The equality operator <literal>“=”</literal> turns into IS NULL.  Any other
+		<para> The equality operator <literal>"="</literal> turns into IS NULL.  Any other
 			operator turns into IS NOT NULL. </para>
 		<para> When a <literal>compare_op</literal> is paired with an array, it defines a
 			function call: </para>
@@ -923,13 +923,13 @@
 			the array, if any, represent the parameters of the function call.  They may be
 			strings, numbers, or nulls.  In the generated SQL, the function call appears on
 			the right of the comparison. </para>
-		<para> The <literal>“between”</literal> operator creates a BETWEEN clause: </para>
+		<para> The <literal>"between"</literal> operator creates a BETWEEN clause: </para>
 
 		<productionset>
 
 			<production xml:id="ebnf.predicate_3">
 				<lhs> predicate </lhs>
-				<rhs> '{'  “between”  ':'  '['  lit_value  ','  lit_value  ']'  '}' </rhs>
+				<rhs> '{'  "between"  ':'  '['  lit_value  ','  lit_value  ']'  '}' </rhs>
 			</production>
 
 		</productionset>
@@ -960,8 +960,8 @@
 		<para>For the HAVING clause, json_query accepts exactly the same syntax as it accepts for
 			the WHERE clause.</para>
 		<para> The other way to create an IN list is to use an explicit
-			<literal>“in”</literal> operator with an array of literal values.  This format
-			also works for the <literal>“not in”</literal> operator: </para>
+			<literal>"in"</literal> operator with an array of literal values.  This format
+			also works for the <literal>"not in"</literal> operator: </para>
 
 		<productionset>
 
@@ -972,7 +972,7 @@
 
 			<production xml:id="ebnf.in_operator">
 				<lhs> in_operator </lhs>
-				<rhs> “in”  |  “not in” </rhs>
+				<rhs> "in"  |  "not in" </rhs>
 			</production>
 
 		</productionset>
@@ -991,7 +991,7 @@
 
 		<para> The remaining types of <literal>predicate</literal> can put a function call on
 			the left of the comparison, by using a <literal>transform_spec</literal> together
-			with a <literal>“value”</literal> tag.   The <literal>transform_spec</literal> is
+			with a <literal>"value"</literal> tag.   The <literal>transform_spec</literal> is
 			optional, and if you don't need it, the same SQL would in many cases be easier to
 			express by other means. </para>
 		<para> The <literal>transform_spec</literal> construct was described earlier in
@@ -1002,18 +1002,18 @@
 			<production xml:id="ebnf.transform_spec_1">
 				<lhs> transform_spec </lhs>
 				<rhs>
-					'”transform”'  ':'  string  ]<sbr/>
-					[ ',' '”result_field”  ':'  string  ]<sbr/>
-					[ ',' '”params”  ':' param_list  ]
+					'"transform"'  ':'  string  ]<sbr/>
+					[ ',' '"result_field"  ':'  string  ]<sbr/>
+					[ ',' '"params"  ':' param_list  ]
 				</rhs>
 			</production>
 
 		</productionset>
 
-		<para> As in the SELECT clause, the <literal>“transform”</literal> string names the
+		<para> As in the SELECT clause, the <literal>"transform"</literal> string names the
 			function.  The first parameter is always the column identified by the field_name.
 			Additional parameters, if any, appear in the <literal>param_list</literal>.  The
-			<literal>“result_field”</literal> string, if present, identifies one column of a
+			<literal>"result_field"</literal> string, if present, identifies one column of a
 			multicolumn return value. </para>
 		<para> Here's a second way to compare a value to a literal value (but not to a null
 			value): </para>
@@ -1022,7 +1022,7 @@
 
 			<production xml:id="ebnf.predicate_7">
 				<lhs> predicate </lhs>
-				<rhs> '{' compare_op ':' '{' '”value”' ':' lit_value<sbr/>
+				<rhs> '{' compare_op ':' '{' '"value"' ':' lit_value<sbr/>
 					[ transform_spec ] '}' '}' </rhs>
 			</production>
 
@@ -1034,7 +1034,7 @@
 
 			<production xml:id="ebnf.predicate_8">
 				<lhs> predicate </lhs>
-				<rhs> '{' compare_op ':' '{' '”value”' ':' '{'<sbr/>
+				<rhs> '{' compare_op ':' '{' '"value"' ':' '{'<sbr/>
 					condition { ',' condition } [ transform_spec ] '}' '}' </rhs>
 			</production>
 
@@ -1047,7 +1047,7 @@
 
 			<production xml:id="ebnf.predicate_9">
 				<lhs> predicate </lhs>
-				<rhs> '{' compare_op ':' '{' '”value”' ':' '['<sbr/>
+				<rhs> '{' compare_op ':' '{' '"value"' ':' '['<sbr/>
 					string { ',' parameter } ']' [ transform_spec ] '}' '}' </rhs>
 			</production>
 
@@ -1084,24 +1084,24 @@
 			<production xml:id="ebnf.sort_field_def">
 				<lhs> sort_field_def </lhs>
 				<rhs> '{'<sbr/>
-					'”class”'  ':'  class_name<sbr/>
-					','  '”field”'  ':'  field_name<sbr/>
-					[  ','  '”direction”'  ':'  lit_value  ]<sbr/>
+					'"class"'  ':'  class_name<sbr/>
+					','  '"field"'  ':'  field_name<sbr/>
+					[  ','  '"direction"'  ':'  lit_value  ]<sbr/>
 					[  ','  transform_spec  ]<sbr/>
 					'}' </rhs>
 			</production>
 
 		</productionset>
 
-		<para> The <literal>“class”</literal> and <literal>“field”</literal> entries are
+		<para> The <literal>"class"</literal> and <literal>"field"</literal> entries are
 			required, and of course the field must belong to the class.  Furthermore, at
 			least one field from the class must appear in the SELECT clause. </para>
-		<para> The <literal>“direction”</literal> entry, if present, specifies whether the
+		<para> The <literal>"direction"</literal> entry, if present, specifies whether the
 			sort will be ascending or descending for the column in question.  If the associated
-			value begins with “D” or “d”, the sort will be descending; otherwise the sort will
+			value begins with "D" or "d", the sort will be descending; otherwise the sort will
 			be ascending.  If the value is a number, it will be treated as a string that does not
-			start with “D” or “d”, resulting in an ascending sort. </para>
-		<para> In the absence of a <literal>“direction”</literal> entry, the sort will be
+			start with "D" or "d", resulting in an ascending sort. </para>
+		<para> In the absence of a <literal>"direction"</literal> entry, the sort will be
 			ascending. </para>
 		<para> The <literal>transform_spec</literal> works here the same way it works in the
 			SELECT clause and the WHERE clause, enabling you to pass the column through a
@@ -1112,9 +1112,9 @@
 			<production xml:id="ebnf.transform_spec_2">
 				<lhs> transform_spec </lhs>
 				<rhs>
-					'”transform”'  ':'  string  ]<sbr/>
-					[ ',' '”result_field”  ':'  string  ]<sbr/>
-					[ ',' '”params”  ':' param_list  ]
+					'"transform"'  ':'  string  ]<sbr/>
+					[ ',' '"result_field"  ':'  string  ]<sbr/>
+					[ ',' '"params"  ':' param_list  ]
 				</rhs>
 			</production>
 
@@ -1169,7 +1169,7 @@
 		<para> Since the <literal>field_name</literal> is the key for the object, it cannot
 			appear more than once.  As a result, some kinds of sorts are not possible with this
 			syntax.  For example, one might want to sort by UPPER( family_name ), and then by
-			family_name with case unchanged, to make sure that “diBona” comes before “Dibona”.
+			family_name with case unchanged, to make sure that "diBona" comes before "Dibona".
 			For situations like this, you must encode the ORDER BY clause as an array rather
 			than an object. </para>
 		<para> The data associated with each <literal>field_name</literal> may take either of
@@ -1185,7 +1185,7 @@
 
 		</productionset>
 
-		<para> If the literal is a string starting with “D” or “d”, json_query sorts the field
+		<para> If the literal is a string starting with "D" or "d", json_query sorts the field
 			in descending order.  Otherwise it sorts the field in ascending order. </para>
 		<para> In other cases, the <literal>field_name</literal> may be paired with an object
 			to specify more details: </para>
@@ -1195,19 +1195,19 @@
 			<production xml:id="ebnf.sort_class_subdef_1">
 				<lhs> sort_class_subdef </lhs>
 				<rhs> '{'<sbr/>
-					[  '”direction”'  ':'  lit_value ]<sbr/>
+					[  '"direction"'  ':'  lit_value ]<sbr/>
 					[  transform_spec  ]<sbr/>
 					'}' </rhs>
 			</production>
 
 		</productionset>
 
-		<para> As before, the value tagged as <literal>“direction”</literal> specifies the
+		<para> As before, the value tagged as <literal>"direction"</literal> specifies the
 			direction of the sort, depending on the first character.  If not otherwise
 			specified, the sort direction defaults to ascending. </para>
 		<para> Also as before, the <literal>transform_spec</literal> may specify a function
 			through which to pass the column. </para>
-		<para> Since both the <literal>“direction”</literal> tag and the
+		<para> Since both the <literal>"direction"</literal> tag and the
 			<literal>transform_spec</literal> are optional, the object may be empty: </para>
 
 		<productionset>
