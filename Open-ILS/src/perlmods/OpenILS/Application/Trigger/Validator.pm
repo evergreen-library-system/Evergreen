@@ -27,15 +27,15 @@ sub MaxPassiveDelayAge {
 
     my $delay_field_ts = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($target->$delay_field()));
 
-    # the cutoff date is today - delay - age.  This is also true for negative delays.
-    # For example, today - "7 days" - "1 day" == 8 days ago.  For a 7-day delay, you would
-    # not validate if the date of the object is 8 or more days old.
-    my $max_date = DateTime->now;
-    $max_date->subtract( seconds => interval_to_seconds( $env->{event}->event_def->delay ) );
-    $max_date->subtract( seconds => interval_to_seconds( $env->{params}->{max_delay_age} ) );
+    # the cutoff date is the target timestamp + the delay + the max_delay_age
+    # This is also true for negative delays. For example:
+    #    due_date + "-3 days" + "1 day" == -2 days old.
+    $delay_field_ts
+        ->add( seconds => interval_to_seconds( $env->{event}->event_def->delay ) )
+        ->add( seconds => interval_to_seconds( $env->{params}->{max_delay_age} ) );
 
-    return 0 if $delay_field_ts <= $max_date;
-    return 1;
+    return 1 if $delay_field_ts > DateTime->now;
+    return 0;
 }
 
 sub CircIsOverdue {
