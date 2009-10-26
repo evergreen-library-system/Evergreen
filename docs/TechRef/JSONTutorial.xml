@@ -1,0 +1,2795 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<sect1 version="5.0" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xi="http://www.w3.org/2003/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+	<info>
+		<title>JSON Queries: A Tutorial</title>
+
+		<author>
+			<personname>
+				<firstname>Scott</firstname>
+				<surname>McKellar</surname>
+			</personname>
+			<affiliation>
+				<orgname>Equinox Software, Inc.</orgname>
+			</affiliation>
+		</author>
+
+		<copyright>
+			<year>2009</year>
+			<holder>Equinox Software, Inc.</holder>
+		</copyright>
+
+		<releaseinfo>
+			Licensing: Creative Commons Attribution-Share Alike 3.0 United States License.
+		</releaseinfo>
+	</info>
+
+	<sect2>
+		<title>Introduction</title>
+		<para> The json_query facility provides a way for client applications to query the
+			database over the network.  Instead of constructing its own SQL, the application
+			encodes a query in the form of a JSON string and passes it to the json_query service.
+			Then the json_query service parses the JSON, constructs and executes the
+			corresponding SQL, and returns the results to the client application. </para>
+		<para> This arrangement enables the json_query service to act as a gatekeeper, protecting
+			the database from potentially damaging SQL commands.  In particular, the generated SQL
+			is confined to SELECT statements, which will not change the contents of the database. </para>
+		<para> In addition, the json_query service sometimes uses its knowledge of the database
+			structure to supply column names and join conditions so that the client application
+			doesn't have to. </para>
+		<para> Nevertheless, the need to encode a query in a JSON string adds complications,
+			because the client needs to know how to build the right JSON.  JSON queries are also
+			somewhat limiting – they can't do all of the things that you can do with raw SQL. </para>
+		<para> This tutorial explains what you can do with a JSON query, and how you can do it. </para>
+
+		<sect3>
+			<title>The IDL</title>
+			<para> A JSON query does not refer to tables and columns.  Instead, it refers to classes
+				and fields, which the IDL maps to the corresponding database entities. </para>
+			<para> The IDL (Interface Definition Language) is an XML file, typically
+				<filename>/openils/conf/fm_IDL.xml</filename>.  It maps each class to a table, view,
+				or subquery, and each field to a column.  It also includes information about foreign
+				key relationships. </para>
+			<para> (The IDL also defines virtual classes and virtual fields, which don't correspond
+				to database entities.  We won't discuss them here, because json_query ignores them.) </para>
+			<para> When it first starts up, json_query loads a relevant subset of the IDL into memory.
+				Thereafter, it consults its copy of the IDL whenever it needs to know about the
+				database structure.  It uses the IDL to validate the JSON queries, and to translate
+				classes and fields to the corresponding tables and columns.  In some cases it uses the
+				IDL to supply information that the queries don't provide. </para>
+		</sect3>
+
+		<sect3>
+			<title>Definitions</title>
+			<para> References to “SQL” refer to the dialect implemented by PostgreSQL.  This tutorial
+				assumes that you are already familiar with SQL. </para>
+			<para> You should also be familiar with JSON.  However it is worth defining a couple of terms
+				that have other meanings in other contexts: </para>
+
+			<itemizedlist>
+
+				<listitem>
+					<para> An “object” is a JSON object, i.e. a comma-separated list of name:value pairs,
+						enclosed in curly braces, like this:
+						<informalexample>
+							<programlisting>
+	{ “a”:”frobozz”, “b”:24, “c”:null }
+							</programlisting>
+						</informalexample>
+					</para>
+				</listitem>
+
+				<listitem>
+					<para> An “array” is a JSON array, i.e. a comma-separated list of values, enclosed
+						in square brackets, like this:
+						<informalexample>
+							<programlisting>
+	[ “Goober”, 629, null, false, “glub” ]
+							</programlisting>
+						</informalexample>
+					</para>
+				</listitem>
+
+			</itemizedlist>
+
+		</sect3>
+
+		<sect3>
+			<title>The Examples</title>
+			<para> The test_json_query utility generated the SQL for all of the sample queries in this
+				tutorial.  Newlines and indentation were then inserted manually for readability. </para>
+			<para> All examples involve the actor.org_unit table, sometimes in combination with a
+				few related tables.  The queries themselves are designed to illustrate the syntax, not
+				to do anything useful at the application level.  For example, it's not meaningful to
+				take the square root of an org_unit id, except to illustrate how to code a function call.
+				The examples are like department store mannequins – they have no brains, they're only
+				for display. </para>
+		</sect3>
+
+	</sect2>
+
+	<sect2>
+		<title>Hello, World!</title>
+
+		<para> The simplest kind of query defines nothing but a FROM clause.  For example: </para>
+		<informalexample>
+			<programlisting language="JSON">
+
+	{
+	    "from":"aou"
+	}
+
+			</programlisting>
+		</informalexample>
+		<para> In this minimal example we select from only one table.  Later we will see how to join
+			multiple tables. </para>
+		<para> Since we don't supply a WHERE clause, json_query constructs a default WHERE clause for
+			us, including all the available columns.  The resulting SQL looks like this: </para>
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".billing_address AS "billing_address",
+	    "aou".holds_address   AS "holds_address",
+	    "aou".id              AS "id",
+	    "aou".ill_address     AS "ill_address",
+	    "aou".mailing_address AS "mailing_address",
+	    "aou".name            AS "name",
+	    "aou".ou_type         AS "ou_type",
+	    "aou".parent_ou       AS "parent_ou",
+	    "aou".shortname       AS "shortname",
+	    "aou".email           AS "email",
+	    "aou".phone           AS "phone",
+	    "aou".opac_visible    AS "opac_visible"
+	FROM
+	    actor.org_unit        AS "aou" ;
+			</programlisting>
+		</informalexample>
+
+		<sect3>
+			<title>Default SELECT Clauses</title>
+			<para> The default SELECT clause includes every column that the IDL defines it as a
+				non-virtual field for the class in question.  If a column is present in the database
+				but not defined in the IDL, json_query doesn't know about it.  In the case of the
+				example shown above, all the columns are defined in the IDL, so they all show up in
+				the default SELECT clause. </para>
+			<para> If the FROM clause joins two or more tables, the default SELECT clause includes
+				columns only from the core table, not from any of the joined tables. </para>
+			<para> The default SELECT clause has almost the same effect as “<literal>SELECT *</literal>”,
+				but not exactly.  If you were to “<literal>SELECT * from actor.org_unit_type</literal>
+				in psql, the output would include all the same columns as in the example above, but not in
+				the same order.  A default SELECT clause includes the columns in the order in which the IDL
+				defines them, which may be different from the order in which the database defines them. </para>
+			<para> In practice, the sequencing of columns in the SELECT clause is not significant.
+				The result set is returned to the client program in the form of a data structure, which
+				the client program can navigate however it chooses. </para>
+		</sect3>
+
+		<sect3>
+			<title>Other Lessons</title>
+			<para> There are other ways to get a default SELECT clause.  However, default SELECT clauses
+				are a distraction at this point, because most of the time you'll specify your own SELECT
+				clause explicitly, as we will discuss later. </para>
+			<para> Let's consider some more important aspects of this simple example – more important
+				because they apply to more complex queries as well. </para>
+
+			<itemizedlist>
+
+				<listitem>
+					<para> The entire JSON query is an object.  In this simple case the object includes
+						only one entry, for the FROM clause.  Typically you'll also have entries for
+						the SELECT clause and the WHERE clause, and possibly for HAVING, ORDER BY,
+						LIMIT, or OFFSET clauses.  There is no separate entry for a GROUP BY clause,
+						which you can specify by other means. </para>
+				</listitem>
+
+				<listitem>
+					<para> Although all the other entries are optional, you must include an entry for
+						the FROM clause.  You cannot, for example, do a SELECT USER the way you can in
+						psql. </para>
+				</listitem>
+
+				<listitem>
+					<para> Every column is qualified by an alias for the table.  This alias is always the
+						class name for the table, as defined in the IDL. </para>
+				</listitem>
+
+				<listitem>
+					<para> Every column is aliased with the column name.  There is a way to choose a
+						different column alias (not shown here). </para>
+				</listitem>
+
+			</itemizedlist>
+
+		</sect3>
+	</sect2>
+
+	<sect2>
+		<title>The SELECT Clause</title>
+
+		<para> The following variation also produces a default SELECT clause: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "from":"aou",
+	        "select": {
+	        "aou":"*"
+	    }
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> ...and so does this one: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select": {
+	         "aou":null
+	    },
+	    "from":"aou"
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> While this syntax may not be terribly useful, it does illustrate the minimal structure
+			of a SELECT clause in a JSON query: an entry in the outermost JSON object, with a key of
+			<literal>“select”</literal>.  The value associated with this key is another JSON object,
+			whose keys are class names. </para>
+		<para> (These two examples also illustrate another point: unlike SQL, a JSON query doesn't care
+			whether the FROM clause or the SELECT clause comes first.) </para>
+		<para> Usually you don't want the default SELECT clause.  Here's how to select only some of the
+			columns: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": {
+	        "aou":[ "id", "name" ]
+	    }
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> The value associated with the class name is an array of column names.  If you select
+			columns from multiple tables (not shown here), you'll need a separate entry for each
+			table, and a separate column list for each entry. </para>
+		<para> The previous example results in the following SQL: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".id       AS "id",
+	    "aou".name     AS "name"
+	FROM
+	    actor.org_unit AS "aou" ;
+			</programlisting>
+		</informalexample>
+
+		<sect3>
+			<title>Fancier SELECT Clauses</title>
+			<para> The previous example featured an array of column names.  More generally, it
+				featured an array of field specifications, and one kind of field specification
+				is a column name.  The other kind is a JSON object, with some combination of the
+				following keys: </para>
+
+			<itemizedlist>
+
+				<listitem>
+					<para> <literal>“column”</literal> -- the column name (required). </para>
+				</listitem>
+
+				<listitem>
+					<para> <literal>“alias”</literal> -- used to define a column alias, which
+						otherwise defaults to the column name. </para>
+				</listitem>
+
+				<listitem>
+					<para> <literal>“aggregate”</literal> -- takes a value of
+						<literal>true</literal> or <literal>false.</literal>  Don't worry about
+						this one yet.  It concerns the use of GROUP BY clauses, which we will
+						examine later. </para>
+				</listitem>
+
+				<listitem>
+					<para> <literal>“transform”</literal> -- the name of an SQL function to be
+						called. </para>
+				</listitem>
+
+				<listitem>
+					<para> <literal>“result_field”</literal> -- used with
+						<literal>“transform”</literal>; specifies an output column of a function that
+						returns multiple columns at a time. </para>
+				</listitem>
+
+				<listitem>
+					<para> <literal>“params”</literal> -- used with <literal>“transform”</literal>;
+						provides a list of parameters for the function.  They may be strings, numbers,
+						or nulls. </para>
+				</listitem>
+
+			</itemizedlist>
+
+			<para> This example assigns a different column alias: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": {
+	        "aou": [
+	            "id",
+	            { "column":"name", "alias":"org_name" }
+	        ]
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "org_name"
+	FROM
+	    actor.org_unit AS "aou" ;
+				</programlisting>
+			</informalexample>
+
+			<para> In this case, changing the column alias doesn't accomplish much.  But if we
+				were joining to the actor.org_unit_type table, which also has a “name” column,
+				we could use different aliases to distinguish them. </para>
+			<para> The following example uses a function to raise a column to upper case: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": {
+	        "aou": [
+	            "id",
+	            { "column":"name", "transform":"upper" }
+	        ]
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id           AS "id",
+	    upper("aou".name ) AS "name"
+	FROM
+	    actor.org_unit     AS "aou" ;
+				</programlisting>
+			</informalexample>
+
+			<para> Here we take a substring of the name, using the <literal>“params”</literal>
+				element to pass parameters: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": {
+	        "aou": [
+	            "id", {
+	                "column":"name",
+	                "transform":"substr",
+	                "params":[ 3, 5 ]
+	            }
+	        ]
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    substr("aou".name,'3','5' ) AS "name"
+	FROM
+	    actor.org_unit AS "aou" ;
+				</programlisting>
+			</informalexample>
+
+			<para> The parameters specified with <literal>“params”</literal> are inserted
+				<emphasis>after</emphasis> the applicable column (<literal>“name”</literal> in this
+				case), which is always the first parameter.  They are always passed as strings,
+				i.e. enclosed in quotes, even if the JSON expresses them as numbers.  PostgreSQL
+				will ordinarily coerce them to the right type.  However if the function name is
+				overloaded to accept different types, PostgreSQL may invoke a function other than
+				the one intended. </para>
+			<para> Finally we call a fictitious function <literal>“frobozz”</literal> that returns
+				multiple columns, where we want only one of them: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": {
+	        "aou": [
+	            "id", {
+	                "column":"name",
+	                "transform":"frobozz",
+	                "result_field":"zamzam"
+	            }
+	        ]
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id                        AS "id",
+	    (frobozz("aou".name ))."zamzam" AS "name"
+	FROM
+	    actor.org_unit                  AS "aou" ;
+				</programlisting>
+			</informalexample>
+
+			<para> The “frobozz” function doesn't actually exist, but json_query doesn't know
+				that.  The query won't fail until json_query tries to execute it in the database. </para>
+		</sect3>
+
+
+		<sect3>
+			<title>Things You Can't Do</title>
+			<para> You can do some things in a SELECT clause with raw SQL (with psql, for example)
+				that you can't do with a JSON query.  Some of them matter and some of them don't. </para>
+			<para> When you do a JOIN, you can't arrange the selected columns in any arbitrary
+				sequence, because all of the columns from a given table must be grouped together.
+				This limitation doesn't matter.  The results are returned in the form of a data
+				structure, which the client program can navigate however it likes. </para>
+			<para> You can't select an arbitrary expression, such as
+				<literal>“percentage / 100”</literal> or <literal>“last_name || ', ' || first_name”</literal>.
+				Most of the time this limitation doesn't matter either, because the client program
+				can do these kinds of manipulations for itself.  However, function calls may be a problem.
+				You can't nest them, and you can't pass more than one column value to them (and it has
+				to be the first parameter). </para>
+			<para> You can't use a CASE expression.  Instead, the client application can do the equivalent
+				branching for itself. </para>
+			<para> You can't select a subquery.  In raw SQL you can do something like the following: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    id,
+	    name,
+	    (
+	        SELECT name
+	        FROM actor.org_unit_type AS aout
+	        WHERE aout.id = aou.ou_type
+	    ) AS type_name
+	FROM
+	    actor.org_unit AS aou;
+				</programlisting>
+			</informalexample>
+
+			<para> This contrived example is not very realistic.  Normally you would use a JOIN in this
+				case, and that's what you should do in a JSON query.  Other cases may not be so easy
+				to solve. </para>
+		</sect3>
+
+	</sect2>
+
+	<sect2>
+		<title>The WHERE Clause</title>
+		<para> Most queries need a WHERE clause, as in this simple example: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "parent_ou":"3"
+	    }
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> Like the SELECT clause, the WHERE clause gets its own entry in the top-level object
+			of a JSON query.  The key is <literal>“where”</literal>, and the associated value is
+			either an object (as shown here) or an array (to be discussed a bit later).  Each entry
+			in the object is a separate condition. </para>
+		<para> In this case, we use a special shortcut for expressing an equality condition.  The
+			column name is on the left of the colon, and the value to which we are equating it is
+			on the right. </para>
+		<para> Here's the resulting SQL: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".id       AS "id",
+	    "aou".name     AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    "aou".parent_ou = 3;
+			</programlisting>
+		</informalexample>
+
+		<para> Like the SELECT clause, the generated WHERE clause qualifies each column name with
+			the alias of the relevant table. </para>
+		<para> If you want to compare a column to NULL, put “<literal>null</literal>” (without
+			quotation marks) to the right of the colon instead of a literal value.  The resulting
+			SQL will include <literal>“IS NULL”</literal> instead of an equals sign. </para>
+
+		<sect3>
+			<title>Other Kinds of Comparisons</title>
+			<para> Here's the same query (which generates the same SQL) without the special
+				shortcut: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "parent_ou":{ "=":3 }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> We still have an entry whose key is the column name, but this time the
+				associated value is another JSON object.  It must contain exactly one entry,
+				with the comparison operator on the left of the colon, and the value to be
+				compared on the right. </para>
+			<para> The same syntax works for other kinds of comparison operators.
+				For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "parent_ou":{ "&gt;":3 }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> ...turns into: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id       AS "id",
+	    "aou".name     AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    "aou".parent_ou > 3 ;
+				</programlisting>
+			</informalexample>
+
+			<para> The condition '<literal>“=”:null</literal>' turns into IS NULL.  Any other
+				operator used with <literal>“null”</literal> turns into IS NOT NULL. </para>
+			<para> You can use most of the comparison operators recognized by PostgreSQL: </para>
+
+			<programlisting language="SQL">
+	=    &lt;&gt;   !=
+	&lt;    &gt;    &lt;=   &gt;=
+	~    ~*   !~   !~*
+	like      ilike
+	similar to
+			</programlisting>
+
+			<para> The only ones you can't use are <literal>“is distinct from”</literal> and
+				<literal>“is not distinct from”</literal>. </para>
+		</sect3>
+
+		<sect3>
+			<title>Custom Comparisons</title>
+			<para> Here's a dirty little secret: json_query doesn't really pay much attention to the
+				operator you supply.  It merely checks to make sure that the operator doesn't contain
+				any semicolons or white space, in order to prevent certain kinds of SQL injection.
+				It also allows <literal>“similar to”</literal> as a special exception. </para>
+			<para> As a result, you can slip an operator of your own devising into the SQL, so long as
+				it doesn't contain any semicolons or white space, and doesn't create invalid syntax.
+				Here's a contrived and rather silly example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "parent_ou":{ "&lt;2+":3 }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> ...which results in the following SQL: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id       AS "id",
+	    "aou".name     AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    "aou".parent_ou &lt;2+ 3;
+				</programlisting>
+			</informalexample>
+
+			<para> It's hard to come up with a realistic case where this hack would be useful, but it
+				could happen. </para>
+		</sect3>
+
+		<sect3>
+			<title>Comparing One Column to Another</title>
+			<para> Here's how to put another column on the right hand side of a comparison: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "id": { "&gt;": { "+aou":"parent_ou" } }
+	    }
+	};
+				</programlisting>
+			</informalexample>
+
+			<para> This syntax is similar to the previous examples, except that instead of comparing
+				to a literal value, we compare to an object.  This object has only a single entry,
+				whose key is a table alias preceded by a leading plus sign.  The associated value is
+				the name of the column. </para>
+			<para> Here's the resulting SQL: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    (
+	        "aou".id &gt; (  "aou".parent_ou  )
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> The table alias must correspond to the appropriate table.  Since json_query doesn't
+				validate the choice of alias, it won't detect an invalid alias until it tries to
+				execute the query.  In this simple example there's only one table to choose from.  The
+				choice of alias is more important in a subquery or join. </para>
+			<para> The leading plus sign, combined with a table alias, can be used in other situations
+				to designate the table to which a column belongs.  We shall defer a discussion of this
+				usage to the section on joins. </para>
+		</sect3>
+
+		<sect3>
+			<title>Testing Boolean Columns</title>
+			<para> In SQL, there are several ways to test a boolean column such as
+				actor.org_unit.opac_visible.  The most obvious way is to compare it to true or false: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    id
+	FROM
+	    actor.org_unit
+	WHERE
+	    opac_visible = true;
+				</programlisting>
+			</informalexample>
+
+			<para> In a JSON query this approach doesn't work.  If you try it, the “= true” test will
+				turn into IS NULL.  Don't do that.  Instead, use a leading plus sign, as described in
+				the preceding section, to treat the boolean column as a stand-alone condition: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id" ] },
+	    "where": {
+	        "+aou":"opac_visible"
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> Result: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    "aou".opac_visible ;
+				</programlisting>
+			</informalexample>
+
+			<para> If you need to test for falsity, then write a test for truth and negate it with the
+				<literal>“-not”</literal> operator.  We will discuss the “-not” operator later, but
+				here's a preview: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id" ] },
+	    "where": {
+	        "-not": {
+	            "+aou":"opac_visible"
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    NOT (  "aou".opac_visible  );
+				</programlisting>
+			</informalexample>
+
+			<para> You can also compare a boolean column directly to a more complex condition: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id" ] },
+	    "where": {
+	        "opac_visible": {
+	            "=": { "parent_ou":{ "&gt;":3 } }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> Here we compare a boolean column, not to a literal value, but to a boolean expression.
+				The resulting SQL looks a little goofy, but it works: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    (
+	        "aou".opac_visible = ( "aou".parent_ou &gt; 3 )
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> In this case we compare the boolean column to a single simple condition.  However you
+				can include additional complications – multiple conditions, IN lists, BETWEEN clauses,
+				and other features as described below. </para>
+		</sect3>
+
+		<sect3>
+			<title>Multiple Conditions</title>
+			<para> If you need multiple conditions, just add them to the <literal>“where”</literal>
+				object, separated by commas: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+		"from":"aou",
+		"select": { "aou":[ "id", "name" ] },
+		"where": {
+			"parent_ou":{ "&gt;":3 },
+			"id":{ "&lt;&gt;":7 }
+		}
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> The generated SQL connects the conditions with AND: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id       AS "id",
+	    "aou".name     AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    "aou".parent_ou &gt; 3
+	    AND "aou".id &lt;&gt; 7;
+				</programlisting>
+			</informalexample>
+
+			<para> Later we will see how to use OR instead of AND. </para>
+		</sect3>
+
+		<sect3>
+			<title>Using Arrays</title>
+			<para> Here's a puzzler.  Suppose you need two conditions for the same column.  How do
+				you code them in the same WHERE clause?  For example, suppose you want something
+				like this: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    id,
+	    name
+	FROM
+	    actor.org_unit
+	WHERE
+	    parent_ou &gt; 3
+	    AND parent_ou &lt;&gt; 7;
+				</programlisting>
+			</informalexample>
+
+			<para> You might try a WHERE clause like this: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	    “where”: {
+	        “parent_ou”:{ “&gt;”:3 },
+	        “parent_ou”:{ “&lt;&gt;”:7 }
+	    }
+				</programlisting>
+			</informalexample>
+
+			<para> Nope.  Won't work.  According to JSON rules, two entries in the same object
+				can't have the same key. </para>
+			<para> After slapping yourself in the forehead, you try something a little smarter: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	    “where”: {
+	        “parent_ou”: {
+	            “&gt;”:3,
+	            “&lt;&gt;”:7
+	        }
+	    }
+				</programlisting>
+			</informalexample>
+
+			<para> Nice try, but that doesn't work either.  Maybe it ought to work – at least it's
+				legal JSON – but, no. </para>
+			<para> Here's what works: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": [
+	        { "parent_ou":{ "&gt;":3 } },
+	        { "parent_ou":{ "&lt;&gt;":7 } }
+	    ]
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> We wrapped the two conditions into two separate JSON objects, and then wrapped
+				those objects together into a JSON array.  The resulting SQL looks like this: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id       AS "id",
+	    "aou".name     AS "name
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    ( "aou".parent_ou &gt; 3 )
+	    AND
+	    ( "aou".parent_ou &lt;&gt; 7 );
+				</programlisting>
+			</informalexample>
+
+			<para> That's not quite what we were hoping for, because the extra parentheses are so ugly.
+				But they're harmless.  This will do. </para>
+			<para> If you're in the mood, you can use arrays to as many parentheses as
+				you like, even if there is only one condition inside: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where":
+	    [[[[[[
+	          {
+	              "parent_ou":{ "&gt;":3 }
+	          },
+	    ]]]]]]
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> ...yields: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id       AS "id",
+	    "aou".name     AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    ( ( ( ( ( ( "aou".parent_ou &gt; 3 ) ) ) ) ) );
+				</programlisting>
+			</informalexample>
+
+		</sect3>
+
+		<sect3>
+			<title>How to OR</title>
+			<para> By default, json_query combines conditions with AND.  When you need OR,
+				here's how to do it: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "-or": {
+	            "id":2,
+	            "parent_ou":3
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> We use <literal>“-or”</literal> as the key, with the conditions to be ORed in an
+				associated object.  The leading minus sign is there to make sure that the operator
+				isn't confused with a column name.  Later we'll see some other operators with leading
+				minus signs.  In a couple of spots we even use plus signs. </para>
+			<para> Here are the results from the above example: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    (
+	        "aou".id = 2
+	        OR "aou".parent_ou = 3
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> The conditions paired with <literal>“-or”</literal> are linked by OR and enclosed
+				in parentheses, </para>
+			<para> Here's how to do the same thing using an array, except that it produces an extra
+				layer of parentheses: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "-or": [
+	            { "id":2 },
+	            { "parent_ou":3 }
+	        ]
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    (
+	        ( "aou".id = 2 )
+	        OR ( "aou".parent_ou = 3 )
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> It's possible, though not very useful, to have only a single condition subject to
+				the <literal>“-or”</literal> operator.  In that case, the condition appears by itself,
+				since there's nothing to OR it to.  This trick is another way to add an extraneous
+				layer of parentheses, </para>
+		</sect3>
+
+		<sect3>
+			<title>Another way to AND</title>
+			<para> You can also use the <literal>“-and”</literal> operator.  It works just like
+				<literal>“-or”</literal>, except that it combines conditions with AND instead of OR.
+				Since AND is the default, we don't usually need a separate operator for it, but it's
+				available.
+			</para>
+			<para>
+				In rare cases, nothing else will do – you can't include two conditions in the same
+				list because of the duplicate key problem, but you can't combine them with arrays
+				either.  In particular, you might need to combine them within an expression that
+				you're comparing to a boolean column (see the subsection above on Testing Boolean
+				Columns). </para>
+		</sect3>
+
+		<sect3>
+			<title>Negation with NOT</title>
+			<para> The <literal>“-not”</literal> operator negates a condition or set of conditions.
+				For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "-not": {
+	            "id":{ "&gt;":2 },
+	            "parent_ou":3
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    NOT
+	    (
+	        "aou".id &gt; 2
+	        AND "aou".parent_ou = 3
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> In this example we merely negate a combination of two comparisons.  However the
+				condition to be negated may be as complicated as it needs to be.  Anything that can
+				be subject to <literal>“where”</literal> can be subject to
+				<literal>“-not”</literal>. </para>
+			<para> In most cases you can achieve the same result by other means.  However the
+				<literal>“-not”</literal> operator is the only way to represent NOT BETWEEN
+				(to be discussed later). </para>
+		</sect3>
+
+		<sect3>
+			<title>EXISTS with Subqueries</title>
+			<para> Two other operators carry a leading minus sign: <literal>“-exists”</literal>
+				and its negation <literal>“-not-exists”</literal>.  These operators apply to
+				subqueries, which have the same format as a full query.  For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "-exists": {
+	            "from":"asv",
+	            "select":{ "asv":[ "id" ] },
+	            "where": {
+	                "owner":7
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    EXISTS
+	    (
+	        SELECT "asv".id AS "id"
+	        FROM action.survey AS "asv"
+	        WHERE "asv".owner = 7
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> This kind of subquery is of limited use, because its WHERE clause doesn't
+				have anything to do with the main query.  It just shuts down the main query
+				altogether if it isn't satisfied. </para>
+			<para> More typical is a correlated subquery, whose WHERE clause refers to a row
+				from the main query.  For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "-exists": {
+	            "from":"asv",
+	            "select":{ "asv":[ "id" ] },
+	            "where": {
+	                "owner":{ "=":{ "+aou":"id" }}
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> Note the use of <literal>“+aou”</literal> to qualify the id column in the
+				inner WHERE clause. </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    EXISTS
+	    (
+	        SELECT  "asv".id AS "id"
+	        FROM action.survey AS "asv"
+	        WHERE ("asv".owner = (  "aou".id  ))
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> This latter example illustrates the syntax, but in practice, it would
+				probably be more natural to use an IN clause with a subquery (to be discussed
+				later). </para>
+		</sect3>
+
+		<sect3>
+			<title>BETWEEN Clauses</title>
+			<para> Here's how to express a BETWEEN clause: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id" ] },
+	    "where": {
+	        "parent_ou": { "between":[ 3, 7 ] }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> The value associated with the column name is an object with a single
+				entry, whose key is <literal>“between”</literal>.  The corresponding
+				value is an array with exactly two values, defining the range to be
+				tested. </para>
+			<para> The range bounds must be either numbers or string literals.  Although
+				SQL allows them to be null, a null doesn't make sense in this context,
+				because a null never matches anything.  Consequently json_query doesn't
+				allow them. </para>
+			<para> The resulting SQL is just what you would expect: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    parent_ou BETWEEN '3' AND '7';
+				</programlisting>
+			</informalexample>
+
+		</sect3>
+
+		<sect3>
+			<title>IN and NOT IN Lists</title>
+			<para> There are two ways to code an IN list.  One way is simply to include
+				the list of values in an array: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "parent_ou": [ 3, 5, 7 ]
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> As with a BETWEEN clause, the values in the array must be numbers or
+				string literals.  Nulls aren't allowed.  Here's the resulting SQL, which
+				again is just what you would expect: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    "aou".parent_ou IN (3, 5, 7);
+				</programlisting>
+			</informalexample>
+
+			<para> The other way is similar to the syntax shown above for a BETWEEN clause,
+				except that the array may include any non-zero number of values: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "parent_ou": { "in": [ 3, 5, 7 ] }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> This version results in the same SQL as the first one. </para>
+			<para> For a NOT IN list, you can use the latter format, using the
+				<literal>“not in”</literal> operator instead of <literal>“in”</literal>.
+				Alternatively, you can use either format together with the
+				<literal>“-not”</literal> operator. </para>
+		</sect3>
+
+		<sect3>
+			<title>IN and NOT IN Clauses with Subqueries</title>
+			<para> For an IN clause with a subquery, the syntax is similar to the second
+				of the two formats for an IN list (see the previous subsection).  The
+				<literal>“in”</literal> or <literal>“not in”</literal> operator is paired,
+				not with an array of values, but with an object representing the subquery.
+				For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "id": {
+	            "in": {
+	                "from":"asv",
+	                "select":{ "asv":[ "owner" ] },
+	                "where":{ "name":"Voter Registration" }
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> The results: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    "aou".id IN
+	    (
+	        SELECT
+	            "asv".owner AS "owner"
+	        FROM
+	            action.survey AS "asv"
+	        WHERE
+	            "asv".name = 'Voter Registration'
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> In SQL the subquery may select multiple columns, but in a JSON query it
+				can select only a single column. </para>
+			<para> For a NOT IN clause with a subquery, use the <literal>“not in”</literal>
+				operator instead of <literal>“in”</literal>. </para>
+		</sect3>
+
+		<sect3>
+			<title>Comparing to a Function</title>
+			<para> Here's how to compare a column to a function call: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "id":{ ">":[ "sqrt", 16 ] }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> A comparison operator (<literal>“&gt;”</literal> in this case) is paired
+				with an array.  The first entry in the array must be a string giving the name
+				of the function.  The remaining parameters, if any, are the parameters.  They
+				may be strings, numbers, or nulls.  The resulting SQL for this example: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    "aou".id &gt; sqrt( '16' );
+				</programlisting>
+			</informalexample>
+
+			<para> All parameters are passed as quoted strings -- even if, as in this case,
+				they are really numbers. </para>
+			<para> This syntax  is somewhat limited in that the function parameters must be
+				constants (hence the use of a silly example). </para>
+		</sect3>
+
+		<sect3>
+			<title>Putting a Function Call on the Left</title>
+			<para> In the discussion of the SELECT clause, we saw how you could transform the value
+				of a selected column by passing it to a function.  In the WHERE clause, you can use
+				similar syntax to transform the value of a column before comparing it to something
+				else. </para>
+			<para> For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "name": {
+	            "=": {
+	                "transform":"upper",
+	                "value":"CARTER BRANCH"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> The <literal>“transform”</literal> entry gives the name of the function that we
+				will use on the left side of the comparison.  The <literal>“value”</literal> entry
+				designates the value on the right side of the comparison. </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    upper("aou".name ) =  'CARTER BRANCH' ;
+				</programlisting>
+			</informalexample>
+
+			<para> As in the SELECT clause, you can pass literal values or nulls to the  function
+				as additional parameters by using an array tagged as
+				<literal>“params”</literal>: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "name": {
+	            "=": {
+	                "transform":"substr",
+	                "params":[ 1, 6 ],
+	                "value":"CARTER"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    substr("aou".name,'1','6' ) =  'CARTER' ;
+				</programlisting>
+			</informalexample>
+
+			<para> The first parameter is always the column name, qualified by the class name,
+				followed by any additional parameters (which are always enclosed in quotes even
+				if they are numeric). </para>
+			<para> As in the SELECT clause: if the function returns multiple columns, you can specify
+				the one you want by using a <literal>“result_field”</literal> entry (not shown
+				here). </para>
+			<para> If you leave out the <literal>“transform”</literal> entry (or misspell it), the
+				column name will appear on the left without any function call.  This syntax works,
+				but it's more complicated than it needs to be. </para>
+		</sect3>
+
+		<sect3>
+			<title>Putting Function Calls on Both Sides</title>
+			<para> If you want to compare one function call to another, you can use the same syntax
+				shown in the previous subsection – except that the <literal>“value”</literal> entry
+				carries an array instead of a literal value.  For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "id": {
+	            "&gt;": {
+	                "transform":"factorial",
+	                "value":[ "sqrt", 1000 ]
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    factorial("aou".id ) &gt;  sqrt( '1000' ) ;
+				</programlisting>
+			</informalexample>
+
+			<para> The format for the right side function is similar to what we saw earlier, in the
+				subsection Comparing to a Function.  Note that there are two different formats for
+				defining function calls: </para>
+
+			<itemizedlist>
+
+				<listitem>
+					<para> For a function call to the left of the comparison, the function name is
+						tagged as <literal>“transform”</literal>.  The first parameter is always the
+						relevant column name; additional parameters, if any, are in an array tagged
+						as <literal>“params”</literal>.  The entry for
+						<literal>“result_field”</literal>, if present, specifies a subcolumn. </para>
+				</listitem>
+
+				<listitem>
+					<para> For a function call to the right of the comparison, the function name is
+						the first entry in an array, together with any parameters.  There's no way to
+						specify a subcolumn. </para>
+				</listitem>
+
+			</itemizedlist>
+
+		</sect3>
+
+		<sect3>
+			<title>Comparing a Function to a Condition</title>
+			<para> So far we have seen two kinds of data for the <literal>“value”</literal> tag.  A
+				string or number translates to a literal value, and an array translates to a function
+				call.  The third possibility is a JSON object, which translates to a condition.  For
+				example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "from":"aou",
+	    "select": { "aou":[ "id", "name" ] },
+	    "where": {
+	        "id": {
+	            "=": {
+	                "value":{ "parent_ou":{ ">":3 } },
+	                "transform":"is_prime"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> The function tagged as <literal>“transform”</literal> must return boolean, or else
+				json_query will generate invalid SQL.  The function used here,
+				<literal>“is_prime”</literal>, is fictitious. </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	WHERE
+	    (
+	        is_prime("aou".id ) = ( "aou".parent_ou > 3 )
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> If we left out the <literal>“transform”</literal> entry, json_query would compare
+				the column on the left (which would to be boolean) to the condition on the right.
+				The results are similar to those for a simpler format described earlier (see the
+				subsection Testing Boolean Columns). </para>
+			<para> In the example above we compared the boolean to a simple condition.  However the
+				expression on the right may include multiple conditions, IN lists, subqueries, and
+				whatever other complications are necessary. </para>
+		</sect3>
+
+		<sect3>
+			<title>Things You Can't Do</title>
+			<para> The WHERE clause is subject to some of the same limitations as the SELECT clause.
+				However, in the WHERE clause these limitations are more limiting, because the client
+				program can't compensate by doing some of the work for itself. </para>
+			<para> You can't use arbitrary expressions in a WHERE condition, such as
+				<literal>“WHERE id > parent_ou – 3”</literal>.  In some cases you may be able to
+				contrive a custom operator in order to fake such an expression.  However this mechanism
+				is neither very general nor very aesthetic. </para>
+			<para> To the right of a comparison operator, all function parameters must be literals or
+				null.  You can't pass a column value, nor can you nest function calls. </para>
+			<para> Likewise you can't include column values or arbitrary expressions in an IN list
+				or a BETWEEN clause. </para>
+			<para> You can't include null values in an IN list or a BETWEEN list, not that you should
+				ever want to. </para>
+			<para> As noted earlier: you can't use the comparison operators
+				<literal>“is distinct from”</literal> or <literal>“is not distinct from”</literal>. </para>
+			<para> Also as noted earlier: a subquery in an IN clause cannot select more than one
+				column. </para>
+		</sect3>
+
+	</sect2>
+
+	<sect2>
+		<title>JOIN clauses</title>
+		<para> Until now, our examples have selected from only one table at a time.  As a result,
+			the FROM clause has been very simple – just a single string containing the class name of
+			the relevant table. </para>
+		<para> When the FROM clause joins multiple tables, the corresponding JSON naturally gets more
+			complicated. </para>
+		<para> SQL provides two ways to define a join.  One way is to list both tables in the FROM
+			clause, and put the join conditions in the WHERE clause: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    aou.id,
+	    aout.name
+	FROM
+	    actor.org_unit aou,
+	    actor.org_unit_type aout
+	WHERE
+	    aout.id = aou.ou_type;
+			</programlisting>
+		</informalexample>
+
+		<para> The other way is to use an explicit JOIN clause: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    aou.id,
+	    aout.name
+	FROM
+	    actor.org_unit aou
+	        JOIN actor.org_unit_type aout
+	            ON ( aout.id = aou.ou_type );
+			</programlisting>
+		</informalexample>
+
+		<para> JSON queries use only the second of these  methods.  The following example expresses
+			the same query in JSON: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "name" ] },
+	    "from": {
+	        "aou":"aout"
+	    }
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> First, let's review the SELECT clause.  Since it selects rows from two different tables,
+			the data for <literal>“select”</literal> includes two entries, one for each table. </para>
+		<para> As for the FROM clause, it's no longer just a string.  It's a JSON object, with exactly
+			one entry.  The key of this entry is the class name of the core table, i.e. the table
+			named immediately after the FROM keyword.  The data associated with this key contains the
+			rest of the information about the join.  In this simple example, that information consists
+			entirely of a string containing the class name of the other table. </para>
+		<para> So where is the join condition? </para>
+		<para> It's in the IDL.  Upon reading the IDL, json_query knows that actor.org_unit has a
+			foreign key pointing to actor.org_unit_type, and builds a join condition accordingly: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	        INNER JOIN actor.org_unit_type AS "aout"
+	            ON ( "aout".id = "aou".ou_type ) ;
+			</programlisting>
+		</informalexample>
+
+		<para> In this case the core table is the child table, and the joined table is the parent table.
+			We could just as well have written it the other way around: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "name" ] },
+	    "from": {
+	        "aout":"aou"
+	    }
+	}
+			</programlisting>
+		</informalexample>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".name AS "name"
+	FROM
+	    actor.org_unit_type AS "aout"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON ( "aou".ou_type = "aout".id ) ;
+			</programlisting>
+		</informalexample>
+
+		<sect3>
+			<title>Specifying The Join Columns Explicitly</title>
+			<para> While it's convenient to let  json_query pick the join columns, it doesn't
+				always work. </para>
+			<para> For example, the actor.org_unit table has four different address ids, for
+				four different kinds of addresses.  Each of them is a foreign key to the
+				actor.org_address table.  Json_query can't guess which one you want if you
+				don't tell it. </para>
+			<para> (Actually it will try to guess.  It will pick the first matching link that
+				it finds in the IDL, which may or may not be the one you want.) </para>
+			<para> Here's how to define exactly which columns you want for the join: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aoa":[ "street1" ] },
+	    "from": {
+	        "aou": {
+	            "aoa": {
+	                "fkey":"holds_address",
+	                "field":"id"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> Before, the table we were joining was represented merely by its class name.
+				Now it's represented by an entry in a JSON object.  The key of that entry is the
+				class name, and the associated data is another layer of JSON object containing
+				the attributes of the join. </para>
+			<para> Later we'll encounter other kinds of join attributes.  For now, the only
+				attributes that we're looking at are the ones that identify the join columns:
+				<literal>“fkey”</literal> and <literal>“field”</literal>.  The hard part is
+				remembering which is which: </para>
+
+			<itemizedlist>
+
+				<listitem>
+					<para> <literal>“fkey”</literal> identifies the join column from the
+						<emphasis>left</emphasis> table; </para>
+				</listitem>
+
+				<listitem>
+					<para> <literal>“field”</literal> identifies the join column from the
+						<emphasis>right</emphasis> table. </para>
+				</listitem>
+
+			</itemizedlist>
+
+			<para> When there are only two tables involved, the core table is on the left, and
+				the non-core table is on the right.  In more complex queries neither table may
+				be the core table. </para>
+			<para> Here is the result of the preceding JSON: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aoa".street1 AS "street1"
+	FROM
+	    actor.org_unit AS "aou"
+	        INNER JOIN actor.org_address AS "aoa"
+	            ON ( "aoa".id = "aou".holds_address ) ;
+				</programlisting>
+			</informalexample>
+
+			<para> In this example the child table is on the left and the parent table is on the
+				right.  We can swap the tables if we swap the join columns as well: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aoa":[ "street1" ] },
+	    "from": {
+	        "aoa": {
+	            "aou": {
+	                "fkey":"id",
+	                "field":"holds_address"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aoa".street1 AS "street1"
+	FROM
+	    actor.org_address AS "aoa"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON ( "aou".holds_address = "aoa".id ) ;
+				</programlisting>
+			</informalexample>
+
+			<para> When you specify both of the join columns, json_query assumes that you know
+				what you're doing.  It doesn't check the IDL to confirm that the join makes sense.
+				The burden is on you to avoid absurdities. </para>
+		</sect3>
+
+		<sect3>
+			<title>Specifying Only One Join Column</title>
+			<para> We just saw how to specify both ends of a join.  It turns out that there's a
+				shortcut – most of the time you only need to specify one end.  Consider the
+				following variation on the previous example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aoa":[ "street1" ] },
+	    "from": {
+	        "aoa": {
+	            "aou": {
+	                "field":"holds_address"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> ..which results in exactly the same SQL as before. </para>
+			<para> Here we specified the join column from the child table, the column that is a
+				foreign key pointing to another table.  As long as that linkage is defined in the IDL,
+				json_query can look it up and figure out what the corresponding column is in the
+				parent table. </para>
+			<para> However this shortcut doesn't work if you specify only the column in the parent
+				table, because it would lead to ambiguities.  Suppose we had specified the id column
+				of actor.org_address.  As noted earlier, there are four different foreign keys from
+				actor.org_unit to actor.org_address, and json_query would have no way to guess
+				which one we wanted. </para>
+		</sect3>
+
+		<sect3>
+			<title>Joining to Multiple Tables</title>
+			<para> So far we have joined only two tables at a time.  What if we need to join one
+				table to two different tables? </para>
+			<para> Here's an example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "depth" ], "aoa":[ "street1" ] },
+	    "from": {
+	        "aou": {
+	            "aout":{},
+	            "aoa": {
+	                "fkey":"holds_address"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> The first join, to actor.org_unit_type, is simple.  We could have specified join
+				columns, but we don't have to, because json_query will construct that join on the
+				basis of what it finds in the IDL.  Having no join attributes to specify, we leave
+				that object empty. </para>
+			<para> For the second join, to actor.org_address, we have to specify at least the join
+				column in the child table, as discussed earlier.  We could also have specified the
+				join column from the parent table, but we don't have to, so we didn't. </para>
+			<para> Here is the resulting SQL: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".depth AS "depth",
+	    "aoa".street1 AS "street1"
+	FROM
+	    actor.org_unit AS "aou"
+	        INNER JOIN actor.org_unit_type AS "aout"
+	            ON ( "aout".id = "aou".ou_type )
+	        INNER JOIN actor.org_address AS "aoa"
+	            ON ( "aoa".id = "aou".holds_address ) ;
+				</programlisting>
+			</informalexample>
+
+			<para> Since there can be only one core table, the outermost object in the FROM clause
+				can have only one entry, whose key is the class name of the core table.  The next
+				level has one entry for every table that's joined to the core table. </para>
+		</sect3>
+
+		<sect3>
+			<title>Nested Joins</title>
+			<para> Let's look at that last query again.  It joins three tables, and the core table
+				is the one in the middle.  Can we make one of the end tables the core table instead? </para>
+			<para> Yes, we can: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "depth" ], "aoa":[ "street1" ] },
+	    "from": {
+	        "aoa": {
+	            "aou": {
+	                "field":"holds_address",
+	                "join": {
+	                    "aout":{ "fkey":"ou_type" }
+	                }
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> The <literal>“join”</literal> attribute introduces another level of join.  In this
+				case <literal>“aou”</literal> is the left table for the nested join, and the right table
+				for the original join.  Here are the results: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".depth AS "depth",
+	    "aoa".street1 AS "street1"
+	FROM
+	    actor.org_address AS "aoa"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON ( "aou".holds_address = "aoa".id )
+	        INNER JOIN actor.org_unit_type AS "aout"
+	            ON ( "aout".id = "aou".ou_type ) ;
+				</programlisting>
+			</informalexample>
+
+		</sect3>
+
+		<sect3>
+			<title>Outer Joins</title>
+			<para> By default, json_query constructs an inner join.  If you need an outer join, you
+				can add the join type as an attribute of the join: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aoa":[ "street1" ] },
+	    "from": {
+	        "aoa": {
+	            "aou": {
+	                "field":"mailing_address",
+	                "type":"left"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> Here we asked for a left outer join.  For a right outer join, code
+				<literal>“type”:”right”</literal>.  For a full outer join, code
+				<literal>“type”:”full”</literal>.  Any other value for “type” results in an inner
+				join, so watch out for typos.  A type of <literal>“rihgt”</literal> will give you
+				a wrong join instead of a right one. </para>
+			<para> Here is the resulting SQL for this example: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aoa".street1 AS "street1"
+	FROM
+	    actor.org_address AS "aoa"
+	        LEFT JOIN actor.org_unit AS "aou"
+	            ON ( "aou".mailing_address = "aoa".id ) ;
+				</programlisting>
+			</informalexample>
+
+		</sect3>
+
+		<sect3>
+			<title>Referring to Joined Tables in the WHERE Clause</title>
+			<para> In the WHERE clause of the generated SQL, every column name is qualified by a
+				table alias, which is always the corresponding class name. </para>
+			<para> If a column belongs to the core table, this qualification happens by default.
+				If it belongs to a joined table, the JSON must specify what class name to use for
+				an alias.  For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "name" ] },
+	    "from": {
+	        "aout":"aou"
+	    },
+	    "where": {
+	        "+aou":{ "parent_ou":2 }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> Note the peculiar operator <literal>“+aou”</literal> -- a plus sign followed
+				by the relevant class name.  This operator tells json_query to apply the specified
+				class to the condition that follows.  The result: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".name AS "name"
+	FROM
+	    actor.org_unit_type AS "aout"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON ( "aou".ou_type = "aout".id )
+	WHERE
+	    ( "aou".parent_ou = 2 );
+				</programlisting>
+			</informalexample>
+
+			<para> The plus-class operator may apply to multiple conditions: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "name" ] },
+	    "from": {
+	        "aout":"aou"
+	    },
+	    "where": {
+	        "+aou":{
+	            "parent_ou":2,
+	            "id":{ "&lt;":42 }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".name AS "name"
+	FROM
+	    actor.org_unit_type AS "aout"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON ( "aou".ou_type = "aout".id )
+	WHERE
+	    (
+	        "aou".parent_ou = 2
+	        AND "aou".id &lt; 42
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> For these artificial examples, it would have been simpler to swap the tables,
+				so that actor.org_unit is the core table.  Then you wouldn't need to go through
+				any special gyrations to apply the right table alias.  In a more realistic case,
+				however, you might need to apply conditions to both tables.  Just swapping the
+				tables wouldn't solve the problem. </para>
+			<para> You can also use a plus-class operator to compare columns from two different
+				tables: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "name" ] },
+	    "from": {
+	        "aout":"aou"
+	    },
+	    "where": {
+	        "depth": { "&gt;": { "+aou":"parent_ou" } }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".name AS "name"
+	FROM
+	    actor.org_unit_type AS "aout"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON ( "aou".ou_type = "aout".id )
+	WHERE
+	    (
+	        "aout".depth > (  "aou".parent_ou  )
+	    );
+				</programlisting>
+			</informalexample>
+
+			<para> Please don't expect that query to make any sense.  It doesn't.  But it
+				illustrates the syntax. </para>
+		</sect3>
+
+		<sect3>
+			<title>Join Filters</title>
+			<para> While the above approach certainly works, the special syntax needed is goofy
+				and awkward.  A somewhat cleaner solution is to include a condition in the JOIN
+				clause: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "name" ] },
+	    "from": {
+	        "aout": {
+	            "aou": {
+	                "filter": {
+	                    "parent_ou":2
+	                }
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id", "aout".name AS "name"
+	FROM
+	    actor.org_unit_type AS "aout"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON ( "aou".ou_type = "aout".id
+	                 AND  "aou".parent_ou = 2 ) ;
+			</programlisting>
+			</informalexample>
+
+			<para> By default, json_query uses AND to combine the <literal>“filter”</literal>
+				condition with the original join condition.  If you need OR, you can use the
+				<literal>“filter_op”</literal> attribute to say so: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "name" ] },
+	    "from": {
+	        "aout": {
+	            "aou": {
+	                "filter": {
+	                    "parent_ou":2
+	                },
+	                "filter_op":"or"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".name AS "name"
+	FROM
+	    actor.org_unit_type AS "aout"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON ( "aou".ou_type = "aout".id
+	                 OR  "aou".parent_ou = 2 ) ;
+				</programlisting>
+			</informalexample>
+
+			<para> If the data tagged by <literal>“filter_op”</literal> is anything but
+				<literal>“or”</literal> (in upper, lower, or mixed case), json_query uses AND
+				instead of OR. </para>
+			<para> The condition tagged by <literal>“filter”</literal> may be much more complicated.
+				In fact it accepts all the same syntax as the WHERE clause. </para>
+			<para> Remember, though, that it all gets combined with the the original join condition
+				with an AND, or with an OR if you so specify.  If you're not careful, the result
+				may be a confusing mixture of AND and OR at the same level. </para>
+		</sect3>
+
+		<sect3>
+			<title>Joining to a Subquery</title>
+			<para> In SQL you can put a subquery in a FROM clause, and select from it as if it were
+				a table.  A JSON query has no way to do that directly.  The IDL, however, can define
+				a class as a subquery instead of as a table.  When you SELECT from it, json_query
+				inserts the corresponding subquery into the FROM clause.  For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select":{ "iatc":[ "id", "dest", "copy_status" ] },
+	    "from": "iatc"
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> There's nothing special-looking about this JSON, but json_query expands it as
+				follows: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "iatc".id AS "id",
+	    "iatc".dest AS "dest",
+	    "iatc".copy_status AS "copy_status"
+	FROM
+	    (
+	        SELECT  t.*
+	        FROM
+	            action.transit_copy t
+	                JOIN actor.org_unit AS s
+	                    ON (t.source = s.id)
+	                JOIN actor.org_unit AS d
+	                    ON (t.dest = d.id)
+	        WHERE
+	            s.parent_ou &lt;&gt; d.parent_ou
+	    ) AS "iatc" ;
+				</programlisting>
+			</informalexample>
+
+			<para> The <literal>“iatc”</literal> class is like a view, except that it's defined in the
+				IDL instead of the database.  In this case it provides a way to do a join that would
+				otherwise be impossible through a JSON query, because it joins the same table in two
+				different ways (see the next subsection). </para>
+		</sect3>
+
+		<sect3>
+			<title>Things You Can't Do</title>
+			<para> In a JOIN, as with other SQL constructs, there are some things that you can't do with
+				a JSON query. </para>
+			<para> In particular, you can't specify a table alias, because the table alias is always the
+				class name.  As a result: </para>
+
+			<itemizedlist>
+
+				<listitem>
+					<para> You can't join a table to itself.  For example, you can't join actor.org_unit
+						to itself in order to select the name of the parent for every org_unit. </para>
+				</listitem>
+
+				<listitem>
+					<para> You can't join to the same table in more than one way.  For example, you can't
+						join actor.org_unit to actor.org_address through four different foreign keys, to
+						get four kinds of addresses in a single query. </para>
+				</listitem>
+
+			</itemizedlist>
+
+			<para> The only workaround is to perform the join in a view, or in a subquery defined in
+				the IDL as described in the previous subsection. </para>
+			<para> Some other things, while not impossible, require some ingenuity in the use of join
+				filters. </para>
+			<para> For example: by default, json_query constructs a join condition using only a single
+				pair of corresponding columns.  As long as the database is designed accordingly, a
+				single pair of columns will normally suffice.  If you ever need to join on more than
+				one pair of columns, you can use join filters for the extras. </para>
+			<para> Likewise, join conditions are normally equalities.  In raw SQL it is possible
+				(though rarely useful) to base a join on an inequality, or to use a function call in
+				a join condition, or to omit any join condition in order to obtain a Cartesian product.
+				If necessary, you can devise such unconventional joins by combining the normal join
+				conditions with join filters. </para>
+			<para> For example, here's how to get a Cartesian product: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select": { "aou":[ "id" ], "aout":[ "name" ] },
+	    "from": {
+	        "aout": {
+	            "aou": {
+	                "filter": {
+	                    "ou_type":{ "&lt;&gt;": { "+aout":"id" } }
+	                },
+	                "filter_op":"or"
+	            }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".id AS "id",
+	    "aout".name AS "name"
+	FROM
+	    actor.org_unit_type AS "aout"
+	        INNER JOIN actor.org_unit AS "aou"
+	            ON
+	            (
+	                "aou".ou_type = "aout".id
+	                OR  ("aou".ou_type &lt;&gt; (  "aout".id  ))
+	            ) ;
+				</programlisting>
+			</informalexample>
+
+			<para> Yes, it's ugly, but at least you're not likely to do it by accident. </para>
+		</sect3>
+	</sect2>
+
+	<sect2>
+		<title>Selecting from Functions</title>
+		<para> In SQL, you can put a function call in the FROM clause.  The function may return
+			multiple columns and multiple rows.  Within the query, the function behaves like a
+			table. </para>
+		<para> A JSON query can also select from a function: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "from": [ "actor.org_unit_ancestors", 5 ]
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> The data associated with <literal>“from”</literal> is an array instead of a string
+				or an object.  The first element in the array specifies the name of the function.
+				Subsequent elements, if any, supply the parameters of the function; they must be
+				literal values or nulls. </para>
+		<para> Here is the resulting query: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT *
+	FROM
+	    actor.org_unit_ancestors( '5' ) AS "actor.org_unit_ancestors" ;
+			</programlisting>
+		</informalexample>
+
+		<para> In a JSON query this format is very limited, largely because the IDL knows
+			nothing about the available functions.  You can't join the function to a table or
+			to another function.  If you try to supply a SELECT list or a WHERE clause,
+			json_query will ignore it.  The generated query will always select every column,
+			via a wild card asterisk, from every row. </para>
+	</sect2>
+
+	<sect2>
+		<title>The ORDER BY Clause</title>
+		<para> In most cases you can encode an ORDER BY clause as either an array or an object.
+			Let's take a simple example and try it both ways.  First the array: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select":{ "aou":[ "name" ] },
+	    "from": "aou",
+	    "order_by": [
+	        { "class":"aou", "field":"name" }
+	    ]
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> Now the object: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select":{ "aou":[ "name" ] },
+	    "from": "aou",
+	    "order_by": {
+	        "aou":{ "name":{} }
+	    }
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> The results are identical from either version: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	ORDER BY
+	    "aou".name;
+			</programlisting>
+		</informalexample>
+
+		<para> The array format is more verbose, but as we shall see, it is also more flexible.
+			It can do anything the object format can do, plus some things that the object format
+			<emphasis>can't</emphasis> do. </para>
+
+		<sect3>
+			<title>ORDER BY as an Array</title>
+			<para> In the array format, each element of the array is an object defining one of the
+				sort fields.  Each such object must include at least two tags: </para>
+
+			<itemizedlist>
+
+				<listitem>
+					<para> The <literal>“class”</literal> tag provides the name of the class,
+						which must be either the core class or a joined class. </para>
+				</listitem>
+
+				<listitem>
+					<para> The <literal>“field”</literal> tag provides the field name, corresponding
+						to one of the columns of the class. </para>
+				</listitem>
+
+			</itemizedlist>
+
+			<para> If you want to sort by multiple fields, just include a separate object for each
+				field. </para>
+			<para> If you want to sort a field in descending order, add a
+				<literal>“direction”</literal> tag: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select":{ "aou":[ "name" ] },
+	    "from": "aou",
+	    "order_by": [
+	        { "class":"aou", "field":"name", "direction":"desc" }
+	    ]
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	ORDER BY
+	    "aou".name DESC;
+				</programlisting>
+			</informalexample>
+
+			<para> The string tagged as <literal>“direction”</literal> can be anything – all that
+				matters is the first character.  If the string starts with “D” or “d”, the sort
+				will be descending.  Otherwise it will be ascending.  So
+				<literal>“diplodocus”</literal> or <literal>“Dioscorides”</literal> will work as
+				well as <literal>“desc”</literal>, but <literal>“going down”</literal> means that
+				the sort will go up. </para>
+			<para> You can also pass a column through some kind of transforming function, much as
+				you can in the SELECT and WHERE clauses, using the <literal>“transform”</literal>
+				tag.  For example, for a case-insensitive sort, you could raise to upper case: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select":{ "aou":[ "name" ] },
+	    "from": "aou",
+	    "order_by": [
+	        {
+	            "class":"aou",
+	            "field":"name",
+	            "transform":"upper"
+	        }
+	    ]
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	ORDER BY
+	    upper("aou".name );
+				</programlisting>
+			</informalexample>
+
+			<para> If you need additional parameters for the function, you can use the
+				<literal>“params”</literal> tag to pass them: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select":{ "aou":[ "name" ] },
+	    "from": "aou",
+	    "order_by": [
+	        {
+	            "class":"aou",
+	            "field":"name",
+	            "transform":"substr",
+	            "params":[ 1, 8 ]
+	        }
+	    ]
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> The additional parameters appear as elements in an array.  They may be numbers,
+				strings, or nulls. </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	ORDER BY
+	    substr("aou".name,'1','8' );
+				</programlisting>
+			</informalexample>
+
+			<para> As we have seen elsewhere, all literal values are passed as quoted strings,
+				even if they are numbers. </para>
+			<para> If the function returns multiple columns, you can use the
+				<literal>“result_field”</literal> tag to indicate which one you want (not shown). </para>
+		</sect3>
+
+		<sect3>
+			<title>ORDER BY as an Object</title>
+			<para> When you encode the ORDER BY clause as an object, the keys of the object are
+				class names.  Each class must be either the core class or a joined class.  The
+				data for each class can be either an array or another layer of object.  Here's an
+				example with one of each: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select":{ "aout":"id", "aou":[ "name" ] },
+	    "from": { "aou":"aout" },
+	    "order_by": {
+	        "aout":[ "id" ],
+	        "aou":{ "name":{ "direction":"desc" } }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<para> For the <literal>“aout”</literal> class, the associated array is simply a list
+				of field names (in this case, just one).  Naturally, each field must reside in
+				the class with which it is associated. </para>
+			<para> However, a list of field names provides no way to specify the direction of
+				sorting, or a transforming function.  You can add those details only if the
+				class name is paired with an object, as in the example for the
+				<literal>“aou”</literal> class.  The keys for such an object are field names, and
+				the associated tags define other details. </para>
+			<para> In this example, we use the <literal>“direction”</literal> tag to specify that
+				the name field be sorted in descending order.  This tag works the same way here as
+				described earlier.  If the associated string starts with “D” or “d”, the sort will
+				be descending; otherwise it will be ascending. </para>
+			<para> Here is the resulting SQL: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".name AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	        INNER JOIN actor.org_unit_type AS "aout"
+	            ON ( "aout".id = "aou".ou_type )
+	ORDER BY
+	    "aout".id,
+	    "aou".name DESC;
+				</programlisting>
+			</informalexample>
+
+			<para> You can also use the  <literal>“transform</literal>”, <literal>“params”</literal>,
+				and <literal>“result_field”</literal> tags to specify the use of a transforming
+				function, as described in the previous subsection.  For example: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select":{ "aou":[ "name", "id" ] },
+	    "from": "aou",
+	    "order_by": {
+	        "aou":{
+	            "name":{ "transform":"substr", "params":[ 1, 8 ] }
+	        }
+	    }
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+	    "aou".name AS "name",
+	    "aou".id AS "id"
+	FROM
+	    actor.org_unit AS "aou"
+	ORDER BY
+	    substr("aou".name,'1','8' );
+				</programlisting>
+			</informalexample>
+
+		</sect3>
+
+		<sect3>
+			<title>Things You Can't Do</title>
+			<para> If you encode the ORDER BY clause as an object, you may encounter a couple of
+				restrictions. </para>
+			<para> Because the key of such an object is the class name, all the fields from a given
+				class must be grouped together.  You can't sort by a column from one table, followed
+				by a column from another table, followed by a column from the first table.  If you
+				need such a sort, you must encode the ORDER BY clause in the array format, which
+				suffers from no such restrictions. </para>
+			<para> For similar reasons, with an ORDER BY clause encoded as an object, you can't
+				reference the same column more than once.  Although such a sort may seem perverse,
+				there are situations where it can be useful, provided that the column is passed to
+				a transforming function. </para>
+			<para> For example, you might want a case-insensitive sort, except that for any given
+				letter you want lower case to sort first.  For example, you want “diBona” to sort
+				before “Dibona”.  Here's a way to do that, coding the ORDER BY clause as an array: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+	{
+	    "select":{ "au":[ "family_name", "id" ] },
+	    "from": "au",
+	    "order_by": [
+	        { "class":"au", "field":"family_name", "transform":"upper" },
+	        { "class":"au", "field":"family_name" }
+	    ]
+	}
+				</programlisting>
+			</informalexample>
+
+			<informalexample>
+				<programlisting language="SQL">
+	SELECT
+		"au".family_name AS "family_name",
+		"au".id AS "id"
+	FROM
+		actor.usr AS "au"
+	ORDER BY
+		upper("au".family_name ),
+		"au".family_name;
+				</programlisting>
+			</informalexample>
+
+			<para> Such a sort is not possible where the ORDER BY clause is coded as an object. </para>
+		</sect3>
+	</sect2>
+
+	<sect2>
+		<title>The GROUP BY Clause</title>
+		<para> A JSON query has no separate construct to define a GROUP BY clause.  Instead, the
+			necessary information is distributed across the SELECT clause.  However, the way it works
+			is a bit backwards from what you might expect, so pay attention. </para>
+		<para> Here's an example: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select": {
+	        "aou": [
+	            { "column":"parent_ou" },
+	            { "column":"name", "transform":"max", "aggregate":true }
+	        ]
+	    },
+	    "from": "aou"
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> The <literal>“transform”</literal> tag is there just to give us an excuse to do a GROUP
+			BY.  What's important to notice is the <literal>“aggregate”</literal> tag. </para>
+		<para> Here's the resulting SQL: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".parent_ou AS "parent_ou",
+	    max("aou".name ) AS "name"
+	FROM
+	    actor.org_unit AS "aou"
+	GROUP BY
+	    1;
+			</programlisting>
+		</informalexample>
+
+		<para> The GROUP BY clause references fields from the SELECT clause by numerical reference,
+			instead of by repeating them.  Notice that the field it references, parent_ou, is the
+			one that <emphasis>doesn't</emphasis> carry the <literal>“aggregate”</literal> tag in
+			the JSON. </para>
+		<para> Let's state that more generally.  The GROUP BY clause includes only the fields that
+			do <emphasis>not</emphasis> carry the <literal>“aggregate”</literal> tag (or that carry
+			it with a value of false). </para>
+		<para> However, that logic applies only when some field somewhere <emphasis>does</emphasis>
+			carry the <literal>“aggregate”</literal> tag, with a value of true.  If there is no
+			<literal>“aggregate”</literal> tag, or it appears only with a value of false, then there
+			is no GROUP BY clause. </para>
+		<para> If you really want to include every field in the GROUP BY clause, don't use
+			<literal>“aggregate”</literal>.  Use the <literal>“distinct”</literal> tag, as described
+			in the next section. </para>
+	</sect2>
+
+	<sect2>
+		<title>The DISTINCT Clause</title>
+		<para> JSON queries don't generate DISTINCT clauses.  However, they can generate GROUP
+			BY clauses that include every item from the SELECT clause.  The effect is the same
+			as applying DISTINCT to the entire SELECT clause. </para>
+		<para> For example: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select": {
+	        "aou": [
+	            "parent_ou",
+	            "ou_type"
+	        ]
+	    },
+	    "from":"aou",
+	    "distinct":"true"
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> Note the <literal>“distinct”</literal> entry at the top level of the
+			query object, with a value of “true”. </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".parent_ou AS "parent_ou",
+	    "aou".ou_type AS "ou_type"
+	FROM
+	    actor.org_unit AS "aou"
+	GROUP BY
+	    1, 2;
+			</programlisting>
+		</informalexample>
+
+		<para> The generated GROUP BY clause references every column in the SELECT clause by
+			number. </para>
+	</sect2>
+
+	<sect2>
+		<title>The HAVING Clause</title>
+		<para> For a HAVING clause, add a <literal>“having”</literal> entry at the top level
+			of the query object.  For the associated data, you can use all the same syntax
+			that you can use for a WHERE clause. </para>
+		<para> Here's a simple example: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select": {
+	        "aou": [
+	            "parent_ou", {
+	                "column":"id",
+	                "transform":"count",
+	                "alias":"id_count",
+	                "aggregate":"true"
+	            }
+	        ]
+	    },
+	    "from":"aou",
+	    "having": {
+	        "id": {
+	            "&gt;" : {
+	                "transform":"count",
+	                "value":6
+	            }
+	        }
+	    }
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> We use the “aggregate” tag in the SELECT clause to give us a GROUP  BY to go
+			with the HAVING.  Results: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	    "aou".parent_ou AS "parent_ou",
+	    count("aou".id ) AS "id_count"
+	FROM
+	    actor.org_unit AS "aou"
+	GROUP BY
+	    1
+	HAVING
+	    count("aou".id ) >  6 ;
+			</programlisting>
+		</informalexample>
+
+		<para> In raw SQL we could have referred to “count( 1 )”.  But since JSON queries
+			cannot encode arbitrary expressions, we applied the count function to a column
+			that cannot be null. </para>
+	</sect2>
+
+	<sect2>
+		<title>The LIMIT and OFFSET Clauses</title>
+		<para> To add an LIMIT or OFFSET clause, add an entry to the top level of a query
+			object.  For example: </para>
+
+		<informalexample>
+			<programlisting language="JSON">
+	{
+	    "select": {
+	        "aou": [ "id", "name" ]
+	    },
+	    "from":"aou",
+	    "order_by": { "aou":[ "id" ] },
+	    "offset": 7,
+	    "limit": 42
+	}
+			</programlisting>
+		</informalexample>
+
+		<para> The data associated with <literal>“offset”</literal> and <literal>“limit”</literal>
+			may be either a number or a string, but if it's a string, it should have a number
+			inside. </para>
+		<para> Result: </para>
+
+		<informalexample>
+			<programlisting language="SQL">
+	SELECT
+	   "aou".id AS "id",
+	   "aou".name AS "name"
+	FROM
+	   actor.org_unit AS "aou"
+	ORDER BY
+	   "aou".id
+	LIMIT 42 
+	OFFSET 7;
+			</programlisting>
+		</informalexample>
+
+	</sect2>
+	
+</sect1>
