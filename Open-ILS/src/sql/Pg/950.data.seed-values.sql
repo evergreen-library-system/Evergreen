@@ -1914,7 +1914,9 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (1, 'usr'),
     (1, 'billable_transaction.summary'),
     (1, 'circ_lib.billing_address');
-  
+
+INSERT INTO action_trigger.event_params (event_def, param, value) VALUES
+    (1, 'max_delay_age', '"1 day"');
 
 -- Sample Mark Long-Overdue Item Lost --
 
@@ -2311,4 +2313,39 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
         'When a holds is uncanceled, reset the request time to push it to the end of the queue',
         'bool'
     );
+
+
+-- Sample Pre-due Notice --
+
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template) 
+    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'MaxPassiveDelayAge', 'SendEmail', '-3 days', 'due_date', 'usr', 
+$$
+[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Subject: Courtesy Notice
+
+Dear [% user.family_name %], [% user.first_given_name %]
+As a reminder, the following items are due in 3 days.
+
+[% FOR circ IN target %]
+    Title: [% circ.target_copy.call_number.record.simple_record.title %] 
+    Barcode: [% circ.target_copy.barcode %] 
+    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    Item Cost: [% helpers.get_copy_price(circ.target_copy) %]
+    Library: [% circ.circ_lib.name %]
+    Library Phone: [% circ.circ_lib.phone %]
+[% END %]
+
+$$);
+
+INSERT INTO action_trigger.environment (event_def, path) VALUES 
+    (6, 'target_copy.call_number.record.simple_record'),
+    (6, 'usr'),
+    (6, 'circ_lib.billing_address');
+
+INSERT INTO action_trigger.event_params (event_def, param, value) VALUES
+    (6, 'max_delay_age', '"1 day"');
+  
 
