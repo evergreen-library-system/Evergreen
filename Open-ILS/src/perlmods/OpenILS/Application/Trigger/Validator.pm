@@ -13,7 +13,10 @@ sub CircIsOpen {
     my $self = shift;
     my $env = shift;
 
-    return defined($env->{target}->checkin_time) ? 0 : 1;
+    return 0 if (defined($env->{target}->checkin_time));
+    return 0 if ($env->{params}->{max_delay_age} && !$self->MaxPassiveDelayAge($env));
+
+    return 1;
 }
 
 sub MaxPassiveDelayAge {
@@ -36,6 +39,7 @@ sub CircIsOverdue {
 
     return 0 if $circ->checkin_time;
     return 0 if $circ->stop_fines and not $circ->stop_fines =~ /MAXFINES|LONGOVERDUE/;
+    return 0 if ($env->{params}->{max_delay_age} && !$self->MaxPassiveDelayAge($env));
 
     my $due_date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
     return 0 if $due_date > DateTime->now;
