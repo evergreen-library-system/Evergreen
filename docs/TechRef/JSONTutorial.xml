@@ -41,7 +41,7 @@
 			doesn't have to. </para>
 		<para> Nevertheless, the need to encode a query in a JSON string adds complications,
 			because the client needs to know how to build the right JSON.  JSON queries are also
-			somewhat limiting – they can't do all of the things that you can do with raw SQL. </para>
+			somewhat limiting -- they can't do all of the things that you can do with raw SQL. </para>
 		<para> This tutorial explains what you can do with a JSON query, and how you can do it. </para>
 
 		<sect3>
@@ -63,7 +63,7 @@
 
 		<sect3>
 			<title>Definitions</title>
-			<para> References to “SQL” refer to the dialect implemented by PostgreSQL.  This tutorial
+			<para> References to "SQL" refer to the dialect implemented by PostgreSQL.  This tutorial
 				assumes that you are already familiar with SQL. </para>
 			<para> You should also be familiar with JSON.  However it is worth defining a couple of terms
 				that have other meanings in other contexts: </para>
@@ -71,22 +71,22 @@
 			<itemizedlist>
 
 				<listitem>
-					<para> An “object” is a JSON object, i.e. a comma-separated list of name:value pairs,
+					<para> An "object" is a JSON object, i.e. a comma-separated list of name:value pairs,
 						enclosed in curly braces, like this:
 						<informalexample>
 							<programlisting>
-	{ “a”:”frobozz”, “b”:24, “c”:null }
+	{ "a":"frobozz", "b":24, "c":null }
 							</programlisting>
 						</informalexample>
 					</para>
 				</listitem>
 
 				<listitem>
-					<para> An “array” is a JSON array, i.e. a comma-separated list of values, enclosed
+					<para> An "array" is a JSON array, i.e. a comma-separated list of values, enclosed
 						in square brackets, like this:
 						<informalexample>
 							<programlisting>
-	[ “Goober”, 629, null, false, “glub” ]
+	[ "Goober", 629, null, false, "glub" ]
 							</programlisting>
 						</informalexample>
 					</para>
@@ -104,7 +104,7 @@
 				few related tables.  The queries themselves are designed to illustrate the syntax, not
 				to do anything useful at the application level.  For example, it's not meaningful to
 				take the square root of an org_unit id, except to illustrate how to code a function call.
-				The examples are like department store mannequins – they have no brains, they're only
+				The examples are like department store mannequins -- they have no brains, they're only
 				for display. </para>
 		</sect3>
 
@@ -156,8 +156,8 @@
 				the default SELECT clause. </para>
 			<para> If the FROM clause joins two or more tables, the default SELECT clause includes
 				columns only from the core table, not from any of the joined tables. </para>
-			<para> The default SELECT clause has almost the same effect as “<literal>SELECT *</literal>”,
-				but not exactly.  If you were to “<literal>SELECT * from actor.org_unit_type</literal>
+			<para> The default SELECT clause has almost the same effect as "<literal>SELECT *</literal>",
+				but not exactly.  If you were to "<literal>SELECT * from actor.org_unit_type</literal>
 				in psql, the output would include all the same columns as in the example above, but not in
 				the same order.  A default SELECT clause includes the columns in the order in which the IDL
 				defines them, which may be different from the order in which the database defines them. </para>
@@ -171,7 +171,7 @@
 			<para> There are other ways to get a default SELECT clause.  However, default SELECT clauses
 				are a distraction at this point, because most of the time you'll specify your own SELECT
 				clause explicitly, as we will discuss later. </para>
-			<para> Let's consider some more important aspects of this simple example – more important
+			<para> Let's consider some more important aspects of this simple example -- more important
 				because they apply to more complex queries as well. </para>
 
 			<itemizedlist>
@@ -236,7 +236,7 @@
 
 		<para> While this syntax may not be terribly useful, it does illustrate the minimal structure
 			of a SELECT clause in a JSON query: an entry in the outermost JSON object, with a key of
-			<literal>“select”</literal>.  The value associated with this key is another JSON object,
+			<literal>"select"</literal>.  The value associated with this key is another JSON object,
 			whose keys are class names. </para>
 		<para> (These two examples also illustrate another point: unlike SQL, a JSON query doesn't care
 			whether the FROM clause or the SELECT clause comes first.) </para>
@@ -279,34 +279,34 @@
 			<itemizedlist>
 
 				<listitem>
-					<para> <literal>“column”</literal> -- the column name (required). </para>
+					<para> <literal>"column"</literal> -- the column name (required). </para>
 				</listitem>
 
 				<listitem>
-					<para> <literal>“alias”</literal> -- used to define a column alias, which
+					<para> <literal>"alias"</literal> -- used to define a column alias, which
 						otherwise defaults to the column name. </para>
 				</listitem>
 
 				<listitem>
-					<para> <literal>“aggregate”</literal> -- takes a value of
+					<para> <literal>"aggregate"</literal> -- takes a value of
 						<literal>true</literal> or <literal>false.</literal>  Don't worry about
 						this one yet.  It concerns the use of GROUP BY clauses, which we will
 						examine later. </para>
 				</listitem>
 
 				<listitem>
-					<para> <literal>“transform”</literal> -- the name of an SQL function to be
+					<para> <literal>"transform"</literal> -- the name of an SQL function to be
 						called. </para>
 				</listitem>
 
 				<listitem>
-					<para> <literal>“result_field”</literal> -- used with
-						<literal>“transform”</literal>; specifies an output column of a function that
+					<para> <literal>"result_field"</literal> -- used with
+						<literal>"transform"</literal>; specifies an output column of a function that
 						returns multiple columns at a time. </para>
 				</listitem>
 
 				<listitem>
-					<para> <literal>“params”</literal> -- used with <literal>“transform”</literal>;
+					<para> <literal>"params"</literal> -- used with <literal>"transform"</literal>;
 						provides a list of parameters for the function.  They may be strings, numbers,
 						or nulls. </para>
 				</listitem>
@@ -340,7 +340,7 @@
 			</informalexample>
 
 			<para> In this case, changing the column alias doesn't accomplish much.  But if we
-				were joining to the actor.org_unit_type table, which also has a “name” column,
+				were joining to the actor.org_unit_type table, which also has a "name" column,
 				we could use different aliases to distinguish them. </para>
 			<para> The following example uses a function to raise a column to upper case: </para>
 
@@ -368,7 +368,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> Here we take a substring of the name, using the <literal>“params”</literal>
+			<para> Here we take a substring of the name, using the <literal>"params"</literal>
 				element to pass parameters: </para>
 
 			<informalexample>
@@ -398,14 +398,14 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The parameters specified with <literal>“params”</literal> are inserted
-				<emphasis>after</emphasis> the applicable column (<literal>“name”</literal> in this
+			<para> The parameters specified with <literal>"params"</literal> are inserted
+				<emphasis>after</emphasis> the applicable column (<literal>"name"</literal> in this
 				case), which is always the first parameter.  They are always passed as strings,
 				i.e. enclosed in quotes, even if the JSON expresses them as numbers.  PostgreSQL
 				will ordinarily coerce them to the right type.  However if the function name is
 				overloaded to accept different types, PostgreSQL may invoke a function other than
 				the one intended. </para>
-			<para> Finally we call a fictitious function <literal>“frobozz”</literal> that returns
+			<para> Finally we call a fictitious function <literal>"frobozz"</literal> that returns
 				multiple columns, where we want only one of them: </para>
 
 			<informalexample>
@@ -435,7 +435,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The “frobozz” function doesn't actually exist, but json_query doesn't know
+			<para> The "frobozz" function doesn't actually exist, but json_query doesn't know
 				that.  The query won't fail until json_query tries to execute it in the database. </para>
 		</sect3>
 
@@ -449,7 +449,7 @@
 				This limitation doesn't matter.  The results are returned in the form of a data
 				structure, which the client program can navigate however it likes. </para>
 			<para> You can't select an arbitrary expression, such as
-				<literal>“percentage / 100”</literal> or <literal>“last_name || ', ' || first_name”</literal>.
+				<literal>"percentage / 100"</literal> or <literal>"last_name || ', ' || first_name"</literal>.
 				Most of the time this limitation doesn't matter either, because the client program
 				can do these kinds of manipulations for itself.  However, function calls may be a problem.
 				You can't nest them, and you can't pass more than one column value to them (and it has
@@ -497,7 +497,7 @@
 		</informalexample>
 
 		<para> Like the SELECT clause, the WHERE clause gets its own entry in the top-level object
-			of a JSON query.  The key is <literal>“where”</literal>, and the associated value is
+			of a JSON query.  The key is <literal>"where"</literal>, and the associated value is
 			either an object (as shown here) or an array (to be discussed a bit later).  Each entry
 			in the object is a separate condition. </para>
 		<para> In this case, we use a special shortcut for expressing an equality condition.  The
@@ -519,9 +519,9 @@
 
 		<para> Like the SELECT clause, the generated WHERE clause qualifies each column name with
 			the alias of the relevant table. </para>
-		<para> If you want to compare a column to NULL, put “<literal>null</literal>” (without
+		<para> If you want to compare a column to NULL, put "<literal>null</literal>" (without
 			quotation marks) to the right of the colon instead of a literal value.  The resulting
-			SQL will include <literal>“IS NULL”</literal> instead of an equals sign. </para>
+			SQL will include <literal>"IS NULL"</literal> instead of an equals sign. </para>
 
 		<sect3>
 			<title>Other Kinds of Comparisons</title>
@@ -573,8 +573,8 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The condition '<literal>“=”:null</literal>' turns into IS NULL.  Any other
-				operator used with <literal>“null”</literal> turns into IS NOT NULL. </para>
+			<para> The condition '<literal>"=":null</literal>' turns into IS NULL.  Any other
+				operator used with <literal>"null"</literal> turns into IS NOT NULL. </para>
 			<para> You can use most of the comparison operators recognized by PostgreSQL: </para>
 
 			<programlisting language="SQL">
@@ -585,8 +585,8 @@
 	similar to
 			</programlisting>
 
-			<para> The only ones you can't use are <literal>“is distinct from”</literal> and
-				<literal>“is not distinct from”</literal>. </para>
+			<para> The only ones you can't use are <literal>"is distinct from"</literal> and
+				<literal>"is not distinct from"</literal>. </para>
 		</sect3>
 
 		<sect3>
@@ -594,7 +594,7 @@
 			<para> Here's a dirty little secret: json_query doesn't really pay much attention to the
 				operator you supply.  It merely checks to make sure that the operator doesn't contain
 				any semicolons or white space, in order to prevent certain kinds of SQL injection.
-				It also allows <literal>“similar to”</literal> as a special exception. </para>
+				It also allows <literal>"similar to"</literal> as a special exception. </para>
 			<para> As a result, you can slip an operator of your own devising into the SQL, so long as
 				it doesn't contain any semicolons or white space, and doesn't create invalid syntax.
 				Here's a contrived and rather silly example: </para>
@@ -690,7 +690,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> In a JSON query this approach doesn't work.  If you try it, the “= true” test will
+			<para> In a JSON query this approach doesn't work.  If you try it, the "= true" test will
 				turn into IS NULL.  Don't do that.  Instead, use a leading plus sign, as described in
 				the preceding section, to treat the boolean column as a stand-alone condition: </para>
 
@@ -720,7 +720,7 @@
 			</informalexample>
 
 			<para> If you need to test for falsity, then write a test for truth and negate it with the
-				<literal>“-not”</literal> operator.  We will discuss the “-not” operator later, but
+				<literal>"-not"</literal> operator.  We will discuss the "-not" operator later, but
 				here's a preview: </para>
 
 			<informalexample>
@@ -781,13 +781,13 @@
 			</informalexample>
 
 			<para> In this case we compare the boolean column to a single simple condition.  However you
-				can include additional complications – multiple conditions, IN lists, BETWEEN clauses,
+				can include additional complications -- multiple conditions, IN lists, BETWEEN clauses,
 				and other features as described below. </para>
 		</sect3>
 
 		<sect3>
 			<title>Multiple Conditions</title>
-			<para> If you need multiple conditions, just add them to the <literal>“where”</literal>
+			<para> If you need multiple conditions, just add them to the <literal>"where"</literal>
 				object, separated by commas: </para>
 
 			<informalexample>
@@ -844,9 +844,9 @@
 
 			<informalexample>
 				<programlisting language="JSON">
-	    “where”: {
-	        “parent_ou”:{ “&gt;”:3 },
-	        “parent_ou”:{ “&lt;&gt;”:7 }
+	    "where": {
+	        "parent_ou":{ "&gt;":3 },
+	        "parent_ou":{ "&lt;&gt;":7 }
 	    }
 				</programlisting>
 			</informalexample>
@@ -857,17 +857,17 @@
 
 			<informalexample>
 				<programlisting language="JSON">
-	    “where”: {
-	        “parent_ou”: {
-	            “&gt;”:3,
-	            “&lt;&gt;”:7
+	    "where": {
+	        "parent_ou": {
+	            "&gt;":3,
+	            "&lt;&gt;":7
 	        }
 	    }
 				</programlisting>
 			</informalexample>
 
-			<para> Nice try, but that doesn't work either.  Maybe it ought to work – at least it's
-				legal JSON – but, no. </para>
+			<para> Nice try, but that doesn't work either.  Maybe it ought to work -- at least it's
+				legal JSON -- but, no. </para>
 			<para> Here's what works: </para>
 
 			<informalexample>
@@ -956,7 +956,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> We use <literal>“-or”</literal> as the key, with the conditions to be ORed in an
+			<para> We use <literal>"-or"</literal> as the key, with the conditions to be ORed in an
 				associated object.  The leading minus sign is there to make sure that the operator
 				isn't confused with a column name.  Later we'll see some other operators with leading
 				minus signs.  In a couple of spots we even use plus signs. </para>
@@ -977,7 +977,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The conditions paired with <literal>“-or”</literal> are linked by OR and enclosed
+			<para> The conditions paired with <literal>"-or"</literal> are linked by OR and enclosed
 				in parentheses, </para>
 			<para> Here's how to do the same thing using an array, except that it produces an extra
 				layer of parentheses: </para>
@@ -1013,20 +1013,20 @@
 			</informalexample>
 
 			<para> It's possible, though not very useful, to have only a single condition subject to
-				the <literal>“-or”</literal> operator.  In that case, the condition appears by itself,
+				the <literal>"-or"</literal> operator.  In that case, the condition appears by itself,
 				since there's nothing to OR it to.  This trick is another way to add an extraneous
 				layer of parentheses, </para>
 		</sect3>
 
 		<sect3>
 			<title>Another way to AND</title>
-			<para> You can also use the <literal>“-and”</literal> operator.  It works just like
-				<literal>“-or”</literal>, except that it combines conditions with AND instead of OR.
+			<para> You can also use the <literal>"-and"</literal> operator.  It works just like
+				<literal>"-or"</literal>, except that it combines conditions with AND instead of OR.
 				Since AND is the default, we don't usually need a separate operator for it, but it's
 				available.
 			</para>
 			<para>
-				In rare cases, nothing else will do – you can't include two conditions in the same
+				In rare cases, nothing else will do -- you can't include two conditions in the same
 				list because of the duplicate key problem, but you can't combine them with arrays
 				either.  In particular, you might need to combine them within an expression that
 				you're comparing to a boolean column (see the subsection above on Testing Boolean
@@ -1035,7 +1035,7 @@
 
 		<sect3>
 			<title>Negation with NOT</title>
-			<para> The <literal>“-not”</literal> operator negates a condition or set of conditions.
+			<para> The <literal>"-not"</literal> operator negates a condition or set of conditions.
 				For example: </para>
 
 			<informalexample>
@@ -1071,17 +1071,17 @@
 
 			<para> In this example we merely negate a combination of two comparisons.  However the
 				condition to be negated may be as complicated as it needs to be.  Anything that can
-				be subject to <literal>“where”</literal> can be subject to
-				<literal>“-not”</literal>. </para>
+				be subject to <literal>"where"</literal> can be subject to
+				<literal>"-not"</literal>. </para>
 			<para> In most cases you can achieve the same result by other means.  However the
-				<literal>“-not”</literal> operator is the only way to represent NOT BETWEEN
+				<literal>"-not"</literal> operator is the only way to represent NOT BETWEEN
 				(to be discussed later). </para>
 		</sect3>
 
 		<sect3>
 			<title>EXISTS with Subqueries</title>
-			<para> Two other operators carry a leading minus sign: <literal>“-exists”</literal>
-				and its negation <literal>“-not-exists”</literal>.  These operators apply to
+			<para> Two other operators carry a leading minus sign: <literal>"-exists"</literal>
+				and its negation <literal>"-not-exists"</literal>.  These operators apply to
 				subqueries, which have the same format as a full query.  For example: </para>
 
 			<informalexample>
@@ -1143,7 +1143,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> Note the use of <literal>“+aou”</literal> to qualify the id column in the
+			<para> Note the use of <literal>"+aou"</literal> to qualify the id column in the
 				inner WHERE clause. </para>
 
 			<informalexample>
@@ -1185,7 +1185,7 @@
 			</informalexample>
 
 			<para> The value associated with the column name is an object with a single
-				entry, whose key is <literal>“between”</literal>.  The corresponding
+				entry, whose key is <literal>"between"</literal>.  The corresponding
 				value is an array with exactly two values, defining the range to be
 				tested. </para>
 			<para> The range bounds must be either numbers or string literals.  Although
@@ -1257,16 +1257,16 @@
 
 			<para> This version results in the same SQL as the first one. </para>
 			<para> For a NOT IN list, you can use the latter format, using the
-				<literal>“not in”</literal> operator instead of <literal>“in”</literal>.
+				<literal>"not in"</literal> operator instead of <literal>"in"</literal>.
 				Alternatively, you can use either format together with the
-				<literal>“-not”</literal> operator. </para>
+				<literal>"-not"</literal> operator. </para>
 		</sect3>
 
 		<sect3>
 			<title>IN and NOT IN Clauses with Subqueries</title>
 			<para> For an IN clause with a subquery, the syntax is similar to the second
 				of the two formats for an IN list (see the previous subsection).  The
-				<literal>“in”</literal> or <literal>“not in”</literal> operator is paired,
+				<literal>"in"</literal> or <literal>"not in"</literal> operator is paired,
 				not with an array of values, but with an object representing the subquery.
 				For example: </para>
 
@@ -1312,8 +1312,8 @@
 
 			<para> In SQL the subquery may select multiple columns, but in a JSON query it
 				can select only a single column. </para>
-			<para> For a NOT IN clause with a subquery, use the <literal>“not in”</literal>
-				operator instead of <literal>“in”</literal>. </para>
+			<para> For a NOT IN clause with a subquery, use the <literal>"not in"</literal>
+				operator instead of <literal>"in"</literal>. </para>
 		</sect3>
 
 		<sect3>
@@ -1332,7 +1332,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> A comparison operator (<literal>“&gt;”</literal> in this case) is paired
+			<para> A comparison operator (<literal>"&gt;"</literal> in this case) is paired
 				with an array.  The first entry in the array must be a string giving the name
 				of the function.  The remaining parameters, if any, are the parameters.  They
 				may be strings, numbers, or nulls.  The resulting SQL for this example: </para>
@@ -1380,8 +1380,8 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The <literal>“transform”</literal> entry gives the name of the function that we
-				will use on the left side of the comparison.  The <literal>“value”</literal> entry
+			<para> The <literal>"transform"</literal> entry gives the name of the function that we
+				will use on the left side of the comparison.  The <literal>"value"</literal> entry
 				designates the value on the right side of the comparison. </para>
 
 			<informalexample>
@@ -1398,7 +1398,7 @@
 
 			<para> As in the SELECT clause, you can pass literal values or nulls to the  function
 				as additional parameters by using an array tagged as
-				<literal>“params”</literal>: </para>
+				<literal>"params"</literal>: </para>
 
 			<informalexample>
 				<programlisting language="JSON">
@@ -1434,9 +1434,9 @@
 				followed by any additional parameters (which are always enclosed in quotes even
 				if they are numeric). </para>
 			<para> As in the SELECT clause: if the function returns multiple columns, you can specify
-				the one you want by using a <literal>“result_field”</literal> entry (not shown
+				the one you want by using a <literal>"result_field"</literal> entry (not shown
 				here). </para>
-			<para> If you leave out the <literal>“transform”</literal> entry (or misspell it), the
+			<para> If you leave out the <literal>"transform"</literal> entry (or misspell it), the
 				column name will appear on the left without any function call.  This syntax works,
 				but it's more complicated than it needs to be. </para>
 		</sect3>
@@ -1444,7 +1444,7 @@
 		<sect3>
 			<title>Putting Function Calls on Both Sides</title>
 			<para> If you want to compare one function call to another, you can use the same syntax
-				shown in the previous subsection – except that the <literal>“value”</literal> entry
+				shown in the previous subsection -- except that the <literal>"value"</literal> entry
 				carries an array instead of a literal value.  For example: </para>
 
 			<informalexample>
@@ -1484,10 +1484,10 @@
 
 				<listitem>
 					<para> For a function call to the left of the comparison, the function name is
-						tagged as <literal>“transform”</literal>.  The first parameter is always the
+						tagged as <literal>"transform"</literal>.  The first parameter is always the
 						relevant column name; additional parameters, if any, are in an array tagged
-						as <literal>“params”</literal>.  The entry for
-						<literal>“result_field”</literal>, if present, specifies a subcolumn. </para>
+						as <literal>"params"</literal>.  The entry for
+						<literal>"result_field"</literal>, if present, specifies a subcolumn. </para>
 				</listitem>
 
 				<listitem>
@@ -1502,7 +1502,7 @@
 
 		<sect3>
 			<title>Comparing a Function to a Condition</title>
-			<para> So far we have seen two kinds of data for the <literal>“value”</literal> tag.  A
+			<para> So far we have seen two kinds of data for the <literal>"value"</literal> tag.  A
 				string or number translates to a literal value, and an array translates to a function
 				call.  The third possibility is a JSON object, which translates to a condition.  For
 				example: </para>
@@ -1524,9 +1524,9 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The function tagged as <literal>“transform”</literal> must return boolean, or else
+			<para> The function tagged as <literal>"transform"</literal> must return boolean, or else
 				json_query will generate invalid SQL.  The function used here,
-				<literal>“is_prime”</literal>, is fictitious. </para>
+				<literal>"is_prime"</literal>, is fictitious. </para>
 
 			<informalexample>
 				<programlisting language="SQL">
@@ -1542,7 +1542,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> If we left out the <literal>“transform”</literal> entry, json_query would compare
+			<para> If we left out the <literal>"transform"</literal> entry, json_query would compare
 				the column on the left (which would to be boolean) to the condition on the right.
 				The results are similar to those for a simpler format described earlier (see the
 				subsection Testing Boolean Columns). </para>
@@ -1557,7 +1557,7 @@
 				However, in the WHERE clause these limitations are more limiting, because the client
 				program can't compensate by doing some of the work for itself. </para>
 			<para> You can't use arbitrary expressions in a WHERE condition, such as
-				<literal>“WHERE id > parent_ou – 3”</literal>.  In some cases you may be able to
+				<literal>"WHERE id > parent_ou -- 3"</literal>.  In some cases you may be able to
 				contrive a custom operator in order to fake such an expression.  However this mechanism
 				is neither very general nor very aesthetic. </para>
 			<para> To the right of a comparison operator, all function parameters must be literals or
@@ -1567,7 +1567,7 @@
 			<para> You can't include null values in an IN list or a BETWEEN list, not that you should
 				ever want to. </para>
 			<para> As noted earlier: you can't use the comparison operators
-				<literal>“is distinct from”</literal> or <literal>“is not distinct from”</literal>. </para>
+				<literal>"is distinct from"</literal> or <literal>"is not distinct from"</literal>. </para>
 			<para> Also as noted earlier: a subquery in an IN clause cannot select more than one
 				column. </para>
 		</sect3>
@@ -1577,7 +1577,7 @@
 	<sect2>
 		<title>JOIN clauses</title>
 		<para> Until now, our examples have selected from only one table at a time.  As a result,
-			the FROM clause has been very simple – just a single string containing the class name of
+			the FROM clause has been very simple -- just a single string containing the class name of
 			the relevant table. </para>
 		<para> When the FROM clause joins multiple tables, the corresponding JSON naturally gets more
 			complicated. </para>
@@ -1626,7 +1626,7 @@
 		</informalexample>
 
 		<para> First, let's review the SELECT clause.  Since it selects rows from two different tables,
-			the data for <literal>“select”</literal> includes two entries, one for each table. </para>
+			the data for <literal>"select"</literal> includes two entries, one for each table. </para>
 		<para> As for the FROM clause, it's no longer just a string.  It's a JSON object, with exactly
 			one entry.  The key of this entry is the class name of the core table, i.e. the table
 			named immediately after the FROM keyword.  The data associated with this key contains the
@@ -1708,18 +1708,18 @@
 				the attributes of the join. </para>
 			<para> Later we'll encounter other kinds of join attributes.  For now, the only
 				attributes that we're looking at are the ones that identify the join columns:
-				<literal>“fkey”</literal> and <literal>“field”</literal>.  The hard part is
+				<literal>"fkey"</literal> and <literal>"field"</literal>.  The hard part is
 				remembering which is which: </para>
 
 			<itemizedlist>
 
 				<listitem>
-					<para> <literal>“fkey”</literal> identifies the join column from the
+					<para> <literal>"fkey"</literal> identifies the join column from the
 						<emphasis>left</emphasis> table; </para>
 				</listitem>
 
 				<listitem>
-					<para> <literal>“field”</literal> identifies the join column from the
+					<para> <literal>"field"</literal> identifies the join column from the
 						<emphasis>right</emphasis> table. </para>
 				</listitem>
 
@@ -1781,7 +1781,7 @@
 		<sect3>
 			<title>Specifying Only One Join Column</title>
 			<para> We just saw how to specify both ends of a join.  It turns out that there's a
-				shortcut – most of the time you only need to specify one end.  Consider the
+				shortcut -- most of the time you only need to specify one end.  Consider the
 				following variation on the previous example: </para>
 
 			<informalexample>
@@ -1886,8 +1886,8 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The <literal>“join”</literal> attribute introduces another level of join.  In this
-				case <literal>“aou”</literal> is the left table for the nested join, and the right table
+			<para> The <literal>"join"</literal> attribute introduces another level of join.  In this
+				case <literal>"aou"</literal> is the left table for the nested join, and the right table
 				for the original join.  Here are the results: </para>
 
 			<informalexample>
@@ -1929,9 +1929,9 @@
 			</informalexample>
 
 			<para> Here we asked for a left outer join.  For a right outer join, code
-				<literal>“type”:”right”</literal>.  For a full outer join, code
-				<literal>“type”:”full”</literal>.  Any other value for “type” results in an inner
-				join, so watch out for typos.  A type of <literal>“rihgt”</literal> will give you
+				<literal>"type":"right"</literal>.  For a full outer join, code
+				<literal>"type":"full"</literal>.  Any other value for "type" results in an inner
+				join, so watch out for typos.  A type of <literal>"rihgt"</literal> will give you
 				a wrong join instead of a right one. </para>
 			<para> Here is the resulting SQL for this example: </para>
 
@@ -1971,7 +1971,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> Note the peculiar operator <literal>“+aou”</literal> -- a plus sign followed
+			<para> Note the peculiar operator <literal>"+aou"</literal> -- a plus sign followed
 				by the relevant class name.  This operator tells json_query to apply the specified
 				class to the condition that follows.  The result: </para>
 
@@ -2102,9 +2102,9 @@
 			</programlisting>
 			</informalexample>
 
-			<para> By default, json_query uses AND to combine the <literal>“filter”</literal>
+			<para> By default, json_query uses AND to combine the <literal>"filter"</literal>
 				condition with the original join condition.  If you need OR, you can use the
-				<literal>“filter_op”</literal> attribute to say so: </para>
+				<literal>"filter_op"</literal> attribute to say so: </para>
 
 			<informalexample>
 				<programlisting language="JSON">
@@ -2137,10 +2137,10 @@
 				</programlisting>
 			</informalexample>
 
-			<para> If the data tagged by <literal>“filter_op”</literal> is anything but
-				<literal>“or”</literal> (in upper, lower, or mixed case), json_query uses AND
+			<para> If the data tagged by <literal>"filter_op"</literal> is anything but
+				<literal>"or"</literal> (in upper, lower, or mixed case), json_query uses AND
 				instead of OR. </para>
-			<para> The condition tagged by <literal>“filter”</literal> may be much more complicated.
+			<para> The condition tagged by <literal>"filter"</literal> may be much more complicated.
 				In fact it accepts all the same syntax as the WHERE clause. </para>
 			<para> Remember, though, that it all gets combined with the the original join condition
 				with an AND, or with an OR if you so specify.  If you're not careful, the result
@@ -2187,7 +2187,7 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The <literal>“iatc”</literal> class is like a view, except that it's defined in the
+			<para> The <literal>"iatc"</literal> class is like a view, except that it's defined in the
 				IDL instead of the database.  In this case it provides a way to do a join that would
 				otherwise be impossible through a JSON query, because it joins the same table in two
 				different ways (see the next subsection). </para>
@@ -2283,7 +2283,7 @@
 			</programlisting>
 		</informalexample>
 
-		<para> The data associated with <literal>“from”</literal> is an array instead of a string
+		<para> The data associated with <literal>"from"</literal> is an array instead of a string
 				or an object.  The first element in the array specifies the name of the function.
 				Subsequent elements, if any, supply the parameters of the function; they must be
 				literal values or nulls. </para>
@@ -2360,12 +2360,12 @@
 			<itemizedlist>
 
 				<listitem>
-					<para> The <literal>“class”</literal> tag provides the name of the class,
+					<para> The <literal>"class"</literal> tag provides the name of the class,
 						which must be either the core class or a joined class. </para>
 				</listitem>
 
 				<listitem>
-					<para> The <literal>“field”</literal> tag provides the field name, corresponding
+					<para> The <literal>"field"</literal> tag provides the field name, corresponding
 						to one of the columns of the class. </para>
 				</listitem>
 
@@ -2374,7 +2374,7 @@
 			<para> If you want to sort by multiple fields, just include a separate object for each
 				field. </para>
 			<para> If you want to sort a field in descending order, add a
-				<literal>“direction”</literal> tag: </para>
+				<literal>"direction"</literal> tag: </para>
 
 			<informalexample>
 				<programlisting language="JSON">
@@ -2399,14 +2399,14 @@
 				</programlisting>
 			</informalexample>
 
-			<para> The string tagged as <literal>“direction”</literal> can be anything – all that
-				matters is the first character.  If the string starts with “D” or “d”, the sort
+			<para> The string tagged as <literal>"direction"</literal> can be anything -- all that
+				matters is the first character.  If the string starts with "D" or "d", the sort
 				will be descending.  Otherwise it will be ascending.  So
-				<literal>“diplodocus”</literal> or <literal>“Dioscorides”</literal> will work as
-				well as <literal>“desc”</literal>, but <literal>“going down”</literal> means that
+				<literal>"diplodocus"</literal> or <literal>"Dioscorides"</literal> will work as
+				well as <literal>"desc"</literal>, but <literal>"going down"</literal> means that
 				the sort will go up. </para>
 			<para> You can also pass a column through some kind of transforming function, much as
-				you can in the SELECT and WHERE clauses, using the <literal>“transform”</literal>
+				you can in the SELECT and WHERE clauses, using the <literal>"transform"</literal>
 				tag.  For example, for a case-insensitive sort, you could raise to upper case: </para>
 
 			<informalexample>
@@ -2437,7 +2437,7 @@
 			</informalexample>
 
 			<para> If you need additional parameters for the function, you can use the
-				<literal>“params”</literal> tag to pass them: </para>
+				<literal>"params"</literal> tag to pass them: </para>
 
 			<informalexample>
 				<programlisting language="JSON">
@@ -2473,7 +2473,7 @@
 			<para> As we have seen elsewhere, all literal values are passed as quoted strings,
 				even if they are numbers. </para>
 			<para> If the function returns multiple columns, you can use the
-				<literal>“result_field”</literal> tag to indicate which one you want (not shown). </para>
+				<literal>"result_field"</literal> tag to indicate which one you want (not shown). </para>
 		</sect3>
 
 		<sect3>
@@ -2496,17 +2496,17 @@
 				</programlisting>
 			</informalexample>
 
-			<para> For the <literal>“aout”</literal> class, the associated array is simply a list
+			<para> For the <literal>"aout"</literal> class, the associated array is simply a list
 				of field names (in this case, just one).  Naturally, each field must reside in
 				the class with which it is associated. </para>
 			<para> However, a list of field names provides no way to specify the direction of
 				sorting, or a transforming function.  You can add those details only if the
 				class name is paired with an object, as in the example for the
-				<literal>“aou”</literal> class.  The keys for such an object are field names, and
+				<literal>"aou"</literal> class.  The keys for such an object are field names, and
 				the associated tags define other details. </para>
-			<para> In this example, we use the <literal>“direction”</literal> tag to specify that
+			<para> In this example, we use the <literal>"direction"</literal> tag to specify that
 				the name field be sorted in descending order.  This tag works the same way here as
-				described earlier.  If the associated string starts with “D” or “d”, the sort will
+				described earlier.  If the associated string starts with "D" or "d", the sort will
 				be descending; otherwise it will be ascending. </para>
 			<para> Here is the resulting SQL: </para>
 
@@ -2524,8 +2524,8 @@
 				</programlisting>
 			</informalexample>
 
-			<para> You can also use the  <literal>“transform</literal>”, <literal>“params”</literal>,
-				and <literal>“result_field”</literal> tags to specify the use of a transforming
+			<para> You can also use the  <literal>"transform</literal>", <literal>"params"</literal>,
+				and <literal>"result_field"</literal> tags to specify the use of a transforming
 				function, as described in the previous subsection.  For example: </para>
 
 			<informalexample>
@@ -2570,8 +2570,8 @@
 				there are situations where it can be useful, provided that the column is passed to
 				a transforming function. </para>
 			<para> For example, you might want a case-insensitive sort, except that for any given
-				letter you want lower case to sort first.  For example, you want “diBona” to sort
-				before “Dibona”.  Here's a way to do that, coding the ORDER BY clause as an array: </para>
+				letter you want lower case to sort first.  For example, you want "diBona" to sort
+				before "Dibona".  Here's a way to do that, coding the ORDER BY clause as an array: </para>
 
 			<informalexample>
 				<programlisting language="JSON">
@@ -2624,8 +2624,8 @@
 			</programlisting>
 		</informalexample>
 
-		<para> The <literal>“transform”</literal> tag is there just to give us an excuse to do a GROUP
-			BY.  What's important to notice is the <literal>“aggregate”</literal> tag. </para>
+		<para> The <literal>"transform"</literal> tag is there just to give us an excuse to do a GROUP
+			BY.  What's important to notice is the <literal>"aggregate"</literal> tag. </para>
 		<para> Here's the resulting SQL: </para>
 
 		<informalexample>
@@ -2642,17 +2642,17 @@
 
 		<para> The GROUP BY clause references fields from the SELECT clause by numerical reference,
 			instead of by repeating them.  Notice that the field it references, parent_ou, is the
-			one that <emphasis>doesn't</emphasis> carry the <literal>“aggregate”</literal> tag in
+			one that <emphasis>doesn't</emphasis> carry the <literal>"aggregate"</literal> tag in
 			the JSON. </para>
 		<para> Let's state that more generally.  The GROUP BY clause includes only the fields that
-			do <emphasis>not</emphasis> carry the <literal>“aggregate”</literal> tag (or that carry
+			do <emphasis>not</emphasis> carry the <literal>"aggregate"</literal> tag (or that carry
 			it with a value of false). </para>
 		<para> However, that logic applies only when some field somewhere <emphasis>does</emphasis>
-			carry the <literal>“aggregate”</literal> tag, with a value of true.  If there is no
-			<literal>“aggregate”</literal> tag, or it appears only with a value of false, then there
+			carry the <literal>"aggregate"</literal> tag, with a value of true.  If there is no
+			<literal>"aggregate"</literal> tag, or it appears only with a value of false, then there
 			is no GROUP BY clause. </para>
 		<para> If you really want to include every field in the GROUP BY clause, don't use
-			<literal>“aggregate”</literal>.  Use the <literal>“distinct”</literal> tag, as described
+			<literal>"aggregate"</literal>.  Use the <literal>"distinct"</literal> tag, as described
 			in the next section. </para>
 	</sect2>
 
@@ -2678,8 +2678,8 @@
 			</programlisting>
 		</informalexample>
 
-		<para> Note the <literal>“distinct”</literal> entry at the top level of the
-			query object, with a value of “true”. </para>
+		<para> Note the <literal>"distinct"</literal> entry at the top level of the
+			query object, with a value of "true". </para>
 
 		<informalexample>
 			<programlisting language="SQL">
@@ -2699,7 +2699,7 @@
 
 	<sect2>
 		<title>The HAVING Clause</title>
-		<para> For a HAVING clause, add a <literal>“having”</literal> entry at the top level
+		<para> For a HAVING clause, add a <literal>"having"</literal> entry at the top level
 			of the query object.  For the associated data, you can use all the same syntax
 			that you can use for a WHERE clause. </para>
 		<para> Here's a simple example: </para>
@@ -2730,7 +2730,7 @@
 			</programlisting>
 		</informalexample>
 
-		<para> We use the “aggregate” tag in the SELECT clause to give us a GROUP  BY to go
+		<para> We use the "aggregate" tag in the SELECT clause to give us a GROUP  BY to go
 			with the HAVING.  Results: </para>
 
 		<informalexample>
@@ -2747,7 +2747,7 @@
 			</programlisting>
 		</informalexample>
 
-		<para> In raw SQL we could have referred to “count( 1 )”.  But since JSON queries
+		<para> In raw SQL we could have referred to "count( 1 )".  But since JSON queries
 			cannot encode arbitrary expressions, we applied the count function to a column
 			that cannot be null. </para>
 	</sect2>
@@ -2771,7 +2771,7 @@
 			</programlisting>
 		</informalexample>
 
-		<para> The data associated with <literal>“offset”</literal> and <literal>“limit”</literal>
+		<para> The data associated with <literal>"offset"</literal> and <literal>"limit"</literal>
 			may be either a number or a string, but if it's a string, it should have a number
 			inside. </para>
 		<para> Result: </para>
