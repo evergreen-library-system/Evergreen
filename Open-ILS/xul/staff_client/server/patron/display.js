@@ -565,8 +565,9 @@ patron.display.prototype = {
             this.controller.view.cmd_patron_bills.setAttribute('style','');
             this.controller.view.cmd_standing_penalties.setAttribute('style','');
             this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
+            var auto_hide_patron_sidebar = String( this.OpenILS.data.hash.aous['circ.auto_hide_patron_summary'] ) == 'true';
             var x = document.getElementById('splitter_grippy'); 
-            if (x && ! dont_hide_summary) {
+            if (x && auto_hide_patron_sidebar && ! dont_hide_summary) {
                 if (! this.summary_hidden_once_already ) {
                     var first_deck = x.parentNode.previousSibling;
                     if (! first_deck.collapsed) x.doCommand();

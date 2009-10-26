@@ -1697,6 +1697,11 @@ INSERT into config.org_unit_setting_type
     'When true, the Date of Birth column in patron lists will default to Not Visible, and in the Patron Summary sidebar the value will display as <Hidden> unless the field label is clicked.',
     'bool' ),
 
+( 'circ.auto_hide_patron_summary',
+    'GUI: Toggle off the patron summary sidebar after first view.',
+    'When true, the patron summary sidebar will collapse after a new patron sub-interface is selected.',
+    'bool' ),
+
 ( 'credit.processor.default',
     'Credit card processing: Name default credit processor',
     'This might be "AuthorizeNet", "PayPal", etc.',
