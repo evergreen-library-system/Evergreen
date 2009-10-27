@@ -31,6 +31,7 @@
     <command id="cmd_broken" disabled="true" hidden="true"/>
     <command id="cmd_holds_retarget"/>
     <command id="cmd_holds_cancel" />
+    <command id="cmd_holds_uncancel" />
     <command id="cmd_search_opac" />
     <command id="save_columns" />
     <command id="cmd_alt_view" />
@@ -59,6 +60,7 @@
         <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
         <menuitem label="&staff.circ.holds.retarget;" command="cmd_holds_retarget" accesskey="&staff.circ.holds.retarget.accesskey;"/>
         <menuitem label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
+        <menuitem label="&staff.circ.holds.uncancel;" command="cmd_holds_uncancel" accesskey="&staff.circ.holds.uncancel.accesskey;"/>
         <menuseparator />
         <menuitem command="save_columns" label="&staff.circ.holds.save_columns;" accesskey="&staff.circ.holds.save_columns.accesskey;"/>
     </popup>
@@ -127,6 +129,7 @@
                     <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
                     <menuitem label="&staff.circ.holds.retarget;" command="cmd_holds_retarget" accesskey="&staff.circ.holds.retarget.accesskey;"/>
                     <menuitem label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
+                    <menuitem label="&staff.circ.holds.uncancel;" command="cmd_holds_uncancel" accesskey="&staff.circ.holds.uncancel.accesskey;"/>
                     <menuseparator />
                     <menuitem command="save_columns" label="&staff.circ.holds.save_columns;" accesskey="&staff.circ.holds.save_columns.accesskey;"/>
                 </menupopup>

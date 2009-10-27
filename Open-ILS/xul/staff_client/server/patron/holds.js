@@ -146,6 +146,7 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_alt_view.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_retarget.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
+                        obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','false');
                         obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
                     } else {
                         obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
@@ -164,6 +165,7 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_alt_view.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
+                        obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','true');
                         obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
                     }
                 }
@@ -815,6 +817,22 @@ patron.holds.prototype = {
                             }
                         }
                     ],
+                    'cmd_holds_uncancel' : [
+                        ['command'],
+                        function() {
+                            try {
+                                JSAN.use('util.functional');
+                                for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                                    var robj = obj.network.simple_request('FM_AHR_UNCANCEL',[ ses(), obj.retrieve_ids[i].id]);
+                                    if (typeof robj.ilsevent != 'undefined') throw(robj);
+                                }
+                                obj.clear_and_retrieve();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_uncancel.hold_not_uncancelled'),E);
+                            }
+                        }
+                    ],
+
                     'cmd_retrieve_patron' : [
                         ['command'],
                         function() {

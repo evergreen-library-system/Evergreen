@@ -2056,6 +2056,8 @@
 <!ENTITY staff.circ.holds.retarget.accesskey "T">
 <!ENTITY staff.circ.holds.cancel "Cancel Hold">
 <!ENTITY staff.circ.holds.cancel.accesskey "C">
+<!ENTITY staff.circ.holds.uncancel "Un-cancel Hold">
+<!ENTITY staff.circ.holds.uncancel.accesskey "U">
 <!ENTITY staff.circ.holds.save_columns "Save Columns">
 <!ENTITY staff.circ.holds.save_columns.accesskey "">
 <!ENTITY staff.hold_list.cancel_hold_dialog.title "Cancel Hold">
