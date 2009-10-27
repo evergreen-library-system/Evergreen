@@ -18,14 +18,15 @@ use warnings;
 use Getopt::Long;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::JSON;
+use OpenSRF::EX qw(:try);
 require 'oils_header.pl';
 
 my $opt_lockfile = '/tmp/action-trigger-LOCK';
 my $opt_osrf_config = '/openils/conf/opensrf_core.xml';
+my $opt_custom_filter = '/openils/conf/action_trigger_filters.json';
 my $opt_run_pending = 0;
 my $opt_debug_stdout = 0;
 my $opt_help = 0;
-my $opt_custom_filter;
 my $opt_hooks;
 
 GetOptions(
@@ -33,16 +34,16 @@ GetOptions(
     'run-pending' => \$opt_run_pending,
     'hooks=s' => \$opt_hooks,
     'debug-stdout' => \$opt_debug_stdout,
-    'custom-filter=s' => \$opt_custom_filter,
+    'custom-filters=s' => \$opt_custom_filter,
     'lock-file=s' => \$opt_lockfile,
     'help' => \$opt_help,
 );
 
 
 # typical passive hook filters
-my %hook_handlers = (
+my $hook_handlers = {
 
-    # overdue circulations
+    # default overdue circulations
     'checkout.due' => {
         context_org => 'circ_lib',
         filter => {
@@ -53,26 +54,39 @@ my %hook_handlers = (
             ]
         }
     }
-);
+};
+
+if ($opt_custom_filter) {
+    open FILTERS, $opt_custom_filter;
+    $hook_handlers = OpenSRF::Utils::JSON->JSON2Perl(join('',(<FILTERS>)));
+    close FILTERS;
+}
 
 sub help {
     print <<HELP;
 
 $0 : Create and process action/trigger events
 
-    --osrf-config <config_file>
-        OpenSRF config file
+    --osrf-config=<config_file>
+        OpenSRF core config file.  Defaults to:
+            /openils/conf/opensrf_core.xml
+
+    --custom-filters=<filter_file>
+        File containing a JSON Object which describes any hooks that should
+        use a user-defined filter to find their target objects.  Defaults to:
+            /openils/conf/action_trigger_filters.json
 
     --run-pending
         Run pending action_trigger.event's
 
-    --hooks hook1[,hook2,hook3,...]
-        hooks to generate events for
+    --hooks=hook1[,hook2,hook3,...]
+        Hooks for which events should be generated.  Defaults to the list of
+        hooks defined in the --custom-filters option.
 
     --debug-stdout
         Print server responses to stdout (as JSON) for debugging
 
-    --lock-file <file_name>
+    --lock-file=<file_name>
         Lock file
 
     --help
@@ -80,7 +94,8 @@ $0 : Create and process action/trigger events
 
     Examples:
 
-        # To run all pending events.  This is what you tell CRON to run at regular intervals
+        # To run all pending events.  This is what you tell CRON to run at
+        # regular intervals
         perl $0 --osrf-config /openils/conf/opensrf_core.xml --run-pending
 
         # To batch create all "checkout.due" events
@@ -93,18 +108,16 @@ HELP
 # create events for the specified hooks using the configured filters and context orgs
 sub process_hooks {
 
-    my @hooks = ($opt_hooks) ? split(',', $opt_hooks) : ();
+    my @hooks = ($opt_hooks) ? split(',', $opt_hooks) : keys(%$hook_handlers);
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
 
     for my $hook (@hooks) {
     
-        my $config = $hook_handlers{$hook} or next;
+        my $config = $$hook_handlers{$hook} or next;
         my $method = 'open-ils.trigger.passive.event.autocreate.batch';
         $method =~ s/passive/active/ if $config->{active};
         
-        my $filter = ($opt_custom_filter) ? OpenSRF::Utils::JSON->JSON2Perl($opt_custom_filter) : $config->{filter};
-    
-        my $req = $ses->request($method, $hook, $config->{context_org}, $filter);
+        my $req = $ses->request($method, $hook, $config->{context_org}, $config->{filter});
         while(my $resp = $req->recv(timeout => 1800)) {
             if($opt_debug_stdout) {
                 print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
@@ -133,13 +146,14 @@ open(F, ">$opt_lockfile") or die "Unable to open lockfile $opt_lockfile for writ
 print F $$;
 close F;
 
-eval {
+try {
     osrf_connect($opt_osrf_config);
     process_hooks();
     run_pending();
+} otherwise {
+    my $e = shift;
+    warn "$e\n";
 };
-
-warn "$@\n" if $@;
 
 unlink $opt_lockfile;
 
