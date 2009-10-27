@@ -1537,6 +1537,33 @@ circ.util.hold_columns = function(modify,params) {
     var c = [
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'cancel_time',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_cancel_time'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.ahr.cancel_time(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'cancel_cause',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_cancel_cause'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return typeof my.ahr.cancel_cause == 'object' ? my.ahr.cancel_cause().label() : data.hash.ahrcc[ my.ahr.cancel_cause() ].label(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'cancel_note',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_cancel_note'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.ahr.cancel_note(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
             'id' : 'request_lib',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.request_lib'),
             'flex' : 1,

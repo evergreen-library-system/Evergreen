@@ -52,7 +52,10 @@ patron.holds.prototype = {
                 'current_copy' : { 'hidden' : false },
                 'capture_time' : { 'hidden' : false },
                 'notify_time' : { 'hidden' : false },
-                'notify_count' : { 'hidden' : false }
+                'notify_count' : { 'hidden' : false },
+                'cancel_cause' : { 'hidden' : ! ( obj.data.hash.aous['circ.holds.canceled.display_count'] || obj.data.hash.aous['circ.holds.canceled.display_age'] ) },
+                'cancel_note' : { 'hidden' :  ! ( obj.data.hash.aous['circ.holds.canceled.display_count'] || obj.data.hash.aous['circ.holds.canceled.display_age'] ) },
+                'cancel_time' : { 'hidden' :  ! ( obj.data.hash.aous['circ.holds.canceled.display_count'] || obj.data.hash.aous['circ.holds.canceled.display_age'] ) }
             }
         );
 
