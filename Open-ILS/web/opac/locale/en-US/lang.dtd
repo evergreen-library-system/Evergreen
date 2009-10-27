@@ -1512,9 +1512,10 @@
 <!ENTITY staff.server.admin.org_settings.cat.bib.keep_on_empty.desc 'Do not automatically delete a bib record when all attached copies are deleted'>
 <!ENTITY staff.server.admin.org_settings.cat.bib.alert_on_empty 'Alert on empty bib records'>
 <!ENTITY staff.server.admin.org_settings.cat.bib.alert_on_empty.desc "Alert staff when the last copy for a record is being deleted">
-
-
-
+<!ENTITY ui.circ.in_house_use.entry_cap "GUI: Record In-House Use: Maximum # of uses allowed per entry.">
+<!ENTITY ui.circ.in_house_use.entry_cap.desc "The # of uses entry in the Record In-House Use interface may not exceed the value of this setting.">
+<!ENTITY ui.circ.in_house_use.entry_warn "GUI: Record In-House Use: # of uses threshold for Are You Sure? dialog.">
+<!ENTITY ui.circ.in_house_use.entry_warn.desc "In the Record In-House Use interface, a submission attempt will warn if the # of uses field exceeds the value of this setting.">
 <!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
 <!ENTITY staff.server.admin.stat_cat.greeting "Welcome ">
 <!ENTITY staff.server.admin.stat_cat.heading " Statistical Category Editor">
