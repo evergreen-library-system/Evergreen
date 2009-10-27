@@ -2752,6 +2752,10 @@
 <!ENTITY staff.portal.default.welcome "This is the Evergreen staff client portal page. You can customize this with the information or functionality your organization needs to support its operations. For example, you could add links to process and procedure documents.">
 <!ENTITY ui.circ.patron_summary.horizontal "GUI: Alternative Horizontal Patron Summary Panel">
 <!ENTITY ui.circ.patron_summary.horizontal.desc "This replaces the vertical Patron Summary Sidebar.">
+<!ENTITY ui.circ.in_house_use.entry_cap "GUI: Record In-House Use: Maximum # of uses allowed per entry.">
+<!ENTITY ui.circ.in_house_use.entry_cap.desc "The # of uses entry in the Record In-House Use interface may not exceed the value of this setting.">
+<!ENTITY ui.circ.in_house_use.entry_warn "GUI: Record In-House Use: # of uses threshold for Are You Sure? dialog.">
+<!ENTITY ui.circ.in_house_use.entry_warn.desc "In the Record In-House Use interface, a submission attempt will warn if the # of uses field exceeds the value of this setting.">
 <!ENTITY ui.general.button_bar "GUI: Above-Tab Button Bar">
 <!ENTITY ui.general.button_bar.desc "This enables a row of buttons and/or icons between the top-level menu system and the tabbed interfaces.">
 <!ENTITY ui.network.progress_meter "GUI: Network Activity Meter">
