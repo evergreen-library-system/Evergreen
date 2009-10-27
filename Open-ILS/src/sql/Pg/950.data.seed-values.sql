@@ -1627,6 +1627,16 @@ INSERT into config.org_unit_setting_type
   'Set this if you would like patron displays in the staff client to be closed after a certain interval of inactivity.  Example ''5 minutes''',
   'interval' ),
 
+( 'ui.circ.in_house_use.entry_cap',
+  'GUI: Record In-House Use: Maximum # of uses allowed per entry.',
+  'The # of uses entry in the Record In-House Use interface may not exceed the value of this setting.',
+  'integer' ),
+
+( 'ui.circ.in_house_use.entry_warn',
+  'GUI: Record In-House Use: # of uses threshold for Are You Sure? dialog.',
+  'In the Record In-House Use interface, a submission attempt will warn if the # of uses field exceeds the value of this setting.',
+  'integer' ),
+
 ( 'acq.default_circ_modifier',
   'Default circulation modifier',
   null,

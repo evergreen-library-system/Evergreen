@@ -9,6 +9,7 @@ circ.in_house_use = function (params) {
     JSAN.use('util.barcode');
     JSAN.use('util.date');
     JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+    JSAN.use('util.sound'); this.sound = new util.sound();
 }
 
 circ.in_house_use.prototype = {
@@ -16,6 +17,9 @@ circ.in_house_use.prototype = {
     'init' : function( params ) {
 
         var obj = this;
+
+        obj.entry_cap = Number( obj.data.hash.aous['ui.circ.in_house_use.entry_cap'] ) || 99;
+        obj.entry_warn = Number( obj.data.hash.aous['ui.circ.in_house_use.entry_warn'] ) || 20;
 
         JSAN.use('circ.util');
         var columns = circ.util.columns( 
@@ -135,13 +139,19 @@ circ.in_house_use.prototype = {
                                 try {
                                     var value = Number(ev.target.value);
                                     if (value > 0) {
-                                        if (value > 99) ev.target.value = 99;
+                                        if (value > obj.entry_cap) { throw(value); }
                                     } else {
-                                        ev.target.value = 1;
+                                        throw(value);
                                     }
                                 } catch(E) {
                                     dump('in_house_use:multiplier: ' + E + '\n');
-                                    ev.target.value = 1;
+                                    obj.sound.circ_bad();
+                                    setTimeout(
+                                        function() {
+                                            obj.controller.view.in_house_use_multiplier_textbox.focus();
+                                            obj.controller.view.in_house_use_multiplier_textbox.select();
+                                        }, 0
+                                    );
                                 }
                             }
                         }
@@ -230,13 +240,14 @@ circ.in_house_use.prototype = {
                 return; 
             }
 
-            if (multiplier == 0 || multiplier > 99) {
+            if (multiplier == 0 || multiplier > obj.entry_cap) {
                 obj.controller.view.in_house_use_multiplier_textbox.focus();
                 obj.controller.view.in_house_use_multiplier_textbox.select();
+                obj.sound.circ_bad();
                 return;
             }
 
-            if (multiplier > 20) {
+            if (multiplier > obj.entry_warn) {
                 var r = obj.error.yns_alert(
                     document.getElementById('circStrings').getFormattedString('staff.circ.in_house_use.confirm_multiple', [barcode, multiplier]),
                     document.getElementById('circStrings').getString('staff.circ.in_house_use.confirm_multiple.title'),
@@ -308,6 +319,7 @@ circ.in_house_use.prototype = {
                 //I could override map_row_to_column here
                 }
             );
+            obj.sound.circ_good();
 
             if (typeof obj.on_in_house_use == 'function') {
                 obj.on_in_house_use(result);
