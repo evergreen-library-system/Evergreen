@@ -51,7 +51,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0057'); -- senator
+INSERT INTO config.upgrade_log (version) VALUES ('0058'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -548,6 +548,8 @@ CREATE TABLE config.org_unit_setting_type (
     description     TEXT,
     datatype        TEXT    NOT NULL DEFAULT 'string',
     fm_class        TEXT,
+    view_perm       INT,
+    update_perm     INT,
     --
     -- define valid datatypes
     --
