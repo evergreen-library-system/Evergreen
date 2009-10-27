@@ -1886,6 +1886,15 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'top_of_queue',
+            'label' : document.getElementById('commonStrings').getString('staff.ahr_top_of_queue_label'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return get_bool( my.ahr.cut_in_line() ) ? document.getElementById('commonStrings').getString('common.yes') : document.getElementById('commonStrings').getString('common.no') ; }
+        },
+        {
+            'persist' : 'hidden width ordinal',
             'id' : 'target',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_target_label'),
             'flex' : 1,

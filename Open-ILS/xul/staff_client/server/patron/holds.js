@@ -535,6 +535,62 @@ patron.holds.prototype = {
                             }
                         }
                     ],
+                    'cmd_holds_cut_in_line' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+                                xml += '<description>'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.description')+'</description>';
+                                xml += '<hbox><button value="cut" label="'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.btn_cut.label')+'"';
+                                xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.btn_cut.accesskey')+'" name="fancy_submit"/>';
+                                xml += '<button value="nocut" label="'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.btn_no_cut.label')+'"';
+                                xml += '  accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey')+'" name="fancy_submit"/></hbox>';
+                                xml += '</vbox>';
+                                var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+                                bot_xml += '<spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.btn_cancel.label')+'"';
+                                bot_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey')+'" name="fancy_cancel"/></hbox>';
+                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+                                JSAN.use('util.window'); var win = new util.window();
+                                var fancy_prompt_data = win.open(
+                                    urls.XUL_FANCY_PROMPT,
+                                    'fancy_prompt', 'chrome,resizable,modal',
+                                    { 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : $("patronStrings").getString('staff.patron.holds.holds_cut_in_line.set_notifs') }
+                                );
+                                if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
+                                var cut = fancy_prompt_data.fancy_submit == 'cut' ? get_db_true() : get_db_false();
+
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
+                                var msg = '';
+                                if(get_bool(cut)) {
+                                    if(obj.retrieve_ids.length > 1) {
+                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cut_in_line.enable_cut.plural', [hold_list.join(', ')]);
+                                    } else {
+                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cut_in_line.enable_cut.singular', [hold_list.join(', ')]);
+                                    }
+                                } else {
+                                    if(obj.retrieve_ids.length > 1) {
+                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cut_in_line.disable_cut.plural', [hold_list.join(', ')]);
+                                    } else {
+                                        msg = $("patronStrings").getFormattedString('staff.patron.holds.holds_cut_in_line.disable_cut.singular', [hold_list.join(', ')]);
+                                    }
+                                }
+
+                                var r = obj.error.yns_alert(msg,
+                                        $("patronStrings").getString('staff.patron.holds.holds_cut_in_line.mod_holds_title'),
+                                        $("commonStrings").getString('common.yes'),
+                                        $("commonStrings").getString('common.no'),
+                                        null,
+                                        $("commonStrings").getString('common.check_to_confirm')
+                                );
+                                if (r == 0) {
+                                    circ.util.batch_hold_update(hold_list, { 'cut_in_line' : cut }, { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } });
+                                }
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.holds.holds_not_modified'),E);
+                            }
+                        }
+                    ],
+
                     'cmd_holds_suspend' : [
                         ['command'],
                         function() {
