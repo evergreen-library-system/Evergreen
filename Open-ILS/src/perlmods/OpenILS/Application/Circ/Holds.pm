@@ -503,6 +503,8 @@ sub uncancel_hold {
     }
 
     $hold->clear_cancel_time;
+    $hold->clear_cancel_cause;
+    $hold->clear_cancel_note;
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
 
