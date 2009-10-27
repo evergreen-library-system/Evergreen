@@ -10,10 +10,10 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Reporter::SQLBuilder;
 use File::Find;
 
-my ($config, $du, $live, %seen) = ('SYSCONFDIR/bootstrap.conf', 0, 0);
+my ($config, $du, $live, %seen) = ('SYSCONFDIR/opensrf_core.xml', 0, 0);
 
 GetOptions(
-	"boostrap=s"	=> \$config,
+	"bootstrap=s"	=> \$config,
 	"du"	=> \$du,
 	"live"	=> \$live,
 );
@@ -24,9 +24,9 @@ my $sc = OpenSRF::Utils::SettingsClient->new;
 my $db_driver = $sc->config_value( reporter => setup => database => 'driver' );
 my $db_host = $sc->config_value( reporter => setup => database => 'host' );
 my $db_port = $sc->config_value( reporter => setup => database => 'port' );
-my $db_name = $sc->config_value( reporter => setup => database => 'name' );
+my $db_name = $sc->config_value( reporter => setup => database => 'db' ) || $sc->config_value( reporter => setup => database => 'name' );
 my $db_user = $sc->config_value( reporter => setup => database => 'user' );
-my $db_pw = $sc->config_value( reporter => setup => database => 'password' );
+my $db_pw = $sc->config_value( reporter => setup => database => 'pw' ) || $sc->config_value( reporter => setup => database => 'password' );
 
 my $output_base = $sc->config_value( reporter => setup => files => 'output_base' );
 
