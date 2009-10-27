@@ -367,7 +367,7 @@ sub retrieve_holds {
     } elsif($cancel_age) {
 
         # find all of the canceled holds that were canceled within the configured time frame
-        my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($cancel_age));
+        my $date = DateTime->now->subtract(seconds => OpenSRF::Utils::interval_to_seconds($cancel_age));
         $date = $U->epoch2ISO8601($date->epoch);
 
         my $canceled = $e->search_action_hold_request([
