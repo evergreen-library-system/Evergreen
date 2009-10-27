@@ -756,6 +756,12 @@
 	<event code='4020' textcode='CREDIT_PROCESSOR_DECLINED_TRANSACTION'>
 		<desc xml:lang="en-US">The credit card processor has declined the transaction.</desc>
 	</event>
+	<event code='4040' textcode='CREDIT_PROCESSOR_SUCCESS_WO_RECORD'>
+        <desc xml:lang="en-US">A *TERRIBLE* problem has occurred: a credit
+            card transaction was processed successfuly, but the patron's
+            payment could not be recorded within Evergreen.  Please seek
+            assistance.</desc>
+	</event>
 
 
 	<event code='5000' textcode='PERM_FAILURE'>

@@ -2415,6 +2415,9 @@
 <!ENTITY staff.pat.barcode_entry.submit_btn.accesskey "S">
 <!ENTITY staff.pat.barcode_entry.retrieving.label "Retrieving...">
 <!ENTITY staff.patron.bill_cc_info.title "Credit Card Information">
+<!ENTITY staff.patron.bill_cc_info.where_process.label "Process where?">
+<!ENTITY staff.patron.bill_cc_info.process_int.label "Process payment through Evergreen">
+<!ENTITY staff.patron.bill_cc_info.process_ext.label "Record externally processed payment">
 <!ENTITY staff.patron.bill_cc_info.visa.label "Visa">
 <!ENTITY staff.patron.bill_cc_info.mastercard.label "Mastercard">
 <!ENTITY staff.patron.bill_cc_info.american_express.label "American Express">

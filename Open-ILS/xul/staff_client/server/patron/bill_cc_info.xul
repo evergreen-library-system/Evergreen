@@ -19,95 +19,170 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="patron_bill" title="&staff.patron.bill_cc_info.title;"
-    orient="vertical" style="overflow: auto"
-    onload="try{info_init(); font_helper();}catch(E){alert(E);}"
-    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	orient="vertical" style="overflow: auto"
+	onload="try{info_init(); font_helper();refresh_fields();}catch(E){alert(E);}"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <!-- BEHAVIOR -->
         <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
         <scripts id="openils_util_scripts"/>
 
-    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 
-    <script>
-    <![CDATA[
-        function $(id) { return document.getElementById(id); }
+	<script>
+	<![CDATA[
+		function $(id) { return document.getElementById(id); }
 
-        function info_init() {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
-            JSAN.errorLevel = "die"; // none, warn, or die
-            JSAN.addRepository('/xul/server/');
-            JSAN.use('util.error'); g.error = new util.error();
-            g.error.sdump('D_TRACE','my_init() for patron_display.xul');
-            g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
-            g.OpenILS.data.init({'via':'stash'});
-            g.payment_blob = { 'cc_args' : {}, 'cancelled' : true };
-            g.OpenILS.data.temp = js2JSON( g.payment_blob );
-            g.OpenILS.data.stash('temp');
-
-            document.getElementById('cc_number').focus();
+        XULElement.prototype.hide = function() {
+            this.style.display = "none";
+        }
+        XULElement.prototype.reveal = function() {
+            this.style.display = "";
         }
 
-        function info_finish() {
-            /* FIXME -- need unique temp space name */
-            delete( g.payment_blob.cancelled );
-            g.OpenILS.data.temp = js2JSON( g.payment_blob );
-            g.OpenILS.data.stash('temp');
+        var show = {'int': 1, 'ext': 2}; // tied to Application::Circ::Money
+        var fields_of_interest = {
+            "cc_type":          show['ext'],
+            "cc_number":        show['int'],
+            "expire_month":     show['int'],
+            "expire_year":      show['int'],
+            "approval_code":    show['ext'],
+            "note":             show['ext'] + show['int'],
+            "where_process":    show['ext'] + show['int']
+        };
+
+        function is_relevant_here(field) {
+            var flag = $('where_process').value;
+            var field_flag = fields_of_interest[field];
+            return ((field_flag & flag) == flag);
         }
 
-    ]]>
-    </script>
+        function refresh_fields() {
+            for (var field in fields_of_interest) {
+                if (is_relevant_here(field)) {
+                    $('row_' + field).reveal();
+                }
+                else {
+                    $('row_' + field).hide();
+                }
+            }
+        }
 
-    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+		function info_init() {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+			JSAN.errorLevel = "die"; // none, warn, or die
+			JSAN.addRepository('/xul/server/');
+			JSAN.use('util.error'); g.error = new util.error();
+			g.error.sdump('D_TRACE','my_init() for patron_display.xul');
+			g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
+			g.OpenILS.data.init({'via':'stash'});
+            /* 'true' as a string matches the expectations in bills.js */
+            g.payment_blob = { 'cc_args' : {}, 'cancelled' : 'true' };
+			g.OpenILS.data.temp = js2JSON( g.payment_blob );
+			g.OpenILS.data.stash('temp');
 
-    <groupbox>
-        <caption label="&staff.patron.bill_cc_info.info.label;"/>
-        <grid>
-            <columns> <column flex="0" /> <column flex="0" /> </columns>
-            <rows>
-                <row>
-                    <label value="&staff.patron.bill_cc_info.type.label;"/>
-                    <menulist id="cc_type" oncommand="g.payment_blob.cc_args.type = this.value;">
-                        <menupopup>
-                            <menuitem label="&staff.patron.bill_cc_info.visa.label;" value="Visa"/>
-                            <menuitem label="&staff.patron.bill_cc_info.mastercard.label;" value="Mastercard"/>
-                            <menuitem label="&staff.patron.bill_cc_info.american_express.label;" value="American Express"/>
-                            <menuitem label="&staff.patron.bill_cc_info.discover.label;" value="Discover"/>
-                            <menuitem label="&staff.patron.bill_cc_info.other.label;" value="Other"/>
-                        </menupopup>
-                    </menulist>
-                </row>
-                <row>
-                    <label value="&staff.patron.bill_cc_info.cc_number.value;"/>
-                    <textbox id="cc_number" onchange="g.payment_blob.cc_args.number = event.target.value" context="clipboard"/>
-                </row>
-                <row>
-                    <label value="&staff.patron.bill_cc_info.month_expire.value;"/>
-                    <textbox id="expire_month" onchange="g.payment_blob.cc_args.expire_month = event.target.value" context="clipboard"/>
-                </row>
-                <row>
-                    <label value="&staff.patron.bill_cc_info.year_expire.value;"/>
-                    <textbox id="expire_year" onchange="g.payment_blob.cc_args.expire_year = event.target.value" context="clipboard"/>
-                </row>
-                <row>
-                    <label value="&staff.patron.bill_cc_info.approval_code.value;"/>
-                    <textbox id="approval_code" onchange="g.payment_blob.cc_args.approval_code = event.target.value" context="clipboard"/>
-                </row>
-                <row>
-                    <label value="&staff.patron.bill_cc_info.note.value;"/>
-                    <textbox id="note" onchange="g.payment_blob.note = event.target.value" multiline="true" context="clipboard"/>
-                </row>
-            </rows>
-        </grid>
-        <hbox>
-            <spacer flex="1"/>
-            <button label="&staff.patron.bill_cc_info.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_cc_info.cancel.accesskey;"/>
-            <button label="&staff.patron.bill_cc_info.submit.label;" oncommand="info_finish(); window.close();" accesskey="&staff.patron.bill_cc_info.submit.accesskey;"/>
-        </hbox>
-    </groupbox>
+			document.getElementById('cc_number').focus();
+		}
+
+        function sanity_check() {
+            if ($('where_process').value == show['int']) { // internal process
+                if ($('cc_number').value.match(/^\s*$/)) {
+                    alert($('patronStrings').getString('staff.patron.bill_cc_info.need_cc_number'));
+                    return false;
+                }
+            }
+            else {  // external
+                if ($('approval_code').value.match(/^\s*$/)) {
+                    alert($('patronStrings').getString('staff.patron.bill_cc_info.need_approval_code'));
+                    return false;
+                }
+            }
+            return true;
+        }
+
+		function info_finish() {
+			/* FIXME -- need unique temp space name */
+
+            /* The following for loop gathers our payment_blob values from
+            the widgets in this window.  This is better than the method of
+            gathering data that was here before (using oncommand attributes
+            to set values in this JS object whenever a field value changed)
+            because (if for no other reason), a select menu, if left at the
+            default value, would never reach the payment_blob, because its
+            oncommand attribute would never fire. */
+            for (var field in fields_of_interest) {
+                if (is_relevant_here(field)) {
+                    var matches = field.match(/^cc_(.+)$/);
+                    var target_key = matches ? matches[1] : field;
+                    g.payment_blob.cc_args[target_key] = $(field).value;
+                }
+            }
+			delete( g.payment_blob.cancelled );
+			g.OpenILS.data.temp = js2JSON( g.payment_blob );
+			g.OpenILS.data.stash('temp');
+		}
+
+	]]>
+	</script>
+
+	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+
+	<groupbox>
+		<caption label="&staff.patron.bill_cc_info.info.label;"/>
+		<grid>
+			<columns> <column flex="0" /> <column flex="0" /> </columns>
+			<rows>
+				<row id="row_where_process">
+					<label value="&staff.patron.bill_cc_info.where_process.label;"/>
+					<menulist id="where_process" oncommand="refresh_fields();">
+						<menupopup>
+							<menuitem label="&staff.patron.bill_cc_info.process_int.label;" value="1"/>
+							<menuitem label="&staff.patron.bill_cc_info.process_ext.label;" value="2"/>
+						</menupopup>
+					</menulist>
+				</row>
+				<row id="row_cc_type">
+					<label value="&staff.patron.bill_cc_info.type.label;"/>
+					<menulist id="cc_type">
+						<menupopup>
+                            <menuitem label="&staff.patron.bill_cc_info.visa.label;" value="VISA"/><!-- capitalization to match CC processors' output -->
+                            <menuitem label="&staff.patron.bill_cc_info.mastercard.label;" value="MasterCard"/><!-- capitalization to match CC processors' output -->
+							<menuitem label="&staff.patron.bill_cc_info.american_express.label;" value="American Express"/>
+							<menuitem label="&staff.patron.bill_cc_info.discover.label;" value="Discover"/>
+							<menuitem label="&staff.patron.bill_cc_info.other.label;" value="Other"/>
+						</menupopup>
+					</menulist>
+				</row>
+				<row id="row_approval_code">
+					<label value="&staff.patron.bill_cc_info.approval_code.value;"/>
+					<textbox id="approval_code" context="clipboard"/>
+				</row>
+				<row id="row_cc_number">
+					<label value="&staff.patron.bill_cc_info.cc_number.value;"/>
+					<textbox id="cc_number" context="clipboard"/>
+				</row>
+				<row id="row_expire_month">
+					<label value="&staff.patron.bill_cc_info.month_expire.value;"/>
+					<textbox id="expire_month" context="clipboard"/>
+				</row>
+				<row id="row_expire_year">
+					<label value="&staff.patron.bill_cc_info.year_expire.value;"/>
+					<textbox id="expire_year" context="clipboard"/>
+				</row>
+				<row id="row_note">
+					<label value="&staff.patron.bill_cc_info.note.value;"/>
+					<textbox id="note" multiline="true" context="clipboard"/>
+				</row>
+			</rows>
+		</grid>
+		<hbox>
+			<spacer flex="1"/>
+			<button label="&staff.patron.bill_cc_info.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_cc_info.cancel.accesskey;"/>
+            <button label="&staff.patron.bill_cc_info.submit.label;" oncommand="if (sanity_check()) { info_finish(); window.close(); }" accesskey="&staff.patron.bill_cc_info.submit.accesskey;"/>
+		</hbox>
+	</groupbox>
 
 </window>
-
 

@@ -265,6 +265,8 @@ sub dispatch {
 
         my $retval = {
             statusText => "Transaction approved: " . $transaction->authorization,
+            processor => $argshash->{processor},
+            cardType => $cardtype,
             statusCode => 200,
             approvalCode => $transaction->authorization,
             server_response => $transaction->server_response
