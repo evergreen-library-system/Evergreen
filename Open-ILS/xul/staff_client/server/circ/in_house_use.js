@@ -18,8 +18,8 @@ circ.in_house_use.prototype = {
 
 		var obj = this;
 
-		obj.entry_cap = Number( obj.data.hash.aous['ui.circ.in_house_use.entry_cap'] ) || 99;
-		obj.entry_warn = Number( obj.data.hash.aous['ui.circ.in_house_use.entry_warn'] ) || 20;
+		obj.entry_cap = /* Number( obj.data.hash.aous['ui.circ.in_house_use.entry_cap'] ) || */ 99;
+		obj.entry_warn = /* Number( obj.data.hash.aous['ui.circ.in_house_use.entry_warn'] ) || */ 20;
 
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
