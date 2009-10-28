@@ -419,7 +419,7 @@ sub hold_pull_list {
 		SELECT	h.*
 		  FROM	$h_table h
 		  	JOIN $a_table a ON (h.current_copy = a.id)
-		  	LEFT JOIN $ord_table ord (a.location = ord.location AND a.circ_lib = ord.org)
+		  	LEFT JOIN $ord_table ord ON (a.location = ord.location AND a.circ_lib = ord.org)
 		  WHERE	a.circ_lib = ?
 		  	AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
