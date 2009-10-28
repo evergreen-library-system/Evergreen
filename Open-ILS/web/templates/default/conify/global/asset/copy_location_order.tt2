@@ -5,8 +5,7 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
     <div>Copy Location Order</div>
-    <div>
-    </div>
+    <div></div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -17,10 +16,15 @@
             labelAttr='shortname'>
     </select>
     <button dojoType='dijit.form.Button' onClick='applyChanges()'>Apply Changes</button>
+    <span>To move an item, drag it up or down with the mouse.</span>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <ol id='acl-ol'></ol>
+</div>
+
+<div class='hidden'>
+    <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>
 </div>
 
 [% END %]
