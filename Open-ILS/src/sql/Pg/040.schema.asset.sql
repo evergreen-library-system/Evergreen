@@ -32,6 +32,21 @@ CREATE TABLE asset.copy_location (
 	CONSTRAINT acl_name_once_per_lib UNIQUE (name, owning_lib)
 );
 
+CREATE TABLE asset.copy_location_order
+(
+        id              SERIAL           PRIMARY KEY,
+        location        INT              NOT NULL
+                                             REFERENCES asset.copy_location
+                                             ON DELETE CASCADE
+                                             DEFERRABLE INITIALLY DEFERRED,
+        org             INT              NOT NULL
+                                             REFERENCES actor.org_unit
+                                             ON DELETE CASCADE
+                                             DEFERRABLE INITIALLY DEFERRED,
+        position        INT              NOT NULL DEFAULT 0,
+        CONSTRAINT acplo_once_per_org UNIQUE ( location, org )
+);
+
 CREATE TABLE asset.copy (
 	id		BIGSERIAL			PRIMARY KEY,
 	circ_lib	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
