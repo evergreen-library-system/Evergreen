@@ -819,7 +819,7 @@ sub new_hold_copy_targeter {
 
 	local $OpenILS::Application::Storage::WRITE = 1;
 
-	$self->{target_weight} = {};
+	$self->{target_weight} = 0;
 
 	my $holds;
 
