@@ -647,6 +647,7 @@
 <!ENTITY staff.main.menu.admin.local_admin.conify.idl_field_doc.label "Field Documentation">
 <!ENTITY staff.main.menu.admin.local_admin.conify.standing_penalty.label "Standing Penalties">
 <!ENTITY staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label "Group Penalty Thresholds">
+<!ENTITY staff.main.menu.admin.local_admin.conify.copy_location_order.label "Copy Location Order">
 <!ENTITY staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label "Circulation Policies">
 <!ENTITY staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label "Hold Policies">
 <!ENTITY staff.main.menu.admin.local_admin.work_log.label "Work Log">

@@ -560,6 +560,10 @@ main.menu.prototype = {
                 function() { open_eg_web_page('conify/global/config/hold_matrix_matchpoint', 
                     'menu.local_admin.hold_matrix_matchpoint.tab'); }
             ],
+            'cmd_local_admin_copy_location_order' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/asset/copy_location_order'); }
+            ],
             'cmd_local_admin_work_log' : [
                 ['oncommand'],
                 function() { 

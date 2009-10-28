@@ -98,6 +98,7 @@
     <command id="cmd_local_admin_stat_cats"/>
     <command id="cmd_local_admin_standing_penalty"/>
     <command id="cmd_local_admin_grp_penalty_threshold"/>
+    <command id="cmd_local_admin_copy_location_order"/>
     <command id="cmd_local_admin_idl_field_doc"/>
     <command id="cmd_local_admin_action_trigger"/>
     <command id="cmd_local_admin_survey"/>
@@ -288,6 +289,7 @@
                 <menuitem label="&staff.server.admin.index.statistical_categories;" command="cmd_local_admin_stat_cats"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;" command="cmd_local_admin_standing_penalty"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;" command="cmd_local_admin_action_trigger"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>
