@@ -408,6 +408,7 @@ sub hold_pull_list {
 	return undef unless ($ou);
 	my $h_table = action::hold_request->table;
 	my $a_table = asset::copy->table;
+	my $ord_table = asset::copy_location_order->table;
 
 	my $idlist = 1 if ($self->api_name =~/id_list/o);
 
@@ -418,12 +419,13 @@ sub hold_pull_list {
 		SELECT	h.*
 		  FROM	$h_table h
 		  	JOIN $a_table a ON (h.current_copy = a.id)
+		  	LEFT JOIN $ord_table ord (a.location = ord.location AND a.circ_lib = ord.org)
 		  WHERE	a.circ_lib = ?
 		  	AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
 		  	AND (h.expire_time IS NULL OR h.expire_time > NOW())
 			$status_filter
-		  ORDER BY h.request_time ASC
+		  ORDER BY CASE WHEN ord.position IS NOT NULL THEN ord.position ELSE 999 END, h.request_time
 		  LIMIT $limit
 		  OFFSET $offset
 	SQL

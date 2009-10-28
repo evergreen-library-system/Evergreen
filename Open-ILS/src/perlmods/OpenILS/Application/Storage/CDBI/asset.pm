@@ -13,6 +13,14 @@ __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/name owning_lib holdable hold_verify opac_visible circulate/ );
 
 #-------------------------------------------------------------------------------
+package asset::copy_location_order;
+use base qw/asset/;
+
+__PACKAGE__->table( 'asset_copy_location_order' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Essential => qw/location org position/ );
+
+#-------------------------------------------------------------------------------
 package asset::call_number;
 use base qw/asset/;
 

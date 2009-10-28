@@ -292,6 +292,12 @@
 	asset::call_number->sequence( 'asset.call_number_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package asset::copy_location_order;
+	
+	asset::copy_location_order->table( 'asset.copy_location_order' );
+	asset::copy_location_order->sequence( 'asset.copy_location_order_id_seq' );
+
+	#---------------------------------------------------------------------
 	package asset::copy_location;
 	
 	asset::copy_location->table( 'asset.copy_location' );
