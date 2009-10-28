@@ -1,14 +1,11 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Copy Location Order' %]
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/asset/copy_location_order.js'> </script>
+<link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/js/dojo/dojo/resources/dnd.css'></link>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
     <div>Copy Location Order</div>
     <div>
-        <!--
-        <button dojoType='dijit.form.Button' onClick='acplGrid.showCreateDialog()'>New Location Order</button>
-        <button dojoType='dijit.form.Button' onClick='acplGrid.deleteSelected()'>Delete Selected</button>
-        -->
     </div>
 </div>
 
@@ -19,18 +16,11 @@
             searchAttr='shortname'
             labelAttr='shortname'>
     </select>
+    <button dojoType='dijit.form.Button' onClick='applyChanges()'>Apply Changes</button>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <table>
-        <thead><tr><th>Name</th><th>Owning Lib</th></thead>
-        <tbody id='acpl-tbody'>
-            <tr id='acpl-tr'>
-                <td><span name='name'/></td>
-                <td><span name='owning_lib'/></td>
-            </tr>
-        </tbody>
-    </table>
+    <ol id='acl-ol'></ol>
 </div>
 
 [% END %]
