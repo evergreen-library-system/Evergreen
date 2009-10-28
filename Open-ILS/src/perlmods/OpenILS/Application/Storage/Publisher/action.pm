@@ -1107,7 +1107,7 @@ sub new_hold_copy_targeter {
 				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$all_copies)." copies");
 
 				my $max_loops = $actor->request(
-					'open-ils.actor.ou_setting.ancestor_default' => $hold->pickup_lib => 'circ.holds.max_org_unit_target_loops'
+					'open-ils.actor.ou_setting.ancestor_default' => $hold->pickup_lib.'' => 'circ.holds.max_org_unit_target_loops'
 				)->gather(1);
 
 				if (defined($max_loops)) {
