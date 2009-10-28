@@ -389,49 +389,49 @@ CREATE TABLE actor.hours_of_operation (
 COMMENT ON TABLE actor.hours_of_operation IS $$
 When does this org_unit usually open and close?  (Variations
 are expressed in the actor.org_unit_closed table.)
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_0_open IS $$
 When does this org_unit open on Monday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_0_close IS $$
 When does this org_unit close on Monday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_1_open IS $$
 When does this org_unit open on Tuesday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_1_close IS $$
 When does this org_unit close on Tuesday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_2_open IS $$
 When does this org_unit open on Wednesday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_2_close IS $$
 When does this org_unit close on Wednesday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_3_open IS $$
 When does this org_unit open on Thursday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_3_close IS $$
 When does this org_unit close on Thursday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_4_open IS $$
 When does this org_unit open on Friday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_4_close IS $$
 When does this org_unit close on Friday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_5_open IS $$
 When does this org_unit open on Saturday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_5_close IS $$
 When does this org_unit close on Saturday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_6_open IS $$
 When does this org_unit open on Sunday?
-$$
+$$;
 COMMENT ON COLUMN actor.hours_of_operation.dow_6_close IS $$
 When does this org_unit close on Sunday?
-$$
+$$;
 
 CREATE TABLE actor.org_unit_closed (
 	id		SERIAL				PRIMARY KEY,
