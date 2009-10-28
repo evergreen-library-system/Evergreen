@@ -81,11 +81,11 @@ patron.holds.prototype = {
                                     row.my.patron_family_name = blob.patron_last;
                                     row.my.patron_first_given_name = blob.patron_first;
                                     row.my.patron_barcode = blob.patron_barcode;
-                                                                        row.my.total_holds = blob.total_holds;
-                                                                        row.my.queue_position = blob.queue_position;
-                                                                        row.my.potential_copies = blob.potential_copies;
-                                                                        row.my.estimated_wait = blob.estimated_wait;
-                                                                        row.my.ahrn_count = blob.hold.notes().length;
+                                    row.my.total_holds = blob.total_holds;
+                                    row.my.queue_position = blob.queue_position;
+                                    row.my.potential_copies = blob.potential_copies;
+                                    row.my.estimated_wait = blob.estimated_wait;
+                                    row.my.ahrn_count = blob.hold.notes().length;
 
                                     var copy_id = row.my.ahr.current_copy();
                                     if (typeof copy_id == 'object') {
