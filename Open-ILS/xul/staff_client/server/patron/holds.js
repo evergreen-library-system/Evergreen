@@ -1185,6 +1185,7 @@ patron.holds.prototype = {
                     }
                 }
             }
+            holds.reverse();
             //alert('method = ' + method + ' params = ' + js2JSON(params));
         }
 
