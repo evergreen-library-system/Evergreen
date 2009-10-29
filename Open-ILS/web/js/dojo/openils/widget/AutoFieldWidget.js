@@ -22,6 +22,11 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *  orgLimitPerms -- If this field defines a set of org units and an orgLimitPerms 
          *      is defined, the code will limit the org units in the set to those
          *      allowed by the permission
+         *  selfReference -- The primary purpose of an AutoFieldWidget is to render the value
+         *      or widget for a field on an object (that may or may not link to another object).
+         *      selfReference allows you to sidestep the indirection and create a selector widget
+         *      based purely on an fmClass.  To get a dropdown of all of the 'abc'
+         *      objects, pass in {selfReference : true, fmClass : 'abc'}.  
          */
         constructor : function(args) {
             for(var k in args)
@@ -33,12 +38,27 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
             this.suppressLinkedFields = args.suppressLinkedFields || [];
 
-            if(!this.idlField) {
-                this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
-                var fields = this.fmIDL.fields;
-                for(var f in fields) 
-                    if(fields[f].name == this.fmField)
-                        this.idlField = fields[f];
+            if(this.selfReference) {
+                this.fmField = fieldmapper.IDL.fmclasses[this.fmClass].pkey;
+                
+                // create a mock-up of the idlField object.  
+                this.idlField = {
+                    datatype : 'link',
+                    'class' : this.fmClass,
+                    reltype : 'has_a',
+                    key : this.fmField,
+                    name : this.fmField
+                };
+
+            } else {
+
+                if(!this.idlField) {
+                    this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+                    var fields = this.fmIDL.fields;
+                    for(var f in fields) 
+                        if(fields[f].name == this.fmField)
+                            this.idlField = fields[f];
+                }
             }
 
             if(!this.idlField) 
@@ -355,7 +375,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             } else {
 
                 this.baseWidgetValue(this.widgetValue);
-                if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence && !this.selfReference)
                     this.widget.attr('disabled', true); 
                 if(this.disableWidgetTest && this.disableWidgetTest(this.idlField.name, this.fmObject))
                     this.widget.attr('disabled', true); 
