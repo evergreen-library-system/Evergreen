@@ -24,6 +24,7 @@ circ.print_list_template_editor.prototype = {
 			this.test_patron = new au();
 			this.test_patron.family_name('Doe');
 			this.test_patron.first_given_name('John');
+			this.test_patron.alias('Curly');
 			this.test_card = new ac();
 			this.test_card.barcode('123456789');
 			this.test_patron.card( this.test_card );
@@ -262,7 +263,7 @@ circ.print_list_template_editor.prototype = {
 											+ document.getElementById('circStrings').getString('staff.circ.print_list_template.window.heading')
 											+ '</h1>'
 											+ '<p>%SHORTNAME%, %TODAY%, %STAFF_FIRSTNAME%, %STAFF_LASTNAME%, '
-											+ '%PATRON_FIRSTNAME%, %LIBRARY%</p>'
+											+ '%PATRON_FIRSTNAME%, %PATRON_ALIAS%, %PATRON_ALIAS_OR_FIRSTNAME%, %LIBRARY%</p>'
 											+ '<h1>'
 											+ document.getElementById('circStrings').getFormattedString('staff.circ.print_list_template.window.template_type', [template_type])
 											+ '</h1>'
