@@ -317,6 +317,20 @@ user id.  The login session is the requestor and if the requestor is
 different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
 
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_holds",
+    authoritative => 1,
+	api_name	=> "open-ils.circ.holds.canceled.retrieve",
+);
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_holds",
+    authoritative => 1,
+	api_name	=> "open-ils.circ.holds.canceled.id_list.retrieve",
+);
+
+
 sub retrieve_holds {
 	my($self, $client, $auth, $user_id, $options) = @_;
 
@@ -334,50 +348,59 @@ sub retrieve_holds {
         }
     }
 
-    my $holds = $e->search_action_hold_request([
-		{   usr =>  $user_id , 
-			fulfillment_time => undef,
-			cancel_time => undef,
-		}, 
-		{order_by => {ahr => "request_time"}}
-	]);
+    my $holds;
 
-    my $cancel_age;
-    my $cancel_count = 
-        $U->ou_ancestor_setting_value(
-            $e->requestor->ws_ou, 'circ.holds.canceled.display_count', $e);
+    if($self->api_name !~ /canceled/) {
 
-    unless($cancel_count) {
-        $cancel_age = $U->ou_ancestor_setting_value(
-            $e->requestor->ws_ou, 'circ.holds.canceled.display_age', $e);
-    }
+        # Fetch the active holds
 
-    if($cancel_count) {
+        $holds = $e->search_action_hold_request([
+            {   usr =>  $user_id , 
+                fulfillment_time => undef,
+                cancel_time => undef,
+            }, 
+            {order_by => {ahr => "request_time"}}
+        ]);
 
-        # find at most cancel_count canceled holds
-        my $canceled = $e->search_action_hold_request([
-		    {   usr =>  $user_id , 
-			    fulfillment_time => undef,
-			    cancel_time => {'!=' => undef},
-		    }, 
-		    {order_by => {ahr => "cancel_time desc"}, limit => $cancel_count}
-	    ]);
-        push(@$holds, @$canceled);
+    } else {
 
-    } elsif($cancel_age) {
+        # Fetch the canceled holds
 
-        # find all of the canceled holds that were canceled within the configured time frame
-        my $date = DateTime->now->subtract(seconds => OpenSRF::Utils::interval_to_seconds($cancel_age));
-        $date = $U->epoch2ISO8601($date->epoch);
+        my $cancel_age;
+        my $cancel_count = 
+            $U->ou_ancestor_setting_value(
+                $e->requestor->ws_ou, 'circ.holds.canceled.display_count', $e);
 
-        my $canceled = $e->search_action_hold_request([
-		    {   usr =>  $user_id , 
-			    fulfillment_time => undef,
-			    cancel_time => {'>=' => $date},
-		    }, 
-		    {order_by => {ahr => "cancel_time desc"}}
-	    ]);
-        push(@$holds, @$canceled);
+        unless($cancel_count) {
+            $cancel_age = $U->ou_ancestor_setting_value(
+                $e->requestor->ws_ou, 'circ.holds.canceled.display_age', $e);
+        }
+
+        if($cancel_count) { # limit by count
+
+            # find at most cancel_count canceled holds
+            $holds = $e->search_action_hold_request([
+                {   usr =>  $user_id , 
+                    fulfillment_time => undef,
+                    cancel_time => {'!=' => undef},
+                }, 
+                {order_by => {ahr => "cancel_time desc"}, limit => $cancel_count}
+            ]);
+
+        } elsif($cancel_age) { # limit by age
+
+            # find all of the canceled holds that were canceled within the configured time frame
+            my $date = DateTime->now->subtract(seconds => OpenSRF::Utils::interval_to_seconds($cancel_age));
+            $date = $U->epoch2ISO8601($date->epoch);
+
+            $holds = $e->search_action_hold_request([
+                {   usr =>  $user_id , 
+                    fulfillment_time => undef,
+                    cancel_time => {'>=' => $date},
+                }, 
+                {order_by => {ahr => "cancel_time desc"}}
+            ]);
+        }
     }
 	
 	if( ! $self->api_name =~ /id_list/ ) {
