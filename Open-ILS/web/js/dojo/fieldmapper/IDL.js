@@ -102,7 +102,8 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 var name = field.getAttribute('name');
 
                 if(name == 'isnew' || name == 'ischanged' || name == 'isdeleted') 
-                    continue;
+                    return;
+                    
 
                 var obj = {
                     field : field,
