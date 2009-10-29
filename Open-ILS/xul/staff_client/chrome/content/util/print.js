@@ -165,6 +165,10 @@ util.print.prototype = {
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%STAFF_PROFILE%/,obj.data.hash.pgt[ params.staff.profile() ].name() ); }
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+            try{b = s; s = s.replace(/%PATRON_ALIAS_OR_FIRSTNAME%/,(params.patron.alias() == '' || params.patron.alias() == null) ? params.patron.first_given_name() : params.patron.alias());}
+                catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+            try{b = s; s = s.replace(/%PATRON_ALIAS%/,(params.patron.alias() == '' || params.patron.alias() == null) ? '' : params.patron.alias());}
+                catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/,params.patron.first_given_name());}
                 catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
             try{b = s; s = s.replace(/%PATRON_LASTNAME%/,params.patron.family_name());}
