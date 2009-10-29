@@ -24,6 +24,12 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                         if (i > 0) idl_url += '&';
                         idl_url += 'class=' + trim_class;
                     }
+
+                    JSON2js.fallbackObjectifier = function (arg, key_name, val_name) {
+                        fieldmapper.IDL.load([key_name]);
+                        return decodeJS(arg);
+                    }
+                    
                 }
                         
                 var self = this;
