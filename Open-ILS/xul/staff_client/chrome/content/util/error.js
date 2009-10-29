@@ -29,11 +29,18 @@ util.error = function () {
 
 util.error.prototype = {
 
-    'printDebug' : true,
-    'consoleDump' : false,
-    'debugDump' : true,
-    'fileDump' : false,
-    'alertDump' : false,
+    'allowPrintDebug' : true,
+    'allowConsoleDump' : true,
+    'allowDebugDump' : true,
+    'allowFileDump' : true,
+    'allowAlertDump' : true,
+
+    'forcePrintDebug' : false,
+    'forceConsoleDump' : false,
+    'forceDebugDump' : false,
+    'forceFileDump' : false,
+    'forceAlertDump' : false,
+
     'arg_dump_full' : false,
 
     'debug' : function(e){
@@ -44,77 +51,78 @@ util.error.prototype = {
     'sdump_levels' : {
 
         'D_NONE' : false, 
-        'D_ALL' : false, 
-        'D_ERROR' : { 'dump' : true, 'console' : true }, 
-        'D_DEBUG' : { 'dump' : true, 'console' : true }, 
-        'D_TRACE' :  { 'dump' : true }, 
-        'D_ALERT' : { 'alert' : true, 'dump' : true },
-        'D_WARN' : false, 
-        'D_COLUMN_RENDER_ERROR' : false, 
-        'D_XULRUNNER' : false, 
-        'D_DECK' : { 'dump' : true },
+        'D_ALL' : false,
+
+        'D_ERROR' : { 'debug' : true, 'console' : true }, 
+        'D_DEBUG' : { 'debug' : true, 'console' : true }, 
+        'D_TRACE' :  { 'debug' : false }, 
+        'D_ALERT' : { 'alert' : true, 'debug' : true },
+        'D_WARN' : { 'debug' : false }, 
+        'D_COLUMN_RENDER_ERROR' : { 'debug' : false }, 
+        'D_XULRUNNER' : { 'debug' : false }, 
+        'D_DECK' : { 'debug' : false },
         'D_TRACE_ENTER' :  false, 
         'D_TRACE_EXIT' :  false, 
         'D_TIMEOUT' :  false, 
-        'D_FILTER' : false,
-        'D_CONSTRUCTOR' : false, 
-        'D_FIREFOX' : false, 
-        'D_LEGACY' : false, 
+        'D_FILTER' : { 'debug' : false },
+        'D_CONSTRUCTOR' : { 'debug' : false }, 
+        'D_FIREFOX' : { 'debug' : false }, 
+        'D_LEGACY' : { 'debug' : false }, 
         'D_DATA_STASH' : { 'alert' : false }, 
-        'D_DATA_RETRIEVE' : false,
+        'D_DATA_RETRIEVE' : { 'debug' : false },
 
-        'D_CLAM' : false, 
-        'D_PAGED_TREE' : false, 
-        'D_GRID_LIST' : false, 
-        'D_HTML_TABLE' : false,
-        'D_TAB' : false, 
-        'D_LIST' : false, 
-        'D_LIST_DUMP_WITH_KEYS_ON_CLEAR' : false, 
-        'D_LIST_DUMP_ON_CLEAR' : false,
+        'D_CLAM' : { 'debug' : false }, 
+        'D_PAGED_TREE' : { 'debug' : false }, 
+        'D_GRID_LIST' : { 'debug' : false }, 
+        'D_HTML_TABLE' : { 'debug' : false },
+        'D_TAB' : { 'debug' : false }, 
+        'D_LIST' : { 'debug' : false }, 
+        'D_LIST_DUMP_WITH_KEYS_ON_CLEAR' : { 'debug' : false }, 
+        'D_LIST_DUMP_ON_CLEAR' : { 'debug' : false },
 
-        'D_AUTH' : { 'dump' : true }, 
-        'D_OPAC' : { 'dump' : true }, 
-        'D_CAT' : false, 
-        'D_BROWSER' : { 'dump' : true },
+        'D_AUTH' : { 'debug' : false }, 
+        'D_OPAC' : { 'debug' : false }, 
+        'D_CAT' : { 'debug' : false }, 
+        'D_BROWSER' : { 'debug' : false },
 
-        'D_PATRON_SEARCH' : false, 
-        'D_PATRON_SEARCH_FORM' : false, 
-        'D_PATRON_SEARCH_RESULTS' : false,
+        'D_PATRON_SEARCH' : { 'debug' : false }, 
+        'D_PATRON_SEARCH_FORM' : { 'debug' : false }, 
+        'D_PATRON_SEARCH_RESULTS' : { 'debug' : false },
 
-        'D_PATRON_DISPLAY' : false, 
-        'D_PATRON_DISPLAY_STATUS' : false, 
-        'D_PATRON_DISPLAY_CONTACT' : false,
+        'D_PATRON_DISPLAY' : { 'debug' : false }, 
+        'D_PATRON_DISPLAY_STATUS' : { 'debug' : false }, 
+        'D_PATRON_DISPLAY_CONTACT' : { 'debug' : false },
 
-        'D_PATRON_ITEMS' : false, 
-        'D_PATRON_CHECKOUT_ITEMS' : false, 
-        'D_PATRON_HOLDS' : false,
-        'D_PATRON_BILLS' : false, 
-        'D_PATRON_EDIT' : false,
+        'D_PATRON_ITEMS' : { 'debug' : false }, 
+        'D_PATRON_CHECKOUT_ITEMS' : { 'debug' : false }, 
+        'D_PATRON_HOLDS' : { 'debug' : false },
+        'D_PATRON_BILLS' : { 'debug' : false }, 
+        'D_PATRON_EDIT' : { 'debug' : false },
 
-        'D_CHECKIN' : false, 
-        'D_CHECKIN_ITEMS' : false,
+        'D_CHECKIN' : { 'debug' : false }, 
+        'D_CHECKIN_ITEMS' : { 'debug' : false },
 
-        'D_HOLD_CAPTURE' : false, 
-        'D_HOLD_CAPTURE_ITEMS' : false,
+        'D_HOLD_CAPTURE' : { 'debug' : false }, 
+        'D_HOLD_CAPTURE_ITEMS' : { 'debug' : false },
 
-        'D_PATRON_UTILS' : false, 
-        'D_CIRC_UTILS' : false,
+        'D_PATRON_UTILS' : { 'debug' : false }, 
+        'D_CIRC_UTILS' : { 'debug' : false },
 
-        'D_FILE' : false, 
-        'D_EXPLODE' : false, 
-        'D_FM_UTILS' : false, 
-        'D_PRINT' : { 'dump' : true }, 
-        'D_OBSERVERS' : { 'dump' : true, 'console' : false, 'alert' : false },
-        'D_CACHE' : { 'dump' : true, 'console' : false, 'alert' : false },
-        'D_SES' : { 'dump' : true, 'console' : false },
-        'D_SES_FUNC' : false, 
-        'D_SES_RESULT' : { 'dump' : true }, 
-        'D_SES_ERROR' : { 'dump' : true, 'console' : true }, 
-        'D_SPAWN' : false, 
-        'D_STRING' : false,
-        'D_UTIL' : false, 
-        'D_WIN' : { 'dump' : true }, 
-        'D_WIDGETS' : false
+        'D_FILE' : { 'debug' : false }, 
+        'D_EXPLODE' : { 'debug' : false }, 
+        'D_FM_UTILS' : { 'debug' : false }, 
+        'D_PRINT' : { 'debug' : false }, 
+        'D_OBSERVERS' : { 'debug' : false, 'console' : false, 'alert' : false },
+        'D_CACHE' : { 'debug' : false, 'console' : false, 'alert' : false },
+        'D_SES' : { 'debug' : true, 'console' : true },
+        'D_SES_FUNC' : { 'debug' : false }, 
+        'D_SES_RESULT' : { 'debug' : false }, 
+        'D_SES_ERROR' : { 'debug' : true, 'console' : true }, 
+        'D_SPAWN' : { 'debug' : false }, 
+        'D_STRING' : { 'debug' : false },
+        'D_UTIL' : { 'debug' : false }, 
+        'D_WIN' : { 'debug' : false }, 
+        'D_WIDGETS' : { 'debug' : false }
     },
 
     'filter_console_init' : function (p) {
@@ -152,13 +160,13 @@ util.error.prototype = {
             if (this.sdump_levels['D_NONE']) return null;
             if (this.sdump_levels[level]||this.sdump_levels['D_ALL']) {
                 this.sdump_last_time = now;
-                if (this.debugDump || ( this.sdump_levels[level] && this.sdump_levels[level].debug ) ) this.debug(message);
-                if (this.alertDump || ( this.sdump_levels[level] && this.sdump_levels[level].alert ) ) alert(message);
-                if (this.consoleDump || ( this.sdump_levels[level] && this.sdump_levels[level].console ) ) {
+                if (this.forceDebugDump || ( this.allowDebugDump && this.sdump_levels[level] && this.sdump_levels[level].debug ) ) this.debug(message);
+                if (this.forceAlertDump || ( this.allowAlertDump && this.sdump_levels[level] && this.sdump_levels[level].alert ) ) alert(message);
+                if (this.forceConsoleDump || ( this.allowConsoleDump && this.sdump_levels[level] && this.sdump_levels[level].console ) ) {
                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     this.consoleService.logStringMessage(message);
                 }
-                if (this.fileDump || ( this.sdump_levels[level] && this.sdump_levels[level].file ) ) {
+                if (this.forceFileDump || ( this.allowFileDump && this.sdump_levels[level] && this.sdump_levels[level].file ) ) {
                     if (level!='D_FILE') {
                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         JSAN.use('util.file'); var master_log = new util.file('log');
