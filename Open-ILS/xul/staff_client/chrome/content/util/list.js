@@ -561,10 +561,12 @@ util.list.prototype = {
         treeitem.appendChild( treerow );
         treerow.setAttribute('retrieve_id',params.retrieve_id);
 
-        s += ('tree = ' + this.node + '\n');
-        s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
+        s += ('tree = ' + this.node.nodeName + '\n');
+        s += ('treeitem = ' + treeitem.nodeName + '  treerow = ' + treerow.nodeName + '\n');
 
         if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+
+            s += 'found a retrieve_row function\n';
 
             obj.put_retrieving_label(treerow);
             treerow.addEventListener(
@@ -628,6 +630,9 @@ util.list.prototype = {
             );
             */
         } else {
+
+            s += 'did not find a retrieve_row function\n';
+
             obj.put_retrieving_label(treerow);
             treerow.addEventListener(
                 'flesh',
@@ -652,7 +657,6 @@ util.list.prototype = {
             );
             */
         }
-        this.error.sdump('D_LIST',s);
 
             try {
 
@@ -671,6 +675,8 @@ util.list.prototype = {
         setTimeout( function() { obj.auto_retrieve(); }, 0 );
 
         JSAN.use('util.widgets'); util.widgets.dispatch('select',obj.node);
+
+        this.error.sdump('D_LIST',s);
 
         return params;
     },
