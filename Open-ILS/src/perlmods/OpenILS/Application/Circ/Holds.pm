@@ -692,17 +692,42 @@ sub update_hold_impl {
         return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
     }
 
+
     # --------------------------------------------------------------
-    # if the hold is on the holds shelf and the pickup lib changes, 
-    # we need to create a new transit
+    # if the hold is on the holds shelf or in transit and the pickup 
+    # lib changes we need to create a new transit.
     # --------------------------------------------------------------
-    if( ($orig_hold->pickup_lib ne $hold->pickup_lib) and (_hold_status($e, $hold) == 4)) {
-        return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $orig_hold->pickup_lib);
-        return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $hold->pickup_lib);
-        my $evt = transit_hold($e, $orig_hold, $hold, 
-            $e->retrieve_asset_copy($hold->current_copy));
-        return $evt if $evt;
-    }
+    if($orig_hold->pickup_lib ne $hold->pickup_lib) {
+
+        my $status = _hold_status($e, $hold);
+
+        if($status == 3) { # in transit
+
+            return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_TRANSIT', $orig_hold->pickup_lib);
+            return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_TRANSIT', $hold->pickup_lib);
+
+            $logger->info("updating pickup lib for hold ".$hold->id." while already in transit");
+
+            # update the transit to reflect the new pickup location
+			my $transit = $e->search_action_hold_transit_copy(
+                {hold=>$hold->id, dest_recv_time => undef})->[0] 
+                or return $e->die_event;
+
+            $transit->dest($hold->pickup_lib);
+            $e->update_action_hold_transit_copy($transit) or return $e->die_event;
+
+        } elsif($status == 4) { # on holds shelf
+
+            return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $orig_hold->pickup_lib);
+            return $e->die_event unless $e->allowed('UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', $hold->pickup_lib);
+
+            $logger->info("updating pickup lib for hold ".$hold->id." while on holds shelf");
+
+            # create the new transit
+            my $evt = transit_hold($e, $orig_hold, $hold, $e->retrieve_asset_copy($hold->current_copy));
+            return $evt if $evt;
+        }
+    } 
 
     update_hold_if_frozen($self, $e, $hold, $orig_hold);
     $e->update_action_hold_request($hold) or return $e->die_event;
