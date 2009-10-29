@@ -569,7 +569,8 @@ sub transit_hold {
 
     $logger->info("putting hold into transit on pickup_lib update");
 
-    my $transit = Fieldmapper::action::transit_copy->new;
+    my $transit = Fieldmapper::action::hold_transit_copy->new;
+    $transit->hold($hold->id);
     $transit->source($src);
     $transit->dest($dest);
     $transit->target_copy($copy->id);
@@ -580,7 +581,7 @@ sub transit_hold {
     $copy->editor($e->requestor->id);
     $copy->edit_date('now');
 
-    $e->create_action_transit_copy($transit) or return $e->die_event;
+    $e->create_action_hold_transit_copy($transit) or return $e->die_event;
     $e->update_asset_copy($copy) or return $e->die_event;
     return undef;
 }
