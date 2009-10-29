@@ -130,8 +130,7 @@ CREATE TABLE acq.fund_allocation (
     id          SERIAL  PRIMARY KEY,
     funding_source        INT     NOT NULL REFERENCES acq.funding_source (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     fund        INT     NOT NULL REFERENCES acq.fund (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    amount      NUMERIC,
-    percent     NUMERIC CHECK (percent IS NULL OR percent BETWEEN 0.0 AND 100.0),
+    amount      NUMERIC NOT NULL,
     allocator   INT NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     note        TEXT,
 	create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
@@ -693,21 +692,9 @@ CREATE OR REPLACE VIEW acq.funding_source_credit_total AS
 
 CREATE OR REPLACE VIEW acq.funding_source_allocation_total AS
     SELECT  funding_source,
-            SUM(amount)::NUMERIC(100,2) AS amount
-      FROM (
-            SELECT  funding_source,
-                    SUM(a.amount)::NUMERIC(100,2) AS amount
-              FROM  acq.fund_allocation a
-              WHERE a.percent IS NULL
-              GROUP BY 1
-                            UNION ALL
-            SELECT  funding_source,
-                    SUM( (SELECT SUM(amount) FROM acq.funding_source_credit c WHERE c.funding_source = a.funding_source) * (a.percent/100.0) )::NUMERIC(100,2) AS amount
-              FROM  acq.fund_allocation a
-              WHERE a.amount IS NULL
-              GROUP BY 1
-        ) x
-      GROUP BY 1;
+            SUM(a.amount)::NUMERIC(100,2) AS amount
+    FROM  acq.fund_allocation a
+    GROUP BY 1;
 
 CREATE OR REPLACE VIEW acq.funding_source_balance AS
     SELECT  COALESCE(c.funding_source, a.funding_source) AS funding_source,
@@ -718,25 +705,11 @@ CREATE OR REPLACE VIEW acq.funding_source_balance AS
 
 CREATE OR REPLACE VIEW acq.fund_allocation_total AS
     SELECT  fund,
-            SUM(amount)::NUMERIC(100,2) AS amount
-      FROM (
-            SELECT  fund,
-                    SUM(a.amount * acq.exchange_ratio(s.currency_type, f.currency_type))::NUMERIC(100,2) AS amount
-              FROM  acq.fund_allocation a
-                    JOIN acq.fund f ON (a.fund = f.id)
-                    JOIN acq.funding_source s ON (a.funding_source = s.id)
-              WHERE a.percent IS NULL
-              GROUP BY 1
-                            UNION ALL
-            SELECT  fund,
-                    SUM( (SELECT SUM(amount) FROM acq.funding_source_credit c WHERE c.funding_source = a.funding_source) * acq.exchange_ratio(s.currency_type, f.currency_type) * (a.percent/100.0) )::NUMERIC(100,2) AS amount
-              FROM  acq.fund_allocation a
-                    JOIN acq.fund f ON (a.fund = f.id)
-                    JOIN acq.funding_source s ON (a.funding_source = s.id)
-              WHERE a.amount IS NULL
-              GROUP BY 1
-        ) x
-      GROUP BY 1;
+            SUM(a.amount * acq.exchange_ratio(s.currency_type, f.currency_type))::NUMERIC(100,2) AS amount
+    FROM acq.fund_allocation a
+         JOIN acq.fund f ON (a.fund = f.id)
+         JOIN acq.funding_source s ON (a.funding_source = s.id)
+    GROUP BY 1;
 
 CREATE OR REPLACE VIEW acq.fund_debit_total AS
     SELECT  id AS fund,
