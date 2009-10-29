@@ -92,7 +92,7 @@ function check_all_refunds() {
         for (var i in g.bill_map) {
             if ( Number( g.bill_map[i].transaction.balance_owed() ) < 0 ) {
                 var row_params = g.row_map[i];
-                //row_params.row.my.checked = true;
+                row_params.row.my.checked = true;
                 g.bill_list.refresh_row(row_params);
             }
         }
@@ -222,7 +222,11 @@ function init_lists() {
                             tally_selected();
                             tally_all();
                         } );
+                    } else {
+                        if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
                     }
+                } else {
+                    if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
                 }
                 return row;
             } catch(E) {
