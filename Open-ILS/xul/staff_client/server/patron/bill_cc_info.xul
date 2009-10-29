@@ -19,20 +19,20 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="patron_bill" title="&staff.patron.bill_cc_info.title;"
-	orient="vertical" style="overflow: auto"
-	onload="try{info_init(); font_helper();refresh_fields();}catch(E){alert(E);}"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    orient="vertical" style="overflow: auto"
+    onload="try{info_init(); font_helper();refresh_fields();}catch(E){alert(E);}"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <!-- BEHAVIOR -->
-        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
-        <scripts id="openils_util_scripts"/>
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+    <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 
-	<script>
-	<![CDATA[
-		function $(id) { return document.getElementById(id); }
+    <script>
+    <![CDATA[
+        function $(id) { return document.getElementById(id); }
 
         XULElement.prototype.hide = function() {
             this.style.display = "none";
@@ -41,12 +41,19 @@
             this.style.display = "";
         }
 
+        var patron = {};
         var show = {'int': 1, 'ext': 2}; // tied to Application::Circ::Money
         var fields_of_interest = {
             "cc_type":          show['ext'],
             "cc_number":        show['int'],
             "expire_month":     show['int'],
             "expire_year":      show['int'],
+            "billing_first":    show['int'],
+            "billing_last":     show['int'],
+            "billing_address":  show['int'],
+            "billing_city":     show['int'],
+            "billing_state":    show['int'],
+            "billing_zip":      show['int'],
             "approval_code":    show['ext'],
             "note":             show['ext'] + show['int'],
             "where_process":    show['ext'] + show['int']
@@ -69,22 +76,47 @@
             }
         }
 
-		function info_init() {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
-			JSAN.errorLevel = "die"; // none, warn, or die
-			JSAN.addRepository('/xul/server/');
-			JSAN.use('util.error'); g.error = new util.error();
-			g.error.sdump('D_TRACE','my_init() for patron_display.xul');
-			g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
-			g.OpenILS.data.init({'via':'stash'});
+        function populate_address_fields() {
+            $('billing_first').value = patron.first_given_name();
+            $('billing_last').value = patron.family_name();
+            $('billing_address').value = patron.billing_address().street1();
+            var street2 = patron.billing_address().street2();
+            if (street2) {
+                $('billing_address').value += (' ' + street2);
+            }
+            $('billing_city').value = patron.billing_address().city();
+            $('billing_state').value = patron.billing_address().state();
+            $('billing_zip').value = patron.billing_address().post_code();
+        }
+
+        function info_init() {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+            JSAN.errorLevel = "die"; // none, warn, or die
+            JSAN.addRepository('/xul/server/');
+            JSAN.use('util.error'); g.error = new util.error();
+            JSAN.use('util.network'); g.network = new util.network();
+            g.error.sdump('D_TRACE','my_init() for patron_display.xul');
+            g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
+            g.OpenILS.data.init({'via':'stash'});
             /* 'true' as a string matches the expectations in bills.js */
             g.payment_blob = { 'cc_args' : {}, 'cancelled' : 'true' };
-			g.OpenILS.data.temp = js2JSON( g.payment_blob );
-			g.OpenILS.data.stash('temp');
+            g.OpenILS.data.temp = js2JSON( g.payment_blob );
+            g.OpenILS.data.stash('temp');
 
-			document.getElementById('cc_number').focus();
-		}
+            try {
+                patron = g.network.simple_request(
+                    'FM_AU_FLESHED_RETRIEVE_VIA_ID',
+                    [ses(), xul_param('patron_id', {'modal_xulG': true})]
+                );
+            } catch (e) {
+                alert ("Patron retrieval failed");
+                throw(e);
+            }
+
+            populate_address_fields();
+            document.getElementById('cc_number').focus();
+        }
 
         function sanity_check() {
             if ($('where_process').value == show['int']) { // internal process
@@ -102,8 +134,8 @@
             return true;
         }
 
-		function info_finish() {
-			/* FIXME -- need unique temp space name */
+        function info_finish() {
+            /* FIXME -- need unique temp space name */
 
             /* The following for loop gathers our payment_blob values from
             the widgets in this window.  This is better than the method of
@@ -119,70 +151,102 @@
                     g.payment_blob.cc_args[target_key] = $(field).value;
                 }
             }
-			delete( g.payment_blob.cancelled );
-			g.OpenILS.data.temp = js2JSON( g.payment_blob );
-			g.OpenILS.data.stash('temp');
-		}
+            delete( g.payment_blob.cancelled );
+            g.OpenILS.data.temp = js2JSON( g.payment_blob );
+            g.OpenILS.data.stash('temp');
+        }
 
-	]]>
-	</script>
+    ]]>
+    </script>
 
-	<messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
+    <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties" />
 
-	<groupbox>
-		<caption label="&staff.patron.bill_cc_info.info.label;"/>
-		<grid>
-			<columns> <column flex="0" /> <column flex="0" /> </columns>
-			<rows>
-				<row id="row_where_process">
-					<label value="&staff.patron.bill_cc_info.where_process.label;"/>
-					<menulist id="where_process" oncommand="refresh_fields();">
-						<menupopup>
-							<menuitem label="&staff.patron.bill_cc_info.process_int.label;" value="1"/>
-							<menuitem label="&staff.patron.bill_cc_info.process_ext.label;" value="2"/>
-						</menupopup>
-					</menulist>
-				</row>
-				<row id="row_cc_type">
-					<label value="&staff.patron.bill_cc_info.type.label;"/>
-					<menulist id="cc_type">
-						<menupopup>
+    <groupbox>
+        <caption label="&staff.patron.bill_cc_info.info.label;"/>
+        <grid>
+            <columns> <column flex="0" /> <column flex="0" /> </columns>
+            <rows>
+                <row id="row_where_process">
+                    <label value="&staff.patron.bill_cc_info.where_process.label;"/>
+                    <menulist id="where_process" oncommand="refresh_fields();">
+                        <menupopup>
+                            <menuitem label="&staff.patron.bill_cc_info.process_int.label;" value="1"/>
+                            <menuitem label="&staff.patron.bill_cc_info.process_ext.label;" value="2"/>
+                        </menupopup>
+                    </menulist>
+                </row>
+                <row id="row_cc_type">
+                    <label value="&staff.patron.bill_cc_info.type.label;"/>
+                    <menulist id="cc_type">
+                        <menupopup>
                             <menuitem label="&staff.patron.bill_cc_info.visa.label;" value="VISA"/><!-- capitalization to match CC processors' output -->
                             <menuitem label="&staff.patron.bill_cc_info.mastercard.label;" value="MasterCard"/><!-- capitalization to match CC processors' output -->
-							<menuitem label="&staff.patron.bill_cc_info.american_express.label;" value="American Express"/>
-							<menuitem label="&staff.patron.bill_cc_info.discover.label;" value="Discover"/>
-							<menuitem label="&staff.patron.bill_cc_info.other.label;" value="Other"/>
-						</menupopup>
-					</menulist>
-				</row>
-				<row id="row_approval_code">
-					<label value="&staff.patron.bill_cc_info.approval_code.value;"/>
-					<textbox id="approval_code" context="clipboard"/>
-				</row>
-				<row id="row_cc_number">
-					<label value="&staff.patron.bill_cc_info.cc_number.value;"/>
-					<textbox id="cc_number" context="clipboard"/>
-				</row>
-				<row id="row_expire_month">
-					<label value="&staff.patron.bill_cc_info.month_expire.value;"/>
-					<textbox id="expire_month" context="clipboard"/>
-				</row>
-				<row id="row_expire_year">
-					<label value="&staff.patron.bill_cc_info.year_expire.value;"/>
-					<textbox id="expire_year" context="clipboard"/>
-				</row>
-				<row id="row_note">
-					<label value="&staff.patron.bill_cc_info.note.value;"/>
-					<textbox id="note" multiline="true" context="clipboard"/>
-				</row>
-			</rows>
-		</grid>
-		<hbox>
-			<spacer flex="1"/>
-			<button label="&staff.patron.bill_cc_info.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_cc_info.cancel.accesskey;"/>
+                            <menuitem label="&staff.patron.bill_cc_info.american_express.label;" value="American Express"/>
+                            <menuitem label="&staff.patron.bill_cc_info.discover.label;" value="Discover"/>
+                            <menuitem label="&staff.patron.bill_cc_info.other.label;" value="Other"/>
+                        </menupopup>
+                    </menulist>
+                </row>
+                <row id="row_approval_code">
+                    <label value="&staff.patron.bill_cc_info.approval_code.value;"/>
+                    <textbox id="approval_code" context="clipboard"/>
+                </row>
+                <row id="row_cc_number">
+                    <label value="&staff.patron.bill_cc_info.cc_number.value;"/>
+                    <textbox id="cc_number" context="clipboard"/>
+                </row>
+                <row id="row_expire_month">
+                    <label value="&staff.patron.bill_cc_info.month_expire.value;"/>
+                    <textbox id="expire_month" context="clipboard"/>
+                </row>
+                <row id="row_expire_year">
+                    <label value="&staff.patron.bill_cc_info.year_expire.value;"/>
+                    <textbox id="expire_year" context="clipboard"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+    <groupbox>
+        <caption label="Optional fields"/>
+        <grid>
+            <columns><column flex="0" /><column flex="1" /></columns>
+            <rows>
+                <row id="row_billing_first">
+                    <label value="&staff.patron.bill_cc_info.billing_first.value;"/>
+                    <textbox id="billing_first" context="clipboard"/>
+                </row>
+                <row id="row_billing_last">
+                    <label value="&staff.patron.bill_cc_info.billing_last.value;"/>
+                    <textbox id="billing_last" context="clipboard"/>
+                </row>
+                <row id="row_billing_address">
+                    <label value="&staff.patron.bill_cc_info.billing_address.value;"/>
+                    <textbox id="billing_address" context="clipboard"/>
+                </row>
+                <row id="row_billing_city">
+                    <label value="&staff.patron.bill_cc_info.billing_city.value;"/>
+                    <textbox id="billing_city" context="clipboard"/>
+                </row>
+                <row id="row_billing_state">
+                    <label value="&staff.patron.bill_cc_info.billing_state.value;"/>
+                    <textbox id="billing_state" context="clipboard"/>
+                </row>
+                <row id="row_billing_zip">
+                    <label value="&staff.patron.bill_cc_info.billing_zip.value;"/>
+                    <textbox cols="12" maxlength="11" id="billing_zip" context="clipboard"/>
+                </row>
+                <row id="row_note">
+                    <label value="&staff.patron.bill_cc_info.note.value;"/>
+                    <textbox id="note" multiline="true" context="clipboard"/>
+                </row>
+            </rows>
+        </grid>
+        <hbox>
+            <spacer flex="1"/>
+            <button label="&staff.patron.bill_cc_info.cancel.label;" oncommand="window.close()" accesskey="&staff.patron.bill_cc_info.cancel.accesskey;"/>
             <button label="&staff.patron.bill_cc_info.submit.label;" oncommand="if (sanity_check()) { info_finish(); window.close(); }" accesskey="&staff.patron.bill_cc_info.submit.accesskey;"/>
-		</hbox>
-	</groupbox>
+        </hbox>
+    </groupbox>
 
 </window>
 

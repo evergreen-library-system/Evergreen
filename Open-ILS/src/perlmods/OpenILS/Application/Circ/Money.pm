@@ -50,6 +50,12 @@ __PACKAGE__->register_method(
                         number          (for call to payment processor)
                         expire_month    (for call to payment processor)
                         expire_year     (for call to payment processor)
+                        billing_first   (for call to payment processor)
+                        billing_last    (for call to payment processor)
+                        billing_address (for call to payment processor)
+                        billing_city    (for call to payment processor)
+                        billing_state   (for call to payment processor)
+                        billing_zip     (for call to payment processor)
                         note            (if payments->{note} is blank, use this)
                     },
                     check_number
@@ -208,7 +214,13 @@ sub make_payments {
                         $cc_args->{expire_month},
                         $cc_args->{expire_year}
                     ),
-                    "ou" => $this_ou
+                    "ou" => $this_ou,
+                    "first_name" => $cc_args->{billing_first},
+                    "last_name" => $cc_args->{billing_last},
+                    "address" => $cc_args->{billing_address},
+                    "city" => $cc_args->{billing_city},
+                    "state" => $cc_args->{billing_state},
+                    "zip" => $cc_args->{billing_zip},
                 }
             );
 

@@ -95,7 +95,7 @@ __PACKAGE__->register_method(
                    action: optional (default: Normal Authorization)
                first_name: optional (default: patron's first_given_name field)
                 last_name: optional (default: patron's family_name field)
-                  address: optional (default: patron's street1 field)
+                  address: optional (default: patron's street1 field + street2)
                      city: optional (default: patron's city field)
                     state: optional (default: patron's state field)
                       zip: optional (default: patron's zip field)
@@ -201,6 +201,9 @@ sub prepare_bop_content {
     # mapping of fields for different payment processors, particularly ones
     # in other countries?
     $content{address}    ||= $patron->mailing_address->street1;
+    $content{address} .= ", " . $patron->mailing_address->street2
+        if $patron->mailing_address->street2;
+
     $content{city}       ||= $patron->mailing_address->city;
     $content{state}      ||= $patron->mailing_address->state;
     $content{zip}        ||= $patron->mailing_address->post_code;

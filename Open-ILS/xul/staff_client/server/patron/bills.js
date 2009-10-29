@@ -459,7 +459,8 @@ patron.bills.prototype = {
                         var my_xulG = win.open(
                             urls.XUL_PATRON_BILL_CC_INFO,
                             'billccinfo',
-                            'chrome,resizable,modal'
+                            'chrome,resizable,modal',
+                            {'patron_id': obj.patron_id}
                         );
                         obj.OpenILS.data.stash_retrieve();
                         //payment_blob = my_xulG.payment_blob; //JSON2js( obj.OpenILS.data.temp );

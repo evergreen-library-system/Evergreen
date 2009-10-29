@@ -9,6 +9,8 @@ hbox#PatronNotNavBar { border-top: solid thin black; }
 deck#patron_deck { border-left: solid thin black; }
 .patronNameLarge { font-weight: bold; }
 
+row#row_billing_first { padding-top: 10px; }
+row#row_billing_zip { padding-bottom: 10px; }
 .NO_PENALTIES .patronNameLarge { border: solid thick lime; padding: 10px; }
 /*
 .ONE_PENALTY .patronNameLarge { background-color: fuchsia; }

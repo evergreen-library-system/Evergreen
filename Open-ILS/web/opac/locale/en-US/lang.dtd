@@ -2428,6 +2428,12 @@
 <!ENTITY staff.patron.bill_cc_info.month_expire.value "Expire Month">
 <!ENTITY staff.patron.bill_cc_info.year_expire.value "Expire Year">
 <!ENTITY staff.patron.bill_cc_info.approval_code.value "Approval Code">
+<!ENTITY staff.patron.bill_cc_info.billing_first.value "Billing name (first)">
+<!ENTITY staff.patron.bill_cc_info.billing_last.value "Billing name (last)">
+<!ENTITY staff.patron.bill_cc_info.billing_address.value "Address">
+<!ENTITY staff.patron.bill_cc_info.billing_city.value "City, town or village">
+<!ENTITY staff.patron.bill_cc_info.billing_state.value "State or province">
+<!ENTITY staff.patron.bill_cc_info.billing_zip.value "ZIP or postal code">
 <!ENTITY staff.patron.bill_cc_info.note.value "Note">
 <!ENTITY staff.patron.bill_cc_info.cancel.label "Cancel">
 <!ENTITY staff.patron.bill_cc_info.cancel.accesskey "C">
