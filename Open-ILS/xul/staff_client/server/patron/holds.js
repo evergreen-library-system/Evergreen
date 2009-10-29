@@ -229,6 +229,30 @@ patron.holds.prototype = {
                             }
                         },
                     ],
+                    'cmd_cancelled_holds_view' : [
+                        ['command'],
+                        function(ev) {
+                            document.getElementById('show_cancelled_deck').selectedIndex = 1;
+                            /* For some reason attribute propogation on the <command> element isn't working with hidden */
+                            document.getElementById('holds_cancel_btn').setAttribute('hidden','true');
+                            document.getElementById('holds_uncancel_btn').setAttribute('hidden','false');
+                            document.getElementById('holds_cancel_btn2').setAttribute('hidden','true');
+                            document.getElementById('holds_uncancel_btn2').setAttribute('hidden','false');
+                            obj.clear_and_retrieve();
+                        }
+                    ],
+                    'cmd_uncancelled_holds_view' : [
+                        ['command'],
+                        function(ev) {
+                            document.getElementById('show_cancelled_deck').selectedIndex = 0;
+                            /* For some reason attribute propogation on the <command> element isn't working with hidden */
+                            document.getElementById('holds_cancel_btn').setAttribute('hidden','false');
+                            document.getElementById('holds_uncancel_btn').setAttribute('hidden','true');
+                            document.getElementById('holds_cancel_btn2').setAttribute('hidden','false');
+                            document.getElementById('holds_uncancel_btn2').setAttribute('hidden','true');
+                            obj.clear_and_retrieve();
+                        }
+                    ],
                     'sel_mark_items_damaged' : [
                         ['command'],
                         function() {
@@ -1032,6 +1056,7 @@ patron.holds.prototype = {
         var x_lib_type_menu = document.getElementById('lib_type_menu');
         var x_lib_menu_placeholder = document.getElementById('lib_menu_placeholder');
         var x_lib_filter_checkbox = document.getElementById('lib_filter_checkbox');
+        var x_show_cancelled_deck = document.getElementById('show_cancelled_deck');
         switch(obj.hold_interface_type) {
             case 'shelf':
                 obj.render_lib_menus({'pickup_lib':true});
@@ -1054,6 +1079,7 @@ patron.holds.prototype = {
                 if (x_fetch_more) x_fetch_more.hidden = true;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
+                if (x_show_cancelled_deck) x_show_cancelled_deck.hidden = false;
             break;
         }
         setTimeout( // We do this because render_lib_menus above creates and appends a DOM node, but until this thread exits, it doesn't really happen
@@ -1076,6 +1102,7 @@ patron.holds.prototype = {
                 obj.controller.view.cmd_alt_view.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
+                obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','true');
                 obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
             }, 0
         );
@@ -1131,7 +1158,11 @@ patron.holds.prototype = {
             var method; var params = [ ses() ];
             switch(obj.hold_interface_type) {
                 case 'patron' :
-                    method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU.authoritative';
+                    if (document.getElementById('show_cancelled_deck').selectedIndex == 0) {
+                        method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU.authoritative';
+                    } else {
+                        method = 'FM_AHR_CANCELLED_ID_LIST_RETRIEVE_VIA_AU.authoritative';
+                    }
                     params.push( obj.patron_id );
                     obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
                 break;

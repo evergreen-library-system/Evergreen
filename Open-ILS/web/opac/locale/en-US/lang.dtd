@@ -2589,6 +2589,10 @@
 <!ENTITY staff.patron.holds_overlay.print.accesskey "P">
 <!ENTITY staff.patron.holds_overlay.place_hold.label "Place Hold">
 <!ENTITY staff.patron.holds_overlay.place_hold.accesskey "H">
+<!ENTITY staff.patron.holds_overlay.show_cancelled_holds.label "Show Cancelled Holds">
+<!ENTITY staff.patron.holds_overlay.show_cancelled_holds.accesskey "">
+<!ENTITY staff.patron.holds_overlay.show_uncancelled_holds.label "Show Un-Cancelled Holds">
+<!ENTITY staff.patron.holds_overlay.show_uncancelled_holds.accesskey "">
 <!ENTITY staff.patron.info_group.clone.label "Register a New Group Member by Cloning Selected Patrons">
 <!ENTITY staff.patron.info_group.clone.accesskey "N">
 <!ENTITY staff.patron.info_group.remove.accesskey "R">

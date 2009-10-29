@@ -36,6 +36,8 @@
     <command id="cmd_search_opac" />
     <command id="save_columns" />
     <command id="cmd_alt_view" />
+    <command id="cmd_cancelled_holds_view" />
+    <command id="cmd_uncancelled_holds_view" />
     </commandset>
 
     <popupset id="holds_popupset">
@@ -61,8 +63,8 @@
         <menuitem command="sel_mark_items_damaged" label="&staff.circ.holds.mark_item_damaged;" accesskey="&staff.circ.holds.mark_item_damaged.accesskey;"/>
         <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
         <menuitem label="&staff.circ.holds.retarget;" command="cmd_holds_retarget" accesskey="&staff.circ.holds.retarget.accesskey;"/>
-        <menuitem label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
-        <menuitem label="&staff.circ.holds.uncancel;" command="cmd_holds_uncancel" accesskey="&staff.circ.holds.uncancel.accesskey;"/>
+        <menuitem id="holds_cancel_btn" label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
+        <menuitem id="holds_uncancel_btn" hidden="true" label="&staff.circ.holds.uncancel;" command="cmd_holds_uncancel" accesskey="&staff.circ.holds.uncancel.accesskey;"/>
         <menuseparator />
         <menuitem command="save_columns" label="&staff.circ.holds.save_columns;" accesskey="&staff.circ.holds.save_columns.accesskey;"/>
     </popup>
@@ -103,6 +105,10 @@
             </menupopup>
         </menulist>
         <vbox id="lib_menu_placeholder" hidden="true"/>
+        <deck id="show_cancelled_deck" hidden="true">
+            <button command="cmd_cancelled_holds_view" label="&staff.patron.holds_overlay.show_cancelled_holds.label;" accesskey="&staff.patron.holds_overlay.show_cancelled_holds.accesskey;"/>
+            <button command="cmd_uncancelled_holds_view" label="&staff.patron.holds_overlay.show_uncancelled_holds.label;" accesskey="&staff.patron.holds_overlay.show_uncancelled_holds.accesskey;"/>
+        </deck>
         <button id="fetch_more" label="&staff.patron.holds_overlay.fetch_more.label;" accesskey="&staff.patron.holds_overlay.fetch_more.accesskey;" hidden="true"/>
     <spacer flex="1"/>
         <progressmeter id="progress" type="determined" hidden="true" />
@@ -131,8 +137,8 @@
                     <menuitem command="sel_mark_items_damaged" label="&staff.circ.holds.mark_item_damaged;" accesskey="&staff.circ.holds.mark_item_damaged.accesskey;"/>
                     <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
                     <menuitem label="&staff.circ.holds.retarget;" command="cmd_holds_retarget" accesskey="&staff.circ.holds.retarget.accesskey;"/>
-                    <menuitem label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
-                    <menuitem label="&staff.circ.holds.uncancel;" command="cmd_holds_uncancel" accesskey="&staff.circ.holds.uncancel.accesskey;"/>
+                    <menuitem id="holds_cancel_btn2" label="&staff.circ.holds.cancel;" command="cmd_holds_cancel" accesskey="&staff.circ.holds.cancel.accesskey;"/>
+                    <menuitem id="holds_uncancel_btn2" hidden="true" label="&staff.circ.holds.uncancel;" command="cmd_holds_uncancel" accesskey="&staff.circ.holds.uncancel.accesskey;"/>
                     <menuseparator />
                     <menuitem command="save_columns" label="&staff.circ.holds.save_columns;" accesskey="&staff.circ.holds.save_columns.accesskey;"/>
                 </menupopup>

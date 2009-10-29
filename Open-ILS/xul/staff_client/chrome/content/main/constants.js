@@ -102,6 +102,8 @@ const api = {
     'FM_AHR_RETRIEVE_VIA_AU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve' },
     'FM_AHR_ID_LIST_RETRIEVE_VIA_AU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.id_list.retrieve' },
     'FM_AHR_ID_LIST_RETRIEVE_VIA_AU.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.id_list.retrieve.authoritative' },
+    'FM_AHR_CANCELLED_ID_LIST_RETRIEVE_VIA_AU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.canceled.id_list.retrieve' },
+    'FM_AHR_CANCELLED_ID_LIST_RETRIEVE_VIA_AU.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.canceled.id_list.retrieve.authoritative' },
     'FM_AHR_RETRIEVE_VIA_BRE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.open_holds.retrieve' },
     'FM_AHR_RETRIEVE_ALL_VIA_BRE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve_all_from_title' },
     'FM_AHR_RETRIEVE_VIA_PICKUP_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve_by_pickup_lib' },
