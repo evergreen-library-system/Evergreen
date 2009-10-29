@@ -1,41 +1,59 @@
 if(!dojo._hasResource["fieldmapper.IDL"]) {
+    dojo.require("DojoSRF");
     dojo.provide("fieldmapper.IDL");
     dojo.declare('fieldmapper.IDL', null, {
     
         _URL_PATH : '/reports/fm_IDL.xml', // XXX locale?
-        // -- just need to set up xmlent and use '/reports/'+dojo.locale+'/fm_IDL.xml'
+        // -- just need to set up xmlent and use '/reports/'+OpenSRF.locale+'/fm_IDL.xml'
         NS_REPORTS : 'http://open-ils.org/spec/opensrf/IDL/reporter/v1',
         NS_PERSIST : 'http://open-ils.org/spec/opensrf/IDL/persistence/v1',
         NS_OBJ : 'http://open-ils.org/spec/opensrf/IDL/objects/v1',
 
-        constructor : function(callback, force) {
-            if(!fieldmapper.IDL.fmclasses || force) {
+        constructor : function(classlist) {
+
+            if(!fieldmapper.IDL.fmclasses || (classlist && classlist.length)) {
+                var idl_url = this._URL_PATH;
+
+                if (classlist.length) {
+                    idl_url += '?';
+
+                    for (var i = 0; i < classlist.length; i++) {
+                        var trim_class = classlist[i];
+                        if (!trim_class) continue;
+
+                        if (i > 0) idl_url += '&';
+                        idl_url += 'class=' + trim_class;
+                    }
+                }
+                        
                 var self = this;
                 dojo.xhrGet({
-                    url : this._URL_PATH,
+                    url : idl_url,
                     handleAs : 'xml',
                     sync : true,
                     timeout : 10000,
                     load : function (response) {
-                        self._parse(response, callback);
+                        self._parse(response);
                         fieldmapper.IDL.loaded = true;
                     },
                     error : function (response) {
                         fieldmapper.IDL.loaded = false;
                         dojo.require('fieldmapper.fmall', true);
-                        if(callback)
-                            callback();
                     }
                 });
             }
 
-            return dojo.require('fieldmapper.Fieldmapper');
+            dojo.require('fieldmapper.Fieldmapper'); 
+
+            if (classlist && classlist.length)
+                dojo.forEach( classlist, function (c) { fieldmapper.vivicateClass(c); } );
         },
 
-        _parse : function(xmlNode, callback) {
+        _parse : function(xmlNode) {
             var classes = xmlNode.getElementsByTagName('class');
-            var idl = fieldmapper.IDL.fmclasses = {};
-    
+            if (!fieldmapper.IDL || !fieldmapper.IDL.fmclasses)
+                fieldmapper.IDL.fmclasses = {};
+
             for(var i = 0; i < classes.length; i++) {
                 var node = classes[i];
                 var id = node.getAttribute('id');
@@ -85,11 +103,9 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     
                 obj.core = (obj.core == 'true');
                 obj.label = (obj.label) ? obj.label : obj.name;
-                idl[id] = obj;
+                fieldmapper.IDL.fmclasses[id] = obj;
             }
     
-            if(callback)
-                callback();
         },
     
         /* parses the links and fields portion of the IDL */
@@ -168,7 +184,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     });
 
     window.fmclasses = {};
-    fieldmapper.IDL.load = function (callback, force) { return new fieldmapper.IDL(callback, force); };
+    fieldmapper.IDL.load = function (list) { if (!list) list = []; return new fieldmapper.IDL(list); };
     fieldmapper.IDL.loaded = false;
 
 }
