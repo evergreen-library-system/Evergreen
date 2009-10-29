@@ -819,7 +819,7 @@ sub new_hold_copy_targeter {
 
 	local $OpenILS::Application::Storage::WRITE = 1;
 
-	$self->{target_weight} = 0;
+	$self->{target_weight} = {};
 
 	my $holds;
 
@@ -1512,12 +1512,12 @@ sub create_prox_list {
 		next unless (defined($prox));
 
 		# Fetch the weighting value for hold targeting, defaulting to 1
-		$self->{target_weight} ||= $actor->request(
+		$self->{target_weight}{$lib} ||= $actor->request(
 			'open-ils.actor.ou_setting.ancestor_default' => $lib => 'circ.holds.org_unit_target_weight'
 		)->gather(1) || 1;
 
 		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
-		for my $w ( 1 .. $self->{target_weight} ) {
+		for my $w ( 1 .. $self->{target_weight}{$lib} ) {
 			push @{$prox_list[$prox]}, $cp;
 		}
 	}
