@@ -114,7 +114,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     };
 
     if (!window.fmclasses) dojo.require("fieldmapper.fmall", true);
-    for( var cl in fieldmapper.IDL.fmclasses ) {
+    for( var cl in fmclasses ) {
         fieldmapper.vivicateClass(cl);
     }
 
