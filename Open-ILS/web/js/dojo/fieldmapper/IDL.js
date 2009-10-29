@@ -1,4 +1,5 @@
 if(!dojo._hasResource["fieldmapper.IDL"]) {
+    dojo.require('dojox.data.dom');
     dojo.provide("fieldmapper.IDL");
     dojo.declare('fieldmapper.IDL', null, {
     
@@ -33,16 +34,14 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
         },
 
         _parse : function(xmlNode, callback) {
-            var classes = xmlNode.getElementsByTagName('class');
             var idl = fieldmapper.IDL.fmclasses = {};
-    
-            for(var i = 0; i < classes.length; i++) {
-                var node = classes[i];
+
+            dojo.forEach( dojo.query('class', xmlNode), function (node) {
                 var id = node.getAttribute('id');
-                var fields = node.getElementsByTagName('fields')[0];
+                var fields = dojo.query('fields', node)[0];
                 window.fmclasses[id] = [];
                 
-                var fieldData = this._parseFields(node, id);
+                var fieldData = this._parseFields( node, id );
     
                 var obj = { 
                     fields  : fieldData.list,
@@ -86,10 +85,9 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 obj.core = (obj.core == 'true');
                 obj.label = (obj.label) ? obj.label : obj.name;
                 idl[id] = obj;
-            }
+            });
     
-            if(callback)
-                callback();
+            if(callback) callback();
         },
     
         /* parses the links and fields portion of the IDL */
@@ -97,17 +95,10 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
             var data = [];
             var map = {};
     
-            var fields = node.getElementsByTagName('fields')[0];
-            fields = fields.getElementsByTagName('field');
-    
-            var links = node.getElementsByTagName('links')[0];
-            if( links ) links = links.getElementsByTagName('link');
-            else links = [];
-    
+            var links = dojo.query('links', node);
     
             var position = 0;
-            for(var i = 0; i < fields.length; i++) {
-                var field = fields[i];
+            dojo.forEach(dojo.query('fields field', node), function (field) {
                 var name = field.getAttribute('name');
 
                 if(name == 'isnew' || name == 'ischanged' || name == 'isdeleted') 
@@ -122,7 +113,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     selector : field.getAttributeNS(this.NS_REPORTS,'selector'),
                     array_position : position++,
                     type	: 'field',
-                    virtual : (fields[i].getAttributeNS(this.NS_PERSIST, 'virtual') == 'true') 
+                    virtual : (field.getAttributeNS(this.NS_PERSIST, 'virtual') == 'true') 
                 };
 
                 obj.label = obj.label || obj.name;
@@ -130,14 +121,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
 
                 window.fmclasses[classname].push(obj.name);
     
-                var link = null;
-                for(var l = 0; l < links.length; l++) {
-                    if(links[l].getAttribute('field') == name) {
-                        link = links[l];
-                        break;
-                    }
-                }
-    
+                var link = dojo.query('links link[field=' + name + ']', node)[0];
                 if(link) {
                     obj.type = 'link';
                     obj.key = link.getAttribute('key');
@@ -147,7 +131,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     
                 data.push(obj);
                 map[obj.name] = obj;
-            }
+            });
     
             dojo.forEach(['isnew', 'ischanged', 'isdeleted'],
                 function(name) {
