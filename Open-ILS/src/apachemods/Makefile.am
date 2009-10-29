@@ -16,6 +16,9 @@ install-exec-local: $(OILSAPACHEINST)
 apachemods:
 	$(APXS2) -c $(AM_LDFLAGS) -lxml2 -lopensrf -lxslt -lexpat $(AM_CFLAGS) @srcdir@/mod_xmlent.c
 	$(APXS2) -i -a @srcdir@/mod_xmlent.la
+	$(APXS2) -c $(AM_LDFLAGS) -lxml2 -lopensrf -lxslt -lexpat $(AM_CFLAGS) @srcdir@/mod_idlchunk.c
+	$(APXS2) -i -a @srcdir@/mod_idlchunk.la
 
 clean-local:
 	rm -f @srcdir@/mod_xmlent.la @srcdir@/mod_xmlent.lo @srcdir@/mod_xmlent.slo
+	rm -f @srcdir@/mod_idlchunk.la @srcdir@/mod_idlchunk.lo @srcdir@/mod_idlchunk.slo
