@@ -1353,7 +1353,7 @@ BEGIN
           FROM  action.circulation circ
             JOIN asset.copy cp ON (cp.id = circ.target_copy)
           WHERE circ.usr = match_user
-               AND circ_lib IN ( SELECT * FROM explode_array(context_org_list) )
+               AND circ.circ_lib IN ( SELECT * FROM explode_array(context_org_list) )
             AND circ.checkin_time IS NULL
             AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
             AND cp.circ_modifier IN (SELECT circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = out_by_circ_mod.id);
