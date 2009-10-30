@@ -58,7 +58,7 @@ my $hook_handlers = {
 
 if ($opt_custom_filter) {
     open FILTERS, $opt_custom_filter;
-    $hook_handlers = OpenSRF::Utils::JSON->JSON2Perl(join('',(<FILTERS>)));
+    $hook_handlers = OpenSRF::Utils::JSON->JSON2perl(join('',(<FILTERS>)));
     close FILTERS;
 }
 
