@@ -1079,6 +1079,9 @@ sub handle_mark_damaged {
     my $apply = $args->{apply_fines} || '';
     return undef if $apply eq 'noapply';
 
+    my $new_amount = $args->{override_amount};
+    my $new_btype = $args->{override_btype};
+
     # grab the last circulation
     my $circ = $e->search_action_circulation([
         {   target_copy => $copy->id}, 
@@ -1107,16 +1110,30 @@ sub handle_mark_damaged {
 
     if($apply) {
         
-        if($charge_price and $copy_price) {
-            my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
-                $e, $copy_price, 7, 'Damaged Item', $circ->id);
-            return $evt if $evt;
-        }
+        if($new_amount and $new_btype) {
 
-        if($proc_fee) {
+            # Allow staff to override the amount to charge for a damaged item
+            # Consider the case where the item is only partially damaged
+            # This value is meant to take the place of the item price and
+            # optional processing fee.
+
             my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
-                $e, $proc_fee, 8, 'Damaged Item Processing Fee', $circ->id);
+                $e, $new_amount, $new_btype, 'Damaged Item Override', $circ->id);
             return $evt if $evt;
+
+        } else {
+
+            if($charge_price and $copy_price) {
+                my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
+                    $e, $copy_price, 7, 'Damaged Item', $circ->id);
+                return $evt if $evt;
+            }
+
+            if($proc_fee) {
+                my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
+                    $e, $proc_fee, 8, 'Damaged Item Processing Fee', $circ->id);
+                return $evt if $evt;
+            }
         }
 
         # the assumption is that you would not void the overdues unless you 
