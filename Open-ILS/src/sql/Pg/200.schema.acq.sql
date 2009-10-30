@@ -36,7 +36,7 @@ CREATE TABLE acq.provider (
     currency_type       TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
     code                TEXT    NOT NULL,
     holding_tag         TEXT,
-    san                 INT,
+    san                 TEXT,
     CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
 	CONSTRAINT code_once_per_owner UNIQUE (code, owner)
 );
