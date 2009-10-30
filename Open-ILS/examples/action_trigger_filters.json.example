@@ -1,0 +1,15 @@
+{
+
+'checkout.due' :
+    { 'context_org' : 'circ_lib',
+      'filter'      :
+            { 'checkin_time'  : null,
+              '-or'           :
+                    [ { 'stop_fines'  : ['MAXFINES', 'LONGOVERDUE'] },
+                      { 'stop_fines'  : null }
+                    ]
+            }
+    }
+
+}
+

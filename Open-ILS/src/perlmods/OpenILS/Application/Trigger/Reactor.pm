@@ -55,19 +55,38 @@ my $_TT_helpers = {
         return $U->get_copy_price(new_editor(), $copy_id);
     },
 
+    # given a copy, returns the title and author in a hash
+    get_copy_bib_basics => sub {
+        my $copy_id = shift;
+        my $copy = new_editor()->retrieve_asset_copy([
+            $copy_id,
+            {
+                flesh => 2,
+                flesh_fields => {
+                    acp => ['call_number'],
+                    acn => ['record']
+                }
+            }
+        ]);
+        if($copy->call_number->id == -1) {
+            return {
+                title => $copy->dummy_title,
+                author => $copy->dummy_author,
+            };
+        } else {
+            my $mvr = $U->record_to_mvr($copy->call_number->record);
+            return {
+                title => $mvr->title,
+                author => $mvr->author
+            };
+        }
+    },
+
     # returns the org unit setting value
     get_org_setting => sub {
         my($org_id, $setting) = @_;
         return $U->ou_ancestor_setting_value($org_id, $setting);
     },
-
-    # returns fines summary information for open transactions
-    get_user_fines_summary => sub {
-        my $user_id = shift;
-        return $U->simplereq(
-            'open-ils.storage', 
-            'open-ils.storage.money.open_user_summary.search', $user_id);
-    }
 };
 
 
