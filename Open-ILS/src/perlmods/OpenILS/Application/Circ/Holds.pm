@@ -694,6 +694,14 @@ sub update_hold_impl {
 
 
     # --------------------------------------------------------------
+    # Changing the request time is like playing God
+    # --------------------------------------------------------------
+    if($hold->request_time ne $orig_hold->request_time) {
+        return OpenILS::Event->new('BAD_PARAMS') if $hold->fulfillment_time;
+        return $e->die_event unless $e->allowed('UPDATE_HOLD_REQUEST_TIME', $hold->pickup_lib);
+    }
+
+    # --------------------------------------------------------------
     # if the hold is on the holds shelf or in transit and the pickup 
     # lib changes we need to create a new transit.
     # --------------------------------------------------------------
