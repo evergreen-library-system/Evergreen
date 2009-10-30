@@ -16,6 +16,11 @@ sub CircIsOpen {
     return 0 if (defined($env->{target}->checkin_time));
     return 0 if ($env->{params}->{max_delay_age} && !$self->MaxPassiveDelayAge($env));
 
+    if ($env->{params}->{min_target_age}) {
+        $env->{params}->{target_age_field} = 'xact_start';
+        return 0 if (!$self->MinPassiveTargetAge($env));
+    }
+
     return 1;
 }
 
@@ -38,6 +43,21 @@ sub MaxPassiveDelayAge {
     return 0;
 }
 
+sub MinPassiveTargetAge {
+    my $self = shift;
+    my $env = shift;
+    my $target = $env->{target};
+    my $delay_field = $env->{params}->{target_age_field} || $env->{event}->event_def->delay_field;
+
+    my $delay_field_ts = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($target->$delay_field()));
+
+    # to get the minimum time that the target must have aged to, add the min age to the delay field
+    $delay_field_ts->add( seconds => interval_to_seconds( $env->{params}->{min_target_age} ) );
+
+    return 1 if $delay_field_ts <= DateTime->now;
+    return 0;
+}
+
 sub CircIsOverdue {
     my $self = shift;
     my $env = shift;
@@ -46,6 +66,11 @@ sub CircIsOverdue {
     return 0 if $circ->checkin_time;
     return 0 if $circ->stop_fines and not $circ->stop_fines =~ /MAXFINES|LONGOVERDUE/;
     return 0 if ($env->{params}->{max_delay_age} && !$self->MaxPassiveDelayAge($env));
+
+    if ($env->{params}->{min_target_age}) {
+        $env->{params}->{target_age_field} = 'xact_start';
+        return 0 if (!$self->MinPassiveTargetAge($env));
+    }
 
     my $due_date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
     return 0 if $due_date > DateTime->now;

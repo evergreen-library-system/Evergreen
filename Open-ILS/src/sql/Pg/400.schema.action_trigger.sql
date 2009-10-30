@@ -77,6 +77,7 @@ INSERT INTO action_trigger.validator (module,description) VALUES ('CircIsOpen','
 INSERT INTO action_trigger.validator (module,description) VALUES ('HoldIsAvailable','Check that an item is on the hold shelf');
 INSERT INTO action_trigger.validator (module,description) VALUES ('CircIsOverdue','Check that the circulation is overdue');
 INSERT INTO action_trigger.validator (module,description) VALUES ('MaxPassiveDelayAge','Check that the event is not too far past the delay_field time -- requires a max_delay_age interval parameter');
+INSERT INTO action_trigger.validator (module,description) VALUES ('MinPassiveTargetAge','Check that the target is old enough to be used by this event -- requires a min_target_age interval parameter, and accepts an optional target_age_field to specify what time to use for offsetting');
 
 -- After an event passes validation (action_trigger.validator), the reactor processes it.
 CREATE TABLE action_trigger.reactor (
