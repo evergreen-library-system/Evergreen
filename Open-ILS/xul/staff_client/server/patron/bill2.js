@@ -31,17 +31,7 @@ function my_init() {
 
         retrieve_mbts_for_list();
 
-        $('details').addEventListener(
-            'command',
-            handle_details,
-            false
-        );
-
-        $('add').addEventListener(
-            'command',
-            handle_add,
-            false
-        );
+        event_listeners();
 
         JSAN.use('util.exec'); var exec = new util.exec(20); 
         exec.on_error = function(E) { alert(E); return true; }
@@ -73,6 +63,37 @@ function my_init() {
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
         alert(err_msg);
     }
+}
+
+function event_listeners() {
+        $('details').addEventListener(
+            'command',
+            handle_details,
+            false
+        );
+
+        $('add').addEventListener(
+            'command',
+            handle_add,
+            false
+        );
+
+        $('payment').addEventListener(
+            'change',
+            function(ev) { distribute_payment(); },
+            false
+        );
+
+        $('payment').addEventListener(
+            'keypress',
+            function(ev) {
+                if (! (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* mac enter */) ) { return; }
+                distribute_payment();
+                $('apply_payment_btn').focus();
+            },
+            false
+        );
+
 }
 
 function $(id) { return document.getElementById(id); }

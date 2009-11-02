@@ -110,7 +110,7 @@
                     <hbox>
                         <checkbox id="annotate_payment" label="&staff.patron.bills_overlay.annotate_payment.label;" accesskey="n" oils_persist="checked" checked="false" oncommand="default_focus();"/>
                         <button label="See Distribution" accesskey="D" oncommand="distribute_payment(); default_focus();"/>
-                        <button label="Apply Payment" accesskey="P"/>
+                        <button id="apply_payment_btn" label="Apply Payment" accesskey="P"/>
                     </hbox>
                 </groupbox>
             </hbox>
