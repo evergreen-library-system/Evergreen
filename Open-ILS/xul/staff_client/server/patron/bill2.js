@@ -117,6 +117,27 @@ function default_focus() {
     try { $('payment').focus(); } catch(E) { alert('Error in default_focus(): ' + E); }
 }
 
+function tally_pending() {
+    try {
+        JSAN.use('util.money');
+        var tb = $('payment');
+        var payment_tendered = util.money.dollars_float_to_cents_integer( tb.value );
+        var payment_pending = 0;
+        var retrieve_ids = g.bill_list.dump_retrieve_ids();
+        for (var i = 0; i < retrieve_ids.length; i++) {
+            var row_params = g.row_map[retrieve_ids[i]];
+            if (g.check_map[retrieve_ids[i]]) { 
+                payment_pending += util.money.dollars_float_to_cents_integer( row_params.row.my.payment_pending );
+            }
+        }
+        var change_pending = payment_tendered - payment_pending;
+        $('pending_payment').value = util.money.cents_as_dollars( payment_pending );
+        $('pending_change').value = util.money.cents_as_dollars( change_pending );
+    } catch(E) {
+        alert('Error in bill2.js, tally_pending(): ' + E);
+    }
+}
+
 function tally_selected() {
     try {
         JSAN.use('util.money');
@@ -310,7 +331,7 @@ function init_lists() {
                 g.bill_list.retrieve_selection(),
                 function(o) { return o.getAttribute('retrieve_id'); }
             );
-            tally_selected();
+            //tally_selected();
             $('details').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('add').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('voidall').setAttribute('disabled', g.bill_list_selection.length == 0);
@@ -475,7 +496,7 @@ function distribute_payment() {
             }
             g.bill_list.refresh_row(row_params);
         }
-        //obj.update_payment_applied();
+        tally_pending();
     } catch(E) {
         alert('Error in bill2.js, distribute_payment(): ' + E);
     }
