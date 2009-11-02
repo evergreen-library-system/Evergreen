@@ -1081,6 +1081,7 @@ sub handle_mark_damaged {
 
     my $new_amount = $args->{override_amount};
     my $new_btype = $args->{override_btype};
+    my $new_note = $args->{override_note};
 
     # grab the last circulation
     my $circ = $e->search_action_circulation([
@@ -1118,7 +1119,7 @@ sub handle_mark_damaged {
             # optional processing fee.
 
             my $evt = OpenILS::Application::Circ::CircCommon->create_bill(
-                $e, $new_amount, $new_btype, 'Damaged Item Override', $circ->id);
+                $e, $new_amount, $new_btype, 'Damaged Item Override', $circ->id, $new_note);
             return $evt if $evt;
 
         } else {
