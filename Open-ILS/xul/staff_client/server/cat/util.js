@@ -355,21 +355,31 @@ cat.util.mark_item_damaged = function(copy_ids) {
                                     JSAN.use('util.money');
                                     var circ_obj = robj.payload.circ;
                                     var patron_obj = circ_obj.usr();
-                                    JSAN.use('patron.util');
-                                    var patron_name = patron.util.format_name( patron_obj ) + ' : ' + patron_obj.card().barcode();
 
-                                    var r1 = error.yns_alert(
-                                        $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.charge_patron_prompt.message', [ 
-                                            copies[i].barcode(), 
-                                            patron_name, 
-                                            circ_obj.checkin_time().substr(0,10), // FIXME: need to replace with something better
-                                            util.money.sanitize(robj.payload.charge) ]),
-                                        $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.title'),
-                                        $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label'),
-                                        $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label'), null,
-                                        $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action'));
+                                    JSAN.use('util.window'); var win = new util.window();
+                                    var my_xulG = win.open(
+                                        urls.XUL_PATRON_BILL_WIZARD,
+                                        'billwizard',
+                                        'chrome,resizable,modal',
+                                        { 
+                                            'patron' : patron_obj, 
+                                            'patron_id' : patron_obj.id(), 
+                                            'circ' : circ_obj, 
+                                            'xact_id' : circ_obj.id(), 
+                                            'do_not_process_bill' : true,
+                                            'override_default_billing_type' : 7, /* Damaged Item */ 
+                                            'override_default_price' : util.money.sanitize( robj.payload.charge ) 
+                                        }
+                                    );
 
-                                    robj = network.simple_request('MARK_ITEM_DAMAGED',[ ses(), copies[i].id(), {'apply_fines' : r1 == 0 ? 'apply' : 'noapply'} ]);
+                                    var params = {};
+                                    params.apply_fines = my_xulG.proceed ? 'apply' : 'noapply';
+                                    if (my_xulG.proceed) {
+                                        params.override_amount = my_xulG.amount;
+                                        params.override_btype = my_xulG.cbt_id;
+                                        params.override_note = my_xulG.note;
+                                    }
+                                    robj = network.simple_request('MARK_ITEM_DAMAGED',[ ses(), copies[i].id(), params ]);
                                     if (typeof robj.ilsevent != 'undefined') { throw(robj); }
                                     break;
                                 default: throw(robj);

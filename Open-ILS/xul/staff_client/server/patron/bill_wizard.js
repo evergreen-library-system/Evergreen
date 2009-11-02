@@ -22,55 +22,68 @@ function retrieve_mbts() {
 
 function retrieve_circ() {
     JSAN.use('util.widgets');
-    g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.mbts_id ],
-        function (req) {
-            var r_circ = req.getResultObject();
-            if (instanceOf(r_circ,circ)) {
 
-                $('title_label').hidden = false;
-                $('checked_out_label').hidden = false;
-                $('due_label').hidden = false;
-                $('checked_in_label').hidden = false;
-                $('checked_out').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
-                $('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
-                $('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+    function render_circ(r_circ) {
 
-                g.network.simple_request(
-                    'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative',
-                    [ r_circ.target_copy() ],
-                    function (rreq) {
-                        var r_mvr = rreq.getResultObject();
-                        if (instanceOf(r_mvr,mvr)) {
-                            util.widgets.remove_children('title');
-                            $('title').appendChild( document.createTextNode( r_mvr.title() ) );
-                        } else {
-                            g.network.simple_request(
-                                'FM_ACP_RETRIEVE',
-                                [ r_circ.target_copy() ],
-                                function (rrreq) {
-                                    var r_acp = rrreq.getResultObject();
-                                    if (instanceOf(r_acp,acp)) {
-                                        util.widgets.remove_children('title');
-                                        $('title').appendChild( document.createTextNode( r_acp.dummy_title() ) );
-                                    }
-                                }
-                            );
+        $('title_label').hidden = false;
+        $('checked_out_label').hidden = false;
+        $('due_label').hidden = false;
+        $('checked_in_label').hidden = false;
+        $('checked_out').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
+        $('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
+        $('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+
+        g.network.simple_request(
+            'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.authoritative',
+            [ typeof r_circ.target_copy() == 'object' ? r_circ.target_copy().id() : r_circ.target_copy() ],
+            function (rreq) {
+                var r_mvr = rreq.getResultObject();
+                if (instanceOf(r_mvr,mvr)) {
+                    util.widgets.remove_children('title');
+                    $('title').appendChild( document.createTextNode( r_mvr.title() ) );
+                } else {
+                    g.network.simple_request(
+                        'FM_ACP_RETRIEVE',
+                        [ typeof r_circ.target_copy() == 'object' ? r_circ.target_copy().id() : r_circ.target_copy() ],
+                        function (rrreq) {
+                            var r_acp = rrreq.getResultObject();
+                            if (instanceOf(r_acp,acp)) {
+                                util.widgets.remove_children('title');
+                                $('title').appendChild( document.createTextNode( r_acp.dummy_title() ) );
+                            }
                         }
-                    }
-                );
-
+                    );
+                }
             }
-        }
-    );
+        );
+
+    }
+
+    if (g.circ) {
+        render_circ(g.circ);
+    } else {
+        g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.mbts_id ],
+            function (req) {
+                var r_circ = req.getResultObject();
+                if (instanceOf(r_circ,circ)) {
+                    render_circ(r_circ);
+                }
+            }
+        );
+    }
 }
 
 function retrieve_patron() {
-    g.patron_id = xul_param('patron_id',{'modal_xulG':true});
+    JSAN.use('patron.util'); 
 
-    if (g.patron_id) {
-        JSAN.use('patron.util'); 
+    g.patron_id = xul_param('patron_id',{'modal_xulG':true});
+    g.au_obj = xul_param('patron',{'modal_xulG':true});
+
+    if (! g.au_obj) {
         g.au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.patron_id );
-        
+    }
+
+    if (g.au_obj) {
         $('patron_name').setAttribute('value', 
             patron.util.format_name( g.au_obj ) + ' : ' + g.au_obj.card().barcode() 
         );
@@ -93,13 +106,14 @@ function patron_bill_init() {
         JSAN.use('util.money');
         JSAN.use('util.widgets');
         JSAN.use('util.functional');
-        var billing_list = util.functional.filter_list( g.OpenILS.data.list.cbt, function (x) { return x.id() >= 100 } );
+        var override_default_billing_type = xul_param('override_default_billing_type',{'modal_xulG':true});
+        var billing_list = util.functional.filter_list( g.OpenILS.data.list.cbt, function (x) { return x.id() >= 100 || x.id() == override_default_billing_type } );
         var ml = util.widgets.make_menulist(
             util.functional.map_list(
                 billing_list.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } ), //g.OpenILS.data.list.billing_type.sort(),
                 function(obj) { return [ obj.name(), obj.id() ]; } //function(obj) { return [ obj, obj ]; }
             ),
-            billing_list.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } )[0].id()
+            override_default_billing_type || billing_list.sort( function(a,b) { if (a.name()>b.name()) return 1; if (a.name()<b.name()) return -1; return 0; } )[0].id()
         );
         ml.setAttribute('id','billing_type');
         document.getElementById('menu_placeholder').appendChild(ml);
@@ -120,8 +134,13 @@ function patron_bill_init() {
         if ( g.OpenILS.data.hash.cbt[ ml.value ] ) {
             $('bill_amount').value = g.OpenILS.data.hash.cbt[ ml.value ].default_price();
         }
+        var override_default_price = xul_param('override_default_price',{'modal_xulG':true});
+        if (override_default_price) {
+            $('bill_amount').value = override_default_price;
+        }
         $('bill_amount').select(); $('bill_amount').focus();
 
+        g.circ = xul_param('circ',{'modal_xulG':true});
         if (xul_param('xact_id',{'modal_xulG':true})) { 
             g.mbts_id = xul_param('xact_id',{'modal_xulG':true});
             $('summary').hidden = false; 
@@ -139,37 +158,54 @@ function patron_bill_init() {
 
 function patron_bill_finish() {
     try {
+        var do_not_process_bill = xul_param('do_not_process_bill',{'modal_xulG':true});
         var xact_id = xul_param('xact_id',{'modal_xulG':true});
-        if (!xact_id) {
-                var grocery = new mg();
-                    grocery.isnew('1');
-                    grocery.billing_location( g.OpenILS.data.list.au[0].ws_ou() );
-                    grocery.usr( g.au_obj.id() );
-                    grocery.note( $('bill_note').value );
-                xact_id = g.network.request(
-                    api.FM_MG_CREATE.app,
-                    api.FM_MG_CREATE.method,
-                    [ ses(), grocery ]
-                );
-        }
-        if (typeof xact_id.ilsevent == 'undefined') {
-            JSAN.use('util.money');
-            var billing = new mb();
-                billing.isnew('1');
-                billing.note( $('bill_note').value );
-                billing.xact( xact_id );
-                billing.amount( util.money.sanitize( $('bill_amount').value ) );
-                billing.btype( $('billing_type').value );
-                billing.billing_type( g.OpenILS.data.hash.cbt[$('billing_type').value].name() );
-            var mb_id = g.network.request(
-                api.FM_MB_CREATE.app,
-                api.FM_MB_CREATE.method,
-                [ ses(), billing ]
+
+        if (do_not_process_bill) {
+
+            update_modal_xulG(
+                {
+                    'proceed' : true,
+                    'cbt_id' : $('billing_type').value,
+                    'amount' : $('bill_amount').value,
+                    'note' : $('bill_note').value
+                }
             );
-            if (typeof mb_id.ilsevent != 'undefined') throw(mb_id);
-            //alert($('patronStrings').getString('staff.patron.bill_wizard.patron_bill_finish.billing_added'));
+
         } else {
-            throw(xact_id);
+
+            if (!xact_id) {
+                    var grocery = new mg();
+                        grocery.isnew('1');
+                        grocery.billing_location( g.OpenILS.data.list.au[0].ws_ou() );
+                        grocery.usr( g.au_obj.id() );
+                        grocery.note( $('bill_note').value );
+                    xact_id = g.network.request(
+                        api.FM_MG_CREATE.app,
+                        api.FM_MG_CREATE.method,
+                        [ ses(), grocery ]
+                    );
+            }
+            if (typeof xact_id.ilsevent == 'undefined') {
+                JSAN.use('util.money');
+                var billing = new mb();
+                    billing.isnew('1');
+                    billing.note( $('bill_note').value );
+                    billing.xact( xact_id );
+                    billing.amount( util.money.sanitize( $('bill_amount').value ) );
+                    billing.btype( $('billing_type').value );
+                    billing.billing_type( g.OpenILS.data.hash.cbt[$('billing_type').value].name() );
+                var mb_id = g.network.request(
+                    api.FM_MB_CREATE.app,
+                    api.FM_MB_CREATE.method,
+                    [ ses(), billing ]
+                );
+                if (typeof mb_id.ilsevent != 'undefined') throw(mb_id);
+                //alert($('patronStrings').getString('staff.patron.bill_wizard.patron_bill_finish.billing_added'));
+            } else {
+                throw(xact_id);
+            }
+
         }
     } catch(E) {
         g.error.standard_unexpected_error_alert('bill_wizard',E);
