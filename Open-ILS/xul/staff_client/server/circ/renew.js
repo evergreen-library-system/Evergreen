@@ -216,7 +216,22 @@ circ.renew.prototype = {
                     'cmd_csv_to_file' : [ ['command'], function() { 
                         obj.list.dump_csv_to_file( { 'defaultFileName' : 'checked_in.txt' } ); 
                         obj.controller.view.renew_barcode_entry_textbox.focus();
-                    } ]
+                    } ],
+                    'renew_duedate_datepicker' : [
+                        ['change'],
+                        function(ev) { 
+                            try {
+                                if (obj.check_date(ev.target)) {
+                                    ev.target.parentNode.setAttribute('style','');
+                                } else {
+                                    ev.target.parentNode.setAttribute('style','background-color: red');
+                                }
+                            } catch(E) {
+                                alert('Error in renew.js, renew_duedate_datepicker @change: ' + E);
+                            }
+                        }
+                    ]
+
                 }
             }
         );
@@ -249,19 +264,40 @@ circ.renew.prototype = {
         }
     },
 
-    'renew' : function() {
+    'renew' : function(params) {
         var obj = this;
         try {
+            if (!params) params = {};
+
             var barcode = obj.controller.view.renew_barcode_entry_textbox.value;
             if (!barcode) return;
             if (barcode) {
                 if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
             }
+            params.barcode = barcode;
+            params.return_patron = true;
+
             var auto_print = document.getElementById('renew_auto');
             if (auto_print) auto_print = auto_print.checked;
+
+            if (document.getElementById('renew_duedate_checkbox').checked) {
+                if (! obj.check_date(obj.controller.view.renew_duedate_datepicker)) return;
+                var tp = document.getElementById('renew_duedate_timepicker');
+                var dp = obj.controller.view.renew_duedate_datepicker;
+                var tp_date = tp.dateValue;
+                var dp_date = dp.dateValue;
+                tp_date.setFullYear( dp_date.getFullYear() );
+                tp_date.setMonth( dp_date.getMonth() );
+                tp_date.setDate( dp_date.getDate() );
+
+                JSAN.use('util.date');
+                params.due_date = util.date.formatted_date(tp_date,'%{iso8601}');
+            }
+
+
             JSAN.use('circ.util');
             var renew = circ.util.renew_via_barcode(
-                { 'barcode' : barcode, 'return_patron' : true },
+                params,
                 function( r ) {
                     obj.renew_followup( r, barcode );
                 }
@@ -412,6 +448,25 @@ circ.renew.prototype = {
 
         JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
 
+    },
+
+    'check_date' : function(node) {
+        var obj = this;
+        JSAN.use('util.date');
+        try {
+            obj.controller.view.renew_barcode_entry_textbox.setAttribute('disabled','false');
+            obj.controller.view.renew_barcode_entry_textbox.disabled = false;
+            obj.controller.view.cmd_renew_submit_barcode.setAttribute('disabled','false');
+            obj.controller.view.cmd_renew_submit_barcode.disabled = false;
+            if (util.date.check_past('YYYY-MM-DD',node.value) ) {
+                obj.controller.view.renew_barcode_entry_textbox.setAttribute('disabled','true');
+                obj.controller.view.cmd_renew_submit_barcode.setAttribute('disabled','true');
+                return false;
+            }
+            return true;
+        } catch(E) {
+            throw(E);
+        }
     }
 
 }

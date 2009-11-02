@@ -68,6 +68,11 @@
         <label id="no_change_label" value="" style="color: red" hidden="true"/>
     </vbox>
     <spacer flex="1"/>
+    <hbox id="duedate_hbox">
+        <checkbox id="renew_duedate_checkbox" label="&staff.circ.renew_overlay.duedate.label;" accesskey="&staff.circ.renew_overlay.duedate.accesskey;" oncommand="if (this.checked) { this.nextSibling.focus(); } else { document.getElementById('renew_barcode_entry_textbox').focus(); }"/>
+        <datepicker id="renew_duedate_datepicker" type="popup" />
+        <timepicker id="renew_duedate_timepicker" type="popup" />
+    </hbox>
     <vbox>
         <hbox>
             <menubar>
