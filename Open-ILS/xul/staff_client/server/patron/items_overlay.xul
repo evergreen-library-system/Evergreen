@@ -17,6 +17,7 @@
     <command id="cmd_items_export" />
     <command id="cmd_items_renew" />
     <command id="cmd_items_renew_all" />
+    <command id="cmd_items_renew_with_date" />
     <command id="cmd_items_claimed_returned" />
     <command id="cmd_items_checkin" />
     <command id="cmd_items_edit" />
@@ -36,6 +37,7 @@
     <command id="cmd_items_print2" />
     <command id="cmd_items_export2" />
     <command id="cmd_items_renew2" />
+    <command id="cmd_items_renew_with_date2" />
     <command id="cmd_items_claimed_returned2" />
     <command id="cmd_items_checkin2" />
     <command id="cmd_items_edit2" />
@@ -61,6 +63,7 @@
         <menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned" />
         <menuitem label="&staff.patron.items_overlay.items_renew.label;" command="cmd_items_renew" />
         <menuitem label="&staff.patron.items_overlay.items_renew_all.label;" command="cmd_items_renew_all" hidden="false"/>
+        <menuitem label="&staff.patron.items_overlay.items_renew_with_date.label;" command="cmd_items_renew_with_date" hidden="false"/>
         <menuitem label="&staff.patron.items_overlay.items_checkin.label;" command="cmd_items_checkin" />
         <menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing" />
         <menuseparator />
@@ -77,6 +80,7 @@
         <menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost2" />
         <menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned2" />
         <menuitem label="&staff.patron.items_overlay.items_renew.label;" command="cmd_items_renew2" />
+        <menuitem label="&staff.patron.items_overlay.items_renew_with_date.label;" command="cmd_items_renew_with_date2" />
         <menuitem label="&staff.patron.items_overlay.items_checkin.label;" command="cmd_items_checkin2" />
         <menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing2" />
         <menuseparator />
@@ -131,6 +135,7 @@
                 <menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned" />
                 <menuitem label="&staff.patron.items_overlay.items_renew.label;" command="cmd_items_renew" />
                 <menuitem label="&staff.patron.items_overlay.items_renew_all.label;" command="cmd_items_renew_all" hidden="false"/>
+                <menuitem label="&staff.patron.items_overlay.items_renew_with_date.label;" command="cmd_items_renew_with_date" hidden="false"/>
                 <menuitem label="&staff.patron.items_overlay.items_checkin.label;" command="cmd_items_checkin" />
                 <menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing" />
                 <menuseparator />
@@ -155,6 +160,7 @@
                 <menuitem label="&staff.patron.items_overlay.items_mark_lost.label;" command="cmd_items_mark_lost2" />
                 <menuitem label="&staff.patron.items_overlay.items_claimed_returned.label;" command="cmd_items_claimed_returned2" />
                 <menuitem label="&staff.patron.items_overlay.items_renew.label;" command="cmd_items_renew2" />
+                <menuitem label="&staff.patron.items_overlay.items_renew_with_date.label;" command="cmd_items_renew_with_date2" hidden="false"/>
                 <menuitem label="&staff.patron.items_overlay.items_checkin.label;" command="cmd_items_checkin2" />
                 <menuitem label="&staff.patron.items_overlay.add_billing.label;" command="cmd_add_billing2" />
                 <menuseparator />

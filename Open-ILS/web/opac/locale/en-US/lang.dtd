@@ -2788,6 +2788,7 @@
 <!ENTITY staff.patron.items_overlay.items_claimed_returned.label "Mark Claimed Returned">
 <!ENTITY staff.patron.items_overlay.items_renew.label "Renew">
 <!ENTITY staff.patron.items_overlay.items_renew_all.label "Renew All">
+<!ENTITY staff.patron.items_overlay.items_renew_with_date.label "Renew with Specific Due Date">
 <!ENTITY staff.patron.items_overlay.items_checkin.label "Check In">
 <!ENTITY staff.patron.items_overlay.add_billing.label "Add Billing">
 <!ENTITY staff.patron.items_overlay.save_columns.label "Save Columns">

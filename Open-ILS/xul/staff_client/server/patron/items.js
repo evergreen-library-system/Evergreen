@@ -8,6 +8,7 @@ patron.items = function (params) {
     JSAN.use('util.error'); this.error = new util.error();
     JSAN.use('util.network'); this.network = new util.network();
     JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+    JSAN.use('util.sound'); this.sound = new util.sound();
 }
 
 patron.items.prototype = {
@@ -91,9 +92,11 @@ patron.items.prototype = {
                     'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
                     'cmd_items_export' : [ ['command'], function() { obj.items_export(1); } ],
                     'cmd_items_export2' : [ ['command'], function() { obj.items_export(2); } ],
-                    'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); /* obj.retrieve();*/ } ],
-                    'cmd_items_renew_all' : [ ['command'], function() { obj.items_renew_all(); } ],
-                    'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); /* obj.retrieve();*/ } ],
+                    'cmd_items_renew' : [ ['command'], function() { obj.items_renew({which_list:1}); } ],
+                    'cmd_items_renew_with_date' : [ ['command'], function() { obj.items_renew({which_list:1,skip_prompt:true,get_date:true}); } ],
+                    'cmd_items_renew_all' : [ ['command'], function() { obj.items_renew_all({which_list:1}); } ],
+                    'cmd_items_renew2' : [ ['command'], function() { obj.items_renew({which_list:2}); } ],
+                    'cmd_items_renew_with_date2' : [ ['command'], function() { obj.items_renew({which_list:2,skip_prompt:true,get_date:true}); } ],
                     'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1);  /*obj.retrieve();*/ } ],
                     'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2);  /*obj.retrieve();*/ } ],
                     'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1);  /*obj.retrieve();*/ } ],
@@ -127,12 +130,14 @@ patron.items.prototype = {
         obj.controller.view.sel_patron2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','true');
         obj.controller.view.cmd_items_renew.setAttribute('disabled','true');
+        obj.controller.view.cmd_items_renew_with_date.setAttribute('disabled','true');
         obj.controller.view.cmd_items_checkin.setAttribute('disabled','true');
         obj.controller.view.cmd_items_edit.setAttribute('disabled','true');
         obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','true');
         obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
         obj.controller.view.cmd_items_claimed_returned2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_renew2.setAttribute('disabled','true');
+        obj.controller.view.cmd_items_renew_with_date2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_checkin2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_edit2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_mark_lost2.setAttribute('disabled','true');
@@ -223,8 +228,9 @@ patron.items.prototype = {
         }
     },
 
-    'items_renew_all' : function() {
+    'items_renew_all' : function(params) {
         try {
+            if (!params) params = {};
             var obj = this; var list = obj.list;
             if (list.on_all_fleshed != null) {
                 var r = window.confirm($("patronStrings").getString('staff.patron.items.items_renew_all.list_is_busy'));
@@ -235,7 +241,9 @@ patron.items.prototype = {
             function flesh_callback() {
                 try {
                     obj.list.select_all();
-                    obj.items_renew(1,true);    
+                    params.skip_prompt = true;
+                    if (!params.which_list) params.which_list = 1;
+                    obj.items_renew(params);    
                     setTimeout(function(){list.on_all_fleshed = null; /* obj.retrieve();*/ },0);
                 } catch(E) {
                     obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew_all.items_not_renewed', ['2']),E);
@@ -248,14 +256,15 @@ patron.items.prototype = {
         }
     },
 
-    'items_renew' : function(which,skip_prompt) {
+    'items_renew' : function(params) {
         var obj = this;
         try{
+            if (!params) { params = {}; }
             JSAN.use('circ.util');
-            var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+            var retrieve_ids = ( params.which_list == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
             if (!retrieve_ids || retrieve_ids.length == 0) return;
             JSAN.use('util.functional');
-            if (!skip_prompt) {
+            if (!params.skip_prompt) {
                 var msg = '';
                 if(retrieve_ids.length > 1) {
                     msg += $("patronStrings").getFormattedString('staff.patron.items.items_renew.renew_item_plural',[util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ')]);
@@ -268,6 +277,44 @@ patron.items.prototype = {
 
             var count = 0;
 
+            function check_date(value) {
+                JSAN.use('util.date');
+                try {
+                    if (! util.date.check('YYYY-MM-DD',value) ) { 
+                        throw($("patronStrings").getString('staff.patron.items.items_edit.invalid_date')); 
+                    }
+                    if (util.date.check_past('YYYY-MM-DD',value) ) { 
+                        throw($("patronStrings").getString('staff.patron.items.items_edit.need_later_date')); 
+                    }
+                    if ( util.date.formatted_date(new Date(),'%F') == value) { 
+                        throw($("patronStrings").getString('staff.patron.items.items_edit.need_later_date')); 
+                    }
+                    return true;
+                } catch(E) {
+                    alert(E);
+                    return false;
+                }
+            }
+
+            if (params.get_date) {
+                JSAN.use('util.functional');
+                var title = $("patronStrings").getString('staff.patron.items.items_edit.renew_with_date.title');
+                var value = 'YYYY-MM-DD';
+                var text = $("patronStrings").getFormattedString('staff.patron.items.items_edit.renew_with_date.prompt', [util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ')]);
+                var due_date; var invalid = true;
+                while(invalid) {
+                    due_date = window.prompt(text,value,title);
+                    if (due_date) {
+                        invalid = ! check_date(due_date);
+                        if (invalid) obj.sound.circ_bad();
+                    } else {
+                        alert( $("patronStrings").getString('staff.patron.items.items_edit.cancel_renew_with_date') );
+                        return;
+                    }
+                }
+                params.due_date = due_date;
+            }
+
             function gen_renew(bc,circ_id) {
                 var x = document.getElementById('renew_msgs');
                 if (x) {
@@ -275,7 +322,10 @@ patron.items.prototype = {
                     l.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.items.items_renew.renewing',[bc]));
                     x.appendChild(l);
                 }
-                var renew = circ.util.renew_via_barcode( { 'barcode' : bc, 'patron' : obj.patron_id },
+                var p = { 'barcode' : bc, 'patron' : obj.patron_id };
+                if (params.due_date) p.due_date = params.due_date;
+                var renew = circ.util.renew_via_barcode(
+                    p, 
                     function(r) {
                         try {
                             if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
@@ -813,6 +863,7 @@ patron.items.prototype = {
 
         obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','false');
         obj.controller.view.cmd_items_renew.setAttribute('disabled','false');
+        obj.controller.view.cmd_items_renew_with_date.setAttribute('disabled','false');
         obj.controller.view.cmd_items_checkin.setAttribute('disabled','false');
         obj.controller.view.cmd_items_edit.setAttribute('disabled','false');
         obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','false');
@@ -834,6 +885,7 @@ patron.items.prototype = {
 
         obj.controller.view.cmd_items_claimed_returned2.setAttribute('disabled','false');
         obj.controller.view.cmd_items_renew2.setAttribute('disabled','false');
+        obj.controller.view.cmd_items_renew_with_date2.setAttribute('disabled','false');
         obj.controller.view.cmd_items_checkin2.setAttribute('disabled','false');
         obj.controller.view.cmd_items_edit2.setAttribute('disabled','false');
         obj.controller.view.cmd_items_mark_lost2.setAttribute('disabled','false');
