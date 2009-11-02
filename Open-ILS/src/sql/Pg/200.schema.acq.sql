@@ -133,8 +133,7 @@ CREATE TABLE acq.fund_allocation (
     amount      NUMERIC NOT NULL,
     allocator   INT NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     note        TEXT,
-	create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
+	create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 CREATE INDEX fund_alloc_allocator_idx ON acq.fund_allocation ( allocator );
 
