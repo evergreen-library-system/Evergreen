@@ -144,7 +144,7 @@ sub run_pending {
 }
 
 help() and exit if $opt_help;
-help() and exit unless ($opt_run_pending or $opt_hooks);
+help() and exit unless ($opt_run_pending or $opt_process_hooks);
 
 # check / set the lockfile
 die "I'm already running with lockfile $opt_lockfile\n" if -e $opt_lockfile;
