@@ -94,6 +94,21 @@ function event_listeners() {
             false
         );
 
+        $('bill_patron_btn').addEventListener(
+            'command',
+            function() {
+                JSAN.use('util.window'); var win = new util.window();
+                var my_xulG = win.open(
+                    urls.XUL_PATRON_BILL_WIZARD,
+                    'billwizard',
+                    'chrome,resizable,modal',
+                    { 'patron_id' : g.patron_id }
+                );
+                if (my_xulG.xact_id) { g.funcs.push( gen_list_append_func( my_xulG.xact_id ) ); /* FIXME: do something to update summary sidebar */ }
+            },
+            false
+        );
+
 }
 
 function $(id) { return document.getElementById(id); }
@@ -232,6 +247,13 @@ function check_all_refunds() {
     }
 }
 
+function gen_list_append_func(r) {
+    return function() {
+        if (typeof r == 'object') { g.row_map[ r.id() ] = g.bill_list.append( { 'retrieve_id' : r.id(), 'row' : { 'my' : { 'checked' : true, 'mbts' : r } } } );
+        } else { g.row_map[r] = g.bill_list.append( { 'retrieve_id' : r, 'row' : { 'my' : { 'checked' : true } } } ); }
+    }
+}
+
 function retrieve_mbts_for_list() {
     var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative';
     g.mbts_ids = g.network.simple_request(method,[ses(),g.patron_id]);
@@ -246,16 +268,9 @@ function retrieve_mbts_for_list() {
    
         g.mbts_ids.reverse();
  
-        function gen_func(r) {
-            return function() {
-                if (typeof r == 'object') { g.row_map[ r.id() ] = g.bill_list.append( { 'retrieve_id' : r.id(), 'row' : { 'my' : { 'checked' : true, 'mbts' : r } } } );
-                } else { g.row_map[r] = g.bill_list.append( { 'retrieve_id' : r, 'row' : { 'my' : { 'checked' : true } } } ); }
-            }
-        }
-
         for (var i = 0; i < g.mbts_ids.length; i++) {
             dump('i = ' + i + ' g.mbts_ids[i] = ' + g.mbts_ids[i] + '\n');
-            g.funcs.push( gen_func(g.mbts_ids[i]) );
+            g.funcs.push( gen_list_append_func(g.mbts_ids[i]) );
         }
     }
 }

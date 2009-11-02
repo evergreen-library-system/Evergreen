@@ -116,7 +116,7 @@
             </hbox>
             <splitter />
             <hbox>
-                <button label="Bill Patron" accesskey="" />
+                <button id="bill_patron_btn" label="Bill Patron" accesskey="" />
                 <button label="History" accesskey="" />
                 <spacer flex="1"/>
                 <menubar>

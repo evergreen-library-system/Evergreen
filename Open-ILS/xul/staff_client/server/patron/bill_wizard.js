@@ -202,6 +202,14 @@ function patron_bill_finish() {
                 );
                 if (typeof mb_id.ilsevent != 'undefined') throw(mb_id);
                 //alert($('patronStrings').getString('staff.patron.bill_wizard.patron_bill_finish.billing_added'));
+
+                update_modal_xulG(
+                    {
+                        mb_id : mb_id,
+                        xact_id : xact_id
+                    }
+                );
+
             } else {
                 throw(xact_id);
             }
