@@ -2747,6 +2747,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
 			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
 			<field reporter:label="Top of Queue" name="cut_in_line" reporter:datatype="bool" />
+			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool" />
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
@@ -3329,6 +3330,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is Reference" name="ref" reporter:datatype="bool"/>
 			<field reporter:label="Copy Status" name="status" reporter:datatype="link"/>
 			<field reporter:label="Copy Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Copy Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>

@@ -76,7 +76,8 @@ CREATE TABLE asset.copy (
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE,
 	deleted		BOOL				NOT NULL DEFAULT FALSE,
 	dummy_isbn      TEXT,
-	status_changed_time TIMESTAMP WITH TIME ZONE
+	status_changed_time TIMESTAMP WITH TIME ZONE,
+	mint_condition      BOOL        NOT NULL DEFAULT FALSE
 );
 CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted IS FALSE;
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
