@@ -28,11 +28,13 @@ my $opt_run_pending = 0;
 my $opt_debug_stdout = 0;
 my $opt_help = 0;
 my $opt_hooks;
+my $opt_process_hooks = 0;
 
 GetOptions(
     'osrf-config=s' => \$opt_osrf_config,
     'run-pending' => \$opt_run_pending,
     'hooks=s' => \$opt_hooks,
+    'process-hooks' => \$opt_process_hooks,
     'debug-stdout' => \$opt_debug_stdout,
     'custom-filters=s' => \$opt_custom_filter,
     'lock-file=s' => \$opt_lockfile,
@@ -77,11 +79,14 @@ $0 : Create and process action/trigger events
             /openils/conf/action_trigger_filters.json
 
     --run-pending
-        Run pending action_trigger.event's
+        Run pending events
+
+    --process-hooks
+        Create hook events
 
     --hooks=hook1[,hook2,hook3,...]
-        Hooks for which events should be generated.  Defaults to the list of
-        hooks defined in the --custom-filters option.
+        Define which hooks to create events for.  If none are defined,
+        it defaults to the list of hooks defined in the --custom-filters option.
 
     --debug-stdout
         Print server responses to stdout (as JSON) for debugging
@@ -107,6 +112,7 @@ HELP
 
 # create events for the specified hooks using the configured filters and context orgs
 sub process_hooks {
+    return unless $opt_process_hooks;
 
     my @hooks = ($opt_hooks) ? split(',', $opt_hooks) : keys(%$hook_handlers);
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
