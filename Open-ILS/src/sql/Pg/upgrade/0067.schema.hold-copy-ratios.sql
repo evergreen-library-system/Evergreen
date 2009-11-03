@@ -31,22 +31,24 @@ BEGIN
 
     output.hold_count := hold_count;
 
-    FOR hold_map_data IN
-        SELECT  DISTINCT m.target_copy,
-                acp.status
-          FROM  action.hold_copy_map m
-                JOIN asset.copy acp ON (m.target_copy = acp.id)
-                JOIN action.hold_request h ON (m.hold = h.id)
-          WHERE m.hold IN ( SELECT DISTINCT hold FROM action.hold_copy_map WHERE target_copy = copy_id ) AND NOT h.frozen
-    LOOP
-        output.copy_count := output.copy_count + 1;
-        IF hold_map_data.status IN (0,7,12) THEN
-            output.available_count := output.available_count + 1;
-        END IF;
-    END LOOP;
+    IF output.hold_count > 0 THEN
+        FOR hold_map_data IN
+            SELECT  DISTINCT m.target_copy,
+                    acp.status
+              FROM  action.hold_copy_map m
+                    JOIN asset.copy acp ON (m.target_copy = acp.id)
+                    JOIN action.hold_request h ON (m.hold = h.id)
+              WHERE m.hold IN ( SELECT DISTINCT hold FROM action.hold_copy_map WHERE target_copy = copy_id ) AND NOT h.frozen
+        LOOP
+            output.copy_count := output.copy_count + 1;
+            IF hold_map_data.status IN (0,7,12) THEN
+                output.available_count := output.available_count + 1;
+            END IF;
+        END LOOP;
+        output.total_copy_ratio = output.copy_count::FLOAT / output.hold_count::FLOAT;
+        output.available_copy_ratio = output.available_count::FLOAT / output.hold_count::FLOAT;
 
-    output.total_copy_ratio = output.copy_count::FLOAT / output.hold_count::FLOAT;
-    output.available_copy_ratio = output.available_count::FLOAT / output.hold_count::FLOAT;
+    END IF;
 
     RETURN output;
 
