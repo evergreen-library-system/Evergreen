@@ -928,6 +928,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="ccmm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_matrix_matchpoint" oils_persist:tablename="config.circ_matrix_matchpoint" reporter:label="Circulation Matrix Matchpoint">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_matchpoint_id_seq">
 			<field reporter:label="Matchpoint ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="link"/>
@@ -943,6 +944,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link"/>
 			<field reporter:label="Max Fine Rule" name="max_fine_rule" reporter:datatype="link"/>
 			<field reporter:label="Script Test" name="script_test" reporter:datatype="text"/>
+			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Copy/Hold Ratio"/>
+			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Copy/Hold Ratio"/>
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
