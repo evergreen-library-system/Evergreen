@@ -114,6 +114,8 @@ CREATE TABLE config.circ_matrix_matchpoint (
     recurring_fine_rule  INT     NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
     max_fine_rule        INT     NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED,
     script_test          TEXT,                           -- javascript source 
+    total_copy_hold_ratio     FLOAT,
+    available_copy_hold_ratio FLOAT,
     CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, juvenile_flag, usr_age_lower_bound, usr_age_upper_bound, is_renewal)
 );
 
@@ -217,6 +219,58 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
+CREATE TYPE action.hold_stats AS (
+    hold_count              INT,
+    copy_count              INT,
+    available_count         INT,
+    total_copy_ratio        FLOAT,
+    available_copy_ratio    FLOAT
+);
+
+CREATE OR REPLACE FUNCTION action.copy_related_hold_stats (copy_id INT) RETURNS action.hold_stats AS $func$
+DECLARE
+    output          action.hold_stats%ROWTYPE;
+    hold_count      INT := 0;
+    copy_count      INT := 0;
+    available_count INT := 0;
+    hold_map_data   RECORD;
+BEGIN
+
+    output.hold_count := 0;
+    output.copy_count := 0;
+    output.available_count := 0;
+
+    SELECT  COUNT( DISTINCT m.hold ) INTO hold_count
+      FROM  action.hold_copy_map m
+            JOIN action.hold_request h ON (m.hold = h.id)
+      WHERE m.target_copy = copy_id
+            AND NOT h.frozen;
+
+    output.hold_count := hold_count;
+
+    IF output.hold_count > 0 THEN
+        FOR hold_map_data IN
+            SELECT  DISTINCT m.target_copy,
+                    acp.status
+              FROM  action.hold_copy_map m
+                    JOIN asset.copy acp ON (m.target_copy = acp.id)
+                    JOIN action.hold_request h ON (m.hold = h.id)
+              WHERE m.hold IN ( SELECT DISTINCT hold FROM action.hold_copy_map WHERE target_copy = copy_id ) AND NOT h.frozen
+        LOOP
+            output.copy_count := output.copy_count + 1;
+            IF hold_map_data.status IN (0,7,12) THEN
+                output.available_count := output.available_count + 1;
+            END IF;
+        END LOOP;
+        output.total_copy_ratio = output.copy_count::FLOAT / output.hold_count::FLOAT;
+        output.available_copy_ratio = output.available_count::FLOAT / output.hold_count::FLOAT;
+
+    END IF;
+
+    RETURN output;
+
+END;
+$func$ LANGUAGE PLPGSQL;
 
 CREATE TYPE action.matrix_test_result AS ( success BOOL, matchpoint INT, fail_part TEXT );
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
@@ -230,6 +284,7 @@ DECLARE
     circ_test        config.circ_matrix_matchpoint%ROWTYPE;
     out_by_circ_mod        config.circ_matrix_circ_mod_test%ROWTYPE;
     circ_mod_map        config.circ_matrix_circ_mod_test_map%ROWTYPE;
+    hold_ratio          action.hold_stats%ROWTYPE;
     penalty_type         TEXT;
     tmp_grp         INT;
     items_out        INT;
@@ -307,6 +362,28 @@ BEGIN
         result.success := FALSE;
         done := TRUE;
         RETURN NEXT result;
+    END IF;
+
+    -- Fail if the total copy-hold ratio is too low
+    IF circ_test.total_copy_hold_ratio IS NOT NULL THEN
+        SELECT INTO hold_ratio * FROM action.copy_related_hold_stats(match_item);
+        IF hold_ratio.total_copy_ratio IS NOT NULL AND hold_ratio.total_copy_ratio < circ_test.total_copy_hold_ratio THEN
+            result.fail_part := 'config.circ_matrix_test.total_copy_hold_ratio';
+            result.success := FALSE;
+            done := TRUE;
+            RETURN NEXT result;
+        END IF;
+    END IF;
+
+    -- Fail if the available copy-hold ratio is too low
+    IF circ_test.available_copy_hold_ratio IS NOT NULL THEN
+        SELECT INTO hold_ratio * FROM action.copy_related_hold_stats(match_item);
+        IF hold_ratio.available_copy_ratio IS NOT NULL AND hold_ratio.available_copy_ratio < circ_test.available_copy_hold_ratio THEN
+            result.fail_part := 'config.circ_matrix_test.available_copy_hold_ratio';
+            result.success := FALSE;
+            done := TRUE;
+            RETURN NEXT result;
+        END IF;
     END IF;
 
     IF renewal THEN
