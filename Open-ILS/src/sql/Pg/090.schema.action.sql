@@ -355,7 +355,8 @@ CREATE TABLE action.hold_request (
 	thaw_date		TIMESTAMP WITH TIME ZONE,
 	shelf_time		TIMESTAMP WITH TIME ZONE,
     cut_in_line     BOOL,
-	mint_condition  BOOL NOT NULL DEFAULT TRUE
+	mint_condition  BOOL NOT NULL DEFAULT TRUE,
+	shelf_expire_time TIMESTAMPTZ
 );
 
 CREATE INDEX hold_request_target_idx ON action.hold_request (target);
