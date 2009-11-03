@@ -56,6 +56,8 @@ function _holdsHandleStaff() {
 		return
 	}
 
+	grabUserPrefs(user);
+
 	holdArgs.recipient = user;
 	holdsDrawEditor();
 }
@@ -445,15 +447,21 @@ function __holdsDrawWindow() {
 	$('holds_phone').value = holdArgs.recipient.day_phone();
 	appendClear( $('holds_email'), text(holdArgs.recipient.email()));
 
-	var pref = G.user.prefs[PREF_HOLD_NOTIFY];
+	var pref = holdArgs.recipient.prefs[PREF_HOLD_NOTIFY];
 
 	if(pref) {
-		if( ! pref.match(/email/i) ) 
+		if( ! pref.match(/email/i) ) {
 			$('holds_enable_email').checked = false;
+		} else {
+			$('holds_enable_email').checked = true;
+		}
 
 		if( ! pref.match(/phone/i) ) {
 			$('holds_phone').disabled = true;
 			$('holds_enable_phone').checked = false;
+		} else {
+			$('holds_phone').disabled = false;
+			$('holds_enable_phone').checked = true;
 		}
 	}
 
