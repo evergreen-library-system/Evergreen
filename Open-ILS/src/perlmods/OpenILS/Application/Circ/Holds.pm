@@ -721,6 +721,7 @@ sub update_hold_impl {
                 {hold=>$hold->id, dest_recv_time => undef})->[0] 
                 or return $e->die_event;
 
+            $transit->prev_dest($transit->dest); # mark the previous destination on the transit
             $transit->dest($hold->pickup_lib);
             $e->update_action_hold_transit_copy($transit) or return $e->die_event;
 
@@ -740,6 +741,12 @@ sub update_hold_impl {
     update_hold_if_frozen($self, $e, $hold, $orig_hold);
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
+
+    # a change to mint-condition changes the set of potential copies, so retarget the hold;
+    if($U->is_true($hold->mint_condition) and !$U->is_true($orig_hold->mint_condition)) {
+        _reset_hold($self, $e->requestor, $hold) 
+    }
+
     return $hold->id;
 }
 
@@ -999,6 +1006,15 @@ __PACKAGE__->register_method (
 	/
 );
 
+__PACKAGE__->register_method (
+	method		=> "hold_pull_list",
+	api_name		=> "open-ils.circ.hold_pull_list.retrieve.count",
+	signature	=> q/
+		Returns a list of holds that need to be "pulled"
+		by a given location
+	/
+);
+
 
 sub hold_pull_list {
 	my( $self, $conn, $authtoken, $limit, $offset ) = @_;
@@ -1011,10 +1027,20 @@ sub hold_pull_list {
 	$evt = $U->check_perms($reqr->id, $org, 'VIEW_HOLD');
 	return $evt if $evt;
 
-	if( $self->api_name =~ /id_list/ ) {
+    if($self->api_name =~ /count/) {
+
+		my $count = $U->storagereq(
+			'open-ils.storage.direct.action.hold_request.pull_list.current_copy_circ_lib.status_filtered.count',
+			$org, $limit, $offset ); 
+
+        $logger->info("Grabbing pull list for org unit $org with $count items");
+        return $count
+
+    } elsif( $self->api_name =~ /id_list/ ) {
 		return $U->storagereq(
 			'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
 			$org, $limit, $offset ); 
+
 	} else {
 		return $U->storagereq(
 			'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.status_filtered.atomic',

@@ -122,7 +122,7 @@ use base qw/action/;
 __PACKAGE__->table('action_hold_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
-				     source_send_time dest_recv_time prev_hop
+				     source_send_time dest_recv_time prev_hop prev_dest
 				     copy_status hold/);
 
 #-------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ use base qw/action/;
 __PACKAGE__->table('action_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
-				     source_send_time dest_recv_time prev_hop
+				     source_send_time dest_recv_time prev_hop prev_dest
 				     copy_status/);
 
 #-------------------------------------------------------------------------------
