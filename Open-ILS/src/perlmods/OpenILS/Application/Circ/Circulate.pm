@@ -2081,7 +2081,7 @@ sub attempt_checkin_hold_capture {
 
     $hold->current_copy($copy->id);
     $hold->capture_time('now');
-    $hold->shelf_time('now') 
+    $self->put_hold_on_shelf($hold) 
         if $hold->pickup_lib == $self->editor->requestor->ws_ou;
 
     # prevent DB errors caused by fetching 
@@ -2242,7 +2242,7 @@ sub process_received_transit {
         my $hold = $self->editor->retrieve_action_hold_request($hold_transit->hold);
 
         # hold has arrived at destination, set shelf time
-        $hold->shelf_time('now');
+        $self->put_hold_on_shelf($hold);
         $self->bail_on_events($self->editor->event)
             unless $self->editor->update_action_hold_request($hold);
         return if $self->bail_out;
@@ -2259,6 +2259,28 @@ sub process_received_transit {
 
     return $hold_transit;
 }
+
+
+# ------------------------------------------------------------------
+# Sets the shelf_time and shelf_expire_time for a newly shelved hold
+# ------------------------------------------------------------------
+sub put_hold_on_shelf {
+    my($self, $hold) = @_;
+
+    $hold->shelf_time('now');
+
+    my $shelf_expire = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.holds.default_shelf_expire_interval', $self->editor);
+
+    if($shelf_expire) {
+        my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
+        my $expire_time = DateTime->now->add(seconds => $seconds);
+        $hold->shelf_expire_time($expire_time->strftime('%FT%T%z'));
+    }
+
+    return undef;
+}
+
 
 
 sub generate_fines {

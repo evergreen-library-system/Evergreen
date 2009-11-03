@@ -1232,6 +1232,7 @@ sub _reset_hold {
 	$hold->clear_capture_time;
 	$hold->clear_current_copy;
 	$hold->clear_shelf_time;
+	$hold->clear_shelf_expire_time;
 
 	$e->update_action_hold_request($hold) or return $e->event;
 	$e->commit;
