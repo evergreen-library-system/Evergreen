@@ -2329,6 +2329,14 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
         'bool'
     );
 
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+    VALUES (
+        'circ.holds.default_shelf_expire_interval',
+        'Default hold shelf expire interval',
+        '',
+        'interval'
+);
+
 
 -- Sample Pre-due Notice --
 
