@@ -916,6 +916,13 @@ g.panes_and_field_names = {
             input: 'c = function(v){ g.apply("ref",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.reference.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.reference.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
         }
     ],
+    [
+        $('catStrings').getString('staff.cat.copy_editor.field.mint_condition.label'),
+        { 
+            render: 'get_bool( fm.mint_condition() ) ? $("catStrings").getString("staff.cat.copy_editor.field.mint_condition.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.mint_condition.no_or_false")', 
+            input: 'c = function(v){ g.apply("mint_condition",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.mint_condition.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.mint_condition.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+        }
+    ]
 ],
 
 'right_pane4' : 

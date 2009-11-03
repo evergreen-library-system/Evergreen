@@ -20,6 +20,7 @@
         <command id="cmd_holds_print" />
         <command id="cmd_show_catalog" />
         <command id="cmd_retrieve_patron" />
+        <command id="cmd_holds_edit_desire_mint_condition" />
         <command id="cmd_holds_edit_pickup_lib" />
         <command id="cmd_holds_edit_phone_notify" />
         <command id="cmd_holds_edit_email_notify" />
@@ -49,6 +50,7 @@
             <menuseparator />
             <menuitem label="&staff.circ.holds.retrieve_patron;" command="cmd_retrieve_patron" accesskey="&staff.circ.holds.retrieve_patron.accesskey;"/>
             <menuseparator />
+            <menuitem label="&staff.circ.holds.edit_desire_mint_condition;" command="cmd_holds_edit_desire_mint_condition" accesskey="&staff.circ.holds.edit_desire_mint_condition.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
             <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
@@ -123,6 +125,7 @@
                     <menuseparator />
                     <menuitem label="&staff.circ.holds.retrieve_patron;" command="cmd_retrieve_patron" accesskey="&staff.circ.holds.retrieve_patron.accesskey;"/>
                     <menuseparator />
+                    <menuitem label="&staff.circ.holds.edit_desire_mint_condition;" command="cmd_holds_edit_desire_mint_condition" accesskey="&staff.circ.holds.edit_desire_mint_condition.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_pickup_library;" command="cmd_holds_edit_pickup_lib" accesskey="&staff.circ.holds.edit_pickup_library.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
                     <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>

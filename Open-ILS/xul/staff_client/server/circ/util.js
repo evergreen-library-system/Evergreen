@@ -747,6 +747,22 @@ circ.util.columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'acp_mint_condition',
+            'fm_class' : 'acp',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.acp_mint_condition'),
+            'flex' : 0,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (get_bool( my.acp.mint_condition() )) {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.acp_mint_condition.true');
+                } else {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.acp_mint_condition.false');
+                }
+            }
+        },
+        {
+            'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
             'id' : 'ref',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.reference'),
@@ -1156,7 +1172,7 @@ circ.util.columns = function(modify,params) {
         {
             'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
-            'id' : 'status',
+            'id' : 'acp_status',
             'label' : document.getElementById('commonStrings').getString('staff.acp_label_status'),
             'flex' : 1,
             'primary' : false,
@@ -1665,7 +1681,7 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
-            'id' : 'status',
+            'id' : 'ahr_status',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_status_label'),
             'flex' : 1,
             'primary' : false,
@@ -1701,6 +1717,21 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.hold_type(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'ahr_mint_condition',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.ahr_mint_condition'),
+            'flex' : 0,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (get_bool( my.ahr.mint_condition() )) {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.ahr_mint_condition.true');
+                } else {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.ahr_mint_condition.false');
+                }
+            }
         },
         {
             'persist' : 'hidden width ordinal',
