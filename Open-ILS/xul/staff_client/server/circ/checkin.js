@@ -14,6 +14,7 @@ circ.checkin = function (params) {
 circ.checkin.prototype = {
 
     'selection_list' : [],
+    'row_map' : {},
 
     'init' : function( params ) {
 
@@ -54,7 +55,7 @@ circ.checkin.prototype = {
                         var sel = obj.list.retrieve_selection();
                         obj.selection_list = util.functional.map_list(
                             sel,
-                            function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
+                            function(o) { var p = JSON2js(o.getAttribute('retrieve_id')); p.unique_row_counter = o.getAttribute('unique_row_counter'); return p; }
                         );
                         obj.error.sdump('D_TRACE', 'circ/copy_status: selection list = ' + js2JSON(obj.selection_list) );
                         if (obj.selection_list.length == 0) {
@@ -168,19 +169,46 @@ circ.checkin.prototype = {
                     'sel_backdate' : [
                         ['command'],
                         function() {
-                            JSAN.use('circ.util');
-                            var circ_ids = [];
-                            for (var i = 0; i < obj.selection_list.length; i++) {
-                                var circ_id = obj.selection_list[i].circ_id; 
-                                var copy_id = obj.selection_list[i].copy_id; 
-                                if (!circ_id) {
-                                    var blob = obj.network.simple_request('FM_ACP_DETAILS',[ses(),copy_id]);
-                                    if (blob.circ) circ_id = blob.circ.id();
+                            try {
+                                JSAN.use('circ.util');
+                                var circ_ids = []; var circ_row_map = {};
+                                for (var i = 0; i < obj.selection_list.length; i++) {
+                                    var circ_id = obj.selection_list[i].circ_id; 
+                                    var copy_id = obj.selection_list[i].copy_id; 
+                                    if (!circ_id) {
+                                        var blob = obj.network.simple_request('FM_ACP_DETAILS',[ses(),copy_id]);
+                                        if (blob.circ) circ_id = blob.circ.id();
+                                    }
+                                    if (!circ_id) continue;
+                                    if (! circ_row_map[ circ_id ]) { circ_row_map[ circ_id ] = []; }
+                                    circ_row_map[ circ_id ].push( obj.selection_list[i].unique_row_counter );
+                                    circ_ids.push( circ_id );
                                 }
-                                if (!circ_id) continue;
-                                circ_ids.push( circ_id );
+                                var robj = circ.util.backdate_post_checkin( circ_ids );
+                                if (robj.complete) {
+                                    var bad_circs = {};
+                                    for (var i = 0; i < robj.bad_circs.length; i++) {
+                                        bad_circs[ robj.bad_circs[i].circ_id ] = robj.bad_circs[i].result;
+                                    }
+                                    for (var circ_id in circ_row_map) {
+                                        var row_array = circ_row_map[circ_id];
+                                        for (var i = 0; i < row_array.length; i++) {
+                                            var row_data = obj.row_map[ row_array[i] ];
+                                            if (row_data.row.my.circ) {
+                                                if (bad_circs[ circ_id ]) {
+                                                    row_data.row_properties = 'backdate_failed';
+                                                } else {
+                                                    row_data.row_properties = 'backdate_succeeded';
+                                                    row_data.row.my.circ.checkin_time( robj.backdate );
+                                                }
+                                            }
+                                            obj.list.refresh_row( row_data );
+                                        } 
+                                    }
+                                }
+                            } catch(E) {
+                                alert('Error in checkin.js, sel_backdate: ' + E);
                             }
-                            circ.util.backdate_post_checkin( circ_ids );
                         }
                     ],
                     'sel_mark_items_damaged' : [
@@ -490,7 +518,9 @@ circ.checkin.prototype = {
                             'message' : checkin.message
                         }
                     },
-                    'to_top' : true
+                    'to_top' : true,
+                    'on_append' : function(rparams) { obj.row_map[ rparams.unique_row_counter ] = rparams; },
+                    'on_remove' : function(unique_row_counter) { delete obj.row_map[ unique_row_counter ]; }
                 }
             );
             obj.list.node.view.selection.select(0);

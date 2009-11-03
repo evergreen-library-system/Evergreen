@@ -7,6 +7,26 @@ treechildren::-moz-tree-row(refundable) {
     background-color: pink;
 }
 
+treechildren::-moz-tree-row(backdate_failed) {
+    background-color: pink ! important;
+}
+
+treechildren::-moz-tree-row(backdate_succeeded) {
+    background-color: lightgreen ! important;
+}
+
+treechildren::-moz-tree-row(backdate_failed) {
+    background-color: pink ! important;
+}
+
+treechildren::-moz-tree-row(backdate_succeeded,selected) {
+    background-color: #900eff ! important;
+}
+
+treechildren::-moz-tree-row(backdate_failed,selected) {
+    background-color: #ffc0ff ! important;
+}
+
 .checkin_screen_normal { background-color: green; }
 .checkin_screen_backdating { background-color: red; }
 .checkin_screen_do_not_alert_on_precat { }
