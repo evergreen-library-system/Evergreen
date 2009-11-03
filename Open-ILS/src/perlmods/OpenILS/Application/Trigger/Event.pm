@@ -361,7 +361,7 @@ sub build_environment {
     try {
    
         my $compartment = new Safe;
-        $compartment->permit(':default',':load');
+        $compartment->permit(':default','require','dofile','caller');
         $compartment->share('$current_environment');
 
         $self->environment->{EventProcessor} = $self;
