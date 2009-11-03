@@ -7,6 +7,8 @@ util.list = function (id) {
 
     this.row_count = { 'total' : 0, 'fleshed' : 0 };
 
+    this.unique_row_counter = 0;
+
     if (!this.node) throw('Could not find element ' + id);
     switch(this.node.nodeName) {
         case 'listbox' : 
@@ -334,6 +336,11 @@ util.list.prototype = {
         if (this.row_count.fleshed == this.row_count.total) {
             setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
         }
+        rparams.my_node.setAttribute('unique_row_counter',obj.unique_row_counter);
+        rparams.unique_row_counter = obj.unique_row_counter++;
+        if (typeof params.on_append == 'function') {
+            params.on_append(rparams);
+        }
         return rparams;
     },
     
@@ -513,8 +520,10 @@ util.list.prototype = {
                     // Remove oldest row
                     //if (typeof params.to_bottom != 'undefined') 
                     if (typeof params.to_top == 'undefined') {
+                        if (typeof params.on_delete == 'function') { prams.on_delete( treechildren_node.firstChild.getAttribute('unique_row_counter') ); }
                         treechildren_node.removeChild( treechildren_node.firstChild );
                     } else {
+                        if (typeof params.on_delete == 'function') { prams.on_delete( treechildren_node.lastChild.getAttribute('unique_row_counter') ); }
                         treechildren_node.removeChild( treechildren_node.lastChild );
                     }
                 }
@@ -560,6 +569,7 @@ util.list.prototype = {
         var treerow = document.createElement('treerow');
         treeitem.appendChild( treerow );
         treerow.setAttribute('retrieve_id',params.retrieve_id);
+        if (params.row_properties) treerow.setAttribute('properties',params.row_properties);
 
         s += ('tree = ' + this.node.nodeName + '\n');
         s += ('treeitem = ' + treeitem.nodeName + '  treerow = ' + treerow.nodeName + '\n');
