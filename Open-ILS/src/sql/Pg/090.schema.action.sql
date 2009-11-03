@@ -414,7 +414,8 @@ CREATE TABLE action.transit_copy (
 	dest			INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	prev_hop		INT				REFERENCES action.transit_copy (id) DEFERRABLE INITIALLY DEFERRED,
 	copy_status		INT				NOT NULL REFERENCES config.copy_status (id) DEFERRABLE INITIALLY DEFERRED,
-	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE
+	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE,
+	prev_dest       INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED
 );
 CREATE INDEX active_transit_dest_idx ON "action".transit_copy (dest); 
 CREATE INDEX active_transit_source_idx ON "action".transit_copy (source);

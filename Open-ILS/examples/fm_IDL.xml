@@ -1159,6 +1159,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is Persistent? (unused)" name="persistant_transfer" reporter:datatype="bool"/>
 			<field reporter:label="Previous Hop (unused)" name="prev_hop" reporter:datatype="link"/>
 			<field reporter:label="Source" name="source" reporter:datatype="link"/>
+			<field reporter:label="Prev Destination" name="prev_dest" reporter:datatype="org_unit"/>
 			<field reporter:label="Send Date/Time" name="source_send_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Hold Transit" name="hold_transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -1166,6 +1167,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="hold_transit_copy" reltype="might_have" key="id" map="" class="ahtc"/>
 			<link field="source" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="prev_dest" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_status" reltype="has_a" key="id" map="" class="ccs"/>
 			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
@@ -2816,6 +2818,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Workstations" name="workstations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Copy Location Orders" name="copy_location_orders" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Transit Copy Prev Destinations" name="atc_prev_dests" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>
@@ -2836,6 +2839,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="distribution_formula_entries" reltype="has_many" key="owning_lib" map="" class="acqdfe"/>
 			<link field="fund_alloc_pcts" reltype="has_many" key="org" map="" class="acqfap"/>
 			<link field="copy_location_orders" reltype="has_many" key="org" map="" class="acplo"/>
+			<link field="atc_prev_dests" reltype="has_many" key="prev_dest" map="" class="atc"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3774,6 +3778,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Send Date/Time" name="source_send_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Base Transit" name="transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Prev Destination Library" name="prev_dest" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
 			<link field="transit_copy" reltype="might_have" key="id" map="" class="atc"/>
@@ -3781,6 +3786,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="source" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_status" reltype="has_a" key="id" map="" class="ccs"/>
 			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="prev_dest" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
