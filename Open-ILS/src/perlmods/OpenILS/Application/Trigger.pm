@@ -513,7 +513,7 @@ sub pending_events {
 
     return $editor->search_action_trigger_event(
         [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] } }],
-        { idlist=> 1 }
+        { idlist=> 1, timeout => 1800 }
     );
 }
 __PACKAGE__->register_method(
