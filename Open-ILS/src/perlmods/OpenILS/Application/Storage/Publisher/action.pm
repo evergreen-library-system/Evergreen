@@ -1019,7 +1019,8 @@ sub new_hold_copy_targeter {
 			@$all_copies = grep {	isTrue($_->status->holdable) && 
 						isTrue($_->location->holdable) && 
 						isTrue($_->holdable) &&
-						!isTrue($_->deleted)
+						!isTrue($_->deleted) &&
+						isTrue($hold->mint_condition) ? isTrue($_->mint_condition) : 1
 					} @$all_copies;
 
 			# let 'em know we're still working

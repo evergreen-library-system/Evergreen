@@ -13,3 +13,5 @@ ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
 
 COMMIT;
 
+ALTER TABLE auditor.action_hold_request ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
+
