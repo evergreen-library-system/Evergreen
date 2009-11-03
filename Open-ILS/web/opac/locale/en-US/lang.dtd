@@ -2051,6 +2051,8 @@
 <!ENTITY staff.circ.holds.edit_hold_range.accesskey "R">
 <!ENTITY staff.circ.holds.edit_hold_focus "Edit Hold Focus">
 <!ENTITY staff.circ.holds.edit_hold_focus.accesskey "F">
+<!ENTITY staff.circ.holds.edit_desire_mint_condition "Set Desired Copy Quality">
+<!ENTITY staff.circ.holds.edit_desire_mint_condition.accesskey "Q">
 <!ENTITY staff.circ.holds.set_top_of_queue "Set Top of Queue">
 <!ENTITY staff.circ.holds.set_top_of_queue.accesskey "Q">
 <!ENTITY staff.circ.holds.mark_item_damaged "Mark Item Damaged">
