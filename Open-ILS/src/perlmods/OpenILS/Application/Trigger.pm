@@ -532,8 +532,18 @@ sub grouped_events {
     my %groups = ( '*' => [] );
 
     for my $e_id ( @$events ) {
-        my $e = OpenILS::Application::Trigger::Event->new($e_id);
-        if ($e->validate->valid) {
+
+        my $e;
+        try {
+           $e = OpenILS::Application::Trigger::Event->new($e_id);
+        } otherwise {};
+
+        next unless $e; 
+
+        if (try { $e->validate->valid } otherwise { $e = undef; }) {
+
+            next unless $e;
+
             if (my $group = $e->event->event_def->group_field) {
 
                 # split the grouping link steps
@@ -575,20 +585,30 @@ sub run_all_events {
     for my $def ( %$groups ) {
         if ($def eq '*') {
             for my $event ( @{ $$groups{'*'} } ) {
-                $client->respond(
-                    $self
-                        ->method_lookup('open-ils.trigger.event.fire')
-                        ->run($event)
-                );
+                try {
+                    $client->respond(
+                        $self
+                            ->method_lookup('open-ils.trigger.event.fire')
+                            ->run($event)
+                    );
+                } otherwise { 
+                    # un-oh
+                    $logger->error("event firing failed");
+                };
             }
         } else {
             my $defgroup = $$groups{$def};
             for my $ident ( keys %$defgroup ) {
-                $client->respond(
-                    $self
-                        ->method_lookup('open-ils.trigger.event_group.fire')
-                        ->run($$defgroup{$ident})
-                );
+                try {
+                    $client->respond(
+                        $self
+                            ->method_lookup('open-ils.trigger.event_group.fire')
+                            ->run($$defgroup{$ident})
+                    );
+                } otherwise {
+                    # uh-oh
+                    $logger->error("event group firing failed");
+                };
             }
         }
     }
