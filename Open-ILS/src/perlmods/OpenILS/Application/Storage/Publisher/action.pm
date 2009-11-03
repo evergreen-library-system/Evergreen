@@ -411,6 +411,7 @@ sub hold_pull_list {
 	my $ord_table = asset::copy_location_order->table;
 
 	my $idlist = 1 if ($self->api_name =~/id_list/o);
+	my $count = 1 if ($self->api_name =~/count$/o);
 
 	my $status_filter = '';
 	$status_filter = 'AND a.status IN (0,7)' if ($self->api_name =~/status_filtered/o);
@@ -430,10 +431,25 @@ sub hold_pull_list {
 		  OFFSET $offset
 	SQL
 
+    if ($count) {
+        $select = <<"        SQL";
+            SELECT    count(*)
+              FROM    $h_table h
+                  JOIN $a_table a ON (h.current_copy = a.id)
+              WHERE    a.circ_lib = ?
+                  AND h.capture_time IS NULL
+                  AND h.cancel_time IS NULL
+                  AND (h.expire_time IS NULL OR h.expire_time > NOW())
+                $status_filter
+        SQL
+    }
+
 	my $sth = action::survey->db_Main->prepare_cached($select);
 	$sth->execute($ou);
 
-	if ($idlist) {
+	if ($count) {
+		$client->respond( $sth->fetchall_arrayref()->[0][0] );
+	} elsif ($idlist) {
 		$client->respond( $_->{id} ) for ( $sth->fetchall_hash );
 	} else {
 		$client->respond( $_->to_fieldmapper ) for ( map { action::hold_request->construct($_) } $sth->fetchall_hash );
@@ -441,6 +457,28 @@ sub hold_pull_list {
 
 	return undef;
 }
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.direct.action.hold_request.pull_list.current_copy_circ_lib.count',
+	api_level       => 1,
+	stream          => 1,
+	signature	=> [
+		"Returns a count of holds for a specific library's pull list.",
+ 		[ [org_unit => "The library's org id", "number"] ],
+		['A count of holds for the stated library to pull ', 'number']
+	],
+	method          => 'hold_pull_list',
+);
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.direct.action.hold_request.pull_list.current_copy_circ_lib.status_filtered.count',
+	api_level       => 1,
+	stream          => 1,
+	signature	=> [
+		"Returns a status filtered count of holds for a specific library's pull list.",
+ 		[ [org_unit => "The library's org id", "number"] ],
+		['A status filtered count of holds for the stated library to pull ', 'number']
+	],
+	method          => 'hold_pull_list',
+);
 __PACKAGE__->register_method(
 	api_name        => 'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib',
 	api_level       => 1,
