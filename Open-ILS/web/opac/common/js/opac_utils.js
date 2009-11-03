@@ -583,7 +583,7 @@ function grabUser(ses, force) {
 function grabUserPrefs(user, force) {
 	if(user == null) user = G.user;
 	if(!force && user.prefs) return user.prefs;	
-	var req = new Request(FETCH_USER_PREFS, user.session, user.id());
+	var req = new Request(FETCH_USER_PREFS, G.user.session, user.id());
 	req.send(true);
 	user.prefs = req.result();
 	return user.prefs;
