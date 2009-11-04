@@ -359,7 +359,13 @@ sub create_batch_events {
         { hook   => [ keys %hook_hash ], active => 't' },
     );
 
-    my $first_loop = 1;
+    my $orig_filter_and = [];
+    if ($$filter{'-and'}) {
+        for my $f ( @{ $$filter{'-and'} } ) {
+            push @$orig_filter_and, $f;
+        }
+    }
+
     for my $def ( @$defs ) {
 
         my $date = DateTime->now->subtract( seconds => interval_to_seconds($def->delay) );
@@ -381,23 +387,27 @@ sub create_batch_events {
                     ->add( seconds => interval_to_seconds($def->delay) )
                     ->strftime( '%F %T%z' );
         } else {
-            $filter->{ $def->delay_field } = {
-                '<=' => DateTime
-                    ->now
-                    ->subtract( seconds => interval_to_seconds($def->delay) )
-                    ->strftime( '%F %T%z' )
-            };
+            if ($def->max_delay) {
+                my @times = sort {$a <=> $b} interval_to_seconds($def->delay), interval_to_seconds($def->max_delay);
+                $filter->{ $def->delay_field } = {
+                    'between' => [
+                        DateTime->now->subtract( seconds => $times[0] )->strftime( '%F %T%z' ),
+                        DateTime->now->subtract( seconds => $times[1] )->strftime( '%F %T%z' )
+                    ]
+                };
+            } else {
+                $filter->{ $def->delay_field } = {
+                    '<=' => DateTime->now->subtract( seconds => interval_to_seconds($def->delay) )->strftime( '%F %T%z' )
+                };
+            }
         }
 
         my $class = _fm_class_by_hint($hook_hash{$def->hook}->core_type);
 
         # filter where this target has an event (and it's pending, for active hooks)
-        if($first_loop) {
-            $$filter{'-and'} = [] if (!exists($$filter{'-and'}));
-            $first_loop = 0;
-        } else {
-            # remove the pre-existing event check for the previous event def
-            pop @{ $filter->{'-and'} };
+        $$filter{'-and'} = [];
+        for my $f ( @$orig_filter_and ) {
+            push @{ $$filter{'-and'} }, $f;
         }
 
         push @{ $filter->{'-and'} }, {
