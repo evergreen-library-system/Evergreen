@@ -763,7 +763,7 @@ patron.holds.prototype = {
 
                                 var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_list.join(', ')]);
-                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_list.join(', ')]);
+                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt.plural',[hold_list.join(', ')]);
                                 var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
                                 var value = 'YYYY-MM-DD';
                                 var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
@@ -808,7 +808,7 @@ patron.holds.prototype = {
 
                                 var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_list.join(', ')]);
-                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_list.join(', ')]);
+                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt.plural',[hold_list.join(', ')]);
                                 var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
                                 var value = 'YYYY-MM-DD';
                                 var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
@@ -850,7 +850,7 @@ patron.holds.prototype = {
 
                                 var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.shelf_expire_time.prompt',[hold_list.join(', ')]);
-                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.shelf_expire_time.prompt',[hold_list.join(', ')]);
+                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.shelf_expire_time.prompt.plural',[hold_list.join(', ')]);
                                 var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
                                 var value = 'YYYY-MM-DD';
                                 var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
