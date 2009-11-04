@@ -26,6 +26,7 @@
         <command id="cmd_holds_edit_email_notify" />
         <command id="cmd_holds_edit_thaw_date" />
         <command id="cmd_holds_edit_expire_time" />
+        <command id="cmd_holds_edit_shelf_expire_time" />
         <command id="cmd_holds_activate" />
         <command id="cmd_holds_suspend" />
         <command id="cmd_holds_cut_in_line" />
@@ -55,6 +56,7 @@
             <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
             <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
+            <menuitem label="&staff.circ.holds.edit_shelf_expire_time;" command="cmd_holds_edit_shelf_expire_time" accesskey="&staff.circ.holds.edit_shelf_expire_time.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date.accesskey;"/>
             <menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
             <menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
@@ -130,6 +132,7 @@
                     <menuitem label="&staff.circ.holds.edit_phone_notification;" command="cmd_holds_edit_phone_notify" accesskey="&staff.circ.holds.edit_phone_notification.accesskey;"/>
                     <menuitem label="&staff.circ.holds.set_email_notification;" command="cmd_holds_edit_email_notify" accesskey="&staff.circ.holds.set_email_notification.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_expire_time;" command="cmd_holds_edit_expire_time" accesskey="&staff.circ.holds.edit_expire_time.accesskey;"/>
+                    <menuitem label="&staff.circ.holds.edit_shelf_expire_time;" command="cmd_holds_edit_shelf_expire_time" accesskey="&staff.circ.holds.edit_shelf_expire_time.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_activation_date;" command="cmd_holds_edit_thaw_date" accesskey="&staff.circ.holds.edit_activation_date.accesskey;"/>
                     <menuitem label="&staff.circ.holds.activate_hold;" command="cmd_holds_activate" accesskey="&staff.circ.holds.activate_hold.accesskey;"/>
                     <menuitem label="&staff.circ.holds.suspend_hold;" command="cmd_holds_suspend" accesskey="&staff.circ.holds.suspend_hold.accesskey;"/>
