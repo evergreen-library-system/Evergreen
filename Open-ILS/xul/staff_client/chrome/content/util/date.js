@@ -4,7 +4,7 @@ if (typeof util == 'undefined') var util = {};
 util.date = {};
 
 util.date.EXPORT_OK    = [ 
-    'check', 'timer_init', 'timer_elapsed', 'db_date2Date', 'formatted_date', 'interval_to_seconds'
+    'check', 'check_past', 'timer_init', 'timer_elapsed', 'db_date2Date', 'formatted_date', 'interval_to_seconds'
 ];
 util.date.EXPORT_TAGS    = { ':all' : util.date.EXPORT_OK };
 
