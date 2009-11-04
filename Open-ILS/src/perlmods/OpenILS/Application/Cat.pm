@@ -216,6 +216,11 @@ sub undelete_biblio_record_entry {
     $record->deleted('f');
     $record->active('t');
 
+    # Set the leader/05 to indicate that the record has been corrected/revised
+    my $marc = $record->marc();
+    $marc =~ s{(<leader>.{5}).}{$1c};
+    $record->marc($marc);
+
     # no 2 non-deleted records can have the same tcn_value
     my $existing = $e->search_biblio_record_entry(
         {   deleted => 'f', 

@@ -312,6 +312,12 @@ sub delete_rec {
    $rec->active('f');
    $rec->editor( $editor->requestor->id );
    $rec->edit_date('now');
+
+   # Set the leader/05 to indicate that the record has been deleted
+   my $marc = $rec->marc();
+   $marc =~ s{(<leader>.{5}).}{$1d};
+   $rec->marc($marc);
+
    $editor->update_biblio_record_entry($rec) or return $editor->event;
 
    return undef;
