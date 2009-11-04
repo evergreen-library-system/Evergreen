@@ -536,13 +536,20 @@ sub grouped_events {
         my $e;
         try {
            $e = OpenILS::Application::Trigger::Event->new($e_id);
-        } otherwise {};
+        } catch Error with {
+            $logger->error("Event creation failed with ".shift());
+        };
 
         next unless $e; 
+        my $valid;
 
-        if (try { $e->validate->valid } otherwise { $e = undef; }) {
+        try {
+            $valid = $e->validate->valid;
+        } catch Error with {
+            $logger->error("Event validation failed with ".shift());
+        };
 
-            next unless $e;
+        if ($valid) {
 
             if (my $group = $e->event->event_def->group_field) {
 
@@ -591,9 +598,8 @@ sub run_all_events {
                             ->method_lookup('open-ils.trigger.event.fire')
                             ->run($event)
                     );
-                } otherwise { 
-                    # un-oh
-                    $logger->error("event firing failed");
+                } catch Error with { 
+                    $logger->error("event firing failed with ".shift());
                 };
             }
         } else {
@@ -605,9 +611,8 @@ sub run_all_events {
                             ->method_lookup('open-ils.trigger.event_group.fire')
                             ->run($$defgroup{$ident})
                     );
-                } otherwise {
-                    # uh-oh
-                    $logger->error("event group firing failed");
+                } catch Error with {
+                    $logger->error("event firing failed with ".shift());
                 };
             }
         }
