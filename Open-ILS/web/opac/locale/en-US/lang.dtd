@@ -2958,3 +2958,14 @@
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label "Total Circs - Current Year">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs.label "Total Circs">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label "Total Circs - Prev Year">
+<!ENTITY staff.util.timestamp_dialog.title "Select Date or Timestamp:">
+<!ENTITY staff.util.timestamp_dialog.date.label "Date:">
+<!ENTITY staff.util.timestamp_dialog.date.accesskey "D">
+<!ENTITY staff.util.timestamp_dialog.cancel_btn.label "Cancel">
+<!ENTITY staff.util.timestamp_dialog.cancel_btn.accesskey "C">
+<!ENTITY staff.util.timestamp_dialog.remove_btn.label "Remove">
+<!ENTITY staff.util.timestamp_dialog.remove_btn.accesskey "R">
+<!ENTITY staff.util.timestamp_dialog.apply_btn.label "Apply">
+<!ENTITY staff.util.timestamp_dialog.apply_btn.accesskey "A">
+
+

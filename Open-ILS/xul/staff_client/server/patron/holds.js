@@ -837,36 +837,30 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             try {
-                                JSAN.use('util.date');
-                                function check_date(value) {
-                                    try {
-                                        if (! util.date.check('YYYY-MM-DD',value) ) { throw(document.getElementById('circStrings').getString('staff.circ.holds.shelf_expire_time.invalid_date')); }
-                                        return true;
-                                    } catch(E) {
-                                        alert(E);
-                                        return false;
-                                    }
-                                }
-
                                 var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.shelf_expire_time.prompt',[hold_list.join(', ')]);
                                 var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.shelf_expire_time.prompt.plural',[hold_list.join(', ')]);
                                 var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
-                                var value = 'YYYY-MM-DD';
                                 var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
-                                var shelf_expire_time; var invalid = true;
-                                while(invalid) {
-                                    shelf_expire_time = window.prompt(msg,value,title);
-                                    if (shelf_expire_time) {
-                                        invalid = ! check_date(shelf_expire_time);
-                                    } else {
-                                        invalid = false;
+                                var desc = document.getElementById('circStrings').getString('staff.circ.holds.shelf_expire_time.dialog.description');
+
+                                JSAN.use('util.window'); var win = new util.window();
+                                var my_xulG = win.open( 
+                                    urls.XUL_TIMESTAMP_DIALOG, 'edit_shelf_expire_time', 'chrome,resizable,modal', 
+                                    { 
+                                        'title' : title, 
+                                        'description' : desc, 
+                                        'msg' : msg, 
+                                        'allow_unset' : false,
+                                        'disallow_future_dates' : false,
+                                        'disallow_past_dates' : false,
+                                        'disallow_today' : false
                                     }
-                                }
-                                if (shelf_expire_time || shelf_expire_time == '') {
+                                );
+                                if (my_xulG.complete) {
                                     circ.util.batch_hold_update(
                                         hold_list, 
-                                        { 'shelf_expire_time' : shelf_expire_time == '' ? null : util.date.formatted_date(shelf_expire_time + ' 00:00:00','%{iso8601}') }, 
+                                        { 'shelf_expire_time' : my_xulG.timestamp }, 
                                         { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } }
                                     );
                                 }
