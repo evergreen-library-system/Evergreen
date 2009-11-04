@@ -2,7 +2,7 @@ package OpenILS::Application::Trigger::Event;
 use strict; use warnings;
 use OpenSRF::EX qw/:try/;
 
-use OpenSRF::Utils::Logger qw/:logger/;
+use OpenSRF::Utils::Logger qw/$logger/;
 
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
@@ -113,7 +113,7 @@ sub cleanup {
                 $self->cleanedup(1);
             }
         } otherwise {
-            $log->error( shift() );
+            $log->error("Event cleanup failed with ". shift() );
             $self->update_state( 'error' ) || die 'Unable to update event state';
         };
 
@@ -148,7 +148,7 @@ sub react {
                         ->final_result
                 );
             } otherwise {
-                $log->error( shift() );
+                $log->error("Event reacting failed with ". shift() );
                 $self->update_state( 'error' ) || die 'Unable to update event state';
             };
 
@@ -179,7 +179,7 @@ sub validate {
                     ->final_result
             );
         } otherwise {
-            $log->error( shift() );
+            $log->error("Event validation failed with ". shift() );
             $self->update_state( 'error' ) || die 'Unable to update event state';
         };
 

@@ -459,6 +459,7 @@ sub fire_single_event {
     my $e = OpenILS::Application::Trigger::Event->new($event_id);
 
     if ($e->validate->valid) {
+        $logger->info("Event is valid, reacting...");
         $e->react->cleanup;
     }
 
@@ -486,6 +487,7 @@ sub fire_event_group {
     my $e = OpenILS::Application::Trigger::EventGroup->new(@$events);
 
     if ($e->validate->valid) {
+        $logger->info("Event group is valid, reacting...");
         $e->react->cleanup;
     }
 
