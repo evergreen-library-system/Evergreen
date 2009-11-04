@@ -520,10 +520,10 @@ util.list.prototype = {
                     // Remove oldest row
                     //if (typeof params.to_bottom != 'undefined') 
                     if (typeof params.to_top == 'undefined') {
-                        if (typeof params.on_delete == 'function') { prams.on_delete( treechildren_node.firstChild.getAttribute('unique_row_counter') ); }
+                        if (typeof params.on_delete == 'function') { params.on_delete( treechildren_node.firstChild.getAttribute('unique_row_counter') ); }
                         treechildren_node.removeChild( treechildren_node.firstChild );
                     } else {
-                        if (typeof params.on_delete == 'function') { prams.on_delete( treechildren_node.lastChild.getAttribute('unique_row_counter') ); }
+                        if (typeof params.on_delete == 'function') { params.on_delete( treechildren_node.lastChild.getAttribute('unique_row_counter') ); }
                         treechildren_node.removeChild( treechildren_node.lastChild );
                     }
                 }
