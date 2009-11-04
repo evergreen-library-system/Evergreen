@@ -687,6 +687,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Success Cleanup" name="cleanup_success"  reporter:datatype="link"/>
 			<field reporter:label="Failure Cleanup" name="cleanup_failure"  reporter:datatype="link"/>
 			<field reporter:label="Processing Delay" name="delay"  reporter:datatype="interval"/>
+			<field reporter:label="Max Event Validity Delay" name="max_delay"  reporter:datatype="interval"/>
 			<field reporter:label="Processing Delay Context Field" name="delay_field"  reporter:datatype="text"/>
 			<field reporter:label="Processing Group Context Field" name="group_field"  reporter:datatype="text"/>
 			<field reporter:label="Template" name="template"  reporter:datatype="text"/>
