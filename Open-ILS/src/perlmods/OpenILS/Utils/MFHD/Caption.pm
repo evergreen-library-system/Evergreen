@@ -165,6 +165,12 @@ sub capstr {
     }
 }
 
+sub type_of_unit {
+    my $self = shift;
+
+    return $self->{_mfhdc_UNIT};
+}
+
 sub calendar_change {
     my $self = shift;
 
