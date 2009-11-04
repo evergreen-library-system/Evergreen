@@ -1629,6 +1629,24 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
+            'id' : 'shelf_time',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.holds.shelf_time'),
+            'flex' : 0,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.ahr.shelf_time(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'id' : 'shelf_expire_time',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.holds.shelf_expire_time'),
+            'flex' : 0,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.ahr.shelf_expire_time(); }
+        },
+        {
+            'persist' : 'hidden width ordinal',
             'id' : 'available_timestamp',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.available_timestamp'),
             'flex' : 1,
