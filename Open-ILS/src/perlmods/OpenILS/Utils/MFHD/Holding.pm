@@ -36,7 +36,6 @@ sub new {
 	    $self->{_mfhdh_SUBFIELDS}->{$key} = {HOLDINGS => $val,
 						 UNIT     => undef,};
 	    $last_enum = $key;
-	} elsif ($key =~ /[i-m]/) {
 	} elsif ($key eq 'o') {
 	    warn '$o specified prior to first enumeration'
 	      unless defined($last_enum);
@@ -118,6 +117,10 @@ sub format {
     my $self = shift;
     my $caption = $self->{_mfhdh_CAPTION};
     my $str = '';
+
+    if ($caption->type_of_unit) {
+	$str = $caption->type_of_unit . ' ';
+    }
 
     if ($caption->enumeration_is_chronology) {
 	# if issues are identified by chronology only, then the
