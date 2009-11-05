@@ -391,8 +391,8 @@ sub create_batch_events {
                 my @times = sort {$a <=> $b} interval_to_seconds($def->delay), interval_to_seconds($def->max_delay);
                 $filter->{ $def->delay_field } = {
                     'between' => [
-                        DateTime->now->subtract( seconds => $times[0] )->strftime( '%F %T%z' ),
-                        DateTime->now->subtract( seconds => $times[1] )->strftime( '%F %T%z' )
+                        DateTime->now->subtract( seconds => $times[1] )->strftime( '%F %T%z' ),
+                        DateTime->now->subtract( seconds => $times[0] )->strftime( '%F %T%z' )
                     ]
                 };
             } else {

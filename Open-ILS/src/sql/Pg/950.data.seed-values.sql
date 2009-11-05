@@ -1901,8 +1901,8 @@ INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:hold.cancel',
 
 -- Sample Overdue Notice --
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template) 
-    VALUES (1, 'f', 1, '7 Day Overdue Email Notification', 'checkout.due', 'CircIsOverdue', 'SendEmail', '7 days', 'due_date', 'usr', 
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template) 
+    VALUES (1, 'f', 1, '7 Day Overdue Email Notification', 'checkout.due', 'CircIsOverdue', 'SendEmail', '7 days', '8 days', 'due_date', 'usr', 
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
@@ -1929,9 +1929,6 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (1, 'usr'),
     (1, 'billable_transaction.summary'),
     (1, 'circ_lib.billing_address');
-
-INSERT INTO action_trigger.event_params (event_def, param, value) VALUES
-    (1, 'max_delay_age', '"1 day"');
 
 -- Sample Mark Long-Overdue Item Lost --
 
@@ -2340,8 +2337,8 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
 
 -- Sample Pre-due Notice --
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template) 
-    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'MaxPassiveDelayAge', 'SendEmail', '-3 days', 'due_date', 'usr', 
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template) 
+    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'MaxPassiveDelayAge', 'SendEmail', '-3 days', 'due_date', 'usr', '-2 days',
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
@@ -2367,10 +2364,6 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (6, 'target_copy.call_number.record.simple_record'),
     (6, 'usr'),
     (6, 'circ_lib.billing_address');
-
-INSERT INTO action_trigger.event_params (event_def, param, value) VALUES
-    (6, 'max_delay_age', '"1 day"');
-  
 
 -- ApplyPatronPenalty A/T Reactor
 
