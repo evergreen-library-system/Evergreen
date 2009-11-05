@@ -153,6 +153,17 @@ CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON action.circulation FOR EAC
 CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_update ();
 CREATE TRIGGER mat_summary_remove_tgr AFTER DELETE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_delete ();
 
+CREATE OR REPLACE FUNCTION action.push_circ_due_time () RETURNS TRIGGER AS $$
+BEGIN
+    IF (EXTRACT(EPOCH FROM NEW.circ_duration)::INT % EXTRACT(EPOCH FROM '1 day'::INTERVAL)::INT) = 0 THEN
+        NEW.due_date = (NEW.due_date::DATE + '1 day'::INTERVAL - '1 second'::INTERVAL)::TIMESTAMPTZ;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER push_due_date_tgr BEFORE INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
 
 CREATE TABLE action.aged_circulation (
 	usr_post_code		TEXT,
