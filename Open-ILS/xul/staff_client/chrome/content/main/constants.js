@@ -178,6 +178,7 @@ const api = {
     'FM_BRN_FROM_MARCXML' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.marcxml_to_brn', 'secure' : false },
     'FM_CBT_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.billing_type.ranged.retrieve.all', 'secure' : false },
     'FM_CCS_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all', 'secure' : false },
+    'FM_CIRC_CHAIN' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.renewal_chain.retrieve_by_circ.atomic' },
     'FM_CIRC_DETAILS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.fleshed.retrieve' },
     'FM_CIRC_DETAILS.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.fleshed.retrieve.authoritative' },
     'FM_CIRC_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.retrieve' },

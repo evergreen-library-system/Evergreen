@@ -2931,6 +2931,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Time.label "Checkin Time">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Workstation.label "Checkin Workstation">
 <!ENTITY staff.circ.alternate_copy_summary.Checkout_Date.label "Checkout Date">
+<!ENTITY staff.circ.alternate_copy_summary.Checkout_Workstation.label "Checkout Workstation">
 <!ENTITY staff.circ.alternate_copy_summary.Circ_Modifier.label "Circ Modifier">
 <!ENTITY staff.circ.alternate_copy_summary.Circulation_History.label "Circulation History">
 <!ENTITY staff.circ.alternate_copy_summary.Copy_ID.label "Copy ID">
@@ -2952,6 +2953,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Quick_Summary.label "Quick Summary">
 <!ENTITY staff.circ.alternate_copy_summary.Reference.label "Reference">
 <!ENTITY staff.circ.alternate_copy_summary.Remaining_Renewals.label "Remaining Renewals">
+<!ENTITY staff.circ.alternate_copy_summary.Renewal_Workstation.label "Renewal Workstation">
 <!ENTITY staff.circ.alternate_copy_summary.Rolling_Counter.label "Rolling Counter">
 <!ENTITY staff.circ.alternate_copy_summary.Status.label "Status">
 <!ENTITY staff.circ.alternate_copy_summary.TCN.label "TCN">

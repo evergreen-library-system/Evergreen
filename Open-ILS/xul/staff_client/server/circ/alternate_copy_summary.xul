@@ -106,6 +106,8 @@
                                 <textbox name="reference" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Total_Circs.label;" />
                                 <textbox name="total_circ_count" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Workstation.label;" />
+                                <textbox name="checkout_workstation" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="&staff.circ.alternate_copy_summary.Status_Changed_Time.label;" />
@@ -114,8 +116,8 @@
                                 <textbox name="opac_visible" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label;" />
                                 <textbox name="total_circ_count_curr_year" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
-                                <textbox name="checkin_time" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Workstation.label;" />
+                                <textbox name="renewal_workstation" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="&staff.circ.alternate_copy_summary.Copy_ID.label;" />
@@ -124,8 +126,8 @@
                                 <textbox name="holdable" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label;" />
                                 <textbox name="total_circ_count_prev_year" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
-                                <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
+                                <textbox name="checkin_time" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="&staff.circ.alternate_copy_summary.TCN.label;" />
@@ -134,6 +136,8 @@
                                 <textbox name="circ_mod" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Rolling_Counter.label;" />
                                 <textbox name="rolling_counter" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
+                                <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <spacer />

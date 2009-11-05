@@ -271,6 +271,8 @@ function load_item() {
         set("xact_start", '');
         set("create_time", '');
         set("workstation", '');
+        set("renewal_workstation", '');
+        set("checkout_workstation", '');
         set("billings", '');
         set("payments", '');
         set("billable_transaction", '');
@@ -309,6 +311,19 @@ function load_item() {
             set("xact_start", details.circ.xact_start()); 
             set("create_time", details.circ.create_time()); 
             set("workstation", details.circ.workstation()); 
+            if (get_bool(details.circ.opac_renewal())||get_bool(details.circ.phone_renewal())||get_bool(details.circ.desk_renewal())) {
+                set("renewal_workstation", typeof details.circ.workstation() == 'object' ? details.circ.workstation().name() : details.circ.workstation() ); 
+                network.simple_request('FM_CIRC_CHAIN', [ses(), details.circ.id() ], function(req) { // Tiny race condition between details.circ and circs[circs.length-1] here, but meh :)
+                    try {
+                        var circs = req.getResultObject();
+                        set("checkout_workstation", typeof circs[0].workstation() == 'object' ? circs[0].workstation().name() : circs[0].workstation() );
+                    } catch(E) {
+                        alert('Error in alternate_copy_summary.js, FM_CIRC_CHAIN: ' + E);
+                    }
+                } );
+            } else {
+                set("checkout_workstation", typeof details.circ.workstation() == 'object' ? details.circ.workstation().name() : details.circ.workstation() ); 
+            }
             set("billings", details.circ.billings()); 
             set("payments", details.circ.payments()); 
             set("billable_transaction", details.circ.billable_transaction()); 
