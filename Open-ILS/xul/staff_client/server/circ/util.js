@@ -519,7 +519,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.id() : ( my.acp.circulations() ? my.acp.circulations()[0].id() : ""); },
+            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.id() : ""; },
             'persist' : 'hidden width ordinal'
         },
         {
@@ -869,11 +869,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return data.hash.aou[ my.circ.circ_lib() ].shortname();
                 } else {
-                    if (my.acp.circulations()) {
-                        return data.hash.aou[ my.acp.circulations()[0].circ_lib() ].shortname();
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             }
         },
@@ -889,12 +885,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.xact_start();
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].xact_start();
-                    }
-                    else {
-                        return  "";
-                    }
+                    return  "";
                 }
             }
         },
@@ -910,11 +901,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.checkin_time();
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].checkin_time();
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             }
         },
@@ -930,11 +917,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.xact_start().substr(0,10);
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].xact_start().substr(0,10);
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             }
         },
@@ -950,11 +933,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.checkin_time().substr(0,10);
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].checkin_time().substr(0,10);
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             }
         },
@@ -966,7 +945,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.xact_finish() : ( my.acp.circulations() ? my.acp.circulations()[0].xact_finish() : ""); },
+            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.xact_finish() : ""; },
         },
         {
             'persist' : 'hidden width ordinal',
@@ -980,11 +959,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.due_date().substr(0,10);
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].due_date().substr(0,10);
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             }
         },
@@ -1000,11 +975,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.due_date().substr(11,8);
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].due_date().substr(11,8);
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             }
         },
@@ -1120,11 +1091,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.renewal_remaining();
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].renewal_remaining();
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             },
             'sort_type' : 'number'
@@ -1141,11 +1108,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.stop_fines();
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].stop_fines();
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             }
         },
@@ -1161,11 +1124,7 @@ circ.util.columns = function(modify,params) {
                 if (my.circ) {
                     return my.circ.stop_fines_time();
                 } else {
-                    if (my.acp.circulations()) {
-                        return my.acp.circulations()[0].stop_fines_time();
-                    } else {
-                        return "";
-                    }
+                    return "";
                 }
             }
         },
@@ -1261,7 +1220,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.checkin_scan_time().substr(0,10) : ( my.acp.circulations() ? my.acp.circulations()[0].checkin_scan_time().substr(0,10) : ""); },
+            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.checkin_scan_time().substr(0,10) : ""; },
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1271,7 +1230,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.checkin_scan_time() : ( my.acp.circulations() ? my.acp.circulations()[0].checkin_scan_time() : ""); },
+            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.checkin_scan_time() : ""; },
         },
         {
             'persist' : 'hidden width ordinal',
