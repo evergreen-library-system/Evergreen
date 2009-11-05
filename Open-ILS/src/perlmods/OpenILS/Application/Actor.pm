@@ -2075,7 +2075,7 @@ sub user_transaction_history {
 	my( $self, $conn, $auth, $userid, $type ) = @_;
 
 	# run inside of a transaction to prevent replication delays
-	my $e = new_editor(xact=>1, authtoken=>$auth);
+	my $e = new_editor(authtoken=>$auth);
 	return $e->die_event unless $e->checkauth;
 
 	if( $e->requestor->id ne $userid ) {
@@ -2086,19 +2086,12 @@ sub user_transaction_history {
 	my $api = $self->api_name;
 	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history.still_open$/);
 
-	my @xacts = @{ $e->search_money_billable_transaction(
-		[	{ usr => $userid, @xact_finish },
-			{ flesh => 1,
-			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] },
-			  order_by => { mbt => 'xact_start DESC' },
-			}
-		],
-      {substream => 1}
-	) };
-
-	$e->rollback;
-
-	my @mbts = $U->make_mbts( $e, @xacts );
+    my @mbts = $e->search_money_billable_transaction_summary(
+        [ 
+            { usr => $userid, @xact_finish },
+            { order_by => { mbt => 'xact_start DESC' } }
+        ]
+    );
 
 	if(defined($type)) {
 		@mbts = grep { $_->xact_type eq $type } @mbts;
