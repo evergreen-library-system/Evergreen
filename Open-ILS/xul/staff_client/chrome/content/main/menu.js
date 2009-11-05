@@ -95,7 +95,7 @@ main.menu.prototype = {
             obj.set_tab( 
                 loc, 
                 {'tab_name' : label, 'browser' : false }, 
-                {'no_xulG' : false, 'show_print_button' : false, 'show_nav_buttons' : true } 
+                {'no_xulG' : false, 'show_print_button' : true, 'show_nav_buttons' : true } 
             );
         }
 
@@ -112,7 +112,7 @@ main.menu.prototype = {
             obj.set_tab( 
                 loc, 
                 {tab_name : label, browser : false }, 
-                {no_xulG : false, show_print_button : false, show_nav_buttons : true }
+                {no_xulG : false, show_print_button : true, show_nav_buttons : true }
             );
         }
 
