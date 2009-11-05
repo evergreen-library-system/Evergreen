@@ -1533,6 +1533,7 @@ sub user_transactions {
 		->method_lookup('open-ils.actor.user.transactions.history.still_open')
 		->run($login_session => $user_id => $type);
 
+
 	if($api =~ /have_charge/o) {
 
 		$trans = [ grep { int($_->total_owed * 100) > 0 } @$trans ];
@@ -1983,7 +1984,7 @@ sub user_transaction_history {
 	my( $self, $conn, $auth, $userid, $type ) = @_;
 
 	# run inside of a transaction to prevent replication delays
-	my $e = new_editor(xact=>1, authtoken=>$auth);
+	my $e = new_editor(authtoken=>$auth);
 	return $e->die_event unless $e->checkauth;
 
 	if( $e->requestor->id ne $userid ) {
@@ -1994,37 +1995,34 @@ sub user_transaction_history {
 	my $api = $self->api_name;
 	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history.still_open$/);
 
-	my @xacts = @{ $e->search_money_billable_transaction(
-		[	{ usr => $userid, @xact_finish },
-			{ flesh => 1,
-			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] },
-			  order_by => { mbt => 'xact_start DESC' },
-			}
-		],
-      {substream => 1}
-	) };
-
-	$e->rollback;
-
-	my @mbts = $U->make_mbts( $e, @xacts );
+    my $mbts = $e->search_money_billable_transaction_summary(
+        [ 
+            { usr => $userid, @xact_finish },
+            { order_by => { mbt => 'xact_start DESC' } }
+        ]
+    );
 
 	if(defined($type)) {
-		@mbts = grep { $_->xact_type eq $type } @mbts;
+		@$mbts = grep { $_->xact_type eq $type } @$mbts;
 	}
 
 	if($api =~ /have_balance/o) {
-		@mbts = grep { int($_->balance_owed * 100) != 0 } @mbts;
+		@$mbts = grep { int($_->balance_owed * 100) != 0 } @$mbts;
 	}
 
 	if($api =~ /have_charge/o) {
-		@mbts = grep { defined($_->last_billing_ts) } @mbts;
+		@$mbts = grep { defined($_->last_billing_ts) } @$mbts;
 	}
 
 	if($api =~ /have_bill/o) {
-		@mbts = grep { int($_->total_owed * 100) != 0 } @mbts;
+		@$mbts = grep { int($_->total_owed * 100) != 0 } @$mbts;
 	}
 
-	return [@mbts];
+    if ($api =~ /\.ids/) {
+    	return [map {$_->id} @$mbts];
+    } else {
+        return $mbts;
+    }
 }
 
 
