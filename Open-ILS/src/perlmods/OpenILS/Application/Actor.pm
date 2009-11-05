@@ -1587,6 +1587,7 @@ sub user_transactions {
 		->method_lookup('open-ils.actor.user.transactions.history.still_open')
 		->run($login_session => $user_id => $type);
 
+
 	if($api =~ /have_charge/o) {
 
 		$trans = [ grep { int($_->total_owed * 100) > 0 } @$trans ];
@@ -2086,7 +2087,7 @@ sub user_transaction_history {
 	my $api = $self->api_name;
 	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history.still_open$/);
 
-    my @mbts = $e->search_money_billable_transaction_summary(
+    my $mbts = $e->search_money_billable_transaction_summary(
         [ 
             { usr => $userid, @xact_finish },
             { order_by => { mbt => 'xact_start DESC' } }
@@ -2094,25 +2095,25 @@ sub user_transaction_history {
     );
 
 	if(defined($type)) {
-		@mbts = grep { $_->xact_type eq $type } @mbts;
+		@$mbts = grep { $_->xact_type eq $type } @$mbts;
 	}
 
 	if($api =~ /have_balance/o) {
-		@mbts = grep { int($_->balance_owed * 100) != 0 } @mbts;
+		@$mbts = grep { int($_->balance_owed * 100) != 0 } @$mbts;
 	}
 
 	if($api =~ /have_charge/o) {
-		@mbts = grep { defined($_->last_billing_ts) } @mbts;
+		@$mbts = grep { defined($_->last_billing_ts) } @$mbts;
 	}
 
 	if($api =~ /have_bill/o) {
-		@mbts = grep { int($_->total_owed * 100) != 0 } @mbts;
+		@$mbts = grep { int($_->total_owed * 100) != 0 } @$mbts;
 	}
 
     if ($api =~ /\.ids/) {
-    	return [map {$_->id} @mbts];
+    	return [map {$_->id} @$mbts];
     } else {
-        return [@mbts];
+        return $mbts;
     }
 }
 
