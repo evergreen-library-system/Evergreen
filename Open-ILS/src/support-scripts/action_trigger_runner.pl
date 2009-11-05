@@ -29,11 +29,13 @@ my $opt_debug_stdout = 0;
 my $opt_help = 0;
 my $opt_hooks;
 my $opt_process_hooks = 0;
+my $opt_granularity = undef;
 
 GetOptions(
     'osrf-config=s' => \$opt_osrf_config,
     'run-pending' => \$opt_run_pending,
     'hooks=s' => \$opt_hooks,
+    'hooks=s' => \$opt_granularity,
     'process-hooks' => \$opt_process_hooks,
     'debug-stdout' => \$opt_debug_stdout,
     'custom-filters=s' => \$opt_custom_filter,
@@ -88,6 +90,9 @@ $0 : Create and process action/trigger events
         Define which hooks to create events for.  If none are defined,
         it defaults to the list of hooks defined in the --custom-filters option.
 
+    --granularity=label
+        Run events with {label} granularity setting, or no granularity setting
+
     --debug-stdout
         Print server responses to stdout (as JSON) for debugging
 
@@ -123,7 +128,7 @@ sub process_hooks {
         my $method = 'open-ils.trigger.passive.event.autocreate.batch';
         $method =~ s/passive/active/ if $config->{active};
         
-        my $req = $ses->request($method, $hook, $config->{context_org}, $config->{filter});
+        my $req = $ses->request($method, $hook, $config->{context_org}, $config->{filter}, $opt_granularity);
         while(my $resp = $req->recv(timeout => 1800)) {
             if($opt_debug_stdout) {
                 print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
@@ -135,7 +140,7 @@ sub process_hooks {
 sub run_pending {
     return unless $opt_run_pending;
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    my $req = $ses->request('open-ils.trigger.event.run_all_pending');
+    my $req = $ses->request('open-ils.trigger.event.run_all_pending' => $opt_granularity);
     while(my $resp = $req->recv(timeout => 600)) {
         if($opt_debug_stdout) {
             print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";

@@ -692,6 +692,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Processing Group Context Field" name="group_field"  reporter:datatype="text"/>
 			<field reporter:label="Template" name="template"  reporter:datatype="text"/>
 			<field reporter:label="Name" name="name"  reporter:datatype="text"/>
+			<field reporter:label="Granularity" name="granularity"  reporter:datatype="text"/>
 			<field reporter:label="Environmet Entries" name="env" oils_persist:virtual="true"  reporter:datatype="link"/>
 			<field reporter:label="Parameters" name="params" oils_persist:virtual="true"  reporter:datatype="link"/>
 		</fields>
@@ -728,12 +729,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="State" name="state" reporter:datatype="text"/>
 			<field reporter:label="Template Output" name="template_output" reporter:datatype="link"/>
 			<field reporter:label="Error Output" name="error_output" reporter:datatype="text"/>
+			<field reporter:label="Asynchronous Output" name="async_output" reporter:datatype="link"/>
 			<field reporter:label="Update Process" name="update_process" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
 			<link field="template_output" reltype="has_a" key="id" map="" class="ateo"/>
 			<link field="error_output" reltype="has_a" key="id" map="" class="ateo"/>
+			<link field="async_output" reltype="has_a" key="id" map="" class="ateo"/>
 		</links>
 	</class>
 

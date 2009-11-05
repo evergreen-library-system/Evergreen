@@ -339,6 +339,7 @@ sub create_batch_events {
     my $key = shift;
     my $location_field = shift; # where to look for event_def.owner filtering ... circ_lib, for instance, where hook.core_type = circ
     my $filter = shift || {};
+    my $granularity = shift;
 
     my $active = ($self->api_name =~ /active/o) ? 1 : 0;
     if ($active && !keys(%$filter)) {
@@ -433,6 +434,7 @@ sub create_batch_events {
             $event->target( $o_id );
             $event->event_def( $def->id );
             $event->run_time( $run_time );
+            $event->granularity($granularity) if (defined $granularity);
 
             $editor->create_action_trigger_event( $event );
 
@@ -459,7 +461,6 @@ __PACKAGE__->register_method(
     stream   => 1,
     argc     => 2
 );
-
 
 sub fire_single_event {
     my $self = shift;
@@ -520,12 +521,20 @@ __PACKAGE__->register_method(
 sub pending_events {
     my $self = shift;
     my $client = shift;
+    my $granularity = shift;
 
     my $editor = new_editor();
 
+    my $query = [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] } }];
+
+    if (defined $granularity) {
+        $query->[0]->{'-or'} = [ {granularity => $granularity}, {granularity => undef} ];
+    } else {
+        $query->[0]->{granularity} = undef;
+    }
+
     return $editor->search_action_trigger_event(
-        [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] } }],
-        { idlist=> 1, timeout => 1800 }
+        $query, { idlist=> 1, timeout => 1800 }
     );
 }
 __PACKAGE__->register_method(
@@ -534,12 +543,12 @@ __PACKAGE__->register_method(
     api_level=> 1
 );
 
-
 sub grouped_events {
     my $self = shift;
     my $client = shift;
+    my $granularity = shift;
 
-    my ($events) = $self->method_lookup('open-ils.trigger.event.find_pending')->run();
+    my ($events) = $self->method_lookup('open-ils.trigger.event.find_pending')->run($granularity);
 
     my %groups = ( '*' => [] );
 
@@ -598,8 +607,9 @@ __PACKAGE__->register_method(
 sub run_all_events {
     my $self = shift;
     my $client = shift;
+    my $granularity = shift;
 
-    my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run();
+    my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run($granularity);
 
     for my $def ( %$groups ) {
         if ($def eq '*') {
