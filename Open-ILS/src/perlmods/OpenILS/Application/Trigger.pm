@@ -525,12 +525,12 @@ sub pending_events {
 
     my $editor = new_editor();
 
-    my $query = [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] } }];
+    my $query = [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] }, 'join' => 'atevdef' }];
 
     if (defined $granularity) {
-        $query->[0]->{'-or'} = [ {granularity => $granularity}, {granularity => undef} ];
+        $query->[0]->{'+atevdef'} = {'-or' => [ {granularity => $granularity}, {granularity => undef} ] };
     } else {
-        $query->[0]->{granularity} = undef;
+        $query->[0]->{'+atevdef'} = {granularity => undef};
     }
 
     return $editor->search_action_trigger_event(
