@@ -932,6 +932,7 @@ sub new_record_holdings {
 	my $client = shift;
 	my $bib = shift;
 	my $ou = shift;
+	my $hide_copies = shift;
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
@@ -970,32 +971,40 @@ sub new_record_holdings {
 	$year += 1900;
 	$month += 1;
 
-	$client->respond("<volumes xmlns='http://open-ils.org/spec/holdings/v1'>");
+	$client->respond("<volumes xmlns='http://open-ils.org/spec/holdings/v1'>\n");
 
 	for my $cn (@{$tree->call_numbers}) {
-        next unless ( $cn->deleted eq 'f' || $cn->deleted == 0 );
+		next unless ( $cn->deleted eq 'f' || $cn->deleted == 0 );
 
 		my $found = 0;
 		for my $c (@{$cn->copies}) {
 			next unless grep {$c->circ_lib->id == $_} @ou_ids;
-            next unless ( $c->deleted eq 'f' || $c->deleted == 0 );
+			next unless ( $c->deleted eq 'f' || $c->deleted == 0 );
 			$found = 1;
 			last;
 		}
 
-        if (!$found && ref($cn->uri_maps) && @{$cn->uri_maps}) {
-    		$found = 1 if (grep {$cn->owning_lib->id == $_} @ou_ids);
-        }
+		if (!$found && ref($cn->uri_maps) && @{$cn->uri_maps}) {
+			$found = 1 if (grep {$cn->owning_lib->id == $_} @ou_ids);
+		}
 		next unless $found;
+
+		# We don't want O:A:S:unAPI::acn to return the record, we've got that already
+		my $holdings_args = { no_record => 1 };
+		# In the context of BibTemplate, copies aren't necessary because we pull those
+		# in a separate call
+		if ($hide_copies) {
+			$holdings_args->{no_copies} = 1;
+		}
 
         $client->respond(
             OpenILS::Application::SuperCat::unAPI::acn
                 ->new( $cn )
-                ->as_xml({ no_record => 1 })
+                ->as_xml( $holdings_args )
         );
 	}
 
-	return "</volumes>";
+	return "</volumes>\n";
 }
 __PACKAGE__->register_method(
 	method    => 'new_record_holdings',
@@ -1010,8 +1019,14 @@ Returns the XML representation of the requested bibliographic record's holdings
 		  params   =>
 		  	[
 				{ name => 'bibId',
-				  desc => 'An OpenILS biblio::record_entry id',
+				  desc => 'An OpenILS biblio::record_entry ID',
 				  type => 'number' },
+				{ name => 'orgUnit',
+				  desc => 'An OpenILS actor::org_unit short name that limits the scope of returned holdings',
+				  type => 'text' },
+				{ name => 'hideCopies',
+				  desc => 'Flag that prevents the inclusion of copies in the returned holdings',
+				  type => 'boolean' },
 			],
 		  'return' =>
 		  	{ desc => 'Stream of bib record holdings hierarchy in XML',
@@ -1687,7 +1702,7 @@ sub as_xml {
     my $self = shift;
     my $args = shift;
 
-    my $xml = '<uri xmlns="http://open-ils.org/spec/holdings/v1" ';
+    my $xml = '      <uri xmlns="http://open-ils.org/spec/holdings/v1" ';
     $xml .= 'id="tag:open-ils.org:asset-uri/' . $self->obj->id . '" ';
     $xml .= 'use_restriction="' . $self->escape( $self->obj->use_restriction ) . '" ';
     $xml .= 'label="' . $self->escape( $self->obj->label ) . '" ';
@@ -1695,21 +1710,21 @@ sub as_xml {
 
     if (!$args->{no_volumes}) {
         if (ref($self->obj->call_number_maps) && @{ $self->obj->call_number_maps }) {
-            $xml .= '<volumes>' . join(
+            $xml .= "      <volumes>\n" . join(
                 '',
                 map {
                     OpenILS::Application::SuperCat::unAPI
                         ->new( $_->call_number )
                         ->as_xml({ %$args, no_uris=>1, no_copies=>1 })
                 } @{ $self->obj->call_number_maps }
-            ) . '</volumes>';
+            ) . "      </volumes>\n";
 
         } else {
-            $xml .= '<volumes/>';
+            $xml .= "      <volumes/>\n";
         }
     }
 
-    $xml .= '</uri>';
+    $xml .= "      </uri>\n";
 
     return $xml;
 }
@@ -1721,49 +1736,51 @@ sub as_xml {
     my $self = shift;
     my $args = shift;
 
-    my $xml = '<volume xmlns="http://open-ils.org/spec/holdings/v1" ';
+    my $xml = '    <volume xmlns="http://open-ils.org/spec/holdings/v1" ';
 
     $xml .= 'id="tag:open-ils.org:asset-call_number/' . $self->obj->id . '" ';
     $xml .= 'lib="' . $self->escape( $self->obj->owning_lib->shortname ) . '" ';
     $xml .= 'label="' . $self->escape( $self->obj->label ) . '">';
+    $xml .= "\n";
 
     if (!$args->{no_copies}) {
         if (ref($self->obj->copies) && @{ $self->obj->copies }) {
-            $xml .= '<copies>' . join(
+            $xml .= "      <copies>\n" . join(
                 '',
                 map {
                     OpenILS::Application::SuperCat::unAPI
                         ->new( $_ )
                         ->as_xml({ %$args, no_volume=>1 })
                 } @{ $self->obj->copies }
-            ) . '</copies>';
+            ) . "      </copies>\n";
 
         } else {
-            $xml .= '<copies/>';
+            $xml .= "      <copies/>\n";
         }
     }
 
     if (!$args->{no_uris}) {
         if (ref($self->obj->uri_maps) && @{ $self->obj->uri_maps }) {
-            $xml .= '<uris>' . join(
+            $xml .= "      <uris>\n" . join(
                 '',
                 map {
                     OpenILS::Application::SuperCat::unAPI
                         ->new( $_->uri )
                         ->as_xml({ %$args, no_volumes=>1 })
                 } @{ $self->obj->uri_maps }
-            ) . '</uris>';
+            ) . "      </uris>\n";
 
         } else {
-            $xml .= '<uris/>';
+            $xml .= "      <uris/>\n";
         }
     }
 
 
-    $xml .= '<owning_lib xmlns="http://open-ils.org/spec/actors/v1" ';
+    $xml .= '      <owning_lib xmlns="http://open-ils.org/spec/actors/v1" ';
     $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->owning_lib->id . '" ';
     $xml .= 'shortname="'.$self->escape( $self->obj->owning_lib->shortname ) .'" ';
     $xml .= 'name="'.$self->escape( $self->obj->owning_lib->name ) .'"/>';
+    $xml .= "\n";
 
     unless ($args->{no_record}) {
         my $rec_tag = "tag:open-ils.org:biblio-record_entry/".$self->obj->record->id.'/'.$self->escape( $self->obj->owning_lib->shortname ) ;
@@ -1773,7 +1790,7 @@ sub as_xml {
         $xml .= $U->entityize($r_doc->documentElement->toString);
     }
 
-    $xml .= '</volume>';
+    $xml .= "    </volume>\n";
 
     return $xml;
 }
@@ -1785,7 +1802,7 @@ sub as_xml {
     my $self = shift;
     my $args = shift;
 
-    my $xml = '<copy xmlns="http://open-ils.org/spec/holdings/v1" '.
+    my $xml = '      <copy xmlns="http://open-ils.org/spec/holdings/v1" '.
         'id="tag:open-ils.org:asset-copy/' . $self->obj->id . '" ';
 
     $xml .= $_ . '="' . $self->escape( $self->obj->$_  ) . '" ' for (qw/
@@ -1793,34 +1810,38 @@ sub as_xml {
         deposit_amount price barcode circ_modifier circ_as_type opac_visible
     /);
 
-    $xml .= '>';
+    $xml .= ">\n";
 
-    $xml .= '<status ident="' . $self->obj->status->id . '">' . $self->escape( $self->obj->status->name  ) . '</status>';
-    $xml .= '<location ident="' . $self->obj->location->id . '">' . $self->escape( $self->obj->location->name  ) . '</location>';
-    $xml .= '<circlib ident="' . $self->obj->circ_lib->id . '">' . $self->escape( $self->obj->circ_lib->name  ) . '</circlib>';
+    $xml .= '        <status ident="' . $self->obj->status->id . '">' . $self->escape( $self->obj->status->name  ) . "</status>\n";
+    $xml .= '        <location ident="' . $self->obj->location->id . '">' . $self->escape( $self->obj->location->name  ) . "</location>\n";
+    $xml .= '        <circlib ident="' . $self->obj->circ_lib->id . '">' . $self->escape( $self->obj->circ_lib->name  ) . "</circlib>\n";
 
-    $xml .= '<circ_lib xmlns="http://open-ils.org/spec/actors/v1" ';
+    $xml .= '        <circ_lib xmlns="http://open-ils.org/spec/actors/v1" ';
     $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->circ_lib->id . '" ';
     $xml .= 'shortname="'.$self->escape( $self->obj->circ_lib->shortname ) .'" ';
     $xml .= 'name="'.$self->escape( $self->obj->circ_lib->name ) .'"/>';
+    $xml .= "\n";
 
-	$xml .= "<copy_notes>";
+	$xml .= "        <copy_notes>\n";
 	if (ref($self->obj->notes) && $self->obj->notes) {
 		for my $note ( @{$self->obj->notes} ) {
 			next unless ( $note->pub eq 't' );
-			$xml .= sprintf('<copy_note date="%s" title="%s">%s</copy_note>',$note->create_date, $self->escape($note->title), $self->escape($note->value));
+			$xml .= sprintf('        <copy_note date="%s" title="%s">%s</copy_note>',$note->create_date, $self->escape($note->title), $self->escape($note->value));
+			$xml .= "\n";
 		}
 	}
 
-	$xml .= "</copy_notes><statcats>";
+	$xml .= "        </copy_notes>\n";
+    $xml .= "        <statcats>\n";
 
 	if (ref($self->obj->stat_cat_entries) && $self->obj->stat_cat_entries) {
 		for my $sce ( @{$self->obj->stat_cat_entries} ) {
 			next unless ( $sce->stat_cat->opac_visible eq 't' );
-			$xml .= sprintf('<statcat name="%s">%s</statcat>',$self->escape($sce->stat_cat->name) ,$self->escape($sce->value));
+			$xml .= sprintf('          <statcat name="%s">%s</statcat>',$self->escape($sce->stat_cat->name) ,$self->escape($sce->value));
+			$xml .= "\n";
 		}
 	}
-	$xml .= "</statcats>";
+	$xml .= "        </statcats>\n";
 
     unless ($args->{no_volume}) {
         if (ref($self->obj->call_number)) {
@@ -1828,11 +1849,11 @@ sub as_xml {
                         ->new( $self->obj->call_number )
                         ->as_xml({ %$args, no_copies=>1 });
         } else {
-            $xml .= '<volume/>';
+            $xml .= "    <volume/>\n";
         }
     }
 
-    $xml .= '</copy>';
+    $xml .= "      </copy>\n";
 
     return $xml;
 }

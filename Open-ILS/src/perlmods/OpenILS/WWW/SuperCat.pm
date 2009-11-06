@@ -42,7 +42,7 @@ $browse_types{call_number}{xml} = sub {
 	my $year = (gmtime())[5] + 1900;
 	my $content = '';
 
-	$content .= "<volumes  xmlns='http://open-ils.org/spec/holdings/v1'>";
+	$content .= "<volumes  xmlns='http://open-ils.org/spec/holdings/v1'>\n";
 
 	for my $cn (@$tree) {
 		(my $cn_class = $cn->class_name) =~ s/::/-/gso;
@@ -69,17 +69,17 @@ $browse_types{call_number}{xml} = sub {
 
 		my $rec_tag = "tag:open-ils.org,$year:$rec_class/".$cn->record->id.'/'.$cn->owning_lib->shortname;
 
-		$content .= "<volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>";
-		$content .= "<owning_lib xmlns='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>";
+		$content .= "<volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>\n";
+		$content .= "<owning_lib xmlns='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>\n";
 
 		my $r_doc = $parser->parse_string($cn->record->marc);
 		$r_doc->documentElement->setAttribute( id => $rec_tag );
 		$content .= $U->entityize($r_doc->documentElement->toString);
 
-		$content .= "</volume>";
+		$content .= "</volume>\n";
 	}
 
-	$content .= '</volumes>';
+	$content .= "</volumes>\n";
 	return ("Content-type: application/xml\n\n",$content);
 };
 
@@ -162,7 +162,8 @@ sub child_init {
                 	my $base = shift;
                 	my $site = shift;
 
-                	my $feed = create_record_feed( 'record', $real_format, $record_list, $unapi, $site, $real_format =~ /-full$/o ? 1 : 0 );
+			$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
+                	my $feed = create_record_feed( 'record', $real_format, $record_list, $unapi, $site, $real_format =~ /(-full|-uris)$/o ? 1 : 0 );
                 	$feed->root( "$base/../" );
                 	$feed->lib( $site );
                 	$feed->link( next => $next => $feed->type );
@@ -177,6 +178,95 @@ sub child_init {
         }
     }
 }
+
+=head2 parse_feed_type($type)
+
+Determines whether and how a given feed type needs to be "fleshed out"
+with holdings information.
+
+The feed type could end with the string "-full", in which case we want
+to return call numbers, copies, and URIS.
+
+Or the feed type could be "-uris", in which case we want to return
+call numbers and URIS.
+
+Otherwise, we won't return any holdings.
+
+=cut
+
+sub parse_feed_type {
+	my $type = shift;
+
+ 	if ($type =~ /-full$/o) {
+		return 1;
+	}
+
+ 	if ($type =~ /-uris$/o) {
+		return "uris";
+	}
+
+	# Otherwise, we'll return just the facts, ma'am
+	return 0;
+}
+
+=head2 supercat_format($format_hashref, $format_type)
+
+Given a reference to a hash containing the namespace_uri,
+docs, and schema location attributes for a set of formats,
+generate the XML description required by the supercat service.
+
+We derive the base type from the format type so that we do not
+have to populate the hash with redundant information.
+
+=cut
+
+sub supercat_format {
+	my $h = shift;
+	my $type = shift;
+
+	(my $base_type = $type) =~ s/(-full|-uris)$//o;
+
+	my $format = "<format><name>$type</name><type>application/xml</type>";
+
+	for my $part ( qw/namespace_uri docs schema_location/ ) {
+		$format .= "<$part>$$h{$base_type}{$part}</$part>"
+			if ($$h{$base_type}{$part});
+	}
+
+	$format .= '</format>';
+
+	return $format;
+}
+
+=head2 unapi_format($format_hashref, $format_type)
+
+Given a reference to a hash containing the namespace_uri,
+docs, and schema location attributes for a set of formats,
+generate the XML description required by the supercat service.
+
+We derive the base type from the format type so that we do not
+have to populate the hash with redundant information.
+
+=cut
+
+sub unapi_format {
+	my $h = shift;
+	my $type = shift;
+
+	(my $base_type = $type) =~ s/(-full|-uris)$//o;
+
+	my $format = "<format name='$type' type='application/xml'";
+
+	for my $part ( qw/namespace_uri docs schema_location/ ) {
+		$format .= " $part='$$h{$base_type}{$part}'"
+			if ($$h{$base_type}{$part});
+	}
+
+	$format .= "/>\n";
+
+	return $format;
+}
+
 
 sub oisbn {
 
@@ -234,8 +324,8 @@ sub unapi {
 	my $locale = $cgi->param('locale') || 'en-US';
 
 	my $format = $cgi->param('format');
-	my $flesh_feed = ($format =~ /-full$/o) ? 1 : 0;
-	(my $base_format = $format) =~ s/-full$//o;
+	my $flesh_feed = parse_feed_type($format);
+	(my $base_format = $format) =~ s/(-full|-uris)$//o;
 	my ($id,$type,$command,$lib) = ('','','');
 
 	if (!$format) {
@@ -271,24 +361,11 @@ sub unapi {
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				$body .= "\t<format name='$type' type='application/xml'";
-
-				for my $part ( qw/namespace_uri docs schema_location/ ) {
-					$body .= " $part='$$h{$type}{$part}'"
-						if ($$h{$type}{$part});
-				}
-				
-				$body .= "/>\n";
+				$body .= unapi_format($h, $type);
 
 				if (OpenILS::WWW::SuperCat::Feed->exists($type)) {
-					$body .= "\t<format name='$type-full' type='application/xml'";
-
-					for my $part ( qw/namespace_uri docs schema_location/ ) {
-						$body .= " $part='$$h{$type}{$part}'"
-							if ($$h{$type}{$part});
-					}
-				
-					$body .= "/>\n";
+					$body .= unapi_format($h, "$type-full");
+					$body .= unapi_format($h, "$type-uris");
 				}
 			}
 
@@ -322,24 +399,11 @@ sub unapi {
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				$body .= "\t<format name='$type' type='application/xml'";
-
-				for my $part ( qw/namespace_uri docs schema_location/ ) {
-					$body .= " $part='$$h{$type}{$part}'"
-						if ($$h{$type}{$part});
-				}
-				
-				$body .= "/>\n";
+				$body .= "\t" . unapi_format($h, $type);
 
 				if (OpenILS::WWW::SuperCat::Feed->exists($type)) {
-					$body .= "\t<format name='$type-full' type='application/xml'";
-
-					for my $part ( qw/namespace_uri docs schema_location/ ) {
-						$body .= " $part='$$h{$type}{$part}'"
-							if ($$h{$type}{$part});
-					}
-				
-					$body .= "/>\n";
+					$body .= "\t" . unapi_format($h, "$type-full");
+					$body .= "\t" . unapi_format($h, "$type-uris");
 				}
 			}
 
@@ -514,8 +578,8 @@ sub supercat {
 
 	my $path = $cgi->path_info;
 	my ($id,$type,$format,$command) = reverse split '/', $path;
-	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
-	(my $base_format = $format) =~ s/-full$//o;
+	my $flesh_feed = parse_feed_type($type);
+	(my $base_format = $format) =~ s/(-full|-uris)$//o;
 
 	my $skin = $cgi->param('skin') || 'default';
 	my $locale = $cgi->param('locale') || 'en-US';
@@ -564,24 +628,11 @@ sub supercat {
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				print "<format><name>$type</name><type>application/xml</type>";
-
-				for my $part ( qw/namespace_uri docs schema_location/ ) {
-					print "<$part>$$h{$type}{$part}</$part>"
-						if ($$h{$type}{$part});
-				}
-				
-				print '</format>';
+				print supercat_format($h, $type);
 
 				if (OpenILS::WWW::SuperCat::Feed->exists($type)) {
-					print "<format><name>$type-full</name><type>application/xml</type>";
-
-					for my $part ( qw/namespace_uri docs schema_location/ ) {
-						print "<$part>$$h{$type}{$part}</$part>"
-							if ($$h{$type}{$part});
-					}
-				
-					print '</format>';
+					print supercat_format($h, "$type-full");
+					print supercat_format($h, "$type-uris");
 				}
 
 			}
@@ -636,24 +687,11 @@ sub supercat {
 
 		for my $h (@$list) {
 			my ($type) = keys %$h;
-			print "<format><name>$type</name><type>application/xml</type>";
-
-			for my $part ( qw/namespace_uri docs schema_location/ ) {
-				print "<$part>$$h{$type}{$part}</$part>"
-					if ($$h{$type}{$part});
-			}
-			
-			print '</format>';
+			print supercat_format($h, $type);
 
 			if (OpenILS::WWW::SuperCat::Feed->exists($type)) {
-				print "<format><name>$type-full</name><type>application/xml</type>";
-
-				for my $part ( qw/namespace_uri docs schema_location/ ) {
-					print "<$part>$$h{$type}{$part}</$part>"
-						if ($$h{$type}{$part});
-				}
-				
-				print '</format>';
+				print supercat_format($h, "$type-full");
+				print supercat_format($h, "$type-uris");
 			}
 
 		}
@@ -790,7 +828,7 @@ sub bookbag_feed {
 	#warn "URL breakdown: $url -> $root -> $base -> $path -> $unapi";
 
 	my ($id,$type) = reverse split '/', $path;
-	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
+	my $flesh_feed = parse_feed_type($type);
 
 	my $bucket = $actor->request("open-ils.actor.container.public.flesh", 'biblio', $id)->gather(1);
 	return Apache2::Const::NOT_FOUND unless($bucket);
@@ -866,7 +904,8 @@ sub changes_feed {
 	$path =~ s/^\/(?:feed\/)?freshmeat\///og;
 	
 	my ($type,$rtype,$axis,$limit,$date) = split '/', $path;
-	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
+	my $flesh_feed = parse_feed_type($type);
+
 	$limit ||= 10;
 
 	my $list = $supercat->request("open-ils.supercat.$rtype.record.$axis.recent", $date, $limit)->gather(1);
@@ -1074,7 +1113,7 @@ sub opensearch_feed {
 	} elsif ($type eq '-') {
 		$type = 'atom';
 	}
-	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
+	my $flesh_feed = parse_feed_type($type);
 
 	$terms = decode_utf8($terms);
 	$lang = 'eng' if ($lang eq 'en-US');
@@ -1235,7 +1274,9 @@ sub create_record_feed {
 
 	my $year = (gmtime())[5] + 1900;
 
-	my $flesh_feed = ($type =~ s/-full$//o) ? 1 : 0;
+	my $flesh_feed = parse_feed_type($type);
+
+	$type =~ s/(-full|-uris)$//o;
 
 	my $feed = new OpenILS::WWW::SuperCat::Feed ($type);
 	$feed->base($base) if ($flesh);
@@ -1267,7 +1308,7 @@ sub create_record_feed {
 
 		$xml = '';
 		if ($lib && ($type eq 'marcxml' || $type eq 'atom') &&  $flesh) {
-			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib );
+			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, ($flesh_feed eq "uris") ? 1 : 0 );
 			while ( !$r->complete ) {
 				$xml .= join('', map {$_->content} $r->recv);
 			}
@@ -1341,7 +1382,7 @@ sub string_browse {
 		$page
 	)->gather(1);
 
-    (my $norm_format = $format) =~ s/-full$//o;
+    (my $norm_format = $format) =~ s/(-full|-uris)$//o;
 
 	my ($header,$content) = $browse_types{$axis}{$norm_format}->($tree,$prev,$next,$format,$unapi,$base,$site);
 	print $header.$content;
@@ -1396,7 +1437,7 @@ sub item_age_browse {
 		$page
 	)->gather(1);
 
-    (my $norm_format = $format) =~ s/-full$//o;
+    (my $norm_format = $format) =~ s/(-full|-uris)$//o;
 
 	my ($header,$content) = $browse_types{$axis}{$norm_format}->($recs,$prev,$next,$format,$unapi,$base,$site);
 	print $header.$content;

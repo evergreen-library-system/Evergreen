@@ -32,7 +32,9 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         
             var slots = {};
             dojo.forEach(all_slots, function(s){
-                var datatype = 'marcxml-full';
+                // marcxml-uris does not include copies, which avoids timeouts
+                // with bib records that have hundreds or thousands of copies
+                var datatype = 'marcxml-uris';
         
                 if (s.getAttribute('type').indexOf('+') > -1) 
                     datatype = s.getAttribute('type').split('+').reverse()[0];
