@@ -155,7 +155,7 @@ CREATE TRIGGER mat_summary_remove_tgr AFTER DELETE ON action.circulation FOR EAC
 
 CREATE OR REPLACE FUNCTION action.push_circ_due_time () RETURNS TRIGGER AS $$
 BEGIN
-    IF (EXTRACT(EPOCH FROM NEW.circ_duration)::INT % EXTRACT(EPOCH FROM '1 day'::INTERVAL)::INT) = 0 THEN
+    IF (EXTRACT(EPOCH FROM NEW.duration)::INT % EXTRACT(EPOCH FROM '1 day'::INTERVAL)::INT) = 0 THEN
         NEW.due_date = (NEW.due_date::DATE + '1 day'::INTERVAL - '1 second'::INTERVAL)::TIMESTAMPTZ;
     END IF;
 
