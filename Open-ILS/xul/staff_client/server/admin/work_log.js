@@ -2,6 +2,8 @@ var error;
 var list1; var selected1 = [];
 var list2; var selected2 = [];
 var data;
+var max_work_log_entries;
+var max_patron_log_entries;
 
 function my_init() {
     try {
@@ -13,6 +15,9 @@ function my_init() {
         error.sdump('D_TRACE','my_init() for main_test.xul');
 
         JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
+
+        max_work_log_entries = data.hash.aous['ui.admin.work_log.max_entries'] || 20;
+        max_patron_log_entries = data.hash.aous['ui.admin.patron_log.max_entries'] || 10;
 
         init_lists();
         set_behavior();
@@ -83,13 +88,23 @@ function populate_lists() {
         list1.clear();
         data.stash_retrieve();
         if (data.work_log) {
-            for (var i = 0; i < data.work_log.length; i++ ) { 
+            var count = data.work_log.length;
+            var x = document.getElementById('desire_number_of_work_log_entries');
+            if (x) {
+                if (Number(x.value) < count) { count = Number(x.value); }
+            }
+            for (var i = 0; i < count; i++ ) { 
                 list1.append( data.work_log[i] );
             }
         }
         list2.clear();
         if (data.patron_log) {
-            for (var i = 0; i < data.patron_log.length; i++ ) { 
+            var count = data.patron_log.length;
+            var y = document.getElementById('desire_number_of_patron_log_entries');
+            if (y) {
+                if (Number(y.value) < count) { count = Number(y.value); }
+            }
+            for (var i = 0; i < count; i++ ) { 
                 list2.append( data.patron_log[i] );
             }
         }
@@ -100,6 +115,18 @@ function populate_lists() {
 
 function set_behavior() {
     try {
+
+        var x = document.getElementById('desire_number_of_work_log_entries');
+        if (x) {
+            x.setAttribute('max',max_work_log_entries);
+            if (!x.value) { x.setAttribute('value',max_work_log_entries); x.value = max_work_log_entries; }
+        }
+        var y = document.getElementById('desire_number_of_patron_log_entries');
+        if (y) {
+            y.setAttribute('max',max_patron_log_entries);
+            if (!y.value) { y.setAttribute('value',max_patron_log_entries); y.value = max_patron_log_entries; }
+        }
+
         var cmd_refresh = document.getElementById('cmd_refresh');
         var cmd_retrieve_item = document.getElementById('cmd_retrieve_item');
         var cmd_retrieve_patron1 = document.getElementById('cmd_retrieve_patron1');
