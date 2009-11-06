@@ -63,7 +63,10 @@
                     var key = base_key + attribute_list[j];
                     var value = prefs.prefHasUserValue(key) ? prefs.getCharPref(key) : null;
                     dump('persist_helper: retrieving key = ' + key + ' value = ' + value + ' for ' + nodes[i].nodeName + '\n');
-                    if (value) nodes[i].setAttribute( attribute_list[j], value );
+                    if (value) {
+                        nodes[i].setAttribute( attribute_list[j], value );
+                        if (attribute_list[j]=='value') { nodes[i].value = value; }
+                    }
                 }
                 if ( (nodes[i].nodeName == 'checkbox' || nodes[i].nodeName == 'menuitem') && attribute_list.indexOf('checked') > -1) {
                     var cmd = nodes[i].getAttribute('command');
@@ -137,6 +140,36 @@
                             false
                         );
                     }
+                } else if ( (nodes[i].nodeName == 'textbox') && attribute_list.indexOf('value') > -1) {
+                    if (nodes[i].disabled == false && nodes[i].hidden == false) {
+                        var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
+                        if (no_poke && no_poke == 'true') {
+                            dump('\tpersist_helper: not poking element with key = ' + key + '\n');
+                        } else {
+                            dump('\tpersist_helper: poking element with key = ' + key + '\n');
+                            var evt = document.createEvent("Events");
+                            evt.initEvent( 'change', true, true );
+                            nodes[i].dispatchEvent(evt);
+                        }
+                    }
+                    nodes[i].addEventListener(
+                        'change',
+                        function(bk) {
+                            return function(ev) {
+                                try {
+                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                    var key = bk + 'value';
+                                    var value = ev.target.value;
+                                    ev.target.setAttribute( 'value', value );
+                                    prefs.setCharPref( key, value );
+                                    dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for value\n');
+                                } catch(E) {
+                                    alert('Error in persist_helper(), textbox change event listener: ' + E);
+                                }
+                            };
+                        }(base_key), 
+                        false
+                    );
                 }
                 // TODO: Need to add event listeners for window resizing, splitter repositioning, grippy state, etc.
             }
