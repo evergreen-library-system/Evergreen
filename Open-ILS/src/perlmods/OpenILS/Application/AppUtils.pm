@@ -1167,9 +1167,28 @@ sub ou_ancestor_setting_value {
     return undef;
 }
 
+
+# If an authentication token is provided AND this org unit setting has a
+# view_perm, then make sure the user referenced by the auth token has
+# that permission.  This means that if you call this method without an
+# authtoken param, you can get whatever org unit setting values you want.
+# API users beware.
 sub ou_ancestor_setting {
-    my( $self, $orgid, $name, $e ) = @_;
-    $e = $e || OpenILS::Utils::CStoreEditor->new;
+    my( $self, $orgid, $name, $e, $auth ) = @_;
+    $e = $e || OpenILS::Utils::CStoreEditor->new(
+        (defined $auth) ? (authtoken => $auth) : ()
+    );
+    my $coust = $e->retrieve_config_org_unit_setting_type([
+        $name, {flesh => 1, flesh_fields => {coust => ['view_perm']}}
+    ]);
+
+    if ($auth && $coust && $coust->view_perm) {
+        # And you can't have permission if you don't have a valid session.
+        return undef if not $e->checkauth;
+        # And now that we know you MIGHT have permission, we check it.
+        return undef if not $e->allowed($coust->view_perm->code, $orgid);
+    }
+
     my $query = {from => ['actor.org_unit_ancestor_setting', $name, $orgid]};
     my $setting = $e->json_query($query)->[0];
     return undef unless $setting;

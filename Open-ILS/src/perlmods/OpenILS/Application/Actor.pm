@@ -50,6 +50,22 @@ my $set_user_settings;
 my $set_ou_settings;
 
 
+#__PACKAGE__->register_method(
+#	method	=> "allowed_test",
+#	api_name	=> "open-ils.actor.allowed_test",
+#);
+#sub allowed_test {
+#    my($self, $conn, $auth, $orgid, $permcode) = @_;
+#    my $e = new_editor(authtoken => $auth);
+#    return $e->die_event unless $e->checkauth;
+#
+#    return {
+#        orgid => $orgid,
+#        permcode => $permcode,
+#        result => $e->allowed($permcode, $orgid)
+#    };
+#}
+
 __PACKAGE__->register_method(
 	method	=> "update_user_setting",
 	api_name	=> "open-ils.actor.patron.settings.update",
@@ -97,13 +113,11 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.org_unit.settings.update",
     signature => {
         desc => q/
-            Updates the value for a given org unit setting.  The permission to update an org unit setting
-            is either the UPDATE_ORG_UNIT_SETTING_ALL, a specific UPDATE_ORG_UNIT_SETTING.<setting_name>
-            permission, or a permission the maps to a prefix of the setting name.  For example, if the setting
-            was called "foo.bar.baz" the user could update the setting if he\she had the following perms:
-            UPDATE_ORG_UNIT_SETTING.foo
-            UPDATE_ORG_UNIT_SETTING.foo.bar
-            UPDATE_ORG_UNIT_SETTING.foo.bar.baz/,
+            Updates the value for a given org unit setting.  The permission to update
+            an org unit setting is either the UPDATE_ORG_UNIT_SETTING_ALL, or a specific
+            permission specified in the update_perm column of the
+            config.org_unit_setting_type table's row corresponding to the setting being
+            changed./,
         params => [
 		    {desc => 'authtoken', type => 'string'},
             {desc => 'org unit id', type => 'number'},
@@ -124,22 +138,16 @@ sub set_ou_settings {
 	for my $name (keys %$settings) {
         my $val = $$settings{$name};
 
-        my $type = $e->retrieve_config_org_unit_setting_type($name) or return $e->die_event;
+        my $type = $e->retrieve_config_org_unit_setting_type([
+            $name,
+            {flesh => 1, flesh_fields => {'coust' => ['update_perm']}}
+        ]) or return $e->die_event;
         my $set = $e->search_actor_org_unit_setting({org_unit => $org_id, name => $name})->[0];
 
-        unless($all_allowed) {
-            my $allowed = 0;
-            my $perm = 'UPDATE_ORG_UNIT_SETTING';
-            for my $part (split(/\./, $name)) {
-                $perm = "$perm.$part";
-                if($e->allowed($perm, $org_id)) {
-                    $allowed = 1;
-                    last;
-                }
-            }
-
-            return $e->die_event unless $allowed;
-        }
+        # If there is no relevant permission, the default assumption will
+        # be, "no, the caller cannot change that value."
+        return $e->die_event unless ($all_allowed ||
+            ($type->update_perm && $e->allowed($type->update_perm->code, $org_id)));
 
         if(defined $val) {
             $val = OpenSRF::Utils::JSON->perl2JSON($val);
@@ -204,13 +212,22 @@ sub user_settings {
 __PACKAGE__->register_method(
 	method	=> "ranged_ou_settings",
 	api_name	=> "open-ils.actor.org_unit_setting.values.ranged.retrieve",
+    signature => {
+        desc => q/
+            Retrieves all org unit settings for the given org_id, up to whatever limit
+            is implied for retrieving OU settings by the authenticated users' permissions./,
+        params => [
+            {desc => 'authtoken', type => 'string'},
+            {desc => 'org unit id', type => 'number'},
+        ],
+        return => {desc => 'A hashref of "ranged" settings'}
+    }
 );
 sub ranged_ou_settings {
 	my( $self, $client, $auth, $org_id ) = @_;
 
 	my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
-    return $e->event unless $e->allowed('VIEW_ORG_SETTINGS', $org_id);
 
     my %ranged_settings;
     my $org_list = $U->get_org_ancestors($org_id);
@@ -219,11 +236,22 @@ sub ranged_ou_settings {
 
     # start at the context org and capture the setting value
     # without clobbering settings we've already captured
-    for my $org_id (@$org_list) {
+    for my $this_org_id (@$org_list) {
         
-        my @sets = grep { $_->org_unit == $org_id } @$settings;
+        my @sets = grep { $_->org_unit == $this_org_id } @$settings;
 
         for my $set (@sets) {
+            my $type = $e->retrieve_config_org_unit_setting_type([
+                $set->name,
+                {flesh => 1, flesh_fields => {coust => ['view_perm']}}
+            ]);
+
+            # If there is no relevant permission, the default assumption will
+            # be, "yes, the caller can have that value."
+            if ($type && $type->view_perm) {
+                next if not $e->allowed($type->view_perm->code, $org_id);
+            }
+
             $ranged_settings{$set->name} = OpenSRF::Utils::JSON->JSON2perl($set->value)
                 unless defined $ranged_settings{$set->name};
         }
@@ -237,6 +265,18 @@ sub ranged_ou_settings {
 __PACKAGE__->register_method(
     api_name => 'open-ils.actor.ou_setting.ancestor_default',
     method => 'ou_ancestor_setting',
+    signature => {
+        desc => q/Get an org unit setting value as seen from your org unit.  IF AND ONLY IF
+        you provide an authentication token, this method will make sure that the given
+        user has permission to view that setting, if there is a permission associated
+        with the setting./,
+        params => [
+            {desc => 'org unit id', type => 'number'},
+            {desc => 'setting name', type => 'string'},
+            {desc => '(optional) authtoken', type => 'string'},
+        ],
+        return => {desc => 'A value for the org unit setting, or undef'}
+    }
 );
 
 # ------------------------------------------------------------------
@@ -247,18 +287,30 @@ __PACKAGE__->register_method(
 # otherwise, returns NULL
 # ------------------------------------------------------------------
 sub ou_ancestor_setting {
-    my( $self, $client, $orgid, $name ) = @_;
-    return $U->ou_ancestor_setting($orgid, $name);
+    my( $self, $client, $orgid, $name, $auth ) = @_;
+    return $U->ou_ancestor_setting($orgid, $name, undef, $auth);
 }
 
 __PACKAGE__->register_method(
     api_name => 'open-ils.actor.ou_setting.ancestor_default.batch',
     method => 'ou_ancestor_setting_batch',
+    signature => {
+        desc => q/Get org unit setting name => value pairs as seen from the specified org unit.
+        IF AND ONLY IF you provide an authentication token, this method will make sure
+        that the given user has permission to view that setting, if there is a
+        permission associated with the setting./,
+        params => [
+            {desc => 'org unit id', type => 'number'},
+            {desc => 'setting name list', type => 'array'},
+            {desc => '(optional) authtoken', type => 'string'},
+        ],
+        return => {desc => 'A hash with name => value pairs for the org unit settings'}
+    }
 );
 sub ou_ancestor_setting_batch {
-    my( $self, $client, $orgid, $name_list ) = @_;
+    my( $self, $client, $orgid, $name_list, $auth ) = @_;
     my %values;
-    $values{$_} = $U->ou_ancestor_setting($orgid, $_) for @$name_list;
+    $values{$_} = $U->ou_ancestor_setting($orgid, $_, undef, $auth) for @$name_list;
     return \%values;
 }
 
