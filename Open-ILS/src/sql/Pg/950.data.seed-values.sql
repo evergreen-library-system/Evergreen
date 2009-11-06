@@ -1223,8 +1223,8 @@ INSERT INTO permission.perm_list VALUES
     (199, 'CREATE_MFHD_RECORD', oils_i18n_gettext(199, 'Allows a user to create a new MFHD record', 'ppl', 'description')),
     (200, 'UPDATE_MFHD_RECORD', oils_i18n_gettext(200, 'Allows a user to update an MFHD record', 'ppl', 'description')),
     (201, 'DELETE_MFHD_RECORD', oils_i18n_gettext(201, 'Allows a user to delete an MFHD record', 'ppl', 'description')),
-    (202, 'ADMIN_ACQ_FUND', oils_i18n_gettext(171, 'Allow a user to create/view/update/delete a fund', 'ppl', 'description')),
-    (203, 'group_application.user.staff.acq_admin', oils_i18n_gettext(193, 'Allows a user to add/remove/edit users in the "Acquisitions Administrators" group', 'ppl', 'description'))
+    (202, 'ADMIN_ACQ_FUND', oils_i18n_gettext(202, 'Allow a user to create/view/update/delete a fund', 'ppl', 'description')),
+    (203, 'group_application.user.staff.acq_admin', oils_i18n_gettext(203, 'Allows a user to add/remove/edit users in the "Acquisitions Administrators" group', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list));
@@ -1522,8 +1522,6 @@ INSERT INTO permission.grp_perm_map VALUES (143, 3, 198, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (144, 4, 199, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (145, 4, 200, 1, false);
 INSERT INTO permission.grp_perm_map VALUES (146, 4, 201, 1, false);
-
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
 
 -- Add basic acquisitions permissions to the Acquisitions group
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
