@@ -553,6 +553,10 @@ sub grouped_events {
     my %groups = ( '*' => [] );
 
     for my $e_id ( @$events ) {
+        $logger->info("trigger: processing event $e_id");
+
+        # let the client know we're still chugging along TODO add osrf support for method_lookup $client's
+        $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
         my $e;
         try {
@@ -562,37 +566,34 @@ sub grouped_events {
         };
 
         next unless $e; 
-        my $valid;
 
         try {
-            $valid = $e->validate->valid;
+            $e->build_environment;
         } catch Error with {
-            $logger->error("Event validation failed with ".shift());
+            $logger->error("Event environment building failed with ".shift());
         };
 
-        if ($valid) {
+        if (my $group = $e->event->event_def->group_field) {
 
-            if (my $group = $e->event->event_def->group_field) {
+            # split the grouping link steps
+            my @steps = split /\./, $group;
 
-                # split the grouping link steps
-                my @steps = split /\./, $group;
+            # find the grouping object
+            my $node = $e->target;
+            $node = $node->$_() for ( @steps );
 
-                # find the grouping object
-                my $node = $e->target;
-                $node = $node->$_() for ( @steps );
+            # get the pkey value for the grouping object on this event
+            my $node_ident = $node->Identity;
+            my $ident_value = $node->$node_ident();
 
-                # get the pkey value for the grouping object on this event
-                my $node_ident = $node->Identity;
-                my $ident_value = $node->$node_ident();
-
-                # push this event onto the event+grouping_pkey_value stack
-                $groups{$e->event->event_def->id}{$ident_value} ||= [];
-                push @{ $groups{$e->event->event_def->id}{$ident_value} }, $e;
-            } else {
-                # it's a non-grouped event
-                push @{ $groups{'*'} }, $e;
-            }
+            # push this event onto the event+grouping_pkey_value stack
+            $groups{$e->event->event_def->id}{$ident_value} ||= [];
+            push @{ $groups{$e->event->event_def->id}{$ident_value} }, $e;
+        } else {
+            # it's a non-grouped event
+            push @{ $groups{'*'} }, $e;
         }
+
         $e->editor->disconnect;
     }
 
@@ -611,7 +612,7 @@ sub run_all_events {
 
     my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run($granularity);
 
-    for my $def ( %$groups ) {
+    for my $def ( keys %$groups ) {
         if ($def eq '*') {
             for my $event ( @{ $$groups{'*'} } ) {
                 try {
