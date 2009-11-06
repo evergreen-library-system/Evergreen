@@ -427,9 +427,10 @@ circ.checkout.prototype = {
                             //I could override map_row_to_column here
                             }
                         );
-                        obj.error.work_log( 
+                        obj.error.work_log(
                             document.getElementById('circStrings').getFormattedString(
-                                'staff.circ.work_log_checkout.message',
+                                (get_bool(checkout.payload.circ.opac_renewal())||get_bool(checkout.payload.circ.phone_renewal())||get_bool(checkout.payload.circ.desk_renewal())) ?
+                                    'staff.circ.work_log_renew.message' : 'staff.circ.work_log_checkout.message',
                                 [
                                     ses('staff_usrname'),
                                     xulG.patron.family_name(),
