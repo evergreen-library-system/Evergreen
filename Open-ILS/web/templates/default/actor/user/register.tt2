@@ -138,7 +138,6 @@
                 <span style='padding-right:10px;'>This is a pending address: </span>
                 <button name='approve-button'>Approve Address</button>
                 <div name='replaced-addr-div'>
-                    <span>This address replaces:</span>
                     <div name='replaced-addr'></div>
                 </div>
             </td>

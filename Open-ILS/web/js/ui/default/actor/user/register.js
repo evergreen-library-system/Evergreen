@@ -845,7 +845,18 @@ function uEditNewAddr(evt, id, mkLinks) {
 
                     if(addr.replaces()) {
                         var div = dojo.query('[name=replaced-addr]', row)[0]
-                        div.innerHTML = addr.replaces();
+                        var replaced =  patron.addresses().filter(
+                            function(i) { return (i.id() == addr.replaces()) })[0];
+
+                        div.innerHTML = dojo.string.substitute(localeStrings.REPLACED_ADDRESS, [
+                            replaced.address_type() || '',
+                            replaced.street1() || '',
+                            replaced.street2() || '',
+                            replaced.city() || '',
+                            replaced.state() || '',
+                            replaced.post_code() || ''
+                        ]);
+
                     } else {
                         openils.Util.hide(dojo.query('[name=replaced-addr-div]', row)[0]);
                     }
