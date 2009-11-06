@@ -141,7 +141,7 @@ sub run_pending {
     return unless $opt_run_pending;
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
     my $req = $ses->request('open-ils.trigger.event.run_all_pending' => $opt_granularity);
-    while(my $resp = $req->recv(timeout => 600)) {
+    while(my $resp = $req->recv(timeout => 7200)) {
         if($opt_debug_stdout) {
             print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
         }
