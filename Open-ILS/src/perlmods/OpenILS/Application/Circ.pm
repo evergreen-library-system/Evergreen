@@ -893,6 +893,7 @@ sub copy_details {
                 flesh => 1,
                 flesh_fields => {
                     circ => [
+                        'workstation',
                         'checkin_workstation', 
                         'duration_rule', 
                         'max_fine_rule', 
@@ -1380,7 +1381,7 @@ sub retrieve_circ_chain {
         $circ_id,
         {
             flesh => -1,
-            flesh_fields => {circ => ['parent_circ']}
+            flesh_fields => {circ => [qw/parent_circ workstation checkin_workstation/]}
         }
     ]) or return $e->event;
 
@@ -1402,7 +1403,10 @@ sub retrieve_circ_chain {
 
     # base circ may not be the end of the chain.  see if there are any subsequent circs
     $circ = $base_circ;
-    $conn->respond($circ) while ($circ = $e->search_action_circulation({parent_circ => $circ->id})->[0]);
+    $conn->respond($circ) while ($circ = $e->search_action_circulation([
+        {parent_circ => $circ->id},
+        {flesh => 1, flesh_fields => {circ => [qw/workstation checkin_workstation/]}}
+    ])->[0]);
 
     return undef;
 }
