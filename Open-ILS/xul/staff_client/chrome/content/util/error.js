@@ -606,7 +606,11 @@ util.error.prototype = {
                 to_top: true
             };
             if (data.patron_log.length > 0) {
-                if ( data.patron_log[ data.patron_log.length -1 ].row.my.au_id == row_data.au_id ) data.patron_log.pop();
+                var temp = [];
+                for (var i = 0; i < data.patron_log.length; i++) {
+                    if (data.patron_log[ i ].row.my.au_id != row_data.au_id) temp.push( data.patron_log[i] );
+                } 
+                data.patron_log = temp;
             }
             data.patron_log.push( ds );
             if (data.patron_log.length > max_entries) data.patron_log.shift();
