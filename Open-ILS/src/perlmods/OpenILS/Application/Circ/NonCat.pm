@@ -3,6 +3,9 @@ use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use Data::Dumper;
+use DateTime;
+use DateTime::Format::ISO8601;
+use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
@@ -11,6 +14,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 $Data::Dumper::Indent = 0;
 
 my $U = "OpenILS::Application::AppUtils";
+my $_dt_parser = DateTime::Format::ISO8601->new;
 
 
 # returns ( $newid, $evt ).  If $evt, then there was an error
@@ -145,6 +149,7 @@ __PACKAGE__->register_method(
 	/
 );
 
+
 sub fetch_noncat {
 	my( $self, $conn, $auth, $circid ) = @_;
 	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
@@ -154,6 +159,24 @@ sub fetch_noncat {
 	if( $c->patron ne $e->requestor->id ) {
 		return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
 	}
+
+	my $otype = $e->retrieve_config_non_cataloged_type($c->item_type) 
+		or return $e->die_event;
+
+	my $duedate = $_dt_parser->parse_datetime( clense_ISO8601($c->circ_time) );
+	$duedate = $duedate
+		->add( seconds => interval_to_seconds($otype->circ_duration) )
+		->strftime('%FT%T%z');
+
+	my $offset = $e->request(
+		'open-ils.storage.actor.org_unit.closed_date.overlap',
+		$c->circ_lib,
+		$duedate
+	);
+
+	$duedate = $offset->{end} if ($offset);
+	$c->duedate($duedate);
+
 	return $c;
 }
 
