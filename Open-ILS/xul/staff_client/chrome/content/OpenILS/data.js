@@ -445,6 +445,9 @@ OpenILS.data.prototype = {
         }
         file.close();
 
+        JSAN.use('util.print'); (new util.print()).GetPrintSettings();
+        obj.data_progress('Printer settings retrieved. ');
+
         JSAN.use('util.functional');
         JSAN.use('util.fm_utils');
 

@@ -411,12 +411,13 @@ util.print.prototype = {
 
     'load_settings' : function() {
         try {
+            var error_msg = '';
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var file = new util.file('gPrintSettings');
             if (file._file.exists()) {
                 temp = file.get_object(); file.close();
                 for (var i in temp) {
-                    this.gPrintSettings[i] = temp[i];
+                    try { this.gPrintSettings[i] = temp[i]; } catch(E) { error_msg += 'Error trying to set gPrintSettings.'+i+'='+temp[i]+' : ' + js2JSON(E) + '\n'; }
                 }
             } else {
                 this.gPrintSettings.marginTop = 0;
@@ -429,6 +430,17 @@ util.print.prototype = {
                 this.gPrintSettings.footerStrLeft = '';
                 this.gPrintSettings.footerStrCenter = '';
                 this.gPrintSettings.footerStrRight = '';
+            }
+            if (error_msg) {
+                this.error.sdump('D_PRINT',error_msg);
+                this.error.yns_alert(
+                    document.getElementById('offlineStrings').getString('load_printer_settings_error_description'),
+                    document.getElementById('offlineStrings').getString('load_printer_settings_error_title'),
+                    document.getElementById('offlineStrings').getString('common.ok'),
+                    null,
+                    null,
+                    null
+                );
             }
         } catch(E) {
             this.error.standard_unexpected_error_alert("load_settings()",E);
