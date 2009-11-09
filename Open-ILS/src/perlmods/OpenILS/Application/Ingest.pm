@@ -1025,7 +1025,8 @@ sub xpath_to_string {
     }
 
     $string =~ s/(\w+)\/(\w+)/$1 $2/sgo;
-    $string =~ s/(\d{4})-(\d{4})/ $1 $2 /sgo;
+    # Split date ranges and ISSNs on the hyphen
+    $string =~ s/(\d{4})-(\d{3,4}x?)/ $1 $2 /goi;
 
     return NFD($string);
 }
@@ -1181,92 +1182,88 @@ sub _marcxml_to_full_rows {
 
     for my $tagline ( @{$root->getChildrenByTagName("leader")} ) {
         next unless $tagline;
-
-        my $ns = $type->new;
-
-        $ns->tag( 'LDR' );
-        my $val = $tagline->textContent;
-        $val = NFD($val);
-        $val =~ s/\pM+//sgo;
-        $val =~ s/\pC+//sgo;
-        $val =~ s/\W+$//sgo;
-        $ns->value( $val );
-
-        push @ns_list, $ns;
+        _special_tag_to_full_rows($type, $tagline, \@ns_list, 'LDR');
     }
 
     for my $tagline ( @{$root->getChildrenByTagName("controlfield")} ) {
         next unless $tagline;
-
-        my $ns = $type->new;
-
-        $ns->tag( $tagline->getAttribute( "tag" ) );
-        my $val = $tagline->textContent;
-        $val = NFD($val);
-        $val =~ s/\pM+//sgo;
-        $val =~ s/\pC+//sgo;
-        $val =~ s/\W+$//sgo;
-        $ns->value( $val );
-
-        push @ns_list, $ns;
+        _special_tag_to_full_rows($type, $tagline, \@ns_list, $tagline->getAttribute( "tag" ));
     }
 
     for my $tagline ( @{$root->getChildrenByTagName("datafield")} ) {
         next unless $tagline;
-
-        my $tag = $tagline->getAttribute( "tag" );
-        my $ind1 = $tagline->getAttribute( "ind1" );
-        my $ind2 = $tagline->getAttribute( "ind2" );
-
-        for my $data ( @{$tagline->getChildrenByTagName('subfield')} ) {
-            next unless $data;
-
-            my $ns = $type->new;
-
-            $ns->tag( $tag );
-            $ns->ind1( $ind1 );
-            $ns->ind2( $ind2 );
-            $ns->subfield( $data->getAttribute( "code" ) );
-            my $val = $data->textContent;
-            $val = NFD($val);
-            $val =~ s/\pM+//sgo;
-            $val =~ s/\pC+//sgo;
-            $val =~ s/\W+$//sgo;
-            $val =~ s/(\d{4})-(\d{4})/ $1 $2 /sgo;
-            $val =~ s/(\w+)\/(\w+)/$1 $2/sgo;
-            $ns->value( lc($val) );
-
-            push @ns_list, $ns;
-        }
+        _data_tag_to_full_rows($type, $tagline, \@ns_list, $tagline->getAttribute( "tag" ));
 
         if ($xmltype eq 'metabib' and $tag eq '245') {
-               $tag = 'tnf';
-    
-            for my $data ( @{$tagline->getChildrenByTagName('subfield')} ) {
-                next unless ($data and $data->getAttribute( "code" ) eq 'a');
-    
-                $ns = $type->new;
-    
-                $ns->tag( $tag );
-                $ns->ind1( $ind1 );
-                $ns->ind2( $ind2 );
-                $ns->subfield( $data->getAttribute( "code" ) );
-                my $val = substr( $data->textContent, $ind2 );
-                $val = NFD($val);
-                $val =~ s/\pM+//sgo;
-                $val =~ s/\pC+//sgo;
-                $val =~ s/\W+$//sgo;
-                $val =~ s/(\w+)\/(\w+)/$1 $2/sgo;
-                $val =~ s/(\d{4})-(\d{4})/ $1 $2 /sgo;
-                $ns->value( lc($val) );
-    
-                push @ns_list, $ns;
-            }
+            _data_tag_to_full_rows($type, $tagline, \@ns_list, 'tnf');
         }
     }
 
     $log->debug("Returning ".scalar(@ns_list)." Fieldmapper nodes from $xmltype xml");
     return @ns_list;
+}
+
+=head2 _special_tag_to_full_rows
+
+Converts a leader or control field to a set of normalized values
+
+=cut
+
+sub _special_tag_to_full_rows {
+    my $type = shift;
+    my $tagline = shift;
+    my $ns_list = shift;
+    my $tagname = shift;
+
+    my $ns = $type->new;
+
+    $ns->tag( $tagname );
+    my $val = $tagline->textContent;
+    $val = NFD($val);
+    $val =~ s/\pM+//sgo;
+    $val =~ s/\pC+//sgo;
+    $val =~ s/\W+$//sgo;
+    $ns->value( $val );
+
+    push @$ns_list, $ns;
+}
+
+=head2 _data_tag_to_full_rows
+
+Converts a data field to a set of normalized values
+
+=cut
+
+sub _data_tag_to_full_rows {
+    my $type = shift;
+    my $tagline = shift;
+    my $ns_list = shift;
+    my $tag = shift;
+
+    my $ind1 = $tagline->getAttribute( "ind1" );
+    my $ind2 = $tagline->getAttribute( "ind2" );
+
+    for my $data ( @{$tagline->getChildrenByTagName('subfield')} ) {
+        next unless $data;
+
+        my $ns = $type->new;
+
+        $ns->tag( $tag );
+        $ns->ind1( $ind1 );
+        $ns->ind2( $ind2 );
+        $ns->subfield( $data->getAttribute( "code" ) );
+        my $val = $data->textContent;
+        $val = NFD($val);
+        $val =~ s/\pM+//sgo;
+        $val =~ s/\pC+//sgo;
+        $val =~ s/\W+$//sgo;
+        # Split date ranges and ISSNs on the hyphen
+        $val =~ s/(\d{4})-(\d{3,4}x?)/ $1 $2 /goi;
+        $val =~ s/(\w+)\/(\w+)/$1 $2/sgo;
+        $ns->value( lc($val) );
+
+        push @$ns_list, $ns;
+    }
 }
 
 sub flat_marc_xml {
