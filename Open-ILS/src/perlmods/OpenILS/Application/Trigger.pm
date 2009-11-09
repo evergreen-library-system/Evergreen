@@ -391,8 +391,8 @@ sub create_batch_events {
                 my @times = sort {$a <=> $b} interval_to_seconds($def->delay), interval_to_seconds($def->max_delay);
                 $filter->{ $def->delay_field } = {
                     'between' => [
-                        DateTime->now->subtract( seconds => $times[0] )->strftime( '%F %T%z' ),
-                        DateTime->now->subtract( seconds => $times[1] )->strftime( '%F %T%z' )
+                        DateTime->now->subtract( seconds => $times[1] )->strftime( '%F %T%z' ),
+                        DateTime->now->subtract( seconds => $times[0] )->strftime( '%F %T%z' )
                     ]
                 };
             } else {
@@ -460,7 +460,6 @@ __PACKAGE__->register_method(
     argc     => 2
 );
 
-
 sub fire_single_event {
     my $self = shift;
     my $client = shift;
@@ -469,6 +468,7 @@ sub fire_single_event {
     my $e = OpenILS::Application::Trigger::Event->new($event_id);
 
     if ($e->validate->valid) {
+        $logger->info("Event is valid, reacting...");
         $e->react->cleanup;
     }
 
@@ -496,6 +496,7 @@ sub fire_event_group {
     my $e = OpenILS::Application::Trigger::EventGroup->new(@$events);
 
     if ($e->validate->valid) {
+        $logger->info("Event group is valid, reacting...");
         $e->react->cleanup;
     }
 
@@ -532,7 +533,6 @@ __PACKAGE__->register_method(
     api_level=> 1
 );
 
-
 sub grouped_events {
     my $self = shift;
     my $client = shift;
@@ -542,29 +542,47 @@ sub grouped_events {
     my %groups = ( '*' => [] );
 
     for my $e_id ( @$events ) {
-        my $e = OpenILS::Application::Trigger::Event->new($e_id);
-        if ($e->validate->valid) {
-            if (my $group = $e->event->event_def->group_field) {
+        $logger->info("trigger: processing event $e_id");
 
-                # split the grouping link steps
-                my @steps = split /\./, $group;
+        # let the client know we're still chugging along TODO add osrf support for method_lookup $client's
+        $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
-                # find the grouping object
-                my $node = $e->target;
-                $node = $node->$_() for ( @steps );
+        my $e;
+        try {
+           $e = OpenILS::Application::Trigger::Event->new($e_id);
+        } catch Error with {
+            $logger->error("Event creation failed with ".shift());
+        };
 
-                # get the pkey value for the grouping object on this event
-                my $node_ident = $node->Identity;
-                my $ident_value = $node->$node_ident();
+        next unless $e; 
 
-                # push this event onto the event+grouping_pkey_value stack
-                $groups{$e->event->event_def->id}{$ident_value} ||= [];
-                push @{ $groups{$e->event->event_def->id}{$ident_value} }, $e;
-            } else {
-                # it's a non-grouped event
-                push @{ $groups{'*'} }, $e;
-            }
+        try {
+            $e->build_environment;
+        } catch Error with {
+            $logger->error("Event environment building failed with ".shift());
+        };
+
+        if (my $group = $e->event->event_def->group_field) {
+
+            # split the grouping link steps
+            my @steps = split /\./, $group;
+
+            # find the grouping object
+            my $node = $e->target;
+            $node = $node->$_() for ( @steps );
+
+            # get the pkey value for the grouping object on this event
+            my $node_ident = $node->Identity;
+            my $ident_value = $node->$node_ident();
+
+            # push this event onto the event+grouping_pkey_value stack
+            $groups{$e->event->event_def->id}{$ident_value} ||= [];
+            push @{ $groups{$e->event->event_def->id}{$ident_value} }, $e;
+        } else {
+            # it's a non-grouped event
+            push @{ $groups{'*'} }, $e;
         }
+
         $e->editor->disconnect;
     }
 
@@ -582,23 +600,31 @@ sub run_all_events {
 
     my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run();
 
-    for my $def ( %$groups ) {
+    for my $def ( keys %$groups ) {
         if ($def eq '*') {
             for my $event ( @{ $$groups{'*'} } ) {
-                $client->respond(
-                    $self
-                        ->method_lookup('open-ils.trigger.event.fire')
-                        ->run($event)
-                );
+                try {
+                    $client->respond(
+                        $self
+                            ->method_lookup('open-ils.trigger.event.fire')
+                            ->run($event)
+                    );
+                } catch Error with { 
+                    $logger->error("event firing failed with ".shift());
+                };
             }
         } else {
             my $defgroup = $$groups{$def};
             for my $ident ( keys %$defgroup ) {
-                $client->respond(
-                    $self
-                        ->method_lookup('open-ils.trigger.event_group.fire')
-                        ->run($$defgroup{$ident})
-                );
+                try {
+                    $client->respond(
+                        $self
+                            ->method_lookup('open-ils.trigger.event_group.fire')
+                            ->run($$defgroup{$ident})
+                    );
+                } catch Error with {
+                    $logger->error("event firing failed with ".shift());
+                };
             }
         }
     }

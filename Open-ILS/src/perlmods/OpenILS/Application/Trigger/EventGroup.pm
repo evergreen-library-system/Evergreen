@@ -4,7 +4,7 @@ use OpenILS::Application::Trigger::Event;
 use base 'OpenILS::Application::Trigger::Event';
 use OpenSRF::EX qw/:try/;
 
-use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/$logger/;
 
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
@@ -56,7 +56,7 @@ sub react {
                     ->final_result
             );
         } otherwise {
-            $log->error( shift() );
+            $log->error("Event reacting failed with ". shift() );
             $self->update_state( 'error' ) || die 'Unable to update event group state';
         };
 
@@ -90,7 +90,7 @@ sub validate {
         $self->{ids} = [ map { $_->id } @valid_events ];
         $self->editor->xact_commit;
     } otherwise {
-        $log->error( shift() );
+        $log->error("Event group validation failed with ". shift() );
         $self->editor->xact_rollback;
         $self->update_state( 'error' ) || die 'Unable to update event group state';
     };
