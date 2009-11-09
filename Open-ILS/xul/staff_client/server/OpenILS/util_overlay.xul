@@ -28,6 +28,7 @@
         </menupopup>
 		<messagecatalog id="commonStrings" src='/xul/server/locale/<!--#echo var="locale"-->/common.properties'/>
 		<messagecatalog id="offlineStrings" src='/xul/server/locale/<!--#echo var="locale"-->/offline.properties'/>
+		<messagecatalog id="authStrings" src='/xul/server/locale/<!--#echo var="locale"-->/auth.properties'/>
 		<script>dump('finished openils_util_overlay\n');</script>
 	</scripts>
 
