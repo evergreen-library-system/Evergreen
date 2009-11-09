@@ -76,30 +76,29 @@
             }
         }
 
+        function copy_address(a) {
+            var p = g.summary.patron;
+            var s = $("patronStrings").getFormattedString(
+                'staff.patron.mailable_address_format',
+                [p.first_given_name(), p.second_given_name(), p.family_name(),
+                    a.street1(), a.street2(), a.city(), a.county(),
+                    a.state(), a.post_code(), a.country()]
+            );
+            // Without the following call to replace(), you get
+            // literal instances of '\n' in the string.
+            copy_to_clipboard(s.replace(/(\\n)+/g, "\n"));
+        }
+
         function copy_mailing_address() {
             var a = g.summary.patron.mailing_address();
             if (!a) return;
-            copy_to_clipboard(
-                (a.street1() ? a.street1() : "") + "\t" + 
-                (a.street2() ? a.street2() : "") + "\t" +  
-                (a.county() ? a.county() : "") + "\t" + 
-                (a.city() ? a.city() : "") + "\t" +  
-                (a.post_code() ? a.post_code() : "") + "\t" + 
-                (a.country() ? a.country() : "")
-            );
+            copy_address(a);
         }
-        
+
         function copy_billing_address() {
             var a = g.summary.patron.billing_address();
             if (!a) return;
-            copy_to_clipboard(
-                (a.street1() ? a.street1() : "") + "\t" + 
-                (a.street2() ? a.street2() : "") + "\t" +  
-                (a.county() ? a.county() : "") + "\t" + 
-                (a.city() ? a.city() : "") + "\t" +  
-                (a.post_code() ? a.post_code() : "") + "\t" + 
-                (a.country() ? a.country() : "")
-            );
+            copy_address(a);
         }
     
         function post_overlay() {
