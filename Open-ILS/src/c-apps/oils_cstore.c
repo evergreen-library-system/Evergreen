@@ -3121,7 +3121,7 @@ char* SELECT (
 	int gfirst = 1;
 	//int hfirst = 1;
 
-	osrfLogDebug(OSRF_LOG_MARK, "cstore SELECT locale: %s", locale);
+	osrfLogDebug(OSRF_LOG_MARK, "cstore SELECT locale: %s", locale ? locale : "(none)" );
 
 	// punt if there's no FROM clause
 	if (!join_hash || ( join_hash->type == JSON_HASH && !join_hash->size )) {
