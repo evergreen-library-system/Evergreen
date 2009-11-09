@@ -78,15 +78,21 @@
 
         function copy_address(a) {
             var p = g.summary.patron;
+            var parts = [
+                p.first_given_name(), p.second_given_name(), p.family_name(),
+                a.street1(), a.street2(), a.city(), a.county(),
+                a.state(), a.post_code(), a.country()
+            ];
+            for (var i = 0; i < parts.length; i++)
+                if (parts[i] == null) parts[i] = "";
+
             var s = $("patronStrings").getFormattedString(
-                'staff.patron.mailable_address_format',
-                [p.first_given_name(), p.second_given_name(), p.family_name(),
-                    a.street1(), a.street2(), a.city(), a.county(),
-                    a.state(), a.post_code(), a.country()]
+                'staff.patron.mailable_address_format', parts
             );
-            // Without the following call to replace(), you get
-            // literal instances of '\n' in the string.
-            copy_to_clipboard(s.replace(/(\\n)+/g, "\n"));
+            // Replace literal instances of '\n' and excessive whitespace.
+            copy_to_clipboard(
+                s.replace(/(\\n)+/g, "\n").replace(/ {2,}/g, " ")
+            );
         }
 
         function copy_mailing_address() {
