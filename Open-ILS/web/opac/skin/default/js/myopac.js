@@ -166,19 +166,42 @@ function myOPACDrawCheckedOutSlim(r) {
 		return;
 	}
 
+    var totalAsync = checked.overdue.length + checked.out.length;
+    var fetchedCircs = [];
+    var collectCircs = function(r) {
+        var circ = r.getResultObject();
+        circ._od = r.od;
+        fetchedCircs.push(circ);
+        if(fetchedCircs.length < totalAsync) return;
+
+        // sort by due date, oldest to newest
+        fetchedCircs = fetchedCircs.sort(
+            function(a, b) {
+                if(a.due_date() > b.due_date()) return 1;
+                return -1;
+            }
+        )
+
+        dojo.forEach(fetchedCircs, 
+            function(circ) { 
+                myOPACDrawCheckedItem(circ, tbody);
+            }
+        );
+    }
+
 	for( var i = 0; i < checked.overdue.length; i++ ) {
 		var req = new Request(FETCH_CIRC_BY_ID, G.user.session, checked.overdue[i]);
-		req.request.tbody = tbody;
+		//req.request.tbody = tbody;
 		req.request.od = true;
-		req.callback(myOPACDrawCheckedItem);
+		req.callback(collectCircs);
 		req.send();
 	}
 
 
 	for( var i = 0; i < checked.out.length; i++ ) {
 		var req = new Request(FETCH_CIRC_BY_ID, G.user.session, checked.out[i]);
-		req.request.tbody = tbody;
-		req.callback(myOPACDrawCheckedItem);
+		//req.request.tbody = tbody;
+		req.callback(collectCircs);
 		req.send();
 	}
 
@@ -194,13 +217,14 @@ function myOPACDrawCheckedOutSlim(r) {
 }
 
 
-function myOPACDrawCheckedItem(r) {
+//function myOPACDrawCheckedItem(r) {
+function myOPACDrawCheckedItem(circ, tbody) {
 
-	var circ = r.getResultObject();
-	var tbody = r.tbody;
+	//var circ = r.getResultObject();
+	//var tbody = r.tbody;
 	var row = checkedRowTemplate.cloneNode(true);
 	row.id = 'myopac_checked_row_ ' + circ.id();
-   row.setAttribute('circid', circ.id());
+    row.setAttribute('circid', circ.id());
 
 	var due = _trimTime(circ.due_date());
 
@@ -209,7 +233,7 @@ function myOPACDrawCheckedItem(r) {
 	//var rnlink = $n( row, "myopac_checked_renew_link" );
 
 	//if( r.od ) due = elem('b', {style:'color:red;font-size:110%'},due);
-	if( r.od ) {
+	if( circ._od ) {
       due = elem('b', null, due);
       addCSSClass(due, 'overdue');
    } else {
