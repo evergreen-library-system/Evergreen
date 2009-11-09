@@ -1912,7 +1912,7 @@ INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:hold.cancel',
 -- Sample Overdue Notice --
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template) 
-    VALUES (1, 'f', 1, '7 Day Overdue Email Notification', 'checkout.due', 'CircIsOverdue', 'SendEmail', '7 days', '8 days', 'due_date', 'usr', 
+    VALUES (1, 'f', 1, '7 Day Overdue Email Notification', 'checkout.due', 'CircIsOverdue', 'SendEmail', '7 days', 'due_date', 'usr', '8 days', 
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
