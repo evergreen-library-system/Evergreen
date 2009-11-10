@@ -35,7 +35,7 @@ GetOptions(
     'osrf-config=s' => \$opt_osrf_config,
     'run-pending' => \$opt_run_pending,
     'hooks=s' => \$opt_hooks,
-    'hooks=s' => \$opt_granularity,
+    'granularity=s' => \$opt_granularity,
     'process-hooks' => \$opt_process_hooks,
     'debug-stdout' => \$opt_debug_stdout,
     'custom-filters=s' => \$opt_custom_filter,
