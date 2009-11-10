@@ -3023,7 +3023,7 @@ msgstr "Oromo"
 # id::s
 #: cblvl.value:s
 msgid "Serial"
-msgstr "Collections"
+msgstr "Periodique"
 
 #: clfm.description:j
 msgid "The item is a short story or collection of short stories."
