@@ -35,16 +35,37 @@
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <!-- BEHAVIOR -->
-        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
-        <scripts id="openils_util_scripts"/>
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {}; var idleService = null; var idleObserver = null;</script>
+    <scripts id="openils_util_scripts"/>
 
     <script type="text/javascript" src="JSAN.js"/>
     <script type="text/javascript" src="constants.js"/>
     <script type="text/javascript" src="../OpenILS/util/fmall.js"/>
     <script type="text/javascript">
     <![CDATA[
+        function setup_idle_observer(delay) {
+            dump("will minimize after " + delay + " idle seconds\n");
+            idleService = Components.classes[
+                "@mozilla.org/widget/idleservice;1"
+            ].getService(Components.interfaces.nsIIdleService);
+            idleObserver = {
+                observe: function(subject, topic, data) {
+                    if (topic == "idle") {
+                        window.minimize();
+                        dump("minimizing window; subject: " + subject +
+                            ", topic: " + topic +
+                            ", data: " + data + "\n");
+                    }
+                }
+            };
+            idleService.addIdleObserver(idleObserver, delay); // seconds
+            // You could remove the IdleObserver with the following line...
+            // idleService.removeIdleObserver(idleObserver, delay);
+            // ... but why would we?
+        }
         function my_init() {
             try {
+
                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 if (typeof JSAN == 'undefined') { throw(document.getElementById('offlineStrings').getString('common.jsan.missing')); }
                 JSAN.errorLevel = "die"; // none, warn, or die
@@ -69,6 +90,8 @@
 
                 document.title = g.window.appshell_name_increment() + ': ' + g.data.list.au[0].usrname() + '@' + g.data.ws_name + '.' + g.data.server_unadorned;
 
+                var delay = g.data.hash.aous["ui.general.idle_timeout"];
+                if (delay) setup_idle_observer(delay);
             } catch(E) {
                 var err_msg = document.getElementById("offlineStrings").getFormattedString("common.exception", ["menu_frame.xul", E]);
                 try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }

@@ -1622,10 +1622,10 @@ INSERT into config.org_unit_setting_type
   'If enabled and a patron has outstanding bills and the alert page is not required, show the billing tab by default, instead of the checkout tab, when a patron is loaded',
   'bool' ),
 
-( 'ui.circ.patron_display_timeout_interval',
-  'GUI: Patron display timeout interval',
-  'Set this if you would like patron displays in the staff client to be closed after a certain interval of inactivity.  Example ''5 minutes''',
-  'interval' ),
+( 'ui.general.idle_timeout',
+    'GUI: Idle timeout',
+    'If you want staff client windows to be minimized after a certain amount of system idle time, set this to the number of seconds of idle time that you want to allow before minimizing (requires staff client restart).',
+    'integer' ),
 
 ( 'ui.circ.in_house_use.entry_cap',
   'GUI: Record In-House Use: Maximum # of uses allowed per entry.',
