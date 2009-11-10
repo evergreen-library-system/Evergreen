@@ -4077,10 +4077,10 @@ INSERT INTO permission.grp_tree (name, parent, description, perm_interval, userg
 -- You can't log into the staff client without this
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_ORG_SETTINGS'), 1, false);
 -- MFHD permissions are necessary for serials work; add to the default catalogers group
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MFHD_RECORD'), 1, false);
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
 
 -- Add basic acquisitions permissions to the Acquisitions group
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'GENERAL_ACQ'), 1, false);
