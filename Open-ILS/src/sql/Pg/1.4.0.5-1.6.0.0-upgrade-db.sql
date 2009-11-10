@@ -4069,6 +4069,7 @@ INSERT INTO permission.perm_list (code) VALUES ('VIEW_ACQ_FUNDING_SOURCE');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.password_regex');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.patron.password.use_phone');
+INSERT INTO permission.perm_list (code, description) VALUES ('UPDATE_RECORD', 'Allow a user to update and undelete bibliographic records');
 
 INSERT INTO permission.grp_tree (name, parent, description, perm_interval, usergroup, application_perm) VALUES ('Acquisitions', 3, NULL, '3 years', TRUE, 'group_application.user.staff.acq');
 INSERT INTO permission.grp_tree (name, parent, description, perm_interval, usergroup, application_perm) VALUES ('Acquisitions Administrators', (SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), NULL, '3 years', TRUE, 'group_application.user.staff.acq_admin');
@@ -4079,6 +4080,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SE
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MFHD_RECORD'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
 
 -- Add basic acquisitions permissions to the Acquisitions group
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'GENERAL_ACQ'), 1, false);
