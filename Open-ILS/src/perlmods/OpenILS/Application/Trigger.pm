@@ -244,8 +244,7 @@ sub events_by_target {
             "+atevdef" => { active => 't' },
             "+atev" => { state => 'pending' }
         },
-        order_by => { "+atev" => [ 'run_time', 'add_time' ] },
-        distinct => 1
+        order_by => { "atev" => [ 'run_time', 'add_time' ] }
     };
 
 
