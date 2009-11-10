@@ -1,1 +1,3472 @@
-#ChangeLog
+2009-03-27  erickson
+
+	* using new common cat code to in-transactoin bib/volume/copy
+	  creation. created streamlined PO creation method that creates po,
+	  assets, and debits in one transaction. moved asset create logic
+	  into financials.pm for consistency
+
+	* set the provider on the lineitem at po create time. respond after
+	  lineitem update
+
+	* plugged in more streamlined PO creation. added progress meter and
+	  status updates during PO creation
+
+	* added support for displaying the value from the 'selector' field
+	  for read-only widgets
+
+	* added an appendclear function to remove child nodes befor
+	  inserting a new one
+
+	* plugged in intial lineitem table implementation
+
+	* adding some initial readonly parts
+
+2009-03-29  dbs
+
+	* Fix for #54 - make SlimPAC search respect
+	  title/keyword/author/subject/series index
+
+	* Let's fix this typo and see what breaks :)
+
+	* Naive implementation of protection against apostrophes in SlimPAC
+	  search. Fix for #55.
+
+2009-03-30  miker
+
+	* pass the default search class correctly, instead of rewriting the
+	  query (possibly causing user confusion); require a valid class be
+	  passed to the middle layer code
+
+2009-03-30  erickson
+
+	* some layout tweaks for event def grid
+
+	* repaired array positions
+
+	* self is not defined here, use this
+
+	* move the select list creation actoin in with the rest of the
+	  linietem actions (dropdown)
+
+2009-03-31  dbs
+
+	* Fix closed dates editor.
+	  * XMLENT forces quirks mode, and tr/table needs an intervening td
+	  * XMLENT likes its JavaScript inside double-quotes on onclick
+	  attributes
+	  * Cookie.js was triggering 404 errors
+	  
+	  Thanks to dchristens from IRC for reporting the problem and Jeff
+	  of TADL for finding the solution.
+
+2009-03-31  erickson
+
+	* repaired copy/paste 'editor' field name for acqpl links
+
+2009-03-31  scottmk
+
+	* Plugged some massive memory leaks.
+	  
+	  In one case we were leaking an osrfHash whenever we didn't use
+	  it.
+	  I rearranged matters so that we won't create the osrfHash unless
+	  we're going to use it.
+	  
+	  The other leaks involved various libxml2 functions that return
+	  allocated strings that need to be freed. In many of those cases
+	  we had been stdruping the strings and leaking the originals.
+	  Eliminating all those strdups should boost performance a bit,
+	  and reduce the memory footprint.
+
+2009-03-31  erickson
+
+	* test script for printing a purchase order
+
+	* added address info
+
+	* added provider addresses link
+
+	* some formatting
+
+	* typo:actor.org_unit_descendents. run_time is now a date string
+	  instead of a query
+
+2009-03-31  miker
+
+	* adding template_output table to support storing just one copy of
+	  batch output
+
+	* give the environment built by O::A::T::Event[Group] access to the
+	  event proccessing object; teach O::A::T::Reactor::run_TT how to
+	  use this special EventProcessor env element, optionally turning
+	  this off via a "nostore" flag to run_TT
+
+2009-03-31  erickson
+
+	* fixed closing tag
+
+	* set the nostore var
+
+	* prevent some warnings in the logs
+
+2009-03-31  miker
+
+	* add method for creating events by definition(s) (array accepted),
+	  including testing of inactive events, for a specific target
+	  instead of by hook key
+
+2009-03-31  erickson
+
+	* removed remaining assumptions of an 'id' field on all objects.
+	  use Identity column everywhere
+
+	* in batches, 'event' is an array of events
+
+	* fixed var name
+
+	* created method that takes a circ-based event def and a copy
+	  barcode, creates the event if possible and fires the event. this
+	  is primarily for testing notifications
+
+2009-04-01  miker
+
+	* reordering table due to fkey
+
+2009-04-01  erickson
+
+	* Updated the IDL to match the table name in the sql:
+	  template_output => event_output
+	  Added an is_error column to event_output
+	  Updated event.error_output to link to event_output table
+	  Storing error text in event_output table with is_error='t'
+
+	* disabling editing of sequenced fields is better handled in the
+	  widgetLoaded function. removing this less smart version
+
+	* recursive calls to _object_by_path need their own copy of the
+	  path array so that sibling calls aren't left with an empty path
+
+	* simple reactor that just processes a template
+
+	* added ProcessTemplate reactor and new hook, format.po
+
+	* instead of generic format.po hook, let's use specific
+	  format.po.jedi and format.po.print so we can find the right
+	  event_def at runtime
+
+	* updated to use trigger for generating templated output
+
+	* updated, autogrid-ified currency_type list page
+
+	* autogrid the circ_modifier config ui
+
+2009-04-02  djfiander
+
+	* Fix code that loads MARC test data, add a couple of tests,
+	  indicate that a bunch of tests are no longer "TODO"
+
+	* Add support for split issue numbers
+
+	* Add test cases for semi-monthly publication on fixed dates,
+	  omitted issues
+
+2009-04-02  dbs
+
+	* Prevent error messages with many lines from scrolling off the
+	  bottom of the screen, by truncating messages at 30 lines.
+	  Also, fix some FIMXEs, in case anyone ever gets ambitious about
+	  grepping for FIXMEs :)
+
+2009-04-02  erickson
+
+	* allow the caller to define a function that tells the autofield
+	  widget to disable itself if it returns true
+
+	* typo, descendents -> descendants
+
+	* the key changes depending on which stored proc is called. use
+	  whatever key is given to access the value
+
+	* added an option selection column with associated methods. this is
+	  separate from the dojo grid selection api, this it is often
+	  unwieldy and complicates keyboard navigation. still need to
+	  implement selectall
+
+	* added delete all button
+
+	* implemented select/deselect all. removed some debugging. disable
+	  sort when clicking on selector column header
+
+	* auto grid column width
+
+2009-04-03  dbs
+
+	* Avoid a PostgreSQL 8.3 type conversion problem.
+	  Thanks to Jeff Godin for the suggested fix on IRC.
+
+	* Fix broken Z39.50 import due to XMLENT manipulating <script>
+	  elements
+	  
+	  Thanks to Jeff Godin <jeff@tcnet.org> for the patch!
+	  
+	  Developer's Certificate of Origin 1.1
+	  
+	  By making a contribution to this project, I certify that:
+	  
+	  (a) The contribution was created in whole or in part by me and I
+	  have the right to submit it under the open source license
+	  indicated in the file; or
+	  
+	  (b) The contribution is based upon previous work that, to the
+	  best
+	  of my knowledge, is covered under an appropriate open source
+	  license and I have the right under that license to submit that
+	  work with modifications, whether created in whole or in part
+	  by me, under the same open source license (unless I am
+	  permitted to submit under a different license), as indicated
+	  in the file; or
+	  
+	  (c) The contribution was provided directly to me by some other
+	  person who certified (a), (b) or (c) and I have not modified
+	  it.
+	  
+	  (d) I understand and agree that this project and the contribution
+	  are public and that a record of the contribution (including all
+	  personal information I submit with it, including my sign-off) is
+	  maintained indefinitely and may be redistributed consistent with
+	  this project or the open source license(s) involved.
+	  
+	  Signed-off-by: Jeff Godin <jeff@tcnet.org>
+
+2009-04-03  erickson
+
+	* fixed fund currency type datatype
+
+	* return the fleshed event from fire-event-by-barcode
+
+	* popup progress bar
+
+	* added initial 'test circ event def by barcode' functionality
+
+	* go ahead and protect tracker retrieval as well
+
+2009-04-03  phasefx
+
+	* sort item attribute editor templates alphabetically
+
+	* Fix hold shelf display for solitary item. We expect an array
+	  here, but if the array only has one element, then RemoteRequest
+	  is just returning that element
+
+	* "Hold Slip" accidentally replaced "Transit Slip" during
+	  i18n-ization
+
+2009-04-03  erickson
+
+	* do appendClear so we're not growing with new tests
+
+	* used admin_ perm structure
+
+2009-04-05  djfiander
+
+	* Properly pad dates with leading 0
+
+	* Move 'next' calcuations into MFHD::Caption, since they depend
+	  primarily on the caption and pattern fields.
+	  Leave Holding::next() where it is, so a holding statement can
+	  report
+	  on the 'next' date.
+
+2009-04-06  erickson
+
+	* more autogridding
+
+	* repaired the disable widget logic
+
+	* moved generic object/event firing to apputils function. plugged
+	  in PO formatting call
+
+	* started plugging in PO printing, at least to HTML. this assumes a
+	  format.po.html trigger hook
+
+2009-04-06  miker
+
+	* make PO formatting hooks passive; remove PO print hook, add PO
+	  html and pdf hooks
+
+2009-04-06  erickson
+
+	* added a mark-po-received method
+
+	* plugged in mark-po-received action
+
+	* added delete-selected buttons
+
+	* added delete operation
+
+	* set provider on lineitem at import
+
+	* for now, update the price when it's changed. will probably make
+	  this more interactive in the future
+
+	* save some space in the selector colum
+
+2009-04-07  djfiander
+
+	* a bit more refactoring of Caption & Holding
+
+	* Start getting ready to handle more complex publication patterns.
+
+2009-04-07  miker
+
+	* teach acq to extract holding-related data from a named tag and
+	  configured subfields
+
+2009-04-07  scottmk
+
+	* Use the new JSON parser
+
+	* In oils_cstore.c:
+	  
+	  1. Check the return code from all calls to SELECT().
+	  
+	  2. In searchValueTransform(): insist that the function name be in
+	  a
+	  JSON_STRING.
+	  
+	  3. In searchFieldTransformPredicate(): screen the operator string
+	  for
+	  SQL injection.
+	  
+	  4. In searchFieldTransformPredicate(): insert another layer of
+	  parentheses to avoid ambiguity.
+	  
+	  5. Eliminated extraneous parameters on some calls to
+	  osrfLogError().
+	  
+	  6. In searchFieldTransformPredicate(): disallow comparisons to
+	  nulls and booleans.
+
+2009-04-07  dbs
+
+	* Add a unique index on biblio.record_entry.id
+	  On a large system (2M records), this reduced ingest time from
+	  45-60 seconds / record to 5 seconds / record
+
+	* Reverting the unique index on bre.id; it's a primary key and
+	  already has one by definition
+	  Creating the index probably improved the speed of ingest as a
+	  side effect;
+	  a reindex would probably have the same effect without additional
+	  index overhead.
+	  More investigation required.
+
+2009-04-07  erickson
+
+	* trying to bring some coherence to the basic components of an
+	  order/picklist. separating across modules complicates the
+	  process. more to follow
+
+	* porting some more functionality over to the common area
+
+	* moved marc upload into Order.pm
+
+2009-04-08  dbs
+
+	* Fix open-ils.ingest.full.biblio.record_list by passing a
+	  reference to the list, rather than a scalar
+	  Fix the return value of open-ils.ingest.full.biblio.record_list
+	  by returning a true count, rather than a sum of the processed IDs
+
+2009-04-08  erickson
+
+	* added entries for acq::provider_holding_subfield_map, updated
+	  acq::lineitem_provider_attr_definition entries
+
+2009-04-08  miker
+
+	* adding note and circ_modifier to acq.lineitem_detail; moving some
+	  IDL definitions out of the "example" area
+
+2009-04-08  erickson
+
+	* added permacrud entries for acqphsm and acqlipad
+
+	* more import work, more to come
+
+2009-04-09  scottmk
+
+	* 1. In osrfAppChildInit(): reduce the scope of the attr variable.
+	  Don't call
+	  dbi_result_get_field_attribs() unless you're going to use the
+	  result.
+	  
+	  2. In dbi_result_get_field_attribs(): Eliminate the round trip
+	  from string to
+	  number and back to string; just use the string that's already
+	  available.
+	  
+	  If the string is in a JSON_NUMBER, it's guaranteed to be numeric.
+	  If the
+	  string is in a JSON_STRING, it might not be numeric, and if it
+	  isn't, then
+	  PostgreSQL will choke on it. The old code would silently convert
+	  it to zero,
+	  or possibly to some other unintended value.
+
+2009-04-09  erickson
+
+	* continuing to slog through the import process
+
+	* oops, result in true
+
+	* events not guaranteed to have a code, treat display as such
+
+	* added some debugging for now and initial status updates
+
+	* let's go ahead and import the new order.pm even though it's not
+	  done
+
+2009-04-09  dbs
+
+	* A long time ago, miker said we could correct typos in the schema
+	  as long as we add corresponding upgrade logic
+	  Let's take advantage of his openness before we hit 2.0 :)
+
+2009-04-09  erickson
+
+	* go ahead and sort ancestor list by depth so that tree-ification
+	  is not strictly required
+
+2009-04-09  dbs
+
+	* Lots of people are stumbling over the "opensrf" (OpenSRF) vs.
+	  "osrf" (EG) username, so bring them into sync
+
+2009-04-09  phasefx
+
+	* let's try reposition the Register button so it doesn't scroll
+	  offscreen.. could work on scrollbars too
+
+2009-04-09  dbs
+
+	* Avoid a warning about testing against an undefined value
+
+2009-04-09  erickson
+
+	* fixed order by clause
+
+2009-04-09  phasefx
+
+	* fix for nasty little copy/paste regression, trying to support
+	  null ilsevent's. This was preventing Force this Action dialogs
+	  for multiple overridable events
+
+2009-04-10  erickson
+
+	* usr_attr got destroyed in a previous revision, repairing
+
+	* plugged in debit creation
+
+	* set copy location on li detail on import
+
+	* added support for choosing to create bib/copy/callnumber entries
+	  at order record upload time
+
+	* added support for choosing to create bib/copy/callnumber entries
+	  at order record upload time. added more status info
+
+	* use the existing price-finding logic
+
+2009-04-13  dbs
+
+	* context_org_list is an array, and PostgreSQL 8.3 wants it
+	  declared as such
+
+2009-04-13  erickson
+
+	* fixed status update variable for picklist / purchase order. store
+	  estimated price as local attr, since the source is the holdings
+	  data and not the primary marc data
+
+	* added post-upload links to load the resulting PO and selection
+	  list
+
+2009-04-13  dbs
+
+	* Clean up another minor typo (not referenced anywhere, apparently)
+
+2009-04-13  erickson
+
+	* moved generic po bib/cn/copy creation api into order.pm. more
+	  progress update fixes.
+
+	* started acq JS localization
+
+	* plugged in per-po asset creation
+
+2009-04-14  phasefx
+
+	* syntax
+
+	* workstation registration tweaks.. layout, help, and NO_SESSION
+	  handling
+
+	* porting the "top-margin label fix" from 1.2
+
+2009-04-14  dbs
+
+	* First stab at copying fields in the MARC editor:
+	  * CTRL-UP pastes a copy of the current field & subfields before
+	  the current field
+	  * CTRL-DOWN pastes a copy of the current field & subfields after
+	  the current field
+
+2009-04-14  phasefx
+
+	* remove stubs
+
+2009-04-14  dbs
+
+	* Patch to fix "insert subfield" shortcut key conflict in Mac
+	  client
+	  
+	  Thanks to Alexander O'Neill <aoneill@upei.ca> for this patch
+
+2009-04-14  erickson
+
+	* allow the grid to render display labels for linked classes that
+	  it can retrieve
+
+2009-04-14  scottmk
+
+	* 1. In searchFieldTransform(): make sure that the function name
+	  and subcolumn,
+	  when present, look like identifiers; i.e. protect against SQL
+	  injection.
+	  
+	  2. Check for a NULL return value whenever calling
+	  searchFieldTransform().
+
+2009-04-14  erickson
+
+	* do the queued ingest dance like vandelay. create assets after the
+	  lineitems are processed so we can begin/commit the transaction
+	  after each record
+
+	* added status infor for bibs imported and indexed and copies
+	  indexed
+
+	* loosened perms for viewing group tree. fixed org_unit datatype on
+	  pgpt
+
+2009-04-14  miker
+
+	* incorrect sequence name
+
+2009-04-14  erickson
+
+	* sql function to remove all traces of a PO. This is for
+	  testing/development purposes only
+
+2009-04-15  miker
+
+	* teaching record merge function how to copy over 856 tags when
+	  there is a MARC-mapped URI entry
+
+	* have the merge proc delete the source record after asset merging
+
+	* yet untested method for calling the in-db merge stored proc to
+	  handle merging of master/sub bib records
+
+2009-04-15  dbs
+
+	* Enable field transforms to be named with a schema;
+	  is_identifier()
+	  was being a bit too strict and killing perfectly good calls to
+	  functions like "permission.usr_has_perm"
+
+2009-04-15  miker
+
+	* move the duplicate TCN test to /after/ the final attempt at TCN
+	  fixup
+
+	* protect the org trail from the top of the tree
+
+	* protect the org trail from the top of the tree WITHOUT breaking
+	  everything...
+
+2009-04-15  dbs
+
+	* pgsql-server-dev is not a client requirement
+
+2009-04-15  erickson
+
+	* don't remove the lineitem and attrs if it points to a selection
+	  list
+
+	* if we keep the li around, reset some other fields
+
+	* moved po create into order.pm. some other refactoring of asset
+	  creation
+
+	* option to skip asset creation at po create time with existing
+	  picklist. similar update clues added to po/asset create that are
+	  in upload
+
+	* provide option to leave lineitem_details when purging PO if the
+	  li points to a picklist
+
+	* moved li_detail CUD into order. removed old lid code
+
+	* added circ_modifier and note fields to li details edit page
+
+	* added callnumber to the batch operation set
+
+2009-04-16  scottmk
+
+	* In oils_cstore.c: fix autojoin, i.e. the facility for
+	  constructing
+	  a join when the JSON query doesn't specify the columns involved.
+	  
+	  When looking up a foreign key linkage in the IDL, ignore the
+	  parent
+	  table's end of the link (where reltype = "has_many"), because the
+	  parent doesn't know the name of the column at the other end.
+	  
+	  Now an autojoin can work regardless of which table is subordinate
+	  to which.
+
+2009-04-16  dbs
+
+	* Double-dashes anger the XML gods if you try to comment out the
+	  example extensions
+
+2009-04-16  erickson
+
+	* move to autogrid
+
+	* move po/lid receive process into order.pm. added receive
+	  operation for lineitem
+
+2009-04-16  dbs
+
+	* Balance out connect() and disconnect() in _extract_856_uri
+
+2009-04-16  erickson
+
+	* use new receive response types. cleaned up some progress handling
+
+	* implemented PO receive rollback and api's for li and lid
+	  rollback. li/lid ui to come
+
+	* initial support for lineitem notes
+
+	* ML lineitem note CUD method
+
+	* create / edit lineitem notes
+
+	* more notes tweaks
+
+	* don't append to the catalog link if it's already set
+
+	* logic bug
+
+2009-04-16  scottmk
+
+	* In oils_cstore.c, tightened validation for partial autojoins,
+	  i.e.
+	  when the query specifies only one of the join columns.
+	  
+	  When looking up the other join column in the IDL, make sure that
+	  the
+	  link used points to the right table. Also make sure that the
+	  reltype
+	  for the link is not "has_many", because that would imply that the
+	  link is virtual, and the designated column doesn't exist in the
+	  database.
+
+2009-04-16  erickson
+
+	* fixed logic error in check lineitem received. don't update
+	  picklist/po on li update becuase we're re-updating over and over
+
+	* implemented lineitem and lineitem_detail receive
+
+2009-04-17  erickson
+
+	* thinko
+
+	* 'funding types' is a misnomer.. they're just funds
+
+2009-04-17  dbs
+
+	* MODS33 introduced some annoying changes to the way URLs are
+	  treated;
+	  ind2=0 no longer generates a location element, just a uri. ugh.
+	  
+	  Roll back to MODS32 for index and display purposes.
+
+2009-04-17  miker
+
+	* adding explicit feed support for MODS 3.2 and 3.3, to support
+	  item/volume data (-full mode) in feeds
+
+	* adding item-age axis to the browse interface
+
+2009-04-17  scottmk
+
+	* Add CREATE TABLE statements, and the associated IDL entries,
+	  for two new tables:
+	  
+	  acq.fund_tag
+	  acq.fund_tag_map
+
+2009-04-17  miker
+
+	* provide a non-emtpy default for the site portion of the pathinfo
+
+2009-04-19  dbs
+
+	* Remove variables that aren't actually used anywhere in the script
+
+2009-04-19  erickson
+
+	* more enhanced lineitem price setting. updates existing debits if
+	  necessary
+
+2009-04-20  erickson
+
+	* added virtual fields for total encumbered and total spent for a
+	  PO
+
+	* added option to flesh total spent/encumbered for a PO
+
+	* show some PO summary info along the top
+
+	* added selection list merge and clone plus some minor tweaks to
+	  processing status updates
+
+	* don't update li on each li detail update, let the calling code do
+	  that for efficiency
+
+	* implemented list clone and merge
+
+	* respond after li update, may not be any lid's
+
+	* fixed some grid update and progress bugs with merge/clone
+
+	* for consistency, give org unit a reporter:selector field (of
+	  shortname)
+
+	* treat linked aou objects with datatype = 'link' the same as
+	  dataype = 'org_unit' objects
+
+	* fetch lineitems in substream since they are so large
+
+	* ported picklist page to autogrid for consistency
+
+	* strange things happen when you have to progress dialogs.. the
+	  page strethes out, not sure why. make it so a given dialog can be
+	  either indeterminate or not for reuse
+
+	* moved picklist delete into order.pm. code re-use
+
+	* only one progress dialog
+
+	* oops, gotta commit
+
+	* simplify progress dialog. pass true to show to make it
+	  indeterminate
+
+	* clear away the li notes if necessary
+
+	* slight wording change
+
+	* if the bibs and holdings have already been loaded into the ILS,
+	  the marc from the order record is no longer of much use. by
+	  default, let's show the live marc record and give a link to open
+	  the marc editor for the live marc record from the lineitem info
+	  page
+
+	* use the smart lineitem price updater to handle exising fund
+	  debits
+
+	* wrap the ils-marc edit button in a perm
+
+2009-04-21  erickson
+
+	* clean up the lineitem notes handling. clean up actions dropdown
+
+	* don't create dummy barcodes and callnumbers until it's absolutely
+	  necessary (i.e. at asset import time)
+
+	* for a given lineitem, give each lid that does not have a
+	  callnumber label defined the same callnumber
+
+2009-04-21  miker
+
+	* adding Dojo build profile (v1) for the OPAC (all thanks go to
+	  lmcfarland!)
+
+2009-04-21  erickson
+
+	* added func to turn on UniversalXPConnect and offer a friendly
+	  error when it fails
+
+2009-04-21  miker
+
+	* adding support for the <description> element under <class> and
+	  <field>
+
+	* force UTF-8 encoding of records when so requested (they already
+	  are UTF-8, just forcing the flag)
+
+2009-04-21  erickson
+
+	* pass in the build ID and urls map to embedded browsers
+
+	* function to get the XUL build id
+
+	* when isXUL, load the linked bib record in the usual opac details
+	  wrapper tab, so we can access holdings maintenance, etc.
+
+2009-04-21  miker
+
+	* Patch from James Fournie fixing regression of copy display in
+	  deep hierarchies which was introduced by a partial fixed in
+	  r12470
+
+2009-04-21  erickson
+
+	* plugged in au.create and au.update hook event creation
+
+2009-04-21  scottmk
+
+	* Add <field> entries for two new create_time columns,
+	  in acq.fund_debit and acq.fund_allocation.
+
+	* Added create_time columns to acq.fund_debit and
+	  acq.fund_allocation.
+
+2009-04-21  erickson
+
+	* create events after the commit to prevent any possible race
+	  condition. also, no need for the manual activity log entry
+
+	* permacrud entries for purchase order
+
+	* import stuff before using it
+
+	* by default, load the most recently accessed 'local' purchase
+	  orders. made filters non-required, horizonatalized filter layout.
+	  ported to autogrid
+
+2009-04-22  dbs
+
+	* Typo fix
+
+2009-04-22  erickson
+
+	* $pen is an object in this case, not a hash
+
+	* building the grid cell widget forces server fetches, which cause
+	  grid display to act wonky. disabling for now until I can put
+	  together some pre-draw fetching logic
+
+2009-04-22  miker
+
+	* add an explict name column to event definitions, unique on owner
+
+	* tell the IDL about the new name column on event_definition
+
+2009-04-22  erickson
+
+	* use string comparator
+
+	* when only one cstore clause is passed to an editor query, no need
+	  for containing array
+
+	* just in case any cstore connections linger, force disconnect
+	  after we're done with them
+
+2009-04-22  miker
+
+	* teach the batch processor to ignore targets with existing events
+	  (pending for active, any for passive) for the def in question
+
+2009-04-22  erickson
+
+	* prevent erroneous error message on xact begin when an exact
+	  already exists
+
+	* use new event_def name field. added delete buttons for more
+	  event_def grids
+
+	* added event def label string
+
+2009-04-22  miker
+
+	* need to define the <description> element
+
+	* Patch from Ben Ostrowsky adding many labels to the IDL and fixing
+	  several typos; some minor re-flowing as well
+
+2009-04-22  erickson
+
+	* split wants a regex pattern to split on
+
+2009-04-22  miker
+
+	* ordering events by run_time and then add_time to tie-break
+
+2009-04-23  miker
+
+	* allow groups of circ modifiers for the max-per-circ-mod test
+
+2009-04-23  erickson
+
+	* missing comma
+
+2009-04-23  scottmk
+
+	* In SELECT():
+	  
+	  1. Reduce the scope of order_buf and having_buf, thereby reducing
+	  the number
+	  of places where we need to remember to free them.
+	  
+	  2. Don't allocate order_buf unless we're going to use it.
+	  
+	  3. Return an error if the ORDER BY clause references an invalid
+	  class
+	  or column (instead of silently ignoring the reference).
+	  
+	  4. Return an error if the ORDER BY clause references a virtual
+	  field
+	  (instead of including it like it was a real column, resulting in
+	  a
+	  failure later).
+
+2009-04-23  erickson
+
+	* plug in the event creation for the hold.available hook. (note,
+	  hold.capture is different since transit may be required)
+
+	* added the hold.avaiable hook
+
+2009-04-23  dbs
+
+	* Add a definition for the trigger service
+
+2009-04-23  miker
+
+	* cut-and-paste-o when adding the collections warning penalty calc
+
+2009-04-23  scottmk
+
+	* If the "virtual" tag is not present for a field,
+	  default it to "false".
+
+2009-04-23  erickson
+
+	* added template callback for getting user fines summary
+
+2009-04-24  erickson
+
+	* added provider holding_tag
+
+	* can't get dijit textarea to honor spaces/tabs. this custom
+	  textarea widget (much simpler) works nicely
+
+	* use custom textarea widget
+
+2009-04-25  dbs
+
+	* Move a particularly noticeable colour feature from layout to
+	  colors.css
+
+2009-04-26  dbs
+
+	* Put MFHD in the OpenILS::Utils:: package space
+
+	* Normalize to composed Unicode characters
+	  
+	  Some browsers (like Firefox) do a better job of displaying
+	  composed Unicode characters
+
+	* Improve the ID-matching regex
+	  Normalize to composed Unicode characters
+
+	* Basic support for returning MFHD for display purposes
+	  
+	  Interim measure, while there is a direct linkage between sre and
+	  bre,
+	  is to invoke the bib_to_mfhd_hash method at record display time;
+	  probably should return a structure including a count of parsed
+	  MFHD
+	  records to shortcut cycling through all the arrays, but baby
+	  steps
+
+2009-04-26  miker
+
+	* updating badly explained (by me) alternative (untested)
+
+2009-04-26  dbs
+
+	* Add some bib and MFHD records for testing out various serials
+	  features
+
+2009-04-26  miker
+
+	* MFHD lives in the file OpenILS/Utils/MFHD.pm, but all submodules
+	  and code using it, except the new MFHDParser.pm, work in the
+	  shorter MFHD namespace (instead of OpenILS::Utils::MFHD). See
+	  Fieldmapper as an existing analog
+
+2009-04-26  erickson
+
+	* Patch from Doug Kyle which allows the caller to specify a user
+	  during renewal so that the system can verify the renewed item is
+	  checked out to the specified user. Thanks
+
+	* don't assume the existence event code number
+
+	* ilsevent may be present, but null, be safer
+
+2009-04-27  erickson
+
+	* on second thought, just rely on the existing record details page
+	  for editing records that are already in the ILS
+
+	* started a per-lineitem, batch-barcode updater ui. just need to
+	  plug in the save
+
+	* plug in real copy save.
+
+	* created an Acqusitions menu with a couple of menu entries.
+	  experimental, probably will be hidden for 1.6 release
+
+	* forward-porting 12847 (hold expire date warning bug), which was
+	  missed before
+
+	* oops, new patron editor link slipped in, rolling that back for
+	  now
+
+2009-04-27  dbs
+
+	* JSON demands double-quoted strings (simplejson is picky about
+	  this!)
+
+2009-04-27  erickson
+
+	* begining of brief record entry form, based on defined marc attr
+	  defs. just need to determine how to go the opposite direction
+	  with the xpath for building marc (IOW, which tag/subfield to use
+	  when presented with multiple options in the attr def xpath
+
+2009-04-28  dbs
+
+	* I was incrementing the counter twice in the "count linefeeds"
+	  loop. Stop doing that.
+	  Also, use a Unicode-safe algorithm for iterating over characters.
+
+2009-04-28  phasefx
+
+	* This is the search interface experiment attached to the record
+	  bucket interface. Make it more useful by not capping results to
+	  10 rows
+
+	* better test. New copies were getting the string "undefined" for
+	  the creator/owner field values
+
+2009-04-28  erickson
+
+	* added code to build the marc xml from the form, added option to
+	  select destination selection list for brief record. added stub
+	  for 'finish editing via marc editor' option
+
+2009-04-29  miker
+
+	* adding dojo class for parsing and rendering opac/slot-data
+	  extentions
+
+	* replace, do not extend, the innerHTML of the slot
+
+	* experiment-turned-feature: openils.BibTemplate dojo module, with
+	  an example in result_summary.xml
+
+2009-04-29  scottmk
+
+	* Fix the links in the Fieldmapper, which were borked whenever a
+	  class had only one link.
+	  
+	  This fix entailed a complete rewrite of the code that builds the
+	  fieldmapper structure, using XML::LibXML instead of XML::Simple.
+
+2009-04-29  erickson
+
+	* added access points to picklist and PO view UI for creating brief
+	  records
+
+2009-04-29  scottmk
+
+	* When loading the IDL code in C or Perl: generate the
+	  array_positions
+	  based on the sequence in which the fields appear in the IDL file
+	  (rather than from attributes in the <field> elements).
+	  
+	  In most cases this change will make no difference, because the
+	  fields appear in sequence. However for classes "brn" and "mvr"
+	  the
+	  sequences of fields in the IDL are scrambled. For those classes,
+	  this change will effectively renumber the fields.
+	  
+	  This commit does not affect the corresponding Python or Java
+	  code.
+	  So don't go editing the IDL yet to remove the array_position
+	  attributes.
+
+2009-04-29  kgs
+
+	* 
+
+	* 
+
+	* 
+
+	* For style guides and other materials specific to the production
+	  of Evergreen documentation
+
+2009-04-29  erickson
+
+	* big re-work of the provider config page
+
+2009-04-30  miker
+
+	* add example Subjects extention based on openils.BibTemplate
+
+2009-04-30  erickson
+
+	* field array position is determined by position in the IDL.
+	  dynamically generate isnew/ischanged/isdeleted fields and push
+	  them onto the end of the list of fields. For now, if
+	  isnew/ischanged/isdeleted fields exist in the IDL, they are
+	  ignored
+
+2009-04-30  scottmk
+
+	* Enforce the requirement that the ORDER BY clause be represented
+	  by a JSON_HASH. The old code would often silently ignore a
+	  malformed ORDER BY clause.
+	  
+	  (Note: the output of diff makes this change look spectacularly
+	  more complicated than it really is. Because I increased the
+	  level of indentation of a large chunk of code, diff made a lot
+	  of spurious matches.)
+
+2009-04-30  erickson
+
+	* we need a local attr def for price out of the box
+
+2009-04-30  phasefx
+
+	* more correct permission handling for registering
+	  workstations..builds the library drop-down based on work orgs.
+	  But was also done because I was getting a weird -1 result on the
+	  admin user from open-ils.actor.user.perm.highest_org
+
+2009-05-01  dbs
+
+	* Enable org_unit-scoped SRU searches
+	  
+	  http://example.com/opac/extras/sru/SHORTNAME will set a search
+	  scope
+	  of SHORTNAME if the search string does not already contain a
+	  site:
+	  parameter
+	  
+	  Combined with simple2zoom configuration, this gives us the
+	  ability to
+	  surface different Z39.50 "databases" that correspond to various
+	  org_units.
+
+2009-05-01  miker
+
+	* removing namspace prefixes on holdings extentions
+
+2009-05-01  dbs
+
+	* Add a basic holdings retrieval format - more flexible than the
+	  XML holdings, but less detailed
+	  
+	  Should be enough info to flesh out Z39.50 holdings, at least
+
+	* Proof of concept holdings-in-SRU results
+	  
+	  Based on what seems to be the best holdings option of a poor lot
+	  from
+	  http://vdxipedia.oclc.org/index.php/Holdings_Parsing - apparently
+	  standard MFHD doesn't exist, despite
+	  http://www.loc.gov/marc/holdings/hd852.html
+	  
+	  As miker says, code from this should be factored out
+	  from a few different places, and this needs to be much
+	  more configurable, and holdings values need to be escaped...
+
+	* Just add a single record to the SRU results without a collection
+	  wrapper
+
+	* Increase default maximumRecords from 10 to 50
+	  
+	  This is a stop-gap measure until simple2zoom / SRU can be taught
+	  to work together on paging
+
+2009-05-01  miker
+
+	* disambiguate the owning_lib field
+
+	* pass in the record position starting at the offset
+
+2009-05-02  miker
+
+	* moving default page size back to 10, since paging works properly
+	  in yaz-client again
+
+2009-05-02  scottmk
+
+	* Introduce a new syntax for specifying an ORDER BY clause
+	  (while retaining the old syntax). For example:
+	  
+	  {
+	  "select":{ "au":[ "family_name", "id" ] },
+	  "from": "au",
+	  "order_by":
+	  [
+	  {
+	  "class":"au",
+	  "field":"family_name",
+	  "direction":"D"
+	  },
+	  {
+	  "class":"au",
+	  "field":"id"
+	  }
+	  ]
+	  }
+	  
+	  This syntax is more flexible than the old syntax, because columns
+	  from the same table don't have to be grouped together.
+	  
+	  Planned but not yet implemented: "transform" and "params" tag for
+	  passing a column through a transforming function.
+
+2009-05-02  miker
+
+	* adding acn and acp support to unAPI interface
+
+2009-05-02  scottmk
+
+	* Detect and report certain malformations in the ORDER BY clause
+	  (which would otherwise cause segfaults).
+
+2009-05-03  miker
+
+	* add configurable string joiner instead of hardcoding a space
+	  Open-ILS/web/js/dojo/openils/BibTemplate.js
+
+	* hide empty volumes (for ##URI## support)
+
+	* add org unit scoping support, defaulting to global; clean up
+	  textContent handling; avoid removing content unless there are
+	  items matching the query
+
+	* adding a simplistic example of URI rendering.
+
+	* improve example, removing all non-local links where this is at
+	  least one 856$9
+
+	* add ##URI## support ot the slimpac
+
+2009-05-04  miker
+
+	* remove unwanted empty elements; add ##URI## scoping support to
+	  tag browsing
+
+2009-05-04  scottmk
+
+	* Add support for the tags "transform", "params", and
+	  "result_field" to the
+	  new ORDER BY syntax for JSON queries.
+
+2009-05-04  miker
+
+	* adding holdings to fleshed atom feeds
+
+	* adding internal identifier to holdings-namespaced location,
+	  status and circlib elements in holdings xml
+
+	* showing copy counts or localized online resources (##URI##) up
+	  front on the main slimpac result list
+
+2009-05-04  scottmk
+
+	* To plug a memory leak: uncommented a call to
+	  jsonObjectIteratorFree().
+	  This call was allegedly causing abends at some point in the past,
+	  but my testing reveals no problems with it now.
+	  
+	  Also: eliminated a couple of calls to oilsIDLFindPath().
+
+2009-05-04  erickson
+
+	* added special handler for copy location fetching to fetch
+	  locations owned at workstation ancestors + descendents, instead
+	  of entire tree
+
+	* capture async widgets after they are loaded
+
+	* allow the workstation to be passed in via url param for
+	  testing/debugging
+
+	* give more view perrms to provider
+
+	* added ordering agency field to create-po dialog
+
+	* simplify the basic po retrieval perm test
+
+	* added some acq seed data
+
+2009-05-04  miker
+
+	* fixing json_query for fleshing URIs
+
+	* adding unapi <abbr> tags to slimpac record detail display for
+	  copies, callnumbers and local URIs
+
+2009-05-04  erickson
+
+	* add some protection against partially cataloged pre-cat copies
+
+	* more acq seed data, fixed my broken syntax
+
+	* check explicit perm on importing on-order record and only when
+	  necessary
+
+2009-05-04  miker
+
+	* quiet warnings about undef string escaping; add more fields to
+	  the top level copy element
+
+2009-05-05  erickson
+
+	* new acq perm
+
+2009-05-05  miker
+
+	* avoid empty authority search queries
+
+2009-05-05  erickson
+
+	* adding collection_code field to lineitem_detail.
+
+	* typo
+
+	* fixed label
+
+	* height fixes, tabbing fixes
+
+	* wrap header buttons in a div so they will adopt the correct CSS
+
+	* IDL entry for acq.lineitem_detail.collection_code
+
+	* initial action_trigger seed data for overdue notice, mark lost,
+	  mark lost notice, and purchase_order html template. More to come,
+	  will evolve
+
+	* update grid after dialog hide. use the new attr() call to set the
+	  grid structure
+
+	* for consistency, onSubmit -> onPostSubmit
+
+	* grid containers need explicit heights
+
+	* don't reset subtotal on each li
+
+2009-05-05  scottmk
+
+	* Remove array_position attributes, 'virtual="false"', and the
+	  three canonical virtual fields isnew, ischanged, and
+	  isdeleted.
+
+2009-05-05  erickson
+
+	* dojo does not take kindly to numbers when it wants strings
+
+	* added collection code. update copy count in li list when an li's
+	  copy count changes
+
+2009-05-05  scottmk
+
+	* Qualify the column name with the table alias (i.e. class name)
+	  at one spot in the ORDER BY clause where we were neglecting
+	  to do so.
+
+2009-05-05  erickson
+
+	* ported the attr def grid to the newer dojox.grid.DataGrid, plus
+	  some other dojo api fixes. 2 grids to go
+
+	* for consistency, open attr def editor on double click
+
+2009-05-06  erickson
+
+	* in RO mode, don't bother loading the linked display field if the
+	  widget value is null
+
+	* use fully-qualified path in view po/pl links
+
+	* don't require a copy location in import records since we allow
+	  for the configuration of a default. capture colleciton code on
+	  import
+
+	* make sure we build widgets for bacode/note in item list. force
+	  sync on batch widget draw to make subsequent widgets load faster
+
+	* remove some debug logs
+
+	* moved queue grid to dojo.data.DataGrid plus some other dojo-istic
+	  updates. need to update the column picker
+
+	* go ahead and ipmort the placeholder menu since it's used by grid
+	  column pickers
+
+	* out with the old-style grid column picker, in with the new
+
+2009-05-06  miker
+
+	* make subfield 9 the first place we look for a Located URI owner
+
+2009-05-06  erickson
+
+	* added column picker support for suppressing picker actions on
+	  configured columns
+
+2009-05-07  erickson
+
+	* fixed mismatched function name
+
+	* moved match grid to DataGrid
+
+	* honor the locale cookie before the standard headers
+
+	* support for parsing accept-language for locale
+
+2009-05-08  kgs
+
+	* Creating a folder for reports guides.
+
+	* Grammars, glossaries, bibliographies, style guides, and other
+	  documentation.
+
+	* name clarity.
+
+	* setting up guides sync
+
+	* removing extraneous file
+
+	* removing extraneous file
+
+	* removing extraneous file
+
+	* JSON Grammar document in progress.
+
+	* Fixed higgledy-piggledy productionset elements to make them more
+	  eyeball-friendly.
+
+2009-05-08  erickson
+
+	* changed the optional XML parsing to support DTD replacement via
+	  xml::libxml. added some other useful context variables
+
+	* moved vandelay into the new TT infrastructure. still using dtd
+	  for now.
+
+	* base_uri as a misnomer. changed to base_path. added support for
+	  overrideing the initially parsed dtd to support xml dtd entity
+	  munging
+
+	* added missing remove column to provider attr def
+
+	* on the hunt for grids that don't need an explicit height. think
+	  i've found a way, started moving some files in that direction.
+	  hiding the left bar for now since it's just taking up space. some
+	  other general cleanup
+
+2009-05-09  dbs
+
+	* Invoke escape() as a function rather than method, avoids
+	  returning 1 for any input
+	  
+	  This is not ideal but solves the problem in the short-term.
+
+2009-05-10  dbs
+
+	* On third thought, let the caller escape the values; might not be
+	  an XML context.
+
+2009-05-10  miker
+
+	* use direct access -- those variables do not exist anymore
+
+2009-05-11  erickson
+
+	* added some grid autoheight handling. small bug fixes on creation.
+	  other small cleanup
+
+	* if a sequence field is explicitly requested in the field order,
+	  honor it
+
+	* grid width tweaks
+
+	* grid style tweaks, some reformatting
+
+	* grid height fixes, added class label
+
+	* height/width fixes
+
+	* grid heigth fixes, formatting, removed old imported JS since it
+	  was only a few lines, run the code in the template
+
+	* dojo-1.3 treats HTML from a grid getter as raw text, but it will
+	  let you return HTML from a formatter. fixed the autogrid selector
+	  cell. tweaked fuding_source list as well. i'm sure there are more
+	  UI's to track down
+
+	* moved from getter to formatter for html-ized id link for
+	  dojo-1.3. grid height fixes
+
+	* exit early if no event is created
+
+	* started building the new server/local admin menu
+
+	* more menu entries
+
+2009-05-11  scottmk
+
+	* Correct the way that cstore determines whether a class in the
+	  SELECT clause is referenced by the FROM clause.
+	  
+	  Instead of calling jsonObjectFindPath(), which is an imprecise
+	  blunt instrument, traverse the join tree recursively, using
+	  specific knowledge of how join trees are built to look in all
+	  right places, and only in the right places.
+
+2009-05-11  erickson
+
+	* honor non-IDL fields in the fieldOrder
+
+	* remove debug log
+
+	* plugged in some dummy commands to get thing started
+
+	* plugged in initial xpath parsing for provider attr defs. fixed
+	  some grid height issues. fixed some html cell value formtters
+
+	* plugged in click actions for conify pages
+
+2009-05-12  kgs
+
+	* 
+
+	* Reorganizing hierarchy
+
+	* reorganizing hierarchy
+
+	* Placing boe.xml at the top, with chapters underneath it
+
+	* 
+
+	* Establishing cataloging folder under StaffServices
+
+2009-05-12  dbs
+
+	* Add basic MFHD holdings display to OPAC
+
+2009-05-12  kgs
+
+	* Most recent unchunked output of JSONGrammar.html
+
+2009-05-12  erickson
+
+	* plugged in the rest of the admin menu entries
+
+	* apply a formatter so dojo-1.3 will render the html links
+
+	* fall back to the original non-tundra grid. better fonts, better
+	  alternating row colors. removed some unnecessary duplicate css
+	  imports
+
+	* pile of dojo-1.3 compability fixes. more to come
+
+	* fixed some columns that got b0rked in the autogrid setup
+
+	* better autofielwidget debugging
+
+	* treat non-idl fields as virtual fields
+
+	* cache has no object when a new object is created. if not in the
+	  cache, assume balance, etc. info of '0'
+
+2009-05-13  erickson
+
+	* pile of dojo layout fixes for 1.3 and to better ascimilate into
+	  the TT framework
+
+2009-05-13  phasefx
+
+	* Use the dedicated xul file for rendering MARC html instead of
+	  data: url'ing it. Fixes the mangling of double-daggers in record
+	  merging and overlaying displays
+
+2009-05-13  erickson
+
+	* in the public interface, never show hidden orgs (or descendants)
+	  in a selector
+
+	* more dojo1.3 fixes
+
+	* call onPostCreate before we insert the new item into the store
+
+2009-05-14  erickson
+
+	* bludgeoning dojo grid headerMenu into something as flexible as we
+	  need is proving annoying. go back to using custom grid column
+	  picker, complete with 'auto' option. launch picker via header
+	  context menu. needs a little i18n help and (preferably) better
+	  templating
+
+2009-05-14  scottmk
+
+	* In searchJOIN(): abort if recursive call fails.
+
+	* 1. Allow an ORDER BY clause to use a column from a table not
+	  represented in the SELECT clause, as long as it is either the
+	  core table or a joined table.
+	  
+	  2. Fix bug whereby we were emitting the HAVING clause out of
+	  sequence.
+
+2009-05-14  erickson
+
+	* better match grid height handling
+
+2009-05-14  phasefx
+
+	* A little messy, but this should get the Back/Forward buttons
+	  working again for browsers embedded in the staff client. Model
+	  after the old 'cmd_local_admin' section in menu.js
+	  
+	  Here's the problem in a nutshell: <browser> behaves differently
+	  if loaded from chrome:// versus https?://
+	  
+	  In particular, the webNavigation for a browser does not work if
+	  the <browser> is coming from http, so Back & Forward buttons will
+	  not work.
+	  
+	  There's been churn trying to work around this, and past
+	  differences between remote/chrome browsers. The use of chrome
+	  browser is preventing us from making the top-level menu system
+	  (menu.js) remote xul where it would be easier to deploy changes
+	  and local customizations. remote xul where it would be easier to
+	  deploy changes and local customizations.
+	  
+	  urls.XUL_BROWSER --> chrome/content/util/browser.xul is a wrapper
+	  for chrome-based <browser>
+	  urls.XUL_REMOTE_BROWSER --> chrome/content/util/rbrowser.xul is a
+	  wrapper for non chrome-based <browser>
+	  chrome/content/util/browser.js is the javascript in common
+	  between the two
+	  
+	  Since menu.js is currently chrome, we need to use XUL_BROWSER.
+	  
+	  Since menu.js is chrome, it doesn't magically know the remote
+	  server we're connecting to. So URL's passed to XUL_BROWSER need
+	  to be wrapped or decorated with obj.url_prefix(), which looks up
+	  the hostname given during the login sequence.
+	  
+	  Does this make sense? :)
+
+2009-05-14  erickson
+
+	* layout fixes for grid scrollbar issues
+
+	* some menu tidying, more acq menu entries next
+
+	* acq menu entries. fixed generic browser loader to get
+	  back/forward working
+
+	* acq ui tab labels
+
+2009-05-14  scottmk
+
+	* Performance tweak for HAVING clause:
+	  
+	  1. Use a char* for it, not a growing_buffer.
+	  
+	  2. Don't allocate it at all when there is no HAVING clause.
+	  
+	  This change will eliminate to mallocs and frees for each call.
+
+2009-05-15  phasefx
+
+	* simple fix for the Exit button in offline interface if invoked
+	  from Circulation menu. Normally I would just hide it, but let's
+	  try this instead
+
+2009-05-15  miker
+
+	* avoid regex-izing user supplied strings
+
+2009-05-15  erickson
+
+	* grid height/width fixes
+
+2009-05-15  kgs
+
+	* creating release-sensitive docs hierarchy
+
+	* moving folders under release 1.4
+
+	* moving LocalAdmin folder (can't seem to get tortoisesvn to do
+	  this as a batch here)
+
+	* moving another folder for docs into hierarchy
+
+	* moving techref into hierarchy
+
+2009-05-15  erickson
+
+	* local admin menu entries for circ/hold matrix matchpoint
+
+	* though the staff client graciously passes IAMXUL into the
+	  environment, it's not available in the web env until some point
+	  after page load. pass a new 'xul' cookie as well, which is
+	  immediately available to the browser
+
+	* read xul cookie as well
+
+	* when isXUL, hide the dijit menu navigation bar
+
+	* ranged org unit setting method which returns the whole pile of
+	  settings for a given org, plus ancestor settings that are not
+	  represented by the context org or intermediate ancestor.
+
+	* use the new ranged org settings retrieval
+
+	* use the new ranged org settings retrieval, part 2
+
+	* removing deprecated version of org settings retrieval method. use
+	  open-ils.actor.org_unit_setting.values.ranged.retrieve instead
+
+	* add generic view_org_settins perm and apply to staff
+
+	* staff UIs don't need a footer, it just complicates the ui
+
+2009-05-15  kgs
+
+	* correcting error of logic
+
+	* moving folders up
+
+	* relocating folder
+
+	* one more move
+
+	* deleting 1.4 under trunk (which is like having a tuna beef
+	  sandwich)
+
+2009-05-15  dbs
+
+	* LPAD() demands that its first parameter be TEXT in PostgreSQL
+	  8.3; cast accordingly
+
+2009-05-16  kgs
+
+	* JSON Tutorial for Technical Reference documentation.
+
+	* Added link to tutorial, converted to chapter from section.
+
+2009-05-17  phasefx
+
+	* the Toggle Summary button and the grippy now do the same thing
+	  and don't impede each other. End result, Patron Summary sidebar
+	  can be toggled more easily
+
+	* another fix for auto-hiding patron summary sidebar. Current
+	  behavior is for sidebar to display on first patron load, and then
+	  shrink/toggle when loading a sub-interface. Summary can be
+	  redisplayed by clicking clicking grippy, dragging slider, or
+	  using Other -> Toggle Summary menu
+
+	* have Circ -> Retrieve Last Patron chose the right patron display
+	  (horiz vs vertical summary sidebar)
+
+	* Make an org setting for the network activity meter. It's not
+	  ready for prime-time yet
+
+	* only do the auto-hiding of patron summary once per invocation of
+	  the interface. IOW, if staff wants to unhide the summary after it
+	  collapses, let it stay unhidden even when further navigating the
+	  display
+
+	* make sure these patron sub-interfaces can spawn new patron tabs
+	  if need be. Fixes Retrieve Patron from Group interface
+
+2009-05-18  phasefx
+
+	* make clicking on the grippy in the z39.50 client and pressing the
+	  Hide/Show Top Pane button do the same thing/play well together.
+	  The text 'Hide' versus 'Show' can get out of sync, though. Could
+	  punt and relabel it 'Toggle'
+
+2009-05-18  erickson
+
+	* treat copy.circ_modifier as a link
+
+	* import PermaCrud globally within this module
+
+	* some UI width fixes
+
+	* css fixes remove the need for a padding div after grids to
+	  prevent horizontal scroll
+
+2009-05-19  miker
+
+	* adding invalidating stop_date column to usr_standing_penalty,
+	  which is checked by circ/hold stored procs. ML code
+	  (circ/hold/renew scripts) will need to do the same.
+
+2009-05-20  erickson
+
+	* make the password label a little more generic
+
+	* forward-porting 13208: force undef fuflillment time filter on
+	  holds_by_title retrieval
+
+2009-05-20  dbs
+
+	* Give marc2sre the ability to read subfields for an id field
+
+2009-05-20  djfiander
+
+	* Basic makefile to run testsuite with right options
+
+	* Refactor publication pattern parsing to make processing simpler
+	  later
+
+2009-05-21  erickson
+
+	* added newTab function (wrapper) for opening a xul tab
+
+	* import button
+
+2009-05-22  dbs
+
+	* Protect against the horrifying possibility that a caption might
+	  not exist
+
+	* Add some docs about loading the test MFHD records
+
+	* Rough working MFHD editor
+	  
+	  To do:
+	  * Support internationalization
+	  * Open the MARC editor in a tab instead of a pop-up window
+
+2009-05-24  miker
+
+	* Forwared-porting patch from Ben Ostrowsky to address authority
+	  matching in 1.4+
+
+2009-05-24  scottmk
+
+	* In SELECT(): Eliminate a sanity check and error message because
+	  they are now redundant.
+	  
+	  We don't need to verify that a class in the SELECT clause is
+	  defined in the IDL, because we also verify that the class is
+	  referenced in the FROM clause, and all of those classes have
+	  already been vetted against the IDL.
+
+2009-05-25  dbs
+
+	* Serials: point MFHD records at the master bib record when merging
+	  bibs
+
+	* Intended defence against lack of caption was still failing; keep
+	  it simple, dbs
+
+	* Add a serial search method that returns an array of MFHD hashes
+	  for a given bib record
+	  
+	  This enables libraries to display multiple MFHD records per bib
+	  record, for example if
+	  a library has serial holdings for a given journal in microfiche,
+	  microfilm, and print,
+	  the holdings can be represented separately.
+	  
+	  Note that we are not currently identifying which MFHD record is
+	  providing the
+	  holdings coverage; the likely short-term plan will be to display
+	  location information
+	  such as 852 $c.
+
+	* Display an array of MFHD records per bib record
+	  
+	  Reduce some of code duplication
+	  Get ready for translation by breaking out the strings
+	  Introduce spaces between entries in flattened holdings so that we
+	  don't end up with 800-character wide displays of the Economist
+	  holdings
+	  
+	  We need to enable the MFHD editor button to invoke the correct
+	  MFHD record, probably by adding MFHD ID to the svr definition
+
+	* Handle the merge of users for serials
+
+2009-05-26  dbs
+
+	* More polish for MFHD record display
+	  * Add an owning_lib to SRE and SVR so that holdings are scoped to
+	  the search location
+	  * Add owning_lib as a context for deleting, merging, and updating
+	  MFHD records
+	  * Make the comma spacing regex global so that all current issues
+	  will be separated by a comma followed by a space
+	  * Use the MFHD id to invoke the MARC editor directly
+
+	* Fix bad merge, regret being up this late
+
+2009-05-26  erickson
+
+	* layout tweaks
+
+	* created hooks and drop points for damaged and checkout.damaged,
+	  the latter occuring when a patron is 'linked' to a damaged item
+	  (aka charged fines) by virtue of the most recent circulation
+
+2009-05-26  miker
+
+	* updating default hook set for standing penalties
+
+2009-05-26  erickson
+
+	* if an explicit event-def-id is provided, assume that's what the
+	  caller really wants even if it's inactive. this is useful for
+	  testing
+
+	* action_trigger tables that link to a specific event def are now
+	  configured on a separate page where the event def is implied by
+	  the URL so that an event_def will not have to be chosen by the
+	  user when configuring params/environment.
+	  
+	  top-level action_trigger page shows event defs (which link to an
+	  event_def_data page), hooks, reactors, validators, etc.
+
+	* gave autogrid the ability to turn on the column picker
+
+	* turn on column picker
+
+	* forgot the 'delete'
+
+	* added some more 'here we are logs'
+
+	* started plugging in the abiliy to define circ mod groups for a
+	  circ matrix test. just wireframe now. more later
+
+	* added onEditPane callback for munging edit/create panes
+
+	* more work toword support circ mod groups
+
+2009-05-27  erickson
+
+	* pcrud entries for ccmcmt
+
+	* ccmcmtm pcrud entries
+
+2009-05-27  dbs
+
+	* Fix MFHD edit invocation by using pcrud.retrieve to get the right
+	  MFHD record
+	  Make an EcmaScript spec writer happy somewhere by returning null
+	  from all of these functions.
+
+	* Bah, that was a short-lived experiment with returning from all
+	  functions.
+
+2009-05-27  erickson
+
+	* add pcrud controller for ccmcmtm and ccmcmt
+
+2009-05-27  dbs
+
+	* Internationalize the MFHD strings in the OPAC, using Dojo
+
+2009-05-27  erickson
+
+	* oops, over-enthusiastic batch merge, rolling back the extra files
+
+2009-05-27  dbs
+
+	* Create the MFHD perms and assign them by default to Cataloguers
+
+2009-05-27  miker
+
+	* silent failure regression in renew due to refactoring; spotted by
+	  Bill Ott of GRPL
+
+2009-05-27  dbs
+
+	* Enable the 001 and 003 control fields to be edited
+	  This can help resolve conflicting TCN values when importing
+	  records; just edit the 001 of the incoming record
+
+2009-05-27  erickson
+
+	* plugged in rest of group mods creation/deletion. just need whole
+	  group deletion now
+
+2009-05-28  phasefx
+
+	* offline interfaces were only clearing on 'Save these
+	  transactions' if receipt printing was enabled. doh, thought I had
+	  fixed that
+
+2009-05-29  dbs
+
+	* Serials holdings: Use the 852 field to identify the location for
+	  each MFHD record
+	  Also, fix up the import instructions a bit; however, marc2sre.pl
+	  still needs to be taught to generate owning_lib
+
+2009-05-29  erickson
+
+	* storage call needs to go to storage
+
+2009-05-29  miker
+
+	* be more strict about going away after short-circut code; check
+	  earlier for hold validity
+
+2009-05-29  dbs
+
+	* Use Unicode-friendly regular expressions for registering and
+	  retrieving patrons by name
+	  
+	  This enables patrons with names like Étienne or ԱԲԳԱՐ to be
+	  registered and retrieved
+
+2009-05-30  miker
+
+	* one-character thinko in baseline online resource display,
+	  discovered by Warren Layton -- thanks Warren!
+
+	* bringing craftsman up to speed with BibTemplate and the copy
+	  location display. minor display glitch (top border) with the copy
+	  location cell
+
+	* make craftsman the default skin
+
+2009-05-31  dbs
+
+	* Make autogen.sh a bit more robust and informative
+	  * Default to sysconfdir as configured at build time
+	  * Return an error message and value if the specified config file
+	  is not found
+	  * Support legacy option of using $1 as the config file value,
+	  without breaking "autogen.sh -u"
+
+2009-06-01  dbs
+
+	* Invoke a function rather than a property
+
+	* Borrow miker's approach to finding the right depth to display
+	  holdings
+	  (might be worthwhile abstracting the 'here' bit to org_utils.js)
+
+	* Display incomplete holdings, not missing volumes twice
+	  Improve display of holdings with 100% wide table
+
+	* Internet Explorer gets very upset by JS hashes with unquoted keys
+
+	* Add help for copying current field above or below current row
+
+2009-06-01  erickson
+
+	* old-school circ scripts require refreshed script runner on
+	  renewals
+
+	* fixed some column labels
+
+	* added some field labels
+
+2009-06-01  phasefx
+
+	* fixing logic error for the Available On column in various hold
+	  list interfaces. Stealing Jeff's fix instead of coming up with
+	  if/else mangling. Can't test right away, so will backport later
+
+2009-06-01  erickson
+
+	* if no search terms are sent, exit early
+
+	* make the input test a little more strict (require the presence of
+	  a search term)
+
+2009-06-02  dbs
+
+	* Don't go stampeding towards the location subfields!
+	  
+	  Return gracefully if the MFHD record contains no 852 field,
+	  rather than erroring out
+
+2009-06-02  miker
+
+	* Patch from Jeff Godin (MLC/TADL) which:
+	  
+	  Fixes the mixed content warnings from IE7 and IE8 "out of the
+	  box" without
+	  breaking sites that use static servers for CSS and Javascript.
+	  
+	  This sets OILS_PROTOCOL based on the environment variable HTTPS
+	  (which
+	  Apache sets to "on" for https:// requests).
+	  
+	  Thus, a page loaded via https:// gets https:// urls, and a page
+	  loaded via
+	  http:// gets http:// urls.
+	  
+	  To accommodate sites with static servers that can not support
+	  https,
+	  there's a new OILS_OPAC_STATIC_PROTOCOL variable in eg_vhost.conf
+	  which can be set to "http" to force JS/CSS to be loaded over
+	  http://
+	  (you'll get the same warnings that you got before).
+
+2009-06-02  phasefx
+
+	* missed a column, for hold Available On. the other was the
+	  (timestamp) variant
+
+2009-06-03  miker
+
+	* regression in hold targeting where blanket expire_time is set
+
+2009-06-03  dbs
+
+	* Tell MARC::File::XML to treat the XML as UTF8, otherwise
+	  non-ASCII characters get mangled.
+
+2009-06-03  miker
+
+	* be a little more strict on grace period; add support for
+	  restricting to short fine_interval circs during the day, and a
+	  "do them all" run at night for longer intervals
+
+	* indent tidying; quiet the oilsContinueStatus messages a good bit
+
+2009-06-03  erickson
+
+	* when retargeting alternate holds after opportunistic checkin
+	  capture, only retarget related holds not all holds with
+	  prev_check_time=null
+
+	* silence 'uninitialized value in hash element' warnings
+
+	* removed and old pile of 'warn' statements used for debugging
+
+2009-06-03  dbs
+
+	* Bah, don't shift the args inside the loop!
+	  Thanks to berick for reporting the problem
+
+2009-06-03  erickson
+
+	* no need to warn when orgid is null in find_org(), that's not an
+	  uncommon occurrence. just return undef
+
+2009-06-03  miker
+
+	* turn on BibTemplate rendering of online resources by default
+
+2009-06-04  miker
+
+	* do not use Located URIs for record inclusion when a copy location
+	  filter is requested
+
+2009-06-04  djfiander
+
+	* Mark some tests "TODO" for the time being
+
+	* Beginning of code to calcuate dates based on publication
+	  patterns.
+	  This is still completely untested.
+
+2009-06-04  erickson
+
+	* handle isNaN 'money' values
+
+	* make the selector cell onclick handler more dojo-y. added support
+	  for disabling selector cell based on user-defined callback.
+
+	* disable selector cells for system billing types so no deletion
+	  attempts are allowed
+
+	* added an 'alert' field to the end of the zip code database. the
+	  purpose for now is to alert staff in the user editor when said
+	  post code is entered
+
+	* added support for reading zip code db and alerting when alert msg
+	  is present
+
+2009-06-04  dbs
+
+	* Update to preferred terminology to keep things clear for our
+	  patrons
+
+2009-06-04  erickson
+
+	* clear pending flag on an approved address
+
+	* added ability to set display type (e.g. display is not 'block')
+	  when showing a node
+
+	* plugged in pending addr approval. just need to fill in replaced
+	  addr details
+
+2009-06-05  erickson
+
+	* created setting to enable the creation of pending addresses
+
+2009-06-05  miker
+
+	* adding openils_dojo.js includes for our custom dojo build
+
+2009-06-05  erickson
+
+	* grid getter fixes for 1.3
+
+	* repaired typo in module name
+
+	* shift off the class param
+
+2009-06-05  miker
+
+	* allow bookbag (rlist) display to work with just one record id
+
+2009-06-06  dbs
+
+	* Add a "Due Time" column. Useful for items that circulate only for
+	  hours at a time.
+	  
+	  Warning: This is a gross hack, doesn't support localized
+	  displays, etc.
+
+	* Set the string in the right properties file.
+	  We have "Due Time" on the live circ interface only for the
+	  moment.
+
+2009-06-08  erickson
+
+	* treat archived penalties as non-existent (unless explicitly
+	  retireved via pcrud)
+
+2009-06-08  miker
+
+	* allow rlist URLs to honor offset param
+
+	* doh! applied to the wrong call
+
+2009-06-09  erickson
+
+	* Patch from Laura McFarland (who's previous gajillion patches went
+	  woefully unattributed) to tidy up and fix some bugs in the new
+	  survey editor UI.
+
+	* don't try to load user settings if we are not logged in yet
+
+	* don't try to load user settings if we are not logged in yet
+
+	* added org setting to turn on 'show bills tab first when bills
+	  owed'
+
+	* smarter boolean value test for display strings
+
+	* one small step for i18n
+
+	* ignore expired penalties
+
+	* different show-all / show-required links. show new-addr button
+	  when show-required is selected
+
+	* removed unnecessary check for the existence of matrix_test_result
+
+	* plugged in 'auto-set-juvenile-flag-by-dob' handler
+
+	* added support for default inet access level setting
+
+	* when using a text box and a value is required or regEx is
+	  defined, use a ValidationTextBox instead
+
+	* indicate required widgets by checkin required-ness setting in the
+	  markup
+
+2009-06-10  phasefx
+
+	* looks like JSAN isn't really using its EXPORT list for function
+	  libraries
+
+	* fix OPAC visible cosmetic bug for stat cats in staff client.
+	  Bitten again by JSON returning '0' instead of 0
+
+2009-06-10  erickson
+
+	* enabled authoritative for several methods
+
+	* added org setting for future ability to close patron-related
+	  staff client tabs after a period of inactivity
+
+2009-06-10  phasefx
+
+	* have spine label interface use authoritative copy retrieval to
+	  prevent ASSET_COPY_NOT_FOUND race condition
+
+2009-06-10  erickson
+
+	* part 1, duplicate patron searching plugin
+
+2009-06-11  erickson
+
+	* finished dupe patron search plugin
+
+2009-06-11  miker
+
+	* joins in the all_circulations reporting view were ... overzealous
+
+2009-06-11  scottmk
+
+	* Add index so that we can readily find all the
+	  items in a given copy_bucket.
+
+2009-06-12  djfiander
+
+	* Untested code for generating next dates for all patterns
+	  specified in the standard. Now to write the code that calls the
+	  generators to find the correct "next" issue from the current one.
+
+2009-06-12  phasefx
+
+	* Fixes the display issue with using a lot of services in the
+	  Z39.50 client by summarizing the total results instead of listing
+	  them per service. Based on a patch from Warren Layton. Thanks!
+	  I've tweaked this so that the per-service summaries still exist,
+	  but as a tooltip/mouse-over.
+
+2009-06-12  erickson
+
+	* disallow merge if subordinate account is in collections
+
+2009-06-12  phasefx
+
+	* make it so 'bundle' must be targeted specifically, otherwise
+	  folks might accidentally include build.tar if they package the
+	  client into an installer. It's a dev convenience thing for me
+
+2009-06-14  dbs
+
+	* We need to explicitly require dijit.form.Form
+
+2009-06-15  dbs
+
+	* Make it possible to edit MFHD records that have gone bad.
+	  
+	  Previously, invalid MFHD records would be hidden from the staff
+	  client because
+	  they had no holdings to display; now we check for isXUL() and
+	  display a default
+	  location of "MFHD" inside the staff client if things are so
+	  messed up that even
+	  the location isn't visible.
+
+	* Add some logging to MFHDParser.pm, and prevent returning raw
+	  parsing errors to the client
+	  
+	  In concert with c13383, this will give cataloguers the ability to
+	  fix errors in MFHD records
+	  without requiring a system administrator to manipulate SQL
+	  directly. Sweet relief.
+
+	* Enable Google Preview in craftsman skin
+
+2009-06-15  miker
+
+	* Branching for 1.6 ... finally settled down enough.
+
+	* Branching for bugfixes to 1.6.0
+
+2009-06-15  erickson
+
+	* remove suppress fields and default to user's pref via column
+	  picker. added column picker to hold config interface
+
+	* hold matrix matchpoint transit range is ref to org unit type,
+	  fixing IDL
+
+2009-06-15  dbs
+
+	* Backport typo fix
+
+2009-06-18  lmcfarland
+
+	* adding developer (me) to about page
+
+2009-06-19  erickson
+
+	* fixed missing param to authority import call
+
+	* added auth record number extractor
+
+2009-06-19  miker
+
+	* merging in authority ingest methods
+
+2009-06-22  erickson
+
+	* define fix_tcn and override parameters before call to
+	  biblio_record_replace_marc, because of some unexpected (by me,
+	  anyway) handling of =~ in a parameter list
+
+2009-06-23  miker
+
+	* backporting move of the record-merge stored proc to the end of
+	  the schema load, to avoid cross-schema issues
+
+2009-06-23  dbs
+
+	* Simple fix for making home page links work
+
+2009-06-25  erickson
+
+	* adjust the arbitrary print sleep based on the number of items
+	  that need printing. this prevents chopping of the data as it's
+	  being queued to the printer
+
+2009-06-29  erickson
+
+	* de-dupe the permission list
+
+2009-06-30  dbs
+
+	* Treat SRU queries as UTF8 input.
+	  
+	  Resolves a problem whereby any non-ASCII input in SRU queries
+	  resulted in searches for corrupted strings (and consequently 0
+	  hits)
+
+2009-07-03  dbs
+
+	* Remove dangling semicolon from PerlChildInitHandler
+	  
+	  Thanks to Jeff Godin for pointing this out!
+
+2009-07-05  dbs
+
+	* Merge r13500, r13503 from trunk to fix database i18n script and
+	  tests
+
+2009-07-08  erickson
+
+	* if alerting on empty bibs and not overriding, return the alert.
+	  if overriding or not alerting, do the delete (if keep on empty if
+	  not set)
+
+2009-07-08  dbs
+
+	* Merge r13491 from trunk: Give unAPI and friends the ability to
+	  redirect to an OPAC with a specific locale and skin
+
+	* Merge r13492 from trunk: Requests for added content fail all the
+	  time; don't pollute the logs with bogus errors
+
+	* Merge r13509 from trunk: Order copy locations by name by default;
+	  useful for shelving location filter in advanced search
+
+2009-07-09  dbs
+
+	* Merge 13541 from trunk: set explicit encoding for database i18n
+	  input
+
+	* Merge r13546 from trunk: Need to generate the opac.js Dojo string
+	  file, too
+
+	* Merge r13549, r13550, r13551 for a perfect set of i18n scripts
+
+2009-07-11  dbs
+
+	* Merge r13563 from trunk: Update to latest libyaz; install z39.50
+	  server library out of the box
+
+2009-07-13  erickson
+
+	* capture the timeout argument to json_query
+
+2009-07-13  dbs
+
+	* Merge r13574 from trunk: fix for reporter due to removal of
+	  virtual attribute
+
+2009-07-14  dbs
+
+	* Backport r13424 and r13580 from trunk: RefWorks export support
+	  
+	  Patch from Warren Layton implementing RefWorks export via
+	  SuperCat:
+	  
+	  "The patch a new transform, MARC21slim2MARCtxt.xsl, which
+	  converts MARC
+	  into the MARC-ish plain text format accepted by RefWorks (see
+	  [1]).
+	  The patch also adds a new feed to SuperCat, called "marctxt"."
+	  
+	  As well as a reworked patch for the default opac skin to expose
+	  this
+	  functionality as a link next to the "Place a Hold" link.
+
+2009-07-14  erickson
+
+	* backporting 13584 : org fleshing depth
+
+2009-07-15  miker
+
+	* Merging 13599 from trunk: Protect against duplicate Located URIs
+	  at ingest time
+
+	* Merging 13602 from trunk: check for a null circ mod on an item
+	  when doing a non-null circ_mod test
+
+2009-07-16  dbs
+
+	* Give cataloguers a chance to recover from errors, or add holdings
+	  to an empty MFHD record
+
+2009-07-17  erickson
+
+	* added option to import holdings from main record import screen.
+	  Give the user the option to choose which item import profile,
+	  when bibs are done importing, attempt to import holdings for
+	  successfully imported records. Still needs a UI for configuring
+	  new import profiles and ways to import holdings from the queue
+	  interface
+
+2009-07-17  miker
+
+	* erring on the side of conservative for initial 1.6, disabling
+	  RefWorks export by default
+
+2009-07-19  erickson
+
+	* added seed data for hold-available notifications. update
+	  holdisavail validator to use same basic logic as hold status
+	  method
+
+2009-07-20  erickson
+
+	* display label strings for linked objects instead of bare pkeys.
+	  still need to look at resizing the cell
+
+	* specific cookie path not playing nicely when communicating with
+	  staff client cookies, in particular, change operator
+	  functionality. go back to global cookies
+
+	* in general, you want the router to operate at loglevel 2 (warn)
+	  unless you are debugging something
+
+	* localeStrings variable getting clobbered by some other global
+	  var. give it a namespace to protect it
+
+2009-07-21  dbs
+
+	* Merge r13647 from trunk: do not display serial holdings from
+	  deleted MFHD records
+
+	* Merge r13648 from trunk: add crude methods for creating and
+	  deleting MFHD record
+
+	* Merge r13649 from trunk: Expose create and delete MFHD records as
+	  UI elements in staff client record display
+
+	* Merge r13643 from trunk: avoid one useless call to google.com for
+	  Google Book Preview
+
+2009-07-21  erickson
+
+	* use the editor's allowed() method for checking perms. added
+	  context org to perm check. removed info/activity logs since
+	  editor logs queries at info and updates at activity already.
+	  changed 'record' param to 'record_id' for clarity. returning the
+	  new id on create instead of the editor object.
+
+2009-07-21  dbs
+
+	* Merge r13661 and r13662 from trunk: rely on pcrud to delete MFHD
+	  records, i18n-ize another string, and enable dojo.require() to
+	  work in rdetail.js
+
+2009-07-21  erickson
+
+	* IE does not support Array.map(), use dojo.map().
+	  dojox.data.dom.textContent() returns nothing in IE -- use
+	  innerHTML instead when using IE.
+
+2009-07-21  miker
+
+	* add 1.6 upgrade sql (and remove 2.0 stub)
+
+2009-07-21  erickson
+
+	* added hold notification trigger event def
+
+2009-07-22  dbs
+
+	* Merge 13680 from trunk: FTS on serials records is unnecessary
+	  bloat
+
+	* Following r13680, don't create the tables that we have now
+	  dropped from the schema
+
+2009-07-22  miker
+
+	* Temporary script to deal with ingest trigger issues
+
+2009-07-22  dbs
+
+	* Merge upgrade script changes r13686, r13687, r13691 from trunk
+	  (default permissions)
+
+	* Merge r13692 from trunk for default ACQ permissions in seed data
+
+	* Update the README for the 1.6 release
+
+2009-07-23  dbs
+
+	* Fix typo in typo fix - thanks to Warren Layton for finding &
+	  reporting
+
+2009-07-23  erickson
+
+	* Patch from Bill Ott to clear the advanced search form prior to
+	  populating with cached search data to prevent doubling of search
+	  rows
+
+	* patch from Ben Ostrowsky to fix log entry typos: ciculator ->
+	  circulator
+
+	* open-ils.cat.biblio.records.merge uses in_db merge now to take
+	  advantage of URI handling (and speed, etc.). added a perm test to
+	  in_db_merge. removed old bib merge code
+
+	* fixed what appears to be a typo in the oils_i18n_gettext pkey
+	  param for 'author of work' entry
+
+2009-07-24  erickson
+
+	* changed ACQ label in staff client to Acquisitions (Preview) to
+	  prevent confusion
+
+	* added authoritative option so some billing methods
+
+2009-07-24  phasefx
+
+	* backporting changeset 13735: faster method for bill retrieval
+
+2009-07-27  phasefx
+
+	* bug fix: Item Status, once spawned from the Copy Buckets
+	  interface, would keep spawning on every bucket change
+
+2009-07-28  dbs
+
+	* Backport r13749 from trunk: Attempt to avoid clashes with
+	  browsers that treat 'delete' as a reserved JavaScript keyword
+
+	* Backport r13750 from trunk: Avoid a mixed-content (HTTP vs.
+	  HTTPS) warning
+
+	* Backport r13751 from trunk: Make i18n scripts stricter about
+	  UTF-8 input/output handling.
+
+2009-07-28  phasefx
+
+	* set the grp_perm_map sequence before inserting grp_perm_map rows.
+	  Thanks Dan!
+
+2009-07-29  erickson
+
+	* backport 13764: added example translator memcache server config
+
+2009-08-03  phasefx
+
+	* Backport changeset 13791 from trunk: restore raw z39.50 PQN
+	  search feature
+
+2009-08-11  erickson
+
+	* selected columns in a json_query need to be in an array
+
+2009-08-12  erickson
+
+	* added ability to auto-override configured checkout/renewal events
+	  at selfcheck. also, pull in JS files directly so we're not
+	  unnecessarily running opac-only code
+
+2009-08-13  erickson
+
+	* fixed some bugs in creating new picklists by name
+
+2009-08-18  phasefx
+
+	* backport changeset 13857: fixed regression with default search
+	  field not being refocused after using the Clear Form button. Also
+	  have the default field come into focus when the whole tab leaves
+	  focus and is later revisited.
+
+	* backport changesets 13842 and 13862 for working copy/paste
+	  context menus in marc editor
+
+2009-08-18  erickson
+
+	* don't call ->content if there is no response
+
+2009-08-19  erickson
+
+	* add lib shortname to overdue script xml output
+
+	* if the requested hook does not exist, gracefully back out
+
+2009-08-20  phasefx
+
+	* backport changeset 13889 for fixing regression with renewing
+	  multiple items at once in staff client
+
+2009-08-20  miker
+
+	* backporting r13894: moving the simple-rec synchronization out of
+	  the DB for insert/update, and as a new trigger for "delete". This
+	  should finally address the ingest issues seen at some sites
+	  through the 1.4 series
+
+	* backport of r13897: thinko in recent ingest fix
+
+	* update, re, update script re: thinko in recent ingest fix
+
+	* .: tagging 1.6.0.0
+
+	* Open-ILS/src/perlmods/OpenILS/Application.pm, README: updating
+	  version number
+
+2009-08-21  miker
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql,
+	  Open-ILS/src/sql/Pg/reporter-schema.sql: typo reported by Dyrcona
+	  via IRC, thanks!
+
+2009-09-04  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Cat.pm: on marc record
+	  import, call ingest after the create xact has been committed
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Cat.pm: capture
+	  override as a var because using =~ in an arg list is non-good
+
+2009-09-08  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Ingest.pm: backport of
+	  r13936: pass the ID not the bib object to the
+	  reporter.simple_rec_update stored proc
+
+2009-09-18  miker
+
+	* Open-ILS/src/extras/import/parallel_pg_loader.pl,
+	  Open-ILS/src/extras/import/pg_loader.pl: Bug reported by Wiktor
+	  Rzeczkowski from McMaster University: [parallel_]pg_loader.pl was
+	  not taught about the changes to the materialized_simple_record
+	  trigger
+
+2009-09-21  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Z3950.pm:
+	  properly populate %services hash of configured Z servers
+
+2009-09-22  miker
+
+	* Open-ILS/web/js/dojo/openils/BibTemplate.js,
+	  Open-ILS/web/opac/skin/default/xml/rdetail/rdetail_summary.xml:
+	  backporting r14089 and r14091: IE does not appreciate direct
+	  parent/child CSS selectors, so we will use the more generic
+	  descendant selector; improve the display of title data by
+	  providing a space between subfields (XML processors, particularly
+	  those rendering HTML, normalizes whitespace by default)
+
+2009-09-23  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/CDBI/config.pm:
+	  Backport r14098 from trunk: fix typo in CDBI/config.pm (courtesy
+	  Jason Stephenson)
+
+2009-09-23  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search.pm: call
+	  child_init on Z39 module from top-level search service child init
+
+2009-09-23  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/action.pm:
+	  SQL thinko causing over-zealous reshelving of copies not yet out
+	  of their delay time. Problem spotted and fix suggested by Bill
+	  Ott of GRPL.
+
+2009-09-24  miker
+
+	* Open-ILS/src/reporter/clark-kent.pl: backporting r13983: turn off
+	  array expansion in DBD::Pg (new feature that is on by default,
+	  and we do not want it)
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Z3950.pm:
+	  backporting r14155: correcting thinko that caused calling a
+	  cstore method before cstore is started
+
+	* Open-ILS/src/sql/Pg/reporter-schema.sql: backporting r14159:
+	  Correcting reporting view definition with regard to ISBN and ISSN
+	  extraction
+
+2009-09-25  miker
+
+	* Open-ILS/examples/fm_IDL.xml,
+	  Open-ILS/web/conify/global/actor/org_unit.html,
+	  Open-ILS/web/conify/global/actor/org_unit.js: Backporting r14165:
+	  
+	  Patch from Warren Layton at Laurentian university which addresses
+	  some issues
+	  saving org unit data via the conify interfaces.
+	  
+	  Thanks, Warren, and sorry for the delay.
+
+2009-09-26  miker
+
+	* Open-ILS/src/sql/Pg/080.schema.money.sql,
+	  Open-ILS/src/sql/Pg/090.schema.action.sql,
+	  Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: backporting
+	  r14173: Fix targetting trac ticket #70 -- populate the xact_type
+	  column in transaction summary materialization trigger
+
+2009-09-28  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/WWW/SuperCat/Feed.pm: Make MODS v3
+	  variants inherit from mods3 rather than mods (version 2).
+	  
+	  Results in the correct namespace being applied to MODS v3[123]
+	  and makes Zotero happy.
+
+2009-10-02  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/admin/survey.js,
+	  Open-ILS/xul/staff_client/chrome/content/admin/survey_overlay.xul,
+	  Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties:
+	  backporting changeset 14244: Make the old survey wizard use work
+	  locations instead of home lib
+
+2009-10-02  dbs
+
+	* Open-ILS/web/opac/locale/en-US/opac.dtd,
+	  Open-ILS/web/opac/skin/default/xml/rdetail/rdetail_summary.xml:
+	  Remove one hard-coded string (Subjects) from default skin
+
+2009-10-06  dbs
+
+	* Open-ILS/web/opac/locale/en-US/lang.dtd: Remove duplicate entity
+	  definition
+
+	* Open-ILS/web/opac/skin/craftsman/xml/common/css_common.xml,
+	  Open-ILS/web/opac/skin/default/xml/common/css_common.xml: Remove
+	  the source of many annoying 404 errors - a CSS file that doesn't
+	  exist
+
+2009-10-07  erickson
+
+	* Open-ILS/web/opac/common/js/opac_utils.js: created workaround for
+	  confusing IE bug caused by titles with @'s, which resulted in
+	  URLs where the title should be
+
+2009-10-07  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/Application/SuperCat.pm: Backport
+	  the good part of r14283 for escaping call number labels and
+	  org_unit shortnames in -full unAPI output
+
+2009-10-08  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Trigger/Event.pm:
+	  Backporting r14032, a confirmed fix for ticket #64: use Safe to
+	  protect against EVIL evals coming in from the outside world -- we
+	  share the environment into the Safe compartment using the name
+	  $current_environment
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Backporting
+	  r14305 to fix <controlfield> creation and use (when missing) bug:
+	  
+	  When we add a <controlfield> element we need to set it to be 40
+	  characters
+	  long, and full of spaces, otherwise the Fixed Field editor cannot
+	  properly
+	  set the positions.
+	  
+	  Additionally, when a Fixed Field is edited but there is no
+	  backing
+	  <controlfield> element (say, trying to set the Audn when there is
+	  no 008)
+	  then we will add the needed <controlfield>.
+
+2009-10-09  erickson
+
+	* Open-ILS/xul/staff_client/server/patron/ue_config.js: until a
+	  more flexible solution exists, make the default zip regex in the
+	  old-school patron editor Canada-friendly by default
+
+2009-10-09  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/actor.pm:
+	  foward-porting 1.2 changeset r9281 for cloned patron address
+	  searching
+
+2009-10-12  miker
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: insert
+	  billing summary data into the materialized view during upgrade
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/action.pm:
+	  pass the patron id (instead of the object) and the appropriate
+	  context org to the penalty calculator
+
+2009-10-12  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Penalty.pm: capture the
+	  context org parameter for penalty generation.
+
+2009-10-12  miker
+
+	* Open-ILS/src/sql/Pg/1.2.3-1.4-upgrade-db.sql,
+	  Open-ILS/src/sql/Pg/1.2.4-1.4-upgrade-db.sql: side-porting
+	  complete 1.2-1.4 upgrade scripts
+
+2009-10-12  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/OpenILS/global_util.js,
+	  Open-ILS/xul/staff_client/chrome/content/circ/offline_checkin.xul,
+	  Open-ILS/xul/staff_client/chrome/content/circ/offline_checkout.xul,
+	  Open-ILS/xul/staff_client/chrome/content/circ/offline_in_house_use.xul,
+	  Open-ILS/xul/staff_client/chrome/content/circ/offline_renew.xul,
+	  Open-ILS/xul/staff_client/chrome/content/main/menu_frame.xul,
+	  Open-ILS/xul/staff_client/chrome/content/util/list_clipboard.xul,
+	  Open-ILS/xul/staff_client/server/cat/copy_buckets.xul,
+	  Open-ILS/xul/staff_client/server/cat/copy_buckets_quick.xul,
+	  Open-ILS/xul/staff_client/server/cat/copy_editor.xul,
+	  Open-ILS/xul/staff_client/server/cat/copy_summary.xul,
+	  Open-ILS/xul/staff_client/server/cat/marcedit.xul,
+	  Open-ILS/xul/staff_client/server/cat/record_buckets.xul,
+	  Open-ILS/xul/staff_client/server/cat/record_buckets_overlay.xul,
+	  Open-ILS/xul/staff_client/server/cat/record_buckets_quick.xul,
+	  Open-ILS/xul/staff_client/server/cat/spine_labels.xul,
+	  Open-ILS/xul/staff_client/server/cat/volume_editor.xul,
+	  Open-ILS/xul/staff_client/server/cat/z3950.xul,
+	  Open-ILS/xul/staff_client/server/circ/checkin.xul,
+	  Open-ILS/xul/staff_client/server/circ/checkin_overlay.xul,
+	  Open-ILS/xul/staff_client/server/circ/checkout.xul,
+	  Open-ILS/xul/staff_client/server/circ/checkout_overlay.xul,
+	  Open-ILS/xul/staff_client/server/circ/copy_details.xul,
+	  Open-ILS/xul/staff_client/server/circ/copy_status.xul,
+	  Open-ILS/xul/staff_client/server/circ/copy_status_overlay.xul,
+	  Open-ILS/xul/staff_client/server/circ/in_house_use.xul,
+	  Open-ILS/xul/staff_client/server/patron/bill_history.xul,
+	  Open-ILS/xul/staff_client/server/patron/bills.xul,
+	  Open-ILS/xul/staff_client/server/patron/bills_overlay.xul,
+	  Open-ILS/xul/staff_client/server/patron/display.xul,
+	  Open-ILS/xul/staff_client/server/patron/display_horiz.xul,
+	  Open-ILS/xul/staff_client/server/patron/display_horiz_overlay.xul,
+	  Open-ILS/xul/staff_client/server/patron/display_overlay.xul,
+	  Open-ILS/xul/staff_client/server/patron/hold_notices.xul,
+	  Open-ILS/xul/staff_client/server/patron/holds.xul,
+	  Open-ILS/xul/staff_client/server/patron/holds_overlay.xul,
+	  Open-ILS/xul/staff_client/server/patron/summary.xul,
+	  Open-ILS/xul/staff_client/server/patron/summary_overlay_horiz.xul:
+	  backport changesets 13953, 14017: persist mechanism replacement
+	  for 1.9 xulrunners
+
+2009-10-12  erickson
+
+	* Open-ILS/xul/staff_client/server/patron/ue.js: jscalendar doesn't
+	  like the DoB date format. trim the DoB to just the date part
+
+2009-10-12  miker
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: account for
+	  case differences in billing type change
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: do not use
+	  NEW in an ON DELETE trigger, use OLD
+
+	* Open-ILS/src/sql/Pg/080.schema.money.sql: do not use NEW in an ON
+	  DELETE trigger, use OLD
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql,
+	  Open-ILS/src/sql/Pg/950.data.seed-values.sql: set trucation to 1
+	  for LoC z39.50 source
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/actor.pm:
+	  only need to send address search params once now
+
+	* Open-ILS/web/conify/global/actor/org_unit.html: Patch from Laura
+	  Cassell to make the email regexp a bit more forgiving.
+	  Specifically, this allows the name portion of the address to
+	  contain
+	  period separated chunks.
+
+2009-10-13  phasefx
+
+	* Open-ILS/xul/staff_client/server/patron/summary_overlay.xul:
+	  quick tweak so birthdates show by default. Trunk has an org unit
+	  setting and surrounding code for controlling this
+
+2009-10-14  dbs
+
+	* Open-ILS/src/support-scripts/eg_db_config.pl: Merge r14405 from
+	  trunk: support state_store updates
+
+2009-10-14  erickson
+
+	* Open-ILS/xul/staff_client/server/patron/ue.js: like dob, trim the
+	  expire_date to accomodate jscalendar
+
+2009-10-14  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/OpenILS/global_util.js,
+	  Open-ILS/xul/staff_client/server/patron/holds_overlay.xul:
+	  backport changeset 14111: fixes doubled holds display glitch from
+	  oils_persist
+
+2009-10-14  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/Penalty.pm: thinko on
+	  rollback vs. commit when creating a local cstoreEditor object for
+	  user penalty calculation/creation
+
+2009-10-15  dbs
+
+	* Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties:
+	  Backport r14431 - add missing error message
+
+	* Open-ILS/src/sql/Pg/950.data.seed-values.sql: Merge r14436 from
+	  rel_1_6: Add UPDATE_RECORD permission so cataloguers can undelete
+	  records
+
+2009-10-15  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/action.pm:
+	  use inline penalty processing during fine generation to prevent
+	  duplicate penalties
+
+2009-10-15  miker
+
+	* Open-ILS/web/reports/xul/template_builder.xul: backporting r14443
+	  and r14444 from trunk: xul + dojo can not use dojo.addOnLoad or
+	  djConfig.parseOnLoad
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql,
+	  Open-ILS/src/sql/Pg/extend-reporter.sql: backporting trunk fix
+	  for pathological historical circ report query plan
+
+2009-10-15  dbs
+
+	* Open-ILS/src/sql/Pg/000.english.pg84.fts-config.sql: Simplest
+	  possible way to add PostgreSQL 8.4 support.
+	  
+	  Ubuntu 9.10 (Karmic Koala) ships with PostgreSQL 8.4, and in my
+	  testing it works identically to 8.3. Let's add it and avoid at
+	  least one install-time pain.
+
+2009-10-16  dbs
+
+	* Open-ILS/src/sql/Pg/030.schema.metabib.sql,
+	  Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql,
+	  Open-ILS/src/sql/Pg/950.data.seed-values.sql: Add a "complete
+	  subject" index and corresponding upgrade script
+
+2009-10-19  erickson
+
+	* Open-ILS/web/templates/default/vandelay/inc/queue.tt2: authority
+	  record queue needs autoheight to render
+
+2009-10-19  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/util/list.js: backport
+	  changeset 14467, for xulrunner 1.9 change to scrollbars in lists
+	  (fixes bug where off-screen rows don't flesh themselves when they
+	  become visible)
+
+	* Open-ILS/xul/staff_client/chrome/content/OpenILS/global_util.js:
+	  backport changeset 14396: Tweak the key used for oils_persist so
+	  that saved settings will survive staff client BUILD_ID changes.
+
+2009-10-21  erickson
+
+	* Open-ILS/src/c-apps/oils_cstore.c: repaired bug in cstore
+	  'might_have' fleshing which lead to fleshing the same object into
+	  itself
+
+	* Open-ILS/src/c-apps/oils_cstore.c: rolling back 14518, cstore
+	  might_have change. thinko
+
+2009-10-22  miker
+
+	* Open-ILS/web/conify/global/actor/org_unit.js,
+	  Open-ILS/web/conify/global/actor/org_unit_type.js,
+	  Open-ILS/web/conify/global/config/copy_status.js,
+	  Open-ILS/web/conify/global/config/marc_code_maps.js,
+	  Open-ILS/web/conify/global/permission/grp_tree.js,
+	  Open-ILS/web/conify/global/permission/perm_list.js: backporting
+	  r14545 from trunk: use fieldmapper.AutoIDL inside conify to allow
+	  openils.PermaCrud to function properly
+
+	* build/i18n/scripts/db-seed-i18n.py,
+	  build/i18n/scripts/fieldmapper.py,
+	  build/i18n/scripts/ils_events.py: remove the call to unicode() --
+	  breaks things on python 2.5+
+
+2009-10-23  miker
+
+	* Open-ILS/web/reports/xul/template_builder.xul: rolling back
+	  r14446: dojo.addOnLoad() is fine in xul, as long as we are not
+	  using a layer
+
+	* Open-ILS/web/conify/global/actor/org_unit.html,
+	  Open-ILS/web/conify/global/actor/org_unit.js: Patch from Warren
+	  Layton which fixes the behavior of the new Org Unit
+	  configuration interfaces. Moving from raw open-ils.pcrud service
+	  calls to the
+	  handy openils.PermaCrud dojo module.
+	  
+	  Applied with minor editorialization to remove some duplicated
+	  code.
+
+2009-10-25  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Trigger.pm: when
+	  testing for existing events (to prevent duplicates) don't test
+	  for the presence of events linked to the previous event def in
+	  the loop. when fetching targets, only fetch the identifier column
+	  since it is all that is needed to create the event (and there
+	  could be many objects for passive events). increase the search
+	  timeout for event targets
+
+	* Open-ILS/examples/fm_IDL.xml: added some links from the user
+	  object to the user's accumulated money summary and open billable
+	  transactions summaries
+
+2009-10-25  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/MFHD/Caption.pm: Backport
+	  MFHD from trunk
+	  
+	  djfiander was horrified to hear that 1.6.0.0 might be rolled with
+	  an
+	  arbitrary cut of his MFHD code from when that tag was originally
+	  created
+
+2009-10-26  phasefx
+
+	* Open-ILS/xul/staff_client/server/patron/display.js: backporting
+	  part of 14606, disabling the auto-hide patron summary behavior by
+	  default
+
+2009-10-27  dbs
+
+	* Open-ILS/src/reporter/find_orphaned_reports.pl: Update
+	  find_orphaned_reports.pl to modern Evergreen (with apologies to
+	  chromatic):
+	  * prefer non-deprecated reporter database settings
+	  * use opensrf_core.xml instead of bootstrap.conf
+	  * fix typo (boostrap -> bootstrap)
+
+2009-10-27  miker
+
+	* Open-ILS/src/sql/Pg/100.circ_matrix.sql: correct ambiguous select
+
+2009-10-28  miker
+
+	* Open-ILS/xul/staff_client/server/patron/ue.xhtml: Patch from
+	  James Fournie to increase the width of of the state/province
+	  field from 2 to 3 characters, for ISO 3166-2 compliance
+
+2009-10-28  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/Utils/MFHD/Date.pm: Missed the
+	  addition of Date.pm when backporting djfiander's MFHD
+	  enhancements. Argh.
+
+2009-10-29  miker
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: repair
+	  ambiguous WHERE clause
+	  Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql
+
+2009-10-29  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Holds.pm: when
+	  changing the pickup lib of a hold that is already on the shelf,
+	  create a hold-transit-copy not just a regular transit-copy
+
+2009-10-30  erickson
+
+	* Open-ILS/examples/action_trigger_filters.json.example,
+	  Open-ILS/src/perlmods/OpenILS/Application/Trigger/Reactor.pm,
+	  Open-ILS/src/perlmods/OpenILS/Application/Trigger/Validator.pm,
+	  Open-ILS/src/support-scripts/action_trigger_runner.pl:
+	  backporting max-delay-age validator, action_trigger runner script
+	  + trigger filters
+
+	* Open-ILS/examples/action_trigger_filters.json.example,
+	  Open-ILS/src/support-scripts/action_trigger_runner.pl: repaired
+	  function name and JSON
+
+2009-11-02  erickson
+
+	* Open-ILS/src/support-scripts/action_trigger_runner.pl: added
+	  explicit --process-hooks flag to turn on hook event creation.
+	  This allows the script to run in --run-pending mode without
+	  trying to create hook events from default values
+
+	* Open-ILS/src/support-scripts/action_trigger_runner.pl: exit with
+	  help if the script is not told to process any hooks or run
+	  pending events
+
+2009-11-03  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Trigger.pm: there could
+	  be many pending events, up the timeout for inititial fetching
+
+2009-11-03  dbs
+
+	* Open-ILS/web/opac/common/js/opac_utils.js,
+	  Open-ILS/web/opac/skin/default/js/holds.js: Patch from Jeff Godin
+	  to make holds placed by staff respect the patron's notification
+	  preferences.
+	  
+	  The attached patch should fix a bug which resulted in patron
+	  notification
+	  preferences (phone/email/both) being ignored in favor of the
+	  staff user's
+	  notification preferences when staff place a hold on behalf of
+	  another
+	  user.
+	  
+	  BUG: When staff place a hold for another user, the staff member's
+	  notification preferences (not the recipient user's) are
+	  consulted.
+	  
+	  This patch fixes that bug, as well as a bug where notification
+	  selections
+	  were not reset between canceled attempts to place holds for
+	  different
+	  recipients.
+	  
+	  There is also a minor change to grabUserPrefs() regarding which
+	  session
+	  variable to send as an auth token (now uses G.user.session, which
+	  seems to
+	  be an acceptable convention used elsewhere. This was needed, as
+	  the passed
+	  user does not always have a valid session.
+	  
+	  Developer's Certificate of Origin 1.1
+	  
+	  By making a contribution to this project, I certify that:
+	  
+	  (a) The contribution was created in whole or in part by me and I
+	  have the right to submit it under the open source license
+	  indicated in the file; or
+	  
+	  (b) The contribution is based upon previous work that, to the
+	  best
+	  of my knowledge, is covered under an appropriate open source
+	  license and I have the right under that license to submit that
+	  work with modifications, whether created in whole or in part
+	  by me, under the same open source license (unless I am
+	  permitted to submit under a different license), as indicated
+	  in the file; or
+	  
+	  (c) The contribution was provided directly to me by some other
+	  person who certified (a), (b) or (c) and I have not modified
+	  it.
+	  
+	  (d) I understand and agree that this project and the contribution
+	  are public and that a record of the contribution (including all
+	  personal information I submit with it, including my sign-off) is
+	  maintained indefinitely and may be redistributed consistent with
+	  this project or the open source license(s) involved.
+	  
+	  Signed-off-by: Jeff Godin <jeff@tcnet.org>
+
+2009-11-03  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Trigger/Event.pm:
+	  backporting r14747: use the individual opcodes instead of the
+	  :load tag, which is not supported until opcodes in perl 5.10
+
+2009-11-04  miker
+
+	* Open-ILS/examples/fm_IDL.xml,
+	  Open-ILS/src/perlmods/OpenILS/Application/Trigger.pm,
+	  Open-ILS/src/sql/Pg/400.schema.action_trigger.sql: add max_delay
+	  field to optionally pre-invalidate events based on a delay
+	  window, instead of simply the minimum delay time
+
+2009-11-04  dbs
+
+	* Open-ILS/web/templates/base.tt2: Set the encoding for oilsweb
+	  templates for systems that haven't set a default charset header
+	  in Apache
+	  
+	  This resolves a problem seen on Karmic where corrupted characters
+	  were displayed in Vandelay and other TT2 interfaces.
+
+2009-11-04  miker
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: add max_delay
+	  field for a/t event defs to the upgrade script
+
+2009-11-05  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/main/menu.js: enable the
+	  print button for these interfaces
+
+2009-11-05  miker
+
+	* Open-ILS/src/sql/Pg/090.schema.action.sql,
+	  Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: use a trigger
+	  to push day-granular circ due_date to the end of the calendar day
+
+	* Open-ILS/src/sql/Pg/090.schema.action.sql,
+	  Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: Typo
+
+2009-11-05  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Actor.pm: use new mbts
+	  mat view directly instead of jumping through the billable xact.
+	  remove explicit xact management and rely on authoritative
+
+2009-11-06  miker
+
+	* Open-ILS/src/sql/Pg/090.schema.action.sql,
+	  Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: backporting
+	  r14803: thinko in push-due_date trigger function
+
+2009-11-06  dbs
+
+	* Open-ILS/src/sql/Pg/950.data.seed-values.sql: Remove a duplicate
+	  permission group map entry.
+	  
+	  This worries me a little - did we reorder the non-pinned
+	  permission list
+	  entries, thereby throwing off all the hard-coded perm_grp_map
+	  entries?
+	  
+	  Also correct some mismatched oils_i18n_gettext ID attributes.
+
+	* Open-ILS/src/sql/Pg/950.data.seed-values.sql: Remove Spanish from
+	  the list of localizations, as there is no Spanish localization.
+	  
+	  Only removing this from rel_1_6_0_0 as we can always hope.
+
+2009-11-07  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Ingest.pm: make sure
+	  there is a space before and after normalized date ranges
+
+2009-11-09  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Trigger.pm,
+	  Open-ILS/src/perlmods/OpenILS/Application/Trigger/Event.pm,
+	  Open-ILS/src/perlmods/OpenILS/Application/Trigger/EventGroup.pm,
+	  Open-ILS/src/perlmods/OpenILS/Application/Trigger/Validator.pm:
+	  Back-porting:
+	  
+	  support for min-passive-delay-age validation
+	  more detailed error logging
+	  fix to max_delay between filter
+	  no longer validate batch passive events during the grouping phase
+
+2009-11-09  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Ingest.pm,
+	  Open-ILS/src/sql/Pg/reporter-schema.sql: Backport r14825 and
+	  r14826 to address ISSN ingest and retrieval bugs
+
+2009-11-09  erickson
+
+	* Open-ILS/web/opac/skin/default/js/myopac.js: back-porting 14370:
+	  sort checked out items by due date, oldest first. this brings the
+	  items that need the most attention to the top of the list.
+	  previously, there was no sorting
+
+2009-11-09  dbs
+
+	* Open-ILS/xul/staff_client/server/OpenILS/util_overlay.xul: Fix
+	  Launchpad bug 458321 ("authStrings missing when Change Operator
+	  fails")
+
+2009-11-09  phasefx
+
+	* Open-ILS/xul/staff_client/chrome/content/OpenILS/data.js,
+	  Open-ILS/xul/staff_client/chrome/content/util/print.js,
+	  Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties:
+	  Mozilla has a printer settings object which we serialize when
+	  saving the settings. But those objects are not necessarily
+	  compatible across xulrunner versions. This changeset will load
+	  what settings it can and warn the user that they need to
+	  reconfigure their printer settings. We also attempt to load the
+	  printer settings up-front during the login process for earlier
+	  warning.
+
+2009-11-10  dbs
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: Add
+	  UPDATE_RECORD permission and grant it to cataloguers (per
+	  Launchpad bug # 479247)
+	  
+	  Thanks to Warren Layton for finding this during upgrade testing
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: Fix 1.4->1.6
+	  upgrade script to assign new cataloger permissions to cataloger
+	  group, not circulators
+	  
+	  Thanks again to Warren Layton for spotting and reporting this!
+
+2009-11-10  miker
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Trigger.pm: backporting
+	  14851: removing needless (and problematic) distinct clause, and
+	  fixing order_by syntax
+
+	* Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql: adding
+	  VIEW_BILLING_TYPE to Staff groups during upgrade
+

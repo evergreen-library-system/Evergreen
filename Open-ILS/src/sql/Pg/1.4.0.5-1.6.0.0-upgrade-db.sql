@@ -21,7 +21,7 @@ DROP SCHEMA serial CASCADE;
 
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.0');
+INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.0-GOLD');
  
 CREATE TABLE config.standing_penalty (
 	id		SERIAL	PRIMARY KEY,
