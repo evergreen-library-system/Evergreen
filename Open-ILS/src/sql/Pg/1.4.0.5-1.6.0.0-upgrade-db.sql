@@ -4075,6 +4075,7 @@ INSERT INTO permission.grp_tree (name, parent, description, perm_interval, userg
 INSERT INTO permission.grp_tree (name, parent, description, perm_interval, usergroup, application_perm) VALUES ('Acquisitions Administrators', (SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), NULL, '3 years', TRUE, 'group_application.user.staff.acq_admin');
 
 -- You can't log into the staff client without this
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_BILLING_TYPE'), 0, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_ORG_SETTINGS'), 1, false);
 -- MFHD permissions are necessary for serials work; add to the default catalogers group
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MFHD_RECORD'), 1, false);
