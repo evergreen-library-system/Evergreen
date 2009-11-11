@@ -1298,6 +1298,13 @@
 <!ENTITY staff.patron_display.archived_penalty.end_date.accesskey "">
 <!ENTITY staff.patron_display.archived_penalty.retrieve.label "Retrieve Archived Penalties">
 <!ENTITY staff.patron_display.archived_penalty.retrieve.accesskey "R">
+<!ENTITY staff.patron_display.trigger_event.caption "Modify Triggered Events">
+<!ENTITY staff.patron_display.trigger_event.menu.actions.label "Actions for Selected Events">
+<!ENTITY staff.patron_display.trigger_event.menu.actions.accesskey "A">
+<!ENTITY staff.patron_display.trigger_event.menu.actions.cancel.label "Cancel Event">
+<!ENTITY staff.patron_display.trigger_event.menu.actions.cancel.accesskey "C">
+<!ENTITY staff.patron_display.trigger_event.menu.actions.reset.label "Reset Event">
+<!ENTITY staff.patron_display.trigger_event.menu.actions.reset.accesskey "R">
 <!ENTITY staff.patron_editor_interface_label "Patron Edit">
 <!ENTITY staff.patron_interface_label "Patron ">
 <!ENTITY staff.patron_navbar.bills 'Bills'>
@@ -2619,6 +2626,8 @@
 <!ENTITY staff.patron.info_surveys.answer.value "Answer:">
 <!ENTITY staff.patron.info.notes.label "Notes">
 <!ENTITY staff.patron.info.notes.accesskey "N">
+<!ENTITY staff.patron.info.triggered_events.label "Triggered Events">
+<!ENTITY staff.patron.info.triggered_events.accesskey "v">
 <!ENTITY staff.patron.info.stat_cats.label "Statistical Categories">
 <!ENTITY staff.patron.info.stat_cats.accesskey "S">
 <!ENTITY staff.patron.info.surveys.label "Surveys">

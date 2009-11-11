@@ -308,6 +308,18 @@ patron.display.prototype = {
                             );
                         }
                     ],
+                    'cmd_patron_info_triggered_events' : [
+                        ['command'],
+                        function(ev) {
+                            obj.right_deck.set_iframe(
+                                urls.XUL_TRIGGER_EVENTS,
+                                {},
+                                {
+                                    'patron_id' : obj.patron.id()
+                                }
+                            );
+                        }
+                    ],
                     'cmd_patron_info_stats' : [
                         ['command'],
                         function(ev) {

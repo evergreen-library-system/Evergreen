@@ -1,0 +1,175 @@
+var list; var error; var net; var rows; var archived_rows;
+
+function $(id) { return document.getElementById(id); }
+
+//// parent interfaces often call these
+function default_focus() { $('atev_list').focus(); }
+function refresh() { populate_list(); }
+////
+
+function trigger_event_init() {
+    try {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
+
+        commonStrings = $('commonStrings');
+        patronStrings = $('patronStrings');
+
+        if (typeof JSAN == 'undefined') {
+            throw(
+                commonStrings.getString('common.jsan.missing')
+            );
+        }
+
+        JSAN.errorLevel = "die"; // none, warn, or die
+        JSAN.addRepository('..');
+
+        JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
+        XML_HTTP_SERVER = data.server_unadorned;
+
+        JSAN.use('util.error'); error = new util.error();
+        JSAN.use('util.network'); net = new util.network();
+        JSAN.use('patron.util'); 
+        JSAN.use('util.list'); 
+        JSAN.use('util.functional'); 
+        JSAN.use('util.widgets');
+
+        dojo.require('openils.Util');
+
+        init_list();
+        $('cmd_cancel_event').addEventListener('command', gen_event_handler('cancel'), false);
+        $('cmd_reset_event').addEventListener('command', gen_event_handler('reset'), false);
+        populate_list();
+        default_focus();
+
+    } catch(E) {
+        var err_prefix = 'trigger_events.js -> trigger_event_init() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+}
+
+function gen_event_handler(method) { // cancel or reset?
+    return function(ev) {
+        try {
+            var sel = list.retrieve_selection();
+            var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
+
+            var pm = $('progress'); pm.value = 0; pm.hidden = false;
+            var idx = -1;
+
+            var i = method == 'cancel' ? 'FM_ATEV_CANCEL' : 'FM_ATEV_RESET';
+            fieldmapper.standardRequest(
+                [ api[i].app, api[i].method ],
+                {   async: true,
+                    params: [ses(), [ids]],
+                    onresponse: function(r) {
+                        try {
+                            idx++; pm.value = Number( pm.value ) + 100/ids.length;
+                            var result = openils.Util.readResponse(r);
+                            if (typeof result.ilsevent != 'undefined') { throw(result); }
+                        } catch(E) {
+                            error.standard_unexpected_error_alert('In patron/trigger_events.js, handle_'+i+'_event onresponse.',E);
+                        }
+                    },
+                    onerror: function(r) {
+                        try {
+                            var result = openils.Util.readResponse(r);
+                            throw(result);
+                        } catch(E) {
+                            error.standard_unexpected_error_alert('In patron/trigger_events.js, handle_'+i+'_event onerror.',E);
+                        }
+                        pm.hidden = true; pm.value = 0; populate_list();
+                    },
+                    oncomplete: function(r) {
+                        try {
+                            var result = openils.Util.readResponse(r);
+                        } catch(E) {
+                            error.standard_unexpected_error_alert('In patron/trigger_events.js, handle_'+i+'_event oncomplete.',E);
+                        }
+                        pm.hidden = true; pm.value = 0; populate_list();
+                    }
+                }
+            );
+
+        } catch(E) {
+            alert('Error in patron/trigger_events.js, handle_???_event(): ' + E);
+        }
+    };
+}
+
+function init_list() {
+    try {
+
+        list = new util.list( 'atev_list' );
+        list.init( 
+            {
+                'columns' : [ 'atev' ],
+                'retrieve_row' : retrieve_row,
+                'on_select' : handle_selection
+            }
+        );
+
+    } catch(E) {
+        var err_prefix = 'trigger_events.js -> init_list() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+}
+
+function retrieve_row(params) { // callback function for fleshing rows in a list
+    params.row_node.setAttribute('retrieve_id',params.row.my.atev.id()); 
+    params.on_retrieve(params.row); 
+    return params.row; 
+}
+
+function handle_selection(ev) { // handler for list row selection event
+    var sel = list.retrieve_selection();
+    if (sel.length > 0) {
+        $('cmd_cancel_event').setAttribute('disabled','false');
+        $('cmd_reset_event').setAttribute('disabled','false');
+    } else {
+        $('cmd_cancel_event').setAttribute('disabled','true');
+        $('cmd_reset_event').setAttribute('disabled','true');
+    }
+};
+
+function populate_list() {
+    try {
+
+        rows = {};
+        list.clear();
+
+        function onResponse(r) {
+            var evt = openils.Util.readResponse(r);
+            var row_params = {
+                'row' : {
+                    'my' : {
+                        'atev' : evt
+                    }
+                }
+            };
+            rows[ evt.id() ] = list.append( row_params );
+
+        }
+
+        function onError(r) {
+            var evt = openils.Util.readResponse(r);
+            alert('error, evt = ' + js2JSON(evt));
+        }
+
+        var methods = ['FM_ATEV_APROPOS_CIRC','FM_ATEV_APROPOS_AHR'];
+        for (var i in methods) {
+            fieldmapper.standardRequest(
+                [api[methods[i]].app, api[methods[i]].method ],
+                {   async: true,
+                    params: [ses(), xul_param('patron_id')],
+                    onresponse : onResponse,
+                    onerror : onError,
+                    oncomplete : function() {}
+                }
+            );
+        }
+
+    } catch(E) {
+        var err_prefix = 'trigger_events.js -> populate_list() : ';
+        if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+}
