@@ -3437,6 +3437,8 @@ sub copy_events {
 
     (my $obj_type = $self->api_name) =~ s/.*\.([a-z]+)$/$1/;
 
+    my $copy = $e->retrieve_asset_copy($copy_id) or return $e->event;
+
     my $copy_field = 'target_copy';
     $copy_field = 'current_copy' if $obj_type eq 'ahr';
 
@@ -3446,6 +3448,7 @@ sub copy_events {
         from => $obj_type,
         where => {$copy_field => $copy_id}
     };
+
 
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
     my $req = $ses->request('open-ils.trigger.events_by_target', 
@@ -3459,6 +3462,8 @@ sub copy_events {
         if($e->requestor->id != $user->id) {
             return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
         }
+
+        $tgt->$copy_field($copy);
 
         $tgt->usr($user);
         $conn->respond($val) if $val;
