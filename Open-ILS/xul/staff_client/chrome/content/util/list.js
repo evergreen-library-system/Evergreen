@@ -32,14 +32,28 @@ util.list.prototype = {
         JSAN.use('util.widgets');
 
         if (typeof params.map_row_to_column == 'function') obj.map_row_to_column = params.map_row_to_column;
-        if (typeof params.map_row_to_columns == 'function') obj.map_row_to_columns = params.map_row_to_columns;
+        if (typeof params.map_row_to_columns == 'function') {
+            obj.map_row_to_columns = params.map_row_to_columns;
+        } else {
+            obj.map_row_to_columns = obj.std_map_row_to_columns();
+        }
         if (typeof params.retrieve_row == 'function') obj.retrieve_row = params.retrieve_row;
 
         obj.prebuilt = false;
         if (typeof params.prebuilt != 'undefined') obj.prebuilt = params.prebuilt;
 
         if (typeof params.columns == 'undefined') throw('util.list.init: No columns');
-        obj.columns = params.columns;
+        obj.columns = [];
+        for (var i = 0; i < params.columns.length; i++) {
+            if (typeof params.columns[i] == 'object') {
+                obj.columns.push( params.columns[i] );
+            } else {
+                var cols = obj.fm_columns( params.columns[i] );
+                for (var j = 0; j < cols.length; j++) {
+                    obj.columns.push( cols[j] );
+                }
+            }
+        }
 
         switch(obj.node.nodeName) {
             case 'tree' : obj._init_tree(params); break;
@@ -1518,7 +1532,99 @@ util.list.prototype = {
         } catch(E) {
             obj.error.standard_unexpected_error_alert('setting list actions',E);
         }
-    }
+    },
 
+    // Takes fieldmapper class name and attempts to spit out column definitions suitable for .init
+    'fm_columns' : function(hint,column_extras) {
+        var obj = this;
+        var columns = [];
+        try {
+            // requires the dojo library fieldmapper.autoIDL
+            if (typeof fieldmapper == 'undefined') { throw 'fieldmapper undefined'; }
+            if (typeof fieldmapper.IDL == 'undefined') { throw 'fieldmapper.IDL undefined'; }
+            if (typeof fieldmapper.IDL.fmclasses == 'undefined') { throw 'fieldmapper.IDL.fmclasses undefined'; }
+            if (typeof fieldmapper.IDL.fmclasses[hint] == 'undefined') { throw 'fieldmapper.IDL.fmclasses.' + hint + ' undefined'; }
+            var my_class = fieldmapper.IDL.fmclasses[hint]; 
+
+            function col_def(my_field) {
+                var col_id = hint + '_' + my_field.name;
+                var def = {
+                    'id' : col_id,
+                    'label' : my_field.label || my_field.name,
+                    'sort_type' : [ 'int', 'float', 'id', 'number' ].indexOf(my_field.datatype) > -1 ? 'number' : ( my_field.datatype == 'money' ? 'money' : 'default'),
+                    'hidden' : [ 'isnew', 'ischanged', 'isdeleted' ].indexOf(my_field.name) > -1,
+                    'flex' : 1
+                };                    
+                // my_field.datatype => bool float id int interval link money number org_unit text timestamp
+                def.render = function(my) { return my[hint][my_field.name](); }
+                if (my_field.datatype == 'timestamp') {
+                    dojo.require('dojo.date.locale');
+                    dojo.require('dojo.date.stamp');
+                    def.render = function(my) {
+                        return dojo.date.locale.format( dojo.date.stamp.fromISOString(my[hint][my_field.name]()) );
+                    }
+                }
+                if (my_field.datatype == 'org_unit') {
+                    def.render = function(my) {
+                        return typeof my[hint][my_field.name]() == 'object' ? my[hint][my_field.name]().shortname() : data.hash.aou[ my[hint][my_field.name]() ].shortname();
+                    }
+                }
+                if (my_field.datatype == 'money') {
+                    JSAN.use('util.money');
+                    def.render = function(my) {
+                        return util.money.sanitize( my[hint][my_field.name]() );
+                    }
+                }
+                if (column_extras) {
+                    if (column_extras[col_id]) {
+                        for (var attr in column_extras[col_id]) {
+                            def[attr] = column_extras[col_id][attr];
+                        }
+                    }
+                }
+                return def;
+            }
+ 
+            for (var i = 0; i < my_class.fields.length; i++) {
+                var my_field = my_class.fields[i];
+                columns.push( col_def(my_field) );
+            }
+
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('fm_columns()',E);
+        }
+        return columns;
+    },
+    // Default for the map_row_to_columns function for .init
+    'std_map_row_to_columns' : function(error_value) {
+        return function(row,cols) {
+            // row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
+            // cols contains all of the objects listed above in columns
+
+            var obj = {};
+            JSAN.use('util.error'); obj.error = new util.error();
+            JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+            JSAN.use('util.network'); obj.network = new util.network();
+            JSAN.use('util.money');
+
+            var my = row.my;
+            var values = [];
+            var cmd = '';
+            try {
+                for (var i = 0; i < cols.length; i++) {
+                    switch (typeof cols[i].render) {
+                        case 'function': try { values[i] = cols[i].render(my); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
+                        case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
+                        default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
+                    }
+                }
+                if (cmd) eval( cmd );
+            } catch(E) {
+                obj.error.sdump('D_WARN','map_row_to_column: ' + E);
+                if (error_value) { value = error_value; } else { value = '   ' };
+            }
+            return values;
+        }
+    }
 }
 dump('exiting util.list.js\n');
