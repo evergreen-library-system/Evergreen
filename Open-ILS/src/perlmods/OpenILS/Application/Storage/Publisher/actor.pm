@@ -207,6 +207,8 @@ __PACKAGE__->register_method(
 
 sub make_hoo_spanset {
     my $hoo = shift;
+    return undef unless $hoo;
+
     my $today = shift || DateTime->now;
 
     my $tz = OpenSRF::AppSession->create('open-ils.actor')->request(
@@ -242,6 +244,7 @@ sub make_hoo_spanset {
 
 sub make_closure_spanset {
     my $closures = shift;
+    return undef unless $closures;
 
     my $spanset = DateTime::SpanSet->empty_set;
     for my $k ( keys %$closures ) {
@@ -287,7 +290,7 @@ sub org_closed_overlap {
         actor::org_unit::closed_date->db_Main->selectall_hashref( $sql, 'id', {}, $date, $ou )
     );
 
-    if ($closure_spanset->intersects( $target_date )) {
+    if ($closure_spanset && $closure_spanset->intersects( $target_date )) {
         my $closure_intersection = $closure_spanset->intersection( $target_date );
         $begin = $closure_intersection->min;
         $end = $closure_intersection->max;
