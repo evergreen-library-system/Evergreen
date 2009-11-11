@@ -141,7 +141,16 @@ sub run_pending {
     return unless $opt_run_pending;
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
     my $req = $ses->request('open-ils.trigger.event.run_all_pending' => $opt_granularity);
+
+    my $check_lockfile = 1;
     while(my $resp = $req->recv(timeout => 7200)) {
+        if ($check_lockfile && -e $opt_lockfile) {
+            open LF, $opt_lockfile;
+            my $contents = <LF>;
+            close LF;
+            unlink $opt_lockfile if ($contents == $$);
+            $check_lockfile = 0;
+        }
         if($opt_debug_stdout) {
             print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
         }
@@ -166,7 +175,10 @@ try {
     warn "$e\n";
 };
 
-unlink $opt_lockfile;
-
-
+if (-e $opt_lockfile) {
+    open LF, $opt_lockfile;
+    my $contents = <LF>;
+    close LF;
+    unlink $opt_lockfile if ($contents == $$);
+}
 
