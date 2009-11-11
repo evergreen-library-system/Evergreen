@@ -3419,6 +3419,56 @@ sub user_events {
     return undef;
 }
 
+__PACKAGE__->register_method (
+	method		=> 'copy_events',
+	api_name    => 'open-ils.actor.copy.events.circ',
+    stream      => 1,
+);
+__PACKAGE__->register_method (
+	method		=> 'copy_events',
+	api_name    => 'open-ils.actor.copy.events.ahr',
+    stream      => 1,
+);
+
+sub copy_events {
+    my($self, $conn, $auth, $copy_id, $filters) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    (my $obj_type = $self->api_name) =~ s/.*\.([a-z]+)$/$1/;
+
+    my $copy_field = 'target_copy';
+    $copy_field = 'current_copy' if $obj_type eq 'ahr';
+
+    $filters ||= {};
+    $filters->{target} = { 
+        select => { $obj_type => ['id'] },
+        from => $obj_type,
+        where => {$copy_field => $copy_id}
+    };
+
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    my $req = $ses->request('open-ils.trigger.events_by_target', 
+        $obj_type, $filters, {atevdef => ['reactor', 'validator']}, 2);
+
+    while(my $resp = $req->recv) {
+        my $val = $resp->content;
+        my $tgt = $val->target;
+        
+        my $user = $e->retrieve_actor_user($tgt->usr);
+        if($e->requestor->id != $user->id) {
+            return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+        }
+
+        $tgt->usr($user);
+        $conn->respond($val) if $val;
+    }
+
+    return undef;
+}
+
+
+
 
 __PACKAGE__->register_method (
 	method		=> 'update_events',
