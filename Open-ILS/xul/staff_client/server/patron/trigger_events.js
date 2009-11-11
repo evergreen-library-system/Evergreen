@@ -60,7 +60,7 @@ function gen_event_handler(method) { // cancel or reset?
             fieldmapper.standardRequest(
                 [ api[i].app, api[i].method ],
                 {   async: true,
-                    params: [ses(), [ids]],
+                    params: [ses(), ids],
                     onresponse: function(r) {
                         try {
                             idx++; pm.value = Number( pm.value ) + 100/ids.length;
