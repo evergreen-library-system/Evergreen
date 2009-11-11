@@ -247,6 +247,10 @@ sub events_by_target {
         order_by => { "atev" => [ 'run_time', 'add_time' ] }
     };
 
+    $query->{limit} = $filter->{limit} if defined $filter->{limit};
+    $query->{offset} = $filter->{offset} if defined $filter->{offset};
+    $query->{order_by} = $filter->{order_by} if defined $filter->{order_by};
+
 
     # allow multiple 'target' filters
     $query->{where}->{'+atev'}->{'-and'} = [];
