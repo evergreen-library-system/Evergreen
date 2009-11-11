@@ -61,14 +61,30 @@
                 var attribute_list = nodes[i].getAttribute('oils_persist').split(' ');
                 for (var j = 0; j < attribute_list.length; j++) {
                     var key = base_key + attribute_list[j];
-                    var value = prefs.prefHasUserValue(key) ? prefs.getCharPref(key) : null;
-                    dump('persist_helper: retrieving key = ' + key + ' value = ' + value + ' for ' + nodes[i].nodeName + '\n');
-                    if (value) {
-                        nodes[i].setAttribute( attribute_list[j], value );
-                        if (attribute_list[j]=='value') { nodes[i].value = value; }
+                    var has_key = prefs.prefHasUserValue(key);
+                    var value = has_key ? prefs.getCharPref(key) : null;
+                    if (value == 'true') { value = true; }
+                    if (value == 'false') { value = false; }
+                    dump('persist_helper: >>> retrieving key = ' + key + ' (' + (has_key ? 'found' : 'not found') + ')  value = ' + value + ' for ' + nodes[i].nodeName + '\n');
+                    if (has_key) {
+                        if (attribute_list[j]=='checked') { 
+                            nodes[i].checked = value; 
+                            dump('\t.checked = ' + value + '\n');
+                            if (!value) {
+                                nodes[i].removeAttribute('checked');
+                                dump('\tremoving @checked\n');
+                            }
+                        } else {
+                            nodes[i].setAttribute( attribute_list[j], value);
+                            dump('\t@' + attribute_list[j] + ' = ' + value + '\n');
+                        }
+                        if (attribute_list[j]=='value') { 
+                            nodes[i].value = value; 
+                            dump('\t.value = ' + value + '\n');
+                        }
                     }
                 }
-                if ( (nodes[i].nodeName == 'checkbox' || nodes[i].nodeName == 'menuitem') && attribute_list.indexOf('checked') > -1) {
+                if ( (nodes[i].nodeName == 'checkbox' || nodes[i].nodeName == 'menuitem' || nodes[i].nodeName == 'toolbarbutton') && attribute_list.indexOf('checked') > -1 ) {
                     var cmd = nodes[i].getAttribute('command');
                     var cmd_el = document.getElementById(cmd);
                     if (nodes[i].disabled == false && nodes[i].hidden == false) {
@@ -93,6 +109,19 @@
                     if (cmd_el) {
                         cmd_el.addEventListener(
                             'command',
+                            function(ev) {
+                                try {
+                                    var evt = document.createEvent("Events");
+                                    evt.initEvent( 'oils_persist', true, true );
+                                    ev.target.dispatchEvent(evt);
+                                } catch(E) {
+                                    alert('Error in persist_helper, firing virtual event oils_persist after command event on <command> element: ' + E);
+                                }
+                            },
+                            false
+                        );
+                        cmd_el.addEventListener(
+                            'oils_persist',
                             function (bk,explicit_original_node) {
                                 return function(ev) {
                                     try {
@@ -100,16 +129,16 @@
                                         if (ev.explicitOriginalTarget != explicit_original_node) return;
                                         var key = bk + 'checked';
                                         var value;
-                                        if (ev.explicitOriginalTarget.nodeName == 'checkbox') {
+                                        if ( ['checkbox','toolbarbutton'].indexOf( ev.explicitOriginalTarget.nodeName ) > -1 ) {
                                             value = ev.explicitOriginalTarget.checked;
+                                            ev.explicitOriginalTarget.setAttribute( 'checked', value ? value : '' );
                                         } else {
                                             value = ev.explicitOriginalTarget.getAttribute('checked'); // menuitem with type="checkbox"
                                         }
-                                        ev.explicitOriginalTarget.setAttribute( 'checked', value );
                                         prefs.setCharPref( key, value );
-                                        dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem via <command>\n');
+                                        dump('persist_helper: <<< setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem/toolbarbutton via <command>\n');
                                     } catch(E) {
-                                        alert('Error in persist_helper(), checkbox/menuitem -> command, command event listener: ' + E);
+                                        alert('Error in persist_helper(), checkbox/menuitem/toolbarbutton -> command, oils_persist event listener: ' + E);
                                     }
                                 };
                             }( base_key, nodes[i] ),
@@ -118,22 +147,35 @@
                     } else {
                         nodes[i].addEventListener(
                             'command',
+                            function(ev) {
+                                try {
+                                    var evt = document.createEvent("Events");
+                                    evt.initEvent( 'oils_persist', true, true );
+                                    ev.target.dispatchEvent(evt);
+                                } catch(E) {
+                                    alert('Error in persist_helper, firing virtual event oils_persist after command event on element: ' + E);
+                                }
+                            },
+                            false
+                        );
+                        nodes[i].addEventListener(
+                            'oils_persist',
                             function(bk) {
                                 return function(ev) {
                                     try {
                                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                         var key = bk + 'checked';
                                         var value;
-                                        if (ev.target.nodeName == 'checkbox') {
+                                        if ( ['checkbox','toolbarbutton'].indexOf( ev.target.nodeName ) > -1 ) {
                                             value = ev.target.checked;
+                                            ev.target.setAttribute( 'checked', value ? value : '' );
                                         } else {
                                             value = ev.target.getAttribute('checked'); // menuitem with type="checkbox"
                                         }
-                                        ev.target.setAttribute( 'checked', value );
                                         prefs.setCharPref( key, value );
-                                        dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem\n');
+                                        dump('persist_helper: <<< setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem/toolbarbutton\n');
                                     } catch(E) {
-                                        alert('Error in persist_helper(), checkbox/menuitem command event listener: ' + E);
+                                        alert('Error in persist_helper(), checkbox/menuitem/toolbarbutton oils_persist event listener: ' + E);
                                     }
                                 };
                             }(base_key), 
@@ -154,6 +196,19 @@
                     }
                     nodes[i].addEventListener(
                         'change',
+                        function(ev) {
+                            try {
+                                var evt = document.createEvent("Events");
+                                evt.initEvent( 'oils_persist', true, true );
+                                ev.target.dispatchEvent(evt);
+                            } catch(E) {
+                                alert('Error in persist_helper, firing virtual event oils_persist after change event on element: ' + E);
+                            }
+                        },
+                        false
+                    );
+                    nodes[i].addEventListener(
+                        'oils_persist',
                         function(bk) {
                             return function(ev) {
                                 try {
@@ -162,9 +217,9 @@
                                     var value = ev.target.value;
                                     ev.target.setAttribute( 'value', value );
                                     prefs.setCharPref( key, value );
-                                    dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for value\n');
+                                    dump('persist_helper: <<< setting key = ' +  key + ' value = ' + value + ' for value\n');
                                 } catch(E) {
-                                    alert('Error in persist_helper(), textbox change event listener: ' + E);
+                                    alert('Error in persist_helper(), textbox oils_persist event listener: ' + E);
                                 }
                             };
                         }(base_key), 
