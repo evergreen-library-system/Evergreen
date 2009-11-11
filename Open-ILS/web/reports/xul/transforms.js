@@ -1,6 +1,7 @@
 dojo.requireLocalization("openils.reports", "reports");
 
 var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
+var OILS_RPT_DTYPE_ARRAY = 'array';
 var OILS_RPT_DTYPE_STRING = 'text';
 var OILS_RPT_DTYPE_MONEY = 'money';
 var OILS_RPT_DTYPE_BOOL = 'bool';

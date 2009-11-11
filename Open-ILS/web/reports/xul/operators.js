@@ -66,6 +66,14 @@ var OILS_RPT_FILTERS = {
 
 	'is not blank' : {
 		label : rpt_strings.OPERATORS_NOT_NULL_BLANK
+	},
+
+	'= any' : {
+		labels : { 'array' : rpt_strings.OPERATORS_EQ_ANY }
+	},
+
+	'<> any' : {
+		labels : { 'array' : rpt_strings.OPERATORS_NE_ANY }
 	}
 }
 

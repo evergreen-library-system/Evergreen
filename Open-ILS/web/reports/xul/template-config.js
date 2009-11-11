@@ -105,7 +105,7 @@ function addReportAtoms () {
 				  alias     : field_label,
 				  join      : jointype,
 				  datatype  : datatype,
-				  op        : '=',
+				  op        : (datatype == 'array') ? '= any' : '=',
 				  op_label  : rpt_strings.TEMPLATE_CONF_EQUALS,
 				  op_value  : {}
 				};
@@ -513,13 +513,16 @@ function populateOperatorContext () {
 
 	for (var i in OILS_RPT_FILTERS) {
 		var o = OILS_RPT_FILTERS[i];
-		menu.appendChild(
-			createMenuItem(
-				{ label : o.label,
-				  onmouseup : "changeOperator({op:'"+i+"',label:'"+o.label+"'})"
-				}
-			)
-		);
+        if (o.label) {
+    		menu.appendChild(
+	    		createMenuItem(
+		    		{ label : o.label,
+			    	  onmouseup : "changeOperator({op:'"+i+"',label:'"+o.label+"'})"
+				    }
+    			)
+	    	);
+        }
+
 		if (o.labels) {
 			var keys = getKeys(o.labels);
 			for ( var k in keys ) {

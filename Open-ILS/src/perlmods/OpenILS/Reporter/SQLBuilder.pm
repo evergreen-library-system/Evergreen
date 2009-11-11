@@ -943,6 +943,16 @@ sub toSQL {
 	} elsif (lc($op) eq 'not in') {
 		$sql .= " NOT IN (". join(",", map { $_->toSQL } @$val).")";
 
+	} elsif (lc($op) eq '= any') {
+		$val = $$val[0] if (ref($val) eq 'ARRAY');
+		$val = $val->toSQL;
+		$sql = "$val = ANY (".$self->SUPER::toSQL.")";
+
+	} elsif (lc($op) eq '<> any') {
+		$val = $$val[0] if (ref($val) eq 'ARRAY');
+		$val = $val->toSQL;
+		$sql = "$val <> ANY (".$self->SUPER::toSQL.")";
+
 	} elsif (lc($op) eq 'is blank') {
 		$sql = '('. $self->SUPER::toSQL ." IS NULL OR ". $self->SUPER::toSQL ." = '')";
 

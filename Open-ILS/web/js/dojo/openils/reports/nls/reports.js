@@ -25,6 +25,8 @@
 	"FILTERS_LABEL_NOT_NULL": "Is not NULL",
 	"FILTERS_LABEL_NULL_BLANK": "Is NULL or Blank",
 	"FILTERS_LABEL_NOT_NULL_BLANK": "Is not NULL or Blank",
+	"FILTERS_LABEL_EQ_ANY": "Equals Any",
+	"FILTERS_LABEL_NE_ANY": "Does Not Equal Any",
 	
 	"FOLDERS_TEMPLATES": "Templates",
 	"FOLDERS_TEMPLATE": "Template",
@@ -104,6 +106,8 @@
 	"OPERATORS_IS_NOT_NULL": "Is not NULL",
 	"OPERATORS_NULL_BLANK": "Is NULL or Blank",
 	"OPERATORS_NOT_NULL_BLANK": "Is not NULL or Blank",
+	"OPERATORS_EQ_ANY": "Equals Any",
+	"OPERATORS_NE_ANY": "Does Not Equal Any",
 	
 	"SOURCE_BROWSE_AGGREGATE": "Aggregate",
 	"SOURCE_BROWSE_NON_AGGREGATE": "Non-Aggregate",
