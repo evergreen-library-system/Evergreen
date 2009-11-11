@@ -367,6 +367,7 @@ sub create_batch_events {
     }
 
     for my $def ( @$defs ) {
+        next if ($granularity && $def->granularity ne $granularity );
 
         my $date = DateTime->now->subtract( seconds => interval_to_seconds($def->delay) );
 
@@ -433,7 +434,6 @@ sub create_batch_events {
             $event->target( $o_id );
             $event->event_def( $def->id );
             $event->run_time( $run_time );
-            $event->granularity($granularity) if (defined $granularity);
 
             $editor->create_action_trigger_event( $event );
 
