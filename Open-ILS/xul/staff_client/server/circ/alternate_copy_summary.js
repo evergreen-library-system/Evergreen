@@ -312,7 +312,7 @@ function load_item() {
             set("create_time", details.circ.create_time()); 
             set("workstation", details.circ.workstation()); 
             if (get_bool(details.circ.opac_renewal())||get_bool(details.circ.phone_renewal())||get_bool(details.circ.desk_renewal())) {
-                set("renewal_workstation", typeof details.circ.workstation() == 'object' ? details.circ.workstation().name() : details.circ.workstation() ); 
+                set("renewal_workstation", (typeof details.circ.workstation() == 'object' && details.circ.workstation() != null) ? details.circ.workstation().name() : details.circ.workstation() ); 
                 network.simple_request('FM_CIRC_CHAIN', [ses(), details.circ.id() ], function(req) { // Tiny race condition between details.circ and circs[circs.length-1] here, but meh :)
                     try {
                         var circs = req.getResultObject();
