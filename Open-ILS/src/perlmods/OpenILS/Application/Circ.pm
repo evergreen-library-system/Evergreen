@@ -303,15 +303,17 @@ sub set_circ_claims_returned {
     my $barcode = $$args{barcode};
     my $backdate = $$args{backdate};
 
-    $logger->info("marking circ for item $barcode as claims returned".
-        (($backdate) ? " with backdate $backdate" : ''));
-
     my $copy = $e->search_asset_copy({barcode=>$barcode, deleted=>'f'})->[0] 
         or return $e->die_event;
 
     my $circ = $e->search_action_circulation(
         {checkin_time => undef, target_copy => $copy->id})->[0]
             or return $e->die_event;
+
+    $backdate = $circ->due_date if $$args{use_due_date};
+
+    $logger->info("marking circ for item $barcode as claims returned".
+        (($backdate) ? " with backdate $backdate" : ''));
 
     my $patron = $e->retrieve_actor_user($circ->usr);
     my $max_count = $U->ou_ancestor_setting_value(
