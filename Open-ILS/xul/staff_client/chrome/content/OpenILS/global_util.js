@@ -50,10 +50,12 @@
         }
     }
 
-    function oils_persist(e) {
+    function oils_persist(e,cancelable) {
         try {
+            if (!e) { return; }
+            if (typeof cancelable == 'undefined') { cancelable = false; } 
             var evt = document.createEvent("Events");
-            evt.initEvent( 'oils_persist', true, true );
+            evt.initEvent( 'oils_persist', false, cancelable ); // event name, bubbles, cancelable
             e.dispatchEvent(evt);
         } catch(E) {
             alert('Error with oils_persist():' + E);
@@ -65,9 +67,7 @@
             function gen_event_handler(etype,node) {
                 return function(ev) {
                     try {
-                        var evt = document.createEvent("Events");
-                        evt.initEvent( 'oils_persist', true, true );
-                        ev.target.dispatchEvent(evt);
+                        oils_persist(ev.target);
                     } catch(E) {
                         alert('Error in persist_helper, firing virtual event oils_persist after ' + etype + ' event on ' + node.nodeName + '.id = ' + node.id + ': ' + E);
                     }
@@ -103,6 +103,13 @@
                             }
                             prefs.setCharPref( key, value );
                             // TODO: Need to add logic for window resizing, splitter repositioning, grippy state, etc.
+                        }
+                        if (target.hasAttribute('oils_persist_peers') && ! ev.cancelable) { // We abuse the .cancelable field on the oils_persist event to prevent looping
+                            var peer_list = target.getAttribute('oils_persist_peers').split(' ');
+                            for (var j = 0; j < peer_list.length; j++) {
+                                dump('persist_helper: dispatching oils_persist to peer ' + peer_list[j] + '\n');
+                                oils_persist( document.getElementById( peer_list[j] ), true );
+                            } 
                         }
                     } catch(E) {
                         alert('Error in persist_helper() event listener for ' + bk + ': ' + E);
