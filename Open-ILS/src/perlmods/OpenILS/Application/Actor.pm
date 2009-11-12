@@ -30,6 +30,7 @@ use OpenILS::Application::Actor::Container;
 use OpenILS::Application::Actor::ClosedDates;
 use OpenILS::Application::Actor::UserGroups;
 use OpenILS::Application::Actor::Friends;
+use OpenILS::Application::Actor::Stage;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;

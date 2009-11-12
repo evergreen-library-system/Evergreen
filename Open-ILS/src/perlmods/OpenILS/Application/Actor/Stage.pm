@@ -62,7 +62,7 @@ sub user_stage_by_org {
 
     my $stage_ids = $e->search_staging_user_stage(
         [
-            {   home_ou => $org_id}, 
+            {   home_ou => $org_id, complete => 'f'}, 
             {   limit => $limit, 
                 offset => $offset, 
                 order_by => {stgu => 'row_id'}
@@ -86,6 +86,28 @@ sub flesh_user_stage {
         statcats => $e->search_staging_statcat_stage({usrname => $user->usrname})
     };
 }
+
+
+__PACKAGE__->register_method (
+	method		=> 'user_stage_by_uname',
+	api_name    => 'open-ils.actor.user.stage.retrieve.by_username',
+);
+
+sub user_stage_by_uname {
+    my($self, $conn, $auth, $username) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $user = $e->search_staging_user_stage({
+        usrname => $username, 
+        complete => 'f'
+    })->[0] or return $e->event;
+
+    return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+    return flesh_user_stage($e, $user->row_id);
+}
+
 
 
 

@@ -39,6 +39,7 @@ var addrTemplateRows;
 var cgi;
 var cloneUser;
 var cloneUserObj;
+var stageUser;
 
 
 if(!window.xulG) var xulG = null;
@@ -50,6 +51,7 @@ function load() {
     cgi = new openils.CGI();
     cloneUser = cgi.param('clone');
     var userId = cgi.param('usr');
+    var stageUname = cgi.param('stage');
 
     if(xulG) {
 	    if(xulG.ses) openils.User.authtoken = xulG.ses;
@@ -81,9 +83,13 @@ function load() {
     if(userId) {
         patron = uEditLoadUser(userId);
     } else {
-        patron = uEditNewPatron();
-        if(cloneUser) 
-            uEditCopyCloneData(patron);
+        if(stageUname) {
+            patron = uEditLoadStageUser(stageUname);
+        } else {
+            patron = uEditNewPatron();
+            if(cloneUser) 
+                uEditCopyCloneData(patron);
+        }
     }
 
 
@@ -111,6 +117,76 @@ function load() {
     loadSurveys();
     checkClaimsReturnCountPerm();
     checkClaimsNoCheckoutCountPerm();
+}
+
+
+/**
+ * Loads a staged user and turns them into something the editor can understand
+ */
+function uEditLoadStageUser(stageUname) {
+
+    var data = fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.stage.retrieve.by_username'],
+        { params : [openils.User.authtoken, stageUname] }
+    );
+
+    stageUser = data.user;
+    patron = uEditNewPatron();
+
+    // copy the data into our new user object
+    for(var key in fieldmapper.IDL.fmclasses.stgu.field_map) {
+        if(fieldmapper.IDL.fmclasses.au.field_map[key] && !fieldmapper.IDL.fmclasses.stgu.field_map[key].virtual) {
+            if(data.user[key]() !== null)
+                patron[key]( data.user[key]() );
+        }
+    }
+
+    // copy the data into our new address objects
+    // TODO: uses the first mailing address only
+    if(data.mailing_addresses.length) {
+
+        var mail_addr = new fieldmapper.aua();
+        mail_addr.id(-1); // virtual ID
+        mail_addr.usr(-1);
+        mail_addr.isnew(1);
+        patron.mailing_address(mail_addr);
+        patron.addresses().push(mail_addr);
+
+        for(var key in fieldmapper.IDL.fmclasses.stgma.field_map) {
+            if(fieldmapper.IDL.fmclasses.aua.field_map[key] && !fieldmapper.IDL.fmclasses.stgma.field_map[key].virtual) {
+                if(data.mailing_addresses[0][key]() !== null)
+                    mail_addr[key]( data.mailing_addresses[0][key]() );
+            }
+        }
+    }
+    
+    // copy the data into our new address objects
+    // TODO uses the first billing address only
+    if(data.billing_addresses.length) {
+
+        var bill_addr = new fieldmapper.aua();
+        bill_addr.id(-2); // virtual ID
+        bill_addr.usr(-1);
+        bill_addr.isnew(1);
+        patron.billing_address(bill_addr);
+        patron.addresses().push(bill_addr);
+
+        for(var key in fieldmapper.IDL.fmclasses.stgba.field_map) {
+            if(fieldmapper.IDL.fmclasses.aua.field_map[key] && !fieldmapper.IDL.fmclasses.stgba.field_map[key].virtual) {
+                if(data.billing_addresses[0][key]() !== null)
+                    bill_addr[key]( data.billing_addresses[0][key]() );
+            }
+        }
+    }
+
+    // TODO: uses the first card only
+    if(data.cards.length) {
+        var card = new fieldmapper.ac();
+        card.id(-1); // virtual ID
+        patron.card().barcode(data.cards[0].barcode());
+    }
+
+    return patron;
 }
 
 /*
@@ -763,11 +839,19 @@ function _uEditSave(doClone) {
                 newPatron = openils.Util.readResponse(r);
                 if(newPatron) {
                     uEditUpdateUserSettings(newPatron.id());
+                    if(stageUser) uEditRemoveStage();
                     uEditFinishSave(newPatron, doClone);
                 }
             }
         }
     );
+}
+
+function uEditRemoveStage() {
+    var resp = fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.stage.delete'],
+        { params : [openils.User.authtoken, stageUser.row_id()] }
+    )
 }
 
 function uEditFinishSave(newPatron, doClone) {
