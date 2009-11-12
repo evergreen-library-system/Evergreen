@@ -1,5 +1,4 @@
 {
-
 "checkout.due" :
     { "context_org" : "circ_lib",
       "filter"      :
@@ -9,7 +8,15 @@
                       { "stop_fines"  : null }
                     ]
             }
+    },
+    "hold_request.shelf_expires_soon" : {
+        "context_org": "pickup_lib",
+        "filter": {
+            "shelf_expire_time": {"!=": null},
+            "capture_time": {"!=": null},
+            "current_copy": {"!=": null},
+            "shelf_time": {"!=": null},
+            "cancel_time": null
+        }
     }
-
 }
-
