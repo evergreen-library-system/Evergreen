@@ -2945,6 +2945,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Circulation_History.label "Circulation History">
 <!ENTITY staff.circ.alternate_copy_summary.Copy_ID.label "Copy ID">
 <!ENTITY staff.circ.alternate_copy_summary.Copy_Location.label "Copy Location">
+<!ENTITY staff.circ.alternate_copy_summary.Renewal_Type.label "Renewal Type">
 <!ENTITY staff.circ.alternate_copy_summary.Date_Created.label "Date Created">
 <!ENTITY staff.circ.alternate_copy_summary.Status_Changed_Time.label "Status Changed">
 <!ENTITY staff.circ.alternate_copy_summary.Due_Date.label "Due Date">

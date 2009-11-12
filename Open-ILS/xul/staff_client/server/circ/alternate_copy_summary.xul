@@ -84,8 +84,10 @@
                                 <textbox name="price" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Copy_Location.label;" />
                                 <textbox name="location" readonly="true" context="clipboard"/>
-                                <spacer />
-                                <spacer />
+                                <!--                                <spacer />
+                                <spacer /> -->
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Type.label;" />
+                                <textbox name="renewal_type" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Due_Date.label;" />
                                 <textbox name="due_date" readonly="true" context="clipboard"/>
                             </row>

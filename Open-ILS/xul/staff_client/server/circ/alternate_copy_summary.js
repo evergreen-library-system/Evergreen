@@ -35,6 +35,24 @@ function set_tooltip(name,value) {
     }
 }
 
+function renewal_composite_kludge(circ) {
+    // Only a corrupt database could give us a situation where more
+    // than one of these were true at a time, right?
+    if (circ.desk_renewal() == "t")
+        return document.getElementById('circStrings').getString(
+            'staff.circ.copy_details.desk_renewal'
+        );
+    else if (circ.opac_renewal() == "t")
+        return document.getElementById('circStrings').getString(
+            'staff.circ.copy_details.opac_renewal'
+        );
+    else if (circ.phone_renewal() == "t")
+        return document.getElementById('circStrings').getString(
+            'staff.circ.copy_details.phone_renewal'
+        );
+    else return "";
+}
+
 function load_item() {
     try {
         if (! xulG.barcode) return;
@@ -115,6 +133,7 @@ function load_item() {
         set("copy_id", '');
         set("loan_duration", '');
         set("location", '');
+        set("renewal_type", '');
         set("opac_visible", '');
         set("price", '');
         set("ref", '');
@@ -300,6 +319,7 @@ function load_item() {
             set("max_fine_rule", details.circ.max_fine_rule()); 
             set("opac_renewal", details.circ.opac_renewal()); 
             set("phone_renewal", details.circ.phone_renewal()); 
+            set("renewal_type", renewal_composite_kludge(details.circ));
             set("recuring_fine", details.circ.recuring_fine()); 
             set("recuring_fine_rule", details.circ.recuring_fine_rule()); 
             set("renewal_remaining", details.circ.renewal_remaining()); 
