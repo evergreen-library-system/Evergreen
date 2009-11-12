@@ -2383,3 +2383,12 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyPatronPenalty','Applies the conifigured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.');
 
 
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype, fm_class)
+    VALUES (
+        'circ.claim_return.copy_status', 
+        'Claim Return Copy Status', 
+        'Claims returned copies are put into this status.  Default is to leave the copy in the Checked Out status'
+        'link', 
+        'ccs', 
+    );
+

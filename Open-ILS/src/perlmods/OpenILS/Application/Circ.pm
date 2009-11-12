@@ -356,18 +356,16 @@ sub set_circ_claims_returned {
     }
 
     $e->update_action_circulation($circ) or return $e->die_event;
-    $e->commit;
 
-
-    # see if we need to also mark the copy as missing
-    if($U->ou_ancestor_setting_value($circ->circ_lib, 'circ.claim_return.mark_missing')) {
-	    return $apputils->simplereq(
-		    'open-ils.circ',
-            'open-ils.circ.mark_item_missing',
-            $auth, $copy->id
-        );
+    # see if there is a configured post-claims-return copy status
+    if(my $stat = $U->ou_ancestor_setting_value($circ->circ_lib, 'circ.claim_return.copy_status')) {
+	    $copy->status($stat);
+	    $copy->edit_date('now');
+	    $copy->editor($e->requestor->id);
+	    $e->update_asset_copy($copy) or return $e->die_event;
     }
 
+    $e->commit;
     return 1;
 }
 
