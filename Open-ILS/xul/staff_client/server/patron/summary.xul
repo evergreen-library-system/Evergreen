@@ -91,7 +91,7 @@
             );
             // Replace literal instances of '\n' and excessive whitespace.
             copy_to_clipboard(
-                s.replace(/(\\n)+/g, "\n").replace(/ {2,}/g, " ")
+                s.replace(/(\\n)+/g, "\r\n").replace(/ {2,}/g, " ")
             );
         }
 
