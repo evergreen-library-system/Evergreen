@@ -1,4 +1,4 @@
-var list; var error; var net; var rows; var archived_rows;
+var list; var error; var net; var rows;
 
 function $(id) { return document.getElementById(id); }
 
@@ -38,6 +38,11 @@ function trigger_event_init() {
         init_list();
         $('cmd_cancel_event').addEventListener('command', gen_event_handler('cancel'), false);
         $('cmd_reset_event').addEventListener('command', gen_event_handler('reset'), false);
+        $('circ').addEventListener('command', function() { populate_list(); }, false);
+        $('ahr').addEventListener('command', function() { populate_list(); }, false);
+        $('pending').addEventListener('command', function() { populate_list(); }, false);
+        $('complete').addEventListener('command', function() { populate_list(); }, false);
+        $('error').addEventListener('command', function() { populate_list(); }, false);
         populate_list();
         default_focus();
 
@@ -134,6 +139,8 @@ function handle_selection(ev) { // handler for list row selection event
 function populate_list() {
     try {
 
+        $('circ').disabled = true; $('ahr').disabled = true; $('pending').disabled = true; $('complete').disabled = true; $('error').disabled = true;
+
         rows = {};
         list.clear();
 
@@ -153,20 +160,28 @@ function populate_list() {
         function onError(r) {
             var evt = openils.Util.readResponse(r);
             alert('error, evt = ' + js2JSON(evt));
+            $('circ').disabled = false; $('ahr').disabled = false; $('pending').disabled = false; $('complete').disabled = false; $('error').disabled = false;
         }
 
-        var methods = ['FM_ATEV_APROPOS_CIRC','FM_ATEV_APROPOS_AHR'];
-        for (var i in methods) {
-            fieldmapper.standardRequest(
-                [api[methods[i]].app, api[methods[i]].method ],
-                {   async: true,
-                    params: [ses(), xul_param('patron_id')],
-                    onresponse : onResponse,
-                    onerror : onError,
-                    oncomplete : function() {}
+        var method = $('circ').checked ? 'FM_ATEV_APROPOS_CIRC' : 'FM_ATEV_APROPOS_AHR';
+        if (xul_param('copy_id')) { method += '_VIA_COPY'; }
+
+        var filter = {"event":{"state":"complete"}, "offset":0, "limit":10, "order_by":[{"class":"atev", "field":"run_time", "direction":"desc"}]};
+
+        if ($('pending').checked) { filter.event.state = 'pending'; filter.order_by[0].direction = 'asc'; }
+        if ($('error').checked) { filter.event.state = 'error'; }
+
+        fieldmapper.standardRequest(
+            [api[method].app, api[method].method ],
+            {   async: true,
+                params: [ses(), xul_param('copy_id') || xul_param('patron_id'), filter],
+                onresponse : onResponse,
+                onerror : onError,
+                oncomplete : function() {
+                    $('circ').disabled = false; $('ahr').disabled = false; $('pending').disabled = false; $('complete').disabled = false; $('error').disabled = false;
                 }
-            );
-        }
+            }
+        );
 
     } catch(E) {
         var err_prefix = 'trigger_events.js -> populate_list() : ';

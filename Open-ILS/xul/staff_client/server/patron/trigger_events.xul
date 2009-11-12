@@ -17,7 +17,7 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="trigger_event_win" onload="try { trigger_event_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+<window id="trigger_event_win" onload="try { font_helper(); persist_helper(); trigger_event_init(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -41,12 +41,30 @@
         <caption id="trigger_event_caption" label="&staff.patron_display.trigger_event.caption;"/>
         <vbox flex="0">
             <hbox flex="1">
+                <toolbar id="filters" flex="1">
+                    <toolbarbutton id="circ" label="&staff.patron_display.trigger_event.radio_button.circ_events.label;" accesskey="&staff.patron_display.trigger_event.radio_button.circ_events.accesskey;" 
+                        type="radio" group="atev_type" checked="true" style="-moz-user-focus: normal" oils_persist="checked" oils_persist_no_poke="true"
+                        oncommand="oils_persist(document.getElementById('ahr'));" />
+                    <toolbarbutton id="ahr" label="&staff.patron_display.trigger_event.radio_button.hold_events.label;" accesskey="&staff.patron_display.trigger_event.radio_button.hold_events.accesskey;" 
+                        type="radio" group="atev_type" style="-moz-user-focus: normal" oils_persist="checked" oils_persist_no_poke="true"
+                        oncommand="oils_persist(document.getElementById('circ'));" />
+                    <toolbarseparator/>
+                    <toolbarbutton id="pending" label="&staff.patron_display.trigger_event.checkbox_filter.pending.label;" accesskey="&staff.patron_display.trigger_event.checkbox_filter.pending.accesskey;" 
+                        type="radio" group="atev_status" checked="true" style="-moz-user-focus: normal" oils_persist="checked" oils_persist_no_poke="true"
+                        oncommand="oils_persist(document.getElementById('complete')); oils_persist(document.getElementById('error'));"/>
+                    <toolbarbutton id="complete" label="&staff.patron_display.trigger_event.checkbox_filter.complete.label;" accesskey="&staff.patron_display.trigger_event.checkbox_filter.complete.accesskey;" 
+                        type="radio" group="atev_status" style="-moz-user-focus: normal" oils_persist="checked" oils_persist_no_poke="true"
+                        oncommand="oils_persist(document.getElementById('pending')); oils_persist(document.getElementById('error'));"/>
+                    <toolbarbutton id="error" label="&staff.patron_display.trigger_event.checkbox_filter.error.label;" accesskey="&staff.patron_display.trigger_event.checkbox_filter.error.accesskey;" 
+                        type="radio" group="atev_status" style="-moz-user-focus: normal" oils_persist="checked" oils_persist_no_poke="true"
+                        oncommand="oils_persist(document.getElementById('pending')); oils_persist(document.getElementById('complete'));"/>
+                </toolbar>
                 <spacer flex="1" />
                 <progressmeter id="progress" flex="1" hidden="true" mode="undetermined"/>
                 <menubar>
                     <menu label="&staff.patron_display.trigger_event.menu.actions.label;" 
                         accesskey="&staff.patron_display.trigger_event.menu.actions.accesskey;" 
-                        type="menu" style="-moz-user-focus: normal">
+                        style="-moz-user-focus: normal">
                         <menupopup>
                             <menuitem command="cmd_cancel_event" label="&staff.patron_display.trigger_event.menu.actions.cancel.label;" accesskey="&staff.patron-display.menu.actions.cancel.accesskey;"/>
                             <menuitem command="cmd_reset_event" label="&staff.patron_display.trigger_event.menu.actions.reset.label;" accesskey="&staff.patron-display.menu.actions.reset.accesskey;"/>

@@ -145,6 +145,8 @@ const api = {
     'FM_ATC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.transit.retrieve_by_lib', 'secure' : false },
     'FM_ATEV_APROPOS_AHR' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.events.ahr', 'secure' : true },
     'FM_ATEV_APROPOS_CIRC' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.events.circ', 'secure' : true },
+    'FM_ATEV_APROPOS_AHR_VIA_COPY' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.copy.events.ahr', 'secure' : true },
+    'FM_ATEV_APROPOS_CIRC_VIA_COPY' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.copy.events.circ', 'secure' : true },
     'FM_ATEV_CANCEL' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.event.cancel.batch', 'secure' : false },
     'FM_ATEV_RESET' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.event.reset.batch', 'secure' : false },
     'FM_AU_ID_RETRIEVE_VIA_BARCODE_OR_USERNAME' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.retrieve_id_by_barcode_or_username' },

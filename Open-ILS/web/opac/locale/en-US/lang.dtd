@@ -1305,6 +1305,16 @@
 <!ENTITY staff.patron_display.trigger_event.menu.actions.cancel.accesskey "C">
 <!ENTITY staff.patron_display.trigger_event.menu.actions.reset.label "Reset Event">
 <!ENTITY staff.patron_display.trigger_event.menu.actions.reset.accesskey "R">
+<!ENTITY staff.patron_display.trigger_event.radio_button.circ_events.label "Circ Events">
+<!ENTITY staff.patron_display.trigger_event.radio_button.circ_events.accesskey "C">
+<!ENTITY staff.patron_display.trigger_event.radio_button.hold_events.label "Hold Events">
+<!ENTITY staff.patron_display.trigger_event.radio_button.hold_events.accesskey "H">
+<!ENTITY staff.patron_display.trigger_event.checkbox_filter.pending.label "Pending">
+<!ENTITY staff.patron_display.trigger_event.checkbox_filter.pending.accesskey "P">
+<!ENTITY staff.patron_display.trigger_event.checkbox_filter.complete.label "Complete">
+<!ENTITY staff.patron_display.trigger_event.checkbox_filter.complete.accesskey "t">
+<!ENTITY staff.patron_display.trigger_event.checkbox_filter.error.label "Error">
+<!ENTITY staff.patron_display.trigger_event.checkbox_filter.error.accesskey "E">
 <!ENTITY staff.patron_editor_interface_label "Patron Edit">
 <!ENTITY staff.patron_interface_label "Patron ">
 <!ENTITY staff.patron_navbar.bills 'Bills'>
