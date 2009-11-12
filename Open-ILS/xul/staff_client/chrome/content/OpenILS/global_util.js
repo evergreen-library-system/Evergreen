@@ -50,8 +50,66 @@
         }
     }
 
+    function oils_persist(e) {
+        try {
+            var evt = document.createEvent("Events");
+            evt.initEvent( 'oils_persist', true, true );
+            e.dispatchEvent(evt);
+        } catch(E) {
+            alert('Error with oils_persist():' + E);
+        }
+    }
+
     function persist_helper() {
         try {
+            function gen_event_handler(etype,node) {
+                return function(ev) {
+                    try {
+                        var evt = document.createEvent("Events");
+                        evt.initEvent( 'oils_persist', true, true );
+                        ev.target.dispatchEvent(evt);
+                    } catch(E) {
+                        alert('Error in persist_helper, firing virtual event oils_persist after ' + etype + ' event on ' + node.nodeName + '.id = ' + node.id + ': ' + E);
+                    }
+                };
+            };
+
+            function gen_oils_persist_handler(bk,node) {
+                return function(ev) {
+                    try {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        var target;
+                        if (ev.target.nodeName == 'command') {
+                            target = node;
+                            if (ev.explicitOriginalTarget != node) return;
+                        } else {
+                            target = ev.target;
+                        }
+                        var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
+                        var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + target.getAttribute('id')).replace('/','_','g') + '_';
+                        var attribute_list = target.getAttribute('oils_persist').split(' ');
+                        dump('persist_helper: <<< ' + target.nodeName + '.id = ' + target.id + '\t' + bk + '\n');
+                        for (var j = 0; j < attribute_list.length; j++) {
+                            var key = base_key + attribute_list[j];
+                            var value = target.getAttribute( attribute_list[j] );
+                            if ( attribute_list[j] == 'checked' && ['checkbox','toolbarbutton'].indexOf( target.nodeName ) > -1 ) {
+                                value = target.checked;
+                                dump('\t' + value + ' <== .' + attribute_list[j] + '\n');
+                            } else if ( attribute_list[j] == 'value' && ['textbox'].indexOf( target.nodeName ) > -1 ) {
+                                value = target.value;
+                                dump('\t' + value + ' <== .' + attribute_list[j] + '\n');
+                            } else {
+                                dump('\t' + value + ' <== @' + attribute_list[j] + '\n');
+                            }
+                            prefs.setCharPref( key, value );
+                            // TODO: Need to add logic for window resizing, splitter repositioning, grippy state, etc.
+                        }
+                    } catch(E) {
+                        alert('Error in persist_helper() event listener for ' + bk + ': ' + E);
+                    }
+                };
+            }
+
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
             var nodes = document.getElementsByAttribute('oils_persist','*');
@@ -59,174 +117,89 @@
                 var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
                 var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + nodes[i].getAttribute('id')).replace('/','_','g') + '_';
                 var attribute_list = nodes[i].getAttribute('oils_persist').split(' ');
+                dump('persist_helper: >>> ' + nodes[i].nodeName + '.id = ' + nodes[i].id + '\t' + base_key + '\n');
                 for (var j = 0; j < attribute_list.length; j++) {
                     var key = base_key + attribute_list[j];
                     var has_key = prefs.prefHasUserValue(key);
                     var value = has_key ? prefs.getCharPref(key) : null;
                     if (value == 'true') { value = true; }
                     if (value == 'false') { value = false; }
-                    dump('persist_helper: >>> retrieving key = ' + key + ' (' + (has_key ? 'found' : 'not found') + ')  value = ' + value + ' for ' + nodes[i].nodeName + '\n');
                     if (has_key) {
-                        if (attribute_list[j]=='checked') { 
+                        if ( attribute_list[j] == 'checked' && ['checkbox','toolbarbutton'].indexOf( nodes[i].nodeName ) > -1 ) {
                             nodes[i].checked = value; 
-                            dump('\t.checked = ' + value + '\n');
+                            dump('\t' + value + ' ==> .' + attribute_list[j] + '\n');
                             if (!value) {
                                 nodes[i].removeAttribute('checked');
                                 dump('\tremoving @checked\n');
                             }
+                        } else if ( attribute_list[j] == 'value' && ['textbox'].indexOf( nodes[i].nodeName ) > -1 ) {
+                            nodes[i].value = value;
+                            dump('\t' + value + ' ==> .' + attribute_list[j] + '\n');
                         } else {
                             nodes[i].setAttribute( attribute_list[j], value);
-                            dump('\t@' + attribute_list[j] + ' = ' + value + '\n');
-                        }
-                        if (attribute_list[j]=='value') { 
-                            nodes[i].value = value; 
-                            dump('\t.value = ' + value + '\n');
+                            dump('\t' + value + ' ==> @' + attribute_list[j] + '\n');
                         }
                     }
                 }
-                if ( (nodes[i].nodeName == 'checkbox' || nodes[i].nodeName == 'menuitem' || nodes[i].nodeName == 'toolbarbutton') && attribute_list.indexOf('checked') > -1 ) {
-                    var cmd = nodes[i].getAttribute('command');
-                    var cmd_el = document.getElementById(cmd);
-                    if (nodes[i].disabled == false && nodes[i].hidden == false) {
-                        var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
-                        if (no_poke && no_poke == 'true') {
-                            // Timing issue for some checkboxes; don't poke them with an event
-                            dump('\tpersist_helper: not poking element with key = ' + key + '\n');
-                        } else {
-                            if (cmd_el) {
-                                dump('\tpersist_helper: poking @command element for element with key = ' + key + '\n');
-                                var evt = document.createEvent("Events");
-                                evt.initEvent( 'command', true, true );
-                                cmd_el.dispatchEvent(evt);
-                            } else {
-                                dump('\tpersist_helper: poking element with key = ' + key + '\n');
-                                var evt = document.createEvent("Events");
-                                evt.initEvent( 'command', true, true );
-                                nodes[i].dispatchEvent(evt);
-                            }
-                        }
-                    }
-                    if (cmd_el) {
-                        cmd_el.addEventListener(
-                            'command',
-                            function(ev) {
-                                try {
-                                    var evt = document.createEvent("Events");
-                                    evt.initEvent( 'oils_persist', true, true );
-                                    ev.target.dispatchEvent(evt);
-                                } catch(E) {
-                                    alert('Error in persist_helper, firing virtual event oils_persist after command event on <command> element: ' + E);
-                                }
-                            },
-                            false
-                        );
-                        cmd_el.addEventListener(
-                            'oils_persist',
-                            function (bk,explicit_original_node) {
-                                return function(ev) {
-                                    try {
-                                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                        if (ev.explicitOriginalTarget != explicit_original_node) return;
-                                        var key = bk + 'checked';
-                                        var value;
-                                        if ( ['checkbox','toolbarbutton'].indexOf( ev.explicitOriginalTarget.nodeName ) > -1 ) {
-                                            value = ev.explicitOriginalTarget.checked;
-                                            ev.explicitOriginalTarget.setAttribute( 'checked', value ? value : '' );
-                                        } else {
-                                            value = ev.explicitOriginalTarget.getAttribute('checked'); // menuitem with type="checkbox"
-                                        }
-                                        prefs.setCharPref( key, value );
-                                        dump('persist_helper: <<< setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem/toolbarbutton via <command>\n');
-                                    } catch(E) {
-                                        alert('Error in persist_helper(), checkbox/menuitem/toolbarbutton -> command, oils_persist event listener: ' + E);
-                                    }
-                                };
-                            }( base_key, nodes[i] ),
-                            false
-                        );
+                var cmd = nodes[i].getAttribute('command');
+                var cmd_el = document.getElementById(cmd);
+                if (nodes[i].disabled == false && nodes[i].hidden == false) {
+                    var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
+                    if (no_poke && no_poke == 'true') {
+                        // Timing issue for some checkboxes; don't poke them with an event
+                        dump('\tnot poking\n');
                     } else {
-                        nodes[i].addEventListener(
-                            'command',
-                            function(ev) {
-                                try {
-                                    var evt = document.createEvent("Events");
-                                    evt.initEvent( 'oils_persist', true, true );
-                                    ev.target.dispatchEvent(evt);
-                                } catch(E) {
-                                    alert('Error in persist_helper, firing virtual event oils_persist after command event on element: ' + E);
-                                }
-                            },
-                            false
-                        );
-                        nodes[i].addEventListener(
-                            'oils_persist',
-                            function(bk) {
-                                return function(ev) {
-                                    try {
-                                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                        var key = bk + 'checked';
-                                        var value;
-                                        if ( ['checkbox','toolbarbutton'].indexOf( ev.target.nodeName ) > -1 ) {
-                                            value = ev.target.checked;
-                                            ev.target.setAttribute( 'checked', value ? value : '' );
-                                        } else {
-                                            value = ev.target.getAttribute('checked'); // menuitem with type="checkbox"
-                                        }
-                                        prefs.setCharPref( key, value );
-                                        dump('persist_helper: <<< setting key = ' +  key + ' value = ' + value + ' for checkbox/menuitem/toolbarbutton\n');
-                                    } catch(E) {
-                                        alert('Error in persist_helper(), checkbox/menuitem/toolbarbutton oils_persist event listener: ' + E);
-                                    }
-                                };
-                            }(base_key), 
-                            false
-                        );
-                    }
-                } else if ( (nodes[i].nodeName == 'textbox') && attribute_list.indexOf('value') > -1) {
-                    if (nodes[i].disabled == false && nodes[i].hidden == false) {
-                        var no_poke = nodes[i].getAttribute('oils_persist_no_poke');
-                        if (no_poke && no_poke == 'true') {
-                            dump('\tpersist_helper: not poking element with key = ' + key + '\n');
-                        } else {
-                            dump('\tpersist_helper: poking element with key = ' + key + '\n');
+                        if (cmd_el) {
+                            dump('\tpoking @command\n');
                             var evt = document.createEvent("Events");
-                            evt.initEvent( 'change', true, true );
+                            evt.initEvent( 'command', true, true );
+                            cmd_el.dispatchEvent(evt);
+                        } else {
+                            dump('\tpoking\n');
+                            var evt = document.createEvent("Events");
+                            evt.initEvent( 'command', true, true );
                             nodes[i].dispatchEvent(evt);
                         }
                     }
-                    nodes[i].addEventListener(
-                        'change',
-                        function(ev) {
-                            try {
-                                var evt = document.createEvent("Events");
-                                evt.initEvent( 'oils_persist', true, true );
-                                ev.target.dispatchEvent(evt);
-                            } catch(E) {
-                                alert('Error in persist_helper, firing virtual event oils_persist after change event on element: ' + E);
-                            }
-                        },
+                }
+                if (cmd_el) {
+                    cmd_el.addEventListener(
+                        'command',
+                        gen_event_handler('command',cmd_el),
                         false
                     );
+                    cmd_el.addEventListener(
+                        'oils_persist',
+                        gen_oils_persist_handler( base_key, nodes[i] ),
+                        false
+                    );
+                } else {
+                    var event_types = [];
+                    if (nodes[i].hasAttribute('oils_persist_events')) {
+                        var event_type_list = nodes[i].getAttribute('oils_persist_events').split(' ');
+                        for (var j = 0; j < event_type_list.length; j++) {
+                            event_types.push( event_type_list[j] );
+                        }
+                    } else {
+                        if (nodes[i].nodeName == 'textbox') { 
+                            event_types.push('change'); 
+                        } else {
+                            event_types.push('command'); 
+                        }
+                    }
+                    for (var j = 0; j < event_types.length; j++) {
+                        nodes[i].addEventListener(
+                            event_types[j],
+                            gen_event_handler(event_types[j],nodes[i]),
+                            false
+                        );
+                    }
                     nodes[i].addEventListener(
                         'oils_persist',
-                        function(bk) {
-                            return function(ev) {
-                                try {
-                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                    var key = bk + 'value';
-                                    var value = ev.target.value;
-                                    ev.target.setAttribute( 'value', value );
-                                    prefs.setCharPref( key, value );
-                                    dump('persist_helper: <<< setting key = ' +  key + ' value = ' + value + ' for value\n');
-                                } catch(E) {
-                                    alert('Error in persist_helper(), textbox oils_persist event listener: ' + E);
-                                }
-                            };
-                        }(base_key), 
+                        gen_oils_persist_handler( base_key, nodes[i] ),
                         false
                     );
                 }
-                // TODO: Need to add event listeners for window resizing, splitter repositioning, grippy state, etc.
             }
         } catch(E) {
             alert('Error in persist_helper(): ' + E);
