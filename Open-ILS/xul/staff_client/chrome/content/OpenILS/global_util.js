@@ -88,7 +88,7 @@
                         var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
                         var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + target.getAttribute('id')).replace('/','_','g') + '_';
                         var attribute_list = target.getAttribute('oils_persist').split(' ');
-                        dump('persist_helper: <<< ' + target.nodeName + '.id = ' + target.id + '\t' + bk + '\n');
+                        dump('on_oils_persist: <<< ' + target.nodeName + '.id = ' + target.id + '\t' + bk + '\n');
                         for (var j = 0; j < attribute_list.length; j++) {
                             var key = base_key + attribute_list[j];
                             var value = target.getAttribute( attribute_list[j] );
@@ -107,7 +107,7 @@
                         if (target.hasAttribute('oils_persist_peers') && ! ev.cancelable) { // We abuse the .cancelable field on the oils_persist event to prevent looping
                             var peer_list = target.getAttribute('oils_persist_peers').split(' ');
                             for (var j = 0; j < peer_list.length; j++) {
-                                dump('persist_helper: dispatching oils_persist to peer ' + peer_list[j] + '\n');
+                                dump('on_oils_persist: dispatching oils_persist to peer ' + peer_list[j] + '\n');
                                 oils_persist( document.getElementById( peer_list[j] ), true );
                             } 
                         }
