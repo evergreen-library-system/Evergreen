@@ -1552,7 +1552,7 @@ sub create_prox_list {
 
 		# Fetch the weighting value for hold targeting, defaulting to 1
 		$self->{target_weight}{$lib} ||= $actor->request(
-			'open-ils.actor.ou_setting.ancestor_default' => $lib => 'circ.holds.org_unit_target_weight'
+			'open-ils.actor.ou_setting.ancestor_default' => $lib.'' => 'circ.holds.org_unit_target_weight'
 		)->gather(1) || 1;
 
 		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
