@@ -1576,6 +1576,11 @@ util.list.prototype = {
                     }
                 }
                 if (column_extras) {
+                    if (column_extras['*']) {
+                        for (var attr in column_extras['*']) {
+                            def[attr] = column_extras['*'][attr];
+                        }
+                    }
                     if (column_extras[col_id]) {
                         for (var attr in column_extras[col_id]) {
                             def[attr] = column_extras[col_id][attr];
