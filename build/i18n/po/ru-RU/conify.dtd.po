@@ -1,0 +1,491 @@
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-12 23:59-0400\n"
+"PO-Revision-Date: 2009-04-13 15:30+0400\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Accelerator-Marker: &\n"
+
+#. Common entities
+#: conify.save_button.label
+msgctxt "conify.save_button.label"
+msgid "Save"
+msgstr "Сохранить"
+
+#: conify.delete_button.label
+msgctxt "conify.delete_button.label"
+msgid "Delete"
+msgstr "Удалить"
+
+#: conify.new_kid_button.label
+msgctxt "conify.new_kid_button.label"
+msgid "New Child"
+msgstr "Новое потомство"
+
+#. Main configuration interface menu
+#: conify.admin.title
+msgid "Global :: Administration"
+msgstr "Глобальная :: Администрация"
+
+#: conify.admin.top_pane.title
+msgctxt "conify.admin.top_pane.title"
+msgid "Controls"
+msgstr "Контроль"
+
+#: conify.admin.configure
+msgid "Configure your ILS"
+msgstr "Конфигурация вашего ИБС"
+
+#: conify.admin.left_pane.controls
+msgctxt "conify.admin.left_pane.controls"
+msgid "Controls"
+msgstr "Контроль"
+
+#: conify.admin.org_unit_type.link
+msgid "Organization Types"
+msgstr "Тип Организации"
+
+#: conify.admin.org_unit.link
+msgctxt "conify.admin.org_unit.link"
+msgid "Organizational Units"
+msgstr "Организационная единица"
+
+#: conify.admin.grp_tree.link
+msgctxt "conify.admin.grp_tree.link"
+msgid "Permission Groups"
+msgstr "Полномочия групп"
+
+#: conify.admin.perm_list.link
+msgid "Permissions"
+msgstr "Полномочия"
+
+#: conify.admin.copy_status.link
+msgid "Copy Statuses"
+msgstr "Копия статусов"
+
+#: conify.admin.marc_code_maps.link
+msgid "MARC Codes"
+msgstr "коды MARC "
+
+#: conify.admin.bottom_pane.title
+msgctxt "conify.admin.bottom_pane.title"
+msgid "Controls"
+msgstr "Контроль"
+
+#. Organization unit type configuration interface
+#: conify.org_unit_type.title
+msgid "Global :: Actor :: Organization Unit Types"
+msgstr "Глобальная :: Исполнитель:: Типы организационной единицы"
+
+#: conify.org_unit_type.type_tree.label
+msgid "Organization Unit Types"
+msgstr "Типы организационной единицы"
+
+#: conify.org_unit_type.type_name
+msgid "Type Name"
+msgstr "Имя типа"
+
+#: conify.org_unit_type.opac_label
+msgid "OPAC Label"
+msgstr "OPAC ярлык"
+
+#: conify.org_unit_type.parent_type
+msgid "Parent Type"
+msgstr "Тип родителя"
+
+#: conify.org_unit_type.can_have_volumes
+msgid "Can Have Volumes and Copies"
+msgstr "Может  иметь тома и дублеты"
+
+#: conify.org_unit_type.can_have_users
+msgid "Can Have Users"
+msgstr "Может  иметь пользователей"
+
+#. Organization unit configuration interface
+#: conify.org_unit.title
+msgid "Global :: Actor :: Organization Units"
+msgstr "Глобальная :: Исполнитель :: Организационные единицы"
+
+#: conify.org_unit.ou_tree.label
+msgctxt "conify.org_unit.ou_tree.label"
+msgid "Organizational Units"
+msgstr "Организационные единицы"
+
+#: conify.org_unit.editor_pane.title
+msgid "Main Settings"
+msgstr "Основне параметры установки"
+
+#: conify.org_unit.editor_pane.org_unit_name
+msgid "Organization Unit Name"
+msgstr "Название Организационной единицы"
+
+#: conify.org_unit.editor_pane.org_unit_code
+msgid "Organization Unit Policy Code"
+msgstr "Код поведения Организационной единицы"
+
+#: conify.org_unit.editor_pane.main_email
+msgid "Main Email Address"
+msgstr "Основной электронный адрес"
+
+#: conify.org_unit.editor_pane.main_phone
+msgid "Main Phone Number"
+msgstr "Основной телеф. номер"
+
+#: conify.org_unit.editor_pane.org_unit_type
+msgid "Organization Unit Type"
+msgstr "Тип организационной единицы"
+
+#: conify.org_unit.editor_pane.parent
+msgid "Parent Organization Unit"
+msgstr "Родитель организационной единицы"
+
+#: conify.org_unit.editor_pane.opac_visible
+msgid "OPAC Visible"
+msgstr "OPAC видим"
+
+#. Hours of operation
+#: conify.org_unit.hoo_pane.title
+msgid "Hours of Operation"
+msgstr "Часы действия"
+
+#: conify.org_unit.hoo_pane.open_time
+msgid "Open time"
+msgstr "Открытое время"
+
+#: conify.org_unit.hoo_pane.close_time
+msgid "Close time"
+msgstr "Закрытое время"
+
+#: conify.org_unit.hoo_pane.closed
+msgid "Closed"
+msgstr "Закрыт"
+
+#: conify.org_unit.hoo_pane.monday
+msgid "Monday"
+msgstr "Понедельник"
+
+#: conify.org_unit.hoo_pane.tuesday
+msgid "Tuesday"
+msgstr "Вторник"
+
+#: conify.org_unit.hoo_pane.wednesday
+msgid "Wednesday"
+msgstr "Среда"
+
+#: conify.org_unit.hoo_pane.thursday
+msgid "Thursday"
+msgstr "Четверг"
+
+#: conify.org_unit.hoo_pane.friday
+msgid "Friday"
+msgstr "Пятница"
+
+#: conify.org_unit.hoo_pane.saturday
+msgid "Saturday"
+msgstr "Суббота"
+
+#: conify.org_unit.hoo_pane.sunday
+msgid "Sunday"
+msgstr "Воскресенье"
+
+#. Addresses
+#: conify.org_unit.addresses_pane.title
+msgid "Addresses"
+msgstr "Адреса"
+
+#: conify.org_unit.addresses_pane.physical.title
+msgid "Physical Address"
+msgstr "Физический адрес"
+
+#: conify.org_unit.addresses_pane.holds.title
+msgid "Holds Address"
+msgstr "Адрес задерживающего"
+
+#: conify.org_unit.addresses_pane.mailing.title
+msgid "Mailing Address"
+msgstr " Почтовый адрес"
+
+#: conify.org_unit.addresses_pane.ill.title
+msgid "ILL Address"
+msgstr "МБА  адрес"
+
+#: conify.org_unit.addresses_pane.type
+msgid "Type"
+msgstr "Тип"
+
+#: conify.org_unit.addresses_pane.valid
+msgid "Valid"
+msgstr "Действительный"
+
+#: conify.org_unit.addresses_pane.street1
+msgid "Street 1"
+msgstr "Улица 1"
+
+#: conify.org_unit.addresses_pane.street2
+msgid "Street 2"
+msgstr "Улица 2"
+
+#: conify.org_unit.addresses_pane.city
+msgid "City"
+msgstr "Город"
+
+#: conify.org_unit.addresses_pane.state
+msgid "State"
+msgstr "Штат"
+
+#: conify.org_unit.addresses_pane.zip
+msgid "Zip"
+msgstr "Индекс"
+
+#: conify.org_unit.addresses_pane.country
+msgid "Country"
+msgstr "Страна"
+
+#: conify.org_unit.addresses_pane.county
+msgid "County"
+msgstr "Графство"
+
+#. This is a highlighted label that is followed by the name of the organizational unit
+#: conify.org_unit.status_bar
+msgid "Now editing:"
+msgstr "Редактирование сейчас"
+
+#: conify.copy_status.title
+msgid "Global :: Configuration :: Copy Status"
+msgstr "Основной: Конфигурация: Копия статуса"
+
+#: conify.copy_status.new_status.label
+msgid "New Status:"
+msgstr "Новый статус"
+
+#: conify.copy_status.new_status.name
+msgid "New Status Name"
+msgstr "Имя нового статуса"
+
+#: conify.copy_status.new_status.save
+msgctxt "conify.copy_status.new_status.save"
+msgid "Add"
+msgstr "Добавить"
+
+#: conify.copy_status.save_changes
+msgctxt "conify.copy_status.save_changes"
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: conify.copy_status.delete_selected
+msgctxt "conify.copy_status.delete_selected"
+msgid "Delete Selected"
+msgstr "Удалить выбранные"
+
+#: conify.marc_code_maps.title
+msgid "Global :: Configuration :: MARC Code Maps"
+msgstr "Основной: конфигурация: Карты MARC кодов"
+
+#: conify.marc_code_maps.audience_map.title
+msgid "Audience Map"
+msgstr "Список группы"
+
+#: conify.marc_code_maps.audience_map.new.label
+msgid "New Audience Map:"
+msgstr "Список новой группы"
+
+#: conify.marc_code_maps.new_code
+msgctxt "conify.marc_code_maps.new_code"
+msgid "New Code"
+msgstr "Новый код"
+
+#: conify.marc_code_maps.new_value
+msgid "New Value"
+msgstr "Новая величина"
+
+#: conify.marc_code_maps.audience_map.description
+msgctxt "conify.marc_code_maps.audience_map.description"
+msgid "Description"
+msgstr "Описание"
+
+#: conify.marc_code_maps.delete_selected
+msgctxt "conify.marc_code_maps.delete_selected"
+msgid "Delete Selected"
+msgstr "Удалить отмеченные"
+
+#: conify.marc_code_maps.save_changes
+msgctxt "conify.marc_code_maps.save_changes"
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: conify.marc_code_maps.bib_level.title
+msgid "Bibliographic Level Map"
+msgstr "Карта Библиографического Уровня"
+
+#: conify.marc_code_maps.bib_level.new.label
+msgid "New Bibliographic Level:"
+msgstr "Новый Библиографический Уровень:"
+
+#: conify.marc_code_maps.add
+msgctxt "conify.marc_code_maps.add"
+msgid "Add"
+msgstr "Добавить"
+
+#: conify.marc_code_maps.item_form.title
+msgid "Item Form Map"
+msgstr "Карта формы  единицы"
+
+#: conify.marc_code_maps.item_form.new.label
+msgid "New Item Form:"
+msgstr "Новая форма единицы"
+
+#: conify.marc_code_maps.item_type.title
+msgid "Item Type Map"
+msgstr "Карта  типа единицы"
+
+#: conify.marc_code_maps.item_type.new.label
+msgid "New Item Type:"
+msgstr "Новый тип библ. единицы"
+
+#: conify.marc_code_maps.language.title
+msgid "Language Map"
+msgstr "Карта языка"
+
+#: conify.marc_code_maps.language.new.label
+msgid "New Language:"
+msgstr "Новый язык"
+
+#: conify.marc_code_maps.literary_form.title
+msgid "Literary Form Map"
+msgstr "Литературная форма карты"
+
+#: conify.marc_code_maps.literary_form.new.label
+msgid "New Literary Form:"
+msgstr "Новая литературная форма"
+
+#: conify.marc_code_maps.video.title
+msgid "Videorecording Format Map"
+msgstr "Карта формата видеозаписи"
+
+#: conify.marc_code_maps.video.new.label
+msgid "New Video Recording Format:"
+msgstr " Новый Формат видеозаписи"
+
+#. perm_list.html Entities
+#: conify.perm_list.permission_list.title
+msgid "Global :: Permission :: Permission List"
+msgstr "Основной :: Полномочия :: Список доступа"
+
+#: conify.perm_list.new_code.label
+msgctxt "conify.perm_list.new_code.label"
+msgid "New Code"
+msgstr "Новый код"
+
+#: conify.perm_list.add_button.label
+msgctxt "conify.perm_list.add_button.label"
+msgid "Add"
+msgstr "Добавить"
+
+#: conify.perm_list.save_changes.label
+msgctxt "conify.perm_list.save_changes.label"
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: conify.perm_list.delete_selected.label
+msgctxt "conify.perm_list.delete_selected.label"
+msgid "Delete Selected"
+msgstr "Удалить выбранные"
+
+#: conify.perm_list.new_permission.label
+msgid "New Permission:"
+msgstr "Новые Полномочия"
+
+#. grp_tree.html Entities
+#: conify.grp_tree.group_tree.title
+msgid "Global :: Permission :: Group Tree"
+msgstr "Основной :: Полномочия :: Дерево группы "
+
+#: conify.grp_tree.permission_groups.label
+msgctxt "conify.grp_tree.permission_groups.label"
+msgid "Permission Groups"
+msgstr "Группы Полномочий"
+
+#: conify.grp_tree.group_config.label
+msgid "Group Configuration"
+msgstr "Состав группы"
+
+#: conify.grp_tree.group_name.label
+msgid "Group Name"
+msgstr "Имя группы"
+
+#: conify.grp_tree.description.label
+msgctxt "conify.grp_tree.description.label"
+msgid "Description"
+msgstr "Описание"
+
+#: conify.grp_tree.permission_interval.label
+msgid "Permission Interval"
+msgstr "Интервал Полномочия"
+
+#: conify.grp_tree.editing_permission.label
+msgid "Editing Permission"
+msgstr "Редактирование Полномочий"
+
+#: conify.grp_tree.parent_group.label
+msgid "Parent Group"
+msgstr "Родительская группа"
+
+#: conify.grp_tree.user_group.label
+msgid "User Group"
+msgstr "Группа пользователя"
+
+#: conify.grp_tree.save_button.label
+msgctxt "conify.grp_tree.save_button.label"
+msgid "Save"
+msgstr "Сохранить"
+
+#: conify.grp_tree.delete_button.label
+msgctxt "conify.grp_tree.delete_button.label"
+msgid "Delete"
+msgstr "Удалить"
+
+#: conify.grp_tree.new_child_button.label
+msgctxt "conify.grp_tree.new_child_button.label"
+msgid "New Child"
+msgstr "Новое потомство"
+
+#: conify.grp_tree.group_permissions.title
+msgid "Group Permissions"
+msgstr "Полномочия группы"
+
+#: conify.grp_tree.new_mapping.label
+msgid "New Mapping"
+msgstr "Новая карта"
+
+#: conify.grp_tree.permission.label
+msgid "Permission:"
+msgstr "Полномочия:"
+
+#: conify.grp_tree.depth.label
+msgid "Depth:"
+msgstr "Глубина:"
+
+#: conify.grp_tree.grantable.label
+msgid "Grantable:"
+msgstr "Вознаграждаемый"
+
+#: conify.grp_tree.add_mapping_button.label
+msgid "Add Mapping"
+msgstr "Добавить в карту"
+
+#: conify.grp_tree.save_changes.label
+msgctxt "conify.grp_tree.save_changes.label"
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: conify.grp_tree.remove_selected.label
+msgctxt "conify.grp_tree.remove_selected.label"
+msgid "Delete Selected"
+msgstr "Удалить выбранные"
