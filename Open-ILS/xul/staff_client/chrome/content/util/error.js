@@ -346,14 +346,22 @@ util.error.prototype = {
             + '<groupbox flex="1" style="overflow: auto; border: solid thin red;"><caption label="' + (title) + '"/>';
 
         if (image) xml += '<hbox><image src="' + image + '"/><spacer flex="1"/></hbox>';
-        xml += '<description style="font-size: large">' + (s)
+        xml += '<description id="msg" style="-moz-user-select: text; -moz-user-focus: normal; font-size: large">' + (s)
             + '</description></groupbox><groupbox><caption label="Options"/><hbox>';
         var b1_key = b1 ? b1[0] : '';
         var b2_key = b2 ? b2[0] : '';
         var b3_key = b3 ? b3[0] : ''; /* FIXME - need to check for collisions */
-        if (b1) xml += '<button id="b1" accesskey="' + b1_key + '" label="' + (b1) + '" name="fancy_submit" value="b1"/>'
-        if (b2) xml += '<button id="b2" accesskey="' + b2_key + '" label="' + (b2) + '" name="fancy_submit" value="b2"/>'
-        if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>'
+        if (b1) xml += '<button id="b1" accesskey="' + b1_key + '" label="' + (b1) + '" name="fancy_submit" value="b1"/>';
+        if (b2) xml += '<button id="b2" accesskey="' + b2_key + '" label="' + (b2) + '" name="fancy_submit" value="b2"/>';
+        if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>';
+        var copy_button_label = 'Copy Message'; /* default in case the I18N infrastructure is failing, yns_alert often gets used for errors */
+        var x= document.getElementById('offlineStrings');
+        if (x) {
+            if (typeof x.getString == 'function') {
+                if (x.getString('common.error.copy_msg')) { copy_button_label = x.getString('common.error.copy_msg'); }
+            }
+        }
+        xml += '<spacer flex="1"/><button label="' + copy_button_label + '" oncommand="try { copy_to_clipboard( document.getElementById(' + "'msg'" + ').textContent ); } catch(E) { alert(E); }" />';
         xml += '</hbox></groupbox></vbox>';
         JSAN.use('OpenILS.data');
         //var data = new OpenILS.data(); data.init({'via':'stash'});
@@ -402,7 +410,7 @@ util.error.prototype = {
             c    = Text for confirmation checkbox.  null for no confirm
         */
 
-        dump('yns_alert:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
+        dump('yns_alert_formatted:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 
         this.sound.bad();
@@ -415,14 +423,22 @@ util.error.prototype = {
             + '<groupbox flex="1" style="overflow: auto; border: solid thin red;"><caption label="' + (title) + '"/>';
 
         if (image) xml += '<hbox><image src="' + image + '"/><spacer flex="1"/></hbox>';
-        xml += '<description style="font-size: large"><html:pre style="font-size: large">' + (s)
+        xml += '<description style="-moz-user-select: text; -moz-user-focus: normal; font-size: large"><html:pre id="msg" style="font-size: large">' + (s)
             + '</html:pre></description></groupbox><groupbox><caption label="Options"/><hbox>';
         var b1_key = b1 ? b1[0] : '';
         var b2_key = b2 ? b2[0] : '';
         var b3_key = b3 ? b3[0] : ''; /* FIXME - need to check for collisions */
-        if (b1) xml += '<button id="b1" accesskey="' + b1_key + '" label="' + (b1) + '" name="fancy_submit" value="b1"/>'
-        if (b2) xml += '<button id="b2" accesskey="' + b2_key + '" label="' + (b2) + '" name="fancy_submit" value="b2"/>'
-        if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>'
+        if (b1) xml += '<button id="b1" accesskey="' + b1_key + '" label="' + (b1) + '" name="fancy_submit" value="b1"/>';
+        if (b2) xml += '<button id="b2" accesskey="' + b2_key + '" label="' + (b2) + '" name="fancy_submit" value="b2"/>';
+        if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>';
+        var copy_button_label = 'Copy Message'; /* default in case the I18N infrastructure is failing, yns_alert often gets used for errors */
+        var x= document.getElementById('offlineStrings');
+        if (x) {
+            if (typeof x.getString == 'function') {
+                if (x.getString('common.error.copy_msg')) { copy_button_label = x.getString('common.error.copy_msg'); }
+            }
+        }
+        xml += '<spacer flex="1"/><button label="' + copy_button_label + '" oncommand="try { copy_to_clipboard( document.getElementById(' + "'msg'" + ').textContent ); } catch(E) { alert(E); }" />';
         xml += '</hbox></groupbox></vbox>';
         JSAN.use('OpenILS.data');
         //var data = new OpenILS.data(); data.init({'via':'stash'});
