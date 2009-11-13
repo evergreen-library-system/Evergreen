@@ -51,7 +51,7 @@ patron.items.prototype = {
                                     );
                                 }
                             } catch(E) {
-                                alert('Error in copy_status.js, cmd_triggered_events: ' + E);
+                                alert('Error in items.js, cmd_triggered_events: ' + E);
                             }
                         }
                     ],
