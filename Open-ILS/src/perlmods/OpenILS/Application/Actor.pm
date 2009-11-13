@@ -3558,5 +3558,60 @@ sub really_delete_user {
 
 
 
+__PACKAGE__->register_method (
+	method		=> 'user_payments',
+	api_name    => 'open-ils.actor.user.payments.retrieve',
+    stream => 1,
+    signature   => q/
+        Returns all payments for a given user.  Default order is newest payments first.
+        @param auth Authentication token
+        @param user_id The user ID
+        @param filters An optional hash of filters, including limit, offset, and order_by definitions
+    /
+);
+
+sub user_payments {
+    my($self, $conn, $auth, $user_id, $filters) = @_;
+    $filters ||= {};
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
+
+    # Find all payments for all transactions for user $user_id
+    my $query = {
+        select => {mp => ['id']}, 
+        from => 'mp', 
+        where => {
+            xact => {
+                in => {
+                    select => {mbt => ['id']}, 
+                    from => 'mbt', 
+                    where => {usr => $user_id}
+                }   
+            }
+        },
+        order_by => [{ # by default, order newest payments first
+            class => 'mp', 
+            field => 'payment_ts',
+            direction => 'desc'
+        }]
+    };
+
+    for (qw/order_by limit offset/) {
+        $query->{$_} = $filters->{$_} if defined $filters->{$_};
+    }
+
+    my $payment_ids = $e->json_query($query);
+    $conn->respond($e->retrieve_money_payment($_->{id})) for @$payment_ids;
+
+    return undef;
+}
+
+
+
+
 1;
 
