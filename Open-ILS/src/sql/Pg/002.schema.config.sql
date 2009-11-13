@@ -51,7 +51,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0081'); -- berick
+INSERT INTO config.upgrade_log (version) VALUES ('0082'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -564,6 +564,30 @@ CREATE TABLE config.org_unit_setting_type (
       ( datatype <> 'link' AND fm_class IS NULL ) )
 );
 
+CREATE TABLE config.usr_setting_type (
+
+    name TEXT PRIMARY KEY,
+    opac_visible BOOL NOT NULL DEFAULT FALSE,
+    label TEXT UNIQUE NOT NULL,
+    description TEXT,
+    datatype TEXT NOT NULL DEFAULT 'string',
+    fm_class TEXT,
+
+    --
+    -- define valid datatypes
+    --
+    CONSTRAINT coust_valid_datatype CHECK ( datatype IN
+    ( 'bool', 'integer', 'float', 'currency', 'interval',
+        'date', 'string', 'object', 'array', 'link' ) ),
+
+    --
+    -- fm_class is meaningful only for 'link' datatype
+    --
+    CONSTRAINT coust_no_empty_link CHECK
+    ( ( datatype = 'link' AND fm_class IS NOT NULL ) OR
+        ( datatype <> 'link' AND fm_class IS NULL ) )
+
+);
 
 -- Some handy functions, based on existing ones, to provide optional ingest normalization
 

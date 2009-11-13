@@ -150,7 +150,7 @@ CREATE INDEX actor_usr_note_creator_idx ON actor.usr_note ( creator );
 CREATE TABLE actor.usr_setting (
 	id	BIGSERIAL	PRIMARY KEY,
 	usr	INT		NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	name	TEXT		NOT NULL,
+	name	TEXT		NOT NULL REFERENCES config.usr_setting_type (name) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	value	TEXT		NOT NULL,
 	CONSTRAINT usr_once_per_key UNIQUE (usr,name)
 );

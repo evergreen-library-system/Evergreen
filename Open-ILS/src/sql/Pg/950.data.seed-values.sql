@@ -1458,6 +1458,33 @@ INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,duration_rule,recurring_
 -- hold matrix - 110.hold_matrix.sql:
 INSERT INTO config.hold_matrix_matchpoint (requestor_grp) VALUES (1);
 
+
+-- User setting types
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('opac.default_font', TRUE, 'OPAC Font Size', 'OPAC Font Size', 'string');
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('opac.default_search_depth', TRUE, 'OPAC Search Depth', 'OPAC Search Depth', 'integer');
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('opac.default_search_location', TRUE, 'OPAC Search Location', 'OPAC Search Location', 'integer');
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('opac.hits_per_page', TRUE, 'Hits per Page', 'Hits per Page', 'string');
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('opac.hold_notify', TRUE, 'Hold Notification Format', 'Hold Notification Format', 'string');
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('staff_client.catalog.record_view.default', TRUE, 'Default Record View', 'Default Record View', 'string');
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('staff_client.copy_editor.templates', TRUE, 'Copy Editor Template', 'Copy Editor Template', 'object');
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES ('circ.holds_behind_desk', FALSE, 'Hold is behind Circ Desk', 'Hold is behind Circ Desk', 'bool');
+
+
 -- org_unit setting types
 INSERT into config.org_unit_setting_type
 ( name, label, description, datatype ) VALUES
