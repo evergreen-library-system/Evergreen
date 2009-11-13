@@ -1015,7 +1015,16 @@ sub get_max_fine_amount {
     if ($U->is_true($max_fine_rule->is_percent)) {
         my $price = $U->get_copy_price($self->editor, $self->copy, $self->volume);
         $max_amount = $price * $max_fine_rule->amount / 100;
-    }  
+    } elsif (
+        $U->ou_ancestor_setting_value(
+            $self->circ->circ_lib,
+            'circ.max_fine.cap_at_price',
+            $self->editor
+        )
+    ) {
+        my $price = $U->get_copy_price($self->editor, $self->copy, $self->volume);
+        $max_amount = ( $price && $max_amount > $price ) ? $price : $max_amount;
+    }
 
     return $max_amount;
 }
