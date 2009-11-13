@@ -107,7 +107,32 @@ function init_list() {
         list = new util.list( 'atev_list' );
         list.init( 
             {
-                'columns' : [ 'atev' ],
+                'columns' : [].concat(
+                    list.fm_columns('atev', {
+                        'atev_target' : { 'render' : function(my) { return fieldmapper.IDL.fmclasses[my.atev.target().classname].label; } }
+                    })
+                ).concat(
+                    list.fm_columns('atevdef', { 
+                        '*' : { 'hidden' : true }, 
+                        'atevdef_name' : { 'hidden' : false }, 
+                        'atevdef_reactor' : { 'hidden' : false } 
+                    })
+                ).concat(
+                    list.fm_columns('circ', { 
+                        '*' : { 'hidden' : true }, 
+                        'circ_due_date' : { 'hidden' : false } 
+                    })
+                ).concat(
+                    list.fm_columns('acp', { 
+                        '*' : { 'hidden' : true }, 
+                        'acp_barcode' : { 'hidden' : false } 
+                    })
+                ).concat(
+                    list.fm_columns('ahr', { 
+                        '*' : { 'hidden' : true },
+                        'ahr_id' : { 'hidden' : false } 
+                    })
+                ),
                 'retrieve_row' : retrieve_row,
                 'on_select' : handle_selection
             }
@@ -149,7 +174,11 @@ function populate_list() {
             var row_params = {
                 'row' : {
                     'my' : {
-                        'atev' : evt
+                        'atev' : evt,
+                        'atevdef' : evt.event_def(),
+                        'circ' : evt.target().classname == 'circ' ? evt.target() : null,
+                        'ahr' : evt.target().classname == 'ahr' ? evt.target() : null,
+                        'acp' : evt.target().classname == 'circ' ? evt.target().target_copy() : evt.target().current_copy()
                     }
                 }
             };
