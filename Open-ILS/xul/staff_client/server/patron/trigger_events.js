@@ -109,27 +109,39 @@ function init_list() {
             {
                 'columns' : [].concat(
                     list.fm_columns('atev', {
-                        'atev_target' : { 'render' : function(my) { return fieldmapper.IDL.fmclasses[my.atev.target().classname].label; } }
+                        'atev_target' : { 'render' : function(my) { return fieldmapper.IDL.fmclasses[my.atev.target().classname].label; } },
+                        'atev_event_def' : { 'hidden' : true, 'render' : function(my) { return my.atev.event_def().id(); } }
                     })
                 ).concat(
                     list.fm_columns('atevdef', { 
-                        '*' : { 'hidden' : true }, 
+                        '*' : { 'expanded_label' : true, 'hidden' : true }, 
                         'atevdef_name' : { 'hidden' : false }, 
-                        'atevdef_reactor' : { 'hidden' : false } 
+                        'atevdef_reactor' : { 'render' : function(my) { return my.atevdef.reactor().id(); } }, 
+                        'atevdef_validator' : { 'render' : function(my) { return my.atevdef.validator().id(); } } 
+                    })
+                ).concat(
+                    list.fm_columns('atreact', { 
+                        '*' : { 'expanded_label' : true, 'hidden' : true }, 
+                        'atreact_module' : { 'hidden' : false } 
+                    })
+                ).concat(
+                    list.fm_columns('atval', { 
+                        '*' : { 'expanded_label' : true, 'hidden' : true }, 
+                        'atval_module' : { 'hidden' : false } 
                     })
                 ).concat(
                     list.fm_columns('circ', { 
-                        '*' : { 'hidden' : true }, 
+                        '*' : { 'expanded_label' : true, 'hidden' : true }, 
                         'circ_due_date' : { 'hidden' : false } 
                     })
                 ).concat(
                     list.fm_columns('acp', { 
-                        '*' : { 'hidden' : true }, 
+                        '*' : { 'expanded_label' : true, 'hidden' : true }, 
                         'acp_barcode' : { 'hidden' : false } 
                     })
                 ).concat(
                     list.fm_columns('ahr', { 
-                        '*' : { 'hidden' : true },
+                        '*' : { 'expanded_label' : true, 'hidden' : true },
                         'ahr_id' : { 'hidden' : false } 
                     })
                 ),
@@ -176,6 +188,8 @@ function populate_list() {
                     'my' : {
                         'atev' : evt,
                         'atevdef' : evt.event_def(),
+                        'atreact' : evt.event_def().reactor(),
+                        'atval' : evt.event_def().validator(),
                         'circ' : evt.target().classname == 'circ' ? evt.target() : null,
                         'ahr' : evt.target().classname == 'ahr' ? evt.target() : null,
                         'acp' : evt.target().classname == 'circ' ? evt.target().target_copy() : evt.target().current_copy()
