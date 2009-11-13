@@ -59,6 +59,21 @@ sub create_active_events_for_object {
 
     for my $def ( @$defs ) {
 
+        if ($def->usr_field && $def->opt_in_setting) {
+            my $ufield = $def->usr_field;
+            my $uid = $target->$ufield;
+            $uid = $uid->id if (ref $uid); # fleshed user object, unflesh it
+
+            my $opt_in_setting = $editor->search_actor_usr_setting(
+                { usr   => $uid,
+                  name  => $def->opt_in_setting,
+                  value => 'true'
+                }
+            );
+
+            next unless (@$opt_in_setting);
+        }
+
         my $date = DateTime->now;
 
         if ($hook_hash{$def->hook}->passive eq 'f') {
@@ -127,6 +142,21 @@ sub create_event_for_object_and_def {
     my %hook_hash = map { ($_->key, $_) } @$hooks;
 
     for my $def ( @$defs ) {
+
+        if ($def->usr_field && $def->opt_in_setting) {
+            my $ufield = $def->usr_field;
+            my $uid = $target->$ufield;
+            $uid = $uid->id if (ref $uid); # fleshed user object, unflesh it
+
+            my $opt_in_setting = $editor->search_actor_usr_setting(
+                { usr   => $uid,
+                  name  => $def->opt_in_setting,
+                  value => 'true'
+                }
+            );
+
+            next unless (@$opt_in_setting);
+        }
 
         my $date = DateTime->now;
 
@@ -425,6 +455,19 @@ sub create_batch_events {
                 }
             }
         };
+
+        if ($def->usr_field && $def->opt_in_setting) {
+            push @{ $filter->{'-and'} }, {
+                '-exists' => {
+                    from  => 'aus',
+                    where => {
+                        name => $def->id,
+                        usr  => { '=' => { '+' . $hook_hash{$def->hook}->core_type => $def->usr_field } },
+                        value=> 'true'
+                    }
+                }
+            };
+        }
 
         $class =~ s/^Fieldmapper:://o;
         $class =~ s/::/_/go;

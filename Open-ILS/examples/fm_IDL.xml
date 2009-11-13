@@ -693,6 +693,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Template" name="template"  reporter:datatype="text"/>
 			<field reporter:label="Name" name="name"  reporter:datatype="text"/>
 			<field reporter:label="Granularity" name="granularity"  reporter:datatype="text"/>
+			<field reporter:label="Opt-In User Field" name="usr_field"  reporter:datatype="text"/>
+			<field reporter:label="Opt-In Setting Type" name="opt_in_setting"  reporter:datatype="link"/>
 			<field reporter:label="Environmet Entries" name="env" oils_persist:virtual="true"  reporter:datatype="link"/>
 			<field reporter:label="Parameters" name="params" oils_persist:virtual="true"  reporter:datatype="link"/>
 		</fields>
@@ -705,6 +707,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="cleanup_failure" reltype="has_a" key="module" map="" class="atclean"/>
 			<link field="env" reltype="has_many" key="event_def" map="" class="atenv"/>
 			<link field="params" reltype="has_many" key="event_def" map="" class="atevparam"/>
+			<link field="opt_in_setting" reltype="has_a" key="name" map="" class="cust"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -1106,11 +1109,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="aus" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting" reporter:label="User Setting">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_setting_id_seq">
 			<field reporter:label="Setting ID" name="id" reporter:datatype="id" />
-			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Name" name="name" reporter:datatype="link"/>
 			<field reporter:label="User" name="usr" reporter:datatype="link"/>
 			<field reporter:label="Value" name="value" reporter:datatype="text"/>
 		</fields>
 		<links>
+			<link field="name" reltype="has_a" key="name" map="" class="cust"/>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
@@ -1736,6 +1740,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
+	<class id="cust" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_setting_type" oils_persist:tablename="config.usr_setting_type" reporter:label="User Setting Type">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:datatype="text"/>
+			<field name="label" reporter:datatype="text"/>
+			<field name="description" reporter:datatype="text"/>
+			<field name="datatype" reporter:datatype="text"/>
+			<field name="fm_class" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="name" reltype="has_many" key="name" map="" class="aus"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_USER_SETTING_TYPE" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_USER_SETTING_TYPE" global_required="true"/>
+				<delete permission="ADMIN_USER_SETTING_TYPE" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
 	<class id="coust" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::org_unit_setting_type" oils_persist:tablename="config.org_unit_setting_type" reporter:label="Organizational Unit Setting Type">
 		<fields oils_persist:primary="name">
 			<field name="name" reporter:datatype="text"/>
