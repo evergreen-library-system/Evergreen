@@ -1580,6 +1580,9 @@ util.list.prototype = {
                         for (var attr in column_extras['*']) {
                             def[attr] = column_extras['*'][attr];
                         }
+                        if (column_extras['*']['expanded_label']) {
+                            def.label = my_class.label + ': ' + def.label;
+                        }
                     }
                     if (column_extras[col_id]) {
                         for (var attr in column_extras[col_id]) {
