@@ -117,6 +117,7 @@
             <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
             <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
             <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
+            <menuitem command="cmd_triggered_events" label="&staff.circ.copy_status_overlay.cmd_triggered_events.label;" accesskey="&staff.circ.copy_status_overlay.cmd_triggered_events.accesskey;"/>
             <menuseparator/>
             <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
             <menuitem command="cmd_transfer_items" label="&staff.circ.copy_status_overlay.cmd_transfer_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_transfer_items.accesskey;"/>
@@ -147,6 +148,7 @@
             <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
             <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
             <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
+            <menuitem command="cmd_triggered_events" label="&staff.circ.copy_status_overlay.cmd_triggered_events.label;" accesskey="&staff.circ.copy_status_overlay.cmd_triggered_events.accesskey;"/>
             <menuseparator />
             <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
             <menuseparator />

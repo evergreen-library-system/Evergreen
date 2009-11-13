@@ -63,6 +63,7 @@ circ.copy_status.prototype = {
                             obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
                             obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
                             obj.controller.view.sel_patron.setAttribute('disabled','true');
+                            obj.controller.view.cmd_triggered_events.setAttribute('disabled','true');
                             obj.controller.view.sel_spine.setAttribute('disabled','true');
                             obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
                             obj.controller.view.sel_clip.setAttribute('disabled','true');
@@ -82,6 +83,7 @@ circ.copy_status.prototype = {
                             obj.controller.view.sel_edit.setAttribute('disabled','false');
                             obj.controller.view.sel_opac.setAttribute('disabled','false');
                             obj.controller.view.sel_patron.setAttribute('disabled','false');
+                            obj.controller.view.cmd_triggered_events.setAttribute('disabled','false');
                             obj.controller.view.sel_bucket.setAttribute('disabled','false');
                             obj.controller.view.sel_copy_details.setAttribute('disabled','false');
                             obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
@@ -161,6 +163,26 @@ circ.copy_status.prototype = {
                                 alert('Error in copy_status.js, cmd_alt_view handler: ' + E);
                             }
                         },
+                    ],
+                    'cmd_triggered_events' : [
+                        ['command'],
+                        function() {
+                            try {
+                                for (var i = 0; i < obj.selection_list.length; i++) {
+                                    xulG.new_tab(
+                                        urls.XUL_TRIGGER_EVENTS,
+                                        {
+                                            'tab_name' : document.getElementById('commonStrings').getFormattedString('tab.label.triggered_events_for_copy',[ obj.selection_list[i].barcode ])
+                                        },
+                                        {
+                                            'copy_id' : obj.selection_list[i].copy_id
+                                        }
+                                    );
+                                }
+                            } catch(E) {
+                                alert('Error in copy_status.js, cmd_triggered_events: ' + E);
+                            }
+                        }
                     ],
                     'sel_checkin' : [
                         ['command'],

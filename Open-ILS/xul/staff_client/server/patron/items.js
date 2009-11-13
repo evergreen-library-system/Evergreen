@@ -33,6 +33,48 @@ patron.items.prototype = {
                     'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
                     'sel_clip2' : [ ['command'], function() { obj.list2.clipboard(); } ],
                     'sel_patron' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.retrieve_ids); } ],
+                    'cmd_triggered_events' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var copy_ids = util.functional.map_list( obj.retrieve_ids, function(o) { return o.copy_id; } ); 
+                                var barcodes = util.functional.map_list( obj.retrieve_ids, function(o) { return o.barcode; } ); 
+                                for (var i = 0; i < copy_ids.length; i++) {
+                                    xulG.new_tab(
+                                        urls.XUL_TRIGGER_EVENTS,
+                                        {
+                                            'tab_name' : document.getElementById('commonStrings').getFormattedString('tab.label.triggered_events_for_copy',[ barcodes[i] ])
+                                        },
+                                        {
+                                            'copy_id' : copy_ids[i]
+                                        }
+                                    );
+                                }
+                            } catch(E) {
+                                alert('Error in copy_status.js, cmd_triggered_events: ' + E);
+                            }
+                        }
+                    ],
+                    'cmd_triggered_events2' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var copy_ids = util.functional.map_list( obj.retrieve_ids2, function(o) { return o.copy_id; } ); 
+                                for (var i = 0; i < copy_ids.length; i++) {
+                                    xulG.new_tab(
+                                        urls.XUL_TRIGGER_EVENTS,
+                                        {},
+                                        {
+                                            'copy_id' : copy_ids[i]
+                                        }
+                                    );
+                                }
+                            } catch(E) {
+                                alert('Error in copy_status.js, cmd_triggered_events: ' + E);
+                            }
+                        }
+                    ],
+
                     'sel_bucket' : [
                         ['command'],
                         function() {
@@ -126,8 +168,10 @@ patron.items.prototype = {
         obj.controller.view.sel_bucket2.setAttribute('disabled','true');
         obj.controller.view.sel_copy_details.setAttribute('disabled','true');
         obj.controller.view.sel_patron.setAttribute('disabled','true');
+        obj.controller.view.cmd_triggered_events.setAttribute('disabled','true');
         obj.controller.view.sel_copy_details2.setAttribute('disabled','true');
         obj.controller.view.sel_patron2.setAttribute('disabled','true');
+        obj.controller.view.cmd_triggered_events2.setAttribute('disabled','true');
         obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','true');
         obj.controller.view.cmd_items_renew.setAttribute('disabled','true');
         obj.controller.view.cmd_items_renew_with_date.setAttribute('disabled','true');
@@ -871,6 +915,7 @@ patron.items.prototype = {
         obj.controller.view.sel_copy_details.setAttribute('disabled','false');
         obj.controller.view.sel_bucket.setAttribute('disabled','false');
         obj.controller.view.sel_patron.setAttribute('disabled','false');
+        obj.controller.view.cmd_triggered_events.setAttribute('disabled','false');
         obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
         obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
 
@@ -893,6 +938,7 @@ patron.items.prototype = {
         obj.controller.view.sel_copy_details2.setAttribute('disabled','false');
         obj.controller.view.sel_bucket2.setAttribute('disabled','false');
         obj.controller.view.sel_patron2.setAttribute('disabled','false');
+        obj.controller.view.cmd_triggered_events2.setAttribute('disabled','false');
         obj.controller.view.sel_mark_items_damaged2.setAttribute('disabled','false');
         obj.controller.view.sel_mark_items_missing2.setAttribute('disabled','false');
 

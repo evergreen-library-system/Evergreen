@@ -1891,6 +1891,8 @@
 <!ENTITY staff.circ.copy_status_overlay.sel_copy_details.accesskey "I">
 <!ENTITY staff.circ.copy_status_overlay.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.circ.copy_status_overlay.sel_patron.accesskey "L">
+<!ENTITY staff.circ.copy_status_overlay.cmd_triggered_events.label "Show Triggered Events">
+<!ENTITY staff.circ.copy_status_overlay.cmd_triggered_events.accesskey "T">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.label "Edit Item Attributes">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.accesskey "E">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
@@ -2806,6 +2808,8 @@
 <!ENTITY staff.patron.items_overlay.sel_copy_details.accesskey "I">
 <!ENTITY staff.patron.items_overlay.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.patron.items_overlay.sel_patron.accesskey "L">
+<!ENTITY staff.patron.items_overlay.cmd_triggered_events.label "Show Triggered Events">
+<!ENTITY staff.patron.items_overlay.cmd_triggered_events.accesskey "T">
 <!ENTITY staff.patron.items_overlay.items_edit.label "Edit Due Date">
 <!ENTITY staff.patron.items_overlay.items_mark_lost.label "Mark Lost (by Patron)">
 <!ENTITY staff.patron.items_overlay.items_claimed_returned.label "Mark Claimed Returned">
