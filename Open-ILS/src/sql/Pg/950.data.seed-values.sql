@@ -908,6 +908,7 @@ INSERT INTO permission.perm_list VALUES
     (21, 'CREATE_VOLUME', oils_i18n_gettext(21, 'Allow a user to create a volume', 'ppl', 'description')),
     (22, 'UPDATE_VOLUME', oils_i18n_gettext(22, 'Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE, user must have both permissions at appropriate level to merge records.', 'ppl', 'description')),
     (23, 'DELETE_VOLUME', oils_i18n_gettext(23, 'Allow a user to delete a volume', 'ppl', 'description')),
+    (24, 'CREATE_COPY', oils_i18n_gettext(24, 'Allow a user to create a new copy object', 'ppl', 'description')),
     (25, 'UPDATE_COPY', oils_i18n_gettext(25, 'Allow a user to edit a copy', 'ppl', 'description')),
     (26, 'DELETE_COPY', oils_i18n_gettext(26, 'Allow a user to delete a copy', 'ppl', 'description')),
     (27, 'RENEW_HOLD_OVERRIDE', oils_i18n_gettext(27, 'Allow a user to continue to renew an item even if it is required for a hold', 'ppl', 'description')),
@@ -924,13 +925,12 @@ INSERT INTO permission.perm_list VALUES
     (38, 'SET_CIRC_MISSING', oils_i18n_gettext(38, 'Allow a user to mark an item as ''missing''', 'ppl', 'description')),
     (39, 'SET_CIRC_CLAIMS_RETURNED', oils_i18n_gettext(39, 'Allow a user to mark an item as ''claims returned''', 'ppl', 'description')),
     (41, 'CREATE_TRANSACTION', oils_i18n_gettext(41, 'Allow a user to create a new billable transaction', 'ppl', 'description')),
+    (42, 'VIEW_TRANSACTION', oils_i18n_gettext(42, 'Allow a user may view another user''s transactions', 'ppl', 'description')),
     (43, 'CREATE_BILL', oils_i18n_gettext(43, 'Allow a user to create a new bill on a transaction', 'ppl', 'description')),
     (44, 'VIEW_CONTAINER', oils_i18n_gettext(44, 'Allow a user to view another user''s containers (buckets)', 'ppl', 'description')),
     (45, 'CREATE_CONTAINER', oils_i18n_gettext(45, 'Allow a user to create a new container for another user', 'ppl', 'description')),
-    (24, 'CREATE_COPY', oils_i18n_gettext(24, 'Allow a user to create a new copy object', 'ppl', 'description')),
     (47, 'UPDATE_ORG_UNIT', oils_i18n_gettext(47, 'Allow a user to change the settings for an organization unit', 'ppl', 'description')),
     (48, 'VIEW_CIRCULATIONS', oils_i18n_gettext(48, 'Allow a user to see what another user has checked out', 'ppl', 'description')),
-    (42, 'VIEW_TRANSACTION', oils_i18n_gettext(42, 'Allow a user may view another user''s transactions', 'ppl', 'description')),
     (49, 'DELETE_CONTAINER', oils_i18n_gettext(49, 'Allow a user to delete another user''s container', 'ppl', 'description')),
     (50, 'CREATE_CONTAINER_ITEM', oils_i18n_gettext(50, 'Allow a user to create a container item for another user', 'ppl', 'description')),
     (51, 'CREATE_USER_GROUP_LINK', oils_i18n_gettext(51, 'Allow a user to add other users to permission groups', 'ppl', 'description')),
@@ -970,8 +970,8 @@ INSERT INTO permission.perm_list VALUES
     (85, 'VIEW_COPY_NOTES', oils_i18n_gettext(85, 'Allow a user to view all notes attached to a copy', 'ppl', 'description')),
     (86, 'VIEW_VOLUME_NOTES', oils_i18n_gettext(86, 'Allow a user to view all notes attached to a volume', 'ppl', 'description')),
     (87, 'VIEW_TITLE_NOTES', oils_i18n_gettext(87, 'Allow a user to view all notes attached to a title', 'ppl', 'description')),
-    (89, 'CREATE_VOLUME_NOTE', oils_i18n_gettext(89, 'Allow a user to create a new volume note', 'ppl', 'description')),
     (88, 'CREATE_COPY_NOTE', oils_i18n_gettext(88, 'Allow a user to create a new copy note', 'ppl', 'description')),
+    (89, 'CREATE_VOLUME_NOTE', oils_i18n_gettext(89, 'Allow a user to create a new volume note', 'ppl', 'description')),
     (90, 'CREATE_TITLE_NOTE', oils_i18n_gettext(90, 'Allow a user to create a new title note', 'ppl', 'description')),
     (91, 'DELETE_COPY_NOTE', oils_i18n_gettext(91, 'Allow a user to delete another user''s copy notes', 'ppl', 'description')),
     (92, 'DELETE_VOLUME_NOTE', oils_i18n_gettext(92, 'Allow a user to delete another user''s volume note', 'ppl', 'description')),
@@ -1273,124 +1273,135 @@ INSERT INTO permission.grp_penalty_threshold (grp,org_unit,penalty,threshold)
 SELECT SETVAL('permission.grp_penalty_threshold_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_penalty_threshold));
 
 -- XXX Incomplete base permission setup.  A patch would be appreciated.
-INSERT INTO permission.grp_perm_map VALUES (57, 2, 15, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (109, 2, 95, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (1, 1, 2, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (12, 1, 5, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (13, 1, 6, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (51, 1, 32, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (111, 1, 95, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (11, 3, 4, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (14, 3, 7, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (16, 3, 9, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (19, 3, 15, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (20, 3, 16, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (21, 3, 17, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (116, 3, 18, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (117, 3, 20, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (118, 3, 21, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (119, 3, 22, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (120, 3, 23, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (121, 3, 25, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (26, 3, 27, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (27, 3, 28, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (28, 3, 29, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (29, 3, 30, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (44, 3, 31, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (31, 3, 33, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (32, 3, 34, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (33, 3, 35, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (41, 3, 36, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (45, 3, 37, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (46, 3, 38, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (47, 3, 39, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (122, 3, 41, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (123, 3, 43, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (60, 3, 44, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (110, 3, 45, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (124, 3, 8, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (125, 3, 24, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (126, 3, 19, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (61, 3, 47, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (95, 3, 48, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (17, 3, 11, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (62, 3, 42, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (63, 3, 49, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (64, 3, 50, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (127, 3, 53, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (65, 3, 54, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (128, 3, 55, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (67, 3, 56, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (68, 3, 57, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (69, 3, 58, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (70, 3, 59, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (71, 3, 60, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (72, 3, 61, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (73, 3, 62, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (74, 3, 63, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (81, 3, 72, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (82, 3, 73, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (83, 3, 74, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (84, 3, 75, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (85, 3, 76, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (86, 3, 77, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (89, 3, 79, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (90, 3, 80, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (91, 3, 81, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (92, 3, 82, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (98, 3, 83, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (115, 3, 84, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (100, 3, 85, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (101, 3, 86, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (102, 3, 87, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (103, 3, 89, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (104, 3, 88, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (108, 3, 94, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (112, 3, 96, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (113, 3, 97, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (130, 3, 99, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (131, 3, 100, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (139, 3, 181, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (22, 4, 18, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (24, 4, 20, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (38, 4, 21, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (34, 4, 22, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (39, 4, 23, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (35, 4, 25, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (129, 4, 26, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (15, 4, 8, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (40, 4, 24, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (23, 4, 19, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (66, 4, 55, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (134, 10, 51, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (75, 10, 66, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (76, 10, 67, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (77, 10, 68, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (78, 10, 69, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (79, 10, 70, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (80, 10, 71, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (87, 10, 78, 2, false);
-INSERT INTO permission.grp_perm_map VALUES (105, 10, 91, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (106, 10, 92, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (107, 10, 93, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (114, 10, 98, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (132, 10, 101, 1, true);
-INSERT INTO permission.grp_perm_map VALUES (136, 10, 102, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (137, 10, 103, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (140, 10, 147, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (141, 10, 148, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (142, 10, 149, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (97, 5, 41, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (96, 5, 43, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (93, 5, 48, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (94, 5, 53, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (133, 5, 102, 0, false);
-INSERT INTO permission.grp_perm_map VALUES (138, 5, 104, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (143, 3, 198, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (144, 4, 199, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (145, 4, 200, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (146, 4, 201, 1, false);
-INSERT INTO permission.grp_perm_map VALUES (147, 4, 348, 1, false);
+-- Add basic user permissions to the Users group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (1, (SELECT id FROM permission.perm_list WHERE code = 'OPAC_LOGIN'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (1, (SELECT id FROM permission.perm_list WHERE code = 'MR_HOLDS'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (1, (SELECT id FROM permission.perm_list WHERE code = 'TITLE_HOLDS'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (1, (SELECT id FROM permission.perm_list WHERE code = 'COPY_CHECKIN'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (1, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MY_CONTAINER'), 0, false);
+
+-- Add basic patron permissions to the Patrons group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (2, (SELECT id FROM permission.perm_list WHERE code = 'RENEW_CIRC'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (2, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MY_CONTAINER'), 0, false);
+
+-- Add basic staff permissions to the Staff group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'STAFF_LOGIN'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VOLUME_HOLDS'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'COPY_HOLDS'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'REQUEST_HOLDS'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_HOLD'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'RENEW_CIRC'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_USER_FINES_SUMMARY'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_USER_TRANSACTIONS'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MARC'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MARC'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'IMPORT_MARC'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_VOLUME'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_VOLUME'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_VOLUME'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_COPY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_COPY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'RENEW_HOLD_OVERRIDE'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_USER'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_USER'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_USER'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_USER'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_TRANSIT'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PERMISSION'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CHECKIN_BYPASS_HOLD_FULFILL'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_PAYMENT'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'SET_CIRC_LOST'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'SET_CIRC_MISSING'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'SET_CIRC_CLAIMS_RETURNED'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_TRANSACTION'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_TRANSACTION'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_BILL'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_CONTAINER'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_CONTAINER'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_ORG_UNIT'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_CIRCULATIONS'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_CONTAINER'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_CONTAINER_ITEM'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PERM_GROUPS'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PERMIT_CHECKOUT'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_BATCH_COPY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_PATRON_STAT_CAT'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_COPY_STAT_CAT'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_PATRON_STAT_CAT_ENTRY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_COPY_STAT_CAT_ENTRY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_PATRON_STAT_CAT'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_COPY_STAT_CAT'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_PATRON_STAT_CAT_ENTRY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_COPY_STAT_CAT_ENTRY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_NON_CAT_TYPE'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_NON_CAT_TYPE'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_IN_HOUSE_USE'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'COPY_CHECKOUT'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_COPY_LOCATION'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_COPY_LOCATION'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_COPY_TRANSIT'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'COPY_TRANSIT_RECEIVE'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_HOLD_PERMIT'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_COPY_CHECKOUT_HISTORY'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'REMOTE_Z3950_QUERY'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'REGISTER_WORKSTATION'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_COPY_NOTES'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_VOLUME_NOTES'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_TITLE_NOTES'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_COPY_NOTE'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_VOLUME_NOTE'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_CONTAINER'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_HOLD_NOTIFICATION'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_HOLD_NOTIFICATION'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'OFFLINE_UPLOAD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'OFFLINE_VIEW'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_BILLING_TYPE'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_ORG_SETTINGS'), 1, false);
+
+-- Add basic cataloguing permissions to the Catalogers group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'COPY_HOLDS'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MARC'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MARC'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'IMPORT_MARC'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_VOLUME'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_VOLUME'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_VOLUME'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_COPY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_COPY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_COPY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_BATCH_COPY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
+
+-- Add basic circulation permissions to the Circulators group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_TRANSACTION'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_BILL'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_CIRCULATIONS'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_PERM_GROUPS'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CIRC_OVERRIDE_DUE_DATE'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'COPY_IS_REFERENCE.override'), 1, false);
+
+-- Add basic sys admin permissions to the Local System Administrator group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_USER_GROUP_LINK'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_PATRON_STAT_CAT'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_COPY_STAT_CAT'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_PATRON_STAT_CAT_ENTRY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_COPY_STAT_CAT_ENTRY'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_PATRON_STAT_CAT_ENTRY_MAP'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_COPY_STAT_CAT_ENTRY_MAP'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_COPY_LOCATION'), 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_COPY_NOTE'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_VOLUME_NOTE'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_TITLE_NOTE'), 0, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_ORG_SETTING'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'OFFLINE_EXECUTE'), 1, true);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'CIRC_OVERRIDE_DUE_DATE'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'CIRC_PERMIT_OVERRIDE'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'RUN_REPORTS'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'SHARE_REPORT_FOLDER'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_REPORT_OUTPUT'), 1, false);
 
 -- Add basic acquisitions permissions to the Acquisitions group
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
