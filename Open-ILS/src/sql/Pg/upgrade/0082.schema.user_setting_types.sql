@@ -67,7 +67,7 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
             );
 
 
-ATLER TABLE actor.usr_setting
+ALTER TABLE actor.usr_setting
     ADD CONSTRAINT user_setting_type_fkey
     FOREIGN KEY (name) REFERENCES config.usr_setting_type (name) 
     ON DELETE CASCADE ON UPDATE CASCADE
