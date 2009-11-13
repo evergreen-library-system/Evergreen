@@ -726,6 +726,9 @@ INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('en-US', 'eng', oils_i18n_gettext('en-US', 'English (US)', 'i18n_l', 'name'),
 	oils_i18n_gettext('en-US', 'American English', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('cs-CZ', 'cze', oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'name'),
+	oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'description'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('en-CA', 'eng', oils_i18n_gettext('en-CA', 'English (Canada)', 'i18n_l', 'name'),
 	oils_i18n_gettext('en-CA', 'Canadian English', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
@@ -740,6 +743,9 @@ INSERT INTO config.i18n_locale (code,marc_code,name,description)
 --INSERT INTO config.i18n_locale (code,marc_code,name,description)
 --    VALUES ('es-MX', 'spa', oils_i18n_gettext('es-MX', 'Spanish (Mexico)', 'i18n_l', 'name'),
 --	oils_i18n_gettext('es-MX', 'Mexican Spanish', 'i18n_l', 'description'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description)
+    VALUES ('ru-RU', 'rus', oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'name'),
+	oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'description'));
 
 -- Z39.50 server attributes
 
