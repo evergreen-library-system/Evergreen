@@ -12,13 +12,13 @@ my $testno = 0;
 
 sub right_answer {
     my $holding = shift;
-    my $answer = {};
+    my $answer  = {};
 
     foreach my $subfield (split(/\|/, $holding->subfield('x'))) {
-	next unless $subfield;
+        next unless $subfield;
 
-	my ($key, $val) = unpack('aa*', $subfield);
-	$answer->{$key} = $val;
+        my ($key, $val) = unpack('aa*', $subfield);
+        $answer->{$key} = $val;
     }
 
     return $answer;
@@ -31,8 +31,8 @@ sub load_MARC_rec {
 
     # skim to beginning of record (a non-blank, non comment line)
     while ($line = <DATA>) {
-	chomp $line;
-	last if (!($line =~ /^\s*$/) && !($line =~ /^#/));
+        chomp $line;
+        last if (!($line =~ /^\s*$/) && !($line =~ /^#/));
     }
 
     return undef if !$line;
@@ -42,35 +42,39 @@ sub load_MARC_rec {
     carp('No record created!') unless $marc;
 
     $marc->leader('01119nas  2200313 a 4500');
-    $marc->append_fields(MARC::Field->new('008', '970701c18439999enkwr p       0   a0eng  '));
-    $marc->append_fields(MARC::Field->new('035', '', '',
-					  a => sprintf('%04d', $testno)));
+    $marc->append_fields(
+        MARC::Field->new('008', '970701c18439999enkwr p       0   a0eng  '));
+    $marc->append_fields(
+        MARC::Field->new('035', '', '', a => sprintf('%04d', $testno)));
 
     while ($line) {
-	next if $line =~ /^#/;	# allow embedded comments
+        next if $line =~ /^#/;    # allow embedded comments
 
-	return $marc if $line =~ /^\s*$/;
+        return $marc if $line =~ /^\s*$/;
 
-	my ($fieldno, $indicators, $rest) = split(/ /, $line, 3);
-	my @inds = unpack('cc', $indicators);
-	my $field;
-	my @subfields;
+        my ($fieldno, $indicators, $rest) = split(/ /, $line, 3);
+        my @inds = unpack('cc', $indicators);
+        my $field;
+        my @subfields;
 
-	@subfields = ();
-	foreach my $subfield (split(/\$/, $rest)) {
-	    next unless $subfield;
+        @subfields = ();
+        foreach my $subfield (split(/\$/, $rest)) {
+            next unless $subfield;
 
-	    my ($key, $val) = unpack('aa*', $subfield);
-	    push @subfields, $key, $val;
-	}
+            my ($key, $val) = unpack('aa*', $subfield);
+            push @subfields, $key, $val;
+        }
 
-	$field = MARC::Field->new($fieldno, $inds[0], $inds[1],
-				  a => 'scratch', @subfields);
+        $field = MARC::Field->new(
+            $fieldno, $inds[0], $inds[1],
+            a => 'scratch',
+            @subfields
+        );
 
-	$marc->append_fields($field);
+        $marc->append_fields($field);
 
-	$line = <DATA>;
-	chomp $line if $line;
+        $line = <DATA>;
+        chomp $line if $line;
     }
     return $marc;
 }
@@ -81,22 +85,22 @@ my @captions;
 while ($rec = load_MARC_rec) {
     $rec = MFHD->new($rec);
 
-    foreach my $cap  (sort {$a->tag <=> $b->tag} $rec->field('85.')) {
-	my $htag;
-	my @holdings;
+    foreach my $cap (sort { $a->tag <=> $b->tag } $rec->field('85.')) {
+        my $htag;
+        my @holdings;
 
-	($htag = $cap->tag) =~ s/^85/86/;
-	@holdings = $rec->holdings($htag, $cap->subfield('8'));
+        ($htag = $cap->tag) =~ s/^85/86/;
+        @holdings = $rec->holdings($htag, $cap->subfield('8'));
 
-	next unless scalar @holdings;
-	foreach my $field (@holdings) {
-	  TODO: {
-		local $TODO = "unimplemented"
-		  if ($field->subfield('z') =~ /^TODO/);
-		is_deeply($field->next, right_answer($field),
-			  $field->subfield('8') . ': ' . $field->subfield('z'));
-	    }
-	}
+        next unless scalar @holdings;
+        foreach my $field (@holdings) {
+          TODO: {
+                local $TODO = "unimplemented"
+                  if ($field->subfield('z') =~ /^TODO/);
+                is_deeply($field->next, right_answer($field),
+                    $field->subfield('8') . ': ' . $field->subfield('z'));
+            }
+        }
     }
 }
 
