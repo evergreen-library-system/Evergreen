@@ -36,6 +36,8 @@ function trigger_event_init() {
         dojo.require('openils.Util');
 
         init_list();
+        $('list_actions').appendChild( list.render_list_actions() );
+        list.set_list_actions();
         $('cmd_cancel_event').addEventListener('command', gen_event_handler('cancel'), false);
         $('cmd_reset_event').addEventListener('command', gen_event_handler('reset'), false);
         $('circ').addEventListener('command', function() { populate_list(); }, false);
