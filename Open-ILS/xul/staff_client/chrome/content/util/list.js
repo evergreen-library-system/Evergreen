@@ -1123,31 +1123,36 @@ util.list.prototype = {
 
     '_dump_tree_csv' : function(params) {
         var obj = this;
-        var dump = '';
+        var _dump = '';
+        var ord_cols = [];
         for (var j = 0; j < obj.columns.length; j++) {
             if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') {
                 /* skip */
             } else {
-                if (dump) dump += ',';
-                dump += '"' + obj.columns[j].label.replace(/"/g, '""') + '"';
+                ord_cols.push( [ obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('ordinal'), j ] );
             }
         }
-        dump += '\r\n';
+        ord_cols.sort( function(a,b) { 
+            if ( Number( a[0] ) < Number( b[0] ) ) return -1; 
+            if ( Number( a[0] ) > Number( b[0] ) ) return 1; 
+            return 0;
+        } );
+        for (var j = 0; j < ord_cols.length; j++) {
+            if (_dump) _dump += ',';
+            _dump += '"' + obj.columns[ ord_cols[j][1] ].label.replace(/"/g, '""') + '"';
+        }
+        _dump += '\r\n';
         for (var i = 0; i < this.treechildren.childNodes.length; i++) {
             var row = '';
             var treeitem = this.treechildren.childNodes[i];
             var treerow = treeitem.firstChild;
-            for (var j = 0; j < treerow.childNodes.length; j++) {
-                if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') {
-                    /* skip */
-                } else {
-                    if (row) row += ',';
-                    row += '"' + treerow.childNodes[j].getAttribute('label').replace(/"/g, '""') + '"';
-                }
+            for (var j = 0; j < ord_cols.length; j++) {
+                if (row) row += ',';
+                row += '"' + treerow.childNodes[ ord_cols[j][1] ].getAttribute('label').replace(/"/g, '""') + '"';
             }
-            dump +=  row + '\r\n';
+            _dump +=  row + '\r\n';
         }
-        return dump;
+        return _dump;
     },
 
     'dump_extended_format' : function(params) {
@@ -1161,21 +1166,30 @@ util.list.prototype = {
 
     '_dump_tree_extended_format' : function(params) {
         var obj = this;
-        var dump = '';
+        var _dump = '';
+        var ord_cols = [];
+        for (var j = 0; j < obj.columns.length; j++) {
+            if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') {
+                /* skip */
+            } else {
+                ord_cols.push( [ obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('ordinal'), j ] );
+            }
+        }
+        ord_cols.sort( function(a,b) { 
+            if ( Number( a[0] ) < Number( b[0] ) ) return -1; 
+            if ( Number( a[0] ) > Number( b[0] ) ) return 1; 
+            return 0;
+        } );
         for (var i = 0; i < this.treechildren.childNodes.length; i++) {
             var row = document.getElementById('offlineStrings').getString('list.dump_extended_format.record_separator') + '\r\n';
             var treeitem = this.treechildren.childNodes[i];
             var treerow = treeitem.firstChild;
-            for (var j = 0; j < treerow.childNodes.length; j++) {
-                if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') {
-                    /* skip */
-                } else {
-                    row += obj.columns[j].label + ': ' + treerow.childNodes[j].getAttribute('label') + '\r\n';
-                }
+            for (var j = 0; j < ord_cols.length; j++) {
+                row += obj.columns[ ord_cols[j][1] ].label + ': ' + treerow.childNodes[ ord_cols[j][1] ].getAttribute('label') + '\r\n';
             }
-            dump +=  row + '\r\n';
+            _dump +=  row + '\r\n';
         }
-        return dump;
+        return _dump;
     },
 
     'dump_csv_to_clipboard' : function(params) {
