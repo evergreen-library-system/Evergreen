@@ -1150,6 +1150,34 @@ util.list.prototype = {
         return dump;
     },
 
+    'dump_extended_format' : function(params) {
+        var obj = this;
+        switch(this.node.nodeName) {
+            case 'tree' : return this._dump_tree_extended_format(params); break;
+            default: throw('NYI: Need .dump_extended_format() for ' + this.node.nodeName); break;
+        }
+
+    },
+
+    '_dump_tree_extended_format' : function(params) {
+        var obj = this;
+        var dump = '';
+        for (var i = 0; i < this.treechildren.childNodes.length; i++) {
+            var row = document.getElementById('offlineStrings').getString('list.dump_extended_format.record_separator') + '\r\n';
+            var treeitem = this.treechildren.childNodes[i];
+            var treerow = treeitem.firstChild;
+            for (var j = 0; j < treerow.childNodes.length; j++) {
+                if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') {
+                    /* skip */
+                } else {
+                    row += obj.columns[j].label + ': ' + treerow.childNodes[j].getAttribute('label') + '\r\n';
+                }
+            }
+            dump +=  row + '\r\n';
+        }
+        return dump;
+    },
+
     'dump_csv_to_clipboard' : function(params) {
         var obj = this;
         if (typeof params == 'undefined') params = {};
@@ -1170,6 +1198,21 @@ util.list.prototype = {
             obj.wrap_in_full_retrieve( 
                 function() { 
                     print.simple( obj.dump_csv( params ), {'content_type':'text/plain'} );
+                }
+            );
+        }
+    },
+
+    'dump_extended_format_to_printer' : function(params) {
+        var obj = this;
+        JSAN.use('util.print'); var print = new util.print();
+        if (typeof params == 'undefined') params = {};
+        if (params.no_full_retrieve) {
+            print.simple( obj.dump_extended_format( params ), {'content_type':'text/plain'} );
+        } else {
+            obj.wrap_in_full_retrieve( 
+                function() { 
+                    print.simple( obj.dump_extended_format( params ), {'content_type':'text/plain'} );
                 }
             );
         }
@@ -1436,6 +1479,11 @@ util.list.prototype = {
             mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.csv_to_printer.accesskey'));
             mp.appendChild(mi);
             mi = document.createElement('menuitem');
+            mi.setAttribute('id',obj.node.id + '_extended_to_printer');
+            mi.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.extended_to_printer.label'));
+            mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.extended_to_printer.accesskey'));
+            mp.appendChild(mi);
+            mi = document.createElement('menuitem');
             mi.setAttribute('id',obj.node.id + '_csv_to_file');
             mi.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.csv_to_file.label'));
             mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.csv_to_file.accesskey'));
@@ -1502,6 +1550,20 @@ util.list.prototype = {
                     false
                 );
             }
+            x = document.getElementById(obj.node.id + '_extended_to_printer');
+            if (x) {
+                x.addEventListener(
+                    'command',
+                    function() {
+                        obj.dump_extended_format_to_printer(params);
+                        if (params && typeof params.on_complete == 'function') {
+                            params.on_complete(params);
+                        }
+                    },
+                    false
+                );
+            }
+
             x = document.getElementById(obj.node.id + '_csv_to_file');
             if (x) {
                 x.addEventListener(
