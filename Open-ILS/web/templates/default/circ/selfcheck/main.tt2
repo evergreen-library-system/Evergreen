@@ -1,0 +1,34 @@
+[% ctx.page_title = 'Self Checkout' %]
+[% WRAPPER default/base.tt2 %]
+<script src='[% ctx.media_prefix %]/js/ui/default/circ/selfcheck/selfcheck.js'> </script>
+<link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/selfcheck.css'></link>
+
+<div id='oils-selfck-top-div'>
+    <div id='oils-selfck-user-banner'></div>
+    <div id='oils-selfck-logo-div'>
+        <img src='[% ctx.media_prefix %]/images/eg_logo.jpg'/>
+    </div>
+    <div id='oils-selfck-scan-div'>
+        <div id='oils-selfck-scan-text'>
+            Please log in with your library barcode.
+        </div>
+        <input jsId='selfckScanBox' dojoType='dijit.form.TextBox'></input>
+    </div>
+</div>
+<div id='oils-selfck-bottom-div'>
+    <div id='oils-selfck-circ-page' class='hidden'>
+        <!-- Checkout / renewal interface -->
+        [% INCLUDE 'default/circ/selfcheck/circ_page.tt2' %]
+    </div>
+    <div id='oils-selfck-holds-page' class='hidden'>
+        <!-- Patron holds interface -->
+    </div>
+    <div id='oils-selfck-payment-page' class='hidden'>
+        <!-- Credit Card payments interface -->
+    </div>
+</div>
+
+[% END %]
+
+
+

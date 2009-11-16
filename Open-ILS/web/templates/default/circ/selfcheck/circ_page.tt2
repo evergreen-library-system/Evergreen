@@ -1,0 +1,50 @@
+<div id='oils-selfck-circ-table-div'>
+    <table id='oils-selfck-circ-table'>
+        <thead>
+            <tr>
+                <td id='oils-self-circ-pic-cell'></td>
+                <td>Barcode</td>
+                <td>Title</td>
+                <td>Author</td>
+                <td>Due Date</td>
+                <td>Renewal Left</td>
+                <td>Type</td>
+            </tr>
+        </thead>
+        <tbody id='oils-selfck-circ-tbody'>
+            <tr id='oils-selfck-circ-row'>
+                <td><img class='oils-selfck-jacket' name='jacket'></img></td>
+                <td name='barcode'></td>
+                <td name='title'></td>
+                <td name='author'></td>
+                <td name='due_date'></td>
+                <td name='remaining'></td>
+                <td>
+                    <span name='cotype_co'>Checkout</span>
+                    <span name='cotype_rn' class='hidden'>Renewal</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id='oils-selfck-circ-info-div'>
+    <fieldset>
+        <legend>Items Checked Out</legend>
+        <div>
+            <div>Total items this session: FOO</div>
+            <div>Total items on account: BAR</div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Holds Ready for Pickup</legend>
+        <div>You have FOO items ready for pickup</div>
+        <div>For mor information, see <a href='foo'>Hold Details</a></div>
+    </fieldset>
+    <fieldset>
+        <legend>Fines</legend>
+        <div>Total fines on account: $FOO</div>
+        <div>Pay fines with <a href='foo'>Credit Card</a></div>
+    </fieldset>
+</div>
+

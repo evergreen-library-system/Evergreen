@@ -1,0 +1,81 @@
+
+#oils-selfck-top-div {
+    width: 99%;
+    padding: 10px;
+    margin: 0px;
+    height: 180px;
+    border: 1px solid #888;
+    text-align: center;
+    font-weight:bold;
+}
+
+#oils-selfck-user-banner {
+    position:fixed;
+    top:30px;
+    right:30px;
+}
+
+#oils-selfck-logo-div {
+    margin: 20px;
+}
+
+#oils-selfck-scan-text {
+    margin: 10px;
+}
+
+#oils-selfck-bottom-div {
+    width: 100%;
+    padding: 10px;
+}
+
+#oils-self-circ-pic-cell {
+    width: 43px;
+}
+
+.oils-selfck-jacket {
+    height: 50px; 
+    width: 40px;  
+    border: none;
+}
+
+#oils-selfck-circ-table  {
+    width: 100%;
+}
+
+#oils-selfck-circ-table thead {
+    font-weight: bold;
+}
+
+#oils-selfck-circ-table-div {
+    width: 70%;
+    position: float;
+    float: left;
+    border-right: 1px solid #888;
+}
+
+#oils-selfck-circ-info-div {
+    width: 28%;
+    float: right;
+}
+
+#oils-selfck-circ-info-div fieldset {
+    margin: 20px;
+    padding: 10px;
+    border: 2px dashed #888;
+    -moz-border-radius: 3px;
+}
+
+#oils-selfck-circ-info-div fieldset legend {
+    font-weight: bold;
+}
+
+
+
+/*
+#oils-selfck-main-table {width: 100%}
+#oils-selfck-main-table td {
+    padding: 5px;
+    border: 1px solid #888;
+}
+#oils-selfck-main-table- td {
+*/

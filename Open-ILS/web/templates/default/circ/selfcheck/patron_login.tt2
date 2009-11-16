@@ -1,0 +1,7 @@
+<div>Please login using your library barcode</div>
+<div class='oils-selfck-login-box'>
+    <input jsId='selfckBarcodeBox' dojoType='dijit.form.TextBox'></input>
+</div>
+<div id='oils-selfck-login-pw' class='hidden oils-selfck-login-box'>
+    <input jsId='selfckPwBox' dojoType='dijit.form.TextBox'></input>
+</div>
