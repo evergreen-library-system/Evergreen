@@ -5,6 +5,9 @@
 
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
 
+# from http://closure-compiler.googlecode.com/files/compiler-latest.zip  FIXME: Autotools this?
+export CLOSURE_COMPILER_JAR = ~/closure-compiler/compiler.jar
+
 OPENSRF_JSLIBS = "$(OPENSRF_LIBS)/javascript"
 CHROME_LOCALES = $$(ls -1 chrome/locale)
 SKIN_CSS = $$(ls -1 server/skin/*css | sed -e "s/.css/_custom.css/")
@@ -96,3 +99,14 @@ server-xul: build
 	@echo "Copying xul into $(WEBDIR)/xul/$(STAFF_CLIENT_BUILD_ID)"
 	mkdir -p "$(WEBDIR)/xul/$(STAFF_CLIENT_BUILD_ID)"
 	cp -R @top_srcdir@/Open-ILS/xul/staff_client/build/server "${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}/"
+
+compress-javascript: build
+	@echo "Size of build/ before compression = " `du -sh build/`
+	@echo " * Running Google's Closure Compiler against javascript.  Errors in build/compression.err"
+	@external/closure_compiler.sh $(CLOSURE_COMPILER_JAR) 2>> build/compression.err
+	@echo `find build/ -name '*.js~' -size 0 -print | wc -l` compression failures
+	@find build/ -name '*.js~' -size 0 -exec rm {} \; # remove the output files for those that did not compile
+	@echo `find build/ -name '*.js~' -print | wc -l` compression successes
+	@find build/ -name '*.js~' -exec perl -e '$$a = "{}"; chop $$a; `mv $$a~ $$a`;' \;
+	@echo "Size of build/ (minus compression.err) after compression = " `du -sh --exclude compression.err build/`
+
