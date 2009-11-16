@@ -343,7 +343,7 @@ sub org_closed_overlap {
     }
 
     my $start = $begin->strftime('%FT%T%z');
-    my $stop = $end->strftime('%FT%T%z') };
+    my $stop = $end->strftime('%FT%T%z');
 
     return undef if ($start eq $stop);
     return { start => $start, end => $stop };
