@@ -271,6 +271,7 @@ sub org_closed_overlap {
 
 	return undef unless ($date && $ou);
 
+    # we're given a date and a direction, find any closures that contain the date
 	my $t = actor::org_unit::closed_date->table;
 	my $sql = <<"	SQL";
 		SELECT	*
@@ -286,6 +287,7 @@ sub org_closed_overlap {
     my $target_date = $_dt_parser->parse_datetime( $date );
 	my ($begin, $end) = ($target_date, $target_date);
 
+    # create a spanset from the closures that contain the $date
 	my $closure_spanset = make_closure_spanset(
         actor::org_unit::closed_date->db_Main->selectall_hashref( $sql, 'id', {}, $date, $ou )
     );
@@ -340,11 +342,11 @@ sub org_closed_overlap {
         }
     }
 
-    if ($begin eq $date && $end eq $date) {
-        return undef;
-    }
+    my $start = $begin->strftime('%FT%T%z');
+    my $stop = $end->strftime('%FT%T%z') };
 
-    return { start => $begin->strftime('%FT%T%z'), end => $end->strftime('%FT%T%z') };
+    return undef if ($start eq $stop);
+    return { start => $start, end => $stop };
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.org_unit.closed_date.overlap',
