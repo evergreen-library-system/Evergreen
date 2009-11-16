@@ -238,10 +238,10 @@
 	config::rules::max_fine->sequence( 'config.rule_max_fine_id_seq' );
 	
 	#---------------------------------------------------------------------
-	package config::rules::recuring_fine;
+	package config::rules::recurring_fine;
 	
-	config::rules::recuring_fine->table( 'config.rule_recuring_fine' );
-	config::rules::recuring_fine->sequence( 'config.rule_recuring_fine_id_seq' );
+	config::rules::recurring_fine->table( 'config.rule_recurring_fine' );
+	config::rules::recurring_fine->sequence( 'config.rule_recurring_fine_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package config::net_access_level;

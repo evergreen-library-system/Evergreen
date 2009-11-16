@@ -812,9 +812,9 @@ sub fetch_recurring_fine_by_name {
 	my( $obj, $evt );
 	$obj = $self->simplereq(
 		'open-ils.cstore', 
-		'open-ils.cstore.direct.config.rules.recuring_fine.search.atomic', { name => $name } );
+		'open-ils.cstore.direct.config.rules.recurring_fine.search.atomic', { name => $name } );
 	$obj = $obj->[0];
-	$evt = OpenILS::Event->new('CONFIG_RULES_RECURING_FINE_NOT_FOUND') unless $obj;
+	$evt = OpenILS::Event->new('CONFIG_RULES_RECURRING_FINE_NOT_FOUND') unless $obj;
 	return ($obj, $evt);
 }
 

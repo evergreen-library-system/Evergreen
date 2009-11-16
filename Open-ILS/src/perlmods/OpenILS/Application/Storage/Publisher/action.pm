@@ -755,7 +755,7 @@ sub generate_fines {
 	
 			$client->respond( "\t$pending_fine_count pending fine(s)\n" );
 
-			my $recuring_fine = int($c->recuring_fine * 100);
+			my $recurring_fine = int($c->recurring_fine * 100);
 			my $max_fine = int($c->max_fine * 100);
 
 			my ($latest_billing_ts, $latest_amount) = ('',0);
@@ -788,8 +788,8 @@ sub generate_fines {
 				);
 				next if (@cl);
 	
-				$current_fine_total += $recuring_fine;
-				$latest_amount += $recuring_fine;
+				$current_fine_total += $recurring_fine;
+				$latest_amount += $recurring_fine;
 				$latest_billing_ts = $timestamptz;
 
 				money::billing->create(
@@ -797,7 +797,7 @@ sub generate_fines {
 					  note		=> "System Generated Overdue Fine",
 					  billing_type	=> "Overdue materials",
 					  btype		=> 1,
-					  amount	=> sprintf('%0.2f', $recuring_fine/100),
+					  amount	=> sprintf('%0.2f', $recurring_fine/100),
 					  billing_ts	=> $timestamptz,
 					}
 				);

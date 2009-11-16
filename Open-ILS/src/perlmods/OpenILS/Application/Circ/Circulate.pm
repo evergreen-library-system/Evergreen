@@ -984,7 +984,7 @@ sub get_circ_policy {
         recurring_fine_rule => $recurring_fine_rule->name,
         max_fine_rule => $max_fine_rule->name,
         max_fine => $self->get_max_fine_amount($max_fine_rule),
-        fine_interval => $recurring_fine_rule->recurance_interval,
+        fine_interval => $recurring_fine_rule->recurrance_interval,
         renewal_remaining => $duration_rule->max_renewals
     };
 
@@ -1540,19 +1540,19 @@ sub build_checkout_circ_object {
             "with duration=$dname, maxfine=$mname, recurring=$rname");
     
         $circ->duration($policy->{duration});
-        $circ->recuring_fine($policy->{recurring_fine});
+        $circ->recurring_fine($policy->{recurring_fine});
         $circ->duration_rule($duration->name);
-        $circ->recuring_fine_rule($recurring->name);
+        $circ->recurring_fine_rule($recurring->name);
         $circ->max_fine_rule($max->name);
         $circ->max_fine($policy->{max_fine});
-        $circ->fine_interval($recurring->recurance_interval);
+        $circ->fine_interval($recurring->recurrance_interval);
         $circ->renewal_remaining($duration->max_renewals);
 
     } else {
 
         $logger->info("circulator: copy found with an unlimited circ duration");
         $circ->duration_rule(OILS_UNLIMITED_CIRC_DURATION);
-        $circ->recuring_fine_rule(OILS_UNLIMITED_CIRC_DURATION);
+        $circ->recurring_fine_rule(OILS_UNLIMITED_CIRC_DURATION);
         $circ->max_fine_rule(OILS_UNLIMITED_CIRC_DURATION);
         $circ->renewal_remaining(0);
     }

@@ -897,7 +897,7 @@ sub copy_details {
                         'checkin_workstation', 
                         'duration_rule', 
                         'max_fine_rule', 
-                        'recuring_fine_rule'
+                        'recurring_fine_rule'
                     ]
                 },
                 order_by => { circ => 'xact_start desc' }, 

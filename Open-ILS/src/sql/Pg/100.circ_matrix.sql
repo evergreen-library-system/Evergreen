@@ -111,7 +111,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     usr_age_upper_bound  INTERVAL,
     circulate            BOOL    NOT NULL DEFAULT TRUE,    -- Hard "can't circ" flag requiring an override
     duration_rule        INT     NOT NULL REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
-    recurring_fine_rule  INT     NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
+    recurring_fine_rule  INT     NOT NULL REFERENCES config.rule_recurring_fine (id) DEFERRABLE INITIALLY DEFERRED,
     max_fine_rule        INT     NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED,
     script_test          TEXT,                           -- javascript source 
     total_copy_hold_ratio     FLOAT,

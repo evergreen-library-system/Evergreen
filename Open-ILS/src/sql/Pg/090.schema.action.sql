@@ -115,13 +115,13 @@ CREATE TABLE action.circulation (
 	create_time		TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
 	duration		INTERVAL,				  -- derived from "circ duration" rule
 	fine_interval		INTERVAL			NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
-	recuring_fine		NUMERIC(6,2),				  -- derived from "circ fine" rule
+	recurring_fine		NUMERIC(6,2),				  -- derived from "circ fine" rule
 	max_fine		NUMERIC(6,2),				  -- derived from "max fine" rule
 	phone_renewal		BOOL				NOT NULL DEFAULT FALSE,
 	desk_renewal		BOOL				NOT NULL DEFAULT FALSE,
 	opac_renewal		BOOL				NOT NULL DEFAULT FALSE,
 	duration_rule		TEXT				NOT NULL, -- name of "circ duration" rule
-	recuring_fine_rule	TEXT				NOT NULL, -- name of "circ fine" rule
+	recurring_fine_rule	TEXT				NOT NULL, -- name of "circ fine" rule
 	max_fine_rule		TEXT				NOT NULL, -- name of "max fine" rule
 	stop_fines		TEXT				CHECK (stop_fines IN (
 	                                       'CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE','CLAIMSNEVERCHECKEDOUT')),
@@ -190,8 +190,8 @@ CREATE OR REPLACE VIEW action.all_circulation AS
     SELECT  id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
         copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
         circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, due_date,
-        stop_fines_time, checkin_time, create_time, duration, fine_interval, recuring_fine,
-        max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recuring_fine_rule,
+        stop_fines_time, checkin_time, create_time, duration, fine_interval, recurring_fine,
+        max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recurring_fine_rule,
         max_fine_rule, stop_fines, workstation, checkin_workstation, checkin_scan_time, parent_circ
       FROM  action.aged_circulation
             UNION ALL
@@ -199,8 +199,8 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         cp.call_number AS copy_call_number, cp.location AS copy_location, cn.owning_lib AS copy_owning_lib, cp.circ_lib AS copy_circ_lib,
         cn.record AS copy_bib_record, circ.xact_start, circ.xact_finish, circ.target_copy, circ.circ_lib, circ.circ_staff, circ.checkin_staff,
         circ.checkin_lib, circ.renewal_remaining, circ.due_date, circ.stop_fines_time, circ.checkin_time, circ.create_time, circ.duration,
-        circ.fine_interval, circ.recuring_fine, circ.max_fine, circ.phone_renewal, circ.desk_renewal, circ.opac_renewal, circ.duration_rule,
-        circ.recuring_fine_rule, circ.max_fine_rule, circ.stop_fines, circ.workstation, circ.checkin_workstation, circ.checkin_scan_time,
+        circ.fine_interval, circ.recurring_fine, circ.max_fine, circ.phone_renewal, circ.desk_renewal, circ.opac_renewal, circ.duration_rule,
+        circ.recurring_fine_rule, circ.max_fine_rule, circ.stop_fines, circ.workstation, circ.checkin_workstation, circ.checkin_scan_time,
         circ.parent_circ
       FROM  action.circulation circ
         JOIN asset.copy cp ON (circ.target_copy = cp.id)
@@ -232,15 +232,15 @@ BEGIN
         (id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
         copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
         circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, due_date,
-        stop_fines_time, checkin_time, create_time, duration, fine_interval, recuring_fine,
-        max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recuring_fine_rule,
+        stop_fines_time, checkin_time, create_time, duration, fine_interval, recurring_fine,
+        max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recurring_fine_rule,
         max_fine_rule, stop_fines, workstation, checkin_workstation, checkin_scan_time, parent_circ)
       SELECT
         id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
         copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
         circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, due_date,
-        stop_fines_time, checkin_time, create_time, duration, fine_interval, recuring_fine,
-        max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recuring_fine_rule,
+        stop_fines_time, checkin_time, create_time, duration, fine_interval, recurring_fine,
+        max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recurring_fine_rule,
         max_fine_rule, stop_fines, workstation, checkin_workstation, checkin_scan_time, parent_circ
         FROM action.all_circulation WHERE id = OLD.id;
 

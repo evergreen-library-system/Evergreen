@@ -84,7 +84,7 @@ CREATE TABLE reporter.report (
 	data		TEXT				NOT NULL,
 	folder		INT				NOT NULL REFERENCES reporter.report_folder (id) DEFERRABLE INITIALLY DEFERRED,
 	recur		BOOL				NOT NULL DEFAULT FALSE,
-	recurance	INTERVAL
+	recurrence	INTERVAL
 );
 CREATE INDEX rpt_rpt_owner_idx ON reporter.report (owner);
 CREATE INDEX rpt_rpt_fldr_idx ON reporter.report (folder);

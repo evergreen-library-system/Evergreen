@@ -96,7 +96,7 @@ var FM_TABLE_DISPLAY = {
 			'template',
 			'create_time',
 			'recur',
-			'recurance',
+			'recurrence',
 			'owner',
 		]
 	},

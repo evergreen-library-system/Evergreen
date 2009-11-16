@@ -82,10 +82,10 @@ my %fine_cols = (
 	high			=> "High",
 	normal			=> "Normal",
 	low			=> "Low",
-	recurance_interval	=> "Interval",
+	recurrence_interval	=> "Interval",
 );
 
-my @fine_display_order = ( qw/name recurance_interval normal high low/ );
+my @fine_display_order = ( qw/name recurrence_interval normal high low/ );
 
 my %age_cols = (
 	name	=> "Name",
@@ -120,13 +120,13 @@ if (my $action = $cgi->param('action')) {
 				{ map { ($_ => $cgi->param($_)) } keys %dur_cols }
 			);
 		}
-	} elsif ($form eq 'recuring_fine') {
+	} elsif ($form eq 'recurring_fine') {
 		if ($action eq 'Remove Selected') {
 			for my $id ( ($cgi->param('remove_me')) ) {
-				config::rules::recuring_fine->retrieve($id)->delete;
+				config::rules::recurring_fine->retrieve($id)->delete;
 			}
 		} elsif ( $action eq 'Add New' ) {
-			config::rules::recuring_fine->create(
+			config::rules::recurring_fine->create(
 				{ map { ($_ => $cgi->param($_)) } keys %fine_cols }
 			);
 		}
@@ -196,11 +196,11 @@ if (my $action = $cgi->param('action')) {
 
 {
 	#-----------------------------------------------------------------------
-	# Recuring Fine form
+	# Recurring Fine form
 	#-----------------------------------------------------------------------
 	print	"<form method='POST'>".
-		"<input type='hidden' name='rules_form' value='recuring_fine'>".
-		"<h2>Recuring Fine Levels</h2>".
+		"<input type='hidden' name='rules_form' value='recurring_fine'>".
+		"<h2>Recurring Fine Levels</h2>".
 		"<table class='table_class'><tr class='header_class'>\n";
 	
 	for my $col ( @fine_display_order ) {
@@ -209,7 +209,7 @@ if (my $action = $cgi->param('action')) {
 	
 	print "<td/>\n";
 	
-	for my $row ( config::rules::recuring_fine->retrieve_all ) {
+	for my $row ( config::rules::recurring_fine->retrieve_all ) {
 		print "</tr><tr class='row_class'>\n";
 		for my $col ( @fine_display_order ) {
 			print td($row->$col);

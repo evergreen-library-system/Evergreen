@@ -78,7 +78,7 @@ if($cp->fine_level == 1) {
 
 print "Duration [".$rule_set->duration_rule->name."] = $dur\n";
 print "Recurring fines [".$rule_set->recurring_fine_rule->name."; interval='".
-    $rule_set->recurring_fine_rule->recurance_interval."'] = \$$recf\n";
+    $rule_set->recurring_fine_rule->recurrence_interval."'] = \$$recf\n";
 print "Max fine [".$rule_set->max_fine_rule->name."] = \$".$rule_set->max_fine_rule->amount."\n";
 print "took: $rundur\n";
 

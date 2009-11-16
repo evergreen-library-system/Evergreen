@@ -51,7 +51,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0084'); -- senator
+INSERT INTO config.upgrade_log (version) VALUES ('0085'); -- dbs
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -309,15 +309,15 @@ COMMENT ON TABLE config.rule_max_fine IS $$
  */
 $$;
 
-CREATE TABLE config.rule_recuring_fine (
+CREATE TABLE config.rule_recurring_fine (
 	id			SERIAL		PRIMARY KEY,
 	name			TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
 	high			NUMERIC(6,2)	NOT NULL,
 	normal			NUMERIC(6,2)	NOT NULL,
 	low			NUMERIC(6,2)	NOT NULL,
-	recurance_interval	INTERVAL	NOT NULL DEFAULT '1 day'::INTERVAL
+	recurrence_interval	INTERVAL	NOT NULL DEFAULT '1 day'::INTERVAL
 );
-COMMENT ON TABLE config.rule_recuring_fine IS $$
+COMMENT ON TABLE config.rule_recurring_fine IS $$
 /*
  * Copyright (C) 2005  Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
@@ -325,7 +325,7 @@ COMMENT ON TABLE config.rule_recuring_fine IS $$
  * Circulation Recurring Fine rules
  *
  * Each circulation is given a recurring fine amount based on one of
- * these rules.  The recurance_interval should not be any shorter
+ * these rules.  The recurrence_interval should not be any shorter
  * than the interval between runs of the fine_processor.pl script
  * (which is run from CRON), or you could miss fines.
  * 

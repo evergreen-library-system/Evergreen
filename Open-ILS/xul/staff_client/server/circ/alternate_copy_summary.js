@@ -279,8 +279,8 @@ function load_item() {
         set("max_fine_rule", '');
         set("opac_renewal", '');
         set("phone_renewal", '');
-        set("recuring_fine", '');
-        set("recuring_fine_rule", '');
+        set("recurring_fine", '');
+        set("recurring_fine_rule", '');
         set("renewal_remaining", '');
         set("stop_fines", '');
         set("stop_fines_time", '');
@@ -320,8 +320,8 @@ function load_item() {
             set("opac_renewal", details.circ.opac_renewal()); 
             set("phone_renewal", details.circ.phone_renewal()); 
             set("renewal_type", renewal_composite_kludge(details.circ));
-            set("recuring_fine", details.circ.recuring_fine()); 
-            set("recuring_fine_rule", details.circ.recuring_fine_rule()); 
+            set("recurring_fine", details.circ.recurring_fine()); 
+            set("recurring_fine_rule", details.circ.recurring_fine_rule()); 
             set("renewal_remaining", details.circ.renewal_remaining()); 
             set("stop_fines", details.circ.stop_fines()); 
             set("stop_fines_time", details.circ.stop_fines_time()); 

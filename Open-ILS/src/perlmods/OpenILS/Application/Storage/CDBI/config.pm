@@ -55,11 +55,11 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/name amount is_percent/);
 #-------------------------------------------------------------------------------
 
-package config::rules::recuring_fine;
+package config::rules::recurring_fine;
 use base qw/config/;
-__PACKAGE__->table('config_rule_recuring_fine');
+__PACKAGE__->table('config_rule_recurring_fine');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name high normal low recurance_interval/);
+__PACKAGE__->columns(Essential => qw/name high normal low recurrence_interval/);
 #-------------------------------------------------------------------------------
 
 package config::rules::age_hold_protect;

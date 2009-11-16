@@ -1124,7 +1124,7 @@ ALTER TABLE action.hold_request ADD COLUMN cancel_note TEXT;
 ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN juvenile_flag BOOL;
 ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN circulate BOOL NOT NULL DEFAULT TRUE;
 ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN duration_rule INT REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN recurring_fine_rule INT REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN recurring_fine_rule INT REFERENCES config.rule_recurring_fine (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN max_fine_rule INT REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN script_test TEXT;
 

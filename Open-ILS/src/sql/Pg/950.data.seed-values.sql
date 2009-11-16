@@ -97,13 +97,13 @@ INSERT INTO config.rule_max_fine VALUES
     (7, oils_i18n_gettext(7, 'overdue_equip_max', 'crmf', 'name'), 100.00);
 SELECT SETVAL('config.rule_max_fine_id_seq'::TEXT, 100);
 
-INSERT INTO config.rule_recuring_fine VALUES 
+INSERT INTO config.rule_recurring_fine VALUES 
     (1, oils_i18n_gettext(1, 'default', 'crrf', 'name'), 0.50, 0.10, 0.05, '1 day');
-INSERT INTO config.rule_recuring_fine VALUES 
+INSERT INTO config.rule_recurring_fine VALUES 
     (2, oils_i18n_gettext(2, '10_cent_per_day', 'crrf', 'name'), 0.50, 0.10, 0.10, '1 day');
-INSERT INTO config.rule_recuring_fine VALUES 
+INSERT INTO config.rule_recurring_fine VALUES 
     (3, oils_i18n_gettext(3, '50_cent_per_day', 'crrf', 'name'), 0.50, 0.50, 0.50, '1 day');
-SELECT SETVAL('config.rule_recuring_fine_id_seq'::TEXT, 100);
+SELECT SETVAL('config.rule_recurring_fine_id_seq'::TEXT, 100);
 
 INSERT INTO config.rule_age_hold_protect VALUES
 	(1, oils_i18n_gettext(1, '3month', 'crahp', 'name'), '3 months', 0);

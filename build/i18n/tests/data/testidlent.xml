@@ -73,8 +73,8 @@
 			<field reporter:label='&field.rodcirc.max_fine_rule.label;' oils_persist:virtual='false' name='max_fine_rule' reporter:datatype='link' oils_obj:array_position='15' />
 			<field reporter:label='&field.rodcirc.opac_renewal.label;' oils_persist:virtual='false' name='opac_renewal' reporter:datatype='bool' oils_obj:array_position='16' />
 			<field reporter:label='&field.rodcirc.phone_renewal.label;' oils_persist:virtual='false' name='phone_renewal' reporter:datatype='bool' oils_obj:array_position='17' />
-			<field reporter:label='&field.rodcirc.recuring_fine.label;' oils_persist:virtual='false' name='recuring_fine' reporter:datatype='money' oils_obj:array_position='18' />
-			<field reporter:label='&field.rodcirc.recuring_fine_rule.label;' oils_persist:virtual='false' name='recuring_fine_rule' reporter:datatype='link' oils_obj:array_position='19' />
+			<field reporter:label='&field.rodcirc.recurring_fine.label;' oils_persist:virtual='false' name='recurring_fine' reporter:datatype='money' oils_obj:array_position='18' />
+			<field reporter:label='&field.rodcirc.recurring_fine_rule.label;' oils_persist:virtual='false' name='recurring_fine_rule' reporter:datatype='link' oils_obj:array_position='19' />
 			<field reporter:label='&field.rodcirc.renewal_remaining.label;' oils_persist:virtual='false' name='renewal_remaining' reporter:datatype='int' oils_obj:array_position='20' />
 			<field reporter:label='&field.rodcirc.stop_fines.label;' oils_persist:virtual='false' name='stop_fines' reporter:datatype='text' oils_obj:array_position='21' />
 			<field reporter:label='&field.rodcirc.stop_fines_time.label;' oils_persist:virtual='false' name='stop_fines_time' reporter:datatype='timestamp' oils_obj:array_position='22' />
@@ -101,7 +101,7 @@
 			<link field='billings' reltype='has_many' class='mb' key='xact' map='' />
 			<link field='duration_rule' reltype='has_a' class='crcd' key='name' map='' />
 			<link field='max_fine_rule' reltype='has_a' class='crmf' key='name' map='' />
-			<link field='recuring_fine_rule' reltype='has_a' class='crrf' key='name' map='' />
+			<link field='recurring_fine_rule' reltype='has_a' class='crrf' key='name' map='' />
 			<link field='circ_type' reltype='might_have' class='rcirct' key='id' map='' />
 			<link field='billing_total' reltype='might_have' class='rxbt' key='xact' map='' />
 			<link field='payment_total' reltype='might_have' class='rxpt' key='xact' map='' />

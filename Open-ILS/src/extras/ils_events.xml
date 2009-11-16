@@ -464,8 +464,8 @@
 	<event code='1608' textcode='METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested metabib_subject_field_entry was not found</desc>
 	</event>
-	<event code='1609' textcode='CONFIG_RULES_RECURING_FINE_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested config_rules_recuring_fine was not found</desc>
+	<event code='1609' textcode='CONFIG_RULES_RECURRING_FINE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_rules_recurring_fine was not found</desc>
 	</event>
 	<event code='1610' textcode='MONEY_CHECK_PAYMENT_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested money_check_payment was not found</desc>

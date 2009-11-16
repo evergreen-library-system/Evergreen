@@ -9,7 +9,7 @@
 <!ENTITY field.rodcirc.duration.label "Quisque pharetra">
 <!ENTITY field.aws.name.label "lectus vitae aliquam">
 <!ENTITY class.auoi.label "venenatis, mi nisl">
-<!ENTITY field.rodcirc.recuring_fine_rule.label "suscipit sapien, eu sollicitudin">
+<!ENTITY field.rodcirc.recurring_fine_rule.label "suscipit sapien, eu sollicitudin">
 <!ENTITY field.rodcirc.duration_rule.label "neque dolor a nulla">
 <!ENTITY field.auoi.id.label "Phasellus aliquam vulputate justo">
 <!ENTITY field.rodcirc.payment_total.label "Proin augue libero">
@@ -28,7 +28,7 @@
 <!ENTITY field.rodcirc.max_fine_rule.label "ultricies quam">
 <!ENTITY field.rodcirc.xact_start.label "lacinia accumsan">
 <!ENTITY field.rodcirc.billable_transaction.label "Nullam imperdiet">
-<!ENTITY field.rodcirc.recuring_fine.label "tincidunt mauris">
+<!ENTITY field.rodcirc.recurring_fine.label "tincidunt mauris">
 <!ENTITY field.auoi.staff.label "Staff Member">
 <!ENTITY field.aws.id.label "Workstation ID">
 <!ENTITY field.rodcirc.usr.label "Mauris ac diam">

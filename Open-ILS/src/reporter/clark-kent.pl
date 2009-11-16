@@ -284,7 +284,7 @@ for my $r ( @reports ) {
 				$r->{folder},
 				$r->{runner},
 				$r->{run_time},
-				$r->{report}->{recurance},
+				$r->{report}->{recurrence},
 				$r->{email},
 				$r->{csv_format},
 				$r->{excel_format},

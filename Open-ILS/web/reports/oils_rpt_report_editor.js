@@ -120,7 +120,7 @@ oilsRptReportEditor.prototype.save = function() {
 	report.name( DOM.oils_rpt_report_editor_name.value );
 	report.description( DOM.oils_rpt_report_editor_desc.value );
 	report.recur(this.paramEditor.recur());
-	report.recurance(this.paramEditor.recurInterval());
+	report.recurrence(this.paramEditor.recurInterval());
 
 
 	/* collect the param data */
