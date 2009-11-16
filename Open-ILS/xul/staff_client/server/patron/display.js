@@ -569,6 +569,11 @@ patron.display.prototype = {
 
     'reset_nav_styling' : function(btn,dont_hide_summary) {
         try {
+            if (!dont_hide_summary) { dont_hide_summary = false; }
+            if (this.skip_hide_summary) {
+                this.skip_hide_summary = false;
+                dont_hide_summary = true;
+            }
             this.controller.view.cmd_patron_checkout.setAttribute('style','');
             this.controller.view.cmd_patron_items.setAttribute('style','');
             this.controller.view.cmd_patron_edit.setAttribute('style','');

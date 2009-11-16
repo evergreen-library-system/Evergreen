@@ -125,6 +125,7 @@ patron.summary.prototype = {
                                                 if (xulG) {
                                                     if (xulG.display_window) {
                                                         if (! obj.show_billing_tab_on_bills_done_once ) {
+                                                            xulG.display_window.g.patron.skip_hide_summary = true;
                                                             xulG.display_window.util.widgets.dispatch('command','cmd_patron_bills');
                                                             obj.show_billing_tab_on_bills_done_once = 1;
                                                         }
