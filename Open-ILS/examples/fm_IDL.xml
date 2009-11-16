@@ -1707,6 +1707,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Checkins" name="checkins" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations Performed as Staff" name="performed_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Reservations" name="reservations" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="demographic" reltype="might_have" key="id" map="" class="rud"/>
@@ -1737,6 +1738,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="cards" reltype="has_many" key="usr" map="" class="ac"/>
 			<link reporter:label="Circulations Performed as Staff" field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
 			<link field="fund_alloc_pcts" reltype="has_many" key="allocator" map="" class="acqfap"/>
+			<link field="reservations" reltype="has_many" key="capture_staff" map="" class="bresv"/>
 		</links>
 	</class>
 
@@ -2330,6 +2332,177 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="renewals" reltype="has_many" key="parent_circ" map="" class="circ"/>
 		</links>
 	</class>
+
+	<class id="brt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_type" oils_persist:tablename="booking.resource_type" reporter:label="Resource Type">
+		<fields oils_persist:primary="id" oils_persist:sequence="booking.booking.resource_type_id_seq">
+			<field reporter:label="Resource Type ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Resource Type Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Fine Interval" name="fine_interval" reporter:datatype="interval"/>
+			<field reporter:label="Fine Amount" name="fine_amount" reporter:datatype="money"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
+			<field reporter:label="Catalog Item" name="catalog_item" reporter:datatype="bool"/>
+			<field reporter:label="Transferable" name="transferable" reporter:datatype="bool"/>
+			<field reporter:label="Resources" name="resources" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Resource Attributes" name="resource_attrs" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Target Resource Types" name="tgt_rsrc_types" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="resources" reltype="has_many" key="type" map="" class="brsrc"/>
+			<link field="resource_attrs" reltype="has_many" key="type" map="" class="bra"/>
+			<link field="tgt_rsrc_types" reltype="has_many" key="type" map="" class="bresv"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="brsrc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource" oils_persist:tablename="booking.resource" reporter:label="Resource">
+		<fields oils_persist:primary="id" oils_persist:sequence="schema.booking.resource_id_seq">
+			<field reporter:label="Resource ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
+			<field reporter:label="Resource Type" name="type" reporter:datatype="link"/>
+			<field reporter:label="Overbook" name="overbook" reporter:datatype="bool"/>
+			<field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
+			<field reporter:label="Is Deposit Required" name="deposit" reporter:datatype="bool"/>
+			<field reporter:label="Deposit Amount" name="deposit_amount" reporter:datatype="money"/>
+			<field reporter:label="User Fee" name="user_fee" reporter:datatype="money"/>
+			<field reporter:label="Resource Attribute Maps" name="attr_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Reservation Target Resources" name="tgt_rsrcs" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Reservation Current Resources" name="curr_rsrcs" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="type" reltype="has_a" key="id" map="" class="brt"/>
+			<link field="attr_maps" reltype="has_many" key="resource" map="" class="bram"/>
+			<link field="tgt_rsrcs" reltype="has_many" key="targeted_resource" map="" class="bresv"/>
+			<link field="curr_rsrcs" reltype="has_many" key="current_resource" map="" class="bresv"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+	
+	<class id="bra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_attr" oils_persist:tablename="booking.resource_attr" reporter:label="Resource Attribute">
+		<fields oils_persist:primary="id" oils_persist:sequence="schema.booking.resource_attr_id_seq">
+			<field reporter:label="Resource Attribute ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
+			<field reporter:label="Resource Attribute Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Resource Type" name="resource_type" reporter:datatype="link"/>
+			<field reporter:label="Is Required" name="required" reporter:datatype="bool"/>
+			<field reporter:label="Valid Values" name="valid_values" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Resource Attribute Maps" name="attr_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="resource_type" reltype="has_a" key="id" map="" class="brt"/>
+			<link field="valid_values" reltype="has_many" key="attr" map="" class="brav"/>
+			<link field="attr_maps" reltype="has_many" key="attr" map="" class="bram"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+	
+	<class id="brav" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_attr_value" oils_persist:tablename="booking.resource_attr_value" reporter:label="Resource Attribute Value">
+		<fields oils_persist:primary="id" oils_persist:sequence="schema.booking.resource_attr_value_id_seq">
+			<field reporter:label="Resource Attribute Value ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
+			<field reporter:label="Resource Attribute" name="attr" reporter:datatype="link"/>
+			<field reporter:label="Valid Value" name="valid_value" reporter:datatype="text"/>
+			<field reporter:label="Resource Attribute Maps" name="attr_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Resource Attribute Value Maps" name="attr_val_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="attr" reltype="has_a" key="id" map="" class="bra"/>
+			<link field="attr_maps" reltype="has_many" key="id" map="" class="bram"/>
+			<link field="attr_val_maps" reltype="has_many" key="attr_value" map="" class="bravm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+	
+	<class id="bram" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_attr_map" oils_persist:tablename="booking.resource_attr_map" reporter:label="Resource Attribute Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="schema.booking.resource_attr_map_id_seq">
+			<field reporter:label="Resource Attribute Map ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Resource" name="resource" reporter:datatype="link"/>
+			<field reporter:label="Resource Attribute" name="resource_attr" reporter:datatype="link"/>
+			<field reporter:label="Attribute Value" name="value" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="resource" reltype="has_a" key="id" map="" class="brsrc"/>
+			<link field="resource_attr" reltype="has_a" key="id" map="" class="bra"/>
+			<link field="value" reltype="has_a" key="id" map="" class="brav"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+	
+	<class id="bresv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::reservation" oils_persist:tablename="booking.reservation" reporter:label="Reservation">
+		<fields oils_persist:primary="id" oils_persist:sequence="schema.money.billable_xact_id_seq">
+			<field reporter:label="Transaction ID" name="id" reporter:datatype="id" />
+			<field reporter:label="User" name="usr" reporter:datatype="link"/>
+			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" reporter:datatype="timestamp"/>
+			<field reporter:label="Transaction Start Date/Time" name="xact_start" reporter:datatype="timestamp"/>
+			<field reporter:label="Unrecovered Debt" name="unrecovered" reporter:datatype="bool"/>
+			<field reporter:label="Grocery Billing link" name="grocery" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Circulation Billing link" name="circulation" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Billing Line Items" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Payment Line Items" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Payment Summary" name="summary" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Request Time" name="request_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Start Time" name="start_time" reporter:datatype="timestamp"/>
+			<field reporter:label="End Time" name="end_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Capture Time" name="capture_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Cancel Time" name="cancel_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Pickup Time" name="pickup_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Return Time" name="return_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Booking Interval" name="booking_interval" reporter:datatype="interval"/>
+			<field reporter:label="Fine Interval" name="fine_interval" reporter:datatype="interval"/>
+			<field reporter:label="Fine Amount" name="fine_amount" reporter:datatype="money"/>
+			<field reporter:label="Target Resource Type" name="target_resource_type" reporter:datatype="link"/>
+			<field reporter:label="Target Resource" name="target_resource" reporter:datatype="link"/>
+			<field reporter:label="Current Resource" name="current_resource" reporter:datatype="link"/>
+			<field reporter:label="Request Library" name="request_lib" reporter:datatype="link"/>
+			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="link"/>
+			<field reporter:label="Capture Staff" name="capture_staff" reporter:datatype="link"/>
+			<field reporter:label="Attribute Value Maps" name="attr_val_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>
+			<link field="circulation" reltype="might_have" key="id" map="" class="circ"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
+			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
+			<link field="summary" reltype="might_have" key="id" map="" class="mbts"/>
+			<link field="target_resource_type" reltype="has_a" key="id" map="" class="brt"/>
+			<link field="target_resource" reltype="might_have" key="id" map="" class="brsrc"/>
+			<link field="current_resource" reltype="might_have" key="id" map="" class="brsrc"/>
+			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="pickup_lib" reltype="might_have" key="id" map="" class="aou"/>
+			<link field="capture_staff" reltype="might_have" key="id" map="" class="au"/>
+			<link field="attr_val_maps" reltype="has_many" key="reservation" map="" class="bravm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+	
+	<class id="bravm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::reservation_attr_value_map" oils_persist:tablename="booking.reservation_attr_value_map" reporter:label="Reservation Attribute Value Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="schema.booking.reservation_attr_value_map_id_seq">
+			<field reporter:label="Reservation Attribute Value Map" name="id" reporter:datatype="id"/>
+			<field reporter:label="Reservation" name="reservation" reporter:datatype="link"/>
+			<field reporter:label="Attribute Map" name="attr_value" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="reservation" reltype="has_a" key="id" map="" class="bresv"/>
+			<link field="attr_value" reltype="has_a" key="id" map="" class="brav"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="ccnbi" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item" reporter:label="Call Number Bucket Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.call_number_bucket_item_id_seq">
 			<field name="bucket" reporter:datatype="link"/>
@@ -2852,6 +3025,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Copy Location Orders" name="copy_location_orders" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transit Copy Prev Destinations" name="atc_prev_dests" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Reservation Requests" name="resv_requests" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Reservation Pickups" name="resv_pickups" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Resource Types" name="rsrc_types" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Resources" name="resources" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Resource Attributes" name="rsrc_attrs" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Attribute Values" name="attr_vals" oils_persist:virtual="true" reporter:datatype="link"/>
+
 		</fields>
 		<links>
 			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>
@@ -2873,6 +3053,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="fund_alloc_pcts" reltype="has_many" key="org" map="" class="acqfap"/>
 			<link field="copy_location_orders" reltype="has_many" key="org" map="" class="acplo"/>
 			<link field="atc_prev_dests" reltype="has_many" key="prev_dest" map="" class="atc"/>
+			<link field="resv_requests" reltype="has_many" key="request_lib" map="" class="bresv"/>
+			<link field="resv_pickups" reltype="has_many" key="pickup_lib" map="" class="bresv"/>
+			<link field="rsrc_types" reltype="has_many" key="owner" map="" class="brt"/>
+			<link field="resources" reltype="has_many" key="owner" map="" class="brsrc"/>
+			<link field="rsrc_attrs" reltype="has_many" key="owner" map="" class="bra"/>
+			<link field="attr_vals" reltype="has_many" key="owner" map="" class="brav"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
