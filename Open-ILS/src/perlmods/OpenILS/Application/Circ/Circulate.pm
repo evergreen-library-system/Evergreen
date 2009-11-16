@@ -1017,7 +1017,7 @@ sub get_max_fine_amount {
         $max_amount = $price * $max_fine_rule->amount / 100;
     } elsif (
         $U->ou_ancestor_setting_value(
-            $self->circ->circ_lib,
+            $self->circ_lib,
             'circ.max_fine.cap_at_price',
             $self->editor
         )
