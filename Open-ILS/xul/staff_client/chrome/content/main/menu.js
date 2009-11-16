@@ -348,27 +348,27 @@ main.menu.prototype = {
             'cmd_patron_register' : [
                 ['oncommand'],
                 function() {
-                                function spawn_editor(p) {
-                                    var url = urls.XUL_PATRON_EDIT;
-                                    var param_count = 0;
-                                    for (var i in p) {
-                                        if (param_count++ == 0) url += '?'; else url += '&';
-                                        url += i + '=' + window.escape(p[i]);
-                                    }
-                                    var loc = obj.url_prefix( urls.XUL_BROWSER ) + '?url=' + window.escape( obj.url_prefix(url) );
-                                    obj.new_tab(
-                                        loc, 
-                                        {}, 
-                                        { 
-                                            'show_print_button' : true , 
-                                            'tab_name' : offline.getString('menu.cmd_patron_register.related.tab'),
-                                            'passthru_content_params' : {
-                                                'spawn_search' : function(s) { obj.spawn_search(s); },
-                                                'spawn_editor' : spawn_editor,
-                                            }
-                                        }
-                                    );
+                    function spawn_editor(p) {
+                        var url = urls.XUL_PATRON_EDIT;
+                        var param_count = 0;
+                        for (var i in p) {
+                            if (param_count++ == 0) url += '?'; else url += '&';
+                            url += i + '=' + window.escape(p[i]);
+                        }
+                        var loc = obj.url_prefix( urls.XUL_BROWSER ) + '?url=' + window.escape( obj.url_prefix(url) );
+                        obj.new_tab(
+                            loc, 
+                            {}, 
+                            { 
+                                'show_print_button' : true , 
+                                'tab_name' : offline.getString('menu.cmd_patron_register.related.tab'),
+                                'passthru_content_params' : {
+                                    'spawn_search' : function(s) { obj.spawn_search(s); },
+                                    'spawn_editor' : spawn_editor,
                                 }
+                            }
+                        );
+                    }
 
                     obj.data.stash_retrieve();
                     var loc = obj.url_prefix( urls.XUL_BROWSER ) 
