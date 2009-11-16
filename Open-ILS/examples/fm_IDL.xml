@@ -4867,7 +4867,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="id" reltype="might_have" key="id" map="" class="circ"/>
 		</links>
 	</class>
-	<class id="rhrr" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_request_record" oils_persist:tablename="reporter.hold_request_record" reporter:label="Hold Request Record">
+	<class id="rhrr" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::hold_request_record" oils_persist:tablename="reporter.hold_request_record" reporter:label="Hold Request Record">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Hold ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Hold Target" name="target" reporter:datatype="int" />

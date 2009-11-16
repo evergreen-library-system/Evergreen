@@ -18,5 +18,13 @@
             "shelf_time": {"!=": null},
             "cancel_time": null
         }
+    },
+    "hold_request.long_wait" : {
+        "context_org": "pickup_lib",
+        "filter": {
+            "frozen": "f",
+            "cancel_time": null,
+            "capture_time": null
+        }
     }
 }
