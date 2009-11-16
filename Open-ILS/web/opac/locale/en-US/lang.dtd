@@ -789,6 +789,8 @@
 <!ENTITY staff.main.menu.circ.offline.label "Enter Offline Interface">
 <!ENTITY staff.main.menu.circ.patron_registration.accesskey "R">
 <!ENTITY staff.main.menu.circ.patron_registration.label "Register Patron">
+<!ENTITY staff.main.menu.circ.staged_patrons.accesskey "t">
+<!ENTITY staff.main.menu.circ.staged_patrons.label "Staged Patrons">
 <!ENTITY staff.main.menu.circ.patron_retrieve.accesskey "L">
 <!ENTITY staff.main.menu.circ.patron_retrieve.label "Retrieve Last Patron">
 <!ENTITY staff.main.menu.circ.patron_status.key "P">
@@ -1298,6 +1300,13 @@
 <!ENTITY staff.patron_display.archived_penalty.end_date.accesskey "">
 <!ENTITY staff.patron_display.archived_penalty.retrieve.label "Retrieve Archived Penalties">
 <!ENTITY staff.patron_display.archived_penalty.retrieve.accesskey "R">
+<!ENTITY staff.patron_display.staged.caption "Staged Patrons">
+<!ENTITY staff.patron_display.staged.menu.actions.label "Actions for Selected Events">
+<!ENTITY staff.patron_display.staged.menu.actions.accesskey "A">
+<!ENTITY staff.patron_display.staged.menu.actions.cancel.label "Cancel Patron">
+<!ENTITY staff.patron_display.staged.menu.actions.cancel.accesskey "C">
+<!ENTITY staff.patron_display.staged.menu.actions.load.label "Load Patron">
+<!ENTITY staff.patron_display.staged.menu.actions.load.accesskey "L">
 <!ENTITY staff.patron_display.trigger_event.caption "Modify Triggered Events">
 <!ENTITY staff.patron_display.trigger_event.menu.actions.label "Actions for Selected Events">
 <!ENTITY staff.patron_display.trigger_event.menu.actions.accesskey "A">

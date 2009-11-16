@@ -37,6 +37,7 @@
     <command id="cmd_search_tcn" />
     <command id="cmd_search_bib_id" />
     <command id="cmd_patron_register" key="patron-register-key" />
+    <command id="cmd_staged_patrons" />
     <command id="cmd_standalone" />
     <command id="cmd_survey_wizard" />
     <command id="cmd_stat_cat_edit" />
@@ -184,6 +185,7 @@
         <menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.accesskey;" key="circ-checkin-key" command="cmd_circ_checkin"/>
         <menuitem label="&staff.main.menu.circ.renew.label;" accesskey="&staff.main.menu.circ.renew.accesskey;" key="circ-renew-key" command="cmd_circ_renew"/>
         <menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.accesskey;" key="patron-register-key" command="cmd_patron_register"/>
+        <menuitem label="&staff.main.menu.circ.staged_patrons.label;" accesskey="&staff.main.menu.circ.staged_patrons.accesskey;" command="cmd_staged_patrons"/>
         <menuitem label="&staff.main.menu.circ.patron_retrieve.label;" accesskey="&staff.main.menu.circ.patron_retrieve.accesskey;" command="cmd_retrieve_last_patron" key="retrieve_last_patron_key"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.accesskey;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>

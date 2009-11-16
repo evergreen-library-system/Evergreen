@@ -387,6 +387,13 @@ main.menu.prototype = {
                     );
                 }
             ],
+            'cmd_staged_patrons' : [
+                ['oncommand'],
+                function() {
+                    obj.data.stash_retrieve();
+                    obj.set_tab(obj.url_prefix(urls.XUL_STAGED_PATRONS),{'tab_name':offlineStrings.getString('menu.circulation.staged_patrons.tab')},{});
+                }
+            ],
             'cmd_circ_checkin' : [
                 ['oncommand'],
                 function() { 
