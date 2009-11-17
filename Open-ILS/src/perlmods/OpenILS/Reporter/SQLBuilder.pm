@@ -1113,7 +1113,7 @@ sub build {
 	bless $self => "OpenILS::Reporter::SQLBuilder::Join::$self->{_join_type}";
 
 	if ( $self->{_join_type} eq 'inner' or !$self->{_join_type}) {
-		$self->{_join_type} eq 'i';
+		$self->{_join_type} = 'i';
 	} else {
 		if ($self->{_join_type} eq 'left') {
 			$self->{_right_rel}->{_nullable} = 'l';
