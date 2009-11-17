@@ -984,7 +984,7 @@ sub get_circ_policy {
         recurring_fine_rule => $recurring_fine_rule->name,
         max_fine_rule => $max_fine_rule->name,
         max_fine => $self->get_max_fine_amount($max_fine_rule),
-        fine_interval => $recurring_fine_rule->recurrance_interval,
+        fine_interval => $recurring_fine_rule->recurrence_interval,
         renewal_remaining => $duration_rule->max_renewals
     };
 
@@ -1545,7 +1545,7 @@ sub build_checkout_circ_object {
         $circ->recurring_fine_rule($recurring->name);
         $circ->max_fine_rule($max->name);
         $circ->max_fine($policy->{max_fine});
-        $circ->fine_interval($recurring->recurrance_interval);
+        $circ->fine_interval($recurring->recurrence_interval);
         $circ->renewal_remaining($duration->max_renewals);
 
     } else {
