@@ -1304,9 +1304,9 @@
 <!ENTITY staff.patron_display.staged.menu.actions.label "Actions for Selected Events">
 <!ENTITY staff.patron_display.staged.menu.actions.accesskey "A">
 <!ENTITY staff.patron_display.staged.menu.actions.cancel.label "Cancel Patron">
-<!ENTITY staff.patron_display.staged.menu.actions.cancel.accesskey "C">
+<!ENTITY staff.patron_display.staged.menu.actions.cancel.accesskey "">
 <!ENTITY staff.patron_display.staged.menu.actions.load.label "Load Patron">
-<!ENTITY staff.patron_display.staged.menu.actions.load.accesskey "L">
+<!ENTITY staff.patron_display.staged.menu.actions.load.accesskey "P">
 <!ENTITY staff.patron_display.trigger_event.caption "Modify Triggered Events">
 <!ENTITY staff.patron_display.trigger_event.menu.actions.label "Actions for Selected Events">
 <!ENTITY staff.patron_display.trigger_event.menu.actions.accesskey "A">
