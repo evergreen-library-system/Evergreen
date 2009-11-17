@@ -23,7 +23,7 @@ if [ -z "$DB_VERSION" ] || [ `echo $DB_VERSION | grep -c '[^0-9]'` != 0 ]; then
 * guess was:                                                                   *
 * $DB_VERSION
 * which didn't make any sense.  For assistance, please email                   *
-* open-ils-general@list.georgialibraries.org or join #OpenILS-Evergreen on the *
+* open-ils-general@list.georgialibraries.org or join #Evergreen on the         *
 * freenode IRC network.                                                        *
 ********************************************************************************
 EOM
@@ -67,7 +67,7 @@ cat <<EOM
 * version you have installed ($a).  If you're not really sure why, you should  *
 * proabably press 'Control-C' now, and abort.  To continue using the latest    *
 * available version ($b), press enter. For assistance, please email            *
-* open-ils-general@list.georgialibraries.org or join #OpenILS-Evergreen on the *
+* open-ils-general@list.georgialibraries.org or join #Evergreen on the         *
 * freenode IRC network.                                                        *
 ********************************************************************************
 EOM
