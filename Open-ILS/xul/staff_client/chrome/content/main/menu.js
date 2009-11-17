@@ -372,7 +372,7 @@ main.menu.prototype = {
 
                     obj.data.stash_retrieve();
                     var loc = obj.url_prefix( urls.XUL_BROWSER ) 
-                        + '?url=' + window.escape( obj.url_prefix(urls.XUL_PATRON_EDIT) + '?ses=' + window.escape( ses() ) );
+                        + '?url=' + window.escape( obj.url_prefix(urls.XUL_PATRON_EDIT) );
                     obj.set_tab(
                         loc, 
                         {}, 
@@ -380,6 +380,7 @@ main.menu.prototype = {
                             'show_print_button' : true , 
                             'tab_name' : offlineStrings.getString('menu.cmd_patron_register.tab'),
                             'passthru_content_params' : {
+                                'ses' : ses(),
                                 'spawn_search' : function(s) { obj.spawn_search(s); },
                                 'spawn_editor' : spawn_editor,
                             }
