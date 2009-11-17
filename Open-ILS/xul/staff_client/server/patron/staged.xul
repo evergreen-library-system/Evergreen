@@ -41,6 +41,7 @@
         <caption id="staged_caption" label="&staff.patron_display.staged.caption;"/>
         <vbox flex="0">
             <hbox flex="1">
+                <hbox id="lib_menu_placeholder" />
                 <spacer flex="1" />
                 <progressmeter id="progress" flex="1" hidden="true" mode="undetermined"/>
                 <menubar>

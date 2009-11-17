@@ -1,9 +1,9 @@
-var list; var error; var net; var rows;
+var list; var error; var net; var rows; var menu_lib;
 
 function $(id) { return document.getElementById(id); }
 
 //// parent interfaces often call these
-function default_focus() { $('stgu_list').focus(); }
+function default_focus() { $('lib_menu').focus(); }
 function refresh() { populate_list(); }
 ////
 
@@ -35,6 +35,7 @@ function staged_init() {
 
         dojo.require('openils.Util');
 
+        populate_lib_menu();
         init_list();
         $('list_actions').appendChild( list.render_list_actions() );
         list.set_list_actions();
@@ -46,6 +47,36 @@ function staged_init() {
     } catch(E) {
         var err_prefix = 'staged.js -> staged_init() : ';
         if (error) error.standard_unexpected_error_alert(err_prefix,E); else alert(err_prefix + E);
+    }
+}
+
+function populate_lib_menu() {
+    try {
+        JSAN.use('util.widgets');
+        var x = document.getElementById('lib_menu_placeholder');
+        if (!x) { return; }
+        util.widgets.remove_children( x );
+
+        JSAN.use('util.file');
+        var file = new util.file('offline_ou_list');
+        if (file._file.exists()) {
+            var list_data = file.get_object(); file.close();
+            var ml = util.widgets.make_menulist( list_data[0], ses('ws_ou') );
+            ml.setAttribute('id','lib_menu');
+            x.appendChild( ml );
+            ml.addEventListener(
+                'command',
+                function(ev) {
+                    menu_lib = ev.target.value;
+                    populate_list();
+                },
+                false
+            );
+        } else {
+            alert($("patronStrings").getString('staff.patron.staged.lib_menus.missing_library_list'));
+        }
+    } catch(E) {
+        alert('Error in staged.js, populate_lib_menu(): ' + E);
     }
 }
 
@@ -222,7 +253,7 @@ function populate_list() {
         fieldmapper.standardRequest(
             [api['FM_STGU_RETRIEVE'].app, api['FM_STGU_RETRIEVE'].method ],
             {   async: true,
-                params: [ses(), ses('ws_ou')],
+                params: [ses(), menu_lib || ses('ws_ou')],
                 onresponse : onResponse,
                 onerror : onError,
                 oncomplete : function() {
