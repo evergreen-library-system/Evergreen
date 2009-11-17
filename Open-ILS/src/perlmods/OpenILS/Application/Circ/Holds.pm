@@ -1996,6 +1996,54 @@ sub find_hold_mvr {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'clear_shelf_process',
+    stream => 1,
+	api_name => 'open-ils.circ.hold.clear_shelf.process'
+);
+
+sub clear_shelf_process {
+	my($self, $client, $auth) = @_;
+
+	my $e = new_editor(authtoken=>$auth, xact => 1);
+	$e->checkauth or return $e->die_event;
+	$e->allowed('UPDATE_HOLD') or return $e->die_event;
+
+    # Find holds that expired on the holds shelf
+
+    # Cancel the expired holds
+    
+    #  ...
+}
+
+
+__PACKAGE__->register_method(
+	method => 'usr_hold_summary',
+	api_name => 'open-ils.circ.holds.user_summary',
+    signature => q/
+        Returns a summary of holds statuses for a given user
+    /
+);
+
+sub usr_hold_summary {
+    my($self, $conn, $auth, $user_id) = @_;
+
+	my $e = new_editor(authtoken=>$auth);
+	$e->checkauth or return $e->event;
+	$e->allowed('VIEW_HOLD') or return $e->event;
+
+    my $holds = $e->search_action_hold_request(
+        {  
+            usr =>  $user_id , 
+            fulfillment_time => undef,
+            cancel_time => undef,
+        }
+    );
+
+    my %summary = (1 => 0, 2 => 0, 3 => 0, 4 => 0);
+    $summary{_hold_status($e, $_)} += 1 for @$holds;
+    return \%summary;
+}
 
 
 1;
