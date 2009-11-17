@@ -3,6 +3,10 @@ dojo.require('openils.Util');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 
+dojo.requireLocalization('openils.circ', 'selfcheck');
+var localeStrings = dojo.i18n.getLocalization('openils.circ', 'selfcheck');
+
+
 const SET_BARCODE_REGEX = 'opac.barcode_regex';
 const SET_PATRON_TIMEOUT = 'circ.selfcheck.patron_login_timeout';
 const SET_ALERT_ON_CHECKOUT_EVENT = 'circ.selfcheck.alert_on_checkout_event';
@@ -105,7 +109,6 @@ SelfCheckManager.prototype.drawLoginPage = function() {
  * Login the patron.  
  */
 SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
-    console.log('loginPatron: ' + barcode);
 
     if(this.orgSettings[SET_PATRON_PASSWORD_REQUIRED]) {
 
@@ -168,13 +171,10 @@ SelfCheckManager.prototype.updateScanBox = function(args) {
         dojo.byId('oils-selfck-scan-text').innerHTML = args.msg;
 
     if(selfckScanBox._lastHandler && (args.handler || args.clearHandler)) {
-        console.log('disconnecting ' + selfckScanBox._lastHandler);
         dojo.disconnect(selfckScanBox._lastHandler);
     }
 
     if(args.handler) {
-        console.log('updating scan box with ['+args.msg+'] and handler ' + args.handler);
-
         selfckScanBox._lastHandler = dojo.connect(
             selfckScanBox, 
             'onKeyDown', 
@@ -205,6 +205,121 @@ SelfCheckManager.prototype.drawCircPage = function() {
     this.circTbody = dojo.byId('oils-selfck-circ-tbody');
     if(!this.circTemplate)
         this.circTemplate = this.circTbody.removeChild(dojo.byId('oils-selfck-circ-row'));
+
+    // items out, holds, and fines summaries
+
+    // fines summary
+    fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.fines.summary'],
+        {   async : true,
+            params : [this.authtoken, this.patron.id()],
+            oncomplete : function(r) {
+                var summary = openils.Util.readResponse(r);
+                dojo.byId('oils-selfck-fines-total').innerHTML = 
+                    dojo.string.substitute(
+                        localeStrings.TOTAL_FINES_ACCOUNT, 
+                        [summary.balance_owed()]
+                    );
+            }
+        }
+    );
+
+    // items out summary
+
+    this.updateHoldsSummary();
+    this.updateCircSummary();
+}
+
+SelfCheckManager.prototype.updateHoldsSummary = function(decrement) {
+
+
+    var self = this;
+    var oncomplete = function() {
+        dojo.byId('oils-selfck-holds-total').innerHTML = 
+            dojo.string.substitute(
+                localeStrings.TOTAL_HOLDS, 
+                [self.holdsSummary.total]
+            );
+
+        dojo.byId('oils-selfck-holds-ready').innerHTML = 
+            dojo.string.substitute(
+                localeStrings.HOLDS_READY_FOR_PICKUP, 
+                [self.holdsSummary.ready]
+            );
+    };
+
+    if(!this.holdsSummary) {
+        fieldmapper.standardRequest(
+            ['open-ils.circ', 'open-ils.circ.holds.user_summary'],
+            {   async : true,
+                params : [this.authtoken, this.patron.id()],
+                oncomplete : function(r) {
+                    var summary = openils.Util.readResponse(r);
+                    self.holdsSummary = {};
+                    self.holdsSummary.ready = Number(summary['4']);
+                    self.holdsSummary.total = 0;
+                    for(var i in summary) 
+                        self.holdsSummary.total += Number(summary[i]);
+                    oncomplete();
+                }
+            }
+        );
+    } else {
+
+        if(this.decrement) 
+            this.holdsSummary.ready -= 1;
+    
+        oncomplete();
+    }
+}
+
+
+SelfCheckManager.prototype.updateCircSummary = function(increment) {
+
+    var self = this;
+    var oncomplete = function() {
+        dojo.byId('oils-selfck-circ-account-total').innerHTML = 
+            dojo.string.substitute(
+                localeStrings.TOTAL_ITEMS_ACCOUNT, 
+                [self.circSummary.total]
+            );
+
+        dojo.byId('oils-selfck-circ-session-total').innerHTML = 
+            dojo.string.substitute(
+                localeStrings.TOTAL_ITEMS_SESSION, 
+                [self.circSummary.session]
+            );
+    }
+
+    if(this.circSummary) {
+
+        if(increment) {
+            // local checkout occurred.  Add to the total and the session.
+            this.circSummary.total += 1;
+            this.circSummary.session += 1;
+        }
+
+        oncomplete();
+
+    } else {
+        // fetch the circ summary for the patron
+        var summary = fieldmapper.standardRequest(
+            ['open-ils.actor', 'open-ils.actor.user.checked_out.count'],
+            {
+                async : true,
+                params : [this.authtoken, this.patron.id()],
+                oncomplete : function(r) {
+                    var summary = openils.Util.readResponse(r);
+                    self.circSummary = {
+                        total : Number(summary.out) + Number(summary.overdue),
+                        overdue : Number(summary.overdue),
+                        session : 0
+                    }
+                    oncomplete();
+                }
+            }
+        );
+    }
 }
 
 
