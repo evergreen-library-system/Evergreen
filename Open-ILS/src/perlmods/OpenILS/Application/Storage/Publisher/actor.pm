@@ -261,7 +261,7 @@ sub make_closure_spanset {
     return $spanset;
 }
 
-sub org_closed_overlap {
+sub new_org_closed_overlap {
 	my $self = shift;
 	my $client = shift;
 	my $ou = shift;
@@ -300,7 +300,7 @@ sub org_closed_overlap {
 		if ( $direction <= 0 ) {
 			$begin->subtract( minutes => 1 );
 
-			while ( my $_b = org_closed_overlap($self, $client, $ou, $begin->strftime('%FT%T%z'), -1, 1 ) ) {
+			while ( my $_b = new_org_closed_overlap($self, $client, $ou, $begin->strftime('%FT%T%z'), -1, 1 ) ) {
 				$begin = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
 			}
 		}
@@ -308,7 +308,7 @@ sub org_closed_overlap {
 		if ( $direction >= 0 ) {
 			$end->add( minutes => 1 );
 
-			while ( my $_a = org_closed_overlap($self, $client, $ou, $end->strftime('%FT%T%z'), 1, 1 ) ) {
+			while ( my $_a = new_org_closed_overlap($self, $client, $ou, $end->strftime('%FT%T%z'), 1, 1 ) ) {
 				$end = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
 			}
 		}
@@ -325,7 +325,7 @@ sub org_closed_overlap {
             $begin = $hoo_intersection->min;
             $begin->subtract( minutes => 1 );
 
-            while ( my $_b = org_closed_overlap($self, $client, $ou, $begin->strftime('%FT%T%z'), -1 ) ) {
+            while ( my $_b = new_org_closed_overlap($self, $client, $ou, $begin->strftime('%FT%T%z'), -1 ) ) {
                 $begin = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
             }
         }
@@ -336,7 +336,7 @@ sub org_closed_overlap {
 			$end->add( minutes => 1 );
 
 
-            while ( my $_b = org_closed_overlap($self, $client, $ou, $end->strftime('%FT%T%z'), -1 ) ) {
+            while ( my $_b = new_org_closed_overlap($self, $client, $ou, $end->strftime('%FT%T%z'), -1 ) ) {
                 $end = $_dt_parser->parse_datetime( clense_ISO8601($_b->{end}) );
             }
         }
@@ -347,6 +347,126 @@ sub org_closed_overlap {
 
     return undef if ($start eq $stop);
     return { start => $start, end => $stop };
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.org_unit.closed_date.overlap',
+	api_level	=> 0,
+	method		=> 'new_org_closed_overlap',
+);
+
+sub org_closed_overlap {
+    my $self = shift;
+    my $client = shift;
+    my $ou = shift;
+    my $date = shift;
+    my $direction = shift || 0;
+    my $no_hoo = shift || 0;
+
+    return undef unless ($date && $ou);
+
+    my $t = actor::org_unit::closed_date->table;
+    my $sql = <<"    SQL";
+        SELECT  *
+          FROM  $t
+          WHERE ? between close_start and close_end
+            AND org_unit = ?
+          ORDER BY close_start ASC, close_end DESC
+          LIMIT 1
+    SQL
+
+    $date = clense_ISO8601($date);
+    my ($begin, $end) = ($date,$date);
+
+    my $hoo = actor::org_unit::hours_of_operation->retrieve($ou);
+
+    if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $date, $ou )) {
+        $begin = clense_ISO8601($closure->{close_start});
+        $end = clense_ISO8601($closure->{close_end});
+
+        if ( $direction <= 0 ) {
+            $before = $_dt_parser->parse_datetime( $begin );
+            $before->subtract( minutes => 1 );
+
+            while ( my $_b = org_closed_overlap($self, $client, $ou, $before->strftime('%FT%T%z'), -1, 1 ) ) {
+                $before = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
+            }
+            $begin = clense_ISO8601($before->strftime('%FT%T%z'));
+        }
+
+        if ( $direction >= 0 ) {
+            $after = $_dt_parser->parse_datetime( $end );
+            $after->add( minutes => 1 );
+
+            while ( my $_a = org_closed_overlap($self, $client, $ou, $after->strftime('%FT%T%z'), 1, 1 ) ) {
+                $after = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
+            }
+            $end = clense_ISO8601($after->strftime('%FT%T%z'));
+        }
+    }
+
+    if ( !$no_hoo ) {
+        if ( $hoo ) {
+
+            if ( $direction <= 0 ) {
+                my $begin_dow = $_dt_parser->parse_datetime( $begin )->day_of_week_0;
+                my $begin_open_meth = "dow_".$begin_dow."_open";
+                my $begin_close_meth = "dow_".$begin_dow."_close";
+
+                my $count = 1;
+                while ($hoo->$begin_open_meth eq '00:00:00' and $hoo->$begin_close_meth eq '00:00:00') {
+                    $begin = clense_ISO8601($_dt_parser->parse_datetime( $begin )->subtract( days => 1)->strftime('%FT%T%z'));
+                    $begin_dow++;
+                    $begin_dow %= 7;
+                    $count++;
+                    last if ($count > 6);
+                    $begin_open_meth = "dow_".$begin_dow."_open";
+                    $begin_close_meth = "dow_".$begin_dow."_close";
+                }
+
+                if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $begin, $ou )) {
+                    $before = $_dt_parser->parse_datetime( $begin );
+                    $before->subtract( minutes => 1 );
+                    while ( my $_b = org_closed_overlap($self, $client, $ou, $before->strftime('%FT%T%z'), -1 ) ) {
+                        $before = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
+                    }
+                }
+            }
+    
+            if ( $direction >= 0 ) {
+                my $end_dow = $_dt_parser->parse_datetime( $end )->day_of_week_0;
+                my $end_open_meth = "dow_".$end_dow."_open";
+                my $end_close_meth = "dow_".$end_dow."_close";
+    
+                $count = 1;
+                while ($hoo->$end_open_meth eq '00:00:00' and $hoo->$end_close_meth eq '00:00:00') {
+                    $end = clense_ISO8601($_dt_parser->parse_datetime( $end )->add( days => 1)->strftime('%FT%T%z'));
+                    $end_dow++;
+                    $end_dow %= 7;
+                    $count++;
+                    last if ($count > 6);
+                    $end_open_meth = "dow_".$end_dow."_open";
+                    $end_close_meth = "dow_".$end_dow."_close";
+                }
+
+                if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $end, $ou )) {
+                    $after = $_dt_parser->parse_datetime( $end );
+                    $after->add( minutes => 1 );
+
+                    while ( my $_a = org_closed_overlap($self, $client, $ou, $after->strftime('%FT%T%z'), 1 ) ) {
+                        $after = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
+                    }
+                    $end = clense_ISO8601($after->strftime('%FT%T%z'));
+                }
+            }
+
+        }
+    }
+
+    if ($begin eq $date && $end eq $date) {
+        return undef;
+    }
+
+    return { start => $begin, end => $end };
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.org_unit.closed_date.overlap',
