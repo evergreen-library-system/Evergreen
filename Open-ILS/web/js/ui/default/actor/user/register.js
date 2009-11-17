@@ -64,7 +64,9 @@ function load() {
 	        if(parms.clone) 
                 cloneUser = parms.clone;
             if(parms.usr !== null)
-                userId = parms.usr
+                userId = parms.usr;
+            if(parms.stage !== null)
+                stageUname = parms.stage
         }
     }
 
