@@ -82,11 +82,10 @@ SelfCheckManager.prototype.drawLoginPage = function() {
         if(self.orgSettings[SET_PATRON_PASSWORD_REQUIRED]) {
             
             // password is required.  wire up the scan box to read it
-            self.updateScanBox(
-                'Please enter your password', // TODO i18n 
-                false,
-                function(pw) { self.loginPatron(barcode, ps); }
-            );
+            self.updateScanBox({
+                msg : 'Please enter your password', // TODO i18n 
+                handler : function(pw) { self.loginPatron(barcode, ps); }
+            });
 
             dojo.connect(selfckScanBox, 'onKeyDown', pwHandler);
 
@@ -96,17 +95,17 @@ SelfCheckManager.prototype.drawLoginPage = function() {
         }
     };
 
-    this.updateScanBox(
-        'Please log in with your library barcode.', // TODO
-        false,
-        bcHandler
-    );
+    this.updateScanBox({
+        msg : 'Please log in with your library barcode.', // TODO
+        handler : bcHandler
+    });
 }
 
 /**
  * Login the patron.  
  */
 SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
+    console.log('loginPatron: ' + barcode);
 
     if(this.orgSettings[SET_PATRON_PASSWORD_REQUIRED]) {
 
@@ -154,26 +153,40 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
 /**
  * Manages the main input box
- * @param str The context message to display with the box
+ * @param msg The context message to display with the box
  * @param clearOnly Don't update the context message, just clear the value and re-focus
  * @param handler Optional "on-enter" handler.  
  */
-SelfCheckManager.prototype.updateScanBox = function(str, clearOnly, handler) {
+SelfCheckManager.prototype.updateScanBox = function(args) {
 
-    if(!clearOnly)
-        dojo.byId('oils-selfck-scan-text').innerHTML = str;
     selfckScanBox.attr('value', '');
-    selfckScanBox.focus();
 
-    if(handler) {
-        dojo.connect(selfckScanBox, 'onKeyDown', 
+    if(args.value)
+        selfckScanBox.attr('value', args.value);
+
+    if(args.msg) 
+        dojo.byId('oils-selfck-scan-text').innerHTML = args.msg;
+
+    if(selfckScanBox._lastHandler && (args.handler || args.clearHandler)) {
+        console.log('disconnecting ' + selfckScanBox._lastHandler);
+        dojo.disconnect(selfckScanBox._lastHandler);
+    }
+
+    if(args.handler) {
+        console.log('updating scan box with ['+args.msg+'] and handler ' + args.handler);
+
+        selfckScanBox._lastHandler = dojo.connect(
+            selfckScanBox, 
+            'onKeyDown', 
             function(e) {
                 if(e.keyCode != dojo.keys.ENTER) 
                     return;
-                handler(selfckScanBox.attr('value'));
+                args.handler(selfckScanBox.attr('value'));
             }
         );
     }
+
+    selfckScanBox.focus();
 }
 
 /**
@@ -182,11 +195,10 @@ SelfCheckManager.prototype.updateScanBox = function(str, clearOnly, handler) {
 SelfCheckManager.prototype.drawCircPage = function() {
 
     var self = this;
-    this.updateScanBox(
-        'Please enter an item barcode', // TODO i18n
-        false,
-        function(barcode) { self.checkout(barcode); }
-    );
+    this.updateScanBox({
+        msg : 'Please enter an item barcode', // TODO i18n
+        handler : function(barcode) { self.checkout(barcode); }
+    });
 
     openils.Util.show('oils-selfck-circ-page');
 
@@ -261,6 +273,7 @@ SelfCheckManager.prototype.renew = function() {
  * Display the result of a checkout or renewal in the items out table
  */
 SelfCheckManager.prototype.displayCheckout = function(evt) {
+
     var copy = evt.payload.copy;
     var record = evt.payload.record;
     var circ = evt.payload.circ;
@@ -273,9 +286,9 @@ SelfCheckManager.prototype.displayCheckout = function(evt) {
     }
     */
 
-    this.byName('barcode', row).innerHTML = copy.barcode();
-    this.byName('title', row).innerHTML = record.title();
-    this.byName('author', row).innerHTML = record.author();
+    this.byName(row, 'barcode').innerHTML = copy.barcode();
+    this.byName(row, 'title').innerHTML = record.title();
+    this.byName(row, 'author').innerHTML = record.author();
     this.circTbody.appendChild(row);
 }
 
