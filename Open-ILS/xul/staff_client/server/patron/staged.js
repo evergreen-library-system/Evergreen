@@ -53,53 +53,103 @@ function gen_event_handler(method) { // cancel or load?
     return function(ev) {
         try {
             var sel = list.retrieve_selection();
-            var ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ); } );
+            var ids = util.functional.map_list( sel, function(o) { return o.getAttribute('retrieve_id'); } );
 
             if (method == 'cancel') {
-
-                var pm = $('progress'); pm.value = 0; pm.hidden = false;
-                var idx = -1;
-
-                fieldmapper.standardRequest(
-                    [ api['FM_STGU_CANCEL'].app, api['FM_STGU_CANCEL'].method ],
-                    {   async: true,
-                        params: [ses(), ids],
-                        onresponse: function(r) {
-                            try {
-                                idx++; pm.value = Number( pm.value ) + 100/ids.length;
-                                var result = openils.Util.readResponse(r);
-                                if (typeof result.ilsevent != 'undefined') { throw(result); }
-                            } catch(E) {
-                                error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event onresponse.',E);
-                            }
-                        },
-                        onerror: function(r) {
-                            try {
-                                var result = openils.Util.readResponse(r);
-                                throw(result);
-                            } catch(E) {
-                                error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event onerror.',E);
-                            }
-                            pm.hidden = true; pm.value = 0; populate_list();
-                        },
-                        oncomplete: function(r) {
-                            try {
-                                var result = openils.Util.readResponse(r);
-                            } catch(E) {
-                                error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event oncomplete.',E);
-                            }
-                            pm.hidden = true; pm.value = 0; populate_list();
-                        }
-                    }
-                );
+                cancel( ids );
             } else {
-                // load
+                load( ids );
             }
 
         } catch(E) {
             alert('Error in patron/staged.js, handle_???_event(): ' + E);
         }
     };
+}
+
+function cancel(ids) {
+    try {
+        var pm = $('progress'); pm.value = 0; pm.hidden = false;
+        var idx = -1;
+
+        fieldmapper.standardRequest(
+            [ api['FM_STGU_CANCEL'].app, api['FM_STGU_CANCEL'].method ],
+            {   async: true,
+                params: [ses(), ids],
+                onresponse: function(r) {
+                    try {
+                        idx++; pm.value = Number( pm.value ) + 100/ids.length;
+                        var result = openils.Util.readResponse(r);
+                        if (typeof result.ilsevent != 'undefined') { throw(result); }
+                    } catch(E) {
+                        error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event onresponse.',E);
+                    }
+                },
+                onerror: function(r) {
+                    try {
+                        var result = openils.Util.readResponse(r);
+                        throw(result);
+                    } catch(E) {
+                        error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event onerror.',E);
+                    }
+                    pm.hidden = true; pm.value = 0; populate_list();
+                },
+                oncomplete: function(r) {
+                    try {
+                        var result = openils.Util.readResponse(r);
+                    } catch(E) {
+                        error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event oncomplete.',E);
+                    }
+                    pm.hidden = true; pm.value = 0; populate_list();
+                }
+            }
+        );
+    } catch(E) {
+        alert('Error in staged.js, cancel(): ' + E);
+    }
+}
+
+function spawn_search(s) {
+    data.stash_retrieve();
+    xulG.new_patron_tab( {}, { 'doit' : 1, 'query' : s } );
+}
+
+function spawn_editor(p) {
+    var url = urls.XUL_PATRON_EDIT;
+    var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER );
+    xulG.new_tab(
+        loc, 
+        {}, 
+        { 
+            'url' : url,
+            'show_print_button' : true , 
+            'tab_name' : $("patronStrings").getFormattedString('staff.patron.staged.register_patron',[p.stage]),
+            'passthru_content_params' : {
+                'spawn_search' : spawn_search,
+                'spawn_editor' : spawn_editor,
+                'url_prefix' : xulG.url_prefix,
+                'new_tab' : xulG.new_tab,
+                'new_patron_tab' : xulG.new_patron_tab,
+                'params' : p
+            }
+        }
+    );
+}
+
+function load( ids ) {
+    try {
+        var seen = {};
+
+        for (var i = 0; i < ids.length; i++) {
+            if (! seen[ ids[i] ]) {
+                seen[ ids[i] ] = true;
+                spawn_editor( { 'stage' : ids[i] } );
+            }
+        }
+
+    } catch(E) {
+        alert('Error in staged.js, load(): ' + E);
+    }
 }
 
 function init_list() {
@@ -127,7 +177,7 @@ function init_list() {
 
 function retrieve_row(params) { // callback function for fleshing rows in a list
     try {
-        params.row_node.setAttribute('retrieve_id',params.row.my.stgu.row_id()); 
+        params.row_node.setAttribute('retrieve_id',params.row.my.stgu.usrname()); 
         params.on_retrieve(params.row); 
     } catch(E) {
         alert('Error in staged.js, retrieve_row(): ' + E);
@@ -161,7 +211,7 @@ function populate_list() {
                     }
                 }
             };
-            rows[ blob.user.row_id() ] = list.append( row_params );
+            rows[ blob.user.usrname() ] = list.append( row_params );
         }
 
         function onError(r) {
