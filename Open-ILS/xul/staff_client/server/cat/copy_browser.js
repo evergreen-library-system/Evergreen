@@ -1462,7 +1462,7 @@ cat.copy_browser.prototype = {
                         'owning_lib' : { 'hidden' : false },
                         'call_number' : { 'hidden' : false },
                         'due_date' : { 'hidden' : false },
-                        'status' : { 'hidden' : false },
+                        'acp_status' : { 'hidden' : false },
                     },
                     {
                         'just_these' : [
@@ -1484,9 +1484,10 @@ cat.copy_browser.prototype = {
                             'price',
                             'circ_as_type',
                             'circ_modifier',
-                            'status',
+                            'acp_status',
                             'alert_message',
-                            'acp_id',
+                            'acp_mint_condition',
+                            'acp_id'
                         ]
                     }
                 )
