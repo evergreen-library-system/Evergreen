@@ -960,7 +960,7 @@ sub retrieve_hold_queue_status_impl {
     return {
         total_holds => scalar(@$q_holds),
         queue_position => $qpos,
-        potential_copies => $num_potentials,
+        potential_copies => $num_potentials->{count},
         status => _hold_status($e, $hold),
         estimated_wait => int($estimated_wait)
     };
@@ -1908,7 +1908,26 @@ sub uber_hold {
 	my($self, $client, $auth, $hold_id) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	$e->checkauth or return $e->event;
-	$e->allowed('VIEW_HOLD') or return $e->event;
+    return uber_hold_impl($e, $hold_id);
+}
+
+__PACKAGE__->register_method(
+	method => 'batch_uber_hold',
+    authoritative => 1,
+    stream => 1,
+	api_name => 'open-ils.circ.hold.details.batch.retrieve'
+);
+
+sub batch_uber_hold {
+	my($self, $client, $auth, $hold_ids) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	$e->checkauth or return $e->event;
+    $client->respond(uber_hold_impl($e, $_)) for @$hold_ids;
+    return undef;
+}
+
+sub uber_hold_impl {
+    my($e, $hold_id) = @_;
 
 	my $resp = {};
 
@@ -1921,6 +1940,11 @@ sub uber_hold {
 			}
 		]
 	) or return $e->event;
+
+    if($hold->usr->id ne $e->requestor->id) {
+        # A user is allowed to see his/her own holds
+	    $e->allowed('VIEW_HOLD') or return $e->event;
+    }
 
 	my $user = $hold->usr;
 	$hold->usr($user->id);
