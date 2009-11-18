@@ -4,6 +4,7 @@ dojo.require('openils.CGI');
 dojo.require('openils.Util');
 dojo.require('openils.User');
 dojo.require('openils.Event');
+dojo.require('openils.widget.ProgressDialog');
 
 dojo.requireLocalization('openils.circ', 'selfcheck');
 var localeStrings = dojo.i18n.getLocalization('openils.circ', 'selfcheck');
@@ -37,23 +38,26 @@ function SelfCheckManager() {
     // dict of org unit settings for "here"
     this.orgSettings = {};
 
-    
-    // Construct a mock checkout for debugging purposes
-    this.mockCheckout = {
-        payload : {
-            record : new fieldmapper.mvr(),
-            copy : new fieldmapper.acp(),
-            circ : new fieldmapper.circ()
-        }
-    };
 
-    this.mockCheckout.payload.record.title('Jazz improvisation for guitar');
-    this.mockCheckout.payload.record.author('Wise, Les');
-    this.mockCheckout.payload.record.isbn('0634033565');
-    this.mockCheckout.payload.copy.barcode('123456789');
-    this.mockCheckout.payload.circ.renewal_remaining(1);
-    this.mockCheckout.payload.circ.parent_circ(1);
-    this.mockCheckout.payload.circ.due_date('2012-12-21');
+    // Construct a mock checkout for debugging purposes
+    if(this.mockCheckouts = this.cgi.param('mock-circ')) {
+
+        this.mockCheckout = {
+            payload : {
+                record : new fieldmapper.mvr(),
+                copy : new fieldmapper.acp(),
+                circ : new fieldmapper.circ()
+            }
+        };
+
+        this.mockCheckout.payload.record.title('Jazz improvisation for guitar');
+        this.mockCheckout.payload.record.author('Wise, Les');
+        this.mockCheckout.payload.record.isbn('0634033565');
+        this.mockCheckout.payload.copy.barcode('123456789');
+        this.mockCheckout.payload.circ.renewal_remaining(1);
+        this.mockCheckout.payload.circ.parent_circ(1);
+        this.mockCheckout.payload.circ.due_date('2012-12-21');
+    }
 }
 
 
@@ -68,20 +72,20 @@ SelfCheckManager.prototype.init = function() {
     this.authtoken = openils.User.authtoken;
     this.loadOrgSettings();
 
-    // add onclick handlers for nav links
-
+    
     var self = this;
-    dojo.connect(
-        dojo.byId('oils-selfck-hold-details-link'),
-        'onclick',
-        function() { self.drawHoldsPage(); }
-    );
+    // connect onclick handlers to the various navigation links
+    var linkHandlers = {
+        'oils-selfck-hold-details-link' : function() { self.drawHoldsPage(); },
+        'oils-selfck-nav-holds' : function() { self.drawHoldsPage(); },
+        'oils-selfck-pay-fines-link' : function() { self.drawFinesPage(); },
+        'oils-selfck-nav-fines' : function() { self.drawFinesPage(); },
+        'oils-selfck-nav-home' : function() { self.drawCircPage(); },
+        'oils-selfck-nav-logout' : function() { self.logoutPatron(); }
+    }
 
-    dojo.connect(
-        dojo.byId('oils-selfck-pay-fines-link'),
-        'onclick',
-        function() { self.drawPayFinesPage(); }
-    );
+    for(var id in linkHandlers) 
+        dojo.connect(dojo.byId(id), 'onclick', linkHandlers[id]);
 
 
     if(this.cgi.param('patron')) {
@@ -241,6 +245,8 @@ SelfCheckManager.prototype.drawCircPage = function() {
         handler : function(barcode) { self.checkout(barcode); }
     });
 
+    openils.Util.hide('oils-selfck-payment-page');
+    openils.Util.hide('oils-selfck-holds-page');
     openils.Util.show('oils-selfck-circ-page');
 
     this.circTbody = dojo.byId('oils-selfck-circ-tbody');
@@ -272,7 +278,7 @@ SelfCheckManager.prototype.drawCircPage = function() {
     this.updateCircSummary();
 
     // render mock checkouts for debugging?
-    if(this.cgi.param('mock-circ')) {
+    if(this.mockCheckouts) {
         for(var i in [1,2,3]) 
             this.displayCheckout(this.mockCheckout);
     }
@@ -355,8 +361,86 @@ SelfCheckManager.prototype.drawHoldsPage = function() {
     openils.Util.hide('oils-selfck-circ-page');
     openils.Util.hide('oils-selfck-payment-page');
     openils.Util.show('oils-selfck-holds-page');
+
+    this.holdTbody = dojo.byId('oils-selfck-hold-tbody');
+    if(!this.holdTemplate)
+        this.holdTemplate = this.holdTbody.removeChild(dojo.byId('oils-selfck-hold-row'));
+    while(this.holdTbody.childNodes[0])
+        this.holdTbody.removeChild(this.holdTbody.childNodes[0]);
+
+    progressDialog.show(true);
+
+    var self = this;
+    fieldmapper.standardRequest( // fetch the hold IDs
+        ['open-ils.circ', 'open-ils.circ.holds.id_list.retrieve'],
+        {   async : true,
+            params : [this.authtoken, this.patron.id()],
+
+            oncomplete : function(r) { 
+                var ids = openils.Util.readResponse(r);
+                if(!ids || ids.length == 0) return;
+
+                fieldmapper.standardRequest( // fetch the hold objects with fleshed details
+                    ['open-ils.circ', 'open-ils.circ.hold.details.batch.retrieve.atomic'],
+                    {   async : true,
+                        params : [self.authtoken, ids],
+                        oncomplete : function(rr) {
+                            self.drawHolds(openils.Util.readResponse(rr));
+                        }
+                    }
+                );
+            }
+        }
+    );
 }
 
+/**
+ * Fetch and add a single hold to the list of holds
+ */
+SelfCheckManager.prototype.drawHolds = function(holds) {
+
+    holds = holds.sort(
+        // sort available holds to the top of the list
+        // followed by queue position order
+        function(a, b) {
+            if(a.status == 4) return -1;
+            if(a.queue_position < b.queue_position) return -1;
+            return 1;
+        }
+    );
+
+    progressDialog.hide();
+
+    for(var i in holds) {
+
+        var data = holds[i];
+        var row = this.holdTemplate.cloneNode(true);
+
+        if(data.mvr.isbn()) {
+            this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/' + data.mvr.isbn());
+        }
+
+        this.byName(row, 'title').innerHTML = data.mvr.title();
+        this.byName(row, 'author').innerHTML = data.mvr.author();
+
+        if(data.status == 4) {
+
+            // hold is ready for pickup
+            this.byName(row, 'status').innerHTML = localeStrings.HOLD_STATUS_READY;
+
+        } else {
+
+            // hold is still pending
+            this.byName(row, 'status').innerHTML = 
+                dojo.string.substitute(
+                    localeStrings.HOLD_STATUS_WAITING,
+                    [data.queue_position, data.potential_copies]
+                );
+        }
+
+        this.holdTbody.appendChild(row);
+    }
+}
 
 
 
@@ -368,6 +452,13 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
 
     if(!barcode) {
         this.updateScanbox(null, true);
+        return;
+    }
+
+    if(this.mockCheckouts) {
+        // if we're in mock-checkout mode, just insert another
+        // fake circ into the table and get out of here.
+        this.displayCheckout(this.mockCheckout);
         return;
     }
 
@@ -443,7 +534,8 @@ SelfCheckManager.prototype.displayCheckout = function(evt) {
     this.byName(row, 'due_date').innerHTML = 
         dojo.date.locale.format(date, {selector : 'date'});
 
-    this.circTbody.appendChild(row);
+    // put new circs at the top of the list
+    this.circTbody.insertBefore(row, this.circTbody.getElementsByTagName('tr')[0]);
 }
 
 
@@ -451,16 +543,19 @@ SelfCheckManager.prototype.byName = function(node, name) {
     return dojo.query('[name=' + name+']', node)[0];
 }
 
+
+SelfCheckManager.prototype.drawFinesPage = function() {
+
+    openils.Util.hide('oils-selfck-circ-page');
+    openils.Util.hide('oils-selfck-holds-page');
+    openils.Util.show('oils-selfck-payment-page');
+
+}
+
 /**
  * Print a receipt
  */
 SelfCheckManager.prototype.printReceipt = function() {
-}
-
-/**
- * Build the patron holds table
- */
-SelfCheckManager.prototype.displayHolds = function() {
 }
 
 

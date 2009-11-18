@@ -1,7 +1,9 @@
 <div id='oils-selfck-circ-info-div'>
     <div id='oils-selfck-info-nav'>
-        <span><a href='javascript:void(0);'>Home</a></span>
-        <span><a href='javascript:void(0);'>Done</a></span>
+        <span><a id='oils-selfck-nav-home' href='javascript:void(0);' class='selected'>Home</a></span>
+        <span><a id='oils-selfck-nav-holds' href='javascript:void(0);'>My Holds</a></span>
+        <span><a id='oils-selfck-nav-fines' href='javascript:void(0);'>Pay Fines</a></span>
+        <span><a id='oils-selfck-nav-logout' href='javascript:void(0);'>Log Out</a></span>
     </div>
     <fieldset>
         <legend>Items Checked Out</legend>

@@ -1,5 +1,5 @@
 <div id='oils-selfck-circ-table-div'>
-    <table id='oils-selfck-circ-table'>
+    <table id='oils-selfck-circ-table' class='oils-selfck-item-table'>
         <thead>
             <tr>
                 <td id='oils-self-circ-pic-cell'></td>

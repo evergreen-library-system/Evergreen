@@ -41,18 +41,28 @@ body {
     border: none;
 }
 
-#oils-selfck-circ-table  {
+.oils-selfck-item-table  {
     width: 98%;
     margin-top: 15px;
 }
 
-#oils-selfck-circ-table td {
-    text-align: center;
+.oils-selfck-item-table td {
+    text-align: left;
+    padding: 10px;
 }
 
-#oils-selfck-circ-table thead {
+.oils-selfck-item-table thead {
     font-weight: bold;
 }
+
+.oils-selfck-item-table tbody tr {
+    border-bottom: 1px solid #888;
+}
+
+.oils-selfck-item-table tbody td {
+    padding:10px;
+}
+
 
 #oils-selfck-content-div {
     width: 70%;
@@ -73,7 +83,12 @@ body {
 }
 
 #oils-selfck-info-nav span {
+    padding-left: 10px;
     padding-right: 10px;
+}
+
+#oils-selfck-info-nav span.selected {
+    background-color: #e0e0e0;
 }
 
 #oils-selfck-circ-info-div fieldset {
@@ -91,11 +106,4 @@ body {
     padding: 3px;
 }
 
-#oils-selfck-circ-tbody tr {
-    border-bottom: 1px solid #888;
-}
-
-#oils-selfck-circ-tbody td {
-    padding:10px;
-}
 

@@ -31,7 +31,7 @@
         [% INCLUDE 'default/circ/selfcheck/summary.tt2' %]
     </div>
 </div>
-
+<div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>
 [% END %]
 
 
