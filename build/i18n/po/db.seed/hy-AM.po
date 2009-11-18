@@ -1,0 +1,6146 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2009-11-18 00:41:35-0400\n"
+"PO-Revision-Date: 2008-08-09 17:28+0400\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+
+# id::vqbrad.description__11
+#: 950.data.seed-values.sql:1879
+msgid "Internal ID"
+msgstr ""
+
+# id::clm.value__vai
+# id::vai
+#: 950.data.seed-values.sql:666
+msgid "Vai"
+msgstr "Vai"
+
+# id::cblvl.value__i
+# id::i
+#: 950.data.seed-values.sql:720
+msgid "Integrating resource"
+msgstr "Միավորող պաշար"
+
+# id::clfm.value__u
+# id::u
+#: 950.data.seed-values.sql:201
+msgid "Unknown"
+msgstr "Չճանաչված"
+
+# id::clfm.value__p
+# id::p
+#: 950.data.seed-values.sql:195
+msgid "Poetry"
+msgstr "Պոէզիա"
+
+# id::ccs.name__6
+# id::6
+#: 950.data.seed-values.sql:120
+msgid "In transit"
+msgstr "Տեղափոխման մեջ"
+
+# id::clm.value__pau
+# id::pau
+#: 950.data.seed-values.sql:544
+msgid "Palauan"
+msgstr "Palauan"
+
+# id::ppl.description__306
+#: 950.data.seed-values.sql:1190
+msgid "FIXME: Need description for UPDATE_LOCALE"
+msgstr ""
+
+# id::ppl.description__115
+# id::115
+#: 950.data.seed-values.sql:1000
+#, fuzzy
+msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
+msgstr ""
+"Թույլ է տալիս օգտվողին ստեղծել կրկնակի պահումներ (այսինքն՝ նույն վերնագրի "
+"համար երկու պահում):"
+
+# id::ppl.description__194
+#: 950.data.seed-values.sql:1078
+msgid "Allows a user to create a purchase order"
+msgstr ""
+
+# id::cza.label__5 id::cza.label__14 id::cza.label__23
+#: 950.data.seed-values.sql:768 950.data.seed-values.sql:789
+#: 950.data.seed-values.sql:808
+msgid "Title"
+msgstr ""
+
+# id::clm.value__kir
+# id::kir
+#: 950.data.seed-values.sql:431
+msgid "Kyrgyz"
+msgstr "Կիրգիզերեն"
+
+# id::i18n_l.description__en-US
+# id::en-US
+#: 950.data.seed-values.sql:727
+msgid "American English"
+msgstr "Ամերիկական անգլերեն"
+
+# id::cblvl.value__b
+# id::b
+#: 950.data.seed-values.sql:717
+msgid "Serial component part"
+msgstr "Պարբերականի մաս"
+
+# id::clm.value__niu
+# id::niu
+#: 950.data.seed-values.sql:517
+msgid "Niuean"
+msgstr "Niuean"
+
+# id::clm.value__fat
+# id::fat
+#: 950.data.seed-values.sql:336
+msgid "Fanti"
+msgstr "Fanti"
+
+# id::crcd.name__1
+# id::1
+#: 950.data.seed-values.sql:61
+msgid "7_days_0_renew"
+msgstr "7_days_0_renew"
+
+# id::ppl.description__123
+# id::123
+#: 950.data.seed-values.sql:1008
+#, fuzzy
+msgid "Allow a user to un-bar a patron"
+msgstr "Թույլ է տալիս օգտվողին բացել ընթերցողին:"
+
+# id::cza.label__3 id::cza.label__12 id::cza.label__21
+#: 950.data.seed-values.sql:764 950.data.seed-values.sql:785
+#: 950.data.seed-values.sql:804
+msgid "LCCN"
+msgstr ""
+
+# id::clm.value__mas
+# id::mas
+#: 950.data.seed-values.sql:479
+msgid "Masai"
+msgstr "Masai"
+
+# id::clm.value__bam
+# id::bam
+#: 950.data.seed-values.sql:245
+msgid "Bambara"
+msgstr "Bambara"
+
+# id::clm.value__snd
+# id::snd
+#: 950.data.seed-values.sql:600
+msgid "Sindhi"
+msgstr "Sindhi"
+
+# id::aou.name__7
+# id::7
+#: 950.data.seed-values.sql:854
+msgid "Example Branch 4"
+msgstr "Օրինակ մասնաճյուղ 4"
+
+# id::cam.description__b
+#: 950.data.seed-values.sql:148
+msgid "The item is intended for children, approximate ages 6-8 years."
+msgstr ""
+
+# id::clm.value__abk
+# id::abk
+#: 950.data.seed-values.sql:207
+msgid "Abkhaz"
+msgstr "Աբխազ"
+
+# id::clm.value__sat
+# id::sat
+#: 950.data.seed-values.sql:575
+msgid "Santali"
+msgstr "Santali"
+
+# id::clm.value__dua
+# id::dua
+#: 950.data.seed-values.sql:315
+msgid "Duala"
+msgstr "Duala"
+
+# id::clm.value__ukr
+# id::ukr
+#: 950.data.seed-values.sql:661
+msgid "Ukrainian"
+msgstr "Ուկրաիներեն"
+
+# id::clm.value__vot
+# id::vot
+#: 950.data.seed-values.sql:670
+msgid "Votic"
+msgstr "Votic"
+
+# id::cubt.label__folks%3Acirc.view
+#: 950.data.seed-values.sql:1950
+msgid "View Circulations"
+msgstr ""
+
+# id::aou.name__5
+# id::5
+#: 950.data.seed-values.sql:850
+msgid "Example Branch 2"
+msgstr "Օրինակ մասնաճյուղ 2"
+
+# id::clfm.value__h
+# id::h
+#: 950.data.seed-values.sql:183
+msgid "Humor, satires, etc."
+msgstr "Հումոր, սատիրա, այլ"
+
+# id::ppl.description__43
+# id::43
+#: 950.data.seed-values.sql:929
+#, fuzzy
+msgid "Allow a user to create a new bill on a transaction"
+msgstr "Թույլ է տալիս օգտվողին տրանզակցիայի համար ստեղծել նոր հաշիվ"
+
+# id::clm.value__bnt
+# id::bnt
+#: 950.data.seed-values.sql:261
+msgid "Bantu (Other)"
+msgstr "Bantu (այլ)"
+
+# id::clm.value__kau
+# id::kau
+#: 950.data.seed-values.sql:421
+msgid "Kanuri"
+msgstr "Kanuri"
+
+# id::clm.value__umb
+# id::umb
+#: 950.data.seed-values.sql:662
+msgid "Umbundu"
+msgstr "Umbundu"
+
+# id::crrf.name__2
+# id::2
+#: 950.data.seed-values.sql:103
+msgid "10_cent_per_day"
+msgstr "10_cent_per_day"
+
+# id::ppl.description__41
+# id::41
+# id::43
+#: 950.data.seed-values.sql:927
+#, fuzzy
+msgid "Allow a user to create a new billable transaction"
+msgstr "Թույլ է տալիս օգտվողին տրանզակցիայի համար ստեղծել նոր հաշիվ"
+
+# id::cubt.label__folks%3Acirc.renew
+#: 950.data.seed-values.sql:1951
+msgid "Renew Circulations"
+msgstr ""
+
+# id::ppl.description__188
+#: 950.data.seed-values.sql:1072
+msgid "Allow a user to mark an item status as 'in transit'"
+msgstr ""
+
+# id::ppl.description__342
+#: 950.data.seed-values.sql:1228
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty"
+msgstr ""
+
+# id::ppl.description__223
+#: 950.data.seed-values.sql:1107
+msgid "FIXME: Need description for CREATE_PERM"
+msgstr ""
+
+# id::clm.value__cel
+# id::cel
+#: 950.data.seed-values.sql:277
+msgid "Celtic (Other)"
+msgstr "Կելտերեն (այլ)"
+
+# id::cst.value__2
+# id::2
+#: 950.data.seed-values.sql:11
+msgid "Barred"
+msgstr "Կասէցված"
+
+# id::clm.value__hil
+# id::hil
+#: 950.data.seed-values.sql:381
+msgid "Hiligaynon"
+msgstr "Hiligaynon"
+
+# id::clm.value__kac
+# id::kac
+#: 950.data.seed-values.sql:415
+msgid "Kachin"
+msgstr "Kachin"
+
+# id::crmf.name__4
+# id::4
+#: 950.data.seed-values.sql:91
+msgid "overdue_max"
+msgstr "overdue_max"
+
+# id::ppl.description__164
+# id::164
+# id::77
+#: 950.data.seed-values.sql:1048
+#, fuzzy
+msgid "Allow a user to update a fund allocation"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել պատճեի տէղաբաշխումը"
+
+# id::clfm.value__j
+# id::j
+#: 950.data.seed-values.sql:189
+msgid "Short stories"
+msgstr "Կարճ պատմվածքներ"
+
+# id::clm.value__pag
+# id::pag
+#: 950.data.seed-values.sql:539
+msgid "Pangasinan"
+msgstr "Pangasinan"
+
+# id::ppl.description__156
+# id::156
+# id::153
+# id::157
+# id::88
+#: 950.data.seed-values.sql:1040
+#, fuzzy
+msgid "Allow a user to update a funding source"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__237
+#: 950.data.seed-values.sql:1121
+msgid "FIXME: Need description for DELETE_LASSO"
+msgstr ""
+
+# id::ppl.description__262
+#: 950.data.seed-values.sql:1146
+msgid "FIXME: Need description for UPDATE_ITEM_FORM"
+msgstr ""
+
+# id::ppl.description__332
+#: 950.data.seed-values.sql:1218
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft"
+msgstr ""
+
+# id::ppl.description__182
+#: 950.data.seed-values.sql:1066
+msgid "Allow a user to mark an item status as 'available'"
+msgstr ""
+
+# id::ppl.description__82
+# id::82
+#: 950.data.seed-values.sql:967
+#, fuzzy
+msgid "Allow a user to view which users have checked out a given copy"
+msgstr "Թույլ է տալիս օգտվողին տեսնել թե որ օգտվողներն են վերցրել տրված օրինակը"
+
+# id::clm.value__pam
+# id::pam
+#: 950.data.seed-values.sql:541
+msgid "Pampanga"
+msgstr "Pampanga"
+
+# id::clm.value__nah
+# id::nah
+#: 950.data.seed-values.sql:504
+msgid "Nahuatl"
+msgstr "Nahuatl"
+
+# id::clm.value__yid
+# id::yid
+#: 950.data.seed-values.sql:683
+msgid "Yiddish"
+msgstr "Yiddish"
+
+# id::vqbrad.description__8
+#: 950.data.seed-values.sql:1876
+msgid "Accession Number"
+msgstr ""
+
+# id::ppl.description__117
+# id::117
+#: 950.data.seed-values.sql:1001
+#, fuzzy
+msgid "Allow a user to update a closed date interval for a given location"
+msgstr ""
+"Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար թարմացնել փակ ամսաթվի "
+"տիրույթը:"
+
+# id::clm.value__cpp
+# id::cpp
+#: 950.data.seed-values.sql:298
+msgid "Creoles and Pidgins, Portuguese-based (Other)"
+msgstr "Creoles and Pidgins, Portuguese-based (այլ)"
+
+# id::clm.value__ton
+# id::ton
+#: 950.data.seed-values.sql:643
+msgid "Tongan"
+msgstr "Tongan"
+
+# id::clm.value__ijo
+# id::ijo
+#: 950.data.seed-values.sql:394
+msgid "Ijo"
+msgstr "Ijo"
+
+# id::clm.value__cai
+# id::cai
+#: 950.data.seed-values.sql:271
+msgid "Central American Indian (Other)"
+msgstr "Central American Indian (այլ)"
+
+# id::ccs.name__14
+# id::14
+#: 950.data.seed-values.sql:128
+msgid "Damaged"
+msgstr "Վնասված"
+
+# id::ppl.description__132
+# id::132
+#: 950.data.seed-values.sql:1017
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
+msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԳրադարանիԿառավարիչ\" "
+"խմբից"
+
+# id::clm.value__sma
+# id::sma
+#: 950.data.seed-values.sql:592
+msgid "Southern Sami"
+msgstr "Southern Sami"
+
+# id::clm.value__kaw
+# id::kaw
+#: 950.data.seed-values.sql:422
+msgid "Kawi"
+msgstr "Kawi"
+
+# id::ppl.description__20
+#: 950.data.seed-values.sql:907
+msgid "Allow a user to import a MARC record via the Z39.50 interface"
+msgstr ""
+
+# id::ppl.description__257
+#: 950.data.seed-values.sql:1141
+msgid "FIXME: Need description for UPDATE_CIRC_MOD"
+msgstr ""
+
+# id::ppl.description__245
+#: 950.data.seed-values.sql:1129
+msgid "FIXME: Need description for DELETE_ORG_UNIT_CLOSING"
+msgstr ""
+
+# id::clm.value__kok
+# id::kok
+#: 950.data.seed-values.sql:433
+msgid "Konkani"
+msgstr "Konkani"
+
+# id::ppl.description__226
+#: 950.data.seed-values.sql:1110
+msgid "FIXME: Need description for CREATE_VR_FORMAT"
+msgstr ""
+
+# id::clm.value__nau
+# id::nau
+#: 950.data.seed-values.sql:507
+msgid "Nauru"
+msgstr "Nauru"
+
+# id::cam.value__g
+# id::g
+#: 950.data.seed-values.sql:162
+msgid "General"
+msgstr "Ընդհանուր"
+
+# id::clm.value__sas
+# id::sas
+#: 950.data.seed-values.sql:574
+msgid "Sasak"
+msgstr "Sasak"
+
+# id::ccs.name__0
+# id::0
+#: 950.data.seed-values.sql:114
+msgid "Available"
+msgstr "Մատչելի"
+
+# id::ppl.description__180
+#: 950.data.seed-values.sql:1064
+msgid "Allow a user to mark a transaction as bad (unrecoverable) debt"
+msgstr ""
+
+# id::crcd.name__6
+# id::6
+#: 950.data.seed-values.sql:71
+msgid "35_days_1_renew"
+msgstr "35_days_1_renew"
+
+# id::clm.value__zul
+# id::zul
+#: 950.data.seed-values.sql:690
+msgid "Zulu"
+msgstr "Zulu"
+
+# id::ppl.description__255
+#: 950.data.seed-values.sql:1139
+msgid "FIXME: Need description for UPDATE_BIB_LEVEL"
+msgstr ""
+
+# id::ppl.description__87
+# id::87
+#: 950.data.seed-values.sql:972
+#, fuzzy
+msgid "Allow a user to view all notes attached to a title"
+msgstr "Թույլ է տալիս օգտվողին դիտել վերնագրին կցված բոլոր նշումները"
+
+# id::clm.value__geo
+# id::geo
+#: 950.data.seed-values.sql:355
+msgid "Georgian"
+msgstr "Վրացերեն"
+
+# id::ppl.description__155
+# id::155
+# id::153
+# id::157
+# id::88
+#: 950.data.seed-values.sql:1039
+#, fuzzy
+msgid "Allow a user to view a funding source"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::clm.value__arc
+# id::arc
+#: 950.data.seed-values.sql:225
+msgid "Aramaic"
+msgstr "Aramaic"
+
+# id::ppl.description__84
+# id::84
+#: 950.data.seed-values.sql:969
+#, fuzzy
+msgid "Allow a user to register a new workstation"
+msgstr "Թույլ է տալիս օգտվողին գրանցել նոր աշխատանքային կայան"
+
+# id::clm.value__tir
+# id::tir
+#: 950.data.seed-values.sql:637
+msgid "Tigrinya"
+msgstr "Tigrinya"
+
+# id::clm.value__chk id::clm.value__-tru
+# id::chk
+#: 950.data.seed-values.sql:283 950.data.seed-values.sql:645
+msgid "Truk"
+msgstr "Truk"
+
+# id::ppl.description__225
+#: 950.data.seed-values.sql:1109
+msgid "FIXME: Need description for CREATE_SURVEY"
+msgstr ""
+
+# id::clm.value__tib
+# id::tib
+#: 950.data.seed-values.sql:635
+msgid "Tibetan"
+msgstr "Տիբեթերեն"
+
+# id::ppl.description__274
+#: 950.data.seed-values.sql:1158
+msgid "FIXME: Need description for UPDATE_RELEVANCE_ADJUSTMENT"
+msgstr ""
+
+# id::cza.label__7 id::cza.label__16 id::cza.label__25
+# id::vqbrad.description__12
+#: 950.data.seed-values.sql:772 950.data.seed-values.sql:793
+#: 950.data.seed-values.sql:812 950.data.seed-values.sql:1880
+msgid "Publisher"
+msgstr ""
+
+# id::clm.value__inh
+# id::inh
+#: 950.data.seed-values.sql:402
+msgid "Ingush"
+msgstr "Ingush"
+
+# id::clm.value__dzo
+# id::dzo
+#: 950.data.seed-values.sql:319
+msgid "Dzongkha"
+msgstr "Dzongkha"
+
+# id::clm.value__grn id::clm.value__-gua
+# id::grn
+#: 950.data.seed-values.sql:371 950.data.seed-values.sql:372
+msgid "Guarani"
+msgstr "Guarani"
+
+# id::clm.value__iii
+# id::iii
+#: 950.data.seed-values.sql:393
+msgid "Sichuan Yi"
+msgstr "Sichuan Yi"
+
+# id::clm.value__btk
+# id::btk
+#: 950.data.seed-values.sql:265
+msgid "Batak"
+msgstr "Batak"
+
+# id::clm.value__div
+# id::div
+#: 950.data.seed-values.sql:312
+msgid "Divehi"
+msgstr "Divehi"
+
+# id::clm.value__sga
+# id::sga
+#: 950.data.seed-values.sql:581
+msgid "Irish, Old (to 1100)"
+msgstr "Irish, Old (to 1100)"
+
+# id::clm.value__kru
+# id::kru
+#: 950.data.seed-values.sql:440
+msgid "Kurukh"
+msgstr "Kurukh"
+
+# id::clm.value__her
+# id::her
+#: 950.data.seed-values.sql:380
+msgid "Herero"
+msgstr "Herero"
+
+# id::crcd.name__3
+# id::3
+#: 950.data.seed-values.sql:65
+msgid "3_months_0_renew"
+msgstr "3_months_0_renew"
+
+# id::ppl.description__7
+#: 950.data.seed-values.sql:895
+msgid "Allow a user to place a volume level hold"
+msgstr ""
+
+# id::clm.value__lav
+# id::lav
+#: 950.data.seed-values.sql:453
+msgid "Latvian"
+msgstr "Լատվիերեն"
+
+# id::clm.value__eng
+# id::eng
+#: 950.data.seed-values.sql:324
+msgid "English"
+msgstr "Անգլերեն"
+
+# id::ppl.description__55
+# id::55
+#: 950.data.seed-values.sql:940
+#, fuzzy
+msgid "Allow a user to edit copies in batch"
+msgstr "Թույլ է տալիս օգտվողին փաթեթով խմբագրել օրինակները"
+
+# id::cifm.value__d
+# id::d
+#: 950.data.seed-values.sql:696
+msgid "Large print"
+msgstr "Լայն տպագրություն"
+
+# id::clm.value__scr
+# id::scr
+#: 950.data.seed-values.sql:578
+msgid "Croatian"
+msgstr "Խորվաթերեն"
+
+# id::cam.value__j
+# id::j
+#: 950.data.seed-values.sql:165
+msgid "Juvenile"
+msgstr "Պատանեկան"
+
+# id::clm.value__chi
+# id::chi
+#: 950.data.seed-values.sql:282
+msgid "Chinese"
+msgstr "Չիներեն"
+
+# id::ppl.description__51
+# id::51
+#: 950.data.seed-values.sql:936
+#, fuzzy
+msgid "Allow a user to add other users to permission groups"
+msgstr "Օգտվողը կարող է իրավասությունների խմբերին ավելացնել այլ օգտվողների "
+
+# id::ppl.description__11
+# id::11
+#: 950.data.seed-values.sql:899
+#, fuzzy
+msgid "Allow a user to view another user's holds"
+msgstr "Թույլ է տալիս օգտվողին դիտելու այլ օգտվողի պահումները"
+
+# id::ppl.description__233
+#: 950.data.seed-values.sql:1117
+msgid "FIXME: Need description for DELETE_HOURS_OF_OPERATION"
+msgstr ""
+
+# id::clm.value__iku
+# id::iku
+#: 950.data.seed-values.sql:395
+msgid "Inuktitut"
+msgstr "Inuktitut"
+
+# id::clm.value__mun
+# id::mun
+#: 950.data.seed-values.sql:500
+msgid "Munda (Other)"
+msgstr "Munda(այլ)"
+
+# id::clm.value__pli
+# id::pli
+#: 950.data.seed-values.sql:549
+msgid "Pali"
+msgstr "Pali"
+
+# id::clm.value__gaa
+# id::gaa
+#: 950.data.seed-values.sql:348
+msgid "Gã"
+msgstr "Gã"
+
+# id::ppl.description__119
+# id::119
+#: 950.data.seed-values.sql:1004
+#, fuzzy
+msgid "Allow a user to delete a non cataloged type"
+msgstr "Թույլ է տալիս օգտվողին ջնջել չմուտքագրվող տեսակը:"
+
+# id::clm.value__yap
+# id::yap
+#: 950.data.seed-values.sql:682
+msgid "Yapese"
+msgstr "Yapese"
+
+# id::clm.value__ara
+# id::ara
+#: 950.data.seed-values.sql:224
+msgid "Arabic"
+msgstr "Արաբերեն"
+
+# id::clm.value__ven
+# id::ven
+#: 950.data.seed-values.sql:667
+msgid "Venda"
+msgstr "Venda"
+
+# id::ppl.description__34
+#: 950.data.seed-values.sql:921
+msgid "Allow a user to view user permissions within the user permissions editor"
+msgstr ""
+
+# id::pgt.name__3
+#: 950.data.seed-values.sql:1251
+msgid "Staff"
+msgstr ""
+
+# id::ppl.description__134
+# id::134
+#: 950.data.seed-values.sql:1019
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Supercat\" խմբից"
+
+# id::clm.value''in__gwi
+#: 950.data.seed-values.sql:374
+msgid "Gwich"
+msgstr ""
+
+# id::clm.value__iro
+# id::iro
+#: 950.data.seed-values.sql:407
+msgid "Iroquoian (Other)"
+msgstr "Iroquoian (այլ)"
+
+# id::clm.value__ori
+# id::ori
+#: 950.data.seed-values.sql:532
+msgid "Oriya"
+msgstr "Oriya"
+
+# id::ppl.description__125
+# id::125
+#: 950.data.seed-values.sql:1010
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"User\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Օգտվող\" խմբից"
+
+# id::clm.value__ipk
+# id::ipk
+#: 950.data.seed-values.sql:404
+msgid "Inupiaq"
+msgstr "Inupiaq"
+
+# id::cbt.name__2
+#: 950.data.seed-values.sql:868
+msgid "Long Overdue Collection Fee"
+msgstr ""
+
+# id::ppl.description__253
+#: 950.data.seed-values.sql:1137
+msgid "FIXME: Need description for TRANSIT_COPY"
+msgstr ""
+
+# id::i18n_l.name__en-CA
+#: 950.data.seed-values.sql:732
+msgid "English (Canada)"
+msgstr ""
+
+# id::clm.value__hin
+# id::hin
+#: 950.data.seed-values.sql:383
+msgid "Hindi"
+msgstr "Հինդու"
+
+# id::clm.value__ewo
+# id::ewo
+#: 950.data.seed-values.sql:332
+msgid "Ewondo"
+msgstr "Ewondo"
+
+# id::cza.label__1 id::cza.label__10 id::cza.label__19
+#: 950.data.seed-values.sql:760 950.data.seed-values.sql:781
+#: 950.data.seed-values.sql:800
+msgid "Title Control Number"
+msgstr ""
+
+# id::ppl.description__292
+#: 950.data.seed-values.sql:1176
+msgid "FIXME: Need description for DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
+msgstr ""
+
+# id::ppl.description__138
+# id::138
+#: 950.data.seed-values.sql:1023
+#, fuzzy
+msgid "Allow a user to renew an item past the maximum renewal count"
+msgstr ""
+"Թույլ է տալիս օգտվողին թարմացնել նյութը, որը գերազանցել է ամենաշատ "
+"թարմացումների քանակը:  "
+
+# id::ppl.description__139
+# id::139
+#: 950.data.seed-values.sql:1024
+msgid "Allow staff to override checkout count failure"
+msgstr "Թույլ է տալիս աշխատակազմին վերագրել դուրս տրումների հաշվիչի ձախողումը:"
+
+# id::clm.value__hun
+# id::hun
+#: 950.data.seed-values.sql:387
+msgid "Hungarian"
+msgstr "Հունգարերեն"
+
+# id::clfm.value__f
+# id::f
+#: 950.data.seed-values.sql:181
+msgid "Novels"
+msgstr "Նովելներ"
+
+# id::clm.value__wol
+# id::wol
+#: 950.data.seed-values.sql:678
+msgid "Wolof"
+msgstr "Wolof"
+
+# id::clm.value__bos
+# id::bos
+#: 950.data.seed-values.sql:262
+msgid "Bosnian"
+msgstr "Բոսներեն"
+
+# id::clm.value__rom
+# id::rom
+#: 950.data.seed-values.sql:562
+msgid "Romani"
+msgstr "Romani"
+
+# id::clm.value__vie
+# id::vie
+#: 950.data.seed-values.sql:668
+msgid "Vietnamese"
+msgstr "Վիետնամերեն"
+
+# id::aout.opac_label__4
+#: 950.data.seed-values.sql:835
+msgid "This Specialized Library"
+msgstr ""
+
+# id::clm.value__mnc
+# id::mnc
+#: 950.data.seed-values.sql:492
+msgid "Manchu"
+msgstr "Manchu"
+
+# id::aou.name__1
+# id::1
+#: 950.data.seed-values.sql:842
+msgid "Example Consortium"
+msgstr "Միավորման օրինակ"
+
+# id::clm.value__rus id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU
+# id::rus
+#: 950.data.seed-values.sql:565 950.data.seed-values.sql:747
+#: 950.data.seed-values.sql:748
+msgid "Russian"
+msgstr "Ռուսերեն"
+
+# id::clm.value__gba
+# id::gba
+#: 950.data.seed-values.sql:353
+msgid "Gbaya"
+msgstr "Gbaya"
+
+# id::clm.value__luo
+# id::luo
+#: 950.data.seed-values.sql:466
+msgid "Luo (Kenya and Tanzania)"
+msgstr "Luo (Kenya and Tanzania)"
+
+# id::clm.value__tiv
+# id::tiv
+#: 950.data.seed-values.sql:638
+msgid "Tiv"
+msgstr "Tiv"
+
+# id::ppl.description__242
+#: 950.data.seed-values.sql:1126
+msgid "FIXME: Need description for DELETE_ORG_ADDRESS"
+msgstr ""
+
+# id::clm.value__und
+# id::und
+#: 950.data.seed-values.sql:663
+msgid "Undetermined"
+msgstr "Undetermined"
+
+# id::ppl.description__213
+#: 950.data.seed-values.sql:1097
+msgid "FIXME: Need description for CREATE_LANGUAGE"
+msgstr ""
+
+# id::cam.description__f
+#: 950.data.seed-values.sql:160
+msgid "The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience."
+msgstr ""
+
+# id::ppl.description__90
+# id::90
+#: 950.data.seed-values.sql:975
+#, fuzzy
+msgid "Allow a user to create a new title note"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր վերնագրի նշում"
+
+# id::cnal.name__3
+# id::3
+#: 950.data.seed-values.sql:137
+msgid "No Access"
+msgstr "Ոչ մատչելի"
+
+# id::ppl.description__175
+#: 950.data.seed-values.sql:1059
+msgid "Allow a user to create/view/update/delete a provider"
+msgstr ""
+
+# id::ppl.description__207
+#: 950.data.seed-values.sql:1091
+msgid "FIXME: Need description for CREATE_CIRC_DURATION"
+msgstr ""
+
+# id::clfm.value__1
+# id::1
+#: 950.data.seed-values.sql:172
+msgid "Fiction (not further specified)"
+msgstr "Գեղարվեստական (սահմանված չէ)"
+
+# id::ppl.description__108
+# id::108
+#: 950.data.seed-values.sql:993
+#, fuzzy
+msgid "Allow a user to check in/out an item that has an alert message"
+msgstr "Թույլ է տալիս օգտվողին սպասարկել զգուշացնող հաղորդումով նյութը"
+
+# id::clm.value__bra
+# id::bra
+#: 950.data.seed-values.sql:263
+msgid "Braj"
+msgstr "Braj"
+
+# id::clm.value__bat
+# id::bat
+#: 950.data.seed-values.sql:249
+msgid "Baltic (Other)"
+msgstr "Baltic (այլ)"
+
+# id::clm.value__tso
+# id::tso
+#: 950.data.seed-values.sql:648
+msgid "Tsonga"
+msgstr "Tsonga"
+
+# id::aout.opac_label__5
+#: 950.data.seed-values.sql:838
+msgid "Your Bookmobile"
+msgstr ""
+
+# id::clfm.description__i
+#: 950.data.seed-values.sql:187
+msgid "The item is a single letter or collection of correspondence."
+msgstr ""
+
+# id::citm.value__m
+# id::m
+#: 950.data.seed-values.sql:714
+msgid "Computer file"
+msgstr "Համակարգչային ֆայլ"
+
+# id::clm.value__phi
+# id::phi
+#: 950.data.seed-values.sql:547
+msgid "Philippine (Other)"
+msgstr "Philippine (այլ)"
+
+# id::clm.value__ger
+# id::ger
+#: 950.data.seed-values.sql:356
+msgid "German"
+msgstr "Գերմաներեն"
+
+# id::ppl.description__131
+# id::131
+#: 950.data.seed-values.sql:1016
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
+msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԼոկալԱդմին\" խմբից"
+
+# id::clm.value__sla
+# id::sla
+#: 950.data.seed-values.sql:589
+msgid "Slavic (Other)"
+msgstr "Սլավոներեն (այլ)"
+
+# id::ppl.description__33
+#: 950.data.seed-values.sql:920
+msgid "Allow a user to place an item in transit"
+msgstr ""
+
+# id::ppl.description__266
+#: 950.data.seed-values.sql:1150
+msgid "FIXME: Need description for UPDATE_LASSO_MAP"
+msgstr ""
+
+# id::clm.value__baq
+# id::baq
+#: 950.data.seed-values.sql:247
+msgid "Basque"
+msgstr "Բասկերեն"
+
+# id::clm.value__tum
+# id::tum
+#: 950.data.seed-values.sql:651
+msgid "Tumbuka"
+msgstr "Tumbuka"
+
+# id::ppl.description__27
+#: 950.data.seed-values.sql:914
+msgid "Allow a user to continue to renew an item even if it is required for a hold"
+msgstr ""
+
+# id::cbs.source__1
+# id::1
+#: 950.data.seed-values.sql:3
+msgid "oclc"
+msgstr "oclc"
+
+# id::pgt.name__6
+#: 950.data.seed-values.sql:1257
+msgid "Acquisitions"
+msgstr ""
+
+# id::ppl.description__71
+# id::71
+#: 950.data.seed-values.sql:956
+#, fuzzy
+msgid "User may delete a copy statistical category entry map"
+msgstr "Թույլ է տալիս օգտվողին ջնջել վիճ քարտ մուտքի քարտեզը"
+
+# id::ppl.description__329
+#: 950.data.seed-values.sql:1215
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.void_overdue_on_lost"
+msgstr ""
+
+# id::clm.value__mdr
+# id::mdr
+#: 950.data.seed-values.sql:482
+msgid "Mandar"
+msgstr "Mandar"
+
+# id::cblvl.value__a
+# id::a
+#: 950.data.seed-values.sql:716
+msgid "Monographic component part"
+msgstr "Մենագրության մաս"
+
+# id::clfm.description__p
+#: 950.data.seed-values.sql:196
+msgid "The item is a poem or collection of poems."
+msgstr ""
+
+# id::ppl.description__289
+#: 950.data.seed-values.sql:1173
+msgid "FIXME: Need description for CREATE_MARC_CODE"
+msgstr ""
+
+# id::citm.value__t
+# id::t
+#: 950.data.seed-values.sql:702
+msgid "Manuscript language material"
+msgstr "Manuscript language material"
+
+# id::clm.value__che
+# id::che
+#: 950.data.seed-values.sql:280
+msgid "Chechen"
+msgstr "Չեչեներեն"
+
+# id::clm.value__nzi
+# id::nzi
+#: 950.data.seed-values.sql:529
+msgid "Nzima"
+msgstr "Nzima"
+
+# id::clm.value__dut
+# id::dut
+#: 950.data.seed-values.sql:317
+msgid "Dutch"
+msgstr "Հոլանդերեն"
+
+# id::cnct.name__1
+# id::1
+#: 950.data.seed-values.sql:49
+msgid "Paperback Book"
+msgstr "Փափուկ կազմով գիրք"
+
+# id::clm.value__eka
+# id::eka
+#: 950.data.seed-values.sql:322
+msgid "Ekajuk"
+msgstr "Ekajuk"
+
+# id::clm.value__grb
+# id::grb
+#: 950.data.seed-values.sql:368
+msgid "Grebo"
+msgstr "Grebo"
+
+# id::crcd.name__2
+# id::2
+#: 950.data.seed-values.sql:63
+msgid "28_days_2_renew"
+msgstr "28_days_2_renew"
+
+# id::clm.value__nep
+# id::nep
+#: 950.data.seed-values.sql:513
+msgid "Nepali"
+msgstr "Նեպալերեն"
+
+# id::ppl.description__127
+# id::127
+#: 950.data.seed-values.sql:1012
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Staff\" group"
+msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Աշխատակազմ\" խմբից"
+
+# id::clm.value__sms
+# id::sms
+#: 950.data.seed-values.sql:598
+msgid "Skolt Sami"
+msgstr "Skolt Sami"
+
+# id::clm.value__nbl
+# id::nbl
+#: 950.data.seed-values.sql:509
+msgid "Ndebele (South Africa)"
+msgstr "Ndebele (Հարաֆային Աֆրիկա)"
+
+# id::ccs.name__4
+# id::4
+#: 950.data.seed-values.sql:118
+msgid "Missing"
+msgstr "Բացակա"
+
+# id::clm.value__wel
+# id::wel
+#: 950.data.seed-values.sql:675
+msgid "Welsh"
+msgstr "Welsh"
+
+# id::clm.value__ota
+# id::ota
+#: 950.data.seed-values.sql:536
+msgid "Turkish, Ottoman"
+msgstr "Թուրքերեն, Օտոման"
+
+# id::cza.label__6 id::cza.label__15 id::cza.label__24
+# id::vqbrad.description__6
+# id::6
+# id::2
+#: 950.data.seed-values.sql:770 950.data.seed-values.sql:791
+#: 950.data.seed-values.sql:810 950.data.seed-values.sql:1874
+#, fuzzy
+msgid "ISSN"
+msgstr "SSN"
+
+# id::ppl.description__210
+#: 950.data.seed-values.sql:1094
+msgid "FIXME: Need description for CREATE_HOURS_OF_OPERATION"
+msgstr ""
+
+# id::ppl.description__351
+#: 950.data.seed-values.sql:1242
+msgid "Allow a user to place a hold despite the availability of a local copy"
+msgstr ""
+
+# id::clm.value__goh
+# id::goh
+#: 950.data.seed-values.sql:364
+msgid "German, Old High (ca. 750-1050)"
+msgstr "German, Old High (ca. 750-1050)"
+
+# id::ppl.description__70
+# id::70
+#: 950.data.seed-values.sql:955
+#, fuzzy
+msgid "User may delete a patron statistical category entry map"
+msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտ մուտքի քարտեզը"
+
+# id::clm.value__tem
+# id::tem
+#: 950.data.seed-values.sql:629
+msgid "Temne"
+msgstr "Temne"
+
+# id::ppl.description__172
+#: 950.data.seed-values.sql:1056
+msgid "Allow a user to view/credit/debit a funding source"
+msgstr ""
+
+# id::clm.value__jpr
+# id::jpr
+#: 950.data.seed-values.sql:411
+msgid "Judeo-Persian"
+msgstr "Judeo-Persian"
+
+# id::cubt.label__folks
+#: 950.data.seed-values.sql:1947
+msgid "Friends"
+msgstr ""
+
+# id::clm.value__day
+# id::day
+#: 950.data.seed-values.sql:307
+msgid "Dayak"
+msgstr "Dayak"
+
+# id::clm.value__gon
+# id::gon
+#: 950.data.seed-values.sql:365
+msgid "Gondi"
+msgstr "Gondi"
+
+# id::ppl.description__214
+#: 950.data.seed-values.sql:1098
+msgid "FIXME: Need description for CREATE_LASSO"
+msgstr ""
+
+# id::ppl.description__28
+# id::28
+# id::14
+#: 950.data.seed-values.sql:915
+#, fuzzy
+msgid "Allow a user to create another user"
+msgstr "Թույլ է տալիս օգտվողին թարմացնելու այլ օգտվողի պահումները"
+
+# id::clm.value__bak
+# id::bak
+#: 950.data.seed-values.sql:243
+msgid "Bashkir"
+msgstr "Բաշկիրերեն"
+
+# id::ppl.description__311
+#: 950.data.seed-values.sql:1195
+msgid "FIXME: Need description for CREATE_IMPORT_ITEM"
+msgstr ""
+
+# id::ppl.description__183
+#: 950.data.seed-values.sql:1067
+msgid "Allow a user to mark an item status as 'checked out'"
+msgstr ""
+
+# id::clm.value__kam
+# id::kam
+#: 950.data.seed-values.sql:417
+msgid "Kamba"
+msgstr "Kamba"
+
+# id::i18n_l.name__es-MX
+#: 950.data.seed-values.sql:744
+msgid "Spanish (Mexico)"
+msgstr ""
+
+# id::citm.value__i
+# id::i
+#: 950.data.seed-values.sql:712
+msgid "Nonmusical sound recording"
+msgstr "Ոչ երաժշտական ձայներիզներ"
+
+# id::pgt.name__2
+#: 950.data.seed-values.sql:1249
+msgid "Patrons"
+msgstr ""
+
+# id::ppl.description__227
+#: 950.data.seed-values.sql:1111
+msgid "FIXME: Need description for CREATE_XML_TRANSFORM"
+msgstr ""
+
+# id::ppl.description__102
+# id::102
+#: 950.data.seed-values.sql:987
+#, fuzzy
+msgid "Allow a user to change the due date on an item to any date"
+msgstr "Թույլ է տալիս օգտվողին փոխել նյութի վերադարձի ամսաթիվը այլով: "
+
+# id::ppl.description__76
+# id::76
+#: 950.data.seed-values.sql:961
+#, fuzzy
+msgid "Allow a user to create a new copy location"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր պատճեի տեղաբաշխում"
+
+# id::ppl.description__279
+#: 950.data.seed-values.sql:1163
+msgid "FIXME: Need description for UPDATE_XML_TRANSFORM"
+msgstr ""
+
+# id::clm.value__nso
+# id::nso
+#: 950.data.seed-values.sql:523
+msgid "Northern Sotho"
+msgstr "Northern Sotho"
+
+# id::crcd.name__8
+# id::8
+#: 950.data.seed-values.sql:75
+msgid "1_hour_2_renew"
+msgstr "1_hour_2_renew"
+
+# id::clfm.value__i
+# id::i
+#: 950.data.seed-values.sql:186
+msgid "Letters"
+msgstr "Նամակներ"
+
+# id::ppl.description__348
+#: 950.data.seed-values.sql:1237
+msgid "Allow a user to update and undelete records."
+msgstr ""
+
+# id::clm.value__mak
+# id::mak
+#: 950.data.seed-values.sql:473
+msgid "Makasar"
+msgstr "Makasar"
+
+# id::clm.value__afa
+# id::afa
+#: 950.data.seed-values.sql:212
+msgid "Afroasiatic (Other)"
+msgstr "Աֆրոասիական (այլ)"
+
+# id::clm.value__bih
+# id::bih
+#: 950.data.seed-values.sql:256
+msgid "Bihari"
+msgstr "Bihari"
+
+# id::clm.value__ine
+# id::ine
+#: 950.data.seed-values.sql:401
+msgid "Indo-European (Other)"
+msgstr "Հնդ-եվրոպական (այլ)"
+
+# id::clm.value__kin
+# id::kin
+#: 950.data.seed-values.sql:430
+msgid "Kinyarwanda"
+msgstr "Kinyarwanda"
+
+# id::clm.value__ile
+# id::ile
+#: 950.data.seed-values.sql:396
+msgid "Interlingue"
+msgstr "Interlingue"
+
+# id::ccs.name__12
+# id::12
+#: 950.data.seed-values.sql:126
+msgid "Reserves"
+msgstr "Պահեստային"
+
+# id::ppl.description__301
+#: 950.data.seed-values.sql:1185
+msgid "FIXME: Need description for UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
+msgstr ""
+
+# id::clm.value__heb
+# id::heb
+#: 950.data.seed-values.sql:379
+msgid "Hebrew"
+msgstr "Hebrew"
+
+# id::clm.value__lit
+# id::lit
+#: 950.data.seed-values.sql:457
+msgid "Lithuanian"
+msgstr "Լիտվերեն"
+
+# id::clm.value__epo id::clm.value__-esp
+# id::epo
+#: 950.data.seed-values.sql:326 950.data.seed-values.sql:328
+msgid "Esperanto"
+msgstr "Էսպերանտո"
+
+# id::ppl.description__67
+# id::67
+# id::69
+#: 950.data.seed-values.sql:952
+#, fuzzy
+msgid "User may delete a copy statistical category"
+msgstr "Օգտվողը կարող է ջնջել պատճեի վիճ քարտ մուտքը"
+
+# id::clm.value__cpf
+# id::cpf
+#: 950.data.seed-values.sql:297
+msgid "Creoles and Pidgins, French-based (Other)"
+msgstr "Creoles and Pidgins, French-based (այլ)"
+
+# id::clm.value__ssw id::clm.value__-swz
+# id::ssw
+#: 950.data.seed-values.sql:612 950.data.seed-values.sql:619
+msgid "Swazi"
+msgstr "Swazi"
+
+# id::cubt.label__folks%3Apub_book_bags.view
+#: 950.data.seed-values.sql:1948
+msgid "List Published Book Bags"
+msgstr ""
+
+# id::clm.value__-lap id::clm.value__smi
+# id::-lap
+#: 950.data.seed-values.sql:451 950.data.seed-values.sql:594
+msgid "Sami"
+msgstr "Sami"
+
+# id::ppl.description__65
+#: 950.data.seed-values.sql:949
+msgid "User may link a copy to an entry in a statistical category"
+msgstr ""
+
+# id::clm.value__inc
+# id::inc
+#: 950.data.seed-values.sql:399
+msgid "Indic (Other)"
+msgstr "Indic (Other)"
+
+# id::clm.value__tel
+# id::tel
+#: 950.data.seed-values.sql:628
+msgid "Telugu"
+msgstr "Telugu"
+
+# id::cza.label__4 id::cza.label__13 id::cza.label__22
+#: 950.data.seed-values.sql:766 950.data.seed-values.sql:787
+#: 950.data.seed-values.sql:806
+msgid "Author"
+msgstr ""
+
+# id::cbs.source__2
+# id::2
+#: 950.data.seed-values.sql:5
+msgid "System Local"
+msgstr "System Local"
+
+# id::ppl.description__154
+# id::154
+# id::153
+# id::157
+# id::88
+#: 950.data.seed-values.sql:1038
+#, fuzzy
+msgid "Allow a user to delete a funding source"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__294
+#: 950.data.seed-values.sql:1178
+msgid "FIXME: Need description for DELETE_AUTHORITY_RECORD_NOTE"
+msgstr ""
+
+# id::ppl.description__48
+# id::48
+#: 950.data.seed-values.sql:933
+#, fuzzy
+msgid "Allow a user to see what another user has checked out"
+msgstr "Թույլ է տալիս օգտվողին տեսնել ինչ է մյուս օգտվոչը վերցրել"
+
+# id::clm.value__new
+# id::new
+#: 950.data.seed-values.sql:514
+msgid "Newari"
+msgstr "Newari"
+
+# id::aout.name__4
+#: 950.data.seed-values.sql:834
+msgid "Sub-library"
+msgstr ""
+
+# id::crcd.name__5
+# id::5
+#: 950.data.seed-values.sql:69
+msgid "2_months_2_renew"
+msgstr "2_months_2_renew"
+
+# id::cnal.name__2
+# id::2
+#: 950.data.seed-values.sql:135
+msgid "Unfiltered"
+msgstr "Չզտված"
+
+# id::ppl.description__265
+#: 950.data.seed-values.sql:1149
+msgid "FIXME: Need description for UPDATE_LASSO"
+msgstr ""
+
+# id::ppl.description__171
+#: 950.data.seed-values.sql:1055
+msgid "(Deprecated) Allow a user to create/view/update/delete a fund"
+msgstr ""
+
+# id::ppl.description__196
+#: 950.data.seed-values.sql:1080
+msgid "Allows a user to import a bib record from the acq staging area (on-order record) into the ILS bib data set"
+msgstr ""
+
+# id::ppl.description__161
+# id::161
+# id::76
+#: 950.data.seed-values.sql:1045
+#, fuzzy
+msgid "Allow a user to create a new fund allocation"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր պատճեի տեղաբաշխում"
+
+# id::ppl.description__133
+# id::133
+#: 950.data.seed-values.sql:1018
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Cat1\" խմբից"
+
+# id::ppl.description__212
+#: 950.data.seed-values.sql:1096
+msgid "FIXME: Need description for CREATE_ITEM_TYPE"
+msgstr ""
+
+# id::ppl.description__25
+# id::25
+# id::75
+#: 950.data.seed-values.sql:912
+#, fuzzy
+msgid "Allow a user to edit a copy"
+msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
+
+# id::ppl.description__61
+# id::61
+# id::63
+#: 950.data.seed-values.sql:946
+#, fuzzy
+msgid "User may update a copy statistical category"
+msgstr "Օգտվողը կարող է թարմացնել պատճեի վիճ քարտ մուտքը"
+
+# id::clm.value__ful
+# id::ful
+#: 950.data.seed-values.sql:346
+msgid "Fula"
+msgstr "Fula"
+
+# id::cifm.value__a
+# id::a
+#: 950.data.seed-values.sql:693
+msgid "Microfilm"
+msgstr "Միկրոֆիլմ"
+
+# id::ppl.description__256
+#: 950.data.seed-values.sql:1140
+msgid "FIXME: Need description for UPDATE_CIRC_DURATION"
+msgstr ""
+
+# id::clm.value__nub
+# id::nub
+#: 950.data.seed-values.sql:524
+msgid "Nubian languages"
+msgstr "Նուբիական լեզուներ"
+
+# id::clm.value__arm id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM
+# id::arm
+#: 950.data.seed-values.sql:227 950.data.seed-values.sql:738
+#: 950.data.seed-values.sql:739
+msgid "Armenian"
+msgstr "Հայերեն"
+
+# id::coust.label__circ.holds.clear_shelf.copy_status
+#: 950.data.seed-values.sql:2583
+msgid "Holds: Clear shelf copy status"
+msgstr ""
+
+# id::clm.value__sad
+# id::sad
+#: 950.data.seed-values.sql:566
+msgid "Sandawe"
+msgstr "Sandawe"
+
+# id::ppl.description__126
+# id::126
+#: 950.data.seed-values.sql:1011
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Patron\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Հաճախորդ\" խմբից:"
+
+# id::clfm.description__s
+#: 950.data.seed-values.sql:199
+msgid "The item is a speech or collection of speeches."
+msgstr ""
+
+# id::clm.value__bad
+# id::bad
+#: 950.data.seed-values.sql:241
+msgid "Banda"
+msgstr "Banda"
+
+# id::clm.value__tam
+# id::tam
+#: 950.data.seed-values.sql:625
+msgid "Tamil"
+msgstr "Tamil"
+
+# id::clm.value__aus
+# id::aus
+#: 950.data.seed-values.sql:235
+msgid "Australian languages"
+msgstr "Ավստրալիական լեզուներ"
+
+# id::cam.value__
+# id::
+#: 950.data.seed-values.sql:141
+msgid "Unknown or unspecified"
+msgstr "Չիմացված կամ չբնութագրված"
+
+# id::ppl.description__10 id::ppl.description__13 id::ppl.description__35
+#: 950.data.seed-values.sql:898 950.data.seed-values.sql:900
+#: 950.data.seed-values.sql:922
+msgid "* no longer applicable"
+msgstr ""
+
+# id::cblvl.value__m
+# id::m
+#: 950.data.seed-values.sql:721
+msgid "Monograph/Item"
+msgstr "Մենագրություն/Նյութ"
+
+# id::ppl.description__103
+# id::103
+#: 950.data.seed-values.sql:988
+#, fuzzy
+msgid "Allow a user to bypass the circulation permit call for check out"
+msgstr ""
+"Թույլ է տալիս օգտվողին դուրս տրման համար շրջանցել տացքի թույլտվության կանչը "
+
+# id::clm.value__pus
+# id::pus
+#: 950.data.seed-values.sql:555
+msgid "Pushto"
+msgstr "Pushto"
+
+# id::cifm.value__b
+# id::b
+#: 950.data.seed-values.sql:694
+msgid "Microfiche"
+msgstr "Միկրոֆիշ"
+
+# id::clm.value__wln
+# id::wln
+#: 950.data.seed-values.sql:677
+msgid "Walloon"
+msgstr "Walloon"
+
+# id::ppl.description__324
+#: 950.data.seed-values.sql:1210
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.auth.staff_timeout"
+msgstr ""
+
+# id::ppl.description__112
+# id::112
+#: 950.data.seed-values.sql:997
+#, fuzzy
+msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
+msgstr ""
+"Թույլ է տալիս օգտվողին վիժեցնել օրինակի տրանզիտը, եթե օգտվողը չի գտնվում "
+"տրանզիտի սկզբնաղբյուրում"
+
+# id::clm.value__din
+# id::din
+#: 950.data.seed-values.sql:311
+msgid "Dinka"
+msgstr "Dinka"
+
+# id::ppl.description__350
+#: 950.data.seed-values.sql:1239
+msgid "Allow a user to create/view/update/delete a copy location order"
+msgstr ""
+
+# id::clm.value__chu
+# id::chu
+#: 950.data.seed-values.sql:289
+msgid "Church Slavic"
+msgstr "Church Slavic"
+
+# id::clm.value__nno
+# id::nno
+#: 950.data.seed-values.sql:518
+msgid "Norwegian (Nynorsk)"
+msgstr "Norwegian (Nynorsk)"
+
+# id::clm.value__lam
+# id::lam
+#: 950.data.seed-values.sql:448
+msgid "Lamba"
+msgstr "Lamba"
+
+# id::ppl.description__277
+#: 950.data.seed-values.sql:1161
+msgid "FIXME: Need description for UPDATE_VOLUME_NOTE"
+msgstr ""
+
+# id::clm.value__mic
+# id::mic
+#: 950.data.seed-values.sql:485
+msgid "Micmac"
+msgstr "Micmac"
+
+# id::clm.value__-gag id::clm.value__glg
+# id::-gag
+#: 950.data.seed-values.sql:350 950.data.seed-values.sql:361
+msgid "Galician"
+msgstr "Գալիցերեն"
+
+# id::clm.value__mad
+# id::mad
+#: 950.data.seed-values.sql:469
+msgid "Madurese"
+msgstr "Madurese"
+
+# id::coust.description__circ.holds.clear_shelf.no_capture_holds
+#: 950.data.seed-values.sql:2593
+msgid "During the clear shelf process, avoid capturing new holds on cleared items."
+msgstr ""
+
+# id::clm.value__kmb
+# id::kmb
+#: 950.data.seed-values.sql:432
+msgid "Kimbundu"
+msgstr "Kimbundu"
+
+# id::clm.value__ssa
+# id::ssa
+#: 950.data.seed-values.sql:610
+msgid "Nilo-Saharan (Other)"
+msgstr "Nilo-Saharan (այլ)"
+
+# id::clm.value__sag
+# id::sag
+#: 950.data.seed-values.sql:567
+msgid "Sango (Ubangi Creole)"
+msgstr "Sango (Ubangi Creole)"
+
+# id::clm.value__kha
+# id::kha
+#: 950.data.seed-values.sql:425
+msgid "Khasi"
+msgstr "Khasi"
+
+# id::clm.value__man
+# id::man
+#: 950.data.seed-values.sql:475
+msgid "Mandingo"
+msgstr "Mandingo"
+
+# id::clm.value__mah
+# id::mah
+#: 950.data.seed-values.sql:471
+msgid "Marshallese"
+msgstr "Marshallese"
+
+# id::clm.value__yao
+# id::yao
+#: 950.data.seed-values.sql:681
+msgid "Yao (Africa)"
+msgstr "Yao (Africa)"
+
+# id::ppl.description__293
+#: 950.data.seed-values.sql:1177
+msgid "FIXME: Need description for DELETE_AUTHORITY_IMPORT_QUEUE"
+msgstr ""
+
+# id::clm.value__mar
+# id::mar
+#: 950.data.seed-values.sql:478
+msgid "Marathi"
+msgstr "Marathi"
+
+# id::clm.value__slv
+# id::slv
+#: 950.data.seed-values.sql:591
+msgid "Slovenian"
+msgstr "Սլովեներեն"
+
+# id::clm.value__sal
+# id::sal
+#: 950.data.seed-values.sql:570
+msgid "Salishan languages"
+msgstr "Salishan languages"
+
+# id::ppl.description__320
+#: 950.data.seed-values.sql:1206
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING_ALL"
+msgstr ""
+
+# id::ppl.description__152
+# id::152
+#: 950.data.seed-values.sql:1036
+msgid "Allow a staff member to define where another staff member has their permissions"
+msgstr ""
+"Թույլ է տալիս աշխատակազմի անդամին սահմանել այլ անդամի իրավասությունները:"
+
+# id::clm.value__san
+# id::san
+#: 950.data.seed-values.sql:572
+msgid "Sanskrit"
+msgstr "Սանսկրիտ"
+
+# id::ccs.name__9
+# id::9
+#: 950.data.seed-values.sql:123
+msgid "On order"
+msgstr "Պատվիրված"
+
+# id::clfm.value__e
+# id::e
+#: 950.data.seed-values.sql:179
+msgid "Essays"
+msgstr "Էսսէներ"
+
+# id::aout.opac_label__2
+#: 950.data.seed-values.sql:829
+msgid "Local Library System"
+msgstr ""
+
+# id::cifm.value__r
+# id::r
+#: 950.data.seed-values.sql:698
+msgid "Regular print reproduction"
+msgstr "Սովորական տպագիր ռեպրոդուկցիաներ"
+
+# id::ppl.description__153
+# id::153
+# id::157
+# id::88
+#: 950.data.seed-values.sql:1037
+#, fuzzy
+msgid "Allow a user to create a new funding source"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::clm.value__elx
+# id::elx
+#: 950.data.seed-values.sql:323
+msgid "Elamite"
+msgstr "Elamite"
+
+# id::ppl.description__271
+#: 950.data.seed-values.sql:1155
+msgid "FIXME: Need description for UPDATE_ORG_TYPE"
+msgstr ""
+
+# id::ppl.description__275
+#: 950.data.seed-values.sql:1159
+msgid "FIXME: Need description for UPDATE_SURVEY"
+msgstr ""
+
+# id::ppl.description__53
+# id::53
+#: 950.data.seed-values.sql:938
+#, fuzzy
+msgid "Allow a user to view other users' permission groups"
+msgstr "Թույլ է տալիս օգտվողին դիտել ուրիշների իրավասությունների խմբերը"
+
+# id::clm.value__ady
+# id::ady
+#: 950.data.seed-values.sql:211
+msgid "Adygei"
+msgstr "Ադիգեյ"
+
+# id::ccpbt.label__misc id::ccnbt.label__misc id::cbrebt.label__misc
+# id::cubt.label__misc
+#: 950.data.seed-values.sql:1937 950.data.seed-values.sql:1940
+#: 950.data.seed-values.sql:1941 950.data.seed-values.sql:1946
+msgid "Miscellaneous"
+msgstr ""
+
+# id::ppl.description__57
+# id::57
+# id::56
+#: 950.data.seed-values.sql:942
+#, fuzzy
+msgid "User may create a copy statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::clm.value__nor
+# id::nor
+#: 950.data.seed-values.sql:522
+msgid "Norwegian"
+msgstr "Նորվեգերեն"
+
+# id::clm.value__lug
+# id::lug
+#: 950.data.seed-values.sql:463
+msgid "Ganda"
+msgstr "Ganda"
+
+# id::aout.opac_label__1
+#: 950.data.seed-values.sql:826
+msgid "Everywhere"
+msgstr ""
+
+# id::aou.name__6
+# id::6
+#: 950.data.seed-values.sql:852
+msgid "Example Branch 3"
+msgstr "Օրինակ մասնաճյուղ 3"
+
+# id::aou.name__4
+# id::4
+#: 950.data.seed-values.sql:848
+msgid "Example Branch 1"
+msgstr "Օրինակ մասնաճյուղ 1"
+
+# id::clm.value__lah
+# id::lah
+#: 950.data.seed-values.sql:447
+msgid "Lahnda"
+msgstr "Lahnda"
+
+# id::ppl.description__222
+#: 950.data.seed-values.sql:1106
+msgid "FIXME: Need description for CREATE_ORG_UNIT_CLOSING"
+msgstr ""
+
+# id::clm.value__hit
+# id::hit
+#: 950.data.seed-values.sql:384
+msgid "Hittite"
+msgstr "Հեթիթերեն"
+
+# id::ppl.description__118
+# id::118
+#: 950.data.seed-values.sql:1003
+#, fuzzy
+msgid "Allow a user to create a new closed date for a location"
+msgstr "Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար ստեղծել նոր փակ ամսաթիվ:"
+
+# id::clm.value__tuk
+# id::tuk
+#: 950.data.seed-values.sql:650
+msgid "Turkmen"
+msgstr "Թուրքմեներեն"
+
+# id::cam.description__j
+#: 950.data.seed-values.sql:166
+msgid "The item is intended for children and young people, approximate ages 0-15 years."
+msgstr ""
+
+# id::ppl.description__251
+#: 950.data.seed-values.sql:1135
+msgid "FIXME: Need description for DELETE_XML_TRANSFORM"
+msgstr ""
+
+# id::clm.value__suk
+# id::suk
+#: 950.data.seed-values.sql:613
+msgid "Sukuma"
+msgstr "Sukuma"
+
+# id::ppl.description__203
+#: 950.data.seed-values.sql:1087
+msgid "Allows a user to add/remove/edit users in the \"Acquisitions Administrators\" group"
+msgstr ""
+
+# id::citm.value__p
+# id::p
+#: 950.data.seed-values.sql:707
+msgid "Mixed materials"
+msgstr "Խառը նյութեր"
+
+# id::ppl.description__72
+# id::72
+#: 950.data.seed-values.sql:957
+#, fuzzy
+msgid "Allow a user to create a new non-cataloged item type"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր չմուտքագրված նյութի տէսակ"
+
+# id::ppl.description__315
+#: 950.data.seed-values.sql:1199
+msgid "FIXME: Need description for DELETE_IMPORT_ITEM_ATTR_DEF"
+msgstr ""
+
+# id::ppl.description__308
+#: 950.data.seed-values.sql:1192
+msgid "FIXME: Need description for UPDATE_TRANSLATION"
+msgstr ""
+
+# id::ppl.description__345
+#: 950.data.seed-values.sql:1233
+msgid "Allows staff to manually change a patron's claims returned count"
+msgstr ""
+
+# id::ccs.name__8
+# id::8
+#: 950.data.seed-values.sql:122
+msgid "On holds shelf"
+msgstr "Պահված դարակի վրա"
+
+# id::aout.name__5
+# id::5
+#: 950.data.seed-values.sql:837
+msgid "Bookmobile"
+msgstr "Ավտոգրադարան"
+
+# id::ppl.description__261
+#: 950.data.seed-values.sql:1145
+msgid "FIXME: Need description for UPDATE_HOURS_OF_OPERATION"
+msgstr ""
+
+# id::clm.value__ypk
+# id::ypk
+#: 950.data.seed-values.sql:685
+msgid "Yupik languages"
+msgstr "Yupik languages"
+
+# id::clm.value__tvl
+# id::tvl
+#: 950.data.seed-values.sql:655
+msgid "Tuvaluan"
+msgstr "Tuvaluan"
+
+# id::ppl.description__54
+# id::54
+#: 950.data.seed-values.sql:939
+#, fuzzy
+msgid "Allow a user to determine whether another user can check out an item"
+msgstr "Թույլ է տալիս օգտվողին սահմանել որ մեկ այլ օգտվող կարող է ստանալ նյութ"
+
+# id::ppl.description__104
+# id::104
+#: 950.data.seed-values.sql:989
+#, fuzzy
+msgid "Allow a user to override the copy_is_reference event"
+msgstr "Թույլ է տալիս օգտվողին վերագրել copy_is_reference իրադարձությունը"
+
+# id::ppl.description__209
+#: 950.data.seed-values.sql:1093
+msgid "FIXME: Need description for CREATE_COPY_STATUS"
+msgstr ""
+
+# id::ppl.description__278
+#: 950.data.seed-values.sql:1162
+msgid "FIXME: Need description for UPDATE_VR_FORMAT"
+msgstr ""
+
+# id::clm.value__bej
+# id::bej
+#: 950.data.seed-values.sql:250
+msgid "Beja"
+msgstr "Beja"
+
+# id::clm.value__gem
+# id::gem
+#: 950.data.seed-values.sql:354
+msgid "Germanic (Other)"
+msgstr "Գերմանական (այլ)"
+
+# id::cza.label__9 id::cza.label__18 id::cza.label__27
+#: 950.data.seed-values.sql:776 950.data.seed-values.sql:797
+#: 950.data.seed-values.sql:816
+msgid "Item Type"
+msgstr ""
+
+# id::clm.value__kab
+# id::kab
+#: 950.data.seed-values.sql:414
+msgid "Kabyle"
+msgstr "Kabyle"
+
+# id::crcd.name__10
+# id::10
+#: 950.data.seed-values.sql:79
+msgid "14_days_2_renew"
+msgstr "14_days_2_renew"
+
+# id::ppl.description__15
+#: 950.data.seed-values.sql:902
+msgid "Allow a user to renew items"
+msgstr ""
+
+# id::cit.name__2
+# id::2
+#: 950.data.seed-values.sql:55
+msgid "SSN"
+msgstr "SSN"
+
+# id::clm.value__got
+# id::got
+#: 950.data.seed-values.sql:367
+msgid "Gothic"
+msgstr "Գոթերեն"
+
+# id::ppl.description__254
+#: 950.data.seed-values.sql:1138
+msgid "FIXME: Need description for UPDATE_AUDIENCE"
+msgstr ""
+
+# id::clm.value__tmh
+# id::tmh
+#: 950.data.seed-values.sql:641
+msgid "Tamashek"
+msgstr "Tamashek"
+
+# id::ppl.description__310
+#: 950.data.seed-values.sql:1194
+msgid "FIXME: Need description for VIEW_AUTHORITY_RECORD_NOTES"
+msgstr ""
+
+# id::ppl.description__325
+#: 950.data.seed-values.sql:1211
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.org.bounced_emails"
+msgstr ""
+
+# id::clm.value__kaa
+# id::kaa
+#: 950.data.seed-values.sql:413
+msgid "Kara-Kalpak"
+msgstr "Կարա-կալպակերեն"
+
+# id::clm.value__swa
+# id::swa
+#: 950.data.seed-values.sql:617
+msgid "Swahili"
+msgstr "Swahili"
+
+# id::clm.value__car
+# id::car
+#: 950.data.seed-values.sql:273
+msgid "Carib"
+msgstr "Carib"
+
+# id::clm.value__sam
+# id::sam
+#: 950.data.seed-values.sql:571
+msgid "Samaritan Aramaic"
+msgstr "Samaritan Aramaic"
+
+# id::clm.value__chr
+# id::chr
+#: 950.data.seed-values.sql:288
+msgid "Cherokee"
+msgstr "Cherokee"
+
+# id::ppl.description__176
+#: 950.data.seed-values.sql:1060
+msgid "Allow a user to view and purchase from a provider"
+msgstr ""
+
+# id::ccs.name__5
+# id::5
+#: 950.data.seed-values.sql:119
+msgid "In process"
+msgstr "Գործողության մեջ"
+
+# id::ppl.description__173
+#: 950.data.seed-values.sql:1057
+msgid "Allow a user to view/credit/debit a fund"
+msgstr ""
+
+# id::ppl.description__270
+#: 950.data.seed-values.sql:1154
+msgid "FIXME: Need description for UPDATE_ORG_ADDRESS"
+msgstr ""
+
+# id::ppl.description__78
+# id::78
+#: 950.data.seed-values.sql:963
+#, fuzzy
+msgid "Allow a user to delete a copy location"
+msgstr "Թույլ է տալիս օգտվողին ջնջել պատճեի տէղաբաշխումը"
+
+# id::ppl.description__340
+#: 950.data.seed-values.sql:1226
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold"
+msgstr ""
+
+# id::ppl.description__336
+#: 950.data.seed-values.sql:1222
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.reshelving_complete.interval"
+msgstr ""
+
+# id::clm.value__mag
+# id::mag
+#: 950.data.seed-values.sql:470
+msgid "Magahi"
+msgstr "Magahi"
+
+# id::clm.value__paa
+# id::paa
+#: 950.data.seed-values.sql:538
+msgid "Papuan (Other)"
+msgstr "Papuan (այլ)"
+
+# id::clm.value__-mla id::clm.value__mlg
+# id::-mla
+#: 950.data.seed-values.sql:489 950.data.seed-values.sql:490
+msgid "Malagasy"
+msgstr "Malagasy"
+
+# id::clm.value__tli
+# id::tli
+#: 950.data.seed-values.sql:640
+msgid "Tlingit"
+msgstr "Tlingit"
+
+# id::clm.value__mao
+# id::mao
+#: 950.data.seed-values.sql:476
+msgid "Maori"
+msgstr "Մաորի"
+
+# id::clm.value__frm
+# id::frm
+#: 950.data.seed-values.sql:343
+msgid "French, Middle (ca. 1400-1600)"
+msgstr "Ֆրանսերեն, Միջին (մոտ. 1400-1600)"
+
+# id::clm.value__bai
+# id::bai
+#: 950.data.seed-values.sql:242
+msgid "Bamileke languages"
+msgstr "Bamileke languages"
+
+# id::clm.value__ibo
+# id::ibo
+#: 950.data.seed-values.sql:390
+msgid "Igbo"
+msgstr "Igbo"
+
+# id::clm.value__lad
+# id::lad
+#: 950.data.seed-values.sql:446
+msgid "Ladino"
+msgstr "Ladino"
+
+# id::clm.value__cat
+# id::cat
+#: 950.data.seed-values.sql:274
+msgid "Catalan"
+msgstr "Կատալոներեն"
+
+# id::clm.value__srr
+# id::srr
+#: 950.data.seed-values.sql:609
+msgid "Serer"
+msgstr "Serer"
+
+# id::cam.value__e
+# id::e
+#: 950.data.seed-values.sql:156
+msgid "Adult"
+msgstr "Մեծահասակ"
+
+# id::ppl.description__42
+# id::42
+#: 950.data.seed-values.sql:928
+#, fuzzy
+msgid "Allow a user may view another user's transactions"
+msgstr "Օգտվողը կարող է դիտել այլ օգտվողի տրանզակցիաները"
+
+# id::clm.value__phn
+# id::phn
+#: 950.data.seed-values.sql:548
+msgid "Phoenician"
+msgstr "Phoenician"
+
+# id::clm.value__wen
+# id::wen
+#: 950.data.seed-values.sql:676
+msgid "Sorbian languages"
+msgstr "Sorbian languages"
+
+# id::ppl.description__220
+#: 950.data.seed-values.sql:1104
+msgid "FIXME: Need description for CREATE_ORG_TYPE"
+msgstr ""
+
+# id::cam.value__a
+# id::a
+#: 950.data.seed-values.sql:144
+msgid "Preschool"
+msgstr "Նախադպրոցական"
+
+# id::ppl.description__299
+#: 950.data.seed-values.sql:1183
+msgid "FIXME: Need description for DELETE_TRANSLATION"
+msgstr ""
+
+# id::clm.value__sel
+# id::sel
+#: 950.data.seed-values.sql:579
+msgid "Selkup"
+msgstr "Selkup"
+
+# id::ppl.description__246
+#: 950.data.seed-values.sql:1130
+msgid "FIXME: Need description for DELETE_PERM"
+msgstr ""
+
+# id::clm.value__nob
+# id::nob
+#: 950.data.seed-values.sql:519
+msgid "Norwegian (Bokmål)"
+msgstr "Norwegian (Bokmål)"
+
+# id::clm.value__bal
+# id::bal
+#: 950.data.seed-values.sql:244
+msgid "Baluchi"
+msgstr "Baluchi"
+
+# id::ppl.description__224
+#: 950.data.seed-values.sql:1108
+msgid "FIXME: Need description for CREATE_RELEVANCE_ADJUSTMENT"
+msgstr ""
+
+# id::clm.value__pan
+# id::pan
+#: 950.data.seed-values.sql:542
+msgid "Panjabi"
+msgstr "Panjabi"
+
+# id::clm.value__oss
+# id::oss
+#: 950.data.seed-values.sql:535
+msgid "Ossetic"
+msgstr "Ossetic"
+
+# id::clm.value__raj
+# id::raj
+#: 950.data.seed-values.sql:557
+msgid "Rajasthani"
+msgstr "Rajasthani"
+
+# id::ppl.description__229
+#: 950.data.seed-values.sql:1113
+msgid "FIXME: Need description for DELETE_BIB_LEVEL"
+msgstr ""
+
+# id::clm.value__non
+# id::non
+#: 950.data.seed-values.sql:521
+msgid "Old Norse"
+msgstr "Old Norse"
+
+# id::ppl.description__77
+# id::77
+#: 950.data.seed-values.sql:962
+#, fuzzy
+msgid "Allow a user to update a copy location"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել պատճեի տէղաբաշխումը"
+
+# id::ppl.description__326
+#: 950.data.seed-values.sql:1212
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval"
+msgstr ""
+
+# id::clm.value__hau
+# id::hau
+#: 950.data.seed-values.sql:377
+msgid "Hausa"
+msgstr "Hausa"
+
+# id::cubt.label__folks%3Ahold.cancel
+#: 950.data.seed-values.sql:1954
+msgid "Cancel Holds"
+msgstr ""
+
+# id::clm.value__kut
+# id::kut
+#: 950.data.seed-values.sql:445
+msgid "Kutenai"
+msgstr "Kutenai"
+
+# id::clm.value__mol
+# id::mol
+#: 950.data.seed-values.sql:496
+msgid "Moldavian"
+msgstr "Մոլդավերեն"
+
+# id::ppl.description__218
+#: 950.data.seed-values.sql:1102
+msgid "FIXME: Need description for CREATE_NET_ACCESS_LEVEL"
+msgstr ""
+
+# id::ppl.description__111
+# id::111
+#: 950.data.seed-values.sql:996
+#, fuzzy
+msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
+msgstr ""
+"Թույլ է տալիս օգտվողին վիժեցնելու օրինակի տրանզիտը, եթե օգտվողը տրանզիտ "
+"կետում է:"
+
+# id::ppl.description__305
+#: 950.data.seed-values.sql:1189
+msgid "FIXME: Need description for UPDATE_BIB_IMPORT_QUEUE"
+msgstr ""
+
+# id::clm.value__lol
+# id::lol
+#: 950.data.seed-values.sql:458
+msgid "Mongo-Nkundu"
+msgstr "Mongo-Nkundu"
+
+# id::clm.value__kum
+# id::kum
+#: 950.data.seed-values.sql:442
+msgid "Kumyk"
+msgstr "Kumyk"
+
+# id::vqbrad.description__14
+#: 950.data.seed-values.sql:1882
+msgid "Edition"
+msgstr ""
+
+# id::clm.value__ava
+# id::ava
+#: 950.data.seed-values.sql:236
+msgid "Avaric"
+msgstr "Avaric"
+
+# id::ppl.description__101
+# id::101
+#: 950.data.seed-values.sql:986
+#, fuzzy
+msgid "Allow a user to execute an offline script batch"
+msgstr "Թույլ է տալիս օգտվողին կատարել օֆլայն սկրիպտի փաթեթը"
+
+# id::clm.value__gmh
+# id::gmh
+#: 950.data.seed-values.sql:363
+msgid "German, Middle High (ca. 1050-1500)"
+msgstr "German, Middle High (ca. 1050-1500)"
+
+# id::ppl.description__81
+# id::81
+#: 950.data.seed-values.sql:966
+#, fuzzy
+msgid "Allow a user to see if another user has permission to place a hold on a given copy"
+msgstr ""
+"Թույլ է տալիս օգտվողին տեսնել արդյոք այլ օգտվող ունի իրավասություն տրված "
+"օրինակի համար պահում կատարել"
+
+# id::cza.label__2 id::cza.label__11 id::cza.label__20
+# id::vqbrad.description__5
+# id::2
+# id::6
+#: 950.data.seed-values.sql:762 950.data.seed-values.sql:783
+#: 950.data.seed-values.sql:802 950.data.seed-values.sql:1873
+#, fuzzy
+msgid "ISBN"
+msgstr "SSN"
+
+# id::clm.value__mai
+# id::mai
+#: 950.data.seed-values.sql:472
+msgid "Maithili"
+msgstr "Maithili"
+
+# id::pgt.name__5
+#: 950.data.seed-values.sql:1255
+msgid "Circulators"
+msgstr ""
+
+# id::clm.value__tai
+# id::tai
+#: 950.data.seed-values.sql:623
+msgid "Tai (Other)"
+msgstr "Թաի (այլ)"
+
+# id::clm.value__tpi
+# id::tpi
+#: 950.data.seed-values.sql:644
+msgid "Tok Pisin"
+msgstr "Tok Pisin"
+
+# id::clm.value__bin
+# id::bin
+#: 950.data.seed-values.sql:258
+msgid "Edo"
+msgstr "Edo"
+
+# id::ppl.description__288
+#: 950.data.seed-values.sql:1172
+msgid "FIXME: Need description for CREATE_LOCALE"
+msgstr ""
+
+# id::cit.name__3
+# id::3
+#: 950.data.seed-values.sql:57
+msgid "Other"
+msgstr "Այլ"
+
+# id::clm.value__peo
+# id::peo
+#: 950.data.seed-values.sql:545
+msgid "Old Persian (ca. 600-400 B.C.)"
+msgstr "Հին պարսկերեն (մոտ. 600-400 B.C.)"
+
+# id::ppl.description__286
+#: 950.data.seed-values.sql:1170
+msgid "FIXME: Need description for CREATE_BIB_IMPORT_FIELD_DEF"
+msgstr ""
+
+# id::ppl.description__264
+#: 950.data.seed-values.sql:1148
+msgid "FIXME: Need description for UPDATE_LANGUAGE"
+msgstr ""
+
+# id::citm.value__k
+# id::k
+#: 950.data.seed-values.sql:704
+msgid "Two-dimensional nonprojectable graphic"
+msgstr "Երկչափանի չպրոեկտվող գրաֆիկա"
+
+# id::clm.value__ban
+# id::ban
+#: 950.data.seed-values.sql:246
+msgid "Balinese"
+msgstr "Balinese"
+
+# id::clm.value__tkl
+# id::tkl
+#: 950.data.seed-values.sql:639
+msgid "Tokelauan"
+msgstr "Tokelauan"
+
+# id::clm.value__doi
+# id::doi
+#: 950.data.seed-values.sql:313
+msgid "Dogri"
+msgstr "Dogri"
+
+# id::ppl.description__197
+#: 950.data.seed-values.sql:1081
+msgid "Allows a user to mark a purchase order, lineitem, or individual copy as received"
+msgstr ""
+
+# id::clm.value__lim
+# id::lim
+#: 950.data.seed-values.sql:455
+msgid "Limburgish"
+msgstr "Limburgish"
+
+# id::clm.value__egy
+# id::egy
+#: 950.data.seed-values.sql:321
+msgid "Egyptian"
+msgstr "Եգիպտերեն"
+
+# id::ppl.description__330
+#: 950.data.seed-values.sql:1216
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.hold_stalling.soft"
+msgstr ""
+
+# id::ppl.description__190
+#: 950.data.seed-values.sql:1074
+msgid "Allow a user to mark an item status as 'on holds shelf'"
+msgstr ""
+
+# id::ppl.description__346
+#: 950.data.seed-values.sql:1235
+msgid "Allows staff to edit the note for a bill on a transaction"
+msgstr ""
+
+# id::clm.value__tyv
+# id::tyv
+#: 950.data.seed-values.sql:657
+msgid "Tuvinian"
+msgstr "Tuvinian"
+
+# id::citm.value__o
+# id::o
+#: 950.data.seed-values.sql:706
+msgid "Kit"
+msgstr "Kit"
+
+# id::acpl.name__1
+# id::1
+#: 950.data.seed-values.sql:1442
+msgid "Stacks"
+msgstr "Պահոցներ"
+
+# id::clm.value__mul
+# id::mul
+#: 950.data.seed-values.sql:499
+msgid "Multiple languages"
+msgstr "Բազմաթիվ լեզուներ"
+
+# id::clm.value__mlt
+# id::mlt
+#: 950.data.seed-values.sql:491
+msgid "Maltese"
+msgstr "Maltese"
+
+# id::clm.value__asm
+# id::asm
+#: 950.data.seed-values.sql:232
+msgid "Assamese"
+msgstr "Assamese"
+
+# id::ppl.description__88
+# id::88
+#: 950.data.seed-values.sql:973
+#, fuzzy
+msgid "Allow a user to create a new copy note"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__192
+#: 950.data.seed-values.sql:1076
+msgid "Allow a user to mark an item status as 'inter-library loan'"
+msgstr ""
+
+# id::pgt.name__10
+#: 950.data.seed-values.sql:1261
+msgid "Local System Administrator"
+msgstr ""
+
+# id::cza.label__8 id::cza.label__17 id::cza.label__26
+# id::vqbrad.description__13
+#: 950.data.seed-values.sql:774 950.data.seed-values.sql:795
+#: 950.data.seed-values.sql:814 950.data.seed-values.sql:1881
+msgid "Publication Date"
+msgstr ""
+
+# id::ppl.description__291
+#: 950.data.seed-values.sql:1175
+msgid "FIXME: Need description for DELETE_ACQ_FUNDING_SOURCE"
+msgstr ""
+
+# id::ppl.description__16
+#: 950.data.seed-values.sql:903
+msgid "Allow a user to view bill details"
+msgstr ""
+
+# id::ppl.description__335
+#: 950.data.seed-values.sql:1221
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max"
+msgstr ""
+
+# id::ppl.description__200
+# id::ppl.description__199
+# id::166
+# id::88
+#: 950.data.seed-values.sql:1084
+#, fuzzy
+msgid "Allows a user to update an MFHD record"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__4
+#: 950.data.seed-values.sql:892
+msgid "Allow a user to log in to the staff client"
+msgstr ""
+
+# id::clm.value__tsn id::clm.value__-tsw
+# id::tsn
+#: 950.data.seed-values.sql:647 950.data.seed-values.sql:649
+msgid "Tswana"
+msgstr "Tswana"
+
+# id::ppl.description__341
+#: 950.data.seed-values.sql:1227
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty"
+msgstr ""
+
+# id::clm.value__lat
+# id::lat
+#: 950.data.seed-values.sql:452
+msgid "Latin"
+msgstr "Լատիներեն"
+
+# id::ppl.description__62
+# id::62
+# id::56
+#: 950.data.seed-values.sql:947
+#, fuzzy
+msgid "User may update an entry in a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::clm.value__cop
+# id::cop
+#: 950.data.seed-values.sql:293
+msgid "Coptic"
+msgstr "Ղպտերեն"
+
+# id::crmf.name__5
+# id::5
+#: 950.data.seed-values.sql:93
+msgid "overdue_equip_min"
+msgstr "overdue_equip_min"
+
+# id::ppl.description__238
+#: 950.data.seed-values.sql:1122
+msgid "FIXME: Need description for DELETE_LASSO_MAP"
+msgstr ""
+
+# id::ppl.description__243
+#: 950.data.seed-values.sql:1127
+msgid "FIXME: Need description for DELETE_ORG_TYPE"
+msgstr ""
+
+# id::clm.value__ltz
+# id::ltz
+#: 950.data.seed-values.sql:460
+msgid "Letzeburgesch"
+msgstr "Letzeburgesch"
+
+# id::clm.value__-fri id::clm.value__fry
+# id::-fri
+#: 950.data.seed-values.sql:342 950.data.seed-values.sql:345
+msgid "Frisian"
+msgstr "Frisian"
+
+# id::clm.value__myn
+# id::myn
+#: 950.data.seed-values.sql:503
+msgid "Mayan languages"
+msgstr "Mayan լեզուներ"
+
+# id::clm.value__por
+# id::por
+#: 950.data.seed-values.sql:552
+msgid "Portuguese"
+msgstr "Պորտուգալերեն"
+
+# id::clm.value__ace
+# id::ace
+#: 950.data.seed-values.sql:208
+msgid "Achinese"
+msgstr "Աշկենազի"
+
+# id::cit.name__1
+# id::1
+#: 950.data.seed-values.sql:53
+msgid "Drivers License"
+msgstr "Վարորդական իրավունք"
+
+# id::ppl.description__38
+#: 950.data.seed-values.sql:925
+msgid "Allow a user to mark an item as 'missing'"
+msgstr ""
+
+# id::ppl.description__69
+# id::69
+# id::59
+# id::56
+#: 950.data.seed-values.sql:954
+#, fuzzy
+msgid "User may delete an entry from a copy statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::ppl.description__140
+# id::140
+#: 950.data.seed-values.sql:1025
+msgid "Allow staff to override overdue count failure"
+msgstr "Թույլ է տալիս աշխատակազմին վերագրել ժամկետանցների հաշվիչի ձախողումը:"
+
+# id::clm.value__ter
+# id::ter
+#: 950.data.seed-values.sql:630
+msgid "Terena"
+msgstr "Terena"
+
+# id::ppl.description__22
+#: 950.data.seed-values.sql:909
+msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE, user must have both permissions at appropriate level to merge records."
+msgstr ""
+
+# id::ppl.description__185
+#: 950.data.seed-values.sql:1069
+msgid "Allow a user to mark an item status as 'lost'"
+msgstr ""
+
+# id::ppl.description__347
+#: 950.data.seed-values.sql:1236
+msgid "Allows staff to edit the note for a payment on a transaction"
+msgstr ""
+
+# id::clm.value__ave
+# id::ave
+#: 950.data.seed-values.sql:237
+msgid "Avestan"
+msgstr "Avestan"
+
+# id::clm.value__min
+# id::min
+#: 950.data.seed-values.sql:486
+msgid "Minangkabau"
+msgstr "Minangkabau"
+
+# id::clm.value__him
+# id::him
+#: 950.data.seed-values.sql:382
+msgid "Himachali"
+msgstr "Himachali"
+
+# id::ppl.description__162
+# id::162
+# id::78
+#: 950.data.seed-values.sql:1046
+#, fuzzy
+msgid "Allow a user to delete a fund allocation"
+msgstr "Թույլ է տալիս օգտվողին ջնջել պատճեի տէղաբաշխումը"
+
+# id::ppl.description__167
+# id::167
+# id::166
+# id::88
+#: 950.data.seed-values.sql:1051
+#, fuzzy
+msgid "Allow a user to delate a provider"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__147
+# id::147
+#: 950.data.seed-values.sql:1031
+#, fuzzy
+msgid "Allow a user to run reports"
+msgstr "Թույլ է տալիս օգտվողներին հաշվետվություններ ակտիվացնել  "
+
+# id::clm.value__znd
+# id::znd
+#: 950.data.seed-values.sql:689
+msgid "Zande"
+msgstr "Zande"
+
+# id::clm.value__fro
+# id::fro
+#: 950.data.seed-values.sql:344
+msgid "French, Old (ca. 842-1400)"
+msgstr "Ֆրանսերեն, Հին (մոտ. 842-1400)"
+
+# id::ppl.description__39
+#: 950.data.seed-values.sql:926
+msgid "Allow a user to mark an item as 'claims returned'"
+msgstr ""
+
+# id::clm.value__sit
+# id::sit
+#: 950.data.seed-values.sql:588
+msgid "Sino-Tibetan (Other)"
+msgstr "Sino-Tibetan (Other)"
+
+# id::i18n_l.description__en-CA
+# id::en-CA
+#: 950.data.seed-values.sql:733
+msgid "Canadian English"
+msgstr "Կանադական անգլերեն"
+
+# id::clm.value__-eth id::clm.value__gez
+# id::-eth
+#: 950.data.seed-values.sql:330 950.data.seed-values.sql:357
+msgid "Ethiopic"
+msgstr "Եթովպերեն"
+
+# id::vqarad.description__1
+#: 950.data.seed-values.sql:1933
+msgid "Identifier"
+msgstr ""
+
+# id::ppl.description__186
+#: 950.data.seed-values.sql:1070
+msgid "Allow a user to mark an item status as 'missing'"
+msgstr ""
+
+# id::ppl.description__334
+#: 950.data.seed-values.sql:1220
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.global.password_regex"
+msgstr ""
+
+# id::ppl.description__83
+# id::83
+#: 950.data.seed-values.sql:968
+#, fuzzy
+msgid "Allow a user to perform Z39.50 queries against remote servers"
+msgstr "Թույլ է տալիս օգտվողին ձևավորել z3950 հարցումներ "
+
+# id::ccs.name__13
+# id::13
+#: 950.data.seed-values.sql:127
+msgid "Discard/Weed"
+msgstr "Discard/Weed"
+
+# id::ppl.description__110
+# id::110
+#: 950.data.seed-values.sql:995
+#, fuzzy
+msgid "Allow a user to change the missing status on a copy"
+msgstr "Թույլ է տալիս օգտվողին փոխել օրինակի բացակաի վիճակը"
+
+# id::clm.value__jpn
+# id::jpn
+#: 950.data.seed-values.sql:410
+msgid "Japanese"
+msgstr "Ճապոներեն"
+
+# id::clm.value__cor
+# id::cor
+#: 950.data.seed-values.sql:294
+msgid "Cornish"
+msgstr "Cornish"
+
+# id::clm.value__bul
+# id::bul
+#: 950.data.seed-values.sql:268
+msgid "Bulgarian"
+msgstr "Բուլղարերեն"
+
+# id::clm.value__roa
+# id::roa
+#: 950.data.seed-values.sql:560
+msgid "Romance (Other)"
+msgstr "Ռոմաներեն (այլ)"
+
+# id::ppl.description__32
+# id::32
+# id::75
+#: 950.data.seed-values.sql:919
+#, fuzzy
+msgid "Allow a user to check in a copy"
+msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
+
+# id::ppl.description__313
+#: 950.data.seed-values.sql:1197
+msgid "FIXME: Need description for CREATE_IMPORT_TRASH_FIELD"
+msgstr ""
+
+# id::clm.value__yor
+# id::yor
+#: 950.data.seed-values.sql:684
+msgid "Yoruba"
+msgstr "Yoruba"
+
+# id::clm.value__arw
+# id::arw
+#: 950.data.seed-values.sql:231
+msgid "Arawak"
+msgstr "Arawak"
+
+# id::ppl.description__321
+#: 950.data.seed-values.sql:1207
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.lost_materials_processing_fee"
+msgstr ""
+
+# id::clm.value__nyn
+# id::nyn
+#: 950.data.seed-values.sql:527
+msgid "Nyankole"
+msgstr "Nyankole"
+
+# id::clm.value__fre
+# id::fre
+#: 950.data.seed-values.sql:341
+msgid "French"
+msgstr "Ֆրանսերեն"
+
+# id::clm.value__tog
+# id::tog
+#: 950.data.seed-values.sql:642
+msgid "Tonga (Nyasa)"
+msgstr "Tonga (Nyasa)"
+
+# id::ppl.description__312
+#: 950.data.seed-values.sql:1196
+msgid "FIXME: Need description for CREATE_IMPORT_ITEM_ATTR_DEF"
+msgstr ""
+
+# id::ppl.description__258
+#: 950.data.seed-values.sql:1142
+msgid "FIXME: Need description for UPDATE_COPY_NOTE"
+msgstr ""
+
+# id::ppl.description__105
+# id::105
+#: 950.data.seed-values.sql:990
+#, fuzzy
+msgid "Allow a user to void a bill"
+msgstr "Թույլ է տալիս օգտվողին արգելափակել հաշիվը"
+
+# id::clm.value__ben
+# id::ben
+#: 950.data.seed-values.sql:253
+msgid "Bengali"
+msgstr "Բենգալերեն"
+
+# id::clm.value__bas
+# id::bas
+#: 950.data.seed-values.sql:248
+msgid "Basa"
+msgstr "Basa"
+
+# id::cubt.label__folks%3Ahold.view
+#: 950.data.seed-values.sql:1953
+msgid "View Holds"
+msgstr ""
+
+# id::ppl.description__106
+#: 950.data.seed-values.sql:991
+msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
+msgstr ""
+
+# id::ppl.description__36
+#: 950.data.seed-values.sql:923
+msgid "Allow a user to record payments in the Billing Interface"
+msgstr ""
+
+# id::clfm.value__s
+# id::s
+#: 950.data.seed-values.sql:198
+msgid "Speeches"
+msgstr "Ելույթներ"
+
+# id::clm.value__kos id::clm.value__-kus
+# id::kos
+#: 950.data.seed-values.sql:437 950.data.seed-values.sql:444
+msgid "Kusaie"
+msgstr "Kusaie"
+
+# id::clm.value__nap
+# id::nap
+#: 950.data.seed-values.sql:506
+msgid "Neapolitan Italian"
+msgstr "Neapolitan Italian"
+
+# id::clm.value__fin
+# id::fin
+#: 950.data.seed-values.sql:338
+msgid "Finnish"
+msgstr "Ֆիներեն"
+
+# id::clm.value__sun
+# id::sun
+#: 950.data.seed-values.sql:614
+msgid "Sundanese"
+msgstr "Sundanese"
+
+# id::clm.value__alb
+# id::alb
+#: 950.data.seed-values.sql:218
+msgid "Albanian"
+msgstr "Ալբաներեն"
+
+# id::ppl.description__96
+# id::96
+#: 950.data.seed-values.sql:981
+#, fuzzy
+msgid "Allow a user to view notifications attached to a hold"
+msgstr "Թույլ է տալիս օգտվողին դիտել պահմանը կցված հիշեցումները"
+
+# id::clm.value__osa
+# id::osa
+#: 950.data.seed-values.sql:534
+msgid "Osage"
+msgstr "Osage"
+
+# id::ppl.description__281
+#: 950.data.seed-values.sql:1165
+msgid "FIXME: Need description for UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF"
+msgstr ""
+
+# id::vqbrad.description__10
+#: 950.data.seed-values.sql:1878
+msgid "TCN Source"
+msgstr ""
+
+# id::coust.description__ui.admin.work_log.max_entries
+#: 950.data.seed-values.sql:1815
+msgid "Maximum entries for \"Most Recent Staff Actions\" section of the Work Log interface."
+msgstr ""
+
+# id::ppl.description__44
+# id::44
+#: 950.data.seed-values.sql:930
+#, fuzzy
+msgid "Allow a user to view another user's containers (buckets)"
+msgstr "Թույլ է տալիս օգտվողին դիտել այլ օգտվողի կոնտեյները (փնջերը)"
+
+# id::clm.value__-tag id::clm.value__tgl
+# id::-tag
+#: 950.data.seed-values.sql:621 950.data.seed-values.sql:633
+msgid "Tagalog"
+msgstr "Tagalog"
+
+# id::clm.value__scc
+# id::scc
+#: 950.data.seed-values.sql:576
+msgid "Serbian"
+msgstr "Սերբերեն"
+
+# id::ppl.description__284
+#: 950.data.seed-values.sql:1168
+msgid "FIXME: Need description for CREATE_AUTHORITY_IMPORT_QUEUE"
+msgstr ""
+
+# id::clm.value__ast
+# id::ast
+#: 950.data.seed-values.sql:233
+msgid "Bable"
+msgstr "Բաբելոնյան"
+
+# id::cblvl.value__d
+# id::d
+#: 950.data.seed-values.sql:719
+msgid "Subunit"
+msgstr "Ենթամիավոր"
+
+# id::clm.value__ita
+# id::ita
+#: 950.data.seed-values.sql:408
+msgid "Italian"
+msgstr "Իտալերեն"
+
+# id::clm.value__chb
+# id::chb
+#: 950.data.seed-values.sql:279
+msgid "Chibcha"
+msgstr "Chibcha"
+
+# id::aou.name__8
+# id::8
+#: 950.data.seed-values.sql:856
+#, fuzzy
+msgid "Example Sub-library 1"
+msgstr "Example Sub-lib 1"
+
+# id::clm.value__nav
+# id::nav
+#: 950.data.seed-values.sql:508
+msgid "Navajo"
+msgstr "Նավախո"
+
+# id::ppl.description__273
+#: 950.data.seed-values.sql:1157
+msgid "FIXME: Need description for UPDATE_PERM"
+msgstr ""
+
+# id::clm.value__mno
+# id::mno
+#: 950.data.seed-values.sql:494
+msgid "Manobo languages"
+msgstr "Manobo լեզուներ"
+
+# id::clm.value__cha
+# id::cha
+#: 950.data.seed-values.sql:278
+msgid "Chamorro"
+msgstr "Chamorro"
+
+# id::clm.value__lua
+# id::lua
+#: 950.data.seed-values.sql:461
+msgid "Luba-Lulua"
+msgstr "Luba-Lulua"
+
+# id::ppl.description__79
+# id::79
+#: 950.data.seed-values.sql:964
+#, fuzzy
+msgid "Allow a user to create a transit_copy object for transiting a copy"
+msgstr ""
+"Թույլ է տալիս օգտվողին ստեղծել transit_copy պատկեր պատճեի տրանզիտի համար"
+
+# id::clm.value__wak
+# id::wak
+#: 950.data.seed-values.sql:671
+msgid "Wakashan languages"
+msgstr "Wakashan languages"
+
+# id::clm.value__amh
+# id::amh
+#: 950.data.seed-values.sql:221
+msgid "Amharic"
+msgstr "Ամհարիկ"
+
+# id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
+# id::cze
+#: 950.data.seed-values.sql:303 950.data.seed-values.sql:729
+#: 950.data.seed-values.sql:730
+msgid "Czech"
+msgstr "Չեխերեն"
+
+# id::cbt.name__1
+#: 950.data.seed-values.sql:866
+msgid "Overdue Materials"
+msgstr ""
+
+# id::clm.value__-taj id::clm.value__tgk
+# id::-taj
+#: 950.data.seed-values.sql:624 950.data.seed-values.sql:632
+msgid "Tajik"
+msgstr "Տաջիկերեն"
+
+# id::clm.value__rap
+# id::rap
+#: 950.data.seed-values.sql:558
+msgid "Rapanui"
+msgstr "Rapanui"
+
+# id::clm.value__urd
+# id::urd
+#: 950.data.seed-values.sql:664
+msgid "Urdu"
+msgstr "Ուրդու"
+
+# id::ppl.description__24
+# id::24
+# id::88
+#: 950.data.seed-values.sql:911
+#, fuzzy
+msgid "Allow a user to create a new copy object"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::clm.value__loz
+# id::loz
+#: 950.data.seed-values.sql:459
+msgid "Lozi"
+msgstr "Lozi"
+
+# id::ppl.description__60
+# id::60
+# id::56
+#: 950.data.seed-values.sql:945
+#, fuzzy
+msgid "User may update a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::ppl.description__149
+# id::149
+#: 950.data.seed-values.sql:1033
+#, fuzzy
+msgid "Allow a user to view report output"
+msgstr "Թույլ է տալիս օգտվողին դիտել հաշվետվությունը"
+
+# id::clm.value__gor
+# id::gor
+#: 950.data.seed-values.sql:366
+msgid "Gorontalo"
+msgstr "Gorontalo"
+
+# id::ppl.description__240
+#: 950.data.seed-values.sql:1124
+msgid "FIXME: Need description for DELETE_METABIB_FIELD"
+msgstr ""
+
+# id::ppl.description__260
+#: 950.data.seed-values.sql:1144
+msgid "FIXME: Need description for UPDATE_GROUP_PERM"
+msgstr ""
+
+# id::clm.value__chg
+# id::chg
+#: 950.data.seed-values.sql:281
+msgid "Chagatai"
+msgstr "Chagatai"
+
+# id::ppl.description__295
+#: 950.data.seed-values.sql:1179
+msgid "FIXME: Need description for DELETE_BIB_IMPORT_IMPORT_FIELD_DEF"
+msgstr ""
+
+# id::ppl.description__89
+# id::89
+#: 950.data.seed-values.sql:974
+#, fuzzy
+msgid "Allow a user to create a new volume note"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
+
+# id::crcd.name__9
+# id::9
+#: 950.data.seed-values.sql:77
+msgid "28_days_0_renew"
+msgstr "28_days_0_renew"
+
+# id::ccs.name__11
+# id::11
+#: 950.data.seed-values.sql:125
+msgid "Cataloging"
+msgstr "Քարտագրում"
+
+# id::ppl.description__30
+#: 950.data.seed-values.sql:917
+msgid "Allow a user to delete another user, including all associated transactions"
+msgstr ""
+
+# id::crcd.name__4
+# id::4
+#: 950.data.seed-values.sql:67
+msgid "3_days_1_renew"
+msgstr "3_days_1_renew"
+
+# id::clm.value__art
+# id::art
+#: 950.data.seed-values.sql:230
+msgid "Artificial (Other)"
+msgstr "Արհեստական (այլ)"
+
+# id::clm.value__nia
+# id::nia
+#: 950.data.seed-values.sql:515
+msgid "Nias"
+msgstr "Nias"
+
+# id::clm.value__arn
+# id::arn
+#: 950.data.seed-values.sql:228
+msgid "Mapuche"
+msgstr "Mapuche"
+
+# id::vqbrad.description__9
+#: 950.data.seed-values.sql:1877
+msgid "TCN Value"
+msgstr ""
+
+# id::clm.value__uig
+# id::uig
+#: 950.data.seed-values.sql:660
+msgid "Uighur"
+msgstr "Uighur"
+
+# id::clm.value__chy
+# id::chy
+#: 950.data.seed-values.sql:291
+msgid "Cheyenne"
+msgstr "Cheyenne"
+
+# id::clfm.description__u
+#: 950.data.seed-values.sql:202
+msgid "The literary form of the item is unknown."
+msgstr ""
+
+# id::clm.value__fon
+# id::fon
+#: 950.data.seed-values.sql:340
+msgid "Fon"
+msgstr "Fon"
+
+# id::clm.value__awa
+# id::awa
+#: 950.data.seed-values.sql:238
+msgid "Awadhi"
+msgstr "Awadhi"
+
+# id::clm.value__cre
+# id::cre
+#: 950.data.seed-values.sql:299
+msgid "Cree"
+msgstr "Cree"
+
+# id::clm.value__oto
+# id::oto
+#: 950.data.seed-values.sql:537
+msgid "Otomian languages"
+msgstr "Օտոմանական լեզուներ"
+
+# id::clm.value__nym
+# id::nym
+#: 950.data.seed-values.sql:526
+msgid "Nyamwezi"
+msgstr "Nyamwezi"
+
+# id::clm.value__ind
+# id::ind
+#: 950.data.seed-values.sql:400
+msgid "Indonesian"
+msgstr "Ինդոնեզերեն"
+
+# id::cst.value__1
+# id::1
+#: 950.data.seed-values.sql:10
+msgid "Good"
+msgstr "Լավ"
+
+# id::clm.value__den
+# id::den
+#: 950.data.seed-values.sql:309
+msgid "Slave"
+msgstr "Slave"
+
+# id::cbt.name__7
+#: 950.data.seed-values.sql:878
+msgid "Damaged Item"
+msgstr ""
+
+# id::clm.value__haw
+# id::haw
+#: 950.data.seed-values.sql:378
+msgid "Hawaiian"
+msgstr "Hawaiian"
+
+# id::czs.label__loc
+#: 950.data.seed-values.sql:753
+msgid "Library of Congress"
+msgstr ""
+
+# id::clm.value__sid
+# id::sid
+#: 950.data.seed-values.sql:585
+msgid "Sidamo"
+msgstr "Sidamo"
+
+# id::ppl.description__283
+#: 950.data.seed-values.sql:1167
+msgid "FIXME: Need description for CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
+msgstr ""
+
+# id::ppl.description__202
+#: 950.data.seed-values.sql:1086
+msgid "Allow a user to create/view/update/delete a fund"
+msgstr ""
+
+# id::clm.value__pro
+# id::pro
+#: 950.data.seed-values.sql:554
+msgid "Provençal (to 1500)"
+msgstr "Provençal (to 1500)"
+
+# id::ppl.description__158
+# id::158
+# id::157
+# id::88
+#: 950.data.seed-values.sql:1042
+#, fuzzy
+msgid "Allow a user to delete a fund"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::clm.value__sin id::clm.value__-snh
+# id::sin
+#: 950.data.seed-values.sql:586 950.data.seed-values.sql:601
+msgid "Sinhalese"
+msgstr "Sinhalese"
+
+# id::clm.value__ada
+# id::ada
+#: 950.data.seed-values.sql:210
+msgid "Adangme"
+msgstr "Adangme"
+
+# id::clm.value__tha
+# id::tha
+#: 950.data.seed-values.sql:634
+msgid "Thai"
+msgstr "Thai"
+
+# id::clm.value__afr
+# id::afr
+#: 950.data.seed-values.sql:214
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+# id::citm.value__a
+# id::a
+#: 950.data.seed-values.sql:701
+msgid "Language material"
+msgstr "Լեզվական նյութեր"
+
+# id::ppl.description__31
+# id::31
+# id::11
+#: 950.data.seed-values.sql:918
+#, fuzzy
+msgid "Allow a user to view another user's Patron Record"
+msgstr "Թույլ է տալիս օգտվողին դիտելու այլ օգտվողի պահումները"
+
+# id::vqbrad.description__4
+#: 950.data.seed-values.sql:1872
+msgid "Pagination"
+msgstr ""
+
+# id::ppl.description__201
+# id::ppl.description__199
+# id::166
+# id::88
+#: 950.data.seed-values.sql:1085
+#, fuzzy
+msgid "Allows a user to delete an MFHD record"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::clm.value__uga
+# id::uga
+#: 950.data.seed-values.sql:659
+msgid "Ugaritic"
+msgstr "Ugaritic"
+
+# id::clm.value__uzb
+# id::uzb
+#: 950.data.seed-values.sql:665
+msgid "Uzbek"
+msgstr "Ուզբեկերեն"
+
+# id::cbt.name__4
+#: 950.data.seed-values.sql:872
+msgid "Lost Materials Processing Fee"
+msgstr ""
+
+# id::clm.value__ira
+# id::ira
+#: 950.data.seed-values.sql:405
+msgid "Iranian (Other)"
+msgstr "Իրանական (այլ)"
+
+# id::clm.value__zen
+# id::zen
+#: 950.data.seed-values.sql:687
+msgid "Zenaga"
+msgstr "Zenaga"
+
+# id::clm.value__bug
+# id::bug
+#: 950.data.seed-values.sql:267
+msgid "Bugis"
+msgstr "Bugis"
+
+# id::ccs.name__7
+# id::7
+#: 950.data.seed-values.sql:121
+msgid "Reshelving"
+msgstr "Վերադասավորում"
+
+# id::clm.value__bur
+# id::bur
+#: 950.data.seed-values.sql:269
+msgid "Burmese"
+msgstr "Burmese"
+
+# id::ppl.description__160
+# id::160
+# id::157
+# id::88
+#: 950.data.seed-values.sql:1044
+#, fuzzy
+msgid "Allow a user to update a fund"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::clm.value__ale
+# id::ale
+#: 950.data.seed-values.sql:219
+msgid "Aleut"
+msgstr "Ալեուտ"
+
+# id::ppl.description__232
+#: 950.data.seed-values.sql:1116
+msgid "FIXME: Need description for DELETE_COPY_STATUS"
+msgstr ""
+
+# id::clm.value__kro
+# id::kro
+#: 950.data.seed-values.sql:439
+msgid "Kru"
+msgstr "Kru"
+
+# id::clfm.description__m
+#: 950.data.seed-values.sql:193
+msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
+msgstr ""
+
+# id::clm.value__lin
+# id::lin
+#: 950.data.seed-values.sql:456
+msgid "Lingala"
+msgstr "Lingala"
+
+# id::cbt.name__6
+#: 950.data.seed-values.sql:876
+msgid "System: Rental"
+msgstr ""
+
+# id::ccs.name__1
+# id::1
+#: 950.data.seed-values.sql:115
+msgid "Checked out"
+msgstr "Սպասարկված է"
+
+# id::ppl.description__302
+#: 950.data.seed-values.sql:1186
+msgid "FIXME: Need description for UPDATE_AUTHORITY_IMPORT_QUEUE"
+msgstr ""
+
+# id::clm.value__mos
+# id::mos
+#: 950.data.seed-values.sql:498
+msgid "Mooré"
+msgstr "Mooré"
+
+# id::clm.value__arg
+# id::arg
+#: 950.data.seed-values.sql:226
+msgid "Aragonese Spanish"
+msgstr "Aragonese Spanish"
+
+# id::cam.value__b
+# id::b
+#: 950.data.seed-values.sql:147
+msgid "Primary"
+msgstr "Նախնական"
+
+# id::clm.value__mis
+# id::mis
+#: 950.data.seed-values.sql:487
+msgid "Miscellaneous languages"
+msgstr "Miscellaneous languages"
+
+# id::clm.value__lui
+# id::lui
+#: 950.data.seed-values.sql:464
+msgid "Luiseño"
+msgstr "Luiseño"
+
+# id::clm.value__syr
+# id::syr
+#: 950.data.seed-values.sql:620
+msgid "Syriac"
+msgstr "Syriac"
+
+# id::clm.value__kar
+# id::kar
+#: 950.data.seed-values.sql:419
+msgid "Karen"
+msgstr "Karen"
+
+# id::clm.value__grc
+# id::grc
+#: 950.data.seed-values.sql:369
+msgid "Greek, Ancient (to 1453)"
+msgstr "Greek, Ancient (to 1453)"
+
+# id::clm.value__fur
+# id::fur
+#: 950.data.seed-values.sql:347
+msgid "Friulian"
+msgstr "Friulian"
+
+# id::clm.value__nyo
+# id::nyo
+#: 950.data.seed-values.sql:528
+msgid "Nyoro"
+msgstr "Nyoro"
+
+# id::citm.value__e
+# id::e
+#: 950.data.seed-values.sql:708
+msgid "Cartographic material"
+msgstr "Քարտեզներ"
+
+# id::clm.value__bre
+# id::bre
+#: 950.data.seed-values.sql:264
+msgid "Breton"
+msgstr "Բրետոներեն"
+
+# id::ppl.description__91
+# id::91
+# id::49
+#: 950.data.seed-values.sql:976
+#, fuzzy
+msgid "Allow a user to delete another user's copy notes"
+msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
+
+# id::clm.value__-gae id::clm.value__gla
+# id::-gae
+#: 950.data.seed-values.sql:349 950.data.seed-values.sql:359
+msgid "Scottish Gaelic"
+msgstr "Scottish Gaelic"
+
+# id::clm.value__tur
+# id::tur
+#: 950.data.seed-values.sql:653
+msgid "Turkish"
+msgstr "Թուրքերեն"
+
+# id::ppl.description__94
+# id::94
+#: 950.data.seed-values.sql:979
+#, fuzzy
+msgid "Allow a user to update another user's container"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել մեկ ուրիշ օգտվողի կոնտեյները"
+
+# id::ppl.description__323
+#: 950.data.seed-values.sql:1209
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.auth.opac_timeout"
+msgstr ""
+
+# id::ccs.name__10
+# id::10
+#: 950.data.seed-values.sql:124
+msgid "ILL"
+msgstr "ՄԳԲ"
+
+# id::clm.value__del
+# id::del
+#: 950.data.seed-values.sql:308
+msgid "Delaware"
+msgstr "Delaware"
+
+# id::clm.value__war
+# id::war
+#: 950.data.seed-values.sql:673
+msgid "Waray"
+msgstr "Waray"
+
+# id::aout.name__1
+# id::1
+#: 950.data.seed-values.sql:825
+msgid "Consortium"
+msgstr "Միավորում"
+
+# id::clm.value__snk
+# id::snk
+#: 950.data.seed-values.sql:602
+msgid "Soninke"
+msgstr "Soninke"
+
+# id::ppl.description__124
+# id::124
+#: 950.data.seed-values.sql:1009
+#, fuzzy
+msgid "Allow a user to remove an existing workstation so a new one can replace it"
+msgstr ""
+"Թույլ է տալիս օգտվողին հեռացնել առկա աշխատանքային կայանը, այսպիսով նորը "
+"կարող է փոխարինել դրան:"
+
+# id::coust.label__circ.holds.clear_shelf.no_capture_holds
+#: 950.data.seed-values.sql:2592
+msgid "Holds: Bypass hold capture during clear shelf process"
+msgstr ""
+
+# id::clm.value__zap
+# id::zap
+#: 950.data.seed-values.sql:686
+msgid "Zapotec"
+msgstr "Zapotec"
+
+# id::clm.value__hmn
+# id::hmn
+#: 950.data.seed-values.sql:385
+msgid "Hmong"
+msgstr "Hmong"
+
+# id::ppl.description__179
+#: 950.data.seed-values.sql:1063
+msgid "Allow a user to create/view/update/delete a currency_type"
+msgstr ""
+
+# id::ppl.description__205
+#: 950.data.seed-values.sql:1089
+msgid "FIXME: Need description for CREATE_AUDIENCE"
+msgstr ""
+
+# id::ppl.description__92
+# id::92
+# id::49
+#: 950.data.seed-values.sql:977
+#, fuzzy
+msgid "Allow a user to delete another user's volume note"
+msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
+
+# id::ppl.description__178
+# id::178
+# id::153
+#: 950.data.seed-values.sql:1062
+msgid "Allow a staff member to directly remove a bibliographic record"
+msgstr ""
+"Թույլ է տալիս աշխատակազմի անդամին ուղղակիորեն հեռացնել մատենագիտական "
+"գրառումը:"
+
+# id::clm.value__-cam id::clm.value__khm
+# id::-cam
+#: 950.data.seed-values.sql:272 950.data.seed-values.sql:427
+msgid "Khmer"
+msgstr "Կխմեր"
+
+# id::clm.value__chv
+# id::chv
+#: 950.data.seed-values.sql:290
+msgid "Chuvash"
+msgstr "Չուվաշերեն"
+
+# id::ppl.description__211
+#: 950.data.seed-values.sql:1095
+msgid "FIXME: Need description for CREATE_ITEM_FORM"
+msgstr ""
+
+# id::cbt.name__3
+#: 950.data.seed-values.sql:870
+msgid "Lost Materials"
+msgstr ""
+
+# id::cam.description__d
+#: 950.data.seed-values.sql:154
+msgid "The item is intended for young people, approximate ages 14-17 years."
+msgstr ""
+
+# id::clm.value__may
+# id::may
+#: 950.data.seed-values.sql:481
+msgid "Malay"
+msgstr "Malay"
+
+# id::clm.value__kal
+# id::kal
+#: 950.data.seed-values.sql:416
+msgid "Kalâtdlisut"
+msgstr "Kalâtdlisut"
+
+# id::clm.value__zun
+# id::zun
+#: 950.data.seed-values.sql:691
+msgid "Zuni"
+msgstr "Zuni"
+
+# id::citm.value__f
+# id::f
+#: 950.data.seed-values.sql:709
+msgid "Manuscript cartographic material"
+msgstr "Ձեռագիր քարտեզներ"
+
+# id::clm.value__iba
+# id::iba
+#: 950.data.seed-values.sql:389
+msgid "Iban"
+msgstr "Iban"
+
+# id::aout.opac_label__3
+#: 950.data.seed-values.sql:832
+msgid "This Branch"
+msgstr ""
+
+# id::cbt.name__9
+#: 950.data.seed-values.sql:882
+msgid "Notification Fee"
+msgstr ""
+
+# id::ppl.description__204
+#: 950.data.seed-values.sql:1088
+msgid "FIXME: Need description for ASSIGN_GROUP_PERM"
+msgstr ""
+
+# id::clm.value__tut
+# id::tut
+#: 950.data.seed-values.sql:654
+msgid "Altaic (Other)"
+msgstr "Altaic (այլ)"
+
+# id::ppl.description__73
+# id::73
+#: 950.data.seed-values.sql:958
+#, fuzzy
+msgid "Allow a user to update a non-cataloged item type"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել չմուտքագրված նյութի տէսակը"
+
+# id::clm.value__ceb
+# id::ceb
+#: 950.data.seed-values.sql:276
+msgid "Cebuano"
+msgstr "Cebuano"
+
+# id::clm.value__moh
+# id::moh
+#: 950.data.seed-values.sql:495
+msgid "Mohawk"
+msgstr "Mohawk"
+
+# id::ppl.description__219
+#: 950.data.seed-values.sql:1103
+msgid "FIXME: Need description for CREATE_ORG_ADDRESS"
+msgstr ""
+
+# id::ppl.description__168
+# id::168
+# id::166
+# id::88
+#: 950.data.seed-values.sql:1052
+#, fuzzy
+msgid "Allow a user to view a provider"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__184
+#: 950.data.seed-values.sql:1068
+msgid "Allow a user to mark an item status as 'bindery'"
+msgstr ""
+
+# id::clm.value__dgr
+# id::dgr
+#: 950.data.seed-values.sql:310
+msgid "Dogrib"
+msgstr "Dogrib"
+
+# id::clm.value__vol
+# id::vol
+#: 950.data.seed-values.sql:669
+msgid "Volapük"
+msgstr "Volapük"
+
+# id::clm.value__mga
+# id::mga
+#: 950.data.seed-values.sql:484
+msgid "Irish, Middle (ca. 1100-1550)"
+msgstr "Irish, Middle (ca. 1100-1550)"
+
+# id::citm.value__j
+# id::j
+#: 950.data.seed-values.sql:713
+msgid "Musical sound recording"
+msgstr "Երաժշտական ձայներիզներ"
+
+# id::ppl.description__63
+# id::63
+# id::59
+# id::56
+#: 950.data.seed-values.sql:948
+#, fuzzy
+msgid "User may update an entry in a copy statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::aou.name__2
+# id::2
+#: 950.data.seed-values.sql:844
+msgid "Example System 1"
+msgstr "Օրինակ համակարգ 1"
+
+# id::czs.label__oclc
+#: 950.data.seed-values.sql:755
+msgid "OCLC"
+msgstr ""
+
+# id::clm.value__jav
+# id::jav
+#: 950.data.seed-values.sql:409
+msgid "Javanese"
+msgstr "Javanese"
+
+# id::ppl.description__45
+# id::45
+#: 950.data.seed-values.sql:931
+#, fuzzy
+msgid "Allow a user to create a new container for another user"
+msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի համար ստեղծել նոր կոնտեյներ"
+
+# id::ppl.description__166
+# id::166
+# id::88
+#: 950.data.seed-values.sql:1050
+#, fuzzy
+msgid "Allow a user to create a new provider"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::coust.description__circ.holds.clear_shelf.copy_status
+#: 950.data.seed-values.sql:2584
+msgid "Any copies that have not been put into reshelving, in-transit, or on-holds-shelf (for a new hold) during the clear shelf process will be put into this status.  This is basically a purgatory status for copies waiting to be pulled from the shelf and processed by hand"
+msgstr ""
+
+# id::aou.name__3
+# id::3
+#: 950.data.seed-values.sql:846
+msgid "Example System 2"
+msgstr "Օրինակ համակարգ 2"
+
+# id::vqbrad.description__2
+#: 950.data.seed-values.sql:1870
+msgid "Author of work"
+msgstr ""
+
+# id::ppl.description__121
+# id::121
+#: 950.data.seed-values.sql:1006
+#, fuzzy
+msgid "Allow a user to remove someone from collections"
+msgstr "Թույլ է տալիս օգտվողին հեռացնել ինչ որ մեկին հավաքածուից: "
+
+# id::cbt.name__101
+#: 950.data.seed-values.sql:884
+msgid "Misc"
+msgstr ""
+
+# id::clm.value__kan
+# id::kan
+#: 950.data.seed-values.sql:418
+msgid "Kannada"
+msgstr "Kannada"
+
+# id::ppl.description__177
+# id::177
+# id::11
+#: 950.data.seed-values.sql:1061
+#, fuzzy
+msgid "Allow a user to view another users picklist"
+msgstr "Թույլ է տալիս օգտվողին դիտելու այլ օգտվողի պահումները"
+
+# id::clm.value__dum
+# id::dum
+#: 950.data.seed-values.sql:316
+msgid "Dutch, Middle (ca. 1050-1350)"
+msgstr "Հոլանդերեն, Միջին (մոտ. 1050-1350)"
+
+# id::ppl.description__80
+# id::80
+#: 950.data.seed-values.sql:965
+#, fuzzy
+msgid "Allow a user to close out a transit on a copy"
+msgstr "Թույլ է տալիս օգտվողին փակել պատճեի տրանզիտը"
+
+# id::clm.value__per
+# id::per
+#: 950.data.seed-values.sql:546
+msgid "Persian"
+msgstr "Ֆարսի"
+
+# id::ppl.description__249
+#: 950.data.seed-values.sql:1133
+msgid "FIXME: Need description for DELETE_TRANSIT"
+msgstr ""
+
+# id::clm.value__mon
+# id::mon
+#: 950.data.seed-values.sql:497
+msgid "Mongolian"
+msgstr "Մոնղոլերեն"
+
+# id::clm.value__cho
+# id::cho
+#: 950.data.seed-values.sql:286
+msgid "Choctaw"
+msgstr "Choctaw"
+
+# id::clm.value__aym
+# id::aym
+#: 950.data.seed-values.sql:239
+msgid "Aymara"
+msgstr "Aymara"
+
+# id::clm.value__sai
+# id::sai
+#: 950.data.seed-values.sql:569
+msgid "South American Indian (Other)"
+msgstr "South American Indian(այլ)"
+
+# id::ppl.description__252
+#: 950.data.seed-values.sql:1136
+msgid "FIXME: Need description for REMOVE_GROUP_PERM"
+msgstr ""
+
+# id::ppl.description__122
+# id::122
+#: 950.data.seed-values.sql:1007
+#, fuzzy
+msgid "Allow a user to bar a patron"
+msgstr "Թույլ է տալիս օգտվողին արգելափակել ընթերցողին:"
+
+# id::ppl.description__228
+#: 950.data.seed-values.sql:1112
+msgid "FIXME: Need description for DELETE_AUDIENCE"
+msgstr ""
+
+# id::i18n_l.description__es-MX
+# id::es-MX
+#: 950.data.seed-values.sql:745
+msgid "Mexican Spanish"
+msgstr "Մեքսիկական իսպաներեն"
+
+# id::ppl.description__150
+# id::150
+#: 950.data.seed-values.sql:1034
+#, fuzzy
+msgid "Allow a user to checkout an item that is marked as non-circ"
+msgstr "Թույլ է տալիս օգտվողին դուրս տալ նյութը որը նշված է որպես չսպասարկ"
+
+# id::clm.value__-sho id::clm.value__sna
+# id::-sho
+#: 950.data.seed-values.sql:584 950.data.seed-values.sql:599
+msgid "Shona"
+msgstr "Shona"
+
+# id::clm.value__chp
+# id::chp
+#: 950.data.seed-values.sql:287
+msgid "Chipewyan"
+msgstr "Chipewyan"
+
+# id::clm.value__cos
+# id::cos
+#: 950.data.seed-values.sql:295
+msgid "Corsican"
+msgstr "Կորսիկերեն"
+
+# id::ppl.description__217
+#: 950.data.seed-values.sql:1101
+msgid "FIXME: Need description for CREATE_METABIB_FIELD"
+msgstr ""
+
+# id::clm.value__kpe
+# id::kpe
+#: 950.data.seed-values.sql:438
+msgid "Kpelle"
+msgstr "Kpelle"
+
+# id::ppl.description__74
+# id::74
+#: 950.data.seed-values.sql:959
+#, fuzzy
+msgid "Allow a user to create a new in-house-use "
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր տնային օգտագործում"
+
+# id::ppl.description__95
+# id::95
+#: 950.data.seed-values.sql:980
+#, fuzzy
+msgid "Allow a user to create a container for themselves"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել իր համար կոնտեյներ"
+
+# id::cifm.value__c
+# id::c
+#: 950.data.seed-values.sql:695
+msgid "Microopaque"
+msgstr "Microopaque"
+
+# id::clm.value__som
+# id::som
+#: 950.data.seed-values.sql:604
+msgid "Somali"
+msgstr "Somali"
+
+# id::ppl.description__349
+#: 950.data.seed-values.sql:1238
+msgid "Allows staff to manually change a patron's claims never checkout out count"
+msgstr ""
+
+# id::clm.value__arp
+# id::arp
+#: 950.data.seed-values.sql:229
+msgid "Arapaho"
+msgstr "Arapaho"
+
+# id::ppl.description__130
+# id::130
+#: 950.data.seed-values.sql:1015
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
+msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"ԳլոբալԱդմին\" խմբից"
+
+# id::clm.value__ber
+# id::ber
+#: 950.data.seed-values.sql:254
+msgid "Berber (Other)"
+msgstr "Berber (այլ)"
+
+# id::clm.value__chn
+# id::chn
+#: 950.data.seed-values.sql:285
+msgid "Chinook jargon"
+msgstr "Chinook jargon"
+
+# id::clm.value__aka
+# id::aka
+#: 950.data.seed-values.sql:216
+msgid "Akan"
+msgstr "Akan"
+
+# id::ppl.description__268
+#: 950.data.seed-values.sql:1152
+msgid "FIXME: Need description for UPDATE_METABIB_FIELD"
+msgstr ""
+
+# id::clm.value__lus
+# id::lus
+#: 950.data.seed-values.sql:467
+msgid "Lushai"
+msgstr "Lushai"
+
+# id::ppl.description__230
+#: 950.data.seed-values.sql:1114
+msgid "FIXME: Need description for DELETE_CIRC_DURATION"
+msgstr ""
+
+# id::ppl.description__97
+# id::97
+#: 950.data.seed-values.sql:982
+#, fuzzy
+msgid "Allow a user to create new hold notifications"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր պահման նշում"
+
+# id::i18n_l.name__en-US
+#: 950.data.seed-values.sql:726
+msgid "English (US)"
+msgstr ""
+
+# id::clm.value__pon
+# id::pon
+#: 950.data.seed-values.sql:551
+msgid "Ponape"
+msgstr "Ponape"
+
+# id::ppl.description__37
+#: 950.data.seed-values.sql:924
+msgid "Allow a user to mark an item as 'lost'"
+msgstr ""
+
+# id::clm.value__tah
+# id::tah
+#: 950.data.seed-values.sql:622
+msgid "Tahitian"
+msgstr "Tahitian"
+
+# id::clm.value__bla
+# id::bla
+#: 950.data.seed-values.sql:260
+msgid "Siksika"
+msgstr "Siksika"
+
+# id::ppl.description__174
+# id::174
+# id::21
+# id::89
+#: 950.data.seed-values.sql:1058
+#, fuzzy
+msgid "Allows a user to create a picklist"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
+
+# id::clm.value__nds
+# id::nds
+#: 950.data.seed-values.sql:512
+msgid "Low German"
+msgstr "Low German"
+
+# id::clm.value__dar
+# id::dar
+#: 950.data.seed-values.sql:306
+msgid "Dargwa"
+msgstr "Dargwa"
+
+# id::ppl.description__9
+#: 950.data.seed-values.sql:897
+msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
+msgstr ""
+
+# id::ppl.description__331
+#: 950.data.seed-values.sql:1217
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard"
+msgstr ""
+
+# id::clfm.value__m
+# id::m
+#: 950.data.seed-values.sql:192
+msgid "Mixed forms"
+msgstr "Խառը ձևաչափեր"
+
+# id::ppl.description__344
+#: 950.data.seed-values.sql:1232
+msgid "Allows staff to override the max claims returned value for a patron"
+msgstr ""
+
+# id::clm.value__sog
+# id::sog
+#: 950.data.seed-values.sql:603
+msgid "Sogdian"
+msgstr "Sogdian"
+
+# id::clm.value__pra
+# id::pra
+#: 950.data.seed-values.sql:553
+msgid "Prakrit languages"
+msgstr "Prakrit languages"
+
+# id::clm.value__gay
+# id::gay
+#: 950.data.seed-values.sql:352
+msgid "Gayo"
+msgstr "Gayo"
+
+# id::ppl.description__113
+# id::113
+#: 950.data.seed-values.sql:998
+#, fuzzy
+msgid "Allow a user to query the ZIP code data method"
+msgstr "Թույլ է տալիս օգտվողին հարցնել զիպ կոդի տվյալի մեթոդը"
+
+# id::ppl.description__47
+#: 950.data.seed-values.sql:932
+msgid "Allow a user to change the settings for an organization unit"
+msgstr ""
+
+# id::clfm.value__0
+# id::0
+#: 950.data.seed-values.sql:169
+msgid "Not fiction (not further specified)"
+msgstr "Ոչ գեղարվեստական (սահմանված չէ)"
+
+# id::clm.value__kua
+# id::kua
+#: 950.data.seed-values.sql:441
+msgid "Kuanyama"
+msgstr "Kuanyama"
+
+# id::clm.value__-tar id::clm.value__tat
+# id::-tar
+#: 950.data.seed-values.sql:626 950.data.seed-values.sql:627
+msgid "Tatar"
+msgstr "Թաթարերեն"
+
+# id::citm.value__c
+# id::c
+#: 950.data.seed-values.sql:710
+msgid "Notated music"
+msgstr "Նոտաներ"
+
+# id::ppl.description__93
+# id::93
+# id::49
+#: 950.data.seed-values.sql:978
+#, fuzzy
+msgid "Allow a user to delete another user's title note"
+msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
+
+# id::crmf.name__7
+# id::7
+#: 950.data.seed-values.sql:97
+msgid "overdue_equip_max"
+msgstr "overdue_equip_max"
+
+# id::ppl.description__17
+#: 950.data.seed-values.sql:904
+msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface, duplicate of VIEW_TRANSACTION"
+msgstr ""
+
+# id::cam.description__
+#: 950.data.seed-values.sql:142
+msgid "The target audience for the item not known or not specified."
+msgstr ""
+
+# id::clm.value__jrb
+# id::jrb
+#: 950.data.seed-values.sql:412
+msgid "Judeo-Arabic"
+msgstr "Judeo-Arabic"
+
+# id::clm.value__-gal id::clm.value__orm
+# id::-gal
+#: 950.data.seed-values.sql:351 950.data.seed-values.sql:533
+msgid "Oromo"
+msgstr "Oromo"
+
+# id::cblvl.value__s
+# id::s
+#: 950.data.seed-values.sql:722
+msgid "Serial"
+msgstr "Պարբերական"
+
+# id::clfm.description__j
+#: 950.data.seed-values.sql:190
+msgid "The item is a short story or collection of short stories."
+msgstr ""
+
+# id::pgt.name__1
+#: 950.data.seed-values.sql:1247
+msgid "Users"
+msgstr ""
+
+# id::cbrebt.label__reading_list
+#: 950.data.seed-values.sql:1944
+msgid "Reading List"
+msgstr ""
+
+# id::ppl.description__165
+#: 950.data.seed-values.sql:1049
+msgid "Lowest level permission required to access the ACQ interface"
+msgstr ""
+
+# id::clm.value__sem
+# id::sem
+#: 950.data.seed-values.sql:580
+msgid "Semitic (Other)"
+msgstr "Semitic (այլ)"
+
+# id::ppl.description__272
+#: 950.data.seed-values.sql:1156
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_CLOSING"
+msgstr ""
+
+# id::ppl.description__85
+# id::85
+#: 950.data.seed-values.sql:970
+#, fuzzy
+msgid "Allow a user to view all notes attached to a copy"
+msgstr "Թույլ է տալիս օգտվողին դիտել պատճեին կցված բոլոր նշումները"
+
+# id::clm.value__kho
+# id::kho
+#: 950.data.seed-values.sql:428
+msgid "Khotanese"
+msgstr "Khotanese"
+
+# id::ppl.description__169
+# id::169
+# id::166
+# id::88
+#: 950.data.seed-values.sql:1053
+#, fuzzy
+msgid "Allow a user to update a provider"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::clm.value__bem
+# id::bem
+#: 950.data.seed-values.sql:252
+msgid "Bemba"
+msgstr "Bemba"
+
+# id::vqbrad.description__1
+#: 950.data.seed-values.sql:1869
+msgid "Title of work"
+msgstr ""
+
+# id::ppl.description__50
+# id::50
+# id::45
+#: 950.data.seed-values.sql:935
+#, fuzzy
+msgid "Allow a user to create a container item for another user"
+msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի համար ստեղծել նոր կոնտեյներ"
+
+# id::ppl.description__86
+# id::86
+#: 950.data.seed-values.sql:971
+#, fuzzy
+msgid "Allow a user to view all notes attached to a volume"
+msgstr "Թույլ է տալիս օգտվողին դիտել հատորին կցված բոլոր նշումները"
+
+# id::clm.value__que
+# id::que
+#: 950.data.seed-values.sql:556
+msgid "Quechua"
+msgstr "Quechua"
+
+# id::ppl.description__297
+#: 950.data.seed-values.sql:1181
+msgid "FIXME: Need description for DELETE_LOCALE"
+msgstr ""
+
+# id::ppl.description__193
+#: 950.data.seed-values.sql:1077
+msgid "Allows a user to add/remove/edit users in the \"ACQ\" group"
+msgstr ""
+
+# id::clm.value__crp
+# id::crp
+#: 950.data.seed-values.sql:301
+msgid "Creoles and Pidgins (Other)"
+msgstr "Creoles and Pidgins (այլ)"
+
+# id::ppl.description__206
+#: 950.data.seed-values.sql:1090
+msgid "FIXME: Need description for CREATE_BIB_LEVEL"
+msgstr ""
+
+# id::clm.value__nic
+# id::nic
+#: 950.data.seed-values.sql:516
+msgid "Niger-Kordofanian (Other)"
+msgstr "Niger-Kordofanian (այլ)"
+
+# id::clm.value__est
+# id::est
+#: 950.data.seed-values.sql:329
+msgid "Estonian"
+msgstr "Էստոներեն"
+
+# id::clm.value__fan
+# id::fan
+#: 950.data.seed-values.sql:333
+msgid "Fang"
+msgstr "Fang"
+
+# id::pgt.name__4
+#: 950.data.seed-values.sql:1253
+msgid "Catalogers"
+msgstr ""
+
+# id::clm.value__mal
+# id::mal
+#: 950.data.seed-values.sql:474
+msgid "Malayalam"
+msgstr "Malayalam"
+
+# id::ppl.description__170
+#: 950.data.seed-values.sql:1054
+msgid "Allow a user to create/view/update/delete a funding source"
+msgstr ""
+
+# id::clm.value__smn
+# id::smn
+#: 950.data.seed-values.sql:596
+msgid "Inari Sami"
+msgstr "Inari Sami"
+
+# id::i18n_l.name__fr-CA
+#: 950.data.seed-values.sql:735
+msgid "French (Canada)"
+msgstr ""
+
+# id::aout.name__3
+# id::3
+#: 950.data.seed-values.sql:831
+msgid "Branch"
+msgstr "Մասնաճյուղ"
+
+# id::clm.value__afh
+# id::afh
+#: 950.data.seed-values.sql:213
+msgid "Afrihili (Artificial language)"
+msgstr "Afrihili (Աֆրիյան լեզու)"
+
+# id::vqbrad.description__15
+#: 950.data.seed-values.sql:1883
+msgid "Item Barcode"
+msgstr ""
+
+# id::ppl.description__296
+#: 950.data.seed-values.sql:1180
+msgid "FIXME: Need description for DELETE_BIB_IMPORT_QUEUE"
+msgstr ""
+
+# id::ppl.description__107
+# id::107
+#: 950.data.seed-values.sql:992
+#, fuzzy
+msgid "Allow a user to check out an item in a non-circulatable status"
+msgstr "Թույլ է տալիս օգտվողին դուրս տալ նյութ որը ունի չսպասարկվող վիճակ"
+
+# id::ppl.description__327
+#: 950.data.seed-values.sql:1213
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval"
+msgstr ""
+
+# id::ppl.description__263
+#: 950.data.seed-values.sql:1147
+msgid "FIXME: Need description for UPDATE_ITEM_TYPE"
+msgstr ""
+
+# id::ppl.description__151
+# id::151
+#: 950.data.seed-values.sql:1035
+#, fuzzy
+msgid "Allow a user to delete an item out of another user's container"
+msgstr "Թույլ է տալիս օգտվողին այլ օգտվողի կոնտեյներից ջնջել նյութը:"
+
+# id::ppl.description__247
+#: 950.data.seed-values.sql:1131
+msgid "FIXME: Need description for DELETE_RELEVANCE_ADJUSTMENT"
+msgstr ""
+
+# id::cbs.source__3
+# id::3
+#: 950.data.seed-values.sql:7
+msgid "Project Gutenberg"
+msgstr "Գուտենբերգ նախագիծ"
+
+# id::aou.name__9
+# id::9
+#: 950.data.seed-values.sql:858
+msgid "Example Bookmobile 1"
+msgstr "Example Bookmobile 1"
+
+# id::cam.description__g
+#: 950.data.seed-values.sql:163
+msgid "The item is of general interest and not aimed at an audience of a particular intellectual level."
+msgstr ""
+
+# id::ppl.description__120
+# id::120
+#: 950.data.seed-values.sql:1005
+#, fuzzy
+msgid "Allow a user to put someone into collections"
+msgstr "Թույլ է տալիս օգտվողին մտցնել ինչ որ մեկին հավաքածուի մեջ:"
+
+# id::clm.value__fij
+# id::fij
+#: 950.data.seed-values.sql:337
+msgid "Fijian"
+msgstr "Fijian"
+
+# id::clm.value__ilo
+# id::ilo
+#: 950.data.seed-values.sql:397
+msgid "Iloko"
+msgstr "Iloko"
+
+# id::ppl.description__98
+# id::98
+#: 950.data.seed-values.sql:983
+#, fuzzy
+msgid "Allow a user to update an organization unit setting"
+msgstr "Թույլ է տալիս օգտվողին թարմացնել կազմ միավորի կարգաբերումները"
+
+# id::ppl.description__337
+#: 950.data.seed-values.sql:1223
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout"
+msgstr ""
+
+# id::czs.label__biblios
+#: 950.data.seed-values.sql:757
+msgid "‡biblios.net"
+msgstr ""
+
+# id::clm.value__tig
+# id::tig
+#: 950.data.seed-values.sql:636
+msgid "Tigré"
+msgstr "Tigré"
+
+# id::clm.value__-sao id::clm.value__smo
+# id::-sao
+#: 950.data.seed-values.sql:573 950.data.seed-values.sql:597
+msgid "Samoan"
+msgstr "Samoan"
+
+# id::ccpbt.label__staff_client id::cbrebt.label__staff_client
+#: 950.data.seed-values.sql:1938 950.data.seed-values.sql:1942
+msgid "General Staff Client container"
+msgstr ""
+
+# id::ppl.description__75
+# id::75
+#: 950.data.seed-values.sql:960
+#, fuzzy
+msgid "Allow a user to check out a copy"
+msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
+
+# id::clm.value__glv id::clm.value__-max
+# id::glv
+#: 950.data.seed-values.sql:362 950.data.seed-values.sql:480
+msgid "Manx"
+msgstr "Manx"
+
+# id::ppl.description__241
+#: 950.data.seed-values.sql:1125
+msgid "FIXME: Need description for DELETE_NET_ACCESS_LEVEL"
+msgstr ""
+
+# id::clm.value__rar
+# id::rar
+#: 950.data.seed-values.sql:559
+msgid "Rarotongan"
+msgstr "Rarotongan"
+
+# id::ppl.description__290
+#: 950.data.seed-values.sql:1174
+msgid "FIXME: Need description for CREATE_TRANSLATION"
+msgstr ""
+
+# id::clfm.description__h
+#: 950.data.seed-values.sql:184
+msgid "The item is a humorous work, satire or of similar literary form."
+msgstr ""
+
+# id::crrf.name__3
+# id::3
+#: 950.data.seed-values.sql:105
+msgid "50_cent_per_day"
+msgstr "50_cent_per_day"
+
+# id::ppl.description__187
+#: 950.data.seed-values.sql:1071
+msgid "Allow a user to mark an item status as 'in process'"
+msgstr ""
+
+# id::clm.value__dyu
+# id::dyu
+#: 950.data.seed-values.sql:318
+msgid "Dyula"
+msgstr "Dyula"
+
+# id::ppl.description__23
+# id::23
+# id::21
+# id::89
+#: 950.data.seed-values.sql:910
+#, fuzzy
+msgid "Allow a user to delete a volume"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
+
+# id::clm.value__gre
+# id::gre
+#: 950.data.seed-values.sql:370
+msgid "Greek, Modern (1453- )"
+msgstr "Greek, Modern (1453- )"
+
+# id::clm.value__efi
+# id::efi
+#: 950.data.seed-values.sql:320
+msgid "Efik"
+msgstr "Efik"
+
+# id::ppl.description__195
+#: 950.data.seed-values.sql:1079
+msgid "Allows a user to view a purchase order"
+msgstr ""
+
+# id::ppl.description__141
+# id::141
+#: 950.data.seed-values.sql:1026
+msgid "Allow staff to override fine amount checkout failure"
+msgstr "Թույլ է տալիս աշխատակազմին վերագրել տուգանքների հաշվիչի ձախողումը:"
+
+# id::ppl.description__135
+# id::135
+#: 950.data.seed-values.sql:1020
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
+msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"SIP-Client\" խմբից"
+
+# id::ppl.description__14
+# id::14
+#: 950.data.seed-values.sql:901
+#, fuzzy
+msgid "Allow a user to update another user's hold"
+msgstr "Թույլ է տալիս օգտվողին թարմացնելու այլ օգտվողի պահումները"
+
+# id::clm.value__mus
+# id::mus
+#: 950.data.seed-values.sql:501
+msgid "Creek"
+msgstr "Creek"
+
+# id::cam.value__c
+# id::c
+#: 950.data.seed-values.sql:150
+msgid "Pre-adolescent"
+msgstr "Pre-adolescent"
+
+# id::clm.value__smj
+# id::smj
+#: 950.data.seed-values.sql:595
+msgid "Lule Sami"
+msgstr "Lule Sami"
+
+# id::ppl.description__59
+# id::59
+# id::56
+#: 950.data.seed-values.sql:944
+#, fuzzy
+msgid "User may create an entry in a copy statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::clm.value__bis
+# id::bis
+#: 950.data.seed-values.sql:259
+msgid "Bislama"
+msgstr "Bislama"
+
+# id::clm.value__kon
+# id::kon
+#: 950.data.seed-values.sql:435
+msgid "Kongo"
+msgstr "Kongo"
+
+# id::clm.value__ach
+# id::ach
+#: 950.data.seed-values.sql:209
+msgid "Acoli"
+msgstr "Acoli"
+
+# id::clm.value__mkh
+# id::mkh
+#: 950.data.seed-values.sql:488
+msgid "Mon-Khmer (Other)"
+msgstr "Mon-Khmer (այլ)"
+
+# id::ppl.description__29
+#: 950.data.seed-values.sql:916
+msgid "Allow a user to edit a user's record"
+msgstr ""
+
+# id::clm.value__pap
+# id::pap
+#: 950.data.seed-values.sql:543
+msgid "Papiamento"
+msgstr "Papiamento"
+
+# id::clm.value__mwr
+# id::mwr
+#: 950.data.seed-values.sql:502
+msgid "Marwari"
+msgstr "Marwari"
+
+# id::crmf.name__2
+# id::2
+#: 950.data.seed-values.sql:87
+msgid "overdue_min"
+msgstr "overdue_min"
+
+# id::ppl.description__287
+#: 950.data.seed-values.sql:1171
+msgid "FIXME: Need description for CREATE_BIB_IMPORT_QUEUE"
+msgstr ""
+
+# id::clm.value__dak
+# id::dak
+#: 950.data.seed-values.sql:304
+msgid "Dakota"
+msgstr "Dakota"
+
+# id::clm.value__pol
+# id::pol
+#: 950.data.seed-values.sql:550
+msgid "Polish"
+msgstr "Լեհերեն"
+
+# id::crmf.name__3
+# id::3
+#: 950.data.seed-values.sql:89
+msgid "overdue_mid"
+msgstr "overdue_mid"
+
+# id::clm.value__hat
+# id::hat
+#: 950.data.seed-values.sql:376
+msgid "Haitian French Creole"
+msgstr "Haitian French Creole"
+
+# id::clm.value__bik
+# id::bik
+#: 950.data.seed-values.sql:257
+msgid "Bikol"
+msgstr "Bikol"
+
+# id::clm.value__swe
+# id::swe
+#: 950.data.seed-values.sql:618
+msgid "Swedish"
+msgstr "Շվեդերեն"
+
+# id::ppl.description__239
+#: 950.data.seed-values.sql:1123
+msgid "FIXME: Need description for DELETE_LIT_FORM"
+msgstr ""
+
+# id::cam.description__c
+#: 950.data.seed-values.sql:151
+msgid "The item is intended for young people, approximate ages 9-13 years."
+msgstr ""
+
+# id::clm.value__sgn
+# id::sgn
+#: 950.data.seed-values.sql:582
+msgid "Sign languages"
+msgstr "Sign languages"
+
+# id::ppl.description__8
+# id::8
+#: 950.data.seed-values.sql:896
+#, fuzzy
+msgid "Allow a user to place a hold on a specific copy"
+msgstr "Օգտվողը կարող է որոշակի օրինակի համար տեղադրել պահում"
+
+# id::ppl.description__136
+# id::136
+#: 950.data.seed-values.sql:1021
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
+msgstr ""
+"Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Մատակարար\" խմբից:"
+
+# id::clm.value__chm
+# id::chm
+#: 950.data.seed-values.sql:284
+msgid "Mari"
+msgstr "Mari"
+
+# id::clm.value__ewe
+# id::ewe
+#: 950.data.seed-values.sql:331
+msgid "Ewe"
+msgstr "Ewe"
+
+# id::clm.value__tup
+# id::tup
+#: 950.data.seed-values.sql:652
+msgid "Tupi languages"
+msgstr "Tupi languages"
+
+# id::clm.value__alg
+# id::alg
+#: 950.data.seed-values.sql:220
+msgid "Algonquian (Other)"
+msgstr "Algonquian (այլ)"
+
+# id::clm.value__fao id::clm.value__-far
+# id::fao
+#: 950.data.seed-values.sql:334 950.data.seed-values.sql:335
+msgid "Faroese"
+msgstr "Faroese"
+
+# id::ppl.description__314
+#: 950.data.seed-values.sql:1198
+msgid "FIXME: Need description for DELETE_IMPORT_ITEM"
+msgstr ""
+
+# id::ppl.description__234
+#: 950.data.seed-values.sql:1118
+msgid "FIXME: Need description for DELETE_ITEM_FORM"
+msgstr ""
+
+# id::ppl.description__304
+#: 950.data.seed-values.sql:1188
+msgid "FIXME: Need description for UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF"
+msgstr ""
+
+# id::clm.value__dan
+# id::dan
+#: 950.data.seed-values.sql:305
+msgid "Danish"
+msgstr "Դանիերեն"
+
+# id::clm.value__dra
+# id::dra
+#: 950.data.seed-values.sql:314
+msgid "Dravidian (Other)"
+msgstr "Dravidian (այլ)"
+
+# id::i18n_l.description__es-US
+# id::es-US
+#: 950.data.seed-values.sql:742
+msgid "American Spanish"
+msgstr "Ամերիկական իսպաներեն"
+
+# id::ppl.description__244
+#: 950.data.seed-values.sql:1128
+msgid "FIXME: Need description for DELETE_ORG_UNIT"
+msgstr ""
+
+# id::clm.value__cpe
+# id::cpe
+#: 950.data.seed-values.sql:296
+msgid "Creoles and Pidgins, English-based (Other)"
+msgstr "Creoles and Pidgins, English-based (այլ)"
+
+# id::ppl.description__319
+#: 950.data.seed-values.sql:1203
+msgid "FIXME: Need description for UPDATE_IMPORT_TRASH_FIELD"
+msgstr ""
+
+# id::ppl.description__128
+# id::128
+#: 950.data.seed-values.sql:1013
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Տացքավար\" խմբից"
+
+# id::clm.value__cus
+# id::cus
+#: 950.data.seed-values.sql:302
+msgid "Cushitic (Other)"
+msgstr "Cushitic (այլ)"
+
+# id::ppl.description__56
+# id::56
+#: 950.data.seed-values.sql:941
+msgid "User may create a new patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::clm.value__tet
+# id::tet
+#: 950.data.seed-values.sql:631
+msgid "Tetum"
+msgstr "Tetum"
+
+# id::ppl.description__66
+# id::66
+# id::56
+#: 950.data.seed-values.sql:951
+#, fuzzy
+msgid "User may delete a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::clm.value__pal
+# id::pal
+#: 950.data.seed-values.sql:540
+msgid "Pahlavi"
+msgstr "Պահլավերեն"
+
+# id::cubt.label__folks%3Apub_book_bags.add
+#: 950.data.seed-values.sql:1949
+msgid "Add to Published Book Bags"
+msgstr ""
+
+# id::ppl.description__280
+#: 950.data.seed-values.sql:1164
+msgid "FIXME: Need description for MERGE_BIB_RECORDS"
+msgstr ""
+
+# id::clm.value__slo
+# id::slo
+#: 950.data.seed-values.sql:590
+msgid "Slovak"
+msgstr "Սլովակերեն"
+
+# id::ppl.description__159
+# id::159
+# id::158
+# id::157
+# id::88
+#: 950.data.seed-values.sql:1043
+#, fuzzy
+msgid "Allow a user to view a fund"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__142
+#: 950.data.seed-values.sql:1027
+msgid "Allow staff to override circulation copy range failure"
+msgstr ""
+
+# id::ppl.description__148
+# id::148
+#: 950.data.seed-values.sql:1032
+#, fuzzy
+msgid "Allow a user to share report his own folders"
+msgstr "Թույլ է տալիս օգտվողին համատեղ օգտագործել հաշվետվությունը"
+
+# id::ppl.description__339
+#: 950.data.seed-values.sql:1225
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password"
+msgstr ""
+
+# id::ppl.description__235
+#: 950.data.seed-values.sql:1119
+msgid "FIXME: Need description for DELETE_ITEM_TYPE"
+msgstr ""
+
+# id::clm.value__gil
+# id::gil
+#: 950.data.seed-values.sql:358
+msgid "Gilbertese"
+msgstr "Gilbertese"
+
+# id::ppl.description__307
+#: 950.data.seed-values.sql:1191
+msgid "FIXME: Need description for UPDATE_MARC_CODE"
+msgstr ""
+
+# id::ppl.description__100
+# id::100
+#: 950.data.seed-values.sql:985
+#, fuzzy
+msgid "Allow a user to view uploaded offline script information"
+msgstr "Թույլ է տալիս օգտվողին դիտել բեռնավորված օֆլայն սկրիպտի ինֆորմացիան"
+
+# id::clm.value__kik
+# id::kik
+#: 950.data.seed-values.sql:429
+msgid "Kikuyu"
+msgstr "Kikuyu"
+
+# id::ppl.description__316
+#: 950.data.seed-values.sql:1200
+msgid "FIXME: Need description for DELETE_IMPORT_TRASH_FIELD"
+msgstr ""
+
+# id::crahp.name__2
+# id::2
+#: 950.data.seed-values.sql:111
+msgid "6month"
+msgstr "6ամիս"
+
+# id::ppl.description__143
+#: 950.data.seed-values.sql:1028
+msgid "Allow staff to override item on holds shelf failure"
+msgstr ""
+
+# id::clm.value__ang
+# id::ang
+#: 950.data.seed-values.sql:222
+msgid "English, Old (ca. 450-1100)"
+msgstr "Անգլերեն, հին (մոտ. 450-1100)"
+
+# id::clm.value__nai
+# id::nai
+#: 950.data.seed-values.sql:505
+msgid "North American Indian (Other)"
+msgstr "North American Indian (այլ)"
+
+# id::coust.label__ui.admin.patron_log.max_entries
+#: 950.data.seed-values.sql:1819
+msgid "GUI: Work Log: Maximum Patrons Logged"
+msgstr ""
+
+# id::ppl.description__215
+#: 950.data.seed-values.sql:1099
+msgid "FIXME: Need description for CREATE_LASSO_MAP"
+msgstr ""
+
+# id::ppl.description__276
+#: 950.data.seed-values.sql:1160
+msgid "FIXME: Need description for UPDATE_TRANSIT"
+msgstr ""
+
+# id::clm.value__crh
+# id::crh
+#: 950.data.seed-values.sql:300
+msgid "Crimean Tatar"
+msgstr "Crimean Tatar"
+
+# id::cbrebt.label__bookbag
+#: 950.data.seed-values.sql:1943
+msgid "Book Bag"
+msgstr ""
+
+# id::clm.value__bho
+# id::bho
+#: 950.data.seed-values.sql:255
+msgid "Bhojpuri"
+msgstr "Bhojpuri"
+
+# id::cam.value__f
+# id::f
+#: 950.data.seed-values.sql:159
+msgid "Specialized"
+msgstr "Մասնագիտացված"
+
+# id::clm.value__tsi
+# id::tsi
+#: 950.data.seed-values.sql:646
+msgid "Tsimshian"
+msgstr "Tsimshian"
+
+# id::clfm.description__1
+#: 950.data.seed-values.sql:173
+msgid "The item is a work of fiction and no further identification of the literary form is desired"
+msgstr ""
+
+# id::clm.value__cmc
+# id::cmc
+#: 950.data.seed-values.sql:292
+msgid "Chamic languages"
+msgstr "Chamic languages"
+
+# id::clm.value__nog
+# id::nog
+#: 950.data.seed-values.sql:520
+msgid "Nogai"
+msgstr "Nogai"
+
+# id::clfm.description__0
+#: 950.data.seed-values.sql:170
+msgid "The item is not a work of fiction and no further identification of the literary form is desired"
+msgstr ""
+
+# id::ppl.description__338
+#: 950.data.seed-values.sql:1224
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
+msgstr ""
+
+# id::clm.value__enm
+# id::enm
+#: 950.data.seed-values.sql:325
+msgid "English, Middle (1100-1500)"
+msgstr "Անգլերեն, Միջին (1100-1500)"
+
+# id::clm.value__sah
+# id::sah
+#: 950.data.seed-values.sql:568
+msgid "Yakut"
+msgstr "Յակուտերեն"
+
+# id::clm.value__sux
+# id::sux
+#: 950.data.seed-values.sql:616
+msgid "Sumerian"
+msgstr "Sumerian"
+
+# id::crmf.name__6
+# id::6
+#: 950.data.seed-values.sql:95
+msgid "overdue_equip_mid"
+msgstr "overdue_equip_mid"
+
+# id::clm.value__xho
+# id::xho
+#: 950.data.seed-values.sql:680
+msgid "Xhosa"
+msgstr "Xhosa"
+
+# id::clm.value__mni
+# id::mni
+#: 950.data.seed-values.sql:493
+msgid "Manipuri"
+msgstr "Manipuri"
+
+# id::clm.value__bua
+# id::bua
+#: 950.data.seed-values.sql:266
+msgid "Buriat"
+msgstr "Բուրյաթերեն"
+
+# id::ppl.description__52
+# id::52
+#: 950.data.seed-values.sql:937
+#, fuzzy
+msgid "Allow a user to remove other users from permission groups"
+msgstr "Օգտվողը կարող է իրավասությունների խմբերին հեռացնել այլ օգտվողների "
+
+# id::ppl.description__2
+#: 950.data.seed-values.sql:891
+msgid "Allow a user to log in to the OPAC"
+msgstr ""
+
+# id::clm.value__hup
+# id::hup
+#: 950.data.seed-values.sql:388
+msgid "Hupa"
+msgstr "Hupa"
+
+# id::clm.value__ina id::clm.value__-int
+# id::ina
+#: 950.data.seed-values.sql:398 950.data.seed-values.sql:403
+msgid "Interlingua (International Auxiliary Language Association)"
+msgstr "Interlingua (International Auxiliary Language Association)"
+
+# id::clm.value__ice
+# id::ice
+#: 950.data.seed-values.sql:391
+msgid "Icelandic"
+msgstr "Իսլանդերեն"
+
+# id::ppl.description__221
+#: 950.data.seed-values.sql:1105
+msgid "FIXME: Need description for CREATE_ORG_UNIT"
+msgstr ""
+
+# id::clm.value__twi
+# id::twi
+#: 950.data.seed-values.sql:656
+msgid "Twi"
+msgstr "Twi"
+
+# id::ppl.description__191
+#: 950.data.seed-values.sql:1075
+msgid "Allow a user to mark an item status as 'on order'"
+msgstr ""
+
+# id::coust.label__ui.admin.work_log.max_entries
+#: 950.data.seed-values.sql:1814
+msgid "GUI: Work Log: Maximum Actions Logged"
+msgstr ""
+
+# id::clm.value__guj
+# id::guj
+#: 950.data.seed-values.sql:373
+msgid "Gujarati"
+msgstr "Gujarati"
+
+# id::ppl.description__269
+#: 950.data.seed-values.sql:1153
+msgid "FIXME: Need description for UPDATE_NET_ACCESS_LEVEL"
+msgstr ""
+
+# id::clm.value__map
+# id::map
+#: 950.data.seed-values.sql:477
+msgid "Austronesian (Other)"
+msgstr "Austronesian (այլ)"
+
+# id::clm.value__akk
+# id::akk
+#: 950.data.seed-values.sql:217
+msgid "Akkadian"
+msgstr "Akkadian"
+
+# id::ppl.description__19
+# id::ppl.description__199
+# id::166
+# id::88
+#: 950.data.seed-values.sql:906
+#, fuzzy
+msgid "Allow a user to create new MARC records"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__328
+#: 950.data.seed-values.sql:1214
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
+msgstr ""
+
+# id::cnal.name__1
+# id::1
+#: 950.data.seed-values.sql:133
+msgid "Filtered"
+msgstr "Զտված"
+
+# id::clm.value__kor
+# id::kor
+#: 950.data.seed-values.sql:436
+msgid "Korean"
+msgstr "Կորեերեն"
+
+# id::clm.value__shn
+# id::shn
+#: 950.data.seed-values.sql:583
+msgid "Shan"
+msgstr "Shan"
+
+# id::ppl.description__318
+#: 950.data.seed-values.sql:1202
+msgid "FIXME: Need description for UPDATE_IMPORT_ITEM_ATTR_DEF"
+msgstr ""
+
+# id::citm.value__d
+# id::d
+#: 950.data.seed-values.sql:711
+msgid "Manuscript notated music"
+msgstr "Ձեռագիր նոտաներ"
+
+# id::ppl.description__49
+# id::49
+#: 950.data.seed-values.sql:934
+#, fuzzy
+msgid "Allow a user to delete another user's container"
+msgstr "Թույլ է տալիս օգտվողին ջնջել այլ օգտվողի կոնտեյները"
+
+# id::clm.value__kom
+# id::kom
+#: 950.data.seed-values.sql:434
+msgid "Komi"
+msgstr "Komi"
+
+# id::cam.description__e
+#: 950.data.seed-values.sql:157
+msgid "The item is intended for adults."
+msgstr ""
+
+# id::cblvl.value__c
+# id::c
+#: 950.data.seed-values.sql:718
+msgid "Collection"
+msgstr "Հավաքածու"
+
+# id::clm.value__nya
+# id::nya
+#: 950.data.seed-values.sql:525
+msgid "Nyanja"
+msgstr "Nyanja"
+
+# id::ppl.description__5
+#: 950.data.seed-values.sql:893
+msgid "Allow a user to create a metarecord holds"
+msgstr ""
+
+# id::ppl.description__208
+#: 950.data.seed-values.sql:1092
+msgid "FIXME: Need description for CREATE_CIRC_MOD"
+msgstr ""
+
+# id::ppl.description__282
+#: 950.data.seed-values.sql:1166
+msgid "FIXME: Need description for CREATE_ACQ_FUNDING_SOURCE"
+msgstr ""
+
+# id::clm.value__khi
+# id::khi
+#: 950.data.seed-values.sql:426
+msgid "Khoisan (Other)"
+msgstr "Khoisan (այլ)"
+
+# id::clm.value__cad
+# id::cad
+#: 950.data.seed-values.sql:270
+msgid "Caddo"
+msgstr "Caddo"
+
+# id::clm.value__lez
+# id::lez
+#: 950.data.seed-values.sql:454
+msgid "Lezgian"
+msgstr "Լեզգիերեն"
+
+# id::ppl.description__259
+#: 950.data.seed-values.sql:1143
+msgid "FIXME: Need description for UPDATE_COPY_STATUS"
+msgstr ""
+
+# id::clm.value__kas
+# id::kas
+#: 950.data.seed-values.sql:420
+msgid "Kashmiri"
+msgstr "Kashmiri"
+
+# id::ppl.description__116
+# id::116
+#: 950.data.seed-values.sql:1002
+#, fuzzy
+msgid "Allow a user to remove a closed date interval for a given location"
+msgstr ""
+"Թույլ է տալիս օգտվողին տվյալ տեղաբաշխման համար հեռացնել փակ ամսաթվի "
+"տիրույթը:"
+
+# id::clm.value__hai
+# id::hai
+#: 950.data.seed-values.sql:375
+msgid "Haida"
+msgstr "Haida"
+
+# id::ppl.description__333
+#: 950.data.seed-values.sql:1219
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.opac.barcode_regex"
+msgstr ""
+
+# id::clm.value__-lan id::clm.value__oci
+# id::-lan
+#: 950.data.seed-values.sql:449 950.data.seed-values.sql:530
+msgid "Occitan (post-1500)"
+msgstr "Occitan (post-1500)"
+
+# id::clm.value__son
+# id::son
+#: 950.data.seed-values.sql:605
+msgid "Songhai"
+msgstr "Songhai"
+
+# id::i18n_l.name__es-US
+#: 950.data.seed-values.sql:741
+msgid "Spanish (US)"
+msgstr ""
+
+# id::ppl.description__285
+#: 950.data.seed-values.sql:1169
+msgid "FIXME: Need description for CREATE_AUTHORITY_RECORD_NOTE"
+msgstr ""
+
+# id::ccs.name__2
+# id::2
+#: 950.data.seed-values.sql:116
+msgid "Bindery"
+msgstr "Կազմատուն"
+
+# id::aout.name__2
+# id::2
+#: 950.data.seed-values.sql:828
+msgid "System"
+msgstr "Համակարգ"
+
+# id::pgt.name__6
+#: 950.data.seed-values.sql:1259
+msgid "Acquisitions Administrator"
+msgstr ""
+
+# id::ppl.description__157
+# id::157
+# id::88
+#: 950.data.seed-values.sql:1041
+#, fuzzy
+msgid "Allow a user to create a new fund"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::pgt.description__10
+#: 950.data.seed-values.sql:1262
+msgid "System maintenance, configuration, etc."
+msgstr ""
+
+# id::ppl.description__114
+#: 950.data.seed-values.sql:999
+msgid "Allow a user to cancel holds"
+msgstr ""
+
+# id::ppl.description__109
+# id::109
+#: 950.data.seed-values.sql:994
+#, fuzzy
+msgid "Allow a user to remove the lost status from a copy"
+msgstr "Թույլ է տալիս օգտվողին փոխել օրինակի կորածի վիճակը"
+
+# id::vqbrad.description__3
+#: 950.data.seed-values.sql:1871
+msgid "Language of work"
+msgstr ""
+
+# id::ppl.description__144
+# id::144
+#: 950.data.seed-values.sql:1029
+msgid "Allow staff to force checkout of Missing/Lost type items"
+msgstr ""
+"Թույլ է տալիս աշխատակազմին իրականացնել դուրս տրում Բացակա/Կորած նյութերի "
+"համար:"
+
+# id::clm.value__aar
+# id::aar
+#: 950.data.seed-values.sql:206
+msgid "Afar"
+msgstr "Afar"
+
+# id::crahp.name__1
+# id::1
+#: 950.data.seed-values.sql:109
+msgid "3month"
+msgstr "3ամիս"
+
+# id::citm.value__r
+# id::r
+#: 950.data.seed-values.sql:705
+msgid "Three-dimensional artifact or naturally occurring object"
+msgstr "Three-dimensional artifact or naturally occurring object"
+
+# id::ppl.description__68
+# id::68
+# id::58
+# id::56
+#: 950.data.seed-values.sql:953
+#, fuzzy
+msgid "User may delete an entry from a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::clm.value__udm
+# id::udm
+#: 950.data.seed-values.sql:658
+msgid "Udmurt"
+msgstr "Ուդմուրտերեն"
+
+# id::clm.value__gle id::clm.value__-iri
+# id::gle
+#: 950.data.seed-values.sql:360 950.data.seed-values.sql:406
+msgid "Irish"
+msgstr "Իռլանդերեն"
+
+# id::coust.description__circ.max_fine.cap_at_price
+#: 950.data.seed-values.sql:2576
+msgid "This prevents the system from charging more than the item price in overdue fines"
+msgstr ""
+
+# id::coust.label__circ.max_fine.cap_at_price
+#: 950.data.seed-values.sql:2575
+msgid "Circ: Cap Max Fine at Item Price"
+msgstr ""
+
+# id::ppl.description__309
+#: 950.data.seed-values.sql:1193
+msgid "FIXME: Need description for VIEW_ACQ_FUNDING_SOURCE"
+msgstr ""
+
+# id::ppl.description__198
+#: 950.data.seed-values.sql:1082
+msgid "Allows a user to view all org settings at the specified level"
+msgstr ""
+
+# id::crcd.name__11 id::crmf.name__1 id::crrf.name__1
+# id::11
+#: 950.data.seed-values.sql:81 950.data.seed-values.sql:85
+#: 950.data.seed-values.sql:101
+msgid "default"
+msgstr "լռակյաց"
+
+# id::clm.value__kaz
+# id::kaz
+#: 950.data.seed-values.sql:423
+msgid "Kazakh"
+msgstr "Ղազախերեն"
+
+# id::clm.value__kbd
+# id::kbd
+#: 950.data.seed-values.sql:424
+msgid "Kabardian"
+msgstr "Կաբարդիներեն"
+
+# id::clm.value__bel
+# id::bel
+#: 950.data.seed-values.sql:251
+msgid "Belarusian"
+msgstr "Բելառուսերեն"
+
+# id::clm.value__mac
+# id::mac
+#: 950.data.seed-values.sql:468
+msgid "Macedonian"
+msgstr "Մակեդոներեն"
+
+# id::cam.description__a
+#: 950.data.seed-values.sql:145
+msgid "The item is intended for children, approximate ages 0-5 years."
+msgstr ""
+
+# id::ppl.description__26
+# id::26
+# id::25
+# id::75
+#: 950.data.seed-values.sql:913
+#, fuzzy
+msgid "Allow a user to delete a copy"
+msgstr "Թույլ է տալիս օգտվողին վերցնել պատճեն"
+
+# id::ppl.description__317
+#: 950.data.seed-values.sql:1201
+msgid "FIXME: Need description for UPDATE_IMPORT_ITEM"
+msgstr ""
+
+# id::clm.value__-ajm
+# id::-ajm
+#: 950.data.seed-values.sql:215
+msgid "Aljamía"
+msgstr "Aljamía"
+
+# id::clm.value__lun
+# id::lun
+#: 950.data.seed-values.sql:465
+msgid "Lunda"
+msgstr "Lunda"
+
+# id::ppl.description__343
+#: 950.data.seed-values.sql:1229
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.patron.password.use_phone"
+msgstr ""
+
+# id::clm.value__sme
+# id::sme
+#: 950.data.seed-values.sql:593
+msgid "Northern Sami"
+msgstr "Northern Sami"
+
+# id::ppl.description__64
+#: 950.data.seed-values.sql:950
+msgid "User may link another user to an entry in a statistical category"
+msgstr ""
+
+# id::clm.value__xal
+# id::xal
+#: 950.data.seed-values.sql:679
+msgid "Kalmyk"
+msgstr "Kalmyk"
+
+# id::cam.value__d
+# id::d
+#: 950.data.seed-values.sql:153
+msgid "Adolescent"
+msgstr "Adolescent"
+
+# id::clm.value__rum
+# id::rum
+#: 950.data.seed-values.sql:563
+msgid "Romanian"
+msgstr "Ռումիներեն"
+
+# id::cbt.name__8
+#: 950.data.seed-values.sql:880
+msgid "Damaged Item Processing Fee"
+msgstr ""
+
+# id::clm.value__aze
+# id::aze
+#: 950.data.seed-values.sql:240
+msgid "Azerbaijani"
+msgstr "Ադրբեջաներեն"
+
+# id::clm.value__srd
+# id::srd
+#: 950.data.seed-values.sql:608
+msgid "Sardinian"
+msgstr "Սարդիներեն"
+
+# id::clm.value__hmo
+# id::hmo
+#: 950.data.seed-values.sql:386
+msgid "Hiri Motu"
+msgstr "Hiri Motu"
+
+# id::ppl.description__6
+#: 950.data.seed-values.sql:894
+msgid "Allow a user to place a hold at the title level"
+msgstr ""
+
+# id::vqbrad.description__7
+#: 950.data.seed-values.sql:1875
+msgid "Price"
+msgstr ""
+
+# id::ppl.description__146
+# id::146
+#: 950.data.seed-values.sql:1030
+#, fuzzy
+msgid "Allow a user to place multiple holds on a single title"
+msgstr "Թույլ է տալիս օգտվողներին դնել բազմակի պահումներ մեկ վերնագրի համար"
+
+# id::cbt.name__5
+#: 950.data.seed-values.sql:874
+msgid "System: Deposit"
+msgstr ""
+
+# id::ppl.description__250
+#: 950.data.seed-values.sql:1134
+msgid "FIXME: Need description for DELETE_VR_FORMAT"
+msgstr ""
+
+# id::coust.description__ui.admin.patron_log.max_entries
+#: 950.data.seed-values.sql:1820
+msgid "Maximum entries for \"Most Recently Affected Patrons...\" section of the Work Log interface."
+msgstr ""
+
+# id::ppl.description__303
+#: 950.data.seed-values.sql:1187
+msgid "FIXME: Need description for UPDATE_AUTHORITY_RECORD_NOTE"
+msgstr ""
+
+# id::citm.value__g
+# id::g
+#: 950.data.seed-values.sql:703
+msgid "Projected medium"
+msgstr "Պրոյեկտված"
+
+# id::clm.value__roh
+# id::roh
+#: 950.data.seed-values.sql:561
+msgid "Raeto-Romance"
+msgstr "Raeto-Romance"
+
+# id::ppl.description__181
+#: 950.data.seed-values.sql:1065
+msgid "Allow a user to view billing types"
+msgstr ""
+
+# id::ppl.description__248
+#: 950.data.seed-values.sql:1132
+msgid "FIXME: Need description for DELETE_SURVEY"
+msgstr ""
+
+# id::clm.value__lao
+# id::lao
+#: 950.data.seed-values.sql:450
+msgid "Lao"
+msgstr "Lao"
+
+# id::ppl.description__129
+# id::129
+#: 950.data.seed-values.sql:1014
+#, fuzzy
+msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
+msgstr "Թույլ է տալիս օգտվողին ավելացնել/հեռացնել օգտվողներին \"Քարտագրող\" խմբից"
+
+# id::ppl.description__21
+# id::21
+# id::89
+#: 950.data.seed-values.sql:908
+#, fuzzy
+msgid "Allow a user to create a volume"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր հատորի նշում"
+
+# id::ppl.description__216
+#: 950.data.seed-values.sql:1100
+msgid "FIXME: Need description for CREATE_LIT_FORM"
+msgstr ""
+
+# id::ppl.description__137
+# id::137
+#: 950.data.seed-values.sql:1022
+#, fuzzy
+msgid "Allow a user to place a hold on an age-protected item"
+msgstr "Թույլ է տալիս օգտվողին դնել պահում երկարաժամկետ պահպանման նյութի վրա:"
+
+# id::clm.value__sio
+# id::sio
+#: 950.data.seed-values.sql:587
+msgid "Siouan (Other)"
+msgstr "Siouan (այլ)"
+
+# id::ppl.description__231
+#: 950.data.seed-values.sql:1115
+msgid "FIXME: Need description for DELETE_CIRC_MOD"
+msgstr ""
+
+# id::clm.value__men
+# id::men
+#: 950.data.seed-values.sql:483
+msgid "Mende"
+msgstr "Mende"
+
+# id::ppl.description__58
+# id::58
+# id::56
+#: 950.data.seed-values.sql:943
+#, fuzzy
+msgid "User may create an entry in a patron statistical category"
+msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողական վիճակագրական դաս"
+
+# id::clm.value__oji
+# id::oji
+#: 950.data.seed-values.sql:531
+msgid "Ojibwa"
+msgstr "Ojibwa"
+
+# id::clm.value__sus
+# id::sus
+#: 950.data.seed-values.sql:615
+msgid "Susu"
+msgstr "Susu"
+
+# id::ppl.description__199
+# id::166
+# id::88
+#: 950.data.seed-values.sql:1083
+#, fuzzy
+msgid "Allows a user to create a new MFHD record"
+msgstr "Թույլ է տալիս օգտվողին ստեղծել նոր օրինակի նշում"
+
+# id::ppl.description__298
+#: 950.data.seed-values.sql:1182
+msgid "FIXME: Need description for DELETE_MARC_CODE"
+msgstr ""
+
+# id::clm.value__cau
+# id::cau
+#: 950.data.seed-values.sql:275
+msgid "Caucasian (Other)"
+msgstr "Caucasian (այլ)"
+
+# id::clm.value__kur
+# id::kur
+#: 950.data.seed-values.sql:443
+msgid "Kurdish"
+msgstr "Քրդերեն"
+
+# id::clm.value__wal
+# id::wal
+#: 950.data.seed-values.sql:672
+msgid "Walamo"
+msgstr "Walamo"
+
+# id::ppl.description__99
+# id::99
+#: 950.data.seed-values.sql:984
+#, fuzzy
+msgid "Allow a user to upload an offline script"
+msgstr "Թույլ է տալիս օգտվողին բեռնավորել օֆլայն սկրիպտը"
+
+# id::ccs.name__3
+# id::3
+#: 950.data.seed-values.sql:117
+msgid "Lost"
+msgstr "Կորած"
+
+# id::clm.value__nde
+# id::nde
+#: 950.data.seed-values.sql:510
+msgid "Ndebele (Zimbabwe)  "
+msgstr "Ndebele (Zimbabwe)  "
+
+# id::clm.value__lub
+# id::lub
+#: 950.data.seed-values.sql:462
+msgid "Luba-Katanga"
+msgstr "Luba-Katanga"
+
+# id::cifm.value__s
+# id::s
+#: 950.data.seed-values.sql:699
+msgid "Electronic"
+msgstr "Էլեկտրոնային"
+
+# id::clfm.value__d
+# id::d
+#: 950.data.seed-values.sql:177
+msgid "Dramas"
+msgstr "Դրամա"
+
+# id::clm.value__zha
+# id::zha
+#: 950.data.seed-values.sql:688
+msgid "Zhuang"
+msgstr "Zhuang"
+
+# id::cifm.value__f
+# id::f
+#: 950.data.seed-values.sql:697
+msgid "Braille"
+msgstr "Բրայլ"
+
+# id::ppl.description__267
+#: 950.data.seed-values.sql:1151
+msgid "FIXME: Need description for UPDATE_LIT_FORM"
+msgstr ""
+
+# id::clfm.value__c
+# id::c
+#: 950.data.seed-values.sql:175
+msgid "Comic strips"
+msgstr "Շարժեր"
+
+# id::clm.value__ido
+# id::ido
+#: 950.data.seed-values.sql:392
+msgid "Ido"
+msgstr "Ido"
+
+# id::i18n_l.description__fr-CA
+# id::fr-CA
+#: 950.data.seed-values.sql:736
+#, fuzzy
+msgid "Canadian French"
+msgstr "Կանադական ֆրանսերեն"
+
+# id::ppl.description__189
+#: 950.data.seed-values.sql:1073
+msgid "Allow a user to mark an item status as 'reshelving'"
+msgstr ""
+
+# id::ppl.description__300
+#: 950.data.seed-values.sql:1184
+msgid "FIXME: Need description for UPDATE_ACQ_FUNDING_SOURCE"
+msgstr ""
+
+# id::clm.value__fiu
+# id::fiu
+#: 950.data.seed-values.sql:339
+msgid "Finno-Ugrian (Other)"
+msgstr "Finno-Ugrian (այլ)"
+
+# id::clm.value__apa
+# id::apa
+#: 950.data.seed-values.sql:223
+msgid "Apache languages"
+msgstr "Ապաչի լեզուներ"
+
+# id::clm.value__run
+# id::run
+#: 950.data.seed-values.sql:564
+msgid "Rundi"
+msgstr "Rundi"
+
+# id::crcd.name__7
+# id::7
+#: 950.data.seed-values.sql:73
+msgid "7_days_2_renew"
+msgstr "7_days_2_renew"
+
+# id::ppl.description__236
+#: 950.data.seed-values.sql:1120
+msgid "FIXME: Need description for DELETE_LANGUAGE"
+msgstr ""
+
+# id::clm.value__-esk
+# id::-esk
+#: 950.data.seed-values.sql:327
+msgid "Eskimo languages"
+msgstr "Eskimo languages"
+
+# id::cubt.label__folks%3Acirc.checkout
+#: 950.data.seed-values.sql:1952
+msgid "Checkout Items"
+msgstr ""
+
+# id::clm.value__ath
+# id::ath
+#: 950.data.seed-values.sql:234
+msgid "Athapascan (Other)"
+msgstr "Athapascan (այլ)"
+
+# id::clm.value__ndo
+# id::ndo
+#: 950.data.seed-values.sql:511
+msgid "Ndonga"
+msgstr "Ndonga"
+
+# id::ppl.description__322
+#: 950.data.seed-values.sql:1208
+msgid "FIXME: Need description for UPDATE_ORG_UNIT_SETTING.cat.default_item_price"
+msgstr ""
+
+# id::clm.value__sco
+# id::sco
+#: 950.data.seed-values.sql:577
+msgid "Scots"
+msgstr "Scots"
+
+# id::clm.value__sot id::clm.value__-sso
+# id::sot
+#: 950.data.seed-values.sql:606 950.data.seed-values.sql:611
+msgid "Sotho"
+msgstr "Sotho"
+
+# id::clm.value__was
+# id::was
+#: 950.data.seed-values.sql:674
+msgid "Washo"
+msgstr "Washo"
+
+# id::clm.value__spa
+# id::spa
+#: 950.data.seed-values.sql:607
+msgid "Spanish"
+msgstr "Իսպաներեն"
+
+# id::ppl.description__18
+#: 950.data.seed-values.sql:905
+msgid "Allow a user to edit a MARC record"
+msgstr ""
+
+# id::ppl.description__163
+# id::163
+# id::162
+# id::78
+#: 950.data.seed-values.sql:1047
+#, fuzzy
+msgid "Allow a user to view a fund allocation"
+msgstr "Թույլ է տալիս օգտվողին ջնջել պատճեի տէղաբաշխումը"
+
+# id::19
+#~ msgid "User is allowed to create new MARC records"
+#~ msgstr "Օգտվողը իրավունք ունի ստեղծելու նոր MARC գրառումներ"
+
+# id::41
+#~ msgid "User may create new billable transactions"
+#~ msgstr "Օգտվողը կարող է ստեղծել նոր վճարովի տրանզակցիաներ"
+
+# id::24
+#~ msgid "User is allowed to create a new copy object"
+#~ msgstr "Օգտվողը կարող է ստեղծել նոր պատճե"
+
+# id::47
+#~ msgid "Allows a user to change org unit settings"
+#~ msgstr "Թույլ է տալիս օգտվողին փոխել կազմ միավորի կարգաբերումները"
+
+# id::50
+#~ msgid "Create a container item for another user"
+#~ msgstr "Ստեղծում է կոնտեյների նյութ այլ օգտվողի համար"
+
+# id::57
+#~ msgid "User may create a copy stat cat"
+#~ msgstr "Օգտվողը կարող է ստեղծել վիճ քարտ պատճե"
+
+# id::58
+#~ msgid "User may create a new patron stat cat entry"
+#~ msgstr "Օգտվողը կարող է ստեղծել նոր ընթերցողի վիճ քարտ մուտք"
+
+# id::59
+#~ msgid "User may create a new copy stat cat entry"
+#~ msgstr "Օգտվողը կարող է ստեղծել նոր պատճե վիճ քարտ մուտքի"
+
+# id::60
+#~ msgid "User may update a patron stat cat"
+#~ msgstr "Օգտվողը կարող է թարմացնել ընթերցողի վիճ քարտը"
+
+# id::61
+#~ msgid "User may update a copy stat cat"
+#~ msgstr "Օգտվողը կարող է թարմացնել պատճեի վիճ քարտ"
+
+# id::62
+#~ msgid "User may update a patron stat cat entry"
+#~ msgstr "Օգտվողը կարող է թարմացնել ընթերցողի վիճ քարտի մուտքը"
+
+# id::65
+#~ msgid "User may link a copy to a stat cat entry"
+#~ msgstr "Օգտվողը կարող է կապել պատճեի վիճ քարտ մուտքը"
+
+# id::64
+#~ msgid "User may link another user to a stat cat entry"
+#~ msgstr "Օգտվողը կարող է կապել մեկ այլ օգտվողի վիճ քարտ մուտքի"
+
+# id::66
+#~ msgid "User may delete a patron stat cat"
+#~ msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտը"
+
+# id::67
+#~ msgid "User may delete a copy stat cat"
+#~ msgstr "Օգտվողը կարող է ջնջել պատճեի վիճ քարտը"
+
+# id::68
+#~ msgid "User may delete a patron stat cat entry"
+#~ msgstr "Օգտվողը կարող է ջնջել ընթերցողի վիճ քարտի մուտքը"
+
+# id::91
+#~ msgid "Allows a user to delete someone elses copy notes"
+#~ msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի օրինակի նշումները"
+
+# id::92
+#~ msgid "Allows a user to delete someone elses volume note"
+#~ msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի հատորի նշումները"
+
+# id::93
+#~ msgid "Allows a user to delete someone elses title note"
+#~ msgstr "Թույլ է տալիս օգտվողին ջնջել մեկ ուրիշի վերնագրի նշումները"
+
+# id::106
+#~ msgid "Allows a person to check in/out an item that is claims returned"
+#~ msgstr "Թույլ է տալիս մարդուն սպասարկել նյութը որը խարանված վերադարձ է:"
+
+#~ msgid "Gwich'in"
+#~ msgstr "Gwich'in"
+
+#~ msgid "Sub-lib"
+#~ msgstr "Sub-lib"
+
+#~ msgid "123 Main St."
+#~ msgstr "123 Main St."
+
+#~ msgid "Administrator"
+#~ msgstr "Կառավարիչ"

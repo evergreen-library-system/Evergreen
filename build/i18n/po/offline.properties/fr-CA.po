@@ -1,0 +1,1135 @@
+# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen ILS > offline.properties.po\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-18 00:41-0400\n"
+"PO-Revision-Date: 2008-11-27 14:03-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team: NRCan Library\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: Canada\n"
+
+#: common.exception
+msgid ""
+"!! This software has encountered an error.  Please tell your friendly system "
+"administrator or software developer the following:\n"
+"%1$s\n"
+"%2$s\n"
+msgstr ""
+"!! Une erreur s’est produite dans ce logiciel. Veuillez aviser votre "
+"administrateur de système ou développeur de logiciel de ce qui suit :\n"
+"%1$s\n"
+"%2$s\n"
+" "
+
+#: common.jsan.missing
+msgid "The JSAN library object is missing."
+msgstr "L’objet JSAN est absent de la bibliothèque"
+
+#: common.ok
+msgid "Ok"
+msgstr "Ok"
+
+#: common.clear
+msgid "Clear"
+msgstr "Effacer"
+
+#: common.confirm
+msgid "Check here to confirm this message."
+msgstr "Cochez ici pour confirmer ce message."
+
+#: common.error.default
+msgid "Please report that this happened."
+msgstr "Veuillez signaler cet incident."
+
+#: common.error.copy_msg
+msgid "Copy Message"
+msgstr ""
+
+#: common.barcode.status.warning
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
+msgstr ""
+"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
+"étiquetté %3."
+
+#: common.barcode.status.warning.lost
+msgid "Lost"
+msgstr "Perdu"
+
+#: common.barcode.status.warning.expired
+msgid "Expired"
+msgstr "Expiré"
+
+#: common.barcode.status.warning.barred
+msgid "Barred"
+msgstr "Barré"
+
+#: common.barcode.status.warning.blocked
+msgid "Blocked"
+msgstr "Bloqué"
+
+#: common.barcode.status.warning.unknown
+msgid "with an unknown code: %1$s"
+msgstr "avec un code inconnu : %1$s"
+
+#: common.date.invalid
+msgid "Invalid Date"
+msgstr "Date invalide"
+
+#: common.no
+msgid "No"
+msgstr "Non"
+
+#: common.no.accesskey
+msgid "N"
+msgstr ""
+
+#: common.yes
+msgid "Yes"
+msgstr "Oui"
+
+#: common.yes.accesskey
+msgid "Y"
+msgstr ""
+
+#: common.unimplemented
+msgid "Not Yet Implemented"
+msgstr "Pas encore mis en œuvre"
+
+#: cat.bib_record
+msgid "Bib Record: %1$s"
+msgstr "Comptes de bibliothèque : %1$s"
+
+#: cat.opac.delete_record.confirm
+msgid "Are you sure you want to delete title record #%1$s from the catalog?"
+msgstr ""
+"Êtes vous certain de vouloir supprimer le compte intitulé #%1$s du "
+"catalogue?"
+
+#: cat.opac.delete_record
+msgid "Delete Record"
+msgstr "Supprimer le compte"
+
+#: cat.opac.delete
+msgid "Delete"
+msgstr "Supprimer"
+
+#: cat.opac.undelete_record.confirm
+msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr ""
+"Êtes vous certain de vouloir récupérer le compte intitulé #%1$s du "
+"catalogue?"
+
+#: cat.opac.undelete_record
+msgid "Undelete Record"
+msgstr "Récupérer le compte"
+
+#: cat.opac.undelete
+msgid "Undelete"
+msgstr "Récupérer"
+
+#: cat.opac.cancel
+msgid "Cancel"
+msgstr "Annuler"
+
+#: cat.opac.record_deleted
+msgid "Record deleted."
+msgstr "Compte supprimé"
+
+#: cat.opac.record_deleted.confirm
+msgctxt "cat.opac.record_deleted.confirm"
+msgid "Check here to confirm this action."
+msgstr "Cochez ici pour confirmer cette action."
+
+#: cat.opac.record_undeleted
+msgid "Record undeleted."
+msgstr "Compte récupéré."
+
+#: cat.opac.record_undeleted.confirm
+msgctxt "cat.opac.record_undeleted.confirm"
+msgid "Check here to confirm this action."
+msgstr "Cochez ici pour confirmer cette action."
+
+#. # variables: document ID, error code, error description
+#: cat.opac.record_deleted.error
+msgid "Error deleting record #%1$s : %2$s : %3$s"
+msgstr ""
+"Une erreur s’est produite lors de la suppression des comptes n° %1$s : %2$s> "
+"[%1$s : %2$s] : %3$s"
+
+#. # variables: document ID, error code, error description
+#: cat.opac.record_undeleted.error
+#, fuzzy
+msgid "Error undeleting record #%1$s : %2$s : %3$s"
+msgstr ""
+"Une erreur s’est produite lors de la suppression des comptes n° %1$s : %2$s> "
+"[%1$s : %2$s] : %3$s"
+
+#: cat.opac.record_marked_for_overlay.record_id.alert
+msgid "Record with ID %1$s marked for overlay."
+msgstr "Compte avec ID %1$s désigné pour recouvrement."
+
+#: cat.opac.record_marked_for_overlay.tcn.alert
+msgid "Record with TCN %1$s marked for overlay."
+msgstr "Compte avec ID %1$s désigné pour recouvrement."
+
+#: cat.save_record
+msgid "Save Record"
+msgstr "Enregistrer le compte"
+
+#: cat.save.success
+msgid "Record successfully saved."
+msgstr "Compte enregistré."
+
+#: cat.save.failure
+msgid "Record not likely updated."
+msgstr "Compte probablement pas mis à jour."
+
+#: cat.record.counter
+msgid "Record %1$s of %2$s"
+msgstr "Compte %1$s de %2$s"
+
+#: cat.preference.error
+msgid "Preference not likely updated."
+msgstr "Préférences probablement pas mises à jour."
+
+#: staff.admin.survey.save_response.label
+msgid "Save this response"
+msgstr "Enregistrer cette réponse"
+
+#: staff.admin.survey.save_response.accesskey
+msgid "R"
+msgstr "R"
+
+#: circ.bad_checkdigit
+msgid "This barcode has a bad check digit."
+msgstr "Ce code à barres a un numéro de chèque erroné."
+
+#: circ.barcode.enter
+msgid "Please enter a patron barcode first."
+msgstr "Veuillez saisir le code à barres du client d’abord."
+
+#: circ.barcode.warning
+msgid "Barcode Warning"
+msgstr "Avertissement du code à barres"
+
+#: circ.standalone
+msgid "Standalone"
+msgstr "Autonome"
+
+#: circ.duplicate_scan.msg
+msgid "This barcode has already been scanned."
+msgstr "Ce code à barres a déjà été numérisé."
+
+#: circ.duplicate_scan.field
+msgid "Duplicate Scan"
+msgstr "Reproduire la numérisation"
+
+#: circ.offline_checkout.nonbarcoded
+msgid "or choose a non-barcoded option..."
+msgstr "ou choisir l’option sans code à barres…"
+
+#: circ.offline_checkout.items
+msgid "Enter the number of items:"
+msgstr "Saisir le numéro des articles :"
+
+#: circ.offline_checkout.download.warning
+msgid ""
+"WARNING: The non-barcode types have not been downloaded from the server.  "
+"You should log in to retrieve these."
+msgstr ""
+"AVERTISSEMENT : Les types sans code à barres n’ont pas été téléchargés à "
+"partir du serveur. Vous devez ouvrir une session pour les récupérer."
+
+#: circ.offline_checkout.barcode.flagged.lost
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Lost."
+msgstr ""
+"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
+"étiquetté Perdu."
+
+#: circ.offline_checkout.barcode.flagged.expired
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Expired."
+msgstr ""
+"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
+"étiquetté Expiré."
+
+#: circ.offline_checkout.barcode.flagged.barred
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
+msgstr ""
+"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
+"étiquetté Barré."
+
+#: circ.offline_checkout.barcode.flagged.blocked
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
+msgstr ""
+"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
+"étiquetté Bloqué."
+
+#: circ.offline_checkout.barcode.flagged.unknown
+msgid ""
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
+"3$s."
+msgstr ""
+"Avertissement : Pour ce qui est de %1$s, ce code à barres (%2$s) a été "
+"étiquetté d’un code inconnu : %3$s."
+
+#: circ.offline_checkout.date.early
+msgid "Due date needs to be after today."
+msgstr "La date d’échéance doit être ultérieure à la date d’aujourd’hui."
+
+#: circ.offline_checkout.required_field
+msgid "Required Field"
+msgstr "Champs requis"
+
+#: circ.offline_checkout.valid_count
+msgid "Please try again and enter a valid count."
+msgstr "Veuillez essayer de nouveau et saisir un nombre valide."
+
+#: circ.offline_checkout.required_value
+msgid "Required Value"
+msgstr "Valeur requise"
+
+#: circ.offline_register.future.birth.date
+msgid "Patron needs to be born yesterday."
+msgstr "Le client doit être né hier."
+
+#: circ.offline_register.invalid.birth.date
+msgid "Happy birthday!  You need to be more than 0 days old."
+msgstr "Joyeux anniversaire! Vous devez avoir plus de 0 ans."
+
+#: circ.offline_register.survey.prompt
+msgid "Choose a response..."
+msgstr "Choisir une réponse…"
+
+#: circ.offline_register.missing.post_code
+msgid "Missing Address : Postal Code"
+msgstr "Adresse manquante : Code postal"
+
+#: circ.offline_register.missing.state
+msgid "Missing Address : State"
+msgstr "Adresse manquante : État"
+
+#: circ.offline_register.missing.city
+msgid "Missing Address : City"
+msgstr "Adresse manquante : Ville"
+
+#: circ.offline_register.missing.street1
+msgid "Missing Address : Line 1"
+msgstr "Adresse manquante : Ligne 1"
+
+#: circ.offline_register.missing.ident_value
+msgid "Missing Identification Value"
+msgstr "Valeur d’identification manquante"
+
+#: circ.offline_register.missing.ident_type
+msgid "Missing Identification Type"
+msgstr "Type d’identification manquant"
+
+#: circ.offline_register.missing.dob
+msgid "Missing Date of Birth"
+msgstr "Date de naissance manquante"
+
+#: circ.offline_register.missing.first_given_name
+msgid "Missing First Name"
+msgstr "Prénom manquant"
+
+#: circ.offline_register.missing.family_name
+msgid "Missing Last Name"
+msgstr "Nom de famille manquant"
+
+#: circ.offline_register.missing.passwd
+msgid "Missing Password"
+msgstr "Mot de passe manquant"
+
+#: circ.offline_register.missing.barcode
+msgid "Missing Barcode"
+msgstr "Code à barres manquant"
+
+#: circ.offline_register.missing.profile
+msgid "Missing Profile"
+msgstr "Profil manquant"
+
+#: circ.offline_register.missing.home_ou
+msgid "Missing Home Library"
+msgstr "Bibliothèque d’origine manquante"
+
+#: circ.offline_register.missing.alert
+msgid "Please fix the following:"
+msgstr "Veuillez corriger les éléments suivants :"
+
+#: circ.offline_register.patron.saved
+msgid "Patron Registration Saved"
+msgstr "Inscription du client sauvegardée"
+
+#: circ.offline_register.missing.library.list
+msgid "Missing library list."
+msgstr "Liste de bibliothèques manquantes."
+
+#: circ.offline_register.missing.profile.list
+msgid "Missing profile list."
+msgstr "Liste de profils manquants."
+
+#: circ.offline_register.missing.id.type.list
+msgid "Missing identification type list."
+msgstr "Liste de types d’identification manquants."
+
+#: circ.offline_register.missing.required.surveys
+msgid "Missing required surveys."
+msgstr "Sondages requis manquants."
+
+#: circ.offline_register.missing.files.error
+msgid ""
+"ERROR: Offline patron registration requires some server-generated files.  "
+"Please login periodically to retrieve these files."
+msgstr ""
+"ERREUR : L’inscription du client hors ligne nécessite des fichiers créés par "
+"le serveur. Veuillez ouvrir une session périodiquement pour récupérer ces "
+"fichiers."
+
+#: jsan.file_not_found.error
+msgid "File not found: %1$s"
+msgstr "Fichier non trouvé : %1$s"
+
+#: jsan.namespace.creation.error
+msgid "Could not create namespace[%1$s]: %2$s"
+msgstr "Impossible de créer l’espace nom[%1$s] : %2$s"
+
+#: menu.cmd_edit_copy_buckets.tab
+msgid "Copy Buckets"
+msgstr "Copier les paniers"
+
+#: menu.cmd_edit_volume_buckets.tab
+msgid "Volume Buckets"
+msgstr "Paniers de volume"
+
+#: menu.cmd_edit_record_buckets.tab
+msgid "Record Buckets"
+msgstr "Consigner les paniers"
+
+#: menu.cmd_edit_user_buckets.tab
+msgid "User Buckets"
+msgstr "Paniers de l’utilisateur"
+
+#: menu.cmd_replace_barcode.prompt
+msgid "Enter original barcode for the item:"
+msgstr "Saisir le code à barres d’origine pour l’article :"
+
+#: menu.cmd_replace_barcode.label
+msgctxt "menu.cmd_replace_barcode.label"
+msgid "Replace Barcode"
+msgstr "Remplacer le code à barres"
+
+#: menu.cmd_replace_barcode.retrieval.error
+msgid "We were unable to retrieve an item with barcode \"%1$s\"."
+msgstr "Impossible de récupérer un article dont le code à barres est \"%1$s\"."
+
+#: menu.cmd_replace_barcode.replacement.prompt
+msgid "Enter the replacement barcode for the item:"
+msgstr "Saisir le code à barres de remplacement pour l’article :"
+
+#: menu.cmd_replace_barcode.replacement.label
+msgctxt "menu.cmd_replace_barcode.replacement.label"
+msgid "Replace Barcode"
+msgstr "Remplacer le code à barres"
+
+#: menu.cmd_replace_barcode.blank.error
+msgid "Rename aborted.  Blank for barcode not allowed."
+msgstr "Impossible de renommer. Espace vide non autorisé pour le code à barres."
+
+#: menu.cmd_replace_barcode.duplicate.error
+msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
+msgstr "Impossible de renommer. Une autre copie a un code à barres \"%1$s\"."
+
+#: menu.cmd_replace_barcode.testing.error
+msgid "Error testing replacement barcode \"%1$s\"."
+msgstr ""
+"Une erreur s’est produite lors de la mise à l’essai du remplacement du code "
+"à barres \"%1$s\"."
+
+#: menu.cmd_replace_barcode.permission.error
+msgid "Rename aborted.  Insufficient permission."
+msgstr "Impossible de renommer. Permission insuffisante."
+
+#: menu.cmd_replace_barcode.renaming.error
+msgid "Error renaming item."
+msgstr "Une erreur s’est produite lors de la renomination de l’article."
+
+#: menu.cmd_replace_barcode.renaming.failure
+msgid "The rename operation probably failed."
+msgstr "L’opération de renomination a probablement échoué."
+
+#: menu.cmd_search_opac.tab
+msgid "Catalog"
+msgstr "Catalogue"
+
+#: menu.cmd_search_bib_id.tab
+msgid "What is the internal ID for the bibliographic record?"
+msgstr "Quel est l’ID du compte bibliographique?"
+
+#: menu.cmd_search_bib_id.prompt
+msgid "Bib ID Lookup"
+msgstr "Recherche de l’ID de la bibliothèque"
+
+#: menu.cmd_search_tcn.tab
+msgid "What is the TCN or accession ID for the record?"
+msgstr "Quel est le TCN ou l’ID d’accès du compte?"
+
+#: menu.cmd_search_tcn.prompt
+msgid "TCN Lookup"
+msgstr "Recherche du TCN"
+
+#: menu.cmd_search_tcn.not_found.error
+msgid "\"%1$s\" not found"
+msgstr "\"%1$s\" non trouvé"
+
+#: menu.cmd_search_tcn.deleted.error
+msgid "\"%1$s\" is deleted.  Show the deleted record anyway?"
+msgstr "\"%1$s\" est supprimé. Afficher quand même le compte supprimé?"
+
+#: menu.cmd_patron_register.related.tab
+msgid "Editing Related Patron"
+msgstr "Modification du client associé"
+
+#: menu.cmd_patron_register.tab
+msgid "Register Patron"
+msgstr "Inscrire le client"
+
+#: menu.cmd_browse_holds.tab
+msgid "Hold Browser"
+msgstr "Navigateur des articles mis en réserve"
+
+#: menu.cmd_browse_holds_shelf.tab
+msgid "Holds Shelf"
+msgstr "Emplacement des articles mis en réserve"
+
+#: menu.cmd_browse_hold_pull_list.tab
+msgid "On Shelf Pull List"
+msgstr "Activation de la liste d’extraction de l’emplacement"
+
+#: menu.cmd_local_admin.tab
+msgid "Local Administration"
+msgstr "Administration locale"
+
+#: menu.cmd_open_vandelay.tab
+msgid "MARC Import/Export"
+msgstr "Importer/Exporter des fichiers MARC"
+
+#: menu.cmd_open_conify.tab
+msgid "Server Settings"
+msgstr "Paramètres du serveur"
+
+#: menu.cmd_retrieve_last_patron.session.error
+msgid "No patron visited yet this session."
+msgstr "Aucun client n’a encore ouvert cette session."
+
+#: menu.cmd_retrieve_last_record.session.error
+msgid "No record visited yet this session."
+msgstr "Aucun compte n’a encore été consulté dans cette session."
+
+#: menu.cmd_retrieve_last_record.status
+msgid "Retrieving title..."
+msgstr "Récupération du titre…"
+
+#: menu.cmd_chg_session.label
+msgid "Change Login"
+msgstr "Changer l’ouverture de session"
+
+#: menu.cmd_chg_session.operator.label
+msgid "Change Operator: %1$s"
+msgstr "Changer l’opérateur : %1$s"
+
+#: menu.cmd_manage_offline_xacts.tab
+msgid "Offline Transactions"
+msgstr "Transations hors ligne"
+
+#: menu.cmd_download_patrons.complete.status
+msgid "Download completed"
+msgstr "Téléchargement terminé"
+
+#: menu.cmd_download_patrons.error
+msgid ""
+"There was a problem with the download.  The server returned a status %1$s : "
+"%2$s"
+msgstr ""
+"Un problème est survenu lors du téléchargement. Le serveur a retourné un "
+"statut %1$s : %2$s"
+
+#: menu.cmd_stat_cat_edit.tab
+msgid "Statistical Category Editor"
+msgstr "Éditeur des catégories statistiques"
+
+#: menu.cmd_non_cat_type_edit.tab
+msgid "Non-Cataloged Type Editor"
+msgstr "Éditeur des types non catalogués"
+
+#: menu.cmd_copy_location_edit.tab
+msgid "Copy Location Editor"
+msgstr "Éditeur d’emplacement des copies"
+
+#: menu.cmd_console.tab
+msgid "JavaScript Console"
+msgstr "Console JavaScript"
+
+#: menu.cmd_shell.tab
+msgid "JavaScript Shell"
+msgstr "JavaScript Shell"
+
+#: menu.cmd_xuleditor.tab
+msgid "XUL Editor"
+msgstr "Éditeur XUL"
+
+#: menu.cmd_fieldmapper.tab
+msgid "Fieldmapper"
+msgstr ""
+
+#: menu.cmd_public_opac.tab
+msgid "OPAC"
+msgstr "OPAC"
+
+#: menu.cmd_extension_manager.tab
+msgid "Extension Manager"
+msgstr "Gestionnaire d’extension"
+
+#: menu.cmd_theme_manager.tab
+msgid "Theme Manager"
+msgstr "Gestionnaire des thèmes"
+
+#: menu.cmd_shutdown.prompt
+msgid "Exit Evergreen completely?"
+msgstr "Quitter Evergreen définitivement?"
+
+#: menu.spawn_search.msg
+msgid "Editor would like to search for: %1$s"
+msgstr "L’éditeur désire rechercher : %1$s"
+
+#: menu.cmd_verify_credentials.tabname
+msgid "Verify Credentials"
+msgstr "Vérification des qualifications"
+
+#: menu.close_all_tabs.error
+msgid "Error closing all tabs"
+msgstr "Une erreur s’est produite lors de la fermeture de tous les onglets."
+
+#: menu.new_tab.tab
+msgid "Tab"
+msgstr "Onglet"
+
+#: main.session_cookie.error
+msgid "Error setting session cookie: %1$s"
+msgstr ""
+
+#: menu.set_tab.error
+msgid "pause for error"
+msgstr "pause en raison d’une erreur"
+
+#: menu.reset_network_stats
+msgid "Reset network activity summary?"
+msgstr ""
+
+#: main.testing
+msgid "Testing"
+msgstr "Mise à l’essai"
+
+#: main.transaction_export.title
+msgid "Save Transaction File As"
+msgstr "Enregistrer le fichier de transaction sous le nom"
+
+#: main.transaction_export.prompt
+msgid "Would you like to overwrite the existing file %1$s?"
+msgstr "Désirez vous remplacer le fichier existant %1$s?"
+
+#: main.transaction_export.prompt.title
+msgid "Transaction Export Warning"
+msgstr "Avertissement d’exportation de la transaction."
+
+#: main.transaction_export.success.prompt
+msgid ""
+"Your transactions have been successfully exported to file %1$s. We strongly "
+"recommend that you now purge the transactions from this staff client.  Would "
+"you like for us to do this?"
+msgstr ""
+"Vos transactions ont été exportées vers le fichier %1$s. Il est fortement "
+"recommandé de supprimer maintenant les transactions du client membre du "
+"personnel. Désirez vous que nous le fassions pour vous?"
+
+#: main.transaction_export.success.title
+msgid "Transaction Export Successful"
+msgstr "Transaction exportée"
+
+#: main.transaction_export.filename.error
+msgid ""
+"Error purging transactions:  Taking too long to find a unique filename for "
+"archival."
+msgstr ""
+"Une erreur est survenue lors de la suppression des transactions : La "
+"recherche pour trouver un nom de fichier aux fins d’archivage est trop "
+"longue."
+
+#: main.transaction_export.duplicate.warning
+msgid ""
+"Please note that you now have two sets of identical transactions.  Unless "
+"the set you just exported is solely for archival purposes, we run the risk "
+"of duplicate transactions being processed on the server."
+msgstr ""
+"Veuillez prendre note que vous avez maintenant deux ensembles de "
+"transactions identiques. À moins que l’ensemble que vous venez d’exporter "
+"sert uniquement à des fins d’archivage, vous courez le risque que les "
+"transactions traitées sur le serveur soient reproduites."
+
+#: main.transaction_export.no_filename.error
+msgid ""
+"Either you did not choose a filename, or you tried to overwrite an existing "
+"file."
+msgstr ""
+"Soit vous n’avez pas choisi un nom de fichier ou vous avez tenté de "
+"remplacer un fichier existant."
+
+#: main.transaction_export.no_transactions.error
+msgid "There are no outstanding transactions to export."
+msgstr "Il ne reste aucune transaction à exporter."
+
+#: main.transaction_import.outstanding.error
+msgid ""
+"There are already outstanding transactions on this staff client.  Upload "
+"these first."
+msgstr ""
+"Des transactions sont déjà en attente pour ce client membre du personnel. "
+"Téléchargez-les en amont d’abord."
+
+#: main.transaction_import.title
+msgid "Import Transaction File"
+msgstr "Importez le fichier de transaction."
+
+#: main.transaction_import.delete.prompt
+msgid ""
+"Your transactions have been successfully migrated to this staff client.\n"
+"\n"
+"We recommend that you delete the external copy.  Would you like for us to "
+"delete %1$s?"
+msgstr ""
+"Vos transactions ont été transférées à ce client membre du personnel.\n"
+"\n"
+"Il est recommandé de supprimer la copie externe. Désirez vous que nous les "
+"supprimions pour vous %1$s?"
+
+#: main.transaction_import.success
+msgid "Transaction Import Successful"
+msgstr "Transaction importée"
+
+#: main.on_debug.clear_cache
+msgid "cache cleared"
+msgstr "cache effacé"
+
+#: main.on_debug.debug
+msgid "debug the debug :D"
+msgstr "Déboguer le problème :D"
+
+#: main.new_window_btn.login_first_warning
+msgid "Please login first!"
+msgstr "Veuillez d’abord ouvrir une session!"
+
+#: main.settings.migrate
+msgid ""
+"This version of the staff client stores local settings in a different "
+"location than your previous installation.  Should we attempt to migrate "
+"these settings?"
+msgstr ""
+"Cette version du client membre du personnel permet de stocker les paramètres "
+"locaux dans un emplacement différent de celui de l’installation précédente. "
+"Devrions nous tenter de transférer ces paramètres?"
+
+#: main.settings.migrate.failed
+msgid ""
+"WARNING: Unable to migrate legacy settings.  The settings and configuration "
+"files appear to exist in multiple locations. \n"
+"To resolve this problem manually, please consider:\n"
+"\t%1$s\n"
+"which is in the directory where we want to store settings for the current "
+"operating system account, and:\n"
+"\t%2$s\n"
+"which is where we used to store such information.\n"
+msgstr ""
+"AVERTISSEMENT : Impossible de transférer les anciens paramètres. Les "
+"paramètres et les fichiers de configuration semblent exister dans multiples "
+"emplacements. \n"
+"Pour résoudre ce problème manuellement, il faut considérer :\n"
+"\t%1$s\n"
+"qui se trouve dans le répertoire dans lequel nous voulons stocker les "
+"paramètres du compte du système d’exploitation actuel et :\n"
+"\t%2$s\n"
+"dans lequel nous stockions ces renseignements antérieurement.\n"
+
+#: main.settings.migrate.confirm
+msgid ""
+"Move the settings and configuration files from\n"
+"%1$s\n"
+"to\n"
+"%2$s?"
+msgstr ""
+"Transférer les paramètres et les fichiers de configuration de \n"
+"%1$s\n"
+"à \n"
+"%2$s?"
+
+#: main.settings.migrate.error
+msgid "Error trying to move %1$s to directory %2$s"
+msgstr ""
+"Une erreur s’est produite lors de la tentative de transfert de %1$s vers le "
+"répertoire %2$s."
+
+#: network.override.exceptions
+msgid "Exceptions"
+msgstr ""
+
+#: network.override.override
+msgid "Override"
+msgstr ""
+
+#: network.override.force.prompt
+msgid "Force this action?"
+msgstr ""
+
+#: network.ignore_errors
+msgid "Ignore Errors"
+msgstr ""
+
+#: network.method_not_found.error
+msgid "Method not found for %1$s"
+msgstr ""
+
+#: network.new_session.authorize
+msgctxt "network.new_session.authorize"
+msgid "Authorize"
+msgstr ""
+
+#: network.new_session.expired
+msgid "Session Expired"
+msgstr ""
+
+#: network.new_session.expired.prompt
+msgid "Please enter the credentials for a new login session."
+msgstr ""
+
+#: network.new_session.operator_change
+msgid "Operator Change"
+msgstr ""
+
+#: network.new_session.operator_change.prompt
+msgid ""
+"Please enter the credentials for the new login session.  Note that the "
+"previous session is still active."
+msgstr ""
+
+#: network.permission.authorize
+msgctxt "network.permission.authorize"
+msgid "Authorize"
+msgstr ""
+
+#: network.permission.description.brief
+msgid "Permission Denied: %1$s"
+msgstr ""
+
+#: network.permission.description.full
+msgid ""
+"Another staff member with the above permission may authorize this specific "
+"action.  Please notify your library administrator if you need this "
+"permission.  If you feel you have received this exception in error, please "
+"inform your friendly Evergreen developers or helpdesk staff of the above "
+"permission and this debug information: %1$s"
+msgstr ""
+
+#: network.server_or_method.error
+msgid "Server or method error"
+msgstr ""
+
+#: network.server.failure.exception
+msgid ""
+"Network or server failure.  Please check your Internet connection to %1$s "
+"and choose Retry Network.  If you need to enter Offline Mode, choose Ignore "
+"Errors in this and subsequent dialogs.  If you believe this error is due to "
+"a bug in Evergreen and not network problems, please contact your help desk "
+"or friendly Evergreen administrators, and give them this information:"
+msgstr ""
+
+#: network.server.method
+msgid "method=%1$s"
+msgstr ""
+
+#: network.server.params
+msgid "params=%1$s"
+msgstr ""
+
+#: network.server.thrown_label
+msgid "THROWN:"
+msgstr ""
+
+#: network.server.status_label
+msgid "STATUS:"
+msgstr ""
+
+#: network.network_failure
+msgid "Network Failure"
+msgstr ""
+
+#: network.retry_network
+msgid "Retry Network"
+msgstr ""
+
+#: network.unknown_status
+msgid "Unknown status"
+msgstr ""
+
+#: network.window_title.error
+msgid "Error setting window titles to match new login"
+msgstr ""
+
+#: openils.global_util.clear_cache.error
+msgid "Problem clearing the cache: %1$s"
+msgstr "Un problème est survenu lors de l’effacement du cache : %1$s"
+
+#: openils.global_util.clipboard.error
+msgid "Clipboard action failed: %1$s"
+msgstr "L’action du presse papier a échoué : %1$s"
+
+#: openils.global_util.clipboard
+msgid "Copied \"%1$s\" to clipboard."
+msgstr "\"%1$s\" a été copié dans le presse papier."
+
+#: openils.global_util.content_window_jsobject.error
+msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
+msgstr ""
+"Une erreur s’est produite dans les répertoires get_contentWindow(%1$s) et "
+"wrappedJSObject : %2$s"
+
+#: openils.global_util.content_window.error
+msgid "Error with get_contentWindow(%1$s): %2$s"
+msgstr ""
+"Une erreur s’est produite dans le répertoire get_contentWindow(%1$s) : %2$s"
+
+#: openils.global_util.font_size.error
+msgid "Error adjusting the font size: %1$s"
+msgstr ""
+"Une erreur s’est produite lors de l’ajustement de la taille de la police : %"
+"1$s"
+
+#: list.row_fetch_warning
+msgid ""
+"WARNING: Only %1$s out of %2$s rows in this list have been retrieved for "
+"immediate viewing.  Sorting this list requires that all these rows be "
+"retrieved, and this may take some time and lag the staff client.  Would you "
+"like to proceed?"
+msgstr ""
+
+#: list.columns_saved
+msgid "Column configuration saved."
+msgstr ""
+
+#: list.row_retrieving
+msgid "Retrieving..."
+msgstr ""
+
+#: list.save_csv_as
+msgid "Save List CSV As..."
+msgstr ""
+
+#: list.actions.menu.label
+msgid "List Actions"
+msgstr ""
+
+#: list.actions.menu.accesskey
+msgctxt "list.actions.menu.accesskey"
+msgid "L"
+msgstr ""
+
+#: list.actions.field_to_clipboard.label
+msgid "Copy Field from Selected Row to Clipboard"
+msgstr ""
+
+#: list.actions.field_to_clipboard.accesskey
+msgid "C"
+msgstr ""
+
+#: list.actions.csv_to_clipboard.label
+msgid "Copy List CSV to Clipboard"
+msgstr ""
+
+#: list.actions.csv_to_clipboard.accesskey
+msgctxt "list.actions.csv_to_clipboard.accesskey"
+msgid "L"
+msgstr ""
+
+#: list.actions.csv_to_printer.label
+msgid "Print List CSV"
+msgstr ""
+
+#: list.actions.csv_to_printer.accesskey
+msgid "P"
+msgstr ""
+
+#: list.actions.extended_to_printer.label
+msgid "Print List Expanded Format"
+msgstr ""
+
+#: list.actions.extended_to_printer.accesskey
+msgid "x"
+msgstr ""
+
+#: list.actions.csv_to_file.label
+msgid "Save List CSV to File"
+msgstr ""
+
+#: list.actions.csv_to_file.accesskey
+msgid "F"
+msgstr ""
+
+#: list.actions.save_column_configuration.label
+msgid "Save Column Configuration"
+msgstr ""
+
+#: list.actions.save_column_configuration.accesskey
+msgid "S"
+msgstr ""
+
+#: list.dump_extended_format.record_separator
+msgid "=-=-="
+msgstr ""
+
+#: menu.cmd_survey_wizard.inadequate_perm
+msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
+msgstr ""
+
+#: menu.cmd_local_admin_fonts_and_sounds.tab
+msgid "Global Font and Sound Settings"
+msgstr ""
+
+#: menu.cmd_local_admin_printer.tab
+msgid "Printer Settings Editor"
+msgstr ""
+
+#: menu.cmd_local_admin_closed_dates.tab
+msgid "Closed Dates Editor"
+msgstr ""
+
+#: menu.cmd_local_admin_copy_locations.tab
+#, fuzzy
+msgid "Copy Locations Editor"
+msgstr "Éditeur d’emplacement des copies"
+
+#: menu.cmd_local_admin_lib_settings.tab
+msgid "Library Settings Editor"
+msgstr ""
+
+#: menu.cmd_local_admin_non_cat_types.tab
+#, fuzzy
+msgid "Non-cataloged Types Editor"
+msgstr "Éditeur des types non catalogués"
+
+#: menu.cmd_local_admin_stat_cats.tab
+#, fuzzy
+msgid "Statistical Categories Editor"
+msgstr "Éditeur des catégories statistiques"
+
+#: menu.cmd_local_admin_reports.tab
+msgid "Reports"
+msgstr ""
+
+#: menu.cmd_local_admin_cash_reports.tab
+msgid "Cash Reports"
+msgstr ""
+
+#: menu.cmd_local_admin_transit_list.tab
+msgid "Transits"
+msgstr ""
+
+#: menu.cmd_acq_view_picklist.tab
+msgid "Selection Lists"
+msgstr ""
+
+#: menu.cmd_acq_bib_search.tab
+msgid "Title Search"
+msgstr ""
+
+#: menu.cmd_acq_upload.tab
+msgid "Load Order Record"
+msgstr ""
+
+#: menu.cmd_acq_new_brief_record.tab
+msgid "New Brief Record"
+msgstr ""
+
+#: menu.cmd_acq_view_po.tab
+msgid "Purchase Orders"
+msgstr ""
+
+#: menu.cmd_acq_view_fund.tab
+msgid "Funds"
+msgstr ""
+
+#: menu.cmd_acq_view_funding_source.tab
+msgid "Funding Sources"
+msgstr ""
+
+#: menu.cmd_acq_view_provider.tab
+msgid "Providers"
+msgstr ""
+
+#: menu.cmd_acq_view_currency_type.tab
+msgid "Currency Types"
+msgstr ""
+
+#: menu.cmd_acq_view_exchange_rate.tab
+msgid "Exchange Rates"
+msgstr ""
+
+#: menu.cmd_acq_view_distrib_formula.tab
+msgid "Distribution Formulas"
+msgstr ""
+
+#: menu.local_admin.circ_matrix_matchpoint.tab
+msgid "Circulation Policies"
+msgstr ""
+
+#: menu.local_admin.hold_matrix_matchpoint.tab
+msgid "Hold Policies"
+msgstr ""
+
+#: menu.local_admin.work_log.tab
+msgid "Work Log"
+msgstr ""
+
+#: menu.circulation.staged_patrons.tab
+msgid "Staged Patrons"
+msgstr ""
+
+#: load_printer_settings_error_description
+msgid ""
+"Printer settings did not load cleanly with this version of Evergreen.  You "
+"should reconfigure your printer under Printer Settings Editor."
+msgstr ""
+
+#: load_printer_settings_error_title
+msgid "Printer Settings"
+msgstr ""
+
+#~ msgid "Success testing credentials!"
+#~ msgstr "Test de qualifications réussi"
+
+#~ msgid "Failure testing credentials!"
+#~ msgstr "Test de qualifications échoué"
+
+#~ msgid "Username: <%1$s>"
+#~ msgstr "Nom d'utilisateur: <%1$s>"
+
+#~ msgid "Barcode: <%1$s>"
+#~ msgstr "Code à barres: <%1$s>"
+
+#~ msgid "About this client..."
+#~ msgstr "À propos de ce client…"

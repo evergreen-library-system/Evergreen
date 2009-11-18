@@ -1,0 +1,2595 @@
+# extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd, ../../Open-ILS/web/opac/locale/en-CA/opac.dtd
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-18 00:41-0400\n"
+"PO-Revision-Date: 2008-11-27 13:44-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Accelerator-Marker: &\n"
+
+# =================================================================
+# Some generic stuff
+#. =================================================================
+#. Some generic stuff
+#. =================================================================
+#: lang.version
+msgid "remote v1"
+msgstr "remote v1"
+
+#: lang.description
+msgid "English"
+msgstr "English"
+
+#: lang.author
+msgid "PINES"
+msgstr "PINES"
+
+#: common.all
+msgid "All"
+msgstr "All"
+
+#: common.currency
+msgid "$"
+msgstr "$"
+
+#: common.language
+#, fuzzy
+msgid "Language: "
+msgstr "Language"
+
+#: common.name
+msgid "Name"
+msgstr "Name"
+
+#: common.none
+msgid "None"
+msgstr "None"
+
+#: common.title
+msgctxt "common.title"
+msgid "Title"
+msgstr "Title"
+
+#: common.author
+msgctxt "common.author"
+msgid "Author"
+msgstr "Author"
+
+#: common.authors
+msgid "Authors"
+msgstr "Authors"
+
+#: common.callnumber
+msgctxt "common.callnumber"
+msgid "Call Number"
+msgstr "Call Number"
+
+#: common.edition
+msgid "Edition"
+msgstr "Edition"
+
+#: common.subject
+msgid "Subject"
+msgstr "Subject"
+
+#: common.series
+msgid "Series"
+msgstr "Series"
+
+#: common.keyword
+msgid "Keyword"
+msgstr "Keyword"
+
+#: common.type
+msgid "Search Type"
+msgstr "Search Type"
+
+#: common.isbn
+msgctxt "common.isbn"
+msgid "ISBN"
+msgstr "ISBN"
+
+#: common.format
+msgid "Format"
+msgstr "Format"
+
+# Message displayed while search results are loading
+#. Message displayed while search results are loading
+#: common.loading
+msgctxt "common.loading"
+msgid "Loading..."
+msgstr "Loading..."
+
+#: common.login
+msgctxt "common.login"
+msgid "Login"
+msgstr "Login"
+
+#: common.logout
+msgid "Log Out"
+msgstr "Log Out"
+
+#: common.physical
+msgid "Physical Description"
+msgstr "Physical Description"
+
+#: common.pubdate
+msgid "Publication Date"
+msgstr "Publication Date"
+
+#: common.publisher
+msgid "Publisher"
+msgstr "Publisher"
+
+#: common.results
+msgid "Results"
+msgstr "Results"
+
+#: common.select
+msgid "Select"
+msgstr "Select"
+
+#: common.status
+msgid "Status"
+msgstr "Status"
+
+#: common.at
+msgid "at"
+msgstr "at"
+
+#: common.of
+msgid "of"
+msgstr "of"
+
+#: common.no
+msgid "No"
+msgstr "No"
+
+#: common.yes
+msgid "Yes"
+msgstr "Yes"
+
+#: common.cancel
+msgctxt "common.cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#: common.library
+msgctxt "common.library"
+msgid "Library"
+msgstr "Library"
+
+#: common.username
+msgid "Username"
+msgstr "Username"
+
+#: common.password
+msgctxt "common.password"
+msgid "Password"
+msgstr "Password"
+
+#: common.submit
+msgctxt "common.submit"
+msgid "Submit"
+msgstr "Submit"
+
+#: common.close
+msgid "close"
+msgstr "close"
+
+#: common.and
+msgid "and"
+msgstr "and"
+
+#: common.user_not_found
+msgid "User not found"
+msgstr "User not found"
+
+#: opac.advanced.wizard.title
+msgctxt "opac.advanced.wizard.title"
+msgid "Advanced Search"
+msgstr "Advanced Search"
+
+#: common.nowSearching
+msgid "Now searching "
+msgstr "Now searching "
+
+#: common.ofAtLeast
+msgid " of about "
+msgstr ""
+
+#: common.relevancy
+msgid "Match Score: "
+msgstr "Match Score: "
+
+#: common.tips
+msgid "Tips:"
+msgstr "Tips:"
+
+#: common.tips.tip1
+msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgstr "Click on a folder icon in the sidebar to access related quick searches"
+
+#: common.tips.tip2
+msgid ""
+"If you don't find what you want try expanding your search using the range "
+"selector at the right of the search bar"
+msgstr ""
+"If you don't find what you want try expanding your search using the range "
+"selector at the right of the search bar"
+
+#: common.org.openAll
+msgid "Expand All"
+msgstr "Expand All"
+
+#: common.org.closeAll
+msgid "Close All"
+msgstr "Close All"
+
+#: common.org.cancel
+msgctxt "common.org.cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#: common.org.loading
+msgid "Loading library selector..."
+msgstr "Loading library selector..."
+
+# ==========================================================
+# Tips
+#: common.org.note
+msgctxt "common.org.note"
+msgid "Tip:"
+msgstr "Tip:"
+
+#: common.org.notetext
+msgid ""
+"Click on a location's name to select it.  Click on the folder icons to "
+"expand a section."
+msgstr ""
+"Click on a location's name to select it.  Click on the folder icons to "
+"expand a section."
+
+#: opac.login.login
+msgctxt "opac.login.login"
+msgid "Login"
+msgstr "Login"
+
+# =================================================================
+# Footer
+#: opac.basic
+msgctxt "opac.basic"
+msgid "Basic Catalog (HTML only)"
+msgstr "Basic Catalogue (HTML only)"
+
+#: common.password_criteria
+#, fuzzy
+msgid ""
+"The password must be at least 7 characters in length, \n"
+"contain at least one letter (a-z/A-Z), \n"
+"and contain at least one number."
+msgstr ""
+"The password must be at least 7 characters in length, \tcontain at least one "
+"letter (a-z/A-Z), \tand contain at least one number."
+
+#: common.a2z.title
+msgid "Title: A to Z"
+msgstr ""
+
+#: common.z2a.title
+msgid "Title: Z to A"
+msgstr ""
+
+#: common.a2z.author
+msgid "Author: A to Z"
+msgstr ""
+
+#: common.z2a.author
+msgid "Author: Z to A"
+msgstr ""
+
+#: common.new2old.pubdate
+msgid "Date: Newest to Oldest"
+msgstr ""
+
+#: common.old2new.pubdate
+msgid "Date: Oldest to Newest"
+msgstr ""
+
+#: opac.style.reddish
+msgid "Reddish"
+msgstr "Reddish"
+
+#: holds.where_am_i
+#, fuzzy
+msgid ""
+"Holds lists are not as simple as \n"
+"'first come, first served.'  A complex matrix combining \n"
+"consideration of item ownership, patron home library, and item purchase \n"
+"date determines  priorities for holds; the list is dynamic, changing \n"
+"with every hold placed.  Therefore, any indication of a place in the \n"
+"holds list would be inaccurate.  The holds system is designed to \n"
+"obtain a requested item in the fastest and most efficient way possible. \n"
+"Your library will contact you when you hold items become \n"
+"available."
+msgstr ""
+"PINES is a statewide system with both patrons and items \tassociated with "
+"over 250 libraries, holds lists are not as simple as \t'first come, first "
+"served' in PINES.  A complex matrix combining \tconsideration of item "
+"ownership, patron home library, and item purchase \tdate determines  "
+"priorities for holds; the list is dynamic, changing \twith every hold placed. "
+" Therefore, any indication of a place in the \tholds list would be "
+"inaccurate.  The PINES holds system is designed to \tobtain a requested item "
+"in the fastest and most efficient way possible. \tYour PINES library will "
+"contact you when you hold items become \tavailable."
+
+#: holds.advanced_options
+#, fuzzy
+msgid ""
+"If you wish to broaden the scope of your hold to include other \n"
+"versions of this title, select the formats that would be acceptable. \n"
+"The first available copy will be sent to you."
+msgstr ""
+"If you wish to broaden the scope of your hold to include other \tversions of "
+"this title, select the formats that would be acceptable. \tThe first "
+"available copy will be sent to you."
+
+# =================================================================
+# Events and Permissions
+#. =================================================================
+#. Events and Permissions
+#. =================================================================
+#: ilsevent.0
+msgid "Operation Succeeded"
+msgstr "Operation Succeeded"
+
+#: ilsevent.1000
+msgid "Login failed.  The username or password entered was incorrect."
+msgstr "Login failed.  The username or password entered was incorrect."
+
+#: ilsevent.1001
+msgid "Login session has timed out or does not exist"
+msgstr "Login session has timed out or does not exist"
+
+#: ilsevent.1002
+msgid "User was not found in the database"
+msgstr "User was not found in the database"
+
+#: ilsevent.1200
+msgid "The given username already exists in the database"
+msgstr "The given username already exists in the database"
+
+#: ilsevent.5000
+msgid "Permission Denied"
+msgstr "Permission Denied"
+
+#: ilsperm.CREATE_HOLD
+msgid "User is not allowed to create holds for other users at this location"
+msgstr "User is not allowed to create holds for other users at this location"
+
+# =================================================================
+# common/pages
+#. =================================================================
+#. common/pages
+#. =================================================================
+#: common.cn.loading
+msgid "Loading Callnumber Page..."
+msgstr "Loading Callnumber Page..."
+
+#: common.cn.browsing
+msgid "You are now browsing"
+msgstr "You are now browsing"
+
+#: common.cn.previous
+msgid "&lt;&lt; Previous Page"
+msgstr "&lt;&lt; Previous Page"
+
+#: common.cn.shelf
+msgctxt "common.cn.shelf"
+msgid "Shelf Browser"
+msgstr "Shelf Browser"
+
+#: common.cn.next
+msgid "Next Page &gt;&gt;"
+msgstr "Next Page &gt;&gt;"
+
+#: common.textsize.title
+msgid "Text Size: "
+msgstr "Text Size: "
+
+#: common.textsize.regular
+msgid "Regular"
+msgstr "Regular"
+
+# Regular / Large
+#. Regular / Large
+#: common.textsize.separator
+msgid "/"
+msgstr "/"
+
+#: common.textsize.large
+msgid "Large"
+msgstr "Large"
+
+#: home.js.disabled
+msgid ""
+"JavaScript must be enabled in order for you to use the regular Evergreen "
+"Catalog. \n"
+"However, it seems JavaScript is either disabled or not supported by your "
+"browser. \n"
+"To use the regular Evergreen Catalog, enable JavaScript by changing your "
+"browser options, then \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
+"<a style='color: blue; text-decoration: underline;' "
+"href='/opac/extras/slimpac/start.html'>here</a>."
+msgstr ""
+"JavaScript must be enabled in order for you to use the regular Evergreen "
+"Catalogue. \n"
+"However, it seems JavaScript is either disabled or not supported by your "
+"browser. \n"
+"To use the regular Evergreen Catalogue, enable JavaScript by changing your "
+"browser options, then \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<br/><br/>Alternatively, you can use the basic HTML-only catalogue \n"
+"<a style='color: blue; text-decoration: underline;' "
+"href='/opac/extras/slimpac/start.html'>here</a>."
+
+# =================================================================
+# MyOPAC bookbag page
+#. =================================================================
+#. MyOPAC bookbag page
+#. =================================================================
+#: myopac.delete.bookbag
+#, fuzzy
+msgid ""
+"This will remove the selected bookbag and all items contained within the "
+"bookbag. \n"
+"Are you sure you wish to continue?"
+msgstr ""
+"This will remove the selected bookbag and all items contained within the "
+"bookbag. Are you sure you wish to continue?"
+
+#: myopac.no.bookbags
+msgid "You have not created any bookbags"
+msgstr "You have not created any bookbags"
+
+#: myopac.bookbags.title
+msgctxt "myopac.bookbags.title"
+msgid "My Bookbags"
+msgstr "My Bookbags"
+
+#: myopac.bookbag.items
+msgid "# Items"
+msgstr "# Items"
+
+#: myopac.bookbag.shared
+msgid "Shared"
+msgstr "Shared"
+
+#: myopac.bookbag.toggle
+msgid "Share / Hide"
+msgstr "Share / Hide"
+
+#: myopac.bookbag.delete
+msgid "Delete this bookbag?"
+msgstr "Delete this bookbag?"
+
+#: myopac.items
+msgid "Items"
+msgstr "Items"
+
+#: myopac.view
+msgid "(View)"
+msgstr "(View)"
+
+#: myopac.atom.feed
+msgid "ATOM Feed"
+msgstr "ATOM Feed"
+
+#: myopac.bookbag.hide
+msgid "Hide"
+msgstr "Hide"
+
+#: myopac.delete
+msgid "Delete"
+msgstr "Delete"
+
+#: myopac.bookbag.create
+msgid "Create a new Bookbag"
+msgstr "Create a new Bookbag"
+
+#: myopac.bookbag.naming
+msgid "Enter the name of the new Bookbag: "
+msgstr "Enter the name of the new Bookbag: "
+
+#: myopac.bookbag.share
+msgid "Share this Bookbag"
+msgstr "Share this Bookbag"
+
+#: myopac.bookbag.refworks
+msgctxt "myopac.bookbag.refworks"
+msgid "Export to RefWorks"
+msgstr ""
+
+#: myopac.bookbag.no.items
+msgid "The selected bookbag contains no items..."
+msgstr "The selected bookbag contains no items..."
+
+#: myopac.bookbag.remove
+msgid "Remove this item?"
+msgstr "Remove this item?"
+
+#: myopac.remove.link
+msgid "remove"
+msgstr "remove"
+
+#: myopac.publish.text
+#, fuzzy
+msgid ""
+"Sharing a Bookbag means that the contents of the Bookbag will be visible to "
+"others. \n"
+"To see the public view of a shared Bookbag, click the \"View\" link in the \n"
+"\"Shared\" column of the Bookbag list at the top of this page."
+msgstr ""
+"Sharing a Bookbag means that the contents of the Bookbag will be visible to "
+"others. To see the public view of a shared Bookbag, click the \"View\" link in "
+"the \"Shared\" column of the Bookbag list at the top of this page."
+
+#: myopac.item.confirm
+msgid "Are you sure you wish to remove this bookbag item?"
+msgstr "Are you sure you wish to remove this bookbag item?"
+
+#: myopac.publish.confirm
+msgid ""
+"Sharing this bookbag will allow the contents \n"
+"of the bookbag to be seen by others.  Are you sure you wish to share this "
+"bookbag?"
+msgstr ""
+"Sharing this bookbag will allow the contents \n"
+"of the bookback to be seen by others.  Are you sure you wish to share this "
+"bookbag?"
+
+#: myopac.unpublish.confirm
+msgid "Are you sure you wish to hide this bookbag?"
+msgstr "Are you sure you wish to hide this bookbag?"
+
+#: myopac.update.success
+msgid "The Bookbag was successfully updated."
+msgstr "The Bookbag was successfully updated."
+
+#: myopac.updated.success
+msgid "Bookbag successfully updated"
+msgstr "Bookbag successfully updated"
+
+#: myopac.create.warning
+#, fuzzy
+msgid ""
+"Warning: Adding items to a bookbag creates a link between you and the \n"
+"items in the database.  The contents of the bookbag are NOT publicly \n"
+"viewable unless the bookbag is shared. However, if you prefer not to \n"
+"have any link between your patron record and a particular item or items, \n"
+"we suggest that you do not place said items in a bookbag or that you \n"
+"avoid using bookbags all together.  Thank you."
+msgstr ""
+"Warning: Adding items to a bookbag creates a link between you and the items "
+"in the database.  The contents of the bookbag are NOT publicly viewable "
+"unless the bookbag is shared. However, if you prefer not to have any link "
+"between your patron record and a particular item or items, we suggest that "
+"you do not place said items in a bookbag or that you avoid using bookbags "
+"all together.  Thank you."
+
+#: myopac.describe.bookbags
+msgid "Bookbags are..."
+msgstr "Bookbags are..."
+
+# =================================================================
+# MyOPAC Checked Page
+#. =================================================================
+#. MyOPAC Checked Page
+#. =================================================================
+#: myopac.checked.out
+msgid "Total items out:"
+msgstr "Total items out:"
+
+#: myopac.checked.overdue
+msgid "Total items overdue:"
+msgstr "Total items overdue:"
+
+#: myopac.checked.renew
+msgid "Renew Selected Items"
+msgstr "Renew Selected Items"
+
+#: myopac.checked.renewing
+msgid "Renewing..."
+msgstr "Renewing..."
+
+#: myopac.checked.renew.remaining
+msgctxt "myopac.checked.renew.remaining"
+msgid "Renewals Remaining"
+msgstr "Renewals Remaining"
+
+#: myopac.checked.noitems
+msgid "You have no items checked out at this time"
+msgstr "You have no items checked out at this time"
+
+#: myopac.checked.other.circ
+msgid "Other Circulations"
+msgstr "Other Circulations"
+
+#: myopac.checked.circ.lib
+msgid "Circulating Library"
+msgstr "Circulating Library"
+
+#: myopac.checked.item.type
+msgid "Circulation Type"
+msgstr "Circulation Type"
+
+#: myopac.checked.circ.time
+msgid "Please return by ..."
+msgstr "Please return by ..."
+
+#: myopac.checked.renew.success
+msgid "item(s) successfully renewed"
+msgstr "item(s) successfully renewed"
+
+#: myopac.checked.renew.confirm
+msgid "Are you sure you wish to renew the selected item(s)?"
+msgstr "Are you sure you wish to renew the selected item(s)?"
+
+#: myopac.checked.renew.fail
+msgid ""
+"The system is unable to renew the selected item at this time.  This usually "
+"means the item is needed to fulfill a hold.  Please see a librarian for "
+"further help."
+msgstr ""
+"The system is unable to renew the selected item at this time.  This usually "
+"means the item is needed to fulfill a hold.  Please see a librarian for "
+"further help."
+
+#: myopac.checked.renew.fail2
+#, fuzzy
+msgid ""
+"Library policy prevents the renewal of this item at this time.  Please see a "
+"librarian for further details."
+msgstr ""
+"PINES policy prevents the renewal of this item at this time.  Please see a "
+"librarian for further details."
+
+# =================================================================
+# MyOPAC Fines Page
+#. =================================================================
+#. MyOPAC Fines Page
+#. =================================================================
+#: myopac.fines.title
+msgid "Summary"
+msgstr "Summary"
+
+#: myopac.fines.owed
+msgid "Total Owed"
+msgstr "Total Owed"
+
+#: myopac.fines.paid
+msgid "Total Paid"
+msgstr "Total Paid"
+
+#: myopac.fines.balance
+msgid "Balance Owed"
+msgstr "Balance Owed"
+
+# Message displayed while search results are loading
+#: myopac.fines.status
+msgctxt "myopac.fines.status"
+msgid "Loading..."
+msgstr "Loading..."
+
+#: myopac.fines.overdue
+msgid "Overdue Materials"
+msgstr "Overdue Materials"
+
+#: myopac.fines.checkout
+msgid "Checkout Date"
+msgstr "Checkout Date"
+
+#: myopac.fines.due
+msgctxt "myopac.fines.due"
+msgid "Due Date"
+msgstr "Due Date"
+
+#: myopac.fines.returned
+msgid "Date Returned"
+msgstr "Date Returned"
+
+#: myopac.fines.accruing
+msgid "(fines accruing)"
+msgstr "(fines accruing)"
+
+#: myopac.fines.other
+msgid "Other Fees"
+msgstr "Other Fees"
+
+#: myopac.fines.time.start
+msgid "Transaction Start Time"
+msgstr "Transaction Start Time"
+
+#: myopac.fines.time.paid
+msgid "Last Payment Time"
+msgstr "Last Payment Time"
+
+#: myopac.fines.owed.initial
+msgid "Initial Amount Owed"
+msgstr "Initial Amount Owed"
+
+#: myopac.fines.paid.amount
+msgid "Total Amount Paid"
+msgstr "Total Amount Paid"
+
+#: myopac.fines.type
+msgid "Billing Type"
+msgstr "Billing Type"
+
+# =================================================================
+# MyOPAC Holds Page
+#. =================================================================
+#. MyOPAC Holds Page
+#. =================================================================
+#: myopac.holds.formats
+msgid "Formats"
+msgstr "Formats"
+
+#: myopac.holds.location
+msgid "Pickup Location"
+msgstr "Pickup Location"
+
+#: myopac.holds.edit
+msgid "Edit"
+msgstr "Edit"
+
+#: myopac.holds.status.none
+msgid "You have no items on hold at this time"
+msgstr "You have no items on hold at this time"
+
+#: myopac.holds.status.waiting
+msgid "Waiting for copy"
+msgstr "Waiting for copy"
+
+#: myopac.holds.status.intransit
+msgid "In Transit"
+msgstr "In Transit"
+
+#: myopac.holds.status.available
+msgid "Ready for Pickup"
+msgstr "Ready for Pickup"
+
+#: myopac.holds.cancel
+msgctxt "myopac.holds.cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#: myopac.holds.verify
+msgid ""
+"If you wish to cancel the selected hold, click OK, otherwise click Cancel."
+msgstr ""
+"If you wish to cancel the selected hold, click OK, otherwise click Cancel."
+
+#: myopac.holds.freeze_selected
+msgid "Suspend"
+msgstr ""
+
+#: myopac.holds.thaw_selected
+msgid "Activate"
+msgstr ""
+
+#: myopac.holds.thaw_date_selected
+msgid "Set Active Date"
+msgstr ""
+
+#: myopac.holds.cancel_selected
+msgctxt "myopac.holds.cancel_selected"
+msgid "Cancel"
+msgstr "Cancel"
+
+#: myopac.holds.processing
+msgid "Processing holds... This may take a moment."
+msgstr "Processing holds... This may take a moment."
+
+#: myopac.holds.actions
+msgid "Actions for selected holds"
+msgstr "Actions for selected holds"
+
+#: myopac.holds.cancel.confirm
+msgid "Are you sure you wish to cancel the selected holds?"
+msgstr "Are you sure you wish to cancel the selected holds?"
+
+#: myopac.holds.freeze.confirm
+#, fuzzy
+msgid ""
+"Are you sure you wish to suspend the selected holds? \n"
+"If an item has already been selected to fulfill the hold, it will not be "
+"suspended"
+msgstr ""
+"Are you sure you wish to freeze the selected holds? Note that if an item has "
+"already been selected to fulfill the hold, it will not be frozen"
+
+#: myopac.holds.thaw.confirm
+#, fuzzy
+msgid "Are you sure you wish to activate the selected holds?"
+msgstr "Are you sure you wish to cancel the selected holds?"
+
+#: myopac.holds.thaw_date.confirm
+#, fuzzy
+msgid ""
+"Are you sure you wish to change the activate date for the selected holds?"
+msgstr ""
+"Are you sure you wish to change the un-freeze date for the selected holds?"
+
+#: myopac.holds.freeze.select_thaw
+msgid ""
+"Select an automatic activation date.  If no date is chosen, the holds will "
+"remain suspended until they are manually activated."
+msgstr ""
+
+#: opac.holds.freeze
+msgid "Suspend this hold"
+msgstr ""
+
+#: opac.holds.freeze.help
+#, fuzzy
+msgid ""
+"A suspended hold will retain its place in the queue, but will not be "
+"fulfilled until it has been activated."
+msgstr ""
+"A 'frozen' will retain its place in the queue, but will not be fulfilled "
+"until it has been unfrozen."
+
+#: opac.holds.freeze.thaw_date
+#, fuzzy
+msgid "Automatically activate hold on:"
+msgstr "Automatically un-freeze hold on:"
+
+#: opac.holds.expire_time
+msgid "Expiration date"
+msgstr ""
+
+#: myopac.holds.estimated_wait
+msgid "Estimated Wait (days)"
+msgstr ""
+
+# =================================================================
+# MyOPAC Preferences Page
+#. =================================================================
+#. MyOPAC Preferences Page
+#. =================================================================
+#: myopac.prefs.title
+msgid "Preferences"
+msgstr "Preferences"
+
+#: myopac.prefs.hits
+msgid "Search hits per page"
+msgstr "Search hits per page"
+
+#: myopac.prefs.font
+msgid "Default Font Size"
+msgstr "Default Font Size"
+
+#: myopac.prefs.font.regular
+msgid "Regular Font"
+msgstr "Regular Font"
+
+#: myopac.prefs.font.large
+msgid "Large Font"
+msgstr "Large Font"
+
+#: myopac.prefs.holds.notify
+msgid "Default Hold Notification Method"
+msgstr "Default Hold Notification Method"
+
+#: myopac.prefs.holds.both
+msgid "Use Phone and Email"
+msgstr "Use Phone and Email"
+
+#: myopac.prefs.holds.phone
+msgid "Use Phone Only"
+msgstr "Use Phone Only"
+
+#: myopac.prefs.holds.email
+msgid "Use Email Only"
+msgstr "Use Email Only"
+
+#: myopac.prefs.search.location
+msgid "Default Search Location"
+msgstr "Default Search Location"
+
+#: myopac.prefs.search.home
+msgid "Always search my home library by default."
+msgstr "Always search my home library by default."
+
+#: myopac.prefs.search.range
+msgid "Default Search Range"
+msgstr "Default Search Range"
+
+#: myopac.prefs.save
+msgid "Save Preference Changes"
+msgstr "Save Preference Changes"
+
+#: myopac.prefs.save.success
+msgid "Preferences successfully updated"
+msgstr "Preferences successfully updated"
+
+#: myopac.prefs.save.failed
+msgid "Preferences update failed!"
+msgstr "Preferences update failed!"
+
+#: myopac.prefs.help
+#, fuzzy
+msgid ""
+"This setting defines how you will be notified of holds that are ready to be "
+"picked up from the library. \n"
+"By default, holds will use the notification style you choose here. \n"
+"However, you will still have the option to change individual holds "
+"regardless of this setting."
+msgstr ""
+"This setting defines how you will be notified of holds that are ready to be "
+"picked up from the library. By default, holds will use the notification "
+"style you choose here. However, you will still have the option to change "
+"individual holds regardless of this setting."
+
+#: myopac.holds.unfrozen
+msgid "Active"
+msgstr ""
+
+#: myopac.holds.frozen.until
+msgid "Activate on..."
+msgstr ""
+
+# =================================================================
+# MyOPAC Summary page
+#. =================================================================
+#. MyOPAC Summary page
+#. =================================================================
+#: myopac.summary.expired
+#, fuzzy
+msgid ""
+"Your account expired on <span id='myopac.expired.date'/>! \n"
+"Please see a librarian to renew your account."
+msgstr ""
+"Your account expired on <span id='myopac.expired.date'/>! Please see a "
+"librarian to renew your account."
+
+#: myopac.summary.notes
+msgid "* Staff Notes *"
+msgstr "* Staff Notes *"
+
+#: myopac.summary.phone.day
+msgid "Day Phone"
+msgstr "Day Phone"
+
+#: myopac.summary.phone.evening
+msgid "Evening Phone"
+msgstr "Evening Phone"
+
+#: myopac.summary.phone.other
+msgid "Other Phone"
+msgstr "Other Phone"
+
+#: myopac.summary.change
+msgid "Change"
+msgstr "Change"
+
+#: myopac.summary.username.enter
+msgid "Enter new username:"
+msgstr "Enter new username:"
+
+#: myopac.summary.password.text
+msgid "(not shown)"
+msgstr "(not shown)"
+
+#: myopac.summary.password.current
+msgid "Enter current password:"
+msgstr "Enter current password:"
+
+#: myopac.summary.password.new
+msgid "Enter new password:"
+msgstr "Enter new password:"
+
+#: myopac.summary.password.reenter
+msgid "Re-enter new password:"
+msgstr "Re-enter new password:"
+
+#: myopac.summary.email
+msgid "Email Address"
+msgstr "Email Address"
+
+#: myopac.summary.email.new
+msgid "Enter new email address:"
+msgstr "Enter new email address:"
+
+#: myopac.summary.id.primary
+msgid "Primary Identification"
+msgstr "Primary Identification"
+
+#: myopac.summary.barcode
+msgid "Active Barcode"
+msgstr "Active Barcode"
+
+#: myopac.summary.home
+msgid "Home Library"
+msgstr "Home Library"
+
+#: myopac.summary.genesis
+msgid "Account Creation Date"
+msgstr "Account Creation Date"
+
+#: myopac.summary.addresses
+msgid "Addresses"
+msgstr "Addresses"
+
+#: myopac.summary.addresses.pending
+msgid "Pending Addresses"
+msgstr ""
+
+#: myopac.summary.address.type
+msgid "Address Type"
+msgstr "Address Type"
+
+#: myopac.summary.address.street
+msgid "Street"
+msgstr "Street"
+
+#: myopac.summary.address.city
+msgid "City"
+msgstr "City"
+
+#: myopac.summary.address.county
+msgid "County"
+msgstr "County"
+
+#: myopac.summary.address.state
+msgid "State"
+msgstr "Province"
+
+#: myopac.summary.address.country
+#, fuzzy
+msgid "Country"
+msgstr "County"
+
+#: myopac.summary.address.zip
+msgid "Zip"
+msgstr "Postal Code"
+
+#: myopac.summary.address.edit
+#, fuzzy
+msgid "Edit Address"
+msgstr "Email Address"
+
+#: myopac.summary.address.invalid
+msgid "Invalid Address"
+msgstr ""
+
+#: myopac.summary.username.error
+msgid "Please enter a username"
+msgstr "Please enter a username"
+
+#: myopac.summary.username.dup
+msgid ""
+"The requested username is not available.  Please choose a different "
+"username."
+msgstr ""
+"The requested username is not available.  Please choose a different "
+"username."
+
+#: myopac.summary.username.success
+msgid "Username successfully updated"
+msgstr "Username successfully updated"
+
+#: myopac.summary.username.failure
+msgid "Username update failed"
+msgstr "Username update failed"
+
+#: myopac.summary.username.invalid
+msgid "Username cannot contain spaces or have the same format as a barcode"
+msgstr ""
+
+#: myopac.summary.email.error
+msgid "Please enter a valid email address"
+msgstr "Please enter a valid email address"
+
+#: myopac.summary.email.success
+msgid "Email address successfully updated"
+msgstr "Email address successfully updated"
+
+#: myopac.summary.email.failed
+msgid "Email address update failed"
+msgstr "Email address update failed"
+
+#: myopac.summary.password.error
+msgid "Passwords are empty or do not match"
+msgstr "Passwords are empty or do not match"
+
+#: myopac.summary.password.success
+msgctxt "myopac.summary.password.success"
+msgid "Password successfully updated"
+msgstr "Password successfully updated"
+
+#: myopac.summary.password.failure
+msgid "Password update failed"
+msgstr "Password update failed"
+
+# =================================================================
+# Advanced Search Page
+#. =================================================================
+#. Advanced Search Page
+#. =================================================================
+#: opac.advanced.wizard.contains
+msgid "Selected field contains the following words"
+msgstr "Selected field contains the following words"
+
+#: opac.advanced.wizard.nocontains
+msgid "Selected field does <u>not</u> contain the following words"
+msgstr "Selected field does <u>not</u> contain the following words"
+
+#: opac.advanced.wizard.exact
+msgid "Selected field contains the <u>exact</u> phrase"
+msgstr "Selected field contains the <u>exact</u> phrase"
+
+#: opac.advanced.refined.title
+msgid "Refined Advanced Search"
+msgstr "Refined Advanced Search"
+
+#: opac.advanced.refined.title_contains
+msgid "Title contains the following words"
+msgstr "Title contains the following words"
+
+#: opac.advanced.refined.author_contains
+msgid "Author contains the following words"
+msgstr "Author contains the following words"
+
+#: opac.advanced.refined.subject_contains
+msgid "Subject contains the following words"
+msgstr "Subject contains the following words"
+
+#: opac.advanced.refined.series_contains
+msgid "Series contains the following words"
+msgstr "Series contains the following words"
+
+#: opac.advanced.refined.contains
+msgid "Contains"
+msgstr "Contains"
+
+#: opac.advanced.refined.nocontains
+msgid "Does not contain"
+msgstr "Does not contain"
+
+#: opac.advanced.refined.exact
+msgid "Matches Exactly"
+msgstr "Matches Exactly"
+
+#: opac.advanced.marc.warning
+msgid "For Librarians"
+msgstr "For Librarians"
+
+# ==========================================================
+# MARC expert search
+#: opac.advanced.marc.title
+msgctxt "opac.advanced.marc.title"
+msgid "MARC Expert Search"
+msgstr "MARC Expert Search"
+
+#: opac.advanced.marc.tag
+msgid "MARC Tag"
+msgstr "MARC Tag"
+
+#: opac.advanced.marc.ind1
+msgid "Indicator 1"
+msgstr "Indicator 1"
+
+#: opac.advanced.marc.ind2
+msgid "Indicator 2"
+msgstr "Indicator 2"
+
+#: opac.advanced.marc.subfield
+msgid "Subfield"
+msgstr "Subfield"
+
+#: opac.advanced.marc.value
+msgid "Value"
+msgstr "Value"
+
+#: opac.advanced.marc.addrow
+msgid "Add a new row"
+msgstr "Add a new row"
+
+#: opac.advanced.quick.title
+msgctxt "opac.advanced.quick.title"
+msgid "Quick Search"
+msgstr "Quick Search"
+
+#: opac.advanced.quick.isbn
+msgctxt "opac.advanced.quick.isbn"
+msgid "ISBN"
+msgstr "ISBN"
+
+#: opac.advanced.quick.issn
+msgid "ISSN"
+msgstr "ISSN"
+
+#: opac.advanced.quick.lccn
+msgid "LCCN"
+msgstr "LCCN"
+
+# title control number
+#. title control number
+#: opac.advanced.quick.tcn
+msgid "TCN"
+msgstr "TCN"
+
+#: opac.advanced.quick.barcode
+msgid "Item Barcode"
+msgstr "Item Barcode"
+
+#: opac.advanced.quick.cn
+msgctxt "opac.advanced.quick.cn"
+msgid "Call Number"
+msgstr "Call Number"
+
+#: opac.advanced.copy_loc_filter
+msgid "Shelving Location"
+msgstr ""
+
+# ==========================================================
+# MARC expert search
+#. ==========================================================
+#. MARC expert search
+#. ==========================================================
+#: search.marc
+msgctxt "search.marc"
+msgid "MARC Expert Search"
+msgstr "MARC Expert Search"
+
+#: search.marc.tag
+msgid "Tag:"
+msgstr "Tag:"
+
+#: search.marc.subfield
+msgid "Subfield:"
+msgstr "Subfield:"
+
+#: search.marc.value
+msgid "Value:"
+msgstr "Value:"
+
+#: search.marc.add.row
+msgid "Add Row"
+msgstr "Add Row"
+
+# ==========================================================
+# Status bar
+#. ==========================================================
+#. Status bar
+#. ==========================================================
+#: status.results
+msgid "Including results for"
+msgstr "Including results for"
+
+# ==========================================================
+# Tips
+#. ==========================================================
+#. Tips
+#. ==========================================================
+#: tips.label
+msgctxt "tips.label"
+msgid "Tip:"
+msgstr "Tip:"
+
+# =================================================================
+# More generic stuff
+#. =================================================================
+#. More generic stuff
+#. =================================================================
+#: opac.session_expiring
+msgid "Your login session will timeout in 1 minute unless there is activity."
+msgstr "Your login session will timeout in 1 minute unless there is activity."
+
+#: opac.session_expired
+msgid "Your login session has expired"
+msgstr "Your login session has expired"
+
+#: navigate.home
+msgid "Home"
+msgstr "Home"
+
+#: navigate.home.title
+msgid "Go to the Home page"
+msgstr "Go to the Home page"
+
+#: opac.navigate.advanced
+msgctxt "opac.navigate.advanced"
+msgid "Advanced Search"
+msgstr "Advanced Search"
+
+#: opac.navigate.advanced.title
+msgid "Go to the Advanced Search Page"
+msgstr "Go to the Advanced Search Page"
+
+#: navigate.myopac
+msgctxt "navigate.myopac"
+msgid "My Account"
+msgstr "My Account"
+
+#: opac.navigate.myopac
+msgctxt "opac.navigate.myopac"
+msgid "My Account"
+msgstr "My Account"
+
+#: navigate.myopac.title
+msgid "Go to My OPAC"
+msgstr "Go to My OPAC"
+
+#: navigate.login
+msgid "Log in"
+msgstr "Log in"
+
+#: navigate.login.title
+msgid "Log in for personalized features"
+msgstr "Log in for personalized features"
+
+#: navigate.logout
+msgctxt "navigate.logout"
+msgid "Log out"
+msgstr "Log out"
+
+#: navigate.logout.title
+msgctxt "navigate.logout.title"
+msgid "Log out"
+msgstr "Log out"
+
+#: opac.navigate.selectNewOrg
+msgid "Choose a different library"
+msgstr "Choose a different library"
+
+#: opac.navigate.selectOrg
+msgctxt "opac.navigate.selectOrg"
+msgid "Choose a library to search"
+msgstr "Choose a library to search"
+
+#: navigate.loggedinas
+msgid "You are logged in as "
+msgstr "You are logged in as "
+
+#: navigate.loggedinas.title
+msgid "Logged in as..."
+msgstr "Logged in as..."
+
+#: navigate.titleGroupResults
+msgid "My Search Results"
+msgstr "My Search Results"
+
+#: navigate.titleResults
+msgid "My Title Results"
+msgstr "My Title Results"
+
+#: navigate.title.details
+msgid "My Title Details"
+msgstr "My Title Details"
+
+#: navigate.record.details
+msgid "Record Details"
+msgstr "Record Details"
+
+# =================================================================
+# Footer
+#. =================================================================
+#. Footer
+#. =================================================================
+#: footer.basic
+msgctxt "footer.basic"
+msgid "Basic Catalog (HTML only)"
+msgstr "Basic Catalogue (HTML only)"
+
+#: footer.find.library
+msgid "Find a Library Near Me"
+msgstr "Find a Library Near Me"
+
+#: footer.find.url
+msgid "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
+msgstr "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
+
+#: footer.help.url
+msgid "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
+msgstr "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
+
+#: footer.help
+msgid "Help"
+msgstr "Help"
+
+#: footer.library.url
+msgid "http://www.georgialibraries.org/public/pines.html"
+msgstr "http://www.georgialibraries.org/public/pines.html"
+
+#: footer.library.about
+msgid "About PINES"
+msgstr "About PINES"
+
+#: footer.union.url
+msgid "http://www.galileo.usg.edu/"
+msgstr "http://www.galileo.usg.edu/"
+
+#: footer.union
+msgid "GALILEO"
+msgstr "GALILEO"
+
+#: footer.copyright
+#, fuzzy
+msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+msgstr "Copyright &#xA9; 2006 Georgia Public Library Service"
+
+# Introduces the logo for the project
+#. Introduces the logo for the project
+#: footer.logo
+msgid "Powered by"
+msgstr "Powered by"
+
+# =================================================================
+# My OPAC
+#. =================================================================
+#. My OPAC
+#. =================================================================
+#: myopac.account
+msgid "Account Summary"
+msgstr "Account Summary"
+
+#: myopac.checkouts
+msgid "Items Checked Out"
+msgstr "Items Checked Out"
+
+#: myopac.holds
+msgid "Items on Hold"
+msgstr "Items on Hold"
+
+#: myopac.fines
+msgid "Fines"
+msgstr "Fines"
+
+#: myopac.preferences
+msgid "Account Preferences"
+msgstr "Account Preferences"
+
+#: myopac.bookbags
+msgctxt "myopac.bookbags"
+msgid "My Bookbags"
+msgstr "My Bookbags"
+
+# =================================================================
+# Sidebar
+#. =================================================================
+#. Sidebar
+#. =================================================================
+#: sidebar.relevantSubjects.headerLabel
+msgid "Relevant Subjects"
+msgstr "Relevant Subjects"
+
+#: sidebar.relevantAuthors.headerLabel
+msgid "Relevant Authors"
+msgstr "Relevant Authors"
+
+#: sidebar.relevantSeries.headerLabel
+msgid "Relevant Series"
+msgstr "Relevant Series"
+
+#: sidebar.relevantReviews.headerLabel
+msgctxt "sidebar.relevantReviews.headerLabel"
+msgid "Reviews"
+msgstr "Reviews"
+
+#: sidebar.quick.search
+msgctxt "sidebar.quick.search"
+msgid "Quick Search"
+msgstr "Quick Search"
+
+#: sidebar.copy.not.found
+msgid "No copy with the requested barcode was found"
+msgstr "No copy with the requested barcode was found"
+
+# =================================================================
+# Search formats
+#. =================================================================
+#. Search formats
+#. =================================================================
+#: opac.search.books
+msgid "Books"
+msgstr "Books"
+
+#: opac.search.allFormats
+msgid "All Formats"
+msgstr "All Formats"
+
+#: opac.search.largePrint
+msgid "Large Print Books"
+msgstr "Large Print Books"
+
+#: opac.search.audioBooks
+msgid "Audiobooks"
+msgstr "Audiobooks"
+
+#: opac.search.videoRecordings
+msgid "Video Recordings"
+msgstr "Video Recordings"
+
+#: opac.search.music
+msgid "Music"
+msgstr "Music"
+
+#: opac.search.electronic
+msgid "Electronic Resources"
+msgstr "Electronic Resources"
+
+#: opac.search.nowSearching
+msgid "Now Searching"
+msgstr "Now Searching"
+
+# =================================================================
+# Page Titles
+#. =================================================================
+#. Page Titles
+#. =================================================================
+#: opac.title.home
+msgid "Evergreen Home"
+msgstr "Evergreen Home"
+
+#: opac.title.mresult
+msgid "Evergreen Title Groups"
+msgstr "Evergreen Title Groups"
+
+#: opac.title.rresult
+msgid "Evergreen Titles"
+msgstr "Evergreen Titles"
+
+#: opac.title.myopac
+msgid "Evergreen My Account"
+msgstr "Evergreen My Account"
+
+#: opac.title.rdetail
+msgid "Evergreen Title Details"
+msgstr "Evergreen Title Details"
+
+#: opac.title.advanced
+msgid "Evergreen Advanced Search"
+msgstr "Evergreen Advanced Search"
+
+#: opac.title.reqitems
+msgid "Evergreen Request Items"
+msgstr "Evergreen Request Items"
+
+#: opac.title.cnbrowse
+msgid "Evergreen Call Number Browse"
+msgstr "Evergreen Call Number Browse"
+
+#: opac.holds.forMe
+msgid "Place this hold for myself"
+msgstr "Place this hold for myself"
+
+#: opac.holds.xulRecipient
+msgid "Enter recipient barcode"
+msgstr "Enter recipient barcode"
+
+#: opac.holds.recipient
+msgid "Recipient"
+msgstr "Recipient"
+
+#: opac.holds.placeHold
+msgctxt "opac.holds.placeHold"
+msgid "Place Hold"
+msgstr "Place Hold"
+
+#: opac.holds.exportRefWorks
+msgctxt "opac.holds.exportRefWorks"
+msgid "Export to RefWorks"
+msgstr ""
+
+#: opac.holds.contactPhone
+msgid "Contact telephone number"
+msgstr "Contact telephone number"
+
+#: opac.holds.contactEmail
+msgid "Contact email address"
+msgstr "Contact email address"
+
+#: opac.holds.pickupLocation
+msgid "Pickup location"
+msgstr "Pickup location"
+
+#: opac.holds.success
+msgid "Hold was successfully placed"
+msgstr "Hold was successfully placed"
+
+#: opac.holds.failure
+msgid "Hold was not successfully placed"
+msgstr "Hold was not successfully placed"
+
+# =================================================================
+# Advanced
+#. =================================================================
+#. Advanced
+#. =================================================================
+#: advanced.search.title
+msgid "Search Input"
+msgstr "Search Input"
+
+#: advanced.add.row
+msgid "Add Search Row"
+msgstr "Add Search Row"
+
+#: advanced.search.submit
+msgid "Submit Search"
+msgstr "Submit Search"
+
+#: advanced.search.reset
+msgid "Reset Form"
+msgstr ""
+
+#: advanced.search.filters
+msgid "Search Filters"
+msgstr "Search Filters"
+
+#: advanced.item.form
+msgid "Item Form"
+msgstr "Item Form"
+
+#: advanced.item.type
+msgid "Item Type"
+msgstr "Item Type"
+
+#: advanced.link
+msgid "Advanced"
+msgstr "Advanced"
+
+#: advanced.basic.link
+msgid "Basic"
+msgstr "Basic"
+
+#: advanced.literary.form
+msgid "Literary Form"
+msgstr ""
+
+#: advanced.non.fiction
+msgid "Non Fiction"
+msgstr "Non Fiction"
+
+#: advanced.fiction
+msgid "Fiction"
+msgstr "Fiction"
+
+#: advanced.language
+msgid "Language"
+msgstr "Language"
+
+#: advanced.audience
+msgid "Audience"
+msgstr "Audience"
+
+#: advanced.adult
+msgid "Adult"
+msgstr "Adult"
+
+#: advanced.juvenile
+msgid "Juvenile"
+msgstr "Juvenile"
+
+#: advanced.general
+msgid "General"
+msgstr "General"
+
+#: advanced.sort.criteria
+msgid "Sort Criteria"
+msgstr "Sort Criteria"
+
+#: advanced.search.library
+msgid "Search Library"
+msgstr "Search Library"
+
+#: advanced.relevance
+msgid "Relevance"
+msgstr "Relevance"
+
+#: advanced.pubdate
+msgid "Publication date"
+msgstr "Publication date"
+
+#: advanced.sort.asc
+msgid "Ascending / A to Z"
+msgstr "Ascending / A to Z"
+
+#: advanced.sort.desc
+msgid "Descending / Z to A"
+msgstr "Descending / Z to A"
+
+#: advanced.frbrize
+msgid "Group Formats and Editions"
+msgstr "Group Formats and Editions"
+
+#: advanced.go
+msgid "Go"
+msgstr "Go"
+
+#: advanced.biblevel
+msgid "Bib Level"
+msgstr ""
+
+#: advanced.filter.pubyear
+#, fuzzy
+msgid "Publication Year"
+msgstr "Publication Date"
+
+#: advanced.filter.pubyear.equals
+msgid "Is"
+msgstr ""
+
+#: advanced.filter.pubyear.before
+msgid "Before"
+msgstr ""
+
+#: advanced.filter.pubyear.after
+msgid "After"
+msgstr ""
+
+#: advanced.filter.pubyear.between
+msgid "Between"
+msgstr ""
+
+# =================================================================
+# Rdetail
+#. =================================================================
+#. Rdetail
+#. =================================================================
+#: rdetail.print
+msgid "print these details"
+msgstr "print these details"
+
+#: rdetail.cn.barcode
+msgctxt "rdetail.cn.barcode"
+msgid "Barcode"
+msgstr "Barcode"
+
+#: rdetail.cn.location
+msgid "Location"
+msgstr "Location"
+
+#: rdetail.cn.hold.age
+msgid "Age Hold Protection"
+msgstr "Age Hold Protection"
+
+#: rdetail.cn.genesis
+msgid "Create Date"
+msgstr "Create Date"
+
+#: rdetail.cn.holdable
+msgid "Holdable"
+msgstr "Holdable"
+
+#: rdetail.cn.due
+msgctxt "rdetail.cn.due"
+msgid "Due Date"
+msgstr "Due Date"
+
+#: rdetail.cn.more
+msgid "more info..."
+msgstr "more info..."
+
+#: rdetail.cn.less
+msgid "less info"
+msgstr "less info"
+
+#: rdetail.cn.hold
+msgid "place hold"
+msgstr "place hold"
+
+#: rdetail.cn.disabled
+msgid "- Disabled -"
+msgstr "- Disabled -"
+
+#: rdetail.cn.note
+msgid "Copy Note"
+msgstr "Copy Note"
+
+#: rdetail.cn.category
+msgid "Copy Category"
+msgstr "Copy Category"
+
+#: rdetail.cn.print
+msgid "Print Page"
+msgstr "Print Page"
+
+#: rdetail.page.results
+msgid "First results page"
+msgstr "First results page"
+
+# Result # &common.of; #
+#. Result # &common.of; #
+#: rdetail.result
+msgid "Result"
+msgstr "Result"
+
+#: rdetail.start
+msgid "Start"
+msgstr "Start"
+
+#: rdetail.page.previous
+msgid "Previous page"
+msgstr "Previous page"
+
+#: rdetail.page.next
+msgid "Next page"
+msgstr "Next page"
+
+#: rdetail.page.last
+msgid "Last results page"
+msgstr "Last results page"
+
+#: rdetail.end
+msgid "End"
+msgstr "End"
+
+#: rdetail.more
+msgid "More Actions..."
+msgstr "More Actions..."
+
+#: rdetail.bookbag.add
+msgid "Add to bookbag"
+msgstr "Add to bookbag"
+
+#: rdetail.bookbag.create
+msgid "Create a new bookbag"
+msgstr "Create a new bookbag"
+
+#: rdetail.record.deleted
+#, fuzzy
+msgid ""
+"This record has been deleted from the database. \n"
+"We recommend that you remove this title from any bookbags it may have been "
+"added to."
+msgstr ""
+"This record has been deleted from the database. We recommend that you remove "
+"this title from any bookbags it may have been added to."
+
+#: rdetail.none
+msgid "(none)"
+msgstr "(none)"
+
+#: rdetail.bookbag.add.success
+msgid "Item successfully added to bookbag"
+msgstr "Item successfully added to bookbag"
+
+#: rdetail.bookbag.name
+msgid "Enter the name of the new bookbag"
+msgstr "Enter the name of the new bookbag"
+
+#: rdetail.bookbag.create.success
+msgid "Bookbag successfully created"
+msgstr "Bookbag successfully created"
+
+#: rdetail.detailMain.headerLabel
+msgid "Record Summary"
+msgstr "Record Summary"
+
+#: rdetail.detailMain.subjects
+msgctxt "rdetail.detailMain.subjects"
+msgid "Subjects"
+msgstr "Subjects"
+
+#: rdetail.detailMain.abstract
+msgid "Abstract"
+msgstr "Abstract"
+
+#: rdetail.detailMain.viewMarc
+msgid "View MARC"
+msgstr "View MARC"
+
+#: rdetail.detailMain.hideMarc
+msgid "Return to title details"
+msgstr "Return to title details"
+
+#: rdetail.author.search
+msgid "Perform an author search"
+msgstr "Perform an author search"
+
+#: rdetail.copyInfo.headerLabel
+msgid "Copy Information"
+msgstr "Copy Information"
+
+#: rdetail.copyInfo.library
+msgctxt "rdetail.copyInfo.library"
+msgid "Library"
+msgstr "Library"
+
+#: rdetail.copyInfo.callnumber
+msgid "Callnumber"
+msgstr "Callnumber"
+
+#: rdetail.copyInfo.copylocation
+msgid "Copy Location"
+msgstr ""
+
+#: rdetail.copyInfo.local
+msgid "View Copy Information for this location only"
+msgstr "View Copy Information for this location only"
+
+#: rdetail.copyInfo.all
+msgid "View copy information for all libraries"
+msgstr "View copy information for all libraries"
+
+#: rdetail.copyInfo.actions
+msgid "Actions"
+msgstr "Actions"
+
+#: rdetail.copyInfo.print
+msgid "Print Call Numbers for this library"
+msgstr "Print Call Numbers for this library"
+
+#: rdetail.copyInfo.details
+msgid "Copy Details"
+msgstr ""
+
+#: rdetail.copyInfo.browse
+msgid "Browse Call Numbers"
+msgstr ""
+
+#: rdetail.copyInfo.hold
+msgctxt "rdetail.copyInfo.hold"
+msgid "Place Hold"
+msgstr "Place Hold"
+
+#: rdetail.extras.summary
+msgid "Copy Summary"
+msgstr "Copy Summary"
+
+#: rdetail.extras.browser
+msgctxt "rdetail.extras.browser"
+msgid "Shelf Browser"
+msgstr "Shelf Browser"
+
+#: rdetail.extras.reviews
+msgctxt "rdetail.extras.reviews"
+msgid "Reviews"
+msgstr "Reviews"
+
+#: rdetail.extras.toc
+msgid "Table of Contents"
+msgstr "Table of Contents"
+
+#: rdetail.extras.excerpt
+msgid "Excerpt"
+msgstr "Excerpt"
+
+#: rdetail.extras.preview
+msgid "Preview"
+msgstr ""
+
+#: rdetail.extras.author.notes
+msgid "Author Notes"
+msgstr "Author Notes"
+
+#: rdetail.extras.annotation
+msgid "Annotation"
+msgstr "Annotation"
+
+#: rdetail.extras.marc
+msgid "MARC Record"
+msgstr "MARC Record"
+
+#: rdetail.extras.call.null
+msgid "There are no call numbers for this item at this location."
+msgstr "There are no call numbers for this item at this location."
+
+#: rdetail.extras.call.local
+msgid "Local Call Numbers:"
+msgstr "Local Call Numbers:"
+
+#: rdetail.extras.preview.fulltext
+msgid "Full text"
+msgstr ""
+
+#: rdetail.extras.preview.title
+msgid "See the full text of this book."
+msgstr ""
+
+#: rdetail.extras.preview.badge
+msgid "Show a preview of this book from Google Book Search"
+msgstr ""
+
+#: rdetail.loading
+msgid "Loading copy infomation..."
+msgstr "Loading copy infomation..."
+
+#: rdetail.noneAvailable
+msgid " * There are no copies in this location"
+msgstr " * There are no copies in this location"
+
+#: rdetail.summary.online
+msgid "Online Resources"
+msgstr "Online Resources"
+
+#: rdetail.summary.subjects
+msgctxt "rdetail.summary.subjects"
+msgid "Subjects"
+msgstr "Subjects"
+
+#: result.sort_by
+msgid "Sort Results by Relevance"
+msgstr ""
+
+#: result.sort_by.title
+msgid "Sort Results by Title"
+msgstr ""
+
+#: result.sort_by.author
+msgid "Sort Results by Author"
+msgstr ""
+
+#: result.sort_by.pubdate
+msgid "Sort Results by Publication Date"
+msgstr ""
+
+#: result.limit2avail
+msgid "Limit to Available"
+msgstr ""
+
+#: result.info.copies
+msgid "Available copies / Total copies"
+msgstr "Available copies / Total copies"
+
+#: result.info.no.items
+msgid "No items with the selected format were found in this location."
+msgstr "No items with the selected format were found in this location."
+
+#: result.info.format.items
+msgid "Listed below are all items in the catalog with the chosen format."
+msgstr "Listed below are all items in the catalogue with the chosen format."
+
+#: result.info.show
+msgid "Show records for"
+msgstr "Show records for"
+
+#: result.lowhits.few
+msgid "Few hits were returned for your search."
+msgstr "Few hits were returned for your search."
+
+#: result.lowhits.zero
+msgid "Zero hits were returned for your search."
+msgstr "Zero hits were returned for your search."
+
+#: result.lowhits.did.you.mean
+msgid "Maybe you meant:"
+msgstr "Maybe you meant:"
+
+#: result.lowhits.formats
+msgid "You will find more hits when searching all item formats:"
+msgstr "You will find more hits when searching all item formats:"
+
+#: result.lowhits.formats.search
+msgid "Search again with all formats?"
+msgstr "Search again with all formats?"
+
+#: result.lowhits.related
+msgid "You may also like to try these related searches:"
+msgstr "You may also like to try these related searches:"
+
+#: result.lowhits.expand
+msgid "You may also wish to expand your search range to:"
+msgstr "You may also wish to expand your search range to:"
+
+#: result.lowhits.class
+msgid "You can try searching the same terms by:"
+msgstr "You can try searching the same terms by:"
+
+#: result.lowhits.title
+msgid "title"
+msgstr "title"
+
+#: result.lowhits.author
+msgid "author"
+msgstr "author"
+
+#: result.lowhits.subject
+msgid "subject"
+msgstr "subject"
+
+#: result.lowhits.series
+msgid "series"
+msgstr "series"
+
+#: result.lowhits.keyword
+msgid "keyword"
+msgstr "keyword"
+
+#: result.table.keyword
+msgid "View titles for this record"
+msgstr "View titles for this record"
+
+#: result.table.author
+msgid "Perform an Author Search"
+msgstr "Perform an Author Search"
+
+#: result.googleBooks.browse
+msgid "Browse in Google Books Search"
+msgstr ""
+
+#: common.call.number.label
+msgid "Call Number:"
+msgstr "Call Number:"
+
+#: common.isbn.label
+msgid "ISBN:"
+msgstr "ISBN:"
+
+#: common.issn.label
+msgid "ISSN:"
+msgstr "ISSN:"
+
+#: common.copy.barcode.label
+msgid "Copy Barcode:"
+msgstr "Copy Barcode:"
+
+#: common.hold.place
+msgid "Place hold for my account"
+msgstr ""
+
+#: common.hold.check
+msgid "Checking for possibility of hold fulfillment..."
+msgstr "Checking for possibility of hold fulfillment..."
+
+#: common.hold.create
+msgid "Create / Edit a Hold"
+msgstr "Create / Edit a Hold"
+
+#: common.hold.update
+msgid "Update Hold"
+msgstr "Update Hold"
+
+#: common.hold.type.label
+msgid "Hold Type:"
+msgstr "Hold Type:"
+
+#: common.hold.volume
+msgid "Volume Hold"
+msgstr "Volume Hold"
+
+#: common.hold.copy
+msgid "Copy Hold"
+msgstr "Copy Hold"
+
+#: common.hold.advanced
+msgid "Advanced Hold Options"
+msgstr "Advanced Hold Options"
+
+#: common.hold.delivery
+msgid "Please select a physical location where your hold can be delivered."
+msgstr "Please select a physical location where your hold can be delivered."
+
+#: common.hold.exists
+msgid "A hold already exists on the requested item."
+msgstr "A hold already exists on the requested item."
+
+#: common.hold.exists.override
+#, fuzzy
+msgid ""
+"A hold already exists on the requested \n"
+"item. Would you like to create the hold anyway?"
+msgstr ""
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
+
+#: common.hold.barred
+#, fuzzy
+msgid ""
+"PATRON BARRED. Please see any notes in the \n"
+"\"Staff Notes\" section of your \"My Account\" page or contact your local "
+"library."
+msgstr ""
+"PATRON BARRED. Please see any notes in the \"Staff Notes\" section of your \"My "
+"Account\" page or contact your local library."
+
+#: common.hold.item.invalid
+#, fuzzy
+msgid ""
+"This hold is no longer valid. It's likely that the \n"
+"target for the hold was deleted from the system.  Please cancel this hold "
+"and \n"
+"place a new one."
+msgstr ""
+"This hold is no longer valid. It's likely that the target for the hold was "
+"deleted from the system.  Please cancel this hold and place a new one."
+
+#: common.hold.patron.invalid
+msgid "The patron barcode entered as the hold recipient is invalid."
+msgstr "The patron barcode entered as the hold recipient is invalid."
+
+# Was (??), perhaps change to a button or icon?
+#. Was (??), perhaps change to a button or icon?
+#: common.help
+msgid "(Help)"
+msgstr "(Help)"
+
+#: common.phone.format.help
+msgid ""
+"The phone number does not have the correct format. The expected format is "
+"XXX-YYY-ZZZZ"
+msgstr ""
+"The phone number does not have the correct format. The expected format is "
+"XXX-YYY-ZZZZ"
+
+#: common.hold.failed
+#, fuzzy
+msgid ""
+"No items were found that could fulfill the requested holds. \n"
+"It's possible that choosing a different format will result in a successful "
+"hold. \n"
+"It is also possible that you have exceeded the number of allowable holds. \n"
+"For further information, please consult your local librarian."
+msgstr ""
+"No items were found that could fulfill the requested holds. It's possible "
+"that choosing a different format will result in a successful hold. It is "
+"also possible that you have exceeded the number of allowable holds. For "
+"further information, please consult your local librarian."
+
+#: common.control.click
+msgid "(control-click to select multiple formats)"
+msgstr "(control-click to select multiple formats)"
+
+#: common.format.alternatives
+msgid "Acceptable Alternative Formats:"
+msgstr "Acceptable Alternative Formats:"
+
+#: common.phone.format
+msgid "(XXX-YYY-ZZZZ)"
+msgstr "(XXX-YYY-ZZZZ)"
+
+#: common.phone.enable
+msgid "Enable phone notifications for this hold?"
+msgstr "Enable phone notifications for this hold?"
+
+#: common.email.enable
+msgid "Enable email notifications for this hold?"
+msgstr "Enable email notifications for this hold?"
+
+#: common.email.none
+msgid "(Patron has no configured email address)"
+msgstr "(Patron has no configured email address)"
+
+#: common.email.set
+msgid ""
+"(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> "
+"for setting your email address)"
+msgstr ""
+"(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> "
+"for setting your email address)"
+
+#: common.keywords.label
+msgid "Keywords:"
+msgstr "Keywords:"
+
+#: common.physical.label
+msgid "Physical Description:"
+msgstr "Physical Description:"
+
+#: common.series.label
+msgid "Series:"
+msgstr "Series:"
+
+#: common.subject.label
+msgid "Subject:"
+msgstr "Subject:"
+
+#: common.title.label
+msgid "Title:"
+msgstr "Title:"
+
+#: common.author.label
+msgid "Author:"
+msgstr "Author:"
+
+#: common.format.label
+msgid "Format:"
+msgstr "Format:"
+
+#: library.select
+msgid "Find results in"
+msgstr "Find results in"
+
+#: library.select.label
+msgid "Choose a different library..."
+msgstr "Choose a different library..."
+
+#: library.select.help
+msgctxt "library.select.help"
+msgid "Choose a library to search"
+msgstr "Choose a library to search"
+
+#: login.username
+msgid "Enter your username or library barcode"
+msgstr "Enter your username or library barcode"
+
+#: login.password.change
+msgid "Change Password"
+msgstr "Change Password"
+
+#: login.first.time
+#, fuzzy
+msgid ""
+"This appears to be the first time you have logged in. \n"
+"You will need to change your password."
+msgstr ""
+"This appears to be the first time you have logged in. You will need to "
+"change your password."
+
+#: login.password.current.enter
+msgid "Enter your current password"
+msgstr "Enter your current password"
+
+#: login.password.new.enter
+msgid "Enter the new password"
+msgstr "Enter the new password"
+
+#: login.password.new.reenter
+msgid "Re-type the new password for verification"
+msgstr "Re-type the new password for verification"
+
+#: login.password.update
+msgid "Update Password"
+msgstr "Update Password"
+
+#: login.password.nomatch
+msgid "Passwords do not match"
+msgstr "Passwords do not match"
+
+#: login.password.success
+msgctxt "login.password.success"
+msgid "Password successfully updated"
+msgstr "Password successfully updated"
+
+#: login.password.strength
+msgid "The password provided is not strong enough."
+msgstr "The password provided is not strong enough."
+
+#: login.barcode.inactive
+msgid ""
+"The barcode used to login is marked as inactive.  Please contact your local "
+"library."
+msgstr ""
+"The barcode used to login is marked as inactive.  Please contact your local "
+"library."
+
+#: login.account.inactive
+msgid "This account has been deactivated.  Please contact your local library."
+msgstr "This account has been deactivated.  Please contact your local library."
+
+#: login.failed
+#, fuzzy
+msgid ""
+"Login failed. The username or password provided was not valid. \n"
+"Ensure Caps-Lock is off and try again or contact your local library."
+msgstr ""
+"Login failed. The username or password provided was not valid. Ensure Caps-"
+"Lock is off and try again or contact your local library."
+
+#: button.go
+msgid "Go!"
+msgstr "Go!"
+
+#. =================================================================
+#. Slimpac Simple Search
+#. =================================================================
+#: slimpac.language.select
+msgid "Select language"
+msgstr ""
+
+# =================================================================
+# Slimpac Simple Search
+#: slimpac.start.title
+msgid "Simple Search"
+msgstr "Simple Search"
+
+#: slimpac.start.nowSearching
+msgid "Now searching: "
+msgstr "Now searching: "
+
+#: slimpac.start.dynamic
+msgid "Dynamic Catalog"
+msgstr "Dynamic Catalogue"
+
+# =================================================================
+# Slimpac Advanced Search
+#. =================================================================
+#. Slimpac Advanced Search
+#. =================================================================
+#: slimpac.advanced.language
+msgid "Item Language"
+msgstr "Item Language"
+
+#: slimpac.advanced.create_date
+msgid "Record Creation Date"
+msgstr "Record Creation Date"
+
+#: slimpac.advanced.edit_date
+msgid "Record Edit Date"
+msgstr "Record Edit Date"
+
+#: opac.image_provided
+msgid "Image provided by"
+msgstr ""
+
+#: vendor.name
+msgid "Amazon"
+msgstr ""
+
+#: vendor.base_link
+msgid "http://amazon.com/dp/"
+msgstr ""
+
+#. =================================================================
+#. Selfcheck
+#. =================================================================
+#: selfck.staff_login_label
+msgid "Staff login"
+msgstr ""
+
+#: selfck.staff_login
+msgid "Library barcode or username"
+msgstr ""
+
+#: selfck.staff_pw
+msgctxt "selfck.staff_pw"
+msgid "Password"
+msgstr "Password"
+
+#: selfck.submit
+msgctxt "selfck.submit"
+msgid "Submit"
+msgstr "Submit"
+
+#: selfck.clear
+msgid "Clear"
+msgstr ""
+
+#: selfck.patron_barcode_label
+msgid "Please scan your library barcode"
+msgstr ""
+
+#: selfck.item_barcode_label
+msgid "Please scan an item to checkout or renew:"
+msgstr ""
+
+#: selfck.barcode
+msgctxt "selfck.barcode"
+msgid "Barcode"
+msgstr "Barcode"
+
+#: selfck.title
+msgctxt "selfck.title"
+msgid "Title"
+msgstr "Title"
+
+#: selfck.author
+msgctxt "selfck.author"
+msgid "Author"
+msgstr "Author"
+
+#: selfck.due_date
+msgctxt "selfck.due_date"
+msgid "Due Date"
+msgstr "Due Date"
+
+#: selfck.remaining
+msgctxt "selfck.remaining"
+msgid "Renewals Remaining"
+msgstr "Renewals Remaining"
+
+#: selfck.cotype
+msgid "Type"
+msgstr ""
+
+#: selfck.cotype_co
+msgid "Checkout"
+msgstr ""
+
+#: selfck.cotype_rn
+msgid "Renewal"
+msgstr ""
+
+#: selfck.done
+#, fuzzy
+msgid "Done"
+msgstr "Done"
+
+#: selfck.welcome
+msgid "Welcome"
+msgstr ""
+
+#: selfck.printing
+msgid "Printing Receipt..."
+msgstr ""
+
+#. event messages
+#: selfck.event.co_success
+msgid "Check out succeeded"
+msgstr ""
+
+#: selfck.event.co_unknown
+msgid "An unknown event has occurred"
+msgstr ""
+
+#: selfck.event.dupe_barcode
+msgid "This item has already been checked out during this session"
+msgstr ""
+
+#: selfck.event.patron_not_found
+msgid "The patron barcode was not found"
+msgstr ""
+
+#: selfck.event.item_noncat
+msgid "The requested item is not in the catalog"
+msgstr "The requested item is not in the catalogue"
+
+#: selfck.event.item_nocirc
+msgid "The requested item is not allowed to circulate"
+msgstr ""
+
+#: selfck.event.already_out
+msgid "The requested item is already checked out to another patron"
+msgstr ""
+
+#: selfck.items_out
+msgid "You checked out the following items"
+msgstr ""
+
+#: selfck.org_hours
+msgid "Hours of Operation"
+msgstr ""
+
+#: selfck.org_phone
+msgid "Library Phone Number"
+msgstr ""
+
+#: selfck.day0
+msgid "Monday"
+msgstr ""
+
+#: selfck.day1
+msgid "Tuesday"
+msgstr ""
+
+#: selfck.day2
+msgid "Wednesday"
+msgstr ""
+
+#: selfck.day3
+msgid "Thursday"
+msgstr ""
+
+#: selfck.day4
+msgid "Friday"
+msgstr ""
+
+#: selfck.day5
+msgid "Saturday"
+msgstr ""
+
+#: selfck.day6
+msgid "Sunday"
+msgstr ""
+
+#~ msgid "details"
+#~ msgstr "details"
+
+#~ msgid "browse"
+#~ msgstr "browse"
+
+#~ msgid "YYYY-MM-DD"
+#~ msgstr "YYYY-MM-DD"
