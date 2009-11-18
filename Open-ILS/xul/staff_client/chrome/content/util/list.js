@@ -1628,11 +1628,17 @@ util.list.prototype = {
                     'id' : col_id,
                     'label' : my_field.label || my_field.name,
                     'sort_type' : [ 'int', 'float', 'id', 'number' ].indexOf(my_field.datatype) > -1 ? 'number' : ( my_field.datatype == 'money' ? 'money' : 'default'),
-                    'hidden' : [ 'isnew', 'ischanged', 'isdeleted' ].indexOf(my_field.name) > -1,
+                    'hidden' : my_field.virtual || my_field.datatype == 'link',
                     'flex' : 1
                 };                    
                 // my_field.datatype => bool float id int interval link money number org_unit text timestamp
-                def.render = function(my) { return my[hint][my_field.name](); }
+                if (my_field.datatype == 'link') {
+                    def.render = function(my) { 
+                        return typeof my[hint][my_field.name]() == 'object' ? my[hint][my_field.name]()[my_field.key]() : my[hint][my_field.name](); 
+                    }
+                } else {
+                    def.render = function(my) { return my[hint][my_field.name](); }
+                }
                 if (my_field.datatype == 'timestamp') {
                     dojo.require('dojo.date.locale');
                     dojo.require('dojo.date.stamp');
