@@ -111,8 +111,7 @@ function init_list() {
             {
                 'columns' : [].concat(
                     list.fm_columns('atev', {
-                        'atev_target' : { 'render' : function(my) { return fieldmapper.IDL.fmclasses[my.atev.target().classname].label; } },
-                        'atev_event_def' : { 'hidden' : true, 'render' : function(my) { return my.atev.event_def().id(); } }
+                        'atev_target' : { 'render' : function(my) { return fieldmapper.IDL.fmclasses[my.atev.target().classname].label; } }
                     })
                 ).concat(
                     list.fm_columns('atevdef', { 
