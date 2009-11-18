@@ -1,9 +1,12 @@
 
+body {
+    font-family: Arial, Verdana;
+    font-size: 14px;
+}
+
 #oils-selfck-top-div {
-    width: 99%;
-    padding: 10px;
-    margin: 0px;
-    height: 180px;
+    padding: 20px;
+    margin: 2px;
     border: 1px solid #888;
     text-align: center;
     font-weight:bold;
@@ -24,7 +27,7 @@
 }
 
 #oils-selfck-bottom-div {
-    width: 100%;
+    width: 98%;
     padding: 10px;
 }
 
@@ -39,28 +42,43 @@
 }
 
 #oils-selfck-circ-table  {
-    width: 100%;
+    width: 98%;
+    margin-top: 15px;
+}
+
+#oils-selfck-circ-table td {
+    text-align: center;
 }
 
 #oils-selfck-circ-table thead {
     font-weight: bold;
 }
 
-#oils-selfck-circ-table-div {
+#oils-selfck-content-div {
     width: 70%;
     position: float;
     float: left;
-    border-right: 1px solid #888;
 }
 
-#oils-selfck-circ-info-div {
+#oils-selfck-summary-div {
     width: 28%;
     float: right;
+    border-left: 1px solid #888;
+}
+
+#oils-selfck-info-nav {
+    margin: 15px 10px 15px 10px;
+    padding: 8px;
+    border-bottom: 1px dashed #888;
+}
+
+#oils-selfck-info-nav span {
+    padding-right: 10px;
 }
 
 #oils-selfck-circ-info-div fieldset {
-    margin: 20px;
-    padding: 10px;
+    margin: 15px 10px 15px 10px;
+    padding: 8px;
     border: 2px dashed #888;
     -moz-border-radius: 3px;
 }
@@ -69,13 +87,15 @@
     font-weight: bold;
 }
 
-
-
-/*
-#oils-selfck-main-table {width: 100%}
-#oils-selfck-main-table td {
-    padding: 5px;
-    border: 1px solid #888;
+#oils-selfck-circ-info-div div {
+    padding: 3px;
 }
-#oils-selfck-main-table- td {
-*/
+
+#oils-selfck-circ-tbody tr {
+    border-bottom: 1px solid #888;
+}
+
+#oils-selfck-circ-tbody td {
+    padding:10px;
+}
+

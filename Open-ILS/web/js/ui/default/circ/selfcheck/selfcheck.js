@@ -1,3 +1,5 @@
+dojo.require('dojo.date.locale');
+dojo.require('dojo.date.stamp');
 dojo.require('openils.CGI');
 dojo.require('openils.Util');
 dojo.require('openils.User');
@@ -34,7 +36,27 @@ function SelfCheckManager() {
 
     // dict of org unit settings for "here"
     this.orgSettings = {};
+
+    
+    // Construct a mock checkout for debugging purposes
+    this.mockCheckout = {
+        payload : {
+            record : new fieldmapper.mvr(),
+            copy : new fieldmapper.acp(),
+            circ : new fieldmapper.circ()
+        }
+    };
+
+    this.mockCheckout.payload.record.title('Jazz improvisation for guitar');
+    this.mockCheckout.payload.record.author('Wise, Les');
+    this.mockCheckout.payload.record.isbn('0634033565');
+    this.mockCheckout.payload.copy.barcode('123456789');
+    this.mockCheckout.payload.circ.renewal_remaining(1);
+    this.mockCheckout.payload.circ.parent_circ(1);
+    this.mockCheckout.payload.circ.due_date('2012-12-21');
 }
+
+
 
 /**
  * Fetch the org-unit settings, initialize the display, etc.
@@ -46,9 +68,28 @@ SelfCheckManager.prototype.init = function() {
     this.authtoken = openils.User.authtoken;
     this.loadOrgSettings();
 
+    // add onclick handlers for nav links
+
+    var self = this;
+    dojo.connect(
+        dojo.byId('oils-selfck-hold-details-link'),
+        'onclick',
+        function() { self.drawHoldsPage(); }
+    );
+
+    dojo.connect(
+        dojo.byId('oils-selfck-pay-fines-link'),
+        'onclick',
+        function() { self.drawPayFinesPage(); }
+    );
+
+
     if(this.cgi.param('patron')) {
-        // Patron barcode via cgi param.  Mainly used for debugging.
+        
+        // Patron barcode via cgi param.  Mainly used for debugging and
+        // only works if password is not required by policy
         this.loginPatron(this.cgi.param('patron'));
+
     } else {
         this.drawLoginPage();
     }
@@ -224,103 +265,98 @@ SelfCheckManager.prototype.drawCircPage = function() {
         }
     );
 
-    // items out summary
-
+    // holds summary
     this.updateHoldsSummary();
+
+    // items out summary
     this.updateCircSummary();
+
+    // render mock checkouts for debugging?
+    if(this.cgi.param('mock-circ')) {
+        for(var i in [1,2,3]) 
+            this.displayCheckout(this.mockCheckout);
+    }
 }
 
 SelfCheckManager.prototype.updateHoldsSummary = function(decrement) {
 
-
-    var self = this;
-    var oncomplete = function() {
-        dojo.byId('oils-selfck-holds-total').innerHTML = 
-            dojo.string.substitute(
-                localeStrings.TOTAL_HOLDS, 
-                [self.holdsSummary.total]
-            );
-
-        dojo.byId('oils-selfck-holds-ready').innerHTML = 
-            dojo.string.substitute(
-                localeStrings.HOLDS_READY_FOR_PICKUP, 
-                [self.holdsSummary.ready]
-            );
-    };
-
     if(!this.holdsSummary) {
-        fieldmapper.standardRequest(
+        var summary = fieldmapper.standardRequest(
             ['open-ils.circ', 'open-ils.circ.holds.user_summary'],
-            {   async : true,
-                params : [this.authtoken, this.patron.id()],
-                oncomplete : function(r) {
-                    var summary = openils.Util.readResponse(r);
-                    self.holdsSummary = {};
-                    self.holdsSummary.ready = Number(summary['4']);
-                    self.holdsSummary.total = 0;
-                    for(var i in summary) 
-                        self.holdsSummary.total += Number(summary[i]);
-                    oncomplete();
-                }
-            }
+            {params : [this.authtoken, this.patron.id()]}
         );
-    } else {
 
-        if(this.decrement) 
-            this.holdsSummary.ready -= 1;
-    
-        oncomplete();
+        this.holdsSummary = {};
+        this.holdsSummary.ready = Number(summary['4']);
+        this.holdsSummary.total = 0;
+
+        for(var i in summary) 
+            this.holdsSummary.total += Number(summary[i]);
     }
+
+    if(this.decrement) 
+        this.holdsSummary.ready -= 1;
+
+    dojo.byId('oils-selfck-holds-total').innerHTML = 
+        dojo.string.substitute(
+            localeStrings.TOTAL_HOLDS, 
+            [this.holdsSummary.total]
+        );
+
+    dojo.byId('oils-selfck-holds-ready').innerHTML = 
+        dojo.string.substitute(
+            localeStrings.HOLDS_READY_FOR_PICKUP, 
+            [this.holdsSummary.ready]
+        );
 }
 
 
 SelfCheckManager.prototype.updateCircSummary = function(increment) {
 
-    var self = this;
-    var oncomplete = function() {
-        dojo.byId('oils-selfck-circ-account-total').innerHTML = 
-            dojo.string.substitute(
-                localeStrings.TOTAL_ITEMS_ACCOUNT, 
-                [self.circSummary.total]
-            );
+    if(!this.circSummary) {
 
-        dojo.byId('oils-selfck-circ-session-total').innerHTML = 
-            dojo.string.substitute(
-                localeStrings.TOTAL_ITEMS_SESSION, 
-                [self.circSummary.session]
-            );
-    }
-
-    if(this.circSummary) {
-
-        if(increment) {
-            // local checkout occurred.  Add to the total and the session.
-            this.circSummary.total += 1;
-            this.circSummary.session += 1;
-        }
-
-        oncomplete();
-
-    } else {
-        // fetch the circ summary for the patron
         var summary = fieldmapper.standardRequest(
             ['open-ils.actor', 'open-ils.actor.user.checked_out.count'],
-            {
-                async : true,
-                params : [this.authtoken, this.patron.id()],
-                oncomplete : function(r) {
-                    var summary = openils.Util.readResponse(r);
-                    self.circSummary = {
-                        total : Number(summary.out) + Number(summary.overdue),
-                        overdue : Number(summary.overdue),
-                        session : 0
-                    }
-                    oncomplete();
-                }
-            }
+            {params : [this.authtoken, this.patron.id()]}
         );
+
+        this.circSummary = {
+            total : Number(summary.out) + Number(summary.overdue),
+            overdue : Number(summary.overdue),
+            session : 0
+        };
     }
+
+    if(increment) {
+        // local checkout occurred.  Add to the total and the session.
+        this.circSummary.total += 1;
+        this.circSummary.session += 1;
+    }
+
+    dojo.byId('oils-selfck-circ-account-total').innerHTML = 
+        dojo.string.substitute(
+            localeStrings.TOTAL_ITEMS_ACCOUNT, 
+            [this.circSummary.total]
+        );
+
+    dojo.byId('oils-selfck-circ-session-total').innerHTML = 
+        dojo.string.substitute(
+            localeStrings.TOTAL_ITEMS_SESSION, 
+            [this.circSummary.session]
+        );
 }
+
+
+SelfCheckManager.prototype.drawHoldsPage = function() {
+
+    // TODO add option to hid scanBox
+    // this.updateScanBox(...)
+
+    openils.Util.hide('oils-selfck-circ-page');
+    openils.Util.hide('oils-selfck-payment-page');
+    openils.Util.show('oils-selfck-holds-page');
+}
+
 
 
 
@@ -394,16 +430,19 @@ SelfCheckManager.prototype.displayCheckout = function(evt) {
     var circ = evt.payload.circ;
     var row = this.circTemplate.cloneNode(true);
 
-    /*
     if(record.isbn()) {
-	    var pic = $n(template, 'jacket');
-	    pic.setAttribute('src', '/opac/ac/jacket/small/' + cleanISBN(record.isbn()));
+        this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/' + record.isbn());
     }
-    */
 
     this.byName(row, 'barcode').innerHTML = copy.barcode();
     this.byName(row, 'title').innerHTML = record.title();
     this.byName(row, 'author').innerHTML = record.author();
+    this.byName(row, 'remaining').innerHTML = circ.renewal_remaining();
+
+    var date = dojo.date.stamp.fromISOString(circ.due_date());
+    this.byName(row, 'due_date').innerHTML = 
+        dojo.date.locale.format(date, {selector : 'date'});
+
     this.circTbody.appendChild(row);
 }
 

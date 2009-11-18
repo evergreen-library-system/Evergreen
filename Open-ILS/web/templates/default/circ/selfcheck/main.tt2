@@ -14,15 +14,21 @@
     </div>
 </div>
 <div id='oils-selfck-bottom-div'>
-    <div id='oils-selfck-circ-page' class='hidden'>
-        <!-- Checkout / renewal interface -->
-        [% INCLUDE 'default/circ/selfcheck/circ_page.tt2' %]
+    <div id='oils-selfck-content-div'>
+        <div id='oils-selfck-circ-page' class='hidden'>
+            <!-- Checkout / renewal interface -->
+            [% INCLUDE 'default/circ/selfcheck/circ_page.tt2' %]
+        </div>
+        <div id='oils-selfck-holds-page' class='hidden'>
+            <!-- Patron holds interface -->
+            [% INCLUDE 'default/circ/selfcheck/holds_page.tt2' %]
+        </div>
+        <div id='oils-selfck-payment-page' class='hidden'>
+            <!-- Credit Card payments interface -->
+        </div>
     </div>
-    <div id='oils-selfck-holds-page' class='hidden'>
-        <!-- Patron holds interface -->
-    </div>
-    <div id='oils-selfck-payment-page' class='hidden'>
-        <!-- Credit Card payments interface -->
+    <div id='oils-selfck-summary-div'>
+        [% INCLUDE 'default/circ/selfcheck/summary.tt2' %]
     </div>
 </div>
 

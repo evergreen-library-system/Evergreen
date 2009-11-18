@@ -27,23 +27,3 @@
         </tbody>
     </table>
 </div>
-
-<div id='oils-selfck-circ-info-div'>
-    <fieldset>
-        <legend>Items Checked Out</legend>
-        <div id='oils-selfck-circ-session-total'></div>
-        <div id='oils-selfck-circ-account-total'></div>
-    </fieldset>
-    <fieldset>
-        <legend>Holds</legend>
-        <div id='oils-selfck-holds-ready'></div>
-        <div id='oils-selfck-holds-total'></div>
-        <div><a href=='javascript:void(0);' id='oils-selfck-hold-details-link'>Hold Details</a></div>
-    </fieldset>
-    <fieldset>
-        <legend>Fines</legend>
-        <div id='oils-selfck-fines-total'></div>
-        <div><a href='javascript:void(0);' id='oils-selfck-pay-fines-link'>Pay fines</a></div>
-    </fieldset>
-</div>
-
