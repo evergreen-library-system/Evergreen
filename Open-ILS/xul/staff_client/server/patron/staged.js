@@ -1,4 +1,4 @@
-var list; var error; var net; var rows; var menu_lib;
+var list; var error; var net; var rows; var row_id_usrname_map; var menu_lib;
 
 function $(id) { return document.getElementById(id); }
 
@@ -41,6 +41,7 @@ function staged_init() {
         list.set_list_actions();
         $('cmd_cancel').addEventListener('command', gen_event_handler('cancel'), false);
         $('cmd_load').addEventListener('command', gen_event_handler('load'), false);
+        $('cmd_reload').addEventListener('command', function() { populate_list(); }, false);
         populate_list();
         default_focus();
 
@@ -61,13 +62,15 @@ function populate_lib_menu() {
         var file = new util.file('offline_ou_list');
         if (file._file.exists()) {
             var list_data = file.get_object(); file.close();
-            var ml = util.widgets.make_menulist( list_data[0], ses('ws_ou') );
+            menu_lib = x.getAttribute('value') || ses('ws_ou');
+            var ml = util.widgets.make_menulist( list_data[0], menu_lib );
             ml.setAttribute('id','lib_menu');
             x.appendChild( ml );
             ml.addEventListener(
                 'command',
                 function(ev) {
                     menu_lib = ev.target.value;
+                    x.setAttribute('value',ev.target.value); oils_persist(x);
                     populate_list();
                 },
                 false
@@ -84,12 +87,13 @@ function gen_event_handler(method) { // cancel or load?
     return function(ev) {
         try {
             var sel = list.retrieve_selection();
-            var ids = util.functional.map_list( sel, function(o) { return o.getAttribute('retrieve_id'); } );
+            var row_ids = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ).row_id; } );
+            var usrnames = util.functional.map_list( sel, function(o) { return JSON2js( o.getAttribute('retrieve_id') ).usrname; } );
 
             if (method == 'cancel') {
-                cancel( ids );
+                cancel( row_ids );
             } else {
-                load( ids );
+                load( usrnames );
             }
 
         } catch(E) {
@@ -100,41 +104,35 @@ function gen_event_handler(method) { // cancel or load?
 
 function cancel(ids) {
     try {
-        var pm = $('progress'); pm.value = 0; pm.hidden = false;
-        var idx = -1;
 
-        fieldmapper.standardRequest(
-            [ api['FM_STGU_CANCEL'].app, api['FM_STGU_CANCEL'].method ],
-            {   async: true,
-                params: [ses(), ids],
-                onresponse: function(r) {
-                    try {
-                        idx++; pm.value = Number( pm.value ) + 100/ids.length;
-                        var result = openils.Util.readResponse(r);
-                        if (typeof result.ilsevent != 'undefined') { throw(result); }
-                    } catch(E) {
-                        error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event onresponse.',E);
+        if (! window.confirm( $('patronStrings').getString('staff.patron.staged.confirm_patron_delete') ) ) { return; }
+        var pm = $('progress'); pm.value = 0; pm.hidden = false;
+        var idx = 0;
+
+        function gen_req_handler(id) {
+            return function(req) {
+                try {
+                    idx++; pm.value = Number( pm.value ) + 100/ids.length; 
+                    if (idx == ids.length) { pm.value = 0; pm.hidden = true; }
+                    var robj = req.getResultObject();
+                    if (robj == '1') {
+                        var node = rows[ row_id_usrname_map[ id ] ].my_node;
+                        var parentNode = node.parentNode;
+                        parentNode.removeChild( node );
+                        delete(rows[ row_id_usrname_map[ id ] ]);
+                        delete(row_id_usrname_map[ id ]);
+                    } else {
+                        alert( $('patronStrings').getFormattedString('staff.patron.staged.error_on_delete',[ id ]) );
                     }
-                },
-                onerror: function(r) {
-                    try {
-                        var result = openils.Util.readResponse(r);
-                        throw(result);
-                    } catch(E) {
-                        error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event onerror.',E);
-                    }
-                    pm.hidden = true; pm.value = 0; populate_list();
-                },
-                oncomplete: function(r) {
-                    try {
-                        var result = openils.Util.readResponse(r);
-                    } catch(E) {
-                        error.standard_unexpected_error_alert('In patron/staged.js, handle_'+i+'_event oncomplete.',E);
-                    }
-                    pm.hidden = true; pm.value = 0; populate_list();
+                } catch(E) {
+                    alert('Error in staged.js, cancel patron request handler: ' + E);
                 }
             }
-        );
+        }
+
+        for (var i = 0; i < ids.length; i++) {
+            net.simple_request('FM_STGU_DELETE', [ ses(), ids[i] ], gen_req_handler( ids[i] ));
+        }
     } catch(E) {
         alert('Error in staged.js, cancel(): ' + E);
     }
@@ -145,7 +143,7 @@ function spawn_search(s) {
     xulG.new_patron_tab( {}, { 'doit' : 1, 'query' : s } );
 }
 
-function spawn_editor(p) {
+function spawn_editor(p,func) {
     var url = urls.XUL_PATRON_EDIT;
     var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER );
     xulG.new_tab(
@@ -161,20 +159,36 @@ function spawn_editor(p) {
                 'url_prefix' : xulG.url_prefix,
                 'new_tab' : xulG.new_tab,
                 'new_patron_tab' : xulG.new_patron_tab,
+                'on_save' : function() { if (typeof func == 'function') { func(); } },
                 'params' : p
             }
         }
     );
 }
 
-function load( ids ) {
+function load( usrnames ) {
     try {
+
+        function gen_on_save_handler(usrname) {
+            return function() {
+                try {
+                    var node = rows[ usrname ].my_node;
+                    var parentNode = node.parentNode;
+                    parentNode.removeChild( node );
+                    delete(row_id_usrname_map[ rows[ usrname ].row.my.stgu.row_id() ]);
+                    delete(rows[ usrname ]);
+                } catch(E) {
+                    alert('Error in staged.js, load on save handler: ' + E);
+                }
+            }
+        }
+
         var seen = {};
 
-        for (var i = 0; i < ids.length; i++) {
-            if (! seen[ ids[i] ]) {
-                seen[ ids[i] ] = true;
-                spawn_editor( { 'stage' : ids[i] } );
+        for (var i = 0; i < usrnames.length; i++) {
+            if (! seen[ usrnames[i] ]) {
+                seen[ usrnames[i] ] = true;
+                spawn_editor( { 'stage' : usrnames[i] }, gen_on_save_handler( usrnames[i] ) );
             }
         }
 
@@ -208,7 +222,7 @@ function init_list() {
 
 function retrieve_row(params) { // callback function for fleshing rows in a list
     try {
-        params.row_node.setAttribute('retrieve_id',params.row.my.stgu.usrname()); 
+        params.row_node.setAttribute('retrieve_id',js2JSON( { 'row_id' : params.row.my.stgu.row_id(), 'usrname' : params.row.my.stgu.usrname() } )); 
         params.on_retrieve(params.row); 
     } catch(E) {
         alert('Error in staged.js, retrieve_row(): ' + E);
@@ -230,7 +244,7 @@ function handle_selection(ev) { // handler for list row selection event
 function populate_list() {
     try {
 
-        rows = {};
+        rows = {}; row_id_usrname_map = {};
         list.clear();
 
         function onResponse(r) {
@@ -243,6 +257,7 @@ function populate_list() {
                 }
             };
             rows[ blob.user.usrname() ] = list.append( row_params );
+            row_id_usrname_map[ blob.user.row_id() ] = blob.user.usrname();
         }
 
         function onError(r) {
@@ -253,7 +268,7 @@ function populate_list() {
         fieldmapper.standardRequest(
             [api['FM_STGU_RETRIEVE'].app, api['FM_STGU_RETRIEVE'].method ],
             {   async: true,
-                params: [ses(), menu_lib || ses('ws_ou')],
+                params: [ses(), menu_lib || ses('ws_ou'), $('limit').value || 100],
                 onresponse : onResponse,
                 onerror : onError,
                 oncomplete : function() {

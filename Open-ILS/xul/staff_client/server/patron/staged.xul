@@ -33,6 +33,7 @@
     <commandset id="staged_cmds">
         <command id="cmd_load" disabled="true"/>
         <command id="cmd_cancel" disabled="true"/>
+        <command id="cmd_reload" />
     </commandset>
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -41,21 +42,17 @@
         <caption id="staged_caption" label="&staff.patron_display.staged.caption;"/>
         <vbox flex="0">
             <hbox flex="1">
-                <hbox id="lib_menu_placeholder" />
+                <vbox pack="center">
+                    <label value="&staff.patron_display.staged.limit.label;" accesskey="&staff.patron_display.staged.limit.accesskey;" control="limit" />
+                </vbox>
+                <textbox id="limit" type="number" value="100" oils_persist="value" />
+                <vbox pack="center">
+                    <label value="&staff.patron_display.staged.home_lib.label;" accesskey="&staff.patron_display.staged.home_lib.accesskey;" control="lib_menu" />
+                </vbox>
+                <hbox id="lib_menu_placeholder" oils_persist="value" />
+                <button command="cmd_reload" label="&staff.patron_display.staged.reload.label;" accesskey="&staff.patron_display.staged.reload.accesskey;" />
                 <spacer flex="1" />
                 <progressmeter id="progress" flex="1" hidden="true" mode="undetermined"/>
-<!--
-                <menubar>
-                    <menu label="&staff.patron_display.staged.menu.actions.label;" 
-                        accesskey="&staff.patron_display.staged.menu.actions.accesskey;" 
-                        style="-moz-user-focus: normal">
-                        <menupopup>
-                            <menuitem command="cmd_load" label="&staff.patron_display.staged.menu.actions.load.label;" accesskey="&staff.patron_display.staged.menu.actions.load.accesskey;"/>
-                            <menuitem command="cmd_cancel" label="&staff.patron_display.staged.menu.actions.cancel.label;" accesskey="&staff.patron_display.staged.menu.actions.cancel.accesskey;"/>
-                        </menupopup>
-                    </menu>
-                </menubar>
--->
                 <button command="cmd_load" label="&staff.patron_display.staged.menu.actions.load.label;" accesskey="&staff.patron_display.staged.menu.actions.load.accesskey;"/>
                 <button command="cmd_cancel" label="&staff.patron_display.staged.menu.actions.cancel.label;" accesskey="&staff.patron_display.staged.menu.actions.cancel.accesskey;"/>
             </hbox>

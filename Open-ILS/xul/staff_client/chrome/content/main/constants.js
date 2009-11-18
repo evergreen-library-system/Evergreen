@@ -241,6 +241,7 @@ const api = {
     'FM_MOUS_RETRIEVE.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.fines.summary.authoritative', 'cacheable' : true, 'ttl' : 60000 },
     'FM_PGT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.tree.retrieve', 'secure' : false },
     'FM_STGU_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.stage.retrieve.by_org', 'secure' : true },
+    'FM_STGU_DELETE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.stage.delete', 'secure' : false },
     'MARC_HTML_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.html', 'secure' : false },
     'FM_BLOB_RETRIEVE_VIA_Z3950_SEARCH' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.search_class' },
     'FM_BLOB_RETRIEVE_VIA_Z3950_RAW_SEARCH' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.search_service' },
