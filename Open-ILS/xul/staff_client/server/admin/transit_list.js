@@ -405,7 +405,16 @@ admin.transit_list.prototype = {
                     'sel_opac' : [ ['command'], function() { JSAN.use('cat.util'); cat.util.show_in_opac(obj.selection_list); } ],
                     'sel_transit_abort' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.abort_transits(obj.selection_list); } ],
                     'sel_patron' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.selection_list); } ],
-                    'sel_copy_details' : [ ['command'], function() { JSAN.use('circ.util'); for (var i = 0; i < obj.selection_list.length; i++) { circ.util.show_copy_details( obj.selection_list[i].copy_id ); } } ],
+                    'sel_copy_details' : [ ['command'],
+                        function() {
+                            JSAN.use('circ.util');
+                            circ.util.item_details_new(
+                                util.functional.map_list(
+                                    obj.selection_list,
+                                    function(o) { return o.barcode; }
+                                )
+                            );
+                        } ],
                     'sel_bucket' : [ ['command'], function() { JSAN.use('cat.util'); cat.util.add_copies_to_bucket(obj.selection_list); } ],
                     'cmd_print_list' : [ ['command'], function() { obj.print_list(0); } ],
                     'cmd_kick_off' : [ ['command'], function(ev) { ev.target.disabled = true; obj.kick_off(); } ],

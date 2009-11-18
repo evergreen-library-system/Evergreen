@@ -275,9 +275,12 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             JSAN.use('circ.util');
-                            for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                if (obj.retrieve_ids[i].copy_id) circ.util.show_copy_details( obj.retrieve_ids[i].copy_id );
-                            }
+                            circ.util.item_details_new(
+                                util.functional.map_list(
+                                    obj.retrieve_ids,
+                                    function(o) { return o.barcode; }
+                                )
+                            );
                         }
                     ],
 

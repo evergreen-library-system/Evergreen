@@ -84,6 +84,19 @@ circ.util.show_copy_details = function(copy_id) {
     }
 };
 
+circ.util.item_details_new = function(barcodes) {
+    try {
+        var content_params = {
+            'from_item_details_new': true,
+            'barcodes': barcodes
+        };
+        xulG.new_tab(urls.XUL_COPY_STATUS, {}, content_params);
+    } catch(E) {
+        JSAN.use('util.error');
+        (new util.error()).standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.utils.retrieve_copy.failure'),E);
+    }
+};
+
 circ.util.backdate_post_checkin = function(circ_ids) {
     var obj = {};
     JSAN.use('util.error'); obj.error = new util.error();

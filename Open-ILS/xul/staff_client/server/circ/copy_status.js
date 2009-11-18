@@ -276,9 +276,12 @@ circ.copy_status.prototype = {
                         ['command'],
                         function() {
                             JSAN.use('circ.util');
-                            for (var i = 0; i < obj.selection_list.length; i++) {
-                                circ.util.show_copy_details( obj.selection_list[i].copy_id );
-                            }
+                            circ.util.item_details_new(
+                                util.functional.map_list(
+                                    obj.selection_list,
+                                    function(o) { return o.barcode; }
+                                )
+                            );
                         }
                     ],
                     'sel_renew' : [
@@ -1148,8 +1151,14 @@ circ.copy_status.prototype = {
                 var f = obj.browser.get_content();
                 xulG.barcode = result.copy.barcode(); // FIXME: We could pass the already-fetched data, but need to figure out how to manage that and honor Trim List, the whole point of which is to limit memory consumption
                 if (f) {
-                    f.xulG = xulG;
-                    f.load_item();
+                    if (!xulG.from_item_details_new) {
+                        /* We don't want to call load_item() in this case
+                         * because we're going to call copy_status() later
+                         * (which gets action menus populated, unlike
+                         * load_item()). */
+                        f.xulG = xulG;
+                        f.load_item();
+                    }
                 } else {
                     alert('hrmm');
                 }

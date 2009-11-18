@@ -158,9 +158,12 @@ circ.renew.prototype = {
                         ['command'],
                         function() {
                             JSAN.use('circ.util');
-                            for (var i = 0; i < obj.selection_list.length; i++) {
-                                circ.util.show_copy_details( obj.selection_list[i].copy_id );
-                            }
+                            circ.util.item_details_new(
+                                util.functional.map_list(
+                                    obj.selection_list,
+                                    function(o) { return o.barcode; }
+                                )
+                            );
                         }
                     ],
                     'sel_mark_items_damaged' : [
