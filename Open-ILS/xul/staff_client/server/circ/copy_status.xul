@@ -61,33 +61,7 @@
                 g.data.stash_retrieve();
 
                 if (window.xulG.barcodes && window.xulG.barcodes.length) {
-                    if (window.xulG.from_item_details_new) {
-                        // Switch item status display to "alternate view"
-                        g.copy_status.controller.control_map.cmd_alt_view[1](0);
-
-                        // This property's truthiness should not persist any
-                        // longer. Otherwise, user's won't get results if they
-                        // enter a different barcode into the Alternate View.
-                        window.xulG.from_item_details_new = false;
-                    }
-
-                    // This timeout is needed to populate the
-                    // "Actions for (Catalogers|Selected Items)" menus.
-                    // Without this, the other fields still get populated
-                    // with data about the item referred to by barcode, but
-                    // for some reason those menus don't start working.
-                    JSAN.use('util.exec'); var exec = new util.exec();
-                    var funcs = [];
-                    for (var i = 0; i < window.xulG.barcodes.length; i++) {
-                        funcs.push(
-                            function(b){
-                                return function() {
-                                    g.copy_status.copy_status(b);
-                                }
-                            }(window.xulG.barcodes[i])
-                        );
-                    }
-                    setTimeout(function() { exec.chain(funcs); }, 1000);
+                    g.barcodes = window.xulG.barcodes;
                 } else {
                     g.barcodes = xul_param(
                         'barcodes',{
@@ -97,26 +71,28 @@
                             'clear_xpcom' : true,
                         }
                     ) || [];
-
-                    if (g.barcodes.length > 0) {
-                        JSAN.use('util.exec'); var exec = new util.exec();
-                        var funcs = [];
-                        for (var i = 0; i < g.barcodes.length; i++) {
-                            funcs.push(
-                                function(b){
-                                    return function() {
-                                        g.copy_status.copy_status(b);
-                                    }
-                                }(g.barcodes[i])
-                            );
-                        }
-                        if (window.xulG.from_item_details_new) {
-                            g.copy_status.controller.control_map.cmd_alt_view[1](0);
-                            window.xulG.from_item_details_new = false;
-                        }
-                        setTimeout(function() { exec.chain(funcs); }, 1000);
-                    }
                 }
+
+                window.xulG.fetched_copy_details = {};
+
+                if (window.xulG.from_item_details_new) {
+                    // Switch item status display to "alternate view"
+                    g.copy_status.controller.control_map.cmd_alt_view[1](0);
+                }
+
+                JSAN.use('util.exec'); var exec = new util.exec();
+                var funcs = [];
+                for (var i = 0; i < g.barcodes.length; i++) {
+                    funcs.push(
+                        function(b){
+                            return function() {
+                                window.xulG.fetched_copy_details[b] =
+                                    g.copy_status.copy_status(b);
+                            }
+                        }(g.barcodes[i])
+                    );
+                }
+                exec.chain(funcs);
             } catch(E) {
                 var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ.copy_status.xul', E]);
                 try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }

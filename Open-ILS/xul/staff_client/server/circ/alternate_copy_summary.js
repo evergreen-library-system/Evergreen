@@ -14,7 +14,11 @@ function my_init() {
         JSAN.use('util.network'); network = new util.network();
         JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
 
-        setTimeout( function() { load_item(); }, 1000 ); // timeout so xulG gets a chance to get pushed in
+        // timeout so xulG gets a chance to get pushed in
+        setTimeout(
+            function () { xulG.from_item_details_new = false; load_item(); },
+            1000
+        );
 
     } catch(E) {
         try { error.standard_unexpected_error_alert('main/test.xul',E); } catch(F) { alert(E); }
@@ -57,8 +61,15 @@ function load_item() {
     try {
         if (! xulG.barcode) return;
 
-        var details = network.simple_request('FM_ACP_DETAILS_VIA_BARCODE.authoritative', [ ses(), xulG.barcode ]);
-        // Should get back .mvr, .copy, .volume, .transit, .circ, .hold
+        if (xulG.fetched_copy_details && xulG.fetched_copy_details[xulG.barcode]) {
+            var details = xulG.fetched_copy_details[xulG.barcode];
+            // We don't want to use these details more than once (i.e., we
+            // don't want cached data after things have potentially changed).
+            delete xulG.fetched_copy_details[xulG.barcode];
+        } else {
+            var details = network.simple_request('FM_ACP_DETAILS_VIA_BARCODE.authoritative', [ ses(), xulG.barcode ]);
+            // Should get back .mvr, .copy, .volume, .transit, .circ, .hold
+        }
 
         if (typeof bib_brief_overlay == 'function') bib_brief_overlay( { 'mvr' : details.mvr, 'acp' : details.copy } );
 /*

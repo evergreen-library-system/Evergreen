@@ -1165,13 +1165,12 @@ circ.copy_status.prototype = {
             }
             obj.controller.view.copy_status_barcode_entry_textbox.value = '';
             obj.controller.view.copy_status_barcode_entry_textbox.focus();
-            
+            return result; // In some cases we're going to want to save this
         } catch(E) {
             obj.error.standard_unexpected_error_alert('barcode = ' + barcode,E);
             obj.controller.view.copy_status_barcode_entry_textbox.select();
             obj.controller.view.copy_status_barcode_entry_textbox.focus();
         }
-
     },
     
     'spawn_copy_editor' : function() {
