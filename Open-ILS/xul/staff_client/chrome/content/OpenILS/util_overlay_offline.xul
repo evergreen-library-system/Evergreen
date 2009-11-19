@@ -11,6 +11,7 @@
         <script type="text/javascript" src="util/CGI.js" />
         <script type="text/javascript" src="util/md5.js" />
         <script type="text/javascript" src="util/JSON_v1.js" />
+        <script type="text/javascript" src="global_util.js" />   
     </scripts>
     <script>dump('Loaded OpenILS/util_overlay_offline.xul\n');</script>
 
