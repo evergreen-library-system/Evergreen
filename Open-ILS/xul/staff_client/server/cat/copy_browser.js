@@ -132,17 +132,14 @@ cat.copy_browser.prototype = {
                                     }
                                 );
 
-                                list = util.functional.map_list(
-                                    list,
-                                    function (o) {
-                                        return o.split(/_/)[1];
-                                    }
-                                );
-    
                                 JSAN.use('circ.util');
-                                for (var i = 0; i < list.length; i++) {
-                                    circ.util.show_copy_details( list[i] );
-                                }
+                                circ.util.item_details_new(
+                                    util.functional.map_list(
+                                        list, function (o) {
+                                            return obj.map_acp[o].barcode();
+                                        }
+                                    )
+                                );
                             }
                         ],
                         'cmd_add_items' : [
