@@ -2023,21 +2023,109 @@ sub find_hold_mvr {
 __PACKAGE__->register_method(
 	method => 'clear_shelf_process',
     stream => 1,
-	api_name => 'open-ils.circ.hold.clear_shelf.process'
+	api_name => 'open-ils.circ.hold.clear_shelf.process',
+    signature => {
+        desc => q/
+            1. Find all holds that have expired on the holds shelf
+            2. Cancel the holds
+            3. If a clear-shelf status is configured, put targeted copies into this status
+            4. Divide copies into 3 groups: items to transit, items to reshelve, and items
+                that are needed for holds.  No subsequent action is taken on the holds
+                or items after grouping.
+        /
+    }
 );
 
 sub clear_shelf_process {
-	my($self, $client, $auth) = @_;
+	my($self, $client, $auth, $org_id) = @_;
 
 	my $e = new_editor(authtoken=>$auth, xact => 1);
 	$e->checkauth or return $e->die_event;
-	$e->allowed('UPDATE_HOLD') or return $e->die_event;
 
-    # Find holds that expired on the holds shelf
+    $org_id ||= $e->requestor->ws_ou;
+	$e->allowed('UPDATE_HOLD', $org_id) or return $e->die_event;
 
-    # Cancel the expired holds
-    
-    #  ...
+    my $copy_status = $U->ou_ancestor_setting_value($org_id, 'circ.holds.clear_shelf.copy_status');
+
+    # Find holds on the shelf that have been there too long
+    my $hold_ids = $e->search_action_hold_request(
+        {   shelf_expire_time => {'<' => 'now'},
+            pickup_lib => $org_id,
+            cancel_time => undef,
+            fulfillment_time => undef,
+            shelf_time => {'!=' => undef}
+        },
+        { idlist => 1 }
+    );
+
+
+    my @holds;
+    for my $hold_id (@$hold_ids) {
+
+        $logger->info("Clear shelf processing hold $hold_id");
+        
+        my $hold = $e->retrieve_action_hold_request([
+            $hold_id, {   
+                flesh => 1,
+                flesh_fields => {ahr => ['current_copy']}
+            }
+        ]);
+
+        $hold->cancel_time('now');
+        $hold->cancel_cause(2); # Hold Shelf expiration
+        $e->update_action_hold_request($hold) or return $e->die_event;
+
+        my $copy = $hold->current_copy;
+
+        if($copy_status) {
+            # if a clear-shelf copy status is defined, update the copy
+            $copy->status($copy_status);
+            $copy->edit_date('now');
+            $copy->editor($e->requestor->id);
+            $e->update_asset_copy($copy) or return $e->die_event;
+        }
+
+        my ($alt_hold) = __PACKAGE__->find_nearest_permitted_hold($e, $copy, $e->requestor, 1);
+
+        if($alt_hold) {
+
+            # copy is needed for a hold
+            $client->respond({action => 'hold', copy => $copy, hold_id => $hold->id});
+
+        } elsif($copy->circ_lib != $e->requestor->ws_ou) {
+
+            # copy needs to transit
+            $client->respond({action => 'transit', copy => $copy, hold_id => $hold->id});
+
+        } else {
+
+            # copy needs to go back to the shelf
+            $client->respond({action => 'shelf', copy => $copy, hold_id => $hold->id});
+        }
+
+        push(@holds, $hold);
+    }
+
+    $e->commit;
+
+    # tell the client we're done
+    $client->resopnd_complete;
+
+    # fire off the hold cancelation trigger
+    my $trigger = OpenSRF::AppSession->connect('open-ils.trigger');
+
+    for my $hold (@holds) {
+
+        my $req = $trigger->request(
+            'open-ils.trigger.event.autocreate', 
+            'hold_request.cancel.expire_holds_shelf', 
+            $hold, $org_id);
+
+        # wait for response so don't flood the service
+        $req->recv;
+    }
+
+    $trigger->disconnect;
 }
 
 
