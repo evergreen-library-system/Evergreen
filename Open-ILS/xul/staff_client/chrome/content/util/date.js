@@ -50,12 +50,12 @@ util.date.db_date2Date = function (db_date) {
         dojo.require('dojo.date.stamp');
         return dojo.date.stamp.fromISOString( db_date.replace( /^(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d-\d\d)(\d\d)$/, '$1:$2') );
     } else {
-        var y  = date.substr(0,4); 
-        var mo = date.substr(5,2); 
-        var d  = date.substr(8,2); 
-        var h  = date.substr(11,2); 
-        var mi = date.substr(14,2); 
-        var s  = date.substr(17,2); 
+        var y  = db_date.substr(0,4); 
+        var mo = db_date.substr(5,2); 
+        var d  = db_date.substr(8,2); 
+        var h  = db_date.substr(11,2); 
+        var mi = db_date.substr(14,2); 
+        var s  = db_date.substr(17,2); 
         return new Date(y,mo-1,d,h,mi,s); 
     }
 }
