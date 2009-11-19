@@ -45,14 +45,9 @@ util.date.timer_elapsed = function (id) {
     return( ms + 'ms (' + ms/1000 + 's)' );
 }
 
-util.date.db_date2Date = function (date) {
-    var y  = date.substr(0,4);
-    var mo = date.substr(5,2);
-    var d  = date.substr(8,2);
-    var h  = date.substr(11,2);
-    var mi = date.substr(14,2);
-    var s  = date.substr(17,2);
-    return new Date(y,mo-1,d,h,mi,s);
+util.date.db_date2Date = function (db_date) {
+    dojo.require('dojo.date.stamp');
+    return dojo.date.stamp.fromISOString( db_date );
 }
 
 util.date.formatted_date = function (orig_date,format) {
@@ -85,31 +80,13 @@ util.date.formatted_date = function (orig_date,format) {
     var M = _date.getMinutes(); M = M.toString(); if (M.length == 1) M = '0' + M;
     var sec = _date.getSeconds(); sec = sec.toString(); if (sec.length == 1) sec = '0' + sec;
 
+    dojo.require('dojo.date.locale');
+    dojo.require('dojo.date.stamp');
+
     var s = format;
     if (s == '') { s = '%F %H:%M'; }
-    if (typeof _date.iso8601Format != 'function') {
-    
-        try {
-            var js = JSAN._loadJSFromUrl( urls.isodate_lib_remote );
-            eval( js ); 
-
-        } catch(E) { 
-
-            try {
-                var js = JSAN._loadJSFromUrl( urls.isodate_lib_local );
-                eval( js );
-
-            } catch(F) {
-
-                alert('Problem loading ISO8601 date extension:' + E + '\n' + F); 
-
-            }
-        }
-
-    }
-    if (typeof _date.iso8601Format == 'function') {
-        s = s.replace( /%\{iso8601\}/g, _date.iso8601Format("YMDHMS") );
-    }
+    s = s.replace( /%\{localized\}/g, dojo.date.locale.format( _date ) );
+    s = s.replace( /%\{iso8601\}/g, dojo.date.stamp.toISOString( _date ) );
     s = s.replace( /%m/g, mm );
     s = s.replace( /%d/g, dd );
     s = s.replace( /%Y/g, yyyy );
