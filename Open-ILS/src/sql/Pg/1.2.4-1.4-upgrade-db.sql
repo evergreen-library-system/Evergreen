@@ -15,6 +15,33 @@
  */
 
 
+ALTER TABLE auditor.asset_copy_history ALTER COLUMN price DROP NOT NULL; -- Price is nullable in 1.4+, auditor triggers complain when it's not informed of this
+
+-- Get rid of embedded slashes from old ingest
+UPDATE metabib.title_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.author_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.subject_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.series_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.keyword_field_entry
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
+UPDATE metabib.full_rec
+SET value = REGEXP_REPLACE(value, E'(\\w+)\\/(\\w+)', E'\\1 \\2','g')
+WHERE value ~ E'(\\w+)\\/(\\w+)';
+
 \set ON_ERROR_STOP 1
 
 BEGIN;
@@ -135,6 +162,18 @@ UPDATE config.metabib_field SET xpath = regexp_replace(xpath, 'mods:', 'mods32:'
 ALTER TABLE config.copy_status ADD COLUMN opac_visible BOOL NOT NULL DEFAULT FALSE;
 UPDATE config.copy_status SET opac_visible = holdable;
 
+CREATE TABLE config.bib_level_map (
+        code    TEXT    PRIMARY KEY,
+        value   TEXT    NOT NULL
+);
+INSERT INTO config.bib_level_map (code, value) VALUES ('a', oils_i18n_gettext('a', 'Monographic component part', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('b', oils_i18n_gettext('b', 'Serial component part', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('c', oils_i18n_gettext('c', 'Collection', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('d', oils_i18n_gettext('d', 'Subunit', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('i', oils_i18n_gettext('i', 'Integrating resource', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('m', oils_i18n_gettext('m', 'Monograph/Item', 'cblvl', 'value'));
+INSERT INTO config.bib_level_map (code, value) VALUES ('s', oils_i18n_gettext('s', 'Serial', 'cblvl', 'value'));
+
 CREATE TABLE config.z3950_source (
     name                TEXT    PRIMARY KEY,
     label               TEXT    NOT NULL UNIQUE,
@@ -153,7 +192,7 @@ INSERT INTO config.z3950_source (name, label, host, port, db, auth)
 
 CREATE TABLE config.z3950_attr (
     id          SERIAL  PRIMARY KEY,
-    source      TEXT    NOT NULL REFERENCES config.z3950_source (name),
+    source      TEXT    NOT NULL REFERENCES config.z3950_source (name) DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    NOT NULL,
     label       TEXT    NOT NULL,
     code        INT     NOT NULL,
@@ -1320,7 +1359,6 @@ CREATE TABLE config.circ_matrix_ruleset (
 	recurring_fine_rule	INT	NOT NULL REFERENCES config.rule_recuring_fine (id) DEFERRABLE INITIALLY DEFERRED,
 	max_fine_rule		INT	NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED
 );
-INSERT INTO config.circ_matrix_ruleset (matchpoint,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,11,1,1);
 
 CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS INT AS $func$
 DECLARE
@@ -1972,8 +2010,8 @@ CREATE TABLE vandelay.bib_match (
 -- DROP TABLE vandelay.import_item CASCADE;
 CREATE TABLE vandelay.import_item (
     id              BIGSERIAL   PRIMARY KEY,
-    record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE,
-    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE,
+    record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     owning_lib      INT,
     circ_lib        INT,
     call_number     TEXT,
@@ -2517,7 +2555,7 @@ CREATE TRIGGER ingest_authority_trigger
     FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_authority_marc();
 
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (1, 'title', oils_i18n_gettext(1, 'Title of work', 'vqbrad', 'description'),'//*[@tag="245"]/*[contains("abcmnopr",@code)]');
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (2, 'author', oils_i18n_gettext(1, 'Author of work', 'vqbrad', 'description'),'//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (2, 'author', oils_i18n_gettext(2, 'Author of work', 'vqbrad', 'description'),'//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (3, 'language', oils_i18n_gettext(3, 'Language of work', 'vqbrad', 'description'),'//*[@tag="240"]/*[@code="l"][1]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (4, 'pagination', oils_i18n_gettext(4, 'Pagination', 'vqbrad', 'description'),'//*[@tag="300"]/*[@code="a"][1]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident, remove ) VALUES (5, 'isbn',oils_i18n_gettext(5, 'ISBN', 'vqbrad', 'description'),'//*[@tag="020"]/*[@code="a"]', TRUE, $r$(?:-|\s.+$)$r$);
@@ -5687,4 +5725,11 @@ Added Log Comment
 </xsl:stylesheet>$$ WHERE name = 'mods32';
 
 COMMIT;
+
+INSERT INTO config.circ_matrix_ruleset (matchpoint,duration_rule,recurring_fine_rule,max_fine_rule)
+ SELECT  1, d.id, f.id, m.id
+   FROM  config.rule_circ_duration d
+               JOIN config.rule_recuring_fine f ON (f.name = d.name)
+               JOIN config.rule_max_fine m ON (f.name = m.name)
+   WHERE m.name = 'default';
 
