@@ -47,7 +47,7 @@ util.date.timer_elapsed = function (id) {
 
 util.date.db_date2Date = function (db_date) {
     dojo.require('dojo.date.stamp');
-    return dojo.date.stamp.fromISOString( db_date );
+    return dojo.date.stamp.fromISOString( db_date.replace( /^(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d-\d\d)(\d\d)$/, '$1:$2') );
 }
 
 util.date.formatted_date = function (orig_date,format) {
