@@ -133,10 +133,8 @@ SelfCheckManager.prototype.drawLoginPage = function() {
             // password is required.  wire up the scan box to read it
             self.updateScanBox({
                 msg : 'Please enter your password', // TODO i18n 
-                handler : function(pw) { self.loginPatron(barcode, ps); }
+                handler : function(pw) { self.loginPatron(barcode, pw); }
             });
-
-            dojo.connect(selfckScanBox, 'onKeyDown', pwHandler);
 
         } else {
             // password is not required, go ahead and login
