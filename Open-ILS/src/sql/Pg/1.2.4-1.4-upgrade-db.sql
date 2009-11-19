@@ -192,7 +192,7 @@ INSERT INTO config.z3950_source (name, label, host, port, db, auth)
 
 CREATE TABLE config.z3950_attr (
     id          SERIAL  PRIMARY KEY,
-    source      TEXT    NOT NULL REFERENCES config.z3950_source (name),
+    source      TEXT    NOT NULL REFERENCES config.z3950_source (name) DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    NOT NULL,
     label       TEXT    NOT NULL,
     code        INT     NOT NULL,
@@ -2010,8 +2010,8 @@ CREATE TABLE vandelay.bib_match (
 -- DROP TABLE vandelay.import_item CASCADE;
 CREATE TABLE vandelay.import_item (
     id              BIGSERIAL   PRIMARY KEY,
-    record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE,
-    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE,
+    record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     owning_lib      INT,
     circ_lib        INT,
     call_number     TEXT,
@@ -2555,7 +2555,7 @@ CREATE TRIGGER ingest_authority_trigger
     FOR EACH ROW EXECUTE PROCEDURE vandelay.ingest_authority_marc();
 
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (1, 'title', oils_i18n_gettext(1, 'Title of work', 'vqbrad', 'description'),'//*[@tag="245"]/*[contains("abcmnopr",@code)]');
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (2, 'author', oils_i18n_gettext(1, 'Author of work', 'vqbrad', 'description'),'//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (2, 'author', oils_i18n_gettext(2, 'Author of work', 'vqbrad', 'description'),'//*[@tag="100" or @tag="110" or @tag="113"]/*[contains("ad",@code)]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (3, 'language', oils_i18n_gettext(3, 'Language of work', 'vqbrad', 'description'),'//*[@tag="240"]/*[@code="l"][1]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (4, 'pagination', oils_i18n_gettext(4, 'Pagination', 'vqbrad', 'description'),'//*[@tag="300"]/*[@code="a"][1]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident, remove ) VALUES (5, 'isbn',oils_i18n_gettext(5, 'ISBN', 'vqbrad', 'description'),'//*[@tag="020"]/*[@code="a"]', TRUE, $r$(?:-|\s.+$)$r$);
@@ -5727,7 +5727,7 @@ Added Log Comment
 COMMIT;
 
 INSERT INTO config.circ_matrix_ruleset (matchpoint,duration_rule,recurring_fine_rule,max_fine_rule)
- SELECT  d.id, f.id, m.id
+ SELECT  1, d.id, f.id, m.id
    FROM  config.rule_circ_duration d
                JOIN config.rule_recuring_fine f ON (f.name = d.name)
                JOIN config.rule_max_fine m ON (f.name = m.name)
