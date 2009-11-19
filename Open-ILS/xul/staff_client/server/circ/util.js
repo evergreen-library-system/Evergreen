@@ -867,7 +867,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.status_changed_time(); },
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.status_changed_time(), '%{localized}' ); },
             'persist' : 'hidden width ordinal'
         },
         {
@@ -889,38 +889,6 @@ circ.util.columns = function(modify,params) {
         {
             'persist' : 'hidden width ordinal',
             'fm_class' : 'circ',
-            'id' : 'xact_start_full',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkout_timestamp'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'editable' : false, 'render' : function(my) {
-                if (my.circ) {
-                    return my.circ.xact_start();
-                } else {
-                    return  "";
-                }
-            }
-        },
-        {
-            'persist' : 'hidden width ordinal',
-            'fm_class' : 'circ',
-            'id' : 'checkin_time_full',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_timestamp'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'editable' : false, 'render' : function(my) {
-                if (my.circ) {
-                    return my.circ.checkin_time();
-                } else {
-                    return "";
-                }
-            }
-        },
-        {
-            'persist' : 'hidden width ordinal',
-            'fm_class' : 'circ',
             'id' : 'xact_start',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.xact_start'),
             'flex' : 1,
@@ -928,7 +896,7 @@ circ.util.columns = function(modify,params) {
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
                 if (my.circ) {
-                    return my.circ.xact_start().substr(0,10);
+                    return util.date.formatted_date( my.circ.xact_start(), '%{localized}' );
                 } else {
                     return "";
                 }
@@ -944,7 +912,7 @@ circ.util.columns = function(modify,params) {
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
                 if (my.circ) {
-                    return my.circ.checkin_time().substr(0,10);
+                    return util.date.formatted_date( my.circ.checkin_time(), '%{localized}' );
                 } else {
                     return "";
                 }
@@ -958,7 +926,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.xact_finish() : ""; },
+            'editable' : false, 'render' : function(my) { return my.circ ? util.date.formatted_date( my.circ.xact_finish(), '%{localized}' ) : ""; },
         },
         {
             'persist' : 'hidden width ordinal',
@@ -970,23 +938,7 @@ circ.util.columns = function(modify,params) {
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
                 if (my.circ) {
-                    return my.circ.due_date().substr(0,10);
-                } else {
-                    return "";
-                }
-            }
-        },
-        {
-            'persist' : 'hidden width ordinal',
-            'fm_class' : 'circ',
-            'id' : 'due_time',
-            'label' : document.getElementById('commonStrings').getString('staff.circ_label_due_time'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'editable' : false, 'render' : function(my) {
-                if (my.circ) {
-                    return my.circ.due_date().substr(11,8);
+                    return util.date.formatted_date( my.circ.due_date(), '%{localized}' );
                 } else {
                     return "";
                 }
@@ -1000,7 +952,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.create_date().substr(0,10); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.create_date(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1010,7 +962,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.edit_date().substr(0,10); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.edit_date(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1135,7 +1087,7 @@ circ.util.columns = function(modify,params) {
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
                 if (my.circ) {
-                    return my.circ.stop_fines_time();
+                    return util.date.formatted_date( my.circ.stop_fines_time(), '%{localized}' );
                 } else {
                     return "";
                 }
@@ -1233,17 +1185,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.checkin_scan_time().substr(0,10) : ""; },
-        },
-        {
-            'persist' : 'hidden width ordinal',
-            'fm_class' : 'circ',
-            'id' : 'checkin_scan_timestamp',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_scan_timestamp'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.circ ? my.circ.checkin_scan_time() : ""; },
+            'editable' : false, 'render' : function(my) { return my.circ ? util.date.formatted_date( my.circ.checkin_scan_time(), '%{localized}' ) : ""; },
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1269,21 +1211,21 @@ circ.util.columns = function(modify,params) {
             'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'create_date',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.create_date'),
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.bre.create_date'),
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.bre ? my.bre.create_date() : ''; }
+            'editable' : false, 'render' : function(my) { return my.bre ? util.date.formatted_date( my.bre.create_date(), '%{localized}' ) : ''; }
         },
         {
             'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
             'id' : 'edit_date',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.edit_date'),
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.bre.edit_date'),
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.bre ? my.bre.edit_date() : ''; }
+            'editable' : false, 'render' : function(my) { return my.bre ? util.date.formatted_date( my.bre.edit_date(), '%{localized}' ) : ''; }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1471,7 +1413,7 @@ circ.util.transit_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'editable' : false, 'render' : function(my) { return my.atc.source_send_time(); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.atc.source_send_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1495,7 +1437,7 @@ circ.util.transit_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : false,
-            'editable' : false, 'render' : function(my) { return my.atc.dest_recv_time(); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.atc.dest_recv_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1550,7 +1492,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.cancel_time(); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.cancel_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1600,16 +1542,6 @@ circ.util.hold_columns = function(modify,params) {
                 }
             }
         },
-
-        {
-            'persist' : 'hidden width ordinal',
-            'id' : 'request_timestamp',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.request_timestamp'),
-            'flex' : 0,
-            'primary' : false,
-            'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.request_time().toString(); }
-        },
         {
             'persist' : 'hidden width ordinal',
             'id' : 'request_time',
@@ -1617,7 +1549,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 0,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.request_time().toString().substr(0,10); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.request_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1626,7 +1558,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 0,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.shelf_time(); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.shelf_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1635,24 +1567,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 0,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.shelf_expire_time(); }
-        },
-        {
-            'persist' : 'hidden width ordinal',
-            'id' : 'available_timestamp',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.available_timestamp'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'editable' : false, 'render' : function(my) {
-                if (my.ahr.transit() && my.ahr.transit().dest_recv_time()) {
-                    return my.ahr.transit().dest_recv_time().toString();
-                }
-                if (!my.ahr.transit() && my.ahr.capture_time()) {
-                    return my.ahr.capture_time().toString();
-                }
-                return "";
-            }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.shelf_expire_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1663,22 +1578,13 @@ circ.util.hold_columns = function(modify,params) {
             'hidden' : false,
             'editable' : false, 'render' : function(my) {
                 if (my.ahr.transit() && my.ahr.transit().dest_recv_time()) {
-                    return my.ahr.transit().dest_recv_time().toString().substr(0,10);
+                    return util.date.formatted_date( my.ahr.transit().dest_recv_time(), '%{localized}' );
                 }
                 if (!my.ahr.transit() && my.ahr.capture_time()) {
-                    return my.ahr.capture_time().toString().substr(0,10);
+                    return util.date.formatted_date( my.ahr.capture_time(), '%{localized}' );
                 }
                 return "";
             }
-        },
-        {
-            'persist' : 'hidden width ordinal',
-            'id' : 'capture_timestamp',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.capture_timestamp'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.capture_time() ? my.ahr.capture_time().toString() : ""; }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1687,7 +1593,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : ""; }
+            'editable' : false, 'render' : function(my) { return my.ahr.capture_time() ? util.date.formatted_date( my.ahr.capture_time(), '%{localized}' ) : ""; }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1769,7 +1675,7 @@ circ.util.hold_columns = function(modify,params) {
                 if (my.ahr.thaw_date() == null) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.thaw_date.none');
                 } else {
-                    return my.ahr.thaw_date().substr(0,10);
+                    return util.date.formatted_date( my.ahr.thaw_date(), '%{localized}' );
                 }
             }
         },
@@ -1846,21 +1752,12 @@ circ.util.hold_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal',
-            'id' : 'expire_time',
-            'label' : document.getElementById('commonStrings').getString('staff.ahr_expire_time_label'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.expire_time(); }
-        },
-        {
-            'persist' : 'hidden width ordinal',
             'id' : 'expire_date',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_expire_date_label'),
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.expire_time() ? my.ahr.expire_time().toString().substr(0,10) : ''; }
+            'editable' : false, 'render' : function(my) { return my.ahr.expire_time() ? util.date.formatted_date( my.ahr.expire_time(), '%{localized}' ) : ''; }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1869,7 +1766,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.fulfillment_time(); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.fulfillment_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -1905,7 +1802,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.prev_check_time(); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.prev_check_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2035,7 +1932,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.notify_time(); }
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.notify_time(), '%{localized}' ); }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2068,7 +1965,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  my.ahr.transit().source_send_time() : ""; }
+            'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  util.date.formatted_date( my.ahr.transit().source_send_time(), '%{localized}' ) : ""; }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2086,7 +1983,7 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  my.ahr.transit().dest_recv_time() : ""; }
+            'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  util.date.formatted_date( my.ahr.transit().dest_recv_time(), '%{localized}' ) : ""; }
         },
         {
             'persist' : 'hidden width ordinal',
