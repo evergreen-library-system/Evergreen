@@ -2158,4 +2158,84 @@ sub usr_hold_summary {
 }
 
 
+
+__PACKAGE__->register_method(
+	method => 'hold_has_copy_at',
+	api_name => 'open-ils.circ.hold.has_copy_at',
+    signature => q/
+        Returns the ID of the found copy and name of the shelving location if there is
+        an available copy at the specified org unit.  Returns empty hash otherwise.
+    /
+);
+
+sub hold_has_copy_at {
+    my($self, $conn, $auth, $args) = @_;
+
+	my $e = new_editor(authtoken=>$auth);
+	$e->checkauth or return $e->event;
+
+    my $hold_type = $$args{hold_type};
+    my $hold_target = $$args{hold_target};
+    my $org_unit = $$args{org_unit};
+
+    my $query = {
+        select => {acp => ['id'], acpl => ['name']},
+        from => {
+            acp => {
+                acpl => {field => 'id', filter => { holdable => 't'}, fkey => 'location'},
+                ccs => {field => 'id', filter => { holdable => 't'}, fkey => 'status'}
+            }
+        },
+        where => {'+acp' => { circulate => 't', deleted => 'f', holdable => 't', circ_lib => $org_unit}},
+        limit => 1
+    };
+
+    if($hold_type eq 'C') {
+
+        $query->{where}->{'+acp'}->{id} = $hold_target;
+
+    } elsif($hold_type eq 'V') {
+
+        $query->{where}->{'+acp'}->{call_number} = $hold_target;
+    
+    } elsif($hold_type eq 'T') {
+
+        $query->{from}->{acp}->{acn} = {
+            field => 'id',
+            fkey => 'call_number',
+            'join' => {
+                bre => {
+                    field => 'id',
+                    filter => {id => $hold_target},
+                    fkey => 'record'
+                }
+            }
+        };
+
+    } else {
+
+        $query->{from}->{acp}->{acn} = {
+            field => 'id',
+            fkey => 'call_number',
+            join => {
+                bre => {
+                    field => 'id',
+                    fkey => 'record',
+                    join => {
+                        mmrsm => {
+                            field => 'source',
+                            fkey => 'id',
+                            filter => {metarecord => $hold_target},
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    my $res = $e->json_query($query)->[0] or return {};
+    return {copy => $res->{id}, location => $res->{name}} if $res;
+}
+
+
 1;
