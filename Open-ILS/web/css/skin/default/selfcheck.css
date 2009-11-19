@@ -48,7 +48,7 @@ body {
 
 .oils-selfck-item-table td {
     text-align: left;
-    padding: 10px;
+    padding: 7px;
 }
 
 .oils-selfck-item-table thead {
@@ -57,10 +57,6 @@ body {
 
 .oils-selfck-item-table tbody tr {
     border-bottom: 1px solid #888;
-}
-
-.oils-selfck-item-table tbody td {
-    padding:10px;
 }
 
 
@@ -104,6 +100,14 @@ body {
 
 #oils-selfck-circ-info-div div {
     padding: 3px;
+}
+
+#oils-selfck-status-div {
+    height: 20px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: middle;
+    color: red;
 }
 
 

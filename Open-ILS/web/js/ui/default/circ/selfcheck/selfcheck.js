@@ -207,7 +207,11 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
  */
 SelfCheckManager.prototype.updateScanBox = function(args) {
 
-    selfckScanBox.attr('value', '');
+    if(args.select) {
+        selfckScanBox.domNode.select();
+    } else {
+        selfckScanBox.attr('value', '');
+    }
 
     if(args.value)
         selfckScanBox.attr('value', args.value);
@@ -372,18 +376,23 @@ SelfCheckManager.prototype.drawHoldsPage = function() {
 
     var self = this;
     fieldmapper.standardRequest( // fetch the hold IDs
+
         ['open-ils.circ', 'open-ils.circ.holds.id_list.retrieve'],
         {   async : true,
             params : [this.authtoken, this.patron.id()],
 
             oncomplete : function(r) { 
                 var ids = openils.Util.readResponse(r);
-                if(!ids || ids.length == 0) return;
+                if(!ids || ids.length == 0) {
+                    progressDialog.hide();
+                    return;
+                }
 
                 fieldmapper.standardRequest( // fetch the hold objects with fleshed details
                     ['open-ils.circ', 'open-ils.circ.hold.details.batch.retrieve.atomic'],
                     {   async : true,
                         params : [self.authtoken, ids],
+
                         oncomplete : function(rr) {
                             self.drawHolds(openils.Util.readResponse(rr));
                         }
@@ -497,8 +506,12 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
                 break;
 
             case 'NO_SESSION':
-                // TODO logout staff
+                // TODO logout staff?
                 break;
+
+            default:
+                dojo.byId('oils-selfck-status-div').innerHTML = evt.textcode;
+                this.updateScanBox({select:true});
         }
     }
 
