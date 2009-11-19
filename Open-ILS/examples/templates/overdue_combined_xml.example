@@ -23,7 +23,7 @@
             <addr_city>[% escape_xml(user_addr.city) %]</addr_city>
             <addr_state>[% user_addr.state %]</addr_state>
             <addr_post_code>[% user_addr.post_code %]</addr_post_code>
-            <email>[% user.email %]</email>
+            <email>[% escape_xml(user.email) %]</email>
             <sys_id>[% user.id %]</sys_id>
         </patron>
         <location>
@@ -35,7 +35,7 @@
             <addr_city>[% escape_xml(lib_addr.city) %]</addr_city>
             <addr_state>[% lib_addr.state %]</addr_state>
             <addr_post_code>[% lib_addr.post_code %]</addr_post_code>
-            <email>[% lib.email %]</email>
+            <email>[% escape_xml(lib.email) %]</email>
             <sys_id>[% lib.id %]</sys_id>
         </location>
         [%- FOREACH circ = circ_set.circ_list %]
