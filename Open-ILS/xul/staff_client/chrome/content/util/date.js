@@ -86,6 +86,7 @@ util.date.formatted_date = function (orig_date,format) {
     var s = format;
     if (s == '') { s = '%F %H:%M'; }
     s = s.replace( /%\{localized\}/g, dojo.date.locale.format( _date ) );
+    s = s.replace( /%\{localized_date\}/g, dojo.date.locale.format( _date, { 'selector' : 'date' } ) );
     s = s.replace( /%\{iso8601\}/g, dojo.date.stamp.toISOString( _date ) );
     s = s.replace( /%m/g, mm );
     s = s.replace( /%d/g, dd );
