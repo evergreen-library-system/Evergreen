@@ -1,25 +1,13 @@
 /*
- * Copyright (C) 2004-2008  Georgia Public Library Service
- * Copyright (C) 2007-2008  Equinox Software, Inc.
- * Mike Rylander <miker@esilibrary.com> 
+ * Copyright (C) 2009 Equinox Software, Inc.
+ * Joe Atzberger
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * Released under GNU General Public License version 2
  */
-
-DROP SCHEMA auditor CASCADE;
 
 BEGIN;
 
-CREATE SCHEMA auditor;
+INSERT INTO config.upgrade_log (version) VALUES ('0087'); -- atz
 
 CREATE FUNCTION auditor.create_auditor_seq     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
@@ -59,7 +47,7 @@ BEGIN
         END;
         $func$ LANGUAGE 'plpgsql';
     $$;
-	RETURN TRUE;
+    RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
 
@@ -88,6 +76,7 @@ BEGIN
 END;
 $creator$ LANGUAGE 'plpgsql';
 
+DROP FUNCTION IF EXISTS auditor.create_auditor; -- Besides this line and the 0087 INSERT, the rest of this file is 900.audit-functions.sql
 
 -- The main event
 
@@ -98,7 +87,7 @@ BEGIN
     PERFORM auditor.create_auditor_func(sch, tbl);
     PERFORM auditor.create_auditor_update_trigger(sch, tbl);
     PERFORM auditor.create_auditor_lifecycle(sch, tbl);
-    RETURN TRUE;
+	RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
 
