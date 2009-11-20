@@ -4537,7 +4537,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Allocation ID" name="id" reporter:datatype="id" />
             <field reporter:label="Funding Source" name="funding_source" reporter:datatype="link" />
             <field reporter:label="Org Unit" name="org" reporter:datatype="org_unit" />
-            <field reporter:label="" name="fund_code" reporter:datatype="text" />
+            <field reporter:label="Fund Code" name="fund_code" reporter:datatype="text" />
             <field reporter:label="Percent" name="percent" reporter:datatype="float" />
             <field reporter:label="Allocating User" name="allocator" reporter:datatype="link" />
             <field reporter:label="Note" name="note" reporter:datatype="text" />
