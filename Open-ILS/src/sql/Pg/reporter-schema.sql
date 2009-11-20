@@ -203,8 +203,15 @@ CREATE TRIGGER zzz_update_materialized_simple_record_tgr
     FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
 
 CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
-    DROP TRIGGER zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
-$$ LANGUAGE SQL;
+    DECLARE x RECORD;
+    BEGIN
+        -- DROP TRIGGER IF EXISTS is only available starting with PostgreSQL 8.2
+        FOR x IN SELECT tgname FROM pg_trigger WHERE tgname = 'zzz_update_materialized_simple_record_tgr'
+        LOOP
+            DROP TRIGGER zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
+        END LOOP;
+    END;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION reporter.enable_materialized_simple_record_trigger () RETURNS VOID AS $$
 
