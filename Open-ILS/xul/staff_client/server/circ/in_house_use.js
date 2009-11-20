@@ -139,7 +139,7 @@ circ.in_house_use.prototype = {
 								try {
 									var value = Number(ev.target.value);
 									if (value > 0) {
-										if (value > 99) { throw(value); }
+										if (value > obj.entry_cap) { throw(value); }
 									} else {
 										throw(value);
 									}
