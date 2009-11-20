@@ -1389,13 +1389,13 @@ function myOPACDrawNonCatCirc(r) {
 	appendClear($n(row, 'circ_lib'), text(findOrgUnit(circ.circ_lib()).name()));
 	appendClear($n(row, 'item_type'), text(type.name()));
 
-	var duration = interval_to_seconds(type.circ_duration());
-	duration = parseInt(duration + '000');
-
-	var dtf = circ.circ_time();
-    var start = dojo.date.stamp.fromISOString(circ.circ_time());
-	var due = new Date(  start.getTime() + duration );
-	appendClear($n(row, 'circ_time'), text(due.iso8601Format('YMDHM', null, true, true)));
+	appendClear(
+        $n(row, 'circ_time'), 
+        text(dojo.date.locale.format(
+            dojo.date.stamp.fromISOString(circ.duedate()),
+            {format : 'short'}
+        ))
+    );
 }
 
 
