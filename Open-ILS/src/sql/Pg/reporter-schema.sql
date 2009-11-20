@@ -244,7 +244,7 @@ CREATE TRIGGER zzz_update_materialized_simple_rec_delete_tgr
 
 
 CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
-    DROP TRIGGER zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
+    DROP TRIGGER IF EXISTS zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION reporter.enable_materialized_simple_record_trigger () RETURNS VOID AS $$
