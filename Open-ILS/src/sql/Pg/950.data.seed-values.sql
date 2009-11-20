@@ -2564,9 +2564,9 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype, fm
     VALUES (
         'circ.claim_return.copy_status', 
         'Claim Return Copy Status', 
-        'Claims returned copies are put into this status.  Default is to leave the copy in the Checked Out status'
+        'Claims returned copies are put into this status.  Default is to leave the copy in the Checked Out status',
         'link', 
-        'ccs', 
+        'ccs' 
     );
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
