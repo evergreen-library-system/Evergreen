@@ -20,12 +20,13 @@ sub new {
     $self->{_mfhdc_PATTERN}      = {};
     $self->{_mfhdc_COPY}         = undef;
     $self->{_mfhdc_UNIT}         = undef;
+    $self->{_mfhdc_LINK_ID}      = undef;
     $self->{_mfhdc_COMPRESSIBLE} = 1;       # until proven otherwise
 
     foreach my $subfield ($self->subfields) {
         my ($key, $val) = @$subfield;
         if ($key eq '8') {
-            $self->{LINK} = $val;
+            $self->{_mfhdc_LINK_ID} = $val;
         } elsif ($key =~ /[a-h]/) {
             # Enumeration Captions
             $self->{_mfhdc_ENUMS}->{$key} = {
@@ -173,6 +174,12 @@ sub type_of_unit {
     my $self = shift;
 
     return $self->{_mfhdc_UNIT};
+}
+
+sub link_id {
+    my $self = shift;
+
+    return $self->{_mfhdc_LINK_ID};
 }
 
 sub calendar_change {
@@ -364,7 +371,7 @@ sub calendar_increment {
     return 0;
 }
 
-sub next_date {
+sub next_chron {
     my $self  = shift;
     my $next  = shift;
     my $carry = shift;
@@ -427,8 +434,7 @@ sub next_date {
                 # 		printf("# testing new candidate '%s' against '%s'\n",
                 # 		       join('/', @candidate), join('/', @new));
 
-                if (   !defined($new[0])
-                    || !on_or_after(\@candidate, \@new)) {
+                if (!defined($new[0]) || !on_or_after(\@candidate, \@new)) {
                     # first time through the loop
                     # or @candidate is before @new =>
                     # @candidate is the next issue.
@@ -458,13 +464,11 @@ sub next_date {
         # There was no suitable publication pattern defined,
         # so use the $w frequency to figure out the next date
         if (!defined($freq)) {
-            carp "Undefined frequency in next_date!";
+            carp "Undefined frequency in next_chron!";
         } elsif (!MFHD::Date::can_increment($freq)) {
             carp "Don't know how to deal with frequency '$freq'!";
         } else {
-            #
             # One of the standard defined issue frequencies
-            #
             @new = MFHD::Date::incr_date($freq, @cur);
 
             while ($self->is_omitted(@new)) {
@@ -484,7 +488,7 @@ sub next_date {
     for my $i (0..$#new) {
         $next->{$keys[$i]} = $new[$i];
     }
-    # Figure out if we need to adust volume number
+    # Figure out if we need to adjust volume number
     # right now just use the $carry that was passed in.
     # in long run, need to base this on ($carry or date_change)
     if ($carry) {
@@ -620,7 +624,7 @@ sub next_enum {
 
         } else {
             # No enumeration publication pattern specified for this level,
-            # just keed adding one.
+            # just keep adding one.
 
             if (!$self->capstr($key)) {
                 # Just assume that it increments continuously and give up
@@ -669,7 +673,7 @@ sub next_enum {
     } else {
         # Figure out date of next issue, then decide if we need
         # to adjust top level enumeration based on that
-        $self->next_date($next, $carry, ('i'..'m'));
+        $self->next_chron($next, $carry, ('i'..'m'));
     }
 }
 
@@ -680,25 +684,23 @@ sub next {
 
     # Initialize $next with current enumeration & chronology, then
     # we can just operate on $next, based on the contents of the caption
+    foreach my $key ('a'..'m') {
+        my $holding_values = $holding->field_values($key);
+        my $index;
+        if ($holding->is_compressed) {
+            return undef
+              if $holding->is_open_ended;
+              # TODO: error on next for open-ended holdings?
+            $index = 1;
+        } else {
+            $index = 0;
+        }
+        $next->{$key} = ${$holding_values}[$index] if defined $holding_values;
+    }
 
     if ($self->enumeration_is_chronology) {
-        foreach my $key ('a'..'h') {
-            $next->{$key} = $holding->{_mfhdh_SUBFIELDS}->{$key}
-              if defined $holding->{_mfhdh_SUBFIELDS}->{$key};
-        }
-        $self->next_date($next, 0, ('a'..'h'));
-
+        $self->next_chron($next, 0, ('a'..'h'));
         return $next;
-    }
-
-    foreach my $key ('a'..'h') {
-        $next->{$key} = $holding->{_mfhdh_SUBFIELDS}->{$key}->{HOLDINGS}
-          if defined $holding->{_mfhdh_SUBFIELDS}->{$key};
-    }
-
-    foreach my $key ('i'..'m') {
-        $next->{$key} = $holding->{_mfhdh_SUBFIELDS}->{$key}
-          if defined $holding->{_mfhdh_SUBFIELDS}->{$key};
     }
 
     if (exists $next->{'h'}) {

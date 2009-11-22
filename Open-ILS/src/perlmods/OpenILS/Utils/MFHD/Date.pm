@@ -523,6 +523,7 @@ sub can_increment {
     return exists $increments{$freq};
 }
 
+# TODO: add support for weeks as chron level?
 sub incr_date {
     my $freq = shift;
     my $incr = $increments{$freq};

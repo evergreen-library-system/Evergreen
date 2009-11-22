@@ -128,7 +128,7 @@ sub mfhd_to_hash {
             }
         }
 
-        foreach my $cap_id ($mfhd->captions('853')) {
+        foreach my $cap_id ($mfhd->caption_link_ids('853')) {
             my @curr_holdings = $mfhd->holdings('863', $cap_id);
             next unless scalar @curr_holdings;
             foreach (@curr_holdings) {
@@ -136,7 +136,7 @@ sub mfhd_to_hash {
             }
         }
 
-        foreach my $cap_id ($mfhd->captions('854')) {
+        foreach my $cap_id ($mfhd->caption_link_ids('854')) {
             my @curr_supplements = $mfhd->holdings('864', $cap_id);
             next unless scalar @curr_supplements;
             foreach (@curr_supplements) {
@@ -144,7 +144,7 @@ sub mfhd_to_hash {
             }
         }
 
-        foreach my $cap_id ($mfhd->captions('855')) {
+        foreach my $cap_id ($mfhd->caption_link_ids('855')) {
             my @curr_indexes = $mfhd->holdings('865', $cap_id);
             next unless scalar @curr_indexes;
             foreach (@curr_indexes) {

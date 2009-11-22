@@ -53,7 +53,7 @@ sub load_MARC_rec {
         return $marc if $line =~ /^\s*$/;
 
         my ($fieldno, $indicators, $rest) = split(/ /, $line, 3);
-        my @inds = unpack('cc', $indicators);
+        my @inds = unpack('aa', $indicators);
         my $field;
         my @subfields;
 
