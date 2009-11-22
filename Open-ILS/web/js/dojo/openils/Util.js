@@ -251,5 +251,17 @@ if(!dojo._hasResource["openils.Util"]) {
         node.appendChild(child);
     };
 
+    /**
+     * Plays a sound file via URL.  Only works with browsers
+     * that support HTML 5 <audio> element.  E.g. Firefox 3.5
+     */
+    openils.Util.playAudioUrl = function(urlString) {
+        var audio = document.createElement('audio');
+        audio.setAttribute('src', urlString);
+        audio.setAttribute('autoplay', 'true');
+        document.body.appendChild(audio);
+        document.body.removeChild(audio);
+    }
+
 }
 
