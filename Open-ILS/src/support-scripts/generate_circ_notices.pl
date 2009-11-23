@@ -400,7 +400,7 @@ sub fetch_circ_data {
         $usr_id,
         {   flesh => 1,
             flesh_fields => {
-                au => [qw/card billing_address mailing_address/] 
+                au => [qw/card billing_address mailing_address profile/] 
             }
         }
     ]);
