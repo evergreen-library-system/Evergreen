@@ -1326,7 +1326,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="cxt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::xml_transform" oils_persist:tablename="config.xml_transform" reporter:label="XML/XSLT Transform Definition">
 		<fields oils_persist:primary="name">
-			<field name="field_class" />
+			<field reporter:label="Field Class" name="field_class" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" />
 			<field reporter:label="Namespace URI" name="namespace_uri" reporter:datatype="text"/>
 			<field reporter:label="Namespace Prefix" name="prefix" reporter:datatype="text"/>
@@ -1680,7 +1680,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Secondary Identification Type" name="ident_type2" reporter:datatype="link"/>
 			<field reporter:label="Primary Identification" name="ident_value"  reporter:datatype="text"/>
 			<field reporter:label="Secondary Identification" name="ident_value2"  reporter:datatype="text"/>
-			<field name="last_xact_id" reporter:datatype="text"/>
+			<field reporter:label="Last Transaction ID" name="last_xact_id" reporter:datatype="text"/>
 			<field reporter:label="Mailing Address" name="mailing_address" reporter:datatype="link"/>
 			<field reporter:label="Is Group Lead Account" name="master_account" reporter:datatype="bool"/>
 			<field reporter:label="Internet Access Level" name="net_access_level" reporter:datatype="link"/>
@@ -2643,17 +2643,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="sre" controller="open-ils.pcrud open-ils.cstore" oils_obj:fieldmapper="serial::record_entry" oils_persist:tablename="serial.record_entry" reporter:label="Serial Record Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.record_entry_id_seq">
-			<field name="active" reporter:datatype="bool"/>
+			<field reporter:label="Is Active" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Bib Record" name="record" reporter:datatype="link"/>
-			<field name="create_date" reporter:datatype="timestamp"/>
-			<field name="creator" />
-			<field name="deleted" reporter:datatype="bool"/>
-			<field name="edit_date" reporter:datatype="timestamp"/>
-			<field name="editor" />
-			<field name="id" reporter:datatype="id" />
-			<field name="last_xact_id" />
-			<field name="marc" />
-			<field name="source" />
+			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Creator" name="creator" />
+			<field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
+			<field reporter:label="Edit date" name="edit_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Editor" name="editor" />
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Last Transaction ID" name="last_xact_id" />
+			<field reporter:label="MARC" name="marc" />
+			<field reporter:label="Source" name="source" />
 			<field reporter:label="Owning Org Unit" name="owning_lib" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
@@ -2673,7 +2673,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="ssub" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription" reporter:label="Subscription">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_id_seq">
-			<field name="active" reporter:datatype="bool"/>
+			<field reporter:label="Is Active" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Call Number" name="call_number" reporter:datatype="link"/>
 			<field reporter:label="URI" name="uri" reporter:datatype="link"/>
 			<field reporter:label="Start date" name="start_date" reporter:datatype="timestamp"/>
@@ -2686,7 +2686,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="sbu" controller="open-ils.cstore" oils_obj:fieldmapper="serial::binding_unit" oils_persist:tablename="serial.binding_unit" reporter:label="Binding Unit">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.binding_unit_id_seq">
-			<field name="active" reporter:datatype="bool"/>
+			<field reporter:label="Is Active" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Subscription" name="subscription" reporter:datatype="link"/>
 			<field reporter:label="Label" name="label" />
 		</fields>
@@ -2923,7 +2923,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="ahr" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request" reporter:core="true" reporter:label="Hold Request">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
-			<field name="status" oils_persist:virtual="true" />
+			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true" />
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Currently Targeted Copy" name="current_copy" />
@@ -2946,8 +2946,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Target Object ID" name="target" reporter:datatype="link"/>
 			<field reporter:label="Hold User" name="usr" reporter:datatype="link"/>
 			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
-			<field name="notify_time" oils_persist:virtual="true" reporter:datatype="timestamp"/>
-			<field name="notify_count" oils_persist:virtual="true" reporter:datatype="int" />
+			<field reporter:label="Notify Time" name="notify_time" oils_persist:virtual="true" reporter:datatype="timestamp"/>
+			<field reporter:label="Notify Count" name="notify_count" oils_persist:virtual="true" reporter:datatype="int" />
 			<field reporter:label="Notifications" name="notifications" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Eligible Copies" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -4195,7 +4195,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="City" name="city"  reporter:datatype="text"/>
 			<field reporter:label="Country" name="country"  reporter:datatype="text"/>
 			<field reporter:label="County" name="county"  reporter:datatype="text"/>
-			<field name="id" reporter:datatype="id"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
 			<field reporter:label="Post Code" name="post_code"  reporter:datatype="text"/>
 			<field reporter:label="State" name="state"  reporter:datatype="text"/>
@@ -4226,7 +4226,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="acqpc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::provider_contact" oils_persist:tablename="acq.provider_contact" reporter:label="Provider Contact">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_contact_id_seq">
-			<field name="id" reporter:datatype="id"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Role" name="role" reporter:datatype="text"/>
@@ -4343,7 +4343,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" />
 			<field reporter:label="Currency" name="currency_type" oils_persist:primitive="string" reporter:datatype="link" />
 			<field reporter:label="Code" name="code" reporter:datatype="text" />
-			<field name="summary" oils_persist:virtual="true"/>
+			<field reporter:label="Summary" name="summary" oils_persist:virtual="true"/>
 			<field reporter:label="Allocations" name="allocations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credits" name="credits" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -4402,7 +4402,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Year" name="year" reporter:datatype="int" />
 			<field reporter:label="Currency Type" name="currency_type" reporter:datatype="link" />
 			<field reporter:label="Code" name="code" reporter:datatype="text" />
-			<field name="summary" oils_persist:virtual="true"/>
+			<field reporter:label="Summary" name="summary" oils_persist:virtual="true"/>
 			<field reporter:label="Allocations" name="allocations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Debits" name="debits" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Tags" name="tags" oils_persist:virtual="true" reporter:datatype="link"/>
