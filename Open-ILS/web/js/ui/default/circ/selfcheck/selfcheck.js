@@ -278,7 +278,7 @@ SelfCheckManager.prototype.drawCircPage = function() {
     }
 }
 
-SelfCheckManager.prototype.updateHoldsSummary = function(decrement) {
+SelfCheckManager.prototype.updateHoldsSummary = function() {
 
     if(!this.holdsSummary) {
         var summary = fieldmapper.standardRequest(
@@ -293,9 +293,6 @@ SelfCheckManager.prototype.updateHoldsSummary = function(decrement) {
         for(var i in summary) 
             this.holdsSummary.total += Number(summary[i]);
     }
-
-    if(this.decrement) 
-        this.holdsSummary.ready -= 1;
 
     dojo.byId('oils-selfck-holds-total').innerHTML = 
         dojo.string.substitute(
@@ -500,6 +497,8 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
     var popup = false;  
 
     // TODO handle lost/missing/etc checkin+checkout override steps
+    
+    var payload = result.payload || {};
         
     if(result.textcode == 'NO_SESSION') {
 
@@ -509,15 +508,22 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
         if(action == 'checkout') {
 
-            displayText = dojo.string.substitute(
-                localeStrings.CHECKOUT_SUCCESS, [item]);
-                this.displayCheckout(result, 'checkout');
+            displayText = dojo.string.substitute(localeStrings.CHECKOUT_SUCCESS, [item]);
+            this.displayCheckout(result, 'checkout');
+
+            if(payload.holds_fulfilled && payload.holds_fulfilled.length) {
+                // A hold was fulfilled, update the hold numbers in the circ summary
+                console.log("fulfilled hold " + payload.holds_fulfilled + " during checkout");
+                this.holdsSummary = null;
+                this.updateHoldsSummary();
+            }
+
+            this.updateCircSummary(true);
 
         } else if(action == 'renew') {
 
-            displayText = dojo.string.substitute(
-                localeStrings.RENEW_SUCCESS, [item]);
-                this.displayCheckout(result, 'renew');
+            displayText = dojo.string.substitute(localeStrings.RENEW_SUCCESS, [item]);
+            this.displayCheckout(result, 'renew');
         }
 
         this.updateScanBox();
@@ -526,8 +532,6 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
         // Server says the item is already checked out.  If it's checked out to the
         // current user, we may need to renew it.  
-
-        var payload = result.payload || {};
 
         if(payload.old_circ) { 
 
