@@ -20,8 +20,8 @@
                 <td name='due_date'></td>
                 <td name='remaining'></td>
                 <td>
-                    <span name='cotype_co'>Checkout</span>
-                    <span name='cotype_rn' class='hidden'>Renewal</span>
+                    <div name='checkout' class='hidden'>Checkout</div>
+                    <div name='renew' class='hidden'>Renewal</div>
                 </td>
             </tr>
         </tbody>

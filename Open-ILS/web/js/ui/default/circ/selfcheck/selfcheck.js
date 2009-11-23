@@ -192,6 +192,7 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
  * @param handler Optional "on-enter" handler.  
  */
 SelfCheckManager.prototype.updateScanBox = function(args) {
+    args = args || {};
 
     if(args.select) {
         selfckScanBox.domNode.select();
@@ -270,7 +271,7 @@ SelfCheckManager.prototype.drawCircPage = function() {
     // render mock checkouts for debugging?
     if(this.mockCheckouts) {
         for(var i in [1,2,3]) 
-            this.displayCheckout(this.mockCheckout);
+            this.displayCheckout(this.mockCheckout, 'checkout');
     }
 }
 
@@ -453,7 +454,7 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
     if(this.mockCheckouts) {
         // if we're in mock-checkout mode, just insert another
         // fake circ into the table and get out of here.
-        this.displayCheckout(this.mockCheckout);
+        this.displayCheckout(this.mockCheckout, 'checkout');
         return;
     }
 
@@ -462,6 +463,8 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
 
     var method = 'open-ils.circ.checkout.full';
     if(override) method += '.override';
+
+    console.log("Checkout out item " + barcode + " with method " + method);
 
     var result = fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.checkout.full'],
@@ -475,11 +478,12 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
 
     var stat = this.handleXactResult('checkout', barcode, result);
 
-    console.log("Circ resulted in " + js2JSON(result));
-
-    if(stat.override)
+    if(stat.override) {
         this.checkout(barcode, true);
-
+    } else if(stat.renew) {
+        // TODO check org setting for auto-renewal interval
+        this.renew(barcode);
+    }
 }
 
 
@@ -500,20 +504,20 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
             displayText = dojo.string.substitute(
                 localeStrings.CHECKOUT_SUCCESS, [item]);
-                this.displayCheckout(result);
+                this.displayCheckout(result, 'checkout');
 
         } else if(action == 'renew') {
 
             displayText = dojo.string.substitute(
                 localeStrings.RENEW_SUCCESS, [item]);
-                this.displayCheckout(result);
+                this.displayCheckout(result, 'renew');
         }
 
         this.updateScanBox();
 
     } else if(result.textcode == 'OPEN_CIRCULATION_EXISTS' && action == 'checkout') {
 
-        this.renew(item);
+        return { renew : true };
 
     } else {
 
@@ -553,9 +557,20 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
                     localeStrings.LOGIN_FAILED, [item]);
                 break;
 
+            case 'MAX_RENEWALS_REACHED' :
+                displayText = dojo.string.substitute(
+                    localeStrings.MAX_RENEWALS, [item]);
+                break;
+
+            case 'ITEM_NOT_CATALOGED' :
+                displayText = dojo.string.substitute(
+                    localeStrings.ITEM_NOT_CATALOGED, [item]);
+                break;
+
             case 'already-out' : 
-                    displayText = dojo.string.substitute(
-                        localeStrings.ALREADY_OUT, [item]);
+                displayText = dojo.string.substitute(
+                    localeStrings.ALREADY_OUT, [item]);
+                break;
 
             default:
                 console.error('Unhandled event ' + result.textcode);
@@ -570,6 +585,8 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
         }
     }
 
+    console.log("Updating status with " + displayText);
+
     dojo.byId('oils-selfck-status-div').innerHTML = displayText;
 
     if(popup && this.orgSettings[SET_ALERT_ON_CHECKOUT_EVENT]) 
@@ -582,13 +599,33 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 /**
  * Renew an item
  */
-SelfCheckManager.prototype.renew = function() {
+SelfCheckManager.prototype.renew = function(barcode, override) {
+
+    var method = 'open-ils.circ.renew';
+    if(override) method += '.override';
+
+    console.log("Renewing item " + barcode + " with method " + method);
+
+    var result = fieldmapper.standardRequest(
+        ['open-ils.circ', method],
+        {params: [
+            this.authtoken, {
+                patron_id : this.patron.id(),
+                copy_barcode : barcode
+            }
+        ]}
+    );
+
+    var stat = this.handleXactResult('renew', barcode, result);
+
+    if(stat.override)
+        this.renew(barcode, true);
 }
 
 /**
  * Display the result of a checkout or renewal in the items out table
  */
-SelfCheckManager.prototype.displayCheckout = function(evt) {
+SelfCheckManager.prototype.displayCheckout = function(evt, type) {
 
     var copy = evt.payload.copy;
     var record = evt.payload.record;
@@ -603,6 +640,7 @@ SelfCheckManager.prototype.displayCheckout = function(evt) {
     this.byName(row, 'title').innerHTML = record.title();
     this.byName(row, 'author').innerHTML = record.author();
     this.byName(row, 'remaining').innerHTML = circ.renewal_remaining();
+    openils.Util.show(this.byName(row, type));
 
     var date = dojo.date.stamp.fromISOString(circ.due_date());
     this.byName(row, 'due_date').innerHTML = 
