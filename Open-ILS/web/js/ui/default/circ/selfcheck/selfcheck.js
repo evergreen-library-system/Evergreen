@@ -16,6 +16,8 @@ const SET_ALERT_ON_CHECKOUT_EVENT = 'circ.selfcheck.alert_on_checkout_event';
 const SET_AUTO_OVERRIDE_EVENTS = 'circ.selfcheck.auto_override_checkout_events';
 const SET_PATRON_PASSWORD_REQUIRED = 'circ.selfcheck.patron_password_required';
 
+//openils.Util.playAudioUrl('/xul/server/skin/media/audio/bonus.wav');
+
 function SelfCheckManager() {
 
     this.cgi = new openils.CGI();
@@ -32,12 +34,8 @@ function SelfCheckManager() {
     // are we currently performing a renewal?
     this.isRenewal = false; 
 
-    // is a transaction pending?
-    this.pendingXact = false; 
-
     // dict of org unit settings for "here"
     this.orgSettings = {};
-
 
     // Construct a mock checkout for debugging purposes
     if(this.mockCheckouts = this.cgi.param('mock-circ')) {
@@ -163,7 +161,8 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
         );
 
         if(res == 0) {
-            return alert('login failed'); // TODO
+            // user-not-found results in login failure
+            this.handleXactResult('login', barcode, {textcode : 'ACTOR_USER_NOT_FOUND'});
         }
     } 
 
@@ -175,25 +174,14 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
     var evt = openils.Event.parse(this.patron);
     if(evt) {
+        this.handleXactResult('login', barcode, evt);
 
-        // User login failed, why?
-        
-        switch(evt.textcode) {
+    } else {
 
-            case 'ACTOR_USER_NOT_FOUND':
-                return alert('user not found'); // TODO
-
-            case 'NO_SESSION':
-                return alert('staff login timed out'); // TODO
-
-            default:
-                return alert('unexpected patron login error occured: ' + evt.textcode); // TODO
-        }
+        dojo.byId('oils-selfck-status-div').innerHTML = '';
+        dojo.byId('oils-selfck-user-banner').innerHTML = 'Welcome, ' + this.patron.usrname(); // TODO i18n
+        this.drawCircPage();
     }
-
-    // patron login succeeded
-    dojo.byId('oils-selfck-user-banner').innerHTML = 'Welcome, ' + this.patron.usrname(); // TODO i18n
-    this.drawCircPage();
 }
 
 
@@ -485,36 +473,111 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
         ]}
     );
 
+    var stat = this.handleXactResult('checkout', barcode, result);
 
-    if(dojo.isArray(result)) {
-        // list of results.  See if we can override all of them.
+    console.log("Circ resulted in " + js2JSON(result));
+
+    if(stat.override)
+        this.checkout(barcode, true);
+
+}
+
+
+SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
+
+    var displayText = '';
+    var popup = false;
+
+    // TODO handle lost/missing/etc checkin+checkout override steps
+        
+    if(result.textcode == 'NO_SESSION') {
+
+        return this.logoutStaff();
+
+    } else if(result.textcode == 'SUCCESS') {
+
+        if(action == 'checkout') {
+
+            displayText = dojo.string.substitute(
+                localeStrings.CHECKOUT_SUCCESS, [item]);
+                this.displayCheckout(result);
+
+        } else if(action == 'renew') {
+
+            displayText = dojo.string.substitute(
+                localeStrings.RENEW_SUCCESS, [item]);
+                this.displayCheckout(result);
+        }
+
+        this.updateScanBox();
+
+    } else if(result.textcode == 'OPEN_CIRCULATION_EXISTS' && action == 'checkout') {
+
+        this.renew(item);
 
     } else {
-        var evt = openils.Event.parse(result);
 
-        switch(evt.textcode) {
-            // standard result events
+        var overrideEvents = this.orgSettings[SET_AUTO_OVERRIDE_EVENTS];
+    
+        if(overrideEvents && overrideEvents.length) {
             
-            case 'SUCCESS':
-                this.displayCheckout(evt);
+            // see if the events we received are all in the list of
+            // events to override
+    
+            if(!result.length) result = [result];
+    
+            var override = true;
+            for(var i = 0; i < result.length; i++) {
+                var match = overrideEvents.filter(
+                    function(e) { return (e == result[i].textcode); })[0];
+                if(!match) {
+                    override = false;
+                    break;
+                }
+            }
+
+            if(override) 
+                return { override : true };
+        }
+    
+        this.updateScanBox({select : true});
+        popup = true;
+
+        if(result.length) 
+            result = result[0];
+
+        switch(result.textcode) {
+
+            case 'ACTOR_USER_NOT_FOUND' : 
+                displayText = dojo.string.substitute(
+                    localeStrings.LOGIN_FAILED, [item]);
                 break;
 
-            case 'OPEN_CIRCULATION_EXISTS':
-                // TODO renewal
-                break;
-
-            case 'NO_SESSION':
-                // TODO logout staff?
-                break;
+            case 'already-out' : 
+                    displayText = dojo.string.substitute(
+                        localeStrings.ALREADY_OUT, [item]);
 
             default:
-                dojo.byId('oils-selfck-status-div').innerHTML = evt.textcode;
-                this.updateScanBox({select:true});
+                console.error('Unhandled event ' + result.textcode);
+
+                if(action == 'checkout' || action == 'renew') {
+                    displayText = dojo.string.substitute(
+                        localeStrings.GENERIC_CIRC_FAILURE, [item]);
+                } else {
+                    displayText = dojo.string.substitute(
+                        localeStrings.UNKNOWN_ERROR, [result.textcode]);
+                }
         }
     }
 
-    console.log("Circ resulted in " + js2JSON(result));
+    dojo.byId('oils-selfck-status-div').innerHTML = displayText;
+
+    if(popup && this.orgSettings[SET_ALERT_ON_CHECKOUT_EVENT]) 
+        alert(displayText);
+
+    return {};
 }
+
 
 /**
  * Renew an item
@@ -574,6 +637,12 @@ SelfCheckManager.prototype.printReceipt = function() {
  * Logout the patron and return to the login page
  */
 SelfCheckManager.prototype.logoutPatron = function() {
+
+    this.patron = null;
+    this.holdsSummary = null;
+    this.circSummary = null;
+
+    this.drawLoginPage();
 }
 
 

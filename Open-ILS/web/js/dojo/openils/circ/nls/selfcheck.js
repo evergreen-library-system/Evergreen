@@ -5,6 +5,12 @@
     'TOTAL_HOLDS' : "You have <b>${0}</b> total holds.",
     'TOTAL_FINES_ACCOUNT' : "Total fines on account: <b>$${0}</b>.",
     'HOLD_STATUS_READY' : 'Ready for pickup',
-    'HOLD_STATUS_WAITING' : '#${0} in line with ${1} copies'
+    'HOLD_STATUS_WAITING' : '#${0} in line with ${1} copies',
+    'CHECKOUT_SUCCESS' : 'Checkout of item ${0} succeeded',
+    'RENEW_SUCCESS' : 'Renewal of item ${0} succeeded',
+    'ALREADY_OUT' : 'Item ${0} is already checked out',
+    'GENERIC_CIRC_FAILURE' : 'Unable to check out item ${0}.  Please see staff.',
+    'LOGIN_FAILED' : 'Login for ${0} failed',
+    'UNKNOWN_ERROR' : 'An unhandled exception occurred with error code ${0}'
 }
 
