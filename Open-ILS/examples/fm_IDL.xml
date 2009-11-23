@@ -5099,7 +5099,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="erfcc" controller="open-ils.reporter-store" oils_obj:fieldmapper="extend_reporter::full_circ_count" oils_persist:tablename="extend_reporter.full_circ_count" reporter:label="Total Circulation Count, Including Legacy">
 		<fields oils_persist:primary="id">
-			<field reporter:label="Copy ID" name="id" reporter:datatype="int" />
+			<field reporter:label="Copy ID" name="id" reporter:datatype="link" />
 			<field reporter:label="Total Circulation Count" name="circ_count" reporter:datatype="int" />
 		</fields>
 		<links>
@@ -5334,7 +5334,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<!-- ********************************************************************************************************************* -->
 	<class id="rccc" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::classic_current_circ" oils_persist:tablename="reporter.classic_current_circ" reporter:core="true" reporter:label="Classic Circulation View">
 		<fields oils_persist:primary="id">
-			<field reporter:label="Circulation" name="id" reporter:datatype="id" />
+			<field reporter:label="Circulation" name="id" reporter:datatype="link" />
 			<field reporter:label="Library Circulation Location Short (Policy) Name" name="circ_lib" reporter:datatype="text"/>
 			<field reporter:label="Library Circulation Location Link" name="circ_lib_id" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulation Date/Time" name="xact_start" reporter:datatype="timestamp"/>
@@ -5403,7 +5403,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="rccbs" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::classic_current_billing_summary" oils_persist:tablename="reporter.classic_current_billing_summary" reporter:core="true" reporter:label="Classic Open Transaction Summary">
 		<fields oils_persist:primary="id">
-			<field reporter:label="Transaction ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Transaction ID" name="id" reporter:datatype="link" />
 
 			<field reporter:label="Billing Location Short (Policy) Name" name="billing_location_shortname" reporter:datatype="text"/>
 			<field reporter:label="Billing Location Name" name="billing_location_name" reporter:datatype="text"/>
@@ -5459,7 +5459,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 		</oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
-			<field reporter:label="Pretransit Copy Status" name="copy_status" reporter:datatype="bool"/>
+			<field reporter:label="Pretransit Copy Status" name="copy_status" reporter:datatype="link"/>
 			<field reporter:label="Destination" name="dest" reporter:datatype="link"/>
 			<field reporter:label="Receive Date/Time" name="dest_recv_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Transit ID" name="id" reporter:datatype="id"/>
@@ -5476,6 +5476,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="copy_status" reltype="has_a" key="id" map="" class="ccs"/>
 			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="prev_hop" reltype="has_a" key="id" map="" class="atc"/>
 		</links>
 	</class>
 
@@ -5558,9 +5559,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Transaction Billings" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transaction Payments" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Base Transaction" name="billable_transaction" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Circulation Type" name="circ_type" oils_persist:virtual="true" reporter:datatype="text"/>
-			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="money"/>
-			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Circulation Type" name="circ_type" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
