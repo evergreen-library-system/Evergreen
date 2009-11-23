@@ -14,6 +14,7 @@
     'LOGIN_FAILED' : 'Login for ${0} failed',
     'UNKNOWN_ERROR' : 'An unhandled exception occurred with error code ${0}',
     'MAX_RENEWALS' : 'No more renewals allowed for item ${0}',
-    'ITEM_NOT_CATALOGED' : 'Item ${0} was not found in the system.  Try re-scanning the item.'
+    'ITEM_NOT_CATALOGED' : 'Item ${0} was not found in the system.  Try re-scanning the item.',
+    'WORKSTATION_REQUIRED' : 'Workstation is required.  Set the workstation name with URL param "ws"'
 }
 

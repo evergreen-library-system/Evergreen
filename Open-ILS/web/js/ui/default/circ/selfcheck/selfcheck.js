@@ -16,6 +16,7 @@ const SET_ALERT_ON_CHECKOUT_EVENT = 'circ.selfcheck.alert_on_checkout_event';
 const SET_AUTO_OVERRIDE_EVENTS = 'circ.selfcheck.auto_override_checkout_events';
 const SET_PATRON_PASSWORD_REQUIRED = 'circ.selfcheck.patron_password_required';
 const SET_AUTO_RENEW_INTERVAL = 'circ.checkout_auto_renew_age';
+const SET_WORKSTATION_REQUIRED = 'circ.selfcheck.workstation_required';
 
 //openils.Util.playAudioUrl('/xul/server/skin/media/audio/bonus.wav');
 
@@ -71,6 +72,11 @@ SelfCheckManager.prototype.init = function() {
     this.authtoken = openils.User.authtoken;
     this.loadOrgSettings();
 
+    // workstation is required but none provided
+    if(this.orgSettings[SET_WORKSTATION_REQUIRED] && !this.workstation) {
+        alert(dojo.string.substitute(localeStrings.WORKSTATION_REQUIRED));
+        return;
+    }
     
     var self = this;
     // connect onclick handlers to the various navigation links
@@ -111,6 +117,7 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
             SET_AUTO_OVERRIDE_EVENTS,
             SET_PATRON_PASSWORD_REQUIRED,
             SET_AUTO_RENEW_INTERVAL,
+            SET_WORKSTATION_REQUIRED
         ]
     );
 
@@ -134,7 +141,8 @@ SelfCheckManager.prototype.drawLoginPage = function() {
             // password is required.  wire up the scan box to read it
             self.updateScanBox({
                 msg : 'Please enter your password', // TODO i18n 
-                handler : function(pw) { self.loginPatron(barcode, pw); }
+                handler : function(pw) { self.loginPatron(barcode, pw); },
+                password : true
             });
 
         } else {
@@ -155,6 +163,12 @@ SelfCheckManager.prototype.drawLoginPage = function() {
 SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
     if(this.orgSettings[SET_PATRON_PASSWORD_REQUIRED]) {
+        
+        if(!passwd) {
+            // would only happen in dev/debug mode when using the patron= param
+            alert('password required by org setting.  remove patron= from URL'); 
+            return;
+        }
 
         // patron password is required.  Verify it.
 
@@ -165,7 +179,10 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
         if(res == 0) {
             // user-not-found results in login failure
-            this.handleXactResult('login', barcode, {textcode : 'ACTOR_USER_NOT_FOUND'});
+            dojo.byId('oils-selfck-status-div').innerHTML = 
+                dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]);
+            this.drawLoginPage();
+            return;
         }
     } 
 
@@ -177,7 +194,10 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
     var evt = openils.Event.parse(this.patron);
     if(evt) {
-        this.handleXactResult('login', barcode, evt);
+
+        dojo.byId('oils-selfck-status-div').innerHTML = 
+            dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]);
+        this.drawLoginPage();
 
     } else {
 
@@ -201,6 +221,12 @@ SelfCheckManager.prototype.updateScanBox = function(args) {
         selfckScanBox.domNode.select();
     } else {
         selfckScanBox.attr('value', '');
+    }
+
+    if(args.password) {
+        selfckScanBox.domNode.setAttribute('type', 'password');
+    } else {
+        selfckScanBox.domNode.setAttribute('type', '');
     }
 
     if(args.value)
@@ -591,11 +617,6 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
             result = result[0];
 
         switch(result.textcode) {
-
-            case 'ACTOR_USER_NOT_FOUND' : 
-                displayText = dojo.string.substitute(
-                    localeStrings.LOGIN_FAILED, [item]);
-                break;
 
             case 'MAX_RENEWALS_REACHED' :
                 displayText = dojo.string.substitute(
