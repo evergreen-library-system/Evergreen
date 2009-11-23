@@ -5036,7 +5036,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="rud" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::user_demographic" oils_persist:tablename="reporter.demographic" reporter:label="User Demographics">
 		<fields oils_persist:primary="id">
-			<field reporter:label="User ID" name="id" reporter:datatype="id" />
+			<field reporter:label="User ID" name="id" reporter:datatype="link" />
 			<field reporter:label="Date of Birth" name="dob" reporter:datatype="timestamp"/>
 			<field reporter:label="General Demographic Division" name="general_division" reporter:datatype="text"/>
 		</fields>
@@ -5046,7 +5046,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="rcirct" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::circulation_type" oils_persist:tablename="reporter.circ_type" reporter:label="Circulation Type">
 		<fields oils_persist:primary="id">
-			<field reporter:label="Circulation ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Circulation ID" name="id" reporter:datatype="link" />
 			<field reporter:label="Circulation Type" name="type" reporter:datatype="text"/>
 		</fields>
 		<links>
@@ -5055,7 +5055,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="rhrr" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::hold_request_record" oils_persist:tablename="reporter.hold_request_record" reporter:label="Hold Request Record">
 		<fields oils_persist:primary="id">
-			<field reporter:label="Hold ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Hold ID" name="id" reporter:datatype="link" />
 			<field reporter:label="Hold Target" name="target" reporter:datatype="int" />
 			<field reporter:label="Hold Request Type" name="hold_type" reporter:datatype="text"/>
 			<field reporter:label="Target Bib Record" name="bib_record" reporter:datatype="link"/>
@@ -5067,7 +5067,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="rxbt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_billing_totals" oils_persist:tablename="reporter.xact_billing_totals" reporter:label="Transaction Billing Totals">
 		<fields oils_persist:primary="xact">
-			<field reporter:label="Transaction ID" name="xact" reporter:datatype="int" />
+			<field reporter:label="Transaction ID" name="xact" reporter:datatype="link" />
 			<field reporter:label="Unvoided Billing Amount" name="unvoided" reporter:datatype="int" />
 			<field reporter:label="Voided Billing Amount" name="voided" reporter:datatype="money"/>
 			<field reporter:label="Total Billing Amount" name="total" reporter:datatype="money"/>
@@ -5078,7 +5078,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="rxpt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_paid_totals" oils_persist:tablename="reporter.xact_paid_totals" reporter:label="Transaction Paid Totals">
 		<fields oils_persist:primary="xact">
-			<field reporter:label="Transaction ID" name="xact" reporter:datatype="int" />
+			<field reporter:label="Transaction ID" name="xact" reporter:datatype="link" />
 			<field reporter:label="Unvoided Paid Amount" name="unvoided" reporter:datatype="int" />
 			<field reporter:label="Voided (Returned) Paid Amount" name="voided" reporter:datatype="money"/>
 			<field reporter:label="Total Paid Amount" name="total" reporter:datatype="money"/>
@@ -5089,7 +5089,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="ergbhu" controller="open-ils.reporter-store" oils_obj:fieldmapper="extend_reporter::global_bibs_by_holding_update" oils_persist:tablename="extend_reporter.global_bibs_by_holding_update" reporter:label="Bib IDs by Holding Add/Delete Time (OCLC batch update)">
 		<fields oils_persist:primary="id">
-			<field reporter:label="Bib ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Bib ID" name="id" reporter:datatype="link" />
 			<field reporter:label="Update Time" name="holding_update" reporter:datatype="timestamp" />
 			<field reporter:label="Update Type" name="update_type" reporter:datatype="text" />
 		</fields>
