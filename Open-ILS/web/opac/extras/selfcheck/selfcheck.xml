@@ -30,6 +30,8 @@
 <html xmlns='http://www.w3.org/1999/xhtml'>
 
     <head>
+    	<script type="text/javascript" src='/js/dojo/dojo/dojo.js'></script>
+
         <script language='javascript' type='text/javascript' 
             src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/utils.js'></script>
 	    <script language='javascript' type='text/javascript' 

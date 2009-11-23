@@ -218,6 +218,13 @@ function selfckPatronLogin(barcode) {
 
             return alert(patron.textcode);
         }
+
+        if(!isTrue(patron.active())) {
+            unHideMe($('selfck-patron-not-found'));
+            $('selfck-patron-login-input').select();
+            return;
+        }
+
         $('selfck-patron-login-input').value = ''; // reset the input
         hideMe($('selfck-patron-login-container'));
         unHideMe($('selfck-patron-checkout-container'));
