@@ -76,7 +76,7 @@ BEGIN
 END;
 $creator$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS auditor.create_auditor; -- Besides this line and the 0087 INSERT, the rest of this file is 900.audit-functions.sql
+DROP FUNCTION IF EXISTS auditor.create_auditor (TEXT, TEXT); -- Besides this line and the 0087 INSERT, the rest of this file is 900.audit-functions.sql
 
 -- The main event
 
