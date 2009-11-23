@@ -558,7 +558,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Data" name="data" reporter:datatype="text"/>
 			<field reporter:label="Is Error" name="is_error" reporter:datatype="bool"/>
 			<field reporter:label="Events" name="events" oils_persist:virtual="true"  reporter:datatype="link"/>
-			<field reporter:label="Events" name="error_events" oils_persist:virtual="true"  reporter:datatype="link"/>
+			<field reporter:label="Error Events" name="error_events" oils_persist:virtual="true"  reporter:datatype="link"/>
 		</fields>
 		<links>
             <link field="events" reltype="has_many" key="template_output" map="" class="atev"/>
@@ -1727,16 +1727,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="hold_requests" reltype="has_many" key="usr" map="" class="circ"/>
 			<link field="permissions" reltype="has_many" key="usr" map="perm" class="pupm"/>
 			<link field="settings" reltype="has_many" key="usr" map="" class="aus"/>
-			<link reporter:label="Billable Transactions" field="billable_transactions" reltype="has_many" key="usr" map="" class="mbt"/>
+			<link field="billable_transactions" reltype="has_many" key="usr" map="" class="mbt"/>
 			<link field="open_billable_transactions_summary" reltype="has_many" key="usr" map="" class="mobts"/>
 			<link field="money_summary" reltype="might_have" key="usr" map="" class="mus"/>
 			<link field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
 			<link field="addresses" reltype="has_many" key="usr" map="" class="aua"/>
 			<link field="survey_responses" reltype="has_many" key="usr" map="" class="asvr"/>
 			<link field="notes" reltype="has_many" key="usr" map="" class="aun"/>
-			<link reporter:label="Check-ins Performed as Staff" field="checkins" reltype="has_many" key="checkin_staff" map="" class="circ"/>
+			<link field="checkins" reltype="has_many" key="checkin_staff" map="" class="circ"/>
 			<link field="cards" reltype="has_many" key="usr" map="" class="ac"/>
-			<link reporter:label="Circulations Performed as Staff" field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
+			<link field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
 			<link field="fund_alloc_pcts" reltype="has_many" key="allocator" map="" class="acqfap"/>
 			<link field="reservations" reltype="has_many" key="capture_staff" map="" class="bresv"/>
 		</links>
