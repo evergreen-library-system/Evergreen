@@ -9,6 +9,7 @@
     'CHECKOUT_SUCCESS' : 'Checkout of item ${0} succeeded',
     'RENEW_SUCCESS' : 'Renewal of item ${0} succeeded',
     'ALREADY_OUT' : 'Item ${0} is already checked out',
+    'OPEN_CIRCULATION_EXISTS' : 'Item ${0} is already checked out to another user',
     'GENERIC_CIRC_FAILURE' : 'Unable to check out item ${0}.  Please see staff.',
     'LOGIN_FAILED' : 'Login for ${0} failed',
     'UNKNOWN_ERROR' : 'An unhandled exception occurred with error code ${0}',

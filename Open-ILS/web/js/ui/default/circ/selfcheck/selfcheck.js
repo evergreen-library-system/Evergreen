@@ -15,6 +15,7 @@ const SET_PATRON_TIMEOUT = 'circ.selfcheck.patron_login_timeout';
 const SET_ALERT_ON_CHECKOUT_EVENT = 'circ.selfcheck.alert_on_checkout_event';
 const SET_AUTO_OVERRIDE_EVENTS = 'circ.selfcheck.auto_override_checkout_events';
 const SET_PATRON_PASSWORD_REQUIRED = 'circ.selfcheck.patron_password_required';
+const SET_AUTO_RENEW_INTERVAL = 'circ.checkout_auto_renew_age';
 
 //openils.Util.playAudioUrl('/xul/server/skin/media/audio/bonus.wav');
 
@@ -108,6 +109,8 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
             SET_PATRON_TIMEOUT,
             SET_ALERT_ON_CHECKOUT_EVENT,
             SET_AUTO_OVERRIDE_EVENTS,
+            SET_PATRON_PASSWORD_REQUIRED,
+            SET_AUTO_RENEW_INTERVAL,
         ]
     );
 
@@ -476,12 +479,13 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
         ]}
     );
 
+    console.log(js2JSON(result));
+
     var stat = this.handleXactResult('checkout', barcode, result);
 
     if(stat.override) {
         this.checkout(barcode, true);
     } else if(stat.renew) {
-        // TODO check org setting for auto-renewal interval
         this.renew(barcode);
     }
 }
@@ -490,7 +494,10 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
 SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
     var displayText = '';
-    var popup = false;
+
+    // If true, the display message is important enough to pop up.  Whether or not
+    // an alert() actually occurs, depends on org unit settings
+    var popup = false;  
 
     // TODO handle lost/missing/etc checkin+checkout override steps
         
@@ -517,7 +524,36 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
     } else if(result.textcode == 'OPEN_CIRCULATION_EXISTS' && action == 'checkout') {
 
-        return { renew : true };
+        // Server says the item is already checked out.  If it's checked out to the
+        // current user, we may need to renew it.  
+
+        var payload = result.payload || {};
+
+        if(payload.old_circ) { 
+
+            /*
+            old_circ refers to the previous checkout IFF it's for the same user. 
+            If no auto-renew interval is not defined, assume we should renew it
+            If an auto-renew interval is defined and the payload comes back with
+            auto_renew set to true, do the renewal.  Otherwise, let the patron know
+            the item is already checked out to them.  */
+
+            if( !this.orgSettings[SET_AUTO_RENEW_INTERVAL] ||
+                (this.orgSettings[SET_AUTO_RENEW_INTERVAL] && payload.auto_renew) ) {
+                return { renew : true };
+            }
+
+            popup = true;
+            displayText = dojo.string.substitute(localeStrings.ALREADY_OUT, [item]);
+
+        } else {
+            
+            // item is checked out to some other user
+            popup = true;
+            displayText = dojo.string.substitute(localeStrings.OPEN_CIRCULATION_EXISTS, [item]);
+        }
+
+        this.updateScanBox({select:true});
 
     } else {
 
@@ -567,9 +603,9 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
                     localeStrings.ITEM_NOT_CATALOGED, [item]);
                 break;
 
-            case 'already-out' : 
+            case 'OPEN_CIRCULATION_EXISTS' :
                 displayText = dojo.string.substitute(
-                    localeStrings.ALREADY_OUT, [item]);
+                    localeStrings.OPEN_CIRCULATION_EXISTS, [item]);
                 break;
 
             default:
@@ -615,6 +651,8 @@ SelfCheckManager.prototype.renew = function(barcode, override) {
             }
         ]}
     );
+
+    console.log(js2JSON(result));
 
     var stat = this.handleXactResult('renew', barcode, result);
 
