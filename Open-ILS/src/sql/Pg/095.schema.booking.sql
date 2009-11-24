@@ -30,7 +30,9 @@ CREATE TABLE booking.resource_type (
 	                               DEFERRABLE INITIALLY DEFERRED,
 	catalog_item   BOOLEAN         NOT NULL DEFAULT FALSE,
 	transferable   BOOLEAN         NOT NULL DEFAULT FALSE,
-	CONSTRAINT brt_name_once_per_owner UNIQUE(owner, name)
+    record         INT             REFERENCES biblio.record_entry (id)
+                                   DEFERRABLE INITIALLY DEFERRED,
+	CONSTRAINT brt_name_once_per_owner UNIQUE(owner, name, record)
 );
 
 CREATE TABLE booking.resource (
