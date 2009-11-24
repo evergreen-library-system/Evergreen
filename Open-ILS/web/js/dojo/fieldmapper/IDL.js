@@ -26,7 +26,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     }
 
                     JSON2js.fallbackObjectifier = function (arg, key_name, val_name) {
-                        fieldmapper.IDL.load([key_name]);
+                        fieldmapper.IDL.load([arg[key_name]]);
                         return decodeJS(arg);
                     }
                     
