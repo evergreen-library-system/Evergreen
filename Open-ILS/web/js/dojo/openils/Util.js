@@ -256,6 +256,7 @@ if(!dojo._hasResource["openils.Util"]) {
      * that support HTML 5 <audio> element.  E.g. Firefox 3.5
      */
     openils.Util.playAudioUrl = function(urlString) {
+        if(!urlString) return;
         var audio = document.createElement('audio');
         audio.setAttribute('src', urlString);
         audio.setAttribute('autoplay', 'true');

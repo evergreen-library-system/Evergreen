@@ -17,6 +17,7 @@ const SET_AUTO_OVERRIDE_EVENTS = 'circ.selfcheck.auto_override_checkout_events';
 const SET_PATRON_PASSWORD_REQUIRED = 'circ.selfcheck.patron_password_required';
 const SET_AUTO_RENEW_INTERVAL = 'circ.checkout_auto_renew_age';
 const SET_WORKSTATION_REQUIRED = 'circ.selfcheck.workstation_required';
+const SET_SOUND_ON_CHECKOUT_EVENT = 'circ.selfcheck.sound_on_checkout_event';
 
 //openils.Util.playAudioUrl('/xul/server/skin/media/audio/bonus.wav');
 
@@ -179,8 +180,10 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
         if(res == 0) {
             // user-not-found results in login failure
-            dojo.byId('oils-selfck-status-div').innerHTML = 
-                dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]);
+            this.handleAlert(
+                dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]),
+                false, 'login-failure'
+            );
             this.drawLoginPage();
             return;
         }
@@ -194,17 +197,32 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
     var evt = openils.Event.parse(this.patron);
     if(evt) {
-
-        dojo.byId('oils-selfck-status-div').innerHTML = 
-            dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]);
+        this.handleAlert(
+            dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]),
+            false, 'login-failure'
+        );
         this.drawLoginPage();
 
     } else {
 
-        dojo.byId('oils-selfck-status-div').innerHTML = '';
+        this.handleAlert('', false, 'login-success');
         dojo.byId('oils-selfck-user-banner').innerHTML = 'Welcome, ' + this.patron.usrname(); // TODO i18n
         this.drawCircPage();
     }
+}
+
+
+SelfCheckManager.prototype.handleAlert = function(message, shouldPopup, sound) {
+
+    console.log("Handling alert " + message);
+
+    dojo.byId('oils-selfck-status-div').innerHTML = message;
+
+    if(shouldPopup && this.orgSettings[SET_ALERT_ON_CHECKOUT_EVENT]) 
+        alert(message);
+
+    if(sound && this.orgSettings[SET_SOUND_ON_CHECKOUT_EVENT])
+        openils.Util.playAudioUrl(SelfCheckManager.audioConfig[sound]);
 }
 
 
@@ -522,6 +540,8 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
     // an alert() actually occurs, depends on org unit settings
     var popup = false;  
 
+    var sound = '';
+
     // TODO handle lost/missing/etc checkin+checkout override steps
     
     var payload = result.payload || {};
@@ -552,6 +572,7 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
             this.displayCheckout(result, 'renew');
         }
 
+        sound = 'checkout-success';
         this.updateScanBox();
 
     } else if(result.textcode == 'OPEN_CIRCULATION_EXISTS' && action == 'checkout') {
@@ -574,12 +595,14 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
             }
 
             popup = true;
+            sound = 'checkout-failure';
             displayText = dojo.string.substitute(localeStrings.ALREADY_OUT, [item]);
 
         } else {
             
             // item is checked out to some other user
             popup = true;
+            sound = 'checkout-failure';
             displayText = dojo.string.substitute(localeStrings.OPEN_CIRCULATION_EXISTS, [item]);
         }
 
@@ -612,6 +635,7 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
     
         this.updateScanBox({select : true});
         popup = true;
+        sound = 'checkout-failure';
 
         if(result.length) 
             result = result[0];
@@ -646,13 +670,7 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
         }
     }
 
-    console.log("Updating status with " + displayText);
-
-    dojo.byId('oils-selfck-status-div').innerHTML = displayText;
-
-    if(popup && this.orgSettings[SET_ALERT_ON_CHECKOUT_EVENT]) 
-        alert(displayText);
-
+    this.handleAlert(displayText, popup, sound);
     return {};
 }
 

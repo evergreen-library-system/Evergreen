@@ -2,6 +2,7 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/circ/selfcheck/selfcheck.js'> </script>
 <link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/selfcheck.css'></link>
+[% INCLUDE 'default/circ/selfcheck/audio_config.tt2' %]
 
 <div id='oils-selfck-top-div'>
     <div id='oils-selfck-user-banner'></div>
