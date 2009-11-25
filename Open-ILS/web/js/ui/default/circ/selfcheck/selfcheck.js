@@ -113,6 +113,7 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
             SET_BARCODE_REGEX,
             SET_PATRON_TIMEOUT,
             SET_ALERT_POPUP,
+            SET_ALERT_SOUND,
             SET_AUTO_OVERRIDE_EVENTS,
             SET_PATRON_PASSWORD_REQUIRED,
             SET_AUTO_RENEW_INTERVAL,
