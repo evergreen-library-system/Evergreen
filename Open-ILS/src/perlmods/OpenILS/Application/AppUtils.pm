@@ -1481,7 +1481,7 @@ sub xact_org {
 # most appropriate event.  create the event, fire it, then return the resulting
 # event with fleshed template_output and error_output
 sub fire_object_event {
-    my($self, $event_def, $hook, $object, $context_org) = @_;
+    my($self, $event_def, $hook, $object, $context_org, $granularity, $user_data) = @_;
 
     my $e = OpenILS::Utils::CStoreEditor->new;
     my $def;
@@ -1496,6 +1496,7 @@ sub fire_object_event {
 
     } else {
         # find the most appropriate event def depending on context org
+
         my $orgs = $self->get_org_ancestors($context_org);
         $orgs = $e->search_actor_org_unit(
             [{id => $orgs}, {flesh => 1, flesh_fields => {aou => ['ou_type']}}]);
@@ -1511,26 +1512,51 @@ sub fire_object_event {
         return $e->event unless $def;
     }
 
-    my $event_id = $self->simplereq(
-        'open-ils.trigger', $auto_method, $def->id, $object, $context_org);
-
-    my $fire = 'open-ils.trigger.event.fire';
-
     if($def->group_field) {
-        $fire =~ s/event/event_group/o;
-        $event_id = [$event_id];
+        # we have a list of objects
+        $object = [$object] unless ref $object eq 'ARRAY';
+
+        my @event_ids;
+        $user_data ||= [];
+        for my $i (0..$#$object) {
+            my $obj = $$object[$i];
+            my $udata = $$user_data[$i];
+            my $event_id = $self->simplereq(
+                'open-ils.trigger', $auto_method, $def->id, $obj, $context_org, $udata);
+            push(@event_ids, $event_id);
+        }
+
+        $logger->info("EVENTS = " . OpenSRF::Utils::JSON->perl2JSON(\@event_ids));
+
+        my $resp = $self->simplereq(
+            'open-ils.trigger', 
+            'open-ils.trigger.event_group.fire',
+            \@event_ids);
+
+        return undef unless $resp and $resp->{events} and @{$resp->{events}};
+
+        return $e->retrieve_action_trigger_event([
+            $resp->{events}->[0]->id,
+            {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
+        ]);
+
+    } else {
+
+        my $event_id = $self->simplereq(
+            'open-ils.trigger', $auto_method, $def->id, $object, $context_org, $user_data);
+
+        my $resp = $self->simplereq(
+            'open-ils.trigger', 
+            'open-ils.trigger.event.fire', 
+            $event_id);
+
+        return undef unless $resp and $resp->{event};
+
+        return $e->retrieve_action_trigger_event([
+            $resp->{event}->id,
+            {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
+        ]);
     }
-
-    my $resp = $self->simplereq('open-ils.trigger', $fire, $event_id);
-    return 0 unless $resp and ($resp->{event} or $resp->{events});
-    my $evt = $resp->{event} ? $resp->{event} : $resp->{events}->[0];
-
-    return 0 unless $evt;
-
-    return $e->retrieve_action_trigger_event([
-        $evt->id,
-        {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
-    ]);
 }
 
 

@@ -1278,7 +1278,27 @@ sub test_batch_circ_events {
     return $U->fire_object_event($event_def, undef, $circ, $e->requestor->ws_ou)
 }
 
+__PACKAGE__->register_method(
+	method	=> "fire_circ_events", 
+	api_name	=> "open-ils.circ.fire_circ_trigger_events",
+    signature => q/
+        General event def runner for circ objects.  If no event def ID
+        is provided, the hook will be used to find the best event_def
+        match based on the context org unit
+    /
+);
 
+sub fire_circ_events {
+    my($self, $conn, $auth, $org_id, $event_def, $hook, $granularity, $circ_ids, $user_data) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $org_id);
+
+    my $circs = $e->batch_retrieve_action_circulation($circ_ids);
+    return undef unless @$circs;
+    return $U->fire_object_event($event_def, $hook, $circs, $org_id, $granularity, $user_data)
+}
 
 __PACKAGE__->register_method(
 	method	=> "user_payments_list",

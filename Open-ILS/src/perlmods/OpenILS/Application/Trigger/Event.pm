@@ -433,10 +433,16 @@ sub _object_by_path {
     my $label = shift;
     my $path = shift;
 
+
     my $step = shift(@$path);
+
 
     my $fhint = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{class};
     my $fclass = $self->_fm_class_by_hint( $fhint );
+
+    OpenSRF::EX::ERROR->throw(
+        "$step is not a field on ".$context->class_name."  Please repair the environment.")
+        unless $fhint;
 
     my $ffield = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{key};
     my $rtype = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{reltype};
@@ -452,13 +458,15 @@ sub _object_by_path {
 
     $meth .= $fclass;
     $meth =~ s/Fieldmapper:://;
-    $meth =~ s/::/_/;
+    $meth =~ s/::/_/g;
 
     my $ed = grep( /open-ils.cstore/, @{$fclass->Controller} ) ?
             $self->editor :
             new_rstore_editor();
 
     my $obj = $context->$step(); 
+
+    $logger->debug("_object_by_path(): meth=$meth, obj=$obj, multi=$multi, step=$step, lfield=$lfield");
 
     if (!ref $obj) {
         $obj = $ed->$meth( 
