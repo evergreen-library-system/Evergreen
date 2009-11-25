@@ -730,6 +730,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Update Time" name="update_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Complete Time" name="complete_time" reporter:datatype="timestamp"/>
 			<field reporter:label="State" name="state" reporter:datatype="text"/>
+			<field reporter:label="User Data" name="user_data" reporter:datatype="text"/>
 			<field reporter:label="Template Output" name="template_output" reporter:datatype="link"/>
 			<field reporter:label="Error Output" name="error_output" reporter:datatype="text"/>
 			<field reporter:label="Asynchronous Output" name="async_output" reporter:datatype="link"/>

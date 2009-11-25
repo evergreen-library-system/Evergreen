@@ -230,6 +230,17 @@ sub update_state {
     return $ok || undef;
 }
 
+sub findEvent {
+    my $self = shift;
+    my $member = shift;
+
+    $member = $member->id if (ref($member));
+
+    my @list = grep { $member == $_->id } @{ $self->events };
+
+    return shift(@list);
+}
+
 sub build_environment {
     my $self = shift;
     my $env = $self->environment;
@@ -237,6 +248,7 @@ sub build_environment {
     $$env{EventProcessor} = $self;
     $$env{target} = [];
     $$env{event} = [];
+    $$env{user_data} = [];
     for my $e ( @{ $self->events } ) {
         for my $env_part ( keys %{ $e->environment } ) {
             next if ($env_part eq 'EventProcessor');
@@ -244,6 +256,8 @@ sub build_environment {
                 push @{ $$env{target} }, $e->environment->{target};
             } elsif ($env_part eq 'event') {
                 push @{ $$env{event} }, $e->environment->{event};
+            } elsif ($env_part eq 'user_data') {
+                push @{ $$env{user_data} }, $e->environment->{user_data};
             } else {
                 $$env{$env_part} = $e->environment->{$env_part};
             }

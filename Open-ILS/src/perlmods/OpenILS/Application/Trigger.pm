@@ -4,6 +4,7 @@ use OpenILS::Application;
 use base qw/OpenILS::Application/;
 
 use OpenSRF::EX qw/:try/;
+use OpenSRF::Utils::JSON;
 
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
@@ -30,6 +31,8 @@ sub create_active_events_for_object {
     my $key = shift;
     my $target = shift;
     my $location = shift;
+    my $granularity = shift;
+    my $user_data = shift;
 
     my $ident = $target->Identity;
     my $ident_value = $target->$ident();
@@ -58,6 +61,7 @@ sub create_active_events_for_object {
     );
 
     for my $def ( @$defs ) {
+        next if ($granularity && $def->granularity ne $granularity );
 
         if ($def->usr_field && $def->opt_in_setting) {
             my $ufield = $def->usr_field;
@@ -93,6 +97,7 @@ sub create_active_events_for_object {
         $event->target( $ident_value );
         $event->event_def( $def->id );
         $event->run_time( $date->strftime( '%F %T%z' ) );
+        $event->user_data( OpenSRF::Utils::JSON->perl2JSON($user_data) ) if (defined($user_data));
 
         $editor->create_action_trigger_event( $event );
 
@@ -117,6 +122,7 @@ sub create_event_for_object_and_def {
     my $definitions = shift;
     my $target = shift;
     my $location = shift;
+    my $user_data = shift;
 
     my $ident = $target->Identity;
     my $ident_value = $target->$ident();
@@ -177,6 +183,7 @@ sub create_event_for_object_and_def {
         $event->target( $ident_value );
         $event->event_def( $def->id );
         $event->run_time( $date->strftime( '%F %T%z' ) );
+        $event->user_data( OpenSRF::Utils::JSON->perl2JSON($user_data) ) if (defined($user_data));
 
         $editor->create_action_trigger_event( $event );
 
@@ -373,6 +380,7 @@ sub create_batch_events {
     my $location_field = shift; # where to look for event_def.owner filtering ... circ_lib, for instance, where hook.core_type = circ
     my $filter = shift || {};
     my $granularity = shift;
+    my $user_data = shift;
 
     my $active = ($self->api_name =~ /active/o) ? 1 : 0;
     if ($active && !keys(%$filter)) {
@@ -481,6 +489,7 @@ sub create_batch_events {
             $event->target( $o_id );
             $event->event_def( $def->id );
             $event->run_time( $run_time );
+            $event->user_data( OpenSRF::Utils::JSON->perl2JSON($user_data) ) if (defined($user_data));
 
             $editor->create_action_trigger_event( $event );
 

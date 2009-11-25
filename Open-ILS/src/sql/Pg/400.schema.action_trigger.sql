@@ -155,6 +155,7 @@ CREATE TABLE action_trigger.event (
     complete_time   TIMESTAMPTZ,
     update_process  INT,
     state           TEXT        NOT NULL DEFAULT 'pending' CHECK (state IN ('pending','invalid','found','collecting','collected','validating','valid','reacting','reacted','cleaning','complete','error')),
+    user_data       TEXT        CHECK (user_data IS NULL OR is_json( user_data )),
     template_output BIGINT      REFERENCES action_trigger.event_output (id),
     error_output    BIGINT      REFERENCES action_trigger.event_output (id),
     async_output    BIGINT      REFERENCES action_trigger.event_output (id)

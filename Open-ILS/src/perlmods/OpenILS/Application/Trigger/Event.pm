@@ -1,6 +1,7 @@
 package OpenILS::Application::Trigger::Event;
 use strict; use warnings;
 use OpenSRF::EX qw/:try/;
+use OpenSRF::Utils::JSON;
 
 use OpenSRF::Utils::Logger qw/$logger/;
 
@@ -55,6 +56,9 @@ sub init {
             }
         ])
     );
+
+    $self->user_data(OpenSRF::Utils::JSON->JSON2perl( $self->event->user_data ))
+        if (defined( $self->event->user_data ));
 
     if ($self->event->state eq 'valid') {
         $self->valid(1);
@@ -206,6 +210,15 @@ sub cleanedup {
     my $c = shift;
     $self->{cleanedup} = $c if (defined $c);
     return $self->{cleanedup};
+}
+
+sub user_data {
+    my $self = shift;
+    return undef unless (ref $self);
+
+    my $r = shift;
+    $self->{user_data} = $r if (defined $r);
+    return $self->{user_data};
 }
 
 sub reacted {
@@ -368,8 +381,9 @@ sub build_environment {
         $self->environment->{target} = $self->target;
         $self->environment->{event} = $self->event;
         $self->environment->{template} = $self->event->event_def->template;
+        $self->environment->{user_data} = $self->user_data;
 
-	$current_environment = $self->environment;
+        $current_environment = $self->environment;
 
         $self->environment->{params}{ $_->param } = $compartment->reval($_->value) for ( @{$self->event->event_def->params} );
     

@@ -116,5 +116,12 @@ CREATE OR REPLACE FUNCTION oils_i18n_gettext( TEXT, TEXT, TEXT, TEXT ) RETURNS T
     SELECT $2;
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION is_json (TEXT) RETURNS BOOL AS $func$
+    use JSON::XS;
+    my $json = shift();
+    eval { decode_json( $json ) };
+    return $@ ? 0 : 1;
+$func$ LANGUAGE PLPERLU;
+
 COMMIT;
 
