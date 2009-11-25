@@ -221,32 +221,40 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
                 if (++pos == obj_list.length) {
                     req.oncomplete = function (r) {
+                        var res = r.recv();
 
-                        _pcrud.session.request({
-                            method : 'open-ils.pcrud.transaction.commit',
-                            timeout : 10,
-                            params : [ _pcrud.auth() ],
-                            onerror : function (r) {
-                                _pcrud.disconnect();
-                                throw 'Transaction commit error';
-                            },      
-                            oncomplete : function (r) {
-                                var res = r.recv();
-                                if ( res && res.content() ) {
-                                    if(req._final_complete)
-                                        req._final_complete(req);
-                                    _pcrud.disconnect();
-                                } else {
+                        if ( res && res.content() ) {
+                            _return_list.push( res.content() );
+                            _pcrud.session.request({
+                                method : 'open-ils.pcrud.transaction.commit',
+                                timeout : 10,
+                                params : [ _pcrud.auth() ],
+                                onerror : function (r) {
                                     _pcrud.disconnect();
                                     throw 'Transaction commit error';
-                                }
-                            },
-                        }).send();
+                                },      
+                                oncomplete : function (r) {
+                                    var res = r.recv();
+                                    if ( res && res.content() ) {
+                                        if(req._final_complete)
+                                            req._final_complete(req);
+                                        _pcrud.disconnect();
+                                    } else {
+                                        _pcrud.disconnect();
+                                        throw 'Transaction commit error';
+                                    }
+                                },
+                            }).send();
+                        } else {
+                            _pcrud.disconnect();
+                            throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
+                        }
                     };
 
                     req.onerror = function (r) {
                         if (r._final_error) r._final_error(r);
                         _pcrud.disconnect();
+                        throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
                     };
 
                 } else {
