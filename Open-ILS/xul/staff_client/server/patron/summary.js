@@ -273,7 +273,7 @@ patron.summary.prototype = {
                         function(e) {
                             return function() { 
                                 var val = obj.patron.ident_value();
-                                val = val.replace(/.+(\d\d\d\d)$/,'xxxx$1');
+                                if (val) val = val.replace(/.+(\d\d\d\d)$/,'xxxx$1');   // must avoid val.replace if val is NULL
                                 util.widgets.set_text(e, val);
                             };
                         }
@@ -298,7 +298,7 @@ patron.summary.prototype = {
                         function(e) {
                             return function() { 
                                 var val = obj.patron.ident_value2();
-                                val = val.replace(/.+(\d\d\d\d)$/,'xxxx$1');
+                                if (val) val = val.replace(/.+(\d\d\d\d)$/,'xxxx$1');   // must avoid val.replace if val is NULL
                                 util.widgets.set_text(e, val);
                             };
                         }
