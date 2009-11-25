@@ -31,7 +31,8 @@ sub new {
     $self->{_mfhdh_NOTES}{public}  = [];
     $self->{_mfhdh_NOTES}{private} = [];
     $self->{_mfhdh_COPYRIGHT}      = [];
-    $self->{_mfhdh_COMPRESSED}     = $self->indicator(2) eq '0' ? 1 : 0;
+    $self->{_mfhdh_COMPRESSED}     = ($self->indicator(2) eq '0' || $self->indicator(2) eq '2') ? 1 : 0;
+    # TODO: full support for second indicators 2, 3, and 4
     $self->{_mfhdh_OPEN_ENDED}     = 0;
 
     foreach my $subfield ($self->subfields) {
@@ -85,6 +86,9 @@ sub new {
 # than simply the MARC subfields, although in the current implementation they
 # are indexed on the subfield key
 #
+# TODO: this accessor should probably be replaced with methods which hide the
+# underlying structure of {_mfhdh_FIELDS} (see field_values for a start)
+#
 sub fields {
     my $self = shift;
 
@@ -94,6 +98,10 @@ sub fields {
 #
 # Given a field key, returns an array ref of one (for single statements)
 # or two (for compressed statements) values
+#
+# TODO: add setter functionality to replace direct {HOLDINGS} access in other
+# methods. It also makes sense to override some of the MARC::Field setter
+# methods (such as update()) to accomplish this level of encapsulation.
 #
 sub field_values {
     my ($self, $key) = @_;
@@ -117,8 +125,23 @@ sub seqno {
     return $self->{_mfhdh_SEQNO};
 }
 
+#
+# Optionally accepts a true/false value to set the 'compressed' attribute
+# Returns 'compressed' attribute
+#
 sub is_compressed {
     my $self = shift;
+    my $is_compressed = shift;
+
+    if (defined($is_compressed)) {
+        if ($is_compressed) {
+            $self->{_mfhdh_COMPRESSED} = 1;
+            $self->update(ind2 => '0');
+        } else {
+            $self->{_mfhdh_COMPRESSED} = 0;
+            $self->update(ind2 => '1');
+        }
+    }
 
     return $self->{_mfhdh_COMPRESSED};
 }
@@ -135,6 +158,18 @@ sub caption {
     return $self->{_mfhdh_CAPTION};
 }
 
+#
+# notes: If called with no arguments, returns the public notes array ref.
+# If called with a single argument, it returns either 'public' or
+# 'private' notes based on the passed string.
+#
+# If called with more than one argument, it sets the proper note field, with
+# type being the first argument and the note value(s) as the remaining
+# argument(s).
+#
+# It is also optional to pass in an array ref of note values as the third
+# argument rather than a list.
+#
 sub notes {
     my $self  = shift;
     my $type  = shift;
@@ -143,7 +178,7 @@ sub notes {
     if (!$type) {
         $type = 'public';
     } elsif ($type ne 'public' && $type ne 'private') {
-        carp("Notes being applied without specifiying type");
+        carp("Notes being applied without specifying type");
         unshift(@notes, $type);
         $type = 'public';
     }
@@ -242,7 +277,7 @@ sub format_chron {
             # account for possible combined issue chronology
             my @chron_parts = split('/', $holdings->{$key});
             for (my $i = 0; $i < @chron_parts; $i++) {
-                $chron_parts[$i] = $month{$chron_parts[$i]};
+                $chron_parts[$i] = $month{$chron_parts[$i]} if exists $month{$chron_parts[$i]};
             }
             $chron = join('/', @chron_parts);
         } else {
@@ -367,7 +402,7 @@ sub format {
 
     # Public Note
     if (@{$self->notes}) {
-        $formatted .= ' Note: ' . join(', ', @{$self->notes});
+        $formatted .= ' -- ' . join(', ', @{$self->notes});
     }
 
     return $formatted;
@@ -436,6 +471,11 @@ sub validate {
 sub increment {
     my $self = shift;
 
+    if ($self->is_open_ended) {
+        carp "Holding is open-ended, cannot increment";
+        return $self;
+    }
+
     my $next = $self->next();
 
     if ($self->is_compressed) {    # expand range
@@ -453,6 +493,34 @@ sub increment {
 
     $self->seqno($self->seqno + 1);
     $self->update(%{$next});    # update underlying subfields
+    return $self;
+}
+
+#
+# Turns a compressed holding into the singular form of the last member
+# in the range
+#
+sub compressed_to_last {
+    my $self = shift;
+
+    if (!$self->is_compressed) {
+        carp "Holding not compressed, cannot convert to last member";
+        return $self;
+    } elsif ($self->is_open_ended) {
+        carp "Holding is open-ended, cannot convert to last member";
+        return $self;
+    }
+
+    my %changes;
+    foreach my $key (keys %{$self->fields}) {
+        my @values = @{$self->field_values($key)};
+        $self->fields->{$key}{HOLDINGS} = [$values[1]];
+        $changes{$key} = $values[1];
+    }
+
+    $self->update(%changes);    # update underlying subfields
+    $self->is_compressed(0);    # remove compressed state
+
     return $self;
 }
 
@@ -486,6 +554,9 @@ sub chron_to_date {
         @keys = ('i'..'m');
     }
 
+    # @chron_start and @chron_end will hold the (year, month, day) values
+    # represented by the start and optional end of the chronology instance.
+    # Default to January 1 with a year of 0 as initial values.
     my @chron_start = (0, 1, 1);
     my @chron_end   = (0, 1, 1);
     my @chrons = (\@chron_start, \@chron_end);
@@ -499,6 +570,8 @@ sub chron_to_date {
         } elsif ($capstr =~ /day/) {
             ($chron_start[2], $chron_end[2]) = @{$self->field_values($key)};
         } elsif ($capstr =~ /season/) {
+            # chrons defined as season-only will use the astronomical season
+            # dates as a basic estimate.
             my @seasons = @{$self->field_values($key)};
             for (my $i = 0; $i < @seasons; $i++) {
                 $seasons[$i] = &_uncombine($seasons[$i], 0);
@@ -547,7 +620,7 @@ sub _uncombine {
     my ($combo, $pos) = @_;
 
     if (ref($combo)) {
-        carp("Function 'uncombine' is not an instance method");
+        carp("Function '_uncombine' is not an instance method");
         return;
     }
 

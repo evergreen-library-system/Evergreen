@@ -8,7 +8,6 @@ use Data::Dumper;
 
 use base 'MARC::Record';
 
-# use OpenSRF::Utils::JSON;
 use OpenILS::Utils::MFHD::Caption;
 use OpenILS::Utils::MFHD::Holding;
 
@@ -130,6 +129,23 @@ sub holdings {
       values %{$self->{_mfhd_HOLDINGS}->{$field}->{$capid}};
 }
 
+#
+# generate_predictions() is an initial attempt at a function which can be used
+# to populate an issuance table with a list of predicted issues.  It accepts
+# a hash ref of options initially defined as:
+# field : the caption field to predict on (853, 854, or 855)
+# num_to_predict : the number of issues you wish to predict
+# last_rec_date : the date of the last received issue, to be used as an offset
+#                 for predicting future issues
+#
+# The basic method is to first convert to a single holding if compressed, then
+# increment the holding and save the resulting values to @predictions.
+# 
+# returns @preditions, an array of array refs containing (link id, formatted
+# label, formatted chronology date, formatted estimated arrival date, and an
+# array ref of holding subfields as (key, value, key, value ...)) (not a hash
+# to protect order and possible duplicate keys).
+#
 sub generate_predictions {
     my ($self, $options) = @_;
     my $field          = $options->{field};
@@ -154,25 +170,29 @@ sub generate_predictions {
         my @holdings = $self->holdings($htag, $link_id);
         my $last_holding = $holdings[-1];
 
+        if ($last_holding->is_compressed) {
+            $last_holding->compressed_to_last; # convert to last in range
+        }
+
         my $pub_date  = $strp->parse_datetime($last_holding->chron_to_date);
         my $date_diff = $receival_date - $pub_date;
 
         $last_holding->notes('public',  []);
+        # add a note marker for system use
         $last_holding->notes('private', ['AUTOGEN']);
 
         for (my $i = 0; $i < $num_to_predict; $i++) {
             $last_holding->increment;
             $pub_date = $strp->parse_datetime($last_holding->chron_to_date);
-            $pub_date = $pub_date + $date_diff;
+            my $arrival_date = $pub_date + $date_diff;
             push(
                 @predictions,
                 [
                     $link_id,
                     $last_holding->format,
                     $pub_date->strftime('%F'),
-#                     OpenSRF::Utils::JSON->perl2JSON(
-#                         [$last_holding->subfields_list]
-#                     )
+                    $arrival_date->strftime('%F'),
+                    [$last_holding->subfields_list]
                 ]
             );
         }

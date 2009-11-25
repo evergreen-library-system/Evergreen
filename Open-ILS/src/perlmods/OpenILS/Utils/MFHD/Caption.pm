@@ -682,19 +682,21 @@ sub next {
     my $holding = shift;
     my $next    = {};
 
+    # If the holding is compressed and not open ended, base next() on the
+    # closing date.  If the holding is open-ended, next() is undefined
+    my $index;
+    if ($holding->is_compressed) {
+        return undef if $holding->is_open_ended;
+        # TODO: error on next for open-ended holdings?
+        $index = 1;
+    } else {
+        $index = 0;
+    }
+
     # Initialize $next with current enumeration & chronology, then
     # we can just operate on $next, based on the contents of the caption
     foreach my $key ('a'..'m') {
         my $holding_values = $holding->field_values($key);
-        my $index;
-        if ($holding->is_compressed) {
-            return undef
-              if $holding->is_open_ended;
-              # TODO: error on next for open-ended holdings?
-            $index = 1;
-        } else {
-            $index = 0;
-        }
         $next->{$key} = ${$holding_values}[$index] if defined $holding_values;
     }
 

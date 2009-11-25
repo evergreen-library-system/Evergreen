@@ -38,7 +38,7 @@ sub format_textual_holdings {
 
     $public_note = $field->subfield('z');
     if ($public_note) {
-        return "$holdings - $public_note";
+        return "$holdings -- $public_note";
     }
     return $holdings;
 }
