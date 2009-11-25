@@ -107,7 +107,7 @@ static int do_request( char* request ) {
 		if( *tmp ) {
 			growing_buffer* buffer = buffer_init(256);
 			buffer_fadd( buffer, "[%s]", tmp );
-			params = jsonParseString( buffer->buf );
+			params = jsonParse( buffer->buf );
 			buffer_free(buffer);
 		}
 		

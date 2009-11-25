@@ -1393,11 +1393,11 @@ static char* org_tree_root( osrfMethodContext* ctx ) {
 Utility function: create a JSON_HASH with a single key/value pair.
 This function is equivalent to:
 
-	jsonParseStringFmt( "{\"%s\":\"%s\"}", key, value )
+	jsonParseFmt( "{\"%s\":\"%s\"}", key, value )
 
 or, if value is NULL:
 
-	jsonParseStringFmt( "{\"%s\":null}", key )
+	jsonParseFmt( "{\"%s\":null}", key )
 
 ...but faster because it doesn't create and parse a JSON string.
 */

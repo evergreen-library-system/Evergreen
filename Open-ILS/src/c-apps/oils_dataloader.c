@@ -211,7 +211,7 @@ static int startTransaction () {
 
 static int sendCommand ( const char* json ) {
 	int ret = 1;
-	jsonObject* item = jsonParseString(json);
+	jsonObject* item = jsonParse(json);
 
 	if (!item->classname) {
 		osrfLogError(OSRF_LOG_MARK, "Data loader cannot handle unclassed objects.  Skipping [%s]!", json);
@@ -226,7 +226,7 @@ static int sendCommand ( const char* json ) {
 	// make the param array
 	jsonObject* params = jsonNewObjectType( JSON_ARRAY );
 	jsonObjectSetIndex( params, 0, item );
-	jsonObjectSetIndex( params, 1, jsonParseString("{\"quiet\":\"true\"}") );
+	jsonObjectSetIndex( params, 1, jsonParse("{\"quiet\":\"true\"}") );
 
 	jsonObject* data;
 	int req_id = osrfAppSessionMakeRequest( session, params, method_name, 1, NULL );

@@ -79,7 +79,7 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
 	oilsEvent* evt = NULL;
 
 	if (orgid == -1) {
-		jsonObject* where_clause = jsonParseString( "{\"parent_ou\":null}" );
+		jsonObject* where_clause = jsonParse( "{\"parent_ou\":null}" );
 		jsonObject* org = oilsUtilsQuickReq(
 			"open-ils.cstore",
 			"open-ils.cstore.direct.actor.org_unit.search",
@@ -95,7 +95,7 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
 	for( i = 0; i < size && permissions[i]; i++ ) {
 
 		char* perm = permissions[i];
-		jsonObject* params = jsonParseStringFmt("[%d, \"%s\", %d]", userid, perm, orgid);
+		jsonObject* params = jsonParseFmt("[%d, \"%s\", %d]", userid, perm, orgid);
 		jsonObject* o = oilsUtilsQuickReq( "open-ils.storage", 
 			"open-ils.storage.permission.user_has_perm", params );
 
@@ -139,7 +139,7 @@ jsonObject* oilsUtilsCStoreReq( const char* method, const jsonObject* params ) {
 
 jsonObject* oilsUtilsFetchUserByUsername( const char* name ) {
 	if(!name) return NULL;
-	jsonObject* params = jsonParseStringFmt("{\"usrname\":\"%s\"}", name);
+	jsonObject* params = jsonParseFmt("{\"usrname\":\"%s\"}", name);
 	jsonObject* user = oilsUtilsQuickReq( 
 		"open-ils.cstore", "open-ils.cstore.direct.actor.user.search", params );
 
@@ -154,7 +154,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 
 	osrfLogInfo(OSRF_LOG_MARK, "Fetching user by barcode %s", barcode);
 
-	jsonObject* params = jsonParseStringFmt("{\"barcode\":\"%s\"}", barcode);
+	jsonObject* params = jsonParseFmt("{\"barcode\":\"%s\"}", barcode);
 	jsonObject* card = oilsUtilsQuickReq(
 		"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
 	jsonObjectFree(params);
@@ -167,7 +167,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 	double iusr = strtod(usr, NULL);
 	free(usr);
 
-	params = jsonParseStringFmt("[%f]", iusr);
+	params = jsonParseFmt("[%f]", iusr);
 	jsonObject* user = oilsUtilsQuickReq(
 		"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params);
 
@@ -178,7 +178,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 char* oilsUtilsFetchOrgSetting( int orgid, const char* setting ) {
 	if(!setting) return NULL;
 
-	jsonObject* params = jsonParseStringFmt("[%d, \"%s\"]", orgid, setting );
+	jsonObject* params = jsonParseFmt("[%d, \"%s\"]", orgid, setting );
 
 	jsonObject* set = oilsUtilsQuickReq(
 		"open-ils.actor",
@@ -199,7 +199,7 @@ char* oilsUtilsLogin( const char* uname, const char* passwd, const char* type, i
 	osrfLogDebug(OSRF_LOG_MARK, "Logging in with username %s", uname );
 	char* token = NULL;
 
-	jsonObject* params = jsonParseStringFmt("[\"%s\"]", uname);
+	jsonObject* params = jsonParseFmt("[\"%s\"]", uname);
 
 	jsonObject* o = oilsUtilsQuickReq( 
 		"open-ils.auth", "open-ils.auth.authenticate.init", params );
@@ -214,7 +214,7 @@ char* oilsUtilsLogin( const char* uname, const char* passwd, const char* type, i
 	jsonObjectFree(params);
 	free(passhash);
 
-	params = jsonParseStringFmt( "[\"%s\", \"%s\", \"%s\", \"%d\"]", uname, fullhash, type, orgId );
+	params = jsonParseFmt( "[\"%s\", \"%s\", \"%s\", \"%d\"]", uname, fullhash, type, orgId );
 	o = oilsUtilsQuickReq( "open-ils.auth",
 		"open-ils.auth.authenticate.complete", params );
 
@@ -233,7 +233,7 @@ char* oilsUtilsLogin( const char* uname, const char* passwd, const char* type, i
 
 
 jsonObject* oilsUtilsFetchWorkstation( long id ) {
-	jsonObject* p = jsonParseStringFmt("[%ld]", id);
+	jsonObject* p = jsonParseFmt("[%ld]", id);
 	jsonObject* r = oilsUtilsQuickReq(
 		"open-ils.storage", 
 		"open-ils.storage.direct.actor.workstation.retrieve", p );
@@ -242,7 +242,7 @@ jsonObject* oilsUtilsFetchWorkstation( long id ) {
 }
 
 jsonObject* oilsUtilsFetchWorkstationByName( const char* name ) {
-	jsonObject* p = jsonParseStringFmt("{\"name\":\"%s\"}", name);
+	jsonObject* p = jsonParseFmt("{\"name\":\"%s\"}", name);
     jsonObject* r = oilsUtilsCStoreReq(
         "open-ils.cstore.direct.actor.workstation.search", p);
 	jsonObjectFree(p);
