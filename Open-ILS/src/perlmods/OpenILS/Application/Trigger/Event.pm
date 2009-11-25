@@ -85,7 +85,7 @@ sub init {
     
     my $meth = "retrieve_" . $class;
     $meth =~ s/Fieldmapper:://;
-    $meth =~ s/::/_/;
+    $meth =~ s/::/_/g;
     
     $self->target( $self->editor->$meth( $self->event->target ) );
 
