@@ -12,14 +12,12 @@ var localeStrings = dojo.i18n.getLocalization('openils.circ', 'selfcheck');
 
 const SET_BARCODE_REGEX = 'opac.barcode_regex';
 const SET_PATRON_TIMEOUT = 'circ.selfcheck.patron_login_timeout';
-const SET_ALERT_ON_CHECKOUT_EVENT = 'circ.selfcheck.alert_on_checkout_event';
 const SET_AUTO_OVERRIDE_EVENTS = 'circ.selfcheck.auto_override_checkout_events';
 const SET_PATRON_PASSWORD_REQUIRED = 'circ.selfcheck.patron_password_required';
 const SET_AUTO_RENEW_INTERVAL = 'circ.checkout_auto_renew_age';
 const SET_WORKSTATION_REQUIRED = 'circ.selfcheck.workstation_required';
-const SET_SOUND_ON_CHECKOUT_EVENT = 'circ.selfcheck.sound_on_checkout_event';
-
-//openils.Util.playAudioUrl('/xul/server/skin/media/audio/bonus.wav');
+const SET_ALERT_POPUP = 'circ.selfcheck.alert.popup';
+const SET_ALERT_SOUND = 'circ.selfcheck.alert.sound';
 
 function SelfCheckManager() {
 
@@ -114,7 +112,7 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
         this.staff.ws_ou(), [
             SET_BARCODE_REGEX,
             SET_PATRON_TIMEOUT,
-            SET_ALERT_ON_CHECKOUT_EVENT,
+            SET_ALERT_POPUP,
             SET_AUTO_OVERRIDE_EVENTS,
             SET_PATRON_PASSWORD_REQUIRED,
             SET_AUTO_RENEW_INTERVAL,
@@ -218,10 +216,10 @@ SelfCheckManager.prototype.handleAlert = function(message, shouldPopup, sound) {
 
     dojo.byId('oils-selfck-status-div').innerHTML = message;
 
-    if(shouldPopup && this.orgSettings[SET_ALERT_ON_CHECKOUT_EVENT]) 
+    if(shouldPopup && this.orgSettings[SET_ALERT_POPUP]) 
         alert(message);
 
-    if(sound && this.orgSettings[SET_SOUND_ON_CHECKOUT_EVENT])
+    if(sound && this.orgSettings[SET_ALERT_SOUND])
         openils.Util.playAudioUrl(SelfCheckManager.audioConfig[sound]);
 }
 

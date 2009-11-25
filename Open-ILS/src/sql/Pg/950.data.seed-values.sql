@@ -1589,7 +1589,7 @@ INSERT into config.org_unit_setting_type
   'Number of seconds of inactivity before the patron is logged out of the selfcheck interfacer',
   'integer' ),
 
-( 'circ.selfcheck.alert_on_checkout_event',
+( 'circ.selfcheck.alert.popup',
   'Selfcheck: Pop-up alert for errors',
   'If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message',
   'bool' ),
@@ -2606,4 +2606,13 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
         oils_i18n_gettext('circ.selfcheck.patron_password_required', 'Patron must log in with barcode and password at selfcheck station', 'coust', 'description'),
         'bool'
     );
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
+    VALUES ( 
+        'circ.selfcheck.alert.sound',
+        oils_i18n_gettext('circ.selfcheck.alert.sound', 'Selfcheck: Audio Alerts', 'coust', 'label'),
+        oils_i18n_gettext('circ.selfcheck.alert.sound', 'Use audio alerts for selfcheck events', 'coust', 'description'),
+        'bool'
+    );
+
 
