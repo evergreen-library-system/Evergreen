@@ -1798,7 +1798,9 @@ sub do_checkin {
     if( $self->copy ) {
         $self->transit(
             $self->editor->search_action_transit_copy(
-            { target_copy => $self->copy->id, dest_recv_time => undef })->[0]); 
+                { target_copy => $self->copy->id, dest_recv_time => undef }
+            )->[0]
+        ); 
     }
 
     if( $self->circ ) {
@@ -1828,12 +1830,12 @@ sub do_checkin {
                 $U->copy_status($self->copy->status)->id 
                     == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
 
-         my $hold;
-         if( $hold_transit ) {
-            $hold = $self->editor->retrieve_action_hold_request($hold_transit->hold);
-         } else {
-                ($hold) = $U->fetch_open_hold_by_copy($self->copy->id);
-         }
+            my $hold;
+            if( $hold_transit ) {
+               $hold = $self->editor->retrieve_action_hold_request($hold_transit->hold);
+            } else {
+                   ($hold) = $U->fetch_open_hold_by_copy($self->copy->id);
+            }
 
             $self->hold($hold);
 
@@ -1871,7 +1873,7 @@ sub do_checkin {
    # this copy can fulfill a hold or needs to be routed to a different location
    # ------------------------------------------------------------------------------
 
-    unless($self->noop) { # no-op checkins to not capture holds or put items into transit
+    if(!$self->noop) { # /not/ a no-op checkin, not capture for hold or put item into transit
 
         my $needed_for_hold = (!$self->remote_hold and $self->attempt_checkin_hold_capture());
         return if $self->bail_out;
@@ -1889,18 +1891,32 @@ sub do_checkin {
             $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->editor->requestor->ws_ou);
     
             if( $circ_lib == $self->editor->requestor->ws_ou ) {
+                # copy is where it needs to be, either for hold or reshelving
     
                 $self->checkin_handle_precat();
                 return if $self->bail_out;
     
             } else {
+                # copy needs to transit "home", or stick here if it's a floating copy
     
-                my $bc = $self->copy->barcode;
-                $logger->info("circulator: copy $bc at the wrong location, sending to $circ_lib");
-                $self->checkin_build_copy_transit($circ_lib);
-                return if $self->bail_out;
-                $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
+                if ($U->is_true( $self->copy->floating ) && !$self->remote_hold) { # copy is floating, stick here
+                    $self->checkin_changed(1);
+                    $self->copy->circ_lib( $self->editor->requestor->ws_ou );
+                    $self->update_copy;
+                } else {
+                    my $bc = $self->copy->barcode;
+                    $logger->info("circulator: copy $bc at the wrong location, sending to $circ_lib");
+                    $self->checkin_build_copy_transit($circ_lib);
+                    return if $self->bail_out;
+                    $self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
+                }
             }
+        }
+    } else { # no-op checkin
+        if ($U->is_true( $self->copy->floating )) { # XXX floating items still stick where they are even with no-op checkin?
+            $self->checkin_changed(1);
+            $self->copy->circ_lib( $self->editor->requestor->ws_ou );
+            $self->update_copy;
         }
     }
 

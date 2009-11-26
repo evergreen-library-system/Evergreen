@@ -75,6 +75,7 @@ CREATE TABLE asset.copy (
 	alert_message	TEXT,
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE,
 	deleted		BOOL				NOT NULL DEFAULT FALSE,
+	floating		BOOL				NOT NULL DEFAULT FALSE,
 	dummy_isbn      TEXT,
 	status_changed_time TIMESTAMP WITH TIME ZONE,
 	mint_condition      BOOL        NOT NULL DEFAULT TRUE
