@@ -44,10 +44,21 @@ sub new {
             $self->{_mfhdc_CHRONS}->{$key} = $val;
         } elsif ($key eq 'u') {
             # Bib units per next higher enumeration level
+
+	    # Some files seem to have "empty" $u subfields,
+	    # especially for top level of enumeration. Just drop them
+	    next if (!defined($val) || !$val);
+
             carp('$u specified for top-level enumeration')
               unless defined($last_enum);
             $self->{_mfhdc_ENUMS}->{$last_enum}->{COUNT} = $val;
         } elsif ($key eq 'v') {
+	    # Is this level of enumeration continuous, or does it restart?
+
+	    # Some files seem to have "empty" $v subfields,
+	    # especially for top level of enumeration. Just drop them
+	    next if (!defined($val) || !$val);
+
             carp '$v specified for top-level enumeration'
               unless defined($last_enum);
             $self->{_mfhdc_ENUMS}->{$last_enum}->{RESTART} = ($val eq 'r');
@@ -666,7 +677,7 @@ sub next_enum {
     # 2) Increment the highest level of enumeration (either by date
     #    or because $carry is set because of the above loop
 
-    if (!$self->subfield('i')) {
+    if (!$self->subfield('i') || !$next->{i}) {
         # The simple case: if there is no chronology specified
         # then just check $carry and return
         $next->{'a'} += $carry;
