@@ -70,12 +70,15 @@ if(!dojo._hasResource["MARC.Record"]) {
             var me = this;
             for ( var i in arguments ) {
                 var f = arguments[i];
+                var done = false;
                 for (var j in this.fields) {
                     if (f.tag > this.fields[j].tag) {
                         this.insertFieldsBefore(this.fields[j], f);
+                        done = true;
                         break;
                     }
                 }
+                if (!done) this.appendFields(f);
             }
         },
 
