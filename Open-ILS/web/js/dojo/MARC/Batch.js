@@ -27,6 +27,7 @@ if(!dojo._hasResource["MARC.Batch"]) {
             this.ready = false;
             this.records = [];
             this.source = kwargs.source;
+            this.delimiter = kwargs.delimiter
             this.current_record = 0;
 
             if (this.source) this.ready = true;
@@ -42,9 +43,9 @@ if(!dojo._hasResource["MARC.Batch"]) {
             } else if (this.source.match(/^\s*</)) { // this is xml text
                 this.source = dojox.xml.parser.parse( this.source );
                 this.parse();
-            } else { // must be a breaker doc. split on blank lines
+            } else { // must be a marcbreaker doc. split on blank lines
                 this.source = this.source.split(/^$/);
-                this.type = 'breaker';
+                this.type = 'marcbreaker';
             }
         },
 
@@ -67,6 +68,7 @@ if(!dojo._hasResource["MARC.Batch"]) {
             if (chunk) {
                 var args = {};
                 args[this.type] = chunk;
+                if (this.delimiter) args.delimiter = this.delimiter;
                 return new MARC.Record(args);
             }
 
