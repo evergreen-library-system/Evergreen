@@ -24,13 +24,28 @@ if(!dojo._hasResource["MARC.Batch"]) {
     dojo.declare('MARC.Batch', null, {
 
         constructor : function(kwargs) {
-            this.current_record = 0;
+            this.ready = false;
             this.records = [];
-            this.type = kwargs.type || 'xml';
             this.source = kwargs.source;
+            this.current_record = 0;
 
-            if (kwargs.url) this.fetchURL( kwargs.url );
-            this.parse();
+            if (this.source) this.ready = true;
+            if (!this.ready && kwargs.url) this.fetchURL( kwargs.url );
+
+            if (this.ready) this.parse();
+        },
+
+        parse : function () {
+            if (dojo.isObject( this.source )) { // assume an xml collection document
+                this.source = dojo.query('record', this.source);
+                this.type = 'xml';
+            } else if (this.source.match(/^\s*</)) { // this is xml text
+                this.source = dojox.xml.parser.parse( this.source );
+                this.parse();
+            } else { // must be a breaker doc. split on blank lines
+                this.source = this.source.split(/^$/);
+                this.type = 'breaker';
+            }
         },
 
         fetchURL : function (u) {
@@ -46,24 +61,18 @@ if(!dojo._hasResource["MARC.Batch"]) {
             });
         },
 
-        next : function () { return this.records[this.current_record++] },
+        next : function () {
+            var chunk = this.source[this.current_record++];
 
-        parse : function () {
-            if (this.source && dojo.isObject( this.source )) { // assume an xml collection document
-                this.records = dojo.map(
-                    dojo.query('record', this.source),
-                    function (r) { return new MARC.Record({xml:r}) }
-                );
-            } else if (this.source && this.source.match(/^\s*</)) { // this is xml text
-                this.source = dojox.xml.parser.parse( this.source );
-                this.parse();
-            } else if (this.source) { // must be a breaker doc. split on blank lines
-                this.records = dojo.map(
-                    this.source.split(/^$/),
-                    function (r) { return new MARC.Record({breaker:r}) }
-                );
+            if (chunk) {
+                var args = {};
+                args[this.type] = chunk;
+                return new MARC.Record(args);
             }
+
+            return null;
         }
+
     });
 }
             
