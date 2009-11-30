@@ -6,6 +6,7 @@ use Email::Send;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::Trigger::Reactor;
 use OpenSRF::Utils::Logger qw/:logger/;
+use utf8;
 $Data::Dumper::Indent = 0;
 
 use base 'OpenILS::Application::Trigger::Reactor';
@@ -46,6 +47,8 @@ sub handler {
 
     my $stat;
     my $err;
+
+    utf8::encode($text); # prevent "Wide character" errors in Email::Send
 
     try {
         $stat = $sender->send($text);
