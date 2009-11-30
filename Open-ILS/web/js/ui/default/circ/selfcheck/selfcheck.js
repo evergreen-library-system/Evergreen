@@ -29,6 +29,12 @@ function SelfCheckManager() {
     this.patron = null; 
     this.patronBarcodeRegex = null;
 
+    this.checkouts = [];
+
+    // During renewals, keep track of the ID of the previous circulation. 
+    // Previous circ is used for tracking failed renewals (for receipts).
+    this.prevCirc = null;
+
     // current item barcode
     this.itemBarcode = null; 
 
@@ -100,6 +106,17 @@ SelfCheckManager.prototype.init = function() {
 
     } else {
         this.drawLoginPage();
+    }
+
+    /**
+     * To test printing, pass a URL param of 'testprint'.  The value for the param
+     * should be a JSON string like so:  [{circ:<circ_id>}, ...]
+     */
+    var testPrint = this.cgi.param('testprint');
+    if(testPrint) {
+        this.checkouts = JSON2js(testPrint);
+        this.printReceipt();
+        this.checkouts = [];
     }
 }
 
@@ -489,6 +506,8 @@ SelfCheckManager.prototype.drawHolds = function(holds) {
  */
 SelfCheckManager.prototype.checkout = function(barcode, override) {
 
+    this.prevCirc = null;
+
     if(!barcode) {
         this.updateScanbox(null, true);
         return;
@@ -571,6 +590,7 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
             this.displayCheckout(result, 'renew');
         }
 
+        this.checkouts.push({circ : result.payload.circ.id()});
         sound = 'checkout-success';
         this.updateScanBox();
 
@@ -590,6 +610,7 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
             if( !this.orgSettings[SET_AUTO_RENEW_INTERVAL] ||
                 (this.orgSettings[SET_AUTO_RENEW_INTERVAL] && payload.auto_renew) ) {
+                this.prevCirc = payload.old_circ.id();
                 return { renew : true };
             }
 
@@ -636,10 +657,15 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
         popup = true;
         sound = 'checkout-failure';
 
+        if(action == 'renew')
+            this.checkouts.push({circ : this.prevCirc, renewal_failure : true});
+
         if(result.length) 
             result = result[0];
 
         switch(result.textcode) {
+
+            // TODO custom handler for blocking penalties
 
             case 'MAX_RENEWALS_REACHED' :
                 displayText = dojo.string.substitute(
@@ -737,30 +763,118 @@ SelfCheckManager.prototype.byName = function(node, name) {
 
 
 SelfCheckManager.prototype.drawFinesPage = function() {
-
     openils.Util.hide('oils-selfck-circ-page');
     openils.Util.hide('oils-selfck-holds-page');
     openils.Util.show('oils-selfck-payment-page');
+}
 
+
+SelfCheckManager.prototype.initPrinter = function() {
+    try { // Mozilla only
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalPreferencesRead');
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalPreferencesWrite');
+        var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        if (pref)
+            pref.setBoolPref('print.always_print_silent', true);
+    } catch(E) {
+        console.log("Unable to initialize auto-printing"); 
+    }
 }
 
 /**
  * Print a receipt
  */
-SelfCheckManager.prototype.printReceipt = function() {
+SelfCheckManager.prototype.printReceipt = function(callback) {
+
+    var circIds = [];
+    var circCtx = []; // circ context data.  in this case, renewal_failure info
+
+    // collect the circs and failure info
+    dojo.forEach(
+        this.checkouts, 
+        function(blob) {
+            circIds.push(blob.circ);
+            circCtx.push({renewal_failure:blob.renewal_failure});
+        }
+    );
+
+    var params = [
+        this.authtoken, 
+        this.staff.ws_ou(),
+        null,
+        'format.selfcheck.checkout',
+        'print-on-demand',
+        circIds,
+        circCtx
+    ];
+
+    var self = this;
+    fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.fire_circ_trigger_events'],
+        {   
+            async : true,
+            params : params,
+            oncomplete : function(r) {
+                var resp = openils.Util.readResponse(r);
+                var output = resp.template_output();
+                if(output) {
+                    self.printData(output.data(), self.checkouts.length, callback); 
+                } else {
+                    var error = resp.error_output();
+                    if(error) {
+                        throw new Error("Error creating receipt: " + error.data());
+                    } else {
+                        throw new Error("No receipt data returned from server");
+                    }
+                }
+            }
+        }
+    );
 }
+
+SelfCheckManager.prototype.printData = function(data, numItems, callback) {
+
+    var win = window.open('', '', 'resizable,width=700,height=500,scrollbars=1'); 
+    win.document.body.innerHTML = data;
+    win.print();
+
+    /*
+     * There is no way to know when the browser is done printing.
+     * Make a best guess at when to close the print window by basing
+     * the setTimeout wait on the number of items to be printed plus
+     * a small buffer
+     */
+    var sleepTime = 1000;
+    if(numItems > 0) 
+        sleepTime += (numItems / 2) * 1000;
+
+    setTimeout(
+        function() { 
+            win.close(); // close the print window
+            if(callback)
+                callback(); // fire optional post-print callback
+        },
+        sleepTime 
+    );
+}
+
 
 
 /**
  * Logout the patron and return to the login page
  */
 SelfCheckManager.prototype.logoutPatron = function() {
-
-    this.patron = null;
-    this.holdsSummary = null;
-    this.circSummary = null;
-
-    this.drawLoginPage();
+    if(this.checkouts.length) {
+        this.printReceipt(
+            function() {
+                location.href = location.href;
+            }
+        );
+    } else {
+        location.href = location.href;
+    }
 }
 
 
