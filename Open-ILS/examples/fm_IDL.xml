@@ -5333,6 +5333,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
     </class>
 
+	<class id="qsq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="sql::stored_query" oils_persist:tablename="sql.stored_query" reporter:label="Stored Query">
+		<fields oils_persist:primary="id" oils_persist:sequence="sql.stored_query_id_seq">
+			<field reporter:label="Query ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Query type" name="type" reporter:datatype="text"/>
+			<field reporter:label="Use ALL" name="use_all" reporter:datatype="bool"/>
+			<field reporter:label="Use DISTINCT" name="use_distinct" reporter:datatype="bool"/>
+			<field reporter:label="FROM Clause" name="from_clause" reporter:datatype="int"/>
+			<field reporter:label="WHERE Clause" name="where_clause" reporter:datatype="int"/>
+			<field reporter:label="HAVING Clause" name="having_clause" reporter:datatype="int"/>
+		</fields>
+		<links>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="qseq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="sql::query_sequence" oils_persist:tablename="sql.query_sequence" reporter:label="Query Sequence">
+		<fields oils_persist:primary="id" oils_persist:sequence="sql.sql.query_sequence_id_seq">
+			<field reporter:label="Query Seq ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Parent Query" name="parent_query" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Child Query" name="child_query" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="parent_query" reltype="has_a" key="id" map="" class="qsq"/>
+			<link field="child_query" reltype="has_a" key="id" map="" class="qsq"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="qdt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="sql::datatype" oils_persist:tablename="sql.datatype" reporter:label="Datatype">
 		<fields oils_persist:primary="id" oils_persist:sequence="sql.datatype_id_seq">
 			<field reporter:label="Datatype ID" name="id" reporter:datatype="id"/>
