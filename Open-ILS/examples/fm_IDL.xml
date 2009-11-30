@@ -5421,6 +5421,35 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="qxp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expression" oils_persist:tablename="query.expression" reporter:label="Expression">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Expression Type" name="type" reporter:datatype="text"/>
+			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
+			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Literal" name="literal" reporter:datatype="text"/>
+			<field reporter:label="Table Alias" name="table_alias" reporter:datatype="text"/>
+			<field reporter:label="Column Name" name="column_name" reporter:datatype="text"/>
+			<field reporter:label="Left Operand" name="left_operand" reporter:datatype="link"/>
+			<field reporter:label="Operator" name="operator" reporter:datatype="text"/>
+			<field reporter:label="Right Operand" name="right_operand" reporter:datatype="link"/>
+			<field reporter:label="Function ID" name="function_id" reporter:datatype="link"/>
+			<field reporter:label="Subquery" name="subquery" reporter:datatype="link"/>
+			<field reporter:label="Cast Type" name="cast_type" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="left_operand" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="right_operand" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="function_id" reltype="might_have" key="id" map="" class="qfs"/>
+			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
+			<link field="cast_type" reltype="might_have" key="id" map="" class="qdt"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
 	<!-- ********************************************************************************************************************* -->
