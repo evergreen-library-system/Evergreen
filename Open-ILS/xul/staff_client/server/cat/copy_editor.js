@@ -840,6 +840,13 @@ g.panes_and_field_names = {
 
     ],
     [
+        $('catStrings').getString('staff.cat.copy_editor.field.floating.label'),
+        { 
+            render: 'fm.floating() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.floating() ) ? $("catStrings").getString("staff.cat.copy_editor.field.floating.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.floating.no_or_false") )',
+            input: 'c = function(v){ g.apply("floating",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.floating.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.floating.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+        }
+    ],
+    [
         $('catStrings').getString('staff.cat.copy_editor.field.loan_duration.label'),
         { 
             render: 'switch(Number(fm.loan_duration())){ case 1: $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.short"); break; case 2: $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.normal"); break; case 3: $("catStrings").getString("staff.cat.copy_editor.field.loan_duration.extended"); break; }',
