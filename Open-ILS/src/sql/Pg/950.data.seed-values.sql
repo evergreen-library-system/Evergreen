@@ -2656,7 +2656,7 @@ $$
     [% FOR circ IN target %]
         [%-
             SET idx = loop.count - 1;
-            SET user_data =  EventProcessor.findEvent( event.$idx ).environment.user_data 
+            SET udata =  user_data.$idx
         -%]
         <li>
             <div>[% helpers.get_copy_bib_basics(circ.target_copy.id).title %]</div>
