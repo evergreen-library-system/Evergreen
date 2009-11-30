@@ -5333,6 +5333,62 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
     </class>
 
+	<class id="qdt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="sql::datatype" oils_persist:tablename="sql.datatype" reporter:label="Datatype">
+		<fields oils_persist:primary="id" oils_persist:sequence="sql.datatype_id_seq">
+			<field reporter:label="Datatype ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Datatype Name" name="datatype_name" reporter:datatype="text"/>
+			<field reporter:label="Is Numeric" name="is_numeric" reporter:datatype="bool"/>
+			<field reporter:label="Is Composite" name="is_composite" reporter:datatype="bool"/>
+		</fields>
+		<links>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="qsf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="sql::subfield" oils_persist:tablename="sql.subfield" reporter:label="Subfield">
+		<fields oils_persist:primary="id" oils_persist:sequence="sql.subfield_id_seq">
+			<field reporter:label="Subfield ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Composite Type" name="composite_type" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Subfield Type" name="subfield_type" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="composite_type" reltype="has_a" key="id" map="" class="qdt"/>
+			<link field="subfield_type" reltype="has_a" key="id" map="" class="qdt"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+	
+	<class id="qfs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="sql::function_sig" oils_persist:tablename="sql.function_sig" reporter:label="Function Signature">
+		<fields oils_persist:primary="id" oils_persist:sequence="sql.function_sig_id_seq">
+			<field reporter:label="Function Signature ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Function Name" name="function_name" reporter:datatype="text"/>
+			<field reporter:label="Return Type" name="return_type" reporter:datatype="link"/>
+			<field reporter:label="Is Aggregate" name="is_aggregate" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="return_type" reltype="might_have" key="id" map="" class="qdt"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+	
+	<class id="qfpd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="sql::function_param_def" oils_persist:tablename="sql.function_param_def" reporter:label="Function Parameter Definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="sql.function_param_def_id_seq">
+			<field reporter:label="Function Param Def ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Function ID" name="function_id" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Datatype" name="datatype" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="function_id" reltype="has_a" key="id" map="" class="qfs"/>
+			<link field="datatype" reltype="has_a" key="id" map="" class="qdt"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
 
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
