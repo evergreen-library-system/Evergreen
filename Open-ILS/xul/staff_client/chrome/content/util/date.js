@@ -111,7 +111,7 @@ util.date.formatted_date = function (orig_date,format) {
     return s;
 
     } catch(E) {
-        alert('Error in util.date.formatted_date:\ntypeof orig_date = ' + typeof orig_date + ' orig_date = ' + orig_date + '\ntypeof _date = ' + typeof _date + ' _date = ' + _date + '\nformat = ' + format + '\n' + E);
+        alert('Error in util.date.formatted_date:\nlocation.href = ' + location.href + '\ntypeof orig_date = ' + typeof orig_date + ' orig_date = ' + orig_date + '\ntypeof _date = ' + typeof _date + ' _date = ' + _date + '\nformat = ' + format + '\n' + E);
     }
 }
 
