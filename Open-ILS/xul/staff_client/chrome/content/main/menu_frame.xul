@@ -58,7 +58,11 @@
                     }
                 }
             };
-            idleService.addIdleObserver(idleObserver, delay); // seconds
+            try { // prevent scary popup from invalid delay time
+                idleService.addIdleObserver(idleObserver, delay); // seconds
+            } catch(E) {
+                dump("Idle delay of '" + delay + "' is not a valid delay time");
+            }
             // You could remove the IdleObserver with the following line...
             // idleService.removeIdleObserver(idleObserver, delay);
             // ... but why would we?
