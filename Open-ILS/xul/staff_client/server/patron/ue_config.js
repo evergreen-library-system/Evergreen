@@ -32,7 +32,7 @@ const unameRegex    = /^\w[\.\w\@-]*$/;
 const ssnRegex        = /^\d{3}-\d{2}-\d{4}$/;
 const dlRegex        = /^[a-zA-Z]{2}-\w+/; /* driver's license */
 const phoneRegex    = /^\d{3}-\d{3}-\d{4}(| \S+.*)$/i;
-const nonumRegex    = /^[^\d\s]+[\d]*$/; /* no numbers, no beginning whitespace */
+const nonumRegex    = /^[^\d\s]\D*$/; /* no numbers, no beginning whitespace */
 const dateRegex    = /^\d{4}-\d{2}-\d{2}/;
 const zipRegex        = /^\d{5}(-\d{4}|-?$)|(^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$)/;
 
