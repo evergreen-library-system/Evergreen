@@ -1390,43 +1390,44 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_circ_chain",
+	api_name	=> "open-ils.circ.renewal_chain.retrieve_by_circ.summary",
+	signature => {
+        desc => q/Given a circulation, this returns all circulation objects
+                that are part of the same chain of renewals./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Circ ID', type => 'number'},
+        ],
+        return => {desc => q/List of circ objects, orderd by oldest circ first/}
+    }
+);
+
 sub retrieve_circ_chain {
     my($self, $conn, $auth, $circ_id) = @_;
 
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
 
-    # grab the base circ and all parent (previous) circs by fleshing
-    my $base_circ = $e->retrieve_action_circulation([
-        $circ_id,
-        {
-            flesh => -1,
-            flesh_fields => {circ => [qw/parent_circ workstation checkin_workstation/]}
+    if($self->api_name =~ /summary/) {
+        my $sum = $e->json_query({from => ['action.summarize_circ_chain', $circ_id]})->[0];
+        return undef unless $sum;
+        my $obj = Fieldmapper::action::circ_chain_summary->new;
+        $obj->$_($sum->{$_}) for keys %$sum;
+        return $obj;
+
+    } else {
+
+        my $chain = $e->json_query({from => ['action.circ_chain', $circ_id]});
+
+        for my $circ_info (@$chain) {
+            my $circ = Fieldmapper::action::circulation->new;
+            $circ->$_($circ_info->{$_}) for keys %$circ_info;
+            $conn->respond($circ);
         }
-    ]) or return $e->event;
-
-    return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $base_circ->circ_lib);
-
-    # send each circ to the caller, starting with the oldest circulation
-    my @chain;
-    my $circ = $base_circ;
-    while($circ) {
-        push(@chain, $circ);
-
-        # unflesh for consistency
-        my $parent = $circ->parent_circ;
-        $circ->parent_circ($parent->id) if $parent; 
-
-        $circ = $parent;
     }
-    $conn->respond($_) for reverse(@chain);
-
-    # base circ may not be the end of the chain.  see if there are any subsequent circs
-    $circ = $base_circ;
-    $conn->respond($circ) while ($circ = $e->search_action_circulation([
-        {parent_circ => $circ->id},
-        {flesh => 1, flesh_fields => {circ => [qw/workstation checkin_workstation/]}}
-    ])->[0]);
 
     return undef;
 }

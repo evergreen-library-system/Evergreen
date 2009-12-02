@@ -112,6 +112,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
+	<class id="accs" controller="open-ils.cstore" oils_obj:fieldmapper="action::circ_chain_summary" oils_persist:virtual="true" reporter:label="Circulation Chain Summary">
+        <!-- when the time is right, turn me into a view.  -->
+		<fields>
+            <field reporter:label="Total Circs" name="num_circs" datatype="int"/>
+            <field reporter:label="Start Time" name="start_time" datatype="timestamp"/>
+            <field reporter:label="Checkout Workstation" name="checkout_workstation" datatype="text"/>
+            <field reporter:label="Last Renewal Time" name="last_renewal_time" datatype="timestamp"/>
+            <field reporter:label="Last Stop Fines" name="last_stop_fines" datatype="text"/>
+            <field reporter:label="Last Stop Fines Time" name="last_stop_fines_time" datatype="timestamp"/>
+            <field reporter:label="Last Renewal Workstation" name="last_renewal_workstation" datatype="text"/>
+            <field reporter:label="Last Checkin Workstation" name="last_checkin_workstation" datatype="text"/>
+            <field reporter:label="Last Checkin Time" name="last_checkin_time" datatype="timestamp"/>
+            <field reporter:label="Last Checkin Scan Time" name="last_checkin_scan_time" datatype="timestamp"/>
+		</fields>
+	</class>
+
 
 	<!-- Actually in the DB -->
 	<class id="vibtf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_bib_trash_fields" oils_persist:tablename="vandelay.import_bib_trash_fields" reporter:label="Import/Overlay Fields for Removal">
@@ -2174,6 +2190,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Circulation Type" name="circ_type" oils_persist:virtual="true" reporter:datatype="text"/>
 			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="money"/>
 			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Unrecovered Debt" name="unrecovered" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
