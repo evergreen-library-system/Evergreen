@@ -5508,6 +5508,54 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="qrc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::record_column" oils_persist:tablename="query.record_column" reporter:label="Record Column">
+		<fields oils_persist:primary="id" oils_persist:sequence="record_column_id_seq">
+			<field reporter:label="Record Column ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="From Relation ID" name="from_relation" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Column Name" name="column_name" reporter:datatype="text"/>
+			<field reporter:label="Column Type" name="column_type" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="from_relation" reltype="has_a" key="id" map="" class="qfr"/>
+			<link field="column_type" reltype="has_a" key="id" map="" class="qdt"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="qsi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::select_item" oils_persist:tablename="query.select_item" reporter:label="Select Item">
+		<fields oils_persist:primary="id" oils_persist:sequence="select_item_id_seq">
+			<field reporter:label="Select Item ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Stored Query ID" name="stored_query" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Expression" name="expression" reporter:datatype="link"/>
+			<field reporter:label="Column Alias" name="column_alias" reporter:datatype="text"/>
+			<field reporter:label="Is Grouped By" name="grouped_by" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="stored_query" reltype="has_a" key="id" map="" class="qsq"/>
+			<link field="expression" reltype="has_a" key="id" map="" class="qxp"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="qobi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::order_by_item" oils_persist:tablename="query.order_by_item" reporter:label="Order By Item">
+		<fields oils_persist:primary="id" oils_persist:sequence="order_by_item_id_seq">
+			<field reporter:label="Order By Item ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Stored Query ID" name="stored_query" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Expression" name="expression" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="stored_query" reltype="has_a" key="id" map="" class="qsq"/>
+			<link field="expression" reltype="has_a" key="id" map="" class="qxp"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
 	<!-- ********************************************************************************************************************* -->
