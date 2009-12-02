@@ -107,44 +107,60 @@ sub ranged_billing_types {
 __PACKAGE__->register_method(
 	method	=> "checkouts_by_user",
 	api_name	=> "open-ils.circ.actor.user.checked_out",
+    stream => 1,
 	NOTES		=> <<"	NOTES");
 	Returns a list of open circulations as a pile of objects.  Each object
 	contains the relevant copy, circ, and record
 	NOTES
 
 sub checkouts_by_user {
-	my( $self, $client, $user_session, $user_id ) = @_;
+	my($self, $client, $auth, $user_id) = @_;
 
-	my( $requestor, $target, $copy, $record, $evt );
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
 
-	( $requestor, $target, $evt ) = 
-		$apputils->checkses_requestor( $user_session, $user_id, 'VIEW_CIRCULATIONS');
-	return $evt if $evt;
+	my $circ_ids = $e->search_action_circulation(
+        {   usr => $user_id,
+            checkin_time => undef,
+            '-or' => [
+                {stop_fines => undef},
+                {stop_fines => ['MAXFINES','LONGOVERDUE']}
+            ]
+        },
+        {idlist => 1}
+    );
 
-	my $circs = $apputils->simplereq(
-		'open-ils.cstore',
-		"open-ils.cstore.direct.action.open_circulation.search.atomic", 
-		{ usr => $target->id, checkin_time => undef } );
-#		{ usr => $target->id } );
+    for my $id (@$circ_ids) {
+        my $circ = $e->retrieve_action_circulation([
+            $id,
+            {   flesh => 3,
+                flesh_fields => {
+                    circ => ['target_copy'],
+                    acp => ['call_number'],
+                    acn => ['record']
+                }
+            }
+        ]);
 
-	my @results;
-	for my $circ (@$circs) {
+        # un-flesh for consistency
+        my $c = $circ->target_copy;
+        $circ->target_copy($c->id);
 
-		( $copy, $evt )  = $apputils->fetch_copy($circ->target_copy);
-		return $evt if $evt;
+        my $cn = $c->call_number;
+        $c->call_number($cn->id);
 
-		$logger->debug("Retrieving record for copy " . $circ->target_copy);
+        my $t = $cn->record;
+        $cn->record($t->id);
 
-		($record, $evt) = $apputils->fetch_record_by_copy( $circ->target_copy );
-		return $evt if $evt;
+        $client->respond(
+            {   circ => $circ,
+                copy => $c,
+                record => $U->record_to_mvr($t)
+            }
+        );
+    }
 
-		my $mods = $apputils->record_to_mvr($record);
-
-		push( @results, { copy => $copy, circ => $circ, record => $mods } );
-	}
-
-	return \@results;
-
+    return undef;
 }
 
 
