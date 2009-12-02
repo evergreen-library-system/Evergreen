@@ -5422,7 +5422,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="qxp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expression" oils_persist:tablename="query.expression" reporter:label="Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="">
+		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Expression Type" name="type" reporter:datatype="text"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -5445,6 +5445,47 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="function_id" reltype="might_have" key="id" map="" class="qfs"/>
 			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
 			<link field="cast_type" reltype="might_have" key="id" map="" class="qdt"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="qcb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::case_branch" oils_persist:tablename="query.case_branch" reporter:label="Case Branch">
+		<fields oils_persist:primary="id" oils_persist:sequence="case_branch_id_seq">
+			<field reporter:label="Case Branch ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Condition" name="condition" reporter:datatype="link"/>
+			<field reporter:label="Result" name="result" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="condition" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="result" reltype="has_a" key="id" map="" class="qxp"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="qfr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::from_relation" oils_persist:tablename="query.from_relation" reporter:label="From Relation">
+		<fields oils_persist:primary="id" oils_persist:sequence="from_relation_id_seq">
+			<field reporter:label="From Relation ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="From Relation Type" name="type" reporter:datatype="text"/>
+			<field reporter:label="Table Name" name="table_name" reporter:datatype="text"/>
+			<field reporter:label="Class Name" name="class_name" reporter:datatype="text"/>
+			<field reporter:label="Subquery ID" name="subquery" reporter:datatype="link"/>
+			<field reporter:label="Function Call ID" name="function_call" reporter:datatype="link"/>
+			<field reporter:label="Table Alias" name="table_alias" reporter:datatype="text"/>
+			<field reporter:label="Parent Relation ID" name="parent_relation" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Join Type" name="join_type" reporter:datatype="text"/>
+			<field reporter:label="On Clause ID" name="on_clause" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
+			<link field="function_call" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_relation" reltype="might_have" key="id" map="" class="qfr"/>
+			<link field="on_clause" reltype="might_have" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
