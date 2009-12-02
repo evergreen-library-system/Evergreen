@@ -77,6 +77,9 @@ SelfCheckManager.prototype.init = function() {
     this.authtoken = openils.User.authtoken;
     this.loadOrgSettings();
 
+    this.circTbody = dojo.byId('oils-selfck-circ-tbody');
+    this.itemsOutTbody = dojo.byId('oils-selfck-circ-out-tbody');
+
     // workstation is required but none provided
     if(this.orgSettings[SET_WORKSTATION_REQUIRED] && !this.workstation) {
         alert(dojo.string.substitute(localeStrings.WORKSTATION_REQUIRED));
@@ -87,11 +90,13 @@ SelfCheckManager.prototype.init = function() {
     // connect onclick handlers to the various navigation links
     var linkHandlers = {
         'oils-selfck-hold-details-link' : function() { self.drawHoldsPage(); },
-        'oils-selfck-nav-holds' : function() { self.drawHoldsPage(); },
+        //'oils-selfck-nav-holds' : function() { self.drawHoldsPage(); },
         'oils-selfck-pay-fines-link' : function() { self.drawFinesPage(); },
-        'oils-selfck-nav-fines' : function() { self.drawFinesPage(); },
+        //'oils-selfck-nav-fines' : function() { self.drawFinesPage(); },
         'oils-selfck-nav-home' : function() { self.drawCircPage(); },
-        'oils-selfck-nav-logout' : function() { self.logoutPatron(); }
+        'oils-selfck-nav-logout' : function() { self.logoutPatron(); },
+        'oils-selfck-nav-logout-print' : function() { self.logoutPatron(true); },
+        'oils-selfck-items-out-details-link' : function() { self.drawItemsOutPage(); }
     }
 
     for(var id in linkHandlers) 
@@ -293,6 +298,11 @@ SelfCheckManager.prototype.updateScanBox = function(args) {
  */
 SelfCheckManager.prototype.drawCircPage = function() {
 
+    openils.Util.show('oils-selfck-circ-tbody');
+
+    while(this.itemsOutTbody.childNodes[0])
+        this.itemsOutTbody.removeChild(this.itemsOutTbody.childNodes[0]);
+
     var self = this;
     this.updateScanBox({
         msg : 'Please enter an item barcode', // TODO i18n
@@ -303,7 +313,6 @@ SelfCheckManager.prototype.drawCircPage = function() {
     openils.Util.hide('oils-selfck-holds-page');
     openils.Util.show('oils-selfck-circ-page');
 
-    this.circTbody = dojo.byId('oils-selfck-circ-tbody');
     if(!this.circTemplate)
         this.circTemplate = this.circTbody.removeChild(dojo.byId('oils-selfck-circ-row'));
 
@@ -336,6 +345,51 @@ SelfCheckManager.prototype.drawCircPage = function() {
         for(var i in [1,2,3]) 
             this.displayCheckout(this.mockCheckout, 'checkout');
     }
+}
+
+SelfCheckManager.prototype.drawItemsOutPage = function() {
+    openils.Util.hide('oils-selfck-circ-tbody');
+    openils.Util.hide('oils-selfck-payment-page');
+    openils.Util.hide('oils-selfck-holds-page');
+    openils.Util.show('oils-selfck-circ-page');
+
+    while(this.itemsOutTbody.childNodes[0])
+        this.itemsOutTbody.removeChild(this.itemsOutTbody.childNodes[0]);
+
+    progressDialog.show(true);
+    
+    var self = this;
+    fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.actor.user.checked_out.atomic'],
+        {
+            async : true,
+            params : [this.authtoken, this.patron.id()],
+            oncomplete : function(r) {
+
+                var resp = openils.Util.readResponse(r);
+
+                var circs = resp.sort(
+                    function(a, b) {
+                        if(a.circ.due_date() > b.circ.due_date())
+                            return -1;
+                        return 1;
+                    }
+                );
+
+                progressDialog.hide();
+
+                dojo.forEach(circs,
+                    function(circ) {
+                        self.displayCheckout(
+                            {payload : circ}, 
+                            (circ.circ.parent_circ()) ? 'renew' : 'checkout',
+                            true
+                        );
+                    }
+                );
+            }
+        }
+    );
 }
 
 SelfCheckManager.prototype.updateHoldsSummary = function() {
@@ -731,7 +785,7 @@ SelfCheckManager.prototype.renew = function(barcode, override) {
 /**
  * Display the result of a checkout or renewal in the items out table
  */
-SelfCheckManager.prototype.displayCheckout = function(evt, type) {
+SelfCheckManager.prototype.displayCheckout = function(evt, type, itemsOut) {
 
     var copy = evt.payload.copy;
     var record = evt.payload.record;
@@ -753,7 +807,9 @@ SelfCheckManager.prototype.displayCheckout = function(evt, type) {
         dojo.date.locale.format(date, {selector : 'date'});
 
     // put new circs at the top of the list
-    this.circTbody.insertBefore(row, this.circTbody.getElementsByTagName('tr')[0]);
+    var tbody = this.circTbody;
+    if(itemsOut) tbody = this.itemsOutTbody;
+    tbody.insertBefore(row, tbody.getElementsByTagName('tr')[0]);
 }
 
 
@@ -865,8 +921,8 @@ SelfCheckManager.prototype.printData = function(data, numItems, callback) {
 /**
  * Logout the patron and return to the login page
  */
-SelfCheckManager.prototype.logoutPatron = function() {
-    if(this.checkouts.length) {
+SelfCheckManager.prototype.logoutPatron = function(print) {
+    if(print && this.checkouts.length) {
         this.printReceipt(
             function() {
                 location.href = location.href;

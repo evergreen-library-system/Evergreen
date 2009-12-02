@@ -1,7 +1,7 @@
 
 body {
     font-family: Arial, Verdana;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 #oils-selfck-top-div {
@@ -79,8 +79,8 @@ body {
 }
 
 #oils-selfck-info-nav span {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 #oils-selfck-info-nav span.selected {
