@@ -5,6 +5,8 @@
 
 .hideme { display: none; }
 
+.change_to_credit { text-decoration: line-through; }
+
 hbox#PatronNotNavBar { border-top: solid thin black; }
 deck#patron_deck { border-left: solid thin black; }
 .patronNameLarge { font-weight: bold; }

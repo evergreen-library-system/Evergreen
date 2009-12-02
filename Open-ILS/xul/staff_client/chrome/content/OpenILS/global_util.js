@@ -12,6 +12,7 @@
             }
 
             switch(a) {
+                case 'staff' : return data.list.au[0]; break;
                 case 'staff_id' : return data.list.au[0].id(); break;
                 case 'staff_usrname' : return data.list.au[0].usrname(); break;
                 case 'ws_ou' :

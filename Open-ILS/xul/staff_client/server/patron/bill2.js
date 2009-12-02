@@ -66,6 +66,7 @@ function my_init() {
 }
 
 function event_listeners() {
+    try {
         $('details').addEventListener(
             'command',
             handle_details,
@@ -109,6 +110,21 @@ function event_listeners() {
             false
         );
 
+        $('convert_change_to_credit').addEventListener(
+            'command',
+            function(ev) {
+                if (ev.target.checked) {
+                    addCSSClass( $('change_due'), 'change_to_credit' );
+                } else {
+                    removeCSSClass( $('change_due'), 'change_to_credit' );
+                }
+            },
+            false
+        );
+
+    } catch(E) {
+        alert('Error in bill2.js, event_listeners(): ' + E);
+    }
 }
 
 function $(id) { return document.getElementById(id); }
@@ -119,6 +135,7 @@ function default_focus() {
 
 function tally_pending() {
     try {
+        var payments = [];
         JSAN.use('util.money');
         var tb = $('payment');
         var payment_tendered = util.money.dollars_float_to_cents_integer( tb.value );
@@ -127,12 +144,16 @@ function tally_pending() {
         for (var i = 0; i < retrieve_ids.length; i++) {
             var row_params = g.row_map[retrieve_ids[i]];
             if (g.check_map[retrieve_ids[i]]) { 
-                payment_pending += util.money.dollars_float_to_cents_integer( row_params.row.my.payment_pending );
+                var value = util.money.dollars_float_to_cents_integer( row_params.row.my.payment_pending );
+                payment_pending += value;
+                if (value != '0.00') { payments.push( [ retrieve_ids[i], value ] ); }
             }
         }
         var change_pending = payment_tendered - payment_pending;
         $('pending_payment').value = util.money.cents_as_dollars( payment_pending );
         $('pending_change').value = util.money.cents_as_dollars( change_pending );
+        $('change_due').value = util.money.cents_as_dollars( change_pending );
+        return { 'payments' : payments, 'change' : change_pending };
     } catch(E) {
         alert('Error in bill2.js, tally_pending(): ' + E);
     }
@@ -501,4 +522,146 @@ function distribute_payment() {
         alert('Error in bill2.js, distribute_payment(): ' + E);
     }
 }
+
+function apply_payment() {
+    try {
+        var payment_blob = {};
+        JSAN.use('util.window');
+        var win = new util.window();
+        switch($('payment_type').value) {
+            case 'credit_card_payment' :
+                g.data.temp = '';
+                g.data.stash('temp');
+                var my_xulG = win.open(
+                    urls.XUL_PATRON_BILL_CC_INFO,
+                    'billccinfo',
+                    'chrome,resizable,modal',
+                    {'patron_id': g.patron_id}
+                );
+                g.data.stash_retrieve();
+                payment_blob = JSON2js( g.data.temp ); // FIXME - replace with my_xulG and update_modal_xulG, though it looks like we were using that before and moved away from it
+            break;
+            case 'check_payment' :
+                g.data.temp = '';
+                g.data.stash('temp');
+                var my_xulG = win.open(
+                    urls.XUL_PATRON_BILL_CHECK_INFO,
+                    'billcheckinfo',
+                    'chrome,resizable,modal'
+                );
+                g.data.stash_retrieve();
+                payment_blob = JSON2js( g.data.temp );
+            break;
+        }
+        if (
+            (typeof payment_blob == 'undefined') || 
+            payment_blob=='' || 
+            payment_blob.cancelled=='true'
+        ) { 
+            alert( $('commonStrings').getString('common.cancelled') ); 
+            return; 
+        }
+        payment_blob.userid = g.patron_id;
+        payment_blob.note = payment_blob.note || '';
+        //payment_blob.cash_drawer = 1; // FIXME: get new Config() to work
+        payment_blob.payment_type = $('payment_type').value;
+        var tally_blob = tally_pending();
+        payment_blob.payments = tally_blob.payments;
+        payment_blob.patron_credit = $('convert_change_to_credit').checked ? tally_blob.change : '0.00'; 
+        if ( payment_blob.payments.length == 0 && payment_blob.patron_credit == '0.00' ) {
+            alert($("patronStrings").getString('staff.patron.bills.apply_payment.nothing_applied'));
+            return;
+        }
+        if ( pay( payment_blob ) ) {
+
+            g.data.voided_billings = []; g.data.stash('voided_billings');
+            g.bill_list.clear();
+            retrieve_mbts_for_list();
+            if (typeof window.refresh == 'function') window.refresh();
+            if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
+            try {
+                var no_print_prompting = g.data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+                if (no_print_prompting) {
+                    if (no_print_prompting.indexOf( "Bill Pay" ) > -1) return; // Skip print attempt
+                }
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                g.data.stash_retrieve();
+                var template = 'bill_payment';
+                JSAN.use('patron.util'); JSAN.use('util.functional');
+                var params = { 
+                    'patron' : g.patron,
+                    'lib' : data.hash.aou[ ses('ws_ou') ],
+                    'staff' : ses('staff'),
+                    'header' : data.print_list_templates[template].header,
+                    'line_item' : data.print_list_templates[template].line_item,
+                    'footer' : data.print_list_templates[template].footer,
+                    'type' : data.print_list_templates[template].type,
+                    'list' : util.functional.map_list(
+                        payment_blob.payments,
+                        function(o) {
+                            return {
+                                'bill_id' : o[0],
+                                'payment' : o[1],
+                                'last_billing_type' : g.bill_map[ o[0] ].transaction.last_billing_type(),
+                                'last_billing_note' : g.bill_map[ o[0] ].transaction.last_billing_note(),
+                                'title' : typeof g.bill_map[ o[0] ].title != 'undefined' ? g.bill_map[ o[0] ].title : '', 
+                                'barcode' : typeof g.bill_map[ o[0] ].barcode != 'undefined' ? g.bill_map[ o[0] ].barcode : ''
+                            };
+                        }
+                    ),
+                    'data' : g.previous_summary
+                };
+                g.error.sdump('D_DEBUG',js2JSON(params));
+                if ($('auto_print').checked) params.no_prompt = true;
+                JSAN.use('util.print'); var print = new util.print();
+                print.tree_list( params );
+            } catch(E) {
+                g.standard_unexpected_error_alert('bill receipt', E);
+            }
+        }
+    } catch(E) {
+        alert('Error in bill2.js, apply_payment(): ' + E);
+    }
+}
+
+function pay(payment_blob) {
+    try {
+        var x = $('annotate_payment');
+        if (x && x.checked && (! payment_blob.note)) {
+            payment_blob.note = window.prompt(
+                $("patronStrings").getString('staff.patron.bills.pay.annotate_payment'),
+                '', 
+                $("patronStrings").getString('staff.patron.bills.pay.annotate_payment.title')
+            );
+        }
+        previous_summary = {
+            original_balance : obj.controller.view.bill_total_owed.value,
+            voided_balance : obj.controller.view.voided_balance.value,
+            payment_received : obj.controller.view.bill_payment_amount.value,
+            payment_applied : obj.controller.view.bill_payment_applied.value,
+            change_given : obj.controller.view.bill_change_amount.value,
+            credit_given : obj.controller.view.bill_credit_amount.value,
+            new_balance : obj.controller.view.bill_new_balance.value,
+            payment_type : obj.controller.view.payment_type.getAttribute('label'),
+            note : payment_blob.note
+        }
+        var robj = g.network.request(
+            api.BILL_PAY.app,    
+            api.BILL_PAY.method,
+            [ ses(), payment_blob ]
+        );
+        if (robj == 1) { return true; } 
+        if (typeof robj.ilsevent != 'undefined') {
+            switch(Number(robj.ilsevent)) {
+                case 0 /* SUCCESS */ : return true; break;
+                case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert($("patronStrings").getFormattedString('staff.patron.bills.pay.refund_exceeds_desk_payment', [robj.desc])); return false; break;
+                default: throw(robj); break;
+            }
+        }
+    } catch(E) {
+        obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.pay.payment_failed'),E);
+        return false;
+    }
+}
+
 

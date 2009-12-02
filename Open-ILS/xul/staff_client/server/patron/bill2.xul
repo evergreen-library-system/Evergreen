@@ -46,9 +46,9 @@
     <popupset>
         <popup id="actions_popup">
             <menuitem command="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" oncommand="alert('Not Yet Implemented');"/>
-            <menuitem command="voidall" label="Void All Billings" accesskey="" />
-            <menuitem command="refund" label="Refund" accesskey="" />
-            <menuitem command="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="" />
+            <menuitem command="voidall" label="&staff.patron.bill_interface.void_all_billings.label;" accesskey="&staff.patron.bill_interface.void_all_billings.accesskey;" />
+            <menuitem command="refund" label="&staff.patron.bill_interface.refund.label;" accesskey="&staff.patron.bill_interface.refund.accesskey;" />
+            <menuitem command="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="&staff.patron.bill_interface.add_billing.accesskey;" />
             <menuitem command="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;"/>
         </popup>
     </popupset>
@@ -67,20 +67,20 @@
                     </columns>
                     <rows>
                         <row>
-                            <vbox pack="center"><label value="Total Owed:" class="big_emphasis1" /></vbox><vbox pack="center"><label id="total_owed2" class="big_emphasis1"/></vbox>
+                            <vbox pack="center"><label value="&staff.patron.bill_interface.total_owed;" class="big_emphasis1" /></vbox><vbox pack="center"><label id="total_owed2" class="big_emphasis1"/></vbox>
                             <spacer flex="1"/>
-                            <vbox pack="center"><label value="Refunds Available:" class="big_emphasis2"/></vbox><vbox pack="center"><label id="refunds_owed" class="big_emphasis2"/></vbox>
+                            <vbox pack="center"><label value="&staff.patron.bill_interface.refunds_available;" class="big_emphasis2"/></vbox><vbox pack="center"><label id="refunds_owed" class="big_emphasis2"/></vbox>
                         </row>
                         <row>
-                            <vbox pack="center"><label value="Total Checked:" class="big_emphasis1" /></vbox><vbox pack="center"><label id="checked_owed2" class="big_emphasis1"/></vbox>
+                            <vbox pack="center"><label value="&staff.patron.bill_interface.total_checked;" class="big_emphasis1" /></vbox><vbox pack="center"><label id="checked_owed2" class="big_emphasis1"/></vbox>
                             <spacer flex="1"/>
-                            <vbox pack="center"><label value='Credit Available:' class="big_emphasis2"/></vbox><vbox pack="center"><label id="credit_forward" class="big_emphasis2"/></vbox>
+                            <vbox pack="center"><label value='&staff.patron.bill_interface.credit_available;' class="big_emphasis2"/></vbox><vbox pack="center"><label id="credit_forward" class="big_emphasis2"/></vbox>
                         </row>
                     </rows>
                 </grid>
                 <spacer flex="1"/>
                 <groupbox>
-                    <caption label="Pay Bill"/>
+                    <caption label="&staff.patron.bills_overlay.pay_bill.label;"/>
                     <grid>
                         <columns>
                             <column/>
@@ -88,13 +88,13 @@
                         </columns>
                         <rows>
                             <row>
-                                <label value="Payment Type:" class="emphasis1" accesskey="T" control="payment_type"/>
+                                <label value="&staff.patron.bills_overlay.payment_type.value;" class="emphasis1" accesskey="&staff.patron.bills_overlay.payment_type.accesskey;" control="payment_type"/>
                                 <menulist id="payment_type">
                                     <menupopup id="payment_type_menupopup">
                                         <menuitem id="payment_type_menuitem1" label="&staff.patron.bills_overlay.cash.label;" value="cash_payment"/>
                                         <menuitem id="payment_type_menuitem2" label="&staff.patron.bills_overlay.check.label;" value="check_payment"/>
                                         <menuitem id="payment_type_menuitem3" label="&staff.patron.bills_overlay.credit_card.label;" value="credit_card_payment"/>
-                                        <menuitem id="payment_type_menuitem4" label="Patron Credit" value="credit_payment" />
+                                        <menuitem id="payment_type_menuitem4" label="&staff.patron.bills_overlay.patron_credit.label;" value="credit_payment" />
                                         <menuitem id="payment_type_menuitem5" label="&staff.patron.bills_overlay.word.label;" value="work_payment"/>
                                         <menuitem id="payment_type_menuitem6" label="&staff.patron.bills_overlay.forgive.label;" value="forgive_payment"/>
                                         <menuitem id="payment_type_menuitem7" label="&staff.patron.bills_overlay.goods.label;" value="goods_payment"/>
@@ -102,30 +102,30 @@
                                 </menulist>
                             </row>
                             <row>
-                                <label value="Payment Received:" class="emphasis1" />
+                                <label value="&staff.patron.bill_interface.payment_received.label;" accesskey="&staff.patron.bill_interface.payment_received.accesskey;" class="emphasis1" control="payment" />
                                 <hbox><textbox id="payment" size="6"/></hbox>
                             </row>
                         </rows>
                     </grid>
                     <hbox>
-                        <checkbox id="annotate_payment" label="&staff.patron.bills_overlay.annotate_payment.label;" accesskey="n" oils_persist="checked" checked="false" oncommand="default_focus();"/>
-                        <button label="See Distribution" accesskey="D" oncommand="distribute_payment(); default_focus();"/>
-                        <button id="apply_payment_btn" label="Apply Payment" accesskey="P"/>
+                        <checkbox id="annotate_payment" label="&staff.patron.bills_overlay.annotate_payment.label;" accesskey="&staff.patron.bills_overlay.annotate_payment.accesskey;" oils_persist="checked" checked="false" oncommand="default_focus();"/>
+                        <button label="&staff.patron.bills_overlay.see_distribution.label;" accesskey="&staff.patron.bills_overlay.see_distribution.accesskey;" oncommand="distribute_payment(); default_focus();"/>
+                        <button id="apply_payment_btn" label="&staff.patron.bills_overlay.apply_payment.label;" accesskey="&staff.patron.bills_overlay.apply_payment.accesskey;"/>
                     </hbox>
                 </groupbox>
             </hbox>
             <splitter />
             <hbox>
-                <button id="bill_patron_btn" label="Bill Patron" accesskey="" />
-                <button label="History" accesskey="" />
+                <button id="bill_patron_btn" label="&staff.patron.bills_overlay.bill_patron.label;" accesskey="&staff.patron.bills_overlay.bill_patron.accesskey;" />
+                <button id="bill_history_btn" label="&staff.patron.bills_overlay.history.label;" accesskey="&staff.patron.bills_overlay.history.accesskey;" />
                 <spacer flex="1"/>
                 <menubar>
-                    <menu label="Actions for Selected Rows" accesskey="A">
+                    <menu label="&staff.patron.bill_interface.actions.label;" accesskey="&staff.patron.bill_interface.actions.accesskey;">
                         <menupopup>
                             <menuitem command="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" oncommand="alert('Not Yet Implemented');"/>
-                            <menuitem command="voidall" label="Void All Billings" accesskey="V" />
-                            <menuitem command="refund" label="Refund" accesskey="R" />
-                            <menuitem command="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="A" />
+                            <menuitem command="voidall" label="&staff.patron.bill_interface.void_all_billings.label;" accesskey="&staff.patron.bill_interface.void_all_billings.accesskey;" />
+                            <menuitem command="refund" label="&staff.patron.bill_interface.refund.label;" accesskey="&staff.patron.bill_interface.refund.accesskey;" />
+                            <menuitem command="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="&staff.patron.bill_interface.add_billing.accesskey;" />
                             <menuitem command="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;"/>
                         </menupopup>
                     </menu>
@@ -161,6 +161,7 @@
                         <label value='&staff.patron.bill_interface.voided_this_session.label;' class="emphasis1"/><label id="currently_voided" value="$0.00"/>
                     </hbox>
                     <hbox><label value='Change Due Upon Payment:' class="big_emphasis1"/><label id="change_due" value="$0.00" class="big_emphasis1"/></hbox>
+                    <checkbox id="convert_change_to_credit" label="Convert to Patron Credit" />
                 </vbox>
                 <spacer flex="1"/>
                 <grid>

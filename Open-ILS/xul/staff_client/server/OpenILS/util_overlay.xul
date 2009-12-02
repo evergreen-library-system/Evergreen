@@ -10,6 +10,8 @@
         <script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
         <script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
         <script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
+        <script>try { dojo.require('dojo.date.locale'); } catch(E) { alert(E); }</script>
+        <script>try { dojo.require('dojo.date.stamp'); } catch(E) { alert(E); }</script>
         <script type="text/javascript" src="/xul/server/main/constants.js" />
         <script type="text/javascript" src="/xul/server/OpenILS/data.js" />
         <script type="text/javascript" src="/xul/server/util/barcode.js" />

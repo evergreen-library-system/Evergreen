@@ -2510,7 +2510,20 @@
 <!ENTITY staff.patron.bill_history.selected_billed.label "Selected Billed:">
 <!ENTITY staff.patron.bill_history.selected_paid.label "Selected Paid:">
 
+<!ENTITY staff.patron.bill_interface.total_owed "Total Owed:">
+<!ENTITY staff.patron.bill_interface.total_checked "Total Checked:">
+<!ENTITY staff.patron.bill_interface.refunds_available "Refunds Available:">
+<!ENTITY staff.patron.bill_interface.credit_available "Credit Available:">
+<!ENTITY staff.patron.bill_interface.payment_received.label "Payment Received:">
+<!ENTITY staff.patron.bill_interface.payment_received.accesskey "R">
+<!ENTITY staff.patron.bill_interface.actions.label "Actions for Selected Transactions">
+<!ENTITY staff.patron.bill_interface.actions.accesskey "A">
 <!ENTITY staff.patron.bill_interface.add_billing.label "Add Billing">
+<!ENTITY staff.patron.bill_interface.add_billing.accesskey "B">
+<!ENTITY staff.patron.bill_interface.void_all_billings.label "Void All Billings">
+<!ENTITY staff.patron.bill_interface.void_all_billings.accesskey "V">
+<!ENTITY staff.patron.bill_interface.refund.label "Refund">
+<!ENTITY staff.patron.bill_interface.refund.accesskey "R">
 <!ENTITY staff.patron.bill_interface.full_details.label "Full Details">
 <!ENTITY staff.patron.bill_interface.full_details.accesskey "D">
 <!ENTITY staff.patron.bill_interface.show_in_catalog.label "Show in Catalog">
@@ -2532,10 +2545,11 @@
 <!ENTITY staff.patron.bills_overlay.new_balance.value "= New Balance">
 <!ENTITY staff.patron.bills_overlay.pay_bill.label "Pay Bill">
 <!ENTITY staff.patron.bills_overlay.payment_type.value "Payment Type">
-<!ENTITY staff.patron.bills_overlay.payment_type.accesskey "t">
+<!ENTITY staff.patron.bills_overlay.payment_type.accesskey "T">
 <!ENTITY staff.patron.bills_overlay.cash.label "Cash">
 <!ENTITY staff.patron.bills_overlay.check.label "Check">
 <!ENTITY staff.patron.bills_overlay.credit_card.label "Credit Card">
+<!ENTITY staff.patron.bills_overlay.patron_credit.label "Patron Credit">
 <!ENTITY staff.patron.bills_overlay.word.label "Work">
 <!ENTITY staff.patron.bills_overlay.forgive.label "Forgive">
 <!ENTITY staff.patron.bills_overlay.goods.label "Goods">
@@ -2549,7 +2563,11 @@
 <!ENTITY staff.patron.bills_overlay.history.label "History">
 <!ENTITY staff.patron.bills_overlay.history.accesskey "H">
 <!ENTITY staff.patron.bills_overlay.annotate_payment.label "Annotate Payment">
+<!ENTITY staff.patron.bills_overlay.annotate_payment.accesskey "n">
 <!ENTITY staff.patron.bills_overlay.convert_change_to_credit.label "Convert Change to Patron Credit">
+<!ENTITY staff.patron.bills_overlay.convert_change_to_credit.accesskey "C">
+<!ENTITY staff.patron.bills_overlay.see_distribution.label "See Distribution">
+<!ENTITY staff.patron.bills_overlay.see_distribution.accesskey "D">
 <!ENTITY staff.patron.bills_overlay.apply_payment.label "Apply Payment!">
 <!ENTITY staff.patron.bills_overlay.apply_payment.accesskey "P">
 <!ENTITY staff.patron.bill_summary_overlay.bill_number.value "Bill #">
