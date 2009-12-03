@@ -210,12 +210,9 @@ patron.items.prototype = {
                     fake_circ.xact_start( nc_circ.circ_time() );
                     fake_circ.renewal_remaining(0);
                     fake_circ.stop_fines('Non-Cataloged');
+                    fake_circ.due_date( nc_circ.duedate() );
                         
-                    JSAN.use('util.date');
-                    var c = nc_circ.circ_time();
-                    var d = c == "now" ? new Date() : util.date.db_date2Date( c );
-                    var t = obj.data.hash.cnct[ nc_circ.item_type() ];
-                    if (!t) {
+                    if (!obj.data.hash.cnct[ nc_circ.item_type() ]) {
                         var robj2 = obj.network.simple_request('FM_CNCT_RETRIEVE',[ nc_circ.circ_lib() ]);
                         if (typeof robj2.ilsevent != 'undefined') throw(robj);
                         obj.data.stash_retrieve();
@@ -226,12 +223,7 @@ patron.items.prototype = {
                             }
                         }
                         obj.data.stash('hash','list');
-                        t = obj.data.hash.cnct[ nc_circ.item_type() ];
                     }
-                    var cd = t.circ_duration() || $("patronStrings").getString('staff.patron.items.show_noncats.14_days');
-                    var i = util.date.interval_to_seconds( cd ) * 1000;
-                    d.setTime( Date.parse(d) + i );
-                    fake_circ.due_date( util.date.formatted_date(d,'%F') );
     
                     var fake_record = new mvr();
                     fake_record.title( obj.data.hash.cnct[ nc_circ.item_type() ].name());
