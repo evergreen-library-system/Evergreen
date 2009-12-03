@@ -135,6 +135,9 @@ function uEditLoadStageUser(stageUname) {
     stageUser = data.user;
     patron = uEditNewPatron();
 
+    if(!stageUser) 
+        return patron;
+
     // copy the data into our new user object
     for(var key in fieldmapper.IDL.fmclasses.stgu.field_map) {
         if(fieldmapper.IDL.fmclasses.au.field_map[key] && !fieldmapper.IDL.fmclasses.stgu.field_map[key].virtual) {
