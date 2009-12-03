@@ -38,6 +38,7 @@ sub create_non_cat_circ {
 		$evt = $editor->event unless
 			$circ = $editor->create_action_non_cataloged_circulation( $circ )
 
+
 	} else {
 		$id = $U->simplereq(
 			'open-ils.storage',
@@ -45,6 +46,11 @@ sub create_non_cat_circ {
 		$evt = $U->DB_UPDATE_FAILED($circ) unless $id;
 		$circ->id($id);
 	}
+
+    if($circ) {
+        my $e = ($editor) ? $editor : new_editor();
+        $circ = noncat_due_date($e, $circ);
+    }
 
 	return( $circ, $evt );
 }
@@ -159,25 +165,30 @@ sub fetch_noncat {
 	if( $c->patron ne $e->requestor->id ) {
 		return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
 	}
+    return noncat_due_date($e, $c);
+}
 
-	my $otype = $e->retrieve_config_non_cataloged_type($c->item_type) 
+sub noncat_due_date {
+    my($e, $circ) = @_;
+
+	my $otype = $e->retrieve_config_non_cataloged_type($circ->item_type) 
 		or return $e->die_event;
 
-	my $duedate = $_dt_parser->parse_datetime( clense_ISO8601($c->circ_time) );
+	my $duedate = $_dt_parser->parse_datetime( clense_ISO8601($circ->circ_time) );
 	$duedate = $duedate
 		->add( seconds => interval_to_seconds($otype->circ_duration) )
 		->strftime('%FT%T%z');
 
 	my $offset = $e->request(
 		'open-ils.storage.actor.org_unit.closed_date.overlap',
-		$c->circ_lib,
+		$circ->circ_lib,
 		$duedate
 	);
 
 	$duedate = $offset->{end} if ($offset);
-	$c->duedate($duedate);
+	$circ->duedate($duedate);
 
-	return $c;
+	return $circ;
 }
 
 
