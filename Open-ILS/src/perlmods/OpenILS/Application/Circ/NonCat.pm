@@ -158,7 +158,7 @@ __PACKAGE__->register_method(
 
 sub fetch_noncat {
 	my( $self, $conn, $auth, $circid ) = @_;
-	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+	my $e = new_editor( authtoken => $auth );
 	return $e->event unless $e->checkauth;
 	my $c = $e->retrieve_action_non_cataloged_circulation($circid)
 		or return $e->event;
@@ -179,7 +179,7 @@ sub noncat_due_date {
 		->add( seconds => interval_to_seconds($otype->circ_duration) )
 		->strftime('%FT%T%z');
 
-	my $offset = $e->request(
+	my $offset = $U->storagereq(
 		'open-ils.storage.actor.org_unit.closed_date.overlap',
 		$circ->circ_lib,
 		$duedate
