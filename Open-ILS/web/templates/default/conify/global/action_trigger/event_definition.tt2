@@ -3,6 +3,16 @@
 <script src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'> </script>
 <script>openils.Util.addOnLoad(loadEventDef)</script>
 
+<div class='hidden'>
+    <select dojoType='dijit.form.ComboBox' jsId='eventDefGranularity'>
+        <option value='hourly'>Hourly</option>
+        <option value='daily'>Daily</option>
+        <option value='weekly'>Weekly</option>
+        <option value='monthly'>Monthly</option>
+        <option value='yearly'>Yearly</option>
+    </select>
+</div>
+
 
 <div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='eventDefTabs'>
 

@@ -128,10 +128,14 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
         build : function(onload) {
 
+            if(this.widgetValue == null)
+                this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
+
             if(this.widget) {
                 // core widget provided for us, attach and move on
                 if(this.parentNode) // may already be in the "right" place
                     this.parentNode.appendChild(this.widget.domNode);
+                this._widgetLoaded();
                 return;
             }
             
@@ -139,8 +143,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 this.parentNode = dojo.create('div');
 
             this.onload = onload;
-            if(this.widgetValue == null)
-                this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
 
             if(this.readOnly) {
                 dojo.require('dijit.layout.ContentPane');
