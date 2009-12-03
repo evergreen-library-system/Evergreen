@@ -69,9 +69,9 @@ class IDL(basel10n.BaseL10N):
             for name in entry.occurrences:
                 if entry.msgstr == '':
                     # No translation available; use the en-US definition
-                    self.definitions.append(unicode(entity % (name[0], entry.msgid), 'utf_8'))
+                    self.definitions.append(entity % (name[0], entry.msgid))
                 else:
-                    self.definitions.append(unicode(entity % (name[0], entry.msgstr), 'utf_8'))
+                    self.definitions.append(entity % (name[0], entry.msgstr))
 
 class IDLHandler(xml.sax.handler.ContentHandler):
     """
