@@ -433,6 +433,20 @@ sub create_grocery_bill {
 
 
 __PACKAGE__->register_method(
+    method => 'fetch_reservation',
+    api_name => 'open-ils.circ.booking.reservation.retrieve'
+);
+sub fetch_grocery {
+    my( $self, $conn, $auth, $id ) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_TRANSACTION'); # eh.. basically the same permission
+    my $g = $e->retrieve_booking_reservation($id)
+        or return $e->event;
+    return $g;
+}
+
+__PACKAGE__->register_method(
     method => 'fetch_grocery',
     api_name => 'open-ils.circ.money.grocery.retrieve'
 );

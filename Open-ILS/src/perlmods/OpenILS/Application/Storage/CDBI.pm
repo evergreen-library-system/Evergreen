@@ -5,6 +5,7 @@ use Class::DBI::AbstractSearch;
 
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::action;
+use OpenILS::Application::Storage::CDBI::booking;
 use OpenILS::Application::Storage::CDBI::asset;
 use OpenILS::Application::Storage::CDBI::authority;
 use OpenILS::Application::Storage::CDBI::biblio;
@@ -555,6 +556,9 @@ sub modify_from_fieldmapper {
 
 	action::circulation->has_a( usr => 'actor::user' );
 	actor::user->has_many( circulations => 'action::circulation' => 'usr' );
+
+	booking::reservation->has_a( usr => 'actor::user' );
+	actor::user->has_many( reservations => 'booking::reservation' => 'usr' );
 	
 	action::circulation->has_a( circ_staff => 'actor::user' );
 	actor::user->has_many( performed_circulations => 'action::circulation' => 'circ_staff' );
@@ -564,6 +568,8 @@ sub modify_from_fieldmapper {
 
 	action::circulation->has_a( target_copy => 'asset::copy' );
 	asset::copy->has_many( circulations => 'action::circulation' => 'target_copy' );
+
+	booking::reservation->has_a( pickup_lib => 'actor::org_unit' );
 
 	action::circulation->has_a( circ_lib => 'actor::org_unit' );
 	actor::org_unit->has_many( circulations => 'action::circulation' => 'circ_lib' );
@@ -621,8 +627,10 @@ sub modify_from_fieldmapper {
 	action::circulation->has_many( billings => 'money::billing' => 'xact' );
 	action::circulation->has_many( payments => 'money::payment' => 'xact' );
 	#action::circulation->might_have( billable_transaction => 'money::billable_transaction' );
-
 	#action::open_circulation->might_have( circulation => 'action::circulation' );
+
+	booking::reservation->has_many( billings => 'money::billing' => 'xact' );
+	booking::reservation->has_many( payments => 'money::payment' => 'xact' );
 
 	action::in_house_use->has_a( org_unit => 'actor::org_unit' );
 	action::in_house_use->has_a( staff => 'actor::user' );

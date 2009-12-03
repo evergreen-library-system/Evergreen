@@ -1379,7 +1379,8 @@ sub user_payments_list {
                     ],
                     mbt => [
                         'circulation', 
-                        'grocery'
+                        'grocery',
+                        'reservation'
                     ]
                 }
             }

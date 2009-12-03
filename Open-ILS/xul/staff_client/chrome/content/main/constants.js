@@ -230,6 +230,7 @@ const api = {
     'FM_MP_NOTE_EDIT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment.note.edit' },
     'FM_MG_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.create' },
     'FM_MG_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.retrieve' },
+    'FM_BRESV_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.booking.reservation.retrieve' },
     'FM_MOBTS_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance' },
     'FM_MOBTS_HAVING_BALANCE.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance.authoritative' },
     'FM_MOBTS_TOTAL_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance.total' },

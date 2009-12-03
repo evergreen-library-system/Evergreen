@@ -51,8 +51,13 @@ sub _make_mbts {
                 $s->balance_owed( sprintf('%0.2f', (($to) - ($tp)) / 100) );
 		#$log->debug( "balance of ".$x->id." == ".$s->balance_owed, DEBUG );
 
-                $s->xact_type( 'grocery' ) if (money::grocery->retrieve($x->id));
-                $s->xact_type( 'circulation' ) if (action::circulation->retrieve($x->id));
+                if (action::circulation->retrieve($x->id)) {
+                    $s->xact_type( 'circulation' );
+                } elsif (money::grocery->retrieve($x->id)) {
+                    $s->xact_type( 'grocery' );
+                } elsif (booking::reservation->retrieve($x->id)) {
+                    $s->xact_type( 'reservation' );
+                }
 
                 push @mbts, $s;
         }
@@ -117,6 +122,7 @@ sub new_collections {
 	my $mb = money::billing->table;
 	my $circ = action::circulation->table;
 	my $mg = money::grocery->table;
+	my $res = booking::reservation->table;
 	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname = ?))";
 
 	my $SQL = <<"	SQL";
@@ -153,6 +159,23 @@ select
           where x.xact_finish is null
                 and c.id is null
                 and x.billing_location in (XX)
+                and b.billing_ts < current_timestamp - ? * '1 day'::interval
+                and not b.voided
+          group by 1,2
+
+                  union all
+
+         select
+                x.id,
+                x.usr,
+                MAX(b.billing_ts) as last_billing,
+                SUM(b.amount) AS total_billing
+          from  booking.reservation x
+                left join money.collections_tracker c ON (c.usr = x.usr AND c.location = ?)
+                join money.billing b on (b.xact = x.id)
+          where x.xact_finish is null
+                and c.id is null
+                and x.pickup_lib in (XX)
                 and b.billing_ts < current_timestamp - ? * '1 day'::interval
                 and not b.voided
           group by 1,2
@@ -236,6 +259,20 @@ select
                 and b.billing_ts between ? and ?
                 and not b.voided
           group by 1,2
+
+                  union all
+
+         select
+                x.id,
+                x.usr,
+                SUM(b.amount) AS total_billing
+          from  booking.reservation x
+                join money.billing b on (b.xact = x.id)
+          where x.xact_finish is null
+                and x.pickup_lib in (XX)
+                and b.billing_ts between ? and ?
+                and not b.voided
+          group by 1,2
         ) full_list
         left join money.payment p on (full_list.id = p.xact)
   group by 1
@@ -290,6 +327,42 @@ SELECT  usr,
         MAX(last_pertinent_payment) AS last_pertinent_payment
   FROM  (
                 SELECT  lt.usr,
+                        NULL::TIMESTAMPTZ AS last_pertinent_billing,
+                        NULL::TIMESTAMPTZ AS last_pertinent_payment
+                  FROM  booking.reservation lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.billing bl ON (lt.id = bl.xact)
+                  WHERE cl.location = ?
+                        AND lt.pickup_lib IN (XX)
+                        AND bl.void_time BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                SELECT  lt.usr,
+                        MAX(bl.billing_ts) AS last_pertinent_billing,
+                        NULL::TIMESTAMPTZ AS last_pertinent_payment
+                  FROM  booking.reservation lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.billing bl ON (lt.id = bl.xact)
+                  WHERE cl.location = ?
+                        AND lt.pickup_lib IN (XX)
+                        AND bl.billing_ts BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                SELECT  lt.usr,
+                        NULL::TIMESTAMPTZ AS last_pertinent_billing,
+                        MAX(pm.payment_ts) AS last_pertinent_payment
+                  FROM  booking.reservation lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.payment pm ON (lt.id = pm.xact)
+                  WHERE cl.location = ?
+                        AND lt.pickup_lib IN (XX)
+                        AND pm.payment_ts BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                 SELECT  lt.usr,
                         NULL::TIMESTAMPTZ AS last_pertinent_billing,
                         NULL::TIMESTAMPTZ AS last_pertinent_payment
                   FROM  money.grocery lt
@@ -389,9 +462,17 @@ SELECT  usr,
 
 		my $sth = money::collections_tracker->db_Main->prepare($real_sql);
 		$sth->execute(
+            # reservation queries
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
+
+            # grocery queries
+			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate,
+
+            # circ queries
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,

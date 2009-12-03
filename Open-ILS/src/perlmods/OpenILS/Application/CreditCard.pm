@@ -359,9 +359,12 @@ sub retrieve_payable_balance {
             my $circ = $e->retrieve_action_circulation($xact->id) or return $e->event;
             next unless grep { $_ == $circ->circ_lib } @credit_orgs;
 
-        } else {
+        } elsif ($xact->xact_type eq 'grocery') {
             my $bill = $e->retrieve_money_grocery($xact->id) or return $e->event;
             next unless grep { $_ == $bill->billing_location } @credit_orgs;
+        } elsif ($xact->xact_type eq 'reservation') {
+            my $bill = $e->retrieve_booking_reservation($xact->id) or return $e->event;
+            next unless grep { $_ == $bill->pickup_lib } @credit_orgs;
         }
         $sum += $xact->balance_owed();
     }

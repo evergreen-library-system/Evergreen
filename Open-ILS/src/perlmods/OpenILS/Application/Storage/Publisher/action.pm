@@ -114,7 +114,22 @@ sub overdue_circs {
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
 	$sth->execute($upper_interval);
 
-	return ( map { action::circulation->construct($_) } $sth->fetchall_hash );
+	my @circs = map { action::circulation->construct($_) } $sth->fetchall_hash;
+
+	$c_t = booking::reservation->table;
+	$sql = <<"	SQL";
+		SELECT	*
+		  FROM	$c_t
+		  WHERE	return_time IS NULL
+		  	AND end_time < ( CURRENT_TIMESTAMP $grace)
+            AND fine_interval IS NOT NULL
+            AND cancel_time IS NULL
+	SQL
+
+	my $sth = action::circulation->db_Main->prepare_cached($sql);
+	$sth->execute($upper_interval);
+
+	my @circs = map { booking::reservation->construct($_) } $sth->fetchall_hash;
 
 }
 
@@ -638,7 +653,9 @@ sub generate_fines {
 
 	my @circs;
 	if ($circ) {
-		push @circs, action::circulation->search_where( { id => $circ, stop_fines => undef } );
+		push @circs,
+            action::circulation->search_where( { id => $circ, stop_fines => undef } ),
+            booking::reservation->search_where( { id => $circ, return_time => undef, cancel_time => undef } );
 	} else {
 		push @circs, overdue_circs($grace);
 	}
@@ -647,7 +664,22 @@ sub generate_fines {
 
 	my $penalty = OpenSRF::AppSession->create('open-ils.penalty');
 	for my $c (@circs) {
+
+        my $ctype = ref($c);
+        $ctype =~ s/^.*([^:]+)$/$1/o;
 	
+        my $due_date_method = 'due_date';
+        my $target_copy_method = 'target_copy';
+        my $circ_lib_method = 'circ_lib';
+        my $recurring_fine_method = 'recurring_fine';
+        if ($ctype eq 'reservation') {
+            $due_date_method = 'end_time';
+            $target_copy_method = 'current_resource';
+            $circ_lib_method = 'pickup_lib';
+            $recurring_fine_method = 'fine_amount';
+            next unless ($c->fine_interval);
+        }
+
 		try {
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
 				$log->debug("Cleaning up after previous transaction\n");
@@ -657,7 +689,7 @@ sub generate_fines {
 			$log->info("Processing circ ".$c->id."...\n");
 
 
-			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
+			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->$due_date_method ) );
 	
 			my $due = $due_dt->epoch;
 			my $now = time;
@@ -677,15 +709,15 @@ sub generate_fines {
 			}
 	
 			$client->respond(
-				"ARG! Overdue circulation ".$c->id.
-				" for item ".$c->target_copy.
+				"ARG! Overdue $ctype ".$c->id.
+				" for item ".$c->$target_copy_method.
 				" (user ".$c->usr.").\n".
 				"\tItem was due on or before: ".localtime($due)."\n");
 	
 			my @fines = money::billing->search_where(
 				{ xact => $c->id,
 				  btype => 1,
-				  billing_ts => { '>' => $c->due_date } },
+				  billing_ts => { '>' => $c->$due_date_method } },
 				{ order_by => 'billing_ts DESC'}
 			);
 
@@ -707,7 +739,7 @@ sub generate_fines {
 				$last_fine = $due;
 
 				if (0) {
-					if (my $h = $hoo{$c->circ_lib}) { 
+					if (my $h = $hoo{$c->$circ_lib_method}) { 
 
 						$log->info( "Circ lib has an hours-of-operation entry" );
 						# find the day after the due date...
@@ -755,17 +787,17 @@ sub generate_fines {
 	
 			$client->respond( "\t$pending_fine_count pending fine(s)\n" );
 
-			my $recurring_fine = int($c->recurring_fine * 100);
+			my $recurring_fine = int($c->$recurring_fine_method * 100);
 			my $max_fine = int($c->max_fine * 100);
 
 			my ($latest_billing_ts, $latest_amount) = ('',0);
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
 				if ($current_fine_total >= $max_fine) {
-					$c->update({stop_fines => 'MAXFINES', stop_fines_time => 'now'});
+					$c->update({stop_fines => 'MAXFINES', stop_fines_time => 'now'}) if ($ctype eq 'circulation');
 					$client->respond(
 						"\tMaximum fine level of ".$c->max_fine.
-						" reached for this circulation.\n".
+						" reached for this $ctype.\n".
 						"\tNo more fines will be generated.\n" );
 					last;
 				}
@@ -776,7 +808,7 @@ sub generate_fines {
 				my $dow_open = "dow_${dow}_open";
 				my $dow_close = "dow_${dow}_close";
 
-				if (my $h = $hoo{$c->circ_lib}) {
+				if (my $h = $hoo{$c->$circ_lib_method}) {
 					next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
 				}
 
@@ -784,7 +816,7 @@ sub generate_fines {
 				my @cl = actor::org_unit::closed_date->search_where(
 						{ close_start	=> { '<=' => $timestamptz },
 						  close_end	=> { '>=' => $timestamptz },
-						  org_unit	=> $c->circ_lib }
+						  org_unit	=> $c->$circ_lib_method }
 				);
 				next if (@cl);
 	
@@ -813,7 +845,7 @@ sub generate_fines {
 
                 # Caluclate penalties inline
 				OpenILS::Utils::Penalty->calculate_penalties(
-					undef, $c->usr->to_fieldmapper->id.'', $c->circ_lib->to_fieldmapper->id.'');
+					undef, $c->usr->to_fieldmapper->id.'', $c->$circ_lib_method->to_fieldmapper->id.'');
 
 			} else {
 
@@ -824,7 +856,7 @@ sub generate_fines {
 				$penalty->request(
 				    'open-ils.penalty.patron_penalty.calculate',
 				    { patronid	=> ''.$c->usr,
-				    context_org	=> ''.$c->circ_lib,
+				    context_org	=> ''.$c->$circ_lib_method,
 				    update	=> 1,
 				    background	=> 1,
 				    }
@@ -833,8 +865,8 @@ sub generate_fines {
 
 		} catch Error with {
 			my $e = shift;
-			$client->respond( "Error processing overdue circulation [".$c->id."]:\n\n$e\n" );
-			$log->error("Error processing overdue circulation [".$c->id."]:\n$e\n");
+			$client->respond( "Error processing overdue $ctype [".$c->id."]:\n\n$e\n" );
+			$log->error("Error processing overdue $ctype [".$c->id."]:\n$e\n");
 			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 			throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
 		};

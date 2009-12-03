@@ -621,7 +621,9 @@ sub transaction_details {
 			circulations	=> 
 				fetch_circ_xacts($e, $uid, $org, $start_date, $end_date),
 			grocery			=> 
-				fetch_grocery_xacts($e, $uid, $org, $start_date, $end_date)
+				fetch_grocery_xacts($e, $uid, $org, $start_date, $end_date),
+			reservations	=> 
+				fetch_reservation_xacts($e, $uid, $org, $start_date, $end_date)
 		};
 
 		# for each transaction, flesh the workstatoin on any attached payment
@@ -629,6 +631,7 @@ sub transaction_details {
 		# not just a generic payment object
 		for my $xact ( 
 			@{$blob->{transactions}->{circulations}}, 
+			@{$blob->{transactions}->{reservations}}, 
 			@{$blob->{transactions}->{grocery}} ) {
 
 			my $ps;
@@ -769,6 +772,53 @@ sub fetch_grocery_xacts {
 						flesh => 1,
 						flesh_fields => { 
 							mg => [ "billings", "payments", "billing_location" ] }
+					}
+				]
+			)
+		);
+	}
+
+	return \@data;
+}
+
+sub fetch_reservation_xacts {
+	my $e				= shift;
+	my $uid			= shift;
+	my $org			= shift;
+	my $start_date = shift;
+	my $end_date	= shift;
+
+	my @xacts;
+	$U->walk_org_tree( $org, 
+		sub {
+			my $n = shift;
+			$logger->debug("collect: searching for open grocery xacts at " . $n->shortname);
+			push( @xacts, 
+				@{
+					$e->search_booking_reservation(
+						{
+							usr					=> $uid, 
+							pickup_lib      	=> $n->id,
+						}, 
+						{idlist => 1}
+					)
+				}
+			);
+		}
+	);
+
+	my @data;
+	my $active_ids = fetch_active($e, \@xacts, $start_date, $end_date);
+
+	for my $id (@$active_ids) {
+		push( @data, 
+			$e->retrieve_booking_reservation(
+				[
+					$id,
+					{
+						flesh => 1,
+						flesh_fields => { 
+							bresv => [ "billings", "payments", "pickup_lib" ] }
 					}
 				]
 			)

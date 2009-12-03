@@ -97,9 +97,17 @@ sub handler {
             my $s = $cstore->request('open-ils.cstore.direct.money.billable_xact_summary.retrieve' => $xact)->gather(1);
             my $u = $cstore->request('open-ils.cstore.direct.actor.usr.retrieve' => $s->usr)->gather(1);
             my $c = $cstore->request('open-ils.cstore.direct.actor.card.retrieve' => $u->card)->gather(1);
-            my $w = $s->xact_type eq 'circulation' ? 
-                $cstore->request('open-ils.cstore.direct.action.circulation.retrieve' => $xact)->gather(1)->circ_lib :
-                $cstore->request('open-ils.cstore.direct.money.grocery.retrieve' => $xact)->gather(1)->billing_location;
+            my $w;
+
+            if ($s->xact_type eq 'circulation') {
+                $w = $cstore->request('open-ils.cstore.direct.action.circulation.retrieve' => $xact)->gather(1)->circ_lib :
+            } elsif ($s->xact_type eq 'grocery') {
+                $w = $cstore->request('open-ils.cstore.direct.money.grocery.retrieve' => $xact)->gather(1)->billing_location;
+            } elsif ($s->xact_type eq 'reservation') {
+                $w = $cstore->request('open-ils.cstore.direct.booking.reservation.retrieve' => $xact)->gather(1)->pickup_lib;
+            } else {
+                die;
+            }
     
             my $failures = $actor->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $w, ['MARK_BAD_DEBT'])->gather(1);
     

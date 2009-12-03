@@ -508,6 +508,12 @@ BEGIN
         SELECT  SUM(f.balance_owed) INTO current_fines
           FROM  money.materialized_billable_xact_summary f
                 JOIN (
+                    SELECT  r.id
+                      FROM  booking.reservation r
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (r.pickup_lib = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL
+                                UNION ALL
                     SELECT  g.id
                       FROM  money.grocery g
                             JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
@@ -688,6 +694,12 @@ BEGIN
         SELECT  SUM(f.balance_owed) INTO current_fines
           FROM  money.materialized_billable_xact_summary f
                 JOIN (
+                    SELECT  r.id
+                      FROM  booking.reservation r
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (r.pickup_lib = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL
+                                UNION ALL
                     SELECT  g.id
                       FROM  money.grocery g
                             JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)

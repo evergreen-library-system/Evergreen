@@ -80,6 +80,7 @@ for my $d (@$user_data) {
 	my $user		= $xact_data->{usr}->{__data__};
 	my $circs	= $xact_data->{transactions}->{circulations};
 	my $grocery = $xact_data->{transactions}->{grocery};
+	my $reservations = $xact_data->{transactions}->{reservations};
 
 
 	# --------------------------------------------------------------------
@@ -96,7 +97,7 @@ for my $d (@$user_data) {
 			$a->{post_code}) . "\n";
 	}
 
-	print_xact_details($_->{__data__}) for (@$circs, @$grocery);
+	print_xact_details($_->{__data__}) for (@$circs, @$grocery, @$reservations);
 
 	print "\n" . '-'x60 . "\n";
 }

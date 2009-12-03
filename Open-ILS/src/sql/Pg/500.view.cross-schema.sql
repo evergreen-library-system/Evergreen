@@ -20,7 +20,7 @@ BEGIN;
 CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
 	SELECT	xact.id AS id,
 		xact.usr AS usr,
-		COALESCE(circ.circ_lib,groc.billing_location) AS billing_location,
+		COALESCE(circ.circ_lib,groc.billing_location,res.pickup_lib) AS billing_location,
 		xact.xact_start AS xact_start,
 		xact.xact_finish AS xact_finish,
 		SUM(credit.amount) AS total_paid,
@@ -37,6 +37,7 @@ CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
 	  	JOIN pg_class p ON (xact.tableoid = p.oid)
 		LEFT JOIN "action".circulation circ ON (circ.id = xact.id)
 		LEFT JOIN money.grocery groc ON (groc.id = xact.id)
+		LEFT JOIN booking.reservation res ON (groc.id = xact.id)
 	  	LEFT JOIN (
 			SELECT	billing.xact,
 				billing.voided,

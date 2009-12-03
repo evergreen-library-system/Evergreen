@@ -161,6 +161,12 @@
 	action::circulation->sequence( 'money.billable_xact_id_seq' );
 
 	#---------------------------------------------------------------------
+	package booking::reservation;
+	
+	booking::reservation->table( 'booking.reservation' );
+	booking::reservation->sequence( 'money.billable_xact_id_seq' );
+
+	#---------------------------------------------------------------------
 	package action::non_cat_in_house_use;
 	
 	action::non_cat_in_house_use->table( 'action.non_cat_in_house_use' );

@@ -30,6 +30,7 @@ function retrieve_mbts() {
                 switch(g.mbts.xact_type()) {
                     case 'circulation' : retrieve_circ(); break;
                     case 'grocery' : retrieve_grocery(); $('copy_summary_vbox').hidden = true; $('copy_summary_splitter').hidden = true; break;
+                    case 'reservation' : retrieve_reservation(); $('copy_summary_vbox').hidden = true; $('copy_summary_splitter').hidden = true; break;
                     default: $('copy_summary_vbox').hidden = true; $('copy_summary_splitter').hidden = true; break;
                 }
 
@@ -47,6 +48,18 @@ function retrieve_grocery() {
             var r_mg = req.getResultObject();
             if (instanceOf(r_mg,mg)) {
                 $('billing_location').value = g.data.hash.aou[ r_mg.billing_location() ].shortname() + ' : ' + g.data.hash.aou[ r_mg.billing_location() ].name();
+            }
+        }
+    );
+}
+
+function retrieve_reservation() {
+    JSAN.use('util.widgets');
+    g.network.simple_request('FM_BRESV_RETRIEVE', [ ses(), g.mbts_id ],
+        function (req) {
+            var r_bresv = req.getResultObject();
+            if (instanceOf(r_bresv,bresv)) {
+                $('billing_location').value = g.data.hash.aou[ r_bresv.pickup_lib() ].shortname() + ' : ' + g.data.hash.aou[ r_bresv.pickup_lib() ].name();
             }
         }
     );

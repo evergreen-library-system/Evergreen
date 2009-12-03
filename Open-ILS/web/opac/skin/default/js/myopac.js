@@ -616,6 +616,12 @@ function myOPACShowTransactions(r) {
 
 		else if(trans.xact_type() == 'grocery' ) 
 			myopacShowGenericTransaction( trans );
+
+/*      XXX need to copy circulation output function here
+		else if(trans.xact_type() == 'reservation' ) 
+			myopacShowReservationTransaction( trans );
+*/
+
 	}
 }
 
