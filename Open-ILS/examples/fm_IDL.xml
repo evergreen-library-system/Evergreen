@@ -1755,7 +1755,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="cards" reltype="has_many" key="usr" map="" class="ac"/>
 			<link field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
 			<link field="fund_alloc_pcts" reltype="has_many" key="allocator" map="" class="acqfap"/>
-			<link field="reservations" reltype="has_many" key="capture_staff" map="" class="bresv"/>
+			<link field="reservations" reltype="has_many" key="usr" map="" class="bresv"/>
 		</links>
 	</class>
 
@@ -2357,6 +2357,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Resource Type Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Fine Interval" name="fine_interval" reporter:datatype="interval"/>
 			<field reporter:label="Fine Amount" name="fine_amount" reporter:datatype="money"/>
+			<field reporter:label="Max Fine Amount" name="max_fine" reporter:datatype="money"/>
 			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
 			<field reporter:label="Catalog Item" name="catalog_item" reporter:datatype="bool"/>
 			<field reporter:label="Bibliographic Record" name="record" reporter:datatype="link"/>
@@ -2463,8 +2464,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" reporter:datatype="timestamp"/>
 			<field reporter:label="Transaction Start Date/Time" name="xact_start" reporter:datatype="timestamp"/>
 			<field reporter:label="Unrecovered Debt" name="unrecovered" reporter:datatype="bool"/>
-			<field reporter:label="Grocery Billing link" name="grocery" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Circulation Billing link" name="circulation" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Billing Line Items" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Payment Line Items" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="money"/>
@@ -2480,6 +2479,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Booking Interval" name="booking_interval" reporter:datatype="interval"/>
 			<field reporter:label="Fine Interval" name="fine_interval" reporter:datatype="interval"/>
 			<field reporter:label="Fine Amount" name="fine_amount" reporter:datatype="money"/>
+			<field reporter:label="Max Fine Amount" name="max_fine" reporter:datatype="money"/>
 			<field reporter:label="Target Resource Type" name="target_resource_type" reporter:datatype="link"/>
 			<field reporter:label="Target Resource" name="target_resource" reporter:datatype="link"/>
 			<field reporter:label="Current Resource" name="current_resource" reporter:datatype="link"/>
@@ -2489,8 +2489,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Attribute Value Maps" name="attr_val_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>
-			<link field="circulation" reltype="might_have" key="id" map="" class="circ"/>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
 			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>

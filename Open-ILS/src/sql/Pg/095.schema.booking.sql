@@ -25,6 +25,7 @@ CREATE TABLE booking.resource_type (
 	name           TEXT            NOT NULL,
 	fine_interval  INTERVAL,
 	fine_amount    DECIMAL(8,2)    NOT NULL DEFAULT 0,
+	max_fine       DECIMAL(8,2),
 	owner          INT             NOT NULL
 	                               REFERENCES actor.org_unit( id )
 	                               DEFERRABLE INITIALLY DEFERRED,
@@ -109,6 +110,7 @@ CREATE TABLE booking.reservation (
 	booking_interval INTERVAL,
 	fine_interval    INTERVAL,
 	fine_amount      DECIMAL(8,2),
+	max_fine         DECIMAL(8,2),
 	target_resource_type  INT       NOT NULL
 	                                REFERENCES booking.resource_type(id)
 	                                ON DELETE CASCADE
