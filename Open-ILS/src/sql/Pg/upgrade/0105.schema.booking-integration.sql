@@ -2,9 +2,9 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0105'); -- miker
 
-CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE booking.mat_summary_create ('reservation');
-CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE booking.mat_summary_update ();
-CREATE TRIGGER mat_summary_remove_tgr AFTER DELETE ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE booking.mat_summary_delete ();
+CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_create ('reservation');
+CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_update ();
+CREATE TRIGGER mat_summary_remove_tgr AFTER DELETE ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_delete ();
 
 CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
     SELECT  xact.id AS id,
