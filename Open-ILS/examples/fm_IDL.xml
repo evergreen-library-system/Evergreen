@@ -5554,6 +5554,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="xstr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_string" oils_persist:tablename="query.expr_string" reporter:label="String Expression">
+		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
+			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Literal" name="literal" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
 	<!-- ********************************************************************************************************************* -->

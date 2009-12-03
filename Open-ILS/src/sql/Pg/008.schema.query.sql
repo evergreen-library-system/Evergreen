@@ -229,7 +229,9 @@ CREATE TABLE query.record_column (
 	                                DEFERRABLE INITIALLY DEFERRED,
 	seq_no        INT               NOT NULL,
 	column_name   TEXT              NOT NULL,
-	column_type   TEXT              NOT NULL,
+    column_type   INT               NOT NULL REFERENCES query.datatype
+                                    ON DELETE CASCADE
+                                    DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT column_sequence UNIQUE (from_relation, seq_no)
 );
 
