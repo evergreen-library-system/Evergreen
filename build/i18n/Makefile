@@ -13,7 +13,6 @@ FMIDLSRC=../../Open-ILS/examples/fm_IDL.xml
 FMIDLOUT=fm_IDL.dtd.pot
 FMIDLENT=fm_IDL.xml
 FMIDLENTITY=fm_IDL.dtd
-FMIDLPO=fm_IDL.po
 EVTSRC=../../Open-ILS/src/extras/ils_events.xml
 EVTOUT=ils_events.xml.pot
 EVTPO=ils_events.xml.po
@@ -66,7 +65,6 @@ newpo:
 	@pot2po $(PROGRESS) -i po/conify.dtd/conify.dtd.pot -o $(PO)/conify.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/conify.js/conify.js.pot -o $(PO)/conify.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/db.seed/db.seed.pot -o $(PO)/db.seed/$(LOCALE).po 
-	@pot2po $(PROGRESS) -i po/fm_IDL/fm_IDL.pot -o $(PO)/fm_IDL/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/fm_IDL.dtd/fm_IDL.dtd.pot -o $(PO)/fm_IDL.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/ils_events.xml/ils_events.xml.pot -o $(PO)/ils_events.xml/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/lang.dtd/lang.dtd.pot -o $(PO)/lang.dtd/$(LOCALE).po 
@@ -126,6 +124,7 @@ dojo2pot:
 	@scripts/dojo_resource.py --pot $(DOJO_RPT_SRC)/reports.js --output $(PO)/reports.js/reports.js.pot
 
 po2dojo:
+	@mkdir -p locale/$(LOCALE)
 	@scripts/dojo_resource.py --create $(PO)/conify.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/conify.js
 	@scripts/dojo_resource.py --create $(PO)/opac.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/opac.js
 	@scripts/dojo_resource.py --create $(PO)/reports.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/reports.js
@@ -134,9 +133,11 @@ ils2pot:
 	@scripts/ils_events.py --pot $(EVTSRC) --output $(PO)/ils_events.xml/$(EVTOUT)
 
 po2ils:
+	@mkdir -p locale/$(LOCALE)
 	@scripts/ils_events.py --create $(PO)/ils_events.xml/$(LOCALE).po --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(EVTXML) 
 
 props2pot:
+	@mkdir -p locale/$(LOCALE)
 	@moz2po -P $(PROGRESS) -o $(PO)/auth.properties/auth.properties.pot -i $(CHROME_PROPSDIR)/en-US/auth.properties 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/offline.properties/offline.properties.pot -i $(CHROME_PROPSDIR)/en-US/offline.properties 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/admin.properties/admin.properties.pot -i $(SERVER_PROPSDIR)/en-US/admin.properties 2>&1
@@ -147,6 +148,7 @@ props2pot:
 	@moz2po -P $(PROGRESS) -o $(PO)/patron.properties/patron.properties.pot -i $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
 
 po2dtds:
+	@mkdir -p locale/$(LOCALE)
 	@po2moz $(PROGRESS) -i $(PO)/conify.dtd/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/conify.dtd -t $(DTDDIR)/en-US/conify.dtd 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/lang.dtd/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/lang.dtd -t $(DTDDIR)/en-US/lang.dtd 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/opac.dtd/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/opac.dtd -t $(DTDDIR)/en-US/opac.dtd 2>&1
@@ -168,6 +170,7 @@ sql2pot:
 #	@msghack --empty -o $(PO)/$(SQLPOT) $(PO)/$(SQLPOT)
 
 po2sql:
+	@mkdir -p locale/$(LOCALE)
 	@scripts/db-seed-i18n.py --sql $(PO)/db.seed/$(LOCALE).po --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(SQLOUT).sql
 
 # Generate a fieldmapper IDL file that uses entities instead of hard-coded strings
@@ -180,6 +183,7 @@ fmidl2pot:
 
 # Generate a set of entity declarations from a PO file
 fmidlpo2entity:
+	@mkdir -p locale/$(LOCALE)
 	@scripts/fieldmapper.py --entity $(PO)/fm_IDL.dtd/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/$(FMIDLENTITY)
 
 # Generate en-US DTD from a POT file; required if any other locale is installed
