@@ -156,6 +156,7 @@ prep_output:
 	@mkdir -p locale/$(LOCALE)
 	@for i in `ls -d $(PO)/*.dtd`; do cd $(STARTDIR)/$$i && ln -sf $(LOCALE).po $(LOCALE).dtd.po; done
 	@for i in `ls -d $(PO)/*.properties`; do cd $(STARTDIR)/$$i && ln -sf $(LOCALE).po $(LOCALE).properties.po; done
+	@for i in `ls -d $(PO)/*.html`; do cd $(STARTDIR)/$$i && ln -sf $(LOCALE).po $(LOCALE).html.po; done
 	@cd $(STARTDIR)
 
 po2dtds:
@@ -173,7 +174,7 @@ po2props:
 	@po2moz $(PROGRESS) -i $(PO)/cat.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/cat.properties -t $(SERVER_PROPSDIR)/en-US/cat.properties 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/circ.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/circ.properties -t $(SERVER_PROPSDIR)/en-US/circ.properties 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/common.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/common.properties -t $(SERVER_PROPSDIR)/en-US/common.properties 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/multiclass_search_help.html/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/multiclass_search_help.html -t $(SERVER_PROPSDIR)/en-US/multiclass_search_help.html 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/multiclass_search_help.html/$(LOCALE).html.po -o $(PROJECT)/$(LOCALE)/multiclass_search_help.html -t $(SERVER_PROPSDIR)/en-US/multiclass_search_help.html 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/patron.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/patron.properties -t $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
 
 sql2pot:
