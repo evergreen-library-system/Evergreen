@@ -1,0 +1,57 @@
+[% WRAPPER default/base.tt2 %]
+[% ctx.page_title = 'Resources' %]
+
+<script src="/opac/common/js/CGI.js" type="text/javascript"></script>
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.XUL');
+
+    function get_brsrc_ids() {
+        var cgi = new CGI();
+        var results = JSON2js(cgi.param('results'));
+        if (!results) return undefined;
+        var brsrc_ids = [];
+        for (var i in results) {
+            brsrc_ids.push(results[i][0]);
+        }
+        return brsrc_ids;
+    }
+
+    openils.Util.addOnLoad(
+        function() {
+            var search = undefined; // default to all objs
+            var brsrc_ids = get_brsrc_ids();
+            if (brsrc_ids) {
+                search = {id: brsrc_ids};
+            }
+            ustGrid.loadAll({order_by:{brsrc : 'barcode'}}, search);
+        }
+    );
+</script>
+
+
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>Resources</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='ustGrid.showCreateDialog()'>New Resource</button>
+        <button dojoType='dijit.form.Button' onClick='ustGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="ustGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['owner', 'type', 'barcode',
+                'overbook', 'deposit', 'deposit_amount', 'user_fee']"
+            query="{name: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='brsrc'
+            showPaginator='true'
+            editOnEnter='true'>
+    </table>
+ </div>
+
+[% END %]

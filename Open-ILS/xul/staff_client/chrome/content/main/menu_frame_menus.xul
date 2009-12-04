@@ -122,6 +122,13 @@
     <command id="cmd_server_admin_circ_mod"/>
     <command id="cmd_server_admin_org_unit_setting_type"/>
     <command id="cmd_server_admin_usr_setting_type"/>
+    <command id="cmd_server_admin_booking_resource" />
+    <command id="cmd_server_admin_booking_resource_type" />
+    <command id="cmd_server_admin_booking_resource_attr" />
+    <command id="cmd_server_admin_booking_resource_attr_value" />
+    <command id="cmd_server_admin_booking_resource_attr_map" />
+    <command id="cmd_server_admin_booking_reservation" />
+    <command id="cmd_server_admin_booking_reservation_attr_value_map" />
 </commandset>
 
 
@@ -317,6 +324,17 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_setting_type;" command="cmd_server_admin_org_unit_setting_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.usr_setting_type;" command="cmd_server_admin_usr_setting_type"/>
+                <menu id="main.menu.admin.server.booking" label="&staff.main.menu.admin.server_admin.booking.label;" accesskey="&staff.main.menu.admin.server_admin.booking.label;">
+                    <menupopup id="main.menu.admin.server.booking.popup">
+                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource.label;" command="cmd_server_admin_booking_resource" accesskey="&staff.main.menu.admin.server_admin.booking.resource.accesskey;"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_type.label;" command="cmd_server_admin_booking_resource_type" accesskey="&staff.main.menu.admin.server_admin.booking.resource_type.accesskey;"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_attr.label;" command="cmd_server_admin_booking_resource_attr" accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr.accesskey;"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_attr_value.label;" command="cmd_server_admin_booking_resource_attr_value" accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr_value.accesskey;"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_attr_map.label;" command="cmd_server_admin_booking_resource_attr_map" accesskey="&staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey;"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.booking.reservation.label;" command="cmd_server_admin_booking_reservation" accesskey="&staff.main.menu.admin.server_admin.booking.reservation.accesskey;"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.booking.reservation_attr_value_map.label;" command="cmd_server_admin_booking_reservation_attr_value_map" accesskey="&staff.main.menu.admin.server_admin.booking.reservation_attr_value_map.accesskey;"/>
+                    </menupopup>
+                </menu>
             </menupopup>
         </menu>
 

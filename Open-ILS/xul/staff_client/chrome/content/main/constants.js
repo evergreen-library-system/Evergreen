@@ -174,6 +174,7 @@ const api = {
     'FM_AUSP_REMOVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalty.remove' },
     'FM_AUSP_PCRUD_UPDATE' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.update.ausp', 'secure' : false },
     'FM_AUSP_UPDATE_NOTE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalty.note.update' },
+    'FM_BOOKING_CREATE_BRT_AND_BRSRC' : { 'app' : 'open-ils.booking', 'method' : 'open-ils.booking.create_brt_and_brsrc_from_copies' },
     'FM_BRE_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve', 'secure' : false },
     'FM_BRE_RETRIEVE_VIA_ID.authoritative' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve.authoritative', 'secure' : false },
     'FM_BRE_ID_SEARCH_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.find_by_barcode', 'secure' : false },

@@ -1,0 +1,39 @@
+[% WRAPPER default/base.tt2 %]
+[% ctx.page_title = 'Reservation Attribute Value Maps' %]
+
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+
+    openils.Util.addOnLoad(
+        function() {
+            ustGrid.loadAll({order_by:{bravm : 'name'}});
+        }
+    );
+</script>
+
+
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>Reservation Attribute Value Maps</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='ustGrid.showCreateDialog()'>New Reservation Attribute Value Map</button>
+        <button dojoType='dijit.form.Button' onClick='ustGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="ustGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['name', 'fine_interval', 'fine_amount',
+                'owner', 'catalog_item', 'transferable', 'record']"
+            query="{name: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='bravm'
+            showPaginator='true'
+            editOnEnter='true'>
+    </table>
+ </div>
+
+[% END %]

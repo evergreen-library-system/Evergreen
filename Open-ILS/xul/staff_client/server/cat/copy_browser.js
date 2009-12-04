@@ -142,6 +142,69 @@ cat.copy_browser.prototype = {
                                 );
                             }
                         ],
+                        'cmd_create_brt' : [
+                            ['command'],
+                            function() {
+                                JSAN.use('util.functional');
+                                var cs = document.getElementById('catStrings');
+                                // Filter out selected rows that aren't copies.
+                                var list = util.functional.filter_list(
+                                    obj.sel_list,
+                                    function (o) {
+                                        return o.split(/_/)[0] == 'acp';
+                                    }
+                                );
+                                // Get the IDs of all copy rows.
+                                var copy_ids = util.functional.map_list(
+                                    list, function (o) {
+                                        return obj.map_acp[o].id();
+                                    }
+                                );
+                                // Ask the ML to create brt's and brsrc's.
+                                var results = fieldmapper.standardRequest(
+                                    ['open-ils.booking', 'open-ils.booking.create_brt_and_brsrc_from_copies'],
+                                    [ses(), copy_ids]
+                                );
+                                if (results == null) {
+                                    alert(cs.getString('staff.cat.copy_browser.brt_and_brsrc.create_failed_silent'));
+                                }
+                                else if (typeof results.ilsevent != 'undefined') {
+                                    // FIXME Isn't there a more standardized
+                                    // way to show this error?
+                                    alert(cs.getFormattedString(
+                                        'staff.cat.copy_browser.brt_and_brsrc.create_failed',
+                                        [results.ilsevent, results.textcode,
+                                            results.desc, results.debug]
+                                    ));
+                                } else {
+                                    // Spawn new tab to allow editing new
+                                    // resources.
+                                    try {
+                                        var url = urls.XUL_BROWSER + '?url=' +
+                                            window.escape(
+                                                xulG.url_prefix(urls.EG_WEB_BASE) +
+                                                '/conify/global/booking/resource?results=' +
+                                                window.escape(js2JSON(results['brsrc']))
+                                            );
+                                        // Sorry about the CGI params, but I
+                                        // don't see another choice for
+                                        // passing data to conify pages. This
+                                        // has the obvious problem of a
+                                        // character length limit. FIXME
+                                        xulG.new_tab(url,
+                                            {'tab_name': cs.getString('staff.cat.copy_browser.brt_and_brsrc.newtab_name'),
+                                             'browser' : false},
+                                            {'no_xulG' : false}
+                                        );
+                                    } catch(E) {
+                                        JSAN.use('util.error');
+                                        var error = new util.error;
+                                        var f = error.standard_unexpected_error_alert;
+                                        f(cs.getString('staff.cat.copy_browser.brt_and_brsrc.newtab_failed'), E);
+                                    }
+                                }
+                            }
+                        ],
                         'cmd_add_items' : [
                             ['command'],
                             function() {
@@ -1613,6 +1676,7 @@ cat.copy_browser.prototype = {
             obj.controller.view.cmd_transfer_volume.setAttribute('disabled','true');
             obj.controller.view.cmd_transfer_items.setAttribute('disabled','true');
             obj.controller.view.sel_copy_details.setAttribute('disabled','true');
+            obj.controller.view.cmd_create_brt.setAttribute('disabled','true');
             obj.controller.view.sel_patron.setAttribute('disabled','true');
             obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
             obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
@@ -1637,6 +1701,7 @@ cat.copy_browser.prototype = {
                 obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','false');
                 obj.controller.view.cmd_transfer_items.setAttribute('disabled','false');
                 obj.controller.view.sel_copy_details.setAttribute('disabled','false');
+                obj.controller.view.cmd_create_brt.setAttribute('disabled','false');
                 obj.controller.view.sel_patron.setAttribute('disabled','false');
             }
         } catch(E) {

@@ -435,6 +435,28 @@ vim:et:ts=4:sw=4:
 
             </open-ils.actor>
 
+            <open-ils.booking>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::Booking</implementation>
+                <max_requests>199</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.booking_unix.sock</unix_sock>
+                    <unix_pid>open-ils.booking_unix.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.booking_unix.log</unix_log>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                    <marctemplates>
+                        <K_book>LOCALSTATEDIR/templates/marc/k_book.xml</K_book>
+                    </marctemplates>
+                </app_settings>
+            </open-ils.booking>
 
             <open-ils.cat>
                 <keepalive>5</keepalive>
@@ -951,6 +973,7 @@ vim:et:ts=4:sw=4:
                 <appname>opensrf.math</appname> 
                 <appname>opensrf.dbmath</appname> 
                 <appname>open-ils.acq</appname> 
+                <appname>open-ils.booking</appname>
                 <appname>open-ils.cat</appname> 
                 <appname>open-ils.supercat</appname> 
                 <appname>open-ils.search</appname> 

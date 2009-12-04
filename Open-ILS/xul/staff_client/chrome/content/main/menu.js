@@ -626,6 +626,34 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/usr_setting_type'); }
             ],
+            'cmd_server_admin_booking_resource': [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/booking/resource'); }
+            ],
+            'cmd_server_admin_booking_resource_type': [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/booking/resource_type'); }
+            ],
+            'cmd_server_admin_booking_resource_attr': [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/booking/resource_attr'); }
+            ],
+            'cmd_server_admin_booking_resource_attr_value': [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/booking/resource_attr_value'); }
+            ],
+            'cmd_server_admin_booking_resource_attr_map': [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/booking/resource_attr_map'); }
+            ],
+            'cmd_server_admin_booking_reservation': [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/booking/reservation'); }
+            ],
+            'cmd_server_admin_booking_reservation_attr_value_map': [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/booking/reservation_attr_value_map'); }
+            ],
             'cmd_acq_view_picklist' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/picklist/list', 'menu.cmd_acq_view_picklist.tab'); }
