@@ -267,8 +267,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Bib Source" name="bib_source" reporter:datatype="link"/>
 			<field reporter:label="Final Target Record" name="imported_as" reporter:datatype="link"/>
 			<field reporter:label="Purpose" name="purpose" reporter:datatype="text"/>
-			<field reporter:label="Attributes" name="attributes" oils_persist:virtual="true" reporter:datatype="text"/>
-			<field reporter:label="Matches" name="matches" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Attributes" name="attributes" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Matches" name="matches" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="queue" reltype="has_a" key="id" map="" class="vbq"/>
@@ -384,8 +384,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Queue" name="queue" reporter:datatype="link"/>
 			<field reporter:label="Final Target Record" name="imported_as" reporter:datatype="link"/>
 			<field reporter:label="Purpose" name="purpose" reporter:datatype="text"/>
-			<field reporter:label="Attributes" name="attributes" oils_persist:virtual="true" reporter:datatype="text"/>
-			<field reporter:label="Matches" name="matches" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Attributes" name="attributes" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Matches" name="matches" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="queue" reltype="has_a" key="id" map="" class="vaq"/>
@@ -434,7 +434,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Value" name="attr_value" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="record" reltype="has_a" key="id" map="" class="vaqr"/>
+			<link field="record" reltype="has_a" key="id" map="" class="vqar"/>
 			<link field="field" reltype="has_a" key="id" map="" class="vqarad"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -798,7 +798,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="circulations" reltype="has_many" key="workstation" map="" class="circ"/>
-			<link field="circulation_checkins" reltype="has_many" key="checkin_workstation" map="" class="circ"/>
 		</links>
 	</class>
 
@@ -1673,8 +1672,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Standing Penalties" name="standing_penalties" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Survey Responses" name="survey_responses" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field name="ws_ou" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field name="wsid" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Workstation Org Unit" name="ws_ou" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Workstation ID" name="wsid" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Alert Message" name="alert_message"  reporter:datatype="text"/>
 			<field reporter:label="Barred" name="barred" reporter:datatype="bool"/>
@@ -3108,8 +3107,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="addresses" reltype="has_many" key="org_unit" map="" class="aoa"/>
 			<link field="checkins" reltype="has_many" key="checkin_lib" map="" class="circ"/>
 			<link field="workstations" reltype="has_many" key="owning_lib" map="" class="aws"/>
-			<link field="distribution_formulas" reltype="has_many" key="owner" map="" class="acqdf"/>
-			<link field="distribution_formula_entries" reltype="has_many" key="owning_lib" map="" class="acqdfe"/>
 			<link field="fund_alloc_pcts" reltype="has_many" key="org" map="" class="acqfap"/>
 			<link field="copy_location_orders" reltype="has_many" key="org" map="" class="acplo"/>
 			<link field="atc_prev_dests" reltype="has_many" key="prev_dest" map="" class="atc"/>
