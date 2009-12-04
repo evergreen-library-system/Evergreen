@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf=8 -*-
 # vim: set fileencoding=utf-8 :
 """
 Test the BaseL10N class to ensure that we have a solid foundation.
@@ -19,14 +20,14 @@ class TestBaseL10N(unittest.TestCase):
     canonpo = os.path.join(basedir, 'data/complex.po')
     poentries = [{
         'msgid': 'Using Library', 
-        'msgstr': 'Utiliser la bibliothèque',
+        'msgstr': u'Utiliser la bibliothèque',
         'occurrences': [
             {'line': 240, 'name': 'field.aihu.org_unit.label'},
             {'line': 257, 'name': 'field.ancihu.org_unit.label'},
         ]},
         {
         'msgid': '\nSuper crazy long and repetitive message ID from hell\nSuper crazy long and repetitive message ID from hell\nSuper crazy long and repetitive message ID from hell\nSuper crazy long and repetitive message ID from hell\nSuper crazy long and repetitive message ID from hell', 
-        'msgstr': 'ôèàéç',
+        'msgstr': u'ôèàéç',
         'occurrences': [
             {'line': 2475, 'name': 'field.rxbt.voided.label'},
         ]},
@@ -65,13 +66,13 @@ class TestBaseL10N(unittest.TestCase):
         for msg in self.poentries:
             poe = polib.POEntry()
             for x in msg['occurrences']:
-                poe.occurrences.append((x['line'], x['name']))
+                poe.occurrences.append((x['name'], x['line']))
             poe.msgid = msg['msgid']
             if msg.has_key('msgstr'):
                 poe.msgstr = msg['msgstr']
             pogen.pot.append(poe)
 
-        self.assertEqual(str(poload), str(pogen))
+        self.assertEqual(unicode(poload), unicode(pogen))
 
     def testsavepot(self):
         """

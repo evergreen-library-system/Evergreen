@@ -11,11 +11,11 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: 240:field.aihu.org_unit.label 257:field.ancihu.org_unit.label
+#: field.aihu.org_unit.label:240 field.ancihu.org_unit.label:257
 msgid "Using Library"
 msgstr "Utiliser la bibliothèque"
 
-#: 2475:field.rxbt.voided.label
+#: field.rxbt.voided.label:2475
 msgid ""
 "\n"
 "Super crazy long and repetitive message ID from hell\n"
@@ -25,6 +25,6 @@ msgid ""
 "Super crazy long and repetitive message ID from hell"
 msgstr "ôèàéç"
 
-#: 524:field.bre.source.label
+#: field.bre.source.label:524
 msgid "Record Source"
 msgstr ""
