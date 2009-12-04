@@ -55,7 +55,7 @@ msgstr "lectus vitae aliquam"
 msgid "User Sharing Opt-in"
 msgstr "venenatis, mi nisl"
 
-#: field.rodcirc.recuring_fine_rule.label:73
+#: field.rodcirc.recurring_fine_rule.label:73
 msgid "Recurring Fine Rule"
 msgstr "suscipit sapien, eu sollicitudin"
 
@@ -127,7 +127,7 @@ msgstr "lacinia accumsan"
 msgid "Base Transaction"
 msgstr "Nullam imperdiet"
 
-#: field.rodcirc.recuring_fine.label:72
+#: field.rodcirc.recurring_fine.label:72
 msgid "Recurring Fine Amount"
 msgstr "tincidunt mauris"
 
