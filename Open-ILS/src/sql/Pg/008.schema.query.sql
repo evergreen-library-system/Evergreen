@@ -264,8 +264,6 @@ CREATE TABLE query.order_by_item (
 
 -- Create updatable view for BETWEEN expressions
 
-INSERT INTO config.upgrade_log (version) VALUES ('0107'); -- Scott McKellar
-
 CREATE OR REPLACE VIEW query.expr_xbet AS
     SELECT
 		id,
