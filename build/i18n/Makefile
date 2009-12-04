@@ -1,6 +1,7 @@
 PO=po
 PROJECT=locale
 LOCALE=fr-CA
+STARTDIR=$(shell pwd)
 POTLIST=$(shell ls -d po/*)
 DTDDIR=../../Open-ILS/web/opac/locale
 CHROME_PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
@@ -84,11 +85,11 @@ newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot dojo2pot
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
 # and SQL insert files from PO for locale LOCALE
-project: po2dtds po2props po2sql fmidlpo2entity po2ils po2dojo
+project: prep_output po2dtds po2props po2sql fmidlpo2entity po2ils po2dojo
 	@echo "Generated project files for locale $(LOCALE)"
 
 # Update PO files with new and changed strings from POT files
-updatepo: 
+updatepo: prep_output  
 	@pot2po $(PROGRESS) -i po/admin.properties/admin.properties.pot -o $(PO)/admin.properties/$(LOCALE).po  -t $(PO)/admin.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/auth.properties/auth.properties.pot -o $(PO)/auth.properties/$(LOCALE).po  -t $(PO)/auth.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/cat.properties/cat.properties.pot -o $(PO)/cat.properties/$(LOCALE).po  -t $(PO)/cat.properties/$(LOCALE).po 
@@ -147,23 +148,33 @@ props2pot:
 	@moz2po -P $(PROGRESS) -o $(PO)/multiclass_search_help.html/multiclass_search_help.html.pot -i $(SERVER_PROPSDIR)/en-US/multiclass_search_help.html 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/patron.properties/patron.properties.pot -i $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
 
+# There are some hacky things we need to do to make po2moz happy,
+# like ensure that the .po file has either ".dtd" or ".properties" in
+# the name to generate the appropriate output, even though that breaks
+# GNU gettext recommended layout of foo.dtd/ll-LL.po
+prep_output:
+	@mkdir -p locale/$(LOCALE)
+	@for i in `ls -d $(PO)/*.dtd`; do cd $(STARTDIR)/$$i && ln -sf $(LOCALE).po $(LOCALE).dtd.po; done
+	@for i in `ls -d $(PO)/*.properties`; do cd $(STARTDIR)/$$i && ln -sf $(LOCALE).po $(LOCALE).properties.po; done
+	@cd $(STARTDIR)
+
 po2dtds:
 	@mkdir -p locale/$(LOCALE)
-	@po2moz $(PROGRESS) -i $(PO)/conify.dtd/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/conify.dtd -t $(DTDDIR)/en-US/conify.dtd 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/lang.dtd/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/lang.dtd -t $(DTDDIR)/en-US/lang.dtd 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/opac.dtd/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/opac.dtd -t $(DTDDIR)/en-US/opac.dtd 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/reports.dtd/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/reports.dtd -t $(DTDDIR)/en-US/reports.dtd 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/vandelay.dtd/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/vandelay.dtd -t $(DTDDIR)/en-US/vandelay.dtd 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/conify.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/conify.dtd -t $(DTDDIR)/en-US/conify.dtd 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/lang.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/lang.dtd -t $(DTDDIR)/en-US/lang.dtd 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/opac.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/opac.dtd -t $(DTDDIR)/en-US/opac.dtd 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/reports.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/reports.dtd -t $(DTDDIR)/en-US/reports.dtd 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/vandelay.dtd/$(LOCALE).dtd.po -o $(PROJECT)/$(LOCALE)/vandelay.dtd -t $(DTDDIR)/en-US/vandelay.dtd 2>&1
 
 po2props:
-	@po2moz $(PROGRESS) -i $(PO)/auth.properties/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/auth.properties -t $(CHROME_PROPSDIR)/en-US/auth.properties 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/offline.properties/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/offline.properties -t $(CHROME_PROPSDIR)/en-US/offline.properties 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/admin.properties/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/admin.properties -t $(SERVER_PROPSDIR)/en-US/admin.properties 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/cat.properties/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/cat.properties -t $(SERVER_PROPSDIR)/en-US/cat.properties 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/circ.properties/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/circ.properties -t $(SERVER_PROPSDIR)/en-US/circ.properties 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/common.properties/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/common.properties -t $(SERVER_PROPSDIR)/en-US/common.properties 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/multiclass_search_help.html/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/multiclass_search_help.html -t $(SERVER_PROPSDIR)/en-US/multiclass_search_help.html 2>&1
-	@po2moz $(PROGRESS) -i $(PO)/patron.properties/$(LOCALE).po -o $(PROJECT)/$(LOCALE)/patron.properties -t $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/auth.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/auth.properties -t $(CHROME_PROPSDIR)/en-US/auth.properties 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/offline.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/offline.properties -t $(CHROME_PROPSDIR)/en-US/offline.properties 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/admin.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/admin.properties -t $(SERVER_PROPSDIR)/en-US/admin.properties 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/cat.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/cat.properties -t $(SERVER_PROPSDIR)/en-US/cat.properties 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/circ.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/circ.properties -t $(SERVER_PROPSDIR)/en-US/circ.properties 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/common.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/common.properties -t $(SERVER_PROPSDIR)/en-US/common.properties 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/multiclass_search_help.html/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/multiclass_search_help.html -t $(SERVER_PROPSDIR)/en-US/multiclass_search_help.html 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/patron.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/patron.properties -t $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
 
 sql2pot:
 	@scripts/db-seed-i18n.py --pot $(SQLSRCDIR)/$(SQLSRCFILE) --output $(PO)/db.seed/$(SQLPOT)
