@@ -782,6 +782,8 @@ sub draw_lines {
 		
 	}
 
+	return [] unless ($new_data[0] && @{$new_data[0]});
+
 	for my $col (@use_me) {
 		push @leg, $r->{column_labels}->[$values[$col - 1]];
 	}
