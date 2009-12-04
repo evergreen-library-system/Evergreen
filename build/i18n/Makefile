@@ -233,3 +233,6 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/opac.js $(DOJO_OPAC_SRC)/$(DOJO_LOCALE)/opac.js
 	mkdir -p $(DOJO_RPT_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/reports.js $(DOJO_RPT_SRC)/$(DOJO_LOCALE)/reports.js
+
+install_all_locales: newpo
+	for i in `ls po/*/*po|grep -v en-US | cut -f3 -d'/' | cut -f1 -d. | sort | uniq`; do RC=`make LOCALE=$$i install`; if [ "$$RC" > "0" ]; then break; fi; done
