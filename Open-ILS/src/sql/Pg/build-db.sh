@@ -89,15 +89,18 @@ ordered_file_list="
 
   005.schema.actors.sql
   006.schema.permissions.sql
+  008.schema.query.sql
   010.schema.biblio.sql
   011.schema.authority.sql
   012.schema.vandelay.sql
+  015.schema.staging.sql
   020.schema.functions.sql
   030.schema.metabib.sql
   040.schema.asset.sql
   070.schema.container.sql
   080.schema.money.sql
   090.schema.action.sql
+  095.schema.booking.sql
   
   100.circ_matrix.sql
   110.hold_matrix.sql
