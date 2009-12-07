@@ -145,18 +145,18 @@ sub create_brt_and_brsrc {
         return $e->die_event;
 }
 
-sub res_list_by_attrs {
+sub resource_list_by_attrs {
     my $self = shift;
     my $client = shift;
     my $auth = shift;
     my $filters = shift;
 
     return undef unless ($filters->{type} || $filters->{attribute_values});
-    return undef unless ($filters->{type} || $filters->{attribute_values});
 
     my $query = {
         'select'   => { brsrc => [ 'id' ] },
-        'from'     => { brsrc => { bram => {} } },
+        'from'     => { brsrc => {} },
+        'where'    => {},
         'distinct' => 1
     };
 
@@ -165,6 +165,8 @@ sub res_list_by_attrs {
     }
 
     if ($filters->{attribute_values}) {
+
+        $query->{from}->{brsrc}->{bram} = { field => 'resource' };
 
         $filters->{attribute_values} = [$filters->{attribute_values}]
             if (!ref($filters->{attribute_values}));
@@ -246,7 +248,7 @@ sub res_list_by_attrs {
     return $allowed_ids;
 }
 __PACKAGE__->register_method(
-    method   => "res_list_by_attrs",
+    method   => "resource_list_by_attrs",
     api_name => "open-ils.booking.resources.filtered_id_list",
     argc     => 2,
     signature=> {
@@ -260,7 +262,7 @@ __PACKAGE__->register_method(
 
 The filter object parameter can contain the following keys:
  * type             => The id of a booking resource type (brt)
- * attribute_values => The id of booking resource type attribute values that the resource must have assigned to it (brav)
+ * attribute_values => The ids of booking resource type attribute values that the resource must have assigned to it (brav)
  * available        => Either:
                         A timestamp during which the resources are not reserved.  If the resource is overbookable, this is ignored.
                         A range of two timestamps which do not overlap any reservations for the resources.  If the resource is overbookable, this is ignored.
@@ -269,6 +271,99 @@ The filter object parameter can contain the following keys:
                         A range of two timestamps which overlap a reservation of the resources.
 
 Note that at least one of 'type' or 'attribute_values' is required.
+
+NOTES
+
+);
+
+sub reservation_list_by_filters {
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my $filters = shift;
+
+    return undef unless ($filters->{user} || $filters->{resource} || $filters->{type} || $filters->{attribute_values});
+
+    my $query = {
+        'select'   => { bresv => [ 'id' ] },
+        'from'     => { bresv => {} },
+        'where'    => {},
+        'distinct' => 1
+    };
+
+    if ($filters->{fields}) {
+        $query->{where} = $filters->{fields};
+    }
+
+
+    if ($filters->{user}) {
+        $query->{where}->{usr} = $filters->{user};
+    }
+
+    if ($filters->{type}) {
+        $query->{where}->{target_resource_type} = $filters->{type};
+    }
+
+    if ($filters->{resource}) {
+        $query->{where}->{target_resource} = $filters->{resource};
+    }
+
+    if ($filters->{attribute_values}) {
+
+        $query->{from}->{bresv}->{bravm} = { field => 'reservation' };
+
+        $filters->{attribute_values} = [$filters->{attribute_values}]
+            if (!ref($filters->{attribute_values}));
+
+        $query->{having}->{'+bravm'}->{attr_value}->{'@>'} = {
+            transform => 'array_accum',
+            value => '{'.join(',', @{ $filters->{attribute_values} } ).'}'
+        };
+    }
+
+    if ($filters->{search_start} || $filters->{search_end}) {
+        
+        $query->{where}->{'-or'} = {};
+
+        $query->{where}->{'-or'}->{start_time} = { 'between' => [ $filters->{search_start}, $filters->{search_end} ] }
+                if ($filters->{search_start});
+
+        $query->{where}->{'-or'}->{end_time} = { 'between' => [ $filters->{search_start}, $filters->{search_end} ] }
+                if ($filters->{search_end});
+    }
+
+    my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+    my $ids = $cstore->request( 'open-ils.cstore.json_query.atomic', $query )->gather(1);
+    $ids = [ map { $_->{id} } @$ids ];
+    $cstore->disconnect;
+
+    return $ids;
+}
+__PACKAGE__->register_method(
+    method   => "reservation_list_by_filters",
+    api_name => "open-ils.booking.reservations.filtered_id_list",
+    argc     => 2,
+    signature=> {
+        params => [
+            {type => 'string', desc => 'Authentication token'},
+            {type => 'object', desc => 'Filter object -- see notes for details'}
+        ],
+        return => { desc => "An array of brsrc ids matching the requested filters." },
+    },
+    notes    => <<'NOTES'
+
+The filter object parameter can contain the following keys:
+ * user             => The id of a user that has requested a bookable item -- filters on bresv.usr
+ * type             => The id of a booking resource type (brt) -- filters on bresv.target_resource_type
+ * resource         => The id of a booking resource (brsrc) -- filters on bresv.target_resource
+ * attribute_values => The ids of booking resource type attribute values that the resource must have assigned to it (brav)
+ * search_start     => If search_end is not specified, booking interval (start_time to end_time) must contain this timestamp.
+ * search_end       => If search_start is not specified, booking interval (start_time to end_time) must contain this timestamp.
+ * fields           => An object containing any combination of bresv search filters in standard cstore/pcrud search format.
+
+Note that at least one of 'user', 'type', 'resource' or 'attribute_values' is required.  If both search_start and search_end are specified,
+then the result includes any reservations that overlap with that time range.  Any filter fields supplied in 'fields' are overridden
+by the top-level filters ('user', 'type', 'resource').
 
 NOTES
 
