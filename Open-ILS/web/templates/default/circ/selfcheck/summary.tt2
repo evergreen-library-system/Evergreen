@@ -14,12 +14,12 @@
         <legend>Holds</legend>
         <div id='oils-selfck-holds-ready'></div>
         <div id='oils-selfck-holds-total'></div>
-        <div><a href='javascript:void(0);' id='oils-selfck-hold-details-link'>Hold Details</a></div>
+        <div><a href='javascript:void(0);' id='oils-selfck-hold-details-link'>View Holds</a></div>
     </fieldset>
     <fieldset>
         <legend>Fines</legend>
         <div id='oils-selfck-fines-total'></div>
-        <div><a href='javascript:void(0);' id='oils-selfck-pay-fines-link'>Pay fines</a></div>
+        <div class='hidden'><a href='javascript:void(0);' id='oils-selfck-pay-fines-link'>Pay fines</a></div>
     </fieldset>
 </div>
 
