@@ -1,14 +1,14 @@
 <div id='oils-selfck-circ-info-div'>
     <div id='oils-selfck-info-nav'>
         <span><a id='oils-selfck-nav-home' href='javascript:void(0);' class='selected'>Home</a></span>
-        <span><a id='oils-selfck-nav-holds' href='javascript:void(0);'>Holds</a></span>
-        <span><a id='oils-selfck-nav-fines' href='javascript:void(0);'>Fines</a></span>
-        <span><a id='oils-selfck-nav-logout' href='javascript:void(0);'>Log Out</a></span>
+        <span><a id='oils-selfck-nav-logout' href='javascript:void(0);'>Logout</a></span>
+        <span><a id='oils-selfck-nav-logout-print' href='javascript:void(0);'>Logout w/ Receipt</a></span>
     </div>
     <fieldset>
         <legend>Items Checked Out</legend>
         <div id='oils-selfck-circ-session-total'></div>
         <div id='oils-selfck-circ-account-total'></div>
+        <div><a href='javascript:void(0);' id='oils-selfck-items-out-details-link'>View Items Out</a></div>
     </fieldset>
     <fieldset>
         <legend>Holds</legend>
