@@ -544,6 +544,11 @@ function vlFormatViewMatches(id) {
     return '<a href="javascript:void(0);" onclick="vlLoadMatchUI(' + id + ');">' + this.name + '</a>';
 }
 
+function vlFormatViewMatchMARC(id) {
+    return '<a href="javascript:void(0);" onclick="vlLoadMARCHtml(' + id + ', false, '+
+        'function(){displayGlobalDiv(\'vl-match-div\');});">' + this.name + '</a>';
+}
+
 function getAttrValue(rowIdx, item) {
     if(!item) return '';
     var attrCode = this.field.split('.')[1];

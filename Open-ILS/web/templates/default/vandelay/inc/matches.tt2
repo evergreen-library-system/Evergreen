@@ -18,8 +18,7 @@
                 {name: '&vandelay.id;', field:'id'},
                 {   name: '&vandelay.view.marc;', 
                     get: vlGetViewMARC, 
-                    value:'&lt;a href="javascript:void(0);" onclick="vlLoadMARCHtml(RECID, '+
-                        'true, function(){displayGlobalDiv(\'vl-match-div\');});">&vandelay.view.marc;&lt;/a>'
+                    formatter : vlFormatViewMatchMARC
                 },
                 {name: '&vandelay.creator;', get: vlGetCreator},
                 {name: '&vandelay.create.date;', field:'create_date', get: vlGetDateTimeField},
