@@ -145,4 +145,134 @@ sub create_brt_and_brsrc {
         return $e->die_event;
 }
 
+sub res_list_by_attrs {
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my $filters = shift;
+
+    return undef unless ($filters->{type} || $filters->{attribute_values});
+    return undef unless ($filters->{type} || $filters->{attribute_values});
+
+    my $query = {
+        'select'   => { brsrc => [ 'id' ] },
+        'from'     => { brsrc => { bram => {} } },
+        'distinct' => 1
+    };
+
+    if ($filters->{type}) {
+        $query->{where}->{type} = $filters->{type};
+    }
+
+    if ($filters->{attribute_values}) {
+
+        $filters->{attribute_values} = [$filters->{attribute_values}]
+            if (!ref($filters->{attribute_values}));
+
+        $query->{having}->{'+bram'}->{value}->{'@>'} = {
+            transform => 'array_accum',
+            value => '{'.join(',', @{ $filters->{attribute_values} } ).'}'
+        };
+    }
+
+    if ($filters->{available}) {
+        $query->{from}->{brsrc}->{bresv} = { field => 'current_resource' };
+
+        if (!ref($filters->{available})) { # just one time, start perhaps
+            $query->{where}->{'+bresv'} = {
+                '-or' => {
+                    'overbook' => 't',
+                    '-or' => {
+                        start_time => { '>=' => $filters->{available} },
+                        end_time   => { '<=' => $filters->{available} },
+                    }
+                }
+            };
+        } else { # start and end times
+            $query->{where}->{'+bresv'} = {
+                '-or' => {
+                    'overbook' => 't',
+                    '-and' => {
+                        '-or' => {
+                            start_time => { '>=' => $filters->{available}->[0] },
+                            end_time   => { '<=' => $filters->{available}->[0] },
+                        },
+                        '-or' => {
+                            start_time => { '>=' => $filters->{available}->[1] },
+                            end_time   => { '<=' => $filters->{available}->[1] },
+                        }
+                    }
+                }
+            };
+        }
+    }
+
+    if ($filters->{booked}) {
+        $query->{from}->{brsrc}->{bresv} = { field => 'current_resource' };
+
+        if (!ref($filters->{booked})) { # just one time, start perhaps
+            $query->{where}->{'+bresv'} = {
+                start_time => { '<=' => $filters->{booked} },
+                end_time   => { '>=' => $filters->{booked} },
+            };
+        } else { # start and end times
+            $query->{where}->{'+bresv'} = {
+                '-or' => {
+                    '-and' => {
+                        start_time => { '<=' => $filters->{booked}->[0] },
+                        end_time   => { '>=' => $filters->{booked}->[0] },
+                    },
+                    '-and' => {
+                        start_time => { '<=' => $filters->{booked}->[1] },
+                        end_time   => { '>=' => $filters->{booked}->[1] },
+                    }
+                }
+            };
+        }
+    }
+
+    my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+    my $ids = $cstore->request( 'open-ils.cstore.json_query.atomic', $query )->gather(1);
+    $ids = [ map { $_->{id} } @$ids ];
+    $cstore->disconnect;
+
+    my $pcrud = OpenSRF::AppSession->connect('open-ils.pcrud');
+    my $allowed_ids = $pcrud->request(
+        'open-ils.pcrud.id_list.brsrc.atomic',
+        $auth => { id => $ids }
+    )->gather(1);
+    $pcrud->disconnect;
+
+    return $allowed_ids;
+}
+__PACKAGE__->register_method(
+    method   => "res_list_by_attrs",
+    api_name => "open-ils.booking.resources.filtered_id_list",
+    argc     => 2,
+    signature=> {
+        params => [
+            {type => 'string', desc => 'Authentication token'},
+            {type => 'object', desc => 'Filter object -- see notes for details'}
+        ],
+        return => { desc => "An array of brsrc ids matching the requested filters." },
+    },
+    notes    => <<'NOTES'
+
+The filter object parameter can contain the following keys:
+ * type             => The id of a booking resource type (brt)
+ * attribute_values => The id of booking resource type attribute values that the resource must have assigned to it (brav)
+ * available        => Either:
+                        A timestamp during which the resources are not reserved.  If the resource is overbookable, this is ignored.
+                        A range of two timestamps which do not overlap any reservations for the resources.  If the resource is overbookable, this is ignored.
+ * booked           => Either:
+                        A timestamp during which the resources are reserved.
+                        A range of two timestamps which overlap a reservation of the resources.
+
+Note that at least one of 'type' or 'attribute_values' is required.
+
+NOTES
+
+);
+
+
 1;
