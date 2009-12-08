@@ -77,6 +77,8 @@ sub child_init {
 sub handler {
 
     my $r   = shift;
+    return Apache2::Const::DECLINED if (-e $r->filename);
+
     my $cgi = CGI->new;
     my $path = $r->path_info;
     my $res;
