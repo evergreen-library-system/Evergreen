@@ -1214,7 +1214,10 @@ sub do_checkout {
     $self->build_checkout_circ_object();
     return if $self->bail_out;
 
-    $self->apply_modified_due_date();
+    my $modify_to_start = $self->booking_adjusted_due_date();
+    return if $self->bail_out;
+
+    $self->apply_modified_due_date($modify_to_start);
     return if $self->bail_out;
 
     return $self->bail_on_events($self->editor->event)
@@ -1589,8 +1592,77 @@ sub build_checkout_circ_object {
 }
 
 
+sub booking_adjusted_due_date {
+    my $self = shift;
+    my $circ = $self->circ;
+    my $copy = $self->copy;
+
+
+    my $changed;
+
+    if( $self->due_date ) {
+
+        return $self->bail_on_events($self->editor->event)
+            unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
+
+       $circ->due_date(clense_ISO8601($self->due_date));
+
+    } else {
+
+        return unless $copy and $circ->due_date;
+    }
+
+    if (my $booking_item = $self->editor->search_booking_resource( { barcode => $copy->barcode } )) {
+        my $resource_type = $self->editor->retrieve_booking_resource_type( $booking_item->resource_type );
+
+        my $stop_circ_setting = $U->ou_ancestor_setting_value( $self->circ_lib, 'circ.booking_reservation.stop_circ', $self->editor );
+        my $shorten_circ_setting = $resource_type->elbow_room ||
+            $U->ou_ancestor_setting_value( $self->circ_lib, 'circ.booking_reservation.default_elbow_room', $self->editor ) ||
+            '0 seconds';
+
+        my $booking_ses = OpenSRF::AppSession->create( 'open-ils.booking' );
+        my $bookings = $booking_ses->request(
+            'open-ils.booking.reservations.filtered_id_list',
+            { resource => $booking_item->id, start_time => 'now', end_time => $circ->due_date }
+        )->gather(1);
+        $booking_ses->disconnect;
+        
+        my $dt_parser = DateTime::Format::ISO8601->new;
+        my $due_date = $dt_parser->parse_datetime( clense_ISO8601($circ->due_date) );
+
+        for my $bid (@$bookings) {
+
+            my $booking = $self->editor->retrieve_booking_reservation( $bid );
+
+            my $booking_start = $dt_parser->parse_datetime( clense_ISO8601($booking->start_time) );
+            my $booking_end = $dt_parser->parse_datetime( clense_ISO8601($booking->end_time) );
+
+            return $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') )
+                if ($booking_start < DateTime->now);
+
+
+            if ($U->is_true($stop_circ_setting)) {
+                $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') ); 
+            } else {
+                $due_date = $booking_start->subtract( seconds => interval_to_seconds($shorten_circ_setting) );
+                $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') ) if ($due_date < DateTime->now); 
+            }
+            
+            $circ->due_date(clense_ISO8601($due_date->strftime('%FT%T%z')));
+            $self->due_date($circ->due_date);
+            $changed = 1;
+        }
+
+        return $self->bail_on_events($self->editor->event)
+            unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
+    }
+
+    return $changed;
+}
+
 sub apply_modified_due_date {
     my $self = shift;
+    my $shift_earlier = shift;
     my $circ = $self->circ;
     my $copy = $self->copy;
 
@@ -1625,7 +1697,11 @@ sub apply_modified_due_date {
 
             # XXX make the behavior more dynamic
             # for now, we just push the due date to after the close date
-            $circ->due_date($dateinfo->{end});
+            if ($shift_earlier) {
+                $circ->due_date($dateinfo->{start});
+            } else {
+                $circ->due_date($dateinfo->{end});
+            }
       }
    }
 }

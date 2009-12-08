@@ -297,7 +297,7 @@ sub reservation_list_by_filters {
         'select'   => { bresv => [ 'id' ] },
         'from'     => { bresv => {} },
         'where'    => {},
-        'order_by' => [{ class => bresv => field => start_time => direction => 'asc' }]
+        'order_by' => [{ class => bresv => field => start_time => direction => 'asc' }],
         'distinct' => 1
     };
 

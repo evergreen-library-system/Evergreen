@@ -2507,6 +2507,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Return Time" name="return_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Booking Interval" name="booking_interval" reporter:datatype="interval"/>
 			<field reporter:label="Fine Interval" name="fine_interval" reporter:datatype="interval"/>
+			<field reporter:label="Inter-booking Interval" name="elbow_room" reporter:datatype="interval"/>
 			<field reporter:label="Fine Amount" name="fine_amount" reporter:datatype="money"/>
 			<field reporter:label="Max Fine Amount" name="max_fine" reporter:datatype="money"/>
 			<field reporter:label="Target Resource Type" name="target_resource_type" reporter:datatype="link"/>

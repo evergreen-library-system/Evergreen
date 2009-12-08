@@ -23,6 +23,7 @@ CREATE SCHEMA booking;
 CREATE TABLE booking.resource_type (
 	id             SERIAL          PRIMARY KEY,
 	name           TEXT            NOT NULL,
+	elbow_room     INTERVAL,
 	fine_interval  INTERVAL,
 	fine_amount    DECIMAL(8,2)    NOT NULL DEFAULT 0,
 	max_fine       DECIMAL(8,2),
