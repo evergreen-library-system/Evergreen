@@ -397,7 +397,7 @@ SelfCheckManager.prototype.goToTab = function(name) {
 
     openils.Util.hide('oils-selfck-payment-page');
     openils.Util.hide('oils-selfck-holds-page');
-    openils.Util.show('oils-selfck-circ-page');
+    openils.Util.hide('oils-selfck-circ-page');
     
     switch(name) {
         case 'checkout':
@@ -557,6 +557,8 @@ SelfCheckManager.prototype.drawHolds = function(holds) {
             return 1;
         }
     );
+
+    this.holds = holds;
 
     progressDialog.hide();
 
@@ -963,6 +965,8 @@ SelfCheckManager.prototype.printItemsOutReceipt = function(callback) {
 
     if(!this.itemsOut.length) return;
 
+    progressDialog.show(true);
+
     var params = [
         this.authtoken, 
         this.staff.ws_ou(),
@@ -979,10 +983,72 @@ SelfCheckManager.prototype.printItemsOutReceipt = function(callback) {
             async : true,
             params : params,
             oncomplete : function(r) {
+                progressDialog.hide();
                 var resp = openils.Util.readResponse(r);
                 var output = resp.template_output();
                 if(output) {
                     self.printData(output.data(), self.itemsOut.length, callback); 
+                } else {
+                    var error = resp.error_output();
+                    if(error) {
+                        throw new Error("Error creating receipt: " + error.data());
+                    } else {
+                        throw new Error("No receipt data returned from server");
+                    }
+                }
+            }
+        }
+    );
+}
+
+/**
+ * Print a receipt for this user's items out
+ */
+SelfCheckManager.prototype.printHoldsReceipt = function(callback) {
+
+    if(!this.holds.length) return;
+
+    progressDialog.show(true);
+
+    var holdIds = [];
+    var holdData = [];
+
+    dojo.forEach(this.holds,
+        function(data) {
+            holdIds.push(data.hold.id());
+            if(data.status == 4) {
+                holdData.push({ready : true});
+            } else {
+                holdData.push({
+                    queue_position : data.queue_position, 
+                    potential_copies : data.potential_copies
+                });
+            }
+        }
+    );
+
+    var params = [
+        this.authtoken, 
+        this.staff.ws_ou(),
+        null,
+        'format.selfcheck.holds',
+        'print-on-demand',
+        holdIds,
+        holdData
+    ];
+
+    var self = this;
+    fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.fire_hold_trigger_events'],
+        {   
+            async : true,
+            params : params,
+            oncomplete : function(r) {
+                progressDialog.hide();
+                var resp = openils.Util.readResponse(r);
+                var output = resp.template_output();
+                if(output) {
+                    self.printData(output.data(), self.holds.length, callback); 
                 } else {
                     var error = resp.error_output();
                     if(error) {
