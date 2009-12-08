@@ -436,7 +436,7 @@ __PACKAGE__->register_method(
     method => 'fetch_reservation',
     api_name => 'open-ils.circ.booking.reservation.retrieve'
 );
-sub fetch_grocery {
+sub fetch_reservation {
     my( $self, $conn, $auth, $id ) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
