@@ -12,6 +12,8 @@ use OpenILS::Application::AppUtils;
 my $U = "OpenILS::Application::AppUtils";
 
 use OpenSRF::Utils::Logger qw/$logger/;
+use DateTime;
+use DateTime::Format::ISO8601;
 
 sub prepare_new_brt {
     my ($record_id, $owning_lib, $mvr) = @_;
@@ -295,6 +297,7 @@ sub reservation_list_by_filters {
         'select'   => { bresv => [ 'id' ] },
         'from'     => { bresv => {} },
         'where'    => {},
+        'order_by' => [{ class => bresv => field => start_time => direction => 'asc' }]
         'distinct' => 1
     };
 
