@@ -30,6 +30,7 @@ function SelfCheckManager() {
     this.patronBarcodeRegex = null;
 
     this.checkouts = [];
+    this.itemsOut = [];
 
     // During renewals, keep track of the ID of the previous circulation. 
     // Previous circ is used for tracking failed renewals (for receipts).
@@ -90,13 +91,12 @@ SelfCheckManager.prototype.init = function() {
     // connect onclick handlers to the various navigation links
     var linkHandlers = {
         'oils-selfck-hold-details-link' : function() { self.drawHoldsPage(); },
-        //'oils-selfck-nav-holds' : function() { self.drawHoldsPage(); },
         'oils-selfck-pay-fines-link' : function() { self.drawFinesPage(); },
-        //'oils-selfck-nav-fines' : function() { self.drawFinesPage(); },
         'oils-selfck-nav-home' : function() { self.drawCircPage(); },
         'oils-selfck-nav-logout' : function() { self.logoutPatron(); },
         'oils-selfck-nav-logout-print' : function() { self.logoutPatron(true); },
-        'oils-selfck-items-out-details-link' : function() { self.drawItemsOutPage(); }
+        'oils-selfck-items-out-details-link' : function() { self.drawItemsOutPage(); },
+        'oils-selfck-print-list-link' : function() { self.printList(); }
     }
 
     for(var id in linkHandlers) 
@@ -120,7 +120,7 @@ SelfCheckManager.prototype.init = function() {
     var testPrint = this.cgi.param('testprint');
     if(testPrint) {
         this.checkouts = JSON2js(testPrint);
-        this.printReceipt();
+        this.printSessionReceipt();
         this.checkouts = [];
     }
 }
@@ -299,6 +299,7 @@ SelfCheckManager.prototype.updateScanBox = function(args) {
 SelfCheckManager.prototype.drawCircPage = function() {
 
     openils.Util.show('oils-selfck-circ-tbody');
+    this.goToTab('checkout');
 
     while(this.itemsOutTbody.childNodes[0])
         this.itemsOutTbody.removeChild(this.itemsOutTbody.childNodes[0]);
@@ -308,10 +309,6 @@ SelfCheckManager.prototype.drawCircPage = function() {
         msg : 'Please enter an item barcode', // TODO i18n
         handler : function(barcode) { self.checkout(barcode); }
     });
-
-    openils.Util.hide('oils-selfck-payment-page');
-    openils.Util.hide('oils-selfck-holds-page');
-    openils.Util.show('oils-selfck-circ-page');
 
     if(!this.circTemplate)
         this.circTemplate = this.circTbody.removeChild(dojo.byId('oils-selfck-circ-row'));
@@ -347,11 +344,11 @@ SelfCheckManager.prototype.drawCircPage = function() {
     }
 }
 
+
 SelfCheckManager.prototype.drawItemsOutPage = function() {
     openils.Util.hide('oils-selfck-circ-tbody');
-    openils.Util.hide('oils-selfck-payment-page');
-    openils.Util.hide('oils-selfck-holds-page');
-    openils.Util.show('oils-selfck-circ-page');
+
+    this.goToTab('items_out');
 
     while(this.itemsOutTbody.childNodes[0])
         this.itemsOutTbody.removeChild(this.itemsOutTbody.childNodes[0]);
@@ -378,8 +375,10 @@ SelfCheckManager.prototype.drawItemsOutPage = function() {
 
                 progressDialog.hide();
 
+                self.itemsOut = [];
                 dojo.forEach(circs,
                     function(circ) {
+                        self.itemsOut.push(circ.circ.id());
                         self.displayCheckout(
                             {payload : circ}, 
                             (circ.circ.parent_circ()) ? 'renew' : 'checkout',
@@ -390,6 +389,48 @@ SelfCheckManager.prototype.drawItemsOutPage = function() {
             }
         }
     );
+}
+
+
+SelfCheckManager.prototype.goToTab = function(name) {
+    this.tabName = name;
+
+    openils.Util.hide('oils-selfck-payment-page');
+    openils.Util.hide('oils-selfck-holds-page');
+    openils.Util.show('oils-selfck-circ-page');
+    
+    switch(name) {
+        case 'checkout':
+            openils.Util.show('oils-selfck-circ-page');
+            break;
+        case 'items_out':
+            openils.Util.show('oils-selfck-circ-page');
+            break;
+        case 'holds':
+            openils.Util.show('oils-selfck-holds-page');
+            break;
+        case 'fines':
+            openils.Util.show('oils-selfck-payment-page');
+            break;
+    }
+}
+
+
+SelfCheckManager.prototype.printList = function() {
+    switch(this.tabName) {
+        case 'checkout':
+            this.printSessionReceipt();
+            break;
+        case 'items_out':
+            this.printItemsOutReceipt();
+            break;
+        case 'holds':
+            this.printHoldsReceipt();
+            break;
+        case 'fines':
+            this.printFinesReceipt();
+            break;
+    }
 }
 
 SelfCheckManager.prototype.updateHoldsSummary = function() {
@@ -463,9 +504,7 @@ SelfCheckManager.prototype.drawHoldsPage = function() {
     // TODO add option to hid scanBox
     // this.updateScanBox(...)
 
-    openils.Util.hide('oils-selfck-circ-page');
-    openils.Util.hide('oils-selfck-payment-page');
-    openils.Util.show('oils-selfck-holds-page');
+    this.goToTab('holds');
 
     this.holdTbody = dojo.byId('oils-selfck-hold-tbody');
     if(!this.holdTemplate)
@@ -840,9 +879,9 @@ SelfCheckManager.prototype.initPrinter = function() {
 }
 
 /**
- * Print a receipt
+ * Print a receipt for this session's checkouts
  */
-SelfCheckManager.prototype.printReceipt = function(callback) {
+SelfCheckManager.prototype.printSessionReceipt = function(callback) {
 
     var circIds = [];
     var circCtx = []; // circ context data.  in this case, renewal_failure info
@@ -917,13 +956,55 @@ SelfCheckManager.prototype.printData = function(data, numItems, callback) {
 }
 
 
+/**
+ * Print a receipt for this user's items out
+ */
+SelfCheckManager.prototype.printItemsOutReceipt = function(callback) {
+
+    if(!this.itemsOut.length) return;
+
+    var params = [
+        this.authtoken, 
+        this.staff.ws_ou(),
+        null,
+        'format.selfcheck.items_out',
+        'print-on-demand',
+        this.itemsOut
+    ];
+
+    var self = this;
+    fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.fire_circ_trigger_events'],
+        {   
+            async : true,
+            params : params,
+            oncomplete : function(r) {
+                var resp = openils.Util.readResponse(r);
+                var output = resp.template_output();
+                if(output) {
+                    self.printData(output.data(), self.itemsOut.length, callback); 
+                } else {
+                    var error = resp.error_output();
+                    if(error) {
+                        throw new Error("Error creating receipt: " + error.data());
+                    } else {
+                        throw new Error("No receipt data returned from server");
+                    }
+                }
+            }
+        }
+    );
+}
+
+
+
 
 /**
  * Logout the patron and return to the login page
  */
 SelfCheckManager.prototype.logoutPatron = function(print) {
     if(print && this.checkouts.length) {
-        this.printReceipt(
+        this.printSessionReceipt(
             function() {
                 location.href = location.href;
             }
