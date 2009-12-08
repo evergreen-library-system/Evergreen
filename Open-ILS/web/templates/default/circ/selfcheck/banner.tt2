@@ -1,0 +1,10 @@
+<div id='oils-selfck-user-banner'></div>
+<div id='oils-selfck-logo-div'>
+    <img src='[% ctx.media_prefix %]/images/eg_logo.jpg'/>
+</div>
+<div id='oils-selfck-scan-div'>
+    <div id='oils-selfck-scan-text'></div>
+    <input jsId='selfckScanBox' dojoType='dijit.form.TextBox'></input>
+</div>
+<div id='oils-selfck-status-div'></div>
+

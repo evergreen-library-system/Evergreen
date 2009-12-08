@@ -5,15 +5,7 @@
 [% INCLUDE 'default/circ/selfcheck/audio_config.tt2' %]
 
 <div id='oils-selfck-top-div'>
-    <div id='oils-selfck-user-banner'></div>
-    <div id='oils-selfck-logo-div'>
-        <img src='[% ctx.media_prefix %]/images/eg_logo.jpg'/>
-    </div>
-    <div id='oils-selfck-scan-div'>
-        <div id='oils-selfck-scan-text'></div>
-        <input jsId='selfckScanBox' dojoType='dijit.form.TextBox'></input>
-    </div>
-    <div id='oils-selfck-status-div'></div>
+    [% INCLUDE 'default/circ/selfcheck/banner.tt2' %]
 </div>
 <div id='oils-selfck-bottom-div'>
     <div id='oils-selfck-content-div'>
