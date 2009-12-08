@@ -29,7 +29,7 @@
 
 <window id="menu_frame_win"
     onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-    orient="vertical" width="800" height="500"
+    orient="vertical" width="1024" height="740"
     sizemode="maximized" oils_persist="width height" title="&staff.main.menu.title;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

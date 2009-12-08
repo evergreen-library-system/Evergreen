@@ -562,7 +562,7 @@ patron.util.retrieve_au_via_id = function(session, id, f) {
     JSAN.use('util.network');
     var network = new util.network();
     var patron_obj = network.simple_request(
-        'FM_AU_RETRIEVE_VIA_ID',
+        'FM_AU_RETRIEVE_VIA_ID.authoritative',
         [ session, id ],
         f
     );

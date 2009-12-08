@@ -100,6 +100,7 @@ util.window.prototype = {
             data.init({'via':'stash'});
             var x = data.modal_xulG_stack[key].pop();
             data.stash('modal_xulG_stack');
+            w.focus();
             return x;
         } else {
             if (my_xulG) {

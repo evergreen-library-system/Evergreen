@@ -40,32 +40,32 @@ function retrieve_mbts_for_list() {
     } else {
         //g.mbts_ids.reverse();
     
-                function gen_func(r) {
-                    return function() {
-                        if (typeof r == 'object') {
-                            g.bill_list.append( 
-                                { 
-                                    'retrieve_id' : r.id(), 
-                                    'row' : { 
-                                        'my' : { 
-                                            'mbts' : r 
-                                        } 
-                                    } 
+        function gen_func(r) {
+            return function() {
+                if (typeof r == 'object') {
+                    g.bill_list.append( 
+                        { 
+                            'retrieve_id' : r.id(), 
+                            'row' : { 
+                                'my' : { 
+                                    'mbts' : r 
                                 } 
-                            );
-                        } else {
-                            g.bill_list.append( 
-                                { 
-                                    'retrieve_id' : r, 
-                                    'row' : { 
-                                        'my' : {} 
-                                    } 
-                                } 
-                            );
-                        }
-                    }
+                            } 
+                        } 
+                    );
+                } else {
+                    g.bill_list.append( 
+                        { 
+                            'retrieve_id' : r, 
+                            'row' : { 
+                                'my' : {} 
+                            } 
+                        } 
+                    );
                 }
-    
+            }
+        }
+
         for (var i = 0; i < g.mbts_ids.length; i++) {
             dump('i = ' + i + ' g.mbts_ids[i] = ' + g.mbts_ids[i] + '\n');
             g.funcs.push( gen_func(g.mbts_ids[i]) );

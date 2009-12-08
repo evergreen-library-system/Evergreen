@@ -428,7 +428,7 @@ patron.display.prototype = {
                                     'url_prefix' : xulG.url_prefix,
                                     'on_money_change' : function(b) {
                                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                        obj.refresh_all();
+                                        obj.summary_window.refresh();
                                     }
                                 }
                             );

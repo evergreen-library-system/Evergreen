@@ -405,4 +405,47 @@ util.widgets.load_attributes = function (file) {
     }
 }
 
+util.widgets.addProperty = function(e,c) {
+	if(!e || !c) return;
+
+	var prop_class_string = e.getAttribute('properties');
+	var prop_class_array;
+
+	if(prop_class_string)
+		prop_class_array = prop_class_string.split(/\s+/);
+
+	var string_ip = ""; /*strip out nulls*/
+	for (var prop_class in prop_class_array) {
+		if (prop_class_array[prop_class] == c) { return; }
+		if(prop_class_array[prop_class] !=null)
+			string_ip += prop_class_array[prop_class] + " ";
+	}
+	string_ip += c;
+	e.setAttribute('properties',string_ip);
+}
+
+util.widgets.removeProperty = function(e, c) {
+	if(!e || !c) return;
+
+	var prop_class_string = '';
+
+	var prop_class_array = e.getAttribute('properties');
+	if( prop_class_array )
+		prop_class_array = prop_class_array.split(/\s+/);
+
+	var first = 1;
+	for (var prop_class in prop_class_array) {
+		if (prop_class_array[prop_class] != c) {
+			if (first == 1) {
+				prop_class_string = prop_class_array[prop_class];
+				first = 0;
+			} else {
+				prop_class_string = prop_class_string + ' ' +
+					prop_class_array[prop_class];
+			}
+		}
+	}
+	e.setAttribute('properties', prop_class_string);
+}
+
 dump('exiting util/widgets.js\n');

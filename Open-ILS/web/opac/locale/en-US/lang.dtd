@@ -2556,13 +2556,35 @@
 <!ENTITY staff.patron.bill_interface.selected_billed.label "Checked Billed:">
 <!ENTITY staff.patron.bill_interface.selected_paid.label "Checked Paid:">
 <!ENTITY staff.patron.bill_interface.voided_this_session.label "Voided this session:">
+<!ENTITY staff.patron.bill_interface.change_due_upon_payment.label "Change Due Upon Payment:">
+<!ENTITY staff.patron.bill_interface.pending.label "Pending:">
+<!ENTITY staff.patron.bill_interface.total.label "Total:">
+<!ENTITY staff.patron.bill_interface.checked.label "Checked:">
+<!ENTITY staff.patron.bill_interface.payment.label "Payment">
+<!ENTITY staff.patron.bill_interface.change.label "Change">
+<!ENTITY staff.patron.bill_interface.owed.label "Owed">
+<!ENTITY staff.patron.bill_interface.billed.label "Billed">
+<!ENTITY staff.patron.bill_interface.paid.label "Paid">
 
 <!ENTITY staff.patron.bills_overlay.still_checked_out.label "Red Items are still Checked Out">
 <!ENTITY staff.patron.bills_overlay.uncheck_all.label "Uncheck All">
+<!ENTITY staff.patron.bills_overlay.uncheck_all.accesskey "U">
 <!ENTITY staff.patron.bills_overlay.check_all.label "Check All">
+<!ENTITY staff.patron.bills_overlay.check_all.accesskey "k">
+<!ENTITY staff.patron.bills_overlay.check_all_refunds.label "Check All Refunds">
+<!ENTITY staff.patron.bills_overlay.check_all_refunds.accesskey "f">
 <!ENTITY staff.patron.bills_overlay.print_bills.label "Print Bills" >
+<!ENTITY staff.patron.bills_overlay.print_bills.accesskey "" >
 <!ENTITY staff.patron.bills_overlay.alternate_view.label "Alternate View">
 <!ENTITY staff.patron.bills_overlay.alternate_view.accesskey "V">
+<!ENTITY staff.patron.bills_overlay.receipt_options.label "Receipt Options">
+<!ENTITY staff.patron.bills_overlay.receipt_options.accesskey "O">
+<!ENTITY staff.patron.bills_overlay.receipt_upon_payment.label "Receipt Upon Payment">
+<!ENTITY staff.patron.bills_overlay.receipt_upon_payment.accesskey "U">
+<!ENTITY staff.patron.bills_overlay.printer_prompt.label "Printer Prompt">
+<!ENTITY staff.patron.bills_overlay.printer_prompt.accesskey "P">
+<!ENTITY staff.patron.bills_overlay.number_of_copies.label "Number of Copies:">
+<!ENTITY staff.patron.bills_overlay.number_of_copies.accesskey "N">
 <!ENTITY staff.patron.bills_overlay.summary.label "Summary">
 <!ENTITY staff.patron.bills_overlay.net_balance.value "Net Balance">
 <!ENTITY staff.patron.bills_overlay.new_balance.value "= New Balance">

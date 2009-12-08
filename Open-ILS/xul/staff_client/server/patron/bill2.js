@@ -9,9 +9,10 @@ function my_init() {
         JSAN.use('util.network'); g.network = new util.network();
         JSAN.use('util.date');
         JSAN.use('util.money');
+        JSAN.use('util.widgets');
         JSAN.use('patron.util');
         JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-        //g.data.temp = ''; g.data.stash('temp');
+        g.data.voided_billings = []; g.data.stash('voided_billings');
 
         g.error.sdump('D_TRACE','my_init() for bill2.xul');
 
@@ -26,6 +27,8 @@ function my_init() {
         g.funcs = []; g.bill_map = {}; g.row_map = {}; g.check_map = {};
 
         g.patron_id = xul_param('patron_id');
+
+        $('circulating_hint').hidden = true;
 
         init_lists();
 
@@ -46,14 +49,14 @@ function my_init() {
                     try {
                         g.patron = req.getResultObject();
                         if (typeof g.patron.ilsevent != 'undefined') throw(g.patron);
-                        $('credit_forward').setAttribute('value','$' + util.money.sanitize( g.patron.credit_forward_balance() ));
+                        $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
                     } catch(E) {
                         alert('Error in bill2.js, retrieve patron callback: ' + E);
                     }
                 }
             );
         } else {
-            $('credit_forward').setAttribute('value','$' + util.money.sanitize( g.patron.credit_forward_balance() ));
+            $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
         }
 
         default_focus();
@@ -79,9 +82,34 @@ function event_listeners() {
             false
         );
 
+        $('voidall').addEventListener(
+            'command',
+            handle_void_all,
+            false
+        );
+
         $('payment').addEventListener(
             'change',
-            function(ev) { distribute_payment(); },
+            function(ev) {
+                if ($('payment_type').value == 'credit_payment') {
+                    JSAN.use('util.money');
+                    JSAN.use('patron.util'); g.patron = patron.util.retrieve_au_via_id(ses(),g.patron_id);
+                    var proposed = util.money.dollars_float_to_cents_integer(ev.target.value);
+                    var available = util.money.dollars_float_to_cents_integer(g.patron.credit_forward_balance());
+                    if (proposed > available) {
+                        alert($("patronStrings").getFormattedString('staff.patron.bills.bill_payment_amount.credit_amount', [g.patron.credit_forward_balance()]));
+                        ev.target.value = util.money.cents_as_dollars( available );
+                        ev.target.setAttribute('value',ev.target.value);
+                    }
+                }
+                distribute_payment(); 
+            },
+            false
+        );
+
+        $('payment').addEventListener(
+            'focus',
+            function(ev) { ev.target.select(); },
             false
         );
 
@@ -110,6 +138,21 @@ function event_listeners() {
             false
         );
 
+        $('bill_history_btn').addEventListener(
+            'command',
+            function() {
+                xulG.display_window.g.patron.right_deck.reset_iframe( 
+                    urls.XUL_PATRON_BILL_HISTORY,
+                    {},
+                    {
+                        'patron_id' : g.patron_id,
+                        'refresh' : function() { refresh(); }
+                    }
+                );
+            },
+            false
+        );
+
         $('convert_change_to_credit').addEventListener(
             'command',
             function(ev) {
@@ -117,6 +160,18 @@ function event_listeners() {
                     addCSSClass( $('change_due'), 'change_to_credit' );
                 } else {
                     removeCSSClass( $('change_due'), 'change_to_credit' );
+                }
+            },
+            false
+        );
+
+        $('apply_payment_btn').addEventListener(
+            'command',
+            function(ev) {
+                try {
+                    apply_payment();
+                } catch(E) {
+                    alert('Error in bill2.js, apply_payment_btn: ' + E);
                 }
             },
             false
@@ -146,14 +201,14 @@ function tally_pending() {
             if (g.check_map[retrieve_ids[i]]) { 
                 var value = util.money.dollars_float_to_cents_integer( row_params.row.my.payment_pending );
                 payment_pending += value;
-                if (value != '0.00') { payments.push( [ retrieve_ids[i], value ] ); }
+                if (value != '0.00') { payments.push( [ retrieve_ids[i], util.money.cents_as_dollars(value) ] ); }
             }
         }
         var change_pending = payment_tendered - payment_pending;
         $('pending_payment').value = util.money.cents_as_dollars( payment_pending );
         $('pending_change').value = util.money.cents_as_dollars( change_pending );
         $('change_due').value = util.money.cents_as_dollars( change_pending );
-        return { 'payments' : payments, 'change' : change_pending };
+        return { 'payments' : payments, 'change' : util.money.cents_as_dollars( change_pending ) };
     } catch(E) {
         alert('Error in bill2.js, tally_pending(): ' + E);
     }
@@ -181,11 +236,29 @@ function tally_selected() {
             selected_paid += tp;
             selected_balance += bo;
         }
-        //$('checked_billed').setAttribute('value', '$' + util.money.cents_as_dollars( selected_billed ) );
-        //$('checked_paid').setAttribute('value', '$' + util.money.cents_as_dollars( selected_paid ) );
-        //$('checked_owed').setAttribute('value', '$' + util.money.cents_as_dollars( selected_balance ) );
+        //$('checked_billed').setAttribute('value', util.money.cents_as_dollars( selected_billed ) );
+        //$('checked_paid').setAttribute('value', util.money.cents_as_dollars( selected_paid ) );
+        //$('checked_owed').setAttribute('value', util.money.cents_as_dollars( selected_balance ) );
     } catch(E) {
         alert('Error in bill2.js, tally_selected(): ' + E);
+    }
+}
+
+function tally_voided() {
+    try {
+        JSAN.use('util.money');
+        var voided_total = 0;
+
+        g.data.stash_retrieve();
+
+        for (var i = 0; i < g.data.voided_billings.length; i++) {
+            var billing = g.data.voided_billings[i];
+            var bv = util.money.dollars_float_to_cents_integer( billing.amount() );
+            voided_total += bv;
+        }
+        $('currently_voided').setAttribute('value', util.money.cents_as_dollars( voided_total ) );
+    } catch(E) {
+        alert('Error in bill2.js, tally_voided(): ' + E);
     }
 }
 
@@ -228,15 +301,15 @@ function tally_all() {
                 checked_balance += bo;
             }
         }
-        $('checked_billed').setAttribute('value', '$' + util.money.cents_as_dollars( checked_billed ) );
-        $('checked_paid').setAttribute('value', '$' + util.money.cents_as_dollars( checked_paid ) );
-        $('checked_owed').setAttribute('value', '$' + util.money.cents_as_dollars( checked_balance ) );
-        $('checked_owed2').setAttribute('value', '$' + util.money.cents_as_dollars( checked_balance ) );
-        $('total_billed').setAttribute('value', '$' + util.money.cents_as_dollars( total_billed ) );
-        $('total_paid').setAttribute('value', '$' + util.money.cents_as_dollars( total_paid ) );
-        $('total_owed').setAttribute('value', '$' + util.money.cents_as_dollars( total_balance ) );
-        $('total_owed2').setAttribute('value', '$' + util.money.cents_as_dollars( total_balance ) );
-        $('refunds_owed').setAttribute('value', '$' + util.money.cents_as_dollars( Math.abs( refunds_owed ) ) );
+        $('checked_billed').setAttribute('value', util.money.cents_as_dollars( checked_billed ) );
+        $('checked_paid').setAttribute('value', util.money.cents_as_dollars( checked_paid ) );
+        $('checked_owed').setAttribute('value', util.money.cents_as_dollars( checked_balance ) );
+        $('checked_owed2').setAttribute('value', util.money.cents_as_dollars( checked_balance ) );
+        $('total_billed').setAttribute('value', util.money.cents_as_dollars( total_billed ) );
+        $('total_paid').setAttribute('value', util.money.cents_as_dollars( total_paid ) );
+        $('total_owed').setAttribute('value', util.money.cents_as_dollars( total_balance ) );
+        $('total_owed2').setAttribute('value', util.money.cents_as_dollars( total_balance ) );
+        $('refunds_owed').setAttribute('value', util.money.cents_as_dollars( Math.abs( refunds_owed ) ) );
         // tally_selected();
     } catch(E) {
         alert('Error in bill2.js, tally_all(): ' + E);
@@ -251,6 +324,7 @@ function check_all() {
             row_params.row.my.checked = true;
             g.bill_list.refresh_row(row_params);
         }
+        tally_all();
         distribute_payment();
     } catch(E) {
         alert('Error in bill2.js, check_all(): ' + E);
@@ -266,6 +340,7 @@ function uncheck_all() {
             row_params.row.my.checked = false;
             g.bill_list.refresh_row(row_params);
         }
+        tally_all();
         distribute_payment();
     } catch(E) {
         alert('Error in bill2.js, check_all(): ' + E);
@@ -276,13 +351,14 @@ function uncheck_all() {
 function check_all_refunds() {
     try {
         for (var i in g.bill_map) {
-            g.check_map[i] = true;
             if ( Number( g.bill_map[i].transaction.balance_owed() ) < 0 ) {
+                g.check_map[i] = true;
                 var row_params = g.row_map[i];
                 row_params.row.my.checked = true;
                 g.bill_list.refresh_row(row_params);
             }
         }
+        tally_all();
         distribute_payment();
     } catch(E) {
         alert('Error in bill2.js, check_all_refunds(): ' + E);
@@ -328,7 +404,8 @@ function init_lists() {
         'columns' : 
             [
                 {
-                    'id' : 'select', 'type' : 'checkbox', 'editable' : true, 'label' : '', 'render' : function(my) { return String( my.checked ) == 'true'; }, 
+                    'id' : 'select', 'primary' : true, 'type' : 'checkbox', 'editable' : true, 'label' : '', 'style' : 'min-width: 3em;',
+                    'render' : function(my) { return String( my.checked ) == 'true'; }, 
                 }
             ].concat(
                 patron.util.mbts_columns({
@@ -341,7 +418,9 @@ function init_lists() {
             ).concat( 
                 [
                     {
-                        'id' : 'payment_pending', 'editable' : false, 'label' : 'Payment Pending', 'sort_type' : 'money', 'render' : function(my) { return my.payment_pending || '0.00'; }, 
+                        'id' : 'payment_pending', 'editable' : false, 'sort_type' : 'money', 
+                        'label' : $('patronStrings').getString('staff.patron.bill_interface.payment_pending.column_header'),
+                        'render' : function(my) { return my.payment_pending || '0.00'; }, 
                     }
                 ]
             ))),
@@ -392,6 +471,22 @@ function init_lists() {
             try {
                 var id = params.retrieve_id;
                 var row = params.row;
+
+                function handle_props(row) {
+                    try {
+                        if ( row && row.my && row.my.mbts && Number( row.my.mbts.balance_owed() ) < 0 ) {
+                            util.widgets.addProperty(params.row_node.firstChild,'refundable');
+                        }
+                        if ( row && row.my && row.my.circ && ! row.my.circ.checkin_time() ) {
+                            $('circulating_hint').hidden = false;
+                            util.widgets.addProperty(params.row_node.firstChild,'circulating');
+                        }
+                    } catch(E) {
+                        g.error.sdump('D_WARN','Error setting list properties in bill2.js: ' + E);
+                        alert('Error setting list properties in bill2.js: ' + E);
+                    }
+                }
+
                 if (id) {
                     if (typeof row.my == 'undefined') row.my = {};
                     if (typeof row.my.mbts == 'undefined' ) {
@@ -402,10 +497,10 @@ function init_lists() {
                             row.my.acp = blob.copy;
                             row.my.mvr = blob.record;
                             if (typeof params.on_retrieve == 'function') {
-                                if ( Number( row.my.mbts.balance_owed() ) < 0 ) {
-                                    params.row_node.firstChild.setAttribute('properties','refundable');
+                                if ( row.my.mbts && Number( row.my.mbts.balance_owed() ) < 0 ) {
                                     row.my.checked = false;
                                 }
+                                handle_props(row);
                                 params.on_retrieve(row);
                             };
                             g.bill_map[ id ] = blob;
@@ -413,11 +508,17 @@ function init_lists() {
                             tally_all();
                         } );
                     } else {
-                        if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+                        if (typeof params.on_retrieve == 'function') { 
+                            handle_props(row);
+                            params.on_retrieve(row); 
+                        }
                     }
                 } else {
-                    if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+                    if (typeof params.on_retrieve == 'function') { 
+                        params.on_retrieve(row); 
+                    }
                 }
+
                 return row;
             } catch(E) {
                 alert('Error in bill2.js, retrieve_row(): ' + E);
@@ -430,10 +531,11 @@ function init_lists() {
 }
 
 function handle_add() {
-    if(g.bill_list_selection.length > 1)
+    if(g.bill_list_selection.length > 1) {
         var msg = $("patronStrings").getFormattedString('staff.patron.bill_history.handle_add.message_plural', [g.bill_list_selection]);
-    else
+    } else {
         var msg = $("patronStrings").getFormattedString('staff.patron.bill_history.handle_add.message_singular', [g.bill_list_selection]);
+    }
         
     var r = g.error.yns_alert(msg,
         $("patronStrings").getString('staff.patron.bill_history.handle_add.title'),
@@ -451,12 +553,33 @@ function handle_add() {
                 { 'patron_id' : g.patron_id, 'xact_id' : g.bill_list_selection[i] }
             );
         }
-        g.bill_list.clear();
-        retrieve_mbts_for_list();
-        if (typeof window.refresh == 'function') window.refresh();
+        refresh();
         if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
     }
 }
+
+function handle_void_all() {
+    if(g.bill_list_selection.length > 1) {
+        var msg = $("patronStrings").getFormattedString('staff.patron.bill_history.handle_void.message_plural', [g.bill_list_selection]);
+    } else {
+        var msg = $("patronStrings").getFormattedString('staff.patron.bill_history.handle_void.message_singular', [g.bill_list_selection]);
+    }
+        
+    var r = g.error.yns_alert(msg,
+        $("patronStrings").getString('staff.patron.bill_history.handle_void.title'),
+        $("patronStrings").getString('staff.patron.bill_history.handle_void.btn_yes'),
+        $("patronStrings").getString('staff.patron.bill_history.handle_void.btn_no'),null,
+        $("patronStrings").getString('staff.patron.bill_history.handle_void.confirm_message'));
+    if (r == 0) {
+        for (var i = 0; i < g.bill_list_selection.length; i++) {
+            void_all_billings( g.bill_list_selection[i] );
+        }
+        refresh();
+        if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
+        if (typeof window.xulG == 'object' && typeof window.xulG.on_money_change == 'function') window.xulG.on_money_change();
+    }
+}
+
 
 function handle_details() {
     JSAN.use('util.window'); var win = new util.window();
@@ -468,8 +591,8 @@ function handle_details() {
             {
                 'patron_id' : g.patron_id,
                 'mbts_id' : g.bill_list_selection[i],
-                'refresh' : function() { 
-                    if (typeof window.refresh == 'function') window.refresh();
+                'refresh' : function() {
+                    refresh(); 
                     if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
                 }, 
             }
@@ -574,15 +697,25 @@ function apply_payment() {
         }
         if ( pay( payment_blob ) ) {
 
-            g.data.voided_billings = []; g.data.stash('voided_billings');
-            g.bill_list.clear();
-            retrieve_mbts_for_list();
-            if (typeof window.refresh == 'function') window.refresh();
+            $('payment').value = ''; $('payment').select(); $('payment').focus();
+            refresh({'clear_voided_summary':true});
             if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
+            if (typeof window.xulG == 'object' && typeof window.xulG.on_money_change == 'function') window.xulG.on_money_change();
+            if ( $('payment_type').value == 'credit_payment' || $('convert_change_to_credit').checked ) {
+                JSAN.use('patron.util'); 
+                patron.util.retrieve_au_via_id(ses(),g.patron_id, function(req) {
+                    var au_obj = req.getResultObject();
+                    if (typeof au_obj.ils_event == 'undefined') {
+                        g.patron = au_obj;
+                        $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
+                    }
+                });
+            }
             try {
+                if ( ! $('receipt_upon_payment').hasAttribute('checked') ) { return; } // Skip print attempt
                 var no_print_prompting = g.data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
                 if (no_print_prompting) {
-                    if (no_print_prompting.indexOf( "Bill Pay" ) > -1) return; // Skip print attempt
+                    if (no_print_prompting.indexOf( "Bill Pay" ) > -1) { return; } // Skip print attempt
                 }
                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                 g.data.stash_retrieve();
@@ -590,12 +723,12 @@ function apply_payment() {
                 JSAN.use('patron.util'); JSAN.use('util.functional');
                 var params = { 
                     'patron' : g.patron,
-                    'lib' : data.hash.aou[ ses('ws_ou') ],
+                    'lib' : g.data.hash.aou[ ses('ws_ou') ],
                     'staff' : ses('staff'),
-                    'header' : data.print_list_templates[template].header,
-                    'line_item' : data.print_list_templates[template].line_item,
-                    'footer' : data.print_list_templates[template].footer,
-                    'type' : data.print_list_templates[template].type,
+                    'header' : g.data.print_list_templates[template].header,
+                    'line_item' : g.data.print_list_templates[template].line_item,
+                    'footer' : g.data.print_list_templates[template].footer,
+                    'type' : g.data.print_list_templates[template].type,
                     'list' : util.functional.map_list(
                         payment_blob.payments,
                         function(o) {
@@ -612,11 +745,11 @@ function apply_payment() {
                     'data' : g.previous_summary
                 };
                 g.error.sdump('D_DEBUG',js2JSON(params));
-                if ($('auto_print').checked) params.no_prompt = true;
+                if (! $('printer_prompt').hasAttribute('checked')) params.no_prompt = true;
                 JSAN.use('util.print'); var print = new util.print();
-                print.tree_list( params );
+                print.tree_list( params ); 
             } catch(E) {
-                g.standard_unexpected_error_alert('bill receipt', E);
+                g.error.standard_unexpected_error_alert('bill receipt', E);
             }
         }
     } catch(E) {
@@ -634,22 +767,21 @@ function pay(payment_blob) {
                 $("patronStrings").getString('staff.patron.bills.pay.annotate_payment.title')
             );
         }
-        previous_summary = {
-            original_balance : obj.controller.view.bill_total_owed.value,
-            voided_balance : obj.controller.view.voided_balance.value,
-            payment_received : obj.controller.view.bill_payment_amount.value,
-            payment_applied : obj.controller.view.bill_payment_applied.value,
-            change_given : obj.controller.view.bill_change_amount.value,
-            credit_given : obj.controller.view.bill_credit_amount.value,
-            new_balance : obj.controller.view.bill_new_balance.value,
-            payment_type : obj.controller.view.payment_type.getAttribute('label'),
+        g.previous_summary = {
+            original_balance : $('total_owed').value,
+            voided_balance : $('currently_voided').value,
+            payment_received : $('payment').value,
+            payment_applied : $('pending_payment').value,
+            change_given : $('convert_change_to_credit').checked ? 0 : $('pending_change').value,
+            credit_given : $('convert_change_to_credit').checked ? $('pending_change').value : 0,
+            new_balance : util.money.cents_as_dollars( 
+                util.money.dollars_float_to_cents_integer( $('total_owed').value ) - 
+                util.money.dollars_float_to_cents_integer( $('pending_payment').value )
+            ),
+            payment_type : $('payment_type').getAttribute('label'),
             note : payment_blob.note
         }
-        var robj = g.network.request(
-            api.BILL_PAY.app,    
-            api.BILL_PAY.method,
-            [ ses(), payment_blob ]
-        );
+        var robj = g.network.simple_request( 'BILL_PAY', [ ses(), payment_blob ]);
         if (robj == 1) { return true; } 
         if (typeof robj.ilsevent != 'undefined') {
             switch(Number(robj.ilsevent)) {
@@ -659,9 +791,65 @@ function pay(payment_blob) {
             }
         }
     } catch(E) {
-        obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.pay.payment_failed'),E);
+        g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.pay.payment_failed'),E);
         return false;
     }
 }
 
+function refresh(params) {
+    try {
+        if (params && params.clear_voided_summary) {
+            g.data.voided_billings = []; g.data.stash('voided_billings');
+        }
+        g.bill_list.clear();
+        retrieve_mbts_for_list();
+        tally_voided();
+        distribute_payment(); 
+    } catch(E) {
+        alert('Error in bill2.js, refresh(): ' + E);
+    }
+}
+
+function void_all_billings(mobts_id) {
+    try {
+        JSAN.use('util.functional');
+        
+        var mb_list = g.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID.authoritative', [ ses(), mobts_id ] );
+        if (typeof mb_list.ilsevent != 'undefined') throw(mb_list);
+
+        mb_list = util.functional.filter_list( mb_list, function(o) { return ! get_bool( o.voided() ) });
+
+        if (mb_list.length == 0) { alert($("patronStrings").getString('staff.patron.bills.void_all_billings.all_voided')); return; }
+
+        var sum = 0;
+        for (var i = 0; i < mb_list.length; i++) sum += util.money.dollars_float_to_cents_integer( mb_list[i].amount() );
+        sum = util.money.cents_as_dollars( sum );
+
+        var msg = $("patronStrings").getFormattedString('staff.patron.bills.void_all_billings.void.message', [sum]);
+        var r = g.error.yns_alert(msg,
+            $("patronStrings").getString('staff.patron.bills.void_all_billings.void.title'),
+            $("patronStrings").getString('staff.patron.bills.void_all_billings.void.yes'),
+            $("patronStrings").getString('staff.patron.bills.void_all_billings.void.no'), null,
+            $("patronStrings").getString('staff.patron.bills.void_all_billings.void.confirm_message'));
+        if (r == 0) {
+            var robj = g.network.simple_request('FM_MB_VOID',[ses()].concat(util.functional.map_list(mb_list,function(o){return o.id();})));
+            if (robj.ilsevent) {
+                switch(Number(robj.ilsevent)) {
+                    default: 
+                        g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.void_all_billings.error_voiding_bills'),robj); 
+                        refresh(); return; 
+                    break;
+                }
+            }
+
+            g.data.stash_retrieve(); if (! g.data.voided_billings ) g.data.voided_billings = []; 
+            for (var i = 0; i < mb_list.length; i++) {
+                    g.data.voided_billings.push( mb_list[i] );
+            }
+            g.data.stash('voided_billings');
+        }
+    } catch(E) {
+        try { g.error.standard_unexpected_error_alert('bill2.js, void_all_billings():',E); } catch(F) { alert(E); }
+    }
+}
 

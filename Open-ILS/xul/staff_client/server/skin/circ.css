@@ -7,6 +7,10 @@ treechildren::-moz-tree-row(refundable) {
     background-color: pink;
 }
 
+treechildren::-moz-tree-row(circulating) {
+    background-color: red; color: white;
+}
+
 treechildren::-moz-tree-row(backdate_failed) {
     background-color: pink ! important;
 }

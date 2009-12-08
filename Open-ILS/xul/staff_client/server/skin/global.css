@@ -12,12 +12,14 @@ treechildren::-moz-tree-checkbox(checked) {
 }
 
 treechildren::-moz-tree-row(selected) {
-    background-color: lightblue ! important;
+    border: thin dashed lightblue ! important;
 }
 
+/*
 treechildren::-moz-tree-cell-text(selected,focus) {
     color: black;
 }
+*/
 
 /*
 * { font-size-adjust: .5; }

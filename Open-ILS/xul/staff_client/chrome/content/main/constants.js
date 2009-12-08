@@ -337,7 +337,7 @@ const urls = {
     'XUL_REMOTE_OPAC_WRAPPER' : '/xul/server/cat/opac.xul',
     'XUL_OPAC_WRAPPER' : 'chrome://open_ils_staff_client/content/cat/opac.xul',
     'XUL_PATRON_BARCODE_ENTRY' : '/xul/server/patron/barcode_entry.xul',
-    'XUL_PATRON_BILLS' : '/xul/server/patron/bills.xul',
+    'XUL_PATRON_BILLS' : '/xul/server/patron/bill2.xul',
     'XUL_PATRON_BILL_CC_INFO' : '/xul/server/patron/bill_cc_info.xul',
     'XUL_PATRON_BILL_CHECK_INFO' : '/xul/server/patron/bill_check_info.xul',
     'XUL_PATRON_BILL_DETAILS' : '/xul/server/patron/bill_details.xul',
