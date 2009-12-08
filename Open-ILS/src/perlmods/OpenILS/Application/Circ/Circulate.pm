@@ -1612,7 +1612,9 @@ sub booking_adjusted_due_date {
         return unless $copy and $circ->due_date;
     }
 
-    if (my $booking_item = $self->editor->search_booking_resource( { barcode => $copy->barcode } )) {
+    my $booking_items = $self->editor->search_booking_resource( { barcode => $copy->barcode } );
+    if (@$booking_items) {
+        my $booking_item = $booking_items->[0];
         my $resource_type = $self->editor->retrieve_booking_resource_type( $booking_item->type );
 
         my $stop_circ_setting = $U->ou_ancestor_setting_value( $self->circ_lib, 'circ.booking_reservation.stop_circ', $self->editor );
