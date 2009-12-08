@@ -1613,7 +1613,7 @@ sub booking_adjusted_due_date {
     }
 
     if (my $booking_item = $self->editor->search_booking_resource( { barcode => $copy->barcode } )) {
-        my $resource_type = $self->editor->retrieve_booking_resource_type( $booking_item->resource_type );
+        my $resource_type = $self->editor->retrieve_booking_resource_type( $booking_item->type );
 
         my $stop_circ_setting = $U->ou_ancestor_setting_value( $self->circ_lib, 'circ.booking_reservation.stop_circ', $self->editor );
         my $shorten_circ_setting = $resource_type->elbow_room ||
@@ -1649,7 +1649,6 @@ sub booking_adjusted_due_date {
             }
             
             $circ->due_date(clense_ISO8601($due_date->strftime('%FT%T%z')));
-            $self->due_date($circ->due_date);
             $changed = 1;
         }
 
