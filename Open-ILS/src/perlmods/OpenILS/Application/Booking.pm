@@ -153,6 +153,9 @@ sub resource_list_by_attrs {
 
     return undef unless ($filters->{type} || $filters->{attribute_values});
 
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
     my $query = {
         'select'   => { brsrc => [ 'id' ] },
         'from'     => { brsrc => {} },
@@ -283,6 +286,10 @@ sub reservation_list_by_filters {
     my $filters = shift;
 
     return undef unless ($filters->{user} || $filters->{resource} || $filters->{type} || $filters->{attribute_values});
+
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_TRANSACTION');
 
     my $query = {
         'select'   => { bresv => [ 'id' ] },
