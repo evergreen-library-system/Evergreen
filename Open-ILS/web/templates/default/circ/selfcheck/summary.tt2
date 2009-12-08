@@ -19,7 +19,7 @@
     <fieldset>
         <legend>Fines</legend>
         <div id='oils-selfck-fines-total'></div>
-        <div class='hidden'><a href='javascript:void(0);' id='oils-selfck-pay-fines-link'>Pay fines</a></div>
+        <div><a href='javascript:void(0);' id='oils-selfck-pay-fines-link'>View Fines</a></div>
     </fieldset>
 </div>
 

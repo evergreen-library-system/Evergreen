@@ -227,7 +227,7 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
     } else {
 
         this.handleAlert('', false, 'login-success');
-        dojo.byId('oils-selfck-user-banner').innerHTML = 'Welcome, ' + this.patron.usrname(); // TODO i18n
+        dojo.byId('oils-selfck-user-banner').innerHTML = 'Welcome, ' + this.patron.first_given_name(); // TODO i18n
         this.drawCircPage();
     }
 }
@@ -594,6 +594,52 @@ SelfCheckManager.prototype.drawHolds = function(holds) {
 }
 
 
+SelfCheckManager.prototype.drawFinesPage = function() {
+
+    // TODO add option to hid scanBox
+    // this.updateScanBox(...)
+
+    this.goToTab('fines');
+    progressDialog.show(true);
+
+    this.finesTbody = dojo.byId('oils-selfck-fines-tbody');
+    if(!this.finesTemplate)
+        this.finesTemplate = this.finesTbody.removeChild(dojo.byId('oils-selfck-fines-row'));
+    while(this.finesTbody.childNodes[0])
+        this.finesTbody.removeChild(this.finesTbody.childNodes[0]);
+
+    var self = this;
+    var handler = function(dataList) {
+        for(var i in dataList) {
+            var data = dataList[i];
+            var row = self.finesTemplate.cloneNode(true);
+            var type = data.transaction.xact_type();
+            if(type == 'circulation') {
+                self.byName(row, 'type').innerHTML = type;
+                self.byName(row, 'details').innerHTML = data.record.title();
+            } else if(type == 'grocery') {
+                self.byName(row, 'type').innerHTML = 'Miscellaneous'; // Go ahead and head off any confusion around "grocery".  TODO i18n
+                self.byName(row, 'details').innerHTML = data.transaction.last_billing_type();
+            }
+            self.byName(row, 'total_owed').innerHTML = data.transaction.total_owed();
+            self.byName(row, 'total_paid').innerHTML = data.transaction.total_paid();
+            self.byName(row, 'balance').innerHTML = data.transaction.balance_owed();
+            self.finesTbody.appendChild(row);
+        }
+    }
+
+    fieldmapper.standardRequest( 
+        ['open-ils.actor', 'open-ils.actor.user.transactions.have_balance.fleshed'],
+        {   async : true,
+            params : [this.authtoken, this.patron.id()],
+            oncomplete : function(r) { 
+                progressDialog.hide();
+                handler(openils.Util.readResponse(r));
+            }
+        }
+    );
+}
+
 
 /**
  * Check out a single item.  If the item is already checked 
@@ -856,13 +902,6 @@ SelfCheckManager.prototype.displayCheckout = function(evt, type, itemsOut) {
 
 SelfCheckManager.prototype.byName = function(node, name) {
     return dojo.query('[name=' + name+']', node)[0];
-}
-
-
-SelfCheckManager.prototype.drawFinesPage = function() {
-    openils.Util.hide('oils-selfck-circ-page');
-    openils.Util.hide('oils-selfck-holds-page');
-    openils.Util.show('oils-selfck-payment-page');
 }
 
 

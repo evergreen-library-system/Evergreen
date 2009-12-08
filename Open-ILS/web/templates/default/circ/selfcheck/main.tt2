@@ -13,7 +13,7 @@
             <a id='oils-selfck-print-list-link' href='javascript:void(0);'>Print List</a>
         </div>
         <div id='oils-selfck-circ-page' class='hidden'>
-            <!-- Checkout / renewal interface -->
+            <!-- Checkout / renewal and items out interface -->
             [% INCLUDE 'default/circ/selfcheck/circ_page.tt2' %]
         </div>
         <div id='oils-selfck-holds-page' class='hidden'>
@@ -21,7 +21,8 @@
             [% INCLUDE 'default/circ/selfcheck/holds_page.tt2' %]
         </div>
         <div id='oils-selfck-payment-page' class='hidden'>
-            <!-- Credit Card payments interface -->
+            <!-- Fines and credit card payments interface -->
+            [% INCLUDE 'default/circ/selfcheck/fines.tt2' %]
         </div>
     </div>
     <div id='oils-selfck-summary-div'>

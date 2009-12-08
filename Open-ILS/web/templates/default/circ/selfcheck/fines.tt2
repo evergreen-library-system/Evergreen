@@ -1,0 +1,22 @@
+<div id='oils-selfck-fines-table-div'>
+    <table id='oils-selfck-fines-table' class='oils-selfck-item-table'>
+        <thead>
+            <tr>
+                <td>Type</td>
+                <td>Details</td>
+                <td>Total Owed</td>
+                <td>Total Paid</td>
+                <td>Balance Owed</td>
+            </tr>
+        </thead>
+        <tbody id='oils-selfck-fines-tbody'>
+            <tr id='oils-selfck-fines-row'>
+                <td name='type'></td>
+                <td name='details'></td>
+                <td name='total_owed'></td>
+                <td name='total_paid'></td>
+                <td name='balance' style='color:red;'></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
