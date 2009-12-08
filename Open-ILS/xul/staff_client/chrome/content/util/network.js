@@ -94,7 +94,8 @@ util.network.prototype = {
             var sparams = js2JSON(params);
             obj.error.sdump('D_SES','_request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
                 '\noverride_params = ' + override_params + '\n_params = ' + _params +
-                '\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
+                '\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) +
+                '\nlocation.href = ' + location.href );
 
             if (document.getElementById('network_progress')) {
                 if (g && g.menu && g.menu.network_meter && typeof g.menu.network_meter.inc == 'function') g.menu.network_meter.inc(app,name);
