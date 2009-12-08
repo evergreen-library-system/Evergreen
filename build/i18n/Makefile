@@ -234,5 +234,11 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	mkdir -p $(DOJO_RPT_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/reports.js $(DOJO_RPT_SRC)/$(DOJO_LOCALE)/reports.js
 
-install_all_locales: newpo
-	for i in `ls po/*/*po|grep -v en-US | cut -f3 -d'/' | cut -f1 -d. | sort | uniq`; do RC=`make LOCALE=$$i install`; if [ "$$RC" > "0" ]; then break; fi; done
+install_all_locales: newpo newpot
+	for i in `ls po/*/*po|grep -v en-US | cut -f3 -d'/' | cut -f1 -d. | sort | uniq`; \
+	do \
+	make LOCALE=$$i install; \
+	RC=$$?; \
+	if [ "$$RC" -gt 0 ]; \
+	then echo $$RC; exit $$RC; \
+	fi; done
