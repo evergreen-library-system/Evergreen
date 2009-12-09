@@ -610,6 +610,7 @@ SelfCheckManager.prototype.drawFinesPage = function() {
 
     var self = this;
     var handler = function(dataList) {
+        self.finesCount = dataList.length;
         for(var i in dataList) {
             var data = dataList[i];
             var row = self.finesTemplate.cloneNode(true);
@@ -1088,6 +1089,48 @@ SelfCheckManager.prototype.printHoldsReceipt = function(callback) {
                 var output = resp.template_output();
                 if(output) {
                     self.printData(output.data(), self.holds.length, callback); 
+                } else {
+                    var error = resp.error_output();
+                    if(error) {
+                        throw new Error("Error creating receipt: " + error.data());
+                    } else {
+                        throw new Error("No receipt data returned from server");
+                    }
+                }
+            }
+        }
+    );
+}
+
+
+/**
+ * Print a receipt for this user's items out
+ */
+SelfCheckManager.prototype.printFinesReceipt = function(callback) {
+
+    progressDialog.show(true);
+
+    var params = [
+        this.authtoken, 
+        this.staff.ws_ou(),
+        null,
+        'format.selfcheck.fines',
+        'print-on-demand',
+        [this.patron.id()]
+    ];
+
+    var self = this;
+    fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.fire_user_trigger_events'],
+        {   
+            async : true,
+            params : params,
+            oncomplete : function(r) {
+                progressDialog.hide();
+                var resp = openils.Util.readResponse(r);
+                var output = resp.template_output();
+                if(output) {
+                    self.printData(output.data(), self.finesCount, callback); 
                 } else {
                     var error = resp.error_output();
                     if(error) {
