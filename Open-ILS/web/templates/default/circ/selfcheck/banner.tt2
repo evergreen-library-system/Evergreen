@@ -4,7 +4,7 @@
 </div>
 <div id='oils-selfck-scan-div'>
     <div id='oils-selfck-scan-text'></div>
-    <input jsId='selfckScanBox' dojoType='dijit.form.TextBox'></input>
+    <input jsId='selfckScanBox' dojoType='dijit.form.TextBox'/>
 </div>
 <div id='oils-selfck-status-div'></div>
 

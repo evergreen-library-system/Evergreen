@@ -10,7 +10,7 @@
         </thead>
         <tbody id='oils-selfck-hold-tbody'>
             <tr id='oils-selfck-hold-row'>
-                <td><img class='oils-selfck-jacket' name='jacket'></img></td>
+                <td><img class='oils-selfck-jacket' name='jacket'/></td>
                 <td name='title'></td>
                 <td name='author'></td>
                 <td name='status'></td>

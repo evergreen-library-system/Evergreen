@@ -29,7 +29,27 @@
         [% INCLUDE 'default/circ/selfcheck/summary.tt2' %]
     </div>
 </div>
-<div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>
+<div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div>
+<div dojoType="dijit.Dialog" jsId='oilsSelfckWsDialog' class='oils-login-dialog' style='display:none;'>
+    <form>
+        <table>
+            <tr>
+                <td>Choose a location</td>
+                <td><div dojoType='openils.widget.OrgUnitFilteringSelect' jsId='oilsSelfckWsLocSelector' 
+                    searchAttr='shortname' labelAttr='shortname'/></td>
+            </tr>
+            <tr>
+                <td>Enter a workstation name</td>
+                <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckWsName'/></td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button jsId='oilsSelfckWsSubmit' dojoType='dijit.form.Button'>Submit</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
 [% END %]
 
 

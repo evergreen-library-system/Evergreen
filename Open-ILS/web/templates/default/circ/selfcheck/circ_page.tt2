@@ -13,7 +13,7 @@
         </thead>
         <tbody id='oils-selfck-circ-tbody'>
             <tr id='oils-selfck-circ-row'>
-                <td><img class='oils-selfck-jacket' name='jacket'></img></td>
+                <td><img class='oils-selfck-jacket' name='jacket'/></td>
                 <td name='barcode'></td>
                 <td name='title'></td>
                 <td name='author'></td>
@@ -25,6 +25,6 @@
                 </td>
             </tr>
         </tbody>
-        <tbody id='oils-selfck-circ-out-tbody' class='oils-selfck-item-table'/>
+        <tbody id='oils-selfck-circ-out-tbody' class='oils-selfck-item-table'></tbody>
     </table>
 </div>

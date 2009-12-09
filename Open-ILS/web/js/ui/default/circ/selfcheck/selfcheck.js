@@ -5,6 +5,7 @@ dojo.require('openils.Util');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 dojo.require('openils.widget.ProgressDialog');
+dojo.require('openils.widget.OrgUnitFilteringSelect');
 
 dojo.requireLocalization('openils.circ', 'selfcheck');
 var localeStrings = dojo.i18n.getLocalization('openils.circ', 'selfcheck');
@@ -83,7 +84,9 @@ SelfCheckManager.prototype.init = function() {
 
     // workstation is required but none provided
     if(this.orgSettings[SET_WORKSTATION_REQUIRED] && !this.workstation) {
-        alert(dojo.string.substitute(localeStrings.WORKSTATION_REQUIRED));
+        if(confirm(dojo.string.substitute(localeStrings.WORKSTATION_REQUIRED))) {
+            this.registerWorkstation();
+        }
         return;
     }
     
@@ -123,6 +126,54 @@ SelfCheckManager.prototype.init = function() {
         this.printSessionReceipt();
         this.checkouts = [];
     }
+}
+
+
+/**
+ * Registers a new workstion
+ */
+SelfCheckManager.prototype.registerWorkstation = function() {
+    
+    oilsSelfckWsDialog.show();
+
+    new openils.User().buildPermOrgSelector(
+        'REGISTER_WORKSTATION', 
+        oilsSelfckWsLocSelector, 
+        this.staff.home_ou()
+    );
+
+
+    var self = this;
+    dojo.connect(oilsSelfckWsSubmit, 'onClick', 
+
+        function() {
+            oilsSelfckWsDialog.hide();
+            var name = oilsSelfckWsLocSelector.attr('displayedValue') + '-' + oilsSelfckWsName.attr('value');
+
+            var res = fieldmapper.standardRequest(
+                ['open-ils.actor', 'open-ils.actor.workstation.register'],
+                { params : [
+                        self.authtoken, name, oilsSelfckWsLocSelector.attr('value')
+                    ]
+                }
+            );
+
+            if(evt = openils.Event.parse(res)) {
+                if(evt.textcode == 'WORKSTATION_NAME_EXISTS') {
+                    if(confirm(localeStrings.WORKSTATION_EXISTS)) {
+                        location.href = location.href.replace(/\?.*/, '') + '?ws=' + name;
+                    } else {
+                        self.registerWorkstation();
+                    }
+                    return;
+                } else {
+                    alert(evt);
+                }
+            } else {
+                location.href = location.href.replace(/\?.*/, '') + '?ws=' + name;
+            }
+        }
+    );
 }
 
 /**
