@@ -1,4 +1,5 @@
 function $(id) { return document.getElementById(id); }
+var payment_history_fetched = false;
 
 function tally_selected() {
     try {
@@ -76,6 +77,11 @@ function retrieve_mbts_for_list() {
 function init_lists() {
     JSAN.use('util.list'); JSAN.use('circ.util'); 
 
+    init_main_list();
+    init_payments_list();
+}
+
+function init_main_list() {
     g.bill_list_selection = [];
 
     g.bill_list = new util.list('bill_tree');
@@ -128,6 +134,34 @@ function init_lists() {
 
     $('bill_list_actions').appendChild( g.bill_list.render_list_actions() );
     g.bill_list.set_list_actions();
+}
+
+function init_payments_list() {
+    g.payments_list_selection = [];
+
+    g.payments_list = new util.list('payments_tree');
+
+    g.payments_list.init( {
+        'columns' : g.payments_list.fm_columns('mp'),
+        'on_select' : function(ev) {
+            JSAN.use('util.functional');
+            g.payments_list_selection = util.functional.map_list(
+                g.payments_list.retrieve_selection(),
+                function(o) { return o.getAttribute('retrieve_id'); }
+            );
+        },
+        'retrieve_row' : function(params) {
+            var id = params.retrieve_id;
+            var row = params.row;
+            if (typeof params.on_retrieve == 'function') {
+                params.on_retrieve(row);
+            };
+            return row;
+        },
+    } );
+
+    $('payments_list_actions').appendChild( g.payments_list.render_list_actions() );
+    g.payments_list.set_list_actions();
 }
 
 function my_init() {
@@ -247,4 +281,51 @@ function print_bills() {
     }
 }
 
+function payment_history_init() {
+    try {
+        if (payment_history_fetched) { return; } else { payment_history_fetched = true; }
 
+        g.payments_list.clear();
+
+        $('payments_meter').hidden = false;
+
+        fieldmapper.standardRequest(
+            [ api.FM_MP_RETRIEVE_VIA_USER.app, api.FM_MP_RETRIEVE_VIA_USER.method ],
+            {   async: true,
+                params: [ses(), g.patron_id],
+                onresponse: function(r) {
+                    try {
+                        var result = r.recv().content();
+
+                        if (result && typeof result.ilsevent == 'undefined') {
+                            g.payments_list.append( 
+                                { 
+                                    'retrieve_id' : result.id(), 
+                                    'row' : { 
+                                        'my' : { 
+                                            'mp' : result 
+                                        } 
+                                    } 
+                                } 
+                            );
+                        } else {
+                            throw( js2JSON(result) );
+                        }
+                    } catch(E) {
+                        alert('Error retrieving payment in bill_history.js, onresponse: ' + E);                        
+                    }
+                },
+                oncomplete: function() {
+                    $('payments_meter').hidden = true;
+                },
+                onerror: function(r) {
+                    var result = r.recv().content();
+                    alert('Error retrieving payment in bill_history.js, onerror: ' + js2JSON(result));                        
+                }
+            }
+        );
+
+    } catch(E) {
+        alert('Error in bill_history.js, payment_history_init(): ' + E);
+    }
+}

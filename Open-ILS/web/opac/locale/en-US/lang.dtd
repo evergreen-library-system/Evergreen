@@ -2532,6 +2532,10 @@
 <!ENTITY staff.patron.bill_history.print.accesskey "P">
 <!ENTITY staff.patron.bill_history.selected_billed.label "Selected Billed:">
 <!ENTITY staff.patron.bill_history.selected_paid.label "Selected Paid:">
+<!ENTITY staff.patron.bill_history.tab.transactions.label "Transactions">
+<!ENTITY staff.patron.bill_history.tab.transactions.accesskey "T">
+<!ENTITY staff.patron.bill_history.tab.payments.label "Payments">
+<!ENTITY staff.patron.bill_history.tab.payments.accesskey "y">
 
 <!ENTITY staff.patron.bill_interface.total_owed "Total Owed:">
 <!ENTITY staff.patron.bill_interface.total_checked "Total Checked:">
