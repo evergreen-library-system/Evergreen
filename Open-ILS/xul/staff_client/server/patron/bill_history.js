@@ -147,8 +147,9 @@ function init_payments_list() {
             JSAN.use('util.functional');
             g.payments_list_selection = util.functional.map_list(
                 g.payments_list.retrieve_selection(),
-                function(o) { return o.getAttribute('retrieve_id'); }
+                function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
             );
+            $('payments_details').disabled = g.payments_list_selection.length == 0;
         },
         'retrieve_row' : function(params) {
             var id = params.retrieve_id;
@@ -199,7 +200,13 @@ function my_init() {
 
         $('details').addEventListener(
             'command',
-            handle_details,
+            gen_handle_details('bills'),
+            false
+        );
+
+        $('payments_details').addEventListener(
+            'command',
+            gen_handle_details('payments'),
             false
         );
 
@@ -248,23 +255,31 @@ function handle_add() {
     }
 }
 
-function handle_details() {
-    JSAN.use('util.window'); var win = new util.window();
-    for (var i = 0; i < g.bill_list_selection.length; i++) {
-        var my_xulG = win.open(
-            urls.XUL_PATRON_BILL_DETAILS,
-            'test_billdetails_' + g.bill_list_selection[i],
-            'chrome,resizable',
-            {
-                'patron_id' : g.patron_id,
-                'mbts_id' : g.bill_list_selection[i],
-                'refresh' : function() { 
-                    if (typeof window.refresh == 'function') window.refresh();
-                    if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
-                }, 
-            }
-        );
-    }
+function gen_handle_details(which_list) {
+    return function() {
+        JSAN.use('util.functional');
+        var selection;
+        switch(which_list) {
+            case 'payments': selection = util.functional.map_list( g.payments_list_selection, function(o) { return o.xact; } ); break;
+            default: selection = g.bill_list_selection; break;
+        }
+        JSAN.use('util.window'); var win = new util.window();
+        for (var i = 0; i < selection.length; i++) {
+            var my_xulG = win.open(
+                urls.XUL_PATRON_BILL_DETAILS,
+                'test_billdetails_' + selection[i],
+                'chrome,resizable',
+                {
+                    'patron_id' : g.patron_id,
+                    'mbts_id' : selection[i],
+                    'refresh' : function() { 
+                        if (typeof window.refresh == 'function') window.refresh();
+                        if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
+                    }, 
+                }
+            );
+        }
+    };
 }
 
 function print_bills() {
@@ -300,7 +315,7 @@ function payment_history_init() {
                         if (result && typeof result.ilsevent == 'undefined') {
                             g.payments_list.append( 
                                 { 
-                                    'retrieve_id' : result.id(), 
+                                    'retrieve_id' : js2JSON( { 'id' : result.id(), 'xact' : result.xact() } ),
                                     'row' : { 
                                         'my' : { 
                                             'mp' : result 
