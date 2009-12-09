@@ -2170,18 +2170,25 @@ sub user_transaction_history {
 
 	if($api =~ /have_bill_or_payment/o) {
 
-        # includes xacts that have all-voided billings and at least 1 payment
+        # transactions that have a non-zero sum across all billings or at least 1 payment
 		@$mbts = grep { 
             int($_->balance_owed * 100) != 0 ||
             defined($_->last_payment_ts) } @$mbts;
 
     } elsif( $api =~ /have_balance/o) {
+
+        # transactions that have a non-zero overall balance
 		@$mbts = grep { int($_->balance_owed * 100) != 0 } @$mbts;
 
 	} elsif( $api =~ /have_charge/o) {
+
+        # transactions that have at least 1 billing, regardless of whether it was voided
 		@$mbts = grep { defined($_->last_billing_ts) } @$mbts;
 
 	} elsif( $api =~ /have_bill/o) {
+
+        # transactions that have non-zero sum across all billings.  This will exclude
+        # xacts where all billings have been voided
 		@$mbts = grep { int($_->total_owed * 100) != 0 } @$mbts;
 	}
 
