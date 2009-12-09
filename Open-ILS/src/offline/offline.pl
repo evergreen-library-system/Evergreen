@@ -656,8 +656,19 @@ sub ol_handle_checkout {
         return $e if $e;
     }
 
-	return $U->simplereq(
+    my $evt = $U->simplereq(
 		'open-ils.circ', 'open-ils.circ.checkout', $authtoken, $args );
+
+    # if the item is already checked out to this user and we are past 
+    # the configured auto-renewal interval, try to renew the circ.
+    if( ref $evt ne 'ARRAY' and
+        $evt->{textcode} == 'OPEN_CIRCULATION_EXISTS' and 
+        $evt->{payload}->{auto_renew}) {
+
+            return ol_handle_renew($command);
+    }
+
+    return $evt;
 }
 
 
@@ -669,7 +680,7 @@ sub ol_handle_renew {
 	my $args = ol_circ_args_from_command($command);
 	my $t = time;
 	return $U->simplereq(
-		'open-ils.circ', 'open-ils.circ.renew', $authtoken, $args );
+		'open-ils.circ', 'open-ils.circ.renew.override', $authtoken, $args );
 }
 
 
