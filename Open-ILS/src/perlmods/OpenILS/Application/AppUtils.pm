@@ -1542,6 +1542,8 @@ sub fire_object_event {
 
     } else {
 
+        $object = $$object[0] if ref $object eq 'ARRAY';
+
         my $event_id = $self->simplereq(
             'open-ils.trigger', $auto_method, $def->id, $object, $context_org, $user_data);
 
