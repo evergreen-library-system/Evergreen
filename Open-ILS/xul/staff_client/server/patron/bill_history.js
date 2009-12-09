@@ -300,14 +300,37 @@ function payment_history_init() {
     try {
         if (payment_history_fetched) { return; } else { payment_history_fetched = true; }
 
+        $('payments_date1').year = $('payments_date1').year - 1;
+
+        retrieve_payments();
+
+    } catch(E) {
+        alert('Error in bill_history.js, payment_history_init(): ' + E);
+    }
+}
+
+function retrieve_payments() {
+    try {
+
         g.payments_list.clear();
 
         $('payments_meter').hidden = false;
 
+        var filters = {
+            'where' : {
+                'payment_ts' : {
+                    'between' : [
+                        $('payments_date1').value,
+                        $('payments_date2').value == util.date.formatted_date(new Date(),'%F') ? 'now' : $('payments_date2').value 
+                    ]
+                }
+            }
+        };
+
         fieldmapper.standardRequest(
             [ api.FM_MP_RETRIEVE_VIA_USER.app, api.FM_MP_RETRIEVE_VIA_USER.method ],
             {   async: true,
-                params: [ses(), g.patron_id],
+                params: [ses(), g.patron_id, filters],
                 onresponse: function(r) {
                     try {
                         var result = r.recv().content();
@@ -341,6 +364,6 @@ function payment_history_init() {
         );
 
     } catch(E) {
-        alert('Error in bill_history.js, payment_history_init(): ' + E);
+        alert('Error in bill_history.js, retrieve_payments(): ' + E);
     }
 }
