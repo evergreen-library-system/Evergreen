@@ -605,6 +605,7 @@ sub ol_handle_inhouse {
 # Pulls the relevant circ args from the command, fetches data where 
 # necessary
 # --------------------------------------------------------------------
+my %user_id_cache;
 sub ol_circ_args_from_command {
 	my $command = shift;
 
@@ -621,12 +622,43 @@ sub ol_circ_args_from_command {
 		", realtime=$realtime, workstation=$ws, checkout_time=$cotime, ".
 		"patron=$pbc, due_date=$due_date, noncat=$noncat");
 
+
 	my $args = { 
 		permit_override	=> 1, 
-		barcode				=> $barcode,		
-		checkout_time		=> $cotime, 
-		patron_barcode		=> $pbc,
-		due_date				=> $due_date };
+		barcode         => $barcode,		
+		checkout_time   => $cotime, 
+		patron_barcode  => $pbc,
+		due_date        => $due_date 
+    };
+
+    if(ol_get_org_setting('circ.offline.username_allowed')) {
+
+        my $format = ol_get_org_setting('opac.barcode_regex');
+        if($format) {
+
+            $format =~ s/^\/|\/$//g; # remove any couching //'s
+            if($pbc !~ qr/$format/) {
+
+                # the patron barcode does not match the configured barcode format
+                # assume they passed a username instead
+
+                my $user_id = $user_id_cache{$pbc} ||
+                    $U->simplereq(
+                        'open-ils.actor', 
+                        'open-ils.actor.username.exists', 
+                        $authtoken, $pbc);
+
+                
+                if($user_id) {
+                    # a valid username was provided, update the args and cache
+                    $user_id_cache{$pbc} = $user_id;
+                    $args->{patron_id} = $user_id;
+                    delete $args->{patron_barcode};
+                }
+            }
+        }
+    }
+
 
 	if( $command->{noncat} ) {
 		$args->{noncat} = 1;
@@ -635,6 +667,14 @@ sub ol_circ_args_from_command {
 	}
 
 	return $args;
+}
+
+sub ol_get_org_setting {
+    my $name = shift;
+    return $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.ou_setting.ancestor_default',
+        $org, $name, $authtoken);
 }
 
 
