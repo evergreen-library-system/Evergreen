@@ -2123,6 +2123,23 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that has billings
 	NOTES
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.have_bill_or_payment",
+    authoritative => 1,
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of billable transactions for a user that has non-zero-sum billings or at least 1 payment
+	NOTES
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.have_bill_or_payment.ids",
+    authoritative => 1,
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of billable transaction ids for a user that has non-zero-sum billings or at least 1 payment
+	NOTES
+
 
 
 sub user_transaction_history {
@@ -2151,15 +2168,20 @@ sub user_transaction_history {
 		@$mbts = grep { $_->xact_type eq $type } @$mbts;
 	}
 
-	if($api =~ /have_balance/o) {
+	if($api =~ /have_bill_or_payment/o) {
+
+        # includes xacts that have all-voided billings and at least 1 payment
+		@$mbts = grep { 
+            int($_->balance_owed * 100) != 0 ||
+            defined($_->last_payment_ts) } @$mbts;
+
+    } elsif( $api =~ /have_balance/o) {
 		@$mbts = grep { int($_->balance_owed * 100) != 0 } @$mbts;
-	}
 
-	if($api =~ /have_charge/o) {
+	} elsif( $api =~ /have_charge/o) {
 		@$mbts = grep { defined($_->last_billing_ts) } @$mbts;
-	}
 
-	if($api =~ /have_bill/o) {
+	} elsif( $api =~ /have_bill/o) {
 		@$mbts = grep { int($_->total_owed * 100) != 0 } @$mbts;
 	}
 
