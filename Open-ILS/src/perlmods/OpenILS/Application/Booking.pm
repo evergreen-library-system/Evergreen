@@ -178,7 +178,7 @@ sub resource_list_by_attrs {
 
         $query->{having}->{'+bram'}->{value}->{'@>'} = {
             transform => 'array_accum',
-            value => '{'.join(',', @{ $filters->{attribute_values} } ).'}'
+            value => '$'.$$.'${'.join(',', @{ $filters->{attribute_values} } ).'}$'.$$.'$'
         };
     }
 
@@ -187,29 +187,31 @@ sub resource_list_by_attrs {
 
         if (!ref($filters->{available})) { # just one time, start perhaps
             $query->{where}->{'+bresv'} = {
-                '-or' => {
-                    'overbook' => 't',
-                    '-or' => {
-                        start_time => { '>=' => $filters->{available} },
-                        end_time   => { '<=' => $filters->{available} },
+                '-or' => [
+                    { '+brsrc' => {'overbook' => 't'} },
+                    { '-or' =>
+                        {   start_time => { '>=' => $filters->{available} },
+                            end_time   => { '<=' => $filters->{available} },
+                        }
                     }
-                }
+                ]
             };
         } else { # start and end times
             $query->{where}->{'+bresv'} = {
-                '-or' => {
-                    'overbook' => 't',
-                    '-and' => {
-                        '-or' => {
-                            start_time => { '>=' => $filters->{available}->[0] },
-                            end_time   => { '<=' => $filters->{available}->[0] },
-                        },
-                        '-or' => {
-                            start_time => { '>=' => $filters->{available}->[1] },
-                            end_time   => { '<=' => $filters->{available}->[1] },
-                        }
+                '-or' => [
+                    { '+brsrc' => {'overbook' => 't'} },
+                    { '-and' =>
+                        [{ '-or' =>
+                            {   start_time => { '>=' => $filters->{available}->[0] },
+                                end_time   => { '<=' => $filters->{available}->[0] },
+                            }
+                        },{'-or' =>
+                            {   start_time => { '>=' => $filters->{available}->[1] },
+                                end_time   => { '<=' => $filters->{available}->[1] },
+                            }
+                        }]
                     }
-                }
+                ]
             };
         }
     }
@@ -240,17 +242,22 @@ sub resource_list_by_attrs {
 
     my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
     my $ids = $cstore->request( 'open-ils.cstore.json_query.atomic', $query )->gather(1);
-    $ids = [ map { $_->{id} } @$ids ];
     $cstore->disconnect;
 
-    my $pcrud = OpenSRF::AppSession->connect('open-ils.pcrud');
-    my $allowed_ids = $pcrud->request(
-        'open-ils.pcrud.id_list.brsrc.atomic',
-        $auth => { id => $ids }
-    )->gather(1);
-    $pcrud->disconnect;
+    if (@$ids) {
+        $ids = [ map { $_->{id} } @$ids ];
 
-    return $allowed_ids;
+        my $pcrud = OpenSRF::AppSession->connect('open-ils.pcrud');
+        my $allowed_ids = $pcrud->request(
+            'open-ils.pcrud.id_list.brsrc.atomic',
+            $auth => { id => $ids }
+        )->gather(1);
+        $pcrud->disconnect;
+
+        return $allowed_ids;
+    } else {
+        return $ids; # empty []
+    }
 }
 __PACKAGE__->register_method(
     method   => "resource_list_by_attrs",
@@ -327,7 +334,7 @@ sub reservation_list_by_filters {
 
         $query->{having}->{'+bravm'}->{attr_value}->{'@>'} = {
             transform => 'array_accum',
-            value => '{'.join(',', @{ $filters->{attribute_values} } ).'}'
+            value => '$'.$$.'${'.join(',', @{ $filters->{attribute_values} } ).'}$'.$$.'$'
         };
     }
 
