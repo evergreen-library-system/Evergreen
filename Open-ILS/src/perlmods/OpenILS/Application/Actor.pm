@@ -3633,6 +3633,13 @@ sub user_payments {
         $query->{$_} = $filters->{$_} if defined $filters->{$_};
     }
 
+    if(defined $filters->{where}) {
+        foreach (keys %{$filters->{where}}) {
+            # don't allow the caller to expand the result set to other users
+            $query->{where}->{$_} = $filters->{where}->{$_} unless $_ eq 'xact'; 
+        }
+    }
+
     my $payment_ids = $e->json_query($query);
     $conn->respond($e->retrieve_money_payment($_->{id})) for @$payment_ids;
 
