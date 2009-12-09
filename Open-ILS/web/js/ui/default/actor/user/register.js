@@ -616,6 +616,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
 }
 
 function uEditDupeSearch(type, value) {
+    if(!value) return;
     var search;
     switch(type) {
 
