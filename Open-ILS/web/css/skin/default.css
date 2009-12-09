@@ -77,6 +77,14 @@ table { border-collapse: collapse; }
 
 .oils-fm-edit-pane { margin: 5px; }
 .oils-fm-edit-pane td { padding: 5px; }
+.oils-fm-edit-pane-help {  
+    width:10px;
+    padding:0px;
+    margin:0px;
+    border:1px solid #e0e0e0;
+    text-align:center;
+    vertical-align:middle;
+}
 .oils-fm-edit-dialog td { border:1px solid #999;}
 .oils-header-panel {
     width: 100%;

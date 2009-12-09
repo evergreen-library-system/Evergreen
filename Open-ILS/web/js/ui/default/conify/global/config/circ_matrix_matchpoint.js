@@ -12,6 +12,7 @@ var circModEntryCache = {};
 var matchPoint;
 
 function load(){
+    cmGrid.overrideWidgetArgs.is_renewal = {ternary : true};
     cmGrid.loadAll({order_by:{ccmm:'circ_modifier'}});
     cmGrid.onEditPane = buildEditPaneAdditions;
     circModEditor = dojo.byId('circ-mod-editor').parentNode.removeChild(dojo.byId('circ-mod-editor'));

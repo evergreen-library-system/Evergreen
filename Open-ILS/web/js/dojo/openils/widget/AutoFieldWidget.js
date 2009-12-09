@@ -79,7 +79,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var value = this.baseWidgetValue();
             switch(this.idlField.datatype) {
                 case 'bool':
-                    return (value) ? 't' : 'f'
+                    switch(value) {
+                        case 'true': return 't';
+                        case 'false' : return 'f';
+                        case 'unset' : return null;
+                        case true : return 't';
+                        default: return 'f';
+                    }
                 case 'timestamp':
                     if(!value) return null;
                     return dojo.date.stamp.toISOString(value);
@@ -105,9 +111,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var value = this.widgetValue;
             switch(this.idlField.datatype) {
                 case 'bool':
-                    return (openils.Util.isTrue(value)) ? 
-                        openils.widget.AutoFieldWidget.localeStrings.TRUE : 
-                        openils.widget.AutoFieldWidget.localeStrings.FALSE;
+                    switch(value) {
+                        case 'true': return openils.widget.AutoFieldWidget.localeStrings.TRUE; 
+                        case 'false' : return openils.widget.AutoFieldWidget.localeStrings.FALSE;
+                        case 'unset' : return openils.widget.AutoFieldWidget.localeStrings.UNSET;
+                        case true : return openils.widget.AutoFieldWidget.localeStrings.TRUE; 
+                        default: return openils.widget.AutoFieldWidget.localeStrings.FALSE;
+                    }
                 case 'timestamp':
                     dojo.require('dojo.date.locale');
                     dojo.require('dojo.date.stamp');
@@ -192,9 +202,30 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         break;
 
                     case 'bool':
-                        dojo.require('dijit.form.CheckBox');
-                        this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
-                        this.widgetValue = openils.Util.isTrue(this.widgetValue);
+                        if(this.ternary) {
+                            dojo.require('dijit.form.FilteringSelect');
+                            var store = new dojo.data.ItemFileReadStore({
+                                data:{
+                                    identifier : 'value',
+                                    items:[
+                                        {label : openils.widget.AutoFieldWidget.localeStrings.UNSET, value : 'unset'},
+                                        {label : openils.widget.AutoFieldWidget.localeStrings.TRUE, value : 'true'},
+                                        {label : openils.widget.AutoFieldWidget.localeStrings.FALSE, value : 'false'}
+                                    ]
+                                }
+                            });
+                            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
+                            this.widget.searchAttr = this.widget.labelAttr = 'label';
+                            this.widget.valueAttr = 'value';
+                            this.widget.store = store;
+                            this.widget.startup();
+                            this.widgetValue = (this.widgetValue === null) ? 'unset' : 
+                                (openils.Util.isTrue(this.widgetValue)) ? 'true' : 'false';
+                        } else {
+                            dojo.require('dijit.form.CheckBox');
+                            this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
+                            this.widgetValue = openils.Util.isTrue(this.widgetValue);
+                        }
                         break;
 
                     case 'link':

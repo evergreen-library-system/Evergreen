@@ -58,6 +58,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 this.overrideEditWidgets = {};
                 this.overrideEditWidgetClass = {};
+                this.overrideWidgetArgs = {};
 
                 if(this.editOnEnter) 
                     this._applyEditOnEnter();
@@ -375,6 +376,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     fmObject:fmObject,
                     overrideWidgets : this.overrideEditWidgets,
                     overrideWidgetClass : this.overrideEditWidgetClass,
+                    overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
                     onPostSubmit : function() {
                         for(var i in fmObject._fields) {
@@ -413,6 +415,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     fmClass : this.fmClass,
                     overrideWidgets : this.overrideEditWidgets,
                     overrideWidgetClass : this.overrideEditWidgetClass,
+                    overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
                     onPostSubmit : function(r) {
                         var fmObject = openils.Util.readResponse(r);

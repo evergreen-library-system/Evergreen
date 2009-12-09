@@ -16,6 +16,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             onPostSubmit : null, // apply callback
             onCancel : null, // cancel callback
             hideActionButtons : false,
+            fieldDocs : null,
 
             constructor : function(args) {
                 this.fieldList = [];
@@ -33,6 +34,12 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 if(this.readOnly)
                     this.hideActionButtons = true;
 
+                // grab any field-level docs
+                /*
+                var pcrud = new openils.PermaCrud();
+                this.fieldDocs = pcrud.search('fdoc', {fm_class:this.fmClass});
+                */
+
                 var table = this.table = document.createElement('table');
                 var tbody = document.createElement('tbody');
                 this.domNode.appendChild(table);
@@ -48,6 +55,9 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 if(!this.overrideWidgetClass)
                     this.overrideWidgetClass = {};
 
+                if(!this.overrideWidgetArgs)
+                    this.overrideWidgetArgs = {};
+
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual) continue;
@@ -56,29 +66,47 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                         continue; /* don't show auto-generated fields on create */
 
                     var row = document.createElement('tr');
+                    //var docTd = document.createElement('td');
                     var nameTd = document.createElement('td');
                     var valTd = document.createElement('td');
                     var valSpan = document.createElement('span');
                     valTd.appendChild(valSpan);
 
+                    /*
+                    if(this.fieldDocs[field]) {
+                        var helpLink = dojo.create('a');
+                        var helpImg = dojo.create('img', {src:'/opac/images/advancedsearch-icon.png'}); // TODO Config
+                        helpLink.appendChild(helpImg);
+                        docTd.appendChild(helpLink);
+                    }
+                    */
 
                     nameTd.appendChild(document.createTextNode(field.label));
                     row.setAttribute('fmfield', field.name);
+                    //row.appendChild(docTd);
                     row.appendChild(nameTd);
                     row.appendChild(valTd);
                     tbody.appendChild(row);
+                    //dojo.addClass(docTd, 'oils-fm-edit-pane-help');
 
-                    var widget = new openils.widget.AutoFieldWidget({
-                        idlField : field, 
-                        fmObject : this.fmObject,
-                        fmClass : this.fmClass,
-                        parentNode : valSpan,
-                        orgLimitPerms : this.limitPerms,
-                        readOnly : this.readOnly,
-                        widget : this.overrideWidgets[field.name],
-                        widgetClass : this.overrideWidgetClass[field.name],
-                        disableWidgetTest : this.disableWidgetTest
-                    });
+                    if(!this.overrideWidgetArgs[field.name])
+                        this.overrideWidgetArgs[field.name] = {};
+
+                    var args = dojo.mixin(
+                        this.overrideWidgetArgs[field.name], {
+                            idlField : field, 
+                            fmObject : this.fmObject,
+                            fmClass : this.fmClass,
+                            parentNode : valSpan,
+                            orgLimitPerms : this.limitPerms,
+                            readOnly : this.readOnly,
+                            widget : this.overrideWidgets[field.name],
+                            widgetClass : this.overrideWidgetClass[field.name],
+                            disableWidgetTest : this.disableWidgetTest
+                        }
+                    );
+
+                    var widget = new openils.widget.AutoFieldWidget(args);
 
                     widget.build();
                     this.fieldList.push({name:field.name, widget:widget});
