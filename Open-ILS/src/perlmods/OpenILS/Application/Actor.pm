@@ -2143,7 +2143,8 @@ __PACKAGE__->register_method(
 
 
 sub user_transaction_history {
-	my( $self, $conn, $auth, $userid, $type ) = @_;
+	my( $self, $conn, $auth, $userid, $type, $filter ) = @_;
+    $filter ||= {};
 
 	# run inside of a transaction to prevent replication delays
 	my $e = new_editor(authtoken=>$auth);
@@ -2159,7 +2160,7 @@ sub user_transaction_history {
 
     my $mbts = $e->search_money_billable_transaction_summary(
         [ 
-            { usr => $userid, @xact_finish },
+            { usr => $userid, @xact_finish, %$filter },
             { order_by => { mbt => 'xact_start DESC' } }
         ]
     );
@@ -3641,7 +3642,34 @@ sub user_payments {
     }
 
     my $payment_ids = $e->json_query($query);
-    $conn->respond($e->retrieve_money_payment($_->{id})) for @$payment_ids;
+    for my $pid (@$payment_ids) {
+        my $pay = $e->retrieve_money_payment([
+            $pid->{id},
+            {   flesh => 6,
+                flesh_fields => {
+                    mp => ['xact'],
+                    mbt => ['summary', 'circulation', 'grocery'],
+                    circ => ['target_copy'],
+                    acp => ['call_number'],
+                    acn => ['record']
+                }
+            }
+        ]);
+
+        my $resp = {
+            mp => $pay,
+            xact_type => $pay->xact->summary->xact_type,
+            last_billing_type => $pay->xact->summary->last_billing_type,
+        };
+
+        if($pay->xact->summary->xact_type eq 'circulation') {
+            $resp->{barcode} = $pay->xact->circulation->target_copy->barcode;
+            $resp->{title} = $U->record_to_mvr($pay->xact->circulation->target_copy->call_number->record)->title;
+        }
+
+        $pay->xact($pay->xact->id); # de-flesh
+        $conn->respond($resp);
+    }
 
     return undef;
 }
