@@ -31,13 +31,13 @@ function retrieve_mbts_for_list() {
     var method = 'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY.authoritative';
     if (xul_param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative';
     var date2 = $('bills_date2').dateValue;
-    date2.setHours(23); date2.setMinutes(59); date2.setSeconds(59);
+    date2.setDate( date2.getDate() + 1 ); // Javascript will wrap into subsequent months
     var filter = {
         'xact_start' : {
             'between' : [
                 $('bills_date1').value,
                 $('bills_date2').value == util.date.formatted_date(new Date(),'%F') ?
-                    'now' : util.date.formatted_date( date2 ,'%{iso8601}')
+                    'now' : util.date.formatted_date( date2 ,'%F')
             ]
         }
     }
@@ -348,14 +348,14 @@ function retrieve_payments() {
         $('payments_meter').hidden = false;
 
         var date2 = $('payments_date2').dateValue;
-        date2.setHours(23); date2.setMinutes(59); date2.setSeconds(59);
+        date2.setDate( date2.getDate() + 1 ); // Javascript will wrap into subsequent months
         var filters = {
             'where' : {
                 'payment_ts' : {
                     'between' : [
                         $('payments_date1').value,
                         $('payments_date2').value == util.date.formatted_date(new Date(),'%F') ? 
-                            'now' : util.date.formatted_date( date2 ,'%{iso8601}')
+                            'now' : util.date.formatted_date( date2 ,'%F')
                     ]
                 }
             }

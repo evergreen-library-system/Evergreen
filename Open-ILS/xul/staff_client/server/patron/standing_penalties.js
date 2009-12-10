@@ -396,7 +396,7 @@ function handle_retrieve_archived_penalties() {
         dojo.require('openils.PermaCrud');
         var pcrud = new openils.PermaCrud( { authtoken :ses() });
         var date2 = document.getElementById('date2').dateValue;
-        date2.setHours(23); date2.setMinutes(59); date2.setSeconds(59);
+        date2.setDate( date2.getDate() + 1 ); // Javascript will wrap into subsequent months
         pcrud.search(
             'ausp',
             {
@@ -405,7 +405,7 @@ function handle_retrieve_archived_penalties() {
                     'between' : [ 
                         document.getElementById('date1').value, 
                         document.getElementById('date2').value == util.date.formatted_date(new Date(),'%F') ? 
-                            'now' :util.date.formatted_date( date2 ,'%{iso8601}')
+                            'now' : util.date.formatted_date( date2 ,'%F')
                     ]
                 }
             },
