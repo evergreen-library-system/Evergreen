@@ -2542,6 +2542,12 @@
 <!ENTITY staff.patron.bill_history.payments.end_date.accesskey "">
 <!ENTITY staff.patron.bill_history.payments.retrieve.label "Retrieve Payments">
 <!ENTITY staff.patron.bill_history.payments.retrieve.accesskey "R">
+<!ENTITY staff.patron.bill_history.bills.start_date.label "Start Date">
+<!ENTITY staff.patron.bill_history.bills.start_date.accesskey "S">
+<!ENTITY staff.patron.bill_history.bills.end_date.label "End Date">
+<!ENTITY staff.patron.bill_history.bills.end_date.accesskey "">
+<!ENTITY staff.patron.bill_history.bills.retrieve.label "Retrieve Transactions">
+<!ENTITY staff.patron.bill_history.bills.retrieve.accesskey "R">
 
 <!ENTITY staff.patron.bill_interface.total_owed "Total Owed:">
 <!ENTITY staff.patron.bill_interface.total_checked "Total Checked:">

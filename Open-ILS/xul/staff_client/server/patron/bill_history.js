@@ -30,7 +30,18 @@ function retrieve_mbts_for_list() {
     //var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
     var method = 'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY.authoritative';
     if (xul_param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE.authoritative';
-    g.mbts_ids = g.network.simple_request(method,[ses(),g.patron_id]);
+    var date2 = $('bills_date2').dateValue;
+    date2.setHours(23); date2.setMinutes(59); date2.setSeconds(59);
+    var filter = {
+        'xact_start' : {
+            'between' : [
+                $('bills_date1').value,
+                $('bills_date2').value == util.date.formatted_date(new Date(),'%F') ?
+                    'now' : util.date.formatted_date( date2 ,'%{iso8601}')
+            ]
+        }
+    }
+    g.mbts_ids = g.network.simple_request(method,[ses(),g.patron_id, null, filter]);
     if (g.mbts_ids.ilsevent) {
         switch(Number(g.mbts_ids.ilsevent)) {
             case -1: g.error.standard_network_error_alert($("patronStrings").getString('staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again')); break;
@@ -67,10 +78,12 @@ function retrieve_mbts_for_list() {
             }
         }
 
+        g.bill_list.clear(); $('bills_meter').hidden = false;
         for (var i = 0; i < g.mbts_ids.length; i++) {
             dump('i = ' + i + ' g.mbts_ids[i] = ' + g.mbts_ids[i] + '\n');
             g.funcs.push( gen_func(g.mbts_ids[i]) );
         }
+        g.funcs.push( function() { $('bills_meter').hidden = true; } );
     }
 }
 
@@ -142,7 +155,23 @@ function init_payments_list() {
     g.payments_list = new util.list('payments_tree');
 
     g.payments_list.init( {
-        'columns' : g.payments_list.fm_columns('mp'),
+        'columns' : g.payments_list.fm_columns('mp').concat( [
+            {
+                'id' : 'payments_blob_xact_type', 'flex' : 0,
+                'label' : $('patronStrings').getString('staff.patron.bill_history.column.xact_type.label'),
+                'render' : function(my) { return my.xact_type; }
+            },
+            {
+                'id' : 'payments_blob_last_billing_type', 'flex' : 0,
+                'label' : $('patronStrings').getString('staff.patron.bill_history.column.last_billing_type.label'),
+                'render' : function(my) { return my.last_billing_type; }
+            },
+            {
+                'id' : 'payments_blob_title', 'flex' : 1,
+                'label' : $('patronStrings').getString('staff.patron.bill_history.column.title.label'),
+                'render' : function(my) { return my.title; }
+            }
+        ] ),
         'on_select' : function(ev) {
             JSAN.use('util.functional');
             g.payments_list_selection = util.functional.map_list(
@@ -195,6 +224,8 @@ function my_init() {
         g.patron_id = xul_param('patron_id');
 
         init_lists();
+
+        $('bills_date1').year = $('bills_date1').year - 1;
 
         retrieve_mbts_for_list();
 
@@ -316,12 +347,15 @@ function retrieve_payments() {
 
         $('payments_meter').hidden = false;
 
+        var date2 = $('payments_date2').dateValue;
+        date2.setHours(23); date2.setMinutes(59); date2.setSeconds(59);
         var filters = {
             'where' : {
                 'payment_ts' : {
                     'between' : [
                         $('payments_date1').value,
-                        $('payments_date2').value == util.date.formatted_date(new Date(),'%F') ? 'now' : $('payments_date2').value 
+                        $('payments_date2').value == util.date.formatted_date(new Date(),'%F') ? 
+                            'now' : util.date.formatted_date( date2 ,'%{iso8601}')
                     ]
                 }
             }
@@ -338,10 +372,13 @@ function retrieve_payments() {
                         if (result && typeof result.ilsevent == 'undefined') {
                             g.payments_list.append( 
                                 { 
-                                    'retrieve_id' : js2JSON( { 'id' : result.id(), 'xact' : result.xact() } ),
+                                    'retrieve_id' : js2JSON( { 'id' : result.mp.id(), 'xact' : result.mp.xact() } ),
                                     'row' : { 
                                         'my' : { 
-                                            'mp' : result 
+                                            'mp' : result.mp,
+                                            'xact_type' : result.xact_type,
+                                            'last_billing_type' : result.last_billing_type,
+                                            'title' : result.title
                                         } 
                                     } 
                                 } 

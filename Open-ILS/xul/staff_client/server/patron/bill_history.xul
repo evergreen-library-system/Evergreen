@@ -46,10 +46,41 @@
                 <tabpanels flex="1">
                     <tabpanel orient="vertical">
                         <hbox>
-                            <label value='&staff.patron.bill_history.selected_billed.label;' style='font-weight: bold;'/>
-                            <label id="billed_tally" />
-                            <label value='&staff.patron.bill_history.selected_paid.label;' style='font-weight: bold;'/>
-                            <label id="paid_tally" />
+                            <toolbox flex="1">
+                                <toolbar>
+                                    <toolbaritem pack="center">
+                                        <hbox>
+                                            <label value='&staff.patron.bill_history.selected_billed.label;' style='font-weight: bold;'/>
+                                            <label id="billed_tally" />
+                                            <label value='&staff.patron.bill_history.selected_paid.label;' style='font-weight: bold;'/>
+                                            <label id="paid_tally" />
+                                        </hbox>
+                                    </toolbaritem>
+                                    <toolbarspring/>
+                                    <toolbaritem>
+                                        <progressmeter id="bills_meter" flex="1" hidden="true" mode="undetermined"/>
+                                    </toolbaritem>
+                                    <toolbaritem> 
+                                        <vbox pack="center">
+                                            <label control="bills_date1"
+                                                value="&staff.patron.bill_history.bills.start_date.label;" 
+                                                accesskey="&staff.patron.bill_history.bills.start_date.accesskey;" />
+                                        </vbox>
+                                        <datepicker id="bills_date1" type="popup" />
+                                        <vbox pack="center">
+                                            <label control="bills_date2"
+                                                value="&staff.patron.bill_history.bills.end_date.label;" 
+                                                accesskey="&staff.patron.bill_history.bills.end_date.accesskey;" />
+                                        </vbox>
+                                        <datepicker id="bills_date2" type="popup" />
+                                    </toolbaritem>
+                                    <toolbarbutton id="bills_retrieve_btn"
+                                        label="&staff.patron.bill_history.bills.retrieve.label;"
+                                        accesskey="&staff.patron.bill_history.bills.retrieve.accesskey;"
+                                        oncommand="retrieve_mbts_for_list();"
+                                        style="-moz-user-focus: normal" />
+                                </toolbar>
+                            </toolbox>
                         </hbox>
                         <tree id="bill_tree" flex="1" enableColumnDrag="true" seltype="multiple"/>
                         <hbox>
