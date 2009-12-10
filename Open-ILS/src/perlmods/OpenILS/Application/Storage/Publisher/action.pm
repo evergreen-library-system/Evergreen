@@ -1320,6 +1320,205 @@ __PACKAGE__->register_method(
 	method		=> 'new_hold_copy_targeter',
 );
 
+sub reservation_targeter {
+	my $self = shift;
+	my $client = shift;
+	my $one_reservation = shift;
+
+	local $OpenILS::Application::Storage::WRITE = 1;
+
+	my $reservations;
+
+	try {
+		if ($one_reservation) {
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+			$reservations = booking::reservation->search_where( { id => $one_reservation, capture_time => undef, cancel_time => undef } );
+		} else {
+
+			# find all the reservations needing targeting
+			$reservations = [
+                booking::reservation->search_where(
+					{ current_resource => undef,
+					  cancel_time => undef,
+					  start_time => { '>' => 'now' }
+                    },
+                    { order_by => 'start_time' }
+                )
+            ];
+		}
+	} catch Error with {
+		my $e = shift;
+		die "Could not retrieve reservation requests:\n\n$e\n";
+	};
+
+	for my $bresv (@$reservations) {
+		try {
+			#start a transaction if needed
+			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
+				$log->debug("Cleaning up after previous transaction\n");
+				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+			}
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+			$log->info("Processing reservation ".$bresv->id."...\n");
+
+			#first, re-fetch the hold, to make sure it's not captured already
+			$bresv->remove_from_object_index();
+			$bresv = booking::reservation->retrieve( $bresv->id );
+
+			die "OK\n" if (!$bresv or $bresv->capture_time or $bresv->cancel_time);
+
+			my $end_time = $parser->parse_datetime( clense_ISO8601( $bresv->end_time ) );
+			if (DateTime->compare($end_time, DateTime->now) < 0) {
+
+				# cancel cause = un-targeted expiration
+				$bresv->update( { cancel_time => 'now' } ); 
+				$self->method_lookup('open-ils.storage.transaction.commit')->run;
+
+				# tell A/T the reservation was cancelled
+				my $fm_bresv = $bresv->to_fieldmapper;
+				my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+				$ses->request('open-ils.trigger.event.autocreate', 
+					'booking.reservation.cancel.expire_no_target', $fm_bresv, $fm_bresv->pickup_lib);
+
+				die "OK\n";
+			}
+
+            my $possible_resources;
+
+			# find all the potential resources
+			if (!$bresv->target_resource) {
+                my $filter = { type => $bresv->target_resource_type };
+                my $attr_maps = booking::reservations_attr_value_map->search( reservation => $bresv->id );
+
+                $filter->{attribute_values} = [ map { $_->attr_value } @$attr_maps ] if (@$attr_maps);
+
+   				my $ses = OpenSRF::AppSession->create('open-ils.booking');
+                $possible_resources = $ses->request('open-ils.booking.resources.filtered_id_list', $filter)->gather(1);
+
+			} else {
+				$possible_resources = $bresv->target_resource;
+			}
+
+            my $all_resources booking::resource->search( id => $possible_resources );
+			@$all_resources = grep { isTrue($_->type->transferable) || $_->owner.'' eq $bresv->pickup_lib.'' } @$all_resources;
+
+
+            my @good_resources;
+            for my $res (@$all_resources) {
+                unless (isTrue($res->type->catalog_item)) {
+                    push @good_resources, $res;
+                    next;
+                }
+
+                my $copy = asset::copy->search( deleted => f, barcode => $res->barcode )->[0];
+
+                unless ($copy) {
+                    push @good_resources, $res;
+                    next;
+                }
+
+                if ($copy->status->id == 0 || $copy->status->id == 7) {
+                    push @good_resources, $res;
+                    next;
+                }
+
+                if ($copy->status->id == 1) {
+                    my $circs = action::circulation->search_where(
+                        {target_copy => $copy->id, checkin_time => undef },
+                        { order_by => 'id DESC' }
+                    );
+
+                    if (@$circs) {
+                        my $due_date = $circs->[0]->due_date;
+			            $due_date = $parser->parse_datetime( clense_ISO8601( $due_date ) );
+			            my $start_time = $parser->parse_datetime( clense_ISO8601( $bresv->start_time ) );
+                        next if (DateTime->compare($start_time, $due_date) < 0);
+                        push @good_resources, $res;
+                    }
+
+                    next;
+                }
+
+                push @good_resources, $res if (isTrue($copy->status->holdable));
+            }
+
+			# let 'em know we're still working
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			
+			# if we have no copies ...
+			if (!@good_resources) {
+				$log->info("\tNo resources available for targeting at all!\n");
+				push @successes, { reservation => $bresv->id, eligible_copies => 0, error => 'NO_COPIES' };
+
+				$self->method_lookup('open-ils.storage.transaction.commit')->run;
+				die "OK\n";
+			}
+
+			$log->debug("\t".scalar(@good_resources)." resources available for targeting...");
+
+			my $prox_list = [];
+			$$prox_list[0] =
+			[
+				grep {
+					$_->owner == $bresv->pickup_lib
+				} @good_resources
+			];
+
+			$all_resources = [grep {$_->owner != $bresv->pickup_lib } @good_resources];
+			# $all_copies is now a list of copies not at the pickup library
+
+			my $best = shift @good_resources;
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+			if (!$best) {
+				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$all_resources)." resources");
+
+				$prox_list =
+                    map  { $_->[1] }
+                    sort { $a->[0] <> $b->[0] }
+                    map  {
+                        [   actor::org_unit_proximity->search_where(
+                                { from_org => $bresv->pickup_lib.'', to_org => $_=>owner.'' }
+                            )->[0]->prox,
+                            $_
+                        ]
+                    } @$all_resources;
+
+				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+				$best = shift @$prox_list
+			}
+
+			if ($best) {
+				$bresv->update( { current_resource => ''.$best->id } );
+				$log->debug("\tUpdating reservation [".$bresv->id."] with new 'current_resource' [".$best->id."] for reservation fulfillment.");
+			}
+
+			$self->method_lookup('open-ils.storage.transaction.commit')->run;
+			$log->info("\tProcessing of hold ".$hold->id." complete.");
+
+			push @successes,
+				{ reservation => $hold->id,
+				  current_resource => ($best ? $best->id : undef) };
+
+		} otherwise {
+			my $e = shift;
+			if ($e !~ /^OK/o) {
+				$log->error("Processing of hold failed:  $e");
+				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+				throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
+			}
+		};
+	}
+
+	return \@successes;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.booking.reservation.resource_targeter',
+	api_level	=> 1,
+	method		=> 'reservation_targeter',
+);
+
 my $locations;
 my $statuses;
 my %cache = (titles => {}, cns => {});

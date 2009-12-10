@@ -557,6 +557,12 @@ sub modify_from_fieldmapper {
 	action::circulation->has_a( usr => 'actor::user' );
 	actor::user->has_many( circulations => 'action::circulation' => 'usr' );
 
+	booking::resource_attr_map->has_a( resource => 'booking::resource' );
+
+	booking::resource->has_a( owner => 'actor::org_unit' );
+	booking::resource->has_a( type => 'booking::resource_type' );
+	booking::resource_type->has_a( owner => 'actor::org_unit' );
+
 	booking::reservation->has_a( usr => 'actor::user' );
 	actor::user->has_many( reservations => 'booking::reservation' => 'usr' );
 	

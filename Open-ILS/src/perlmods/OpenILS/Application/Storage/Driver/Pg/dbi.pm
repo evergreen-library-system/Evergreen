@@ -161,10 +161,34 @@
 	action::circulation->sequence( 'money.billable_xact_id_seq' );
 
 	#---------------------------------------------------------------------
+	package booking::resource_type;
+	
+	booking::resource_type->table( 'booking.resource_type' );
+	booking::resource_type->sequence( 'booking.resource_type_id_seq' );
+
+	#---------------------------------------------------------------------
+	package booking::resource;
+	
+	booking::resource->table( 'booking.resource' );
+	booking::resource->sequence( 'booking.resource_id_seq' );
+
+	#---------------------------------------------------------------------
 	package booking::reservation;
 	
 	booking::reservation->table( 'booking.reservation' );
 	booking::reservation->sequence( 'money.billable_xact_id_seq' );
+
+	#---------------------------------------------------------------------
+	package booking::reservation_attr_value_map;
+	
+	booking::reservation_attr_value_map->table( 'booking.reservation_attr_value_map' );
+	booking::reservation_attr_value_map->sequence( 'booking.reservation_attr_value_map_id_seq' );
+
+	#---------------------------------------------------------------------
+	package booking::resource_attr_map;
+	
+	booking::resource_attr_map->table( 'booking.resource_attr_map' );
+	booking::resource_attr_map->sequence( 'booking.resource_attr_map_id_seq' );
 
 	#---------------------------------------------------------------------
 	package action::non_cat_in_house_use;
