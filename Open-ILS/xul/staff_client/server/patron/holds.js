@@ -143,6 +143,7 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_holds_edit_expire_time.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_edit_shelf_expire_time.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','false');
+                        obj.controller.view.cmd_holds_edit_request_date.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_activate.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_suspend.setAttribute('disabled','false');
                         obj.controller.view.cmd_alt_view.setAttribute('disabled','false');
@@ -164,6 +165,7 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_holds_edit_expire_time.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_edit_shelf_expire_time.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
+                        obj.controller.view.cmd_holds_edit_request_date.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
                         obj.controller.view.cmd_alt_view.setAttribute('disabled','true');
@@ -872,7 +874,42 @@ patron.holds.prototype = {
                             }
                         }
                     ],
+                    'cmd_holds_edit_request_date' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
+                                var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.request_date.prompt',[hold_list.join(', ')]);
+                                var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.request_date.prompt.plural',[hold_list.join(', ')]);
+                                var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
+                                var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
+                                var desc = document.getElementById('circStrings').getString('staff.circ.holds.request_date.dialog.description');
 
+                                JSAN.use('util.window'); var win = new util.window();
+                                var my_xulG = win.open( 
+                                    urls.XUL_TIMESTAMP_DIALOG, 'edit_request_date', 'chrome,resizable,modal', 
+                                    { 
+                                        'title' : title, 
+                                        'description' : desc, 
+                                        'msg' : msg, 
+                                        'allow_unset' : false,
+                                        'disallow_future_dates' : true,
+                                        'disallow_past_dates' : false,
+                                        'disallow_today' : false
+                                    }
+                                );
+                                if (my_xulG.complete) {
+                                    circ.util.batch_hold_update(
+                                        hold_list, 
+                                        { 'request_time' : my_xulG.timestamp }, 
+                                        { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } }
+                                    );
+                                }
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.holds.unexpected_error.not_likely_modified'),E);
+                            }
+                        }
+                    ],
                     'cmd_holds_retarget' : [
                         ['command'],
                         function() {

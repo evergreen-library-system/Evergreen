@@ -2092,6 +2092,8 @@
 <!ENTITY staff.circ.holds.set_email_notification.accesskey "E">
 <!ENTITY staff.circ.holds.edit_activation_date "Edit Activation Date">
 <!ENTITY staff.circ.holds.edit_activation_date.accesskey "D">
+<!ENTITY staff.circ.holds.edit_request_date "Edit Request Date">
+<!ENTITY staff.circ.holds.edit_request_date.accesskey "q">
 <!ENTITY staff.circ.holds.edit_expire_time "Edit Expiration Date">
 <!ENTITY staff.circ.holds.edit_expire_time.accesskey "E">
 <!ENTITY staff.circ.holds.edit_shelf_expire_time "Edit Shelf Expire Time">
