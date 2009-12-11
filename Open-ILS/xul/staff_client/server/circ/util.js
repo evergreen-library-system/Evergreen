@@ -3003,6 +3003,9 @@ circ.util.batch_hold_update = function ( hold_ids, field_changes, params ) {
                         params.oncomplete( bad_holds );
                     }
                     if (params.progressmeter) { params.progressmeter.value = 0; params.progressmeter.hidden = true; }
+                },
+                onerror: function(r) {
+                    alert('Error in circ/util.js, batch_hold_update(), onerror: ' + r);
                 }
             }
         );
