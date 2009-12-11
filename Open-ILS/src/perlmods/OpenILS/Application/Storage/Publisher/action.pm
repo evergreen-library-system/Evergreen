@@ -1399,7 +1399,7 @@ sub reservation_targeter {
 				$possible_resources = $bresv->target_resource;
 			}
 
-            my $all_resources booking::resource->search( id => $possible_resources );
+            my $all_resources = booking::resource->search( id => $possible_resources );
 			@$all_resources = grep { isTrue($_->type->transferable) || $_->owner.'' eq $bresv->pickup_lib.'' } @$all_resources;
 
 
@@ -1475,7 +1475,7 @@ sub reservation_targeter {
 
 				$prox_list =
                     map  { $_->[1] }
-                    sort { $a->[0] <> $b->[0] }
+                    sort { $a->[0] <=> $b->[0] }
                     map  {
                         [   actor::org_unit_proximity->search_where(
                                 { from_org => $bresv->pickup_lib.'', to_org => $_=>owner.'' }
