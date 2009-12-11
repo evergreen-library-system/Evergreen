@@ -47,7 +47,7 @@ sub new {
 			[
 				{ card => $$c[0] },
 				{
-					flesh => 1,
+					flesh => 2,
 					flesh_fields => {
 						"au" => [
 							#"cards",
@@ -58,7 +58,8 @@ sub new {
 							"mailing_address",
 							#"stat_cat_entries",
 							'profile',
-						]
+						],
+                        ausp => ['standing_penalty']
 					}
 				}
 			]
@@ -226,11 +227,11 @@ sub screen_msg {
 
 	if( $u->standing_penalties ) {
 		return $b if 
-			grep { $_->penalty_type eq 'PATRON_EXCEEDS_OVERDUE_COUNT' } 
+			grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_OVERDUE_COUNT' } 
 				@{$u->standing_penalties};
 
 		return $b if 
-			grep { $_->penalty_type eq 'PATRON_EXCEEDS_FINES' } 
+			grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_FINES' } 
 				@{$u->standing_penalties};
 	}
 
@@ -255,7 +256,7 @@ sub too_many_charged {
 sub too_many_overdue {
 	my $self = shift;
 	if( $self->{user}->standing_penalties ) {
-		return grep { $_->penalty_type eq 'PATRON_EXCEEDS_OVERDUE_COUNT' } 
+		return grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_OVERDUE_COUNT' } 
 			@{$self->{user}->standing_penalties};
 	}
 	return 0;
@@ -283,7 +284,7 @@ sub excessive_fines {
     my $self = shift;
 	syslog('LOG_DEBUG', 'OILS: Patron->excessive_fines()');
 	if( $self->{user}->standing_penalties ) {
-		return grep { $_->penalty_type eq 'PATRON_EXCEEDS_FINES' } 
+		return grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_FINES' } 
 			@{$self->{user}->standing_penalties};
 	}
 	return 0;
@@ -296,7 +297,7 @@ sub excessive_fees {
 	my $self = shift;
 	syslog('LOG_DEBUG', 'OILS: Patron->excessive_fees()');
 	if( $self->{user}->standing_penalties ) {
-		return grep { $_->penalty_type eq 'PATRON_EXCEEDS_FINES' } 
+		return grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_FINES' } 
 			@{$self->{user}->standing_penalties};
 	}
 	return 0;
