@@ -130,7 +130,7 @@ function gen_handle_apply(params) {
             }
 
         } catch(E) {
-            alert('Error in backdate.js, handle_apply(): ' + E);
+            alert('Error in timestamp.js, handle_apply(): ' + E);
         }
     };
 }
