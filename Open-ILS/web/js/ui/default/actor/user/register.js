@@ -34,12 +34,14 @@ var uEditAddrVirtId = -1;
 var orgSettings = {};
 var userSettings = {};
 var userSettingsToUpdate = {};
+var userSettingTypes;
 var tbody;
 var addrTemplateRows;
 var cgi;
 var cloneUser;
 var cloneUserObj;
 var stageUser;
+var optInSettings;
 
 
 if(!window.xulG) var xulG = null;
@@ -224,9 +226,32 @@ function uEditCopyCloneData(patron) {
 
 
 function uEditFetchUserSettings(userId) {
+    
+    var baseNode = fieldmapper.aou.findOrgUnit(staff.ws_ou());
+    var orgs = fieldmapper.aou.orgNodeTrail(baseNode);
+    orgs = orgs.map(function(node) { return node.id(); });
+
+    /* fetch any user setting types we need + any that offer opt-in */
+    userSettingTypes = pcrud.search('cust', {
+        '-or' : [
+            {name:['circ.holds_behind_desk']}, 
+            {name : {
+                'in': {
+                    select : {atevdef : ['opt_in_setting']}, 
+                    from : 'atevdef',
+                    // we only care about opt-in settings for event_defs our users encounter
+                    where : {'+atevdef' : {owner : orgs}}
+                }
+            }}
+        ]
+    });
+
+    var names = userSettingTypes.map(function(obj) { return obj.name() });
+
+    /* fetch any values set for this user */
     userSettings = fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve'],
-        {params : [openils.User.authtoken, userId, ['circ.holds_behind_desk']]});
+        {params : [openils.User.authtoken, userId, names]});
 }
 
 
@@ -247,29 +272,29 @@ function loadStaticFields() {
         if(fmcls) {
             fleshFMRow(row, fmcls);
         } else {
-            if(row.getAttribute('user_setting'))
-                fleshUserSettingRow(row, row.getAttribute('user_setting'))
+
+            if(row.id == 'uedit-settings-divider') {
+
+                var template = tbody.removeChild(dojo.byId('uedit-user-setting-template'));
+                dojo.forEach(userSettingTypes, function(type) { uEditDrawSettingRow(tbody, row, template, type); } );
+
+                if(userSettingTypes.length > 1 || orgSettings['circ.holds.behind_desk_pickup_supported']) {
+                    openils.Util.show('uedit-settings-divider', 'table-row');
+                }
+            }
         }
     }
 }
 
-function fleshUserSettingRow(row, userSetting) {
-    switch(userSetting) {
-        case 'circ.holds_behind_desk':
-            if(orgSettings['circ.holds.behind_desk_pickup_supported']) {
-                openils.Util.show('uedit-settings-divider', 'table-row');
-                openils.Util.show(row, 'table-row');
-                if(userSettings[userSetting]) 
-                    holdsBehindShelfBox.attr('checked', true);
-
-                // if the setting changes, add it to the list of settings that need updating
-                dojo.connect(
-                    holdsBehindShelfBox, 
-                    'onChange', 
-                    function(newVal) { userSettingsToUpdate['circ.holds_behind_desk'] = newVal; }
-                );
-            } 
-    }
+function uEditDrawSettingRow(tbody, dividerRow, template, stype) {
+    var row = template.cloneNode(true);
+    row.setAttribute('user_setting', stype.name());
+    getByName(row, 'label').innerHTML = stype.label();
+    var cb = new dijit.form.CheckBox({}, getByName(row, 'widget'));
+    cb.attr('value', userSettings[stype.name()]);
+    dojo.connect(cb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
+    tbody.insertBefore(row, dividerRow.nextSibling);
+    openils.Util.show(row, 'table-row');
 }
 
 function uEditUpdateUserSettings(userId) {

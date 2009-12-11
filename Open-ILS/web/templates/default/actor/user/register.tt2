@@ -117,10 +117,10 @@
         <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
 
         <tr class='divider hidden' id='uedit-settings-divider'><td colspan='0'>User Settings</td></tr>
-        <tr user_setting='circ.holds_behind_desk'class='hidden'>
+        <tr class='hidden' id='uedit-user-setting-template'>
             <td/>
-            <td>Holds Behind Shelf</td>
-            <td><div dojoType='dijit.form.CheckBox' jsId='holdsBehindShelfBox'/></td>
+            <td><span name='label'></span></td>
+            <td><div name='widget'></div></td>
         </tr>
 
         <!-- Address -->
