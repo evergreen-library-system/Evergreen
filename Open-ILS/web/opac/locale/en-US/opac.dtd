@@ -590,9 +590,10 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY common.hold.copy "Copy Hold">
 <!ENTITY common.hold.advanced "Advanced Hold Options">
 <!ENTITY common.hold.delivery "Please select a physical location where your hold can be delivered.">
+<!ENTITY common.hold.checked_out "This item is already checked out.">
+<!ENTITY common.hold.checked_out.override "This item is already checked out.  Would you like to place the hold anyway?">
 <!ENTITY common.hold.exists "A hold already exists on the requested item.">
-<!ENTITY common.hold.exists.override "A hold already exists on the requested
-item. Would you like to create the hold anyway?">
+<!ENTITY common.hold.exists.override "A hold already exists on the requested item. Would you like to create the hold anyway?">
 <!ENTITY common.hold.barred 'PATRON BARRED. Please see any notes in the
 "Staff Notes" section of your "My Account" page or contact your local library.'>
 <!ENTITY common.hold.item.invalid "This hold is no longer valid. It's likely that the

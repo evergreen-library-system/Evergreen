@@ -843,11 +843,25 @@ function holdProcessResult( hold, res, recurse ) {
 				if( confirm($('hold_dup_exists_override').innerHTML) ) {
 					return holdsPlaceHold(hold, true);
 				}
+                return;
 
 			} else {
 				return alert($('hold_dup_exists').innerHTML);
 			}
 		}
+
+		if( grep(res, function(e) { return (e.textcode == 'HOLD_ITEM_CHECKED_OUT'); }) ) {
+			if( fetchPermOrgs('HOLD_ITEM_CHECKED_OUT.override')[0] != -1 ) {
+				if( confirm($('hold_checked_out_override').innerHTML) ) {
+					return holdsPlaceHold(hold, true);
+				}
+                return;
+
+			} else {
+				return alert($('hold_checked_out').innerHTML);
+			}
+		}
+
 
 		alert($('holds_failure').innerHTML);
 	}

@@ -220,8 +220,10 @@
 	<span class='hide_me' id='holds_pick_good_org'>&common.hold.delivery;</span>
 
 	<span class='hide_me' id='hold_dup_exists'>&common.hold.exists;</span>
+	<span class='hide_me' id='hold_checked_out'>&common.hold.checked_out;</span>
 
 	<span class='hide_me' id='hold_dup_exists_override'>&common.hold.exists.override;</span>
+	<span class='hide_me' id='hold_checked_out_override'>&common.hold.checked_out.override;</span>
 
 	<span id='hold_failed_patron_barred' class='hide_me'>&common.hold.barred;</span>
 

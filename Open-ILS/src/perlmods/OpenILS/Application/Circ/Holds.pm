@@ -111,6 +111,9 @@ sub create_hold {
     my $existing = $e->search_action_hold_request($sargs); 
     push( @events, OpenILS::Event->new('HOLD_EXISTS')) if @$existing;
 
+    my $checked_out = hold_item_is_checked_out($e, $recipient->id, $hold->hold_type, $hold->target);
+    push( @events, OpenILS::Event->new('HOLD_ITEM_CHECKED_OUT')) if $checked_out;
+
     if( $t eq OILS_HOLD_TYPE_METARECORD ) 
         { $pevt = $e->event unless $e->allowed('MR_HOLDS', $porg); }
 
@@ -2236,6 +2239,84 @@ sub hold_has_copy_at {
     my $res = $e->json_query($query)->[0] or return {};
     return {copy => $res->{id}, location => $res->{name}} if $res;
 }
+
+
+# returns true if the user already has an item checked out 
+# that could be used to fulfill the requested hold.
+sub hold_item_is_checked_out {
+    my($e, $user_id, $hold_type, $hold_target) = @_;
+
+    my $query = {
+        select => {acp => ['id']},
+        from => {acp => {}},
+        where => {
+            '+acp' => {
+                id => {
+                    in => { # copies for circs the user has checked out
+                        select => {circ => ['target_copy']},
+                        from => 'circ',
+                        where => {
+                            usr => $user_id,
+                            checkin_time => undef,
+                            '-or' => [
+                                {stop_fines => ["MAXFINES","LONGOVERDUE"]},
+                                {stop_fines => undef}
+                            ],
+                        }
+                    }
+                }
+            }
+        },
+        limit => 1
+    };
+
+    if($hold_type eq 'C') {
+
+        $query->{where}->{'+acp'}->{id} = $hold_target;
+
+    } elsif($hold_type eq 'V') {
+
+        $query->{where}->{'+acp'}->{call_number} = $hold_target;
+    
+    } elsif($hold_type eq 'T') {
+
+        $query->{from}->{acp}->{acn} = {
+            field => 'id',
+            fkey => 'call_number',
+            'join' => {
+                bre => {
+                    field => 'id',
+                    filter => {id => $hold_target},
+                    fkey => 'record'
+                }
+            }
+        };
+
+    } else {
+
+        $query->{from}->{acp}->{acn} = {
+            field => 'id',
+            fkey => 'call_number',
+            join => {
+                bre => {
+                    field => 'id',
+                    fkey => 'record',
+                    join => {
+                        mmrsm => {
+                            field => 'source',
+                            fkey => 'id',
+                            filter => {metarecord => $hold_target},
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    return $e->json_query($query)->[0];
+}
+
+
 
 
 1;
