@@ -190,7 +190,7 @@ sub user_settings {
     sub get_setting {
         my($e, $user_id, $setting) = @_;
         my $val = $e->search_actor_user_setting({usr => $user_id, name => $setting})->[0];
-        return '' unless $val; # XXX this should really return undef, but needs testing
+        return undef unless $val; # XXX this should really return undef, but needs testing
         return OpenSRF::Utils::JSON->JSON2perl($val->value);
     }
 
