@@ -82,10 +82,10 @@ function timestamp_init() {
 
 function check_date(value) {
     if (xul_param('disallow_future_dates',{'modal_xulG':true})) {
-        if ( ev.target.dateValue > new Date() ) { return { 'allowed' : false, 'reason' : $('commonStrings').getString('staff.util.timestamp_dialog.future_date_disallowed') }; }
+        if ( value > new Date() ) { return { 'allowed' : false, 'reason' : $('commonStrings').getString('staff.util.timestamp_dialog.future_date_disallowed') }; }
     }
     if (xul_param('disallow_past_dates',{'modal_xulG':true})) {
-        if ( util.date.check_past('YYYY-MM-DD', ev.target.value) ) { return { 'allowed' : false, 'reason' : $('commonStrings').getString('staff.util.timestamp_dialog.past_date_disallowed') }; }
+        if ( util.date.check_past('YYYY-MM-DD', value) ) { return { 'allowed' : false, 'reason' : $('commonStrings').getString('staff.util.timestamp_dialog.past_date_disallowed') }; }
     }
     if (xul_param('disallow_today',{'modal_xulG':true})) {
         if ( util.date.formatted_date(new Date(),'%F') == value) { return { 'allowed' : false, 'reason' : $('commonStrings').getString('staff.util.timestamp_dialog.today_disallowed') }; }
