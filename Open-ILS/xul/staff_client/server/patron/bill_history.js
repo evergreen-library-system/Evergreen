@@ -19,12 +19,33 @@ function tally_selected() {
             selected_billed += to;
             selected_paid += tp;
         }
-        $('billed_tally').setAttribute('value', '$' + util.money.cents_as_dollars( selected_billed ) );
-        $('paid_tally').setAttribute('value', '$' + util.money.cents_as_dollars( selected_paid ) );
+        $('billed_tally').setAttribute('value', util.money.cents_as_dollars( selected_billed ) );
+        $('paid_tally').setAttribute('value', util.money.cents_as_dollars( selected_paid ) );
     } catch(E) {
         alert('Error in bill_history.js, tally_selected(): ' + E);
     }
 }
+
+function payments_tally_selected() {
+    try {
+        JSAN.use('util.money');
+        var selected_paid = 0;
+
+        for (var i = 0; i < g.payments_list_selection.length; i++) {
+            var payment = g.payments_map[g.payments_list_selection[i].id];
+            if (!payment) {
+                $('payments_paid_tally').setAttribute('value', '???');
+                return;
+            }
+            var amount = util.money.dollars_float_to_cents_integer( payment.amount() );
+            selected_paid += amount;
+        }
+        $('payments_paid_tally').setAttribute('value', util.money.cents_as_dollars( selected_paid ) );
+    } catch(E) {
+        alert('Error in bill_history.js, payments_tally_selected(): ' + E);
+    }
+}
+
 
 function retrieve_mbts_for_list() {
     //var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
@@ -178,6 +199,7 @@ function init_payments_list() {
                 g.payments_list.retrieve_selection(),
                 function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
             );
+            payments_tally_selected();
             $('payments_details').disabled = g.payments_list_selection.length == 0;
         },
         'retrieve_row' : function(params) {
@@ -219,7 +241,7 @@ function my_init() {
             document.title = $("patronStrings").getString('staff.patron.bill_history.my_init.bill_history');
         }
 
-        g.funcs = []; g.bill_map = {};
+        g.funcs = []; g.bill_map = {}; g.payments_map = {};
 
         g.patron_id = xul_param('patron_id');
 
@@ -383,6 +405,7 @@ function retrieve_payments() {
                                     } 
                                 } 
                             );
+                            g.payments_map[ result.mp.id() ] = result.mp;
                         } else {
                             throw( js2JSON(result) );
                         }

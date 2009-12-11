@@ -96,6 +96,12 @@
                         <hbox>
                             <toolbox flex="1">
                                 <toolbar>
+                                    <toolbaritem pack="center">
+                                        <hbox>
+                                            <label value='&staff.patron.bill_history.selected_paid.label;' style='font-weight: bold;'/>
+                                            <label id="payments_paid_tally" />
+                                        </hbox>
+                                    </toolbaritem>
                                     <toolbarspring/>
                                     <toolbaritem>
                                         <progressmeter id="payments_meter" flex="1" hidden="true" mode="undetermined"/>
