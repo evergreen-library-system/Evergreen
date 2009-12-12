@@ -54,22 +54,22 @@ EG_BIN_DIR = /openils/bin
 # Action/Trigger entries ----
 
 # Runs all pending A/T events every half hour
-0 */2 * * * . ~/.bashrc && cd $EG_BIN_DIR && /usr/bin/perl ./action_trigger_runner.pl --osrf-config $SRF_CORE --run-pending
+0 */2 * * * . ~/.bashrc && cd $EG_BIN_DIR && ./action_trigger_runner.pl --osrf-config $SRF_CORE --run-pending
 
 # Passive A/T event generation.
 # Note: the --granularity flag is not supported in 1.6
 # Note: passive event defs with no granularity will be processed regardless of any granularity flags
 # Note: push these back to 3am so they will run after the fine generator and spread out the start minute to reduce dogpiling
-0 * * * *   . ~/.bashrc && cd $EG_BIN_DIR && /usr/bin/perl ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity hourly
-5 3 * * *   . ~/.bashrc && cd $EG_BIN_DIR && /usr/bin/perl ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity daily
-10 3 * * 1-5 . ~/.bashrc && cd $EG_BIN_DIR && /usr/bin/perl ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity weekdays
-15 3 * * 0   . ~/.bashrc && cd $EG_BIN_DIR && /usr/bin/perl ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity weekly
-20 3 1 * *   . ~/.bashrc && cd $EG_BIN_DIR && /usr/bin/perl ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity monthly
-25 3 1 1 *   . ~/.bashrc && cd $EG_BIN_DIR && /usr/bin/perl ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity yearly
+0 * * * *   . ~/.bashrc && cd $EG_BIN_DIR && ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity hourly
+5 3 * * *   . ~/.bashrc && cd $EG_BIN_DIR && ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity daily
+10 3 * * 1-5 . ~/.bashrc && cd $EG_BIN_DIR && ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity weekdays
+15 3 * * 0   . ~/.bashrc && cd $EG_BIN_DIR && ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity weekly
+20 3 1 * *   . ~/.bashrc && cd $EG_BIN_DIR && ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity monthly
+25 3 1 1 *   . ~/.bashrc && cd $EG_BIN_DIR && ./action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity yearly
 
 # Legacy overdue/predue notice generator.  Change to suit.
 #XML_FILE_PREFIX = /openils/var/data/overdue/overdue
-#0 3 * * * . ~/.bashrc && cd $EG_BIN_DIR && /usr/bin/perl ./generate_circ_notices.pl --osrf_config $SRF_CORE --notice-types overdue,predue --generate-global-templates --send-email > $XML_FILE_PREFIX.$(date +"\%F").xml
+#0 3 * * * . ~/.bashrc && cd $EG_BIN_DIR && ./generate_circ_notices.pl --osrf_config $SRF_CORE --notice-types overdue,predue --generate-global-templates --send-email > $XML_FILE_PREFIX.$(date +"\%F").xml
 
 
 # TODO: add other entries
