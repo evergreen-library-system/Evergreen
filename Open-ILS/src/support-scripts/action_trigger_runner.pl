@@ -16,10 +16,11 @@
 use strict;
 use warnings;
 use Getopt::Long;
+use OpenSRF::System;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::JSON;
 use OpenSRF::EX qw(:try);
-require 'oils_header.pl';
+use OpenILS::Utils::Fieldmapper;
 
 my $opt_lockfile = '/tmp/action-trigger-LOCK';
 my $opt_osrf_config = '/openils/conf/opensrf_core.xml';
@@ -167,7 +168,8 @@ print F $$;
 close F;
 
 try {
-    osrf_connect($opt_osrf_config);
+	OpenSRF::System->bootstrap_client(config_file => $opt_osrf_config);
+	Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
     process_hooks();
     run_pending();
 } otherwise {
