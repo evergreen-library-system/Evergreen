@@ -229,9 +229,15 @@ sub run_method {
         $circulator->do_checkout();
 
     } elsif( $circulator->is_res_checkin ) {
-        $circulator->do_reservation_return();
-        $circulator->do_checkin();
-
+        my ($reservation, $evt) = $U->fetch_booking_reservation($self->reservation);
+        if ($evt) {
+            $self->bail_on_events($evt);
+        } else {
+            $self->reservation( $reservation );
+            $self->generate_fines(1)
+            $circulator->do_reservation_return();
+            $circulator->do_checkin();
+        }
     } elsif( $api =~ /checkin/ ) {
         $circulator->do_checkin();
 
@@ -1639,10 +1645,6 @@ sub do_reservation_pickup {
 
     $self->log_me("do_reservation_pickup()");
 
-    my ($reservation, $evt) = $U->fetch_booking_reservation($self->reservation);
-    return $self->bail_on_events($evt) if $evt;
-
-    $self->reservation( $reservation );
     $self->reservation->pickup_time('now');
 
     if (
@@ -2497,21 +2499,25 @@ sub put_hold_on_shelf {
 
 sub generate_fines {
    my $self = shift;
+   my $reservation = shift;
    my $evt;
    my $obt;
+
+   my $id = $reservation ? $self->reservation->id : $self->circ->id;
 
    my $st = OpenSRF::AppSession->connect('open-ils.storage');
 
    $st->request(
       'open-ils.storage.action.circulation.overdue.generate_fines',
       undef,
-      $self->circ->id
+      $id
    )->wait_complete;
 
    $st->disconnect;
 
    # refresh the circ in case the fine generator set the stop_fines field
-   $self->circ($self->editor->retrieve_action_circulation($self->circ->id));
+   $self->reservation($self->editor->retrieve_booking_reservation($id)) if $reservation;
+   $self->circ($self->editor->retrieve_action_circulation($id)) if !$reservation;
 
    return undef;
 }

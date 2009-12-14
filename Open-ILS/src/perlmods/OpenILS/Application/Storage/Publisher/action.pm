@@ -126,10 +126,10 @@ sub overdue_circs {
             AND cancel_time IS NULL
 	SQL
 
-	my $sth = action::circulation->db_Main->prepare_cached($sql);
+	$sth = action::circulation->db_Main->prepare_cached($sql);
 	$sth->execute($upper_interval);
 
-	my @circs = map { booking::reservation->construct($_) } $sth->fetchall_hash;
+	@circs = map { booking::reservation->construct($_) } $sth->fetchall_hash;
 
 }
 
