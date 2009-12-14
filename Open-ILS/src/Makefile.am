@@ -73,6 +73,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/juv_to_adult.srfsh \
 		 $(supportscr)/thaw_expired_frozen_holds.srfsh \
 		 $(supportscr)/long-overdue-status-update.pl \
+		 $(supportscr)/action_trigger_runner.pl \
 		 $(srcdir)/extras/openurl_map.pl \
 		 $(srcdir)/extras/fast-extract \
 		 $(srcdir)/extras/import/marc_add_ids
