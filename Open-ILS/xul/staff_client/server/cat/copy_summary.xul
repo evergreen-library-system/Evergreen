@@ -93,16 +93,16 @@
 
                         function acn_callback(rreq) {
                             try {
-                                $w('barcode',copy.barcode());    
-                                $w('ref',get_bool(copy.ref()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
-                                $w('opac_visible',get_bool(copy.opac_visible()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
-                                $w('circulate',get_bool(copy.circulate()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
-                                $w('holdable',get_bool(copy.holdable()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
-                                $w('age_protect',copy.age_protect() == null ? $('staff.cat.copy_summary.unset') : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );    
-                                $w('location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );    
-                                $w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
-                                $w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
-                                $w('status',typeof copy.status() == 'object' ? copy.status().name() : g.data.hash.ccs[ copy.status() ].name() );    
+                                $w('copy_summary_barcode',copy.barcode());    
+                                $w('copy_summary_ref',get_bool(copy.ref()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
+                                $w('copy_summary_opac_visible',get_bool(copy.opac_visible()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
+                                $w('copy_summary_circulate',get_bool(copy.circulate()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
+                                $w('copy_summary_holdable',get_bool(copy.holdable()) ? $('catStrings').getString('staff.cat.copy_summary.yes') : $('catStrings').getString('staff.cat.copy_summary.no'));    
+                                $w('copy_summary_age_protect',copy.age_protect() == null ? $('staff.cat.copy_summary.unset') : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );    
+                                $w('copy_summary_location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );    
+                                $w('copy_summary_create_date',util.date.formatted_date(copy.create_date(),'%F'));
+                                $w('copy_summary_edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
+                                $w('copy_summary_status',typeof copy.status() == 'object' ? copy.status().name() : g.data.hash.ccs[ copy.status() ].name() );    
                             } catch(E) {
                                 g.error.standard_unexpected_error_alert('rendering copy',E);
                             }
@@ -111,14 +111,14 @@
                                 if (typeof cn.ilsevent != 'undefined') {
                                     switch(Number(cn.ilsevent)) {
                                         case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
-                                            $w('callnumber', $('catStrings').getString('staff.cat.copy_summary.not_cataloged'));    
+                                            $w('copy_summary_callnumber', $('catStrings').getString('staff.cat.copy_summary.not_cataloged'));    
                                         break;
                                         default:
                                             throw(cn);
                                         break;
                                     }
                                 } else {
-                                    $w('callnumber',cn.label());    
+                                    $w('copy_summary_callnumber',cn.label());    
                                 }
                                 g.list.append({'row':{'my':{'acp':copy,'acn':cn}}});
                             } catch(E) {
@@ -150,7 +150,7 @@
                     try {
                         var robj = req.getResultObject();
                         if (typeof robj.ilsevent != 'undefined') throw(robj);
-                        $w('total_circs',robj.total.count);
+                        $w('copy_summary_total_circs',robj.total.count);
                     } catch(E) {
                         g.error.standard_unexpected_error_alert('retrieving circ total',E);
                     }
@@ -201,33 +201,33 @@
                 <rows>
                     <row>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.barcode.label;"/>
-                        <label id="barcode" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event);"/>
+                        <label id="copy_summary_barcode" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event);"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.location.label;"/>
-                        <label id="location"/>
+                        <label id="copy_summary_location"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.call_number.label;"/>
-                        <label id="callnumber"/>
+                        <label id="copy_summary_callnumber"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.status.label;"/>
-                        <label id="status"/>
+                        <label id="copy_summary_status"/>
                     </row>
                     <row>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.circulate.label;"/>
-                        <label id="circulate"/>
+                        <label id="copy_summary_circulate"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.reference.label;"/>
-                        <label id="ref"/>
+                        <label id="copy_summary_ref"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.holdable.label;"/>
-                        <label id="holdable"/>
+                        <label id="copy_summary_holdable"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.opac_visible.label;"/>
-                        <label id="opac_visible"/>
+                        <label id="copy_summary_opac_visible"/>
                     </row>
                     <row>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.created.label;"/>
-                        <label id="create_date"/>
+                        <label id="copy_summary_create_date"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.edited.label;"/>
-                        <label id="edit_date"/>
+                        <label id="copy_summary_edit_date"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.age_protect.label;"/>
-                        <label id="age_protect"/>
+                        <label id="copy_summary_age_protect"/>
                         <label style="font-weight: bold" value="&staff.cat.copy_summary.total_circs.label;"/>
-                        <label id="total_circs"/>
+                        <label id="copy_summary_total_circs"/>
                     </row>
                 </rows>
             </grid>
