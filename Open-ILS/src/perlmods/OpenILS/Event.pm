@@ -44,7 +44,7 @@ sub new {
 		ilsevent		=> $e, 
 		textcode		=> $event, 
 		stacktrace	=> "$f:$l $ff:$ll $fff:$lll", 
-		desc			=> $descs->{$lang}->{$e} || '',
+		desc			=> $descs->{$lang}->{$e || ''} || '',
 		servertime	=> $t,
 		pid			=> $$, %params };
 }
