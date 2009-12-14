@@ -175,7 +175,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			},
 			
 			removeTranslation : function (t) {
-				return changeTranslation('delete',t);
+				return this.changeTranslation('delete',t);
 			},
 			
 			changeTranslation : function (method, trans_id) {
