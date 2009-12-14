@@ -150,6 +150,13 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
     method  => "run_method",
+    api_name    => "open-ils.circ.reservation.pickup");
+__PACKAGE__->register_method(
+    method  => "run_method",
+    api_name    => "open-ils.circ.reservation.return");
+
+__PACKAGE__->register_method(
+    method  => "run_method",
     api_name    => "open-ils.circ.checkout.inspect",
     desc => q/
         Returns the circ matrix test result and, on success, the rule set and matrix test object
@@ -172,6 +179,9 @@ sub run_method {
     # Go ahead and load the script runner to make sure we have all 
     # of the objects we need
     # --------------------------------------------------------------------------
+    $circulator->is_res_checkin($circulator->is_checkin(1)) if $api =~ /reservation.return/;
+    $circulator->is_res_checkout(1) if $api =~ /reservation.pickup/;
+
     $circulator->is_renewal(1) if $api =~ /renew/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
     $circulator->noop if $circulator->claims_never_checked_out;
@@ -206,14 +216,21 @@ sub run_method {
             $circulator->do_checkout();
         }
 
+    } elsif( $circulator->is_res_checkout ) {
+        $circulator->do_reservation_pickup();
+
     } elsif( $api =~ /inspect/ ) {
         my $data = $circulator->do_inspect();
         $circulator->editor->rollback;
         return $data;
 
-    } elsif( $api =~ /checkout/ ) {
+    } elsif( $api =~ // ) {
         $circulator->is_checkout(1);
         $circulator->do_checkout();
+
+    } elsif( $circulator->is_res_checkin ) {
+        $circulator->do_reservation_return();
+        $circulator->do_checkin();
 
     } elsif( $api =~ /checkin/ ) {
         $circulator->do_checkin();
@@ -338,6 +355,7 @@ my @AUTOLOAD_FIELDS = qw/
     notify_hold
     remote_hold
     backdate
+    reservation
     copy
     copy_id
     copy_barcode
@@ -349,10 +367,12 @@ my @AUTOLOAD_FIELDS = qw/
     title
     is_renewal
     is_checkout
+    is_res_checkout
     is_noncat
     is_precat
     request_precat
     is_checkin
+    is_res_checkin
     noncat_type
     editor
     events
@@ -1324,6 +1344,28 @@ sub update_copy {
     $copy->circ_lib($circ_lib) if $circ_lib;
 }
 
+sub update_reservation {
+    my $self = shift;
+    my $reservation = $self->reservation;
+
+    my $usr = $reservation->usr;
+    my $target_rt = $reservation->target_resource_type;
+    my $target_r = $reservation->target_resource;
+    my $current_r = $reservation->current_resource;
+
+    $reservation->usr($usr->id) if $usr;
+    $reservation->target_resource_type($target_rt->id) if $target_rt;
+    $reservation->target_resource($target_r->id) if $target_r;
+    $reservation->current_resource($current_r->id) if $current_r;
+
+    return $self->bail_on_events($self->editor->event)
+        unless $self->editor->update_booking_reservation($self->reservation);
+
+    my $evt;
+    ($reservation, $evt) = $U->fetch_booking_reservation($reservation->id);
+    $self->reservation($reservation);
+}
+
 
 sub bail_on_events {
     my( $self, @evts ) = @_;
@@ -1464,6 +1506,7 @@ sub find_related_user_hold {
 
 sub run_checkout_scripts {
     my $self = shift;
+    my $nobail = shift;
 
     my $evt;
     my $runner = $self->script_runner;
@@ -1498,13 +1541,13 @@ sub run_checkout_scripts {
 
         unless($duration) {
             ($duration, $evt) = $U->fetch_circ_duration_by_name($duration_name);
-            return $self->bail_on_events($evt) if $evt;
+            return $self->bail_on_events($evt) if ($evt && !$nobail);
         
             ($recurring, $evt) = $U->fetch_recurring_fine_by_name($recurring_name);
-            return $self->bail_on_events($evt) if $evt;
+            return $self->bail_on_events($evt) if ($evt && !$nobail);
         
             ($max_fine, $evt) = $U->fetch_max_fine_by_name($max_fine_name);
-            return $self->bail_on_events($evt) if $evt;
+            return $self->bail_on_events($evt) if ($evt && !$nobail);
         }
 
     } else {
@@ -1591,6 +1634,73 @@ sub build_checkout_circ_object {
     $self->circ($circ);
 }
 
+sub do_reservation_pickup {
+    my $self = shift;
+
+    $self->log_me("do_reservation_pickup()");
+
+    my ($reservation, $evt) = $U->fetch_booking_reservation($self->reservation);
+    return $self->bail_on_events($evt) if $evt;
+
+    $self->reservation( $reservation );
+    $self->reservation->pickup_time('now');
+
+    if (
+        $self->reservation->current_resource &&
+        $self->reservation->current_resource->catalog_item
+    ) {
+        $self->copy( $self->reservation->current_resource->catalog_item );
+        $self->patron( $self->reservation->usr );
+        $self->run_checkout_scripts(1);
+
+        my $duration   = $self->duration_rule;
+        my $max        = $self->max_fine_rule;
+        my $recurring  = $self->recurring_fines_rule;
+
+        if ($duration && $max && $recurring) {
+            my $policy = $self->get_circ_policy($duration, $recurring, $max);
+
+            my $dname = $duration->name;
+            my $mname = $max->name;
+            my $rname = $recurring->name;
+
+            $logger->debug("circulator: building reservation ".
+                "with duration=$dname, maxfine=$mname, recurring=$rname");
+
+            $self->reservation->fine_amount($policy->{recurring_fine});
+            $self->reservation->max_fine($policy->{max_fine});
+            $self->reservation->fine_interval($recurring->recurrence_interval);
+        }
+
+        $self->copy->status(OILS_COPY_STATUS_CHECKED_OUT);
+        $self->update_copy();
+
+    } else {
+        $self->reservation->fine_amount($self->reservation->fine_amount);
+        $self->reservation->max_fine($self->reservation->max_fine);
+        $self->reservation->fine_interval($self->reservation->fine_interval);
+    }
+
+    $self->update_reservation();
+}
+
+sub do_reservation_return {
+    my $self = shift;
+    my $request = shift;
+
+    $self->log_me("do_reservation_return()");
+
+    my ($reservation, $evt) = $U->fetch_booking_reservation($self->reservation);
+    return $self->bail_on_events($evt) if $evt;
+
+    $self->reservation( $reservation );
+    $self->reservation->return_time('now');
+    $self->update_reservation();
+
+    if ( $self->reservation->current_resource && $self->reservation->current_resource->catalog_item ) {
+        $self->copy( $self->reservation->current_resource->catalog_item );
+    }
+}
 
 sub booking_adjusted_due_date {
     my $self = shift;

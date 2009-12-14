@@ -2396,6 +2396,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Resource Attribute Maps" name="attr_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Reservation Target Resources" name="tgt_rsrcs" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Reservation Current Resources" name="curr_rsrcs" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Catalog Item" name="catalog_item" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>

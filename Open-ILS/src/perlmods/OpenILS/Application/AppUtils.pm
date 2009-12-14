@@ -796,6 +796,64 @@ sub DB_UPDATE_FAILED {
 		payload => ($payload) ? $payload : undef ); 
 }
 
+sub fetch_booking_reservation {
+	my( $self, $id ) = @_;
+	my( $res, $evt );
+
+	$res = $self->simplereq(
+		'open-ils.cstore', 
+		'open-ils.cstore.direct.booking.reservation.retrieve', $id
+	);
+
+	# simplereq doesn't know how to flesh so ...
+	if ($res) {
+		$res->usr(
+			$self->simplereq(
+				'open-ils.cstore', 
+				'open-ils.cstore.direct.actor.user.retrieve', $res->usr
+			)
+		);
+
+		$res->target_resource_type(
+			$self->simplereq(
+				'open-ils.cstore', 
+				'open-ils.cstore.direct.booking.resource_type.retrieve', $res->target_resource_type
+			)
+		);
+
+		if ($res->current_resource) {
+			$res->current_resource(
+				$self->simplereq(
+					'open-ils.cstore', 
+					'open-ils.cstore.direct.booking.resource.retrieve', $res->current_resource
+				)
+			);
+
+			if ($self->is_true( $res->target_resource_type->catalog_item )) {
+				$res->current_resource->catalog_item( $self->fetch_copy_by_barcode( $res->current_resource->barcode ) );
+			}
+		}
+
+		if ($res->target_resource) {
+			$res->target_resource(
+				$self->simplereq(
+					'open-ils.cstore', 
+					'open-ils.cstore.direct.booking.resource.retrieve', $res->target_resource
+				)
+			);
+
+			if ($self->is_true( $res->target_resource_type->catalog_item )) {
+				$res->target_resource->catalog_item( $self->fetch_copy_by_barcode( $res->target_resource->barcode ) );
+			}
+		}
+
+	} else {
+		$evt = OpenILS::Event->new('RESERVATION_NOT_FOUND');
+	}
+
+	return ($res, $evt);
+}
+
 sub fetch_circ_duration_by_name {
 	my( $self, $name ) = @_;
 	my( $dur, $evt );
@@ -936,6 +994,16 @@ sub unflesh_copy {
 	return $copy;
 }
 
+sub unflesh_reservation {
+	my( $self, $reservation ) = @_;
+	return undef unless $reservation;
+	$reservation->usr( $reservation->usr->id ) if ref($reservation->usr);
+	$reservation->target_resource_type( $reservation->target_resource_type->id ) if ref($reservation->target_resource_type);
+	$reservation->target_resource( $reservation->target_resource->id ) if ref($reservation->target_resource);
+	$reservation->current_resource( $reservation->current_resource->id ) if ref($reservation->current_resource);
+	return $reservation;
+}
+
 # un-fleshes a copy and updates it in the DB
 # returns a DB_UPDATE_FAILED event on error
 # returns undef on success
@@ -961,6 +1029,29 @@ sub update_copy {
 	$logger->debug("Update of copy ".$copy->id." returned: $s");
 
 	return $self->DB_UPDATE_FAILED($copy) unless $s;
+	return undef;
+}
+
+sub update_reservation {
+	my( $self, %params ) = @_;
+
+	my $reservation	= $params{reservation}	|| die "update_reservation(): reservation required";
+	my $editor		= $params{editor} || die "update_reservation(): copy editor required";
+	my $session		= $params{session};
+
+	$logger->debug("Updating copy in the database: " . $reservation->id);
+
+	$self->unflesh_reservation($reservation);
+
+	my $s;
+	my $meth = 'open-ils.cstore.direct.booking.reservation.update';
+
+	$s = $session->request( $meth, $reservation )->gather(1) if $session;
+	$s = $self->cstorereq( $meth, $reservation ) unless $session;
+
+	$logger->debug("Update of copy ".$reservation->id." returned: $s");
+
+	return $self->DB_UPDATE_FAILED($reservation) unless $s;
 	return undef;
 }
 

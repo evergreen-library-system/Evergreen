@@ -842,6 +842,12 @@
 	<event code='7019' textcode='HOLD_CAPTURE_DELAYED'>
 		<desc xml:lang="en-US">Hold capture was delayed for this item</desc>
 	</event>
+	<event code='7020' textcode='COPY_RESERVED'>
+		<desc xml:lang="en-US">Item reserved for booking request</desc>
+	</event>
+	<event code='7021' textcode='RESERVATION_NOT_FOUND'>
+		<desc xml:lang="en-US">Booking reservation not found</desc>
+	</event>
 
 
 
