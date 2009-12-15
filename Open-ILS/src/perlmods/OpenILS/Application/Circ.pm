@@ -1346,7 +1346,7 @@ sub fire_circ_events {
     }
 
     return undef unless @$targets;
-    return $U->fire_object_event($event_def, $hook, $targets, $org_id, $granularity, $user_data)
+    return $U->fire_object_event($event_def, $hook, $targets, $org_id, $granularity, $user_data);
 }
 
 __PACKAGE__->register_method(

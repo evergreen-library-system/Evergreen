@@ -234,7 +234,7 @@ sub run_method {
             $self->bail_on_events($evt);
         } else {
             $self->reservation( $reservation );
-            $self->generate_fines(1)
+            $self->generate_fines(1);
             $circulator->do_reservation_return();
             $circulator->do_checkin();
         }
