@@ -1227,7 +1227,8 @@
 <!ENTITY staff.patron_display.checkouts.label 'Check Outs:'>
 <!ENTITY staff.patron_display.checkouts_overdue.label 'Overdue:'>
 <!ENTITY staff.patron_display.contact.caption 'Identity &amp; Contact Info'>
-<!ENTITY staff.patron_display.account_info.caption 'Account Info'>
+<!ENTITY staff.patron_display.tab.account_info.label 'Account Info'>
+<!ENTITY staff.patron_display.tab.account_info.accesskey ''>
 <!ENTITY staff.patron_display.patron_info.caption 'Patron Info'>
 <!ENTITY staff.patron_display.phone_numbers.caption 'Phone Numbers'>
 <!ENTITY staff.patron_display.tab.identification.label 'Identification'>

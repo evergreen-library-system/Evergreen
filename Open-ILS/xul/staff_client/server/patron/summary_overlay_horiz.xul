@@ -26,7 +26,6 @@
 <hbox id="patron_info_sidebar" flex="1">
     <image id="patron_photo_url" />
     <vbox id="patron_info" flex="1" />
-    <vbox id="account_info" flex="1" />
     <vbox flex="1">
         <vbox id="PatronSummaryContact_address" orient="vertical"/>
         <vbox id="PatronSummaryContact_phone" />
@@ -35,11 +34,13 @@
     <vbox id="contact_info" flex="1">
         <tabbox flex="1">
             <tabs>
+                <tab label="&staff.patron_display.tab.account_info.label;" accesskey="&staff.patron_display.tab.account_info.accesskey;"/>
                 <tab label="&staff.patron_display.tab.identification.label;" accesskey="&staff.patron_display.tab.identification.accesskey;"/>
                 <tab id="group_tab" label="&staff.patron_display.tab.group.label;" accesskey="&staff.patron_display.tab.group.accesskey;"/>
                 <tab label="&staff.patron_display.tab.stat_cats.label;" accesskey="&staff.patron_display.tab.stat_cats.accesskey;"/>
             </tabs>
             <tabpanels flex="1">
+                <tabpanel><vbox id="account_info" flex="1" /></tabpanel>
                 <tabpanel><grid id="PatronSummaryContact_grid" flex="1"/></tabpanel>
                 <tabpanel orient="vertical">
                     <tree id="group_list" flex="1" enableColumnDrag="true" seltype="multiple" context="group_actions"/>
@@ -62,28 +63,25 @@
 </hbox>
 
 <vbox id="account_info">
-    <groupbox flex="1">
-        <caption label="&staff.patron_display.account_info.caption;"/>
-        <grid>
-            <columns>
-                <column/>
-            </columns>
-            <rows>
-                <row id="pdsgr1">
-                    <description id="patron_profile" class="copyable profile value"/>
-                </row>
-                <row id="pdsgr5">
-                    <description id="patron_library" class="copyable homelib value"/>
-                </row>
-                <row id="pdsgr5a">
-                    <description id="patron_net_access" class="copyable net_access value"/>
-                </row>
-                <row id="pdsgr5aa">
-                    <description id="patron_date_of_exp" class="copyable expire_date value"/>
-                </row>
-            </rows>
-        </grid>
-    </groupbox>
+    <grid flex="1">
+        <columns>
+            <column/>
+        </columns>
+        <rows>
+            <row id="pdsgr1">
+                <description id="patron_profile" class="copyable profile value"/>
+            </row>
+            <row id="pdsgr5">
+                <description id="patron_library" class="copyable homelib value"/>
+            </row>
+            <row id="pdsgr5a">
+                <description id="patron_net_access" class="copyable net_access value"/>
+            </row>
+            <row id="pdsgr5aa">
+                <description id="patron_date_of_exp" class="copyable expire_date value"/>
+            </row>
+        </rows>
+    </grid>
 </vbox>
 
 <vbox id="patron_info" flex="1">
