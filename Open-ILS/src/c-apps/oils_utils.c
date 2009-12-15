@@ -119,7 +119,7 @@ jsonObject* oilsUtilsQuickReq( const char* service, const char* method,
 	if(!(service && method)) return NULL;
 	osrfLogDebug(OSRF_LOG_MARK, "oilsUtilsQuickReq(): %s - %s", service, method );
 	osrfAppSession* session = osrfAppSessionClientInit( service ); 
-	int reqid = osrfAppSessionMakeRequest( session, params, method, 1, NULL );
+	int reqid = osrfAppSessionSendRequest( session, params, method, 1 );
 	osrfMessage* omsg = osrfAppSessionRequestRecv( session, reqid, 60 ); 
 	jsonObject* result = jsonObjectClone(osrfMessageGetResult(omsg));
 	osrfMessageFree(omsg);
