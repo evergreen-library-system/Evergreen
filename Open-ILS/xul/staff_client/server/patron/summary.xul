@@ -20,7 +20,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="patron_summary_win" 
-    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" onunload="try { observer.unregister(); } catch(E) { alert(E); }"
+    onload="try { font_helper(); my_init(); } catch(E) { alert(E); }" onunload="try { observer.unregister(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -49,7 +49,7 @@
             observe: function(subject,topic,data) {
                 dump('observe: <'+subject+','+topic+','+data+'>\n');
                 // setTimeout is needed here for xulrunner 1.8
-                setTimeout( function() { try { post_overlay(); } catch(E) { alert(E); } }, 0 );
+                setTimeout( function() { try { persist_helper(); post_overlay(); } catch(E) { alert(E); } }, 0 );
             }
         }
                 
@@ -95,6 +95,14 @@
             );
         }
 
+        function copy_displayed_address() {
+            if ( $('radio_address').selectedIndex == 0 ) {
+                copy_mailing_address();
+            } else {
+                copy_billing_address();
+            }
+        }
+
         function copy_mailing_address() {
             var a = g.summary.patron.mailing_address();
             if (!a) return;
@@ -134,8 +142,8 @@
     
     <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
 
-    <commandset id="patron_summary_cmds">
-    </commandset>
+    <commandset id="patron_summary_cmds" />
+    <popupset id="patron_summary_popups" />
 
     <box id="patron_summary_main" />
 

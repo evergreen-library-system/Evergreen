@@ -30,6 +30,39 @@ patron.summary.prototype = {
         obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
         var obscure_dob = String( obj.OpenILS.data.hash.aous['circ.obscure_dob'] ) == 'true';
 
+        JSAN.use('util.functional'); JSAN.use('patron.util'); JSAN.use('util.list'); obj.group_list = new util.list('group_list');
+        obj.group_list.init( {
+            'columns' : [
+                { 'id' : 'gl_family_name', 'flex' : 1, 
+                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.family_name.label'),
+                    'render' : function(my) { return my.family_name; } },
+                { 'id' : 'gl_first_given_name', 'flex' : 1, 
+                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.first_given_name.label'),
+                    'render' : function(my) { return my.first_given_name; } },
+                { 'id' : 'gl_second_given_name', 'flex' : 1, 'hidden' : true, 
+                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.second_given_name.label'),
+                    'render' : function(my) { return my.second_given_name; } },
+                { 'id' : 'gl_home_lib', 'flex' : 1, 'hidden' : true, 
+                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.home_ou.label'),
+                    'render' : function(my) { return obj.OpenILS.data.hash.aou[ my.home_ou ].shortname(); } }
+            ],
+            'retrieve_row' : function(params) {
+                var id = params.retrieve_id;
+                var blob = patron.util.retrieve_name_via_id( ses(), id );
+                var row = params.row; if (typeof row.my == 'undefined') { row.my = {}; }
+                row.my.family_name = blob[0];
+                row.my.first_given_name = blob[1];
+                row.my.second_given_name = blob[2];
+                row.my.home_ou = blob[3];
+                if (typeof params.on_retrieve == 'function') {
+                    params.on_retrieve(row);
+                }
+                return row;
+            }
+        } );
+        $('group_list_actions').appendChild( obj.group_list.render_list_actions() );
+        obj.group_list.set_list_actions();
+
         JSAN.use('util.controller'); obj.controller = new util.controller();
         obj.controller.init(
             {
@@ -37,6 +70,53 @@ patron.summary.prototype = {
                     'cmd_broken' : [
                         ['command'],
                         function() { alert($("commonStrings").getString('common.unimplemented')); }
+                    ],
+                    'radio_address' : [
+                        ['render'],
+                        function(e) {
+                            return function() {
+                                if (e.value == 'physical') { e.selectedIndex = 1; $('address_deck').selectedIndex = 1; }
+                            };
+                        }
+                    ],
+                    'group_tab' : [
+                        ['command'],
+                        function() {
+                            try {
+                                if (! obj.group_frame_loaded) {
+                                    obj.group_frame();
+                                    obj.group_frame_loaded = true;
+                                }
+                            } catch(E) {
+                                alert('Error in summary.js, group_tab: ' + E);
+                            }
+                        }
+                    ],
+                    'group_tab_retrieve_patron' : [
+                        ['command'],
+                        function() {
+                            var selected_ids = util.functional.map_list(
+                                obj.group_list.retrieve_selection(),
+                                function(o) {
+                                    return o.getAttribute('retrieve_id');
+                                }
+                            );
+                            for (var i = 0; i < selected_ids.length; i++) {
+                                try {
+                                    window.xulG.new_patron_tab(
+                                        { 'tab_name' : patronStrings.getString('staff.patron.info_group.retrieve_patron.tab_name') },
+                                        {
+                                            'id' : selected_ids[i],
+                                            'url_prefix' : xulG.url_prefix,
+                                            'new_tab' : xulG.new_tab,
+                                            'set_tab' : xulG.set_tab
+                                        }
+                                    );
+                                } catch(E) {
+                                    alert('Error in summary.js, group_tab_retrieve_patron: ' + E);
+                                }
+                            }
+                        }
                     ],
                     'patron_alert' : [
                         ['render'],
@@ -733,6 +813,36 @@ patron.summary.prototype = {
             } else {
                 alert(js2JSON(E));
             }
+        }
+    },
+
+    'group_frame' : function() {
+        var obj = this;
+        try {
+            obj.group_list.clear();
+
+            var robj = obj.network.simple_request(
+                'FM_AU_LIST_RETRIEVE_VIA_GROUP.authoritative',
+                [ ses(), obj.patron.usrgroup() ]
+            );
+            if ((robj == null) || (typeof robj.ilsevent != 'undefined') ) throw(robj);
+            var ids = util.functional.filter_list( robj, function(o) { return o != obj.patron.id(); });
+            var funcs = [];
+
+                function gen_func(r) {
+                    return function() {
+                        obj.group_list.append( { 'retrieve_id' : r, 'row' : {} } );
+                    }
+                }
+
+            //funcs.push( gen_func(obj.patron.id()) );
+            for (var i = 0; i < ids.length; i++) {
+                funcs.push( gen_func(ids[i]) );
+            }
+            JSAN.use('util.exec'); var exec = new util.exec(4);
+            exec.chain( funcs );
+        } catch(E) {
+            alert('Error in summary.js, group_frame(): ' + E);
         }
     }
 }

@@ -545,6 +545,9 @@ patron.display.prototype = {
                     'refresh' : function() { obj.refresh_all(); },
                     'on_finished' : obj.gen_patron_summary_finish_func(),
                     'stop_sign_page' : obj.gen_patron_stop_sign_page_func(),
+                    'new_patron_tab' : xulG.new_patron_tab,
+                    'new_tab' : xulG.new_tab,
+                    'set_tab' : xulG.set_tab,
                     'on_error' : function(E) {
                         try {
                             var error;

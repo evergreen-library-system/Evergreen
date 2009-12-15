@@ -7,103 +7,123 @@
 
 <script>dump('loading patron/summary_overlay.xul\n');</script>
 
-<commandset id="patron_summary_cmds" />
+<commandset id="patron_summary_cmds">
+    <command id="group_tab_retrieve_patron"/>
+</commandset>
+
+<popupset id="patron_summary_popups">
+    <popup id="group_actions" position="at_pointer">
+        <menuitem command="group_tab_retrieve_patron"
+            label="&staff.patron.summary_overlay.group_tab.retrieve_patron.label;"
+            accesskey="&staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey;" />
+    </popup>
+</popupset>
 
 <box id="patron_summary_main" flex="1" orient="vertical" class="my_overflow">
     <hbox id="patron_info_sidebar" flex="1"/>
 </box>
 
-<hbox id="patron_info_sidebar">
+<hbox id="patron_info_sidebar" flex="1">
     <image id="patron_photo_url" />
-    <vbox id="patron_info" flex="1">
-        <groupbox flex="1">
-            <caption label="Patron Info"/>
-            <description id="patron_name" />
-            <grid>
-                <columns>
-                    <column/>
-                    <column/>
-                </columns>
-                <rows>
-                    <row>
-                        <label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="copyable text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
-                        <description id="patron_date_of_birth" class="copyable dob value" hide_value="true" oils_persist="hide_value"/>
-                    </row>
-                    <row>
-                        <label id="PatronSummaryContact_library_card_label" class="copyable text_left card label"
-                            value="&staff.patron_display.library_card.label;"/>
-                        <description id="patron_card" class="copyable card value click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
-                    </row>
-                    <row>
-                        <label id="PatronSummaryContact_hold_alias_label" class="copyable text_left" value="&staff.patron_display.hold_alias.label;"/>
-                        <description id="patron_hold_alias" class="copyable hold_alias value" />
-                    </row>
-                    <row>
-                        <label id="PatronSummaryContact_usrname_label" class="copyable text_left usrname label"
-                            value="&staff.patron.summary_overlay.opac_login.value;" />
-                        <description id="patron_usrname" class="copyable usrname value"/>
-                    </row>
-                    <row>
-                        <label id="PatronSummaryContact_email_label" class="copyable text_left email label"
-                            value="&staff.patron_display.email.label;" />
-                        <description id="patron_email" class="copyable email value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
-                    </row>
-                </rows>
-            </grid>
-            <spacer/><!-- bug workaround.. for some reason.. maybe timing with the overlay inserting children.. the patron_name label shows up beneath the grid when rendered -->
-        </groupbox>
+    <vbox id="patron_info" flex="1" />
+    <vbox id="account_info" flex="1" />
+    <vbox flex="1">
+        <vbox id="PatronSummaryContact_address" orient="vertical"/>
+        <vbox id="PatronSummaryContact_phone" />
+        <spacer flex="1"/>
     </vbox>
     <vbox id="contact_info" flex="1">
-        <groupbox flex="1">
-            <caption>
-                <button id="contact_info_btn" label="Mailing Address" type="menu">
-                    <menupopup>
-                        <menuitem label="&staff.patron_display.mailing_address;" oncommand="document.getElementById('contact_info_btn').setAttribute('label',this.getAttribute('label')); document.getElementById('contact_info_deck').selectedIndex = 0;"/>
-                        <menuitem label="&staff.patron_display.physical_address;" oncommand="document.getElementById('contact_info_btn').setAttribute('label',this.getAttribute('label')); document.getElementById('contact_info_deck').selectedIndex = 1;"/>
-                        <menuitem label="Phone Numbers" oncommand="document.getElementById('contact_info_btn').setAttribute('label',this.getAttribute('label')); document.getElementById('contact_info_deck').selectedIndex = 2;"/>
-                        <menuitem label="Identification" oncommand="document.getElementById('contact_info_btn').setAttribute('label',this.getAttribute('label')); document.getElementById('contact_info_deck').selectedIndex = 3;"/>
-                    </menupopup>
-                </button>
-            </caption>
-            <deck id="contact_info_deck">
-                <vbox id="PatronSummaryContact_mailing_address" orient="vertical"/>
-                <vbox id="PatronSummaryContact_physical_address" orient="vertical"/>
-                <grid id="PatronSummaryContact_grid_phone" />
-                <grid id="PatronSummaryContact_grid" flex="1"/>
-            </deck>
-        </groupbox>
-    </vbox>
-    <vbox>
-        <groupbox flex="1">
-            <caption label="Circ Info"/>
-            <grid id="PatronSummaryStatus_grid" flex="1"/>
-        </groupbox>
-    </vbox>
-    <vbox>
-        <groupbox flex="1">
-            <caption label="Account Info"/>
-            <grid>
-                <columns>
-                    <column/>
-                </columns>
-                <rows>
-                    <row id="pdsgr1">
-                        <description id="patron_profile" class="copyable profile value"/>
-                    </row>
-                    <row id="pdsgr5">
-                        <description id="patron_library" class="copyable homelib value"/>
-                    </row>
-                    <row id="pdsgr5a">
-                        <description id="patron_net_access" class="copyable net_access value"/>
-                    </row>
-                    <row id="pdsgr5aa">
-                        <description id="patron_date_of_exp" class="copyable expire_date value"/>
-                    </row>
-                </rows>
-            </grid>
-        </groupbox>
+        <tabbox flex="1">
+            <tabs>
+                <tab label="&staff.patron_display.tab.identification.label;" accesskey="&staff.patron_display.tab.identification.accesskey;"/>
+                <tab id="group_tab" label="&staff.patron_display.tab.group.label;" accesskey="&staff.patron_display.tab.group.accesskey;"/>
+                <tab label="&staff.patron_display.tab.stat_cats.label;" accesskey="&staff.patron_display.tab.stat_cats.accesskey;"/>
+            </tabs>
+            <tabpanels flex="1">
+                <tabpanel><grid id="PatronSummaryContact_grid" flex="1"/></tabpanel>
+                <tabpanel orient="vertical">
+                    <tree id="group_list" flex="1" enableColumnDrag="true" seltype="multiple" context="group_actions"/>
+                    <hbox>
+                        <hbox id="group_list_actions" />
+                        <spacer flex="1" />
+                        <button command="group_tab_retrieve_patron"
+                            label="&staff.patron.summary_overlay.group_tab.retrieve_patron.label;" 
+                            accesskey="&staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey;" />
+                    </hbox>
+                </tabpanel>
+                <tabpanel>
+                    <vbox>
+                    </vbox>
+                </tabpanel>
+                <tabpanel hidden="true"><grid id="PatronSummaryStatus_grid" flex="1"/></tabpanel>
+            </tabpanels>
+        </tabbox>
     </vbox>
 </hbox>
+
+<vbox id="account_info">
+    <groupbox flex="1">
+        <caption label="&staff.patron_display.account_info.caption;"/>
+        <grid>
+            <columns>
+                <column/>
+            </columns>
+            <rows>
+                <row id="pdsgr1">
+                    <description id="patron_profile" class="copyable profile value"/>
+                </row>
+                <row id="pdsgr5">
+                    <description id="patron_library" class="copyable homelib value"/>
+                </row>
+                <row id="pdsgr5a">
+                    <description id="patron_net_access" class="copyable net_access value"/>
+                </row>
+                <row id="pdsgr5aa">
+                    <description id="patron_date_of_exp" class="copyable expire_date value"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+</vbox>
+
+<vbox id="patron_info" flex="1">
+    <groupbox flex="1">
+        <caption label="&staff.patron_display.patron_info.caption;"/>
+        <description id="patron_name" />
+        <grid>
+            <columns>
+                <column/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="copyable text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
+                    <description id="patron_date_of_birth" class="copyable dob value" hide_value="true" oils_persist="hide_value"/>
+                </row>
+                <row>
+                    <label id="PatronSummaryContact_library_card_label" class="copyable text_left card label"
+                        value="&staff.patron_display.library_card.label;"/>
+                    <description id="patron_card" class="copyable card value click_link" onclick="try { copy_to_clipboard(event); } catch(E) { alert(E); }"/>
+                </row>
+                <row>
+                    <label id="PatronSummaryContact_hold_alias_label" class="copyable text_left" value="&staff.patron_display.hold_alias.label;"/>
+                    <description id="patron_hold_alias" class="copyable hold_alias value" />
+                </row>
+                <row>
+                    <label id="PatronSummaryContact_usrname_label" class="copyable text_left usrname label"
+                        value="&staff.patron.summary_overlay.opac_login.value;" />
+                    <description id="patron_usrname" class="copyable usrname value"/>
+                </row>
+                <row>
+                    <label id="PatronSummaryContact_email_label" class="copyable text_left email label"
+                        value="&staff.patron_display.email.label;" />
+                    <description id="patron_email" class="copyable email value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
+                </row>
+            </rows>
+        </grid>
+        <spacer/><!-- bug workaround.. for some reason.. maybe timing with the overlay inserting children.. the patron_name label shows up beneath the grid when rendered -->
+    </groupbox>
+</vbox>
 
 <grid id="PatronSummaryStatus_grid">
     <columns id="pdsgc">
@@ -193,59 +213,73 @@
     </rows>
 </grid>
 
-<grid id="PatronSummaryContact_grid_phone">
-    <columns id="pdcgpc">
-        <column id="pdcgpc1" />
-        <column id="pdcgpc2" />
-    </columns>
-    <rows id="pdcgpr" flex="1">
-        <row id="pdcgpr1">
-            <label id="PatronSummaryContact_day_phone_label" class="copyable text_left phone label day_phone"
-                value="&staff.patron_display.day_phone.label;" />
-            <description id="patron_day_phone" class="copyable phone value day_phone"/> 
-        </row>
-        <row id="pdcgpr2">
-            <label id="PatronSummaryContact_evening_phone_label" class="copyable text_left phone label evening_phone"
-                value="&staff.patron_display.evening_phone.label;" />
-            <description id="patron_evening_phone" class="copyable phone value evening_phone"/>
-        </row>
-        <row id="pdcgpr3">
-            <label id="PatronSummaryContact_other_phone_label" class="copyable text_left phone label other_phone"
-                value="&staff.patron_display.other_phone.label;" />
-            <description id="patron_other_phone" class="copyable phone value other_phone"/> 
-        </row>
-        <row id="pdsgpr4"><label id="pdsgpr4l" value=" "/></row>
-        <row id="pdsgpr6"><label id="pdsgpr6l" value=" "/></row>
-
-    </rows>
-</grid>
-
-<vbox id="PatronSummaryContact_mailing_address">
-    <description id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" class="copyable address street street1 mailing value"/>
-    <description id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" class="copyable address street street2 mailing value"/>
-    <hbox id="pdcmah">
-        <description id="patron_mailing_address_city" tooltiptext="&staff.patron_display.mailing.city.label;" class="copyable address city mailing value"/>
-        <description id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" class="copyable address state mailing value"/>
-        <description id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" class="copyable address post_code mailing value"/>
-    </hbox>
-    <hbox>
-        <spacer flex="1" />
-        <label value="&staff.patron_display.mailing.copy;" onclick="copy_mailing_address();" class="copyable click_link"/>
-    </hbox>
+<vbox id="PatronSummaryContact_phone">
+    <groupbox>
+        <caption label="&staff.patron_display.phone_numbers.caption;"/>
+        <grid id="PatronSummaryContact_grid_phone">
+            <columns id="pdcgpc">
+                <column id="pdcgpc1" />
+                <column id="pdcgpc2" />
+            </columns>
+            <rows id="pdcgpr" flex="1">
+                <row id="pdcgpr1">
+                    <label id="PatronSummaryContact_day_phone_label" class="copyable text_left phone label day_phone"
+                        value="&staff.patron_display.day_phone.label;" />
+                    <description id="patron_day_phone" class="copyable phone value day_phone"/> 
+                </row>
+                <row id="pdcgpr2">
+                    <label id="PatronSummaryContact_evening_phone_label" class="copyable text_left phone label evening_phone"
+                        value="&staff.patron_display.evening_phone.label;" />
+                    <description id="patron_evening_phone" class="copyable phone value evening_phone"/>
+                </row>
+                <row id="pdcgpr3">
+                    <label id="PatronSummaryContact_other_phone_label" class="copyable text_left phone label other_phone"
+                        value="&staff.patron_display.other_phone.label;" />
+                    <description id="patron_other_phone" class="copyable phone value other_phone"/> 
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
 </vbox>
 
-<vbox id="PatronSummaryContact_physical_address">
-    <description id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" class="copyable address street street1 physical value" />
-    <description id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;"  class="copyable address street street2 physical value"/>
-    <hbox id="pdcpah">
-        <description id="patron_physical_address_city" tooltiptext="&staff.patron_display.physical.city.label;" class="copyable address city physical value"/>
-        <description id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" class="copyable address state physical value"/>
-        <description id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" class="copyable address post_code physical value"/>
-    </hbox>
-    <hbox>
-        <spacer flex="1" />
-        <label value="&staff.patron_display.physical.copy;" onclick="copy_billing_address();" class="copyable click_link"/>
-    </hbox>
+<vbox id="PatronSummaryContact_address">
+    <groupbox>
+        <caption label="&staff.patron_display.addresses.caption;"/>
+        <deck id="address_deck">
+            <vbox>
+                <description id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" class="copyable address street street1 mailing value"/>
+                <description id="patron_mailing_address_street2" tooltiptext="&staff.patron_display.mailing.street2.label;" class="copyable address street street2 mailing value"/>
+                <hbox id="pdcmah">
+                    <description id="patron_mailing_address_city" tooltiptext="&staff.patron_display.mailing.city.label;" class="copyable address city mailing value"/>
+                    <description id="patron_mailing_address_state" tooltiptext="&staff.patron_display.mailing.state.label;" class="copyable address state mailing value"/>
+                    <description id="patron_mailing_address_post_code" tooltiptext="&staff.patron_display.mailing.post_code.label;" class="copyable address post_code mailing value"/>
+                </hbox>
+            </vbox>
+            <vbox>
+                <description id="patron_physical_address_street1" tooltiptext="&staff.patron_display.physical.street1.label;" class="copyable address street street1 physical value" />
+                <description id="patron_physical_address_street2" tooltiptext="&staff.patron_display.physical.street2.label;"  class="copyable address street street2 physical value"/>
+                <hbox id="pdcpah">
+                    <description id="patron_physical_address_city" tooltiptext="&staff.patron_display.physical.city.label;" class="copyable address city physical value"/>
+                    <description id="patron_physical_address_state" tooltiptext="&staff.patron_display.physical.state.label;" class="copyable address state physical value"/>
+                    <description id="patron_physical_address_post_code" tooltiptext="&staff.patron_display.physical.post_code.label;" class="copyable address post_code physical value"/>
+                </hbox>
+            </vbox>
+        </deck>
+        <hbox>
+            <radiogroup id="radio_address" orient="horizontal" oils_persist="value">
+                <radio id="radio_address_mailing" selected="true" value="mailing"
+                    oncommand="oils_persist(this.parentNode); $('address_deck').selectedIndex = 0;"
+                    label="&staff.patron_display.radio.mailing_address.label;" 
+                    accesskey="&staff.patron_display.radio.mailing_address.accesskey;" />
+                <radio id="radio_address_physical" value="physical"
+                    oncommand="oils_persist(this.parentNode); $('address_deck').selectedIndex = 1;"
+                    label="&staff.patron_display.radio.physical_address.label;"
+                    accesskey="&staff.patron_display.radio.physical_address.accesskey;" /> 
+            </radiogroup>
+            <spacer flex="1" />
+            <label value="&staff.patron_display.address.copy;" onclick="copy_displayed_address();" class="copyable click_link"/>
+        </hbox>
+    </groupbox>
 </vbox>
 
 </overlay>
