@@ -118,8 +118,12 @@
             util.widgets.remove_children( x );
 
             var default_lib = g.my_lib; 
-            if ( !get_bool( g.aout_hash[ g.my_libs_ou_hash[ default_lib ].ou_type() ].can_have_users() ) ) {
+            if (typeof g.my_libs_ou_hash[ default_lib ] == 'undefined') {
                 default_lib = null;
+            } else {
+                if ( !get_bool( g.aout_hash[ g.my_libs_ou_hash[ default_lib ].ou_type() ].can_have_users() ) ) {
+                    default_lib = null;
+                }
             }
 
             g.ml = util.widgets.make_menulist( 
