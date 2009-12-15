@@ -417,6 +417,23 @@ CREATE TABLE acq.fiscal_calendar (
 	name            TEXT           NOT NULL
 );
 
+-- Create a default calendar (though we don't specify its contents). 
+-- Create a foreign key in actor.org_unit, initially pointing to
+-- the default calendar.
+
+INSERT INTO acq.fiscal_calendar (
+    name
+) VALUES (
+
+    'Default'
+);
+
+ALTER TABLE actor.org_unit
+ADD COLUMN fiscal_calendar INT NOT NULL
+    REFERENCES acq.fiscal_calendar( id )
+    DEFERRABLE INITIALLY DEFERRED
+    DEFAULT 1;
+
 CREATE TABLE acq.fiscal_year (
 	id              SERIAL         PRIMARY KEY,
 	calendar        INT            NOT NULL
