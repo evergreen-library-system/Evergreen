@@ -1621,6 +1621,7 @@ util.list.prototype = {
             if (typeof fieldmapper.IDL.fmclasses == 'undefined') { throw 'fieldmapper.IDL.fmclasses undefined'; }
             if (typeof fieldmapper.IDL.fmclasses[hint] == 'undefined') { throw 'fieldmapper.IDL.fmclasses.' + hint + ' undefined'; }
             var my_class = fieldmapper.IDL.fmclasses[hint]; 
+            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
 
             function col_def(my_field) {
                 var col_id = hint + '_' + my_field.name;
