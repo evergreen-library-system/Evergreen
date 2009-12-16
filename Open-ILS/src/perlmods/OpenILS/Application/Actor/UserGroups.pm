@@ -10,6 +10,38 @@ my $U = "OpenILS::Application::AppUtils";
 sub initialize { return 1; }
 
 
+
+__PACKAGE__->register_method(
+	method => 'group_money_summary',
+	api_name	=> 'open-ils.actor.usergroup.members.balance_owed',
+    authoritative => 1,
+	signature	=> q/
+	/
+);
+
+sub group_money_summary {
+	my($self, $conn, $auth, $group_id) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_USER');
+    return $e->json_query(
+        {
+            select => {mous => ['usr', 'balance_owed']},
+            from => 'mous',
+            where => {
+                usr => {
+                    in => {
+                        select => {au => ['id']}, 
+                        from => 'au', 
+                        where => {usrgroup => $group_id}
+                    }
+                }
+            }
+        }
+    );
+}
+
+
 __PACKAGE__->register_method(
 	method => 'get_users_from_usergroup',
 	api_name	=> 'open-ils.actor.usergroup.members.retrieve',
