@@ -46,7 +46,10 @@ patron.summary.prototype = {
                     'render' : function(my) { return my.second_given_name; } },
                 { 'id' : 'gl_home_lib', 'flex' : 1, 'hidden' : true, 
                     'label' : patronStrings.getString('staff.patron.summary.group_list.column.home_ou.label'),
-                    'render' : function(my) { return obj.OpenILS.data.hash.aou[ my.home_ou ].shortname(); } }
+                    'render' : function(my) { return obj.OpenILS.data.hash.aou[ my.home_ou ].shortname(); } },
+                { 'id' : 'gl_balance_owed', 'flex' : 1,
+                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.balance_owed.label'),
+                    'render' : function(my) { return my.balance_owed; } }
             ],
             'retrieve_row' : function(params) {
                 var id = params.retrieve_id;
@@ -56,6 +59,9 @@ patron.summary.prototype = {
                 row.my.first_given_name = blob[1];
                 row.my.second_given_name = blob[2];
                 row.my.home_ou = blob[3];
+                if (obj.group_owed[ id ]) {
+                    row.my.balance_owed = obj.group_owed[ id ];
+                }
                 if (typeof params.on_retrieve == 'function') {
                     params.on_retrieve(row);
                 }
@@ -246,31 +252,75 @@ patron.summary.prototype = {
                                     }
                                 }
                                 obj.network.simple_request(
-                                    'FM_MOUS_RETRIEVE.authoritative',
-                                    [ ses(), obj.patron.id() ],
+                                    'BLOB_BALANCE_OWED_VIA_USERGROUP',
+                                    [ ses(), obj.patron.usrgroup() ],
                                     function(req) {
                                         try {
                                             JSAN.use('util.money');
                                             var robj = req.getResultObject();
-                                            util.widgets.set_text(e, patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
-                                            if (under_btn) util.widgets.set_text(under_btn, 
-                                                patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( robj.balance_owed() )]));
-                                            var show_billing_tab_on_bills = String( obj.OpenILS.data.hash.aous['ui.circ.show_billing_tab_on_bills'] ) == 'true';
-                                            if (show_billing_tab_on_bills && Number(robj.balance_owed()) > 0) {
-                                                if (xulG) {
-                                                    if (xulG.display_window) {
-                                                        if (! obj.show_billing_tab_on_bills_done_once ) {
-                                                            xulG.display_window.g.patron.skip_hide_summary = true;
-                                                            xulG.display_window.util.widgets.dispatch('command','cmd_patron_bills');
-                                                            obj.show_billing_tab_on_bills_done_once = 1;
+                                            if (typeof robj.ils_event != 'undefined') { throw(robj); }
+
+                                            var sum = 0; /* in cents */
+                                            obj.group_owed = {};
+
+                                            function render_main_patron_bill_summary(bs) {
+                                                try {
+                                                    util.widgets.set_text(
+                                                        e, 
+                                                        patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( bs.balance_owed )])
+                                                    );
+                                                    if (under_btn) {
+                                                        util.widgets.set_text(
+                                                            under_btn, 
+                                                            patronStrings.getFormattedString('staff.patron.summary.patron_bill.money', [util.money.sanitize( bs.balance_owed )])
+                                                        );
+                                                    }
+                                                    var show_billing_tab_on_bills = String( obj.OpenILS.data.hash.aous['ui.circ.show_billing_tab_on_bills'] ) == 'true';
+                                                    if (show_billing_tab_on_bills && Number(bs.balance_owed) > 0) {
+                                                        if (xulG) {
+                                                            if (xulG.display_window) {
+                                                                if (! obj.show_billing_tab_on_bills_done_once ) {
+                                                                    xulG.display_window.g.patron.skip_hide_summary = true;
+                                                                    xulG.display_window.util.widgets.dispatch('command','cmd_patron_bills');
+                                                                    obj.show_billing_tab_on_bills_done_once = 1;
+                                                                }
+                                                            }
+                                                        }
+                                                    };
+                                                    obj.bills_summary = bs;
+                                                    if (obj.holds_summary && obj.bills_summary)  {
+                                                        if (typeof window.xulG == 'object' && typeof window.xulG.stop_sign_page == 'function') {
+                                                            window.xulG.stop_sign_page( obj.patron, { 'holds_summary' : obj.holds_summary, 'bills_summary' : obj.bills_summary } ); 
                                                         }
                                                     }
+                                                } catch(E) {
+                                                    alert('Error in summary.js, render_main_patron_bill_summary(): ' + E);
                                                 }
                                             }
-                                            obj.bills_summary = robj;
-                                            if (obj.holds_summary && obj.bills_summary) 
-                                                if (typeof window.xulG == 'object' && typeof window.xulG.stop_sign_page == 'function')
-                                                    window.xulG.stop_sign_page( obj.patron, { 'holds_summary' : obj.holds_summary, 'bills_summary' : obj.bills_summary } ); 
+
+                                            var rendered_main_patron_bill_summary = false;
+                                            for (var i = 0; i < robj.length; i++) {
+                                                if (robj[i].usr == obj.patron.id()) {
+                                                    render_main_patron_bill_summary( robj[i] );
+                                                    rendered_main_patron_bill_summary = true;
+                                                } else {
+                                                    sum += util.money.dollars_float_to_cents_integer( robj[i].balance_owed );
+                                                    obj.group_owed[ robj[i].usr ] = robj[i].balance_owed;
+                                                }
+                                            }
+                                            if (!rendered_main_patron_bill_summary) {
+                                                render_main_patron_bill_summary( { balance_owed: 0.00, usr: obj.patron.id() } );
+                                            }
+                                            if (sum > 0) {
+                                                var tab = $('group_tab');
+                                                addCSSClass(tab,'balance_owed');
+                                            } else {
+                                                removeCSSClass(tab,'balance_owed');
+                                            }
+                                            tab.setAttribute(
+                                                'label',
+                                                patronStrings.getFormattedString('staff.patron.summary.tab.group_list_with_total_owed.label',[ util.money.cents_as_dollars( sum ) ])
+                                            );
                                         } catch(E) {
                                             alert('Error in summary.js, patron_bill callback: ' + E);
                                         }

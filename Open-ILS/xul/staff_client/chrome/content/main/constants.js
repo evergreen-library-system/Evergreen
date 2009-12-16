@@ -51,6 +51,7 @@ const api = {
     'BLOB_MBTS_DETAILS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transaction.fleshed.retrieve', 'secure' : false },
     'BLOB_MOBTS_CIRC_MVR_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.have_balance.fleshed' },
     'BLOB_MOBTS_CIRC_MVR_OPEN' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.fleshed' },
+    'BLOB_BALANCE_OWED_VIA_USERGROUP' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.usergroup.members.balance_owed.authoritative' },
     'BUCKET_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.container.create' },
     'BUCKET_FLESH' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.container.flesh' },
     'BUCKET_DELETE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.container.full_delete' },
