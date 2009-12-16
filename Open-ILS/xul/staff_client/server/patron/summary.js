@@ -30,7 +30,9 @@ patron.summary.prototype = {
         obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
         var obscure_dob = String( obj.OpenILS.data.hash.aous['circ.obscure_dob'] ) == 'true';
 
-        JSAN.use('util.functional'); JSAN.use('patron.util'); JSAN.use('util.list'); obj.group_list = new util.list('group_list');
+        JSAN.use('util.functional'); JSAN.use('patron.util'); JSAN.use('util.list'); 
+
+        obj.group_list = new util.list('group_list');
         obj.group_list.init( {
             'columns' : [
                 { 'id' : 'gl_family_name', 'flex' : 1, 
@@ -63,6 +65,23 @@ patron.summary.prototype = {
         $('group_list_actions').appendChild( obj.group_list.render_list_actions() );
         obj.group_list.set_list_actions();
 
+        obj.stat_cat_list = new util.list('stat_cat_list');
+        obj.stat_cat_list.init( {
+            'columns' : [].concat(
+                obj.stat_cat_list.fm_columns( 'actsc', {
+                    'actsc_id' : { 'hidden' : true },
+                    'actsc_opac_visible' : { 'hidden' : true },
+                    'actsc_usr_summary' : { 'hidden' : true }
+                } )
+            ).concat(
+                obj.stat_cat_list.fm_columns( 'actscecm', {
+                    'actscecm_id' : { 'hidden' : true }
+                } )
+            )
+        } );
+        $('stat_cat_list_actions').appendChild( obj.stat_cat_list.render_list_actions() );
+        obj.stat_cat_list.set_list_actions();
+
         JSAN.use('util.controller'); obj.controller = new util.controller();
         obj.controller.init(
             {
@@ -89,6 +108,42 @@ patron.summary.prototype = {
                                 }
                             } catch(E) {
                                 alert('Error in summary.js, group_tab: ' + E);
+                            }
+                        }
+                    ],
+                    'stat_cat_tab' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.stat_cat_list.clear();
+                                var entries = obj.patron.stat_cat_entries();
+                                for (var i = 0; i < entries.length; i++) {
+                                    var stat_cat = obj.OpenILS.data.hash.my_actsc[ entries[i].stat_cat() ];
+                                    if (!stat_cat) {
+                                        stat_cat = obj.OpenILS.data.hash.actsc[ entries[i].stat_cat() ];
+                                    }
+                                    if (!stat_cat) {
+                                        var robj = obj.network.simple_request('FM_ACTSC_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : entries[i].stat_cat() } }]);
+                                        if (typeof robj == 'object' && typeof robj.ilsevent != 'undefined') {
+                                            obj.OpenILS.data.hash.actsc[ entries[i].stat_cat() ] = robj;
+                                            obj.OpenILS.data.stash( 'hash' );
+                                            stat_cat = robj;
+                                        }
+                                    }
+                                    if (!stat_cat) { continue; }
+                                    if (get_bool( stat_cat.usr_summary() )) {
+                                        obj.stat_cat_list.append( {
+                                            'row' : {
+                                                'my' : {
+                                                    'actsc' : stat_cat,
+                                                    'actscecm' : entries[i],
+                                                }
+                                            }
+                                        } );
+                                    }
+                                }
+                            } catch(E) {
+                                alert('Error in summary.js, stat_cat_tab: ' + E);
                             }
                         }
                     ],
