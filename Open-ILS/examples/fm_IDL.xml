@@ -3442,7 +3442,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="item" reltype="has_a" key="id" map="" class="cubi"/>
 		</links>
 	</class>
-	<class id="mus" controller="open-ils.cstore" oils_obj:fieldmapper="money::user_summary" oils_persist:tablename="money.usr_summary" reporter:label="User Summary">
+	<class id="mus" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::user_summary" oils_persist:tablename="money.usr_summary" reporter:label="User Summary">
 		<fields oils_persist:primary="usr" oils_persist:sequence="">
 			<field name="balance_owed" reporter:datatype="money" />
 			<field name="total_owed" reporter:datatype="money" />
@@ -3452,6 +3452,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER">
+                    <context link="usr" field="home_ou"/>
+                </retrieve>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="clfm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::lit_form_map" oils_persist:tablename="config.lit_form_map" reporter:label="Literary Form" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
