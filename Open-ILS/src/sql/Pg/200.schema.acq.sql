@@ -97,10 +97,11 @@ CREATE TABLE acq.funding_source (
 );
 
 CREATE TABLE acq.funding_source_credit (
-	id	SERIAL	PRIMARY KEY,
-	funding_source    INT     NOT NULL REFERENCES acq.funding_source (id) DEFERRABLE INITIALLY DEFERRED,
-	amount	NUMERIC	NOT NULL,
-	note	TEXT
+	id	SERIAL	   PRIMARY KEY,
+	funding_source INT      NOT NULL REFERENCES acq.funding_source (id) DEFERRABLE INITIALLY DEFERRED,
+	amount	       NUMERIC	NOT NULL,
+	note  	       TEXT,
+	deadline_date  TIMESTAMPTZ
 );
 
 CREATE TABLE acq.fund (
