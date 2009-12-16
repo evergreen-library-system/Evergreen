@@ -81,6 +81,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 case 'bool':
                     switch(value) {
                         case 'true': return 't';
+                        case 'on': return 't';
                         case 'false' : return 'f';
                         case 'unset' : return null;
                         case true : return 't';
