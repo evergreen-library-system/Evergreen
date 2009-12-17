@@ -689,6 +689,13 @@
 
 	#-------------------------------------------------------------------------------
 
+	package action::reservation_transit_copy;
+
+	action::reservation_transit_copy->sequence( 'action.transit_copy_id_seq' );
+	action::reservation_transit_copy->table('action.reservation_transit_copy');
+
+	#-------------------------------------------------------------------------------
+
 	package action::transit_copy;
 
 	action::transit_copy->sequence( 'action.transit_copy_id_seq' );

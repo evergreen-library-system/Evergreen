@@ -127,6 +127,16 @@ __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
 
 #-------------------------------------------------------------------------------
 
+package action::reservation_transit_copy;
+use base qw/action/;
+__PACKAGE__->table('action_reservation_transit_copy');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
+				     source_send_time dest_recv_time prev_hop prev_dest
+				     copy_status reservation/);
+
+#-------------------------------------------------------------------------------
+
 package action::transit_copy;
 use base qw/action/;
 __PACKAGE__->table('action_transit_copy');
