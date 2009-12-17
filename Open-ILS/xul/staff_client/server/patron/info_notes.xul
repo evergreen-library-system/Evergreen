@@ -192,18 +192,17 @@
                 xml += '<label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.patron_visible.value')+'"/><checkbox id="pub" name="fancy_data"/></row>';
                 xml += '<row><label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.title.value')+'"/><textbox id="title" name="fancy_data" context="clipboard"/></row>';
                 xml += '<row><label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.note.value')+'"/><textbox multiline="true" id="note" name="fancy_data" context="clipboard"/></row>';
+                var show_initials = String( g.data.hash.aous['ui.circ_and_cat.notes.require_initials'] ) == 'true';
+                if (show_initials) {
+                    xml += '<row><label value="'+$("patronStrings").getString('staff.patron.info_notes.new_note.initials.value')+'"/><textbox id="initials" name="fancy_required_data" context="clipboard"/></row>';
+                }
                 xml += '<row><spacer/><hbox><button label="'+$("patronStrings").getString('staff.patron.info_notes.new_note.cancel.label')+'" name="fancy_cancel"';
                 xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_notes.new_note.cancel.accesskey')+'"/>';
                 xml += '<button label="'+$("patronStrings").getString('staff.patron.info_notes.new_note.add.label')+'"';
                 xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_notes.new_note.add.accesskey')+'" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
-                //g.data.init({'via':'stash'});
-                //g.data.temp_note_xml = xml; g.data.stash('temp_note_xml');
                 JSAN.use('util.window'); var win = new util.window();
                 var fancy_prompt_data = win.open(
                     urls.XUL_FANCY_PROMPT,
-                    //+ '?xml_in_stash=temp_note_xml'
-                    //+ '&focus=' + window.escape('title')
-                    //+ '&title=' + window.escape('Add Note'),
                     'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
                     { 'xml' : xml, 'focus' : 'title', 'title' : $("patronStrings").getString('staff.patron.info_notes.new_note.add_note_title') }
                 );
@@ -212,6 +211,10 @@
                     var note = new aun();
                     note.isnew(1);
                     note.title( fancy_prompt_data.title );
+                    if (fancy_prompt_data.initials) {
+                        fancy_prompt_data.note = fancy_prompt_data.note 
+                            + $("commonStrings").getFormattedString('staff.initials.format',[fancy_prompt_data.initials,util.date.formatted_date(new Date(),'%F')]);
+                    }
                     note.value( fancy_prompt_data.note );
                     note.pub( get_bool( fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
                     note.usr( g.patron_id );
@@ -219,7 +222,6 @@
                     if (typeof r.ilsevent != 'undefined') throw(r);
                     setTimeout(function(){
                         g.new_note = true;
-                        alert($("patronStrings").getString('staff.patron.info_notes.new_note.add_note_title'));
                         refresh();
                     },0);
                 }

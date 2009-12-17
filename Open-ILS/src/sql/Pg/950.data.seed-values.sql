@@ -1719,8 +1719,13 @@ INSERT into config.org_unit_setting_type
   'bool' ),
 
 ( 'ui.circ.standing_penalty.require_initials',
-  'Require staff initials for entry/edit of standing penalties.',
-  null,
+  oils_i18n_gettext('ui.circ.standing_penalty.require_initials', 'GUI: Require staff initials for entry/edit of standing penalties.', 'coust', 'label'),
+  oils_i18n_gettext('ui.circ.standing_penalty.require_initials', 'Appends staff initials and edit date into penalty note.', 'coust', 'description'),
+  'bool' ),
+
+( 'ui.circ_and_cat.notes.require_initials',
+  oils_i18n_gettext('ui.circ_and_cat.notes.require_initials', 'GUI: Require staff initials for entry/edit of item and patron notes.', 'coust', 'label'),
+  oils_i18n_gettext('ui.circ_and_cat.notes.require_initials', 'Appends staff initials and edit date into note content.', 'coust', 'description'),
   'bool' ),
 
 ( 'ui.general.button_bar',

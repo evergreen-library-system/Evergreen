@@ -93,7 +93,8 @@ function edit_penalty_init() {
                     if (initials_tb.value == '') {
                         initials_tb.focus(); return;
                     } else {
-                        note = note + ' - ' + initials_tb.value;
+                        JSAN.use('util.date');
+                        note = note + commonStrings.getFormattedString('staff.initials.format',[initials_tb.value,util.date.formatted_date(new Date(),'%F')]);
                     }
                 }
                 update_modal_xulG(
