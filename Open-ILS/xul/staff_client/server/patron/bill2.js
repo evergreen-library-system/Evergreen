@@ -595,6 +595,8 @@ function handle_details() {
                     refresh(); 
                     if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
                 }, 
+                'new_tab' : xulG.new_tab,
+                'url_prefix' : xulG.url_prefix
             }
         );
     }

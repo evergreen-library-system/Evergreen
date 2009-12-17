@@ -69,7 +69,7 @@
                 var mid = document.createElement('iframe'); mv.appendChild(mid);
                 mid.setAttribute('src',urls.XUL_COPY_SUMMARY);
                 mid.setAttribute('flex','1');
-                get_contentWindow(mid).xulG = { 'copy_id' : g.copy.id() };
+                get_contentWindow(mid).xulG = { 'copy_id' : g.copy.id(), 'new_tab' : xulG.new_tab, 'url_prefix' : xulG.url_prefix };
 
                 show_circs();
 

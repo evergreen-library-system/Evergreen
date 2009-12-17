@@ -21,7 +21,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_copy_summary_win" 
-    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onload="try { font_helper(); persist_helper(); my_init(); } catch(E) { alert(E); }"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -85,7 +85,9 @@
                         'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                     }
                 );
-    
+                $('list_actions').appendChild( g.list.render_list_actions() );
+                g.list.set_list_actions();
+ 
                 function acp_callback(req) {
                     try {
                         var copy = req.getResultObject();
@@ -121,6 +123,10 @@
                                     $w('copy_summary_callnumber',cn.label());    
                                 }
                                 g.list.append({'row':{'my':{'acp':copy,'acn':cn}}});
+                                g.barcode = copy.barcode(); g.doc_id = cn.record();
+                                if (g.doc_id > -1) {
+                                    $('show_in_opac').hidden = false;
+                                }
                             } catch(E) {
                                 g.error.standard_unexpected_error_alert('retrieving volume',E);
                             }
@@ -156,7 +162,9 @@
                     }
                 });
 
-                toggle_deck(); toggle_deck(); /* quick hack */
+                if ( $('alternate_view').checked ) {
+                    toggle_deck();
+                }
 
             } catch(E) {
                 try { g.error.standard_unexpected_error_alert('copy_summary.xul',E); } catch(F) { alert(E + '\n' + F); }
@@ -167,12 +175,8 @@
             try {
                 if ($('item_deck').selectedIndex == 0) {
                     $('item_deck').selectedIndex = 1; /* change to grid */
-                    $('save_columns').hidden = true;
-                    $('sel_clip').hidden = true;
                 } else {
                     $('item_deck').selectedIndex = 0; /* change to tree */
-                    $('save_columns').hidden = false;
-                    $('sel_clip').hidden = false;
                 }
             } catch(E) {
             }
@@ -233,10 +237,12 @@
             </grid>
         </deck>
         <hbox>
-            <button label="&staff.cat.copy_summary.alternate_view.label;" oncommand="toggle_deck()"/>
-            <button id="save_columns" label="&staff.cat.copy_summary.save_columns.label;" oncommand="try { g.list.save_columns(); } catch(E) { alert(E); }"/>
-            <button id="sel_clip" label="&staff.cat.copy_summary.sel_clip.label;" oncommand="try { g.list.node.view.selection.selectAll(); g.list.clipboard(); } catch(E) { alert(E); }"/>
-            <button id="print_export" label="&staff.cat.copy_summary.print_export.label;" oncommand="try { g.list.on_all_fleshed = function() { JSAN.use('util.print'); var p = new util.print(); p.simple( g.list.dump_csv(), { 'content_type' : 'text/plain' } ); setTimeout( function() { g.list.on_all_fleshed = null; }, 0); }; g.list.full_retrieve(); } catch(E) { alert(E); }"/>
+            <hbox id="list_actions"/>
+            <button id="show_in_opac" hidden="true" label="&staff.cat.copy_summary.show_in_opac.label;" accesskey="&staff.cat.copy_summary.show_in_opac.accesskey;"
+                oncommand="JSAN.use('cat.util'); cat.util.show_in_opac([{barcode:g.barcode,doc_id:g.doc_id}]);"/>
+            <checkbox id="alternate_view" label="&staff.cat.copy_summary.alternate_view.label;" accesskey="&staff.cat.copy_summary.alternate_view.accesskey;" 
+                oils_persist="checked" oils_persist_no_poke="true"
+                oncommand="toggle_deck()"/>
         </hbox>
     </groupbox>
 

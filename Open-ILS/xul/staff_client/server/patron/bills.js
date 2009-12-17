@@ -958,6 +958,8 @@ patron.bills.prototype = {
                                                 'patron_id' : obj.patron_id,
                                                 'mbts_id' : my.mobts.id(),
                                                 'refresh' : function() { obj.refresh(); },
+                                                'new_tab' : xulG.new_tab,
+                                                'url_prefix' : xulG.url_prefix
                                             }
                                         );
                                     },

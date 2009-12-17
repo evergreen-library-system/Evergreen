@@ -426,6 +426,7 @@ patron.display.prototype = {
                                     'display_window' : window,
                                     'patron_id' : obj.patron.id(),
                                     'url_prefix' : xulG.url_prefix,
+                                    'new_tab' : xulG.new_tab,
                                     'on_money_change' : function(b) {
                                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                         obj.summary_window.refresh();

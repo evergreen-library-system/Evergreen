@@ -94,7 +94,7 @@
                 var item_summary = document.createElement('iframe'); ib.appendChild(item_summary);
                 item_summary.setAttribute('src',urls.XUL_COPY_SUMMARY);
                 item_summary.setAttribute('flex','1');
-                get_contentWindow(item_summary).xulG = { 'copy' : g.copy, 'callnumber' : g.callnumber };
+                get_contentWindow(item_summary).xulG = { 'copy' : g.copy, 'callnumber' : g.callnumber, 'new_tab' : xulG.new_tab, 'url_prefix' : xulG.url_prefix };
 
                 $('r_last').disabled = true;
                 if (g.circ) {

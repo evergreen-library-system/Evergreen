@@ -179,6 +179,7 @@ const api = {
     'FM_BOOKING_CREATE_BRT_AND_BRSRC' : { 'app' : 'open-ils.booking', 'method' : 'open-ils.booking.create_brt_and_brsrc_from_copies' },
     'FM_BRE_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve', 'secure' : false },
     'FM_BRE_RETRIEVE_VIA_ID.authoritative' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve.authoritative', 'secure' : false },
+    'FM_BRE_ID_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.bib_id.by_barcode', 'secure' : false },
     'FM_BRE_ID_SEARCH_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.find_by_barcode', 'secure' : false },
     'FM_BRE_ID_SEARCH_VIA_MULTICLASS_QUERY' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.multiclass.query.staff' },
     'FM_BRE_ID_SEARCH_VIA_TCN' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.tcn', 'secure' : false },

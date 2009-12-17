@@ -178,13 +178,18 @@ cat.util.spawn_spine_editor = function(selection_list) {
 
 cat.util.show_in_opac = function(selection_list) {
     JSAN.use('util.error'); var error = new util.error();
+    JSAN.use('util.network'); var network = new util.network();
     var doc_id; var seen = {};
     try {
         for (var i = 0; i < selection_list.length; i++) {
             doc_id = selection_list[i].doc_id;
             if (!doc_id) {
-                alert($("catStrings").getFormattedString('staff.cat.util.show_in_opac.unknown_barcode', [selection_list[i].barcode]));
-                continue;
+                var barcode = selection_list[i].barcode;
+                doc_id = network.simple_request('FM_BRE_ID_VIA_BARCODE',[barcode]);
+                if (typeof doc_id.ils_event != 'undefined' || doc_id == -1) {
+                    alert($("catStrings").getFormattedString('staff.cat.util.show_in_opac.unknown_barcode', [barcode]));
+                    continue;
+                }
             }
             if (doc_id == -1 ) {
                 continue; /* pre-cat */

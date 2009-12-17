@@ -65,7 +65,7 @@ circ.util.show_copy_details = function(copy_id) {
 
     try {
         var url = xulG.url_prefix( urls.XUL_COPY_DETAILS ); // + '?copy_id=' + copy_id;
-        var my_xulG = obj.win.open( url, 'show_copy_details', 'chrome,resizable,modal', { 'copy_id' : copy_id } );
+        var my_xulG = obj.win.open( url, 'show_copy_details', 'chrome,resizable,modal', { 'copy_id' : copy_id, 'new_tab' : xulG.new_tab, 'url_prefix' : xulG.url_prefix } );
 
         if (typeof my_xulG.retrieve_these_patrons == 'undefined') return;
         var patrons = my_xulG.retrieve_these_patrons;
@@ -137,7 +137,7 @@ circ.util.show_last_few_circs = function(selection_list) {
         try {
             if (typeof selection_list[i].copy_id == 'undefined' || selection_list[i].copy_id == null) continue;
             var url = xulG.url_prefix( urls.XUL_CIRC_SUMMARY ); // + '?copy_id=' + selection_list[i].copy_id + '&count=' + count;
-            var my_xulG = obj.win.open( url, 'show_last_few_circs', 'chrome,resizable,modal', { 'copy_id' : selection_list[i].copy_id } );
+            var my_xulG = obj.win.open( url, 'show_last_few_circs', 'chrome,resizable,modal', { 'copy_id' : selection_list[i].copy_id, 'new_tab' : xulG.new_tab, 'url_prefix': xulG.url_prefix } );
 
             if (typeof my_xulG.retrieve_these_patrons == 'undefined') continue;
             var patrons = my_xulG.retrieve_these_patrons;

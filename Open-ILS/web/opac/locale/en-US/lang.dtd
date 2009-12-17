@@ -2310,9 +2310,9 @@
 <!ENTITY staff.cat.copy_summary.age_protect.label "Age Protect:">
 <!ENTITY staff.cat.copy_summary.total_circs.label "Total Circulations:">
 <!ENTITY staff.cat.copy_summary.alternate_view.label "Alternate View">
-<!ENTITY staff.cat.copy_summary.save_columns.label "Save Columns">
-<!ENTITY staff.cat.copy_summary.sel_clip.label "Copy to Clipboard">
-<!ENTITY staff.cat.copy_summary.print_export.label "Print Export">
+<!ENTITY staff.cat.copy_summary.alternate_view.accesskey "">
+<!ENTITY staff.cat.copy_summary.show_in_opac.label "Show in Catalog">
+<!ENTITY staff.cat.copy_summary.show_in_opac.accesskey "S">
 <!ENTITY staff.cat.marcedit.options.label "Options">
 <!ENTITY staff.cat.marcedit.stackSubfields.label "Stack subfields">
 <!ENTITY staff.cat.marcedit.stackSubfields.accesskey "s">
