@@ -461,6 +461,8 @@ DECLARE
     tmp_groc            RECORD;
     tmp_circ            RECORD;
     tmp_org             actor.org_unit%ROWTYPE;
+    tmp_penalty         config.standing_penalty%ROWTYPE;
+    tmp_depth           INTEGER;
 BEGIN
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
 
@@ -720,6 +722,116 @@ BEGIN
         END IF;
     END IF;
 
+    -- Start over for in collections
+    SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+
+    -- Remove the in-collections penalty if the user has paid down enough
+    -- This penalty is different, because this code is not responsible for creating 
+    -- new in-collections penalties, only for removing them
+    LOOP
+        tmp_grp := user_object.profile;
+        LOOP
+            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 30 AND org_unit = tmp_org.id;
+
+            IF max_fines.threshold IS NULL THEN
+                SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
+            ELSE
+                EXIT;
+            END IF;
+
+            IF tmp_grp IS NULL THEN
+                EXIT;
+            END IF;
+        END LOOP;
+
+        IF max_fines.threshold IS NOT NULL OR tmp_org.parent_ou IS NULL THEN
+            EXIT;
+        END IF;
+
+        SELECT * INTO tmp_org FROM actor.org_unit WHERE id = tmp_org.parent_ou;
+
+    END LOOP;
+
+    IF max_fines.threshold IS NOT NULL THEN
+
+        -- first, see if the user had paid down to the threshold
+        SELECT  SUM(f.balance_owed) INTO current_fines
+          FROM  money.materialized_billable_xact_summary f
+                JOIN (
+                    SELECT  r.id
+                      FROM  booking.reservation r
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (r.pickup_lib = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL
+                                UNION ALL
+                    SELECT  g.id
+                      FROM  money.grocery g
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL
+                                UNION ALL
+                    SELECT  circ.id
+                      FROM  action.circulation circ
+                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (circ.circ_lib = fp.id)
+                      WHERE usr = match_user
+                            AND xact_finish IS NULL ) l USING (id);
+
+        IF current_fines IS NULL OR current_fines <= max_fines.threshold THEN
+            -- patron has paid down enough
+
+            SELECT INTO tmp_penalty * FROM config.standing_penalty WHERE id = 30;
+
+            IF tmp_penalty.org_depth IS NOT NULL THEN
+
+                -- since this code is not responsible for applying the penalty, it can't 
+                -- guarantee the current context org will match the org at which the penalty 
+                --- was applied.  search up the org tree until we hit the configured penalty depth
+                SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+                SELECT INTO tmp_depth depth FROM actor.org_unit_type WHERE id = tmp_org.ou_type;
+
+                WHILE tmp_depth >= tmp_penalty.org_depth LOOP
+
+                    FOR existing_sp_row IN
+                            SELECT  *
+                            FROM  actor.usr_standing_penalty
+                            WHERE usr = match_user
+                                    AND org_unit = tmp_org.id
+                                    AND (stop_date IS NULL or stop_date > NOW())
+                                    AND standing_penalty = 30 
+                            LOOP
+
+                        -- Penalty exists, return it for removal
+                        RETURN NEXT existing_sp_row;
+                    END LOOP;
+
+                    IF tmp_org.parent_ou IS NULL THEN
+                        EXIT;
+                    END IF;
+
+                    SELECT * INTO tmp_org FROM actor.org_unit WHERE id = tmp_org.parent_ou;
+                    SELECT INTO tmp_depth depth FROM actor.org_unit_type WHERE id = tmp_org.ou_type;
+                END LOOP;
+
+            ELSE
+
+                -- no penalty depth is defined, look for exact matches
+
+                FOR existing_sp_row IN
+                        SELECT  *
+                        FROM  actor.usr_standing_penalty
+                        WHERE usr = match_user
+                                AND org_unit = max_fines.org_unit
+                                AND (stop_date IS NULL or stop_date > NOW())
+                                AND standing_penalty = 30 
+                        LOOP
+                    -- Penalty exists, return it for removal
+                    RETURN NEXT existing_sp_row;
+                END LOOP;
+            END IF;
+    
+        END IF;
+
+    END IF;
 
     RETURN;
 END;

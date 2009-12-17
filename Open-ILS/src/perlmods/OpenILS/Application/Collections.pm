@@ -415,6 +415,15 @@ sub put_into_collections {
 	}
 
 	$e->commit;
+
+    my $pen = Fieldmapper::actor::user_standing_penalty->new;
+    $pen->org_unit($org->id);
+    $pen->usr($user_id);
+    $pen->standing_penalty(30); # PATRON_IN_COLLECTIONS
+    $pen->staff($e->requestor->id);
+    $pen->note($fee_note) if $fee_note;
+    $U->simplereq('open-ils.actor', 'open-ils.actor.user.penalty.apply', $auth, $pen);
+
 	return OpenILS::Event->new('SUCCESS');
 }
 

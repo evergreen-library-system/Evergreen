@@ -51,7 +51,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0117'); -- phasefx
+INSERT INTO config.upgrade_log (version) VALUES ('0118'); -- berick
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -139,6 +139,7 @@ INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (26,'STAFF
 INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (27,'STAFF_H','Alerting block on Hold','HOLD');
 INSERT INTO config.standing_penalty (id,name,label,block_list) VALUES (28,'STAFF_R','Alerting block on Renew','RENEW');
 INSERT INTO config.standing_penalty (id,name,label) VALUES (29,'INVALID_PATRON_ADDRESS','Patron has an invalid address');
+INSERT INTO config.standing_penalty (id,name,label) VALUES (30,'PATRON_IN_COLLECTIONS','Patron has been referred to a collections agency');
 
 SELECT SETVAL('config.standing_penalty_id_seq', 100);
 
