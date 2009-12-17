@@ -216,15 +216,15 @@ util.browser.prototype = {
                                     try {
                                         obj.error.sdump('D_TRACE','calling on_url_load');
                                         obj.on_url_load( obj.controller.view.browser_browser );
-                                        if (obj.debug_label) {
-                                            try {
-                                                document.getElementById(obj.debug_label).setAttribute('tooltiptext','url: ' + obj.get_content().location.href);
-                                            } catch(E) {
-                                                obj.error.sdump('D_ERROR','on_url_load, debug_label: ' + E );
-                                            }
-                                        }
                                     } catch(E) {
                                         obj.error.sdump('D_ERROR','on_url_load: ' + E );
+                                    }
+                                }
+                                if (obj.debug_label) {
+                                    try {
+                                        document.getElementById(obj.debug_label).setAttribute('tooltiptext','url: ' + obj.get_content().location.href);
+                                    } catch(E) {
+                                        obj.error.sdump('D_ERROR','on_url_load, debug_label: ' + E );
                                     }
                                 }
                             }
