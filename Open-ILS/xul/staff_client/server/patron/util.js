@@ -579,15 +579,18 @@ patron.util.retrieve_name_via_id = function(session, id) {
     return parts;
 }
 
-patron.util.retrieve_fleshed_au_via_id = function(session, id) {
+patron.util.retrieve_fleshed_au_via_id = function(session, id, f) {
     JSAN.use('util.network');
     var network = new util.network();
     var patron_obj = network.simple_request(
         'FM_AU_FLESHED_RETRIEVE_VIA_ID.authoritative',
-        [ session, id ]
+        [ session, id ],
+        typeof f == 'function' ? f : null
     );
-    patron.util.set_penalty_css(patron_obj);
-    return patron_obj;
+    if (typeof f != 'function') {
+        patron.util.set_penalty_css(patron_obj);
+        return patron_obj;
+    }
 }
 
 patron.util.retrieve_fleshed_au_via_barcode = function(session, id) {

@@ -47,7 +47,7 @@ patron.summary.prototype = {
                 { 'id' : 'gl_home_lib', 'flex' : 1, 'hidden' : true, 
                     'label' : patronStrings.getString('staff.patron.summary.group_list.column.home_ou.label'),
                     'render' : function(my) { return obj.OpenILS.data.hash.aou[ my.home_ou ].shortname(); } },
-                { 'id' : 'gl_balance_owed', 'flex' : 1,
+                { 'id' : 'gl_balance_owed', 'flex' : 1, 'sort_type' : 'money',
                     'label' : patronStrings.getString('staff.patron.summary.group_list.column.balance_owed.label'),
                     'render' : function(my) { return my.balance_owed; } }
             ],
