@@ -208,6 +208,7 @@ function uEditCopyCloneData(patron) {
         'evening_phone', 
         'other_phone',
         'billing_address',
+        'usrgroup',
         'mailing_address' ], 
         function(field) {
             patron[field](cloneUserObj[field]());
