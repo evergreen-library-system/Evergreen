@@ -652,6 +652,7 @@ sub circ_count {
 
 __PACKAGE__->register_method(
 	method		=> 'fetch_notes',
+	authoritative	=> 1,
 	api_name		=> 'open-ils.circ.copy_note.retrieve.all',
 	signature	=> q/
 		Returns an array of copy note objects.  

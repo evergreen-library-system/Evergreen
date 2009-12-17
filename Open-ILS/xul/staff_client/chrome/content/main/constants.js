@@ -88,7 +88,7 @@ const api = {
     'FM_ACPL_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve.all', 'secure' : false },
     'FM_ACPL_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve', 'secure' : false },
     'FM_ACPL_RETRIEVE_VIA_ID.authoritative' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve.authoritative', 'secure' : false },
-    'FM_ACPN_RETRIEVE_ALL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.retrieve.all', 'secure' : false },
+    'FM_ACPN_RETRIEVE_ALL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.retrieve.all.authoritative', 'secure' : false },
     'FM_ACPN_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.create' },
     'FM_ACPN_DELETE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.delete', 'secure' : false },
     'FM_ACTSC_RETRIEVE_BATCH' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.batch', 'secure' : false },
