@@ -124,6 +124,13 @@
                 JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
                 if (ev.target.id) xulG[ ev.target.id ] = ev.target.value || ev.target.getAttribute('value');
                 xulG[ 'fancy_submit' ] = ev.target.value || ev.target.getAttribute('value');
+                var nl = document.getElementsByAttribute('name','fancy_required_data');
+                    for (var i = 0; i < nl.length; i++) {
+                    xulG[ nl[i].id ] = nl[i].nodeName == 'checkbox' ? nl[i].checked : nl[i].value;
+                    if ( xulG[ nl[i].id ] == '' ) {
+                        nl[i].focus(); return; // abort save
+                    }
+                }
                 var nl = document.getElementsByAttribute('name','fancy_data');
                     for (var i = 0; i < nl.length; i++) {
                     xulG[ nl[i].id ] = nl[i].nodeName == 'checkbox' ? nl[i].checked : nl[i].value;
