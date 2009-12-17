@@ -311,8 +311,8 @@ patron.summary.prototype = {
                                             if (!rendered_main_patron_bill_summary) {
                                                 render_main_patron_bill_summary( { balance_owed: 0.00, usr: obj.patron.id() } );
                                             }
+                                            var tab = $('group_tab');
                                             if (sum > 0) {
-                                                var tab = $('group_tab');
                                                 addCSSClass(tab,'balance_owed');
                                             } else {
                                                 removeCSSClass(tab,'balance_owed');
