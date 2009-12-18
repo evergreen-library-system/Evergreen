@@ -146,7 +146,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 // core widget provided for us, attach and move on
                 if(this.parentNode) // may already be in the "right" place
                     this.parentNode.appendChild(this.widget.domNode);
-                this._widgetLoaded();
+                if(this.widget.attr('value') == null)
+                    this._widgetLoaded();
                 return;
             }
             
