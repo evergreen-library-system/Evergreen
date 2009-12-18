@@ -84,14 +84,79 @@ CREATE TABLE action_trigger.reactor (
     module      TEXT    PRIMARY KEY, -- All live under the OpenILS::Trigger::Reactor:: namespace
     description TEXT    
 );
-INSERT INTO action_trigger.reactor (module,description) VALUES ('fourty_two','Returns the answer to life, the universe and everything');
-INSERT INTO action_trigger.reactor (module,description) VALUES ('NOOP_True','Always returns true -- reaction always passes');
-INSERT INTO action_trigger.reactor (module,description) VALUES ('NOOP_False','Always returns false -- reaction always fails');
-INSERT INTO action_trigger.reactor (module,description) VALUES ('SendEmail','Send an email based on a user-defined template');
-INSERT INTO action_trigger.reactor (module,description) VALUES ('GenerateBatchOverduePDF','Output a batch PDF of overdue notices for printing');
-INSERT INTO action_trigger.reactor (module,description) VALUES ('MarkItemLost','Marks a circulation and associated item as lost');
-INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyCircFee','Applies a billing with a pre-defined amount to a circulation');
-INSERT INTO action_trigger.reactor (module,description) VALUES ('ProcessTemplate', 'Processes the configured template');
+
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'fourty_two',
+    oils_i18n_gettext(
+        'fourty_two',
+        'Returns the answer to life, the universe and everything',
+        'atreact',
+        'description'
+    )
+);
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'NOOP_True',
+    oils_i18n_gettext(
+        'NOOP_True',
+        'Always returns true -- reaction always passes',
+        'atreact',
+        'description'
+    )
+);
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'NOOP_False',
+    oils_i18n_gettext(
+        'NOOP_False',
+        'Always returns false -- reaction always fails',
+        'atreact',
+        'description'
+    )
+);
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'SendEmail',
+    oils_i18n_gettext(
+        'SendEmail',
+        'Send an email based on a user-defined template',
+        'atreact',
+        'description'
+    )
+);
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'GenerateBatchOverduePDF',
+    oils_i18n_gettext(
+        'GenerateBatchOverduePDF',
+        'Output a batch PDF of overdue notices for printing',
+        'atreact',
+        'description'
+    )
+);
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'MarkItemLost',
+    oils_i18n_gettext(
+        'MarkItemLost',
+        'Marks a circulation and associated item as lost',
+        'atreact',
+        'description'
+    )
+);
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'ApplyCircFee',
+    oils_i18n_gettext(
+        'ApplyCircFee',
+        'Applies a billing with a pre-defined amount to a circulation',
+        'atreact',
+        'description'
+    )
+);
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'ProcessTemplate',
+    oils_i18n_gettext(
+        'ProcessTemplate',
+        'Processes the configured template',
+        'atreact',
+        'description'
+    )
+);
 
 -- After an event is reacted to (either success or failure) a cleanup module is run against the resulting environment
 CREATE TABLE action_trigger.cleanup (

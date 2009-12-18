@@ -2574,9 +2574,17 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (6, 'usr'),
     (6, 'circ_lib.billing_address');
 
--- ApplyPatronPenalty A/T Reactor
+-- Additional A/T Reactors
 
-INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyPatronPenalty','Applies the conifigured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.');
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'ApplyPatronPenalty',
+    oils_i18n_gettext(
+        'ApplyPatronPenalty',
+        'Applies the conifigured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.',
+        'atreact',
+        'description'
+    )
+);
 
 INSERT INTO action_trigger.reactor (module,description) VALUES
 (   'SendFile',
