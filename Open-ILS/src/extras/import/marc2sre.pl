@@ -29,8 +29,8 @@ my ($idfield, $count, $user, $password, $config, $marctype, $idsubfield, @files,
 	('001', 1, 'admin', 'open-ils', '/openils/conf/opensrf_core.xml', 'USMARC');
 
 GetOptions(
-	'idfield=i'	=> \$idfield,
-	'idsubfield=a'	=> \$idsubfield,
+	'idfield=s'	=> \$idfield,
+	'idsubfield=s'	=> \$idsubfield,
 	'startid=i'	=> \$count,
 	'user=s'	=> \$user,
 	'password=s'	=> \$password,
