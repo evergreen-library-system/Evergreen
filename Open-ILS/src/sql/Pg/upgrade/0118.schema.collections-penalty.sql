@@ -399,4 +399,4 @@ END;
 $func$ LANGUAGE plpgsql;
 
 
-BEGIN;
+COMMIT;
