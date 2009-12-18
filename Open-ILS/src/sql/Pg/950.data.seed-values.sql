@@ -2578,6 +2578,16 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 
 INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyPatronPenalty','Applies the conifigured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.');
 
+INSERT INTO action_trigger.reactor (module,description) VALUES
+(   'SendFile',
+    oils_i18n_gettext(
+        'SendFile',
+        'Build and transfer a file to a remote server.  Required parameter "remote_host" specifying target server.  Optional parameters: remote_user, remote_password, remote_account, port, type (FTP, SFTP or SCP), and debug.',
+        'atreact',
+        'description'
+    )
+);
+
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype, fm_class)
     VALUES (
