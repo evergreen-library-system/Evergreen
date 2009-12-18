@@ -684,13 +684,6 @@ __PACKAGE__->register_method(
     api_level    => 1,
     argc        => 1,
 );                      
-__PACKAGE__->register_method(  
-    api_name    => "open-ils.ingest.full.serial.object.readonly",
-    method        => "ro_authority_ingest_single_object",
-    api_level    => 1,
-    argc        => 1,
-);                      
-
 
 sub ro_authority_ingest_single_xml {
     my $self = shift;
