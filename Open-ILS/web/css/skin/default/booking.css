@@ -1,0 +1,48 @@
+div#brsrc_available_outer {
+    width: 50%;
+    float: left;
+    border-right: 1px solid #999999;
+}
+div#bra_and_brav {
+}
+div#reserve_right_side {
+    float: right;
+    width: 49%;
+    padding-left: 4px;
+}
+div#reserve_under {
+    clear: both;
+}
+div#reserve_datetime_start {
+    padding-bottom: 6px;
+}
+div#reserve_datetime_end {
+    padding-bottom: 6px;
+    border-bottom: 1px solid #999999;
+}
+label.bra {
+    font-style: italic;
+    padding-right: 12px;
+}
+h1.booking, h2.booking {
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 8px;
+}
+select#brsrc_list {
+    width: 90%;
+}
+label.reserve_datetime {
+    font-style: italic;
+    margin-bottom: 2px;
+}
+id#patron_barcode {
+    width: 150px;
+}
+div.nice_vertical_padding {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+span.two_buttons {
+    text-align: center;
+}

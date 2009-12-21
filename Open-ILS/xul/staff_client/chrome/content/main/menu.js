@@ -116,7 +116,6 @@ main.menu.prototype = {
             );
         }
 
-
         var cmd_map = {
             'cmd_broken' : [
                 ['oncommand'],
@@ -646,14 +645,6 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/booking/resource_attr_map'); }
             ],
-            'cmd_server_admin_booking_reservation': [
-                ['oncommand'],
-                function() { open_eg_web_page('conify/global/booking/reservation'); }
-            ],
-            'cmd_server_admin_booking_reservation_attr_value_map': [
-                ['oncommand'],
-                function() { open_eg_web_page('conify/global/booking/reservation_attr_value_map'); }
-            ],
             'cmd_acq_view_picklist' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/picklist/list', 'menu.cmd_acq_view_picklist.tab'); }
@@ -698,7 +689,51 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/distribution_formula', 'menu.cmd_acq_view_distrib_formula.tab'); }
             ],
-
+            'cmd_booking_reservation' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab(
+                        "/eg/booking/reservation",
+                        {
+                            "tab_name": offlineStrings.getString(
+                                "menu.cmd_booking_reservation.tab"
+                            ),
+                            "browser": false
+                        },
+                        xulG
+                    );
+                }
+            ],
+            'cmd_booking_reservation_pickup' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab(
+                        "/eg/booking/reservation_pickup",
+                        {
+                            "tab_name": offlineStrings.getString(
+                                "menu.cmd_booking_reservation.tab"
+                            ),
+                            "browser": false
+                        },
+                        xulG
+                    );
+                }
+            ],
+            'cmd_booking_reservation_return' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab(
+                        "/eg/booking/reservation_return",
+                        {
+                            "tab_name": offlineStrings.getString(
+                                "menu.cmd_booking_reservation.tab"
+                            ),
+                            "browser": false
+                        },
+                        xulG
+                    );
+                }
+            ],
             'cmd_reprint' : [
                 ['oncommand'],
                 function() {

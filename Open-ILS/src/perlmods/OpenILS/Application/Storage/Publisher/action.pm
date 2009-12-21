@@ -1332,7 +1332,7 @@ sub reservation_targeter {
 	try {
 		if ($one_reservation) {
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
-			$reservations = booking::reservation->search_where( { id => $one_reservation, capture_time => undef, cancel_time => undef } );
+			$reservations = [ booking::reservation->search_where( { id => $one_reservation, capture_time => undef, cancel_time => undef } ) ];
 		} else {
 
 			# find all the reservations needing targeting
@@ -1351,6 +1351,7 @@ sub reservation_targeter {
 		die "Could not retrieve reservation requests:\n\n$e\n";
 	};
 
+	my @successes = ();
 	for my $bresv (@$reservations) {
 		try {
 			#start a transaction if needed
@@ -1383,27 +1384,27 @@ sub reservation_targeter {
 				die "OK\n";
 			}
 
-            my $possible_resources;
+			my $possible_resources;
 
 			# find all the potential resources
 			if (!$bresv->target_resource) {
-                my $filter = { type => $bresv->target_resource_type };
-                my $attr_maps = booking::reservations_attr_value_map->search( reservation => $bresv->id );
+				my $filter = { type => $bresv->target_resource_type };
+				my $attr_maps = [ booking::reservation_attr_value_map->search( reservation => $bresv->id) ];
 
-                $filter->{attribute_values} = [ map { $_->attr_value } @$attr_maps ] if (@$attr_maps);
+				$filter->{attribute_values} = [ map { $_->attr_value } @$attr_maps ] if (@$attr_maps);
 
-   				my $ses = OpenSRF::AppSession->create('open-ils.booking');
-                $possible_resources = $ses->request('open-ils.booking.resources.filtered_id_list', $filter)->gather(1);
-
+				$filter->{available} = [$bresv->start_time, $bresv->end_time];
+				my $ses = OpenSRF::AppSession->create('open-ils.booking');
+				$possible_resources = $ses->request('open-ils.booking.resources.filtered_id_list', undef, $filter)->gather(1);
 			} else {
 				$possible_resources = $bresv->target_resource;
 			}
 
-            my $all_resources = booking::resource->search( id => $possible_resources );
+            my $all_resources = [ booking::resource->search( id => $possible_resources ) ];
 			@$all_resources = grep { isTrue($_->type->transferable) || $_->owner.'' eq $bresv->pickup_lib.'' } @$all_resources;
 
 
-            my @good_resources;
+            my @good_resources = ();
             for my $res (@$all_resources) {
                 unless (isTrue($res->type->catalog_item)) {
                     push @good_resources, $res;
@@ -1495,16 +1496,16 @@ sub reservation_targeter {
 			}
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
-			$log->info("\tProcessing of hold ".$hold->id." complete.");
+			$log->info("\tProcessing of bresv ".$bresv->id." complete.");
 
 			push @successes,
-				{ reservation => $hold->id,
+				{ reservation => $bresv->id,
 				  current_resource => ($best ? $best->id : undef) };
 
 		} otherwise {
 			my $e = shift;
 			if ($e !~ /^OK/o) {
-				$log->error("Processing of hold failed:  $e");
+				$log->error("Processing of bresv failed:  $e");
 				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 				throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
 			}

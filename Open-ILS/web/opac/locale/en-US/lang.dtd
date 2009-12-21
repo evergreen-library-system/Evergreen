@@ -273,7 +273,7 @@
 <!ENTITY staff.cat.opac.undelete_record.accesskey "U">
 <!ENTITY staff.cat.opac.undelete_record.label "Undelete Record">
 <!ENTITY staff.cat.opac.create_brt_from_record.accesskey "T">
-<!ENTITY staff.cat.opac.create_brt_from_record.label "Create Booking Resource From Copy">
+<!ENTITY staff.cat.opac.create_brt_from_record.label "Make Item Bookable">
 <!ENTITY staff.cat.opac.menu.accesskey "A">
 <!ENTITY staff.cat.opac.menu.label "Actions for this Record">
 <!ENTITY staff.cat.opac.opac_view.accesskey "O">
@@ -680,10 +680,6 @@
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_value.accesskey "V">
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_map.label "Resource Attribute Maps">
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey "M">
-<!ENTITY staff.main.menu.admin.server_admin.booking.reservation.label "Reservations">
-<!ENTITY staff.main.menu.admin.server_admin.booking.reservation.accesskey "N">
-<!ENTITY staff.main.menu.admin.server_admin.booking.reservation_attr_value_map.label "Reservation Attribute Value Maps">
-<!ENTITY staff.main.menu.admin.server_admin.booking.reservation_attr_value_map.accesskey "B">
 
 <!ENTITY staff.main.menu.admin.developer.label "For developers...">
 <!ENTITY staff.main.menu.admin.download_patrons.accesskey "D">
@@ -764,6 +760,15 @@
 <!ENTITY staff.main.menu.acq.brief_record.label "New Brief Record">
 <!ENTITY staff.main.menu.acq.upload.label "Load Order Record">
 <!ENTITY staff.main.menu.acq.po.label "Purchase Orders">
+
+<!ENTITY staff.main.menu.booking.label "Booking">
+<!ENTITY staff.main.menu.booking.accesskey "B">
+<!ENTITY staff.main.menu.booking.reservation.label "Create or Edit Reservations">
+<!ENTITY staff.main.menu.booking.reservation.accesskey "C">
+<!ENTITY staff.main.menu.booking.reservation_pickup.label "Pick Up Reservations">
+<!ENTITY staff.main.menu.booking.reservation_pickup.accesskey "P">
+<!ENTITY staff.main.menu.booking.reservation_return.label "Return Reservations">
+<!ENTITY staff.main.menu.booking.reservation_return.accesskey "R">
 
 <!ENTITY staff.main.menu.acq.fund.label "Funds">
 <!ENTITY staff.main.menu.acq.funding_source.label "Funding Sources">
@@ -2151,7 +2156,9 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey "B">
 <!ENTITY staff.cat.copy_browser.actions.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.cat.copy_browser.actions.sel_copy_details.accesskey "I">
-<!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.label "Create Booking Resource Type from this Record">
+<!ENTITY staff.cat.copy_browser.actions.cmd_book_item_now.label "Book This Item">
+<!ENTITY staff.cat.copy_browser.actions.cmd_book_item_now.accesskey "K">
+<!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.label "Make This Item Bookable">
 <!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.accesskey "Y">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.accesskey "L">
@@ -2200,7 +2207,7 @@
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey "B">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey "I">
-<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.label "Create Booking Resource Type from this Record">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.label "Make This Item Bookable">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.accesskey "Y">
 
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_patron.label "Show Last Few Circulations">

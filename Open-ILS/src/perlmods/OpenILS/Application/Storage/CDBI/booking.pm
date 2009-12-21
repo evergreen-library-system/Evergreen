@@ -28,7 +28,7 @@ package booking::reservation;
 use base qw/booking/;
 __PACKAGE__->table('booking_reservation');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact_start usr current_copy circ_lib
+__PACKAGE__->columns(Essential => qw/xact_start usr current_resource
 				     fine_amount max_fine fine_interval xact_finish 
 				     capture_staff pickup_lib request_time start_time end_time
                      capture_time cancel_time pickup_time return_time

@@ -258,7 +258,7 @@ sub set_savepoint {
     my $name = shift || 'savepoint';
     return unless $self->{session} and $self->{xact_id};
 	$self->log(I, "setting savepoint '$name'");
-	my $stat = $self->request($self->app.".savepoint.set")
+	my $stat = $self->request($self->app.".savepoint.set", $name)
 	    or $self->log(E, "error setting savepoint '$name'");
     return $stat;
 }
@@ -268,7 +268,7 @@ sub release_savepoint {
     my $name = shift || 'savepoint';
     return unless $self->{session} and $self->{xact_id};
 	$self->log(I, "releasing savepoint '$name'");
-	my $stat = $self->request($self->app.".savepoint.release")
+	my $stat = $self->request($self->app.".savepoint.release", $name)
         or $self->log(E, "error releasing savepoint '$name'");
     return $stat;
 }
@@ -278,7 +278,7 @@ sub rollback_savepoint {
     my $name = shift || 'savepoint';
     return unless $self->{session} and $self->{xact_id};
 	$self->log(I, "rollback savepoint '$name'");
-	my $stat = $self->request($self->app.".savepoint.rollback")
+	my $stat = $self->request($self->app.".savepoint.rollback", $name)
         or $self->log(E, "error rolling back savepoint '$name'");
     return $stat;
 }

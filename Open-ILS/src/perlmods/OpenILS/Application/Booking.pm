@@ -12,8 +12,6 @@ use OpenILS::Application::AppUtils;
 my $U = "OpenILS::Application::AppUtils";
 
 use OpenSRF::Utils::Logger qw/$logger/;
-use DateTime;
-use DateTime::Format::ISO8601;
 
 sub prepare_new_brt {
     my ($record_id, $owning_lib, $mvr) = @_;
@@ -34,7 +32,7 @@ sub get_existing_brt {
         {name => $mvr->title, owner => $owning_lib, record => $record_id}
     );
 
-    return $results->[0] if (length @$results > 0);
+    return $results->[0] if scalar(@$results) > 0;
     return undef;
 }
 
@@ -72,21 +70,26 @@ sub get_single_record_id {
     return $record_id;
 }
 
-__PACKAGE__->register_method(
-    method   => "create_brt_and_brsrc",
-    api_name => "open-ils.booking.create_brt_and_brsrc_from_copies",
-    signature => {
-        params => [
-            {type => 'string', desc => 'Authentication token'},
-            {type => 'array', desc => 'Copy IDs'},
-        ],
-        return => { desc => "A two-element hash. The 'brt' element " .
-            "is a list of created booking resource types described by " .
-            "id/copyid pairs.  The 'brsrc' element is a similar " .
-            "list of created booking resources described by copy/recordid " .
-            "pairs"}
-    }
-);
+# This function generates the correct json_query clause for determining
+# whether two given ranges overlap.  Each range is composed of a start
+# and an end point.  All four points should be the same type (could be int,
+# date, time, timestamp, or perhaps other types).
+#
+# The first range (or the first two points) should be specified as
+# literal values.  The second range (or the last two points) should be
+# specified as the names of columns, the values of which in a given row
+# will constitute the second range in the comparison.
+#
+# ALSO: PostgreSQL includes an OVERLAPS operator which provides the same
+# functionality in a much more concise way, but json_query does not (yet).
+sub json_query_ranges_overlap {
+    +{ '-or' => [
+        { '-and' => [{$_[2] => {'>=', $_[0]}}, {$_[2] => {'<',  $_[1]}}]},
+        { '-and' => [{$_[3] => {'>',  $_[0]}}, {$_[3] => {'<',  $_[1]}}]},
+        { '-and' => { $_[3] => {'>',  $_[0]},   $_[2] => {'<=', $_[0]}}},
+        { '-and' => { $_[3] => {'>',  $_[1]},   $_[2] => {'<',  $_[1]}}},
+    ]};
+}
 
 sub create_brt_and_brsrc {
     my ($self, $conn, $authtoken, $copy_ids) = @_;
@@ -106,39 +109,59 @@ sub create_brt_and_brsrc {
     }
 
     while (my ($owning_lib, $brt) = each %brt_table) {
+        my $pre_existing = 1;
         if ($brt->isnew) {
-            if ($e->allowed('CREATE_BOOKING_RESOURCE_TYPE', $owning_lib)) {
-                # We can/should abort if this creation fails, because the
-                # logic isn't going to be trying to create any redundnat
-                # brt's, therefore any error will be more serious than
-                # that.  See the different take on creating brsrc's below.
+            if ($e->allowed('ADMIN_BOOKING_RESOURCE_TYPE', $owning_lib)) {
+                $pre_existing = 0;
                 return $e->die_event unless (
                     #    v-- Important: assignment modifies original hash
                     $brt = $e->create_booking_resource_type($brt)
                 );
             }
-            push @created_brt, [$brt->id, $brt->record];
         }
+        push @created_brt, [$brt->id, $brt->record, $pre_existing];
     }
 
     foreach (@copies) {
-        if (
-            $e->allowed('CREATE_BOOKING_RESOURCE', $_->call_number->owning_lib)
-        ) {
+        if ($e->allowed(
+            'ADMIN_BOOKING_RESOURCE', $_->call_number->owning_lib
+        )) {
+            # This block needs to disregard any cstore failures and just
+            # return what results it can.
             my $brsrc = new Fieldmapper::booking::resource;
             $brsrc->isnew(1);
             $brsrc->type($brt_table{$_->call_number->owning_lib}->id);
             $brsrc->owner($_->call_number->owning_lib);
             $brsrc->barcode($_->barcode);
 
-            # We don't want to abort the transaction or do anything dramatic if
-            # this fails, because quite possibly a user selected many copies on
-            # which to perform this "create booking resource" operation, and
-            # among those copies there may be some that we still need to
-            # create, and some that we don't.  So we just do what we can.
-            push @created_brsrc, [$brsrc->id, $_->id] if
-                ($brsrc = $e->create_booking_resource($brsrc));
-            #           ^--- Important: assignment.
+            $e->set_savepoint("alpha");
+            my $pre_existing = 0;
+            my $usable_result = undef;
+            if (!($usable_result = $e->create_booking_resource($brsrc))) {
+                $e->rollback_savepoint("alpha");
+                if (($usable_result = $e->search_booking_resource(
+                    +{ map { ($_, $brsrc->$_()) } qw/type owner barcode/ }
+                ))) {
+                    $usable_result = $usable_result->[0];
+                    $pre_existing = 1;
+                } else {
+                    # So we failed to create a booking resource for this copy.
+                    # For now, let's just keep going.  If the calling app wants
+                    # to consider this an error, it can notice the absence
+                    # of a booking resource for the copy in the returned
+                    # results.
+                    $logger->warn(
+                        "Couldn't create or find brsrc for acp #" .  $_->id
+                    );
+                }
+            } else {
+                $e->release_savepoint("alpha");
+            }
+
+            if ($usable_result) {
+                push @created_brsrc,
+                    [$usable_result->id, $_->id, $pre_existing];
+            }
         }
     }
 
@@ -146,17 +169,119 @@ sub create_brt_and_brsrc {
         return {brt => \@created_brt, brsrc => \@created_brsrc} or
         return $e->die_event;
 }
+__PACKAGE__->register_method(
+    method   => "create_brt_and_brsrc",
+    api_name => "open-ils.booking.resources.create_from_copies",
+    signature => {
+        params => [
+            {type => 'string', desc => 'Authentication token'},
+            {type => 'array', desc => 'Copy IDs'},
+        ],
+        return => { desc => "A two-element hash. The 'brt' element " .
+            "is a list of created booking resource types described by " .
+            "3-tuples (id, copy id, was pre-existing).  The 'brsrc' " .
+            "element is a similar list of created booking resources " .
+            "described by (id, record id, was pre-existing) 3-tuples."}
+    }
+);
+
+
+sub create_bresv {
+    my ($self, $client, $authtoken,
+        $target_user_barcode, $datetime_range,
+        $brt, $brsrc_list, $attr_values) = @_;
+
+    $brsrc_list = [ undef ] if not defined $brsrc_list;
+    return undef if scalar(@$brsrc_list) < 1; # Empty list not ok.
+
+    my $e = new_editor(xact => 1, authtoken => $authtoken);
+    return $e->die_event unless (
+        $e->checkauth and
+        $e->allowed("ADMIN_BOOKING_RESERVATION") and
+        $e->allowed("ADMIN_BOOKING_RESERVATION_ATTR_MAP")
+    );
+
+    my $usr = $U->fetch_user_by_barcode($target_user_barcode);
+    return $usr if ref($usr) eq 'HASH' and exists($usr->{"ilsevent"});
+
+    my $results = [];
+    foreach my $brsrc (@$brsrc_list) {
+        my $bresv = new Fieldmapper::booking::reservation;
+        $bresv->usr($usr->id);
+        $bresv->request_lib($e->requestor->ws_ou);
+        $bresv->pickup_lib($e->requestor->ws_ou);
+        $bresv->start_time($datetime_range->[0]);
+        $bresv->end_time($datetime_range->[1]);
+
+        # A little sanity checking: don't agree to put a reservation on a
+        # brsrc and a brt when they don't match.  In fact, bomb out of
+        # this transaction entirely.
+        if ($brsrc) {
+            my $brsrc_itself = $e->retrieve_booking_resource($brsrc) or
+                return $e->die_event;
+            return $e->die_event if ($brsrc_itself->type != $brt);
+        }
+        $bresv->target_resource($brsrc);    # undef is ok here
+        $bresv->target_resource_type($brt);
+
+        ($bresv = $e->create_booking_reservation($bresv)) or
+            return $e->die_event;
+
+        # We could/should do some sanity checking on this too: namely, on
+        # whether the attribute values given actually apply to the relevant
+        # brt.  Not seeing any grievous side effects of not checking, though.
+        my @bravm = ();
+        foreach my $value (@$attr_values) {
+            my $bravm = new Fieldmapper::booking::reservation_attr_value_map;
+            $bravm->reservation($bresv->id);
+            $bravm->attr_value($value);
+            $bravm = $e->create_booking_reservation_attr_value_map($bravm) or
+                return $e->die_event;
+            push @bravm, $bravm;
+        }
+        push @$results, {
+            "bresv" => $bresv->id,
+            "bravm" => \@bravm,
+        };
+    }
+
+    $e->commit or return $e->die_event;
+
+    # Targeting must be tacked on _after_ committing the transaction where the
+    # reservations are actually created.
+    foreach (@$results) {
+        $_->{"targeting"} = $U->storagereq(
+            "open-ils.storage.booking.reservation.resource_targeter",
+            $_->{"bresv"}
+        )->[0];
+    }
+    return $results;
+}
+__PACKAGE__->register_method(
+    method   => "create_bresv",
+    api_name => "open-ils.booking.reservations.create",
+    signature => {
+        params => [
+            {type => 'string', desc => 'Authentication token'},
+            {type => 'string', desc => 'Barcode of user for whom to reserve'},
+            {type => 'array', desc => 'Two elements: start and end timestamp'},
+            {type => 'int', desc => 'Booking resource type'},
+            {type => 'list', desc => 'Booking resource (undef ok; empty not ok)'},
+            {type => 'array', desc => 'Attribute values selected'},
+        ],
+        return => { desc => "A hash containing the new bresv and a list " .
+            "of new bravm"}
+    }
+);
+
 
 sub resource_list_by_attrs {
     my $self = shift;
     my $client = shift;
-    my $auth = shift;
+    my $auth = shift; # Keep as argument, though not used just now.
     my $filters = shift;
 
     return undef unless ($filters->{type} || $filters->{attribute_values});
-
-    my $e = new_editor(authtoken=>$auth);
-    return $e->event unless $e->checkauth;
 
     my $query = {
         'select'   => { brsrc => [ 'id' ] },
@@ -165,8 +290,9 @@ sub resource_list_by_attrs {
         'distinct' => 1
     };
 
+    $query->{where} = {"-and" => []};
     if ($filters->{type}) {
-        $query->{where}->{type} = $filters->{type};
+        push @{$query->{where}->{"-and"}}, {"type" => $filters->{type}};
     }
 
     if ($filters->{attribute_values}) {
@@ -178,95 +304,82 @@ sub resource_list_by_attrs {
 
         $query->{having}->{'+bram'}->{value}->{'@>'} = {
             transform => 'array_accum',
-            value => '$'.$$.'${'.join(',', @{ $filters->{attribute_values} } ).'}$'.$$.'$'
+            value => '$_' . $$ . '${' .
+                join(',', @{$filters->{attribute_values}}) .
+                '}$_' . $$ . '$'
         };
     }
 
     if ($filters->{available}) {
-        $query->{from}->{brsrc}->{bresv} = { field => 'current_resource' };
-
-        if (!ref($filters->{available})) { # just one time, start perhaps
-            $query->{where}->{'+bresv'} = {
-                '-or' => [
-                    { '+brsrc' => {'overbook' => 't'} },
-                    { '-or' =>
-                        {   start_time => { '>=' => $filters->{available} },
-                            end_time   => { '<=' => $filters->{available} },
-                        }
-                    }
-                ]
-            };
-        } else { # start and end times
-            $query->{where}->{'+bresv'} = {
-                '-or' => [
-                    { '+brsrc' => {'overbook' => 't'} },
-                    { '-and' =>
-                        [{ '-or' =>
-                            {   start_time => { '>=' => $filters->{available}->[0] },
-                                end_time   => { '<=' => $filters->{available}->[0] },
-                            }
-                        },{'-or' =>
-                            {   start_time => { '>=' => $filters->{available}->[1] },
-                                end_time   => { '<=' => $filters->{available}->[1] },
-                            }
-                        }]
-                    }
-                ]
-            };
+        # If only one timestamp has been provided, make it into a range.
+        if (!ref($filters->{available})) {
+            $filters->{available} = [($filters->{available}) x 2];
         }
+
+        push @{$query->{where}->{"-and"}}, {
+            "-or" => [
+                {"overbook" => "t"},
+                {"-not-exists" => {
+                    "select" => {"bresv" => ["id"]},
+                    "from" => "bresv",
+                    "where" => {"-and" => [
+                        json_query_ranges_overlap(
+                            $filters->{available}->[0],
+                            $filters->{available}->[1],
+                            "start_time",
+                            "end_time"
+                        ),
+                        {"cancel_time" => undef},
+                        {"current_resource" => {"=" => {"+brsrc" => "id"}}}
+                    ]},
+                }}
+            ]
+        };
     }
-
     if ($filters->{booked}) {
-        $query->{from}->{brsrc}->{bresv} = { field => 'current_resource' };
-
-        if (!ref($filters->{booked})) { # just one time, start perhaps
-            $query->{where}->{'+bresv'} = {
-                start_time => { '<=' => $filters->{booked} },
-                end_time   => { '>=' => $filters->{booked} },
-            };
-        } else { # start and end times
-            $query->{where}->{'+bresv'} = {
-                '-or' => {
-                    '-and' => {
-                        start_time => { '<=' => $filters->{booked}->[0] },
-                        end_time   => { '>=' => $filters->{booked}->[0] },
-                    },
-                    '-and' => {
-                        start_time => { '<=' => $filters->{booked}->[1] },
-                        end_time   => { '>=' => $filters->{booked}->[1] },
-                    }
-                }
-            };
+        # If only one timestamp has been provided, make it into a range.
+        if (!ref($filters->{booked})) {
+            $filters->{booked} = [($filters->{booked}) x 2];
         }
+
+        push @{$query->{where}->{"-and"}}, {
+            "-exists" => {
+                "select" => {"bresv" => ["id"]},
+                "from" => "bresv",
+                "where" => {"-and" => [
+                    json_query_ranges_overlap(
+                        $filters->{booked}->[0],
+                        $filters->{booked}->[1],
+                        "start_time",
+                        "end_time"
+                    ),
+                    {"cancel_time" => undef},
+                    {"current_resource" => { "=" => {"+brsrc" => "id"}}}
+                ]},
+            }
+        };
+        # I think that the "booked" case could be done with a JOIN instead of
+        # an EXISTS, but I'm leaving it this way for symmetry with the
+        # "available" case for now.  The available case cannot be done with a
+        # join.
     }
 
     my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
-    my $ids = $cstore->request( 'open-ils.cstore.json_query.atomic', $query )->gather(1);
+    my $rows = $cstore->request( 'open-ils.cstore.json_query.atomic', $query )->gather(1);
     $cstore->disconnect;
 
-    if (@$ids) {
-        $ids = [ map { $_->{id} } @$ids ];
-
-        my $pcrud = OpenSRF::AppSession->connect('open-ils.pcrud');
-        my $allowed_ids = $pcrud->request(
-            'open-ils.pcrud.id_list.brsrc.atomic',
-            $auth => { id => $ids }
-        )->gather(1);
-        $pcrud->disconnect;
-
-        return $allowed_ids;
-    } else {
-        return $ids; # empty []
-    }
+    return @$rows ? [map { $_->{id} } @$rows] : [];
 }
 __PACKAGE__->register_method(
     method   => "resource_list_by_attrs",
     api_name => "open-ils.booking.resources.filtered_id_list",
-    argc     => 2,
+    argc     => 3,
     signature=> {
         params => [
-            {type => 'string', desc => 'Authentication token'},
-            {type => 'object', desc => 'Filter object -- see notes for details'}
+            {type => 'string', desc => 'Authentication token (unused for now,' .
+               ' but at least pass undef here)'},
+            {type => 'object', desc => 'Filter object: see notes for details'},
+            {type => 'bool', desc => 'Return whole objects instead of IDs?'}
         ],
         return => { desc => "An array of brsrc ids matching the requested filters." },
     },
@@ -285,23 +398,24 @@ The filter object parameter can contain the following keys:
 Note that at least one of 'type' or 'attribute_values' is required.
 
 NOTES
-
 );
+
 
 sub reservation_list_by_filters {
     my $self = shift;
     my $client = shift;
     my $auth = shift;
     my $filters = shift;
+    my $whole_obj = shift;
 
-    return undef unless ($filters->{user} || $filters->{resource} || $filters->{type} || $filters->{attribute_values});
+    return undef unless ($filters->{user} || $filters->{user_barcode} || $filters->{resource} || $filters->{type} || $filters->{attribute_values});
 
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_TRANSACTION');
 
     my $query = {
-        'select'   => { bresv => [ 'id' ] },
+        'select'   => { bresv => [ 'id', 'start_time' ] },
         'from'     => { bresv => {} },
         'where'    => {},
         'order_by' => [{ class => bresv => field => start_time => direction => 'asc' }],
@@ -316,6 +430,12 @@ sub reservation_list_by_filters {
     if ($filters->{user}) {
         $query->{where}->{usr} = $filters->{user};
     }
+    elsif ($filters->{user_barcode}) {  # just one of user and user_barcode
+        my $usr = $U->fetch_user_by_barcode($filters->{user_barcode});
+        return $usr if ref($usr) eq 'HASH' and exists($usr->{"ilsevent"});
+        $query->{where}->{usr} = $usr->id;
+    }
+
 
     if ($filters->{type}) {
         $query->{where}->{target_resource_type} = $filters->{type};
@@ -334,12 +454,13 @@ sub reservation_list_by_filters {
 
         $query->{having}->{'+bravm'}->{attr_value}->{'@>'} = {
             transform => 'array_accum',
-            value => '$'.$$.'${'.join(',', @{ $filters->{attribute_values} } ).'}$'.$$.'$'
+            value => '$_' . $$ . '${' .
+                join(',', @{$filters->{attribute_values}}) .
+                '}$_' . $$ . '$'
         };
     }
 
     if ($filters->{search_start} || $filters->{search_end}) {
-        
         $query->{where}->{'-or'} = {};
 
         $query->{where}->{'-or'}->{start_time} = { 'between' => [ $filters->{search_start}, $filters->{search_end} ] }
@@ -350,11 +471,25 @@ sub reservation_list_by_filters {
     }
 
     my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
-    my $ids = $cstore->request( 'open-ils.cstore.json_query.atomic', $query )->gather(1);
-    $ids = [ map { $_->{id} } @$ids ];
+    my $ids = [ map { $_->{id} } @{
+        $cstore->request(
+            'open-ils.cstore.json_query.atomic', $query
+        )->gather(1)
+    } ];
     $cstore->disconnect;
 
-    return $ids;
+    return $ids if not $whole_obj;
+
+    my $bresv_list = $e->search_booking_reservation([
+        {"id" => $ids},
+        {"flesh" => 1,
+            "flesh_fields" => {
+                "bresv" =>
+                    [qw/target_resource current_resource target_resource_type/]
+            }
+        }]
+    );
+    return $bresv_list ? $bresv_list : [];
 }
 __PACKAGE__->register_method(
     method   => "reservation_list_by_filters",
@@ -365,12 +500,13 @@ __PACKAGE__->register_method(
             {type => 'string', desc => 'Authentication token'},
             {type => 'object', desc => 'Filter object -- see notes for details'}
         ],
-        return => { desc => "An array of brsrc ids matching the requested filters." },
+        return => { desc => "An array of bresv ids matching the requested filters." },
     },
     notes    => <<'NOTES'
 
 The filter object parameter can contain the following keys:
  * user             => The id of a user that has requested a bookable item -- filters on bresv.usr
+ * barcode          => The barcode of a user that has requested a bookable item
  * type             => The id of a booking resource type (brt) -- filters on bresv.target_resource_type
  * resource         => The id of a booking resource (brsrc) -- filters on bresv.target_resource
  * attribute_values => The ids of booking resource type attribute values that the resource must have assigned to it (brav)
@@ -383,8 +519,6 @@ then the result includes any reservations that overlap with that time range.  An
 by the top-level filters ('user', 'type', 'resource').
 
 NOTES
-
 );
-
 
 1;

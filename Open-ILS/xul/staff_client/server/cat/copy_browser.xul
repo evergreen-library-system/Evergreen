@@ -73,6 +73,7 @@ vim:noet:sw=4:ts=4:
         <command id="cmd_broken" />
         <command id="sel_copy_details"/>
         <command id="cmd_create_brt"/>
+        <!-- <command id="cmd_book_item_now"/> -->
         <command id="sel_patron"/>
         <command id="sel_clip" />
         <command id="cmd_clear" />
@@ -104,6 +105,7 @@ vim:noet:sw=4:ts=4:
             <menuitem command="cmd_add_items_to_buckets" label="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.label;" accesskey="&staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey;"/>
             <menuitem command="sel_copy_details" label="&staff.cat.copy_browser.actions.sel_copy_details.label;" accesskey="&staff.cat.copy_browser.actions.sel_copy_details.label;" />
             <menuitem command="cmd_create_brt" label="&staff.cat.copy_browser.actions.cmd_create_brt.label;" accesskey="&staff.cat.copy_browser.actions.cmd_create_brt.accesskey;" />
+            <!-- <menuitem command="cmd_book_item_now" label="&staff.cat.copy_browser.actions.cmd_book_item_now.label;" accesskey="&staff.cat.copy_browser.actions.cmd_book_item_now.accesskey;" /> -->
             <menuitem command="sel_patron" label="&staff.cat.copy_browser.actions.sel_patron.label;" accesskey="&staff.cat.copy_browser.actions.sel_patron.accesskey;"/>
             <menuseparator/>
             <menuitem command="cmd_edit_items" label="&staff.cat.copy_browser.actions.cmd_edit_items.label;" accesskey="&staff.cat.copy_browser.actions.cmd_edit_items.accesskey;"/>

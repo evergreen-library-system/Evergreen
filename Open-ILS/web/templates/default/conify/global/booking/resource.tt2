@@ -7,30 +7,16 @@
     dojo.require('openils.widget.AutoGrid');
     dojo.require('openils.XUL');
 
-    function get_brsrc_ids() {
-        var cgi = new CGI();
-        var results = JSON2js(cgi.param('results'));
-        if (!results) return undefined;
-        var brsrc_ids = [];
-        for (var i in results) {
-            brsrc_ids.push(results[i][0]);
-        }
-        return brsrc_ids;
-    }
-
     openils.Util.addOnLoad(
         function() {
             var search = undefined; // default to all objs
-            var brsrc_ids = get_brsrc_ids();
-            if (brsrc_ids) {
-                search = {id: brsrc_ids};
+            if (xulG && xulG.resultant_brsrc) {
+                search = {id: xulG.resultant_brsrc};
             }
             ustGrid.loadAll({order_by:{brsrc : 'barcode'}}, search);
         }
     );
 </script>
-
-
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
     <div>Resources</div>

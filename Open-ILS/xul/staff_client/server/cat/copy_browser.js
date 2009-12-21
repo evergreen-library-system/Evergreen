@@ -145,63 +145,50 @@ cat.copy_browser.prototype = {
                         'cmd_create_brt' : [
                             ['command'],
                             function() {
-                                JSAN.use('util.functional');
-                                var cs = document.getElementById('catStrings');
-                                // Filter out selected rows that aren't copies.
+                                JSAN.use("cat.util");
+                                JSAN.use("util.functional");
+
+                                /* Filter selected rows that aren"t copies. */
                                 var list = util.functional.filter_list(
                                     obj.sel_list,
                                     function (o) {
-                                        return o.split(/_/)[0] == 'acp';
+                                        return o.split(/_/)[0] == "acp";
                                     }
                                 );
-                                // Get the IDs of all copy rows.
-                                var copy_ids = util.functional.map_list(
-                                    list, function (o) {
-                                        return obj.map_acp[o].id();
-                                    }
+                                var results = cat.util.make_bookable(
+                                    util.functional.map_list(
+                                        list, function (o) {
+                                            return obj.map_acp[o].id();
+                                        }
+                                    )
                                 );
-                                // Ask the ML to create brt's and brsrc's.
-                                var results = fieldmapper.standardRequest(
-                                    ['open-ils.booking', 'open-ils.booking.create_brt_and_brsrc_from_copies'],
-                                    [ses(), copy_ids]
-                                );
-                                if (results == null) {
-                                    alert(cs.getString('staff.cat.copy_browser.brt_and_brsrc.create_failed_silent'));
+                                if (results && results["brsrc"]) {
+                                    cat.util.edit_new_brsrc(results["brsrc"]);
                                 }
-                                else if (typeof results.ilsevent != 'undefined') {
-                                    // FIXME Isn't there a more standardized
-                                    // way to show this error?
-                                    alert(cs.getFormattedString(
-                                        'staff.cat.copy_browser.brt_and_brsrc.create_failed',
-                                        [results.ilsevent, results.textcode,
-                                            results.desc, results.debug]
-                                    ));
-                                } else {
-                                    // Spawn new tab to allow editing new
-                                    // resources.
-                                    try {
-                                        var url = urls.XUL_BROWSER + '?url=' +
-                                            window.escape(
-                                                xulG.url_prefix(urls.EG_WEB_BASE) +
-                                                '/conify/global/booking/resource?results=' +
-                                                window.escape(js2JSON(results['brsrc']))
-                                            );
-                                        // Sorry about the CGI params, but I
-                                        // don't see another choice for
-                                        // passing data to conify pages. This
-                                        // has the obvious problem of a
-                                        // character length limit. FIXME
-                                        xulG.new_tab(url,
-                                            {'tab_name': cs.getString('staff.cat.copy_browser.brt_and_brsrc.newtab_name'),
-                                             'browser' : false},
-                                            {'no_xulG' : false}
-                                        );
-                                    } catch(E) {
-                                        JSAN.use('util.error');
-                                        var error = new util.error;
-                                        var f = error.standard_unexpected_error_alert;
-                                        f(cs.getString('staff.cat.copy_browser.brt_and_brsrc.newtab_failed'), E);
+                            }
+                        ],
+                        'cmd_book_item_now' : [
+                            ['command'],
+                            function() {
+                                JSAN.use("cat.util");
+                                JSAN.use("util.functional");
+
+                                /* Filter selected rows that aren"t copies. */
+                                var list = util.functional.filter_list(
+                                    obj.sel_list,
+                                    function (o) {
+                                        return o.split(/_/)[0] == "acp";
                                     }
+                                );
+                                var results = cat.util.make_bookable(
+                                    util.functional.map_list(
+                                        list, function (o) {
+                                            return obj.map_acp[o].id();
+                                        }
+                                    )
+                                );
+                                if (results) {
+                                    cat.util.edit_new_bresv(results);
                                 }
                             }
                         ],

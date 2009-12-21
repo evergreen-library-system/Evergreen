@@ -517,4 +517,77 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
         if (error) error.standard_unexpected_error_alert('cat.util.fast_item_add',E); else alert('FIXME: ' + E);
     }
 }
+
+cat.util.make_bookable = function(copy_ids) {
+    var results = fieldmapper.standardRequest(
+        ["open-ils.booking", "open-ils.booking.resources.create_from_copies"],
+        [ses(), copy_ids]
+    );
+    if (results == null) {
+        alert(document.getElementById("catStrings").getString(
+            "staff.cat.copy_browser.make_bookable.create_failed_silent"
+        ));
+    }
+    else if (typeof results.ilsevent != "undefined") {
+        alert(document.getElementById("catStrings").getFormattedString(
+            "staff.cat.copy_browser.make_bookable.create_failed",
+            [results.ilsevent, results.textcode, results.desc, results.debug]
+        ));
+    }
+    return results;
+}
+
+cat.util.edit_new_brsrc = function(brsrc_list) {
+    /* Spawn new tab to allow editing new resources. */
+    try {
+        xulG.resultant_brsrc = brsrc_list.map(function(o) { return o[0]; });
+        xulG.new_tab(
+            urls.XUL_BROWSER + "?url=" + window.escape(
+                xulG.url_prefix("/eg/conify/global/booking/resource")
+            ), {
+                "tab_name": offlineStrings.getString(
+                    "menu.cmd_booking_resource.tab"
+                 ),
+                "browser" : true
+            }, {
+                "no_xulG": false,
+                "show_print_button": false,
+                "show_nav_buttons": true,
+                "passthru_content_params": xulG
+            }
+        );
+    } catch(E) {
+        alert(
+            document.getElementById("catStrings").getFormattedString(
+                "staff.cat.copy_browser.make_bookable.newtab_failed"
+            ), E
+        );
+    }
+}
+
+cat.util.edit_new_bresv = function(booking_results) {
+    /* Spawn new tab to allow editing new reservations. */
+    try {
+        if (xulG.auth == undefined) {
+            xulG.auth = {"session": {"key": ses()}};
+        }
+        xulG.booking_results = booking_results;
+        xulG.new_tab(
+            xulG.url_prefix("/eg/booking/reservation"),
+            {
+                "tab_name": offlineStrings.getString(
+                    "menu.cmd_booking_reservation.tab"
+                 ),
+                "browser" : false
+            }, xulG
+        );
+    } catch(E) {
+        alert(
+            document.getElementById("catStrings").getString(
+                "staff.cat.copy_browser.make_bookable.newtab_failed"
+            ) + E
+        );
+    }
+}
+
 dump('exiting cat/util.js\n');

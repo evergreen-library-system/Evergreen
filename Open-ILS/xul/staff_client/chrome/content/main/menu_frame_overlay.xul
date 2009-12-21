@@ -72,6 +72,7 @@
         <menu id="main.menu.circ" />
         <menu id="main.menu.cat" />
         <menu id="main.menu.acq" />
+        <menu id="main.menu.booking" />
         <spacer flex="1" />
         <menu id="main.menu.admin" />
         <!--
