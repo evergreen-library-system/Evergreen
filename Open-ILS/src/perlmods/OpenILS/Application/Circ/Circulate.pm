@@ -224,7 +224,7 @@ sub run_method {
         $circulator->editor->rollback;
         return $data;
 
-    } elsif( $api =~ // ) {
+    } elsif( $api =~ /checkout/ ) {
         $circulator->is_checkout(1);
         $circulator->do_checkout();
 
