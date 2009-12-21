@@ -828,6 +828,31 @@ SelfCheckManager.prototype.drawFinesPage = function() {
     );
 }
 
+SelfCheckManager.prototype.checkin = function(barcode) {
+
+    var resp = fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.checkin.override'],
+        {params : [
+            this.authtoken, {
+                patron_id : this.patron.id(),
+                copy_barcode : barcode,
+                noop : true
+            }
+        ]}
+    );
+
+    if(!resp.length) resp = [resp];
+    for(var i = 0; i < resp.length; i++) {
+        var tc = openils.Event.parse(resp[i]).textcode;
+        if(tc == 'SUCCESS' || tc == 'NO_CHANGE') {
+            continue;
+        } else {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 /**
  * Check out a single item.  If the item is already checked 
@@ -867,12 +892,12 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
         ]}
     );
 
-    console.log(js2JSON(result));
-
     var stat = this.handleXactResult('checkout', barcode, result);
 
     if(stat.override) {
         this.checkout(barcode, true);
+    } else if(stat.doOver) {
+        this.checkout(barcode);
     } else if(stat.renew) {
         this.renew(barcode);
     }
@@ -886,12 +911,9 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
     // If true, the display message is important enough to pop up.  Whether or not
     // an alert() actually occurs, depends on org unit settings
     var popup = false;  
-
-    var sound = '';
-
-    // TODO handle lost/missing/etc checkin+checkout override steps
-    
+    var sound = ''; // sound file reference
     var payload = result.payload || {};
+    var overrideEvents = this.orgSettings[SET_AUTO_OVERRIDE_EVENTS];
         
     if(result.textcode == 'NO_SESSION') {
 
@@ -948,6 +970,21 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
             displayText = dojo.string.substitute(localeStrings.ALREADY_OUT, [item]);
 
         } else {
+
+            console.log(js2JSON(result.payload));
+            console.log(result.payload.copy.status() +' '+overrideEvents);
+
+            if( // copy is marked lost.  if configured to do so, check it in and try again.
+                result.payload.copy && 
+                result.payload.copy.status() == /* LOST */ 3 &&
+                overrideEvents && overrideEvents.length &&
+                overrideEvents.indexOf('COPY_STATUS_LOST') != -1) {
+
+                    if(this.checkin(item)) {
+                        return { doOver : true };
+                    }
+            }
+
             
             // item is checked out to some other user
             popup = true;
@@ -959,7 +996,6 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
     } else {
 
-        var overrideEvents = this.orgSettings[SET_AUTO_OVERRIDE_EVENTS];
     
         if(overrideEvents && overrideEvents.length) {
             
@@ -1009,6 +1045,7 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
             case 'OPEN_CIRCULATION_EXISTS' :
                 displayText = dojo.string.substitute(
                     localeStrings.OPEN_CIRCULATION_EXISTS, [item]);
+
                 break;
 
             default:
