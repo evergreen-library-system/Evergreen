@@ -829,11 +829,11 @@ sub do_copy_checks {
 
         if(my $old_circ = $circs->[0]) { # an open circ was found
 
-            my $payload; # event payload
+            my $payload = {copy => $copy};
 
             if($old_circ->usr == $self->patron->id) {
                 
-                $payload = {old_circ => $old_circ};
+                $payload->{old_circ} = $old_circ;
 
                 # If there is an open circulation on the checkout item and an auto-renew 
                 # interval is defined, inform the caller that they should go 
