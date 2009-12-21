@@ -16,6 +16,7 @@
     'MAX_RENEWALS' : 'No more renewals allowed for item ${0}',
     'ITEM_NOT_CATALOGED' : 'Item ${0} was not found in the system.  Try re-scanning the item.',
     'WORKSTATION_REQUIRED' : 'A workstation is required to log in to selfcheck.  You can set the  workstation name with URL param "ws".  \n\nWould you like to register a new workstation for this self-check interface?',
-    'WORKSTATION_EXISTS' : 'This workstation has already been registered.  Would you like to use it for this self-check station?'
+    'WORKSTATION_EXISTS' : 'This workstation has already been registered.  Would you like to use it for this self-check station?',
+    'CC_PAYABLE_BALANCE' : 'You have \$${0} in fines payable by credit card.'
 }
 

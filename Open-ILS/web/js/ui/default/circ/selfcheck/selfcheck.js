@@ -1,5 +1,7 @@
 dojo.require('dojo.date.locale');
 dojo.require('dojo.date.stamp');
+dojo.require('dijit.form.CheckBox');
+dojo.require('dijit.form.NumberSpinner');
 dojo.require('openils.CGI');
 dojo.require('openils.Util');
 dojo.require('openils.User');
@@ -19,6 +21,7 @@ const SET_AUTO_RENEW_INTERVAL = 'circ.checkout_auto_renew_age';
 const SET_WORKSTATION_REQUIRED = 'circ.selfcheck.workstation_required';
 const SET_ALERT_POPUP = 'circ.selfcheck.alert.popup';
 const SET_ALERT_SOUND = 'circ.selfcheck.alert.sound';
+const SET_CC_PAYMENT_ALLOWED = 'credit.payments.allow';
 
 function SelfCheckManager() {
 
@@ -94,7 +97,8 @@ SelfCheckManager.prototype.init = function() {
     // connect onclick handlers to the various navigation links
     var linkHandlers = {
         'oils-selfck-hold-details-link' : function() { self.drawHoldsPage(); },
-        'oils-selfck-pay-fines-link' : function() { self.drawFinesPage(); },
+        'oils-selfck-view-fines-link' : function() { self.drawFinesPage(); },
+        'oils-selfck-pay-fines-link' : function() { self.drawPayFinesPage(); },
         'oils-selfck-nav-home' : function() { self.drawCircPage(); },
         'oils-selfck-nav-logout' : function() { self.logoutPatron(); },
         'oils-selfck-nav-logout-print' : function() { self.logoutPatron(true); },
@@ -190,7 +194,8 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
             SET_AUTO_OVERRIDE_EVENTS,
             SET_PATRON_PASSWORD_REQUIRED,
             SET_AUTO_RENEW_INTERVAL,
-            SET_WORKSTATION_REQUIRED
+            SET_WORKSTATION_REQUIRED,
+            SET_CC_PAYMENT_ALLOWED
         ]
     );
 
@@ -364,23 +369,8 @@ SelfCheckManager.prototype.drawCircPage = function() {
     if(!this.circTemplate)
         this.circTemplate = this.circTbody.removeChild(dojo.byId('oils-selfck-circ-row'));
 
-    // items out, holds, and fines summaries
-
     // fines summary
-    fieldmapper.standardRequest(
-        ['open-ils.actor', 'open-ils.actor.user.fines.summary'],
-        {   async : true,
-            params : [this.authtoken, this.patron.id()],
-            oncomplete : function(r) {
-                var summary = openils.Util.readResponse(r);
-                dojo.byId('oils-selfck-fines-total').innerHTML = 
-                    dojo.string.substitute(
-                        localeStrings.TOTAL_FINES_ACCOUNT, 
-                        [summary.balance_owed()]
-                    );
-            }
-        }
-    );
+    this.updateFinesSummary();
 
     // holds summary
     this.updateHoldsSummary();
@@ -393,6 +383,31 @@ SelfCheckManager.prototype.drawCircPage = function() {
         for(var i in [1,2,3]) 
             this.displayCheckout(this.mockCheckout, 'checkout');
     }
+}
+
+
+SelfCheckManager.prototype.updateFinesSummary = function() {
+    var self = this; 
+
+    // fines summary
+    fieldmapper.standardRequest(
+        ['open-ils.actor', 'open-ils.actor.user.fines.summary'],
+        {   async : true,
+            params : [this.authtoken, this.patron.id()],
+            oncomplete : function(r) {
+
+                var summary = openils.Util.readResponse(r);
+
+                dojo.byId('oils-selfck-fines-total').innerHTML = 
+                    dojo.string.substitute(
+                        localeStrings.TOTAL_FINES_ACCOUNT, 
+                        [summary.balance_owed()]
+                    );
+
+                self.creditPayableBalance = summary.balance_owed();
+            }
+        }
+    );
 }
 
 
@@ -446,9 +461,11 @@ SelfCheckManager.prototype.drawItemsOutPage = function() {
 SelfCheckManager.prototype.goToTab = function(name) {
     this.tabName = name;
 
+    openils.Util.hide('oils-selfck-fines-page');
     openils.Util.hide('oils-selfck-payment-page');
     openils.Util.hide('oils-selfck-holds-page');
     openils.Util.hide('oils-selfck-circ-page');
+    openils.Util.hide('oils-selfck-pay-fines-link');
     
     switch(name) {
         case 'checkout':
@@ -461,6 +478,9 @@ SelfCheckManager.prototype.goToTab = function(name) {
             openils.Util.show('oils-selfck-holds-page');
             break;
         case 'fines':
+            openils.Util.show('oils-selfck-fines-page');
+            break;
+        case 'payment':
             openils.Util.show('oils-selfck-payment-page');
             break;
     }
@@ -645,6 +665,117 @@ SelfCheckManager.prototype.drawHolds = function(holds) {
 }
 
 
+SelfCheckManager.prototype.drawPayFinesPage = function() {
+    this.goToTab('payment');
+
+    dojo.byId('oils-selfck-cc-payment-summary').innerHTML = 
+        dojo.string.substitute(
+            localeStrings.CC_PAYABLE_BALANCE,
+            [this.creditPayableBalance]
+        );
+
+    oilsSelfckCCNumber.attr('value', '');
+    oilsSelfckCCMonth.attr('value', '01');
+    oilsSelfckCCAmount.attr('value', this.creditPayableBalance);
+    oilsSelfckCCYear.attr('value', new Date().getFullYear());
+    oilsSelfckCCFName.attr('value', this.patron.first_given_name());
+    oilsSelfckCCLName.attr('value', this.patron.family_name());
+    var addr = this.patron.billing_address() || this.patron.mailing_address();
+
+    if(addr) {
+        oilsSelfckCCStreet.attr('value', addr.street1()+' '+addr.street2());
+        oilsSelfckCCCity.attr('value', addr.city());
+        oilsSelfckCCState.attr('value', addr.state());
+        oilsSelfckCCZip.attr('value', addr.post_code());
+    }
+
+    dojo.connect(oilsSelfckEditDetails, 'onChange', 
+        function(newVal) {
+            dojo.forEach(
+                [   oilsSelfckCCFName, 
+                    oilsSelfckCCLName, 
+                    oilsSelfckCCStreet, 
+                    oilsSelfckCCCity, 
+                    oilsSelfckCCState, 
+                    oilsSelfckCCZip
+                ],
+                function(dij) { dij.attr('disabled', !newVal); }
+            );
+        }
+    );
+
+
+    var self = this;
+    dojo.connect(oilsSelfckCCSubmit, 'onClick',
+        function() {
+            progressDialog.show(true);
+            self.sendCCPayment();
+        }
+    );
+}
+
+
+// In this form, this code only supports global on/off credit card 
+// payments and does not dissallow payments to transactions that started
+// at remote locations or transactions that have accumulated billings at 
+// remote locations that dissalow credit card payments.
+// TODO add per-transaction blocks for orgs that do not support CC payments
+
+SelfCheckManager.prototype.sendCCPayment = function() {
+
+    var args = {
+        userid : this.patron.id(),
+        payment_type : 'credit_card_payment',
+        payments : [],
+        cc_args : {
+            where_process : 1,
+            number : oilsSelfckCCNumber.attr('value'),
+            expire_year : oilsSelfckCCYear.attr('value'),
+            expire_month : oilsSelfckCCMonth.attr('value'),
+            billing_first : oilsSelfckCCFName.attr('value'),
+            billing_last : oilsSelfckCCLName.attr('value'),
+            billing_address : oilsSelfckCCStreet.attr('value'),
+            billing_city : oilsSelfckCCCity.attr('value'),
+            billing_state : oilsSelfckCCState.attr('value'),
+            billing_zip : oilsSelfckCCZip.attr('value')
+        }
+    }
+
+    var funds = oilsSelfckCCAmount.attr('value');
+
+    xacts = this.finesData.sort(
+        function(a, b) {
+            if(a.transaction.xact_start() < b.transaction.xact_start()) 
+                return -1;
+            return 1;
+        }
+    );
+
+    for(var i in xacts) {
+        var xact = xacts[i].transaction;
+        var paying = Math.min(funds, xact.balance_owed());
+        args.payments.push([xact.id(), paying]);
+        funds -= paying;
+        if(funds <= 0) break;
+    }
+
+    var resp = fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.money.payment'],
+        {params : [this.authtoken, args]}
+    );
+
+    progressDialog.hide();
+
+    var evt = openils.Event.parse(resp);
+    if(evt) {
+        alert(evt);
+    } else {
+        this.updateFinesSummary();
+        this.drawFinesPage();
+    }
+}
+
+
 SelfCheckManager.prototype.drawFinesPage = function() {
 
     // TODO add option to hid scanBox
@@ -652,6 +783,10 @@ SelfCheckManager.prototype.drawFinesPage = function() {
 
     this.goToTab('fines');
     progressDialog.show(true);
+
+    if(this.creditPayableBalance > 0 && this.orgSettings[SET_CC_PAYMENT_ALLOWED]) {
+        openils.Util.show('oils-selfck-pay-fines-link', 'inline');
+    }
 
     this.finesTbody = dojo.byId('oils-selfck-fines-tbody');
     if(!this.finesTemplate)
@@ -662,6 +797,7 @@ SelfCheckManager.prototype.drawFinesPage = function() {
     var self = this;
     var handler = function(dataList) {
         self.finesCount = dataList.length;
+        self.finesData = dataList;
         for(var i in dataList) {
             var data = dataList[i];
             var row = self.finesTemplate.cloneNode(true);

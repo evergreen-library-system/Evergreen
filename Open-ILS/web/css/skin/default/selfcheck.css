@@ -79,6 +79,9 @@ body {
     text-align: right;
     width: 100%;
 }
+#oils-selfck-content-header span {
+    padding-left: 5px;
+}
 
 #oils-selfck-info-nav {
     margin: 15px 10px 15px 10px;
@@ -86,9 +89,11 @@ body {
     border-bottom: 1px dashed #888;
 }
 
+#oils-selfck-circ-info-div span {
+    padding-right: 8px;
+}
 #oils-selfck-info-nav span {
     padding-left: 8px;
-    padding-right: 8px;
 }
 
 #oils-selfck-info-nav span.selected {
@@ -116,6 +121,15 @@ body {
     font-weight: bold;
     vertical-align: middle;
     color: red;
+}
+
+#oils-selfck-cc-payment-summary {
+    font-weight:bold;
+    padding: 30px;
+}
+
+#oils-selfck-cc-payment-table td {
+    padding: 5px;
 }
 
 

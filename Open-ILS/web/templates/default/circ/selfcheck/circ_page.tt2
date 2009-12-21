@@ -7,7 +7,7 @@
                 <td>Title</td>
                 <td>Author</td>
                 <td>Due Date</td>
-                <td>Renewals Left</td>
+                <td class='hidden'>Renewals Left</td>
                 <td>Type</td>
             </tr>
         </thead>
@@ -18,7 +18,7 @@
                 <td name='title'></td>
                 <td name='author'></td>
                 <td name='due_date'></td>
-                <td name='remaining'></td>
+                <td  class='hidden' name='remaining'></td>
                 <td>
                     <div name='checkout' class='hidden'>Checkout</div>
                     <div name='renew' class='hidden'>Renewal</div>

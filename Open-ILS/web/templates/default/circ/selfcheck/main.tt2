@@ -10,7 +10,8 @@
 <div id='oils-selfck-bottom-div'>
     <div id='oils-selfck-content-div'>
         <div id='oils-selfck-content-header'>
-            <a id='oils-selfck-print-list-link' href='javascript:void(0);'>Print List</a>
+            <span><a class='hidden' href='javascript:void(0);' id='oils-selfck-pay-fines-link'>Pay Fines</a></span>
+            <span><a id='oils-selfck-print-list-link' href='javascript:void(0);'>Print List</a></span>
         </div>
         <div id='oils-selfck-circ-page' class='hidden'>
             <!-- Checkout / renewal and items out interface -->
@@ -20,9 +21,13 @@
             <!-- Patron holds interface -->
             [% INCLUDE 'default/circ/selfcheck/holds_page.tt2' %]
         </div>
-        <div id='oils-selfck-payment-page' class='hidden'>
-            <!-- Fines and credit card payments interface -->
+        <div id='oils-selfck-fines-page' class='hidden'>
+            <!-- Fines and interface -->
             [% INCLUDE 'default/circ/selfcheck/fines.tt2' %]
+        </div>
+        <div id='oils-selfck-payment-page' class='hidden'>
+            <!-- credit card payments interface -->
+            [% INCLUDE 'default/circ/selfcheck/payment.tt2' %]
         </div>
     </div>
     <div id='oils-selfck-summary-div'>

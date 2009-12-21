@@ -1,0 +1,69 @@
+<div id='oils-selfck-cc-payment-summary'> </div>
+<table id='oils-selfck-cc-payment-table'>
+    <tbody>
+        <tr>
+            <td>Amount</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCAmount' required='true'/></td>
+        </tr>
+        <tr>
+            <td>Credit Card #</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCNumber' required='true'/></td>
+        </tr>
+        <tr>
+            <td>Exipration Month</td>
+            <td>
+                <select dojoType='dijit.form.FilteringSelect' jsId='oilsSelfckCCMonth' required='true'>
+                    <option value='01' selected='selected'>Jan</option>
+                    <option value='02'>Feb</option>
+                    <option value='03'>Mar</option>
+                    <option value='04'>April</option>
+                    <option value='05'>May</option>
+                    <option value='06'>June</option>
+                    <option value='07'>July</option>
+                    <option value='08'>Aug</option>
+                    <option value='09'>Sept</option>
+                    <option value='10'>Oct</option>
+                    <option value='11'>Nov</option>
+                    <option value='12'>Dec</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Expiration Year</td>
+            <td><input dojoType='dijit.form.NumberSpinner' constraints='{pattern:"0000", places:0, maxlength:4}' jsId='oilsSelfckCCYear' required='true'/></td>
+        </tr>
+        <tr>
+            <td>Edit Billing Details</td>
+            <td><input dojoType='dijit.form.CheckBox' jsId='oilsSelfckEditDetails'/></td>
+        </tr>
+        <tr>
+            <td>First Name</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCFName' disabled='disabled' required='true'/></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCLName' disabled='disabled' required='true'/></td>
+        </tr>
+        <tr>
+            <td>Street Address</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCStreet' disabled='disabled' required='true'/></td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCCity' disabled='disabled' required='true'/></td>
+        </tr>
+        <tr>
+            <td>State or Province</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCState' disabled='disabled' required='true'/></td>
+        </tr>
+        <tr>
+            <td>ZIP or Postal Code</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCZip' disabled='disabled' required='true'/></td>
+        </tr>
+        <tr>
+            <td colspan='2' align='center'>
+                <button dojoType='dijit.form.Button' jsId='oilsSelfckCCSubmit'>Submit Payment</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
