@@ -354,7 +354,7 @@ SelfCheckManager.prototype.updateScanBox = function(args) {
  */
 SelfCheckManager.prototype.drawCircPage = function() {
 
-    openils.Util.show('oils-selfck-circ-tbody');
+    openils.Util.show('oils-selfck-circ-tbody', 'table-row-group');
     this.goToTab('checkout');
 
     while(this.itemsOutTbody.childNodes[0])
