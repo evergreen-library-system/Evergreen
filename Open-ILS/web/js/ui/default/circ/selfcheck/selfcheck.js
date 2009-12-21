@@ -828,7 +828,16 @@ SelfCheckManager.prototype.drawFinesPage = function() {
     );
 }
 
-SelfCheckManager.prototype.checkin = function(barcode) {
+SelfCheckManager.prototype.checkin = function(barcode, abortTransit) {
+
+    var resp = fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.transit.abort'],
+        {params : [this.authtoken, {barcode : barcode}]}
+    );
+
+    // resp == 1 on success
+    if(openils.Event.parse(resp))
+        return false;
 
     var resp = fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.checkin.override'],
@@ -971,9 +980,6 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
         } else {
 
-            console.log(js2JSON(result.payload));
-            console.log(result.payload.copy.status() +' '+overrideEvents);
-
             if( // copy is marked lost.  if configured to do so, check it in and try again.
                 result.payload.copy && 
                 result.payload.copy.status() == /* LOST */ 3 &&
@@ -1011,6 +1017,16 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
                 if(!match) {
                     override = false;
                     break;
+                }
+
+                if(result[i].textcode == 'COPY_IN_TRANSIT') {
+                    // to override a transit, we have to abort the transit and check it in first
+                    if(this.checkin(item, true)) {
+                        return { doOver : true };
+                    } else {
+                        override = false;
+                    }
+
                 }
             }
 
