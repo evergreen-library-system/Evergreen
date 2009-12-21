@@ -668,15 +668,25 @@ SelfCheckManager.prototype.drawHolds = function(holds) {
 SelfCheckManager.prototype.drawPayFinesPage = function() {
     this.goToTab('payment');
 
+    // find the total selected amount
+    var total = 0;
+    dojo.forEach(
+        dojo.query('[name=selector]', this.finesTbody),
+        function(input) {
+            if(input.checked)
+                total += Number(input.getAttribute('balance_owed'));
+        }
+    );
+    total = total.toFixed(2);
+
     dojo.byId('oils-selfck-cc-payment-summary').innerHTML = 
         dojo.string.substitute(
             localeStrings.CC_PAYABLE_BALANCE,
-            [this.creditPayableBalance]
+            [total]
         );
 
     oilsSelfckCCNumber.attr('value', '');
     oilsSelfckCCMonth.attr('value', '01');
-    oilsSelfckCCAmount.attr('value', this.creditPayableBalance);
     oilsSelfckCCYear.attr('value', new Date().getFullYear());
     oilsSelfckCCFName.attr('value', this.patron.first_given_name());
     oilsSelfckCCLName.attr('value', this.patron.family_name());
@@ -741,23 +751,20 @@ SelfCheckManager.prototype.sendCCPayment = function() {
         }
     }
 
-    var funds = oilsSelfckCCAmount.attr('value');
 
-    xacts = this.finesData.sort(
-        function(a, b) {
-            if(a.transaction.xact_start() < b.transaction.xact_start()) 
-                return -1;
-            return 1;
+    // find the selected transactions
+    dojo.forEach(
+        dojo.query('[name=selector]', this.finesTbody),
+        function(input) {
+            if(input.checked) {
+                args.payments.push([
+                    input.getAttribute('xact'),
+                    Number(input.getAttribute('balance_owed')).toFixed(2)
+                ]);
+            }
         }
     );
 
-    for(var i in xacts) {
-        var xact = xacts[i].transaction;
-        var paying = Math.min(funds, xact.balance_owed());
-        args.payments.push([xact.id(), paying]);
-        funds -= paying;
-        if(funds <= 0) break;
-    }
 
     var resp = fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.money.payment'],
@@ -794,27 +801,71 @@ SelfCheckManager.prototype.drawFinesPage = function() {
     while(this.finesTbody.childNodes[0])
         this.finesTbody.removeChild(this.finesTbody.childNodes[0]);
 
+    // when user clicks on a selector checkbox, update the total owed
+    var updateSelected = function() {
+        var total = 0;
+        dojo.forEach(
+            dojo.query('[name=selector]', this.finesTbody),
+            function(input) {
+                if(input.checked)
+                    total += Number(input.getAttribute('balance_owed'));
+            }
+        );
+
+        total = total.toFixed(2);
+        dojo.byId('oils-selfck-selected-total').innerHTML = 
+            dojo.string.substitute(localeStrings.TOTAL_FINES_SELECTED, [total]);
+    }
+
+    // wire up the batch on/off selector
+    var sel = dojo.byId('oils-selfck-fines-selector');
+    sel.onchange = function() {
+        dojo.forEach(
+            dojo.query('[name=selector]', this.finesTbody),
+            function(input) {
+                input.checked = sel.checked;
+            }
+        );
+    };
+
     var self = this;
     var handler = function(dataList) {
+
         self.finesCount = dataList.length;
         self.finesData = dataList;
+
         for(var i in dataList) {
+
             var data = dataList[i];
             var row = self.finesTemplate.cloneNode(true);
             var type = data.transaction.xact_type();
+
             if(type == 'circulation') {
                 self.byName(row, 'type').innerHTML = type;
                 self.byName(row, 'details').innerHTML = data.record.title();
+
             } else if(type == 'grocery') {
                 self.byName(row, 'type').innerHTML = 'Miscellaneous'; // Go ahead and head off any confusion around "grocery".  TODO i18n
                 self.byName(row, 'details').innerHTML = data.transaction.last_billing_type();
             }
+
             self.byName(row, 'total_owed').innerHTML = data.transaction.total_owed();
             self.byName(row, 'total_paid').innerHTML = data.transaction.total_paid();
             self.byName(row, 'balance').innerHTML = data.transaction.balance_owed();
+
+            // row selector
+            var selector = self.byName(row, 'selector')
+            selector.onchange = updateSelected;
+            selector.setAttribute('xact', data.transaction.id());
+            selector.setAttribute('balance_owed', data.transaction.balance_owed());
+            selector.checked = true;
+
             self.finesTbody.appendChild(row);
         }
+
+        updateSelected();
     }
+
 
     fieldmapper.standardRequest( 
         ['open-ils.actor', 'open-ils.actor.user.transactions.have_balance.fleshed'],

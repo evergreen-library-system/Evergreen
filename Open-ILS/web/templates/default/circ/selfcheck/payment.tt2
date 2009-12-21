@@ -2,10 +2,6 @@
 <table id='oils-selfck-cc-payment-table'>
     <tbody>
         <tr>
-            <td>Amount</td>
-            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCAmount' required='true'/></td>
-        </tr>
-        <tr>
             <td>Credit Card #</td>
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCNumber' required='true'/></td>
         </tr>
