@@ -4403,6 +4403,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="acqftr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_transfer" oils_persist:tablename="acq.fund_transfer" reporter:label="Fund Transfer">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_transfer_id_seq">
+			<field reporter:label="Fund Transfer ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Source Fund" name="src_fund" reporter:datatype="link"/>
+			<field reporter:label="Source Amount" name="src_amount" reporter:datatype="money"/>
+			<field reporter:label="Destination Fund" name="dest_fund" reporter:datatype="link"/>
+			<field reporter:label="Destination Amount" name="dest_amount" reporter:datatype="money"/>
+			<field reporter:label="Transfer Time" name="transfer_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Transfer User" name="transfer_user" reporter:datatype="link"/>
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="src_fund" reltype="has_a" key="id" map="" class="acqf"/>
+			<link field="dest_fund" reltype="has_a" key="id" map="" class="acqf"/>
+			<link field="transfer_user" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="acqfc" controller="open-ils.cstore" oils_obj:fieldmapper="acq::fiscal_calendar" oils_persist:tablename="acq.fiscal_calendar" reporter:label="Fiscal Calendar">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fiscal_calendar_id_seq">
 			<field reporter:label="Fiscal Calendar ID" name="id" reporter:datatype="id" reporter:selector='id'/>

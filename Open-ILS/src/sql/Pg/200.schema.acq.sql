@@ -413,6 +413,55 @@ CREATE TABLE acq.fund_tag_map (
 	CONSTRAINT acqftm_fund_once_per_tag UNIQUE( fund, tag )
 );
 
+CREATE TABLE acq.fund_transfer (
+    id               SERIAL         PRIMARY KEY,
+    src_fund         INT            NOT NULL REFERENCES acq.fund( id )
+                                    DEFERRABLE INITIALLY DEFERRED,
+    src_amount       NUMERIC        NOT NULL,
+    dest_fund        INT            NOT NULL REFERENCES acq.fund( id )
+                                    DEFERRABLE INITIALLY DEFERRED,
+    dest_amount      NUMERIC        NOT NULL,
+    transfer_time    TIMESTAMPTZ    NOT NULL DEFAULT now(),
+    transfer_user    INT            NOT NULL REFERENCES actor.usr( id )
+                                    DEFERRABLE INITIALLY DEFERRED,
+    note             TEXT
+);
+
+CREATE INDEX acqftr_usr_idx
+ON acq.fund_transfer( transfer_user );
+
+COMMENT ON TABLE acq.fund_transfer IS $$
+/*
+ * Copyright (C) 2009  Georgia Public Library Service
+ * Scott McKellar <scott@esilibrary.com>
+ *
+ * Fund Transfer
+ *
+ * Each row represents the transfer of money from a source fund
+ * to a destination fund.  There should be corresponding entries
+ * in acq.fund_allocation.  The purpose of acq.fund_transfer is
+ * to record how much money moved from which fund to which other
+ * fund.
+ *
+ * The presence of two amount fields, rather than one, reflects
+ * the possibility that the two funds are denominated in different
+ * currencies.  If they use the same currency type, the two
+ * amounts should be the same.
+ *
+ * ****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+$$;
+
 CREATE TABLE acq.fiscal_calendar (
 	id              SERIAL         PRIMARY KEY,
 	name            TEXT           NOT NULL
