@@ -1038,9 +1038,17 @@ static int val_fields( Class* class, const char* id, xmlNodePtr fields ) {
 	@return 1 if errors found, or 0 if not.
 
 	Rules:
-	- id attribute must be present with a non-empty value.
+	- attribute names are limited to: "name", "virtual", "label", "datatype", "array_position",
+	"selector", "i18n", "primitive".
+	- "name" attribute is required.
 	- label attribute, if present, must have a non-empty value.
-	- virtual attribute, if present, must have a value of "true" or "false".
+	- virtual and i18n attributes, if present, must have a value of "true" or "false".
+	- if the datatype attribute is present, its value must be one of: "bool", "float", "id",
+	"int", "interval", "link", "money", "number", "org_unit", "text", "timestamp".
+
+	Warnings:
+	- A non-virtual field should have a datatype attribute.
+	- Attribute "array_position" is deprecated.
 */
 static int val_one_field( Class* class, const char* id, xmlNodePtr field ) {
 	int rc = 0;
@@ -1087,7 +1095,9 @@ static int val_one_field( Class* class, const char* id, xmlNodePtr field ) {
 			xmlFree( dt_str );
 			// To do: make sure that the namespace is reporter
 		} else if( !strcmp( attr_name, "array_position" ) ) {
-			;  // Ignore for now, but it should be deprecated
+			printf( "Line %ld: WARNING: Deprecated array_position attribute "
+					"for field \"%s\" in class \"%s\"\n",
+					xmlGetLineNo( field ), ((char*) field_name ? : ""), id );
 		} else if( !strcmp( attr_name, "selector" ) ) {
 			;  // Ignore for now
 		} else if( !strcmp( attr_name, "i18n" ) ) {
@@ -1116,7 +1126,7 @@ static int val_one_field( Class* class, const char* id, xmlNodePtr field ) {
 		attr = attr->next;
 	}
 
-	if( warn && DT_NONE == datatype ) {
+	if( warn && (!is_virtual) && DT_NONE == datatype ) {
 		printf( "Line %ld: WARNING: No datatype attribute for field \"%s\" in class \"%s\"\n",
 			xmlGetLineNo( field ), ((char*) field_name ? : ""), id );
 	}
