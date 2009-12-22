@@ -18,6 +18,9 @@
                 case 'ws_ou' :
                     return data.list.au[0].ws_ou();
                 break;
+                case 'ws_ou_shortname' :
+                    return data.hash.aou[ data.list.au[0].ws_ou() ].shortname();
+                break;
                 case 'authtime' :
                     return data.session.authtime;
                 break;
