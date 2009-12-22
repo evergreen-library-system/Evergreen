@@ -88,6 +88,12 @@ function event_listeners() {
             false
         );
 
+        $('opac').addEventListener(
+            'command',
+            handle_opac,
+            false
+        );
+
         $('payment').addEventListener(
             'change',
             function(ev) {
@@ -435,6 +441,7 @@ function init_lists() {
             $('details').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('add').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('voidall').setAttribute('disabled', g.bill_list_selection.length == 0);
+            $('opac').setAttribute('disabled', g.bill_list_selection.length == 0);
         },
         'on_click' : function(ev) {
             netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserRead');
@@ -584,6 +591,22 @@ function handle_void_all() {
     }
 }
 
+function handle_opac() {
+    try {
+        var ids = [];
+        for (var i = 0; i < g.bill_list_selection.length; i++) {
+            var my_mvr = g.bill_map[ g.bill_list_selection[i] ].record;
+            var my_acp = g.bill_map[ g.bill_list_selection[i] ].copy;
+            if (typeof my_mvr != 'undefined' && my_mvr != null) {
+                ids.push( { 'barcode' : my_acp.barcode(), 'doc_id' : my_mvr.doc_id() } );
+            }
+        }
+        JSAN.use('cat.util');
+        cat.util.show_in_opac( ids );
+    } catch(E) {
+        alert('Error in bill2.js, handle_opac: ' + E);
+    }
+}
 
 function handle_details() {
     JSAN.use('util.window'); var win = new util.window();
