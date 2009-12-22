@@ -96,8 +96,8 @@
                                 <textbox name="isbn" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Loan_Duration.label;" />
                                 <textbox name="loan_duration" readonly="true" context="clipboard"/>
-                                <spacer />
-                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs.label;" />
+                                <textbox name="total_circ_count" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Checkout_Date.label;" />
                                 <textbox name="xact_start" readonly="true" context="clipboard"/>
                             </row>
@@ -106,8 +106,8 @@
                                 <textbox name="copy_create_date" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Reference.label;" />
                                 <textbox name="reference" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Total_Circs.label;" />
-                                <textbox name="total_circ_count" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label;" />
+                                <textbox name="total_circ_count_curr_year" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Checkout_Workstation.label;" />
                                 <textbox name="checkout_workstation" readonly="true" context="clipboard"/>
                             </row>
@@ -116,30 +116,30 @@
                                 <textbox name="status_changed_time" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.OPAC_Visible.label;" />
                                 <textbox name="opac_visible" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label;" />
-                                <textbox name="total_circ_count_curr_year" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Renewal_Workstation.label;" />
-                                <textbox name="renewal_workstation" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label;" />
+                                <textbox name="total_circ_count_prev_year" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Duration_Rule.label;" />
+                                <textbox name="duration_rule" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="&staff.circ.alternate_copy_summary.Copy_ID.label;" />
                                 <textbox name="copy_id" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Holdable.label;" />
                                 <textbox name="holdable" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label;" />
-                                <textbox name="total_circ_count_prev_year" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
-                                <textbox name="checkin_time" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Rolling_Counter.label;" />
+                                <textbox name="rolling_counter" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Recurring_Fine_Rule.label;" />
+                                <textbox name="recurring_fine_rule" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <label value="&staff.circ.alternate_copy_summary.TCN.label;" />
                                 <textbox name="tcn" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Circ_Modifier.label;" />
                                 <textbox name="circ_mod" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Rolling_Counter.label;" />
-                                <textbox name="rolling_counter" readonly="true" context="clipboard"/>
-                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
-                                <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Workstation.label;" />
+                                <textbox name="renewal_workstation" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Max_Fine_Rule.label;" />
+                                <textbox name="max_fine_rule" readonly="true" context="clipboard"/>
                             </row>
                             <row>
                                 <spacer />
@@ -148,6 +148,20 @@
                                 <textbox name="hold_shelf_loc" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Remaining_Renewals.label;" />
                                 <textbox name="remaining_renewals" readonly="true" context="clipboard"/>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
+                                <textbox name="checkin_time" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <spacer /><spacer />
+                                <spacer /><spacer />
+                                <spacer /><spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
+                                <textbox name="checkin_scan_time" readonly="true" context="clipboard"/>
+                            </row>
+                            <row>
+                                <spacer /><spacer />
+                                <spacer /><spacer />
+                                <spacer /><spacer />
                                 <label value="&staff.circ.alternate_copy_summary.Checkin_Workstation.label;" />
                                 <textbox name="checkin_workstation" readonly="true" context="clipboard"/>
                             </row>

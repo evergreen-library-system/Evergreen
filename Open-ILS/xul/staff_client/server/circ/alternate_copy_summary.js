@@ -323,16 +323,13 @@ function load_item() {
             set("desk_renewal", details.circ.desk_renewal()); 
             set("due_date", details.circ.due_date()); 
             set("duration", details.circ.duration()); 
-            set("duration_rule", details.circ.duration_rule()); 
             set("fine_interval", details.circ.fine_interval()); 
             set("circ_id", details.circ.id()); 
             set("max_fine", details.circ.max_fine()); 
-            set("max_fine_rule", details.circ.max_fine_rule()); 
             set("opac_renewal", details.circ.opac_renewal()); 
             set("phone_renewal", details.circ.phone_renewal()); 
             set("renewal_type", renewal_composite_kludge(details.circ));
             set("recurring_fine", details.circ.recurring_fine()); 
-            set("recurring_fine_rule", details.circ.recurring_fine_rule()); 
             set("renewal_remaining", details.circ.renewal_remaining()); 
             set("stop_fines", details.circ.stop_fines()); 
             set("stop_fines_time", details.circ.stop_fines_time()); 
@@ -361,6 +358,70 @@ function load_item() {
             set("circ_type", details.circ.circ_type()); 
             set("billing_total", details.circ.billing_total()); 
             set("payment_total", details.circ.payment_total()); 
+            if (! details.circ.checkin_time() ) {
+                set("recurring_fine_rule", document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.copy_details.recurring_fine_rule_format',
+                    [
+                        details.circ.recurring_fine_rule().name(),
+                        details.circ.recurring_fine_rule().id(),
+                        details.circ.recurring_fine_rule().low(),
+                        details.circ.recurring_fine_rule().normal(),
+                        details.circ.recurring_fine_rule().high(),
+                        details.circ.recurring_fine_rule().recurrence_interval()
+                    ]
+                )); 
+                set_tooltip("recurring_fine_rule", document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.copy_details.recurring_fine_rule_tooltip_format',
+                    [
+                        details.circ.recurring_fine_rule().name(),
+                        details.circ.recurring_fine_rule().id(),
+                        details.circ.recurring_fine_rule().low(),
+                        details.circ.recurring_fine_rule().normal(),
+                        details.circ.recurring_fine_rule().high(),
+                        details.circ.recurring_fine_rule().recurrence_interval()
+                    ]
+                )); 
+                set("duration_rule", document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.copy_details.duration_rule_format',
+                    [
+                        details.circ.duration_rule().name(),
+                        details.circ.duration_rule().id(),
+                        details.circ.duration_rule().shrt(),
+                        details.circ.duration_rule().normal(),
+                        details.circ.duration_rule().extended(),
+                        details.circ.duration_rule().max_renewals()
+                    ]
+                )); 
+                set_tooltip("duration_rule", document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.copy_details.duration_rule_tooltip_format',
+                    [
+                        details.circ.duration_rule().name(),
+                        details.circ.duration_rule().id(),
+                        details.circ.duration_rule().shrt(),
+                        details.circ.duration_rule().normal(),
+                        details.circ.duration_rule().extended(),
+                        details.circ.duration_rule().max_renewals()
+                    ]
+                )); 
+                set("max_fine_rule", document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.copy_details.max_fine_rule_format',
+                    [
+                        details.circ.max_fine_rule().name(),
+                        details.circ.max_fine_rule().id(),
+                        details.circ.max_fine_rule().amount(),
+                        details.circ.max_fine_rule().is_percent()
+                    ]
+                ));
+                set_tooltip("max_fine_rule", document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.copy_details.max_fine_rule_tooltip_format',
+                    [
+                        details.circ.max_fine_rule().name(),
+                        details.circ.max_fine_rule().id(),
+                        details.circ.max_fine_rule().amount(),
+                        details.circ.max_fine_rule().is_percent()
+                    ]
+                ));
+            }
         }
 
         set("status", '');

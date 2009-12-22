@@ -3104,6 +3104,9 @@
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label "Total Circs - Current Year">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs.label "Total Circs">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label "Total Circs - Prev Year">
+<!ENTITY staff.circ.alternate_copy_summary.Duration_Rule.label "Duration Rule">
+<!ENTITY staff.circ.alternate_copy_summary.Recurring_Fine_Rule.label "Recurring Fine Rule">
+<!ENTITY staff.circ.alternate_copy_summary.Max_Fine_Rule.label "Max Fine Rule">
 <!ENTITY staff.util.timestamp_dialog.title "Select Date or Timestamp:">
 <!ENTITY staff.util.timestamp_dialog.date.label "Date:">
 <!ENTITY staff.util.timestamp_dialog.date.accesskey "D">
