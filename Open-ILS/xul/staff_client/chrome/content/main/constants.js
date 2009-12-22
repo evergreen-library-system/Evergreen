@@ -111,6 +111,7 @@ const api = {
     'FM_AHR_RETRIEVE_VIA_PICKUP_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve_by_pickup_lib' },
     'FM_AHR_ID_LIST_RETRIEVE_VIA_PICKUP_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.id_list.retrieve_by_pickup_lib' },
     'FM_AHR_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.retrieve' },
+    'FM_AHR_PULL_LIST_COUNT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.retrieve.count' },
     'FM_AHR_ID_LIST_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.id_list.retrieve', 'secure' : false },
     'FM_AHR_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.on_shelf.retrieve' },
     'FM_AHR_ID_LIST_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve', 'secure' : false },
@@ -322,7 +323,8 @@ const urls = {
     'XUL_DEBUG_XULEDITOR' : '/xul/server/util/xuledit.xul',
     'XUL_FANCY_PROMPT' : '/xul/server/util/fancy_prompt.xul',
     'XUL_HOLD_CAPTURE' : '/xul/server/circ/hold_capture.xul',
-    'XUL_HOLD_PULL_LIST' : '/xul/server/admin/hold_pull_list.xhtml',
+    /*'XUL_HOLD_PULL_LIST' : '/xul/server/admin/hold_pull_list.xhtml',*/
+    'XUL_HOLD_PULL_LIST' : '/xul/server/patron/holds.xul',
     'XUL_HOLDS_BROWSER' : '/xul/server/patron/holds.xul',
     'XUL_HOLD_DETAILS' : '/xul/server/patron/hold_details.xul',
     'XUL_HOLD_CANCEL' : '/xul/server/patron/hold_cancel.xul',
