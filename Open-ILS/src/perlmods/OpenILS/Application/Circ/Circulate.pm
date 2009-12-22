@@ -2,10 +2,12 @@ package OpenILS::Application::Circ::Circulate;
 use strict; use warnings;
 use base 'OpenILS::Application';
 use OpenSRF::EX qw(:try);
+use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
+use DateTime;
 my $U = "OpenILS::Application::AppUtils";
 
 my %scripts;
@@ -174,6 +176,92 @@ sub run_method {
         OpenILS::Application::Circ::Circulator->new($auth, %$args);
 
     return circ_events($circulator) if $circulator->bail_out;
+
+    # --------------------------------------------------------------------------
+    # First, check for a booking transit, as the barcode may not be a copy
+    # barcode, but a resource barcode, and nothing else in here will work
+    # --------------------------------------------------------------------------
+
+    if (my $bc = $circulator->copy_barcode) { # do we have a barcode?
+        my $resources = $circulator->editor->search_booking_resource( { barcode => $bc } ); # any resources by this barcode?
+        if (@$resources) { # yes!
+
+            my $res_id_list = [ map { $_->id } @$resources ];
+            my $transit = $circulator->editor->search_action_reservation_transit_copy(
+                [
+                    { target_copy => $res_id_list, dest => $circulator->circ_lib },
+                    { order_by => { artc => 'source_send_time' }, limit => 1 }
+                ]
+            )->[0]; # Any transit for this barcode?
+
+            if ($transit) { # yes! unwrap it.
+
+                my $reservation = $circulator->editor->retrieve_booking_reservation( $transit->reservation );
+                my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_reservation_type );
+
+                if ($U->is_true($res_type->catalog_item)) { # is there a copy to be had here?
+                    if (my $copy = circulator->editor->search_asset_copy({ barcode => $bc, deleted => 'f' })->[0]) { # got a copy
+                        $copy->status( $transit->copy_status );
+                        $copy->editor($self->editor->requestor->id);
+                        $copy->edit_date('now');
+                        $circulator->editor->update_asset_copy( $copy );
+                    }
+                }
+
+                $transit->dest_recv_time('now');
+                $circulator->editor->update_action_reservation_transit_copy( $transit );
+
+                $circulator->editor->commit;
+
+                #XXX need to return here, with info about the resource/copy and the "put it on the booking shelf" message
+
+            } else { # no transit, look for an upcoming reservation to capture for
+
+                my $reservation = $circulator->editor->search_booking_reservation(
+                    [
+                        { current_resource => $res_id_list,
+                          pickup_lib => $circulator->circ_lib,
+                          cancel_time => undef,
+                          capture_time => undef
+                        },
+                        { order_by => { bresv => 'start_time' }, limit => 1 }
+                    ]
+                )->[0];
+
+                if ($reservation) { # we have a reservation for which we could capture this resource.  wheee!
+                    my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_reservation_type );
+                    my $elbow_room = $res_type->elbow_room ||
+                        $U->ou_ancestor_setting_value( $circulator->circ_lib, 'circ.booking_reservation.default_elbow_room', $circulator->editor );
+                
+                    if ($elbow_room) {
+                        $reservation = $circulator->editor->search_booking_reservation(
+                            [
+                                { id => $reservation->id, start_time => { '<=' => DateTime->now->add( seconds => interval_to_seconds($elbow_room) )->strftime('%FT%T%z') } },
+                                { order_by => { bresv => 'start_time' }, limit => 1 }
+                            ]
+                        )->[0];
+                    }
+
+                    if ($reservation) { # no elbow room specified, or we still have a reservation within the elbow_room time
+                        my $b_ses = OpenSRF::AppSession->create('open-ils.booking');
+                        my $result = $b_ses->request(
+                            'open-ils.booking.reservation.capture',
+                            $auth => $reservation->id
+                        )->gather(1);
+
+                        if (ref($result) && $result->{ilsevent} == 0) { # captured!
+                            #XXX what to return here???
+                            return $result; # the booking capture success
+                        } else {
+                            #XXX how to fail???  Probably, just move on.
+                        }
+                    }
+                }
+            }
+        }
+    }
+            
+    
 
     # --------------------------------------------------------------------------
     # Go ahead and load the script runner to make sure we have all 
