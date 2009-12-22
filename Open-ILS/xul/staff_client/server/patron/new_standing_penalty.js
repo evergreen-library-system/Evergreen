@@ -76,7 +76,7 @@ function new_penalty_init() {
                         initials_tb.focus(); return;
                     } else {
                         JSAN.use('util.date');
-                        note = note + commonStrings.getFormattedString('staff.initials.format',[initials_tb.value,util.date.formatted_date(new Date(),'%F')]);
+                        note = note + commonStrings.getFormattedString('staff.initials.format',[initials_tb.value,util.date.formatted_date(new Date(),'%F'), ses('ws_ou_shortname')]);
                     }
                 }
                 update_modal_xulG(

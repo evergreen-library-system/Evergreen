@@ -213,7 +213,7 @@
                     note.title( fancy_prompt_data.title );
                     if (fancy_prompt_data.initials) {
                         fancy_prompt_data.note = fancy_prompt_data.note 
-                            + $("commonStrings").getFormattedString('staff.initials.format',[fancy_prompt_data.initials,util.date.formatted_date(new Date(),'%F')]);
+                            + $("commonStrings").getFormattedString('staff.initials.format',[fancy_prompt_data.initials,util.date.formatted_date(new Date(),'%F'), ses('ws_ou_shortname')]);
                     }
                     note.value( fancy_prompt_data.note );
                     note.pub( get_bool( fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
