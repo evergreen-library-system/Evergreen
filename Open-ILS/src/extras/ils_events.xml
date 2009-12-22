@@ -848,6 +848,9 @@
 	<event code='7021' textcode='RESERVATION_NOT_FOUND'>
 		<desc xml:lang="en-US">Booking reservation not found</desc>
 	</event>
+	<event code='7022' textcode='RESERVATION_CAPTURE_FAILED'>
+		<desc xml:lang="en-US">Booking reservation capture failed</desc>
+	</event>
 
 
 

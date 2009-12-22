@@ -521,4 +521,94 @@ by the top-level filters ('user', 'type', 'resource').
 NOTES
 );
 
+sub capture_reservation {
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my $res_id = shift;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('CAPTURE_RESERVATION');
+    my $here = $e->requestor->ws_ou;
+
+    my $reservation = $e->retrieve_booking_reservation( $res_id );
+    return OpenILS::Event->new('RESERVATION_NOT_FOUND') unless $reservation;
+
+    return OpenILS::Event->new('RESERVATION_CAPTURE_FAILED', payload => { captured => 0, fail_cause => 'no-resource' })
+        if (!$reservation->current_resource); # no resource
+
+    return OpenILS::Event->new('RESERVATION_CAPTURE_FAILED', payload => { captured => 0, fail_cause => 'cancelled' })
+        if ($reservation->cancel_time); # canceled
+
+    my $resource = $e->retrieve_booking_resource( $reservation->current_resource );
+    my $type = $e->retrieve_booking_resource( $resource->type );
+
+    $reservation->capture_staff( $e->requestor->id );
+    $reservation->capture_time( 'now' );
+
+    return $e->event unless ( $e->update_booking_reservation( $reservation ) and $reservation = $e->data );
+
+    my $ret = { captured => 1, reservation => $reservation };
+
+    if ($here <> $reservation->pickup_lib) {
+        return OpenILS::Event->new('RESERVATION_CAPTURE_FAILED', payload => { captured => 0, fail_cause => 'not-transferable' })
+            if (!$U->is_true($type->transferable)); # non-transferable resource
+
+        # need to transit the item ... is it already in transit?
+        my $transit = $e->search_action_reservation_transit_copy( { reservation => $res_id, dest_recv_time => undef } )->[0];
+
+        if (!$transit) { # not yet in transit
+            $transit = new Fieldmapper::action::reservation_transit_copy ();
+
+            $transit->copy($resource->id);
+            $transit->copy_status(15);
+            $transit->source_send_time('now');
+            $transit->source($here);
+            $transit->dest($reservation->pickup_lib);
+
+            $e->create_action_reservation_transit_copy( $transit );
+
+            if ($U->is_true($type->catalog_item)) {
+                my $copy = $e->search_asset_copy( { barcode => $resource->barcode, deleted => 'f' } )->[0];
+
+                if ($copy) {
+                    return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS', payload => $copy) if ($copy->status == 1);
+                    $copy->status(6);
+                    $e->update_asset_copy( $copy );
+                    $$ret{catalog_item} = $e->data;
+                }
+            }
+        }
+
+        $$ret{transit} = $transit;
+    } elsif ($U->is_true($type->catalog_item)) {
+        my $copy = $e->search_asset_copy( { barcode => $resource->barcode, deleted => 'f' } )->[0];
+
+        if ($copy) {
+            return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS', payload => { captured => 0, copy => $copy }) if ($copy->status == 1);
+            $copy->status(15);
+            $e->update_asset_copy( $copy );
+            $$ret{catalog_item} = $e->data;
+        }
+    }
+
+    $e->commit;
+
+    return OpenILS::Event->new('SUCCESS', payload => $ret);
+}
+__PACKAGE__->register_method(
+    method   => "capture_reservation",
+    api_name => "open-ils.booking.reservation.capture",
+    argc     => 2,
+    signature=> {
+        params => [
+            {type => 'string', desc => 'Authentication token'},
+            {type => 'number', desc => 'Reservation ID'}
+        ],
+        return => { desc => "An OpenILS Event object describing the outcome of the capture, with relevant payload." },
+    }
+);
+
+
 1;
