@@ -2062,7 +2062,7 @@ sub do_checkin {
    # this copy can fulfill a hold or needs to be routed to a different location
    # ------------------------------------------------------------------------------
 
-    if(!$self->noop) { # /not/ a no-op checkin, not capture for hold or put item into transit
+    if(!$self->noop) { # /not/ a no-op checkin, capture for hold or put item into transit
 
         my $needed_for_hold = (!$self->remote_hold and $self->attempt_checkin_hold_capture());
         return if $self->bail_out;
