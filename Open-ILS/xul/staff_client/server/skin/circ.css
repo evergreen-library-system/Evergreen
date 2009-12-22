@@ -3,12 +3,20 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
-treechildren::-moz-tree-row(refundable) {
+treechildren::-moz-tree-cell(refundable) {
     background-color: pink;
 }
 
-treechildren::-moz-tree-row(circulating) {
-    background-color: red; color: white;
+treechildren::-moz-tree-cell-text(refundable) {
+    color: black;
+}
+
+treechildren::-moz-tree-cell(circulating) {
+    background-color: red;
+}
+
+treechildren::-moz-tree-cell-text(circulating) {
+    color: white;
 }
 
 treechildren::-moz-tree-row(backdate_failed) {

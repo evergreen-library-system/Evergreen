@@ -494,13 +494,15 @@ util.list.prototype = {
                 },
                 false
             );
-            /*
-            setTimeout(
-                function() {
-                    util.widgets.dispatch('flesh',treerow);
-                }, 0
-            );
-            */
+            if (typeof params.flesh_immediately != 'undefined') {
+                if (params.flesh_immediately) {
+                    setTimeout(
+                        function() {
+                            util.widgets.dispatch('flesh',treerow);
+                        }, 0
+                    );
+                }
+            }
         } else {
             obj.put_retrieving_label(treerow);
             treerow.addEventListener(
@@ -518,13 +520,15 @@ util.list.prototype = {
                 },
                 false
             );
-            /*
-            setTimeout(
-                function() {
-                    util.widgets.dispatch('flesh',treerow);
-                }, 0
-            );
-            */
+            if (typeof params.flesh_immediately != 'undefined') {
+                if (params.flesh_immediately) {
+                    setTimeout(
+                        function() {
+                            util.widgets.dispatch('flesh',treerow);
+                        }, 0
+                    );
+                }
+            }
         }
         this.error.sdump('D_LIST',s);
 
@@ -646,13 +650,16 @@ util.list.prototype = {
                 },
                 false
             );
-            /*
-            setTimeout(
-                function() {
-                    util.widgets.dispatch('flesh',treerow);
-                }, 0
-            );
-            */
+            if (typeof params.flesh_immediately != 'undefined') {
+                if (params.flesh_immediately) {
+                    setTimeout(
+                        function() {
+                            util.widgets.dispatch('flesh',treerow);
+                        }, 0
+                    );
+                }
+            }
+
         } else {
 
             s += 'did not find a retrieve_row function\n';
@@ -673,13 +680,16 @@ util.list.prototype = {
                 },
                 false
             );
-            /*
-            setTimeout(
-                function() {
-                    util.widgets.dispatch('flesh',treerow);
-                }, 0
-            );
-            */
+            if (typeof params.flesh_immediately != 'undefined') {
+                if (params.flesh_immediately) {
+                    setTimeout(
+                        function() {
+                            util.widgets.dispatch('flesh',treerow);
+                        }, 0
+                    );
+                }
+            }
+
         }
 
             try {
@@ -933,12 +943,13 @@ util.list.prototype = {
     '_map_row_to_treecell' : function(params,treerow) {
         var obj = this;
         var s = '';
-        util.widgets.remove_children(treerow);
+        //util.widgets.remove_children(treerow);
+        var create_treecells = treerow.childNodes.length == 0;
 
         if (typeof params.map_row_to_column == 'function' || typeof this.map_row_to_column == 'function') {
 
             for (var i = 0; i < this.columns.length; i++) {
-                var treecell = document.createElement('treecell');
+                var treecell = create_treecells ? document.createElement('treecell') : treerow.childNodes[i];
                 if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
                 var label = '';
                 if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
@@ -964,7 +975,7 @@ util.list.prototype = {
     
                 }
                 if (this.columns[i].type == 'checkbox') { treecell.setAttribute('value',label); } else { treecell.setAttribute('label',label ? label : ''); }
-                treerow.appendChild( treecell );
+                if (create_treecells) { treerow.appendChild( treecell ); }
                 s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
             }
         } else if (typeof params.map_row_to_columns == 'function' || typeof this.map_row_to_columns == 'function') {
@@ -981,14 +992,14 @@ util.list.prototype = {
 
             }
             for (var i = 0; i < labels.length; i++) {
-                var treecell = document.createElement('treecell');
+                var treecell = create_treecells ? document.createElement('treecell') : treerow.childNodes[i];
                 if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
                 if ( this.columns[i].type == 'checkbox') {
                     treecell.setAttribute('value', labels[i]);
                 } else {
                     treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
                 }
-                treerow.appendChild( treecell );
+                if (create_treecells) { treerow.appendChild( treecell ); }
                 s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
             }
 

@@ -367,8 +367,8 @@ function check_all_refunds() {
 
 function gen_list_append_func(r) {
     return function() {
-        if (typeof r == 'object') { g.row_map[ r.id() ] = g.bill_list.append( { 'retrieve_id' : r.id(), 'row' : { 'my' : { 'checked' : true, 'mbts' : r } } } );
-        } else { g.row_map[r] = g.bill_list.append( { 'retrieve_id' : r, 'row' : { 'my' : { 'checked' : true } } } ); }
+        if (typeof r == 'object') { g.row_map[ r.id() ] = g.bill_list.append( { 'retrieve_id' : r.id(), 'flesh_immediately' : true, 'row' : { 'my' : { 'checked' : true, 'mbts' : r } } } );
+        } else { g.row_map[r] = g.bill_list.append( { 'retrieve_id' : r, 'flesh_immediately' : true, 'row' : { 'my' : { 'checked' : true } } } ); }
     }
 }
 
@@ -476,10 +476,12 @@ function init_lists() {
                     try {
                         if ( row && row.my && row.my.mbts && Number( row.my.mbts.balance_owed() ) < 0 ) {
                             util.widgets.addProperty(params.row_node.firstChild,'refundable');
+                            util.widgets.addProperty(params.row_node.firstChild.childNodes[ g.payment_pending_column_idx ],'refundable');
                         }
                         if ( row && row.my && row.my.circ && ! row.my.circ.checkin_time() ) {
                             $('circulating_hint').hidden = false;
                             util.widgets.addProperty(params.row_node.firstChild,'circulating');
+                            util.widgets.addProperty(params.row_node.firstChild.childNodes[ g.title_column_idx ],'circulating');
                         }
                     } catch(E) {
                         g.error.sdump('D_WARN','Error setting list properties in bill2.js: ' + E);
@@ -526,6 +528,8 @@ function init_lists() {
         }
     } );
 
+    g.title_column_idx = util.functional.map_list( g.bill_list.columns, function(o) { return o.id; } ).indexOf( 'title' );
+    g.payment_pending_column_idx = util.functional.map_list( g.bill_list.columns, function(o) { return o.id; } ).indexOf( 'payment_pending' );
     $('bill_list_actions').appendChild( g.bill_list.render_list_actions() );
     g.bill_list.set_list_actions();
 }
