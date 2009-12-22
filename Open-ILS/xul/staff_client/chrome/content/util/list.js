@@ -581,11 +581,15 @@ util.list.prototype = {
                 }
             }
         }
-        var delete_me = [];
-        for (var i in treeitem.childNodes) if (treeitem.childNodes[i].nodeName == 'treerow') delete_me.push(treeitem.childNodes[i]);
-        for (var i = 0; i < delete_me.length; i++) treeitem.removeChild(delete_me[i]);
+        //var delete_me = [];
+        //for (var i in treeitem.childNodes) if (treeitem.childNodes[i].nodeName == 'treerow') delete_me.push(treeitem.childNodes[i]);
+        //for (var i = 0; i < delete_me.length; i++) treeitem.removeChild(delete_me[i]);
+        var prev_treerow = treeitem.firstChild; /* FIXME: worry about hierarchal lists like copy_browser? */
         var treerow = document.createElement('treerow');
-        treeitem.appendChild( treerow );
+        while (prev_treerow.firstChild) {
+            treerow.appendChild( prev_treerow.removeChild( prev_treerow.firstChild ) );
+        }
+        treeitem.replaceChild( treerow, prev_treerow );
         treerow.setAttribute('retrieve_id',params.retrieve_id);
         if (params.row_properties) treerow.setAttribute('properties',params.row_properties);
 
@@ -728,15 +732,21 @@ util.list.prototype = {
                 cols_idx++;
             }
             */
+            var create_treecells = treerow.childNodes.length == 0;
             for (var i = 0; i < obj.columns.length; i++) {
-            var treecell = document.createElement('treecell'); treecell.setAttribute('label',document.getElementById('offlineStrings').getString('list.row_retrieving'));
-            treerow.appendChild(treecell);
+                var treecell = create_treecells ? document.createElement('treecell') : treerow.childNodes[i]; 
+                if (treecell) {
+                    if (create_treecells) { 
+                        treecell.setAttribute('label',document.getElementById('offlineStrings').getString('list.row_retrieving'));
+                        treerow.appendChild(treecell); 
+                    }
+                }
             }
             /*
             dump('\t' + cols_idx + '\n');
             */
         } catch(E) {
-            alert(E);
+            alert('Error in list.js, put_retrieving_label(): ' + E);
         }
     },
 
