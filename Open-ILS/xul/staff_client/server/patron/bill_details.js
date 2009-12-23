@@ -338,7 +338,6 @@ function handle_void() {
                     g.data.voided_billings.push( mb_list[i] );
             }
             g.data.stash('voided_billings');
-            alert($("patronStrings").getString('staff.patron.bill_details.handle_void.billings_voided'));
             retrieve_mbts();
             g.bill_list.clear();
             retrieve_mb();
