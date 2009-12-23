@@ -34,6 +34,7 @@ use OpenILS::Application::Actor::Stage;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
+use List::Util qw/max/;
 
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
@@ -3675,6 +3676,66 @@ sub user_payments {
 }
 
 
+
+__PACKAGE__->register_method (
+	method		=> 'negative_balance_users',
+	api_name    => 'open-ils.actor.users.negative_balance',
+    stream => 1,
+    signature   => q/
+        Returns all users that have an overall negative balance
+        @param auth Authentication token
+        @param org_id The context org unit as an ID or list of IDs.  This will be the home 
+        library of the user.  If no org_unit is specified, no org unit filter is applied
+    /
+);
+
+sub negative_balance_users {
+    my($self, $conn, $auth, $org_id) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('VIEW_USER', $org_id);
+
+    my $query = {
+        select => { 
+            mous => ['usr', 'balance_owed'], 
+            au => ['home_ou'], 
+            mbts => [
+                {column => 'last_billing_ts', transform => 'max', aggregate => 1},
+                {column => 'last_payment_ts', transform => 'max', aggregate => 1},
+            ]
+        }, 
+        from => { 
+            mous => { 
+                au => { 
+                    fkey => 'usr', 
+                    field => 'id', 
+                    join => { 
+                        mbts => { 
+                            key => 'id', 
+                            field => 'usr' 
+                        } 
+                    } 
+                } 
+            } 
+        }, 
+        where => {'+mous' => {balance_owed => {'<' => 0}}} 
+    };
+
+    $query->{from}->{mous}->{au}->{filter}->{home_ou} = $org_id if $org_id;
+
+    my $list = $e->json_query($query, {timeout => 600});
+
+    for my $data (@$list) {
+        $conn->respond({
+            usr => $e->retrieve_actor_user([$data->{usr}, {flesh => 1, flesh_fields => {au => ['card']}}]),
+            balance_owed => $data->{balance_owed},
+            last_billing_activity => max($data->{last_billing_ts}, $data->{last_payment_ts})
+        });
+    }
+
+    return undef;
+}
 
 
 1;
