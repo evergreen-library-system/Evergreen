@@ -32,61 +32,65 @@ patron.summary.prototype = {
 
         JSAN.use('util.functional'); JSAN.use('patron.util'); JSAN.use('util.list'); 
 
-        obj.group_list = new util.list('group_list');
-        obj.group_list.init( {
-            'columns' : [
-                { 'id' : 'gl_family_name', 'flex' : 1, 
-                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.family_name.label'),
-                    'render' : function(my) { return my.family_name; } },
-                { 'id' : 'gl_first_given_name', 'flex' : 1, 
-                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.first_given_name.label'),
-                    'render' : function(my) { return my.first_given_name; } },
-                { 'id' : 'gl_second_given_name', 'flex' : 1, 'hidden' : true, 
-                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.second_given_name.label'),
-                    'render' : function(my) { return my.second_given_name; } },
-                { 'id' : 'gl_home_lib', 'flex' : 1, 'hidden' : true, 
-                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.home_ou.label'),
-                    'render' : function(my) { return obj.OpenILS.data.hash.aou[ my.home_ou ].shortname(); } },
-                { 'id' : 'gl_balance_owed', 'flex' : 1, 'sort_type' : 'money',
-                    'label' : patronStrings.getString('staff.patron.summary.group_list.column.balance_owed.label'),
-                    'render' : function(my) { return my.balance_owed; } }
-            ],
-            'retrieve_row' : function(params) {
-                var id = params.retrieve_id;
-                var blob = patron.util.retrieve_name_via_id( ses(), id );
-                var row = params.row; if (typeof row.my == 'undefined') { row.my = {}; }
-                row.my.family_name = blob[0];
-                row.my.first_given_name = blob[1];
-                row.my.second_given_name = blob[2];
-                row.my.home_ou = blob[3];
-                if (obj.group_owed[ id ]) {
-                    row.my.balance_owed = obj.group_owed[ id ];
+        if (document.getElementById('group_list')) {
+            obj.group_list = new util.list('group_list');
+            obj.group_list.init( {
+                'columns' : [
+                    { 'id' : 'gl_family_name', 'flex' : 1, 
+                        'label' : patronStrings.getString('staff.patron.summary.group_list.column.family_name.label'),
+                        'render' : function(my) { return my.family_name; } },
+                    { 'id' : 'gl_first_given_name', 'flex' : 1, 
+                        'label' : patronStrings.getString('staff.patron.summary.group_list.column.first_given_name.label'),
+                        'render' : function(my) { return my.first_given_name; } },
+                    { 'id' : 'gl_second_given_name', 'flex' : 1, 'hidden' : true, 
+                        'label' : patronStrings.getString('staff.patron.summary.group_list.column.second_given_name.label'),
+                        'render' : function(my) { return my.second_given_name; } },
+                    { 'id' : 'gl_home_lib', 'flex' : 1, 'hidden' : true, 
+                        'label' : patronStrings.getString('staff.patron.summary.group_list.column.home_ou.label'),
+                        'render' : function(my) { return obj.OpenILS.data.hash.aou[ my.home_ou ].shortname(); } },
+                    { 'id' : 'gl_balance_owed', 'flex' : 1, 'sort_type' : 'money',
+                        'label' : patronStrings.getString('staff.patron.summary.group_list.column.balance_owed.label'),
+                        'render' : function(my) { return my.balance_owed; } }
+                ],
+                'retrieve_row' : function(params) {
+                    var id = params.retrieve_id;
+                    var blob = patron.util.retrieve_name_via_id( ses(), id );
+                    var row = params.row; if (typeof row.my == 'undefined') { row.my = {}; }
+                    row.my.family_name = blob[0];
+                    row.my.first_given_name = blob[1];
+                    row.my.second_given_name = blob[2];
+                    row.my.home_ou = blob[3];
+                    if (obj.group_owed[ id ]) {
+                        row.my.balance_owed = obj.group_owed[ id ];
+                    }
+                    if (typeof params.on_retrieve == 'function') {
+                        params.on_retrieve(row);
+                    }
+                    return row;
                 }
-                if (typeof params.on_retrieve == 'function') {
-                    params.on_retrieve(row);
-                }
-                return row;
-            }
-        } );
-        $('group_list_actions').appendChild( obj.group_list.render_list_actions() );
-        obj.group_list.set_list_actions();
+            } );
+            $('group_list_actions').appendChild( obj.group_list.render_list_actions() );
+            obj.group_list.set_list_actions();
+        }
 
-        obj.stat_cat_list = new util.list('stat_cat_list');
-        obj.stat_cat_list.init( {
-            'columns' : [].concat(
-                obj.stat_cat_list.fm_columns( 'actsc', {
-                    'actsc_id' : { 'hidden' : true },
-                    'actsc_opac_visible' : { 'hidden' : true },
-                    'actsc_usr_summary' : { 'hidden' : true }
-                } )
-            ).concat(
-                obj.stat_cat_list.fm_columns( 'actscecm', {
-                    'actscecm_id' : { 'hidden' : true }
-                } )
-            )
-        } );
-        $('stat_cat_list_actions').appendChild( obj.stat_cat_list.render_list_actions() );
-        obj.stat_cat_list.set_list_actions();
+        if (document.getElementById('stat_cat_list')) {
+            obj.stat_cat_list = new util.list('stat_cat_list');
+            obj.stat_cat_list.init( {
+                'columns' : [].concat(
+                    obj.stat_cat_list.fm_columns( 'actsc', {
+                        'actsc_id' : { 'hidden' : true },
+                        'actsc_opac_visible' : { 'hidden' : true },
+                        'actsc_usr_summary' : { 'hidden' : true }
+                    } )
+                ).concat(
+                    obj.stat_cat_list.fm_columns( 'actscecm', {
+                        'actscecm_id' : { 'hidden' : true }
+                    } )
+                )
+            } );
+            $('stat_cat_list_actions').appendChild( obj.stat_cat_list.render_list_actions() );
+            obj.stat_cat_list.set_list_actions();
+        }
 
         JSAN.use('util.controller'); obj.controller = new util.controller();
         obj.controller.init(
@@ -312,15 +316,17 @@ patron.summary.prototype = {
                                                 render_main_patron_bill_summary( { balance_owed: 0.00, usr: obj.patron.id() } );
                                             }
                                             var tab = $('group_tab');
-                                            if (sum > 0) {
-                                                addCSSClass(tab,'balance_owed');
-                                            } else {
-                                                removeCSSClass(tab,'balance_owed');
+                                            if (tab) {
+                                                if (sum > 0) {
+                                                    addCSSClass(tab,'balance_owed');
+                                                } else {
+                                                    removeCSSClass(tab,'balance_owed');
+                                                }
+                                                tab.setAttribute(
+                                                    'label',
+                                                    patronStrings.getFormattedString('staff.patron.summary.tab.group_list_with_total_owed.label',[ util.money.cents_as_dollars( sum ) ])
+                                                );
                                             }
-                                            tab.setAttribute(
-                                                'label',
-                                                patronStrings.getFormattedString('staff.patron.summary.tab.group_list_with_total_owed.label',[ util.money.cents_as_dollars( sum ) ])
-                                            );
                                         } catch(E) {
                                             alert('Error in summary.js, patron_bill callback: ' + E);
                                         }
