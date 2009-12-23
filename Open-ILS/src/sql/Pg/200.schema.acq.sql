@@ -111,6 +111,7 @@ CREATE TABLE acq.fund (
     year            INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
     currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
     code            TEXT,
+	rollover        BOOL    NOT NULL DEFAULT FALSE,
     CONSTRAINT name_once_per_org_year UNIQUE (org,name,year),
     CONSTRAINT code_once_per_org_year UNIQUE (org, code, year)
 );
