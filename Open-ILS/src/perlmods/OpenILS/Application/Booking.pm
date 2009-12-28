@@ -551,7 +551,7 @@ sub capture_reservation {
 
     my $ret = { captured => 1, reservation => $reservation };
 
-    if ($here <> $reservation->pickup_lib) {
+    if ($here != $reservation->pickup_lib) {
         return OpenILS::Event->new('RESERVATION_CAPTURE_FAILED', payload => { captured => 0, fail_cause => 'not-transferable' })
             if (!$U->is_true($type->transferable)); # non-transferable resource
 
