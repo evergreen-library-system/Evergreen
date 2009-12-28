@@ -101,7 +101,8 @@ CREATE TABLE acq.funding_source_credit (
 	funding_source INT      NOT NULL REFERENCES acq.funding_source (id) DEFERRABLE INITIALLY DEFERRED,
 	amount	       NUMERIC	NOT NULL,
 	note  	       TEXT,
-	deadline_date  TIMESTAMPTZ
+	deadline_date  TIMESTAMPTZ,
+	effective_date TIMESTAMPTZ NOT NULL default now()
 );
 
 CREATE TABLE acq.fund (
