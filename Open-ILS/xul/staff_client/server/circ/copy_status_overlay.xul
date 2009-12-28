@@ -17,6 +17,9 @@
         <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
         <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
         <menuseparator/>
+        <menuitem command="cmd_create_brt" label="&staff.circ.copy_status_overlay.cmd_create_brt.label;" accesskey="&staff.circ.copy_status_overlay.cmd_create_brt.accesskey;"/>
+        <menuitem command="cmd_book_item_now" label="&staff.circ.copy_status_overlay.cmd_book_item_now.label;" accesskey="&staff.circ.copy_status_overlay.cmd_book_item_now.accesskey;"/>
+        <menuseparator/>
         <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
         <menuseparator/>
         <menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey;"/>
@@ -149,6 +152,9 @@
             <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
             <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
             <menuitem command="cmd_triggered_events" label="&staff.circ.copy_status_overlay.cmd_triggered_events.label;" accesskey="&staff.circ.copy_status_overlay.cmd_triggered_events.accesskey;"/>
+            <menuseparator />
+            <menuitem command="cmd_create_brt" label="&staff.circ.copy_status_overlay.cmd_create_brt.label;" accesskey="&staff.circ.copy_status_overlay.cmd_create_brt.accesskey;"/>
+            <menuitem command="cmd_book_item_now" label="&staff.circ.copy_status_overlay.cmd_book_item_now.label;" accesskey="&staff.circ.copy_status_overlay.cmd_book_item_now.accesskey;"/>
             <menuseparator />
             <menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
             <menuseparator />

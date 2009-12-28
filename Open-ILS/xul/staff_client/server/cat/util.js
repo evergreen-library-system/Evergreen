@@ -570,7 +570,7 @@ cat.util.edit_new_bresv = function(booking_results) {
         if (xulG.auth == undefined) {
             xulG.auth = {"session": {"key": ses()}};
         }
-        xulG.booking_results = booking_results;
+        xulG.bresv_interface_opts = {"booking_results": booking_results};
         xulG.new_tab(
             xulG.url_prefix("/eg/booking/reservation"),
             {

@@ -10,10 +10,20 @@
         <h1 class="booking AUTO_choose_a_brt"></h1>
         <form onsubmit="init_reservation_interface(this); return false;">
             <div id="brt_selector_here" class="nice_vertical_padding"></div>
-            <div class="nice_vertical_padding">
-                <input type="submit" class="AUTO_ATTR_VALUE_next" />
+            <div id="brt_select_other_controls">
+                <!-- <div class="nice_vertical_padding">
+                    <input type="checkbox" name="brt_noncat_only"
+                        id="brt_noncat_only" checked="checked" />
+                    <label for="brt_noncat_only"
+                        class="AUTO_brt_noncat_only"></label>
+                </div> -->
+                <div class="nice_vertical_padding">
+                    <input type="submit"
+                        class="AUTO_ATTR_VALUE_next" />
+                </div>
             </div>
         </form>
+        <div id="preselected_patron"></div>
     </div>
 
     <div id="brt_reserve_block" class="container">
@@ -25,7 +35,7 @@
                     anything in CSS. -->
                 <select id="brsrc_list" name="brsrc_list" multiple="multiple"
                     size="12"></select>
-                <div class="nice_vertical_padding">
+                <div id="holds_patron_barcode" class="nice_vertical_padding">
                     <label class="AUTO_patron_barcode"
                         for="patron_barcode" /></label>
                     <input name="patron_barcode" id="patron_barcode"
@@ -57,13 +67,14 @@
                     <input id="reserve_date_end" />
                     <input id="reserve_time_end" />
                 </div>
-                <h2 class="booking AUTO_with_these_attr"></h2>
-                <div id="bra_and_brav">
-                </div>
+                <h2 id="bra_and_brav_header"
+                    class="booking AUTO_with_these_attr"></h2>
+                <div id="bra_and_brav"></div>
             </div>
             <div id="reserve_under">
                 <hr />
                 <h2 class="booking" id="existing_reservation_patron_line"></h2>
+                <div id="bresv_grid_alt_explanation"></div>
                 <table id="bresv_grid" jsId="bresvGrid"
                     dojoType="dojox.grid.DataGrid" query="{id: '*'}"
                     rowSelector="20px" autoHeight="true">

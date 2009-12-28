@@ -64,6 +64,8 @@ circ.copy_status.prototype = {
                             obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
                             obj.controller.view.sel_patron.setAttribute('disabled','true');
                             obj.controller.view.cmd_triggered_events.setAttribute('disabled','true');
+                            obj.controller.view.cmd_create_brt.setAttribute('disabled','true');
+                            obj.controller.view.cmd_book_item_now.setAttribute('disabled','true');
                             obj.controller.view.sel_spine.setAttribute('disabled','true');
                             obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
                             obj.controller.view.sel_clip.setAttribute('disabled','true');
@@ -88,6 +90,12 @@ circ.copy_status.prototype = {
                             obj.controller.view.sel_copy_details.setAttribute('disabled','false');
                             obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
                             obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
+                            if (obj.selected_one_unique_owning_lib()) {
+                                obj.controller.view.cmd_book_item_now.setAttribute('disabled','false');
+                            } else {
+                                obj.controller.view.cmd_book_item_now.setAttribute('disabled','true');
+                            }
+                            obj.controller.view.cmd_create_brt.setAttribute('disabled','false');
                             obj.controller.view.sel_spine.setAttribute('disabled','false');
                             obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
                             obj.controller.view.sel_clip.setAttribute('disabled','false');
@@ -181,6 +189,42 @@ circ.copy_status.prototype = {
                                 }
                             } catch(E) {
                                 alert('Error in copy_status.js, cmd_triggered_events: ' + E);
+                            }
+                        }
+                    ],
+                    'cmd_create_brt' : [
+                        ['command'],
+                        function() {
+                            JSAN.use("cat.util");
+                            JSAN.use("util.functional");
+
+                            var results = cat.util.make_bookable(
+                                util.functional.map_list(
+                                    obj.selection_list, function (o) {
+                                        return o.copy_id;
+                                    }
+                                )
+                            );
+                            if (results && results["brsrc"]) {
+                                cat.util.edit_new_brsrc(results["brsrc"]);
+                            }
+                        }
+                    ],
+                    'cmd_book_item_now' : [
+                        ['command'],
+                        function() {
+                            JSAN.use("cat.util");
+                            JSAN.use("util.functional");
+
+                            var results = cat.util.make_bookable(
+                                util.functional.map_list(
+                                    obj.selection_list, function (o) {
+                                        return o.copy_id;
+                                    }
+                                )
+                            );
+                            if (results) {
+                                cat.util.edit_new_bresv(results);
                             }
                         }
                     ],
@@ -1008,6 +1052,15 @@ circ.copy_status.prototype = {
 
     },
 
+    'selected_one_unique_owning_lib': function () {
+        JSAN.use('util.functional');
+        var list = util.functional.map_list(
+            this.selection_list,
+            function(o) { return o.owning_lib; }
+        );
+        return util.functional.unique_list_values(list).length == 1;
+    },
+
     'test_barcode' : function(bc) {
         var obj = this;
         var good = util.barcode.check(bc);
@@ -1100,6 +1153,7 @@ circ.copy_status.prototype = {
                                 'renewable' : details.circ ? 't' : 'f', 
                                 'copy_id' : details.copy.id(), 
                                 'acn_id' : details.volume ? details.volume.id() : -1, 
+                                'owning_lib' : details.volume ? details.volume.owning_lib() : -1, 
                                 'barcode' : barcode, 
                                 'doc_id' : details.mvr ? details.mvr.doc_id() : null  
                             } 

@@ -1637,6 +1637,7 @@ cat.copy_browser.prototype = {
         try {
             var found_aou = false; var found_acn = false; var found_acp = false;
             var found_aou_with_can_have_vols = false;
+            var sel_copy_libs = {};
             for (var i = 0; i < obj.sel_list.length; i++) {
                 var type = obj.sel_list[i].split(/_/)[0];
                 switch(type) {
@@ -1646,7 +1647,15 @@ cat.copy_browser.prototype = {
                         if ( get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) found_aou_with_can_have_vols = true;
                     break;
                     case 'acn' : found_acn = true; break;
-                    case 'acp' : found_acp = true; break;
+                    case 'acp' :
+                        found_acp = true;
+                        sel_copy_libs[
+                            obj.map_acn[
+                                "acn_" +
+                                obj.map_acp[obj.sel_list[i]].call_number()
+                            ].owning_lib()
+                        ] = true;
+                        break;
                 }
             }
             obj.controller.view.cmd_add_items.setAttribute('disabled','true');
@@ -1664,6 +1673,7 @@ cat.copy_browser.prototype = {
             obj.controller.view.cmd_transfer_items.setAttribute('disabled','true');
             obj.controller.view.sel_copy_details.setAttribute('disabled','true');
             obj.controller.view.cmd_create_brt.setAttribute('disabled','true');
+            obj.controller.view.cmd_book_item_now.setAttribute('disabled','true');
             obj.controller.view.sel_patron.setAttribute('disabled','true');
             obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
             obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
@@ -1690,6 +1700,11 @@ cat.copy_browser.prototype = {
                 obj.controller.view.sel_copy_details.setAttribute('disabled','false');
                 obj.controller.view.cmd_create_brt.setAttribute('disabled','false');
                 obj.controller.view.sel_patron.setAttribute('disabled','false');
+
+                var L = 0; for (var k in sel_copy_libs) L++;
+                if (L < 2) {
+                    obj.controller.view.cmd_book_item_now.setAttribute('disabled','false');
+                }
             }
         } catch(E) {
             obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.actions.error'),E);

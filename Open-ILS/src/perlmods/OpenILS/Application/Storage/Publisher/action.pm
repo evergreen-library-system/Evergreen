@@ -1411,7 +1411,7 @@ sub reservation_targeter {
                     next;
                 }
 
-                my $copy = asset::copy->search( deleted => f, barcode => $res->barcode )->[0];
+                my $copy = [ asset::copy->search( deleted => f, barcode => $res->barcode )]->[0];
 
                 unless ($copy) {
                     push @good_resources, $res;

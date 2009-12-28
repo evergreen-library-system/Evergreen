@@ -46,3 +46,12 @@ div.nice_vertical_padding {
 span.two_buttons {
     text-align: center;
 }
+option.forced_unavailable {
+    background-color: #ffcccc;
+    color: #990000;
+    font-weight: bold;
+    font-style: italic;
+}
+div#preselected_patron {
+    font-size: 12pt;
+}

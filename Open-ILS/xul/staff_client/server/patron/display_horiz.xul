@@ -102,6 +102,7 @@
         <command id="cmd_patron_info_groups" />
         <command id="cmd_patron_other" />
         <command id="cmd_patron_alert" />
+        <command id="cmd_patron_reservation" />
         <command id="cmd_patron_exit" />
         <command id="cmd_patron_retrieve" />
         <command id="cmd_patron_merge" />

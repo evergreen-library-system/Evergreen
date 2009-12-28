@@ -13,9 +13,11 @@ dojo.requireLocalization("openils.booking", "reservation");
  */
 var localeStrings = dojo.i18n.getLocalization("openils.booking", "reservation");
 var pcrud = new openils.PermaCrud();
+var opts;
 var our_brt;
 var brsrc_index = {};
 var bresv_index = {};
+var just_reserved_now = {};
 
 function AttrValueTable() { this.t = {}; }
 AttrValueTable.prototype.set = function(attr, value) { this.t[attr] = value; };
@@ -36,46 +38,126 @@ AttrValueTable.prototype.get_all_values = function() {
 var attr_value_table =  new AttrValueTable();
 
 function TimestampRange() {
-    this.start = {"date": undefined, "time": undefined};
-    this.end = {"date": undefined, "time": undefined};
+    this.start = new Date();
+    this.end = new Date();
+
+    this.validity = {"start": false, "end": false};
+    this.nodes = {
+        "start": {"date": undefined, "time": undefined},
+        "end": {"date": undefined, "time": undefined}
+    };
+    this.saved_style_properties = {};
+    this.invalid_style_properties = {
+        "backgroundColor": "#ffcccc",
+        "color": "#990000",
+        "borderColor": "#990000",
+        "fontWeight": "bold"
+    };
 }
 TimestampRange.prototype.get_timestamp = function(when) {
-    return (this[when].date + " " + this[when].time);
+    return this.any_widget.serialize(this[when]).
+        replace("T", " ").substr(0, 19);
 };
 TimestampRange.prototype.get_range = function() {
     return this.is_backwards() ?
         [this.get_timestamp("end"), this.get_timestamp("start")] :
         [this.get_timestamp("start"), this.get_timestamp("end")];
 };
-TimestampRange.prototype.split_time = function(s) {
-    /* We're not interested in seconds for our purposes,
-     * so we floor everything to :00.
-     *
-     * Also, notice that following discards all time zone information
-     * from the timestamp string represenation.  This should probably
-     * stay the way it is, even when this code is improved to support
-     * selecting time zones (it currently just assumes server's local
-     * time).  The easy way to add support will be to add a drop-down
-     * selector from which the user can pick a time zone, then use
-     * that timezone literal in an "AT TIME ZONE" clause in SQL on
-     * the server side.
-     */
-    return s.split("T")[1].replace(/(\d{2}:\d{2}:)(\d{2})(.*)/, "$100");
-};
-TimestampRange.prototype.split_date = function(s) {
-    return s.split("T")[0];
-};
 TimestampRange.prototype.update_from_widget = function(widget) {
     var when = widget.id.match(/(start|end)/)[1];
     var which = widget.id.match(/(date|time)/)[1];
 
+    if (this.any_widget == undefined)
+        this.any_widget = widget;
+    if (this.nodes[when][which] == undefined)
+        this.nodes[when][which] = widget.domNode; /* We'll need this later */
+
     if (when && which) {
-        this[when][which] =
-            this["split_" + which](widget.serialize(widget.value));
+        this.update_timestamp(when, which, widget.value);
+    }
+
+    this.compute_validity();
+    this.paint_validity();
+};
+TimestampRange.prototype.compute_validity = function() {
+    if (Math.abs(this.start - this.end) < 1000) {
+        this.validity.end = false;
+    } else {
+        if (this.start < this.current_minimum())
+            this.validity.start = false;
+        else
+            this.validity.start = true;
+
+        if (this.end < this.current_minimum())
+            this.validity.end = false;
+        else
+            this.validity.end = true;
+    }
+};
+/* This method provides the minimum timestamp that is considered valid. For
+ * now it's arbitrarily "now + 15 minutes", meaning that all reservations
+ * must be made at least 15 minutes in the future.
+ *
+ * For reasons of keeping the middle layer happy, this should always return
+ * a time that is at least somewhat in the future. The ML isn't able to target
+ * any resources for a reservation with a start date that isn't in the future.
+ */
+TimestampRange.prototype.current_minimum = function() {
+    /* XXX This is going to be a problem with local clocks that are off. */
+    var n = new Date();
+    n.setTime(n.getTime() + 1000 * 900); /* XXX 15 minutes; stop hardcoding! */
+    return n;
+};
+TimestampRange.prototype.update_timestamp = function(when, which, value) {
+    if (which == "date") {
+        this[when].setFullYear(value.getFullYear());
+        this[when].setMonth(value.getMonth());
+        this[when].setDate(value.getDate());
+    } else {    /* "time" */
+        this[when].setHours(value.getHours());
+        this[when].setMinutes(value.getMinutes());
+        this[when].setSeconds(0);
     }
 };
 TimestampRange.prototype.is_backwards = function() {
-    return (this.get_timestamp("start") > this.get_timestamp("end"));
+    return (this.start > this.end);
+};
+TimestampRange.prototype.paint_validity = function()  {
+    for (var when in this.validity) {
+        if (this.validity[when]) {
+            this.paint_valid_node(this.nodes[when].date);
+            this.paint_valid_node(this.nodes[when].time);
+        } else {
+            this.paint_invalid_node(this.nodes[when].date);
+            this.paint_invalid_node(this.nodes[when].time);
+        }
+    }
+};
+TimestampRange.prototype.paint_invalid_node = function(node) {
+    if (node) {
+        /* Just toggling the class of something would be better than
+         * manually setting style here, but I haven't been able to get that
+         * to play nicely with dojo's styling of the date/time textboxen.
+         */
+        if (this.saved_style_properties.backgroundColor == undefined) {
+            for (var k in this.invalid_style_properties) {
+                this.saved_style_properties[k] = node.style[k];
+            }
+        }
+        for (var k in this.invalid_style_properties) {
+            node.style[k] = this.invalid_style_properties[k];
+        }
+    }
+};
+TimestampRange.prototype.paint_valid_node = function(node) {
+    if (node) {
+        for (var k in this.saved_style_properties) {
+            node.style[k] = this.saved_style_properties[k];
+        }
+    }
+};
+TimestampRange.prototype.is_valid = function() {
+    return (this.validity.start && this.validity.end);
 };
 var reserve_timestamp_range = new TimestampRange();
 
@@ -93,7 +175,8 @@ SelectorMemory.prototype.save = function() {
 SelectorMemory.prototype.restore = function() {
     for (var i = 0; i < this.selector.options.length; i++) {
         if (this.memory[this.selector.options[i].value]) {
-            this.selector.options[i].selected = true;
+            if (!this.selector.options[i].disabled)
+                this.selector.options[i].selected = true;
         }
     }
 };
@@ -148,6 +231,10 @@ function get_all_noncat_brt() {
     );
 }
 
+function get_brt_by_id(id) {
+    return pcrud.retrieve("brt", id);
+}
+
 function get_brsrc_id_list() {
     var options = {"type": our_brt.id()};
 
@@ -168,36 +255,56 @@ function get_brsrc_id_list() {
     );
 }
 
-// FIXME: We need failure checking after pcrud.retrieve()
-function sync_brsrc_index_from_ids(id_list) {
-    /* One pass to populate the cache with anything that's missing. */
-    for (var i in id_list) {
-        if (!brsrc_index[id_list[i]]) {
-            brsrc_index[id_list[i]] = pcrud.retrieve("brsrc", id_list[i]);
+/* FIXME: We need failure checking after pcrud.retrieve() */
+function add_brsrc_to_index_if_needed(list, further) {
+    for (var i in list) {
+        if (!brsrc_index[list[i]]) {
+            brsrc_index[list[i]] = pcrud.retrieve("brsrc", list[i]);
         }
-        brsrc_index[id_list[i]].isdeleted(false); // See NOTE below.
+        if (further)
+            further(brsrc_index[list[i]]);
     }
-    /* A second pass to indicate any entries in the cache to be hidden. */
+}
+
+function sync_brsrc_index_from_ids(available_list, additional_list) {
+    /* Default states for everything in the index. Read the further comments. */
     for (var i in brsrc_index) {
-        if (id_list.indexOf(Number(i)) < 0) { // Number() is important.
-            brsrc_index[i].isdeleted(true); // See NOTE below.
-        }
+        brsrc_index[i].isdeleted(true);
+        brsrc_index[i].ischanged(false);
     }
-    /* NOTE: We lightly abuse the isdeleted() magic attribute of the brsrcs
-     * in our cache.  Because we're not going to pass back any brsrcs to
-     * the middle layer, it doesn't really matter what we set this attribute
-     * to. What we're using it for is to indicate in our little brsrc cache
-     * whether a given brsrc should be displayed in this UI's current state
-     * (based on whether it was returned by the last call to the middle layer,
-     * i.e., whether it matches the currently selected attributes).
+
+    /* Populate the cache with anything that's missing and tag everything
+     * in the "available" list as *not* deleted, and tag everything in the
+     * additional list as "changed." See below. */
+    add_brsrc_to_index_if_needed(
+        available_list, function(o) { o.isdeleted(false); }
+    );
+    add_brsrc_to_index_if_needed(
+        additional_list,
+        function(o) {
+            if (!(o.id() in just_reserved_now)) o.ischanged(true);
+        }
+    );
+    /* NOTE: We lightly abuse the isdeleted() and ischanged() magic fieldmapper
+     * attributes of the brsrcs in our cache.  Because we're not going to
+     * pass back any brsrcs to the middle layer, it doesn't really matter
+     * what we set this attribute to. What we're using it for is to indicate
+     * in our little brsrc cache how a given brsrc should be displayed in this
+     * UI's current state (based on whether the brsrc matches timestamp range
+     * availability (isdeleted(false)) and whether the brsrc has been forced
+     * into the list because it was selected in a previous interface (like
+     * the catalog) (ischanged(true))).
      */
 }
 
 function check_bresv_targeting(results) {
     var missing = 0;
     for (var i in results) {
-        if (!(results[i].targeting && results[i].targeting.current_resource))
+        if (!(results[i].targeting && results[i].targeting.current_resource)) {
             missing++;
+        } else {
+            just_reserved_now[results[i].targeting.current_resource] = true;
+        }
     }
     return missing;
 }
@@ -206,6 +313,9 @@ function create_bresv(resource_list) {
     var barcode = document.getElementById("patron_barcode").value;
     if (barcode == "") {
         alert(localeStrings.WHERES_THE_BARCODE);
+        return;
+    } else if (!reserve_timestamp_range.is_valid()) {
+        alert(localeStrings.INVALID_TS_RANGE);
         return;
     }
     var results;
@@ -285,7 +395,12 @@ function create_bresv_on_brsrc() {
         alert(localeStrings.SELECT_A_BRSRC_THEN);
 }
 
-function create_bresv_on_brt() { create_bresv(); }
+function create_bresv_on_brt() {
+    if (any_usable_brsrc())
+        create_bresv();
+    else
+        alert(localeStrings.NO_USABLE_BRSRC);
+}
 
 function get_actor_by_barcode(barcode) {
     var usr = fieldmapper.standardRequest(
@@ -329,11 +444,24 @@ function init_bresv_grid(barcode) {
             alert(my_ils_error(localeStrings.GET_BRESV_LIST_ERR, result));
         }
     } else {
+        if (result.length < 1) {
+            document.getElementById("bresv_grid_alt_explanation").innerHTML =
+                localeStrings.NO_EXISTING_BRESV;
+            hide_dom_element(document.getElementById("bresv_grid"));
+            reveal_dom_element(document.getElementById("reserve_under"));
+        } else {
+            document.getElementById("bresv_grid_alt_explanation").innerHTML =
+                "";
+            reveal_dom_element(document.getElementById("bresv_grid"));
+            reveal_dom_element(document.getElementById("reserve_under"));
+        }
+        /* May as well do the following in either case... */
         bresvGrid.setStore(
             new dojo.data.ItemFileReadStore(
                 {"data": flatten_to_dojo_data(result)}
             )
         );
+        bresv_index = {};
         for (var i in result) {
             bresv_index[result[i].id()] = result[i];
         }
@@ -369,6 +497,9 @@ function provide_brt_selector(targ_div) {
             targ_div.appendChild(
                 document.createTextNode(localeStrings.NO_BRT_RESULTS)
             );
+            document.getElementById(
+                "brt_select_other_controls"
+            ).style.display = "none";
         } else {
             var selector = document.createElement("select");
             selector.setAttribute("id", "brt_selector");
@@ -383,6 +514,7 @@ function provide_brt_selector(targ_div) {
                 option.appendChild(document.createTextNode(brt_list[i].name()));
                 selector.appendChild(option);
             }
+            targ_div.innerHTML = "";
             targ_div.appendChild(selector);
         }
     }
@@ -396,7 +528,8 @@ function init_reservation_interface(f) {
     reveal_dom_element(reserve_block);
 
     /* Save a global reference to the brt we're going to reserve */
-    our_brt = xulG.brt_list[f.brt_selector.selectedIndex];
+    if (f)
+        our_brt = xulG.brt_list[f.brt_selector.selectedIndex];
 
     /* Get a list of attributes that can apply to that brt. */
     var bra_list = pcrud.search("bra", {"resource_type": our_brt.id()});
@@ -410,6 +543,10 @@ function init_reservation_interface(f) {
     bra_list.map(function(o) {
         brav_by_bra[o.id()] = pcrud.search("brav", {"attr": o.id()});
     });
+
+    /* Hide the label over the attributes widgets if we have nothing to show. */
+    var domf = (bra_list.length < 1) ? hide_dom_element : reveal_dom_element;
+    domf(document.getElementById("bra_and_brav_header"));
 
     /* Create DOM widgets to represent each attribute/values set. */
     for (var i in bra_list) {
@@ -451,12 +588,20 @@ function init_reservation_interface(f) {
      * asking about. */
     document.getElementById("brsrc_list_header").innerHTML = our_brt.name();
 
+    if (opts.patron_barcode) {
+        document.getElementById("holds_patron_barcode").style.display = "none";
+        document.getElementById("patron_barcode").value = opts.patron_barcode;
+        document.getElementById("patron_barcode").onchange();
+    }
     update_brsrc_list();
 }
 
 function update_brsrc_list() {
     var brsrc_id_list = get_brsrc_id_list();
-    sync_brsrc_index_from_ids(brsrc_id_list);
+    var force_list = (opts.booking_results && opts.booking_results.brsrc) ?
+        opts.booking_results.brsrc.map(function(o) { return o[0]; }) : [];
+
+    sync_brsrc_index_from_ids(brsrc_id_list, force_list);
 
     var target_selector = document.getElementById("brsrc_list");
     var selector_memory = new SelectorMemory(target_selector);
@@ -464,16 +609,30 @@ function update_brsrc_list() {
     target_selector.innerHTML = "";
 
     for (var i in brsrc_index) {
-        if (brsrc_index[i].isdeleted()) {
+        if (brsrc_index[i].isdeleted() && (!brsrc_index[i].ischanged()))
             continue;
-        }
+
         var opt = document.createElement("option");
         opt.setAttribute("value", brsrc_index[i].id());
         opt.appendChild(document.createTextNode(brsrc_index[i].barcode()));
+
+        if (brsrc_index[i].isdeleted() && (brsrc_index[i].ischanged())) {
+            opt.setAttribute("class", "forced_unavailable");
+            opt.setAttribute("disabled", "disabled");
+        }
+
         target_selector.appendChild(opt);
     }
 
     selector_memory.restore();
+}
+
+function any_usable_brsrc() {
+    for (var i in brsrc_index) {
+        if (!brsrc_index[i].isdeleted())
+            return true;
+    }
+    return false;
 }
 
 function update_bresv_grid() {
@@ -494,8 +653,6 @@ function update_bresv_grid() {
             }
         }, 0);
         setTimeout(function() { init_bresv_grid(widg.value); }, 0);
-
-        reveal_dom_element(document.getElementById("reserve_under"));
     }
 }
 
@@ -536,6 +693,10 @@ function cancel_selected_bresv(bresv_dojo_items) {
         cancel_reservations(
             bresv_dojo_items.map(function(o) { return bresv_index[o.id]; })
         );
+        /* After some delay to allow the cancellations a chance to get
+         * committed, refresh the brsrc list as it might reflect newly
+         * available resources now. */
+        setTimeout(update_brsrc_list, 2000);
     } else {
         alert(localeStrings.CXL_BRESV_SELECT_SOMETHING);
     }
@@ -576,6 +737,41 @@ function init_auto_l10n(el) {
     }
 }
 
+/* The following function should return true if the reservation interface
+ * should start normally (show a list of brt to choose from) or false if
+ * it should not (because we've "started" it some other way by setting up
+ * and displaying other widgets).
+ */
+function early_action_passthru() {
+    if (opts.booking_results) {
+        if (opts.booking_results.brt.length != 1) {
+            alert(localeStrings.NEED_EXACTLY_ONE_BRT_PASSED_IN);
+            return true;
+        } else if (!(our_brt = get_brt_by_id(opts.booking_results.brt[0][0]))) {
+            alert(localeStrings.COULD_NOT_RETRIEVE_BRT_PASSED_IN);
+            return true;
+        }
+
+        init_reservation_interface();
+        return false;
+    }
+
+    if (opts.patron_barcode) {
+        try {
+            var patron = get_actor_by_barcode(opts.patron_barcode);
+            if (patron) {
+                document.getElementById("preselected_patron").innerHTML =
+                    "Patron targeted for reservation: <strong>" +
+                    formal_name(patron) + "</strong>";
+            }
+        } catch (E) {
+            ; /* XXX ignorable? perhaps. */
+        }
+    }
+
+    return true;
+}
+
 /*
  * my_init
  */
@@ -583,7 +779,10 @@ function my_init() {
     hide_dom_element(document.getElementById("brt_reserve_block"));
     reveal_dom_element(document.getElementById("brt_search_block"));
     hide_dom_element(document.getElementById("reserve_under"));
-    provide_brt_selector(document.getElementById("brt_selector_here"));
     init_auto_l10n(document.getElementById("auto_l10n_start_here"));
     init_timestamp_widgets();
+
+    if (!(opts = xulG.bresv_interface_opts)) opts = {};
+    if (early_action_passthru())
+        provide_brt_selector(document.getElementById("brt_selector_here"));
 }

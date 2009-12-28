@@ -86,6 +86,13 @@
                             <button id="PatronNavBar_edit" command="cmd_patron_edit" class="nav"
                                 label="&staff.patron_navbar.edit;" accesskey="&staff.patron_navbar.edit.accesskey;"/>
                             <button id="PatronNavBar_messages" label="&staff.patron_navbar.actions.menu.standing_penalties.label;" accesskey="&staff.patron_navbar.actions.menu.standing_penalties.accesskey;" command="cmd_standing_penalties" class="nav"/>
+
+                            <button id="PatronNavBar_booking" command="cmd_patron_booking" class="nav" label="&staff.patron_navbar.booking;" accesskey="&staff.patron_navbar.booking.accesskey;" type="menu">
+                                <menupopup>
+                                    <menuitem label="&staff.main.menu.booking.reservation.label;" accesskey="&staff.main.menu.booking.reservation.accesskey;" command="cmd_patron_reservation" />
+                                </menupopup>
+                            </button>
+
                             <button id="PatronNavBar_other" command="cmd_patron_other" class="nav" label="&staff.patron_navbar.other;" accesskey="&staff.patron_navbar.other.accesskey;" type="menu">
                                 <menupopup>
                                     <menuitem label="&staff.patron_navbar.alert;" accesskey="&staff.patron_navbar.alert.accesskey;" command="cmd_patron_alert"/>

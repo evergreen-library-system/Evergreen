@@ -1380,6 +1380,8 @@
 <!ENTITY staff.patron_navbar.holds.accesskey 'H'>
 <!ENTITY staff.patron_navbar.alert 'Display Alert and Messages'>
 <!ENTITY staff.patron_navbar.alert.accesskey 'A'>
+<!ENTITY staff.patron_navbar.booking 'Booking'>
+<!ENTITY staff.patron_navbar.booking.accesskey 'k'>
 <!ENTITY staff.patron_navbar.other 'Other'>
 <!ENTITY staff.patron_navbar.other.accesskey 'o'>
 <!ENTITY staff.patron_navbar.items 'Items Out'>
@@ -1946,6 +1948,10 @@
 <!ENTITY staff.circ.copy_status_overlay.sel_patron.accesskey "L">
 <!ENTITY staff.circ.copy_status_overlay.cmd_triggered_events.label "Show Triggered Events">
 <!ENTITY staff.circ.copy_status_overlay.cmd_triggered_events.accesskey "T">
+<!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.label "Book Item Now">
+<!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.accesskey "N">
+<!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.label "Make Item Bookable">
+<!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.accesskey "K">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.label "Edit Item Attributes">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.accesskey "E">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
@@ -2156,10 +2162,10 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey "B">
 <!ENTITY staff.cat.copy_browser.actions.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.cat.copy_browser.actions.sel_copy_details.accesskey "I">
-<!ENTITY staff.cat.copy_browser.actions.cmd_book_item_now.label "Book This Item">
-<!ENTITY staff.cat.copy_browser.actions.cmd_book_item_now.accesskey "K">
-<!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.label "Make This Item Bookable">
-<!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.accesskey "Y">
+<!ENTITY staff.cat.copy_browser.actions.cmd_book_item_now.label "Book Item Now">
+<!ENTITY staff.cat.copy_browser.actions.cmd_book_item_now.accesskey "N">
+<!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.label "Make Item Bookable">
+<!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.accesskey "K">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.accesskey "L">
 <!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Item Attributes">

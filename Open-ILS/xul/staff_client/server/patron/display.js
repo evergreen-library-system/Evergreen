@@ -375,6 +375,27 @@ patron.display.prototype = {
                             }
                         }
                     ],
+                    'cmd_patron_reservation' : [
+                        ['command'],
+                        function(ev) {
+                            if (xulG.auth == undefined) {
+                                xulG.auth = {"session": {"key": ses()}};
+                            }
+                            xulG.bresv_interface_opts = {
+                                "patron_barcode": obj.patron.card().barcode()
+                            };
+                            xulG.new_tab(
+                                "/eg/booking/reservation",
+                                {
+                                    "tab_name": offlineStrings.getString(
+                                        "menu.cmd_booking_reservation.tab"
+                                    ),
+                                    "browser": false
+                                },
+                                xulG
+                            );
+                        }
+                    ],
                     'cmd_patron_exit' : [
                         ['command'],
                         function(ev) {

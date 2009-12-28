@@ -521,6 +521,66 @@ by the top-level filters ('user', 'type', 'resource').
 NOTES
 );
 
+
+sub get_pull_list {
+    my ($self, $client, $auth, $range, $pickup_lib) = @_;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('RETRIEVE_RESERVATION_PULL_LIST');
+    return $e->die_event unless ref($range) eq 'ARRAY';
+
+    my $query = {
+        "select" => {"bresv" => ["id"]},
+        "from" => "bresv",
+        "where" => {
+            "-and" => [
+                json_query_ranges_overlap(
+                    $range->[0], $range->[1], "start_time", "end_time"
+                ),
+                {"current_resource" => {"!=" => undef}},
+                {"capture_time" => undef},
+                {"cancel_time" => undef},
+                {"return_time" => undef},
+                {"pickup_time" => undef}
+            ],
+        }
+    };
+    if ($pickup_lib) {
+        push @{$query->{"where"}->{"-and"}}, {"pickup_lib" => $pickup_lib};
+    }
+
+    my $ids = [ map { $_->{id} } @{$e->json_query($query)} ];
+    if (@$ids) {
+        my $bresv_list = $e->search_booking_reservation([
+            {"id" => $ids}, {
+                flesh => 1,
+                flesh_fields => {
+                    bresv => [qw/usr target_resource_type current_resource/]
+                }
+            }
+        ]);
+        return $bresv_list ? $bresv_list : [];
+    } else {
+        return $ids;    # empty list
+    }
+}
+__PACKAGE__->register_method(
+    method   => "get_pull_list",
+    api_name => "open-ils.booking.reservations.get_pull_list",
+    argc     => 2,
+    signature=> {
+        params => [
+            {type => 'string', desc => 'Authentication token'},
+            {type => 'array', desc => 'Date/time range for reservations'},
+            {type => 'number', desc => '(Optional) Pickup library'}
+        ],
+        return => { desc => "An array of reservations, fleshed with usr, " .
+            "current_resource, and target_resource_type" }
+    }
+);
+
+
 sub capture_reservation {
     my $self = shift;
     my $client = shift;
@@ -599,7 +659,7 @@ sub capture_reservation {
 }
 __PACKAGE__->register_method(
     method   => "capture_reservation",
-    api_name => "open-ils.booking.reservation.capture",
+    api_name => "open-ils.booking.reservations.capture",
     argc     => 2,
     signature=> {
         params => [
