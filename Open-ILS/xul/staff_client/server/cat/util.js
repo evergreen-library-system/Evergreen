@@ -269,7 +269,6 @@ cat.util.spawn_copy_editor = function(params) {
             params
         );
         if (!my_xulG.copies && params.edit) {
-            alert(typeof params.no_copies_modified_msg != 'undefined' ? params.no_copies_modified_msg : $("catStrings").getString('staff.cat.util.copy_editor.not_modified'));
         } else {
             return my_xulG.copies;
         }

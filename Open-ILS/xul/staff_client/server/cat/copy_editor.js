@@ -1238,8 +1238,6 @@ g.stash_and_close = function() {
                 );
                 if (typeof r.ilsevent != 'undefined') {
                     g.error.standard_unexpected_error_alert('copy update',r);
-                } else {
-                    alert($('catStrings').getString('staff.cat.copy_editor.handle_update.success'));
                 }
                 /* FIXME -- revisit the return value here */
             } catch(E) {

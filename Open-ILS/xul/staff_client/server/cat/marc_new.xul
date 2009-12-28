@@ -106,7 +106,6 @@
                                                 [ ses(), new_marcxml, catStrings.getString('staff.cat.marc_new.system_local.label'), 1 ]
                                             );
                                             if (typeof robj.ilsevent != 'undefined') throw(robj);
-                                            alert(catStrings.getString('staff.cat.marc_new.record_created.label'));
 
                                             /* Replace tab with OPAC-view of record */
 
