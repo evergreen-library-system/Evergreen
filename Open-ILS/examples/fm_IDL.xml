@@ -1107,6 +1107,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
+	<class id="mbtslv" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction_summary_location_view" oils_persist:tablename="money.billable_xact_summary_location_view" reporter:label="Billable Transaction Summary with Billing Location" oils_persist:readonly="true" reporter:core="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field reporter:label="Balance Owed" name="balance_owed" reporter:datatype="money"/>
+			<field reporter:label="Transaction ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Last Billing Note" name="last_billing_note" reporter:datatype="text"/>
+			<field reporter:label="Last Billing Timestamp" name="last_billing_ts" reporter:datatype="timestamp"/>
+			<field reporter:label="Last Billing Type" name="last_billing_type" reporter:datatype="text"/>
+			<field reporter:label="Last Payment Note" name="last_payment_note" reporter:datatype="text"/>
+			<field reporter:label="Last Payment Timestamp" name="last_payment_ts" reporter:datatype="timestamp"/>
+			<field reporter:label="Last Payment Type" name="last_payment_type" reporter:datatype="text"/>
+			<field reporter:label="Total Owed" name="total_owed" reporter:datatype="money"/>
+			<field reporter:label="Total Paid" name="total_paid" reporter:datatype="money"/>
+			<field reporter:label="Billed User" name="usr" reporter:datatype="link"/>
+			<field reporter:label="Transaction Finish Time" name="xact_finish" reporter:datatype="timestamp" />
+			<field reporter:label="Transaction Start Time" name="xact_start" reporter:datatype="timestamp" />
+			<field reporter:label="Transaction Type" name="xact_type" reporter:datatype="text"/>
+			<field reporter:label="Billing Location" name="billing_location" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
 	<class id="aun" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_note" oils_persist:tablename="actor.usr_note" reporter:label="User Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_note_id_seq">
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
