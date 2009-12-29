@@ -413,4 +413,99 @@ return undef;
 
 $func$ LANGUAGE PLPERLU;
 
+CREATE OR REPLACE FUNCTION biblio.marc21_record_type( rid BIGINT ) RETURNS config.marc21_rec_type_map AS $func$
+DECLARE
+	ldr         RECORD;
+	tval        TEXT;
+	tval_rec    RECORD;
+	bval        TEXT;
+	bval_rec    RECORD;
+    retval      config.marc21_rec_type_map%ROWTYPE;
+BEGIN
+    SELECT * INTO ldr FROM metabib.full_rec WHERE record = rid AND tag = 'LDR' LIMIT 1;
+
+    IF ldr.id IS NULL THEN
+        SELECT * INTO retval FROM config.marc21_rec_type_map WHERE code = 'BKS';
+        RETURN retval;
+    END IF;
+
+    SELECT * INTO tval_rec FROM config.marc21_ff_pos_map WHERE fixed_field = 'Type' LIMIT 1; -- They're all the same
+    SELECT * INTO bval_rec FROM config.marc21_ff_pos_map WHERE fixed_field = 'BLvl' LIMIT 1; -- They're all the same
+
+
+    tval := SUBSTRING( ldr.value, tval_rec.start_pos + 1, tval_rec.length );
+    bval := SUBSTRING( ldr.value, bval_rec.start_pos + 1, bval_rec.length );
+
+    -- RAISE NOTICE 'type %, blvl %, ldr %', tval, bval, ldr.value;
+
+    SELECT * INTO retval FROM config.marc21_rec_type_map WHERE type_val LIKE '%' || tval || '%' AND blvl_val LIKE '%' || bval || '%';
+
+
+    IF retval.code IS NULL THEN
+        SELECT * INTO retval FROM config.marc21_rec_type_map WHERE code = 'BKS';
+    END IF;
+
+    RETURN retval;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION biblio.marc21_extract_fixed_field( rid BIGINT, ff TEXT ) RETURNS TEXT AS $func$
+DECLARE
+    rtype       TEXT;
+    ff_pos      RECORD;
+    tag_data    RECORD;
+    val         TEXT;
+BEGIN
+    rtype := (biblio.marc21_record_type( rid )).code;
+    FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE fixed_field = ff AND rec_type = rtype ORDER BY tag DESC LOOP
+        FOR tag_data IN SELECT * FROM metabib.full_rec WHERE tag = UPPER(ff_pos.tag) AND record = rid LOOP
+            val := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
+            RETURN val;
+        END LOOP;
+        val := REPEAT( ff_pos.default_val, ff_pos.length );
+        RETURN val;
+    END LOOP;
+
+    RETURN NULL;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE TYPE biblio.marc21_physical_characteristics AS ( id INT, record BIGINT, ptype TEXT, subfield INT, value INT );
+CREATE OR REPLACE FUNCTION biblio.marc21_physical_characteristics( rid BIGINT ) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
+DECLARE
+    rowid   INT := 0;
+    _007    RECORD;
+    ptype   config.marc21_physical_characteristic_type_map%ROWTYPE;
+    psf     config.marc21_physical_characteristic_subfield_map%ROWTYPE;
+    pval    config.marc21_physical_characteristic_value_map%ROWTYPE;
+    retval  biblio.marc21_physical_characteristics%ROWTYPE;
+BEGIN
+
+    SELECT * INTO _007 FROM metabib.full_rec WHERE record = rid AND tag = '007' LIMIT 1;
+
+    IF _007.id IS NOT NULL THEN
+        SELECT * INTO ptype FROM config.marc21_physical_characteristic_type_map WHERE ptype_key = SUBSTRING( _007.value, 1, 1 );
+
+        IF ptype.ptype_key IS NOT NULL THEN
+            FOR psf IN SELECT * FROM config.marc21_physical_characteristic_subfield_map WHERE ptype_key = ptype.ptype_key LOOP
+                SELECT * INTO pval FROM config.marc21_physical_characteristic_value_map WHERE ptype_subfield = psf.id AND value = SUBSTRING( _007.value, psf.start_pos + 1, psf.length );
+
+                IF pval.id IS NOT NULL THEN
+                    rowid := rowid + 1;
+                    retval.id := rowid;
+                    retval.record := rid;
+                    retval.ptype := ptype.ptype_key;
+                    retval.subfield := psf.id;
+                    retval.value := pval.id;
+                    RETURN NEXT retval;
+                END IF;
+
+            END LOOP;
+        END IF;
+    END IF;
+
+    RETURN;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 COMMIT;

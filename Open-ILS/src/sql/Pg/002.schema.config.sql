@@ -51,7 +51,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0125'); -- Scott McKellar
+INSERT INTO config.upgrade_log (version) VALUES ('0127'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -481,6 +481,44 @@ CREATE TABLE config.bib_level_map (
 	value	TEXT	NOT NULL
 );
 
+CREATE TABLE config.marc21_rec_type_map (
+    code        TEXT    PRIMARY KEY,
+    type_val    TEXT    NOT NULL,
+    blvl_val    TEXT    NOT NULL
+);
+
+CREATE TABLE config.marc21_ff_pos_map (
+    id          SERIAL  PRIMARY KEY,
+    fixed_field TEXT    NOT NULL,
+    tag         TEXT    NOT NULL,
+    rec_type    TEXT    NOT NULL,
+    start_pos   INT     NOT NULL,
+    length      INT     NOT NULL,
+    default_val TEXT    NOT NULL DEFAULT ' '
+);
+
+CREATE TABLE config.marc21_physical_characteristic_type_map (
+    ptype_key   TEXT    PRIMARY KEY,
+    label       TEXT    NOT NULL -- I18N
+);
+
+CREATE TABLE config.marc21_physical_characteristic_subfield_map (
+    id          SERIAL  PRIMARY KEY,
+    ptype_key   TEXT    NOT NULL REFERENCES config.marc21_physical_characteristic_type_map (ptype_key) ON DELETE CASCADE ON UPDATE CASCADE,
+    subfield    TEXT    NOT NULL,
+    start_pos   INT     NOT NULL,
+    length      INT     NOT NULL,
+    label       TEXT    NOT NULL -- I18N
+);
+
+CREATE TABLE config.marc21_physical_characteristic_value_map (
+    id              SERIAL  PRIMARY KEY,
+    value           TEXT    NOT NULL,
+    ptype_subfield  INT     NOT NULL REFERENCES config.marc21_physical_characteristic_subfield_map (id),
+    label           TEXT    NOT NULL -- I18N
+);
+
+
 CREATE TABLE config.z3950_source (
     name                TEXT    PRIMARY KEY,
     label               TEXT    NOT NULL UNIQUE,
@@ -661,4 +699,3 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 COMMIT;
-

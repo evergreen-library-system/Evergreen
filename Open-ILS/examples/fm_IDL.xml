@@ -5978,6 +5978,103 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="bmpc" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::marc21_physical_characteristics" oils_persist:tablename="biblio.marc21_physical_characteristics" reporter:label="MARC21 Physical Characteristics" oils_persist:field_safe="true" oils_persist:readonly="true">
+		<fields oils_persist:primary="id">
+			<field reporter:label="Temp ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Type" name="ptype" reporter:datatype="link"/>
+			<field reporter:label="Subfield" name="subfield" reporter:datatype="link"/>
+			<field reporter:label="Value" name="value" reporter:datatype="link"/>
+			<field reporter:label="Record" name="record" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="ptype" reltype="has_a" key="id" map="" class="cmpctm"/>
+			<link field="subfield" reltype="has_a" key="id" map="" class="cmpcsm"/>
+			<link field="value" reltype="has_a" key="id" map="" class="cmpcvm"/>
+			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+	</class>
+
+	<class id="cmfpm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_ff_pos_map" oils_persist:tablename="config.marc21_ff_pos_map" reporter:label="MARC21 Fixed Field Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.marc21_ff_pos_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Fixed Field" name="fixed_field" reporter:datatype="text"/>
+			<field reporter:label="Tag" name="tag" reporter:datatype="text"/>
+			<field reporter:label="Record Type" name="rec_type" reporter:datatype="text"/>
+			<field reporter:label="Start Postion" name="start_pos" reporter:datatype="int"/>
+			<field reporter:label="Length" name="length" reporter:datatype="int"/>
+			<field reporter:label="Default Value" name="default_val" reporter:datatype="text"/>
+		</fields>
+		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="cmpctm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_physical_characteristic_type_map" oils_persist:tablename="config.marc21_physical_characteristic_type_map" reporter:label="MARC21 Physical Characteristic Type Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="ptype_key">
+			<field reporter:label="Type Key" name="ptype_key" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+		</fields>
+		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="cmpcsm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_physical_characteristic_subfield_map" oils_persist:tablename="config.marc21_physical_characteristic_subfield_map" reporter:label="MARC21 Physical Characteristic Subfield Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.marc21_physical_characteristic_subfield_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Type Key" name="ptype_key" reporter:datatype="link"/>
+			<field reporter:label="Subfield" name="subfield" reporter:datatype="text"/>
+			<field reporter:label="Start Postion" name="start_pos" reporter:datatype="int"/>
+			<field reporter:label="Length" name="length" reporter:datatype="int"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="ptype_key" reltype="has_a" key="id" map="" class="cmpctm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="cmpcsm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_physical_characteristic_value_map" oils_persist:tablename="config.marc21_physical_characteristic_value_map" reporter:label="MARC21 Physical Characteristic Value Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.marc21_physical_characteristic_value_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Value" name="value" reporter:datatype="text"/>
+			<field reporter:label="Subfield" name="ptype_subfield" reporter:datatype="link"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="ptype_subfield" reltype="has_a" key="id" map="" class="cmpcsm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="cmrtm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_rec_type_map" oils_persist:tablename="config.marc21_rec_type_map" reporter:label="MARC21 Record Type Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="code">
+			<field reporter:label="Code" name="code" reporter:datatype="id"/>
+			<field reporter:label="Type Value" name="type_val" reporter:datatype="text"/>
+			<field reporter:label="BLvl Value" name="blvl_val" reporter:datatype="text"/>
+		</fields>
+		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extensions that are useful for PINES.  Comment out or remove if you don't want them. -->
 	<!-- ********************************************************************************************************************* -->
