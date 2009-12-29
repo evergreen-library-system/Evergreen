@@ -3,6 +3,7 @@ use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenSRF::Utils qw/:datetime/;
 use OpenILS::Application;
 use OpenILS::Utils::Fieldmapper;
 use base 'OpenILS::Application';
@@ -123,6 +124,116 @@ sub users_of_interest {
     return process_users_of_interest_results(
         $self, $conn, $e, $req, $start, $age, $fine_level, $location);
 }
+
+
+__PACKAGE__->register_method(
+	method    => 'users_of_interest_warning_penalty',
+	api_name  => 'open-ils.collections.users_of_interest.warning_penalty.retrieve',
+	api_level => 1,
+	argc      => 4,
+    stream    => 1,
+	signature => { 
+		desc     => q/
+			Returns an array of user information objects for users that have the
+            PATRON_EXCEEDS_COLLECTIONS_WARNING penalty applied, 
+			based on the search criteria provided./,
+		            
+		params   => [
+			{	name => 'auth',
+				desc => 'The authentication token',
+				type => 'string' 
+            }, {	
+                name => 'location',
+				desc => q/The short-name of the orginization unit (library) at which the penalty is applied.
+							If a selected location has 'child' locations (e.g. a library region), the
+							child locations will be included in the search/,
+				type => q/string/,
+			}, {	
+                name => 'min_age',
+				desc => q/Optional.  Minimum age of the penalty application/,
+				type => q/interval, e.g "30 days"/,
+			}, {	
+                name => 'max_age',
+				desc => q/Optional.  Maximum age of the penalty application/,
+				type => q/interval, e.g "90 days"/,
+			}
+		],
+
+	  	'return' => { 
+			desc		=> q/An array of user information objects.  
+						usr : Array of user information objects containing id, dob, profile, and groups
+						threshold_amount : The total amount the patron owes that is at least as old
+							as the fine "age" and whose transaction was created at the searched location
+						last_pertinent_billing : The time of the last billing that relates to this query
+						/,
+			type		=> 'array',
+			example	=> {
+				usr	=> {
+					id			=> 'id',
+					dob		=> '1970-01-01',
+					profile	=> 'Patron',
+					groups	=> [ 'Patron', 'Staff' ],
+				},
+				threshold_amount => 99, # TODO: still needed?
+			}
+		}
+	}
+);
+
+
+
+sub users_of_interest_warning_penalty {
+    my( $self, $conn, $auth, $location, $min_age, $max_age ) = @_;
+
+    return OpenILS::Event->new('BAD_PARAMS') unless ($auth and $location);
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $org = $e->search_actor_org_unit({shortname => $location})
+        or return $e->event; $org = $org->[0];
+
+    # they need global perms to view users so no org is provided
+    return $e->event unless $e->allowed('VIEW_USER'); 
+
+    my $org_ids = $e->json_query({from => ['actor.org_unit_full_path', $org->id]});
+
+    my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+    # max age == oldest 
+    my $max_set_date = DateTime->now->subtract(seconds => 
+        interval_to_seconds($max_age))->strftime( '%F %T%z' ) if $max_age;
+    my $min_set_date = DateTime->now->subtract(seconds => 
+        interval_to_seconds($min_age))->strftime( '%F %T%z' ) if $min_age;
+
+    my $start = time;
+    my $query = {
+        select => {ausp => ['usr']},
+        from => 'ausp',
+        where => {
+            standing_penalty => 4, # PATRON_EXCEEDS_COLLECTIONS_WARNING
+            org_unit => [ map {$_->{id}} @$org_ids ],
+            '-or' => [
+                {stop_date => undef},
+                {stop_date => {'>' => 'now'}}
+            ]
+        }
+    };
+
+    $query->{where}->{'-and'} = [] if $max_set_date or $min_set_date;
+    push(@{$query->{where}->{'-and'}}, {set_date => {'>' => $max_set_date}}) if $max_set_date;
+    push(@{$query->{where}->{'-and'}}, {set_date => {'<' => $min_set_date}}) if $min_set_date;
+
+    my $req = $ses->request('open-ils.cstore.json_query', $query);
+
+    # let the client know we're still here
+    $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+    return process_users_of_interest_results(
+        $self, $conn, $e, $req, $start, $min_age, '', $location, $max_age);
+}
+
+
 
 
 sub process_users_of_interest_results {
