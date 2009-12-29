@@ -905,6 +905,50 @@ patron.bills.prototype = {
                                 }
                             );
                         break;
+                        case 'reservation':
+                            xt_label.setAttribute( 'value', $("patronStrings").getString('staff.patron.bills.info_box.label_value.reservation') );
+                            obj.network.simple_request(
+                                'FM_BRESV_RETRIEVE_VIA_PCRUD', 
+                                [ ses(), { 'id' : { '=' : my.mobts.id() } } ],
+                                function (req) {
+                                    try {
+                                        var reservation = req.getResultObject()[0];
+                                        if (typeof reservation.ilsevent != 'undefined') { return; }
+                                        obj.network.simple_request(
+                                            'FM_BRSRC_RETRIEVE_VIA_PCRUD',
+                                            [ ses(), { 'id' : { '=' : reservation.target_resource() } } ],
+                                            function (rreq) {
+                                                try {
+                                                    var resource = rreq.getResultObject()[0];
+                                                    if (typeof resource.ilsevent != 'undefined') { return; }
+                                                    obj.network.simple_request(
+                                                        'FM_BRT_RETRIEVE_VIA_PCRUD',
+                                                        [ ses(), { 'id' : { '=' : resource.type() } } ],
+                                                        function (rrreq) {
+                                                            try {
+                                                                var resource_type = rrreq.getResultObject()[0];
+                                                                if (typeof resource_type.ilsevent != 'undefined') { return; }
+                                                                xt_value.appendChild(
+                                                                    document.createTextNode(
+                                                                        $("patronStrings").getFormattedString('staff.patron.bills.info_box.value_format.reservation', [resource.barcode(), resource_type.name()]) 
+                                                                    )
+                                                                );
+                                                            } catch(E) {
+                                                                alert(E);
+                                                            }
+                                                        }
+                                                    );
+                                                } catch(E) {
+                                                    alert(E);
+                                                }
+                                            }
+                                        );
+                                    } catch(E) {
+                                        alert(E);
+                                    }
+                                }
+                            );
+                        break;
                         default:
                                 xt_label.setAttribute( 'value',
                                     my.mvr ? $("patronStrings").getString('staff.patron.bills.info_box.label_value.title') : $("patronStrings").getString('staff.patron.bills.info_box.label_value.type') );
