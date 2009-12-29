@@ -1720,7 +1720,7 @@ INSERT into config.org_unit_setting_type
   'bool' ),
 
 ( 'ui.staff.require_initials',
-  oils_i18n_gettext('ui.staff.require_initials', 'GUI: Require staff initials for entry/edit of item and patron notes.', 'coust', 'label'),
+  oils_i18n_gettext('ui.staff.require_initials', 'GUI: Require staff initials for entry/edit of item/patron/penalty notes/messages.', 'coust', 'label'),
   oils_i18n_gettext('ui.staff.require_initials', 'Appends staff initials and edit date into note content.', 'coust', 'description'),
   'bool' ),
 
