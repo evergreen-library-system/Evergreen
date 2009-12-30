@@ -1377,7 +1377,8 @@ sub do_checkout {
                 deposit_billing  => $self->deposit_billing,
                 rental_billing   => $self->rental_billing,
                 parent_circ      => $pcirc,
-                patron           => ($self->return_patron) ? $self->patron : undef
+                patron           => ($self->return_patron) ? $self->patron : undef,
+                patron_money     => $self->editor->retrieve_money_user_summary($self->patron->id)
             }
         )
     );
