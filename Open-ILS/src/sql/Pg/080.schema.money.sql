@@ -254,6 +254,11 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 CREATE TABLE money.materialized_billable_xact_summary AS
 	SELECT * FROM money.billable_xact_summary WHERE 1=0;
 
+-- TODO: Define money.materialized_billable_xact_summary w/ explicit columns and
+-- remove the definition above for money.billable_xact_summary.
+CREATE OR REPLACE VIEW money.billable_xact_summary AS 
+    SELECT * FROM money.materialized_billable_xact_summary;
+
 CREATE INDEX money_mat_summary_id_idx ON money.materialized_billable_xact_summary (id);
 CREATE INDEX money_mat_summary_usr_idx ON money.materialized_billable_xact_summary (usr);
 CREATE INDEX money_mat_summary_xact_start_idx ON money.materialized_billable_xact_summary (xact_start);
@@ -489,12 +494,14 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE VIEW money.usr_summary AS
-	SELECT	usr,
-		SUM(total_paid) AS total_paid,
-		SUM(total_owed) AS total_owed, 
-		SUM(balance_owed) AS balance_owed
-	  FROM money.billable_xact_summary
-	  GROUP BY 1;
+    SELECT 
+        usr, 
+        sum(total_paid) AS total_paid, 
+        sum(total_owed) AS total_owed, 
+        sum(balance_owed) AS balance_owed
+    FROM money.materialized_billable_xact_summary
+    GROUP BY usr;
+
 
 CREATE OR REPLACE VIEW money.usr_circulation_summary AS
 	SELECT	usr,
