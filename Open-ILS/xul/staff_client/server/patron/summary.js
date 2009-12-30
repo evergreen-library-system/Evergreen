@@ -157,6 +157,16 @@ patron.summary.prototype = {
                             }
                         }
                     ],
+                    'spawn_group_interface' : [
+                        ['command'],
+                        function() {
+                            try {
+                                window.xulG.spawn_group_interface();
+                            } catch(E) {
+                                alert('Error in summary.js, spawn_group_interface: ' + E);
+                            }
+                        }
+                    ],
                     'group_tab_retrieve_patron' : [
                         ['command'],
                         function() {

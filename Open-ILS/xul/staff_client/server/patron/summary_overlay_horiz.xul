@@ -9,6 +9,7 @@
 
 <commandset id="patron_summary_cmds">
     <command id="group_tab_retrieve_patron"/>
+    <command id="spawn_group_interface"/>
 </commandset>
 
 <popupset id="patron_summary_popups">
@@ -47,6 +48,9 @@
                     <hbox>
                         <hbox id="group_list_actions" />
                         <spacer flex="1" />
+                        <button command="spawn_group_interface"
+                            label="&staff.patron.info.group.label;"
+                            accesskey="&staff.patron.info.group.accesskey;" />
                         <button command="group_tab_retrieve_patron"
                             label="&staff.patron.summary_overlay.group_tab.retrieve_patron.label;" 
                             accesskey="&staff.patron.summary_overlay.group_tab.retrieve_patron.accesskey;" />

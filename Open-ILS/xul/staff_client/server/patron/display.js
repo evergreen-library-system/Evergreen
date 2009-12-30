@@ -353,16 +353,7 @@ patron.display.prototype = {
                     'cmd_patron_info_groups' : [
                         ['command'],
                         function(ev) {
-                            obj.right_deck.set_iframe(
-                                urls.XUL_PATRON_INFO_GROUP,
-                                {},
-                                {
-                                    'patron_id' : obj.patron.id(),
-                                    'url_prefix' : xulG.url_prefix,
-                                    'new_tab' : xulG.new_tab,
-                                    'new_patron_tab' : xulG.new_patron_tab
-                                }
-                            );
+                            obj.spawn_group_interface();
                         }
                     ],
                     'cmd_patron_alert' : [
@@ -567,6 +558,7 @@ patron.display.prototype = {
                     'refresh' : function() { obj.refresh_all(); },
                     'on_finished' : obj.gen_patron_summary_finish_func(),
                     'stop_sign_page' : obj.gen_patron_stop_sign_page_func(),
+                    'spawn_group_interface' : function() { obj.spawn_group_interface(); },
                     'new_patron_tab' : xulG.new_patron_tab,
                     'new_tab' : xulG.new_tab,
                     'set_tab' : xulG.set_tab,
@@ -899,7 +891,26 @@ patron.display.prototype = {
                 alert('Error in patron_stop_sign_page_func(): ' + E);
             }
         };
+    },
+
+    'spawn_group_interface' : function() {
+        var obj = this;
+        try {
+            obj.right_deck.set_iframe(
+                urls.XUL_PATRON_INFO_GROUP,
+                {},
+                {
+                    'patron_id' : obj.patron.id(),
+                    'url_prefix' : xulG.url_prefix,
+                    'new_tab' : xulG.new_tab,
+                    'new_patron_tab' : xulG.new_patron_tab
+                }
+            );
+        } catch(E) {
+            alert('Error in display.js, spawn_group_interface(): ' + E);
+        }
     }
+
 }
 
 dump('exiting patron/display.js\n');
