@@ -61,6 +61,8 @@ function my_init() {
 
         default_focus();
 
+        tally_all();
+
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill2.xul', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }

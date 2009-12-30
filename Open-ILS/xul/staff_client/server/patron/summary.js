@@ -364,8 +364,8 @@ patron.summary.prototype = {
                                             if (e4) util.widgets.set_text(e4, robj.long_overdue    );
                                             if (e5) util.widgets.set_text(e5, robj.lost    );
                                             if (under_btn) util.widgets.set_text(under_btn, 
-                                                String( robj.out + robj.overdue + robj.claims_returned + robj.long_overdue) + 
-                                                ( robj.overdue > 0 ? '*' : '' )
+                                                String( robj.out + robj.overdue + robj.claims_returned + robj.long_overdue) 
+                                                /* + ( robj.overdue > 0 ? '*' : '' ) */
                                             );
                                         } catch(E) {
                                             alert(E);

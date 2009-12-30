@@ -30,6 +30,7 @@ row#row_billing_zip { padding-bottom: 10px; }
 /* .PATRON_HAS_OVERDUES label.items_overdue.label { text-decoration: underline; } */
 .PATRON_HAS_OVERDUES label.items_overdue.value { }
 .PATRON_HAS_OVERDUES label.overdues_indicator { display: inline; color: #AA4400; }
+.PATRON_HAS_OVERDUES label#under_items { color: red; }
 
 .PATRON_EXCEEDS_CHECKOUT_COUNT .patronNameLarge { border: solid thick #C99DFF; padding: 10px; }
 .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out { color: purple; }
@@ -47,6 +48,7 @@ row#row_billing_zip { padding-bottom: 10px; }
 /* .PATRON_EXCEEDS_FINES label.bill.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_FINES label.bill.value { }
 .PATRON_EXCEEDS_FINES label.max_bills_indicator { display: inline; color: purple; }
+.PATRON_EXCEEDS_FINES label#under_bills { color: red; }
 
 .PATRON_AGE_LT_18 .dob { color: purple; }
 .PATRON_AGE_LT_18 label.juvenile_indicator { display: inline; color: purple; }
