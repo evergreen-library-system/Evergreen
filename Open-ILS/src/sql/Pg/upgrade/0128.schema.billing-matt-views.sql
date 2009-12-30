@@ -3,6 +3,7 @@ BEGIN;
 INSERT INTO config.upgrade_log (version) VALUES ('0128');
 
 DROP VIEW money.open_usr_circulation_summary;
+DROP VIEW money.open_usr_summary;
 DROP VIEW money.open_billable_xact_summary;
 
 CREATE OR REPLACE VIEW money.billable_xact_summary AS 
