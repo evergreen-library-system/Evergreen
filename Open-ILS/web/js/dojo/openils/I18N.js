@@ -56,6 +56,48 @@ if(!dojo._hasResource["openils.I18N"]) {
 		return obj_list;
 	}
 
+    openils.I18N.translatePage = function () {
+
+        dojo.require('dojo.query');
+
+        var elements = dojo.query('*[i18n]');
+        if (!elements.length) return null;
+
+        dojo.forEach(elements, function(e){
+
+            var what = e.getAttribute('i18n');
+            var parts = what.match(/^(.+)\.([^.]+)$/);
+            var app = parts[0]; var bundle = parts[1];
+            if (!app || !bundle) return null;
+
+            if (!openils.I18N.translatePage.NLSCache[app][bundle]) {
+                dojo.requireLocalization(app,bundle);
+                openils.I18N.translatePage.NLSCache[app][bundle] = dojo.i18n.getLocalization(app,bundle);
+
+                if (!openils.I18N.translatePage.NLSCache[app][bundle]) return null;
+            }
+
+            dojo.require('dojo.string');
+
+            var template = e.innerHTML;
+            var finalHTML = dojo.string.substitute( template, openils.I18N.translatePage.NLSCache[app][bundle] );
+
+            if (template == finalHTML) { // no subsititution occurred
+                dojo.require("dojox.jsonPath");
+                var transString = e.getAttribute('string') || template;
+                finalHTML = dojox.jsonPath.query(
+                    openils.I18N.translatePage.NLSCache[app][bundle],
+                    '$.'+transString,
+                    {evalType:"RESULT"}
+                );
+            }
+
+            if (finalHTML) e.innerHTML = finalHTML;
+
+        });
+    }
+    openils.I18N.translatePage.NLSCache = {}; // stash this on the function .. WHEEEE
+
 }
 
 
