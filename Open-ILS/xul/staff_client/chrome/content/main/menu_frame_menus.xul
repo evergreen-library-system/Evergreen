@@ -89,6 +89,7 @@
     <command id="cmd_acq_view_distrib_formula" />
 
     <command id="cmd_booking_reservation" />
+    <command id="cmd_booking_pull_list" />
     <command id="cmd_booking_reservation_pickup" />
     <command id="cmd_booking_reservation_return" />
 
@@ -264,6 +265,7 @@
 <menu id="main.menu.booking" label="&staff.main.menu.booking.label;" accesskey="&staff.main.menu.booking.accesskey;">
     <menupopup id="main.menu.booking.popup">
         <menuitem label="&staff.main.menu.booking.reservation.label;" accesskey="&staff.main.menu.booking.reservation.accesskey;" command="cmd_booking_reservation"/>
+        <menuitem label="&staff.main.menu.booking.pull_list.label;" accesskey="&staff.main.menu.booking.pull_list.accesskey;" command="cmd_booking_pull_list"/>
         <!-- <menuitem label="&staff.main.menu.booking.reservation_pickup.label;" accesskey="&staff.main.menu.booking.reservation_pickup.accesskey;" command="cmd_booking_reservation_pickup"/>
         <menuitem label="&staff.main.menu.booking.reservation_return.label;" accesskey="&staff.main.menu.booking.reservation_return.accesskey;" command="cmd_booking_reservation_return"/> -->
     </menupopup>

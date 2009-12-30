@@ -15,6 +15,7 @@ var localeStrings = dojo.i18n.getLocalization("openils.booking", "reservation");
 var pcrud = new openils.PermaCrud();
 var opts;
 var our_brt;
+var brt_list = [];
 var brsrc_index = {};
 var bresv_index = {};
 var just_reserved_now = {};
@@ -184,41 +185,12 @@ SelectorMemory.prototype.restore = function() {
 /*
  * Misc helper functions
  */
-function hide_dom_element(e) { e.style.display = "none"; };
-function reveal_dom_element(e) { e.style.display = ""; };
-function get_keys(L) { var K = []; for (var k in L) K.push(k); return K; }
-function formal_name(u) {
-    var name = u.family_name() + ", " + u.first_given_name();
-    if (u.second_given_name())
-        name += (" " + u.second_given_name());
-    return name;
-}
-function humanize_timestamp_string(ts) {
-    /* For now, this discards time zones. */
-    var parts = ts.split("T");
-    var timeparts = parts[1].split("-")[0].split(":");
-    return parts[0] + " " + timeparts[0] + ":" + timeparts[1];
-}
 function set_datagrid_empty_store(grid) {
     grid.setStore(
         new dojo.data.ItemFileReadStore(
             {"data": flatten_to_dojo_data([])}
         )
     );
-}
-function is_ils_error(e) { return (e.ilsevent != undefined); }
-function is_ils_actor_card_error(e) {
-    return (e.textcode == "ACTOR_CARD_NOT_FOUND");
-}
-function my_ils_error(header, e) {
-    var s = header + "\n";
-    var keys = [
-        "ilsevent", "desc", "textcode", "servertime", "pid", "stacktrace"
-    ];
-    for (var i in keys) {
-        if (e[keys[i]]) s += ("\t" + keys[i] + ": " + e[keys[i]] + "\n");
-    }
-    return s;
 }
 
 /*
@@ -484,6 +456,27 @@ function cancel_reservations(bresv_list) {
     );
 }
 
+function munge_specific_resource(barcode) {
+    try {
+        var brsrc_list = pcrud.search('brsrc', {'barcode': barcode});
+        if (brsrc_list && brsrc_list.length > 0) {
+            opts.booking_results = {
+                "brt": [[brsrc_list[0].type(), 0, 1]],
+                "brsrc": [[brsrc_list[0].id(), 0, 1]],
+            };
+            if (!(our_brt = get_brt_by_id(opts.booking_results.brt[0][0]))) {
+                alert(localeStrings.COULD_NOT_RETRIEVE_BRT_PASSED_IN);
+            } else {
+                init_reservation_interface();
+            }
+        } else {
+            alert(localeStrings.BRSRC_NOT_FOUND);
+        }
+    } catch (E) {
+        alert(localeStrings.BRSRC_RETRIEVE_ERROR + E);
+    }
+}
+
 /*
  * These functions deal with interface tricks (populating widgets,
  * changing the page, etc.).
@@ -492,14 +485,10 @@ function provide_brt_selector(targ_div) {
     if (!targ_div) {
         alert(localeStrings.NO_TARG_DIV);
     } else {
-        var brt_list = xulG.brt_list = get_all_noncat_brt();
+        brt_list = get_all_noncat_brt();
         if (!brt_list || brt_list.length < 1) {
-            targ_div.appendChild(
-                document.createTextNode(localeStrings.NO_BRT_RESULTS)
-            );
-            document.getElementById(
-                "brt_select_other_controls"
-            ).style.display = "none";
+            document.getElementById("select_noncat_brt_block").
+                style.display = "none";
         } else {
             var selector = document.createElement("select");
             selector.setAttribute("id", "brt_selector");
@@ -520,16 +509,28 @@ function provide_brt_selector(targ_div) {
     }
 }
 
-function init_reservation_interface(f) {
+function init_resv_iface_arb() {
+    init_reservation_interface(document.getElementById("arbitrary_resource"));
+}
+
+function init_resv_iface_sel() {
+    init_reservation_interface(document.getElementById("brt_selector"));
+}
+
+function init_reservation_interface(widget) {
+    /* Save a global reference to the brt we're going to reserve */
+    if (widget && (widget.selectedIndex != undefined)) {
+        our_brt = brt_list[widget.selectedIndex];
+    } else if (widget != undefined) {
+        if (!munge_specific_resource(widget.value))
+            return;
+    }
+
     /* Hide and reveal relevant divs. */
     var search_block = document.getElementById("brt_search_block");
     var reserve_block = document.getElementById("brt_reserve_block");
     hide_dom_element(search_block);
     reveal_dom_element(reserve_block);
-
-    /* Save a global reference to the brt we're going to reserve */
-    if (f)
-        our_brt = xulG.brt_list[f.brt_selector.selectedIndex];
 
     /* Get a list of attributes that can apply to that brt. */
     var bra_list = pcrud.search("bra", {"resource_type": our_brt.id()});
@@ -587,12 +588,6 @@ function init_reservation_interface(f) {
     /* Add a prominent label reminding the user what resource type they're
      * asking about. */
     document.getElementById("brsrc_list_header").innerHTML = our_brt.name();
-
-    if (opts.patron_barcode) {
-        document.getElementById("holds_patron_barcode").style.display = "none";
-        document.getElementById("patron_barcode").value = opts.patron_barcode;
-        document.getElementById("patron_barcode").onchange();
-    }
     update_brsrc_list();
 }
 
@@ -702,41 +697,6 @@ function cancel_selected_bresv(bresv_dojo_items) {
     }
 }
 
-/* Quick and dirty way to localize some strings; not recommended for reuse.
- * I'm sure dojo provides a better mechanism for this, but at the moment
- * this is faster to implement anew than figuring out the Right way to do
- * the same thing w/ dojo.
- */
-function init_auto_l10n(el) {
-    function do_it(myel, cls) {
-        if (cls) {
-            var clss = cls.split(" ");
-            for (var k in clss) {
-                var parts = clss[k].match(/^AUTO_ATTR_([A-Z]+)_.+$/);
-                if (parts && localeStrings[clss[k]]) {
-                    myel.setAttribute(
-                        parts[1].toLowerCase(), localeStrings[clss[k]]
-                    );
-                } else if (clss[k].match(/^AUTO_/) && localeStrings[clss[k]]) {
-                    myel.innerHTML = localeStrings[clss[k]];
-                }
-            }
-        }
-    }
-
-    for (var i in el.attributes) {
-        if (el.attributes[i].nodeName == "class") {
-            do_it(el, el.attributes[i].value);
-            break;
-        }
-    }
-    for (var i in el.childNodes) {
-        if (el.childNodes[i].nodeType == 1) { // element node?
-            init_auto_l10n(el.childNodes[i]); // recurse!
-        }
-    }
-}
-
 /* The following function should return true if the reservation interface
  * should start normally (show a list of brt to choose from) or false if
  * it should not (because we've "started" it some other way by setting up
@@ -757,16 +717,9 @@ function early_action_passthru() {
     }
 
     if (opts.patron_barcode) {
-        try {
-            var patron = get_actor_by_barcode(opts.patron_barcode);
-            if (patron) {
-                document.getElementById("preselected_patron").innerHTML =
-                    "Patron targeted for reservation: <strong>" +
-                    formal_name(patron) + "</strong>";
-            }
-        } catch (E) {
-            ; /* XXX ignorable? perhaps. */
-        }
+        document.getElementById("contain_patron_barcode").style.display="none";
+        document.getElementById("patron_barcode").value = opts.patron_barcode;
+        update_bresv_grid();
     }
 
     return true;

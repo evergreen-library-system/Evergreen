@@ -765,6 +765,8 @@
 <!ENTITY staff.main.menu.booking.accesskey "B">
 <!ENTITY staff.main.menu.booking.reservation.label "Create or Edit Reservations">
 <!ENTITY staff.main.menu.booking.reservation.accesskey "C">
+<!ENTITY staff.main.menu.booking.pull_list.label "Pull List">
+<!ENTITY staff.main.menu.booking.pull_list.accesskey "L">
 <!ENTITY staff.main.menu.booking.reservation_pickup.label "Pick Up Reservations">
 <!ENTITY staff.main.menu.booking.reservation_pickup.accesskey "P">
 <!ENTITY staff.main.menu.booking.reservation_return.label "Return Reservations">

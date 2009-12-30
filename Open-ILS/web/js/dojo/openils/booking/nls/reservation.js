@@ -45,6 +45,8 @@
         "Error retrieving booking resource type",
     'INVALID_TS_RANGE':
         "You must choose a valid start and end time for the reservation.",
+    'BRSRC_NOT_FOUND': "Could not locate that resource.",
+    'BRSRC_RETRIVE_ERROR': "Error retrieving resource: ",
     'ANY': "ANY",
 
     'AUTO_choose_a_brt': "Choose a Bookable Resource Type",
@@ -62,5 +64,12 @@
     'AUTO_bresv_grid_resource': "Resource",
     'AUTO_bresv_grid_start_time': "Start time",
     'AUTO_bresv_grid_end_time': "End time",
-    'AUTO_brt_noncat_only': "Show only non-cataloged bookable resource types"
+    'AUTO_brt_noncat_only': "Show only non-cataloged bookable resource types",
+    'AUTO_arbitrary_resource':
+        "Enter the barcode of a cataloged, bookable resource:",
+    'AUTO_explain_bookable':
+        "To reserve an item that is not yet registered as a bookable " +
+        "resource, find it in the catalog or under <em>Display Item</em>, and "+
+        "select <em>Make Item Bookable</em> or <em>Book Item Now</em> there.",
+    'AUTO_or': '- Or -'
 }

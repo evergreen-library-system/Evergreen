@@ -52,6 +52,23 @@ option.forced_unavailable {
     font-weight: bold;
     font-style: italic;
 }
-div#preselected_patron {
-    font-size: 12pt;
+input#arbitrary_resource { margin-left: 8px; margin-right: 8px; }
+div#or { font-size: 12pt; font-weight: bold; }
+input#interval_in_days { width: 75px; }
+table#the_table thead tr th {
+    vertical-align: top;
+    background-color: #dddddd;
+    color: #000000;
+    font-weight: bold;
+    padding: 0 6px 0 6px;
+    border-left: 1px #333333 solid;
+    border-right: 1px #333333 solid;
+}
+tbody#the_table_body td {
+    vertical-align: top;
+    padding: 2px;
+    border-top: 1px #cccccc solid;
+    border-left: 1px #cccccc solid;
+    border-bottom: 1px #333333 solid;
+    border-right: 1px #333333 solid;
 }

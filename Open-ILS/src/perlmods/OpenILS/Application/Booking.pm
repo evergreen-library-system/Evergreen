@@ -3,6 +3,7 @@ package OpenILS::Application::Booking;
 use strict;
 use warnings;
 
+use POSIX qw/strftime/;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 
@@ -478,7 +479,10 @@ sub reservation_list_by_filters {
     } ];
     $cstore->disconnect;
 
-    return $ids if not $whole_obj;
+    if (not $whole_obj) {
+        $e->disconnect;
+        return $ids;
+    }
 
     my $bresv_list = $e->search_booking_reservation([
         {"id" => $ids},
@@ -489,6 +493,7 @@ sub reservation_list_by_filters {
             }
         }]
     );
+    $e->disconnect;
     return $bresv_list ? $bresv_list : [];
 }
 __PACKAGE__->register_method(
@@ -522,27 +527,48 @@ NOTES
 );
 
 
+sub naive_ts_string { strftime("%F %T", localtime(shift)); }
+
 sub get_pull_list {
-    my ($self, $client, $auth, $range, $pickup_lib) = @_;
+    my ($self, $client, $auth, $range, $interval_secs, $pickup_lib) = @_;
 
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('RETRIEVE_RESERVATION_PULL_LIST');
-    return $e->die_event unless ref($range) eq 'ARRAY';
+    return $e->die_event unless (
+        ref($range) eq 'ARRAY' or
+        ($interval_secs = int($interval_secs)) > 0
+    );
+
+    $range = [ naive_ts_string(time), naive_ts_string(time + $interval_secs) ]
+        if not $range;
+
+    my @fundamental_constraints = (
+        {"current_resource" => {"!=" => undef}},
+        {"capture_time" => undef},
+        {"cancel_time" => undef},
+        {"return_time" => undef},
+        {"pickup_time" => undef}
+    );
 
     my $query = {
-        "select" => {"bresv" => ["id"]},
+        "select" => {
+            "bresv" => [
+                "current_resource",
+                {
+                    "column" => "start_time",
+                    "transform" => "min",
+                    "aggregate" => 1
+                }
+            ]
+        },
         "from" => "bresv",
         "where" => {
             "-and" => [
                 json_query_ranges_overlap(
                     $range->[0], $range->[1], "start_time", "end_time"
                 ),
-                {"current_resource" => {"!=" => undef}},
-                {"capture_time" => undef},
-                {"cancel_time" => undef},
-                {"return_time" => undef},
-                {"pickup_time" => undef}
+                @fundamental_constraints
             ],
         }
     };
@@ -550,33 +576,128 @@ sub get_pull_list {
         push @{$query->{"where"}->{"-and"}}, {"pickup_lib" => $pickup_lib};
     }
 
-    my $ids = [ map { $_->{id} } @{$e->json_query($query)} ];
-    if (@$ids) {
-        my $bresv_list = $e->search_booking_reservation([
-            {"id" => $ids}, {
-                flesh => 1,
-                flesh_fields => {
-                    bresv => [qw/usr target_resource_type current_resource/]
-                }
+    my $rows = $e->json_query($query);
+    my %resource_id_map = ();
+    my @all_ids = ();
+    if (@$rows) {
+        my $id_query = {
+            "select" => {"bresv" => ["id"]},
+            "from" => "bresv",
+            "where" => {
+                "-and" => [
+                    {"current_resource" => "PLACEHOLDER"},
+                    {"start_time" => "PLACEHOLDER"},
+                ]
             }
-        ]);
-        return $bresv_list ? $bresv_list : [];
+        };
+        if ($pickup_lib) {
+            push @{$id_query->{"where"}->{"-and"}},
+                {"pickup_lib" => $pickup_lib};
+        }
+
+        foreach (@$rows) {
+            $id_query->{"where"}->{"-and"}->[0]->{"current_resource"} =
+                $_->{"current_resource"};
+            $id_query->{"where"}->{"-and"}->[1]->{"start_time"} =
+                $_->{"start_time"};
+
+            my $results = $e->json_query($id_query);
+            if (@$results) {
+                my @these_ids = map { $_->{"id"} } @$results;
+                push @all_ids, @these_ids;
+
+                $resource_id_map{$_->{"current_resource"}} = [@these_ids];
+            }
+        }
+    }
+    if (@all_ids) {
+        my %bresv_lookup = (
+            map { $_->id => $_ } @{
+                $e->search_booking_reservation([{"id" => [@all_ids]}, {
+                    flesh => 1,
+                    flesh_fields => { bresv => [
+                            "usr",
+                            "target_resource_type",
+                            "current_resource"
+                    ]}
+                }])
+            }
+        );
+        $e->disconnect;
+        return [ map {
+            my $key = $_;
+            my $one = $bresv_lookup{$resource_id_map{$key}->[0]};
+            my $result = {
+                "current_resource" => $one->current_resource,
+                "target_resource_type" => $one->target_resource_type,
+                "reservations" => [
+                    map { $bresv_lookup{$_} } @{$resource_id_map{$key}}
+                ]
+            };
+            foreach (@{$result->{"reservations"}}) {    # deflesh
+                $_->current_resource($_->current_resource->id);
+                $_->target_resource_type($_->target_resource_type->id);
+            }
+            $result;
+        } keys %resource_id_map ];
     } else {
-        return $ids;    # empty list
+        $e->disconnect;
+        return [];
     }
 }
 __PACKAGE__->register_method(
     method   => "get_pull_list",
     api_name => "open-ils.booking.reservations.get_pull_list",
+    argc     => 4,
+    signature=> {
+        params => [
+            {type => "string", desc => "Authentication token"},
+            {type => "array", desc =>
+                "range: Date/time range for reservations (opt)"},
+            {type => "int", desc =>
+                "interval: Seconds from now (instead of range)"},
+            {type => "number", desc => "(Optional) Pickup library"}
+        ],
+        return => { desc => "An array of hashes, each containing key/value " .
+            "pairs describing resource, resource type, and a list of " .
+            "reservations that claim the given resource." }
+    }
+);
+
+
+sub get_copy_fleshed_just_right {
+    my ($self, $client, $auth, $barcode) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    my $results = $e->search_asset_copy([
+        {"barcode" => $barcode},
+        {
+            "flesh" => 1,
+            "flesh_fields" => {"acp" => [qw/call_number location/]}
+        }
+    ]);
+
+    if (ref($results) eq 'ARRAY') {
+        $e->disconnect;
+        return $results->[0] unless ref $barcode;
+        return +{ map { $_->barcode => $_ } @$results };
+    } else {
+        return $e->die_event;
+    }
+}
+__PACKAGE__->register_method(
+    method   => "get_copy_fleshed_just_right",
+    api_name => "open-ils.booking.asset.get_copy_fleshed_just_right",
     argc     => 2,
     signature=> {
         params => [
-            {type => 'string', desc => 'Authentication token'},
-            {type => 'array', desc => 'Date/time range for reservations'},
-            {type => 'number', desc => '(Optional) Pickup library'}
+            {type => "string", desc => "Authentication token"},
+            {type => "mixed", desc => "One barcode or an array of them"},
         ],
-        return => { desc => "An array of reservations, fleshed with usr, " .
-            "current_resource, and target_resource_type" }
+        return => { desc =>
+            "A copy, or a hash of copies keyed by barcode if an array of " .
+            "barcodes was given"
+        }
     }
 );
 

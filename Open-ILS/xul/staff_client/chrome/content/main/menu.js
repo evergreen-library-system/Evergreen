@@ -704,6 +704,21 @@ main.menu.prototype = {
                     );
                 }
             ],
+            'cmd_booking_pull_list' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab(
+                        "/eg/booking/pull_list",
+                        {
+                            "tab_name": offlineStrings.getString(
+                                "menu.cmd_booking_pull_list.tab"
+                            ),
+                            "browser": false
+                        },
+                        xulG
+                    );
+                }
+            ],
             'cmd_booking_reservation_pickup' : [
                 ['oncommand'],
                 function() {
@@ -711,7 +726,7 @@ main.menu.prototype = {
                         "/eg/booking/reservation_pickup",
                         {
                             "tab_name": offlineStrings.getString(
-                                "menu.cmd_booking_reservation.tab"
+                                "menu.cmd_booking_reservation_pickup.tab"
                             ),
                             "browser": false
                         },
@@ -726,7 +741,7 @@ main.menu.prototype = {
                         "/eg/booking/reservation_return",
                         {
                             "tab_name": offlineStrings.getString(
-                                "menu.cmd_booking_reservation.tab"
+                                "menu.cmd_booking_reservation_return.tab"
                             ),
                             "browser": false
                         },
