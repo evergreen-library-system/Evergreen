@@ -581,6 +581,16 @@ main.menu.prototype = {
                     );
                 }
             ],
+            'cmd_local_admin_patrons_due_refunds' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab(
+                        obj.url_prefix(urls.XUL_PATRONS_DUE_REFUNDS),
+                        { 'tab_name' : offlineStrings.getString('menu.local_admin.patrons_due_refunds.tab') },
+                        {}
+                    );
+                }
+            ],
             'cmd_server_admin_org_type' : [
                 ['oncommand'],
                 function() { open_conify_page('actor/org_unit_type', null); }
