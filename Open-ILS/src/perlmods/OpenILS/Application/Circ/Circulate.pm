@@ -296,6 +296,7 @@ sub run_method {
 
         # requesting a precat checkout implies that any required
         # overrides have been performed.  Go ahead and re-override.
+        $circulator->skip_permit_key(1);
         $circulator->override(1) if $circulator->request_precat;
         $circulator->do_permit();
         $circulator->is_checkout(1);
@@ -523,6 +524,7 @@ my @AUTOLOAD_FIELDS = qw/
     parent_circ
     return_patron
     claims_never_checked_out
+    skip_permit_key
 /;
 
 
@@ -611,6 +613,7 @@ sub push_events {
 
 sub mk_permit_key {
     my $self = shift;
+    return '' if $self->skip_permit_key;
     my $key = md5_hex( time() . rand() . "$$" );
     $self->cache_handle->put_cache( "oils_permit_key_$key", 1, 300 );
     return $self->permit_key($key);
@@ -618,6 +621,7 @@ sub mk_permit_key {
 
 sub check_permit_key {
     my $self = shift;
+    return 1 if $self->skip_permit_key;
     my $key = $self->permit_key;
     return 0 unless $key;
     my $k = "oils_permit_key_$key";
