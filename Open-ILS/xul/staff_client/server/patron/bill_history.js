@@ -138,6 +138,7 @@ function init_main_list() {
             );
             tally_selected();
             $('details').disabled = g.bill_list_selection.length == 0;
+            $('copy_details').disabled = g.bill_list_selection.length == 0;
             $('add').disabled = g.bill_list_selection.length == 0;
             $('summary').hidden = g.bill_list_selection.length == 0;
             $('copy_summary').hidden = g.bill_list_selection.length == 0;
@@ -201,6 +202,7 @@ function init_payments_list() {
             );
             payments_tally_selected();
             $('payments_details').disabled = g.payments_list_selection.length == 0;
+            $('copy_details_from_payments').disabled = g.payments_list_selection.length == 0;
         },
         'retrieve_row' : function(params) {
             var id = params.retrieve_id;
@@ -260,6 +262,18 @@ function my_init() {
         $('payments_details').addEventListener(
             'command',
             gen_handle_details('payments'),
+            false
+        );
+
+        $('copy_details').addEventListener(
+            'command',
+            gen_handle_copy_details('bills'),
+            false
+        );
+
+        $('copy_details_from_payments').addEventListener(
+            'command',
+            gen_handle_copy_details('payments'),
             false
         );
 
@@ -331,6 +345,28 @@ function gen_handle_details(which_list) {
                     }, 
                 }
             );
+        }
+    };
+}
+
+function gen_handle_copy_details(which_list) {
+    return function() {
+        try {
+            JSAN.use('util.functional');
+            var selection;
+            switch(which_list) {
+                case 'payments': selection = util.functional.map_list( g.payments_list_selection, function(o) { return o.xact; } ); break;
+                default: selection = g.bill_list_selection; break;
+            }
+            var ids = [];
+            for (var i = 0; i < selection.length; i++) {
+                var blob = g.network.simple_request('BLOB_MBTS_DETAILS_RETRIEVE',[ses(),selection[i]]);
+                if (blob.copy) { ids.push( blob.copy.barcode() ) }
+            }
+            JSAN.use('circ.util');
+            circ.util.item_details_new(ids);
+        } catch(E) {
+            alert('Error in bill_history.js, handle_copy_details(): ' + E);
         }
     };
 }

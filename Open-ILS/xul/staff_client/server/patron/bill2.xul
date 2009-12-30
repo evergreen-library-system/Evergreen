@@ -36,20 +36,22 @@
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
 
     <commandset>
-        <command id="opac" disabled="true"/>
-        <command id="voidall" disabled="true"/>
-        <command id="refund" disabled="true"/>
-        <command id="add" disabled="true"/>
-        <command id="details" disabled="true"/>
+        <command id="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" disabled="true"/>
+        <command id="copy_details" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" disabled="true"/>
+        <command id="voidall" label="&staff.patron.bill_interface.void_all_billings.label;" accesskey="&staff.patron.bill_interface.void_all_billings.accesskey;" disabled="true"/>
+        <command id="refund" label="&staff.patron.bill_interface.refund.label;" accesskey="&staff.patron.bill_interface.refund.accesskey;" disabled="true"/>
+        <command id="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="&staff.patron.bill_interface.add_billing.accesskey;" disabled="true"/>
+        <command id="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;" disabled="true"/>
     </commandset>
 
     <popupset>
         <popup id="actions_popup">
-            <menuitem command="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" oncommand="alert('Not Yet Implemented');"/>
-            <menuitem command="voidall" label="&staff.patron.bill_interface.void_all_billings.label;" accesskey="&staff.patron.bill_interface.void_all_billings.accesskey;" />
-            <menuitem command="refund" label="&staff.patron.bill_interface.refund.label;" accesskey="&staff.patron.bill_interface.refund.accesskey;" />
-            <menuitem command="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="&staff.patron.bill_interface.add_billing.accesskey;" />
-            <menuitem command="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;"/>
+            <menuitem command="opac" />
+            <menuitem command="copy_details" />
+            <menuitem command="voidall" />
+            <menuitem command="refund" />
+            <menuitem command="add" />
+            <menuitem command="details" />
         </popup>
     </popupset>
 
@@ -126,11 +128,12 @@
                     <menubar>
                         <menu label="&staff.patron.bill_interface.actions.label;" accesskey="&staff.patron.bill_interface.actions.accesskey;">
                             <menupopup>
-                                <menuitem command="opac" label="&staff.patron.bill_interface.show_in_catalog.label;" accesskey="&staff.patron.bill_interface.show_in_catalog.accesskey;" oncommand="alert('Not Yet Implemented');"/>
-                                <menuitem command="voidall" label="&staff.patron.bill_interface.void_all_billings.label;" accesskey="&staff.patron.bill_interface.void_all_billings.accesskey;" />
-                                <menuitem command="refund" label="&staff.patron.bill_interface.refund.label;" accesskey="&staff.patron.bill_interface.refund.accesskey;" />
-                                <menuitem command="add" label="&staff.patron.bill_interface.add_billing.label;" accesskey="&staff.patron.bill_interface.add_billing.accesskey;" />
-                                <menuitem command="details" label="&staff.patron.bill_interface.full_details.label;" accesskey="&staff.patron.bill_interface.full_details.accesskey;"/>
+                                <menuitem command="opac" />
+                                <menuitem command="copy_details" />
+                                <menuitem command="voidall" />
+                                <menuitem command="refund" />
+                                <menuitem command="add" />
+                                <menuitem command="details" />
                             </menupopup>
                         </menu>
                     </menubar>

@@ -89,6 +89,7 @@
                             <button id="opac" label="&staff.patron.bill_history.show_in_catalog.label;" accesskey="&staff.patron.bill_history.show_in_catalog.accesskey;" hidden="true" oncommand="alert('Not Yet Implemented');"/>
                             <button id="print" label="&staff.patron.bill_history.print.label;" accesskey="&staff.patron.bill_history.print.accesskey;" hidden="false" oncommand="print_bills();"/>
                             <button id="add" label="&staff.patron.bill_history.add_billing.label;" disabled="true"/>
+                            <button id="copy_details" disabled="true" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" />
                             <button id="details" label="&staff.patron.bill_history.full_details.label;" disabled="true" accesskey="&staff.patron.bill_history.full_details.accesskey;"/>
                         </hbox>
                     </tabpanel>
@@ -132,6 +133,7 @@
                         <hbox>
                             <hbox id="payments_list_actions" />
                             <spacer flex="1"/>
+                            <button id="copy_details_from_payments" disabled="true" label="&staff.patron.items_overlay.sel_copy_details.label;" accesskey="&staff.patron.items_overlay.sel_copy_details.accesskey;" />
                             <button id="payments_details" label="&staff.patron.bill_history.full_details.label;" disabled="true" accesskey="&staff.patron.bill_history.full_details.accesskey;"/>
                         </hbox>
                     </tabpanel>
