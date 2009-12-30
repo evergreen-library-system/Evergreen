@@ -63,8 +63,8 @@
 
     <popupset id="stgu_popupset">
         <popup id="stgu_actions" position="at_pointer">
-            <menuitem command="cmd_load" label="&staff.patron_display.staged.menu.actions.load.label;" accesskey="&staff.patron-display.menu.actions.load.accesskey;"/>
-            <menuitem command="cmd_cancel" label="&staff.patron_display.staged.menu.actions.cancel.label;" accesskey="&staff.patron-display.menu.actions.cancel.accesskey;"/>
+            <menuitem command="cmd_load" label="&staff.patron_display.staged.menu.actions.load.label;" accesskey="&staff.patron_display.menu.actions.load.accesskey;"/>
+            <menuitem command="cmd_cancel" label="&staff.patron_display.staged.menu.actions.cancel.label;" accesskey="&staff.patron_display.menu.actions.cancel.accesskey;"/>
         </popup>
     </popupset>
 

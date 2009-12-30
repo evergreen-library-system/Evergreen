@@ -66,8 +66,8 @@
                         accesskey="&staff.patron_display.trigger_event.menu.actions.accesskey;" 
                         style="-moz-user-focus: normal">
                         <menupopup>
-                            <menuitem command="cmd_cancel_event" label="&staff.patron_display.trigger_event.menu.actions.cancel.label;" accesskey="&staff.patron-display.menu.actions.cancel.accesskey;"/>
-                            <menuitem command="cmd_reset_event" label="&staff.patron_display.trigger_event.menu.actions.reset.label;" accesskey="&staff.patron-display.menu.actions.reset.accesskey;"/>
+                            <menuitem command="cmd_cancel_event" label="&staff.patron_display.trigger_event.menu.actions.cancel.label;" accesskey="&staff.patron_display.menu.actions.cancel.accesskey;"/>
+                            <menuitem command="cmd_reset_event" label="&staff.patron_display.trigger_event.menu.actions.reset.label;" accesskey="&staff.patron_display.menu.actions.reset.accesskey;"/>
                         </menupopup>
                     </menu>
                 </menubar>
@@ -79,8 +79,8 @@
 
     <popupset id="atev_popupset">
         <popup id="atev_actions" position="at_pointer">
-            <menuitem command="cmd_cancel_event" label="&staff.patron_display.trigger_event.menu.actions.cancel.label;" accesskey="&staff.patron-display.menu.actions.cancel.accesskey;"/>
-            <menuitem command="cmd_reset_event" label="&staff.patron_display.trigger_event.menu.actions.reset.label;" accesskey="&staff.patron-display.menu.actions.reset.accesskey;"/>
+            <menuitem command="cmd_cancel_event" label="&staff.patron_display.trigger_event.menu.actions.cancel.label;" accesskey="&staff.patron_display.menu.actions.cancel.accesskey;"/>
+            <menuitem command="cmd_reset_event" label="&staff.patron_display.trigger_event.menu.actions.reset.label;" accesskey="&staff.patron_display.menu.actions.reset.accesskey;"/>
         </popup>
     </popupset>
 

@@ -73,9 +73,9 @@
                             type="menu" style="-moz-user-focus: normal" 
                             oncommand="this.focus(); this.firstChild.showPopup()">
                             <menupopup>
-                                <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron-display.menu.actions.remove.accesskey;"/>
-                                <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron-display.menu.actions.edit.accesskey;"/>
-                                <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron-display.menu.actions.archive.accesskey;"/>
+                                <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron_display.menu.actions.remove.accesskey;"/>
+                                <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron_display.menu.actions.edit.accesskey;"/>
+                                <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron_display.menu.actions.archive.accesskey;"/>
                             </menupopup>
                         </toolbarbutton>
                     </toolbar>
@@ -113,9 +113,9 @@
 
     <popupset id="csp_popupset">
         <popup id="ausp_actions" position="at_pointer">
-            <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron-display.menu.actions.remove.accesskey;"/>
-            <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron-display.menu.actions.edit.accesskey;"/>
-            <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron-display.menu.actions.archive.accesskey;"/>
+            <menuitem command="cmd_remove_penalty" label="&staff.patron_display.penalty.menu.actions.remove.label;" accesskey="&staff.patron_display.menu.actions.remove.accesskey;"/>
+            <menuitem command="cmd_edit_penalty" label="&staff.patron_display.penalty.menu.actions.edit.label;" accesskey="&staff.patron_display.menu.actions.edit.accesskey;"/>
+            <menuitem command="cmd_archive_penalty" label="&staff.patron_display.penalty.menu.actions.archive.label;" accesskey="&staff.patron_display.menu.actions.archive.accesskey;"/>
         </popup>
     </popupset>
 
