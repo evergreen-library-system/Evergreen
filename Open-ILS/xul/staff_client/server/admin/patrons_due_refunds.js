@@ -1,4 +1,4 @@
-var list; var error; var net; var rows;
+var list; var error; var net; var rows; var menu_lib;
 
 function $(id) { return document.getElementById(id); }
 
@@ -34,6 +34,7 @@ function patrons_due_refunds_init() {
         dojo.require('dojo.date.locale');
         dojo.require('dojo.date.stamp');
 
+        render_lib_menu();
         init_list();
         $('list_actions').appendChild( list.render_list_actions() );
         list.set_list_actions();
@@ -158,7 +159,7 @@ function populate_list() {
         fieldmapper.standardRequest(
             [api['FM_AU_BLOBS_WITH_NEGATIVE_BALANCE'].app, api['FM_AU_BLOBS_WITH_NEGATIVE_BALANCE'].method ],
             {   async: true,
-                params: [ses()],
+                params: [ses(),menu_lib],
                 onresponse : onResponse,
                 onerror : onError,
                 oncomplete : function() {
@@ -169,5 +170,37 @@ function populate_list() {
 
     } catch(E) {
         alert('Error in patrons_due_refunds.js, populate_list(): ' + E);
+    }
+}
+
+function render_lib_menu() {
+    try {
+        var x = document.getElementById('lib_menu_placeholder');
+        if (!x) { return; }
+        util.widgets.remove_children( x );
+
+        JSAN.use('util.file');
+        var file = new util.file('offline_ou_list');
+        if (file._file.exists()) {
+            var list_data = file.get_object(); file.close();
+            menu_lib = x.getAttribute('value') || ses('ws_ou');
+            var ml = util.widgets.make_menulist( list_data[0], menu_lib );
+            ml.setAttribute('id','lib_menu');
+            x.appendChild( ml );
+            ml.addEventListener(
+                'command',
+                function(ev) {
+                    menu_lib = ev.target.value;
+                    x.setAttribute('value',ev.target.value); oils_persist(x);
+                    populate_list();
+                },
+                false
+            );
+        } else {
+            throw('Missing offline org unit list.');
+        }
+
+    } catch(E) {
+        alert('Error in patrons_due_refunds.js, render_lib_menu(): ' + E);
     }
 }

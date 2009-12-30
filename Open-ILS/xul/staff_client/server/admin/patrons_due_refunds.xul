@@ -40,6 +40,7 @@
         <caption id="patrons_due_refunds_caption" label="&staff.admin.patrons_due_refunds.caption;"/>
         <vbox flex="0">
             <hbox flex="1">
+                <hbox id="lib_menu_placeholder" oils_persist="value" /> 
                 <spacer flex="1" />
                 <progressmeter id="progress" flex="1" hidden="true" mode="undetermined"/>
                 <menubar>
