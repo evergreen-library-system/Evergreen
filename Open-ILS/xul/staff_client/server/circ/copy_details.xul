@@ -130,7 +130,8 @@
                 $('r_hold').disabled = true;
                 if (g.hold) {
                     $('r_hold').disabled = false;
-                    var status_robj = g.network.simple_request('FM_AHR_STATUS',[ ses(), g.hold.id() ]);
+                    var better_fleshed_hold_blob = g.network.simple_request('FM_AHR_BLOB_RETRIEVE.authoritative',[ ses(), g.hold.id() ]);
+                    var status_robj = better_fleshed_hold_blob.status;
                     JSAN.use('circ.util');
                     var columns = circ.util.hold_columns( 
                         { 
@@ -146,7 +147,7 @@
 
                     JSAN.use('util.list'); g.list = new util.list('hold');
                     g.list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
-                    g.list.append( { 'row' : { 'my' : { 'ahr' : g.hold, 'acp' : g.copy, 'status' : status_robj, } } });
+                    g.list.append( { 'row' : { 'my' : { 'ahr' : better_fleshed_hold_blob.hold, 'acp' : g.copy, 'status' : status_robj, } } });
     
                     JSAN.use('patron.util'); 
                     var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.hold.usr() );
