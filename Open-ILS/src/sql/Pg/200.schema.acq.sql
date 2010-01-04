@@ -482,7 +482,9 @@ CREATE TABLE acq.fund_transfer (
     transfer_time    TIMESTAMPTZ    NOT NULL DEFAULT now(),
     transfer_user    INT            NOT NULL REFERENCES actor.usr( id )
                                     DEFERRABLE INITIALLY DEFERRED,
-    note             TEXT
+    note             TEXT,
+	funding_source_credit INT       NOT NULL REFERENCES acq.funding_source_credit( id )
+                                    DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE INDEX acqftr_usr_idx

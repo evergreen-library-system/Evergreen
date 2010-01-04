@@ -4436,11 +4436,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Transfer Time" name="transfer_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Transfer User" name="transfer_user" reporter:datatype="link"/>
 			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+			<field reporter:label="Funding Source Credit ID" name="funding_source_credit" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="src_fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="dest_fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="transfer_user" reltype="has_a" key="id" map="" class="au"/>
+			<link field="funding_source_credit" reltype="has_a" key="id" map="" class="acqfscred"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6044,7 +6046,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="cmpcsm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_physical_characteristic_value_map" oils_persist:tablename="config.marc21_physical_characteristic_value_map" reporter:label="MARC21 Physical Characteristic Value Map" oils_persist:field_safe="true">
+	<class id="cmpcvm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_physical_characteristic_value_map" oils_persist:tablename="config.marc21_physical_characteristic_value_map" reporter:label="MARC21 Physical Characteristic Value Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.marc21_physical_characteristic_value_map_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Value" name="value" reporter:datatype="text"/>
