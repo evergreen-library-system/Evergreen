@@ -147,18 +147,19 @@ sub id {
 sub title_id {
     my $self = shift;
     my $t =  ($self->{mods}) ? $self->{mods}->title : $self->{copy}->dummy_title;
-    $t =~ s/\pM+//og;
+    $t = OpenILS::SIP::clean_text($t);
+
     return $t;
 }
 
 sub permanent_location {
     my $self = shift;
-	 return $self->{volume}->owning_lib->name;
+    return OpenILS::SIP::clean_text($self->{volume}->owning_lib->name);
 }
 
 sub current_location {
     my $self = shift;
-	 return $self->{copy}->circ_lib->name;
+    return OpenILS::SIP::clean_text($self->{copy}->circ_lib->name);
 }
 
 
@@ -214,7 +215,7 @@ sub fee_currency {
 
 sub owner {
     my $self = shift;
-	 return $self->{volume}->owning_lib->name;
+    return OpenILS::SIP::clean_text($self->{volume}->owning_lib->name);
 }
 
 sub hold_queue {
@@ -263,14 +264,14 @@ sub hold_pickup_date {
 # message to display on console
 sub screen_msg {
     my $self = shift;
-    return $self->{screen_msg} || '';
+    return OpenILS::SIP::clean_text($self->{screen_msg}) || '';
 }
 
 
 # reciept printer
 sub print_line {
      my $self = shift;
-     return $self->{print_line} || '';
+     return OpenILS::SIP::clean_text($self->{print_line}) || '';
 }
 
 

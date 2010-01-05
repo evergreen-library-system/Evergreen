@@ -92,9 +92,9 @@ sub id {
 
 sub name {
     my $self = shift;
-	 my $u = $self->{user};
-	 return $u->first_given_name . ' ' . 
-		$u->second_given_name . ' ' . $u->family_name;
+    my $u = $self->{user};
+    return OpenILS::SIP::clean_text($u->first_given_name . ' ' . 
+            $u->second_given_name . ' ' . $u->family_name);
 }
 
 sub home_library {
@@ -105,15 +105,15 @@ sub home_library {
 }
 
 sub __addr_string {
-	my $addr = shift;
-	return "" unless $addr;
-	return $addr->street1 .' '. 
-		$addr->street2 .' '.
-		$addr->city .' '.
-		$addr->county .' '.
-		$addr->state .' '.
-		$addr->country .' '.
-		$addr->post_code;
+    my $addr = shift;
+    return "" unless $addr;
+    return OpenILS::SIP::clean_text($addr->street1 .' '. 
+        $addr->street2 .' '.
+        $addr->city .' '.
+        $addr->county .' '.
+        $addr->state .' '.
+        $addr->country .' '.
+        $addr->post_code);
 }
 
 sub address {
@@ -128,12 +128,12 @@ sub address {
 
 sub email_addr {
     my $self = shift;
-	return $self->{user}->email;
+    return OpenILS::SIP::clean_text($self->{user}->email);
 }
 
 sub home_phone {
     my $self = shift;
-	return $self->{user}->day_phone;
+    return $self->{user}->day_phone;
 }
 
 sub sip_birthdate {
@@ -145,7 +145,7 @@ sub sip_birthdate {
 
 sub ptype {
     my $self = shift;
-	return $self->{user}->profile->name;
+    return OpenILS::SIP::clean_text($self->{user}->profile->name);
 }
 
 sub language {
@@ -323,7 +323,7 @@ sub hold_items {
 	 );
 
 	my @holds;
-	push( @holds, $self->__hold_to_title($_) ) for @$holds;
+	push( @holds, OpenILS::SIP::clean_text($self->__hold_to_title($_)) ) for @$holds;
 
 	return (defined $start and defined $end) ? 
 		[ $holds[($start-1)..($end-1)] ] : 
@@ -426,7 +426,7 @@ sub overdue_items {
 		if(@return_datatype and $return_datatype[0]->{value} eq 'barcode') {
 			push( @o, __circ_to_barcode($self->{editor}, $circid));
 		} else {
-			push( @o, __circ_to_title($self->{editor}, $circid));
+			push( @o, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
 		}
 	}
 	@overdues = @o;
@@ -473,7 +473,7 @@ sub charged_items {
 		if(@return_datatype and $return_datatype[0]->{value} eq 'barcode') {
 			push( @c, __circ_to_barcode($self->{editor}, $circid));
 		} else {
-			push( @c, __circ_to_title($self->{editor}, $circid));
+			push( @c, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
 		}
 	}
 
@@ -525,7 +525,7 @@ sub block {
 
 	# retrieve the un-fleshed user object for update
 	$u = $e->retrieve_actor_user($u->id);
-	my $note = $u->alert_message || "";
+	my $note = OpenILS::SIP::clean_text($u->alert_message) || "";
 	$note = "CARD BLOCKED BY SELF-CHECK MACHINE\n$note"; # XXX Config option
 
 	$u->alert_message($note);
@@ -569,7 +569,7 @@ sub inet_privileges {
 	my $e = OpenILS::SIP->editor();
 	$INET_PRIVS = $e->retrieve_all_config_net_access_level() unless $INET_PRIVS;
 	my ($level) = grep { $_->id eq $self->{user}->net_access_level } @$INET_PRIVS;
-	my $name = $level->name;
+	my $name = OpenILS::SIP::clean_text($level->name);
 	syslog('LOG_DEBUG', "OILS: Patron inet_privs = $name");
 	return $name;
 }
