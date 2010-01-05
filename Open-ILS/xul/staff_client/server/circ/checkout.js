@@ -6,6 +6,7 @@ circ.checkout = function (params) {
     JSAN.use('util.error'); this.error = new util.error();
     JSAN.use('util.network'); this.network = new util.network();
     JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+    JSAN.use('util.money');
     JSAN.use('util.barcode');
 };
 
@@ -297,6 +298,9 @@ circ.checkout.prototype = {
                 'patron' : obj.patron, 
                 'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
                 'staff' : obj.data.list.au[0],
+                'data' : {
+                    'balance_owed' : util.money.sanitize( obj.most_recent_balance_owed ),
+                },
                 'template' : 'checkout',
                 'callback' : function() {
                     setTimeout(
@@ -404,7 +408,11 @@ circ.checkout.prototype = {
                         if (checkout.payload.copy.dummy_author()) {
                             checkout.payload.record.author( checkout.payload.copy.dummy_author() );
                         }
-            
+           
+                        if (checkout.payload.patron_money) {
+                            obj.most_recent_balance_owed = checkout.payload.patron_money.balance_owed();
+                        }
+ 
                         obj.list.append(
                             {
                                 'row' : {
