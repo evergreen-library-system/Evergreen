@@ -47,6 +47,13 @@
                     <input name="patron_barcode" id="patron_barcode"
                         onchange="update_bresv_grid();" />
                 </div>
+                <div id="pickup_lib_selector_row" class="nice_vertical_padding">
+                    <label for="pickup_lib_selector"
+                        class="AUTO_pickup_lib_selector"></label>
+                    <select dojoType="openils.widget.OrgUnitFilteringSelect"
+                        id="pickup_lib_selector" jsId="pickup_lib_selector"
+                        searchAttr="shortname" labelAttr="shortname"></select>
+                </div>
                 <div class="nice_vertical_padding">
                     <span class="two_buttons">
                         <input type="button"
@@ -99,9 +106,8 @@
         </table>
         <div class="nice_vertical_padding"
             id="existing_bresv_under_buttons">
-            <input type="button" id="button_edit_existing"
-                class="AUTO_ATTR_VALUE_button_edit_existing"
-                disabled="disabled" />
+            <!-- <input type="button" id="button_edit_existing"
+                class="AUTO_ATTR_VALUE_button_edit_existing" /> -->
             <input type="button" id="button_cancel_existing"
                 class="AUTO_ATTR_VALUE_button_cancel_existing"
                 onclick="cancel_selected_bresv(bresvGrid.selection.getSelected());" />

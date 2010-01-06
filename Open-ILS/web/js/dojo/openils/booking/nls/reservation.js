@@ -6,7 +6,7 @@
     'CREATE_BRESV_LOCAL_ERROR': "Exception trying to create reservation: ",
     'CREATE_BRESV_SERVER_ERROR': "Server error trying to create reservation: ",
     'CREATE_BRESV_SERVER_NO_RESPONSE':
-        "No response from server after trying to create reservation: ",
+        "No response from server after trying to create reservation.",
     /* FIXME: Users aren't likely to be able to do anything with the following
      * message.  Figure out a way to do something more helpful.
      */
@@ -36,7 +36,8 @@
     'CXL_BRESV_SUCCESS': function(n) {
         return ("Canceled " + n + " reservation" + (n == 1 ? "" : "s") + ".");
     },
-    'CXL_BRESV_FAILURE': "Error canceling reservations.",
+    'CXL_BRESV_FAILURE': "Error canceling reservations; server silent.",
+    'CXL_BRESV_FAILURE2': "Error canceling reservations:\n",
     'CXL_BRESV_SELECT_SOMETHING':
         "You have not selected any reservations to cancel.",
     'NEED_EXACTLY_ONE_BRT_PASSED_IN':
@@ -71,5 +72,7 @@
         "To reserve an item that is not yet registered as a bookable " +
         "resource, find it in the catalog or under <em>Display Item</em>, and "+
         "select <em>Make Item Bookable</em> or <em>Book Item Now</em> there.",
+    'AUTO_pickup_lib_selector':
+        "Choose the pickup library for this reservation:",
     'AUTO_or': '- Or -'
 }

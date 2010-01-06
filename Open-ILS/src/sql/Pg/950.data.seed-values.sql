@@ -1249,10 +1249,10 @@ INSERT INTO permission.perm_list VALUES
     (356, 'ADMIN_BOOKING_RESOURCE_ATTR_VALUE', oils_i18n_gettext(356, 'Enables the user to create/update/delete booking resource attribute values', 'ppl', 'description')),
     (357, 'ADMIN_BOOKING_RESERVATION', oils_i18n_gettext(357, 'Enables the user to create/update/delete booking reservations', 'ppl', 'description')),
     (358, 'ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP', oils_i18n_gettext(358, 'Enables the user to create/update/delete booking reservation attribute value maps', 'ppl', 'description')),
-    (359, 'HOLD_ITEM_CHECKED_OUT.override', oils_i18n_gettext(359, 'Allows a user to place a hold on an item that they already have checked out', 'ppl', 'description'))
+    (359, 'HOLD_ITEM_CHECKED_OUT.override', oils_i18n_gettext(359, 'Allows a user to place a hold on an item that they already have checked out', 'ppl', 'description')),
+    (360, 'RETRIEVE_RESERVATION_PULL_LIST', oils_i18n_gettext(360, 'Allows a user to retrieve a booking reservation pull list', 'ppl', 'description')),
+    (361, 'CAPTURE_RESERVATION', oils_i18n_gettext(361, 'Allows a user to capture booking reservations', 'ppl', 'description'))
 ;
-
-    ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 

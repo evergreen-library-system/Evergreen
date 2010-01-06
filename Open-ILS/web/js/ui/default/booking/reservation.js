@@ -3,6 +3,7 @@
  */
 dojo.require("fieldmapper.OrgUtils");
 dojo.require("openils.PermaCrud");
+dojo.require("openils.widget.OrgUnitFilteringSelect");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dijit.form.DateTextBox");
 dojo.require("dijit.form.TimeTextBox");
@@ -15,6 +16,7 @@ var localeStrings = dojo.i18n.getLocalization("openils.booking", "reservation");
 var pcrud = new openils.PermaCrud();
 var opts;
 var our_brt;
+var pickup_lib_selected;
 var brt_list = [];
 var brsrc_index = {};
 var bresv_index = {};
@@ -208,7 +210,7 @@ function get_brt_by_id(id) {
 }
 
 function get_brsrc_id_list() {
-    var options = {"type": our_brt.id()};
+    var options = {"type": our_brt.id(), "pickup_lib": pickup_lib_selected};
 
     /* This mechanism for avoiding the passing of an empty 'attribute_values'
      * option is essential because if you pass such an option to the
@@ -298,6 +300,7 @@ function create_bresv(resource_list) {
                 xulG.auth.session.key,
                 barcode,
                 reserve_timestamp_range.get_range(),
+                pickup_lib_selected,
                 our_brt.id(),
                 resource_list,
                 attr_value_table.get_all_values()
@@ -358,7 +361,7 @@ function create_bresv_on_brsrc() {
     var selector = document.getElementById("brsrc_list");
     var selected_values = [];
     for (var i in selector.options) {
-        if (selector.options[i].selected)
+        if (selector.options[i] && selector.options[i].selected)
             selected_values.push(selector.options[i].value);
     }
     if (selected_values.length > 0)
@@ -440,20 +443,19 @@ function init_bresv_grid(barcode) {
     }
 }
 
-function cancel_reservations(bresv_list) {
-    for (var i in bresv_list) { bresv_list[i].cancel_time("now"); }
-    pcrud.update(
-        bresv_list, {
-            "oncomplete": function() {
-                update_bresv_grid();
-                alert(localeStrings.CXL_BRESV_SUCCESS(bresv_list.length));
-            },
-            "onerror": function(o) {
-                update_bresv_grid();
-                alert(localeStrings.CXL_BRESV_FAILURE + "\n" + o);
-            }
-        }
+function cancel_reservations(bresv_id_list) {
+    var result = fieldmapper.standardRequest(
+        ["open-ils.booking", "open-ils.booking.reservations.cancel"],
+        [xulG.auth.session.key, bresv_id_list]
     );
+    setTimeout(update_bresv_grid, 0);
+    if (!result) {
+        alert(localeStrings.CXL_BRESV_FAILURE);
+    } else if (is_ils_error(result)) {
+        alert(my_ils_error(localeStrings.CXL_BRESV_FAILURE2, result));
+    } else {
+        alert(localeStrings.CXL_BRESV_SUCCESS(result.length));
+    }
 }
 
 function munge_specific_resource(barcode) {
@@ -481,6 +483,22 @@ function munge_specific_resource(barcode) {
  * These functions deal with interface tricks (populating widgets,
  * changing the page, etc.).
  */
+function init_pickup_lib_selector() {
+    var User = new openils.User();
+    User.buildPermOrgSelector(
+        "ADMIN_BOOKING_RESERVATION", pickup_lib_selector, null,
+        function() {
+            pickup_lib_selected = pickup_lib_selector.getValue();
+            dojo.connect(pickup_lib_selector, "onChange",
+                function() {
+                    pickup_lib_selected = this.getValue();
+                    update_brsrc_list();
+                }
+            )
+        }
+    );
+}
+
 function provide_brt_selector(targ_div) {
     if (!targ_div) {
         alert(localeStrings.NO_TARG_DIV);
@@ -588,6 +606,7 @@ function init_reservation_interface(widget) {
     /* Add a prominent label reminding the user what resource type they're
      * asking about. */
     document.getElementById("brsrc_list_header").innerHTML = our_brt.name();
+    init_pickup_lib_selector();
     update_brsrc_list();
 }
 
@@ -686,7 +705,7 @@ function init_timestamp_widgets() {
 function cancel_selected_bresv(bresv_dojo_items) {
     if (bresv_dojo_items && bresv_dojo_items.length > 0) {
         cancel_reservations(
-            bresv_dojo_items.map(function(o) { return bresv_index[o.id]; })
+            bresv_dojo_items.map(function(o) { return o.id[0]; })
         );
         /* After some delay to allow the cancellations a chance to get
          * committed, refresh the brsrc list as it might reflect newly

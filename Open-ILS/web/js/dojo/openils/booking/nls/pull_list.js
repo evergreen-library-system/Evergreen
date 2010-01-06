@@ -5,7 +5,7 @@
     'COPY_LOOKUP_ERROR': "Error looking up copies by barcode: ",
     'COPY_MISSING': "Unexpected error: No information for copy: ",
 
-    'AUTO_pickup_lib_selector': "Select a location for pickup:",
+    'AUTO_owning_lib_selector': "See pull list for library:",
     'AUTO_pull_list_title': "Booking Pull List",
     'AUTO_interval_in_days': "Generate list for this many days hence: ",
     'AUTO_ATTR_VALUE_fetch': "Fetch",

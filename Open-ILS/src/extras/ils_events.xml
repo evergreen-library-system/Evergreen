@@ -851,6 +851,9 @@
 	<event code='7022' textcode='RESERVATION_CAPTURE_FAILED'>
 		<desc xml:lang="en-US">Booking reservation capture failed</desc>
 	</event>
+	<event code='7023' textcode='RESERVATION_BAD_PARAMS'>
+		<desc xml:lang="en-US">Provided parameters describe unacceptable reservation.</desc>
+	</event>
 
 
 

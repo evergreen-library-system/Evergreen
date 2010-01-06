@@ -7,17 +7,17 @@ dojo.requireLocalization("openils.booking", "pull_list");
 var localeStrings = dojo.i18n.getLocalization("openils.booking", "pull_list");
 var pcrud = new openils.PermaCrud();
 
-var pickup_lib_selected;
+var owning_lib_selected;
 var acp_cache = {};
 
-function init_pickup_lib_selector() {
+function init_owning_lib_selector() {
     var User = new openils.User();
     User.buildPermOrgSelector(
-        "RETRIEVE_RESERVATION_PULL_LIST", pickup_lib_selector, null,
+        "RETRIEVE_RESERVATION_PULL_LIST", owning_lib_selector, null,
         function() {
-            pickup_lib_selected = pickup_lib_selector.getValue();
-            dojo.connect(pickup_lib_selector, "onChange",
-                function() { pickup_lib_selected = this.getValue(); }
+            owning_lib_selected = owning_lib_selector.getValue();
+            dojo.connect(owning_lib_selector, "onChange",
+                function() { owning_lib_selected = this.getValue(); }
             )
         }
     );
@@ -31,7 +31,7 @@ function retrieve_pull_list(ivl_in_days) {
 
     return fieldmapper.standardRequest(
         ["open-ils.booking", "open-ils.booking.reservations.get_pull_list"],
-        [xulG.auth.session.key, null, secs, pickup_lib_selected]
+        [xulG.auth.session.key, null, secs, owning_lib_selected]
     );
 }
 
@@ -101,22 +101,24 @@ function get_all_relevant_acp(list) {
             barcodes.push(list[i].current_resource.barcode());
         }
     }
-    var results = fieldmapper.standardRequest(
-        [
-            "open-ils.booking",
-            "open-ils.booking.asset.get_copy_fleshed_just_right"
-        ],
-        [xulG.auth.session.key, barcodes]
-    );
+    if (barcodes.length > 0) {
+        var results = fieldmapper.standardRequest(
+            [
+                "open-ils.booking",
+                "open-ils.booking.asset.get_copy_fleshed_just_right"
+            ],
+            [xulG.auth.session.key, barcodes]
+        );
 
-    if (!results) {
-        alert(localeStrings.COPY_LOOKUP_NO_RESPONSE);
-        return null;
-    } else if (is_ils_error(results)) {
-        alert(my_ils_error(localeStrings.COPY_LOOKUP_ERROR, results));
-        return null;
-    } else {
-        return results;
+        if (!results) {
+            alert(localeStrings.COPY_LOOKUP_NO_RESPONSE);
+            return null;
+        } else if (is_ils_error(results)) {
+            alert(my_ils_error(localeStrings.COPY_LOOKUP_ERROR, results));
+            return null;
+        } else {
+            return results;
+        }
     }
 }
 
@@ -185,6 +187,6 @@ function populate_pull_list(form) {
 }
 
 function my_init() {
-    init_pickup_lib_selector();
+    init_owning_lib_selector();
     init_auto_l10n(document.getElementById("auto_l10n_start_here"));
 }

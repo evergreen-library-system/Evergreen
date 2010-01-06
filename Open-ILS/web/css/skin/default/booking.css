@@ -61,7 +61,7 @@ table#the_table thead tr th {
     color: #000000;
     font-weight: bold;
     padding: 0 6px 0 6px;
-    border-left: 1px #333333 solid;
+    border-left: 1px #cccccc solid;
     border-right: 1px #333333 solid;
 }
 tbody#the_table_body td {
@@ -72,3 +72,12 @@ tbody#the_table_body td {
     border-bottom: 1px #333333 solid;
     border-right: 1px #333333 solid;
 }
+.capture_failure { color: #cc0000; }
+.capture_success { color: #00cc00; }
+ul { list-style-type: square; }
+.capture_info { font-size: 12pt; font-weight: bold; margin-bottom: 4px; }
+.transit_notice {
+    font-size: 12pt; font-weight: bold; color: #ff6666;
+    margin-bottom: 4px; margin-top: 4px;
+}
+span#result_display { margin-left: 12px; }

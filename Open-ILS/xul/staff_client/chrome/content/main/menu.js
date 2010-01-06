@@ -729,6 +729,21 @@ main.menu.prototype = {
                     );
                 }
             ],
+            'cmd_booking_capture' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab(
+                        "/eg/booking/capture",
+                        {
+                            "tab_name": offlineStrings.getString(
+                                "menu.cmd_booking_capture.tab"
+                            ),
+                            "browser": false
+                        },
+                        xulG
+                    );
+                }
+            ],
             'cmd_booking_reservation_pickup' : [
                 ['oncommand'],
                 function() {

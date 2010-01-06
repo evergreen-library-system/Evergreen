@@ -6,11 +6,11 @@
 <div id="auto_l10n_start_here">
     <h1 class="booking AUTO_pull_list_title"></h1>
     <form onsubmit="populate_pull_list(this); return false;">
-        <div id="pickup_lib_selector_row" class="nice_vertical_padding">
-            <label for="pickup_lib_selector" class="AUTO_pickup_lib_selector">
+        <div id="owning_lib_selector_row" class="nice_vertical_padding">
+            <label for="owning_lib_selector" class="AUTO_owning_lib_selector">
             </label>
             <select dojoType="openils.widget.OrgUnitFilteringSelect"
-                id="pickup_lib_selector" jsId="pickup_lib_selector"
+                id="owning_lib_selector" jsId="owning_lib_selector"
                 searchAttr="shortname" labelAttr="shortname"></select>
         </div>
         <div id="interval_input_row" class="nice_vertical_padding">
@@ -25,7 +25,7 @@
     </form>
     <hr />
     <div id="table_goes_here" class="nice_vertical_padding">
-        <table id="the_table" width="90%">
+        <table id="the_table" width="100%">
             <thead>
                 <tr>
                     <th width="30%" class="AUTO_th_title_or_name"></th>

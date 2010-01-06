@@ -197,7 +197,7 @@ sub run_method {
             if ($transit) { # yes! unwrap it.
 
                 my $reservation = $circulator->editor->retrieve_booking_reservation( $transit->reservation );
-                my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_reservation_type );
+                my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
 
                 if ($U->is_true($res_type->catalog_item)) { # is there a copy to be had here?
                     if (my $copy = circulator->editor->search_asset_copy({ barcode => $bc, deleted => 'f' })->[0]) { # got a copy
@@ -229,7 +229,7 @@ sub run_method {
                 )->[0];
 
                 if ($reservation) { # we have a reservation for which we could capture this resource.  wheee!
-                    my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_reservation_type );
+                    my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
                     my $elbow_room = $res_type->elbow_room ||
                         $U->ou_ancestor_setting_value( $circulator->circ_lib, 'circ.booking_reservation.default_elbow_room', $circulator->editor );
                 
@@ -245,7 +245,7 @@ sub run_method {
                     if ($reservation) { # no elbow room specified, or we still have a reservation within the elbow_room time
                         my $b_ses = OpenSRF::AppSession->create('open-ils.booking');
                         my $result = $b_ses->request(
-                            'open-ils.booking.reservation.capture',
+                            'open-ils.booking.reservations.capture',
                             $auth => $reservation->id
                         )->gather(1);
 
@@ -2810,6 +2810,7 @@ sub check_checkin_copy_status {
             $status == OILS_COPY_STATUS_ON_HOLDS_SHELF  ||
             $status == OILS_COPY_STATUS_IN_TRANSIT  ||
             $status == OILS_COPY_STATUS_CATALOGING  ||
+            $status == OILS_COPY_STATUS_ON_RESV_SHELF  ||
             $status == OILS_COPY_STATUS_RESHELVING );
 
    return OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy )

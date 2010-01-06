@@ -50,7 +50,7 @@ CREATE TABLE booking.resource (
 	deposit        BOOLEAN          NOT NULL DEFAULT FALSE,
 	deposit_amount DECIMAL(8,2)     NOT NULL DEFAULT 0.00,
 	user_fee       DECIMAL(8,2)     NOT NULL DEFAULT 0.00,
-	CONSTRAINT br_unique UNIQUE(owner, type, barcode)
+	CONSTRAINT br_unique UNIQUE(owner, barcode)
 );
 
 -- For non-catalog items: hijack barcode for name/description
