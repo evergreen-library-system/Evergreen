@@ -58,7 +58,7 @@ util.controller.prototype = {
             } catch(E) {
                 var error = 'Problem in util.controller.render with\n' 
                     + this.render_list[i] + '\n\n' + js2JSON(E);
-                this.error.sdump('D_ERROR',error);
+                this.error.sdump('D_WARN',error);
             }
         }
     }

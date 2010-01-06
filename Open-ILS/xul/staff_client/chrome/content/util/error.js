@@ -164,7 +164,11 @@ util.error.prototype = {
                 if (this.forceAlertDump || ( this.allowAlertDump && this.sdump_levels[level] && this.sdump_levels[level].alert ) ) alert(message);
                 if (this.forceConsoleDump || ( this.allowConsoleDump && this.sdump_levels[level] && this.sdump_levels[level].console ) ) {
                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                    this.consoleService.logStringMessage(message);
+                    if (level=='D_ERROR') {
+                        Components.utils.reportError(message);
+                    } else {
+                        this.consoleService.logStringMessage(message);
+                    }
                 }
                 if (this.forceFileDump || ( this.allowFileDump && this.sdump_levels[level] && this.sdump_levels[level].file ) ) {
                     if (level!='D_FILE') {
