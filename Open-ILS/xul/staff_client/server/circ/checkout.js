@@ -426,23 +426,27 @@ circ.checkout.prototype = {
                             //I could override map_row_to_column here
                             }
                         );
-                        obj.error.work_log(
-                            document.getElementById('circStrings').getFormattedString(
-                                (get_bool(checkout.payload.circ.opac_renewal())||get_bool(checkout.payload.circ.phone_renewal())||get_bool(checkout.payload.circ.desk_renewal())) ?
-                                    'staff.circ.work_log_renew.message' : 'staff.circ.work_log_checkout.message',
-                                [
-                                    ses('staff_usrname'),
-                                    xulG.patron.family_name(),
-                                    xulG.patron.card().barcode(),
-                                    checkout.payload.copy.barcode()
-                                ]
-                            ), {
-                                'au_id' : xulG.patron.id(),
-                                'au_family_name' : xulG.patron.family_name(),
-                                'au_barcode' : xulG.patron.card().barcode(),
-                                'acp_barcode' : checkout.payload.copy.barcode()
-                            }
-                        );
+                        try {
+                            obj.error.work_log(
+                                document.getElementById('circStrings').getFormattedString(
+                                    (get_bool(checkout.payload.circ.opac_renewal())||get_bool(checkout.payload.circ.phone_renewal())||get_bool(checkout.payload.circ.desk_renewal())) ?
+                                        'staff.circ.work_log_renew.message' : 'staff.circ.work_log_checkout.message',
+                                    [
+                                        ses('staff_usrname'),
+                                        xulG.patron.family_name(),
+                                        xulG.patron.card().barcode(),
+                                        checkout.payload.copy.barcode()
+                                    ]
+                                ), {
+                                    'au_id' : xulG.patron.id(),
+                                    'au_family_name' : xulG.patron.family_name(),
+                                    'au_barcode' : xulG.patron.card().barcode(),
+                                    'acp_barcode' : checkout.payload.copy.barcode()
+                                }
+                            );
+                        } catch(E) {
+                            obj.error.sdump('D_ERROR','Error with work_logging in server/circ/checkout.js, _checkout:' + E);
+                        }
                         document.getElementById('msg_area').removeChild(x);
                         /*
                         if (typeof obj.on_checkout == 'function') {

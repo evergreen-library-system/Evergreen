@@ -2896,6 +2896,47 @@ circ.util.renew_via_barcode = function ( params, async ) {
                         break;
                     }
                 }
+                try {
+                    var ibarcode = renew[0].payload.copy ? renew[0].payload.copy.barcode() : params.barcode;
+                    var p_id = renew[0].payload.patron ? renew[0].payload.patron.id() : renew[0].payload.circ.usr();
+                    var pname; var pbarcode; 
+                    if (renew[0].patron) {
+                        pname = renew[0].payload.patron.family_name();
+                        pbarcode = typeof renew[0].payload.patron.card() == 'object' ? renew[0].payload.patron.card().barcode() : null;
+                    } else {
+                        if (circ.util.renew_via_barcode.last_usr_id == p_id) {
+                            pname = circ.util.renew_via_barcode.last_pname;
+                            pbarcode = circ.util.renew_via_barcode.last_pbarcode;
+                        } else {
+                            JSAN.use('patron.util'); var p = patron.util.retrieve_fleshed_au_via_id(ses(),p_id);
+                            pname = p.family_name();
+                            pbarcode = typeof p.card() == 'object' ? p.card().barcode() : null;
+                            if (pname) {
+                                circ.util.renew_via_barcode.last_usr_id = p_id;
+                                circ.util.renew_via_barcode.last_pname = pname;
+                                circ.util.renew_via_barcode.last_pbarcode = pbarcode;
+                            }
+                        } 
+                    }
+                    error.work_log(
+                        document.getElementById('circStrings').getFormattedString(
+                            'staff.circ.work_log_renew.message',
+                            [
+                                ses('staff_usrname'),
+                                pname ? pname : '???',
+                                pbarcode ? pbarcode : '???',
+                                ibarcode ? ibarcode : '???'
+                            ]
+                        ), {
+                            'au_id' : p_id,
+                            'au_family_name' : pname,
+                            'au_barcode' : pbarcode,
+                            'acp_barcode' : ibarcode
+                        }
+                    );
+                } catch(E) {
+                    error.sdump('D_ERROR','Error with work_logging in server/circ/util.js, renew_via_barcode():' + E);
+                }
                 if (typeof async == 'function') async(renew);
                 return renew;
             } catch(E) {
