@@ -37,6 +37,7 @@ sub _sort_buckets {
 __PACKAGE__->register_method(
 	method	=> "bucket_retrieve_all",
 	api_name	=> "open-ils.actor.container.all.retrieve_by_user",
+    authoritative => 1,
 	notes		=> <<"	NOTES");
 		Retrieves all un-fleshed buckets assigned to given user 
 		PARAMS(authtoken, bucketOwnerId)
@@ -65,6 +66,7 @@ sub bucket_retrieve_all {
 __PACKAGE__->register_method(
 	method	=> "bucket_flesh",
 	api_name	=> "open-ils.actor.container.flesh",
+    authoritative => 1,
 	argc		=> 3, 
 );
 
