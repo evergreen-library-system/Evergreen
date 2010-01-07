@@ -50,12 +50,12 @@ messagecatalog { -moz-binding: url('chrome://open_ils_staff_client/content/main/
 .fixed_textbox { }
 .marc_buttons_box description { font-weight: bold; }
 .marc { 
-	-moz-appearance: none;
-	font-family: monospace;
-	font-size: x-large;
-	border: none;
-	padding: 0px; 
-	margin: 0px; 
+    -moz-appearance: none;
+    font-family: monospace;
+    font-size: x-large;
+    border: none;
+    padding: 0px; 
+    margin: 0px; 
 }
 .marc:hover { background-color: #DDDDDD; }
 .invalid { background-color: #FF8888; }

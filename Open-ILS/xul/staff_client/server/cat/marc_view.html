@@ -7,31 +7,31 @@
 <script type='text/javascript'>
 <![CDATA[
 
-	var xsltProcessor;
+    var xsltProcessor;
 
-	function xsl_marc2html_init() {
+    function xsl_marc2html_init() {
         try {
-    		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-    		xsltProcessor = new XSLTProcessor();
-    		var req = new XMLHttpRequest();
-    		req.open("GET", urls.xsl_marc2html, false);
-    		req.send(null);
+            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            xsltProcessor = new XSLTProcessor();
+            var req = new XMLHttpRequest();
+            req.open("GET", urls.xsl_marc2html, false);
+            req.send(null);
             if (req.status != 200) {
                 alert('We were unable to load ' + urls.xsl_marc2html + ' and thus cannot display the MARC here.\nReason: ' + req.statusText);
                 return false;
             }
-    		var xsl = req.responseXML;
-    		xsltProcessor.importStylesheet(xsl);
+            var xsl = req.responseXML;
+            xsltProcessor.importStylesheet(xsl);
             return true;
         } catch(E) {
             alert('An error occurred and we are unable to display the MARC here.\nError in xsl_marc2html_init: ' + E);
             return false;
         }
-	}
+    }
 
-	function apply_xsl_marc2html(marc) {
+    function apply_xsl_marc2html(marc) {
         try {
-    		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
             var obj = this;
             var parser = new DOMParser();
             var doc = parser.parseFromString( marc, 'text/xml' );
@@ -41,14 +41,14 @@
         } catch(E) {
             alert('An error occurred and we are unable to display the MARC here.\nError in apply_xsl_marc2html: ' + E);
         }
-	}
+    }
 
-	function my_init() {
-		if (!xsl_marc2html_init()) return;
-		document.body.innerHTML = "<button onclick='window.print()'>Print Page<\/button>";
-		if (typeof xulG != 'undefined' && xulG.marcxml) apply_xsl_marc2html(xulG.marcxml);
-		document.body.firstChild.focus();
-	}
+    function my_init() {
+        if (!xsl_marc2html_init()) return;
+        document.body.innerHTML = "<button onclick='window.print()'>Print Page<\/button>";
+        if (typeof xulG != 'undefined' && xulG.marcxml) apply_xsl_marc2html(xulG.marcxml);
+        document.body.firstChild.focus();
+    }
 
 ]]>
 </script>

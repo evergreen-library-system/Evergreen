@@ -3,10 +3,10 @@ dump('entering util/clipboard.js\n');
 if (typeof util == 'undefined') var util = {};
 util.clipboard = {};
 
-util.clipboard.EXPORT_OK	= [ 
-	'cut', 'copy', 'paste'
+util.clipboard.EXPORT_OK    = [ 
+    'cut', 'copy', 'paste'
 ];
-util.clipboard.EXPORT_TAGS	= { ':all' : util.clipboard.EXPORT_OK };
+util.clipboard.EXPORT_TAGS    = { ':all' : util.clipboard.EXPORT_OK };
 
 util.clipboard.cut = function() {
     try {

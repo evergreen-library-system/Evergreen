@@ -1,166 +1,166 @@
 <?xml version='1.0' encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<head>
-		<title>&staff.server.admin.non_cat_types.title;</title>
-		<script language='javascript' src='/opac/common/js/utils.js'> </script>
-		<script language='javascript' src='/opac/common/js//config.js'> </script>
-		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
-	
-		<script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
-		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
-		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/init.js'> </script>
-		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-		<script language='javascript' src='adminlib.js'> </script>
-		<script language='javascript' src='non_cat_types.js'> </script>
+    <head>
+        <title>&staff.server.admin.non_cat_types.title;</title>
+        <script language='javascript' src='/opac/common/js/utils.js'> </script>
+        <script language='javascript' src='/opac/common/js//config.js'> </script>
+        <script language='javascript' src='/opac/common/js/CGI.js'> </script>
+        <script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+    
+        <script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
+        <script language='javascript' src='/opac/common/js/fmall.js'> </script>
+        <script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+        <script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+        <script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+        <script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
+        <script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+        <script language='javascript' src='/opac/common/js/init.js'> </script>
+        <script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+        <script language='javascript' src='adminlib.js'> </script>
+        <script language='javascript' src='non_cat_types.js'> </script>
 
-		<link type='text/css' rel='stylesheet' href='admin.css'/>
-	</head>
+        <link type='text/css' rel='stylesheet' href='admin.css'/>
+    </head>
 
-	<body onload='try{ncEditorInit();}catch(e){alert(js2JSON(e));}'>
+    <body onload='try{ncEditorInit();}catch(e){alert(js2JSON(e));}'>
 
-		<div class='welcome_box'>
-			<span>&staff.server.admin.non_cat_types.greeting;</span><b><span id='nc_user'/></b>
-		</div>
+        <div class='welcome_box'>
+            <span>&staff.server.admin.non_cat_types.greeting;</span><b><span id='nc_user'/></b>
+        </div>
 
-		<center>
-			<div class='title'>&staff.server.admin.non_cat_types.editor.title;</div>
+        <center>
+            <div class='title'>&staff.server.admin.non_cat_types.editor.title;</div>
 
-			<br/>
+            <br/>
 
-			<table class='data_grid data_grid_center' width='85%'>
-				<thead>
-					<tr><td colspan='5'>&staff.server.admin.non_cat_types.editor.header;</td></tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><input id='nc_new_name'> </input></td>
-						<td>
-							<input id='nc_new_interval_count' type='text' size='3' maxlength='3' value='14'/>
-							<select id='nc_new_interval_type' style='width: 6em;'>
-								<option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
-								<option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
-								<option value='days' selected='selected'>&staff.server.admin.non_cat_types.editor.days;</option>
-								<option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
-								<option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
-							</select>
-						</td>
-						<td>&staff.server.admin.non_cat_types.in_house_circ;
-						    <input id='nc_new_inhouse' type='checkbox'/>
-						</td>
-						<td><select class='select_big' id='nc_new_owner' disabled='disabled'> </select></td>
-						<td><input id='nc_new_submit' type='submit' value='&staff.server.admin.non_cat_types.editor.create;' disabled='disabled'> </input></td>
-					</tr>
-				</tbody>
-			</table>
+            <table class='data_grid data_grid_center' width='85%'>
+                <thead>
+                    <tr><td colspan='5'>&staff.server.admin.non_cat_types.editor.header;</td></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input id='nc_new_name'> </input></td>
+                        <td>
+                            <input id='nc_new_interval_count' type='text' size='3' maxlength='3' value='14'/>
+                            <select id='nc_new_interval_type' style='width: 6em;'>
+                                <option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
+                                <option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
+                                <option value='days' selected='selected'>&staff.server.admin.non_cat_types.editor.days;</option>
+                                <option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
+                                <option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
+                            </select>
+                        </td>
+                        <td>&staff.server.admin.non_cat_types.in_house_circ;
+                            <input id='nc_new_inhouse' type='checkbox'/>
+                        </td>
+                        <td><select class='select_big' id='nc_new_owner' disabled='disabled'> </select></td>
+                        <td><input id='nc_new_submit' type='submit' value='&staff.server.admin.non_cat_types.editor.create;' disabled='disabled'> </input></td>
+                    </tr>
+                </tbody>
+            </table>
 
-			<br/> <hr/> <br/>
+            <br/> <hr/> <br/>
 
             &staff.server.admin.copy_locations.editor.library.filter; <select disabled='disabled' id='nc_org_filter'> </select>
             <br/><br/>
 
-			<table id='nc_table' class='data_grid' width='85%'>
-				<thead>
-					<tr>
-						<td>&staff.server.admin.non_cat_types.name;</td>
-						<td>&staff.server.admin.non_cat_types.owning_location;</td>
-						<td>&staff.server.admin.non_cat_types.duration;</td>
-						<td>&staff.server.admin.non_cat_types.in_house.circulate;</td>
-						<td>&staff.server.admin.non_cat_types.edit;</td>
-						<td>&staff.server.admin.non_cat_types.delete;</td>
-					</tr>
-				</thead>
-				<tbody id='nc_tbody'>
-					<tr id='nc_row_template'>
-						<td><b name='nc_name'> </b></td>
-						<td name='nc_owner'/>
-						<td>
-							<input name='nc_interval_count' type='text' size='3' maxlength='3' disabled='disabled'/>
-							<select name='nc_interval_type' style='width: 6em;' disabled='disabled'>
-								<option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
-								<option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
-								<option value='days'>&staff.server.admin.non_cat_types.editor.days;</option>
-								<option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
-								<option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
-							</select>
-						</td>
-						<td>
-							<input name='nc_inhouse' type='checkbox' disabled='disabled'/>
-						</td>
-						<td><input name='nc_edit' type='submit' value='&staff.server.admin.non_cat_types.edit;' disabled='disabled'/></td>
-						<td><input name='nc_delete' type='submit' value='&staff.server.admin.non_cat_types.delete;' disabled='disabled'/></td>
-					</tr>
-				</tbody>
-			</table>
-		</center>
+            <table id='nc_table' class='data_grid' width='85%'>
+                <thead>
+                    <tr>
+                        <td>&staff.server.admin.non_cat_types.name;</td>
+                        <td>&staff.server.admin.non_cat_types.owning_location;</td>
+                        <td>&staff.server.admin.non_cat_types.duration;</td>
+                        <td>&staff.server.admin.non_cat_types.in_house.circulate;</td>
+                        <td>&staff.server.admin.non_cat_types.edit;</td>
+                        <td>&staff.server.admin.non_cat_types.delete;</td>
+                    </tr>
+                </thead>
+                <tbody id='nc_tbody'>
+                    <tr id='nc_row_template'>
+                        <td><b name='nc_name'> </b></td>
+                        <td name='nc_owner'/>
+                        <td>
+                            <input name='nc_interval_count' type='text' size='3' maxlength='3' disabled='disabled'/>
+                            <select name='nc_interval_type' style='width: 6em;' disabled='disabled'>
+                                <option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
+                                <option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
+                                <option value='days'>&staff.server.admin.non_cat_types.editor.days;</option>
+                                <option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
+                                <option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input name='nc_inhouse' type='checkbox' disabled='disabled'/>
+                        </td>
+                        <td><input name='nc_edit' type='submit' value='&staff.server.admin.non_cat_types.edit;' disabled='disabled'/></td>
+                        <td><input name='nc_delete' type='submit' value='&staff.server.admin.non_cat_types.delete;' disabled='disabled'/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </center>
 
-		<table class='hide_me'> <!-- repository for template rows -->
-			<tbody>
-				<tr id='nc_edit_row_template' class='insert_row' edit='1'>
-					<td align='center'>
-						<span class='padded'>
-							<input name='nc_edit_name' type='text'> </input>
-						</span>
-					</td>
-					<td name='nc_edit_owner'/>
-					<td>
-						<span>
-							<input name='nc_edit_interval_count' type='text' size='3' maxlength='3'/>
-							<select name='nc_edit_interval_type' style='width: 6em;'>
-								<option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
-								<option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
-								<option value='days'>&staff.server.admin.non_cat_types.editor.days;</option>
-								<option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
-								<option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
-							</select>
-						</span>
-					</td>
+        <table class='hide_me'> <!-- repository for template rows -->
+            <tbody>
+                <tr id='nc_edit_row_template' class='insert_row' edit='1'>
+                    <td align='center'>
+                        <span class='padded'>
+                            <input name='nc_edit_name' type='text'> </input>
+                        </span>
+                    </td>
+                    <td name='nc_edit_owner'/>
+                    <td>
+                        <span>
+                            <input name='nc_edit_interval_count' type='text' size='3' maxlength='3'/>
+                            <select name='nc_edit_interval_type' style='width: 6em;'>
+                                <option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
+                                <option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
+                                <option value='days'>&staff.server.admin.non_cat_types.editor.days;</option>
+                                <option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
+                                <option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
+                            </select>
+                        </span>
+                    </td>
 
-					<td><input name='nc_edit_inhouse' type='checkbox'/></td>
+                    <td><input name='nc_edit_inhouse' type='checkbox'/></td>
 
-					<td>
-						<span class='padded'>
-							<input name='nc_edit_submit' type='submit' value='&staff.server.admin.non_cat_types.submit;'> </input>
-						</span>
-					</td>
-					<td>
-						<span class='padded'>
-							<input name='nc_edit_cancel' type='submit' value='&staff.server.admin.non_cat_types.cancel;'> </input>
-						</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</body>
+                    <td>
+                        <span class='padded'>
+                            <input name='nc_edit_submit' type='submit' value='&staff.server.admin.non_cat_types.submit;'> </input>
+                        </span>
+                    </td>
+                    <td>
+                        <span class='padded'>
+                            <input name='nc_edit_cancel' type='submit' value='&staff.server.admin.non_cat_types.cancel;'> </input>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
 
-	<span class='hide_me' id='nc_delete_confirm'>
-		&staff.server.admin.non_cat_types.delete.confirm;
-	</span>
+    <span class='hide_me' id='nc_delete_confirm'>
+        &staff.server.admin.non_cat_types.delete.confirm;
+    </span>
 
-	<span class='hide_me' id='cd_in_house_exp'>
-		&staff.server.admin.non_cat_types.in_house.help;
-	</span>
+    <span class='hide_me' id='cd_in_house_exp'>
+        &staff.server.admin.non_cat_types.in_house.help;
+    </span>
 
-	<span class='hide_me' id='nc_update_success'>
-		&staff.server.admin.non_cat_types.update.success;
-	</span>
+    <span class='hide_me' id='nc_update_success'>
+        &staff.server.admin.non_cat_types.update.success;
+    </span>
 
-	<span class='hide_me' id='nc_type_exists'>
-		&staff.server.admin.non_cat_types.name_exists;
-	</span>
+    <span class='hide_me' id='nc_type_exists'>
+        &staff.server.admin.non_cat_types.name_exists;
+    </span>
 
 
 </html>

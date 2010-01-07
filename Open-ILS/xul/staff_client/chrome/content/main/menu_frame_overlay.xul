@@ -5,7 +5,7 @@
 <?xul-overlay href="/xul/server/main/menu_frame_menus.xul"?>
 -->
 <overlay id="menu_frame_overlay" 
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script>dump('loading menu_frame_overlay.xul\n');</script>
 
@@ -14,31 +14,31 @@
 
 <!-- The top level widget for the staff client -->
 <box id="menu_frame_main" flex="1" orient="vertical">
-	<toolbox id="main_toolbox"/>
-	<tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
-		<tabs id="main_tabs" closebutton="true" onclosetab="g.menu.close_tab()">
-			<tab id="tab_1" accesskey="&staff.chrome.menu_frame_overlay.tab1.accesskey;" label="&staff.chrome.menu_frame_overlay.tab1.label;" hidden="true" />
-			<tab id="tab_2" accesskey="&staff.chrome.menu_frame_overlay.tab2.accesskey;" label="&staff.chrome.menu_frame_overlay.tab2.label;" hidden="true" />
-			<tab id="tab_3" accesskey="&staff.chrome.menu_frame_overlay.tab3.accesskey;" label="&staff.chrome.menu_frame_overlay.tab3.label;" hidden="true" />
-			<tab id="tab_4" accesskey="&staff.chrome.menu_frame_overlay.tab4.accesskey;" label="&staff.chrome.menu_frame_overlay.tab4.label;" hidden="true" />
-			<tab id="tab_5" accesskey="&staff.chrome.menu_frame_overlay.tab5.accesskey;" label="&staff.chrome.menu_frame_overlay.tab5.label;" hidden="true" />
-			<tab id="tab_6" accesskey="&staff.chrome.menu_frame_overlay.tab6.accesskey;" label="&staff.chrome.menu_frame_overlay.tab6.label;" hidden="true" />
-			<tab id="tab_7" accesskey="&staff.chrome.menu_frame_overlay.tab7.accesskey;" label="&staff.chrome.menu_frame_overlay.tab7.label;" hidden="true" />
-			<tab id="tab_8" accesskey="&staff.chrome.menu_frame_overlay.tab8.accesskey;" label="&staff.chrome.menu_frame_overlay.tab8.label;" hidden="true" />
-			<tab id="tab_9" accesskey="&staff.chrome.menu_frame_overlay.tab9.accesskey;" label="&staff.chrome.menu_frame_overlay.tab9.label;" hidden="true" />
-		</tabs>
-		<tabpanels id="main_panels" flex="1">
-			<tabpanel id="panel_1"><label value="panel_1"/></tabpanel>
-			<tabpanel id="panel_2"><label value="panel_2"/></tabpanel>
-			<tabpanel id="panel_3"><label value="panel_3"/></tabpanel>
-			<tabpanel id="panel_4"><label value="panel_4"/></tabpanel>
-			<tabpanel id="panel_5"><label value="panel_5"/></tabpanel>
-			<tabpanel id="panel_6"><label value="panel_6"/></tabpanel>
-			<tabpanel id="panel_7"><label value="panel_7"/></tabpanel>
-			<tabpanel id="panel_8"><label value="panel_8"/></tabpanel>
-			<tabpanel id="panel_9"><label value="panel_9"/></tabpanel>
-		</tabpanels>
-	</tabbox>
+    <toolbox id="main_toolbox"/>
+    <tabbox id="main_tabbox" flex="1" eventnode="window" handleCtrlTab="true">
+        <tabs id="main_tabs" closebutton="true" onclosetab="g.menu.close_tab()">
+            <tab id="tab_1" accesskey="&staff.chrome.menu_frame_overlay.tab1.accesskey;" label="&staff.chrome.menu_frame_overlay.tab1.label;" hidden="true" />
+            <tab id="tab_2" accesskey="&staff.chrome.menu_frame_overlay.tab2.accesskey;" label="&staff.chrome.menu_frame_overlay.tab2.label;" hidden="true" />
+            <tab id="tab_3" accesskey="&staff.chrome.menu_frame_overlay.tab3.accesskey;" label="&staff.chrome.menu_frame_overlay.tab3.label;" hidden="true" />
+            <tab id="tab_4" accesskey="&staff.chrome.menu_frame_overlay.tab4.accesskey;" label="&staff.chrome.menu_frame_overlay.tab4.label;" hidden="true" />
+            <tab id="tab_5" accesskey="&staff.chrome.menu_frame_overlay.tab5.accesskey;" label="&staff.chrome.menu_frame_overlay.tab5.label;" hidden="true" />
+            <tab id="tab_6" accesskey="&staff.chrome.menu_frame_overlay.tab6.accesskey;" label="&staff.chrome.menu_frame_overlay.tab6.label;" hidden="true" />
+            <tab id="tab_7" accesskey="&staff.chrome.menu_frame_overlay.tab7.accesskey;" label="&staff.chrome.menu_frame_overlay.tab7.label;" hidden="true" />
+            <tab id="tab_8" accesskey="&staff.chrome.menu_frame_overlay.tab8.accesskey;" label="&staff.chrome.menu_frame_overlay.tab8.label;" hidden="true" />
+            <tab id="tab_9" accesskey="&staff.chrome.menu_frame_overlay.tab9.accesskey;" label="&staff.chrome.menu_frame_overlay.tab9.label;" hidden="true" />
+        </tabs>
+        <tabpanels id="main_panels" flex="1">
+            <tabpanel id="panel_1"><label value="panel_1"/></tabpanel>
+            <tabpanel id="panel_2"><label value="panel_2"/></tabpanel>
+            <tabpanel id="panel_3"><label value="panel_3"/></tabpanel>
+            <tabpanel id="panel_4"><label value="panel_4"/></tabpanel>
+            <tabpanel id="panel_5"><label value="panel_5"/></tabpanel>
+            <tabpanel id="panel_6"><label value="panel_6"/></tabpanel>
+            <tabpanel id="panel_7"><label value="panel_7"/></tabpanel>
+            <tabpanel id="panel_8"><label value="panel_8"/></tabpanel>
+            <tabpanel id="panel_9"><label value="panel_9"/></tabpanel>
+        </tabpanels>
+    </tabbox>
     <statusbar>
         <statusbarpanel />
         <spacer flex="1" />
@@ -65,19 +65,19 @@
 
 <!-- The main top level menubar -->
 <toolbox id="main_toolbox">
-	<menubar id="main_menubar">
-		<menu id="main.menu.file" />
-		<menu id="main.menu.edit" />
-		<menu id="main.menu.search" />
-		<menu id="main.menu.circ" />
-		<menu id="main.menu.cat" />
-		<menu id="main.menu.acq" />
-		<spacer flex="1" />
-		<menu id="main.menu.admin" />
+    <menubar id="main_menubar">
+        <menu id="main.menu.file" />
+        <menu id="main.menu.edit" />
+        <menu id="main.menu.search" />
+        <menu id="main.menu.circ" />
+        <menu id="main.menu.cat" />
+        <menu id="main.menu.acq" />
+        <spacer flex="1" />
+        <menu id="main.menu.admin" />
         <!--
-		<menu id="main.menu.help" />
+        <menu id="main.menu.help" />
         -->
-	</menubar>
+    </menubar>
     <toolbar id="main_toolbar" hidden="true">
         <toolbarbutton id="tb_checkout" 
             command="cmd_circ_checkout" 

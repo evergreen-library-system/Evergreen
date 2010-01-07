@@ -1,98 +1,98 @@
 messagecatalog { -moz-binding: url('../main/bindings.xml#messagecatalog'); }
 input {
-	background-color: lightgrey;
+    background-color: lightgrey;
 }
 
 input:focus {
-	background-color: lightcyan;
+    background-color: lightcyan;
 }
 
 .marcSubfieldDelimiter, .marcSubfieldCode, .marcInd1, .marcInd2, .marcTag, .marcEditableControlfield, .marcSubfield, .marcControlfield, .marcLeader {
-	font-family: fixed, monospace;
-	margin: 0;
+    font-family: fixed, monospace;
+    margin: 0;
 }
 
 .marcEditableControlfield {
-	text-align: left;
+    text-align: left;
 }
 
 .marcSubfieldCode, .marcInd1, .marcInd2, .marcTag {
-	width: 1em;
+    width: 1em;
 }
 
 .marcSubfieldDelimiter, .marcSubfieldCode {
-	color: blue;
+    color: blue;
 }
 
 .marcInd1, .marcInd2, .marcTag {
-	text-align: center;
+    text-align: center;
 }
 
 .marcSubfield {
-	min-width: 1em;
+    min-width: 1em;
 }
 
 .tooltip {
-	/* width: 10em; */
+    /* width: 10em; */
 }
 
 caption {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 grid row, grid column {
-	border-collapse: collapse;
-	border: solid thin gray;
-	vertical-align: bottom;
+    border-collapse: collapse;
+    border: solid thin gray;
+    vertical-align: bottom;
 }
 
 grid column {
-	background-color: lightgray; 
-	padding: 2px;
+    background-color: lightgray; 
+    padding: 2px;
 }
 
 grid#leaderGrid textbox {
-	min-width: 1em;
+    min-width: 1em;
 }
 
 grid#leaderGrid label {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 grid#leaderGrid label, grid#leaderGrid textbox {
-	visibility: hidden;
+    visibility: hidden;
 }
 
 grid#leaderGrid[type="BKS"] *[set~="BKS"], grid#leaderGrid[type="BKS"] *[set~="BKS"] + textbox {
-	visibility: visible;
+    visibility: visible;
 }
 
 grid#leaderGrid[type="SER"] *[set~="SER"], grid#leaderGrid[type="SER"] *[set~="SER"] + textbox {
-	visibility: visible;
+    visibility: visible;
 }
 
 grid#leaderGrid[type="VIS"] *[set~="VIS"], grid#leaderGrid[type="VIS"] *[set~="VIS"] + textbox {
-	visibility: visible;
+    visibility: visible;
 }
 
 grid#leaderGrid[type="MIX"] *[set~="MIX"], grid#leaderGrid[type="MIX"] *[set~="MIX"] + textbox {
-	visibility: visible;
+    visibility: visible;
 }
 
 grid#leaderGrid[type="MAP"] *[set~="MAP"], grid#leaderGrid[type="MAP"] *[set~="MAP"] + textbox {
-	visibility: visible;
+    visibility: visible;
 }
 
 grid#leaderGrid[type="SCO"] *[set~="SCO"], grid#leaderGrid[type="SCO"] *[set~="SCO"] + textbox {
-	visibility: visible;
+    visibility: visible;
 }
 
 grid#leaderGrid[type="REC"] *[set~="REC"], grid#leaderGrid[type="REC"] *[set~="REC"] + textbox {
-	visibility: visible;
+    visibility: visible;
 }
 
 grid#leaderGrid[type="COM"] *[set~="COM"], grid#leaderGrid[type="COM"] *[set~="COM"] + textbox {
-	visibility: visible;
+    visibility: visible;
 }
 
 grid[name="-none-"] * label { color: black; }

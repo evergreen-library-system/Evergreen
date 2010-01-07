@@ -16,56 +16,56 @@
 <?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_chrome.xul"?>
 
 <window id="opac_win"
-	onload="try { my_init(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/cat/opac.js"/>
-	
-	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
+    <script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+    <script type="text/javascript" src="chrome://open_ils_staff_client/content/cat/opac.js"/>
+    
+    <messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
-	<vbox flex="1">
-		<deck id="top_pane"/>
-		<hbox id="nav" hidden="true">
-			<label id="record_pos"/>
-			<button id="record_start" accesskey="&staff.cat.opac.record_start.accesskey;" label="&staff.cat.opac.record_start.label;" oncommand="if (g.f_record_start) g.f_record_start();"/>
-			<button id="record_prev" accesskey="&staff.cat.opac.record_prev.accesskey;" label="&staff.cat.opac.record_prev.label;" oncommand="if (g.f_record_prev) g.f_record_prev();"/>
-			<button id="record_next" accesskey="&staff.cat.opac.record_next.accesskey;" label="&staff.cat.opac.record_next.label;" oncommand="if (g.f_record_next) g.f_record_next();"/>
-			<button id="record_end" accesskey="&staff.cat.opac.record_end.accesskey;" label="&staff.cat.opac.record_end.label;" oncommand="if (g.f_record_end) g.f_record_end();"/>
-			<spacer flex="1"/>
-			<menubar>
-				<menu label="&staff.cat.opac.menu.label;" accesskey="&staff.cat.opac.menu.accesskey;">
-				<menupopup>
-				<menuitem label="&staff.cat.opac.opac_view.label;" accesskey="" id="opac_view" oncommand="set_opac();"/>
-				<menuitem label="&staff.cat.opac.marc_view.label;" accesskey="&staff.cat.opac.marc_view.accesskey;" id="marc_view" oncommand="set_marc_view();"/>
-				<menuitem label="&staff.cat.opac.marc_edit.label;" accesskey="&staff.cat.opac.marc_edit.accesskey;" id="marc_edit" oncommand="set_marc_edit();"/>
-				<menuitem label="&staff.cat.opac.copy_browse.label;" accesskey="&staff.cat.opac.copy_browse.accesskey;" id="copy_browse" oncommand="set_copy_browser();"/>
-				<menuitem label="&staff.cat.opac.view_holds.label;" accesskey="&staff.cat.opac.view_holds.accesskey;" id="view_holds" oncommand="set_hold_browser();"/>
-				<menuseparator/>
-				<menuitem label="&staff.cat.opac.add_bucket.label;" accesskey="&staff.cat.opac.add_bucket.accesskey;" id="add_bucket" oncommand="add_to_bucket();"/>
-				<menuitem label="&staff.cat.opac.mark_for_overlay.label;" accesskey="&staff.cat.opac.mark_for_overlay.accesskey;" id="mark_for_overlay" oncommand="mark_for_overlay();"/>
-				<menuitem label="&staff.cat.opac.delete_record.label;" accesskey="&staff.cat.opac.delete_record.accesskey;" id="delete_record" oncommand="delete_record();"/>
-				<menuitem label="&staff.cat.opac.undelete_record.label;" accesskey="&staff.cat.opac.undelete_record.accesskey;" id="undelete_record" oncommand="undelete_record();"/>
-				<menuseparator/>
-				<menuitem label="&staff.cat.opac.bib_in_new_tab.label;" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
-				<menuitem label="&staff.cat.opac.remove_me.label;" id="remove_me" oncommand="remove_me();"/>
-				<menuseparator/>
-				<menuitem label="&staff.cat.opac.default.label;" id="default" oncommand="set_default();"/>
-				<menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid);"/>
-				</menupopup>
-				</menu>
-			</menubar>
-		</hbox>
-		<deck id="bottom_pane" flex="1"/>
-	</vbox>
+    <vbox flex="1">
+        <deck id="top_pane"/>
+        <hbox id="nav" hidden="true">
+            <label id="record_pos"/>
+            <button id="record_start" accesskey="&staff.cat.opac.record_start.accesskey;" label="&staff.cat.opac.record_start.label;" oncommand="if (g.f_record_start) g.f_record_start();"/>
+            <button id="record_prev" accesskey="&staff.cat.opac.record_prev.accesskey;" label="&staff.cat.opac.record_prev.label;" oncommand="if (g.f_record_prev) g.f_record_prev();"/>
+            <button id="record_next" accesskey="&staff.cat.opac.record_next.accesskey;" label="&staff.cat.opac.record_next.label;" oncommand="if (g.f_record_next) g.f_record_next();"/>
+            <button id="record_end" accesskey="&staff.cat.opac.record_end.accesskey;" label="&staff.cat.opac.record_end.label;" oncommand="if (g.f_record_end) g.f_record_end();"/>
+            <spacer flex="1"/>
+            <menubar>
+                <menu label="&staff.cat.opac.menu.label;" accesskey="&staff.cat.opac.menu.accesskey;">
+                <menupopup>
+                <menuitem label="&staff.cat.opac.opac_view.label;" accesskey="" id="opac_view" oncommand="set_opac();"/>
+                <menuitem label="&staff.cat.opac.marc_view.label;" accesskey="&staff.cat.opac.marc_view.accesskey;" id="marc_view" oncommand="set_marc_view();"/>
+                <menuitem label="&staff.cat.opac.marc_edit.label;" accesskey="&staff.cat.opac.marc_edit.accesskey;" id="marc_edit" oncommand="set_marc_edit();"/>
+                <menuitem label="&staff.cat.opac.copy_browse.label;" accesskey="&staff.cat.opac.copy_browse.accesskey;" id="copy_browse" oncommand="set_copy_browser();"/>
+                <menuitem label="&staff.cat.opac.view_holds.label;" accesskey="&staff.cat.opac.view_holds.accesskey;" id="view_holds" oncommand="set_hold_browser();"/>
+                <menuseparator/>
+                <menuitem label="&staff.cat.opac.add_bucket.label;" accesskey="&staff.cat.opac.add_bucket.accesskey;" id="add_bucket" oncommand="add_to_bucket();"/>
+                <menuitem label="&staff.cat.opac.mark_for_overlay.label;" accesskey="&staff.cat.opac.mark_for_overlay.accesskey;" id="mark_for_overlay" oncommand="mark_for_overlay();"/>
+                <menuitem label="&staff.cat.opac.delete_record.label;" accesskey="&staff.cat.opac.delete_record.accesskey;" id="delete_record" oncommand="delete_record();"/>
+                <menuitem label="&staff.cat.opac.undelete_record.label;" accesskey="&staff.cat.opac.undelete_record.accesskey;" id="undelete_record" oncommand="undelete_record();"/>
+                <menuseparator/>
+                <menuitem label="&staff.cat.opac.bib_in_new_tab.label;" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
+                <menuitem label="&staff.cat.opac.remove_me.label;" id="remove_me" oncommand="remove_me();"/>
+                <menuseparator/>
+                <menuitem label="&staff.cat.opac.default.label;" id="default" oncommand="set_default();"/>
+                <menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid);"/>
+                </menupopup>
+                </menu>
+            </menubar>
+        </hbox>
+        <deck id="bottom_pane" flex="1"/>
+    </vbox>
 
 </window>
 

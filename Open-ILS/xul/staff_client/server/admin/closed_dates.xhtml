@@ -1,233 +1,233 @@
 <?xml version='1.0' encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<head>
-		<title>&staff.server.admin.closed_dates.title;</title>
-		<script type='text/javascript' src='/opac/common/js/utils.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/config.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/CGI.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/JSON_v1.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/fmall.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/fmgen.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/Cookies.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/opac_utils.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/org_utils.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/init.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-		<script type='text/javascript' src='/opac/common/js/Date.W3CDTF.js'> </script>
-		<script type='text/javascript' src='adminlib.js'> </script>
-		<script type='text/javascript' src='closed_dates.js'> </script>
+    <head>
+        <title>&staff.server.admin.closed_dates.title;</title>
+        <script type='text/javascript' src='/opac/common/js/utils.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/config.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/CGI.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/JSON_v1.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/fmall.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/fmgen.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/Cookies.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/opac_utils.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/org_utils.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/init.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+        <script type='text/javascript' src='/opac/common/js/Date.W3CDTF.js'> </script>
+        <script type='text/javascript' src='adminlib.js'> </script>
+        <script type='text/javascript' src='closed_dates.js'> </script>
 
-		<link rel="stylesheet" type="text/css" media="all" 
-			href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
-		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
-		<script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
-		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
+        <link rel="stylesheet" type="text/css" media="all" 
+            href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
+        <script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
+        <script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
+        <script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
 
-		<link type='text/css' rel='stylesheet' href='admin.css'/>
+        <link type='text/css' rel='stylesheet' href='admin.css'/>
 
-		<style type='text/css'>
-			span { padding: 6px; }
-			b { padding: 6px; }
-		</style>
-	</head>
+        <style type='text/css'>
+            span { padding: 6px; }
+            b { padding: 6px; }
+        </style>
+    </head>
 
-	<body onload='try{cdEditorInit();}catch(e){alert(js2JSON(e));}'>
+    <body onload='try{cdEditorInit();}catch(e){alert(js2JSON(e));}'>
 
-		<div class='welcome_box'>
-			<span>&staff.server.admin.closed_dates.welcome;</span><b><span id='cd_user'/></b>
-		</div>
+        <div class='welcome_box'>
+            <span>&staff.server.admin.closed_dates.welcome;</span><b><span id='cd_user'/></b>
+        </div>
 
-		<center>
-			<div class='title'>&staff.server.admin.closed_dates.editor.title;</div>
+        <center>
+            <div class='title'>&staff.server.admin.closed_dates.editor.title;</div>
 
-			<br/>
-			&staff.server.admin.closed_dates.editor.for;<select id='cd_orgs'  style='width:auto;'/>
-			<br/><br/>
+            <br/>
+            &staff.server.admin.closed_dates.editor.for;<select id='cd_orgs'  style='width:auto;'/>
+            <br/><br/>
 
-			<table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
-				<thead>
-					<tr>
-						<td>&staff.server.admin.closed_dates.editor.duration;</td>
-						<td>&staff.server.admin.closed_dates.editor.reason;</td>
-						<td>&staff.server.admin.closed_dates.editor.delete;</td>
-					</tr>
-				</thead>
-				<tbody id='cd_tbody'>
+            <table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
+                <thead>
+                    <tr>
+                        <td>&staff.server.admin.closed_dates.editor.duration;</td>
+                        <td>&staff.server.admin.closed_dates.editor.reason;</td>
+                        <td>&staff.server.admin.closed_dates.editor.delete;</td>
+                    </tr>
+                </thead>
+                <tbody id='cd_tbody'>
 
-					<tr id='cd_row'>
-						<td align='left'>
-							From
-							<b name='start_date'/> at <b name='start_time'/>
-							<span> through </span>
-							<b name='end_date'/> at <b name='end_time'/>
-						</td>
-						<td><div name='note'/></td>
-						<td><button name='delete'>delete</button></td>
-					</tr>
+                    <tr id='cd_row'>
+                        <td align='left'>
+                            From
+                            <b name='start_date'/> at <b name='start_time'/>
+                            <span> through </span>
+                            <b name='end_date'/> at <b name='end_time'/>
+                        </td>
+                        <td><div name='note'/></td>
+                        <td><button name='delete'>delete</button></td>
+                    </tr>
 
-					<tr id='cd_allday_row'>
-						<td align='left'>
-							All Day <b name='start_date'/>
-						</td>
-						<td><div name='note'/></td>
-						<td><button name='delete'>delete</button></td>
-					</tr>
+                    <tr id='cd_allday_row'>
+                        <td align='left'>
+                            All Day <b name='start_date'/>
+                        </td>
+                        <td><div name='note'/></td>
+                        <td><button name='delete'>delete</button></td>
+                    </tr>
 
 
-					<tr id='cd_allmultiday_row'>
-						<td align='left'>
-							Every Day From <b name='start_date'/> through <b name='end_date'/>
-						</td>
-						<td><div name='note'/></td>
-						<td><button name='delete'>&staff.server.admin.closed_dates.editor.allmultiday.delete;</button></td>
-					</tr>
+                    <tr id='cd_allmultiday_row'>
+                        <td align='left'>
+                            Every Day From <b name='start_date'/> through <b name='end_date'/>
+                        </td>
+                        <td><div name='note'/></td>
+                        <td><button name='delete'>&staff.server.admin.closed_dates.editor.allmultiday.delete;</button></td>
+                    </tr>
 
-				</tbody>
-			</table>
+                </tbody>
+            </table>
 
-			<br/>
-			<div style='width: 80%'>
-				&staff.server.admin.closed_dates.editor.allmultiday.format;
-			</div>
+            <br/>
+            <div style='width: 80%'>
+                &staff.server.admin.closed_dates.editor.allmultiday.format;
+            </div>
 
-			<br/>
-		
-			<table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
-				<tr>
-					<td width='100%' align='center' style='border: 1px solid #F0E0F0;'>
-						<button id='cd_new_allday' 
-							onclick="cdShowEditRow('cd_edit_allday_row');">&staff.server.admin.closed_dates.add.allday;</button>
-						<button id='cd_new_multiday' 
-							onclick="cdShowEditRow('cd_edit_allmultiday_row');">&staff.server.admin.closed_dates.add.multiday;</button>
-						<button id='cd_new' 
-							onclick="cdShowEditRow('cd_edit_row');">&staff.server.admin.closed_dates.add.detailed;</button>
-					</td>
-				</tr>
-			</table>
-		
-			<table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
-				<tbody id='cd_edit_tbody'>
-		
-					<tr id='cd_edit_row' class='hide_me'>
-						<td>
-						<table class='data_grid data_grid_center' style='width: 100%;'>
-							<thead>
-								<tr>
-									<td>&staff.server.admin.closed_dates.date.start;</td>
-									<td>&staff.server.admin.closed_dates.time.start;</td>
-									<td>&staff.server.admin.closed_dates.date.end;</td>
-									<td>&staff.server.admin.closed_dates.time.end;</td>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<input id='cd_edit_start_date' type='text' size='10' maxlength='10'/>
-										<img src="/opac/common/js/jscalendar/img.gif"  
-											id='cd_edit_start_date_img' class='cal_img'/>
-									</td>
+            <br/>
+        
+            <table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
+                <tr>
+                    <td width='100%' align='center' style='border: 1px solid #F0E0F0;'>
+                        <button id='cd_new_allday' 
+                            onclick="cdShowEditRow('cd_edit_allday_row');">&staff.server.admin.closed_dates.add.allday;</button>
+                        <button id='cd_new_multiday' 
+                            onclick="cdShowEditRow('cd_edit_allmultiday_row');">&staff.server.admin.closed_dates.add.multiday;</button>
+                        <button id='cd_new' 
+                            onclick="cdShowEditRow('cd_edit_row');">&staff.server.admin.closed_dates.add.detailed;</button>
+                    </td>
+                </tr>
+            </table>
+        
+            <table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
+                <tbody id='cd_edit_tbody'>
+        
+                    <tr id='cd_edit_row' class='hide_me'>
+                        <td>
+                        <table class='data_grid data_grid_center' style='width: 100%;'>
+                            <thead>
+                                <tr>
+                                    <td>&staff.server.admin.closed_dates.date.start;</td>
+                                    <td>&staff.server.admin.closed_dates.time.start;</td>
+                                    <td>&staff.server.admin.closed_dates.date.end;</td>
+                                    <td>&staff.server.admin.closed_dates.time.end;</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input id='cd_edit_start_date' type='text' size='10' maxlength='10'/>
+                                        <img src="/opac/common/js/jscalendar/img.gif"  
+                                            id='cd_edit_start_date_img' class='cal_img'/>
+                                    </td>
 
-									<td>
-										<table width='100%'><tbody><tr><td>
-											<input id='cd_edit_start_time' type='text' size='5' maxlength='5'/>
-										</td>
-										<td>
-											<div style='font-size: 80%;'>&staff.server.admin.closed_dates.allday.label;</div>
-											<input type='checkbox' id='cd_edit_start_time_allday'
-												onclick='
-													var input = $("cd_edit_start_time");
-													input.disabled = !input.disabled;'/>
-										</td></tr></tbody></table>
-									</td>
+                                    <td>
+                                        <table width='100%'><tbody><tr><td>
+                                            <input id='cd_edit_start_time' type='text' size='5' maxlength='5'/>
+                                        </td>
+                                        <td>
+                                            <div style='font-size: 80%;'>&staff.server.admin.closed_dates.allday.label;</div>
+                                            <input type='checkbox' id='cd_edit_start_time_allday'
+                                                onclick='
+                                                    var input = $("cd_edit_start_time");
+                                                    input.disabled = !input.disabled;'/>
+                                        </td></tr></tbody></table>
+                                    </td>
 
-									<td>
-										<input id='cd_edit_end_date' type='text' size='10' maxlength='10'/>
-										<img src="/opac/common/js/jscalendar/img.gif"  
-											id='cd_edit_end_date_img' class='cal_img'/>
-									</td>
+                                    <td>
+                                        <input id='cd_edit_end_date' type='text' size='10' maxlength='10'/>
+                                        <img src="/opac/common/js/jscalendar/img.gif"  
+                                            id='cd_edit_end_date_img' class='cal_img'/>
+                                    </td>
 
-									<td>
-										<table width='100%'><tbody><tr><td>
-											<input id='cd_edit_end_time' type='text' size='5' maxlength='5'/>
-										</td>
-										<td>
-											<div style='font-size: 80%;'>&staff.server.admin.closed_dates.allday.label;</div>
-											<input type='checkbox' id='cd_edit_end_time_allday'
-												onclick='
-													var input = $("cd_edit_end_time");
-													input.disabled = !input.disabled;'/>
-										</td></tr></tbody></table>
-									</td>
+                                    <td>
+                                        <table width='100%'><tbody><tr><td>
+                                            <input id='cd_edit_end_time' type='text' size='5' maxlength='5'/>
+                                        </td>
+                                        <td>
+                                            <div style='font-size: 80%;'>&staff.server.admin.closed_dates.allday.label;</div>
+                                            <input type='checkbox' id='cd_edit_end_time_allday'
+                                                onclick='
+                                                    var input = $("cd_edit_end_time");
+                                                    input.disabled = !input.disabled;'/>
+                                        </td></tr></tbody></table>
+                                    </td>
 
-								</tr>
-							</tbody>
-						</table>
-						</td>
-					</tr>
-		
-					<tr id='cd_edit_allday_row' class='hide_me'>
-						<td>	
-							<span> &staff.server.admin.closed_dates.allday.label; </span>
-							<input id='cd_edit_allday_start_date' type='text' size='10' maxlength='10'/>
-							<img src="/opac/common/js/jscalendar/img.gif"  
-								id='cd_edit_allday_start_date_img' class='cal_img'/>
-						</td>
-					</tr>
-		
-					<tr id='cd_edit_allmultiday_row' class='hide_me'>
-						<td>	
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+        
+                    <tr id='cd_edit_allday_row' class='hide_me'>
+                        <td>    
+                            <span> &staff.server.admin.closed_dates.allday.label; </span>
+                            <input id='cd_edit_allday_start_date' type='text' size='10' maxlength='10'/>
+                            <img src="/opac/common/js/jscalendar/img.gif"  
+                                id='cd_edit_allday_start_date_img' class='cal_img'/>
+                        </td>
+                    </tr>
+        
+                    <tr id='cd_edit_allmultiday_row' class='hide_me'>
+                        <td>    
 
-							<span> All Day From </span>
-							<input id='cd_edit_allmultiday_start_date' type='text' size='10' maxlength='10'/>
-							<img src="/opac/common/js/jscalendar/img.gif"  
-								id='cd_edit_allmultiday_start_date_img' class='cal_img'/>
+                            <span> All Day From </span>
+                            <input id='cd_edit_allmultiday_start_date' type='text' size='10' maxlength='10'/>
+                            <img src="/opac/common/js/jscalendar/img.gif"  
+                                id='cd_edit_allmultiday_start_date_img' class='cal_img'/>
 
-							<span> Through</span>
+                            <span> Through</span>
 
-							<input id='cd_edit_allmultiday_end_date' type='text' size='10' maxlength='10'/>
-							<img src="/opac/common/js/jscalendar/img.gif"  
-								id='cd_edit_allmultiday_end_date_img' class='cal_img'/>
-						</td>
-					</tr>
+                            <input id='cd_edit_allmultiday_end_date' type='text' size='10' maxlength='10'/>
+                            <img src="/opac/common/js/jscalendar/img.gif"  
+                                id='cd_edit_allmultiday_end_date_img' class='cal_img'/>
+                        </td>
+                    </tr>
 
-					<tr id='cd_edit_note_row' class='hide_me' valign='middle'>
-						<td>
-							<div>&staff.server.admin.closed_dates.editor.reason.label;</div>
-							<textarea style='border: 1px solid blue; background: #E0F0E0; margin: 5px;' 
-								id='cd_edit_note' wrap='soft' cols='40' rows='3'/>
-							<div id='cd_apply_all_div' class='hide_me'>
-								&staff.server.admin.closed_dates.apply_all; <input type='checkbox' id='cd_apply_all'/>
-							</div>
-						</td>
-					</tr>
+                    <tr id='cd_edit_note_row' class='hide_me' valign='middle'>
+                        <td>
+                            <div>&staff.server.admin.closed_dates.editor.reason.label;</div>
+                            <textarea style='border: 1px solid blue; background: #E0F0E0; margin: 5px;' 
+                                id='cd_edit_note' wrap='soft' cols='40' rows='3'/>
+                            <div id='cd_apply_all_div' class='hide_me'>
+                                &staff.server.admin.closed_dates.apply_all; <input type='checkbox' id='cd_apply_all'/>
+                            </div>
+                        </td>
+                    </tr>
 
-					<tr id='cd_edit_submit' class='hide_me'>
-						<td>
-							<button onclick='cdNew();'>&staff.server.admin.closed_dates.save;</button>
-							<button onclick='cdCancelEdit();'>&staff.server.admin.closed_dates.cancel;</button>
-						</td>
-					</tr>
+                    <tr id='cd_edit_submit' class='hide_me'>
+                        <td>
+                            <button onclick='cdNew();'>&staff.server.admin.closed_dates.save;</button>
+                            <button onclick='cdCancelEdit();'>&staff.server.admin.closed_dates.cancel;</button>
+                        </td>
+                    </tr>
 
-		
-				</tbody>
-			</table>
+        
+                </tbody>
+            </table>
 
-			<span class='hide_me' id='cd_all_day'>&staff.server.admin.closed_dates.allday.label;</span>
-			<span class='hide_me' id='cd_confirm_delete'>&staff.server.admin.closed_dates.confirm_delete;</span>
-			<span class='hide_me' id='cd_invalid_date'>&staff.server.admin.closed_dates.date.invalid;</span>
-			<span class='hide_me' id='cd_invalid_time'>&staff.server.admin.closed_dates.time.invalid;</span>
-			<span class='hide_me' id='cd_update_success'>&staff.server.admin.closed_dates.success;</span>
-		
-		</center>
-	</body>
+            <span class='hide_me' id='cd_all_day'>&staff.server.admin.closed_dates.allday.label;</span>
+            <span class='hide_me' id='cd_confirm_delete'>&staff.server.admin.closed_dates.confirm_delete;</span>
+            <span class='hide_me' id='cd_invalid_date'>&staff.server.admin.closed_dates.date.invalid;</span>
+            <span class='hide_me' id='cd_invalid_time'>&staff.server.admin.closed_dates.time.invalid;</span>
+            <span class='hide_me' id='cd_update_success'>&staff.server.admin.closed_dates.success;</span>
+        
+        </center>
+    </body>
 </html>
 

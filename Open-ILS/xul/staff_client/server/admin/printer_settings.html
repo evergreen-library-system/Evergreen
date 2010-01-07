@@ -1,29 +1,29 @@
 <html><head>
 
-	<script type="text/javascript" src="/opac/common/js/utils.js"></script>
-	<script type="text/javascript" src="/opac/common/js/CGI.js"></script>
-	<script type="text/javascript" src="/opac/common/js/md5.js"></script>
-	<script type="text/javascript" src="/opac/common/js/JSON_v1.js"></script>
-	<script type="text/javascript" src="/opac/common/js/fmall.js"></script>
-	<script type="text/javascript" src="/opac/common/js/fmgen.js"></script>
-	<script type="text/javascript" src="/opac/common/js/RemoteRequest.js"></script>
-	<script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'></script>
-	<script type="text/javascript" src="/opac/common/js/org_utils.js"></script>
+    <script type="text/javascript" src="/opac/common/js/utils.js"></script>
+    <script type="text/javascript" src="/opac/common/js/CGI.js"></script>
+    <script type="text/javascript" src="/opac/common/js/md5.js"></script>
+    <script type="text/javascript" src="/opac/common/js/JSON_v1.js"></script>
+    <script type="text/javascript" src="/opac/common/js/fmall.js"></script>
+    <script type="text/javascript" src="/opac/common/js/fmgen.js"></script>
+    <script type="text/javascript" src="/opac/common/js/RemoteRequest.js"></script>
+    <script type='text/javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'></script>
+    <script type="text/javascript" src="/opac/common/js/org_utils.js"></script>
 
-	<script type="text/javascript" src="/xul/server/OpenILS/global_util.js"></script>
-	<script type="text/javascript" src="/xul/server/main/constants.js"></script>
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
-	<script type="text/javascript" src="printer_settings.js"></script>
+    <script type="text/javascript" src="/xul/server/OpenILS/global_util.js"></script>
+    <script type="text/javascript" src="/xul/server/main/constants.js"></script>
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
+    <script type="text/javascript" src="printer_settings.js"></script>
 </head><body onload="try { my_init(); } catch(E) { alert(E); }" style="background: white;">
-	<h1>Normal Settings</h1>
-	<iframe id="sample" src="printer_settings.txt"></iframe><br />
-	<button onclick="try { g.printer_settings(); } catch(E) { alert(E); }">Set Default Printer and Print Test Page</button>
-	<button onclick="try { g.page_settings(); } catch(E) { alert(E); }">Page Settings</button><br />
-	<h1>Advanced Settings</h1>
-	<button onclick="try { g.set_print_strategy('webBrowserPrint'); } catch(E) { alert(E); }">Use default print strategy (Mozilla Print)</button>
-	<button onclick="try { g.set_print_strategy('dos.print'); } catch(E) { alert(E); }">Use alternate print strategy (DOS LPT1 Print)</button>
-	<p>
-		<b>Warning:</b> The alternate (DOS LPT1) print strategy will ignore the printer settings made in the "Normal Settings" section.  In Windows, you must map your printer to the LPT1 port, under Start Menu -&gt; Printers and Faxes -&gt; your printer -&gt; right-click, Properties -&gt; Ports.  Also, HTML styling such as different font weights and sizes will be lost when using the DOS LPT1 print.  Data is sent to the printer as simple text in this case.
-	</p>
+    <h1>Normal Settings</h1>
+    <iframe id="sample" src="printer_settings.txt"></iframe><br />
+    <button onclick="try { g.printer_settings(); } catch(E) { alert(E); }">Set Default Printer and Print Test Page</button>
+    <button onclick="try { g.page_settings(); } catch(E) { alert(E); }">Page Settings</button><br />
+    <h1>Advanced Settings</h1>
+    <button onclick="try { g.set_print_strategy('webBrowserPrint'); } catch(E) { alert(E); }">Use default print strategy (Mozilla Print)</button>
+    <button onclick="try { g.set_print_strategy('dos.print'); } catch(E) { alert(E); }">Use alternate print strategy (DOS LPT1 Print)</button>
+    <p>
+        <b>Warning:</b> The alternate (DOS LPT1) print strategy will ignore the printer settings made in the "Normal Settings" section.  In Windows, you must map your printer to the LPT1 port, under Start Menu -&gt; Printers and Faxes -&gt; your printer -&gt; right-click, Properties -&gt; Ports.  Also, HTML styling such as different font weights and sizes will be lost when using the DOS LPT1 print.  Data is sent to the printer as simple text in this case.
+    </p>
 </body></html>
 

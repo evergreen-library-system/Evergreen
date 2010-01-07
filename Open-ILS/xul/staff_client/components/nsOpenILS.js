@@ -3,7 +3,7 @@ function OpenILS(){}
 OpenILS.prototype = {
 
     help: function () { 
-    	dump("Ah ha!  This xpcom isn't really 'xp'.  We make use of the .wrappedJSObject method to get a truly global place to stick data.\n"); 
+        dump("Ah ha!  This xpcom isn't really 'xp'.  We make use of the .wrappedJSObject method to get a truly global place to stick data.\n"); 
     },
 
     data: {},

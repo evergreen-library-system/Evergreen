@@ -16,121 +16,121 @@
 <?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_offline.xul"?>
 
 <window id="offline_register_win" sizemode="maximized"
-	onload="try { my_init(); } catch(E) { alert(E); }"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { my_init(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
         <script type="text/javascript">
-		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
-	</script>
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+    </script>
         <scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
-	<script type="text/javascript" src="offline_register.js"/>
+    <script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+    <script type="text/javascript" src="offline_register.js"/>
 
-	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
+    <messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
-	<groupbox flex="1">
-		<caption label="&staff.circ.offline_register.main.label;"/>
-		<grid>
-			<columns><column/><column/></columns>
-			<rows>
-				<row>
-					<label value="&staff.circ.offline_register.x_home_ou.label;"/>
-					<hbox id="x_home_ou"/>
-				</row>
-				<row>
-					<label value="&staff.circ.offline_register.x_profile.label;"/>
-					<hbox id="x_profile"/>
-				</row>
-				<row>
-					<label value=" "/>
-				</row>
-			</rows>
-		</grid>
-		<hbox flex="1">
-			<vbox flex="1">
-				<grid>
-					<columns><column/><column/></columns>
-					<rows>
-						<row>
-							<label value="&staff.circ.offline_register.barcode.label;"/>
-							<textbox id="barcode"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.passwd.label;"/>
-							<textbox id="passwd"/>
-						</row>
-						<row><label value=" "/></row>
-						<row>
-							<label value="&staff.circ.offline_register.family_name.label;"/>
-							<textbox id="family_name"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.first_given_name.label;"/>
-							<textbox id="first_given_name"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.dob.label;"/>
-							<textbox id="dob" style="font-family: monospace;"/>
-						</row>
-						<row><label value=" "/></row>
-						<row>
-							<label value="&staff.circ.offline_register.x_ident_type.label;"/>
-							<hbox id="x_ident_type"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.ident_value.label;"/>
-							<textbox id="ident_value"/>
-						</row>
-					</rows>
-				</grid>
-			</vbox>
-			<splitter><grippy/></splitter>
-			<vbox flex="1">
-				<grid>
-					<columns><column/><column/></columns>
-					<rows>
-						<row>
-							<label value="&staff.circ.offline_register.billing_address.label;"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.street1.label;"/>
-							<textbox id="street1"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.street2.label;"/>
-							<textbox id="street2"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.city.label;"/>
-							<textbox id="city"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.state.label;"/>
-							<textbox id="state" value="&staff.circ.offline_register.state.default_value;"/>
-						</row>
-						<row>
-							<label value="&staff.circ.offline_register.post_code.label;"/>
-							<textbox id="post_code"/>
-						</row>
-						<row hidden="true">
-							<label value="&staff.circ.offline_register.country.label;"/>
-							<textbox id="country" value="&staff.circ.offline_register.country.default_value;"/>
-						</row>
-						<row><label value=" "/></row>
-					</rows>
-				</grid>
-				<vbox id="x_surveys" flex="1"/>
-			</vbox>
-		</hbox>
-		<hbox>
-			<spacer flex="1"/>
-			<button id="cancel" label="&common.cancel;" />
-			<button id="submit" label="&staff.circ.offline_register.submit.label;" accesskey="&staff.circ.offline_register.submit.accesskey;" />
-		</hbox>
-	</groupbox>
+    <groupbox flex="1">
+        <caption label="&staff.circ.offline_register.main.label;"/>
+        <grid>
+            <columns><column/><column/></columns>
+            <rows>
+                <row>
+                    <label value="&staff.circ.offline_register.x_home_ou.label;"/>
+                    <hbox id="x_home_ou"/>
+                </row>
+                <row>
+                    <label value="&staff.circ.offline_register.x_profile.label;"/>
+                    <hbox id="x_profile"/>
+                </row>
+                <row>
+                    <label value=" "/>
+                </row>
+            </rows>
+        </grid>
+        <hbox flex="1">
+            <vbox flex="1">
+                <grid>
+                    <columns><column/><column/></columns>
+                    <rows>
+                        <row>
+                            <label value="&staff.circ.offline_register.barcode.label;"/>
+                            <textbox id="barcode"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.passwd.label;"/>
+                            <textbox id="passwd"/>
+                        </row>
+                        <row><label value=" "/></row>
+                        <row>
+                            <label value="&staff.circ.offline_register.family_name.label;"/>
+                            <textbox id="family_name"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.first_given_name.label;"/>
+                            <textbox id="first_given_name"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.dob.label;"/>
+                            <textbox id="dob" style="font-family: monospace;"/>
+                        </row>
+                        <row><label value=" "/></row>
+                        <row>
+                            <label value="&staff.circ.offline_register.x_ident_type.label;"/>
+                            <hbox id="x_ident_type"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.ident_value.label;"/>
+                            <textbox id="ident_value"/>
+                        </row>
+                    </rows>
+                </grid>
+            </vbox>
+            <splitter><grippy/></splitter>
+            <vbox flex="1">
+                <grid>
+                    <columns><column/><column/></columns>
+                    <rows>
+                        <row>
+                            <label value="&staff.circ.offline_register.billing_address.label;"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.street1.label;"/>
+                            <textbox id="street1"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.street2.label;"/>
+                            <textbox id="street2"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.city.label;"/>
+                            <textbox id="city"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.state.label;"/>
+                            <textbox id="state" value="&staff.circ.offline_register.state.default_value;"/>
+                        </row>
+                        <row>
+                            <label value="&staff.circ.offline_register.post_code.label;"/>
+                            <textbox id="post_code"/>
+                        </row>
+                        <row hidden="true">
+                            <label value="&staff.circ.offline_register.country.label;"/>
+                            <textbox id="country" value="&staff.circ.offline_register.country.default_value;"/>
+                        </row>
+                        <row><label value=" "/></row>
+                    </rows>
+                </grid>
+                <vbox id="x_surveys" flex="1"/>
+            </vbox>
+        </hbox>
+        <hbox>
+            <spacer flex="1"/>
+            <button id="cancel" label="&common.cancel;" />
+            <button id="submit" label="&staff.circ.offline_register.submit.label;" accesskey="&staff.circ.offline_register.submit.accesskey;" />
+        </hbox>
+    </groupbox>
 
 </window>
 

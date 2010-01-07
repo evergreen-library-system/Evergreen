@@ -19,170 +19,170 @@
 -->
 
 <window id="main_win" 
-	onload="try { main_init(); } catch(E) { alert(E); }"
-	onunload="try { G.auth.logoff(); } catch(E) { alert(E); }"
-	title="&staff.auth.title;"
-	width="640" height="480"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    onload="try { main_init(); } catch(E) { alert(E); }"
+    onunload="try { G.auth.logoff(); } catch(E) { alert(E); }"
+    title="&staff.auth.title;"
+    width="640" height="480"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- BEHAVIOR -->
-	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var G;</script>
-	<script>dump('Loading main/main.xul\n');</script>
-	<scripts id="openils_util_scripts">
-		<script type="text/javascript" src="constants.js" />
-		<script type="text/javascript" src="../OpenILS/util/utils.js" />
-		<script type="text/javascript" src="../OpenILS/util/CGI.js" />
-		<script type="text/javascript" src="../OpenILS/util/md5.js" />
-		<script type="text/javascript" src="../OpenILS/util/JSON_v1.js" />
-		<!--
-		<script type="text/javascript" src="../OpenILS/util/fmall.js" />
-		<script type="text/javascript" src="../OpenILS/util/fmgen.js" />
-		-->
-		<script type="text/javascript" src="../OpenILS/util/RemoteRequest.js" />
-		<!--
-		<script type="text/javascript" src="../OpenILS/util/OrgTree.js" />
-		-->
-		<script type="text/javascript" src="../OpenILS/util/org_utils.js" />   
-	</scripts>
-	<script>dump('Loaded main/main.xul\n');</script>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var G;</script>
+    <script>dump('Loading main/main.xul\n');</script>
+    <scripts id="openils_util_scripts">
+        <script type="text/javascript" src="constants.js" />
+        <script type="text/javascript" src="../OpenILS/util/utils.js" />
+        <script type="text/javascript" src="../OpenILS/util/CGI.js" />
+        <script type="text/javascript" src="../OpenILS/util/md5.js" />
+        <script type="text/javascript" src="../OpenILS/util/JSON_v1.js" />
+        <!--
+        <script type="text/javascript" src="../OpenILS/util/fmall.js" />
+        <script type="text/javascript" src="../OpenILS/util/fmgen.js" />
+        -->
+        <script type="text/javascript" src="../OpenILS/util/RemoteRequest.js" />
+        <!--
+        <script type="text/javascript" src="../OpenILS/util/OrgTree.js" />
+        -->
+        <script type="text/javascript" src="../OpenILS/util/org_utils.js" />   
+    </scripts>
+    <script>dump('Loaded main/main.xul\n');</script>
 
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/main.js"/>
-	<script>
-		dump("lang.version = &lang.version;" + '\n');
-	</script>
+    <script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+    <script type="text/javascript" src="chrome://open_ils_staff_client/content/main/main.js"/>
+    <script>
+        dump("lang.version = &lang.version;" + '\n');
+    </script>
 
     <script type="text/javascript" src="chrome://venkman/content/venkman-overlay.js"/>
     <script type="application/x-javascript" src="chrome://inspector/content/hooks.js"/>
     <script type="application/x-javascript" src="chrome://chromelist/content/overlay/ChromeListOverlay.js" />
 
-	<messagecatalog id="authStrings" src="chrome://open_ils_staff_client/locale/auth.properties"/>
-	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
+    <messagecatalog id="authStrings" src="chrome://open_ils_staff_client/locale/auth.properties"/>
+    <messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
-	<commandset id="auth_cmds">
-		<command id="cmd_login" />
-		<command id="cmd_logoff"/>
-		<command id="cmd_override" />
-		<command id="cmd_close_window"/>
-		<command id="cmd_standalone"/>
-		<command id="cmd_standalone_export"/>
-		<command id="cmd_standalone_import"/>
-		<command id="cmd_js_console"/>
-		<command id="cmd_debugger"/>
-		<command id="cmd_inspector"/>
-		<command id="cmd_chrome_list"/>
-		<command id="cmd_js_shell"/>
-		<command id="cmd_clear_cache"/>
-		<command id="cmd_test_server"/>
-		<command id="cmd_ssl_exception" hidden="true"/>
-	</commandset>
+    <commandset id="auth_cmds">
+        <command id="cmd_login" />
+        <command id="cmd_logoff"/>
+        <command id="cmd_override" />
+        <command id="cmd_close_window"/>
+        <command id="cmd_standalone"/>
+        <command id="cmd_standalone_export"/>
+        <command id="cmd_standalone_import"/>
+        <command id="cmd_js_console"/>
+        <command id="cmd_debugger"/>
+        <command id="cmd_inspector"/>
+        <command id="cmd_chrome_list"/>
+        <command id="cmd_js_shell"/>
+        <command id="cmd_clear_cache"/>
+        <command id="cmd_test_server"/>
+        <command id="cmd_ssl_exception" hidden="true"/>
+    </commandset>
 
-	<keyset id="auth_keys">
-		<key id="auth-login-key" modifiers="accel" key="S" command="cmd_login"/>
-		<key id="auth-logoff-key" modifiers="accel" key="L" command="cmd_logoff"/>
-		<key id="auth-close-key" modifiers="accel" key="Q" command="cmd_close_window"/>
-	</keyset>
+    <keyset id="auth_keys">
+        <key id="auth-login-key" modifiers="accel" key="S" command="cmd_login"/>
+        <key id="auth-logoff-key" modifiers="accel" key="L" command="cmd_logoff"/>
+        <key id="auth-close-key" modifiers="accel" key="Q" command="cmd_close_window"/>
+    </keyset>
 
-	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	<!-- CONTENT -->
-	<deck id="main_deck" flex="1">
-	<groupbox id="main_groupbox" flex="1" style="overflow: auto;">
-		<caption id="main_caption" label="&staff.main.auth.caption;"/>
-		<hbox>
-			<button id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- CONTENT -->
+    <deck id="main_deck" flex="1">
+    <groupbox id="main_groupbox" flex="1" style="overflow: auto;">
+        <caption id="main_caption" label="&staff.main.auth.caption;"/>
+        <hbox>
+            <button id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
 
-			<button id="new_window_btn" label="&staff.auth.new_window_btn.label;" accesskey="&staff.auth.new_window_btn.accesskey;" />
+            <button id="new_window_btn" label="&staff.auth.new_window_btn.label;" accesskey="&staff.auth.new_window_btn.accesskey;" />
 
             <label value="&staff.auth.locale.label;" accesskey="&staff.auth.locale.accesskey;" control="locale_menu"/>
             <menulist id="locale_menu">
                 <menupopup id="locale_menupopup">
                 </menupopup>
             </menulist>
-			<button id="apply_locale_btn" label="&staff.auth.apply_locale_btn.label;" accesskey="&staff.auth.apply_locale_btn.accesskey;" />
-		</hbox>
-		<label value=" "/>
+            <button id="apply_locale_btn" label="&staff.auth.apply_locale_btn.label;" accesskey="&staff.auth.apply_locale_btn.accesskey;" />
+        </hbox>
+        <label value=" "/>
 
 <grid flex="1">
-	<columns><column flex="1"/><column flex="1"/></columns>
-	<rows flex="1">
+    <columns><column flex="1"/><column flex="1"/></columns>
+    <rows flex="1">
 <row flex="1">
-		<groupbox flex="1">
-			<caption label="&staff.main.auth.server;"/>
-			<grid>
-				<columns><column /><column /></columns>
-				<rows>
-					<row>
-						<label value="&staff.main.auth.hostname;" control="server_prompt" accesskey="&staff.main.auth.hostname.accesskey;"/>
-						<vbox>
-							<menulist editable="true" id="server_prompt" flex="1">
+        <groupbox flex="1">
+            <caption label="&staff.main.auth.server;"/>
+            <grid>
+                <columns><column /><column /></columns>
+                <rows>
+                    <row>
+                        <label value="&staff.main.auth.hostname;" control="server_prompt" accesskey="&staff.main.auth.hostname.accesskey;"/>
+                        <vbox>
+                            <menulist editable="true" id="server_prompt" flex="1">
                                 <menupopup id="server_menu" />
                             </menulist>
                             <hbox>
-							    <button label="&staff.main.auth.retest;" id="retest" accesskey="&staff.main.auth.retest.accesskey;" command="cmd_test_server"/>
-							    <button label="&staff.main.auth.add_ssl_exception;" id="ssl_exception" command="cmd_ssl_exception"/>
+                                <button label="&staff.main.auth.retest;" id="retest" accesskey="&staff.main.auth.retest.accesskey;" command="cmd_test_server"/>
+                                <button label="&staff.main.auth.add_ssl_exception;" id="ssl_exception" command="cmd_ssl_exception"/>
                             </hbox>
-						</vbox>
-					</row>
-					<row>
-						<label value="&staff.main.auth.status;"/>
-						<label id="status" />
-					</row>
-					<row>
-						<label value="&staff.main.auth.version;"/>
-						<label id="version" />
-					</row>
-				</rows>
-			</grid>
-		</groupbox>
+                        </vbox>
+                    </row>
+                    <row>
+                        <label value="&staff.main.auth.status;"/>
+                        <label id="status" />
+                    </row>
+                    <row>
+                        <label value="&staff.main.auth.version;"/>
+                        <label id="version" />
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
 
-		<groupbox flex="1">
-			<caption label="&staff.main.auth.workstation;"/>
-			<deck id="ws_deck" flex="1">
-			</deck>
-		</groupbox>
+        <groupbox flex="1">
+            <caption label="&staff.main.auth.workstation;"/>
+            <deck id="ws_deck" flex="1">
+            </deck>
+        </groupbox>
 
 </row>
 <row flex="1">
-		<groupbox flex="1">
-			<caption label="&staff.main.authentication.caption;"/>
-			<grid>
-				<columns> <column /> <column /> </columns>
-				<rows>
-					<row> <label value="&common.username;" control="name_prompt" accesskey="&common.username.accesskey;"/> <textbox id="name_prompt" value=""/>
-					</row>
-					<row>
-						<label value="&common.password;" control="password_prompt" accesskey="&common.password.accesskey;"/>
-						<textbox id="password_prompt" value="" type="password"/>
-					</row>
-					<row>
-						<spacer />
-						<hbox>
-							<button id="submit_button" label="&common.login;" accesskey="&common.login.accesskey;" command="cmd_login" />
-							<button label="&staff.auth.logoff_prompt;" accesskey="&staff.auth.logoff_prompt.accesskey;" command="cmd_logoff" />
-						</hbox>
-					</row>
-				</rows>
-			</grid>
-		</groupbox>
+        <groupbox flex="1">
+            <caption label="&staff.main.authentication.caption;"/>
+            <grid>
+                <columns> <column /> <column /> </columns>
+                <rows>
+                    <row> <label value="&common.username;" control="name_prompt" accesskey="&common.username.accesskey;"/> <textbox id="name_prompt" value=""/>
+                    </row>
+                    <row>
+                        <label value="&common.password;" control="password_prompt" accesskey="&common.password.accesskey;"/>
+                        <textbox id="password_prompt" value="" type="password"/>
+                    </row>
+                    <row>
+                        <spacer />
+                        <hbox>
+                            <button id="submit_button" label="&common.login;" accesskey="&common.login.accesskey;" command="cmd_login" />
+                            <button label="&staff.auth.logoff_prompt;" accesskey="&staff.auth.logoff_prompt.accesskey;" command="cmd_logoff" />
+                        </hbox>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
 
-		<groupbox flex="1">
-			<caption label="&staff.main.auth.offline.caption;"/>
-			<hbox><button label="&staff.main.auth.offline.interface;" accesskey="&staff.main.auth.offline.interface.accesskey;" command="cmd_standalone"/></hbox>
-			<hbox><button label="&staff.main.auth.offline.export;" command="cmd_standalone_export"/></hbox>
-			<hbox><button label="&staff.main.auth.offline.import;" command="cmd_standalone_import"/></hbox>
-		</groupbox>
+        <groupbox flex="1">
+            <caption label="&staff.main.auth.offline.caption;"/>
+            <hbox><button label="&staff.main.auth.offline.interface;" accesskey="&staff.main.auth.offline.interface.accesskey;" command="cmd_standalone"/></hbox>
+            <hbox><button label="&staff.main.auth.offline.export;" command="cmd_standalone_export"/></hbox>
+            <hbox><button label="&staff.main.auth.offline.import;" command="cmd_standalone_import"/></hbox>
+        </groupbox>
 </row>
 </rows>
 </grid>
-		<vbox id="progress_space">
-			<progressmeter id="progress_bar" mode="normal" value="0" hidden="true"/>
-		</vbox>
-		<button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.accesskey;" command="cmd_close_window"/>
-		<groupbox id="debug_gb" flex="1" hidden="true">
-			<caption label="&staff.main.auth.debug.caption;"/>
+        <vbox id="progress_space">
+            <progressmeter id="progress_bar" mode="normal" value="0" hidden="true"/>
+        </vbox>
+        <button label="&staff.auth.quit_prompt;" accesskey="&staff.auth.quit_prompt.accesskey;" command="cmd_close_window"/>
+        <groupbox id="debug_gb" flex="1" hidden="true">
+            <caption label="&staff.main.auth.debug.caption;"/>
             <hbox>
                 <arrowscrollbox orient="horizontal" flex="1">
                     <button label="&staff.main.auth.debug.javascript;" accesskey="&staff.main.auth.debug.javascript.accesskey;" command="cmd_js_console"/>
@@ -193,10 +193,10 @@
                     <button label="&staff.main.auth.debug.clear;" accesskey="&staff.main.auth.debug.clear.accesskey;" command="cmd_clear_cache"/>
                 </arrowscrollbox>
             </hbox>
-		</groupbox>
+        </groupbox>
 
-	</groupbox>
-	</deck>
+    </groupbox>
+    </deck>
 
 </window>
 

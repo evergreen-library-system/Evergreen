@@ -1,96 +1,96 @@
 <?xml version='1.0' encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
-	<!ENTITY nbsp " "> <!-- calendar needs this entity -->
+    "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+    <!ENTITY nbsp " "> <!-- calendar needs this entity -->
 ]>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<head>
-		<title>&staff.server.admin.hold_pull.title;</title>
-		<script language='javascript' src='/opac/common/js/utils.js'> </script>
-		<script language='javascript' src='/opac/common/js//config.js'> </script> 
-		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
-	
-		<script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
-		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
-		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
-		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
-		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
-		<script language='javascript' src='/opac/common/js/init.js'> </script>
-		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-		<script language='javascript' src='/opac/common/js/sorttable.js'> </script>
-		<script language='javascript' src='adminlib.js'> </script>
-		<script language='javascript' src='hold_pull_list.js'> </script>
-		<link type='text/css' rel='stylesheet' href='admin.css'/>
+    <head>
+        <title>&staff.server.admin.hold_pull.title;</title>
+        <script language='javascript' src='/opac/common/js/utils.js'> </script>
+        <script language='javascript' src='/opac/common/js//config.js'> </script> 
+        <script language='javascript' src='/opac/common/js/CGI.js'> </script>
+        <script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+    
+        <script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
+        <script language='javascript' src='/opac/common/js/fmall.js'> </script>
+        <script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+        <script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+        <script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+        <script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
+        <script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+        <script language='javascript' src='/opac/common/js/init.js'> </script>
+        <script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+        <script language='javascript' src='/opac/common/js/sorttable.js'> </script>
+        <script language='javascript' src='adminlib.js'> </script>
+        <script language='javascript' src='hold_pull_list.js'> </script>
+        <link type='text/css' rel='stylesheet' href='admin.css'/>
   
-		<style type='text/css'>
-			a { color: black; text-decoration: none; }
-		</style>
-	</head>
+        <style type='text/css'>
+            a { color: black; text-decoration: none; }
+        </style>
+    </head>
 
-	<body onload='try{pullListInit();}catch(e){alert(js2JSON(e));}'>
+    <body onload='try{pullListInit();}catch(e){alert(js2JSON(e));}'>
 
-		<center>
-			<h2>&staff.server.admin.hold_pull.header;<span id='pl_org'/></h2>
+        <center>
+            <h2>&staff.server.admin.hold_pull.header;<span id='pl_org'/></h2>
 
-			<div style='position:absolute; top: 5px; right: 5px;'>
-				<span>&staff.server.admin.hold_pull.greeting;</span><b><span id='pl_user'/></b>
-			</div>
-		
-			<hr/><br/>
+            <div style='position:absolute; top: 5px; right: 5px;'>
+                <span>&staff.server.admin.hold_pull.greeting;</span><b><span id='pl_user'/></b>
+            </div>
+        
+            <hr/><br/>
 
-			<span>&staff.server.admin.hold_pull.sort.note;</span>
+            <span>&staff.server.admin.hold_pull.sort.note;</span>
 
-			<table width='100%' class='data_grid sortable' id='pl_table'>
-				<thead>
-					<tr>
-						<td>&staff.server.admin.hold_pull.title.label;</td>
-						<td>&staff.server.admin.hold_pull.author;</td>
-						<td>&staff.server.admin.hold_pull.copy_location;</td>
-						<td id='pl_callnumber'>&staff.server.admin.hold_pull.call_number;</td>
-						<td>&staff.server.admin.hold_pull.item_barcode;</td>
-						<td>&staff.server.admin.hold_pull.copy;</td>
-						<td>&staff.server.admin.hold_pull.format;</td>
-						<td>&staff.server.admin.hold_pull.patron_barcode;</td>
-						<td>&staff.server.admin.hold_pull.hold_date;</td>
-						<td>&staff.server.admin.hold_pull.hold_type;</td>
-					</tr>
-				</thead>
-				<tbody id='pull_list_tbody'>
-					<tr id='pull_list_row'>
-						<td name='title'/>
-						<td name='author'/>
-						<td name='copy_location'/>
-						<td name='call_number'/>
-						<td name='barcode'/>
-						<td name='copy_number'/>
-						<td>
-							<span name='format_at'		class='hide_me'>&staff.server.admin.hold_pull.book;</span>
-							<span name='format_at-d'	class='hide_me'>&staff.server.admin.hold_pull.large_book;</span>
-							<span name='format_i'		class='hide_me'>&staff.server.admin.hold_pull.audiobook;</span>
-							<span name='format_g'		class='hide_me'>&staff.server.admin.hold_pull.video;</span>
-							<span name='format_j'		class='hide_me'>&staff.server.admin.hold_pull.music;</span>
-							<span name='format_m'		class='hide_me'>&staff.server.admin.hold_pull.eresource;</span>
-						</td>
-						<td name='patron'/>
-						<td name='date'/>
-						<td>
-							<span name='copy_hold' class='hide_me'>&staff.server.admin.hold_pull.copy_hold;</span>
-							<span name='volume_hold' class='hide_me'>&staff.server.admin.hold_pull.volume_hold;</span>
-							<span name='title_hold' class='hide_me'>&staff.server.admin.hold_pull.title_hold;</span>
-							<span name='mr_hold' class='hide_me'>&staff.server.admin.hold_pull.metarecord_hold;</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</center>
-	</body>
+            <table width='100%' class='data_grid sortable' id='pl_table'>
+                <thead>
+                    <tr>
+                        <td>&staff.server.admin.hold_pull.title.label;</td>
+                        <td>&staff.server.admin.hold_pull.author;</td>
+                        <td>&staff.server.admin.hold_pull.copy_location;</td>
+                        <td id='pl_callnumber'>&staff.server.admin.hold_pull.call_number;</td>
+                        <td>&staff.server.admin.hold_pull.item_barcode;</td>
+                        <td>&staff.server.admin.hold_pull.copy;</td>
+                        <td>&staff.server.admin.hold_pull.format;</td>
+                        <td>&staff.server.admin.hold_pull.patron_barcode;</td>
+                        <td>&staff.server.admin.hold_pull.hold_date;</td>
+                        <td>&staff.server.admin.hold_pull.hold_type;</td>
+                    </tr>
+                </thead>
+                <tbody id='pull_list_tbody'>
+                    <tr id='pull_list_row'>
+                        <td name='title'/>
+                        <td name='author'/>
+                        <td name='copy_location'/>
+                        <td name='call_number'/>
+                        <td name='barcode'/>
+                        <td name='copy_number'/>
+                        <td>
+                            <span name='format_at'        class='hide_me'>&staff.server.admin.hold_pull.book;</span>
+                            <span name='format_at-d'    class='hide_me'>&staff.server.admin.hold_pull.large_book;</span>
+                            <span name='format_i'        class='hide_me'>&staff.server.admin.hold_pull.audiobook;</span>
+                            <span name='format_g'        class='hide_me'>&staff.server.admin.hold_pull.video;</span>
+                            <span name='format_j'        class='hide_me'>&staff.server.admin.hold_pull.music;</span>
+                            <span name='format_m'        class='hide_me'>&staff.server.admin.hold_pull.eresource;</span>
+                        </td>
+                        <td name='patron'/>
+                        <td name='date'/>
+                        <td>
+                            <span name='copy_hold' class='hide_me'>&staff.server.admin.hold_pull.copy_hold;</span>
+                            <span name='volume_hold' class='hide_me'>&staff.server.admin.hold_pull.volume_hold;</span>
+                            <span name='title_hold' class='hide_me'>&staff.server.admin.hold_pull.title_hold;</span>
+                            <span name='mr_hold' class='hide_me'>&staff.server.admin.hold_pull.metarecord_hold;</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </center>
+    </body>
 </html>
