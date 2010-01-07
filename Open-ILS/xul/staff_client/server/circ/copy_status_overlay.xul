@@ -13,6 +13,7 @@
     <popup id="copy_status_actions" position="at_pointer"> 
         <menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
         <menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
+        <menuitem command="sel_record_bucket" />
         <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
         <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
         <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
@@ -42,6 +43,7 @@
     <popup id="copy_cat_status_actions" position="at_pointer"> 
         <menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
         <menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
+        <menuitem command="sel_record_bucket" />
         <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
         <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
         <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
@@ -117,6 +119,7 @@
         <menupopup>
             <menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
             <menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
+            <menuitem command="sel_record_bucket" />
             <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
             <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
             <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
@@ -148,6 +151,7 @@
         <menupopup>
             <menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
             <menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
+            <menuitem command="sel_record_bucket" />
             <menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
             <menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
             <menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>

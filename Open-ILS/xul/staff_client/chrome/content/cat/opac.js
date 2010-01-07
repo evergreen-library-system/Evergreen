@@ -249,10 +249,12 @@ function remove_me() {
 function add_to_bucket() {
     JSAN.use('util.window'); var win = new util.window();
     win.open(
-        xulG.url_prefix(urls.XUL_RECORD_BUCKETS_QUICK)
-        + '?record_ids=' + js2JSON( [ docid ] ),
+        xulG.url_prefix(urls.XUL_RECORD_BUCKETS_QUICK),
         'sel_bucket_win' + win.window_name_increment(),
-        'chrome,resizable,modal,center'
+        'chrome,resizable,modal,center',
+        {
+            record_ids: [ docid ]
+        }
     );
 }
 

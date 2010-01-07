@@ -1949,6 +1949,8 @@
 <!ENTITY staff.circ.copy_status_overlay.sel_clip.accesskey "C">
 <!ENTITY staff.circ.copy_status_overlay.sel_bucket.label "Add to Item Bucket">
 <!ENTITY staff.circ.copy_status_overlay.sel_bucket.accesskey "A">
+<!ENTITY staff.circ.copy_status_overlay.sel_record_bucket.label "Add to Record Bucket">
+<!ENTITY staff.circ.copy_status_overlay.sel_record_bucket.accesskey "">
 <!ENTITY staff.circ.copy_status_overlay.sel_opac.label "Show in Catalog">
 <!ENTITY staff.circ.copy_status_overlay.sel_opac.accesskey "S">
 <!ENTITY staff.circ.copy_status_overlay.sel_copy_details.label "Show Item Details">

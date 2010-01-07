@@ -239,6 +239,18 @@ cat.util.add_copies_to_bucket = function(selection_list) {
     );
 }
 
+cat.util.add_titles_to_bucket = function(record_ids) {
+    JSAN.use('util.window'); var win = new util.window();
+    win.open(
+        xulG.url_prefix(urls.XUL_RECORD_BUCKETS_QUICK),
+        'sel_bucket_win' + win.window_name_increment(),
+        'chrome,resizable,modal,center',
+        {
+            record_ids: record_ids 
+        }
+    );
+}
+
 cat.util.spawn_copy_editor = function(params) {
     try {
         if (!params.copy_ids && !params.copies) return;
