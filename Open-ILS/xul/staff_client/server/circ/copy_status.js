@@ -58,6 +58,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_edit.setAttribute('disabled','true');
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
+							obj.controller.view.sel_record_bucket.setAttribute('disabled','true');
 							obj.controller.view.sel_copy_details.setAttribute('disabled','true');
 							obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
 							obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
@@ -82,6 +83,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_opac.setAttribute('disabled','false');
 							obj.controller.view.sel_patron.setAttribute('disabled','false');
 							obj.controller.view.sel_bucket.setAttribute('disabled','false');
+							obj.controller.view.sel_record_bucket.setAttribute('disabled','false');
 							obj.controller.view.sel_copy_details.setAttribute('disabled','false');
 							obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
 							obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
@@ -274,6 +276,19 @@ circ.copy_status.prototype = {
 							cat.util.add_copies_to_bucket(obj.selection_list);
 						}
 					],
+                    'sel_record_bucket' : [
+                        ['command'],
+                        function() {
+                            JSAN.use('cat.util'); JSAN.use('util.functional');
+                            cat.util.add_titles_to_bucket(
+                                util.functional.map_list(
+                                    obj.selection_list, function (o) {
+                                        return o.doc_id;
+                                    }
+                                )
+                            );
+                        }
+                    ],
 					'copy_status_barcode_entry_textbox' : [
 						['keypress'],
 						function(ev) {
