@@ -1117,30 +1117,29 @@ function AcqLiTable() {
         if(openils.XUL.isXUL()) {
             win = window.open('/xul/' + openils.XUL.buildId() + '/server/cat/marcedit.xul');
         } else {
-
             win = window.open('/xul/server/cat/marcedit.xul'); 
-            var self = this;
-            win.xulG = {
-                record : {marc : li.marc()},
-                save : {
-                    label: 'Save Record', // XXX I18N
-                    func: function(xmlString) {
-                        li.marc(xmlString);
-                        fieldmapper.standardRequest(
-                            ['open-ils.acq', 'open-ils.acq.lineitem.update'],
-                            {   async: true,
-                                params: [openils.User.authtoken, li],
-                                oncomplete: function(r) {
-                                    openils.Util.readResponse(r);
-                                    win.close();
-                                    self.drawInfo(li.id())
-                                }
-                            }
-                        );
-                    },
-                }
-            };
         }
+        var self = this;
+        win.xulG = {
+            record : {marc : li.marc()},
+            save : {
+                label: 'Save Record', // XXX I18N
+                func: function(xmlString) {
+                    li.marc(xmlString);
+                    fieldmapper.standardRequest(
+                        ['open-ils.acq', 'open-ils.acq.lineitem.update'],
+                        {   async: true,
+                            params: [openils.User.authtoken, li],
+                            oncomplete: function(r) {
+                                openils.Util.readResponse(r);
+                                win.close();
+                                self.drawInfo(li.id())
+                            }
+                        }
+                    );
+                },
+            }
+        };
     }
 
     this._savePl = function(values) {
