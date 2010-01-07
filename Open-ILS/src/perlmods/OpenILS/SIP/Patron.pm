@@ -419,7 +419,7 @@ sub overdue_items {
 	syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circs @overdues");
 	
 	
-	my @return_datatype = grep { $_->{name} eq 'msg64_summary_datatype' } @{$self->{config}->{implementation_config}->{options}->{option}};
+	my @return_datatype = grep { $_->{name} eq 'msg64_summary_datatype' } OpenILS::SIP::config()->{implementation_config}->{options}->{option};
 	
 	for my $circid (@overdues) {
 		next unless $circid;
@@ -466,7 +466,7 @@ sub charged_items {
 	my @c;
 	syslog('LOG_DEBUG', "OILS: charged_items() fleshing circs @charges");
 
-	my @return_datatype = grep { $_->{name} eq 'msg64_summary_datatype' } @{$self->{config}->{implementation_config}->{options}->{option}};
+	my @return_datatype = grep { $_->{name} eq 'msg64_summary_datatype' } OpenILS::SIP::config()->{implementation_config}->{options}->{option};
 
 	for my $circid (@charges) {
 		next unless $circid;
