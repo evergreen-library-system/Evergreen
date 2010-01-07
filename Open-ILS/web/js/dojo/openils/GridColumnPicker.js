@@ -30,7 +30,7 @@ if(!dojo._hasResource["openils.GridColumnPicker"]) {
             this.dialog = dialog;
             this.grid = grid;
             this.structure = structure;
-            this.dialogTable = dialog.domNode.getElementsByTagName('tbody')[0];
+            this.dialogTable = dialog.containerNode.getElementsByTagName('tbody')[0];
             this.baseCellList = this.structure[0].cells[0].slice();
             this.build();
             this.grid.model.fields.get(0).sort = false;
