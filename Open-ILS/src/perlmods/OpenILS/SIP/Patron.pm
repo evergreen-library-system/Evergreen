@@ -402,7 +402,7 @@ sub drop_hold {
 
 sub __patron_items_info {
 	my $self = shift;
-	return if $self->{items_info};
+	return if $self->{item_info};
 	$self->{item_info} = 
 		OpenILS::Application::Actor::_checked_out(
 			0, $self->{editor}, $self->{user}->id);;
