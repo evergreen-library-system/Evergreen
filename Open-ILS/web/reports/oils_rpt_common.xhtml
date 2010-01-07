@@ -1,23 +1,23 @@
 <!-- Load dojo -->
 <style type="text/css">
-	@import url('/js/dojo/dojo/resources/dojo.css');
-	@import url('/js/dojo/dijit/themes/tundra/tundra.css');
-	@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
+ @import url('/js/dojo/dojo/resources/dojo.css');
+ @import url('/js/dojo/dijit/themes/tundra/tundra.css');
+ @import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
 </style>
 <script type="text/javascript">
-	var djConfig= {
-		isDebug: false,
-		parseOnLoad: true
-	}
+ var djConfig= {
+  isDebug: false,
+  parseOnLoad: true
+ }
 </script>
 <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
 <script type="text/javascript">
-	dojo.require('dojo.parser');
-	dojo.require('dojo.string');
+ dojo.require('dojo.parser');
+ dojo.require('dojo.string');
 
-	function status_update (markup) {
-		dojo.byId('status_text').innerHTML = markup;
-	}
+ function status_update (markup) {
+  dojo.byId('status_text').innerHTML = markup;
+ }
 </script>
 
 <script type='text/javascript' src='/opac/common/js/utils.js'> </script>
@@ -39,17 +39,17 @@
 <script type='text/javascript' src='/opac/common/js/fm_table_conf.js'> </script>
 <script type='text/javascript' src='/opac/common/js/md5.js'> </script>
 <script type="text/javascript">
-	stpicopen  = '../opac/images/slimtree/folder2.gif';
-	stpicclose = '../opac/images/slimtree/folderopen2.gif';
-	stpicblank = '../opac/images/slimtree/page.gif';
-	stpicline  = '../opac/images/slimtree/line.gif';
-	stpicjoin  = '../opac/images/slimtree/join.gif';
-	stpicjoinb = '../opac/images/slimtree/joinbottom.gif';
+ stpicopen  = '../opac/images/slimtree/folder2.gif';
+ stpicclose = '../opac/images/slimtree/folderopen2.gif';
+ stpicblank = '../opac/images/slimtree/page.gif';
+ stpicline  = '../opac/images/slimtree/line.gif';
+ stpicjoin  = '../opac/images/slimtree/join.gif';
+ stpicjoinb = '../opac/images/slimtree/joinbottom.gif';
 </script>
 
 
 <link rel="stylesheet" type="text/css" media="all" 
-	href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
+ href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
 <script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
 <script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
@@ -77,19 +77,19 @@
 
 
 <span class='hide_me' id='oils_rpt_generic_success'>
-	&reports.oils_rpt_common.action_succeeded;
+ &reports.oils_rpt_common.action_succeeded;
 </span>
 
 <span class='hide_me' id='oils_rpt_generic_failure'>
-	&reports.oils_rpt_common.action_failed;
+ &reports.oils_rpt_common.action_failed;
 </span>
 
 
 <button style='padding: 0px;' id='generic_calendar_button' class='hide_me'>
-	<img src="/opac/common/js/jscalendar/img.gif"
-		style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;"
-		title="&reports.oils_rpt_common.generic_calendar_button;"
-		onmouseover="this.style.background='red';"
-		onmouseout="this.style.background=''" />
+ <img src="/opac/common/js/jscalendar/img.gif"
+  style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;"
+  title="&reports.oils_rpt_common.generic_calendar_button;"
+  onmouseover="this.style.background='red';"
+  onmouseout="this.style.background=''" />
 </button>
 

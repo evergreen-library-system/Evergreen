@@ -55,7 +55,7 @@ HTTP.Cookies.prototype.date = new HTTP.Cookies.Date; // date object instance
 HTTP.Cookies.prototype.read = function (name) {
    var value  = '';
    if(!this.JAR) {
-		this.JAR = {};
+  this.JAR = {};
       var array  = document.cookie.split(';');
       for (var x = 0; x < array.length; x++) {
          var pair = array[x].split('=');
@@ -70,7 +70,7 @@ HTTP.Cookies.prototype.read = function (name) {
          if(cookie == name) {
             value = this.JAR[cookie];
          }
-	   }
+    }
    }
    return value ? unescape(value) : '';
 }

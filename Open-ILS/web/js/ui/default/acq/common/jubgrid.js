@@ -57,7 +57,7 @@ var JUBGrid = {
     getJUBEstimatedPrice : function(rowIndex) {
         var data = JUBGrid.jubGrid.model.getRow(rowIndex);
         if (!data) return '';
-	    var price = new openils.acq.Lineitem(
+     var price = new openils.acq.Lineitem(
             {lineitem:JUBGrid.getLi(data.id)}).getEstimatedPrice();
         if(price) return price.price;
         return ''
@@ -204,15 +204,15 @@ var JUBGrid = {
             var deleted = false;
             for(var i = 0; i < selected.length; i++) {
                 var rowIdx = selected[i];
-	            var jubid = JUBGrid.jubGrid.model.getRow(rowIdx).id;
+             var jubid = JUBGrid.jubGrid.model.getRow(rowIdx).id;
                 if(jubid == id) {
-		    if (lineitems[id].state() == 'new') {
-			deleteMe.push(lineitems[id]);
-			deleted = true;
-		    } else {
-			alert("Can not delete line item "+id+
-			      ": item is "+lineitems[id].state());
-		    }
+      if (lineitems[id].state() == 'new') {
+   deleteMe.push(lineitems[id]);
+   deleted = true;
+      } else {
+   alert("Can not delete line item "+id+
+         ": item is "+lineitems[id].state());
+      }
                 }
             }
             if(!deleted) 
@@ -229,36 +229,36 @@ var JUBGrid = {
     },
 
     deleteLID: function(evt) {
-	var list =[];
-	var selected = JUBGrid.jubDetailGrid.selection.getSelected();
-	for (var idx = 0; idx < selected.length; idx++) {
-	    var rowIdx = selected[idx];
-	    var lid = JUBGrid.jubDetailGrid.model.getRow(rowIdx);
-	    var deleteFromStore = function (evt) {
+ var list =[];
+ var selected = JUBGrid.jubDetailGrid.selection.getSelected();
+ for (var idx = 0; idx < selected.length; idx++) {
+     var rowIdx = selected[idx];
+     var lid = JUBGrid.jubDetailGrid.model.getRow(rowIdx);
+     var deleteFromStore = function (evt) {
 
-		if (evt) {
-		    // something bad happened
-		    alert("Error: "+evt.desc);
-		} else {
-		    var deleteItem = function(item, rq) {
-			JUBGrid.jubDetailGrid.model.store.deleteItem(item);
-		    };
-		    var updateCount = function(item) {
-			var newval = JUBGrid.jubGrid.model.store.getValue(item, "item_count");
-			JUBGrid.jubGrid.model.store.setValue(item, "item_count", newval-1);
-			JUBGrid.jubGrid.update();
-		    };
+  if (evt) {
+      // something bad happened
+      alert("Error: "+evt.desc);
+  } else {
+      var deleteItem = function(item, rq) {
+   JUBGrid.jubDetailGrid.model.store.deleteItem(item);
+      };
+      var updateCount = function(item) {
+   var newval = JUBGrid.jubGrid.model.store.getValue(item, "item_count");
+   JUBGrid.jubGrid.model.store.setValue(item, "item_count", newval-1);
+   JUBGrid.jubGrid.update();
+      };
 
-		    JUBGrid.jubDetailGrid.model.store.fetch({query:{id:lid.id},
-							     onItem: deleteItem});
-		    JUBGrid.jubGrid.model.store.fetch({query:{id:JUBGrid.jubDetailGrid.lineitemID},
-						       onItem: updateCount});
-		}
-		JUBGrid.jubDetailGrid.update(); 
-	    };
+      JUBGrid.jubDetailGrid.model.store.fetch({query:{id:lid.id},
+            onItem: deleteItem});
+      JUBGrid.jubGrid.model.store.fetch({query:{id:JUBGrid.jubDetailGrid.lineitemID},
+             onItem: updateCount});
+  }
+  JUBGrid.jubDetailGrid.update(); 
+     };
 
-	    openils.acq.Lineitem.deleteLID(lid.id, deleteFromStore);
-	}
+     openils.acq.Lineitem.deleteLID(lid.id, deleteFromStore);
+ }
     },
 
     createLID: function(fields) {
@@ -273,11 +273,11 @@ var JUBGrid = {
     },
 
     receiveLID: function(evt) {
-	    var list =[];
-	    var selected = JUBGrid.jubDetailGrid.selection.getSelected();
-    	for (var idx = 0; idx < selected.length; idx++) {
-    	    var rowIdx = selected[idx];
-    	    var lid = JUBGrid.jubDetailGrid.model.getRow(rowIdx);
+     var list =[];
+     var selected = JUBGrid.jubDetailGrid.selection.getSelected();
+     for (var idx = 0; idx < selected.length; idx++) {
+         var rowIdx = selected[idx];
+         var lid = JUBGrid.jubDetailGrid.model.getRow(rowIdx);
             list.push(lid.id);
         }
         if(lid != null) { // is at least one selected?

@@ -1,6 +1,6 @@
 try {
-	load_lib('jsOO.js');
-	load_lib('jsDOM.js');
+ load_lib('jsOO.js');
+ load_lib('jsDOM.js');
 } catch (e) {}
 
 var __xmlhttpreqid = 1;
@@ -32,11 +32,11 @@ XMLHttpRequest.method('send', function (data) {
 
         __xmlhttpreq_hash['id' + this._hash_id] = {};
 
-	try {
-        	_OILS_FUNC_xmlhttprequest_send(this._hash_id,this._method,this._url,this._async,headerlist,data);
-	} catch (e) {
-		alert("Sorry, no XMLHttpRequest support");
-	}
+ try {
+         _OILS_FUNC_xmlhttprequest_send(this._hash_id,this._method,this._url,this._async,headerlist,data);
+ } catch (e) {
+  alert("Sorry, no XMLHttpRequest support");
+ }
 
         this.responseText = __xmlhttpreq_hash['id' + this._hash_id].responseText;
         this.readyState = __xmlhttpreq_hash['id' + this._hash_id].readyState;

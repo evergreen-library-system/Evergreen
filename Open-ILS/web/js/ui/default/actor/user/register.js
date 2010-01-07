@@ -48,14 +48,14 @@ function load() {
     var userId = cgi.param('usr');
 
     if(xulG) {
-	    if(xulG.ses) openils.User.authtoken = xulG.ses;
-	    if(xulG.clone !== null) cloneUser = xulG.clone;
+     if(xulG.ses) openils.User.authtoken = xulG.ses;
+     if(xulG.clone !== null) cloneUser = xulG.clone;
         if(xulG.usr !== null) userId = xulG.usr
         if(xulG.params) {
             var parms = xulG.params;
-	        if(parms.ses) 
+         if(parms.ses) 
                 openils.User.authtoken = parms.ses;
-	        if(parms.clone) 
+         if(parms.clone) 
                 cloneUser = parms.clone;
             if(parms.usr !== null)
                 userId = parms.usr
@@ -630,22 +630,22 @@ function uEditFinishSave(newPatron, doClone) {
     if(doClone &&cloneUser == null)
         cloneUser = newPatron.id();
 
-	if( doClone ) {
+ if( doClone ) {
 
-		if(xulG && typeof xulG.spawn_editor == 'function' && !patron.isnew() ) {
+  if(xulG && typeof xulG.spawn_editor == 'function' && !patron.isnew() ) {
             window.xulG.spawn_editor({ses:openils.User.authtoken,clone:cloneUser});
             uEditRefresh();
 
-		} else {
-			location.href = href.replace(/\?.*/, '') + '?clone=' + cloneUser;
-		}
+  } else {
+   location.href = href.replace(/\?.*/, '') + '?clone=' + cloneUser;
+  }
 
-	} else {
+ } else {
 
-		uEditRefresh();
-	}
+  uEditRefresh();
+ }
 
-	uEditRefreshXUL(newPatron);
+ uEditRefreshXUL(newPatron);
 }
 
 function uEditRefresh() {
@@ -656,8 +656,8 @@ function uEditRefresh() {
 }
 
 function uEditRefreshXUL(newuser) {
-	if (window.xulG && typeof window.xulG.on_save == 'function') 
-		window.xulG.on_save(newuser);
+ if (window.xulG && typeof window.xulG.on_save == 'function') 
+  window.xulG.on_save(newuser);
 }
 
 
@@ -748,11 +748,11 @@ function uEditApproveAddress(addr) {
                     
                     // remove the replaced address 
                     if(oldId != addr.id()) {
-		                patron.addresses(
+                  patron.addresses(
                             patron.addresses().filter(
-				                function(i) { return (i.id() != oldId); }
-			                )
-		                );
+                    function(i) { return (i.id() != oldId); }
+                   )
+                  );
                     }
                     
                     // fix the the new address

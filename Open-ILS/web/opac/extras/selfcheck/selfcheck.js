@@ -109,7 +109,7 @@ function selfckFetchOrgDetails() {
 
 function selfckSetupPrinter() {
     try { // Mozilla only
-		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+  netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
         netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         netscape.security.PrivilegeManager.enablePrivilege('UniversalPreferencesRead');
         netscape.security.PrivilegeManager.enablePrivilege('UniversalPreferencesWrite');
@@ -202,7 +202,7 @@ function selfckPatronLogin(barcode) {
         'open-ils.actor:open-ils.actor.user.fleshed.retrieve_by_barcode',
         G.user.session, barcode);
 
-	bcReq.request.alertEvent = false;
+ bcReq.request.alertEvent = false;
 
     bcReq.callback(function(r) {
         patron = r.getResultObject();
@@ -284,7 +284,7 @@ function selfckCheckout(override) {
         'open-ils.circ:open-ils.circ.checkout.full' + ((override) ? '.override' : ''),
         G.user.session, {patron_id:patron.id(), copy_barcode:itemBarcode});
 
-	coReq.request.alertEvent = false;
+ coReq.request.alertEvent = false;
     coReq.callback(selfckHandleCoResult);
     coReq.send();
 }
@@ -374,8 +374,8 @@ function selfckDislplayCheckout(evt) {
     var circ = evt.payload.circ;
 
     if(record.isbn()) {
-	    var pic = $n(template, 'selfck.jacket');
-	    pic.setAttribute('src', '../ac/jacket/small/'+cleanISBN(record.isbn()));
+     var pic = $n(template, 'selfck.jacket');
+     pic.setAttribute('src', '../ac/jacket/small/'+cleanISBN(record.isbn()));
     }
     $n(template, 'selfck.barcode').appendChild(text(copy.barcode()));
     $n(template, 'selfck.title').appendChild(text(record.title()));

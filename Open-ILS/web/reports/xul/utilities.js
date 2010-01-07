@@ -1,19 +1,19 @@
 function $ () {
-	var elements = new Array();
+ var elements = new Array();
 
-	for (var i = 0; i < arguments.length; i++) {
-		var element = arguments[i];
+ for (var i = 0; i < arguments.length; i++) {
+  var element = arguments[i];
 
-		if (typeof element == 'string')
-			element = document.getElementById(element) || undefined;
+  if (typeof element == 'string')
+   element = document.getElementById(element) || undefined;
 
-		if (arguments.length == 1)
-			return element;
+  if (arguments.length == 1)
+   return element;
 
-		elements.push( element );
-	}
+  elements.push( element );
+ }
 
-	return elements;
+ return elements;
 }
 
 function _l(l) { location.href = l + location.search; }
@@ -25,9 +25,9 @@ function map (func, list) {
 }
 
 function grep (func, list) {
-	var ret = [];
-	for (var i = 0; i < list.length; i++) if(func(list[i])) ret.push(list[i]);
-	return ret;
+ var ret = [];
+ for (var i = 0; i < list.length; i++) if(func(list[i])) ret.push(list[i]);
+ return ret;
 }
 
 function getSelectedItems(tree) {

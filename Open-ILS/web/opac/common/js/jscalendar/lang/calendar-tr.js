@@ -1,13 +1,13 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
-//	Turkish Translation by Nuri AKMAN
-//	Location: Ankara/TURKEY
-//	e-mail	: nuriakman@hotmail.com
-//	Date	: April, 9 2003
+// Turkish Translation by Nuri AKMAN
+// Location: Ankara/TURKEY
+// e-mail : nuriakman@hotmail.com
+// Date : April, 9 2003
 //
-//	Note: if Turkish Characters does not shown on you screen
-//		  please include falowing line your html code:
+// Note: if Turkish Characters does not shown on you screen
+//    please include falowing line your html code:
 //
-//		  <meta http-equiv="Content-Type" content="text/html; charset=windows-1254">
+//    <meta http-equiv="Content-Type" content="text/html; charset=windows-1254">
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 

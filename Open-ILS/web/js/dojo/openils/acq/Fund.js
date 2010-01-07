@@ -40,7 +40,7 @@ openils.acq.Fund.createStore = function(onComplete, limitPerm) {
             openils.acq.Fund.cache[src.id()] = src;
             items.push(src);
         }
-	    openils.acq.Fund._cachecomplete = true;
+     openils.acq.Fund._cachecomplete = true;
         onComplete(acqf.toStoreData(items));
     }
 
@@ -148,18 +148,18 @@ openils.acq.Fund.nameMapping = function(oncomplete) {
     var ids = [];
     var names = [];
     var buildMap = function() {
-	for (var i in openils.acq.Fund.cache) {
-	    var item = openils.acq.Fund.cache[i];
-	    ids.push(item.id());
-	    names.push(item.name());
-	    oncomplete(ids, names);
-	}
+ for (var i in openils.acq.Fund.cache) {
+     var item = openils.acq.Fund.cache[i];
+     ids.push(item.id());
+     names.push(item.name());
+     oncomplete(ids, names);
+ }
     };
 
     if (openils.acq.Fund._cachecomplete) {
-	buildMap(oncomplete);
+ buildMap(oncomplete);
     } else {
-	openils.acq.Fund.createStore(buildMap);
+ openils.acq.Fund.createStore(buildMap);
     }
 };
 
@@ -176,35 +176,35 @@ openils.acq.Fund.buildPermFundSelector = function(perm, selector) {
     dojo.require('dojo.data.ItemFileReadStore');
 
     function hookupStore(store) {
-	selector.store = store;
+ selector.store = store;
         selector.startup();
     }
 
     function buildPicker(r) {
-	var msg;
-	var fundList = [];
-	while (msg = r.recv()) {
-	    var fund = msg.content();
-	    fundList.push(fund);
-	}
+ var msg;
+ var fundList = [];
+ while (msg = r.recv()) {
+     var fund = msg.content();
+     fundList.push(fund);
+ }
 
-	var store = new dojo.data.ItemFileReadStore({data:acqf.toStoreData(fundList)});
+ var store = new dojo.data.ItemFileReadStore({data:acqf.toStoreData(fundList)});
 
-	hookupStore(store);
-	openils.acq.Fund.storeCache[perm] = store;
+ hookupStore(store);
+ openils.acq.Fund.storeCache[perm] = store;
     }
 
     if (openils.acq.Fund.storeCache[perm]) {
-	hookupStore(openils.acq.Fund.storeCache[perm]);
+ hookupStore(openils.acq.Fund.storeCache[perm]);
     } else {
-	fieldmapper.standardRequest(
-	    ['open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
+ fieldmapper.standardRequest(
+     ['open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
             {   params: [openils.User.authtoken, null,
-			 {flesh_summary:1, limit_perm:perm}],
-		oncomplete: buildPicker,
-		async: true
+    {flesh_summary:1, limit_perm:perm}],
+  oncomplete: buildPicker,
+  async: true
             }
-	)
+ )
     }
 }
 

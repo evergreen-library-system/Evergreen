@@ -5,10 +5,10 @@
 <?xml-stylesheet href='/js/dojo/dojo/resources/dojo.css' type='text/css'?>
 
 <!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-	<!ENTITY nbsp " ">
-	<!--#include virtual="/opac/locale/${locale}/reports.dtd"-->
+ "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+ <!ENTITY nbsp " ">
+ <!--#include virtual="/opac/locale/${locale}/reports.dtd"-->
 ]>
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -16,17 +16,17 @@
 <!-- Load dojo -->
 <script type="text/javascript">
 <![CDATA[
-	var djConfig= {
-		isDebug: false,
-		parseOnLoad: true
-	}
+ var djConfig= {
+  isDebug: false,
+  parseOnLoad: true
+ }
 ]]>
 </script>
 <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
 <script type="text/javascript">
 <![CDATA[
-	dojo.require('dojo.parser');
-	dojo.require('dojo.string');
+ dojo.require('dojo.parser');
+ dojo.require('dojo.string');
 ]]>
 </script>
 
@@ -64,284 +64,284 @@
 <script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/calendar-setup.js"/>
 
 <groupbox flex="1">
-	<caption label="&reports.xul.template_builder.db_source_browser.label;"/>
-	<hbox flex="1">
-		<hbox flex="1">
-			<vbox flex="1">
-				<menulist label="&reports.xul.template_builder.sources_menulist.label;" popup="source-menu"/>
-				<tree
-					id="idl-browse-tree"
-					flex="2"
-					onclick="sourceTreeHandler(event)"
-					ondblclick="sourceTreeHandlerDblClick(event)"
-				>
-					<treecols>
-						<treecol label="&reports.xul.template_builder.source_nullable.label;" flex="0"/>
-						<treecol primary="true" label="&reports.xul.template_builder.source_name.label;" flex="1"/>
-					</treecols>
-					<treechildren id="sources-treetop" alternatingbackground="true" />
-				</tree>
+ <caption label="&reports.xul.template_builder.db_source_browser.label;"/>
+ <hbox flex="1">
+  <hbox flex="1">
+   <vbox flex="1">
+    <menulist label="&reports.xul.template_builder.sources_menulist.label;" popup="source-menu"/>
+    <tree
+     id="idl-browse-tree"
+     flex="2"
+     onclick="sourceTreeHandler(event)"
+     ondblclick="sourceTreeHandlerDblClick(event)"
+    >
+     <treecols>
+      <treecol label="&reports.xul.template_builder.source_nullable.label;" flex="0"/>
+      <treecol primary="true" label="&reports.xul.template_builder.source_name.label;" flex="1"/>
+     </treecols>
+     <treechildren id="sources-treetop" alternatingbackground="true" />
+    </tree>
                 <checkbox id="nullable-source-control" label="&reports.xul.template_builder.nullability_select.label;"/>
-			</vbox>
-		</hbox>
+   </vbox>
+  </hbox>
 
-		<splitter id="rtp-browse-splitter" collapse="before" persist="state hidden"><grippy/></splitter>
+  <splitter id="rtp-browse-splitter" collapse="before" persist="state hidden"><grippy/></splitter>
 
-		<hbox flex="2">
-			<vbox flex="1">
-				<hbox>
-					<label control="path-label" value="&reports.xul.template_builder.source_specifier.label;"/>
-					<textbox id="path-label" flex="1"/>
-				</hbox>
-				<hbox flex="1">
-					<hbox flex="3">
-						<vbox flex="1">
-							<tree
-								id="class-view"
-								flex="3"
-								onclick="detailTreeHandler()"
-								ondblclick="addReportAtoms()"
-								enableColumnDrag="true"
-							>
-								<treecols>
-									<treecol label="&reports.xul.template_builder.field_name.label;" flex="1"/>
-									<treecol label="&reports.xul.template_builder.data_type.label;" flex="0"/>
-								</treecols>
-								<treechildren id="class-treetop" alternatingbackground="true" />
-							</tree>
-						</vbox>
-					</hbox>
+  <hbox flex="2">
+   <vbox flex="1">
+    <hbox>
+     <label control="path-label" value="&reports.xul.template_builder.source_specifier.label;"/>
+     <textbox id="path-label" flex="1"/>
+    </hbox>
+    <hbox flex="1">
+     <hbox flex="3">
+      <vbox flex="1">
+       <tree
+        id="class-view"
+        flex="3"
+        onclick="detailTreeHandler()"
+        ondblclick="addReportAtoms()"
+        enableColumnDrag="true"
+       >
+        <treecols>
+         <treecol label="&reports.xul.template_builder.field_name.label;" flex="1"/>
+         <treecol label="&reports.xul.template_builder.data_type.label;" flex="0"/>
+        </treecols>
+        <treechildren id="class-treetop" alternatingbackground="true" />
+       </tree>
+      </vbox>
+     </hbox>
 
-					<splitter><grippy/></splitter>
+     <splitter><grippy/></splitter>
 
-					<hbox flex="2">
-						<vbox flex="1">
-							<tree
-								id="trans-view"
-								flex="1"
-								seltype="single"
-								onclick="transformSelectHandler()"
-								ondblclick="addReportAtoms()"
-								enableColumnDrag="true"
-							>
-								<treecols>
-									<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
-									<treecol label="&reports.xul.template_builder.params.label;" flex="0" hidden="true"/>
-									<treecol label="&reports.xul.template_builder.applicable_datatypes.label;" flex="1" hidden="true"/>
-									<treecol label="&reports.xul.template_builder.output_type.label;" flex="1" />
-								</treecols>
-								<treechildren id="trans-treetop" alternatingbackground="true" />
-							</tree>
-						</vbox>
-					</hbox>
-				</hbox>
-				<hbox>
-					<spacer flex="1"/>
-					<button label="&reports.xul.template_builder.source_add.label;" id="source-add" oncommand="addReportAtoms()"/>
-				</hbox>
-			</vbox>
-		</hbox>
-	</hbox>
+     <hbox flex="2">
+      <vbox flex="1">
+       <tree
+        id="trans-view"
+        flex="1"
+        seltype="single"
+        onclick="transformSelectHandler()"
+        ondblclick="addReportAtoms()"
+        enableColumnDrag="true"
+       >
+        <treecols>
+         <treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
+         <treecol label="&reports.xul.template_builder.params.label;" flex="0" hidden="true"/>
+         <treecol label="&reports.xul.template_builder.applicable_datatypes.label;" flex="1" hidden="true"/>
+         <treecol label="&reports.xul.template_builder.output_type.label;" flex="1" />
+        </treecols>
+        <treechildren id="trans-treetop" alternatingbackground="true" />
+       </tree>
+      </vbox>
+     </hbox>
+    </hbox>
+    <hbox>
+     <spacer flex="1"/>
+     <button label="&reports.xul.template_builder.source_add.label;" id="source-add" oncommand="addReportAtoms()"/>
+    </hbox>
+   </vbox>
+  </hbox>
+ </hbox>
 </groupbox>
 
 <splitter style="margin:3px" id="rtp-browse-build-splitter" collapse="before" persist="state hidden"><grippy/></splitter>
 
 
 <groupbox flex="1" orient="horizontal">
-	<caption label="&reports.xul.template_builder.template_config_caption.label;"/>
+ <caption label="&reports.xul.template_builder.template_config_caption.label;"/>
 
-	<hbox flex="1">
-		<vbox flex="1">
-			<hbox>
-			<vbox>
-				<label control="template-name" value="&reports.xul.template_builder.name.label;" style="height:2em"/>
-				<label control="template-description" value="&reports.xul.template_builder.description.label;"/>
-			</vbox>
-			<vbox flex="1">
-				<textbox id="template-name" flex="1"/>
-				<textbox id="template-description" multiline="true" flex="1" style="max-height:3em"/>
-			</vbox>
-			<vbox pack="end">
-				<button onclick="save_template();" label="&reports.xul.template_builder.save.label;"/>
-			</vbox>
-			</hbox>
+ <hbox flex="1">
+  <vbox flex="1">
+   <hbox>
+   <vbox>
+    <label control="template-name" value="&reports.xul.template_builder.name.label;" style="height:2em"/>
+    <label control="template-description" value="&reports.xul.template_builder.description.label;"/>
+   </vbox>
+   <vbox flex="1">
+    <textbox id="template-name" flex="1"/>
+    <textbox id="template-description" multiline="true" flex="1" style="max-height:3em"/>
+   </vbox>
+   <vbox pack="end">
+    <button onclick="save_template();" label="&reports.xul.template_builder.save.label;"/>
+   </vbox>
+   </hbox>
 
-			<hbox flex="1">
-				<tabbox flex="2" id="used-source-fields-tabbox">
-					<tabs>
-						<tab
-							id="dis_tab"
-							label="&reports.xul.template_builder.displayed_fields.label;"
-							onclick="transformSelectHandler(true);"
-						/>
-						<tab
-							id="filter_tab"
-							label="&reports.xul.template_builder.base_filters.label;"
-							onclick="transformSelectHandler(true);"
-						/>
-						<tab
-							id="aggfilter_tab"
-							label="&reports.xul.template_builder.aggregate_filters.label;"
-							disabled="true"
-							onclick="transformSelectHandler(true);"
-						/>
-						<!--
-						<tab
-							id="order_tab"
-							label="Field Order"
-							onclick="transformSelectHandler(true);"
-						/>
-						-->
-					</tabs>
+   <hbox flex="1">
+    <tabbox flex="2" id="used-source-fields-tabbox">
+     <tabs>
+      <tab
+       id="dis_tab"
+       label="&reports.xul.template_builder.displayed_fields.label;"
+       onclick="transformSelectHandler(true);"
+      />
+      <tab
+       id="filter_tab"
+       label="&reports.xul.template_builder.base_filters.label;"
+       onclick="transformSelectHandler(true);"
+      />
+      <tab
+       id="aggfilter_tab"
+       label="&reports.xul.template_builder.aggregate_filters.label;"
+       disabled="true"
+       onclick="transformSelectHandler(true);"
+      />
+      <!--
+      <tab
+       id="order_tab"
+       label="Field Order"
+       onclick="transformSelectHandler(true);"
+      />
+      -->
+     </tabs>
 
-					<tabpanels flex="1">
-						<tabpanel id="dis_tabpanel" orient="vertical">
-							<vbox flex="1">
-								<hbox flex="1">
-									<tree
-										id="dis-col-view"
-										flex="1"
-										seltype="single"
-										ondblclick="alterColumnLabel()"
-										onselect="populateTransformContext()"
-										enableColumnDrag="true"
-									>
-										<treecols>
-											<treecol label="&reports.xul.template_builder.display_name.label;" flex="3"/>
-											<treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
-											<treecol label="&reports.xul.template_builder.data_type.label;" flex="1"/>
-											<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
-											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
-										</treecols>
-										<treechildren id="dis-col-treetop" alternatingbackground="true" />
-									</tree>
-								</hbox>
-								<hbox pack="center">
-									<button label="&reports.xul.template_builder.alter_display_header.label;" oncommand="alterColumnLabel()"/>
-									<button type="menu" label="&reports.xul.template_builder.change_transform.label;">
-										<menupopup id='dis_tab_trans_menu'/>
-									</button>
-									<spacer flex="1"/>
-									<button label="&reports.xul.template_builder.move_up.label;" oncommand="changeDisplayOrder('u')"/>
-									<button label="&reports.xul.template_builder.move_down.label;" oncommand="changeDisplayOrder('d')"/>
-									<spacer flex="1"/>
-									<button label="&reports.xul.template_builder.remove_selected_field.label;" oncommand="removeReportAtom()"/>
-								</hbox>
-							</vbox>
-						</tabpanel>
+     <tabpanels flex="1">
+      <tabpanel id="dis_tabpanel" orient="vertical">
+       <vbox flex="1">
+        <hbox flex="1">
+         <tree
+          id="dis-col-view"
+          flex="1"
+          seltype="single"
+          ondblclick="alterColumnLabel()"
+          onselect="populateTransformContext()"
+          enableColumnDrag="true"
+         >
+          <treecols>
+           <treecol label="&reports.xul.template_builder.display_name.label;" flex="3"/>
+           <treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
+           <treecol label="&reports.xul.template_builder.data_type.label;" flex="1"/>
+           <treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
+           <treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
+          </treecols>
+          <treechildren id="dis-col-treetop" alternatingbackground="true" />
+         </tree>
+        </hbox>
+        <hbox pack="center">
+         <button label="&reports.xul.template_builder.alter_display_header.label;" oncommand="alterColumnLabel()"/>
+         <button type="menu" label="&reports.xul.template_builder.change_transform.label;">
+          <menupopup id='dis_tab_trans_menu'/>
+         </button>
+         <spacer flex="1"/>
+         <button label="&reports.xul.template_builder.move_up.label;" oncommand="changeDisplayOrder('u')"/>
+         <button label="&reports.xul.template_builder.move_down.label;" oncommand="changeDisplayOrder('d')"/>
+         <spacer flex="1"/>
+         <button label="&reports.xul.template_builder.remove_selected_field.label;" oncommand="removeReportAtom()"/>
+        </hbox>
+       </vbox>
+      </tabpanel>
 
-						<tabpanel id="filter_tabpanel" orient="vertical">
-							<vbox flex="1">
-								<hbox flex="1">
-									<tree
-										id="filter-col-view"
-										flex="1"
-										seltype="single"
-										onselect="populateTransformContext();populateOperatorContext();changeTemplateFilterValue();"
-										enableColumnDrag="true"
-									>
-										<treecols>
-											<treecol label="&reports.xul.template_builder.filter_field.label;" flex="2"/>
-											<treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
-											<treecol label="&reports.xul.template_builder.data_type.label;" hidden="true" flex="1"/>
-											<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
-											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
-											<treecol label="&reports.xul.template_builder.operator.label;" flex="1"/>
-											<treecol label="&reports.xul.template_builder.value.label;" flex="1"/>
-										</treecols>
-										<treechildren id="filter-col-treetop" alternatingbackground="true" />
-									</tree>
-								</hbox>
-								<hbox pack="center">
-									<button type="menu" label="&reports.xul.template_builder.change_transform.label;">
-										<menupopup id='filter_tab_trans_menu'/>
-									</button>
-									<button type="menu" label="&reports.xul.template_builder.change_operator.label;">
-										<menupopup id='filter_tab_op_menu'/>
-									</button>
-									<button label="&reports.xul.template_builder.change_value.label;" command="filter_tab_value_action"/>
-									<button label="&reports.xul.template_builder.remove_value.label;" oncommand="removeTemplateFilterValue()"/>
-									<spacer flex="1"/>
-									<button label="&reports.xul.template_builder.remove_selected_fields.label;" oncommand="removeReportAtom()"/>
-								</hbox>
-							</vbox>
-						</tabpanel>
+      <tabpanel id="filter_tabpanel" orient="vertical">
+       <vbox flex="1">
+        <hbox flex="1">
+         <tree
+          id="filter-col-view"
+          flex="1"
+          seltype="single"
+          onselect="populateTransformContext();populateOperatorContext();changeTemplateFilterValue();"
+          enableColumnDrag="true"
+         >
+          <treecols>
+           <treecol label="&reports.xul.template_builder.filter_field.label;" flex="2"/>
+           <treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
+           <treecol label="&reports.xul.template_builder.data_type.label;" hidden="true" flex="1"/>
+           <treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
+           <treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
+           <treecol label="&reports.xul.template_builder.operator.label;" flex="1"/>
+           <treecol label="&reports.xul.template_builder.value.label;" flex="1"/>
+          </treecols>
+          <treechildren id="filter-col-treetop" alternatingbackground="true" />
+         </tree>
+        </hbox>
+        <hbox pack="center">
+         <button type="menu" label="&reports.xul.template_builder.change_transform.label;">
+          <menupopup id='filter_tab_trans_menu'/>
+         </button>
+         <button type="menu" label="&reports.xul.template_builder.change_operator.label;">
+          <menupopup id='filter_tab_op_menu'/>
+         </button>
+         <button label="&reports.xul.template_builder.change_value.label;" command="filter_tab_value_action"/>
+         <button label="&reports.xul.template_builder.remove_value.label;" oncommand="removeTemplateFilterValue()"/>
+         <spacer flex="1"/>
+         <button label="&reports.xul.template_builder.remove_selected_fields.label;" oncommand="removeReportAtom()"/>
+        </hbox>
+       </vbox>
+      </tabpanel>
 
-						<tabpanel id="aggfilter_tabpanel" orient="vertical">
-							<vbox flex="1">
-								<hbox flex="1">
-									<tree
-										id="aggfilter-col-view"
-										flex="1"
-										seltype="single"
-										onselect="populateTransformContext();populateOperatorContext();changeTemplateFilterValue();"
-										enableColumnDrag="true"
-									>
-										<treecols>
-											<treecol label="&reports.xul.template_builder.filter_field.label;" flex="2"/>
-											<treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
-											<treecol label="&reports.xul.template_builder.data_type.label;" hidden="true" flex="1"/>
-											<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
-											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
-											<treecol label="&reports.xul.template_builder.operator.label;" flex="1"/>
-											<treecol label="&reports.xul.template_builder.value.label;" flex="1"/>
-										</treecols>
-										<treechildren id="aggfilter-col-treetop" alternatingbackground="true" />
-									</tree>
-								</hbox>
-								<hbox pack="center">
-									<button type="menu" label="&reports.xul.template_builder.change_transform.label;">
-										<menupopup id='aggfilter_tab_trans_menu'/>
-									</button>
-									<button type="menu" label="&reports.xul.template_builder.change_operator.label;">
-										<menupopup id='aggfilter_tab_op_menu'/>
-									</button>
-									<button label="&reports.xul.template_builder.change_value.label;" command="aggfilter_tab_value_action"/>
-									<button label="&reports.xul.template_builder.remove_value.label;" oncommand="removeTemplateFilterValue()"/>
-									<spacer flex="1"/>
-									<button label="&reports.xul.template_builder.remove_selected_fields.label;" oncommand="removeReportAtom()"/>
-								</hbox>
-							</vbox>
-						</tabpanel>
-					</tabpanels>
-				</tabbox>
-			</hbox>
-		</vbox>
-	</hbox>
+      <tabpanel id="aggfilter_tabpanel" orient="vertical">
+       <vbox flex="1">
+        <hbox flex="1">
+         <tree
+          id="aggfilter-col-view"
+          flex="1"
+          seltype="single"
+          onselect="populateTransformContext();populateOperatorContext();changeTemplateFilterValue();"
+          enableColumnDrag="true"
+         >
+          <treecols>
+           <treecol label="&reports.xul.template_builder.filter_field.label;" flex="2"/>
+           <treecol label="&reports.xul.template_builder.field_name.label;" hidden="true" flex="1"/>
+           <treecol label="&reports.xul.template_builder.data_type.label;" hidden="true" flex="1"/>
+           <treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
+           <treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
+           <treecol label="&reports.xul.template_builder.operator.label;" flex="1"/>
+           <treecol label="&reports.xul.template_builder.value.label;" flex="1"/>
+          </treecols>
+          <treechildren id="aggfilter-col-treetop" alternatingbackground="true" />
+         </tree>
+        </hbox>
+        <hbox pack="center">
+         <button type="menu" label="&reports.xul.template_builder.change_transform.label;">
+          <menupopup id='aggfilter_tab_trans_menu'/>
+         </button>
+         <button type="menu" label="&reports.xul.template_builder.change_operator.label;">
+          <menupopup id='aggfilter_tab_op_menu'/>
+         </button>
+         <button label="&reports.xul.template_builder.change_value.label;" command="aggfilter_tab_value_action"/>
+         <button label="&reports.xul.template_builder.remove_value.label;" oncommand="removeTemplateFilterValue()"/>
+         <spacer flex="1"/>
+         <button label="&reports.xul.template_builder.remove_selected_fields.label;" oncommand="removeReportAtom()"/>
+        </hbox>
+       </vbox>
+      </tabpanel>
+     </tabpanels>
+    </tabbox>
+   </hbox>
+  </vbox>
+ </hbox>
 
-	<splitter id="rtp-build-splitter" collapse="after" persist="state hidden"><grippy/></splitter>
+ <splitter id="rtp-build-splitter" collapse="after" persist="state hidden"><grippy/></splitter>
 
-	<hbox flex="3">
-		<tree
-			id="used-sources"
-			flex="1"
-			onclick="renderSources(true)"
-			ondblclick="changeTemplateFilterValue()"
-			enableColumnDrag="true"
-		>
-			<treecols>
-				<treecol label="&reports.xul.template_builder.source_specifier.label;" flex="2"/>
-				<treecol label="&reports.xul.template_builder.table_name.label;" flex="1" hidden="true"/>
-				<treecol label="&reports.xul.template_builder.sql_alias.label;" flex="1" hidden="true"/>
-				<treecol label="&reports.xul.template_builder.relationship.label;" flex="1" hidden="true"/>
-			</treecols>
-			<treechildren id="used-sources-treetop" alternatingbackground="true" />
-		</tree>
-	</hbox>
+ <hbox flex="3">
+  <tree
+   id="used-sources"
+   flex="1"
+   onclick="renderSources(true)"
+   ondblclick="changeTemplateFilterValue()"
+   enableColumnDrag="true"
+  >
+   <treecols>
+    <treecol label="&reports.xul.template_builder.source_specifier.label;" flex="2"/>
+    <treecol label="&reports.xul.template_builder.table_name.label;" flex="1" hidden="true"/>
+    <treecol label="&reports.xul.template_builder.sql_alias.label;" flex="1" hidden="true"/>
+    <treecol label="&reports.xul.template_builder.relationship.label;" flex="1" hidden="true"/>
+   </treecols>
+   <treechildren id="used-sources-treetop" alternatingbackground="true" />
+  </tree>
+ </hbox>
 
 </groupbox>
 
 <commandset>
-	<command id='filter_tab_value_action'/>
-	<command id='aggfilter_tab_value_action'/>
+ <command id='filter_tab_value_action'/>
+ <command id='aggfilter_tab_value_action'/>
 </commandset>
 
 <popupset>
-	<popup id="source-menu" position="after_start"/>
-	<popup
-		id="calendar-widget"
-		position="before_start"
-	/>
+ <popup id="source-menu" position="after_start"/>
+ <popup
+  id="calendar-widget"
+  position="before_start"
+ />
 </popupset>
 
 </window>

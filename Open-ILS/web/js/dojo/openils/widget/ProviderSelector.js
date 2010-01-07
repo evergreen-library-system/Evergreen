@@ -12,9 +12,9 @@ if(!dojo._hasResource["openils.widget.ProviderSelector"]){
      */
 
     dojo.declare(
-	"openils.widget.ProviderSelector", [dijit.form.FilteringSelect],
-	{
+ "openils.widget.ProviderSelector", [dijit.form.FilteringSelect],
+ {
         labelAttr: 'code',
         searchAttr: 'code'
-	});
+ });
 }

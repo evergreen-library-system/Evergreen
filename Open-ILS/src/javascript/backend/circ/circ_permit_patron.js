@@ -7,7 +7,7 @@ log_vars('circ_permit_patron');
 
 
 if( isTrue(patron.barred) ) 
-	result.events.push('PATRON_BARRED');
+ result.events.push('PATRON_BARRED');
 
 var config = findGroupConfig(patronProfile);
 

@@ -13,68 +13,68 @@
 # GNU General Public License for more details.
 -->
 <!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+ "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+ <!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
 ]>
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>&conify.copy_status.title;</title>
+ <head>
+  <title>&conify.copy_status.title;</title>
 
-		<style type="text/css">
-			@import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
-			@import url('/js/dojo/dojo/resources/dojo.css');
-			@import url('/js/dojo/dijit/themes/tundra/tundra.css');
-			@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
-		</style>
+  <style type="text/css">
+   @import url('/js/dojo/dojox/grid/_grid/tundraGrid.css');
+   @import url('/js/dojo/dojo/resources/dojo.css');
+   @import url('/js/dojo/dijit/themes/tundra/tundra.css');
+   @import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
+  </style>
 
-		<style>
-			html, body {
-				height: 100%;
-				width: 100%;
-				margin: 0px 0px 0px 0px;
-				padding: 0px 0px 0px 0px;
-				overflow: hidden;
-			}
+  <style>
+   html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    overflow: hidden;
+   }
 
-			#status_grid {
-				border: 0px;
-				width: 100%;
-				height: 100%;
-			}
+   #status_grid {
+    border: 0px;
+    width: 100%;
+    height: 100%;
+   }
 
-			#grid_container {
-				width: 100%;
-				height: 100%;
-			}
-		</style>
+   #grid_container {
+    width: 100%;
+    height: 100%;
+   }
+  </style>
 
-		<!-- The OpenSRF API writ JS -->
-		<script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
-		<script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
-		<script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
-		<script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
+  <!-- The OpenSRF API writ JS -->
+  <script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
+  <script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
+  <script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
+  <script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
 
-		<!-- Dojo goodness -->
-		<script type="text/javascript" src="../admin.js"></script>
-		<script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
-	        <script type="text/javascript" src="/js/dojo/dojo/openils_dojo.js"></script>
-		<script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
+  <!-- Dojo goodness -->
+  <script type="text/javascript" src="../admin.js"></script>
+  <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
+         <script type="text/javascript" src="/js/dojo/dojo/openils_dojo.js"></script>
+  <script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
 
-		<script type="text/javascript" src="copy_status.js"></script>
+  <script type="text/javascript" src="copy_status.js"></script>
 
-	</head>
+ </head>
 
-	<body class="tundra" id='pagebody'>
+ <body class="tundra" id='pagebody'>
 
-		<div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
-			<script type="dojo/method">
+  <div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
+   <script type="dojo/method">
 <![CDATA[
-				window.highlighter= {};
-				window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
-				window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
+    window.highlighter= {};
+    window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
+    window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
 
-				window.dirtyStore = [];
+    window.dirtyStore = [];
 
                 pCRUD.request({
                     method : 'open-ils.permacrud.search.ccs.atomic',
@@ -87,7 +87,7 @@
                         window._status_data = ccs.toStoreData( window._status_list, 'name' );
                         window.status_store = new dojo.data.ItemFileWriteStore({ data : window._status_data });
 
-	                    window.status_store.onSet = function (item, attr, o, n) {
+                     window.status_store.onSet = function (item, attr, o, n) {
                             if (attr == 'ischanged') return;
                             if (n == o) return;
                             this.setValue( item, 'ischanged', 1);
@@ -110,7 +110,7 @@
 
                             if (dirtyStore.length > 0) {
                                 var confirmation = confirm(
-									ccs_strings.CONFIRM_EXIT_CCS
+         ccs_strings.CONFIRM_EXIT_CCS
                                 );
 
                                 if (confirmation) {
@@ -125,192 +125,192 @@
                     }
                 }).send();
 ]]>
-			</script>
+   </script>
 
-			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
-				<span>&conify.copy_status.new_status.label;</span>
-				<div dojoType="dijit.form.TextBox" id="new_status_code" jsId="new_status_name" label="&conify.copy_status.new_status.name;"></div>
-				<button dojoType="dijit.form.Button" id="save_new_status_code" jsId="save_new_status_name" label="&conify.copy_status.new_status.save;"> 
-					<script type="dojo/connect" event="onClick">
+   <div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
+    <span>&conify.copy_status.new_status.label;</span>
+    <div dojoType="dijit.form.TextBox" id="new_status_code" jsId="new_status_name" label="&conify.copy_status.new_status.name;"></div>
+    <button dojoType="dijit.form.Button" id="save_new_status_code" jsId="save_new_status_name" label="&conify.copy_status.new_status.save;"> 
+     <script type="dojo/connect" event="onClick">
 <![CDATA[
-						var new_name = new_status_name.getValue();
-						if (!new_name) return;
+      var new_name = new_status_name.getValue();
+      if (!new_name) return;
 
-    	                var new_fm_obj = new ccs().fromHash({
-        	                isnew           : 1,
-            	            name            : new_name
-	                    });
+                     var new_fm_obj = new ccs().fromHash({
+                         isnew           : 1,
+                         name            : new_name
+                     });
     
-    	                var err = false;
-        	            pCRUD.request({
-            	            method : 'open-ils.permacrud.create.ccs',
-                	        timeout : 10,
-                    	    params : [ ses, new_fm_obj ],
-	                        onerror : function (r) {
-    	                        highlighter.red.play();
-        	                    status_update( ccs_strings.ERROR_CALLING_METHOD_CCS );
-            	                err = true;
-                	        },
-	                        oncomplete : function (r) {
-    	                        var res = r.recv();
-        	                    if ( res && res.content() ) {
-            	                    var new_item_hash = res.content().toHash();
-            	                    status_store.newItem( new_item_hash );
-									status_update( dojo.string.substitute(ccs_strings.SUCCESS_CREATING_STATUS, [new_item_hash.name]) );
-									status_grid.model.sort(-2);
-									highlighter.green.play();
-                            	} else {
-	                                highlighter.red.play();
-    	                            status_update( ccs_strings.ERROR_CREATING_STATUS );
-        	                        err = true;
-            	                }
-                	        }
-                    	}).send();
+                     var err = false;
+                     pCRUD.request({
+                         method : 'open-ils.permacrud.create.ccs',
+                         timeout : 10,
+                         params : [ ses, new_fm_obj ],
+                         onerror : function (r) {
+                             highlighter.red.play();
+                             status_update( ccs_strings.ERROR_CALLING_METHOD_CCS );
+                             err = true;
+                         },
+                         oncomplete : function (r) {
+                             var res = r.recv();
+                             if ( res && res.content() ) {
+                                 var new_item_hash = res.content().toHash();
+                                 status_store.newItem( new_item_hash );
+         status_update( dojo.string.substitute(ccs_strings.SUCCESS_CREATING_STATUS, [new_item_hash.name]) );
+         status_grid.model.sort(-2);
+         highlighter.green.play();
+                             } else {
+                                 highlighter.red.play();
+                                 status_update( ccs_strings.ERROR_CREATING_STATUS );
+                                 err = true;
+                             }
+                         }
+                     }).send();
 ]]> 
-	                </script>
-				</button>
-			</div>
+                 </script>
+    </button>
+   </div>
 
-			<div dojoType="dijit.layout.ContentPane" style="width:100%; height:100%;" layoutAlign="client">
-				<div dojoType="dojox.grid.data.DojoData" id="status_data_model" jsId="status_data_model" store="status_store" query="{ 'id' : '*' }"></div>
-				<div id="status_grid" dojoType="dojox.Grid" jsId="status_grid">
-					<script type="dojo/connect" event="startup">
+   <div dojoType="dijit.layout.ContentPane" style="width:100%; height:100%;" layoutAlign="client">
+    <div dojoType="dojox.grid.data.DojoData" id="status_data_model" jsId="status_data_model" store="status_store" query="{ 'id' : '*' }"></div>
+    <div id="status_grid" dojoType="dojox.Grid" jsId="status_grid">
+     <script type="dojo/connect" event="startup">
 <![CDATA[
-						var g = this;
-						var status_grid_layout = [
-							{	cells : [
-									[
-										{ name : ccs_strings.ID,
-										  field : "id",
-										},
-										{ name : ccs_strings.NAME,
-										  field : "name",
-										  width : "auto",
-										  editor : dojox.grid.editors.Dijit
-										},
-										{ name : ccs_strings.TRANSLATION,
-										  width : "10em",
-										  height : "2em",
-										  get : function (row) {
-											if (!window.status_rows) window.status_rows = [];
-											var r = window.status_data_model.getRow(row);
-											if (r) {
-												window.status_rows[row] = new ccs().fromHash(window.status_data_model.getRow(row));
-												setTimeout(
-													'dojo.query(".status_grid_trans_cell_' + row + '").'+
-														'instantiate(openils.widget.TranslatorPopup,{field:"name",'+
-														'targetObject:"window.status_rows['+row+']"});'+
-														'status_grid.rowHeightChanged('+row+')',
-													0
-												);
-												return '<span class="status_grid_trans_cell_'+row+'"></span>';
-											}
-											return '';
-										  }
-										},
-										{ name : ccs_strings.HOLDABLE,
-										  field : "holdable",
-										  editor : dojox.grid.editors.bool,
-										  get : function (row) {
-											var r = window.status_data_model.getRow(row);
-											if (r) {
-												var h = r.holdable;
-												if (h == 't' || h === true) return true;
-												return false;
-											}
-										  }
-										},
-										{ name : ccs_strings.OPAC_VISIBLE,
-										  field : "opac_visible",
-										  editor : dojox.grid.editors.bool,
-										  get : function (row) {
-											var r = window.status_data_model.getRow(row);
-											if (r) {
-												var h = r.opac_visible;
-												if (h == 't' || h === true) return true;
-												return false;
-											}
-										  }
-										}
-									]
-								]
-							}
-						];
+      var g = this;
+      var status_grid_layout = [
+       { cells : [
+         [
+          { name : ccs_strings.ID,
+            field : "id",
+          },
+          { name : ccs_strings.NAME,
+            field : "name",
+            width : "auto",
+            editor : dojox.grid.editors.Dijit
+          },
+          { name : ccs_strings.TRANSLATION,
+            width : "10em",
+            height : "2em",
+            get : function (row) {
+           if (!window.status_rows) window.status_rows = [];
+           var r = window.status_data_model.getRow(row);
+           if (r) {
+            window.status_rows[row] = new ccs().fromHash(window.status_data_model.getRow(row));
+            setTimeout(
+             'dojo.query(".status_grid_trans_cell_' + row + '").'+
+              'instantiate(openils.widget.TranslatorPopup,{field:"name",'+
+              'targetObject:"window.status_rows['+row+']"});'+
+              'status_grid.rowHeightChanged('+row+')',
+             0
+            );
+            return '<span class="status_grid_trans_cell_'+row+'"></span>';
+           }
+           return '';
+            }
+          },
+          { name : ccs_strings.HOLDABLE,
+            field : "holdable",
+            editor : dojox.grid.editors.bool,
+            get : function (row) {
+           var r = window.status_data_model.getRow(row);
+           if (r) {
+            var h = r.holdable;
+            if (h == 't' || h === true) return true;
+            return false;
+           }
+            }
+          },
+          { name : ccs_strings.OPAC_VISIBLE,
+            field : "opac_visible",
+            editor : dojox.grid.editors.bool,
+            get : function (row) {
+           var r = window.status_data_model.getRow(row);
+           if (r) {
+            var h = r.opac_visible;
+            if (h == 't' || h === true) return true;
+            return false;
+           }
+            }
+          }
+         ]
+        ]
+       }
+      ];
 
-						this.setStructure(status_grid_layout);
-						this.setModel(window.status_data_model);
+      this.setStructure(status_grid_layout);
+      this.setModel(window.status_data_model);
 ]]>
-					</script>
-				</div>
-			</div>
+     </script>
+    </div>
+   </div>
 
-			<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 5px;" layoutAlign="bottom">
-		
-				<button jsId="save_ccs_button" dojoType="dijit.form.Button" label="&conify.copy_status.save_changes;" onClick="save_them_all()"></button>
-		
-				<button jsId="delete_ccs_button" dojoType="dijit.form.Button" label="&conify.copy_status.delete_selected;">
-					<script type="dojo/connect" event="onClick">
+   <div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 5px;" layoutAlign="bottom">
+  
+    <button jsId="save_ccs_button" dojoType="dijit.form.Button" label="&conify.copy_status.save_changes;" onClick="save_them_all()"></button>
+  
+    <button jsId="delete_ccs_button" dojoType="dijit.form.Button" label="&conify.copy_status.delete_selected;">
+     <script type="dojo/connect" event="onClick">
 <![CDATA[
-						var selected_rows = status_grid.selection.getSelected();
-		
-						var selected_items = [];
-						for (var i in selected_rows) {
-							selected_items.push(
-								status_grid.model.getRow( selected_rows[i] ).__dojo_data_item
-							);
-						}
+      var selected_rows = status_grid.selection.getSelected();
+  
+      var selected_items = [];
+      for (var i in selected_rows) {
+       selected_items.push(
+        status_grid.model.getRow( selected_rows[i] ).__dojo_data_item
+       );
+      }
 
-						status_grid.selection.clear();
+      status_grid.selection.clear();
 
-						for (var i in selected_items) {
-							current_status = selected_items[i];
+      for (var i in selected_items) {
+       current_status = selected_items[i];
 
-							if ( confirm(dojo.string.substitute(ccs_strings.CONFIRM_DELETE, [status_store.getValue( current_status, 'name' )]))) {
+       if ( confirm(dojo.string.substitute(ccs_strings.CONFIRM_DELETE, [status_store.getValue( current_status, 'name' )]))) {
 
-								status_store.setValue( current_status, 'isdeleted', 1 );
-			
-								var modified_ccs = new ccs().fromStoreItem( current_status );
-								modified_ccs.isdeleted( 1 );
-			
-								pCRUD.request({
-									method : 'open-ils.permacrud.delete.ccs',
-									timeout : 10,
-									params : [ ses, modified_ccs ],
-									onerror : function (r) {
-										highlighter.red.play();
-										status_update( dojo.string.substitute( ccs_strings.ERROR_DELETING, [status_store.getValue( current_status, 'name' )] ) );
-									},
-									oncomplete : function (r) {
-										var res = r.recv();
-										if ( res && res.content() ) {
-			
-											var old_name = status_store.getValue( current_status, 'name' );
-		
-											status_store.fetch({
-												query : { id : status_store.getValue( current_status, 'id' ) },
-												onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-												scope : status_store
-											});
-			
-											current_status = null;
-			
-											highlighter.green.play();
-											status_update( dojo.string.substitute(ccs_strings.STATUS_DELETED, [old_name]) );
-										} else {
-											highlighter.red.play();
-											status_update( dojo.string.substitute(ccs_strings.ERROR_DELETING, [old_name]) );
-										}
-									}
-								}).send();
-		
-							}
-						}
+        status_store.setValue( current_status, 'isdeleted', 1 );
+   
+        var modified_ccs = new ccs().fromStoreItem( current_status );
+        modified_ccs.isdeleted( 1 );
+   
+        pCRUD.request({
+         method : 'open-ils.permacrud.delete.ccs',
+         timeout : 10,
+         params : [ ses, modified_ccs ],
+         onerror : function (r) {
+          highlighter.red.play();
+          status_update( dojo.string.substitute( ccs_strings.ERROR_DELETING, [status_store.getValue( current_status, 'name' )] ) );
+         },
+         oncomplete : function (r) {
+          var res = r.recv();
+          if ( res && res.content() ) {
+   
+           var old_name = status_store.getValue( current_status, 'name' );
+  
+           status_store.fetch({
+            query : { id : status_store.getValue( current_status, 'id' ) },
+            onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+            scope : status_store
+           });
+   
+           current_status = null;
+   
+           highlighter.green.play();
+           status_update( dojo.string.substitute(ccs_strings.STATUS_DELETED, [old_name]) );
+          } else {
+           highlighter.red.play();
+           status_update( dojo.string.substitute(ccs_strings.ERROR_DELETING, [old_name]) );
+          }
+         }
+        }).send();
+  
+       }
+      }
 ]]>
-					</script>
-				</button>
-	
-			</div>
-		</div>
-	
-	</body>
+     </script>
+    </button>
+ 
+   </div>
+  </div>
+ 
+ </body>
 </html>

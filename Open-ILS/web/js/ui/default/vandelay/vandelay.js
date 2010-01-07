@@ -282,7 +282,7 @@ function uploadMARC(onload){
             onload(content);
         }
     });
-}	
+} 
 
 /**
   * Creates a new vandelay queue
@@ -1006,9 +1006,9 @@ function vlLoadMarcEditor(type, recId, postReloadHTMLHandler) {
 
 // attribute-editor global variables
 
-var ATTR_EDITOR_IN_UPDATE_MODE = false;	// true on 'edit', false on 'create'
-var ATTR_EDIT_ID = null;		// id of current 'edit' attribute
-var ATTR_EDIT_GROUP = 'bib';		// bib-attrs or auth-attrs
+var ATTR_EDITOR_IN_UPDATE_MODE = false; // true on 'edit', false on 'create'
+var ATTR_EDIT_ID = null;  // id of current 'edit' attribute
+var ATTR_EDIT_GROUP = 'bib';  // bib-attrs or auth-attrs
 
 function vlAttrEditorInit() {
     // set up tooltips on the edit form
@@ -1025,8 +1025,8 @@ function vlShowAttrEditor() {
 function setAttrEditorGroup(groupName) {
     // put us into 'bib'-attr or 'auth'-attr mode.
     if (ATTR_EDIT_GROUP != groupName) {
-	ATTR_EDIT_GROUP = groupName;
-	loadAttrEditorGrid();
+ ATTR_EDIT_GROUP = groupName;
+ loadAttrEditorGrid();
     }
 }
 
@@ -1035,14 +1035,14 @@ function onAttrEditorOpen() {
     var create_bar = document.getElementById('attr-editor-create-bar');
     var update_bar = document.getElementById('attr-editor-update-bar');
     if (ATTR_EDITOR_IN_UPDATE_MODE) {
-	update_bar.style.display='table-row';
-	create_bar.style.display='none';
-	// hide the dropdown-button
-	idStyle('vl-create-attr-editor-button', 'visibility', 'hidden');
+ update_bar.style.display='table-row';
+ create_bar.style.display='none';
+ // hide the dropdown-button
+ idStyle('vl-create-attr-editor-button', 'visibility', 'hidden');
     } else {
-	dijit.byId('attr-editor-dialog').reset();
-	create_bar.style.display='table-row';
-	update_bar.style.display='none';
+ dijit.byId('attr-editor-dialog').reset();
+ create_bar.style.display='table-row';
+ update_bar.style.display='none';
     }
 }
 
@@ -1055,7 +1055,7 @@ function onAttrEditorClose() {
 
 function loadAttrEditorGrid() {
     var _data = (ATTR_EDIT_GROUP == 'auth') ? 
-	vqarad.toStoreData(authAttrDefs) : vqbrad.toStoreData(bibAttrDefs) ;
+ vqarad.toStoreData(authAttrDefs) : vqbrad.toStoreData(bibAttrDefs) ;
 
     var store = new dojo.data.ItemFileReadStore({data:_data});
     attrEditorGrid.setStore(store);
@@ -1101,8 +1101,8 @@ function vlSaveAttrDefinition(data) {
     // this ought to honour custom xpaths, but overwrite xpaths
     // derived from tags/subfields.
     if (data.xpath == '' || looksLikeDerivedXpath(data.xpath)) {
-	var _xpath = tagAndSubFieldsToXpath(data.tag, data.subfield);
-	data.xpath = _xpath;
+ var _xpath = tagAndSubFieldsToXpath(data.tag, data.subfield);
+ data.xpath = _xpath;
     }
 
     // build up our permacrud params. Key variables here are
@@ -1112,7 +1112,7 @@ function vlSaveAttrDefinition(data) {
     var isCreate = (ATTR_EDIT_ID == null);
     var rad      = isAuth ? new vqarad() : new vqbrad() ;
     var method   = 'open-ils.permacrud' + (isCreate ? '.create.' : '.update.') 
-	+ (isAuth ? 'vqarad' : 'vqbrad');
+ + (isAuth ? 'vqarad' : 'vqbrad');
     var _data    = rad.fromStoreItem(data);
 
     _data.ischanged(1);
@@ -1121,14 +1121,14 @@ function vlSaveAttrDefinition(data) {
         ['open-ils.permacrud', method],
         {   async: true,
             params: [authtoken, _data ],
-	    onresponse: function(r) { },
+     onresponse: function(r) { },
             oncomplete: function(r) {
-		attrEditorFetchAttrDefs(vlShowAttrEditor);
-		ATTR_EDIT_ID = null;
-	    },
-	    onerror: function(r) {
-		alert('vlSaveAttrDefinition comms error: ' + r);
-	    }
+  attrEditorFetchAttrDefs(vlShowAttrEditor);
+  ATTR_EDIT_ID = null;
+     },
+     onerror: function(r) {
+  alert('vlSaveAttrDefinition comms error: ' + r);
+     }
         }
     );
 }
@@ -1148,15 +1148,15 @@ function vlAttrDelete() {
     fieldmapper.standardRequest(
         ['open-ils.permacrud', method],
         {   async: true,
-	    params: [authtoken, rad.fromHash({ id : ATTR_EDIT_ID }), ],
-	    oncomplete: function() {
-		dijit.byId('attr-editor-dialog').onCancel(); // close the dialog
-		attrEditorFetchAttrDefs(vlShowAttrEditor);
-		ATTR_EDIT_ID = null;
-	    },
-	    onerror: function(r) {
-		alert('vlAttrDelete comms error: ' + r);
-	    }
+     params: [authtoken, rad.fromHash({ id : ATTR_EDIT_ID }), ],
+     oncomplete: function() {
+  dijit.byId('attr-editor-dialog').onCancel(); // close the dialog
+  attrEditorFetchAttrDefs(vlShowAttrEditor);
+  ATTR_EDIT_ID = null;
+     },
+     onerror: function(r) {
+  alert('vlAttrDelete comms error: ' + r);
+     }
         }
     );
 }
@@ -1166,9 +1166,9 @@ function vlAttrDelete() {
 
 // dom utilities (maybe dojo does these, and these should be replaced)
 
-function idStyle(obId, k, v)	{ document.getElementById(obId).style[k] = v;	}
-function idShow(obId)		{ idStyle(obId, 'display', 'block');		}
-function idHide(obId)		{ idStyle(obId, 'display' , 'none');		}
+function idStyle(obId, k, v) { document.getElementById(obId).style[k] = v; }
+function idShow(obId)  { idStyle(obId, 'display', 'block');  }
+function idHide(obId)  { idStyle(obId, 'display' , 'none');  }
 
 function connectTooltip(fieldId) {
     // Given an element id, look up a tooltip element in the doc (same
@@ -1177,7 +1177,7 @@ function connectTooltip(fieldId) {
     var fld = dojo.byId(fieldId);
     var tip = dojo.byId(fieldId + '-tip');
     dojo.connect(fld, 'onfocus', function(evt) {
-		     dijit.showTooltip(tip.innerHTML, fld, ['below', 'after']); });
+       dijit.showTooltip(tip.innerHTML, fld, ['below', 'after']); });
     dojo.connect(fld, 'onblur', function(evt) { dijit.hideTooltip(fld); });
 }
 
@@ -1188,12 +1188,12 @@ var xpathParser = new openils.MarcXPathParser();
 function tagAndSubFieldsToXpath(tags, subfields) {
     // given tags, and subfields, build up an XPath.
     try {
-	var parts = {
-	    'tags':tags.match(/[\d]+/g), 
-	    'subfields':subfields.match(/[a-zA-z]/g) };
-	return xpathParser.compile(parts);
+ var parts = {
+     'tags':tags.match(/[\d]+/g), 
+     'subfields':subfields.match(/[a-zA-z]/g) };
+ return xpathParser.compile(parts);
     } catch (err) {
-	return {'parts':null, 'tags':null, 'error':err};
+ return {'parts':null, 'tags':null, 'error':err};
     }
 }
 
@@ -1201,11 +1201,11 @@ function looksLikeDerivedXpath(path) {
     // Does this path look like it was derived from tags and subfields?
     var parsed = xpathParser.parse(path);
     if (parsed.tags == null) 
-	return false;
+ return false;
     var compiled = xpathParser.compile(parsed);
     return (path == compiled);
 }
 
 // amazing xpath-util unit-tests
-if (!looksLikeDerivedXpath('//*[@tag="901"]/*[@code="c"]'))	alert('vandelay xpath-utility error');
-if ( looksLikeDerivedXpath('ba-boo-ba-boo!'))			alert('vandelay xpath-utility error');
+if (!looksLikeDerivedXpath('//*[@tag="901"]/*[@code="c"]')) alert('vandelay xpath-utility error');
+if ( looksLikeDerivedXpath('ba-boo-ba-boo!'))   alert('vandelay xpath-utility error');

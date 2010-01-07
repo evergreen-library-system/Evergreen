@@ -51,8 +51,8 @@ var cam_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 /*
 var highlighter = {
-	green : dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } ),
-	red : dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } )
+ green : dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } ),
+ red : dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } )
 };
 
 console.log('highlighters set up');
@@ -61,71 +61,71 @@ console.log('highlighters set up');
 var dirtyStore = [];
 
 function status_update (markup) {
-	if (parent !== window && parent.status_update) parent.status_update( markup );
+ if (parent !== window && parent.status_update) parent.status_update( markup );
 }
 
 console.log('local status function built');
 
 function save_code (classname) {
 
-	var item = current_item[classname];
-	var obj = new fieldmapper[classname]().fromStoreItem( item );
+ var item = current_item[classname];
+ var obj = new fieldmapper[classname]().fromStoreItem( item );
 
-	obj.ischanged( 1 );
-	obj.code( dojo.string.trim( obj.code() ) );
-	obj.value( dojo.string.trim( obj.value() ) );
-	if(classname == 'cam' || classname == 'clfm')
-		obj.description( dojo.string.trim( obj.description() ) );
+ obj.ischanged( 1 );
+ obj.code( dojo.string.trim( obj.code() ) );
+ obj.value( dojo.string.trim( obj.value() ) );
+ if(classname == 'cam' || classname == 'clfm')
+  obj.description( dojo.string.trim( obj.description() ) );
 
-	pCRUD.request({
-		method : 'open-ils.permacrud.update.' + classname,
-		timeout : 10,
-		params : [ ses, modified_ppl ],
-		onerror : function (r) {
-			//highlighter.red.play();
-			status_update( dojo.string.substitute(cam_strings.ERROR_SAVING_DATA_CAM, [classname, obj.code()]) );
-		},
-		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				stores[classname].setValue( current_item, 'ischanged', 0 );
-				//highlighter.green.play();
-				status_update( dojo.string.substitute(cam_strings.SUCCESS_SAVE, stores[classname].getValue( item, 'code' )) );
-			} else {
-				//highlighter.red.play();
-				status_update( dojo.string.substitute( cam_strings.ERROR_SAVING_DATA_CAM, [classname, stores[classname].getValue( item, 'code' )] ) );
-			}
-		},
-	}).send();
+ pCRUD.request({
+  method : 'open-ils.permacrud.update.' + classname,
+  timeout : 10,
+  params : [ ses, modified_ppl ],
+  onerror : function (r) {
+   //highlighter.red.play();
+   status_update( dojo.string.substitute(cam_strings.ERROR_SAVING_DATA_CAM, [classname, obj.code()]) );
+  },
+  oncomplete : function (r) {
+   var res = r.recv();
+   if ( res && res.content() ) {
+    stores[classname].setValue( current_item, 'ischanged', 0 );
+    //highlighter.green.play();
+    status_update( dojo.string.substitute(cam_strings.SUCCESS_SAVE, stores[classname].getValue( item, 'code' )) );
+   } else {
+    //highlighter.red.play();
+    status_update( dojo.string.substitute( cam_strings.ERROR_SAVING_DATA_CAM, [classname, stores[classname].getValue( item, 'code' )] ) );
+   }
+  },
+ }).send();
 }
 
 function save_them_all (event) {
 
-	for (var classname in stores) {
+ for (var classname in stores) {
 
-		var store = stores[classname];
-		store.fetch({
-			query : { ischanged : 1 },
-			onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-			scope : store
-		});
+  var store = stores[classname];
+  store.fetch({
+   query : { ischanged : 1 },
+   onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
+   scope : store
+  });
 
-		var confirmation = true;
+  var confirmation = true;
 
-		if (event && dirtyStore.length > 0) {
-			confirmation = confirm( cam_strings.CONFIRM_EXIT_CAM );
-			event = null;
-		}
+  if (event && dirtyStore.length > 0) {
+   confirmation = confirm( cam_strings.CONFIRM_EXIT_CAM );
+   event = null;
+  }
 
-		if (confirmation) {
-			for (var i in dirtyStore) {
-				current_item[classname] = dirtyStore[i];
-				save_object(classname);
-			}
+  if (confirmation) {
+   for (var i in dirtyStore) {
+    current_item[classname] = dirtyStore[i];
+    save_object(classname);
+   }
 
-			dirtyStore = [];
-		}
-	}
+   dirtyStore = [];
+  }
+ }
 }
 
 dojo.addOnUnload( save_them_all );
@@ -187,16 +187,16 @@ function delete_grid_selection(classname, grid ) {
 
 function create_marc_code (data) {
 
-	var cl = data.classname;
-	if (!cl) return false;
+ var cl = data.classname;
+ if (!cl) return false;
 
-	data.code = dojo.string.trim( data.code );
-	data.value = dojo.string.trim( data.value );
+ data.code = dojo.string.trim( data.code );
+ data.value = dojo.string.trim( data.value );
 
-	if(!data.code || !data.value) return false;
+ if(!data.code || !data.value) return false;
 
-	if(cl == 'cam' || cl == 'clfm')
-		data.description = dojo.string.trim( data.description );
+ if(cl == 'cam' || cl == 'clfm')
+  data.description = dojo.string.trim( data.description );
 
     var new_fm_obj = new fieldmapper[cl]().fromHash( data )
     new_fm_obj.isnew(1);
@@ -226,6 +226,6 @@ function create_marc_code (data) {
         }
     }).send();
 
-	return false;
+ return false;
 }
 

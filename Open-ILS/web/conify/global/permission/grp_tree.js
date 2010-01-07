@@ -56,70 +56,70 @@ var virgin_out_id = -1;
 var highlighter = {};
 
 function status_update (markup) {
-	if (parent !== window && parent.status_update) parent.status_update( markup );
+ if (parent !== window && parent.status_update) parent.status_update( markup );
 }
 
 function save_group () {
 
-	var modified_pgt = new pgt().fromStoreItem( current_group );
-	modified_pgt.ischanged( 1 );
+ var modified_pgt = new pgt().fromStoreItem( current_group );
+ modified_pgt.ischanged( 1 );
 
-	new_kid_button.disabled = false;
-	save_group_button.disabled = false;
-	delete_group_button.disabled = false;
+ new_kid_button.disabled = false;
+ save_group_button.disabled = false;
+ delete_group_button.disabled = false;
 
-	server.pCRUD.request({
-		method : 'open-ils.permacrud.update.pgt',
-		timeout : 10,
-		params : [ ses, modified_pgt ],
-		onerror : function (r) {
-			highlighter.editor_pane.red.play();
-			status_update( dojo.string.substitute( pgt_strings.ERROR_SAVING_DATA, [group_store.getValue( current_group, 'name' )]) );
-		},
-		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				group_store.setValue( current_group, 'ischanged', 0 );
-				highlighter.editor_pane.green.play();
-				status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE, [group_store.getValue( current_group, 'name' )]) );
-			} else {
-				highlighter.editor_pane.red.play();
-				status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_DATA, [group_store.getValue( current_group, 'name' )]) );
-			}
-		},
-	}).send();
+ server.pCRUD.request({
+  method : 'open-ils.permacrud.update.pgt',
+  timeout : 10,
+  params : [ ses, modified_pgt ],
+  onerror : function (r) {
+   highlighter.editor_pane.red.play();
+   status_update( dojo.string.substitute( pgt_strings.ERROR_SAVING_DATA, [group_store.getValue( current_group, 'name' )]) );
+  },
+  oncomplete : function (r) {
+   var res = r.recv();
+   if ( res && res.content() ) {
+    group_store.setValue( current_group, 'ischanged', 0 );
+    highlighter.editor_pane.green.play();
+    status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE, [group_store.getValue( current_group, 'name' )]) );
+   } else {
+    highlighter.editor_pane.red.play();
+    status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_DATA, [group_store.getValue( current_group, 'name' )]) );
+   }
+  },
+ }).send();
 }
 
 function save_perm_map (storeItem) {
 
-	var modified_pgpm = new pgpm().fromStoreItem( storeItem );
-	modified_pgpm.ischanged( 1 );
+ var modified_pgpm = new pgpm().fromStoreItem( storeItem );
+ modified_pgpm.ischanged( 1 );
 
-	server.pCRUD.request({
-		method : 'open-ils.permacrud.update.pgpm',
-		timeout : 10,
-		params : [ ses, modified_pgpm ],
-		onerror : function (r) {
-			highlighter.editor_pane.red.play();
-			status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_PERM_DATA, [group_store.getValue( current_group, 'name' )]) );
-		},
-		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				perm_map_store.setValue( storeItem, 'ischanged', 0 );
-				highlighter.editor_pane.green.play();
-				status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE_PERM, [group_store.getValue( current_group, 'name' )]) );
-			} else {
-				highlighter.editor_pane.red.play();
-				status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_PERM_DATA, [group_store.getValue( current_group, 'name' )]) );
-			}
-		},
-	}).send();
+ server.pCRUD.request({
+  method : 'open-ils.permacrud.update.pgpm',
+  timeout : 10,
+  params : [ ses, modified_pgpm ],
+  onerror : function (r) {
+   highlighter.editor_pane.red.play();
+   status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_PERM_DATA, [group_store.getValue( current_group, 'name' )]) );
+  },
+  oncomplete : function (r) {
+   var res = r.recv();
+   if ( res && res.content() ) {
+    perm_map_store.setValue( storeItem, 'ischanged', 0 );
+    highlighter.editor_pane.green.play();
+    status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE_PERM, [group_store.getValue( current_group, 'name' )]) );
+   } else {
+    highlighter.editor_pane.red.play();
+    status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_PERM_DATA, [group_store.getValue( current_group, 'name' )]) );
+   }
+  },
+ }).send();
 }
 
 function save_them_all (event) {
 
-	var dirtyMaps = [];
+ var dirtyMaps = [];
 
     perm_map_store.fetch({
         query : { ischanged : 1 },

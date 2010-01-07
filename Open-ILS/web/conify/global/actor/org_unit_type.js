@@ -51,37 +51,37 @@ var highlighter = {};
 var aout_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 function status_update (markup) {
-	if (parent !== window && parent.status_update) parent.status_update( markup );
+ if (parent !== window && parent.status_update) parent.status_update( markup );
 }
 
 function save_type () {
 
-	var modified_aout = new aout().fromStoreItem( current_type );
-	modified_aout.ischanged( 1 );
+ var modified_aout = new aout().fromStoreItem( current_type );
+ modified_aout.ischanged( 1 );
 
-	new_kid_button.disabled = false;
-	save_out_button.disabled = false;
-	delete_out_button.disabled = false;
+ new_kid_button.disabled = false;
+ save_out_button.disabled = false;
+ delete_out_button.disabled = false;
 
-	pCRUD.request({
-		method : 'open-ils.permacrud.update.aout',
-		timeout : 10,
-		params : [ ses, modified_aout ],
-		onerror : function (r) {
-			highlighter.editor_pane.red.play();
-			status_update( dojo.string.substitute(aout_strings.ERROR_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
-		},
-		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				ou_type_store.setValue( current_type, 'ischanged', 0 );
-				highlighter.editor_pane.green.play();
-				status_update( dojo.string.substitute(aout_strings.SUCCESS_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
-			} else {
-				highlighter.editor_pane.red.play();
-				status_update( dojo.string.substitute(aout_strings.ERROR_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
-			}
-		},
-	}).send();
+ pCRUD.request({
+  method : 'open-ils.permacrud.update.aout',
+  timeout : 10,
+  params : [ ses, modified_aout ],
+  onerror : function (r) {
+   highlighter.editor_pane.red.play();
+   status_update( dojo.string.substitute(aout_strings.ERROR_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
+  },
+  oncomplete : function (r) {
+   var res = r.recv();
+   if ( res && res.content() ) {
+    ou_type_store.setValue( current_type, 'ischanged', 0 );
+    highlighter.editor_pane.green.play();
+    status_update( dojo.string.substitute(aout_strings.SUCCESS_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
+   } else {
+    highlighter.editor_pane.red.play();
+    status_update( dojo.string.substitute(aout_strings.ERROR_SAVING_DATA, [ou_type_store.getValue( current_type, 'name' )] ) );
+   }
+  },
+ }).send();
 }
 

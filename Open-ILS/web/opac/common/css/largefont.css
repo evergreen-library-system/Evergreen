@@ -1,5 +1,5 @@
-body				{ font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 1.5em; } 
-body table		{ font-size: inherit; }
+body    { font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 1.5em; } 
+body table  { font-size: inherit; }
 
 .org_link { font-size: 92%; }
 .sidebar_extra_item { font-size: 95%; }

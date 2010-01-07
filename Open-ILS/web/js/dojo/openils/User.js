@@ -66,7 +66,7 @@ if(!dojo._hasResource["openils.User"]) {
 
             if(this.sessionCache[this.authtoken]) {
                 this.user = this.sessionCache[this.authtoken];
-				if (!openils.User.user) 
+    if (!openils.User.user) 
                     openils.User.user = this.user;
                 return this.user;
             }
@@ -80,7 +80,7 @@ if(!dojo._hasResource["openils.User"]) {
                             var user = r.recv().content();
                             _u.user = user;
                             _u.sessionCache[_u.authtoken] = user;
-					        if (!openils.User.user) openils.User.user = _u.user;
+             if (!openils.User.user) openils.User.user = _u.user;
                             if(onComplete)
                                 onComplete(user);
                         }
@@ -88,7 +88,7 @@ if(!dojo._hasResource["openils.User"]) {
                 );
             } else {
                 _u.user = fieldmapper.standardRequest(req, params);
-				if (!openils.User.user) openils.User.user = _u.user;
+    if (!openils.User.user) openils.User.user = _u.user;
                 _u.sessionCache[_u.authtoken] = _u.user;
                 return _u.user;
             }
@@ -138,9 +138,9 @@ if(!dojo._hasResource["openils.User"]) {
                 authReq.oncomplete = function(rr) {
                     var data = rr.recv().content();
                     _u.authtoken = data.payload.authtoken;
-					if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
+     if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
                     _u.authtime = data.payload.authtime;
-					if (!openils.User.authtime) openils.User.authtime = _u.authtime;
+     if (!openils.User.authtime) openils.User.authtime = _u.authtime;
                     _u.getBySession(onComplete);
                     if(_u.authcookie) {
                         dojo.require('dojo.cookie');
@@ -277,16 +277,16 @@ if(!dojo._hasResource["openils.User"]) {
                 _u.permOrgStoreCache[perm] = store;
             }
     
-	        if (_u.permOrgStoreCache[perm])
-		        hookupStore(_u.permOrgStoreCache[perm]);
-	        else
+         if (_u.permOrgStoreCache[perm])
+          hookupStore(_u.permOrgStoreCache[perm]);
+         else
                 _u.getPermOrgList(perm, buildTreePicker, true);
         },
     });
 
-	openils.User.user = null;
-	openils.User.authtoken = null;
-	openils.User.authtime = null;
+ openils.User.user = null;
+ openils.User.authtoken = null;
+ openils.User.authtime = null;
     openils.User.authcookie = null;
 }
 

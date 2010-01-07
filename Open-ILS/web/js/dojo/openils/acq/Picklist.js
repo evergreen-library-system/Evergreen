@@ -30,7 +30,7 @@ dojo.declare('openils.acq.Picklist', null, {
 
     constructor: function (pl_id, onComplete, args) {
 
-        var pl_this = this;		// 'this' doesn't exist inside callbacks
+        var pl_this = this;  // 'this' doesn't exist inside callbacks
         var liArgs = (args && args.liArgs) ? args.liArgs : {flesh_attrs:1, clear_marc:1};
         var mkStore = function (r) {
             var storeData;
@@ -78,19 +78,19 @@ dojo.declare('openils.acq.Picklist', null, {
     },
 
     id: function () {
-	return this._id;
+ return this._id;
     },
     name: function() {
-	return this._plist.name();
+ return this._plist.name();
     },
     owner: function() {
-	return this._plist.owner();
+ return this._plist.owner();
     },
     create_time: function() {
-	return this._plist.create_time();
+ return this._plist.create_time();
     },
     edit_time: function() {
-	return this._plist.edit_time();
+ return this._plist.edit_time();
     },
 
     find_attr: function(id, at_name, at_type) {

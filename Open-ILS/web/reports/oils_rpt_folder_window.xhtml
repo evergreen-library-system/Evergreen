@@ -1,132 +1,132 @@
 <div id='oils_rpt_folder_window_contents_div'>
 
 
-	<!--
-	<div style='width:100%;text-align: right; margin: 10px; vertical-align: top'>
-		<a id='oils_rpt_folder_window_contents_new_template' href='javascript:void(0);'><b>Create a new Template for this folder</b></a>
-	</div>
-	-->
-	<table id='oils_rpt_folder_window_contents_table'>
-		<tbody>
-			<tr>
-				<td colspan='2'> 
-					<span>
-						<select id='oils_rpt_folder_contents_action_selector' style='width: auto;'>
-							<option type='template' value='create_report'>&reports.oils_rpt_folder_window.new_report_from_template;</option>
-							<option type='template' value='clone_template'>&reports.oils_rpt_folder_window.clone_template;</option>
-							<option type='template' value='delete_template'>&reports.oils_rpt_folder_window.delete_template;</option>
-							<option type='report' value='change_params' disabled='disabled'>&reports.oils_rpt_folder_window.clone_report;</option>
-							<option type='report' value='schedule_report' disabled='disabled'>&reports.oils_rpt_folder_window.schedule_report;</option>
-							<option type='report' value='delete_report'>&reports.oils_rpt_folder_window.delete_reports;</option>
-							<option type='output' value='show_output'>&reports.oils_rpt_folder_window.view_report_output;</option>
-							<option type='output' value='delete_output'>&reports.oils_rpt_folder_window.delete_output;</option>
+ <!--
+ <div style='width:100%;text-align: right; margin: 10px; vertical-align: top'>
+  <a id='oils_rpt_folder_window_contents_new_template' href='javascript:void(0);'><b>Create a new Template for this folder</b></a>
+ </div>
+ -->
+ <table id='oils_rpt_folder_window_contents_table'>
+  <tbody>
+   <tr>
+    <td colspan='2'> 
+     <span>
+      <select id='oils_rpt_folder_contents_action_selector' style='width: auto;'>
+       <option type='template' value='create_report'>&reports.oils_rpt_folder_window.new_report_from_template;</option>
+       <option type='template' value='clone_template'>&reports.oils_rpt_folder_window.clone_template;</option>
+       <option type='template' value='delete_template'>&reports.oils_rpt_folder_window.delete_template;</option>
+       <option type='report' value='change_params' disabled='disabled'>&reports.oils_rpt_folder_window.clone_report;</option>
+       <option type='report' value='schedule_report' disabled='disabled'>&reports.oils_rpt_folder_window.schedule_report;</option>
+       <option type='report' value='delete_report'>&reports.oils_rpt_folder_window.delete_reports;</option>
+       <option type='output' value='show_output'>&reports.oils_rpt_folder_window.view_report_output;</option>
+       <option type='output' value='delete_output'>&reports.oils_rpt_folder_window.delete_output;</option>
 
-							<option type='template' value='move_template'>&reports.oils_rpt_folder_window.move_templates;</option>
-							<option type='report' value='move_report'>&reports.oils_rpt_folder_window.move_reports;</option>
-							<option type='output' value='move_output'>&reports.oils_rpt_folder_window.move_output;</option>
-						</select>
-					</span>
-					<input type='submit' value='&reports.oils_rpt_folder_window.submit;' id='oils_rpt_folder_content_action_go'/>
-				</td>
-			</tr>
+       <option type='template' value='move_template'>&reports.oils_rpt_folder_window.move_templates;</option>
+       <option type='report' value='move_report'>&reports.oils_rpt_folder_window.move_reports;</option>
+       <option type='output' value='move_output'>&reports.oils_rpt_folder_window.move_output;</option>
+      </select>
+     </span>
+     <input type='submit' value='&reports.oils_rpt_folder_window.submit;' id='oils_rpt_folder_content_action_go'/>
+    </td>
+   </tr>
 
-			<tr id='oils_rpt_content_count_row'>
-				<td style='text-align:left;'>
-					<div>
-						&reports.oils_rpt_folder_window.limit_output;
-						<select id='oils_rpt_output_limit_selector'>
-							<option value='5'>5</option>
-							<option value='10'>10</option>
-							<option value='25'>25</option>
-							<option value='50'>50</option>
-							<option value=''>&reports.oils_rpt_folder_window.all;</option>
-						</select>
-						<span><b id='oils_rpt_pending_output' class='hide_me'>&reports.oils_rpt_folder_window.pending_items;</b></span>
-					</div>
-				</td>
-				<td style='text-align:right;'>
-					<a id='oils_rpt_folder_window_contents_new_template' 
-						href='javascript:void(0);'><b>&reports.oils_rpt_folder_window.new_template;</b></a>
-				</td>
-			</tr>
+   <tr id='oils_rpt_content_count_row'>
+    <td style='text-align:left;'>
+     <div>
+      &reports.oils_rpt_folder_window.limit_output;
+      <select id='oils_rpt_output_limit_selector'>
+       <option value='5'>5</option>
+       <option value='10'>10</option>
+       <option value='25'>25</option>
+       <option value='50'>50</option>
+       <option value=''>&reports.oils_rpt_folder_window.all;</option>
+      </select>
+      <span><b id='oils_rpt_pending_output' class='hide_me'>&reports.oils_rpt_folder_window.pending_items;</b></span>
+     </div>
+    </td>
+    <td style='text-align:right;'>
+     <a id='oils_rpt_folder_window_contents_new_template' 
+      href='javascript:void(0);'><b>&reports.oils_rpt_folder_window.new_template;</b></a>
+    </td>
+   </tr>
 
-			<tr class='oils_rpt_folder_window_contents_row' id='oils_rpt_content_row'>
-				<td colspan='2'>
-					<div id='oils_rpt_folder_contents_selector'/>
-				</td>
-			</tr>
+   <tr class='oils_rpt_folder_window_contents_row' id='oils_rpt_content_row'>
+    <td colspan='2'>
+     <div id='oils_rpt_folder_contents_selector'/>
+    </td>
+   </tr>
 
-			<tr class='hide_me' id='oils_rpt_content_row_empty'>
-				<td style='text-align:left;'><b>&reports.oils_rpt_folder_window.no_items_to_display;</b></td>
-			</tr>
-
-
-			<!-- =================================================================== -->
-			<!--  Second set of folder data for schedule objects that have completed-->
-			<!-- =================================================================== -->
-			<tr id='oils_rpt_content_count_row_2' class='hide_me'>
-				<td style='text-align:left;padding-top: 20px;'>
-					<div>
-						&reports.oils_rpt_folder_window.limit_output;
-						<select id='oils_rpt_output_limit_selector_2'>
-							<option value='5'>5</option>
-							<option value='10'>10</option>
-							<option value='25'>25</option>
-							<option value='50'>50</option>
-							<option value=''>&reports.oils_rpt_folder_window.all;</option>
-						</select>
-						<span><b>&reports.oils_rpt_folder_window.completed_items;</b></span>
-					</div>
-				</td>
-			</tr>
-
-			<tr class='oils_rpt_folder_window_contents_row hide_me' id='oils_rpt_content_row_2'>
-				<td colspan='2'>
-					<div id='oils_rpt_folder_contents_selector_2'/>
-				</td>
-			</tr>
-			<!-- =================================================================== -->
-
-		</tbody>
-	</table>
-
-	<div id='oils_rpt_move_folder_div' class='hide_me' style='width:100%; padding: 5px; margin-left: 10px;'>
-		<div>&reports.oils_rpt_folder_window.selected_folder;<b id='oils_rpt_move_folder_selected'/></div>
-		<hr/>
-		<div id='oils_rpt_move_folder_picker'/>
-		<hr/>
-		<input type='submit' value='&reports.oils_rpt_folder_window.select_folder;' id='oils_rpt_change_folder_submit'/>
-		<input type='submit' value='&reports.oils_rpt_folder_window.cancel;' id='oils_rpt_change_folder_cancel'/>
-	</div>
-
-	<span class='hide_me' id='oils_rpt_folder_contents_confirm_delete'>
-		&reports.oils_rpt_folder_window.confirm_delete;
-	</span>
-
-	<span class='hide_me' id='oils_rpt_folder_contents_template_no_delete'>
-		&reports.oils_rpt_folder_window.dependant_reports_no_delete;
-	</span>
-
-	<span class='hide_me' id='oils_rpt_folder_contents_report_no_delete'>
-		&reports.oils_rpt_folder_window.dependant_outputs_no_delete;
-	</span>
+   <tr class='hide_me' id='oils_rpt_content_row_empty'>
+    <td style='text-align:left;'><b>&reports.oils_rpt_folder_window.no_items_to_display;</b></td>
+   </tr>
 
 
-	<span class='hide_me' id='oils_rpt_folder_contents_no_delete'>
-		&reports.oils_rpt_folder_window.cannot_delete_another_users_data;
-	</span>
+   <!-- =================================================================== -->
+   <!--  Second set of folder data for schedule objects that have completed-->
+   <!-- =================================================================== -->
+   <tr id='oils_rpt_content_count_row_2' class='hide_me'>
+    <td style='text-align:left;padding-top: 20px;'>
+     <div>
+      &reports.oils_rpt_folder_window.limit_output;
+      <select id='oils_rpt_output_limit_selector_2'>
+       <option value='5'>5</option>
+       <option value='10'>10</option>
+       <option value='25'>25</option>
+       <option value='50'>50</option>
+       <option value=''>&reports.oils_rpt_folder_window.all;</option>
+      </select>
+      <span><b>&reports.oils_rpt_folder_window.completed_items;</b></span>
+     </div>
+    </td>
+   </tr>
 
-	<span class='hide_me' id='oils_rpt_change_folder_not_allowed'>
-		&reports.oils_rpt_folder_window.cannot_move_another_users_data;
-	</span>
+   <tr class='oils_rpt_folder_window_contents_row hide_me' id='oils_rpt_content_row_2'>
+    <td colspan='2'>
+     <div id='oils_rpt_folder_contents_selector_2'/>
+    </td>
+   </tr>
+   <!-- =================================================================== -->
 
-	<span class='hide_me' id='oils_rpt_verify_template_delete'>
-		&reports.oils_rpt_folder_window.delete_all_attached_reports;
-	</span>
+  </tbody>
+ </table>
 
-	<span class='hide_me' id='oils_rpt_verify_report_delete'>
-		&reports.oils_rpt_folder_window.delete_all_attached_outputs;
-	</span>
+ <div id='oils_rpt_move_folder_div' class='hide_me' style='width:100%; padding: 5px; margin-left: 10px;'>
+  <div>&reports.oils_rpt_folder_window.selected_folder;<b id='oils_rpt_move_folder_selected'/></div>
+  <hr/>
+  <div id='oils_rpt_move_folder_picker'/>
+  <hr/>
+  <input type='submit' value='&reports.oils_rpt_folder_window.select_folder;' id='oils_rpt_change_folder_submit'/>
+  <input type='submit' value='&reports.oils_rpt_folder_window.cancel;' id='oils_rpt_change_folder_cancel'/>
+ </div>
+
+ <span class='hide_me' id='oils_rpt_folder_contents_confirm_delete'>
+  &reports.oils_rpt_folder_window.confirm_delete;
+ </span>
+
+ <span class='hide_me' id='oils_rpt_folder_contents_template_no_delete'>
+  &reports.oils_rpt_folder_window.dependant_reports_no_delete;
+ </span>
+
+ <span class='hide_me' id='oils_rpt_folder_contents_report_no_delete'>
+  &reports.oils_rpt_folder_window.dependant_outputs_no_delete;
+ </span>
+
+
+ <span class='hide_me' id='oils_rpt_folder_contents_no_delete'>
+  &reports.oils_rpt_folder_window.cannot_delete_another_users_data;
+ </span>
+
+ <span class='hide_me' id='oils_rpt_change_folder_not_allowed'>
+  &reports.oils_rpt_folder_window.cannot_move_another_users_data;
+ </span>
+
+ <span class='hide_me' id='oils_rpt_verify_template_delete'>
+  &reports.oils_rpt_folder_window.delete_all_attached_reports;
+ </span>
+
+ <span class='hide_me' id='oils_rpt_verify_report_delete'>
+  &reports.oils_rpt_folder_window.delete_all_attached_outputs;
+ </span>
 
 
 </div>

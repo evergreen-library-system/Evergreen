@@ -21,13 +21,13 @@ if(!dojo._hasResource["openils.I18N"]) {
     dojo.provide("openils.I18N");
     dojo.require("fieldmapper.dojoData");
     dojo.require("DojoSRF");
-	dojo.require("dojo.data.ItemFileWriteStore");
+ dojo.require("dojo.data.ItemFileWriteStore");
 
     dojo.declare('openils.I18N', null, {});
 
-	openils.I18N.BaseLocales = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n_l.atomic'], [ { query : { code : { '!=' :  null }  } } ] );
-	openils.I18N.localeStore = new dojo.data.ItemFileWriteStore( { data : {identifier : 'locale', label : 'label', items : [] } } );
-	openils.I18N.BaseLocales = openils.I18N.BaseLocales.sort(
+ openils.I18N.BaseLocales = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n_l.atomic'], [ { query : { code : { '!=' :  null }  } } ] );
+ openils.I18N.localeStore = new dojo.data.ItemFileWriteStore( { data : {identifier : 'locale', label : 'label', items : [] } } );
+ openils.I18N.BaseLocales = openils.I18N.BaseLocales.sort(
         function(a, b) {
             if(a.name > b.name) return 1;
             if(a.name < b.name) return -1;
@@ -35,26 +35,26 @@ if(!dojo._hasResource["openils.I18N"]) {
         }
     );
 
-	for (var i in openils.I18N.BaseLocales) {
-		openils.I18N.localeStore.newItem({ locale : openils.I18N.BaseLocales[i].code, label : openils.I18N.BaseLocales[i].name });
-	}
+ for (var i in openils.I18N.BaseLocales) {
+  openils.I18N.localeStore.newItem({ locale : openils.I18N.BaseLocales[i].code, label : openils.I18N.BaseLocales[i].name });
+ }
 
-	openils.I18N.getTranslations = function ( obj /* Fieldmapper object */,  field /* Field to translate */, locale /* optional locale */) {
-		var classname = obj.classname;
+ openils.I18N.getTranslations = function ( obj /* Fieldmapper object */,  field /* Field to translate */, locale /* optional locale */) {
+  var classname = obj.classname;
 
-		// XXX need to derive identity field from IDL...
-		var ident_field = fieldmapper[classname].Identifier;
-		var ident_value = obj[ident_field]();
+  // XXX need to derive identity field from IDL...
+  var ident_field = fieldmapper[classname].Identifier;
+  var ident_value = obj[ident_field]();
 
-		var fielder_args = { query : { fq_field : classname + '.' + field, identity_value : ident_value } };
-		if (locale) fielder_args.translation = locale;
+  var fielder_args = { query : { fq_field : classname + '.' + field, identity_value : ident_value } };
+  if (locale) fielder_args.translation = locale;
 
-		var hash_list = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n.atomic'], [ fielder_args ] );
-		var obj_list = dojo.map( hash_list, function (t) { return new fieldmapper.i18n().fromHash( t ) } );
+  var hash_list = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n.atomic'], [ fielder_args ] );
+  var obj_list = dojo.map( hash_list, function (t) { return new fieldmapper.i18n().fromHash( t ) } );
 
-		if (locale) return obj_list[0];
-		return obj_list;
-	}
+  if (locale) return obj_list[0];
+  return obj_list;
+ }
 
 }
 
