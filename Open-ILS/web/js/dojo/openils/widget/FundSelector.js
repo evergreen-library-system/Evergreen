@@ -12,7 +12,7 @@ if(!dojo._hasResource["openils.widget.FundSelector"]){
      */
 
     dojo.declare(
- "openils.widget.FundSelector", [dijit.form.FilteringSelect],
- {
- });
+	"openils.widget.FundSelector", [dijit.form.FilteringSelect],
+	{
+	});
 }

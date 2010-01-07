@@ -3,8 +3,8 @@ table { font-size: 9pt; }
 table tr { font-size: 9pt; }
 table tr td { font-size: 9pt; }
 
-body table tr td { font-size: inherit; }
-/*body table tr td { font-size: 95%;}*/
+body table tr td	{ font-size: inherit; }
+/*body table tr td	{ font-size: 95%;}*/
 
 .org_link { font-size: 9pt; }
 .sidebar_extra_item { font-size: 9pt; }

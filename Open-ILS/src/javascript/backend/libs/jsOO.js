@@ -31,16 +31,16 @@ Function.method('inherits', function (parent) {
 
 
 instance_of = function(o, c) {
- while (o != null) {
-  if (o.constructor === c) {
-   return true;
-  }
-  if (o === Object) {
-   return false;
-  }
-  o = o.superclass;
- }
- return false;
+	while (o != null) {
+		if (o.constructor === c) {
+			return true;
+		}
+		if (o === Object) {
+			return false;
+		}
+		o = o.superclass;
+	}
+	return false;
 };
 
 

@@ -16,8 +16,8 @@ if(!dojo._hasResource["openils.XUL"]) {
         if(openils.XUL.isXUL()) {
             try {
                 if(openils.XUL.enableXPConnect()) {
-           var CacheClass = new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-           return new CacheClass().wrappedJSObject.OpenILS.prototype.data;
+			        var CacheClass = new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
+			        return new CacheClass().wrappedJSObject.OpenILS.prototype.data;
                 }
             } catch(e) {
                 console.log("Error loading XUL stash: " + e);

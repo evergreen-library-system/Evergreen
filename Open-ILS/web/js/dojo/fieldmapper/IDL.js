@@ -115,13 +115,13 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
 
                 var obj = {
                     field : field,
-                    name : name,
+                    name	: name,
                     label : field.getAttributeNS(this.NS_REPORTS,'label'),
                     datatype : field.getAttributeNS(this.NS_REPORTS,'datatype'),
                     primitive : field.getAttributeNS(this.NS_PERSIST,'primitive'),
                     selector : field.getAttributeNS(this.NS_REPORTS,'selector'),
                     array_position : position++,
-                    type : 'field',
+                    type	: 'field',
                     virtual : (fields[i].getAttributeNS(this.NS_PERSIST, 'virtual') == 'true') 
                 };
 

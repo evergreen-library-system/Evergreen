@@ -9,7 +9,7 @@ if(!dojo._hasResource["openils.DojoPatch"]) {
         // lots of useful doc comments snipped for brevity
         dojo.create = function(tag, attrs, refNode, pos) {
             var doc = d.doc;
-            if(refNode){  
+            if(refNode){		
                 refNode = d.byId(refNode);
                 doc = refNode.ownerDocument;
             }

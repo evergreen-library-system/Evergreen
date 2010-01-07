@@ -1,132 +1,132 @@
 <div id='oils_rpt_param_editor_div'>
- <div>
-  <b id='oils_rpt_param_editor_report_name'> </b>
- </div>
+	<div>
+		<b id='oils_rpt_param_editor_report_name'> </b>
+	</div>
 
- <!--
- <table id='oils_rpt_recur_editor_table'>
-  <tbody>
-   <tr>
-    <th>Recurring Report</th>
-    <td><input type="checkbox" name="oils_rpt_recur" value="t"/></td>
-   </tr>
-   <tr>
-    <th>Recurrence Interval</th>
-    <td>
-     <select name="oils_rpt_recur_count">
-      <option value='1'>1</option>
-      <option value='2'>2</option>
-      <option value='3'>3</option>
-      <option value='4'>4</option>
-      <option value='5'>5</option>
-      <option value='6'>6</option>
-      <option value='7'>7</option>
-      <option value='8'>8</option>
-      <option value='9'>9</option>
-      <option value='10'>10</option>
-      <option value='11'>11</option>
-      <option value='12'>12</option>
-      <option value='13'>13</option>
-      <option value='14'>14</option>
-      <option value='15'>15</option>
-      <option value='16'>16</option>
-      <option value='17'>17</option>
-      <option value='18'>18</option>
-      <option value='19'>19</option>
-      <option value='20'>20</option>
-      <option value='21'>21</option>
-      <option value='22'>22</option>
-      <option value='23'>23</option>
-      <option value='24'>24</option>
-     </select>
-     <select name="oils_rpt_recur_interval_type">
-      <option value="days">Day(s)</option>
-      <option value="weeks">Week(s)</option>
-      <option value="months">Month(s)</option>
-     </select>
-    </td>
-   </tr>
-  </tbody>
- </table>
- -->
+	<!--
+	<table id='oils_rpt_recur_editor_table'>
+		<tbody>
+			<tr>
+				<th>Recurring Report</th>
+				<td><input type="checkbox" name="oils_rpt_recur" value="t"/></td>
+			</tr>
+			<tr>
+				<th>Recurrence Interval</th>
+				<td>
+					<select name="oils_rpt_recur_count">
+						<option value='1'>1</option>
+						<option value='2'>2</option>
+						<option value='3'>3</option>
+						<option value='4'>4</option>
+						<option value='5'>5</option>
+						<option value='6'>6</option>
+						<option value='7'>7</option>
+						<option value='8'>8</option>
+						<option value='9'>9</option>
+						<option value='10'>10</option>
+						<option value='11'>11</option>
+						<option value='12'>12</option>
+						<option value='13'>13</option>
+						<option value='14'>14</option>
+						<option value='15'>15</option>
+						<option value='16'>16</option>
+						<option value='17'>17</option>
+						<option value='18'>18</option>
+						<option value='19'>19</option>
+						<option value='20'>20</option>
+						<option value='21'>21</option>
+						<option value='22'>22</option>
+						<option value='23'>23</option>
+						<option value='24'>24</option>
+					</select>
+					<select name="oils_rpt_recur_interval_type">
+						<option value="days">Day(s)</option>
+						<option value="weeks">Week(s)</option>
+						<option value="months">Month(s)</option>
+					</select>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	-->
 
- <table id='oils_rpt_param_editor_table'>
-  <thead>
-   <tr>
-    <!--
-    <td>Object</td>
-    -->
-    <td>&reports.oils_rpt_param_editor.column;</td>
-    <td>&reports.oils_rpt_param_editor.transform;</td>
-    <td>&reports.oils_rpt_param_editor.action;</td>
-    <td>&reports.oils_rpt_param_editor.user_params;</td>
-   </tr>
-  </thead>
-  <tbody id='oils_rpt_param_editor_tbody'>
-   <tr name='tr'>
-    <!--
-    <td name='object'/>
-    -->
-    <td name='column'/>
-    <td name='transform'/>
-    <td name='action'/>
-    <td>
-     <div>
-      <span name='hint'/>
-      <span name='widget'/>
-     </div>
-     <div name='reldate_div'  style='margin-top: 5px;' class='hide_me'>
-      <div><b> - &reports.oils_rpt_param_editor.or; - </b></div>
-      <input type='checkbox' name='choose_rel'/> &reports.oils_rpt_param_editor.use_relative_date;
-      <div name='reldate'/>
-     </div>
-    </td>
-   </tr>
-  </tbody>
- </table>
+	<table id='oils_rpt_param_editor_table'>
+		<thead>
+			<tr>
+				<!--
+				<td>Object</td>
+				-->
+				<td>&reports.oils_rpt_param_editor.column;</td>
+				<td>&reports.oils_rpt_param_editor.transform;</td>
+				<td>&reports.oils_rpt_param_editor.action;</td>
+				<td>&reports.oils_rpt_param_editor.user_params;</td>
+			</tr>
+		</thead>
+		<tbody id='oils_rpt_param_editor_tbody'>
+			<tr name='tr'>
+				<!--
+				<td name='object'/>
+				-->
+				<td name='column'/>
+				<td name='transform'/>
+				<td name='action'/>
+				<td>
+					<div>
+						<span name='hint'/>
+						<span name='widget'/>
+					</div>
+					<div name='reldate_div'  style='margin-top: 5px;' class='hide_me'>
+						<div><b> - &reports.oils_rpt_param_editor.or; - </b></div>
+						<input type='checkbox' name='choose_rel'/> &reports.oils_rpt_param_editor.use_relative_date;
+						<div name='reldate'/>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
- <div class='hide_me' id='oils_rpt_relative_date_picker'>
-  <table>
-   <tbody>
-    <tr>
-     <td>
-      <select name="count">
-       <option value='1'>1</option>
-       <option value='2'>2</option>
-       <option value='3'>3</option>
-       <option value='4'>4</option>
-       <option value='5'>5</option>
-       <option value='6'>6</option>
-       <option value='7'>7</option>
-       <option value='8'>8</option>
-       <option value='9'>9</option>
-       <option value='10'>10</option>
-       <option value='11'>11</option>
-       <option value='12'>12</option>
-       <option value='13'>13</option>
-       <option value='14'>14</option>
-       <option value='15'>15</option>
-       <option value='16'>16</option>
-       <option value='17'>17</option>
-       <option value='18'>18</option>
-       <option value='19'>19</option>
-       <option value='20'>20</option>
-       <option value='21'>21</option>
-       <option value='22'>22</option>
-       <option value='23'>23</option>
-       <option value='24'>24</option>
-      </select>
-      <select name="type">
-       <option value="days">&reports.oils_rpt_param_editor.days;</option>
-       <option value="weeks">&reports.oils_rpt_param_editor.weeks;</option>
-       <option value="months">&reports.oils_rpt_param_editor.months;</option>
-      </select>
-      <span>&reports.oils_rpt_param_editor.ago;</span>
-     </td>
-    </tr>
-   </tbody>
-  </table>
- </div>
+	<div class='hide_me' id='oils_rpt_relative_date_picker'>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<select name="count">
+							<option value='1'>1</option>
+							<option value='2'>2</option>
+							<option value='3'>3</option>
+							<option value='4'>4</option>
+							<option value='5'>5</option>
+							<option value='6'>6</option>
+							<option value='7'>7</option>
+							<option value='8'>8</option>
+							<option value='9'>9</option>
+							<option value='10'>10</option>
+							<option value='11'>11</option>
+							<option value='12'>12</option>
+							<option value='13'>13</option>
+							<option value='14'>14</option>
+							<option value='15'>15</option>
+							<option value='16'>16</option>
+							<option value='17'>17</option>
+							<option value='18'>18</option>
+							<option value='19'>19</option>
+							<option value='20'>20</option>
+							<option value='21'>21</option>
+							<option value='22'>22</option>
+							<option value='23'>23</option>
+							<option value='24'>24</option>
+						</select>
+						<select name="type">
+							<option value="days">&reports.oils_rpt_param_editor.days;</option>
+							<option value="weeks">&reports.oils_rpt_param_editor.weeks;</option>
+							<option value="months">&reports.oils_rpt_param_editor.months;</option>
+						</select>
+						<span>&reports.oils_rpt_param_editor.ago;</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 </div>
 

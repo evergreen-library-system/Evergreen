@@ -1,91 +1,91 @@
 <div id='oils_rpt_folder_manager_div' class='hide_me' style='margin-top: 10px; text-align: center;'>
- <select id='oils_rpt_folder_manager_actions'>
-  <option value='change_name'>&reports.oils_rpt_folder_manager.change_folder_name;</option>
-  <option value='delete' id='oils_rpt_folder_manager_delete_opt'>&reports.oils_rpt_folder_manager.delete_folder;</option>
-  <option value='create_sub_folder'>&reports.oils_rpt_folder_manager.create_new_sub_folder;</option>
-  <option id='oils_rpt_folder_manager_share_opt' value='share'>&reports.oils_rpt_folder_manager.share_this_folder;</option>
-  <option id='oils_rpt_folder_manager_unshare_opt' value='unshare'>&reports.oils_rpt_folder_manager.hide_folder;</option>
+	<select id='oils_rpt_folder_manager_actions'>
+		<option value='change_name'>&reports.oils_rpt_folder_manager.change_folder_name;</option>
+		<option value='delete' id='oils_rpt_folder_manager_delete_opt'>&reports.oils_rpt_folder_manager.delete_folder;</option>
+		<option value='create_sub_folder'>&reports.oils_rpt_folder_manager.create_new_sub_folder;</option>
+		<option id='oils_rpt_folder_manager_share_opt' value='share'>&reports.oils_rpt_folder_manager.share_this_folder;</option>
+		<option id='oils_rpt_folder_manager_unshare_opt' value='unshare'>&reports.oils_rpt_folder_manager.hide_folder;</option>
 
-  <option class='hide_me'>&reports.oils_rpt_folder_manager.disable_recurrence;</option><!-- XXX -->
+		<option class='hide_me'>&reports.oils_rpt_folder_manager.disable_recurrence;</option><!-- XXX -->
 
- </select>
- <input id='oils_rpt_folder_manager_actions_submit' type='submit' value='&reports.oils_rpt_folder_manager.fldr_mngr_actions_submit;'/>
+	</select>
+	<input id='oils_rpt_folder_manager_actions_submit' type='submit' value='&reports.oils_rpt_folder_manager.fldr_mngr_actions_submit;'/>
 
- <div id='oils_rpt_folder_manager_action_div' style='margin: 15px;'>
+	<div id='oils_rpt_folder_manager_action_div' style='margin: 15px;'>
 
-  <div id='oils_rpt_folder_manager_change_name_div'>
-   &reports.oils_rpt_folder_manager.change_name; 
-   <input id='oils_rpt_folder_manager_name_input' type='text'/>
-   <input type='submit' value='&reports.oils_rpt_folder_manager.submit;' id='oils_rpt_folder_manager_change_name_submit'/>
-  </div>
+		<div id='oils_rpt_folder_manager_change_name_div'>
+			&reports.oils_rpt_folder_manager.change_name; 
+			<input id='oils_rpt_folder_manager_name_input' type='text'/>
+			<input type='submit' value='&reports.oils_rpt_folder_manager.submit;' id='oils_rpt_folder_manager_change_name_submit'/>
+		</div>
 
-  <div id='oils_rpt_folder_manager_create_sub'>
-   <table class='oils_rpt_generic_table'>
-    <tbody>
-     <tr>
-      <td>&reports.oils_rpt_folder_manager.folder_name;</td>
-      <td><input id='oils_rpt_folder_manager_sub_name' type='text'/></td>
-     </tr>
-     <tr>
-      <td>&reports.oils_rpt_folder_manager.share_this_folder;</td>
-      <td>
-       <select id='oils_rpt_folder_manager_sub_shared'>
-        <option value='no' selected='selected'>&reports.oils_rpt_folder_manager.do_not_share;</option>
-        <option value='yes'>&reports.oils_rpt_folder_manager.share;</option>
-       </select>
-      </td>
-     </tr>
-     <tr>
-      <td>&reports.oils_rpt_folder_manager.share_with;</td>
-      <td><select id='oils_rpt_folder_manager_sub_lib_picker'/></td>
-     </tr>
-     <tr><td colspan='2' align='center'>
-      <input type='submit' value='&reports.oils_rpt_folder_manager.create_sub_folder;' 
-       id='oils_rpt_folder_manager_sub_lib_create'/>
-     </td></tr>
-    </tbody>
-   </table>
-  </div>
+		<div id='oils_rpt_folder_manager_create_sub'>
+			<table class='oils_rpt_generic_table'>
+				<tbody>
+					<tr>
+						<td>&reports.oils_rpt_folder_manager.folder_name;</td>
+						<td><input id='oils_rpt_folder_manager_sub_name' type='text'/></td>
+					</tr>
+					<tr>
+						<td>&reports.oils_rpt_folder_manager.share_this_folder;</td>
+						<td>
+							<select id='oils_rpt_folder_manager_sub_shared'>
+								<option value='no' selected='selected'>&reports.oils_rpt_folder_manager.do_not_share;</option>
+								<option value='yes'>&reports.oils_rpt_folder_manager.share;</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>&reports.oils_rpt_folder_manager.share_with;</td>
+						<td><select id='oils_rpt_folder_manager_sub_lib_picker'/></td>
+					</tr>
+					<tr><td colspan='2' align='center'>
+						<input type='submit' value='&reports.oils_rpt_folder_manager.create_sub_folder;' 
+							id='oils_rpt_folder_manager_sub_lib_create'/>
+					</td></tr>
+				</tbody>
+			</table>
+		</div>
 
-  <div id='oils_rpt_folder_manager_share_div'>
-   <table class='oils_rpt_generic_table'>
-    <tbody>
-     <tr>
-      <td>&reports.oils_rpt_folder_manager.share_with;</td>
-      <td><select id='oils_rpt_folder_manager_share_lib_picker'/></td>
-     </tr>
-     <tr><td colspan='2' align='center'>
-      <input type='submit' value='&reports.oils_rpt_folder_manager.share_this_folder;' 
-       id='oils_rpt_folder_manager_share_submit'/>
-     </td></tr>
-    </tbody>
-   </table>
-  </div>
+		<div id='oils_rpt_folder_manager_share_div'>
+			<table class='oils_rpt_generic_table'>
+				<tbody>
+					<tr>
+						<td>&reports.oils_rpt_folder_manager.share_with;</td>
+						<td><select id='oils_rpt_folder_manager_share_lib_picker'/></td>
+					</tr>
+					<tr><td colspan='2' align='center'>
+						<input type='submit' value='&reports.oils_rpt_folder_manager.share_this_folder;' 
+							id='oils_rpt_folder_manager_share_submit'/>
+					</td></tr>
+				</tbody>
+			</table>
+		</div>
 
 
- </div>
+	</div>
 
- <span class='hide_me' id='oils_rpt_folder_manager_change_name_confirm'>
-  &reports.oils_rpt_folder_manager.change_name_confirm;
- </span>
+	<span class='hide_me' id='oils_rpt_folder_manager_change_name_confirm'>
+		&reports.oils_rpt_folder_manager.change_name_confirm;
+	</span>
 
- <span class='hide_me' id='oils_rpt_folder_manager_delete_confirm'>
-  &reports.oils_rpt_folder_manager.delete_name_confirm;
- </span>
-  
- <span class='hide_me' id='oils_rpt_folder_cannot_delete'>
-  &reports.oils_rpt_folder_manager.cannot_delete;
- </span>
+	<span class='hide_me' id='oils_rpt_folder_manager_delete_confirm'>
+		&reports.oils_rpt_folder_manager.delete_name_confirm;
+	</span>
+		
+	<span class='hide_me' id='oils_rpt_folder_cannot_delete'>
+		&reports.oils_rpt_folder_manager.cannot_delete;
+	</span>
 
- <span class='hide_me' id='oils_rpt_folder_already_shared'>
-  &reports.oils_rpt_folder_manager.already_shared;
- </span>
- <span class='hide_me' id='oils_rpt_folder_already_unshared'>
-  &reports.oils_rpt_folder_manager.folder_not_shared;
- </span>
- <span class='hide_me' id='oils_rpt_folder_unshare_confirm'>
-  &reports.oils_rpt_folder_manager.confirm_hide_folder;
- </span>
+	<span class='hide_me' id='oils_rpt_folder_already_shared'>
+		&reports.oils_rpt_folder_manager.already_shared;
+	</span>
+	<span class='hide_me' id='oils_rpt_folder_already_unshared'>
+		&reports.oils_rpt_folder_manager.folder_not_shared;
+	</span>
+	<span class='hide_me' id='oils_rpt_folder_unshare_confirm'>
+		&reports.oils_rpt_folder_manager.confirm_hide_folder;
+	</span>
 
 
 </div>

@@ -443,10 +443,10 @@ function AcqLiTable() {
             if(openils.XUL.isXUL()) {
 
                 var makeRecTab = function() {
-        xulG.new_tab(
+				    xulG.new_tab(
                         XUL_OPAC_WRAPPER,
-         {tab_name: localeStrings.XUL_RECORD_DETAIL_PAGE, browser:false},
-         {
+					    {tab_name: localeStrings.XUL_RECORD_DETAIL_PAGE, browser:false},
+					    {
                             no_xulG : false, 
                             show_nav_buttons : true, 
                             show_print_button : true, 

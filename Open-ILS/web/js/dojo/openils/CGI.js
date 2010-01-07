@@ -37,7 +37,7 @@ if(!dojo._hasResource["openils.CGI"]) {
 
                 var c = string.charAt(idx);
 
-                if( c == "=" ) {
+                if( c == "=" )	{
                     invalue = true;
                     inkey = false;
                     continue;

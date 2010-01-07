@@ -46,61 +46,61 @@ var virgin_out_id = -1;
 var highlighter = {};
 
 function status_update (markup) {
- if (parent !== window && parent.status_update) parent.status_update( markup );
+	if (parent !== window && parent.status_update) parent.status_update( markup );
 }
 
 function save_perm () {
 
- var modified_ppl = new ppl().fromStoreItem( current_perm );
- modified_ppl.ischanged( 1 );
- modified_ppl.description( dojo.string.trim( modified_ppl.description() ) );
- modified_ppl.code( dojo.string.trim( modified_ppl.code() ) );
+	var modified_ppl = new ppl().fromStoreItem( current_perm );
+	modified_ppl.ischanged( 1 );
+	modified_ppl.description( dojo.string.trim( modified_ppl.description() ) );
+	modified_ppl.code( dojo.string.trim( modified_ppl.code() ) );
 
- pCRUD.request({
-  method : 'open-ils.permacrud.update.ppl',
-  timeout : 10,
-  params : [ ses, modified_ppl ],
-  onerror : function (r) {
-   highlighter.red.play();
-   status_update( dojo.string.substitute(ppl_strings.ERROR_SAVING_DATA, [perm_store.getValue(current_perm, 'code')]) );
-  },
-  oncomplete : function (r) {
-   var res = r.recv();
-   if ( res && res.content() ) {
-    perm_store.setValue( current_perm, 'ischanged', 0 );
-    highlighter.green.play();
-    status_update( dojo.string.substitute(ppl_strings.SUCCESS_SAVE, [perm_store.getValue(current_perm, 'code')]) );
-   } else {
-    highlighter.red.play();
-    status_update( dojo.string.substitute(ppl_strings.ERROR_SAVING_DATA, [perm_store.getValue(current_perm, 'code')]) );
-   }
-  },
- }).send();
+	pCRUD.request({
+		method : 'open-ils.permacrud.update.ppl',
+		timeout : 10,
+		params : [ ses, modified_ppl ],
+		onerror : function (r) {
+			highlighter.red.play();
+			status_update( dojo.string.substitute(ppl_strings.ERROR_SAVING_DATA, [perm_store.getValue(current_perm, 'code')]) );
+		},
+		oncomplete : function (r) {
+			var res = r.recv();
+			if ( res && res.content() ) {
+				perm_store.setValue( current_perm, 'ischanged', 0 );
+				highlighter.green.play();
+				status_update( dojo.string.substitute(ppl_strings.SUCCESS_SAVE, [perm_store.getValue(current_perm, 'code')]) );
+			} else {
+				highlighter.red.play();
+				status_update( dojo.string.substitute(ppl_strings.ERROR_SAVING_DATA, [perm_store.getValue(current_perm, 'code')]) );
+			}
+		},
+	}).send();
 }
 
 function save_them_all (event) {
 
- perm_store.fetch({
-  query : { ischanged : 1 },
-  onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-  scope : perm_store
- });
+	perm_store.fetch({
+		query : { ischanged : 1 },
+		onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
+		scope : perm_store
+	});
 
- var confirmation = true;
+	var confirmation = true;
 
 
- if (event && dirtyStore.length > 0) {
-  confirmation = confirm( ppl_strings.CONFIRM_EXIT_PPL );
- }
+	if (event && dirtyStore.length > 0) {
+		confirmation = confirm( ppl_strings.CONFIRM_EXIT_PPL );
+	}
 
- if (confirmation) {
-  for (var i in window.dirtyStore) {
-   window.current_perm = window.dirtyStore[i];
-   save_perm(true);
-  }
+	if (confirmation) {
+		for (var i in window.dirtyStore) {
+			window.current_perm = window.dirtyStore[i];
+			save_perm(true);
+		}
 
-  window.dirtyStore = [];
- }
+		window.dirtyStore = [];
+	}
 }
 
 dojo.addOnUnload( save_them_all );

@@ -46,61 +46,61 @@ var ccs_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 var highlighter = {};
 
 function status_update (markup) {
- if (parent !== window && parent.status_update) parent.status_update( markup );
+	if (parent !== window && parent.status_update) parent.status_update( markup );
 }
 
 function save_status () {
 
- var modified_ccs = new ccs().fromStoreItem( current_status );
- modified_ccs.ischanged( 1 );
+	var modified_ccs = new ccs().fromStoreItem( current_status );
+	modified_ccs.ischanged( 1 );
 
- pCRUD.request({
-  method : 'open-ils.permacrud.update.ccs',
-  timeout : 10,
-  params : [ ses, modified_ccs ],
-  onerror : function (r) {
-   highlighter.red.play();
-   status_update( dojo.string.substitute(ccs_strings.ERROR_SAVING_STATUS, [status_store.getValue( current_status, 'name' )]) );
-  },
-  oncomplete : function (r) {
-   var res = r.recv();
-   if ( res && res.content() ) {
-    status_store.setValue( current_status, 'ischanged', 0 );
-    highlighter.green.play();
-    status_update( dojo.string.substitute(ccs_strings.SUCCESS_SAVE, [status_store.getValue( current_status, 'name' )]) );
-   } else {
-    highlighter.red.play();
-    status_update( dojo.string.substitute(ccs_strings.ERROR_SAVING_STATUS, [status_store.getValue( current_status, 'name' )]) );
-   }
-  },
- }).send();
+	pCRUD.request({
+		method : 'open-ils.permacrud.update.ccs',
+		timeout : 10,
+		params : [ ses, modified_ccs ],
+		onerror : function (r) {
+			highlighter.red.play();
+			status_update( dojo.string.substitute(ccs_strings.ERROR_SAVING_STATUS, [status_store.getValue( current_status, 'name' )]) );
+		},
+		oncomplete : function (r) {
+			var res = r.recv();
+			if ( res && res.content() ) {
+				status_store.setValue( current_status, 'ischanged', 0 );
+				highlighter.green.play();
+				status_update( dojo.string.substitute(ccs_strings.SUCCESS_SAVE, [status_store.getValue( current_status, 'name' )]) );
+			} else {
+				highlighter.red.play();
+				status_update( dojo.string.substitute(ccs_strings.ERROR_SAVING_STATUS, [status_store.getValue( current_status, 'name' )]) );
+			}
+		},
+	}).send();
 }
 
 function save_them_all (event) {
 
- status_store.fetch({
-  query : { ischanged : 1 },
-  onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-  scope : status_store
- });
+	status_store.fetch({
+		query : { ischanged : 1 },
+		onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
+		scope : status_store
+	});
 
- var confirmation = true;
+	var confirmation = true;
 
 
- if (event && dirtyStore.length > 0) {
-  confirmation = confirm(
-   ccs_strings.CONFIRM_EXIT_CCS
-  );
- }
+	if (event && dirtyStore.length > 0) {
+		confirmation = confirm(
+			ccs_strings.CONFIRM_EXIT_CCS
+		);
+	}
 
- if (confirmation) {
-  for (var i in window.dirtyStore) {
-   window.current_status = window.dirtyStore[i];
-   save_status(true);
-  }
+	if (confirmation) {
+		for (var i in window.dirtyStore) {
+			window.current_status = window.dirtyStore[i];
+			save_status(true);
+		}
 
-  window.dirtyStore = [];
- }
+		window.dirtyStore = [];
+	}
 }
 
 dojo.addOnUnload( save_them_all );

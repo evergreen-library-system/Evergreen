@@ -18,19 +18,19 @@ log_debug('loading circ_item_config.js ...');
 */
 
 /* ----------------------------------------------------------------------------- 
- Configure the duration rules for the various item types and circ modifiers
- MARC Fixed Field info:
- http://www.oclc.org/bibformats/en/fixedfield/
- ----------------------------------------------------------------------------- */
+	Configure the duration rules for the various item types and circ modifiers
+	MARC Fixed Field info:
+	http://www.oclc.org/bibformats/en/fixedfield/
+	----------------------------------------------------------------------------- */
 
 var MARC_ITEM_TYPE_MAP = {
- a : { /* Language material [Books] */
-  SIPMediaType   : '001',
-  magneticMedia   : 'f',
-  durationRule   : 'default',
-  recurringFinesRule     : 'default',
-  maxFine     : 'default'
- },
+	a : { /* Language material [Books] */
+		SIPMediaType			: '001',
+		magneticMedia			: 'f',
+		durationRule			: 'default',
+		recurringFinesRule	    : 'default',
+		maxFine					: 'default'
+	},
     /* add more MARC item type configs as needed... */
 }
 
@@ -39,13 +39,13 @@ MARC_ITEM_TYPE_MAP.t = MARC_ITEM_TYPE_MAP.a;
 
 
 var CIRC_MOD_MAP = {
- 'bestseller'    : {
-  SIPMediaType   : '001',
-  magneticMedia   : 'f',
-  durationRule   : 'default',
-  recurringFinesRule     : 'default',
-  maxFine     : 'default'
- },
+	'bestseller'				: {
+		SIPMediaType			: '001',
+		magneticMedia			: 'f',
+		durationRule			: 'default',
+		recurringFinesRule	    : 'default',
+		maxFine					: 'default'
+	},
 }
 
 
@@ -56,9 +56,9 @@ result.item_config = getItemConfig();
 
 function getItemConfig() {
 
- var config = null;
- var marcType = getMARCItemType();
- var circMod  = copy.circ_modifier;
+	var config = null;
+	var marcType	= getMARCItemType();
+	var circMod		= copy.circ_modifier;
 
     if( circMod ) {
         config = CIRC_MOD_MAP[circMod];
@@ -67,15 +67,15 @@ function getItemConfig() {
     }
 
     if(!config)
-  config = MARC_ITEM_TYPE_MAP[marcType];
+		config = MARC_ITEM_TYPE_MAP[marcType];
 
     if(!config) {
         config = {};
-  config.SIPMediaType = '001';
-  config.magneticMedia = 'f';
-  config.durationRule = 'default';
-  config.recurringFinesRule = 'default';
-  config.maxFine = 'default';
+		config.SIPMediaType = '001';
+		config.magneticMedia = 'f';
+		config.durationRule	= 'default';
+		config.recurringFinesRule = 'default';
+		config.maxFine = 'default';
     }
 
     return config

@@ -1,6 +1,6 @@
 try {
- load_lib('jsOO.js');
- load_lib('JSON_v1.js');
+	load_lib('jsOO.js');
+	load_lib('JSON_v1.js');
 } catch (e) {}
 
 var __jsonopensrfreqid = 1;
@@ -40,60 +40,60 @@ JSONOpenSRFRequest.method('connect', function (service) {
 
         if (service) this._service = service;
 
- if (!this._service)
-  throw "call .open with a service before calling .connect";
- try {
-         _OILS_FUNC_jsonopensrfrequest_connect(this._hash_id,this._service);
- } catch (e) {
-  alert("Sorry, no JSONOpenSRFRequest support");
- }
+	if (!this._service)
+		throw "call .open with a service before calling .connect";
+	try {
+        	_OILS_FUNC_jsonopensrfrequest_connect(this._hash_id,this._service);
+	} catch (e) {
+		alert("Sorry, no JSONOpenSRFRequest support");
+	}
 
         this.connected = __jsonopensrfreq_hash['id' + this._hash_id].connected;
 });
 
 JSONOpenSRFRequest.method('disconnect', function () {
 
- if (!this._service)
-  throw "call .connect before calling .disconnect";
- try {
-         _OILS_FUNC_jsonopensrfrequest_disconnect(this._hash_id);
- } catch (e) {
-  alert("Sorry, no JSONOpenSRFRequest support");
- }
+	if (!this._service)
+		throw "call .connect before calling .disconnect";
+	try {
+        	_OILS_FUNC_jsonopensrfrequest_disconnect(this._hash_id);
+	} catch (e) {
+		alert("Sorry, no JSONOpenSRFRequest support");
+	}
 
         this.connected = __jsonopensrfreq_hash['id' + this._hash_id].connected;
 });
 
 JSONOpenSRFRequest.method('finish', function () {
 
- if (!this._service)
-  throw "call .connect before calling .finish";
- try {
-         _OILS_FUNC_jsonopensrfrequest_disconnect(this._hash_id);
-         _OILS_FUNC_jsonopensrfrequest_finish(this._hash_id);
- } catch (e) {
-  alert("Sorry, no JSONOpenSRFRequest support");
- }
+	if (!this._service)
+		throw "call .connect before calling .finish";
+	try {
+        	_OILS_FUNC_jsonopensrfrequest_disconnect(this._hash_id);
+        	_OILS_FUNC_jsonopensrfrequest_finish(this._hash_id);
+	} catch (e) {
+		alert("Sorry, no JSONOpenSRFRequest support");
+	}
 
         this.connected = __jsonopensrfreq_hash['id' + this._hash_id].connected;
 });
 
 JSONOpenSRFRequest.method('send', function () {
 
- if (!this._service)
-  throw "call .open with a service and a method before calling .send";
+	if (!this._service)
+		throw "call .open with a service and a method before calling .send";
 
- var data = [];
- for (var i = 0; i < arguments.length; i++) {
-  data[i] = arguments[i];
- }
+	var data = [];
+	for (var i = 0; i < arguments.length; i++) {
+		data[i] = arguments[i];
+	}
 
- try {
-         //log_debug( this._hash_id + " -> " + this._service + " -> " + this._method + " -> " + this._async + " -> " + js2JSON(data));
-         _OILS_FUNC_jsonopensrfrequest_send(this._hash_id,this._service,this._method,this._async,js2JSON(data));
- } catch (e) {
-  alert("Sorry, no JSONOpenSRFRequest support");
- }
+	try {
+        	//log_debug( this._hash_id + " -> " + this._service + " -> " + this._method + " -> " + this._async + " -> " + js2JSON(data));
+        	_OILS_FUNC_jsonopensrfrequest_send(this._hash_id,this._service,this._method,this._async,js2JSON(data));
+	} catch (e) {
+		alert("Sorry, no JSONOpenSRFRequest support");
+	}
 
         this.responseText = __jsonopensrfreq_hash['id' + this._hash_id].responseText;
         this.readyState = __jsonopensrfreq_hash['id' + this._hash_id].readyState;

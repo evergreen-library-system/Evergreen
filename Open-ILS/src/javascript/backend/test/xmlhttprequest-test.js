@@ -8,8 +8,8 @@ log_stdout("recordID is",params.recordID);
 
 // xpath namespace resolver
 var ns_res = new XPathNamespaceResolver(
- { marc : "http://www.loc.gov/MARC21/slim",
-   mods : "http://www.loc.gov/mods/v3" }
+	{ marc : "http://www.loc.gov/MARC21/slim",
+	  mods : "http://www.loc.gov/mods/v3" }
 );
 
 // xmlhttprequest uses the perl xml parser to get the xml doc from 
@@ -26,9 +26,9 @@ var marc = DOMImplementation.parseString(x.responseXML.evaluate('//marc/text()')
 
 // and then get the title
 var res = marc.evaluate(
- "/marc:record/marc:datafield[@tag='245']/marc:subfield[@code='a']/text()",
- marc,
- ns_res
+	"/marc:record/marc:datafield[@tag='245']/marc:subfield[@code='a']/text()",
+	marc,
+	ns_res
 );
 
 // print the title we just grabbed

@@ -83,13 +83,13 @@ if(!dojo._hasResource["openils.Util"]) {
      * the provided DOM node has focus.
      */
     openils.Util.registerEnterHandler = function(domNode, func) {
-     if(!(domNode && func)) return;
-     domNode.onkeydown = function(evt) {
+	    if(!(domNode && func)) return;
+	    domNode.onkeydown = function(evt) {
             var code = openils.Util.getCharCode(evt);
             if(code == 13 || code == 3) 
                 func();
         }
- }
+	}
 
 
     /**

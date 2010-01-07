@@ -1,7 +1,7 @@
 /* 
- Changed HTML entities to hex encoded entities
- bill erickson
- */
+	Changed HTML entities to hex encoded entities
+	bill erickson
+	*/
 
 addEvent(window, "load", sortables_init);
 
@@ -31,29 +31,29 @@ function ts_makeSortable(table) {
         var cell = firstRow.cells[i];
         var txt = ts_getInnerText(cell);
         cell.innerHTML = '<a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">'
-   + txt +'<span class="sortarrow">&#160;&#160;&#160;</span></a>';
+			+ txt +'<span class="sortarrow">&#160;&#160;&#160;</span></a>';
     }
 }
 
 function ts_getInnerText(el) {
- if (typeof el == "string") return el;
- if (typeof el == "undefined") { return el };
- if (el.innerText) return el.innerText; //Not needed but it is faster
- var str = "";
- 
- var cs = el.childNodes;
- var l = cs.length;
- for (var i = 0; i < l; i++) {
-  switch (cs[i].nodeType) {
-   case 1: //ELEMENT_NODE
-    str += ts_getInnerText(cs[i]);
-    break;
-   case 3: //TEXT_NODE
-    str += cs[i].nodeValue;
-    break;
-  }
- }
- return str;
+	if (typeof el == "string") return el;
+	if (typeof el == "undefined") { return el };
+	if (el.innerText) return el.innerText;	//Not needed but it is faster
+	var str = "";
+	
+	var cs = el.childNodes;
+	var l = cs.length;
+	for (var i = 0; i < l; i++) {
+		switch (cs[i].nodeType) {
+			case 1: //ELEMENT_NODE
+				str += ts_getInnerText(cs[i]);
+				break;
+			case 3:	//TEXT_NODE
+				str += cs[i].nodeValue;
+				break;
+		}
+	}
+	return str;
 }
 
 function ts_resortTable(lnk) {
@@ -70,7 +70,7 @@ function ts_resortTable(lnk) {
     // Work out a type for the column
     if (table.rows.length <= 1) return;
     var itm = ts_getInnerText(table.rows[1].cells[column]);
-  if(!itm) return;
+	 if(!itm) return;
     sortfn = ts_sort_caseinsensitive;
     if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d\d\d$/)) sortfn = ts_sort_date;
     if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d$/)) sortfn = ts_sort_date;
@@ -113,11 +113,11 @@ function ts_resortTable(lnk) {
 }
 
 function getParent(el, pTagName) {
- if (el == null) return null;
- else if (el.nodeType == 1 && el.tagName.toLowerCase() == pTagName.toLowerCase()) // Gecko bug, supposed to be uppercase
-  return el;
- else
-  return getParent(el.parentNode, pTagName);
+	if (el == null) return null;
+	else if (el.nodeType == 1 && el.tagName.toLowerCase() == pTagName.toLowerCase())	// Gecko bug, supposed to be uppercase
+		return el;
+	else
+		return getParent(el.parentNode, pTagName);
 }
 function ts_sort_date(a,b) {
     // y2k notes: two digit years less than 50 are treated as 20XX, greater than 50 are treated as 19XX

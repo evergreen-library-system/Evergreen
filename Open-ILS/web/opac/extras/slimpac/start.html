@@ -7,187 +7,187 @@
 ]>
 
 <html>
- <head>
-  <title>&slimpac.start.title;</title>
-  <style type="text/css">
-   .maintable {
-    border-collapse: collapse;
-    border: 3px solid #A7EA9D;
-    -moz-border-radius: 6px;
-    padding: 6px;
-    margin-top: 65px;
-   }
-   
-   .greenrow {
-    border: 1px solid #D0D0D0;
-    background: #A7EA9D;
-    height: 20px;
-   }
+	<head>
+		<title>&slimpac.start.title;</title>
+		<style type="text/css">
+			.maintable {
+				border-collapse: collapse;
+				border: 3px solid #A7EA9D;
+				-moz-border-radius: 6px;
+				padding: 6px;
+				margin-top: 65px;
+			}
+			
+			.greenrow {
+				border: 1px solid #D0D0D0;
+				background: #A7EA9D;
+				height: 20px;
+			}
 
-   .bluerow {
-    border: 1px solid #D0D0D0;
-    background: #E0F6E0;
-    height: 20px;
-   }
+			.bluerow {
+				border: 1px solid #D0D0D0;
+				background: #E0F6E0;
+				height: 20px;
+			}
 
-   .rowpad {
-    height: 20px;
-   }
+			.rowpad {
+				height: 20px;
+			}
 
-   .footer {
-    width: 100%;
-    text-align: center;
-    vertical-align: bottom;
-    margin: auto;
-    margin-top: 20px;
-   }
+			.footer {
+				width: 100%;
+				text-align: center;
+				vertical-align: bottom;
+				margin: auto;
+				margin-top: 20px;
+			}
 
-   .footer_links {
-    width: 60%;
-    text-align: center;
-    padding: 10px;
-    font-size: 8pt;
-    margin: auto;
-   }
+			.footer_links {
+				width: 60%;
+				text-align: center;
+				padding: 10px;
+				font-size: 8pt;
+				margin: auto;
+			}
 
-   .footer_link {
-    margin-left: 10px; 
-    margin-right: 10px;
-   }
+			.footer_link {
+				margin-left: 10px; 
+				margin-right: 10px;
+			}
 
-   .copyright {
-    margin-top: 4px;
-    font-size: 7pt;
-   }
+			.copyright {
+				margin-top: 4px;
+				font-size: 7pt;
+			}
 
-   .indent0 {
-    padding-left: 0px; 
-   }
+			.indent0 {
+				padding-left: 0px; 
+			}
 
-   .indent1 {
-    padding-left: 10px; 
-   }
+			.indent1 {
+				padding-left: 10px; 
+			}
 
-   .indent2 {
-    padding-left: 20px; 
-   }
+			.indent2 {
+				padding-left: 20px; 
+			}
 
-   .search_field {
-    width: 100%;
-    text-align: center;
-    margin: auto;
-   }
+			.search_field {
+				width: 100%;
+				text-align: center;
+				margin: auto;
+			}
 
-  </style>
- </head>
- <body>
-  <center>
-
-
-  <table class="maintable">
-   <tbody>
-    <tr>
-     <td>
-      <div class='search_field'>
-       <img src='/opac/images/main_logo.jpg' alt=''/>
-      </div>
-     </td>
-    </tr>
-    <tr class="rowpad"><td></td></tr>
-    <form method="GET" action="/opac/extras/opensearch/1.1/-/html-full">
-    <tr class="bluerow">
-     <td>
-      <div class='search_field'>
-       <span>&slimpac.start.nowSearching;</span>
-       <select name="searchOrg">
-        <!--#include file="${locale}/lib_list.inc" -->
-       </select>
-      </div>
-     </td>
-    </tr>
-    <tr class="rowpad"><td></td></tr>
-    <tr class="greenrow">
-     <td>
-      <div class='search_field'>
-
-       <input type="text" name="searchTerms" size="40"/>
-
-       <select name="searchClass">
-        <option value="keyword">&common.keyword;</option>
-        <option value="title">&common.title;</option>
-        <option value="author">&common.author;</option>
-        <option value="subject">&common.subject;</option>
-        <option value="series">&common.series;</option>
-       </select>
-
-       <input type="submit" value="&button.go;"/>
-      </div>
-     </td>
-    </tr>
-    </form>
-    <tr class="bluerow"><td></td></tr>
-    <form method="GET">
-    <tr class="greenrow">
-     <td>
-      <div class='search_field'>
-        <!--#include file="locales.inc"-->
-        <input type="submit" value="&slimpac.language.select;"/>
-      </div>
-     </td>
-    </tr>
-    </form>
-    <tr class="rowpad"><td></td></tr>
-   </tbody>
-  </table>
+		</style>
+	</head>
+	<body>
+		<center>
 
 
-  <div class="footer">
-   <center>
-   <div class="footer_links">
+		<table class="maintable">
+			<tbody>
+				<tr>
+					<td>
+						<div class='search_field'>
+							<img src='/opac/images/main_logo.jpg' alt=''/>
+						</div>
+					</td>
+				</tr>
+				<tr class="rowpad"><td></td></tr>
+				<form method="GET" action="/opac/extras/opensearch/1.1/-/html-full">
+				<tr class="bluerow">
+					<td>
+						<div class='search_field'>
+							<span>&slimpac.start.nowSearching;</span>
+							<select name="searchOrg">
+								<!--#include file="${locale}/lib_list.inc" -->
+							</select>
+						</div>
+					</td>
+				</tr>
+				<tr class="rowpad"><td></td></tr>
+				<tr class="greenrow">
+					<td>
+						<div class='search_field'>
 
-    <span class='footer_link'>
-     <a class='classic_link' href='/'>&slimpac.start.dynamic;</a>
-    </span> 
+							<input type="text" name="searchTerms" size="40"/>
 
-    <span> | </span>
+							<select name="searchClass">
+								<option value="keyword">&common.keyword;</option>
+								<option value="title">&common.title;</option>
+								<option value="author">&common.author;</option>
+								<option value="subject">&common.subject;</option>
+								<option value="series">&common.series;</option>
+							</select>
 
-    <span class='footer_link'>
-     <a class='classic_link' href='advanced.html'>&opac.navigate.advanced;</a>
-    </span> 
+							<input type="submit" value="&button.go;"/>
+						</div>
+					</td>
+				</tr>
+				</form>
+				<tr class="bluerow"><td></td></tr>
+				<form method="GET">
+				<tr class="greenrow">
+					<td>
+						<div class='search_field'>
+								<!--#include file="locales.inc"-->
+								<input type="submit" value="&slimpac.language.select;"/>
+						</div>
+					</td>
+				</tr>
+				</form>
+				<tr class="rowpad"><td></td></tr>
+			</tbody>
+		</table>
 
-    <span> | </span>
 
-    <span class='footer_link'>
-     <a target='_blank' class='classic_link' href='&footer.find.url;'>&footer.find.library;</a>
-    </span> 
+		<div class="footer">
+			<center>
+			<div class="footer_links">
 
-    <span> | </span>
-    
-    <span class='footer_link'>
-     <a target='_blank' class='classic_link' href='&footer.help.url;'>&footer.help;</a>
-    </span>
+				<span class='footer_link'>
+					<a class='classic_link' href='/'>&slimpac.start.dynamic;</a>
+				</span> 
 
-    <span> | </span>
+				<span> | </span>
 
-    <span class='footer_link'>
-     <a target='_blank' class='classic_link' href='&footer.library.url;'>&footer.library.about;</a>
-    </span>
+				<span class='footer_link'>
+					<a class='classic_link' href='advanced.html'>&opac.navigate.advanced;</a>
+				</span> 
 
-    <span> | </span>
+				<span> | </span>
 
-    <span class='footer_link'>
-     <a target='' class='classic_link' id='eg_gal_link' href='&footer.union.url;'>&footer.union;</a>
-    </span>
-    <br/>
-    <div class="copyright">
-     <span>&footer.copyright;</span>
-    </div>
-   </div>
-   </center>
-  </div>
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='&footer.find.url;'>&footer.find.library;</a>
+				</span> 
 
-  </center>
+				<span> | </span>
+				
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='&footer.help.url;'>&footer.help;</a>
+				</span>
 
- </body>
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='&footer.library.url;'>&footer.library.about;</a>
+				</span>
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='' class='classic_link' id='eg_gal_link' href='&footer.union.url;'>&footer.union;</a>
+				</span>
+				<br/>
+				<div class="copyright">
+					<span>&footer.copyright;</span>
+				</div>
+			</div>
+			</center>
+		</div>
+
+		</center>
+
+	</body>
 </html>
 

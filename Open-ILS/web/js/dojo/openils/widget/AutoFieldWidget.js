@@ -4,7 +4,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
     dojo.require('openils.User');
     dojo.require('fieldmapper.IDL');
     dojo.require('openils.PermaCrud');
- dojo.requireLocalization("openils.widget", "AutoFieldWidget");
+	dojo.requireLocalization("openils.widget", "AutoFieldWidget");
 
     dojo.declare('openils.widget.AutoFieldWidget', null, {
 

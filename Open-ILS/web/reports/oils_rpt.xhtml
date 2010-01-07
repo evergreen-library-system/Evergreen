@@ -1,140 +1,140 @@
 <?xml version='1.0'?>
 
 <!DOCTYPE html PUBLIC 
- "-//W3C//DTD XHTML 1.0 Transitional//EN" 
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
- <!ENTITY nbsp " ">
- <!--#include virtual="/opac/locale/${locale}/reports.dtd"-->
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!ENTITY nbsp " ">
+	<!--#include virtual="/opac/locale/${locale}/reports.dtd"-->
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
- <head>
-  <title>&reports.oils_rpt.title;</title>
-  <!--#include virtual="oils_rpt_common.xhtml"-->
-  <script type="text/javascript">
-  <![CDATA[
-   var rptInit = function() {
-    if (oilsInitReports()) {
-     oilsRtpInitFolders();
-    }
-   }
-   dojo.addOnLoad(rptInit);
-   dojo.addOnUnload(oilsCleanupReports);
-  ]]>
-  </script>
- </head>
+	<head>
+		<title>&reports.oils_rpt.title;</title>
+		<!--#include virtual="oils_rpt_common.xhtml"-->
+		<script type="text/javascript">
+		<![CDATA[
+			var rptInit = function() {
+				if (oilsInitReports()) {
+					oilsRtpInitFolders();
+				}
+			}
+			dojo.addOnLoad(rptInit);
+			dojo.addOnUnload(oilsCleanupReports);
+		]]>
+		</script>
+	</head>
 
- <body>
-  <div class='welcome_box'>
-   <span>&reports.common.logged_in_as;</span><b><span id='oils_rpt_user'/></b>
-  </div>
+	<body>
+		<div class='welcome_box'>
+			<span>&reports.common.logged_in_as;</span><b><span id='oils_rpt_user'/></b>
+		</div>
 
-  <div id='oils_rpt_permission_denied' class='hide_me'>
-   &reports.oils_rpt.insufficient_permissions;
-  </div>
+		<div id='oils_rpt_permission_denied' class='hide_me'>
+			&reports.oils_rpt.insufficient_permissions;
+		</div>
 
-  <!--
-  <div>
-   <a class='oils_rpt_main_link' href='javascript:_l("oils_rpt_builder.xhtml");'>Build a New Report Template</a>
-  </div>
-  -->
+		<!--
+		<div>
+			<a class='oils_rpt_main_link' href='javascript:_l("oils_rpt_builder.xhtml");'>Build a New Report Template</a>
+		</div>
+		-->
 
-  <div id='oils_rpt_tree_loading'>
-   &reports.common.loading;
-  </div>
+		<div id='oils_rpt_tree_loading'>
+			&reports.common.loading;
+		</div>
 
-  <table id='oils_rpt_folder_table' class='hide_me'>
-   <tbody>
-    <tr>
-     <td id='oils_rpt_folder_table_left_td'>
-      <div class='oils_rpt_folder_tree_div'>
-       <div><b>&reports.oils_rpt.my_folders;</b></div>
-       <div id='oils_rpt_template_folder_tree' class='oils_rpt_folder_tree'/>
-       <div id='oils_rpt_report_folder_tree' class='oils_rpt_folder_tree'/>
-       <div id='oils_rpt_output_folder_tree' class='oils_rpt_folder_tree'/>
-      </div>
-      <div class='oils_rpt_folder_tree_div'>
-       <div><b>&reports.oils_rpt.shared_folders;</b></div>
-       <div id='oils_rpt_template_shared_folder_tree' class='oils_rpt_folder_tree'/>
-       <div id='oils_rpt_report_shared_folder_tree' class='oils_rpt_folder_tree'/>
-       <div id='oils_rpt_output_shared_folder_tree' class='oils_rpt_folder_tree'/>
-      </div>
-     </td>
-     <td/>
-     <td id='oils_rpt_folder_table_right_td' class='hide_me'>
-      <div class='oils_rpt_folder_window'>
+		<table id='oils_rpt_folder_table' class='hide_me'>
+			<tbody>
+				<tr>
+					<td id='oils_rpt_folder_table_left_td'>
+						<div class='oils_rpt_folder_tree_div'>
+							<div><b>&reports.oils_rpt.my_folders;</b></div>
+							<div id='oils_rpt_template_folder_tree' class='oils_rpt_folder_tree'/>
+							<div id='oils_rpt_report_folder_tree' class='oils_rpt_folder_tree'/>
+							<div id='oils_rpt_output_folder_tree' class='oils_rpt_folder_tree'/>
+						</div>
+						<div class='oils_rpt_folder_tree_div'>
+							<div><b>&reports.oils_rpt.shared_folders;</b></div>
+							<div id='oils_rpt_template_shared_folder_tree' class='oils_rpt_folder_tree'/>
+							<div id='oils_rpt_report_shared_folder_tree' class='oils_rpt_folder_tree'/>
+							<div id='oils_rpt_output_shared_folder_tree' class='oils_rpt_folder_tree'/>
+						</div>
+					</td>
+					<td/>
+					<td id='oils_rpt_folder_table_right_td' class='hide_me'>
+						<div class='oils_rpt_folder_window'>
 
-       <table class='oils_rpt_tab_table' id='oils_rpt_folder_manager_tab_table'><tbody>
-        <tr>
-         <td width='50%'>
-          <a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>&reports.oils_rpt.manage_folder_contents;</a></td>
-         <td width='50%'>
-          <a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>&reports.oils_rpt.manage_folder;</a></td>
-        </tr>
-       </tbody></table>
+							<table class='oils_rpt_tab_table' id='oils_rpt_folder_manager_tab_table'><tbody>
+								<tr>
+									<td width='50%'>
+										<a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>&reports.oils_rpt.manage_folder_contents;</a></td>
+									<td width='50%'>
+										<a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>&reports.oils_rpt.manage_folder;</a></td>
+								</tr>
+							</tbody></table>
 
-       <table id='oils_rpt_folder_details_table'>
-        <tbody>
-         <tr>
-          <td>
-           <span><b id='oils_rpt_folder_name_label'/>: 
-           &reports.oils_rpt.created_by;</span> <b id='oils_rpt_folder_creator_label'/>
-          </td>
-         </tr>
-        </tbody>
-       </table>
+							<table id='oils_rpt_folder_details_table'>
+								<tbody>
+									<tr>
+										<td>
+											<span><b id='oils_rpt_folder_name_label'/>: 
+											&reports.oils_rpt.created_by;</span> <b id='oils_rpt_folder_creator_label'/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 
-       <div>
-        <!--#include virtual="oils_rpt_folder_window.xhtml"-->
-       </div>
-       <div>
-        <!--#include virtual="oils_rpt_folder_manager.xhtml"-->
-       </div>
-      </div>
-     </td>
+							<div>
+								<!--#include virtual="oils_rpt_folder_window.xhtml"-->
+							</div>
+							<div>
+								<!--#include virtual="oils_rpt_folder_manager.xhtml"-->
+							</div>
+						</div>
+					</td>
 
-     <td id='oils_rpt_folder_table_alt_td' class='hide_me' valign='top'>
-      <div class='oils_rpt_folder_window'>
-       <!--#include virtual="oils_rpt_editor.xhtml"-->
-      </div>
+					<td id='oils_rpt_folder_table_alt_td' class='hide_me' valign='top'>
+						<div class='oils_rpt_folder_window'>
+							<!--#include virtual="oils_rpt_editor.xhtml"-->
+						</div>
 
-      <div id='oils_rpt_top_folder' class='hide_me oils_rpt_folder_window'>
-       <div>
-        <span><b>&reports.oils_rpt.create_new_sub_folder;</b>. &reports.oils_rpt.folder_type;</span> <b id='oils_rpt_top_folder_type'/>
-       </div>
-       <table class='oils_rpt_generic_table'>
-        <tbody>
-         <tr>
-          <td>&reports.oils_rpt.folder_name;</td>
-          <td><input id='oils_rpt_top_folder_name' type='text'/></td>
-         </tr>
-         <tr>
-          <td>&reports.oils_rpt.share_folder;</td>
-          <td>
-           <select id='oils_rpt_top_folder_shared'>
-            <option value='f' selected='selected'>&reports.oils_rpt.do_not_share;</option>
-            <option value='t'>&reports.oils_rpt.share;</option>
-           </select>
-          </td>
-         </tr>
-         <tr>
-          <td>&reports.oils_rpt.share_with;</td>
-          <td><select id='oils_rpt_top_folder_lib_picker'/></td>
-         </tr>
-         <tr><td colspan='2' align='center'>
-          <input type='submit' value='&reports.oils_rpt.create_sub_folder;' id='oils_rpt_top_folder_create'/>
-         </td></tr>
-        </tbody>
-       </table>
-      </div>
-     </td>
+						<div id='oils_rpt_top_folder' class='hide_me oils_rpt_folder_window'>
+							<div>
+								<span><b>&reports.oils_rpt.create_new_sub_folder;</b>. &reports.oils_rpt.folder_type;</span> <b id='oils_rpt_top_folder_type'/>
+							</div>
+							<table class='oils_rpt_generic_table'>
+								<tbody>
+									<tr>
+										<td>&reports.oils_rpt.folder_name;</td>
+										<td><input id='oils_rpt_top_folder_name' type='text'/></td>
+									</tr>
+									<tr>
+										<td>&reports.oils_rpt.share_folder;</td>
+										<td>
+											<select id='oils_rpt_top_folder_shared'>
+												<option value='f' selected='selected'>&reports.oils_rpt.do_not_share;</option>
+												<option value='t'>&reports.oils_rpt.share;</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>&reports.oils_rpt.share_with;</td>
+										<td><select id='oils_rpt_top_folder_lib_picker'/></td>
+									</tr>
+									<tr><td colspan='2' align='center'>
+										<input type='submit' value='&reports.oils_rpt.create_sub_folder;' id='oils_rpt_top_folder_create'/>
+									</td></tr>
+								</tbody>
+							</table>
+						</div>
+					</td>
 
-    </tr>
-   </tbody>
-  </table>
-  
- </body>
+				</tr>
+			</tbody>
+		</table>
+		
+	</body>
 </html>
 
 

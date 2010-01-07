@@ -1,6 +1,6 @@
-body a   { color: black; text-decoration: none;}
+body a			{ color: black; text-decoration: none;}
 body a:visited { color: black; text-decoration: none;}
-body a:hover { color: red; text-decoration: underline;}
+body a:hover	{ color: red; text-decoration: underline;}
 
 
 /* the idea is to have 4 complimentary colors that 
@@ -43,10 +43,10 @@ a:focus { background: #E0F0E0; color: #000000;}
 
 .canvas { /* main content div for each page */
     /*
- border-left: 3px solid #A7EA9D;
+	border-left: 3px solid #A7EA9D;
     border-bottom: 3px solid #A7EA9D;
- border-top: 3px solid #A7EA9D;
- */
+	border-top: 3px solid #A7EA9D;
+	*/
 }
 
 /* border around home search box */
@@ -86,7 +86,7 @@ a:focus { background: #E0F0E0; color: #000000;}
 .result_table_subtable { border-top: 1px solid #E0E0E0; }
 
 .copy_count_cell { border-right: 1px solid #E0E0E0; } 
-.copy_count_div { border-left: 2px solid #E0F6E0; border-right: 2px solid #E0F6E0; }
+.copy_count_div {	border-left: 2px solid #E0F6E0; border-right: 2px solid #E0F6E0; }
 
 #rdetail_image_cell { }
 

@@ -14,64 +14,64 @@
 -->
 
 <!DOCTYPE html PUBLIC 
- "-//W3C//DTD XHTML 1.0 Transitional//EN" 
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
- <!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/conify.dtd"-->
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <title>&conify.org_unit_type.title;</title>
+	<head>
+		<title>&conify.org_unit_type.title;</title>
 
-  <style type="text/css">
-   @import url('/js/dojo/dojo/resources/dojo.css');
-   @import url('/js/dojo/dijit/themes/tundra/tundra.css');
-   @import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
-  </style>
+		<style type="text/css">
+			@import url('/js/dojo/dojo/resources/dojo.css');
+			@import url('/js/dojo/dijit/themes/tundra/tundra.css');
+			@import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
+		</style>
 
-  <style>
-   html, body
-   {
-    height: 100%;
-    width: 100%;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-    overflow: hidden;
-   }
+		<style>
+			html, body
+			{
+				height: 100%;
+				width: 100%;
+				margin: 0px 0px 0px 0px;
+				padding: 0px 0px 0px 0px;
+				overflow: hidden;
+			}
 
-   th
-   {
-    text-align: right;
-    font-weight: bold;
-    padding-left: 20px;
-    padding-right: 5px;
-   }
-  </style>
+			th
+			{
+				text-align: right;
+				font-weight: bold;
+				padding-left: 20px;
+				padding-right: 5px;
+			}
+		</style>
 
-  <!-- The OpenSRF API writ JS -->
-  <script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
-  <script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
-  <script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
-  <script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
+		<!-- The OpenSRF API writ JS -->
+		<script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
+		<script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
 
-  <!-- Dojo goodness -->
-  <script type="text/javascript" src="../admin.js"></script>
-  <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
+		<!-- Dojo goodness -->
+		<script type="text/javascript" src="../admin.js"></script>
+		<script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
                 <script type="text/javascript" src="/js/dojo/dojo/openils_dojo.js"></script>
-  <script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
+		<script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
 
-  <script type="text/javascript" src="org_unit_type.js"></script>
+		<script type="text/javascript" src="org_unit_type.js"></script>
 
- </head>
+	</head>
 
- <body class="tundra" id='pagebody'>
+	<body class="tundra" id='pagebody'>
 
-  <div dojoType="dijit.layout.SplitContainer" orientation="horizontal" style="height: 100%">
+		<div dojoType="dijit.layout.SplitContainer" orientation="horizontal" style="height: 100%">
 
-   <div dojoType="dijit.layout.ContentPane" sizeShare="100">
-    <script type="dojo/method">
+			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
+				<script type="dojo/method">
 <![CDATA[
-     window.dirtyStore = [];
+					window.dirtyStore = [];
 
                     pCRUD.request({
                         method : 'open-ils.permacrud.search.aout.atomic',
@@ -96,7 +96,7 @@
 
                                 if (dirtyStore.length > 0) {
                                     var confirmation = confirm(
-          aout_strings.CONFIRM_UNSAVED_CHANGES
+										aout_strings.CONFIRM_UNSAVED_CHANGES
                                     );
 
                                     if (confirmation) {
@@ -111,312 +111,312 @@
                         }
                     }).send();
 ]]>
-    </script>
-    <div
-      id="type_tree"
-      label="&conify.org_unit_type.type_tree.label;"
-      query="{'_top':'true'}"
-      dojoType="dijit.Tree"
-      store="ou_type_store"
-      minSize="200"
-      jsId="type_tree"
-    >
+				</script>
+				<div
+				  id="type_tree"
+				  label="&conify.org_unit_type.type_tree.label;"
+				  query="{'_top':'true'}"
+				  dojoType="dijit.Tree"
+				  store="ou_type_store"
+				  minSize="200"
+				  jsId="type_tree"
+				>
 
-     <script type="dojo/method" event="onClick" args="item,node">
+					<script type="dojo/method" event="onClick" args="item,node">
 <![CDATA[
-      right_pane_toggler.show();
-      current_type = item;
-      current_fm_type = new aout().fromStoreItem(item);
+						right_pane_toggler.show();
+						current_type = item;
+						current_fm_type = new aout().fromStoreItem(item);
 
-      highlighter.editor_pane.green.play();
-      status_update( dojo.string.substitute( aout_strings.STATUS_EDITING, [this.store.getValue( item, 'name' )] ) );
+						highlighter.editor_pane.green.play();
+						status_update( dojo.string.substitute( aout_strings.STATUS_EDITING, [this.store.getValue( item, 'name' )] ) );
 
-      new_kid_button.disabled = false;
-      save_out_button.disabled = false;
-      delete_out_button.disabled = false;
+						new_kid_button.disabled = false;
+						save_out_button.disabled = false;
+						delete_out_button.disabled = false;
 
-      var main_settings_fields = [ 'name', 'opac_label'];
-      for ( var i in main_settings_fields ) {
-       var field = main_settings_fields[i];
-       var value = this.store.getValue( current_type, field );
+						var main_settings_fields = [ 'name', 'opac_label'];
+						for ( var i in main_settings_fields ) {
+							var field = main_settings_fields[i];
+							var value = this.store.getValue( current_type, field );
 
-       if (!value) {
-        window["editor_pane_" + field].setValue( '' ); // unset the value
-        window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
-       } else window["editor_pane_" + field].setValue( value );
-      }
+							if (!value) {
+								window["editor_pane_" + field].setValue( '' ); // unset the value
+								window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
+							} else window["editor_pane_" + field].setValue( value );
+						}
 
-      if ( this.store.getValue( current_type, '_trueRoot' ) == 'true' ) {
-       editor_pane_parent.disabled = true;
-       editor_pane_parent.setValue(null);
-       editor_pane_parent.setDisplayedValue('');
-       editor_pane_parent.validate(false);
-      } else {
-       editor_pane_parent.disabled = false;
-       editor_pane_parent.validate(true);
-       editor_pane_parent.setValue( this.store.getValue( current_type, 'parent' ) );
-      }
+						if ( this.store.getValue( current_type, '_trueRoot' ) == 'true' ) {
+							editor_pane_parent.disabled = true;
+							editor_pane_parent.setValue(null);
+							editor_pane_parent.setDisplayedValue('');
+							editor_pane_parent.validate(false);
+						} else {
+							editor_pane_parent.disabled = false;
+							editor_pane_parent.validate(true);
+							editor_pane_parent.setValue( this.store.getValue( current_type, 'parent' ) );
+						}
 
-      editor_pane_can_have_vols.setChecked( this.store.getValue( current_type, 'can_have_vols' ) == 't' ? true : false );
-      editor_pane_can_have_users.setChecked( this.store.getValue( current_type, 'can_have_users' ) == 't' ? true : false );
+						editor_pane_can_have_vols.setChecked( this.store.getValue( current_type, 'can_have_vols' ) == 't' ? true : false );
+						editor_pane_can_have_users.setChecked( this.store.getValue( current_type, 'can_have_users' ) == 't' ? true : false );
 ]]>
-     </script>
+					</script>
 
-     <script type="dojo/method" event="getLabel" args="item,pI">
-      var label = this.store.getValue(item,'name');
-      if (this.store.getValue(item,'ischanged') == 1) label = '* ' + label;
-      return label;
-     </script>
+					<script type="dojo/method" event="getLabel" args="item,pI">
+						var label = this.store.getValue(item,'name');
+						if (this.store.getValue(item,'ischanged') == 1) label = '* ' + label;
+						return label;
+					</script>
 
-    </div>
-   </div>
+				</div>
+			</div>
 
-   <div id="right_pane" dojoType="dijit.layout.ContentPane"  sizeShare="200">
-    <script type="dojo/method">
-     window.right_pane_toggler = new dojo.fx.Toggler({ node: 'right_pane'});
-     window.right_pane_toggler.hide();
-    </script>
+			<div id="right_pane" dojoType="dijit.layout.ContentPane"  sizeShare="200">
+				<script type="dojo/method">
+					window.right_pane_toggler = new dojo.fx.Toggler({ node: 'right_pane'});
+					window.right_pane_toggler.hide();
+				</script>
 
-     <div id="editor_pane" dojoType="dijit.layout.ContentPane">
-      <script type="dojo/method">
-       highlighter.type_tree = {};
-       highlighter.editor_pane = {};
-       highlighter.type_tree.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'type_tree', duration : 500 } );
-       highlighter.type_tree.red = dojox.fx.highlight( { color : '#FF2018', node : 'type_tree', duration : 500 } );
-       highlighter.editor_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'editor_pane', duration : 500 } );
-       highlighter.editor_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'editor_pane', duration : 500 } );
-      </script>
- 
-      <table class="tundra" style="margin:10px;">
-       <tr>
-        <th>&conify.org_unit_type.type_name;</th>
-        <td>
-         <span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+" required="true">
-          <script type="dojo/connect" event="onChange">
-           if (current_type) {
-            ou_type_store.setValue( current_type, "name", this.getValue() );
-           }
-          </script>
-         </span>
-         <span dojoType="openils.widget.TranslatorPopup" targetObject="current_fm_type" field="name"></span>
-        </td>
-       </tr>
-       <tr>
-        <th>&conify.org_unit_type.opac_label;</th>
-        <td>
-         <span id="editor_pane_opac_label" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_opac_label" regExp=".+" required="true">
-          <script type="dojo/connect" event="onChange">
-           if (current_type) {
-            ou_type_store.setValue( current_type, "opac_label", this.getValue() );
-           }
-          </script>
-         </span>
-         <span dojoType="openils.widget.TranslatorPopup" targetObject="current_fm_type" field="opac_label"></span>
-        </td>
-       </tr>
-       <tr>
-        <th>&conify.org_unit_type.parent_type;</th>
-        <td>
-         <div
-           id="editor_pane_parent"
-           dojoType="dijit.form.FilteringSelect"
-           jsId="editor_pane_parent"
-           store="ou_type_store"
-           searchAttr="name"
-           ignoreCase="true"
-           required="true"
-         >
-          <script type="dojo/method" event="onChange">
+					<div id="editor_pane" dojoType="dijit.layout.ContentPane">
+						<script type="dojo/method">
+							highlighter.type_tree = {};
+							highlighter.editor_pane = {};
+							highlighter.type_tree.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'type_tree', duration : 500 } );
+							highlighter.type_tree.red = dojox.fx.highlight( { color : '#FF2018', node : 'type_tree', duration : 500 } );
+							highlighter.editor_pane.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'editor_pane', duration : 500 } );
+							highlighter.editor_pane.red = dojox.fx.highlight( { color : '#FF2018', node : 'editor_pane', duration : 500 } );
+						</script>
+	
+						<table class="tundra" style="margin:10px;">
+							<tr>
+								<th>&conify.org_unit_type.type_name;</th>
+								<td>
+									<span id="editor_pane_name" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_name" regExp=".+" required="true">
+										<script type="dojo/connect" event="onChange">
+											if (current_type) {
+												ou_type_store.setValue( current_type, "name", this.getValue() );
+											}
+										</script>
+									</span>
+									<span dojoType="openils.widget.TranslatorPopup" targetObject="current_fm_type" field="name"></span>
+								</td>
+							</tr>
+							<tr>
+								<th>&conify.org_unit_type.opac_label;</th>
+								<td>
+									<span id="editor_pane_opac_label" dojoType="dijit.form.ValidationTextBox" jsId="editor_pane_opac_label" regExp=".+" required="true">
+										<script type="dojo/connect" event="onChange">
+											if (current_type) {
+												ou_type_store.setValue( current_type, "opac_label", this.getValue() );
+											}
+										</script>
+									</span>
+									<span dojoType="openils.widget.TranslatorPopup" targetObject="current_fm_type" field="opac_label"></span>
+								</td>
+							</tr>
+							<tr>
+								<th>&conify.org_unit_type.parent_type;</th>
+								<td>
+									<div
+									  id="editor_pane_parent"
+									  dojoType="dijit.form.FilteringSelect"
+									  jsId="editor_pane_parent"
+									  store="ou_type_store"
+									  searchAttr="name"
+									  ignoreCase="true"
+									  required="true"
+									>
+										<script type="dojo/method" event="onChange">
 <![CDATA[
-           if (current_type && this.getValue()) {
-            if ( this.store.getValue( current_type, 'parent' ) == this.getValue() ) return;
+											if (current_type && this.getValue()) {
+												if ( this.store.getValue( current_type, 'parent' ) == this.getValue() ) return;
 
-            this.store.setValue( current_type, "parent", this.getValue() );
-            this.store.fetch({
-             query : { "parent" : this.getValue() },
-             onItem: function (parent_item) {
-              this.setValue( current_type, 'depth', 1 + parseInt(this.getValue( parent_item, 'depth' ) ));
-             },
-             scope : ou_type_store
-            });
-           }
+												this.store.setValue( current_type, "parent", this.getValue() );
+												this.store.fetch({
+													query : { "parent" : this.getValue() },
+													onItem: function (parent_item) {
+														this.setValue( current_type, 'depth', 1 + parseInt(this.getValue( parent_item, 'depth' ) ));
+													},
+													scope : ou_type_store
+												});
+											}
 ]]>
-          </script>
-         </div>
-        </td>
-       </tr>
-       <tr>
-        <th>&conify.org_unit_type.can_have_volumes;</th>
-        <td>
-         <input
-           id="editor_pane_can_have_vols"
-           jsId="editor_pane_can_have_vols"
-           type="checkbox"
-           dojoType="dijit.form.CheckBox"
-           onChange="if (current_type) ou_type_store.setValue( current_type, 'can_have_vols', this.checked ? 't' : 'f' );"
-         />
-        </td>
-       </tr>
-       <tr>
-        <th>&conify.org_unit_type.can_have_users;</th>
-        <td>
-         <input
-           id="editor_pane_can_have_users"
-           jsId="editor_pane_can_have_users"
-           type="checkbox"
-           dojoType="dijit.form.CheckBox"
-           onChange="if (current_type) ou_type_store.setValue( current_type, 'can_have_users', this.checked ? 't' : 'f' );"
-         />
-        </td>
-       </tr>
-      </table>
- 
-      <div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
- 
-       <button jsId="save_out_button" dojoType="dijit.form.Button" label="&conify.save_button.label;" onClick="save_type()">
-        <script type="dojo/connect" event="startup">
-         this.disabled = true;
-        </script>
-       </button>
- 
-       <button jsId="delete_out_button" dojoType="dijit.form.Button" label="&conify.delete_button.label;">
-        <script type="dojo/connect" event="startup">
-         this.disabled = true;
-        </script>
-        <script type="dojo/connect" event="onClick">
+										</script>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>&conify.org_unit_type.can_have_volumes;</th>
+								<td>
+									<input
+									  id="editor_pane_can_have_vols"
+									  jsId="editor_pane_can_have_vols"
+									  type="checkbox"
+									  dojoType="dijit.form.CheckBox"
+									  onChange="if (current_type) ou_type_store.setValue( current_type, 'can_have_vols', this.checked ? 't' : 'f' );"
+									/>
+								</td>
+							</tr>
+							<tr>
+								<th>&conify.org_unit_type.can_have_users;</th>
+								<td>
+									<input
+									  id="editor_pane_can_have_users"
+									  jsId="editor_pane_can_have_users"
+									  type="checkbox"
+									  dojoType="dijit.form.CheckBox"
+									  onChange="if (current_type) ou_type_store.setValue( current_type, 'can_have_users', this.checked ? 't' : 'f' );"
+									/>
+								</td>
+							</tr>
+						</table>
+	
+						<div dojoType="dijit.layout.ContentPane" orientation="horizontal" style="margin-bottom: 20px;">
+	
+							<button jsId="save_out_button" dojoType="dijit.form.Button" label="&conify.save_button.label;" onClick="save_type()">
+								<script type="dojo/connect" event="startup">
+									this.disabled = true;
+								</script>
+							</button>
+	
+							<button jsId="delete_out_button" dojoType="dijit.form.Button" label="&conify.delete_button.label;">
+								<script type="dojo/connect" event="startup">
+									this.disabled = true;
+								</script>
+								<script type="dojo/connect" event="onClick">
 <![CDATA[
- 
-         if (ou_type_store.getValue( current_type, '_trueRoot' ) == 'true') {
-          highlighter.editor_pane.red.play();
-          status_update( dojo.string.substitute( aout_strings.ERROR_DELETING_LAST_AOUT, [ou_type_store.getValue( current_type, 'name' )] ) );
-          return false;
-         }
+	
+									if (ou_type_store.getValue( current_type, '_trueRoot' ) == 'true') {
+										highlighter.editor_pane.red.play();
+										status_update( dojo.string.substitute( aout_strings.ERROR_DELETING_LAST_AOUT, [ou_type_store.getValue( current_type, 'name' )] ) );
+										return false;
+									}
 
-         if ( current_type.children ) {
-          var kids = current_type.children;
-          if (!dojo.isArray(kids)) kids = [kids];
- 
-          var existing_kids = dojo.filter(
-           kids,
-           function(kid){ return kid.isdeleted[0] != 1 }
-          );
-          if ( existing_kids.length > 0) {
-           highlighter.editor_pane.red.play();
-           status_update( dojo.string.substitute( aout_strings.ERROR_ORPHANS, [ou_type_store.getValue( current_type, 'name' ), existing_kids.length] ) );
-           return;
-          }
-         }
- 
-         if ( confirm( dojo.string.substitute ( aout_strings.CONFIRM_DELETE, [current_type.name] ))) {
-          ou_type_store.setValue( current_type, 'isdeleted', 1 );
- 
-          var modified_aout = new aout().fromStoreItem( current_type );
-          modified_aout.isdeleted( 1 );
- 
-          pCRUD.request({
-           method : 'open-ils.permacrud.delete.aout',
-           timeout : 10,
-           params : [ ses, modified_aout ],
-           onerror : function (r) {
-            highlighter.editor_pane.red.play();
-            status_update( dojo.string.substitute ( aout_strings.ERROR_DELETING, [ou_type_store.getValue( current_type, 'name' )] ) );
-           },
-           oncomplete : function (r) {
-            var res = r.recv();
-            if ( res && res.content() ) {
- 
-             var old_name = ou_type_store.getValue( current_type, 'name' );
+									if ( current_type.children ) {
+										var kids = current_type.children;
+										if (!dojo.isArray(kids)) kids = [kids];
+	
+										var existing_kids = dojo.filter(
+											kids,
+											function(kid){ return kid.isdeleted[0] != 1 }
+										);
+										if ( existing_kids.length > 0) {
+											highlighter.editor_pane.red.play();
+											status_update( dojo.string.substitute( aout_strings.ERROR_ORPHANS, [ou_type_store.getValue( current_type, 'name' ), existing_kids.length] ) );
+											return;
+										}
+									}
+	
+									if ( confirm( dojo.string.substitute ( aout_strings.CONFIRM_DELETE, [current_type.name] ))) {
+										ou_type_store.setValue( current_type, 'isdeleted', 1 );
+	
+										var modified_aout = new aout().fromStoreItem( current_type );
+										modified_aout.isdeleted( 1 );
+	
+										pCRUD.request({
+											method : 'open-ils.permacrud.delete.aout',
+											timeout : 10,
+											params : [ ses, modified_aout ],
+											onerror : function (r) {
+												highlighter.editor_pane.red.play();
+												status_update( dojo.string.substitute ( aout_strings.ERROR_DELETING, [ou_type_store.getValue( current_type, 'name' )] ) );
+											},
+											oncomplete : function (r) {
+												var res = r.recv();
+												if ( res && res.content() ) {
+	
+													var old_name = ou_type_store.getValue( current_type, 'name' );
 
-             ou_type_store.fetch({
-              query : { id : ou_type_store.getValue( current_type, 'id' ) },
-              queryOptions : { deep : true },
-              onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-              scope : ou_type_store
-             });
- 
-             current_type = null;
- 
-             new_kid_button.disabled = true;
-             save_out_button.disabled = true;
-             delete_out_button.disabled = true;
-   
-             var main_settings_fields = [ 'name', 'opac_label' ];
-             for ( var i in main_settings_fields ) {
-              var field = main_settings_fields[i];
-              window["editor_pane_" + field].setValue( '' ); // unset the value
-              window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
-             }
+													ou_type_store.fetch({
+														query : { id : ou_type_store.getValue( current_type, 'id' ) },
+														queryOptions : { deep : true },
+														onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+														scope : ou_type_store
+													});
+	
+													current_type = null;
+	
+													new_kid_button.disabled = true;
+													save_out_button.disabled = true;
+													delete_out_button.disabled = true;
+			
+													var main_settings_fields = [ 'name', 'opac_label' ];
+													for ( var i in main_settings_fields ) {
+														var field = main_settings_fields[i];
+														window["editor_pane_" + field].setValue( '' ); // unset the value
+														window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
+													}
 
-             window["editor_pane_can_have_vols"].setChecked( false ); // unset the value
-             window["editor_pane_can_have_users"].setChecked( false ); // unset the value
-   
-             highlighter.editor_pane.green.play();
-             status_update( dojo.string.substitute( aout_strings.STATUS_DELETED, [old_name] ) );
-            } else {
-             highlighter.editor_pane.red.play();
-             status_update( dojo.string.substitute( aout_strings.ERROR_DELETING, [old_name] ) );
-            }
-           }
-          }).send();
- 
-         }
+													window["editor_pane_can_have_vols"].setChecked( false ); // unset the value
+													window["editor_pane_can_have_users"].setChecked( false ); // unset the value
+			
+													highlighter.editor_pane.green.play();
+													status_update( dojo.string.substitute( aout_strings.STATUS_DELETED, [old_name] ) );
+												} else {
+													highlighter.editor_pane.red.play();
+													status_update( dojo.string.substitute( aout_strings.ERROR_DELETING, [old_name] ) );
+												}
+											}
+										}).send();
+	
+									}
 ]]>
-        </script>
-       </button>
- 
-      </div>
- 
-      <button jsId="new_kid_button" dojoType="dijit.form.Button" label="&conify.new_kid_button.label;">
-       <script type="dojo/connect" event="startup">
-        this.disabled = true;
-       </script>
-       <script type="dojo/connect" event="onClick">
+								</script>
+							</button>
+	
+						</div>
+	
+						<button jsId="new_kid_button" dojoType="dijit.form.Button" label="&conify.new_kid_button.label;">
+							<script type="dojo/connect" event="startup">
+								this.disabled = true;
+							</script>
+							<script type="dojo/connect" event="onClick">
 <![CDATA[
-        var new_fm_obj = new aout().fromHash({
-         isnew   : 1,
-         name   : aout_strings.LABEL_NEW_TYPE,
-         can_have_vols : 'f',
-         can_have_users : 'f',
-         depth   : 1 + parseInt(ou_type_store.getValue( current_type, 'depth' )),
-         opac_label  : ou_type_store.getValue( current_type, 'opac_label' ) + ' child' + virgin_out_id--,
-         parent   : ou_type_store.getValue( current_type, 'id' )
-        });
-        var err = false;
-        pCRUD.request({
-         method : 'open-ils.permacrud.create.aout',
-         timeout : 10,
-         params : [ ses, new_fm_obj ],
-         onerror : function (r) {
-          highlighter.editor_pane.red.play();
-          status_update( aout_strings.ERROR_CALLING_METHOD_AOUT );
-          err = true;
-         },
-         oncomplete : function (r) {
-          var res = r.recv();
-          if ( res && res.content() ) {
-           ou_type_store.newItem(
-            res.content().toHash(),
-            { parent : current_type, attribute : 'children' }
-           );
-          } else {
-           highlighter.editor_pane.red.play();
-           status_update( aout_strings.ERROR_CREATING_CHILD_AOUT );
-           err = true;
-          }
-         },
-        }).send();
- 
-        if (!err) {
-         highlighter.editor_pane.green.play();
-         highlighter.type_tree.green.play();
-         status_update( dojo.string.substitute( aout_strings.SUCCESS_CREATING_CHILD_AOUT, [ou_type_store.getValue( current_type, 'name' )] ) );
-        }
+								var new_fm_obj = new aout().fromHash({
+									isnew			: 1,
+									name			: aout_strings.LABEL_NEW_TYPE,
+									can_have_vols	: 'f',
+									can_have_users	: 'f',
+									depth			: 1 + parseInt(ou_type_store.getValue( current_type, 'depth' )),
+									opac_label		: ou_type_store.getValue( current_type, 'opac_label' ) + ' child' + virgin_out_id--,
+									parent			: ou_type_store.getValue( current_type, 'id' )
+								});
+								var err = false;
+								pCRUD.request({
+									method : 'open-ils.permacrud.create.aout',
+									timeout : 10,
+									params : [ ses, new_fm_obj ],
+									onerror : function (r) {
+										highlighter.editor_pane.red.play();
+										status_update( aout_strings.ERROR_CALLING_METHOD_AOUT );
+										err = true;
+									},
+									oncomplete : function (r) {
+										var res = r.recv();
+										if ( res && res.content() ) {
+											ou_type_store.newItem(
+												res.content().toHash(),
+												{ parent : current_type, attribute : 'children' }
+											);
+										} else {
+											highlighter.editor_pane.red.play();
+											status_update( aout_strings.ERROR_CREATING_CHILD_AOUT );
+											err = true;
+										}
+									},
+								}).send();
+	
+								if (!err) {
+									highlighter.editor_pane.green.play();
+									highlighter.type_tree.green.play();
+									status_update( dojo.string.substitute( aout_strings.SUCCESS_CREATING_CHILD_AOUT, [ou_type_store.getValue( current_type, 'name' )] ) );
+								}
 ]]>
-       </script>
-      </button>
- 
-     </div>
-    </div>
-   </div>
- </body>
+							</script>
+						</button>
+	
+					</div>
+				</div>
+			</div>
+	</body>
 </html>

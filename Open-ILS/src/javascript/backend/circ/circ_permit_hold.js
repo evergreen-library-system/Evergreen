@@ -7,13 +7,13 @@ log_vars('circ_permit_hold');
 
 
 if( isTrue(patron.barred) ) 
- result.events.push('PATRON_BARRED');
+	result.events.push('PATRON_BARRED');
 
 if( isTrue(copy.ref) ) 
- result.events.push('ITEM_NOT_HOLDABLE');
+	result.events.push('ITEM_NOT_HOLDABLE');
 
 if( !isTrue(copy.circulate) ) 
- result.events.push('ITEM_NOT_HOLDABLE');
+	result.events.push('ITEM_NOT_HOLDABLE');
 
 
 var config = findGroupConfig(patronProfile);
