@@ -127,10 +127,11 @@ sub overdue_circs {
 	SQL
 
 	$sth = action::circulation->db_Main->prepare_cached($sql);
-	$sth->execute($upper_interval);
+	$sth->execute();
 
-	@circs = map { booking::reservation->construct($_) } $sth->fetchall_hash;
+    push @circs, map { booking::reservation->construct($_) } $sth->fetchall_hash;
 
+    return @circs;
 }
 
 sub complete_reshelving {
