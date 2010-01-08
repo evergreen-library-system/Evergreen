@@ -436,4 +436,39 @@ function set_default() {
     }
 }
 
+function add_volumes() {
+    try {
+        var edit = 0;
+        try {
+            edit = g.network.request(
+                api.PERM_MULTI_ORG_CHECK.app,
+                api.PERM_MULTI_ORG_CHECK.method,
+                [ 
+                    ses(), 
+                    ses('staff_id'), 
+                    [ ses('ws_ou') ],
+                    [ 'CREATE_VOLUME', 'CREATE_COPY' ]
+                ]
+            ).length == 0 ? 1 : 0;
+        } catch(E) {
+            g.error.sdump('D_ERROR','batch permission check: ' + E);
+        }
 
+        if (edit==0) {
+            alert(document.getElementById('offlineStrings').getString('staff.circ.copy_status.add_volumes.perm_failure'));
+            return; // no read-only view for this interface
+        }
+
+        var title = document.getElementById('offlineStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [docid]);
+
+        JSAN.use('util.window'); var win = new util.window();
+        var w = win.open(
+            window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+            title,
+            'chrome,resizable',
+            { 'doc_id' : docid, 'ou_ids' : [ ses('ws_ou') ] }
+        );
+    } catch(E) {
+        alert('Error in chrome/content/cat/opac.js, add_volumes(): ' + E);
+    }
+}
