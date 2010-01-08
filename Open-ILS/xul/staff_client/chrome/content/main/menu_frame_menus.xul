@@ -269,8 +269,8 @@
         <menuitem label="&staff.main.menu.booking.reservation.label;" accesskey="&staff.main.menu.booking.reservation.accesskey;" command="cmd_booking_reservation"/>
         <menuitem label="&staff.main.menu.booking.pull_list.label;" accesskey="&staff.main.menu.booking.pull_list.accesskey;" command="cmd_booking_pull_list"/>
         <menuitem label="&staff.main.menu.booking.capture.label;" accesskey="&staff.main.menu.booking.capture.accesskey;" command="cmd_booking_capture"/>
-        <!-- <menuitem label="&staff.main.menu.booking.reservation_pickup.label;" accesskey="&staff.main.menu.booking.reservation_pickup.accesskey;" command="cmd_booking_reservation_pickup"/>
-        <menuitem label="&staff.main.menu.booking.reservation_return.label;" accesskey="&staff.main.menu.booking.reservation_return.accesskey;" command="cmd_booking_reservation_return"/> -->
+         <menuitem label="&staff.main.menu.booking.reservation_pickup.label;" accesskey="&staff.main.menu.booking.reservation_pickup.accesskey;" command="cmd_booking_reservation_pickup"/>
+        <menuitem label="&staff.main.menu.booking.reservation_return.label;" accesskey="&staff.main.menu.booking.reservation_return.accesskey;" command="cmd_booking_reservation_return"/>
     </menupopup>
 </menu>
 

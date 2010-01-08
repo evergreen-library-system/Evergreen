@@ -573,6 +573,7 @@ NOTES
 
 
 sub naive_ts_string { strftime("%F %T", localtime(shift)); }
+sub naive_start_of_day { strftime("%F", localtime(shift)) . " 00:00:00"; }
 
 # Return a list of bresv or an ilsevent on failure.
 sub get_uncaptured_bresv_for_brsrc {
@@ -1000,6 +1001,147 @@ __PACKAGE__->register_method(
             {type => "array", desc => "List of reservation IDs"}
         ],
         return => { desc => "A list of canceled reservation IDs" },
+    }
+);
+
+
+sub get_captured_reservations {
+    my ($self, $client, $auth, $barcode, $which) = @_;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("VIEW_USER");
+    return $e->die_event unless $e->allowed("ADMIN_BOOKING_RESERVATION");
+
+    # fetch the patron for our uses in any case...
+    my $patron = $U->fetch_user_by_barcode($barcode);
+    return $patron if ref($patron) eq "HASH" and exists $patron->{"ilsevent"};
+
+    my $bresv_flesh = {
+        "flesh" => 1,
+        "flesh_fields" => {"bresv" => [
+            qw/target_resource_type current_resource/
+        ]}
+    };
+
+    my $dispatch = {
+        "patron" => sub {
+            return $patron;
+        },
+        "ready" => sub {
+            return $e->search_booking_reservation([
+                {
+                    "usr" => $patron->id,
+                    "capture_time" => {"!=" => undef},
+                    "pickup_time" => undef,
+                    "cancel_time" => undef
+                },
+                $bresv_flesh
+            ]) or $e->die_event;
+        },
+        "out" => sub {
+            return $e->search_booking_reservation([
+                {
+                    "usr" => $patron->id,
+                    "pickup_time" => {"!=" => undef},
+                    "return_time" => undef,
+                    "cancel_time" => undef
+                },
+                $bresv_flesh
+            ]) or $e->die_event;
+        },
+        "in" => sub {
+            return $e->search_booking_reservation([
+                {
+                    "usr" => $patron->id,
+                    "return_time" => {">=" => naive_start_of_day()},
+                    "cancel_time" => undef
+                },
+                $bresv_flesh
+            ]) or $e->die_event;
+        }
+    };
+
+    my $result = {};
+    foreach (@$which) {
+        my $f = $dispatch->{$_};
+        if ($f) {
+            my $r = &{$f}();
+            return $r if (ref($r) eq "HASH" and exists $r->{"ilsevent"});
+            $result->{$_} = $r;
+        }
+    }
+
+    return $result;
+}
+__PACKAGE__->register_method(
+    method   => "get_captured_reservations",
+    api_name => "open-ils.booking.reservations.get_captured",
+    argc     => 3,
+    signature=> {
+        params => [
+            {type => "string", desc => "Authentication token"},
+            {type => "string", desc => "Patron barcode"},
+            {type => "array", desc => "Parts wanted (patron, ready, out, in?)"}
+        ],
+        return => { desc => "A hash of parts." } # XXX describe more fully
+    }
+);
+
+
+sub get_bresv_by_returnable_resource_barcode {
+    my ($self, $client, $auth, $barcode) = @_;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("VIEW_USER");
+    return $e->die_event unless $e->allowed("ADMIN_BOOKING_RESERVATION");
+
+    my $rows = $e->json_query({
+        "select" => {"bresv" => ["id"]},
+        "from" => {
+            "bresv" => {
+                "brsrc" => {"field" => "id", "fkey" => "current_resource"}
+            }
+        },
+        "where" => {
+            "+brsrc" => {"barcode" => $barcode},
+            "-and" => {
+                "pickup_time" => {"!=" => undef},
+                "cancel_time" => undef,
+                "return_time" => undef
+            }
+        }
+    }) or return $e->die_event;
+
+    if (@$rows < 1) {
+        return $rows;
+    } else {
+        # More than one result might be possible, but we don't want to return
+        # more than one at this time.
+        my $id = $rows->[0]->{"id"};
+        return $e->retrieve_booking_reservation([
+            $id, {
+                "flesh" => 2,
+                "flesh_fields" => {
+                    "bresv" => [qw/usr target_resource_type current_resource/],
+                    "au" => ["card"]
+                }
+            }
+        ]) or $e->die_event;
+    }
+}
+
+__PACKAGE__->register_method(
+    method   => "get_bresv_by_returnable_resource_barcode",
+    api_name => "open-ils.booking.reservations.by_returnable_resource_barcode",
+    argc     => 2,
+    signature=> {
+        params => [
+            {type => "string", desc => "Authentication token"},
+            {type => "string", desc => "Resource barcode"},
+        ],
+        return => { desc => "A fleshed bresv or an ilsevent on error" }
     }
 );
 

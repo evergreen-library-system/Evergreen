@@ -103,6 +103,8 @@
         <command id="cmd_patron_other" />
         <command id="cmd_patron_alert" />
         <command id="cmd_patron_reservation" />
+        <command id="cmd_patron_reservation_pickup" />
+        <command id="cmd_patron_reservation_return" />
         <command id="cmd_patron_exit" />
         <command id="cmd_patron_retrieve" />
         <command id="cmd_patron_merge" />

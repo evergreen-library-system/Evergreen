@@ -185,17 +185,6 @@ SelectorMemory.prototype.restore = function() {
 };
 
 /*
- * Misc helper functions
- */
-function set_datagrid_empty_store(grid) {
-    grid.setStore(
-        new dojo.data.ItemFileReadStore(
-            {"data": flatten_to_dojo_data([])}
-        )
-    );
-}
-
-/*
  * These functions communicate with the middle layer.
  */
 function get_all_noncat_brt() {
@@ -409,10 +398,10 @@ function init_bresv_grid(barcode) {
         }, /* whole_obj */ true]
     );
     if (result == null) {
-        set_datagrid_empty_store(bresvGrid);
+        set_datagrid_empty_store(bresvGrid, flatten_to_dojo_data);
         alert(localeStrings.GET_BRESV_LIST_NO_RESULT);
     } else if (is_ils_error(result)) {
-        set_datagrid_empty_store(bresvGrid);
+        set_datagrid_empty_store(bresvGrid, flatten_to_dojo_data);
         if (is_ils_actor_card_error(result)) {
             alert(localeStrings.ACTOR_CARD_NOT_FOUND);
         } else {

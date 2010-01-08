@@ -318,15 +318,8 @@ sub run_method {
         $circulator->do_checkout();
 
     } elsif( $circulator->is_res_checkin ) {
-        my ($reservation, $evt) = $U->fetch_booking_reservation($self->reservation);
-        if ($evt) {
-            $self->bail_on_events($evt);
-        } else {
-            $self->reservation( $reservation );
-            $self->generate_fines(1);
-            $circulator->do_reservation_return();
-            $circulator->do_checkin();
-        }
+        $circulator->do_reservation_return();
+        $circulator->do_checkin() if ($circulator->copy());
     } elsif( $api =~ /checkin/ ) {
         $circulator->do_checkin();
 
@@ -1452,10 +1445,10 @@ sub update_reservation {
     my $target_r = $reservation->target_resource;
     my $current_r = $reservation->current_resource;
 
-    $reservation->usr($usr->id) if $usr;
-    $reservation->target_resource_type($target_rt->id) if $target_rt;
-    $reservation->target_resource($target_r->id) if $target_r;
-    $reservation->current_resource($current_r->id) if $current_r;
+    $reservation->usr($usr->id) if ref $usr;
+    $reservation->target_resource_type($target_rt->id) if ref $target_rt;
+    $reservation->target_resource($target_r->id) if ref $target_r;
+    $reservation->current_resource($current_r->id) if ref $current_r;
 
     return $self->bail_on_events($self->editor->event)
         unless $self->editor->update_booking_reservation($self->reservation);
@@ -1789,6 +1782,7 @@ sub do_reservation_return {
     return $self->bail_on_events($evt) if $evt;
 
     $self->reservation( $reservation );
+    $self->generate_fines(1);
     $self->reservation->return_time('now');
     $self->update_reservation();
 

@@ -24,11 +24,12 @@ label.bra {
     font-style: italic;
     padding-right: 12px;
 }
-h1.booking, h2.booking {
+h1.booking, h2.booking, h3.booking {
     margin: 0;
     padding-top: 0;
     padding-bottom: 8px;
 }
+h1.booking { font-size: 16pt; font-weight: bold; }
 select#brsrc_list {
     width: 90%;
 }
@@ -81,3 +82,8 @@ ul { list-style-type: square; }
     margin-bottom: 4px; margin-top: 4px;
 }
 span#result_display { margin-left: 12px; }
+div#contains_misc_controls { text-align:right; }
+div#patron_info { font-size: 12pt; font-weight: bold; }
+div#no_ready_bresv, div#no_out_bresv, div#no_in_bresv {
+    font-style: italic;
+}

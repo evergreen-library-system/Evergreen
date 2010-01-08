@@ -62,3 +62,10 @@ function my_ils_error(leader, e) {
     }
     return s;
 }
+function set_datagrid_empty_store(grid, flattener) {
+    grid.setStore(
+        new dojo.data.ItemFileReadStore(
+            {"data": flattener([])}
+        )
+    );
+}

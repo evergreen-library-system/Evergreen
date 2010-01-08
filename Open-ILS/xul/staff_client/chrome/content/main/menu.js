@@ -748,7 +748,7 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() {
                     obj.set_tab(
-                        "/eg/booking/reservation_pickup",
+                        "/eg/booking/pickup",
                         {
                             "tab_name": offlineStrings.getString(
                                 "menu.cmd_booking_reservation_pickup.tab"
@@ -763,7 +763,7 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() {
                     obj.set_tab(
-                        "/eg/booking/reservation_return",
+                        "/eg/booking/return",
                         {
                             "tab_name": offlineStrings.getString(
                                 "menu.cmd_booking_reservation_return.tab"
