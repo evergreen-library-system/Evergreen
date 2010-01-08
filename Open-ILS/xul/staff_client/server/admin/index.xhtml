@@ -9,6 +9,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>&staff.server.admin.index.title;</title>
+        <script type="text/javascript" src="/js/dojo/dojo/dojo.js"
+            djConfig="parseOnLoad: true, isDebug:false"></script>
         <script>
             function _l(l,p) { 
                 var url = l + location.search;
@@ -20,12 +22,19 @@
                 location.href = url;
             }
             function getBuildId() { return location.href.match(/\/xul\/(.+?)\/server\//)[1]; }
+
+            function my_init() {
+                try {
+                    dojo.require("dojo.cookie");
+                    window.xulG.auth = {"session": {"key": dojo.cookie("ses")}};
+                } catch(E) { /* XXX ignorable except for booking links */ }
+            }
         </script>
         <style type='text/css'>
             body { background-color: white; }
         </style>
     </head>
-    <body>
+    <body onload="my_init();">
         <center>
             <div style='height: 40px; margin-top: 20px; font-weight: bold; font-size: 14pt;'>
                 &staff.server.admin.index.title;
@@ -38,9 +47,10 @@
             <table width='100%'>
                 <thead>
                     <tr>
-                        <th width='30%'>&staff.server.admin.index.workstation_configuration;</th>
-                        <th width='30%'>&staff.server.admin.index.library_configuration;</th>
-                        <th width='30%'>&staff.server.admin.index.maintenance_reports;</th>
+                        <th width='25%'>&staff.server.admin.index.workstation_configuration;</th>
+                        <th width='25%'>&staff.server.admin.index.library_configuration;</th>
+                        <th width='25%'>&staff.server.admin.index.maintenance_reports;</th>
+                        <th width='25%'>&staff.server.admin.index.booking;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,6 +93,22 @@
                             </div>
                             <div style='padding: 8px;'>
                                 <a href='javascript:window.xulG.new_tab("/xul/server/admin/transit_list.xul",{"tab_name":"&staff.server.admin.index.transits;"},{});'>&staff.server.admin.index.transit_list;</a>
+                            </div>
+                        </td><td>
+                            <div style='padding: 8px;'>
+                                <a href='javascript:window.xulG.new_tab("/eg/booking/reservation",{"tab_name":"&staff.server.admin.index.booking.reservation;","browser":false},window.xulG);'>&staff.server.admin.index.booking.reservation;</a> <span style="color: red">&staff.server.admin.index.testing;</span>
+                            </div>
+                            <div style='padding: 8px;'>
+                                <a href='javascript:window.xulG.new_tab("/eg/booking/pull_list",{"tab_name":"&staff.server.admin.index.booking.pull_list;","browser":false},window.xulG);'>&staff.server.admin.index.booking.pull_list;</a> <span style="color: red">&staff.server.admin.index.testing;</span>
+                            </div>
+                            <div style='padding: 8px;'>
+                                <a href='javascript:window.xulG.new_tab("/eg/booking/capture",{"tab_name":"&staff.server.admin.index.booking.capture;","browser":false},window.xulG);'>&staff.server.admin.index.booking.capture;</a> <span style="color: red">&staff.server.admin.index.testing;</span>
+                            </div>
+                            <div style='padding: 8px;'>
+                                <a href='javascript:window.xulG.new_tab("/eg/booking/pickup",{"tab_name":"&staff.server.admin.index.booking.pickup;","browser":false},window.xulG);'>&staff.server.admin.index.booking.pickup;</a> <span style="color: red">&staff.server.admin.index.testing;</span>
+                            </div>
+                            <div style='padding: 8px;'>
+                                <a href='javascript:window.xulG.new_tab("/eg/booking/return",{"tab_name":"&staff.server.admin.index.booking.return;","browser":false},window.xulG);'>&staff.server.admin.index.booking.return;</a> <span style="color: red">&staff.server.admin.index.testing;</span>
                             </div>
                         </td>
                     </tr>

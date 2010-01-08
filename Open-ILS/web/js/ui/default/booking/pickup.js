@@ -4,6 +4,22 @@ var localeStrings = dojo.i18n.getLocalization(
 );
 var p;
 
+function react_to_pass_in(opts) {
+    if (opts && opts.patron_barcode) {
+        p.populate({"patron": opts.patron_barcode});
+
+        hide_dom_element(
+            document.getElementById("contains_barcode_control")
+        );
+        document.getElementById("patron_barcode").value = opts.patron_barcode;
+        p._extra_resetting = function() {
+            reveal_dom_element(
+                document.getElementById("contains_barcode_control")
+            );
+        };
+    }
+}
+
 function my_init() {
     p = new Populator({
         "ready": ready_bresv,
@@ -12,13 +28,5 @@ function my_init() {
     }, document.getElementById("patron_barcode"));
     init_auto_l10n(document.getElementById("auto_l10n_start_here"));
 
-    /* The following would be for pass-in from the patron interface, but
-     * doesn't yet work/is cheap and needs improved anyway. */
-//    try {
-//        document.getElementById("patron_barcode").value =
-//            xulG.bresv_interface_opts.patron_barcode;
-//        document.getElementById("lookup").submit();
-//    } catch (E) {
-//        ;
-//    }
+    react_to_pass_in(xulG.bresv_interface_opts);
 }

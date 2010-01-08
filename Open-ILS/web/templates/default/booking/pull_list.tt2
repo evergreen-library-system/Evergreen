@@ -39,11 +39,12 @@
             <tbody id="the_table_body">
             </tbody>
         </table>
+        <div id="print_holder" class="nice_vertical_padding">
+            <!-- XXX Print button probably won't stay right here -->
+            <input type="button" class="AUTO_ATTR_VALUE_print"
+                onclick="window.print();" /><!-- XXX too simplistic? -->
+        </div>
     </div>
-    <div id="print_holder" class="nice_vertical_padding">
-        <!-- XXX Print button probably won't stay right here -->
-        <input type="button" class="AUTO_ATTR_VALUE_print"
-            onclick="window.print();" /><!-- XXX too simplistic? -->
-    </div>
+    <div id="no_results" class="AUTO_no_results"></div>
 </div>
 [% END %]

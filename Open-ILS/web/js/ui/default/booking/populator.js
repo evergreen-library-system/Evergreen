@@ -200,8 +200,8 @@ Populator.prototype.populate = function(barcode, which) {
 };
 Populator.prototype.toggle_anyness = function(any, which) {
     var widget = this.widgets[which].domNode;
-    var empty_alternate = document.getElementById("no_" + widget.id); 
-    var controls = document.getElementById("controls_" + widget.id); 
+    var empty_alternate = document.getElementById("no_" + widget.id);
+    var controls = document.getElementById("controls_" + widget.id);
     if (any) {
         reveal_dom_element(widget);
         if (empty_alternate) hide_dom_element(empty_alternate);
@@ -267,6 +267,10 @@ Populator.prototype.reset = function() {
         this.hide_container(this.widgets[k]);
     }
     this.patron_barcode = undefined;
+
+    if (typeof(this._extra_resetting) == "function")
+        this._extra_resetting();
+
     if (this.primary_input) {
         this.primary_input.value = "";
         this.primary_input.focus();

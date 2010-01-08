@@ -175,18 +175,29 @@ function populate_pull_list(form) {
         return;
     }
 
-    /* Step 2: render the table with the pull list */
-    render_pull_list_fundamentals(results);
+    if (results.length) {
+        reveal_dom_element(document.getElementById("table_goes_here"));
+        hide_dom_element(document.getElementById("no_results"));
 
-    /* Step 3: asynchronously fill in the copy details we're missing */
-    setTimeout(function() {
-        var acp_cache = {};
-        if ((acp_cache = get_all_relevant_acp(results)))
-            fill_in_pull_list_details(results, acp_cache);
-    }, 0);
+        /* Step 2: render the table with the pull list */
+        render_pull_list_fundamentals(results);
+
+        /* Step 3: asynchronously fill in the copy details we're missing */
+        setTimeout(function() {
+            var acp_cache = {};
+            if ((acp_cache = get_all_relevant_acp(results)))
+                fill_in_pull_list_details(results, acp_cache);
+        }, 0);
+    } else {
+        hide_dom_element(document.getElementById("table_goes_here"));
+        reveal_dom_element(document.getElementById("no_results"));
+    }
+
 }
 
 function my_init() {
+    hide_dom_element(document.getElementById("table_goes_here"));
+    hide_dom_element(document.getElementById("no_results"));
     init_owning_lib_selector();
     init_auto_l10n(document.getElementById("auto_l10n_start_here"));
 }
