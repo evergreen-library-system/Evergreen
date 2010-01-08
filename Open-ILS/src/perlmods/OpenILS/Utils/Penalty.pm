@@ -54,7 +54,7 @@ sub calculate_penalties {
             $ses->request(
                 'open-ils.trigger.event.autocreate',
                 'penalty.' . $csp_obj->name,
-                $user,
+                $pen,
                 $pen->org_unit
             );
         }
