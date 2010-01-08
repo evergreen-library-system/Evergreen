@@ -19,9 +19,6 @@ function my_init() {
         JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
         XML_HTTP_SERVER = g.data.server_unadorned;
 
-        //JSAN.addRepository('http://' + g.data.server_unadorned + '/xul/server/');
-        //JSAN._loadJSFromUrl('http://' + g.data.server_unadorned + '/xul/server/cat/util.js');
-
         JSAN.use('util.network'); g.network = new util.network();
 
         g.cgi = new CGI();
@@ -76,15 +73,96 @@ function set_marc_edit() {
     var b =    {};
     var c =    {
             'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
-            /* // FIXME - disable this until we find a good way of pulling remote JSAN libraries into chrome
             'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
                 try {
-                    JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
+                    var cat = { util: {} }; /* FIXME: kludge since we can't load remote JSAN libraries into chrome */
+                    cat.util.spawn_copy_editor = function(params) {
+                        try {
+                            if (!params.copy_ids && !params.copies) return;
+                            if (params.copy_ids && params.copy_ids.length == 0) return;
+                            if (params.copies && params.copies.length == 0) return;
+                            if (params.copy_ids) params.copy_ids = js2JSON(params.copy_ids); // legacy
+                            if (!params.caller_handles_update) params.handle_update = 1; // legacy
+
+                            var obj = {};
+                            JSAN.use('util.network'); obj.network = new util.network();
+                            JSAN.use('util.error'); obj.error = new util.error();
+                        
+                            var title = '';
+                            if (params.copy_ids && params.copy_ids.length > 1 && params.edit == 1)
+                                title = $("offlineStrings").getString('staff.cat.util.copy_editor.batch_edit');
+                            else if(params.copies && params.copies.length > 1 && params.edit == 1)
+                                title = $("offlineStrings").getString('staff.cat.util.copy_editor.batch_view');
+                            else if(params.copy_ids && params.copy_ids.length == 1)
+                                title = $("offlineStrings").getString('staff.cat.util.copy_editor.edit');
+                            else
+                                title = $("offlineStrings").getString('staff.cat.util.copy_editor.view');
+
+                            JSAN.use('util.window'); var win = new util.window();
+                            var my_xulG = win.open(
+                                (urls.XUL_COPY_EDITOR),
+                                title,
+                                'chrome,modal,resizable',
+                                params
+                            );
+                            if (!my_xulG.copies && params.edit) {
+                            } else {
+                                return my_xulG.copies;
+                            }
+                            return [];
+                        } catch(E) {
+                            JSAN.use('util.error'); var error = new util.error();
+                            error.standard_unexpected_error_alert('Error in chrome/content/cat/opac.js, cat.util.spawn_copy_editor',E);
+                        }
+                    }
+                    cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
+                        var error;
+                        try {
+
+                            JSAN.use('util.error'); error = new util.error();
+                            JSAN.use('util.network'); var network = new util.network();
+
+                            var acn_id = network.simple_request(
+                                'FM_ACN_FIND_OR_CREATE',
+                                [ ses(), cn_label, doc_id, ses('ws_ou') ]
+                            );
+
+                            if (typeof acn_id.ilsevent != 'undefined') {
+                                error.standard_unexpected_error_alert('Error in chrome/content/cat/opac.js, cat.util.fast_item_add', acn_id);
+                                return;
+                            }
+
+                            var copy_obj = new acp();
+                            copy_obj.id( -1 );
+                            copy_obj.isnew('1');
+                            copy_obj.barcode( cp_barcode );
+                            copy_obj.call_number( acn_id );
+                            copy_obj.circ_lib( ses('ws_ou') );
+                            /* FIXME -- use constants */
+                            copy_obj.deposit(0);
+                            copy_obj.price(0);
+                            copy_obj.deposit_amount(0);
+                            copy_obj.fine_level(2);
+                            copy_obj.loan_duration(2);
+                            copy_obj.location(1);
+                            copy_obj.status(0);
+                            copy_obj.circulate(get_db_true());
+                            copy_obj.holdable(get_db_true());
+                            copy_obj.opac_visible(get_db_true());
+                            copy_obj.ref(get_db_false());
+
+                            JSAN.use('util.window'); var win = new util.window();
+                            return cat.util.spawn_copy_editor( { 'handle_update' : 1, 'edit' : 1, 'docid' : doc_id, 'copies' : [ copy_obj ] });
+
+                        } catch(E) {
+                            if (error) error.standard_unexpected_error_alert('Error in chrome/content/cat/opac.js, cat.util.fast_item_add #2',E); else alert('FIXME: ' + E);
+                        }
+                    }
+                    return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
                 } catch(E) {
-                    alert(E);
+                    alert('Error in chrome/content/cat/opac.js, set_marc_edit, fast_item_add: ' + E);
                 }
             },
-            */
             'save' : {
                 'label' : document.getElementById('offlineStrings').getString('cat.save_record'),
                 'func' : function (new_marcxml) {
@@ -96,7 +174,6 @@ function set_marc_edit() {
                         if (typeof r.ilsevent != 'undefined') {
                             throw(r);
                         } else {
-                            alert(document.getElementById('offlineStrings').getString("cat.save.success"));
                             return {
                                 'id' : r.id(),
                                 'oncomplete' : function() {}
