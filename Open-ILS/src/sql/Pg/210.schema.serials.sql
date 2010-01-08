@@ -24,6 +24,8 @@ CREATE INDEX serial_record_entry_creator_idx ON serial.record_entry ( creator );
 CREATE INDEX serial_record_entry_editor_idx ON serial.record_entry ( editor );
 CREATE INDEX serial_record_entry_owning_lib_idx ON serial.record_entry ( owning_lib, deleted );
 
+CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD UPDATE serial.record_entry SET deleted = true WHERE old.id = serial.record_entry.id;
+
 CREATE TABLE serial.subscription (
 	id		SERIAL	PRIMARY KEY,
 	callnumber	BIGINT	REFERENCES asset.call_number (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
