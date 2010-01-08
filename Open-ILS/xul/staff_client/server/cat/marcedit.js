@@ -1306,6 +1306,7 @@ function fastItemAdd_attempt(doc_id) {
         if (!document.getElementById('fastItemAdd_callnumber').value) { return; }
         if (!document.getElementById('fastItemAdd_barcode').value) { return; }
         window.xulG.fast_add_item( doc_id, document.getElementById('fastItemAdd_callnumber').value, document.getElementById('fastItemAdd_barcode').value );
+        document.getElementById('fastItemAdd_barcode').value = '';
     } catch(E) {
         alert('fastItemAdd_attempt: ' + E);
     }
