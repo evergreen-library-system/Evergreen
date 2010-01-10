@@ -92,7 +92,9 @@ while ($rec = load_MARC_rec) {
         ($htag = $cap->tag) =~ s/^85/86/;
         @holdings = $rec->holdings($htag, $cap->subfield('8'));
 
-        ok(scalar @holdings, "holdings defined " . $cap->subfield('8'));
+        if (!ok(scalar @holdings, "holdings defined " . $cap->subfield('8'))) {
+            next;
+        }
 
         foreach my $field (@holdings) {
           TODO: {
