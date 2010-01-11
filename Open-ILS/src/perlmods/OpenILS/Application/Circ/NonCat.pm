@@ -3,6 +3,9 @@ use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use Data::Dumper;
+use DateTime;
+use DateTime::Format::ISO8601;
+use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
@@ -11,6 +14,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 $Data::Dumper::Indent = 0;
 
 my $U = "OpenILS::Application::AppUtils";
+my $_dt_parser = DateTime::Format::ISO8601->new;
 
 
 # returns ( $newid, $evt ).  If $evt, then there was an error
@@ -34,6 +38,7 @@ sub create_non_cat_circ {
 		$evt = $editor->event unless
 			$circ = $editor->create_action_non_cataloged_circulation( $circ )
 
+
 	} else {
 		$id = $U->simplereq(
 			'open-ils.storage',
@@ -41,6 +46,11 @@ sub create_non_cat_circ {
 		$evt = $U->DB_UPDATE_FAILED($circ) unless $id;
 		$circ->id($id);
 	}
+
+    if($circ) {
+        my $e = ($editor) ? $editor : new_editor();
+        $circ = noncat_due_date($e, $circ);
+    }
 
 	return( $circ, $evt );
 }
@@ -145,16 +155,40 @@ __PACKAGE__->register_method(
 	/
 );
 
+
 sub fetch_noncat {
 	my( $self, $conn, $auth, $circid ) = @_;
-	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+	my $e = new_editor( authtoken => $auth );
 	return $e->event unless $e->checkauth;
 	my $c = $e->retrieve_action_non_cataloged_circulation($circid)
 		or return $e->event;
 	if( $c->patron ne $e->requestor->id ) {
 		return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
 	}
-	return $c;
+    return noncat_due_date($e, $c);
+}
+
+sub noncat_due_date {
+    my($e, $circ) = @_;
+
+	my $otype = $e->retrieve_config_non_cataloged_type($circ->item_type) 
+		or return $e->die_event;
+
+	my $duedate = $_dt_parser->parse_datetime( clense_ISO8601($circ->circ_time) );
+	$duedate = $duedate
+		->add( seconds => interval_to_seconds($otype->circ_duration) )
+		->strftime('%FT%T%z');
+
+	my $offset = $U->storagereq(
+		'open-ils.storage.actor.org_unit.closed_date.overlap',
+		$circ->circ_lib,
+		$duedate
+	);
+
+	$duedate = $offset->{end} if ($offset);
+	$circ->duedate($duedate);
+
+	return $circ;
 }
 
 
