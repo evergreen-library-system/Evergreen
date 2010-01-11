@@ -26,13 +26,12 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($max_uri, $max_cn, $auth, $mfhd, $config, $quiet) =
-	(0, 0, 0, 0, '/openils/conf/opensrf_core.xml');
+my ($max_uri, $max_cn, $auth, $config, $quiet) =
+	(0, 0, 0, '/openils/conf/opensrf_core.xml');
 
 GetOptions(
 	'config=s'	=> \$config,
 	'authority'	=> \$auth,
-	'serial'	=> \$mfhd,
 	'quiet'		=> \$quiet,
 	'max_uri=i'	=> \$max_uri,	
 	'max_cn=i'	=> \$max_cn,	
@@ -53,7 +52,6 @@ OpenILS::Application::Ingest->use;
 
 my $meth = 'open-ils.ingest.full.biblio.object.readonly';
 $meth = 'open-ils.ingest.full.authority.object.readonly' if ($auth);
-$meth = 'open-ils.ingest.full.serial.object.readonly' if ($mfhd);
 
 $meth = OpenILS::Application::Ingest->method_lookup( $meth );
 
@@ -91,7 +89,7 @@ sub postprocess {
 	my $bib = $data->{bib};
 	my $full_rec = $data->{ingest_data}->{full_rec};
 
-	if (!$auth && !$mfhd) {
+	if (!$auth) {
 		$field_entries = $data->{ingest_data}->{field_entries};
 		$fp = $data->{ingest_data}->{fingerprint};
 		$rd = $data->{ingest_data}->{descriptor};
@@ -102,7 +100,7 @@ sub postprocess {
 	}
 
 	print( OpenSRF::Utils::JSON->perl2JSON($bib)."\n" );
-	if (!$auth && !$mfhd) {
+	if (!$auth) {
 		print( OpenSRF::Utils::JSON->perl2JSON($rd)."\n" );
 		print( OpenSRF::Utils::JSON->perl2JSON($_)."\n" ) for (@$field_entries);
 		for my $u (@$uri) {
