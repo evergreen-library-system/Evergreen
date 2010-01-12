@@ -22,7 +22,7 @@ my ($config, $delim, $after,$deleted) = ('SYSCONFDIR/opensrf_core.xml', ' | ');
 
 GetOptions(
 	"after=s"	=> \$after,
-	"boostrap=s"	=> \$config,
+	"bootstrap=s"	=> \$config,
 	"delimiter=s"	=> \$delim,
 	"include-deleted"	=> \$deleted,
 );
@@ -66,6 +66,6 @@ SQL
 
 for my $id ( @$ids ) {
     my $row = $dbh->selectrow_hashref( $SQL, {}, $id );
-    print "$$row{deleted}$delim$$row{id}$delim$$row{tnc_source}$delim$$row{tcn_value}$delim$$row{marc}\n";
+    print "$$row{deleted}$delim$$row{id}$delim$$row{tcn_source}$delim$$row{tcn_value}$delim$$row{marc}\n";
 }
 
