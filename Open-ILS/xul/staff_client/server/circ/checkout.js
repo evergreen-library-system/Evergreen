@@ -289,25 +289,25 @@ circ.checkout.prototype = {
 		var obj = this;
 		try {
 			obj.patron = obj.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),obj.patron_id]);
-            var params = { 
-                'patron' : obj.patron, 
-                'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
-                'staff' : obj.data.list.au[0],
-                'template' : 'checkout',
-                'callback' : function() {
-                    setTimeout(
-                        function(){
-                            if (typeof f == 'function') { 
-                                setTimeout( 
-                                    function() {
-                                        f();
-                                    }, 1000
-                                );
-                            } 
-                        }, 1000
-                    );
-                }
-            };
+			var params = { 
+				'patron' : obj.patron, 
+				'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+				'staff' : obj.data.list.au[0],
+				'template' : 'checkout',
+				'callback' : function() {
+					setTimeout(
+						function(){
+							if (typeof f == 'function') { 
+								setTimeout( 
+									function() {
+										f();
+									}, 1000
+								);
+							} 
+						}, 1000
+					);
+				}
+			};
 			if (silent) { params.no_prompt = true; }
 			obj.list.print(params);
 		} catch(E) {
@@ -378,16 +378,7 @@ circ.checkout.prototype = {
 								checkout.payload.circ.circ_lib( checkout.payload.noncat_circ.circ_lib() );
 								checkout.payload.circ.circ_staff( checkout.payload.noncat_circ.staff() );
 								checkout.payload.circ.usr( checkout.payload.noncat_circ.patron() );
-						
-								JSAN.use('util.date');
-								var c = checkout.payload.noncat_circ.circ_time();
-								var d = c == "now" ? new Date() : util.date.db_date2Date( c );
-								var t =obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ];
-								var cd = t.circ_duration() || "14 days";
-								var i = util.date.interval_to_seconds( cd ) * 1000;
-								d.setTime( Date.parse(d) + i );
-								checkout.payload.circ.due_date( util.date.formatted_date(d,'%F') );
-			
+								checkout.payload.circ.due_date( checkout.payload.noncat_circ.duedate() );
 							}
 						}
 	
@@ -465,7 +456,7 @@ circ.checkout.prototype = {
 			}
 			document.getElementById('msg_area').appendChild(x);
 
-            /*
+			/*
 			obj.network.request(
 				api.CHECKOUT.app,
 				api.CHECKOUT.method,
@@ -474,12 +465,12 @@ circ.checkout.prototype = {
 					_checkout_callback(req,x);
 				}
 			);
-            */
+			*/
 			
 			if (typeof params.noncat == 'undefined') { obj.items_out_count++; }
-           
-           /* new */
-            _checkout_callback({ 'getResultObject' : function() { return permit; } },x);
+		   
+		   /* new */
+			_checkout_callback({ 'getResultObject' : function() { return permit; } },x);
 
 		} catch(E) {
 			x.setAttribute('style','color: red');
@@ -558,12 +549,12 @@ circ.checkout.prototype = {
 				{
 					'title' : document.getElementById('circStrings').getString('staff.circ.checkout.override.confirm'),
 					'overridable_events' : [ 
-                        null /* custom event */,
+						null /* custom event */,
 						1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 						1213 /* PATRON_BARRED */,
 						1215 /* CIRC_EXCEEDS_COPY_RANGE */,
-                        1232 /* ITEM_DEPOSIT_REQUIRED */,
-                        1233 /* ITEM_RENTAL_FEE_REQUIRED */,
+						1232 /* ITEM_DEPOSIT_REQUIRED */,
+						1233 /* ITEM_RENTAL_FEE_REQUIRED */,
 						7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
 						7003 /* COPY_CIRC_NOT_ALLOWED */,
 						7004 /* COPY_NOT_AVAILABLE */, 
@@ -573,12 +564,12 @@ circ.checkout.prototype = {
 						7013 /* PATRON_EXCEEDS_FINES */
 					],
 					'text' : {
-                        '1232' : function(r) {
-                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_deposit_required.warning');
-                        },
-                        '1233' : function(r) {
-                            return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_rental_fee_required.warning');
-                        },
+						'1232' : function(r) {
+							return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_deposit_required.warning');
+						},
+						'1233' : function(r) {
+							return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_rental_fee_required.warning');
+						},
 						'7004' : function(r) {
 							return r.payload.status().name();
 						},
@@ -654,7 +645,7 @@ circ.checkout.prototype = {
 						}
 					}
 
-                    return;
+					return;
 				}
 
 				var test_permit;
