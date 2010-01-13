@@ -2303,6 +2303,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             'route_to' : '',
             'route_to_msg' : '',
             'route_to_org_fullname' : '',
+            'courier_code' : '',
             'street1' : '',
             'street2' : '',
             'city_state_zip' : '',
@@ -2607,6 +2608,10 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             print_data.route_to_org = lib;
             print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.destination', [check.route_to]);
             print_data.route_to_org_fullname = lib.name();
+            var aous_req = network.simple_request('FM_AOUS_SPECIFIC_RETRIEVE',[ lib.id(), 'lib.courier_code', ses() ]);
+            if (aous_req) {
+                print_data.courier_code = aous_req.value || '';
+            }
             msg += print_data.route_to_msg;
             msg += '\n\n';
             msg += lib.name();

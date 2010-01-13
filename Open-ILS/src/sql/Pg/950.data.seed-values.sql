@@ -1833,8 +1833,12 @@ INSERT into config.org_unit_setting_type
 ( 'ui.admin.patron_log.max_entries',
     oils_i18n_gettext('ui.admin.patron_log.max_entries', 'GUI: Work Log: Maximum Patrons Logged', 'coust', 'label'),
     oils_i18n_gettext('ui.admin.patron_log.max_entries', 'Maximum entries for "Most Recently Affected Patrons..." section of the Work Log interface.', 'coust', 'description'),
-  'interval' )
+  'interval' ),
 
+( 'lib.courier_code',
+    oils_i18n_gettext('lib.courier_code', 'Courier Code', 'coust', 'label'),
+    oils_i18n_gettext('lib.courier_code', 'Courier Code for the library.  Available in transit slip templates as the %courier_code% macro.', 'coust', 'description'),
+    'string')
 ;
 
 -- Org_unit_setting_type(s) that need an fm_class:

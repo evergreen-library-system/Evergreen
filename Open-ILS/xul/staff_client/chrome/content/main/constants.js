@@ -136,6 +136,7 @@ const api = {
     'FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.actor.org_unit.retrieve_by_title', 'secure' : false },
     'FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.actor.org_unit.retrieve_by_title.authoritative', 'secure' : false },
     'FM_AOUS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit_setting.values.ranged.retrieve' },
+    'FM_AOUS_SPECIFIC_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.ou_setting.ancestor_default' },
     'FM_AOUT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_types.retrieve', 'secure' : false },
     'FM_ASC_BATCH_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.asset.retrieve.batch', 'secure' : false },
     'FM_ASC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.asset.retrieve.all', 'secure' : false },
