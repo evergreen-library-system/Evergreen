@@ -1318,7 +1318,7 @@ sub reservation_targeter {
 
 				$prox_list =
                     map  { $_->[1] }
-                    sort { $a->[0] <> $b->[0] }
+                    sort { $a->[0] <=> $b->[0] }
                     map  {
                         [   actor::org_unit_proximity->search_where(
                                 { from_org => $bresv->pickup_lib.'', to_org => $_=>owner.'' }
