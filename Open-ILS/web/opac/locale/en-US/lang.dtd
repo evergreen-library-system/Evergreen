@@ -262,6 +262,8 @@
 <!ENTITY staff.cat.opac.delete_record.label "Delete Record">
 <!ENTITY staff.cat.opac.undelete_record.accesskey "U">
 <!ENTITY staff.cat.opac.undelete_record.label "Undelete Record">
+<!ENTITY staff.cat.opac.create_brt_from_record.accesskey "T">
+<!ENTITY staff.cat.opac.create_brt_from_record.label "Make Item Bookable">
 <!ENTITY staff.cat.opac.menu.accesskey "A">
 <!ENTITY staff.cat.opac.menu.label "Actions for this Record">
 <!ENTITY staff.cat.opac.opac_view.accesskey "O">
@@ -635,6 +637,18 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
 
+<!ENTITY staff.main.menu.admin.server_admin.booking.label "Booking">
+<!ENTITY staff.main.menu.admin.server_admin.booking.accesskey "B">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource.label "Resources">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource.accesskey "R">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource_type.label "Resource Types">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource_type.accesskey "T">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr.label "Resource Attributes">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr.accesskey "A">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_value.label "Resource Attribute Values">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_value.accesskey "V">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_map.label "Resource Attribute Maps">
+<!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey "M">
 
 <!ENTITY staff.main.menu.admin.developer.label "For developers...">
 <!ENTITY staff.main.menu.admin.download_patrons.accesskey "D">
@@ -715,6 +729,19 @@
 <!ENTITY staff.main.menu.acq.brief_record.label "New Brief Record">
 <!ENTITY staff.main.menu.acq.upload.label "Load Order Record">
 <!ENTITY staff.main.menu.acq.po.label "Purchase Orders">
+
+<!ENTITY staff.main.menu.booking.label "Booking">
+<!ENTITY staff.main.menu.booking.accesskey "B">
+<!ENTITY staff.main.menu.booking.reservation.label "Create or Edit Reservations">
+<!ENTITY staff.main.menu.booking.reservation.accesskey "C">
+<!ENTITY staff.main.menu.booking.pull_list.label "Pull List">
+<!ENTITY staff.main.menu.booking.pull_list.accesskey "L">
+<!ENTITY staff.main.menu.booking.capture.label "Capture Resources">
+<!ENTITY staff.main.menu.booking.capture.accesskey "A">
+<!ENTITY staff.main.menu.booking.reservation_pickup.label "Pick Up Reservations">
+<!ENTITY staff.main.menu.booking.reservation_pickup.accesskey "P">
+<!ENTITY staff.main.menu.booking.reservation_return.label "Return Reservations">
+<!ENTITY staff.main.menu.booking.reservation_return.accesskey "R">
 
 <!ENTITY staff.main.menu.acq.fund.label "Funds">
 <!ENTITY staff.main.menu.acq.funding_source.label "Funding Sources">
@@ -1236,6 +1263,8 @@
 <!ENTITY staff.patron_navbar.holds.accesskey 'H'>
 <!ENTITY staff.patron_navbar.alert 'Display Alert and Messages'>
 <!ENTITY staff.patron_navbar.alert.accesskey 'A'>
+<!ENTITY staff.patron_navbar.booking 'Booking'>
+<!ENTITY staff.patron_navbar.booking.accesskey 'k'>
 <!ENTITY staff.patron_navbar.other 'Other'>
 <!ENTITY staff.patron_navbar.other.accesskey 'o'>
 <!ENTITY staff.patron_navbar.items 'Items Out'>
@@ -1557,6 +1586,13 @@
 <!ENTITY staff.server.admin.index.transit_list "Transit List">
 <!ENTITY staff.server.admin.index.conify "Server Settings">
 
+<!ENTITY staff.server.admin.index.booking "Booking">
+<!ENTITY staff.server.admin.index.booking.reservation "Create/Cancel Reservations">
+<!ENTITY staff.server.admin.index.booking.pull_list "Pull List">
+<!ENTITY staff.server.admin.index.booking.capture "Capture">
+<!ENTITY staff.server.admin.index.booking.pickup "Pickup Reservations">
+<!ENTITY staff.server.admin.index.booking.return "Return Reservations">
+
 
 <!ENTITY staff.server.admin.org_settings.title "Evergreen: Library Settings Editor">
 <!-- This will be followed by the user's name -->
@@ -1765,6 +1801,10 @@
 <!ENTITY staff.circ.copy_status_overlay.sel_copy_details.accesskey "I">
 <!ENTITY staff.circ.copy_status_overlay.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.circ.copy_status_overlay.sel_patron.accesskey "L">
+<!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.label "Book Item Now">
+<!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.accesskey "N">
+<!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.label "Make Item Bookable">
+<!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.accesskey "K">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.label "Edit Item Attributes">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.accesskey "E">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
@@ -1946,6 +1986,10 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_add_items_to_buckets.accesskey "B">
 <!ENTITY staff.cat.copy_browser.actions.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.cat.copy_browser.actions.sel_copy_details.accesskey "I">
+<!ENTITY staff.cat.copy_browser.actions.cmd_book_item_now.label "Book Item Now">
+<!ENTITY staff.cat.copy_browser.actions.cmd_book_item_now.accesskey "N">
+<!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.label "Make Item Bookable">
+<!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.accesskey "K">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.accesskey "L">
 <!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Item Attributes">
@@ -1993,6 +2037,9 @@
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.add_items_to_bucket.accesskey "B">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label "Show Item Details">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey "I">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.label "Make This Item Bookable">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.accesskey "Y">
+
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey "L">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "Edit Item Attributes">

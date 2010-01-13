@@ -114,8 +114,24 @@ sub overdue_circs {
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
 	$sth->execute($upper_interval);
 
-	return ( map { action::circulation->construct($_) } $sth->fetchall_hash );
+	my @circs = map { action::circulation->construct($_) } $sth->fetchall_hash;
 
+	$c_t = booking::reservation->table;
+	$sql = <<"	SQL";
+		SELECT	*
+		  FROM	$c_t
+		  WHERE	return_time IS NULL
+		  	AND end_time < ( CURRENT_TIMESTAMP $grace)
+            AND fine_interval IS NOT NULL
+            AND cancel_time IS NULL
+	SQL
+
+	$sth = action::circulation->db_Main->prepare_cached($sql);
+	$sth->execute();
+
+    push @circs, map { booking::reservation->construct($_) } $sth->fetchall_hash;
+
+    return @circs;
 }
 
 sub complete_reshelving {
@@ -597,7 +613,9 @@ sub generate_fines {
 
 	my @circs;
 	if ($circ) {
-		push @circs, action::circulation->search_where( { id => $circ, stop_fines => undef } );
+		push @circs,
+            action::circulation->search_where( { id => $circ, stop_fines => undef } ),
+            booking::reservation->search_where( { id => $circ, return_time => undef, cancel_time => undef } );
 	} else {
 		push @circs, overdue_circs($grace);
 	}
@@ -606,7 +624,22 @@ sub generate_fines {
 
 	my $penalty = OpenSRF::AppSession->create('open-ils.penalty');
 	for my $c (@circs) {
+
+        my $ctype = ref($c);
+        $ctype =~ s/^.*([^:]+)$/$1/o;
 	
+        my $due_date_method = 'due_date';
+        my $target_copy_method = 'target_copy';
+        my $circ_lib_method = 'circ_lib';
+        my $recurring_fine_method = 'recurring_fine';
+        if ($ctype eq 'reservation') {
+            $due_date_method = 'end_time';
+            $target_copy_method = 'current_resource';
+            $circ_lib_method = 'pickup_lib';
+            $recurring_fine_method = 'fine_amount';
+            next unless ($c->fine_interval);
+        }
+
 		try {
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
 				$log->debug("Cleaning up after previous transaction\n");
@@ -616,7 +649,7 @@ sub generate_fines {
 			$log->info("Processing circ ".$c->id."...\n");
 
 
-			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
+			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->$due_date_method ) );
 	
 			my $due = $due_dt->epoch;
 			my $now = time;
@@ -636,15 +669,15 @@ sub generate_fines {
 			}
 	
 			$client->respond(
-				"ARG! Overdue circulation ".$c->id.
-				" for item ".$c->target_copy.
+				"ARG! Overdue $ctype ".$c->id.
+				" for item ".$c->$target_copy_method.
 				" (user ".$c->usr.").\n".
 				"\tItem was due on or before: ".localtime($due)."\n");
 	
 			my @fines = money::billing->search_where(
 				{ xact => $c->id,
 				  btype => 1,
-				  billing_ts => { '>' => $c->due_date } },
+				  billing_ts => { '>' => $c->$due_date_method } },
 				{ order_by => 'billing_ts DESC'}
 			);
 
@@ -666,7 +699,7 @@ sub generate_fines {
 				$last_fine = $due;
 
 				if (0) {
-					if (my $h = $hoo{$c->circ_lib}) { 
+					if (my $h = $hoo{$c->$circ_lib_method}) { 
 
 						$log->info( "Circ lib has an hours-of-operation entry" );
 						# find the day after the due date...
@@ -714,17 +747,17 @@ sub generate_fines {
 	
 			$client->respond( "\t$pending_fine_count pending fine(s)\n" );
 
-			my $recuring_fine = int($c->recuring_fine * 100);
+			my $recurring_fine = int($c->$recurring_fine_method * 100);
 			my $max_fine = int($c->max_fine * 100);
 
 			my ($latest_billing_ts, $latest_amount) = ('',0);
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
 				if ($current_fine_total >= $max_fine) {
-					$c->update({stop_fines => 'MAXFINES', stop_fines_time => 'now'});
+					$c->update({stop_fines => 'MAXFINES', stop_fines_time => 'now'}) if ($ctype eq 'circulation');
 					$client->respond(
 						"\tMaximum fine level of ".$c->max_fine.
-						" reached for this circulation.\n".
+						" reached for this $ctype.\n".
 						"\tNo more fines will be generated.\n" );
 					last;
 				}
@@ -735,7 +768,7 @@ sub generate_fines {
 				my $dow_open = "dow_${dow}_open";
 				my $dow_close = "dow_${dow}_close";
 
-				if (my $h = $hoo{$c->circ_lib}) {
+				if (my $h = $hoo{$c->$circ_lib_method}) {
 					next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
 				}
 
@@ -743,7 +776,7 @@ sub generate_fines {
 				my @cl = actor::org_unit::closed_date->search_where(
 						{ close_start	=> { '<=' => $timestamptz },
 						  close_end	=> { '>=' => $timestamptz },
-						  org_unit	=> $c->circ_lib }
+						  org_unit	=> $c->$circ_lib_method }
 				);
 				next if (@cl);
 	
@@ -772,7 +805,7 @@ sub generate_fines {
 
                 # Caluclate penalties inline
 				OpenILS::Utils::Penalty->calculate_penalties(
-					undef, $c->usr->to_fieldmapper->id.'', $c->circ_lib->to_fieldmapper->id.'');
+					undef, $c->usr->to_fieldmapper->id.'', $c->$circ_lib_method->to_fieldmapper->id.'');
 
 			} else {
 
@@ -783,7 +816,7 @@ sub generate_fines {
 				$penalty->request(
 				    'open-ils.penalty.patron_penalty.calculate',
 				    { patronid	=> ''.$c->usr,
-				    context_org	=> ''.$c->circ_lib,
+				    context_org	=> ''.$c->$circ_lib_method,
 				    update	=> 1,
 				    background	=> 1,
 				    }
@@ -792,8 +825,8 @@ sub generate_fines {
 
 		} catch Error with {
 			my $e = shift;
-			$client->respond( "Error processing overdue circulation [".$c->id."]:\n\n$e\n" );
-			$log->error("Error processing overdue circulation [".$c->id."]:\n$e\n");
+			$client->respond( "Error processing overdue $ctype [".$c->id."]:\n\n$e\n" );
+			$log->error("Error processing overdue $ctype [".$c->id."]:\n$e\n");
 			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 			throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
 		};
@@ -1127,6 +1160,206 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.action.hold_request.copy_targeter',
 	api_level	=> 1,
 	method		=> 'new_hold_copy_targeter',
+);
+
+sub reservation_targeter {
+	my $self = shift;
+	my $client = shift;
+	my $one_reservation = shift;
+
+	local $OpenILS::Application::Storage::WRITE = 1;
+
+	my $reservations;
+
+	try {
+		if ($one_reservation) {
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+			$reservations = [ booking::reservation->search_where( { id => $one_reservation, capture_time => undef, cancel_time => undef } ) ];
+		} else {
+
+			# find all the reservations needing targeting
+			$reservations = [
+                booking::reservation->search_where(
+					{ current_resource => undef,
+					  cancel_time => undef,
+					  start_time => { '>' => 'now' }
+                    },
+                    { order_by => 'start_time' }
+                )
+            ];
+		}
+	} catch Error with {
+		my $e = shift;
+		die "Could not retrieve reservation requests:\n\n$e\n";
+	};
+
+	my @successes = ();
+	for my $bresv (@$reservations) {
+		try {
+			#start a transaction if needed
+			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
+				$log->debug("Cleaning up after previous transaction\n");
+				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+			}
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+			$log->info("Processing reservation ".$bresv->id."...\n");
+
+			#first, re-fetch the hold, to make sure it's not captured already
+			$bresv->remove_from_object_index();
+			$bresv = booking::reservation->retrieve( $bresv->id );
+
+			die "OK\n" if (!$bresv or $bresv->capture_time or $bresv->cancel_time);
+
+			my $end_time = $parser->parse_datetime( clense_ISO8601( $bresv->end_time ) );
+			if (DateTime->compare($end_time, DateTime->now) < 0) {
+
+				# cancel cause = un-targeted expiration
+				$bresv->update( { cancel_time => 'now' } ); 
+				$self->method_lookup('open-ils.storage.transaction.commit')->run;
+
+				# tell A/T the reservation was cancelled
+				my $fm_bresv = $bresv->to_fieldmapper;
+				my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+				$ses->request('open-ils.trigger.event.autocreate', 
+					'booking.reservation.cancel.expire_no_target', $fm_bresv, $fm_bresv->pickup_lib);
+
+				die "OK\n";
+			}
+
+			my $possible_resources;
+
+			# find all the potential resources
+			if (!$bresv->target_resource) {
+				my $filter = { type => $bresv->target_resource_type };
+				my $attr_maps = [ booking::reservation_attr_value_map->search( reservation => $bresv->id) ];
+
+				$filter->{attribute_values} = [ map { $_->attr_value } @$attr_maps ] if (@$attr_maps);
+
+				$filter->{available} = [$bresv->start_time, $bresv->end_time];
+				my $ses = OpenSRF::AppSession->create('open-ils.booking');
+				$possible_resources = $ses->request('open-ils.booking.resources.filtered_id_list', undef, $filter)->gather(1);
+			} else {
+				$possible_resources = $bresv->target_resource;
+			}
+
+            my $all_resources = [ booking::resource->search( id => $possible_resources ) ];
+			@$all_resources = grep { isTrue($_->type->transferable) || $_->owner.'' eq $bresv->pickup_lib.'' } @$all_resources;
+
+
+            my @good_resources = ();
+            for my $res (@$all_resources) {
+                unless (isTrue($res->type->catalog_item)) {
+                    push @good_resources, $res;
+                    next;
+                }
+
+                my $copy = [ asset::copy->search( deleted => f, barcode => $res->barcode )]->[0];
+
+                unless ($copy) {
+                    push @good_resources, $res;
+                    next;
+                }
+
+                if ($copy->status->id == 0 || $copy->status->id == 7) {
+                    push @good_resources, $res;
+                    next;
+                }
+
+                if ($copy->status->id == 1) {
+                    my $circs = action::circulation->search_where(
+                        {target_copy => $copy->id, checkin_time => undef },
+                        { order_by => 'id DESC' }
+                    );
+
+                    if (@$circs) {
+                        my $due_date = $circs->[0]->due_date;
+			            $due_date = $parser->parse_datetime( clense_ISO8601( $due_date ) );
+			            my $start_time = $parser->parse_datetime( clense_ISO8601( $bresv->start_time ) );
+                        next if (DateTime->compare($start_time, $due_date) < 0);
+                        push @good_resources, $res;
+                    }
+
+                    next;
+                }
+
+                push @good_resources, $res if (isTrue($copy->status->holdable));
+            }
+
+			# let 'em know we're still working
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			
+			# if we have no copies ...
+			if (!@good_resources) {
+				$log->info("\tNo resources available for targeting at all!\n");
+				push @successes, { reservation => $bresv->id, eligible_copies => 0, error => 'NO_COPIES' };
+
+				$self->method_lookup('open-ils.storage.transaction.commit')->run;
+				die "OK\n";
+			}
+
+			$log->debug("\t".scalar(@good_resources)." resources available for targeting...");
+
+			my $prox_list = [];
+			$$prox_list[0] =
+			[
+				grep {
+					$_->owner == $bresv->pickup_lib
+				} @good_resources
+			];
+
+			$all_resources = [grep {$_->owner != $bresv->pickup_lib } @good_resources];
+			# $all_copies is now a list of copies not at the pickup library
+
+			my $best = shift @good_resources;
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+			if (!$best) {
+				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$all_resources)." resources");
+
+				$prox_list =
+                    map  { $_->[1] }
+                    sort { $a->[0] <> $b->[0] }
+                    map  {
+                        [   actor::org_unit_proximity->search_where(
+                                { from_org => $bresv->pickup_lib.'', to_org => $_=>owner.'' }
+                            )->[0]->prox,
+                            $_
+                        ]
+                    } @$all_resources;
+
+				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+				$best = shift @$prox_list
+			}
+
+			if ($best) {
+				$bresv->update( { current_resource => ''.$best->id } );
+				$log->debug("\tUpdating reservation [".$bresv->id."] with new 'current_resource' [".$best->id."] for reservation fulfillment.");
+			}
+
+			$self->method_lookup('open-ils.storage.transaction.commit')->run;
+			$log->info("\tProcessing of bresv ".$bresv->id." complete.");
+
+			push @successes,
+				{ reservation => $bresv->id,
+				  current_resource => ($best ? $best->id : undef) };
+
+		} otherwise {
+			my $e = shift;
+			if ($e !~ /^OK/o) {
+				$log->error("Processing of bresv failed:  $e");
+				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+				throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
+			}
+		};
+	}
+
+	return \@successes;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.booking.reservation.resource_targeter',
+	api_level	=> 1,
+	method		=> 'reservation_targeter',
 );
 
 my $locations;

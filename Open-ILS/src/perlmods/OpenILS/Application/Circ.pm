@@ -1105,6 +1105,144 @@ sub test_batch_circ_events {
 }
 
 
+# XXX
+# XXX !!! HERE through line 1245 !!!
+# XXX Backported from trunk aprox 15310, may not be supported or required by 1.6
+# XXX
+
+__PACKAGE__->register_method(
+	method	=> "user_payments_list",
+	api_name	=> "open-ils.circ.user_payments.filtered.batch",
+    stream => 1,
+	signature => {
+        desc => q/Returns a fleshed, date-limited set of all payments a user
+                has made.  By default, ordered by payment date.  Optionally
+                ordered by other columns in the top-level "mp" object/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'User ID', type => 'number'},
+            {desc => 'Order by column(s), optional.  Array of "mp" class columns', type => 'array'}
+        ],
+        return => {desc => q/List of "mp" objects, fleshed with the billable transaction 
+            and the related fully-realized payment object (e.g money.cash_payment)/}
+    }
+);
+
+sub user_payments_list {
+    my($self, $conn, $auth, $user_id, $start_date, $end_date, $order_by) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $user->home_ou);
+
+    $order_by ||= ['payment_ts'];
+
+    # all payments by user, between start_date and end_date
+    my $payments = $e->json_query({
+        select => {mp => ['id']}, 
+        from => {
+            mp => {
+                mbt => {
+                    fkey => 'xact', field => 'id'}
+            }
+        }, 
+        where => {
+            '+mbt' => {usr => $user_id}, 
+            '+mp' => {payment_ts => {between => [$start_date, $end_date]}}
+        },
+        order_by => {mp => $order_by}
+    });
+
+    for my $payment_id (@$payments) {
+        my $payment = $e->retrieve_money_payment([
+            $payment_id->{id}, 
+            {   
+                flesh => 2,
+                flesh_fields => {
+                    mp => [
+                        'xact',
+                        'cash_payment',
+                        'credit_card_payment',
+                        'credit_payment',
+                        'check_payment',
+                        'work_payment',
+                        'forgive_payment',
+                        'goods_payment'
+                    ],
+                    mbt => [
+                        'circulation', 
+                        'grocery',
+                        'reservation'
+                    ]
+                }
+            }
+        ]);
+        $conn->respond($payment);
+    }
+
+    return undef;
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_circ_chain",
+	api_name	=> "open-ils.circ.renewal_chain.retrieve_by_circ",
+    stream => 1,
+	signature => {
+        desc => q/Given a circulation, this returns all circulation objects
+                that are part of the same chain of renewals./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Circ ID', type => 'number'},
+        ],
+        return => {desc => q/List of circ objects, orderd by oldest circ first/}
+    }
+);
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_circ_chain",
+	api_name	=> "open-ils.circ.renewal_chain.retrieve_by_circ.summary",
+	signature => {
+        desc => q/Given a circulation, this returns all circulation objects
+                that are part of the same chain of renewals./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Circ ID', type => 'number'},
+        ],
+        return => {desc => q/List of circ objects, orderd by oldest circ first/}
+    }
+);
+
+sub retrieve_circ_chain {
+    my($self, $conn, $auth, $circ_id) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+
+    if($self->api_name =~ /summary/) {
+        my $sum = $e->json_query({from => ['action.summarize_circ_chain', $circ_id]})->[0];
+        return undef unless $sum;
+        my $obj = Fieldmapper::action::circ_chain_summary->new;
+        $obj->$_($sum->{$_}) for keys %$sum;
+        return $obj;
+
+    } else {
+
+        my $chain = $e->json_query({from => ['action.circ_chain', $circ_id]});
+
+        for my $circ_info (@$chain) {
+            my $circ = Fieldmapper::action::circulation->new;
+            $circ->$_($circ_info->{$_}) for keys %$circ_info;
+            $conn->respond($circ);
+        }
+    }
+
+    return undef;
+}
+
 
 
 # {"select":{"acp":["id"],"circ":[{"aggregate":true,"transform":"count","alias":"count","column":"id"}]},"from":{"acp":{"circ":{"field":"target_copy","fkey":"id","type":"left"},"acn"{"field":"id","fkey":"call_number"}}},"where":{"+acn":{"record":200057}}

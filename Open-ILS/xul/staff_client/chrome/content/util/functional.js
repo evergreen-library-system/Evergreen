@@ -6,7 +6,7 @@ util.functional = {};
 util.functional.EXPORT_OK    = [ 
     'filter_list', 'filter_object', 'find_list', 'find_object', 'map_list', 'map_flat_list', 
     'map_object', 'map_object_to_list', 'convert_object_list_to_hash', 'find_id_object_in_list', 
-    'find_attr_object_in_list', 'walk_tree_preorder',
+    'find_attr_object_in_list', 'walk_tree_preorder', 'unique_list_values',
 ];
 util.functional.EXPORT_TAGS    = { ':all' : util.functional.EXPORT_OK };
 
@@ -132,6 +132,14 @@ util.functional.find_attr_object_in_list = function(list,attr,value) {
         }
     }
     return null;
+}
+
+util.functional.unique_list_values = function(list) {
+    var obj = {};
+    var finished_list = [];
+    for (var i in list) { obj[list[i]] = true; }
+    for (var i in obj) { finished_list.push(i); }
+    return finished_list;
 }
 
 dump('exiting util/functional.js\n');

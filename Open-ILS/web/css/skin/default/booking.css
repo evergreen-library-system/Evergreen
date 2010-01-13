@@ -1,0 +1,89 @@
+div#brsrc_available_outer {
+    width: 50%;
+    float: left;
+    border-right: 1px solid #999999;
+}
+div#bra_and_brav {
+}
+div#reserve_right_side {
+    float: right;
+    width: 49%;
+    padding-left: 4px;
+}
+div#reserve_under {
+    clear: both;
+}
+div#reserve_datetime_start {
+    padding-bottom: 6px;
+}
+div#reserve_datetime_end {
+    padding-bottom: 6px;
+    border-bottom: 1px solid #999999;
+}
+label.bra {
+    font-style: italic;
+    padding-right: 12px;
+}
+h1.booking, h2.booking, h3.booking {
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 8px;
+}
+h1.booking { font-size: 16pt; font-weight: bold; }
+select#brsrc_list {
+    width: 90%;
+}
+label.reserve_datetime {
+    font-style: italic;
+    margin-bottom: 2px;
+}
+id#patron_barcode {
+    width: 150px;
+}
+div.nice_vertical_padding {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+span.two_buttons {
+    text-align: center;
+}
+option.forced_unavailable {
+    background-color: #ffcccc;
+    color: #990000;
+    font-weight: bold;
+    font-style: italic;
+}
+input#arbitrary_resource { margin-left: 8px; margin-right: 8px; }
+div#or { font-size: 12pt; font-weight: bold; }
+input#interval_in_days { width: 75px; }
+table#the_table thead tr th {
+    vertical-align: top;
+    background-color: #dddddd;
+    color: #000000;
+    font-weight: bold;
+    padding: 0 6px 0 6px;
+    border-left: 1px #cccccc solid;
+    border-right: 1px #333333 solid;
+}
+tbody#the_table_body td {
+    vertical-align: top;
+    padding: 2px;
+    border-top: 1px #cccccc solid;
+    border-left: 1px #cccccc solid;
+    border-bottom: 1px #333333 solid;
+    border-right: 1px #333333 solid;
+}
+.capture_failure { color: #cc0000; }
+.capture_success { color: #00cc00; }
+ul { list-style-type: square; }
+.capture_info { font-size: 12pt; font-weight: bold; margin-bottom: 4px; }
+.transit_notice {
+    font-size: 12pt; font-weight: bold; color: #ff6666;
+    margin-bottom: 4px; margin-top: 4px;
+}
+span#result_display { margin-left: 12px; }
+div#contains_misc_controls { text-align:right; }
+div#patron_info { font-size: 12pt; font-weight: bold; }
+div#no_ready_bresv, div#no_out_bresv, div#no_in_bresv {
+    font-style: italic;
+}

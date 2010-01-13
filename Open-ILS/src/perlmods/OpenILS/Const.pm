@@ -41,6 +41,7 @@ econst OILS_COPY_STATUS_CATALOGING    => 11;
 econst OILS_COPY_STATUS_RESERVES      => 12;
 econst OILS_COPY_STATUS_DISCARD       => 13;
 econst OILS_COPY_STATUS_DAMAGED       => 14;
+econst OILS_COPY_STATUS_ON_RESV_SHELF => 15;
 
 
 # ---------------------------------------------------------------------

@@ -2,10 +2,12 @@ package OpenILS::Application::Circ::Circulate;
 use strict; use warnings;
 use base 'OpenILS::Application';
 use OpenSRF::EX qw(:try);
+use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
+use DateTime;
 my $U = "OpenILS::Application::AppUtils";
 
 my %scripts;
@@ -148,6 +150,13 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
     method  => "run_method",
+    api_name    => "open-ils.circ.reservation.pickup");
+__PACKAGE__->register_method(
+    method  => "run_method",
+    api_name    => "open-ils.circ.reservation.return");
+
+__PACKAGE__->register_method(
+    method  => "run_method",
     api_name    => "open-ils.circ.checkout.inspect",
     desc => q/
         Returns the circ matrix test result and, on success, the rule set and matrix test object
@@ -167,9 +176,98 @@ sub run_method {
     return circ_events($circulator) if $circulator->bail_out;
 
     # --------------------------------------------------------------------------
+    # First, check for a booking transit, as the barcode may not be a copy
+    # barcode, but a resource barcode, and nothing else in here will work
+    # --------------------------------------------------------------------------
+
+    if ((my $bc = $circulator->copy_barcode) && $api !~ /checkout|inspect/) { # do we have a barcode?
+        my $resources = $circulator->editor->search_booking_resource( { barcode => $bc } ); # any resources by this barcode?
+        if (@$resources) { # yes!
+
+            my $res_id_list = [ map { $_->id } @$resources ];
+            my $transit = $circulator->editor->search_action_reservation_transit_copy(
+                [
+                    { target_copy => $res_id_list, dest => $circulator->circ_lib },
+                    { order_by => { artc => 'source_send_time' }, limit => 1 }
+                ]
+            )->[0]; # Any transit for this barcode?
+
+            if ($transit) { # yes! unwrap it.
+
+                my $reservation = $circulator->editor->retrieve_booking_reservation( $transit->reservation );
+                my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
+
+                if ($U->is_true($res_type->catalog_item)) { # is there a copy to be had here?
+                    if (my $copy = $circulator->editor->search_asset_copy({ barcode => $bc, deleted => 'f' })->[0]) { # got a copy
+                        $copy->status( $transit->copy_status );
+                        $copy->editor($circulator->editor->requestor->id);
+                        $copy->edit_date('now');
+                        $circulator->editor->update_asset_copy( $copy );
+                    }
+                }
+
+                $transit->dest_recv_time('now');
+                $circulator->editor->update_action_reservation_transit_copy( $transit );
+
+                $circulator->editor->commit;
+
+                #XXX need to return here, with info about the resource/copy and the "put it on the booking shelf" message
+
+            } else { # no transit, look for an upcoming reservation to capture for
+
+                my $reservation = $circulator->editor->search_booking_reservation(
+                    [
+                        { current_resource => $res_id_list,
+                          pickup_lib => $circulator->circ_lib,
+                          cancel_time => undef,
+                          capture_time => undef
+                        },
+                        { order_by => { bresv => 'start_time' }, limit => 1 }
+                    ]
+                )->[0];
+
+                if ($reservation) { # we have a reservation for which we could capture this resource.  wheee!
+                    my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
+                    my $elbow_room = $res_type->elbow_room ||
+                        $U->ou_ancestor_setting_value( $circulator->circ_lib, 'circ.booking_reservation.default_elbow_room', $circulator->editor );
+                
+                    if ($elbow_room) {
+                        $reservation = $circulator->editor->search_booking_reservation(
+                            [
+                                { id => $reservation->id, start_time => { '<=' => DateTime->now->add( seconds => interval_to_seconds($elbow_room) )->strftime('%FT%T%z') } },
+                                { order_by => { bresv => 'start_time' }, limit => 1 }
+                            ]
+                        )->[0];
+                    }
+
+                    if ($reservation) { # no elbow room specified, or we still have a reservation within the elbow_room time
+                        my $b_ses = OpenSRF::AppSession->create('open-ils.booking');
+                        my $result = $b_ses->request(
+                            'open-ils.booking.reservations.capture',
+                            $auth => $reservation->id
+                        )->gather(1);
+
+                        if (ref($result) && $result->{ilsevent} == 0) { # captured!
+                            #XXX what to return here???
+                            return $result; # the booking capture success
+                        } else {
+                            #XXX how to fail???  Probably, just move on.
+                        }
+                    }
+                }
+            }
+        }
+    }
+            
+    
+
+    # --------------------------------------------------------------------------
     # Go ahead and load the script runner to make sure we have all 
     # of the objects we need
     # --------------------------------------------------------------------------
+    $circulator->is_res_checkin($circulator->is_checkin(1)) if $api =~ /reservation.return/;
+    $circulator->is_res_checkout(1) if $api =~ /reservation.pickup/;
+
     $circulator->is_renewal(1) if $api =~ /renew/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
 
@@ -180,7 +278,7 @@ sub run_method {
         $circulator->circ_permit_copy($scripts{circ_permit_copy});      
         $circulator->circ_duration($scripts{circ_duration});             
         $circulator->circ_permit_renew($scripts{circ_permit_renew});
-    } else {
+    } elsif (not $circulator->is_res_checkin) { # mk_env cannot work w/ reservation.return
         $circulator->mk_env();
     }
     return circ_events($circulator) if $circulator->bail_out;
@@ -203,6 +301,9 @@ sub run_method {
             $circulator->do_checkout();
         }
 
+    } elsif( $circulator->is_res_checkout ) {
+        $circulator->do_reservation_pickup();
+
     } elsif( $api =~ /inspect/ ) {
         my $data = $circulator->do_inspect();
         $circulator->editor->rollback;
@@ -212,6 +313,9 @@ sub run_method {
         $circulator->is_checkout(1);
         $circulator->do_checkout();
 
+    } elsif( $circulator->is_res_checkin ) {
+        $circulator->do_reservation_return();
+        $circulator->do_checkin() if ($circulator->copy());
     } elsif( $api =~ /checkin/ ) {
         $circulator->do_checkin();
 
@@ -335,6 +439,7 @@ my @AUTOLOAD_FIELDS = qw/
     notify_hold
     remote_hold
     backdate
+    reservation
     copy
     copy_id
     copy_barcode
@@ -346,10 +451,12 @@ my @AUTOLOAD_FIELDS = qw/
     title
     is_renewal
     is_checkout
+    is_res_checkout
     is_noncat
     is_precat
     request_precat
     is_checkin
+    is_res_checkin
     noncat_type
     editor
     events
@@ -1163,7 +1270,10 @@ sub do_checkout {
     $self->build_checkout_circ_object();
     return if $self->bail_out;
 
-    $self->apply_modified_due_date();
+    my $modify_to_start = $self->booking_adjusted_due_date();
+    return if $self->bail_out;
+
+    $self->apply_modified_due_date($modify_to_start);
     return if $self->bail_out;
 
     return $self->bail_on_events($self->editor->event)
@@ -1258,6 +1368,28 @@ sub update_copy {
     $copy->circ_lib($circ_lib) if $circ_lib;
 }
 
+sub update_reservation {
+    my $self = shift;
+    my $reservation = $self->reservation;
+
+    my $usr = $reservation->usr;
+    my $target_rt = $reservation->target_resource_type;
+    my $target_r = $reservation->target_resource;
+    my $current_r = $reservation->current_resource;
+
+    $reservation->usr($usr->id) if ref $usr;
+    $reservation->target_resource_type($target_rt->id) if ref $target_rt;
+    $reservation->target_resource($target_r->id) if ref $target_r;
+    $reservation->current_resource($current_r->id) if ref $current_r;
+
+    return $self->bail_on_events($self->editor->event)
+        unless $self->editor->update_booking_reservation($self->reservation);
+
+    my $evt;
+    ($reservation, $evt) = $U->fetch_booking_reservation($reservation->id);
+    $self->reservation($reservation);
+}
+
 
 sub bail_on_events {
     my( $self, @evts ) = @_;
@@ -1340,6 +1472,7 @@ sub handle_checkout_holds {
 
 sub run_checkout_scripts {
     my $self = shift;
+    my $nobail = shift;
 
     my $evt;
     my $runner = $self->script_runner;
@@ -1374,13 +1507,13 @@ sub run_checkout_scripts {
 
         unless($duration) {
             ($duration, $evt) = $U->fetch_circ_duration_by_name($duration_name);
-            return $self->bail_on_events($evt) if $evt;
+            return $self->bail_on_events($evt) if ($evt && !$nobail);
         
             ($recurring, $evt) = $U->fetch_recurring_fine_by_name($recurring_name);
-            return $self->bail_on_events($evt) if $evt;
+            return $self->bail_on_events($evt) if ($evt && !$nobail);
         
             ($max_fine, $evt) = $U->fetch_max_fine_by_name($max_fine_name);
-            return $self->bail_on_events($evt) if $evt;
+            return $self->bail_on_events($evt) if ($evt && !$nobail);
         }
 
     } else {
@@ -1462,9 +1595,151 @@ sub build_checkout_circ_object {
     $self->circ($circ);
 }
 
+sub do_reservation_pickup {
+    my $self = shift;
+
+    $self->log_me("do_reservation_pickup()");
+
+    $self->reservation->pickup_time('now');
+
+    if (
+        $self->reservation->current_resource &&
+        $self->reservation->current_resource->catalog_item
+    ) {
+        $self->copy( $self->reservation->current_resource->catalog_item );
+        $self->patron( $self->reservation->usr );
+        $self->run_checkout_scripts(1);
+
+        my $duration   = $self->duration_rule;
+        my $max        = $self->max_fine_rule;
+        my $recurring  = $self->recurring_fines_rule;
+
+        if ($duration && $max && $recurring) {
+            my $policy = $self->get_circ_policy($duration, $recurring, $max);
+
+            my $dname = $duration->name;
+            my $mname = $max->name;
+            my $rname = $recurring->name;
+
+            $logger->debug("circulator: building reservation ".
+                "with duration=$dname, maxfine=$mname, recurring=$rname");
+
+            $self->reservation->fine_amount($policy->{recurring_fine});
+            $self->reservation->max_fine($policy->{max_fine});
+            $self->reservation->fine_interval($recurring->recurrence_interval);
+        }
+
+        $self->copy->status(OILS_COPY_STATUS_CHECKED_OUT);
+        $self->update_copy();
+
+    } else {
+        $self->reservation->fine_amount($self->reservation->fine_amount);
+        $self->reservation->max_fine($self->reservation->max_fine);
+        $self->reservation->fine_interval($self->reservation->fine_interval);
+    }
+
+    $self->update_reservation();
+}
+
+sub do_reservation_return {
+    my $self = shift;
+    my $request = shift;
+
+    $self->log_me("do_reservation_return()");
+
+    my ($reservation, $evt) = $U->fetch_booking_reservation($self->reservation);
+    return $self->bail_on_events($evt) if $evt;
+
+    $self->reservation( $reservation );
+    $self->generate_fines(1);
+    $self->reservation->return_time('now');
+    $self->update_reservation();
+
+    if ( $self->reservation->current_resource && $self->reservation->current_resource->catalog_item ) {
+        $self->copy( $self->reservation->current_resource->catalog_item );
+    }
+}
+
+sub booking_adjusted_due_date {
+    my $self = shift;
+    my $circ = $self->circ;
+    my $copy = $self->copy;
+
+
+    my $changed;
+
+    if( $self->due_date ) {
+
+        return $self->bail_on_events($self->editor->event)
+            unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
+
+       $circ->due_date(clense_ISO8601($self->due_date));
+
+    } else {
+
+        return unless $copy and $circ->due_date;
+    }
+
+    my $booking_items = $self->editor->search_booking_resource( { barcode => $copy->barcode } );
+    if (@$booking_items) {
+        my $booking_item = $booking_items->[0];
+        my $resource_type = $self->editor->retrieve_booking_resource_type( $booking_item->type );
+
+        my $stop_circ_setting = $U->ou_ancestor_setting_value( $self->circ_lib, 'circ.booking_reservation.stop_circ', $self->editor );
+        my $shorten_circ_setting = $resource_type->elbow_room ||
+            $U->ou_ancestor_setting_value( $self->circ_lib, 'circ.booking_reservation.default_elbow_room', $self->editor ) ||
+            '0 seconds';
+
+        my $booking_ses = OpenSRF::AppSession->create( 'open-ils.booking' );
+        my $bookings = $booking_ses->request(
+            'open-ils.booking.reservations.filtered_id_list', $self->editor->authtoken,
+            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date }
+        )->gather(1);
+        $booking_ses->disconnect;
+        
+        my $dt_parser = DateTime::Format::ISO8601->new;
+        my $due_date = $dt_parser->parse_datetime( clense_ISO8601($circ->due_date) );
+
+        for my $bid (@$bookings) {
+
+            my $booking = $self->editor->retrieve_booking_reservation( $bid );
+
+            my $booking_start = $dt_parser->parse_datetime( clense_ISO8601($booking->start_time) );
+            my $booking_end = $dt_parser->parse_datetime( clense_ISO8601($booking->end_time) );
+
+            return $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') )
+                if ($booking_start < DateTime->now);
+
+
+            if ($U->is_true($stop_circ_setting)) {
+                $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') ); 
+            } else {
+                $due_date = $booking_start->subtract( seconds => interval_to_seconds($shorten_circ_setting) );
+                $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') ) if ($due_date < DateTime->now); 
+            }
+            
+            # We set the circ duration here only to affect the logic that will
+            # later (in a DB trigger) mangle the time part of the due date to
+            # 11:59pm. Having any circ duration that is not a whole number of
+            # days is enough to prevent the "correction."
+            my $new_circ_duration = $due_date->epoch - time;
+            $new_circ_duration++ if $new_circ_duration % 86400 == 0;
+            $circ->duration("$new_circ_duration seconds");
+
+            $circ->due_date(clense_ISO8601($due_date->strftime('%FT%T%z')));
+            $changed = 1;
+        }
+
+        return $self->bail_on_events($self->editor->event)
+            unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
+    }
+
+    return $changed;
+}
 
 sub apply_modified_due_date {
     my $self = shift;
+    my $shift_earlier = shift;
     my $circ = $self->circ;
     my $copy = $self->copy;
 
@@ -1499,7 +1774,11 @@ sub apply_modified_due_date {
 
             # XXX make the behavior more dynamic
             # for now, we just push the due date to after the close date
-            $circ->due_date($dateinfo->{end});
+            if ($shift_earlier) {
+                $circ->due_date($dateinfo->{start});
+            } else {
+                $circ->due_date($dateinfo->{end});
+            }
       }
    }
 }
@@ -1721,7 +2000,7 @@ sub do_checkin {
    # this copy can fulfill a hold or needs to be routed to a different location
    # ------------------------------------------------------------------------------
 
-    unless($self->noop) { # no-op checkins to not capture holds or put items into transit
+    if(!$self->noop) { # /not/ a no-op checkin, capture for hold or put item into transit
 
         my $needed_for_hold = (!$self->remote_hold and $self->attempt_checkin_hold_capture());
         return if $self->bail_out;
@@ -2110,6 +2389,53 @@ sub process_received_transit {
 }
 
 
+# ------------------------------------------------------------------
+# Sets the shelf_time and shelf_expire_time for a newly shelved hold
+# ------------------------------------------------------------------
+sub put_hold_on_shelf {
+    my($self, $hold) = @_;
+
+    $hold->shelf_time('now');
+
+    my $shelf_expire = $U->ou_ancestor_setting_value(
+        $self->circ_lib, 'circ.holds.default_shelf_expire_interval', $self->editor);
+
+    if($shelf_expire) {
+        my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
+        my $expire_time = DateTime->now->add(seconds => $seconds);
+        $hold->shelf_expire_time($expire_time->strftime('%FT%T%z'));
+    }
+
+    return undef;
+}
+
+
+
+sub generate_fines {
+   my $self = shift;
+   my $reservation = shift;
+   my $evt;
+   my $obt;
+
+   my $id = $reservation ? $self->reservation->id : $self->circ->id;
+
+   my $st = OpenSRF::AppSession->connect('open-ils.storage');
+
+   $st->request(
+      'open-ils.storage.action.circulation.overdue.generate_fines',
+      undef,
+      $id
+   )->wait_complete;
+
+   $st->disconnect;
+
+   # refresh the circ in case the fine generator set the stop_fines field
+   $self->reservation($self->editor->retrieve_booking_reservation($id)) if $reservation;
+   $self->circ($self->editor->retrieve_action_circulation($id)) if !$reservation;
+
+   return undef;
+}
+
 sub checkin_handle_circ {
    my $self = shift;
    my $circ = $self->circ;
@@ -2292,6 +2618,7 @@ sub check_checkin_copy_status {
             $status == OILS_COPY_STATUS_ON_HOLDS_SHELF  ||
             $status == OILS_COPY_STATUS_IN_TRANSIT  ||
             $status == OILS_COPY_STATUS_CATALOGING  ||
+            $status == OILS_COPY_STATUS_ON_RESV_SHELF  ||
             $status == OILS_COPY_STATUS_RESHELVING );
 
    return OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy )
