@@ -113,7 +113,7 @@ function get_all_relevant_acp(list) {
         if (!results) {
             alert(localeStrings.COPY_LOOKUP_NO_RESPONSE);
             return null;
-        } else if (is_ils_error(results)) {
+        } else if (is_ils_event(results)) {
             alert(my_ils_error(localeStrings.COPY_LOOKUP_ERROR, results));
             return null;
         } else {
@@ -170,7 +170,7 @@ function populate_pull_list(form) {
     if (results == null) {
         alert(localeStrings.PULL_LIST_NO_RESPONSE);
         return;
-    } else if (is_ils_error(results)) {
+    } else if (is_ils_event(results)) {
         alert(my_ils_error(localeStrings.PULL_LIST_ERROR, results));
         return;
     }

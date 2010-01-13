@@ -48,6 +48,10 @@
         "You must choose a valid start and end time for the reservation.",
     'BRSRC_NOT_FOUND': "Could not locate that resource.",
     'BRSRC_RETRIVE_ERROR': "Error retrieving resource: ",
+    'ON_FLY_NO_RESPONSE':
+        "No response from server attempting to make item a bookable resource.",
+    'ON_FLY_ERROR':
+        "Error attempting to make item a bookable resource:",
     'ANY': "ANY",
 
     'AUTO_choose_a_brt': "Choose a Bookable Resource Type",

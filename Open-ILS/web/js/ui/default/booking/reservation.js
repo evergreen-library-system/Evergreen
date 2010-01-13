@@ -299,7 +299,7 @@ function create_bresv(resource_list) {
         alert(localeStrings.CREATE_BRESV_LOCAL_ERROR + E);
     }
     if (results) {
-        if (is_ils_error(results)) {
+        if (is_ils_event(results)) {
             if (is_ils_actor_card_error(results)) {
                 alert(localeStrings.ACTOR_CARD_NOT_FOUND);
             } else {
@@ -373,7 +373,7 @@ function get_actor_by_barcode(barcode) {
     );
     if (usr == null) {
         alert(localeStrings.GET_PATRON_NO_RESULT);
-    } else if (is_ils_error(usr)) {
+    } else if (is_ils_event(usr)) {
         return null; /* XXX inelegant: this function is quiet about errors
                         here because to report them would be redundant with
                         another function that gets called right after this one.
@@ -400,7 +400,7 @@ function init_bresv_grid(barcode) {
     if (result == null) {
         set_datagrid_empty_store(bresvGrid, flatten_to_dojo_data);
         alert(localeStrings.GET_BRESV_LIST_NO_RESULT);
-    } else if (is_ils_error(result)) {
+    } else if (is_ils_event(result)) {
         set_datagrid_empty_store(bresvGrid, flatten_to_dojo_data);
         if (is_ils_actor_card_error(result)) {
             alert(localeStrings.ACTOR_CARD_NOT_FOUND);
@@ -433,14 +433,19 @@ function init_bresv_grid(barcode) {
 }
 
 function cancel_reservations(bresv_id_list) {
-    var result = fieldmapper.standardRequest(
-        ["open-ils.booking", "open-ils.booking.reservations.cancel"],
-        [xulG.auth.session.key, bresv_id_list]
-    );
+    try {
+        var result = fieldmapper.standardRequest(
+            ["open-ils.booking", "open-ils.booking.reservations.cancel"],
+            [xulG.auth.session.key, bresv_id_list]
+        );
+    } catch (E) {
+        alert(localeStrings.CXL_BRESV_FAILURE2 + E);
+        return;
+    }
     setTimeout(update_bresv_grid, 0);
     if (!result) {
         alert(localeStrings.CXL_BRESV_FAILURE);
-    } else if (is_ils_error(result)) {
+    } else if (is_ils_event(result)) {
         alert(my_ils_error(localeStrings.CXL_BRESV_FAILURE2, result));
     } else {
         alert(localeStrings.CXL_BRESV_SUCCESS(result.length));
@@ -449,16 +454,28 @@ function cancel_reservations(bresv_id_list) {
 
 function munge_specific_resource(barcode) {
     try {
-        var brsrc_list = pcrud.search('brsrc', {'barcode': barcode});
-        if (brsrc_list && brsrc_list.length > 0) {
-            opts.booking_results = {
-                "brt": [[brsrc_list[0].type(), 0, 1]],
-                "brsrc": [[brsrc_list[0].id(), 0, 1]],
-            };
-            if (!(our_brt = get_brt_by_id(opts.booking_results.brt[0][0]))) {
-                alert(localeStrings.COULD_NOT_RETRIEVE_BRT_PASSED_IN);
+        var copy_list = pcrud.search(
+            "acp", {"barcode": barcode, "deleted": "f"}
+        );
+        if (copy_list && copy_list.length > 0) {
+            var r = fieldmapper.standardRequest(
+                ["open-ils.booking",
+                    "open-ils.booking.resources.create_from_copies"],
+                [xulG.auth.session.key,
+                    copy_list.map(function(o) { return o.id(); })]
+            );
+
+            if (!r) {
+                alert(localeStrings.ON_FLY_NO_RESPONSE);
+            } else if (is_ils_event(r)) {
+                alert(my_ils_error(localeStrings.ON_FLY_ERROR, r));
             } else {
-                init_reservation_interface();
+                if (!(our_brt = get_brt_by_id(r.brt[0][0]))) {
+                    alert(localeStrings.COULD_NOT_RETRIEVE_BRT_PASSED_IN);
+                } else {
+                    opts.booking_results = r;
+                    init_reservation_interface();
+                }
             }
         } else {
             alert(localeStrings.BRSRC_NOT_FOUND);
@@ -692,7 +709,9 @@ function init_timestamp_widgets() {
 }
 
 function cancel_selected_bresv(bresv_dojo_items) {
-    if (bresv_dojo_items && bresv_dojo_items.length > 0) {
+    if (bresv_dojo_items && bresv_dojo_items.length > 0 &&
+        (bresv_dojo_items[0].length == undefined ||
+            bresv_dojo_items[0].length > 0)) {
         cancel_reservations(
             bresv_dojo_items.map(function(o) { return o.id[0]; })
         );

@@ -48,7 +48,7 @@ function humanize_timestamp_string(ts) {
     var timeparts = parts[1].split("-")[0].split(":");
     return parts[0] + " " + timeparts[0] + ":" + timeparts[1];
 }
-function is_ils_error(e) { return (e.ilsevent != undefined); }
+function is_ils_event(e) { return (e.ilsevent != undefined); }
 function is_ils_actor_card_error(e) {
     return (e.textcode == "ACTOR_CARD_NOT_FOUND");
 }

@@ -197,11 +197,8 @@ sub create_bresv {
     return undef if scalar(@$brsrc_list) < 1; # Empty list not ok.
 
     my $e = new_editor(xact => 1, authtoken => $authtoken);
-    return $e->die_event unless (
-        $e->checkauth and
-        $e->allowed("ADMIN_BOOKING_RESERVATION") and
-        $e->allowed("ADMIN_BOOKING_RESERVATION_ATTR_MAP")
-    );
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("ADMIN_BOOKING_RESERVATION");
 
     my $usr = $U->fetch_user_by_barcode($target_user_barcode);
     return $usr if ref($usr) eq 'HASH' and exists($usr->{"ilsevent"});
@@ -572,8 +569,8 @@ NOTES
 );
 
 
-sub naive_ts_string { strftime("%F %T", localtime(shift)); }
-sub naive_start_of_day { strftime("%F", localtime(shift)) . " 00:00:00"; }
+sub naive_ts_string {strftime("%F %T", localtime($_[0] || time));}
+sub naive_start_of_day {strftime("%F", localtime($_[0] || time))." 00:00:00";}
 
 # Return a list of bresv or an ilsevent on failure.
 sub get_uncaptured_bresv_for_brsrc {
@@ -891,6 +888,7 @@ sub capture_reservation {
         if (!$transit) { # not yet in transit
             $transit = new Fieldmapper::action::reservation_transit_copy;
 
+            $transit->reservation($reservation->id);
             $transit->target_copy($resource->id);
             $transit->copy_status(15);
             $transit->source_send_time('now');
@@ -1034,6 +1032,7 @@ sub get_captured_reservations {
                     "usr" => $patron->id,
                     "capture_time" => {"!=" => undef},
                     "pickup_time" => undef,
+                    "start_time" => {">=" => naive_start_of_day()},
                     "cancel_time" => undef
                 },
                 $bresv_flesh

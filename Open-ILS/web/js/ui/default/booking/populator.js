@@ -139,12 +139,17 @@ Populator.prototype.return_by_resource = function(barcode) {
         "open-ils.booking.reservations.by_returnable_resource_barcode"],
         [xulG.auth.session.key, barcode]
     );
-    if (!r) {
+    if (!r || r.length < 1) {
         alert(localeStrings.NO_SUCH_RETURNABLE_RESOURCE);
-    } else if (is_ils_error(r)) {
+    } else if (is_ils_event(r)) {
         alert(my_ils_error(localeStrings.RETURNABLE_RESOURCE_ERROR, r));
     } else {
-        var new_barcode = r.usr().card().barcode();
+        try {
+            var new_barcode = r.usr().card().barcode();
+        } catch (E) {
+            alert(localeStrings.RETURN_ERROR + "\nr: " + js2JSON(r) + "\n" + E);
+            return;
+        }
         if (this.patron_barcode && this.patron_barcode != new_barcode) {
             /* XXX make this more subtle, i.e. flash something in background */
             alert(localeStrings.NOTICE_CHANGE_OF_PATRON);
@@ -153,7 +158,7 @@ Populator.prototype.return_by_resource = function(barcode) {
         var ret = this.return(r);
         if (!ret) {
             alert(localeStrings.RETURN_NO_RESPONSE);
-        } else if (is_ils_error(ret)) {
+        } else if (is_ils_event(ret) && ret.textcode != "SUCCESS") {
             alert(my_ils_error(localeStrings.RETURN_ERROR, ret));
         } else {
             /* XXX speedbump should go, but something has to happen else
@@ -190,7 +195,7 @@ Populator.prototype.populate = function(barcode, which) {
     if (!result) {
         this.patron_barcode = undefined;
         alert(localeStrings.RESERVATIONS_NO_RESPONSE);
-    } else if (is_ils_error(result)) {
+    } else if (is_ils_event(result)) {
         this.patron_barcode = undefined;
         alert(my_ils_error(localeStrings.RESERVATIONS_ERROR, result));
     } else {
@@ -252,7 +257,7 @@ Populator.prototype.act_on_selected = function(how, which) {
         var result = this[how](reservations[i]);
         if (!result) {
             alert(no_response_msg);
-        } else if (is_ils_error(result)) {
+        } else if (is_ils_event(result) && result.textcode != "SUCCESS") {
             alert(my_ils_error(error_msg, result));
         } else {
             continue;

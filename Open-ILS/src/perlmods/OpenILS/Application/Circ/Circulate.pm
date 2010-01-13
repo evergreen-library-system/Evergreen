@@ -182,7 +182,7 @@ sub run_method {
     # barcode, but a resource barcode, and nothing else in here will work
     # --------------------------------------------------------------------------
 
-    if (my $bc = $circulator->copy_barcode) { # do we have a barcode?
+    if ((my $bc = $circulator->copy_barcode) && $api !~ /checkout|inspect/) { # do we have a barcode?
         my $resources = $circulator->editor->search_booking_resource( { barcode => $bc } ); # any resources by this barcode?
         if (@$resources) { # yes!
 
@@ -200,9 +200,9 @@ sub run_method {
                 my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
 
                 if ($U->is_true($res_type->catalog_item)) { # is there a copy to be had here?
-                    if (my $copy = circulator->editor->search_asset_copy({ barcode => $bc, deleted => 'f' })->[0]) { # got a copy
+                    if (my $copy = $circulator->editor->search_asset_copy({ barcode => $bc, deleted => 'f' })->[0]) { # got a copy
                         $copy->status( $transit->copy_status );
-                        $copy->editor($self->editor->requestor->id);
+                        $copy->editor($circulator->editor->requestor->id);
                         $copy->edit_date('now');
                         $circulator->editor->update_asset_copy( $copy );
                     }
@@ -281,7 +281,7 @@ sub run_method {
         $circulator->circ_permit_copy($scripts{circ_permit_copy});      
         $circulator->circ_duration($scripts{circ_duration});             
         $circulator->circ_permit_renew($scripts{circ_permit_renew});
-    } else {
+    } elsif (not $circulator->is_res_checkin) { # mk_env cannot work w/ reservation.return
         $circulator->mk_env();
     }
     return circ_events($circulator) if $circulator->bail_out;
@@ -1823,8 +1823,8 @@ sub booking_adjusted_due_date {
 
         my $booking_ses = OpenSRF::AppSession->create( 'open-ils.booking' );
         my $bookings = $booking_ses->request(
-            'open-ils.booking.reservations.filtered_id_list',
-            { resource => $booking_item->id, start_time => 'now', end_time => $circ->due_date }
+            'open-ils.booking.reservations.filtered_id_list', $self->editor->authtoken,
+            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date }
         )->gather(1);
         $booking_ses->disconnect;
         
@@ -1849,6 +1849,14 @@ sub booking_adjusted_due_date {
                 $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') ) if ($due_date < DateTime->now); 
             }
             
+            # We set the circ duration here only to affect the logic that will
+            # later (in a DB trigger) mangle the time part of the due date to
+            # 11:59pm. Having any circ duration that is not a whole number of
+            # days is enough to prevent the "correction."
+            my $new_circ_duration = $due_date->epoch - time;
+            $new_circ_duration++ if $new_circ_duration % 86400 == 0;
+            $circ->duration("$new_circ_duration seconds");
+
             $circ->due_date(clense_ISO8601($due_date->strftime('%FT%T%z')));
             $changed = 1;
         }
