@@ -874,7 +874,7 @@ sub bookbag_feed {
 
 
 	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-	print $U->entityize($feed->toString) . "\n";
+	print $U->entityize(decode_utf8($feed->toString)) . "\n";
 
 	return Apache2::Const::OK;
 }
@@ -951,7 +951,7 @@ sub changes_feed {
 
 
 	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
-	print $U->entityize($feed->toString) . "\n";
+	print $U->entityize(decode_utf8($feed->toString)) . "\n";
 
 	return Apache2::Const::OK;
 }
