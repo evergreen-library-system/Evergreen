@@ -819,6 +819,10 @@ sub bookbag_feed {
 
 	my $skin = $cgi->param('skin') || 'default';
 	my $locale = $cgi->param('locale') || 'en-US';
+	my $org = $cgi->param('searchOrg');
+
+	my $org_unit = get_ou($org);
+	my $scope = "l=" . $org_unit->[0]->id . "&";
 
 	$root =~ s{(?<!http:)//}{/}go;
 	$base =~ s{(?<!http:)//}{/}go;
@@ -835,7 +839,7 @@ sub bookbag_feed {
 
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
 	if ($type eq 'opac') {
-		print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?rt=list&" .
+		print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?$scope" . "rt=list&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
 			"\n\n";
 		return 302;
@@ -846,7 +850,7 @@ sub bookbag_feed {
 		$type,
 		[ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
 		$unapi,
-		undef,
+		$org_unit->[0]->shortname,
 		$flesh_feed
 	);
 	$feed->root($root);
@@ -863,7 +867,7 @@ sub bookbag_feed {
 
 	$feed->link(
 		OPAC =>
-		$host . "/opac/$locale/skin/$skin/xml/rresult.xml?rt=list&" .
+		"http://$host/opac/$locale/skin/$skin/xml/rresult.xml?$scope" . "rt=list&" .
 			join('&', map { 'rl=' . $_->target_biblio_record_entry } @{$bucket->items} ),
 		'text/html'
 	);
@@ -897,6 +901,10 @@ sub changes_feed {
 
 	my $skin = $cgi->param('skin') || 'default';
 	my $locale = $cgi->param('locale') || 'en-US';
+	my $org = $cgi->param('searchOrg');
+
+	my $org_unit = get_ou($org);
+	my $scope = "l=" . $org_unit->[0]->id . "&";
 
 	my $path = $cgi->path_info;
 	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
@@ -917,7 +925,7 @@ sub changes_feed {
 	#	return 302;
 	#}
 
-	my $feed = create_record_feed( 'record', $type, $list, $unapi, undef, $flesh_feed);
+	my $feed = create_record_feed( 'record', $type, $list, $unapi, $org_unit->[0]->shortname, $flesh_feed);
 	$feed->root($root);
 
 	if ($date) {
@@ -936,7 +944,7 @@ sub changes_feed {
 
 	$feed->link(
 		OPAC =>
-		$host . "/opac/$locale/skin/$skin/xml/rresult.xml?rt=list&" .
+		"http://$host/opac/$locale/skin/$skin/xml/rresult.xml?$scope" . "rt=list&" .
 			join('&', map { 'rl=' . $_} @$list ),
 		'text/html'
 	);
@@ -1120,20 +1128,7 @@ sub opensearch_feed {
 
 	$log->debug("OpenSearch terms: $terms");
 
-	my $org_unit;
-	if ($org eq '-') {
-	 	$org_unit = $actor->request(
-			'open-ils.actor.org_unit_list.search' => parent_ou => undef
-		)->gather(1);
-	} elsif ($org !~ /^\d+$/o) {
-	 	$org_unit = $actor->request(
-			'open-ils.actor.org_unit_list.search' => shortname => uc($org)
-		)->gather(1);
-	} else {
-	 	$org_unit = $actor->request(
-			'open-ils.actor.org_unit_list.search' => id => $org
-		)->gather(1);
-	}
+	my $org_unit = get_ou($org);
 
 	# Apostrophes break search and get indexed as spaces anyway
 	my $safe_terms = $terms;
@@ -1893,6 +1888,33 @@ sub sru_search {
 
         return "$qualifier:$term";
     }
+}
+
+=head2 get_ou($org_unit)
+
+Returns an aou object for a given actor.org_unit shortname or ID.
+
+=cut
+
+sub get_ou {
+	my $org = shift || '-';
+	my $org_unit;
+
+	if ($org eq '-') {
+	 	$org_unit = $actor->request(
+			'open-ils.actor.org_unit_list.search' => parent_ou => undef
+		)->gather(1);
+	} elsif ($org !~ /^\d+$/o) {
+	 	$org_unit = $actor->request(
+			'open-ils.actor.org_unit_list.search' => shortname => uc($org)
+		)->gather(1);
+	} else {
+	 	$org_unit = $actor->request(
+			'open-ils.actor.org_unit_list.search' => id => $org
+		)->gather(1);
+	}
+
+	return $org_unit;
 }
 
 1;
