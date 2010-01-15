@@ -37,6 +37,7 @@ CREATE TABLE acq.provider (
     code                TEXT    NOT NULL,
     holding_tag         TEXT,
     san                 TEXT,
+    edi_default         INT,          -- REFERENCES acq.edi_account (id) DEFERRABLE INITIALLY DEFERRED
     CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
 	CONSTRAINT code_once_per_owner UNIQUE (code, owner)
 );
@@ -558,6 +559,14 @@ CREATE TABLE acq.fiscal_year (
 	CONSTRAINT acq_fy_logical_key  UNIQUE ( calendar, year ),
     CONSTRAINT acq_fy_physical_key UNIQUE ( calendar, year_begin )
 );
+
+CREATE TABLE acq.edi_account (      -- similar tables can extend remote_account for other parts of EG
+    provider    INT     NOT NULL REFERENCES acq.provider          (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    in_dir      TEXT    -- incoming messages dir (probably different than config.remote_account.path, the outgoing dir)
+) INHERITS (config.remote_account);
+
+-- We need a UNIQUE constraint here also, to support the FK from acq.provider.edi_default
+ALTER TABLE acq.edi_account ADD CONSTRAINT acq_edi_account_id_unique UNIQUE (id);
 
 -- Functions
 

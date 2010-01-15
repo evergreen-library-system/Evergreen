@@ -527,6 +527,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="cracct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::remote_account" oils_persist:tablename="config.remote_account" reporter:label="Remote (3rd party) Account">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.remote_account_id_seq">
+			<field name="id"            reporter:datatype="id"   reporter:label="ID"/>
+			<field name="label"         reporter:datatype="text" reporter:label="Label"/>
+			<field name="host"          reporter:datatype="text" reporter:label="Host"/>
+			<field name="username"      reporter:datatype="text" reporter:label="Username"/>
+			<field name="password"      reporter:datatype="text" reporter:label="Password"/>
+			<field name="account"       reporter:datatype="text" reporter:label="Account"/>
+			<field name="path"          reporter:datatype="text" reporter:label="Path"/>
+			<field name="owner"         reporter:datatype="link" reporter:label="Owner"/>
+			<field name="last_activity" reporter:datatype="timestamp" reporter:label="Last Activity"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="ADMIN_CONFIG_REMOTE_ACCOUNT" context_field="owner"/>
+                <retrieve permission="ADMIN_CONFIG_REMOTE_ACCOUNT" context_field="owner"/>
+                <update   permission="ADMIN_CONFIG_REMOTE_ACCOUNT" context_field="owner"/>
+                <delete   permission="ADMIN_CONFIG_REMOTE_ACCOUNT" context_field="owner"/>
+            </actions>
+        </permacrud>
+	</class>
+
     <class id="czs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_source" oils_persist:tablename="config.z3950_source" reporter:label="Z39.50 Source">
         <fields oils_persist:primary="name">
             <field reporter:label="Z39.50 Source" name="name" reporter:datatype="id"/>
@@ -4311,11 +4336,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Holdings Tag" name="holding_tag" reporter:datatype="text" />
 			<field reporter:label="Addresses" name="addresses" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="SAN" name="san" reporter:datatype="text" />
+			<field reporter:label="EDI Default" name="edi_default" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
             <link field="addresses" reltype="has_many" map="" key="provider" class="acqpa"/>
+            <link field="edi_default" reltype="has_a" map="" key="id" class="acqedi"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -5020,6 +5047,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is Identifier?" name="ident" reporter:datatype="bool"/>
 		</fields>
 		<links/>
+	</class>
+
+	<class id="acqedi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::edi_account" oils_persist:tablename="acq.edi_account" reporter:label="EDI Account">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.remote_account_id_seq"><!-- edi_account inherits from config.remote_account, hence the seq -->
+			<field name="id"            reporter:datatype="id"        reporter:label="EDI Account ID"/>
+			<field name="label"         reporter:datatype="text"      reporter:label="Label"/>
+			<field name="host"          reporter:datatype="text"      reporter:label="Host"/>
+			<field name="username"      reporter:datatype="text"      reporter:label="Username"/>
+			<field name="password"      reporter:datatype="text"      reporter:label="Password"/>
+			<field name="account"       reporter:datatype="text"      reporter:label="Account"/>
+			<field name="path"          reporter:datatype="text"      reporter:label="Path"/>
+			<field name="owner"         reporter:datatype="link"      reporter:label="Owner"/>
+			<field name="last_activity" reporter:datatype="timestamp" reporter:label="Last Activity"/>
+			<field name="provider"      reporter:datatype="link"      reporter:label="Provider"/>
+			<field name="in_dir"        reporter:datatype="text"      reporter:label="Incoming Directory"/>
+		</fields>
+		<links>
+			<link field="provider" reltype="has_a" key="id" map="" class="rof"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </create>
+                <retrieve permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </retrieve>
+                <update permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </update>
+                <delete permission="ADMIN_PROVIDER">
+                    <context link="provider" field="owner"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="rof" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::output_folder" oils_persist:tablename="reporter.output_folder" reporter:label="Output Folder">

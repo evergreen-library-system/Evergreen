@@ -37,6 +37,8 @@ ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_billing_address_fkey FO
 ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_holds_address_fkey FOREIGN KEY (holds_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_ill_address_fkey FOREIGN KEY (ill_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE acq.provider ADD CONSTRAINT acq_provider_edi_default_fkey FOREIGN KEY (edi_default) REFERENCES acq.edi_account (id) DEFERRABLE INITIALLY DEFERRED;
+
 ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
@@ -96,6 +98,8 @@ ALTER TABLE action.circulation ADD CONSTRAINT action_circulation_circ_lib_fkey F
 ALTER TABLE action.circulation ADD CONSTRAINT action_circulation_target_copy_fkey FOREIGN KEY (target_copy) REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE config.billing_type ADD CONSTRAINT config_billing_type_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE config.remote_account ADD CONSTRAINT config_remote_account_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE config.org_unit_setting_type ADD CONSTRAINT view_perm_fkey FOREIGN KEY (view_perm) REFERENCES permission.perm_list (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE config.org_unit_setting_type ADD CONSTRAINT update_perm_fkey FOREIGN KEY (update_perm) REFERENCES permission.perm_list (id) DEFERRABLE INITIALLY DEFERRED;

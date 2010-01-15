@@ -449,6 +449,19 @@ COMMENT ON TABLE config.net_access_level IS $$
  */
 $$;
 
+
+CREATE TABLE config.remote_account (
+    id          SERIAL  PRIMARY KEY,
+    label       TEXT    NOT NULL,
+    host        TEXT    NOT NULL,   -- name or IP, :port optional
+    username    TEXT,               -- optional, since we could default to $USER
+    password    TEXT,               -- optional, since we could use SSH keys, or anonymous login.
+    account     TEXT,               -- aka profile or FTP "account" command
+    path        TEXT,               -- aka directory
+    owner       INT     NOT NULL,   -- REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    last_activity TIMESTAMP WITH TIME ZONE
+);
+
 CREATE TABLE config.audience_map (
 	code		TEXT	PRIMARY KEY,
 	value		TEXT	NOT NULL,
