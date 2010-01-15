@@ -634,7 +634,7 @@ sub mk_env {
         my $copy;
 	    my $flesh = { 
 		    flesh => 2, 
-		    flesh_fields => {acp => ['call_number'], acn => ['record']} 
+		    flesh_fields => {acp => ['location', 'status', 'circ_lib', 'age_protect', 'call_number'], acn => ['record']}
 	    };
 	    if($self->copy_id) {
 		    $copy = $e->retrieve_asset_copy(
@@ -1003,6 +1003,11 @@ sub run_patron_permit_scripts {
         }
 
         push(@allevents, OpenILS::Event->new($_)) for (@$patron_events);
+    }
+
+    for (@allevents) {
+       $_->{payload} = $self->copy if 
+             ($_->{textcode} eq 'COPY_NOT_AVAILABLE');
     }
 
     $logger->info("circulator: permit_patron script returned events: @allevents") if @allevents;
