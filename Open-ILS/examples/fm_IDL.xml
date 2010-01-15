@@ -5064,7 +5064,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="in_dir"        reporter:datatype="text"      reporter:label="Incoming Directory"/>
 		</fields>
 		<links>
-			<link field="provider" reltype="has_a" key="id" map="" class="rof"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
