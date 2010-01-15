@@ -245,21 +245,21 @@
 
 
 <!-- The Acquisitions menu on the main menu -->
-<menu id="main.menu.acq" label="&staff.main.menu.acq.label;">
+<menu id="main.menu.acq" label="&staff.main.menu.acq.label;" accesskey="&staff.main.menu.acq.accesskey;">
     <menupopup id="main.menu.acq.popup">
-        <menuitem label="&staff.main.menu.acq.picklist.label;" command="cmd_acq_view_picklist"/>
-        <menuitem label="&staff.main.menu.acq.bib_search.label;" command="cmd_acq_bib_search"/>
-        <menuitem label="&staff.main.menu.acq.upload.label;" command="cmd_acq_upload"/>
-        <menuitem label="&staff.main.menu.acq.brief_record.label;" command="cmd_acq_new_brief_record"/>
+        <menuitem label="&staff.main.menu.acq.picklist.label;" accesskey="&staff.main.menu.acq.picklist.accesskey;" command="cmd_acq_view_picklist"/>
+        <menuitem label="&staff.main.menu.acq.bib_search.label;" accesskey="&staff.main.menu.acq.bib_search.accesskey;" command="cmd_acq_bib_search"/>
+        <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>
+        <menuitem label="&staff.main.menu.acq.brief_record.label;" accesskey="&staff.main.menu.acq.brief_record.accesskey;" command="cmd_acq_new_brief_record"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.acq.po.label;" command="cmd_acq_view_po" />
+        <menuitem label="&staff.main.menu.acq.po.label;" accesskey="&staff.main.menu.acq.po.accesskey;" command="cmd_acq_view_po" />
         <menuseparator />
-        <menuitem label="&staff.main.menu.acq.fund.label;" command="cmd_acq_view_fund" />
-        <menuitem label="&staff.main.menu.acq.funding_source.label;" command="cmd_acq_view_funding_source" />
-        <menuitem label="&staff.main.menu.acq.provider.label;" command="cmd_acq_view_provider" />
-        <menuitem label="&staff.main.menu.acq.currency_type.label;" command="cmd_acq_view_currency_type" />
-        <menuitem label="&staff.main.menu.acq.exchange_rate.label;" command="cmd_acq_view_exchange_rate" />
-        <menuitem label="&staff.main.menu.acq.distrib_formula.label;" command="cmd_acq_view_distrib_formula" />
+        <menuitem label="&staff.main.menu.acq.fund.label;" accesskey="&staff.main.menu.acq.fund.accesskey;" command="cmd_acq_view_fund" />
+        <menuitem label="&staff.main.menu.acq.funding_source.label;" accesskey="&staff.main.menu.acq.funding_source.accesskey;" command="cmd_acq_view_funding_source" />
+        <menuitem label="&staff.main.menu.acq.provider.label;" accesskey="&staff.main.menu.acq.provider.accesskey;" command="cmd_acq_view_provider" />
+        <menuitem label="&staff.main.menu.acq.currency_type.label;" accesskey="&staff.main.menu.acq.currency_type.accesskey;" command="cmd_acq_view_currency_type" />
+        <menuitem label="&staff.main.menu.acq.exchange_rate.label;" accesskey="&staff.main.menu.acq.exchange_rate.accesskey;" command="cmd_acq_view_exchange_rate" />
+        <menuitem label="&staff.main.menu.acq.distrib_formula.label;" accesskey="&staff.main.menu.acq.distrib_formula.accesskey;" command="cmd_acq_view_distrib_formula" />
     </menupopup>
 </menu>
 

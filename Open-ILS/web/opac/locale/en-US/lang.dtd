@@ -760,11 +760,29 @@
 <!ENTITY staff.main.menu.cat.z39_50_import.label "Import Record from Z39.50">
 
 <!ENTITY staff.main.menu.acq.label "Acquisitions">
+<!ENTITY staff.main.menu.acq.accesskey "A">
 <!ENTITY staff.main.menu.acq.picklist.label "Selection Lists">
+<!ENTITY staff.main.menu.acq.picklist.accesskey "L">
 <!ENTITY staff.main.menu.acq.bib_search.label "Title Search">
+<!ENTITY staff.main.menu.acq.bib_search.accesskey "T">
 <!ENTITY staff.main.menu.acq.brief_record.label "New Brief Record">
+<!ENTITY staff.main.menu.acq.brief_record.accesskey "B">
 <!ENTITY staff.main.menu.acq.upload.label "Load Order Record">
+<!ENTITY staff.main.menu.acq.upload.accesskey "O">
 <!ENTITY staff.main.menu.acq.po.label "Purchase Orders">
+<!ENTITY staff.main.menu.acq.po.accesskey "P">
+<!ENTITY staff.main.menu.acq.fund.label "Funds">
+<!ENTITY staff.main.menu.acq.fund.accesskey "F">
+<!ENTITY staff.main.menu.acq.funding_source.label "Funding Sources">
+<!ENTITY staff.main.menu.acq.funding_source.accesskey "S">
+<!ENTITY staff.main.menu.acq.provider.label "Providers">
+<!ENTITY staff.main.menu.acq.provider.accesskey "V">
+<!ENTITY staff.main.menu.acq.distrib_formula.label "Distribution Formulas">
+<!ENTITY staff.main.menu.acq.distrib_formula.accesskey "D">
+<!ENTITY staff.main.menu.acq.currency_type.label "Currency Types">
+<!ENTITY staff.main.menu.acq.currency_type.accesskey "C">
+<!ENTITY staff.main.menu.acq.exchange_rate.label "Exchange Rates">
+<!ENTITY staff.main.menu.acq.exchange_rate.accesskey "X">
 
 <!ENTITY staff.main.menu.booking.label "Booking">
 <!ENTITY staff.main.menu.booking.accesskey "B">
@@ -778,13 +796,6 @@
 <!ENTITY staff.main.menu.booking.reservation_pickup.accesskey "P">
 <!ENTITY staff.main.menu.booking.reservation_return.label "Return Reservations">
 <!ENTITY staff.main.menu.booking.reservation_return.accesskey "R">
-
-<!ENTITY staff.main.menu.acq.fund.label "Funds">
-<!ENTITY staff.main.menu.acq.funding_source.label "Funding Sources">
-<!ENTITY staff.main.menu.acq.provider.label "Providers">
-<!ENTITY staff.main.menu.acq.distrib_formula.label "Distribution Formulas">
-<!ENTITY staff.main.menu.acq.currency_type.label "Currency Types">
-<!ENTITY staff.main.menu.acq.exchange_rate.label "Exchange Rates">
 
 <!ENTITY staff.main.menu.circ.barcode.retrieve_patron "Retrieve Patron by Barcode">
 <!ENTITY staff.main.menu.circ.barcode.retrieve_patron.accesskey "P">
