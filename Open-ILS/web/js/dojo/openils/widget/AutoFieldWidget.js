@@ -89,6 +89,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         openils.widget.AutoFieldWidget.localeStrings.TRUE : 
                         openils.widget.AutoFieldWidget.localeStrings.FALSE;
                 case 'timestamp':
+                    if (!value) return '';
                     dojo.require('dojo.date.locale');
                     dojo.require('dojo.date.stamp');
                     var date = dojo.date.stamp.fromISOString(value);
