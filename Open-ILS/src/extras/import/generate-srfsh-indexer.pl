@@ -2,6 +2,8 @@
 use strict;
 use Getopt::Long;
 
+die "Obsolete ... records are ingested by stored procs within the db\n";
+
 my ($start, $stop, $count, $group, $out, $method) = (1,1,1,50,'dynamic-reindex-script.sfsh', 'open-ils.ingest.full.biblio.record_list');
 GetOptions (	"start=i" => \$start,
 		"end=i"   => \$stop,

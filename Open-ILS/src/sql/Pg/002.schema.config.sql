@@ -51,7 +51,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0134'); -- phasefx
+INSERT INTO config.upgrade_log (version) VALUES ('0136'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -149,6 +149,37 @@ CREATE TABLE config.xml_transform (
 	prefix		TEXT	NOT NULL,
 	xslt		TEXT	NOT NULL
 );
+
+CREATE TABLE config.biblio_fingerprint (
+	id			SERIAL	PRIMARY KEY,
+	name		TEXT	NOT NULL, 
+	xpath		TEXT	NOT NULL,
+    first_word  BOOL    NOT NULL DEFAULT FALSE,
+	format		TEXT	NOT NULL DEFAULT 'marcxml'
+);
+
+INSERT INTO config.biblio_fingerprint (name, xpath, format)
+    VALUES (
+        'Title',
+        '//marc:datafield[@tag="700"]/marc:subfield[@code="t"]|' ||
+            '//marc:datafield[@tag="240"]/marc:subfield[@code="a"]|' ||
+            '//marc:datafield[@tag="242"]/marc:subfield[@code="a"]|' ||
+            '//marc:datafield[@tag="246"]/marc:subfield[@code="a"]|' ||
+            '//marc:datafield[@tag="245"]/marc:subfield[@code="a"]',
+        'marcxml'
+    );
+
+INSERT INTO config.biblio_fingerprint (name, xpath, format, first_word)
+    VALUES (
+        'Author',
+        '//marc:datafield[@tag="700" and ./*[@code="t"]]/marc:subfield[@code="a"]|'
+            '//marc:datafield[@tag="100"]/marc:subfield[@code="a"]|'
+            '//marc:datafield[@tag="110"]/marc:subfield[@code="a"]|'
+            '//marc:datafield[@tag="111"]/marc:subfield[@code="a"]|'
+            '//marc:datafield[@tag="260"]/marc:subfield[@code="b"]',
+        'marcxml',
+        TRUE
+    );
 
 CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,

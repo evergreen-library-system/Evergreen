@@ -196,6 +196,18 @@ CREATE OR REPLACE FUNCTION reporter.simple_rec_delete (r_id BIGINT) RETURNS BOOL
     SELECT reporter.simple_rec_update($1, TRUE);
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION reporter.simple_rec_trigger () RETURNS TRIGGER AS $func$
+BEGIN
+    IF TG_OP = 'DELETE' THEN
+        PERFORM reporter.simple_rec_delete(NEW.id);
+    ELSE
+        PERFORM reporter.simple_rec_update(NEW.id);
+    END IF;
+
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
 DECLARE
     r_id        BIGINT;
@@ -238,9 +250,9 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER zzz_update_materialized_simple_rec_delete_tgr
-    AFTER UPDATE ON biblio.record_entry
-    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_bib_sync();
+--CREATE TRIGGER zzz_update_materialized_simple_rec_delete_tgr
+--    AFTER UPDATE ON biblio.record_entry
+--    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_bib_sync();
 
 
 CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$

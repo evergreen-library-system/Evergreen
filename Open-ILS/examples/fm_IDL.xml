@@ -1427,6 +1427,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+	<class id="cbfp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::biblio_fingerprint" oils_persist:tablename="config.biblio_fingerprint" reporter:label="Fingerprint Definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.biblio_fingerprint_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="name" reporter:datatype="text"/>
+			<field name="xpath" reporter:datatype="text"/>
+			<field name="format" reporter:datatype="link"/>
+			<field name="first_word" reporter:datatype="bool" />
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_BIBLIO_FINGERPRINT" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_BIBLIO_FINGERPRINT" global_required="true"/>
+                <delete permission="DELETE_BIBLIO_FINGERPRINT" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="cam" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::audience_map" oils_persist:tablename="config.audience_map" reporter:label="Audience Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field reporter:label="Audience Code" name="code" reporter:selector="value" reporter:datatype="text"/>

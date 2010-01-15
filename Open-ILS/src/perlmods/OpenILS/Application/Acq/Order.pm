@@ -225,7 +225,8 @@ sub create_lineitem_list_assets {
         $mgr->editor->xact_begin;
         my $data = create_lineitem_assets($mgr, $li_id) or return undef;
         $mgr->editor->xact_commit;
-        $mgr->push_ingest_queue($data->{li}->eg_bib_id) if $data->{new_bib};
+        # XXX ingest is in-db now
+        #$mgr->push_ingest_queue($data->{li}->eg_bib_id) if $data->{new_bib};
         $mgr->respond;
     }
     $mgr->process_ingest_records;
