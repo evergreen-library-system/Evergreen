@@ -302,13 +302,14 @@ sub disconnect {
 
 # -----------------------------------------------------------------------------
 # commits the db session and destroys the session
+# returns the status of the commit call
 # -----------------------------------------------------------------------------
 sub commit {
 	my $self = shift;
 	return unless $self->{xact_id};
-	$self->xact_commit;
-	$self->session->disconnect;
-	$self->{session} = undef;
+	my $stat = $self->xact_commit;
+    $self->disconnect;
+    return $stat;
 }
 
 # -----------------------------------------------------------------------------
