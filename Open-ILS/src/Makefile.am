@@ -75,7 +75,6 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/long-overdue-status-update.pl \
 		 $(supportscr)/action_trigger_runner.pl \
 		 $(srcdir)/extras/openurl_map.pl \
-		 $(srcdir)/extras/fast-extract \
 		 $(srcdir)/extras/import/marc_add_ids
 	 
 installautojs = $(autojsbinscripts)
@@ -135,7 +134,7 @@ if BUILDEGJAVA
 OILSJAVA_DIR = java
 endif
 
-bin_SCRIPTS = $(core_scripts) $(reporter_scripts) $(installautojs) @srcdir@/extras/eg_config
+bin_SCRIPTS = $(core_scripts) $(reporter_scripts) $(installautojs) @srcdir@/extras/eg_config @srcdir@/extras/fast-extract
 data_DATA = $(core_data) $(reporter_data)
 
 # Take care of which subdirectories to build, and which extra files to include in a distribution.

@@ -18,7 +18,7 @@ binmode(STDOUT, ':utf8');
 
 $| = 1;
 
-my ($config, $delim, $after,$deleted) = ('SYSCONFDIR/opensrf_core.xml', ' | ');
+my ($config, $delim, $after,$deleted) = ('@sysconfdir@/opensrf_core.xml', ' | ');
 
 GetOptions(
 	"after=s"	=> \$after,

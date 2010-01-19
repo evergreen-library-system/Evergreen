@@ -322,7 +322,12 @@ AC_CONFIG_FILES([Makefile
 		 Open-ILS/src/Makefile
 		 Open-ILS/web/Makefile
 		 Open-ILS/xul/staff_client/Makefile
-		 Open-ILS/src/extras/eg_config],  [if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi])
+		 Open-ILS/src/extras/eg_config
+		 Open-ILS/src/extras/fast-extract],
+		[
+			if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi;
+			if test -e "./Open-ILS/src/extras/fast-extract"; then chmod 755 Open-ILS/src/extras/fast-extract; fi;
+		])
 AC_OUTPUT
 
 #-------------------------------------------------
