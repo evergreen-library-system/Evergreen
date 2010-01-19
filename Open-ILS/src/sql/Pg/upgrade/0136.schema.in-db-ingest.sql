@@ -357,9 +357,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
--- Ingest triggers
-DROP TRIGGER zzz_update_materialized_simple_rec_delete_tgr ON biblio.record_entry;
-
 CREATE OR REPLACE FUNCTION reporter.simple_rec_trigger () RETURNS TRIGGER AS $func$
 BEGIN
     IF TG_OP = 'DELETE' THEN
@@ -377,3 +374,8 @@ CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.re
 CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
 
 COMMIT;
+
+-- Ingest triggers.  Not installed on all systems.  Delete outside the transaction
+DROP TRIGGER zzz_update_materialized_simple_rec_delete_tgr ON biblio.record_entry;
+
+
