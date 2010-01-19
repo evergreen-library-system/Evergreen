@@ -2,8 +2,15 @@ var cpdTemplate;
 var cpdCounter = 0;
 var cpdNodes = {};
 
+/* showDueDate will show the due date in the OPAC */
+var showDueDate = false;
+/* showDueTime will show the due time (hours and minutes) in the OPAC;
+   if showDueDate is false, then showDueTime has no effect
+*/
+var showDueTime = false;
+
 function cpdBuild( contextTbody, contextRow, record, callnumber, orgid, depth, copy_location ) {
-var i = cpdCheckExisting(contextRow);
+	var i = cpdCheckExisting(contextRow);
 	if(i) return i;
 
 	var counter = cpdCounter++;
@@ -25,6 +32,9 @@ var i = cpdCheckExisting(contextRow);
 		unHideMe($n(templateRow, 'age_protect_label'));
 		unHideMe($n(templateRow, 'create_date_label'));
 		unHideMe($n(templateRow, 'holdable_label'));
+	}
+
+	if (isXUL() || showDueDate) {
 		unHideMe($n(templateRow, 'due_date_label'));
 	}
 
@@ -177,6 +187,9 @@ function cpdDrawCopies(r) {
 		unHideMe($n(copyrow, 'age_protect_value'));
 		unHideMe($n(copyrow, 'create_date_value'));
 		unHideMe($n(copyrow, 'copy_holdable_td'));
+	}
+
+	if(isXUL() || showDueDate) {
 		unHideMe($n(copyrow, 'copy_due_date_td'));
 	}
 
@@ -236,15 +249,21 @@ function cpdDrawCopy(r) {
 		} else {
 			$n(row, 'copy_is_holdable').appendChild(text(no));	
 		}
+	}
 
+	if (isXUL() || showDueDate) {
 		var circ;
 		if( copy.circulations() ) {
 			circ = copy.circulations()[0];
 			if( circ ) {
-				$n(row, 'copy_due_date').appendChild(text(circ.due_date().replace(/[T ].*/,'')));
+                                var due_time = dojo.date.stamp.fromISOString(circ.due_date());
+                                if( showDueTime ) {
+                                        $n(row, 'copy_due_date').appendChild(text(dojo.date.locale.format(due_time, {"formatLength": "medium"})));
+                                } else {
+                                        $n(row, 'copy_due_date').appendChild(text(dojo.date.locale.format(due_time, {"selector": "date", "formatLength": "medium"})));
+                                }
 			}
 		}
-
 	}
 
 	r.args.copy = copy;
