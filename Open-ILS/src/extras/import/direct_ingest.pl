@@ -50,7 +50,7 @@ Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("ID
 
 OpenILS::Application::Ingest->use;
 
-if (!$auth and !$mfhd) {
+if (!$auth) {
     die "We have no more use for biblio ingest ... just insert the bre objects and you're done!\n";
 }
 
