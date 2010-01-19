@@ -174,6 +174,19 @@ AC_ARG_WITH([apxs],
 [  --with-apxs=path            location of the apxs Apache configuration tool (default is /usr/bin/apxs2)],
 [APXS2=${withval}],
 [APXS2=/usr/bin/apxs2])
+
+# If the passed in value doesn't work, try some reasonable defaults
+# Fedora puts the file in /usr/sbin/apxs, for example
+if ! test -x "$APXS2"; then
+	for i in /usr/bin /usr/sbin /usr/local/apache/bin /usr/local/apache2/bin ; do
+		for j in apxs apxs2 ; do
+			if test -x "$i/$j"; then
+				APXS2="$i/$j"
+				break
+			fi
+		done
+	done
+fi
 AC_SUBST([APXS2])
 
 AC_ARG_WITH([apache],
@@ -195,9 +208,20 @@ AC_ARG_WITH([libxml2],
 AC_SUBST([LIBXML2_HEADERS])
 
 AC_ARG_WITH([dbi],
-[  --with-dbi=path             location of the libdbi libraries (default is /usr/local/lib/dbd)],
+[  --with-dbi=path             location of the libdbi driver libraries (default is /usr/local/lib/dbd)],
 [DBI_LIBS=${withval}],
 [DBI_LIBS=/usr/local/lib/dbd/])
+
+# If the passed in value doesn't work, fall back to reasonable defaults
+# Distributions are starting to package a good version of libdbi / libdbd
+if ! test -d "$DBI_LIBS"; then
+	for i in /usr/lib/dbd/ /usr/local/lib/dbd/ ; do
+		if test -d "$i"; then
+			DBI_LIBS="$i"
+			break
+		fi
+	done
+fi
 AC_SUBST([DBI_LIBS])
 
 if test "x$openils_core" = "xtrue"; then
@@ -312,7 +336,7 @@ if test "x$build_apachemods" = "xtrue"; then
 	if test -x "${APXS2}"; then
 	AC_MSG_RESULT([yes])
 	else
-	AC_MSG_ERROR([*** apxs not found, aborting])
+	AC_MSG_ERROR([*** apxs not found in ${APXS2}, aborting])
 	fi  
 
 	AC_CONFIG_FILES([Open-ILS/src/apachemods/Makefile])
