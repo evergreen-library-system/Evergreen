@@ -358,7 +358,7 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 -- Ingest triggers
-DROP TRIGGER zzz_update_materialized_simple_rec_delete_tgr ON biblio.record_entry
+DROP TRIGGER zzz_update_materialized_simple_rec_delete_tgr ON biblio.record_entry;
 
 CREATE OR REPLACE FUNCTION reporter.simple_rec_trigger () RETURNS TRIGGER AS $func$
 BEGIN
