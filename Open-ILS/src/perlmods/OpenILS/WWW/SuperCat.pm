@@ -1312,7 +1312,7 @@ sub create_record_feed {
 		}
 
 		$node->id($item_tag);
-		#$node->update_ts(clense_ISO8601($record->edit_date));
+		#$node->update_ts(cleanse_ISO8601($record->edit_date));
 		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh);
 		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh);
 		$node->link(unapi => $feed->unapi . "?id=$item_tag") if ($flesh);

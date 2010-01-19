@@ -884,7 +884,7 @@ sub _hold_status {
 
         my $transit = $e->search_action_hold_transit_copy({hold => $hold->id})->[0];
         my $start_time = ($transit) ? $transit->dest_recv_time : $hold->capture_time;
-        $start_time = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($start_time));
+        $start_time = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time));
         my $end_time = $start_time->add(seconds => OpenSRF::Utils::interval_to_seconds($hs_wait_interval));
 
         return 5 if $end_time > DateTime->now;

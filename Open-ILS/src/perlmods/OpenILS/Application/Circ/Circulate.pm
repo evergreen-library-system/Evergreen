@@ -932,7 +932,7 @@ sub do_copy_checks {
 
                 if($auto_renew_intvl) {
                     my $intvl_seconds = OpenSRF::Utils->interval_to_seconds($auto_renew_intvl);
-                    my $checkout_time = DateTime::Format::ISO8601->new->parse_datetime( clense_ISO8601($old_circ->xact_start) );
+                    my $checkout_time = DateTime::Format::ISO8601->new->parse_datetime( cleanse_ISO8601($old_circ->xact_start) );
 
                     if(DateTime->now > $checkout_time->add(seconds => $intvl_seconds)) {
                         $payload->{auto_renew} = 1;
@@ -1721,7 +1721,7 @@ sub build_checkout_circ_object {
     # if the user provided an overiding checkout time,
     # (e.g. the checkout really happened several hours ago), then
     # we apply that here.  Does this need a perm??
-    $circ->xact_start(clense_ISO8601($self->checkout_time))
+    $circ->xact_start(cleanse_ISO8601($self->checkout_time))
         if $self->checkout_time;
 
     # if a patron is renewing, 'requestor' will be the patron
@@ -1809,7 +1809,7 @@ sub booking_adjusted_due_date {
         return $self->bail_on_events($self->editor->event)
             unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
 
-       $circ->due_date(clense_ISO8601($self->due_date));
+       $circ->due_date(cleanse_ISO8601($self->due_date));
 
     } else {
 
@@ -1834,14 +1834,14 @@ sub booking_adjusted_due_date {
         $booking_ses->disconnect;
         
         my $dt_parser = DateTime::Format::ISO8601->new;
-        my $due_date = $dt_parser->parse_datetime( clense_ISO8601($circ->due_date) );
+        my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($circ->due_date) );
 
         for my $bid (@$bookings) {
 
             my $booking = $self->editor->retrieve_booking_reservation( $bid );
 
-            my $booking_start = $dt_parser->parse_datetime( clense_ISO8601($booking->start_time) );
-            my $booking_end = $dt_parser->parse_datetime( clense_ISO8601($booking->end_time) );
+            my $booking_start = $dt_parser->parse_datetime( cleanse_ISO8601($booking->start_time) );
+            my $booking_end = $dt_parser->parse_datetime( cleanse_ISO8601($booking->end_time) );
 
             return $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') )
                 if ($booking_start < DateTime->now);
@@ -1862,7 +1862,7 @@ sub booking_adjusted_due_date {
             $new_circ_duration++ if $new_circ_duration % 86400 == 0;
             $circ->duration("$new_circ_duration seconds");
 
-            $circ->due_date(clense_ISO8601($due_date->strftime('%FT%T%z')));
+            $circ->due_date(cleanse_ISO8601($due_date->strftime('%FT%T%z')));
             $changed = 1;
         }
 
@@ -1884,7 +1884,7 @@ sub apply_modified_due_date {
         return $self->bail_on_events($self->editor->event)
             unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
 
-      $circ->due_date(clense_ISO8601($self->due_date));
+      $circ->due_date(cleanse_ISO8601($self->due_date));
 
    } else {
 
@@ -2012,7 +2012,7 @@ sub checkout_noncat {
 
    my $lib      = $self->noncat_circ_lib || $self->editor->requestor->ws_ou;
    my $count    = $self->noncat_count || 1;
-   my $cotime   = clense_ISO8601($self->checkout_time) || "";
+   my $cotime   = cleanse_ISO8601($self->checkout_time) || "";
 
    $logger->info("circulator: circ creating $count noncat circs with checkout time $cotime");
 

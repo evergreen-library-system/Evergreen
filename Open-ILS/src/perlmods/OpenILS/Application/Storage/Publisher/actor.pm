@@ -252,8 +252,8 @@ sub make_closure_spanset {
 
         $spanset = $spanset->union(
             DateTime::Span->new(
-                start => $_dt_parser->parse_datetime(clense_ISO8601($c->{close_start})),
-                end   => $_dt_parser->parse_datetime(clense_ISO8601($c->{close_end}))
+                start => $_dt_parser->parse_datetime(cleanse_ISO8601($c->{close_start})),
+                end   => $_dt_parser->parse_datetime(cleanse_ISO8601($c->{close_end}))
             )
         );
     }
@@ -282,7 +282,7 @@ sub new_org_closed_overlap {
 		  LIMIT 1
 	SQL
 
-	$date = clense_ISO8601($date);
+	$date = cleanse_ISO8601($date);
 
     my $target_date = $_dt_parser->parse_datetime( $date );
 	my ($begin, $end) = ($target_date, $target_date);
@@ -301,7 +301,7 @@ sub new_org_closed_overlap {
 			$begin->subtract( minutes => 1 );
 
 			while ( my $_b = new_org_closed_overlap($self, $client, $ou, $begin->strftime('%FT%T%z'), -1, 1 ) ) {
-				$begin = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
+				$begin = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{start}) );
 			}
 		}
 
@@ -309,7 +309,7 @@ sub new_org_closed_overlap {
 			$end->add( minutes => 1 );
 
 			while ( my $_a = new_org_closed_overlap($self, $client, $ou, $end->strftime('%FT%T%z'), 1, 1 ) ) {
-				$end = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
+				$end = $_dt_parser->parse_datetime( cleanse_ISO8601($_a->{end}) );
 			}
 		}
     }
@@ -326,7 +326,7 @@ sub new_org_closed_overlap {
             $begin->subtract( minutes => 1 );
 
             while ( my $_b = new_org_closed_overlap($self, $client, $ou, $begin->strftime('%FT%T%z'), -1 ) ) {
-                $begin = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
+                $begin = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{start}) );
             }
         }
 	
@@ -337,7 +337,7 @@ sub new_org_closed_overlap {
 
 
             while ( my $_b = new_org_closed_overlap($self, $client, $ou, $end->strftime('%FT%T%z'), -1 ) ) {
-                $end = $_dt_parser->parse_datetime( clense_ISO8601($_b->{end}) );
+                $end = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{end}) );
             }
         }
     }
@@ -374,23 +374,23 @@ sub org_closed_overlap {
           LIMIT 1
     SQL
 
-    $date = clense_ISO8601($date);
+    $date = cleanse_ISO8601($date);
     my ($begin, $end) = ($date,$date);
 
     my $hoo = actor::org_unit::hours_of_operation->retrieve($ou);
 
     if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $date, $ou )) {
-        $begin = clense_ISO8601($closure->{close_start});
-        $end = clense_ISO8601($closure->{close_end});
+        $begin = cleanse_ISO8601($closure->{close_start});
+        $end = cleanse_ISO8601($closure->{close_end});
 
         if ( $direction <= 0 ) {
             $before = $_dt_parser->parse_datetime( $begin );
             $before->subtract( minutes => 1 );
 
             while ( my $_b = org_closed_overlap($self, $client, $ou, $before->strftime('%FT%T%z'), -1, 1 ) ) {
-                $before = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
+                $before = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{start}) );
             }
-            $begin = clense_ISO8601($before->strftime('%FT%T%z'));
+            $begin = cleanse_ISO8601($before->strftime('%FT%T%z'));
         }
 
         if ( $direction >= 0 ) {
@@ -398,9 +398,9 @@ sub org_closed_overlap {
             $after->add( minutes => 1 );
 
             while ( my $_a = org_closed_overlap($self, $client, $ou, $after->strftime('%FT%T%z'), 1, 1 ) ) {
-                $after = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
+                $after = $_dt_parser->parse_datetime( cleanse_ISO8601($_a->{end}) );
             }
-            $end = clense_ISO8601($after->strftime('%FT%T%z'));
+            $end = cleanse_ISO8601($after->strftime('%FT%T%z'));
         }
     }
 
@@ -414,7 +414,7 @@ sub org_closed_overlap {
 
                 my $count = 1;
                 while ($hoo->$begin_open_meth eq '00:00:00' and $hoo->$begin_close_meth eq '00:00:00') {
-                    $begin = clense_ISO8601($_dt_parser->parse_datetime( $begin )->subtract( days => 1)->strftime('%FT%T%z'));
+                    $begin = cleanse_ISO8601($_dt_parser->parse_datetime( $begin )->subtract( days => 1)->strftime('%FT%T%z'));
                     $begin_dow++;
                     $begin_dow %= 7;
                     $count++;
@@ -427,7 +427,7 @@ sub org_closed_overlap {
                     $before = $_dt_parser->parse_datetime( $begin );
                     $before->subtract( minutes => 1 );
                     while ( my $_b = org_closed_overlap($self, $client, $ou, $before->strftime('%FT%T%z'), -1 ) ) {
-                        $before = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
+                        $before = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{start}) );
                     }
                 }
             }
@@ -439,7 +439,7 @@ sub org_closed_overlap {
     
                 $count = 1;
                 while ($hoo->$end_open_meth eq '00:00:00' and $hoo->$end_close_meth eq '00:00:00') {
-                    $end = clense_ISO8601($_dt_parser->parse_datetime( $end )->add( days => 1)->strftime('%FT%T%z'));
+                    $end = cleanse_ISO8601($_dt_parser->parse_datetime( $end )->add( days => 1)->strftime('%FT%T%z'));
                     $end_dow++;
                     $end_dow %= 7;
                     $count++;
@@ -453,9 +453,9 @@ sub org_closed_overlap {
                     $after->add( minutes => 1 );
 
                     while ( my $_a = org_closed_overlap($self, $client, $ou, $after->strftime('%FT%T%z'), 1 ) ) {
-                        $after = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
+                        $after = $_dt_parser->parse_datetime( cleanse_ISO8601($_a->{end}) );
                     }
-                    $end = clense_ISO8601($after->strftime('%FT%T%z'));
+                    $end = cleanse_ISO8601($after->strftime('%FT%T%z'));
                 }
             }
 

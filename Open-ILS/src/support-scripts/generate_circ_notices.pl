@@ -328,7 +328,7 @@ sub get_bib_attr {
 # provides a date that Template::Plugin::Date can parse
 sub parse_due_date {
     my $circ = shift;
-    my $due = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
+    my $due = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
     return sprintf(
         "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
         $due->hour,

@@ -690,7 +690,7 @@ sub generate_fines {
 			$log->info("Processing circ ".$c->id."...\n");
 
 
-			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->$due_date_method ) );
+			my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->$due_date_method ) );
 	
 			my $due = $due_dt->epoch;
 			my $now = time;
@@ -733,8 +733,8 @@ sub generate_fines {
 	
 			my $last_fine;
 			if ($fine) {
-				$client->respond( "Last billing time: ".$fine->billing_ts." (clensed fromat: ".clense_ISO8601( $fine->billing_ts ).")");
-				$last_fine = $parser->parse_datetime( clense_ISO8601( $fine->billing_ts ) )->epoch;
+				$client->respond( "Last billing time: ".$fine->billing_ts." (clensed format: ".cleanse_ISO8601( $fine->billing_ts ).")");
+				$last_fine = $parser->parse_datetime( cleanse_ISO8601( $fine->billing_ts ) )->epoch;
 			} else {
 				$log->info( "Potential first billing for circ ".$c->id );
 				$last_fine = $due;
@@ -1003,7 +1003,7 @@ sub new_hold_copy_targeter {
 			$_->delete for (@oldmaps);
 
 			if ($hold->expire_time) {
-				my $ex_time = $parser->parse_datetime( clense_ISO8601( $hold->expire_time ) );
+				my $ex_time = $parser->parse_datetime( cleanse_ISO8601( $hold->expire_time ) );
 				if ( DateTime->compare($ex_time, DateTime->now) < 0 ) {
 
 					# cancel cause = un-targeted expiration
@@ -1369,7 +1369,7 @@ sub reservation_targeter {
 
 			die "OK\n" if (!$bresv or $bresv->capture_time or $bresv->cancel_time);
 
-			my $end_time = $parser->parse_datetime( clense_ISO8601( $bresv->end_time ) );
+			my $end_time = $parser->parse_datetime( cleanse_ISO8601( $bresv->end_time ) );
 			if (DateTime->compare($end_time, DateTime->now) < 0) {
 
 				# cancel cause = un-targeted expiration
@@ -1432,8 +1432,8 @@ sub reservation_targeter {
 
                     if (@$circs) {
                         my $due_date = $circs->[0]->due_date;
-			            $due_date = $parser->parse_datetime( clense_ISO8601( $due_date ) );
-			            my $start_time = $parser->parse_datetime( clense_ISO8601( $bresv->start_time ) );
+			            $due_date = $parser->parse_datetime( cleanse_ISO8601( $due_date ) );
+			            my $start_time = $parser->parse_datetime( cleanse_ISO8601( $bresv->start_time ) );
                         next if (DateTime->compare($start_time, $due_date) < 0);
                         push @good_resources, $res;
                     }

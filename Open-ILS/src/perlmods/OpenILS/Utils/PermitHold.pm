@@ -165,7 +165,7 @@ sub check_age_protect {
 	# Now, now many seconds old is this copy
 	my $create_date = DateTime::Format::ISO8601
 		->new
-		->parse_datetime( OpenSRF::Utils::clense_ISO8601($copy->create_date) )
+		->parse_datetime( OpenSRF::Utils::cleanse_ISO8601($copy->create_date) )
 		->epoch;
 
 	my $age = time - $create_date;

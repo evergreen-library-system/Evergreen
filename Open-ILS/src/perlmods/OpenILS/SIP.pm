@@ -158,7 +158,7 @@ sub format_date {
 	return "" unless $date;
 
 	$date = DateTime::Format::ISO8601->new->
-		parse_datetime(OpenSRF::Utils::clense_ISO8601($date));
+		parse_datetime(OpenSRF::Utils::cleanse_ISO8601($date));
 	my @time = localtime($date->epoch);
 
 	my $year = $time[5]+1900;

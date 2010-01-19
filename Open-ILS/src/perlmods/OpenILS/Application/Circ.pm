@@ -368,7 +368,7 @@ sub set_circ_claims_returned {
 
     if( $backdate ) {
         # make it look like the circ stopped at the cliams returned time
-        $circ->stop_fines_time(clense_ISO8601($backdate));
+        $circ->stop_fines_time(cleanse_ISO8601($backdate));
         my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($e, $circ, $backdate);
         return $evt if $evt;
     }
@@ -451,8 +451,8 @@ sub post_checkin_backdate_circ_impl {
         $backdate and $circ->checkin_time;
 
     # update the checkin and stop_fines times to reflect the new backdate
-    $circ->stop_fines_time(clense_ISO8601($backdate));
-    $circ->checkin_time(clense_ISO8601($backdate));
+    $circ->stop_fines_time(cleanse_ISO8601($backdate));
+    $circ->checkin_time(cleanse_ISO8601($backdate));
     $e->update_action_circulation($circ) or return $e->die_event;
 
     # now void the overdues "erased" by the back-dating
@@ -489,7 +489,7 @@ sub set_circ_due_date {
         or return $e->die_event;
 
     return $e->die_event unless $e->allowed('CIRC_OVERRIDE_DUE_DATE', $circ->circ_lib);
-	$date = clense_ISO8601($date);
+	$date = cleanse_ISO8601($date);
 	$circ->due_date($date);
     $e->update_action_circulation($circ) or return $e->die_event;
     $e->commit;
@@ -545,7 +545,7 @@ sub create_in_house_use {
 	}
 
 	if( $use_time ne 'now' ) {
-		$use_time = clense_ISO8601($use_time);
+		$use_time = cleanse_ISO8601($use_time);
 		$logger->debug("in_house_use setting use time to $use_time");
 	}
 

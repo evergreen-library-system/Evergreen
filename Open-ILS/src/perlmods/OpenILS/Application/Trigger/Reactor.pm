@@ -22,7 +22,7 @@ my $_TT_helpers = {
     # turns a date into something TT can understand
     format_date => sub {
         my $date = shift;
-        $date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($date));
+        $date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date));
         return sprintf(
             "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
             $date->hour,

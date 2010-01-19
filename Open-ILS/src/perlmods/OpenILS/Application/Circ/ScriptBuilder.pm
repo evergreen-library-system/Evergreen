@@ -226,7 +226,7 @@ sub fetch_user_data {
 			unless $U->is_true($patron->card->active);
 	
 		my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-			clense_ISO8601($patron->expire_date));
+			cleanse_ISO8601($patron->expire_date));
 	
 		return OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED')
 			if( CORE::time > $expire->epoch ) ;

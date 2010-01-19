@@ -1853,7 +1853,7 @@ sub checkedout_count {
 
 	my (@out,@overdue);
 	for my $c (@$circs) {
-		my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
+		my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->due_date ) );
 		my $due = $due_dt->epoch;
 
 		if ($due < DateTime->today->epoch) {
@@ -1942,7 +1942,7 @@ sub _checked_out_WHAT {
 	my (@out,@overdue);
 	for my $c (@$circs) {
 		if( $c->due_date ) {
-			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
+			my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->due_date ) );
 			my $due = $due_dt->epoch;
 			if ($due < DateTime->today->epoch) {
 				push @overdue, $c->id;

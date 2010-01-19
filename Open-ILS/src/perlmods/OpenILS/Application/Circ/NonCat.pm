@@ -174,7 +174,7 @@ sub noncat_due_date {
 	my $otype = $e->retrieve_config_non_cataloged_type($circ->item_type) 
 		or return $e->die_event;
 
-	my $duedate = $_dt_parser->parse_datetime( clense_ISO8601($circ->circ_time) );
+	my $duedate = $_dt_parser->parse_datetime( cleanse_ISO8601($circ->circ_time) );
 	$duedate = $duedate
 		->add( seconds => interval_to_seconds($otype->circ_duration) )
 		->strftime('%FT%T%z');
