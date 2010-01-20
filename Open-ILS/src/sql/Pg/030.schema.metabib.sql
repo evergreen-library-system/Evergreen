@@ -375,7 +375,7 @@ $func$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION biblio.flatten_marc ( TEXT ) RETURNS SETOF metabib.full_rec AS $func$
 
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 
 my $xml = shift;
 my $r = MARC::Record->new_from_xml( $xml );

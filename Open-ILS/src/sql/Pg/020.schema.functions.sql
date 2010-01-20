@@ -34,13 +34,15 @@ CREATE OR REPLACE FUNCTION public.non_filing_normalize ( TEXT, "char" ) RETURNS 
 $$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $func$
-    use Unicode::Normalize;
-    use Encode;
+	use Unicode::Normalize;
+	use Encode;
 
-	my $txt = lc(encode_utf8(shift));
+	# When working with Unicode data, the first step is to decode it to
+	# a byte string; after that, lowercasing is safe
+	my $txt = lc(decode_utf8(shift));
 	my $sf = shift;
 
-    $txt = NFD($txt);
+	$txt = NFD($txt);
 	$txt =~ s/\pM+//go;	# Remove diacritics
 
 	$txt =~ s/\xE6/AE/go;	# Convert ae digraph
@@ -73,7 +75,9 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
 	$txt =~ s/^\s+//o;	# Remove leading space
 	$txt =~ s/\s+$//o;	# Remove trailing space
 
-	return $txt;
+	# Encoding the outgoing string is good practice, but not strictly
+	# necessary in this case because we've stripped everything from it
+	return encode_utf8($txt);
 $func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT ) RETURNS TEXT AS $func$
