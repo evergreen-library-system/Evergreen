@@ -361,7 +361,7 @@ BEGIN
 		output.ind2 := field.ind2;
 		output.tag := field.tag;
 		output.subfield := field.subfield;
-		IF field.subfield IS NOT NULL THEN
+		IF field.subfield IS NOT NULL AND field.tag NOT IN ('020','022','024') THEN -- exclude standard numbers and control fields
 			output.value := naco_normalize(field.value, field.subfield);
 		ELSE
 			output.value := field.value;

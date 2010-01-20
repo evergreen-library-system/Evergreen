@@ -35,8 +35,9 @@ $$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $func$
     use Unicode::Normalize;
+    use Encode;
 
-	my $txt = lc(shift);
+	my $txt = lc(encode_utf8(shift));
 	my $sf = shift;
 
     $txt = NFD($txt);
