@@ -2651,12 +2651,6 @@ sub checkin_handle_circ {
       $circ->stop_fines_time($self->backdate) if $self->backdate;
    }
 
-   # see if there are any fines owed on this circ.  if not, close it
-    ($obt) = $U->fetch_mbts($circ->id, $self->editor);
-    $circ->xact_finish('now') if( $obt and $obt->balance_owed == 0 );
-
-    $logger->debug("circulator: ".$obt->balance_owed." is owed on this circulation");
-
     # Set the checkin vars since we have the item
     $circ->checkin_time( ($self->backdate) ? $self->backdate : 'now' );
 
@@ -2694,6 +2688,13 @@ sub checkin_handle_circ {
         $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
         $self->update_copy;
     }
+
+
+    # see if there are any fines owed on this circ.  if not, close it
+    ($obt) = $U->fetch_mbts($circ->id, $self->editor);
+    $circ->xact_finish('now') if( $obt and $obt->balance_owed == 0 );
+
+    $logger->debug("circulator: ".$obt->balance_owed." is owed on this circulation");
 
     return $self->bail_on_events($self->editor->event)
         unless $self->editor->update_action_circulation($circ);
