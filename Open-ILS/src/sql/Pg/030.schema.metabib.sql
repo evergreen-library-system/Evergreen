@@ -333,7 +333,7 @@ BEGIN
 		output_row.field_class = idx.field_class;
 		output_row.field = idx.id;
 		output_row.source = rid;
-		output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'gs'));
+		output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'g'));
 
 		RETURN NEXT output_row;
 
