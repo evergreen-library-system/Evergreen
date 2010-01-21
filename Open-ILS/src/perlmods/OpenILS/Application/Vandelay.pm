@@ -36,6 +36,7 @@ sub create_bib_queue {
 	my $name = shift;
 	my $owner = shift;
 	my $type = shift;
+	my $import_def = shift;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
 
@@ -51,6 +52,7 @@ sub create_bib_queue {
 	$queue->name( $name );
 	$queue->owner( $owner );
 	$queue->queue_type( $type ) if ($type);
+	$queue->item_attr_def( $import_def ) if ($import_def);
 
 	my $new_q = $e->create_vandelay_bib_queue( $queue );
 	return $e->die_event unless ($new_q);
@@ -62,7 +64,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.vandelay.bib_queue.create",
 	method		=> "create_bib_queue",
 	api_level	=> 1,
-	argc		=> 3,
+	argc		=> 4,
 );                      
 
 
