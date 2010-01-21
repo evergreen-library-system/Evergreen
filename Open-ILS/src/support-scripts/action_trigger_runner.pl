@@ -62,9 +62,12 @@ my $hook_handlers = {
 };
 
 if ($opt_custom_filter) {
-    open FILTERS, $opt_custom_filter;
-    $hook_handlers = OpenSRF::Utils::JSON->JSON2perl(join('',(<FILTERS>)));
-    close FILTERS;
+    if (open FILTERS, $opt_custom_filter) {
+        $hook_handlers = OpenSRF::Utils::JSON->JSON2perl(join('',(<FILTERS>)));
+        close FILTERS;
+    } else {
+        die "Cannot read filter file '$opt_custom_filter'";
+    }
 }
 
 sub help {
