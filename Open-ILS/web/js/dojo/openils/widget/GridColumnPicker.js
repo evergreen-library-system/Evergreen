@@ -36,7 +36,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
             this.structure = structure;
             if(!structure) 
                 this.structure = this.grid.attr('structure');
-            this.dialogTable = this.dialog.domNode.getElementsByTagName('tbody')[0];
+            this.dialogTable = this.dialog.containerNode.getElementsByTagName('tbody')[0];
             this.baseCellList = this.structure[0].cells[0].slice();
             this.build();
             this.authtoken = authtoken;
@@ -61,7 +61,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
                 "<thead><tr><th width='33%'>Column</th><th width='33%'>Display</th><th width='33%'>Auto Width</th></tr></thead>" +
                 "<tbody><tr><td><div name='cancel_button'/></td><td><div name='save_button'/></td></tr></tbody></table>" });
 
-            dialog.domNode.appendChild(table);
+            dialog.containerNode.appendChild(table);
 
             var button = new dijit.form.Button({label:'Save'}, dojo.query('[name=save_button]', table)[0]);
             button.onClick = function() { dialog.hide(); self.update(true); };

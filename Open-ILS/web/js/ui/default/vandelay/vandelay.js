@@ -735,7 +735,7 @@ function vlQueueGridDrawSelectBox(rowIdx, item) {
 
 function vlQueueGridFormatSelectBox(id) {
     var domId = 'vl-record-list-selected-' + id;
-    selectableGridRecords[domId] = id;
+    if (id) { selectableGridRecords[domId] = id; }
     return "<div><input type='checkbox' id='"+domId+"'/></div>";
 }
 
