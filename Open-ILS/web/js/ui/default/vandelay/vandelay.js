@@ -287,13 +287,13 @@ function uploadMARC(onload){
 /**
   * Creates a new vandelay queue
   */
-function createQueue(queueName, type, onload) {
+function createQueue(queueName, type, onload, importDefId) {
     var name = (type=='bib') ? 'bib' : 'authority';
     var method = 'open-ils.vandelay.'+ name +'_queue.create'
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueName, null, name],
+            params: [authtoken, queueName, null, name, importDefId],
             oncomplete : function(r) {
                 var queue = r.recv().content();
                 if(e = openils.Event.parse(queue)) 
@@ -899,7 +899,7 @@ function batchUpload() {
         currentQueueId = vlUploadQueueSelector.getValue();
         uploadMARC(handleUploadMARC);
     } else {
-        createQueue(queueName, currentType, handleCreateQueue);
+        createQueue(queueName, currentType, handleCreateQueue, vlUploadQueueHoldingsImportProfile.attr('value'));
     }
 }
 

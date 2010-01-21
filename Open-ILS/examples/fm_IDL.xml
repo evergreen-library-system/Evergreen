@@ -149,7 +149,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="vii" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_item" oils_persist:tablename="vandelay.import_item" reporter:label="Import Item Attribute Definition">
+	<class id="vii" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_item" oils_persist:tablename="vandelay.import_item" reporter:label="Import Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_item_id_seq">
 			<field reporter:label="Import Item ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Import Record" name="record" reporter:datatype="link"/>
@@ -243,9 +243,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
 			<field reporter:label="Type" name="queue_type" reporter:datatype="text"/>
+			<field reporter:label="Item Import Attribute Definition" name="item_attr_def" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="item_attr_def" reltype="has_a" key="id" map="" class="viiad"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
