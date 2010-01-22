@@ -297,8 +297,11 @@ function main_init() {
             document.getElementById('debug_gb').hidden = false;
         }
 
-        if (G.pref && G.pref.getBoolPref('open-ils.debug_options')) {
-            document.getElementById('debug_gb').hidden = false;
+        try {
+            if (G.pref && G.pref.getBoolPref('open-ils.debug_options')) {
+                document.getElementById('debug_gb').hidden = false;
+            }
+        } catch(E) {
         }
 
         window.title = authStrings.getFormattedString('staff.auth.titlebar.label', version);

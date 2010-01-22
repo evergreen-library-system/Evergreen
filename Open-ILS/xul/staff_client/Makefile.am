@@ -22,6 +22,9 @@ endif
 
 install-exec-local: $(OILSSERVER_INST)
 
+devbuild: build
+	@cp external/developers.js build/defaults/preferences/
+
 build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp 
 	@echo To test the staff client:
 	@echo "  cd build/"

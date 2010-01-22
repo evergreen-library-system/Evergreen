@@ -48,17 +48,6 @@ pref("browser.popups.showPopupBlocker", false);
 pref("privacy.popups.disable_from_plugins",0);
 pref("privacy.popups.policy",0);
 
-// Developer options
-pref("browser.dom.window.dump.enabled",true);
-pref("javascript.options.strict",false);
-pref("javascript.options.showInConsole",true);
-pref("nglayout.debug.disable_xul_cache",false);
-pref("nglayout.debug.disable_xul_fastload",false);
-pref("browser.xul.error_pages.enabled",true);
-// This one is specific for Open-ILS; debug options on login window
-pref("open-ils.debug_options", true);
-
-
 pref("browser.download.useDownloadDir", true);
 pref("browser.download.folderList", 0);
 pref("browser.download.manager.showAlertOnComplete", true);
@@ -71,6 +60,8 @@ pref("browser.download.manager.openDelay", 0);
 pref("browser.download.manager.focusWhenStarting", false);
 pref("browser.download.manager.flashCount", 2); 
 
+// Developer options we want for all builds
+pref("browser.dom.window.dump.enabled",true);
 
 // For extension manager, etc.
 pref("xpinstall.dialog.confirm", "chrome://mozapps/content/xpinstall/xpinstallConfirm.xul");
