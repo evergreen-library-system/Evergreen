@@ -563,8 +563,12 @@ sub multiclass_query {
     $logger->debug("cleansed query string => $query");
     my $search = $arghash->{searches} = {};
 
-    while ($query =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang|available):[^:]+)$//so) {
-        my($type, $value) = split(':', $1);
+    while ($query =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang|available):.+?)$//so) {
+        my $qpart = $1;
+        my $where = index($qpart,':');
+        my $type = substr($qpart1, 0, $where++);
+        my $value = substr($qpart1, $where);
+
         next unless $type and $value;
 
         $value =~ s/^\s*//og;
