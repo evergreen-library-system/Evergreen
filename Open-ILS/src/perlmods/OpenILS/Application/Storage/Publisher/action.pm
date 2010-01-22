@@ -673,7 +673,9 @@ sub generate_fines {
         my $target_copy_method = 'target_copy';
         my $circ_lib_method = 'circ_lib';
         my $recurring_fine_method = 'recurring_fine';
+        my $is_reservation = 0;
         if ($ctype eq 'reservation') {
+            $is_reservation = 1;
             $due_date_method = 'end_time';
             $target_copy_method = 'current_resource';
             $circ_lib_method = 'pickup_lib';
@@ -699,7 +701,7 @@ sub generate_fines {
             $fine_interval =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
 			$fine_interval = interval_to_seconds( $fine_interval );
 	
-			if ( $fine_interval >= interval_to_seconds('1d') ) {	
+			if ( $is_reservation and $fine_interval >= interval_to_seconds('1d') ) {	
 				my $tz_offset_s = 0;
 				if ($due_dt->strftime('%z') =~ /(-|\+)(\d{2}):?(\d{2})/) {
 					$tz_offset_s = $1 . interval_to_seconds( "${2}h ${3}m"); 
@@ -773,22 +775,26 @@ sub generate_fines {
 				}
 			}
 
+            next if ($last_fine > $now);
+            my $pending_fine_count = int( ($now - $last_fine) / $fine_interval ); 
 
-			my $pending_fine_count = int( ($now - $last_fine) / $fine_interval ); 
-			if ($pending_fine_count < 1 + $grace) {
-				$client->respond( "\tNo fines to create.  " );
-				if ($grace && $now < $due + $fine_interval * $grace) {
-					$client->respond( "Still inside grace period of: ". seconds_to_interval( $fine_interval * $grace)."\n" );
-					$log->info( "Circ ".$c->id." is still inside grace period of: $grace [". seconds_to_interval( $fine_interval * $grace).']' );
-				} else {
-					$client->respond( "Last fine generated for: ".localtime($last_fine)."\n" );
-				}
-				next;
-			}
-	
-			$client->respond( "\t$pending_fine_count pending fine(s)\n" );
+            # Generate fines for the interval we are currently inside, when the fine interval is some multiple of 1d
+            $pending_fine_count++ if ($fine_interval && ($fine_interval % 86400 == 0));
 
-			my $recurring_fine = int($c->$recurring_fine_method * 100);
+            if ( $last_fine == $due                         # we have no fines yet
+                 && $grace                                  # and we have a grace period
+                 && $pending_fine_count <= $grace           # and we seem to be inside that period
+                 && $now < $due + $fine_interval * $grace   # and some date math bares that out, then
+            ) {
+                $client->respond( "Still inside grace period of: ". seconds_to_interval( $fine_interval * $grace)."\n" );
+                $log->info( "Circ ".$c->id." is still inside grace period of: $grace [". seconds_to_interval( $fine_interval * $grace).']' );
+                next;
+            }
+
+            $client->respond( "\t$pending_fine_count pending fine(s)\n" );
+            next unless ($pending_fine_count);
+
+			my $recuring_fine = int($c->$recurring_fine_method * 100);
 			my $max_fine = int($c->max_fine * 100);
 
 			my ($latest_billing_ts, $latest_amount) = ('',0);
