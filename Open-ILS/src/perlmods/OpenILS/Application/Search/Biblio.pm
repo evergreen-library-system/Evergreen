@@ -566,8 +566,8 @@ sub multiclass_query {
     while ($query =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang|available):.+?)$//so) {
         my $qpart = $1;
         my $where = index($qpart,':');
-        my $type = substr($qpart1, 0, $where++);
-        my $value = substr($qpart1, $where);
+        my $type = substr($qpart, 0, $where++);
+        my $value = substr($qpart, $where);
 
         next unless $type and $value;
 
