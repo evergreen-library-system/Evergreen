@@ -164,13 +164,16 @@ sub format_date {
 	my $year = $time[5]+1900;
 	my $mon = $time[4]+1;
 	my $day = $time[3];
-
-	$mon =~ s/^(\d)$/0$1/;
-	$day =~ s/^(\d)$/0$1/;
-	$date = "$year$mon$day";
-
-	$date = $year.'-'.$mon.'-'.$day .' 00:00:00' if $type eq 'due';
-	#$date = $year.'-'.$mon.'-'.$day if $type eq 'due';
+ 	my $hour = $time[2];
+ 	my $minute = $time[1];
+ 	my $second = $time[0];
+  
+ 	$date = sprintf("%04d-%02d-%02d", $year, $mon, $day);
+  
+ 	# Due dates need time of day as well
+ 	if ($type eq 'due') {
+ 		$date .= sprintf(" %02d:%02d:%02d", $hour, $minute, $second);
+ 	}
 
 	syslog('LOG_DEBUG', "OILS: formatted date [type=$type]: $date");
 	return $date;
@@ -275,6 +278,7 @@ sub offline_ok {
 
 sub checkout {
 	my ($self, $patron_id, $item_id, $sc_renew) = @_;
+	$sc_renew = 0;
 
 	$self->verify_session;
 	
@@ -303,15 +307,18 @@ sub checkout {
 	}
 
 	syslog('LOG_DEBUG', "OILS: OpenILS::Checkout data loaded OK, checking out...");
-	$xact->do_checkout();
 
-	if ($item->{patron} && ($item->{patron} ne $patron_id)) {
+	if ($item->{patron} && ($item->{patron} eq $patron_id)) {
+		syslog('LOG_INFO', "OILS: OpenILS::Checkout data loaded OK, doing renew...");
+		$sc_renew = 1;
+	} elsif ($item->{patron} && ($item->{patron} ne $patron_id)) {
 		# I can't deal with this right now
 		# XXX check in then check out?
 		$xact->screen_msg("Item checked out to another patron");
 		$xact->ok(0);
 	} 
 
+	$xact->do_checkout($sc_renew);
 	$xact->desensitize(!$item->magnetic);
 
 	if( $xact->ok ) {
