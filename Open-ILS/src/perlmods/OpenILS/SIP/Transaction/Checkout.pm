@@ -51,7 +51,7 @@ sub new {
 # XXX Set $self->ok(0) on any errors
 sub do_checkout {
 	my $self = shift;
-	syslog('LOG_DEBUG', "OILS: performing checkout...");
+	my $is_renew = shift || 0;
 
 	$self->ok(0); 
 
@@ -60,58 +60,66 @@ sub do_checkout {
 		patron_barcode => $self->{patron}->id
 	};
 
-	my $resp = $U->simplereq(
-		'open-ils.circ',
-		'open-ils.circ.checkout.permit', 
-		$self->{authtoken}, $args );
+	my $resp;
 
-	$resp = [$resp] unless ref $resp eq 'ARRAY';
-
-	my $key;
-
-	syslog('LOG_DEBUG', "OILS: Checkout permit returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
-
-	if( @$resp == 1 and ! $U->event_code($$resp[0]) ) {
-		$key = $$resp[0]->{payload};
-		syslog('LOG_INFO', "OILS: circ permit key => $key");
-
+	if ($is_renew) {
+		$resp = $U->simplereq(
+			'open-ils.circ',
+			'open-ils.circ.renew', $self->{authtoken},
+			{ barcode => $self->item->id, patron_barcode => $self->patron->id });
 	} else {
+		$resp = $U->simplereq(
+			'open-ils.circ',
+			'open-ils.circ.checkout.permit', 
+			$self->{authtoken}, $args );
 
-		# We got one or more non-success events
-		$self->screen_msg('');
-		for my $r (@$resp) {
+		$resp = [$resp] unless ref $resp eq 'ARRAY';
 
-			if( my $code = $U->event_code($resp) ) {
-				my $txt = $resp->{textcode};
-				syslog('LOG_INFO', "OILS: Checkout permit failed with event $code : $txt");
+		my $key;
 
-				if( $txt eq 'OPEN_CIRCULATION_EXISTS' ) {
-					$self->screen_msg(OILS_SIP_MSG_CIRC_EXISTS);
-					return 0;
-				} else {
-					$self->screen_msg(OILS_SIP_MSG_CIRC_PERMIT_FAILED);
+		syslog('LOG_DEBUG', "OILS: Checkout permit returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
+
+		if( @$resp == 1 and ! $U->event_code($$resp[0]) ) {
+			$key = $$resp[0]->{payload};
+			syslog('LOG_INFO', "OILS: circ permit key => $key");
+
+		} else {
+
+			# We got one or more non-success events
+			$self->screen_msg('');
+			for my $r (@$resp) {
+
+				if( my $code = $U->event_code($resp) ) {
+					my $txt = $resp->{textcode};
+					syslog('LOG_INFO', "OILS: Checkout permit failed with event $code : $txt");
+
+					if( $txt eq 'OPEN_CIRCULATION_EXISTS' ) {
+						$self->screen_msg(OILS_SIP_MSG_CIRC_EXISTS);
+						return 0;
+					} else {
+						$self->screen_msg(OILS_SIP_MSG_CIRC_PERMIT_FAILED);
+					}
 				}
 			}
+			return 0;
 		}
-		return 0;
+
+		# --------------------------------------------------------------------
+		# Now do the actual checkout
+		# --------------------------------------------------------------------
+
+		$args = { 
+			permit_key		=> $key, 
+			patron_barcode => $self->{patron}->id, 
+			barcode			=> $self->{item}->id
+		};
+
+		$resp = $U->simplereq(
+			'open-ils.circ',
+			'open-ils.circ.checkout', $self->{authtoken}, $args );
 	}
 
-	# --------------------------------------------------------------------
-	# Now do the actual checkout
-	# --------------------------------------------------------------------
-
-	$args = { 
-		permit_key		=> $key, 
-		patron_barcode => $self->{patron}->id, 
-		barcode			=> $self->{item}->id
-	};
-
-	$resp = $U->simplereq(
-		'open-ils.circ',
-		'open-ils.circ.checkout', $self->{authtoken}, $args );
-
-
-	syslog('LOG_DEBUG', "OILS: Checkout returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
+	syslog('LOG_INFO', "OILS: Checkout returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
 
 	# XXX Check for events
 	if( $resp ) {
