@@ -3,11 +3,9 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
-	<!-- modified by Jason for Evergreen -->
-
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>{09ce6f37-9e73-48db-a264-d095f9f22bb3}</em:id>
-		<em:version>0.1.0</em:version>
+		<em:id>staff-client@open-ils.org</em:id>
+		<em:version>1.6</em:version>
 		<em:type>2</em:type>
 
 		<!-- Target Application this extension can install into, 
@@ -15,25 +13,16 @@
 		<em:targetApplication>
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-				<em:minVersion>1.0</em:minVersion>
-				<em:maxVersion>1.0+</em:maxVersion>
+				<em:minVersion>3.5</em:minVersion>
+				<em:maxVersion>3.5.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
     
-		<!-- Packages, Skins and Locales that this extension registers -->
-		<em:file>
-			<Description about="urn:mozilla:extension:file:BOO.jar">
-				<em:package>content/BOO/</em:package>
-				<em:locale>locale/en-US/BOO/</em:locale>
-				<em:skin>skin/BOO/</em:skin>
-			</Description>
-		</em:file>
-	
 		<!-- Front End MetaData -->
 		<em:name>Evergreen</em:name>
-		<em:description>Evergreen Staff Client </em:description>
+		<em:description>Evergreen Staff Client</em:description>
    	 
-		<em:homepageURL>http://open-ils.org/</em:homepageURL>
+		<em:homepageURL>http://evergreen-ils.org/</em:homepageURL>
     
 	</Description>      
 </RDF>

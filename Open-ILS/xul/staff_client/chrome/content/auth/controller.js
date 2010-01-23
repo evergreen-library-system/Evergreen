@@ -524,7 +524,9 @@ auth.controller.prototype = {
 
         var w; // close all other windows
         while ( w = enumerator.getNext() ) {
-            if (w != window) w.close();
+            if (w != window) {
+                if (w.xulG) { w.close(); } // FIXME: kludge so we don't close Firefox windows as an extension.  We should define a @windowtype for all the staff client windows and have the enumerator just pull those
+            }
         }
 
         this.controller.render('ws_deck');

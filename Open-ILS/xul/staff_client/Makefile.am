@@ -23,7 +23,14 @@ endif
 install-exec-local: $(OILSSERVER_INST)
 
 devbuild: build
+	@echo ' * Copying in developer preferences'
 	@cp external/developers.js build/defaults/preferences/
+
+extension: build
+	@echo ' * Packaging as an XPI'
+	@perl -ne '@f = split /\s+/; if (/open_ils_staff_client/) { if (! /chrome:\/\/open_ils_staff_client/) { $$f[ scalar(@f) - 1 ] = "chrome/" . $$f[ scalar(@f) - 1 ]; }; print join(" ",@f) . "\n"; }' build/chrome/chrome.manifest > build/chrome.manifest
+	@(cd build/ && zip -q -r evergreen.xpi * -x server/\* -x defaults/preferences/standalone_xul_app.js)
+	@md5sum build/evergreen.xpi > build/evergreen.xpi.md5
 
 build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp 
 	@echo To test the staff client:
@@ -32,12 +39,14 @@ build: build_dir chrome2remote localize_manifest generated custom_skins open-ils
 
 build_dir:
 	@echo ' * Creating and populating build/ '
+	@rm -rf build/
 	@mkdir -p build/
 	@cp -fR chrome build/
 	@cp -fR server build/
 	@cp -fR defaults build/
 	@cp -fR components build/
 	@cp application.ini build/
+	@cp install.rdf build/
 	@cp -fR build/chrome/content/util/ build/server/
 	@cp -fR build/chrome/content/auth/ build/server/
 	@cp build/chrome/content/main/constants.js build/server/main/constants.js
@@ -78,6 +87,7 @@ bundle:
 	@rm -f build/build.tar
 	@tar cf build.tar build/
 	@mv build.tar build/
+	@md5sum build/build.tar > build/build.tar.md5
 
 generated:
 	@echo ' * Grabbing lang.dtd from the OPAC code '
