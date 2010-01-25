@@ -199,12 +199,10 @@ admin.transit_list.prototype = {
                 },
                 {
                     'just_these' : [
-                        'request_timestamp',
                         'request_time',
-                        'capture_timestamp',
                         'capture_time',
                         'hold_type',
-                        'expire_time',
+                        'expire_date',
                         'patron_first_given_name',
                         'patron_family_name',
                         'patron_barcode',

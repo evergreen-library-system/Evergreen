@@ -29,6 +29,7 @@
         <scripts id="openils_util_scripts"/>
 
     <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="transit_list.js"/>
     <script>
     <![CDATA[
         function my_init() {
