@@ -21,7 +21,7 @@ vim:noet:sw=4:ts=4:
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="cat_copy_browser" 
+<window id="cat_copy_browser" active="true"
     onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

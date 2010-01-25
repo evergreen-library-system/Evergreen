@@ -17,7 +17,7 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="admin_transit_list_win" 
+<window id="admin_transit_list_win" active="true" 
     onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

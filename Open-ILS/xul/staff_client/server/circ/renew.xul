@@ -19,7 +19,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 <?xul-overlay href="/xul/server/circ/renew_overlay.xul"?>
 
-<window id="renew_win" 
+<window id="renew_win" active="true" 
     onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

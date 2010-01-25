@@ -17,7 +17,7 @@
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
-<window id="trigger_event_win" onload="try { font_helper(); persist_helper(); trigger_event_init(); } catch(E) { alert(E); }"
+<window id="trigger_event_win" onload="try { font_helper(); persist_helper(); trigger_event_init(); } catch(E) { alert(E); }" active="true"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
