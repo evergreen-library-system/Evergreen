@@ -2393,7 +2393,7 @@ sub run_renew_permit {
         $runner->load($self->circ_permit_renew);
         my $result = $runner->run or 
             throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
-        my $events = $result->{events};
+        $events = $result->{events};
         $self->mk_script_runner;
     }
 
