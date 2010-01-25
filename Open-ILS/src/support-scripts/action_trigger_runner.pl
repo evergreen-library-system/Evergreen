@@ -25,6 +25,7 @@ use OpenILS::Utils::Fieldmapper;
 my $opt_lockfile = '/tmp/action-trigger-LOCK';
 my $opt_osrf_config = '/openils/conf/opensrf_core.xml';
 my $opt_custom_filter = '/openils/conf/action_trigger_filters.json';
+my $opt_max_sleep = 3600;  # default to 1 hour
 my $opt_run_pending = 0;
 my $opt_debug_stdout = 0;
 my $opt_help = 0;
@@ -38,12 +39,14 @@ GetOptions(
     'hooks=s' => \$opt_hooks,
     'granularity=s' => \$opt_granularity,
     'process-hooks' => \$opt_process_hooks,
+    'max-sleep' => \$opt_max_sleep,
     'debug-stdout' => \$opt_debug_stdout,
     'custom-filters=s' => \$opt_custom_filter,
     'lock-file=s' => \$opt_lockfile,
     'help' => \$opt_help,
 );
 
+my $max_sleep = $opt_max_sleep;
 
 # typical passive hook filters
 my $hook_handlers = {
@@ -90,11 +93,15 @@ $0 : Create and process action/trigger events
     --process-hooks
         Create hook events
 
+    --max-sleep=<seconds>
+        When in process-hooks mode, wait up to <seconds> for the lock file to
+        go away.  Defaults to 3600 (1 hour).
+
     --hooks=hook1[,hook2,hook3,...]
         Define which hooks to create events for.  If none are defined,
         it defaults to the list of hooks defined in the --custom-filters option.
 
-    --granularity=label
+    --granularity=<label>
         Run events with {label} granularity setting, or no granularity setting
 
     --debug-stdout
@@ -164,8 +171,17 @@ sub run_pending {
 help() and exit if $opt_help;
 help() and exit unless ($opt_run_pending or $opt_process_hooks);
 
-# check / set the lockfile
-die "I'm already running with lockfile $opt_lockfile\n" if -e $opt_lockfile;
+# check the lockfile
+if (-e $opt_lockfile) {
+    die "I'm already running with lockfile $opt_lockfile\n" if (!$opt_process_hooks);
+    # sleeping loop if we're in --process-hooks mode
+    do { last unless ( -e $opt_lockfile ); $max_sleep--; } while ($max_sleep >= 0 && sleep(1));
+}
+
+# there's a tiny race condition here ... oh well
+die "Someone else has been holding the lockfile $opt_lockfile for at least $opt_max_sleep. Giving up now ...\n" if (-e $opt_lockfile);
+
+# set the lockfile
 open(F, ">$opt_lockfile") or die "Unable to open lockfile $opt_lockfile for writing\n";
 print F $$;
 close F;
