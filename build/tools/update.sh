@@ -6,13 +6,18 @@
 # Based on initial version by Bill Erickson.
 
 function svn_or_git {
-    echo -en "###########\nUpdating source directory: ";
-    pwd;
+    echo -en "###########\nUpdating source directory:" `pwd` "\n";
     if [ -d "./.git" ]; then
-        git svn fetch;
-        git svn rebase origin;
+        if [ -d "./.git/svn/trunk" ]; then
+            git svn fetch;
+            # git svn rebase origin || die_msg "git svn rebase origin failed";
+        else
+            git fetch;
+            # git rebase origin || die_msg "git rebase origin failed";
+        fi
     else
-        svn update;
+        echo "Remember to run svn update as needed";
+        # svn update || die_msg "svn update failed";
     fi
 }
 
@@ -37,7 +42,7 @@ function usage {
 usage: $0 [-e /eg_trunk] [-i /openils_dir] [-s /srf_trunk] [-[cfbvt]]
 
 PARAMETERS:
-   -e  specify Evergreen (OpenILS) source repository (default ~/ILS/trunk)
+   -e  specify Evergreen (OpenILS) source repository (default pwd)
    -i  specify Evergreen installed directory (default /openils)
    -s  specify OpenSRF source repository (default ~/OpenSRF/trunk)
 
@@ -91,7 +96,7 @@ BASE=~      # default to $HOME (~ doesn't like :- syntax for whatever reason)
 [ -z "$OPT_BASEDIR" ] || BASE="$OPT_BASEDIR";
 
 OSRF=${OPT_OSRFDIR:-$BASE/OpenSRF/trunk};
-ILS=${OPT_EGDIR:-$BASE/ILS/trunk};
+ILS=${OPT_EGDIR:-$(pwd)};
 XUL="$INSTALL/var/web/xul";
 
 # ----------------------------------
@@ -103,6 +108,8 @@ XUL="$INSTALL/var/web/xul";
 [ ! -d "$OSRF"    ]   && die_msg "OpenSRF Source Directory '$OSRF' does not exist!";
 which sudo >/dev/null || die_msg "sudo not installed (or in PATH)";
 
+[ -d "${ILS}/.svn" ] || [ -d "${ILS}/.git" ] || die_msg "Evergreen Source Directory '$ILS' is not a SVN or git repo";
+
 if [ ! -z "$OPT_TEST" ] ; then
     feedback;
     exit;
@@ -111,6 +118,9 @@ fi
 # ----------------------------------
 # MAIN
 # ----------------------------------
+if [ -n "$OPT_FULL"  ]; then
+    echo; echo; echo '*** Performing FULL installation ***' ; echo; echo;
+fi
 if [ -z "$OPT_VERBOSE" ] ; then
     echo "Running with some make output suppressed.  To see all output, run $0 with -v (verbose)";
     echo "This may take a few minutes... ";
@@ -136,7 +146,7 @@ if [ -n "$OPT_CLEAN" ]; then
     cd $ILS  && make clean;
 fi
 
-if [ -z "$OPT_FULL"  ]; then
+if [ -n "$OPT_FULL"  ]; then
     cd $OSRF && make;
     cd $ILS  && make;
     cd $OSRF && sudo make install;
@@ -147,19 +157,25 @@ BID=$(date +"%Y-%m-%dT%H:%M:%S");   # or "current"
 cd $ILS && sudo make install STAFF_CLIENT_BUILD_ID=$BID;
 sudo chown -R opensrf:opensrf $INSTALL
 
+[ -d "$XUL/$BID" ] || die_msg "New build directory $XUL/$BID was not created.  sudo make install failed?"
+
 if [ -z "$OPT_VERBOSE" ] ; then
     exec 1>&3   # Restore STDOUT
 fi
 
 cd $XUL || die_msg "Could not cd to $XUL";
 pwd;
-rm -f ./current-client-build.zip;
+rm -f $XUL/current-client-build.zip;
 cp -r "$ILS/Open-ILS/xul/staff_client/build" ./
 zip -rq current-client-build.zip build;
+cat ./build/BUILD_ID
 rm -rf ./build;
+
+
 rm -f current;      # removing the link to the old build
 ln -s $BID current; # linking "current" to the new build
 ln -s current/server server;
+    
 
 sudo chown -R opensrf:opensrf $OSRF $ILS
 $INSTALL/bin/osrf_ctl.sh -l -a start_all
