@@ -25,7 +25,7 @@ PARAMETERS:
   db_user - database username
   db_name - database name
     
-Run from your source repository Open-ILS/src/sql/Pg directory.
+Run from your source repository root or Open-ILS/src/sql/Pg directory.
 
 You will be prompted for the postgres password if necessary.
 
@@ -62,6 +62,9 @@ VERSION=$(echo $VERSION | sed -e 's/^ *0*//');    # This is a separate step so w
 [ -z "$VERSION" ] && usage_die "config.upgrade_log missing ANY installed version data!";
 echo "* Last installed version -> $VERSION";
 
+if [ -d ./Open-ILS/src/sql/Pg ] ; then
+    cd ./Open-ILS/src/sql/Pg ;
+fi
 [ -d ./upgrade ] || usage_die "No ./upgrade directory found.  Please run from Open-ILS/src/sql/Pg";
 
 declare -a FILES;
