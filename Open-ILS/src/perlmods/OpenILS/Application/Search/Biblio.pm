@@ -1530,6 +1530,21 @@ sub biblio_search_isbn {
 	return { ids => $recs, count => scalar(@$recs) };
 }
 
+__PACKAGE__->register_method(
+	method	=> "biblio_search_isbn_batch",
+	api_name	=> "open-ils.search.biblio.isbn_list",
+);
+
+sub biblio_search_isbn_batch { 
+	my( $self, $client, $isbn_list ) = @_;
+	$logger->debug("Searching ISBNs @$isbn_list");
+	my $e = new_editor();
+    my @recs = ();
+	@recs = ( @recs, @{ $U->storagereq(
+		'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $_ )
+    } ) for @$isbn_list;
+	return { ids => \@recs, count => scalar(@recs) };
+}
 
 __PACKAGE__->register_method(
 	method	=> "biblio_search_issn",
