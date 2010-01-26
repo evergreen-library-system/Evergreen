@@ -4844,6 +4844,35 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="acqpoh" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::acq_purchase_order_history" oils_persist:tablename="acq.acq_purchase_order_history" reporter:label="Purchase Order History">
+		<fields oils_persist:primary="audit_id" oils_persist:sequence="acq.acq_purchase_order_pkey_seq">
+			<field reporter:label="Audit ID" name="audit_id" reporter:datatype="id"/>
+			<field reporter:label="Audit Time" name="audit_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Audit Action" name="audit_action" reporter:datatype="text"/>
+			<field reporter:label="Purchase Order ID" name="id" reporter:datatype="link"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Editor" name="editor" reporter:datatype="link"/>
+			<field reporter:label="Ordering Agency" name="ordering_agency" reporter:datatype="link"/>
+			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
+			<field reporter:label="State" name="state" reporter:datatype="text"/>
+			<field reporter:label="Order Date" name="order_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="id" reltype="has_a" key="id" map="" class="acqpo"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="ordering_agency" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="acqpon" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::po_note" oils_persist:tablename="acq.po_note" reporter:label="PO Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.po_note_id_seq">
 			<field reporter:label="PO Note ID" name="id" reporter:datatype="id" />
@@ -4894,6 +4923,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="lineitem_details" reltype="has_many" key="lineitem" map="" class="acqlid"/>
 			<link field="lineitem_notes" reltype="has_many" key="lineitem" map="" class="acqlin"/>
 		</links>
+	</class>
+
+	<class id="acqlih" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::acq_lineitem_history" oils_persist:tablename="acq.acq_lineitem_history" reporter:label="Line Item History">
+		<fields oils_persist:primary="audit_id" oils_persist:sequence="acq.acq_lineitem_pkey_seq">
+			<field reporter:label="Audit ID" name="audit_id" reporter:datatype="id"/>
+			<field reporter:label="Audit Time" name="audit_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Audit Action" name="audit_action" reporter:datatype="text"/>
+			<field reporter:label="Lineitem ID" name="id" reporter:datatype="link"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Editor" name="editor" reporter:datatype="link"/>
+			<field reporter:label="Selector" name="selector" reporter:datatype="link"/>
+			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
+			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link"/>
+			<field reporter:label="Picklist" name="picklist" reporter:datatype="link"/>
+			<field reporter:label="Expected Receive Time" name="expected_recv_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp"/>
+			<field reporter:label="MARC" name="marc" reporter:datatype="text"/>
+			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" reporter:datatype="link"/>
+			<field reporter:label="Source Label" name="source_label" reporter:datatype="text"/>
+			<field reporter:label="Item Count" name="item_count" reporter:datatype="int"/>
+			<field reporter:label="State" name="state" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="id" reltype="has_a" key="id" map="" class="jub"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="selector" reltype="has_a" key="id" map="" class="au"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
+			<link field="picklist" reltype="has_a" key="id" map="" class="acqpl"/>
+			<link field="eg_bib_id" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
 	</class>
 
 	<class id="acqlin" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_note" oils_persist:tablename="acq.lineitem_note" reporter:label="Line Item Note">
