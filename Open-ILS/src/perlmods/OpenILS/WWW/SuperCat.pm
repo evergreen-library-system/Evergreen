@@ -1640,8 +1640,13 @@ sub sru_search {
 	my ($shortname, $holdings) = $url =~ m#/?([^/]*)(/holdings)?#;
 
 	if ( $resp->type eq 'searchRetrieve' ) {
-		my $cql_query = decode_utf8($req->query);
-		my $search_string = decode_utf8($req->cql->toEvergreen);
+
+		# These terms are arriving to us double-encoded, so until we
+		# figure out where in the CGI/SRU chain that's happening, we
+		# have to # forcefully double-decode them a second time with
+		# the outer decode('utf8', $string) call
+		my $cql_query = decode('utf8', decode_utf8($req->query));
+		my $search_string = decode('utf8', decode_utf8($req->cql->toEvergreen));
 
 		# Ensure the search string overrides the default site
 		if ($shortname and $search_string !~ m#site:#) {

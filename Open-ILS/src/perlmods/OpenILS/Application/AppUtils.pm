@@ -13,6 +13,7 @@ use OpenILS::Utils::CStoreEditor;
 use OpenILS::Const qw/:const/;
 use Unicode::Normalize;
 use OpenSRF::Utils::SettingsClient;
+use Encode;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -1473,6 +1474,10 @@ sub get_org_locale {
 sub entityize { 
     my($self, $string, $form) = @_;
 	$form ||= "";
+
+	# If we're going to convert non-ASCII characters to XML entities,
+	# we had better be dealing with a UTF8 string to begin with
+	$string = decode_utf8($string);
 
 	if ($form eq 'D') {
 		$string = NFD($string);
