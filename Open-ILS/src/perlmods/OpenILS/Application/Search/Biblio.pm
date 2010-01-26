@@ -1538,11 +1538,17 @@ __PACKAGE__->register_method(
 sub biblio_search_isbn_batch { 
 	my( $self, $client, $isbn_list ) = @_;
 	$logger->debug("Searching ISBNs @$isbn_list");
-	my $e = new_editor();
-    my @recs = ();
-	@recs = ( @recs, @{ $U->storagereq(
-		'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $_ )
-    } ) for @$isbn_list;
+	my @recs = (); my %rec_set = ();
+	foreach my $isbn ( @$isbn_list ) {
+		foreach my $rec ( @{ $U->storagereq(
+			'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn )
+		} ) {
+			if (! $rec_set{ $rec }) {
+				$rec_set{ $rec } = 1;
+				push @recs, $rec;
+			}
+		}
+	}
 	return { ids => \@recs, count => scalar(@recs) };
 }
 
