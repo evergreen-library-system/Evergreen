@@ -378,7 +378,7 @@ circ.checkout.prototype = {
 								checkout.payload.circ.circ_lib( checkout.payload.noncat_circ.circ_lib() );
 								checkout.payload.circ.circ_staff( checkout.payload.noncat_circ.staff() );
 								checkout.payload.circ.usr( checkout.payload.noncat_circ.patron() );
-								checkout.payload.circ.due_date( checkout.payload.noncat_circ.due_date() );
+								checkout.payload.circ.due_date( checkout.payload.noncat_circ.duedate() );
 			
 							}
 						}
