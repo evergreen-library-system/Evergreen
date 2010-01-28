@@ -93,7 +93,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 case 'int':
                 case 'float':
                 case 'money':
-                    if(isNaN(value)) value = 0;
+                    if(isNaN(value)) value = null;
                 default:
                     return (value === '') ? null : value;
             }
