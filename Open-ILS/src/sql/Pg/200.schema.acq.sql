@@ -851,7 +851,7 @@ CREATE OR REPLACE VIEW acq.fund_allocation_total AS
 CREATE OR REPLACE VIEW acq.fund_debit_total AS
     SELECT  fund.id AS fund,
             fund_debit.encumbrance AS encumbrance,
-            COALESCE( SUM(fund_debit.amount), 0 ) AS amount
+			SUM( COALESCE( fund_debit.amount, 0 ) ) AS amount
       FROM acq.fund AS fund
             LEFT JOIN acq.fund_debit AS fund_debit
                 ON ( fund.id = fund_debit.fund )
