@@ -113,8 +113,12 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             switch(this.idlField.datatype) {
                 case 'bool':
                     switch(value) {
-                        case 'true': return openils.widget.AutoFieldWidget.localeStrings.TRUE; 
-                        case 'false' : return openils.widget.AutoFieldWidget.localeStrings.FALSE;
+                        case 't': 
+                        case 'true': 
+                            return openils.widget.AutoFieldWidget.localeStrings.TRUE; 
+                        case 'f' : 
+                        case 'false' : 
+                            return openils.widget.AutoFieldWidget.localeStrings.FALSE;
                         case 'unset' : return openils.widget.AutoFieldWidget.localeStrings.UNSET;
                         case true : return openils.widget.AutoFieldWidget.localeStrings.TRUE; 
                         default: return openils.widget.AutoFieldWidget.localeStrings.FALSE;
