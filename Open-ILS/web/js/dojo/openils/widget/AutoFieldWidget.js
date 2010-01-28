@@ -22,6 +22,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *  orgLimitPerms -- If this field defines a set of org units and an orgLimitPerms 
          *      is defined, the code will limit the org units in the set to those
          *      allowed by the permission
+         *  orgDefaultsToWs -- If this is an org unit field and the widget has no value,
+         *      set the value equal to the users's workstation org unit.  Othwerwise, leave it null
          *  selfReference -- The primary purpose of an AutoFieldWidget is to render the value
          *      or widget for a field on an object (that may or may not link to another object).
          *      selfReference allows you to sidestep the indirection and create a selector widget
@@ -433,7 +435,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget.parentField = 'parent_ou';
             var user = new openils.User();
 
-            if(this.widgetValue == null) 
+            if(this.widgetValue == null && this.orgDefaultsToWs) 
                 this.widgetValue = user.user.ws_ou();
             
             // if we have a limit perm, find the relevent orgs (async)
