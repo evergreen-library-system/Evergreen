@@ -215,68 +215,6 @@ CREATE TABLE metabib.metarecord_source_map (
 CREATE INDEX metabib_metarecord_source_map_metarecord_idx ON metabib.metarecord_source_map (metarecord);
 CREATE INDEX metabib_metarecord_source_map_source_record_idx ON metabib.metarecord_source_map (source);
 
-CREATE FUNCTION version_specific_xpath () RETURNS TEXT AS $wrapper_function$
-DECLARE
-	out_text TEXT;
-BEGIN
-
-	IF REGEXP_REPLACE(VERSION(),E'^.+?(\\d+\\.\\d+).*?$',E'\\1')::FLOAT < 8.3 THEN
-		out_text := 'Creating XPath functions that work like the native XPATH function in 8.3+';
-
-		EXECUTE $create_82_funcs$
-
-CREATE OR REPLACE FUNCTION oils_xpath ( xpath TEXT, xml TEXT, ns ANYARRAY ) RETURNS TEXT[] AS $func$
-DECLARE
-	node_text	TEXT;
-	ns_regexp	TEXT;
-	munged_xpath	TEXT;
-BEGIN
-	
-	munged_xpath := xpath;
-
-	IF ns IS NOT NULL THEN
-		FOR namespace IN 1 .. array_upper(ns, 1) LOOP
-			munged_xpath := REGEXP_REPLACE(
-				munged_xpath,
-				E'(' || ns[namespace][1] || E'):(\\w+)',
-				E'*[local-name() = "\\2" and namespace-uri() = "' || ns[namespace][2] || E'"]',
-				'g'
-			);
-		END LOOP;
-
-		munged_xpath := REGEXP_REPLACE( munged_xpath, E'\\]\\[(\\D)',E' and \\1', 'g');
-	END IF;
-
-	node_text := xpath_nodeset(xml, munged_xpath, 'XXX_OILS_NODESET');
-	node_text := REGEXP_REPLACE(node_text,'^<XXX_OILS_NODESET>', '');
-	node_text := REGEXP_REPLACE(node_text,'</XXX_OILS_NODESET>$', '');
-
-	RETURN  STRING_TO_ARRAY(node_text, '</XXX_OILS_NODESET><XXX_OILS_NODESET>');
-END;
-$func$ LANGUAGE PLPGSQL; 
-
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS 'SELECT oils_xpath( $1, $2, NULL::TEXT[] );' LANGUAGE SQL; 
-
-		$create_82_funcs$;
-	ELSE
-		out_text := 'Creating XPath wrapper functions around the native XPATH function in 8.3+';
-
-		EXECUTE $create_83_funcs$
--- 8.3 or after
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT, ANYARRAY ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML, $3 )::TEXT[];' LANGUAGE SQL; 
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML )::TEXT[];' LANGUAGE SQL; 
-
-		$create_83_funcs$;
-
-	END IF;
-
-	RETURN out_text;
-END;
-$wrapper_function$ LANGUAGE PLPGSQL;
-
-SELECT version_specific_xpath();
-DROP FUNCTION version_specific_xpath();
-
 CREATE TYPE metabib.field_entry_template AS (
         field_class     TEXT,
         field           INT,
@@ -310,7 +248,7 @@ BEGIN
 		IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
 			-- Can't skip the transform
 			IF xfrm.xslt <> '---' THEN
-				transformed_xml := xslt_process(bib.marc,xfrm.xslt);
+				transformed_xml := oils_xslt_process(bib.marc,xfrm.xslt);
 			ELSE
 				transformed_xml := bib.marc;
 			END IF;
@@ -371,6 +309,34 @@ BEGIN
 	END LOOP;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+/*
+CREATE OR REPLACE FUNCTION biblio.flatten_marc ( TEXT, BIGINT ) RETURNS SETOF metabib.full_rec AS $func$
+    SELECT  NULL::bigint AS id, NULL::bigint, 'LDR'::char(3), NULL::TEXT, NULL::TEXT, NULL::TEXT, oils_xpath_string( '//*[local-name()="leader"]', $1 ), NULL::tsvector AS index_vector
+        UNION
+    SELECT  NULL::bigint AS id, NULL::bigint, x.tag::char(3), NULL::TEXT, NULL::TEXT, NULL::TEXT, x.value, NULL::tsvector AS index_vector
+      FROM  oils_xpath_table(
+                'id',
+                'marc',
+                'biblio.record_entry',
+                '//*[local-name()="controlfield"]/@tag|//*[local-name()="controlfield"]',
+                'id=' || $2::TEXT
+            )x(record int, tag text, value text)
+        UNION
+    SELECT  NULL::bigint AS id, NULL::bigint, x.tag::char(3), x.ind1, x.ind2, x.subfield, x.value, NULL::tsvector AS index_vector
+      FROM  oils_xpath_table(
+                'id',
+                'marc',
+                'biblio.record_entry',
+                '//*[local-name()="datafield"]/@tag|' ||
+                '//*[local-name()="datafield"]/@ind1|' ||
+                '//*[local-name()="datafield"]/@ind2|' ||
+                '//*[local-name()="datafield"]/*/@code|' ||
+                '//*[local-name()="datafield"]/*[@code]',
+                'id=' || $2::TEXT
+            )x(record int, tag text, ind1 text, ind2 text, subfield text, value text);
+$func$ LANGUAGE SQL;
+*/
 
 CREATE OR REPLACE FUNCTION biblio.flatten_marc ( TEXT ) RETURNS SETOF metabib.full_rec AS $func$
 
@@ -600,7 +566,7 @@ BEGIN
 		IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
 			-- Can't skip the transform
 			IF xfrm.xslt <> '---' THEN
-				transformed_xml := xslt_process(marc,xfrm.xslt);
+				transformed_xml := oils_xslt_process(marc,xfrm.xslt);
 			ELSE
 				transformed_xml := marc;
 			END IF;

@@ -347,8 +347,8 @@ BEGIN
         
         FOR tmp_attr_set IN
                 SELECT  *
-                  FROM  xpath_table( 'id', 'marc', 'vandelay.queued_bib_record', xpath, 'id = ' || import_id )
-                            AS t( id BIGINT, ol TEXT, clib TEXT, cn TEXT, cnum TEXT, cs TEXT, cl TEXT, circ TEXT,
+                  FROM  oils_xpath_table( 'id', 'marc', 'vandelay.queued_bib_record', xpath, 'id = ' || import_id )
+                            AS t( id INT, ol TEXT, clib TEXT, cn TEXT, cnum TEXT, cs TEXT, cl TEXT, circ TEXT,
                                   dep TEXT, dep_amount TEXT, r TEXT, hold TEXT, pr TEXT, bc TEXT, circ_mod TEXT,
                                   circ_as TEXT, amessage TEXT, note TEXT, pnote TEXT, opac_vis TEXT )
         LOOP

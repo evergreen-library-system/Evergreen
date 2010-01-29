@@ -985,10 +985,10 @@ BEGIN
     IF uri_count > 0 THEN
         
         SELECT  COUNT(*) INTO counter
-          FROM  xpath_table(
+          FROM  oils_xpath_table(
                     'id',
                     'marc',
-                    'acq.lineitem',
+                    'biblio.record_entry',
                     '//*[@tag="856"]',
                     'id=' || lineitem
                 ) as t(i int,c text);
@@ -1007,7 +1007,7 @@ BEGIN
                                 ) || '</subfield>'
                             ), ''
                         ) || '</datafield>' INTO uri_datafield
-              FROM  xpath_table(
+              FROM  oils_xpath_table(
                         'id',
                         'marc',
                         'biblio.record_entry',

@@ -597,7 +597,7 @@ DECLARE
 BEGIN
 
     SELECT  COUNT(*) INTO counter
-      FROM  xpath_table(
+      FROM  oils_xpath_table(
                 'id',
                 'marc',
                 'acq.lineitem',
@@ -609,7 +609,7 @@ BEGIN
         FOR lida IN
             SELECT  * 
               FROM  (   SELECT  id,i,t,v
-                          FROM  xpath_table(
+                          FROM  oils_xpath_table(
                                     'id',
                                     'marc',
                                     'acq.lineitem',
