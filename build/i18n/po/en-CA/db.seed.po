@@ -2,3322 +2,4349 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-12-09 22:48:38-0400\n"
-"PO-Revision-Date: 2008-11-27 16:22-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2010-01-31 21:02:05-0400\n"
+"PO-Revision-Date: 2009-12-14 15:57+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.0.1\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Country: CANADA\n"
 
-#: vqbrad.description:11
+# id::vqbrad.description__11
+#: 950.data.seed-values.sql:1632
 msgid "Internal ID"
 msgstr ""
 
-#: clm.value:vai
+# id::clm.value__vai
+#: 950.data.seed-values.sql:666
 msgid "Vai"
 msgstr ""
 
-#: cblvl.value:i
+# id::cblvl.value__i
+#: 950.data.seed-values.sql:720
 msgid "Integrating resource"
 msgstr ""
 
-#: clfm.value:u
+# id::clfm.value__u
+#: 950.data.seed-values.sql:201
 msgid "Unknown"
 msgstr ""
 
-#: clfm.value:p
+# id::clfm.value__p
+#: 950.data.seed-values.sql:195
 msgid "Poetry"
 msgstr ""
 
-#: ccs.name:6
+# id::ccs.name__6
+#: 950.data.seed-values.sql:120
 msgid "In transit"
 msgstr ""
 
-#: clm.value:pau
+# id::clm.value__pau
+#: 950.data.seed-values.sql:544
 msgid "Palauan"
 msgstr ""
 
-#: ppl.description:115
+# id::ppl.description__115
+#: 950.data.seed-values.sql:1109
 msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
 msgstr ""
 
-#: cza.label:5 cza.label:14
+# id::ppl.description__194
+#: 950.data.seed-values.sql:1224
+msgid "Allows a user to create a purchase order"
+msgstr ""
+
+# id::cza.label__5 id::cza.label__14 id::cza.label__23
+#: 950.data.seed-values.sql:768 950.data.seed-values.sql:789
+#: 950.data.seed-values.sql:808
 msgid "Title"
 msgstr ""
 
-#: clm.value:kir
+# id::clm.value__kir
+#: 950.data.seed-values.sql:431
 msgid "Kyrgyz"
 msgstr ""
 
-#: i18n_l.description:en-US
+# id::i18n_l.description__en-US
+#: 950.data.seed-values.sql:727
 msgid "American English"
 msgstr ""
 
-#: cblvl.value:b
+# id::cblvl.value__b
+#: 950.data.seed-values.sql:717
 msgid "Serial component part"
 msgstr ""
 
-#: clm.value:niu
+# id::clm.value__niu
+#: 950.data.seed-values.sql:517
 msgid "Niuean"
 msgstr ""
 
-#: clm.value:fat
+# id::clm.value__fat
+#: 950.data.seed-values.sql:336
 msgid "Fanti"
 msgstr ""
 
-#: crcd.name:1
+# id::crcd.name__1
+#: 950.data.seed-values.sql:61
 msgid "7_days_0_renew"
 msgstr ""
 
-#: ppl.description:123
+# id::ppl.description__123
+#: 950.data.seed-values.sql:1125
 msgid "Allow a user to un-bar a patron"
 msgstr ""
 
-#: clm.value:tig
-msgid "Tigré"
+# id::cza.label__3 id::cza.label__12 id::cza.label__21
+#: 950.data.seed-values.sql:764 950.data.seed-values.sql:785
+#: 950.data.seed-values.sql:804
+msgid "LCCN"
 msgstr ""
 
-#: clm.value:mas
+# id::clm.value__mas
+#: 950.data.seed-values.sql:479
 msgid "Masai"
 msgstr ""
 
-#: clm.value:bam
+# id::clm.value__bam
+#: 950.data.seed-values.sql:245
 msgid "Bambara"
 msgstr ""
 
-#: clm.value:snd
+# id::clm.value__snd
+#: 950.data.seed-values.sql:600
 msgid "Sindhi"
 msgstr ""
 
-#: aou.name:7
+# id::aou.name__7
+#: 950.data.seed-values.sql:854
 msgid "Example Branch 4"
 msgstr ""
 
-#: cam.description:b
+# id::cam.description__b
+#: 950.data.seed-values.sql:148
 msgid "The item is intended for children, approximate ages 6-8 years."
 msgstr ""
 
-#: clm.value:abk
+# id::clm.value__abk
+#: 950.data.seed-values.sql:207
 msgid "Abkhaz"
 msgstr ""
 
-#: clm.value:sat
+# id::clm.value__sat
+#: 950.data.seed-values.sql:575
 msgid "Santali"
 msgstr ""
 
-#: clm.value:dua
+# id::clm.value__dua
+#: 950.data.seed-values.sql:315
 msgid "Duala"
 msgstr ""
 
-#: clm.value:ukr
+# id::clm.value__ukr
+#: 950.data.seed-values.sql:661
 msgid "Ukrainian"
 msgstr ""
 
-#: clm.value:vot
+# id::clm.value__vot
+#: 950.data.seed-values.sql:670
 msgid "Votic"
 msgstr ""
 
-#: aou.name:5
+# id::cubt.label__folks%3Acirc.view
+#: 950.data.seed-values.sql:1702
+msgid "View Circulations"
+msgstr ""
+
+# id::aou.name__5
+#: 950.data.seed-values.sql:850
 msgid "Example Branch 2"
 msgstr ""
 
-#: clfm.value:h
+# id::clfm.value__h
+#: 950.data.seed-values.sql:183
 msgid "Humor, satires, etc."
-msgstr ""
+msgstr "Humour, satires, etc."
 
-#: ppl.description:43
+# id::ppl.description__43
+#: 950.data.seed-values.sql:963
 msgid "Allow a user to create a new bill on a transaction"
 msgstr ""
 
-#: clm.value:bnt
+# id::clm.value__bnt
+#: 950.data.seed-values.sql:261
 msgid "Bantu (Other)"
 msgstr ""
 
-#: clm.value:kau
+# id::clm.value__kau
+#: 950.data.seed-values.sql:421
 msgid "Kanuri"
 msgstr ""
 
-#: clm.value:umb
+# id::clm.value__umb
+#: 950.data.seed-values.sql:662
 msgid "Umbundu"
 msgstr ""
 
-#: crrf.name:2
+# id::crrf.name__2
+#: 950.data.seed-values.sql:103
 msgid "10_cent_per_day"
 msgstr ""
 
-#: ppl.description:41
+# id::ppl.description__41
+#: 950.data.seed-values.sql:961
 msgid "Allow a user to create a new billable transaction"
 msgstr ""
 
-#: ppl.description:49
-msgid "Allow a user to delete another user container"
+# id::cubt.label__folks%3Acirc.renew
+#: 950.data.seed-values.sql:1703
+msgid "Renew Circulations"
 msgstr ""
 
-#: clm.value:cel
+# id::ppl.description__188
+#: 950.data.seed-values.sql:1218
+msgid "Allow a user to mark an item status as 'in transit'"
+msgstr ""
+
+# id::clm.value__cel
+#: 950.data.seed-values.sql:277
 msgid "Celtic (Other)"
 msgstr ""
 
-#: cst.value:2
+# id::cst.value__2
+#: 950.data.seed-values.sql:11
 msgid "Barred"
 msgstr ""
 
-#: clm.value:hil
+# id::clm.value__hil
+#: 950.data.seed-values.sql:381
 msgid "Hiligaynon"
 msgstr ""
 
-#: clm.value:kac
+# id::clm.value__kac
+#: 950.data.seed-values.sql:415
 msgid "Kachin"
 msgstr ""
 
-#: crmf.name:4
+# id::crmf.name__4
+#: 950.data.seed-values.sql:91
 msgid "overdue_max"
 msgstr ""
 
-#: ppl.description:164
+# id::ppl.description__164
+#: 950.data.seed-values.sql:1194
 msgid "Allow a user to update a fund allocation"
 msgstr ""
 
-#: clfm.value:j
+# id::clfm.value__j
+#: 950.data.seed-values.sql:189
 msgid "Short stories"
 msgstr ""
 
-#: clm.value:pag
+# id::clm.value__pag
+#: 950.data.seed-values.sql:539
 msgid "Pangasinan"
 msgstr ""
 
-#: ppl.description:156
+# id::ppl.description__156
+#: 950.data.seed-values.sql:1186
 msgid "Allow a user to update a funding source"
 msgstr ""
 
-#: ppl.description:82
+# id::ppl.description__182
+#: 950.data.seed-values.sql:1212
+msgid "Allow a user to mark an item status as 'available'"
+msgstr ""
+
+# id::ppl.description__82
+#: 950.data.seed-values.sql:1043
 msgid "Allow a user to view which users have checked out a given copy"
 msgstr ""
 
-#: clm.value:pam
+# id::clm.value__pam
+#: 950.data.seed-values.sql:541
 msgid "Pampanga"
 msgstr ""
 
-#: clm.value:nah
+# id::clm.value__nah
+#: 950.data.seed-values.sql:504
 msgid "Nahuatl"
 msgstr ""
 
-#: clm.value:yid
+# id::clm.value__yid
+#: 950.data.seed-values.sql:683
 msgid "Yiddish"
 msgstr ""
 
-#: vqbrad.description:8
+# id::vqbrad.description__8
+#: 950.data.seed-values.sql:1629
 msgid "Accession Number"
 msgstr ""
 
-#: ppl.description:117
+# id::ppl.description__117
+#: 950.data.seed-values.sql:1111
 msgid "Allow a user to update a closed date interval for a given location"
 msgstr ""
 
-#: clm.value:cpp
+# id::clm.value__cpp
+#: 950.data.seed-values.sql:298
 msgid "Creoles and Pidgins, Portuguese-based (Other)"
 msgstr ""
 
-#: clm.value:ton
+# id::clm.value__ton
+#: 950.data.seed-values.sql:643
 msgid "Tongan"
 msgstr ""
 
-#: clm.value:ijo
+# id::clm.value__ijo
+#: 950.data.seed-values.sql:394
 msgid "Ijo"
 msgstr ""
 
-#: clm.value:cai
+# id::clm.value__cai
+#: 950.data.seed-values.sql:271
 msgid "Central American Indian (Other)"
 msgstr ""
 
-#: ccs.name:14
+# id::ccs.name__14
+#: 950.data.seed-values.sql:128
 msgid "Damaged"
 msgstr ""
 
+# id::ppl.description__132
+# id::ppl.description__129
 # id::129
-#: ppl.description:132
+#: 950.data.seed-values.sql:1143
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clm.value:sma
+# id::clm.value__sma
+#: 950.data.seed-values.sql:592
 msgid "Southern Sami"
 msgstr ""
 
-#: clm.value:kaw
+# id::clm.value__kaw
+#: 950.data.seed-values.sql:422
 msgid "Kawi"
 msgstr ""
 
-#: ppl.description:20
+# id::ppl.description__20
+#: 950.data.seed-values.sql:923
 msgid "Allow a user to import a MARC record via the Z39.50 interface"
 msgstr ""
 
-#: clm.value:kal
-msgid "Kalâtdlisut"
-msgstr ""
-
-#: clm.value:kok
+# id::clm.value__kok
+#: 950.data.seed-values.sql:433
 msgid "Konkani"
 msgstr ""
 
-#: clm.value:nau
+# id::clm.value__nau
+#: 950.data.seed-values.sql:507
 msgid "Nauru"
 msgstr ""
 
-#: cam.value:g
+# id::cam.value__g
+#: 950.data.seed-values.sql:162
 msgid "General"
 msgstr ""
 
-#: clm.value:sas
+# id::clm.value__sas
+#: 950.data.seed-values.sql:574
 msgid "Sasak"
 msgstr ""
 
-#: ccs.name:0
+# id::ccs.name__0
+#: 950.data.seed-values.sql:114
 msgid "Available"
 msgstr ""
 
-#: ppl.description:180
+# id::ppl.description__180
+#: 950.data.seed-values.sql:1210
 msgid "Allow a user to mark a transaction as bad (unrecoverable) debt"
 msgstr ""
 
-#: crcd.name:6
+# id::crcd.name__6
+#: 950.data.seed-values.sql:71
 msgid "35_days_1_renew"
 msgstr ""
 
-#: clm.value:zul
+# id::clm.value__zul
+#: 950.data.seed-values.sql:690
 msgid "Zulu"
 msgstr ""
 
-#: ppl.description:87
+# id::ppl.description__87
+#: 950.data.seed-values.sql:1053
 msgid "Allow a user to view all notes attached to a title"
 msgstr ""
 
-#: clm.value:geo
+# id::clm.value__geo
+#: 950.data.seed-values.sql:355
 msgid "Georgian"
 msgstr ""
 
-#: ppl.description:155
+# id::ppl.description__155
+#: 950.data.seed-values.sql:1185
 msgid "Allow a user to view a funding source"
 msgstr ""
 
-#: clm.value:arc
+# id::clm.value__arc
+#: 950.data.seed-values.sql:225
 msgid "Aramaic"
 msgstr ""
 
-#: ppl.description:84
+# id::ppl.description__84
+#: 950.data.seed-values.sql:1047
 msgid "Allow a user to register a new workstation"
 msgstr ""
 
-#: clm.value:tir
+# id::clm.value__tir
+#: 950.data.seed-values.sql:637
 msgid "Tigrinya"
 msgstr ""
 
-#: clm.value:chk clm.value:-tru
+# id::clm.value__chk id::clm.value__-tru
+#: 950.data.seed-values.sql:283 950.data.seed-values.sql:645
 msgid "Truk"
 msgstr ""
 
-#: clm.value:tib
+# id::clm.value__tib
+#: 950.data.seed-values.sql:635
 msgid "Tibetan"
 msgstr ""
 
-#: cza.label:7 cza.label:16 vqbrad.description:12
+# id::cza.label__7 id::cza.label__16 id::cza.label__25
+# id::vqbrad.description__12
+#: 950.data.seed-values.sql:772 950.data.seed-values.sql:793
+#: 950.data.seed-values.sql:812 950.data.seed-values.sql:1633
 msgid "Publisher"
 msgstr ""
 
-#: clm.value:inh
+# id::clm.value__inh
+#: 950.data.seed-values.sql:402
 msgid "Ingush"
 msgstr ""
 
-#: clm.value:dzo
+# id::clm.value__dzo
+#: 950.data.seed-values.sql:319
 msgid "Dzongkha"
 msgstr ""
 
-#: clm.value:grn clm.value:-gua
+# id::clm.value__grn id::clm.value__-gua
+#: 950.data.seed-values.sql:371 950.data.seed-values.sql:372
 msgid "Guarani"
 msgstr ""
 
-#: clm.value:iii
+# id::clm.value__iii
+#: 950.data.seed-values.sql:393
 msgid "Sichuan Yi"
 msgstr ""
 
-#: clm.value:btk
+# id::clm.value__btk
+#: 950.data.seed-values.sql:265
 msgid "Batak"
 msgstr ""
 
-#: clm.value:div
+# id::clm.value__div
+#: 950.data.seed-values.sql:312
 msgid "Divehi"
 msgstr ""
 
-#: clm.value:sga
+# id::clm.value__sga
+#: 950.data.seed-values.sql:581
 msgid "Irish, Old (to 1100)"
 msgstr ""
 
-#: clm.value:kru
+# id::clm.value__kru
+#: 950.data.seed-values.sql:440
 msgid "Kurukh"
 msgstr ""
 
-#: clm.value:her
+# id::clm.value__her
+#: 950.data.seed-values.sql:380
 msgid "Herero"
 msgstr ""
 
-#: crcd.name:3
+# id::crcd.name__3
+#: 950.data.seed-values.sql:65
 msgid "3_months_0_renew"
 msgstr ""
 
-#: ppl.description:7
+# id::ppl.description__7
+#: 950.data.seed-values.sql:899
 msgid "Allow a user to place a volume level hold"
 msgstr ""
 
-#: clm.value:lav
+# id::clm.value__lav
+#: 950.data.seed-values.sql:453
 msgid "Latvian"
 msgstr ""
 
-#: clm.value:eng
+# id::clm.value__eng
+#: 950.data.seed-values.sql:324
 msgid "English"
 msgstr ""
 
-#: ppl.description:55
+# id::ppl.description__55
+#: 950.data.seed-values.sql:989
 msgid "Allow a user to edit copies in batch"
 msgstr ""
 
-#: cifm.value:d
+# id::cifm.value__d
+#: 950.data.seed-values.sql:696
 msgid "Large print"
 msgstr ""
 
-#: clm.value:scr
+# id::clm.value__scr
+#: 950.data.seed-values.sql:578
 msgid "Croatian"
 msgstr ""
 
-#: cam.value:j
+# id::cam.value__j
+#: 950.data.seed-values.sql:165
 msgid "Juvenile"
 msgstr ""
 
-#: clm.value:chi
+# id::clm.value__chi
+#: 950.data.seed-values.sql:282
 msgid "Chinese"
 msgstr ""
 
-#: ppl.description:51
+# id::ppl.description__51
+#: 950.data.seed-values.sql:981
 msgid "Allow a user to add other users to permission groups"
 msgstr ""
 
-#: ppl.description:11
+# id::ppl.description__11
+#: 950.data.seed-values.sql:907
 msgid "Allow a user to view another user's holds"
 msgstr ""
 
-#: clm.value:iku
+# id::clm.value__iku
+#: 950.data.seed-values.sql:395
 msgid "Inuktitut"
 msgstr ""
 
-#: clm.value:mun
+# id::clm.value__mun
+#: 950.data.seed-values.sql:500
 msgid "Munda (Other)"
 msgstr ""
 
-#: clm.value:pli
+# id::clm.value__pli
+#: 950.data.seed-values.sql:549
 msgid "Pali"
 msgstr ""
 
-#: cza.label:3 cza.label:12
-msgid "LCCN"
+# id::clm.value__gaa
+#: 950.data.seed-values.sql:348
+msgid "Gã"
 msgstr ""
 
+# id::ppl.description__119
 # id::119
-#: ppl.description:119
+#: 950.data.seed-values.sql:1117
 msgid "Allow a user to delete a non cataloged type"
 msgstr "Allow a user to delete a non catalogued type"
 
-#: clm.value:yap
+# id::clm.value__yap
+#: 950.data.seed-values.sql:682
 msgid "Yapese"
 msgstr ""
 
-#: clm.value:ara
+# id::clm.value__ara
+#: 950.data.seed-values.sql:224
 msgid "Arabic"
 msgstr ""
 
-#: clm.value:ven
+# id::clm.value__ven
+#: 950.data.seed-values.sql:667
 msgid "Venda"
 msgstr ""
 
-#: ppl.description:34
+# id::ppl.description__34
+#: 950.data.seed-values.sql:949
 msgid "Allow a user to view user permissions within the user permissions editor"
 msgstr ""
 
-#: pgt.name:3
+# id::pgt.name__3
+#: 950.data.seed-values.sql:1389
 msgid "Staff"
 msgstr ""
 
+# id::ppl.description__134
+# id::ppl.description__129
 # id::129
-#: ppl.description:134
+#: 950.data.seed-values.sql:1147
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clm.value''in:gwi
+# id::clm.value''in__gwi
+#: 950.data.seed-values.sql:374
 msgid "Gwich"
 msgstr ""
 
-#: clm.value:iro
+# id::clm.value__iro
+#: 950.data.seed-values.sql:407
 msgid "Iroquoian (Other)"
 msgstr ""
 
-#: clm.value:ori
+# id::clm.value__ori
+#: 950.data.seed-values.sql:532
 msgid "Oriya"
 msgstr ""
 
+# id::ppl.description__125
+# id::ppl.description__129
 # id::129
-#: ppl.description:125
+#: 950.data.seed-values.sql:1129
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"User\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clm.value:ipk
+# id::clm.value__ipk
+#: 950.data.seed-values.sql:404
 msgid "Inupiaq"
 msgstr ""
 
-#: cbt.name:2
+# id::cbt.name__2
+#: 950.data.seed-values.sql:868
 msgid "Long Overdue Collection Fee"
 msgstr ""
 
-#: i18n_l.name:en-CA
+# id::i18n_l.name__en-CA
+#: 950.data.seed-values.sql:732
 msgid "English (Canada)"
 msgstr ""
 
-#: clm.value:hin
+# id::clm.value__hin
+#: 950.data.seed-values.sql:383
 msgid "Hindi"
 msgstr ""
 
-#: clm.value:ewo
+# id::clm.value__ewo
+#: 950.data.seed-values.sql:332
 msgid "Ewondo"
 msgstr ""
 
-#: cza.label:1 cza.label:10
+# id::cza.label__1 id::cza.label__10 id::cza.label__19
+#: 950.data.seed-values.sql:760 950.data.seed-values.sql:781
+#: 950.data.seed-values.sql:800
 msgid "Title Control Number"
 msgstr ""
 
-#: ppl.description:138
+# id::ppl.description__138
+#: 950.data.seed-values.sql:1155
 msgid "Allow a user to renew an item past the maximum renewal count"
 msgstr ""
 
-#: ppl.description:139
+# id::ppl.description__139
+#: 950.data.seed-values.sql:1157
 msgid "Allow staff to override checkout count failure"
 msgstr ""
 
-#: clm.value:hun
+# id::clm.value__hun
+#: 950.data.seed-values.sql:387
 msgid "Hungarian"
 msgstr ""
 
-#: clfm.value:f
+# id::clfm.value__f
+#: 950.data.seed-values.sql:181
 msgid "Novels"
 msgstr ""
 
-#: clm.value:wol
+# id::clm.value__wol
+#: 950.data.seed-values.sql:678
 msgid "Wolof"
 msgstr ""
 
-#: clm.value:bos
+# id::clm.value__bos
+#: 950.data.seed-values.sql:262
 msgid "Bosnian"
 msgstr ""
 
-#: clm.value:rom
+# id::clm.value__rom
+#: 950.data.seed-values.sql:562
 msgid "Romani"
 msgstr ""
 
-#: clm.value:vie
+# id::clm.value__vie
+#: 950.data.seed-values.sql:668
 msgid "Vietnamese"
 msgstr ""
 
-#: aout.opac_label:4
+# id::aout.opac_label__4
+#: 950.data.seed-values.sql:835
 msgid "This Specialized Library"
 msgstr ""
 
-#: clm.value:mnc
+# id::clm.value__mnc
+#: 950.data.seed-values.sql:492
 msgid "Manchu"
 msgstr ""
 
-#: aou.name:1
+# id::aou.name__1
+#: 950.data.seed-values.sql:842
 msgid "Example Consortium"
 msgstr ""
 
-#: clm.value:rus
+# id::clm.value__rus id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU
+#: 950.data.seed-values.sql:565 950.data.seed-values.sql:747
+#: 950.data.seed-values.sql:748
 msgid "Russian"
 msgstr ""
 
-#: clm.value:gba
+# id::clm.value__gba
+#: 950.data.seed-values.sql:353
 msgid "Gbaya"
 msgstr ""
 
-#: clm.value:luo
+# id::clm.value__luo
+#: 950.data.seed-values.sql:466
 msgid "Luo (Kenya and Tanzania)"
 msgstr ""
 
-#: clm.value:tiv
+# id::clm.value__tiv
+#: 950.data.seed-values.sql:638
 msgid "Tiv"
 msgstr ""
 
-#: clm.value:und
+# id::clm.value__und
+#: 950.data.seed-values.sql:663
 msgid "Undetermined"
 msgstr ""
 
-#: cam.description:f
+# id::cam.description__f
+#: 950.data.seed-values.sql:160
 msgid "The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience."
 msgstr ""
 
-#: ppl.description:90
+# id::ppl.description__90
+#: 950.data.seed-values.sql:1059
 msgid "Allow a user to create a new title note"
 msgstr ""
 
-#: cnal.name:3
+# id::cnal.name__3
+#: 950.data.seed-values.sql:137
 msgid "No Access"
 msgstr ""
 
-#: ppl.description:175
+# id::ppl.description__175
+#: 950.data.seed-values.sql:1205
 msgid "Allow a user to create/view/update/delete a provider"
 msgstr ""
 
-#: ppl.description:17
+# id::ppl.description__17
+#: 950.data.seed-values.sql:917
 msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
 msgstr ""
 
-#: clfm.value:1
+# id::clfm.value__1
+#: 950.data.seed-values.sql:172
 msgid "Fiction (not further specified)"
 msgstr ""
 
-#: ppl.description:108
+# id::ppl.description__108
+#: 950.data.seed-values.sql:1095
 msgid "Allow a user to check in/out an item that has an alert message"
 msgstr ""
 
-#: clm.value:bra
+# id::clm.value__bra
+#: 950.data.seed-values.sql:263
 msgid "Braj"
 msgstr ""
 
-#: clm.value:bat
+# id::clm.value__bat
+#: 950.data.seed-values.sql:249
 msgid "Baltic (Other)"
 msgstr ""
 
-#: clm.value:tso
+# id::clm.value__tso
+#: 950.data.seed-values.sql:648
 msgid "Tsonga"
 msgstr ""
 
-#: aout.opac_label:5
+# id::aout.opac_label__5
+#: 950.data.seed-values.sql:838
 msgid "Your Bookmobile"
 msgstr ""
 
-#: clfm.description:i
+# id::clfm.description__i
+#: 950.data.seed-values.sql:187
 msgid "The item is a single letter or collection of correspondence."
 msgstr ""
 
-#: citm.value:m
+# id::citm.value__m
+#: 950.data.seed-values.sql:714
 msgid "Computer file"
 msgstr ""
 
-#: clm.value:phi
+# id::clm.value__phi
+#: 950.data.seed-values.sql:547
 msgid "Philippine (Other)"
 msgstr ""
 
-#: clm.value:ger
+# id::clm.value__ger
+#: 950.data.seed-values.sql:356
 msgid "German"
 msgstr ""
 
+# id::ppl.description__131
+# id::ppl.description__129
 # id::129
-#: ppl.description:131
+#: 950.data.seed-values.sql:1141
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clm.value:sla
+# id::clm.value__sla
+#: 950.data.seed-values.sql:589
 msgid "Slavic (Other)"
 msgstr ""
 
-#: ppl.description:33
+# id::ppl.description__33
+#: 950.data.seed-values.sql:947
 msgid "Allow a user to place an item in transit"
 msgstr ""
 
-#: clm.value:baq
+# id::clm.value__baq
+#: 950.data.seed-values.sql:247
 msgid "Basque"
 msgstr ""
 
-#: clm.value:tum
+# id::clm.value__tum
+#: 950.data.seed-values.sql:651
 msgid "Tumbuka"
 msgstr ""
 
-#: ppl.description:27
+# id::ppl.description__27
+#: 950.data.seed-values.sql:935
 msgid "Allow a user to continue to renew an item even if it is required for a hold"
 msgstr ""
 
-#: cbs.source:1
+# id::cbs.source__1
+#: 950.data.seed-values.sql:3
 msgid "oclc"
 msgstr ""
 
-#: ppl.description:71
+# id::pgt.name__6
+#: 950.data.seed-values.sql:1395
+msgid "Acquisitions"
+msgstr ""
+
+# id::ppl.description__71
+#: 950.data.seed-values.sql:1021
 msgid "User may delete a copy statistical category entry map"
 msgstr ""
 
-#: clm.value:mdr
+# id::clm.value__mdr
+#: 950.data.seed-values.sql:482
 msgid "Mandar"
 msgstr ""
 
-#: cblvl.value:a
+# id::cblvl.value__a
+#: 950.data.seed-values.sql:716
 msgid "Monographic component part"
 msgstr ""
 
-#: clfm.description:p
+# id::clfm.description__p
+#: 950.data.seed-values.sql:196
 msgid "The item is a poem or collection of poems."
 msgstr ""
 
-#: citm.value:t
+# id::citm.value__t
+#: 950.data.seed-values.sql:702
 msgid "Manuscript language material"
 msgstr ""
 
-#: clm.value:che
+# id::clm.value__che
+#: 950.data.seed-values.sql:280
 msgid "Chechen"
 msgstr ""
 
-#: clm.value:nzi
+# id::clm.value__nzi
+#: 950.data.seed-values.sql:529
 msgid "Nzima"
 msgstr ""
 
-#: clm.value:dut
+# id::clm.value__dut
+#: 950.data.seed-values.sql:317
 msgid "Dutch"
 msgstr ""
 
-#: cnct.name:1
+# id::cnct.name__1
+#: 950.data.seed-values.sql:49
 msgid "Paperback Book"
 msgstr ""
 
-#: clm.value:eka
+# id::clm.value__eka
+#: 950.data.seed-values.sql:322
 msgid "Ekajuk"
 msgstr ""
 
-#: clm.value:grb
+# id::clm.value__grb
+#: 950.data.seed-values.sql:368
 msgid "Grebo"
 msgstr ""
 
-#: crcd.name:2
+# id::crcd.name__2
+#: 950.data.seed-values.sql:63
 msgid "28_days_2_renew"
 msgstr ""
 
-#: clm.value:nep
+# id::clm.value__nep
+#: 950.data.seed-values.sql:513
 msgid "Nepali"
 msgstr ""
 
+# id::ppl.description__127
+# id::ppl.description__129
 # id::129
-#: ppl.description:127
+#: 950.data.seed-values.sql:1133
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Staff\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clm.value:sms
+# id::clm.value__sms
+#: 950.data.seed-values.sql:598
 msgid "Skolt Sami"
 msgstr ""
 
-#: clm.value:nbl
+# id::clm.value__nbl
+#: 950.data.seed-values.sql:509
 msgid "Ndebele (South Africa)"
 msgstr ""
 
-#: ccs.name:4
+# id::ccs.name__4
+#: 950.data.seed-values.sql:118
 msgid "Missing"
 msgstr ""
 
-#: clm.value:wel
+# id::clm.value__wel
+#: 950.data.seed-values.sql:675
 msgid "Welsh"
 msgstr ""
 
-#: clm.value:ota
+# id::clm.value__ota
+#: 950.data.seed-values.sql:536
 msgid "Turkish, Ottoman"
 msgstr ""
 
-#: cza.label:6 cza.label:15 vqbrad.description:6
+# id::cza.label__6 id::cza.label__15 id::cza.label__24
+# id::vqbrad.description__6
+#: 950.data.seed-values.sql:770 950.data.seed-values.sql:791
+#: 950.data.seed-values.sql:810 950.data.seed-values.sql:1627
 msgid "ISSN"
 msgstr ""
 
-#: clm.value:goh
+# id::clm.value__goh
+#: 950.data.seed-values.sql:364
 msgid "German, Old High (ca. 750-1050)"
 msgstr ""
 
-#: ppl.description:70
+# id::ppl.description__70
+#: 950.data.seed-values.sql:1019
 msgid "User may delete a patron statistical category entry map"
 msgstr ""
 
-#: clm.value:tem
+# id::clm.value__tem
+#: 950.data.seed-values.sql:629
 msgid "Temne"
 msgstr ""
 
-#: clm.value:jpr
+# id::ppl.description__172
+#: 950.data.seed-values.sql:1202
+msgid "Allow a user to view/credit/debit a funding source"
+msgstr ""
+
+# id::clm.value__jpr
+#: 950.data.seed-values.sql:411
 msgid "Judeo-Persian"
 msgstr ""
 
-#: cubt.label:folks
+# id::cubt.label__folks
+#: 950.data.seed-values.sql:1699
 msgid "Friends"
 msgstr ""
 
-#: clm.value:day
+# id::clm.value__day
+#: 950.data.seed-values.sql:307
 msgid "Dayak"
 msgstr ""
 
-#: clm.value:gon
+# id::clm.value__gon
+#: 950.data.seed-values.sql:365
 msgid "Gondi"
 msgstr ""
 
-#: ppl.description:28
+# id::ppl.description__28
+#: 950.data.seed-values.sql:937
 msgid "Allow a user to create another user"
 msgstr ""
 
-#: clm.value:bak
+# id::clm.value__bak
+#: 950.data.seed-values.sql:243
 msgid "Bashkir"
 msgstr ""
 
-#: clm.value:kam
+# id::ppl.description__183
+#: 950.data.seed-values.sql:1213
+msgid "Allow a user to mark an item status as 'checked out'"
+msgstr ""
+
+# id::clm.value__kam
+#: 950.data.seed-values.sql:417
 msgid "Kamba"
 msgstr ""
 
-#: ppl.description:4
-msgid "Allow a user to log in to the staff client"
-msgstr ""
-
-#: i18n_l.name:es-MX
+# id::i18n_l.name__es-MX
+#: 950.data.seed-values.sql:741
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: citm.value:i
+# id::citm.value__i
+#: 950.data.seed-values.sql:712
 msgid "Nonmusical sound recording"
 msgstr ""
 
-#: pgt.name:2
+# id::pgt.name__2
+#: 950.data.seed-values.sql:1387
 msgid "Patrons"
 msgstr ""
 
-#: ppl.description:102
+# id::ppl.description__102
+#: 950.data.seed-values.sql:1083
 msgid "Allow a user to change the due date on an item to any date"
 msgstr ""
 
-#: ppl.description:76
+# id::ppl.description__76
+#: 950.data.seed-values.sql:1031
 msgid "Allow a user to create a new copy location"
 msgstr ""
 
-#: clm.value:nso
+# id::clm.value__nso
+#: 950.data.seed-values.sql:523
 msgid "Northern Sotho"
 msgstr ""
 
-#: crcd.name:8
+# id::crcd.name__8
+#: 950.data.seed-values.sql:75
 msgid "1_hour_2_renew"
 msgstr ""
 
-#: clfm.value:i
+# id::clfm.value__i
+#: 950.data.seed-values.sql:186
 msgid "Letters"
 msgstr ""
 
-#: clm.value:mak
+# id::clm.value__mak
+#: 950.data.seed-values.sql:473
 msgid "Makasar"
 msgstr ""
 
-#: clm.value:afa
+# id::clm.value__afa
+#: 950.data.seed-values.sql:212
 msgid "Afroasiatic (Other)"
 msgstr ""
 
-#: clm.value:bih
+# id::clm.value__bih
+#: 950.data.seed-values.sql:256
 msgid "Bihari"
 msgstr ""
 
-#: clm.value:ine
+# id::clm.value__ine
+#: 950.data.seed-values.sql:401
 msgid "Indo-European (Other)"
 msgstr ""
 
-#: clm.value:kin
+# id::clm.value__kin
+#: 950.data.seed-values.sql:430
 msgid "Kinyarwanda"
 msgstr ""
 
-#: clm.value:ile
+# id::clm.value__ile
+#: 950.data.seed-values.sql:396
 msgid "Interlingue"
 msgstr ""
 
-#: ccs.name:12
+# id::ccs.name__12
+#: 950.data.seed-values.sql:126
 msgid "Reserves"
 msgstr ""
 
-#: clm.value:heb
+# id::clm.value__heb
+#: 950.data.seed-values.sql:379
 msgid "Hebrew"
 msgstr ""
 
-#: clm.value:lit
+# id::clm.value__lit
+#: 950.data.seed-values.sql:457
 msgid "Lithuanian"
 msgstr ""
 
-#: clm.value:epo clm.value:-esp
+# id::clm.value__epo id::clm.value__-esp
+#: 950.data.seed-values.sql:326 950.data.seed-values.sql:328
 msgid "Esperanto"
 msgstr ""
 
-#: ppl.description:67
+# id::ppl.description__67
+#: 950.data.seed-values.sql:1013
 msgid "User may delete a copy statistical category"
 msgstr ""
 
-#: clm.value:cpf
+# id::clm.value__cpf
+#: 950.data.seed-values.sql:297
 msgid "Creoles and Pidgins, French-based (Other)"
 msgstr ""
 
-#: clm.value:ssw clm.value:-swz
+# id::clm.value__ssw id::clm.value__-swz
+#: 950.data.seed-values.sql:612 950.data.seed-values.sql:619
 msgid "Swazi"
 msgstr ""
 
-#: cubt.label:folks%3Apub_book_bags.view
+# id::cubt.label__folks%3Apub_book_bags.view
+#: 950.data.seed-values.sql:1700
 msgid "List Published Book Bags"
 msgstr ""
 
-#: clm.value:-lap clm.value:smi
+# id::clm.value__-lap id::clm.value__smi
+#: 950.data.seed-values.sql:451 950.data.seed-values.sql:594
 msgid "Sami"
 msgstr ""
 
-#: ppl.description:65
+# id::ppl.description__65
+#: 950.data.seed-values.sql:1007
 msgid "User may link a copy to an entry in a statistical category"
 msgstr ""
 
-#: clm.value:inc
+# id::clm.value__inc
+#: 950.data.seed-values.sql:399
 msgid "Indic (Other)"
 msgstr ""
 
-#: clm.value:tel
+# id::clm.value__tel
+#: 950.data.seed-values.sql:628
 msgid "Telugu"
 msgstr ""
 
-#: cza.label:4 cza.label:13
+# id::cza.label__4 id::cza.label__13 id::cza.label__22
+#: 950.data.seed-values.sql:766 950.data.seed-values.sql:787
+#: 950.data.seed-values.sql:806
 msgid "Author"
 msgstr ""
 
-#: cbs.source:2
+# id::cbs.source__2
+#: 950.data.seed-values.sql:5
 msgid "System Local"
 msgstr ""
 
-#: ppl.description:154
+# id::ppl.description__154
+#: 950.data.seed-values.sql:1184
 msgid "Allow a user to delete a funding source"
 msgstr ""
 
-#: ppl.description:48
+# id::ppl.description__48
+#: 950.data.seed-values.sql:973
 msgid "Allow a user to see what another user has checked out"
 msgstr ""
 
-#: clm.value:new
+# id::clm.value__new
+#: 950.data.seed-values.sql:514
 msgid "Newari"
 msgstr ""
 
-#: aout.name:4
+# id::aout.name__4
+#: 950.data.seed-values.sql:834
 msgid "Sub-library"
 msgstr ""
 
-#: crcd.name:5
+# id::crcd.name__5
+#: 950.data.seed-values.sql:69
 msgid "2_months_2_renew"
 msgstr ""
 
-#: cnal.name:2
+# id::cnal.name__2
+#: 950.data.seed-values.sql:135
 msgid "Unfiltered"
 msgstr ""
 
+# id::ppl.description__171
+#: 950.data.seed-values.sql:1201
+msgid "(Deprecated) Allow a user to create/view/update/delete a fund"
+msgstr ""
+
+# id::ppl.description__196
+#: 950.data.seed-values.sql:1226
+msgid "Allows a user to import a bib record from the acq staging area (on-order record) into the ILS bib data set"
+msgstr ""
+
+# id::ppl.description__161
+#: 950.data.seed-values.sql:1191
+msgid "Allow a user to create a new fund allocation"
+msgstr ""
+
+# id::ppl.description__133
+# id::ppl.description__129
 # id::129
-#: ppl.description:133
+#: 950.data.seed-values.sql:1145
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: ppl.description:25
+# id::ppl.description__25
+#: 950.data.seed-values.sql:931
 msgid "Allow a user to edit a copy"
 msgstr ""
 
-#: ppl.description:61
+# id::ppl.description__61
+#: 950.data.seed-values.sql:1001
 msgid "User may update a copy statistical category"
 msgstr ""
 
-#: clm.value:ful
+# id::clm.value__ful
+#: 950.data.seed-values.sql:346
 msgid "Fula"
 msgstr ""
 
-#: cifm.value:a
+# id::cifm.value__a
+#: 950.data.seed-values.sql:693
 msgid "Microfilm"
 msgstr ""
 
-#: clm.value:nub
+# id::clm.value__nub
+#: 950.data.seed-values.sql:524
 msgid "Nubian languages"
 msgstr ""
 
-#: clm.value:arm i18n_l.name:hy-AM i18n_l.description:hy-AM
+# id::clm.value__arm id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM
+#: 950.data.seed-values.sql:227 950.data.seed-values.sql:744
+#: 950.data.seed-values.sql:745
 msgid "Armenian"
 msgstr ""
 
-#: clm.value:sad
+# id::clm.value__sad
+#: 950.data.seed-values.sql:566
 msgid "Sandawe"
 msgstr ""
 
+# id::ppl.description__126
+# id::ppl.description__129
 # id::129
-#: ppl.description:126
+#: 950.data.seed-values.sql:1131
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Patron\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clfm.description:s
+# id::clfm.description__s
+#: 950.data.seed-values.sql:199
 msgid "The item is a speech or collection of speeches."
 msgstr ""
 
-#: clm.value:bad
+# id::clm.value__bad
+#: 950.data.seed-values.sql:241
 msgid "Banda"
 msgstr ""
 
-#: clm.value:tam
+# id::clm.value__tam
+#: 950.data.seed-values.sql:625
 msgid "Tamil"
 msgstr ""
 
-#: clm.value:aus
+# id::clm.value__aus
+#: 950.data.seed-values.sql:235
 msgid "Australian languages"
 msgstr ""
 
-#: cam.value:
+# id::cam.value__
+#: 950.data.seed-values.sql:141
 msgid "Unknown or unspecified"
 msgstr ""
 
-#: ppl.description:10 ppl.description:13 ppl.description:35
+# id::ppl.description__10 id::ppl.description__13 id::ppl.description__35
+#: 950.data.seed-values.sql:905 950.data.seed-values.sql:909
+#: 950.data.seed-values.sql:951
 msgid "* no longer applicable"
 msgstr ""
 
-#: cblvl.value:m
+# id::cblvl.value__m
+#: 950.data.seed-values.sql:721
 msgid "Monograph/Item"
 msgstr ""
 
-#: ppl.description:103
+# id::ppl.description__103
+#: 950.data.seed-values.sql:1085
 msgid "Allow a user to bypass the circulation permit call for check out"
 msgstr ""
 
-#: clm.value:pus
+# id::clm.value__pus
+#: 950.data.seed-values.sql:555
 msgid "Pushto"
 msgstr ""
 
-#: cifm.value:b
+# id::cifm.value__b
+#: 950.data.seed-values.sql:694
 msgid "Microfiche"
 msgstr ""
 
-#: clm.value:wln
+# id::clm.value__wln
+#: 950.data.seed-values.sql:677
 msgid "Walloon"
 msgstr ""
 
-#: ppl.description:112
+# id::ppl.description__112
+#: 950.data.seed-values.sql:1103
 msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
 msgstr ""
 
-#: clm.value:din
+# id::clm.value__din
+#: 950.data.seed-values.sql:311
 msgid "Dinka"
 msgstr ""
 
-#: clm.value:chu
+# id::clm.value__chu
+#: 950.data.seed-values.sql:289
 msgid "Church Slavic"
 msgstr ""
 
-#: clm.value:nno
+# id::clm.value__nno
+#: 950.data.seed-values.sql:518
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: clm.value:lam
+# id::clm.value__lam
+#: 950.data.seed-values.sql:448
 msgid "Lamba"
 msgstr ""
 
-#: clm.value:mic
+# id::clm.value__mic
+#: 950.data.seed-values.sql:485
 msgid "Micmac"
 msgstr ""
 
-#: clm.value:-gag clm.value:glg
+# id::clm.value__-gag id::clm.value__glg
+#: 950.data.seed-values.sql:350 950.data.seed-values.sql:361
 msgid "Galician"
 msgstr ""
 
-#: clm.value:mad
+# id::clm.value__mad
+#: 950.data.seed-values.sql:469
 msgid "Madurese"
 msgstr ""
 
-#: clm.value:kmb
+# id::clm.value__kmb
+#: 950.data.seed-values.sql:432
 msgid "Kimbundu"
 msgstr ""
 
-#: clm.value:ssa
+# id::clm.value__ssa
+#: 950.data.seed-values.sql:610
 msgid "Nilo-Saharan (Other)"
 msgstr ""
 
-#: clm.value:sag
+# id::clm.value__sag
+#: 950.data.seed-values.sql:567
 msgid "Sango (Ubangi Creole)"
 msgstr ""
 
-#: clm.value:kha
+# id::clm.value__kha
+#: 950.data.seed-values.sql:425
 msgid "Khasi"
 msgstr ""
 
-#: clm.value:man
+# id::clm.value__man
+#: 950.data.seed-values.sql:475
 msgid "Mandingo"
 msgstr ""
 
-#: clm.value:mah
+# id::clm.value__mah
+#: 950.data.seed-values.sql:471
 msgid "Marshallese"
 msgstr ""
 
-#: clm.value:yao
+# id::clm.value__yao
+#: 950.data.seed-values.sql:681
 msgid "Yao (Africa)"
 msgstr ""
 
-#: clm.value:mar
+# id::clm.value__mar
+#: 950.data.seed-values.sql:478
 msgid "Marathi"
 msgstr ""
 
-#: clm.value:slv
+# id::clm.value__slv
+#: 950.data.seed-values.sql:591
 msgid "Slovenian"
 msgstr ""
 
-#: clm.value:sal
+# id::clm.value__sal
+#: 950.data.seed-values.sql:570
 msgid "Salishan languages"
 msgstr ""
 
+# id::pgt.name__4
 # id::4
-#: pgt.name:4
+#: 950.data.seed-values.sql:1391
 msgid "Catalogers"
 msgstr "Cataloguers"
 
-#: ppl.description:152
+# id::ppl.description__152
+#: 950.data.seed-values.sql:1181
 msgid "Allow a staff member to define where another staff member has their permissions"
 msgstr ""
 
-#: clm.value:san
+# id::clm.value__san
+#: 950.data.seed-values.sql:572
 msgid "Sanskrit"
 msgstr ""
 
-#: ccs.name:9
+# id::ccs.name__9
+#: 950.data.seed-values.sql:123
 msgid "On order"
 msgstr ""
 
-#: clfm.value:e
+# id::clfm.value__e
+#: 950.data.seed-values.sql:179
 msgid "Essays"
 msgstr ""
 
-#: aout.opac_label:2
+# id::aout.opac_label__2
+#: 950.data.seed-values.sql:829
 msgid "Local Library System"
 msgstr ""
 
-#: cifm.value:r
+# id::cifm.value__r
+#: 950.data.seed-values.sql:698
 msgid "Regular print reproduction"
 msgstr ""
 
-#: ppl.description:153
+# id::ppl.description__153
+#: 950.data.seed-values.sql:1183
 msgid "Allow a user to create a new funding source"
 msgstr ""
 
-#: clm.value:elx
+# id::clm.value__elx
+#: 950.data.seed-values.sql:323
 msgid "Elamite"
 msgstr ""
 
-#: ppl.description:161
-msgid "Allow a user to create a new fund allocation"
-msgstr ""
-
-#: ppl.description:53
+# id::ppl.description__53
+#: 950.data.seed-values.sql:985
 msgid "Allow a user to view other users' permission groups"
 msgstr ""
 
-#: clm.value:ady
+# id::clm.value__ady
+#: 950.data.seed-values.sql:211
 msgid "Adygei"
 msgstr ""
 
-#: ccpbt.label:misc ccnbt.label:misc cbrebt.label:misc cubt.label:misc
+# id::ccpbt.label__misc id::ccnbt.label__misc id::cbrebt.label__misc
+# id::cubt.label__misc
+#: 950.data.seed-values.sql:1690 950.data.seed-values.sql:1692
+#: 950.data.seed-values.sql:1693 950.data.seed-values.sql:1698
 msgid "Miscellaneous"
 msgstr ""
 
-#: ppl.description:57
+# id::ppl.description__57
+#: 950.data.seed-values.sql:993
 msgid "User may create a copy statistical category"
 msgstr ""
 
-#: clm.value:nor
+# id::clm.value__nor
+#: 950.data.seed-values.sql:522
 msgid "Norwegian"
 msgstr ""
 
-#: clm.value:lug
+# id::clm.value__lug
+#: 950.data.seed-values.sql:463
 msgid "Ganda"
 msgstr ""
 
-#: aout.opac_label:1
+# id::aout.opac_label__1
+#: 950.data.seed-values.sql:826
 msgid "Everywhere"
 msgstr ""
 
-#: aou.name:6
+# id::aou.name__6
+#: 950.data.seed-values.sql:852
 msgid "Example Branch 3"
 msgstr ""
 
-#: aou.name:4
+# id::aou.name__4
+#: 950.data.seed-values.sql:848
 msgid "Example Branch 1"
 msgstr ""
 
-#: clm.value:lah
+# id::clm.value__lah
+#: 950.data.seed-values.sql:447
 msgid "Lahnda"
 msgstr ""
 
-#: clm.value:hit
+# id::clm.value__hit
+#: 950.data.seed-values.sql:384
 msgid "Hittite"
 msgstr ""
 
-#: ppl.description:118
+# id::ppl.description__118
+#: 950.data.seed-values.sql:1115
 msgid "Allow a user to create a new closed date for a location"
 msgstr ""
 
-#: clm.value:tuk
+# id::clm.value__tuk
+#: 950.data.seed-values.sql:650
 msgid "Turkmen"
 msgstr ""
 
-#: cam.description:j
+# id::cam.description__j
+#: 950.data.seed-values.sql:166
 msgid "The item is intended for children and young people, approximate ages 0-15 years."
 msgstr ""
 
-#: clm.value:suk
+# id::clm.value__suk
+#: 950.data.seed-values.sql:613
 msgid "Sukuma"
 msgstr ""
 
-#: citm.value:p
+# id::ppl.description__203
+#: 950.data.seed-values.sql:1233
+msgid "Allows a user to add/remove/edit users in the \"Acquisitions Administrators\" group"
+msgstr ""
+
+# id::citm.value__p
+#: 950.data.seed-values.sql:707
 msgid "Mixed materials"
 msgstr ""
 
+# id::ppl.description__72
 # id::72
-#: ppl.description:72
+#: 950.data.seed-values.sql:1023
 msgid "Allow a user to create a new non-cataloged item type"
 msgstr "Allow a user to create a new non-catalogued item type"
 
-#: ccs.name:8
+# id::ccs.name__8
+#: 950.data.seed-values.sql:122
 msgid "On holds shelf"
 msgstr ""
 
-#: aout.name:5
+# id::aout.name__5
+#: 950.data.seed-values.sql:837
 msgid "Bookmobile"
 msgstr ""
 
-#: clm.value:ypk
+# id::clm.value__ypk
+#: 950.data.seed-values.sql:685
 msgid "Yupik languages"
 msgstr ""
 
-#: clm.value:tvl
+# id::clm.value__tvl
+#: 950.data.seed-values.sql:655
 msgid "Tuvaluan"
 msgstr ""
 
-#: ppl.description:54
+# id::ppl.description__54
+#: 950.data.seed-values.sql:987
 msgid "Allow a user to determine whether another user can check out an item"
 msgstr ""
 
-#: ppl.description:104
+# id::ppl.description__104
+#: 950.data.seed-values.sql:1087
 msgid "Allow a user to override the copy_is_reference event"
 msgstr ""
 
-#: clm.value:bej
+# id::clm.value__bej
+#: 950.data.seed-values.sql:250
 msgid "Beja"
 msgstr ""
 
-#: clm.value:gem
+# id::clm.value__gem
+#: 950.data.seed-values.sql:354
 msgid "Germanic (Other)"
 msgstr ""
 
-#: cza.label:9 cza.label:18
+# id::cza.label__9 id::cza.label__18 id::cza.label__27
+#: 950.data.seed-values.sql:776 950.data.seed-values.sql:797
+#: 950.data.seed-values.sql:816
 msgid "Item Type"
 msgstr ""
 
-#: clm.value:kab
+# id::clm.value__kab
+#: 950.data.seed-values.sql:414
 msgid "Kabyle"
 msgstr ""
 
-#: crcd.name:10
+# id::crcd.name__10
+#: 950.data.seed-values.sql:79
 msgid "14_days_2_renew"
 msgstr ""
 
-#: ppl.description:15
+# id::ppl.description__15
+#: 950.data.seed-values.sql:913
 msgid "Allow a user to renew items"
 msgstr ""
 
-#: cit.name:2
+# id::cit.name__2
+#: 950.data.seed-values.sql:55
 msgid "SSN"
 msgstr ""
 
-#: clm.value:got
+# id::clm.value__got
+#: 950.data.seed-values.sql:367
 msgid "Gothic"
 msgstr ""
 
-#: clm.value:tmh
+# id::clm.value__tmh
+#: 950.data.seed-values.sql:641
 msgid "Tamashek"
 msgstr ""
 
-#: clm.value:kaa
+# id::clm.value__kaa
+#: 950.data.seed-values.sql:413
 msgid "Kara-Kalpak"
 msgstr ""
 
-#: clm.value:swa
+# id::clm.value__swa
+#: 950.data.seed-values.sql:617
 msgid "Swahili"
 msgstr ""
 
-#: clm.value:car
+# id::clm.value__car
+#: 950.data.seed-values.sql:273
 msgid "Carib"
 msgstr ""
 
-#: clm.value:sam
+# id::clm.value__sam
+#: 950.data.seed-values.sql:571
 msgid "Samaritan Aramaic"
 msgstr ""
 
-#: clm.value:chr
+# id::clm.value__chr
+#: 950.data.seed-values.sql:288
 msgid "Cherokee"
 msgstr ""
 
-#: ppl.description:176
+# id::ppl.description__176
+#: 950.data.seed-values.sql:1206
 msgid "Allow a user to view and purchase from a provider"
 msgstr ""
 
-#: ccs.name:5
+# id::ccs.name__5
+#: 950.data.seed-values.sql:119
 msgid "In process"
 msgstr ""
 
-#: ppl.description:173
+# id::ppl.description__173
+#: 950.data.seed-values.sql:1203
 msgid "Allow a user to view/credit/debit a fund"
 msgstr ""
 
-#: ppl.description:78
+# id::ppl.description__78
+#: 950.data.seed-values.sql:1035
 msgid "Allow a user to delete a copy location"
 msgstr ""
 
-#: clm.value:mag
+# id::clm.value__mag
+#: 950.data.seed-values.sql:470
 msgid "Magahi"
 msgstr ""
 
-#: clm.value:paa
+# id::clm.value__paa
+#: 950.data.seed-values.sql:538
 msgid "Papuan (Other)"
 msgstr ""
 
-#: clm.value:-mla clm.value:mlg
+# id::clm.value__-mla id::clm.value__mlg
+#: 950.data.seed-values.sql:489 950.data.seed-values.sql:490
 msgid "Malagasy"
 msgstr ""
 
-#: clm.value:tli
+# id::clm.value__tli
+#: 950.data.seed-values.sql:640
 msgid "Tlingit"
 msgstr ""
 
-#: clm.value:mao
+# id::clm.value__mao
+#: 950.data.seed-values.sql:476
 msgid "Maori"
 msgstr ""
 
-#: clm.value:frm
+# id::clm.value__frm
+#: 950.data.seed-values.sql:343
 msgid "French, Middle (ca. 1400-1600)"
 msgstr ""
 
-#: clm.value:bai
+# id::clm.value__bai
+#: 950.data.seed-values.sql:242
 msgid "Bamileke languages"
 msgstr ""
 
-#: clm.value:ibo
+# id::clm.value__ibo
+#: 950.data.seed-values.sql:390
 msgid "Igbo"
 msgstr ""
 
-#: clm.value:lad
+# id::clm.value__lad
+#: 950.data.seed-values.sql:446
 msgid "Ladino"
 msgstr ""
 
-#: clm.value:cat
+# id::clm.value__cat
+#: 950.data.seed-values.sql:274
 msgid "Catalan"
 msgstr ""
 
-#: clm.value:srr
+# id::clm.value__srr
+#: 950.data.seed-values.sql:609
 msgid "Serer"
 msgstr ""
 
-#: cam.value:e
+# id::cam.value__e
+#: 950.data.seed-values.sql:156
 msgid "Adult"
 msgstr ""
 
-#: ppl.description:42
+# id::ppl.description__42
+#: 950.data.seed-values.sql:975
 msgid "Allow a user may view another user's transactions"
 msgstr ""
 
-#: clm.value:phn
+# id::clm.value__phn
+#: 950.data.seed-values.sql:548
 msgid "Phoenician"
 msgstr ""
 
-#: clm.value:wen
+# id::clm.value__wen
+#: 950.data.seed-values.sql:676
 msgid "Sorbian languages"
 msgstr ""
 
-#: cam.value:a
+# id::cam.value__a
+#: 950.data.seed-values.sql:144
 msgid "Preschool"
 msgstr ""
 
-#: clm.value:sel
+# id::clm.value__sel
+#: 950.data.seed-values.sql:579
 msgid "Selkup"
 msgstr ""
 
-#: clm.value:bal
+# id::clm.value__nob
+#: 950.data.seed-values.sql:519
+msgid "Norwegian (Bokmål)"
+msgstr ""
+
+# id::clm.value__bal
+#: 950.data.seed-values.sql:244
 msgid "Baluchi"
 msgstr ""
 
-#: clm.value:pan
+# id::clm.value__pan
+#: 950.data.seed-values.sql:542
 msgid "Panjabi"
 msgstr ""
 
-#: clm.value:oss
+# id::clm.value__oss
+#: 950.data.seed-values.sql:535
 msgid "Ossetic"
 msgstr ""
 
-#: clm.value:raj
+# id::clm.value__raj
+#: 950.data.seed-values.sql:557
 msgid "Rajasthani"
 msgstr ""
 
-#: clm.value:non
+# id::clm.value__non
+#: 950.data.seed-values.sql:521
 msgid "Old Norse"
 msgstr ""
 
-#: ppl.description:77
+# id::ppl.description__77
+#: 950.data.seed-values.sql:1033
 msgid "Allow a user to update a copy location"
 msgstr ""
 
-#: clm.value:hau
+# id::clm.value__hau
+#: 950.data.seed-values.sql:377
 msgid "Hausa"
 msgstr ""
 
-#: clm.value:kut
+# id::cubt.label__folks%3Ahold.cancel
+#: 950.data.seed-values.sql:1706
+msgid "Cancel Holds"
+msgstr ""
+
+# id::clm.value__kut
+#: 950.data.seed-values.sql:445
 msgid "Kutenai"
 msgstr ""
 
-#: clm.value:mol
+# id::clm.value__mol
+#: 950.data.seed-values.sql:496
 msgid "Moldavian"
 msgstr ""
 
-#: ppl.description:111
+# id::ppl.description__111
+#: 950.data.seed-values.sql:1101
 msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
 msgstr ""
 
-#: clm.value:lol
+# id::clm.value__lol
+#: 950.data.seed-values.sql:458
 msgid "Mongo-Nkundu"
 msgstr ""
 
-#: clm.value:kum
+# id::clm.value__kum
+#: 950.data.seed-values.sql:442
 msgid "Kumyk"
 msgstr ""
 
-#: vqbrad.description:14
+# id::vqbrad.description__14
+#: 950.data.seed-values.sql:1635
 msgid "Edition"
 msgstr ""
 
-#: clm.value:ava
+# id::clm.value__ava
+#: 950.data.seed-values.sql:236
 msgid "Avaric"
 msgstr ""
 
-#: ppl.description:22
+# id::ppl.description__22
+#: 950.data.seed-values.sql:927
 msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
 msgstr ""
 
-#: clm.value:mos
-msgid "Mooré"
-msgstr ""
-
-#: ppl.description:101
+# id::ppl.description__101
+#: 950.data.seed-values.sql:1081
 msgid "Allow a user to execute an offline script batch"
 msgstr ""
 
-#: clm.value:gmh
+# id::clm.value__gmh
+#: 950.data.seed-values.sql:363
 msgid "German, Middle High (ca. 1050-1500)"
 msgstr ""
 
-#: ppl.description:81
+# id::ppl.description__81
+#: 950.data.seed-values.sql:1041
 msgid "Allow a user to see if another user has permission to place a hold on a given copy"
 msgstr ""
 
-#: cza.label:2 cza.label:11 vqbrad.description:5
+# id::cza.label__2 id::cza.label__11 id::cza.label__20
+# id::vqbrad.description__5
+#: 950.data.seed-values.sql:762 950.data.seed-values.sql:783
+#: 950.data.seed-values.sql:802 950.data.seed-values.sql:1626
 msgid "ISBN"
 msgstr ""
 
-#: clm.value:mai
+# id::clm.value__mai
+#: 950.data.seed-values.sql:472
 msgid "Maithili"
 msgstr ""
 
-#: pgt.name:5
+# id::pgt.name__5
+#: 950.data.seed-values.sql:1393
 msgid "Circulators"
 msgstr ""
 
-#: clm.value:tai
+# id::clm.value__tai
+#: 950.data.seed-values.sql:623
 msgid "Tai (Other)"
 msgstr ""
 
-#: clm.value:tpi
+# id::clm.value__tpi
+#: 950.data.seed-values.sql:644
 msgid "Tok Pisin"
 msgstr ""
 
-#: clm.value:bin
+# id::clm.value__bin
+#: 950.data.seed-values.sql:258
 msgid "Edo"
 msgstr ""
 
-#: cit.name:3
+# id::cit.name__3
+#: 950.data.seed-values.sql:57
 msgid "Other"
 msgstr ""
 
-#: clm.value:peo
+# id::clm.value__peo
+#: 950.data.seed-values.sql:545
 msgid "Old Persian (ca. 600-400 B.C.)"
 msgstr ""
 
-#: citm.value:k
+# id::citm.value__k
+#: 950.data.seed-values.sql:704
 msgid "Two-dimensional nonprojectable graphic"
 msgstr ""
 
-#: clm.value:ban
+# id::clm.value__ban
+#: 950.data.seed-values.sql:246
 msgid "Balinese"
 msgstr ""
 
-#: clm.value:tkl
+# id::clm.value__tkl
+#: 950.data.seed-values.sql:639
 msgid "Tokelauan"
 msgstr ""
 
-#: clm.value:doi
+# id::clm.value__doi
+#: 950.data.seed-values.sql:313
 msgid "Dogri"
 msgstr ""
 
-#: clm.value:pro
-msgid "Provençal (to 1500)"
+# id::ppl.description__197
+#: 950.data.seed-values.sql:1227
+msgid "Allows a user to mark a purchase order, lineitem, or individual copy as received"
 msgstr ""
 
-#: clm.value:lim
+# id::clm.value__lim
+#: 950.data.seed-values.sql:455
 msgid "Limburgish"
 msgstr ""
 
-#: clm.value:egy
+# id::clm.value__egy
+#: 950.data.seed-values.sql:321
 msgid "Egyptian"
 msgstr ""
 
-#: vqbrad.description:7
+# id::ppl.description__190
+#: 950.data.seed-values.sql:1220
+msgid "Allow a user to mark an item status as 'on holds shelf'"
+msgstr ""
+
+# id::vqbrad.description__7
+#: 950.data.seed-values.sql:1628
 msgid "Price"
 msgstr ""
 
-#: clm.value:tyv
+# id::clm.value__tyv
+#: 950.data.seed-values.sql:657
 msgid "Tuvinian"
 msgstr ""
 
-#: citm.value:o
+# id::citm.value__o
+#: 950.data.seed-values.sql:706
 msgid "Kit"
 msgstr ""
 
-#: acpl.name:1
+# id::acpl.name__1
+#: 950.data.seed-values.sql:1568
 msgid "Stacks"
 msgstr ""
 
-#: clm.value:mul
+# id::clm.value__mul
+#: 950.data.seed-values.sql:499
 msgid "Multiple languages"
 msgstr ""
 
-#: clm.value:mlt
+# id::clm.value__mlt
+#: 950.data.seed-values.sql:491
 msgid "Maltese"
 msgstr ""
 
-#: clm.value:asm
+# id::clm.value__asm
+#: 950.data.seed-values.sql:232
 msgid "Assamese"
 msgstr ""
 
-#: ppl.description:88
+# id::ppl.description__88
+#: 950.data.seed-values.sql:1057
 msgid "Allow a user to create a new copy note"
 msgstr ""
 
-#: pgt.name:10
+# id::ppl.description__192
+#: 950.data.seed-values.sql:1222
+msgid "Allow a user to mark an item status as 'inter-library loan'"
+msgstr ""
+
+# id::pgt.name__10
+#: 950.data.seed-values.sql:1399
 msgid "Local System Administrator"
 msgstr ""
 
-#: cza.label:8 cza.label:17 vqbrad.description:13
+# id::cza.label__8 id::cza.label__17 id::cza.label__26
+# id::vqbrad.description__13
+#: 950.data.seed-values.sql:774 950.data.seed-values.sql:795
+#: 950.data.seed-values.sql:814 950.data.seed-values.sql:1634
 msgid "Publication Date"
 msgstr ""
 
-#: ppl.description:16
+# id::ppl.description__16
+#: 950.data.seed-values.sql:915
 msgid "Allow a user to view bill details"
 msgstr ""
 
-#: clm.value:gaa
-msgid "Gã"
+# id::ppl.description__200
+#: 950.data.seed-values.sql:1230
+msgid "Allows a user to update an MFHD record"
 msgstr ""
 
-#: clm.value:tsn clm.value:-tsw
+# id::ppl.description__4
+#: 950.data.seed-values.sql:893
+msgid "Allow a user to log in to the staff client"
+msgstr ""
+
+# id::clm.value__tsn id::clm.value__-tsw
+#: 950.data.seed-values.sql:647 950.data.seed-values.sql:649
 msgid "Tswana"
 msgstr ""
 
-#: clm.value:lat
+# id::clm.value__lat
+#: 950.data.seed-values.sql:452
 msgid "Latin"
 msgstr ""
 
-#: ppl.description:62
+# id::ppl.description__62
+#: 950.data.seed-values.sql:1003
 msgid "User may update an entry in a patron statistical category"
 msgstr ""
 
-#: clm.value:cop
+# id::clm.value__cop
+#: 950.data.seed-values.sql:293
 msgid "Coptic"
 msgstr ""
 
-#: crmf.name:5
+# id::crmf.name__5
+#: 950.data.seed-values.sql:93
 msgid "overdue_equip_min"
 msgstr ""
 
-#: clm.value:ltz
+# id::clm.value__ltz
+#: 950.data.seed-values.sql:460
 msgid "Letzeburgesch"
 msgstr ""
 
-#: clm.value:-fri clm.value:fry
+# id::clm.value__-fri id::clm.value__fry
+#: 950.data.seed-values.sql:342 950.data.seed-values.sql:345
 msgid "Frisian"
 msgstr ""
 
-#: clm.value:myn
+# id::clm.value__myn
+#: 950.data.seed-values.sql:503
 msgid "Mayan languages"
 msgstr ""
 
-#: clm.value:por
+# id::clm.value__por
+#: 950.data.seed-values.sql:552
 msgid "Portuguese"
 msgstr ""
 
-#: clm.value:ace
+# id::clm.value__ace
+#: 950.data.seed-values.sql:208
 msgid "Achinese"
 msgstr ""
 
-#: cit.name:1
+# id::cit.name__1
+#: 950.data.seed-values.sql:53
 msgid "Drivers License"
 msgstr ""
 
-#: ppl.description:38
+# id::ppl.description__38
+#: 950.data.seed-values.sql:957
 msgid "Allow a user to mark an item as 'missing'"
 msgstr ""
 
-#: ppl.description:69
+# id::ppl.description__69
+#: 950.data.seed-values.sql:1017
 msgid "User may delete an entry from a copy statistical category"
 msgstr ""
 
-#: ppl.description:140
+# id::ppl.description__140
+#: 950.data.seed-values.sql:1159
 msgid "Allow staff to override overdue count failure"
 msgstr ""
 
-#: clm.value:ter
+# id::clm.value__ter
+#: 950.data.seed-values.sql:630
 msgid "Terena"
 msgstr ""
 
-#: clm.value:ave
+# id::ppl.description__185
+#: 950.data.seed-values.sql:1215
+msgid "Allow a user to mark an item status as 'lost'"
+msgstr ""
+
+# id::clm.value__ave
+#: 950.data.seed-values.sql:237
 msgid "Avestan"
 msgstr ""
 
-#: clm.value:min
+# id::clm.value__min
+#: 950.data.seed-values.sql:486
 msgid "Minangkabau"
 msgstr ""
 
-#: clm.value:him
+# id::clm.value__him
+#: 950.data.seed-values.sql:382
 msgid "Himachali"
 msgstr ""
 
-#: ppl.description:162
+# id::ppl.description__162
+#: 950.data.seed-values.sql:1192
 msgid "Allow a user to delete a fund allocation"
 msgstr ""
 
-#: ppl.description:167
+# id::ppl.description__167
+#: 950.data.seed-values.sql:1197
 msgid "Allow a user to delate a provider"
 msgstr ""
 
-#: ppl.description:147
+# id::ppl.description__147
+#: 950.data.seed-values.sql:1171
 msgid "Allow a user to run reports"
 msgstr ""
 
-#: clm.value:znd
+# id::clm.value__znd
+#: 950.data.seed-values.sql:689
 msgid "Zande"
 msgstr ""
 
-#: clm.value:fro
+# id::clm.value__fro
+#: 950.data.seed-values.sql:344
 msgid "French, Old (ca. 842-1400)"
 msgstr ""
 
-#: ppl.description:39
+# id::ppl.description__39
+#: 950.data.seed-values.sql:959
 msgid "Allow a user to mark an item as 'claims returned'"
 msgstr ""
 
-#: clm.value:sit
+# id::clm.value__sit
+#: 950.data.seed-values.sql:588
 msgid "Sino-Tibetan (Other)"
 msgstr ""
 
-#: i18n_l.description:en-CA
+# id::i18n_l.description__en-CA
+#: 950.data.seed-values.sql:733
 msgid "Canadian English"
 msgstr ""
 
-#: clm.value:-eth clm.value:gez
+# id::clm.value__-eth id::clm.value__gez
+#: 950.data.seed-values.sql:330 950.data.seed-values.sql:357
 msgid "Ethiopic"
 msgstr ""
 
-#: vqarad.description:1
+# id::vqarad.description__1
+#: 950.data.seed-values.sql:1686
 msgid "Identifier"
 msgstr ""
 
-#: ppl.description:83
+# id::ppl.description__186
+#: 950.data.seed-values.sql:1216
+msgid "Allow a user to mark an item status as 'missing'"
+msgstr ""
+
+# id::ppl.description__83
+#: 950.data.seed-values.sql:1045
 msgid "Allow a user to perform Z39.50 queries against remote servers"
 msgstr ""
 
-#: ccs.name:13
+# id::ccs.name__13
+#: 950.data.seed-values.sql:127
 msgid "Discard/Weed"
 msgstr ""
 
-#: ppl.description:110
+# id::ppl.description__110
+#: 950.data.seed-values.sql:1099
 msgid "Allow a user to change the missing status on a copy"
 msgstr ""
 
-#: clm.value:jpn
+# id::clm.value__jpn
+#: 950.data.seed-values.sql:410
 msgid "Japanese"
 msgstr ""
 
-#: clm.value:cor
+# id::clm.value__cor
+#: 950.data.seed-values.sql:294
 msgid "Cornish"
 msgstr ""
 
-#: clm.value:bul
+# id::clm.value__bul
+#: 950.data.seed-values.sql:268
 msgid "Bulgarian"
 msgstr ""
 
-#: clm.value:roa
+# id::clm.value__roa
+#: 950.data.seed-values.sql:560
 msgid "Romance (Other)"
 msgstr ""
 
-#: ppl.description:32
+# id::ppl.description__32
+#: 950.data.seed-values.sql:945
 msgid "Allow a user to check in a copy"
 msgstr ""
 
-#: clm.value:yor
+# id::clm.value__yor
+#: 950.data.seed-values.sql:684
 msgid "Yoruba"
 msgstr ""
 
-#: clm.value:arw
+# id::clm.value__arw
+#: 950.data.seed-values.sql:231
 msgid "Arawak"
 msgstr ""
 
-#: clm.value:nyn
+# id::clm.value__nyn
+#: 950.data.seed-values.sql:527
 msgid "Nyankole"
 msgstr ""
 
-#: clm.value:fre
+# id::clm.value__fre
+#: 950.data.seed-values.sql:341
 msgid "French"
 msgstr ""
 
-#: clm.value:tog
+# id::clm.value__tog
+#: 950.data.seed-values.sql:642
 msgid "Tonga (Nyasa)"
 msgstr ""
 
-#: clm.value:ben
-msgid "Bengali"
-msgstr ""
-
-#: clm.value:bas
-msgid "Basa"
-msgstr ""
-
-#: ppl.description:106
-msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
-msgstr ""
-
-#: ppl.description:36
-msgid "Allow a user to record payments in the Billing Interface"
-msgstr ""
-
-#: clfm.value:s
-msgid "Speeches"
-msgstr ""
-
-#: clm.value:kos clm.value:-kus
-msgid "Kusaie"
-msgstr ""
-
-#: clm.value:nap
-msgid "Neapolitan Italian"
-msgstr ""
-
-#: clm.value:fin
-msgid "Finnish"
-msgstr ""
-
-#: clm.value:sun
-msgid "Sundanese"
-msgstr ""
-
-#: clm.value:alb
-msgid "Albanian"
-msgstr ""
-
-#: ppl.description:96
-msgid "Allow a user to view notifications attached to a hold"
-msgstr ""
-
-#: clm.value:osa
-msgid "Osage"
-msgstr ""
-
-#: vqbrad.description:10
-msgid "TCN Source"
-msgstr ""
-
-#: ppl.description:44
-msgid "Allow a user to view another user's containers (buckets)"
-msgstr ""
-
-#: clm.value:-tag clm.value:tgl
-msgid "Tagalog"
-msgstr ""
-
-#: clm.value:scc
-msgid "Serbian"
-msgstr ""
-
-#: clm.value:ast
-msgid "Bable"
-msgstr ""
-
-#: cblvl.value:d
-msgid "Subunit"
-msgstr ""
-
-#: clm.value:ita
-msgid "Italian"
-msgstr ""
-
-#: clm.value:chb
-msgid "Chibcha"
-msgstr ""
-
-#: aou.name:8
-msgid "Example Sub-library 1"
-msgstr ""
-
-#: clm.value:nav
-msgid "Navajo"
-msgstr ""
-
-#: clm.value:mno
-msgid "Manobo languages"
-msgstr ""
-
-#: clm.value:cha
-msgid "Chamorro"
-msgstr ""
-
-#: clm.value:lua
-msgid "Luba-Lulua"
-msgstr ""
-
-#: ppl.description:79
-msgid "Allow a user to create a transit_copy object for transiting a copy"
-msgstr ""
-
-#: clm.value:wak
-msgid "Wakashan languages"
-msgstr ""
-
-#: clm.value:amh
-msgid "Amharic"
-msgstr ""
-
-#: clm.value:cze
-msgid "Czech"
-msgstr ""
-
-#: cbt.name:1
-msgid "Overdue Materials"
-msgstr ""
-
-#: clm.value:-taj clm.value:tgk
-msgid "Tajik"
-msgstr ""
-
-#: clm.value:rap
-msgid "Rapanui"
-msgstr ""
-
-#: clm.value:urd
-msgid "Urdu"
-msgstr ""
-
-#: ppl.description:24
-msgid "Allow a user to create a new copy object"
-msgstr ""
-
-#: clm.value:loz
-msgid "Lozi"
-msgstr ""
-
-#: ppl.description:60
-msgid "User may update a patron statistical category"
-msgstr ""
-
-#: ppl.description:149
-msgid "Allow a user to view report output"
-msgstr ""
-
-#: clm.value:gor
-msgid "Gorontalo"
-msgstr ""
-
-#: clm.value:chg
-msgid "Chagatai"
-msgstr ""
-
-#: ppl.description:89
-msgid "Allow a user to create a new volume note"
-msgstr ""
-
-#: crcd.name:9
-msgid "28_days_0_renew"
-msgstr ""
-
-# id::11
-#: ccs.name:11
-msgid "Cataloging"
-msgstr "Cataloguing"
-
-#: crcd.name:4
-msgid "3_days_1_renew"
-msgstr ""
-
-#: clm.value:vol
-msgid "Volapük"
-msgstr ""
-
-#: clm.value:art
-msgid "Artificial (Other)"
-msgstr ""
-
-#: clm.value:nia
-msgid "Nias"
-msgstr ""
-
-#: clm.value:arn
-msgid "Mapuche"
-msgstr ""
-
-#: vqbrad.description:9
-msgid "TCN Value"
-msgstr ""
-
-#: clm.value:uig
-msgid "Uighur"
-msgstr ""
-
-#: clm.value:chy
-msgid "Cheyenne"
-msgstr ""
-
-#: clfm.description:u
-msgid "The literary form of the item is unknown."
-msgstr ""
-
-#: clm.value:fon
-msgid "Fon"
-msgstr ""
-
-#: clm.value:awa
-msgid "Awadhi"
-msgstr ""
-
-#: clm.value:cre
-msgid "Cree"
-msgstr ""
-
-#: clm.value:oto
-msgid "Otomian languages"
-msgstr ""
-
-#: clm.value:nym
-msgid "Nyamwezi"
-msgstr ""
-
-#: clm.value:ind
-msgid "Indonesian"
-msgstr ""
-
-#: cst.value:1
-msgid "Good"
-msgstr ""
-
-#: clm.value:den
-msgid "Slave"
-msgstr ""
-
-#: clm.value:haw
-msgid "Hawaiian"
-msgstr ""
-
-#: czs.label:loc
-msgid "Library of Congress"
-msgstr ""
-
-#: clm.value:sid
-msgid "Sidamo"
-msgstr ""
-
-#: ppl.description:171
-msgid "Allow a user to create/view/update/delete a fund"
-msgstr ""
-
-#: ppl.description:105
+# id::ppl.description__105
+#: 950.data.seed-values.sql:1089
 msgid "Allow a user to void a bill"
 msgstr ""
 
-#: ppl.description:158
+# id::clm.value__ben
+#: 950.data.seed-values.sql:253
+msgid "Bengali"
+msgstr ""
+
+# id::clm.value__bas
+#: 950.data.seed-values.sql:248
+msgid "Basa"
+msgstr ""
+
+# id::cubt.label__folks%3Ahold.view
+#: 950.data.seed-values.sql:1705
+msgid "View Holds"
+msgstr ""
+
+# id::ppl.description__106
+#: 950.data.seed-values.sql:1091
+msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
+msgstr ""
+
+# id::ppl.description__36
+#: 950.data.seed-values.sql:953
+msgid "Allow a user to record payments in the Billing Interface"
+msgstr ""
+
+# id::clfm.value__s
+#: 950.data.seed-values.sql:198
+msgid "Speeches"
+msgstr ""
+
+# id::clm.value__kos id::clm.value__-kus
+#: 950.data.seed-values.sql:437 950.data.seed-values.sql:444
+msgid "Kusaie"
+msgstr ""
+
+# id::clm.value__nap
+#: 950.data.seed-values.sql:506
+msgid "Neapolitan Italian"
+msgstr ""
+
+# id::clm.value__fin
+#: 950.data.seed-values.sql:338
+msgid "Finnish"
+msgstr ""
+
+# id::clm.value__sun
+#: 950.data.seed-values.sql:614
+msgid "Sundanese"
+msgstr ""
+
+# id::clm.value__alb
+#: 950.data.seed-values.sql:218
+msgid "Albanian"
+msgstr ""
+
+# id::ppl.description__96
+#: 950.data.seed-values.sql:1071
+msgid "Allow a user to view notifications attached to a hold"
+msgstr ""
+
+# id::clm.value__osa
+#: 950.data.seed-values.sql:534
+msgid "Osage"
+msgstr ""
+
+# id::vqbrad.description__10
+#: 950.data.seed-values.sql:1631
+msgid "TCN Source"
+msgstr ""
+
+# id::ppl.description__44
+#: 950.data.seed-values.sql:965
+msgid "Allow a user to view another user's containers (buckets)"
+msgstr ""
+
+# id::clm.value__-tag id::clm.value__tgl
+#: 950.data.seed-values.sql:621 950.data.seed-values.sql:633
+msgid "Tagalog"
+msgstr ""
+
+# id::clm.value__scc
+#: 950.data.seed-values.sql:576
+msgid "Serbian"
+msgstr ""
+
+# id::clm.value__ast
+#: 950.data.seed-values.sql:233
+msgid "Bable"
+msgstr ""
+
+# id::cblvl.value__d
+#: 950.data.seed-values.sql:719
+msgid "Subunit"
+msgstr ""
+
+# id::clm.value__ita
+#: 950.data.seed-values.sql:408
+msgid "Italian"
+msgstr ""
+
+# id::clm.value__chb
+#: 950.data.seed-values.sql:279
+msgid "Chibcha"
+msgstr ""
+
+# id::aou.name__8
+#: 950.data.seed-values.sql:856
+msgid "Example Sub-library 1"
+msgstr ""
+
+# id::clm.value__nav
+#: 950.data.seed-values.sql:508
+msgid "Navajo"
+msgstr ""
+
+# id::clm.value__mno
+#: 950.data.seed-values.sql:494
+msgid "Manobo languages"
+msgstr ""
+
+# id::clm.value__cha
+#: 950.data.seed-values.sql:278
+msgid "Chamorro"
+msgstr ""
+
+# id::clm.value__lua
+#: 950.data.seed-values.sql:461
+msgid "Luba-Lulua"
+msgstr ""
+
+# id::ppl.description__79
+#: 950.data.seed-values.sql:1037
+msgid "Allow a user to create a transit_copy object for transiting a copy"
+msgstr ""
+
+# id::clm.value__wak
+#: 950.data.seed-values.sql:671
+msgid "Wakashan languages"
+msgstr ""
+
+# id::clm.value__amh
+#: 950.data.seed-values.sql:221
+msgid "Amharic"
+msgstr ""
+
+# id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
+#: 950.data.seed-values.sql:303 950.data.seed-values.sql:729
+#: 950.data.seed-values.sql:730
+msgid "Czech"
+msgstr ""
+
+# id::cbt.name__1
+#: 950.data.seed-values.sql:866
+msgid "Overdue Materials"
+msgstr ""
+
+# id::clm.value__-taj id::clm.value__tgk
+#: 950.data.seed-values.sql:624 950.data.seed-values.sql:632
+msgid "Tajik"
+msgstr ""
+
+# id::clm.value__rap
+#: 950.data.seed-values.sql:558
+msgid "Rapanui"
+msgstr ""
+
+# id::clm.value__urd
+#: 950.data.seed-values.sql:664
+msgid "Urdu"
+msgstr ""
+
+# id::ppl.description__24
+#: 950.data.seed-values.sql:969
+msgid "Allow a user to create a new copy object"
+msgstr ""
+
+# id::clm.value__loz
+#: 950.data.seed-values.sql:459
+msgid "Lozi"
+msgstr ""
+
+# id::ppl.description__60
+#: 950.data.seed-values.sql:999
+msgid "User may update a patron statistical category"
+msgstr ""
+
+# id::ppl.description__149
+#: 950.data.seed-values.sql:1175
+msgid "Allow a user to view report output"
+msgstr ""
+
+# id::clm.value__gor
+#: 950.data.seed-values.sql:366
+msgid "Gorontalo"
+msgstr ""
+
+# id::clm.value__chg
+#: 950.data.seed-values.sql:281
+msgid "Chagatai"
+msgstr ""
+
+# id::ppl.description__89
+#: 950.data.seed-values.sql:1055
+msgid "Allow a user to create a new volume note"
+msgstr ""
+
+# id::crcd.name__9
+#: 950.data.seed-values.sql:77
+msgid "28_days_0_renew"
+msgstr ""
+
+# id::ccs.name__11
+# id::11
+#: 950.data.seed-values.sql:125
+msgid "Cataloging"
+msgstr "Cataloguing"
+
+# id::crcd.name__4
+#: 950.data.seed-values.sql:67
+msgid "3_days_1_renew"
+msgstr ""
+
+# id::clm.value__art
+#: 950.data.seed-values.sql:230
+msgid "Artificial (Other)"
+msgstr ""
+
+# id::clm.value__nia
+#: 950.data.seed-values.sql:515
+msgid "Nias"
+msgstr ""
+
+# id::clm.value__arn
+#: 950.data.seed-values.sql:228
+msgid "Mapuche"
+msgstr ""
+
+# id::vqbrad.description__9
+#: 950.data.seed-values.sql:1630
+msgid "TCN Value"
+msgstr ""
+
+# id::clm.value__uig
+#: 950.data.seed-values.sql:660
+msgid "Uighur"
+msgstr ""
+
+# id::clm.value__chy
+#: 950.data.seed-values.sql:291
+msgid "Cheyenne"
+msgstr ""
+
+# id::clfm.description__u
+#: 950.data.seed-values.sql:202
+msgid "The literary form of the item is unknown."
+msgstr ""
+
+# id::clm.value__fon
+#: 950.data.seed-values.sql:340
+msgid "Fon"
+msgstr ""
+
+# id::clm.value__awa
+#: 950.data.seed-values.sql:238
+msgid "Awadhi"
+msgstr ""
+
+# id::clm.value__cre
+#: 950.data.seed-values.sql:299
+msgid "Cree"
+msgstr ""
+
+# id::clm.value__oto
+#: 950.data.seed-values.sql:537
+msgid "Otomian languages"
+msgstr ""
+
+# id::clm.value__nym
+#: 950.data.seed-values.sql:526
+msgid "Nyamwezi"
+msgstr ""
+
+# id::clm.value__ind
+#: 950.data.seed-values.sql:400
+msgid "Indonesian"
+msgstr ""
+
+# id::cst.value__1
+#: 950.data.seed-values.sql:10
+msgid "Good"
+msgstr ""
+
+# id::clm.value__den
+#: 950.data.seed-values.sql:309
+msgid "Slave"
+msgstr ""
+
+# id::cbt.name__7
+#: 950.data.seed-values.sql:878
+msgid "Damaged Item"
+msgstr ""
+
+# id::clm.value__haw
+#: 950.data.seed-values.sql:378
+msgid "Hawaiian"
+msgstr ""
+
+# id::czs.label__loc
+#: 950.data.seed-values.sql:753
+msgid "Library of Congress"
+msgstr ""
+
+# id::clm.value__sid
+#: 950.data.seed-values.sql:585
+msgid "Sidamo"
+msgstr ""
+
+# id::ppl.description__202
+#: 950.data.seed-values.sql:1232
+msgid "Allow a user to create/view/update/delete a fund"
+msgstr ""
+
+# id::clm.value__pro
+#: 950.data.seed-values.sql:554
+msgid "Provençal (to 1500)"
+msgstr ""
+
+# id::ppl.description__158
+#: 950.data.seed-values.sql:1188
 msgid "Allow a user to delete a fund"
 msgstr ""
 
-#: clm.value:sin clm.value:-snh
+# id::clm.value__sin id::clm.value__-snh
+#: 950.data.seed-values.sql:586 950.data.seed-values.sql:601
 msgid "Sinhalese"
 msgstr ""
 
-#: clm.value:ada
+# id::clm.value__ada
+#: 950.data.seed-values.sql:210
 msgid "Adangme"
 msgstr ""
 
-#: clm.value:tha
+# id::clm.value__tha
+#: 950.data.seed-values.sql:634
 msgid "Thai"
 msgstr ""
 
-#: clm.value:afr
+# id::clm.value__afr
+#: 950.data.seed-values.sql:214
 msgid "Afrikaans"
 msgstr ""
 
-#: citm.value:a
+# id::citm.value__a
+#: 950.data.seed-values.sql:701
 msgid "Language material"
 msgstr ""
 
-#: ppl.description:31
+# id::ppl.description__31
+#: 950.data.seed-values.sql:943
 msgid "Allow a user to view another user's Patron Record"
 msgstr ""
 
-#: vqbrad.description:4
+# id::vqbrad.description__4
+#: 950.data.seed-values.sql:1625
 msgid "Pagination"
 msgstr ""
 
-#: clm.value:uga
+# id::ppl.description__201
+#: 950.data.seed-values.sql:1231
+msgid "Allows a user to delete an MFHD record"
+msgstr ""
+
+# id::clm.value__uga
+#: 950.data.seed-values.sql:659
 msgid "Ugaritic"
 msgstr ""
 
-#: clm.value:uzb
+# id::clm.value__uzb
+#: 950.data.seed-values.sql:665
 msgid "Uzbek"
 msgstr ""
 
-#: cbt.name:4
+# id::cbt.name__4
+#: 950.data.seed-values.sql:872
 msgid "Lost Materials Processing Fee"
 msgstr ""
 
-#: clm.value:ira
+# id::clm.value__ira
+#: 950.data.seed-values.sql:405
 msgid "Iranian (Other)"
 msgstr ""
 
-#: clm.value:zen
+# id::clm.value__zen
+#: 950.data.seed-values.sql:687
 msgid "Zenaga"
 msgstr ""
 
-#: clm.value:bug
+# id::clm.value__bug
+#: 950.data.seed-values.sql:267
 msgid "Bugis"
 msgstr ""
 
-#: ccs.name:7
+# id::ccs.name__7
+#: 950.data.seed-values.sql:121
 msgid "Reshelving"
 msgstr ""
 
-#: clm.value:bur
+# id::clm.value__bur
+#: 950.data.seed-values.sql:269
 msgid "Burmese"
 msgstr ""
 
-#: ppl.description:160
+# id::ppl.description__160
+#: 950.data.seed-values.sql:1190
 msgid "Allow a user to update a fund"
 msgstr ""
 
-#: clm.value:ale
+# id::clm.value__ale
+#: 950.data.seed-values.sql:219
 msgid "Aleut"
 msgstr ""
 
-#: clm.value:kro
+# id::clm.value__kro
+#: 950.data.seed-values.sql:439
 msgid "Kru"
 msgstr ""
 
-#: clfm.description:m
+# id::clfm.description__m
+#: 950.data.seed-values.sql:193
 msgid "The item is a variety of literary forms (e.g., poetry and short stories)."
 msgstr ""
 
-#: clm.value:lin
+# id::clm.value__lin
+#: 950.data.seed-values.sql:456
 msgid "Lingala"
 msgstr ""
 
-#: cbt.name:6
+# id::cbt.name__6
+#: 950.data.seed-values.sql:876
 msgid "System: Rental"
 msgstr ""
 
-#: ccs.name:1
+# id::ccs.name__1
+#: 950.data.seed-values.sql:115
 msgid "Checked out"
 msgstr ""
 
-#: clm.value:arg
+# id::clm.value__mos
+#: 950.data.seed-values.sql:498
+msgid "Mooré"
+msgstr ""
+
+# id::clm.value__arg
+#: 950.data.seed-values.sql:226
 msgid "Aragonese Spanish"
 msgstr ""
 
-#: cam.value:b
+# id::cam.value__b
+#: 950.data.seed-values.sql:147
 msgid "Primary"
 msgstr ""
 
-#: clm.value:mis
+# id::clm.value__mis
+#: 950.data.seed-values.sql:487
 msgid "Miscellaneous languages"
 msgstr ""
 
-#: clm.value:syr
+# id::clm.value__lui
+#: 950.data.seed-values.sql:464
+msgid "Luiseño"
+msgstr ""
+
+# id::clm.value__syr
+#: 950.data.seed-values.sql:620
 msgid "Syriac"
 msgstr ""
 
-#: clm.value:kar
+# id::clm.value__kar
+#: 950.data.seed-values.sql:419
 msgid "Karen"
 msgstr ""
 
-#: clm.value:grc
+# id::clm.value__grc
+#: 950.data.seed-values.sql:369
 msgid "Greek, Ancient (to 1453)"
 msgstr ""
 
-#: clm.value:fur
+# id::clm.value__fur
+#: 950.data.seed-values.sql:347
 msgid "Friulian"
 msgstr ""
 
-#: clm.value:nyo
+# id::clm.value__nyo
+#: 950.data.seed-values.sql:528
 msgid "Nyoro"
 msgstr ""
 
-#: citm.value:e
+# id::citm.value__e
+#: 950.data.seed-values.sql:708
 msgid "Cartographic material"
 msgstr ""
 
-#: clm.value:bre
+# id::clm.value__bre
+#: 950.data.seed-values.sql:264
 msgid "Breton"
 msgstr ""
 
-#: ppl.description:91
+# id::ppl.description__91
+#: 950.data.seed-values.sql:1061
 msgid "Allow a user to delete another user's copy notes"
 msgstr ""
 
-#: clm.value:-gae clm.value:gla
+# id::clm.value__-gae id::clm.value__gla
+#: 950.data.seed-values.sql:349 950.data.seed-values.sql:359
 msgid "Scottish Gaelic"
 msgstr ""
 
-#: clm.value:tur
+# id::clm.value__tur
+#: 950.data.seed-values.sql:653
 msgid "Turkish"
 msgstr ""
 
-#: ppl.description:94
+# id::ppl.description__94
+#: 950.data.seed-values.sql:1067
 msgid "Allow a user to update another user's container"
 msgstr ""
 
-#: ccs.name:10
+# id::ccs.name__10
+#: 950.data.seed-values.sql:124
 msgid "ILL"
 msgstr ""
 
-#: clm.value:del
+# id::clm.value__del
+#: 950.data.seed-values.sql:308
 msgid "Delaware"
 msgstr ""
 
-#: clm.value:war
+# id::clm.value__war
+#: 950.data.seed-values.sql:673
 msgid "Waray"
 msgstr ""
 
-#: aout.name:1
+# id::aout.name__1
+#: 950.data.seed-values.sql:825
 msgid "Consortium"
 msgstr ""
 
-#: clm.value:snk
+# id::clm.value__snk
+#: 950.data.seed-values.sql:602
 msgid "Soninke"
 msgstr ""
 
-#: ppl.description:124
+# id::ppl.description__124
+#: 950.data.seed-values.sql:1127
 msgid "Allow a user to remove an existing workstation so a new one can replace it"
 msgstr ""
 
-#: clm.value:zap
+# id::clm.value__zap
+#: 950.data.seed-values.sql:686
 msgid "Zapotec"
 msgstr ""
 
-#: clm.value:hmn
+# id::clm.value__hmn
+#: 950.data.seed-values.sql:385
 msgid "Hmong"
 msgstr ""
 
-#: ppl.description:179
+# id::ppl.description__179
+#: 950.data.seed-values.sql:1209
 msgid "Allow a user to create/view/update/delete a currency_type"
 msgstr ""
 
-#: ppl.description:92
+# id::ppl.description__92
+#: 950.data.seed-values.sql:1063
 msgid "Allow a user to delete another user's volume note"
 msgstr ""
 
-#: ppl.description:178
+# id::ppl.description__178
+#: 950.data.seed-values.sql:1208
 msgid "Allow a staff member to directly remove a bibliographic record"
 msgstr ""
 
-#: clm.value:-cam clm.value:khm
+# id::clm.value__-cam id::clm.value__khm
+#: 950.data.seed-values.sql:272 950.data.seed-values.sql:427
 msgid "Khmer"
 msgstr ""
 
-#: clm.value:chv
+# id::clm.value__chv
+#: 950.data.seed-values.sql:290
 msgid "Chuvash"
 msgstr ""
 
-#: cbt.name:3
+# id::cbt.name__3
+#: 950.data.seed-values.sql:870
 msgid "Lost Materials"
 msgstr ""
 
-#: cam.description:d
+# id::cam.description__d
+#: 950.data.seed-values.sql:154
 msgid "The item is intended for young people, approximate ages 14-17 years."
 msgstr ""
 
-#: clm.value:may
+# id::clm.value__may
+#: 950.data.seed-values.sql:481
 msgid "Malay"
 msgstr ""
 
-#: ppl.description:19
-msgid "Allow a user to create new MARC records"
+# id::clm.value__kal
+#: 950.data.seed-values.sql:416
+msgid "Kalâtdlisut"
 msgstr ""
 
-#: clm.value:zun
+# id::clm.value__zun
+#: 950.data.seed-values.sql:691
 msgid "Zuni"
 msgstr ""
 
-#: citm.value:f
+# id::citm.value__f
+#: 950.data.seed-values.sql:709
 msgid "Manuscript cartographic material"
 msgstr ""
 
-#: clm.value:iba
+# id::clm.value__iba
+#: 950.data.seed-values.sql:389
 msgid "Iban"
 msgstr ""
 
-#: aout.opac_label:3
+# id::aout.opac_label__3
+#: 950.data.seed-values.sql:832
 msgid "This Branch"
 msgstr ""
 
-#: ppl.description:109
-msgid "Allow a user to remove the lost status from a copy"
+# id::cbt.name__9
+#: 950.data.seed-values.sql:882
+msgid "Notification Fee"
 msgstr ""
 
-#: clm.value:tut
+# id::clm.value__tut
+#: 950.data.seed-values.sql:654
 msgid "Altaic (Other)"
 msgstr ""
 
+# id::ppl.description__73
 # id::73
-#: ppl.description:73
+#: 950.data.seed-values.sql:1025
 msgid "Allow a user to update a non-cataloged item type"
 msgstr "Allow a user to update a non-catalogued item type"
 
-#: clm.value:ceb
+# id::clm.value__ceb
+#: 950.data.seed-values.sql:276
 msgid "Cebuano"
 msgstr ""
 
-#: clm.value:moh
+# id::clm.value__moh
+#: 950.data.seed-values.sql:495
 msgid "Mohawk"
 msgstr ""
 
-#: ppl.description:168
+# id::ppl.description__168
+#: 950.data.seed-values.sql:1198
 msgid "Allow a user to view a provider"
 msgstr ""
 
-#: clm.value:dgr
+# id::ppl.description__184
+#: 950.data.seed-values.sql:1214
+msgid "Allow a user to mark an item status as 'bindery'"
+msgstr ""
+
+# id::clm.value__dgr
+#: 950.data.seed-values.sql:310
 msgid "Dogrib"
 msgstr ""
 
-#: clm.value:mga
+# id::clm.value__vol
+#: 950.data.seed-values.sql:669
+msgid "Volapük"
+msgstr ""
+
+# id::clm.value__mga
+#: 950.data.seed-values.sql:484
 msgid "Irish, Middle (ca. 1100-1550)"
 msgstr ""
 
-#: citm.value:j
+# id::citm.value__j
+#: 950.data.seed-values.sql:713
 msgid "Musical sound recording"
 msgstr ""
 
-#: ppl.description:63
+# id::ppl.description__63
+#: 950.data.seed-values.sql:1005
 msgid "User may update an entry in a copy statistical category"
 msgstr ""
 
-#: aou.name:2
+# id::aou.name__2
+#: 950.data.seed-values.sql:844
 msgid "Example System 1"
 msgstr ""
 
-#: czs.label:loc
+# id::czs.label__oclc
+#: 950.data.seed-values.sql:755
 msgid "OCLC"
 msgstr ""
 
-#: clm.value:jav
+# id::clm.value__jav
+#: 950.data.seed-values.sql:409
 msgid "Javanese"
 msgstr ""
 
-#: ppl.description:45
+# id::ppl.description__45
+#: 950.data.seed-values.sql:967
 msgid "Allow a user to create a new container for another user"
 msgstr ""
 
-#: ppl.description:166
+# id::ppl.description__166
+#: 950.data.seed-values.sql:1196
 msgid "Allow a user to create a new provider"
 msgstr ""
 
-#: aou.name:3
+# id::aou.name__3
+#: 950.data.seed-values.sql:846
 msgid "Example System 2"
 msgstr ""
 
-#: vqbrad.description:1
+# id::vqbrad.description__2
+#: 950.data.seed-values.sql:1623
 msgid "Author of work"
 msgstr ""
 
-#: ppl.description:121
+# id::ppl.description__121
+#: 950.data.seed-values.sql:1121
 msgid "Allow a user to remove someone from collections"
 msgstr ""
 
-#: clm.value:kan
+# id::clm.value__kan
+#: 950.data.seed-values.sql:418
 msgid "Kannada"
 msgstr ""
 
-#: ppl.description:177
+# id::ppl.description__177
+#: 950.data.seed-values.sql:1207
 msgid "Allow a user to view another users picklist"
 msgstr ""
 
-#: clm.value:dum
+# id::clm.value__dum
+#: 950.data.seed-values.sql:316
 msgid "Dutch, Middle (ca. 1050-1350)"
 msgstr ""
 
-#: ppl.description:80
+# id::ppl.description__80
+#: 950.data.seed-values.sql:1039
 msgid "Allow a user to close out a transit on a copy"
 msgstr ""
 
-#: clm.value:per
+# id::clm.value__per
+#: 950.data.seed-values.sql:546
 msgid "Persian"
 msgstr ""
 
-#: clm.value:mon
+# id::clm.value__mon
+#: 950.data.seed-values.sql:497
 msgid "Mongolian"
 msgstr ""
 
-#: clm.value:cho
+# id::clm.value__cho
+#: 950.data.seed-values.sql:286
 msgid "Choctaw"
 msgstr ""
 
-#: clm.value:aym
+# id::clm.value__aym
+#: 950.data.seed-values.sql:239
 msgid "Aymara"
 msgstr ""
 
-#: clm.value:sai
+# id::clm.value__sai
+#: 950.data.seed-values.sql:569
 msgid "South American Indian (Other)"
 msgstr ""
 
-#: ppl.description:122
+# id::ppl.description__122
+#: 950.data.seed-values.sql:1123
 msgid "Allow a user to bar a patron"
 msgstr ""
 
-#: i18n_l.description:es-MX
+# id::i18n_l.description__es-MX
+#: 950.data.seed-values.sql:742
 msgid "Mexican Spanish"
 msgstr ""
 
-#: ppl.description:150
+# id::ppl.description__150
+#: 950.data.seed-values.sql:1177
 msgid "Allow a user to checkout an item that is marked as non-circ"
 msgstr ""
 
-#: clm.value:-sho clm.value:sna
+# id::clm.value__-sho id::clm.value__sna
+#: 950.data.seed-values.sql:584 950.data.seed-values.sql:599
 msgid "Shona"
 msgstr ""
 
-#: clm.value:chp
+# id::clm.value__chp
+#: 950.data.seed-values.sql:287
 msgid "Chipewyan"
 msgstr ""
 
-#: clm.value:cos
+# id::clm.value__cos
+#: 950.data.seed-values.sql:295
 msgid "Corsican"
 msgstr ""
 
-#: clm.value:kpe
+# id::clm.value__kpe
+#: 950.data.seed-values.sql:438
 msgid "Kpelle"
 msgstr ""
 
-#: ppl.description:74
+# id::ppl.description__74
+#: 950.data.seed-values.sql:1027
 msgid "Allow a user to create a new in-house-use "
 msgstr ""
 
-#: ppl.description:95
+# id::ppl.description__95
+#: 950.data.seed-values.sql:1069
 msgid "Allow a user to create a container for themselves"
 msgstr ""
 
-#: cifm.value:c
+# id::cifm.value__c
+#: 950.data.seed-values.sql:695
 msgid "Microopaque"
 msgstr ""
 
-#: clm.value:som
+# id::clm.value__som
+#: 950.data.seed-values.sql:604
 msgid "Somali"
 msgstr ""
 
-#: clm.value:arp
+# id::clm.value__arp
+#: 950.data.seed-values.sql:229
 msgid "Arapaho"
 msgstr ""
 
+# id::ppl.description__130
+# id::ppl.description__129
 # id::129
-#: ppl.description:130
+#: 950.data.seed-values.sql:1139
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clm.value:ber
+# id::clm.value__ber
+#: 950.data.seed-values.sql:254
 msgid "Berber (Other)"
 msgstr ""
 
-#: clm.value:chn
+# id::clm.value__chn
+#: 950.data.seed-values.sql:285
 msgid "Chinook jargon"
 msgstr ""
 
-#: clm.value:aka
+# id::clm.value__aka
+#: 950.data.seed-values.sql:216
 msgid "Akan"
 msgstr ""
 
-#: clm.value:lus
+# id::clm.value__lus
+#: 950.data.seed-values.sql:467
 msgid "Lushai"
 msgstr ""
 
-#: ppl.description:97
+# id::ppl.description__97
+#: 950.data.seed-values.sql:1073
 msgid "Allow a user to create new hold notifications"
 msgstr ""
 
-#: i18n_l.name:en-US
+# id::i18n_l.name__en-US
+#: 950.data.seed-values.sql:726
 msgid "English (US)"
 msgstr ""
 
-#: clm.value:pon
+# id::clm.value__pon
+#: 950.data.seed-values.sql:551
 msgid "Ponape"
 msgstr ""
 
-#: ppl.description:37
+# id::ppl.description__37
+#: 950.data.seed-values.sql:955
 msgid "Allow a user to mark an item as 'lost'"
 msgstr ""
 
-#: clm.value:tah
+# id::clm.value__tah
+#: 950.data.seed-values.sql:622
 msgid "Tahitian"
 msgstr ""
 
-#: clm.value:bla
+# id::clm.value__bla
+#: 950.data.seed-values.sql:260
 msgid "Siksika"
 msgstr ""
 
-#: ppl.description:174
+# id::ppl.description__174
+#: 950.data.seed-values.sql:1204
 msgid "Allows a user to create a picklist"
 msgstr ""
 
-#: clm.value:nds
+# id::clm.value__nds
+#: 950.data.seed-values.sql:512
 msgid "Low German"
 msgstr ""
 
-#: clm.value:dar
+# id::clm.value__dar
+#: 950.data.seed-values.sql:306
 msgid "Dargwa"
 msgstr ""
 
-#: ppl.description:9
+# id::ppl.description__9
+#: 950.data.seed-values.sql:903
 msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
 msgstr ""
 
-#: clfm.value:m
+# id::clfm.value__m
+#: 950.data.seed-values.sql:192
 msgid "Mixed forms"
 msgstr ""
 
-#: clm.value:sog
+# id::clm.value__sog
+#: 950.data.seed-values.sql:603
 msgid "Sogdian"
 msgstr ""
 
-#: clm.value:pra
+# id::clm.value__pra
+#: 950.data.seed-values.sql:553
 msgid "Prakrit languages"
 msgstr ""
 
-#: clm.value:gay
+# id::clm.value__gay
+#: 950.data.seed-values.sql:352
 msgid "Gayo"
 msgstr ""
 
-#: ppl.description:113
+# id::ppl.description__113
+#: 950.data.seed-values.sql:1105
 msgid "Allow a user to query the ZIP code data method"
 msgstr ""
 
-#: ppl.description:47
+# id::ppl.description__47
+#: 950.data.seed-values.sql:971
 msgid "Allow a user to change the settings for an organization unit"
 msgstr ""
 
-#: clfm.value:0
+# id::clfm.value__0
+#: 950.data.seed-values.sql:169
 msgid "Not fiction (not further specified)"
 msgstr ""
 
-#: clm.value:kua
+# id::clm.value__kua
+#: 950.data.seed-values.sql:441
 msgid "Kuanyama"
 msgstr ""
 
-#: clm.value:-tar clm.value:tat
+# id::clm.value__-tar id::clm.value__tat
+#: 950.data.seed-values.sql:626 950.data.seed-values.sql:627
 msgid "Tatar"
 msgstr ""
 
-#: citm.value:c
+# id::citm.value__c
+#: 950.data.seed-values.sql:710
 msgid "Notated music"
 msgstr ""
 
-#: ppl.description:93
+# id::ppl.description__93
+#: 950.data.seed-values.sql:1065
 msgid "Allow a user to delete another user's title note"
 msgstr ""
 
-#: ppl.description:30
+# id::ppl.description__30
+#: 950.data.seed-values.sql:941
 msgid "Allow a user to mark a user as deleted"
 msgstr ""
 
-#: crmf.name:7
+# id::crmf.name__7
+#: 950.data.seed-values.sql:97
 msgid "overdue_equip_max"
 msgstr ""
 
-#: cam.description:
+# id::cam.description__
+#: 950.data.seed-values.sql:142
 msgid "The target audience for the item not known or not specified."
 msgstr ""
 
-#: clm.value:jrb
+# id::clm.value__jrb
+#: 950.data.seed-values.sql:412
 msgid "Judeo-Arabic"
 msgstr ""
 
-#: clm.value:-gal clm.value:orm
+# id::clm.value__-gal id::clm.value__orm
+#: 950.data.seed-values.sql:351 950.data.seed-values.sql:533
 msgid "Oromo"
 msgstr ""
 
-#: cblvl.value:s
+# id::cblvl.value__s
+#: 950.data.seed-values.sql:722
 msgid "Serial"
 msgstr ""
 
-#: clfm.description:j
+# id::clfm.description__j
+#: 950.data.seed-values.sql:190
 msgid "The item is a short story or collection of short stories."
 msgstr ""
 
-#: pgt.name:1
+# id::pgt.name__1
+#: 950.data.seed-values.sql:1385
 msgid "Users"
 msgstr ""
 
-#: ppl.description:165
+# id::cbrebt.label__reading_list
+#: 950.data.seed-values.sql:1696
+msgid "Reading List"
+msgstr ""
+
+# id::ppl.description__165
+#: 950.data.seed-values.sql:1195
 msgid "Lowest level permission required to access the ACQ interface"
 msgstr ""
 
-#: clm.value:sem
+# id::clm.value__sem
+#: 950.data.seed-values.sql:580
 msgid "Semitic (Other)"
 msgstr ""
 
-#: ppl.description:85
+# id::ppl.description__85
+#: 950.data.seed-values.sql:1049
 msgid "Allow a user to view all notes attached to a copy"
 msgstr ""
 
-#: clm.value:kho
+# id::clm.value__kho
+#: 950.data.seed-values.sql:428
 msgid "Khotanese"
 msgstr ""
 
-#: ppl.description:169
+# id::ppl.description__169
+#: 950.data.seed-values.sql:1199
 msgid "Allow a user to update a provider"
 msgstr ""
 
-#: clm.value:bem
+# id::clm.value__bem
+#: 950.data.seed-values.sql:252
 msgid "Bemba"
 msgstr ""
 
-#: vqbrad.description:1
+# id::vqbrad.description__1
+#: 950.data.seed-values.sql:1622
 msgid "Title of work"
 msgstr ""
 
-#: ppl.description:50
+# id::ppl.description__50
+#: 950.data.seed-values.sql:979
 msgid "Allow a user to create a container item for another user"
 msgstr ""
 
-#: ppl.description:86
+# id::ppl.description__86
+#: 950.data.seed-values.sql:1051
 msgid "Allow a user to view all notes attached to a volume"
 msgstr ""
 
-#: clm.value:que
+# id::clm.value__que
+#: 950.data.seed-values.sql:556
 msgid "Quechua"
 msgstr ""
 
-#: clm.value:crp
+# id::ppl.description__193
+#: 950.data.seed-values.sql:1223
+msgid "Allows a user to add/remove/edit users in the \"ACQ\" group"
+msgstr ""
+
+# id::clm.value__crp
+#: 950.data.seed-values.sql:301
 msgid "Creoles and Pidgins (Other)"
 msgstr ""
 
-#: clm.value:nic
+# id::clm.value__nic
+#: 950.data.seed-values.sql:516
 msgid "Niger-Kordofanian (Other)"
 msgstr ""
 
-#: clm.value:est
+# id::clm.value__est
+#: 950.data.seed-values.sql:329
 msgid "Estonian"
 msgstr ""
 
-#: clm.value:fan
+# id::clm.value__fan
+#: 950.data.seed-values.sql:333
 msgid "Fang"
 msgstr ""
 
-#: clm.value:mal
+# id::clm.value__mal
+#: 950.data.seed-values.sql:474
 msgid "Malayalam"
 msgstr ""
 
-#: ppl.description:170
+# id::ppl.description__170
+#: 950.data.seed-values.sql:1200
 msgid "Allow a user to create/view/update/delete a funding source"
 msgstr ""
 
-#: clm.value:smn
+# id::clm.value__smn
+#: 950.data.seed-values.sql:596
 msgid "Inari Sami"
 msgstr ""
 
-#: i18n_l.name:fr-CA
+# id::i18n_l.name__fr-CA
+#: 950.data.seed-values.sql:735
 msgid "French (Canada)"
 msgstr ""
 
-#: aout.name:3
+# id::aout.name__3
+#: 950.data.seed-values.sql:831
 msgid "Branch"
 msgstr ""
 
-#: clm.value:afh
+# id::clm.value__afh
+#: 950.data.seed-values.sql:213
 msgid "Afrihili (Artificial language)"
 msgstr ""
 
-#: vqbrad.description:15
+# id::vqbrad.description__15
+#: 950.data.seed-values.sql:1636
 msgid "Item Barcode"
 msgstr ""
 
-#: ppl.description:107
+# id::ppl.description__107
+#: 950.data.seed-values.sql:1093
 msgid "Allow a user to check out an item in a non-circulatable status"
 msgstr ""
 
-#: ppl.description:151
+# id::ppl.description__151
+#: 950.data.seed-values.sql:1179
 msgid "Allow a user to delete an item out of another user's container"
 msgstr ""
 
-#: cbs.source:3
+# id::cbs.source__3
+#: 950.data.seed-values.sql:7
 msgid "Project Gutenberg"
 msgstr ""
 
-#: aou.name:9
+# id::aou.name__9
+#: 950.data.seed-values.sql:858
 msgid "Example Bookmobile 1"
 msgstr ""
 
-#: cam.description:g
+# id::cam.description__g
+#: 950.data.seed-values.sql:163
 msgid "The item is of general interest and not aimed at an audience of a particular intellectual level."
 msgstr ""
 
-#: ppl.description:120
+# id::ppl.description__120
+#: 950.data.seed-values.sql:1119
 msgid "Allow a user to put someone into collections"
 msgstr ""
 
-#: clm.value:fij
+# id::clm.value__fij
+#: 950.data.seed-values.sql:337
 msgid "Fijian"
 msgstr ""
 
-#: clm.value:ilo
+# id::clm.value__ilo
+#: 950.data.seed-values.sql:397
 msgid "Iloko"
 msgstr ""
 
-#: ppl.description:98
+# id::ppl.description__98
+#: 950.data.seed-values.sql:1075
 msgid "Allow a user to update an organization unit setting"
 msgstr ""
 
-#: clm.value:-sao clm.value:smo
+# id::czs.label__biblios
+#: 950.data.seed-values.sql:757
+msgid "‡biblios.net"
+msgstr ""
+
+# id::clm.value__tig
+#: 950.data.seed-values.sql:636
+msgid "Tigré"
+msgstr ""
+
+# id::clm.value__-sao id::clm.value__smo
+#: 950.data.seed-values.sql:573 950.data.seed-values.sql:597
 msgid "Samoan"
 msgstr ""
 
-#: ccpbt.label:staff_client cbrebt.label:staff_client
+# id::ccpbt.label__staff_client id::cbrebt.label__staff_client
+#: 950.data.seed-values.sql:1691 950.data.seed-values.sql:1694
 msgid "General Staff Client container"
 msgstr ""
 
-#: ppl.description:75
+# id::ppl.description__75
+#: 950.data.seed-values.sql:1029
 msgid "Allow a user to check out a copy"
 msgstr ""
 
-#: clm.value:glv clm.value:-max
+# id::clm.value__glv id::clm.value__-max
+#: 950.data.seed-values.sql:362 950.data.seed-values.sql:480
 msgid "Manx"
 msgstr ""
 
-#: clm.value:rar
+# id::clm.value__rar
+#: 950.data.seed-values.sql:559
 msgid "Rarotongan"
 msgstr ""
 
-#: clfm.description:h
+# id::clfm.description__h
+#: 950.data.seed-values.sql:184
 msgid "The item is a humorous work, satire or of similar literary form."
 msgstr ""
 
-#: crrf.name:3
+# id::crrf.name__3
+#: 950.data.seed-values.sql:105
 msgid "50_cent_per_day"
 msgstr ""
 
-#: clm.value:dyu
+# id::ppl.description__187
+#: 950.data.seed-values.sql:1217
+msgid "Allow a user to mark an item status as 'in process'"
+msgstr ""
+
+# id::clm.value__dyu
+#: 950.data.seed-values.sql:318
 msgid "Dyula"
 msgstr ""
 
-#: ppl.description:23
+# id::ppl.description__23
+#: 950.data.seed-values.sql:929
 msgid "Allow a user to delete a volume"
 msgstr ""
 
-#: clm.value:gre
+# id::clm.value__gre
+#: 950.data.seed-values.sql:370
 msgid "Greek, Modern (1453- )"
 msgstr ""
 
-#: clm.value:efi
+# id::clm.value__efi
+#: 950.data.seed-values.sql:320
 msgid "Efik"
 msgstr ""
 
-#: clm.value:nob
-msgid "Norwegian (Bokmål)"
+# id::ppl.description__195
+#: 950.data.seed-values.sql:1225
+msgid "Allows a user to view a purchase order"
 msgstr ""
 
-#: ppl.description:141
+# id::ppl.description__141
+#: 950.data.seed-values.sql:1161
 msgid "Allow staff to override fine amount checkout failure"
 msgstr ""
 
+# id::ppl.description__135
+# id::ppl.description__129
 # id::129
-#: ppl.description:135
+#: 950.data.seed-values.sql:1149
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: ppl.description:14
+# id::ppl.description__14
+#: 950.data.seed-values.sql:911
 msgid "Allow a user to update another user's hold"
 msgstr ""
 
-#: clm.value:mus
+# id::clm.value__mus
+#: 950.data.seed-values.sql:501
 msgid "Creek"
 msgstr ""
 
-#: cam.value:c
+# id::cam.value__c
+#: 950.data.seed-values.sql:150
 msgid "Pre-adolescent"
 msgstr ""
 
-#: clm.value:smj
+# id::clm.value__smj
+#: 950.data.seed-values.sql:595
 msgid "Lule Sami"
 msgstr ""
 
-#: ppl.description:59
+# id::ppl.description__59
+#: 950.data.seed-values.sql:997
 msgid "User may create an entry in a copy statistical category"
 msgstr ""
 
-#: clm.value:bis
+# id::clm.value__bis
+#: 950.data.seed-values.sql:259
 msgid "Bislama"
 msgstr ""
 
-#: clm.value:kon
+# id::clm.value__kon
+#: 950.data.seed-values.sql:435
 msgid "Kongo"
 msgstr ""
 
-#: clm.value:ach
+# id::clm.value__ach
+#: 950.data.seed-values.sql:209
 msgid "Acoli"
 msgstr ""
 
-#: clm.value:mkh
+# id::clm.value__mkh
+#: 950.data.seed-values.sql:488
 msgid "Mon-Khmer (Other)"
 msgstr ""
 
-#: ppl.description:29
+# id::ppl.description__29
+#: 950.data.seed-values.sql:939
 msgid "Allow a user to edit a user's record"
 msgstr ""
 
-#: clm.value:pap
+# id::clm.value__pap
+#: 950.data.seed-values.sql:543
 msgid "Papiamento"
 msgstr ""
 
-#: clm.value:mwr
+# id::clm.value__mwr
+#: 950.data.seed-values.sql:502
 msgid "Marwari"
 msgstr ""
 
-#: crmf.name:2
+# id::crmf.name__2
+#: 950.data.seed-values.sql:87
 msgid "overdue_min"
 msgstr ""
 
-#: clm.value:dak
+# id::clm.value__dak
+#: 950.data.seed-values.sql:304
 msgid "Dakota"
 msgstr ""
 
-#: clm.value:pol
+# id::clm.value__pol
+#: 950.data.seed-values.sql:550
 msgid "Polish"
 msgstr ""
 
-#: crmf.name:3
+# id::crmf.name__3
+#: 950.data.seed-values.sql:89
 msgid "overdue_mid"
 msgstr ""
 
-#: clm.value:hat
+# id::clm.value__hat
+#: 950.data.seed-values.sql:376
 msgid "Haitian French Creole"
 msgstr ""
 
-#: clm.value:bik
+# id::clm.value__bik
+#: 950.data.seed-values.sql:257
 msgid "Bikol"
 msgstr ""
 
-#: clm.value:swe
+# id::clm.value__swe
+#: 950.data.seed-values.sql:618
 msgid "Swedish"
 msgstr ""
 
-#: cam.description:c
+# id::cam.description__c
+#: 950.data.seed-values.sql:151
 msgid "The item is intended for young people, approximate ages 9-13 years."
 msgstr ""
 
-#: clm.value:sgn
+# id::clm.value__sgn
+#: 950.data.seed-values.sql:582
 msgid "Sign languages"
 msgstr ""
 
-#: ppl.description:8
+# id::ppl.description__8
+#: 950.data.seed-values.sql:901
 msgid "Allow a user to place a hold on a specific copy"
 msgstr ""
 
+# id::ppl.description__136
+# id::ppl.description__129
 # id::129
-#: ppl.description:136
+#: 950.data.seed-values.sql:1151
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clm.value:chm
+# id::clm.value__chm
+#: 950.data.seed-values.sql:284
 msgid "Mari"
 msgstr ""
 
-#: clm.value:ewe
+# id::clm.value__ewe
+#: 950.data.seed-values.sql:331
 msgid "Ewe"
 msgstr ""
 
-#: clm.value:tup
+# id::clm.value__tup
+#: 950.data.seed-values.sql:652
 msgid "Tupi languages"
 msgstr ""
 
-#: clm.value:alg
+# id::clm.value__alg
+#: 950.data.seed-values.sql:220
 msgid "Algonquian (Other)"
 msgstr ""
 
-#: clm.value:fao clm.value:-far
+# id::clm.value__fao id::clm.value__-far
+#: 950.data.seed-values.sql:334 950.data.seed-values.sql:335
 msgid "Faroese"
 msgstr ""
 
-#: clm.value:dan
+# id::clm.value__dan
+#: 950.data.seed-values.sql:305
 msgid "Danish"
 msgstr ""
 
-#: clm.value:dra
+# id::clm.value__dra
+#: 950.data.seed-values.sql:314
 msgid "Dravidian (Other)"
 msgstr ""
 
-#: i18n_l.description:es-US
+# id::i18n_l.description__es-US
+#: 950.data.seed-values.sql:739
 msgid "American Spanish"
 msgstr ""
 
-#: clm.value:cpe
+# id::clm.value__cpe
+#: 950.data.seed-values.sql:296
 msgid "Creoles and Pidgins, English-based (Other)"
 msgstr ""
 
+# id::ppl.description__128
+# id::ppl.description__129
 # id::129
-#: ppl.description:128
+#: 950.data.seed-values.sql:1135
 #, fuzzy
 msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
 msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
 
-#: clm.value:cus
+# id::clm.value__cus
+#: 950.data.seed-values.sql:302
 msgid "Cushitic (Other)"
 msgstr ""
 
-#: ppl.description:56
+# id::ppl.description__56
+#: 950.data.seed-values.sql:991
 msgid "User may create a new patron statistical category"
 msgstr ""
 
-#: clm.value:tet
+# id::clm.value__tet
+#: 950.data.seed-values.sql:631
 msgid "Tetum"
 msgstr ""
 
-#: ppl.description:66
+# id::ppl.description__66
+#: 950.data.seed-values.sql:1011
 msgid "User may delete a patron statistical category"
 msgstr ""
 
-#: clm.value:pal
+# id::clm.value__pal
+#: 950.data.seed-values.sql:540
 msgid "Pahlavi"
 msgstr ""
 
-#: cubt.label:folks%3Apub_book_bags.add
+# id::cubt.label__folks%3Apub_book_bags.add
+#: 950.data.seed-values.sql:1701
 msgid "Add to Published Book Bags"
 msgstr ""
 
-#: clm.value:slo
+# id::clm.value__slo
+#: 950.data.seed-values.sql:590
 msgid "Slovak"
 msgstr ""
 
-#: ppl.description:159
+# id::ppl.description__159
+#: 950.data.seed-values.sql:1189
 msgid "Allow a user to view a fund"
 msgstr ""
 
-#: ppl.description:142
+# id::ppl.description__142
+#: 950.data.seed-values.sql:1163
 msgid "Allow staff to override circulation copy range failure"
 msgstr ""
 
-#: ppl.description:148
+# id::ppl.description__148
+#: 950.data.seed-values.sql:1173
 msgid "Allow a user to share report his own folders"
 msgstr ""
 
-#: clm.value:gil
+# id::clm.value__gil
+#: 950.data.seed-values.sql:358
 msgid "Gilbertese"
 msgstr ""
 
-#: ppl.description:100
+# id::ppl.description__100
+#: 950.data.seed-values.sql:1079
 msgid "Allow a user to view uploaded offline script information"
 msgstr ""
 
-#: clm.value:kik
+# id::clm.value__kik
+#: 950.data.seed-values.sql:429
 msgid "Kikuyu"
 msgstr ""
 
-#: crahp.name:2
+# id::crahp.name__2
+#: 950.data.seed-values.sql:111
 msgid "6month"
 msgstr ""
 
-#: ppl.description:143
+# id::ppl.description__143
+#: 950.data.seed-values.sql:1165
 msgid "Allow staff to override item on holds shelf failure"
 msgstr ""
 
-#: clm.value:ang
+# id::clm.value__ang
+#: 950.data.seed-values.sql:222
 msgid "English, Old (ca. 450-1100)"
 msgstr ""
 
-#: clm.value:nai
+# id::clm.value__nai
+#: 950.data.seed-values.sql:505
 msgid "North American Indian (Other)"
 msgstr ""
 
-#: clm.value:crh
+# id::clm.value__crh
+#: 950.data.seed-values.sql:300
 msgid "Crimean Tatar"
 msgstr ""
 
-#: cbrebt.label:bookbag
+# id::cbrebt.label__bookbag
+#: 950.data.seed-values.sql:1695
 msgid "Book Bag"
 msgstr ""
 
-#: clm.value:bho
+# id::clm.value__bho
+#: 950.data.seed-values.sql:255
 msgid "Bhojpuri"
 msgstr ""
 
-#: cam.value:f
+# id::cam.value__f
+#: 950.data.seed-values.sql:159
 msgid "Specialized"
 msgstr ""
 
-#: clm.value:tsi
+# id::clm.value__tsi
+#: 950.data.seed-values.sql:646
 msgid "Tsimshian"
 msgstr ""
 
-#: clfm.description:1
+# id::clfm.description__1
+#: 950.data.seed-values.sql:173
 msgid "The item is a work of fiction and no further identification of the literary form is desired"
 msgstr ""
 
-#: clm.value:cmc
+# id::clm.value__cmc
+#: 950.data.seed-values.sql:292
 msgid "Chamic languages"
 msgstr ""
 
-#: clm.value:nog
+# id::clm.value__nog
+#: 950.data.seed-values.sql:520
 msgid "Nogai"
 msgstr ""
 
-#: clfm.description:0
+# id::clfm.description__0
+#: 950.data.seed-values.sql:170
 msgid "The item is not a work of fiction and no further identification of the literary form is desired"
 msgstr ""
 
-#: clm.value:lui
-msgid "Luiseño"
-msgstr ""
-
-#: clm.value:enm
+# id::clm.value__enm
+#: 950.data.seed-values.sql:325
 msgid "English, Middle (1100-1500)"
 msgstr ""
 
-#: clm.value:sah
+# id::clm.value__sah
+#: 950.data.seed-values.sql:568
 msgid "Yakut"
 msgstr ""
 
-#: clm.value:sux
+# id::clm.value__sux
+#: 950.data.seed-values.sql:616
 msgid "Sumerian"
 msgstr ""
 
-#: crmf.name:6
+# id::crmf.name__6
+#: 950.data.seed-values.sql:95
 msgid "overdue_equip_mid"
 msgstr ""
 
-#: clm.value:xho
+# id::clm.value__xho
+#: 950.data.seed-values.sql:680
 msgid "Xhosa"
 msgstr ""
 
-#: clm.value:mni
+# id::clm.value__mni
+#: 950.data.seed-values.sql:493
 msgid "Manipuri"
 msgstr ""
 
-#: clm.value:bua
+# id::clm.value__bua
+#: 950.data.seed-values.sql:266
 msgid "Buriat"
 msgstr ""
 
-#: ppl.description:52
+# id::ppl.description__52
+#: 950.data.seed-values.sql:983
 msgid "Allow a user to remove other users from permission groups"
 msgstr ""
 
-#: ppl.description:2
+# id::ppl.description__2
+#: 950.data.seed-values.sql:891
 msgid "Allow a user to log in to the OPAC"
 msgstr ""
 
-#: clm.value:hup
+# id::clm.value__hup
+#: 950.data.seed-values.sql:388
 msgid "Hupa"
 msgstr ""
 
-#: clm.value:ina clm.value:-int
+# id::clm.value__ina id::clm.value__-int
+#: 950.data.seed-values.sql:398 950.data.seed-values.sql:403
 msgid "Interlingua (International Auxiliary Language Association)"
 msgstr ""
 
-#: clm.value:ice
+# id::clm.value__ice
+#: 950.data.seed-values.sql:391
 msgid "Icelandic"
 msgstr ""
 
-#: clm.value:twi
+# id::clm.value__twi
+#: 950.data.seed-values.sql:656
 msgid "Twi"
 msgstr ""
 
-#: clm.value:guj
+# id::ppl.description__191
+#: 950.data.seed-values.sql:1221
+msgid "Allow a user to mark an item status as 'on order'"
+msgstr ""
+
+# id::clm.value__guj
+#: 950.data.seed-values.sql:373
 msgid "Gujarati"
 msgstr ""
 
-#: clm.value:map
+# id::clm.value__map
+#: 950.data.seed-values.sql:477
 msgid "Austronesian (Other)"
 msgstr ""
 
-#: clm.value:akk
+# id::clm.value__akk
+#: 950.data.seed-values.sql:217
 msgid "Akkadian"
 msgstr ""
 
-#: cnal.name:1
+# id::ppl.description__19
+#: 950.data.seed-values.sql:921
+msgid "Allow a user to create new MARC records"
+msgstr ""
+
+# id::cnal.name__1
+#: 950.data.seed-values.sql:133
 msgid "Filtered"
 msgstr ""
 
-#: clm.value:kor
+# id::clm.value__kor
+#: 950.data.seed-values.sql:436
 msgid "Korean"
 msgstr ""
 
-#: clm.value:shn
+# id::clm.value__shn
+#: 950.data.seed-values.sql:583
 msgid "Shan"
 msgstr ""
 
-#: citm.value:d
+# id::citm.value__d
+#: 950.data.seed-values.sql:711
 msgid "Manuscript notated music"
 msgstr ""
 
-#: clm.value:kom
+# id::ppl.description__49
+#: 950.data.seed-values.sql:977
+msgid "Allow a user to delete another user's container"
+msgstr ""
+
+# id::clm.value__kom
+#: 950.data.seed-values.sql:434
 msgid "Komi"
 msgstr ""
 
-#: cam.description:e
+# id::cam.description__e
+#: 950.data.seed-values.sql:157
 msgid "The item is intended for adults."
 msgstr ""
 
-#: cblvl.value:c
+# id::cblvl.value__c
+#: 950.data.seed-values.sql:718
 msgid "Collection"
 msgstr ""
 
-#: clm.value:nya
+# id::clm.value__nya
+#: 950.data.seed-values.sql:525
 msgid "Nyanja"
 msgstr ""
 
-#: ppl.description:5
+# id::ppl.description__5
+#: 950.data.seed-values.sql:895
 msgid "Allow a user to create a metarecord holds"
 msgstr ""
 
-#: ppl.description:172
-msgid "Allow a user to view/credit/debit a funding source"
-msgstr ""
-
-#: clm.value:khi
+# id::clm.value__khi
+#: 950.data.seed-values.sql:426
 msgid "Khoisan (Other)"
 msgstr ""
 
-#: clm.value:cad
+# id::clm.value__cad
+#: 950.data.seed-values.sql:270
 msgid "Caddo"
 msgstr ""
 
-#: clm.value:lez
+# id::clm.value__lez
+#: 950.data.seed-values.sql:454
 msgid "Lezgian"
 msgstr ""
 
-#: clm.value:kas
+# id::clm.value__kas
+#: 950.data.seed-values.sql:420
 msgid "Kashmiri"
 msgstr ""
 
-#: ppl.description:116
+# id::ppl.description__116
+#: 950.data.seed-values.sql:1113
 msgid "Allow a user to remove a closed date interval for a given location"
 msgstr ""
 
-#: clm.value:hai
+# id::clm.value__hai
+#: 950.data.seed-values.sql:375
 msgid "Haida"
 msgstr ""
 
-#: clm.value:-lan clm.value:oci
+# id::clm.value__-lan id::clm.value__oci
+#: 950.data.seed-values.sql:449 950.data.seed-values.sql:530
 msgid "Occitan (post-1500)"
 msgstr ""
 
-#: clm.value:son
+# id::clm.value__son
+#: 950.data.seed-values.sql:605
 msgid "Songhai"
 msgstr ""
 
-#: i18n_l.name:es-US
+# id::i18n_l.name__es-US
+#: 950.data.seed-values.sql:738
 msgid "Spanish (US)"
 msgstr ""
 
-#: ccs.name:2
+# id::ccs.name__2
+#: 950.data.seed-values.sql:116
 msgid "Bindery"
 msgstr ""
 
-#: aout.name:2
+# id::aout.name__2
+#: 950.data.seed-values.sql:828
 msgid "System"
 msgstr ""
 
-#: ppl.description:157
+# id::pgt.name__6
+#: 950.data.seed-values.sql:1397
+msgid "Acquisitions Administrator"
+msgstr ""
+
+# id::ppl.description__157
+#: 950.data.seed-values.sql:1187
 msgid "Allow a user to create a new fund"
 msgstr ""
 
-#: pgt.description:10
+# id::pgt.description__10
+#: 950.data.seed-values.sql:1400
 msgid "System maintenance, configuration, etc."
 msgstr ""
 
-#: ppl.description:114
+# id::ppl.description__114
+#: 950.data.seed-values.sql:1107
 msgid "Allow a user to cancel holds"
 msgstr ""
 
-#: vqbrad.description:3
+# id::ppl.description__109
+#: 950.data.seed-values.sql:1097
+msgid "Allow a user to remove the lost status from a copy"
+msgstr ""
+
+# id::vqbrad.description__3
+#: 950.data.seed-values.sql:1624
 msgid "Language of work"
 msgstr ""
 
-#: ppl.description:144
+# id::ppl.description__144
+#: 950.data.seed-values.sql:1167
 msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
 
-#: clm.value:aar
+# id::clm.value__aar
+#: 950.data.seed-values.sql:206
 msgid "Afar"
 msgstr ""
 
-#: crahp.name:1
+# id::crahp.name__1
+#: 950.data.seed-values.sql:109
 msgid "3month"
 msgstr ""
 
-#: citm.value:r
+# id::citm.value__r
+#: 950.data.seed-values.sql:705
 msgid "Three-dimensional artifact or naturally occurring object"
 msgstr ""
 
-#: ppl.description:68
+# id::ppl.description__68
+#: 950.data.seed-values.sql:1015
 msgid "User may delete an entry from a patron statistical category"
 msgstr ""
 
-#: clm.value:udm
+# id::clm.value__udm
+#: 950.data.seed-values.sql:658
 msgid "Udmurt"
 msgstr ""
 
-#: clm.value:gle clm.value:-iri
+# id::clm.value__gle id::clm.value__-iri
+#: 950.data.seed-values.sql:360 950.data.seed-values.sql:406
 msgid "Irish"
 msgstr ""
 
-#: crcd.name:11 crmf.name:1 crrf.name:1
+# id::ppl.description__198
+#: 950.data.seed-values.sql:1228
+msgid "Allows a user to view all org settings at the specified level"
+msgstr ""
+
+# id::crcd.name__11 id::crmf.name__1 id::crrf.name__1
+#: 950.data.seed-values.sql:81 950.data.seed-values.sql:85
+#: 950.data.seed-values.sql:101
 msgid "default"
 msgstr ""
 
-#: clm.value:kaz
+# id::clm.value__kaz
+#: 950.data.seed-values.sql:423
 msgid "Kazakh"
 msgstr ""
 
-#: clm.value:kbd
+# id::clm.value__kbd
+#: 950.data.seed-values.sql:424
 msgid "Kabardian"
 msgstr ""
 
-#: clm.value:bel
+# id::clm.value__bel
+#: 950.data.seed-values.sql:251
 msgid "Belarusian"
 msgstr ""
 
-#: clm.value:mac
+# id::clm.value__mac
+#: 950.data.seed-values.sql:468
 msgid "Macedonian"
 msgstr ""
 
-#: cam.description:a
+# id::cam.description__a
+#: 950.data.seed-values.sql:145
 msgid "The item is intended for children, approximate ages 0-5 years."
 msgstr ""
 
-#: ppl.description:26
+# id::ppl.description__26
+#: 950.data.seed-values.sql:933
 msgid "Allow a user to delete a copy"
 msgstr ""
 
-#: cifm.value:s
-msgid "Electronic"
-msgstr ""
-
-#: clm.value:lun
-msgid "Lunda"
-msgstr ""
-
-#: clm.value:sme
-msgid "Northern Sami"
-msgstr ""
-
-#: ppl.description:64
-msgid "User may link another user to an entry in a statistical category"
-msgstr ""
-
-#: clm.value:xal
-msgid "Kalmyk"
-msgstr ""
-
-#: cam.value:d
-msgid "Adolescent"
-msgstr ""
-
-#: clm.value:rum
-msgid "Romanian"
-msgstr ""
-
-#: clm.value:aze
-msgid "Azerbaijani"
-msgstr ""
-
-#: clm.value:srd
-msgid "Sardinian"
-msgstr ""
-
-#: clm.value:hmo
-msgid "Hiri Motu"
-msgstr ""
-
-#: ppl.description:6
-msgid "Allow a user to place a hold at the title level"
-msgstr ""
-
-#: ppl.description:146
-msgid "Allow a user to place multiple holds on a single title"
-msgstr ""
-
-#: cbt.name:5
-msgid "System: Deposit"
-msgstr ""
-
-#: citm.value:g
-msgid "Projected medium"
-msgstr ""
-
-#: clm.value:roh
-msgid "Raeto-Romance"
-msgstr ""
-
-#: clm.value:lao
-msgid "Lao"
-msgstr ""
-
-# id::129
-#: ppl.description:129
-msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
-msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
-
-#: ppl.description:21
-msgid "Allow a user to create a volume"
-msgstr ""
-
-#: ppl.description:137
-msgid "Allow a user to place a hold on an age-protected item"
-msgstr ""
-
-#: clm.value:sio
-msgid "Siouan (Other)"
-msgstr ""
-
-#: clm.value:men
-msgid "Mende"
-msgstr ""
-
-#: ppl.description:58
-msgid "User may create an entry in a patron statistical category"
-msgstr ""
-
-#: clm.value:oji
-msgid "Ojibwa"
-msgstr ""
-
-#: clm.value:sus
-msgid "Susu"
-msgstr ""
-
-#: clm.value:cau
-msgid "Caucasian (Other)"
-msgstr ""
-
-#: clm.value:kur
-msgid "Kurdish"
-msgstr ""
-
-#: clm.value:wal
-msgid "Walamo"
-msgstr ""
-
-#: ppl.description:99
-msgid "Allow a user to upload an offline script"
-msgstr ""
-
-#: ccs.name:3
-msgid "Lost"
-msgstr ""
-
-#: clm.value:nde
-msgid "Ndebele (Zimbabwe)  "
-msgstr ""
-
-#: clm.value:lub
-msgid "Luba-Katanga"
-msgstr ""
-
-#: clfm.value:d
-msgid "Dramas"
-msgstr ""
-
-#: clm.value:zha
-msgid "Zhuang"
-msgstr ""
-
-#: cifm.value:f
-msgid "Braille"
-msgstr ""
-
-#: clfm.value:c
-msgid "Comic strips"
-msgstr ""
-
-#: clm.value:ido
-msgid "Ido"
-msgstr ""
-
-#: i18n_l.description:fr-CA
-msgid "Canadian French"
-msgstr ""
-
-#: clm.value:fiu
-msgid "Finno-Ugrian (Other)"
-msgstr ""
-
-#: clm.value:apa
-msgid "Apache languages"
-msgstr ""
-
-#: clm.value:-ajm
+# id::clm.value__-ajm
+#: 950.data.seed-values.sql:215
 msgid "Aljamía"
 msgstr ""
 
-#: clm.value:run
+# id::clm.value__lun
+#: 950.data.seed-values.sql:465
+msgid "Lunda"
+msgstr ""
+
+# id::clm.value__sme
+#: 950.data.seed-values.sql:593
+msgid "Northern Sami"
+msgstr ""
+
+# id::ppl.description__64
+#: 950.data.seed-values.sql:1009
+msgid "User may link another user to an entry in a statistical category"
+msgstr ""
+
+# id::clm.value__xal
+#: 950.data.seed-values.sql:679
+msgid "Kalmyk"
+msgstr ""
+
+# id::cam.value__d
+#: 950.data.seed-values.sql:153
+msgid "Adolescent"
+msgstr ""
+
+# id::clm.value__rum
+#: 950.data.seed-values.sql:563
+msgid "Romanian"
+msgstr ""
+
+# id::cbt.name__8
+#: 950.data.seed-values.sql:880
+msgid "Damaged Item Processing Fee"
+msgstr ""
+
+# id::clm.value__aze
+#: 950.data.seed-values.sql:240
+msgid "Azerbaijani"
+msgstr ""
+
+# id::clm.value__srd
+#: 950.data.seed-values.sql:608
+msgid "Sardinian"
+msgstr ""
+
+# id::clm.value__hmo
+#: 950.data.seed-values.sql:386
+msgid "Hiri Motu"
+msgstr ""
+
+# id::ppl.description__6
+#: 950.data.seed-values.sql:897
+msgid "Allow a user to place a hold at the title level"
+msgstr ""
+
+# id::ppl.description__146
+#: 950.data.seed-values.sql:1169
+msgid "Allow a user to place multiple holds on a single title"
+msgstr ""
+
+# id::cbt.name__5
+#: 950.data.seed-values.sql:874
+msgid "System: Deposit"
+msgstr ""
+
+# id::citm.value__g
+#: 950.data.seed-values.sql:703
+msgid "Projected medium"
+msgstr ""
+
+# id::clm.value__roh
+#: 950.data.seed-values.sql:561
+msgid "Raeto-Romance"
+msgstr ""
+
+# id::ppl.description__181
+#: 950.data.seed-values.sql:1211
+msgid "Allow a user to view billing types"
+msgstr ""
+
+# id::clm.value__lao
+#: 950.data.seed-values.sql:450
+msgid "Lao"
+msgstr ""
+
+# id::ppl.description__129
+# id::129
+#: 950.data.seed-values.sql:1137
+msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
+msgstr "Allow a user to add/remove users to/from the \"Cataloguer\" group"
+
+# id::ppl.description__21
+#: 950.data.seed-values.sql:925
+msgid "Allow a user to create a volume"
+msgstr ""
+
+# id::ppl.description__137
+#: 950.data.seed-values.sql:1153
+msgid "Allow a user to place a hold on an age-protected item"
+msgstr ""
+
+# id::clm.value__sio
+#: 950.data.seed-values.sql:587
+msgid "Siouan (Other)"
+msgstr ""
+
+# id::clm.value__men
+#: 950.data.seed-values.sql:483
+msgid "Mende"
+msgstr ""
+
+# id::ppl.description__58
+#: 950.data.seed-values.sql:995
+msgid "User may create an entry in a patron statistical category"
+msgstr ""
+
+# id::clm.value__oji
+#: 950.data.seed-values.sql:531
+msgid "Ojibwa"
+msgstr ""
+
+# id::clm.value__sus
+#: 950.data.seed-values.sql:615
+msgid "Susu"
+msgstr ""
+
+# id::ppl.description__199
+#: 950.data.seed-values.sql:1229
+msgid "Allows a user to create a new MFHD record"
+msgstr ""
+
+# id::clm.value__cau
+#: 950.data.seed-values.sql:275
+msgid "Caucasian (Other)"
+msgstr ""
+
+# id::clm.value__kur
+#: 950.data.seed-values.sql:443
+msgid "Kurdish"
+msgstr ""
+
+# id::clm.value__wal
+#: 950.data.seed-values.sql:672
+msgid "Walamo"
+msgstr ""
+
+# id::ppl.description__99
+#: 950.data.seed-values.sql:1077
+msgid "Allow a user to upload an offline script"
+msgstr ""
+
+# id::ccs.name__3
+#: 950.data.seed-values.sql:117
+msgid "Lost"
+msgstr ""
+
+# id::clm.value__nde
+#: 950.data.seed-values.sql:510
+msgid "Ndebele (Zimbabwe)  "
+msgstr ""
+
+# id::clm.value__lub
+#: 950.data.seed-values.sql:462
+msgid "Luba-Katanga"
+msgstr ""
+
+# id::cifm.value__s
+#: 950.data.seed-values.sql:699
+msgid "Electronic"
+msgstr ""
+
+# id::clfm.value__d
+#: 950.data.seed-values.sql:177
+msgid "Dramas"
+msgstr ""
+
+# id::clm.value__zha
+#: 950.data.seed-values.sql:688
+msgid "Zhuang"
+msgstr ""
+
+# id::cifm.value__f
+#: 950.data.seed-values.sql:697
+msgid "Braille"
+msgstr ""
+
+# id::clfm.value__c
+#: 950.data.seed-values.sql:175
+msgid "Comic strips"
+msgstr ""
+
+# id::clm.value__ido
+#: 950.data.seed-values.sql:392
+msgid "Ido"
+msgstr ""
+
+# id::i18n_l.description__fr-CA
+#: 950.data.seed-values.sql:736
+msgid "Canadian French"
+msgstr ""
+
+# id::ppl.description__189
+#: 950.data.seed-values.sql:1219
+msgid "Allow a user to mark an item status as 'reshelving'"
+msgstr ""
+
+# id::clm.value__fiu
+#: 950.data.seed-values.sql:339
+msgid "Finno-Ugrian (Other)"
+msgstr ""
+
+# id::clm.value__apa
+#: 950.data.seed-values.sql:223
+msgid "Apache languages"
+msgstr ""
+
+# id::clm.value__run
+#: 950.data.seed-values.sql:564
 msgid "Rundi"
 msgstr ""
 
-#: crcd.name:7
+# id::crcd.name__7
+#: 950.data.seed-values.sql:73
 msgid "7_days_2_renew"
 msgstr ""
 
-#: clm.value:-esk
+# id::clm.value__-esk
+#: 950.data.seed-values.sql:327
 msgid "Eskimo languages"
 msgstr ""
 
-#: clm.value:ath
+# id::cubt.label__folks%3Acirc.checkout
+#: 950.data.seed-values.sql:1704
+msgid "Checkout Items"
+msgstr ""
+
+# id::clm.value__ath
+#: 950.data.seed-values.sql:234
 msgid "Athapascan (Other)"
 msgstr ""
 
-#: clm.value:ndo
+# id::clm.value__ndo
+#: 950.data.seed-values.sql:511
 msgid "Ndonga"
 msgstr ""
 
-#: clm.value:sco
+# id::clm.value__sco
+#: 950.data.seed-values.sql:577
 msgid "Scots"
 msgstr ""
 
-#: clm.value:sot clm.value:-sso
+# id::clm.value__sot id::clm.value__-sso
+#: 950.data.seed-values.sql:606 950.data.seed-values.sql:611
 msgid "Sotho"
 msgstr ""
 
-#: clm.value:was
+# id::clm.value__was
+#: 950.data.seed-values.sql:674
 msgid "Washo"
 msgstr ""
 
-#: clm.value:spa
+# id::clm.value__spa
+#: 950.data.seed-values.sql:607
 msgid "Spanish"
 msgstr ""
 
-#: ppl.description:18
+# id::ppl.description__18
+#: 950.data.seed-values.sql:919
 msgid "Allow a user to edit a MARC record"
 msgstr ""
 
-#: ppl.description:163
+# id::ppl.description__163
+#: 950.data.seed-values.sql:1193
 msgid "Allow a user to view a fund allocation"
 msgstr ""

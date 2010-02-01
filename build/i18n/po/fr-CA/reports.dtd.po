@@ -1,20 +1,22 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > reports.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-11-27 14:05-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2010-01-31 21:01-0400\n"
+"PO-Revision-Date: 2009-11-24 21:11+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: NRCan Library <Warren.Layton@nrcan.gc.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
-"X-Poedit-Country: CANADA\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: CANADA\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -51,7 +53,7 @@ msgstr "Gérer répertoire"
 
 #: reports.oils_rpt.created_by
 msgid "created by "
-msgstr "créé par"
+msgstr "créé par "
 
 #: reports.oils_rpt.create_new_sub_folder
 msgctxt "reports.oils_rpt.create_new_sub_folder"
@@ -60,7 +62,7 @@ msgstr "Créer un nouveau sous-répertoire"
 
 #: reports.oils_rpt.folder_type
 msgid "Folder type: "
-msgstr "Type de répertoire :"
+msgstr "Type de répertoire : "
 
 #: reports.oils_rpt.folder_name
 msgctxt "reports.oils_rpt.folder_name"
@@ -120,8 +122,12 @@ msgid "Save this Template: "
 msgstr "Enregistrer ce modèle : "
 
 #: reports.oils_rpt_builder.filtering_note
-msgid "Indicates that when filtering on the item, a list of named choices will be generated."
-msgstr "Indique que lorsqu'un filtre s'applique à l'article, une liste de choix sera générée"
+msgid ""
+"Indicates that when filtering on the item, a list of named choices will be "
+"generated."
+msgstr ""
+"Indique que lorsqu'un filtre s'applique à l'article, une liste de choix sera "
+"générée"
 
 #: reports.oils_rpt_builder.temp_disp_items
 msgid "Template Display Items"
@@ -154,7 +160,7 @@ msgstr ""
 
 #: reports.oils_rpt_builder.hint
 msgid "Hint: "
-msgstr "Indice :"
+msgstr "Indice : "
 
 #: reports.oils_rpt_builder.hint_item_details
 msgid "Double-click on an item to see the item details."
@@ -177,6 +183,10 @@ msgctxt "reports.oils_rpt_builder.aggregate_filters"
 msgid "Aggregate Filters"
 msgstr ""
 
+#: reports.oils_rpt_builder.create_aggregate_filter
+msgid "Create Aggregate Filter"
+msgstr ""
+
 #: reports.oils_rpt_builder.field_editor_window.label
 msgid "Select how this field should be displayed:"
 msgstr "Sélectionner comment ce champ devrait être affiché :"
@@ -190,12 +200,10 @@ msgid "Select what filter should be applied to this field:"
 msgstr "Sélectionner le filtre qui devrait être appliqué sur ce champ :"
 
 #: reports.oils_rpt_builder.choose_a_transform
-msgctxt "reports.oils_rpt_builder.choose_a_transform"
 msgid "Choose a Transform: "
 msgstr "Choisir une transformation : "
 
 #: reports.oils_rpt_builder.choose_a_filter
-msgctxt "reports.oils_rpt_builder.choose_a_filter"
 msgid "Choose a Filter: "
 msgstr "Choisir un filtre : "
 
@@ -204,22 +212,9 @@ msgid "Create Filter"
 msgstr "Créer un filtre"
 
 #: reports.oils_rpt_builder.aggregate_filter_to_apply
+#, fuzzy
 msgid "Select what aggregate filter should be applied to this field:"
-msgstr ""
-
-#: reports.oils_rpt_builder.choose_a_transform
-msgctxt "reports.oils_rpt_builder.choose_a_transform"
-msgid "Choose a Transform: "
-msgstr "Choisir une transformation : "
-
-#: reports.oils_rpt_builder.choose_a_filter
-msgctxt "reports.oils_rpt_builder.choose_a_filter"
-msgid "Choose a Filter: "
-msgstr "Choisir un filtre : "
-
-#: reports.oils_rpt_builder.create_aggregate_filter
-msgid "Create Aggregate Filter"
-msgstr ""
+msgstr "Sélectionner le filtre qui devrait être appliqué sur ce champ :"
 
 #: reports.oils_rpt_builder.selected_to_sort_columns
 msgid "Select how the columns should be sorted"
@@ -231,7 +226,7 @@ msgstr "Choisir une colonne : "
 
 #: reports.oils_rpt_builder.choose_sorting_direction
 msgid "Choose the direction the sorting should occur: "
-msgstr "Choisir la direction du tri :"
+msgstr "Choisir la direction du tri : "
 
 #: reports.oils_rpt_builder.ascending
 msgid "Ascending"
@@ -250,8 +245,12 @@ msgid "Close Window"
 msgstr "Fermer la fenêtre"
 
 #: reports.oils_rpt_builder.confirm_new_report
-msgid "This will destroy the report you are currently constructing.  Are you sure you wish to do this?"
-msgstr "Cette action détruira le rapport sur lequel vous travaillez en ce moment. Désirez-vous vraiment le détruire?"
+msgid ""
+"This will destroy the report you are currently constructing.  Are you sure "
+"you wish to do this?"
+msgstr ""
+"Cette action détruira le rapport sur lequel vous travaillez en ce moment. D"
+"ésirez-vous vraiment le détruire?"
 
 #: reports.oils_rpt_common.action_succeeded
 msgid "Action Succeeded"
@@ -267,7 +266,7 @@ msgstr "Sélecteur de date"
 
 #: reports.oils_rpt_editor.template_name
 msgid "Template Name:"
-msgstr "Nom du modèle : "
+msgstr "Nom du modèle :"
 
 #: reports.oils_rpt_editor.template_creator
 msgid "Template Creator:"
@@ -303,7 +302,9 @@ msgstr "Pivoter la colonne de données"
 
 #: reports.oils_rpt_editor.store_report_definition
 msgid "Choose a folder to store this report definition: "
-msgstr "Choisir un répertoire dans lequel la définition du rapport sera sauvegardée : "
+msgstr ""
+"Choisir un répertoire dans lequel la définition du rapport sera sauvegardée "
+": "
 
 #: reports.oils_rpt_editor.selected_folder
 msgctxt "reports.oils_rpt_editor.selected_folder"
@@ -362,7 +363,7 @@ msgstr "Exécuter aussitôt que possible"
 
 #: reports.oils_rpt_editor.sent_to_email
 msgid "Send completion notification to this Email address:"
-msgstr "Envoyer un avis de d'accomplissement a cette adresse de courriel : "
+msgstr "Envoyer un avis de d'accomplissement a cette adresse de courriel :"
 
 #: reports.oils_rpt_editor.midnight
 msgid "Midnight"
@@ -381,8 +382,12 @@ msgid "Save Report"
 msgstr "Enregistrer le rapport"
 
 #: reports.oils_rpt_editor.empty_parameter
-msgid "One or more of the user-defined parameters has been left empty. Please fill in all fields."
-msgstr "Une ou plusieurs paramètres défini par l'utilisateur sont vide. Veuillez remplir tous les champs."
+msgid ""
+"One or more of the user-defined parameters has been left empty. Please fill "
+"in all fields."
+msgstr ""
+"Une ou plusieurs paramètres défini par l'utilisateur sont vide. Veuillez "
+"remplir tous les champs."
 
 #: reports.oils_rpt_editor.same_name
 msgid "There is already a report in this folder with the given name."
@@ -566,11 +571,15 @@ msgid "Are you sure you wish to delete the selected item(s)?"
 msgstr "Désirez-vous vraiment supprimer les articles sélectionnés?"
 
 #: reports.oils_rpt_folder_window.dependant_reports_no_delete
-msgid "One or more of the selected templates could not be deleted because there are reports that depend on them."
+msgid ""
+"One or more of the selected templates could not be deleted because there are "
+"reports that depend on them."
 msgstr ""
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
-msgid "One or more of The selected reports could not be deleted because there are outputs that depend on them."
+msgid ""
+"One or more of The selected reports could not be deleted because there are "
+"outputs that depend on them."
 msgstr ""
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
@@ -657,6 +666,14 @@ msgstr "Sources"
 msgid "Source Name"
 msgstr "Nom de la source"
 
+#: reports.xul.template_builder.source_nullable.label
+msgid "Nullable"
+msgstr ""
+
+#: reports.xul.template_builder.nullability_select.label
+msgid "Enable nullability selection"
+msgstr ""
+
 #: reports.xul.template_builder.source_specifier.label
 msgid "Source Specifier:"
 msgstr "Déterminant de la source :"
@@ -730,11 +747,6 @@ msgstr "Type de transformation de champ"
 msgid "Alter Display Header"
 msgstr "Modifier la rubrique"
 
-#: reports.xul.template_builder.change_transform.label
-msgctxt "reports.xul.template_builder.change_transform.label"
-msgid "Change Transform"
-msgstr "Changer la transformation"
-
 #: reports.xul.template_builder.move_up.label
 msgctxt "reports.xul.template_builder.move_up.label"
 msgid "Move Up"
@@ -762,7 +774,6 @@ msgid "Value"
 msgstr "Valeur"
 
 #: reports.xul.template_builder.change_transform.label
-msgctxt "reports.xul.template_builder.change_transform.label"
 msgid "Change Transform"
 msgstr "Changer la transformation"
 
@@ -782,10 +793,6 @@ msgstr "Supprimer la valeur"
 msgid "Remove Selected Fields"
 msgstr "Supprimer les champs sélectionnés"
 
-#: reports.xul.template_builder.source_specifier.label
-msgid "Source Specifier"
-msgstr "Déterminant de la source"
-
 #: reports.xul.template_builder.table_name.label
 msgid "Table Name"
 msgstr "Nom du tableau"
@@ -798,3 +805,5 @@ msgstr "Alias SQL"
 msgid "Relationship"
 msgstr "Rapport"
 
+#~ msgid "Source Specifier"
+#~ msgstr "Déterminant de la source"

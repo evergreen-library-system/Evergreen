@@ -4,15 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > common.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-09-08 09:34-0500\n"
-"Last-Translator: Warren Layton\n"
+"POT-Creation-Date: 2010-01-31 21:02-0400\n"
+"PO-Revision-Date: 2009-11-27 08:36+0000\n"
+"Last-Translator: Nicolas Chouali <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -101,6 +101,7 @@ msgid "Not yet implemented"
 msgstr "Pas encore mis en oeuvre"
 
 #: common.yes
+msgctxt "common.yes"
 msgid "Yes"
 msgstr "Oui"
 
@@ -135,7 +136,7 @@ msgstr ""
 
 #: openils.global_util.content_window.error
 msgid "Error with get_contentWindow(%1$s): %2$s"
-msgstr "Erreur dans la méthode get_contentWindow(%1$s) : %2$s "
+msgstr "Erreur dans la méthode get_contentWindow(%1$s) : %2$s"
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
@@ -270,6 +271,10 @@ msgstr "Utilisateur"
 msgid "Due Date"
 msgstr "Date d’échéance"
 
+#: staff.circ_label_due_time
+msgid "Due Time"
+msgstr ""
+
 #: staff.circ_label_id
 msgid "Circulation ID"
 msgstr "ID du prêt"
@@ -303,6 +308,88 @@ msgstr "Information"
 #: staff.bills_current_payment_label
 msgid "Current Payment"
 msgstr "Paiment actuel"
+
+#: staff.csp_id_label
+msgid "Penalty ID"
+msgstr ""
+
+#: staff.csp_name_label
+msgid "Name"
+msgstr "Nom"
+
+#: staff.csp_label_label
+msgid "Label"
+msgstr "Étiquette"
+
+#: staff.csp_block_list_label
+msgid "Block List"
+msgstr ""
+
+#: staff.csp_block_circ_label
+msgid "Blocks Circulations?"
+msgstr ""
+
+#: staff.csp_block_renew_label
+msgid "Blocks Renewals?"
+msgstr ""
+
+#: staff.csp_block_hold_label
+msgid "Blocks Holds?"
+msgstr ""
+
+#: staff.csp_block_circ_yes
+msgctxt "staff.csp_block_circ_yes"
+msgid "Yes"
+msgstr "Oui"
+
+# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/common.properties
+#: staff.csp_block_circ_no
+msgid ""
+"_: staff.csp_block_circ_no\n"
+""
+msgstr ""
+"Project-Id-Version: Evergreen ILS > common.properties.po\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2009-11-27 08:36+0000\n"
+"Last-Translator: Nicolas Chouali <Unknown>\n"
+"Language-Team: NRCan Library\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Country: Canada\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: staff.csp_block_renew_yes
+msgctxt "staff.csp_block_renew_yes"
+msgid "Yes"
+msgstr "Oui"
+
+#: staff.csp_block_hold_yes
+msgctxt "staff.csp_block_hold_yes"
+msgid "Yes"
+msgstr "Oui"
+
+#: staff.ausp_staff_label
+msgid "Applied By"
+msgstr ""
+
+#: staff.ausp_set_date_label
+msgid "Applied On"
+msgstr ""
+
+#: staff.ausp_note_label
+msgctxt "staff.ausp_note_label"
+msgid "Note"
+msgstr "Note"
+
+#: staff.ausp_org_unit_label
+msgid "Library"
+msgstr ""
 
 #: staff.mbts_id_label
 msgid "Bill #"
