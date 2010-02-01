@@ -50,7 +50,7 @@ BEGIN
 
     munged_xpath := xpath;
 
-    IF ns IS NOT NULL THEN
+    IF ns IS NOT NULL AND array_upper(ns, 1) IS NOT NULL THEN
         FOR namespace IN 1 .. array_upper(ns, 1) LOOP
             munged_xpath := REGEXP_REPLACE(
                 munged_xpath,
@@ -80,7 +80,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS 'SELECT oils_xpath( $1, $2, NULL::TEXT[] );' LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS $$SELECT oils_xpath( $1, $2, '{}'::TEXT[] );$$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION oils_xslt_process(TEXT, TEXT) RETURNS TEXT AS $$
     SELECT xslt_process( $1, $2 );
@@ -163,7 +163,7 @@ CREATE OR REPLACE FUNCTION oils_xpath_string ( TEXT, TEXT, TEXT, ANYARRAY ) RETU
     SELECT  ARRAY_TO_STRING(
                 oils_xpath(
                     $1 ||
-                        CASE WHEN $1 ~ $re$/[^/]*@[^]]+$$re$ OR $1 ~ $re$text\(\)$$re$ THEN '' ELSE '//text()' END,
+                        CASE WHEN $1 ~ $re$/[^/[]*@[^]]+$$re$ OR $1 ~ $re$text\(\)$$re$ THEN '' ELSE '//text()' END,
                     $2,
                     $4
                 ),
@@ -172,7 +172,7 @@ CREATE OR REPLACE FUNCTION oils_xpath_string ( TEXT, TEXT, TEXT, ANYARRAY ) RETU
 $func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION oils_xpath_string ( TEXT, TEXT, TEXT ) RETURNS TEXT AS $func$
-    SELECT oils_xpath_string( $1, $2, $3, NULL::TEXT[] );
+    SELECT oils_xpath_string( $1, $2, $3, '{}'::TEXT[] );
 $func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION oils_xpath_string ( TEXT, TEXT, ANYARRAY ) RETURNS TEXT AS $func$
@@ -180,7 +180,7 @@ CREATE OR REPLACE FUNCTION oils_xpath_string ( TEXT, TEXT, ANYARRAY ) RETURNS TE
 $func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION oils_xpath_string ( TEXT, TEXT ) RETURNS TEXT AS $func$
-    SELECT oils_xpath_string( $1, $2, NULL::TEXT[] );
+    SELECT oils_xpath_string( $1, $2, '{}'::TEXT[] );
 $func$ LANGUAGE SQL;
 
 
@@ -244,9 +244,10 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION extract_marc_field ( TEXT, BIGINT, TEXT, TEXT ) RETURNS TEXT AS $$
 DECLARE
+    query TEXT;
     output TEXT;
 BEGIN
-    EXECUTE $q$
+    query := $q$
         SELECT  regexp_replace(
                     oils_xpath_string(
                         $q$ || quote_literal($3) || $q$,
@@ -257,7 +258,12 @@ BEGIN
                     '',
                     'g')
           FROM  $q$ || $1 || $q$
-          WHERE id = $q$ || $2 INTO output;
+          WHERE id = $q$ || $2;
+
+    EXECUTE query INTO output;
+
+    -- RAISE NOTICE 'query: %, output; %', query, output;
+
     RETURN output;
 END;
 $$ LANGUAGE PLPGSQL;
