@@ -3,14 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-13 00:00-0400\n"
-"PO-Revision-Date: 2008-12-30 16:40+0100\n"
-"Last-Translator: Linda Skolková <skolkova@ikaros.cz>\n"
+"POT-Creation-Date: 2010-01-31 21:02-0400\n"
+"PO-Revision-Date: 2009-11-24 07:19+0000\n"
+"Last-Translator: Linda Skolková <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -49,9 +50,8 @@ msgstr ""
 "knihovnou?"
 
 #: staff.patron.barcode_entry.patron_consent_title
-#, fuzzy
 msgid "Patron/Library Opt-In Confirmation"
-msgstr "Uživatel/Knihovna - potvrzení o připojení"
+msgstr ""
 
 #: staff.patron.barcode_entry.patron_consent_accept
 msgid "Accept"
@@ -67,9 +67,8 @@ msgid "Check here to confirm this message"
 msgstr "Zaškrtněte pro potvrzení zprávy"
 
 #: staff.patron.barcode_entry.patron_display_error
-#, fuzzy
 msgid "spawning patron display"
-msgstr "Vytváření uživatelského zobrazení"
+msgstr ""
 
 #: staff.patron.barcode_entry.user_perm_display_error
 msgid "spawning user perm editor"
@@ -116,7 +115,7 @@ msgstr "Chyba při rušení účtů"
 #: staff.patron.bill_details.handle_void.billings_voided
 msgctxt "staff.patron.bill_details.handle_void.billings_voided"
 msgid "Billings voided."
-msgstr "Účty zrušeny."
+msgstr "Fakturace zrušeny."
 
 #: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
 msgid "Please close this window and try again."
@@ -131,14 +130,12 @@ msgid "Bill History"
 msgstr "Historie účtů"
 
 #: staff.patron.bill_history.handle_add.message_plural
-#, fuzzy
 msgid "Are you sure you would like to add a billing to bills %1$s?"
-msgstr "Jste si jistý, že chcete přidat fakturaci k fakturám %1$s?"
+msgstr ""
 
 #: staff.patron.bill_history.handle_add.message_singular
-#, fuzzy
 msgid "Are you sure you would like to add a billing to bill %1$s?"
-msgstr "Jste si jistý, že chcete přidat fakturaci k faktuře %1$s?"
+msgstr ""
 
 #: staff.patron.bill_history.handle_add.title
 msgid "Bill Patron"
@@ -172,9 +169,8 @@ msgid "Patron only has %1$s in credit."
 msgstr "Uživatelův kredit je pouze %1$s."
 
 #: staff.patron.bills.bill_change_amount.greedy
-#, fuzzy
 msgid "Someone wanted more money than they deserved"
-msgstr "Někdo chtěl víc peněz, než si zasloužil"
+msgstr ""
 
 #: staff.patron.bills.apply_payment.nothing_applied
 msgid "No payments or patron credit applied."
@@ -218,9 +214,8 @@ msgid "Add Billing"
 msgstr "Přidat fakturaci"
 
 #: staff.patron.bills.info_box.label_value.refund
-#, fuzzy
 msgid "Refund"
-msgstr "Vrácené platby"
+msgstr ""
 
 #: staff.patron.bills.info_box.label_value.void_all_billings
 msgid "Void All Billings"
@@ -278,15 +273,13 @@ msgid "No Patron Selected"
 msgstr "Nebyl vybrán žádný uživatel"
 
 #: staff.patron.display.cmd_patron_edit.edit_search
-#, fuzzy
 msgid "Editor would like to search for: %1$s"
-msgstr "Editor chce vyhledat: %1$s"
+msgstr ""
 
 #: staff.patron.display.spawn_editor.editing_related_patron
-#, fuzzy
 msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
 msgid "Editing Related Patron"
-msgstr "Editace souvisejícího uživatele"
+msgstr ""
 
 #: staff.patron.display.init.retrieving_patron
 msgid "Retrieving Patron..."
@@ -301,9 +294,8 @@ msgid "Alert message: \"%1$s\"<br/><br/>"
 msgstr "Výstražná zpráva: \"%1$s\"<br/><br/>"
 
 #: staff.patron.display.init.network_request.inactive_card
-#, fuzzy
 msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
-msgstr "Konto uživatele bylo vyvoláno NEAKTIVNÍ kartou."
+msgstr ""
 
 #: staff.patron.display.init.network_request.account_barred
 msgid "Patron account is BARRED.<br/><br/>"
@@ -362,9 +354,8 @@ msgid "New Notification Record"
 msgstr "Nové oznámení"
 
 #: staff.patron.hold_notices.method
-#, fuzzy
 msgid "Method"
-msgstr "Postup"
+msgstr ""
 
 #: staff.patron.hold_notices.note
 msgctxt "staff.patron.hold_notices.note"
@@ -616,7 +607,7 @@ msgctxt "staff.patron.holds.holds_edit_email_notify.disable_email.plural"
 msgid ""
 "Are you sure you would like to disable email notification for hold %1$s?"
 msgstr ""
-"Jste si jistý/á, že chcete zakázat emailovové vyrozumění o rezervacích %1$s?"
+"Jste si jistý/á, že chcete zakázat emailovové vyrozumění o rezervaci %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.mod_holds_title
 msgctxt "staff.patron.holds.holds_edit_email_notify.mod_holds_title"
@@ -668,19 +659,16 @@ msgid "Holds not likely cancelled."
 msgstr "Rezervace pravděpodobně nebyly zrušeny."
 
 #: staff.patron.holds.show_catalog.unknown_htype
-#, fuzzy
 msgid ""
 "I do not understand the hold type of %1$s so I can not display the "
 "appropriate record in the catalog."
 msgstr ""
-"Nerozumím typu rezervace %1$s, proto nemohu zobrazit příslušný záznam v "
-"katalogu."
 
 #: staff.patron.holds.show_catalog.retrieving_title
 #, fuzzy
 msgctxt "staff.patron.holds.show_catalog.retrieving_title"
 msgid "Retrieving title..."
-msgstr "Vyhledávání titulu..."
+msgstr "Vyhledávání uživatele"
 
 #: staff.patron.holds.lib_menus.missing_library_list
 msgid "Missing library list."
@@ -715,23 +703,19 @@ msgid "error spawning user editors"
 msgstr ""
 
 #: staff.patron.info_group.spwan_editor.editing_patron
-#, fuzzy
 msgctxt "staff.patron.info_group.spwan_editor.editing_patron"
 msgid "Editing Related Patron"
-msgstr "Editace souvisejícího uživatele"
+msgstr ""
 
 #: staff.patron.info_group.spwan_search
 msgid "spawn search"
 msgstr ""
 
 #: staff.patron.info_group.remove_patron.warning_message
-#, fuzzy
 msgid ""
 "WARNING: If you remove the currently displayed patron, a NEW group will be "
 "displayed in this interface."
 msgstr ""
-"VAROVÁNÍ: Pokud přesunete právě zobrazovaného uživatele, bude v tomto "
-"rozhraní zobrazena NOVÁ skupina."
 
 #: staff.patron.info_group.remove_patron.warning_message_confirm
 msgid "Remove selected patrons from this group?  %1$s"
@@ -842,7 +826,7 @@ msgstr "Náležící do"
 
 #: staff.patron.info_notes.render_notes.created_on
 msgid "created on"
-msgstr "vytvořeno "
+msgstr "vytvořeno"
 
 #: staff.patron.info_notes.render_notes.printing_note_num
 msgid "printing note #%1$s"
@@ -1039,14 +1023,12 @@ msgid "The items were not likely marked lost."
 msgstr "Exempláře pravděpodobně nebyly označeny jako ztracené."
 
 #: staff.patron.items.items_claimed_returned.date_cannot_be_in_future
-#, fuzzy
 msgid "Claims Returned Date cannot be in the future."
-msgstr "Výpůjčku není možné prodloužit."
+msgstr ""
 
 #: staff.patron.items.items_claimed_returned.claimed_returned
-#, fuzzy
 msgid "Claimed Returned"
-msgstr "Prodloužení výpůjčky"
+msgstr ""
 
 #: staff.patron.items.items_claimed_returned.enter_returned_date
 msgid "Enter a claimed returned date for these items: %1$s"
@@ -1054,7 +1036,7 @@ msgstr "Zadejte požadované datum vrácení pro tyto exempláře: %1$s"
 
 #: staff.patron.items.items_claimed_returned.not_marked_claimed_returned
 msgid "The items were not likely marked Claimed Returned."
-msgstr "U exemplářů pravděpodobně nebylo vyznačeno požadované datum vrácení. "
+msgstr "U exemplářů pravděpodobně nebylo vyznačeno požadované datum vrácení."
 
 #: staff.patron.items.items_checkin.confirm_item_check_in.singular
 msgid "Are you sure you would like to check in item %1$s?"
@@ -1076,43 +1058,33 @@ msgstr "%1$s není zkatalogizováno."
 #, fuzzy
 msgctxt "staff.patron.items.show_catalog.retrieving_title"
 msgid "Retrieving title..."
-msgstr "Vyhledávání titulu"
+msgstr "Vyhledávání uživatele"
 
 #: staff.patron.items.retrieve_row.callback_error
 msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
 msgstr ""
 
 #: staff.patron.items.retrieve_row.error_in_retrieve_row
-#, fuzzy
 msgid "error in patron/items.js retrieve_row():"
-msgstr "chyba v patron/items.js retrieve_row():"
+msgstr ""
 
 #: staff.patron.items.refresh.error_refreshing_row2
-#, fuzzy
 msgid ""
 "2 Error refreshing row in list\n"
 "circ_id = %1$s\n"
 "nparams = %2$s"
 msgstr ""
-"2 chyby v obnovení řádku seznamu\n"
-"circ_id = %1$s\n"
-"nparams = %2$s"
 
 #: staff.patron.items.refresh.error_refreshing_row
-#, fuzzy
 msgid ""
 "Error refreshing row in list\n"
 "circ_id = %1$s\n"
 "nparams = %2$s"
 msgstr ""
-"Chyba v onovení řádku seznamu\n"
-"circ_id = %1$s\n"
-"nparams = %2$s"
 
 #: staff.patron.items.retrieve.err_retrieving_circulations
-#, fuzzy
 msgid "Error retrieving circulations."
-msgstr "Chyba ve vyvolání cirkulací."
+msgstr ""
 
 #: staff.patron.items.gen_list_append.error
 msgid "patron/items.js: error in gen_list_append"
@@ -1123,9 +1095,8 @@ msgid "No patrons found matching search criteria."
 msgstr "Uživatel splňující kritéria nebyl nalezen."
 
 #: staff.patron.search_result.search.capped_results
-#, fuzzy
 msgid "Results capped at %1$s patrons."
-msgstr "Výsledek pokrývá %1$s uživatele."
+msgstr ""
 
 #: staff.patron.search_result.search.enter_search_terms
 msgid "Please enter some search terms."
@@ -1136,19 +1107,16 @@ msgid "typeof params.on_retrieve == %1$s"
 msgstr ""
 
 #: staff.patron.search_result.init.search_print
-#, fuzzy
 msgid "patron search print"
-msgstr "tisknout vyhledávání uživatele"
+msgstr ""
 
 #: staff.patron.search_result.init.search_clipboard
-#, fuzzy
 msgid "patron search clipboard"
-msgstr "vyhledávání uživatele do schránky"
+msgstr ""
 
 #: staff.patron.search_result.init.search_saving_columns
-#, fuzzy
 msgid "patron search saving columns"
-msgstr "ukládání sloupců vyhledávání klienta"
+msgstr ""
 
 #: staff.patron.summary.patron_bill.money
 msgid "$ %1$s"
@@ -1212,9 +1180,8 @@ msgid "User session is not defined"
 msgstr "Uživatelská sekce není definována"
 
 #: staff.patron.ue.uEditSaveuser.error_creating_note
-#, fuzzy
 msgid "Error creating patron guardian or parent note"
-msgstr "Chyba ve vytváření poznámky zástupce nebo rodiče uživatele"
+msgstr ""
 
 #: staff.patron.ue.uEditShowSearch.search
 msgctxt "staff.patron.ue.uEditShowSearch.search"
@@ -1226,9 +1193,8 @@ msgstr ""
 "%1$s"
 
 #: staff.patron.user_buckets.tab_name
-#, fuzzy
 msgid "User Buckets"
-msgstr "Uživatelské skupiny"
+msgstr ""
 
 #: staff.patron.user_edit.save_user.depth_required
 msgid "Depth is required on the %1$s permission."
@@ -1332,3 +1298,45 @@ msgstr ""
 msgid ""
 "<div>Replaces address <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Check here to confirm this action."
+#~ msgstr "Zaškrtněte pro potvrzení zprávy"
+
+#, fuzzy
+#~ msgid "ID: %1$s Hold ID: %2$s Staff ID: %3$s"
+#~ msgstr "ID: %1$s ID rezervace: %2$s Oznamovací ID pro zaměstnance: %3$s"
+
+#, fuzzy
+#~ msgid ""
+#~ "Are you sure you would like to disable email notification for holds %1$s?"
+#~ msgstr ""
+#~ "Jste si jistý/á, že chcete zakázat emailovové vyrozumění o rezervaci %1$s?"
+
+#, fuzzy
+#~ msgid "Are you sure you would like to enable Top of Queue for hold %1$s?"
+#~ msgstr ""
+#~ "Jste si jistý/á, že chcete povolit emailovové vyrozumění o rezervaci %1$s?"
+
+#, fuzzy
+#~ msgid "Are you sure you would like to enable Top of Queue for holds %1$s?"
+#~ msgstr ""
+#~ "Jste si jistý/á, že chcete povolit emailovové vyrozumění o rezervacích %1$s?"
+
+#, fuzzy
+#~ msgid "Are you sure you would like to disable Top of Queue for hold %1$s?"
+#~ msgstr ""
+#~ "Jste si jistý/á, že chcete zakázat emailovové vyrozumění o rezervaci %1$s?"
+
+#, fuzzy
+#~ msgid "Are you sure you would like to disable Top of Queue for holds %1$s?"
+#~ msgstr ""
+#~ "Jste si jistý/á, že chcete zakázat emailovové vyrozumění o rezervaci %1$s?"
+
+#, fuzzy
+#~ msgid "Holds not likely un-cancelled."
+#~ msgstr "Rezervace pravděpodobně nebyly zrušeny."
+
+#, fuzzy
+#~ msgid "Enter a new due date for these items to be renewed: %1$s"
+#~ msgstr "Zadejte nové datum vrácení pro tyto exempláře: %1$s"

@@ -1,16 +1,20 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2008-12-09 22:48:38-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2010-01-31 21:02:07-0400\n"
+"PO-Revision-Date: 2009-11-24 19:38+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+
+#: conify.js:SURVEY_ID
+msgid "Survey ID # ${0}"
+msgstr ""
 
 #: conify.js:ERROR_FETCHING_HOLDS
 msgid "Problem fetching Holds Address for ${0}"
@@ -20,16 +24,12 @@ msgstr ""
 msgid "Problem calling method to create new ${0}"
 msgstr ""
 
-#: conify.js:LABEL_NEW_TYPE
-msgid "New Type"
-msgstr ""
-
 #: conify.js:SUCCESS_SAVING_MAILING
 msgid "Saved changes to the Mailing Address of ${0}"
 msgstr ""
 
-#: conify.js:SUCCESS_SAVING_ILL
-msgid "Saved changes to the ILL Address of ${0}"
+#: conify.js:ERROR_CREATING_PERMISSION
+msgid "Problem creating new Permission"
 msgstr ""
 
 #: conify.js:HOLDABLE
@@ -38,6 +38,10 @@ msgstr ""
 
 #: conify.js:ERROR_SAVING_PERM_DATA
 msgid "Problem saving permission data for ${0}"
+msgstr ""
+
+#: conify.js:SURVEY_DELETE_ANSWER
+msgid "Delete Answer"
 msgstr ""
 
 #: conify.js:LABEL_GRANTABLE
@@ -60,8 +64,8 @@ msgstr ""
 msgid "${0} deleted"
 msgstr ""
 
-#: conify.js:ERROR_CREATING_PERMISSION
-msgid "Problem creating new Permission"
+#: conify.js:SUCCESS_SAVING_ILL
+msgid "Saved changes to the ILL Address of ${0}"
 msgstr ""
 
 #: conify.js:ERROR_CALLING_METHOD_PPL
@@ -76,12 +80,16 @@ msgstr ""
 msgid "Problem fetching perms"
 msgstr ""
 
+#: conify.js:END_SURVEY
+msgid "End Survey Now"
+msgstr ""
+
 #: conify.js:CONFIRM_DELETE
 msgid "Are you sure you want to delete ${0}?"
 msgstr ""
 
-#: conify.js:CONFIRM_EXIT_PPL
-msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
+#: conify.js:SUCCESS_SAVING_DATA conify.js:SUCCESS_SAVE
+msgid "Saved changes to ${0}"
 msgstr ""
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
@@ -96,28 +104,28 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: conify.js:ERROR_DELETING_LAST_AOUT
-msgid "Cannot delete ${0}. You need at least one organization type."
+#: conify.js:LABEL_NEW_TYPE
+msgid "New Type"
 msgstr ""
 
-#: conify.js:ERROR_FETCHING_PHYSICAL
-msgid "Problem fetching Physical Address for ${0}"
+#: conify.js:SURVEY_SAVE_CHANGES
+msgid "Save Changes"
 msgstr ""
 
 #: conify.js:ERROR_CREATING_PERM_MAP
 msgid "Problem creating new Permission Map"
 msgstr ""
 
-#: conify.js:ERROR_FETCHING_PERM_MAPS
-msgid "Problem fetching perm maps"
+#: conify.js:ERROR_CALLING_METHOD_PGT
+msgid "Problem calling method to create child Group"
 msgstr ""
 
 #: conify.js:ERROR_FETCHING_ILL
 msgid "Problem fetching ILL Address for ${0}"
 msgstr ""
 
-#: conify.js:ID
-msgid "ID"
+#: conify.js:ERROR_FETCHING_PERM_MAPS
+msgid "Problem fetching perm maps"
 msgstr ""
 
 #: conify.js:SUCCESS_NEW_CHILD_GROUP
@@ -130,6 +138,10 @@ msgstr ""
 
 #: conify.js:ERROR_CREATING_CHILD_AOU
 msgid "Problem creating child organizational unit"
+msgstr ""
+
+#: conify.js:SURVEY_ADD_ANSWER
+msgid "Add Answer"
 msgstr ""
 
 #: conify.js:ERROR_FETCHING_ORGS
@@ -152,20 +164,28 @@ msgstr ""
 msgid "Problem saving Physical Address data for ${0}"
 msgstr ""
 
-#: conify.js:ERROR_SAVING_MAILING
-msgid "Problem saving Mailing Address data for ${0}"
+#: conify.js:ID
+msgid "ID"
+msgstr ""
+
+#: conify.js:SURVEY_QUESTION
+msgid "Question:"
 msgstr ""
 
 #: conify.js:ERROR_SAVING_HOLDS
 msgid "Problem saving Holds Address data for ${0}"
 msgstr ""
 
-#: conify.js:SUCCESS_SAVE conify.js:SUCCESS_SAVING_DATA
-msgid "Saved changes to ${0}"
+#: conify.js:CONFIRM_EXIT_PPL
+msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:ERROR_DELETING_LAST_AOU
 msgid "Cannot delete ${0}, you need at least one organization unit."
+msgstr ""
+
+#: conify.js:ERROR_DELETING_LAST_AOUT
+msgid "Cannot delete ${0}. You need at least one organization type."
 msgstr ""
 
 #: conify.js:SUCCESS_SAVING_HOO
@@ -188,16 +208,20 @@ msgstr ""
 msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 
-#: conify.js:ERROR_SAVING_DATA_CAM
-msgid "Problem saving data for ${0} ${1}"
+#: conify.js:SURVEY_SAVE_ADD
+msgid "Save Question & Add Answer"
 msgstr ""
 
-#: conify.js:SUCCESS_DELETED_PERM_MAP
-msgid "Permission mapping deleted"
+#: conify.js:LABEL_NEW_BRANCH
+msgid "New Branch"
 msgstr ""
 
 #: conify.js:ERROR_FETCHING_TYPES_AOUT
 msgid "Problem fetching organizational unit types"
+msgstr ""
+
+#: conify.js:SURVEY_DELETE_QUESTION
+msgid "Delete Question & Answers"
 msgstr ""
 
 #: conify.js:ERROR_CREATING_STATUS
@@ -236,7 +260,7 @@ msgstr ""
 msgid "New ${0} ${1} created"
 msgstr ""
 
-#: conify.js:LABEL_TRANSLATION conify.js:TRANSLATION
+#: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
 msgid "Translation"
 msgstr ""
 
@@ -260,8 +284,16 @@ msgstr ""
 msgid "Saved permission changes to ${0}"
 msgstr ""
 
-#: conify.js:LABEL_NEW_BRANCH
-msgid "New Branch"
+#: conify.js:SURVEY_ANSWER
+msgid "Answer:"
+msgstr ""
+
+#: conify.js:SURVEY_FOOT_LABEL
+msgid "Questions & Answers"
+msgstr ""
+
+#: conify.js:ERROR_SAVING_DATA_CAM
+msgid "Problem saving data for ${0} ${1}"
 msgstr ""
 
 #: conify.js:ERROR_FETCHING_GROUPS
@@ -272,6 +304,10 @@ msgstr ""
 msgid "Now editing ${0}"
 msgstr ""
 
+#: conify.js:EVENT_DEF_LABEL
+msgid "${0}: ${1}"
+msgstr ""
+
 #: conify.js:CONFIRM_EXIT_CAM
 msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
@@ -280,8 +316,8 @@ msgstr ""
 msgid "Saved changes to the Physical Address of ${0}"
 msgstr ""
 
-#: conify.js:ERROR_CALLING_METHOD_PGT
-msgid "Problem calling method to create child Group"
+#: conify.js:SUCCESS_DELETED_PERM_MAP
+msgid "Permission mapping deleted"
 msgstr ""
 
 #: conify.js:ERROR_CALLING_METHOD_AOUT
@@ -296,8 +332,16 @@ msgstr ""
 msgid "New Group"
 msgstr ""
 
+#: conify.js:ERROR_FETCHING_PHYSICAL
+msgid "Problem fetching Physical Address for ${0}"
+msgstr ""
+
 #: conify.js:ERROR_SAVING_HOO
 msgid "Problem saving Hours of Operation data for ${0}"
+msgstr ""
+
+#: conify.js:ERROR_SAVING_MAILING
+msgid "Problem saving Mailing Address data for ${0}"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_PGT

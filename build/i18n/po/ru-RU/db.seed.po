@@ -2,17 +2,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-13 00:00:09-0400\n"
-"PO-Revision-Date: 2009-06-01 17:30+0400\n"
-"Last-Translator: Tigran Zargaryan <tigran@flib.sci.am>\n"
+"POT-Creation-Date: 2010-01-31 21:02:05-0400\n"
+"PO-Revision-Date: 2009-11-24 06:27+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 
 # id::vqbrad.description__11
-#: 950.data.seed-values.sql:1626
+#: 950.data.seed-values.sql:1632
 msgid "Internal ID"
 msgstr "Внутренний ID"
 
@@ -47,20 +48,20 @@ msgid "Palauan"
 msgstr "Палауанский"
 
 # id::ppl.description__115
-#: 950.data.seed-values.sql:1103
+#: 950.data.seed-values.sql:1109
 msgid "Allow a user to create duplicate holds (two or more holds on the same title)"
 msgstr ""
 "Позволь пользователю создавать дуплетные хранения (два или более хранения на "
 "то же самое заглавие)"
 
 # id::ppl.description__194
-#: 950.data.seed-values.sql:1218
+#: 950.data.seed-values.sql:1224
 msgid "Allows a user to create a purchase order"
 msgstr ""
 
 # id::cza.label__5 id::cza.label__14 id::cza.label__23
-#: 950.data.seed-values.sql:762 950.data.seed-values.sql:783
-#: 950.data.seed-values.sql:802
+#: 950.data.seed-values.sql:768 950.data.seed-values.sql:789
+#: 950.data.seed-values.sql:808
 msgid "Title"
 msgstr "Заглавие"
 
@@ -95,13 +96,13 @@ msgid "7_days_0_renew"
 msgstr "7_days_0_renew"
 
 # id::ppl.description__123
-#: 950.data.seed-values.sql:1119
+#: 950.data.seed-values.sql:1125
 msgid "Allow a user to un-bar a patron"
 msgstr "Позволь пользователю снимать запрет с читателя"
 
 # id::cza.label__3 id::cza.label__12 id::cza.label__21
-#: 950.data.seed-values.sql:758 950.data.seed-values.sql:779
-#: 950.data.seed-values.sql:798
+#: 950.data.seed-values.sql:764 950.data.seed-values.sql:785
+#: 950.data.seed-values.sql:804
 msgid "LCCN"
 msgstr "LCCN"
 
@@ -121,7 +122,7 @@ msgid "Sindhi"
 msgstr "Синдхи"
 
 # id::aou.name__7
-#: 950.data.seed-values.sql:848
+#: 950.data.seed-values.sql:854
 msgid "Example Branch 4"
 msgstr "Модель подразделение 4"
 
@@ -156,12 +157,12 @@ msgid "Votic"
 msgstr "Votic"
 
 # id::cubt.label__folks%3Acirc.view
-#: 950.data.seed-values.sql:1696
+#: 950.data.seed-values.sql:1702
 msgid "View Circulations"
 msgstr ""
 
 # id::aou.name__5
-#: 950.data.seed-values.sql:844
+#: 950.data.seed-values.sql:850
 msgid "Example Branch 2"
 msgstr "Модель подразделение 2"
 
@@ -171,7 +172,7 @@ msgid "Humor, satires, etc."
 msgstr "Юмор, сатира, итд."
 
 # id::ppl.description__43
-#: 950.data.seed-values.sql:957
+#: 950.data.seed-values.sql:963
 msgid "Allow a user to create a new bill on a transaction"
 msgstr "Позволь пользователю создавать новый счёт на транзакцию"
 
@@ -196,19 +197,22 @@ msgid "10_cent_per_day"
 msgstr "10_cent_per_day"
 
 # id::ppl.description__41
-#: 950.data.seed-values.sql:955
+#: 950.data.seed-values.sql:961
 msgid "Allow a user to create a new billable transaction"
 msgstr "Позволь пользователю создавать новую транзакцию со счетом"
 
 # id::cubt.label__folks%3Acirc.renew
-#: 950.data.seed-values.sql:1697
+#: 950.data.seed-values.sql:1703
 msgid "Renew Circulations"
 msgstr ""
 
 # id::ppl.description__188
-#: 950.data.seed-values.sql:1212
+# id::ppl.description__185
+# id::ppl.description__37
+#: 950.data.seed-values.sql:1218
+#, fuzzy
 msgid "Allow a user to mark an item status as 'in transit'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как 'потерянный'"
 
 # id::clm.value__cel
 #: 950.data.seed-values.sql:277
@@ -236,7 +240,8 @@ msgid "overdue_max"
 msgstr "overdue_max"
 
 # id::ppl.description__164
-#: 950.data.seed-values.sql:1188
+# id::ppl.description__77
+#: 950.data.seed-values.sql:1194
 #, fuzzy
 msgid "Allow a user to update a fund allocation"
 msgstr "Позволь пользователю обновить копию местоположения"
@@ -252,17 +257,24 @@ msgid "Pangasinan"
 msgstr "Пангасинан"
 
 # id::ppl.description__156
-#: 950.data.seed-values.sql:1180
+# id::ppl.description__153
+# id::ppl.description__157
+# id::ppl.description__88
+#: 950.data.seed-values.sql:1186
+#, fuzzy
 msgid "Allow a user to update a funding source"
-msgstr ""
+msgstr "Позволь пользователю создавать заметку новой копии"
 
 # id::ppl.description__182
-#: 950.data.seed-values.sql:1206
+# id::ppl.description__185
+# id::ppl.description__37
+#: 950.data.seed-values.sql:1212
+#, fuzzy
 msgid "Allow a user to mark an item status as 'available'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как 'потерянный'"
 
 # id::ppl.description__82
-#: 950.data.seed-values.sql:1037
+#: 950.data.seed-values.sql:1043
 msgid "Allow a user to view which users have checked out a given copy"
 msgstr "Позволь пользователю просмотреть какие пользователи взяли эту копию"
 
@@ -282,12 +294,12 @@ msgid "Yiddish"
 msgstr "Идиш"
 
 # id::vqbrad.description__8
-#: 950.data.seed-values.sql:1623
+#: 950.data.seed-values.sql:1629
 msgid "Accession Number"
 msgstr "Инвентарный номер"
 
 # id::ppl.description__117
-#: 950.data.seed-values.sql:1105
+#: 950.data.seed-values.sql:1111
 msgid "Allow a user to update a closed date interval for a given location"
 msgstr ""
 "Позволь пользователю обновить интервал закрытой даты для данного "
@@ -319,7 +331,7 @@ msgid "Damaged"
 msgstr "Поврежденный"
 
 # id::ppl.description__132
-#: 950.data.seed-values.sql:1137
+#: 950.data.seed-values.sql:1143
 msgid "Allow a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr ""
 "Позволь пользователю добавить/удалить пользователей в/из группы  \"Менеджер "
@@ -336,7 +348,7 @@ msgid "Kawi"
 msgstr "Кави"
 
 # id::ppl.description__20
-#: 950.data.seed-values.sql:917
+#: 950.data.seed-values.sql:923
 msgid "Allow a user to import a MARC record via the Z39.50 interface"
 msgstr ""
 "Позволь пользователю импортировать MARC запись с помощью интерфейса  Z39.50"
@@ -367,7 +379,7 @@ msgid "Available"
 msgstr "Доступный"
 
 # id::ppl.description__180
-#: 950.data.seed-values.sql:1204
+#: 950.data.seed-values.sql:1210
 msgid "Allow a user to mark a transaction as bad (unrecoverable) debt"
 msgstr ""
 
@@ -382,7 +394,7 @@ msgid "Zulu"
 msgstr "Зулу"
 
 # id::ppl.description__87
-#: 950.data.seed-values.sql:1047
+#: 950.data.seed-values.sql:1053
 msgid "Allow a user to view all notes attached to a title"
 msgstr "Позволь пользователю просмотреть все заметки прикрепленные к заглавию"
 
@@ -392,9 +404,13 @@ msgid "Georgian"
 msgstr "Грузинский"
 
 # id::ppl.description__155
-#: 950.data.seed-values.sql:1179
+# id::ppl.description__153
+# id::ppl.description__157
+# id::ppl.description__88
+#: 950.data.seed-values.sql:1185
+#, fuzzy
 msgid "Allow a user to view a funding source"
-msgstr ""
+msgstr "Позволь пользователю создавать заметку новой копии"
 
 # id::clm.value__arc
 #: 950.data.seed-values.sql:225
@@ -402,7 +418,7 @@ msgid "Aramaic"
 msgstr "Арамейский"
 
 # id::ppl.description__84
-#: 950.data.seed-values.sql:1041
+#: 950.data.seed-values.sql:1047
 msgid "Allow a user to register a new workstation"
 msgstr "Позволь пользователю регистрироваь новую рабочую станцию"
 
@@ -423,8 +439,8 @@ msgstr "Тибетский"
 
 # id::cza.label__7 id::cza.label__16 id::cza.label__25
 # id::vqbrad.description__12
-#: 950.data.seed-values.sql:766 950.data.seed-values.sql:787
-#: 950.data.seed-values.sql:806 950.data.seed-values.sql:1627
+#: 950.data.seed-values.sql:772 950.data.seed-values.sql:793
+#: 950.data.seed-values.sql:812 950.data.seed-values.sql:1633
 msgid "Publisher"
 msgstr "Издатель"
 
@@ -479,7 +495,7 @@ msgid "3_months_0_renew"
 msgstr "3_months_0_renew"
 
 # id::ppl.description__7
-#: 950.data.seed-values.sql:893
+#: 950.data.seed-values.sql:899
 msgid "Allow a user to place a volume level hold"
 msgstr "Позволь пользователю поставить хранение на уровне тома"
 
@@ -494,7 +510,7 @@ msgid "English"
 msgstr "Английский"
 
 # id::ppl.description__55
-#: 950.data.seed-values.sql:983
+#: 950.data.seed-values.sql:989
 msgid "Allow a user to edit copies in batch"
 msgstr "Позволь пользователю редактировать копии в группе"
 
@@ -519,12 +535,12 @@ msgid "Chinese"
 msgstr "Китайский"
 
 # id::ppl.description__51
-#: 950.data.seed-values.sql:975
+#: 950.data.seed-values.sql:981
 msgid "Allow a user to add other users to permission groups"
-msgstr "Позволь пользователю добавить других пользователей в группу привилегий "
+msgstr "Позволь пользователю добавить других пользователей в группу привилегий"
 
 # id::ppl.description__11
-#: 950.data.seed-values.sql:901
+#: 950.data.seed-values.sql:907
 msgid "Allow a user to view another user's holds"
 msgstr "Позволь пользователю просмотреть хранения других пользователей"
 
@@ -549,7 +565,7 @@ msgid "Gã"
 msgstr "Gã"
 
 # id::ppl.description__119
-#: 950.data.seed-values.sql:1111
+#: 950.data.seed-values.sql:1117
 msgid "Allow a user to delete a non cataloged type"
 msgstr "Позволь пользователю удалить некаталогизированный тип"
 
@@ -569,19 +585,19 @@ msgid "Venda"
 msgstr "Венда"
 
 # id::ppl.description__34
-#: 950.data.seed-values.sql:943
+#: 950.data.seed-values.sql:949
 msgid "Allow a user to view user permissions within the user permissions editor"
 msgstr ""
 "Позволь пользователю просмотреть привилегтй пользователю из редактора "
 "пользовательских привилегий"
 
 # id::pgt.name__3
-#: 950.data.seed-values.sql:1383
+#: 950.data.seed-values.sql:1389
 msgid "Staff"
 msgstr "Персонал"
 
 # id::ppl.description__134
-#: 950.data.seed-values.sql:1141
+#: 950.data.seed-values.sql:1147
 msgid "Allow a user to add/remove users to/from the \"Supercat\" group"
 msgstr ""
 "Позволь пользователю добавить/удалить пользователей в/из группы \"Supercat\""
@@ -602,7 +618,7 @@ msgid "Oriya"
 msgstr "Ория"
 
 # id::ppl.description__125
-#: 950.data.seed-values.sql:1123
+#: 950.data.seed-values.sql:1129
 msgid "Allow a user to add/remove users to/from the \"User\" group"
 msgstr "Позволь пользователю добавить/удалить пользователей в/из группы \"User\""
 
@@ -612,12 +628,12 @@ msgid "Inupiaq"
 msgstr "Inupiaq"
 
 # id::cbt.name__2
-#: 950.data.seed-values.sql:862
+#: 950.data.seed-values.sql:868
 msgid "Long Overdue Collection Fee"
 msgstr ""
 
 # id::i18n_l.name__en-CA
-#: 950.data.seed-values.sql:729
+#: 950.data.seed-values.sql:732
 msgid "English (Canada)"
 msgstr "Английский (Канада)"
 
@@ -632,20 +648,20 @@ msgid "Ewondo"
 msgstr "Эвондо"
 
 # id::cza.label__1 id::cza.label__10 id::cza.label__19
-#: 950.data.seed-values.sql:754 950.data.seed-values.sql:775
-#: 950.data.seed-values.sql:794
+#: 950.data.seed-values.sql:760 950.data.seed-values.sql:781
+#: 950.data.seed-values.sql:800
 msgid "Title Control Number"
 msgstr "Расстановочный шифр заглавия"
 
 # id::ppl.description__138
-#: 950.data.seed-values.sql:1149
+#: 950.data.seed-values.sql:1155
 msgid "Allow a user to renew an item past the maximum renewal count"
 msgstr ""
 "Позволь пользователю обновить единицу если максимальное число обновлений "
 "превышено"
 
 # id::ppl.description__139
-#: 950.data.seed-values.sql:1151
+#: 950.data.seed-values.sql:1157
 msgid "Allow staff to override checkout count failure"
 msgstr "Позволь пользователю отменять ошибку выдачи"
 
@@ -680,7 +696,7 @@ msgid "Vietnamese"
 msgstr "Вьетнамский"
 
 # id::aout.opac_label__4
-#: 950.data.seed-values.sql:829
+#: 950.data.seed-values.sql:835
 msgid "This Specialized Library"
 msgstr "Специализированная библиотека"
 
@@ -690,12 +706,14 @@ msgid "Manchu"
 msgstr "Манчу"
 
 # id::aou.name__1
-#: 950.data.seed-values.sql:836
+#: 950.data.seed-values.sql:842
 msgid "Example Consortium"
 msgstr "Модель Консорциум"
 
+# id::clm.value__rus id::i18n_l.name__ru-RU id::i18n_l.description__ru-RU
 # id::clm.value__rus
-#: 950.data.seed-values.sql:565
+#: 950.data.seed-values.sql:565 950.data.seed-values.sql:747
+#: 950.data.seed-values.sql:748
 msgid "Russian"
 msgstr "Русский"
 
@@ -727,7 +745,7 @@ msgstr ""
 "делает единицу малоинтересной для другой аудитории."
 
 # id::ppl.description__90
-#: 950.data.seed-values.sql:1053
+#: 950.data.seed-values.sql:1059
 msgid "Allow a user to create a new title note"
 msgstr "Позволь пользователю создавать новую заметку для заглавия"
 
@@ -737,16 +755,14 @@ msgid "No Access"
 msgstr "Нету доступа"
 
 # id::ppl.description__175
-#: 950.data.seed-values.sql:1199
+#: 950.data.seed-values.sql:1205
 msgid "Allow a user to create/view/update/delete a provider"
 msgstr ""
 
 # id::ppl.description__17
-#: 950.data.seed-values.sql:911
+#: 950.data.seed-values.sql:917
 msgid "Allow a user to see another user's grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION"
 msgstr ""
-"Позволь пользователю увидеть деятельность или транзакции циркуляции в "
-"интерфейсе Счетов; дуплетов для VIEW_TRANSACTION"
 
 # id::clfm.value__1
 #: 950.data.seed-values.sql:172
@@ -754,7 +770,7 @@ msgid "Fiction (not further specified)"
 msgstr "Художественная литература (более не детализирован)"
 
 # id::ppl.description__108
-#: 950.data.seed-values.sql:1089
+#: 950.data.seed-values.sql:1095
 msgid "Allow a user to check in/out an item that has an alert message"
 msgstr "Позволь пользователю сдать/выдать единицу у которой есть сигнал тревоги"
 
@@ -774,7 +790,7 @@ msgid "Tsonga"
 msgstr "Тсонга"
 
 # id::aout.opac_label__5
-#: 950.data.seed-values.sql:832
+#: 950.data.seed-values.sql:838
 msgid "Your Bookmobile"
 msgstr "Твой передвижной автобус"
 
@@ -799,11 +815,10 @@ msgid "German"
 msgstr "Немецкий"
 
 # id::ppl.description__131
-#: 950.data.seed-values.sql:1135
+#: 950.data.seed-values.sql:1141
 msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
-"Позволь пользователю добавить/удалить пользователей в/из группы \"LocalAdmin\" "
-""
+"Позволь пользователю добавить/удалить пользователей в/из группы \"LocalAdmin\""
 
 # id::clm.value__sla
 #: 950.data.seed-values.sql:589
@@ -811,7 +826,7 @@ msgid "Slavic (Other)"
 msgstr "Славянский (другой)"
 
 # id::ppl.description__33
-#: 950.data.seed-values.sql:941
+#: 950.data.seed-values.sql:947
 msgid "Allow a user to place an item in transit"
 msgstr "Позволь пользователю поставить единицу в транзит"
 
@@ -826,7 +841,7 @@ msgid "Tumbuka"
 msgstr "Тумбука"
 
 # id::ppl.description__27
-#: 950.data.seed-values.sql:929
+#: 950.data.seed-values.sql:935
 msgid "Allow a user to continue to renew an item even if it is required for a hold"
 msgstr ""
 "Позволь пользователю продолжить обновить единицу если даже эта предусмотрена "
@@ -838,14 +853,14 @@ msgid "oclc"
 msgstr "oclc"
 
 # id::pgt.name__6
-#: 950.data.seed-values.sql:1389
+#: 950.data.seed-values.sql:1395
 msgid "Acquisitions"
 msgstr ""
 
 # id::ppl.description__71
-#: 950.data.seed-values.sql:1015
+#: 950.data.seed-values.sql:1021
 msgid "User may delete a copy statistical category entry map"
-msgstr "Пользователь может удалить карту входа копии стат категории "
+msgstr "Пользователь может удалить карту входа копии стат категории"
 
 # id::clm.value__mdr
 #: 950.data.seed-values.sql:482
@@ -908,10 +923,10 @@ msgid "Nepali"
 msgstr "Непалский"
 
 # id::ppl.description__127
-#: 950.data.seed-values.sql:1127
+#: 950.data.seed-values.sql:1133
 msgid "Allow a user to add/remove users to/from the \"Staff\" group"
 msgstr ""
-"Позволь пользователю добавить/удалить пользователей в/из группы  \"Персонал\" "
+"Позволь пользователю добавить/удалить пользователей в/из группы  \"Персонал\""
 
 # id::clm.value__sms
 #: 950.data.seed-values.sql:598
@@ -940,8 +955,8 @@ msgstr "Турецкий, Оттоманский"
 
 # id::cza.label__6 id::cza.label__15 id::cza.label__24
 # id::vqbrad.description__6
-#: 950.data.seed-values.sql:764 950.data.seed-values.sql:785
-#: 950.data.seed-values.sql:804 950.data.seed-values.sql:1621
+#: 950.data.seed-values.sql:770 950.data.seed-values.sql:791
+#: 950.data.seed-values.sql:810 950.data.seed-values.sql:1627
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -951,9 +966,9 @@ msgid "German, Old High (ca. 750-1050)"
 msgstr "Немецкий, очень старый (пр. 750-1050)"
 
 # id::ppl.description__70
-#: 950.data.seed-values.sql:1013
+#: 950.data.seed-values.sql:1019
 msgid "User may delete a patron statistical category entry map"
-msgstr "Пользователь может удалить карту входа пользоватльской стат категории "
+msgstr "Пользователь может удалить карту входа пользоватльской стат категории"
 
 # id::clm.value__tem
 #: 950.data.seed-values.sql:629
@@ -961,7 +976,7 @@ msgid "Temne"
 msgstr "Темнейский"
 
 # id::ppl.description__172
-#: 950.data.seed-values.sql:1196
+#: 950.data.seed-values.sql:1202
 msgid "Allow a user to view/credit/debit a funding source"
 msgstr ""
 
@@ -971,7 +986,7 @@ msgid "Judeo-Persian"
 msgstr "Иудо-персидский"
 
 # id::cubt.label__folks
-#: 950.data.seed-values.sql:1693
+#: 950.data.seed-values.sql:1699
 msgid "Friends"
 msgstr ""
 
@@ -986,7 +1001,7 @@ msgid "Gondi"
 msgstr "Gondi"
 
 # id::ppl.description__28
-#: 950.data.seed-values.sql:931
+#: 950.data.seed-values.sql:937
 msgid "Allow a user to create another user"
 msgstr "Позволь пользователю создавать другого пользователя"
 
@@ -996,9 +1011,12 @@ msgid "Bashkir"
 msgstr "Башкирский"
 
 # id::ppl.description__183
-#: 950.data.seed-values.sql:1207
+# id::ppl.description__185
+# id::ppl.description__37
+#: 950.data.seed-values.sql:1213
+#, fuzzy
 msgid "Allow a user to mark an item status as 'checked out'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как 'потерянный'"
 
 # id::clm.value__kam
 #: 950.data.seed-values.sql:417
@@ -1006,7 +1024,7 @@ msgid "Kamba"
 msgstr "Kamba"
 
 # id::i18n_l.name__es-MX
-#: 950.data.seed-values.sql:738
+#: 950.data.seed-values.sql:741
 msgid "Spanish (Mexico)"
 msgstr "Испанский  (Мексика)"
 
@@ -1016,17 +1034,17 @@ msgid "Nonmusical sound recording"
 msgstr "Немузыкалный звукозапись"
 
 # id::pgt.name__2
-#: 950.data.seed-values.sql:1381
+#: 950.data.seed-values.sql:1387
 msgid "Patrons"
 msgstr "Пользователи"
 
 # id::ppl.description__102
-#: 950.data.seed-values.sql:1077
+#: 950.data.seed-values.sql:1083
 msgid "Allow a user to change the due date on an item to any date"
 msgstr "Позволь пользователю изменять дату возврата единицы на любую"
 
 # id::ppl.description__76
-#: 950.data.seed-values.sql:1025
+#: 950.data.seed-values.sql:1031
 msgid "Allow a user to create a new copy location"
 msgstr "Позволь пользователю создавать новое местонахождение копии"
 
@@ -1096,7 +1114,7 @@ msgid "Esperanto"
 msgstr "Эсперанто"
 
 # id::ppl.description__67
-#: 950.data.seed-values.sql:1007
+#: 950.data.seed-values.sql:1013
 msgid "User may delete a copy statistical category"
 msgstr "Пользователь может удалить копию стат категории"
 
@@ -1111,7 +1129,7 @@ msgid "Swazi"
 msgstr "Свази"
 
 # id::cubt.label__folks%3Apub_book_bags.view
-#: 950.data.seed-values.sql:1694
+#: 950.data.seed-values.sql:1700
 msgid "List Published Book Bags"
 msgstr ""
 
@@ -1121,7 +1139,7 @@ msgid "Sami"
 msgstr "Самийский"
 
 # id::ppl.description__65
-#: 950.data.seed-values.sql:1001
+#: 950.data.seed-values.sql:1007
 msgid "User may link a copy to an entry in a statistical category"
 msgstr "Пользователь может дать ссылку к входу в стат категории"
 
@@ -1136,8 +1154,8 @@ msgid "Telugu"
 msgstr "Телугу"
 
 # id::cza.label__4 id::cza.label__13 id::cza.label__22
-#: 950.data.seed-values.sql:760 950.data.seed-values.sql:781
-#: 950.data.seed-values.sql:800
+#: 950.data.seed-values.sql:766 950.data.seed-values.sql:787
+#: 950.data.seed-values.sql:806
 msgid "Author"
 msgstr "Автор"
 
@@ -1147,12 +1165,16 @@ msgid "System Local"
 msgstr "Локал системы"
 
 # id::ppl.description__154
-#: 950.data.seed-values.sql:1178
+# id::ppl.description__153
+# id::ppl.description__157
+# id::ppl.description__88
+#: 950.data.seed-values.sql:1184
+#, fuzzy
 msgid "Allow a user to delete a funding source"
-msgstr ""
+msgstr "Позволь пользователю создавать заметку новой копии"
 
 # id::ppl.description__48
-#: 950.data.seed-values.sql:967
+#: 950.data.seed-values.sql:973
 msgid "Allow a user to see what another user has checked out"
 msgstr "Позволь пользователю увидеть что взято другим пользователем"
 
@@ -1162,7 +1184,7 @@ msgid "Newari"
 msgstr "Newari"
 
 # id::aout.name__4
-#: 950.data.seed-values.sql:828
+#: 950.data.seed-values.sql:834
 msgid "Sub-library"
 msgstr "Под библиотека"
 
@@ -1177,36 +1199,36 @@ msgid "Unfiltered"
 msgstr "Нефильтрированный"
 
 # id::ppl.description__171
-#: 950.data.seed-values.sql:1195
+#: 950.data.seed-values.sql:1201
 msgid "(Deprecated) Allow a user to create/view/update/delete a fund"
 msgstr ""
 
 # id::ppl.description__196
-#: 950.data.seed-values.sql:1220
+#: 950.data.seed-values.sql:1226
 msgid "Allows a user to import a bib record from the acq staging area (on-order record) into the ILS bib data set"
 msgstr ""
 
 # id::ppl.description__161
-#: 950.data.seed-values.sql:1185
+# id::ppl.description__76
+#: 950.data.seed-values.sql:1191
 #, fuzzy
 msgid "Allow a user to create a new fund allocation"
 msgstr "Позволь пользователю создавать новое местонахождение копии"
 
 # id::ppl.description__133
-#: 950.data.seed-values.sql:1139
+#: 950.data.seed-values.sql:1145
 msgid "Allow a user to add/remove users to/from the \"Cat1\" group"
-msgstr ""
-"Позволь пользователю добавить/удалить пользователей в/из группы  \"Cat1\" "
+msgstr "Позволь пользователю добавить/удалить пользователей в/из группы  \"Cat1\""
 
 # id::ppl.description__25
-#: 950.data.seed-values.sql:925
+#: 950.data.seed-values.sql:931
 msgid "Allow a user to edit a copy"
 msgstr "Позволь пользователю редактировать копию"
 
 # id::ppl.description__61
-#: 950.data.seed-values.sql:995
+#: 950.data.seed-values.sql:1001
 msgid "User may update a copy statistical category"
-msgstr "Пользователь может обновить копию стат категории "
+msgstr "Пользователь может обновить копию стат категории"
 
 # id::clm.value__ful
 #: 950.data.seed-values.sql:346
@@ -1224,8 +1246,8 @@ msgid "Nubian languages"
 msgstr "Нубийские языки"
 
 # id::clm.value__arm id::i18n_l.name__hy-AM id::i18n_l.description__hy-AM
-#: 950.data.seed-values.sql:227 950.data.seed-values.sql:741
-#: 950.data.seed-values.sql:742
+#: 950.data.seed-values.sql:227 950.data.seed-values.sql:744
+#: 950.data.seed-values.sql:745
 msgid "Armenian"
 msgstr "Армянский"
 
@@ -1235,10 +1257,10 @@ msgid "Sandawe"
 msgstr "Sandawe"
 
 # id::ppl.description__126
-#: 950.data.seed-values.sql:1125
+#: 950.data.seed-values.sql:1131
 msgid "Allow a user to add/remove users to/from the \"Patron\" group"
 msgstr ""
-"Позволь пользователю добавить/удалить пользователей в/из группы  \"Патрон\" "
+"Позволь пользователю добавить/удалить пользователей в/из группы  \"Патрон\""
 
 # id::clfm.description__s
 #: 950.data.seed-values.sql:199
@@ -1266,8 +1288,8 @@ msgid "Unknown or unspecified"
 msgstr "Неизвестный или неустановленный"
 
 # id::ppl.description__10 id::ppl.description__13 id::ppl.description__35
-#: 950.data.seed-values.sql:899 950.data.seed-values.sql:903
-#: 950.data.seed-values.sql:945
+#: 950.data.seed-values.sql:905 950.data.seed-values.sql:909
+#: 950.data.seed-values.sql:951
 msgid "* no longer applicable"
 msgstr "* больше не применимый"
 
@@ -1277,7 +1299,7 @@ msgid "Monograph/Item"
 msgstr "Монограф/Единица"
 
 # id::ppl.description__103
-#: 950.data.seed-values.sql:1079
+#: 950.data.seed-values.sql:1085
 msgid "Allow a user to bypass the circulation permit call for check out"
 msgstr "Позволь пользователю обходить вызов разрешения циркуляции для выдачи"
 
@@ -1297,7 +1319,7 @@ msgid "Walloon"
 msgstr "Валлонский"
 
 # id::ppl.description__112
-#: 950.data.seed-values.sql:1097
+#: 950.data.seed-values.sql:1103
 msgid "Allow a user to abort a copy transit if the user is not at the transit source or dest"
 msgstr ""
 "Позволь пользователю прервать транзит копии если пользователь не находится в "
@@ -1389,12 +1411,12 @@ msgid "Salishan languages"
 msgstr "Салышанские языки"
 
 # id::pgt.name__4
-#: 950.data.seed-values.sql:1385
+#: 950.data.seed-values.sql:1391
 msgid "Catalogers"
 msgstr "Каталогизаторы"
 
 # id::ppl.description__152
-#: 950.data.seed-values.sql:1175
+#: 950.data.seed-values.sql:1181
 msgid "Allow a staff member to define where another staff member has their permissions"
 msgstr "Позволь персоналу где другой член персонала имеет привилегии"
 
@@ -1414,7 +1436,7 @@ msgid "Essays"
 msgstr "Эссе"
 
 # id::aout.opac_label__2
-#: 950.data.seed-values.sql:823
+#: 950.data.seed-values.sql:829
 msgid "Local Library System"
 msgstr "Местная библиотечная система"
 
@@ -1424,9 +1446,12 @@ msgid "Regular print reproduction"
 msgstr "Нормальные печатные репродукции"
 
 # id::ppl.description__153
-#: 950.data.seed-values.sql:1177
+# id::ppl.description__157
+# id::ppl.description__88
+#: 950.data.seed-values.sql:1183
+#, fuzzy
 msgid "Allow a user to create a new funding source"
-msgstr ""
+msgstr "Позволь пользователю создавать заметку новой копии"
 
 # id::clm.value__elx
 #: 950.data.seed-values.sql:323
@@ -1434,7 +1459,7 @@ msgid "Elamite"
 msgstr "Elamite"
 
 # id::ppl.description__53
-#: 950.data.seed-values.sql:979
+#: 950.data.seed-values.sql:985
 msgid "Allow a user to view other users' permission groups"
 msgstr "Позволь пользователю просмотреть группы привилегий других пользователей"
 
@@ -1445,13 +1470,13 @@ msgstr "Адыгейский"
 
 # id::ccpbt.label__misc id::ccnbt.label__misc id::cbrebt.label__misc
 # id::cubt.label__misc
-#: 950.data.seed-values.sql:1684 950.data.seed-values.sql:1686
-#: 950.data.seed-values.sql:1687 950.data.seed-values.sql:1692
+#: 950.data.seed-values.sql:1690 950.data.seed-values.sql:1692
+#: 950.data.seed-values.sql:1693 950.data.seed-values.sql:1698
 msgid "Miscellaneous"
 msgstr ""
 
 # id::ppl.description__57
-#: 950.data.seed-values.sql:987
+#: 950.data.seed-values.sql:993
 msgid "User may create a copy statistical category"
 msgstr "Пользователь может создавать копию стат категорий"
 
@@ -1466,17 +1491,17 @@ msgid "Ganda"
 msgstr "Ганда"
 
 # id::aout.opac_label__1
-#: 950.data.seed-values.sql:820
+#: 950.data.seed-values.sql:826
 msgid "Everywhere"
 msgstr "Везде"
 
 # id::aou.name__6
-#: 950.data.seed-values.sql:846
+#: 950.data.seed-values.sql:852
 msgid "Example Branch 3"
 msgstr "Модель подразделение 3"
 
 # id::aou.name__4
-#: 950.data.seed-values.sql:842
+#: 950.data.seed-values.sql:848
 msgid "Example Branch 1"
 msgstr "Модель подразделение 1"
 
@@ -1491,7 +1516,7 @@ msgid "Hittite"
 msgstr "Hittite"
 
 # id::ppl.description__118
-#: 950.data.seed-values.sql:1109
+#: 950.data.seed-values.sql:1115
 msgid "Allow a user to create a new closed date for a location"
 msgstr "Позволь пользователю создавать новую закрытую дату для местоположения"
 
@@ -1511,7 +1536,7 @@ msgid "Sukuma"
 msgstr "Sukuma"
 
 # id::ppl.description__203
-#: 950.data.seed-values.sql:1227
+#: 950.data.seed-values.sql:1233
 msgid "Allows a user to add/remove/edit users in the \"Acquisitions Administrators\" group"
 msgstr ""
 
@@ -1521,7 +1546,7 @@ msgid "Mixed materials"
 msgstr "Смешанные материалы"
 
 # id::ppl.description__72
-#: 950.data.seed-values.sql:1017
+#: 950.data.seed-values.sql:1023
 msgid "Allow a user to create a new non-cataloged item type"
 msgstr "Позволь пользователю создавать тип новоый некаталогизированной единицы"
 
@@ -1531,7 +1556,7 @@ msgid "On holds shelf"
 msgstr "На полке для хранения"
 
 # id::aout.name__5
-#: 950.data.seed-values.sql:831
+#: 950.data.seed-values.sql:837
 msgid "Bookmobile"
 msgstr "Передвижная библиотека"
 
@@ -1546,16 +1571,16 @@ msgid "Tuvaluan"
 msgstr "Тувалуйский"
 
 # id::ppl.description__54
-#: 950.data.seed-values.sql:981
+#: 950.data.seed-values.sql:987
 msgid "Allow a user to determine whether another user can check out an item"
 msgstr ""
 "Позволь пользователю устанавливать может ли другой пользователь выдать "
 "единицу"
 
 # id::ppl.description__104
-#: 950.data.seed-values.sql:1081
+#: 950.data.seed-values.sql:1087
 msgid "Allow a user to override the copy_is_reference event"
-msgstr "Позволь пользователю отменять copy_is_reference событие "
+msgstr "Позволь пользователю отменять copy_is_reference событие"
 
 # id::clm.value__bej
 #: 950.data.seed-values.sql:250
@@ -1568,8 +1593,8 @@ msgid "Germanic (Other)"
 msgstr "Немецкий (другой)"
 
 # id::cza.label__9 id::cza.label__18 id::cza.label__27
-#: 950.data.seed-values.sql:770 950.data.seed-values.sql:791
-#: 950.data.seed-values.sql:810
+#: 950.data.seed-values.sql:776 950.data.seed-values.sql:797
+#: 950.data.seed-values.sql:816
 msgid "Item Type"
 msgstr "Тип единицы"
 
@@ -1584,7 +1609,7 @@ msgid "14_days_2_renew"
 msgstr "14_days_2_renew"
 
 # id::ppl.description__15
-#: 950.data.seed-values.sql:907
+#: 950.data.seed-values.sql:913
 msgid "Allow a user to renew items"
 msgstr "Позволь пользователю обновить единицы"
 
@@ -1629,7 +1654,7 @@ msgid "Cherokee"
 msgstr "Cherokee"
 
 # id::ppl.description__176
-#: 950.data.seed-values.sql:1200
+#: 950.data.seed-values.sql:1206
 msgid "Allow a user to view and purchase from a provider"
 msgstr ""
 
@@ -1639,12 +1664,12 @@ msgid "In process"
 msgstr "В процессе"
 
 # id::ppl.description__173
-#: 950.data.seed-values.sql:1197
+#: 950.data.seed-values.sql:1203
 msgid "Allow a user to view/credit/debit a fund"
 msgstr ""
 
 # id::ppl.description__78
-#: 950.data.seed-values.sql:1029
+#: 950.data.seed-values.sql:1035
 msgid "Allow a user to delete a copy location"
 msgstr "Позволь пользователю удалить местоположение копии"
 
@@ -1709,7 +1734,7 @@ msgid "Adult"
 msgstr "Взрослый"
 
 # id::ppl.description__42
-#: 950.data.seed-values.sql:969
+#: 950.data.seed-values.sql:975
 msgid "Allow a user may view another user's transactions"
 msgstr "Позволь пользователю просмотреть транзакции других пользователей"
 
@@ -1764,7 +1789,7 @@ msgid "Old Norse"
 msgstr "Старый норвежский"
 
 # id::ppl.description__77
-#: 950.data.seed-values.sql:1027
+#: 950.data.seed-values.sql:1033
 msgid "Allow a user to update a copy location"
 msgstr "Позволь пользователю обновить копию местоположения"
 
@@ -1774,7 +1799,7 @@ msgid "Hausa"
 msgstr "Hausa"
 
 # id::cubt.label__folks%3Ahold.cancel
-#: 950.data.seed-values.sql:1700
+#: 950.data.seed-values.sql:1706
 msgid "Cancel Holds"
 msgstr ""
 
@@ -1789,7 +1814,7 @@ msgid "Moldavian"
 msgstr "Молдовский"
 
 # id::ppl.description__111
-#: 950.data.seed-values.sql:1095
+#: 950.data.seed-values.sql:1101
 msgid "Allow a user to abort a copy transit if the user is at the transit destination or source"
 msgstr ""
 "Позволь пользователю прервать транзит копии если пользователь находится в "
@@ -1806,7 +1831,7 @@ msgid "Kumyk"
 msgstr "Kumyk"
 
 # id::vqbrad.description__14
-#: 950.data.seed-values.sql:1629
+#: 950.data.seed-values.sql:1635
 msgid "Edition"
 msgstr "Редакция"
 
@@ -1816,15 +1841,12 @@ msgid "Avaric"
 msgstr "Avaric"
 
 # id::ppl.description__22
-#: 950.data.seed-values.sql:921
+#: 950.data.seed-values.sql:927
 msgid "Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records."
 msgstr ""
-"Позволь пользователю редактировать тома - необходимых для слияния записей. "
-"Это является VOLUME_UPDATE; необходимо иметь обе привилегий на "
-"соответствующем уровне  чтобы слиять записи."
 
 # id::ppl.description__101
-#: 950.data.seed-values.sql:1075
+#: 950.data.seed-values.sql:1081
 msgid "Allow a user to execute an offline script batch"
 msgstr "Позволь пользователю исполнять офлайновый пакет скрипта"
 
@@ -1834,7 +1856,7 @@ msgid "German, Middle High (ca. 1050-1500)"
 msgstr "Немецкий, выше среднего (пр. 1050-1500)"
 
 # id::ppl.description__81
-#: 950.data.seed-values.sql:1035
+#: 950.data.seed-values.sql:1041
 msgid "Allow a user to see if another user has permission to place a hold on a given copy"
 msgstr ""
 "Позволь пользователю увидеть имеет ли другой пользователь полномочий "
@@ -1842,8 +1864,8 @@ msgstr ""
 
 # id::cza.label__2 id::cza.label__11 id::cza.label__20
 # id::vqbrad.description__5
-#: 950.data.seed-values.sql:756 950.data.seed-values.sql:777
-#: 950.data.seed-values.sql:796 950.data.seed-values.sql:1620
+#: 950.data.seed-values.sql:762 950.data.seed-values.sql:783
+#: 950.data.seed-values.sql:802 950.data.seed-values.sql:1626
 msgid "ISBN"
 msgstr "ISBN"
 
@@ -1853,7 +1875,7 @@ msgid "Maithili"
 msgstr "Maithili"
 
 # id::pgt.name__5
-#: 950.data.seed-values.sql:1387
+#: 950.data.seed-values.sql:1393
 msgid "Circulators"
 msgstr "Циркуляторы"
 
@@ -1885,7 +1907,7 @@ msgstr "Старый персидский (пр. 600-400 B.C.)"
 # id::citm.value__k
 #: 950.data.seed-values.sql:704
 msgid "Two-dimensional nonprojectable graphic"
-msgstr "Двух размерная непроекцируемая графика "
+msgstr "Двух размерная непроекцируемая графика"
 
 # id::clm.value__ban
 #: 950.data.seed-values.sql:246
@@ -1903,7 +1925,7 @@ msgid "Dogri"
 msgstr "Dogri"
 
 # id::ppl.description__197
-#: 950.data.seed-values.sql:1221
+#: 950.data.seed-values.sql:1227
 msgid "Allows a user to mark a purchase order, lineitem, or individual copy as received"
 msgstr ""
 
@@ -1918,12 +1940,15 @@ msgid "Egyptian"
 msgstr "Египетский"
 
 # id::ppl.description__190
-#: 950.data.seed-values.sql:1214
+# id::ppl.description__185
+# id::ppl.description__37
+#: 950.data.seed-values.sql:1220
+#, fuzzy
 msgid "Allow a user to mark an item status as 'on holds shelf'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как 'потерянный'"
 
 # id::vqbrad.description__7
-#: 950.data.seed-values.sql:1622
+#: 950.data.seed-values.sql:1628
 msgid "Price"
 msgstr "Цена"
 
@@ -1938,7 +1963,7 @@ msgid "Kit"
 msgstr "Комплект"
 
 # id::acpl.name__1
-#: 950.data.seed-values.sql:1562
+#: 950.data.seed-values.sql:1568
 msgid "Stacks"
 msgstr "Наборы"
 
@@ -1958,40 +1983,45 @@ msgid "Assamese"
 msgstr "Assamese"
 
 # id::ppl.description__88
-#: 950.data.seed-values.sql:1051
+#: 950.data.seed-values.sql:1057
 msgid "Allow a user to create a new copy note"
 msgstr "Позволь пользователю создавать заметку новой копии"
 
 # id::ppl.description__192
-#: 950.data.seed-values.sql:1216
+# id::ppl.description__184
+# id::ppl.description__186
+# id::ppl.description__38
+#: 950.data.seed-values.sql:1222
+#, fuzzy
 msgid "Allow a user to mark an item status as 'inter-library loan'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как  'отсутствующий'"
 
 # id::pgt.name__10
-#: 950.data.seed-values.sql:1393
+#: 950.data.seed-values.sql:1399
 msgid "Local System Administrator"
 msgstr "Локальный системный администратор"
 
 # id::cza.label__8 id::cza.label__17 id::cza.label__26
 # id::vqbrad.description__13
-#: 950.data.seed-values.sql:768 950.data.seed-values.sql:789
-#: 950.data.seed-values.sql:808 950.data.seed-values.sql:1628
+#: 950.data.seed-values.sql:774 950.data.seed-values.sql:795
+#: 950.data.seed-values.sql:814 950.data.seed-values.sql:1634
 msgid "Publication Date"
 msgstr "Дата публикации"
 
 # id::ppl.description__16
-#: 950.data.seed-values.sql:909
+#: 950.data.seed-values.sql:915
 msgid "Allow a user to view bill details"
 msgstr "Позволь пользователю просмотреть детали счета"
 
 # id::ppl.description__200
-#: 950.data.seed-values.sql:1224
+# id::ppl.description__18
+#: 950.data.seed-values.sql:1230
 #, fuzzy
 msgid "Allows a user to update an MFHD record"
 msgstr "Позволь пользователю редактировать  MARC запись"
 
 # id::ppl.description__4
-#: 950.data.seed-values.sql:887
+#: 950.data.seed-values.sql:893
 msgid "Allow a user to log in to the staff client"
 msgstr "Позволь пользователю заходить в клиент персонала"
 
@@ -2006,7 +2036,7 @@ msgid "Latin"
 msgstr "Латинский"
 
 # id::ppl.description__62
-#: 950.data.seed-values.sql:997
+#: 950.data.seed-values.sql:1003
 msgid "User may update an entry in a patron statistical category"
 msgstr "Пользователь может обновить вход в стат категории патрона"
 
@@ -2051,17 +2081,17 @@ msgid "Drivers License"
 msgstr "Водительское удостоверение"
 
 # id::ppl.description__38
-#: 950.data.seed-values.sql:951
+#: 950.data.seed-values.sql:957
 msgid "Allow a user to mark an item as 'missing'"
 msgstr "Позволь пользователю отметить единицу как  'отсутствующий'"
 
 # id::ppl.description__69
-#: 950.data.seed-values.sql:1011
+#: 950.data.seed-values.sql:1017
 msgid "User may delete an entry from a copy statistical category"
 msgstr "Пользователь может удалить вход из копии стат категории"
 
 # id::ppl.description__140
-#: 950.data.seed-values.sql:1153
+#: 950.data.seed-values.sql:1159
 msgid "Allow staff to override overdue count failure"
 msgstr "Позволь пользователю отменять ошибку просроченных"
 
@@ -2071,7 +2101,8 @@ msgid "Terena"
 msgstr "Terena"
 
 # id::ppl.description__185
-#: 950.data.seed-values.sql:1209
+# id::ppl.description__37
+#: 950.data.seed-values.sql:1215
 #, fuzzy
 msgid "Allow a user to mark an item status as 'lost'"
 msgstr "Позволь пользователю отметить единицу как 'потерянный'"
@@ -2092,19 +2123,21 @@ msgid "Himachali"
 msgstr "Himachali"
 
 # id::ppl.description__162
-#: 950.data.seed-values.sql:1186
+# id::ppl.description__78
+#: 950.data.seed-values.sql:1192
 #, fuzzy
 msgid "Allow a user to delete a fund allocation"
 msgstr "Позволь пользователю удалить местоположение копии"
 
 # id::ppl.description__167
-#: 950.data.seed-values.sql:1191
+# id::ppl.description__23
+#: 950.data.seed-values.sql:1197
 #, fuzzy
 msgid "Allow a user to delate a provider"
 msgstr "Позволь пользователю удалить том"
 
 # id::ppl.description__147
-#: 950.data.seed-values.sql:1165
+#: 950.data.seed-values.sql:1171
 msgid "Allow a user to run reports"
 msgstr "Позволь пользователю выполнять отчеты"
 
@@ -2119,7 +2152,7 @@ msgid "French, Old (ca. 842-1400)"
 msgstr "Французский, старый (пр. 842-1400)"
 
 # id::ppl.description__39
-#: 950.data.seed-values.sql:953
+#: 950.data.seed-values.sql:959
 msgid "Allow a user to mark an item as 'claims returned'"
 msgstr "Позволь пользователю отметить единицу как 'возвращенные претензии'"
 
@@ -2129,7 +2162,7 @@ msgid "Sino-Tibetan (Other)"
 msgstr "Sino-Tibetan (другой)"
 
 # id::i18n_l.description__en-CA
-#: 950.data.seed-values.sql:730
+#: 950.data.seed-values.sql:733
 msgid "Canadian English"
 msgstr "Канадский Английский"
 
@@ -2139,18 +2172,19 @@ msgid "Ethiopic"
 msgstr "Эфиопский"
 
 # id::vqarad.description__1
-#: 950.data.seed-values.sql:1680
+#: 950.data.seed-values.sql:1686
 msgid "Identifier"
 msgstr "Метка"
 
 # id::ppl.description__186
-#: 950.data.seed-values.sql:1210
+# id::ppl.description__38
+#: 950.data.seed-values.sql:1216
 #, fuzzy
 msgid "Allow a user to mark an item status as 'missing'"
 msgstr "Позволь пользователю отметить единицу как  'отсутствующий'"
 
 # id::ppl.description__83
-#: 950.data.seed-values.sql:1039
+#: 950.data.seed-values.sql:1045
 msgid "Allow a user to perform Z39.50 queries against remote servers"
 msgstr ""
 "Позволь пользователю совершать Z39.50 запросы по отношению удаленного "
@@ -2162,7 +2196,7 @@ msgid "Discard/Weed"
 msgstr "Сбрасывать/избавлять"
 
 # id::ppl.description__110
-#: 950.data.seed-values.sql:1093
+#: 950.data.seed-values.sql:1099
 msgid "Allow a user to change the missing status on a copy"
 msgstr "Позволь пользователю изменять статус потерянного на копии"
 
@@ -2187,7 +2221,7 @@ msgid "Romance (Other)"
 msgstr "Цыганский (другой)"
 
 # id::ppl.description__32
-#: 950.data.seed-values.sql:939
+#: 950.data.seed-values.sql:945
 msgid "Allow a user to check in a copy"
 msgstr "Позволь пользователю принять копию"
 
@@ -2217,7 +2251,7 @@ msgid "Tonga (Nyasa)"
 msgstr "Tonga (Nyasa)"
 
 # id::ppl.description__105
-#: 950.data.seed-values.sql:1083
+#: 950.data.seed-values.sql:1089
 msgid "Allow a user to void a bill"
 msgstr "Позволь пользователю признавать недействительным счет"
 
@@ -2232,19 +2266,19 @@ msgid "Basa"
 msgstr "Basa"
 
 # id::cubt.label__folks%3Ahold.view
-#: 950.data.seed-values.sql:1699
+#: 950.data.seed-values.sql:1705
 msgid "View Holds"
 msgstr ""
 
 # id::ppl.description__106
-#: 950.data.seed-values.sql:1085
+#: 950.data.seed-values.sql:1091
 msgid "Allow a user to check in or check out an item that has a status of 'claims returned'"
 msgstr ""
 "Позволь пользователю выдать или принимать единицу со статусом  'возвращенные "
 "претензии'"
 
 # id::ppl.description__36
-#: 950.data.seed-values.sql:947
+#: 950.data.seed-values.sql:953
 msgid "Allow a user to record payments in the Billing Interface"
 msgstr "Позволь пользователю записывать уплаты в интерфейсе Оплат"
 
@@ -2279,7 +2313,7 @@ msgid "Albanian"
 msgstr "Албанский"
 
 # id::ppl.description__96
-#: 950.data.seed-values.sql:1065
+#: 950.data.seed-values.sql:1071
 msgid "Allow a user to view notifications attached to a hold"
 msgstr "Позволь пользователю просмотреть извещения прикрепленные к хранениям"
 
@@ -2289,12 +2323,12 @@ msgid "Osage"
 msgstr "Osage"
 
 # id::vqbrad.description__10
-#: 950.data.seed-values.sql:1625
+#: 950.data.seed-values.sql:1631
 msgid "TCN Source"
 msgstr "TCN источник"
 
 # id::ppl.description__44
-#: 950.data.seed-values.sql:959
+#: 950.data.seed-values.sql:965
 msgid "Allow a user to view another user's containers (buckets)"
 msgstr "Позволь пользователю посмотреть контейтеры других пользователей"
 
@@ -2329,7 +2363,7 @@ msgid "Chibcha"
 msgstr "Chibcha"
 
 # id::aou.name__8
-#: 950.data.seed-values.sql:850
+#: 950.data.seed-values.sql:856
 msgid "Example Sub-library 1"
 msgstr "Модель под библиотека 1"
 
@@ -2354,7 +2388,7 @@ msgid "Luba-Lulua"
 msgstr "Luba-Lulua"
 
 # id::ppl.description__79
-#: 950.data.seed-values.sql:1031
+#: 950.data.seed-values.sql:1037
 msgid "Allow a user to create a transit_copy object for transiting a copy"
 msgstr "Позволь пользователю создать transit_copy объект для транзита копий"
 
@@ -2368,13 +2402,15 @@ msgstr "Вакашский язык"
 msgid "Amharic"
 msgstr "Amharic"
 
+# id::clm.value__cze id::i18n_l.name__cs-CZ id::i18n_l.description__cs-CZ
 # id::clm.value__cze
-#: 950.data.seed-values.sql:303
+#: 950.data.seed-values.sql:303 950.data.seed-values.sql:729
+#: 950.data.seed-values.sql:730
 msgid "Czech"
 msgstr "Чешский"
 
 # id::cbt.name__1
-#: 950.data.seed-values.sql:860
+#: 950.data.seed-values.sql:866
 msgid "Overdue Materials"
 msgstr ""
 
@@ -2394,7 +2430,7 @@ msgid "Urdu"
 msgstr "язык урду"
 
 # id::ppl.description__24
-#: 950.data.seed-values.sql:963
+#: 950.data.seed-values.sql:969
 msgid "Allow a user to create a new copy object"
 msgstr "Позволь пользователю создать объект новой копии"
 
@@ -2404,12 +2440,12 @@ msgid "Lozi"
 msgstr "Lozi"
 
 # id::ppl.description__60
-#: 950.data.seed-values.sql:993
+#: 950.data.seed-values.sql:999
 msgid "User may update a patron statistical category"
 msgstr "Пользователь может обновлять стат категорию патрона"
 
 # id::ppl.description__149
-#: 950.data.seed-values.sql:1169
+#: 950.data.seed-values.sql:1175
 msgid "Allow a user to view report output"
 msgstr "Позволь пользователю посмотреть выходные отчеты"
 
@@ -2424,7 +2460,7 @@ msgid "Chagatai"
 msgstr "Chagatai"
 
 # id::ppl.description__89
-#: 950.data.seed-values.sql:1049
+#: 950.data.seed-values.sql:1055
 msgid "Allow a user to create a new volume note"
 msgstr "Позволь пользователю создать заметку нового тома"
 
@@ -2459,7 +2495,7 @@ msgid "Mapuche"
 msgstr "Mapuche"
 
 # id::vqbrad.description__9
-#: 950.data.seed-values.sql:1624
+#: 950.data.seed-values.sql:1630
 msgid "TCN Value"
 msgstr "TCN значение"
 
@@ -2519,7 +2555,7 @@ msgid "Slave"
 msgstr "Раб"
 
 # id::cbt.name__7
-#: 950.data.seed-values.sql:872
+#: 950.data.seed-values.sql:878
 msgid "Damaged Item"
 msgstr ""
 
@@ -2529,7 +2565,7 @@ msgid "Hawaiian"
 msgstr "Гавайский"
 
 # id::czs.label__loc
-#: 950.data.seed-values.sql:747
+#: 950.data.seed-values.sql:753
 msgid "Library of Congress"
 msgstr "Библиотека Конгресса"
 
@@ -2539,7 +2575,7 @@ msgid "Sidamo"
 msgstr "Sidamo"
 
 # id::ppl.description__202
-#: 950.data.seed-values.sql:1226
+#: 950.data.seed-values.sql:1232
 msgid "Allow a user to create/view/update/delete a fund"
 msgstr ""
 
@@ -2549,7 +2585,8 @@ msgid "Provençal (to 1500)"
 msgstr "Provençal (до 1500)"
 
 # id::ppl.description__158
-#: 950.data.seed-values.sql:1182
+# id::ppl.description__26
+#: 950.data.seed-values.sql:1188
 #, fuzzy
 msgid "Allow a user to delete a fund"
 msgstr "Позволь пользователя удалять копию"
@@ -2580,17 +2617,18 @@ msgid "Language material"
 msgstr "Языковой материал"
 
 # id::ppl.description__31
-#: 950.data.seed-values.sql:937
+#: 950.data.seed-values.sql:943
 msgid "Allow a user to view another user's Patron Record"
 msgstr "Позволь пользователю посмотреть Запись Патрона для другого пользователя"
 
 # id::vqbrad.description__4
-#: 950.data.seed-values.sql:1619
+#: 950.data.seed-values.sql:1625
 msgid "Pagination"
 msgstr "Нумерация страниц"
 
 # id::ppl.description__201
-#: 950.data.seed-values.sql:1225
+# id::ppl.description__18
+#: 950.data.seed-values.sql:1231
 #, fuzzy
 msgid "Allows a user to delete an MFHD record"
 msgstr "Позволь пользователю редактировать  MARC запись"
@@ -2606,7 +2644,7 @@ msgid "Uzbek"
 msgstr "Узбекский"
 
 # id::cbt.name__4
-#: 950.data.seed-values.sql:866
+#: 950.data.seed-values.sql:872
 msgid "Lost Materials Processing Fee"
 msgstr ""
 
@@ -2636,9 +2674,12 @@ msgid "Burmese"
 msgstr "Burmese"
 
 # id::ppl.description__160
-#: 950.data.seed-values.sql:1184
+# id::ppl.description__158
+# id::ppl.description__26
+#: 950.data.seed-values.sql:1190
+#, fuzzy
 msgid "Allow a user to update a fund"
-msgstr ""
+msgstr "Позволь пользователя удалять копию"
 
 # id::clm.value__ale
 #: 950.data.seed-values.sql:219
@@ -2663,7 +2704,7 @@ msgid "Lingala"
 msgstr "Lingala"
 
 # id::cbt.name__6
-#: 950.data.seed-values.sql:870
+#: 950.data.seed-values.sql:876
 msgid "System: Rental"
 msgstr ""
 
@@ -2733,7 +2774,7 @@ msgid "Breton"
 msgstr "Бретонский"
 
 # id::ppl.description__91
-#: 950.data.seed-values.sql:1055
+#: 950.data.seed-values.sql:1061
 msgid "Allow a user to delete another user's copy notes"
 msgstr "Позволь пользователю удалить заметки копии другого пользователя"
 
@@ -2748,7 +2789,7 @@ msgid "Turkish"
 msgstr "Турецкий"
 
 # id::ppl.description__94
-#: 950.data.seed-values.sql:1061
+#: 950.data.seed-values.sql:1067
 msgid "Allow a user to update another user's container"
 msgstr "Позволь пользоателю обновить контейнер другого пользователя"
 
@@ -2768,7 +2809,7 @@ msgid "Waray"
 msgstr "Waray"
 
 # id::aout.name__1
-#: 950.data.seed-values.sql:819
+#: 950.data.seed-values.sql:825
 msgid "Consortium"
 msgstr "Консорциум"
 
@@ -2778,11 +2819,11 @@ msgid "Soninke"
 msgstr "Soninke"
 
 # id::ppl.description__124
-#: 950.data.seed-values.sql:1121
+#: 950.data.seed-values.sql:1127
 msgid "Allow a user to remove an existing workstation so a new one can replace it"
 msgstr ""
 "Позволь пользоателю удалить существующую рабочую станцию чтобы заменить "
-"новым "
+"новым"
 
 # id::clm.value__zap
 #: 950.data.seed-values.sql:686
@@ -2795,17 +2836,17 @@ msgid "Hmong"
 msgstr "Hmong"
 
 # id::ppl.description__179
-#: 950.data.seed-values.sql:1203
+#: 950.data.seed-values.sql:1209
 msgid "Allow a user to create/view/update/delete a currency_type"
 msgstr ""
 
 # id::ppl.description__92
-#: 950.data.seed-values.sql:1057
+#: 950.data.seed-values.sql:1063
 msgid "Allow a user to delete another user's volume note"
 msgstr "Позволь пользоателю удалить заметку тома другого пользователя"
 
 # id::ppl.description__178
-#: 950.data.seed-values.sql:1202
+#: 950.data.seed-values.sql:1208
 msgid "Allow a staff member to directly remove a bibliographic record"
 msgstr "Позволь персоналу прямо удалить библиографическую запись"
 
@@ -2820,7 +2861,7 @@ msgid "Chuvash"
 msgstr "Чувашский"
 
 # id::cbt.name__3
-#: 950.data.seed-values.sql:864
+#: 950.data.seed-values.sql:870
 msgid "Lost Materials"
 msgstr ""
 
@@ -2855,12 +2896,12 @@ msgid "Iban"
 msgstr "Iban"
 
 # id::aout.opac_label__3
-#: 950.data.seed-values.sql:826
+#: 950.data.seed-values.sql:832
 msgid "This Branch"
 msgstr "Это подразделение"
 
 # id::cbt.name__9
-#: 950.data.seed-values.sql:876
+#: 950.data.seed-values.sql:882
 msgid "Notification Fee"
 msgstr ""
 
@@ -2870,7 +2911,7 @@ msgid "Altaic (Other)"
 msgstr "Altaic (другой)"
 
 # id::ppl.description__73
-#: 950.data.seed-values.sql:1019
+#: 950.data.seed-values.sql:1025
 msgid "Allow a user to update a non-cataloged item type"
 msgstr "Позволь пользоателю обновить тип некаалгизированной единицы"
 
@@ -2885,14 +2926,20 @@ msgid "Mohawk"
 msgstr "Mohawk"
 
 # id::ppl.description__168
-#: 950.data.seed-values.sql:1192
+# id::ppl.description__167
+# id::ppl.description__23
+#: 950.data.seed-values.sql:1198
+#, fuzzy
 msgid "Allow a user to view a provider"
-msgstr ""
+msgstr "Позволь пользователю удалить том"
 
 # id::ppl.description__184
-#: 950.data.seed-values.sql:1208
+# id::ppl.description__186
+# id::ppl.description__38
+#: 950.data.seed-values.sql:1214
+#, fuzzy
 msgid "Allow a user to mark an item status as 'bindery'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как  'отсутствующий'"
 
 # id::clm.value__dgr
 #: 950.data.seed-values.sql:310
@@ -2915,17 +2962,17 @@ msgid "Musical sound recording"
 msgstr "Музыкальный звукозапись"
 
 # id::ppl.description__63
-#: 950.data.seed-values.sql:999
+#: 950.data.seed-values.sql:1005
 msgid "User may update an entry in a copy statistical category"
 msgstr "Пользователь может обновить вход в копии стат категории"
 
 # id::aou.name__2
-#: 950.data.seed-values.sql:838
+#: 950.data.seed-values.sql:844
 msgid "Example System 1"
 msgstr "Модель Система 1"
 
 # id::czs.label__oclc
-#: 950.data.seed-values.sql:749
+#: 950.data.seed-values.sql:755
 msgid "OCLC"
 msgstr "OCLC"
 
@@ -2935,28 +2982,29 @@ msgid "Javanese"
 msgstr "Яванский"
 
 # id::ppl.description__45
-#: 950.data.seed-values.sql:961
+#: 950.data.seed-values.sql:967
 msgid "Allow a user to create a new container for another user"
 msgstr "Позволь пользоателю создать новый контейнер для другого пользователя"
 
 # id::ppl.description__166
-#: 950.data.seed-values.sql:1190
+# id::ppl.description__88
+#: 950.data.seed-values.sql:1196
 #, fuzzy
 msgid "Allow a user to create a new provider"
 msgstr "Позволь пользователю создавать заметку новой копии"
 
 # id::aou.name__3
-#: 950.data.seed-values.sql:840
+#: 950.data.seed-values.sql:846
 msgid "Example System 2"
 msgstr "Модель система 2"
 
 # id::vqbrad.description__2
-#: 950.data.seed-values.sql:1617
+#: 950.data.seed-values.sql:1623
 msgid "Author of work"
 msgstr "Автор работы"
 
 # id::ppl.description__121
-#: 950.data.seed-values.sql:1115
+#: 950.data.seed-values.sql:1121
 msgid "Allow a user to remove someone from collections"
 msgstr "Позволь пользоателю удалить кого-нибудь из коллекций"
 
@@ -2966,7 +3014,8 @@ msgid "Kannada"
 msgstr "Kannada"
 
 # id::ppl.description__177
-#: 950.data.seed-values.sql:1201
+# id::ppl.description__11
+#: 950.data.seed-values.sql:1207
 #, fuzzy
 msgid "Allow a user to view another users picklist"
 msgstr "Позволь пользователю просмотреть хранения других пользователей"
@@ -2977,7 +3026,7 @@ msgid "Dutch, Middle (ca. 1050-1350)"
 msgstr "Голландский, Средний (пр. 1050-1350)"
 
 # id::ppl.description__80
-#: 950.data.seed-values.sql:1033
+#: 950.data.seed-values.sql:1039
 msgid "Allow a user to close out a transit on a copy"
 msgstr "Позволь пользоателю закрыть транзит на копию"
 
@@ -3007,17 +3056,17 @@ msgid "South American Indian (Other)"
 msgstr "Южно Американский индейский (другой)"
 
 # id::ppl.description__122
-#: 950.data.seed-values.sql:1117
+#: 950.data.seed-values.sql:1123
 msgid "Allow a user to bar a patron"
 msgstr "Позволь пользоателю ограниченить читателя"
 
 # id::i18n_l.description__es-MX
-#: 950.data.seed-values.sql:739
+#: 950.data.seed-values.sql:742
 msgid "Mexican Spanish"
 msgstr "Мексиканский Испанский"
 
 # id::ppl.description__150
-#: 950.data.seed-values.sql:1171
+#: 950.data.seed-values.sql:1177
 msgid "Allow a user to checkout an item that is marked as non-circ"
 msgstr "Позволь пользоателю ввыдать единицу отмеченную как не циркулирующую"
 
@@ -3042,12 +3091,12 @@ msgid "Kpelle"
 msgstr "Kpelle"
 
 # id::ppl.description__74
-#: 950.data.seed-values.sql:1021
+#: 950.data.seed-values.sql:1027
 msgid "Allow a user to create a new in-house-use "
-msgstr "Позволь пользоателю создать новый для домашнего пользованию"
+msgstr "Позволь пользоателю создать новый для домашнего пользованию "
 
 # id::ppl.description__95
-#: 950.data.seed-values.sql:1063
+#: 950.data.seed-values.sql:1069
 msgid "Allow a user to create a container for themselves"
 msgstr "Позволь пользоателю создать контейнер для себя"
 
@@ -3067,7 +3116,7 @@ msgid "Arapaho"
 msgstr "Arapaho"
 
 # id::ppl.description__130
-#: 950.data.seed-values.sql:1133
+#: 950.data.seed-values.sql:1139
 msgid "Allow a user to add/remove users to/from the \"GlobalAdmin\" group"
 msgstr "Позволь пользователю добавить/удалить в/из группу  \"GlobalAdmin\""
 
@@ -3092,7 +3141,7 @@ msgid "Lushai"
 msgstr "Lushai"
 
 # id::ppl.description__97
-#: 950.data.seed-values.sql:1067
+#: 950.data.seed-values.sql:1073
 msgid "Allow a user to create new hold notifications"
 msgstr "Позволь пользователю создать новую заметку хранения"
 
@@ -3107,7 +3156,7 @@ msgid "Ponape"
 msgstr "Ponape"
 
 # id::ppl.description__37
-#: 950.data.seed-values.sql:949
+#: 950.data.seed-values.sql:955
 msgid "Allow a user to mark an item as 'lost'"
 msgstr "Позволь пользователю отметить единицу как 'потерянный'"
 
@@ -3122,7 +3171,8 @@ msgid "Siksika"
 msgstr "Siksika"
 
 # id::ppl.description__174
-#: 950.data.seed-values.sql:1198
+# id::ppl.description__21
+#: 950.data.seed-values.sql:1204
 #, fuzzy
 msgid "Allows a user to create a picklist"
 msgstr "Позволь пользователю создать том"
@@ -3138,12 +3188,12 @@ msgid "Dargwa"
 msgstr "Dargwa"
 
 # id::ppl.description__9
-#: 950.data.seed-values.sql:897
+#: 950.data.seed-values.sql:903
 msgid "Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)"
 msgstr ""
 "Позволь пользователю создать хранения для другого пользователя  (если верно, "
 "мы все же отмечаем чтобы быть уверенным что у них есть полномочия чтобы "
-"сделать запрос на тип хранения, например, COPY_HOLDS) "
+"сделать запрос на тип хранения, например, COPY_HOLDS)"
 
 # id::clfm.value__m
 #: 950.data.seed-values.sql:192
@@ -3166,12 +3216,12 @@ msgid "Gayo"
 msgstr "Gayo"
 
 # id::ppl.description__113
-#: 950.data.seed-values.sql:1099
+#: 950.data.seed-values.sql:1105
 msgid "Allow a user to query the ZIP code data method"
 msgstr "Позволь пользователю запросить метод данных ZIP код"
 
 # id::ppl.description__47
-#: 950.data.seed-values.sql:965
+#: 950.data.seed-values.sql:971
 msgid "Allow a user to change the settings for an organization unit"
 msgstr "Позволь пользователю изменить настройки для организационной единицы"
 
@@ -3196,12 +3246,12 @@ msgid "Notated music"
 msgstr "Музыка с примечанияи"
 
 # id::ppl.description__93
-#: 950.data.seed-values.sql:1059
+#: 950.data.seed-values.sql:1065
 msgid "Allow a user to delete another user's title note"
 msgstr "Позволь пользователю удалить примечание заглавия другого пользователя"
 
 # id::ppl.description__30
-#: 950.data.seed-values.sql:935
+#: 950.data.seed-values.sql:941
 msgid "Allow a user to mark a user as deleted"
 msgstr "Позволь пользователю отметить пользователя как удаленный"
 
@@ -3236,17 +3286,17 @@ msgid "The item is a short story or collection of short stories."
 msgstr "Единица короткий рассказ или коллекция коротких рассказов."
 
 # id::pgt.name__1
-#: 950.data.seed-values.sql:1379
+#: 950.data.seed-values.sql:1385
 msgid "Users"
 msgstr "Пользователи"
 
 # id::cbrebt.label__reading_list
-#: 950.data.seed-values.sql:1690
+#: 950.data.seed-values.sql:1696
 msgid "Reading List"
 msgstr ""
 
 # id::ppl.description__165
-#: 950.data.seed-values.sql:1189
+#: 950.data.seed-values.sql:1195
 msgid "Lowest level permission required to access the ACQ interface"
 msgstr ""
 
@@ -3256,7 +3306,7 @@ msgid "Semitic (Other)"
 msgstr "Semitic (другой)"
 
 # id::ppl.description__85
-#: 950.data.seed-values.sql:1043
+#: 950.data.seed-values.sql:1049
 msgid "Allow a user to view all notes attached to a copy"
 msgstr "Позволь пользователю посмотреь все заметки прикрепленные к копии"
 
@@ -3266,9 +3316,12 @@ msgid "Khotanese"
 msgstr "Khotanese"
 
 # id::ppl.description__169
-#: 950.data.seed-values.sql:1193
+# id::ppl.description__167
+# id::ppl.description__23
+#: 950.data.seed-values.sql:1199
+#, fuzzy
 msgid "Allow a user to update a provider"
-msgstr ""
+msgstr "Позволь пользователю удалить том"
 
 # id::clm.value__bem
 #: 950.data.seed-values.sql:252
@@ -3276,18 +3329,18 @@ msgid "Bemba"
 msgstr "Bemba"
 
 # id::vqbrad.description__1
-#: 950.data.seed-values.sql:1616
+#: 950.data.seed-values.sql:1622
 msgid "Title of work"
 msgstr "Заглавие работы"
 
 # id::ppl.description__50
-#: 950.data.seed-values.sql:973
+#: 950.data.seed-values.sql:979
 msgid "Allow a user to create a container item for another user"
 msgstr ""
 "Позволь пользователю создавать единицу контейнера для другого пользователя"
 
 # id::ppl.description__86
-#: 950.data.seed-values.sql:1045
+#: 950.data.seed-values.sql:1051
 msgid "Allow a user to view all notes attached to a volume"
 msgstr "Позволь пользователю посмотреть все заметки прикрепленные к тому"
 
@@ -3297,7 +3350,7 @@ msgid "Quechua"
 msgstr "Quechua"
 
 # id::ppl.description__193
-#: 950.data.seed-values.sql:1217
+#: 950.data.seed-values.sql:1223
 msgid "Allows a user to add/remove/edit users in the \"ACQ\" group"
 msgstr ""
 
@@ -3327,7 +3380,7 @@ msgid "Malayalam"
 msgstr "Malayalam"
 
 # id::ppl.description__170
-#: 950.data.seed-values.sql:1194
+#: 950.data.seed-values.sql:1200
 msgid "Allow a user to create/view/update/delete a funding source"
 msgstr ""
 
@@ -3337,12 +3390,12 @@ msgid "Inari Sami"
 msgstr "Inari Sami"
 
 # id::i18n_l.name__fr-CA
-#: 950.data.seed-values.sql:732
+#: 950.data.seed-values.sql:735
 msgid "French (Canada)"
 msgstr "Французский (Канада)"
 
 # id::aout.name__3
-#: 950.data.seed-values.sql:825
+#: 950.data.seed-values.sql:831
 msgid "Branch"
 msgstr "Подразделение"
 
@@ -3352,17 +3405,17 @@ msgid "Afrihili (Artificial language)"
 msgstr "Afrihili (искусственный язык)"
 
 # id::vqbrad.description__15
-#: 950.data.seed-values.sql:1630
+#: 950.data.seed-values.sql:1636
 msgid "Item Barcode"
 msgstr "Штрих код единицы"
 
 # id::ppl.description__107
-#: 950.data.seed-values.sql:1087
+#: 950.data.seed-values.sql:1093
 msgid "Allow a user to check out an item in a non-circulatable status"
 msgstr "Позволь пользователю выдать единицу из статуса не циркулирующий"
 
 # id::ppl.description__151
-#: 950.data.seed-values.sql:1173
+#: 950.data.seed-values.sql:1179
 msgid "Allow a user to delete an item out of another user's container"
 msgstr "Позволь пользователю удалить единицу из контейнера другого пользователя"
 
@@ -3372,7 +3425,7 @@ msgid "Project Gutenberg"
 msgstr "Проект Гутенберг"
 
 # id::aou.name__9
-#: 950.data.seed-values.sql:852
+#: 950.data.seed-values.sql:858
 msgid "Example Bookmobile 1"
 msgstr "Модель книжный автобус 1"
 
@@ -3384,7 +3437,7 @@ msgstr ""
 "определенным умчтвенным уровнем."
 
 # id::ppl.description__120
-#: 950.data.seed-values.sql:1113
+#: 950.data.seed-values.sql:1119
 msgid "Allow a user to put someone into collections"
 msgstr "Позволь пользователю поставить кого то в коллекции"
 
@@ -3399,12 +3452,12 @@ msgid "Iloko"
 msgstr "Iloko"
 
 # id::ppl.description__98
-#: 950.data.seed-values.sql:1069
+#: 950.data.seed-values.sql:1075
 msgid "Allow a user to update an organization unit setting"
-msgstr "Позволь пользователю обновить настройки организационной единицы "
+msgstr "Позволь пользователю обновить настройки организационной единицы"
 
 # id::czs.label__biblios
-#: 950.data.seed-values.sql:751
+#: 950.data.seed-values.sql:757
 msgid "‡biblios.net"
 msgstr ""
 
@@ -3419,12 +3472,12 @@ msgid "Samoan"
 msgstr "Samoan"
 
 # id::ccpbt.label__staff_client id::cbrebt.label__staff_client
-#: 950.data.seed-values.sql:1685 950.data.seed-values.sql:1688
+#: 950.data.seed-values.sql:1691 950.data.seed-values.sql:1694
 msgid "General Staff Client container"
 msgstr ""
 
 # id::ppl.description__75
-#: 950.data.seed-values.sql:1023
+#: 950.data.seed-values.sql:1029
 msgid "Allow a user to check out a copy"
 msgstr "Позволь пользователю выдать копию"
 
@@ -3449,9 +3502,12 @@ msgid "50_cent_per_day"
 msgstr "50_cent_per_day"
 
 # id::ppl.description__187
-#: 950.data.seed-values.sql:1211
+# id::ppl.description__185
+# id::ppl.description__37
+#: 950.data.seed-values.sql:1217
+#, fuzzy
 msgid "Allow a user to mark an item status as 'in process'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как 'потерянный'"
 
 # id::clm.value__dyu
 #: 950.data.seed-values.sql:318
@@ -3459,7 +3515,7 @@ msgid "Dyula"
 msgstr "Dyula"
 
 # id::ppl.description__23
-#: 950.data.seed-values.sql:923
+#: 950.data.seed-values.sql:929
 msgid "Allow a user to delete a volume"
 msgstr "Позволь пользователю удалить том"
 
@@ -3474,24 +3530,23 @@ msgid "Efik"
 msgstr "Efik"
 
 # id::ppl.description__195
-#: 950.data.seed-values.sql:1219
+#: 950.data.seed-values.sql:1225
 msgid "Allows a user to view a purchase order"
 msgstr ""
 
 # id::ppl.description__141
-#: 950.data.seed-values.sql:1155
+#: 950.data.seed-values.sql:1161
 msgid "Allow staff to override fine amount checkout failure"
 msgstr "Позволь пользователю отменять ошибку размера штрафа выдачи"
 
 # id::ppl.description__135
-#: 950.data.seed-values.sql:1143
+#: 950.data.seed-values.sql:1149
 msgid "Allow a user to add/remove users to/from the \"SIP-Client\" group"
 msgstr ""
-"Позволь пользователю добавить/удалить пользователей в/из группы \"SIP-Client\" "
-""
+"Позволь пользователю добавить/удалить пользователей в/из группы \"SIP-Client\""
 
 # id::ppl.description__14
-#: 950.data.seed-values.sql:905
+#: 950.data.seed-values.sql:911
 msgid "Allow a user to update another user's hold"
 msgstr "Позволь пользователю обновить хранение другого пользователя"
 
@@ -3511,7 +3566,7 @@ msgid "Lule Sami"
 msgstr "Lule Sami"
 
 # id::ppl.description__59
-#: 950.data.seed-values.sql:991
+#: 950.data.seed-values.sql:997
 msgid "User may create an entry in a copy statistical category"
 msgstr "Пользователь может создать точку входа в копии стат категории"
 
@@ -3536,7 +3591,7 @@ msgid "Mon-Khmer (Other)"
 msgstr "Mon-Khmer (другой)"
 
 # id::ppl.description__29
-#: 950.data.seed-values.sql:933
+#: 950.data.seed-values.sql:939
 msgid "Allow a user to edit a user's record"
 msgstr "Позволь пользователю редактировать запись пользователя"
 
@@ -3596,12 +3651,12 @@ msgid "Sign languages"
 msgstr "Обозначение языков"
 
 # id::ppl.description__8
-#: 950.data.seed-values.sql:895
+#: 950.data.seed-values.sql:901
 msgid "Allow a user to place a hold on a specific copy"
 msgstr "Позволь пользователю поставить хранение на определенную копию"
 
 # id::ppl.description__136
-#: 950.data.seed-values.sql:1145
+#: 950.data.seed-values.sql:1151
 msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
 msgstr ""
 "Позволь пользователю добавить/удалить пользователей в/из группы \"Vendor\""
@@ -3642,7 +3697,7 @@ msgid "Dravidian (Other)"
 msgstr "Dravidian  (другой)"
 
 # id::i18n_l.description__es-US
-#: 950.data.seed-values.sql:736
+#: 950.data.seed-values.sql:739
 msgid "American Spanish"
 msgstr "Американский испанский"
 
@@ -3652,7 +3707,7 @@ msgid "Creoles and Pidgins, English-based (Other)"
 msgstr "Креольский и Пидгинский, на Английской основе  (другой)"
 
 # id::ppl.description__128
-#: 950.data.seed-values.sql:1129
+#: 950.data.seed-values.sql:1135
 msgid "Allow a user to add/remove users to/from the \"Circulator\" group"
 msgstr ""
 "Позволь пользователю добавить/удалить пользователей в/из группы  "
@@ -3664,7 +3719,7 @@ msgid "Cushitic (Other)"
 msgstr "Cushitic  (другой)"
 
 # id::ppl.description__56
-#: 950.data.seed-values.sql:985
+#: 950.data.seed-values.sql:991
 msgid "User may create a new patron statistical category"
 msgstr "Пользователь может соьдать стат категорию нового патрона"
 
@@ -3674,7 +3729,7 @@ msgid "Tetum"
 msgstr "Tetum"
 
 # id::ppl.description__66
-#: 950.data.seed-values.sql:1005
+#: 950.data.seed-values.sql:1011
 msgid "User may delete a patron statistical category"
 msgstr "Пользователь может удалить стат категорию патрона"
 
@@ -3684,7 +3739,7 @@ msgid "Pahlavi"
 msgstr "Pahlavi"
 
 # id::cubt.label__folks%3Apub_book_bags.add
-#: 950.data.seed-values.sql:1695
+#: 950.data.seed-values.sql:1701
 msgid "Add to Published Book Bags"
 msgstr ""
 
@@ -3694,17 +3749,20 @@ msgid "Slovak"
 msgstr "Словакский"
 
 # id::ppl.description__159
-#: 950.data.seed-values.sql:1183
+# id::ppl.description__158
+# id::ppl.description__26
+#: 950.data.seed-values.sql:1189
+#, fuzzy
 msgid "Allow a user to view a fund"
-msgstr ""
+msgstr "Позволь пользователя удалять копию"
 
 # id::ppl.description__142
-#: 950.data.seed-values.sql:1157
+#: 950.data.seed-values.sql:1163
 msgid "Allow staff to override circulation copy range failure"
 msgstr "Позволь пользователю отменять ошибку циркуляции интервала копии"
 
 # id::ppl.description__148
-#: 950.data.seed-values.sql:1167
+#: 950.data.seed-values.sql:1173
 msgid "Allow a user to share report his own folders"
 msgstr "Позволь пользователю совместно использовать свои собственные папки"
 
@@ -3714,7 +3772,7 @@ msgid "Gilbertese"
 msgstr "Gilbertese"
 
 # id::ppl.description__100
-#: 950.data.seed-values.sql:1073
+#: 950.data.seed-values.sql:1079
 msgid "Allow a user to view uploaded offline script information"
 msgstr "Позволь пользователю посмотреть загруженный офлайн скрипт"
 
@@ -3729,7 +3787,7 @@ msgid "6month"
 msgstr "6month"
 
 # id::ppl.description__143
-#: 950.data.seed-values.sql:1159
+#: 950.data.seed-values.sql:1165
 msgid "Allow staff to override item on holds shelf failure"
 msgstr "Позволь пользователю отменять ошибку хранения единицы на полке"
 
@@ -3749,7 +3807,7 @@ msgid "Crimean Tatar"
 msgstr "Крымские татары"
 
 # id::cbrebt.label__bookbag
-#: 950.data.seed-values.sql:1689
+#: 950.data.seed-values.sql:1695
 msgid "Book Bag"
 msgstr ""
 
@@ -3790,7 +3848,7 @@ msgstr "Nogai"
 msgid "The item is not a work of fiction and no further identification of the literary form is desired"
 msgstr ""
 "Материал не является художественной работой и не трбуется дальнейшей "
-"идентификации литературной формы "
+"идентификации литературной формы"
 
 # id::clm.value__enm
 #: 950.data.seed-values.sql:325
@@ -3828,12 +3886,12 @@ msgid "Buriat"
 msgstr "Бурятский"
 
 # id::ppl.description__52
-#: 950.data.seed-values.sql:977
+#: 950.data.seed-values.sql:983
 msgid "Allow a user to remove other users from permission groups"
 msgstr "Позволь пользователю удалить других пользователей из групп привилегий"
 
 # id::ppl.description__2
-#: 950.data.seed-values.sql:885
+#: 950.data.seed-values.sql:891
 msgid "Allow a user to log in to the OPAC"
 msgstr "Позволь пользователю войти в OPAC"
 
@@ -3858,9 +3916,12 @@ msgid "Twi"
 msgstr "Twi"
 
 # id::ppl.description__191
-#: 950.data.seed-values.sql:1215
+# id::ppl.description__185
+# id::ppl.description__37
+#: 950.data.seed-values.sql:1221
+#, fuzzy
 msgid "Allow a user to mark an item status as 'on order'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как 'потерянный'"
 
 # id::clm.value__guj
 #: 950.data.seed-values.sql:373
@@ -3878,7 +3939,7 @@ msgid "Akkadian"
 msgstr "Akkadian"
 
 # id::ppl.description__19
-#: 950.data.seed-values.sql:915
+#: 950.data.seed-values.sql:921
 msgid "Allow a user to create new MARC records"
 msgstr "Позволь пользоателю создать новые MARC записи"
 
@@ -3903,10 +3964,11 @@ msgid "Manuscript notated music"
 msgstr "Музыкальный рукопись с заметками"
 
 # id::ppl.description__49
-#: 950.data.seed-values.sql:971
+# id::ppl.description__94
+#: 950.data.seed-values.sql:977
 #, fuzzy
 msgid "Allow a user to delete another user's container"
-msgstr "Позволь пользователю удалять контейнер другого пользователя"
+msgstr "Позволь пользоателю обновить контейнер другого пользователя"
 
 # id::clm.value__kom
 #: 950.data.seed-values.sql:434
@@ -3929,7 +3991,7 @@ msgid "Nyanja"
 msgstr "Nyanja"
 
 # id::ppl.description__5
-#: 950.data.seed-values.sql:889
+#: 950.data.seed-values.sql:895
 msgid "Allow a user to create a metarecord holds"
 msgstr "Позволь пользователю создать хранения метазаписи"
 
@@ -3954,11 +4016,11 @@ msgid "Kashmiri"
 msgstr "Kashmiri"
 
 # id::ppl.description__116
-#: 950.data.seed-values.sql:1107
+#: 950.data.seed-values.sql:1113
 msgid "Allow a user to remove a closed date interval for a given location"
 msgstr ""
 "Позволь пользователю для данного местоположения удалить закрытый интервал "
-"даты "
+"даты"
 
 # id::clm.value__hai
 #: 950.data.seed-values.sql:375
@@ -3976,7 +4038,7 @@ msgid "Songhai"
 msgstr "Songhai"
 
 # id::i18n_l.name__es-US
-#: 950.data.seed-values.sql:735
+#: 950.data.seed-values.sql:738
 msgid "Spanish (US)"
 msgstr "Испанский (США)"
 
@@ -3986,43 +4048,44 @@ msgid "Bindery"
 msgstr "Переплёт"
 
 # id::aout.name__2
-#: 950.data.seed-values.sql:822
+#: 950.data.seed-values.sql:828
 msgid "System"
 msgstr "Система"
 
 # id::pgt.name__6
-#: 950.data.seed-values.sql:1391
+#: 950.data.seed-values.sql:1397
 msgid "Acquisitions Administrator"
 msgstr ""
 
 # id::ppl.description__157
-#: 950.data.seed-values.sql:1181
+# id::ppl.description__88
+#: 950.data.seed-values.sql:1187
 #, fuzzy
 msgid "Allow a user to create a new fund"
 msgstr "Позволь пользователю создавать заметку новой копии"
 
 # id::pgt.description__10
-#: 950.data.seed-values.sql:1394
+#: 950.data.seed-values.sql:1400
 msgid "System maintenance, configuration, etc."
 msgstr "Поддержание системой, конфигурация, итд"
 
 # id::ppl.description__114
-#: 950.data.seed-values.sql:1101
+#: 950.data.seed-values.sql:1107
 msgid "Allow a user to cancel holds"
 msgstr "Позволь пользователю отменить хранение"
 
 # id::ppl.description__109
-#: 950.data.seed-values.sql:1091
+#: 950.data.seed-values.sql:1097
 msgid "Allow a user to remove the lost status from a copy"
-msgstr "Позволь пользоателю удалить статус потерянного из копии "
+msgstr "Позволь пользоателю удалить статус потерянного из копии"
 
 # id::vqbrad.description__3
-#: 950.data.seed-values.sql:1618
+#: 950.data.seed-values.sql:1624
 msgid "Language of work"
 msgstr "Язык работы"
 
 # id::ppl.description__144
-#: 950.data.seed-values.sql:1161
+#: 950.data.seed-values.sql:1167
 msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
 "Позволь персонал воздействовать на выдачу для материалов типа "
@@ -4044,7 +4107,7 @@ msgid "Three-dimensional artifact or naturally occurring object"
 msgstr "Трехразмерный искусственный объект или объект от природы"
 
 # id::ppl.description__68
-#: 950.data.seed-values.sql:1009
+#: 950.data.seed-values.sql:1015
 msgid "User may delete an entry from a patron statistical category"
 msgstr "Пользователь может удалить любую точку из стат категории патрона"
 
@@ -4059,7 +4122,7 @@ msgid "Irish"
 msgstr "Ирландский"
 
 # id::ppl.description__198
-#: 950.data.seed-values.sql:1222
+#: 950.data.seed-values.sql:1228
 msgid "Allows a user to view all org settings at the specified level"
 msgstr ""
 
@@ -4095,7 +4158,7 @@ msgid "The item is intended for children, approximate ages 0-5 years."
 msgstr "Единица действительно для детей, примерно 0-5 лет."
 
 # id::ppl.description__26
-#: 950.data.seed-values.sql:927
+#: 950.data.seed-values.sql:933
 msgid "Allow a user to delete a copy"
 msgstr "Позволь пользователя удалять копию"
 
@@ -4115,7 +4178,7 @@ msgid "Northern Sami"
 msgstr "Northern Sami"
 
 # id::ppl.description__64
-#: 950.data.seed-values.sql:1003
+#: 950.data.seed-values.sql:1009
 msgid "User may link another user to an entry in a statistical category"
 msgstr ""
 "Пользователь может связывать другого пользователя с точкой входа в стат "
@@ -4137,7 +4200,7 @@ msgid "Romanian"
 msgstr "Румынский"
 
 # id::cbt.name__8
-#: 950.data.seed-values.sql:874
+#: 950.data.seed-values.sql:880
 msgid "Damaged Item Processing Fee"
 msgstr ""
 
@@ -4157,18 +4220,18 @@ msgid "Hiri Motu"
 msgstr "Hiri Motu"
 
 # id::ppl.description__6
-#: 950.data.seed-values.sql:891
+#: 950.data.seed-values.sql:897
 msgid "Allow a user to place a hold at the title level"
 msgstr "Позволь пользователю поставить хранение на уровне заглавия"
 
 # id::ppl.description__146
-#: 950.data.seed-values.sql:1163
+#: 950.data.seed-values.sql:1169
 msgid "Allow a user to place multiple holds on a single title"
 msgstr ""
 "Позволь пользователю поставить многократные хранения на единственный том"
 
 # id::cbt.name__5
-#: 950.data.seed-values.sql:868
+#: 950.data.seed-values.sql:874
 msgid "System: Deposit"
 msgstr ""
 
@@ -4183,7 +4246,8 @@ msgid "Raeto-Romance"
 msgstr "Raeto-Romance"
 
 # id::ppl.description__181
-#: 950.data.seed-values.sql:1205
+# id::ppl.description__16
+#: 950.data.seed-values.sql:1211
 #, fuzzy
 msgid "Allow a user to view billing types"
 msgstr "Позволь пользователю просмотреть детали счета"
@@ -4194,22 +4258,21 @@ msgid "Lao"
 msgstr "Lao"
 
 # id::ppl.description__129
-#: 950.data.seed-values.sql:1131
+#: 950.data.seed-values.sql:1137
 msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
 msgstr ""
-"Позволь пользователю добавить/удалить пользователей в/из группы  \"Cataloger\" "
-""
+"Позволь пользователю добавить/удалить пользователей в/из группы  \"Cataloger\""
 
 # id::ppl.description__21
-#: 950.data.seed-values.sql:919
+#: 950.data.seed-values.sql:925
 msgid "Allow a user to create a volume"
 msgstr "Позволь пользователю создать том"
 
 # id::ppl.description__137
-#: 950.data.seed-values.sql:1147
+#: 950.data.seed-values.sql:1153
 msgid "Allow a user to place a hold on an age-protected item"
 msgstr ""
-"Позволь пользователю поставить хранение на материал защищенный по возрасту "
+"Позволь пользователю поставить хранение на материал защищенный по возрасту"
 
 # id::clm.value__sio
 #: 950.data.seed-values.sql:587
@@ -4222,7 +4285,7 @@ msgid "Mende"
 msgstr "Mende"
 
 # id::ppl.description__58
-#: 950.data.seed-values.sql:989
+#: 950.data.seed-values.sql:995
 msgid "User may create an entry in a patron statistical category"
 msgstr "Пользователь может создавать точку входа в стат категории патрона"
 
@@ -4237,7 +4300,8 @@ msgid "Susu"
 msgstr "Susu"
 
 # id::ppl.description__199
-#: 950.data.seed-values.sql:1223
+# id::ppl.description__19
+#: 950.data.seed-values.sql:1229
 #, fuzzy
 msgid "Allows a user to create a new MFHD record"
 msgstr "Позволь пользоателю создать новые MARC записи"
@@ -4258,7 +4322,7 @@ msgid "Walamo"
 msgstr "Walamo"
 
 # id::ppl.description__99
-#: 950.data.seed-values.sql:1071
+#: 950.data.seed-values.sql:1077
 msgid "Allow a user to upload an offline script"
 msgstr "Позволь пользователю загрузить офлайн скрипт"
 
@@ -4308,14 +4372,17 @@ msgid "Ido"
 msgstr "Ido"
 
 # id::i18n_l.description__fr-CA
-#: 950.data.seed-values.sql:733
+#: 950.data.seed-values.sql:736
 msgid "Canadian French"
 msgstr "Канадский французский"
 
 # id::ppl.description__189
-#: 950.data.seed-values.sql:1213
+# id::ppl.description__186
+# id::ppl.description__38
+#: 950.data.seed-values.sql:1219
+#, fuzzy
 msgid "Allow a user to mark an item status as 'reshelving'"
-msgstr ""
+msgstr "Позволь пользователю отметить единицу как  'отсутствующий'"
 
 # id::clm.value__fiu
 #: 950.data.seed-values.sql:339
@@ -4343,7 +4410,7 @@ msgid "Eskimo languages"
 msgstr "Эскимосский язык"
 
 # id::cubt.label__folks%3Acirc.checkout
-#: 950.data.seed-values.sql:1698
+#: 950.data.seed-values.sql:1704
 msgid "Checkout Items"
 msgstr ""
 
@@ -4378,11 +4445,14 @@ msgid "Spanish"
 msgstr "Испанский"
 
 # id::ppl.description__18
-#: 950.data.seed-values.sql:913
+#: 950.data.seed-values.sql:919
 msgid "Allow a user to edit a MARC record"
 msgstr "Позволь пользователю редактировать  MARC запись"
 
 # id::ppl.description__163
-#: 950.data.seed-values.sql:1187
+# id::ppl.description__162
+# id::ppl.description__78
+#: 950.data.seed-values.sql:1193
+#, fuzzy
 msgid "Allow a user to view a fund allocation"
-msgstr ""
+msgstr "Позволь пользователю удалить местоположение копии"
