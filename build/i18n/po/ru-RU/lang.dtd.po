@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 21:01-0400\n"
+"POT-Creation-Date: 2010-02-01 00:16-0400\n"
 "PO-Revision-Date: 2009-12-10 21:06+0000\n"
 "Last-Translator: Black Raven <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -796,25 +796,6 @@ msgstr "Evergreen клиент персонала"
 msgid "About this client..."
 msgstr "Об этом клиенте..."
 
-#: staff.auth.about_btn.accesskey
-msgid ""
-"_: staff.auth.about_btn.accesskey\n"
-""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
-"PO-Revision-Date: 2009-12-10 21:06+0000\n"
-"Last-Translator: Black Raven <Unknown>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Accelerator-Marker: &\n"
-"X-Poedit-Bookmarks: 1332,1333,-1,-1,-1,-1,-1,-1,-1,-1\n"
-
 #: staff.auth.new_window_btn.label
 #: staff.auth.new_window_btn.accesskey
 msgid "Open &New Window"
@@ -1105,6 +1086,11 @@ msgstr "&Удалить запись"
 #: staff.cat.opac.undelete_record.accesskey
 msgid "&Undelete Record"
 msgstr "&Отменить удаление записи"
+
+#: staff.cat.opac.create_brt_from_record.label
+#: staff.cat.opac.create_brt_from_record.accesskey
+msgid "Make I&tem Bookable"
+msgstr ""
 
 #: staff.cat.opac.menu.label
 #: staff.cat.opac.menu.accesskey
@@ -2568,6 +2554,37 @@ msgstr ""
 msgid "Circulation Modifiers"
 msgstr "Модификатор циркуляции"
 
+#: staff.main.menu.admin.server_admin.booking.label
+#: staff.main.menu.admin.server_admin.booking.accesskey
+msgctxt "staff.main.menu.admin.server_admin.booking.label staff.main.menu.admin.server_admin.booking.accesskey"
+msgid "&Booking"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource.label
+#: staff.main.menu.admin.server_admin.booking.resource.accesskey
+msgid "&Resources"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource_type.label
+#: staff.main.menu.admin.server_admin.booking.resource_type.accesskey
+msgid "Resource &Types"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource_attr.label
+#: staff.main.menu.admin.server_admin.booking.resource_attr.accesskey
+msgid "Resource &Attributes"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource_attr_value.label
+#: staff.main.menu.admin.server_admin.booking.resource_attr_value.accesskey
+msgid "Resource Attribute &Values"
+msgstr ""
+
+#: staff.main.menu.admin.server_admin.booking.resource_attr_map.label
+#: staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey
+msgid "Resource Attribute &Maps"
+msgstr ""
+
 #: staff.main.menu.admin.developer.label
 msgid "For developers..."
 msgstr "Для разработчиков..."
@@ -2815,6 +2832,37 @@ msgstr ""
 
 #: staff.main.menu.acq.po.label
 msgid "Purchase Orders"
+msgstr ""
+
+#: staff.main.menu.booking.label
+#: staff.main.menu.booking.accesskey
+msgctxt "staff.main.menu.booking.label staff.main.menu.booking.accesskey"
+msgid "&Booking"
+msgstr ""
+
+#: staff.main.menu.booking.reservation.label
+#: staff.main.menu.booking.reservation.accesskey
+msgid "&Create or Edit Reservations"
+msgstr ""
+
+#: staff.main.menu.booking.pull_list.label
+#: staff.main.menu.booking.pull_list.accesskey
+msgid "Pull &List"
+msgstr ""
+
+#: staff.main.menu.booking.capture.label
+#: staff.main.menu.booking.capture.accesskey
+msgid "C&apture Resources"
+msgstr ""
+
+#: staff.main.menu.booking.reservation_pickup.label
+#: staff.main.menu.booking.reservation_pickup.accesskey
+msgid "&Pick Up Reservations"
+msgstr ""
+
+#: staff.main.menu.booking.reservation_return.label
+#: staff.main.menu.booking.reservation_return.accesskey
+msgid "&Return Reservations"
 msgstr ""
 
 #: staff.main.menu.acq.fund.label
@@ -5013,6 +5061,15 @@ msgctxt "staff.patron_navbar.alert.accesskey"
 msgid "A"
 msgstr "A"
 
+#: staff.patron_navbar.booking
+msgctxt "staff.patron_navbar.booking"
+msgid "Booking"
+msgstr ""
+
+#: staff.patron_navbar.booking.accesskey
+msgid "k"
+msgstr ""
+
 #: staff.patron_navbar.other
 msgctxt "staff.patron_navbar.other"
 msgid "Other"
@@ -6279,6 +6336,31 @@ msgstr "Список передач"
 msgid "Server Settings"
 msgstr "Настройки сервера"
 
+#: staff.server.admin.index.booking
+msgctxt "staff.server.admin.index.booking"
+msgid "Booking"
+msgstr ""
+
+#: staff.server.admin.index.booking.reservation
+msgid "Create/Cancel Reservations"
+msgstr ""
+
+#: staff.server.admin.index.booking.pull_list
+msgid "Pull List"
+msgstr ""
+
+#: staff.server.admin.index.booking.capture
+msgid "Capture"
+msgstr ""
+
+#: staff.server.admin.index.booking.pickup
+msgid "Pickup Reservations"
+msgstr ""
+
+#: staff.server.admin.index.booking.return
+msgid "Return Reservations"
+msgstr ""
+
 #: staff.server.admin.org_settings.title
 msgid "Evergreen: Library Settings Editor"
 msgstr "Evergreen: Редакор библиотечных настроек"
@@ -6657,6 +6739,16 @@ msgstr ""
 msgid ""
 "Set this if you would like patron displays in the staff client to be closed "
 "after a certain interval of inactivity.  Example \\'5 minutes\\'"
+msgstr ""
+
+#: staff.server.admin.org_settings.lib.courier_code
+msgid "Courier Code"
+msgstr ""
+
+#: staff.server.admin.org_settings.lib.courier_code.desc
+msgid ""
+"Courier Code for the library.  Available in transit slip templates as the "
+"&#37;courier_code&#37; macro."
 msgstr ""
 
 #: staff.server.admin.stat_cat.title
@@ -7112,6 +7204,18 @@ msgctxt "staff.circ.copy_status_overlay.sel_patron.label staff.circ.copy_status_
 msgid "Show &Last Few Circulations"
 msgstr "Показать последние несколько циркуляций"
 
+#: staff.circ.copy_status_overlay.cmd_book_item_now.label
+#: staff.circ.copy_status_overlay.cmd_book_item_now.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_book_item_now.label staff.circ.copy_status_overlay.cmd_book_item_now.accesskey"
+msgid "Book Item &Now"
+msgstr ""
+
+#: staff.circ.copy_status_overlay.cmd_create_brt.label
+#: staff.circ.copy_status_overlay.cmd_create_brt.accesskey
+msgctxt "staff.circ.copy_status_overlay.cmd_create_brt.label staff.circ.copy_status_overlay.cmd_create_brt.accesskey"
+msgid "Ma&ke Item Bookable"
+msgstr ""
+
 #: staff.circ.copy_status_overlay.sel_edit.label
 #: staff.circ.copy_status_overlay.sel_edit.accesskey
 msgctxt "staff.circ.copy_status_overlay.sel_edit.label staff.circ.copy_status_overlay.sel_edit.accesskey"
@@ -7222,7 +7326,7 @@ msgstr "Отметь единицу как &Поврежденную"
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey
 msgctxt "staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.label staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey"
 msgid "Mark Item Missin&g"
-msgstr "Отметь единицу как Отсутствующу&"
+msgstr "Отметь единицу как Отсутствующу"
 
 #: staff.circ.copy_status_overlay.item_status.label
 msgctxt "staff.circ.copy_status_overlay.item_status.label"
@@ -7742,6 +7846,18 @@ msgctxt "staff.cat.copy_browser.actions.sel_copy_details.label staff.cat.copy_br
 msgid "Show &Item Details"
 msgstr "Покажи детали &Единицы"
 
+#: staff.cat.copy_browser.actions.cmd_book_item_now.label
+#: staff.cat.copy_browser.actions.cmd_book_item_now.accesskey
+msgctxt "staff.cat.copy_browser.actions.cmd_book_item_now.label staff.cat.copy_browser.actions.cmd_book_item_now.accesskey"
+msgid "Book Item &Now"
+msgstr ""
+
+#: staff.cat.copy_browser.actions.cmd_create_brt.label
+#: staff.cat.copy_browser.actions.cmd_create_brt.accesskey
+msgctxt "staff.cat.copy_browser.actions.cmd_create_brt.label staff.cat.copy_browser.actions.cmd_create_brt.accesskey"
+msgid "Ma&ke Item Bookable"
+msgstr ""
+
 #: staff.cat.copy_browser.actions.sel_patron.label
 #: staff.cat.copy_browser.actions.sel_patron.accesskey
 msgctxt "staff.cat.copy_browser.actions.sel_patron.label staff.cat.copy_browser.actions.sel_patron.accesskey"
@@ -7898,6 +8014,14 @@ msgstr "Добавить единицы в &Корзину"
 msgctxt "staff.cat.copy_browser.holdings_maintenance.sel_copy_details.label staff.cat.copy_browser.holdings_maintenance.sel_copy_details.accesskey"
 msgid "Show &Item Details"
 msgstr "Показ &деталей единицы"
+
+#: staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.label
+msgid "Make This Item Bookable"
+msgstr ""
+
+#: staff.cat.copy_browser.holdings_maintenance.cmd_create_brt.accesskey
+msgid "Y"
+msgstr ""
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_patron.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey
