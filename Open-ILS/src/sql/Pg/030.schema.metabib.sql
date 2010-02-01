@@ -310,33 +310,32 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-/*
-CREATE OR REPLACE FUNCTION biblio.flatten_marc ( TEXT, BIGINT ) RETURNS SETOF metabib.full_rec AS $func$
-    SELECT  NULL::bigint AS id, NULL::bigint, 'LDR'::char(3), NULL::TEXT, NULL::TEXT, NULL::TEXT, oils_xpath_string( '//*[local-name()="leader"]', $1 ), NULL::tsvector AS index_vector
-        UNION
-    SELECT  NULL::bigint AS id, NULL::bigint, x.tag::char(3), NULL::TEXT, NULL::TEXT, NULL::TEXT, x.value, NULL::tsvector AS index_vector
-      FROM  oils_xpath_table(
-                'id',
-                'marc',
-                'biblio.record_entry',
-                '//*[local-name()="controlfield"]/@tag|//*[local-name()="controlfield"]',
-                'id=' || $2::TEXT
-            )x(record int, tag text, value text)
-        UNION
-    SELECT  NULL::bigint AS id, NULL::bigint, x.tag::char(3), x.ind1, x.ind2, x.subfield, x.value, NULL::tsvector AS index_vector
-      FROM  oils_xpath_table(
-                'id',
-                'marc',
-                'biblio.record_entry',
-                '//*[local-name()="datafield"]/@tag|' ||
-                '//*[local-name()="datafield"]/@ind1|' ||
-                '//*[local-name()="datafield"]/@ind2|' ||
-                '//*[local-name()="datafield"]/*/@code|' ||
-                '//*[local-name()="datafield"]/*[@code]',
-                'id=' || $2::TEXT
-            )x(record int, tag text, ind1 text, ind2 text, subfield text, value text);
-$func$ LANGUAGE SQL;
-*/
+/* Old form of biblio.flatten_marc() relied on contrib/xml2 functions that got all crashy in PostgreSQL 8.4 */
+-- CREATE OR REPLACE FUNCTION biblio.flatten_marc ( TEXT, BIGINT ) RETURNS SETOF metabib.full_rec AS $func$
+--     SELECT  NULL::bigint AS id, NULL::bigint, 'LDR'::char(3), NULL::TEXT, NULL::TEXT, NULL::TEXT, oils_xpath_string( '//*[local-name()="leader"]', $1 ), NULL::tsvector AS index_vector
+--         UNION
+--     SELECT  NULL::bigint AS id, NULL::bigint, x.tag::char(3), NULL::TEXT, NULL::TEXT, NULL::TEXT, x.value, NULL::tsvector AS index_vector
+--       FROM  oils_xpath_table(
+--                 'id',
+--                 'marc',
+--                 'biblio.record_entry',
+--                 '//*[local-name()="controlfield"]/@tag|//*[local-name()="controlfield"]',
+--                 'id=' || $2::TEXT
+--             )x(record int, tag text, value text)
+--         UNION
+--     SELECT  NULL::bigint AS id, NULL::bigint, x.tag::char(3), x.ind1, x.ind2, x.subfield, x.value, NULL::tsvector AS index_vector
+--       FROM  oils_xpath_table(
+--                 'id',
+--                 'marc',
+--                 'biblio.record_entry',
+--                 '//*[local-name()="datafield"]/@tag|' ||
+--                 '//*[local-name()="datafield"]/@ind1|' ||
+--                 '//*[local-name()="datafield"]/@ind2|' ||
+--                 '//*[local-name()="datafield"]/*/@code|' ||
+--                 '//*[local-name()="datafield"]/*[@code]',
+--                 'id=' || $2::TEXT
+--             )x(record int, tag text, ind1 text, ind2 text, subfield text, value text);
+-- $func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION biblio.flatten_marc ( TEXT ) RETURNS SETOF metabib.full_rec AS $func$
 
