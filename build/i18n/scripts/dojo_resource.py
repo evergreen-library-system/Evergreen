@@ -79,7 +79,10 @@ class DojoResource (basel10n.BaseL10N):
         """
 
         for entry in self.pot:
-            for filename, msgkey in entry.occurrences:
+            for occurrence in entry.occurrences:
+                # Ack. Horrible hack because polib started insisting
+                # that occurrences use integers for line numbers. The nerve!
+                filename, msgkey = occurrence[0].split('.js');
                 if entry.msgstr == '':
                     # No translation available; use the en-US definition
                     self.msgs[msgkey] = entry.msgid
