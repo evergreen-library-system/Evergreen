@@ -3,14 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-12-30 16:43+0100\n"
-"Last-Translator: Linda Skolková <skolkova@ikaros.cz>\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-11-24 07:21+0000\n"
+"Last-Translator: Linda Skolková <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -19,7 +20,7 @@ msgstr ""
 #. Common Entities
 #: reports.common.logged_in_as
 msgid "You are logged in as "
-msgstr "Jste nahraný v jako"
+msgstr "Jste nahraný v jako "
 
 #: reports.common.loading
 msgid "Loading..."
@@ -51,7 +52,7 @@ msgstr "Spravovat složku"
 
 #: reports.oils_rpt.created_by
 msgid "created by "
-msgstr "vytvořený"
+msgstr "vytvořený "
 
 #: reports.oils_rpt.create_new_sub_folder
 msgctxt "reports.oils_rpt.create_new_sub_folder"
@@ -60,7 +61,7 @@ msgstr "Vytvořit novou podsložku"
 
 #: reports.oils_rpt.folder_type
 msgid "Folder type: "
-msgstr "Typy složek"
+msgstr "Typy složek "
 
 #: reports.oils_rpt.folder_name
 msgctxt "reports.oils_rpt.folder_name"
@@ -92,9 +93,8 @@ msgid "Create Sub Folder"
 msgstr "Vytvořit podsložku"
 
 #: reports.oils_rpt_builder.title
-#, fuzzy
 msgid "Evergreen: Report Builder"
-msgstr "Evergreen: Zprávy stavitele"
+msgstr ""
 
 #: reports.oils_rpt_builder.reports_home
 msgid "Reports Home"
@@ -106,19 +106,19 @@ msgstr "Klonování šablony (vzoru)"
 
 #: reports.oils_rpt_builder.template_name
 msgid "Template Name: "
-msgstr "Název šablony"
+msgstr "Název šablony "
 
 #: reports.oils_rpt_builder.template_description
 msgid "Template Description: "
-msgstr "Popis šablony"
+msgstr "Popis šablony "
 
 #: reports.oils_rpt_builder.template_type
 msgid "Template Type: "
-msgstr "Typ šablony:"
+msgstr "Typ šablony: "
 
 #: reports.oils_rpt_builder.save_this_template
 msgid "Save this Template: "
-msgstr "Uložit tuto šablonu:"
+msgstr "Uložit tuto šablonu: "
 
 #: reports.oils_rpt_builder.filtering_note
 msgid ""
@@ -159,7 +159,7 @@ msgstr "Zpráva seskupených filtrů"
 
 #: reports.oils_rpt_builder.hint
 msgid "Hint: "
-msgstr "Pokyn:"
+msgstr "Pokyn: "
 
 #: reports.oils_rpt_builder.hint_item_details
 msgid "Double-click on an item to see the item details."
@@ -200,11 +200,11 @@ msgstr "Výběr (toho), jaký filtr by měl být aplikován do tohoto pole"
 
 #: reports.oils_rpt_builder.choose_a_transform
 msgid "Choose a Transform: "
-msgstr "Volba transformace:"
+msgstr "Volba transformace: "
 
 #: reports.oils_rpt_builder.choose_a_filter
 msgid "Choose a Filter: "
-msgstr "Volba filtru:"
+msgstr "Volba filtru: "
 
 #: reports.oils_rpt_builder.create_filter
 msgid "Create Filter"
@@ -220,11 +220,11 @@ msgstr "Vybrání toho, jak by měli být kolonky (rubriky) setříděny"
 
 #: reports.oils_rpt_builder.choose_column
 msgid "Choose a column: "
-msgstr "Vybrat kolonku (rubriku):"
+msgstr "Vybrat kolonku (rubriku): "
 
 #: reports.oils_rpt_builder.choose_sorting_direction
 msgid "Choose the direction the sorting should occur: "
-msgstr "Vybrat kontrolu třídění kdyby se vyskytoval:"
+msgstr "Vybrat kontrolu třídění kdyby se vyskytoval: "
 
 #: reports.oils_rpt_builder.ascending
 msgid "Ascending"
@@ -300,12 +300,12 @@ msgstr "Otáčivá data kolonky:"
 
 #: reports.oils_rpt_editor.store_report_definition
 msgid "Choose a folder to store this report definition: "
-msgstr "Zvolit vymezení složky k uskladnění této zprávy:"
+msgstr "Zvolit vymezení složky k uskladnění této zprávy: "
 
 #: reports.oils_rpt_editor.selected_folder
 msgctxt "reports.oils_rpt_editor.selected_folder"
 msgid "Selected Folder: "
-msgstr "Označená složka:"
+msgstr "Označená složka: "
 
 #: reports.oils_rpt_editor.output_options
 msgid "Output Options"
@@ -333,11 +333,11 @@ msgstr "Spojnicový diagram"
 
 #: reports.oils_rpt_editor.recurring_report
 msgid "Recurring Report: "
-msgstr "Periodická zpráva:"
+msgstr "Periodická zpráva: "
 
 #: reports.oils_rpt_editor.recurring_interval
 msgid "Recurrence Interval: "
-msgstr "Interval opakování:"
+msgstr "Interval opakování: "
 
 #: reports.oils_rpt_editor.days
 msgctxt "reports.oils_rpt_editor.days"
@@ -527,7 +527,7 @@ msgstr "Nabídnout, předložit"
 
 #: reports.oils_rpt_folder_window.limit_output
 msgid "Limit output to "
-msgstr "Omezení výstupu"
+msgstr "Omezení výstupu "
 
 #: reports.oils_rpt_folder_window.all
 msgid "All"
@@ -552,7 +552,7 @@ msgstr "Doplněné exemláře"
 #: reports.oils_rpt_folder_window.selected_folder
 msgctxt "reports.oils_rpt_folder_window.selected_folder"
 msgid "Selected Folder: "
-msgstr "Vybraná složka:"
+msgstr "Vybraná složka: "
 
 #: reports.oils_rpt_folder_window.select_folder
 msgid "Select Folder"
@@ -591,7 +591,6 @@ msgid "You may not move another user's items"
 msgstr "Nemůžete přesouvat exempláře jiných uživatelů"
 
 #: reports.oils_rpt_folder_window.delete_all_attached_reports
-#, fuzzy
 msgid ""
 "        This will also delete all of your attached reports and outputs for \n"
 "this template. \n"
@@ -601,13 +600,8 @@ msgid ""
 " \n"
 "Do you wish to continue?"
 msgstr ""
-"Toto bude také smazáno, všechno z Vašich připojených zpráv a výstupů pro "
-"tuto šablonu. Jestliže jiní uživatelé mají zprávy nebo výstupy připojené k "
-"této šabloně,  /n ty budou zachovány nedotčené, nebudou smazány /n /n "
-"Přejete si pokračovat?"
 
 #: reports.oils_rpt_folder_window.delete_all_attached_outputs
-#, fuzzy
 msgid ""
 "        This will also delete all of your attached outputs for \n"
 "this report. \n"
@@ -617,9 +611,6 @@ msgid ""
 " \n"
 "Do you wish to continue?"
 msgstr ""
-"Toto bude také smazáné, všechny z Vašich připojených výstupů fro /n  tyto "
-"zprávy. /n /n Jestliže jiní uživatelé mají výstupy připojené k této zprávě, "
-"/n ty budou zachovány nedotčené. /n /n Přejete si pokračovat?"
 
 #: reports.oils_rpt_param_editor.column
 msgid "Column"
@@ -661,7 +652,7 @@ msgstr "Měsíc (měsíce)"
 
 #: reports.oils_rpt_param_editor.ago
 msgid " ago"
-msgstr "předtím, dříve"
+msgstr " předtím, dříve"
 
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"

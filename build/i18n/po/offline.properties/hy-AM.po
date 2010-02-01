@@ -4,14 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-08-04 14:52+0400\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-12-21 13:45+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -47,7 +48,7 @@ msgstr "Տեղեկացրու որ սա պատահել է:"
 
 #: common.error.copy_msg
 msgid "Copy Message"
-msgstr ""
+msgstr "Պատճե հաղորդագրություն"
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
@@ -83,7 +84,7 @@ msgstr "Ոչ"
 
 #: common.no.accesskey
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: common.yes
 msgid "Yes"
@@ -91,7 +92,7 @@ msgstr "Այո"
 
 #: common.yes.accesskey
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
@@ -111,7 +112,7 @@ msgstr "Ջնջել գրառումը"
 
 #: cat.opac.delete
 msgid "Delete"
-msgstr "Ջնջել "
+msgstr "Ջնջել"
 
 #: cat.opac.undelete_record.confirm
 msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
@@ -154,25 +155,20 @@ msgstr "Սխալ՝ գրառումը ջնջելիս #%1$s : %2$s : %3$s"
 
 #. # variables: document ID, error code, error description
 #: cat.opac.record_undeleted.error
-#, fuzzy
 msgid "Error undeleting record #%1$s : %2$s : %3$s"
-msgstr "Սխալ՝ գրառումը ջնջելիս #%1$s : %2$s : %3$s"
+msgstr "Սխալ գրառման ջնջելու ընթացքում #%1$s : %2$s : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "Այս ID-ով գրառումը %1$s նշված է վերադրման համար։"
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "Այս TCN-ով գրառումը %1$s նշված է վերադրման համար։"
 
 #: cat.save_record
 msgid "Save Record"
 msgstr "Հիշել գրառումը"
-
-#: cat.save.success
-msgid "Record successfully saved."
-msgstr "Գրառումը հաջողությամբ հիշված է:"
 
 #: cat.save.failure
 msgid "Record not likely updated."
@@ -494,11 +490,11 @@ msgstr "Տէղային կառավարում"
 
 #: menu.cmd_open_vandelay.tab
 msgid "MARC Import/Export"
-msgstr ""
+msgstr "MARC ներմուծում/արտահանում"
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
-msgstr ""
+msgstr "Սպասարկող կայանի կարգաբերումներ"
 
 #: menu.cmd_retrieve_last_patron.session.error
 msgid "No patron visited yet this session."
@@ -585,7 +581,7 @@ msgstr "Խմբագրիչը կցանկանա օրոնել: %1$s"
 
 #: menu.cmd_verify_credentials.tabname
 msgid "Verify Credentials"
-msgstr ""
+msgstr "Վերահսկիր մանդատները"
 
 #: menu.close_all_tabs.error
 msgid "Error closing all tabs"
@@ -597,7 +593,7 @@ msgstr "Տաբ"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
-msgstr ""
+msgstr "Սեսիայի cookie կարգաբերման սխալ: %1$s"
 
 #: menu.set_tab.error
 msgid "pause for error"
@@ -605,7 +601,7 @@ msgstr "կանգ առ սխալի համար"
 
 #: menu.reset_network_stats
 msgid "Reset network activity summary?"
-msgstr ""
+msgstr "Վերագե՞լ ցանցի ակտիվության հակիրճ շարադրանքը"
 
 #: main.testing
 msgid "Testing"
@@ -750,55 +746,57 @@ msgstr "Սխալ՝ երբ փորձում եք տեղափոխէլ %1$s դեպի �
 
 #: network.override.exceptions
 msgid "Exceptions"
-msgstr ""
+msgstr "Բացառություններ"
 
 #: network.override.override
 msgid "Override"
-msgstr ""
+msgstr "Չեղյալ անել"
 
 #: network.override.force.prompt
 msgid "Force this action?"
-msgstr ""
+msgstr "Ուժով կատարե՞լ այս գործողությունը"
 
 #: network.ignore_errors
 msgid "Ignore Errors"
-msgstr ""
+msgstr "Անտեսիր սխալները"
 
 #: network.method_not_found.error
 msgid "Method not found for %1$s"
-msgstr ""
+msgstr "Մեթոդը չի գտնված սրա համար %1$s"
 
 #: network.new_session.authorize
 msgctxt "network.new_session.authorize"
 msgid "Authorize"
-msgstr ""
+msgstr "Լիազորում"
 
 #: network.new_session.expired
 msgid "Session Expired"
-msgstr ""
+msgstr "Սեսիայի ժամանակը սպառվեց"
 
 #: network.new_session.expired.prompt
 msgid "Please enter the credentials for a new login session."
-msgstr ""
+msgstr "Մուտք արա մանդատները գրանցման նոր կապի համար"
 
 #: network.new_session.operator_change
 msgid "Operator Change"
-msgstr ""
+msgstr "Օպերատորի փոփոխություն"
 
 #: network.new_session.operator_change.prompt
 msgid ""
 "Please enter the credentials for the new login session.  Note that the "
 "previous session is still active."
 msgstr ""
+"Մուտք արա մանդատները կապի նոր սեսիայի համար։ Նկատի առ որ նախորդ սեսիան դեռ "
+"ակտիվ է։"
 
 #: network.permission.authorize
 msgctxt "network.permission.authorize"
 msgid "Authorize"
-msgstr ""
+msgstr "Լիազորում"
 
 #: network.permission.description.brief
 msgid "Permission Denied: %1$s"
-msgstr ""
+msgstr "Իրավասությունը արգելված է: %1$s"
 
 #: network.permission.description.full
 msgid ""
@@ -808,10 +806,16 @@ msgid ""
 "inform your friendly Evergreen developers or helpdesk staff of the above "
 "permission and this debug information: %1$s"
 msgstr ""
+"Աշխատակազմի մեկ այլ անդամ վերը բերված արտոնություններով կարող է թույլատրել "
+"այս հատուկ գործողությունը։ Տեղյակ պահիր քո գրադարանի կառավարչին որ ցանկանում "
+"ես ունենալ այսպիսի արտոնություններ։ Եթե զգում ես որ ստացել ես այս "
+"բացառությունը սխալմամբ, տեղյակ պահիր Էվերգրինի նախագծողներին կամ օգնության "
+"սեղանի աշխատակիցներին  այս թույլատվության մասին և ուղարկիր թերությունների "
+"շտկման այս տեղեկատվությունը։ %1$s"
 
 #: network.server_or_method.error
 msgid "Server or method error"
-msgstr ""
+msgstr "Կայանի կամ մեթոդի սխալ"
 
 #: network.server.failure.exception
 msgid ""
@@ -821,38 +825,46 @@ msgid ""
 "a bug in Evergreen and not network problems, please contact your help desk "
 "or friendly Evergreen administrators, and give them this information:"
 msgstr ""
+"Ցանցի կամ կայանի ձախողում։ Ստուգիր քո ինտերնետ միացումը դեպի %1$s և ընտրիր "
+"Կրկնել Ցանցը։ Եթե ցանկանում ես մուտք գործել ավտոնոմ ռեժիմ, ընտրիր Անտեսիր "
+"Սխալները և համապատասխան երկխոսությունները։ Եթե վստահ ես որ այս սխալը "
+"Էվերգրինի թերություններից է և ոչ թե ցանցային պրոբլեմ է, կապվիր օգնւթյան "
+"սեղանի կամ Էվերգրինի աշխատակազմի հետ, և նրանց տրամադրիր այս "
+"տեղեկատվությունը։"
 
 #: network.server.method
 msgid "method=%1$s"
-msgstr ""
+msgstr "method=%1$s"
 
 #: network.server.params
 msgid "params=%1$s"
-msgstr ""
+msgstr "params=%1$s"
 
 #: network.server.thrown_label
 msgid "THROWN:"
-msgstr ""
+msgstr "ՇՊՐՏՎԱԾ։"
 
 #: network.server.status_label
 msgid "STATUS:"
-msgstr ""
+msgstr "ՎԻՃԱԿ։"
 
 #: network.network_failure
 msgid "Network Failure"
-msgstr ""
+msgstr "Ցանցային տապալում։"
 
 #: network.retry_network
 msgid "Retry Network"
-msgstr ""
+msgstr "Կրկնիր ցանցը"
 
 #: network.unknown_status
 msgid "Unknown status"
-msgstr ""
+msgstr "Անհայտ վիճակ"
 
 #: network.window_title.error
 msgid "Error setting window titles to match new login"
 msgstr ""
+"Սխալ՝ պատուհանի վերնագրերի տեղադրման ընթացքում, որպեսզի համընկնեն նոր "
+"գրանցման բառի հետ։"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
@@ -885,197 +897,257 @@ msgid ""
 "retrieved, and this may take some time and lag the staff client.  Would you "
 "like to proceed?"
 msgstr ""
+"ԶԳՈՒՇԱՑՈՒՄ։ Միայն %1$s այս ցուցակի ընդհանուր %2$s տողերից հետ են կանչվել "
+"անմիջապես դիտման համար։ Այս ցուցակի տեսակավորումը պահանջում է որ բոլոր "
+"տողերը հետ կանչվեն որը որոշակի ժամանակ կպահանջի և աշխատակազմի հաճախորդին "
+"կուշացնի։ Ցանկանու՞մ ես շարունակել։"
 
 #: list.columns_saved
 msgid "Column configuration saved."
-msgstr ""
+msgstr "Սյունակի ձևավորումը հիշված է։"
 
 #: list.row_retrieving
 msgid "Retrieving..."
-msgstr ""
+msgstr "Կանչվում է..."
 
 #: list.save_csv_as
 msgid "Save List CSV As..."
-msgstr ""
+msgstr "Հիշիր ցուցակի CSV որպես..."
 
 #: list.actions.menu.label
 msgid "List Actions"
-msgstr ""
+msgstr "Թվարկիր գործողությունները"
 
 #: list.actions.menu.accesskey
 msgctxt "list.actions.menu.accesskey"
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #: list.actions.field_to_clipboard.label
 msgid "Copy Field from Selected Row to Clipboard"
-msgstr ""
+msgstr "Արտագրիր Դաշտը Ընտրված Տողից դեպի կլիպբորդ"
 
 #: list.actions.field_to_clipboard.accesskey
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: list.actions.csv_to_clipboard.label
 msgid "Copy List CSV to Clipboard"
-msgstr ""
+msgstr "Արտագրիր ցուցակի CSV կլիպբորդ"
 
 #: list.actions.csv_to_clipboard.accesskey
 msgctxt "list.actions.csv_to_clipboard.accesskey"
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #: list.actions.csv_to_printer.label
 msgid "Print List CSV"
-msgstr ""
+msgstr "Տպիր ցուցակի CSV"
 
 #: list.actions.csv_to_printer.accesskey
 msgid "P"
-msgstr ""
+msgstr "P"
 
 #: list.actions.extended_to_printer.label
 msgid "Print List Expanded Format"
-msgstr ""
+msgstr "Տպիր Ցուցակի Ընդլայնված ձևաչափով"
 
 #: list.actions.extended_to_printer.accesskey
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: list.actions.csv_to_file.label
 msgid "Save List CSV to File"
-msgstr ""
+msgstr "Հիշիր ցուցակի CSV ֆայլում"
 
 #: list.actions.csv_to_file.accesskey
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #: list.actions.save_column_configuration.label
 msgid "Save Column Configuration"
-msgstr ""
+msgstr "Հիշիր սյունակի կարգաբերումը"
 
 #: list.actions.save_column_configuration.accesskey
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: list.dump_extended_format.record_separator
 msgid "=-=-="
-msgstr ""
+msgstr "=-=-="
 
 #: menu.cmd_survey_wizard.inadequate_perm
 msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
 msgstr ""
+"Դու ցանկանում ես ձեռք բերել CREATE_SURVEY արտոնություն և/կամ աշխատանքային "
+"տեղաբաշխումներ։"
 
 #: menu.cmd_local_admin_fonts_and_sounds.tab
 msgid "Global Font and Sound Settings"
-msgstr ""
+msgstr "Համընդհանուր ֆոնտի և ձայնի կարգաբերում"
 
 #: menu.cmd_local_admin_printer.tab
 msgid "Printer Settings Editor"
-msgstr ""
+msgstr "Տպիչի կարգաբերումների խմբագիր"
 
 #: menu.cmd_local_admin_closed_dates.tab
 msgid "Closed Dates Editor"
-msgstr ""
+msgstr "Փակ ամսաթվերի խմբագիր"
 
 #: menu.cmd_local_admin_copy_locations.tab
-#, fuzzy
 msgid "Copy Locations Editor"
 msgstr "Օրինակի տեղաբաշխման խմբագիր"
 
 #: menu.cmd_local_admin_lib_settings.tab
 msgid "Library Settings Editor"
-msgstr ""
+msgstr "Գրադարանի կարգաբերումների խմբագիր"
 
 #: menu.cmd_local_admin_non_cat_types.tab
-#, fuzzy
 msgid "Non-cataloged Types Editor"
-msgstr "Չմուտքագրված տեսակի խմբագիր"
+msgstr "Չմուտքագրված տեսակների խմբագիր"
 
 #: menu.cmd_local_admin_stat_cats.tab
-#, fuzzy
 msgid "Statistical Categories Editor"
-msgstr "Վիճակագրական դասի խմբագիր"
+msgstr "Վիճակագրական դասերի խմբագիր"
 
 #: menu.cmd_local_admin_reports.tab
 msgid "Reports"
-msgstr ""
+msgstr "Հաշվետվություններ"
 
 #: menu.cmd_local_admin_cash_reports.tab
 msgid "Cash Reports"
-msgstr ""
+msgstr "Կանխիկի հաշվետվություններ"
 
 #: menu.cmd_local_admin_transit_list.tab
 msgid "Transits"
-msgstr ""
+msgstr "Տրանզիտներ"
 
 #: menu.cmd_acq_view_picklist.tab
 msgid "Selection Lists"
-msgstr ""
+msgstr "Ընտրության ցուցակ"
 
 #: menu.cmd_acq_bib_search.tab
 msgid "Title Search"
-msgstr ""
+msgstr "Վերնագրի փնտրում"
 
 #: menu.cmd_acq_upload.tab
 msgid "Load Order Record"
-msgstr ""
+msgstr "Բեռնավորիր Պատվերի գրառումը"
 
 #: menu.cmd_acq_new_brief_record.tab
 msgid "New Brief Record"
-msgstr ""
+msgstr "Նոր հակիրճ գրառում"
 
 #: menu.cmd_acq_view_po.tab
 msgid "Purchase Orders"
-msgstr ""
+msgstr "Գնման պատվեր"
 
 #: menu.cmd_acq_view_fund.tab
 msgid "Funds"
-msgstr ""
+msgstr "Ֆոնդեր"
 
 #: menu.cmd_acq_view_funding_source.tab
 msgid "Funding Sources"
-msgstr ""
+msgstr "Ֆինանսավորման աղբյուրներ"
 
 #: menu.cmd_acq_view_provider.tab
 msgid "Providers"
-msgstr ""
+msgstr "Ուղեկցողներ"
 
 #: menu.cmd_acq_view_currency_type.tab
 msgid "Currency Types"
-msgstr ""
+msgstr "Արտարժոյթի տեսակներ"
 
 #: menu.cmd_acq_view_exchange_rate.tab
 msgid "Exchange Rates"
-msgstr ""
+msgstr "Փոխանակման կուրսեր"
 
 #: menu.cmd_acq_view_distrib_formula.tab
 msgid "Distribution Formulas"
+msgstr "Տարածման ֆորմուլաներ"
+
+#: menu.cmd_booking_resource.tab
+msgid "Resources"
+msgstr ""
+
+#: menu.cmd_booking_reservation.tab
+msgid "Reservations"
+msgstr ""
+
+#: menu.cmd_booking_reservation_pickup.tab
+msgid "Reservation Pickup"
+msgstr ""
+
+#: menu.cmd_booking_reservation_return.tab
+msgid "Reservation Return"
+msgstr ""
+
+#: menu.cmd_booking_pull_list.tab
+msgid "Booking Pull List"
+msgstr ""
+
+#: menu.cmd_booking_capture.tab
+msgid "Booking Capture"
 msgstr ""
 
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
-msgstr ""
+msgstr "Սպասարկման կանոնակարգեր"
 
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
-msgstr ""
+msgstr "Պահման կանոնակարգեր"
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
+msgstr "Աշխատանքային լոգ"
+
+#: menu.local_admin.patrons_due_refunds.tab
+msgid "Patrons With Negative Balances"
 msgstr ""
 
 #: menu.circulation.staged_patrons.tab
-msgid "Staged Patrons"
-msgstr ""
+msgid "Pending Patrons"
+msgstr "Սպասող ընթերցողներ"
 
 #: load_printer_settings_error_description
 msgid ""
 "Printer settings did not load cleanly with this version of Evergreen.  You "
 "should reconfigure your printer under Printer Settings Editor."
 msgstr ""
+"Էվերգրինի այս տարբերակում տպիչի կարգաբերումները չեն բեռնավորված հստակորեն։ "
+"Պետք է նորից կարգաբերես քո Տպիչը, օգտվելով Տպիչի Կարգաբերման Խմբագիչից։"
 
 #: load_printer_settings_error_title
 msgid "Printer Settings"
+msgstr "Տպիչի Կարգաբերումներ"
+
+#: staff.cat.util.copy_editor.batch_edit
+msgid "Batch Edit"
 msgstr ""
+
+#: staff.cat.util.copy_editor.batch_view
+msgid "Batch View"
+msgstr ""
+
+#: staff.cat.util.copy_editor.edit
+msgid "Edit"
+msgstr ""
+
+#: staff.cat.util.copy_editor.view
+msgid "View"
+msgstr ""
+
+#: staff.circ.copy_status.add_volumes.perm_failure
+msgid "You do not have permission to add volumes to the workstation library."
+msgstr ""
+
+#: staff.circ.copy_status.add_volumes.title
+msgid "Add Volume/Item for Record # %1$s"
+msgstr ""
+
+#~ msgid "Record successfully saved."
+#~ msgstr "Գրառումը հաջողությամբ հիշված է:"
 
 #~ msgid "About this client..."
 #~ msgstr "Այս հաճախորդի մասին..."

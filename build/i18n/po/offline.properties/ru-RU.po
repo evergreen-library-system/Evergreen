@@ -3,14 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2009-06-01 15:48+0400\n"
-"Last-Translator: Ruzanna <scinfo@flib.sci.am>\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2010-01-23 19:55+0000\n"
+"Last-Translator: Sergey Sedov <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -28,7 +29,7 @@ msgstr ""
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr " библиотечный объект JSAN отсутствует"
+msgstr "библиотечный объект JSAN отсутствует"
 
 #: common.ok
 msgid "Ok"
@@ -36,7 +37,7 @@ msgstr "Ok"
 
 #: common.clear
 msgid "Clear"
-msgstr "Стиреть"
+msgstr "Очистить"
 
 #: common.confirm
 msgid "Check here to confirm this message."
@@ -172,10 +173,6 @@ msgstr "Запись с TCN %1$s помечена для наложения."
 msgid "Save Record"
 msgstr "Сохранить запись"
 
-#: cat.save.success
-msgid "Record successfully saved."
-msgstr "Запись успешно сохранена"
-
 #: cat.save.failure
 msgid "Record not likely updated."
 msgstr "Запись, вероятно, не обновлена."
@@ -190,7 +187,7 @@ msgstr "Предпочтения вероятно, не обновлены."
 
 #: staff.admin.survey.save_response.label
 msgid "Save this response"
-msgstr " Сохранить этот отклик "
+msgstr "Сохранить этот отклик"
 
 #: staff.admin.survey.save_response.accesskey
 msgid "R"
@@ -700,7 +697,7 @@ msgstr ""
 
 #: main.transaction_import.success
 msgid "Transaction Import Successful"
-msgstr " Успешная операция импорта"
+msgstr "Успешная операция импорта"
 
 #: main.on_debug.clear_cache
 msgid "cache cleared"
@@ -825,7 +822,7 @@ msgstr ""
 "сообщите администраторы вашей библиотеки, если вам необходимо данное "
 "разрешение. Если вы  считаете, что получили данное исключение по ошибке, "
 "пожалуйста сообщите разработчикам Evergreen службе помощи про это разрешение "
-"делайте debug данной информации: %1$s "
+"делайте debug данной информации: %1$s"
 
 #: network.server_or_method.error
 msgid "Server or method error"
@@ -1074,6 +1071,30 @@ msgstr ""
 msgid "Distribution Formulas"
 msgstr ""
 
+#: menu.cmd_booking_resource.tab
+msgid "Resources"
+msgstr ""
+
+#: menu.cmd_booking_reservation.tab
+msgid "Reservations"
+msgstr ""
+
+#: menu.cmd_booking_reservation_pickup.tab
+msgid "Reservation Pickup"
+msgstr ""
+
+#: menu.cmd_booking_reservation_return.tab
+msgid "Reservation Return"
+msgstr ""
+
+#: menu.cmd_booking_pull_list.tab
+msgid "Booking Pull List"
+msgstr ""
+
+#: menu.cmd_booking_capture.tab
+msgid "Booking Capture"
+msgstr ""
+
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
 msgstr ""
@@ -1086,8 +1107,12 @@ msgstr ""
 msgid "Work Log"
 msgstr ""
 
+#: menu.local_admin.patrons_due_refunds.tab
+msgid "Patrons With Negative Balances"
+msgstr ""
+
 #: menu.circulation.staged_patrons.tab
-msgid "Staged Patrons"
+msgid "Pending Patrons"
 msgstr ""
 
 #: load_printer_settings_error_description
@@ -1099,3 +1124,30 @@ msgstr ""
 #: load_printer_settings_error_title
 msgid "Printer Settings"
 msgstr ""
+
+#: staff.cat.util.copy_editor.batch_edit
+msgid "Batch Edit"
+msgstr ""
+
+#: staff.cat.util.copy_editor.batch_view
+msgid "Batch View"
+msgstr ""
+
+#: staff.cat.util.copy_editor.edit
+msgid "Edit"
+msgstr ""
+
+#: staff.cat.util.copy_editor.view
+msgid "View"
+msgstr ""
+
+#: staff.circ.copy_status.add_volumes.perm_failure
+msgid "You do not have permission to add volumes to the workstation library."
+msgstr ""
+
+#: staff.circ.copy_status.add_volumes.title
+msgid "Add Volume/Item for Record # %1$s"
+msgstr ""
+
+#~ msgid "Record successfully saved."
+#~ msgstr "Запись успешно сохранена"

@@ -4,14 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-08-09 03:40+0400\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-12-23 12:19+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
@@ -71,13 +72,17 @@ msgstr "spawning ընթերցողի արտածումը"
 msgid "spawning user perm editor"
 msgstr "spawning user perm editor"
 
+#: staff.patron.bill_interface.payment_pending.column_header
+msgid "Payment Pending"
+msgstr ""
+
 #: staff.patron.bill_cc_info.need_cc_number
 msgid "You must provide a credit card number"
-msgstr ""
+msgstr "Պետք է տրամադրես կրեդիտ քարտի համարը։"
 
 #: staff.patron.bill_cc_info.need_approval_code
 msgid "You must provide an approval code or an imprint slip number"
-msgstr ""
+msgstr "Պետք է տրամադրես հաստատման կոդը կամ ելքային տվյալների կտրոնի համարը։"
 
 #: staff.patron.bill_details.my_init.error
 msgid "bill_details.xul, my_init:"
@@ -86,30 +91,30 @@ msgstr "bill_details.xul, my_init:"
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.title"
 msgid "Replacement Note"
-msgstr ""
+msgstr "Փոխարինման նշում"
 
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt
 msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt"
 msgid "Enter new note:"
-msgstr ""
+msgstr "Մուտք արա նոր նշում"
 
 #: staff.patron.bill_details.handle_edit_bill_note.failure
 msgid "Note for selected bills not likely updated."
-msgstr ""
+msgstr "Ընտրված հաշիվների մասին նշումը կարծես թե չի թարմացվել։"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
 msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
 msgid "Replacement Note"
-msgstr ""
+msgstr "Փոխարինման նշում"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
 msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
 msgid "Enter new note:"
-msgstr ""
+msgstr "Մուտք արա նոր նշում։"
 
 #: staff.patron.bill_details.handle_edit_payment_note.failure
 msgid "Note for selected payments not likely updated."
-msgstr ""
+msgstr "Ընտրված վճարումների մասին նշումը կարծես թե չի թարմացվել։"
 
 #: staff.patron.bill_details.handle_void.voided_billings.alert
 msgid "All selected billings have already voided."
@@ -144,11 +149,6 @@ msgstr "Ընտրիր սա՝ հաղորդումը հաստատելու համար
 msgctxt "staff.patron.bill_details.handle_void.voiding_error"
 msgid "Error voiding bills."
 msgstr "Սխալ՝ հաշիվներում"
-
-#: staff.patron.bill_details.handle_void.billings_voided
-msgctxt "staff.patron.bill_details.handle_void.billings_voided"
-msgid "Billings voided."
-msgstr "Հաշիվները կասեցված են"
 
 #: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
 msgid "Please close this window and try again."
@@ -189,9 +189,52 @@ msgctxt "staff.patron.bill_history.handle_add.confirm_message"
 msgid "Check here to confirm this message"
 msgstr "Ընտրիր սա՝ այս հաղորդումը հաստատելու համար"
 
+#: staff.patron.bill_history.handle_void.message_plural
+#, fuzzy
+msgid "Are you sure you would like to void all billings on bills %1$s?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ավելացնել հաշիվ ընդհանուր հաշիվներին %1$s"
+
+#: staff.patron.bill_history.handle_void.message_singular
+#, fuzzy
+msgid "Are you sure you would like to void all billings on bill %1$s?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ավելացնել հաշիվ ընդհանուր հաշվին %1$s"
+
+#: staff.patron.bill_history.handle_void.title
+msgctxt "staff.patron.bill_history.handle_void.title"
+msgid "Void All Billings"
+msgstr "Շրջանցիր բոլոր հաշիվները"
+
+#: staff.patron.bill_history.handle_void.btn_yes
+msgctxt "staff.patron.bill_history.handle_void.btn_yes"
+msgid "Yes"
+msgstr "Այո"
+
+#: staff.patron.bill_history.handle_void.btn_no
+msgctxt "staff.patron.bill_history.handle_void.btn_no"
+msgid "No"
+msgstr "Ոչ"
+
+#: staff.patron.bill_history.handle_void.confirm_message
+msgctxt "staff.patron.bill_history.handle_void.confirm_message"
+msgid "Check here to confirm this message"
+msgstr "Ընտրիր սա՝ այս հաղորդումը հաստատելու համար"
+
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
 msgstr "հաշիվները տպվում են"
+
+#: staff.patron.bill_history.column.xact_type.label
+msgid "Transaction Type"
+msgstr ""
+
+#: staff.patron.bill_history.column.last_billing_type.label
+msgid "Last Billing Type"
+msgstr ""
+
+#: staff.patron.bill_history.column.title.label
+msgctxt "staff.patron.bill_history.column.title.label"
+msgid "Title"
+msgstr "Վերնագիր"
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
@@ -233,6 +276,15 @@ msgstr ""
 msgid "Bill payment likely failed"
 msgstr "Հաշվի վճարումը կարծես ձախողվեց"
 
+#: staff.patron.bills.info_box.label_value.reservation
+msgid "Reservation"
+msgstr ""
+
+#. # 1 - Resource Barcode  2 - Resource Type Name
+#: staff.patron.bills.info_box.value_format.reservation
+msgid "%1$s : %2$s"
+msgstr ""
+
 #: staff.patron.bills.info_box.label_value.title
 msgctxt "staff.patron.bills.info_box.label_value.title"
 msgid "Title"
@@ -255,6 +307,7 @@ msgid "Refund"
 msgstr "Վերաֆինանսավորում"
 
 #: staff.patron.bills.info_box.label_value.void_all_billings
+msgctxt "staff.patron.bills.info_box.label_value.void_all_billings"
 msgid "Void All Billings"
 msgstr "Շրջանցիր բոլոր հաշիվները"
 
@@ -269,7 +322,7 @@ msgstr "Բոլոր հաշիվները անկացված են"
 #: staff.patron.bills.void_all_billings.void.message
 msgctxt "staff.patron.bills.void_all_billings.void.message"
 msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
-msgstr "Վստա՞հ ես որ ցանկանում ես շրջանցել $%1$s "
+msgstr "Վստա՞հ ես որ ցանկանում ես շրջանցել $%1$s"
 
 #: staff.patron.bills.void_all_billings.void.title
 msgctxt "staff.patron.bills.void_all_billings.void.title"
@@ -297,7 +350,6 @@ msgid "Error voiding bills."
 msgstr "Սխալ՝ հաշիվները շրջանցելիս"
 
 #: staff.patron.bills.void_all_billings.billings_voided
-msgctxt "staff.patron.bills.void_all_billings.billings_voided"
 msgid "Billings voided."
 msgstr "Հաշիվները շրջանցված են"
 
@@ -315,34 +367,35 @@ msgstr "Խմբագրիչը կցանկանա փնտրել: %1$s"
 
 #: staff.patron.display.cmd_patron_delete.dialog.title
 msgid "Delete Patron Account"
-msgstr ""
+msgstr "Ջնջիր ընթերցողի հաշիվը։"
 
 #: staff.patron.display.cmd_patron_delete.dialog.message
 msgid ""
 "Completely OBLITERATE this patron account, including bills, payments, "
 "bookbags, etc?  This is IRREVERSIBLE."
 msgstr ""
+"Ամբողջովին ՋՆՋԵ՞Լ այս ընթերցողի գրառումները, ներառելով հաշիվները, "
+"վճարումները, գրքի պայուսակները, և այլն։ Սա անվերադարձ է։"
 
 #: staff.patron.display.cmd_patron_delete.dialog.confirmation
-#, fuzzy
 msgid "Check here to confirm this action."
-msgstr "Ընտրիր սա՝ հաղորդումը հաստատելու համար"
+msgstr "Գործողությունը հաստատելու համար ընտրիր սա:"
 
 #: staff.patron.display.cmd_patron_delete.dialog.cancel
 msgid "Cancel Deletion"
-msgstr ""
+msgstr "Չեղյալ արա Ջնջումը"
 
 #: staff.patron.display.cmd_patron_delete.dialog.okay
 msgid "Delete Account"
-msgstr ""
+msgstr "Ջնջել Հաշիվը"
 
 #: staff.patron.display.cmd_patron_delete.deny_deletion_of_super_user
 msgid "You may not delete a super user through this interface."
-msgstr ""
+msgstr "այս միջերեսով չես կարող ջնջել գեր օգտվողին։"
 
 #: staff.patron.display.cmd_patron_delete.deny_deletion_of_self
 msgid "You may not delete your own account."
-msgstr ""
+msgstr "Չես կարող ջնջել քո սեփական հաշիվը։"
 
 #: staff.patron.display.cmd_patron_delete.dest_user.prompt
 msgid ""
@@ -350,6 +403,9 @@ msgid ""
 "enter the barcode for a destination user to receive the deleted user's "
 "miscellaneous staff artifacts (reports, etc.):"
 msgstr ""
+"Օգտվողին ում ցանկանում ես ջնջել ունի STAFF_LOGIN արտոնություններ։ Նպատակային "
+"օգտվողի համար մուտք արա շտրիխ կոդը որպեսզի ստանաս ջնջված օգտվողի  համար "
+"աշխատակազմի տարբեր բնութագրիչները (հաշվետվություններ և այլն):"
 
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
 #: staff.patron.display.cmd_patron_delete.dest_user.default_value
@@ -359,29 +415,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 21:56-0400\n"
-"PO-Revision-Date: 2008-08-09 03:40+0400\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2009-12-23 12:19+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.patron.display.cmd_patron_delete.dest_user.title
 msgid "Destination User"
-msgstr ""
+msgstr "Նպատակակետ օգտվող"
 
 #: staff.patron.display.cmd_patron_delete.dest_user.failure
 msgid "Failed to retrieve destination user.  User deletion aborted."
-msgstr ""
+msgstr "Ձախողում նպատակակետ օգտվողին կանչելիս։ Օգտվողի ջնջումը կասեցվել է։"
 
 #: staff.patron.display.cmd_patron_delete.dest_user.self_reference_failure
 msgid ""
 "Cannot specify the deleted user as the destination user.  User deletion "
 "aborted."
 msgstr ""
+"Չի կրող բնութագրել ջնջված օգտվողին որպես նպատակակետ օգտվող։ Օգտվողի ջնջումը "
+"կասեցվել է։"
 
 #: staff.patron.display.spawn_editor.editing_related_patron
 msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
@@ -450,7 +509,7 @@ msgstr "Ընթերցող:"
 
 #: staff.patron.display.no_alerts_or_messages
 msgid "No Alerts, Blocks, or Messages"
-msgstr ""
+msgstr "Չկան ազդանշաններ, բլոկներ, հաղորդագրություններ։"
 
 #: staff.patron.hold_notices.tooltiptext
 msgid "ID: %1$s Hold ID: %2$s Notifying Staff ID: %3$s"
@@ -493,9 +552,8 @@ msgid "The notification was not likely created."
 msgstr "Նշումը կարծես թե չի ստեղծվել:"
 
 #: staff.patron.hold_notes.tooltiptext
-#, fuzzy
 msgid "ID: %1$s Hold ID: %2$s Staff ID: %3$s"
-msgstr "ID: %1$s պահման ID: %2$s Աշխատակազմի զգուշացման ID: %3$s"
+msgstr "ID: %1$s Պահման ID: %2$s Աշխատակազմի ID: %3$s"
 
 #: staff.patron.hold_notes.new_note
 msgctxt "staff.patron.hold_notes.new_note"
@@ -514,35 +572,35 @@ msgstr "Նշում"
 
 #: staff.patron.hold_notes.public
 msgid "Public"
-msgstr ""
+msgstr "Հանրային"
 
 #: staff.patron.hold_notes.private
 msgid "Private"
-msgstr ""
+msgstr "Մասնավոր"
 
 #: staff.patron.hold_notes.print_on_slip
 msgid "Print on Slip"
-msgstr ""
+msgstr "Տպիր թերթիկի վրա"
 
 #: staff.patron.hold_notes.no_print_on_slip
 msgid "No print on Slip"
-msgstr ""
+msgstr "Չկա տպել թերթիկի վրա"
 
 #: staff.patron.hold_notes.by_staff
 msgid "By Staff"
-msgstr ""
+msgstr "Աշխատակազմի կողմից"
 
 #: staff.patron.hold_notes.by_patron
 msgid "By Patron"
-msgstr ""
+msgstr "Ընթերցողի կողմից"
 
 #: staff.patron.hold_notes.new_note.public
 msgid "Public?"
-msgstr ""
+msgstr "Հանրայի՞ն"
 
 #: staff.patron.hold_notes.new_note.slip
 msgid "Print on slip?"
-msgstr ""
+msgstr "Տպե՞լ թերթիկի վրա։"
 
 #: staff.patron.hold_notes.cancel
 msgctxt "staff.patron.hold_notes.cancel"
@@ -576,6 +634,10 @@ msgstr "Սխալ՝ #%1$s պահման հետ կապված մանրամասներ
 #: staff.patron.holds.show_notifications.error_rendering_notifs
 msgid "Error rendering or retrieving hold notifications."
 msgstr "Սխալ՝ պահման նշումների կանչման ժամանակ:"
+
+#: staff.patron.holds.total_count
+msgid "Total Holds: %1$s"
+msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.choose_hold_range
 msgid "Please choose a Hold Range:"
@@ -790,10 +852,11 @@ msgid ""
 msgstr "Վստա՞հ ես որ ցանկանում ես արգելել էլ փոստ զգուշացում %1$s պահման համար:"
 
 #: staff.patron.holds.holds_edit_email_notify.disable_email.plural
-#, fuzzy
 msgid ""
 "Are you sure you would like to disable email notification for holds %1$s?"
-msgstr "Վստա՞հ ես որ ցանկանում ես արգելել էլ փոստ զգուշացում %1$s պահման համար:"
+msgstr ""
+"Դու վստա՞հ ես որ ցանկանում ես արգելել էլ փոստի զգուշացումները այս պահուների "
+"համար %1$s?"
 
 #: staff.patron.holds.holds_edit_email_notify.mod_holds_title
 msgctxt "staff.patron.holds.holds_edit_email_notify.mod_holds_title"
@@ -805,18 +868,20 @@ msgid ""
 "Move to the front of the holds queue above other holds that are not likewise "
 "flagged Top of Queue?"
 msgstr ""
+"Տեղափոխվե՞լ պահումների հերթի վերին մաս բոլոր այն պահումներից վեր որոնք "
+"նմանապես դրոշակով նշված չեն որպես Հերթի Վերին մաս։"
 
 #: staff.patron.holds.holds_cut_in_line.btn_cut.label
 msgid "Top of Queue"
-msgstr ""
+msgstr "Հարցման սկիզբ"
 
 #: staff.patron.holds.holds_cut_in_line.btn_cut.accesskey
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.label
 msgid "No Top of Queue"
-msgstr ""
+msgstr "Հարցման սկիզբը չէ"
 
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey
 msgctxt "staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey"
@@ -835,30 +900,30 @@ msgstr "C"
 
 #: staff.patron.holds.holds_cut_in_line.set_notifs
 msgid "Set Top of Queue (Force to Front) for Holds"
-msgstr ""
+msgstr "Դիր հարցման սկիզբը (ուժով տար առաջ) պահումների համար։"
 
 #: staff.patron.holds.holds_cut_in_line.enable_cut.singular
-#, fuzzy
 msgid "Are you sure you would like to enable Top of Queue for hold %1$s?"
 msgstr ""
-"Վստա՞հ ես որ ցանկանում ես թույլատրել էլ փոստ զգուշացում %1$s պահման համար:"
+"Դու վստա՞հ ես որ ցանկանում ես թույլատրել Հարցման սկիզբը այս պահման համար %"
+"1$s"
 
 #: staff.patron.holds.holds_cut_in_line.enable_cut.plural
-#, fuzzy
 msgid "Are you sure you would like to enable Top of Queue for holds %1$s?"
 msgstr ""
-"Վստա՞հ ես որ ցանկանում ես թույլատրել էլ փոստ զգուշացում %1$s պահումների "
-"համար:"
+"Դու վստա՞հ ես որ ցանկանում ես թույլատրել Հարցման սկիզբը այս պահուների համար "
+"%1$s"
 
 #: staff.patron.holds.holds_cut_in_line.disable_cut.singular
-#, fuzzy
 msgid "Are you sure you would like to disable Top of Queue for hold %1$s?"
-msgstr "Վստա՞հ ես որ ցանկանում ես արգելել էլ փոստ զգուշացում %1$s պահման համար:"
+msgstr ""
+"Դու վստա՞հ ես որ ցանկանում ես արգելել Հարցման սկիզբը այս պահման համար %1$s"
 
 #: staff.patron.holds.holds_cut_in_line.disable_cut.plural
-#, fuzzy
 msgid "Are you sure you would like to disable Top of Queue for holds %1$s?"
-msgstr "Վստա՞հ ես որ ցանկանում ես արգելել էլ փոստ զգուշացում %1$s պահման համար:"
+msgstr ""
+"Դու վստա՞հ ես որ ցանկանում ես արգելել Հարցման սկիզբը այս պահումների համար %"
+"1$s"
 
 #: staff.patron.holds.holds_cut_in_line.mod_holds_title
 msgctxt "staff.patron.holds.holds_cut_in_line.mod_holds_title"
@@ -867,19 +932,19 @@ msgstr "Պահումների ձևափոխում"
 
 #: staff.patron.holds.holds_desire_mint_condition.description
 msgid "Accept only \"good condition\" copies?"
-msgstr ""
+msgstr "Ընդունե՞լ միայն «լավ վիճակի» օրինակները։"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_good.label
 msgid "Good Condition"
-msgstr ""
+msgstr "Լավ պայմաններ"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_good.accesskey
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.label
 msgid "Any Condition"
-msgstr ""
+msgstr "Որևէ պայման"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
 msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
@@ -898,31 +963,39 @@ msgstr "C"
 
 #: staff.patron.holds.holds_desire_mint_condition.set_notifs
 msgid "Set Desired Copy Quality for Holds"
-msgstr ""
+msgstr "Պահումների համար դիր Օրինակի Ցանկալի Որակը։"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
 "Are you sure you would like to restrict to Good Condition copies for hold %"
 "1$s?"
 msgstr ""
+"Դու վստա՞հ ես որ կցանկանայիր արգելել Լավ Պայմանի օրինակները այս պահման համար "
+"%1$s"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
 "Are you sure you would like to restrict to Good Condition copies for holds %"
 "1$s?"
 msgstr ""
+"Դու վստա՞հ ես որ կցանկանայիր արգելել Լավ Պայմանի օրինակները այս պահումների "
+"համար %1$s"
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
 msgid ""
 "Are you sure you would like to NOT restrict to Good Condition copies for "
 "hold %1$s?"
 msgstr ""
+"Դու վստա՞հ ես որ ՉԷԻՐ ցանկանա արգելել Լավ Պայմանի օրինակները այս պահման "
+"համար %1$s"
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.plural
 msgid ""
 "Are you sure you would like to NOT restrict to Good Condition copies for "
 "holds %1$s?"
 msgstr ""
+"Դու վստա՞հ ես որ ՉԷԻՐ ցանկանա արգելել Լավ Պայմանի օրինակները այս պահումների "
+"համար %1$s"
 
 #: staff.patron.holds.holds_desire_mint_condition.mod_holds_title
 msgctxt "staff.patron.holds.holds_desire_mint_condition.mod_holds_title"
@@ -975,9 +1048,8 @@ msgid "Holds not likely cancelled."
 msgstr "Պահման կարծես չեղյալ չեն արված:"
 
 #: staff.patron.holds.holds_uncancel.hold_not_uncancelled
-#, fuzzy
 msgid "Holds not likely un-cancelled."
-msgstr "Պահման կարծես չեղյալ չեն արված:"
+msgstr "Կարծես թե պահումները չեղյալ չեն արված"
 
 #: staff.patron.holds.show_catalog.unknown_htype
 msgid ""
@@ -1015,22 +1087,22 @@ msgstr "Ձախողվեց կանչել ընթերցողներին"
 
 #: staff.patron.info_group.merge_patrons.failed_merging_patrons
 msgid "Failed merging patrons."
-msgstr ""
+msgstr "Ընթերցողների միաձուլումը ձախողվեց"
 
 #: staff.patron.info_group.clone_patron.register_clone.tab_name
 msgid "Register Patron Clone for Group"
-msgstr "Խմբի համար գրանցիր ընթերցողի կլոնը "
+msgstr "Խմբի համար գրանցիր ընթերցողի կլոնը"
 
 #: staff.patron.info_group.clone_patron.error_spawning_editors
 msgid "error spawning user editors"
 msgstr "error spawning user editors"
 
-#: staff.patron.info_group.spwan_editor.editing_patron
-msgctxt "staff.patron.info_group.spwan_editor.editing_patron"
+#: staff.patron.info_group.spawn_editor.editing_patron
+msgctxt "staff.patron.info_group.spawn_editor.editing_patron"
 msgid "Editing Related Patron"
 msgstr "Կապված ընթերցողի խմբագրում"
 
-#: staff.patron.info_group.spwan_search
+#: staff.patron.info_group.spawn_search
 msgid "spawn search"
 msgstr "spawn search"
 
@@ -1108,6 +1180,38 @@ msgstr "Օգտվողների խմբերը թարմացված են:"
 msgid "error linking patrons"
 msgstr "սխալ՝ ընթերցողներին կապելիս"
 
+#: staff.patron.info_group.column.circs_out.label
+msgid "Items Out"
+msgstr ""
+
+#: staff.patron.info_group.column.circs_overdue.label
+msgid "Items Overdue"
+msgstr ""
+
+#: staff.patron.info_group.column.circs_claimed_returned.label
+msgid "Items Claimed Returned"
+msgstr ""
+
+#: staff.patron.info_group.column.circs_long_overdue.label
+msgid "Items Long Overdue"
+msgstr ""
+
+#: staff.patron.info_group.column.circs_lost.label
+msgid "Items Lost"
+msgstr ""
+
+#: staff.patron.info_group.total_owed.label
+msgid "Total Owed: %1$s"
+msgstr ""
+
+#: staff.patron.info_group.total_out.label
+msgid "Total Items Out: %1$s"
+msgstr ""
+
+#: staff.patron.info_group.total_overdue.label
+msgid "Total Items Overdue: %1$s"
+msgstr ""
+
 #: staff.patron.info_notes.render_notes.add_new_note.label
 msgid "Add New Note"
 msgstr "Ավելացրու նոր նշում"
@@ -1180,6 +1284,10 @@ msgctxt "staff.patron.info_notes.new_note.note.value"
 msgid "Note"
 msgstr "Նշում"
 
+#: staff.patron.info_notes.new_note.initials.value
+msgid "Initials"
+msgstr ""
+
 #: staff.patron.info_notes.new_note.cancel.label
 msgctxt "staff.patron.info_notes.new_note.cancel.label"
 msgid "Cancel"
@@ -1204,10 +1312,6 @@ msgstr "A"
 msgctxt "staff.patron.info_notes.new_note.add_note_title"
 msgid "Add Note"
 msgstr "Ավելացրու նշում"
-
-#: staff.patron.info_notes.new_note.add_note_title
-msgid "Note added."
-msgstr "Նշումը ավելացված է"
 
 #: staff.patron.info_notes.new_note.note_not_created
 msgctxt "staff.patron.info_notes.new_note.note_not_created"
@@ -1287,12 +1391,11 @@ msgid "%1$s renewed."
 msgstr "%1$s թարմացված է:"
 
 #: staff.patron.items.items_renew.not_renewed
-#, fuzzy
 msgid ""
 "%1$s not renewed.\n"
 "%2$s"
 msgstr ""
-"%1%s չեն թարմացված:\n"
+"%1$s չի թարմացված։\n"
 "%2$s"
 
 #: staff.patron.items.items_renew.err_in_renew_via_barcode
@@ -1313,16 +1416,17 @@ msgstr "Հավանաբար թարմացում չի կատարվել:"
 
 #: staff.patron.items.items_edit.renew_with_date.title
 msgid "Renew with Due Date"
-msgstr ""
+msgstr "Թարմացրու Վերադարձի ամսաթվով"
 
 #: staff.patron.items.items_edit.renew_with_date.prompt
-#, fuzzy
 msgid "Enter a new due date for these items to be renewed: %1$s"
-msgstr "Այս նյութերի համար մուտք արա նոր վերադարձի ամսաթիվ: %1$s"
+msgstr ""
+"Մուտք արա վերադարձի նոր ամսաթիվ  այս նյութերի համար որոնք պետք է թարմացվեն: "
+"%1$s"
 
 #: staff.patron.items.items_edit.cancel_renew_with_date
 msgid "Missing Due Date. Renewal canceled."
-msgstr ""
+msgstr "Բացակայող վերադարձի ամսաթիվ։ Թարմացումը չեղյալ է արված։"
 
 #: staff.patron.items.items_edit.invalid_date
 msgid "Invalid Date"
@@ -1382,7 +1486,7 @@ msgstr "Կարծես նյութերը նշված չեն որպես Խարանվ�
 
 #: staff.patron.items.set_claim_returned_failure
 msgid "Override set claimed returned failure?"
-msgstr ""
+msgstr "Չեղյալ անե՞լ բազմությունը որը նշված է ձախողված վերադարձ։"
 
 #: staff.patron.items.items_checkin.confirm_item_check_in.singular
 msgid "Are you sure you would like to check in item %1$s?"
@@ -1487,15 +1591,47 @@ msgstr "Լրանում է"
 
 #: staff.patron.summary.standing_penalty.remove
 msgid "Remove"
-msgstr ""
+msgstr "Հեռացնել"
 
 #: staff.patron.summary.standing_penalty.none
 msgid "No Blocks/Penalties"
+msgstr "Չկան բլոկներ/տուգանքներ"
+
+#: staff.patron.summary.group_list.column.family_name.label
+msgid "Family Name"
+msgstr ""
+
+#: staff.patron.summary.group_list.column.first_given_name.label
+msgid "First Name"
+msgstr ""
+
+#: staff.patron.summary.group_list.column.second_given_name.label
+msgid "Middle Name"
+msgstr ""
+
+#: staff.patron.summary.group_list.column.home_ou.label
+msgid "Home Lib"
+msgstr ""
+
+#: staff.patron.summary.group_list.column.balance_owed.label
+msgid "Balance Owed"
+msgstr ""
+
+#: staff.patron.summary.tab.group_list_with_total_owed.label
+msgid "Group: %1$s"
 msgstr ""
 
 #: staff.patron.staged.register_patron
-msgid "Registering Staged Patron: %1$s"
-msgstr ""
+msgid "Registering Pending Patron: %1$s"
+msgstr "Սպասող ընթերցողների գրանցում: %1$s"
+
+#: staff.patron.staged.confirm_patron_delete
+msgid "Delete the selected patrons?"
+msgstr "Ջնջե՞լ ընտրված ընթերցողներին։"
+
+#: staff.patron.staged.error_on_delete
+msgid "Error deleting pending patron with row_id = %1$s"
+msgstr "Սպասող ընթերցողի ջնջման սխալ row_id = %1$s"
 
 #: staff.patron.staged.lib_menus.missing_library_list
 msgctxt "staff.patron.staged.lib_menus.missing_library_list"
@@ -1504,19 +1640,19 @@ msgstr "Բացակա գրադարնի ցուցակ"
 
 #: staff.patron.standing_penalty.apply_error
 msgid "Error applying %1$s block/standing penalty."
-msgstr ""
+msgstr "Սղալ երբ կիրառվում է %1$s բլոկ/տևողությամբ տուգանք։"
 
 #: staff.patron.standing_penalty.remove_error
 msgid "Error removing %1$s block/standing penalty."
-msgstr ""
+msgstr "Սխալ հեռացնելիս %1$s բլոկ/տուգանքի ժամկետ։."
 
 #: staff.patron.standing_penalty.update_error
 msgid "Error updating block/standing penalty."
-msgstr ""
+msgstr "Սխալ բլոկի/տուգանքի ժամկետի թարմացման ընթացքում։"
 
 #: staff.patron.standing_penalty.retrieve_error
 msgid "Error retrieving block/standing penalty."
-msgstr ""
+msgstr "Սխալ բլոկ/տուգանքի ժամկետի հետ կանչի ընթացքում։"
 
 #: staff.patron.ue.uEditInit.session_no_defined
 msgctxt "staff.patron.ue.uEditInit.session_no_defined"
@@ -1538,7 +1674,7 @@ msgstr ""
 
 #: staff.patron.user_buckets.tab_name
 msgid "User Buckets"
-msgstr ""
+msgstr "Օգտվողի փնջեր"
 
 #: staff.patron.user_edit.save_user.depth_required
 msgid "Depth is required on the %1$s permission."
@@ -1558,27 +1694,27 @@ msgstr "-- Ընտրիր մեկը --"
 
 #: staff.patron.cmd_verify_credentials.correct_credentials
 msgid "Success testing credentials!"
-msgstr ""
+msgstr "Հաջողություն մանդատների թեստավորման ժամանակ։"
 
 #: staff.patron.cmd_verify_credentials.incorrect_credentials
 msgid "Failure testing credentials!"
-msgstr ""
+msgstr "Ձախողում մանդատների թեստավորման ժամանակ։"
 
 #: staff.patron.cmd_verify_credentials.name_feedback
 msgid "Username: <%1$s>"
-msgstr ""
+msgstr "Օգտվողի անուն: <%1$s>"
 
 #: staff.patron.cmd_verify_credentials.barcode_feedback
 msgid "Barcode: <%1$s>"
-msgstr ""
+msgstr "Շտրիխ կոդ: <%1$s>"
 
 #: staff.patron.usr_buckets.merge_records.merge_lead
 msgid "Merge these records? (Select the \"lead\" record first)"
-msgstr ""
+msgstr "Միաձուլե՞լ այս գրառումները։ (Սկզբից ընտրիր \"ղեկավար\" գրառումը)"
 
 #: staff.patron.usr_buckets.merge_records.button.label
 msgid "Merge"
-msgstr ""
+msgstr "Միաձուլել"
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.label
 msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label"
@@ -1592,37 +1728,37 @@ msgstr "C"
 
 #: staff.patron.usr_buckets.merge_records.lead_record_number
 msgid "Lead Record? # %1$s"
-msgstr ""
+msgstr "Ղեկավար գրառու՞մ # %1$s"
 
 #: staff.patron.usr_buckets.merge_records.lead
 msgid "Lead"
-msgstr ""
+msgstr "Առաջատար"
 
 #: staff.patron.usr_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
-msgstr ""
+msgstr "Գրառման միաձուլում"
 
 #: staff.patron.usr_buckets.merge_records.fancy_prompt.alert
 msgid "Merge Aborted"
-msgstr ""
+msgstr "Միաձուլւոմը կասեցվեց"
 
 #: staff.patron.usr_buckets.merge_records.success
 msgid "Records were successfully merged."
-msgstr ""
+msgstr "Գրառումները հաջողությամբ միաձուլվել են:"
 
 #: staff.patron.usr_buckets.merge_records.catch.std_unex_error
 msgid "Records were not likely merged."
-msgstr ""
+msgstr "Գրառումները կարծես թե չեն միաձուլվել:"
 
 #. # The < and > highlight that the value is hidden from immediate display; translate Hidden and change the delimiters as needed
 #: staff.patron.field.hidden
 msgid "<Hidden>"
-msgstr ""
+msgstr "<Hidden>"
 
 #. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
 #: staff.patron.field.unset
 msgid "<Unset>"
-msgstr ""
+msgstr "<Unset>"
 
 #. # Unused by default but available: %7 is county; %10 is country.
 #: staff.patron.mailable_address_format
@@ -1630,8 +1766,12 @@ msgid ""
 "%1$s %2$s %3$s\n"
 "%4$s\n"
 "%5$s\n"
-"%6$s %8$s, %9$s"
+"%6$s, %8$s %9$s"
 msgstr ""
+"%1$s %2$s %3$s\n"
+"%4$s\n"
+"%5$s\n"
+"%6$s, %8$s %9$s"
 
 #: web.staff.patron.ue.session_no_defined
 msgctxt "web.staff.patron.ue.session_no_defined"
@@ -1651,3 +1791,7 @@ msgstr ""
 msgid ""
 "<div>Replaces address <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
 msgstr ""
+"<div>Փոփոխում է հասցեն <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
+
+#~ msgid "Note added."
+#~ msgstr "Նշումը ավելացված է"

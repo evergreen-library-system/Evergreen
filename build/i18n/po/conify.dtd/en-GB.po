@@ -1,0 +1,496 @@
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/conify.dtd
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-31 22:58-0400\n"
+"PO-Revision-Date: 2009-12-29 17:55+0000\n"
+"Last-Translator: Jonathan Field <Unknown>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Accelerator-Marker: &\n"
+
+#. Common entities
+#: conify.save_button.label
+msgctxt "conify.save_button.label"
+msgid "Save"
+msgstr "Save"
+
+#: conify.delete_button.label
+msgctxt "conify.delete_button.label"
+msgid "Delete"
+msgstr "Delete"
+
+#: conify.new_kid_button.label
+msgctxt "conify.new_kid_button.label"
+msgid "New Child"
+msgstr "New Child"
+
+#. Main configuration interface menu
+#: conify.admin.title
+msgid "Global :: Administration"
+msgstr "Global :: Administration"
+
+#: conify.admin.top_pane.title
+msgctxt "conify.admin.top_pane.title"
+msgid "Controls"
+msgstr "Controls"
+
+#: conify.admin.configure
+msgid "Configure your ILS"
+msgstr "Configure your ILS"
+
+#: conify.admin.left_pane.controls
+msgctxt "conify.admin.left_pane.controls"
+msgid "Controls"
+msgstr "Controls"
+
+#: conify.admin.org_unit_type.link
+msgid "Organization Types"
+msgstr "Organisation Types"
+
+#: conify.admin.org_unit.link
+msgctxt "conify.admin.org_unit.link"
+msgid "Organizational Units"
+msgstr "Organisational Units"
+
+#: conify.admin.grp_tree.link
+msgctxt "conify.admin.grp_tree.link"
+msgid "Permission Groups"
+msgstr "Permission Groups"
+
+#: conify.admin.perm_list.link
+msgid "Permissions"
+msgstr "Permissions"
+
+#: conify.admin.copy_status.link
+msgid "Copy Statuses"
+msgstr "Copy Statuses"
+
+#: conify.admin.marc_code_maps.link
+msgid "MARC Codes"
+msgstr "MARC Codes"
+
+#: conify.admin.bottom_pane.title
+msgctxt "conify.admin.bottom_pane.title"
+msgid "Controls"
+msgstr "Controls"
+
+#. Organization unit type configuration interface
+#: conify.org_unit_type.title
+msgid "Global :: Actor :: Organization Unit Types"
+msgstr "Global :: Actor :: Organisation Unit Types"
+
+#: conify.org_unit_type.type_tree.label
+msgid "Organization Unit Types"
+msgstr "Organisation Unit Types"
+
+#: conify.org_unit_type.type_name
+msgid "Type Name"
+msgstr "Type Name"
+
+#: conify.org_unit_type.opac_label
+msgid "OPAC Label"
+msgstr "OPAC Label"
+
+#: conify.org_unit_type.parent_type
+msgid "Parent Type"
+msgstr "Parent Type"
+
+#: conify.org_unit_type.can_have_volumes
+msgid "Can Have Volumes and Copies"
+msgstr "Can Have Volumes and Copies"
+
+#: conify.org_unit_type.can_have_users
+msgid "Can Have Users"
+msgstr "Can Have Users"
+
+#. Organization unit configuration interface
+#: conify.org_unit.title
+msgid "Global :: Actor :: Organization Units"
+msgstr "Global :: Actor :: Organisation Units"
+
+#: conify.org_unit.ou_tree.label
+msgctxt "conify.org_unit.ou_tree.label"
+msgid "Organizational Units"
+msgstr "Organisational Units"
+
+#: conify.org_unit.editor_pane.title
+msgid "Main Settings"
+msgstr "Main Settings"
+
+#: conify.org_unit.editor_pane.org_unit_name
+msgid "Organization Unit Name"
+msgstr "Organisation Unit Name"
+
+#: conify.org_unit.editor_pane.org_unit_code
+msgid "Organization Unit Policy Code"
+msgstr "Organisation Unit Policy Code"
+
+#: conify.org_unit.editor_pane.main_email
+msgid "Main Email Address"
+msgstr "Main Email Address"
+
+#: conify.org_unit.editor_pane.main_phone
+msgid "Main Phone Number"
+msgstr "Main Phone Number"
+
+#: conify.org_unit.editor_pane.org_unit_type
+msgid "Organization Unit Type"
+msgstr "Organisation Unit Type"
+
+#: conify.org_unit.editor_pane.parent
+msgid "Parent Organization Unit"
+msgstr "Parent Organisation Unit"
+
+#: conify.org_unit.editor_pane.opac_visible
+msgid "OPAC Visible"
+msgstr "OPAC Visible"
+
+#. Hours of operation
+#: conify.org_unit.hoo_pane.title
+msgid "Hours of Operation"
+msgstr "Hours of Operation"
+
+#: conify.org_unit.hoo_pane.open_time
+msgid "Open time"
+msgstr "Open time"
+
+#: conify.org_unit.hoo_pane.close_time
+msgid "Close time"
+msgstr "Close time"
+
+#: conify.org_unit.hoo_pane.closed
+msgid "Closed"
+msgstr "Closed"
+
+#: conify.org_unit.hoo_pane.monday
+msgid "Monday"
+msgstr "Monday"
+
+#: conify.org_unit.hoo_pane.tuesday
+msgid "Tuesday"
+msgstr "Tuesday"
+
+#: conify.org_unit.hoo_pane.wednesday
+msgid "Wednesday"
+msgstr "Wednesday"
+
+#: conify.org_unit.hoo_pane.thursday
+msgid "Thursday"
+msgstr "Thursday"
+
+#: conify.org_unit.hoo_pane.friday
+msgid "Friday"
+msgstr "Friday"
+
+#: conify.org_unit.hoo_pane.saturday
+msgid "Saturday"
+msgstr "Saturday"
+
+#: conify.org_unit.hoo_pane.sunday
+msgid "Sunday"
+msgstr "Sunday"
+
+#. Addresses
+#: conify.org_unit.addresses_pane.title
+msgid "Addresses"
+msgstr "Addresses"
+
+#: conify.org_unit.addresses_pane.physical.title
+msgid "Physical Address"
+msgstr "Physical Address"
+
+#: conify.org_unit.addresses_pane.holds.title
+msgid "Holds Address"
+msgstr "Holds Address"
+
+#: conify.org_unit.addresses_pane.mailing.title
+msgid "Mailing Address"
+msgstr "Mailing Address"
+
+#: conify.org_unit.addresses_pane.ill.title
+msgid "ILL Address"
+msgstr "ILL Address"
+
+#: conify.org_unit.addresses_pane.type
+msgid "Type"
+msgstr "Type"
+
+#: conify.org_unit.addresses_pane.valid
+msgid "Valid"
+msgstr "Valid"
+
+#: conify.org_unit.addresses_pane.street1
+msgid "Street 1"
+msgstr "Street 1"
+
+#: conify.org_unit.addresses_pane.street2
+msgid "Street 2"
+msgstr "Street 2"
+
+#: conify.org_unit.addresses_pane.city
+msgid "City"
+msgstr "City"
+
+#: conify.org_unit.addresses_pane.state
+msgid "State"
+msgstr "County"
+
+#: conify.org_unit.addresses_pane.zip
+msgid "Zip"
+msgstr "Post code"
+
+#: conify.org_unit.addresses_pane.country
+msgid "Country"
+msgstr "Country"
+
+#: conify.org_unit.addresses_pane.county
+msgid "County"
+msgstr "County"
+
+#. This is a highlighted label that is followed by the name of the organizational unit
+#: conify.org_unit.status_bar
+msgid "Now editing:"
+msgstr "Now editing:"
+
+#: conify.copy_status.title
+msgid "Global :: Configuration :: Copy Status"
+msgstr "Global :: Configuration :: Copy Status"
+
+#: conify.copy_status.new_status.label
+msgid "New Status:"
+msgstr "New Status:"
+
+#: conify.copy_status.new_status.name
+msgid "New Status Name"
+msgstr "New Status Name"
+
+#: conify.copy_status.new_status.save
+msgctxt "conify.copy_status.new_status.save"
+msgid "Add"
+msgstr "Add"
+
+#: conify.copy_status.save_changes
+msgctxt "conify.copy_status.save_changes"
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: conify.copy_status.delete_selected
+msgctxt "conify.copy_status.delete_selected"
+msgid "Delete Selected"
+msgstr "Delete Selected"
+
+#: conify.marc_code_maps.title
+msgid "Global :: Configuration :: MARC Code Maps"
+msgstr "Global :: Configuration :: MARC Code Maps"
+
+#: conify.marc_code_maps.audience_map.title
+msgid "Audience Map"
+msgstr "Audience Map"
+
+#: conify.marc_code_maps.audience_map.new.label
+msgid "New Audience Map:"
+msgstr "New Audience Map:"
+
+#: conify.marc_code_maps.new_code
+msgctxt "conify.marc_code_maps.new_code"
+msgid "New Code"
+msgstr "New Code"
+
+#: conify.marc_code_maps.new_value
+msgid "New Value"
+msgstr "New Value"
+
+#: conify.marc_code_maps.audience_map.description
+msgctxt "conify.marc_code_maps.audience_map.description"
+msgid "Description"
+msgstr "Description"
+
+#: conify.marc_code_maps.delete_selected
+msgctxt "conify.marc_code_maps.delete_selected"
+msgid "Delete Selected"
+msgstr "Delete Selected"
+
+#: conify.marc_code_maps.save_changes
+msgctxt "conify.marc_code_maps.save_changes"
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: conify.marc_code_maps.bib_level.title
+msgid "Bibliographic Level Map"
+msgstr "Bibliographic Level Map"
+
+#: conify.marc_code_maps.bib_level.new.label
+msgid "New Bibliographic Level:"
+msgstr "New Bibliographic Level:"
+
+#: conify.marc_code_maps.add
+msgctxt "conify.marc_code_maps.add"
+msgid "Add"
+msgstr "Add"
+
+#: conify.marc_code_maps.item_form.title
+msgid "Item Form Map"
+msgstr "Item Form Map"
+
+#: conify.marc_code_maps.item_form.new.label
+msgid "New Item Form:"
+msgstr "New Item Form:"
+
+#: conify.marc_code_maps.item_type.title
+msgid "Item Type Map"
+msgstr "Item Type Map"
+
+#: conify.marc_code_maps.item_type.new.label
+msgid "New Item Type:"
+msgstr "New Item Type:"
+
+#: conify.marc_code_maps.language.title
+msgid "Language Map"
+msgstr "Language Map"
+
+#: conify.marc_code_maps.language.new.label
+msgid "New Language:"
+msgstr "New Language:"
+
+#: conify.marc_code_maps.literary_form.title
+msgid "Literary Form Map"
+msgstr "Literary Form Map"
+
+#: conify.marc_code_maps.literary_form.new.label
+msgid "New Literary Form:"
+msgstr "New Literary Form:"
+
+#: conify.marc_code_maps.video.title
+msgid "Videorecording Format Map"
+msgstr "Videorecording Format Map"
+
+#: conify.marc_code_maps.video.new.label
+msgid "New Video Recording Format:"
+msgstr "New Video Recording Format:"
+
+#. perm_list.html Entities
+#: conify.perm_list.permission_list.title
+msgid "Global :: Permission :: Permission List"
+msgstr "Global :: Permission :: Permission List"
+
+#: conify.perm_list.new_code.label
+msgctxt "conify.perm_list.new_code.label"
+msgid "New Code"
+msgstr "New Code"
+
+#: conify.perm_list.add_button.label
+msgctxt "conify.perm_list.add_button.label"
+msgid "Add"
+msgstr "Add"
+
+#: conify.perm_list.save_changes.label
+msgctxt "conify.perm_list.save_changes.label"
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: conify.perm_list.delete_selected.label
+msgctxt "conify.perm_list.delete_selected.label"
+msgid "Delete Selected"
+msgstr "Delete Selected"
+
+#: conify.perm_list.new_permission.label
+msgid "New Permission:"
+msgstr "New Permission:"
+
+#. grp_tree.html Entities
+#: conify.grp_tree.group_tree.title
+msgid "Global :: Permission :: Group Tree"
+msgstr "Global :: Permission :: Group Tree"
+
+#: conify.grp_tree.permission_groups.label
+msgctxt "conify.grp_tree.permission_groups.label"
+msgid "Permission Groups"
+msgstr "Permission Groups"
+
+#: conify.grp_tree.group_config.label
+msgid "Group Configuration"
+msgstr "Group Configuration"
+
+#: conify.grp_tree.group_name.label
+msgid "Group Name"
+msgstr "Group Name"
+
+#: conify.grp_tree.description.label
+msgctxt "conify.grp_tree.description.label"
+msgid "Description"
+msgstr "Description"
+
+#: conify.grp_tree.permission_interval.label
+msgid "Permission Interval"
+msgstr "Permission Interval"
+
+#: conify.grp_tree.editing_permission.label
+msgid "Editing Permission"
+msgstr "Editing Permission"
+
+#: conify.grp_tree.parent_group.label
+msgid "Parent Group"
+msgstr "Parent Group"
+
+#: conify.grp_tree.user_group.label
+msgid "User Group"
+msgstr "User Group"
+
+#: conify.grp_tree.save_button.label
+msgctxt "conify.grp_tree.save_button.label"
+msgid "Save"
+msgstr "Save"
+
+#: conify.grp_tree.delete_button.label
+msgctxt "conify.grp_tree.delete_button.label"
+msgid "Delete"
+msgstr "Delete"
+
+#: conify.grp_tree.new_child_button.label
+msgctxt "conify.grp_tree.new_child_button.label"
+msgid "New Child"
+msgstr "New Child"
+
+#: conify.grp_tree.group_permissions.title
+msgid "Group Permissions"
+msgstr "Group Permissions"
+
+#: conify.grp_tree.new_mapping.label
+msgid "New Mapping"
+msgstr "New Mapping"
+
+#: conify.grp_tree.permission.label
+msgid "Permission:"
+msgstr "Permission:"
+
+#: conify.grp_tree.depth.label
+msgid "Depth:"
+msgstr "Depth:"
+
+#: conify.grp_tree.grantable.label
+msgid "Grantable:"
+msgstr "Grantable:"
+
+#: conify.grp_tree.add_mapping_button.label
+msgid "Add Mapping"
+msgstr "Add Mapping"
+
+#: conify.grp_tree.save_changes.label
+msgctxt "conify.grp_tree.save_changes.label"
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: conify.grp_tree.remove_selected.label
+msgctxt "conify.grp_tree.remove_selected.label"
+msgid "Delete Selected"
+msgstr "Delete Selected"

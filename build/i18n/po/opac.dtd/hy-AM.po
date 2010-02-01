@@ -4,15 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-08-01 12:46+0400\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-12-15 14:11+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 
 # =================================================================
@@ -41,9 +41,10 @@ msgid "$"
 msgstr "$"
 
 #: common.language
-#, fuzzy
 msgid "Language: "
-msgstr "Լեզու"
+msgstr ""
+"ներկայացնում է բացատի նիշը։ Թարգմանության մեջ համապատասխան դիքում մուտք արա "
+"բացատ։ "
 
 #: common.name
 msgid "Name"
@@ -200,15 +201,15 @@ msgstr "Խորացված փնտրում"
 
 #: common.nowSearching
 msgid "Now searching "
-msgstr "Հիմա որոնում է"
+msgstr "Հիմա որոնում է "
 
 #: common.ofAtLeast
 msgid " of about "
-msgstr "մասին"
+msgstr " մասին "
 
 #: common.relevancy
 msgid "Match Score: "
-msgstr "Հաշվի առ հաշիվը։"
+msgstr "Հաշվի առ հաշիվը։ "
 
 #: common.tips
 msgid "Tips:"
@@ -273,14 +274,14 @@ msgid "Basic Catalog (HTML only)"
 msgstr "Հիմնական քարտարան (միայն HTML)"
 
 #: common.password_criteria
-#, fuzzy
 msgid ""
 "The password must be at least 7 characters in length, \n"
 "contain at least one letter (a-z/A-Z), \n"
 "and contain at least one number."
 msgstr ""
-"Գաղտնաբառը առնվազն պետք է լինի 7 նիշից ոչ պակաս, \tև պարունակի գոնե մեկ տառ "
-"(a-z/A-Z), \tև առնվազն մեկ թիվ։"
+"Գաղտնաբառը պետք է լինի առնվազն 7 նիշ, \n"
+"առնվազն պարունակի մեկ տառ (a-z/A-Z), \n"
+"և պարունակի առնվազն մեկ թիվ։"
 
 #: common.a2z.title
 msgid "Title: A to Z"
@@ -296,7 +297,7 @@ msgstr "Հեղինակ։ Ա մինչև Ֆ"
 
 #: common.z2a.author
 msgid "Author: Z to A"
-msgstr "Հեղինակ։ Ֆ մինչև Ա "
+msgstr "Հեղինակ։ Ֆ մինչև Ա"
 
 #: common.new2old.pubdate
 msgid "Date: Newest to Oldest"
@@ -330,18 +331,17 @@ msgstr ""
 "Հետևաբար, տեղաբաշխման յուրաքանչյուր ցուցում \tպահման ցուցակում կլինի ոչ ճիշտ։ "
 " PINES-ի պահումների համակարգը նախագծված է \tպահանջվող նյութը հնարավորինս "
 "արագ և արդյունավետ կերպով ստանալու համար։ \tՁեր PINES գրադարանը կկապվի ձեր "
-"հետ երբ պահվող նյութերը կդառնան \tհասանելի։ "
+"հետ երբ պահվող նյութերը կդառնան \tհասանելի։"
 
 #: holds.advanced_options
-#, fuzzy
 msgid ""
 "If you wish to broaden the scope of your hold to include other \n"
 "versions of this title, select the formats that would be acceptable. \n"
 "The first available copy will be sent to you."
 msgstr ""
-"Եթե ցանկանում ես ընդլայնել քո պահումների տիրույթը ընդգրկելով \tայս վերնագրի "
-"այլ տարբերակներ, ընտրիր քեզ ընդունելի ձևաչափեր։ \tԱռաջին մատչելի օրինակը "
-"կառաքվի քեզ։ "
+"եթե ցանկանում ես ընդլայնել քո պահումները, ընդգրկելով  \n"
+"վերնագրի այլ տարբերակներ, ընտրիր մատչելի ձևաչափերը։ \n"
+"Առաջին հասանելի օրինակը կուղարկվի քեզ։"
 
 # =================================================================
 # Events and Permissions
@@ -405,7 +405,7 @@ msgstr "Հաջորդ էջ &gt;&gt;"
 
 #: common.textsize.title
 msgid "Text Size: "
-msgstr "Տեքստի մեծություն։"
+msgstr "Տեքստի մեծություն։ "
 
 #: common.textsize.regular
 msgid "Regular"
@@ -422,7 +422,6 @@ msgid "Large"
 msgstr "Լայն"
 
 #: home.js.disabled
-#, fuzzy
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
 "Catalog. \n"
@@ -435,29 +434,28 @@ msgid ""
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
 msgstr ""
-"JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաք օգտագործել "
-"Evergreen-ի քարտարանը։ Համենայնդեպս թվում է, որ JavaScript-ը կամ "
-"արգելափակված է, կամ քո դիտակի կողմից չի աջակցվում։ Որպեսզի օգտագործեք "
-"Evergreen-ի սովորական քարտարանը, թույլատրիր JavaScript-ը փոխելով քո դիտակի "
-"ընտրանքները, ապա <a style='color: blue; text-decoration: underline;' "
-"href='/'>try again</a>։ <br/><br/>Այլընտրանքորեն կարող ես օգտագործել "
-"հիմնական միայն-HTML քարտարանը՝ <a style='color: blue; text-decoration: "
-"underline;' href='/opac/extras/slimpac/start.html'>here</a>։"
+"JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել "
+"Evergreen-ի սովորական քարտարանը։ \n"
+"Համենայնդեպս թվում է որ JavaScript-ը արգելափակված է կամ քո դիտակի ւողմից չի "
+"աջակցվում։ \n"
+"Evergreen-ի սովորական քարտարանի օգտագործման համար թույլատրիր JavaScript-ը "
+"փոխելով քո դիտակի ընտրությունները, ապա \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>փորձիր "
+"նորից</a>.\n"
+"<br/><br/>Որպես այլընտրանք կարող ես օգտագործել հիմնական միայն "
+"HTML-քարտարանը։"
 
-# =================================================================
-# MyOPAC bookbag page
 #. =================================================================
 #. MyOPAC bookbag page
 #. =================================================================
 #: myopac.delete.bookbag
-#, fuzzy
 msgid ""
 "This will remove the selected bookbag and all items contained within the "
 "bookbag. \n"
 "Are you sure you wish to continue?"
 msgstr ""
-"Սա կհեռացնի ընտրված գրքի զամբյուղը և այնտեղ առկա բոլոր նյութերը։ Վստա՞հ ես "
-"որ ուզում ես շարունակել։"
+"Սա կհեռացնի ընտրված պատվերները և այդ պատվերի ներսում առկա բոլոր նյութերը։ \n"
+"Վստա՞հ ես որ ցանկանում ես շարունակել։"
 
 #: myopac.no.bookbags
 msgid "You have not created any bookbags"
@@ -510,7 +508,7 @@ msgstr "Ստեղծիր նոր պատվեր"
 
 #: myopac.bookbag.naming
 msgid "Enter the name of the new Bookbag: "
-msgstr "Մուտք արա նոր գրքի զամբյուղի անունը։"
+msgstr "Մուտք արա նոր գրքի զամբյուղի անունը։ "
 
 #: myopac.bookbag.share
 msgid "Share this Bookbag"
@@ -519,7 +517,7 @@ msgstr "Համատեղիր այս պատվերը"
 #: myopac.bookbag.refworks
 msgctxt "myopac.bookbag.refworks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Արտահանում դեպի RefWorks"
 
 #: myopac.bookbag.no.items
 msgid "The selected bookbag contains no items..."
@@ -534,34 +532,34 @@ msgid "remove"
 msgstr "հեռացնել"
 
 #: myopac.publish.text
-#, fuzzy
 msgid ""
 "Sharing a Bookbag means that the contents of the Bookbag will be visible to "
 "others. \n"
 "To see the public view of a shared Bookbag, click the \"View\" link in the \n"
 "\"Shared\" column of the Bookbag list at the top of this page."
 msgstr ""
-"Պատվերի համատեղում նշանակում է որ պատվերի բովանդակությունը տեսանելի է "
-"ուրիշներին։ Պատվերի հանրային տեսքը դիտելու համար սեղմիր \"Դիտել\" հղումը էջի "
-"վերին մասում գտնվող պատվերի ցուցակի  \"Համատեղ\" սյունակում։"
+"Գրքի պայուսակի համատեղումը նշանակում է որ դրա պարունակությունը դառնում է "
+"տեսանելի մյուսներին։ \n"
+"Համատեղ գրքապայուսակի հանրային տեսքը դիտելու համար սեղմիր \"Դիտել\" հղումը \n"
+"այս էջի վերին մասում գտնվող գրքապայուսակի ցուցակի \"Համատեղել\" սյունակում"
 
 #: myopac.item.confirm
 msgid "Are you sure you wish to remove this bookbag item?"
 msgstr "Վստա՞հ ես որ ուզում ես հեռացնել պատվերի նյութը։"
 
 #: myopac.publish.confirm
-#, fuzzy
 msgid ""
 "Sharing this bookbag will allow the contents \n"
 "of the bookbag to be seen by others.  Are you sure you wish to share this "
 "bookbag?"
 msgstr ""
-"Պատվերի համատեղումը թույլ կտա բոլորին տեսնելու բովանդակությունը։ Վստա՞հ ես "
-"որ ուզում ես համատեղել այս գրքի զամբյուղը։"
+"Այս գրքի պայուսակի համատեղումը թույլ կտա դրա պարունակությանը \n"
+"տեսանելի դարձնել մյուսներին։ Դու վստա՞հ ես որ ցանկանում ես համատեղել այս "
+"պայուսակը։"
 
 #: myopac.unpublish.confirm
 msgid "Are you sure you wish to hide this bookbag?"
-msgstr "Վստա՞հ ես որ ուզում ես թաքցնել գրքի այս զամբյուղը։ "
+msgstr "Վստա՞հ ես որ ուզում ես թաքցնել գրքի այս զամբյուղը։"
 
 #: myopac.update.success
 msgid "The Bookbag was successfully updated."
@@ -572,7 +570,6 @@ msgid "Bookbag successfully updated"
 msgstr "Գրքի զամբյուղը հաջողությամբ թարմացվել է։"
 
 #: myopac.create.warning
-#, fuzzy
 msgid ""
 "Warning: Adding items to a bookbag creates a link between you and the \n"
 "items in the database.  The contents of the bookbag are NOT publicly \n"
@@ -581,12 +578,14 @@ msgid ""
 "we suggest that you do not place said items in a bookbag or that you \n"
 "avoid using bookbags all together.  Thank you."
 msgstr ""
-"Զգուշացում։ Գրքի զամբյուղում նյութի ավելացումը ստեղծում է կապ քո և շտեմարանի "
-"նյութերի միջև։ Գրքի զամբյուղի բովանդակությունը հանրորեն հասանելի չէ քանի "
-"դեռ այն չի դրվել համատեղ օգտագործման։ Համենայնդեպս, եթե նախընտրում ես "
-"չունենալ ոչ մի հղում ընթերցողի գրառման և որոշակի նյութի կամ նյութերի միջև, "
-"առաջարկում ենք չտեղադրել այդ նյութերը գրքի զամբյուղում կամ խուսափել բոլոր "
-"գրքի  զամբյուղների միաժամանակյա օգտագործումը։ Շնորհակալություն։"
+"Զգուշացում։ Գրքապայուսակում նյութերի ավելացումը ստեղծում է կապ քո և \n"
+"շտեմարանի նյութերի մեջ։ Գրքապայուսակի պարունակությունները տեսանելի չեն "
+"հանրորեն \n"
+"քանի դեռ գրքապայուսակը համատեղված է։ Համենայնդեպս, եթե դու նախընտրում ես "
+"չունենալ\n"
+"որևէ կապ ընթերցողի գրառման և որոշակի նյութի կա նյութերի միջև \n"
+"մենք առաջարկում ենք այդ նյութերը չտեղադրել գրքապայուսակում կամ դու \n"
+"խուսափես բոլոր գրքապայուսակները միանգամից օգտագործելուց։ Շնորհակալություն։"
 
 #: myopac.describe.bookbags
 msgid "Bookbags are..."
@@ -620,7 +619,7 @@ msgstr "Մնացող թարմացումներ"
 
 #: myopac.checked.noitems
 msgid "You have no items checked out at this time"
-msgstr "Այս պահին դու չունես դուրս տրված նյութեր "
+msgstr "Այս պահին դու չունես դուրս տրված նյութեր"
 
 #: myopac.checked.other.circ
 msgid "Other Circulations"
@@ -640,7 +639,7 @@ msgstr "Խնդրվում է վերադառնալ..."
 
 #: myopac.checked.renew.success
 msgid "item(s) successfully renewed"
-msgstr "հաջողությամբ թարմացված նյութ(եր) "
+msgstr "հաջողությամբ թարմացված նյութ(եր)"
 
 #: myopac.checked.renew.confirm
 msgid "Are you sure you wish to renew the selected item(s)?"
@@ -654,16 +653,15 @@ msgid ""
 msgstr ""
 "Համակարգը ի վիճակի չէ այս պահին թարմացնելու ընտրված նյութը։ Սա սովորաբար "
 "նշանակում է որ նյութը հարկավոր է պահումը ավարտին հասցնելու համար։ Դիմեք "
-"գրադարանավարին հետագա օգնության համար։  "
+"գրադարանավարին հետագա օգնության համար։"
 
 #: myopac.checked.renew.fail2
-#, fuzzy
 msgid ""
 "Library policy prevents the renewal of this item at this time.  Please see a "
 "librarian for further details."
 msgstr ""
-"PINES-ի քաղաքականությունը կանխարգելում է այս պահին այս նյութի թարմացումը։ "
-"Դիմեք գրադարանավարին հետագա օգնության համար։  "
+"Գրադարանի քաղաքականությունը արգելում է այս պահին այս նյութի թարմացումը։ "
+"Հետագա մանրամասների համար տես գրադարանավարին։"
 
 # =================================================================
 # MyOPAC Fines Page
@@ -756,7 +754,7 @@ msgstr "Խմբագրել"
 
 #: myopac.holds.status.none
 msgid "You have no items on hold at this time"
-msgstr "Այս պահին դու չունես պահված նյութեր "
+msgstr "Այս պահին դու չունես պահված նյութեր"
 
 #: myopac.holds.status.waiting
 msgid "Waiting for copy"
@@ -812,26 +810,24 @@ msgid "Are you sure you wish to cancel the selected holds?"
 msgstr "Վստա՞հ ես որ ուզում ես չեղյալ անել ընտրված պահումները։"
 
 #: myopac.holds.freeze.confirm
-#, fuzzy
 msgid ""
 "Are you sure you wish to suspend the selected holds? \n"
 "If an item has already been selected to fulfill the hold, it will not be "
 "suspended"
 msgstr ""
-"Վստա՞հ ես որ ուզում ես սառեցնել ընտրված պահումները։ Նկատի ունեցիր, որ եթե "
-"նյութը արդեն իսկ ընտրված է պահման նպատակով, այն չի սառեցվի։"
+"Դու վստա՞հ ես որ ցանկանում ես կասեցնել ընտրված պահումները։ \n"
+"Եթե նյութը արդեն ընտրվել է պահման համար այն չի կասեցվի։"
 
 #: myopac.holds.thaw.confirm
-#, fuzzy
 msgid "Are you sure you wish to activate the selected holds?"
-msgstr "Վստա՞հ ես որ ուզում ես չեղյալ անել ընտրված պահումները։"
+msgstr "Դու վստա՞հ ես որ ցանկանում ես ակտիվացնել ընտրված պահումները։"
 
 #: myopac.holds.thaw_date.confirm
-#, fuzzy
 msgid ""
 "Are you sure you wish to change the activate date for the selected holds?"
 msgstr ""
-"Վստա՞հ ես որ ուզում ես ընտրված պահումների համար փոխել ապասառեցման ամսաթիվը։"
+"Դու վստա՞հ ես որ ընտրված պահումների համար ցանկանում ես փոխել ակտիվացման "
+"ամսաթիվը։"
 
 #: myopac.holds.freeze.select_thaw
 msgid ""
@@ -853,17 +849,16 @@ msgstr ""
 "Կասեցվածը կպահպանի իր տեղը հերթում, բայց չի կատարվի քանի դեռ չի ապասառեցվել։"
 
 #: opac.holds.freeze.thaw_date
-#, fuzzy
 msgid "Automatically activate hold on:"
-msgstr "Ավտոմատ ապասառեցրու պահումը"
+msgstr "Ավտոմատ ակտիվացրու պահումը։"
 
 #: opac.holds.expire_time
 msgid "Expiration date"
-msgstr ""
+msgstr "Ժամկետը լրանալու ամսաթիվ։"
 
 #: myopac.holds.estimated_wait
 msgid "Estimated Wait (days)"
-msgstr ""
+msgstr "Գնահատվող սպասում (օրեր)"
 
 # =================================================================
 # MyOPAC Preferences Page
@@ -931,7 +926,6 @@ msgid "Preferences update failed!"
 msgstr "Նախապատվությունների թարմացումը տապալվեց։"
 
 #: myopac.prefs.help
-#, fuzzy
 msgid ""
 "This setting defines how you will be notified of holds that are ready to be "
 "picked up from the library. \n"
@@ -939,10 +933,12 @@ msgid ""
 "However, you will still have the option to change individual holds "
 "regardless of this setting."
 msgstr ""
-"Այս կարգաբերումները սահմանում են թե ինչպես կզգուշացվես պահումների մասին "
-"որոնք պատրաստ են վերցվելու գրադարանից։ Որպես լռակյաց, պահումները կօգտագործեն "
-"հիշեցումների այն ձևը, որը կընտրես այստեղ։ Համենայնդեպս, դու դեռ ունես "
-"ընտրության հնարավորություն` փոփոխելու անհատական պահումները։ "
+"Այս կարգաբերումները սահմանում են թե ինչպես դու կզգուշացվես պահումների մասին "
+"որոնք պատրաստ են գրադարանից ստանալու համար։ \n"
+"Որպես պայմանավորվածություն, պահումները կօգտագործեն այն զգուշացման ձևը որը որ "
+"սահմանել ես այստեղ։ \n"
+"Ինչևէ, դու դեռ կունենաս անհատական պահումը փոխելու ընտրություն, անկախ "
+"կարգաբերումից։"
 
 #: myopac.holds.unfrozen
 msgid "Active"
@@ -952,19 +948,16 @@ msgstr "Ակտիվ:"
 msgid "Activate on..."
 msgstr "Ակտիվացնել ..."
 
-# =================================================================
-# MyOPAC Summary page
 #. =================================================================
 #. MyOPAC Summary page
 #. =================================================================
 #: myopac.summary.expired
-#, fuzzy
 msgid ""
 "Your account expired on <span id='myopac.expired.date'/>! \n"
 "Please see a librarian to renew your account."
 msgstr ""
-"Քո հաշիվը ժամկետանց է դառնում <span id='myopac.expired.date'/>։ Դիմիր "
-"գրադարանավարին թարմացնելու քո հաշիվը։"
+"Քո հաշիվը ավարտվում է <span id='myopac.expired.date'/>! \n"
+"Թարմացնելու համար մոտեցիր գրադարանավարին։"
 
 #: myopac.summary.notes
 msgid "* Staff Notes *"
@@ -1036,7 +1029,7 @@ msgstr "Հասցեներ"
 
 #: myopac.summary.addresses.pending
 msgid "Pending Addresses"
-msgstr ""
+msgstr "Լուծման սպասող հասցեներ"
 
 #: myopac.summary.address.type
 msgid "Address Type"
@@ -1059,22 +1052,20 @@ msgid "State"
 msgstr "Նահանգ"
 
 #: myopac.summary.address.country
-#, fuzzy
 msgid "Country"
-msgstr "Համայնք"
+msgstr "Երկիր"
 
 #: myopac.summary.address.zip
 msgid "Zip"
 msgstr "Զիպ"
 
 #: myopac.summary.address.edit
-#, fuzzy
 msgid "Edit Address"
-msgstr "էլ փոստի հասցե"
+msgstr "Խմբագրիր հասցեն"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
-msgstr ""
+msgstr "Սխալ հասցե"
 
 #: myopac.summary.username.error
 msgid "Please enter a username"
@@ -1095,9 +1086,10 @@ msgid "Username update failed"
 msgstr "Օգտվողի անվան թարմացումը ձախողվեց։"
 
 #: myopac.summary.username.invalid
-#, fuzzy
 msgid "Username cannot contain spaces or have the same format as a barcode"
-msgstr "Օգտվողի անունը չի կարող պարունակել բացատներ։"
+msgstr ""
+"Օգտվողի անունը չի կարող պարունակել բացատներ կամ ունենա նույն ձևաչափը ինչ որ "
+"շտրիխ կոդը։"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
@@ -1113,7 +1105,7 @@ msgstr "Էլ փոստի հասցեի թարմացումը չստացվեց։"
 
 #: myopac.summary.password.error
 msgid "Passwords are empty or do not match"
-msgstr "Գաղտնաբառերը դատարկ են կամ չեն համընկնում։ "
+msgstr "Գաղտնաբառերը դատարկ են կամ չեն համընկնում։"
 
 #: myopac.summary.password.success
 msgctxt "myopac.summary.password.success"
@@ -1363,7 +1355,7 @@ msgstr "Ընտրիր փնտրման համար գրադարանը"
 
 #: navigate.loggedinas
 msgid "You are logged in as "
-msgstr "Դու գրանցված ես որպես"
+msgstr "Դու գրանցված ես որպես "
 
 #: navigate.loggedinas.title
 msgid "Logged in as..."
@@ -1417,7 +1409,7 @@ msgstr "http://www.georgialibraries.org/public/pines.html"
 
 #: footer.library.about
 msgid "About PINES"
-msgstr " PINES-ի մասին"
+msgstr "PINES-ի մասին"
 
 #: footer.union.url
 msgid "http://www.galileo.usg.edu/"
@@ -1428,11 +1420,8 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-#, fuzzy
 msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
-msgstr ""
-"Հեղինակային իրավունք &#xA9; 2006 Գեորգիա նահանգի հանրային գրադարանի "
-"ծառայություն"
+msgstr "Հեղինակային իրավունք &#xA9; 2006-2008 Georgia Public Library Service"
 
 # Introduces the logo for the project
 #. Introduces the logo for the project
@@ -1595,7 +1584,7 @@ msgstr "Տեղադրիր պահումը"
 #: opac.holds.exportRefWorks
 msgctxt "opac.holds.exportRefWorks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Արտահանում դեպի RefWorks"
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
@@ -1660,7 +1649,7 @@ msgstr "Հիմնական"
 
 #: advanced.literary.form
 msgid "Literary Form"
-msgstr ""
+msgstr "Գեղարվեստական ձև"
 
 #: advanced.non.fiction
 msgid "Non Fiction"
@@ -1724,28 +1713,27 @@ msgstr "Գնա"
 
 #: advanced.biblevel
 msgid "Bib Level"
-msgstr ""
+msgstr "Մատենագիտ մակարդակ"
 
 #: advanced.filter.pubyear
-#, fuzzy
 msgid "Publication Year"
-msgstr "Հրատարակման ամսաթիվ"
+msgstr "Հրատարակման տարի"
 
 #: advanced.filter.pubyear.equals
 msgid "Is"
-msgstr ""
+msgstr "Is"
 
 #: advanced.filter.pubyear.before
 msgid "Before"
-msgstr ""
+msgstr "Մինչև"
 
 #: advanced.filter.pubyear.after
 msgid "After"
-msgstr ""
+msgstr "Հետո"
 
 #: advanced.filter.pubyear.between
 msgid "Between"
-msgstr ""
+msgstr "Միջև"
 
 # =================================================================
 # Rdetail
@@ -1853,14 +1841,14 @@ msgid "Create a new bookbag"
 msgstr "Ստեղծիր գրքի նոր զամբյուղ"
 
 #: rdetail.record.deleted
-#, fuzzy
 msgid ""
 "This record has been deleted from the database. \n"
 "We recommend that you remove this title from any bookbags it may have been "
 "added to."
 msgstr ""
-"Այս գրառումը ջնջվել է շտեմարանից։ Խորհուրդ ենք տալիս հեռացնել այս վերնագիրը "
-"բոլոր գրքի զամբյուղներից, որոնցում այն կարող է ավելացված լինել։"
+"Այս գրառումը հեռացվել է շտեմարանից։ \n"
+"Խորհուրդ ենք տալիս այս վերնագիրը ջնջել բոլոր այն գրքի պայուսակներից որոնցում "
+"այն ավելացվել է։"
 
 #: rdetail.none
 msgid "(none)"
@@ -1918,7 +1906,7 @@ msgstr "Դասիչ"
 
 #: rdetail.copyInfo.copylocation
 msgid "Copy Location"
-msgstr ""
+msgstr "Օրինակի տեղաբաշխում"
 
 #: rdetail.copyInfo.local
 msgid "View Copy Information for this location only"
@@ -1938,11 +1926,11 @@ msgstr "Տպիր դասիչները այս գրադարանի համար"
 
 #: rdetail.copyInfo.details
 msgid "Copy Details"
-msgstr ""
+msgstr "Օրինակի մանրամասներ"
 
 #: rdetail.copyInfo.browse
 msgid "Browse Call Numbers"
-msgstr ""
+msgstr "Դիտիր դասիչները"
 
 #: rdetail.copyInfo.hold
 msgctxt "rdetail.copyInfo.hold"
@@ -1973,7 +1961,7 @@ msgstr "Մեջբերում"
 
 #: rdetail.extras.preview
 msgid "Preview"
-msgstr ""
+msgstr "Նախադիտում"
 
 #: rdetail.extras.author.notes
 msgid "Author Notes"
@@ -1997,15 +1985,15 @@ msgstr "Տեղային դասիչներ"
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
-msgstr ""
+msgstr "Լրիվ տեքստ"
 
 #: rdetail.extras.preview.title
 msgid "See the full text of this book."
-msgstr ""
+msgstr "Տես այս գրքի լրիվ տեքստը"
 
 #: rdetail.extras.preview.badge
 msgid "Show a preview of this book from Google Book Search"
-msgstr ""
+msgstr "Ցույց տուր Google Book Search-ից այս գրքի նախնական դիտումը"
 
 #: rdetail.loading
 msgid "Loading copy infomation..."
@@ -2037,9 +2025,8 @@ msgid "Sort Results by Author"
 msgstr "Տեսակավորիր արդյունքները ըստ հեղինակի"
 
 #: result.sort_by.pubdate
-#, fuzzy
 msgid "Sort Results by Publication Date"
-msgstr "Տեսակավորիր արդյունքները ըստ հրատարակման տարեթվի"
+msgstr "Տեսակավորել արդյունքները ըստ հրատարակման ամսաթվի"
 
 #: result.limit2avail
 msgid "Limit to Available"
@@ -2055,19 +2042,19 @@ msgstr "Այս վայրում ընտրված ձևաչափով նյութեր չ�
 
 #: result.info.format.items
 msgid "Listed below are all items in the catalog with the chosen format."
-msgstr "Ստորև թվարկվածները քարտարանի նյութերն են ըստ ընտրված ձևաչափի "
+msgstr "Ստորև թվարկվածները քարտարանի նյութերն են ըստ ընտրված ձևաչափի"
 
 #: result.info.show
 msgid "Show records for"
-msgstr "Ցույց տուր գրառումները "
+msgstr "Ցույց տուր գրառումները"
 
 #: result.lowhits.few
 msgid "Few hits were returned for your search."
-msgstr "Քո որոնման համար շատ քիչ հարվածներ են վերադարձվել "
+msgstr "Քո որոնման համար շատ քիչ հարվածներ են վերադարձվել"
 
 #: result.lowhits.zero
 msgid "Zero hits were returned for your search."
-msgstr "Քո որոնման համար զերո արդյունք է վերադարձվել "
+msgstr "Քո որոնման համար զերո արդյունք է վերադարձվել"
 
 #: result.lowhits.did.you.mean
 msgid "Maybe you meant:"
@@ -2147,7 +2134,7 @@ msgstr "Տեղադրի պահումը իմ հաշվում:"
 
 #: common.hold.check
 msgid "Checking for possibility of hold fulfillment..."
-msgstr "Պահման իրականացման համար ստուգվում է հնարավորությունը... "
+msgstr "Պահման իրականացման համար ստուգվում է հնարավորությունը..."
 
 #: common.hold.create
 msgid "Create / Edit a Hold"
@@ -2177,6 +2164,15 @@ msgstr "Պահման խորացված ընտրանքներ"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Ընտրեք այն ֆիզիկական տեղաբաշխումը, ուր կարելի է առաքել ձեր պահումը։"
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "Պատվիրված նյութի վրա արդեն գոյություն ունի պահում։"
@@ -2184,32 +2180,32 @@ msgstr "Պատվիրված նյութի վրա արդեն գոյություն �
 #: common.hold.exists.override
 #, fuzzy
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
-"Պատվիրված նյութի վրա արդեն գոյություն ունի պահում։ Կուզենա՞ք ամեն դեպքում "
-"ստեղծել պահում։"
+"Պահանջվողի համար արդեն պահում կա։ \n"
+"Ցանկանու՞մ ես ստեղծել պահում։"
 
 #: common.hold.barred
-#, fuzzy
 msgid ""
 "PATRON BARRED. Please see any notes in the \n"
 "\"Staff Notes\" section of your \"My Account\" page or contact your local "
 "library."
 msgstr ""
-"ԸՆԹԵՐՑՈՂԸ ԱՐԳԵԼԱՓԱԿՎԱԾ Է։ Տես նշումները  քո  \"Իմ հաշվեհամար\" էջի "
-"\"Աշխատակազմի նշումներ\" բաժնում, կամ կապվիր քո տեղային գրադարանի հետ։։ "
+"ԸՆԹԵՐՑՈՂԸ ԿԱՍԵՑՎԱԾ Է։ տես նշումները \n"
+"\"Իմ հաշվեկշիռ\" էջի \"Աշխատակազմի նշումներ\" բաժնում, կամ կապվիր քո գրադարանի "
+"հետ։"
 
 #: common.hold.item.invalid
-#, fuzzy
 msgid ""
 "This hold is no longer valid. It's likely that the \n"
 "target for the hold was deleted from the system.  Please cancel this hold "
 "and \n"
 "place a new one."
 msgstr ""
-"Այ պահումը այլևս հավաստի չէ։ Հավանաբար պահման թիրախը համակարգից ջնջված է։ "
-"Չեղյալ արեք այս պահումը և իրականացրու նոր պահում։"
+"Այս պահում արդեն օրինական չէ։ Հավանական է, որ \n"
+"պահման թիրախը համակարգից ջնջված է։ Չեղյալ արա այս պահումը և \n"
+"տեղադրի նորը։"
 
 #: common.hold.patron.invalid
 msgid "The patron barcode entered as the hold recipient is invalid."
@@ -2228,7 +2224,6 @@ msgid ""
 msgstr "Հեռախոսի համարը չունի ճիշտ ձևաչափ։ Սպասվող ձևաչափն է` XXX-YYY-ZZZZ"
 
 #: common.hold.failed
-#, fuzzy
 msgid ""
 "No items were found that could fulfill the requested holds. \n"
 "It's possible that choosing a different format will result in a successful "
@@ -2236,10 +2231,10 @@ msgid ""
 "It is also possible that you have exceeded the number of allowable holds. \n"
 "For further information, please consult your local librarian."
 msgstr ""
-"Պահանջվող պահումներին բավարարող գրառումներ չկան։ Հնարավոր է, որ ուրիշ "
-"ձևաչափի ընտրությունը  կհանգեցնի հաջող պահման։ Հնարավոր է նաև որ դու "
-"գերազանցել ես թույլատրելի պահումների քանակը։ Հետագա տեղեկատվության համար "
-"դիմիր քո տեղային գրադարանավարին։   "
+"Հարցվող պահմանը բավարարող ոչ մի նյութ չի գտնված։ \n"
+"Հնարավոր է որ այլ ձևաչափի ընտրությունը կբերի հաջողված պահման։ \n"
+"Նաև հնարավոր է, որ դու գերազանցել ես թույլատրելի պահումների քանակը։ \n"
+"Հետագա տեղեկատվության համար կապվիր քո գրադարանի հետ։"
 
 #: common.control.click
 msgid "(control-click to select multiple formats)"
@@ -2323,12 +2318,12 @@ msgid "Change Password"
 msgstr "Փոխիր գաղտնաբառը"
 
 #: login.first.time
-#, fuzzy
 msgid ""
 "This appears to be the first time you have logged in. \n"
 "You will need to change your password."
 msgstr ""
-"Կարծես թե դու առաջին անգամ ես մուտք գործում։ Անհրաժեշտ է փոխել գաղտնաբառը։"
+"Կարծես թե դու առաջին անգամ ես մուտք գործում։ \n"
+"Հարկավոր է փոխել գաղտնաբառը։"
 
 #: login.password.current.enter
 msgid "Enter your current password"
@@ -2365,20 +2360,19 @@ msgid ""
 "library."
 msgstr ""
 "Մուտք գործելու համար տրված շտրիխ կոդը նշված է որպես ոչ ակտիվ։ Կապվիր քո "
-"տեղային գրադարանի հետ։ "
+"տեղային գրադարանի հետ։"
 
 #: login.account.inactive
 msgid "This account has been deactivated.  Please contact your local library."
 msgstr "Այս հաշիվը ապաակտիվացված է։ Կապվիր քո տեղային գրադարանի հետ։"
 
 #: login.failed
-#, fuzzy
 msgid ""
 "Login failed. The username or password provided was not valid. \n"
 "Ensure Caps-Lock is off and try again or contact your local library."
 msgstr ""
-"Գրանցումը տապալված է։ Օգտվողի անունը կամ գաղտնաբառը հավաստի չեն։ Ստուգիր որ "
-"Caps-Lock-ը անջատված է, և փորձիր նորից, կամ կապվիր տեղային գրադարանի հետ։"
+"Գրանցումը տապալվեց։ Գրանցման անւնը կամ գաղտնաբառը հավաստի չեն։ \n"
+"Ստուգիր որ Caps-Lock անջատված է . փորձիր նորից կամ կապվիր քո գրադարանի հետ։"
 
 #: button.go
 msgid "Go!"
@@ -2389,7 +2383,7 @@ msgstr "Գնա"
 #. =================================================================
 #: slimpac.language.select
 msgid "Select language"
-msgstr ""
+msgstr "Ընտրիր լեզու"
 
 # =================================================================
 # Slimpac Simple Search
@@ -2399,7 +2393,7 @@ msgstr "Հասարակ փնտրում"
 
 #: slimpac.start.nowSearching
 msgid "Now searching: "
-msgstr "Հիմա որոնում է։"
+msgstr "Հիմա որոնում է։ "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
@@ -2439,11 +2433,11 @@ msgstr "http://amazon.com/dp/"
 #. =================================================================
 #: selfck.staff_login_label
 msgid "Staff login"
-msgstr ""
+msgstr "Աշխատակազմի գրանցում"
 
 #: selfck.staff_login
 msgid "Library barcode or username"
-msgstr ""
+msgstr "Գրադարանի շտրիխ կոդ կամ օգտվողի անուն"
 
 #: selfck.staff_pw
 msgctxt "selfck.staff_pw"
@@ -2457,15 +2451,15 @@ msgstr "Հաստատել"
 
 #: selfck.clear
 msgid "Clear"
-msgstr ""
+msgstr "Մաքրել"
 
 #: selfck.patron_barcode_label
 msgid "Please scan your library barcode"
-msgstr ""
+msgstr "Վերաստուգիր քո գրադարանի շտրիխ կոդերը"
 
 #: selfck.item_barcode_label
 msgid "Please scan an item to checkout or renew:"
-msgstr ""
+msgstr "Դուրս տալու կամ թարմացնելու համար սկան արա նյութը"
 
 #: selfck.barcode
 msgctxt "selfck.barcode"
@@ -2494,97 +2488,96 @@ msgstr "Մնացող թարմացումներ"
 
 #: selfck.cotype
 msgid "Type"
-msgstr ""
+msgstr "Տեսակ"
 
 #: selfck.cotype_co
 msgid "Checkout"
-msgstr ""
+msgstr "Դուրս տրում"
 
 #: selfck.cotype_rn
 msgid "Renewal"
-msgstr ""
+msgstr "Թարմացում"
 
 #: selfck.done
-#, fuzzy
 msgid "Done"
-msgstr "Ոչ մեկը"
+msgstr "Կատարված է"
 
 #: selfck.welcome
 msgid "Welcome"
-msgstr ""
+msgstr "Բարի գալուստ"
 
 #: selfck.printing
 msgid "Printing Receipt..."
-msgstr ""
+msgstr "Ստացականների տպում"
 
 #. event messages
 #: selfck.event.co_success
 msgid "Check out succeeded"
-msgstr ""
+msgstr "Սպասարկումը հաջողվեց"
 
 #: selfck.event.co_unknown
 msgid "An unknown event has occurred"
-msgstr ""
+msgstr "Անծանոթ երևույթ է հանդիպել"
 
 #: selfck.event.dupe_barcode
 msgid "This item has already been checked out during this session"
-msgstr ""
+msgstr "Այս նյութը տվյալ կապի ժամանակ արդեն սպասարկվել է"
 
 #: selfck.event.patron_not_found
 msgid "The patron barcode was not found"
-msgstr ""
+msgstr "Ընթերցողի կոդը չի գտնված"
 
 #: selfck.event.item_noncat
 msgid "The requested item is not in the catalog"
-msgstr ""
+msgstr "Պահանջվող նյութը քարտարանում չէ"
 
 #: selfck.event.item_nocirc
 msgid "The requested item is not allowed to circulate"
-msgstr ""
+msgstr "Պահանջվող նյութը չի սպասարկվում"
 
 #: selfck.event.already_out
 msgid "The requested item is already checked out to another patron"
-msgstr ""
+msgstr "Պահանջվող նյութը արդեն սպասարկված է"
 
 #: selfck.items_out
 msgid "You checked out the following items"
-msgstr ""
+msgstr "Դուք վերցրել եք հետևյալ նյութերը"
 
 #: selfck.org_hours
 msgid "Hours of Operation"
-msgstr ""
+msgstr "Աշխատելու ժամեր"
 
 #: selfck.org_phone
 msgid "Library Phone Number"
-msgstr ""
+msgstr "Գրադարանի հեռախոսահամար"
 
 #: selfck.day0
 msgid "Monday"
-msgstr ""
+msgstr "Երկուշաբթի"
 
 #: selfck.day1
 msgid "Tuesday"
-msgstr ""
+msgstr "Երեքշաբթի"
 
 #: selfck.day2
 msgid "Wednesday"
-msgstr ""
+msgstr "Չորեքշաբթի"
 
 #: selfck.day3
 msgid "Thursday"
-msgstr ""
+msgstr "Հինգշաբթի"
 
 #: selfck.day4
 msgid "Friday"
-msgstr ""
+msgstr "Ուրբաթ"
 
 #: selfck.day5
 msgid "Saturday"
-msgstr ""
+msgstr "Շաբաթ"
 
 #: selfck.day6
 msgid "Sunday"
-msgstr ""
+msgstr "Կիրակի"
 
 #~ msgid "details"
 #~ msgstr "մանրամասներ"
@@ -2599,4 +2592,4 @@ msgstr ""
 #~ msgstr "Գրական&nbsp;Կաղապար"
 
 #~ msgid " of at least "
-#~ msgstr "ամենաքիչը"
+#~ msgstr " ամենաքիչը "

@@ -1,0 +1,89 @@
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
+"PO-Revision-Date: 2009-12-29 16:07+0000\n"
+"Last-Translator: Jonathan Field <Unknown>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
+
+#: opac.js:EDIT_PROPERTIES
+msgid "Edit Propeties"
+msgstr "Edit Propeties"
+
+#: opac.js:CURRENT_SUPPLEMENTS
+msgid "Current supplements"
+msgstr "Current supplements"
+
+#: opac.js:EDIT_MFHD_RECORD
+msgid "Edit Record"
+msgstr "Edit Record"
+
+#: opac.js:CURRENT_HOLDINGS
+msgid "Current volume"
+msgstr "Current volume"
+
+#: opac.js:CURRENT_INDEXES
+msgid "Current indexes"
+msgstr "Current indexes"
+
+#: opac.js:CREATED_MFHD_RECORD
+msgid "Created MFHD record for ${0}"
+msgstr "Created MFHD record for ${0}"
+
+#: opac.js:CREATE_MFHD
+msgid "Add MFHD Record"
+msgstr "Add MFHD Record"
+
+#: opac.js:DELETE_MFHD
+msgid "Delete Record"
+msgstr "Delete Record"
+
+#: opac.js:EDIT_MFHD_MENU
+msgid "Edit Holdings"
+msgstr "Edit Holdings"
+
+#: opac.js:INDEXES
+msgid "Previous indexes"
+msgstr "Previous indexes"
+
+#: opac.js:MISSING_VOLUMES
+msgid "Missing volumes"
+msgstr "Missing volumes"
+
+#: opac.js:INCOMPLETE_VOLUMES
+msgid "Incomplete volumes"
+msgstr "Incomplete volumes"
+
+#: opac.js:HOLDINGS_TABLE_CAPTION
+msgid "Holdings summary (${0})"
+msgstr "Holdings summary (${0})"
+
+#: opac.js:SUPPLEMENTS
+msgid "Previous supplements"
+msgstr "Previous supplements"
+
+#: opac.js:HOLDINGS
+msgid "Previous volumes"
+msgstr "Previous volumes"
+
+#: opac.js:DELETED_MFHD_RECORD
+msgid "Deleted MFHD record ${0}"
+msgstr "Deleted MFHD record ${0}"
+
+#: opac.js:SAVE_MFHD_LABEL
+msgid "Save MFHD"
+msgstr "Save MFHD"
+
+#: opac.js:ONLINE_VOLUMES
+msgid "Online volumes"
+msgstr "Online volumes"

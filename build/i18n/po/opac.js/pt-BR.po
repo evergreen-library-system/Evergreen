@@ -1,0 +1,85 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+
+#: opac.js:EDIT_PROPERTIES
+msgid "Edit Propeties"
+msgstr ""
+
+#: opac.js:CURRENT_SUPPLEMENTS
+msgid "Current supplements"
+msgstr ""
+
+#: opac.js:EDIT_MFHD_RECORD
+msgid "Edit Record"
+msgstr ""
+
+#: opac.js:CURRENT_HOLDINGS
+msgid "Current volume"
+msgstr ""
+
+#: opac.js:CURRENT_INDEXES
+msgid "Current indexes"
+msgstr ""
+
+#: opac.js:CREATED_MFHD_RECORD
+msgid "Created MFHD record for ${0}"
+msgstr ""
+
+#: opac.js:CREATE_MFHD
+msgid "Add MFHD Record"
+msgstr ""
+
+#: opac.js:DELETE_MFHD
+msgid "Delete Record"
+msgstr ""
+
+#: opac.js:EDIT_MFHD_MENU
+msgid "Edit Holdings"
+msgstr ""
+
+#: opac.js:INDEXES
+msgid "Previous indexes"
+msgstr ""
+
+#: opac.js:MISSING_VOLUMES
+msgid "Missing volumes"
+msgstr ""
+
+#: opac.js:INCOMPLETE_VOLUMES
+msgid "Incomplete volumes"
+msgstr ""
+
+#: opac.js:HOLDINGS_TABLE_CAPTION
+msgid "Holdings summary (${0})"
+msgstr ""
+
+#: opac.js:SUPPLEMENTS
+msgid "Previous supplements"
+msgstr ""
+
+#: opac.js:HOLDINGS
+msgid "Previous volumes"
+msgstr ""
+
+#: opac.js:DELETED_MFHD_RECORD
+msgid "Deleted MFHD record ${0}"
+msgstr ""
+
+#: opac.js:SAVE_MFHD_LABEL
+msgid "Save MFHD"
+msgstr ""
+
+#: opac.js:ONLINE_VOLUMES
+msgid "Online volumes"
+msgstr ""

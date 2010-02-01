@@ -3,16 +3,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2009-06-01 15:53+0400\n"
-"Last-Translator: Ruzanna <scinfo@flib.sci.am>\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2010-01-23 19:56+0000\n"
+"Last-Translator: Sergey Sedov <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
-"X-Poedit-Bookmarks: 81,321,-1,-1,-1,-1,-1,-1,-1,-1\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
+"X-Poedit-Bookmarks: 81,321,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -39,7 +40,7 @@ msgstr "$"
 
 #: common.language
 msgid "Language: "
-msgstr "Язык:"
+msgstr "Язык: "
 
 #: common.name
 msgid "Name"
@@ -195,7 +196,7 @@ msgstr "Расширенный поиск"
 
 #: common.nowSearching
 msgid "Now searching "
-msgstr "Поиск"
+msgstr "Поиск "
 
 #: common.ofAtLeast
 msgid " of about "
@@ -203,7 +204,7 @@ msgstr " of about "
 
 #: common.relevancy
 msgid "Match Score: "
-msgstr "Сочетай очки"
+msgstr "Сочетай очки "
 
 #: common.tips
 msgid "Tips:"
@@ -355,7 +356,7 @@ msgstr "Пользователь не найден в базе данных"
 
 #: ilsevent.1200
 msgid "The given username already exists in the database"
-msgstr " Данное имя пользователя уже существует в базе данных "
+msgstr "Данное имя пользователя уже существует в базе данных"
 
 #: ilsevent.5000
 msgid "Permission Denied"
@@ -393,7 +394,7 @@ msgstr "Следующая страница &gt;&gt;"
 
 #: common.textsize.title
 msgid "Text Size: "
-msgstr "Размер текста"
+msgstr "Размер текста "
 
 #: common.textsize.regular
 msgid "Regular"
@@ -464,7 +465,7 @@ msgstr "Совместного пользования"
 
 #: myopac.bookbag.toggle
 msgid "Share / Hide"
-msgstr "Совместно использовать / Скрыть "
+msgstr "Совместно использовать / Скрыть"
 
 #: myopac.bookbag.delete
 msgid "Delete this bookbag?"
@@ -496,7 +497,7 @@ msgstr "Создать новую папку"
 
 #: myopac.bookbag.naming
 msgid "Enter the name of the new Bookbag: "
-msgstr "Введите имя новой папки"
+msgstr "Введите имя новой папки "
 
 #: myopac.bookbag.share
 msgid "Share this Bookbag"
@@ -570,7 +571,7 @@ msgstr ""
 "для просмотра если папка не общее. Однако, если Вы предпочитаете не иметь \n"
 "связь между записью  Вашего патрона и конкретной единицы или единицaми, \n"
 "мы рекомендуем Вам не размещать единицы в папку или Вы \n"
-"избегали полaьзоватся всеми папками вместе. Спасибо.   "
+"избегали полaьзоватся всеми папками вместе. Спасибо."
 
 #: myopac.describe.bookbags
 msgid "Bookbags are..."
@@ -602,7 +603,7 @@ msgstr "Восстановление оставшихся"
 
 #: myopac.checked.noitems
 msgid "You have no items checked out at this time"
-msgstr "  У вас нет выданных единиц на данный момент "
+msgstr "У вас нет выданных единиц на данный момент"
 
 #: myopac.checked.other.circ
 msgid "Other Circulations"
@@ -614,7 +615,7 @@ msgstr "Циркулирующая библиотека"
 
 #: myopac.checked.item.type
 msgid "Circulation Type"
-msgstr "Тип циркуляций "
+msgstr "Тип циркуляций"
 
 #: myopac.checked.circ.time
 msgid "Please return by ..."
@@ -672,7 +673,7 @@ msgstr "Загрузка..."
 
 #: myopac.fines.overdue
 msgid "Overdue Materials"
-msgstr "Просроченные Материалы "
+msgstr "Просроченные Материалы"
 
 #: myopac.fines.checkout
 msgid "Checkout Date"
@@ -883,7 +884,7 @@ msgstr "Место поиска  по умолчанию"
 
 #: myopac.prefs.search.home
 msgid "Always search my home library by default."
-msgstr "По умолчанию всегда осуществить поиск в моей  библиотеке "
+msgstr "По умолчанию всегда осуществить поиск в моей  библиотеке"
 
 #: myopac.prefs.search.range
 msgid "Default Search Range"
@@ -933,7 +934,7 @@ msgid ""
 "Please see a librarian to renew your account."
 msgstr ""
 "Ваш аккаунт истек <span id='myopac.expired.date'/>! \n"
-"Информируйте библиотекаря чтобы обновить ваш аккаунт. "
+"Информируйте библиотекаря чтобы обновить ваш аккаунт."
 
 #: myopac.summary.notes
 msgid "* Staff Notes *"
@@ -1028,22 +1029,20 @@ msgid "State"
 msgstr "Штат"
 
 #: myopac.summary.address.country
-#, fuzzy
 msgid "Country"
-msgstr "Округ"
+msgstr "Страна"
 
 #: myopac.summary.address.zip
 msgid "Zip"
 msgstr "Zip"
 
 #: myopac.summary.address.edit
-#, fuzzy
 msgid "Edit Address"
-msgstr "эл. адрес"
+msgstr "Изменить адрес"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
-msgstr ""
+msgstr "Некорректный адрес"
 
 #: myopac.summary.username.error
 msgid "Please enter a username"
@@ -1322,7 +1321,7 @@ msgstr "Выберите библиотеку для поиска"
 
 #: navigate.loggedinas
 msgid "You are logged in as "
-msgstr "Вы вошли как"
+msgstr "Вы вошли как "
 
 #: navigate.loggedinas.title
 msgid "Logged in as..."
@@ -1510,7 +1509,7 @@ msgstr "Подробности заглавия Evergreen"
 
 #: opac.title.advanced
 msgid "Evergreen Advanced Search"
-msgstr " Расширенный поиск Evergreen"
+msgstr "Расширенный поиск Evergreen"
 
 #: opac.title.reqitems
 msgid "Evergreen Request Items"
@@ -1526,7 +1525,7 @@ msgstr "Сделайте хранение вместо меня"
 
 #: opac.holds.xulRecipient
 msgid "Enter recipient barcode"
-msgstr "Введите штрих-код получателя  "
+msgstr "Введите штрих-код получателя"
 
 #: opac.holds.recipient
 msgid "Recipient"
@@ -1544,7 +1543,7 @@ msgstr ""
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
-msgstr "Контактный телефон "
+msgstr "Контактный телефон"
 
 #: opac.holds.contactEmail
 msgid "Contact email address"
@@ -1556,7 +1555,7 @@ msgstr "Местоположение получения"
 
 #: opac.holds.success
 msgid "Hold was successfully placed"
-msgstr "Хранение была  успешно  размещена "
+msgstr "Хранение была  успешно  размещена"
 
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
@@ -1611,7 +1610,7 @@ msgstr "Не художественный"
 
 #: advanced.fiction
 msgid "Fiction"
-msgstr " Художественный"
+msgstr "Художественный"
 
 #: advanced.language
 msgid "Language"
@@ -1635,7 +1634,7 @@ msgstr "Общий"
 
 #: advanced.sort.criteria
 msgid "Sort Criteria"
-msgstr "                         "
+msgstr "Критерий сортировки"
 
 #: advanced.search.library
 msgid "Search Library"
@@ -1964,7 +1963,7 @@ msgstr "Тематики"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
-msgstr "  Упорядочить результаты по релевантности "
+msgstr "Упорядочить результаты по релевантности"
 
 #: result.sort_by.title
 msgid "Sort Results by Title"
@@ -2114,14 +2113,24 @@ msgstr "Опции расширенного хранения"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Пожалуйста, выберите  место, для размещения вашего хранения"
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "Хранение уже существует на запрошенную единицу"
 
 #: common.hold.exists.override
+#, fuzzy
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 "Хранение уже существует на запрошенную \n"
 "единицу. Хотите все же создавать хранение?"
@@ -2334,7 +2343,7 @@ msgstr "Простой поиск"
 
 #: slimpac.start.nowSearching
 msgid "Now searching: "
-msgstr "Поиск"
+msgstr "Поиск "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"

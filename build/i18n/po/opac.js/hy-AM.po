@@ -1,85 +1,85 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-18 00:41:36-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
+"PO-Revision-Date: 2009-12-21 06:34+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 
 #: opac.js:EDIT_PROPERTIES
 msgid "Edit Propeties"
-msgstr ""
+msgstr "Խմբագրիր նախապատվությունները"
 
 #: opac.js:CURRENT_SUPPLEMENTS
 msgid "Current supplements"
-msgstr ""
+msgstr "Ընթացիկ հավելումներ"
 
 #: opac.js:EDIT_MFHD_RECORD
 msgid "Edit Record"
-msgstr ""
+msgstr "Խմբագրիր գրառումը"
 
 #: opac.js:CURRENT_HOLDINGS
 msgid "Current volume"
-msgstr ""
+msgstr "Ընթացիկ հատորը"
 
 #: opac.js:CURRENT_INDEXES
 msgid "Current indexes"
-msgstr ""
+msgstr "Ընթացիկ ցուցիչները"
 
 #: opac.js:CREATED_MFHD_RECORD
 msgid "Created MFHD record for ${0}"
-msgstr ""
+msgstr "Ստեղծվել է MFHD գրառում ${0} համար"
 
 #: opac.js:CREATE_MFHD
 msgid "Add MFHD Record"
-msgstr ""
+msgstr "Ստեղծիր MFHD գրառում ${0} համար"
 
 #: opac.js:DELETE_MFHD
 msgid "Delete Record"
-msgstr ""
+msgstr "Ջնջել գրառումը"
 
 #: opac.js:EDIT_MFHD_MENU
 msgid "Edit Holdings"
-msgstr ""
+msgstr "Խմբագրիր պահումները"
 
 #: opac.js:INDEXES
 msgid "Previous indexes"
-msgstr ""
+msgstr "Նախորդ ցուցիչները"
 
 #: opac.js:MISSING_VOLUMES
 msgid "Missing volumes"
-msgstr ""
+msgstr "Բացակա հատորներ"
 
 #: opac.js:INCOMPLETE_VOLUMES
 msgid "Incomplete volumes"
-msgstr ""
+msgstr "Չհամալրված հատորներ"
 
 #: opac.js:HOLDINGS_TABLE_CAPTION
 msgid "Holdings summary (${0})"
-msgstr ""
+msgstr "Պահումների ընդհանրացում (${0})"
 
 #: opac.js:SUPPLEMENTS
 msgid "Previous supplements"
-msgstr ""
+msgstr "Նախորդ համալրումներ"
 
 #: opac.js:HOLDINGS
 msgid "Previous volumes"
-msgstr ""
+msgstr "Նախորդ հատորներ"
 
 #: opac.js:DELETED_MFHD_RECORD
 msgid "Deleted MFHD record ${0}"
-msgstr ""
+msgstr "Ջնջված MFHD գրառում ${0}"
 
 #: opac.js:SAVE_MFHD_LABEL
 msgid "Save MFHD"
-msgstr ""
+msgstr "Հիշիր MFHD"
 
 #: opac.js:ONLINE_VOLUMES
 msgid "Online volumes"
-msgstr ""
+msgstr "Առցանց հատորներ"

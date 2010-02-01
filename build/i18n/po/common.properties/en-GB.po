@@ -1,0 +1,828 @@
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-12-30 15:54+0000\n"
+"Last-Translator: Jonathan Field <Unknown>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Accelerator-Marker: &\n"
+
+#: common.exception
+msgid ""
+"!! This software has encountered an error.  Please tell your friendly system "
+"administrator or software developer the following:\n"
+"%1$s\n"
+"%2$s\n"
+msgstr ""
+"!! This software has encountered an error.  Please tell your friendly system "
+"administrator or software developer the following:\n"
+"%1$s\n"
+"%2$s\n"
+
+#: common.jsan.missing
+msgid "The JSAN library object is missing."
+msgstr "The JSAN library object is missing."
+
+#: common.error
+msgid "Please inform your help desk or developers of this error:"
+msgstr "Please inform your help desk or developers of this error:"
+
+#: common.ok
+msgid "Ok"
+msgstr "Ok"
+
+#: common.clear
+msgid "Clear"
+msgstr "Clear"
+
+#: common.confirm
+msgid "Check here to confirm this message."
+msgstr "Check here to confirm this message."
+
+#: common.cancelled
+msgid "Action Cancelled"
+msgstr ""
+
+#: common.error.default
+msgid "Please report that this happened."
+msgstr "Please report that this happened."
+
+#: common.barcode.status.warning
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
+msgstr "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
+
+#: common.barcode.status.warning.lost
+msgid "Lost"
+msgstr "Lost"
+
+#: common.barcode.status.warning.expired
+msgid "Expired"
+msgstr "Expired"
+
+#: common.barcode.status.warning.barred
+msgctxt "common.barcode.status.warning.barred"
+msgid "Barred"
+msgstr "Barred"
+
+#: common.barcode.status.warning.blocked
+msgid "Blocked"
+msgstr "Blocked"
+
+#: common.barcode.status.warning.unknown
+msgid "with an unknown code: %1$s"
+msgstr "with an unknown code: %1$s"
+
+#: common.date.invalid
+msgid "Invalid Date"
+msgstr "Invalid Date"
+
+#: common.action_complete
+msgid "Action completed."
+msgstr "Action completed."
+
+#. # common.grouping_string = the string that should be inserted between elements of a grouped list
+#: common.grouping_string
+msgid ","
+msgstr ","
+
+#: common.unimplemented
+msgid "Not yet implemented"
+msgstr "Not yet implemented"
+
+#: common.yes
+msgctxt "common.yes"
+msgid "Yes"
+msgstr "Yes"
+
+#: common.no
+msgid "No"
+msgstr "No"
+
+#: common.check_to_confirm
+msgid "Check here to confirm this message"
+msgstr "Check here to confirm this message"
+
+#: lang.version
+msgid "remote v1"
+msgstr "remote v1"
+
+#: openils.global_util.clear_cache.error
+msgid "Problem clearing the cache: %1$s"
+msgstr "Problem clearing the cache: %1$s"
+
+#: openils.global_util.clipboard.error
+msgid "Clipboard action failed: %1$s"
+msgstr "Clipboard action failed: %1$s"
+
+#: openils.global_util.clipboard
+msgid "Copied \"%1$s\" to clipboard."
+msgstr "Copied \"%1$s\" to clipboard."
+
+#: openils.global_util.content_window_jsobject.error
+msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
+msgstr "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
+
+#: openils.global_util.content_window.error
+msgid "Error with get_contentWindow(%1$s): %2$s"
+msgstr "Error with get_contentWindow(%1$s): %2$s"
+
+#: openils.global_util.font_size.error
+msgid "Error adjusting the font size: %1$s"
+msgstr "Error adjusting the font size: %1$s"
+
+#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
+#: staff.initials.format
+msgid "[ %1$s %2$s @ %3$s ]"
+msgstr ""
+
+#: staff.acp_label_barcode
+msgctxt "staff.acp_label_barcode"
+msgid "Barcode"
+msgstr "Barcode"
+
+#: staff.acp_label_call_number
+msgid "Call Number"
+msgstr "Class Number"
+
+#: staff.acp_label_circ_as_type
+msgid "Circulate As Type"
+msgstr "Circulate As Type"
+
+#: staff.acp_label_circ_lib
+msgid "Circulation Library"
+msgstr "Circulation Library"
+
+#: staff.acp_label_circ_modifier
+msgid "Circulation Modifier"
+msgstr "Circulation Modifier"
+
+#: staff.acp_label_copy_number
+msgid "Copy Number"
+msgstr "Copy Number"
+
+#: staff.acp_label_deposit_amount
+msgid "Deposit Amount"
+msgstr "Deposit Amount"
+
+#: staff.acp_label_fine_level
+msgid "Fine Level"
+msgstr "Fine Level"
+
+#: staff.acp_label_id
+msgid "Copy ID"
+msgstr "Copy ID"
+
+#: staff.acp_label_loan_duration
+msgid "Loan Duration"
+msgstr "Loan Duration"
+
+#: staff.acp_label_location
+msgid "Location"
+msgstr "Location"
+
+#: staff.acp_label_price
+msgid "Price"
+msgstr "Price"
+
+#: staff.acp_label_status
+msgctxt "staff.acp_label_status"
+msgid "Status"
+msgstr "Status"
+
+#: staff.ahr_current_copy_label
+msgid "Current Copy"
+msgstr "Current Copy"
+
+#: staff.ahr_current_copy_location_label
+msgid "Current Copy Location"
+msgstr "Current Copy Location"
+
+#: staff.ahr_email_notify_label
+msgid "Email Notify"
+msgstr "Email Notify"
+
+#: staff.ahr_expire_date_label
+msgid "Expire Date"
+msgstr "Expire Date"
+
+#: staff.ahr_fulfillment_time_label
+msgid "Fulfillment Time"
+msgstr "Fulfillment Time"
+
+#: staff.ahr_hold_type_label
+msgctxt "staff.ahr_hold_type_label"
+msgid "Type"
+msgstr "Type"
+
+#: staff.ahr_holdable_formats_label
+msgid "Holdable Formats"
+msgstr "Holdable Formats"
+
+#: staff.ahr_id_label
+msgid "Hold ID"
+msgstr "Hold ID"
+
+#: staff.ahr_phone_notify_label
+msgid "Phone Notify"
+msgstr "Phone Notify"
+
+#: staff.ahr_pickup_lib_label
+msgid "Pickup Library"
+msgstr "Pickup Library"
+
+#: staff.ahr_prev_check_time_label
+msgid "Previous Check Time"
+msgstr "Previous Check Time"
+
+#: staff.ahr_requestor_label
+msgid "Requestor"
+msgstr "Requestor"
+
+#: staff.ahr_selection_depth_label
+msgid "Selection Depth"
+msgstr "Selection Depth"
+
+#: staff.ahr_top_of_queue_label
+msgid "Top of Queue"
+msgstr "Top of Queue"
+
+#: staff.ahr_status_label
+msgctxt "staff.ahr_status_label"
+msgid "Status"
+msgstr "Status"
+
+#: staff.ahr_target_label
+msgid "Target"
+msgstr "Target"
+
+#: staff.ahr_usr_label
+msgctxt "staff.ahr_usr_label"
+msgid "User"
+msgstr "User"
+
+#: staff.circ_label_due_date
+msgid "Due Date"
+msgstr "Due Date"
+
+#: staff.circ_label_due_time
+msgid "Due Time"
+msgstr "Due Time"
+
+#: staff.circ_label_id
+msgid "Circulation ID"
+msgstr "Circulation ID"
+
+#: staff.circ_label_renewal_remaining
+msgid "Remaining Renewals"
+msgstr "Remaining Renewals"
+
+#: staff.mvr_label_author
+msgctxt "staff.mvr_label_author"
+msgid "Author"
+msgstr "Author"
+
+#: staff.mvr_label_doc_id
+msgid "Document ID"
+msgstr "Document ID"
+
+#: staff.mvr_label_title
+msgctxt "staff.mvr_label_title"
+msgid "Title"
+msgstr "Title"
+
+#: staff.bills_xact_dates_label
+msgid "Record / Dates"
+msgstr "Record / Dates"
+
+#: staff.bills_information
+msgid "Information"
+msgstr "Information"
+
+#: staff.bills_current_payment_label
+msgid "Current Payment"
+msgstr "Current Payment"
+
+#: staff.csp_id_label
+msgid "Penalty Type ID"
+msgstr "Penalty Type ID"
+
+#: staff.csp_name_label
+msgid "Name"
+msgstr "Name"
+
+#: staff.csp_label_label
+msgid "Label"
+msgstr "Label"
+
+#: staff.csp_block_list_label
+msgid "Block List"
+msgstr "Block List"
+
+#: staff.csp_block_circ_label
+msgid "Blocks Circulations?"
+msgstr "Blocks Circulations?"
+
+#: staff.csp_block_renew_label
+msgid "Blocks Renewals?"
+msgstr "Blocks Renewals?"
+
+#: staff.csp_block_hold_label
+msgid "Blocks Holds?"
+msgstr "Blocks Holds?"
+
+#: staff.csp_block_circ_yes
+msgctxt "staff.csp_block_circ_yes"
+msgid "Yes"
+msgstr "Yes"
+
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
+#: staff.csp_block_circ_no
+msgid ""
+"_: staff.csp_block_circ_no\n"
+""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2009-12-30 15:54+0000\n"
+"Last-Translator: Jonathan Field <Unknown>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+
+#: staff.csp_block_renew_yes
+msgctxt "staff.csp_block_renew_yes"
+msgid "Yes"
+msgstr "Yes"
+
+#: staff.csp_block_hold_yes
+msgctxt "staff.csp_block_hold_yes"
+msgid "Yes"
+msgstr "Yes"
+
+#: staff.ausp_id_label
+msgid "Penalty ID"
+msgstr "Penalty ID"
+
+#: staff.ausp_staff_label
+msgid "Applied By"
+msgstr "Applied By"
+
+#: staff.ausp_set_date_label
+msgid "Applied On"
+msgstr "Applied On"
+
+#: staff.ausp_note_label
+msgctxt "staff.ausp_note_label"
+msgid "Note"
+msgstr "Note"
+
+#: staff.ausp_org_unit_label
+msgid "Library"
+msgstr "Library"
+
+#: staff.mbts_id_label
+msgid "Bill #"
+msgstr "Bill #"
+
+#: staff.mbts_xact_start_label
+msgid "Start"
+msgstr "Start"
+
+#: staff.mbts_xact_finish_label
+msgid "Finish"
+msgstr "Finish"
+
+#: staff.mbts_xact_type_label
+msgctxt "staff.mbts_xact_type_label"
+msgid "Type"
+msgstr "Type"
+
+#: staff.mbts_total_owed_label
+msgid "Total Billed"
+msgstr "Total Billed"
+
+#: staff.mbts_total_paid_label
+msgid "Total Paid"
+msgstr "Total Paid"
+
+#: staff.mbts_balance_owed_label
+msgid "Balance Owed"
+msgstr "Balance Owed"
+
+#: staff.mbts_usr_label
+msgctxt "staff.mbts_usr_label"
+msgid "User"
+msgstr "User"
+
+#: staff.mbts_last_billing_note_label
+msgid "Last Billing Note"
+msgstr "Last Billing Note"
+
+#: staff.mbts_last_billing_type_label
+msgid "Last Billing Type"
+msgstr "Last Billing Type"
+
+#: staff.mbts_last_billing_timestamp_label
+msgid "Last Billed"
+msgstr "Last Billed"
+
+#: staff.mbts_last_payment_note_label
+msgid "Last Payment Note"
+msgstr "Last Payment Note"
+
+#: staff.mbts_last_payment_type_label
+msgid "Last Payment Type"
+msgstr "Last Payment Type"
+
+#: staff.mbts_last_payment_timestamp_label
+msgid "Last Payment"
+msgstr "Last Payment"
+
+#: staff.mb_billing_type_label
+msgid "Billing Type"
+msgstr "Billing Type"
+
+#: staff.mb_xact_label
+msgctxt "staff.mb_xact_label"
+msgid "Transaction ID"
+msgstr "Transaction ID"
+
+#: staff.mb_billing_ts_label
+msgctxt "staff.mb_billing_ts_label"
+msgid "When"
+msgstr "When"
+
+#: staff.mb_void_time_label
+msgid "Void Time"
+msgstr "Void Time"
+
+#: staff.mb_note_label
+msgctxt "staff.mb_note_label"
+msgid "Note"
+msgstr "Note"
+
+#: staff.mb_amount_label
+msgctxt "staff.mb_amount_label"
+msgid "Amount"
+msgstr "Amount"
+
+#: staff.mb_voider_label
+msgid "Voider"
+msgstr "Voider"
+
+#: staff.mb_voided_label
+msgctxt "staff.mb_voided_label"
+msgid "Voided"
+msgstr "Voided"
+
+#: staff.mb_id_label
+msgid "Billing ID"
+msgstr "Billing ID"
+
+#: staff.mp_credit_card_payment_label
+msgid "Credit Card Payment"
+msgstr "Credit Card Payment"
+
+#: staff.mp_forgive_payment_label
+msgid "Forgive Payment"
+msgstr "Forgive Payment"
+
+#: staff.mp_payment_timestamp_label
+msgctxt "staff.mp_payment_timestamp_label"
+msgid "When"
+msgstr "When"
+
+#: staff.mp_payment_type_label
+msgid "Payment Type"
+msgstr "Payment Type"
+
+#: staff.mp_voided_label
+msgctxt "staff.mp_voided_label"
+msgid "Voided"
+msgstr "Voided"
+
+#: staff.mp_id_label
+msgid "Payment ID"
+msgstr "Payment ID"
+
+#: staff.mp_goods_payment_label
+msgid "Goods Payment"
+msgstr "Goods Payment"
+
+#: staff.mp_xact_label
+msgctxt "staff.mp_xact_label"
+msgid "Transaction ID"
+msgstr "Transaction ID"
+
+#: staff.mp_credit_payment_label
+msgid "Credit Payment"
+msgstr "Credit Payment"
+
+#: staff.mp_work_payment_label
+msgid "Work Payment"
+msgstr "Work Payment"
+
+#: staff.mp_note_label
+msgctxt "staff.mp_note_label"
+msgid "Note"
+msgstr "Note"
+
+#: staff.mp_cash_payment_label
+msgid "Cash Payment"
+msgstr "Cash Payment"
+
+#: staff.mp_amount_label
+msgctxt "staff.mp_amount_label"
+msgid "Amount"
+msgstr "Amount"
+
+#: staff.mp_check_payment_label
+msgid "Check Payment"
+msgstr "Cheque Payment"
+
+#: staff.mp_cash_drawer_label
+msgid "Workstation"
+msgstr "Workstation"
+
+#: staff.mp_accepting_usr_label
+msgid "Staff"
+msgstr "Staff"
+
+#: staff.card_barcode_label
+msgctxt "staff.card_barcode_label"
+msgid "Barcode"
+msgstr "Barcode"
+
+#: staff.au_active_label
+msgid "Active"
+msgstr "Active"
+
+#: staff.au_usrname_label
+msgid "Login Name"
+msgstr "Login Name"
+
+#: staff.au_profile_label
+msgid "Profile"
+msgstr "Profile"
+
+#: staff.au_barred_label
+msgctxt "staff.au_barred_label"
+msgid "Barred"
+msgstr "Barred"
+
+#: staff.au_alert_message_label
+msgid "Alert"
+msgstr "Alert"
+
+#: staff.au_claims_returned_count_label
+msgid "Returns Claimed"
+msgstr "Returns Claimed"
+
+#: staff.au_create_date_label
+msgid "Created On"
+msgstr "Created On"
+
+#: staff.au_expire_date_label
+msgid "Expires On"
+msgstr "Expires On"
+
+#: staff.au_home_library_label
+msgid "Home Library"
+msgstr "Home Library"
+
+#: staff.au_home_library_fullname_label
+msgid "Home Library (Full Name)"
+msgstr "Home Library (Full Name)"
+
+#: staff.au_credit_forward_balance_label
+msgid "Credit"
+msgstr "Credit"
+
+#: staff.au_day_phone_label
+msgid "Day Phone"
+msgstr "Day Phone"
+
+#: staff.au_evening_phone_label
+msgid "Evening Phone"
+msgstr "Evening Phone"
+
+#: staff.au_other_phone_label
+msgid "Other Phone"
+msgstr "Other Phone"
+
+#: staff.au_alias_label
+msgid "Alias"
+msgstr "Alias"
+
+#: staff.au_email_label
+msgid "Email"
+msgstr "Email"
+
+#: staff.au_birth_date_label
+msgid "Birth Date"
+msgstr "Birth Date"
+
+#: staff.au_ident_type_label
+msgid "Identification Type"
+msgstr "Identification Type"
+
+#: staff.au_ident_value_label
+msgid "Identification Value"
+msgstr "Identification Value"
+
+#: staff.au_ident_type2_label
+msgid "Identification Type 2"
+msgstr "Identification Type 2"
+
+#: staff.au_ident_value2_label
+msgid "Identification Value 2"
+msgstr "Identification Value 2"
+
+#: staff.au_net_access_level_label
+msgid "Internet Access"
+msgstr "Internet Access"
+
+#: staff.au_master_account_label
+msgid "Group Lead"
+msgstr "Group Lead"
+
+#: staff.au_group_id_label
+msgid "Group ID"
+msgstr "Group ID"
+
+#: staff.au_id_label
+msgid "User ID"
+msgstr "User ID"
+
+#: staff.au_name_prefix_label
+msgid "Prefix"
+msgstr "Prefix"
+
+#: staff.au_family_name_label
+msgid "Family Name"
+msgstr "Family Name"
+
+#: staff.au_first_given_name_label
+msgid "First Name"
+msgstr "First Name"
+
+#: staff.au_second_given_name_label
+msgid "Middle Name"
+msgstr "Middle Name"
+
+#: staff.au_name_suffix_label
+msgid "Suffix"
+msgstr "Suffix"
+
+#: staff.z39_50.search_class.author
+msgctxt "staff.z39_50.search_class.author"
+msgid "Author"
+msgstr "Author"
+
+#: staff.z39_50.search_class.isbn
+msgid "ISBN"
+msgstr "ISBN"
+
+#: staff.z39_50.search_class.issn
+msgid "ISSN"
+msgstr "ISSN"
+
+#: staff.z39_50.search_class.item_type
+msgid "Item Type"
+msgstr "Item Type"
+
+#: staff.z39_50.search_class.item_type.all
+msgid "All Formats"
+msgstr "All Formats"
+
+#: staff.z39_50.search_class.item_type.art
+msgid "Papers/Articles"
+msgstr "Papers/Articles"
+
+#: staff.z39_50.search_class.item_type.bks
+msgid "Books"
+msgstr "Books"
+
+#: staff.z39_50.search_class.item_type.com
+msgid "Computer files"
+msgstr "Computer files"
+
+#: staff.z39_50.search_class.item_type.map
+msgid "Maps"
+msgstr "Maps"
+
+#: staff.z39_50.search_class.item_type.mix
+msgid "Mixed material"
+msgstr "Mixed material"
+
+#: staff.z39_50.search_class.item_type.rec
+msgid "Sound recordings"
+msgstr "Sound recordings"
+
+#: staff.z39_50.search_class.item_type.sco
+msgid "Musical scores"
+msgstr "Musical scores"
+
+#: staff.z39_50.search_class.item_type.ser
+msgid "Serials"
+msgstr "Serials"
+
+#: staff.z39_50.search_class.item_type.url
+msgid "Internet Resources"
+msgstr "Internet Resources"
+
+#: staff.z39_50.search_class.item_type.vis
+msgid "Visual materials"
+msgstr "Visual materials"
+
+#: staff.z39_50.search_class.lccn
+msgid "LCCN"
+msgstr "LCCN"
+
+#: staff.z39_50.search_class.pubdate
+msgid "Publication Date"
+msgstr "Publication Date"
+
+#: staff.z39_50.search_class.publisher
+msgid "Publisher"
+msgstr "Publisher"
+
+#: staff.z39_50.search_class.tcn
+msgid "Accession #"
+msgstr "Accession #"
+
+#: staff.z39_50.search_class.title
+msgctxt "staff.z39_50.search_class.title"
+msgid "Title"
+msgstr "Title"
+
+#: staff.z39_50_import_interface_label
+msgid "Z39.50 Import"
+msgstr "Z39.50 Import"
+
+#: staff.main.data.loaded
+msgid "Data loaded."
+msgstr "Data loaded."
+
+#: staff.main.gen_offline_widgets.synced
+msgid "Offline interface synchronized with server."
+msgstr "Offline interface synchronised with server."
+
+#: staff.main.gen_offline_widgets.noncat_sort.error
+msgid "error in noncat sorting:"
+msgstr "error in noncat sorting:"
+
+#: staff.main.gen_offline_widgets.please_wait
+msgid "Please wait"
+msgstr "Please wait"
+
+#: staff.main.gen_offline_widgets.workstation_registration_denied
+msgid "You do not have permission to register a workstation."
+msgstr "You do not have permission to register a workstation."
+
+#: staff.main.gen_offline_widgets.registration.override
+msgid "Override Registration Failure?"
+msgstr "Override Registration Failure?"
+
+#: staff.main.gen_offline_widgets.registration.error
+msgid "Workstation Registration error (%1$s)"
+msgstr "Workstation Registration error (%1$s)"
+
+#: staff.main.gen_offline_widgets.registration.success
+msgid "Registration successful"
+msgstr "Registration successful"
+
+#: staff.util.timestamp_dialog.future_date_disallowed
+msgid "Future dates disallowed."
+msgstr "Future dates disallowed."
+
+#: staff.util.timestamp_dialog.past_date_disallowed
+msgid "Past dates disallowed."
+msgstr "Past dates disallowed."
+
+#: staff.util.timestamp_dialog.today_disallowed
+msgid "Today disallowed."
+msgstr "Today disallowed."
+
+#: tab.label.triggered_events_for_copy
+msgid "Triggered Events: %1$s"
+msgstr "Triggered Events: %1$s"

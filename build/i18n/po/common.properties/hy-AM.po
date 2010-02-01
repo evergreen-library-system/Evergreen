@@ -4,14 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-08-04 17:34+0400\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2010-01-15 13:34+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -43,7 +44,11 @@ msgstr "Մաքրել"
 
 #: common.confirm
 msgid "Check here to confirm this message."
-msgstr "Այս հաղորդումը հաստատելու համար ստուգիր այստեղ  "
+msgstr "Այս հաղորդումը հաստատելու համար ստուգիր այստեղ"
+
+#: common.cancelled
+msgid "Action Cancelled"
+msgstr ""
 
 #: common.error.default
 msgid "Please report that this happened."
@@ -132,6 +137,11 @@ msgstr "Error with get_contentWindow(%1$s): %2$s"
 msgid "Error adjusting the font size: %1$s"
 msgstr "Սխալ ֆոնտի չափը հավասարեցնելիս: %1$s"
 
+#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
+#: staff.initials.format
+msgid "[ %1$s %2$s @ %3$s ]"
+msgstr ""
+
 #: staff.acp_label_barcode
 msgctxt "staff.acp_label_barcode"
 msgid "Barcode"
@@ -192,19 +202,15 @@ msgstr "Ընթացիկ պատճե"
 
 #: staff.ahr_current_copy_location_label
 msgid "Current Copy Location"
-msgstr ""
+msgstr "Ընթացիկ օրինակի տեղաբաշխում"
 
 #: staff.ahr_email_notify_label
 msgid "Email Notify"
 msgstr "Էլ փոստ տեղեկացում"
 
-#: staff.ahr_expire_time_label
-msgid "Expire Time"
-msgstr "Լրանալու ժամկետ"
-
 #: staff.ahr_expire_date_label
 msgid "Expire Date"
-msgstr ""
+msgstr "Ժամկետը լրանալու ամսաթիվ"
 
 #: staff.ahr_fulfillment_time_label
 msgid "Fulfillment Time"
@@ -245,7 +251,7 @@ msgstr "Ընտրանքի խորություն"
 
 #: staff.ahr_top_of_queue_label
 msgid "Top of Queue"
-msgstr ""
+msgstr "Հարցման սկիզբ"
 
 #: staff.ahr_status_label
 msgctxt "staff.ahr_status_label"
@@ -267,7 +273,7 @@ msgstr "Վերադարձի ամսաթիվ"
 
 #: staff.circ_label_due_time
 msgid "Due Time"
-msgstr ""
+msgstr "Վերադարձի ժամ"
 
 #: staff.circ_label_id
 msgid "Circulation ID"
@@ -305,31 +311,31 @@ msgstr "Ընթացիկ վճարում"
 
 #: staff.csp_id_label
 msgid "Penalty Type ID"
-msgstr ""
+msgstr "Տուգանքի տեսակի ID"
 
 #: staff.csp_name_label
 msgid "Name"
-msgstr ""
+msgstr "Անուն"
 
 #: staff.csp_label_label
 msgid "Label"
-msgstr ""
+msgstr "Պիտակ"
 
 #: staff.csp_block_list_label
 msgid "Block List"
-msgstr ""
+msgstr "Արգելափակիր ցուցակը"
 
 #: staff.csp_block_circ_label
 msgid "Blocks Circulations?"
-msgstr ""
+msgstr "Արգելափակվա՞ծ սպասարկումներ"
 
 #: staff.csp_block_renew_label
 msgid "Blocks Renewals?"
-msgstr ""
+msgstr "Արգելափակվա՞ծ թարմացումներ"
 
 #: staff.csp_block_hold_label
 msgid "Blocks Holds?"
-msgstr ""
+msgstr "Արգելափակվա՞ծ պահումներ"
 
 #: staff.csp_block_circ_yes
 msgctxt "staff.csp_block_circ_yes"
@@ -344,14 +350,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-14 22:08-0400\n"
-"PO-Revision-Date: 2008-08-04 17:34+0400\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-01-15 13:34+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.csp_block_renew_yes
@@ -366,15 +373,15 @@ msgstr "Այւ"
 
 #: staff.ausp_id_label
 msgid "Penalty ID"
-msgstr ""
+msgstr "Տուգանքի ID"
 
 #: staff.ausp_staff_label
 msgid "Applied By"
-msgstr ""
+msgstr "Կիրառված է կողմից"
 
 #: staff.ausp_set_date_label
 msgid "Applied On"
-msgstr ""
+msgstr "Կիրառված է սրա վրա"
 
 #: staff.ausp_note_label
 msgctxt "staff.ausp_note_label"
@@ -383,7 +390,7 @@ msgstr "Նշում"
 
 #: staff.ausp_org_unit_label
 msgid "Library"
-msgstr ""
+msgstr "Գրադարան"
 
 #: staff.mbts_id_label
 msgid "Bill #"
@@ -617,7 +624,7 @@ msgstr "Այլ հեռախոս"
 
 #: staff.au_alias_label
 msgid "Alias"
-msgstr ""
+msgstr "Կեղծանուն"
 
 #: staff.au_email_label
 msgid "Email"
@@ -799,16 +806,19 @@ msgstr "Գրանցումը հաջող է"
 
 #: staff.util.timestamp_dialog.future_date_disallowed
 msgid "Future dates disallowed."
-msgstr ""
+msgstr "Ապագա ամսաթվերը արվելված են"
 
 #: staff.util.timestamp_dialog.past_date_disallowed
 msgid "Past dates disallowed."
-msgstr ""
+msgstr "Նախորդ ամսաթվերը արգելված են"
 
 #: staff.util.timestamp_dialog.today_disallowed
 msgid "Today disallowed."
-msgstr ""
+msgstr "Այսօրը արգելված է"
 
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
-msgstr ""
+msgstr "Սկիզբ առնող գործողություններ: %1$s"
+
+#~ msgid "Expire Time"
+#~ msgstr "Լրանալու ժամկետ"

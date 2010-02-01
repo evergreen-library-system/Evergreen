@@ -1,582 +1,592 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
 #. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-12-26 09:47+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
 msgid "You are logged in as "
-msgstr ""
+msgstr "Դու մուտք ես գործել որպես "
 
 #: reports.common.loading
 msgid "Loading..."
-msgstr ""
+msgstr "Բեռնավորում..."
 
 #: reports.oils_rpt.title
 msgid "Evergreen: Reports"
-msgstr ""
+msgstr "Evergreen: Հաշվետվություններ"
 
 #: reports.oils_rpt.insufficient_permissions
 msgid "You do not have sufficient permissions to run reports"
 msgstr ""
+"Հաշվետվությունները աշխատեցնելու համար դու չունես բավարար իրավասություններ"
 
 #: reports.oils_rpt.my_folders
 msgid "My Folders"
-msgstr ""
+msgstr "Իմ թղթապանակները"
 
 #: reports.oils_rpt.shared_folders
 msgid "Shared Folders"
-msgstr ""
+msgstr "Համատեղված թղթապանակներ"
 
 #: reports.oils_rpt.manage_folder_contents
 msgid "Manage Folder Contents"
-msgstr ""
+msgstr "Կառավարիր թղթապանակի բովանդակությունը"
 
 #: reports.oils_rpt.manage_folder
 msgid "Manage Folder"
-msgstr ""
+msgstr "Կառավարիր թղթապանակը"
 
 #: reports.oils_rpt.created_by
 msgid "created by "
-msgstr ""
+msgstr "ստեղծված է կողմից "
 
 #: reports.oils_rpt.create_new_sub_folder
 msgctxt "reports.oils_rpt.create_new_sub_folder"
 msgid "Create a new sub-folder"
-msgstr ""
+msgstr "Ստեղծիր նոր ենթաթղթապանակ"
 
 #: reports.oils_rpt.folder_type
 msgid "Folder type: "
-msgstr ""
+msgstr "Թղթապանակի տեսակ "
 
 #: reports.oils_rpt.folder_name
 msgctxt "reports.oils_rpt.folder_name"
 msgid "Folder Name:"
-msgstr ""
+msgstr "Թղթապանակի անուն"
 
 #: reports.oils_rpt.share_folder
 msgid "Share this folder:"
-msgstr ""
+msgstr "Համատեղիր այս Թղթապանակը։"
 
 #: reports.oils_rpt.do_not_share
 msgctxt "reports.oils_rpt.do_not_share"
 msgid "Do not share"
-msgstr ""
+msgstr "Մի համատեղիր"
 
 #: reports.oils_rpt.share
 msgctxt "reports.oils_rpt.share"
 msgid "Share"
-msgstr ""
+msgstr "Համատեղել"
 
 #: reports.oils_rpt.share_with
 msgctxt "reports.oils_rpt.share_with"
 msgid "Share with:"
-msgstr ""
+msgstr "Համատեղիր սրա հետ։"
 
 #: reports.oils_rpt.create_sub_folder
 msgctxt "reports.oils_rpt.create_sub_folder"
 msgid "Create Sub Folder"
-msgstr ""
+msgstr "Ստեղծիր ենթաթղթապանակի"
 
 #: reports.oils_rpt_builder.title
 msgid "Evergreen: Report Builder"
-msgstr ""
+msgstr "Evergreen: Հաշվտվության շինարար"
 
 #: reports.oils_rpt_builder.reports_home
 msgid "Reports Home"
-msgstr ""
+msgstr "Հաշվետվությունների տուն"
 
 #: reports.oils_rpt_builder.cloning_template
 msgid "Cloning template"
-msgstr ""
+msgstr "Կլոնավորող ձևանմուշ"
 
 #: reports.oils_rpt_builder.template_name
 msgid "Template Name: "
-msgstr ""
+msgstr "Ձևանմուշի անվանում։ "
 
 #: reports.oils_rpt_builder.template_description
 msgid "Template Description: "
-msgstr ""
+msgstr "Ձևանմուշի նկարագրություն։ "
 
 #: reports.oils_rpt_builder.template_type
 msgid "Template Type: "
-msgstr ""
+msgstr "Ձևանմուշի տեսակ։ "
 
 #: reports.oils_rpt_builder.save_this_template
 msgid "Save this Template: "
-msgstr ""
+msgstr "Հիշիր այս Ձևանմուշը։ "
 
 #: reports.oils_rpt_builder.filtering_note
 msgid ""
 "Indicates that when filtering on the item, a list of named choices will be "
 "generated."
 msgstr ""
+"Բնորոշում է, որ երբ նյութի վրա կատարվում է զտում ապա անվանական "
+"ընտրությունների ցուցակ է գեներացվում։"
 
 #: reports.oils_rpt_builder.temp_disp_items
 msgid "Template Display Items"
-msgstr ""
+msgstr "Նյութերի արտածման ձևանմուշ"
 
 #: reports.oils_rpt_builder.remove_selected
 msgid "Remove Selected"
-msgstr ""
+msgstr "Հեռացրու ընտրվածները"
 
 #: reports.oils_rpt_builder.move_up
 msgctxt "reports.oils_rpt_builder.move_up"
 msgid "Move Up"
-msgstr ""
+msgstr "Տեղափոխել վերեւ"
 
 #: reports.oils_rpt_builder.move_down
 msgctxt "reports.oils_rpt_builder.move_down"
 msgid "Move Down"
-msgstr ""
+msgstr "Տեղափոխել ներքեւ"
 
 #. The below two entity strings were the contents of the .xhtml file but I don't think that works when using XML entities
 #. ENTITY reports.oils_rpt_builder.move_up "Move &uarr;"
 #. ENTITY reports.oils_rpt_builder.move_down "Move &darr;"
 #: reports.oils_rpt_builder.template_filters
 msgid "Template Filters"
-msgstr ""
+msgstr "Ձևանմուշի զտիչներ"
 
 #: reports.oils_rpt_builder.report_aggregate_filters
 msgid "Report Aggregate Filters"
-msgstr ""
+msgstr "Հարշվետվությանը կցված զտիչներ"
 
 #: reports.oils_rpt_builder.hint
 msgid "Hint: "
-msgstr ""
+msgstr "Հնարք: "
 
 #: reports.oils_rpt_builder.hint_item_details
 msgid "Double-click on an item to see the item details."
-msgstr ""
+msgstr "Կրկնակի կտտացրու նյութի վրա, որպեսզի տեսնես նյութի մանրամասները։"
 
 #: reports.oils_rpt_builder.template_types
 msgid "Template Types"
-msgstr ""
+msgstr "Ձևանմուշի տեսակներ"
 
 #: reports.oils_rpt_builder.display_items
 msgid "Display Items"
-msgstr ""
+msgstr "Արտածիր նյութերը"
 
 #: reports.oils_rpt_builder.filters
 msgid "Filters"
-msgstr ""
+msgstr "Զտիչներ"
 
 #: reports.oils_rpt_builder.aggregate_filters
 msgctxt "reports.oils_rpt_builder.aggregate_filters"
 msgid "Aggregate Filters"
-msgstr ""
+msgstr "Ագրեգացրու զտիչները"
 
 #: reports.oils_rpt_builder.create_aggregate_filter
 msgid "Create Aggregate Filter"
-msgstr ""
+msgstr "Ստեղծիր համահավաք զտիչ"
 
 #: reports.oils_rpt_builder.field_editor_window.label
 msgid "Select how this field should be displayed:"
-msgstr ""
+msgstr "Ընտրիր թե այս դաշտը ինչպես պետք է արտածվի։"
 
 #: reports.oils_rpt_builder.add_item
 msgid "Add Item"
-msgstr ""
+msgstr "Ավելացրու նյութ"
 
 #: reports.oils_rpt_builder.select_filter_to_apply
 msgid "Select what filter should be applied to this field:"
-msgstr ""
+msgstr "Ընտրիր թե ինչ զտիչ պետք է կիրառվի այս դաշտի վրա։"
 
 #: reports.oils_rpt_builder.choose_a_transform
 msgid "Choose a Transform: "
-msgstr ""
+msgstr "Ընտրիր ձևափոխիչը: "
 
 #: reports.oils_rpt_builder.choose_a_filter
 msgid "Choose a Filter: "
-msgstr ""
+msgstr "Ընտրիր զտիչը: "
 
 #: reports.oils_rpt_builder.create_filter
 msgid "Create Filter"
-msgstr ""
+msgstr "Ստեղծիր զտիչ"
 
 #: reports.oils_rpt_builder.aggregate_filter_to_apply
 msgid "Select what aggregate filter should be applied to this field:"
-msgstr ""
+msgstr "Ընտրր թե ինչ համահավաք զտիչ պետք է կիրառվի այս դաշտի վրա։"
 
 #: reports.oils_rpt_builder.selected_to_sort_columns
 msgid "Select how the columns should be sorted"
-msgstr ""
+msgstr "Ընտիր թե ինչպես պետք է սյունակները տեսակավորվեն"
 
 #: reports.oils_rpt_builder.choose_column
 msgid "Choose a column: "
-msgstr ""
+msgstr "Ընտրիր սյունակկը: "
 
 #: reports.oils_rpt_builder.choose_sorting_direction
 msgid "Choose the direction the sorting should occur: "
-msgstr ""
+msgstr "Ընտրիր տեսակավորման ուղղությունը։ "
 
 #: reports.oils_rpt_builder.ascending
 msgid "Ascending"
-msgstr ""
+msgstr "Աճող"
 
 #: reports.oils_rpt_builder.descending
 msgid "Descending"
-msgstr ""
+msgstr "Նվազող"
 
 #: reports.oils_rpt_builder.add_sort
 msgid "Add Sort"
-msgstr ""
+msgstr "Ավելացրու տեսակավորումը"
 
 #: reports.oils_rpt_builder.close_window
 msgid "Close Window"
-msgstr ""
+msgstr "Փակիր պատուհանը"
 
 #: reports.oils_rpt_builder.confirm_new_report
 msgid ""
 "This will destroy the report you are currently constructing.  Are you sure "
 "you wish to do this?"
 msgstr ""
+"Սա կոչնչացնի ստեղծվող հաշվետվությունը։ Վստա՞հ ես որ ցանկանում ես շարունակել։"
 
 #: reports.oils_rpt_common.action_succeeded
 msgid "Action Succeeded"
-msgstr ""
+msgstr "Գործողությունը հաջողված է"
 
 #: reports.oils_rpt_common.action_failed
 msgid "Action Failed"
-msgstr ""
+msgstr "Գործողությունը տապալված է"
 
 #: reports.oils_rpt_common.generic_calendar_button
 msgid "Date selector"
-msgstr ""
+msgstr "Ամսաթվի ընտրիչ"
 
 #: reports.oils_rpt_editor.template_name
 msgid "Template Name:"
-msgstr ""
+msgstr "Ձևանմուշի անուն"
 
 #: reports.oils_rpt_editor.template_creator
 msgid "Template Creator:"
-msgstr ""
+msgstr "Ձևանմուշի ստեղծող։"
 
 #: reports.oils_rpt_editor.template_description
 msgid "Template Description:"
-msgstr ""
+msgstr "Ձևանմուշի նկարագրություն։"
 
 #: reports.oils_rpt_editor.report_name
 msgid "Report Name:"
-msgstr ""
+msgstr "Հաշվետվության անուն։"
 
 #: reports.oils_rpt_editor.report_description
 msgid "Report Description:"
-msgstr ""
+msgstr "Հաշվետվության նկարագրություն։"
 
 #: reports.oils_rpt_editor.report_columns
 msgid "Report Columns:"
-msgstr ""
+msgstr "Հաշվետվության սյունակ։"
 
 #: reports.oils_rpt_editor.pivot_label_column
 msgid "Pivot Label Column:"
-msgstr ""
+msgstr "Հիմնական պիտակի սյունակ։"
 
 #: reports.oils_rpt_editor.select_option
 msgid "Select One (optional)"
-msgstr ""
+msgstr "Ընտրիր մեկը (ոչ պարտադիր)"
 
 #: reports.oils_rpt_editor.pivot_data_column
 msgid "Pivot Data Column:"
-msgstr ""
+msgstr "Հիմնական տվյալի սյունակ։"
 
 #: reports.oils_rpt_editor.store_report_definition
 msgid "Choose a folder to store this report definition: "
-msgstr ""
+msgstr "Ընտրիր թղթապանակը այս հաշվետվության սահմանումը պահելու համար: "
 
 #: reports.oils_rpt_editor.selected_folder
 msgctxt "reports.oils_rpt_editor.selected_folder"
 msgid "Selected Folder: "
-msgstr ""
+msgstr "Ընտրիր թղթապանակը։ "
 
 #: reports.oils_rpt_editor.output_options
 msgid "Output Options"
-msgstr ""
+msgstr "Ելքային ընտրություններ"
 
 #: reports.oils_rpt_editor.excel_output
 msgid "Excel Output"
-msgstr ""
+msgstr "Excel ելք"
 
 #: reports.oils_rpt_editor.csv_output
 msgid "CSV Output"
-msgstr ""
+msgstr "CSV ելք"
 
 #: reports.oils_rpt_editor.html_output
 msgid "HTML Output"
-msgstr ""
+msgstr "HTML ելք"
 
 #: reports.oils_rpt_editor.bar_charts
 msgid "Bar Charts"
-msgstr ""
+msgstr "Սյունակային հիստոգրամաններ"
 
 #: reports.oils_rpt_editor.line_charts
 msgid "Line Charts"
-msgstr ""
+msgstr "Տողային հիստոգրամաններ"
 
 #: reports.oils_rpt_editor.recurring_report
 msgid "Recurring Report: "
-msgstr ""
+msgstr "Կրկնվող հաշվետվություն։ "
 
 #: reports.oils_rpt_editor.recurring_interval
 msgid "Recurrence Interval: "
-msgstr ""
+msgstr "Կրկնվող տիրույթ։ "
 
 #: reports.oils_rpt_editor.days
 msgctxt "reports.oils_rpt_editor.days"
 msgid "Day(s)"
-msgstr ""
+msgstr "Օր(եր)"
 
 #: reports.oils_rpt_editor.weeks
 msgctxt "reports.oils_rpt_editor.weeks"
 msgid "Weeks(s)"
-msgstr ""
+msgstr "Շաբաթ(ներ)"
 
 #: reports.oils_rpt_editor.months
 msgid "Month(s)"
-msgstr ""
+msgstr "Ամիս(ներ)"
 
 #: reports.oils_rpt_editor.run_asap
 msgid "Run as soon as possible"
-msgstr ""
+msgstr "Կատարիր որքան հնարավոր է շուտ"
 
 #: reports.oils_rpt_editor.sent_to_email
 msgid "Send completion notification to this Email address:"
-msgstr ""
+msgstr "Ուղարկիր կատարման մասին նշում այս էլ փոստի հասցեին։"
 
 #: reports.oils_rpt_editor.midnight
 msgid "Midnight"
-msgstr ""
+msgstr "Կեսգիշեր"
 
 #: reports.oils_rpt_editor.noon
 msgid "Noon"
-msgstr ""
+msgstr "Կեսօր"
 
 #: reports.oils_rpt_editor.storage_folder_for_output
 msgid "Choose a folder to store this report's output:"
-msgstr ""
+msgstr "Ընտրիր թղթապանակ այս հաշվետվության ելքը պահելու համար"
 
 #: reports.oils_rpt_editor.save_report
 msgid "Save Report"
-msgstr ""
+msgstr "Հիշիր հաշվետվությունը"
 
 #: reports.oils_rpt_editor.empty_parameter
 msgid ""
 "One or more of the user-defined parameters has been left empty. Please fill "
 "in all fields."
 msgstr ""
+"Օգտվողի կողմից սահմանված մեկ կամ մի քանի պարամետրեր թողնված են դատարկ։ "
+"Լրացրու բոլոր դաշտերը։"
 
 #: reports.oils_rpt_editor.same_name
 msgid "There is already a report in this folder with the given name."
-msgstr ""
+msgstr "Այս թղթապանակում տված անվանումով արդեն կա հաշվետվություն։"
 
 #: reports.oils_rpt_folder_manager.change_folder_name
 msgid "Change folder name"
-msgstr ""
+msgstr "Փոխիր թղթապանակի անունը"
 
 #: reports.oils_rpt_folder_manager.delete_folder
 msgid "Delete this folder"
-msgstr ""
+msgstr "Ջնջիր այս թղթապանակը"
 
 #: reports.oils_rpt_folder_manager.create_new_sub_folder
 msgctxt "reports.oils_rpt_folder_manager.create_new_sub_folder"
 msgid "Create a new sub-folder"
-msgstr ""
+msgstr "Ստեղծիր նոր ենթաթղթապանակ"
 
 #: reports.oils_rpt_folder_manager.share_this_folder
 msgid "Share this folder"
-msgstr ""
+msgstr "Համատեղիր այս թղթապանակը"
 
 #: reports.oils_rpt_folder_manager.hide_folder
 msgid "Hide (un-share) this folder"
-msgstr ""
+msgstr "Թաքցրու (մի համատեղիր) այս թղթապանակը"
 
 #: reports.oils_rpt_folder_manager.disable_recurrence
 msgid "Disable recurrence"
-msgstr ""
+msgstr "Արգելիր կրկնությունը"
 
 #: reports.oils_rpt_folder_manager.fldr_mngr_actions_submit
 msgid "Go"
-msgstr ""
+msgstr "Գնա"
 
 #: reports.oils_rpt_folder_manager.change_name
 msgid "Enter new name:"
-msgstr ""
+msgstr "Մուտք արա նոր անուն։"
 
 #: reports.oils_rpt_folder_manager.submit
 msgctxt "reports.oils_rpt_folder_manager.submit"
 msgid "Submit"
-msgstr ""
+msgstr "Հաստատել"
 
 #: reports.oils_rpt_folder_manager.folder_name
 msgctxt "reports.oils_rpt_folder_manager.folder_name"
 msgid "Folder Name:"
-msgstr ""
+msgstr "Թղթապանակի անուն"
 
 #: reports.oils_rpt_folder_manager.do_not_share
 msgctxt "reports.oils_rpt_folder_manager.do_not_share"
 msgid "Do not share"
-msgstr ""
+msgstr "Մի համատեղիր"
 
 #: reports.oils_rpt_folder_manager.share
 msgctxt "reports.oils_rpt_folder_manager.share"
 msgid "Share"
-msgstr ""
+msgstr "Համատեղել"
 
 #: reports.oils_rpt_folder_manager.share_with
 msgctxt "reports.oils_rpt_folder_manager.share_with"
 msgid "Share with:"
-msgstr ""
+msgstr "Համատեղիր սրա հետ։"
 
 #: reports.oils_rpt_folder_manager.create_sub_folder
 msgctxt "reports.oils_rpt_folder_manager.create_sub_folder"
 msgid "Create Sub Folder"
-msgstr ""
+msgstr "Ստեղծիր ենթաթղթապանակ"
 
 #: reports.oils_rpt_folder_manager.change_name_confirm
 msgid "Are you sure you wish to change this folder's name?"
-msgstr ""
+msgstr "Դու վստա՞հ ես որ ցանկանում ես փոխել այս թղթապանակի անունը։"
 
 #: reports.oils_rpt_folder_manager.delete_name_confirm
 msgid "Are you sure you wish to delete this folder?"
-msgstr ""
+msgstr "Դու վստա՞հ ես որ ցանկանում ես ջնջել այս թղթապանակը։"
 
 #: reports.oils_rpt_folder_manager.cannot_delete
 msgid "This folder may not be deleted because it is not empty."
-msgstr ""
+msgstr "Այս թղթապանակը հնարավոր չէ ջնջել, քանի որ այն դատարկ չէ։"
 
 #: reports.oils_rpt_folder_manager.already_shared
 msgid "This folder is already shared"
-msgstr ""
+msgstr "Այս թղթապանակը արդեն համատեղված է"
 
 #: reports.oils_rpt_folder_manager.folder_not_shared
 msgid "This folder is not shared"
-msgstr ""
+msgstr "Այս թղթապանակը համատեղված չէ"
 
 #: reports.oils_rpt_folder_manager.confirm_hide_folder
 msgid "Are you sure you wish to hide this folder?"
-msgstr ""
+msgstr "Դու վստա՞հ ես որ ցանկանում ես թաքցնել այս թղթապանակը։"
 
 #: reports.oils_rpt_folder_window.new_report_from_template
 msgid "Create a new report from selected template"
-msgstr ""
+msgstr "Ընտրվածձևանմուշներից ստեղծիր նոր հաշվետվություն"
 
 #: reports.oils_rpt_folder_window.clone_template
 msgid "Clone selected template"
-msgstr ""
+msgstr "Կլոնավորի ընտրված ձևանմուշը"
 
 #: reports.oils_rpt_folder_window.delete_template
 msgid "Delete selected template(s)"
-msgstr ""
+msgstr "Ջնջիր ընտրված ձևանմուշ(ներ)ը"
 
 #: reports.oils_rpt_folder_window.clone_report
 msgid "Clone report"
-msgstr ""
+msgstr "Կլոնավորի հաշվետվությունը"
 
 #: reports.oils_rpt_folder_window.schedule_report
 msgid "Schedule report"
-msgstr ""
+msgstr "Պլանավորի հաշվետվություն"
 
 #: reports.oils_rpt_folder_window.delete_reports
 msgid "Delete selected report(s)"
-msgstr ""
+msgstr "Ջնջիր ընտրված հաշվետվություն(ներ)ը"
 
 #: reports.oils_rpt_folder_window.view_report_output
 msgid "View report output"
-msgstr ""
+msgstr "Դիտիր ելքային հաշվետվությունը"
 
 #: reports.oils_rpt_folder_window.delete_output
 msgid "Delete selected output(s)"
-msgstr ""
+msgstr "Ջնջել ընտրված ելքերը"
 
 #: reports.oils_rpt_folder_window.move_templates
 msgid "Move the selected template(s) to a different folder"
-msgstr ""
+msgstr "Տեղափոխիր ընտրված ձևանմուշները մեկ այլ թղթապանակ"
 
 #: reports.oils_rpt_folder_window.move_reports
 msgid "Move the selected report(s) to a different folder"
-msgstr ""
+msgstr "Տեղափոխիր ընտրված հաշվետվությունները մեկ այլ թղթապանակ"
 
 #: reports.oils_rpt_folder_window.move_output
 msgid "Move the selected output(s) to a different folder"
-msgstr ""
+msgstr "Տեղափոխիր ընտրված ելքային ձևերը մեկ այլ թղթապանակ"
 
 #: reports.oils_rpt_folder_window.submit
 msgctxt "reports.oils_rpt_folder_window.submit"
 msgid "Submit"
-msgstr ""
+msgstr "Հաստատել"
 
 #: reports.oils_rpt_folder_window.limit_output
 msgid "Limit output to "
-msgstr ""
+msgstr "Սահմանափակիր ելքը մինչև "
 
 #: reports.oils_rpt_folder_window.all
 msgid "All"
-msgstr ""
+msgstr "Լրիվ"
 
 #: reports.oils_rpt_folder_window.pending_items
 msgid "Pending Items"
-msgstr ""
+msgstr "Սպասող նյութեր"
 
 #: reports.oils_rpt_folder_window.new_template
 msgid "Create a new Template for this folder"
-msgstr ""
+msgstr "Այս թղթապանակի համար ստեղծիր նոր Ձևանմուշ"
 
 #: reports.oils_rpt_folder_window.no_items_to_display
 msgid "No items to display"
-msgstr ""
+msgstr "Չկան արտածման ենթակա նյութեր"
 
 #: reports.oils_rpt_folder_window.completed_items
 msgid "Completed Items"
-msgstr ""
+msgstr "Ամբողջական նյութեր"
 
 #: reports.oils_rpt_folder_window.selected_folder
 msgctxt "reports.oils_rpt_folder_window.selected_folder"
 msgid "Selected Folder: "
-msgstr ""
+msgstr "Ընտրված թղթապանակ։ "
 
 #: reports.oils_rpt_folder_window.select_folder
 msgid "Select Folder"
-msgstr ""
+msgstr "Ընտրիր թղթապանակը"
 
 #: reports.oils_rpt_folder_window.cancel
 msgid "Cancel"
-msgstr ""
+msgstr "Չեղյալ անել"
 
 #: reports.oils_rpt_folder_window.confirm_delete
 msgid "Are you sure you wish to delete the selected item(s)?"
-msgstr ""
+msgstr "Դու վստա՞հ ես որ ցանկանում ես ջնջել ընտրված նյութ(եր)ը"
 
 #: reports.oils_rpt_folder_window.dependant_reports_no_delete
 msgid ""
 "One or more of the selected templates could not be deleted because there are "
 "reports that depend on them."
 msgstr ""
+"Ընտրված ձևանմուշներից մեկը կամ մի քանիսը հնարավոր չէ ջնջել քանի որ կան "
+"հաշվետվություններ, որ կախում ունեն դրանցից։"
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
 msgid ""
 "One or more of The selected reports could not be deleted because there are "
 "outputs that depend on them."
 msgstr ""
+"Ընտրված հաշվետվություններից մեկը կամ մի քանիսը հնարավոր չէ ջնջել քանի որ կան "
+"հաշվետվություններ, որ կախում ունեն դրանցից։"
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
 msgid "You may not delete another user's items"
-msgstr ""
+msgstr "Դու չես կարող ջնջել մեկ այլ օգտվողի նյութերը։"
 
 #: reports.oils_rpt_folder_window.cannot_move_another_users_data
 msgid "You may not move another user's items"
-msgstr ""
+msgstr "Չես կարող տեղափոխել մեկ այլ օգտվողի նյութերը։"
 
 #: reports.oils_rpt_folder_window.delete_all_attached_reports
 msgid ""
@@ -588,6 +598,13 @@ msgid ""
 " \n"
 "Do you wish to continue?"
 msgstr ""
+"        Սա կջնջի նաև բոլոր կցված հաշվետվությունները և ելքային ձևերը այս \n"
+"ձևաչափի համար։ \n"
+" \n"
+"Եթե այլ օգտվողներ ունեն այս ձևաչափին կցված հաշվետվություններ, \n"
+"դրանք կմնան անփոփոխ, և ձևաչափը չի ջնջվի։ \n"
+" \n"
+"Ցանկանու՞մ ես շարունակել։"
 
 #: reports.oils_rpt_folder_window.delete_all_attached_outputs
 msgid ""
@@ -599,196 +616,203 @@ msgid ""
 " \n"
 "Do you wish to continue?"
 msgstr ""
+"        Սա նաև կջնջի քո բոլոր կցված ելքային տվյալները այս \n"
+"հաշվետվության համար։. \n"
+" \n"
+"Եթե այլ օգտվողներ ունեն ելքր կցված այս հաշվետվությանը, \n"
+"դրանք կմնան անփոփոխ, և հաշվետվությունը չի ջնջվի։ \n"
+" \n"
+"Ցանկանու՞մ ես շարունակել։"
 
 #: reports.oils_rpt_param_editor.column
 msgid "Column"
-msgstr ""
+msgstr "Սյունակ"
 
 #: reports.oils_rpt_param_editor.transform
 msgid "Transform"
-msgstr ""
+msgstr "Տեղափոխություն"
 
 #: reports.oils_rpt_param_editor.action
 msgid "Action"
-msgstr ""
+msgstr "Գործողություն"
 
 #: reports.oils_rpt_param_editor.user_params
 msgid "User Params"
-msgstr ""
+msgstr "Օգտվողի պարամետրեր"
 
 #: reports.oils_rpt_param_editor.or
 msgid "OR"
-msgstr ""
+msgstr "ԿԱՄ"
 
 #: reports.oils_rpt_param_editor.use_relative_date
 msgid "Use a relative date instead."
-msgstr ""
+msgstr "Փոխարենը օգտագործիր հարաբերական ամսաթիվը"
 
 #: reports.oils_rpt_param_editor.days
 msgctxt "reports.oils_rpt_param_editor.days"
 msgid "Day(s)"
-msgstr ""
+msgstr "Օր(եր)"
 
 #: reports.oils_rpt_param_editor.weeks
 msgctxt "reports.oils_rpt_param_editor.weeks"
 msgid "Weeks(s)"
-msgstr ""
+msgstr "Շաբաթ(ներ)"
 
 #: reports.oils_rpt_param_editor.months
 msgid "Months(s)"
-msgstr ""
+msgstr "Ամիս(ներ)"
 
 #: reports.oils_rpt_param_editor.ago
 msgid " ago"
-msgstr ""
+msgstr " առաջ"
 
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"
-msgstr ""
+msgstr "Շտեմարանի սկզբնական կոդի դիտակ"
 
 #: reports.xul.template_builder.sources_menulist.label
 msgid "Sources"
-msgstr ""
+msgstr "Աղբյուրներ"
 
 #: reports.xul.template_builder.source_name.label
 msgid "Source Name"
-msgstr ""
+msgstr "Աղբյուրի անուն"
 
 #: reports.xul.template_builder.source_nullable.label
 msgid "Nullable"
-msgstr ""
+msgstr "Nullable"
 
 #: reports.xul.template_builder.nullability_select.label
 msgid "Enable nullability selection"
-msgstr ""
+msgstr "Թույլատրի nullability ընտրությունը"
 
 #: reports.xul.template_builder.source_specifier.label
 msgid "Source Specifier:"
-msgstr ""
+msgstr "Սկզբնաղբյուրի բնութագրիչ"
 
 #: reports.xul.template_builder.field_name.label
 msgid "Field Name"
-msgstr ""
+msgstr "Դաշտի անուն"
 
 #: reports.xul.template_builder.data_type.label
 msgid "Data Type"
-msgstr ""
+msgstr "Տվյալի տեսակ"
 
 #: reports.xul.template_builder.field_transform.label
 msgid "Field Transform"
-msgstr ""
+msgstr "Դաշտի տեղափոխություն"
 
 #: reports.xul.template_builder.params.label
 msgid "Params"
-msgstr ""
+msgstr "Params"
 
 #: reports.xul.template_builder.applicable_datatypes.label
 msgid "Applicable Datatypes"
-msgstr ""
+msgstr "Տվյալների Ընդունելի տեսակներ"
 
 #: reports.xul.template_builder.output_type.label
 msgid "Output Type"
-msgstr ""
+msgstr "Ելքի տեսակ"
 
 #: reports.xul.template_builder.source_add.label
 msgid "Add Selected Fields"
-msgstr ""
+msgstr "Ավելացրու ընտրված դաշտերը"
 
 #: reports.xul.template_builder.template_config_caption.label
 msgid "Template Configuration"
-msgstr ""
+msgstr "Ձևանմուշի կարգավորում"
 
 #: reports.xul.template_builder.name.label
 msgid "Name:"
-msgstr ""
+msgstr "Անուն"
 
 #: reports.xul.template_builder.description.label
 msgid "Description:"
-msgstr ""
+msgstr "Նկարագրություն"
 
 #: reports.xul.template_builder.save.label
 msgid "Save"
-msgstr ""
+msgstr "Հիշիր"
 
 #: reports.xul.template_builder.displayed_fields.label
 msgid "Displayed Fields"
-msgstr ""
+msgstr "Արտածված դաշտեր"
 
 #: reports.xul.template_builder.base_filters.label
 msgid "Base Filters"
-msgstr ""
+msgstr "Հիմնական զտիչներ"
 
 #: reports.xul.template_builder.aggregate_filters.label
 msgctxt "reports.xul.template_builder.aggregate_filters.label"
 msgid "Aggregate Filters"
-msgstr ""
+msgstr "Ագրեգացրու զտիչները"
 
 #: reports.xul.template_builder.display_name.label
 msgid "Display Name"
-msgstr ""
+msgstr "Արտածման անուն"
 
 #: reports.xul.template_builder.field_transform_type.label
 msgid "Field Transform Type"
-msgstr ""
+msgstr "Դաշտի տեղափոխման տեսակ"
 
 #: reports.xul.template_builder.alter_display_header.label
 msgid "Alter Display Header"
-msgstr ""
+msgstr "Փոխիր արտածման առաջատարը"
 
 #: reports.xul.template_builder.move_up.label
 msgctxt "reports.xul.template_builder.move_up.label"
 msgid "Move Up"
-msgstr ""
+msgstr "Տեղափոխել վերեւ"
 
 #: reports.xul.template_builder.move_down.label
 msgctxt "reports.xul.template_builder.move_down.label"
 msgid "Move Down"
-msgstr ""
+msgstr "Տեղափոխել ներքեւ"
 
 #: reports.xul.template_builder.remove_selected_field.label
 msgid "Remove Selected Field"
-msgstr ""
+msgstr "Հեռացրու ընտրված դաշտը"
 
 #: reports.xul.template_builder.filter_field.label
 msgid "Filter Field"
-msgstr ""
+msgstr "Զտիր դաշտը"
 
 #: reports.xul.template_builder.operator.label
 msgid "Operator"
-msgstr ""
+msgstr "Օպերատոր"
 
 #: reports.xul.template_builder.value.label
 msgid "Value"
-msgstr ""
+msgstr "Արժեք"
 
 #: reports.xul.template_builder.change_transform.label
 msgid "Change Transform"
-msgstr ""
+msgstr "Փոխիր տեղափոխությունը"
 
 #: reports.xul.template_builder.change_operator.label
 msgid "Change Operator"
-msgstr ""
+msgstr "Փոխիր օպերատորը"
 
 #: reports.xul.template_builder.change_value.label
 msgid "Change value"
-msgstr ""
+msgstr "Փոխիր արժեքը"
 
 #: reports.xul.template_builder.remove_value.label
 msgid "Remove value"
-msgstr ""
+msgstr "Հեռացրու արժեքը"
 
 #: reports.xul.template_builder.remove_selected_fields.label
 msgid "Remove Selected Fields"
-msgstr ""
+msgstr "Հեռացրու ընտրված դաշտերը"
 
 #: reports.xul.template_builder.table_name.label
 msgid "Table Name"
-msgstr ""
+msgstr "Աղյուսակի անուն"
 
 #: reports.xul.template_builder.sql_alias.label
 msgid "SQL Alias"
-msgstr ""
+msgstr "SQL կեղծանուն"
 
 #: reports.xul.template_builder.relationship.label
 msgid "Relationship"
-msgstr ""
+msgstr "կապ"

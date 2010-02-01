@@ -4,15 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-11-27 13:56-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-12-11 20:15+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -44,7 +44,7 @@ msgstr "Retourne %1$s visites"
 
 #: staff.cat.bib_brief.record_id
 msgid "Record ID = %1$s"
-msgstr "ID du compte = %1$s"
+msgstr "ID de la notice = %1$s"
 
 #: staff.cat.bib_brief.deleted
 msgid "(Deleted)"
@@ -73,6 +73,25 @@ msgstr "navigateur d’exemplaires -> ajouter des exemplaires"
 #: staff.cat.copy_browser.add_items_bucket.error
 msgid "copy browser -> add copies to bucket"
 msgstr "navigateur d’exemplaires -> ajouter des copies dans le panier"
+
+#: staff.cat.copy_browser.make_bookable.create_failed_silent
+msgid "No response from server"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.create_failed
+msgid ""
+"Error from server: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_failed
+msgid "Could not open new tab"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_name
+msgid "Resources"
+msgstr ""
 
 #: staff.cat.copy_browser.replace_barcode.failed
 msgid "Barcode %1$s not likely replaced."
@@ -671,10 +690,6 @@ msgctxt "staff.cat.copy_editor.cancel.label"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: staff.cat.copy_editor.handle_update.success
-msgid "Items were added or modified."
-msgstr "Des articles ont été ajoutés ou modifiés."
-
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
 msgstr "erreur de mise à jour de la copie :"
@@ -765,6 +780,20 @@ msgstr "Oui"
 
 #: staff.cat.copy_editor.field.holdable.no_or_false
 msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
+msgid "No"
+msgstr "Non"
+
+#: staff.cat.copy_editor.field.floating.label
+msgid "Floating?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.floating.yes_or_true
+msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+msgid "Yes"
+msgstr "Oui"
+
+#: staff.cat.copy_editor.field.floating.no_or_false
+msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
 msgid "No"
 msgstr "Non"
 
@@ -870,15 +899,15 @@ msgstr "Non"
 
 #: staff.cat.copy_editor.field.mint_condition.label
 msgid "Quality"
-msgstr ""
+msgstr "Qualité"
 
 #: staff.cat.copy_editor.field.mint_condition.yes_or_true
 msgid "Good"
-msgstr ""
+msgstr "Bon"
 
 #: staff.cat.copy_editor.field.mint_condition.no_or_false
 msgid "Mediocre"
-msgstr ""
+msgstr "Médiocre"
 
 #: staff.cat.copy_notes.render_notes.label
 msgid "Add New Note"
@@ -951,6 +980,10 @@ msgstr "Titre"
 msgid "Note"
 msgstr "Note"
 
+#: staff.cat.copy_notes.new_note.initials
+msgid "Initials"
+msgstr ""
+
 #: staff.cat.copy_notes.new_note.cancel.label
 msgctxt "staff.cat.copy_notes.new_note.cancel.label"
 msgid "Cancel"
@@ -969,10 +1002,6 @@ msgstr "Ajouter une note"
 msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
 msgid "A"
 msgstr "A"
-
-#: staff.cat.copy_notes.new_note.success
-msgid "Note added."
-msgstr "La note a été ajoutée."
 
 #: staff.cat.copy_notes.new_note.error
 msgid "The note was not likely created."
@@ -1047,7 +1076,7 @@ msgstr "Créer/Remplacer 008 : CTRL+F8"
 
 #: staff.cat.marcedit.save.label
 msgid "Save Record"
-msgstr "Enregistrer le compte"
+msgstr "Enregistrer la notice"
 
 #: staff.cat.marcedit.marcTag.LDR.label
 msgid "MARC Leader"
@@ -1059,7 +1088,7 @@ msgstr "Ajouter une rangée"
 
 #: staff.cat.marcedit.insert_row.label
 msgid "Insert Row"
-msgstr ""
+msgstr "Insérer une ligne"
 
 #: staff.cat.marcedit.remove_row.label
 msgid "Remove Row"
@@ -1087,7 +1116,7 @@ msgstr "Appliquer l’élément sélectionné"
 
 #: staff.cat.marcedit.no_authority_match.label
 msgid "No matching authority records found"
-msgstr "Aucun compte d’autorité correspondant n’a été trouvé"
+msgstr "Aucune notice d'autorité correspondante n’a été trouvée"
 
 #: staff.cat.marc_new.tab_name
 msgid "MARC Template"
@@ -1095,15 +1124,11 @@ msgstr "Modèle MARC"
 
 #: staff.cat.marc_new.create_record.label
 msgid "Create Record"
-msgstr "Créer un compte"
+msgstr "Créer une notice"
 
 #: staff.cat.marc_new.system_local.label
 msgid "System Local"
 msgstr "Système local"
-
-#: staff.cat.marc_new.record_created.label
-msgid "Record created."
-msgstr "Le compte a été créé."
 
 #: staff.cat.marc_new.retrieving.label
 msgctxt "staff.cat.marc_new.retrieving.label"
@@ -1112,7 +1137,7 @@ msgstr "Récupération du titre..."
 
 #: staff.cat.marc_new.creating_record.error
 msgid "Error creating MARC record."
-msgstr "Erreur de création du compte de MARC."
+msgstr "Erreur de création de la notice MARC."
 
 #: staff.cat.marc_new.loading_template.error
 msgid "Error loading MARC template: %1$s"
@@ -1120,7 +1145,7 @@ msgstr "Erreur de chargement du modèle du MARC : %1$s"
 
 #: staff.cat.opac.set_marc_edit.alert
 msgid "Record successfully saved."
-msgstr "Le compte a été enregistré"
+msgstr "La notice a été enregistré"
 
 #: staff.cat.opac.set_marc_edit.std_unexpected_error
 msgid "Record not likely updated."
@@ -1134,7 +1159,7 @@ msgstr ""
 
 #: staff.cat.opac.set_tab_name
 msgid "Record: %1$s"
-msgstr "Compte : %1$s"
+msgstr "Notice : %1$s"
 
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
@@ -1150,7 +1175,7 @@ msgstr "Le fichier n’a pas été téléchargé."
 
 #: staff.cat.record_buckets.export_records.std_unexpected_error
 msgid "Records could not be exported."
-msgstr "Les comptes n’ont pas pu être exportés."
+msgstr "Les notices n’ont pas pu être exportées."
 
 #: staff.cat.record_buckets.rednder_pending_records.alert
 msgctxt "staff.cat.record_buckets.rednder_pending_records.alert"
@@ -1159,7 +1184,7 @@ msgstr "Action terminée."
 
 #: staff.cat.record_buckets.retrieve_row.std_unexpected_error
 msgid "Error retrieving mvr for record with ID = %1$s"
-msgstr "Erreur d’extraction de mvr pour le compte avec ID = %1$s"
+msgstr "Erreur d’extraction de mvr pour la notice avec ID = %1$s"
 
 #: staff.cat.record_buckets.buckets.std_unexpected_error
 msgid "Could not retrieve your buckets."
@@ -1211,7 +1236,7 @@ msgstr "Le panier %1$s a été créé."
 
 #: staff.cat.record_buckets.merge_records.merge_lead
 msgid "Merge these records? (Select the \"lead\" record first)"
-msgstr "Fusionner ces comptes? (Sélectionner d’abord le compte \"principal\")"
+msgstr "Fusionner ces notices? (Sélectionner d’abord la notice \"principale\")"
 
 #: staff.cat.record_buckets.merge_records.button.label
 msgid "Merge"
@@ -1229,7 +1254,7 @@ msgstr "C"
 
 #: staff.cat.record_buckets.merge_records.lead_record_number
 msgid "Lead Record? # %1$s"
-msgstr "Compte principal? # %1$s"
+msgstr "Notice principal? # %1$s"
 
 #: staff.cat.record_buckets.merge_records.lead
 msgid "Lead"
@@ -1237,7 +1262,7 @@ msgstr "Principal"
 
 #: staff.cat.record_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
-msgstr "Fusionnement de compte"
+msgstr "Fusionnement de notice"
 
 #: staff.cat.record_buckets.merge_records.fancy_prompt.alert
 msgid "Merge Aborted"
@@ -1245,15 +1270,15 @@ msgstr "Fusionnement annulé"
 
 #: staff.cat.record_buckets.merge_records.success
 msgid "Records were successfully merged."
-msgstr "Les comptes ont été fusionnés."
+msgstr "Les notices ont été fusionnés."
 
 #: staff.cat.record_buckets.merge_records.catch.std_unex_error
 msgid "Records were not likely merged."
-msgstr "Les comptes n’ont probablement pas été fusionnés."
+msgstr "Les notices n’ont probablement pas été fusionnées."
 
 #: staff.cat.record_buckets.delete_records.xml1
 msgid "Delete these records?"
-msgstr "Supprimer ces comptes?"
+msgstr "Supprimer ces notices?"
 
 #: staff.cat.record_buckets.delete_records.button.label
 msgctxt "staff.cat.record_buckets.delete_records.button.label"
@@ -1272,11 +1297,11 @@ msgstr "C"
 
 #: staff.cat.record_buckets.delete_records.xml2
 msgid "Record? # %1$s"
-msgstr "Compte? # %1$s"
+msgstr "Notice? # %1$s"
 
 #: staff.cat.record_buckets.delete_records.fancy_prompt_title
 msgid "Record Purging"
-msgstr "Triage des comptes"
+msgstr "Triage des notices"
 
 #: staff.cat.record_buckets.delete_records.fancy_prompt.alert
 msgid "Delete Aborted"
@@ -1284,19 +1309,19 @@ msgstr "Suppression annulée"
 
 #: staff.cat.record_buckets.delete_records.s1
 msgid "Error deleting these records:\n"
-msgstr "Erreur de suppression de ces comptes :\n"
+msgstr "Erreur de suppression de ces notices :\n"
 
 #: staff.cat.record_buckets.delete_records.s2
 msgid "Record #%1$s : %2$s  : %3$s\n"
-msgstr "Compte no %1$s : %2$s> : %3$s\n"
+msgstr "Notice no %1$s : %2$s> : %3$s\n"
 
 #: staff.cat.record_buckets.delete_records.delete_success.alert
 msgid "Records deleted."
-msgstr "Les comptes ont été supprimés."
+msgstr "Les notices ont été supprimées."
 
 #: staff.cat.record_buckets.delete_records.catch.std_unex_err
 msgid "Records were not likely deleted."
-msgstr "Les comptes n’ont probablement pas été supprimés."
+msgstr "Les notices n’ont probablement pas été supprimées."
 
 #: staff.cat.record_buckets.cmd_broken.alert
 msgid "Not Yet Implemented"
@@ -1318,11 +1343,11 @@ msgstr "Recherche..."
 
 #: staff.cat.record_buckets.prep_record_for_list.std_unex_err
 msgid "Could not retrieve this record: %1$s"
-msgstr "Impossible de récupérer ce compte : %1$s"
+msgstr "Impossible de récupérer cette notice : %1$s"
 
 #: staff.cat.record_buckets_quick.copy_one_record
 msgid "Copy this record into which bucket?"
-msgstr "Copier ce compte dans quel panier?"
+msgstr "Copier cette notice dans quel panier?"
 
 #: staff.cat.record_buckets_quick.copy_multiple_records
 msgctxt "staff.cat.record_buckets_quick.copy_multiple_records"
@@ -1351,7 +1376,8 @@ msgstr "La création du panier a échoué."
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
 msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
 msgstr ""
-"L’ajout a probablement échoué pour le panier = %1$s et l’ID du compte = %2$s"
+"L’ajout a probablement échoué pour le panier = %1$s et l’ID de la notice = %"
+"2$s"
 
 #: staff.cat.record_buckets.menulist.change_bucket.undefined
 msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
@@ -1530,10 +1556,6 @@ msgstr "Modifier"
 msgctxt "staff.cat.util.copy_editor.view"
 msgid "View"
 msgstr "Affichage"
-
-#: staff.cat.util.copy_editor.not_modified
-msgid "Copies not modified."
-msgstr "Les exemplaires n’ont pas été modifiés."
 
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
@@ -1829,15 +1851,15 @@ msgstr "H"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Compte avec ID %1$s désigné pour recouvrement."
+msgstr "Notice avec ID %1$s désignée pour recouvrement."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgid "Record with TCN %1$s marked for overlay."
-msgstr "Compte avec TCN %1$s désigné pour recouvrement."
+msgstr "Notice avec TCN %1$s désignée pour recouvrement."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
 msgid "No record marked for overlay."
-msgstr "Aucun compte désigné pour recouvrement."
+msgstr "Aucune notice désigné pour recouvrement."
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error
 msgid "Failure during MARC view."
@@ -1894,19 +1916,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-16 11:08-0400\n"
-"PO-Revision-Date: 2008-11-27 13:56-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2009-12-11 20:15+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Country: Canada\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: Canada\n"
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
@@ -1946,7 +1968,7 @@ msgstr ""
 
 #: staff.cat.z3950.handle_results.num_of_results
 msgid "%1$s records found"
-msgstr "%1$s comptes ont été trouvés"
+msgstr "%1$s notices ont été trouvées"
 
 #: staff.cat.z3950.handle_results.result_error
 msgid "Error retrieving results."
@@ -1967,8 +1989,8 @@ msgid ""
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
-"Un compte avec TCN %1$s existe déjà. \n"
-"FIXME : ajoutez le sommaire du compte ici."
+"Une notice avec TCN %1$s existe déjà. \n"
+"FIXME : ajoutez le sommaire de la notice ici."
 
 #: staff.cat.z3950.spawn_marc_editor.title
 msgctxt "staff.cat.z3950.spawn_marc_editor.title"
@@ -2002,27 +2024,27 @@ msgstr "Cochez ici pour confirmer cette action"
 #: staff.cat.z3950.spawn_marc_editor.successful_overlay
 msgctxt "staff.cat.z3950.spawn_marc_editor.successful_overlay"
 msgid "Record successfully overlaid."
-msgstr "Le compte a été recouvert."
+msgstr "La notice a été recouverte."
 
 #: staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn
 msgid "Record successfully imported with alternate TCN."
-msgstr "Le compte a été importé avec un autre TCN."
+msgstr "La notice a été importée avec un autre TCN."
 
 #: staff.cat.z3950.spawn_marc_editor.import_cancelled
 msgid "Record import cancelled"
-msgstr "L’importation du compte a été annulée"
+msgstr "L’importation de la notice a été annulée"
 
 #: staff.cat.z3950.spawn_marc_editor.successful_import
 msgid "Record successfully imported."
-msgstr "Le compte a été importé."
+msgstr "La notice a été importée."
 
 #: staff.cat.z3950.spawn_marc_editor.import_error
 msgid "Record not likely imported."
-msgstr "Le compte n’est probablement pas importé."
+msgstr "La notice n’est probablement pas importée."
 
 #: staff.cat.z3950.confirm_overlay.description
 msgid "Overlay this record?"
-msgstr "Recouvrir ce compte?"
+msgstr "Recouvrir cette notice?"
 
 #: staff.cat.z3950.confirm_overlay.lead.label
 msgctxt "staff.cat.z3950.confirm_overlay.lead.label"
@@ -2045,7 +2067,7 @@ msgstr "C"
 
 #: staff.cat.z3950.confirm_overlay.title
 msgid "Record Overlay"
-msgstr "Recouvrement du compte"
+msgstr "Recouvrement de la notice"
 
 #: staff.cat.z3950.confirm_overlay.aborted
 msgid "Overlay Aborted"
@@ -2055,7 +2077,7 @@ msgstr "Recouvrement annulé"
 msgid ""
 "Please mark a record for overlay from within the catalog and try this again."
 msgstr ""
-"Veuillez désigner un compte pour le recouvrement à partir du catalogue et "
+"Veuillez désigner une notice pour le recouvrement à partir du catalogue et "
 "réessayez."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name
@@ -2064,7 +2086,7 @@ msgstr "Éditeur de MARC"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label
 msgid "Overlay Record"
-msgstr "Recouvrir le compte"
+msgstr "Recouvrir la notice"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
@@ -2072,7 +2094,7 @@ msgid ""
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
-"Un compte avec TCN %1$s existe déjà. \n"
+"Une notice avec TCN %1$s existe déjà. \n"
 "FIXME : ajoutez le sommaire du compte ici."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision
@@ -2101,20 +2123,20 @@ msgstr "Cochez ici pour confirmer cette action"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
 msgid "Record successfully overlaid with alternate TCN."
-msgstr "Le compte a été recouvert avec un autre TCN."
+msgstr "La notice a été recouverte avec un autre TCN."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay
 msgid "Record overlay cancelled"
-msgstr "Le recouvrement du compte a été annulé"
+msgstr "Le recouvrement de la notice a été annulé"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
 msgid "Record successfully overlaid."
-msgstr "Le compte a été recouvert."
+msgstr "La notice a été recouverte."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
 msgid "Record not likely overlaid."
-msgstr "Le compte n’est probablement pas recouvert."
+msgstr "La notice n’est probablement pas recouverte."
 
 #: staff.cat.z3950.load_creds.z3950_cred_error
 msgid "Error retrieving stored z39.50 credentials"
@@ -2124,8 +2146,25 @@ msgstr "Erreur de l’extraction des références z39.50 stockées."
 msgid "Problem storing z39.50 credentials."
 msgstr "Problème de stockage des références z39.50."
 
+#~ msgid "Items were added or modified."
+#~ msgstr "Des articles ont été ajoutés ou modifiés."
+
+#~ msgid "Note added."
+#~ msgstr "La note a été ajoutée."
+
+#~ msgid "Record created."
+#~ msgstr "La notice a été créée."
+
+#~ msgid "Copies not modified."
+#~ msgstr "Les exemplaires n’ont pas été modifiés."
+
 #~ msgid "Add Subfield: CTRL+D"
 #~ msgstr "Ajouter un champ secondaire : CTRL+D"
 
-#~ msgid "Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
-#~ msgstr "Changer l’état de ces articles par « Endommagé »? Vous devrez récupérer manuellement le dernier prêt si vous devez facturer un client. Codes à barres : %1$s"
+#~ msgid ""
+#~ "Change the status for these items to Damaged?  You will have to manually "
+#~ "retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
+#~ msgstr ""
+#~ "Changer l’état de ces articles par « Endommagé »? Vous devrez récupérer "
+#~ "manuellement le dernier prêt si vous devez facturer un client. Codes à "
+#~ "barres : %1$s"

@@ -2,14 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-18 00:41:36-0400\n"
-"PO-Revision-Date: 2008-12-17 09:38+0100\n"
-"Last-Translator: Aneta Plzáková <anjuli@post.cz>\n"
+"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
+"PO-Revision-Date: 2009-11-24 07:22+0000\n"
+"Last-Translator: Aneta Plzáková <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
@@ -73,14 +74,10 @@ msgid "Day Name"
 msgstr "Název dne"
 
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
-#, fuzzy
 msgid ""
 "You have started building a template!\n"
 " Selecting a new starting source will destroy the current template and start over.  Is this OK?"
 msgstr ""
-"Zahájil/a jste tvorbu šablony!\n"
-"Vybrání nového zdroje zničí současnou šablonu a začne znovu. Je to v "
-"pořádku?"
 
 #: reports.js:WIDGET_YEARS
 msgid "Year(s)"
@@ -139,9 +136,8 @@ msgid "Day of Year"
 msgstr "Den roku"
 
 #: reports.js:TRANSFORMS_SUM reports.js:TFORMS_LABEL_SUM
-#, fuzzy
 msgid "Sum"
-msgstr "Součet"
+msgstr ""
 
 #: reports.js:TFORMS_LABEL_LOWER reports.js:TRANSFORMS_LOWER
 msgid "Lower case"
@@ -184,9 +180,8 @@ msgid "Month(s)"
 msgstr "Měsíc(e)"
 
 #: reports.js:SOURCE_BROWSE_AGGREGATE
-#, fuzzy
 msgid "Aggregate"
-msgstr "Souhrn"
+msgstr ""
 
 #: reports.js:TEMPLATE_CONF_TRUE
 msgid "True"
@@ -225,14 +220,12 @@ msgid "Equals Any"
 msgstr ""
 
 #: reports.js:TEMPLATE_CONF_BARE
-#, fuzzy
 msgid "Bare"
-msgstr "Prázdný"
+msgstr ""
 
 #: reports.js:TEMPLATE_CONF_IN
-#, fuzzy
 msgid "Field matches one of list (comma separated):"
-msgstr "Pole odpovídají jednomu ze seznamu (odděleno čárkou):"
+msgstr ""
 
 #: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
 msgid "Year + Month"
@@ -317,18 +310,16 @@ msgid "Day of Month"
 msgstr "Den měsíce"
 
 #: reports.js:SOURCE_BROWSE_NON_AGGREGATE
-#, fuzzy
 msgid "Non-Aggregate"
-msgstr "Nesouhrný"
+msgstr ""
 
 #: reports.js:OPERATORS_IS_NULL reports.js:FILTERS_LABEL_NULL
 msgid "Is NULL"
 msgstr "Je nulový"
 
 #: reports.js:TRANSFORMS_MIN reports.js:TFORMS_LABEL_MIN
-#, fuzzy
 msgid "Min"
-msgstr "Min."
+msgstr ""
 
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
@@ -339,9 +330,8 @@ msgid "Day(s)"
 msgstr "Den/Dny"
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
-#, fuzzy
 msgid "Report Output: ${0}"
-msgstr "Výstup zprávy: ${0}"
+msgstr ""
 
 #: reports.js:TEMPLATE_CONF_CONFIRM_STATE
 msgid "Click OK for TRUE and Cancel for FALSE."
@@ -380,9 +370,8 @@ msgid "Month Name"
 msgstr "Název měsíce"
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
-#, fuzzy
 msgid "First 5 characters (for US ZIP code)"
-msgstr "Prvních 5 písmen"
+msgstr ""
 
 #: reports.js:OPERATORS_GTE_TIME reports.js:FILTERS_LABEL_GTE_TIME
 msgid "On or After (Date/Time)"
@@ -439,6 +428,5 @@ msgid "Max"
 msgstr "Max"
 
 #: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
-#, fuzzy
 msgid "Field does not match one of list (comma separated):"
-msgstr "Pole odpovídají jednomu ze seznamu (odděleno čárkou):"
+msgstr ""

@@ -3,14 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2009-04-13 15:30+0400\n"
+"POT-Creation-Date: 2010-01-31 22:58-0400\n"
+"PO-Revision-Date: 2009-11-24 06:12+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Accelerator-Marker: &\n"
 
 #. Common entities
@@ -72,7 +73,7 @@ msgstr "Копия статусов"
 
 #: conify.admin.marc_code_maps.link
 msgid "MARC Codes"
-msgstr "коды MARC "
+msgstr "коды MARC"
 
 #: conify.admin.bottom_pane.title
 msgctxt "conify.admin.bottom_pane.title"
@@ -210,7 +211,7 @@ msgstr "Адрес задерживающего"
 
 #: conify.org_unit.addresses_pane.mailing.title
 msgid "Mailing Address"
-msgstr " Почтовый адрес"
+msgstr "Почтовый адрес"
 
 #: conify.org_unit.addresses_pane.ill.title
 msgid "ILL Address"
@@ -371,7 +372,7 @@ msgstr "Карта формата видеозаписи"
 
 #: conify.marc_code_maps.video.new.label
 msgid "New Video Recording Format:"
-msgstr " Новый Формат видеозаписи"
+msgstr "Новый Формат видеозаписи"
 
 #. perm_list.html Entities
 #: conify.perm_list.permission_list.title
@@ -405,7 +406,7 @@ msgstr "Новые Полномочия"
 #. grp_tree.html Entities
 #: conify.grp_tree.group_tree.title
 msgid "Global :: Permission :: Group Tree"
-msgstr "Основной :: Полномочия :: Дерево группы "
+msgstr "Основной :: Полномочия :: Дерево группы"
 
 #: conify.grp_tree.permission_groups.label
 msgctxt "conify.grp_tree.permission_groups.label"

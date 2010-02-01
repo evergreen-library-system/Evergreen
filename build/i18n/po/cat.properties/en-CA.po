@@ -4,14 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-11-27 12:35-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-11-24 20:56+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -71,6 +72,25 @@ msgstr ""
 
 #: staff.cat.copy_browser.add_items_bucket.error
 msgid "copy browser -> add copies to bucket"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.create_failed_silent
+msgid "No response from server"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.create_failed
+msgid ""
+"Error from server: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_failed
+msgid "Could not open new tab"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_name
+msgid "Resources"
 msgstr ""
 
 #: staff.cat.copy_browser.replace_barcode.failed
@@ -640,10 +660,6 @@ msgctxt "staff.cat.copy_editor.cancel.label"
 msgid "Cancel"
 msgstr ""
 
-#: staff.cat.copy_editor.handle_update.success
-msgid "Items were added or modified."
-msgstr ""
-
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
 msgstr ""
@@ -734,6 +750,20 @@ msgstr ""
 
 #: staff.cat.copy_editor.field.holdable.no_or_false
 msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
+msgid "No"
+msgstr ""
+
+#: staff.cat.copy_editor.field.floating.label
+msgid "Floating?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.floating.yes_or_true
+msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+msgid "Yes"
+msgstr ""
+
+#: staff.cat.copy_editor.field.floating.no_or_false
+msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
 msgid "No"
 msgstr ""
 
@@ -920,6 +950,10 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
+#: staff.cat.copy_notes.new_note.initials
+msgid "Initials"
+msgstr ""
+
 #: staff.cat.copy_notes.new_note.cancel.label
 msgctxt "staff.cat.copy_notes.new_note.cancel.label"
 msgid "Cancel"
@@ -937,10 +971,6 @@ msgstr ""
 #: staff.cat.copy_notes.new_note.add_note.accesskey
 msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
 msgid "A"
-msgstr ""
-
-#: staff.cat.copy_notes.new_note.success
-msgid "Note added."
 msgstr ""
 
 #: staff.cat.copy_notes.new_note.error
@@ -1068,10 +1098,6 @@ msgstr ""
 
 #: staff.cat.marc_new.system_local.label
 msgid "System Local"
-msgstr ""
-
-#: staff.cat.marc_new.record_created.label
-msgid "Record created."
 msgstr ""
 
 #: staff.cat.marc_new.retrieving.label
@@ -1489,10 +1515,6 @@ msgctxt "staff.cat.util.copy_editor.view"
 msgid "View"
 msgstr ""
 
-#: staff.cat.util.copy_editor.not_modified
-msgid "Copies not modified."
-msgstr ""
-
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
@@ -1841,18 +1863,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-09 22:48-0400\n"
-"PO-Revision-Date: 2008-11-27 12:35-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2009-11-24 20:56+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: CANADA\n"
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."

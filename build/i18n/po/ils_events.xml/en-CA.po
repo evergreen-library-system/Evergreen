@@ -2,14 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > ils_events.xml.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-18 00:41:34-0400\n"
-"PO-Revision-Date: 2008-11-27 16:24-0500\n"
-"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"POT-Creation-Date: 2010-01-31 22:59:36-0400\n"
+"PO-Revision-Date: 2009-11-24 20:39+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Country: CANADA\n"
@@ -58,7 +59,7 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr ""
 
-#: 8002.OFFLINE_FILE_ERROR:858
+#: 8002.OFFLINE_FILE_ERROR:870
 msgid " An offline file or directory could not be created or accessed "
 msgstr ""
 
@@ -154,7 +155,7 @@ msgstr ""
 msgid "The attempt to write to the DB failed"
 msgstr ""
 
-#: 8000.OFFLINE_SESSION_ACTIVE:852
+#: 8000.OFFLINE_SESSION_ACTIVE:864
 msgid " An offline session for this location is currently processing "
 msgstr ""
 
@@ -174,7 +175,7 @@ msgstr ""
 msgid " Requested billing note does not exist "
 msgstr ""
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:855
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:867
 msgid " An offline file for this workstation exists within this session "
 msgstr ""
 
@@ -222,7 +223,7 @@ msgstr ""
 msgid "The requested reporter_output_folder was not found"
 msgstr ""
 
-#: 8007.OFFLINE_SESSION_EXISTS:873
+#: 8007.OFFLINE_SESSION_EXISTS:885
 msgid " A session with the given name already exists "
 msgstr ""
 
@@ -288,7 +289,7 @@ msgstr ""
 msgid "The given username already exists in the database"
 msgstr ""
 
-#: 9000.REPORT_TEMPLATE_EXISTS:886
+#: 9000.REPORT_TEMPLATE_EXISTS:898
 msgid " A report template with the given name and folder already exists"
 msgstr ""
 
@@ -300,12 +301,20 @@ msgstr ""
 msgid "User has already created a bucket with the requested name"
 msgstr ""
 
-#: 10000.ACQ_LINEITEM_APPROVED:894
+#: 10000.ACQ_LINEITEM_APPROVED:906
 msgid "The lineitem cannot be altered because it has already been approved"
+msgstr ""
+
+#: 7020.COPY_RESERVED:846
+msgid "Item reserved for booking request"
 msgstr ""
 
 #: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:367
 msgid "The requested container_biblio_record_entry_bucket was not found"
+msgstr ""
+
+#: 7021.RESERVATION_NOT_FOUND:849
+msgid "Booking reservation not found"
 msgstr ""
 
 #: 1701.COPY_LOCATION_EXISTS:687
@@ -316,7 +325,7 @@ msgstr ""
 msgid " A workstation with that name already exists "
 msgstr ""
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:906 10005.ACQ_LINEITEM_NO_PROVIDER:909
+#: 10004.ACQ_LINEITEM_NO_PRICE:918 10005.ACQ_LINEITEM_NO_PROVIDER:921
 msgid "The lineitem has no price"
 msgstr ""
 
@@ -400,11 +409,11 @@ msgstr ""
 msgid " Requested title note does not exist "
 msgstr ""
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:897
+#: 10001.ACQ_LINEITEM_NO_COPIES:909
 msgid "The lineitem has no attached copies"
 msgstr ""
 
-#: 9001.REPORT_REPORT_EXISTS:890
+#: 9001.REPORT_REPORT_EXISTS:902
 msgid " A report with the given name and folder already exists"
 msgstr ""
 
@@ -472,7 +481,7 @@ msgstr ""
 msgid "The requested biblio_record_node was not found"
 msgstr ""
 
-#: 8003.OFFLINE_PARAM_ERROR:861
+#: 8003.OFFLINE_PARAM_ERROR:873
 msgid " Missing params in offline upload "
 msgstr ""
 
@@ -530,6 +539,10 @@ msgstr ""
 
 #: 1543.MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND:277
 msgid "The requested money_credit_card_payment was not found"
+msgstr ""
+
+#: 7023.RESERVATION_BAD_PARAMS:855
+msgid "Provided parameters describe unacceptable reservation."
 msgstr ""
 
 #: 1857.ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND:640
@@ -608,12 +621,16 @@ msgstr ""
 msgid "The requested money_credit_payment was not found"
 msgstr ""
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:903
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:915
 msgid "The lineitem detail has no owning_lib"
 msgstr ""
 
 #: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:494
 msgid "The requested metabib_title_field_entry was not found"
+msgstr ""
+
+#: 7022.RESERVATION_CAPTURE_FAILED:852
+msgid "Booking reservation capture failed"
 msgstr ""
 
 #: 1202.ITEM_NOT_CATALOGED:45
@@ -648,7 +665,7 @@ msgstr ""
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr ""
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:900
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:912
 msgid "The lineitem detail has no associated fund"
 msgstr ""
 
@@ -793,8 +810,8 @@ msgstr ""
 msgid "Hold capture was delayed for this item"
 msgstr ""
 
-#: 8004.OFFLINE_CONFIG_ERROR:864 8005.OFFLINE_CHECKSUM_FAILED:867
-#: 8006.OFFLINE_SESSION_NOT_FOUND:870
+#: 8004.OFFLINE_CONFIG_ERROR:876 8005.OFFLINE_CHECKSUM_FAILED:879
+#: 8006.OFFLINE_SESSION_NOT_FOUND:882
 msgid " Offline server is not configured properly "
 msgstr ""
 
@@ -818,7 +835,7 @@ msgstr ""
 msgid " Circulation has no more renewals remaining "
 msgstr ""
 
-#: 8009.OFFLINE_NO_ORG:879 8010.OFFLINE_SESSION_COMPLETE:882
+#: 8009.OFFLINE_NO_ORG:891 8010.OFFLINE_SESSION_COMPLETE:894
 msgid " No org id was provided "
 msgstr ""
 
@@ -902,7 +919,7 @@ msgstr ""
 msgid "The credit card processor has declined the transaction."
 msgstr ""
 
-#: 8008.OFFLINE_INVALID_SESSION:876
+#: 8008.OFFLINE_INVALID_SESSION:888
 msgid " The session name is invalid "
 msgstr ""
 

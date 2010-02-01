@@ -1,85 +1,85 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-18 00:41:36-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
+"PO-Revision-Date: 2009-12-14 01:55+0000\n"
+"Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 
 #: opac.js:EDIT_PROPERTIES
 msgid "Edit Propeties"
-msgstr ""
+msgstr "Edit Propeties"
 
 #: opac.js:CURRENT_SUPPLEMENTS
 msgid "Current supplements"
-msgstr ""
+msgstr "Current supplements"
 
 #: opac.js:EDIT_MFHD_RECORD
 msgid "Edit Record"
-msgstr ""
+msgstr "Edit Record"
 
 #: opac.js:CURRENT_HOLDINGS
 msgid "Current volume"
-msgstr ""
+msgstr "Current volume"
 
 #: opac.js:CURRENT_INDEXES
 msgid "Current indexes"
-msgstr ""
+msgstr "Current indexes"
 
 #: opac.js:CREATED_MFHD_RECORD
 msgid "Created MFHD record for ${0}"
-msgstr ""
+msgstr "Created MFHD record for ${0}"
 
 #: opac.js:CREATE_MFHD
 msgid "Add MFHD Record"
-msgstr ""
+msgstr "Add MFHD Record"
 
 #: opac.js:DELETE_MFHD
 msgid "Delete Record"
-msgstr ""
+msgstr "Delete Record"
 
 #: opac.js:EDIT_MFHD_MENU
 msgid "Edit Holdings"
-msgstr ""
+msgstr "Edit Holdings"
 
 #: opac.js:INDEXES
 msgid "Previous indexes"
-msgstr ""
+msgstr "Previous indexes"
 
 #: opac.js:MISSING_VOLUMES
 msgid "Missing volumes"
-msgstr ""
+msgstr "Missing volumes"
 
 #: opac.js:INCOMPLETE_VOLUMES
 msgid "Incomplete volumes"
-msgstr ""
+msgstr "Incomplete volumes"
 
 #: opac.js:HOLDINGS_TABLE_CAPTION
 msgid "Holdings summary (${0})"
-msgstr ""
+msgstr "Holdings summary (${0})"
 
 #: opac.js:SUPPLEMENTS
 msgid "Previous supplements"
-msgstr ""
+msgstr "Previous supplements"
 
 #: opac.js:HOLDINGS
 msgid "Previous volumes"
-msgstr ""
+msgstr "Previous volumes"
 
 #: opac.js:DELETED_MFHD_RECORD
 msgid "Deleted MFHD record ${0}"
-msgstr ""
+msgstr "Deleted MFHD record ${0}"
 
 #: opac.js:SAVE_MFHD_LABEL
 msgid "Save MFHD"
-msgstr ""
+msgstr "Save MFHD"
 
 #: opac.js:ONLINE_VOLUMES
 msgid "Online volumes"
-msgstr ""
+msgstr "Online volumes"

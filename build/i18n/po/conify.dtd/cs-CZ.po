@@ -3,14 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-12-28 20:51+0100\n"
-"Last-Translator: Monika Horáková <mon.hor@seznam.cz>\n"
+"POT-Creation-Date: 2010-01-31 22:58-0400\n"
+"PO-Revision-Date: 2009-11-24 06:12+0000\n"
+"Last-Translator: Monika Horáková <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -34,9 +35,8 @@ msgstr "Nový přírůstek"
 
 #. Main configuration interface menu
 #: conify.admin.title
-#, fuzzy
 msgid "Global :: Administration"
-msgstr "Globálně :: Administrace"
+msgstr ""
 
 #: conify.admin.top_pane.title
 msgctxt "conify.admin.top_pane.title"
@@ -85,9 +85,8 @@ msgstr "Ovládací prvky"
 
 #. Organization unit type configuration interface
 #: conify.org_unit_type.title
-#, fuzzy
 msgid "Global :: Actor :: Organization Unit Types"
-msgstr "Globálně :: Vykonavatel :: Typy organizační jednotky "
+msgstr ""
 
 #: conify.org_unit_type.type_tree.label
 msgid "Organization Unit Types"
@@ -115,9 +114,8 @@ msgstr "Může mít uživatele"
 
 #. Organization unit configuration interface
 #: conify.org_unit.title
-#, fuzzy
 msgid "Global :: Actor :: Organization Units"
-msgstr "Globálně :: Vykonavatel :: Organizační jednotky"
+msgstr ""
 
 #: conify.org_unit.ou_tree.label
 msgctxt "conify.org_unit.ou_tree.label"
@@ -149,9 +147,8 @@ msgid "Organization Unit Type"
 msgstr "Typ organizační jednotky"
 
 #: conify.org_unit.editor_pane.parent
-#, fuzzy
 msgid "Parent Organization Unit"
-msgstr "Mateřská organizační jednotka"
+msgstr ""
 
 #: conify.org_unit.editor_pane.opac_visible
 msgid "OPAC Visible"
@@ -265,9 +262,8 @@ msgid "Now editing:"
 msgstr "Nyní editovat:"
 
 #: conify.copy_status.title
-#, fuzzy
 msgid "Global :: Configuration :: Copy Status"
-msgstr "Globálně :: Konfigurace :: Kopírovat stav"
+msgstr ""
 
 #: conify.copy_status.new_status.label
 msgid "New Status:"
@@ -293,9 +289,8 @@ msgid "Delete Selected"
 msgstr "Smazat vybrané"
 
 #: conify.marc_code_maps.title
-#, fuzzy
 msgid "Global :: Configuration :: MARC Code Maps"
-msgstr "Globálně :: Konfigurace :: přehled kódů MARC"
+msgstr ""
 
 #: conify.marc_code_maps.audience_map.title
 msgid "Audience Map"
@@ -384,9 +379,8 @@ msgstr "Nový videozáznamový formát"
 
 #. perm_list.html Entities
 #: conify.perm_list.permission_list.title
-#, fuzzy
 msgid "Global :: Permission :: Permission List"
-msgstr "Globálně :: Povolení :: Seznam povolení"
+msgstr ""
 
 #: conify.perm_list.new_code.label
 msgctxt "conify.perm_list.new_code.label"
@@ -414,9 +408,8 @@ msgstr "Nové povolení:"
 
 #. grp_tree.html Entities
 #: conify.grp_tree.group_tree.title
-#, fuzzy
 msgid "Global :: Permission :: Group Tree"
-msgstr "Globálně :: Povolení :: Strom skupiny"
+msgstr ""
 
 #: conify.grp_tree.permission_groups.label
 msgctxt "conify.grp_tree.permission_groups.label"
@@ -445,9 +438,8 @@ msgid "Editing Permission"
 msgstr "Úprava povolení"
 
 #: conify.grp_tree.parent_group.label
-#, fuzzy
 msgid "Parent Group"
-msgstr "Mateřská skupina"
+msgstr ""
 
 #: conify.grp_tree.user_group.label
 msgid "User Group"

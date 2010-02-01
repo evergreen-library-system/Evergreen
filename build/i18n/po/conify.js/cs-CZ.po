@@ -2,14 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-18 00:41:36-0400\n"
-"PO-Revision-Date: 2008-12-29 21:30+0100\n"
-"Last-Translator: Vaclav Jansa <v.jansa@stk.cz>\n"
+"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
+"PO-Revision-Date: 2009-11-24 06:13+0000\n"
+"Last-Translator: Vaclav Jansa <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
@@ -29,7 +30,7 @@ msgstr ""
 
 #: conify.js:SUCCESS_SAVING_MAILING
 msgid "Saved changes to the Mailing Address of ${0}"
-msgstr "Změny e-mailové adresy ${0} uloženy "
+msgstr "Změny e-mailové adresy ${0} uloženy"
 
 #: conify.js:ERROR_CREATING_PERMISSION
 msgid "Problem creating new Permission"
@@ -41,7 +42,7 @@ msgstr "Je možné rezervovat"
 
 #: conify.js:ERROR_SAVING_PERM_DATA
 msgid "Problem saving permission data for ${0}"
-msgstr "Zadání uložení povolovacích dat pro ${0} "
+msgstr "Zadání uložení povolovacích dat pro ${0}"
 
 #: conify.js:SURVEY_DELETE_ANSWER
 msgid "Delete Answer"
@@ -57,7 +58,7 @@ msgstr "Nový stav ${0} vytvořen"
 
 #: conify.js:ERROR_SAVING_STATUS
 msgid "Problem saving ${0}"
-msgstr "Zadání uložení ${0} "
+msgstr "Zadání uložení ${0}"
 
 #: conify.js:SUCCESS_NEW_PERM_MAP
 msgid "New permission map created"
@@ -69,7 +70,7 @@ msgstr "${0} smazán"
 
 #: conify.js:SUCCESS_SAVING_ILL
 msgid "Saved changes to the ILL Address of ${0}"
-msgstr "Změny ILL adres ${0} uloženy "
+msgstr "Změny ILL adres ${0} uloženy"
 
 #: conify.js:ERROR_CALLING_METHOD_PPL
 msgid "Problem calling method to create new permission"
@@ -78,7 +79,7 @@ msgstr ""
 #: conify.js:ERROR_FETCHING_MAILING
 #, fuzzy
 msgid "Problem fetching Mailing Address for ${0}"
-msgstr "Zadání uložení dat e-mailové adresy pro ${0} "
+msgstr "Zadání uložení dat e-mailové adresy pro ${0}"
 
 #: conify.js:ERROR_FETCHING_PERMS
 msgid "Problem fetching perms"
@@ -90,17 +91,17 @@ msgstr ""
 
 #: conify.js:CONFIRM_DELETE
 msgid "Are you sure you want to delete ${0}?"
-msgstr "Opravdu chcete smazat ${0}? "
+msgstr "Opravdu chcete smazat ${0}?"
 
 #: conify.js:SUCCESS_SAVING_DATA conify.js:SUCCESS_SAVE
 msgid "Saved changes to ${0}"
-msgstr "Změny uložené do ${0} "
+msgstr "Změny uložené do ${0}"
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
 msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 "Neuložené změny u jednoho nebo více typů organizací. Stiskněte OK pro "
-"uložení změn nebo Storno pro zrušení změn.  "
+"uložení změn nebo Storno pro zrušení změn."
 
 #: conify.js:ERROR_FETCHING_HOURS
 msgid "Problem fetching hours of operation for ${0}"
@@ -163,7 +164,7 @@ msgstr ""
 msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 "Neuložené změny u jednoho nebo více stavů výtisků. Stiskněte OK pro uložení "
-"změn nebo Storno pro zrušení změn.  "
+"změn nebo Storno pro zrušení změn."
 
 #: conify.js:OPAC_VISIBLE
 msgid "OPAC Visible"
@@ -171,7 +172,7 @@ msgstr "Vidielný OPAC"
 
 #: conify.js:ERROR_SAVING_PHYSICAL
 msgid "Problem saving Physical Address data for ${0}"
-msgstr "Zadání uložení dat fyzické adresy pro ${0} "
+msgstr "Zadání uložení dat fyzické adresy pro ${0}"
 
 #: conify.js:ID
 msgid "ID"
@@ -189,16 +190,15 @@ msgstr "Zadání uložení dat adres rezervací pro ${0}"
 msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 "Neuložené úpravy povolení. Stiskněte OK pro uložení změn nebo Storno pro "
-"zrušení změn.  "
+"zrušení změn."
 
 #: conify.js:ERROR_DELETING_LAST_AOU
 msgid "Cannot delete ${0}, you need at least one organization unit."
-msgstr ""
-"Nelze smazat ${0}. Je třeba zadat minimálně jednu organizační jednotku.  "
+msgstr "Nelze smazat ${0}. Je třeba zadat minimálně jednu organizační jednotku."
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
-msgstr "Nelze smazat ${0}. Je třeba zadat minimálně jeden typ organizace.  "
+msgstr "Nelze smazat ${0}. Je třeba zadat minimálně jeden typ organizace."
 
 #: conify.js:SUCCESS_SAVING_HOO
 msgid "Hours of Operation updated for ${0}"
@@ -220,7 +220,7 @@ msgstr "Zadání uložení dat pro ${0}"
 msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 "Neuložené změny u jedné nebo více organizačních jednotek. Stiskněte OK pro "
-"uložení změn nebo Storno pro zrušení změn. "
+"uložení změn nebo Storno pro zrušení změn."
 
 #: conify.js:SURVEY_SAVE_ADD
 msgid "Save Question & Add Answer"
@@ -260,7 +260,7 @@ msgstr "Hodnota"
 
 #: conify.js:ERROR_ORPHANS
 msgid "Cannot delete ${0}, ${1} subordinates still exist."
-msgstr "Nelze odstranit ${0}, podřízený ${1} stále existuje. "
+msgstr "Nelze odstranit ${0}, podřízený ${1} stále existuje."
 
 #: conify.js:SUCCESS_CREATING_PERMISSION
 msgid "New ${0} permission created"
@@ -326,7 +326,7 @@ msgstr ""
 msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 "Neuložené změny u jednoho nebo více kódů ${0}. Stiskněte OK pro uložení změn "
-"nebo Storno pro zrušení změn.  "
+"nebo Storno pro zrušení změn."
 
 #: conify.js:SUCCESS_SAVING_PHYSICAL
 msgid "Saved changes to the Physical Address of ${0}"
@@ -351,7 +351,7 @@ msgstr "Nová skupina"
 #: conify.js:ERROR_FETCHING_PHYSICAL
 #, fuzzy
 msgid "Problem fetching Physical Address for ${0}"
-msgstr "Zadání uložení dat fyzické adresy pro ${0} "
+msgstr "Zadání uložení dat fyzické adresy pro ${0}"
 
 #: conify.js:ERROR_SAVING_HOO
 msgid "Problem saving Hours of Operation data for ${0}"
@@ -359,13 +359,13 @@ msgstr ""
 
 #: conify.js:ERROR_SAVING_MAILING
 msgid "Problem saving Mailing Address data for ${0}"
-msgstr "Zadání uložení dat e-mailové adresy pro ${0} "
+msgstr "Zadání uložení dat e-mailové adresy pro ${0}"
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 "Neuložené změny v přehledech povolení. Stiskněte OK pro uložení změn nebo "
-"Storno pro zrušení změn.  "
+"Storno pro zrušení změn."
 
 #: conify.js:ERROR_SAVING_ILL
 msgid "Problem saving ILL Address data for ${0}"

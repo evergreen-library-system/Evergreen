@@ -4,19 +4,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-08-03 15:16+0400\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-12-21 08:47+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
-msgstr ""
+msgstr "MARC գրառում չէ"
 
 #: cat.barcode_for_item
 msgid "The barcode for the item is %1$s"
@@ -69,6 +70,25 @@ msgstr "Դիտակի պատճե -> ավելացրու պատճեներ"
 #: staff.cat.copy_browser.add_items_bucket.error
 msgid "copy browser -> add copies to bucket"
 msgstr "Դիտակի պատճե -> ավելացրու պատճեներ փնջին"
+
+#: staff.cat.copy_browser.make_bookable.create_failed_silent
+msgid "No response from server"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.create_failed
+msgid ""
+"Error from server: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_failed
+msgid "Could not open new tab"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_name
+msgid "Resources"
+msgstr ""
 
 #: staff.cat.copy_browser.replace_barcode.failed
 msgid "Barcode %1$s not likely replaced."
@@ -487,7 +507,7 @@ msgstr "Ստեղծիր պատճեներ"
 
 #: staff.cat.copy_editor.copy_notes
 msgid "Copy Notes"
-msgstr ""
+msgstr "Օրինակի նշումներ"
 
 #: staff.cat.copy_editor.status
 msgid "Status"
@@ -623,7 +643,7 @@ msgid ""
 "copy will not be changed."
 msgstr ""
 "Սխալ %1$s օրինակը տնօրինող գրադարանը փոխելիս: Պատճեն տնօրինող գրադարանը չի "
-"փոխվի: "
+"փոխվի:"
 
 #: staff.cat.copy_editor.copy_count
 msgid "1 copy"
@@ -648,33 +668,29 @@ msgctxt "staff.cat.copy_editor.cancel.label"
 msgid "Cancel"
 msgstr "Չեղյալ անել"
 
-#: staff.cat.copy_editor.handle_update.success
-msgid "Items were added or modified."
-msgstr "Նյութերը ավելացվել կամ ձևափոխվել են:"
-
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
 msgstr "պատճեի թարմացման սխալ"
 
 #: staff.cat.copy_editor.add_stat_cat.error
 msgid "Error adding statistical category to display definition"
-msgstr "Սխալ՝ Արտածման սահմանմանը վիճակագրական դաս ավելացնելիս "
+msgstr "Սխալ՝ Արտածման սահմանմանը վիճակագրական դաս ավելացնելիս"
 
 #: staff.cat.copy_editor.populate_stat_cat.error
 msgid "Error populating statistical categories for display"
-msgstr "Սխալ՝ արտածման վիճակագրական դասերը բազմացնելիս "
+msgstr "Սխալ՝ արտածման վիճակագրական դասերը բազմացնելիս"
 
 #: staff.cat.copy_editor.remove_stat_cat_entry
 msgid "<Remove Stat Cat>"
-msgstr ""
+msgstr "<Հեռացրու Stat Cat>"
 
 #: staff.cat.copy_editor.remove_age_based_hold_protection
 msgid "<Remove Protection>"
-msgstr ""
+msgstr "<Հեռացրու պաշտպանությունը>"
 
 #: staff.cat.copy_editor.remove_circulate_as_type
 msgid "<Remove Circulate as Type>"
-msgstr ""
+msgstr "<Հեռացրու սպասարկումը որպես տեսակ>"
 
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
@@ -683,43 +699,43 @@ msgstr "<Unset>"
 
 #: staff.cat.copy_editor.field.owning_library.label
 msgid "Owning Lib : Call Number"
-msgstr ""
+msgstr "Տնօրինող գրադարան ։ Դասիչ"
 
 #: staff.cat.copy_editor.field.creator.label
 msgid "Creator"
-msgstr ""
+msgstr "Ստեղծող"
 
 #: staff.cat.copy_editor.field.last_editor.label
 msgid "Last Editor"
-msgstr ""
+msgstr "Վերջին խմբագիր"
 
 #: staff.cat.copy_editor.field.barcode.label
 msgid "Barcode"
-msgstr ""
+msgstr "Շտրիխ կոդ"
 
 #: staff.cat.copy_editor.field.creation_date.label
 msgid "Creation Date"
-msgstr ""
+msgstr "Ստեղծման ամսաթիվ"
 
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
-msgstr ""
+msgstr "Վերջին խմբագրման ամսաթիվ"
 
 #: staff.cat.copy_editor.field.location.label
 msgid "Location/Collection"
-msgstr ""
+msgstr "Տեղաբաշխում/հավաքածու"
 
 #: staff.cat.copy_editor.field.circulation_library.label
 msgid "Circulation Library"
-msgstr ""
+msgstr "Սպասարկող գրադարան"
 
 #: staff.cat.copy_editor.field.copy_number.label
 msgid "Copy Number"
-msgstr ""
+msgstr "Պատճենի համար"
 
 #: staff.cat.copy_editor.field.circulate.label
 msgid "Circulate?"
-msgstr ""
+msgstr "Սպասարկե՞լ"
 
 #: staff.cat.copy_editor.field.circulate.yes_or_true
 msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
@@ -733,7 +749,7 @@ msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.holdable.label
 msgid "Holdable?"
-msgstr ""
+msgstr "Պահվո՞խ"
 
 #: staff.cat.copy_editor.field.holdable.yes_or_true
 msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
@@ -745,59 +761,73 @@ msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
 msgid "No"
 msgstr "Ոչ"
 
+#: staff.cat.copy_editor.field.floating.label
+msgid "Floating?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.floating.yes_or_true
+msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+msgid "Yes"
+msgstr "Այո"
+
+#: staff.cat.copy_editor.field.floating.no_or_false
+msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
+msgid "No"
+msgstr "Ոչ"
+
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Տարիքի հետ կապված պահման պաշտպանություն"
 
 #: staff.cat.copy_editor.field.loan_duration.label
 msgid "Loan Duration"
-msgstr ""
+msgstr "Տրման տևողություն"
 
 #: staff.cat.copy_editor.field.loan_duration.short
 msgid "Short"
-msgstr ""
+msgstr "Կարճ"
 
 #: staff.cat.copy_editor.field.loan_duration.normal
 msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
 msgid "Normal"
-msgstr ""
+msgstr "Նորմալ"
 
 #: staff.cat.copy_editor.field.loan_duration.extended
 msgid "Long"
-msgstr ""
+msgstr "Երկար"
 
 #: staff.cat.copy_editor.field.fine_level.label
 msgid "Fine Level"
-msgstr ""
+msgstr "Տուգանքի մակարդակ"
 
 #: staff.cat.copy_editor.field.fine_level.low
 msgid "Low"
-msgstr ""
+msgstr "Ցածր"
 
 #: staff.cat.copy_editor.field.fine_level.normal
 msgctxt "staff.cat.copy_editor.field.fine_level.normal"
 msgid "Normal"
-msgstr ""
+msgstr "Նորմալ"
 
 #: staff.cat.copy_editor.field.fine_level.high
 msgid "High"
-msgstr ""
+msgstr "Բարձր"
 
 #: staff.cat.copy_editor.field.circulate_as_type.label
 msgid "Circulate as Type"
-msgstr ""
+msgstr "Սպասարկիր որպես Տեսակ"
 
 #: staff.cat.copy_editor.field.circulation_modifier.label
 msgid "Circulation Modifier"
-msgstr ""
+msgstr "Տացքի ձևափոխիչ"
 
 #: staff.cat.copy_editor.field.alert_message.label
 msgid "Alert Message"
-msgstr ""
+msgstr "Ահազանգող հաղորդում"
 
 #: staff.cat.copy_editor.field.deposit.label
 msgid "Deposit?"
-msgstr ""
+msgstr "Դեպոզիտ անե՞լ"
 
 #: staff.cat.copy_editor.field.deposit.yes_or_true
 msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
@@ -811,15 +841,15 @@ msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.deposit_amount.label
 msgid "Deposit Amount"
-msgstr ""
+msgstr "Դեպոզիտ գումար"
 
 #: staff.cat.copy_editor.field.price.label
 msgid "Price"
-msgstr ""
+msgstr "Գին"
 
 #: staff.cat.copy_editor.field.opac_visible.label
 msgid "OPAC Visible?"
-msgstr ""
+msgstr "ՀՕԱՔ-ը տեսանելի է՞"
 
 #: staff.cat.copy_editor.field.opac_visible.yes_or_true
 msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
@@ -833,7 +863,7 @@ msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.reference.label
 msgid "Reference?"
-msgstr ""
+msgstr "Տեղեկատու՞"
 
 #: staff.cat.copy_editor.field.reference.yes_or_true
 msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
@@ -847,15 +877,15 @@ msgstr "Ոչ"
 
 #: staff.cat.copy_editor.field.mint_condition.label
 msgid "Quality"
-msgstr ""
+msgstr "Որակ"
 
 #: staff.cat.copy_editor.field.mint_condition.yes_or_true
 msgid "Good"
-msgstr ""
+msgstr "Լավ"
 
 #: staff.cat.copy_editor.field.mint_condition.no_or_false
 msgid "Mediocre"
-msgstr ""
+msgstr "Mediocre"
 
 #: staff.cat.copy_notes.render_notes.label
 msgid "Add New Note"
@@ -892,7 +922,7 @@ msgstr "Ջնջե՞լ այս նշումը \"%1$s\" ստեղծված %2$s"
 
 #: staff.cat.copy_notes.delete_note.prompt.title
 msgid "Delete Note"
-msgstr "Նշումը ջնջել: "
+msgstr "Նշումը ջնջել:"
 
 #: staff.cat.copy_notes.delete_note.prompt.yes
 msgctxt "staff.cat.copy_notes.delete_note.prompt.yes"
@@ -906,7 +936,7 @@ msgstr "Ոչ"
 
 #: staff.cat.copy_notes.delete_note.success
 msgid "Note deleted."
-msgstr "Նշումը ջնջված է: "
+msgstr "Նշումը ջնջված է:"
 
 #: staff.cat.copy_notes.delete_note.close_window
 msgid "Close Window"
@@ -928,6 +958,10 @@ msgstr "Վերնագիր"
 msgid "Note"
 msgstr "Նշում"
 
+#: staff.cat.copy_notes.new_note.initials
+msgid "Initials"
+msgstr ""
+
 #: staff.cat.copy_notes.new_note.cancel.label
 msgctxt "staff.cat.copy_notes.new_note.cancel.label"
 msgid "Cancel"
@@ -946,10 +980,6 @@ msgstr "Ավելացնել նշում"
 msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
 msgid "A"
 msgstr "A"
-
-#: staff.cat.copy_notes.new_note.success
-msgid "Note added."
-msgstr "Նշումը ավելացված է:"
 
 #: staff.cat.copy_notes.new_note.error
 msgid "The note was not likely created."
@@ -992,15 +1022,15 @@ msgstr "Ներդնել տող: CTRL+Shift+Enter"
 
 #: staff.cat.marcedit.help.copy_row_up
 msgid "Copy Current Row Above: CTRL+Up"
-msgstr ""
+msgstr "Արտագրել ընթացիկ տողը վերևում: CTRL+Up"
 
 #: staff.cat.marcedit.help.copy_row_down
 msgid "Copy Current Row Below: CTRL+Down"
-msgstr ""
+msgstr "Արտագրել ընթացիկ տողը ներքևում: CTRL+Down"
 
 #: staff.cat.marcedit.help.add_subfield
 msgid "Add Subfield: CTRL+D (CTRL+I on Mac OS X)"
-msgstr ""
+msgstr "Ավելացրու ենթադաշտ: CTRL+D (CTRL+I Mac OS X համար)"
 
 #: staff.cat.marcedit.help.remove_row
 msgid "Remove Row: CTRL+Del"
@@ -1036,7 +1066,7 @@ msgstr "Ավելացրու տող"
 
 #: staff.cat.marcedit.insert_row.label
 msgid "Insert Row"
-msgstr ""
+msgstr "Ներդիր տող"
 
 #: staff.cat.marcedit.remove_row.label
 msgid "Remove Row"
@@ -1064,11 +1094,11 @@ msgstr "Կիրառիր ընտրվածները"
 
 #: staff.cat.marcedit.no_authority_match.label
 msgid "No matching authority records found"
-msgstr "Համընկնող հեղինակավոր գրառումնէր չեն գտնվել "
+msgstr "Համընկնող հեղինակավոր գրառումնէր չեն գտնվել"
 
 #: staff.cat.marc_new.tab_name
 msgid "MARC Template"
-msgstr ""
+msgstr "MARC ձևանմուշ"
 
 #: staff.cat.marc_new.create_record.label
 msgid "Create Record"
@@ -1077,10 +1107,6 @@ msgstr "Ստեղծիր գրառում"
 #: staff.cat.marc_new.system_local.label
 msgid "System Local"
 msgstr "Համակարգի տեղային"
-
-#: staff.cat.marc_new.record_created.label
-msgid "Record created."
-msgstr "Գրառոմը ստեղծված է:"
 
 #: staff.cat.marc_new.retrieving.label
 msgctxt "staff.cat.marc_new.retrieving.label"
@@ -1113,7 +1139,7 @@ msgstr "Գրառում: %1$s"
 
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
-msgstr ""
+msgstr "Գրանցիր փնջերը"
 
 #: staff.cat.record_buckets.save_file_as
 msgid "Save File As"
@@ -1232,7 +1258,7 @@ msgstr "Ջնջե՞լ այս գրառումները:"
 #: staff.cat.record_buckets.delete_records.button.label
 msgctxt "staff.cat.record_buckets.delete_records.button.label"
 msgid "Delete"
-msgstr "Ջնջել "
+msgstr "Ջնջել"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.label
 msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
@@ -1254,7 +1280,7 @@ msgstr "Record Purging"
 
 #: staff.cat.record_buckets.delete_records.fancy_prompt.alert
 msgid "Delete Aborted"
-msgstr "Ջնջելը կասեցված է: "
+msgstr "Ջնջելը կասեցված է:"
 
 #: staff.cat.record_buckets.delete_records.s1
 msgid "Error deleting these records:\n"
@@ -1499,10 +1525,6 @@ msgctxt "staff.cat.util.copy_editor.view"
 msgid "View"
 msgstr "Դիտել"
 
-#: staff.cat.util.copy_editor.not_modified
-msgid "Copies not modified."
-msgstr "Օրինակնրը թարմացված չէն:"
-
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
@@ -1528,9 +1550,8 @@ msgid "Check here to confirm this message"
 msgstr "Հաղորդումը հաստատէլու համարթ ընտրիր սա:"
 
 #: staff.cat.util.mark_item_damaged.md_message
-#, fuzzy
 msgid "Change the status for these items to Damaged?  Barcodes: %1$s"
-msgstr "Փոխէ՞լ այս նյութերի վիճակը Կորածի: Շտրիխ կոդն է՝ %1$s: "
+msgstr "Այս նյութերի համար փոխե՞լ կարգավիճակը վնասվածի։  Շտրիխ կոդեր: %1$s"
 
 #: staff.cat.util.mark_item_damaged.md_title
 msgid "Mark Damaged"
@@ -1553,11 +1574,11 @@ msgstr "Գործողությունը հաստատէլու համարթ ընտր�
 
 #: staff.cat.util.mark_item_damaged.checkin.title
 msgid "Checkin Item Before Marking Damaged?"
-msgstr ""
+msgstr "Հետ ընդունե՞լ նյութը մինչ այն վնասված նշելը։"
 
 #: staff.cat.util.mark_item_damaged.checkin.normal_checkin
 msgid "Normal Checkin"
-msgstr ""
+msgstr "Նորմալ հետ ընդունում"
 
 #: staff.cat.util.mark_item_damaged.checkin.no_checkin
 msgctxt "staff.cat.util.mark_item_damaged.checkin.no_checkin"
@@ -1566,7 +1587,7 @@ msgstr "Չեղյալ անել"
 
 #: staff.cat.util.mark_item_damaged.checkin.forgiving_checkin
 msgid "Forgiving Checkin"
-msgstr ""
+msgstr "Հետ ընդունման ներում"
 
 #: staff.cat.util.mark_item_damaged.checkin.confirm_action
 msgctxt "staff.cat.util.mark_item_damaged.checkin.confirm_action"
@@ -1576,16 +1597,19 @@ msgstr "Ստուգիր այստեղ հաստատելու գործողությո�
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s."
 msgstr ""
+"Այս նյութը %1$s դուրս է տրված այս ընթերցողին, %2$s, և պետք է վերադարձվի %3$s"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
 "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
 "this patron $%4$s for the damage?"
 msgstr ""
+"Այս նյութը %1$s կնշվի որպես վնասված։ Վերադարձվել է՝ %3$s համար %2$s։ Գանձե՞լ "
+"ընթերցողից $%4$ վնասելու համար։"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
 msgid "Charge Patron For Damaged Item?"
-msgstr ""
+msgstr "Վնասված նյութի համար գանձե՞լ ընթերցողից։"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
 msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label"
@@ -1594,7 +1618,7 @@ msgstr "Լավ"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.change_amount_label
 msgid "Change Amount"
-msgstr ""
+msgstr "Փոփոխիր գումարը"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
 msgctxt "staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label"
@@ -1644,7 +1668,7 @@ msgstr "Հաղորդումը հաստատէլու համարթ ընտրիր սա
 
 #: staff.cat.util.mark_item_missing.ms_message
 msgid "'Change the status for these items to Missing? Barcodes: %1$s"
-msgstr "Փոխէ՞լ այս նյութերի վիճակը Կորածի: Շտրիխ կոդն է՝ %1$s: "
+msgstr "Փոխէ՞լ այս նյութերի վիճակը Կորածի: Շտրիխ կոդն է՝ %1$s:"
 
 #: staff.cat.util.mark_item_missing.ms_title
 msgid "Mark Missing"
@@ -1752,7 +1776,7 @@ msgstr "Սխալ՝ երբ հիշվում են նախապատվություննե
 
 #: staff.cat.z3950.native_catalog
 msgid "Native Catalog"
-msgstr ""
+msgstr "Հիմնական քարտարան"
 
 #: staff.cat.z3950.obj_list_init.list_construction_error
 msgid "Failure during list construction."
@@ -1765,46 +1789,46 @@ msgstr "Արդյունքների դիտում"
 #: staff.cat.z3950.results_view.accesskey
 msgctxt "staff.cat.z3950.results_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.cat.z3950.marc_view.label
 msgid "MARC View"
-msgstr ""
+msgstr "MARC Դիտում"
 
 #: staff.cat.z3950.marc_view.accesskey
 msgctxt "staff.cat.z3950.marc_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.cat.z3950.hide_top_pane.label
 msgid "Hide Top Pane"
-msgstr ""
+msgstr "Թաքցրու վերին պատուհանիկը"
 
 #: staff.cat.z3950.hide_top_pane.accesskey
 msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: staff.cat.z3950.unhide_top_pane.label
 msgid "Show Top Pane"
-msgstr ""
+msgstr "Ցույց տուր վերին պատուհանիկը"
 
 #: staff.cat.z3950.unhide_top_pane.accesskey
 msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "Այս ID-ով գրառումը %1$s նշված է վերադրման համար։"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "Այս TCN-ով գրառումը %1$s նշված է վերադրման համար։"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
 msgid "No record marked for overlay."
-msgstr ""
+msgstr "Վերադրման համար չկան նշված գրառումներ"
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error
 msgid "Failure during MARC view."
@@ -1833,6 +1857,8 @@ msgstr "Որոնման համար չկա ընտրված ծառայություն
 #: staff.cat.z3950.initial_search.too_many_selections
 msgid "Only one service can be used with raw search at a time."
 msgstr ""
+"Միայն մեկ ծառայություն է կարելի օգտագործել տվյալ պահին կոպիտ փնտրում "
+"կատարելու հետ միասին"
 
 #: staff.cat.z3950.initial_search.searching
 msgctxt "staff.cat.z3950.initial_search.searching"
@@ -1845,13 +1871,15 @@ msgstr "Ձախողում՝ սկզբնական որոնման ժամանակ"
 
 #: staff.cat.z3950.initial_search.raw_prompt.title
 msgid "Raw Z39.50 PQN Search"
-msgstr ""
+msgstr "Մոտավոր Z39.50 PQN փնտրում"
 
 #: staff.cat.z3950.initial_search.raw_prompt.msg
 msgid ""
 "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
 "string:"
 msgstr ""
+"ԶԳՈՒՇԱՑՈՒՄ։ Սա վճռորոշ բառով պարզ փնտրում չէ։ Մուտք արա մոտավոր z39.50 PQN "
+"որոնման տողը։"
 
 # extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
 #: staff.cat.z3950.initial_search.raw_prompt.default_value
@@ -1861,19 +1889,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-05 21:56-0400\n"
-"PO-Revision-Date: 2008-08-03 15:16+0400\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2009-12-21 08:47+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
-msgstr ""
+msgstr "Մոտավոր z39.50 PQN փնտրումը դեռ ներդրված չէ հիմնական քարտարանի համար։"
 
 #: staff.cat.z3950.page_next.more_results
 msgid "Retrieving more results..."
@@ -1905,7 +1934,7 @@ msgstr "Ցույց է տալիս %1$s of %2$s սրա համար %3$s"
 
 #: staff.cat.z3950.handle_results.showing_total_results
 msgid "Showing %1$s of %2$s"
-msgstr ""
+msgstr "Ցույց է տալիս %1$s ընդամենը %2$s"
 
 #: staff.cat.z3950.handle_results.num_of_results
 msgid "%1$s records found"
@@ -2017,7 +2046,7 @@ msgstr "Վերածածկումը վիժեցված է"
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.try_again
 msgid ""
 "Please mark a record for overlay from within the catalog and try this again."
-msgstr "Նշիր վերածածկման ենթակա գրառումը քարտարանից և փորձիր նորից: "
+msgstr "Նշիր վերածածկման ենթակա գրառումը քարտարանից և փորձիր նորից:"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name
 msgid "MARC Editor"
@@ -2025,7 +2054,7 @@ msgstr "MARC խմբագրիչ"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label
 msgid "Overlay Record"
-msgstr "Վերածածկիր գրառումը "
+msgstr "Վերածածկիր գրառումը"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
@@ -2071,7 +2100,7 @@ msgstr "Գրառման վերածածկումը չեղյալ է արված"
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
 msgid "Record successfully overlaid."
-msgstr "Գրառումը հաջողությամբ վերածածկված է "
+msgstr "Գրառումը հաջողությամբ վերածածկված է"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
 msgid "Record not likely overlaid."
@@ -2084,6 +2113,18 @@ msgstr "Սխալ հիշված z39.50 կրէդենտալները կանչելիս
 #: staff.cat.z3950.save_creds.z3950_cred_error
 msgid "Problem storing z39.50 credentials."
 msgstr "Պրոբլեմ z39.50 կրեդենտալները հիշելիս:"
+
+#~ msgid "Items were added or modified."
+#~ msgstr "Նյութերը ավելացվել կամ ձևափոխվել են:"
+
+#~ msgid "Note added."
+#~ msgstr "Նշումը ավելացված է:"
+
+#~ msgid "Record created."
+#~ msgstr "Գրառոմը ստեղծված է:"
+
+#~ msgid "Copies not modified."
+#~ msgstr "Օրինակնրը թարմացված չէն:"
 
 #~ msgid "Add Subfield: CTRL+D"
 #~ msgstr "Ավելացրու ենթադաշտ: CTRL+D"

@@ -3,14 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2009-06-02 11:30+0400\n"
-"Last-Translator: Ruzanna <scinfo@flib.sci.am>\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-11-24 05:59+0000\n"
+"Last-Translator: Ruzanna <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 "X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
@@ -31,7 +32,7 @@ msgstr "Скопировать корзины"
 
 #: cat.total_bucket_items_in_bucket
 msgid "Contains %1$s bucket items"
-msgstr "Содержит %1$s единиц корзин "
+msgstr "Содержит %1$s единиц корзин"
 
 #: cat.results_returned
 msgid "Returning %1$s hits"
@@ -68,6 +69,25 @@ msgstr "копи браузер -> добавка копий"
 #: staff.cat.copy_browser.add_items_bucket.error
 msgid "copy browser -> add copies to bucket"
 msgstr "копи браузер -> добавка копий в корзину"
+
+#: staff.cat.copy_browser.make_bookable.create_failed_silent
+msgid "No response from server"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.create_failed
+msgid ""
+"Error from server: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_failed
+msgid "Could not open new tab"
+msgstr ""
+
+#: staff.cat.copy_browser.make_bookable.newtab_name
+msgid "Resources"
+msgstr ""
 
 #: staff.cat.copy_browser.replace_barcode.failed
 msgid "Barcode %1$s not likely replaced."
@@ -632,7 +652,7 @@ msgid ""
 "copy will not be changed."
 msgstr ""
 "Ошибка при изменении Библиотеки собственника для   копии %1$s. Библиотека "
-"собственник для этой  копии не будет изменена. "
+"собственник для этой  копии не будет изменена."
 
 #: staff.cat.copy_editor.copy_count
 msgid "1 copy"
@@ -657,10 +677,6 @@ msgctxt "staff.cat.copy_editor.cancel.label"
 msgid "Cancel"
 msgstr "Отклонить"
 
-#: staff.cat.copy_editor.handle_update.success
-msgid "Items were added or modified."
-msgstr "Библ. единицы были добавлены или изменены."
-
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
 msgstr "Ошибка при обновлении копии"
@@ -672,7 +688,7 @@ msgstr ""
 
 #: staff.cat.copy_editor.populate_stat_cat.error
 msgid "Error populating statistical categories for display"
-msgstr "Ошибка при заполнении статистических категорий для отображения "
+msgstr "Ошибка при заполнении статистических категорий для отображения"
 
 #: staff.cat.copy_editor.remove_stat_cat_entry
 msgid "<Remove Stat Cat>"
@@ -709,11 +725,11 @@ msgstr "Штрих-код"
 
 #: staff.cat.copy_editor.field.creation_date.label
 msgid "Creation Date"
-msgstr "Дата создания "
+msgstr "Дата создания"
 
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
-msgstr "Дата последнего редактирования "
+msgstr "Дата последнего редактирования"
 
 #: staff.cat.copy_editor.field.location.label
 msgid "Location/Collection"
@@ -725,7 +741,7 @@ msgstr "Обслуживающая библиотека"
 
 #: staff.cat.copy_editor.field.copy_number.label
 msgid "Copy Number"
-msgstr "Номер копии "
+msgstr "Номер копии"
 
 #: staff.cat.copy_editor.field.circulate.label
 msgid "Circulate?"
@@ -752,6 +768,20 @@ msgstr "Да"
 
 #: staff.cat.copy_editor.field.holdable.no_or_false
 msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
+msgid "No"
+msgstr "Нет"
+
+#: staff.cat.copy_editor.field.floating.label
+msgid "Floating?"
+msgstr ""
+
+#: staff.cat.copy_editor.field.floating.yes_or_true
+msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
+msgid "Yes"
+msgstr "Да"
+
+#: staff.cat.copy_editor.field.floating.no_or_false
+msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
 msgid "No"
 msgstr "Нет"
 
@@ -938,6 +968,10 @@ msgstr "Заглавие"
 msgid "Note"
 msgstr "Зааметка"
 
+#: staff.cat.copy_notes.new_note.initials
+msgid "Initials"
+msgstr ""
+
 #: staff.cat.copy_notes.new_note.cancel.label
 msgctxt "staff.cat.copy_notes.new_note.cancel.label"
 msgid "Cancel"
@@ -956,10 +990,6 @@ msgstr "Добавить заметку"
 msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
 msgid "A"
 msgstr "А"
-
-#: staff.cat.copy_notes.new_note.success
-msgid "Note added."
-msgstr "Заметка добавлена"
 
 #: staff.cat.copy_notes.new_note.error
 msgid "The note was not likely created."
@@ -1074,7 +1104,7 @@ msgstr "Применить выбранное"
 
 #: staff.cat.marcedit.no_authority_match.label
 msgid "No matching authority records found"
-msgstr "Не найдены совпадающие авторитетные записи "
+msgstr "Не найдены совпадающие авторитетные записи"
 
 #: staff.cat.marc_new.tab_name
 msgid "MARC Template"
@@ -1087,10 +1117,6 @@ msgstr "Создать запись"
 #: staff.cat.marc_new.system_local.label
 msgid "System Local"
 msgstr "Локальная Система"
-
-#: staff.cat.marc_new.record_created.label
-msgid "Record created."
-msgstr "Запись создана"
 
 #: staff.cat.marc_new.retrieving.label
 msgctxt "staff.cat.marc_new.retrieving.label"
@@ -1510,10 +1536,6 @@ msgctxt "staff.cat.util.copy_editor.view"
 msgid "View"
 msgstr "Просмотр"
 
-#: staff.cat.util.copy_editor.not_modified
-msgid "Copies not modified."
-msgstr "Копии не изменены"
-
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
@@ -1871,14 +1893,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-20 13:21-0400\n"
-"PO-Revision-Date: 2009-06-02 11:30+0400\n"
-"Last-Translator: Ruzanna <scinfo@flib.sci.am>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2009-11-24 05:59+0000\n"
+"Last-Translator: Ruzanna <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
@@ -2096,8 +2119,25 @@ msgstr "Ошибка при извлечении сохраненной в z39.5
 msgid "Problem storing z39.50 credentials."
 msgstr "Проблема при сохранении в z39.50 мандатов"
 
+#~ msgid "Items were added or modified."
+#~ msgstr "Библ. единицы были добавлены или изменены."
+
+#~ msgid "Note added."
+#~ msgstr "Заметка добавлена"
+
+#~ msgid "Record created."
+#~ msgstr "Запись создана"
+
+#~ msgid "Copies not modified."
+#~ msgstr "Копии не изменены"
+
 #~ msgid "Add Subfield: CTRL+D"
 #~ msgstr "Добавить подполе : CTRL + D"
 
-#~ msgid "Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
-#~ msgstr "Изменить статус этих единиц на поврежденный? Вам придется вручную загружать последняя циркуляцию, если вы хотите выставить счет пользователю. Штрих-коды: %1$s "
+#~ msgid ""
+#~ "Change the status for these items to Damaged?  You will have to manually "
+#~ "retrieve the last circulation if you need to bill a patron.  Barcodes: %1$s"
+#~ msgstr ""
+#~ "Изменить статус этих единиц на поврежденный? Вам придется вручную загружать "
+#~ "последняя циркуляцию, если вы хотите выставить счет пользователю. Штрих-"
+#~ "коды: %1$s"

@@ -3,14 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-18 00:41-0400\n"
-"PO-Revision-Date: 2008-12-30 16:37+0100\n"
-"Last-Translator: Linda Skolková <skolkova@ikaros.cz>\n"
+"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"PO-Revision-Date: 2009-11-24 07:06+0000\n"
+"Last-Translator: Linda Skolková <Unknown>\n"
 "Language-Team: UISK <li@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -20,9 +21,8 @@ msgstr ""
 #. Some generic stuff
 #. =================================================================
 #: lang.version
-#, fuzzy
 msgid "remote v1"
-msgstr "vzdálený v1"
+msgstr ""
 
 #: lang.description
 msgid "English"
@@ -42,7 +42,7 @@ msgstr "&#x25;"
 
 #: common.language
 msgid "Language: "
-msgstr "Jazyk:"
+msgstr "Jazyk: "
 
 #: common.name
 msgid "Name"
@@ -140,14 +140,12 @@ msgid "Status"
 msgstr "Status"
 
 #: common.at
-#, fuzzy
 msgid "at"
-msgstr "v"
+msgstr ""
 
 #: common.of
-#, fuzzy
 msgid "of"
-msgstr "z"
+msgstr ""
 
 #: common.no
 msgid "No"
@@ -200,16 +198,15 @@ msgstr "Pokročilé vyhledávání"
 
 #: common.nowSearching
 msgid "Now searching "
-msgstr "Vyhledávám"
+msgstr "Vyhledávám "
 
 #: common.ofAtLeast
 msgid " of about "
-msgstr " přibližně"
+msgstr " přibližně "
 
 #: common.relevancy
-#, fuzzy
 msgid "Match Score: "
-msgstr "Přesnost shody:"
+msgstr ""
 
 #: common.tips
 msgid "Tips:"
@@ -377,16 +374,14 @@ msgid "Loading Callnumber Page..."
 msgstr "Nahrávání stránky signatur..."
 
 #: common.cn.browsing
-#, fuzzy
 msgid "You are now browsing"
-msgstr "Nyní prohlížíte"
+msgstr ""
 
 #: common.cn.previous
 msgid "&lt;&lt; Previous Page"
 msgstr "&lt;&lt; Předchozí strana"
 
 #: common.cn.shelf
-#, fuzzy
 msgctxt "common.cn.shelf"
 msgid "Shelf Browser"
 msgstr "Prohlížení regálu"
@@ -397,7 +392,7 @@ msgstr "Další strana &gt;&gt;"
 
 #: common.textsize.title
 msgid "Text Size: "
-msgstr "Velikost textu:"
+msgstr "Velikost textu: "
 
 #: common.textsize.regular
 msgid "Regular"
@@ -497,7 +492,7 @@ msgstr "Vytvořit nový seznam knih"
 
 #: myopac.bookbag.naming
 msgid "Enter the name of the new Bookbag: "
-msgstr "Zvolte jméno pro nový seznam knih:"
+msgstr "Zvolte jméno pro nový seznam knih: "
 
 #: myopac.bookbag.share
 msgid "Share this Bookbag"
@@ -982,9 +977,8 @@ msgid "Enter new email address:"
 msgstr "Zadejte novou e-mailovou adresu:"
 
 #: myopac.summary.id.primary
-#, fuzzy
 msgid "Primary Identification"
-msgstr "Hlavní identifikace"
+msgstr ""
 
 #: myopac.summary.barcode
 msgid "Active Barcode"
@@ -1109,9 +1103,8 @@ msgid "Selected field contains the <u>exact</u> phrase"
 msgstr "Zvolené pole obsahuje <u>přesný</u> výraz"
 
 #: opac.advanced.refined.title
-#, fuzzy
 msgid "Refined Advanced Search"
-msgstr "Upravené pokročilé vyhledávání"
+msgstr ""
 
 #: opac.advanced.refined.title_contains
 msgid "Title contains the following words"
@@ -1207,9 +1200,8 @@ msgid "Call Number"
 msgstr "Signatura"
 
 #: opac.advanced.copy_loc_filter
-#, fuzzy
 msgid "Shelving Location"
-msgstr "Umístění"
+msgstr ""
 
 #. ==========================================================
 #. MARC expert search
@@ -1321,7 +1313,7 @@ msgstr "Zvolit knihovnu pro vyhledávání"
 
 #: navigate.loggedinas
 msgid "You are logged in as "
-msgstr "Jste přihlášen jako"
+msgstr "Jste přihlášen jako "
 
 #: navigate.loggedinas.title
 msgid "Logged in as..."
@@ -1532,10 +1524,9 @@ msgid "Recipient"
 msgstr "Příjemce"
 
 #: opac.holds.placeHold
-#, fuzzy
 msgctxt "opac.holds.placeHold"
 msgid "Place Hold"
-msgstr "Zarezervuj"
+msgstr ""
 
 #: opac.holds.exportRefWorks
 msgctxt "opac.holds.exportRefWorks"
@@ -1618,9 +1609,8 @@ msgid "Language"
 msgstr "Jazyk"
 
 #: advanced.audience
-#, fuzzy
 msgid "Audience"
-msgstr "Uživatelské určení"
+msgstr ""
 
 #: advanced.adult
 msgid "Adult"
@@ -1663,9 +1653,8 @@ msgid "Group Formats and Editions"
 msgstr "Nosiče a edice skupiny"
 
 #: advanced.go
-#, fuzzy
 msgid "Go"
-msgstr "Jdi"
+msgstr ""
 
 #: advanced.biblevel
 msgid "Bib Level"
@@ -1676,9 +1665,8 @@ msgid "Publication Year"
 msgstr "Rok vydání"
 
 #: advanced.filter.pubyear.equals
-#, fuzzy
 msgid "Is"
-msgstr "Je"
+msgstr ""
 
 #: advanced.filter.pubyear.before
 msgid "Before"
@@ -1734,9 +1722,8 @@ msgid "less info"
 msgstr "méně informací"
 
 #: rdetail.cn.hold
-#, fuzzy
 msgid "place hold"
-msgstr "rezervovat"
+msgstr ""
 
 #: rdetail.cn.disabled
 msgid "- Disabled -"
@@ -1887,10 +1874,9 @@ msgid "Browse Call Numbers"
 msgstr ""
 
 #: rdetail.copyInfo.hold
-#, fuzzy
 msgctxt "rdetail.copyInfo.hold"
 msgid "Place Hold"
-msgstr "Zarezervuj"
+msgstr ""
 
 #: rdetail.extras.summary
 msgid "Copy Summary"
@@ -2056,9 +2042,8 @@ msgid "keyword"
 msgstr "klíčové slovo"
 
 #: result.table.keyword
-#, fuzzy
 msgid "View titles for this record"
-msgstr "Zobrazit tituly pro tento záznam"
+msgstr ""
 
 #: result.table.author
 msgid "Perform an Author Search"
@@ -2120,14 +2105,24 @@ msgstr "Pokročilé možnosti rezervace"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Zvolte prosím místo, kam může být doručena rezervovaná jednotka."
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "Na zvolený exemplář již existuje rezervace."
 
 #: common.hold.exists.override
+#, fuzzy
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 "Na požadovaný exemplář již existuje \n"
 "rezervace. Chcete jej přesto rezervovat?"
@@ -2322,9 +2317,8 @@ msgstr ""
 "svou knihovnu."
 
 #: button.go
-#, fuzzy
 msgid "Go!"
-msgstr "Jdi!"
+msgstr ""
 
 #. =================================================================
 #. Slimpac Simple Search
@@ -2339,7 +2333,7 @@ msgstr "Jednoduché vyhledávání"
 
 #: slimpac.start.nowSearching
 msgid "Now searching: "
-msgstr "Vyhledávám:"
+msgstr "Vyhledávám: "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
@@ -2522,10 +2516,6 @@ msgstr "Sobota"
 #: selfck.day6
 msgid "Sunday"
 msgstr "Neděle"
-
-#, fuzzy
-#~ msgid "details"
-#~ msgstr "Detaily záznamu"
 
 #~ msgid "browse"
 #~ msgstr "prohlížet"

@@ -1,353 +1,366 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-18 00:41:36-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
+"PO-Revision-Date: 2009-12-24 06:28+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
-msgstr ""
+msgstr "Հարցախույզի ID # ${0}"
 
 #: conify.js:ERROR_FETCHING_HOLDS
 msgid "Problem fetching Holds Address for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ պահումների հասցեի ընտրության ընթացքում սրա համար ${0}"
 
 #: conify.js:ERROR_CALLING_METHOD_CAM
 msgid "Problem calling method to create new ${0}"
-msgstr ""
+msgstr "Պրոբլեմ երբ կանչվում է մեթոդը նորը ստեղծելիս ${0}"
 
 #: conify.js:SUCCESS_SAVING_MAILING
 msgid "Saved changes to the Mailing Address of ${0}"
-msgstr ""
+msgstr "Հիշված փոփոխություններ Փոստային հասցեում այստեղ ${0}"
 
 #: conify.js:ERROR_CREATING_PERMISSION
 msgid "Problem creating new Permission"
-msgstr ""
+msgstr "Պրոբլեմ նոր Իրավասություններ ստեղծելիս"
 
 #: conify.js:HOLDABLE
 msgid "Holdable"
-msgstr ""
+msgstr "Պահվող"
 
 #: conify.js:ERROR_SAVING_PERM_DATA
 msgid "Problem saving permission data for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ իրավասությունների տվյալները հիշելիս սրա համար ${0}"
 
 #: conify.js:SURVEY_DELETE_ANSWER
 msgid "Delete Answer"
-msgstr ""
+msgstr "Ջնջիր պատասխանը"
 
 #: conify.js:LABEL_GRANTABLE
 msgid "Grantable"
-msgstr ""
+msgstr "Շնորհվող"
 
 #: conify.js:SUCCESS_CREATING_STATUS
 msgid "New ${0} status created"
-msgstr ""
+msgstr "Նոր ${0} կարգավիճակը ստեղծված է"
 
 #: conify.js:ERROR_SAVING_STATUS
 msgid "Problem saving ${0}"
-msgstr ""
+msgstr "Պրոբլեմ հիշելիս ${0}"
 
 #: conify.js:SUCCESS_NEW_PERM_MAP
 msgid "New permission map created"
-msgstr ""
+msgstr "Իրավասությունների նոր քարտեզը ստեղծված է"
 
 #: conify.js:STATUS_DELETED
 msgid "${0} deleted"
-msgstr ""
+msgstr "${0} ջնջված"
 
 #: conify.js:SUCCESS_SAVING_ILL
 msgid "Saved changes to the ILL Address of ${0}"
-msgstr ""
+msgstr "Պահված փոփոխություններ ՄԳԲ հասցեում համար ${0}"
 
 #: conify.js:ERROR_CALLING_METHOD_PPL
 msgid "Problem calling method to create new permission"
-msgstr ""
+msgstr "Նոր իրավասություն ստեղծելիս կանչման մեթոդի սխալ"
 
 #: conify.js:ERROR_FETCHING_MAILING
 msgid "Problem fetching Mailing Address for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ Փոստային Հասցեն կաչելիս համար ${0}"
 
 #: conify.js:ERROR_FETCHING_PERMS
 msgid "Problem fetching perms"
-msgstr ""
+msgstr "Պրոբլեմ իրավասությունները կանչելիս"
 
 #: conify.js:END_SURVEY
 msgid "End Survey Now"
-msgstr ""
+msgstr "Հիմա ավարտիր հարցախույզը"
 
 #: conify.js:CONFIRM_DELETE
 msgid "Are you sure you want to delete ${0}?"
-msgstr ""
+msgstr "Դու վստա՞հ ես որ ցանկանում ես ջնջել ${0}"
 
 #: conify.js:SUCCESS_SAVING_DATA conify.js:SUCCESS_SAVE
 msgid "Saved changes to ${0}"
-msgstr ""
+msgstr "Պահված փոփոխություններ այստեղ ${0}"
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
 msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
+"Մեկ կամ ավել կազմակերպությունների տեսակների համար կան չհիշված "
+"փոփոխություններ։ Սեղմիր ԼԱՎ փոփոխությունները հիշելու համար, կամ ԱՆՏԵՍԵԼ "
+"կասեցնելու համար։"
 
 #: conify.js:ERROR_FETCHING_HOURS
 msgid "Problem fetching hours of operation for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ աշխատաժամերի ընտրության ընթացքում սրա համար ${0}"
 
 #: conify.js:LABEL_DESCRIPTION
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: conify.js:LABEL_NEW_TYPE
 msgid "New Type"
-msgstr ""
+msgstr "Նոր տեսակ"
 
 #: conify.js:SURVEY_SAVE_CHANGES
 msgid "Save Changes"
-msgstr ""
+msgstr "Հիշիր փոփոխությունները"
 
 #: conify.js:ERROR_CREATING_PERM_MAP
 msgid "Problem creating new Permission Map"
-msgstr ""
+msgstr "Պրոբլեմ իրավասությունների նոր քարտեզ ստեղծելիս"
 
 #: conify.js:ERROR_CALLING_METHOD_PGT
 msgid "Problem calling method to create child Group"
-msgstr ""
+msgstr "Կանչող մեթոդի պրոբլեմ երեխա խումբ ստեղծելիս"
 
 #: conify.js:ERROR_FETCHING_ILL
 msgid "Problem fetching ILL Address for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ ՄԳԲ հասցեին հասնելիս սրա համար ${0}"
 
 #: conify.js:ERROR_FETCHING_PERM_MAPS
 msgid "Problem fetching perm maps"
-msgstr ""
+msgstr "Պրոբհեմ իրավասությունների քարտեզին հասնելիս"
 
 #: conify.js:SUCCESS_NEW_CHILD_GROUP
 msgid "New child Group created for ${0}"
-msgstr ""
+msgstr "Նոր Երեխա խումբ է ստեղծվել սրա համար ${0}"
 
 #: conify.js:SUCCESS_CREATING_CHILD_AOUT
 msgid "New child Organization Type created for ${0}"
-msgstr ""
+msgstr "Նոր երեխա Կազմակերպության Տեսակը ստեղծված է սրա համար ${0}"
 
 #: conify.js:ERROR_CREATING_CHILD_AOU
 msgid "Problem creating child organizational unit"
-msgstr ""
+msgstr "Պրոբլեմ երեխա կազմակերպչական միավոր ստեղծելիս"
 
 #: conify.js:SURVEY_ADD_ANSWER
 msgid "Add Answer"
-msgstr ""
+msgstr "Ավելացրու պատասխան"
 
 #: conify.js:ERROR_FETCHING_ORGS
 msgid "Problem fetching organizational unit data"
-msgstr ""
+msgstr "Պրոբլեմ կազմակերպչական միավորի տվյալները ընտրելիս"
 
 #: conify.js:ERROR_CALLING_METHOD_PERM_MAP
 msgid "Problem calling method to create new permission map"
-msgstr ""
+msgstr "Պորբլեմ մեթոդը կանչելիս որպեսզի ստեղծվի իրավասությունների նոր քարտեզ"
 
 #: conify.js:CONFIRM_EXIT_CCS
 msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
+"Մեկ կամ ավել պատճեններիի վիճակների համար կան չհիշված փոփոխություններ։ Սեղմիր "
+"ԼԱՎ փոփոխությունները հիշելու համար, կամ ԱՆՏԵՍԵԼ կասեցնելու համար։"
 
 #: conify.js:OPAC_VISIBLE
 msgid "OPAC Visible"
-msgstr ""
+msgstr "ՀՕԱՔը տեսանելի է"
 
 #: conify.js:ERROR_SAVING_PHYSICAL
 msgid "Problem saving Physical Address data for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ Ֆիզիկական Հասցեի տվյալները հիշելիս սրա համար ${0}"
 
 #: conify.js:ID
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: conify.js:SURVEY_QUESTION
 msgid "Question:"
-msgstr ""
+msgstr "Հարց"
 
 #: conify.js:ERROR_SAVING_HOLDS
 msgid "Problem saving Holds Address data for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ Պահուների Հասցեի տվյալները հիշելիս սրա համար ${0}"
 
 #: conify.js:CONFIRM_EXIT_PPL
 msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
+"Կան չհիշված ձևափոխված իրավասություններ։ Սեղմիր ԼԱՎ փոփոխությունները հիշելու, "
+"կամ ԱՆՏԵՍԵԼ դրանք մերժելու համար։"
 
 #: conify.js:ERROR_DELETING_LAST_AOU
 msgid "Cannot delete ${0}, you need at least one organization unit."
-msgstr ""
+msgstr "Չի կարող ջնջել ${0}։ Պետք է ունենաս առնվազն մեկ կազմակերպության միավոր։"
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
-msgstr ""
+msgstr "Չի կարող ջնջել ${0}։ Պետք է ունենաս առնվազն մեկ կազմակերպության տեսակ։"
 
 #: conify.js:SUCCESS_SAVING_HOO
 msgid "Hours of Operation updated for ${0}"
-msgstr ""
+msgstr "Աշխատելու ժամերը թարմացված են սրա համար ${0}"
 
 #: conify.js:NAME
 msgid "Name"
-msgstr ""
+msgstr "Անուն"
 
 #: conify.js:ERROR_CREATING_CHILD_AOUT
 msgid "Problem creating child organization type"
-msgstr ""
+msgstr "Պրոբլեմ երեխա կազմակերպչական միավոր ստեղծելիս"
 
 #: conify.js:ERROR_SAVING_DATA
 msgid "Problem saving data for ${0}"
-msgstr ""
+msgstr "Տվյալը հիշելու պրոբլեմ սրա համար ${0}"
 
 #: conify.js:CONFIRM_EXIT_AOU
 msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
+"Կամակերպչական միավորներ ընտրելիս կան մեկ կամ ավել չհիշված փոփոխություններ։ "
+"Սեղմիր ԼԱՎ փոփոխությունները հիշելու, կամ ԱՆՏԵՍԵԼ դրանք մերժելու համար։"
 
 #: conify.js:SURVEY_SAVE_ADD
 msgid "Save Question & Add Answer"
-msgstr ""
+msgstr "Հիշիր հարցը և ավելացրու պատասխանը"
 
 #: conify.js:LABEL_NEW_BRANCH
 msgid "New Branch"
-msgstr ""
+msgstr "Նոր մասնաճյուղ"
 
 #: conify.js:ERROR_FETCHING_TYPES_AOUT
 msgid "Problem fetching organizational unit types"
-msgstr ""
+msgstr "Կազմակերպչական միավորի տեսակների ընտրության պրոբլեմ"
 
 #: conify.js:SURVEY_DELETE_QUESTION
 msgid "Delete Question & Answers"
-msgstr ""
+msgstr "Ջնջիր հարցը և պատասխանները"
 
 #: conify.js:ERROR_CREATING_STATUS
 msgid "Problem creating new Status"
-msgstr ""
+msgstr "Պրոբլեմ նոր կարգավիճակ ստեղծելիս"
 
 #: conify.js:LABEL_DEPTH
 msgid "Depth"
-msgstr ""
+msgstr "Խորություն"
 
 #: conify.js:SUCCESS_CREATING_CHILD_AOU
 msgid "New child Organizational Unit created for ${0}"
-msgstr ""
+msgstr "Նոր երեխա կազմակերպչական միավոր է ստեղծվել սրա համար ${0}"
 
 #: conify.js:ERROR_CALLING_METHOD_CCS
 msgid "Problem calling method to create new copy status"
-msgstr ""
+msgstr "Կանչման մեթոդի պրոբլեմ պատճենի նոր վիճակ ստեղծելիս"
 
 #: conify.js:LABEL_VALUE
 msgid "Value"
-msgstr ""
+msgstr "Արժեք"
 
 #: conify.js:ERROR_ORPHANS
 msgid "Cannot delete ${0}, ${1} subordinates still exist."
-msgstr ""
+msgstr "Չի կարող ջնջել ${0}, ${1} ենթակաները դեռ առկա են։"
 
 #: conify.js:SUCCESS_CREATING_PERMISSION
 msgid "New ${0} permission created"
-msgstr ""
+msgstr "Նոր ${0} իրավասությունը ստեղծված է"
 
 #: conify.js:ERROR_DELETING
 msgid "Problem deleting ${0}"
-msgstr ""
+msgstr "Պրոբլեմ սա ջնջելիս ${0}"
 
 #: conify.js:SUCCESS_CREATING_CODE
 msgid "New ${0} ${1} created"
-msgstr ""
+msgstr "Նոր ${0} ${1} ստեղծված է"
 
 #: conify.js:TRANSLATION conify.js:LABEL_TRANSLATION
 msgid "Translation"
-msgstr ""
+msgstr "Թարգմանություն"
 
 #: conify.js:SUCCESS_SAVING_HOLDS
 msgid "Saved changes to the Holds Address of ${0}"
-msgstr ""
+msgstr "Հիշված փոփոխություններ Պահումների այս Հասցեում ${0}"
 
 #: conify.js:LABEL_CODE
 msgid "Code"
-msgstr ""
+msgstr "Կոդ"
 
 #: conify.js:ERROR_DELETING_PERM_MAPPING
 msgid "Problem deleting permission mapping ${0}"
-msgstr ""
+msgstr "Պրոբլեմ Իրավասությունների քարտեզավորումը ջնջելիս ${0}"
 
 #: conify.js:ERROR_CREATING_CHILD_GROUP
 msgid "Problem creating child Group"
-msgstr ""
+msgstr "Պրոբլեմ Երեխա Խումբ ստեղծելիս"
 
 #: conify.js:SUCCESS_SAVE_PERM
 msgid "Saved permission changes to ${0}"
-msgstr ""
+msgstr "Հիշված Իրավասությունների փոփոխություն այստեղ ${0}"
 
 #: conify.js:SURVEY_ANSWER
 msgid "Answer:"
-msgstr ""
+msgstr "Պատասխան"
 
 #: conify.js:SURVEY_FOOT_LABEL
 msgid "Questions & Answers"
-msgstr ""
+msgstr "Հարցեր և պատասխաններ"
 
 #: conify.js:ERROR_SAVING_DATA_CAM
 msgid "Problem saving data for ${0} ${1}"
-msgstr ""
+msgstr "Պրոբլեմ տվյալները հիշելիս սրա համար ${0} ${1}"
 
 #: conify.js:ERROR_FETCHING_GROUPS
 msgid "Problem fetching groups"
-msgstr ""
+msgstr "Պրոբլեմ խմբերը ընտրելիս"
 
 #: conify.js:STATUS_EDITING
 msgid "Now editing ${0}"
-msgstr ""
+msgstr "Հիմա խմբագրում եմ ${0}"
 
 #: conify.js:EVENT_DEF_LABEL
 msgid "${0}: ${1}"
-msgstr ""
+msgstr "${0}: ${1}"
 
 #: conify.js:CONFIRM_EXIT_CAM
 msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
+"Կան չհիշված փոփոխություններ մեկ կամ ավել ${0} կոդերում։ Սեղմիր ԼԱՎ դրանք "
+"հիշելու, կամ ԱՆՏԵՍԵԼ դրանք մերժելու համար։"
 
 #: conify.js:SUCCESS_SAVING_PHYSICAL
 msgid "Saved changes to the Physical Address of ${0}"
-msgstr ""
+msgstr "Հիշված փոփոխություններ Ֆիզիկական Հասցեում սրա համար ${0}"
 
 #: conify.js:SUCCESS_DELETED_PERM_MAP
 msgid "Permission mapping deleted"
-msgstr ""
+msgstr "Իրավասությունների քարտեզավորումը ջնջված է"
 
 #: conify.js:ERROR_CALLING_METHOD_AOUT
 msgid "Problem calling method to create child organization type"
-msgstr ""
+msgstr "Պրոբլեմ մեթոդը կանչելիս երբ ստեղծվում է երեխա կազմակերպության տեսակ"
 
 #: conify.js:ERROR_FETCHING_STATUSES
 msgid "Problem fetching statuses"
-msgstr ""
+msgstr "Պրոբլեմ վիճակները ընտրելիս"
 
 #: conify.js:LABEL_NEW_GROUP
 msgid "New Group"
-msgstr ""
+msgstr "Նոր խումբ"
 
 #: conify.js:ERROR_FETCHING_PHYSICAL
 msgid "Problem fetching Physical Address for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ Ֆիզիկական Հասցեները ընտրելիս սրա համար ${0}"
 
 #: conify.js:ERROR_SAVING_HOO
 msgid "Problem saving Hours of Operation data for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ աշխատաժամերը հիշելիս սրա համար ${0}"
 
 #: conify.js:ERROR_SAVING_MAILING
 msgid "Problem saving Mailing Address data for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ փոստային առաքման հասցեի տվյալները հիշելիս սրա համար ${0}"
 
 #: conify.js:CONFIRM_EXIT_PGT
 msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
+"Կան չհիշված ձևափոխված իրավասությունների քարտեզներ։ Սեղմիր ԼԱՎ "
+"փոփոխությունները հիշելու, կամ ԱՆՏԵՍԵԼ դրանք լքելու համար։"
 
 #: conify.js:ERROR_SAVING_ILL
 msgid "Problem saving ILL Address data for ${0}"
-msgstr ""
+msgstr "Պրոբլեմ ՄԳԲ հասցեի տվյալները հիշելիս սրա համար ${0}"

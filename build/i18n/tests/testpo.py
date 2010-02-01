@@ -40,15 +40,16 @@ class TestPOFramework(unittest.TestCase):
         devnull.close()
 
     def tearDown(self):
-        devnull = open('/dev/null', 'w')
-        subprocess.Popen(('cp', '-r', 'tests/tmp', 'done'), 0, None, None, devnull, devnull).wait()
-        for root, dirs, files in os.walk(os.path.join(self.newdir, 'tests/tmp'), topdown=False):
-            for name in files:
-                os.remove(os.path.join(root, name))
-            for name in dirs:
-                os.rmdir(os.path.join(root, name))
-        if os.access(os.path.join(self.newdir, 'tests/tmp'), os.F_OK):
-            os.rmdir(os.path.join(self.newdir, 'tests/tmp'))
+	pass
+#        devnull = open('/dev/null', 'w')
+#        subprocess.Popen(('cp', '-r', 'tests/tmp', 'done'), 0, None, None, devnull, devnull).wait()
+#        for root, dirs, files in os.walk(os.path.join(self.newdir, 'tests/tmp'), topdown=False):
+#            for name in files:
+#                os.remove(os.path.join(root, name))
+#            for name in dirs:
+#                os.rmdir(os.path.join(root, name))
+#        if os.access(os.path.join(self.newdir, 'tests/tmp'), os.F_OK):
+#            os.rmdir(os.path.join(self.newdir, 'tests/tmp'))
 
     def testnewpofiles(self):
         # Create a brand new set of PO files from our en-US project files.
