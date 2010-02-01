@@ -921,31 +921,48 @@ sub retrieve_hold_queue_status_impl {
     my $e = shift;
     my $hold = shift;
 
-    # The holds queue is defined as the set of holds that share at 
-    # least one potential copy with the context hold
+    # The holds queue is defined as the distinct set of holds that share at 
+    # least one potential copy with the context hold, plus any holds that
+    # share the same hold type and target.  The latter part exists to
+    # accomodate holds that currently have no potential copies
     my $q_holds = $e->json_query({
-         select => { 
-            ahcm => ['hold'], 
-            # fetch request_time since it's in the order_by and we're asking for distinct values
-            ahr => ['request_time']
+
+        # fetch request_time since it's in the order_by and we're asking for distinct values
+        select => {ahr => ['id', 'request_time']},
+
+        from => {
+            ahr => {
+                ahcm => {type => 'left'} # there may be no copy maps 
+            }
         },
-        from => {ahcm => 'ahr'},
         order_by => {ahr => ['request_time']},
         distinct => 1,
         where => {
-            target_copy => {
-                in => {
-                    select => {ahcm => ['target_copy']},
-                    from => 'ahcm',
-                    where => {hold => $hold->id}
-                } 
-            } 
+            '-or' => [
+                {
+                    '+ahcm' => {
+                        target_copy => {
+                            in => {
+                                select => {ahcm => ['target_copy']},
+                                from => 'ahcm',
+                                where => {hold => $hold->id}
+                            } 
+                        } 
+                    }
+                },
+                {
+                    '+ahr' => {
+                        hold_type => $hold->hold_type,
+                        target => $hold->target
+                    }
+                }
+            ]
         }, 
     });
 
     my $qpos = 1;
     for my $h (@$q_holds) {
-        last if $h->{hold} == $hold->id;
+        last if $h->{id} == $hold->id;
         $qpos++;
     }
 
