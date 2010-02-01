@@ -15,15 +15,15 @@ installer.
 
 Issue the following commands as the root user to install prerequisites
 using the Makefile.install prerequisite installer, substituting
-"debian-etch", "debian-lenny", "ubunty-hardy", or "ubuntu-intrepid"
+"debian-etch", "debian-lenny", "ubuntu-gutsy", "ubuntu-hardy",
+"ubuntu-intrepid", "ubuntu-karmic", "centos", "rhel", or "gentoo"
 for <osname> below:
 
 make -f Open-ILS/src/extras/Makefile.install <osname>
 
-Note: You may also be able to use "centos" to install the Evergreen 
-prerequisites for CentOS 5 and RHEL 5, or "gentoo" for Gentoo - but
-these are less tested distributions. Your patches and suggestions for
-improvement are welcome!
+Note: "centos", "rhel", and "gentoo" are less tested than the debian
+and ubuntu options.  Your patches and suggestions for improvement are
+welcome!
 
 Configuration and compilation instructions:
 ==========================================
