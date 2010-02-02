@@ -454,6 +454,8 @@ patron.items.prototype = {
                     }
                 }
                 if (due_date) {
+                    // XXX We need to append the time component from the original due date to the entered
+                    // date here, if (circ interval % 1 day == 0)
                     var circs = util.functional.map_list(retrieve_ids,function(o){return o.circ_id;});
                     for (var i = 0; i < circs.length; i++) {
                         var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
