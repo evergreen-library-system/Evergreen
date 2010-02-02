@@ -171,6 +171,7 @@ CREATE TABLE acq.fund (
     code            TEXT,
 	rollover        BOOL    NOT NULL DEFAULT FALSE,
 	propagate       BOOL    NOT NULL DEFAULT TRUE,
+	active          BOOL    NOT NULL DEFAULT TRUE,
     CONSTRAINT name_once_per_org_year UNIQUE (org,name,year),
     CONSTRAINT code_once_per_org_year UNIQUE (org, code, year),
 	CONSTRAINT acq_fund_rollover_implies_propagate CHECK ( propagate OR NOT rollover )
