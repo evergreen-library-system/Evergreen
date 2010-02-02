@@ -165,9 +165,9 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             performAutoEditAction : function() {
                 var self = this;
                 self.performEditAction({
-                    oncomplete:function(r) {
+                    oncomplete:function(req, cudResults) {
                         if(self.onPostSubmit)
-                            self.onPostSubmit(r);
+                            self.onPostSubmit(req, cudResults);
                     }
                 });
             },

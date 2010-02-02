@@ -237,7 +237,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                                     var res = r.recv();
                                     if ( res && res.content() ) {
                                         if(req._final_complete)
-                                            req._final_complete(req);
+                                            req._final_complete(req, _return_list);
                                         _pcrud.disconnect();
                                     } else {
                                         _pcrud.disconnect();

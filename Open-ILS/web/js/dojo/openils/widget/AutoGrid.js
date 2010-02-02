@@ -417,8 +417,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     overrideWidgetClass : this.overrideEditWidgetClass,
                     overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
-                    onPostSubmit : function(r) {
-                        var fmObject = openils.Util.readResponse(r);
+                    onPostSubmit : function(req, cudResults) {
+                        var fmObject = cudResults[0];
                         if(grid.onPostCreate)
                             grid.onPostCreate(fmObject);
                         if(fmObject) 
