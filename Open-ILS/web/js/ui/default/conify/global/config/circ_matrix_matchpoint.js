@@ -144,8 +144,8 @@ function applyCircModChanges() {
         if(group.isnew()) {
 
             pcrud.create(group, {
-                oncomplete : function(r) {
-                    var group = openils.Util.readResponse(r);
+                oncomplete : function(r, cudResults) {
+                    var group = cudResults[0];
                     dojo.forEach(entries, function(e) { e.circ_mod_test(group.id()) } );
                     pcrud.create(entries, {
                         oncomplete : function() {
@@ -158,8 +158,7 @@ function applyCircModChanges() {
         } else {
 
             pcrud.update(group, {
-                oncomplete : function(r) {
-                    openils.Util.readResponse(r);
+                oncomplete : function(r, cudResults) {
                     var newOnes = entries.filter(function(e) { return e.isnew() });
                     var delOnes = entries.filter(function(e) { return e.isdeleted() });
                     if(!delOnes.length && !newOnes.length) {

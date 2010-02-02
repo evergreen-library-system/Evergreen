@@ -65,8 +65,8 @@ function updatePoName() {
     PO.name(value);
     var pcrud = new openils.PermaCrud();
     pcrud.update(PO, {
-        oncomplete : function(r) {
-            var stat = openils.Util.readResponse(r);
+        oncomplete : function(r, cudResults) {
+            var stat = cudResults[0];
             if(stat) 
                 dojo.byId('acq-po-view-name').innerHTML = value;
         }
