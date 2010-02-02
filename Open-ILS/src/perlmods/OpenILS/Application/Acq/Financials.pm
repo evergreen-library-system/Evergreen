@@ -898,31 +898,41 @@ sub search_purchase_order {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_purchase_order',
-	api_name	=> 'open-ils.acq.purchase_order.retrieve',
-	signature => {
-        desc => 'Retrieves a purchase order',
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'purchase_order to retrieve', type => 'number'},
-            {desc => q/Options hash.  flesh_lineitems, to get the lineitems and lineitem_attrs; 
+        method    => 'retrieve_purchase_order',
+        api_name  => 'open-ils.acq.purchase_order.retrieve',
+        stream    => 1,
+        signature => {
+                      desc      => 'Retrieves a purchase order',
+                      params    => [
+                                    {desc => 'Authentication token', type => 'string'},
+                                    {desc => 'purchase_order to retrieve', type => 'number'},
+                                    {desc => q/Options hash.  flesh_lineitems, to get the lineitems and lineitem_attrs;
                 clear_marc, to clear the MARC data from the lineitem (for reduced bandwidth)
                 li_limit : number of lineitems to return if fleshing line items;
                 li_offset : lineitem offset if fleshing line items
                 li_order_by : lineitem sort definition if fleshing line items
-                /, 
-                type => 'hash'}
-        ],
-        return => {desc => 'The purchase order, Event on failure'}
-    }
+                /,
+                                     type => 'hash'}
+                                   ],
+                      return => {desc => 'The purchase order, Event on failure'}
+                     }
 );
 
 sub retrieve_purchase_order {
     my($self, $conn, $auth, $po_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $e->event if po_perm_failure($e, $po_id);
-    return retrieve_purchase_order_impl($e, $po_id, $options);
+
+    $po_id = [ $po_id ] unless ref $po_id;
+    for ( @{$po_id} ) {
+        my $rv;
+        if ( po_perm_failure($e, $_) )
+          { $rv = $e->event }
+        else
+          { $rv =  retrieve_purchase_order_impl($e, $_, $options) }
+
+        $conn->respond($rv);
+    }
 }
 
 
