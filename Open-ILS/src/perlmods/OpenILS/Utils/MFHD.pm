@@ -292,9 +292,14 @@ sub format_holdings {
             # holdings statement, and this caption has the same one, then
             # we don't add the holdings again.
             if (!defined $last_txt || ($last_txt != $txt_link_ids{$cap_id})) {
+                my $txt = $txt_link_ids{$cap_id};
                 $holdings_stmt .= ',' if $holdings_stmt;
-                $holdings_stmt .= $txt_link_ids{$cap_id}->subfield('a');
-                $last_txt = $txt_link_ids{$cap_id};
+                $holdings_stmt .= $txt->subfield('a');
+                if (defined $txt->subfield('z')) {
+                    $holdings_stmt .= ' -- ' . $txt->subfield('z');
+                }
+
+                $last_txt = $txt;
             }
             next;
         }
@@ -317,7 +322,7 @@ sub format_holdings {
 
             while (my $h = shift @holdings) {
                 if (!$h->matches($l->next)) {
-                    # this item is not part of the current run
+                    # this item is not part of the current run,
                     # close out the run and record this item
                     if ($l != $start) {
                         $holdings_stmt .= '-' . $l->format;
@@ -325,9 +330,15 @@ sub format_holdings {
 
                     $holdings_stmt .= ',' . $h->format;
                     $start = $h
-                } elsif (!scalar(@holdings)) {
+                } elsif (!scalar(@holdings) || defined($h->subfield('z'))) {
                     # This is the end of the holdings for this caption
+                    # or this item has a public note that we want
+                    # to display
                     $holdings_stmt .= '-' . $h->format;
+                }
+
+                if (defined $h->subfield('z')) {
+                    $holdings_stmt .= ' -- ' . $h->subfield('z');
                 }
 
                 $l = $h;
@@ -337,6 +348,9 @@ sub format_holdings {
             $holdings_stmt .= (shift @holdings)->format;
             foreach my $h (@holdings) {
                 $holdings_stmt .= ',' . $h->format;
+                if (defined $h->subfield('z')) {
+                    $holdings_stmt .= ' -- ' . $h->subfield('z');
+                }
             }
         }
     }
