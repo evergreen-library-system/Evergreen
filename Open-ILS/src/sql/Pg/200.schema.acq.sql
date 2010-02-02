@@ -200,6 +200,87 @@ CREATE TABLE acq.fund_allocation (
 );
 CREATE INDEX fund_alloc_allocator_idx ON acq.fund_allocation ( allocator );
 
+CREATE TABLE acq.fund_allocation_percent
+(
+    id                   SERIAL            PRIMARY KEY,
+    funding_source       INT               NOT NULL REFERENCES acq.funding_source
+                                               DEFERRABLE INITIALLY DEFERRED,
+    org                  INT               NOT NULL REFERENCES actor.org_unit
+                                               DEFERRABLE INITIALLY DEFERRED,
+    fund_code            TEXT,
+    percent              NUMERIC           NOT NULL,
+    allocator            INTEGER           NOT NULL REFERENCES actor.usr
+                                               DEFERRABLE INITIALLY DEFERRED,
+    note                 TEXT,
+    create_time          TIMESTAMPTZ       NOT NULL DEFAULT now(),
+    CONSTRAINT logical_key UNIQUE( funding_source, org, fund_code ),
+    CONSTRAINT percentage_range CHECK( percent >= 0 AND percent <= 100 )
+);
+
+-- Trigger function to validate combination of org_unit and fund_code
+
+CREATE OR REPLACE FUNCTION acq.fund_alloc_percent_val()
+RETURNS TRIGGER AS $$
+--
+DECLARE
+--
+dummy int := 0;
+--
+BEGIN
+    SELECT
+        1
+    INTO
+        dummy
+    FROM
+        acq.fund
+    WHERE
+        org = NEW.org
+        AND code = NEW.fund_code
+        LIMIT 1;
+    --
+    IF dummy = 1 then
+        RETURN NEW;
+    ELSE
+        RAISE EXCEPTION 'No fund exists for org % and code %', NEW.org, NEW.fund_code;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER acq_fund_alloc_percent_val_trig
+    BEFORE INSERT OR UPDATE ON acq.fund_allocation_percent
+    FOR EACH ROW EXECUTE PROCEDURE acq.fund_alloc_percent_val();
+
+-- To do: trigger to verify that percentages don't add up to more than 100
+
+CREATE OR REPLACE FUNCTION acq.fap_limit_100()
+RETURNS TRIGGER AS $$
+DECLARE
+--
+total_percent numeric;
+--
+BEGIN
+    SELECT
+        sum( percent )
+    INTO
+        total_percent
+    FROM
+        acq.fund_allocation_percent AS fap
+    WHERE
+        fap.funding_source = NEW.funding_source;
+    --
+    IF total_percent > 100 THEN
+        RAISE EXCEPTION 'Total percentages exceed 100 for funding_source %',
+            NEW.funding_source;
+    ELSE
+        RETURN NEW;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER acqfap_limit_100_trig
+    AFTER INSERT OR UPDATE ON acq.fund_allocation_percent
+    FOR EACH ROW EXECUTE PROCEDURE acq.fap_limit_100();
+
 CREATE TABLE acq.picklist (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
