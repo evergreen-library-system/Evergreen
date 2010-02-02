@@ -29,7 +29,7 @@ sub load_MARC_rec {
     $marc = MARC::Record->new();
     carp('No record created!') unless $marc;
 
-    $marc->leader('01119nas  2200313 a 4500');
+    $marc->leader('01119nas  22003134a 4500');
     $marc->append_fields(
         MARC::Field->new('008', '970701c18439999enkwr p       0   a0eng  '));
     $marc->append_fields(
