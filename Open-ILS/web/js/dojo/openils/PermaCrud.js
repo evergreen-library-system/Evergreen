@@ -205,6 +205,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!this.connected) this.connect();
 
             var _pcrud = this;
+            var _return_list = [];
 
             function _CUD_recursive ( obj_list, pos, final_complete, final_error ) {
                 var obj = obj_list[pos];
@@ -220,32 +221,40 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 
                 if (++pos == obj_list.length) {
                     req.oncomplete = function (r) {
+                        var res = r.recv();
 
-                        _pcrud.session.request({
-                            method : 'open-ils.pcrud.transaction.commit',
-                            timeout : 10,
-                            params : [ _pcrud.auth() ],
-                            onerror : function (r) {
-                                _pcrud.disconnect();
-                                throw 'Transaction commit error';
-                            },      
-                            oncomplete : function (r) {
-                                var res = r.recv();
-                                if ( res && res.content() ) {
-                                    if(req._final_complete)
-                                        req._final_complete(req);
-                                    _pcrud.disconnect();
-                                } else {
+                        if ( res && res.content() ) {
+                            _return_list.push( res.content() );
+                            _pcrud.session.request({
+                                method : 'open-ils.pcrud.transaction.commit',
+                                timeout : 10,
+                                params : [ _pcrud.auth() ],
+                                onerror : function (r) {
                                     _pcrud.disconnect();
                                     throw 'Transaction commit error';
-                                }
-                            },
-                        }).send();
+                                },      
+                                oncomplete : function (r) {
+                                    var res = r.recv();
+                                    if ( res && res.content() ) {
+                                        if(req._final_complete)
+                                            req._final_complete(req, _return_list);
+                                        _pcrud.disconnect();
+                                    } else {
+                                        _pcrud.disconnect();
+                                        throw 'Transaction commit error';
+                                    }
+                                },
+                            }).send();
+                        } else {
+                            _pcrud.disconnect();
+                            throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
+                        }
                     };
 
                     req.onerror = function (r) {
                         if (r._final_error) r._final_error(r);
                         _pcrud.disconnect();
+                        throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
                     };
 
                 } else {
@@ -254,11 +263,17 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                     req.oncomplete = function (r) {
                         var res = r.recv();
                         if ( res && res.content() ) {
+                            _return_list.push( res.content() );
                             _CUD_recursive( r._obj_list, r._pos, r._final_complete );
                         } else {
                             _pcrud.disconnect();
                             throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
                         }
+                    };
+                    req.onerror = function (r) {
+                        if (r._final_error) r._final_error(r);
+                        _pcrud.disconnect();
+                        throw '_CUD: Error creating, deleting or updating ' + js2JSON(obj);
                     };
                 }
 
@@ -286,18 +301,30 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                     }
                 },
             }).send();
+
+            return _return_list;
+
         },
 
         create : function ( list, opts ) {
-            this._CUD( 'create', list, opts );
+            return this._CUD( 'create', list, opts );
         },
 
         update : function ( list, opts ) {
-            this._CUD( 'update', list, opts );
+            var id_list = this._CUD( 'update', list, opts );
+            var obj_list = [];
+
+            for (var idx = 0; idx < id_list.length; idx++) {
+                obj_list.push(
+                    this.retrieve( list[idx].classname, id_list[idx] )
+                );
+            }
+
+            return obj_list;
         },
 
         delete : function ( list, opts ) {
-            this._CUD( 'delete', list, opts );
+            return this._CUD( 'delete', list, opts );
         },
 
 	/* 
@@ -305,7 +332,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
 	 * in browsers like IE or Chrome, so we define a safe synonym
 	 */
         eliminate: function ( list, opts ) {
-            this._CUD( 'delete', list, opts );
+            return this._CUD( 'delete', list, opts );
         },
 
         apply : function ( list, opts ) {
