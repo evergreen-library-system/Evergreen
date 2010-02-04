@@ -1029,7 +1029,82 @@ sub format_po {
     return $U->fire_object_event(undef, $hook, $po, $po->ordering_agency);
 }
 
+__PACKAGE__->register_method (
+    method        => 'po_events',
+    api_name    => 'open-ils.acq.purchase_order.events.owner',
+    stream      => 1,
+);
 
+__PACKAGE__->register_method (
+    method        => 'po_events',
+    api_name    => 'open-ils.acq.purchase_order.events.ordering_agency',
+    stream      => 1,
+);
+
+__PACKAGE__->register_method (
+    method        => 'po_events',
+    api_name    => 'open-ils.acq.purchase_order.events.id',
+    stream      => 1,
+);
+
+sub po_events {
+    my($self, $conn, $auth, $search_value, $options) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    (my $search_field = $self->api_name) =~ s/.*\.([_a-z]+)$/$1/;
+    my $obj_type = 'acqpo';
+
+    my $query = {
+        "select"=>{"atev"=>["id"]}, 
+        "from"=>"atev", 
+        "where"=>{
+            "target"=>{
+                "in"=>{
+                    "select"=>{$obj_type=>["id"]}, 
+                    "from"=>$obj_type,
+                    "where"=>{$search_field=>$search_value}
+                }
+            }, 
+            "state"=>"pending" 
+        }
+    };
+
+    if (defined $options->{state}) {
+        $query->{'where'}{'state'} = $options->{state}
+    }
+
+    if (defined $options->{start_time}) {
+        $query->{'where'}{'start_time'} = $options->{start_time};
+    }
+
+    my $po_events = $e->json_query($query);
+
+    my $flesh_fields = $options->{flesh_fields} || {};
+    my $flesh_depth = $options->{flesh_depth} || 1;
+    $flesh_fields->{atev} = ['event_def'] unless $flesh_fields->{atev};
+
+    for my $id (@$po_events) {
+        my $event = $e->retrieve_action_trigger_event([
+            $id->{id},
+            {flesh => $flesh_depth, flesh_fields => $flesh_fields}
+        ]);
+        if (! $event) { next; }
+
+        my $po = retrieve_purchase_order_impl(
+            $e,
+            $event->target(),
+            {flesh_lineitem_count=>1,flesh_price_summary=>1}
+        );
+
+        if ($e->allowed( ['CREATE_PURCHASE_ORDER','VIEW_PURCHASE_ORDER'], $po->ordering_agency() )) {
+            $event->target( $po );
+            $conn->respond($event);
+        }
+    }
+
+    return undef;
+}
 
 1;
 
