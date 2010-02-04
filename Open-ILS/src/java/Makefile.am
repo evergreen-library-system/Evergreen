@@ -14,7 +14,7 @@ JAVA_SRC = \
 all-local:	jar
 
 jar:
-	mkdir -p $(JAVA_LIBDIR)
+	$(MKDIR_P) $(JAVA_LIBDIR)
 	$(JAVAC) -d $(JAVA_LIBDIR) -cp $(JAVA_LIBS) $(JAVA_SRC) 2>&1 
 	rm -f openils.jar
 	echo "creating openils.jar"
@@ -23,12 +23,12 @@ jar:
 
 # only prints the first 30 lines of errors
 slim:
-	mkdir -p $(JAVA_LIBDIR)
+	$(MKDIR_P) $(JAVA_LIBDIR)
 	$(JAVAC) -d $(JAVA_LIBDIR) -cp $(JAVA_LIBS) $(JAVA_SRC) 2>&1 | head -n 30
 	@echo -e "\nTruncating at 30 lines"
 
 check:
-	mkdir -p $(JAVA_LIBDIR)
+	$(MKDIR_P) $(JAVA_LIBDIR)
 	$(JAVAC) -Xlint:unchecked -d $(JAVA_LIBDIR) -cp $(JAVA_LIBS) $(JAVA_SRC) 2>&1 | head -n 30
 	@echo -e "\nTruncating at 30 lines"
 
@@ -36,7 +36,7 @@ run:
 	@$(JAVA) -cp $(JAVA_LIBS):openils.jar $(JAVA_EXE) $(JAVA_ARGS)
 
 deps:
-	mkdir -p ext
+	$(MKDIR_P) ext
 
 docs:
 	find . -name *.java > files;
