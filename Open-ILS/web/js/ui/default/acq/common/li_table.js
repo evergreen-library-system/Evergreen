@@ -169,7 +169,7 @@ function AcqLiTable() {
      * Inserts a single lineitem into the growing table of lineitems
      * @param {Object} li The lineitem object to insert
      */
-    this.addLineitem = function(li) {
+    this.addLineitem = function(li, skip_final_placement) {
         this.liCache[li.id()] = li;
 
         // sort the lineitem notes on edit_time
@@ -200,8 +200,13 @@ function AcqLiTable() {
                 this.poCache[li.purchase_order()] ||
                 fieldmapper.standardRequest(
                     ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],
-                    {params: [this.authtoken, li.purchase_order()]});
-            if(po) {
+                    {params: [
+                        this.authtoken, li.purchase_order(), {
+                            "flesh_price_summary": true,
+                            "flesh_lineitem_count": true
+                        }
+                    ]});
+            if(po && !this.isMeta) {
                 openils.Util.show(nodeByName('po', row), 'inline');
                 var link = nodeByName('po_link', row);
                 link.setAttribute('href', oilsBasePath + '/acq/po/view/' + li.purchase_order());
@@ -210,7 +215,7 @@ function AcqLiTable() {
         }
 
         // show which picklist this lineitem is a member of
-        if(li.picklist() && this.isPO) {
+        if(li.picklist() && (this.isPO || this.isMeta)) {
             var pl = 
                 this.plCache[li.picklist()] = 
                 this.plCache[li.picklist()] || 
@@ -226,7 +231,11 @@ function AcqLiTable() {
         }
 
         var countNode = nodeByName('count', row);
-        countNode.innerHTML = li.item_count() || 0;
+        var count = li.item_count() || 0;
+        if (typeof(this._copy_count_cb) == "function") {
+            this._copy_count_cb(li.id(), count);
+        }
+        countNode.innerHTML = count;
         countNode.id = 'acq-lit-copy-count-label-' + li.id();
 
         // lineitem state
@@ -260,8 +269,12 @@ function AcqLiTable() {
             }
         }
 
-        self.tbody.appendChild(row);
-        self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
+        if (!skip_final_placement) {
+            self.tbody.appendChild(row);
+            self.selectors.push(dojo.query('[name=selectbox]', row)[0]);
+        } else {
+            return row;
+        }
     };
 
     /**
@@ -849,6 +862,10 @@ function AcqLiTable() {
                 if(c.id() < 0) c.id(null);
                 copies.push(c);
             }
+        }
+
+        if (typeof(this._copy_count_cb) == "function") {
+            this._copy_count_cb(liId, total);
         }
 
         dojo.byId('acq-lit-copy-count-label-' + liId).innerHTML = total;

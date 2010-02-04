@@ -90,13 +90,32 @@
 .oils-acq-lineitem-attr-name {}
 .oils-acq-lineitem-attr-value {}
 #oils-acq-lineitem-marc-block { margin-top: 10px; padding: 6px; }
+.oils-acq-po-heading-po { font-weight: bold; }
 
+#oils-acq-metapo-summary {
+    border: 1px inset #ccc;
+    width: 400px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+}
+#oils-acq-metapo-summary th, #oils-acq-metapo-summary td { padding: 3px; }
+#oils-acq-metapo-summary tbody th { font-weight: bold; }
+#oils-acq-metapo-summary thead th {
+    font-size: 110%;
+    font-weight: bold;
+    text-align: center;
+}
+#oils-acq-metapo-summary td { text-align: right; }
 
 #acq-lit-table {width:100%}
 #acq-lit-table th {padding:5px; font-weight: bold; text-align:left;}
 #acq-lit-table td {padding:2px;}
 .acq-lit-row { border-bottom: 1px solid #AAA; }
 .acq-lit-alt-row td { padding-left:30px; }
+.acq-lit-po-heading td { background-color: #ccc; border: 1px solid #000; }
+.acq-lit-po-heading td span { padding-left: 6px; padding-right: 6px; }
+.acq-lit-po-heading td span span { padding: 0; }
+.acq-lit-po-heading td span a[attr="name"] { font-weight: bold; }
 #acq-lit-info-tbody td {padding:5px;}
 #acq-lit-li-details-table {margin-top:20px;}
 #acq-lit-li-details-table td {padding:0px 3px 1px 3px;}
@@ -111,4 +130,3 @@
 .acq-lit-table-spacer { height:20px; }
 .acq-lit-row td[name="selector"] { width:1.5em; font-weight:bold; color:blue; font-size:110%;}
 #acq-lit-notes-tbody li { margin-bottom:10px; border:1px solid #aaa; -moz-border-radius: 5px 5px 5px 5px; }
-

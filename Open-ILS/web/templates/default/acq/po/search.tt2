@@ -4,6 +4,15 @@
     <div id='oils-acq-list-header-label'>PO Search</div>
 </div>
 
+<div id="oils-acq-po-heading-template" class="hidden">
+    <span>Purchase Order: <a attr="name"></a></span>
+    <span>Total Lineitems: <span attr="lineitem_count"></span></span>
+    <span>Total Encumbered: $<span attr="amount_encumbered"></span></span>
+    <span>Total Spent: $<span attr="amount_spent"></span></span>
+    <span>Total Copies: <span attr="copies"></span></span>
+    <span>Status: <span attr="state"></span></span>
+    <span><a class="hidden" attr="activator" href="javascript:void(0);">Activate Order</a></span>
+</div>
 <!-- load the page-specific JS -->
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
 
@@ -36,8 +45,12 @@
                     identifier:"value",
                     label: "name",
                     items: [
+                        /* FIXME This is probably not the correct final list of 
+                        possible states */
                         {name:"New", value:'new'},
-                        {name:"In Process", value:'in-process'}
+                        {name:"In Process", value:'in-process'},
+                        {name:"Pending", value:'pending'},
+                        {name:"On order", value:'on-order'}
                     ]
                 }
             });
@@ -55,9 +68,14 @@
 
         <span dojoType='dijit.form.Button' type='submit'>Search</span>
     </div>
+    <div class="oils-acq-basic-form-div">
+        <input dojoType="dijit.form.CheckBox" value="1" name="metapo_view"
+            id="metapo_view" type="checkbox" />
+        <label for="metapo_view">Show results as a virtual combined PO</label>
+    </div>
 </form>
 <br/>
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" id="holds_po_grid">
     <table 
             id="po-grid" 
             autoHeight='true'
@@ -80,7 +98,38 @@
             </tr> 
         </thead> 
     </table>     
-    <div comment='dojo-needs-me'/>
+    <div comment='dojo-needs-me'></div>
 </div>
+<div id="oils-acq-holds-metapo-summary" class="hidden">
+    <table id="oils-acq-metapo-summary">
+        <thead>
+            <tr>
+                <th colspan="2">Results Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Total Purchase Orders:</th>
+                <td id="oils-acq-metapo-summary-po"></td>
+            </tr>
+            <tr>
+                <th>Total Lineitems:</th>
+                <td id="oils-acq-metapo-summary-lineitem_count"></td>
+            </tr>
+            <tr>
+                <th>Total Copies:</th>
+                <td id="oils-acq-metapo-summary-copies"></td>
+            </tr>
+            <tr>
+                <th>Total Encumbered:</th>
+                <td>$<span id="oils-acq-metapo-summary-amount_encumbered"></span></td>
+            </tr>
+            <tr>
+                <th>Total Spent:</th>
+                <td>$<span id="oils-acq-metapo-summary-amount_spent"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+[% INCLUDE 'default/acq/common/li_table.tt2' %]
 [% END %]
-
