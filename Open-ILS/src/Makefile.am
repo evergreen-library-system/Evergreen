@@ -32,9 +32,9 @@ examples = @top_srcdir@/Open-ILS/examples
 jsbackend = @srcdir@/javascript/backend
 supportscr = @srcdir@/support-scripts
 webdir = $(WEBDIR)
-opacjsdir = $(DESTDIR)$(WEBDIR)/opac/common/js
-jsdojodir = $(DESTDIR)$(WEBDIR)/js/dojo
-jsdojoosrfdir = $(DESTDIR)$(WEBDIR)/js/dojo/opensrf
+#opacjsdir = $(DESTDIR)$(WEBDIR)/opac/common/js
+#jsdojodir = $(DESTDIR)$(WEBDIR)/js/dojo
+#jsdojoosrfdir = $(DESTDIR)$(WEBDIR)/js/dojo/opensrf
 opacextrasdir = $(DESTDIR)$(WEBDIR)/opac/extras/xsl/
 reportsdir = $(DESTDIR)$(WEBDIR)/reports/
 
@@ -115,20 +115,20 @@ OILSWEB_INST = webcore-install offline-install cgi-bootstrap
 #webcore-install
 
 reports_SCRIPTS = @top_srcdir@/Open-ILS/xul/staff_client/server/admin/adminlib.js
-opacjs_SCRIPTS = $(OPENSRF_LIBS)/javascript/DojoSRF.js \
-		 $(OPENSRF_LIBS)/javascript/JSON_v0.js \
-		 $(OPENSRF_LIBS)/javascript/JSON_v1.js \
-		 $(OPENSRF_LIBS)/javascript/md5.js \
-		 $(OPENSRF_LIBS)/javascript/opensrf.js \
-		 $(OPENSRF_LIBS)/javascript/opensrf_xhr.js \
-		 $(OPENSRF_LIBS)/javascript/opensrf_xmpp.js \
-		 @top_srcdir@/Open-ILS/xul/staff_client/chrome//content//util/date.js
-jsdojo_SCRIPTS = $(OPENSRF_LIBS)/javascript/DojoSRF.js
-jsdojoosrf_SCRIPTS = $(OPENSRF_LIBS)/javascript/md5.js \
-		     $(OPENSRF_LIBS)/javascript/JSON_v1.js \
-		     $(OPENSRF_LIBS)/javascript/opensrf.js \
-		     $(OPENSRF_LIBS)/javascript/opensrf_xhr.js \
-		     $(OPENSRF_LIBS)/javascript/opensrf_xmpp.js
+OPACJS = $(OPENSRF_LIBS)/javascript/DojoSRF.js \
+	 $(OPENSRF_LIBS)/javascript/JSON_v0.js \
+	 $(OPENSRF_LIBS)/javascript/JSON_v1.js \
+	 $(OPENSRF_LIBS)/javascript/md5.js \
+	 $(OPENSRF_LIBS)/javascript/opensrf.js \
+	 $(OPENSRF_LIBS)/javascript/opensrf_xhr.js \
+	 $(OPENSRF_LIBS)/javascript/opensrf_xmpp.js \
+	 @top_srcdir@/Open-ILS/xul/staff_client/chrome//content//util/date.js
+JSDOJO = $(OPENSRF_LIBS)/javascript/DojoSRF.js
+JSDOJOOSRF = $(OPENSRF_LIBS)/javascript/md5.js \
+	     $(OPENSRF_LIBS)/javascript/JSON_v1.js \
+	     $(OPENSRF_LIBS)/javascript/opensrf.js \
+	     $(OPENSRF_LIBS)/javascript/opensrf_xhr.js \
+	     $(OPENSRF_LIBS)/javascript/opensrf_xmpp.js
 
 installautojs = $(autojsbinscripts)
 
@@ -206,15 +206,15 @@ uninstall-hook:
 ilscore-install:
 	@echo $@
 	@echo "Installing Perl modules"
-	mkdir -p $(perldir)
-	mkdir -p $(TEMPLATEDIR)
+	$(MKDIR_P) $(perldir)
+	$(MKDIR_P) $(TEMPLATEDIR)
 	cp -r @srcdir@/perlmods/* $(perldir)
 	cp -r @srcdir@/templates/marc $(TEMPLATEDIR)
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@libdir@/perl5/OpenILS/WWW/Web.pm'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@libdir@/perl5/OpenILS/WWW/Method.pm'
 	@echo "Installing string templates to $(TEMPLATEDIR)"
-	mkdir -p $(TEMPLATEDIR)
-	mkdir -p $(datadir)/overdue/
+	$(MKDIR_P) $(TEMPLATEDIR)
+	$(MKDIR_P) $(datadir)/overdue/
 	cp -r @srcdir@/templates/strings $(TEMPLATEDIR)
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
@@ -234,12 +234,12 @@ ilscore-install:
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/offline-blocked-list.pl'
 
 webcore-install:
-	mkdir -p $(WEBDIR)
-	mkdir -p $(WEBDIR)/opac/extras/slimpac/
-	mkdir -p $(WEBDIR)/standalone/
-	mkdir -p $(opacextrasdir)
-	mkdir -p $(DESTDIR)$(reportsdir)
-	mkdir -p $(XSLDIR)
+	$(MKDIR_P) $(DESTDIR)$(WEBDIR)
+	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/opac/extras/slimpac/
+	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/standalone/
+	$(MKDIR_P) $(opacextrasdir)
+	$(MKDIR_P) $(DESTDIR)$(reportsdir)
+	$(MKDIR_P) $(DESTDIR)$(XSLDIR)
 	rm -f $(DESTDIR)$(reportsdir)/fm_IDL.xml
 	cp $(DESTDIR)@sysconfdir@/fm_IDL.xml $(DESTDIR)$(WEBDIR)/reports/
 	cp -r @top_srcdir@/Open-ILS/web/. $(DESTDIR)$(WEBDIR)
@@ -247,49 +247,55 @@ webcore-install:
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(XSLDIR)
 	cp -r $(DESTDIR)$(WEBDIR)/opac/skin/default/* $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/
 	cp -r @top_srcdir@/Open-ILS/web/opac/skin/craftsman/* $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/mresult.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/rresult.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/rdetail.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/advanced.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/myopac.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/mresult.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/rresult.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/rdetail.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/advanced.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/myopac.xml
-	ln -sf $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/index.xml $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/cnbrowse.xml
-
+	for i in mresult.xml rresult.xml rdetail.xml advanced.xml myopac.xml cnbrowse.xml; do \
+		cd $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/ && rm -f $$i && $(LN_S) index.xml $$i; \
+	done
+	for i in mresult.xml rresult.xml rdetail.xml advanced.xml myopac.xml cnbrowse.xml; do \
+		 cd $(DESTDIR)$(WEBDIR)/opac/skin/craftsman/xml/ && rm -f $$i && $(LN_S) index.xml $$i; \
+	done
 
 offline-install:
 	@echo "Installing offline CGIs to $(CGIDIR)/offline";
-	mkdir -p $(TMP)
-	mkdir -p $(CGIDIR)/offline;
-	mkdir -p $(datadir)/offline;
+	$(MKDIR_P) $(TMP)
+	$(MKDIR_P) $(DESTDIR)$(CGIDIR)/offline;
+	$(MKDIR_P) $(datadir)/offline;
 	perl -pe "s{##CONFIG##}{@sysconfdir@}" < @srcdir@/offline/offline.pl > $(TMP)/offline.pl;
 	cp $(TMP)/offline.pl $(DESTDIR)$(CGIDIR)/offline/
 	chmod +x $(DESTDIR)$(CGIDIR)/offline/offline.pl
 
 cgi-bootstrap:
-	@echo "Installing cgi's to $(CGIDIR)"
-	mkdir -p $(TMP)/cgi-bin
-	mkdir -p $(CGIDIR)
+	@echo "Installing cgi's to $(DESTDIR)$(CGIDIR)"
+	$(MKDIR_P) $(TMP)/cgi-bin
+	$(MKDIR_P) $(DESTDIR)$(CGIDIR)
 	for i in @srcdir@/cgi-bin/*cgi; do perl -pe "s{##CONFIG##}{@sysconfdir@}" < $$i > $(TMP)/$$i; done
-	cp $(TMP)/cgi-bin/*cgi $(CGIDIR)
-	cp -r @srcdir@/cgi-bin/support $(CGIDIR)
+	cp $(TMP)/cgi-bin/*cgi $(DESTDIR)$(CGIDIR)
+	cp -r @srcdir@/cgi-bin/support $(DESTDIR)$(CGIDIR)
 	chmod 755 $(DESTDIR)$(CGIDIR)/*cgi
 
 server-xul:
 	@echo $@
-	mkdir -p $(WEBDIR)
-	mkdir -p $(WEBDIR)/xul/
+	$(MKDIR_P) $(DESTDIR)$(WEBDIR)
+	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/xul/
 	@echo "BUILD_ID = $(STAFF_CLIENT_BUILD_ID)"
-	@echo "Copying xul into $(WEBDIR)/xul/$(STAFF_CLIENT_BUILD_ID)"
-	mkdir -p "$(WEBDIR)/xul/$(STAFF_CLIENT_BUILD_ID)"
-	cp -R @top_srcdir@/Open-ILS/xul/staff_client/build/server "${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}/"
+	@echo "Copying xul into $(DESTDIR)$(WEBDIR)/xul/$(STAFF_CLIENT_BUILD_ID)"
+	$(MKDIR_P) "$(DESTDIR)$(WEBDIR)/xul/$(STAFF_CLIENT_BUILD_ID)"
+	cp -R @top_srcdir@/Open-ILS/xul/staff_client/build/server "${DESTDIR}${WEBDIR}/xul/${STAFF_CLIENT_BUILD_ID}/"
 
 reporter-install:
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/clark-kent.pl'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/find_orphaned_reports.pl'
 
 
+install-data-local:
+	for i in $(OPACJS); do \
+		cd $(DESTDIR)$(WEBDIR)/opac/common/js && \
+		rm -f `basename $$i` && $(LN_S) $$i . ; \
+	done
+	for i in $(JSDOJOSRF); do \
+		cd $(DESTDIR)$(WEBDIR)/js/dojo/opensrf && \
+		rm -f `basename $$i` && $(LN_S) $$i . ; \
+	done
+	for i in $(JSDOJOSRF); do \
+		cd $(DESTDIR)$(WEBDIR)/js/dojo && \
+		rm -f `basename $$i` && $(LN_S) $$i . ; \
+	done
