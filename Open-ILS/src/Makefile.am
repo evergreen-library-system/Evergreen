@@ -164,15 +164,15 @@ uninstall-hook:
 ilscore-install:
 	@echo $@
 	@echo "Installing Perl modules"
-	mkdir -p $(perldir)
-	mkdir -p $(TEMPLATEDIR)
+	$(MKDIR_P) $(perldir)
+	$(MKDIR_P) $(TEMPLATEDIR)
 	cp -r @srcdir@/perlmods/* $(perldir)
 	cp -r @srcdir@/templates/marc $(TEMPLATEDIR)
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@libdir@/perl5/OpenILS/WWW/Web.pm'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@libdir@/perl5/OpenILS/WWW/Method.pm'
 	@echo "Installing string templates to $(TEMPLATEDIR)"
-	mkdir -p $(TEMPLATEDIR)
-	mkdir -p $(datadir)/overdue/
+	$(MKDIR_P) $(TEMPLATEDIR)
+	$(MKDIR_P) $(datadir)/overdue/
 	cp -r @srcdir@/templates/strings $(TEMPLATEDIR)
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/oils_sip.xml.example'
