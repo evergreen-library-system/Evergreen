@@ -1033,18 +1033,36 @@ __PACKAGE__->register_method (
     method        => 'po_events',
     api_name    => 'open-ils.acq.purchase_order.events.owner',
     stream      => 1,
+    signature => q/
+        Retrieve EDI-related purchase order events (format.po.jedi), by default those which are pending.
+        @param authtoken Login session key
+        @param owner Id or array of id's for the purchase order Owner field.  Filters the events to just those pertaining to PO's meeting this criteria.
+        @param options Object for tweaking the selection criteria and fleshing options.
+    /
 );
 
 __PACKAGE__->register_method (
     method        => 'po_events',
     api_name    => 'open-ils.acq.purchase_order.events.ordering_agency',
     stream      => 1,
+    signature => q/
+        Retrieve EDI-related purchase order events (format.po.jedi), by default those which are pending.
+        @param authtoken Login session key
+        @param owner Id or array of id's for the purchase order Ordering Agency field.  Filters the events to just those pertaining to PO's meeting this criteria.
+        @param options Object for tweaking the selection criteria and fleshing options.
+    /
 );
 
 __PACKAGE__->register_method (
     method        => 'po_events',
     api_name    => 'open-ils.acq.purchase_order.events.id',
     stream      => 1,
+    signature => q/
+        Retrieve EDI-related purchase order events (format.po.jedi), by default those which are pending.
+        @param authtoken Login session key
+        @param owner Id or array of id's for the purchase order Id field.  Filters the events to just those pertaining to PO's meeting this criteria.
+        @param options Object for tweaking the selection criteria and fleshing options.
+    /
 );
 
 sub po_events {
@@ -1066,6 +1084,15 @@ sub po_events {
                     "where"=>{$search_field=>$search_value}
                 }
             }, 
+            "event_def"=>{
+                "in"=>{
+                    "select"=>{atevdef=>["id"]},
+                    "from"=>"atevdef",
+                    "where"=>{
+                        "hook"=>"format.po.jedi"
+                    }
+                }
+            },
             "state"=>"pending" 
         }
     };
@@ -1105,6 +1132,58 @@ sub po_events {
 
     return undef;
 }
+
+__PACKAGE__->register_method (
+	method		=> 'update_po_events',
+    api_name    => 'open-ils.acq.purchase_order.event.cancel.batch',
+    stream      => 1,
+);
+__PACKAGE__->register_method (
+	method		=> 'update_po_events',
+    api_name    => 'open-ils.acq.purchase_order.event.reset.batch',
+    stream      => 1,
+);
+
+sub update_po_events {
+    my($self, $conn, $auth, $event_ids) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $x = 1;
+    for my $id (@$event_ids) {
+
+        # do a little dance to determine what libraries we are ultimately affecting
+        my $event = $e->retrieve_action_trigger_event([
+            $id,
+            {   flesh => 2,
+                flesh_fields => {atev => ['event_def'], atevdef => ['hook']}
+            }
+        ]) or return $e->die_event;
+
+        my $po = retrieve_purchase_order_impl(
+            $e,
+            $event->target(),
+            {}
+        );
+
+        return $e->die_event unless $e->allowed( ['CREATE_PURCHASE_ORDER','VIEW_PURCHASE_ORDER'], $po->ordering_agency() );
+
+        if($self->api_name =~ /cancel/) {
+            $event->state('invalid');
+        } elsif($self->api_name =~ /reset/) {
+            $event->clear_start_time;
+            $event->clear_update_time;
+            $event->state('pending');
+        }
+
+        $e->update_action_trigger_event($event) or return $e->die_event;
+        $conn->respond({maximum => scalar(@$event_ids), progress => $x++});
+    }
+
+    $e->commit;
+    return {complete => 1};
+}
+
 
 1;
 
