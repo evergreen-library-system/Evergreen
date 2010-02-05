@@ -481,7 +481,7 @@ sub create_batch_events {
         $class =~ s/::/_/go;
 
         my $method = 'search_'. $class;
-        my $object_ids = $editor->$method( $filter, {idlist => 1, timeout => 1800} );
+        my $object_ids = $editor->$method( $filter, {idlist => 1, timeout => 7200} );
 
         for my $o_id (@$object_ids) {
 
@@ -589,7 +589,7 @@ sub pending_events {
     }
 
     return $editor->search_action_trigger_event(
-        $query, { idlist=> 1, timeout => 1800 }
+        $query, { idlist=> 1, timeout => 7200 }
     );
 }
 __PACKAGE__->register_method(
