@@ -1291,8 +1291,9 @@ sub create_purchase_order_api {
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
     # create the PO
-    my %pargs = (ordering_agency => $e->requestor->ws_ou);
+    my %pargs = (ordering_agency => $e->requestor->ws_ou); # default
     $pargs{provider} = $po->provider if $po->provider;
+    $pargs{ordering_agency} = $po->ordering_agency if $po->ordering_agency;
     $po = create_purchase_order($mgr, %pargs) or return $e->die_event;
 
     my $li_ids = $$args{lineitems};
@@ -1824,6 +1825,91 @@ sub activate_purchase_order {
 
     $e->commit;
     return 1;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'split_purchase_order_by_lineitems',
+	api_name	=> 'open-ils.acq.purchase_order.split_by_lineitems',
+	signature => {
+        desc => q/Splits a PO into many POs, 1 per lineitem.  Only works for
+        POs a) with more than one lineitems, and b) in the "pending" state./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Purchase order ID', type => 'number'}
+        ],
+        return => {desc => 'list of new PO IDs on success, Event on error'}
+    }
+);
+
+sub split_purchase_order_by_lineitems {
+    my ($self, $conn, $auth, $po_id) = @_;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $po = $e->retrieve_acq_purchase_order([
+        $po_id, {
+            "flesh" => 1,
+            "flesh_fields" => {"acqpo" => [qw/lineitems notes/]}
+        }
+    ]) or return $e->die_event;
+
+    return $e->die_event
+        unless $e->allowed("CREATE_PURCHASE_ORDER", $po->ordering_agency);
+
+    unless ($po->state eq "pending") {
+        $e->rollback;
+        return new OpenILS::Event("ACQ_PURCHASE_ORDER_TOO_LATE");
+    }
+
+    unless (@{$po->lineitems} > 1) {
+        $e->rollback;
+        return new OpenILS::Event("ACQ_PURCHASE_ORDER_TOO_SHORT");
+    }
+
+    # To split an existing PO into many, it seems unwise to just delete the
+    # original PO, so we'll instead detach all of the original POs' lineitems
+    # but the first, then create new POs for each of the remaining LIs, and
+    # then attach the LIs to their new POs.
+
+    my @po_ids = ($po->id);
+    my @moving_li = @{$po->lineitems};
+    shift @moving_li;    # discard first LI
+
+    foreach my $li (@moving_li) {
+        my $new_po = $po->clone;
+        $new_po->clear_id;
+        $new_po->clear_name;
+        $new_po->creator($e->requestor->id);
+        $new_po->editor($e->requestor->id);
+        $new_po->owner($e->requestor->id);
+        $new_po->edit_time("now");
+        $new_po->create_time("now");
+
+        $new_po = $e->create_acq_purchase_order($new_po);
+
+        # Clone any notes attached to the old PO and attach to the new one.
+        foreach my $note (@{$po->notes}) {
+            my $new_note = $note->clone;
+            $new_note->clear_id;
+            $new_note->edit_time("now");
+            $new_note->purchase_order($new_po->id);
+            $e->create_acq_po_note($new_note);
+        }
+
+        $li->edit_time("now");
+        $li->purchase_order($new_po->id);
+        $e->update_acq_lineitem($li);
+
+        push @po_ids, $new_po->id;
+    }
+
+    $po->edit_time("now");
+    $e->update_acq_purchase_order($po);
+
+    return \@po_ids if $e->commit;
+    return $e->die_event;
 }
 
 

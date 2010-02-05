@@ -645,6 +645,12 @@
 	<event code='1859' textcode='ACQ_PURCHASE_ORDER_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.purchase_order was not found</desc>
 	</event>
+	<event code='1860' textcode='ACQ_PURCHASE_ORDER_TOO_SHORT'>
+		<desc xml:lang='en-US'>The requested acq.purchase_order cannot be split because it does not have more than one lineitem</desc>
+	</event>
+	<event code='1861' textcode='ACQ_PURCHASE_ORDER_TOO_LATE'>
+		<desc xml:lang='en-US'>The requested acq.purchase_order cannot be split because it has gone beyond the "pending" state</desc>
+	</event>
 	<event code='1870' textcode='ACQ_LINEITEM_DETAIL_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.lineitem_detail was not found</desc>
 	</event>

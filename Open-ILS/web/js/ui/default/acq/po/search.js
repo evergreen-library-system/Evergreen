@@ -32,7 +32,10 @@ function doSearch(fields) {
         delete fields.metapo_view;
     }
 
-    if(isNaN(fields.id)) {
+    if (
+        !(fields.id && fields.id.constructor.name == 'Array') && 
+        isNaN(fields.id)
+    ) {
         delete fields.id;
         for(var k in fields) {
             if(fields[k] == '' || fields[k] == null)
@@ -47,6 +50,7 @@ function doSearch(fields) {
     var some = false;
     for(var k in fields) some = true;
     if(!some) fields.id = {'!=' : null};
+
 
     if (metapo_view) {
         openils.Util.hide("holds_po_grid");
@@ -77,7 +81,11 @@ function loadForm() {
         dijitArgs : {name:'ordering_agency', required:false}
     }).build();
 
-    doSearch({ordering_agency : openils.User.user.ws_ou()});
+    if (poIds && poIds.length > 0) {
+        doSearch({"id": poIds, "metapo_view": [true] /* [sic] */});
+    } else {
+        doSearch({"ordering_agency": openils.User.user.ws_ou()});
+    }
 }
 
 function loadMetaPO(fields) {

@@ -4824,6 +4824,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Order Date" name="order_date" reporter:datatype="timestamp" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" />
 			<field reporter:label="Line Items" name="lineitems" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Line Item Count" name="lineitem_count" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Amount Encumbered" name="amount_encumbered" oils_persist:virtual="true" reporter:datatype="float" />
 			<field reporter:label="Amount Spent" name="amount_spent" oils_persist:virtual="true" reporter:datatype="float" />
@@ -4835,6 +4836,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="default_fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 			<link field="lineitems" reltype="has_many" key="purchase_order" map="" class="jub"/>
+			<link field="notes" reltype="has_many" key="purchase_order" map="" class="acqpon"/>
 			<link field="ordering_agency" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">

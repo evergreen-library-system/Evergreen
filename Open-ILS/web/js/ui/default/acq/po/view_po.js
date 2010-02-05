@@ -24,8 +24,12 @@ function init() {
                 dojo.byId('acq-po-view-total-spent').innerHTML = PO.amount_spent();
                 dojo.byId('acq-po-view-state').innerHTML = PO.state(); // TODO i18n
 
-                if(PO.state() == 'pending') 
+                if(PO.state() == 'pending') {
                     openils.Util.show('acq-po-activate');
+                    if (PO.lineitem_count() > 1) {
+                        openils.Util.show('acq-po-split');
+                    }
+                }
             }
         }
     );
@@ -56,6 +60,32 @@ function activatePo() {
         );
     } catch(E) {
         progressDialog.hide();
+    }
+}
+
+function splitPo() {
+    progressDialog.show(true);
+    try {
+        var list;
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.purchase_order.split_by_lineitems'],
+            {   async: true,
+                params: [openils.User.authtoken, PO.id()],
+                onresponse : function(r) {
+                    list = openils.Util.readResponse(r);
+                },
+                oncomplete : function() {
+                    progressDialog.hide();
+                    if (list) {
+                        location.href = oilsBasePath + '/eg/acq/po/search/' +
+                            list.join(",");
+                    }
+                }
+            }
+        );
+    } catch(E) {
+        progressDialog.hide();
+        alert(E);
     }
 }
 

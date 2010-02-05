@@ -1,5 +1,11 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Purchase Orders' %]
+<script type="text/javascript">
+    var poIds = function(s) {
+        return s == "" ? undefined :
+            s.split(",").map(function(t) { return Number(t); });
+    }("[% ctx.page_args.0 %]");
+</script>
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>PO Search</div>
 </div>
