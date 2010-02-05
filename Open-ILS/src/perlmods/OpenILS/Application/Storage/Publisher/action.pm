@@ -817,7 +817,8 @@ sub generate_fines {
 					last;
 				}
 				
-				my $billing_ts = DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill );
+				# XXX Use org time zone (or default to 'local') once we have the ou setting built for that
+				my $billing_ts = DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill, time_zone => 'local' );
 
 				my $dow = $billing_ts->day_of_week_0();
 				my $dow_open = "dow_${dow}_open";
