@@ -25,7 +25,7 @@ OPACJS = $(OPENSRF_LIBS)/javascript/DojoSRF.js \
 	 $(OPENSRF_LIBS)/javascript/opensrf_xmpp.js \
 	 @top_srcdir@/Open-ILS/xul/staff_client/chrome//content//util/date.js
 JSDOJO = $(OPENSRF_LIBS)/javascript/DojoSRF.js
-JSDOJOOSRF = $(OPENSRF_LIBS)/javascript/md5.js \
+JSDOJOSRF = $(OPENSRF_LIBS)/javascript/md5.js \
 	     $(OPENSRF_LIBS)/javascript/JSON_v1.js \
 	     $(OPENSRF_LIBS)/javascript/opensrf.js \
 	     $(OPENSRF_LIBS)/javascript/opensrf_xhr.js \
