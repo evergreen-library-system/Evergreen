@@ -88,7 +88,7 @@ install-data-local:
 		cd $(DESTDIR)$(WEBDIR)/js/dojo/opensrf && \
 		rm -f `basename $$i` && $(LN_S) $$i . ; \
 	done
-	for i in $(JSDOJOSRF); do \
+	for i in $(JSDOJO); do \
 		cd $(DESTDIR)$(WEBDIR)/js/dojo && \
 		rm -f `basename $$i` && $(LN_S) $$i . ; \
 	done
