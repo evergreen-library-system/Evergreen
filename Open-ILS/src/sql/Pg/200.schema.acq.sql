@@ -172,6 +172,10 @@ CREATE TABLE acq.fund (
 	rollover        BOOL    NOT NULL DEFAULT FALSE,
 	propagate       BOOL    NOT NULL DEFAULT TRUE,
 	active          BOOL    NOT NULL DEFAULT TRUE,
+	balance_warning_percent INT CONSTRAINT balance_warning_percent_limit
+	                            CHECK( balance_warning_percent <= 100 ),
+	balance_stop_percent    INT CONSTRAINT balance_stop_percent_limit
+	                            CHECK( balance_stop_percent <= 100 ),
     CONSTRAINT name_once_per_org_year UNIQUE (org,name,year),
     CONSTRAINT code_once_per_org_year UNIQUE (org, code, year),
 	CONSTRAINT acq_fund_rollover_implies_propagate CHECK ( propagate OR NOT rollover )
