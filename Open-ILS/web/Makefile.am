@@ -78,10 +78,12 @@ cgi-bootstrap:
 	chmod 755 $(DESTDIR)$(CGIDIR)/*cgi
 
 install-data-local:
+	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/opac/common/js
 	for i in $(OPACJS); do \
 		cd $(DESTDIR)$(WEBDIR)/opac/common/js && \
 		rm -f `basename $$i` && $(LN_S) $$i . ; \
 	done
+	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/js/dojo/opensrf
 	for i in $(JSDOJOSRF); do \
 		cd $(DESTDIR)$(WEBDIR)/js/dojo/opensrf && \
 		rm -f `basename $$i` && $(LN_S) $$i . ; \
