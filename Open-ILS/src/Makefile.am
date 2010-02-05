@@ -298,7 +298,7 @@ install-data-local:
 		rm -f `basename $$i` && $(LN_S) $$i . ; \
 	done
 	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/js/dojo
-	for i in $(JSDOJOSRF); do \
+	for i in $(JSDOJO); do \
 		cd $(DESTDIR)$(WEBDIR)/js/dojo && \
 		rm -f `basename $$i` && $(LN_S) $$i . ; \
 	done
