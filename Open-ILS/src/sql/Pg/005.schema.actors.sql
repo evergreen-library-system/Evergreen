@@ -339,7 +339,12 @@ CREATE TABLE actor.org_unit (
 	name		TEXT	NOT NULL UNIQUE,
 	email		TEXT,
 	phone		TEXT,
-	opac_visible	BOOL	NOT NULL DEFAULT TRUE
+	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
+	fiscal_calendar INT     NOT NULL DEFAULT 1,  -- foreign key constraint to be added later
+	spend_warning_percent INT CONSTRAINT spend_warning_percent_limit
+		                      CHECK( spend_warning_percent <= 100 ),
+	spend_limit_percent   INT CONSTRAINT spend_limit_percent_limit
+		                      CHECK( spend_limit_percent <= 100 )
 );
 CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);
 CREATE INDEX actor_org_unit_ou_type_idx ON actor.org_unit (ou_type);

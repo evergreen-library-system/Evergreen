@@ -623,11 +623,9 @@ INSERT INTO acq.fiscal_calendar (
     'Default'
 );
 
-ALTER TABLE actor.org_unit
-ADD COLUMN fiscal_calendar INT NOT NULL
-    REFERENCES acq.fiscal_calendar( id )
-    DEFERRABLE INITIALLY DEFERRED
-    DEFAULT 1;
+ALTER TABLE actor.org_unit ADD FOREIGN KEY
+	(fiscal_calendar) REFERENCES acq.fiscal_calendar( id )
+   	DEFERRABLE INITIALLY DEFERRED;
 
 CREATE TABLE acq.fiscal_year (
 	id              SERIAL         PRIMARY KEY,
