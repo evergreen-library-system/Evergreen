@@ -2333,7 +2333,57 @@ sub hold_item_is_checked_out {
     return $e->json_query($query)->[0];
 }
 
+__PACKAGE__->register_method(
+	method => 'change_hold_title',
+	api_name => 'open-ils.circ.hold.change_title',
+    signature => {
+        desc => q/
+            Updates all title level holds targeting the specified bibs to point a new bib./,
+        params => [
+            {desc => 'Authentication Token', type => 'string'},
+            {desc => 'New Target Bib Id', type => 'number'},
+            {desc => 'Old Target Bib Ids', type => 'array'},
+        ],
+        return => { desc => '1 on success' }
+    }
+);
 
+sub change_hold_title {
+    my( $self, $client, $auth, $new_bib_id, $bib_ids ) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->event unless $e->checkauth;
+
+    my $holds = $e->json_query({
+        "select"=>{"ahr"=>["id"]},
+        "from"=>"ahr",
+        "where"=>{
+            cancel_time => undef,
+            fulfillment_time => undef,
+            hold_type => 'T',
+            target => $bib_ids
+        }
+    });
+
+    for my $hold_id (@$holds) {
+        my $hold = $e->retrieve_action_hold_request([$hold_id->{id}, {
+                flesh=> 1, 
+                flesh_fields=>{ahr=>['usr']}
+            }
+        ]);
+        $e->allowed('UPDATE_HOLD', $hold->usr->home_ou) or return $e->event;
+        $logger->info("Changing hold " . $hold->id . " target from " . $hold->target . " to $new_bib_id in title hold target change");
+        $hold->target( $new_bib_id );
+        unless ($e->update_action_hold_request($hold)) {
+            my $evt = $e->event;
+            $logger->error("Error updating hold " . $evt->textcode . ":" . $evt->desc . ":" . $evt->stacktrace);
+        }
+    }
+
+    $e->commit;
+
+    return 1;
+}
 
 
 1;
