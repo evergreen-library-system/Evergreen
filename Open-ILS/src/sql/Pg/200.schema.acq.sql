@@ -38,6 +38,7 @@ CREATE TABLE acq.provider (
     holding_tag         TEXT,
     san                 TEXT,
     edi_default         INT,          -- REFERENCES acq.edi_account (id) DEFERRABLE INITIALLY DEFERRED
+	active              BOOL    NOT NULL DEFAULT TRUE,
     CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
 	CONSTRAINT code_once_per_owner UNIQUE (code, owner)
 );
