@@ -2354,30 +2354,27 @@ sub change_hold_title {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->event unless $e->checkauth;
 
-    my $holds = $e->json_query({
-        "select"=>{"ahr"=>["id"]},
-        "from"=>"ahr",
-        "where"=>{
-            cancel_time => undef,
-            fulfillment_time => undef,
-            hold_type => 'T',
-            target => $bib_ids
-        }
-    });
-
-    for my $hold_id (@$holds) {
-        my $hold = $e->retrieve_action_hold_request([$hold_id->{id}, {
-                flesh=> 1, 
-                flesh_fields=>{ahr=>['usr']}
+    my $holds = $e->search_action_hold_request(
+        [
+            {
+                cancel_time => undef,
+                fulfillment_time => undef,
+                hold_type => 'T',
+                target => $bib_ids
+            },{
+                flesh => 1, 
+                flesh_fields => {ahr => ['usr']}
             }
-        ]);
-        $e->allowed('UPDATE_HOLD', $hold->usr->home_ou) or return $e->event;
+        ], {
+            substream => 1
+        }
+    );
+
+    for my $hold (@$holds) {
+        $e->allowed('UPDATE_HOLD', $hold->usr->home_ou) or return $e->die_event;
         $logger->info("Changing hold " . $hold->id . " target from " . $hold->target . " to $new_bib_id in title hold target change");
         $hold->target( $new_bib_id );
-        unless ($e->update_action_hold_request($hold)) {
-            my $evt = $e->event;
-            $logger->error("Error updating hold " . $evt->textcode . ":" . $evt->desc . ":" . $evt->stacktrace);
-        }
+        $e->update_action_hold_request($hold) or return $e->die_event;
     }
 
     $e->commit;
