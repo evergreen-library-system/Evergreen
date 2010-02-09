@@ -271,6 +271,10 @@
 <!ENTITY staff.cat.opac.marc_view.label "MARC View">
 <!ENTITY staff.cat.opac.mark_for_overlay.accesskey "M">
 <!ENTITY staff.cat.opac.mark_for_overlay.label "Mark for Overlay">
+<!ENTITY staff.cat.opac.mark_for_hold_transfer.accesskey "">
+<!ENTITY staff.cat.opac.mark_for_hold_transfer.label "Mark as Title Hold Transfer Destination">
+<!ENTITY staff.cat.opac.transfer_title_holds.accesskey "">
+<!ENTITY staff.cat.opac.transfer_title_holds.label "Transfer Title Holds">
 <!ENTITY staff.cat.opac.delete_record.accesskey "D">
 <!ENTITY staff.cat.opac.delete_record.label "Delete Record">
 <!ENTITY staff.cat.opac.undelete_record.accesskey "U">
@@ -2166,6 +2170,8 @@
 <!ENTITY staff.circ.holds.edit_desire_mint_condition.accesskey "Q">
 <!ENTITY staff.circ.holds.set_top_of_queue "Set Top of Queue">
 <!ENTITY staff.circ.holds.set_top_of_queue.accesskey "Q">
+<!ENTITY staff.circ.holds.title_transfer.label "Transfer to Marked Title">
+<!ENTITY staff.circ.holds.title_transfer.accesskey "">
 <!ENTITY staff.circ.holds.mark_item_damaged "Mark Item Damaged">
 <!ENTITY staff.circ.holds.mark_item_damaged.accesskey "D">
 <!ENTITY staff.circ.holds.mark_item_missing "Mark Item Missing">
@@ -2438,6 +2444,8 @@
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns2.label "Save List Configuration">
 <!ENTITY staff.cat.record_buckets_overlay.box.label "Batch:">
 <!ENTITY staff.cat.record_buckets_overlay.sel_opac.label "Show All in Catalog">
+<!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.label "Transfer Title Holds">
+<!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.accesskey "Transfer Title Holds">
 <!ENTITY staff.cat.record_buckets_overlay.del_records.label "Delete All Records">
 <!ENTITY staff.cat.record_buckets_overlay.merge_records.label "Merge All Records">
 <!ENTITY staff.cat.record_buckets_overlay.export_records.label "Export All Records">

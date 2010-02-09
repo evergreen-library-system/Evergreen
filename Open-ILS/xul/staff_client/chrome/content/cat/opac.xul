@@ -56,6 +56,8 @@
                 <menuitem label="&staff.cat.opac.undelete_record.label;" accesskey="&staff.cat.opac.undelete_record.accesskey;" id="undelete_record" oncommand="undelete_record();"/>
                 <menuseparator/>
                 <menuitem label="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey;" id="add_volumes" oncommand="add_volumes();"/>
+                <menuitem label="&staff.cat.opac.mark_for_hold_transfer.label;" accesskey="&staff.cat.opac.mark_for_hold_transfer.accesskey;" id="mark_for_hold_transfer" oncommand="mark_for_hold_transfer();"/>
+                <menuitem label="&staff.cat.opac.transfer_title_holds.label;" accesskey="&staff.cat.opac.transfer_title_holds.accesskey;" id="transfer_title_holds" oncommand="transfer_title_holds();"/>
                 <menuseparator/>
                 <menuitem label="&staff.cat.opac.bib_in_new_tab.label;" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
                 <menuitem label="&staff.cat.opac.remove_me.label;" id="remove_me" oncommand="remove_me();"/>

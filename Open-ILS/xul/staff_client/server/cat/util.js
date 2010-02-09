@@ -7,7 +7,8 @@ cat.util = {};
 
 cat.util.EXPORT_OK    = [ 
     'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
-    'mark_item_missing', 'mark_item_damaged', 'replace_barcode', 'fast_item_add'
+    'transfer_title_holds', 'mark_item_missing', 'mark_item_damaged', 'replace_barcode', 'fast_item_add', 
+    'make_bookable', 'edit_new_brsrc', 'edit_new_bresv'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -86,6 +87,30 @@ cat.util.replace_barcode = function(old_bc) {
         JSAN.use('util.error'); var error = new util.error();
         error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.util.replace_barcode.rename_error'),E);
         return old_bc;
+    }
+}
+
+cat.util.transfer_title_holds = function(old_targets) {
+    JSAN.use('OpenILS.data'); var data = new OpenILS.data();
+    JSAN.use('util.network'); var network = new util.network();
+    try {
+        data.stash_retrieve();
+        var target = data.marked_record_for_hold_transfer;
+        if (!target) {
+            var m = $("catStrings").getString('staff.cat.opac.title_for_hold_transfer.destination_needed.label');
+            alert(m);
+            return;
+        }
+        var robj = network.simple_request('TRANSFER_TITLE_HOLDS',[ ses(), target, old_targets ]);
+        if (robj == 1) {
+            var m = $("catStrings").getString('staff.cat.opac.title_for_hold_transfer.success.label');
+            alert(m);
+        } else {
+            var m = $("catStrings").getString('staff.cat.opac.title_for_hold_transfer.failure.label');
+            alert(m);
+        }
+    } catch(E) {
+        alert('Error in cat.util.transfer_title.holds(): ' + E);
     }
 }
 

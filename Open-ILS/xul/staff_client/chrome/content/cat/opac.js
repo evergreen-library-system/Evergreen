@@ -348,9 +348,51 @@ function mark_for_overlay() {
     g.data.stash('marked_record_mvr');
     if (g.data.marked_record_mvr) {
         alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_marked_for_overlay.tcn.alert',[ g.data.marked_record_mvr.tcn() ]));
+        xulG.set_statusbar(1, $("offlineStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label',[g.data.marked_record_mvr.tcn()]) );
     } else {
         alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_marked_for_overlay.record_id.alert',[ g.data.marked_record  ]));
+        xulG.set_statusbar(1, $("offlineStrings").getFormattedString('staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label',[g.data.marked_record]) );
     }
+}
+
+function mark_for_hold_transfer() {
+    g.data.marked_record_for_hold_transfer = docid;
+    g.data.stash('marked_record_for_hold_transfer');
+    var robj = g.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative',[docid]);
+    if (typeof robj.ilsevent == 'undefined') {
+        g.data.marked_record_for_hold_transfer_mvr = robj;
+    } else {
+        g.data.marked_record_for_hold_transfer_mvr = null;
+        g.error.standard_unexpected_error_alert('in mark_for_hold_transfer',robj);
+    }
+    g.data.stash('marked_record_for_hold_transfer_mvr');
+    if (g.data.marked_record_mvr) {
+        var m = $("offlineStrings").getFormattedString('staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label',[g.data.marked_record_for_hold_transfer_mvr.tcn()]);
+        alert(m); xulG.set_statusbar(1, m );
+    } else {
+        var m = $("offlineStrings").getFormattedString('staff.cat.opac.marked_record_for_hold_transfer_indicator.record_id.label',[g.data.marked_record_for_hold_transfer]);
+        alert(m); xulG.set_statusbar(1, m );
+    }
+}
+
+function transfer_title_holds() {
+    g.data.stash_retrieve();
+    var target = g.data.marked_record_for_hold_transfer;
+    if (!target) {
+        var m = $("offlineStrings").getString('staff.cat.opac.title_for_hold_transfer.destination_needed.label');
+        alert(m);
+        return;
+    }
+    var robj = g.network.simple_request('TRANSFER_TITLE_HOLDS',[ ses(), target, [ docid ] ]);
+    if (robj == 1) {
+        var m = $("offlineStrings").getString('staff.cat.opac.title_for_hold_transfer.success.label');
+        alert(m);
+    } else {
+        var m = $("offlineStrings").getString('staff.cat.opac.title_for_hold_transfer.failure.label');
+        alert(m);
+    }
+    hold_browser_reset = true;
+    if (g.view == 'hold_browser') { set_hold_browser(); };
 }
 
 function delete_record() {

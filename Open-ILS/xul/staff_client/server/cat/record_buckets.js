@@ -341,6 +341,7 @@ cat.record_buckets.prototype = {
                                     obj.controller.view.cmd_merge_records.setAttribute('disabled','true');
                                     obj.controller.view.cmd_delete_records.setAttribute('disabled','true');
                                     obj.controller.view.cmd_sel_opac.setAttribute('disabled','true');
+                                    obj.controller.view.cmd_transfer_title_holds.setAttribute('disabled','true');
                                     obj.controller.view.record_buckets_list_actions.disabled = true;
                                     var bucket = obj.network.simple_request(
                                         'BUCKET_FLESH',
@@ -361,6 +362,7 @@ cat.record_buckets.prototype = {
                                         obj.controller.view.cmd_merge_records.setAttribute('disabled','false');
                                         obj.controller.view.cmd_delete_records.setAttribute('disabled','false');
                                         obj.controller.view.cmd_sel_opac.setAttribute('disabled','false');
+                                        obj.controller.view.cmd_transfer_title_holds.setAttribute('disabled','false');
                                         obj.controller.view.record_buckets_list_actions.disabled = false;
 
                                         var x = document.getElementById('info_box');
@@ -550,6 +552,7 @@ cat.record_buckets.prototype = {
                                 obj.controller.view.cmd_merge_records.setAttribute('disabled','true');
                                 obj.controller.view.cmd_delete_records.setAttribute('disabled','true');
                                 obj.controller.view.cmd_sel_opac.setAttribute('disabled','true');
+                                obj.controller.view.cmd_transfer_title_holds.setAttribute('disabled','true');
                                 obj.controller.view.record_buckets_list_actions.disabled = true;
                                 obj.controller.render('record_buckets_menulist_placeholder');
                                 setTimeout(
@@ -846,6 +849,26 @@ cat.record_buckets.prototype = {
                             }
                         }
                     ],
+                    'cmd_transfer_title_holds' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.list2.select_all();
+                                JSAN.use('util.functional');
+                                var docids = util.functional.map_list(
+                                    obj.list2.dump_retrieve_ids(),
+                                    function (o) {
+                                        return JSON2js(o).docid; // docid
+                                    }
+                                );
+                                JSAN.use('cat.util');
+                                cat.util.transfer_title_holds(docids);
+                            } catch(E) {
+                                alert('Error in record_buckets.js, cmd_transfer_title_holds: ' + E);
+                            }
+                        }
+                    ],
+
                     'record_buckets_export_records' : [ ['render'], function(){} ],
                     'record_buckets_list_actions' : [ ['render'], function(){} ]
                 }

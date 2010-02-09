@@ -36,6 +36,9 @@
         <command id="cmd_holds_retarget"/>
         <command id="cmd_holds_cancel" />
         <command id="cmd_holds_uncancel" />
+        <command id="cmd_holds_title_transfer" 
+            label="&staff.circ.holds.title_transfer.label;" 
+            accesskey="&staff.circ.holds.title_transfer.accesskey;" />
         <command id="cmd_search_opac" />
         <command id="save_columns" />
         <command id="cmd_alt_view" />
@@ -65,6 +68,7 @@
             <menuitem label="&staff.circ.holds.edit_hold_range;" class="edit_hold_range" command="cmd_holds_edit_selection_depth" accesskey="&staff.circ.holds.edit_hold_range.accesskey;"/>
             <menuitem label="&staff.circ.holds.edit_hold_focus;" class="edit_hold_focus" command="cmd_broken" accesskey="&staff.circ.holds.edit_hold_focus.accesskey;"/>
             <menuitem label="&staff.circ.holds.set_top_of_queue;" command="cmd_holds_cut_in_line" accesskey="&staff.circ.holds.set_top_of_queue.accesskey;"/>
+            <menuitem command="cmd_holds_title_transfer" />
             <menuseparator />
             <menuitem command="sel_mark_items_damaged" label="&staff.circ.holds.mark_item_damaged;" accesskey="&staff.circ.holds.mark_item_damaged.accesskey;"/>
             <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>
@@ -143,6 +147,7 @@
                     <menuitem label="&staff.circ.holds.edit_hold_range;" class="edit_hold_range" command="cmd_holds_edit_selection_depth" accesskey="&staff.circ.holds.edit_hold_range.accesskey;"/>
                     <menuitem label="&staff.circ.holds.edit_hold_focus;" class="edit_hold_focus" command="cmd_broken" accesskey="&staff.circ.holds.edit_hold_focus.accesskey;"/>
                     <menuitem label="&staff.circ.holds.set_top_of_queue;" command="cmd_holds_cut_in_line" accesskey="&staff.circ.holds.set_top_of_queue.accesskey;"/>
+                    <menuitem command="cmd_holds_title_transfer" />
                     <menuseparator />
                     <menuitem command="sel_mark_items_damaged" label="&staff.circ.holds.mark_item_damaged;" accesskey="&staff.circ.holds.mark_item_damaged.accesskey;"/>
                     <menuitem command="sel_mark_items_missing" label="&staff.circ.holds.mark_item_missing;" accesskey="&staff.circ.holds.mark_item_missing.accesskey;"/>

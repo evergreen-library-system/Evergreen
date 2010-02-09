@@ -1106,6 +1106,41 @@ patron.holds.prototype = {
                             }
                         }
                     ],
+                    'cmd_holds_title_transfer' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var targets = [];
+                                for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                                    var htarget = obj.retrieve_ids[i].target;
+                                    var htype = obj.retrieve_ids[i].type;
+                                    switch(htype) {
+                                        case 'M' :
+                                            continue; // not supported
+                                        break;
+                                        case 'T' :
+                                            targets.push( htarget );
+                                        break;
+                                        case 'V' :
+                                            continue; // not supported
+                                        break;
+                                        case 'C' :
+                                            continue; // not supported
+                                        break;
+                                        default:
+                                            continue; // not supported
+                                        break;
+                                    }
+                                }
+                                JSAN.use('cat.util');
+                                cat.util.transfer_title_holds(targets);
+                                obj.clear_and_retrieve();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('',E);
+                            }
+                        }
+                    ],
+
                     'fetch_more' : [
                         ['command'],
                         function() {

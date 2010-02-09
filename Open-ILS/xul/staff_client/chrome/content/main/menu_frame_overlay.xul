@@ -41,6 +41,11 @@
     </tabbox>
     <statusbar>
         <statusbarpanel />
+        <statusbarpanel id="statusbarpanel1"/>
+        <statusbarpanel id="statusbarpanel2"/>
+        <statusbarpanel id="statusbarpanel3"/>
+        <statusbarpanel id="statusbarpanel4"/>
+        <statusbarpanel id="statusbarpanel5"/>
         <spacer flex="1" />
         <progressmeter id="network_progress" flex="1" mode="determined" value="0" tooltip="network_progress_tip"/>
         <statusbarpanel />

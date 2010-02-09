@@ -1339,6 +1339,10 @@ main.menu.prototype = {
         content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
         content_params.url_prefix = function(url) { return obj.url_prefix(url); };
         content_params.network_meter = obj.network_meter;
+        content_params.set_statusbar = function(slot,text) {
+            var e = document.getElementById('statusbarpanel'+slot);
+            if (e) { e.setAttribute('label',text); }
+        };
         content_params.chrome_xulG = xulG;
         if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
         
