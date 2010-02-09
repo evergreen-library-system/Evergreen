@@ -5491,6 +5491,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="acqdfa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::distribution_formula_application" oils_persist:tablename="acq.distribution_formula_application" reporter:label="Distribution Formula Application">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.distribution_formula_application_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Distribution Formula" name="formula" reporter:datatype="link"/>
+			<field reporter:label="Lineitem" name="lineitem" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="formula" reltype="has_a" key="id" map="" class="acqdf"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_PURCHASE_ORDER">
+					<context link="formula" field="owner"/>
+                </create>
+				<retrieve permission="CREATE_PURCHASE_ORDER">
+					<context link="formula" field="owner"/>
+                </retrieve>
+				<update permission="CREATE_PURCHASE_ORDER">
+					<context link="formula" field="owner"/>
+                </update>
+				<delete permission="CREATE_PURCHASE_ORDER">
+					<context link="formula" field="owner"/>
+                </delete>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="acqda" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::debit_attribution" oils_persist:tablename="acq.debit_attribution" reporter:label="Debit Attribution">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Debit Attribution ID" name="id" reporter:datatype="id"/>

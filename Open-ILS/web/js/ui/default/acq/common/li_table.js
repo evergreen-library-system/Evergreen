@@ -34,6 +34,7 @@ function AcqLiTable() {
     this.liCache = {};
     this.plCache = {};
     this.poCache = {};
+    this.dfaCache = [];
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
     this.selectors = [];
@@ -545,6 +546,7 @@ function AcqLiTable() {
         var self = this;
         this.copyCache = {};
         this.copyWidgetCache = {};
+        this.dfaCache = [];
 
         acqLitSaveCopies.onClick = function() { self.saveCopyChanges(liId) };
         acqLitBatchUpdateCopies.onClick = function() { self.batchCopyUpdate() };
@@ -631,6 +633,7 @@ function AcqLiTable() {
 
         var copyRows = dojo.query('tr', self.copyTbody);
 
+        var acted = false;
         for(var rowIndex = 0; rowIndex < copyRows.length; rowIndex++) {
             
             var row = copyRows[rowIndex];
@@ -658,12 +661,18 @@ function AcqLiTable() {
                 dojo.forEach(
                     ['owning_lib', 'location'], 
                     function(field) {
-                        if(entry[field]()) 
+                        if(entry[field]()) {
+                            acted = true;
                             copyWidgets[field].attr('value', (entry[field]()));
+                        }
                     }
                 );
             }
         }
+
+        if (acted) {
+            this.dfaCache.push(formula.id());
+        };
     };
 
     this._fetchDistribFormulas = function(onload) {
@@ -887,6 +896,24 @@ function AcqLiTable() {
                 }
             }
         );
+
+        if (this.dfaCache.length > 0) {
+            var oldlength =  this.dfaCache.length;
+            fieldmapper.standardRequest(
+                ["open-ils.acq",
+                "open-ils.acq.distribution_formula.record_application"],
+                {
+                    "async": true,
+                    "params": [openils.User.authtoken, this.dfaCache, liId],
+                    "onresponse": function(r) {
+                        var res = openils.Util.readResponse(r);
+                        if (res && res.length != oldlength)
+                            alert(localeStrings.DFA_NOT_ALL);
+                    }
+                }
+            );
+            this.dfaCache = [];
+        }
     }
 
     this.applySelectedLiAction = function(action) {

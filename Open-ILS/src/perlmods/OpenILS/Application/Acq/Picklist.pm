@@ -365,6 +365,69 @@ request open-ils.cstore open-ils.cstore.json_query.atomic {"select":{"jub":[{"tr
 
 
 __PACKAGE__->register_method(
+    method    => "record_distribution_formula_application",
+    api_name  => "open-ils.acq.distribution_formula.record_application",
+    signature => {
+        desc  => "Record the application (which actually happens on the " .
+            "client side) of a distribution formula to a PO or a PL",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Formulae applied", "type" => "array"},
+            {desc => "Lineitem ID", "type" => "number"}
+        ],
+        return => {desc => "acqdfa IDs on success; event on failure"}
+    }
+);
+
+sub record_distribution_formula_application {
+    my ($self, $conn, $auth, $formulae, $li_id) = @_;
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+
+    # We need this to determine relevant OU for testing permissions...
+    my $li = $e->retrieve_acq_lineitem([
+        $li_id, {
+            "flesh" => 1,
+            "flesh_fields" => {"jub" => [qw/purchase_order picklist/]}
+        }
+    ]) or return $e->die_event;
+
+    # ... which we do here.
+    my $ou;
+    if ($li->purchase_order) {
+        $ou = $li->purchase_order->ordering_agency;
+    } elsif ($li->picklist) {
+        $ou = $li->picklist->org_unit;
+    } else {
+        $e->rollback;
+        return new OpenILS::Event("BAD_PARAMS");
+    }
+
+    return $e->die_event unless $e->allowed("CREATE_PURCHASE_ORDER", $ou);
+
+    # Just deal with it if $formulate is a scalar instead of an array.
+    $formulae = [ $formulae ] if not ref $formulae;
+
+    my @results = ();
+    foreach (@{$formulae}) {
+        my $acqdfa = new Fieldmapper::acq::distribution_formula_application;
+
+        $acqdfa->creator($e->requestor->id);
+        $acqdfa->formula($_);
+        $acqdfa->lineitem($li_id);
+
+        $acqdfa = $e->create_acq_distribution_formula_application($acqdfa)
+            or return $e->die_event;
+        push @results, $acqdfa->id;
+    }
+
+    $e->commit or return $e->die_event;
+    \@results;
+}
+
+
+__PACKAGE__->register_method(
 	method => 'ranged_distrib_formulas',
 	api_name	=> 'open-ils.acq.distribution_formula.ranged.retrieve',
     stream => 1,
