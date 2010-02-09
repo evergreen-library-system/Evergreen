@@ -587,6 +587,29 @@ sub create_lineitem_detail_debit {
 # ----------------------------------------------------------------------------
 sub create_fund_debit {
     my($mgr, %args) = @_;
+
+    # Verify the fund is not being spent beyond the hard stop amount
+    my $fund = $mgr->editor->retrieve_acq_fund($args{fund}) or return 0;
+
+    if($fund->balance_stop_percent) {
+
+        my $balance = $mgr->editor->search_acq_fund_combined_balance({fund => $fund->id})->[0];
+        my $allocations = $mgr->editor->search_acq_fund_allocation_total({fund => $fund->id})->[0];
+        $balance = ($balance) ? $balance->amount : 0;
+        $allocations = ($allocations) ? $allocations->amount : 0;
+
+        if( 
+            $allocations == 0 || # if no allocations were ever made, assume we have hit the stop percent
+            ( ( ( ($balance - $args{amount}) / $allocations ) * 100 ) < $fund->balance_stop_percent)) 
+        {
+                $mgr->editor->event(OpenILS::Event->new(
+                    'FUND_EXCEEDS_STOP_PERCENT', 
+                    payload => {fund => $fund->id, debit_amount => $args{amount}}
+                ));
+                return 0;
+        }
+    }
+
     my $debit = Fieldmapper::acq::fund_debit->new;
     $debit->debit_type('purchase');
     $debit->encumbrance('t');
@@ -678,6 +701,15 @@ sub update_purchase_order {
 
 sub create_purchase_order {
     my($mgr, %args) = @_;
+
+    # verify the chosen provider is still active
+    my $provider = $mgr->editor->retrieve_acq_provider($args{provider}) or return 0;
+    unless($U->is_true($provider->active)) {
+        $logger->error("provider is not active.  cannot create PO");
+        $mgr->editor->event(OpenILS::Event->new('ACQ_PROVIDER_INACTIVE'));
+        return 0;
+    }
+
     my $po = Fieldmapper::acq::purchase_order->new;
     $po->creator($mgr->editor->requestor->id);
     $po->editor($mgr->editor->requestor->id);
@@ -978,13 +1010,6 @@ sub upload_records {
     }
 
     if($create_po) {
-
-        # verify the provider is still active
-        unless($U->is_true($provider->active)) {
-            $logger->error("provider is not active.  cannot create PO");
-            $e->rollback;
-            return OpenILS::Event->new('ACQ_PROVIDER_INACTIVE');
-        }
 
         $po = create_purchase_order($mgr, 
             ordering_agency => $ordering_agency,
@@ -1297,14 +1322,6 @@ sub create_purchase_order_api {
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
-
-    # verify the provider is still active
-    my $provider = $e->retrieve_acq_provider($po->provider) or return $e->die_event;
-    unless($U->is_true($provider->active)) {
-        $logger->error("provider is not active.  cannot create PO");
-        $e->rollback;
-        return OpenILS::Event->new('ACQ_PROVIDER_INACTIVE');
-    }
 
     # create the PO
     my %pargs = (ordering_agency => $e->requestor->ws_ou); # default
