@@ -978,6 +978,14 @@ sub upload_records {
     }
 
     if($create_po) {
+
+        # verify the provider is still active
+        unless($U->is_true($provider->active)) {
+            $logger->error("provider is not active.  cannot create PO");
+            $e->rollback;
+            return OpenILS::Event->new('ACQ_PROVIDER_INACTIVE');
+        }
+
         $po = create_purchase_order($mgr, 
             ordering_agency => $ordering_agency,
             provider => $provider->id,
@@ -1289,6 +1297,14 @@ sub create_purchase_order_api {
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    # verify the provider is still active
+    my $provider = $e->retrieve_acq_provider($po->provider) or return $e->die_event;
+    unless($U->is_true($provider->active)) {
+        $logger->error("provider is not active.  cannot create PO");
+        $e->rollback;
+        return OpenILS::Event->new('ACQ_PROVIDER_INACTIVE');
+    }
 
     # create the PO
     my %pargs = (ordering_agency => $e->requestor->ws_ou); # default
