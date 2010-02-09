@@ -1,11 +1,11 @@
-README for Evergreen 1.6
+README for Evergreen 1.6.0.1
 
 Installing prerequisites:
 ========================
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (1.1 or later).
+1. Begin by installing the most recent version of OpenSRF (1.2 or later).
 You can download OpenSRF releases from
 http://evergreen-ils.org/downloads
 
@@ -40,7 +40,7 @@ Installation instructions:
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
-make STAFF_CLIENT_BUILD_ID=rel_1_6_0_0 install
+make STAFF_CLIENT_BUILD_ID=rel_1_6_0_1 install
 
 This will install Evergreen, including example configuration files in
 /openils/conf/ that you can use as templates for your own configuration files.
