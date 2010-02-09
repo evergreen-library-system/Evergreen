@@ -412,7 +412,6 @@ CREATE TABLE acq.lineitem (
 	marc                TEXT                        NOT NULL,
 	eg_bib_id           INT                         REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
 	source_label        TEXT,
-	item_count          INT                         NOT NULL DEFAULT 0,
 	state               TEXT                        NOT NULL DEFAULT 'new',
     CONSTRAINT picklist_or_po CHECK (picklist IS NOT NULL OR purchase_order IS NOT NULL)
 );
