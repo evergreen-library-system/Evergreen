@@ -80,8 +80,11 @@ function loadLIs() {
             params: [openils.User.authtoken, plId, 
                 {flesh_notes:true, flesh_attrs:true, clear_marc:true, offset:plOffset, limit:plLimit}],
             onresponse: function(r) {
-                liTable.show('list');
-                liTable.addLineitem(openils.Util.readResponse(r));
+                var li = openils.Util.readResponse(r);
+                if (li) { /* Not every response is an LI (for some reason) */
+                    liTable.addLineitem(li);
+                    liTable.show('list');
+                }
             }
         }
     );

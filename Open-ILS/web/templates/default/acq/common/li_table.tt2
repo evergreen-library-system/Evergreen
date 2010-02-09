@@ -170,7 +170,7 @@
         <div class='acq-lit-li-menu-bar'>
             <table style='width:100%'>
                 <tr>
-                    <td style='text-align:left;'>
+                    <td class="acq-lit-li-menu-left">
                         <div dojoType='dijit.form.Button' id='acq-lit-copies-back-button'>&#x2196; Return</div>
                         <span style='margin-left:10px;padding-left:10px;border-left:2px solid #aaa;'>
                             Item Count: 
@@ -179,12 +179,12 @@
                             <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
                         </span>
                     </td>
-                    <td style='text-align:right;'>
-                        <span id='acq-lit-update-copies-progress' class='hidden'>
-                            <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></span>
-                        </span>
+                    <td class="acq-lit-li-menu-right">
                         <span>
                             <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies'>Save Changes</div>
+                        </span>
+                        <span id='acq-lit-update-copies-progress' class='hidden'>
+                            <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></span>
                         </span>
                     </td>
                 </tr>
@@ -214,7 +214,7 @@
                         <span>Distribution Formulas</span>
                         <div name='selector'></div>
                         <div name='set_button'></div>
-                        <div name='rel_button'></div>
+                        <div name="reset_button"></div>
                     </td>
                 </tr>
             </tbody>

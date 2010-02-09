@@ -35,6 +35,7 @@ function AcqLiTable() {
     this.plCache = {};
     this.poCache = {};
     this.dfaCache = [];
+    this.dfeOffset = 0;
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
     this.selectors = [];
@@ -48,6 +49,7 @@ function AcqLiTable() {
     this.liNotesRow = this.liNotesTbody.removeChild(dojo.byId('acq-lit-notes-row'));
     this.realCopiesTbody = dojo.byId('acq-lit-real-copies-tbody');
     this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
+    this._copy_fields_for_acqdf = ['owning_lib', 'location'];
 
     dojo.connect(acqLitLiActionsSelector, 'onChange', 
         function() { 
@@ -546,7 +548,9 @@ function AcqLiTable() {
         var self = this;
         this.copyCache = {};
         this.copyWidgetCache = {};
+        this.oldCopyWidgetCache = {};
         this.dfaCache = [];
+        this.dfeOffset = 0;
 
         acqLitSaveCopies.onClick = function() { self.saveCopyChanges(liId) };
         acqLitBatchUpdateCopies.onClick = function() { self.batchCopyUpdate() };
@@ -592,31 +596,33 @@ function AcqLiTable() {
         );
 
         var apply = new dijit.form.Button(
-            {label : 'Apply'},  // TODO i18n
+            {"label": localeStrings.APPLY},
             nodeByName('set_button', row)
         ); 
 
-        var release = new dijit.form.Button(
-            {label : 'Release', disabled: true}, // TODO i18n
-            nodeByName('rel_button', row)  
+        var reset = new dijit.form.Button(
+            {"label": localeStrings.RESET_FORMULAE, "disabled": true},
+            nodeByName("reset_button", row)  
         );
 
         dojo.connect(apply, 'onClick', 
             function() {
                 var form_id = selector.attr('value');
                 if(!form_id) return;
-                apply.attr('disabled', true);
-                release.attr('disabled', false);
                 self._applyDistribFormula(form_id);
+                reset.attr("disabled", false);
             }
         );
 
-        dojo.connect(release, 'onClick', 
+        dojo.connect(reset, 'onClick', 
             function() {
-                apply.attr('disabled', false);
-                release.attr('disabled', true);
+                self.restoreCopyFieldsBeforeDF();
+                self.dfaCache = [];
+                self.dfeOffset = 0;
+                reset.attr("disabled", "true");
             }
         );
+
     };
 
     /**
@@ -626,20 +632,27 @@ function AcqLiTable() {
         if(!formula) return;
 
         formula = this.distribForms.filter(
-            function(form) {
-                return form.id() == formula;
-            }
+            function(form) { return form.id() == formula; }
         )[0];
 
         var copyRows = dojo.query('tr', self.copyTbody);
 
-        var acted = false;
-        for(var rowIndex = 0; rowIndex < copyRows.length; rowIndex++) {
+        if (this.dfeOffset >= copyRows.length) {
+            alert(localeStrings.OUT_OF_COPIES);
+            return;
+        }
+
+        var entries_applied = 0;
+        for(
+            var rowIndex = this.dfeOffset;
+            rowIndex < copyRows.length;
+            rowIndex++
+        ) {
             
             var row = copyRows[rowIndex];
             var copy_id = row.getAttribute('copy_id');
             var copyWidgets = this.copyWidgetCache[copy_id];
-            var entryIndex = 0;
+            var entryIndex = this.dfeOffset;
             var entry = null;
 
             // find the correct entry for the current row
@@ -658,11 +671,11 @@ function AcqLiTable() {
                 //console.log("rowIndex = " + rowIndex + ", entry = " + entry.id() + ", entryIndex=" + 
                 //  entryIndex + ", owning_lib = " + entry.owning_lib() + ", location = " + entry.location());
     
-                dojo.forEach(
-                    ['owning_lib', 'location'], 
+                entries_applied++;
+                this.saveCopyFieldsBeforeDF(copy_id);
+                this._copy_fields_for_acqdf.forEach(
                     function(field) {
                         if(entry[field]()) {
-                            acted = true;
                             copyWidgets[field].attr('value', (entry[field]()));
                         }
                     }
@@ -670,9 +683,38 @@ function AcqLiTable() {
             }
         }
 
-        if (acted) {
+        if (entries_applied) {
             this.dfaCache.push(formula.id());
+            this.dfeOffset += entries_applied;
         };
+    };
+
+    this.saveCopyFieldsBeforeDF = function(copy_id) {
+        var self = this;
+        if (!this.oldCopyWidgetCache[copy_id]) {
+            var copyWidgets = this.copyWidgetCache[copy_id];
+
+            this.oldCopyWidgetCache[copy_id] = {};
+            this._copy_fields_for_acqdf.forEach(
+                function(f) {
+                    self.oldCopyWidgetCache[copy_id][f] =
+                        copyWidgets[f].attr("value");
+                }
+            );
+        }
+    };
+
+    this.restoreCopyFieldsBeforeDF = function() {
+        var self = this;
+        for (var copy_id in this.oldCopyWidgetCache) {
+            this._copy_fields_for_acqdf.forEach(
+                function(f) {
+                    self.copyWidgetCache[copy_id][f].attr(
+                        "value", self.oldCopyWidgetCache[copy_id][f]
+                    );
+                }
+            );
+        }
     };
 
     this._fetchDistribFormulas = function(onload) {
@@ -687,12 +729,13 @@ function AcqLiTable() {
                     oncomplete: function(r) {
                         self.distribForms = openils.Util.readResponse(r);
                         if(!self.distribForms || self.distribForms.length == 0) {
-                            self.distribForms  = [];
-                            return onload();
+                            self.distribForms = [];
+                        } else {
+                            self.distribFormulaStore =
+                                new dojo.data.ItemFileReadStore(
+                                    {data:acqdf.toStoreData(self.distribForms)}
+                                );
                         }
-                        self.distribFormulaStore = 
-                            new dojo.data.ItemFileReadStore(
-                                {data:acqdf.toStoreData(self.distribForms)});
                         self._addDistribFormulaRow();
                         onload();
                     }
@@ -861,8 +904,6 @@ function AcqLiTable() {
         var copies = [];
 
 
-        openils.Util.show('acq-lit-update-copies-progress');
-
         var total = 0;
         for(var id in this.copyCache) {
             var c = this.copyCache[id];
@@ -879,26 +920,28 @@ function AcqLiTable() {
 
         dojo.byId('acq-lit-copy-count-label-' + liId).innerHTML = total;
 
-        if(copies.length == 0)
-            return;
 
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.lineitem_detail.cud.batch'],
-            {   async: true,
-                params: [openils.User.authtoken, copies],
-                onresponse: function(r) {
-                    var res = openils.Util.readResponse(r);
-                    litUpdateCopiesProgress.update(res);
-                },
-                oncomplete: function() {
-                    openils.Util.hide('acq-lit-update-copies-progress');
-                    self.drawCopies(liId); 
+        if (copies.length > 0) {
+            openils.Util.show("acq-lit-update-copies-progress");
+            fieldmapper.standardRequest(
+                ['open-ils.acq', 'open-ils.acq.lineitem_detail.cud.batch'],
+                {   async: true,
+                    params: [openils.User.authtoken, copies],
+                    onresponse: function(r) {
+                        var res = openils.Util.readResponse(r);
+                        litUpdateCopiesProgress.update(res);
+                    },
+                    oncomplete: function() {
+                        self.drawCopies(liId);
+                        openils.Util.hide("acq-lit-update-copies-progress");
+                    }
                 }
-            }
-        );
+            );
+        }
 
         if (this.dfaCache.length > 0) {
-            var oldlength =  this.dfaCache.length;
+            var oldlength = this.dfaCache.length;
+
             fieldmapper.standardRequest(
                 ["open-ils.acq",
                 "open-ils.acq.distribution_formula.record_application"],
@@ -1366,6 +1409,3 @@ function AcqLiTable() {
         }});
     }
 }
-
-
-
