@@ -6256,7 +6256,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                     JOIN asset.copy dcp ON (cn.id = dcp.call_number)
              WHERE  NOT b.deleted
              GROUP BY b.id
-             HAVING SUM( CASE WHEN dcp.deleted THEN -1 ELSE 0 END) &lt; 0 
+             HAVING SUM( CASE WHEN NOT dcp.deleted THEN 1 ELSE 0 END) = 0 
 
 		</oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
