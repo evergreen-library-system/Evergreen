@@ -381,6 +381,65 @@ sub retrieve_fund_summary_impl {
     };
 }
 
+__PACKAGE__->register_method(
+	method => 'transfer_money_between_funds',
+	api_name	=> 'open-ils.acq.funds.transfer_money',
+	signature => {
+        desc => 'Method for transfering money between funds',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Originating fund ID', type => 'number'},
+            {desc => 'Amount of money to transfer away from the originating fund, in the same currency as said fund', type => 'number'},
+            {desc => 'Destination fund ID', type => 'number'},
+            {desc => 'Amount of money to transfer to the destination fund, in the same currency as said fund.  If null, uses the same amount specified with the Originating Fund, and attempts a currency conversion if appropriate.', type => 'number'},
+            {desc => 'Transfer Note', type => 'string'}
+        ],
+        return => {desc => '1 on success, Event on failure'}
+    }
+);
+
+sub transfer_money_between_funds {
+    my($self, $conn, $auth, $ofund_id, $ofund_amount, $dfund_id, $dfund_amount, $note) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $ofund = $e->retrieve_acq_fund($ofund_id) or return $e->event;
+    return $e->die_event unless $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $ofund->org, $ofund);
+    my $dfund = $e->retrieve_acq_fund($dfund_id) or return $e->event;
+    return $e->die_event unless $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $dfund->org, $dfund);
+
+    if (!defined $dfund_amount) {
+        my $ratio = 1;
+        if ($ofund->currency_type ne $dfund->currency_type) {
+            my $exchange_rate = $e->json_query({
+                "select"=>{"acqexr"=>["ratio"]}, 
+                "from"=>"acqexr", 
+                "where"=>{
+                    "from_currency"=>$ofund->currency_type,
+                    "to_currency"=>$dfund->currency_type
+                }
+            });
+            if (scalar(@$exchange_rate)<1) {
+                $logger->error('Unable to find exchange rate for ' . $ofund->currency_type . ' to ' . $dfund->currency_type);
+                return $e->die_event;
+            }
+            $ratio = @{$exchange_rate}[0]->{ratio};
+        }
+        $dfund_amount = $ofund_amount * $ratio;
+    }
+
+    $e->json_query({
+        from => [
+            'acq.transfer_fund',
+            $ofund_id, $ofund_amount, $dfund_id, $dfund_amount, $e->requestor->id, $note
+        ]
+    });
+
+    $e->commit;
+
+    return 1;
+}
+
+
 
 # ---------------------------------------------------------------
 # fund Allocations
