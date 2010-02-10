@@ -4309,6 +4309,75 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+
+	<class id="aurt" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::user_request_type" oils_persist:tablename="acq.user_request_type" reporter:label="User Purchase Request Type">
+		<fields oils_persist:primary="id">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector='label'/>
+			<field reporter:label="Type Label" name="label" reporter:datatype="text" oils_persist:i18n="true" />
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_USER_REQUEST_TYPE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_USER_REQUEST_TYPE" global_required="true"/>
+                <delete permission="ADMIN_USER_REQUEST_TYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="aur" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::user_request" oils_persist:tablename="acq.user_request" reporter:label="User Purchase Request">
+		<fields oils_persist:primary="id">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector='label'/>
+			<field reporter:label="User" name="usr" reporter:datatype="link" />
+			<field reporter:label="Request Type" name="request_type" reporter:datatype="link" />
+			<field reporter:label="Place Hold" name="hold" reporter:datatype="bool" />
+			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="link" />
+			<field reporter:label="Holdable Formats" name="holdable_formats" reporter:datatype="text" />
+			<field reporter:label="Phone Notify" name="phone_notify" reporter:datatype="text" />
+			<field reporter:label="Email Notify" name="email_notify" reporter:datatype="bool" />
+			<field reporter:label="PO Line Item" name="lineitem" reporter:datatype="link" />
+			<field reporter:label="Bib Record" name="eg_bib" reporter:datatype="link" />
+			<field reporter:label="Request Date/Time" name="request_date" reporter:datatype="timestamp" />
+			<field reporter:label="Need Before Date/Time" name="request_date" reporter:datatype="timestamp" />
+			<field reporter:label="Max Acceptable Fee" name="max_fee" reporter:datatype="text" />
+			<field reporter:label="ISxN" name="isxn" reporter:datatype="text" />
+			<field reporter:label="Title" name="title" reporter:datatype="text" />
+			<field reporter:label="Volume" name="volume" reporter:datatype="text" />
+			<field reporter:label="Author" name="author" reporter:datatype="text" />
+			<field reporter:label="Article Title" name="article_title" reporter:datatype="text" />
+			<field reporter:label="Article Pages" name="article_pages" reporter:datatype="text" />
+			<field reporter:label="Publisher" name="publisher" reporter:datatype="text" />
+			<field reporter:label="Publication Location" name="location" reporter:datatype="text" />
+			<field reporter:label="Publication Date" name="pubdate" reporter:datatype="text" />
+			<field reporter:label="Mentioned In" name="mentioned" reporter:datatype="text" />
+			<field reporter:label="Other Info" name="other_info" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="acqli"/>
+			<link field="eg_bib" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="request_type" reltype="has_a" key="id" map="" class="aurt"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="user_request.create">
+                    <context link="usr" field="home_ou"/>
+				</create>
+                <retrieve permission="user_request.view">
+                    <context link="usr" field="home_ou"/>
+				</retrieve>
+                <update permission="user_request.update">
+                    <context link="usr" field="home_ou"/>
+				</update>
+                <delete permission="user_request.delete">
+                    <context link="usr" field="home_ou"/>
+				</delete>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="acqct" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::currency_type" oils_persist:tablename="acq.currency_type" reporter:label="Currency Type">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Currency Code" name="code" reporter:datatype="text" reporter:selector='label'/>
