@@ -1185,5 +1185,54 @@ sub update_po_events {
 }
 
 
+__PACKAGE__->register_method (
+	method		=> 'process_fiscal_rollover',
+    api_name    => 'open-ils.acq.fiscal_rollover.process',
+    stream      => 1,
+);
+
+__PACKAGE__->register_method (
+	method		=> 'process_fiscal_rollover',
+    api_name    => 'open-ils.acq.fiscal_rollover.process.dry_run',
+    stream      => 1,
+);
+
+sub process_fiscal_rollover {
+    my( $self, $conn, $auth, $org_id, $year, $descendants ) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('ADMIN_FUND', $org_id);
+
+    # Create next year's funds
+    $e->json_query({
+        from => [
+            ($descendants) ? 
+                'acq.propagate_funds_by_org_tree' :
+                'acq.propagate_funds_by_org_unit',
+            $year, $e->requestor->id, $org_id
+        ]
+    });
+
+    # Roll the uncumbrances over to the newly create funds
+    $e->json_query({
+        from => [
+            ($descendants) ? 
+                'acq.rollover_funds_by_org_tree' :
+                'acq.rollover_funds_by_org_unit',
+            $year, $e->requestor->id, $org_id
+        ]
+    });
+
+    # TODO
+    # Loop over the newly created funds (funds for $year + 1 for 
+    # selected org units) and stream back the new fund, including 
+    # fund summary and total debits
+
+    $self->api_name =~ /dry_run/ and $e->rollback or $e->commit;
+    return undef;
+}
+
+
 1;
 
