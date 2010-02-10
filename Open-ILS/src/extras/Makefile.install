@@ -332,19 +332,19 @@ install_pgsql_client_debs_84:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_84)
 
 install_pgsql_server_debs_84:
-	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_84)
+	LANG=C $(APT_TOOL) install $(PGSQL_SERVER_DEBS_84)
 
 install_pgsql_client_debs_83:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_83)
 
 install_pgsql_server_debs_83:
-	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_83)
+	LANG=C $(APT_TOOL) install $(PGSQL_SERVER_DEBS_83)
 
 install_pgsql_client_debs_82:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_82)
 
 install_pgsql_server_debs_82:
-	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_82)
+	LANG=C $(APT_TOOL) install $(PGSQL_SERVER_DEBS_82)
 
 # Etch requires an explicit version to avoid PostgreSQL 7.4
 install_pgsql_client_debs_81:
@@ -352,7 +352,7 @@ install_pgsql_client_debs_81:
 
 # Etch requires an explicit version to avoid PostgreSQL 7.4
 install_pgsql_server_debs_81:
-	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_81)
+	LANG=C $(APT_TOOL) install $(PGSQL_SERVER_DEBS_81)
 
 # Install the debian-specific dependencies for more modern distros
 install_extra_debs:
