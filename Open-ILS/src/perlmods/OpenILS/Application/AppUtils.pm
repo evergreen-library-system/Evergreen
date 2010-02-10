@@ -1573,6 +1573,27 @@ sub xact_org {
 }
 
 
+sub find_event_def_by_hook {
+    my($self, $hook, $context_org, $e) = @_;
+
+    $e ||= OpenILS::Utils::CStoreEditor->new;
+
+    my $orgs = $self->get_org_ancestors($context_org);
+
+    # search from the context org up
+    for my $org_id (reverse @$orgs) {
+
+        my $def = $e->search_action_trigger_event_definition(
+            {hook => $hook, owner => $org_id})->[0];
+
+        return $def if $def;
+    }
+
+    return undef;
+}
+
+
+
 # If an event_def ID is not provided, use the hook and context org to find the 
 # most appropriate event.  create the event, fire it, then return the resulting
 # event with fleshed template_output and error_output
@@ -1591,21 +1612,10 @@ sub fire_object_event {
         $auto_method .= '.include_inactive';
 
     } else {
+
         # find the most appropriate event def depending on context org
-
-        my $orgs = $self->get_org_ancestors($context_org);
-        $orgs = $e->search_actor_org_unit(
-            [{id => $orgs}, {flesh => 1, flesh_fields => {aou => ['ou_type']}}]);
-        $orgs = [ sort { $a->ou_type->depth cmp $b->ou_type->depth } @$orgs ];
-
-        for my $org (reverse @$orgs) { 
-            $def = $e->search_action_trigger_event_definition(
-                {hook => $hook, owner => $org->id}
-            )->[0];
-            last if $def;
-        }
-
-        return $e->event unless $def;
+        $def = $self->find_event_def_by_hook($hook, $context_org, $e) 
+            or return $e->event;
     }
 
     if($def->group_field) {
