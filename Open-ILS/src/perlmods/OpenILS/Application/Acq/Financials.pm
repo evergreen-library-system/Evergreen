@@ -1329,6 +1329,8 @@ sub process_fiscal_rollover {
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('ADMIN_FUND', $org_id);
 
+    my $combined = ($self->api_name =~ /combined/); 
+
     my $org_ids = ($descendants) ? 
         [   
             map 
@@ -1349,7 +1351,7 @@ sub process_fiscal_rollover {
         ]
     });
 
-    if($self->api_name =~ /combined/) {
+    if($combined) {
 
         # Roll the uncumbrances over to next year's funds
         # Mark the funds for $year as inactive
@@ -1364,13 +1366,34 @@ sub process_fiscal_rollover {
         });
     }
 
-    # Fetch all funds for the specified org units for return to call w/ summary
-    my $fund_ids = $e->search_acq_fund({year => int($year) + 1, org => $org_ids});
+    # Fetch all funds for the specified org units for the subsequent year
+    my $fund_ids = $e->search_acq_fund(
+        {
+            year => int($year) + 1, 
+            org => $org_ids,
+            propagate => 't'
+        }, 
+        {idlist => 1}
+    );
 
     foreach (@$fund_ids) {
         my $fund = $e->retrieve_acq_fund($_) or return $e->die_event;
         $fund->summary(retrieve_fund_summary_impl($e, $fund));
-        $conn->respond($fund);
+
+        my $amount = 0;
+        if($combined and $U->is_true($fund->rollover)) {
+            # see how much money was rolled over
+
+            my $sum = $e->json_query({
+                select => {acqftr => [{column => 'dest_amount', transform => 'sum'}]}, 
+                from => 'acqftr', 
+                where => {dest_fund => $fund->id, note => 'Rollover'}
+            })->[0];
+
+            $amount = $sum->{dest_amount} if $sum;
+        }
+
+        $conn->respond({fund => $fund, rollover_amount => $amount});
     }
 
     $self->api_name =~ /dry_run/ and $e->rollback or $e->commit;
