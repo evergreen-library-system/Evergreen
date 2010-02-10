@@ -15,7 +15,6 @@ sub NOOP_False { return 0 }
 
 
 
-
 # helper functions inserted into the TT environment
 my $_TT_helpers = {
 
@@ -86,6 +85,18 @@ my $_TT_helpers = {
     get_org_setting => sub {
         my($org_id, $setting) = @_;
         return $U->ou_ancestor_setting_value($org_id, $setting);
+    },
+
+    # returns matching line item attribute, or undef
+    get_li_attr => sub {
+        my ($name, $type, $attr) = @_;
+        # use Data::Dumper; $logger->warn("get_li_attr: " . Dumper($attr));
+        ($name and @$attr) or return;
+        foreach (@$attr) {
+            $_->attr_name eq $name or next;
+            return $_->attr_value if (! $type) or $type eq $_->attr_type;
+        }
+        return;
     },
 };
 
