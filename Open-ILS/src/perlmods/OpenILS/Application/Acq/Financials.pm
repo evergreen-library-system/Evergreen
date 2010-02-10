@@ -1187,24 +1187,100 @@ sub update_po_events {
 
 __PACKAGE__->register_method (
 	method		=> 'process_fiscal_rollover',
-    api_name    => 'open-ils.acq.fiscal_rollover.process',
+    api_name    => 'open-ils.acq.fiscal_rollover.combined',
     stream      => 1,
+	signature => {
+        desc => q/
+            Performs a combined fiscal fund rollover process.
+
+            Creates a new series of funds for the following year, copying the old years 
+            funds that are marked as propagable. They apply to the funds belonging to 
+            either an org unit or to an org unit and all of its dependent org units. 
+            The procedures may be run repeatedly; if any fund has already been propagated, 
+            both the old and the new funds will be left alone.
+
+            Closes out any applicable funds (by org unit or by org unit and dependents) 
+            that are marked as propagable. If such a fund has not already been propagated 
+            to the new year, it will be propagated at closing time.
+
+            If a fund is marked as subject to rollover, any unspent balance in the old year's 
+            fund (including money encumbered but not spent) is transferred to the new year's 
+            fund. Otherwise it is deallocated back to the funding source(s).
+
+            In either case, any encumbrance debits are transferred to the new fund, along 
+            with the corresponding lineitem details. The old year's fund is marked as inactive 
+            so that new debits may not be charged to it.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Fund Year to roll over', type => 'integer'},
+            {desc => 'Org unit ID', type => 'integer'},
+            {desc => 'Include Descendant Orgs (boolean)', type => 'integer'},
+        ],
+        return => {desc => 'Returns a stream of all related funds for the next year including fund summary for each'}
+    }
+
 );
 
 __PACKAGE__->register_method (
 	method		=> 'process_fiscal_rollover',
-    api_name    => 'open-ils.acq.fiscal_rollover.process.dry_run',
+    api_name    => 'open-ils.acq.fiscal_rollover.combined.dry_run',
     stream      => 1,
+	signature => {
+        desc => q/
+            @see open-ils.acq.fiscal_rollover.combined
+            This is the dry-run version.  The action is performed,
+            new fund information is returned, then all changes are rolled back.
+        /
+    }
+
 );
 
+__PACKAGE__->register_method (
+	method		=> 'process_fiscal_rollover',
+    api_name    => 'open-ils.acq.fiscal_rollover.propagate',
+    stream      => 1,
+	signature => {
+        desc => q/
+            @see open-ils.acq.fiscal_rollover.combined
+            This version performs fund propagation only.  I.e, creation of
+            the following year's funds.  It does not rollover over balances, encumbrances, 
+            or mark the previous year's funds as complete.
+        /
+    }
+);
+
+__PACKAGE__->register_method (
+	method		=> 'process_fiscal_rollover',
+    api_name    => 'open-ils.acq.fiscal_rollover.propagate.dry_run',
+    stream      => 1,
+	signature => { desc => q/ 
+        @see open-ils.acq.fiscal_rollover.propagate 
+        This is the dry-run version.  The action is performed,
+        new fund information is returned, then all changes are rolled back.
+    / }
+);
+
+
+
 sub process_fiscal_rollover {
-    my( $self, $conn, $auth, $org_id, $year, $descendants ) = @_;
+    my( $self, $conn, $auth, $year, $org_id, $descendants ) = @_;
 
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('ADMIN_FUND', $org_id);
 
+    my $org_ids = ($descendants) ? 
+        [   
+            map 
+            { $_->{id} } # fetch my descendants
+            @{$e->json_query({from => ['actor.org_unit_descendants', $org_id]})}
+        ]
+        : [$org_id];
+
     # Create next year's funds
+    # Note, it's safe to run this more than once.
+    # IOW, it will not create duplicate new funds.
     $e->json_query({
         from => [
             ($descendants) ? 
@@ -1214,20 +1290,29 @@ sub process_fiscal_rollover {
         ]
     });
 
-    # Roll the uncumbrances over to the newly create funds
-    $e->json_query({
-        from => [
-            ($descendants) ? 
-                'acq.rollover_funds_by_org_tree' :
-                'acq.rollover_funds_by_org_unit',
-            $year, $e->requestor->id, $org_id
-        ]
-    });
+    if($self->api_name =~ /combined/) {
 
-    # TODO
-    # Loop over the newly created funds (funds for $year + 1 for 
-    # selected org units) and stream back the new fund, including 
-    # fund summary and total debits
+        # Roll the uncumbrances over to next year's funds
+        # Mark the funds for $year as inactive
+
+        $e->json_query({
+            from => [
+                ($descendants) ? 
+                    'acq.rollover_funds_by_org_tree' :
+                    'acq.rollover_funds_by_org_unit',
+                $year, $e->requestor->id, $org_id
+            ]
+        });
+    }
+
+    # Fetch all funds for the specified org units for return to call w/ summary
+    my $fund_ids = $e->search_acq_fund({year => int($year) + 1, org => $org_ids});
+
+    foreach (@$fund_ids) {
+        my $fund = $e->retrieve_acq_fund($_) or return $e->die_event;
+        $fund->summary(retrieve_fund_summary_impl($e, $fund));
+        $conn->respond($fund);
+    }
 
     $self->api_name =~ /dry_run/ and $e->rollback or $e->commit;
     return undef;
