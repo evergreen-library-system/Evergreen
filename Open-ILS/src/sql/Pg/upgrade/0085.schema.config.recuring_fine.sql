@@ -118,4 +118,7 @@ UPDATE permission.perm_list SET code = 'ADMIN_RECURRING_FINE_RULE' WHERE code = 
 UPDATE reporter.template SET data = REGEXP_REPLACE(data, E'^(.*)recuring(.*)$', E'\\1recurring\\2') WHERE data LIKE '%recuring%';
 UPDATE reporter.template SET data = REGEXP_REPLACE(data, E'^(.*)recurance(.*)$', E'\\1recurrence\\2') WHERE data LIKE '%recurance%';
 
+-- Update the sequence associated with the table
+ALTER TABLE config.rule_recuring_fine_id_seq RENAME TO rule_recurring_fine_id_seq;
+
 COMMIT;
