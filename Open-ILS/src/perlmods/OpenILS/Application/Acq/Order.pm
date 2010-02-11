@@ -197,57 +197,62 @@ sub update_lineitem {
     $li->edit_time('now');
     $li->editor($mgr->editor->requestor->id);
     $mgr->add_li;
-    my $success = $mgr->editor->update_acq_lineitem($li);
+    return $li if $mgr->editor->update_acq_lineitem($li); 
+    return undef;
+}
 
-    if ($success) { # check for requests, create holds
-        my $requests = $mgr->editor->search_acq_user_request(
-            { lineitem => $li->id,
-              '-or' =>
-                [ { need_before => {'>' => 'now'} },
-                  { need_before => undef }
-                ]
+
+# ----------------------------------------------------------------------------
+# Create real holds from patron requests for a given lineitem
+# ----------------------------------------------------------------------------
+sub promote_lineitem_holds {
+    my($mgr, $li) = @_;
+
+    my $requests = $mgr->editor->search_acq_user_request(
+        { lineitem => $li->id,
+          '-or' =>
+            [ { need_before => {'>' => 'now'} },
+              { need_before => undef }
+            ]
+        }
+    );
+
+    for my $request ( @$requests ) {
+
+        $request->eg_bib( $li->eg_bib_id );
+        $mgr->editor->update_acq_user_request( $request ) or return 0;
+
+        next unless ($U->is_true( $request->hold ));
+
+        my $hold = Fieldmapper::action::hold_request->new;
+        $hold->usr( $request->usr );
+        $hold->requestor( $request->usr );
+        $hold->request_time( $request->request_date );
+        $hold->pickup_lib( $request->pickup_lib );
+        $hold->request_lib( $request->pickup_lib );
+        $hold->selection_ou( $request->pickup_lib );
+        $hold->phone_notify( $request->phone_notify );
+        $hold->email_notify( $request->email_notify );
+        $hold->expire_time( $request->need_before );
+
+        if ($request->holdable_formats) {
+            my $mrm = $mgr->editor->search_metabib_metarecord_source_map( { source => $li->eg_bib_id } )->[0];
+            if ($mrm) {
+                $hold->hold_type( 'M' );
+                $hold->holdable_formats( $request->holdable_formats );
+                $hold->target( $mrm->metarecord );
             }
-        );
-
-        for my $request ( @$requests ) {
-
-            $request->eg_bib( $li->eg_bib_id );
-            $mgr->editor->update_acq_user_request( $request );
-
-            next unless ($U->is_true( $request->hold ));
-
-            my $hold = Fieldmapper::action::hold_request->new;
-            $hold->usr( $request->usr );
-            $hold->requestor( $request->usr );
-            $hold->request_time( $request->request_date );
-            $hold->pickup_lib( $request->pickup_lib );
-            $hold->request_lib( $request->pickup_lib );
-            $hold->selection_ou( $request->pickup_lib );
-            $hold->phone_notify( $request->phone_notify );
-            $hold->email_notify( $request->email_notify );
-            $hold->expire_time( $request->need_before );
-
-            if ($request->holdable_formats) {
-                my $mrm = $mgr->editor->search_metabib_metarecord_source_map( { source => $li->eg_bib_id } )->[0];
-                if ($mrm) {
-                    $hold->hold_type( 'M' );
-                    $hold->holdable_formats( $request->holdable_formats );
-                    $hold->target( $mrm->metarecord );
-                }
-            }
-
-            if (!$hold->target) {
-                $hold->hold_type( 'T' );
-                $hold->target( $li->eg_bib_id );
-            }
-
-            $mgr->editor->create_actor_hold_request( $hold );
         }
 
-        return $li;
+        if (!$hold->target) {
+            $hold->hold_type( 'T' );
+            $hold->target( $li->eg_bib_id );
+        }
+
+        $mgr->editor->create_actor_hold_request( $hold ) or return 0;
     }
 
-    return undef;
+    return $li;
 }
 
 sub delete_lineitem {
@@ -816,6 +821,12 @@ sub create_lineitem_assets {
         create_bib($mgr, $li) or return 0;
         $new_bib = 1;
     }
+
+
+    # -----------------------------------------------------------------
+    # The lineitem is going live, promote user request holds to real holds
+    # -----------------------------------------------------------------
+    promote_lineitem_holds($mgr, $li) or return 0;
 
     my $li_details = $mgr->editor->search_acq_lineitem_detail({lineitem => $li_id}, {idlist=>1});
 
