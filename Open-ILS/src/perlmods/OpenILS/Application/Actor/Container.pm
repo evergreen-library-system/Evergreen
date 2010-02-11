@@ -97,7 +97,9 @@ sub _bucket_flesh {
 	unless($U->is_true($bkt->pub)) {
         return undef if $self->api_name =~ /public/;
         unless($bkt->owner eq $e->requestor->id) {
-            return $e->event unless $e->allowed('VIEW_CONTAINER', $bkt);
+            my $owner = $e->retrieve_actor_user($bkt->owner)
+                or return $e->die_event;
+            return $e->event unless $e->allowed('VIEW_CONTAINER', $owner->home_ou);
         }
 	}
 
