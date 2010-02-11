@@ -900,6 +900,11 @@ sub class_index_string_xml {
             $value =~ s/\pC+//sgo;
             $value =~ s/\W+$//sgo;
 
+            # hack to normalize ratio-like strings
+            while ($term =~ /\b\d{1}:[, ]?\d+(?:[ ,]\d+[^:])+/o) {
+                $term = $` . join ('', split(/[, ]/, $&)) . $';
+            }
+
             $value =~ s/\b\.+\b//sgo;
             $value = lc($value);
 

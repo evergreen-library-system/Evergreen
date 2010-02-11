@@ -30,7 +30,11 @@ function rresultDoSearch() {
 function rresultCollectIds() {
 	var ids;
 
-	switch(getRtype()) {
+    var rtype = getRtype();
+    if (rtype.indexOf('|') > -1)
+        rtype = rtype.substring(0,rtype.indexOf('|'));
+
+	switch(rtype) {
 
 		case RTYPE_COOKIE:
 			ids = JSON2js(cookieManager.read(COOKIE_RIDS));

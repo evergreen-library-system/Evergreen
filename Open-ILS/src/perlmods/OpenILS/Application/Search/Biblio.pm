@@ -612,7 +612,7 @@ sub multiclass_query {
         # Add this data to the default search class
         my $type = $arghash->{default_class} || 'keyword';
         $type = ($type eq '-') ? 'keyword' : $type;
-        $type = ($type !~ /^(title|author|keyword|subject|series)$/o) ? 'keyword' : $type;
+        $type = ($type !~ /^(title|author|keyword|subject|series)(?:\|\w+)?$/o) ? 'keyword' : $type;
         $search->{$type} =  {} unless $search->{$type};
         $search->{$type}->{term} =
             ($search->{$type}->{term}) ? $search->{$type}->{term} . " $query" : $query;
