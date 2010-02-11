@@ -23,6 +23,12 @@
 
 		$term =~ s/(\pM+)//gos;
 		$term =~ s/(\b\.\b)//gos;
+
+		# hack to normalize ratio-like strings
+		while ($term =~ /\b\d{1}:[, ]?\d+(?:[ ,]\d+[^:])+/o) {
+			$term = $` . join ('', split(/[, ]/, $&)) . $';
+		}
+
 		$self->decompose($term);
 
 		my $newterm = '';
