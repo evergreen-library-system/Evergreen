@@ -1094,7 +1094,7 @@ __PACKAGE__->register_method(
 );
 
 sub format_lineitem {
-    my($self, $conn, $auth, $li_id, $format) = @_;
+    my($self, $conn, $auth, $li_id, $format, $user_data) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
 
@@ -1115,7 +1115,7 @@ sub format_lineitem {
     }
 
     my $hook = "format.acqli.$format";
-    return $U->fire_object_event(undef, $hook, $li, $context_org);
+    return $U->fire_object_event(undef, $hook, $li, $context_org, 'print-on-demand', $user_data);
 }
 
 __PACKAGE__->register_method (
