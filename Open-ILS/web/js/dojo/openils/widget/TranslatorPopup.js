@@ -82,7 +82,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 				// Empty it
 				while (trans_tbody.lastChild) trans_tbody.removeChild( trans_tbody.lastChild );
 		
-				for (var i in trans_list) {
+				for (var i = 0; i < trans_list.length; i++) {
 					if (!trans_list[i]) continue;
 		
 					var trans_obj = trans_list[i];
