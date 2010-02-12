@@ -1021,7 +1021,7 @@ function buildOrgSel(selector, org, offset, namecol) {
     var kids = org.children();
     if (kids) {
 	    for( var c = 0; c < kids.length; c++ )
-		    buildOrgSel( selector, org.children()[c], offset, namecol);
+		    buildOrgSel( selector, kids[c], offset, namecol);
     }
 }
 
@@ -1034,7 +1034,7 @@ function buildMergedOrgSel(selector, org_list, offset, namecol) {
         var kids = org.children();
         if (kids) {
 	        for( var c = 0; c < kids.length; c++ )
-		        buildOrgSel( selector, org.children()[c], offset, namecol);
+		        buildOrgSel( selector, kids[c], offset, namecol);
         }
     }
 }

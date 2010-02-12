@@ -33,7 +33,7 @@ function findOrgDepth(org_id_or_node) {
 
 function findOrgTypeFromDepth(depth) {
 	if( depth == null ) return null;
-	for( var type in globalOrgTypes ) {
+	for( var type = 0; type < globalOrgTypes.length; type++ ) {
 		var t = globalOrgTypes[type];
 		if( t.depth() == depth ) return t;
 	}
@@ -43,7 +43,7 @@ function findOrgTypeFromDepth(depth) {
 	the org type object */
 function findOrgType(type_id) {
 	if(typeof type_id == 'object') return type_id;
-	for(var type in globalOrgTypes) {
+	for(var type = 0; type < globalOrgTypes.length; type++) {
 		var t =globalOrgTypes[type]; 
 		if( t.id() == type_id || t.id() == parseInt(type_id) ) 
 			return t;
@@ -60,7 +60,7 @@ function findOrgUnit(org_id) {
 
 function findOrgLasso(lasso_id) {
 	if (typeof lasso_id == 'object') return lasso_id;
-    for (var i in _lasso) {
+    for (var i = 0; i < _lasso.length; i++) {
         if (_lasso[i].id() == lasso_id) return _lasso[i];
     }
     return null;
@@ -96,8 +96,9 @@ function findSiblingOrgs(node) { return findOrgUnit(node.parent_ou()).children()
 function orgIsMine(me, org) {
 	if(!me || !org) return false;
 	if(me.id() == org.id()) return true;
-	for( var i in me.children() ) {
-		if(orgIsMine(me.children()[i], org))
+    var kids = me.children();
+	for( var i = 0; i < kids.legnth; i++ ) {
+		if(orgIsMine(kids[i], org))
 			return true;
 	}
 	return false;
@@ -114,7 +115,7 @@ function orgIsMineFromSet(meList, org) {
 
 var orgArraySearcher = {};
 var globalOrgTree;
-for (var i in _l) {
+for (var i = 0; i < _l.length; i++) {
 	var x = new aou();
 	x.id(_l[i][0]);
 	x.ou_type(_l[i][1]);
