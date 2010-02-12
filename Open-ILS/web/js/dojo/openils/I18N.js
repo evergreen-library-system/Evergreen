@@ -35,7 +35,7 @@ if(!dojo._hasResource["openils.I18N"]) {
         }
     );
 
-	for (var i in openils.I18N.BaseLocales) {
+	for (var i = 0; i < openils.I18N.BaseLocales.length; i++) {
 		openils.I18N.localeStore.newItem({ locale : openils.I18N.BaseLocales[i].code, label : openils.I18N.BaseLocales[i].name });
 	}
 
