@@ -41,7 +41,7 @@ if(!dojo._hasResource['fieldmapper.hash']){
 		}
 
 		if (virtFields && virtFields.length > 0) {
-			for (var i in virtFields) {
+			for (var i = 0; i < virtFields.length; i++) {
 				if (!_hash[virtFields[i]])
 					_hash[virtFields[i]] = null;
 			}
