@@ -393,7 +393,7 @@ function _rdetailDraw(r) {
 	// Fill in our unAPI ID, if anyone cares
 	var abbrs = document.getElementsByTagName('abbr');
 	var span;
-	for (var i = 0; i < abbrs.length; i = i + 1) {
+	for (var i = 0; i < abbrs.length; i++) {
 		if (abbrs[i].getAttribute('name') == 'unapi') {
 			span = abbrs[i];
 			break;
@@ -473,7 +473,7 @@ function rdetailAddBookbags(r) {
 	var index = 3;
 	doSelectorActions(selector);
 
-	for( var i = 0; i != containers.length; i++ ) {
+	for( var i = 0; i < containers.length; i++ ) {
 		found = true;
 		var container = containers[i];
 		insertSelectorVal( selector, index++, container.name(), 
@@ -607,7 +607,7 @@ function rdetailBuildCNList() {
 		return;
 	}
 
-	for( var i in arr ) {
+	for( var i = 0; i < arr.length; i++ ) {
 		var cn = arr[i];
 		var opt = new Option(cn);
 		select.options[index++] = opt;
@@ -673,7 +673,7 @@ function rdetailShowReviews(r) {
 	var template = par.removeChild($('rdetail_review_template'));
 	if( res && res.length > 0 ) {
 		unHideMe($('rdetail_reviews_link'));
-		for( var i = 0; i != res.length; i++ ) {
+		for( var i = 0; i < res.length; i++ ) {
 			var rev = res[i];	
 			if( rev.text && rev.info ) {
 				var node = template.cloneNode(true);
@@ -716,12 +716,15 @@ function _rdetailRows(node) {
 		if( node ) {
 			if( !orgIsMine(node, loc) && !orgIsMine(loc,node) ) return;
 		} else {
-			for( var i = 0; i < globalOrgTree.children().length; i++ ) {
-				var org = findOrgUnit(globalOrgTree.children()[i]);
-				if( orgIsMine(org, loc) ) {
-					node = org;
-					break;
-				}
+            var kids = globalOrgTree.children();
+            if (kids) {
+    			for( var i = 0; i < kids.length; i++ ) {
+	    			var org = findOrgUnit(kids[i]);
+		    		if( orgIsMine(org, loc) ) {
+			    		node = org;
+				    	break;
+    				}
+                }
 			}
 		} 
 	}
@@ -764,8 +767,11 @@ function _rdetailRows(node) {
 
 	} else { node = globalOrgTree; }
 
-	for( var c in node.children() ) 
-		_rdetailRows(node.children()[c]);
+    var kids = node.children();
+    if (kids) {
+    	for( var c = 0; c < kids.length; c++ ) 
+	    	_rdetailRows(kids[c]);
+    }
 }
 
 function rdetailCNPrint(orgid, cn) {
