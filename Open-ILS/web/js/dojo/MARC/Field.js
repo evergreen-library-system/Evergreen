@@ -47,7 +47,7 @@ if(!dojo._hasResource["MARC.Field"]) {
         },
 
         addSubfields : function () {
-            for (var i = 0; i < arguments.length; i++) {
+            for (var i in arguments) {
                 var code = arguments[i];
                 var value = arguments[++i];
                 this.subfields.push( [ code, value ] );
