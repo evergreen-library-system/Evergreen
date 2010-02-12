@@ -441,10 +441,11 @@ __PACKAGE__->register_method(
 );
 
 sub ranged_distrib_formulas {
-    my($self, $conn, $auth) = @_;
+    my($self, $conn, $auth, $org) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $orgs = $U->user_has_work_perm_at($e, 'CREATE_PICKLIST', {descendants =>1});
+
     my $forms = $e->search_acq_distribution_formula([
         {owner => $orgs},
         {
@@ -453,7 +454,20 @@ sub ranged_distrib_formulas {
             order_by => {acqdfe => ['position']}
         }
     ]);
-    $conn->respond($_) for @$forms;
+
+    for (@$forms) {
+
+        # how many times has this DF been used
+        my $count = $e->json_query({
+            select => {acqdfa => [{column => 'formula', aggregate => 1, transform => 'count', alias => 'count'}]}, 
+            from => 'acqdfa', 
+            where => {formula => $_->id}
+        })->[0];
+
+        $_->use_count($count->{count});
+        $conn->respond($_);
+    }
+
     return undef;
 }
 
