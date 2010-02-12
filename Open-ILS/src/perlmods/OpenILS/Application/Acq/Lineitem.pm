@@ -362,9 +362,6 @@ sub lineitem_search_by_attributes {
     }
 
     $query->{"where"} = $where;
-    use Data::Dumper;
-    $Data::Dumper::Indent = 0;
-    $logger->info("XXX LFW " . Dumper($query));
     my $lis = $e->json_query($query);
 
     for my $li_id_obj (@$lis) {
