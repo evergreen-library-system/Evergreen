@@ -257,6 +257,131 @@ sub lineitem_search {
 
 
 __PACKAGE__->register_method(
+    method => "lineitem_search_by_attributes",
+    api_name => "open-ils.acq.lineitem.search.by_attributes",
+    stream => 1,
+    signature => {
+        desc => "Performs a search against lineitem_attrs",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {   desc => q/
+Search definition:
+    attr_value_pairs : list of pairs of (attr definition ID, attr value) where value can be scalar (fuzzy match) or array (exact match)
+    li_states        : list of lineitem states
+    po_agencies      : list of purchase order ordering agencies (org) ids
+
+At least one of these search terms is required.
+                /,
+                type => "object"},
+            {   desc => q/
+Options hash:
+    idlist      : if set, only return lineitem IDs
+    clear_marc  : if set, strip the MARC xml from the lineitem before delivery
+    flesh_attrs : flesh lineitem attributes;
+                /,
+                type => "object"}
+        ]
+    }
+);
+
+__PACKAGE__->register_method(
+    method => "lineitem_search_by_attributes",
+    api_name => "open-ils.acq.lineitem.search.by_attributes.ident",
+    stream => 1,
+    signature => {
+        desc => "Performs a search against lineitem_attrs where ident is true.".
+            "See open-ils.acq.lineitem.search.by_attributes for params."
+    }
+);
+
+sub lineitem_search_by_attributes {
+    my ($self, $conn, $auth, $search, $options) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    # XXX needs permissions consideration
+
+    return [] unless $search;
+    my $attr_value_pairs = $search->{attr_value_pairs};
+    my $li_states = $search->{li_states};
+    my $po_agencies = $search->{po_agencies}; # XXX if none, base it on perms
+
+    my $query = {
+        "select" => {"acqlia" => ["lineitem"]},
+        "from" => {
+            "acqlia" => {
+                "acqliad" => {"field" => "id", "fkey" => "definition"},
+                "jub" => {
+                    "field" => "id",
+                    "fkey" => "lineitem",
+                    "join" => {
+                        "acqpo" => {"field" => "id", "fkey" => "purchase_order"}
+                    }
+                }
+            }
+        }
+    };
+
+    my $where = {};
+    $where->{"+acqliad"} = {"ident" => "t"}
+        if $self->api_name =~ /\.ident/;
+
+    my $searched_for_something = 0;
+
+    if (ref $attr_value_pairs eq "ARRAY") {
+        $where->{"-or"} = [];
+        foreach (@$attr_value_pairs) {
+            next if @$_ != 2;
+            my ($def, $value) = @$_;
+            push @{$where->{"-or"}}, {
+                "-and" => {
+                    "attr_value" => (ref $value) ?
+                        $value : {"ilike" => "%" . $value . "%"},
+                    "definition" => $def
+                }
+            };
+        }
+        $searched_for_something = 1;
+    }
+
+    if ($li_states and @$li_states) {
+        $where->{"+jub"} = {"state" => $li_states};
+        $searched_for_something = 1;
+    }
+
+    if ($po_agencies and @$po_agencies) {
+        $where->{"+acqpo"} = {"ordering_agency" => $po_agencies};
+        $searched_for_something = 1;
+    }
+
+    if (not $searched_for_something) {
+        $e->rollback;
+        return new OpenILS::Event(
+            "BAD_PARAMS", note => "You have provided no search terms."
+        );
+    }
+
+    $query->{"where"} = $where;
+    use Data::Dumper;
+    $Data::Dumper::Indent = 0;
+    $logger->info("XXX LFW " . Dumper($query));
+    my $lis = $e->json_query($query);
+
+    for my $li_id_obj (@$lis) {
+        my $li_id = $li_id_obj->{"lineitem"};
+        if($options->{"idlist"}) {
+            $conn->respond($li_id);
+        } else {
+            $conn->respond(
+                retrieve_lineitem($self, $conn, $auth, $li_id, $options)
+            );
+        }
+    }
+    undef;
+}
+
+
+__PACKAGE__->register_method(
 	method => 'lineitem_search_ident',
 	api_name => 'open-ils.acq.lineitem.search.ident',
     stream => 1,

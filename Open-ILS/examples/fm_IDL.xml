@@ -5093,7 +5093,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="acqliad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_attr_definition" oils_persist:tablename="acq.lineitem_attr_definition" reporter:label="Line Item Attribute Definition">
+	<class id="acqliad" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::lineitem_attr_definition" oils_persist:tablename="acq.lineitem_attr_definition" reporter:label="Line Item Attribute Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
 			<field reporter:label="Definition ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Code" name="code" reporter:datatype="text" />
@@ -5101,6 +5101,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is Identifier?" name="ident" reporter:datatype="bool"/>
 		</fields>
 		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve />
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="acqlimad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_marc_attr_definition" oils_persist:tablename="acq.lineitem_marc_attr_definition" reporter:label="Line Item MARC Attribute Definition">

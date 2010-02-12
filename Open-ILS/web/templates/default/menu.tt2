@@ -50,7 +50,7 @@
                             PO Search
                         </div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy"
-                            onClick="location.href = '[% ctx.base_path %]/acq/po/li_search';">
+                            onClick="location.href = '[% ctx.base_path %]/acq/lineitem/search';">
                             Lineitem Search
                         </div>
                         <!-- XXX 

@@ -49,6 +49,59 @@ if(!dojo._hasResource["openils.XUL"]) {
         }
         return true;
     }
+
+    /* This class cuts down on the obscenely long incantations needed to
+     * use XPCOM components. */
+    openils.XUL.SimpleXPCOM = function() {};
+    openils.XUL.SimpleXPCOM.prototype = {
+        "FP": {
+            "iface": Components.interfaces.nsIFilePicker,
+            "cls": "@mozilla.org/filepicker;1"
+        },
+        "FIS": {
+            "iface": Components.interfaces.nsIFileInputStream,
+            "cls": "@mozilla.org/network/file-input-stream;1"
+        },
+        "SIS": {
+            "iface": Components.interfaces.nsIScriptableInputStream,
+            "cls": "@mozilla.org/scriptableinputstream;1"
+        },
+        "create": function(key) {
+            return Components.classes[this[key].cls].
+                createInstance(this[key].iface);
+        },
+        "getPrivilegeManager": function() {
+            return netscape.security.PrivilegeManager;
+        }
+    };
+
+    openils.XUL.contentFromFileOpenDialog = function(windowTitle) {
+        try {
+            var api = new openils.XUL.SimpleXPCOM();
+
+            /* The following enablePrivilege() call must happen at this exact
+             * level of scope -- not wrapped in another function -- otherwise
+             * it doesn't work. */
+            api.getPrivilegeManager().enablePrivilege("UniversalXPConnect");
+
+            var picker = api.create("FP");
+            picker.init(
+                window, windowTitle || "Upload File", api.FP.iface.modeOpen
+            );
+            if (picker.show() == api.FP.iface.returnOK && picker.file) {
+                var fis = api.create("FIS");
+                var sis = api.create("SIS");
+
+                fis.init(picker.file, 1 /* MODE_RDONLY */, 0, 0);
+                sis.init(fis);
+
+                return sis.read(-1);
+            } else {
+                return null;
+            }
+        } catch(E) {
+            alert(E);
+            return null;
+        }
+    };
 }
-
-

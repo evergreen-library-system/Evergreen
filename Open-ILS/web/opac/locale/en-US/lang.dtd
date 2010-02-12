@@ -769,6 +769,8 @@
 <!ENTITY staff.main.menu.acq.picklist.accesskey "L">
 <!ENTITY staff.main.menu.acq.bib_search.label "Title Search">
 <!ENTITY staff.main.menu.acq.bib_search.accesskey "T">
+<!ENTITY staff.main.menu.acq.li_search.label "Lineitem Search">
+<!ENTITY staff.main.menu.acq.li_search.accesskey "I">
 <!ENTITY staff.main.menu.acq.brief_record.label "New Brief Record">
 <!ENTITY staff.main.menu.acq.brief_record.accesskey "B">
 <!ENTITY staff.main.menu.acq.upload.label "Load Order Record">

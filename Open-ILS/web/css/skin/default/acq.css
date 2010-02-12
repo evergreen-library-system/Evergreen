@@ -107,6 +107,18 @@
 }
 #oils-acq-metapo-summary td { text-align: right; }
 
+/* li search page */
+h1.oils-acq-li-search { font-size: 150%;font-weight: bold;margin-bottom: 12px; }
+h2.oils-acq-li-search { font-size: 138%;font-weight: bold;margin-bottom: 11px; }
+h3.oils-acq-li-search { font-size: 125%;font-weight: bold;margin-bottom: 10px; }
+h4.oils-acq-li-search { font-size: 112%;font-weight: bold;margin-bottom: 9px; }
+#oils-acq-li-search-form-holder {border-bottom: 2px #666 inset; margin: 6px 0;}
+.oils-acq-li-search-form-row { margin: 6px 0; }
+input.oils-acq-li-search { margin: 0 12px; }
+label.oils-acq-li-search { margin: 0 12px; }
+span.oils-acq-li-search { margin: 0 12px; }
+span#records-up { font-weight: bold; }
+
 #acq-lit-table {width:100%}
 #acq-lit-table th {padding:5px; font-weight: bold; text-align:left;}
 #acq-lit-table td {padding:2px;}

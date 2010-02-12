@@ -9,5 +9,10 @@
     'DFA_NOT_ALL': "Could not record all of your applications of distribution forumulas.",
     'APPLY': "Apply",
     'RESET_FORMULAE': "Reset Formulas",
-    'OUT_OF_COPIES': "You have applied distribution formulas to every copy."
+    'OUT_OF_COPIES': "You have applied distribution formulas to every copy.",
+    'ONE_LI_ATTR_SEARCH_AT_A_TIME': "You cannot both type in an attribute value search and search for an uploaded file of terms at the same time.",
+    'LI_ATTR_SEARCH_CHOOSE_FILE': "Select file with search terms",
+    'LI_ATTR_SEARCH_TOO_LARGE': "That file is too large for this operation.",
+    'SELECT_AN_LI_ATTRIBUTE': "You must select an LI attribute.",
+    'NO_RESULTS': "No results."
 }

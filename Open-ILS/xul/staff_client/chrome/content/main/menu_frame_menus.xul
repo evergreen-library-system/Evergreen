@@ -80,6 +80,7 @@
     <command id="cmd_acq_upload" />
     <command id="cmd_acq_view_po" />
     <command id="cmd_acq_bib_search" />
+    <command id="cmd_acq_li_search" />
     <command id="cmd_acq_new_brief_record" />
     <command id="cmd_acq_view_fund" />
     <command id="cmd_acq_view_funding_source" />
@@ -249,6 +250,7 @@
     <menupopup id="main.menu.acq.popup">
         <menuitem label="&staff.main.menu.acq.picklist.label;" accesskey="&staff.main.menu.acq.picklist.accesskey;" command="cmd_acq_view_picklist"/>
         <menuitem label="&staff.main.menu.acq.bib_search.label;" accesskey="&staff.main.menu.acq.bib_search.accesskey;" command="cmd_acq_bib_search"/>
+        <menuitem label="&staff.main.menu.acq.li_search.label;" accesskey="&staff.main.menu.acq.li_search.accesskey;" command="cmd_acq_li_search"/>
         <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>
         <menuitem label="&staff.main.menu.acq.brief_record.label;" accesskey="&staff.main.menu.acq.brief_record.accesskey;" command="cmd_acq_new_brief_record"/>
         <menuseparator />
