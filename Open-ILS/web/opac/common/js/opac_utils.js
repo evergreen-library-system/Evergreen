@@ -88,7 +88,7 @@ function findCurrentPage() {
 		path += "index.xml"; /* in case they go to  / */
 
 	var page = null;
-	for( var p in pages ) {
+	for( var p = 0; p < pages.length; p++ ) {
 		if( path.indexOf(pages[p]) != -1)
 			page = pages[p];
 	}
@@ -1018,8 +1018,11 @@ function buildOrgSel(selector, org, offset, namecol) {
     if(!isXUL() && !isTrue(org.opac_visible())) return;
 	insertSelectorVal( selector, -1, 
 		org[namecol](), org.id(), null, findOrgDepth(org) - offset );
-	for( var c in org.children() )
-		buildOrgSel( selector, org.children()[c], offset, namecol);
+    var kids = org.children();
+    if (kids) {
+	    for( var c = 0; c < kids.length; c++ )
+		    buildOrgSel( selector, org.children()[c], offset, namecol);
+    }
 }
 
 function buildMergedOrgSel(selector, org_list, offset, namecol) {
@@ -1028,8 +1031,11 @@ function buildMergedOrgSel(selector, org_list, offset, namecol) {
         var org = findOrgUnit(org_list[i]);
     	insertSelectorVal( selector, -1, 
 		    org[namecol](), org.id(), null, findOrgDepth(org) - offset );
-	    for( var c in org.children() )
-		    buildOrgSel( selector, org.children()[c], offset, namecol);
+        var kids = org.children();
+        if (kids) {
+	        for( var c = 0; c < kids.length; c++ )
+		        buildOrgSel( selector, org.children()[c], offset, namecol);
+        }
     }
 }
 
@@ -1063,7 +1069,8 @@ function parseForm(form) {
 function isTrue(x) { return ( x && x != "0" && !(x+'').match(/^f$/i) ); }
 
 function fetchPermOrgs() {
-	var a = []; /* why does arguments come accross as an object and not an array? */
+	var a = []; /* Q: why does arguments come accross as an object and not an array? A: because arguments is a special object, a collection */
+
 	for( var i = 0; i < arguments.length; i++ ) 
 		a.push(arguments[i])
 
