@@ -1088,6 +1088,36 @@ sub format_po {
     return $U->fire_object_event(undef, $hook, $po, $po->ordering_agency);
 }
 
+__PACKAGE__->register_method(
+	method => 'format_lineitem',
+	api_name	=> 'open-ils.acq.lineitem.format'
+);
+
+sub format_lineitem {
+    my($self, $conn, $auth, $li_id, $format) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    my $li = $e->retrieve_acq_lineitem($li_id) or return $e->event;
+
+    my $context_org;
+    if (defined $li->purchase_order) {
+        my $po = $e->retrieve_acq_purchase_order($li->purchase_order) or return $e->die_event;
+        return $e->event unless $e->allowed('VIEW_PURCHASE_ORDER', $po->ordering_agency);
+        $context_org = $po->ordering_agency;
+    } else {
+        my $pl = $e->retrieve_acq_picklist($li->picklist) or return $e->die_event;
+        if($e->requestor->id != $pl->owner) {
+            return $e->event unless
+                $e->allowed('VIEW_PICKLIST', $pl->org_unit, $pl);
+        }
+        $context_org = $pl->org_unit;
+    }
+
+    my $hook = "format.acqli.$format";
+    return $U->fire_object_event(undef, $hook, $li, $context_org);
+}
+
 __PACKAGE__->register_method (
     method        => 'po_events',
     api_name    => 'open-ils.acq.purchase_order.events.owner',
