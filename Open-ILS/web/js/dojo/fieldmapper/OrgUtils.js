@@ -37,7 +37,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 
 		var types = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_types.retrieve']);
 
-		for (var i in types) {
+		for (var i = 0; i < types.length; i++) {
 			fieldmapper.aout.OrgTypeCache[types[i].id()] = {
 				loaded : true,
 				type : types[i]
@@ -63,7 +63,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 	fieldmapper.aou.findOrgUnit = fieldmapper.aou.LoadOrg;
 
 	if (window._l) {
-		for (var i in _l) {
+		for (var i = 0; i < _l.length; i++) {
 			fieldmapper.aou.OrgCache[_l[i][0]] = {
 				loaded: false,
 				org : new fieldmapper.aou().fromHash({
@@ -91,7 +91,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 			fieldmapper.aou.OrgCache[x.id()].treePtr = x;
 		}
 
-		for (var i in globalOrgTypes) {
+		for (var i = 0; i < globalOrgTypes.length; i++) {
 			fieldmapper.aout.OrgTypeCache[globalOrgTypes[i].id()] = {
 				loaded : true,
 				type : globalOrgTypes[i]
