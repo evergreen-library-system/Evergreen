@@ -68,16 +68,16 @@ if(!dojo._hasResource["MARC.Field"]) {
                 args.pos = [ args.pos ];
             }
 
-            for (var i in args.code) {
+            for (var i = 0; i < args.code.length; i++) {
                 var sub_pos = {};
-                for (var j in me.subfields) {
+                for (var j = 0; j < me.subfields; j++) {
                     if (me.subfields[j][0] == args.code[i]) {
 
                         if (!sub_pos[args.code[i]]) sub_pos[args.code[j]] = 0;
                         else sub_pos[args.code[i]]++;
 
                         if (args.pos) {
-                            for (var k in args.pos) {
+                            for (var k = 0; k < args.pos.length; k++) {
                                 if (sub_pos[args.code[i]] == args.pos[k]) me.subfields.splice(j,1);
                             }
                         } else if (args.match && me.subfields[j][1].match( args.match )) {
