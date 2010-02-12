@@ -68,10 +68,10 @@ if(!dojo._hasResource["MARC.Record"]) {
 
         insertOrderedFields : function () {
             var me = this;
-            for ( var i in arguments ) {
+            for ( var i in arguments ) { // arguments is special, and for..in is correct
                 var f = arguments[i];
                 var done = false;
-                for (var j in this.fields) {
+                for (var j = 0; j < this.fields.length; j++) {
                     if (f.tag > this.fields[j].tag) {
                         this.insertFieldsBefore(this.fields[j], f);
                         done = true;
@@ -85,7 +85,7 @@ if(!dojo._hasResource["MARC.Record"]) {
         insertFieldsBefore : function (target) {
             arguments.splice(0,1);
             var me = this;
-            for (var j in this.fields) {
+            for (var j = 0; j < this.fields.length; j++) {
                 if (target === this.fields[j]) {
                     j--;
                     dojo.forEach( arguments, function (f) {
@@ -99,7 +99,7 @@ if(!dojo._hasResource["MARC.Record"]) {
         insertFieldsAfter : function (target) {
             arguments.splice(0,1);
             var me = this;
-            for (var j in this.fields) {
+            for (var j = 0; j < this.fields.length; j++) {
                 if (target === this.fields[j]) {
                     dojo.forEach( arguments, function (f) {
                         me.fields.splice(j++,0,f);
@@ -114,7 +114,7 @@ if(!dojo._hasResource["MARC.Record"]) {
             var counter = 0;
             for ( var i in arguments ) {
                 var f = arguments[i];
-                for (var j in me.fields) {
+                for (var j = 0; j < me.fields.length; j++) {
                     if (f === me.fields[j]) {
                         me.fields[j].record = null;
                         me.fields.splice(j,0);
