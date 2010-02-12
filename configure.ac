@@ -1,5 +1,7 @@
 # Copyright (C) 2008 Equinox Software, Inc.
 # Kevin Beswick <kevinbeswick00@gmail.com>
+# Copyright (C) 2010 Laurentian University 
+# Dan Scott <dscott@laurentian.ca>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,7 +19,7 @@
 #---------------------------
 
 export PATH=${PATH}:/usr/sbin
-AC_PREREQ(2.59)
+AC_PREREQ(2.61)
 AC_INIT(Open-ILS, trunk, open-ils-dev@list.georgialibraries.org)
 AM_INIT_AUTOMAKE([OpenILS], [trunk])
 AC_REVISION($Revision: 0.1 $)
