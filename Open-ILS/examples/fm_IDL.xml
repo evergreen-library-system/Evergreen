@@ -5034,6 +5034,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="acqliat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::lineitem_alert_text" oils_persist:tablename="acq.lineitem_alert_text" reporter:label="Line Item Alert Text">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_alert_text_id_seq">
+			<field reporter:label="Alert Text ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Code" name="code" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+		</fields>
+		<links>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="acqlin" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_note" oils_persist:tablename="acq.lineitem_note" reporter:label="Line Item Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_note_id_seq">
 			<field reporter:label="PO Line Item Note ID" name="id" reporter:datatype="id" />
@@ -5042,12 +5054,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Creation Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp" />
 			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
-			<field reporter:label="Vote Value" name="value" reporter:datatype="text" />
+			<field reporter:label="Note Value" name="value" reporter:datatype="text" />
+			<field reporter:label="Alert Text" name="alert_text" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+			<link field="alert_text" reltype="has_a" key="id" map="" class="acqliat"/>
 		</links>
 	</class>
 

@@ -421,6 +421,12 @@ CREATE INDEX li_creator_idx   ON acq.lineitem ( creator );
 CREATE INDEX li_editor_idx    ON acq.lineitem ( editor );
 CREATE INDEX li_selector_idx  ON acq.lineitem ( selector );
 
+CREATE TABLE acq.lineitem_alert_text (
+    id               SERIAL         PRIMARY KEY,
+    code             TEXT           UNIQUE NOT NULL,
+    description      TEXT
+);
+
 CREATE TABLE acq.lineitem_note (
 	id		SERIAL				PRIMARY KEY,
 	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id) DEFERRABLE INITIALLY DEFERRED,
@@ -428,7 +434,9 @@ CREATE TABLE acq.lineitem_note (
 	editor		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	value		TEXT				NOT NULL
+	value		TEXT			NOT NULL,
+	alert_text	INT						 REFERENCES acq.lineitem_alert_text(id)
+										 DEFERRABLE INITIALLY DEFERRED
 );
 CREATE INDEX li_note_li_idx ON acq.lineitem_note (lineitem);
 CREATE INDEX li_note_creator_idx  ON acq.lineitem_note ( creator );
