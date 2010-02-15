@@ -306,26 +306,26 @@
 
         <menu id="main.menu.admin.local" label="&staff.main.menu.admin.local_admin.label;">
             <menupopup id="main.menu.admin.local.popup">
-                <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
-                <menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
-                <menuitem label="&staff.server.admin.index.printer;" command="cmd_local_admin_printer"/>
+                <menuitem label="&staff.server.admin.index.cash_reports;" command="cmd_local_admin_cash_reports"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label;" command="cmd_local_admin_circ_matrix_matchpoint"/>
                 <menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>
                 <menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>
-                <menuitem label="&staff.server.admin.index.library_settings;" command="cmd_local_admin_lib_settings"/>
-                <menuitem label="&staff.server.admin.index.non_cataloged_types;" command="cmd_local_admin_non_cat_types"/>
-                <menuitem label="&staff.server.admin.index.statistical_categories;" command="cmd_local_admin_stat_cats"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;" command="cmd_local_admin_standing_penalty"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;" command="cmd_local_admin_action_trigger"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>
-                <menuitem label="&staff.server.admin.index.reports;" command="cmd_local_admin_reports"/>
-                <menuitem label="&staff.server.admin.index.cash_reports;" command="cmd_local_admin_cash_reports"/>
-                <menuitem label="&staff.server.admin.index.transit_list;" command="cmd_local_admin_transit_list"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label;" command="cmd_local_admin_circ_matrix_matchpoint"/>
+                <menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label;" command="cmd_local_admin_hold_matrix_matchpoint"/>
+                <menuitem label="&staff.server.admin.index.library_settings;" command="cmd_local_admin_lib_settings"/>
+                <menuitem label="&staff.server.admin.index.non_cataloged_types;" command="cmd_local_admin_non_cat_types"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.action_trigger.label;" command="cmd_local_admin_action_trigger"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.patrons_due_refunds.label;" accesskey="&staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey;" command="cmd_local_admin_patrons_due_refunds"/>
+                <menuitem label="&staff.server.admin.index.printer;" command="cmd_local_admin_printer"/>
+                <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
+                <menuitem label="&staff.server.admin.index.reports;" command="cmd_local_admin_reports"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;" command="cmd_local_admin_standing_penalty"/>
+                <menuitem label="&staff.server.admin.index.statistical_categories;" command="cmd_local_admin_stat_cats"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>
+                <menuitem label="&staff.server.admin.index.transit_list;" command="cmd_local_admin_transit_list"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.work_log.label;" accesskey="&staff.main.menu.admin.local_admin.work_log.accesskey;" command="cmd_local_admin_work_log"/>
             </menupopup>
         </menu>
