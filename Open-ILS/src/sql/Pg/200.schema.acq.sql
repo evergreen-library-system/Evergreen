@@ -425,7 +425,7 @@ CREATE TABLE acq.lineitem_alert_text (
     id               SERIAL         PRIMARY KEY,
     code             TEXT           NOT NULL,
     description      TEXT,
-	owning lib       INT            NOT NULL
+	owning_lib       INT            NOT NULL
 	                                REFERENCES actor.org_unit(id)
 	                                DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT alert_one_code_per_org UNIQUE (code, owning_lib)
