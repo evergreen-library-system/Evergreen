@@ -5039,8 +5039,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Alert Text ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Code" name="code" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link"/>
 		</fields>
 		<links>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>

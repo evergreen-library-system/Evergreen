@@ -423,8 +423,12 @@ CREATE INDEX li_selector_idx  ON acq.lineitem ( selector );
 
 CREATE TABLE acq.lineitem_alert_text (
     id               SERIAL         PRIMARY KEY,
-    code             TEXT           UNIQUE NOT NULL,
-    description      TEXT
+    code             TEXT           NOT NULL,
+    description      TEXT,
+	owning lib       INT            NOT NULL
+	                                REFERENCES actor.org_unit(id)
+	                                DEFERRABLE INITIALLY DEFERRED,
+	CONSTRAINT alert_one_code_per_org UNIQUE (code, owning_lib)
 );
 
 CREATE TABLE acq.lineitem_note (
