@@ -639,7 +639,7 @@ sub generate_fines {
         my $due_date_method = 'due_date';
         my $target_copy_method = 'target_copy';
         my $circ_lib_method = 'circ_lib';
-        my $recurring_fine_method = 'recurring_fine';
+        my $recurring_fine_method = 'recuring_fine';
         my $is_reservation = 0;
         if ($ctype eq 'reservation') {
             $is_reservation = 1;
