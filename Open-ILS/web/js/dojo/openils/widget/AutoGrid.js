@@ -371,6 +371,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var grid = this;
                 var fmObject = new fieldmapper[this.fmClass]().fromStoreItem(storeItem);
                 var idents = grid.store.getIdentityAttributes();
+                var self = this;
 
                 var pane = new openils.widget.EditPane({
                     fmObject:fmObject,
