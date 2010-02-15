@@ -5045,6 +5045,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_LINEITEM_ALERT_TEXT" context_field="owning_lib"/>
+				<retrieve permission="STAFF_LOGIN" context_field="owning_lib"/>
+				<update permission="ADMIN_ACQ_LINEITEM_ALERT_TEXT" context_field="owning_lib"/>
+				<delete permission="ADMIN_ACQ_LINEITEM_ALERT_TEXT" context_field="owning_lib"/>
+			</actions>
 		</permacrud>
 	</class>
 
