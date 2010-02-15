@@ -343,8 +343,11 @@ sub retrieve_pl_lineitem {
         my $entry;
         my $flesh = {};
         if($$options{flesh_attrs} or $$options{flesh_notes}) {
-            $flesh = {flesh => 1, flesh_fields => {jub => []}};
-            push(@{$flesh->{flesh_fields}->{jub}}, 'lineitem_notes') if $$options{flesh_notes};
+            $flesh = {flesh => 2, flesh_fields => {jub => []}};
+            if($$options{flesh_notes}) {
+                push(@{$flesh->{flesh_fields}->{jub}}, 'lineitem_notes');
+                $flesh->{flesh_fields}->{acqlin} = ['alert_text'];
+            }
             push(@{$flesh->{flesh_fields}->{jub}}, 'attributes') if $$options{flesh_attrs};
         }
 
