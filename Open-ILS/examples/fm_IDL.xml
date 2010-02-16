@@ -847,6 +847,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="aiit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_item_type" oils_persist:tablename="acq.invoice_item_type" reporter:label="Non-bibliographic Invoice Item Type" oils_persist:field_safe="true">
+		<fields oils_persist:primary="code">
+			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_INVOICE_ITEM_TYPE" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_INVOICE_ITEM_TYPE" global_required="true"/>
+                <delete permission="DELETE_INVOICE_ITEM_TYPE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="acqim" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_method" oils_persist:tablename="acq.invoice_method" reporter:label="Invoice Method used by Vendor" oils_persist:field_safe="true">
+		<fields oils_persist:primary="code">
+			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_INVOICE_METHOD" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_INVOICE_METHOD" global_required="true"/>
+                <delete permission="DELETE_INVOICE_METHOD" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="ccpbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket_type" oils_persist:tablename="container.copy_bucket_type" reporter:label="Copy Bucket Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id"/>
@@ -4440,6 +4472,105 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                 <retrieve permission="ADMIN_PROVIDER MANAGE_PROVIDER VIEW_PROVIDER" context_field="owner"/>
                 <update   permission="ADMIN_PROVIDER" context_field="owner"/>
                 <delete   permission="ADMIN_PROVIDER" context_field="owner"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="acqinv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice" oils_persist:tablename="acq.invoice" reporter:label="Invoice">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.invoice_id_seq">
+			<field reporter:label="Internal Invoice ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Receiver" name="receiver" reporter:datatype="org_unit" />
+			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
+			<field reporter:label="Shipper" name="shipper" reporter:datatype="link"/>
+			<field reporter:label="Receive Date/Time" name="recv_date" reporter:datatype="timestamp" />
+			<field reporter:label="Receive Method" name="receive_method" reporter:datatype="link" />
+			<field reporter:label="Invoice Type" name="invoice_type" reporter:datatype="text" />
+			<field reporter:label="Vendor Invoice ID" name="inv_ident" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="receiver" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+			<link field="shipper" reltype="has_a" key="id" map="" class="acqpro"/>
+			<link field="receive_method" reltype="has_a" key="id" map="" class="acqim"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="ADMIN_INVOICE" context_field="receiver"/>
+                <retrieve permission="ADMIN_INVOICE" context_field="receiver"/>
+                <update   permission="ADMIN_INVOICE" context_field="receiver"/>
+                <delete   permission="ADMIN_INVOICE" context_field="receiver"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="acqie" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_entry" oils_persist:tablename="acq.invoice_entry" reporter:label="Invoice Entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.invoice_entry_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Invoice" name="invoice" reporter:datatype="link" />
+			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link"/>
+			<field reporter:label="PO Line Item" name="lineitem" reporter:datatype="link"/>
+			<field reporter:label="Invoice Item Count" name="inv_item_count" reporter:datatype="int" />
+			<field reporter:label="Physical Item Count" name="phys_item_count" reporter:datatype="int" />
+			<field reporter:label="Note" name="note" reporter:datatype="text" />
+			<field reporter:label="Billed Cost per Item" name="billed_per_item" reporter:datatype="bool" />
+			<field reporter:label="Cost Billed" name="cost_billed" reporter:datatype="money" />
+			<field reporter:label="Actual Cost" name="actual_cost" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="acqli"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="ADMIN_INVOICE">
+					<context link="invoice" field="receiver"/>
+				</create>
+                <retrieve permission="ADMIN_INVOICE">
+					<context link="invoice" field="receiver"/>
+				</retrieve>
+                <update   permission="ADMIN_INVOICE">
+   					<context link="invoice" field="receiver"/>
+				</update>
+				<delete   permission="ADMIN_INVOICE">
+					<context link="invoice" field="receiver"/>
+				</delete>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="acqii" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_item" oils_persist:tablename="acq.invoice_item" reporter:label="Non-bibliographic Invoice Item">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.invoice_item_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Invoice" name="invoice" reporter:datatype="link" />
+			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link"/>
+			<field reporter:label="Fund Debit" name="fund_debit" reporter:datatype="link"/>
+			<field reporter:label="Invoice Item Type" name="inv_item_type" reporter:datatype="link" />
+			<field reporter:label="Title or Item Name" name="title" reporter:datatype="text" />
+			<field reporter:label="Author" name="author" reporter:datatype="text" />
+			<field reporter:label="Note" name="note" reporter:datatype="text" />
+			<field reporter:label="Cost Billed" name="cost_billed" reporter:datatype="money" />
+			<field reporter:label="Actual Cost" name="actual_cost" reporter:datatype="money" />
+		</fields>
+		<links>
+			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
+			<link field="fund_debit" reltype="has_a" key="id" map="" class="acqfdeb"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="ADMIN_INVOICE">
+					<context link="invoice" field="receiver"/>
+				</create>
+                <retrieve permission="ADMIN_INVOICE">
+					<context link="invoice" field="receiver"/>
+				</retrieve>
+                <update   permission="ADMIN_INVOICE">
+   					<context link="invoice" field="receiver"/>
+				</update>
+				<delete   permission="ADMIN_INVOICE">
+					<context link="invoice" field="receiver"/>
+				</delete>
             </actions>
         </permacrud>
 	</class>
