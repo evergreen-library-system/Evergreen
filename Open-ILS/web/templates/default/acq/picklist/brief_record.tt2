@@ -23,8 +23,10 @@
         </tbody>
         <tbody>
             <tr>
-                <td><button dojoType='dijit.form.Button' type='submit'>Submit</button></td>
+                <td><button dojoType='dijit.form.Button' type='submit'>Save Record</button></td>
+                <!--
                 <td><button dojoType='dijit.form.Button' type='submit' jsId='marcEditButton'>Edit MARC</button></td>
+                -->
             </tr>
         </tbody>
     </table>
