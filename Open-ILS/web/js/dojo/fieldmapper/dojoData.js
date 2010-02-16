@@ -26,10 +26,10 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 	function _fromStoreItem (data) {
 		this.fromHash(data);
 
-		for (var i = 0; i < this._ignore_fields.length; i++)
+		for (var i = 0; this._ignore_fields && i < this._ignore_fields.length; i++)
 			this[this._ignore_fields[i]](null);
 
-		for (var i = 0; i < this._fields.length; i++) {
+		for (var i = 0; this._fields && i < this._fields.length; i++) {
 			if (dojo.isArray( this[this._fields[i]]() ))
 				this[this._fields[i]]( this[this._fields[i]]()[0] );
 		}
@@ -53,22 +53,22 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		if (!params) params = {};
         var data = this.initStoreData(label, params);
 
-		for (var i = 0; i < list.length; i++) data.items.push( list[i].toHash(true, params.virtualFields) );
+		for (var i = 0; list && i < list.length; i++) data.items.push( list[i].toHash(true, params.virtualFields) );
 
 		if (params.children && params.parent) {
 			var _hash_list = data.items;
 
 			var _find_root = {};
-			for (var i = 0; i < _hash_list.length; i++) {
+			for (var i = 0; _hash_list && i < _hash_list.length; i++) {
 				_find_root[_hash_list[i][params.identifier]] = _hash_list[i]; 
 			}
 
 			var item_data = [];
-			for (var i = 0; i < _hash_list.length; i++) {
+			for (var i = 0; _hash_list && i < _hash_list.length; i++) {
 				var obj = _hash_list[i]
 				obj[params.children] = [];
 
-				for (var j = 0; j < _hash_list.length; j++) {
+				for (var j = 0; _hash_list && j < _hash_list.length; j++) {
 					var kid = _hash_list[j];
 					if (kid[params.parent] == obj[params.identifier]) {
 						obj[params.children].push( { _reference : kid[params.identifier] } );
@@ -80,7 +80,7 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 				item_data.push( obj );
 			}
 
-			for (var j = 0; j < _find_root.length; j++) {
+			for (var j = 0; _find_root && j < _find_root.length; j++) {
 				_find_root[j]['_top'] = 'true';
 				if (!_find_root[j][params.parent])
 					_find_root[j]['_trueRoot'] = 'true';
