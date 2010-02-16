@@ -454,6 +454,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 this.widget.tree = fieldmapper.aou.globalOrgTree;
                 this.widget.startup();
             }
+
+            return true;
         },
 
         _buildPermGrpSelector : function() {
