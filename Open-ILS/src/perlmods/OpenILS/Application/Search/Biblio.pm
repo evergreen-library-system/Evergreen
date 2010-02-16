@@ -563,11 +563,27 @@ sub multiclass_query {
     $logger->debug("cleansed query string => $query");
     my $search = $arghash->{searches} = {};
 
-    while ($query =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang|available):.+?)$//so) {
+    my $simple_class_re = qr/((?:\w+(?:\|\w+)?):[^:]+?)$/;
+    my $class_list_re = qr/(?:keyword|title|author|subject|series)/;
+    my $modifier_list_re = qr/(?:site|dir|sort|lang|available)/;
+
+    my $tmp_value = '';
+    while ($query =~ s/($simple_class_re[^:]+?)$//so) {
+
         my $qpart = $1;
         my $where = index($qpart,':');
         my $type = substr($qpart, 0, $where++);
         my $value = substr($qpart, $where);
+
+        if ($type !~ /^(?:$class_list_re|$modifier_list_re)/o) {
+            $tmp_value = "$qpart $tmp_value";
+            next;
+        }
+
+        if ($type =~ /$class_list_re/o ) {
+            $value .= $tmp_value;
+            $tmp_value = '';
+        }
 
         next unless $type and $value;
 
@@ -607,8 +623,11 @@ sub multiclass_query {
         }
     }
 
+    $query .= " $tmp_value";
+
     if($query) {
-        # This is the front part of the string before any special tokens were parsed. 
+        # This is the front part of the string before any special tokens were
+        # parsed OR colon-separated strings that do not denote a class.
         # Add this data to the default search class
         my $type = $arghash->{default_class} || 'keyword';
         $type = ($type eq '-') ? 'keyword' : $type;
