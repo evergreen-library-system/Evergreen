@@ -624,6 +624,9 @@ sub multiclass_query {
     }
 
     $query .= " $tmp_value";
+    $query =~ s/\s+/ /go;
+    $query =~ s/^\s+//go;
+    $query =~ s/\s+$//go;
 
     if($query) {
         # This is the front part of the string before any special tokens were
