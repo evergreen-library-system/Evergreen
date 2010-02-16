@@ -6,8 +6,8 @@ CREATE TABLE acq.invoice_method (
     code    TEXT    PRIMARY KEY,
     name    TEXT    NOT NULL -- i18n-ize
 );
-INSERT INTO acq.invoice_item_type (code,name) VALUES ('EDI',oils_i18n_gettext('EDI', 'EDI', 'acqim', 'name'));
-INSERT INTO acq.invoice_item_type (code,name) VALUES ('PPR',oils_i18n_gettext('PPR', 'Paper', 'acqit', 'name'));
+INSERT INTO acq.invoice_method (code,name) VALUES ('EDI',oils_i18n_gettext('EDI', 'EDI', 'acqim', 'name'));
+INSERT INTO acq.invoice_method (code,name) VALUES ('PPR',oils_i18n_gettext('PPR', 'Paper', 'acqit', 'name'));
 
 
 CREATE TABLE acq.invoice (
