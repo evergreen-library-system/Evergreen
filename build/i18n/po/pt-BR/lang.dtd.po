@@ -791,13 +791,8 @@ msgid "Evergreen Staff Client"
 msgstr ""
 
 #: staff.auth.about_btn.label
-msgid "About this client..."
-msgstr ""
-
 #: staff.auth.about_btn.accesskey
-msgid ""
-"_: staff.auth.about_btn.accesskey\n"
-""
+msgid "About this client... &Z"
 msgstr ""
 
 #: staff.auth.new_window_btn.label
