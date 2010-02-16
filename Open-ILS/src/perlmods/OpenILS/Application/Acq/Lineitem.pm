@@ -800,4 +800,18 @@ sub lineitem_note_CUD_batch {
     return {complete => 1};
 }
 
+__PACKAGE__->register_method(
+    method => 'ranged_line_item_alert_text',
+    api_name => 'open-ils.acq.line_item_alert_text.ranged.retrieve.all');
+
+sub ranged_line_item_alert_text {
+    my($self, $conn, $auth, $org_id, $depth) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('ADMIN_ACQ_LINEITEM_ALERT_TEXT', $org_id);
+    return $e->search_acq_lineitem_alert_text(
+        {owning_lib => $U->get_org_full_path($org_id, $depth)});
+}
+
+
 1;

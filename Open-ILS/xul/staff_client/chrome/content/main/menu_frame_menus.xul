@@ -126,6 +126,7 @@
     <command id="cmd_server_admin_copy_status"/>
     <command id="cmd_server_admin_marc_code"/>
     <command id="cmd_server_admin_billing_type"/>
+    <command id="cmd_server_admin_acq_lineitem_alert"/>
     <command id="cmd_server_admin_z39_source"/>
     <command id="cmd_server_admin_circ_mod"/>
     <command id="cmd_server_admin_org_unit_setting_type"/>
@@ -342,7 +343,12 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.org_unit_setting_type;" command="cmd_server_admin_org_unit_setting_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.usr_setting_type;" command="cmd_server_admin_usr_setting_type"/>
-                <menu id="main.menu.admin.server.booking" label="&staff.main.menu.admin.server_admin.booking.label;" accesskey="&staff.main.menu.admin.server_admin.booking.label;">
+                <menu id="main.menu.admin.server.acq" label="&staff.main.menu.admin.server_admin.acq.label;" accesskey="&staff.main.menu.admin.server_admin.acq.accesskey;">
+                    <menupopup id="main.menu.admin.server.acq.popup">
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;" command="cmd_server_admin_acq_lineitem_alert"/>
+                    </menupopup>
+                </menu>
+                <menu id="main.menu.admin.server.booking" label="&staff.main.menu.admin.server_admin.booking.label;" accesskey="&staff.main.menu.admin.server_admin.booking.accesskey;">
                     <menupopup id="main.menu.admin.server.booking.popup">
                         <menuitem label="&staff.main.menu.admin.server_admin.booking.resource.label;" command="cmd_server_admin_booking_resource" accesskey="&staff.main.menu.admin.server_admin.booking.resource.accesskey;"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.booking.resource_type.label;" command="cmd_server_admin_booking_resource_type" accesskey="&staff.main.menu.admin.server_admin.booking.resource_type.accesskey;"/>

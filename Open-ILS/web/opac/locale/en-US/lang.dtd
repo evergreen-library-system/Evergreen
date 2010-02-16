@@ -677,6 +677,11 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.usr_setting_type "User Setting Types">
 
+<!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions">
+<!ENTITY staff.main.menu.admin.server_admin.acq.accesskey "A">
+<!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.label "Line Item Alerts">
+<!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey "L">
+
 <!ENTITY staff.main.menu.admin.server_admin.booking.label "Booking">
 <!ENTITY staff.main.menu.admin.server_admin.booking.accesskey "B">
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource.label "Resources">
