@@ -568,7 +568,7 @@ sub multiclass_query {
     my $modifier_list_re = qr/(?:site|dir|sort|lang|available)/;
 
     my $tmp_value = '';
-    while ($query =~ s/($simple_class_re[^:]+?)$//so) {
+    while ($query =~ s/$simple_class_re//so) {
 
         my $qpart = $1;
         my $where = index($qpart,':');
