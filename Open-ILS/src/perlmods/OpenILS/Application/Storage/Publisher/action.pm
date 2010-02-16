@@ -802,7 +802,7 @@ sub generate_fines {
             $client->respond( "\t$pending_fine_count pending fine(s)\n" );
             next unless ($pending_fine_count);
 
-			my $recuring_fine = int($c->$recurring_fine_method * 100);
+			my $recurring_fine = int($c->$recurring_fine_method * 100);
 			my $max_fine = int($c->max_fine * 100);
 
 			my ($latest_billing_ts, $latest_amount) = ('',0);
