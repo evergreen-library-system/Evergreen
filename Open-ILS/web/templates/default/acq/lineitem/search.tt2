@@ -35,20 +35,52 @@
             </label>
         </div>
         <div class="oils-acq-li-search-form-row">
+            <!-- the "style" attribute on this input seems to be necessary as
+                I can't get the same effect from CSS for some reason -->
             <input class="oils-acq-li-search" dojoType="dijit.form.RadioButton"
                 name="attr_search_type" jsId="attrSearchTypeScalar"
                 id="attr_search_type_scalar" value="scalar"
+                style="vertical-align: top;"
                 onChange="toggleAttrSearchType(this.value, this.checked);" />
             <label for="attr_search_type_scalar" class="oils-acq-li-search">
-                Search by one attribute value
+                Search by attribute values
             </label>
             <div id="oils-acq-li-search-attr-scalar" class="hidden">
-                <input class="oils-acq-li-search"
-                    name="scalar_def" dojoType="dijit.form.FilteringSelect"
-                    jsId="attrScalarDefSelector"
-                    labelAttr="description" searchAttr="description" />
-                <input class="oils-acq-li-search" name="scalar_value"
-                    dojoType="dijit.form.TextBox"/>
+<!--            <div class="oils-acq-li-search-conjunction">
+                    <em>Show results for which:</em><br />
+                    <input dojoType="dijit.form.RadioButton"
+                        id="scalar_search_conjuction_or"
+                        name="scalar_search_conjunction" value="or"
+                        checked="checked" class="oils-acq-li-search" />
+                    <label for="scalar_search_conjuction_or"
+                        class="oils-acq-li-search">ANY of the following terms match</label>
+                    <br />
+                    <input dojoType="dijit.form.RadioButton"
+                        id="scalar_search_conjuction_and"
+                        name="scalar_search_conjunction" value="and"
+                        class="oils-acq-li-search" />
+                    <label for="scalar_search_conjuction_and"
+                        class="oils-acq-li-search">ALL of the following terms match</label>
+                </div> -->
+                <div class="oils-acq-li-search-scalar hidden"
+                    id="oils-acq-li-search-scalar-template">
+                    <input class="oils-acq-li-search" name="def" />
+                    <input class="oils-acq-li-search" name="value" />
+                    <a class="oils-acq-li-search" title="Remove this row"
+                        href="javascript:void(0);" />(X)</a>
+                </div>
+                <div id="oils-acq-li-search-scalar-adder">
+                    <span dojoType="dijit.form.Button"
+                        class="oils-acq-li-search"
+                        onclick="scalarAttrSearchManager.add();">
+                        Add more search terms
+                    </span>
+                    <span dojoType="dijit.form.Button"
+                        class="oils-acq-li-search"
+                        onclick="scalarAttrSearchManager.newBrief();">
+                        New brief record like this
+                    </span>
+                </div>
             </div>
         </div>
         <div class="oils-acq-li-search-form-row">

@@ -118,6 +118,8 @@ input.oils-acq-li-search { margin: 0 12px; }
 label.oils-acq-li-search { margin: 0 12px; }
 span.oils-acq-li-search { margin: 0 12px; }
 span#records-up { font-weight: bold; }
+label[for="attr_search_type_scalar"] { vertical-align: top; }
+.oils-acq-li-search-scalar { margin: 8px 0; }
 
 #acq-lit-table {width:100%}
 #acq-lit-table th {padding:5px; font-weight: bold; text-align:left;}

@@ -66,6 +66,10 @@ if(!dojo._hasResource["openils.XUL"]) {
             "iface": Components.interfaces.nsIScriptableInputStream,
             "cls": "@mozilla.org/scriptableinputstream;1"
         },
+        "FOS": {
+            "iface": Components.interfaces.nsIFileOutputStream,
+            "cls": "@mozilla.org/network/file-output-stream;1"
+        },
         "create": function(key) {
             return Components.classes[this[key].cls].
                 createInstance(this[key].iface);
@@ -75,33 +79,50 @@ if(!dojo._hasResource["openils.XUL"]) {
         }
     };
 
-    openils.XUL.contentFromFileOpenDialog = function(windowTitle) {
-        try {
-            var api = new openils.XUL.SimpleXPCOM();
+    openils.XUL.contentFromFileOpenDialog = function(windowTitle, sizeLimit) {
+        var api = new openils.XUL.SimpleXPCOM();
 
-            /* The following enablePrivilege() call must happen at this exact
-             * level of scope -- not wrapped in another function -- otherwise
-             * it doesn't work. */
-            api.getPrivilegeManager().enablePrivilege("UniversalXPConnect");
+        /* The following enablePrivilege() call must happen at this exact
+         * level of scope -- not wrapped in another function -- otherwise
+         * it doesn't work. */
+        api.getPrivilegeManager().enablePrivilege("UniversalXPConnect");
 
-            var picker = api.create("FP");
-            picker.init(
-                window, windowTitle || "Upload File", api.FP.iface.modeOpen
-            );
-            if (picker.show() == api.FP.iface.returnOK && picker.file) {
-                var fis = api.create("FIS");
-                var sis = api.create("SIS");
+        var picker = api.create("FP");
+        picker.init(
+            window, windowTitle || "Upload File", api.FP.iface.modeOpen
+        );
+        if (picker.show() == api.FP.iface.returnOK && picker.file) {
+            var fis = api.create("FIS");
+            var sis = api.create("SIS");
 
-                fis.init(picker.file, 1 /* MODE_RDONLY */, 0, 0);
-                sis.init(fis);
+            fis.init(picker.file, 1 /* MODE_RDONLY */, 0, 0);
+            sis.init(fis);
 
-                return sis.read(-1);
-            } else {
-                return null;
-            }
-        } catch(E) {
-            alert(E);
+            return sis.read(sizeLimit || -1);
+        } else {
             return null;
+        }
+    };
+
+    openils.XUL.contentToFileSaveDialog = function(content, windowTitle) {
+        var api = new openils.XUL.SimpleXPCOM();
+        api.getPrivilegeManager().enablePrivilege("UniversalXPConnect");
+
+        var picker = api.create("FP");
+        picker.init(
+            window, windowTitle || "Save File", api.FP.iface.modeSave
+        );
+        var result = picker.show();
+        if (picker.file &&
+                (result == api.FP.iface.returnOK ||
+                    result == api.FP.iface.returnReplace)) {
+            if (!picker.file.exists())
+                picker.file.create(0, 0644); /* XXX hardcoded = bad */
+            var fos = api.create("FOS");
+            fos.init(picker.file, 42 /* WRONLY | CREAT | TRUNCATE */, 0644, 0);
+            return fos.write(content, content.length);
+        } else {
+            return 0;
         }
     };
 }

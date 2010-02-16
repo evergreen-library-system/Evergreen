@@ -1023,6 +1023,10 @@ function AcqLiTable() {
                 this.createAssets();
                 break;
 
+            case 'export_isbn_list':
+                this.exportISBNList();
+                break;
+
             case 'add_brief_record':
                 if(this.isPO)
                     location.href = oilsBasePath + '/acq/picklist/brief_record?po=' + this.isPO;
@@ -1047,6 +1051,36 @@ function AcqLiTable() {
             }
         );
     }
+
+    /* Should really think about generalizing this to do more than ISBN #s */
+    this.exportISBNList = function() {
+        var selected = this.getSelected();
+        var isbn_list = selected.map(
+            function(li) {
+                return (new openils.acq.Lineitem({"lineitem": li})).findAttr(
+                    "isbn", "lineitem_marc_attr_definition"
+                );
+            }
+        ).filter(function(attr) { return Boolean(attr); });
+
+        if (isbn_list.length > 0) {
+            if (isbn_list.length < selected.length) {
+                if (!confirm(localeStrings.ISBN_SHORT_LIST)) {
+                    return;
+                }
+            }
+            try {
+                openils.XUL.contentToFileSaveDialog(
+                    isbn_list.join("\n"),
+                    localeStrings.ISBN_SAVE_DIALOG_TITLE
+                );
+            } catch (E) {
+                alert(E);
+            }
+        } else {
+            alert(localeStrings.ISBN_EMPTY_LIST);
+        }
+    };
 
     this.printPO = function() {
         if(!this.isPO) return;

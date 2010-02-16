@@ -21,6 +21,7 @@ function drawBriefRecordForm(fields) {
     var cgi = new openils.CGI();
     paramPL = cgi.param('pl');
     paramPO = cgi.param('po');
+    prepop = JSON2js(cgi.param('prepop'));
 
 
     if(paramPL) {
@@ -63,9 +64,11 @@ function drawBriefRecordForm(fields) {
     }
 
 
+    /*
     marcEditButton.onClick = function(fields) {
         saveBriefRecord(fields, true);
     }
+    */
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem_attr_definition.retrieve.all'],
@@ -90,7 +93,12 @@ function drawBriefRecordForm(fields) {
                             attrDefs[def.code()] = xpathParser.parse(def.xpath());
                             var row = rowTmpl.cloneNode(true);
                             dojo.query('[name=name]', row)[0].innerHTML = def.description();
-                            new dijit.form.TextBox({name : def.code()}, dojo.query('[name=widget]', row)[0]);
+                            var textbox = new dijit.form.TextBox(
+                                {"name": def.code()},
+                                dojo.query('[name=widget]', row)[0]
+                            );
+                            if (prepop && prepop[def.id()])
+                                textbox.attr("value", prepop[def.id()]);
                             tbody.appendChild(row);
                         }
                     );

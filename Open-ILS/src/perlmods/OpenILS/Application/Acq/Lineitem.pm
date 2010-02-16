@@ -310,7 +310,9 @@ sub lineitem_search_by_attributes {
     my $po_agencies = $search->{po_agencies}; # XXX if none, base it on perms
 
     my $query = {
-        "select" => {"acqlia" => ["lineitem"]},
+        "select" => {"acqlia" =>
+            [{"column" => "lineitem", "transform" => "distinct"}]
+        },
         "from" => {
             "acqlia" => {
                 "acqliad" => {"field" => "id", "fkey" => "definition"},

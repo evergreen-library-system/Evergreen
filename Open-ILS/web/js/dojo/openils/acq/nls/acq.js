@@ -14,5 +14,8 @@
     'LI_ATTR_SEARCH_CHOOSE_FILE': "Select file with search terms",
     'LI_ATTR_SEARCH_TOO_LARGE': "That file is too large for this operation.",
     'SELECT_AN_LI_ATTRIBUTE': "You must select an LI attribute.",
-    'NO_RESULTS': "No results."
+    'NO_RESULTS': "No results.",
+    'ISBN_SAVE_DIALOG_TITLE': "Save ISBNs to a file",
+    'ISBN_SHORT_LIST': "Not all of the selected items had ISBNs.\nChoose OK to save the ISBNs that could be found.",
+    'ISBN_EMPTY_LIST': "No ISBNs found."
 }
