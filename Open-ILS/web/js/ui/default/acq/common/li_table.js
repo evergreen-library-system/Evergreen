@@ -973,6 +973,7 @@ function AcqLiTable() {
                     var widget = new openils.widget.AutoFieldWidget({
                         fmField : 'provider',
                         fmClass : 'acqpo',
+                        searchFilter: {"active": "t"},
                         parentNode : dojo.byId('acq-lit-po-provider'),
                     });
                     widget.build(

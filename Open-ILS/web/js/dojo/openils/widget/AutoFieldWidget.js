@@ -385,13 +385,18 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 oncomplete();
 
             } else {
-                new openils.PermaCrud().retrieveAll(linkClass, {   
-                    async : !this.forceSync,
-                    oncomplete : function(r) {
-                        var list = openils.Util.readResponse(r, false, true);
-                        oncomplete(list);
-                    }
-                });
+                var _cb = function(r) {
+                    oncomplete(openils.Util.readResponse(r, false, true));
+                };
+                if (this.searchFilter) {
+                    new openils.PermaCrud().search(linkClass, this.searchFilter, {
+                        async : !this.forceSync, oncomplete : _cb
+                    });
+                } else {
+                    new openils.PermaCrud().retrieveAll(linkClass, {
+                        async : !this.forceSync, oncomplete : _cb
+                    });
+                }
             }
 
             return true;
