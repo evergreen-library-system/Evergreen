@@ -18,7 +18,7 @@
                                             <option mask='pl' value='order_ready'>Mark Ready for Order</option>
                                             <option mask='*'  value='delete_selected'>Delete Selected Items</option>
                                             <option mask='*'  value='add_brief_record'>Add Brief Record</option>
-                                            <option mask='*'  value='export_isbn_list'>Export ISBN List</option>
+                                            <option mask='*'  value='export_attr_list'>Export Single Attribute List</option>
                                             <option mask='po' value='' disabled='disabled'>----PO----</option>
                                             <option mask='sr|pl' value='create_order'>Create Purchase Order</option>
                                             <option mask='po' value='create_assets'>Load Bibs and Items</option>
@@ -26,6 +26,10 @@
                                             <option mask='po' value='rollback_receive_po'>Un-Receive Purchase Order</option>
                                             <option mask='po' value='print_po'>Print Purchase Order</option>
                                         </select>
+                                        <span id="acq-lit-export-attr-holder" class="hidden">
+                                            <input dojoType="dijit.form.FilteringSelect" id="acq-lit-export-attr" jsId="acqLitExportAttrSelector" labelAttr="description" searchAttr="description" />
+                                            <span dojoType="dijit.form.Button" jsId="acqLitExportAttrButton">Export List</span>
+                                        </span>
                                     </span>
                                     <span id='acq-lit-generic-progress' class='hidden'>
                                         <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litGenericProgress"></span>

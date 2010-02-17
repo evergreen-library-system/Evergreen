@@ -10,7 +10,6 @@ dojo.require("openils.PermaCrud");
 dojo.require("openils.XUL");
 dojo.require("openils.widget.AutoFieldWidget");
 
-var _searchable_by_array = ["issn", "isbn", "upc"];
 var combinedAttrValueArray = [];
 var scalarAttrSearchManager;
 var liTable;
@@ -36,7 +35,7 @@ function prepareScalarSearchStore(pcrud) {
 function prepareArraySearchStore(pcrud) {
     attrArrayDefSelector.store = new dojo.data.ItemFileReadStore({
         "data": acqliad.toStoreData(
-            pcrud.search("acqliad", {"code": _searchable_by_array})
+            pcrud.search("acqliad", {"code": li_exportable_attrs})
         )
     });
 }

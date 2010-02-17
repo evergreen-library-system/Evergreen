@@ -136,6 +136,7 @@ label[for="attr_search_type_scalar"] { vertical-align: top; }
 #acq-lit-li-details-table th {padding:0px 3px 1px 3px; font-weight:bold;}
 #acq-lit-li-details-table .dijit {width:130px;}
 #acq-lit-li-details-table td input {width:100px;}
+#acq-lit-export-attr { margin-left: 10px; }
 .acq-lit-note-textarea { border-right: 2px solid #aaa; width:50%;}
 .acq-lit-note-textarea div { padding: 4px; font-weight: bold; }
 #acq-lit-notes-tbody td {padding: 20px 10px 20px 10px; border-bottom:2px solid #aaa;}

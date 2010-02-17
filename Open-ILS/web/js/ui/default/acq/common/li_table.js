@@ -19,6 +19,7 @@ dojo.require('openils.XUL');
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 const XUL_OPAC_WRAPPER = 'chrome://open_ils_staff_client/content/cat/opac.xul';
+var li_exportable_attrs = ["issn", "isbn", "upc"];
 
 function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
@@ -1024,8 +1025,8 @@ function AcqLiTable() {
                 this.createAssets();
                 break;
 
-            case 'export_isbn_list':
-                this.exportISBNList();
+            case 'export_attr_list':
+                this.chooseExportAttr();
                 break;
 
             case 'add_brief_record':
@@ -1053,34 +1054,61 @@ function AcqLiTable() {
         );
     }
 
-    /* Should really think about generalizing this to do more than ISBN #s */
-    this.exportISBNList = function() {
-        var selected = this.getSelected();
-        var isbn_list = selected.map(
+    this.chooseExportAttr = function() {
+        if (!acqLitExportAttrSelector._li_setup) {
+            var self = this;
+            acqLitExportAttrSelector.store = new dojo.data.ItemFileReadStore(
+                {
+                    "data": acqliad.toStoreData(
+                        (new openils.PermaCrud()).search(
+                            "acqliad", {"code": li_exportable_attrs}
+                        )
+                    )
+                }
+            );
+            acqLitExportAttrSelector.setValue();
+            acqLitExportAttrButton.onClick = function(){self.exportAttrList();};
+            acqLitExportAttrSelector._li_setup = true;
+        }
+        openils.Util.show("acq-lit-export-attr-holder", "inline");
+    };
+
+    this.exportAttrList = function() {
+        var attr_def = acqLitExportAttrSelector.item;
+        var li_list = this.getSelected();
+        var value_list = li_list.map(
             function(li) {
                 return (new openils.acq.Lineitem({"lineitem": li})).findAttr(
-                    "isbn", "lineitem_marc_attr_definition"
+                    attr_def.code, "lineitem_marc_attr_definition"
                 );
             }
         ).filter(function(attr) { return Boolean(attr); });
 
-        if (isbn_list.length > 0) {
-            if (isbn_list.length < selected.length) {
-                if (!confirm(localeStrings.ISBN_SHORT_LIST)) {
+        if (value_list.length > 0) {
+            if (value_list.length < li_list.length) {
+                if (!confirm(
+                    dojo.string.substitute(
+                        localeStrings.EXPORT_SHORT_LIST, [attr_def.description]
+                    )
+                )) {
                     return;
                 }
             }
             try {
                 openils.XUL.contentToFileSaveDialog(
-                    isbn_list.join("\n"),
-                    localeStrings.ISBN_SAVE_DIALOG_TITLE
+                    value_list.join("\n"),
+                    localeStrings.EXPORT_SAVE_DIALOG_TITLE
                 );
             } catch (E) {
                 alert(E);
             }
         } else {
-            alert(localeStrings.ISBN_EMPTY_LIST);
+            alert(dojo.string.substitute(
+                localeStrings.EXPORT_EMPTY_LIST, [attr_def.description]
+            ));
         }
+
+        openils.Util.hide("acq-lit-export-attr-holder");
     };
 
     this.printPO = function() {

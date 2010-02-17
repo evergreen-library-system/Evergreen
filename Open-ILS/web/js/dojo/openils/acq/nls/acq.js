@@ -15,7 +15,7 @@
     'LI_ATTR_SEARCH_TOO_LARGE': "That file is too large for this operation.",
     'SELECT_AN_LI_ATTRIBUTE': "You must select an LI attribute.",
     'NO_RESULTS': "No results.",
-    'ISBN_SAVE_DIALOG_TITLE': "Save ISBNs to a file",
-    'ISBN_SHORT_LIST': "Not all of the selected items had ISBNs.\nChoose OK to save the ISBNs that could be found.",
-    'ISBN_EMPTY_LIST': "No ISBNs found."
+    'EXPORT_SAVE_DIALOG_TITLE': "Save field values to a file",
+    'EXPORT_SHORT_LIST': "Not all of the selected items had the attribute '${0}'.\nChoose OK to save those values that could be found.",
+    'EXPORT_EMPTY_LIST': "No values for attribute '${0}' found."
 }

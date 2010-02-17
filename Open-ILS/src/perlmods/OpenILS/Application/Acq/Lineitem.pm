@@ -320,7 +320,11 @@ sub lineitem_search_by_attributes {
                     "field" => "id",
                     "fkey" => "lineitem",
                     "join" => {
-                        "acqpo" => {"field" => "id", "fkey" => "purchase_order"}
+                        "acqpo" => {
+                            "type" => "left",
+                            "field" => "id",
+                            "fkey" => "purchase_order"
+                        }
                     }
                 }
             }
