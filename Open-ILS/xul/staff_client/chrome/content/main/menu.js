@@ -667,6 +667,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('acq/po/search', 'menu.cmd_acq_view_po.tab'); }
             ],
+            'cmd_acq_view_po_events' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/po/events', 'menu.cmd_acq_view_po_events.tab'); }
+            ],
             'cmd_acq_upload' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/picklist/upload', 'menu.cmd_acq_upload.tab'); }

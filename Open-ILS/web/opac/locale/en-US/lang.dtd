@@ -782,6 +782,8 @@
 <!ENTITY staff.main.menu.acq.upload.accesskey "O">
 <!ENTITY staff.main.menu.acq.po.label "Purchase Orders">
 <!ENTITY staff.main.menu.acq.po.accesskey "P">
+<!ENTITY staff.main.menu.acq.po_events.label "Purchase Order Events">
+<!ENTITY staff.main.menu.acq.po_events.accesskey "E">
 <!ENTITY staff.main.menu.acq.fund.label "Funds">
 <!ENTITY staff.main.menu.acq.fund.accesskey "F">
 <!ENTITY staff.main.menu.acq.funding_source.label "Funding Sources">

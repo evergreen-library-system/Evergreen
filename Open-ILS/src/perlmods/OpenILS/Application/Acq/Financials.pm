@@ -1162,6 +1162,10 @@ sub po_events {
     (my $search_field = $self->api_name) =~ s/.*\.([_a-z]+)$/$1/;
     my $obj_type = 'acqpo';
 
+    if ($search_field eq 'ordering_agency') {
+        $search_value = $U->get_org_descendants($search_value);
+    }
+
     my $query = {
         "select"=>{"atev"=>["id"]}, 
         "from"=>"atev", 
@@ -1183,7 +1187,8 @@ sub po_events {
                 }
             },
             "state"=>"pending" 
-        }
+        },
+        "order_by"=>[{"class"=>"atev", "field"=>"run_time", "direction"=>"desc"}]
     };
 
     if (defined $options->{state}) {
@@ -1194,6 +1199,9 @@ sub po_events {
         $query->{'where'}{'start_time'} = $options->{start_time};
     }
 
+    if (defined $options->{order_by}) {
+        $query->{'order_by'} = $options->{order_by};
+    }
     my $po_events = $e->json_query($query);
 
     my $flesh_fields = $options->{flesh_fields} || {};
