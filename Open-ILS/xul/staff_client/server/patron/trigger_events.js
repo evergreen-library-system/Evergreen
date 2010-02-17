@@ -210,7 +210,7 @@ function populate_list() {
         var method = $('circ').checked ? 'FM_ATEV_APROPOS_CIRC' : 'FM_ATEV_APROPOS_AHR';
         if (xul_param('copy_id')) { method += '_VIA_COPY'; }
 
-        var filter = {"event":{"state":"complete"}, "offset":0, "limit":10, "order_by":[{"class":"atev", "field":"run_time", "direction":"desc"}]};
+        var filter = {"event":{"state":"complete"}, "order_by":[{"class":"atev", "field":"run_time", "direction":"desc"}]};
 
         if ($('pending').checked) { filter.event.state = 'pending'; filter.order_by[0].direction = 'asc'; }
         if ($('error').checked) { filter.event.state = 'error'; }
