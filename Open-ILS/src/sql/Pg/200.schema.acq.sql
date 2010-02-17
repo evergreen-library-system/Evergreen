@@ -39,6 +39,7 @@ CREATE TABLE acq.provider (
     san                 TEXT,
     edi_default         INT,          -- REFERENCES acq.edi_account (id) DEFERRABLE INITIALLY DEFERRED
 	active              BOOL    NOT NULL DEFAULT TRUE,
+	prepayment_required BOOL    NOT NULL DEFAULT FALSE,
     CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
 	CONSTRAINT code_once_per_owner UNIQUE (code, owner)
 );

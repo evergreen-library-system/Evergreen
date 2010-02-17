@@ -4459,6 +4459,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="SAN" name="san" reporter:datatype="text" />
 			<field reporter:label="EDI Default" name="edi_default" reporter:datatype="link" />
 			<field reporter:label="Active" name="active" reporter:datatype="bool" />
+			<field reporter:label="Prepayment Required" name="prepayment_required" reporter:datatype="bool" />
 		</fields>
 		<links>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
