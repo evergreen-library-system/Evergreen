@@ -67,7 +67,7 @@ function usage {
 # -------------------------------------------------------------------
 # Load the config opts
 # -------------------------------------------------------------------
-while getopts  "a:x:bf:hu:c:i:" flag; do
+while getopts  "a:x:bf:hu:c:i:s:l" flag; do
     case $flag in   
         "a") OPT_ACTION="$OPTARG";;
         "u") OPT_FETCH_BASE_URL="$OPTARG";;
@@ -75,6 +75,8 @@ while getopts  "a:x:bf:hu:c:i:" flag; do
         "x") OPT_XUL_BUILD_DIR="$OPTARG";;
         "i") OPT_XUL_BUILD_ID="$OPTARG";;
         "c") OPT_CONFIG_FILE="$OPTARG";;
+        "l") OPT_LOCALHOST="-l";;
+        "s") OPT_SERVICE="$OPTARG";;
         "h"|*) usage;;
     esac;
 done
@@ -92,12 +94,14 @@ else
     fi;
 fi;
 
+[ -n "$OPT_LOCALHOST" ] && PERL_LOCALHOST_FLAG="--localhost";
 
 # make sure an action was specified
 [ -z "$OPT_ACTION" ] && usage;
 
-LOCAL_BASE="osrf_ctl.sh -d $OSRF_PID_DIR -c $OSRF_CONFIG";
+LOCAL_BASE="osrf_ctl.sh $OPT_LOCALHOST -d $OSRF_PID_DIR -c $OSRF_CONFIG";
 DRONE_BASE=". /etc/profile && osrf_ctl.sh -d $OSRF_PID_DIR -c $OSRF_CONFIG";
+PERL_CONTROLLER="opensrf-perl.pl --verbose $PERL_LOCALHOST_FLAG --config $OSRF_CONFIG --pid-dir $OSRF_PID_DIR --action $OPT_ACTION --service $OPT_SERVICE";
 
 # -------------------------------------------------------------------
 # Runs DRONE_ACT on the drones, then LOCAL_ACT on the local machine
@@ -186,6 +190,14 @@ function fetch_build {
     ln -s $NEW_DIR current;
 }
 
+# This is a per-service action.  Currently only support in Perl (and Python).
+# When other active languages are added, this script will need a language param
+# to determine which controller script to call.
+if [ -n "$OPT_SERVICE" ]; then
+    local_first "$PERL_CONTROLLER" "$PERL_CONTROLLER";
+    exit;
+fi;
+
 case $OPT_ACTION in
 
     "start_osrf") local_first "$LOCAL_BASE -a start_perl && $LOCAL_BASE -a start_c" \
@@ -210,7 +222,7 @@ case $OPT_ACTION in
     "stop_all") drone_first "$LOCAL_BASE -a stop_all" \
         "$DRONE_BASE -a stop_perl && $DRONE_BASE -a stop_c";;
 
-    "restart_all") $0 -a stop_all; $0 -a start_all;;
+    "restart_all") $0 $OPT_LOCALHOST -a stop_all; $0 $OPT_LOCALHOST -a start_all;;
     "build") cd ~/ILS/ && make clean default_config all;;
     "build_xul") make_xul;;
     "detach_brick") detach_brick;;
