@@ -22,6 +22,7 @@ sub new {
     $self->{ingest_queue} = [];
     $self->{cache} = {};
     $self->throttle(5) unless $self->throttle;
+    $self->{post_proc_queue} = [];
     return $self;
 }
 
@@ -49,8 +50,22 @@ sub respond_complete {
     my($self, %other_args) = @_;
     $self->complete;
     $self->conn->respond_complete({ %{$self->{args}}, %other_args });
+    $self->run_post_response_hooks;
     return undef;
 }
+
+# run the post response hook subs, shifting them off as we go
+sub run_post_response_hooks {
+    my($self) = @_;
+    (shift @{$self->{post_proc_queue}})->() while @{$self->{post_proc_queue}};
+}
+
+# any subs passed to this method will be run after the call to respond_complete
+sub post_process {
+    my($self, $sub) = @_;
+    push(@{$self->{post_proc_queue}}, $sub);
+}
+
 sub total {
     my($self, $val) = @_;
     $self->{args}->{total} = $val if defined $val;
@@ -161,6 +176,7 @@ use strict; use warnings;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::Utils::JSON;
+use OpenSRF::AppSession;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
@@ -337,6 +353,9 @@ sub receive_lineitem {
     $mgr->add_li;
     $li->state('received');
     update_lineitem($mgr, $li) or return 0;
+
+    $mgr->post_process( sub { create_lineitem_status_events($mgr, $li_id, 'aur.received'); });
+
     return 1 if $skip_complete_check;
 
     return check_purchase_order_received($mgr, $li->purchase_order);
@@ -356,6 +375,26 @@ sub rollback_receive_lineitem {
     $mgr->add_li;
     $li->state('on-order');
     return update_lineitem($mgr, $li);
+}
+
+
+sub create_lineitem_status_events {
+    my($mgr, $li_id, $hook) = @_;
+
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->connect;
+    my $user_reqs = $mgr->editor->search_acq_user_request([
+        {lineitem => $li_id}, 
+        {flesh => 1, flesh_fields => {aur => ['usr']}}
+    ]);
+
+    for my $user_req (@$user_reqs) {
+        my $req = $ses->request('open-ils.trigger.event.autocreate', $hook, $user_req, $user_req->usr->home_ou);
+        $req->recv; 
+    }
+
+    $ses->disconnect;
+    return undef;
 }
 
 # ----------------------------------------------------------------------------
@@ -1572,8 +1611,11 @@ sub receive_lineitem_api {
         'RECEIVE_PURCHASE_ORDER', $li->purchase_order->ordering_agency);
 
     receive_lineitem($mgr, $li_id) or return $e->die_event;
+
     $e->commit;
-    return 1;
+    $conn->respond_complete(1);
+    $mgr->run_post_response_hooks;
+    return undef;
 }
 
 
@@ -1913,11 +1955,14 @@ sub activate_purchase_order {
     while( my $li = $e->search_acq_lineitem($query)->[0] ) {
         $li->state('on-order');
         update_lineitem($mgr, $li) or return $e->die_event;
+        $mgr->post_process( sub { create_lineitem_status_events($mgr, $li->id, 'aur.ordered'); });
         $mgr->respond;
     }
 
     $e->commit;
-    return 1;
+    $conn->respond_complete(1);
+    $mgr->run_post_response_hooks;
+    return undef;
 }
 
 
@@ -2003,6 +2048,53 @@ sub split_purchase_order_by_lineitems {
 
     return \@po_ids if $e->commit;
     return $e->die_event;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'cancel_lineitem_api',
+	api_name	=> 'open-ils.acq.lineitem.cancel',
+	signature => {
+        desc => q/Cancels an on-order lineitem/,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Lineitem ID to cancel', type => 'number'},
+            {desc => 'Cancel Cause ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub cancel_lineitem_api {
+    my($self, $conn, $auth, $li_id, $cancel_cause) = @_;
+
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+
+    my $li = $e->retrieve_acq_lineitem([$li_id, 
+        {flesh => 1, flesh_fields => {jub => [q/purchase_order/]}}]);
+
+    unless( $li->purchase_order and ($li->state eq 'on-order' or $li->state eq 'pending-order') ) {
+        $e->rollback;
+        return OpenILS::Event->new('BAD_PARAMS') 
+    }
+
+    return $e->die_event unless 
+        $e->allowed('CREATE_PURCHASE_ORDER', $li->purchase_order->ordering_agency);
+
+    $li->state('cancelled');
+
+    # TODO delete the associated fund debits?
+    # TODO add support for cancel reasons
+    # TODO who/what/where/how do we indicate this change for electronic orders?
+
+    update_lineitem($mgr, $li) or return $e->die_event;
+    $e->commit;
+
+    $conn->respond_complete($li);
+    create_lineitem_status_events($mgr, $li_id, 'aur.cancelled');
+    return undef;
 }
 
 
