@@ -1,1 +1,75 @@
-#ChangeLog
+2010-02-10  dbs
+
+	* Backport r15488: Try to ensure that the PostgreSQL cluster gets
+	  initialized with a C locale
+
+2010-02-11  miker
+
+	* Normalization for ratio-like strings -- specifically for map
+	  scale ratios; allow the default search class (as specified in the
+	  basic search dropdown) to target a specific index
+
+2010-02-11  phasefx
+
+	* Use the home library of the bucket owner as the context org for
+	  the VIEW_CONTAINER permission
+
+2010-02-12  erickson
+
+	* Patch from Joe Atzberger to add getop support for defininging the
+	  call style, hostname, etc. and a fix to bypass some extraneous
+	  oils_requestor output that was dying during json parsing
+
+2010-02-12  dbs
+
+	* Make autoconf 2.6.1 an explicit requirement due to
+	  AC_PROG_MKDIR_P macro usage
+	  
+	  RHEL 5.4 still ships with autoconf 2.59 (released in 2003, folks)
+	  and fails
+	  because MKDIR_P isn't defined. For now, let's kill it right at
+	  the ./configure
+	  step until we decide whether to use the marked-as-obsolete
+	  AM_PROG_MKDIR_P
+	  macro instead.
+
+2010-02-16  erickson
+
+	* return success from org tree builder to prevent clobbering the
+	  widget later in the top-level datatype switch clause
+
+2010-02-16  miker
+
+	* Backporting 15547: ARG! attempted support for search term
+	  containing colons ended up breaking multiclass searching
+
+2010-02-16  dbs
+
+	* Backport r15554 from trunk: Double-decoding the UTF8 for SRU no
+	  longer seems necessary with current Debian Lenny packages
+
+2010-02-16  miker
+
+	* protect against just-spaces in the remaining query blob
+
+2010-02-16  dbs
+
+	* Avoid an empty accesskey string comedy cascade of errors in i18n
+	  with a hack: 'Z' for info
+
+2010-02-18  miker
+
+	* Addressing bug #495229 (https://bugs.launchpad.net/bugs/495229)
+	  for 1.6.0.2 and beyond
+
+2010-02-18  erickson
+
+	* silence uninitialized value warnings
+
+2010-02-18  miker
+
+	* escape "s in hand-built JSON ... should probably build an object
+	  and call js2json against it, but this gets the job done for now
+
+	* .: Tagging 1.6.0.2
+
