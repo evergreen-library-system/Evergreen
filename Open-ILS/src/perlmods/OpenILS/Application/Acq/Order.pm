@@ -23,6 +23,7 @@ sub new {
     $self->{cache} = {};
     $self->throttle(5) unless $self->throttle;
     $self->{post_proc_queue} = [];
+    $self->{last_respond_progress} = 0;
     return $self;
 }
 
@@ -634,9 +635,11 @@ sub create_lineitem_debits {
 sub create_lineitem_detail_debit {
     my($mgr, $li, $lid, $price, $ptype) = @_;
 
+    my $li_id = ref($li) ? $li->id : $li;
+
     unless(ref $li and ref $li->provider) {
        $li = $mgr->editor->retrieve_acq_lineitem([
-            $li,
+            $li_id,
             {   flesh => 1,
                 flesh_fields => {jub => ['provider']},
             }
@@ -1015,7 +1018,7 @@ sub zsearch {
         }
 
         my $result = $resp->content;
-        my $count = $result->{count};
+        my $count = $result->{count} || 0;
         $mgr->total( (($count < $search->{limit}) ? $count : $search->{limit})+1 );
 
         for my $rec (@{$result->{records}}) {
