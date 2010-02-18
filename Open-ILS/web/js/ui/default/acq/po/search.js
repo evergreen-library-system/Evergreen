@@ -82,6 +82,7 @@ function loadForm() {
     }).build();
 
     if (poIds && poIds.length > 0) {
+        dijit.byId("metapo_view").attr("checked", true);
         doSearch({"id": poIds, "metapo_view": [true] /* [sic] */});
     } else {
         doSearch({"ordering_agency": openils.User.user.ws_ou()});
@@ -129,6 +130,11 @@ function loadMetaPO(fields) {
                         case "po":
                             target.innerHTML = self.working_po_list.length;
                             break;
+                        /* Any numeric fields should be named here. */
+                        case "amount_encumbered":
+                        case "amount_spent":
+                            target.innerHTML = self.numericFieldTotal(part);
+                            break;
                         default:
                             /* assume a field on the acqpo's themselves */
                             target.innerHTML = self.anyFieldTotal(part);
@@ -141,10 +147,22 @@ function loadMetaPO(fields) {
                     );
                 }
             };
+            metaPO.numericFieldTotal = function(field) {
+                var self = this;
+                var pennies = self.working_po_list.reduce(
+                    /* working_po_list contains unfleshed acqpo's, so we must
+                     * find the same PO in the poCache */
+                    function(p, c) {
+                        c = self.poCache[c.id()][field]();
+                        return p + Number(c) * 100;
+                    }, 0
+                );
+                return pennies / 100;
+            };
             metaPO.anyFieldTotal = function(field) {
                 var self = this;
                 return self.working_po_list.reduce(
-                    /* working_po_list contains unfleshed, acqpo's, so we must
+                    /* working_po_list contains unfleshed acqpo's, so we must
                      * find the same PO in the poCache */
                     function(p, c) {
                         c = self.poCache[c.id()][field]();
