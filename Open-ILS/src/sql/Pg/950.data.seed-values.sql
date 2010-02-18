@@ -880,8 +880,10 @@ INSERT INTO config.billing_type (id, name, owner) VALUES
 	( 8, oils_i18n_gettext(8, 'Damaged Item Processing Fee', 'cbt', 'name'), 1);
 INSERT INTO config.billing_type (id, name, owner) VALUES
 	( 9, oils_i18n_gettext(9, 'Notification Fee', 'cbt', 'name'), 1);
+INSERT INTO config.billing_type (id, name, owner) VALUES
+    ( 101, oils_i18n_gettext(101, 'Misc', 'cbt', 'name'), 1);
 
-SELECT SETVAL('config.billing_type_id_seq'::TEXT, 100);
+SELECT SETVAL('config.billing_type_id_seq'::TEXT, 101);
 
 
 --006.data.permissions.sql:
