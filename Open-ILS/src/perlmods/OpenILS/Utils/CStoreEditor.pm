@@ -683,7 +683,7 @@ sub runmethod {
 	}
 
 	my $obj; 
-	my $err;
+	my $err = '';
 
 	try {
 		$obj = $self->request($method, @arg);
