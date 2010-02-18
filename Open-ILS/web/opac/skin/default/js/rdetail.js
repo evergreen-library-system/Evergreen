@@ -888,9 +888,9 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode, cl) {
 	_debug('setting action clicks for cn ' + cn);
 
 	var dHref = 'javascript:rdetailVolumeDetails('+
-			'{copy_location : "'+cl+'", rowid : "'+row.id+'", cn :"'+cn+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
+			'{copy_location : "'+cl.replace(/\"/g, '\\"')+'", rowid : "'+row.id+'", cn :"'+cn.replace(/\"/g, '\\"')+'", depth:"'+depth+'", org:"'+orgNode.id()+'", local: '+local+'});';
 
-	var bHref = 'javascript:rdetailShowCNBrowse("' + cn + '", '+orgNode.id()+', "'+depth+'");'; 
+	var bHref = 'javascript:rdetailShowCNBrowse("' + cn.replace(/\"/g, '\\"') + '", '+orgNode.id()+', "'+depth+'");'; 
 
 	unHideMe( $n(row, 'details') )
 		$n(row, 'details').setAttribute('href', dHref);
