@@ -93,14 +93,14 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'biblios' AND name = 'title';
+
+COMMIT;
+
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('cs-CZ', 'cze', oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'name'), oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'description'));
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('ru-RU', 'rus', oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'name'), oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'description'));
-
-UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'biblios' AND name = 'title';
-
-COMMIT;
 
 CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD UPDATE serial.record_entry SET deleted = true WHERE old.id = serial.record_entry.id;
 
