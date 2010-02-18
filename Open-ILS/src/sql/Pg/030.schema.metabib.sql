@@ -710,7 +710,7 @@ BEGIN
     -- On to URIs ...
     uris := oils_xpath('//*[@tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]',NEW.marc);
     IF ARRAY_UPPER(uris,1) > 0 THEN
-        FOR i IN 1 .. ARRAY_UPPER( uris ) LOOP
+        FOR i IN 1 .. ARRAY_UPPER(uris, 1) LOOP
             -- First we pull infot out of the 856
             uri_xml     := uris[i];
 
