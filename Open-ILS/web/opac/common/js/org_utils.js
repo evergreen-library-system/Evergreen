@@ -97,7 +97,7 @@ function orgIsMine(me, org) {
 	if(!me || !org) return false;
 	if(me.id() == org.id()) return true;
     var kids = me.children();
-	for( var i = 0; kids && i < kids.legnth; i++ ) {
+	for( var i = 0; kids && i < kids.length; i++ ) {
 		if(orgIsMine(kids[i], org))
 			return true;
 	}
