@@ -347,6 +347,8 @@ sub unapi {
 	<format name='opac' type='text/html'/>
 	<format name='html' type='text/html'/>
 	<format name='htmlholdings' type='text/html'/>
+	<format name='holdings_xml' type='application/xml'/>
+	<format name='holdings_xml-full' type='application/xml'/>
 	<format name='html-full' type='text/html'/>
 	<format name='htmlholdings-full' type='text/html'/>
 	<format name='marctxt' type='text/plain'/>
@@ -390,6 +392,8 @@ sub unapi {
 	<format name='opac' type='text/html'/>
 	<format name='html' type='text/html'/>
 	<format name='htmlholdings' type='text/html'/>
+	<format name='holdings_xml' type='application/xml'/>
+	<format name='holdings_xml-full' type='application/xml'/>
 	<format name='html-full' type='text/html'/>
 	<format name='htmlholdings-full' type='text/html'/>
 	<format name='marctxt' type='text/plain'/>
@@ -469,11 +473,11 @@ sub unapi {
 	}
 
 	if ( !grep
-	       { (keys(%$_))[0] eq $base_format }
-	       @{ $supercat->request("open-ils.supercat.$type.formats")->gather(1) }
-	     and !grep
-	       { $_ eq $base_format }
-	       qw/opac html htmlholdings marctxt ris/
+		   { (keys(%$_))[0] eq $base_format }
+		   @{ $supercat->request("open-ils.supercat.$type.formats")->gather(1) }
+		 and !grep
+		   { $_ eq $base_format }
+		   qw/opac html htmlholdings marctxt ris holdings_xml/
 	) {
 		print "Content-type: text/html; charset=utf-8\n\n";
 		$apache->custom_response( 406, <<"		HTML");
@@ -532,8 +536,21 @@ sub unapi {
 		return Apache2::Const::OK;
 	}
 
-	my $req = $supercat->request("open-ils.supercat.$type.$format.$command",$id);
+	my $method = "open-ils.supercat.$type.$base_format.$command";
+	my @params = ($id);
+
+	if ($base_format eq 'holdings_xml') {
+		$method .= '.atomic';
+		push @params, $lib;
+		if ($format !~ /-full$/o) {
+			push @params, 1;
+		}
+	}
+
+	my $req = $supercat->request($method,@params);
 	my $data = $req->gather(1);
+
+	$data = join('', @$data) if ($base_format eq 'holdings_xml');
 
 	if ($req->failed || !$data) {
 		print "Content-type: text/html; charset=utf-8\n\n";

@@ -33,7 +33,7 @@
 
 							<tr style='height: 1em' name='counts_row'>
 
-								<td  rowspan='3' class='result_table_pic_header'>
+								<td  rowspan='4' class='result_table_pic_header'>
 									<a><img name='item_jacket' class='result_table_pic'/></a>
 								</td>
 
@@ -45,7 +45,7 @@
 								</td>
 
 								<!-- Copy this td for each copy count appended -->
-								<td  rowspan='3' nowrap='nowrap' name="copy_count_cell" class='copy_count_cell'> 
+								<td  rowspan='4' nowrap='nowrap' name="copy_count_cell" class='copy_count_cell'> 
 								</td>
 
 							</tr>
@@ -135,6 +135,13 @@
 									</span>
 
 
+								</td>
+							</tr>
+							<tr name="local_callnumber_list" class="result_table_title_cell hide_me">
+								<td>&result.localCallNumbers;
+									<span type='opac/slot-data+holdings_xml' query='volumes volume' join=", ">
+										<script type='opac/slot-format'><![CDATA[return '<b>'+item.getAttribute('label')+'</b>';]]></script>
+									</span>
 								</td>
 							</tr>
 

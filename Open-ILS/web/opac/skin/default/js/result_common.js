@@ -483,6 +483,23 @@ function resultDisplayRecord(rec, pos, is_mr) {
 			title_link.setAttribute("href", buildOPACLink(args));
 			title_link.appendChild(text(normalize(truncate(rec.title(), 65))));
 			
+			var here = findOrgUnit(getLocation());
+			if (findOrgType(here.ou_type()).can_have_vols()) { // show the callnumber list
+				dojo.require('openils.BibTemplate');
+				var l_cn_list = $n(r,'local_callnumber_list');
+
+				setTimeout(
+					function () {
+						unHideMe(l_cn_list);
+						new openils.BibTemplate({
+							root : l_cn_list,
+							record : onlyrec,
+							org_unit : here.shortname()
+						}).render();
+					}, 0
+				);
+			}
+
 		} else {
 			buildunAPISpan($n(r,'unapi'), 'metabib-metarecord', rec.doc_id());
 
@@ -507,6 +524,24 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		unHideMe($n(r,'place_hold_span'));
 		$n(r,'place_hold_link').setAttribute(
 			'href','javascript:holdsDrawEditor({record:"'+rec.doc_id()+'",type:"T"});');
+
+		var here = findOrgUnit(getLocation());
+		if (findOrgType(here.ou_type()).can_have_vols()) { // show the callnumber list
+			dojo.require('openils.BibTemplate');
+			var l_cn_list = $n(r,'local_callnumber_list');
+			var onlyrec = rec.doc_id();
+
+			setTimeout(
+				function () {
+					unHideMe(l_cn_list);
+					new openils.BibTemplate({
+						root : l_cn_list,
+						record : onlyrec,
+						org_unit : here.shortname()
+					}).render();
+				}, 0
+			);
+		}
 	}
 
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
