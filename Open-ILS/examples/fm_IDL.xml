@@ -4384,6 +4384,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Publication Date" name="pubdate" reporter:datatype="text" />
 			<field reporter:label="Mentioned In" name="mentioned" reporter:datatype="text" />
 			<field reporter:label="Other Info" name="other_info" reporter:datatype="text" />
+			<field reporter:label="Need Before Date" name="need_before" reporter:datatype="timestamp" />
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -5262,7 +5263,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="acqlimad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_marc_attr_definition" oils_persist:tablename="acq.lineitem_marc_attr_definition" reporter:label="Line Item MARC Attribute Definition">
+	<class id="acqlimad" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::lineitem_marc_attr_definition" oils_persist:tablename="acq.lineitem_marc_attr_definition" reporter:label="Line Item MARC Attribute Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_attr_definition_id_seq">
 			<field reporter:label="Definition ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Code" name="code" reporter:datatype="text" />
@@ -5271,6 +5272,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is Identifier?" name="ident" reporter:datatype="bool"/>
 		</fields>
 		<links/>
+        <permacrud>
+            <actions>
+                <create permission="ADMIN_LINEITEM_MARC_ATTR_DEF" global_required="true"/>
+                <retrieve />
+                <update permission="ADMIN_LINEITEM_MARC_ATTR_DEF" global_required="true"/>
+                <delete permission="ADMIN_LINEITEM_MARC_ATTR_DEF" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="acqligad" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_generated_attr_definition" oils_persist:tablename="acq.lineitem_generated_attr_definition" reporter:label="Line Item Generated Attribute Definition">
