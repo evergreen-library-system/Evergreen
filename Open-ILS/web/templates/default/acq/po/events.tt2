@@ -42,6 +42,7 @@
                     dojoType="dijit.form.DateTextBox"
                     jsId="eventEndDatePicker" />
             </span>
+            <button dojoType="dijit.form.Button" onClick="eventGrid.doSearch()">Search</button>
         </div>
         <table  jsId="eventGrid"
                 dojoType="openils.widget.AutoGrid"

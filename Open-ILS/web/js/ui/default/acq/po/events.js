@@ -15,7 +15,15 @@ function eventInit() {
         buildStateSelector();
         buildOrgSelector();
         buildDatePickers();
+        eventGrid.resetStore();
         buildEventGrid();
+
+        eventGrid.cancelSelected = function() { doSelected('open-ils.acq.purchase_order.event.cancel.batch') };
+        eventGrid.resetSelected = function() { doSelected('open-ils.acq.purchase_order.event.reset.batch') };
+        eventGrid.doSearch = function() {
+            buildEventGrid();
+        }
+
     } catch(E) {
         //dump('Error in acq/events.js, eventInit(): ' + E);
         throw(E);
@@ -42,8 +50,6 @@ function buildDatePickers() {
                 this.setValue( swap );
             }
             eventStartDateRange = this.getValue();
-            eventGrid.resetStore();
-            buildEventGrid();
         }
     );
     dojo.connect(
@@ -57,8 +63,6 @@ function buildDatePickers() {
                 this.setValue( swap );
             }
             eventEndDateRange = this.getValue();
-            eventGrid.resetStore();
-            buildEventGrid();
         }
     );
 
@@ -85,8 +89,6 @@ function buildStateSelector() {
             function() {
                 try {
                      eventState = this.getValue();
-                     eventGrid.resetStore();
-                     buildEventGrid();
                 } catch(E) {
                     //dump('Error in acq/events.js, eventInit, connect, onChange: ' + E);
                     throw(E);
@@ -110,8 +112,6 @@ function buildOrgSelector() {
                     function() {
                         try {
                              eventContextOrg = this.getValue();
-                             eventGrid.resetStore();
-                             buildEventGrid();
                         } catch(E) {
                             //dump('Error in acq/events.js, eventInit, connect, onChange: ' + E);
                             throw(E);
@@ -124,9 +124,6 @@ function buildOrgSelector() {
             }
         };
         new openils.User().buildPermOrgSelector('STAFF_LOGIN', eventContextOrgSelect, null, connect);
-
-        eventGrid.cancelSelected = function() { doSelected('open-ils.acq.purchase_order.event.cancel.batch') };
-        eventGrid.resetSelected = function() { doSelected('open-ils.acq.purchase_order.event.reset.batch') };
 
     } catch(E) {
         //dump('Error in acq/events.js, buildOrgSelector(): ' + E);
@@ -167,8 +164,7 @@ function doSelected(method) {
                 oncomplete: function(r) {
                     try {
                         var result = openils.Util.readResponse(r);
-                         eventGrid.resetStore();
-                         buildEventGrid();
+                        buildEventGrid();
                     } catch(E) {
                         //dump('Error in acq/events.js, doSelected(), oncomplete(): ' + E);
                         throw(E);
@@ -183,6 +179,7 @@ function doSelected(method) {
 }
 
 function buildEventGrid() {
+    eventGrid.resetStore();
     if(eventContextOrg == null) {
         eventContextOrg = openils.User.user.ws_ou();
     }
