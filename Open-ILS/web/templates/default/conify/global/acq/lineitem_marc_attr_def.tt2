@@ -13,7 +13,7 @@
         </div>
         <table  jsId="attrGrid"
                 dojoType="openils.widget.AutoGrid"
-                fieldOrder="['id', 'code', 'description', 'tag', 'subfield', 'ident', 'xpath', 'remove']"
+                fieldOrder="['id', 'code', 'description', 'tag', 'subfield', 'ident', 'remove', 'xpath']"
                 query="{id: '*'}"
                 defaultCellWidth='"auto"'
                 fmClass='acqlimad'
