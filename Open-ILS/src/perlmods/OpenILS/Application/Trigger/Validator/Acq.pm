@@ -28,3 +28,4 @@ sub get_lineitem_from_req {
         $self->editor->retrieve_acq_lineitem($$env->{target}->lineitem);
 }
 
+1;
