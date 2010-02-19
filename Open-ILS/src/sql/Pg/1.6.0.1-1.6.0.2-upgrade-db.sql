@@ -16,7 +16,7 @@
 
 
 
-INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.1');
+INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.2');
 
 INSERT INTO config.billing_type (id, name, owner) VALUES
     ( 101, oils_i18n_gettext(101, 'Misc', 'cbt', 'name'), 1);
