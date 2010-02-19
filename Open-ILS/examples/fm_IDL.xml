@@ -4389,7 +4389,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="lineitem" reltype="has_a" key="id" map="" class="acqli"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 			<link field="eg_bib" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="request_type" reltype="has_a" key="id" map="" class="aurt"/>
 		</links>
@@ -4521,7 +4521,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
-			<link field="lineitem" reltype="has_a" key="id" map="" class="acqli"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
