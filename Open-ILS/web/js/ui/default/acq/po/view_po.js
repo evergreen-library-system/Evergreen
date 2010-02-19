@@ -6,10 +6,19 @@ dojo.require('openils.PermaCrud');
 var PO = null;
 var liTable;
 
+function updatePoState(po_info) {
+    var data = po_info[PO.id()];
+    if (data && data.state) {
+        PO.state(data.state);
+        dojo.byId("acq-po-view-state").innerHTML = PO.state(); // TODO i18n
+    }
+}
+
 function init() {
     liTable = new AcqLiTable();
     liTable.reset();
     liTable.isPO = poId;
+    liTable.poUpdateCallback = updatePoState;
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],

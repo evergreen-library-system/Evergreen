@@ -158,11 +158,20 @@ if(!dojo._hasResource["openils.Util"]) {
         var classList = node.className.split(/\s+/);
         var className = '';
         for(var i = 0; i < classList.length; i++) {
-            if (classList[i] != cls) {
-                if(i == 0)
-                    className = classList[i];
-                else 
-                    className += ' ' + classList[i];
+            if (typeof(cls) == "object") { /* assume regex */
+                if (!cls.test(classList[i])) {
+                    if(i == 0)
+                        className = classList[i];
+                    else
+                        className += ' ' + classList[i];
+                }
+            } else {
+                if (classList[i] != cls) {
+                    if(i == 0)
+                        className = classList[i];
+                    else
+                        className += ' ' + classList[i];
+                }
             }
         }
         node.className = className;
@@ -262,6 +271,15 @@ if(!dojo._hasResource["openils.Util"]) {
         audio.setAttribute('autoplay', 'true');
         document.body.appendChild(audio);
         document.body.removeChild(audio);
+    }
+
+    /**
+     * Return the properties of an object as a list. Saves typing.
+     */
+    openils.Util.objectProperties = function(obj) {
+        var K = [];
+        for (var k in obj) K.push(k);
+        return K;
     }
 
 }

@@ -17,5 +17,6 @@
     'NO_RESULTS': "No results.",
     'EXPORT_SAVE_DIALOG_TITLE': "Save field values to a file",
     'EXPORT_SHORT_LIST': "Not all of the selected items had the attribute '${0}'.\nChoose OK to save those values that could be found.",
-    'EXPORT_EMPTY_LIST': "No values for attribute '${0}' found."
+    'EXPORT_EMPTY_LIST': "No values for attribute '${0}' found.",
+    'UNRECEIVE_LI': "Are you sure you want to mark this lineitem as UN-received?"
 }

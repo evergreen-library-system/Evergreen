@@ -244,34 +244,14 @@ function AcqLiTable() {
 
         // lineitem state
         nodeByName('li_state', row).innerHTML = li.state(); // TODO i18n state labels
-        openils.Util.addCSSClass(row, 'oils-acq-li-state-' + li.state());
-
         // lineitem price
         var priceInput = dojo.query('[name=price]', row)[0];
         var priceData = liWrapper.getPrice();
         priceInput.value = (priceData) ? priceData.price : '';
         priceInput.onchange = function() { self.updateLiPrice(priceInput, li) };
 
-        var recv_link = dojo.query('[name=receive_link]', row)[0];
-
-        if(li.state() == 'on-order') {
-            recv_link.onclick = function() {
-                self.receiveLi(li);
-                openils.Util.hide(recv_link)
-            }
-        } else {
-            openils.Util.hide(recv_link);
-        }
-
-        // TODO we should allow editing before receipt, in which case the
-        // test should be "if 1 or more real (acp) copies exist
-        if(li.state() == 'received') {
-            var real_copies_link = dojo.query('[name=real_copies_link]', row)[0];
-            openils.Util.show(real_copies_link);
-            real_copies_link.onclick = function() {
-                self.showRealCopies(li);
-            }
-        }
+        // show either "mark received" or "unreceive" as appropriate
+        this.updateReceivedness(li, row);
 
         if (!skip_final_placement) {
             self.tbody.appendChild(row);
@@ -280,6 +260,54 @@ function AcqLiTable() {
             return row;
         }
     };
+
+    this.updateReceivedness = function(li, row) {
+        if (typeof(row) == "undefined")
+            row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
+
+        var recv_link = nodeByName("receive_link", row);
+        var unrecv_link = nodeByName("unreceive_link", row);
+        var real_copies_link = nodeByName("real_copies_link", row);
+
+        /* handle row coloring for based on LI state */
+        openils.Util.removeCSSClass(row, /^oils-acq-li-state-/);
+        openils.Util.addCSSClass(row, "oils-acq-li-state-" + li.state());
+
+        /* handle links that appear/disappear based on whether LI is received */
+        if (this.isPO) {
+            var self = this;
+            switch(li.state()) {
+                case "on-order":
+                    openils.Util.hide(real_copies_link);
+                    openils.Util.hide(unrecv_link);
+                    openils.Util.show(recv_link, "inline");
+                    if (typeof(recv_link.onclick) != "function")
+                        recv_link.onclick = function() { self.receiveLi(li); };
+                    return;
+                case "received":
+                    openils.Util.hide(recv_link);
+                    openils.Util.show(unrecv_link, "inline");
+                    if (typeof(unrecv_link.onclick) != "function") {
+                        unrecv_link.onclick = function() {
+                            if (confirm(localeStrings.UNRECEIVE_LI))
+                                self.unReceiveLi(li);
+                        };
+                    }
+                    // TODO we should allow editing before receipt, in which case the
+                    // test should be "if 1 or more real (acp) copies exist
+                    openils.Util.show(real_copies_link);
+                    real_copies_link.onclick = function() {
+                        self.showRealCopies(li);
+                    }
+                    return;
+            }
+        }
+
+        openils.Util.hide(recv_link);
+        openils.Util.hide(unrecv_link);
+        openils.Util.hide(real_copies_link);
+    };
+
 
     /**
      * Draws and shows the lineitem notes pane
@@ -1148,16 +1176,59 @@ function AcqLiTable() {
     }
 
     this.receiveLi = function(li) {
-        if(!this.isPO) return;
+        /* (For now) there shall be no marking LIs received except from the
+         * actual "view PO" interface. */
+        if (!this.isPO) return;
+
+        var self = this;
         progressDialog.show(true);
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.lineitem.receive'],
-            {   async: true,
-                params: [this.authtoken, li.id()],
-                onresponse : function(r) {
-                    var resp = openils.Util.readResponse(r);
-                    progressDialog.hide();
+            ["open-ils.acq", "open-ils.acq.lineitem.receive"], {
+                "async": true,
+                "params": [this.authtoken, li.id()],
+                "onresponse": function(r) {
+                    self.handleReceiveOrRollback(openils.Util.readResponse(r));
                 },
+                "oncomplete": function() {
+                    progressDialog.hide();
+                }
+            }
+        );
+    }
+
+    this.handleReceiveOrRollback = function(resp) {
+        if (resp) {
+            if (resp.li) {
+                for (var li_id in resp.li) {
+                    for (var key in resp.li[li_id])
+                        self.liCache[li_id][key](resp.li[li_id][key]);
+                    self.updateReceivedness(self.liCache[li_id]);
+                }
+            }
+            if (resp.po) {
+                if (typeof(self.poUpdateCallback) == "function")
+                    self.poUpdateCallback(resp.po);
+            }
+        }
+    }
+
+    this.unReceiveLi = function(li) {
+        /* (For now) there shall be no marking LIs un-received except from the
+         * actual "view PO" interface. */
+        if (!this.isPO) return;
+
+        var self = this;
+        progressDialog.show(true);
+        fieldmapper.standardRequest(
+            ["open-ils.acq", "open-ils.acq.lineitem.receive.rollback"], {
+                "async": true,
+                "params": [this.authtoken, li.id()],
+                "onresponse": function(r) {
+                    self.handleReceiveOrRollback(openils.Util.readResponse(r));
+                },
+                "oncomplete": function() {
+                    progressDialog.hide();
+                }
             }
         );
     }

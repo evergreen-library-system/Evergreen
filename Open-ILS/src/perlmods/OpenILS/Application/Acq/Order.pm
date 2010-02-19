@@ -214,7 +214,8 @@ sub update_lineitem {
     $li->edit_time('now');
     $li->editor($mgr->editor->requestor->id);
     $mgr->add_li;
-    return $li if $mgr->editor->update_acq_lineitem($li); 
+    return $mgr->editor->retrieve_acq_lineitem($mgr->editor->data) if
+        $mgr->editor->update_acq_lineitem($li);
     return undef;
 }
 
@@ -353,13 +354,21 @@ sub receive_lineitem {
 
     $mgr->add_li;
     $li->state('received');
-    update_lineitem($mgr, $li) or return 0;
 
+    $li = update_lineitem($mgr, $li) or return 0;
     $mgr->post_process( sub { create_lineitem_status_events($mgr, $li_id, 'aur.received'); });
 
-    return 1 if $skip_complete_check;
+    my $po;
+    my $result = {"li" => {$li->id => {"state" => $li->state}}};
+    return 0 unless
+        $skip_complete_check or (
+            $po = check_purchase_order_received($mgr, $li->purchase_order)
+        );
 
-    return check_purchase_order_received($mgr, $li->purchase_order);
+    if (ref $po) {
+        $result->{"po"} = {$po->id => {"state" => $li->state}};
+    }
+    return $result;
 }
 
 sub rollback_receive_lineitem {
@@ -488,7 +497,9 @@ sub receive_lineitem_detail {
     my $li = check_lineitem_received($mgr, $lid->lineitem) or return 0;
     return 1 if $li == 1; # li not received
 
-    return check_purchase_order_received($mgr, $li->purchase_order);
+    my $po = check_purchase_order_received($mgr, $li->purchase_order) or return 0;
+    return $li if $po == 1;
+    return $po;
 }
 
 
@@ -791,7 +802,8 @@ sub update_purchase_order {
     $po->editor($mgr->editor->requestor->id);
     $po->edit_time('now');
     $mgr->purchase_order($po);
-    return $po if $mgr->editor->update_acq_purchase_order($po);
+    return $mgr->editor->retrieve_acq_purchase_order($mgr->editor->data)
+        if $mgr->editor->update_acq_purchase_order($po);
     return undef;
 }
 
@@ -1576,9 +1588,31 @@ sub receive_lineitem_detail_api {
     return $e->die_event unless $e->allowed(
         'RECEIVE_PURCHASE_ORDER', $lid->lineitem->purchase_order->ordering_agency);
 
-    receive_lineitem_detail($mgr, $lid_id) or return $e->die_event;
+    my $recvd = receive_lineitem_detail($mgr, $lid_id) or return $e->die_event;
+
+    # What's this business, you ask? We basically want to return a minimal
+    # set of information about what has changed as a result of the "receive
+    # lineitem detail" operation; remember: not only does the lineitem detail
+    # change state, but so might an LI and even a PO, and a good UI will want
+    # to reflect those changes.
+    $lid = $e->retrieve_acq_lineitem_detail(
+        [$lid_id, {"flesh" => 1, "flesh_fields" => {"acqlid" => ["lineitem"]}}]
+    );
+    my $result = {"lid" => {$lid->id => {"recv_time" => $lid->recv_time}}};
+
+    if (ref $recvd) {
+        if ($recvd->class_name =~ /::purchase_order/) {
+            $result->{"po"} = {"id" => $recvd->id, "state" => $recvd->state};
+            $result->{"li"} = {
+                $lid->lineitem->id => {"state" => $lid->lineitem->state}
+            };
+        } elsif ($recvd->class_name =~ /::lineitem/) {
+            $result->{"li"} = {$recvd->id => {"state" => $recvd->state}};
+        }
+    }
+
     $e->commit;
-    return 1;
+    return $result;
 }
 
 __PACKAGE__->register_method(
@@ -1590,7 +1624,10 @@ __PACKAGE__->register_method(
             {desc => 'Authentication token', type => 'string'},
             {desc => 'lineitem detail ID', type => 'number'}
         ],
-        return => {desc => '1 on success, Event on error'}
+        return => {desc =>
+            "on success, object containing an LI and possibly a PO; " .
+            "on error, event"
+        }
     }
 );
 
@@ -1613,12 +1650,10 @@ sub receive_lineitem_api {
     return $e->die_event unless $e->allowed(
         'RECEIVE_PURCHASE_ORDER', $li->purchase_order->ordering_agency);
 
-    receive_lineitem($mgr, $li_id) or return $e->die_event;
-
+    my $res = receive_lineitem($mgr, $li_id) or return $e->die_event;
     $e->commit;
-    $conn->respond_complete(1);
+    $conn->respond_complete($res);
     $mgr->run_post_response_hooks;
-    return undef;
 }
 
 
@@ -1655,7 +1690,7 @@ __PACKAGE__->register_method(
 	method => 'rollback_receive_lineitem_detail_api',
 	api_name	=> 'open-ils.acq.lineitem_detail.receive.rollback',
 	signature => {
-        desc => 'Mark a lineitem_detail as received',
+        desc => 'Mark a lineitem_detail as Un-received',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'lineitem detail ID', type => 'number'}
@@ -1684,15 +1719,31 @@ sub rollback_receive_lineitem_detail_api {
     my $po = $li->purchase_order;
 
     return $e->die_event unless $e->allowed('RECEIVE_PURCHASE_ORDER', $po->ordering_agency);
-    rollback_receive_lineitem_detail($mgr, $lid_id) or return $e->die_event;
 
-    $li->state('on-order');
-    $po->state('on-order');
-    udpate_lineitem($mgr, $li) or return $e->die_event;
-    udpate_purchase_order($mgr, $po) or return $e->die_event;
+    my $result = {};
 
-    $e->commit;
-    return 1;
+    my $recvd = rollback_receive_lineitem_detail($mgr, $lid_id)
+        or return $e->die_event;
+
+    if (ref $recvd) {
+        $result->{"lid"} = {$recvd->id => {"recv_time" => $recvd->recv_time}};
+    } else {
+        $result->{"lid"} = {$lid->id => {"recv_time" => $lid->recv_time}};
+    }
+
+    if ($li->state eq "received") {
+        $li->state("on-order");
+        $li = update_lineitem($mgr, $li) or return $e->die_event;
+        $result->{"li"} = {$li->id => {"state" => $li->state}};
+    }
+
+    if ($po->state eq "received") {
+        $po->state("on-order");
+        $po = update_purchase_order($mgr, $po) or return $e->die_event;
+        $result->{"po"} = {$po->id => {"state" => $po->state}};
+    }
+
+    $e->commit and return $result or return $e->die_event;
 }
 
 __PACKAGE__->register_method(
@@ -1704,7 +1755,7 @@ __PACKAGE__->register_method(
             {desc => 'Authentication token', type => 'string'},
             {desc => 'lineitem detail ID', type => 'number'}
         ],
-        return => {desc => '1 on success, Event on error'}
+        return => {desc => 'altered objects on success, event on error'}
     }
 );
 
@@ -1715,25 +1766,25 @@ sub rollback_receive_lineitem_api {
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
-    my $li = $e->retrieve_acq_lineitem_detail([
+    my $li = $e->retrieve_acq_lineitem([
         $li_id, {
-            flesh => 1,
-            flesh_fields => {
-                jub => ['purchase_order']
-            }
+            "flesh" => 1, "flesh_fields" => {"jub" => ["purchase_order"]}
         }
     ]);
     my $po = $li->purchase_order;
 
     return $e->die_event unless $e->allowed('RECEIVE_PURCHASE_ORDER', $po->ordering_agency);
 
-    rollback_receive_lineitem($mgr, $li_id) or return $e->die_event;
+    $li = rollback_receive_lineitem($mgr, $li_id) or return $e->die_event;
 
-    $po->state('on-order');
-    update_purchase_order($mgr, $po) or return $e->die_event;
+    my $result = {"li" => {$li->id => {"state" => $li->state}}};
+    if ($po->state eq "received") {
+        $po->state("on-order");
+        $po = update_purchase_order($mgr, $po) or return $e->die_event;
+        $result->{"po"} = {$po->id => {"state" => $po->state}};
+    }
 
-    $e->commit;
-    return 1;
+    $e->commit and return $result or return $e->die_event;
 }
 
 
