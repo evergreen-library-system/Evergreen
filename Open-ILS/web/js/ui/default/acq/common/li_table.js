@@ -40,6 +40,7 @@ function AcqLiTable() {
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
     this.selectors = [];
+    this.noteAcks = {};
     this.authtoken = openils.User.authtoken;
     this.rowTemplate = this.tbody.removeChild(dojo.byId('acq-lit-row'));
     this.copyTbody = dojo.byId('acq-lit-li-details-tbody');
@@ -89,6 +90,7 @@ function AcqLiTable() {
         while(self.tbody.childNodes[0])
             self.tbody.removeChild(self.tbody.childNodes[0]);
         self.selectors = [];
+        self.noteAcks = {};
     };
     
     this.setNext = function(handler) {
@@ -281,7 +283,10 @@ function AcqLiTable() {
                     openils.Util.hide(real_copies_link);
                     openils.Util.hide(unrecv_link);
                     openils.Util.show(recv_link, "inline");
-                    recv_link.onclick = function() { self.issueReceive(li); };
+                    recv_link.onclick = function() {
+                        if (self.checkLiAlerts(li.id()))
+                            self.issueReceive(li);
+                    };
                     return;
                 case "received":
                     openils.Util.hide(recv_link);
@@ -929,7 +934,10 @@ function AcqLiTable() {
                 } else {
                     openils.Util.hide(unrecv_link);
                     openils.Util.show(recv_link);
-                    recv_link.onclick = function() { self.issueReceive(copy); };
+                    recv_link.onclick = function() {
+                        if (self.checkLiAlerts(copy.lineitem()))
+                            self.issueReceive(copy);
+                    };
                 }
             } else {
                 openils.Util.hide(unrecv_link);
@@ -943,6 +951,39 @@ function AcqLiTable() {
             openils.Util.show(del_link.parentNode);
         }
     }
+
+    this._confirmAlert = function(li, lin) {
+        return confirm(
+            dojo.string.substitute(
+                localeStrings.CONFIRM_LI_ALERT, [
+                    (new openils.acq.Lineitem({"lineitem": li})).findAttr(
+                        "title", "lineitem_marc_attr_definition"
+                    ),
+                    lin.alert_text().description(), lin.value()
+                ]
+            )
+        );
+    };
+
+    this.checkLiAlerts = function(li_id) {
+        var li = this.liCache[li_id];
+
+        var alert_notes = li.lineitem_notes().filter(
+            function(o) { return Boolean(o.alert_text()); }
+        );
+
+        /* this is _intentionally_ not done in a call to forEach() ... */
+        for (var i = 0; i < alert_notes.length; i++) {
+            if (this.noteAcks[alert_notes[i].id()])
+                continue;
+            else if (!this._confirmAlert(li, alert_notes[i]))
+                return false;
+            else
+                this.noteAcks[alert_notes[i].id()] = true;
+        }
+
+        return true;
+    };
 
     this.deleteCopy = function(row) {
         var copy = this.copyCache[row.getAttribute('copy_id')];
@@ -1184,7 +1225,15 @@ function AcqLiTable() {
 
 
     this.receivePO = function() {
-        if(!this.isPO) return;
+        if (!this.isPO) return;
+
+        for (var id in this.liCache) {
+            /* assumption: liCache reflects exactly the
+             * set of LIs that belong to our PO */
+            if (this.liCache[id].state() != "received" &&
+                !this.checkLiAlerts(id)) return;
+        }
+
         this.show('acq-lit-progress-numbers');
         var self = this;
         fieldmapper.standardRequest(
