@@ -33,7 +33,7 @@ if(!dojo._hasResource['openils.widget.PCrudFilterDialog']) {
                 this.inherited(arguments);
                 this.initAutoEnv();
                 var realFieldList = this.sortedFieldList.filter(
-                    function(item) { return !item.virtual; });
+                    function(item) { return !(item.virtual || item.nonIdl); });
                 this.fieldStore = new dojo.data.ItemFileReadStore({
                     data : {
                         identifier : 'name',

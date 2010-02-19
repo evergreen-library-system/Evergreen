@@ -60,7 +60,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
 
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
-                    if(!field || field.virtual) continue;
+                    if(!field || field.virtual || field.nonIdl) continue;
+
 
                     if(field.name == this.fmIDL.pkey && this.mode == 'create' && this.fmIDL.pkey_sequence)
                         continue; /* don't show auto-generated fields on create */
