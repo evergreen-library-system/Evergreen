@@ -251,7 +251,7 @@ function AcqLiTable() {
         priceInput.onchange = function() { self.updateLiPrice(priceInput, li) };
 
         // show either "mark received" or "unreceive" as appropriate
-        this.updateReceivedness(li, row);
+        this.updateLiReceivedness(li, row);
 
         if (!skip_final_placement) {
             self.tbody.appendChild(row);
@@ -261,7 +261,7 @@ function AcqLiTable() {
         }
     };
 
-    this.updateReceivedness = function(li, row) {
+    this.updateLiReceivedness = function(li, row) {
         if (typeof(row) == "undefined")
             row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
 
@@ -281,18 +281,15 @@ function AcqLiTable() {
                     openils.Util.hide(real_copies_link);
                     openils.Util.hide(unrecv_link);
                     openils.Util.show(recv_link, "inline");
-                    if (typeof(recv_link.onclick) != "function")
-                        recv_link.onclick = function() { self.receiveLi(li); };
+                    recv_link.onclick = function() { self.issueReceive(li); };
                     return;
                 case "received":
                     openils.Util.hide(recv_link);
                     openils.Util.show(unrecv_link, "inline");
-                    if (typeof(unrecv_link.onclick) != "function") {
-                        unrecv_link.onclick = function() {
-                            if (confirm(localeStrings.UNRECEIVE_LI))
-                                self.unReceiveLi(li);
-                        };
-                    }
+                    unrecv_link.onclick = function() {
+                        if (confirm(localeStrings.UNRECEIVE_LI))
+                            self.issueReceive(li, /* rollback */ true);
+                    };
                     // TODO we should allow editing before receipt, in which case the
                     // test should be "if 1 or more real (acp) copies exist
                     openils.Util.show(real_copies_link);
@@ -902,23 +899,50 @@ function AcqLiTable() {
             }
         );
 
-        var recv_link = dojo.query('[name=receive]', row)[0];
-        if(copy.recv_time()) {
-            openils.Util.hide(recv_link);
-        } else {
-            recv_link.onclick = function() {
-                self.receiveLid(copy);
-                openils.Util.hide(recv_link);
-            }
+        this.updateLidReceivedness(copy, row);
+    };
+
+    this.updateLidReceivedness = function(copy, row) {
+        if (typeof(row) == "undefined") {
+            row = dojo.query(
+                'tr[copy_id="' + copy.id() + '"]', this.copyTbody
+            )[0];
         }
 
-        if(this.isPO) {
-            openils.Util.hide(dojo.query('[name=delete]', row)[0].parentNode);
+        var self = this;
+        var recv_link = nodeByName("receive", row);
+        var unrecv_link = nodeByName("unreceive", row);
+        var del_link = nodeByName("delete", row);
+
+        if (this.isPO) {
+            openils.Util.hide(del_link.parentNode);
+
+            /* Avoid showing (un)receive links for virtual copies */
+            if (copy.id() > 0) {
+                if(copy.recv_time()) {
+                    openils.Util.hide(recv_link);
+                    openils.Util.show(unrecv_link);
+                    unrecv_link.onclick = function() {
+                        if (confirm(localeStrings.UNRECEIVE_LID))
+                            self.issueReceive(copy, /* rollback */ true);
+                    };
+                } else {
+                    openils.Util.hide(unrecv_link);
+                    openils.Util.show(recv_link);
+                    recv_link.onclick = function() { self.issueReceive(copy); };
+                }
+            } else {
+                openils.Util.hide(unrecv_link);
+                openils.Util.hide(recv_link);
+            }
         } else {
-            dojo.query('[name=delete]', row)[0].onclick = 
-                function() { self.deleteCopy(row) };
+            openils.Util.hide(unrecv_link);
+            openils.Util.hide(recv_link);
+
+            del_link.onclick = function() { self.deleteCopy(row) };
+            openils.Util.show(del_link.parentNode);
         }
-    };
+    }
 
     this.deleteCopy = function(row) {
         var copy = this.copyCache[row.getAttribute('copy_id')];
@@ -1175,78 +1199,54 @@ function AcqLiTable() {
         );
     }
 
-    this.receiveLi = function(li) {
-        /* (For now) there shall be no marking LIs received except from the
-         * actual "view PO" interface. */
+    this.issueReceive = function(obj, rollback) {
+        /* (For now) there shall be no marking LI or LIDs (un)received
+         * except from the actual "view PO" interface. */
         if (!this.isPO) return;
 
-        var self = this;
+        var part =
+            {"jub": "lineitem", "acqlid": "lineitem_detail"}[obj.classname];
+        var method =
+            "open-ils.acq." + part + ".receive" + (rollback ? ".rollback" : "");
+
         progressDialog.show(true);
         fieldmapper.standardRequest(
-            ["open-ils.acq", "open-ils.acq.lineitem.receive"], {
+            ["open-ils.acq", method], {
                 "async": true,
-                "params": [this.authtoken, li.id()],
+                "params": [this.authtoken, obj.id()],
                 "onresponse": function(r) {
-                    self.handleReceiveOrRollback(openils.Util.readResponse(r));
+                    self.handleReceive(openils.Util.readResponse(r));
                 },
-                "oncomplete": function() {
-                    progressDialog.hide();
-                }
+                "oncomplete": function() { progressDialog.hide(); }
             }
         );
-    }
+    };
 
-    this.handleReceiveOrRollback = function(resp) {
+    /**
+     * Handles the responses from receive and rollback ML calls.
+     */
+    this.handleReceive = function(resp) {
         if (resp) {
             if (resp.li) {
                 for (var li_id in resp.li) {
                     for (var key in resp.li[li_id])
                         self.liCache[li_id][key](resp.li[li_id][key]);
-                    self.updateReceivedness(self.liCache[li_id]);
+                    self.updateLiReceivedness(self.liCache[li_id]);
                 }
             }
             if (resp.po) {
                 if (typeof(self.poUpdateCallback) == "function")
                     self.poUpdateCallback(resp.po);
             }
-        }
-    }
-
-    this.unReceiveLi = function(li) {
-        /* (For now) there shall be no marking LIs un-received except from the
-         * actual "view PO" interface. */
-        if (!this.isPO) return;
-
-        var self = this;
-        progressDialog.show(true);
-        fieldmapper.standardRequest(
-            ["open-ils.acq", "open-ils.acq.lineitem.receive.rollback"], {
-                "async": true,
-                "params": [this.authtoken, li.id()],
-                "onresponse": function(r) {
-                    self.handleReceiveOrRollback(openils.Util.readResponse(r));
-                },
-                "oncomplete": function() {
-                    progressDialog.hide();
+            if (resp.lid) {
+                for (var lid_id in resp.lid) {
+                    for (var key in resp.lid[lid_id])
+                        self.copyCache[lid_id][key](resp.lid[lid_id][key]);
+                    self.updateLidReceivedness(self.copyCache[lid_id]);
                 }
             }
-        );
-    }
-
-    this.receiveLid = function(li) {
-        if(!this.isPO) return;
-        progressDialog.show(true);
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.lineitem_detail.receive'],
-            {   async: true,
-                params: [this.authtoken, li.id()],
-                onresponse : function(r) {
-                    var resp = openils.Util.readResponse(r);
-                    progressDialog.hide();
-                },
-            }
-        );
-    }
+        }
+    };
 
     this.rollbackPoReceive = function() {
         if(!this.isPO) return;

@@ -1003,6 +1003,41 @@ sub po_perm_failure {
     return undef;
 }
 
+sub build_price_summary {
+    my ($e, $po_id) = @_;
+
+    # fetch the fund debits for this purchase order
+    my $debits = $e->json_query({
+        "select" => {"acqfdeb" => [qw/encumbrance amount/]},
+        "from" => {
+            "acqlid" => {
+                "jub" => {
+                    "fkey" => "lineitem",
+                    "field" => "id",
+                    "join" => {
+                        "acqpo" => {
+                            "fkey" => "purchase_order", "field" => "id"
+                        }
+                    }
+                },
+                "acqfdeb" => {"fkey" => "fund_debit", "field" => "id"}
+            }
+        },
+        "where" => {"+acqpo" => {"id" => $po_id}}
+    });
+
+    my ($enc, $spent) = (0, 0);
+    for my $deb (@$debits) {
+        if($U->is_true($deb->{encumbrance})) {
+            $enc += $deb->{amount};
+        } else {
+            $spent += $deb->{amount};
+        }
+    }
+    ($enc, $spent);
+}
+
+
 sub retrieve_purchase_order_impl {
     my($e, $po_id, $options) = @_;
 
@@ -1038,31 +1073,7 @@ sub retrieve_purchase_order_impl {
     }
 
     if($$options{flesh_price_summary}) {
-
-        # fetch the fund debits for this purchase order
-        my $debits = $e->json_query({
-            select => {acqfdeb => ["encumbrance", "amount"]},
-            from => {
-                acqlid => {
-                    jub => {fkey => "lineitem", field => "id", 
-                        join => {acqpo => {fkey => "purchase_order", field => "id"}}
-                    },
-                acqfdeb => {fkey => "fund_debit", field =>"id"}
-                }
-            },
-            where => {'+acqpo' => {id => $po_id}}
-        });
-
-        my $enc = 0;
-        my $spent = 0;
-        for my $deb (@$debits) {
-            if($U->is_true($deb->{encumbrance})) {
-                $enc += $deb->{amount};
-            } else {
-                $spent += $deb->{amount};
-            }
-        }
-
+        my ($enc, $spent) = build_price_summary($e, $po_id);
         $po->amount_encumbered($enc);
         $po->amount_spent($spent);
     }

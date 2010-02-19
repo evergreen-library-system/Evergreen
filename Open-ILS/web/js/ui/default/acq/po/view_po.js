@@ -8,9 +8,25 @@ var liTable;
 
 function updatePoState(po_info) {
     var data = po_info[PO.id()];
-    if (data && data.state) {
-        PO.state(data.state);
-        dojo.byId("acq-po-view-state").innerHTML = PO.state(); // TODO i18n
+    if (data) {
+        for (var key in data)
+            PO[key](data[key]);
+        renderPo();
+    }
+}
+
+function renderPo() {
+    dojo.byId("acq-po-view-id").innerHTML = PO.id();
+    dojo.byId("acq-po-view-name").innerHTML = PO.name();
+    dojo.byId("acq-po-view-total-li").innerHTML = PO.lineitem_count();
+    dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered();
+    dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent();
+    dojo.byId("acq-po-view-state").innerHTML = PO.state(); // TODO i18n
+
+    if(PO.state() == "pending") {
+        openils.Util.show("acq-po-activate");
+        if (PO.lineitem_count() > 1)
+            openils.Util.show("acq-po-split");
     }
 }
 
@@ -25,20 +41,8 @@ function init() {
         {   async: true,
             params: [openils.User.authtoken, poId, {flesh_price_summary:true, flesh_lineitem_count:true}],
             oncomplete: function(r) {
-                PO = openils.Util.readResponse(r);
-                dojo.byId('acq-po-view-id').innerHTML = PO.id();
-                dojo.byId('acq-po-view-name').innerHTML = PO.name();
-                dojo.byId('acq-po-view-total-li').innerHTML = PO.lineitem_count();
-                dojo.byId('acq-po-view-total-enc').innerHTML = PO.amount_encumbered();
-                dojo.byId('acq-po-view-total-spent').innerHTML = PO.amount_spent();
-                dojo.byId('acq-po-view-state').innerHTML = PO.state(); // TODO i18n
-
-                if(PO.state() == 'pending') {
-                    openils.Util.show('acq-po-activate');
-                    if (PO.lineitem_count() > 1) {
-                        openils.Util.show('acq-po-split');
-                    }
-                }
+                PO = openils.Util.readResponse(r); /* save PO globally */
+                renderPo();
             }
         }
     );
