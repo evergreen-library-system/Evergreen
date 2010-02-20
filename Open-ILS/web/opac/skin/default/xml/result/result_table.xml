@@ -140,7 +140,10 @@
 							<tr name="local_callnumber_list" class="result_table_title_cell hide_me">
 								<td>&result.localCallNumbers;
 									<span type='opac/slot-data+holdings_xml' query='volumes volume' join=", ">
-										<script type='opac/slot-format'><![CDATA[return '<b>'+item.getAttribute('label')+'</b>';]]></script>
+                                        <!-- Because we clone this template table, and IE won't clone <script>
+                                             nodes (yes, even when it doesn't understand the type ARG) we need
+                                             to use something other than a <script> HATE HATE HATE -->
+										<span class="hide_me" type='opac/slot-format'><![CDATA[return '<b>'+item.getAttribute('label')+'</b>';]]></span>
 									</span>
 								</td>
 							</tr>

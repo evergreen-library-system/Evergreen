@@ -56,7 +56,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                 var joiner = slot.getAttribute('join') || ' ';
 
                                 var slot_handler = dojo.map(
-                                    dojo.query( 'script[type=opac/slot-format]', slot ).orphan(),
+                                    dojo.query( '*[type=opac/slot-format]', slot ).orphan(), // IE, I really REALLY hate you
                                     function(x){ return dojox.data.dom.textContent(x) || x.innerHTML }
                                 ).join('');
 
