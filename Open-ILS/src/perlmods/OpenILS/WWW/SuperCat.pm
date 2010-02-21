@@ -540,7 +540,6 @@ sub unapi {
 	my @params = ($id);
 
 	if ($base_format eq 'holdings_xml') {
-		$method .= '.atomic';
 		push @params, $lib;
 		if ($format !~ /-full$/o) {
 			push @params, 1;
@@ -548,9 +547,7 @@ sub unapi {
 	}
 
 	my $req = $supercat->request($method,@params);
-	my $data = $req->gather(1);
-
-	$data = join('', @$data) if ($base_format eq 'holdings_xml');
+	my $data = $req->gather();
 
 	if ($req->failed || !$data) {
 		print "Content-type: text/html; charset=utf-8\n\n";
@@ -569,6 +566,12 @@ sub unapi {
 	}
 
 	print "Content-type: application/xml; charset=utf-8\n\n$data";
+
+	if ($base_format eq 'holdings_xml') {
+		while (my $c = $req->recv) {
+			print $c->content;
+		}
+	}
 
 	return Apache2::Const::OK;
 }
