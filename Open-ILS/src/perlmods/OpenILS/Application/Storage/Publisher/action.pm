@@ -181,7 +181,7 @@ sub complete_reshelving {
 					AND circ.id IS NULL
 					AND cp.create_date < NOW() - CAST( COALESCE( BTRIM( setting.value,'"' ), ? )  AS INTERVAL)
 		  )
- 	SQL
+	SQL
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
 	$sth->execute($window, $window, $window);
 
