@@ -911,7 +911,7 @@ patron.display.prototype = {
                 }
                 var penalties = obj.patron.standing_penalties();
                 for (var i = 0; i < penalties.length; i++) {
-                    if (penalties[i].standing_penalty().block_list()) {
+                    if (penalties[i].standing_penalty().block_list() || penalties[i].standing_penalty().id() == 20 /* ALERT_NOTE */) {
                         msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
                     }
                 }
