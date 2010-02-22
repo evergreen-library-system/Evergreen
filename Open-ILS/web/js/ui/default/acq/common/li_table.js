@@ -35,7 +35,7 @@ function AcqLiTable() {
     this.liCache = {};
     this.plCache = {};
     this.poCache = {};
-    this.dfaCache = [];
+    this.dfaCache = {};
     this.dfeOffset = 0;
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
@@ -580,7 +580,7 @@ function AcqLiTable() {
         this.copyCache = {};
         this.copyWidgetCache = {};
         this.oldCopyWidgetCache = {};
-        this.dfaCache = [];
+        this.dfaCache = {};
         this.dfeOffset = 0;
 
         acqLitSaveCopies.onClick = function() { self.saveCopyChanges(liId) };
@@ -609,7 +609,7 @@ function AcqLiTable() {
     this._addDistribFormulaRow = function() {
         var self = this;
 
-        if(!self.distribFormulaStore) {
+        if (!self.distribForms) {
             // no formulas, hide the form
             openils.Util.hide('acq-lit-distrib-formula-tbody');
             return;
@@ -619,12 +619,16 @@ function AcqLiTable() {
             this.distribFormulaTemplate = 
                 dojo.byId('acq-lit-distrib-formula-tbody').removeChild(dojo.byId('acq-lit-distrib-form-row'));
 
-        var row = dojo.byId('acq-lit-distrib-formula-tbody').appendChild(this.distribFormulaTemplate.cloneNode(true));
+        var row = this.distribFormulaTemplate.cloneNode(true);
+        dojo.place(row, "acq-lit-distrib-formula-tbody", "only");
 
-        var selector = new dijit.form.FilteringSelect(
-            {store : self.distribFormulaStore}, 
-            nodeByName('selector', row)
+        this.dfSelector = new dijit.form.FilteringSelect(
+            {"labelAttr": "dynLabel", "labelType": "html"},
+            nodeByName("selector", row)
         );
+        this._updateFormulaStore();
+        this.dfSelector.fetchProperties =
+            {"sort": [{"attribute": "use_count", "descending": true}]};
 
         var apply = new dijit.form.Button(
             {"label": localeStrings.APPLY},
@@ -638,7 +642,7 @@ function AcqLiTable() {
 
         dojo.connect(apply, 'onClick', 
             function() {
-                var form_id = selector.attr('value');
+                var form_id = self.dfSelector.attr("value");
                 if(!form_id) return;
                 self._applyDistribFormula(form_id);
                 reset.attr("disabled", false);
@@ -648,8 +652,9 @@ function AcqLiTable() {
         dojo.connect(reset, 'onClick', 
             function() {
                 self.restoreCopyFieldsBeforeDF();
-                self.dfaCache = [];
+                self.dfaCache = {};
                 self.dfeOffset = 0;
+                self._updateFormulaStore();
                 reset.attr("disabled", "true");
             }
         );
@@ -715,9 +720,25 @@ function AcqLiTable() {
         }
 
         if (entries_applied) {
-            this.dfaCache.push(formula.id());
+            this.dfaCache[formula.id()] = ++(this.dfaCache[formula.id()]) || 1;
+            this._updateFormulaStore();
             this.dfeOffset += entries_applied;
         };
+    };
+
+    /**
+     * This function updates the DF store for the dropdown so that use_counts
+     * can reflect DF applications from this session before they're saved
+     * server-side.
+     */
+    this._updateFormulaStore = function() {
+        this.dfSelector.store = new dojo.data.ItemFileReadStore(
+            {
+                "data": self._labelFormulasWithCounts(
+                    acqdf.toStoreData(self.distribForms)
+                )
+            }
+        );
     };
 
     this.saveCopyFieldsBeforeDF = function(copy_id) {
@@ -748,31 +769,40 @@ function AcqLiTable() {
         }
     };
 
-    this._fetchDistribFormulas = function(onload) {
-        if(this.distribForms) {
-            onload();
-        } else {
-            var self = this;
-            fieldmapper.standardRequest(
-                ['open-ils.acq', 'open-ils.acq.distribution_formula.ranged.retrieve.atomic'],
-                {   async: true,
-                    params: [openils.User.authtoken],
-                    oncomplete: function(r) {
-                        self.distribForms = openils.Util.readResponse(r);
-                        if(!self.distribForms || self.distribForms.length == 0) {
-                            self.distribForms = [];
-                        } else {
-                            self.distribFormulaStore =
-                                new dojo.data.ItemFileReadStore(
-                                    {data:acqdf.toStoreData(self.distribForms)}
-                                );
-                        }
-                        self._addDistribFormulaRow();
-                        onload();
-                    }
-                }
-            );
+    this._labelFormulasWithCounts = function(store_data) {
+        for (var key in store_data.items) {
+            var obj = store_data.items[key];
+
+            if (this.dfaCache[obj.id])
+                obj.use_count = Number(obj.use_count) + this.dfaCache[obj.id];
+
+            obj.dynLabel = "<span class='acq-lit-distrib-form-use-count'>[" +
+                obj.use_count + "]</span>&nbsp; " + obj.name;
         }
+        return store_data;
+    };
+
+    /**
+     * This method formerly would not refetch the DF formulas if they'd been
+     * loaded already, but now it always re-fetches, since use_count changes.
+     */
+    this._fetchDistribFormulas = function(onload) {
+        fieldmapper.standardRequest(
+            ["open-ils.acq",
+                "open-ils.acq.distribution_formula.ranged.retrieve.atomic"],
+            {
+                "async": true,
+                "params": [openils.User.authtoken],
+                "oncomplete": function(r) {
+                    self.distribForms = openils.Util.readResponse(r);
+                    if(!self.distribForms || self.distribForms.length == 0) {
+                        self.distribForms = [];
+                    }
+                    self._addDistribFormulaRow();
+                    onload();
+                }
+            }
+        );
     }
 
     this._drawBatchCopyWidgets = function() {
@@ -993,6 +1023,15 @@ function AcqLiTable() {
         this.copyTbody.removeChild(row);
     }
 
+    this._dfaCacheAsList = function() {
+        var L = [];
+        for (var key in this.dfaCache) {
+            for (var i = 0; i < this.dfaCache[key]; i++)
+                L.push(key);
+        }
+        return L;
+    }
+
     this.saveCopyChanges = function(liId) {
         var self = this;
         var copies = [];
@@ -1033,23 +1072,22 @@ function AcqLiTable() {
             );
         }
 
-        if (this.dfaCache.length > 0) {
-            var oldlength = this.dfaCache.length;
-
+        var dfa_list = this._dfaCacheAsList();
+        if (dfa_list.length > 0) {
             fieldmapper.standardRequest(
                 ["open-ils.acq",
                 "open-ils.acq.distribution_formula.record_application"],
                 {
                     "async": true,
-                    "params": [openils.User.authtoken, this.dfaCache, liId],
+                    "params": [openils.User.authtoken, dfa_list, liId],
                     "onresponse": function(r) {
                         var res = openils.Util.readResponse(r);
-                        if (res && res.length != oldlength)
+                        if (res && res.length < dfa_list.length)
                             alert(localeStrings.DFA_NOT_ALL);
                     }
                 }
             );
-            this.dfaCache = [];
+            this.dfaCache = {};
         }
     }
 
