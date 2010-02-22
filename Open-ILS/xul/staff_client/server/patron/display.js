@@ -701,6 +701,10 @@ patron.display.prototype = {
                                             {},
                                             {
                                                 //'id' : list[0],
+                                                'spawn_group_interface' : function() { obj.spawn_group_interface(); },
+                                                'new_patron_tab' : xulG.new_patron_tab,
+                                                'new_tab' : xulG.new_tab,
+                                                'set_tab' : xulG.set_tab,
                                                 'on_finished' : function(patron) {
                                                     obj.patron = patron;
                                                     obj.controller.render();
