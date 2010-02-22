@@ -669,16 +669,21 @@ sub mk_env {
     # Grab the patron
     # --------------------------------------------------------------------------
     my $patron;
+	my $flesh = {
+		flesh => 1,
+		flesh_fields => {au => [ qw/ card / ]}
+	};
+
 	if( $self->patron_id ) {
-		$patron = $e->retrieve_actor_user($self->patron_id) or return $e->event;
+		$patron = $e->retrieve_actor_user([$self->patron_id, $flesh]) or return $e->event;
 
 	} elsif( $self->patron_barcode ) {
 
 		my $card = $e->search_actor_card( 
 			{barcode => $self->patron_barcode})->[0] or return $e->event;
 
-		$patron = $e->search_actor_user( 
-			{card => $card->id})->[0] or return $e->event;
+		$patron = $e->search_actor_user([ 
+			{card => $card->id}, $flesh])->[0] or return $e->event;
 
 	} else {
 		if( my $copy = $self->copy ) {
@@ -686,7 +691,7 @@ sub mk_env {
 				{target_copy => $copy->id, checkin_time => undef});
 
 			if( my $circ = $circs->[0] ) {
-				$patron = $e->retrieve_actor_user($circ->usr)
+				$patron = $e->retrieve_actor_user([$circ->usr, $flesh])
 					or return $e->event;
 			}
 		}
@@ -694,6 +699,23 @@ sub mk_env {
 
     return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'))
         unless $self->patron($patron) or $self->is_checkin;
+
+    unless($self->is_checkin) {
+
+        # Check for inactivity and patron reg. expiration
+
+        $self->bail_on_events(OpenILS::Event->new('PATRON_INACTIVE'))
+			unless $U->is_true($patron->active);
+	
+		$self->bail_on_events(OpenILS::Event->new('PATRON_CARD_INACTIVE'))
+			unless $U->is_true($patron->card->active);
+	
+		my $expire = DateTime::Format::ISO8601->new->parse_datetime(
+			cleanse_ISO8601($patron->expire_date));
+	
+		$self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
+			if( CORE::time > $expire->epoch ) ;
+    }
 }
 
 # --------------------------------------------------------------------------
