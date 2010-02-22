@@ -296,13 +296,35 @@ BEGIN
     -- Fail if the user is BARRED
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
 
-    -- Fail if we couldn't find a set of tests
+    -- Fail if we couldn't find the user 
     IF user_object.id IS NULL THEN
         result.fail_part := 'no_user';
         result.success := FALSE;
         done := TRUE;
         RETURN NEXT result;
         RETURN;
+    END IF;
+
+    SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
+
+    -- Fail if we couldn't find the item 
+    IF item_object.id IS NULL THEN
+        result.fail_part := 'no_user';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+        RETURN;
+    END IF;
+
+    SELECT INTO circ_test * FROM action.find_circ_matrix_matchpoint(circ_ou, match_item, match_user, renewal);
+    result.matchpoint := circ_test.id;
+
+    -- Fail if we couldn't find a matchpoint
+    IF result.matchpoint IS NULL THEN
+        result.fail_part := 'no_matchpoint';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
     END IF;
 
     IF user_object.barred IS TRUE THEN
@@ -313,7 +335,6 @@ BEGIN
     END IF;
 
     -- Fail if the item can't circulate
-    SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
     IF item_object.circulate IS FALSE THEN
         result.fail_part := 'asset.copy.circulate';
         result.success := FALSE;
@@ -343,18 +364,7 @@ BEGIN
         RETURN NEXT result;
     END IF;
 
-    SELECT INTO circ_test * FROM action.find_circ_matrix_matchpoint(circ_ou, match_item, match_user, renewal);
-    result.matchpoint := circ_test.id;
-
     SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( circ_test.org_unit );
-
-    -- Fail if we couldn't find a set of tests
-    IF result.matchpoint IS NULL THEN
-        result.fail_part := 'no_matchpoint';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END IF;
 
     -- Fail if the test is set to hard non-circulating
     IF circ_test.circulate IS FALSE THEN

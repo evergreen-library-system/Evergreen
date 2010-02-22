@@ -186,18 +186,11 @@ BEGIN
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
     SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( pickup_ou );
 
+    result.success := TRUE;
+
     -- Fail if we couldn't find a user
     IF user_object.id IS NULL THEN
         result.fail_part := 'no_user';
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-        RETURN;
-    END IF;
-
-    -- Fail if user is barred
-    IF user_object.barred IS TRUE THEN
-        result.fail_part := 'actor.usr.barred';
         result.success := FALSE;
         done := TRUE;
         RETURN NEXT result;
@@ -215,6 +208,9 @@ BEGIN
         RETURN;
     END IF;
 
+    SELECT INTO matchpoint_id action.find_hold_matrix_matchpoint(pickup_ou, request_ou, match_item, match_user, match_requestor);
+    result.matchpoint := matchpoint_id;
+
     SELECT INTO ou_skip * FROM actor.org_unit_setting WHERE name = 'circ.holds.target_skip_me' AND org_unit = item_object.circ_lib;
 
     -- Fail if the circ_lib for the item has circ.holds.target_skip_me set to true
@@ -226,7 +222,14 @@ BEGIN
         RETURN;
     END IF;
 
-    SELECT INTO matchpoint_id action.find_hold_matrix_matchpoint(pickup_ou, request_ou, match_item, match_user, match_requestor);
+    -- Fail if user is barred
+    IF user_object.barred IS TRUE THEN
+        result.fail_part := 'actor.usr.barred';
+        result.success := FALSE;
+        done := TRUE;
+        RETURN NEXT result;
+        RETURN;
+    END IF;
 
     -- Fail if we couldn't find any matchpoint (requires a default)
     IF matchpoint_id IS NULL THEN
@@ -238,9 +241,6 @@ BEGIN
     END IF;
 
     SELECT INTO hold_test * FROM config.hold_matrix_matchpoint WHERE id = matchpoint_id;
-
-    result.matchpoint := hold_test.id;
-    result.success := TRUE;
 
     IF hold_test.holdable IS FALSE THEN
         result.fail_part := 'config.hold_matrix_test.holdable';
