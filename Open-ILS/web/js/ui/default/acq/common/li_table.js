@@ -772,9 +772,10 @@ function AcqLiTable() {
     this._labelFormulasWithCounts = function(store_data) {
         for (var key in store_data.items) {
             var obj = store_data.items[key];
+            obj.use_count = Number(obj.use_count); /* needed for sorting */
 
             if (this.dfaCache[obj.id])
-                obj.use_count = Number(obj.use_count) + this.dfaCache[obj.id];
+                obj.use_count = obj.use_count + Number(this.dfaCache[obj.id]);
 
             obj.dynLabel = "<span class='acq-lit-distrib-form-use-count'>[" +
                 obj.use_count + "]</span>&nbsp; " + obj.name;
