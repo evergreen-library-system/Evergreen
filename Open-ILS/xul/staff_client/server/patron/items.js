@@ -560,9 +560,9 @@ patron.items.prototype = {
                         }
                     }
                 }
-            }
-            for (var i = 0; i < retrieve_ids.length; i++) {
-                obj.refresh(retrieve_ids[i].circ_id, !do_not_move_these[ retrieve_ids[i].barcode ]);
+                for (var i = 0; i < retrieve_ids.length; i++) {
+                    obj.refresh(retrieve_ids[i].circ_id, !do_not_move_these[ retrieve_ids[i].barcode ]);
+                }
             }
         } catch(E) {
             obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_claimed_returned.not_marked_claimed_returned'),E);
