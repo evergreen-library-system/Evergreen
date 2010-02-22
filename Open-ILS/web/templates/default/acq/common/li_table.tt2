@@ -142,8 +142,13 @@
                         <div dojoType="dijit.form.DropDownButton">
                             <span>New Note</span>
                             <div dojoType="dijit.TooltipDialog">
-                                <div>
-                                    <div jsId='acqLitCreateNoteText' dojoType='dijit.form.Textarea' style='height:5em; width:25em;' name='note'></div>
+                                <div class="acq-lit-note-create-row">
+                                    <label for="acq-lit-create-note-text">Main body of note</label>
+                                    <div jsId='acqLitCreateNoteText' dojoType='dijit.form.Textarea' style='height:5em; width:20em;' name='note' id="acq-lit-create-note-text"></div>
+                                </div>
+                                <div class="acq-lit-note-create-row">
+                                    <label for="acq-lit-note-alert-selector">Optional alert text</label>
+                                    <input id="acq-lit-note-alert-selector" jsId="acqLitNoteAlertSelector" dojoType="dijit.form.FilteringSelect" labelAttr="code" searchAttr="code" required="false" />
                                 </div>
                                 <button jsId='acqLitCreateLiNoteSubmit' dojoType='dijit.form.Button' type="submit">Create</button>
                             </div>

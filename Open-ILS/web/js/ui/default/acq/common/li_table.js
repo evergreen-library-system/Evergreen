@@ -311,11 +311,29 @@ function AcqLiTable() {
     };
 
 
+    this._setAlertStore = function() {
+        acqLitNoteAlertSelector.store = new dojo.data.ItemFileReadStore(
+            {
+                "data": acqliat.toStoreData(
+                    (new openils.PermaCrud()).search(
+                        "acqliat", {"id": {"!=": null}}
+                    )
+                )
+            }
+        );
+        acqLitNoteAlertSelector.setValue(); /* make the store "live" */
+        acqLitNoteAlertSelector._store_ready = true;
+    };
+
     /**
      * Draws and shows the lineitem notes pane
      */
     this.drawLiNotes = function(li) {
         var self = this;
+
+        if (!acqLitNoteAlertSelector._store_ready) {
+            this._setAlertStore();
+        }
 
         li.lineitem_notes(
             li.lineitem_notes().sort(
@@ -337,6 +355,9 @@ function AcqLiTable() {
             note.isnew(true);
             note.value(value);
             note.lineitem(li.id());
+            if (acqLitNoteAlertSelector.item)
+                note.alert_text(Number(acqLitNoteAlertSelector.item.id));
+
             self.updateLiNotes(li, note);
         }
 
