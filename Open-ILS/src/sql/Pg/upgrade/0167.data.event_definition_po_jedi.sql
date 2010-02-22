@@ -2,7 +2,7 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0167');
 
-INSERT INTO acq.event_definition (active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) VALUES (true, 1, 'PO JEDI', 'format.po.jedi', 'NOOP_True', 'ProcessTemplate', NULL, NULL, '00:05:00', NULL, NULL,
+INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) VALUES (true, 1, 'PO JEDI', 'format.po.jedi', 'NOOP_True', 'ProcessTemplate', NULL, NULL, '00:05:00', NULL, NULL,
 $$[%- USE date -%]
 [%# start JEDI document -%]
 [%- BLOCK big_block -%]
