@@ -7,5 +7,6 @@ use OpenILS::Application::Acq::Financials;
 use OpenILS::Application::Acq::Provider;
 use OpenILS::Application::Acq::Lineitem;
 use OpenILS::Application::Acq::Order;
+use OpenILS::Application::Acq::EDI;
 
 1;

@@ -35,6 +35,7 @@ use OpenILS::Utils::Lockfile;
 use File::Basename qw/fileparse/;
 
 use Data::Dumper;
+use Carp;
 
 our @extra_opts = (     # additional keys are stored here
     # 'addlopt'
@@ -56,7 +57,11 @@ sub _default_self {
             'internal_var'  => 'XYZ',
         },
     #   lockfile => undef,
-    }
+    #   session => undef,
+    #   bootstrapped => 0,
+    #   got_options => 0,
+        auto_get_options_4_bootstrap => 1,
+    };
 }
 
 sub is_clean {
@@ -92,6 +97,7 @@ sub fuzzykey {                      # when you know the hash you want from, but 
 
 sub MyGetOptions {
     my $self = shift;
+    $self->{got_options} and carp "MyGetOptions called after options were already retrieved previously";
     my @keys = sort {is_clean($b) <=> is_clean($a)} keys %{$self->{default_opts}};
     $debug and print "KEYS: ", join(", ", @keys), "\n";
     foreach (@keys) {
@@ -112,6 +118,8 @@ sub MyGetOptions {
         $self->{lockfile_obj} = OpenILS::Utils::Lockfile->new($self->first_defined('lock-file'));
         $self->{lockfile}     = $self->{lockfile_obj}->filename;
     }
+    $self->{got_options}++;
+    return $self;
 }
 
 sub first_defined {
@@ -137,7 +145,7 @@ sub new {
     my $self  = _default_self;
     bless ($self, $class);
     $self->init(@_);
-    $debug and print "new obj: ", Dumper($self);
+    $debug and print "new ",  __PACKAGE__, " obj: ", Dumper($self);
     return $self;
 }
 
@@ -204,19 +212,30 @@ sub example {
     return "\n\nEXAMPLES:\n\n    $0 --osrf-config /my/other/opensrf_core.xml\n";
 }
 
+# the proper order is: MyGetOptions, bootstrap, session.
+# But the latter subs will check to see if they need to call the preceeding one(s).  
+
 sub session {
     my $self = shift or return;
+    $self->{bootstrapped} or $self->bootstrap();
+    @_ or croak "session() called without required argument (app_name, e.g. 'open-ils.acq')";
     return ($self->{session} ||= OpenSRF::AppSession->create(@_));
 }
 
 sub bootstrap {
     my $self = shift or return;
+    if ($self->{auto_get_options_4_bootstrap} and not $self->{got_options}) {
+        $debug and print "Automatically calling MyGetOptions before bootstrap\n";
+        $self->MyGetOptions();
+    }
     try {
         $debug and print "bootstrap lock-file  : ", $self->first_defined('lock-file'), "\n";
         $debug and print "bootstrap osrf-config: ", $self->first_defined('osrf-config'), "\n";
         OpenSRF::System->bootstrap_client(config_file => $self->first_defined('osrf-config'));
         Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+        $self->{bootstrapped} = 1;
     } otherwise {
+        $self->{bootstrapped} = 0;
         warn shift;
     };
 }

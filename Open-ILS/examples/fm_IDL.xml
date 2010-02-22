@@ -3078,6 +3078,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="street1"  reporter:datatype="text"/>
 			<field name="street2"  reporter:datatype="text"/>
 			<field name="valid" reporter:datatype="bool"/>
+			<field name="san" reporter:datatype="text" reporter:label="SAN"/>
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
@@ -5410,6 +5411,39 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+
+	<class id="acqedim" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::edi_message" oils_persist:tablename="acq.edi_message" reporter:label="EDI Message">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.edi_message_id_seq">
+			<field name="id"               reporter:datatype="id"        reporter:label="EDI Message ID"/>
+			<field name="account"          reporter:datatype="link"      reporter:label="EDI Account"/>
+			<field name="remote_file"      reporter:datatype="text"      reporter:label="Filename"/>
+			<field name="create_time"      reporter:datatype="timestamp" reporter:label="Time Created"/>
+			<field name="translate_time"   reporter:datatype="timestamp" reporter:label="Time Translated"/>
+			<field name="process_time"     reporter:datatype="timestamp" reporter:label="Time Processed"/>
+			<field name="error_time"       reporter:datatype="timestamp" reporter:label="Time of Error"/>
+			<field name="status"           reporter:datatype="text"      reporter:label="Status"/>
+			<field name="edi"              reporter:datatype="text"      reporter:label="EDI Message Body"/>
+			<field name="jedi"             reporter:datatype="text"      reporter:label="JEDI Message Body"/>
+			<field name="error"            reporter:datatype="text"      reporter:label="Error"/>
+		</fields>
+		<links>
+			<link field="account" reltype="has_a" key="id" map="" class="acqedi"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="ADMIN_PROVIDER MANAGE_PROVIDER VIEW_PROVIDER">
+                    <context link="account" jump="provider" field="owner"/>
+                </retrieve>
+                <update   permission="ADMIN_PROVIDER MANAGE_PROVIDER VIEW_PROVIDER">
+                    <context link="account" jump="provider" field="owner"/>
+                </update>
+                <delete   permission="ADMIN_PROVIDER MANAGE_PROVIDER VIEW_PROVIDER">
+                    <context link="account" jump="provider" field="owner"/>
+                </delete>
+            </actions>
+        </permacrud>
+	</class>
+
 
 	<class id="rof" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::output_folder" oils_persist:tablename="reporter.output_folder" reporter:label="Output Folder">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.output_folder_id_seq">

@@ -41,12 +41,27 @@ sub client {
     return $self->{client} ||= RPC::XML::Client->new($self->{host});     # TODO: auth
 }
 
+sub debug_file {
+    my $self = shift;
+    my $text = shift;
+    my $filename = @_ ? shift : ('/tmp/' . __PACKAGE__ . '_unknown.tmp');
+    unless (open (TMP_EDI, ">$filename")) {
+        warn "Cannot write $filename: $!";
+        return;
+    }
+    print TMP_EDI $text, "\n";
+    close TMP_EDI;
+    return 1;
+}
+
 sub json2edi {
     my $self = shift;
     my $text = shift;
+    $self->debug_file($text, '/tmp/perl_json2edi.tmp');
     my $client = $self->client();
     $self->{verbose} and print "Trying json2edi on host: $self->{host}\n";
-    my $resp = $client->send_request('edi2json', $text);
+    $client->request->header('Content-Type' => 'text/xml;charset=utf-8');
+    my $resp = $client->send_request('json2edi', $text);
     $self->{verbose} and print Dumper($resp);
     return $resp;
 }
@@ -54,9 +69,11 @@ sub json2edi {
 sub edi2json {
     my $self = shift;
     my $text  = shift;
+    $self->debug_file($text, '/tmp/perl_edi2json.tmp');
     my $client = $self->client();
     $self->{verbose} and print "Trying edi2json on host: $self->{host}\n";
-    my $resp = $client->send_request('json2edi', $text);
+    $client->request->header('Content-Type' => 'text/xml;charset=utf-8');
+    my $resp = $client->send_request('edi2json', $text);
     $self->{verbose} and print Dumper($resp);
     return $resp;
 }

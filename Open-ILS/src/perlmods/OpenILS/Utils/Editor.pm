@@ -33,7 +33,6 @@ my %PERMS = (
 	'action.circulation'		=> { retrieve => 'VIEW_CIRCULATIONS'},
 );
 
-my $logstr;
 use constant E => 'error';
 use constant W => 'warn';
 use constant I => 'info';
@@ -52,8 +51,6 @@ sub new {
 	$class = ref($class) || $class;
 	my $self = bless( \%params, $class );
 	$self->{checked_perms} = {};
-	$logstr = "editor [0";
-	$logstr = "editor [1" if $self->{xact};
 	return $self;
 }
 

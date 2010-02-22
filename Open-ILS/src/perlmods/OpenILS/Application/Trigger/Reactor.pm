@@ -42,6 +42,12 @@ my $_TT_helpers = {
         return $str;
     },
 
+    escape_json => sub {
+        my $str = shift;
+        $str =~ s/([\x{0080}-\x{fffd}])/sprintf('\u%0.4x',ord($1))/sgoe;
+        return $str;
+    },
+
     # returns the calculated user locale
     get_user_locale => sub { 
         my $user_id = shift;
@@ -89,7 +95,9 @@ my $_TT_helpers = {
 
     # returns matching line item attribute, or undef
     get_li_attr => sub {
-        my ($name, $type, $attr) = @_;
+        my $name = shift or return;     # the first arg is always the name
+        my ($type, $attr) = (scalar(@_) == 1) ? (undef, $_[0]) : @_;
+        # if the next is the last, it's the attributes, otherwise type
         # use Data::Dumper; $logger->warn("get_li_attr: " . Dumper($attr));
         ($name and @$attr) or return;
         foreach (@$attr) {
@@ -111,6 +119,7 @@ sub run_TT {
     my $error;
     my $output = '';
     my $tt = Template->new;
+    # my $tt = Template->new(ENCODING => 'utf8');   # ??
     $env->{helpers} = $_TT_helpers;
 
     unless( $tt->process(\$env->{template}, $env, \$output) ) {

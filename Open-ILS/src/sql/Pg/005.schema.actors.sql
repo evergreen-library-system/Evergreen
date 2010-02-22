@@ -532,7 +532,8 @@ CREATE TABLE actor.org_address (
 	county		TEXT,
 	state		TEXT	NOT NULL,
 	country		TEXT	NOT NULL,
-	post_code	TEXT	NOT NULL
+	post_code	TEXT	NOT NULL,
+    san         TEXT
 );
 
 CREATE INDEX actor_org_address_org_unit_idx ON actor.org_address (org_unit);
