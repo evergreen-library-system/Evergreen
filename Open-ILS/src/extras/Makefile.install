@@ -100,6 +100,7 @@ DEBS =  \
 	libpq-dev\
 	libreadline5-dev\
 	libspreadsheet-writeexcel-perl\
+	libssh2-1-dev\
 	libtext-aspell-perl\
 	libtext-csv-perl\
 	libtext-csv-perl\
@@ -224,6 +225,7 @@ DEB_APACHE_DISMODS = \
 # Chronically unpackaged CPAN modules
 CPAN_MODULES = \
     Business::CreditCard::Object \
+    Net::uFTP \
     Net::Z3950::Simple2ZOOM \
     UUID::Tiny \
     SRU \
