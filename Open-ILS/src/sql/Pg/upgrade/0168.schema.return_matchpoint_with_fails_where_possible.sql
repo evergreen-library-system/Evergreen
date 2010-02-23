@@ -1,7 +1,7 @@
 
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0167'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0168'); -- miker
 
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
