@@ -1541,12 +1541,12 @@ INSERT into config.org_unit_setting_type
   'interval' ),
 
 ( 'credit.payments.allow',
-  '',
+  'Allow Credit Card Payments',
   'If enabled, patrons will be able to pay fines accrued at this location via credit card',
   'bool' ),
 
 ( 'global.default_locale',
-  'Allow Credit Card Payments',
+  'Global Default Locale',
   null,
   'string' ),
 
