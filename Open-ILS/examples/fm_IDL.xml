@@ -4483,6 +4483,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="acqpron" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::provider_note" oils_persist:tablename="acq.provider_note" reporter:label="Provider Note">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_note_id_seq">
+			<field reporter:label="PO Note ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Provider" name="provider" reporter:datatype="link" />
+			<field reporter:label="Creator" name="creator" reporter:datatype="link" />
+			<field reporter:label="Creation Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp" />
+			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
+			<field reporter:label="Note Value" name="value" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+		</links>
+	</class>
+
 	<class id="acqinv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice" oils_persist:tablename="acq.invoice" reporter:label="Invoice">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.invoice_id_seq">
 			<field reporter:label="Internal Invoice ID" name="id" reporter:datatype="id"/>

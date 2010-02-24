@@ -246,6 +246,8 @@ BEGIN
     UPDATE acq.purchase_order SET owner = dest_usr WHERE owner = src_usr;
     UPDATE acq.po_note SET creator = dest_usr WHERE creator = src_usr;
     UPDATE acq.po_note SET editor = dest_usr WHERE editor = src_usr;
+    UPDATE acq.provider_note SET creator = dest_usr WHERE creator = src_usr;
+    UPDATE acq.provider_note SET editor = dest_usr WHERE editor = src_usr;
     UPDATE acq.lineitem_note SET creator = dest_usr WHERE creator = src_usr;
     UPDATE acq.lineitem_note SET editor = dest_usr WHERE editor = src_usr;
     UPDATE acq.lineitem_usr_attr_definition SET usr = dest_usr WHERE usr = src_usr;

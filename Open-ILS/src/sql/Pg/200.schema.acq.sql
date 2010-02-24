@@ -95,6 +95,19 @@ CREATE TABLE acq.provider_contact_address (
 	fax_phone		TEXT
 );
 
+CREATE TABLE acq.provider_note (
+	id		SERIAL				PRIMARY KEY,
+	provider    INT				NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
+	creator		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	editor		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	value		TEXT			NOT NULL
+);
+CREATE INDEX acq_pro_note_pro_idx      ON acq.provider_note ( provider );
+CREATE INDEX acq_pro_note_creator_idx  ON acq.provider_note ( creator );
+CREATE INDEX acq_pro_note_editor_idx   ON acq.provider_note ( editor );
+
 
 CREATE TABLE acq.funding_source (
 	id		SERIAL	PRIMARY KEY,
