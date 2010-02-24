@@ -2289,7 +2289,7 @@ sub hold_item_is_checked_out {
 
     if($hold_type eq 'C') {
 
-        $query->{where}->{'+acp'}->{id} = $hold_target;
+        $query->{where}->{'+acp'}->{id}->{in}->{where}->{'target_copy'} = $hold_target;
 
     } elsif($hold_type eq 'V') {
 
