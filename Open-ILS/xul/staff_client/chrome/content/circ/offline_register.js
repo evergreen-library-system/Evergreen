@@ -206,13 +206,13 @@ function check_patron(obj) {
     } else {
         $('street1').parentNode.setAttribute('style','');
     }
-    if (! obj.user.ident_value ) {
+    /*if (! obj.user.ident_value ) {
         errors += offlineStrings.getString('circ.offline_register.missing.ident_value') + "\n";
         $('ident_value').focus();
         $('ident_value').parentNode.setAttribute('style','background-color: red');
     } else {
         $('ident_value').parentNode.setAttribute('style','');
-    }
+    }*/
     if (! obj.user.ident_type ) {
         errors += offlineStrings.getString('circ.offline_register.missing.ident_type') + "\n";
         $('ident_type').focus();
