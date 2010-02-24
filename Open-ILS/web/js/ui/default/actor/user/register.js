@@ -425,6 +425,12 @@ function fleshFMRow(row, fmcls, args) {
             break;
     }
 
+    var required = row.getAttribute('required') == 'required';
+
+    // password data is not fetched/required/displayed for existing users
+    if(!patron.isnew() && 'passwd' == fmfield)
+        required = false;
+
     var dijitArgs = {
         style: wstyle, 
         required : required,
@@ -436,8 +442,12 @@ function fleshFMRow(row, fmcls, args) {
     if(value !== null)
         dijitArgs.value = value;
 
-    var required = row.getAttribute('required') == 'required';
+    // fetch profile groups non-async so existing expire_date is
+    // not overwritten when the profile groups arrive and update
+    var sync = (fmfield == 'profile') ? true : false;
+
     var widget = new openils.widget.AutoFieldWidget({
+        forceSync : sync,
         idlField : fieldIdl,
         fmObject : fmObject,
         fmClass : fmcls,
