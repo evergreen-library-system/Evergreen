@@ -40,6 +40,10 @@ CREATE TABLE acq.provider (
     edi_default         INT,          -- REFERENCES acq.edi_account (id) DEFERRABLE INITIALLY DEFERRED
 	active              BOOL    NOT NULL DEFAULT TRUE,
 	prepayment_required BOOL    NOT NULL DEFAULT FALSE,
+    url                 TEXT,
+    email               TEXT,
+    phone               TEXT,
+    fax_phone           TEXT,
     CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
 	CONSTRAINT code_once_per_owner UNIQUE (code, owner)
 );
@@ -63,7 +67,8 @@ CREATE TABLE acq.provider_address (
 	county		TEXT,
 	state		TEXT	NOT NULL,
 	country		TEXT	NOT NULL,
-	post_code	TEXT	NOT NULL
+	post_code	TEXT	NOT NULL,
+	fax_phone	TEXT	NOT NULL
 );
 
 CREATE TABLE acq.provider_contact (
@@ -86,7 +91,8 @@ CREATE TABLE acq.provider_contact_address (
 	county			TEXT,
 	state			TEXT	NOT NULL,
 	country			TEXT	NOT NULL,
-	post_code		TEXT	NOT NULL
+	post_code		TEXT	NOT NULL,
+	fax_phone		TEXT
 );
 
 

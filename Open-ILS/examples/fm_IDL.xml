@@ -4462,6 +4462,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="EDI Default" name="edi_default" reporter:datatype="link" />
 			<field reporter:label="Active" name="active" reporter:datatype="bool" />
 			<field reporter:label="Prepayment Required" name="prepayment_required" reporter:datatype="bool" />
+			<field reporter:label="URL" name="url" reporter:datatype="text" />
+			<field reporter:label="Email" name="email" reporter:datatype="text" />
+			<field reporter:label="Phone" name="phone" reporter:datatype="text" />
+			<field reporter:label="Fax Phone" name="fax_phone" reporter:datatype="text" />
 		</fields>
 		<links>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
@@ -4591,6 +4595,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Street 1" name="street1"  reporter:datatype="text"/>
 			<field reporter:label="Street 2" name="street2"  reporter:datatype="text"/>
 			<field reporter:label="Is Valid?" name="valid" reporter:datatype="bool"/>
+			<field reporter:label="Fax Phone" name="fax_phone" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
@@ -4655,6 +4660,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Street (2)" name="street2"  reporter:datatype="text"/>
 			<field reporter:label="Contact" name="contact" reporter:datatype="link"/>
 			<field reporter:label="Valid Address?" name="valid" reporter:datatype="bool"/>
+			<field reporter:label="Fax Phone" name="fax_phone" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="contact" reltype="has_a" key="id" map="" class="acqpc"/>
