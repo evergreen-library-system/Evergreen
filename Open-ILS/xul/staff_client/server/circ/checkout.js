@@ -276,13 +276,19 @@ circ.checkout.prototype = {
                 if (disable) {
                     document.getElementById('checkout_submit_barcode_button').disabled = true;
                     document.getElementById('checkout_done').disabled = true;
+                    document.getElementById('checkout_duedate_checkbox').disabled = true;
+                    document.getElementById('checkout_duedate_timepicker').disabled = true;
                     obj.controller.view.checkout_menu.disabled = true;
                     obj.controller.view.checkout_barcode_entry_textbox.disabled = true;
+                    obj.controller.view.checkout_duedate_datepicker.disabled = true;
                 } else {
                     document.getElementById('checkout_submit_barcode_button').disabled = false;
                     document.getElementById('checkout_done').disabled = false;
+                    document.getElementById('checkout_duedate_checkbox').disabled = false;
+                    document.getElementById('checkout_duedate_timepicker').disabled = false;
                     obj.controller.view.checkout_menu.disabled = false;
                     obj.controller.view.checkout_barcode_entry_textbox.disabled = false;
+                    obj.controller.view.checkout_duedate_datepicker.disabled = false;
                 }
             }
         } catch(E) {
