@@ -21,5 +21,6 @@
     'UNRECEIVE_LI': "Are you sure you want to mark this lineitem as UN-received?",
 
     'UNRECEIVE_LID': "Are you sure you want to mark this copy as UN-received?",
-    'CONFIRM_LI_ALERT': "An alert has been placed on the lineitem titled,\n\"${0}\":\n\n${1}\n\n${2}\n\nChoose OK if you wish to acknowledge this alert."
+    'CONFIRM_LI_ALERT': "An alert has been placed on the lineitem titled,\n\"${0}\":\n\n${1}\n${2}\n${3}\nChoose OK if you wish to acknowledge this alert.",
+    'ALERT_UNSELECTED': "You must choose an alert code."
 }

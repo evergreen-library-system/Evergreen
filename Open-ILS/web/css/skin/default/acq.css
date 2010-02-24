@@ -140,7 +140,9 @@ label[for="attr_search_type_scalar"] { vertical-align: top; }
 .acq-lit-note-textarea { border-right: 2px solid #aaa; width:50%;}
 .acq-lit-note-textarea div { padding: 4px; font-weight: bold; }
 #acq-lit-notes-tbody td {padding: 20px 10px 20px 10px; border-bottom:2px solid #aaa;}
-.acq-lit-note-create-row { margin: 6px 0; }
+#acq-lit-alert-value { height: 5em; width: 20em; }
+.acq-lit-note-row { margin: 6px 0; }
+span[name="alert_code"] {color: #c00;padding-right: 1em;font-weight: bold;}
 
 .acq-lit-li-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
 .acq-lit-li-menu-left {text-align:left; width:300px;}

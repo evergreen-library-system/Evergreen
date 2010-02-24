@@ -142,18 +142,26 @@
                         <div dojoType="dijit.form.DropDownButton">
                             <span>New Note</span>
                             <div dojoType="dijit.TooltipDialog">
-                                <div class="acq-lit-note-create-row">
-                                    <label for="acq-lit-create-note-text">Main body of note</label>
-                                    <div jsId='acqLitCreateNoteText' dojoType='dijit.form.Textarea' style='height:5em; width:20em;' name='note' id="acq-lit-create-note-text"></div>
-                                </div>
-                                <div class="acq-lit-note-create-row">
-                                    <label for="acq-lit-note-alert-selector">Optional alert text</label>
-                                    <input id="acq-lit-note-alert-selector" jsId="acqLitNoteAlertSelector" dojoType="dijit.form.FilteringSelect" labelAttr="code" searchAttr="code" required="false" />
+                                <div class="acq-lit-note-row">
+                                    <div jsId='acqLitCreateNoteText' dojoType='dijit.form.Textarea' style='height:5em; width:25em;' name='note'></div>
                                 </div>
                                 <button jsId='acqLitCreateLiNoteSubmit' dojoType='dijit.form.Button' type="submit">Create</button>
                             </div>
                         </div>
-                        <div dojoType='dijit.form.Button' id='acq-lit-notes-save-button'>Save Changes</div>
+                        <div dojoType="dijit.form.DropDownButton">
+                            <span>New Alert</span>
+                            <div dojoType="dijit.TooltipDialog">
+                                <div class="acq-lit-note-row">
+                                    <label for="acq-lit-alert-alert-text">Choose alert code &nbsp;</label>
+                                    <input id="acq-lit-alert-alert-text" jsId="acqLitAlertAlertText" dojoType="dijit.form.FilteringSelect" labelAttr="code" searchAttr="code" required="true" />
+                                </div>
+                                <div class="acq-lit-note-row">
+                                    <label for="acq-lit-alert-value">Optional description</label>
+                                    <div jsId="acqLitAlertNoteValue" id="acq-lit-alert-value" dojoType="dijit.form.Textarea" name="value"></div>
+                                </div>
+                                <button jsId="acqLitCreateAlertSubmit" dojoType="dijit.form.Button" type="submit">Create</button>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -163,7 +171,7 @@
             <li id='acq-lit-notes-row'>
                 <table style='width:100%;' class='oils-generic-table'>
                     <tr>
-                        <td width='70%' align='left'><span style='font-size:120%' name='value'></span></td>
+                        <td width='70%' align='left'><span name="alert_code"></span><span style='font-size:120%' name='value'></span></td>
                         <td align='right' style='padding-right:30px;'>
                             <span name='edit_time'></span>
                             <span style='padding-left:4px;'><a name='delete' href='javascript:void(0);' style='color:red;'>Delete</a></span>

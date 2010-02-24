@@ -196,8 +196,9 @@ function AcqLiTable() {
 
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
-        dojo.query('[name=notes_count]', row)[0].innerHTML = li.lineitem_notes().length;
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
+
+        this.updateLiNotesCount(li, row);
 
         // show which PO this lineitem is a member of
         if(li.purchase_order() && !this.isPO) {
@@ -263,6 +264,12 @@ function AcqLiTable() {
         }
     };
 
+    this.updateLiNotesCount = function(li, row) {
+        if (typeof(row) == "undefined")
+            row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
+        nodeByName("notes_count", row).innerHTML = li.lineitem_notes().length;
+    };
+
     this.updateLiReceivedness = function(li, row) {
         if (typeof(row) == "undefined")
             row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
@@ -312,7 +319,7 @@ function AcqLiTable() {
 
 
     this._setAlertStore = function() {
-        acqLitNoteAlertSelector.store = new dojo.data.ItemFileReadStore(
+        acqLitAlertAlertText.store = new dojo.data.ItemFileReadStore(
             {
                 "data": acqliat.toStoreData(
                     (new openils.PermaCrud()).search(
@@ -321,8 +328,8 @@ function AcqLiTable() {
                 )
             }
         );
-        acqLitNoteAlertSelector.setValue(); /* make the store "live" */
-        acqLitNoteAlertSelector._store_ready = true;
+        acqLitAlertAlertText.setValue(); /* make the store "live" */
+        acqLitAlertAlertText._store_ready = true;
     };
 
     /**
@@ -331,9 +338,8 @@ function AcqLiTable() {
     this.drawLiNotes = function(li) {
         var self = this;
 
-        if (!acqLitNoteAlertSelector._store_ready) {
+        if (!acqLitAlertAlertText._store_ready)
             this._setAlertStore();
-        }
 
         li.lineitem_notes(
             li.lineitem_notes().sort(
@@ -355,14 +361,28 @@ function AcqLiTable() {
             note.isnew(true);
             note.value(value);
             note.lineitem(li.id());
-            if (acqLitNoteAlertSelector.item)
-                note.alert_text(Number(acqLitNoteAlertSelector.item.id));
 
             self.updateLiNotes(li, note);
         }
 
-        dojo.byId('acq-lit-notes-save-button').onclick = function() {
-            self.updateLiNotes(li);
+        acqLitCreateAlertSubmit.onClick = function() {
+            if (!acqLitAlertAlertText.item) {
+                alert(localeStrings.ALERT_UNSELECTED);
+                return;
+            }
+
+            var alert_text = new fieldmapper.acqliat().fromStoreItem(
+                acqLitAlertAlertText.item
+            );
+            var value = acqLitAlertNoteValue.attr("value") || "";
+
+            var note = new fieldmapper.acqlin();
+            note.isnew(true);
+            note.lineitem(li.id());
+            note.value(value);
+            note.alert_text(alert_text);
+
+            self.updateLiNotes(li, note);
         }
 
         dojo.forEach(li.lineitem_notes(), function(note) { self.addLiNote(li, note) });
@@ -375,15 +395,18 @@ function AcqLiTable() {
         if(note.isdeleted()) return;
         var self = this;
         var row = self.liNotesRow.cloneNode(true);
-        dojo.query('[name=value]', row)[0].innerHTML = note.value();
+        nodeByName("value", row).innerHTML = note.value();
+        if (note.alert_text())
+            nodeByName("alert_code", row).innerHTML = note.alert_text().code();
 
-        dojo.query('[name=delete]', row)[0].onclick = function() {
+        nodeByName("delete", row).onclick = function() {
             note.isdeleted(true);
             self.liNotesTbody.removeChild(row);
+            self.updateLiNotes(li);
         };
 
         if(note.edit_time()) {
-            dojo.query('[name=edit_time]', row)[0].innerHTML = 
+            nodeByName("edit_time", row).innerHTML =
                 dojo.date.locale.format(
                     dojo.date.stamp.fromISOString(note.edit_time()), 
                     {formatLength:'short'});
@@ -434,6 +457,7 @@ function AcqLiTable() {
                         }
 
                         progressDialog.hide();
+                        self.updateLiNotesCount(li);
                         self.drawLiNotes(li);
                         return;
                     }
@@ -1011,7 +1035,9 @@ function AcqLiTable() {
                     (new openils.acq.Lineitem({"lineitem": li})).findAttr(
                         "title", "lineitem_marc_attr_definition"
                     ),
-                    lin.alert_text().description(), lin.value()
+                    lin.alert_text().code(),
+                    lin.alert_text().description() || "",
+                    lin.value()
                 ]
             )
         );

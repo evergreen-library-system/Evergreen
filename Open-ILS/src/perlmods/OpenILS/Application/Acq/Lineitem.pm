@@ -786,7 +786,7 @@ sub lineitem_note_CUD_batch {
 
         if($note->isnew) {
             $note->creator($e->requestor->id);
-            $e->create_acq_lineitem_note($note) or return $e->die_event;
+            $note = $e->create_acq_lineitem_note($note) or return $e->die_event;
 
         } elsif($note->isdeleted) {
             $e->delete_acq_lineitem_note($note) or return $e->die_event;
@@ -796,7 +796,11 @@ sub lineitem_note_CUD_batch {
         }
 
         if(!$note->isdeleted) {
-            $note = $e->retrieve_acq_lineitem_note($note->id);
+            $note = $e->retrieve_acq_lineitem_note([
+                $note->id, {
+                    "flesh" => 1, "flesh_fields" => {"acqlin" => ["alert_text"]}
+                }
+            ]);
         }
 
         $conn->respond({maximum => $total, progress => ++$count, note => $note});
