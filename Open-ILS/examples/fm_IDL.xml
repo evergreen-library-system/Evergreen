@@ -4931,6 +4931,56 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
+   <class id="acqafat" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::all_fund_allocation_total" oils_persist:readonly="true" oils_persist:tablename="acq.all_fund_allocation_total" reporter:label="All Fund Allocation Total">
+        <fields oils_persist:primary="fund">
+            <field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
+            <field reporter:label="Total Allocation Amount" name="amount" reporter:datatype="money" />
+        </fields>
+        <links>
+            <link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+        </links>
+    </class>
+
+   <class id="acqafet" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::all_fund_encumbrance_total" oils_persist:readonly="true" oils_persist:tablename="acq.all_fund_encumbrance_total" reporter:label="All Fund Encumbrance Total">
+        <fields oils_persist:primary="fund">
+            <field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
+            <field reporter:label="Total Encumbered Amount" name="amount" reporter:datatype="money" />
+        </fields>
+        <links>
+            <link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+        </links>
+    </class>
+
+   <class id="acqafst" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::all_fund_spent_total" oils_persist:readonly="true" oils_persist:tablename="acq.all_fund_spent_total" reporter:label="All Fund Spent Total">
+        <fields oils_persist:primary="fund">
+            <field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
+            <field reporter:label="Total Spent Amount" name="amount" reporter:datatype="money" />
+        </fields>
+        <links>
+            <link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+        </links>
+    </class>
+
+   <class id="acqafsb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::all_fund_spent_balance" oils_persist:readonly="true" oils_persist:tablename="acq.all_fund_spent_balance" reporter:label="All Fund Spent Balance">
+        <fields oils_persist:primary="fund">
+            <field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
+            <field reporter:label="Total Spent Balance" name="amount" reporter:datatype="money" />
+        </fields>
+        <links>
+            <link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+        </links>
+    </class>
+
+   <class id="acqafcb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::all_fund_combined_balance" oils_persist:readonly="true" oils_persist:tablename="acq.all_fund_combined_balance" reporter:label="All Fund Combined Total">
+        <fields oils_persist:primary="fund">
+            <field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
+            <field reporter:label="Total Combined Balance" name="amount" reporter:datatype="money" />
+        </fields>
+        <links>
+            <link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+        </links>
+    </class>
+
 	<class id="acqfsrcct" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_credit_total" oils_persist:readonly="true" oils_persist:tablename="acq.funding_source_credit_total" reporter:label="Total Credit to Funding Source">
 		<fields oils_persist:primary="funding_source">
 			<field reporter:label="Funding Source" name="funding_source" reporter:datatype="link" />
