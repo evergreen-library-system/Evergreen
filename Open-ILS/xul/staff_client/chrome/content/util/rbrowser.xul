@@ -99,14 +99,16 @@
     <commandset id="util_browser_cmds">
         <command id="cmd_broken" />
         <command id="cmd_print" />
-        <command id="cmd_back" />
-        <command id="cmd_forward" />
+        <command id="cmd_back" label="&common.browser.backward.label;" accesskey="&common.browser.backward.accesskey;" />
+        <command id="cmd_reload" label="&common.browser.reload.label;" accesskey="&common.browser.reload.accesskey;" />
+        <command id="cmd_forward" label="&common.browser.forward.label;" accesskey="&common.browser.forward.accesskey;" />
     </commandset>
 
     <vbox flex="1">
         <hbox>
-            <button id="back" label="Go Back" command="cmd_back" accesskey="b" disabled="true" hidden="true"/>
-            <button id="forward" label="Go Forward" command="cmd_forward" accesskey="d" disabled="true" hidden="true"/>
+            <button id="back" command="cmd_back" disabled="true" hidden="true"/>
+            <button id="reload" command="cmd_reload" disabled="false" hidden="false"/>
+            <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
             <spacer flex="1"/>
             <button id="browser_print" label="Print Page" oldcommand="cmd_print" hidden="true"
                 oncommand="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (g.browser.alt_print) { JSAN.use('util.print'); var p = new util.print(); p.NSPrint(g.browser.get_content(),false,{}); } else { g.browser.get_content().print(); }"

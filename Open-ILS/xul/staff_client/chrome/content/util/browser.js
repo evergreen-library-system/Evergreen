@@ -72,6 +72,19 @@ util.browser.prototype = {
                                     obj.error.sdump('D_ERROR',err);
                                 }
                             }
+                        ],
+                        'cmd_reload' : [
+                            ['command'],
+                            function() {
+                                try {
+                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                    var n = obj.getWebNavigation();
+                                    n.reload( Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE );
+                                } catch(E) {
+                                    var err = 'cmd_reload: ' + E;
+                                    obj.error.sdump('D_ERROR',err);
+                                }
+                            }
                         ]
                     }
                 }
@@ -99,6 +112,7 @@ util.browser.prototype = {
 
     'get_content' : function() {
         try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             if (this.controller.view.browser_browser.contentWindow.wrappedJSObject) {
                 return this.controller.view.browser_browser.contentWindow.wrappedJSObject;
             } else {
@@ -133,6 +147,7 @@ util.browser.prototype = {
 
     'getWebNavigation' : function() {
         try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             var wn = this.controller.view.browser_browser.webNavigation;
             var s = this.url + '\n' + this.get_content().location.href + '\n';
             s += ('getWebNavigation() = ' + wn + '\n');
@@ -144,6 +159,7 @@ util.browser.prototype = {
     },
 
     'updateNavButtons' : function() {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this; 
         var s = obj.url + '\n' + obj.get_content().location.href + '\n';
         try {

@@ -52,6 +52,13 @@
 <!ENTITY common.true "True">
 <!ENTITY common.false "False">
 
+<!ENTITY common.browser.forward.label "Go Forward">
+<!ENTITY common.browser.forward.accesskey "d">
+<!ENTITY common.browser.backward.label "Go Back">
+<!ENTITY common.browser.backward.accesskey "B">
+<!ENTITY common.browser.reload.label "Reload">
+<!ENTITY common.browser.reload.accesskey "l">
+
 <!ENTITY common.textbox.cut "Cut">
 <!ENTITY common.textbox.copy "Copy">
 <!ENTITY common.textbox.paste "Paste">
