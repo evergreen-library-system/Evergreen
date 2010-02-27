@@ -4,6 +4,7 @@ dojo.require('dijit.form.Button');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Textarea');
+dojo.require('dijit.Tooltip');
 dojo.require('dijit.ProgressBar');
 dojo.require('openils.User');
 dojo.require('openils.Util');
@@ -35,13 +36,16 @@ function AcqLiTable() {
     this.liCache = {};
     this.plCache = {};
     this.poCache = {};
-    this.dfaCache = {};
+    this.realDfaCache = {};
+    this.virtDfaCounts = {};
+    this.virtDfaId = -1;
     this.dfeOffset = 0;
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
     this.selectors = [];
     this.noteAcks = {};
     this.authtoken = openils.User.authtoken;
+    this.pcrud = new openils.PermaCrud();
     this.rowTemplate = this.tbody.removeChild(dojo.byId('acq-lit-row'));
     this.copyTbody = dojo.byId('acq-lit-li-details-tbody');
     this.copyRow = this.copyTbody.removeChild(dojo.byId('acq-lit-li-details-row'));
@@ -322,7 +326,7 @@ function AcqLiTable() {
         acqLitAlertAlertText.store = new dojo.data.ItemFileReadStore(
             {
                 "data": acqliat.toStoreData(
-                    (new openils.PermaCrud()).search(
+                    this.pcrud.search(
                         "acqliat", {"id": {"!=": null}}
                     )
                 )
@@ -625,7 +629,8 @@ function AcqLiTable() {
         this.copyCache = {};
         this.copyWidgetCache = {};
         this.oldCopyWidgetCache = {};
-        this.dfaCache = {};
+        this.virtDfaCounts = {};
+        this.realDfaCache = {};
         this.dfeOffset = 0;
 
         acqLitSaveCopies.onClick = function() { self.saveCopyChanges(liId) };
@@ -637,6 +642,8 @@ function AcqLiTable() {
 
         this._drawBatchCopyWidgets();
 
+        this._drawDistribApplied(liId);
+
         this._fetchDistribFormulas(
             function() {
                 openils.acq.Lineitem.fetchAttrDefs(
@@ -644,6 +651,158 @@ function AcqLiTable() {
                         self._fetchLineitem(liId, function(li){self._drawCopies(li);}); 
                     } 
                 );
+            }
+        );
+    };
+
+    this._saveDistribAppliedTemplates = function() {
+        if (!this._appliedDistribTemplate) {
+            this._appliedDistribTemplate =
+                dojo.byId("acq-lit-distrib-applied-tbody").
+                    removeChild(dojo.byId("acq-lit-distrib-applied-row"));
+            dojo.attr(this._appliedDistribTemplate, "id");
+        }
+    };
+
+    this._drawDistribApplied = function(liId) {
+        /* Build this table while hidden to prevent rendering artifacts */
+        openils.Util.hide("acq-lit-distrib-applied-tbody");
+
+        this._saveDistribAppliedTemplates();
+
+        /* Remove any rows in the table from previous populations */
+        dojo.query("tr[formula]", "acq-lit-distrib-applied-tbody").
+            forEach(dojo.destroy);
+
+        /* Unregister all dijits previously created (for some reason this isn't
+         * covered by the above destroy calls). */
+        dijit.registry.forEach(
+            function(w) { if (/^dfa-/.test(w.id)) w.destroyRecursive(); }
+        );
+
+        /* Populate the table with our liId */
+        var total = 0;
+        fieldmapper.standardRequest(
+            ["open-ils.acq",
+            "open-ils.acq.distribution_formula_application.ranged.retrieve"],
+            {
+                "async": true,
+                "params": [self.authtoken, liId],
+                "onresponse": function(r) {
+                    var dfa = openils.Util.readResponse(r);
+                    if (dfa) {
+                        total++;
+                        self.realDfaCache[dfa.id()] = dfa;
+                        self._drawDistribAppliedUnit(dfa);
+                    }
+                },
+                "oncomplete": function() {
+                    /* Reveal built table */
+                    if (total) {
+                        openils.Util.show(
+                            "acq-lit-distrib-applied-tbody", "table-row-group"
+                        );
+                    }
+                }
+            }
+        );
+    };
+
+    this._drawDistribAppliedUnit = function(dfa) {
+        var new_row = false;
+        var row = dojo.query(
+            'tr[formula="' + dfa.formula().id() + '"]',
+            "acq-lit-distrib-applied-tbody"
+        )[0];
+
+        if (!row) {
+            new_row = true;
+            row = dojo.clone(this._appliedDistribTemplate);
+            dojo.attr(row, "formula", dfa.formula().id());
+            dojo.query("th", row)[0].innerHTML = dfa.formula().name();
+        }
+
+        var td = dojo.query("td", row)[0];
+
+        dojo.create("span", {"id": "dfa-button-" + dfa.id()}, td, "last");
+        dojo.create("span", {"id": "dfa-tip-" + dfa.id()}, td, "last");
+
+        if (new_row)
+            dojo.place(row, "acq-lit-distrib-applied-tbody", "last");
+
+        new dijit.form.Button(
+            {
+                "onClick": function() {
+                    if (confirm(localeStrings.EXPLAIN_DFA_MGMT))
+                        self.deleteDfa(dfa);
+                },
+                "label": "X",
+                /* XXX I /cannot/ make the following work in as a CSS class
+                 * for some reason. So frustrating... */
+                "style": function(id) {
+                     return (id > 0 ?
+                        "font-weight: bold; color: #c00;" :
+                        "color: #666;");
+                     }(dfa.id()) + "margin: 0 6px;display: inline;"
+            }, "dfa-button-" + dfa.id()
+        );
+        new dijit.Tooltip(
+            {
+                "connectId": ["dfa-button-" + dfa.id()],
+                "label": dojo.string.substitute(
+                    localeStrings.DFA_TIP, dfa.id() > 0 ? [
+                        openils.User.formalName(dfa.creator()),
+                        dojo.date.locale.format(
+                            dojo.date.stamp.fromISOString(dfa.create_time()),
+                            {"formatLength":"short"}
+                        )
+                    ] : [localeStrings.ITS_YOU, localeStrings.JUST_NOW]
+                )
+            }, "dfa-tip-" + dfa.id()
+        );
+    }
+
+    this.deleteDfa = function(dfa) {
+        if (dfa.id() > 0) { /* real */
+            this.pcrud.delete(
+                dfa, {
+                    "async": true,
+                    "oncomplete": function() {
+                        self._removeDistribApplied(dfa.id());
+                        delete self.realDfaCache[dfa.id()];
+                    }
+                }
+            );
+        } else { /* virtual */
+            if (--(this.virtDfaCounts[dfa.formula().id()]) < 0)
+            this.virtDfaCounts[dfa.formula().id()] = 0;
+            /* hasn't been saved yet, so no need to do anything server side */
+            this._removeDistribApplied(dfa.id());
+        }
+
+    };
+
+    this._removeDistribApplied = function(dfaId) {
+        var re = new RegExp("^dfa-\\w+-" + String(dfaId));
+        dijit.registry.forEach(
+            function(w) { if (re.test(w.id)) w.destroyRecursive(); }
+        );
+        this._removeDistribAppliedEmptyRows();
+    };
+
+    this._removeAllDistribAppliedVirtual = function() {
+        /* Unregister dijits */
+        dijit.registry.forEach(
+            function(w) { if (/^dfa-\w+--/.test(w.id)) w.destroyRecursive(); }
+        );
+        this._removeDistribAppliedEmptyRows();
+    };
+
+    this._removeDistribAppliedEmptyRows = function() {
+        /* Remove any rows with no DFA at all */
+        dojo.query("tr[formula] td", "acq-lit-distrib-applied-tbody").forEach(
+            function(o) {
+                if (o.childNodes.length < 1) dojo.destroy(o.parentNode);
             }
         );
     };
@@ -697,9 +856,11 @@ function AcqLiTable() {
         dojo.connect(reset, 'onClick', 
             function() {
                 self.restoreCopyFieldsBeforeDF();
-                self.dfaCache = {};
+                self.virtDfaCounts = {};
+                self.virtDfaId = -1;
                 self.dfeOffset = 0;
                 self._updateFormulaStore();
+                self._removeAllDistribAppliedVirtual();
                 reset.attr("disabled", "true");
             }
         );
@@ -765,8 +926,15 @@ function AcqLiTable() {
         }
 
         if (entries_applied) {
-            this.dfaCache[formula.id()] = ++(this.dfaCache[formula.id()]) || 1;
+            this.virtDfaCounts[formula.id()] =
+                ++(this.virtDfaCounts[formula.id()]) || 1;
             this._updateFormulaStore();
+            this._drawDistribAppliedUnit(
+                function(df) {
+                    var dfa = new acqdfa();
+                    dfa.formula(df); dfa.id(self.virtDfaId--); return dfa;
+                }(formula)
+            );
             this.dfeOffset += entries_applied;
         };
     };
@@ -819,8 +987,8 @@ function AcqLiTable() {
             var obj = store_data.items[key];
             obj.use_count = Number(obj.use_count); /* needed for sorting */
 
-            if (this.dfaCache[obj.id])
-                obj.use_count = obj.use_count + Number(this.dfaCache[obj.id]);
+            if (this.virtDfaCounts[obj.id])
+                obj.use_count = obj.use_count + Number(this.virtDfaCounts[obj.id]);
 
             obj.dynLabel = "<span class='acq-lit-distrib-form-use-count'>[" +
                 obj.use_count + "]</span>&nbsp; " + obj.name;
@@ -1071,10 +1239,10 @@ function AcqLiTable() {
         this.copyTbody.removeChild(row);
     }
 
-    this._dfaCacheAsList = function() {
+    this._virtDfaCountsAsList = function() {
         var L = [];
-        for (var key in this.dfaCache) {
-            for (var i = 0; i < this.dfaCache[key]; i++)
+        for (var key in this.virtDfaCounts) {
+            for (var i = 0; i < this.virtDfaCounts[key]; i++)
                 L.push(key);
         }
         return L;
@@ -1120,7 +1288,7 @@ function AcqLiTable() {
             );
         }
 
-        var dfa_list = this._dfaCacheAsList();
+        var dfa_list = this._virtDfaCountsAsList();
         if (dfa_list.length > 0) {
             fieldmapper.standardRequest(
                 ["open-ils.acq",
@@ -1135,7 +1303,7 @@ function AcqLiTable() {
                     }
                 }
             );
-            this.dfaCache = {};
+            this.virtDfaCounts = {};
         }
     }
 
@@ -1239,7 +1407,7 @@ function AcqLiTable() {
             acqLitExportAttrSelector.store = new dojo.data.ItemFileReadStore(
                 {
                     "data": acqliad.toStoreData(
-                        (new openils.PermaCrud()).search(
+                        this.pcrud.search(
                             "acqliad", {"code": li_exportable_attrs}
                         )
                     )
@@ -1573,7 +1741,6 @@ function AcqLiTable() {
             this.realCopiesTbody.removeChild(this.realCopiesTbody.childNodes[0]);
         this.show('real-copies');
 
-        var pcrud = new openils.PermaCrud({authtoken : this.authtoken});
         this.realCopyList = [];
         this.volCache = {};
         var tabIndex = 1000;
@@ -1587,7 +1754,7 @@ function AcqLiTable() {
             function(fullLi) {
                 li = self.liCache[li.id()] = fullLi;
 
-                pcrud.search(
+                self.pcrud.search(
                     'acp', {
                         id : li.lineitem_details().map(
                             function(item) { return item.eg_copy_id() }
@@ -1600,7 +1767,7 @@ function AcqLiTable() {
                             var volId = copy.call_number();
                             var volume = self.volCache[volId];
                             if(!volume) {
-                                volume = self.volCache[volId] = pcrud.retrieve('acn', volId);
+                                volume = self.volCache[volId] = self.pcrud.retrieve('acn', volId);
                             }
                             self.addRealCopy(volume, copy, tabIndex++);
                         }
@@ -1669,10 +1836,9 @@ function AcqLiTable() {
     };
 
     this.saveRealCopies = function() {
-        var pcrud = new openils.PermaCrud({authtoken : this.authtoken});
         progressDialog.show(true);
         var list = this.realCopyList.filter(function(copy) { return copy.ischanged(); });
-        pcrud.update(list, {oncomplete: function() { 
+        this.pcrud.update(list, {oncomplete: function() { 
             progressDialog.hide();
             self.show('list');
         }});

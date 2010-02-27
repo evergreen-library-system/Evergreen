@@ -239,6 +239,19 @@
             </tbody>
 
             <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
+            <tbody id="acq-lit-distrib-applied-tbody" class="hidden">
+                <tr>
+                    <td colspan="5" id="acq-lit-distrib-applied-heading">
+                        Distribution formulas applied to this lineitem:
+                    </td>
+                </tr>
+                <tr id="acq-lit-distrib-applied-row" class="acq-lit-distrib-applied-row">
+                    <th></th>
+                    <td colspan="4"></td>
+                </tr>
+            </tbody>
+
+            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
             <tbody style='font-weight:bold;'>
                 <tr>
                     <td style='margin-top:30px;'>Owning Branch</td>

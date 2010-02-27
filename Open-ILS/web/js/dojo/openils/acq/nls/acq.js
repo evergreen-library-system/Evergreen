@@ -22,5 +22,9 @@
 
     'UNRECEIVE_LID': "Are you sure you want to mark this copy as UN-received?",
     'CONFIRM_LI_ALERT': "An alert has been placed on the lineitem titled,\n\"${0}\":\n\n${1}\n${2}\n${3}\nChoose OK if you wish to acknowledge this alert.",
-    'ALERT_UNSELECTED': "You must choose an alert code."
+    'ALERT_UNSELECTED': "You must choose an alert code.",
+    'DFA_TIP': "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}",
+    'ITS_YOU': "You",
+    'JUST_NOW': "Just now",
+    'EXPLAIN_DFA_MGMT': "Remove record of this distribution formula usage?"
 }

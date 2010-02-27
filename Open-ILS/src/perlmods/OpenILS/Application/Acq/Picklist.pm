@@ -474,4 +474,57 @@ sub ranged_distrib_formulas {
     return undef;
 }
 
+__PACKAGE__->register_method(
+	method => "ranged_distrib_formula_applications",
+	api_name => "open-ils.acq.distribution_formula_application.ranged.retrieve",
+    stream => 1,
+	signature => {
+        desc => "Ranged distribution formulas applications, fleshed with formulas and users",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Lineitem Id", type => "number"}
+        ],
+        return => {desc => "List of distribution formula applications"}
+    }
+);
+
+sub ranged_distrib_formula_applications {
+    my ($self, $conn, $auth, $li_id) = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $li = $e->retrieve_acq_lineitem([
+        $li_id, {
+            "flesh" => 1,
+            "flesh_fields" => {"jub" => [qw/purchase_order picklist/]}
+        }
+    ]) or return $e->die_event;
+
+    if ($li->picklist) {
+        return $e->die_event unless $e->allowed(
+            "VIEW_PICKLIST", $li->picklist->org_unit
+        );
+    } elsif ($li->purchase_order) {
+        return $e->die_event unless $e->allowed(
+            "VIEW_PURCHASE_ORDER", $li->purchase_order->ordering_agency
+        );
+    } else {
+        # For the moment no use cases are forseen for using this
+        # method with LIs that don't belong to a PL or a PO.
+        $e->disconnect;
+        return new OpenILS::Event("BAD_PARAMS", "note" => "Freestanding LI");
+    }
+
+    my $dfa = $e->search_acq_distribution_formula_application([
+        {"lineitem" => $li_id},
+        {"flesh" => 1, "flesh_fields" => {"acqdfa" => [qw/formula creator/]}}
+    ]);
+
+    $conn->respond($_) foreach (@$dfa);
+
+    $e->disconnect;
+    undef;
+}
+
 1;

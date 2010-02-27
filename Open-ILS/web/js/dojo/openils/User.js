@@ -24,6 +24,7 @@ if(!dojo._hasResource["openils.User"]) {
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('fieldmapper.OrgUtils');
     dojo.require('openils.Util');
+    dojo.requireLocalization("openils.User", "User");
 
     dojo.declare('openils.User', null, {
 
@@ -282,12 +283,27 @@ if(!dojo._hasResource["openils.User"]) {
 	        else
                 _u.getPermOrgList(perm, buildTreePicker, true);
         },
+
     });
 
 	openils.User.user = null;
 	openils.User.authtoken = null;
 	openils.User.authtime = null;
     openils.User.authcookie = null;
+    openils.User.localeStrings =
+        dojo.i18n.getLocalization("openils.User", "User");
+
+    openils.User.formalName = function(u) {
+        if (!u) u = openils.User.user;
+        return dojo.string.substitute(
+            openils.User.localeStrings.FULL_NAME, [
+                u.family_name(), u.first_given_name(),
+                u.second_given_name() ?  u.second_given_name() : "",
+                u.prefix() ? u.prefix() : "",
+                u.suffix() ? u.suffix() : ""
+            ]
+        ).replace(/\s{2,}/g, " ").replace(/\s$/, "");
+    };
 }
 
 
