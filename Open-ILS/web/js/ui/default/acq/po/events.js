@@ -16,7 +16,6 @@ function eventInit() {
         buildStateSelector();
         buildOrgSelector();
         buildDatePickers();
-        eventGrid.resetStore();
         buildEventGrid();
 
         eventGrid.cancelSelected = function() { doSelected('open-ils.acq.purchase_order.event.cancel.batch') };
