@@ -1,3 +1,8 @@
+/**
+	@file oils_cstore.c
+	@brief As a server, perform database operations at the request of clients.
+*/
+
 #include <ctype.h>
 #include "opensrf/osrf_application.h"
 #include "opensrf/osrf_settings.h"
@@ -52,7 +57,7 @@ struct ClassInfoStruct {
 
 	// The remaining members are private and internal.  Client code should not
 	// access them directly.
-	
+
 	ClassInfo* next;          // Supports linked list of joined classes
 	int in_use;               // boolean
 
@@ -146,84 +151,134 @@ static int child_initialized = 0;   /* boolean */
 static dbi_conn writehandle; /* our MASTER db connection */
 static dbi_conn dbhandle; /* our CURRENT db connection */
 //static osrfHash * readHandles;
-static jsonObject* const jsonNULL = NULL; // 
+static jsonObject* const jsonNULL = NULL; //
 static int max_flesh_depth = 100;
 
-// The following points the top of a stack of QueryFrames.  It's a little
+// The following points to the top of a stack of QueryFrames.  It's a little
 // confusing because the top level of the query is at the bottom of the stack.
 static QueryFrame* curr_query = NULL;
 
 /* called when this process is about to exit */
+/**
+	@brief Disconnect from the database.
+
+	This function is called when the server drone is about to terminate.
+*/
 void osrfAppChildExit() {
-    osrfLogDebug(OSRF_LOG_MARK, "Child is exiting, disconnecting from database...");
+	osrfLogDebug(OSRF_LOG_MARK, "Child is exiting, disconnecting from database...");
 
-    int same = 0;
-    if (writehandle == dbhandle) same = 1;
-    if (writehandle) {
-        dbi_conn_query(writehandle, "ROLLBACK;");
-        dbi_conn_close(writehandle);
-        writehandle = NULL;
-    }
-    if (dbhandle && !same)
-        dbi_conn_close(dbhandle);
+	int same = 0;
+	if (writehandle == dbhandle) same = 1;
+	if (writehandle) {
+		dbi_conn_query(writehandle, "ROLLBACK;");
+		dbi_conn_close(writehandle);
+		writehandle = NULL;
+	}
+	if (dbhandle && !same)
+	dbi_conn_close(dbhandle);
 
-    // XXX add cleanup of readHandles whenever that gets used
+	// XXX add cleanup of readHandles whenever that gets used
 
-    return;
+	return;
 }
 
+/**
+	@brief Initialize the application.
+	@return Zero if successful, or non-zero if not.
+
+	Load the IDL file into an internal data structure for future reference.  Each non-virtual
+	class in the IDL corresponds to a table or view in the database.  Ignore all virtual
+	tables and virtual fields.
+
+	Register a number of methods, some of them general-purpose and others specific for
+	particular classes.
+
+	The name of the application is given by the MODULENAME macro, whose value depends on
+	conditional compilation.  The method names also incorporate MODULENAME, followed by a
+	dot, as a prefix.  Some methods are registered or not registered depending on whether
+	the PCRUD macro is defined, and on whether the IDL includes permacrud entries for the
+	class and method.
+
+	The general-purpose methods are as follows (minus their MODULENAME prefixes):
+
+	- json_query (not registered for PCRUD)
+	- transaction.begin
+	- transaction.commit
+	- transaction.rollback
+	- savepoint.set
+	- savepoint.release
+	- savepoint.rollback
+
+	For each non-virtual class, create up to eight class-specific methods:
+
+	- create    (not for readonly classes)
+	- retrieve
+	- update    (not for readonly classes)
+	- delete    (not for readonly classes
+	- search    (atomic and non-atomic versions)
+	- id_list   (atomic and non-atomic versions)
+
+	For PCRUD, the full method names follow the pattern "MODULENAME.method_type.classname".
+	Otherwise they follow the pattern "MODULENAME.direct.XXX.method_type", where XXX is the
+	fieldmapper name from the IDL, with every run of one or more consecutive colons replaced
+	by a period.  In addition, the names of atomic methods have a suffix of ".atomic".
+
+	This function is called when the registering the application, and is executed by the
+	listener before spawning the drones.
+*/
 int osrfAppInitialize() {
 
-    osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
-    osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
+	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
+	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
-    if (!oilsIDLInit( osrf_settings_host_value("/IDL") )) return 1; /* return non-zero to indicate error */
+	if (!oilsIDLInit( osrf_settings_host_value("/IDL") ))
+		return 1; /* return non-zero to indicate error */
 
-    growing_buffer* method_name = buffer_init(64);
+	growing_buffer* method_name = buffer_init(64);
 #ifndef PCRUD
-    // Generic search thingy
-    buffer_add(method_name, MODULENAME);
+	// Generic search thingy
+	buffer_add(method_name, MODULENAME);
 	buffer_add(method_name, ".json_query");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
-						   "doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
+			"doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 #endif
 
-    // first we register all the transaction and savepoint methods
-    buffer_reset(method_name);
+	// first we register all the transaction and savepoint methods
+	buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, MODULENAME);
 	OSRF_BUFFER_ADD(method_name, ".transaction.begin");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
-						   "beginTransaction", "", 0, 0 );
+			"beginTransaction", "", 0, 0 );
 
-    buffer_reset(method_name);
+	buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, MODULENAME);
 	OSRF_BUFFER_ADD(method_name, ".transaction.commit");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
-						   "commitTransaction", "", 0, 0 );
+			"commitTransaction", "", 0, 0 );
 
-    buffer_reset(method_name);
+	buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, MODULENAME);
 	OSRF_BUFFER_ADD(method_name, ".transaction.rollback");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
-						   "rollbackTransaction", "", 0, 0 );
+			"rollbackTransaction", "", 0, 0 );
 
-    buffer_reset(method_name);
+	buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, MODULENAME);
 	OSRF_BUFFER_ADD(method_name, ".savepoint.set");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
-						   "setSavepoint", "", 1, 0 );
+			"setSavepoint", "", 1, 0 );
 
-    buffer_reset(method_name);
+	buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, MODULENAME);
 	OSRF_BUFFER_ADD(method_name, ".savepoint.release");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
-						   "releaseSavepoint", "", 1, 0 );
+			"releaseSavepoint", "", 1, 0 );
 
-    buffer_reset(method_name);
+	buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, MODULENAME);
 	OSRF_BUFFER_ADD(method_name, ".savepoint.rollback");
 	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
-						   "rollbackSavepoint", "", 1, 0 );
+			"rollbackSavepoint", "", 1, 0 );
 
 	static const char* global_method[] = {
 		"create",
@@ -235,7 +290,7 @@ int osrfAppInitialize() {
 	};
 	const int global_method_count
 		= sizeof( global_method ) / sizeof ( global_method[0] );
-	
+
 	unsigned long class_count = osrfHashGetCount( oilsIDL() );
 	osrfLogDebug(OSRF_LOG_MARK, "%lu classes loaded", class_count );
 	osrfLogDebug(OSRF_LOG_MARK,
@@ -245,16 +300,17 @@ int osrfAppInitialize() {
 	osrfHashIterator* class_itr = osrfNewHashIterator( oilsIDL() );
 	osrfHash* idlClass = NULL;
 
-	// For each class in IDL...
+	// For each class in the IDL...
 	while( (idlClass = osrfHashIteratorNext( class_itr ) ) ) {
 
 		const char* classname = osrfHashIteratorKey( class_itr );
-        osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", classname);
+		osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", classname);
 
-        if (!osrfStringArrayContains( osrfHashGet(idlClass, "controller"), MODULENAME )) {
-            osrfLogInfo(OSRF_LOG_MARK, "%s is not listed as a controller for %s, moving on", MODULENAME, classname);
-            continue;
-        }
+		if (!osrfStringArrayContains( osrfHashGet(idlClass, "controller"), MODULENAME )) {
+			osrfLogInfo(OSRF_LOG_MARK, "%s is not listed as a controller for %s, moving on",
+					MODULENAME, classname);
+			continue;
+		}
 
 		if ( str_is_true( osrfHashGet(idlClass, "virtual") ) ) {
 			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
@@ -264,11 +320,13 @@ int osrfAppInitialize() {
 		// Look up some other attributes of the current class
 		const char* idlClass_fieldmapper = osrfHashGet(idlClass, "fieldmapper");
 		if( !idlClass_fieldmapper ) {
-			osrfLogDebug( OSRF_LOG_MARK, "Skipping class \"%s\"; no fieldmapper in IDL", classname );
+			osrfLogDebug( OSRF_LOG_MARK, "Skipping class \"%s\"; no fieldmapper in IDL",
+					classname );
 			continue;
 		}
 
 #ifdef PCRUD
+		// For PCRUD, ignore classes with no permacrud attribute
 		osrfHash* idlClass_permacrud = osrfHashGet(idlClass, "permacrud");
 		if (!idlClass_permacrud) {
 			osrfLogDebug( OSRF_LOG_MARK, "Skipping class \"%s\"; no permacrud in IDL", classname );
@@ -277,74 +335,86 @@ int osrfAppInitialize() {
 #endif
 		const char* readonly = osrfHashGet(idlClass, "readonly");
 
-        int i;
-        for( i = 0; i < global_method_count; ++i ) {  // for each global method
-            const char* method_type = global_method[ i ];
-            osrfLogDebug(OSRF_LOG_MARK,
-                "Using files to build %s class methods for %s", method_type, classname);
+		int i;
+		for( i = 0; i < global_method_count; ++i ) {  // for each global method
+			const char* method_type = global_method[ i ];
+			osrfLogDebug(OSRF_LOG_MARK,
+				"Using files to build %s class methods for %s", method_type, classname);
 
 #ifdef PCRUD
-            const char* tmp_method = method_type;
-            if ( *tmp_method == 'i' || *tmp_method == 's') {
-                tmp_method = "retrieve";
-            }
-            if (!osrfHashGet( idlClass_permacrud, tmp_method )) continue;
+			// Treat "id_list" or "search" as forms of "retrieve"
+			const char* tmp_method = method_type;
+			if ( *tmp_method == 'i' || *tmp_method == 's') {  // "id_list" or "search"
+				tmp_method = "retrieve";
+			}
+			// Skip this method if there is no permacrud entry for it
+			if (!osrfHashGet( idlClass_permacrud, tmp_method ))
+				continue;
 #endif
 
-            if (    str_is_true( readonly ) &&
-                    ( *method_type == 'c' || *method_type == 'u' || *method_type == 'd')
-               ) continue;
+			// No create, update, or delete methods for a readonly class
+			if ( str_is_true( readonly ) &&
+				( *method_type == 'c' || *method_type == 'u' || *method_type == 'd')
+				) continue;
 
-            buffer_reset( method_name );
+			buffer_reset( method_name );
+
+			// Build the method name
 #ifdef PCRUD
-            buffer_fadd(method_name, "%s.%s.%s", MODULENAME, method_type, classname);
+			// For PCRUD: MODULENAME.method_type.classname
+			buffer_fadd(method_name, "%s.%s.%s", MODULENAME, method_type, classname);
 #else
-            char* st_tmp = NULL;
-            char* part = NULL;
-            char* _fm = strdup( idlClass_fieldmapper );
-            part = strtok_r(_fm, ":", &st_tmp);
+			// For non-PCRUD: MODULENAME.MODULENAME.direct.XXX.method_type
+			// where XXX is the fieldmapper name from the IDL, with every run of
+			// one or more consecutive colons replaced by a period.
+			char* st_tmp = NULL;
+			char* part = NULL;
+			char* _fm = strdup( idlClass_fieldmapper );
+			part = strtok_r(_fm, ":", &st_tmp);
 
-            buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
+			buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
 
-            while ((part = strtok_r(NULL, ":", &st_tmp))) {
+			while ((part = strtok_r(NULL, ":", &st_tmp))) {
 				OSRF_BUFFER_ADD_CHAR(method_name, '.');
 				OSRF_BUFFER_ADD(method_name, part);
-            }
+			}
 			OSRF_BUFFER_ADD_CHAR(method_name, '.');
 			OSRF_BUFFER_ADD(method_name, method_type);
-            free(_fm);
+			free(_fm);
 #endif
 
-            char* method = buffer_data(method_name);
-
-            int flags = 0;
-            if (*method_type == 'i' || *method_type == 's') {
-                flags = flags | OSRF_METHOD_STREAMING;
-            }
+			// For an id_list or search method we specify the OSRF_METHOD_STREAMING option.
+			// The consequence is that we implicitly create an atomic method in addition to
+			// the usual non-atomic method.
+			int flags = 0;
+			if (*method_type == 'i' || *method_type == 's') {  // id_list or search
+				flags = flags | OSRF_METHOD_STREAMING;
+			}
 
 			osrfHash* method_meta = osrfNewHash();
 			osrfHashSet( method_meta, idlClass, "class");
-			osrfHashSet( method_meta, method, "methodname" );
+			osrfHashSet( method_meta, buffer_data( method_name ), "methodname" );
 			osrfHashSet( method_meta, strdup(method_type), "methodtype" );
 
+			// Register the method, with a pointer to an osrfHash to tell the method
+			// its name, type, and class.
 			osrfAppRegisterExtendedMethod(
-                    MODULENAME,
-                    method,
-                    "dispatchCRUDMethod",
-                    "",
-                    1,
-                    flags,
-                    (void*)method_meta
-                    );
+					MODULENAME,
+					OSRF_BUFFER_C_STR( method_name ),
+					"dispatchCRUDMethod",
+					"",
+					1,
+					flags,
+					(void*)method_meta
+				);
 
-            free(method);
-        } // end for each global method
-    } // end for each class in IDL
+		} // end for each global method
+	} // end for each class in IDL
 
 	buffer_free( method_name );
 	osrfHashIteratorFree( class_itr );
-	
-    return 0;
+
+	return 0;
 }
 
 static char* getSourceDefinition( osrfHash* class ) {
@@ -376,21 +446,28 @@ static char* getSourceDefinition( osrfHash* class ) {
 }
 
 /**
- * Connects to the database 
- */
+	@brief Initialize a server drone.
+	@return Zero if successful, -1 if not.
+
+	Connect to the database.  For each non-virtual class in the IDL, execute a dummy "SELECT * "
+	query to get the datatype of each column.  Record the datatypes in the loaded IDL.
+
+	This function is called by a server drone shortly after it is spawned by the listener.
+*/
 int osrfAppChildInit() {
 
     osrfLogDebug(OSRF_LOG_MARK, "Attempting to initialize libdbi...");
     dbi_initialize(NULL);
     osrfLogDebug(OSRF_LOG_MARK, "... libdbi initialized.");
 
-    char* driver	= osrf_settings_host_value("/apps/%s/app_settings/driver", MODULENAME);
-    char* user	= osrf_settings_host_value("/apps/%s/app_settings/database/user", MODULENAME);
-    char* host	= osrf_settings_host_value("/apps/%s/app_settings/database/host", MODULENAME);
-    char* port	= osrf_settings_host_value("/apps/%s/app_settings/database/port", MODULENAME);
-    char* db	= osrf_settings_host_value("/apps/%s/app_settings/database/db", MODULENAME);
-    char* pw	= osrf_settings_host_value("/apps/%s/app_settings/database/pw", MODULENAME);
-    char* md	= osrf_settings_host_value("/apps/%s/app_settings/max_query_recursion", MODULENAME);
+    char* driver = osrf_settings_host_value("/apps/%s/app_settings/driver", MODULENAME);
+    char* user	 = osrf_settings_host_value("/apps/%s/app_settings/database/user", MODULENAME);
+    char* host	 = osrf_settings_host_value("/apps/%s/app_settings/database/host", MODULENAME);
+    char* port	 = osrf_settings_host_value("/apps/%s/app_settings/database/port", MODULENAME);
+    char* db	 = osrf_settings_host_value("/apps/%s/app_settings/database/db", MODULENAME);
+    char* pw	 = osrf_settings_host_value("/apps/%s/app_settings/database/pw", MODULENAME);
+    char* md	 = osrf_settings_host_value("/apps/%s/app_settings/max_query_recursion",
+					MODULENAME);
 
     osrfLogDebug(OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver);
     writehandle = dbi_conn_new(driver);
@@ -466,7 +543,8 @@ int osrfAppChildInit() {
             osrfHash* _f;
             while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
 
-                osrfLogInternal(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
+                osrfLogInternal( OSRF_LOG_MARK, "Looking for column named [%s]...",
+						(char*) columnName );
 
                 /* fetch the fieldmapper index */
                 if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
@@ -480,18 +558,18 @@ int osrfAppChildInit() {
 						case DBI_TYPE_INTEGER : {
 
 							if ( !osrfHashGet(_f, "primitive") )
-								osrfHashSet(_f,"number", "primitive");
+								osrfHashSet(_f, "number", "primitive");
 
 							int attr = dbi_result_get_field_attribs_idx(result, columnIndex);
-							if( attr & DBI_INTEGER_SIZE8 ) 
-								osrfHashSet(_f,"INT8", "datatype");
-							else 
-								osrfHashSet(_f,"INT", "datatype");
+							if( attr & DBI_INTEGER_SIZE8 )
+								osrfHashSet(_f, "INT8", "datatype");
+							else
+								osrfHashSet(_f, "INT", "datatype");
 							break;
 						}
                         case DBI_TYPE_DECIMAL :
                             if ( !osrfHashGet(_f, "primitive") )
-                                osrfHashSet(_f,"number", "primitive");
+                                osrfHashSet(_f, "number", "primitive");
 
                             osrfHashSet(_f,"NUMERIC", "datatype");
                             break;
@@ -539,7 +617,7 @@ int osrfAppChildInit() {
 
 /*
   This function is a sleazy hack intended *only* for testing and
-  debugging.  Any real server process should initialize the 
+  debugging.  Any real server process should initialize the
   database connection by calling osrfAppChildInit().
 */
 void set_cstore_dbi_conn( dbi_conn conn ) {
@@ -568,9 +646,10 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 	}
 
 #ifdef PCRUD
-    jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) return -1;
-    jsonObjectFree(user);
+	jsonObject* user = verifyUserPCRUD( ctx );
+	if (!user)
+		return -1;
+	jsonObjectFree(user);
 #endif
 
     dbi_result result = dbi_conn_query(writehandle, "START TRANSACTION;");
@@ -603,10 +682,11 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 
     int spNamePos = 0;
 #ifdef PCRUD
-    spNamePos = 1;
-    jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) return -1;
-    jsonObjectFree(user);
+	spNamePos = 1;
+	jsonObject* user = verifyUserPCRUD( ctx );
+	if (!user)
+		return -1;
+	jsonObjectFree(user);
 #endif
 
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
@@ -631,7 +711,7 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 			spName,
 			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
 		);
-		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, 
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error creating savepoint" );
 		return -1;
 	} else {
@@ -650,10 +730,11 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 
 	int spNamePos = 0;
 #ifdef PCRUD
-    spNamePos = 1;
-    jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) return -1;
-    jsonObjectFree(user);
+	spNamePos = 1;
+	jsonObject* user = verifyUserPCRUD( ctx );
+	if (!user)
+		return -1;
+	jsonObjectFree(user);
 #endif
 
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
@@ -697,10 +778,11 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 
 	int spNamePos = 0;
 #ifdef PCRUD
-    spNamePos = 1;
-    jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) return -1;
-    jsonObjectFree(user);
+	spNamePos = 1;
+	jsonObject* user = verifyUserPCRUD( ctx );
+	if (!user)
+		return -1;
+	jsonObjectFree(user);
 #endif
 
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
@@ -725,7 +807,7 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
                 spName,
                 osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
                 );
-		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, 
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error rolling back savepoint" );
         return -1;
     } else {
@@ -743,20 +825,23 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 	}
 
 #ifdef PCRUD
-    jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) return -1;
-    jsonObjectFree(user);
+	jsonObject* user = verifyUserPCRUD( ctx );
+	if (!user)
+		return -1;
+	jsonObjectFree(user);
 #endif
 
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "No active transaction to commit" );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException", ctx->request, "No active transaction to commit" );
         return -1;
     }
 
     dbi_result result = dbi_conn_query(writehandle, "COMMIT;");
     if (!result) {
         osrfLogError(OSRF_LOG_MARK, "%s: Error committing transaction", MODULENAME );
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error committing transaction" );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException", ctx->request, "Error committing transaction" );
         return -1;
     } else {
         osrfHashRemove(ctx->session->userData, "xact_id");
@@ -774,20 +859,23 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 	}
 
 #ifdef PCRUD
-    jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) return -1;
-    jsonObjectFree(user);
+	jsonObject* user = verifyUserPCRUD( ctx );
+	if (!user)
+		return -1;
+	jsonObjectFree(user);
 #endif
 
     if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "No active transaction to roll back" );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException", ctx->request, "No active transaction to roll back" );
         return -1;
     }
 
     dbi_result result = dbi_conn_query(writehandle, "ROLLBACK;");
     if (!result) {
         osrfLogError(OSRF_LOG_MARK, "%s: Error rolling back transaction", MODULENAME );
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error rolling back transaction" );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException", ctx->request, "Error rolling back transaction" );
         return -1;
     } else {
         osrfHashRemove(ctx->session->userData, "xact_id");
@@ -942,7 +1030,8 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
                 );
 
         char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+				ctx->request, m );
 
         free(m);
 
@@ -961,7 +1050,8 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 	const char* auth = jsonObjectGetString( jsonObjectGetIndex( ctx->params, 0 ) );
     jsonObject* auth_object = jsonNewObject(auth);
-    jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve", auth_object);
+    jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve",
+			auth_object);
     jsonObjectFree(auth_object);
 
     if (!user->classname || strcmp(user->classname, "au")) {
@@ -975,7 +1065,8 @@ static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
         );
 
         char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException", ctx->request, m );
+        osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException",
+				ctx->request, m );
 
         free(m);
         jsonObjectFree(user);
@@ -996,7 +1087,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	int fetch = 0;
 
 	if ( ( *method_type == 's' || *method_type == 'i' ) ) {
-		method_type = "retrieve"; // search and id_list are equivalant to retrieve for this
+		method_type = "retrieve"; // search and id_list are equivalent to retrieve for this
 	} else if ( *method_type == 'u' || *method_type == 'd' ) {
 		fetch = 1; // MUST go to the db for the object for update and delete
 	}
@@ -1023,8 +1114,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
         return 0;
     }
 
-    jsonObject* user = verifyUserPCRUD( ctx );
-    if (!user) return 0;
+	jsonObject* user = verifyUserPCRUD( ctx );
+	if (!user)
+		return 0;
 
     int userid = atoi( oilsFMGetString( user, "id" ) );
     jsonObjectFree(user);
@@ -1085,7 +1177,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 pkey,
                 pkey_value
             );
-        
+
             char* m = buffer_release(msg);
             osrfAppSessionStatus(
                 ctx->session,
@@ -1094,7 +1186,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                 ctx->request,
                 m
             );
-        
+
             free(m);
             if (pkey_value) free(pkey_value);
 
@@ -1135,7 +1227,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size,
                         class_name
                     );
-    
+
                     char* foreign_pkey = osrfHashGet(fcontext, "field");
                     char* foreign_pkey_value = oilsFMGetString(param, osrfHashGet(fcontext, "fkey"));
 
@@ -1147,7 +1239,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                     jsonObject* _fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
                     jsonObjectFree(_tmp_params);
                     jsonObjectFree(_list);
- 
+
                     osrfStringArray* jump_list = osrfHashGet(fcontext, "jump");
 
                     if (_fparam && jump_list) {
@@ -1177,7 +1269,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         }
                     }
 
-           
                     if (!_fparam) {
 
                         growing_buffer* msg = buffer_init(128);
@@ -1188,7 +1279,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                             foreign_pkey,
                             foreign_pkey_value
                         );
-                
+
                         char* m = buffer_release(msg);
                         osrfAppSessionStatus(
                             ctx->session,
@@ -1205,9 +1296,9 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
                         return 0;
                     }
-        
+
                     free(foreign_pkey_value);
-    
+
                     int j = 0;
                     const char* foreign_field = NULL;
                     while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), j++)) ) {
@@ -1239,7 +1330,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	    osrfLogDebug( OSRF_LOG_MARK, "No permission specified for this action, passing through" );
         OK = 1;
     }
-    
+
     int i = 0;
     while ( (perm = osrfStringArrayGetString(permission, i++)) ) {
         int j = 0;
@@ -1297,7 +1388,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
                         jsonObjectFree(return_val);
                     }
 
-                    dbi_result_free(result); 
+                    dbi_result_free(result);
                     if (OK) break;
                 }
             }
@@ -1323,7 +1414,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 					jsonObjectFree(return_val);
 				}
 
-				dbi_result_free(result); 
+				dbi_result_free(result);
 				if (OK) break;
 			}
 
@@ -1467,7 +1558,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 	if (index > -1) {
 		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d", trans_id, target->classname, index);
 		jsonObjectSetIndex(target, index, jsonNewObject(trans_id));
-	}       
+	}
 
 	osrfLogDebug( OSRF_LOG_MARK, "There is a transaction running..." );
 
@@ -1525,15 +1616,15 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 		if (!field_object || field_object->type == JSON_NULL) {
 			buffer_add( val_buf, "DEFAULT" );
-			
+
 		} else if ( !strcmp(get_primitive( field ), "number") ) {
 			const char* numtype = get_datatype( field );
 			if ( !strcmp( numtype, "INT8") ) {
 				buffer_fadd( val_buf, "%lld", atoll(value) );
-				
+
 			} else if ( !strcmp( numtype, "INT") ) {
 				buffer_fadd( val_buf, "%d", atoi(value) );
-				
+
 			} else if ( !strcmp( numtype, "NUMERIC") ) {
 				buffer_fadd( val_buf, "%f", atof(value) );
 			}
@@ -1560,7 +1651,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		}
 
 		free(value);
-		
+
 	}
 
 	osrfHashIteratorFree( field_itr );
@@ -1581,7 +1672,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 	osrfLogDebug(OSRF_LOG_MARK, "%s: Insert SQL [%s]", MODULENAME, query);
 
-	
+
 	dbi_result result = dbi_conn_query(writehandle, query);
 
 	jsonObject* obj = NULL;
@@ -1679,7 +1770,7 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
 	// Build a WHERE clause based on the key value
 	jsonObject* where_clause = jsonNewObjectType( JSON_HASH );
-	jsonObjectSetKey( 
+	jsonObjectSetKey(
 		where_clause,
 		osrfHashGet( class_def, "primarykey" ),
 		jsonObjectClone( id_obj )
@@ -1761,7 +1852,7 @@ static char* jsonNumberToDBString ( osrfHash* field, const jsonObject* value ) {
 static char* searchINPredicate (const char* class_alias, osrfHash* field,
 		jsonObject* node, const char* op, osrfMethodContext* ctx ) {
 	growing_buffer* sql_buf = buffer_init(32);
-	
+
 	buffer_fadd(
 		sql_buf,
 		"\"%s\".%s ",
@@ -1807,7 +1898,7 @@ static char* searchINPredicate (const char* class_alias, osrfHash* field,
 				buffer_free(sql_buf);
 				return NULL;
 			}
-			
+
 			// Append the literal value -- quoted if not a number
 			if ( JSON_NUMBER == in_item->type ) {
 				char* val = jsonNumberToDBString( field, in_item );
@@ -1853,12 +1944,12 @@ static char* searchINPredicate (const char* class_alias, osrfHash* field,
 // Receive a JSON_ARRAY representing a function call.  The first
 // entry in the array is the function name.  The rest are parameters.
 static char* searchValueTransform( const jsonObject* array ) {
-	
+
 	if( array->size < 1 ) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Empty array for value transform", MODULENAME);
 		return NULL;
 	}
-	
+
 	// Get the function name
 	jsonObject* func_item = jsonObjectGetIndex( array, 0 );
 	if( func_item->type != JSON_STRING ) {
@@ -1866,12 +1957,12 @@ static char* searchValueTransform( const jsonObject* array ) {
 			MODULENAME, json_type( func_item->type ) );
 		return NULL;
 	}
-	
+
 	growing_buffer* sql_buf = buffer_init(32);
 
 	OSRF_BUFFER_ADD( sql_buf, jsonObjectGetString( func_item ) );
 	OSRF_BUFFER_ADD( sql_buf, "( " );
-	
+
 	// Get the parameters
 	int func_item_index = 1;   // We already grabbed the zeroth entry
 	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
@@ -1909,11 +2000,11 @@ static char* searchFunctionPredicate (const char* class_alias, osrfHash* field,
 		osrfLogError( OSRF_LOG_MARK, "%s: Invalid operator [%s]", MODULENAME, op );
 		return NULL;
 	}
-	
+
 	char* val = searchValueTransform(node);
 	if( !val )
 		return NULL;
-	
+
 	growing_buffer* sql_buf = buffer_init(32);
 	buffer_fadd(
 		sql_buf,
@@ -1949,14 +2040,14 @@ static char* searchFieldTransform (const char* class_alias, osrfHash* field, con
 	}
 
 	if (field_transform) {
-		
+
 		if( ! is_identifier( field_transform ) ) {
 			osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
 					MODULENAME, field_transform );
 			buffer_free( sql_buf );
 			return NULL;
 		}
-		
+
 		buffer_fadd( sql_buf, "%s(\"%s\".%s", field_transform, class_alias, osrfHashGet(field, "name"));
 		const jsonObject* array = jsonObjectGetKeyConst( node, "params" );
 
@@ -2144,7 +2235,7 @@ static char* searchBETWEENPredicate (const char* class_alias,
 
 	const jsonObject* x_node = jsonObjectGetIndex( node, 0 );
 	const jsonObject* y_node = jsonObjectGetIndex( node, 1 );
-	
+
 	if( NULL == y_node ) {
 		osrfLogError( OSRF_LOG_MARK, "%s: Not enough operands for BETWEEN operator", MODULENAME );
 		return NULL;
@@ -2153,7 +2244,7 @@ static char* searchBETWEENPredicate (const char* class_alias,
 		osrfLogError( OSRF_LOG_MARK, "%s: Too many operands for BETWEEN operator", MODULENAME );
 		return NULL;
 	}
-	
+
 	char* x_string;
 	char* y_string;
 
@@ -2174,7 +2265,7 @@ static char* searchBETWEENPredicate (const char* class_alias,
 	}
 
 	growing_buffer* sql_buf = buffer_init(32);
-	buffer_fadd( sql_buf, "\"%s\".%s BETWEEN %s AND %s", 
+	buffer_fadd( sql_buf, "\"%s\".%s BETWEEN %s AND %s",
 			class_alias, osrfHashGet(field, "name"), x_string, y_string );
 	free(x_string);
 	free(y_string);
@@ -2191,14 +2282,14 @@ static char* searchPredicate ( const ClassInfo* class_info, osrfHash* field,
 	} else if (node->type == JSON_HASH) { // other search
 		jsonIterator* pred_itr = jsonNewIterator( node );
 		if( !jsonIteratorHasNext( pred_itr ) ) {
-			osrfLogError( OSRF_LOG_MARK, "%s: Empty predicate for field \"%s\"", 
+			osrfLogError( OSRF_LOG_MARK, "%s: Empty predicate for field \"%s\"",
 					MODULENAME, osrfHashGet(field, "name") );
 		} else {
 			jsonObject* pred_node = jsonIteratorNext( pred_itr );
 
 			// Verify that there are no additional predicates
 			if( jsonIteratorHasNext( pred_itr ) ) {
-				osrfLogError( OSRF_LOG_MARK, "%s: Multiple predicates for field \"%s\"", 
+				osrfLogError( OSRF_LOG_MARK, "%s: Multiple predicates for field \"%s\"",
 						MODULENAME, osrfHashGet(field, "name") );
 			} else if ( !(strcasecmp( pred_itr->key,"between" )) )
 				pred = searchBETWEENPredicate( class_info->alias, field, pred_node );
@@ -2289,7 +2380,7 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 
 	while ( (snode = jsonIteratorNext( search_itr )) ) {
 		const char* right_alias = search_itr->key;
-		const char* class = 
+		const char* class =
 				jsonObjectGetString( jsonObjectGetKeyConst( snode, "class" ) );
 		if( ! class )
 			class = right_alias;
@@ -2775,7 +2866,7 @@ static jsonObject* defaultSelectList( const char* table_alias ) {
 
 	ClassInfo* class_info = search_all_alias( table_alias );
 	if( ! class_info ) {
-		osrfLogError(  
+		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Can't build default SELECT clause for \"%s\"; no such table alias",
 			MODULENAME,
@@ -2799,7 +2890,7 @@ static jsonObject* defaultSelectList( const char* table_alias ) {
 }
 
 // Translate a jsonObject into a UNION, INTERSECT, or EXCEPT query.
-// The jsonObject must be a JSON_HASH with an single entry for "union", 
+// The jsonObject must be a JSON_HASH with an single entry for "union",
 // "intersect", or "except".  The data associated with this key must be an
 // array of hashes, each hash being a query.
 // Also allowed but currently ignored: entries for "order_by" and "alias".
@@ -3097,7 +3188,7 @@ char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags ) {
 
 char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
-		
+
 		/* SELECT   */ jsonObject* selhash,
 		/* FROM     */ jsonObject* join_hash,
 		/* WHERE    */ jsonObject* search_hash,
@@ -3269,7 +3360,7 @@ char* SELECT (
 
 		selhash = defaultselhash = jsonNewObjectType(JSON_HASH);
 		jsonObjectSetKey( selhash, core_class, default_list );
-	} 
+	}
 
 	// The SELECT clause can be encoded only by a hash
 	if( !from_function && selhash->type != JSON_HASH ) {
@@ -3345,7 +3436,7 @@ char* SELECT (
 			const char* cname = selclass_itr->key;
 
 			// Make sure the target relation is in the FROM clause.
-			
+
 			// At this point join_hash is a step down from the join_hash we
 			// received as a parameter.  If the original was a JSON_STRING,
 			// then json_hash is now NULL.  If the original was a JSON_HASH,
@@ -3502,7 +3593,7 @@ char* SELECT (
                     } else {
 				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, col_name, col_name );
                     }
-					
+
 				// ... but it could be an object, in which case we check for a Field Transform
 				} else if (selfield->type == JSON_HASH) {
 
@@ -3703,7 +3794,7 @@ char* SELECT (
 		buffer_free( group_buf );
 		if( defaultselhash ) jsonObjectFree( defaultselhash );
 		free( join_clause );
-		return NULL;	
+		return NULL;
 	}
 
 	char* table = NULL;
@@ -3723,7 +3814,7 @@ char* SELECT (
 		buffer_free( group_buf );
 		if( defaultselhash ) jsonObjectFree( defaultselhash );
 		free( join_clause );
-		return NULL;	
+		return NULL;
 	}
 
 	// Put it all together
@@ -3927,7 +4018,7 @@ char* SELECT (
 						if (defaultselhash) jsonObjectFree(defaultselhash);
 						return NULL;
 					}
-					
+
 					OSRF_BUFFER_ADD( order_buf, transform_str );
 					free( transform_str );
 				}
@@ -4165,7 +4256,7 @@ char* SELECT (
 
 				// IT'S THE OOOOOOOOOOOLD STYLE!
 				} else {
-					osrfLogError(OSRF_LOG_MARK, 
+					osrfLogError(OSRF_LOG_MARK,
 							"%s: Possible SQL injection attempt; direct order by is not allowed", MODULENAME);
 					if (ctx) {
 						osrfAppSessionStatus(
@@ -4278,11 +4369,11 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 		defaultselhash = jsonNewObjectType(JSON_HASH);
 		selhash = defaultselhash;
 	}
-	
+
 	// If there's no SELECT list for the core class, build one
 	if ( !jsonObjectGetKeyConst(selhash,core_class) ) {
 		jsonObject* field_list = jsonNewObjectType( JSON_ARRAY );
-		
+
 		// Add every non-virtual field to the field list
 		osrfHash* field_def = NULL;
 		osrfHashIterator* field_itr = osrfNewHashIterator( fields );
@@ -4599,7 +4690,7 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 		osrfAppRespondComplete( ctx, NULL );
 
 		/* clean up the query */
-		dbi_result_free(result); 
+		dbi_result_free(result);
 
 	} else {
 		err = -1;
@@ -4723,7 +4814,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 
 					int i = 0;
 					const char* link_field;
-					
+
 					while ( (link_field = osrfStringArrayGetString(link_fields, i++)) ) {
 
 						osrfLogDebug(OSRF_LOG_MARK, "Starting to flesh %s", link_field);
@@ -4742,7 +4833,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_many" ))) { // has_many
 							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
 						}
-							
+
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) { // might_have
 							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
 						}
@@ -5233,17 +5324,17 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 		osrfLogInternal(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
 
 		fmIndex = -1; // reset the position
-		
+
 		/* determine the field type and storage attributes */
 		type = dbi_result_get_field_type_idx(result, columnIndex);
 		attr = dbi_result_get_field_attribs_idx(result, columnIndex);
 
 		/* fetch the fieldmapper index */
 		if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
-			
+
 			if ( str_is_true( osrfHashGet(_f, "virtual") ) )
 				continue;
-			
+
 			const char* pos = (char*)osrfHashGet(_f, "array_position");
 			if ( !pos ) continue;
 
@@ -5261,17 +5352,17 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 				case DBI_TYPE_INTEGER :
 
-					if( attr & DBI_INTEGER_SIZE8 ) 
-						jsonObjectSetIndex( object, fmIndex, 
+					if( attr & DBI_INTEGER_SIZE8 )
+						jsonObjectSetIndex( object, fmIndex,
 							jsonNewNumberObject(dbi_result_get_longlong_idx(result, columnIndex)));
-					else 
-						jsonObjectSetIndex( object, fmIndex, 
+					else
+						jsonObjectSetIndex( object, fmIndex,
 							jsonNewNumberObject(dbi_result_get_int_idx(result, columnIndex)));
 
 					break;
 
 				case DBI_TYPE_DECIMAL :
-					jsonObjectSetIndex( object, fmIndex, 
+					jsonObjectSetIndex( object, fmIndex,
 							jsonNewNumberObject(dbi_result_get_double_idx(result, columnIndex)));
 					break;
 
@@ -5310,7 +5401,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 					break;
 
 				case DBI_TYPE_BINARY :
-					osrfLogError( OSRF_LOG_MARK, 
+					osrfLogError( OSRF_LOG_MARK,
 						"Can't do binary at column %s : index %d", columnName, columnIndex);
 			}
 		}
@@ -5341,7 +5432,7 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 		osrfLogInternal(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
 
 		fmIndex = -1; // reset the position
-		
+
 		/* determine the field type and storage attributes */
 		type = dbi_result_get_field_type_idx(result, columnIndex);
 		attr = dbi_result_get_field_attribs_idx(result, columnIndex);
@@ -5354,10 +5445,10 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 
 				case DBI_TYPE_INTEGER :
 
-					if( attr & DBI_INTEGER_SIZE8 ) 
+					if( attr & DBI_INTEGER_SIZE8 )
 						jsonObjectSetKey( object, columnName,
 								jsonNewNumberObject(dbi_result_get_longlong_idx(result, columnIndex)) );
-					else 
+					else
 						jsonObjectSetKey( object, columnName,
 								jsonNewNumberObject(dbi_result_get_int_idx(result, columnIndex)) );
 					break;
@@ -5395,7 +5486,7 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 					break;
 
 				case DBI_TYPE_BINARY :
-					osrfLogError( OSRF_LOG_MARK, 
+					osrfLogError( OSRF_LOG_MARK,
 						"Can't do binary at column %s : index %d", columnName, columnIndex );
 			}
 		}
@@ -5509,7 +5600,7 @@ don't necessarily need to follow all the rules exactly, such as requiring
 that the first character not be a digit.
 
 We allow leading and trailing white space.  In between, we do not allow
-punctuation (except for underscores and dollar signs), control 
+punctuation (except for underscores and dollar signs), control
 characters, or embedded white space.
 
 More pedantically we should allow quoted identifiers containing arbitrary
@@ -5528,7 +5619,7 @@ static int is_identifier( const char* s) {
 		return 0;   // Nothing but white space?  Not okay.
 
 	// Check each character until we reach white space or
-	// end-of-string.  Letters, digits, underscores, and 
+	// end-of-string.  Letters, digits, underscores, and
 	// dollar signs are okay. With the exception of periods
 	// (as in schema.identifier), control characters and other
 	// punctuation characters are not okay.  Anything else
@@ -5549,7 +5640,7 @@ static int is_identifier( const char* s) {
 
 	// If we found any white space in the above loop,
 	// the rest had better be all white space.
-	
+
 	while( isspace( (unsigned char) *s ) )
 		++s;
 
@@ -5769,7 +5860,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	info->class_def = class_def;
 	info->links     = links;
 	info->fields    = fields;
-	
+
 	return 0;
 }
 
@@ -5937,7 +6028,7 @@ static ClassInfo* search_alias( const char* target ) {
 static ClassInfo* search_all_alias( const char* target ) {
 	ClassInfo* found_class = NULL;
 	QueryFrame* curr_frame = curr_query;
-	
+
 	while( curr_frame ) {
 		if(( found_class = search_alias_in_frame( curr_frame, target ) ))
 			break;
@@ -5968,7 +6059,7 @@ static ClassInfo* add_joined_class( const char* alias, const char* classname ) {
 					  MODULENAME, alias, conflict->class_name );
 		return NULL;
 	}
-	
+
 	ClassInfo* info = allocate_class_info();
 
 	if( build_class_info( info, alias, classname ) ) {
