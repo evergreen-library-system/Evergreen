@@ -187,8 +187,8 @@ void osrfAppChildExit() {
 	@return Zero if successful, or non-zero if not.
 
 	Load the IDL file into an internal data structure for future reference.  Each non-virtual
-	class in the IDL corresponds to a table or view in the database.  Ignore all virtual
-	tables and virtual fields.
+	class in the IDL corresponds to a table or view in the database, or to a subquery defined
+	in the IDL.  Ignore all virtual tables and virtual fields.
 
 	Register a number of methods, some of them general-purpose and others specific for
 	particular classes.
@@ -417,6 +417,14 @@ int osrfAppInitialize() {
 	return 0;
 }
 
+/**
+	@brief Get a table name, view name, or subquery for use in a FROM clause.
+	@param class Pointer to the IDL class entry.
+	@return A table name, a view name, or a subquery in parentheses.
+
+	In some cases the IDL defines a class, not with a table name or a view name, but with
+	a SELECT statement, which may be used as a subquery.
+*/
 static char* getSourceDefinition( osrfHash* class ) {
 
 	char* tabledef = osrfHashGet(class, "tablename");
@@ -456,98 +464,98 @@ static char* getSourceDefinition( osrfHash* class ) {
 */
 int osrfAppChildInit() {
 
-    osrfLogDebug(OSRF_LOG_MARK, "Attempting to initialize libdbi...");
-    dbi_initialize(NULL);
-    osrfLogDebug(OSRF_LOG_MARK, "... libdbi initialized.");
+	osrfLogDebug(OSRF_LOG_MARK, "Attempting to initialize libdbi...");
+	dbi_initialize(NULL);
+	osrfLogDebug(OSRF_LOG_MARK, "... libdbi initialized.");
 
-    char* driver = osrf_settings_host_value("/apps/%s/app_settings/driver", MODULENAME);
-    char* user	 = osrf_settings_host_value("/apps/%s/app_settings/database/user", MODULENAME);
-    char* host	 = osrf_settings_host_value("/apps/%s/app_settings/database/host", MODULENAME);
-    char* port	 = osrf_settings_host_value("/apps/%s/app_settings/database/port", MODULENAME);
-    char* db	 = osrf_settings_host_value("/apps/%s/app_settings/database/db", MODULENAME);
-    char* pw	 = osrf_settings_host_value("/apps/%s/app_settings/database/pw", MODULENAME);
-    char* md	 = osrf_settings_host_value("/apps/%s/app_settings/max_query_recursion",
-					MODULENAME);
+	char* driver = osrf_settings_host_value("/apps/%s/app_settings/driver", MODULENAME);
+	char* user   = osrf_settings_host_value("/apps/%s/app_settings/database/user", MODULENAME);
+	char* host   = osrf_settings_host_value("/apps/%s/app_settings/database/host", MODULENAME);
+	char* port   = osrf_settings_host_value("/apps/%s/app_settings/database/port", MODULENAME);
+	char* db     = osrf_settings_host_value("/apps/%s/app_settings/database/db", MODULENAME);
+	char* pw     = osrf_settings_host_value("/apps/%s/app_settings/database/pw", MODULENAME);
+	char* md     = osrf_settings_host_value("/apps/%s/app_settings/max_query_recursion",
+			MODULENAME);
 
-    osrfLogDebug(OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver);
-    writehandle = dbi_conn_new(driver);
+	osrfLogDebug(OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver);
+	writehandle = dbi_conn_new(driver);
 
-    if(!writehandle) {
-        osrfLogError(OSRF_LOG_MARK, "Error loading database driver [%s]", driver);
-        return -1;
-    }
-    osrfLogDebug(OSRF_LOG_MARK, "Database driver [%s] seems OK", driver);
+	if(!writehandle) {
+		osrfLogError(OSRF_LOG_MARK, "Error loading database driver [%s]", driver);
+		return -1;
+	}
+	osrfLogDebug(OSRF_LOG_MARK, "Database driver [%s] seems OK", driver);
 
-    osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
-            "port=%s, user=%s, pw=%s, db=%s", MODULENAME, host, port, user, pw, db );
+	osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
+			"port=%s, user=%s, pw=%s, db=%s", MODULENAME, host, port, user, pw, db );
 
-    if(host) dbi_conn_set_option(writehandle, "host", host );
-    if(port) dbi_conn_set_option_numeric( writehandle, "port", atoi(port) );
-    if(user) dbi_conn_set_option(writehandle, "username", user);
-    if(pw) dbi_conn_set_option(writehandle, "password", pw );
-    if(db) dbi_conn_set_option(writehandle, "dbname", db );
+	if(host) dbi_conn_set_option(writehandle, "host", host );
+	if(port) dbi_conn_set_option_numeric( writehandle, "port", atoi(port) );
+	if(user) dbi_conn_set_option(writehandle, "username", user);
+	if(pw)   dbi_conn_set_option(writehandle, "password", pw );
+	if(db)   dbi_conn_set_option(writehandle, "dbname", db );
 
-    if(md) max_flesh_depth = atoi(md);
-    if(max_flesh_depth < 0) max_flesh_depth = 1;
-    if(max_flesh_depth > 1000) max_flesh_depth = 1000;
+	if(md)                     max_flesh_depth = atoi(md);
+	if(max_flesh_depth < 0)    max_flesh_depth = 1;
+	if(max_flesh_depth > 1000) max_flesh_depth = 1000;
 
-    free(user);
-    free(host);
-    free(port);
-    free(db);
-    free(pw);
+	free(user);
+	free(host);
+	free(port);
+	free(db);
+	free(pw);
 
-    const char* err;
-    if (dbi_conn_connect(writehandle) < 0) {
-        sleep(1);
-        if (dbi_conn_connect(writehandle) < 0) {
-            dbi_conn_error(writehandle, &err);
-            osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", err);
-            return -1;
-        }
-    }
+	const char* err;
+	if (dbi_conn_connect(writehandle) < 0) {
+		sleep(1);
+		if (dbi_conn_connect(writehandle) < 0) {
+			dbi_conn_error(writehandle, &err);
+			osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", err);
+			return -1;
+		}
+	}
 
-    osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", MODULENAME);
+	osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", MODULENAME);
 
 	osrfHashIterator* class_itr = osrfNewHashIterator( oilsIDL() );
 	osrfHash* class = NULL;
 
 	while( (class = osrfHashIteratorNext( class_itr ) ) ) {
 		const char* classname = osrfHashIteratorKey( class_itr );
-        osrfHash* fields = osrfHashGet( class, "fields" );
+		osrfHash* fields = osrfHashGet( class, "fields" );
 
 		if( str_is_true( osrfHashGet(class, "virtual") ) ) {
 			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
 			continue;
 		}
 
-        char* tabledef = getSourceDefinition(class);
+		char* tabledef = getSourceDefinition(class);
 		if( !tabledef )
 			tabledef = strdup( "(null)" );
 
-        growing_buffer* sql_buf = buffer_init(32);
-        buffer_fadd( sql_buf, "SELECT * FROM %s AS x WHERE 1=0;", tabledef );
+		growing_buffer* sql_buf = buffer_init(32);
+		buffer_fadd( sql_buf, "SELECT * FROM %s AS x WHERE 1=0;", tabledef );
 
-        free(tabledef);
+		free(tabledef);
 
-        char* sql = buffer_release(sql_buf);
-        osrfLogDebug(OSRF_LOG_MARK, "%s Investigatory SQL = %s", MODULENAME, sql);
+		char* sql = buffer_release(sql_buf);
+		osrfLogDebug(OSRF_LOG_MARK, "%s Investigatory SQL = %s", MODULENAME, sql);
 
-        dbi_result result = dbi_conn_query(writehandle, sql);
-        free(sql);
+		dbi_result result = dbi_conn_query(writehandle, sql);
+		free(sql);
 
-        if (result) {
+		if (result) {
 
-            int columnIndex = 1;
-            const char* columnName;
-            osrfHash* _f;
-            while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
+			int columnIndex = 1;
+			const char* columnName;
+			osrfHash* _f;
+			while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
 
-                osrfLogInternal( OSRF_LOG_MARK, "Looking for column named [%s]...",
+				osrfLogInternal( OSRF_LOG_MARK, "Looking for column named [%s]...",
 						(char*) columnName );
 
-                /* fetch the fieldmapper index */
-                if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
+				/* fetch the fieldmapper index */
+				if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
 
 					osrfLogDebug(OSRF_LOG_MARK, "Found [%s] in IDL hash...", (char*)columnName);
 
@@ -567,41 +575,42 @@ int osrfAppChildInit() {
 								osrfHashSet(_f, "INT", "datatype");
 							break;
 						}
-                        case DBI_TYPE_DECIMAL :
-                            if ( !osrfHashGet(_f, "primitive") )
-                                osrfHashSet(_f, "number", "primitive");
+						case DBI_TYPE_DECIMAL :
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f, "number", "primitive");
 
-                            osrfHashSet(_f,"NUMERIC", "datatype");
-                            break;
+							osrfHashSet(_f,"NUMERIC", "datatype");
+							break;
 
-                        case DBI_TYPE_STRING :
-                            if ( !osrfHashGet(_f, "primitive") )
-                                osrfHashSet(_f,"string", "primitive");
-                            osrfHashSet(_f,"TEXT", "datatype");
-                            break;
+						case DBI_TYPE_STRING :
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"string", "primitive");
 
-                        case DBI_TYPE_DATETIME :
-                            if ( !osrfHashGet(_f, "primitive") )
-                                osrfHashSet(_f,"string", "primitive");
+							osrfHashSet(_f,"TEXT", "datatype");
+							break;
 
-                            osrfHashSet(_f,"TIMESTAMP", "datatype");
-                            break;
+						case DBI_TYPE_DATETIME :
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"string", "primitive");
 
-                        case DBI_TYPE_BINARY :
-                            if ( !osrfHashGet(_f, "primitive") )
-                                osrfHashSet(_f,"string", "primitive");
+							osrfHashSet(_f,"TIMESTAMP", "datatype");
+							break;
 
-                            osrfHashSet(_f,"BYTEA", "datatype");
-                    }
+						case DBI_TYPE_BINARY :
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"string", "primitive");
 
-                    osrfLogDebug(
-                            OSRF_LOG_MARK,
-                            "Setting [%s] to primitive [%s] and datatype [%s]...",
-                            (char*)columnName,
-                            osrfHashGet(_f, "primitive"),
-                            osrfHashGet(_f, "datatype")
-                            );
-                }
+							osrfHashSet(_f,"BYTEA", "datatype");
+					}
+
+					osrfLogDebug(
+							OSRF_LOG_MARK,
+							"Setting [%s] to primitive [%s] and datatype [%s]...",
+							(char*)columnName,
+							osrfHashGet(_f, "primitive"),
+							osrfHashGet(_f, "datatype")
+							);
+				}
 				++columnIndex;
 			} // end while loop for traversing result
 			dbi_result_free(result);
@@ -612,7 +621,7 @@ int osrfAppChildInit() {
 
 	osrfHashIteratorFree( class_itr );
 	child_initialized = 1;
-    return 0;
+	return 0;
 }
 
 /*
