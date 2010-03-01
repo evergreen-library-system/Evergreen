@@ -2187,5 +2187,141 @@ sub cancel_lineitem_api {
     return undef;
 }
 
+__PACKAGE__->register_method (
+    method        => 'user_requests',
+    api_name    => 'open-ils.acq.user_request.retrieve.by_user_id',
+    stream      => 1,
+    signature => q/
+        Retrieve fleshed user requests and related data for a given user or users.
+        @param authtoken Login session key
+        @param owner Id or array of id's for the pertinent users.
+    /
+);
+
+__PACKAGE__->register_method (
+    method        => 'user_requests',
+    api_name    => 'open-ils.acq.user_request.retrieve.by_home_ou',
+    stream      => 1,
+    signature => q/
+        Retrieve fleshed user requests and related data for a given org unit or units.
+        @param authtoken Login session key
+        @param owner Id or array of id's for the pertinent org units.
+    /
+);
+
+sub user_requests {
+    my($self, $conn, $auth, $search_value, $options) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    my $rid = $e->requestor->id;
+
+    my $query = {
+        "select"=>{"aur"=>["id"],"au"=>["home_ou", {column => 'id', alias => 'usr_id'} ]},
+        "from"=>{ "aur" => { "au" => {}, "jub" => { "type" => "left" } } },
+        "where"=>{
+            "+jub"=> {
+                "-or" => [
+                    {"id"=>undef}, # this with the left-join pulls in requests without lineitems
+                    {"state"=>["new","on-order","pending-order"]} # FIXME - probably needs softcoding
+                ]
+            }
+        },
+        "order_by"=>[{"class"=>"aur", "field"=>"request_date", "direction"=>"desc"}]
+    };
+
+    if ($options && defined $options->{'state'}) {
+        $query->{'where'}->{'+jub'}->{'-or'}->[1]->{'state'} = $options->{'state'};        
+    }
+
+    if ($self->api_name =~ /by_user_id/) {
+        $query->{'where'}->{'usr'} = $search_value;
+    } else {
+        $query->{'where'}->{'+au'} = { 'home_ou' => $search_value };
+    }
+
+    my $pertinent_ids = $e->json_query($query);
+
+    my %perm_test = ();
+    for my $id_blob (@$pertinent_ids) {
+        if ($rid != $id_blob->{usr_id}) {
+            if (!defined $perm_test{ $id_blob->{home_ou} }) {
+                $perm_test{ $id_blob->{home_ou} } = $e->allowed( ['user_request.view'], $id_blob->{home_ou} );
+            }
+            if (!$perm_test{ $id_blob->{home_ou} }) {
+                next; # failed test
+            }
+        }
+        my $aur_obj = $e->retrieve_acq_user_request([
+            $id_blob->{id},
+            {flesh => 1, flesh_fields => { "aur" => [ 'lineitem' ] } }
+        ]);
+        if (! $aur_obj) { next; }
+
+        if ($aur_obj->lineitem()) {
+            $aur_obj->lineitem()->clear_marc();
+        }
+        $conn->respond($aur_obj);
+    }
+
+    return undef;
+}
+
+__PACKAGE__->register_method (
+    method      => 'update_user_request',
+    api_name    => 'open-ils.acq.user_request.cancel.batch',
+    stream      => 1,
+);
+__PACKAGE__->register_method (
+    method      => 'update_user_request',
+    api_name    => 'open-ils.acq.user_request.set_no_hold.batch',
+    stream      => 1,
+);
+
+sub update_user_request {
+    my($self, $conn, $auth, $aur_ids) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    my $rid = $e->requestor->id;
+
+    my $x = 1;
+    my %perm_test = ();
+    for my $id (@$aur_ids) {
+
+        my $aur_obj = $e->retrieve_acq_user_request([
+            $id,
+            {   flesh => 1,
+                flesh_fields => { "aur" => ['lineitem', 'usr'] }
+            }
+        ]) or return $e->die_event;
+
+        my $context_org = $aur_obj->usr()->home_ou();
+        $aur_obj->usr( $aur_obj->usr()->id() );
+
+        if ($rid != $aur_obj->usr) {
+            if (!defined $perm_test{ $context_org }) {
+                $perm_test{ $context_org } = $e->allowed( ['user_request.update'], $context_org );
+            }
+            if (!$perm_test{ $context_org }) {
+                next; # failed test
+            }
+        }
+
+        if($self->api_name =~ /set_no_hold/) {
+            if ($U->is_true($aur_obj->hold)) { 
+                $aur_obj->hold(0); 
+                $e->update_acq_user_request($aur_obj) or return $e->die_event;
+            }
+        }
+
+        if($self->api_name =~ /cancel/) {
+            $e->delete_acq_user_request($aur_obj);
+        }
+
+        $conn->respond({maximum => scalar(@$aur_ids), progress => $x++});
+    }
+
+    $e->commit;
+    return {complete => 1};
+}
 
 1;
