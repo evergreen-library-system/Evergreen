@@ -1202,22 +1202,21 @@ sub po_events {
         "order_by"=>[{"class"=>"atev", "field"=>"run_time", "direction"=>"desc"}]
     };
 
-    if (defined $options->{state}) {
+    if ($options && defined $options->{state}) {
         $query->{'where'}{'state'} = $options->{state}
     }
 
-    if (defined $options->{start_time}) {
+    if ($options && defined $options->{start_time}) {
         $query->{'where'}{'start_time'} = $options->{start_time};
     }
 
-    if (defined $options->{order_by}) {
+    if ($options && defined $options->{order_by}) {
         $query->{'order_by'} = $options->{order_by};
     }
     my $po_events = $e->json_query($query);
 
-    my $flesh_fields = $options->{flesh_fields} || {};
-    my $flesh_depth = $options->{flesh_depth} || 1;
-    $flesh_fields->{atev} = ['event_def'] unless $flesh_fields->{atev};
+    my $flesh_fields = ( 'atev' => [ 'event_def' ] };
+    my $flesh_depth = 1;
 
     for my $id (@$po_events) {
         my $event = $e->retrieve_action_trigger_event([
