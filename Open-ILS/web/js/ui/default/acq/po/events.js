@@ -9,12 +9,14 @@ var eventContextOrg;
 var eventList;
 var eventStartDateRange;
 var eventEndDateRange;
+var po_map = {};
 
 function eventInit() {
     try {
         buildStateSelector();
         buildOrgSelector();
         buildDatePickers();
+        eventGrid.resetStore();
         buildEventGrid();
 
         eventGrid.cancelSelected = function() { doSelected('open-ils.acq.purchase_order.event.cancel.batch') };
@@ -33,22 +35,22 @@ function buildDatePickers() {
     var today = new Date(); 
     var yesterday = new Date( today.getFullYear(), today.getMonth(), today.getDate() - 1);
     eventStartDatePicker.constraints.max = today;
-    eventStartDatePicker.setValue( yesterday );
-    eventStartDateRange = eventStartDatePicker.getValue();
+    eventStartDatePicker.attr( 'value', yesterday );
+    eventStartDateRange = eventStartDatePicker.attr('value');
     eventEndDatePicker.constraints.max = today;
-    eventEndDatePicker.setValue( today );
-    eventEndDateRange = eventEndDatePicker.getValue();
+    eventEndDatePicker.attr( 'value', today );
+    eventEndDateRange = eventEndDatePicker.attr('value');
     dojo.connect(
         eventStartDatePicker,
         'onChange',
         function() {
             var new_date = arguments[0];
-            if (new_date > eventEndDatePicker.getValue()) {
-                var swap = eventEndDatePicker.getValue();
-                eventEndDatePicker.setValue( new_date );
-                this.setValue( swap );
+            if (new_date > eventEndDatePicker.attr('value')) {
+                var swap = eventEndDatePicker.attr('value');
+                eventEndDatePicker.attr( 'value', new_date );
+                this.attr( 'value', swap );
             }
-            eventStartDateRange = this.getValue();
+            eventStartDateRange = this.attr('value');
         }
     );
     dojo.connect(
@@ -56,12 +58,12 @@ function buildDatePickers() {
         'onChange',
         function() {
             var new_date = arguments[0];
-            if (new_date < eventStartDatePicker.getValue()) {
-                var swap = eventStartDatePicker.getValue();
-                eventStartDatePicker.setValue( new_date );
-                this.setValue( swap );
+            if (new_date < eventStartDatePicker.attr('value')) {
+                var swap = eventStartDatePicker.attr('value');
+                eventStartDatePicker.attr( 'value', new_date );
+                this.attr( 'value', swap );
             }
-            eventEndDateRange = this.getValue();
+            eventEndDateRange = this.attr('value');
         }
     );
 
@@ -81,13 +83,13 @@ function buildStateSelector() {
                 ]
             }
         });
-        eventStateSelect.setValue('pending');
+        eventStateSelect.attr( 'value','pending' );
         dojo.connect(
             eventStateSelect, 
             'onChange',
             function() {
                 try {
-                     eventState = this.getValue();
+                     eventState = this.attr('value');
                 } catch(E) {
                     //dump('Error in acq/events.js, eventInit, connect, onChange: ' + E);
                     throw(E);
@@ -110,7 +112,7 @@ function buildOrgSelector() {
                     'onChange',
                     function() {
                         try {
-                             eventContextOrg = this.getValue();
+                             eventContextOrg = this.attr('value');
                         } catch(E) {
                             //dump('Error in acq/events.js, eventInit, connect, onChange: ' + E);
                             throw(E);
@@ -196,6 +198,7 @@ function buildEventGrid() {
             ]
         }
     }
+    po_map = {};
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.events.ordering_agency'],
         {   async: true,
@@ -203,6 +206,8 @@ function buildEventGrid() {
             onresponse: function(r) {
                 try {
                     if(eventObject = openils.Util.readResponse(r)) {
+                        po_map[ eventObject.target().id() ] = eventObject.target();
+                        eventObject.target( eventObject.target().id() );
                         eventGrid.store.newItem(atev.toStoreItem(eventObject));
                     }
                 } catch(E) {
@@ -212,6 +217,13 @@ function buildEventGrid() {
             }
         }
     );
+}
+
+function format_po_link(value) {
+    if (value) {
+        // FIXME -- how do you escape the value from .name() ?
+        return '<a href="/eg/acq/po/view/' + value + '">' + po_map[ value ].name() + '</a>';
+    }
 }
 
 openils.Util.addOnLoad(eventInit);

@@ -51,6 +51,11 @@
                 suppressFields="['update_process','user_data','template_output','error_output','async_output','event_def']"
                 defaultCellWidth="'auto'"
                 editOnEnter="false">
+            <thead>
+                <tr>
+                    <th field="target" formatter="format_po_link">Purchase Order</th>
+                </tr>
+            </thead>
         </table>
     </div>
 </div>
