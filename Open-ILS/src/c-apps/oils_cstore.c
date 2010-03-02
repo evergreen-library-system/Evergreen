@@ -123,7 +123,7 @@ char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonOb
 
 void userDataFree( void* );
 static void sessionDataFree( char*, void* );
-static char* getSourceDefinition( osrfHash* );
+static char* getRelation( osrfHash* );
 static int str_is_true( const char* str );
 static int obj_is_true( const jsonObject* obj );
 static const char* json_type( int code );
@@ -158,7 +158,6 @@ static int max_flesh_depth = 100;
 // confusing because the top level of the query is at the bottom of the stack.
 static QueryFrame* curr_query = NULL;
 
-/* called when this process is about to exit */
 /**
 	@brief Disconnect from the database.
 
@@ -425,19 +424,23 @@ int osrfAppInitialize() {
 	In some cases the IDL defines a class, not with a table name or a view name, but with
 	a SELECT statement, which may be used as a subquery.
 */
-static char* getSourceDefinition( osrfHash* class ) {
+static char* getRelation( osrfHash* class ) {
 
-	char* tabledef = osrfHashGet(class, "tablename");
+	char* source_def = NULL;
+	const char* tabledef = osrfHashGet(class, "tablename");
 
-	if (tabledef) {
-		tabledef = strdup(tabledef);
+	if ( tabledef ) {
+		source_def = strdup( tabledef );   // Return the name of a table or view
 	} else {
-		tabledef = osrfHashGet(class, "source_definition");
+		tabledef = osrfHashGet( class, "source_definition" );
 		if( tabledef ) {
-			growing_buffer* tablebuf = buffer_init(128);
-			buffer_fadd( tablebuf, "(%s)", tabledef );
-			tabledef = buffer_release(tablebuf);
+			// Return a subquery, enclosed in parentheses
+			source_def = safe_malloc( strlen( tabledef ) + 3 );
+			source_def[ 0 ] = '(';
+			strcpy( source_def + 1, tabledef );
+			strcat( source_def, ")" );
 		} else {
+			// Not found: return an error
 			const char* classname = osrfHashGet( class, "classname" );
 			if( !classname )
 				classname = "???";
@@ -450,7 +453,7 @@ static char* getSourceDefinition( osrfHash* class ) {
 		}
 	}
 
-	return tabledef;
+	return source_def;
 }
 
 /**
@@ -519,31 +522,32 @@ int osrfAppChildInit() {
 
 	osrfHashIterator* class_itr = osrfNewHashIterator( oilsIDL() );
 	osrfHash* class = NULL;
+	growing_buffer* query_buf = buffer_init( 64 );
 
+	// For each class in the IDL...
 	while( (class = osrfHashIteratorNext( class_itr ) ) ) {
 		const char* classname = osrfHashIteratorKey( class_itr );
 		osrfHash* fields = osrfHashGet( class, "fields" );
 
+		// If the class is virtual, ignore it
 		if( str_is_true( osrfHashGet(class, "virtual") ) ) {
 			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
 			continue;
 		}
 
-		char* tabledef = getSourceDefinition(class);
+		char* tabledef = getRelation(class);
 		if( !tabledef )
-			tabledef = strdup( "(null)" );
+			continue;   // No such relation -- a query of it would be doomed to failure
 
-		growing_buffer* sql_buf = buffer_init(32);
-		buffer_fadd( sql_buf, "SELECT * FROM %s AS x WHERE 1=0;", tabledef );
+		buffer_reset( query_buf );
+		buffer_fadd( query_buf, "SELECT * FROM %s AS x WHERE 1=0;", tabledef );
 
 		free(tabledef);
 
-		char* sql = buffer_release(sql_buf);
-		osrfLogDebug(OSRF_LOG_MARK, "%s Investigatory SQL = %s", MODULENAME, sql);
+		osrfLogDebug( OSRF_LOG_MARK, "%s Investigatory SQL = %s", 
+				MODULENAME, OSRF_BUFFER_C_STR( query_buf ) );
 
-		dbi_result result = dbi_conn_query(writehandle, sql);
-		free(sql);
-
+		dbi_result result = dbi_conn_query( writehandle, OSRF_BUFFER_C_STR( query_buf ) );
 		if (result) {
 
 			int columnIndex = 1;
@@ -552,12 +556,12 @@ int osrfAppChildInit() {
 			while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
 
 				osrfLogInternal( OSRF_LOG_MARK, "Looking for column named [%s]...",
-						(char*) columnName );
+						columnName );
 
 				/* fetch the fieldmapper index */
-				if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
+				if( (_f = osrfHashGet(fields, columnName)) ) {
 
-					osrfLogDebug(OSRF_LOG_MARK, "Found [%s] in IDL hash...", (char*)columnName);
+					osrfLogDebug(OSRF_LOG_MARK, "Found [%s] in IDL hash...", columnName);
 
 					/* determine the field type and storage attributes */
 
@@ -606,19 +610,20 @@ int osrfAppChildInit() {
 					osrfLogDebug(
 							OSRF_LOG_MARK,
 							"Setting [%s] to primitive [%s] and datatype [%s]...",
-							(char*)columnName,
+							columnName,
 							osrfHashGet(_f, "primitive"),
 							osrfHashGet(_f, "datatype")
 							);
 				}
 				++columnIndex;
-			} // end while loop for traversing result
+			} // end while loop for traversing columns of result
 			dbi_result_free(result);
 		} else {
-			osrfLogDebug(OSRF_LOG_MARK, "No data found for class [%s]...", (char*)classname);
+			osrfLogDebug(OSRF_LOG_MARK, "No data found for class [%s]...", classname);
 		}
 	} // end for each class in IDL
 
+	buffer_free( query_buf );
 	osrfHashIteratorFree( class_itr );
 	child_initialized = 1;
 	return 0;
@@ -4457,7 +4462,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
     jsonIteratorFree(class_itr);
 
 	char* col_list = buffer_release(select_buf);
-	char* table = getSourceDefinition(meta);
+	char* table = getRelation(meta);
 	if( !table )
 		table = strdup( "(null)" );
 
@@ -5845,7 +5850,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 		return 1;
 	}
 
-	char* source_def = getSourceDefinition( class_def );
+	char* source_def = getRelation( class_def );
 	if( ! source_def )
 		return 1;
 
