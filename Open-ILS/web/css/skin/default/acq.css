@@ -143,6 +143,7 @@ label[for="attr_search_type_scalar"] { vertical-align: top; }
 #acq-lit-alert-value { height: 5em; width: 20em; }
 .acq-lit-note-row { margin: 6px 0; }
 span[name="alert_code"] {color: #c00;padding-right: 1em;font-weight: bold;}
+span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;margin: 0 7px;}
 
 .acq-lit-li-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
 .acq-lit-li-menu-left {text-align:left; width:300px;}

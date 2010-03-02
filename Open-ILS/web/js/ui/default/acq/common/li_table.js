@@ -271,6 +271,16 @@ function AcqLiTable() {
     this.updateLiNotesCount = function(li, row) {
         if (typeof(row) == "undefined")
             row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
+
+        var has_notes = (li.lineitem_notes().filter(
+                function(o) { return Boolean (o.alert_text()); }
+            ).length > 0);
+
+        /* U+2691 is the code point for a filled-in flag character */
+        nodeByName("notes_alert_flag", row).innerHTML =
+             has_notes ? "&#x2691;" : "";
+        nodeByName("noteslink", row).style.fontStyle =
+            has_notes ? "italic" : "normal";
         nodeByName("notes_count", row).innerHTML = li.lineitem_notes().length;
     };
 
