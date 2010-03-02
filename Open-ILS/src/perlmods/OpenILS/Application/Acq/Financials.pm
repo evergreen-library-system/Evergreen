@@ -1215,7 +1215,7 @@ sub po_events {
     }
     my $po_events = $e->json_query($query);
 
-    my $flesh_fields = ( 'atev' => [ 'event_def' ] };
+    my $flesh_fields = { 'atev' => [ 'event_def' ] };
     my $flesh_depth = 1;
 
     for my $id (@$po_events) {
