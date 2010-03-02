@@ -217,15 +217,15 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 		xact.usr,
 		xact.xact_start,
 		xact.xact_finish,
-		credit.amount AS total_paid,
+		COALESCE(credit.amount, 0.0::numeric) AS total_paid,
 		credit.payment_ts AS last_payment_ts,
 		credit.note AS last_payment_note,
 		credit.payment_type AS last_payment_type,
-		debit.amount AS total_owed,
+		COALESCE(debit.amount, 0.0::numeric) AS total_owed,
 		debit.billing_ts AS last_billing_ts,
 		debit.note AS last_billing_note,
 		debit.billing_type AS last_billing_type,
-		COALESCE(debit.amount, 0::numeric) - COALESCE(credit.amount, 0::numeric) AS balance_owed,
+		COALESCE(debit.amount, 0.0::numeric) - COALESCE(credit.amount, 0.0::numeric) AS balance_owed,
 		p.relname AS xact_type
 	  FROM	money.billable_xact xact
 		JOIN pg_class p ON xact.tableoid = p.oid
@@ -303,7 +303,7 @@ CREATE OR REPLACE FUNCTION money.materialized_summary_billing_add () RETURNS TRI
 BEGIN
 	IF NOT NEW.voided THEN
 		UPDATE	money.materialized_billable_xact_summary
-		  SET	total_owed = total_owed + NEW.amount,
+		  SET	total_owed = COALESCE(total_owed, 0.0::numeric) + NEW.amount,
 			last_billing_ts = NEW.billing_ts,
 			last_billing_note = NEW.note,
 			last_billing_type = NEW.billing_type,
@@ -403,7 +403,7 @@ CREATE OR REPLACE FUNCTION money.materialized_summary_payment_add () RETURNS TRI
 BEGIN
 	IF NOT NEW.voided THEN
 		UPDATE	money.materialized_billable_xact_summary
-		  SET	total_paid = total_paid + NEW.amount,
+		  SET	total_paid = COALESCE(total_paid, 0.0::numeric) + NEW.amount,
 			last_payment_ts = NEW.payment_ts,
 			last_payment_note = NEW.note,
 			last_payment_type = TG_ARGV[0],
