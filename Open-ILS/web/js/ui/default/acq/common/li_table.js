@@ -410,8 +410,18 @@ function AcqLiTable() {
         var self = this;
         var row = self.liNotesRow.cloneNode(true);
         nodeByName("value", row).innerHTML = note.value();
-        if (note.alert_text())
-            nodeByName("alert_code", row).innerHTML = note.alert_text().code();
+        var alert_node = nodeByName("alert_code", row);
+        if (note.alert_text()) {
+            alert_node.innerHTML = note.alert_text().code();
+            if (note.alert_text().description()) {
+                new dijit.Tooltip(
+                    {
+                        "connectId": [alert_node],
+                        "label": note.alert_text().description()
+                    }, dojo.create("span", null, alert_node, "after")
+                );
+            }
+        }
 
         nodeByName("delete", row).onclick = function() {
             note.isdeleted(true);

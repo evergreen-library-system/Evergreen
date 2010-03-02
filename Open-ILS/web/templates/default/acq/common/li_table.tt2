@@ -151,11 +151,11 @@
                             <span>New Alert</span>
                             <div dojoType="dijit.TooltipDialog">
                                 <div class="acq-lit-note-row">
-                                    <label for="acq-lit-alert-alert-text">Choose alert code &nbsp;</label>
+                                    <label for="acq-lit-alert-alert-text">Choose alert code &nbsp;&nbsp;</label>
                                     <input id="acq-lit-alert-alert-text" jsId="acqLitAlertAlertText" dojoType="dijit.form.FilteringSelect" labelAttr="code" searchAttr="code" required="true" />
                                 </div>
                                 <div class="acq-lit-note-row">
-                                    <label for="acq-lit-alert-value">Optional description</label>
+                                    <label for="acq-lit-alert-value">Additional comments</label>
                                     <div jsId="acqLitAlertNoteValue" id="acq-lit-alert-value" dojoType="dijit.form.Textarea" name="value"></div>
                                 </div>
                                 <button jsId="acqLitCreateAlertSubmit" dojoType="dijit.form.Button" type="submit">Create</button>
