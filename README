@@ -15,7 +15,7 @@ installer.
 
 Issue the following commands as the root user to install prerequisites
 using the Makefile.install prerequisite installer, substituting
-"debian-etch", "debian-lenny", "ubuntu-gutsy", "ubuntu-hardy",
+"debian-etch", "debian-lenny", "ubuntu-hardy",
 "ubuntu-intrepid", "ubuntu-karmic", "centos", "rhel", or "gentoo"
 for <osname> below:
 

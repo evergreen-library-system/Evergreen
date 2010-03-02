@@ -3,7 +3,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch/lenny), Ubuntu (gutsy/hardy/intrepid/karmic), and Gentoo.
+# Currently supports Debian (etch/lenny), Ubuntu (hardy/intrepid/karmic), and Gentoo.
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -11,8 +11,6 @@
 # 	make -f Makefile.install debian-etch
 # 	- or -
 # 	make -f Makefile.install debian-lenny
-# 	- or -
-# 	make -f Makefile.install ubuntu-gutsy
 # 	- or -
 # 	make -f Makefile.install ubuntu-hardy
 # 	- or -
@@ -114,6 +112,13 @@ EXTRA_DEBS = \
 	libnet-z3950-zoom-perl \
 	libyaz-dev \
 	yaz
+
+# Ubuntu Hardy and Debian Etch require libencode-perl 
+# to get a version of Encode > 2.12 - see bug 525069.
+# Note that the Debian version of libencode-perl comes
+# from etch-backports.
+EXTRA_ENCODE = \
+	libencode-perl
 
 CENTOS = \
 	aspell \
@@ -249,7 +254,7 @@ centos: install_centos_pgsql install_centos_rpms install_yaz install_cpan_marc i
 
 debian-etch: etch generic_debian
 debian-lenny: lenny generic_debian
-etch: install_pgsql_client_debs_81 install_yaz install_cpan_marc
+etch: install_pgsql_client_debs_81 install_yaz install_cpan_marc install_extra_encode
 lenny: install_pgsql_client_debs_83 install_extra_debs
 generic_debian:  install_debs install debian_sys_config
 
@@ -257,11 +262,10 @@ gentoo: install_gentoos install_gentoo_perl install
 
 rhel: centos
 
-ubuntu-gutsy: hardy generic_ubuntu 
 ubuntu-hardy: hardy generic_ubuntu
 ubuntu-intrepid: intrepid generic_ubuntu
 ubuntu-karmic: karmic generic_ubuntu
-hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc
+hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
 intrepid: install_pgsql_client_debs_83 install_extra_debs
 karmic: install_pgsql_client_debs_84 install_extra_debs
 generic_ubuntu: install_debs install debian_sys_config
@@ -360,6 +364,10 @@ install_pgsql_server_debs_81:
 install_extra_debs:
 	$(APT_TOOL) install $(EXTRA_DEBS)
 
+# Install specific modules required by Ubuntu Hardy and
+# Debian Etch - see bug 525069
+install_extra_encode:
+	$(APT_TOOL) install $(EXTRA_ENCODE)
 
 # ------------------------------------------------------------------
 # - GENTOO ---------------------------------------------------------
