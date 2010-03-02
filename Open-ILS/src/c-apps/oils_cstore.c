@@ -629,30 +629,61 @@ int osrfAppChildInit() {
 	return 0;
 }
 
-/*
-  This function is a sleazy hack intended *only* for testing and
-  debugging.  Any real server process should initialize the
-  database connection by calling osrfAppChildInit().
+/**
+	@brief Install a database driver.
+	@param conn Pointer to a database driver.
+
+	The driver is used to process quoted strings correctly.
+
+	This function is a sleazy hack intended @em only for testing and debugging without
+	actually connecting to a database. Any real server process should initialize the
+	database connection by calling osrfAppChildInit().
 */
 void set_cstore_dbi_conn( dbi_conn conn ) {
 	dbhandle = writehandle = conn;
 }
 
+/**
+	@brief Free an osrfHash that stores a transaction ID.
+	@param blob A pointer to the osrfHash to be freed, cast to a void pointer.
+
+	This function is a callback, to be called by the application session when it ends.
+
+	See also sessionDataFree().
+*/
 void userDataFree( void* blob ) {
-    osrfHashFree( (osrfHash*)blob );
-    return;
+	osrfHashFree( (osrfHash*) blob );
 }
 
+/**
+	@brief Roll back a pending transaction at the end of the application session.
+	@param key The name of a key for an osrfHash.
+	@param item An opaque pointer to the item associated with the key.
+
+	We store an osrfHash with the application session, and arrange (by installing
+	userDataFree() as a different callback) for the session to free that osrfHash before
+	terminating.
+
+	This function is a callback for freeing items in the osrfHash.  If the item has a key
+	of "xact_id", the item is a transaction id for a transaction that is still pending.
+	So, if we're still connected, we do a rollback.
+*/
 static void sessionDataFree( char* key, void* item ) {
-    if (!(strcmp(key,"xact_id"))) {
-        if (writehandle)
-            dbi_conn_query(writehandle, "ROLLBACK;");
-        free(item);
-    }
-
-    return;
+	if ( !strcmp(key,"xact_id") ) {
+		if ( writehandle )
+			dbi_conn_query( writehandle, "ROLLBACK;" );
+		free( item );
+	}
 }
 
+/**
+	@brief Implement the transaction.begin method.
+	@param Pointer to the method context.
+	@return Zero if successful, or -1 upon error.
+
+	Start a transaction.  Return a transaction ID (actually the session id of the
+	application session) to the client.
+*/
 int beginTransaction ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -666,26 +697,31 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
-    dbi_result result = dbi_conn_query(writehandle, "START TRANSACTION;");
-    if (!result) {
-        osrfLogError(OSRF_LOG_MARK, "%s: Error starting transaction", MODULENAME );
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error starting transaction" );
-        return -1;
-    } else {
-        jsonObject* ret = jsonNewObject(ctx->session->session_id);
-        osrfAppRespondComplete( ctx, ret );
-        jsonObjectFree(ret);
+	dbi_result result = dbi_conn_query(writehandle, "START TRANSACTION;");
+	if (!result) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error starting transaction", MODULENAME );
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException", ctx->request, "Error starting transaction" );
+		return -1;
+	} else {
+		jsonObject* ret = jsonNewObject( ctx->session->session_id );
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
 
-        if (!ctx->session->userData) {
-            ctx->session->userData = osrfNewHash();
-            osrfHashSetCallback((osrfHash*)ctx->session->userData, &sessionDataFree);
-        }
+		// Store a copy of the application session ID as a transaction id in an osrfHash,
+		// to be stored with the application session.  Install some callbacks so that, if
+		// the session ends while the transaction is still active, we will do a rollback.
+		if (!ctx->session->userData) {
+			ctx->session->userData = osrfNewHash();
+			osrfHashSetCallback((osrfHash*)ctx->session->userData, &sessionDataFree);
+		}
 
-        osrfHashSet( (osrfHash*)ctx->session->userData, strdup( ctx->session->session_id ), "xact_id" );
-        ctx->session->userDataFree = &userDataFree;
+		osrfHashSet( (osrfHash*)ctx->session->userData, strdup( ctx->session->session_id ),
+				"xact_id" );
+		ctx->session->userDataFree = &userDataFree;
 
-    }
-    return 0;
+	}
+	return 0;
 }
 
 int setSavepoint ( osrfMethodContext* ctx ) {
@@ -694,7 +730,7 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-    int spNamePos = 0;
+	int spNamePos = 0;
 #ifdef PCRUD
 	spNamePos = 1;
 	jsonObject* user = verifyUserPCRUD( ctx );
@@ -703,16 +739,16 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
-    if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-        osrfAppSessionStatus(
-                ctx->session,
-                OSRF_STATUS_INTERNALSERVERERROR,
-                "osrfMethodException",
-                ctx->request,
-                "No active transaction -- required for savepoints"
-                );
-        return -1;
-    }
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+	osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for savepoints"
+			);
+		return -1;
+	}
 
 	const char* spName = jsonObjectGetString(jsonObjectGetIndex(ctx->params, spNamePos));
 
@@ -751,37 +787,37 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
-    if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-        osrfAppSessionStatus(
-                ctx->session,
-                OSRF_STATUS_INTERNALSERVERERROR,
-                "osrfMethodException",
-                ctx->request,
-                "No active transaction -- required for savepoints"
-                );
-        return -1;
-    }
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for savepoints"
+			);
+		return -1;
+	}
 
 	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
 
-    dbi_result result = dbi_conn_queryf(writehandle, "RELEASE SAVEPOINT \"%s\";", spName);
-    if (!result) {
-        osrfLogError(
-                OSRF_LOG_MARK,
-                "%s: Error releasing savepoint %s in transaction %s",
-                MODULENAME,
-                spName,
-                osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
-                );
+	dbi_result result = dbi_conn_queryf(writehandle, "RELEASE SAVEPOINT \"%s\";", spName);
+	if (!result) {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Error releasing savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+			);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error releasing savepoint" );
-        return -1;
-    } else {
-        jsonObject* ret = jsonNewObject(spName);
-        osrfAppRespondComplete( ctx, ret );
-        jsonObjectFree(ret);
-    }
-    return 0;
+		return -1;
+	} else {
+		jsonObject* ret = jsonNewObject(spName);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
 }
 
 int rollbackSavepoint ( osrfMethodContext* ctx ) {
@@ -834,7 +870,7 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 
 int commitTransaction ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
-		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		osrfLogError( OSRF_LOG_MARK, "Invalid method context" );
 		return -1;
 	}
 
