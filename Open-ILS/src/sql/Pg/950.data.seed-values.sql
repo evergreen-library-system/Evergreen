@@ -1252,7 +1252,8 @@ INSERT INTO permission.perm_list VALUES
     (359, 'HOLD_ITEM_CHECKED_OUT.override', oils_i18n_gettext(359, 'Allows a user to place a hold on an item that they already have checked out', 'ppl', 'description')),
     (360, 'RETRIEVE_RESERVATION_PULL_LIST', oils_i18n_gettext(360, 'Allows a user to retrieve a booking reservation pull list', 'ppl', 'description')),
     (361, 'CAPTURE_RESERVATION', oils_i18n_gettext(361, 'Allows a user to capture booking reservations', 'ppl', 'description')),
-    (362, 'MERGE_USERS', oils_i18n_gettext(362, 'Allows user records to be merged', 'ppl', 'description'))
+    (362, 'MERGE_USERS', oils_i18n_gettext(362, 'Allows user records to be merged', 'ppl', 'description')),
+    (363, 'ALLOW_ALT_TCN', oils_i18n_gettext(363, 'Allows staff to import a record using an alternate TCN to avoid conflicts', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
