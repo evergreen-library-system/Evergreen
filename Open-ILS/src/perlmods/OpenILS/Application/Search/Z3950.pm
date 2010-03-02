@@ -149,15 +149,7 @@ sub fetch_service_defs {
     };
 
     %services = %$hash; # cache these internally so we can actually use the db-configured sources
-
-    # Return a sorted list for easier handling in the client
-    my @sorted_sources;
-    foreach my $zsource (sort keys %$hash) {
-        if ($hash->{$zsource}->{name}) {
-            push @sorted_sources, $hash->{$zsource};
-        }
-    }
-    return \@sorted_sources;
+    return $hash;
 }
 
 
