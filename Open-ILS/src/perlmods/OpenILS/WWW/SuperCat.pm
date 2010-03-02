@@ -1740,6 +1740,7 @@ sub sru_search {
 						MARC::Field->new( '001', $record->id )
 					);
 				}
+				$marc->delete_field($_) for ($marc->field('852')); # remove any legacy 852s
 				foreach my $cn (keys %$bib_holdings) {
 					foreach my $cp (@{$bib_holdings->{$cn}->{'copies'}}) {
 						$marc->insert_fields_ordered(
