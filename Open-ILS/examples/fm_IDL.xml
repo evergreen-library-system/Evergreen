@@ -5151,6 +5151,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER" context_field="ordering_agency"/>
 		</permacrud>
 	</class>
 
@@ -5238,6 +5239,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="eg_bib_id" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
+                <context link="purchase_order" field="ordering_agency"/>
+                <context link="picklist" field="org_unit"/>
+            </retrieve>
 		</permacrud>
 	</class>
 
