@@ -16,10 +16,5 @@
 
 
 
-INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.2');
-
-INSERT INTO config.billing_type (id, name, owner) VALUES
-    ( 101, oils_i18n_gettext(101, 'Misc', 'cbt', 'name'), 1);
- 
-SELECT SETVAL('config.billing_type_id_seq'::TEXT, (SELECT MAX(id) FROM config.billing_type));
+INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.3');
 

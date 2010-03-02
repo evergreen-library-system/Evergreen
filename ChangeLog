@@ -1,1 +1,27 @@
-#ChangeLog
+2010-02-18  miker
+
+	* forward-porting update scripts
+
+2010-02-22  erickson
+
+	* keep in-db circ consistent with script circs WRT dissallowing
+	  checkouts and renewals for inactive patrons, inactive cards, and
+	  expired patrons
+
+	* Patch from Dan Wells to repair white space error in here-doc
+	  (fixes the r15418 reshelving problem)
+
+2010-02-24  phasefx
+
+	* fix double-listing bug in Actions for this Record -> View Holds
+
+	* Don't require an ident value for offline mode patron
+	  registration, since we don't require it online
+
+2010-03-02  miker
+
+	* Patch from Warren Layton of NRCAN to roll back a bit of typo
+	  fixing that is not warrented in 1.6.0
+
+	* .: Tagging 1.6.0.3
+
