@@ -8,5 +8,6 @@ use OpenILS::Application::Acq::Provider;
 use OpenILS::Application::Acq::Lineitem;
 use OpenILS::Application::Acq::Order;
 use OpenILS::Application::Acq::EDI;
+use OpenILS::Application::Acq::Search;
 
 1;

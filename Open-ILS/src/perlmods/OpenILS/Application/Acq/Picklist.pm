@@ -104,6 +104,13 @@ sub retrieve_picklist {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
 
+    return retrieve_picklist_impl($e, $picklist_id, $options);
+}
+
+sub retrieve_picklist_impl {
+    my ($e, $picklist_id, $options) = @_;
+    $options ||= {};
+
     my $picklist = $e->retrieve_acq_picklist($picklist_id)
         or return $e->event;
 

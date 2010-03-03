@@ -84,11 +84,14 @@ sub retrieve_lineitem {
     my($self, $conn, $auth, $li_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    return retrieve_lineitem_impl($e, $li_id, $options);
+}
+
+sub retrieve_lineitem_impl {
+    my ($e, $li_id, $options) = @_;
     $options ||= {};
 
     # XXX finer grained perms...
-
-    my $li;
 
     my $flesh = {};
     if($$options{flesh_attrs} or $$options{flesh_notes}) {
@@ -100,7 +103,7 @@ sub retrieve_lineitem {
         push(@{$flesh->{flesh_fields}->{jub}}, 'attributes') if $$options{flesh_attrs};
     }
 
-    $li = $e->retrieve_acq_lineitem([$li_id, $flesh]);
+    my $li = $e->retrieve_acq_lineitem([$li_id, $flesh]);
 
     if($$options{flesh_li_details}) {
         my $ops = {
@@ -117,7 +120,16 @@ sub retrieve_lineitem {
         $li->item_count(scalar(@$details));
     }
 
-    if($li->picklist) {
+    if($li->purchase_order) {
+        my $purchase_order =
+            $e->retrieve_acq_purchase_order($li->purchase_order)
+                or return $e->event;
+
+        if($purchase_order->owner != $e->requestor->id) {
+            return $e->event unless
+                $e->allowed('VIEW_PURCHASE_ORDER', undef, $purchase_order);
+        }
+    } elsif($li->picklist) {
         my $picklist = $e->retrieve_acq_picklist($li->picklist)
             or return $e->event;
     
