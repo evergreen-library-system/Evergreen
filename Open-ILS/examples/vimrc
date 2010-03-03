@@ -1,0 +1,22 @@
+set hlsearch
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+vnoremap < <gv
+vnoremap > >gv
+set nobk
+set whichwrap=b,s,<,>,[,]
+set backspace=indent,eol,start
+set smartcase
+filetype on
+syntax enable
+set expandtab
+autocmd BufEnter ?akefile* set noet ts=4 sw=4  "use real tabs in Makefiles
+autocmd BufEnter *txt set noet ts=4 sw=4  "use real tabs in txt files
+autocmd BufEnter *out set noet ts=4 sw=4  "use real tabs in txt files
+autocmd BufEnter *csv set noet ts=4 sw=4  "use real tabs in txt files
+au BufNewFile,BufRead *.xhtml setf html
+au BufNewFile,BufRead *.bsh setf java
+au BufNewFile,BufRead *.ftl setf html
+set bg=dark
+let loaded_matchparen = 1
