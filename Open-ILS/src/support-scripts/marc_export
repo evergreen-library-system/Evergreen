@@ -214,6 +214,7 @@ while ( my $i = <> ) {
 	} otherwise {
 		my $e = shift;
 		warn "\n$e\n";
+        import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
 	};
 
 	stats() if (! ($count{bib} % 50 ));
