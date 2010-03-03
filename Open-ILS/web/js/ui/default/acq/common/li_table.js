@@ -22,6 +22,8 @@ var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 const XUL_OPAC_WRAPPER = 'chrome://open_ils_staff_client/content/cat/opac.xul';
 var li_exportable_attrs = ["issn", "isbn", "upc"];
 
+var fundLabelFormat = ['${0} (${1})', 'code', 'year'];
+
 function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
 }
@@ -1049,6 +1051,7 @@ function AcqLiTable() {
                     var widget = new openils.widget.AutoFieldWidget({
                         fmField : field,
                         fmClass : 'acqlid',
+                        labelFormat : (field == 'fund') ? fundLabelFormat : null,
                         parentNode : dojo.query('[name='+field+']', row)[0],
                         orgLimitPerms : ['CREATE_PICKLIST'],
                         dijitArgs : {required:false},
@@ -1144,6 +1147,7 @@ function AcqLiTable() {
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,
                     fmField : field,
+                    labelFormat : (field == 'fund') ? fundLabelFormat : null,
                     fmClass : 'acqlid',
                     parentNode : dojo.query('[name='+field+']', row)[0],
                     orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
