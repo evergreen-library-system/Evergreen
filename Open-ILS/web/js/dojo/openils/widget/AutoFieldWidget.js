@@ -29,6 +29,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *      selfReference allows you to sidestep the indirection and create a selector widget
          *      based purely on an fmClass.  To get a dropdown of all of the 'abc'
          *      objects, pass in {selfReference : true, fmClass : 'abc'}.  
+         *  labelFormat -- For widgets that are displayed as remote object filtering selects,
+         *      this provides a mechanism for overriding the label format in the filtering select.
+         *      It must be an array, whose first value is a format string, compliant with
+         *      dojo.string.substitute.  The remaining array items are the arguments to the format
+         *      represented as field names on the remote linked object.
+         *      E.g.
+         *      labelFormat : [ '${0} (${1})', 'obj_field_1', 'obj_field_2' ]
          */
         constructor : function(args) {
             for(var k in args)
@@ -64,7 +71,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
 
             if(!this.idlField) 
-                throw new Error("AutoFieldWidget could not determine which field to render.  We need more information. fmClass=" + 
+                throw new Error("AutoFieldWidget could not determine which " +
+                    "field to render.  We need more information. fmClass=" + 
                     this.fmClass + ' fmField=' + this.fmField + ' fmObject=' + js2JSON(this.fmObject));
 
             this.auth = openils.User.authtoken;
@@ -345,6 +353,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         },
 
         _buildLinkSelector : function() {
+            var self = this;
             var selectorInfo = this._getLinkSelector();
             if(!selectorInfo) return false;
 
@@ -368,11 +377,66 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
             this.widget.valueAttr = vfield.name;
 
-            var self = this;
+            /*
+            var setLabelFunc = function(linkedObjectStore) {
+                self.widget.labelFunc = function(val) { return 'FOO'} ;
+                return;
+                if(self.labelFormat) {
+                    self.widget.labelFunc = function(val) { 
+
+                        try {
+
+                            // find the linked item in the remote object store
+                            var query = {};
+                            var linkedItem;
+                            query[fieldmapper.IDL.fmclasses[linkClass].pkey] = ''+self.widgetValue;
+
+                            // find the linked object whose pkey == this widget's value
+                            linkedObjectStore.fetch({
+                                query: query,
+                                onComplete: function(list) { linkedItem = list[0]; }
+                            });
+                                                                                                                                                                    
+                            // find the values from the linked item in the remote object store
+                            var format = self.labelFormat[0];
+                            var values = [];
+                            for(var i = 1; i< self.labelFormat.length; i++) 
+                                values.push(linkedObjectStore.getValue(linkedItem, self.labelFormat[i]));
+                            
+                            // format the label string w/ the extracted linked object values
+                            return dojo.string.substitute(format, values);
+
+                        } catch (E) {
+                            throw new Error('AutoFieldWidget: bad label format [' + format + ':' + values + ']  ' + E);
+                        }
+                    };
+                }
+            }
+            */
+
             var oncomplete = function(list) {
+
+                if(self.labelFormat) 
+                    self.widget.labelAttr = '_label';
+
                 if(list) {
-                    self.widget.store = 
-                        new dojo.data.ItemFileReadStore({data:fieldmapper[linkClass].toStoreData(list)});
+                    var storeData = {data:fieldmapper[linkClass].toStoreData(list)};
+
+                    if(self.labelFormat) {
+                        var format = self.labelFormat[0];
+
+                        dojo.forEach(storeData.data.items, 
+                            function(item) {
+                                var values = [];
+                                for(var i = 1; i< self.labelFormat.length; i++) 
+                                    values.push(item[self.labelFormat[i]]);
+                                item._label = dojo.string.substitute(format, values);
+                            }
+                        );
+                        console.log(js2JSON(storeData));
+                    }
+
+                    self.widget.store = new dojo.data.ItemFileReadStore(storeData);
                     self.cache[self.auth].list[linkClass] = self.widget.store;
                 } else {
                     self.widget.store = self.cache[self.auth].list[linkClass];
