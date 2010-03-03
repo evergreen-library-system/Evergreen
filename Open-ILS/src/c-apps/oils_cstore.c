@@ -402,14 +402,14 @@ int osrfAppInitialize() {
 			// Register the method, with a pointer to an osrfHash to tell the method
 			// its name, type, and class.
 			osrfAppRegisterExtendedMethod(
-					MODULENAME,
-					OSRF_BUFFER_C_STR( method_name ),
-					"dispatchCRUDMethod",
-					"",
-					1,
-					flags,
-					(void*)method_meta
-				);
+				MODULENAME,
+				OSRF_BUFFER_C_STR( method_name ),
+				"dispatchCRUDMethod",
+				"",
+				1,
+				flags,
+				(void*)method_meta
+			);
 
 		} // end for each global method
 	} // end for each class in IDL
@@ -612,12 +612,12 @@ int osrfAppChildInit() {
 					}
 
 					osrfLogDebug(
-							OSRF_LOG_MARK,
-							"Setting [%s] to primitive [%s] and datatype [%s]...",
-							columnName,
-							osrfHashGet(_f, "primitive"),
-							osrfHashGet(_f, "datatype")
-							);
+						OSRF_LOG_MARK,
+						"Setting [%s] to primitive [%s] and datatype [%s]...",
+						columnName,
+						osrfHashGet(_f, "primitive"),
+						osrfHashGet(_f, "datatype")
+					);
 				}
 				++columnIndex;
 			} // end while loop for traversing columns of result
@@ -639,7 +639,7 @@ int osrfAppChildInit() {
 
 	The driver is used to process quoted strings correctly.
 
-	This function is a sleazy hack intended @em only for testing and debugging without
+	This function is a sleazy hack, intended @em only for testing and debugging without
 	actually connecting to a database. Any real server process should initialize the
 	database connection by calling osrfAppChildInit().
 */
@@ -756,8 +756,12 @@ static inline void clearXactId( osrfMethodContext* ctx ) {
 	@param ctx Pointer to the method context.
 	@return Zero if successful, or -1 upon error.
 
-	Start a transaction.  Return a transaction ID (actually the session_id of the
-	application session) to the client, and save it for future reference.
+	Start a transaction.  Save a transaction ID for future reference.
+
+	Method parameters:
+	- authkey (PCRUD only)
+
+	Return to client: Transaction ID
 */
 int beginTransaction ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
@@ -787,6 +791,19 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 	return 0;
 }
 
+/**
+	@brief Implement the savepoint.set method.
+	@param ctx Pointer to the method context.
+	@return Zero if successful, or -1 if not.
+
+	Issue a SAVEPOINT to the database server.
+
+	Method parameters:
+	- authkey (PCRUD only)
+	- savepoint name
+
+	Return to client: Savepoint name
+*/
 int setSavepoint ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -802,6 +819,7 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
+	// Verify that a transaction is pending
 	if( getXactId( ctx ) == NULL ) {
 		osrfAppSessionStatus(
 			ctx->session,
@@ -809,11 +827,12 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 			"osrfMethodException",
 			ctx->request,
 			"No active transaction -- required for savepoints"
-			);
+		);
 		return -1;
 	}
 
-	const char* spName = jsonObjectGetString(jsonObjectGetIndex(ctx->params, spNamePos));
+	// Get the savepoint name from the method params
+	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
 
 	dbi_result result = dbi_conn_queryf(writehandle, "SAVEPOINT \"%s\";", spName);
 	if (!result) {
@@ -835,6 +854,19 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 	return 0;
 }
 
+/**
+	@brief Implement the savepoint.release method.
+	@param ctx Pointer to the method context.
+	@return Zero if successful, or -1 if not.
+
+	Issue a RELEASE SAVEPOINT to the database server.
+
+	Method parameters:
+	- authkey (PCRUD only)
+	- savepoint name
+
+	Return to client: Savepoint name
+*/
 int releaseSavepoint ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -850,6 +882,7 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
+	// Verify that a transaction is pending
 	if( getXactId( ctx ) == NULL ) {
 		osrfAppSessionStatus(
 			ctx->session,
@@ -857,10 +890,11 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 			"osrfMethodException",
 			ctx->request,
 			"No active transaction -- required for savepoints"
-			);
+		);
 		return -1;
 	}
 
+	// Get the savepoint name from the method params
 	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
 
 	dbi_result result = dbi_conn_queryf(writehandle, "RELEASE SAVEPOINT \"%s\";", spName);
@@ -871,7 +905,7 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 			MODULENAME,
 			spName,
 			getXactId( ctx )
-			);
+		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error releasing savepoint" );
 		return -1;
@@ -883,6 +917,19 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 	return 0;
 }
 
+/**
+	@brief Implement the savepoint.rollback method.
+	@param ctx Pointer to the method context.
+	@return Zero if successful, or -1 if not.
+
+	Issue a ROLLBACK TO SAVEPOINT to the database server.
+
+	Method parameters:
+	- authkey (PCRUD only)
+	- savepoint name
+
+	Return to client: Savepoint name
+*/
 int rollbackSavepoint ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -898,39 +945,53 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
+	// Verify that a transaction is pending
 	if( getXactId( ctx ) == NULL ) {
-        osrfAppSessionStatus(
-                ctx->session,
-                OSRF_STATUS_INTERNALSERVERERROR,
-                "osrfMethodException",
-                ctx->request,
-                "No active transaction -- required for savepoints"
-                );
-        return -1;
-    }
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for savepoints"
+		);
+		return -1;
+	}
 
+	// Get the savepoint name from the method params
 	const char* spName = jsonObjectGetString( jsonObjectGetIndex(ctx->params, spNamePos) );
 
-    dbi_result result = dbi_conn_queryf(writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
-    if (!result) {
-        osrfLogError(
-                OSRF_LOG_MARK,
-                "%s: Error rolling back savepoint %s in transaction %s",
-                MODULENAME,
-                spName,
-				getXactId( ctx )
-                );
+	dbi_result result = dbi_conn_queryf(writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
+	if (!result) {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Error rolling back savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			getXactId( ctx )
+		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error rolling back savepoint" );
-        return -1;
-    } else {
-        jsonObject* ret = jsonNewObject(spName);
-        osrfAppRespondComplete( ctx, ret );
-        jsonObjectFree(ret);
-    }
-    return 0;
+		return -1;
+	} else {
+		jsonObject* ret = jsonNewObject(spName);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
 }
 
+/**
+	@brief Implement the transaction.commit method.
+	@param ctx Pointer to the method context.
+	@return Zero if successful, or -1 if not.
+
+	Issue a COMMIT to the database server.
+
+	Method parameters:
+	- authkey (PCRUD only)
+
+	Return to client: Transaction ID.
+*/
 int commitTransaction ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK, "Invalid method context" );
@@ -944,27 +1005,40 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
+	// Verify that a transaction is pending
 	if( getXactId( ctx ) == NULL ) {
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "No active transaction to commit" );
-        return -1;
-    }
+		return -1;
+	}
 
-    dbi_result result = dbi_conn_query(writehandle, "COMMIT;");
-    if (!result) {
-        osrfLogError(OSRF_LOG_MARK, "%s: Error committing transaction", MODULENAME );
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+	dbi_result result = dbi_conn_query(writehandle, "COMMIT;");
+	if (!result) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error committing transaction", MODULENAME );
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error committing transaction" );
-        return -1;
-    } else {
+		return -1;
+	} else {
 		clearXactId( ctx );
-        jsonObject* ret = jsonNewObject(ctx->session->session_id);
-        osrfAppRespondComplete( ctx, ret );
-        jsonObjectFree(ret);
-    }
-    return 0;
+		jsonObject* ret = jsonNewObject(ctx->session->session_id);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
 }
 
+/**
+	@brief Implement the transaction.rollback method.
+	@param ctx Pointer to the method context.
+	@return Zero if successful, or -1 if not.
+
+	Issue a ROLLBACK to the database server.
+
+	Method parameters:
+	- authkey (PCRUD only)
+
+	Return to client: Transaction ID
+*/
 int rollbackTransaction ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -978,25 +1052,26 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
+	// Verify that a transaction is pending
 	if( getXactId( ctx ) == NULL ) {
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "No active transaction to roll back" );
-        return -1;
-    }
+		return -1;
+	}
 
-    dbi_result result = dbi_conn_query(writehandle, "ROLLBACK;");
-    if (!result) {
-        osrfLogError(OSRF_LOG_MARK, "%s: Error rolling back transaction", MODULENAME );
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+	dbi_result result = dbi_conn_query(writehandle, "ROLLBACK;");
+	if (!result) {
+		osrfLogError(OSRF_LOG_MARK, "%s: Error rolling back transaction", MODULENAME );
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error rolling back transaction" );
-        return -1;
-    } else {
+		return -1;
+	} else {
 		clearXactId( ctx );
-        jsonObject* ret = jsonNewObject(ctx->session->session_id);
-        osrfAppRespondComplete( ctx, ret );
-        jsonObjectFree(ret);
-    }
-    return 0;
+		jsonObject* ret = jsonNewObject(ctx->session->session_id);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
 }
 
 int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
@@ -1006,30 +1081,30 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	}
 
 	osrfHash* meta = (osrfHash*) ctx->method->userData;
-    osrfHash* class_obj = osrfHashGet( meta, "class" );
+	osrfHash* class_obj = osrfHashGet( meta, "class" );
 
-    int err = 0;
+	int err = 0;
 
-    const char* methodtype = osrfHashGet(meta, "methodtype");
-    jsonObject * obj = NULL;
+	const char* methodtype = osrfHashGet(meta, "methodtype");
+	jsonObject * obj = NULL;
 
-    if (!strcmp(methodtype, "create")) {
-        obj = doCreate(ctx, &err);
-        osrfAppRespondComplete( ctx, obj );
-    }
-    else if (!strcmp(methodtype, "retrieve")) {
-        obj = doRetrieve(ctx, &err);
-        osrfAppRespondComplete( ctx, obj );
-    }
-    else if (!strcmp(methodtype, "update")) {
-        obj = doUpdate(ctx, &err);
-        osrfAppRespondComplete( ctx, obj );
-    }
-    else if (!strcmp(methodtype, "delete")) {
-        obj = doDelete(ctx, &err);
-        osrfAppRespondComplete( ctx, obj );
-    }
-    else if (!strcmp(methodtype, "search")) {
+	if (!strcmp(methodtype, "create")) {
+		obj = doCreate(ctx, &err);
+		osrfAppRespondComplete( ctx, obj );
+	}
+	else if (!strcmp(methodtype, "retrieve")) {
+		obj = doRetrieve(ctx, &err);
+		osrfAppRespondComplete( ctx, obj );
+	}
+	else if (!strcmp(methodtype, "update")) {
+		obj = doUpdate(ctx, &err);
+		osrfAppRespondComplete( ctx, obj );
+	}
+	else if (!strcmp(methodtype, "delete")) {
+		obj = doDelete(ctx, &err);
+		osrfAppRespondComplete( ctx, obj );
+	}
+	else if (!strcmp(methodtype, "search")) {
 
 		jsonObject* where_clause;
 		jsonObject* rest_of_query;
@@ -1104,89 +1179,88 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 #ifdef PCRUD
 			if(!verifyObjectPCRUD(ctx, cur)) continue;
 #endif
-			osrfAppRespond(
-				ctx,
+			osrfAppRespond( ctx,
 				oilsFMGetObject( cur, osrfHashGet( class_obj, "primarykey" ) )
-				);
+			);
 		}
 		osrfAppRespondComplete( ctx, NULL );
 
-    } else {
-        osrfAppRespondComplete( ctx, obj );
-    }
+	} else {
+		osrfAppRespondComplete( ctx, obj );
+	}
 
-    jsonObjectFree(obj);
+	jsonObjectFree(obj);
 
-    return err;
+	return err;
 }
 
 static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param ) {
 
-    int ret = 1;
-    osrfHash* meta = (osrfHash*) ctx->method->userData;
-    osrfHash* class = osrfHashGet( meta, "class" );
+	int ret = 1;
+	osrfHash* meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class = osrfHashGet( meta, "class" );
 
-    if (!param->classname || (strcmp( osrfHashGet(class, "classname"), param->classname ))) {
+	if (!param->classname || (strcmp( osrfHashGet(class, "classname"), param->classname ))) {
 
 		const char* temp_classname = param->classname;
 		if( ! temp_classname )
 			temp_classname = "(null)";
 
-        growing_buffer* msg = buffer_init(128);
-        buffer_fadd(
-                msg,
-                "%s: %s method for type %s was passed a %s",
-                MODULENAME,
-                osrfHashGet(meta, "methodtype"),
-                osrfHashGet(class, "classname"),
-                temp_classname
-                );
+		growing_buffer* msg = buffer_init(128);
+		buffer_fadd(
+			msg,
+			"%s: %s method for type %s was passed a %s",
+			MODULENAME,
+			osrfHashGet(meta, "methodtype"),
+			osrfHashGet(class, "classname"),
+			temp_classname
+		);
 
-        char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+		char* m = buffer_release(msg);
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
 				ctx->request, m );
 
-        free(m);
+		free(m);
 
-        return 0;
-    }
+		return 0;
+	}
 
 #ifdef PCRUD
-    ret = verifyObjectPCRUD( ctx, param );
+	ret = verifyObjectPCRUD( ctx, param );
 #endif
 
-    return ret;
+	return ret;
 }
 
 #ifdef PCRUD
 
 static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 	const char* auth = jsonObjectGetString( jsonObjectGetIndex( ctx->params, 0 ) );
-    jsonObject* auth_object = jsonNewObject(auth);
-    jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve",
+	jsonObject* auth_object = jsonNewObject(auth);
+	jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve",
 			auth_object);
-    jsonObjectFree(auth_object);
+	jsonObjectFree(auth_object);
 
-    if (!user->classname || strcmp(user->classname, "au")) {
+	if (!user->classname || strcmp(user->classname, "au")) {
 
-        growing_buffer* msg = buffer_init(128);
-        buffer_fadd(
-            msg,
-            "%s: permacrud received a bad auth token: %s",
-            MODULENAME,
-            auth
-        );
+		growing_buffer* msg = buffer_init(128);
+		buffer_fadd(
+			msg,
+			"%s: permacrud received a bad auth token: %s",
+			MODULENAME,
+			auth
+		);
 
-        char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException",
+		char* m = buffer_release(msg);
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException",
 				ctx->request, m );
 
-        free(m);
-        jsonObjectFree(user);
-        user = jsonNULL;
-    }
+		free(m);
+		jsonObjectFree(user);
+		user = jsonNULL;
+	}
 
-    return user;
+	return user;
 
 }
 
@@ -1207,43 +1281,45 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 	osrfHash* pcrud = osrfHashGet( osrfHashGet(class, "permacrud"), method_type );
 
-    if (!pcrud) {
-        // No permacrud for this method type on this class
+	if (!pcrud) {
+		// No permacrud for this method type on this class
 
-        growing_buffer* msg = buffer_init(128);
-        buffer_fadd(
-            msg,
-            "%s: %s on class %s has no permacrud IDL entry",
-            MODULENAME,
-            osrfHashGet(method_metadata, "methodtype"),
-            osrfHashGet(class, "classname")
-        );
+		growing_buffer* msg = buffer_init(128);
+		buffer_fadd(
+			msg,
+			"%s: %s on class %s has no permacrud IDL entry",
+			MODULENAME,
+			osrfHashGet(method_metadata, "methodtype"),
+			osrfHashGet(class, "classname")
+		);
 
-        char* m = buffer_release(msg);
-        osrfAppSessionStatus( ctx->session, OSRF_STATUS_FORBIDDEN, "osrfMethodException", ctx->request, m );
+		char* m = buffer_release(msg);
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_FORBIDDEN,
+				"osrfMethodException", ctx->request, m );
 
-        free(m);
+		free(m);
 
-        return 0;
-    }
+		return 0;
+	}
 
 	jsonObject* user = verifyUserPCRUD( ctx );
 	if (!user)
 		return 0;
 
-    int userid = atoi( oilsFMGetString( user, "id" ) );
-    jsonObjectFree(user);
+	int userid = atoi( oilsFMGetString( user, "id" ) );
+	jsonObjectFree(user);
 
-    osrfStringArray* permission = osrfHashGet(pcrud, "permission");
-    osrfStringArray* local_context = osrfHashGet(pcrud, "local_context");
-    osrfHash* foreign_context = osrfHashGet(pcrud, "foreign_context");
+	osrfStringArray* permission = osrfHashGet(pcrud, "permission");
+	osrfStringArray* local_context = osrfHashGet(pcrud, "local_context");
+	osrfHash* foreign_context = osrfHashGet(pcrud, "foreign_context");
 
-    osrfStringArray* context_org_array = osrfNewStringArray(1);
+	osrfStringArray* context_org_array = osrfNewStringArray(1);
 
-    int err = 0;
-    char* pkey_value = NULL;
+	int err = 0;
+	char* pkey_value = NULL;
 	if ( str_is_true( osrfHashGet(pcrud, "global_required") ) ) {
-		osrfLogDebug( OSRF_LOG_MARK, "global-level permissions required, fetching top of the org tree" );
+		osrfLogDebug( OSRF_LOG_MARK,
+				"global-level permissions required, fetching top of the org tree" );
 
 		// check for perm at top of org tree
 		char* org_tree_root_id = org_tree_root( ctx );
@@ -1256,19 +1332,23 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		}
 
 	} else {
-	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, fetching context org ids" );
+	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, "
+				"fetching context org ids" );
 	    const char* pkey = osrfHashGet(class, "primarykey");
-        jsonObject *param = NULL;
+		jsonObject *param = NULL;
 
-        if (obj->classname) {
-            pkey_value = oilsFMGetString( obj, pkey );
-            if (!fetch) param = jsonObjectClone(obj);
-	        osrfLogDebug( OSRF_LOG_MARK, "Object supplied, using primary key value of %s", pkey_value );
-        } else {
-            pkey_value = jsonObjectToSimpleString( obj );
-            fetch = 1;
-	        osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value of %s and retrieving from the database", pkey_value );
-        }
+		if (obj->classname) {
+			pkey_value = oilsFMGetString( obj, pkey );
+			if (!fetch)
+				param = jsonObjectClone(obj);
+			osrfLogDebug( OSRF_LOG_MARK, "Object supplied, using primary key value of %s",
+					pkey_value );
+		} else {
+			pkey_value = jsonObjectToSimpleString( obj );
+			fetch = 1;
+			osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value "
+					"of %s and retrieving from the database", pkey_value );
+		}
 
 		if (fetch) {
 			jsonObject* _tmp_params = single_hash( pkey, pkey_value );
@@ -1279,48 +1359,50 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 			jsonObjectFree(_list);
 		}
 
-        if (!param) {
-            osrfLogDebug( OSRF_LOG_MARK, "Object not found in the database with primary key %s of %s", pkey, pkey_value );
+		if (!param) {
+			osrfLogDebug( OSRF_LOG_MARK,
+					"Object not found in the database with primary key %s of %s",
+					pkey, pkey_value );
 
-            growing_buffer* msg = buffer_init(128);
-            buffer_fadd(
-                msg,
-                "%s: no object found with primary key %s of %s",
-                MODULENAME,
-                pkey,
-                pkey_value
-            );
+			growing_buffer* msg = buffer_init(128);
+			buffer_fadd(
+				msg,
+				"%s: no object found with primary key %s of %s",
+				MODULENAME,
+				pkey,
+				pkey_value
+			);
 
-            char* m = buffer_release(msg);
-            osrfAppSessionStatus(
-                ctx->session,
-                OSRF_STATUS_INTERNALSERVERERROR,
-                "osrfMethodException",
-                ctx->request,
-                m
-            );
+			char* m = buffer_release(msg);
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				m
+			);
 
-            free(m);
-            if (pkey_value) free(pkey_value);
+			free(m);
+			if (pkey_value) free(pkey_value);
 
-            return 0;
-        }
+			return 0;
+		}
 
-        if (local_context->size > 0) {
-	        osrfLogDebug( OSRF_LOG_MARK, "%d class-local context field(s) specified", local_context->size);
-            int i = 0;
-            const char* lcontext = NULL;
-            while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
-                osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
-	            osrfLogDebug(
-                    OSRF_LOG_MARK,
-                    "adding class-local field %s (value: %s) to the context org list",
-                    lcontext,
-                    osrfStringArrayGetString(context_org_array, context_org_array->size - 1)
-                );
-            }
-        }
-
+		if (local_context->size > 0) {
+			osrfLogDebug( OSRF_LOG_MARK, "%d class-local context field(s) specified",
+					local_context->size);
+			int i = 0;
+			const char* lcontext = NULL;
+			while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
+				osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
+				osrfLogDebug(
+					OSRF_LOG_MARK,
+					"adding class-local field %s (value: %s) to the context org list",
+					lcontext,
+					osrfStringArrayGetString(context_org_array, context_org_array->size - 1)
+				);
+			}
+		}
 
 		if (foreign_context) {
 			unsigned long class_count = osrfHashGetCount( foreign_context );
@@ -1334,34 +1416,36 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 					const char* class_name = osrfHashIteratorKey( class_itr );
 					osrfHash* fcontext = osrfHashGet(foreign_context, class_name);
 
-	                osrfLogDebug(
-                        OSRF_LOG_MARK,
-                        "%d foreign context fields(s) specified for class %s",
-                        ((osrfStringArray*)osrfHashGet(fcontext,"context"))->size,
-                        class_name
-                    );
+					osrfLogDebug(
+						OSRF_LOG_MARK,
+						"%d foreign context fields(s) specified for class %s",
+						((osrfStringArray*)osrfHashGet(fcontext,"context"))->size,
+						class_name
+					);
 
-                    char* foreign_pkey = osrfHashGet(fcontext, "field");
-                    char* foreign_pkey_value = oilsFMGetString(param, osrfHashGet(fcontext, "fkey"));
+					char* foreign_pkey = osrfHashGet(fcontext, "field");
+					char* foreign_pkey_value =
+							oilsFMGetString(param, osrfHashGet(fcontext, "fkey"));
 
 					jsonObject* _tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
 
 					jsonObject* _list = doFieldmapperSearch(
 						ctx, osrfHashGet( oilsIDL(), class_name ), _tmp_params, NULL, &err );
 
-                    jsonObject* _fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
-                    jsonObjectFree(_tmp_params);
-                    jsonObjectFree(_list);
+					jsonObject* _fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+					jsonObjectFree(_tmp_params);
+					jsonObjectFree(_list);
 
-                    osrfStringArray* jump_list = osrfHashGet(fcontext, "jump");
+					osrfStringArray* jump_list = osrfHashGet(fcontext, "jump");
 
-                    if (_fparam && jump_list) {
-                        const char* flink = NULL;
-                        int k = 0;
-                        while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
-                            free(foreign_pkey_value);
+					if (_fparam && jump_list) {
+						const char* flink = NULL;
+						int k = 0;
+						while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
+							free(foreign_pkey_value);
 
-                            osrfHash* foreign_link_hash = oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
+							osrfHash* foreign_link_hash =
+									oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
 
 							foreign_pkey_value = oilsFMGetString(_fparam, flink);
 							foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
@@ -1370,59 +1454,63 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 							_list = doFieldmapperSearch(
 								ctx,
-								osrfHashGet( oilsIDL(), osrfHashGet( foreign_link_hash, "class" ) ),
+								osrfHashGet( oilsIDL(),
+										osrfHashGet( foreign_link_hash, "class" ) ),
 								_tmp_params,
 								NULL,
 								&err
 							);
 
-                            _fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
-                            jsonObjectFree(_tmp_params);
-                            jsonObjectFree(_list);
-                        }
-                    }
+							_fparam = jsonObjectClone(jsonObjectGetIndex(_list, 0));
+							jsonObjectFree(_tmp_params);
+							jsonObjectFree(_list);
+						}
+					}
 
-                    if (!_fparam) {
+					if (!_fparam) {
 
-                        growing_buffer* msg = buffer_init(128);
-                        buffer_fadd(
-                            msg,
-                            "%s: no object found with primary key %s of %s",
-                            MODULENAME,
-                            foreign_pkey,
-                            foreign_pkey_value
-                        );
+						growing_buffer* msg = buffer_init(128);
+						buffer_fadd(
+							msg,
+							"%s: no object found with primary key %s of %s",
+							MODULENAME,
+							foreign_pkey,
+							foreign_pkey_value
+						);
 
-                        char* m = buffer_release(msg);
-                        osrfAppSessionStatus(
-                            ctx->session,
-                            OSRF_STATUS_INTERNALSERVERERROR,
-                            "osrfMethodException",
-                            ctx->request,
-                            m
-                        );
+						char* m = buffer_release(msg);
+						osrfAppSessionStatus(
+							ctx->session,
+							OSRF_STATUS_INTERNALSERVERERROR,
+							"osrfMethodException",
+							ctx->request,
+							m
+						);
 
-                        free(m);
-                        osrfHashIteratorFree(class_itr);
-                        free(foreign_pkey_value);
-                        jsonObjectFree(param);
+						free(m);
+						osrfHashIteratorFree(class_itr);
+						free(foreign_pkey_value);
+						jsonObjectFree(param);
 
-                        return 0;
-                    }
+						return 0;
+					}
 
-                    free(foreign_pkey_value);
+					free(foreign_pkey_value);
 
-                    int j = 0;
-                    const char* foreign_field = NULL;
-                    while ( (foreign_field = osrfStringArrayGetString(osrfHashGet(fcontext,"context"), j++)) ) {
-                        osrfStringArrayAdd( context_org_array, oilsFMGetString( _fparam, foreign_field ) );
-	                    osrfLogDebug(
-                            OSRF_LOG_MARK,
-                            "adding foreign class %s field %s (value: %s) to the context org list",
-                            class_name,
-                            foreign_field,
-                            osrfStringArrayGetString(context_org_array, context_org_array->size - 1)
-                        );
+					int j = 0;
+					const char* foreign_field = NULL;
+					while ( (foreign_field = osrfStringArrayGetString(
+							 osrfHashGet(fcontext,"context" ), j++)) ) {
+						osrfStringArrayAdd( context_org_array,
+								oilsFMGetString( _fparam, foreign_field ) );
+						osrfLogDebug(
+							OSRF_LOG_MARK,
+							"adding foreign class %s field %s (value: %s) to the context org list",
+							class_name,
+							foreign_field,
+							osrfStringArrayGetString(
+									context_org_array, context_org_array->size - 1)
+						);
 					}
 
 					jsonObjectFree(_fparam);
@@ -1435,95 +1523,106 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		jsonObjectFree(param);
 	}
 
-    const char* context_org = NULL;
-    const char* perm = NULL;
-    int OK = 0;
+	const char* context_org = NULL;
+	const char* perm = NULL;
+	int OK = 0;
 
-    if (permission->size == 0) {
+	if (permission->size == 0) {
 	    osrfLogDebug( OSRF_LOG_MARK, "No permission specified for this action, passing through" );
-        OK = 1;
-    }
+		OK = 1;
+	}
 
-    int i = 0;
-    while ( (perm = osrfStringArrayGetString(permission, i++)) ) {
-        int j = 0;
-        while ( (context_org = osrfStringArrayGetString(context_org_array, j++)) ) {
-            dbi_result result;
+	int i = 0;
+	while ( (perm = osrfStringArrayGetString(permission, i++)) ) {
+		int j = 0;
+		while ( (context_org = osrfStringArrayGetString(context_org_array, j++)) ) {
+			dbi_result result;
 
-            if (pkey_value) {
-	            osrfLogDebug(
-                    OSRF_LOG_MARK,
-                    "Checking object permission [%s] for user %d on object %s (class %s) at org %d",
-                    perm,
-                    userid,
-                    pkey_value,
-                    osrfHashGet(class, "classname"),
-                    atoi(context_org)
-                );
+			if (pkey_value) {
+				osrfLogDebug(
+					OSRF_LOG_MARK,
+					"Checking object permission [%s] for user %d "
+							"on object %s (class %s) at org %d",
+					perm,
+					userid,
+					pkey_value,
+					osrfHashGet(class, "classname"),
+					atoi(context_org)
+				);
 
-                result = dbi_conn_queryf(
-                    writehandle,
-                    "SELECT permission.usr_has_object_perm(%d, '%s', '%s', '%s', %d) AS has_perm;",
-                    userid,
-                    perm,
-                    osrfHashGet(class, "classname"),
-                    pkey_value,
-                    atoi(context_org)
-                );
+				result = dbi_conn_queryf(
+					writehandle,
+					"SELECT permission.usr_has_object_perm(%d, '%s', '%s', '%s', %d) AS has_perm;",
+					userid,
+					perm,
+					osrfHashGet(class, "classname"),
+					pkey_value,
+					atoi(context_org)
+				);
 
-                if (result) {
-    	            osrfLogDebug(
-                        OSRF_LOG_MARK,
-                        "Received a result for object permission [%s] for user %d on object %s (class %s) at org %d",
-                        perm,
-                        userid,
-                        pkey_value,
-                        osrfHashGet(class, "classname"),
-                        atoi(context_org)
-                    );
+				if (result) {
+					osrfLogDebug(
+						OSRF_LOG_MARK,
+						"Received a result for object permission [%s] "
+								"for user %d on object %s (class %s) at org %d",
+						perm,
+						userid,
+						pkey_value,
+						osrfHashGet(class, "classname"),
+						atoi(context_org)
+					);
 
-                    if (dbi_result_first_row(result)) {
-                        jsonObject* return_val = oilsMakeJSONFromResult( result );
-						const char* has_perm = jsonObjectGetString( jsonObjectGetKeyConst(return_val, "has_perm") );
+					if (dbi_result_first_row(result)) {
+						jsonObject* return_val = oilsMakeJSONFromResult( result );
+						const char* has_perm = jsonObjectGetString(
+								jsonObjectGetKeyConst(return_val, "has_perm") );
 
-        	            osrfLogDebug(
-                            OSRF_LOG_MARK,
-                            "Status of object permission [%s] for user %d on object %s (class %s) at org %d is %s",
-                            perm,
-                            userid,
-                            pkey_value,
-                            osrfHashGet(class, "classname"),
-                            atoi(context_org),
-                            has_perm
-                        );
+						osrfLogDebug(
+							OSRF_LOG_MARK,
+							"Status of object permission [%s] for user %d "
+									"on object %s (class %s) at org %d is %s",
+							perm,
+							userid,
+							pkey_value,
+							osrfHashGet(class, "classname"),
+							atoi(context_org),
+							has_perm
+						);
 
-                        if ( *has_perm == 't' ) OK = 1;
-                        jsonObjectFree(return_val);
-                    }
+						if ( *has_perm == 't' ) OK = 1;
+						jsonObjectFree(return_val);
+					}
 
-                    dbi_result_free(result);
-                    if (OK) break;
-                }
-            }
+					dbi_result_free(result);
+					if (OK)
+						break;
+				}
+			}
 
-	        osrfLogDebug( OSRF_LOG_MARK, "Checking non-object permission [%s] for user %d at org %d", perm, userid, atoi(context_org) );
-            result = dbi_conn_queryf(
-                writehandle,
-                "SELECT permission.usr_has_perm(%d, '%s', %d) AS has_perm;",
-                userid,
-                perm,
-                atoi(context_org)
-            );
+			osrfLogDebug( OSRF_LOG_MARK,
+					"Checking non-object permission [%s] for user %d at org %d",
+					perm, userid, atoi(context_org) );
+			result = dbi_conn_queryf(
+				writehandle,
+				"SELECT permission.usr_has_perm(%d, '%s', %d) AS has_perm;",
+				userid,
+				perm,
+				atoi(context_org)
+			);
 
 			if (result) {
-				osrfLogDebug( OSRF_LOG_MARK, "Received a result for permission [%s] for user %d at org %d",
+				osrfLogDebug( OSRF_LOG_MARK,
+						"Received a result for permission [%s] for user %d at org %d",
 						perm, userid, atoi(context_org) );
 				if ( dbi_result_first_row(result) ) {
 					jsonObject* return_val = oilsMakeJSONFromResult( result );
-					const char* has_perm = jsonObjectGetString( jsonObjectGetKeyConst(return_val, "has_perm") );
-					osrfLogDebug( OSRF_LOG_MARK, "Status of permission [%s] for user %d at org %d is [%s]",
+					const char* has_perm = jsonObjectGetString(
+							jsonObjectGetKeyConst(return_val, "has_perm") );
+					osrfLogDebug( OSRF_LOG_MARK,
+							"Status of permission [%s] for user %d at org %d is [%s]",
 							perm, userid, atoi(context_org), has_perm );
-					if ( *has_perm == 't' ) OK = 1;
+					if ( *has_perm == 't' )
+						OK = 1;
 					jsonObjectFree(return_val);
 				}
 
@@ -1531,21 +1630,29 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 				if (OK) break;
 			}
 
-        }
-        if (OK) break;
-    }
+		}
+		if (OK)
+			break;
+	}
 
-    if (pkey_value) free(pkey_value);
-    osrfStringArrayFree(context_org_array);
+	if (pkey_value) free(pkey_value);
+	osrfStringArrayFree(context_org_array);
 
-    return OK;
+	return OK;
 }
 
 /**
- * Look up the root of the org_unit tree.  If you find it, return
- * a string containing the id, which the caller is responsible for freeing.
- * Otherwise return NULL.
- */
+	@brief Look up the root of the org_unit tree.
+	@param ctx Pointer to the method context.
+	@return The id of the root org unit, as a character string.
+
+	Query actor.org_unit where parent_ou is null, and return the id as a string.
+
+	This function assumes that there is only one root org unit, i.e. that we
+	have a single tree, not a forest.
+
+	The calling code is responsible for freeing the returned string.
+*/
 static char* org_tree_root( osrfMethodContext* ctx ) {
 
 	static char cached_root_id[ 32 ] = "";  // extravagantly large buffer
@@ -3382,7 +3489,7 @@ char* SELECT (
 					ctx->request,
 					"Malformed FROM clause in JSON query"
 				);
-			return NULL;	// Malformed join_hash; extra entry
+			return NULL;    // Malformed join_hash; extra entry
 		}
 	} else if (join_hash->type == JSON_ARRAY) {
 		// We're selecting from a function, not from a table
