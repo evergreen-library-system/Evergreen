@@ -386,14 +386,20 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     var storeData = {data:fieldmapper[linkClass].toStoreData(list)};
 
                     if(self.labelFormat) {
-                        // set the label for each value in the store based on the provide label format
-                        var format = self.labelFormat[0];
+                        
+                        // set the label for each value in the store based on the provided label format.
 
+                        var format = self.labelFormat[0];
                         dojo.forEach(storeData.data.items, 
+
                             function(item) {
                                 var values = [];
-                                for(var i = 1; i< self.labelFormat.length; i++) 
+
+                                // self.labelFormat[1..*] are names of fields.  Pull the field
+                                // values from each object to determine the values for string substitution
+                               for(var i = 1; i< self.labelFormat.length; i++) 
                                     values.push(item[self.labelFormat[i]]);
+
                                 item._label = dojo.string.substitute(format, values);
                             }
                         );
@@ -401,6 +407,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
                     self.widget.store = new dojo.data.ItemFileReadStore(storeData);
                     self.cache[self.auth].list[linkClass] = self.widget.store;
+
                 } else {
                     self.widget.store = self.cache[self.auth].list[linkClass];
                 }
