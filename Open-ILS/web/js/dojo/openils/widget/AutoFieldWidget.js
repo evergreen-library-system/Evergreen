@@ -377,52 +377,16 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
             this.widget.valueAttr = vfield.name;
 
-            /*
-            var setLabelFunc = function(linkedObjectStore) {
-                self.widget.labelFunc = function(val) { return 'FOO'} ;
-                return;
-                if(self.labelFormat) {
-                    self.widget.labelFunc = function(val) { 
-
-                        try {
-
-                            // find the linked item in the remote object store
-                            var query = {};
-                            var linkedItem;
-                            query[fieldmapper.IDL.fmclasses[linkClass].pkey] = ''+self.widgetValue;
-
-                            // find the linked object whose pkey == this widget's value
-                            linkedObjectStore.fetch({
-                                query: query,
-                                onComplete: function(list) { linkedItem = list[0]; }
-                            });
-                                                                                                                                                                    
-                            // find the values from the linked item in the remote object store
-                            var format = self.labelFormat[0];
-                            var values = [];
-                            for(var i = 1; i< self.labelFormat.length; i++) 
-                                values.push(linkedObjectStore.getValue(linkedItem, self.labelFormat[i]));
-                            
-                            // format the label string w/ the extracted linked object values
-                            return dojo.string.substitute(format, values);
-
-                        } catch (E) {
-                            throw new Error('AutoFieldWidget: bad label format [' + format + ':' + values + ']  ' + E);
-                        }
-                    };
-                }
-            }
-            */
-
             var oncomplete = function(list) {
 
                 if(self.labelFormat) 
-                    self.widget.labelAttr = '_label';
+                    self.widget.labelAttr = self.widget.searchAttr = '_label';
 
                 if(list) {
                     var storeData = {data:fieldmapper[linkClass].toStoreData(list)};
 
                     if(self.labelFormat) {
+                        // set the label for each value in the store based on the provide label format
                         var format = self.labelFormat[0];
 
                         dojo.forEach(storeData.data.items, 
@@ -433,7 +397,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                                 item._label = dojo.string.substitute(format, values);
                             }
                         );
-                        console.log(js2JSON(storeData));
                     }
 
                     self.widget.store = new dojo.data.ItemFileReadStore(storeData);
@@ -441,6 +404,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 } else {
                     self.widget.store = self.cache[self.auth].list[linkClass];
                 }
+
                 self.widget.startup();
                 self._widgetLoaded();
             };
