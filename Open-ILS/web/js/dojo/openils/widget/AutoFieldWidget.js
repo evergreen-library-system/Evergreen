@@ -395,12 +395,19 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                             function(item) {
                                 var values = [];
 
-                                // self.labelFormat[1..*] are names of fields.  Pull the field
-                                // values from each object to determine the values for string substitution
-                               for(var i = 1; i< self.labelFormat.length; i++) 
-                                    values.push(item[self.labelFormat[i]]);
+                                try {
 
-                                item._label = dojo.string.substitute(format, values);
+                                    // self.labelFormat[1..*] are names of fields.  Pull the field
+                                    // values from each object to determine the values for string substitution
+                                    for(var i = 1; i< self.labelFormat.length; i++) 
+                                        values.push(item[self.labelFormat[i]]);
+
+                                    item._label = dojo.string.substitute(format, values);
+
+                                } catch(E) {
+                                    throw new Error("openils.widget.AutoFieldWidget: Invalid labelFormat [" + 
+                                        self.labelFormat + "] : " + E);
+                                }
                             }
                         );
                     }
