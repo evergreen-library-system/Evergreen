@@ -490,6 +490,13 @@ sub set_circ_due_date {
 
     return $e->die_event unless $e->allowed('CIRC_OVERRIDE_DUE_DATE', $circ->circ_lib);
 	$date = cleanse_ISO8601($date);
+
+    if (!(interval_to_seconds($circ->duration) % 86400)) { # duration is divisible by days
+        my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
+        my $new_date = DateTime::Format::ISO8601->new->parse_datetime($date);
+        $date = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
+    }
+
 	$circ->due_date($date);
     $e->update_action_circulation($circ) or return $e->die_event;
     $e->commit;
