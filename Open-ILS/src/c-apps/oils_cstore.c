@@ -85,6 +85,10 @@ void osrfAppChildExit();
 
 static int verifyObjectClass ( osrfMethodContext*, const jsonObject* );
 
+static void setXactId( osrfMethodContext* ctx );
+static inline const char* getXactId( osrfMethodContext* ctx );
+static inline void clearXactId( osrfMethodContext* ctx );
+
 int beginTransaction ( osrfMethodContext* );
 int commitTransaction ( osrfMethodContext* );
 int rollbackTransaction ( osrfMethodContext* );
@@ -544,7 +548,7 @@ int osrfAppChildInit() {
 
 		free(tabledef);
 
-		osrfLogDebug( OSRF_LOG_MARK, "%s Investigatory SQL = %s", 
+		osrfLogDebug( OSRF_LOG_MARK, "%s Investigatory SQL = %s",
 				MODULENAME, OSRF_BUFFER_C_STR( query_buf ) );
 
 		dbi_result result = dbi_conn_query( writehandle, OSRF_BUFFER_C_STR( query_buf ) );
@@ -648,41 +652,112 @@ void set_cstore_dbi_conn( dbi_conn conn ) {
 	@param blob A pointer to the osrfHash to be freed, cast to a void pointer.
 
 	This function is a callback, to be called by the application session when it ends.
+	The application session stores the osrfHash via an opaque pointer.
 
-	See also sessionDataFree().
+	If the osrfHash contains an entry for the key "xact_id", it means that an
+	uncommitted transaction is pending.  Roll it back.
 */
 void userDataFree( void* blob ) {
-	osrfHashFree( (osrfHash*) blob );
+	osrfHash* hash = (osrfHash*) blob;
+	if( osrfHashGet( hash, "xact_id" ) && writehandle )
+		dbi_conn_query( writehandle, "ROLLBACK;" );
+
+	osrfHashFree( hash );
 }
 
 /**
-	@brief Roll back a pending transaction at the end of the application session.
+	@name Managing session data
+	@brief Maintain data stored via the userData pointer of the application session.
+
+	Currently, session-level data is stored in an osrfHash.  Other arrangements are
+	possible, and some would be more efficient.  The application session calls a
+	callback function to free userData before terminating.
+
+	Currently, the only data we store at the session level is the transaction id.  By this
+	means we can ensure that any pending transactions are rolled back before the application
+	session terminates.
+*/
+/*@{*/
+
+/**
+	@brief Free an item in the application session's userData.
 	@param key The name of a key for an osrfHash.
 	@param item An opaque pointer to the item associated with the key.
 
-	We store an osrfHash with the application session, and arrange (by installing
-	userDataFree() as a different callback) for the session to free that osrfHash before
-	terminating.
+	We store an osrfHash as userData with the application session, and arrange (by
+	installing userDataFree() as a different callback) for the session to free that
+	osrfHash before terminating.
 
 	This function is a callback for freeing items in the osrfHash.  If the item has a key
 	of "xact_id", the item is a transaction id for a transaction that is still pending.
-	So, if we're still connected, we do a rollback.
+	It is just a character string, so we free it.
+
+	Currently the transaction ID is the only thing that we store in this osrfHash.  If we
+	ever store anything else in it, we will need to revisit this function so that it will
+	free whatever else needs freeing (which may or may not be just a character string).
 */
 static void sessionDataFree( char* key, void* item ) {
 	if ( !strcmp(key,"xact_id") ) {
-		if ( writehandle )
-			dbi_conn_query( writehandle, "ROLLBACK;" );
 		free( item );
 	}
 }
 
 /**
+	@brief Save a transaction id.
+	@param ctx Pointer to the method context.
+
+	Save the session_id of the current application session as a transaction id.
+*/
+static void setXactId( osrfMethodContext* ctx ) {
+	if( ctx && ctx->session ) {
+		osrfAppSession* session = ctx->session;
+
+		// If the session doesn't already have a hash, create one.  Make sure
+		// that the application session frees the hash when it terminates.
+		if( NULL == session->userData ) {
+			session->userData = osrfNewHash();
+			osrfHashSetCallback( (osrfHash*) session->userData, &sessionDataFree );
+			ctx->session->userDataFree = &userDataFree;
+		}
+
+		// Save the transaction id in the hash, with the key "xact_id"
+		osrfHashSet( (osrfHash*) session->userData, strdup( session->session_id ),
+					  "xact_id" );
+	}
+}
+
+/**
+	@brief Get the transaction ID for the current transaction, if any.
+	@param ctx Pointer to the method context.
+	@return Pointer to the transaction ID.
+
+	The return value points to an internal buffer, and will become invalid upon issuing
+	a commit or rollback.
+*/
+static inline const char* getXactId( osrfMethodContext* ctx ) {
+	if( ctx && ctx->session && ctx->session->userData )
+		return osrfHashGet( (osrfHash*) ctx->session->userData, "xact_id" );
+	else
+		return NULL;
+}
+
+/**
+	@brief Clear the current transaction id.
+	@param ctx Pointer to the method context.
+*/
+static inline void clearXactId( osrfMethodContext* ctx ) {
+	if( ctx && ctx->session && ctx->session->userData )
+		osrfHashRemove( ctx->session->userData, "xact_id" );
+}
+/*@}*/
+
+/**
 	@brief Implement the transaction.begin method.
-	@param Pointer to the method context.
+	@param ctx Pointer to the method context.
 	@return Zero if successful, or -1 upon error.
 
-	Start a transaction.  Return a transaction ID (actually the session id of the
-	application session) to the client.
+	Start a transaction.  Return a transaction ID (actually the session_id of the
+	application session) to the client, and save it for future reference.
 */
 int beginTransaction ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
@@ -704,22 +779,10 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 				"osrfMethodException", ctx->request, "Error starting transaction" );
 		return -1;
 	} else {
-		jsonObject* ret = jsonNewObject( ctx->session->session_id );
+		setXactId( ctx );
+		jsonObject* ret = jsonNewObject( getXactId( ctx ) );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
-
-		// Store a copy of the application session ID as a transaction id in an osrfHash,
-		// to be stored with the application session.  Install some callbacks so that, if
-		// the session ends while the transaction is still active, we will do a rollback.
-		if (!ctx->session->userData) {
-			ctx->session->userData = osrfNewHash();
-			osrfHashSetCallback((osrfHash*)ctx->session->userData, &sessionDataFree);
-		}
-
-		osrfHashSet( (osrfHash*)ctx->session->userData, strdup( ctx->session->session_id ),
-				"xact_id" );
-		ctx->session->userDataFree = &userDataFree;
-
 	}
 	return 0;
 }
@@ -739,8 +802,8 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
-	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-	osrfAppSessionStatus(
+	if( getXactId( ctx ) == NULL ) {
+		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
 			"osrfMethodException",
@@ -759,7 +822,7 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 			"%s: Error creating savepoint %s in transaction %s",
 			MODULENAME,
 			spName,
-			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+			getXactId( ctx )
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error creating savepoint" );
@@ -787,7 +850,7 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
-	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+	if( getXactId( ctx ) == NULL ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -807,7 +870,7 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 			"%s: Error releasing savepoint %s in transaction %s",
 			MODULENAME,
 			spName,
-			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+			getXactId( ctx )
 			);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error releasing savepoint" );
@@ -835,7 +898,7 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
-    if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+	if( getXactId( ctx ) == NULL ) {
         osrfAppSessionStatus(
                 ctx->session,
                 OSRF_STATUS_INTERNALSERVERERROR,
@@ -855,7 +918,7 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
                 "%s: Error rolling back savepoint %s in transaction %s",
                 MODULENAME,
                 spName,
-                osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+				getXactId( ctx )
                 );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error rolling back savepoint" );
@@ -881,7 +944,7 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
-    if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+	if( getXactId( ctx ) == NULL ) {
         osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "No active transaction to commit" );
         return -1;
@@ -894,7 +957,7 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 				"osrfMethodException", ctx->request, "Error committing transaction" );
         return -1;
     } else {
-        osrfHashRemove(ctx->session->userData, "xact_id");
+		clearXactId( ctx );
         jsonObject* ret = jsonNewObject(ctx->session->session_id);
         osrfAppRespondComplete( ctx, ret );
         jsonObjectFree(ret);
@@ -915,7 +978,7 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 	jsonObjectFree(user);
 #endif
 
-    if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+	if( getXactId( ctx ) == NULL ) {
         osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "No active transaction to roll back" );
         return -1;
@@ -928,7 +991,7 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 				"osrfMethodException", ctx->request, "Error rolling back transaction" );
         return -1;
     } else {
-        osrfHashRemove(ctx->session->userData, "xact_id");
+		clearXactId( ctx );
         jsonObject* ret = jsonNewObject(ctx->session->session_id);
         osrfAppRespondComplete( ctx, ret );
         jsonObjectFree(ret);
@@ -1531,16 +1594,12 @@ static char* org_tree_root( osrfMethodContext* ctx ) {
 }
 
 /**
-Utility function: create a JSON_HASH with a single key/value pair.
-This function is equivalent to:
+	@brief Create a JSON_HASH with a single key/value pair.
+	@param key The key of the key/value pair.
+	@param value the value of the key/value pair.
+	@return Pointer to a newly created jsonObject of type JSON_HASH.
 
-	jsonParseFmt( "{\"%s\":\"%s\"}", key, value )
-
-or, if value is NULL:
-
-	jsonParseFmt( "{\"%s\":null}", key )
-
-...but faster because it doesn't create and parse a JSON string.
+	The value of the key/value is either a string or (if @a value is NULL) a null.
 */
 static jsonObject* single_hash( const char* key, const char* value ) {
 	// Sanity check
@@ -1571,10 +1630,7 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 	osrfLogDebug( OSRF_LOG_MARK, "Object seems to be of the correct type" );
 
-	char* trans_id = NULL;
-	if( ctx->session && ctx->session->userData )
-		trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
-
+	const char* trans_id = getXactId( ctx );
 	if ( !trans_id ) {
 		osrfLogError( OSRF_LOG_MARK, "No active transaction -- required for CREATE" );
 
@@ -5059,7 +5115,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
-	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+	if( getXactId( ctx ) == NULL ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_BADREQUEST,
@@ -5086,8 +5142,7 @@ static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 	}
 
 	dbhandle = writehandle;
-
-	char* trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
+	const char* trans_id = getXactId( ctx );
 
         // Set the last_xact_id
 	int index = oilsIDL_ntop( target->classname, "last_xact_id" );
@@ -5256,7 +5311,7 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 
-	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+	if( getXactId( ctx ) == NULL ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_BADREQUEST,
