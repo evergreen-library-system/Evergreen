@@ -376,11 +376,11 @@ BEGIN
 		SELECT depth 
 		  FROM permission.usr_perm_map upm
 		 WHERE upm.usr = user_id 
-		   AND upm.perm = n_perm
+		   AND (upm.perm = n_perm OR upm.perm = -1)
        				UNION
 		SELECT	gpm.depth
 		  FROM	permission.grp_perm_map gpm
-		  WHERE	gpm.perm = n_perm 
+		  WHERE	(gpm.perm = n_perm OR gpm.perm = -1)
 	        AND gpm.grp IN (
 	 		   SELECT	(permission.grp_ancestors(
 					(SELECT profile FROM actor.usr WHERE id = user_id)
@@ -389,7 +389,7 @@ BEGIN
        				UNION
 		SELECT	p.depth
 		  FROM	permission.grp_perm_map p 
-		  WHERE p.perm = n_perm
+		  WHERE (p.perm = n_perm OR p.perm = -1)
 		    AND p.grp IN (
 		  		SELECT (permission.grp_ancestors(m.grp)).id 
 				FROM   permission.usr_grp_map m
