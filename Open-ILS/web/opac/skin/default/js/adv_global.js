@@ -311,7 +311,7 @@ function advBuildSearchBlob() {
             string = string.replace(/\s*$/,'');
 			//searches[stype].term = string;
             if(searches) searches += ' ';
-            searches += stype + ':'+ string;
+            searches += stype + ': '+ string;
 		}
 	}
 
