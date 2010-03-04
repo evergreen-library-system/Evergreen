@@ -44,6 +44,7 @@ CREATE TABLE acq.provider (
     email               TEXT,
     phone               TEXT,
     fax_phone           TEXT,
+	default_claim_interval INTERVAL,
     CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
 	CONSTRAINT code_once_per_owner UNIQUE (code, owner)
 );
@@ -433,6 +434,7 @@ CREATE TABLE acq.lineitem (
 	eg_bib_id           INT                         REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
 	source_label        TEXT,
 	state               TEXT                        NOT NULL DEFAULT 'new',
+	claim_interval      INTERVAL,
     CONSTRAINT picklist_or_po CHECK (picklist IS NOT NULL OR purchase_order IS NOT NULL)
 );
 CREATE INDEX li_po_idx ON acq.lineitem (purchase_order);
