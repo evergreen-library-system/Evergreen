@@ -73,6 +73,71 @@
 
 		<script type="text/javascript" src="grp_tree.js"></script>
 
+        <script type="text/javascript"><![CDATA[
+            var dirtyStore = [];
+            var current_group;
+
+            var _group_list = server.pcrud.retrieveAll('pgt');
+            var _group_data = pgt.toStoreData( _group_list );
+            var group_store = new dojo.data.ItemFileWriteStore({ data : _group_data });
+
+            group_store.onSet = function (item, attr, o, n) {
+                if (attr == 'ischanged') return;
+                if (n == o) return;
+                this.setValue( item, 'ischanged', 1);
+            };
+
+            dojo.addOnUnload( function (event) {
+
+                group_store.fetch({
+                    query : { ischanged : 1 },
+                    queryOptions : { deep : true },
+                    onItem : function (item, req) { try { if (this.isItem( item )) dirtyStore.push( item ); } catch (e) { /* meh */ } },
+                    scope : group_store
+                });
+
+                if (dirtyStore.length > 0) {
+                    var confirmation = confirm( pgt_strings.CONFIRM_EXIT_PGT );
+
+                    if (confirmation) {
+                        for (var i in dirtyStore) {
+                            current_group = dirtyStore[i];
+                            save_group(true);
+                        }
+                    }
+                }
+
+            });
+
+            var _ou_type_list = server.pcrud.retrieveAll('aout');
+            var _ou_type_data = aout.toStoreData( _ou_type_list );
+            var ou_type_store = new dojo.data.ItemFileReadStore({ data : _ou_type_data });
+
+            var _perm_list = server.pcrud.retrieveAll('ppl');
+            var _perm_data = ppl.toStoreData( _perm_list, 'code' );
+            var _perm_name_data = ppl.toStoreData( _perm_list, 'code', { identifier : 'code' } );
+
+            var perm_store = new dojo.data.ItemFileWriteStore({ data : _perm_data });
+            var perm_name_store = new dojo.data.ItemFileWriteStore({ data : _perm_name_data });
+
+            var _perm_map_list = server.pcrud.retrieveAll('pgpm');
+            var _perm_map_data = pgpm.toStoreData( _perm_map_list, 'id' );
+            var perm_map_store = new dojo.data.ItemFileWriteStore({ data : _perm_map_data });
+
+            perm_map_store.onSet = function (item, attr, o, n) {
+                if (attr == 'ischanged') return;
+                if (n == o) return;
+
+                this.setValue( item, 'ischanged', 1);
+
+                if (attr == 'grantable' && (typeof (n) != 'string'))
+                    this.setValue(item, 'grantable', n ? 't' : 'f');
+            }
+
+            dojo.addOnUnload( function (event) { save_them_all(); });
+
+        ]]></script>
+
 	</head>
 
 	<body class="tundra" id='pagebody'>
@@ -80,109 +145,12 @@
 		<div dojoType="dijit.layout.SplitContainer" orientation="horizontal" style="height: 100%">
 
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
-				<script type="dojo/method">
-				<![CDATA[
-					window.dirtyStore = [];
-
-                    server.pCRUD.request({
-                        method : 'open-ils.permacrud.search.pgt.atomic',
-                        timeout : 10,
-                        params : [ ses, { id : { "!=" : null } }, { order_by : { pgt : 'name' } } ],
-                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_GROUPS ) },
-                        oncomplete : function (r) {
-                            window._group_list = r.recv().content();
-                            window._group_data = pgt.toStoreData( window._group_list );
-                            window.group_store = new dojo.data.ItemFileWriteStore({ data : window._group_data });
-                            window.group_store.onSet = function (item, attr, o, n) {
-                                if (attr == 'ischanged') return;
-                                if (n == o) return;
-                                this.setValue( item, 'ischanged', 1);
-                            };
-                            dojo.addOnUnload( function (event) {
-
-                                window.group_store.fetch({
-                                    query : { ischanged : 1 },
-                                    queryOptions : { deep : true },
-                                    onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-                                    scope : window.group_store
-                                });
-
-                                if (dirtyStore.length > 0) {
-                                    var confirmation = confirm( pgt_strings.CONFIRM_EXIT_PGT );
-
-                                    if (confirmation) {
-                                        for (var i in window.dirtyStore) {
-                                            window.current_group = window.dirtyStore[i];
-                                            save_group(true);
-                                        }
-                                    }
-                                }
-
-                            });
-                        }
-                    }).send();
-
-                    server.actor.request({
-                        method : 'open-ils.actor.org_types.retrieve',
-                        timeout : 10,
-                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_TYPES_AOUT ) },
-                        oncomplete : function (r) {
-                            window._ou_type_list = r.recv().content();
-                            window._ou_type_data = aout.toStoreData( window._ou_type_list );
-                            window.ou_type_store = new dojo.data.ItemFileReadStore({ data : window._ou_type_data });
-                        }
-                    }).send();
-
-                    server.actor.request({
-                        method : 'open-ils.actor.permissions.retrieve',
-                        timeout : 10,
-                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_PERMS ) },
-                        oncomplete : function (r) {
-    
-                            window._perm_list = r.recv().content();
-
-                            window._perm_data = ppl.toStoreData( window._perm_list, 'code' );
-                            window._perm_name_data = ppl.toStoreData( window._perm_list, 'code', { identifier : 'code' } );
-
-                            window.perm_store = new dojo.data.ItemFileWriteStore({ data : window._perm_data });
-                            window.perm_name_store = new dojo.data.ItemFileWriteStore({ data : window._perm_name_data });
-    
-   
-                        }
-                    }).send();
-
-                    server.pCRUD.request({
-                        method : 'open-ils.permacrud.search.pgpm.atomic',
-                        timeout : 10,
-                        params : [ ses, { id : { "!=" : null } } ],
-                        onerror : function (r) { status_update( pgt_strings.ERROR_FETCHING_PERM_MAPS ) },
-                        oncomplete : function (r) {
-                            window._perm_map_list = r.recv().content();
-                            window._perm_map_data = pgpm.toStoreData( window._perm_map_list, 'id' );
-                            window.perm_map_store = new dojo.data.ItemFileWriteStore({ data : window._perm_map_data });
-
-							window.perm_map_store.onSet = function (item, attr, o, n) {
-								if (attr == 'ischanged') return;
-								if (n == o) return;
-
-								this.setValue( item, 'ischanged', 1);
-
-								if (attr == 'grantable' && (typeof (n) != 'string'))
-									this.setValue(item, 'grantable', n ? 't' : 'f');
-							}
-
-                            dojo.addOnUnload( function (event) { save_them_all(); });
-                        }
- 
-                    }).send();
-]]>
-				</script>
 				<div
 				  id="group_tree"
-				  label="&conify.grp_tree.permission_groups.label;"
-				  query="{'_top':'true'}"
+                  label="&conify.grp_tree.permission_groups.label;"
 				  dojoType="dijit.Tree"
 				  store="group_store"
+                  query="{'_top':'true'}"
 				  minSize="200"
 				  jsId="group_tree"
 				>
@@ -194,7 +162,7 @@
 						current_group = item;
 						window.current_fm_group = new pgt().fromStoreItem(item);
 
-						perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
+						perm_map_model.query = { grp : current_group ? group_store.getValue(current_group,'id') : -1 };
 						perm_map_model.refresh();
 						perm_grid.refresh();
 
@@ -397,50 +365,40 @@
 										var modified_pgt = new pgt().fromStoreItem( current_group );
 										modified_pgt.isdeleted( 1 );
 	
-										server.pCRUD.request({
-											method : 'open-ils.permacrud.delete.pgt',
-											timeout : 10,
-											params : [ ses, modified_pgt ],
+										server.pcrud.eliminate( modified_pgt, {
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
 												status_update( dojo.string.substitute( pgt_strings.CONFIRM_DELETE, [group_store.getValue( current_group, 'name' )]) );
 											},
 											oncomplete : function (r) {
-												var res = r.recv();
-												if ( res && res.content() ) {
-	
-													var old_name = group_store.getValue( current_group, 'name' );
+												var old_name = group_store.getValue( current_group, 'name' );
 
-													group_store.fetch({
-														query : { id : group_store.getValue( current_group, 'id' ) },
-														queryOptions : { deep : true },
-														onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-														scope : group_store
-													});
-	
-													current_group = null;
-	
-													new_kid_button.disabled = true;
-													save_group_button.disabled = true;
-													delete_group_button.disabled = true;
-			
-													var main_settings_fields = [ 'name', 'perm_interval', 'description' ];
-													for ( var i in main_settings_fields ) {
-														var field = main_settings_fields[i];
-														window["editor_pane_" + field].setValue( '' ); // unset the value
-														window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
-													}
+												group_store.fetch({
+													query : { id : group_store.getValue( current_group, 'id' ) },
+													queryOptions : { deep : true },
+													onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+													scope : group_store
+												});
 
-													window["editor_pane_usergroup"].setChecked( false ); // unset the value
-			
-													highlighter.editor_pane.green.play();
-													status_update( dojo.string.substitute( pgt_strings.STATUS_DELETED, [old_name]) );
-												} else {
-													highlighter.editor_pane.red.play();
-													status_update( dojo.string.substitute( pgt_strings.ERROR_DELETING, [old_name]) );
+												current_group = null;
+
+												new_kid_button.disabled = true;
+												save_group_button.disabled = true;
+												delete_group_button.disabled = true;
+		
+												var main_settings_fields = [ 'name', 'perm_interval', 'description' ];
+												for ( var i in main_settings_fields ) {
+													var field = main_settings_fields[i];
+													window["editor_pane_" + field].setValue( '' ); // unset the value
+													window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
 												}
+
+												window["editor_pane_usergroup"].setChecked( false ); // unset the value
+		
+												highlighter.editor_pane.green.play();
+												status_update( dojo.string.substitute( pgt_strings.STATUS_DELETED, [old_name]) );
 											}
-										}).send();
+										});
 	
 									}
 ]]>	
@@ -464,30 +422,18 @@
 								});
 	
 								var err = false;
-								server.pCRUD.request({
-									method : 'open-ils.permacrud.create.pgt',
-									timeout : 10,
-									params : [ ses, new_fm_obj ],
+
+								server.pcrud.create( new_fm_obj, {
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
 										status_update( pgt_strings.ERROR_CALLING_METHOD_PGT );
 										err = true;
 									},
-									oncomplete : function (r) {
-										var res = r.recv();
-										if ( res && res.content() ) {
-											group_store.newItem(
-												res.content().toHash(),
-												{ parent : current_group, attribute : 'children' }
-											);
-										} else {
-											highlighter.editor_pane.red.play();
-											status_update( pgt_strings.ERROR_CREATING_CHILD_GROUP );
-											err = true;
-										}
-									},
-								}).send();
-	
+                                    oncomplete : function (r,list) {
+								        group_store.newItem( list[0].toHash(), { parent : current_group, attribute : 'children' } );
+                                    }
+                                });
+
 								if (!err) {
 									highlighter.editor_pane.green.play();
 									highlighter.group_tree.green.play();
@@ -501,7 +447,7 @@
 
 					<div id="perm_pane" dojoType="dijit.layout.ContentPane" title="&conify.grp_tree.group_permissions.title;">
 						<script type="dojo/connect" event="onShow">
-							perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
+							perm_map_model.query = { grp : current_group ? group_store.getValue(current_group,'id') : -1 };
 							perm_map_model.refresh();
 							perm_grid.refresh();
 						</script>
@@ -645,36 +591,26 @@
 						                        });
 						    
 						                        var err = false;
-						                        server.pCRUD.request({
-						                            method : 'open-ils.permacrud.create.pgpm',
-						                            timeout : 10,
-						                            params : [ ses, new_fm_obj ],
+						                        server.pcrud.create(new_fm_obj, {
 						                            onerror : function (r) {
 						                                highlighter.group_tree.red.play();
 						                                status_update( pgt_strings.ERROR_CALLING_METHOD_PERM_MAP );
 						                                err = true;
 						                            },
-						                            oncomplete : function (r) {
+						                            oncomplete : function (r, list) {
 		
-						                                var res = r.recv();
-						                                if ( res && res.content() ) {
-						                                    var new_item_hash = res.content().toHash();
-						                                    perm_map_store.newItem( new_item_hash );
-						                                    status_update( pgt_strings.SUCCESS_NEW_PERM_MAP );
-						                                    highlighter.group_tree.green.play();
+						                                var new_item_hash = list[0].toHash();
+						                                perm_map_store.newItem( new_item_hash );
+						                                status_update( pgt_strings.SUCCESS_NEW_PERM_MAP );
+						                                highlighter.group_tree.green.play();
 		
-								                            perm_map_model.query = { grp : current_group ? current_group.id[0] : -1 };
-						                                    perm_grid.model.sort(-1);
-								                            perm_map_model.refresh();
-								                            perm_grid.refresh();
+								                        perm_map_model.query = { grp : current_group ? group_store.getValue(current_group,'id') : -1 };
+						                                perm_grid.model.sort(-1);
+								                        perm_map_model.refresh();
+								                        perm_grid.refresh();
 		
-						                                } else {
-						                                    highlighter.group_tree.red.play();
-						                                    status_update( pgt_strings.ERROR_CREATING_PERM_MAP );
-						                                    err = true;
-						                                }
 						                            }
-						                        }).send();
+						                        });
 
 												new_popup._closeDropDown();
 ]]>    
@@ -708,34 +644,25 @@
 								            var modified_pgpm = new pgpm().fromStoreItem( window.current_perm_map );
 									        modified_pgpm.isdeleted( 1 );
 			            
-			                                server.pCRUD.request({
-			                                    method : 'open-ils.permacrud.delete.pgpm',
-			                                    timeout : 10,
-				                                params : [ ses, modified_pgpm ],
+			                                server.pcrud.eliminate( modified_pgpm, {
 					                            onerror : function (r) {
 													highlighter.editor_pane.red.play();
 							                        status_update( dojo.string.substitute( pgt_strings.ERROR_DELETING_PERM_MAPPING, [perm_map_store.getValue( window.current_perm_map, 'id' )] ) );
 								                },
-									            oncomplete : function (r) {
-										            var res = r.recv();
-											        if ( res && res.content() ) {
+									            oncomplete : function (r, list) {
 						
-							                            perm_map_store.fetch({
-								                            query : { id : perm_map_store.getValue( window.current_perm_map, 'id' ) },
-									                        onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-										                    scope : perm_map_store
-											            });
+						                            perm_map_store.fetch({
+							                            query : { id : perm_map_store.getValue( window.current_perm_map, 'id' ) },
+								                        onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+									                    scope : perm_map_store
+										            });
 		            
-												        window.current_perm_map = null;
+											        window.current_perm_map = null;
 						
-														highlighter.editor_pane.green.play();
-								                        status_update( pgt_strings.SUCCESS_DELETED_PERM_MAP );
-									                } else {
-														highlighter.editor_pane.red.play();
-											            status_update( dojo.string.substitute( pgt_strings.ERROR_DELETING_PERM_MAPPING, [perm_map_store.getValue( window.current_perm_map, 'id' )]) );
-												    }
+													highlighter.editor_pane.green.play();
+							                        status_update( pgt_strings.SUCCESS_DELETED_PERM_MAP );
 			                                    }
-			                                }).send();
+			                                });
 				        
 				                        }
 ]]>
