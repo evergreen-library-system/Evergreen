@@ -1122,10 +1122,7 @@ main.menu.prototype = {
     'spawn_search' : function(s) {
         var obj = this;
         obj.error.sdump('D_TRACE', offlineStrings.getFormattedString('menu.spawn_search.msg', [js2JSON(s)]) ); 
-        obj.data.stash_retrieve();
-        var loc = obj.url_prefix(urls.XUL_PATRON_DISPLAY);
-        loc += '?doit=1&query=' + window.escape(js2JSON(s));
-        obj.new_tab( loc, {}, {} );
+        obj.new_patron_tab( {}, { 'doit' : 1, 'query' : js2JSON(s) } );
     },
 
     'init_tab_focus_handlers' : function() {
