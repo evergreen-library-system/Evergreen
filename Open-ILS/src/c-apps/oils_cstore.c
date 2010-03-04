@@ -820,7 +820,8 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 #endif
 
 	// Verify that a transaction is pending
-	if( getXactId( ctx ) == NULL ) {
+	const char* trans_id = getXactId( ctx );
+	if( NULL == trans_id ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -841,7 +842,7 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 			"%s: Error creating savepoint %s in transaction %s",
 			MODULENAME,
 			spName,
-			getXactId( ctx )
+			trans_id
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error creating savepoint" );
@@ -883,7 +884,8 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 #endif
 
 	// Verify that a transaction is pending
-	if( getXactId( ctx ) == NULL ) {
+	const char* trans_id = getXactId( ctx );
+	if( NULL == trans_id ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -904,7 +906,7 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 			"%s: Error releasing savepoint %s in transaction %s",
 			MODULENAME,
 			spName,
-			getXactId( ctx )
+			trans_id
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error releasing savepoint" );
@@ -946,7 +948,8 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 #endif
 
 	// Verify that a transaction is pending
-	if( getXactId( ctx ) == NULL ) {
+	const char* trans_id = getXactId( ctx );
+	if( NULL == trans_id ) {
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -967,7 +970,7 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 			"%s: Error rolling back savepoint %s in transaction %s",
 			MODULENAME,
 			spName,
-			getXactId( ctx )
+			trans_id
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error rolling back savepoint" );
@@ -1006,7 +1009,8 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 #endif
 
 	// Verify that a transaction is pending
-	if( getXactId( ctx ) == NULL ) {
+	const char* trans_id = getXactId( ctx );
+	if( NULL == trans_id ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "No active transaction to commit" );
 		return -1;
@@ -1019,10 +1023,10 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 				"osrfMethodException", ctx->request, "Error committing transaction" );
 		return -1;
 	} else {
-		clearXactId( ctx );
-		jsonObject* ret = jsonNewObject(ctx->session->session_id);
+		jsonObject* ret = jsonNewObject( trans_id );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
+		clearXactId( ctx );
 	}
 	return 0;
 }
@@ -1053,7 +1057,8 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 #endif
 
 	// Verify that a transaction is pending
-	if( getXactId( ctx ) == NULL ) {
+	const char* trans_id = getXactId( ctx );
+	if( NULL == trans_id ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "No active transaction to roll back" );
 		return -1;
@@ -1066,27 +1071,37 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 				"osrfMethodException", ctx->request, "Error rolling back transaction" );
 		return -1;
 	} else {
-		clearXactId( ctx );
-		jsonObject* ret = jsonNewObject(ctx->session->session_id);
+		jsonObject* ret = jsonNewObject( trans_id );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
+		clearXactId( ctx );
 	}
 	return 0;
 }
 
+/**
+	@brief Implement the class-specific methods.
+	@param ctx Pointer to the method context.
+	@return Zero if successful, or -1 if not.
+
+	Branch on the method type: create, retrieve, update, delete, search, and id_list.
+
+	The method parameters and the type of value returned to the client depend on the method
+	type.  However, for PCRUD methods, the first method parameter should always be an
+	authkey.
+*/
 int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
 		return -1;
 	}
 
-	osrfHash* meta = (osrfHash*) ctx->method->userData;
-	osrfHash* class_obj = osrfHashGet( meta, "class" );
+	int err = 0;                // to be returned to caller
+	jsonObject * obj = NULL;    // to be returned to client
 
-	int err = 0;
-
-	const char* methodtype = osrfHashGet(meta, "methodtype");
-	jsonObject * obj = NULL;
+	// Get the method type so that we can branch on it
+	osrfHash* method_meta = (osrfHash*) ctx->method->userData;
+	const char* methodtype = osrfHashGet( method_meta, "methodtype" );
 
 	if (!strcmp(methodtype, "create")) {
 		obj = doCreate(ctx, &err);
@@ -1106,6 +1121,14 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	}
 	else if (!strcmp(methodtype, "search")) {
 
+		// Implement search method: return rows of the specified class that satisfy
+		// a specified WHERE clause.
+
+		// Method parameters:
+		// - authkey (PCRUD only)
+		// - WHERE clause, as jsonObject
+		// - Other SQL clause(s), as a JSON_HASH: joins, SELECT list, LIMIT, etc.
+
 		jsonObject* where_clause;
 		jsonObject* rest_of_query;
 
@@ -1117,15 +1140,20 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		rest_of_query = jsonObjectGetIndex( ctx->params, 1 );
 #endif
 
+		// Do the query
+		osrfHash* class_obj = osrfHashGet( method_meta, "class" );
 		obj = doFieldmapperSearch( ctx, class_obj, where_clause, rest_of_query, &err );
 
-		if(err) return err;
+		if(err)
+			return err;
 
+		// Return each row to the client (except that some may be suppressed by PCRUD)
 		jsonObject* cur = 0;
 		unsigned long res_idx = 0;
 		while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
 #ifdef PCRUD
-			if(!verifyObjectPCRUD(ctx, cur)) continue;
+			if(!verifyObjectPCRUD(ctx, cur))
+				continue;
 #endif
 			osrfAppRespond( ctx, cur );
 		}
@@ -1133,12 +1161,21 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 	} else if (!strcmp(methodtype, "id_list")) {
 
+		// Implement the id_list method.  Return the primary key values for all rows of the
+		// relevant class that satisfy a specified WHERE clause.  This method relies on the
+		// assumption that every class has a primary key consisting of a single column.
+
+		// Method parameters:
+		// - authkey (PCRUD only)
+		// - WHERE clause, as jsonObject
+		// - Other SQL clause(s), as a JSON_HASH: joins, LIMIT, etc.
+
 		jsonObject* where_clause;
 		jsonObject* rest_of_query;
 
-		// We use the where clause without change.  But we need
-		// to massage the rest of the query, so we work with a copy
-		// of it instead of modifying the original.
+		// We use the where clause without change.  But we need to massage the rest of the
+		// query, so we work with a copy of it instead of modifying the original.
+
 #ifdef PCRUD
 		where_clause  = jsonObjectGetIndex( ctx->params, 1 );
 		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 2 ) );
@@ -1147,6 +1184,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 1 ) );
 #endif
 
+		// Eliminate certain SQL clauses, if present
 		if ( rest_of_query ) {
 			jsonObjectRemoveKey( rest_of_query, "select" );
 			jsonObjectRemoveKey( rest_of_query, "no_i18n" );
@@ -1158,6 +1196,9 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 		jsonObjectSetKey( rest_of_query, "no_i18n", jsonNewBoolObject( 1 ) );
 
+		// Get the class metadata
+		osrfHash* class_obj = osrfHashGet( method_meta, "class" );
+
 		// Build a SELECT list containing just the primary key,
 		// i.e. like { "classname":["keyname"] }
 		jsonObject* col_list_obj = jsonNewObjectType( JSON_ARRAY );
@@ -1168,16 +1209,20 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 		jsonObjectSetKey( rest_of_query, "select", select_clause );
 
+		// Do the query
 		obj = doFieldmapperSearch( ctx, class_obj, where_clause, rest_of_query, &err );
 
 		jsonObjectFree( rest_of_query );
-		if(err) return err;
+		if(err)
+			return err;
 
+		// Return each primary key value to the client
 		jsonObject* cur;
 		unsigned long res_idx = 0;
 		while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
 #ifdef PCRUD
-			if(!verifyObjectPCRUD(ctx, cur)) continue;
+			if(!verifyObjectPCRUD(ctx, cur))
+				continue;
 #endif
 			osrfAppRespond( ctx,
 				oilsFMGetObject( cur, osrfHashGet( class_obj, "primarykey" ) )
@@ -1186,7 +1231,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		osrfAppRespondComplete( ctx, NULL );
 
 	} else {
-		osrfAppRespondComplete( ctx, obj );
+		osrfAppRespondComplete( ctx, obj );      // should be unreachable...
 	}
 
 	jsonObjectFree(obj);
