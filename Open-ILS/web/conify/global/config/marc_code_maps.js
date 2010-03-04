@@ -18,6 +18,7 @@
 dojo.require('fieldmapper.AutoIDL');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.widget.TranslatorPopup');
+dojo.require('openils.PermaCrud');
 dojo.require('dojo.cookie');
 dojo.require('dojo.parser');
 dojo.require('dojo.string');
@@ -40,7 +41,7 @@ console.log('loading marc_code_maps.js');
 // some handy globals
 var cgi = new CGI();
 var ses = dojo.cookie('ses') || cgi.param('ses');
-var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+var pCRUD = new openils.PermaCrudopenils.PermaCrud({authtoken:ses});
 
 console.log('initialized pcrud session');
 
@@ -77,26 +78,16 @@ function save_code (classname) {
 	if(classname == 'cam' || classname == 'clfm')
 		obj.description( dojo.string.trim( obj.description() ) );
 
-	pCRUD.request({
-		method : 'open-ils.permacrud.update.' + classname,
-		timeout : 10,
-		params : [ ses, modified_ppl ],
+	pCRUD.update(obj, {
 		onerror : function (r) {
 			//highlighter.red.play();
 			status_update( dojo.string.substitute(cam_strings.ERROR_SAVING_DATA_CAM, [classname, obj.code()]) );
 		},
 		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				stores[classname].setValue( current_item, 'ischanged', 0 );
-				//highlighter.green.play();
-				status_update( dojo.string.substitute(cam_strings.SUCCESS_SAVE, stores[classname].getValue( item, 'code' )) );
-			} else {
-				//highlighter.red.play();
-				status_update( dojo.string.substitute( cam_strings.ERROR_SAVING_DATA_CAM, [classname, stores[classname].getValue( item, 'code' )] ) );
-			}
-		},
-	}).send();
+			stores[classname].setValue( current_item, 'ischanged', 0 );
+			status_update( dojo.string.substitute(cam_strings.SUCCESS_SAVE, stores[classname].getValue( item, 'code' )) );
+		}
+	});
 }
 
 function save_them_all (event) {
@@ -153,33 +144,21 @@ function delete_grid_selection(classname, grid ) {
             var obj = new fieldmapper[classname]().fromStoreItem( item );
             obj.isdeleted( 1 );
             
-            pCRUD.request({
-                method : 'open-ils.permacrud.delete.' + classname,
-                timeout : 10,
-                params : [ ses, obj ],
+            pCRUD.eliminate(obj, {
                 onerror : function (r) {
                     //highlighter.red.play();
                     status_update( dojo.string.substitute( cam_strings.ERROR_DELETING, [grid.model.store.getValue( item, 'value' )] ) );
                 },
                 oncomplete : function (r) {
-                    var res = r.recv();
-                    var old_name = grid.model.store.getValue( item, 'value' );
-                    if ( res && res.content() ) {
-
-                        grid.model.store.fetch({
-                            query : { code : grid.model.store.getValue( item, 'code' ) },
-                            onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-                            scope : grid.model.store
-                        });
+                    grid.model.store.fetch({
+                        query : { code : grid.model.store.getValue( item, 'code' ) },
+                        onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+                        scope : grid.model.store
+                    });
             
-                        //highlighter.green.play();
-                        status_update( dojo.string.substitute( cam_strings.STATUS_DELETED, [old_name] ) );
-                    } else {
-                        //highlighter.red.play();
-                        status_update( dojo.string.substitute( cam_strings.ERROR_DELETING, [old_name] ) );
-                    }
+                    status_update( dojo.string.substitute( cam_strings.STATUS_DELETED, [old_name] ) );
                 }
-            }).send();
+            });
         
         }
     }
@@ -202,29 +181,19 @@ function create_marc_code (data) {
     new_fm_obj.isnew(1);
 
     var err = false;
-    pCRUD.request({
-        method : 'open-ils.permacrud.create.' + cl,
-        timeout : 10,
-        params : [ ses, new_fm_obj ],
+    pCRUD.create(new_fm_obj, {
         onerror : function (r) {
             //highlighter.red.play();
             status_update( dojo.string.substitute( cam_strings.ERROR_CALLING_METHOD_CAM, [cl] ) );
             err = true;
         },
-        oncomplete : function (r) {
-            var res = r.recv();
-            if ( res && res.content() ) {
-                var new_item_hash = res.content().toHash();
-                stores[cl].newItem( new_item_hash );
-                status_update( dojo.string.substitute( cam_strings.SUCCESS_CREATING_CODE, [new_item_hash.code, cl] ) );
-                //highlighter.green.play();
-            } else {
-                //highlighter.red.play();
-                status_update( cam_strings.ERROR_CREATING_PERMISSION );
-                err = true;
-            }
+        oncomplete : function (r, list) {
+            var new_item_hash = list[0].toHash();
+            stores[cl].newItem( new_item_hash );
+            status_update( dojo.string.substitute( cam_strings.SUCCESS_CREATING_CODE, [new_item_hash.code, cl] ) );
+            //highlighter.green.play();
         }
-    }).send();
+    });
 
 	return false;
 }
