@@ -62,95 +62,87 @@
 
 		<script type="text/javascript" src="perm_list.js"></script>
 
+		<script type="dojo/method"><![CDATA[
+			var highlighter= {};
+			highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
+			highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
+
+			var dirtyStore = [];
+			var perm_rows = [];
+
+            var _perm_list = pCRUD.retrieveAll('ppl');
+            var _perm_data = ppl.toStoreData( _perm_list, 'code' );
+            var perm_store = new dojo.data.ItemFileWriteStore({ data : _perm_data });
+
+            perm_store.onSet = function (item, attr, o, n) {
+                if (attr == 'ischanged') return;
+                if (n == o) return;
+                this.setValue( item, 'ischanged', 1);
+            };
+			var perm_data_model = new dojox.grid.data.DojoData({ store: perm_store, query: { code : '*' } });
+
+			var perm_grid_layout = [
+				{	cells : [
+						[
+							{ name : ppl_strings.LABEL_CODE,        field : "code",        width : "300px", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
+							{ name : ppl_strings.LABEL_DESCRIPTION, field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
+						],
+						[
+							{ name : ppl_strings.LABEL_TRANSLATION,
+							  width : "10em",
+							  height : "2em",
+							  get : function (row) {
+								var r = perm_data_model.getRow(row);
+								if (r) {
+									perm_rows[row] = new ccs().fromHash(perm_data_model.getRow(row));
+									setTimeout(
+										'dojo.query(".perm_grid_trans_desc_' + row + '").'+
+											'instantiate(openils.widget.TranslatorPopup,{field:"description",'+
+											'targetObject:"window.perm_rows['+row+']"});'+
+											'perm_grid.rowHeightChanged('+row+')',
+										0
+									);
+									var oldnode = dojo.byId('description_translation_' + row);
+									if (oldnode) dijit.byNode(oldnode).destroyRecursive();
+									return '<span class="perm_grid_trans_desc_'+row+'"></span>';
+								}
+								return '';
+							  }
+							}
+						]
+					]
+				}
+			];
+
+            dojo.addOnUnload( function (event) {
+
+                perm_store.fetch({
+                    query : { ischanged : 1 },
+                    onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
+                    scope : perm_store
+                });
+
+                if (dirtyStore.length > 0) {
+                    var confirmation = confirm(ppl_strings.CONFIRM_EXIT_PPL);
+
+                    if (confirmation) {
+                        for (var i in dirtyStore) {
+                            window.current_perm = dirtyStore[i];
+                            save_perm(true);
+                        }
+                    }
+                }
+
+            });
+]]>
+		</script>
+
+
 	</head>
 
 	<body class="tundra" id='pagebody'>
 
 		<div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
-			<script type="dojo/method">
-<![CDATA[
-				window.highlighter= {};
-				window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
-				window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
-
-				window.dirtyStore = [];
-
-                pCRUD.request({
-                    method : 'open-ils.permacrud.search.ppl.atomic',
-                    timeout : 10,
-                    params : [ ses, { id : { "!=" : null } }, { order_by : { ppl : 'code' } } ],
-                    onerror : function (r) { status_update(ppl_strings.ERROR_FETCHING_PERMS) },
-                    oncomplete : function (r) {
-
-                        window._perm_list = r.recv().content();
-                        window._perm_data = ppl.toStoreData( window._perm_list, 'code' );
-                        window.perm_store = new dojo.data.ItemFileWriteStore({ data : window._perm_data });
-
-	                    perm_store.onSet = function (item, attr, o, n) {
-                            if (attr == 'ischanged') return;
-                            if (n == o) return;
-                            this.setValue( item, 'ischanged', 1);
-                        };
-
-						window.perm_grid_layout = [
-							{	cells : [
-									[
-										{ name : ppl_strings.LABEL_CODE,        field : "code",        width : "300px", editor : dojox.grid.editors.Dijit, rowSpan : "2" },
-										{ name : ppl_strings.LABEL_DESCRIPTION, field : "description", width : "auto",  editor : dojox.grid.editors.Editor, style : "minHeight:1em;" }
-									],
-									[
-										{ name : ppl_strings.LABEL_TRANSLATION,
-										  width : "10em",
-										  height : "2em",
-										  get : function (row) {
-											if (!window.perm_rows) window.perm_rows = [];
-											var r = window.perm_data_model.getRow(row);
-											if (r) {
-												window.perm_rows[row] = new ccs().fromHash(window.perm_data_model.getRow(row));
-												setTimeout(
-													'dojo.query(".perm_grid_trans_desc_' + row + '").'+
-														'instantiate(openils.widget.TranslatorPopup,{field:"description",'+
-														'targetObject:"window.perm_rows['+row+']"});'+
-														'perm_grid.rowHeightChanged('+row+')',
-													0
-												);
-												var oldnode = dojo.byId('description_translation_' + row);
-												if (oldnode) dijit.byNode(oldnode).destroyRecursive();
-												return '<span class="perm_grid_trans_desc_'+row+'"></span>';
-											}
-											return '';
-										  }
-										}
-									]
-								]
-							}
-						];
-
-                        dojo.addOnUnload( function (event) {
-
-                            perm_store.fetch({
-                                query : { ischanged : 1 },
-                                onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-                                scope : perm_store
-                            });
-
-                            if (dirtyStore.length > 0) {
-                                var confirmation = confirm(ppl_strings.CONFIRM_EXIT_PPL);
-
-                                if (confirmation) {
-                                    for (var i in window.dirtyStore) {
-                                        window.current_perm = window.dirtyStore[i];
-                                        save_perm(true);
-                                    }
-                                }
-                            }
-
-                        });
-                    }
-                }).send();
-]]>
-			</script>
-
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
 				<span>&conify.perm_list.new_permission.label;</span>
 				<div dojoType="dijit.form.TextBox" id="new_perm_code" jsId="new_perm_code" label="&conify.perm_list.new_code.label;"></div>
@@ -166,37 +158,26 @@
 	                    });
     
     	                var err = false;
-        	            pCRUD.request({
-            	            method : 'open-ils.permacrud.create.ppl',
-                	        timeout : 10,
-                    	    params : [ ses, new_fm_obj ],
+        	            pCRUD.create(new_fm_objnew_fm_obj, {
 	                        onerror : function (r) {
     	                        highlighter.red.play();
         	                    status_update( ppl_strings.ERROR_CALLING_METHOD_PPL );
             	                err = true;
                 	        },
-	                        oncomplete : function (r) {
-    	                        var res = r.recv();
-        	                    if ( res && res.content() ) {
-            	                    var new_item_hash = res.content().toHash();
-            	                    perm_store.newItem( new_item_hash );
-									status_update( dojo.string.substitute(ppl_strings.SUCCESS_CREATING_PERMISSION, [new_item_hash.code]) );
-									perm_grid.model.sort(-1);
-									highlighter.green.play();
-                            	} else {
-	                                highlighter.red.play();
-    	                            status_update( ppl_strings.ERROR_CREATING_PERMISSION );
-        	                        err = true;
-            	                }
+	                        oncomplete : function (r, list) {
+           	                    var new_item_hash = list[0].toHash();
+           	                    perm_store.newItem( new_item_hash );
+								status_update( dojo.string.substitute(ppl_strings.SUCCESS_CREATING_PERMISSION, [new_item_hash.code]) );
+								perm_grid.model.sort(-1);
+								highlighter.green.play();
                 	        }
-                    	}).send();
+                    	});
 ]]> 
 	                </script>
 				</button>
 			</div>
 
 			<div dojoType="dijit.layout.ContentPane" style="width:100%; height:100%;" layoutAlign="client">
-				<div dojoType="dojox.grid.data.DojoData" id="perm_data_model" jsId="perm_data_model" store="perm_store" query="{ code : '*' }"></div>
 				<div id="perm_grid" dojoType="dojox.Grid" model="perm_data_model" structure="perm_grid_layout" jsId="perm_grid">
 					<!--
 					<script type="dojo/connect" event="onSet" args="item,attr,oldVal,newVal">
@@ -233,36 +214,26 @@
 								var modified_ppl = new ppl().fromStoreItem( current_perm );
 								modified_ppl.isdeleted( 1 );
 			
-								pCRUD.request({
-									method : 'open-ils.permacrud.delete.ppl',
-									timeout : 10,
-									params : [ ses, modified_ppl ],
+								pCRUD.eliminate(modified_ppl, {
 									onerror : function (r) {
 										highlighter.red.play();
 										status_update( dojo.string.substitute(ppl_strings.ERROR_DELETING, [perm_store.getValue( current_perm, 'code' )]) );
 									},
 									oncomplete : function (r) {
-										var res = r.recv();
-										if ( res && res.content() ) {
-			
-											var old_name = perm_store.getValue( current_perm, 'code' );
-		
-											perm_store.fetch({
-												query : { id : perm_store.getValue( current_perm, 'id' ) },
-												onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-												scope : perm_store
-											});
-			
-											current_perm = null;
-			
-											highlighter.green.play();
-											status_update( dojo.string.substitute(ppl_strings.STATUS_DELETED, [old_name]) );
-										} else {
-											highlighter.red.play();
-											status_update( dojo.string.substitute(ppl_strings.ERROR_DELETING, [old_name]) );
-										}
+										var old_name = perm_store.getValue( current_perm, 'code' );
+
+										perm_store.fetch({
+											query : { id : perm_store.getValue( current_perm, 'id' ) },
+											onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+											scope : perm_store
+										});
+
+										current_perm = null;
+
+										highlighter.green.play();
+										status_update( dojo.string.substitute(ppl_strings.STATUS_DELETED, [old_name]) );
 									}
-								}).send();
+								});
 		
 							}
 						}
