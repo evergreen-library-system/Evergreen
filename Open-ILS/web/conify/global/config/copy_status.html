@@ -63,69 +63,61 @@
 
 		<script type="text/javascript" src="copy_status.js"></script>
 
+        <script type="dojo/method">
+<![CDATA[
+            var highlighter= {};
+            highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
+            highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
+
+            var dirtyStore = [];
+
+            var _status_list = pCRUD.retrieveAll('ccs', { order_by : { ccs : 'name' } });
+            var _status_data = ccs.toStoreData( _status_list, 'name' );
+            var status_store = new dojo.data.ItemFileWriteStore({ data : _status_data });
+
+            status_store.onSet = function (item, attr, o, n) {
+                if (attr == 'ischanged') return;
+                if (n == o) return;
+                this.setValue( item, 'ischanged', 1);
+
+                if (attr == 'holdable' && typeof n != 'string')
+                    this.setValue(item, 'holdable', n ? 't' : 'f');
+
+                if (attr == 'opac_visible' && typeof n != 'string')
+                    this.setValue(item, 'opac_visible', n ? 't' : 'f');
+
+            };
+
+            dojo.addOnUnload( function (event) {
+
+                status_store.fetch({
+                    query : { ischanged : 1 },
+                    onItem : function (item, req) { try { if (this.isItem( item )) dirtyStore.push( item ); } catch (e) { /* meh */ } },
+                    scope : status_store
+                });
+
+                if (dirtyStore.length > 0) {
+                    var confirmation = confirm(
+                        ccs_strings.CONFIRM_EXIT_CCS
+                    );
+
+                    if (confirmation) {
+                        for (var i in window.dirtyStore) {
+                            current_status = dirtyStore[i];
+                            save_status(true);
+                        }
+                    }
+                }
+
+            });
+]]>
+        </script>
+
 	</head>
 
 	<body class="tundra" id='pagebody'>
 
 		<div dojoType="dijit.layout.LayoutContainer" id="grid_container" jsId="grid_container" orientation="vertical">
-			<script type="dojo/method">
-<![CDATA[
-				window.highlighter= {};
-				window.highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
-				window.highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
-
-				window.dirtyStore = [];
-
-                pCRUD.request({
-                    method : 'open-ils.permacrud.search.ccs.atomic',
-                    timeout : 10,
-                    params : [ ses, { id : { "!=" : null } }, { order_by : { ccs : 'name' } } ],
-                    onerror : function (r) { status_update(ccs_strings.ERROR_FETCHING_STATUSES) },
-                    oncomplete : function (r) {
-
-                        window._status_list = r.recv().content();
-                        window._status_data = ccs.toStoreData( window._status_list, 'name' );
-                        window.status_store = new dojo.data.ItemFileWriteStore({ data : window._status_data });
-
-	                    window.status_store.onSet = function (item, attr, o, n) {
-                            if (attr == 'ischanged') return;
-                            if (n == o) return;
-                            this.setValue( item, 'ischanged', 1);
-
-                            if (attr == 'holdable' && typeof n != 'string')
-                                this.setValue(item, 'holdable', n ? 't' : 'f');
-
-                            if (attr == 'opac_visible' && typeof n != 'string')
-                                this.setValue(item, 'opac_visible', n ? 't' : 'f');
-
-                        };
-
-                        dojo.addOnUnload( function (event) {
-
-                            status_store.fetch({
-                                query : { ischanged : 1 },
-                                onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-                                scope : status_store
-                            });
-
-                            if (dirtyStore.length > 0) {
-                                var confirmation = confirm(
-									ccs_strings.CONFIRM_EXIT_CCS
-                                );
-
-                                if (confirmation) {
-                                    for (var i in window.dirtyStore) {
-                                        window.current_status = window.dirtyStore[i];
-                                        save_status(true);
-                                    }
-                                }
-                            }
-
-                        });
-                    }
-                }).send();
-]]>
-			</script>
 
 			<div dojoType="dijit.layout.LayoutContainer" orientation="horizontal" style="margin-top: 5px;" layoutAlign="top">
 				<span>&conify.copy_status.new_status.label;</span>
@@ -142,30 +134,20 @@
 	                    });
     
     	                var err = false;
-        	            pCRUD.request({
-            	            method : 'open-ils.permacrud.create.ccs',
-                	        timeout : 10,
-                    	    params : [ ses, new_fm_obj ],
+        	            pCRUD.create(new_fm_obj, {
 	                        onerror : function (r) {
     	                        highlighter.red.play();
         	                    status_update( ccs_strings.ERROR_CALLING_METHOD_CCS );
             	                err = true;
                 	        },
-	                        oncomplete : function (r) {
-    	                        var res = r.recv();
-        	                    if ( res && res.content() ) {
-            	                    var new_item_hash = res.content().toHash();
-            	                    status_store.newItem( new_item_hash );
-									status_update( dojo.string.substitute(ccs_strings.SUCCESS_CREATING_STATUS, [new_item_hash.name]) );
-									status_grid.model.sort(-2);
-									highlighter.green.play();
-                            	} else {
-	                                highlighter.red.play();
-    	                            status_update( ccs_strings.ERROR_CREATING_STATUS );
-        	                        err = true;
-            	                }
+	                        oncomplete : function (r, list) {
+           	                    var new_item_hash = list[0].toHash();
+           	                    status_store.newItem( new_item_hash );
+								status_update( dojo.string.substitute(ccs_strings.SUCCESS_CREATING_STATUS, [new_item_hash.name]) );
+								status_grid.model.sort(-2);
+								highlighter.green.play();
                 	        }
-                    	}).send();
+                    	});
 ]]> 
 	                </script>
 				</button>
@@ -272,36 +254,26 @@
 								var modified_ccs = new ccs().fromStoreItem( current_status );
 								modified_ccs.isdeleted( 1 );
 			
-								pCRUD.request({
-									method : 'open-ils.permacrud.delete.ccs',
-									timeout : 10,
-									params : [ ses, modified_ccs ],
+								pCRUD.eliminate(modified_ccs, {
 									onerror : function (r) {
 										highlighter.red.play();
 										status_update( dojo.string.substitute( ccs_strings.ERROR_DELETING, [status_store.getValue( current_status, 'name' )] ) );
 									},
 									oncomplete : function (r) {
-										var res = r.recv();
-										if ( res && res.content() ) {
-			
-											var old_name = status_store.getValue( current_status, 'name' );
+										var old_name = status_store.getValue( current_status, 'name' );
 		
-											status_store.fetch({
-												query : { id : status_store.getValue( current_status, 'id' ) },
-												onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-												scope : status_store
-											});
+										status_store.fetch({
+											query : { id : status_store.getValue( current_status, 'id' ) },
+											onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+											scope : status_store
+										});
 			
-											current_status = null;
+										current_status = null;
 			
-											highlighter.green.play();
-											status_update( dojo.string.substitute(ccs_strings.STATUS_DELETED, [old_name]) );
-										} else {
-											highlighter.red.play();
-											status_update( dojo.string.substitute(ccs_strings.ERROR_DELETING, [old_name]) );
-										}
+										highlighter.green.play();
+										status_update( dojo.string.substitute(ccs_strings.STATUS_DELETED, [old_name]) );
 									}
-								}).send();
+								});
 		
 							}
 						}
