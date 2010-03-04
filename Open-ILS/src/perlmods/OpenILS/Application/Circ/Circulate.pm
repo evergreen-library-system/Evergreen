@@ -699,7 +699,7 @@ sub mk_env {
 			unless $U->is_true($patron->card->active);
 	
 		my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-			cleanse_ISO8601($patron->expire_date));
+			clense_ISO8601($patron->expire_date));
 	
 		$self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
 			if( CORE::time > $expire->epoch ) ;
