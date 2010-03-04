@@ -70,7 +70,7 @@
 			var dirtyStore = [];
 			var perm_rows = [];
 
-            var _perm_list = pCRUD.retrieveAll('ppl');
+            var _perm_list = pCRUD.retrieveAll('ppl', { order_by : { ppl : 'code' } });
             var _perm_data = ppl.toStoreData( _perm_list, 'code' );
             var perm_store = new dojo.data.ItemFileWriteStore({ data : _perm_data });
 

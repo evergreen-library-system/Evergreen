@@ -77,7 +77,7 @@
             var dirtyStore = [];
             var current_group;
 
-            var _group_list = server.pcrud.retrieveAll('pgt');
+            var _group_list = server.pcrud.retrieveAll('pgt', { order_by : { pgt : 'name' } });
             var _group_data = pgt.toStoreData( _group_list );
             var group_store = new dojo.data.ItemFileWriteStore({ data : _group_data });
 
@@ -109,11 +109,11 @@
 
             });
 
-            var _ou_type_list = server.pcrud.retrieveAll('aout');
+            var _ou_type_list = server.pcrud.retrieveAll('aout', { order_by : { aout : 'depth' } });
             var _ou_type_data = aout.toStoreData( _ou_type_list );
             var ou_type_store = new dojo.data.ItemFileReadStore({ data : _ou_type_data });
 
-            var _perm_list = server.pcrud.retrieveAll('ppl');
+            var _perm_list = server.pcrud.retrieveAll('ppl', { order_by : { ppl : 'code' } });
             var _perm_data = ppl.toStoreData( _perm_list, 'code' );
             var _perm_name_data = ppl.toStoreData( _perm_list, 'code', { identifier : 'code' } );
 
