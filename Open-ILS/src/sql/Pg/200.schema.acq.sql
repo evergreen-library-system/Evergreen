@@ -322,6 +322,21 @@ CREATE INDEX acq_picklist_owner_idx   ON acq.picklist ( owner );
 CREATE INDEX acq_picklist_creator_idx ON acq.picklist ( creator );
 CREATE INDEX acq_picklist_editor_idx  ON acq.picklist ( editor );
 
+CREATE TABLE acq.cancel_reason (
+        id            SERIAL            PRIMARY KEY,
+        org_unit      INTEGER           NOT NULL REFERENCES actor.org_unit( id )
+                                        DEFERRABLE INITIALLY DEFERRED,
+        label         TEXT              NOT NULL,
+        description   TEXT              NOT NULL,
+        CONSTRAINT acq_cancel_reason_one_per_org_unit UNIQUE( org_unit, label )
+);
+
+-- Reserve ids 1-999 for stock reasons
+-- Reserve ids 1000-1999 for EDI reasons
+-- 2000+ are available for staff to create
+
+SELECT SETVAL('acq.cancel_reason_id_seq'::TEXT, 2000);
+
 CREATE TABLE acq.purchase_order (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
@@ -333,7 +348,9 @@ CREATE TABLE acq.purchase_order (
 	provider	INT				NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
 	state			TEXT					NOT NULL DEFAULT 'new',
 	order_date		TIMESTAMP WITH TIME ZONE,
-	name			TEXT					NOT NULL
+	name			TEXT					NOT NULL,
+	cancel_reason   INT                     REFERENCES acq.cancel_reason( id )
+                                            DEFERRABLE INITIALLY DEFERRED
 );
 CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
 CREATE INDEX po_provider_idx ON acq.purchase_order (provider);
@@ -435,6 +452,8 @@ CREATE TABLE acq.lineitem (
 	source_label        TEXT,
 	state               TEXT                        NOT NULL DEFAULT 'new',
 	claim_interval      INTERVAL,
+	cancel_reason       INT                         REFERENCES acq.cancel_reason( id )
+                                                    DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT picklist_or_po CHECK (picklist IS NOT NULL OR purchase_order IS NOT NULL)
 );
 CREATE INDEX li_po_idx ON acq.lineitem (purchase_order);
