@@ -2781,8 +2781,11 @@ sub checkin_handle_backdate {
     # clean up the backdate for date comparison
     # we want any bills created on or after the backdate
     # ------------------------------------------------------------------
-    $bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
-    #$bd = "${bd}T23:59:59";
+    my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->circ->due_date));
+    my $new_date = DateTime::Format::ISO8601->new->parse_datetime($bd);
+    $bd = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
+
+    $self->backdate($bd);
 
     my $bills = $self->editor->search_money_billing(
         { 
