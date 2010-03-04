@@ -500,7 +500,8 @@ CREATE TABLE acq.lineitem_detail (
     circ_modifier   TEXT    REFERENCES config.circ_modifier (code) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     owning_lib  INT         REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
     location    INT         REFERENCES asset.copy_location (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-    recv_time   TIMESTAMP WITH TIME ZONE
+    recv_time   TIMESTAMP WITH TIME ZONE,
+	cancel_reason   INT     REFERENCES acq.cancel_reason( id ) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE INDEX li_detail_li_idx ON acq.lineitem_detail (lineitem);
