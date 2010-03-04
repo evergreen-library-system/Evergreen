@@ -305,8 +305,14 @@ sub set_circ_claims_returned {
 	$circ->stop_fines_time('now') unless $circ->stop_fines_time;
 
     if( $backdate ) {
+        $backdate = clense_ISO8601($backdate);
+
+        my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
+        my $new_date = DateTime::Format::ISO8601->new->parse_datetime($backdate);
+        $backdate = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
+
         # make it look like the circ stopped at the cliams returned time
-        $circ->stop_fines_time(clense_ISO8601($backdate));
+        $circ->stop_fines_time($backdate);
         my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($e, $circ, $backdate);
         return $evt if $evt;
     }
