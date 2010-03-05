@@ -1239,37 +1239,43 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	return err;
 }
 
+/**
+	@brief Verify that we have a valid class reference.
+	@param ctx Pointer to the method context.
+	@param param Pointer to the method parameters.
+	@return 1 if the class reference is valid, or zero if it isn't.
+
+	The class of the method params must match the class to which the method id devoted.
+	For PCRUD there are additional restrictions.
+*/
 static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param ) {
 
-	int ret = 1;
-	osrfHash* meta = (osrfHash*) ctx->method->userData;
-	osrfHash* class = osrfHashGet( meta, "class" );
+	osrfHash* method_meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class = osrfHashGet( method_meta, "class" );
 
+	// Compare the method's class to the parameters' class
 	if (!param->classname || (strcmp( osrfHashGet(class, "classname"), param->classname ))) {
 
-		const char* temp_classname = param->classname;
-		if( ! temp_classname )
-			temp_classname = "(null)";
-
+		// Oops -- they don't match.  Complain.
 		growing_buffer* msg = buffer_init(128);
 		buffer_fadd(
 			msg,
 			"%s: %s method for type %s was passed a %s",
 			MODULENAME,
-			osrfHashGet(meta, "methodtype"),
+			osrfHashGet(method_meta, "methodtype"),
 			osrfHashGet(class, "classname"),
-			temp_classname
+			param->classname ? param->classname : "(null)"
 		);
 
 		char* m = buffer_release(msg);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
 				ctx->request, m );
-
 		free(m);
 
 		return 0;
 	}
 
+	int ret = 1;
 #ifdef PCRUD
 	ret = verifyObjectPCRUD( ctx, param );
 #endif
@@ -1279,11 +1285,21 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 
 #ifdef PCRUD
 
+/**
+	@brief (PCRUD only) Verify that the user is properly logged in.
+	@param ctx Pointer to the method context.
+	@return If the user is logged in, a pointer to the user object from the authentication
+	server; otherwise NULL.
+*/
 static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
+
+	// Get the authkey (the first method parameter)
 	const char* auth = jsonObjectGetString( jsonObjectGetIndex( ctx->params, 0 ) );
 	jsonObject* auth_object = jsonNewObject(auth);
-	jsonObject* user = oilsUtilsQuickReq("open-ils.auth","open-ils.auth.session.retrieve",
-			auth_object);
+
+	// Fetch the user object from the authentication server
+	jsonObject* user = oilsUtilsQuickReq( "open-ils.auth", "open-ils.auth.session.retrieve",
+			auth_object );
 	jsonObjectFree(auth_object);
 
 	if (!user->classname || strcmp(user->classname, "au")) {
@@ -1302,11 +1318,10 @@ static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 
 		free(m);
 		jsonObjectFree(user);
-		user = jsonNULL;
+		user = NULL;
 	}
 
 	return user;
-
 }
 
 static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) {
