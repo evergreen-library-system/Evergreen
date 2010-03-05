@@ -65,10 +65,6 @@
 
         <script type="text/javascript">
 <![CDATA[
-            var highlighter= {};
-            highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
-            highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
-
             var dirtyStore = [];
 
             var _status_list = pCRUD.retrieveAll('ccs', { order_by : { ccs : 'name' } });
@@ -173,6 +169,9 @@
 										{ name : ccs_strings.TRANSLATION,
 										  width : "10em",
 										  height : "2em",
+                                          formatter: function (row) {
+												return '<span class="status_grid_trans_cell_'+row+'"></span>';
+                                          },
 										  get : function (row) {
 											if (!window.status_rows) window.status_rows = [];
 											var r = window.status_data_model.getRow(row);
@@ -185,7 +184,7 @@
 														'status_grid.rowHeightChanged('+row+')',
 													0
 												);
-												return '<span class="status_grid_trans_cell_'+row+'"></span>';
+												return row;
 											}
 											return '';
 										  }
@@ -284,5 +283,11 @@
 			</div>
 		</div>
 	
+        <script type="text/javascript">
+            var highlighter= {};
+            highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
+            highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
+        </script>
+ 
 	</body>
 </html>

@@ -63,10 +63,6 @@
 		<script type="text/javascript" src="perm_list.js"></script>
 
 		<script type="text/javascript"><![CDATA[
-			var highlighter= {};
-			highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
-			highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
-
 			var dirtyStore = [];
 			var perm_rows = [];
 
@@ -74,12 +70,13 @@
             var _perm_data = ppl.toStoreData( _perm_list, 'code' );
             var perm_store = new dojo.data.ItemFileWriteStore({ data : _perm_data });
 
+
             perm_store.onSet = function (item, attr, o, n) {
                 if (attr == 'ischanged') return;
                 if (n == o) return;
                 this.setValue( item, 'ischanged', 1);
             };
-			var perm_data_model = new dojox.grid.data.DojoData({ store: perm_store, query: { code : '*' } });
+
 
 			var perm_grid_layout = [
 				{	cells : [
@@ -91,6 +88,9 @@
 							{ name : ppl_strings.LABEL_TRANSLATION,
 							  width : "10em",
 							  height : "2em",
+							  formatter : function (value) {
+                                return '<span class="perm_grid_trans_desc_'+value+'"></span>';
+                              },
 							  get : function (row) {
 								var r = perm_data_model.getRow(row);
 								if (r) {
@@ -104,7 +104,7 @@
 									);
 									var oldnode = dojo.byId('description_translation_' + row);
 									if (oldnode) dijit.byNode(oldnode).destroyRecursive();
-									return '<span class="perm_grid_trans_desc_'+row+'"></span>';
+									return row;
 								}
 								return '';
 							  }
@@ -118,7 +118,7 @@
 
                 perm_store.fetch({
                     query : { ischanged : 1 },
-                    onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
+                    onItem : function (item, req) { try { if (this.isItem( item )) dirtyStore.push( item ); } catch (e) { /* meh */ } },
                     scope : perm_store
                 });
 
@@ -127,7 +127,7 @@
 
                     if (confirmation) {
                         for (var i in dirtyStore) {
-                            window.current_perm = dirtyStore[i];
+                            current_perm = dirtyStore[i];
                             save_perm(true);
                         }
                     }
@@ -158,7 +158,7 @@
 	                    });
     
     	                var err = false;
-        	            pCRUD.create(new_fm_objnew_fm_obj, {
+        	            pCRUD.create(new_fm_obj, {
 	                        onerror : function (r) {
     	                        highlighter.red.play();
         	                    status_update( ppl_strings.ERROR_CALLING_METHOD_PPL );
@@ -178,11 +178,9 @@
 			</div>
 
 			<div dojoType="dijit.layout.ContentPane" style="width:100%; height:100%;" layoutAlign="client">
+                <div dojoType="dojox.grid.data.DojoData" id="perm_data_model" jsId="perm_data_model" store="perm_store" query="{ code : '*' }">
+                </div>
 				<div id="perm_grid" dojoType="dojox.Grid" model="perm_data_model" structure="perm_grid_layout" jsId="perm_grid">
-					<!--
-					<script type="dojo/connect" event="onSet" args="item,attr,oldVal,newVal">
-					</script>
-					-->
 				</div>
 			</div>
 
@@ -244,5 +242,11 @@
 			</div>
 		</div>
 	
+        <script type="text/javascript">
+            var highlighter= {};
+    		highlighter.green = dojox.fx.highlight( { color : '#B4FFB4', node : 'grid_container', duration : 500 } );
+	    	highlighter.red = dojox.fx.highlight( { color : '#FF2018', node : 'grid_container', duration : 500 } );
+        </script>
+
 	</body>
 </html>

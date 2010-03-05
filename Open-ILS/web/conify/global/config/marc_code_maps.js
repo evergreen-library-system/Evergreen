@@ -41,7 +41,7 @@ console.log('loading marc_code_maps.js');
 // some handy globals
 var cgi = new CGI();
 var ses = dojo.cookie('ses') || cgi.param('ses');
-var pCRUD = new openils.PermaCrudopenils.PermaCrud({authtoken:ses});
+var pCRUD = new openils.PermaCrud({authtoken:ses});
 
 console.log('initialized pcrud session');
 
