@@ -1565,6 +1565,9 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (7, (SE
 -- Ability to merge users
 INSERT INTO permission.perm_list (code) VALUES ('MERGE_USERS');
 
+-- Trigger event definition permissions
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_EVENT_DEF', 'Allow a user to administer trigger event definitions');
+
 -- Admin user account
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, 'admin', 'open-ils', 'Administrator', 'System Account', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
 
