@@ -1254,7 +1254,8 @@ INSERT INTO permission.perm_list VALUES
     (361, 'CAPTURE_RESERVATION', oils_i18n_gettext(361, 'Allows a user to capture booking reservations', 'ppl', 'description')),
     (362, 'MERGE_USERS', oils_i18n_gettext(362, 'Allows user records to be merged', 'ppl', 'description')),
     (363, 'ALLOW_ALT_TCN', oils_i18n_gettext(363, 'Allows staff to import a record using an alternate TCN to avoid conflicts', 'ppl', 'description')),
-    (364, 'ADMIN_TRIGGER_EVENT_DEF', oils_i18n_gettext(364, 'Allow a user to administer trigger event definitions', 'ppl', 'description'))
+    (364, 'ADMIN_TRIGGER_EVENT_DEF', oils_i18n_gettext(364, 'Allow a user to administer trigger event definitions', 'ppl', 'description')),
+	(365, 'ADMIN_ACQ_CANCEL_CAUSE', oils_i18n_gettext(365, 'Allow a user to create/update/delete reasons for order cancellations', 'ppl', 'description')
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -3932,4 +3933,9 @@ INSERT INTO acq.invoice_item_type (code,name) VALUES ('ITM',oils_i18n_gettext('I
 
 INSERT INTO acq.invoice_method (code,name) VALUES ('EDI',oils_i18n_gettext('EDI', 'EDI', 'acqim', 'name'));
 INSERT INTO acq.invoice_method (code,name) VALUES ('PPR',oils_i18n_gettext('PPR', 'Paper', 'acqit', 'name'));
+
+INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
+    1, 1, 'invalid_isbn', oils_i18n_gettext( 1, 'ISBN is unrecognizable', 'acqcr', 'label' ));
+INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
+    2, 1, 'postpone', oils_i18n_gettext( 2, 'Title has been postponed', 'acqcr', 'label' ));
 
