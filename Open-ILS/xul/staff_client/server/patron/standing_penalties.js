@@ -136,8 +136,20 @@ function penalty_init() {
                                     var parentNode = node.parentNode;
                                     parentNode.removeChild( node );
                                     delete(rows[ id ]);
-                                    var csp_id = typeof penalty.standing_penalty() == 'object' ? penalty.standing_penalty().id() : penalty.standing_penalty();
-                                    document.getElementById('csp_'+csp_id).setAttribute('disabled','false');
+
+                                    var csp_id;
+                                    if (typeof penalty.standing_penalty() == 'object') {
+                                        csp_id = penalty.standing_penalty().id();
+                                    } else {
+                                        csp_id = penalty.standing_penalty();
+                                    }
+
+                                    // Protect against manipulating a node that doesn't exist - which will
+                                    // be the case for system penalties with an ID of < 100 -- see csp_list above
+                                    var csp_node = document.getElementById('csp_'+csp_id);
+                                    if (csp_node) {
+                                        csp_node.setAttribute('disabled','false');
+                                    }
                                 }
                             } catch(E) {
                                 alert(E);
