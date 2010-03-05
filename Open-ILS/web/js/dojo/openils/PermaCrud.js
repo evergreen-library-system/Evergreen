@@ -323,13 +323,15 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             return obj_list;
         },
 
+	/* 
+	 * 'delete' is a reserved keyword in JavaScript and can't be used
+	 * in browsers like IE or Chrome, so we define a safe synonym
+     * NOTE: delete() is now removed -- use eliminate instead
+
         delete : function ( list, opts ) {
             return this._CUD( 'delete', list, opts );
         },
 
-	/* 
-	 * 'delete' is a reserved keyword in JavaScript and can't be used
-	 * in browsers like IE or Chrome, so we define a safe synonym
 	 */
         eliminate: function ( list, opts ) {
             return this._CUD( 'delete', list, opts );

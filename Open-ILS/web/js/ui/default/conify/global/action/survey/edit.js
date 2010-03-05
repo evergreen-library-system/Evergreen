@@ -152,7 +152,7 @@ function deleteQuestion(quesId, surveyBody) {
     delQuestion.id(quesId);
     delQuestion.isdeleted(true);
     surveyBody.parentNode.removeChild(surveyBody);
-    return pcrud.delete(delQuestion);
+    return pcrud.eliminate(delQuestion);
 
 }
 
@@ -193,7 +193,7 @@ function deleteAnswer(ansId) {
     var delAnswer = new asva();
     delAnswer.id(ansId);
     delAnswer.isdeleted(true);
-    return pcrud.delete(delAnswer);
+    return pcrud.eliminate(delAnswer);
   
 }
 function newAnswer(quesId, answerText, answerRow, surveyBody) {

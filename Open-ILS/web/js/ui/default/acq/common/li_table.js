@@ -786,7 +786,7 @@ function AcqLiTable() {
 
     this.deleteDfa = function(dfa) {
         if (dfa.id() > 0) { /* real */
-            this.pcrud.delete(
+            this.pcrud.eliminate(
                 dfa, {
                     "async": true,
                     "oncomplete": function() {

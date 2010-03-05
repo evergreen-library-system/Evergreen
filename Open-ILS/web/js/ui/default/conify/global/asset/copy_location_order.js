@@ -86,7 +86,7 @@ function applyChanges() {
 function deleteOrders(onload) {
     // delete the existing order entries in preparation for new ones
     var pcrud = new openils.PermaCrud({authtoken : user.authtoken});
-    pcrud.delete(
+    pcrud.eliminate(
         orders,
         {
             async : true,

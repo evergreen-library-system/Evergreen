@@ -169,7 +169,7 @@ function applyCircModChanges() {
                         pcrud.create(newOnes, {
                             oncomplete : function() {
                                 if(delOnes.length) {
-                                    pcrud.delete(delOnes, {
+                                    pcrud.eliminate(delOnes, {
                                         oncomplete : function() {
                                             progressDialog.hide();
                                         }
@@ -180,7 +180,7 @@ function applyCircModChanges() {
                             }
                         });
                     } else {
-                        pcrud.delete(delOnes, {
+                        pcrud.eliminate(delOnes, {
                             oncomplete : function() {
                                 progressDialog.hide();
                             }
