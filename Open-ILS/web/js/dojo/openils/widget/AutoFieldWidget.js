@@ -36,6 +36,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *      represented as field names on the remote linked object.
          *      E.g.
          *      labelFormat : [ '${0} (${1})', 'obj_field_1', 'obj_field_2' ]
+         *  dataLoader : Bypass the default PermaCrud linked data fetcher and use this function instead.
+         *      Function arguments are (link class name, search filter, callback)
+         *      The fetched objects should be passed to the callback as an array
          */
         constructor : function(args) {
             for(var k in args)
@@ -427,17 +430,27 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 oncomplete();
 
             } else {
-                var _cb = function(r) {
-                    oncomplete(openils.Util.readResponse(r, false, true));
-                };
-                if (this.searchFilter) {
-                    new openils.PermaCrud().search(linkClass, this.searchFilter, {
-                        async : !this.forceSync, oncomplete : _cb
-                    });
+
+                if(this.dataLoader) {
+
+                    // caller provided an external function for retrieving the data
+                    this.dataLoader(linkClass, this.searchFilter, oncomplete);
+
                 } else {
-                    new openils.PermaCrud().retrieveAll(linkClass, {
-                        async : !this.forceSync, oncomplete : _cb
-                    });
+
+                    var _cb = function(r) {
+                        oncomplete(openils.Util.readResponse(r, false, true));
+                    };
+
+                    if (this.searchFilter) {
+                        new openils.PermaCrud().search(linkClass, this.searchFilter, {
+                            async : !this.forceSync, oncomplete : _cb
+                        });
+                    } else {
+                        new openils.PermaCrud().retrieveAll(linkClass, {
+                            async : !this.forceSync, oncomplete : _cb
+                        });
+                    }
                 }
             }
 
