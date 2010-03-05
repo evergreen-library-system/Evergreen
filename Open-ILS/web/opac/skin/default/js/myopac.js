@@ -248,7 +248,7 @@ function myOPACDrawCheckedItem(circ, tbody) {
 	//rnlink.setAttribute('href', 'javascript:myOPACRenewCirc("'+circ.id()+'");');
 	circsCache.push(circ);
 
-	if( circ.renewal_remaining() < 1 ) {
+   if( circ.renewal_remaining() < 1 ) {
       $n(row, 'selectme').disabled = true;
       if(!__can_renew_one)
          $('mo_renew_button').disabled = true;
@@ -397,7 +397,7 @@ function myOPACDrawHolds(r) {
 
         var exp_date;
         if(h.expire_time()) {
-            exp_date = dojo.date.stamp.fromISOString(h.expire_time());
+            exp_date = dojo.date.stamp.fromISOString(h.expire_time().replace(/(T\d\d:\d\d:\d\d)([+-]\d\d)(\d)/, "$1$2:$3"));
             $n(row, 'myopac_hold_expire_time').appendChild(
                 text(dojo.date.locale.format(exp_date, {selector:'date'})));
         }
@@ -587,6 +587,7 @@ function _finesFormatNumber(num) {
 //function _trimTime(time) { if(!time) return ""; return time.replace(/\ .*/,""); }
 function _trimTime(time) { 
 	if(!time) return ""; 
+    time = time.replace(/(T\d\d:\d\d:\d\d)([+-]\d\d)(\d)/, "$1$2:$3");
     var d = dojo.date.stamp.fromISOString(time);
     if(!d) return ""; /* date parse failed */
     return d.iso8601Format('YMD');
@@ -594,7 +595,7 @@ function _trimTime(time) {
 
 function _trimSeconds(time) { 
     if(!time) return ""; 
-    var d = dojo.date.stamp.fromISOString(time);
+    var d = dojo.date.stamp.fromISOString(time.replace(/(T\d\d:\d\d:\d\d)([+-]\d\d)(\d)/, "$1$2:$3"));
     if(!d) return ""; /* date parse failed */
     return d.iso8601Format('YMDHM',null,true,true);
 }
@@ -698,8 +699,7 @@ function myOPACShowCircTransaction(trans, record, circ) {
 
 	$n(row,'myopac_circ_trans_start').
 		appendChild(text(_trimTime(trans.xact_start())));
-
-   var due = _trimTime(circ.due_date());
+	var due = _trimTime(circ.due_date());
 	var checkin = _trimTime(circ.stop_fines_time());
 
 	$n(row,'myopac_circ_trans_due').appendChild(text(due))
