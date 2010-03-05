@@ -18,6 +18,7 @@
 dojo.require('fieldmapper.AutoIDL');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.widget.TranslatorPopup');
+dojo.require('openils.PermaCrud');
 dojo.require('dojo.parser');
 dojo.require('dojo.string');
 dojo.require('dojo.data.ItemFileWriteStore');
@@ -36,7 +37,7 @@ dojo.requireLocalization("openils.conify", "conify");
 var cgi = new CGI();
 var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
-var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+var pCRUD = new openils.PermaCrud({authtoken:ses});
 
 var current_status;
 var virgin_out_id = -1;
@@ -54,26 +55,17 @@ function save_status () {
 	var modified_ccs = new ccs().fromStoreItem( current_status );
 	modified_ccs.ischanged( 1 );
 
-	pCRUD.request({
-		method : 'open-ils.permacrud.update.ccs',
-		timeout : 10,
-		params : [ ses, modified_ccs ],
+	pCRUD.update(modified_ccs, {
 		onerror : function (r) {
 			highlighter.red.play();
 			status_update( dojo.string.substitute(ccs_strings.ERROR_SAVING_STATUS, [status_store.getValue( current_status, 'name' )]) );
 		},
 		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				status_store.setValue( current_status, 'ischanged', 0 );
-				highlighter.green.play();
-				status_update( dojo.string.substitute(ccs_strings.SUCCESS_SAVE, [status_store.getValue( current_status, 'name' )]) );
-			} else {
-				highlighter.red.play();
-				status_update( dojo.string.substitute(ccs_strings.ERROR_SAVING_STATUS, [status_store.getValue( current_status, 'name' )]) );
-			}
-		},
-	}).send();
+			status_store.setValue( current_status, 'ischanged', 0 );
+			highlighter.green.play();
+			status_update( dojo.string.substitute(ccs_strings.SUCCESS_SAVE, [status_store.getValue( current_status, 'name' )]) );
+		}
+	});
 }
 
 function save_them_all (event) {

@@ -18,6 +18,7 @@
 dojo.require('fieldmapper.AutoIDL');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.widget.TranslatorPopup');
+dojo.require('openils.PermaCrud');
 dojo.require('dojo.parser');
 dojo.require('dojo.string');
 dojo.require('dojo.data.ItemFileWriteStore');
@@ -36,7 +37,7 @@ dojo.requireLocalization("openils.conify", "conify");
 var cgi = new CGI();
 var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
-var pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+var pCRUD = new openils.PermaCrud({authtoken : ses});
 
 var ppl_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
@@ -56,26 +57,17 @@ function save_perm () {
 	modified_ppl.description( dojo.string.trim( modified_ppl.description() ) );
 	modified_ppl.code( dojo.string.trim( modified_ppl.code() ) );
 
-	pCRUD.request({
-		method : 'open-ils.permacrud.update.ppl',
-		timeout : 10,
-		params : [ ses, modified_ppl ],
+	pCRUD.update(modified_ppl, {
 		onerror : function (r) {
 			highlighter.red.play();
 			status_update( dojo.string.substitute(ppl_strings.ERROR_SAVING_DATA, [perm_store.getValue(current_perm, 'code')]) );
 		},
 		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				perm_store.setValue( current_perm, 'ischanged', 0 );
-				highlighter.green.play();
-				status_update( dojo.string.substitute(ppl_strings.SUCCESS_SAVE, [perm_store.getValue(current_perm, 'code')]) );
-			} else {
-				highlighter.red.play();
-				status_update( dojo.string.substitute(ppl_strings.ERROR_SAVING_DATA, [perm_store.getValue(current_perm, 'code')]) );
-			}
-		},
-	}).send();
+			perm_store.setValue( current_perm, 'ischanged', 0 );
+			highlighter.green.play();
+			status_update( dojo.string.substitute(ppl_strings.SUCCESS_SAVE, [perm_store.getValue(current_perm, 'code')]) );
+		}
+	});
 }
 
 function save_them_all (event) {

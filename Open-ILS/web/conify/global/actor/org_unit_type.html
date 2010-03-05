@@ -62,6 +62,46 @@
 
 		<script type="text/javascript" src="org_unit_type.js"></script>
 
+        <script type="text/javascript">
+<![CDATA[
+            var dirtyStore = [];
+
+            var _out_type_list = pCRUD.retrieveAll('aout', { order_by : { aout : 'name' } });
+
+            var ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( _out_type_list ) });
+
+            ou_type_store.onSet = function (item, attr, o, n) {
+                if (attr == 'ischanged') return;
+                if (n == o) return;
+                this.setValue( item, 'ischanged', 1);
+            };
+
+            dojo.addOnUnload( function (event) {
+
+                ou_type_store.fetch({
+                    query : { ischanged : 1 },
+                    queryOptions : { deep : true },
+                    onItem : function (item, req) { try { if (this.isItem( item )) dirtyStore.push( item ); } catch (e) { /* meh */ } },
+                    scope : ou_type_store
+                });
+
+                if (dirtyStore.length > 0) {
+                    var confirmation = confirm(
+                        aout_strings.CONFIRM_UNSAVED_CHANGES
+                    );
+
+                    if (confirmation) {
+                        for (var i in dirtyStore) {
+                            current_type = dirtyStore[i];
+                            save_type(true);
+                        }
+                    }
+                }
+
+            });
+]]>
+        </script>
+
 	</head>
 
 	<body class="tundra" id='pagebody'>
@@ -69,49 +109,6 @@
 		<div dojoType="dijit.layout.SplitContainer" orientation="horizontal" style="height: 100%">
 
 			<div dojoType="dijit.layout.ContentPane" sizeShare="100">
-				<script type="dojo/method">
-<![CDATA[
-					window.dirtyStore = [];
-
-                    pCRUD.request({
-                        method : 'open-ils.permacrud.search.aout.atomic',
-                        timeout : 10,
-                        params : [ ses, { id : { "!=" : null } }, { order_by : { aout : 'name' } } ],
-                        onerror : function (r) { status_update( aout_strings.ERROR_FETCHING_TYPES_AOUT ) },
-                        oncomplete : function (r) {
-                            ou_type_store = new dojo.data.ItemFileWriteStore({ data : aout.toStoreData( r.recv().content() ) });
-                            ou_type_store.onSet = function (item, attr, o, n) {
-                                if (attr == 'ischanged') return;
-                                if (n == o) return;
-                                this.setValue( item, 'ischanged', 1);
-                            };
-                            dojo.addOnUnload( function (event) {
-
-                                ou_type_store.fetch({
-                                    query : { ischanged : 1 },
-                                    queryOptions : { deep : true },
-                                    onItem : function (item, req) { try { if (this.isItem( item )) window.dirtyStore.push( item ); } catch (e) { /* meh */ } },
-                                    scope : ou_type_store
-                                });
-
-                                if (dirtyStore.length > 0) {
-                                    var confirmation = confirm(
-										aout_strings.CONFIRM_UNSAVED_CHANGES
-                                    );
-
-                                    if (confirmation) {
-                                        for (var i in window.dirtyStore) {
-                                            window.current_type = window.dirtyStore[i];
-                                            save_type(true);
-                                        }
-                                    }
-                                }
-
-                            });
-                        }
-                    }).send();
-]]>
-				</script>
 				<div
 				  id="type_tree"
 				  label="&conify.org_unit_type.type_tree.label;"
@@ -313,51 +310,42 @@
 										var modified_aout = new aout().fromStoreItem( current_type );
 										modified_aout.isdeleted( 1 );
 	
-										pCRUD.request({
-											method : 'open-ils.permacrud.delete.aout',
-											timeout : 10,
-											params : [ ses, modified_aout ],
+										pCRUD.eliminate(modified_aout, {
 											onerror : function (r) {
 												highlighter.editor_pane.red.play();
 												status_update( dojo.string.substitute ( aout_strings.ERROR_DELETING, [ou_type_store.getValue( current_type, 'name' )] ) );
 											},
 											oncomplete : function (r) {
-												var res = r.recv();
-												if ( res && res.content() ) {
 	
-													var old_name = ou_type_store.getValue( current_type, 'name' );
+												var old_name = ou_type_store.getValue( current_type, 'name' );
 
-													ou_type_store.fetch({
-														query : { id : ou_type_store.getValue( current_type, 'id' ) },
-														queryOptions : { deep : true },
-														onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
-														scope : ou_type_store
-													});
+												ou_type_store.fetch({
+													query : { id : ou_type_store.getValue( current_type, 'id' ) },
+													queryOptions : { deep : true },
+													onItem : function (item, req) { try { if (this.isItem( item )) this.deleteItem( item ); } catch (e) { /* meh */ } },
+													scope : ou_type_store
+												});
 	
-													current_type = null;
+												current_type = null;
 	
-													new_kid_button.disabled = true;
-													save_out_button.disabled = true;
-													delete_out_button.disabled = true;
+												new_kid_button.disabled = true;
+												save_out_button.disabled = true;
+												delete_out_button.disabled = true;
 			
-													var main_settings_fields = [ 'name', 'opac_label' ];
-													for ( var i in main_settings_fields ) {
-														var field = main_settings_fields[i];
-														window["editor_pane_" + field].setValue( '' ); // unset the value
-														window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
-													}
-
-													window["editor_pane_can_have_vols"].setChecked( false ); // unset the value
-													window["editor_pane_can_have_users"].setChecked( false ); // unset the value
-			
-													highlighter.editor_pane.green.play();
-													status_update( dojo.string.substitute( aout_strings.STATUS_DELETED, [old_name] ) );
-												} else {
-													highlighter.editor_pane.red.play();
-													status_update( dojo.string.substitute( aout_strings.ERROR_DELETING, [old_name] ) );
+												var main_settings_fields = [ 'name', 'opac_label' ];
+												for ( var i in main_settings_fields ) {
+													var field = main_settings_fields[i];
+													window["editor_pane_" + field].setValue( '' ); // unset the value
+													window["editor_pane_" + field].setDisplayedValue( '' ); // unset the value
 												}
+
+												window["editor_pane_can_have_vols"].setChecked( false ); // unset the value
+												window["editor_pane_can_have_users"].setChecked( false ); // unset the value
+		
+												highlighter.editor_pane.green.play();
+												status_update( dojo.string.substitute( aout_strings.STATUS_DELETED, [old_name] ) );
 											}
-										}).send();
+										});
 	
 									}
 ]]>
@@ -382,27 +370,17 @@
 									parent			: ou_type_store.getValue( current_type, 'id' )
 								});
 								var err = false;
-								pCRUD.request({
-									method : 'open-ils.permacrud.create.aout',
-									timeout : 10,
-									params : [ ses, new_fm_obj ],
+								pCRUD.create(new_fm_obj, {
 									onerror : function (r) {
 										highlighter.editor_pane.red.play();
 										status_update( aout_strings.ERROR_CALLING_METHOD_AOUT );
 										err = true;
 									},
-									oncomplete : function (r) {
-										var res = r.recv();
-										if ( res && res.content() ) {
-											ou_type_store.newItem(
-												res.content().toHash(),
-												{ parent : current_type, attribute : 'children' }
-											);
-										} else {
-											highlighter.editor_pane.red.play();
-											status_update( aout_strings.ERROR_CREATING_CHILD_AOUT );
-											err = true;
-										}
+									oncomplete : function (r, list) {
+										ou_type_store.newItem(
+											list[0].toHash(),
+											{ parent : current_type, attribute : 'children' }
+										);
 									},
 								}).send();
 	

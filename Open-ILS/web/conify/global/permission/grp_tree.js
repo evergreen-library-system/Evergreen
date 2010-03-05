@@ -17,6 +17,7 @@
 
 dojo.require('fieldmapper.AutoIDL');
 dojo.require('fieldmapper.dojoData');
+dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.TranslatorPopup');
 dojo.require('dojo.parser');
 dojo.require('dojo.data.ItemFileWriteStore');
@@ -45,12 +46,11 @@ var cgi = new CGI();
 var cookieManager = new HTTP.Cookies();
 var ses = cookieManager.read('ses') || cgi.param('ses');
 var server = {};
-server.pCRUD = new OpenSRF.ClientSession('open-ils.permacrud');
+server.pcrud = new openils.PermaCrud({ authtoken : ses });
 server.actor = new OpenSRF.ClientSession('open-ils.actor');
 
 var pgt_strings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
-var current_group;
 var virgin_out_id = -1;
 
 var highlighter = {};
@@ -68,26 +68,17 @@ function save_group () {
 	save_group_button.disabled = false;
 	delete_group_button.disabled = false;
 
-	server.pCRUD.request({
-		method : 'open-ils.permacrud.update.pgt',
-		timeout : 10,
-		params : [ ses, modified_pgt ],
+	server.pcrud.update(modified_pgt, {
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
 			status_update( dojo.string.substitute( pgt_strings.ERROR_SAVING_DATA, [group_store.getValue( current_group, 'name' )]) );
 		},
 		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				group_store.setValue( current_group, 'ischanged', 0 );
-				highlighter.editor_pane.green.play();
-				status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE, [group_store.getValue( current_group, 'name' )]) );
-			} else {
-				highlighter.editor_pane.red.play();
-				status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_DATA, [group_store.getValue( current_group, 'name' )]) );
-			}
+			group_store.setValue( current_group, 'ischanged', 0 );
+			highlighter.editor_pane.green.play();
+			status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE, [group_store.getValue( current_group, 'name' )]) );
 		},
-	}).send();
+	});
 }
 
 function save_perm_map (storeItem) {
@@ -95,26 +86,17 @@ function save_perm_map (storeItem) {
 	var modified_pgpm = new pgpm().fromStoreItem( storeItem );
 	modified_pgpm.ischanged( 1 );
 
-	server.pCRUD.request({
-		method : 'open-ils.permacrud.update.pgpm',
-		timeout : 10,
-		params : [ ses, modified_pgpm ],
+	server.pcrud.update(modified_pgpm, {
 		onerror : function (r) {
 			highlighter.editor_pane.red.play();
 			status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_PERM_DATA, [group_store.getValue( current_group, 'name' )]) );
 		},
 		oncomplete : function (r) {
-			var res = r.recv();
-			if ( res && res.content() ) {
-				perm_map_store.setValue( storeItem, 'ischanged', 0 );
-				highlighter.editor_pane.green.play();
-				status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE_PERM, [group_store.getValue( current_group, 'name' )]) );
-			} else {
-				highlighter.editor_pane.red.play();
-				status_update( dojo.string.substitute(pgt_strings.ERROR_SAVING_PERM_DATA, [group_store.getValue( current_group, 'name' )]) );
-			}
+			perm_map_store.setValue( storeItem, 'ischanged', 0 );
+			highlighter.editor_pane.green.play();
+			status_update( dojo.string.substitute(pgt_strings.SUCCESS_SAVE_PERM, [group_store.getValue( current_group, 'name' )]) );
 		},
-	}).send();
+	});
 }
 
 function save_them_all (event) {
