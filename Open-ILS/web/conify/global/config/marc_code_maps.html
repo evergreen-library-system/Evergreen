@@ -81,6 +81,9 @@
                             { name : cam_strings.LABEL_TRANSLATION,
                               width : "10em",
                               height : "2em",
+                              formatter : function (row) {
+                                    return '<span class="cam_value_'+row+'"></span>';
+                              },
                               get : function (row) {
                                 if (!grid_row_object_cache.cam) grid_row_object_cache.cam = [];
                                 var r = this.grid.model.getRow(row);
@@ -96,7 +99,7 @@
                                     );
                                     var oldnode = dojo.byId('value_translation_cam_' + row);
                                     if (oldnode) dijit.byNode(oldnode).destroyRecursive();
-                                    return '<span class="cam_value_'+row+'"></span>';
+                                    return row;
                                 }
                                 return '';
                               }
@@ -104,6 +107,9 @@
                             { name : cam_strings.LABEL_TRANSLATION,
                               width : "10em",
                               height : "2em",
+                              formatter : function (row) {
+                                    return '<span class="cam_description_'+row+'"></span>';
+                              },
                               get : function (row) {
                                 if (!grid_row_object_cache.cam) grid_row_object_cache.cam = [];
                                 var r = this.grid.model.getRow(row);
@@ -119,7 +125,7 @@
                                     );
                                     var oldnode = dojo.byId('description_translation_cam_' + row);
                                     if (oldnode) dijit.byNode(oldnode).destroyRecursive();
-                                    return '<span class="cam_description_'+row+'"></span>';
+                                    return row;
                                 }
                                 return '';
                               }
@@ -171,6 +177,9 @@
 								        { name : cam_strings.LABEL_TRANSLATION,
 									      width : "10em",
 										  height : "2em",
+                                          formatter : function (row) {
+					                            return '<span class="'+classname+'_value_'+row+'"></span>';
+                                          },
 	                                      get : function (row) {
 		                                    if (!grid_row_object_cache[classname]) grid_row_object_cache[classname] = [];
 			                                var r = this.grid.model.getRow(row);
@@ -186,7 +195,7 @@
 		                                        );
 												var oldnode = dojo.byId('value_translation_' + classname + '_' + row);
 												if (oldnode) dijit.byNode(oldnode).destroyRecursive();
-					                            return '<span class="'+classname+'_value_'+row+'"></span>';
+					                            return row;
 						                    }
 							                return '';
 								          }
