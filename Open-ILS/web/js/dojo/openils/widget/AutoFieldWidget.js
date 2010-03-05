@@ -36,6 +36,11 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *      represented as field names on the remote linked object.
          *      E.g.
          *      labelFormat : [ '${0} (${1})', 'obj_field_1', 'obj_field_2' ]
+         *      Note: this does not control the final display value.  Only values in the drop-down.
+         *      See searchFormat for controlling the display value
+         *  searchFormat -- This format controls the structure of the search attribute which
+         *      controls the text used during type-ahead searching and the displayed value in 
+         *      the filtering select.  See labelFormat for the structure.  
          *  dataLoader : Bypass the default PermaCrud linked data fetcher and use this function instead.
          *      Function arguments are (link class name, search filter, callback)
          *      The fetched objects should be passed to the callback as an array
@@ -383,34 +388,46 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var oncomplete = function(list) {
 
                 if(self.labelFormat) 
-                    self.widget.labelAttr = self.widget.searchAttr = '_label';
+                    self.widget.labelAttr = '_label';
+
+                if(self.searchFormat)
+                    self.widget.searchAttr = '_search';
+
+                function formatString(item, formatList) {
+
+                    try {
+
+                        // formatList[1..*] are names of fields.  Pull the field
+                        // values from each object to determine the values for string substitution
+                        var values = [];
+                        var format = formatList[0];
+                        for(var i = 1; i< formatList.length; i++) 
+                            values.push(item[formatList[i]]);
+
+                        return dojo.string.substitute(format, values);
+
+                    } catch(E) {
+                        throw new Error(
+                            "openils.widget.AutoFieldWidget: Invalid formatList ["+formatList+"] : "+E);
+                    }
+
+                }
 
                 if(list) {
                     var storeData = {data:fieldmapper[linkClass].toStoreData(list)};
 
                     if(self.labelFormat) {
-                        
-                        // set the label for each value in the store based on the provided label format.
-
-                        var format = self.labelFormat[0];
                         dojo.forEach(storeData.data.items, 
-
                             function(item) {
-                                var values = [];
+                                item._label = formatString(item, self.labelFormat);
+                            }
+                        );
+                    }
 
-                                try {
-
-                                    // self.labelFormat[1..*] are names of fields.  Pull the field
-                                    // values from each object to determine the values for string substitution
-                                    for(var i = 1; i< self.labelFormat.length; i++) 
-                                        values.push(item[self.labelFormat[i]]);
-
-                                    item._label = dojo.string.substitute(format, values);
-
-                                } catch(E) {
-                                    throw new Error("openils.widget.AutoFieldWidget: Invalid labelFormat [" + 
-                                        self.labelFormat + "] : " + E);
-                                }
+                    if(self.searchFormat) {
+                        dojo.forEach(storeData.data.items, 
+                            function(item) {
+                                item._search = formatString(item, self.searchFormat);
                             }
                         );
                     }
