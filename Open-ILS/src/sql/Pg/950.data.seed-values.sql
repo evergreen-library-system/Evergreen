@@ -1253,7 +1253,8 @@ INSERT INTO permission.perm_list VALUES
     (360, 'RETRIEVE_RESERVATION_PULL_LIST', oils_i18n_gettext(360, 'Allows a user to retrieve a booking reservation pull list', 'ppl', 'description')),
     (361, 'CAPTURE_RESERVATION', oils_i18n_gettext(361, 'Allows a user to capture booking reservations', 'ppl', 'description')),
     (362, 'MERGE_USERS', oils_i18n_gettext(362, 'Allows user records to be merged', 'ppl', 'description')),
-    (363, 'ALLOW_ALT_TCN', oils_i18n_gettext(363, 'Allows staff to import a record using an alternate TCN to avoid conflicts', 'ppl', 'description'))
+    (363, 'ALLOW_ALT_TCN', oils_i18n_gettext(363, 'Allows staff to import a record using an alternate TCN to avoid conflicts', 'ppl', 'description')),
+    (364, 'ADMIN_TRIGGER_EVENT_DEF', oils_i18n_gettext(364, 'Allow a user to administer trigger event definitions', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
