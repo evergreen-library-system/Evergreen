@@ -104,7 +104,7 @@ static jsonObject* doCreate ( osrfMethodContext*, int* );
 static jsonObject* doRetrieve ( osrfMethodContext*, int* );
 static jsonObject* doUpdate ( osrfMethodContext*, int* );
 static jsonObject* doDelete ( osrfMethodContext*, int* );
-static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
+static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class_meta,
 		jsonObject* where_hash, jsonObject* query_hash, int* err );
 static jsonObject* oilsMakeFieldmapperFromResult( dbi_result, osrfHash* );
 static jsonObject* oilsMakeJSONFromResult( dbi_result );
@@ -1829,8 +1829,8 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 	// Set the last_xact_id
 	int index = oilsIDL_ntop( target->classname, "last_xact_id" );
 	if (index > -1) {
-		osrfLogDebug( OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d",
-			trans_id, target->classname, index );
+		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d",
+			trans_id, target->classname, index);
 		jsonObjectSetIndex(target, index, jsonNewObject(trans_id));
 	}
 
@@ -5079,21 +5079,19 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 	return err;
 }
 
-static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
+static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class_meta,
 		jsonObject* where_hash, jsonObject* query_hash, int* err ) {
 
 	// XXX for now...
 	dbhandle = writehandle;
 
-	osrfHash* links = osrfHashGet(meta, "links");
-	osrfHash* fields = osrfHashGet(meta, "fields");
-	char* core_class = osrfHashGet(meta, "classname");
-	char* pkey = osrfHashGet(meta, "primarykey");
+	osrfHash* fields = osrfHashGet( class_meta, "fields" );
+	char* core_class = osrfHashGet( class_meta, "classname" );
+	char* pkey = osrfHashGet( class_meta, "primarykey" );
 
 	const jsonObject* _tmp;
-	jsonObject* obj;
 
-	char* sql = buildSELECT( where_hash, query_hash, meta, ctx );
+	char* sql = buildSELECT( where_hash, query_hash, class_meta, ctx );
 	if (!sql) {
 		osrfLogDebug(OSRF_LOG_MARK, "Problem building query, returning NULL");
 		*err = -1;
@@ -5105,7 +5103,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 	if( NULL == result ) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]",
-			MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
+			MODULENAME, osrfHashGet( class_meta, "fieldmapper" ), sql);
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -5122,51 +5120,62 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	}
 
 	jsonObject* res_list = jsonNewObjectType(JSON_ARRAY);
-	osrfHash* dedup = osrfNewHash();
+	jsonObject* row_obj = NULL;
 
 	if (dbi_result_first_row(result)) {
-		/* JSONify the result */
+
+		// Convert each row to a JSON_ARRAY of column values, and enclose those objects
+		// in a JSON_ARRAY of rows.  If two or more rows have the same key value, then
+		// eliminate the duplicates.
 		osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
+		osrfHash* dedup = osrfNewHash();
 		do {
-			obj = oilsMakeFieldmapperFromResult( result, meta );
-			char* pkey_val = oilsFMGetString( obj, pkey );
+			row_obj = oilsMakeFieldmapperFromResult( result, class_meta );
+			char* pkey_val = oilsFMGetString( row_obj, pkey );
 			if ( osrfHashGet( dedup, pkey_val ) ) {
-				jsonObjectFree(obj);
-				free(pkey_val);
+				jsonObjectFree( row_obj );
+				free( pkey_val );
 			} else {
 				osrfHashSet( dedup, pkey_val, pkey_val );
-				jsonObjectPush(res_list, obj);
+				jsonObjectPush( res_list, row_obj );
 			}
 		} while (dbi_result_next_row(result));
+		osrfHashFree(dedup);
+
 	} else {
 		osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s",
 			MODULENAME, sql );
 	}
 
-	osrfHashFree(dedup);
 	/* clean up the query */
 	dbi_result_free(result);
 	free(sql);
 
+	// If we're asked to flesh, and there's anything to flesh, then flesh.
 	if (res_list->size && query_hash) {
 		_tmp = jsonObjectGetKeyConst( query_hash, "flesh" );
 		if (_tmp) {
-			int x = (int)jsonObjectGetNumber(_tmp);
-			if (x == -1 || x > max_flesh_depth) x = max_flesh_depth;
+			// Get the flesh depth
+			int x = (int) jsonObjectGetNumber(_tmp);
+			if (x == -1 || x > max_flesh_depth)
+				x = max_flesh_depth;
 
-			const jsonObject* temp_blob;
-			if ((temp_blob = jsonObjectGetKeyConst( query_hash, "flesh_fields" )) && x > 0) {
+			// We need a non-zero flesh depth, and a list of fields to flesh
+			const jsonObject* temp_blob = jsonObjectGetKeyConst( query_hash, "flesh_fields" );
+			if ( temp_blob && x > 0 ) {
 
 				jsonObject* flesh_blob = jsonObjectClone( temp_blob );
 				const jsonObject* flesh_fields = jsonObjectGetKeyConst( flesh_blob, core_class );
 
 				osrfStringArray* link_fields = NULL;
+				osrfHash* links = osrfHashGet( class_meta, "links" );
 
 				if (flesh_fields) {
 					if (flesh_fields->size == 1) {
 						const char* _t = jsonObjectGetString(
 							jsonObjectGetIndex( flesh_fields, 0 ) );
-						if (!strcmp(_t,"*")) link_fields = osrfHashKeys( links );
+						if (!strcmp(_t,"*"))
+							link_fields = osrfHashKeys( links );
 					}
 
 					if (!link_fields) {
@@ -5207,12 +5216,14 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_many" ))) {
 							// has_many
-							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
+							value_field = osrfHashGet(
+								fields, osrfHashGet( class_meta, "primarykey" ) );
 						}
 
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) {
 							// might_have
-							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
+							value_field = osrfHashGet(
+								fields, osrfHashGet( class_meta, "primarykey" ) );
 						}
 
 						osrfStringArray* link_map = osrfHashGet( kid_link, "map" );
@@ -5677,58 +5688,75 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 	free(id);
 
 	return obj;
-
 }
 
+/**
+	@brief Translate a row returned from the database into a jsonObject of type JSON_ARRAY.
+	@param result An iterator for a result set; we only look at the current row.
+	@param @meta Pointer to the class metadata for the core class.
+	@return Pointer to the resulting jsonObject if successful; otherwise NULL.
 
+	If a column is not defined in the IDL, or if it has no array_position defined for it in
+	the IDL, or if it is defined as virtual, ignore it.
+
+	Otherwise, translate the column value into a jsonObject of type JSON_NULL, JSON_NUMBER,
+	or JSON_STRING.  Then insert this jsonObject into the JSON_ARRAY according to its
+	array_position in the IDL.
+
+	A field defined in the IDL but not represented in the returned row will leave a hole
+	in the JSON_ARRAY.  In effect it will be treated as a null value.
+
+	In the resulting JSON_ARRAY, the field values appear in the sequence defined by the IDL,
+	regardless of their sequence in the SELECT statement.  The JSON_ARRAY is assigned the
+	classname corresponding to the @a meta argument.
+
+	The calling code is responsible for freeing the the resulting jsonObject by calling
+	jsonObjectFree().
+*/
 static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* meta) {
 	if(!(result && meta)) return jsonNULL;
 
-	jsonObject* object = jsonNewObject(NULL);
+	jsonObject* object = jsonNewObjectType( JSON_ARRAY );
 	jsonObjectSetClass(object, osrfHashGet(meta, "classname"));
+	osrfLogInternal(OSRF_LOG_MARK, "Setting object class to %s ", object->classname);
 
 	osrfHash* fields = osrfHashGet(meta, "fields");
 
-	osrfLogInternal(OSRF_LOG_MARK, "Setting object class to %s ", object->classname);
-
-	osrfHash* _f;
-	time_t _tmp_dt;
-	char dt_string[256];
-	struct tm gmdt;
-
-	int fmIndex;
 	int columnIndex = 1;
-	int attr;
-	unsigned short type;
 	const char* columnName;
 
-	/* cycle through the column list */
+	/* cycle through the columns in the row returned from the database */
 	while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
 
 		osrfLogInternal(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
 
-		fmIndex = -1; // reset the position
+		int fmIndex = -1;  // Will be set to the IDL's sequence number for this field
 
 		/* determine the field type and storage attributes */
-		type = dbi_result_get_field_type_idx(result, columnIndex);
-		attr = dbi_result_get_field_attribs_idx(result, columnIndex);
+		unsigned short type = dbi_result_get_field_type_idx(result, columnIndex);
+		int attr            = dbi_result_get_field_attribs_idx(result, columnIndex);
 
-		/* fetch the fieldmapper index */
-		if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
+		// Fetch the IDL's sequence number for the field.  If the field isn't in the IDL,
+		// or if it has no sequence number there, or if it's virtual, skip it.
+		osrfHash* _f = osrfHashGet( fields, (char*) columnName );
+		if( _f ) {
 
 			if ( str_is_true( osrfHashGet(_f, "virtual") ) )
-				continue;
+				continue;   // skip this column: IDL says it's virtual
 
 			const char* pos = (char*)osrfHashGet(_f, "array_position");
-			if ( !pos )
-				continue;
+			if ( !pos )      // IDL has no sequence number for it.  This shouldn't happen,
+				continue;    // since we assign sequence numbers dynamically as we load the IDL.
 
 			fmIndex = atoi( pos );
 			osrfLogInternal(OSRF_LOG_MARK, "... Found column at position [%s]...", pos);
 		} else {
-			continue;
+			continue;     // This field is not defined in the IDL
 		}
 
+		// Stuff the column value into a slot in the JSON_ARRAY, indexed according to the
+		// sequence number from the IDL (which is likely to be different from the sequence
+		// of columns in the SELECT clause).
 		if (dbi_result_field_is_null_idx(result, columnIndex)) {
 			jsonObjectSetIndex( object, fmIndex, jsonNewObject(NULL) );
 		} else {
@@ -5753,7 +5781,6 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 				case DBI_TYPE_STRING :
 
-
 					jsonObjectSetIndex(
 						object,
 						fmIndex,
@@ -5762,14 +5789,15 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 
 					break;
 
-				case DBI_TYPE_DATETIME :
+				case DBI_TYPE_DATETIME : {
 
-					memset(dt_string, '\0', sizeof(dt_string));
-					memset(&gmdt, '\0', sizeof(gmdt));
+					char dt_string[256] = "";
+					struct tm gmdt;
 
-					_tmp_dt = dbi_result_get_datetime_idx(result, columnIndex);
+					// Fetch the date column as a time_t
+					time_t _tmp_dt = dbi_result_get_datetime_idx(result, columnIndex);
 
-
+					// Translate the time_t to a human-readable string
 					if (!(attr & DBI_DATETIME_DATE)) {
 						gmtime_r( &_tmp_dt, &gmdt );
 						strftime(dt_string, sizeof(dt_string), "%T", &gmdt);
@@ -5784,14 +5812,14 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 					jsonObjectSetIndex( object, fmIndex, jsonNewObject(dt_string) );
 
 					break;
-
+				}
 				case DBI_TYPE_BINARY :
 					osrfLogError( OSRF_LOG_MARK,
 						"Can't do binary at column %s : index %d", columnName, columnIndex);
-			}
+			} // End switch
 		}
 		++columnIndex;
-	}
+	} // End while
 
 	return object;
 }
