@@ -45,7 +45,8 @@ autojsbinscripts = @srcdir@/extras/fieldmapper.pl \
 
 # Decide which entities to build
 
-sysconf_DATA = $(examples)/opensrf.xml.example \
+sysconf_DATA = $(examples)/action_trigger_filters.json.example \
+	       $(examples)/opensrf.xml.example \
 	       $(examples)/opensrf_core.xml.example \
 	       $(examples)/fm_IDL.xml \
 	       $(examples)/oils_sip.xml.example \
