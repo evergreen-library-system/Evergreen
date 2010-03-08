@@ -5195,7 +5195,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="jub" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem" oils_persist:tablename="acq.lineitem" reporter:label="Line Item">
+	<class id="jub" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::lineitem" oils_persist:tablename="acq.lineitem" reporter:label="Line Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_id_seq">
 			<field reporter:label="Lineitem ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Selecting User" name="selector" reporter:datatype="link" />
@@ -5231,6 +5231,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="lineitem_notes" reltype="has_many" key="lineitem" map="" class="acqlin"/>
 			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER CREATE_PICKLIST VIEW_PICKLIST">
+                <context link="purchase_order" field="ordering_agency"/>
+                <context link="picklist" field="org_unit"/>
+            </retrieve>
+		</permacrud>
 	</class>
 
 	<class id="acqlih" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::acq_lineitem_history" oils_persist:tablename="acq.acq_lineitem_history" reporter:label="Line Item History">
