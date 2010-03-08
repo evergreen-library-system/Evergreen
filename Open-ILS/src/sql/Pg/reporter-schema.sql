@@ -127,7 +127,7 @@ SELECT	r.id,
 	series_statement.value AS series_statement,
 	summary.value AS summary,
 	ARRAY_ACCUM( SUBSTRING(isbn.value FROM $$^\S+$$) ) AS isbn,
-	ARRAY_ACCUM( REGEXP_REPLACE(issn.value, E'^\\S*(\\d{4})[-\\s](\\d{3,4}x?)', E'\\1 \\2') ) AS issn,
+	ARRAY_ACCUM( DISTINCT SUBSTRING(REGEXP_REPLACE(issn.value, E'^\\s*(\\d{4})[-\\s](\\d{3,4}x?)\\s*', E'\\1 \\2') FROM 1 FOR 9)) AS issn,
 	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '650' AND subfield = 'a' AND record = r.id)) AS topic_subject,
 	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '651' AND subfield = 'a' AND record = r.id)) AS geographic_subject,
 	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '655' AND subfield = 'a' AND record = r.id)) AS genre,
@@ -159,7 +159,7 @@ SELECT	r.id,
 	publisher.value AS publisher,
 	SUBSTRING(pubdate.value FROM $$\d+$$) AS pubdate,
 	ARRAY_ACCUM( DISTINCT SUBSTRING(isbn.value FROM $$^\S+$$) ) AS isbn,
-	ARRAY_ACCUM( DISTINCT SUBSTRING(issn.value FROM $$^\S+$$) ) AS issn
+	ARRAY_ACCUM( DISTINCT SUBSTRING(REGEXP_REPLACE(issn.value, E'^\\s*(\\d{4})[-\\s](\\d{3,4}x?)\\s*', E'\\1 \\2') FROM 1 FOR 9) ) AS issn
   FROM	biblio.record_entry r
 	LEFT JOIN metabib.full_rec title ON (r.id = title.record AND title.tag = '245' AND title.subfield = 'a')
 	LEFT JOIN metabib.full_rec author ON (r.id = author.record AND author.tag IN ('100','110','111') AND author.subfield = 'a')
