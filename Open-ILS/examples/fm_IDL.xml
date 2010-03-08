@@ -5180,7 +5180,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="acqpon" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::po_note" oils_persist:tablename="acq.po_note" reporter:label="PO Note">
+	<class id="acqpon" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::po_note" oils_persist:tablename="acq.po_note" reporter:label="PO Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.po_note_id_seq">
 			<field reporter:label="PO Note ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link" />
@@ -5195,6 +5195,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
+                <context link="purchase_order" field="ordering_agency"/>
+            </retrieve>
+            <create permission="CREATE_PURCHASE_ORDER">
+                <context link="purchase_order" field="ordering_agency"/>
+            </create>
+            <update permission="CREATE_PURCHASE_ORDER">
+                <context link="purchase_order" field="ordering_agency"/>
+            </update>
+            <delete permission="CREATE_PURCHASE_ORDER">
+                <context link="purchase_order" field="ordering_agency"/>
+            </delete>
+		</permacrud>
 	</class>
 
 	<class id="jub" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::lineitem" oils_persist:tablename="acq.lineitem" reporter:label="Line Item">
