@@ -543,13 +543,15 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.cat.asset.volume.fleshed.batch.update.override",);
 
 sub fleshed_volume_update {
-	my( $self, $conn, $auth, $volumes, $delete_stats ) = @_;
+	my( $self, $conn, $auth, $volumes, $delete_stats, $options ) = @_;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
+    $options ||= {};
 
 	my $override = ($self->api_name =~ /override/);
 	my $editor = new_editor( requestor => $reqr, xact => 1 );
     my $retarget_holds = [];
+    my $auto_merge_vols = $options->{auto_merge_vols};
 
 	for my $vol (@$volumes) {
 		$logger->info("vol-update: investigating volume ".$vol->id);
@@ -583,8 +585,9 @@ sub fleshed_volume_update {
 
 		} elsif( $vol->ischanged ) {
 			$logger->info("vol-update: update volume");
-			$evt = update_volume($vol, $editor);
-			return $evt if $evt;
+			my $resp = update_volume($vol, $editor, ($override or $auto_merge_vols));
+			return $resp->{evt} if $resp->{evt};
+            $vol = $resp->{merge_vol};
 		}
 
 		# now update any attached copies
@@ -605,24 +608,37 @@ sub fleshed_volume_update {
 sub update_volume {
 	my $vol = shift;
 	my $editor = shift;
+    my $auto_merge = shift;
 	my $evt;
+    my $merge_vol;
 
-	return $evt if ( $evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($editor, $vol->owning_lib) );
+	return {evt => $evt} 
+        if ( $evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($editor, $vol->owning_lib) );
 
-	my $vols = $editor->search_asset_call_number( { 
-			owning_lib	=> $vol->owning_lib,
-			record		=> $vol->record,
-			label			=> $vol->label,
-			deleted		=> 'f'
-		}
-	);
+	my $vols = $editor->search_asset_call_number({ 
+        owning_lib	=> $vol->owning_lib,
+        record		=> $vol->record,
+        label		=> $vol->label,
+        deleted		=> 'f',
+        id          => {'!=' => $vol->id}
+    });
 
-	# There exists a different volume in the DB with the same properties
-	return OpenILS::Event->new('VOLUME_LABEL_EXISTS', payload => $vol->id)
-		if grep { $_->id ne $vol->id } @$vols;
+    if(@$vols) {
 
-	return $editor->event unless $editor->update_asset_call_number($vol);
-	return undef;
+        if($auto_merge) {
+
+            # If the auto-merge option is on, merge our updated volume into the existing
+            # volume with the same record + owner + label.
+            ($merge_vol, $evt) = OpenILS::Application::Cat::Merge::merge_volumes($editor, [$vol], $vols->[0]);
+            return {evt => $evt, merge_vol => $merge_vol};
+
+        } else {
+	        return {evt => OpenILS::Event->new('VOLUME_LABEL_EXISTS', payload => $vol->id)};
+        }
+    }
+
+	return {evt => $editor->die_event} unless $editor->update_asset_call_number($vol);
+	return {};
 }
 
 
