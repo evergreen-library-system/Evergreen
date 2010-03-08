@@ -220,6 +220,16 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
         return list;
     }
 
+    fieldmapper.aou.fullPath = function(orgId, asId) {
+
+        var orgList = fieldmapper.aou.orgNodeTrail(fieldmapper.aou.findOrgUnit(orgId));
+        orgList.pop(); // prevent dupes
+        orgList = orgList.concat(fieldmapper.aou.descendantNodeList(contextOrg))
+
+        if(!asId) return orgList;
+        return orgList.map( function(node) { return node.id(); } );
+    }
+
 	dojo.addOnUnload( function () {
 		for (var i in fieldmapper.aou.OrgCache) {
 			x=fieldmapper.aou.OrgCache[i].treePtr;
