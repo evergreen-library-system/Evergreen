@@ -318,7 +318,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 dojo.forEach(items,
                     function(item) {
                         var fmObject = new fieldmapper[self.fmClass]().fromStoreItem(item);
-                        new openils.PermaCrud()['delete'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
+                        new openils.PermaCrud()['eliminate'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
                     }
                 );
             },
