@@ -65,7 +65,8 @@ OILSCORE_INST = ilscore-install
 core_data = @srcdir@/extras/ils_events.xml \
 	    $(examples)/hold_notification_template.example
 
-sysconf_DATA = $(examples)/opensrf.xml.example \
+sysconf_DATA = $(examples)/action_trigger_filters.json.example \
+	       $(examples)/opensrf.xml.example \
 	       $(examples)/opensrf_core.xml.example \
 	       $(examples)/fm_IDL.xml \
 	       $(examples)/oils_sip.xml.example \
