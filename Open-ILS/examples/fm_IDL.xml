@@ -610,7 +610,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<retrieve/>
-				<delete permission="ADMIN_TRIGGER_TEMPLATE_OUTPUT" global_required="true"/>
+				<delete permission="ADMIN_TRIGGER_TEMPLATE_OUTPUT DELETE_TRIGGER_TEMPLATE_OUTPUT" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -625,10 +625,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_TRIGGER_HOOK" global_required="true"/>
+				<create permission="ADMIN_TRIGGER_HOOK CREATE_TRIGGER_HOOK" global_required="true"/>
 				<retrieve/>
-				<update permission="ADMIN_TRIGGER_HOOK" global_required="true"/>
-				<delete permission="ADMIN_TRIGGER_HOOK" global_required="true"/>
+				<update permission="ADMIN_TRIGGER_HOOK UPDATE_TRIGGER_HOOK" global_required="true"/>
+				<delete permission="ADMIN_TRIGGER_HOOK DELETE_TRIGGER_HOOK" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -649,10 +649,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_TRIGGER_VALIDATOR" global_required="true"/>
+				<create permission="ADMIN_TRIGGER_VALIDATOR CREATE_TRIGGER_VALIDATOR" global_required="true"/>
 				<retrieve/>
-				<update permission="ADMIN_TRIGGER_VALIDATOR" global_required="true"/>
-				<delete permission="ADMIN_TRIGGER_VALIDATOR" global_required="true"/>
+				<update permission="ADMIN_TRIGGER_VALIDATOR UPDATE_TRIGGER_VALIDATOR" global_required="true"/>
+				<delete permission="ADMIN_TRIGGER_VALIDATOR DELETE_TRIGGER_VALIDATOR" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -665,10 +665,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_TRIGGER_REACTOR" global_required="true"/>
+				<create permission="ADMIN_TRIGGER_REACTOR CREATE_TRIGGER_REACTOR" global_required="true"/>
 				<retrieve/>
-				<update permission="ADMIN_TRIGGER_REACTOR" global_required="true"/>
-				<delete permission="ADMIN_TRIGGER_REACTOR" global_required="true"/>
+				<update permission="ADMIN_TRIGGER_REACTOR UPDATE_TRIGGER_REACTOR" global_required="true"/>
+				<delete permission="ADMIN_TRIGGER_REACTOR DELETE_TRIGGER_REACTOR" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -681,10 +681,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links/>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_TRIGGER_CLEANUP" global_required="true"/>
+				<create permission="ADMIN_TRIGGER_CLEANUP CREATE_TRIGGER_CLEANUP" global_required="true"/>
 				<retrieve/>
-				<update permission="ADMIN_TRIGGER_CLEANUP" global_required="true"/>
-				<delete permission="ADMIN_TRIGGER_CLEANUP" global_required="true"/>
+				<update permission="ADMIN_TRIGGER_CLEANUP UPDATE_TRIGGER_CLEANUP" global_required="true"/>
+				<delete permission="ADMIN_TRIGGER_CLEANUP DELETE_TRIGGER_CLEANUP" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -703,16 +703,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_TRIGGER_EVENT_DEF">
+				<create permission="ADMIN_TRIGGER_EVENT_DEF CREATE_TRIGGER_EVENT_DEF">
                     <context link="event_def" field="owner"/>
                 </create>
-				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF">
+				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF VIEW_TRIGGER_EVENT_DEF">
                     <context link="event_def" field="owner"/>
                 </retrieve>
-				<update permission="ADMIN_TRIGGER_EVENT_DEF">
+				<update permission="ADMIN_TRIGGER_EVENT_DEF UPDATE_TRIGGER_EVENT_DEF">
                     <context link="event_def" field="owner"/>
                 </update>
-				<delete permission="ADMIN_TRIGGER_EVENT_DEF">
+				<delete permission="ADMIN_TRIGGER_EVENT_DEF DELETE_TRIGGER_EVENT_DEF">
                     <context link="event_def" field="owner"/>
                 </delete>
 			</actions>
@@ -754,10 +754,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_TRIGGER_EVENT_DEF" context_field="owner"/>
-				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF" context_field="owner"/>
-				<update permission="ADMIN_TRIGGER_EVENT_DEF" context_field="owner"/>
-				<delete permission="ADMIN_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<create permission="ADMIN_TRIGGER_EVENT_DEF CREATE_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF VIEW_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<update permission="ADMIN_TRIGGER_EVENT_DEF UPDATE_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<delete permission="ADMIN_TRIGGER_EVENT_DEF DELETE_TRIGGER_EVENT_DEF" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -799,16 +799,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_TRIGGER_EVENT_DEF">
+				<create permission="ADMIN_TRIGGER_EVENT_DEF CREATE_TRIGGER_EVENT_DEF">
                     <context link="event_def" field="owner"/>
                 </create>
-				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF">
+				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF VIEW_TRIGGER_EVENT_DEF">
                     <context link="event_def" field="owner"/>
                 </retrieve>
-				<update permission="ADMIN_TRIGGER_EVENT_DEF">
+				<update permission="ADMIN_TRIGGER_EVENT_DEF UPDATE_TRIGGER_EVENT_DEF">
                     <context link="event_def" field="owner"/>
                 </update>
-				<delete permission="ADMIN_TRIGGER_EVENT_DEF">
+				<delete permission="ADMIN_TRIGGER_EVENT_DEF DELETE_TRIGGER_EVENT_DEF">
                     <context link="event_def" field="owner"/>
                 </delete>
 			</actions>

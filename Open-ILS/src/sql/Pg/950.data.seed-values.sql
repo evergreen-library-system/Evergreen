@@ -1256,6 +1256,28 @@ INSERT INTO permission.perm_list VALUES
     (363, 'ALLOW_ALT_TCN', oils_i18n_gettext(363, 'Allows staff to import a record using an alternate TCN to avoid conflicts', 'ppl', 'description')),
     (364, 'ADMIN_TRIGGER_EVENT_DEF', oils_i18n_gettext(364, 'Allow a user to administer trigger event definitions', 'ppl', 'description')),
 	(365, 'ADMIN_ACQ_CANCEL_CAUSE', oils_i18n_gettext(365, 'Allow a user to create/update/delete reasons for order cancellations', 'ppl', 'description')
+    (366, 'ADMIN_TRIGGER_CLEANUP', oils_i18n_gettext(366, 'Allow a user to create, delete, and update trigger cleanup entries', 'ppl', 'description')),
+    (367, 'CREATE_TRIGGER_CLEANUP', oils_i18n_gettext(367, 'Allow a user to create trigger cleanup entries', 'ppl', 'description')),
+    (368, 'DELETE_TRIGGER_CLEANUP', oils_i18n_gettext(368, 'Allow a user to delete trigger cleanup entries', 'ppl', 'description')),
+    (369, 'UPDATE_TRIGGER_CLEANUP', oils_i18n_gettext(369, 'Allow a user to update trigger cleanup entries', 'ppl', 'description')),
+    (370, 'CREATE_TRIGGER_EVENT_DEF', oils_i18n_gettext(370, 'Allow a user to create trigger event definitions', 'ppl', 'description')),
+    (371, 'DELETE_TRIGGER_EVENT_DEF', oils_i18n_gettext(371, 'Allow a user to delete trigger event definitions', 'ppl', 'description')),
+    (372, 'UPDATE_TRIGGER_EVENT_DEF', oils_i18n_gettext(372, 'Allow a user to update trigger event definitions', 'ppl', 'description')),
+    (373, 'VIEW_TRIGGER_EVENT_DEF', oils_i18n_gettext(373, 'Allow a user to view trigger event definitions', 'ppl', 'description')),
+    (374, 'ADMIN_TRIGGER_HOOK', oils_i18n_gettext(374, 'Allow a user to create, update, and delete trigger hooks', 'ppl', 'description')),
+    (375, 'CREATE_TRIGGER_HOOK', oils_i18n_gettext(375, 'Allow a user to create trigger hooks', 'ppl', 'description')),
+    (376, 'DELETE_TRIGGER_HOOK', oils_i18n_gettext(376, 'Allow a user to delete trigger hooks', 'ppl', 'description')),
+    (377, 'UPDATE_TRIGGER_HOOK', oils_i18n_gettext(377, 'Allow a user to update trigger hooks', 'ppl', 'description')),
+    (378, 'ADMIN_TRIGGER_REACTOR', oils_i18n_gettext(378, 'Allow a user to create, update, and delete trigger reactors', 'ppl', 'description')),
+    (379, 'CREATE_TRIGGER_REACTOR', oils_i18n_gettext(379, 'Allow a user to create trigger reactors', 'ppl', 'description')),
+    (380, 'DELETE_TRIGGER_REACTOR', oils_i18n_gettext(380, 'Allow a user to delete trigger reactors', 'ppl', 'description')),
+    (381, 'UPDATE_TRIGGER_REACTOR', oils_i18n_gettext(381, 'Allow a user to update trigger reactors', 'ppl', 'description')),
+    (382, 'ADMIN_TRIGGER_TEMPLATE_OUTPUT', oils_i18n_gettext(382, 'Allow a user to delete trigger template output', 'ppl', 'description')),
+    (383, 'DELETE_TRIGGER_TEMPLATE_OUTPUT', oils_i18n_gettext(383, 'Allow a user to delete trigger template output', 'ppl', 'description')),
+    (384, 'ADMIN_TRIGGER_VALIDATOR', oils_i18n_gettext(384, 'Allow a user to create, update, and delete trigger validators', 'ppl', 'description')),
+    (385, 'CREATE_TRIGGER_VALIDATOR', oils_i18n_gettext(385, 'Allow a user to create trigger validators', 'ppl', 'description')),
+    (386, 'DELETE_TRIGGER_VALIDATOR', oils_i18n_gettext(386, 'Allow a user to delete trigger validators', 'ppl', 'description')),
+    (387, 'UPDATE_TRIGGER_VALIDATOR', oils_i18n_gettext(387, 'Allow a user to update trigger validators', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1419,6 +1441,18 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (S
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'RUN_REPORTS'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'SHARE_REPORT_FOLDER'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_REPORT_OUTPUT'), 1, false);
+
+-- Add trigger administration permissions to the Local System Administrator group
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT 10, id, 1, false FROM permission.perm_list
+        WHERE code LIKE 'ADMIN_TRIGGER%'
+            OR code LIKE 'CREATE_TRIGGER%'
+            OR code LIKE 'DELETE_TRIGGER%'
+            OR code LIKE 'UPDATE_TRIGGER%'
+;
+-- View trigger permissions are required at a consortial level for initial setup
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT 10, id, 0, false FROM permission.perm_list WHERE code LIKE 'VIEW_TRIGGER%';
 
 -- Add basic acquisitions permissions to the Acquisitions group
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, (SELECT MAX(id) FROM permission.grp_perm_map));
