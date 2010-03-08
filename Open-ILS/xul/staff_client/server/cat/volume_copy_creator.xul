@@ -44,7 +44,8 @@
             <spacer flex="1" />
             <checkbox id="check_barcodes" label="&staff.cat.volume_copy_creator.check_barcodes.label;" oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.check_barcodes.accesskey;"/>
             <checkbox id="print_labels" label="&staff.cat.volume_copy_creator.print_labels.label;"  oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.print_labels.accesskey;"/>
-            <button id="Create" accesskey="&staff.cat.volume_copy_creator.create.accesskey;" label="&staff.cat.volume_copy_creator.create.label;" disabled="true" oncommand="g.stash_and_close();"/>
+            <button id="CreateWithDefaults" disabled="true" oncommand="g.stash_and_close('noedit');"/>
+            <button id="EditThenCreate" disabled="true" oncommand="g.stash_and_close('edit');"/>
         </hbox>
         <grid flex="1">
             <columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>

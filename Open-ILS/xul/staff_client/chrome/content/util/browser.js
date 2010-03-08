@@ -136,6 +136,9 @@ util.browser.prototype = {
             cw.xulG = obj.passthru_content_params || {};
             cw.xulG.set_tab = window.xulG.set_tab;
             cw.xulG.new_tab = window.xulG.new_tab;
+            cw.xulG.new_patron_tab = window.xulG.new_patron_tab;
+            cw.xulG.set_patron_tab = window.xulG.set_patron_tab;
+            cw.xulG.volume_item_creator = window.xulG.volume_item_creator;
             cw.xulG.url_prefix = window.xulG.url_prefix;
             cw.xulG.urls = window.urls;
             try { s += ('******** cw = ' + cw + ' cw.xulG = ' + (cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }

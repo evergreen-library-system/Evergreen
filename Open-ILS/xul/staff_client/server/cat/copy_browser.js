@@ -306,19 +306,13 @@ cat.copy_browser.prototype = {
                                     list = util.functional.map_list(
                                         list,
                                         function (o) {
-                                            return obj.map_acp[ o ].barcode();
+                                            var cloned_copy_obj = JSON2js( js2JSON( obj.map_acp[ o ] ) );
+                                            cloned_copy_obj.call_number( obj.map_acn[ 'acn_' + cloned_copy_obj.call_number() ] );
+                                            return cloned_copy_obj;
                                         }
                                     );
 
-                                    JSAN.use('cat.util');
-                                    for (var i = 0; i < list.length; i++) {
-                                        try {
-                                            cat.util.replace_barcode(list[i]);
-                                        } catch(E) {
-                                            obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.replace_barcode.failed', [list[i]]),E);
-                                        }
-                                    }
-                                    obj.refresh_list();
+                                    xulG.volume_item_creator( {'existing_copies':list, 'onrefresh' : function() { obj.refresh_list(); } } );
 
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.replace_barcode.error'),E);

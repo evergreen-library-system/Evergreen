@@ -1,4 +1,4 @@
-const g_max_copies_that_can_be_added_at_a_time_per_volume = 100;
+const g_max_copies_that_can_be_added_at_a_time_per_volume = 999;
 var g = {};
 
 function my_init() {
@@ -8,7 +8,7 @@ function my_init() {
         /* Initial setup */
 
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+        if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
         JSAN.errorLevel = "die"; // none, warn, or die
         JSAN.addRepository('/xul/server/');
         JSAN.use('util.error'); g.error = new util.error();
@@ -19,31 +19,82 @@ function my_init() {
 
         JSAN.use('util.network'); g.network = new util.network();
 
-        /***********************************************************************************************************/
-        /* What record am I dealing with?  Am I adding just copies or copies and volumes? */
+        g.refresh = xul_param('onrefresh');
 
-        g.doc_id = xul_param('doc_id');
+        /***********************************************************************************************************/
+        /* Am I adding just copies or copies and volumes?  Or am I rebarcoding existing copies? */
+
+        // g.copy_shortcut = { ou_id : { callnumber_label : callnumber_id }, ... }
+        g.copy_shortcut = xul_param('copy_shortcut');
+        // g.existing_copies = [ copy1, copy2, ... ]
+        g.existing_copies = xul_param('existing_copies') || [];
+
+        if (g.existing_copies.length > 0) {
+            document.getElementById('EditThenCreate').setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label'));
+            document.getElementById('EditThenCreate').setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey'));
+            document.getElementById('CreateWithDefaults').setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.rebarcode.btn.label'));
+            document.getElementById('CreateWithDefaults').setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.rebarcode.btn.accesskey'));
+        } else {
+            document.getElementById('EditThenCreate').setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.edit_then_create.btn.label'));
+            document.getElementById('EditThenCreate').setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.edit_then_create.btn.accesskey'));
+            document.getElementById('CreateWithDefaults').setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.create_with_defaults.btn.label'));
+            document.getElementById('CreateWithDefaults').setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey'));
+        }
+
+        //g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + xul_param('ou_ids'));
+
+        var ou_ids = xul_param('ou_ids',{'concat' : true}) || [];
+
+        /***********************************************************************************************************/
+        /* If we're passed existing_copies, rig up a copy_shortcut object to leverage existing code for rendering the volume labels, etc. 
+         * Also make a lookup object for existing copies keyed on org id and callnumber label, and another keyed on copy id. */
+
+        // g.org_label_existing_copy_map = { ou_id : { callnumber_label : [ copy1, copy2, ... ] }, ... }
+        g.org_label_existing_copy_map = {};
+        // g.id_copy_map = { acp_id : acp, ... }
+        g.id_copy_map = {};
+        for (var i = 0; i < g.existing_copies.length; i++) {
+            if (! g.copy_shortcut) { g.copy_shortcut = {}; }
+            var copy = g.existing_copies[i];
+            g.id_copy_map[ copy.id() ] = copy;
+            var call_number = copy.call_number();
+            g.doc_id = call_number.record();
+            if (!g.copy_shortcut[ call_number.owning_lib() ]) {
+                ou_ids.push( call_number.owning_lib() );
+                g.copy_shortcut[ call_number.owning_lib() ] = {};
+                g.org_label_existing_copy_map[ call_number.owning_lib() ] = {};
+            }
+            g.copy_shortcut[ call_number.owning_lib() ][ call_number.label() ] = call_number.id();
+            if (! g.org_label_existing_copy_map[ call_number.owning_lib() ][ call_number.label() ]) {
+                g.org_label_existing_copy_map[ call_number.owning_lib() ][ call_number.label() ] = [];
+            }
+            g.org_label_existing_copy_map[ call_number.owning_lib() ][ call_number.label() ].push( copy );
+        }
+
+        /***********************************************************************************************************/
+        /* What record am I dealing with?  */
+
+        g.doc_id = g.doc_id || xul_param('doc_id');
+        if (! g.doc_id) {
+            alert('Error in volume_copy_creator.js, g.doc_id not valid');
+            window.close(); return;
+        }
         var sb = document.getElementById('summary_box'); while(sb.firstChild) sb.removeChild(sb.lastChild);
         var summary = document.createElement('iframe'); sb.appendChild(summary);
         summary.setAttribute('src',urls.XUL_BIB_BRIEF);
         summary.setAttribute('flex','1');
         get_contentWindow(summary).xulG = { 'docid' : g.doc_id };
 
-        g.copy_shortcut = xul_param('copy_shortcut',{'JSON2js_if_cgi':true});
-        g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + xul_param('ou_ids'));
-
-        var ou_ids = xul_param('ou_ids',{'JSON2js_if_cgi' : true, 'concat' : true});;
-
         /***********************************************************************************************************/
         /* For the call number drop down */
 
-        var cn_blob;
-        try {
-            cn_blob = g.network.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[g.doc_id]);
-        } catch(E) {
-            cn_blob = [];
-        }
-        if ((!g.copy_shortcut)) {
+        if (!g.copy_shortcut) {
+            var cn_blob;
+            try {
+                cn_blob = g.network.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[g.doc_id]);
+            } catch(E) {
+                cn_blob = [];
+            }
             var hbox = document.getElementById('marc_cn');
             var ml = util.widgets.make_menulist(
                 util.functional.map_list(
@@ -70,7 +121,7 @@ function my_init() {
             ml.setAttribute('width', '200');
             var btn = document.createElement('button');
             btn.setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.label'));
-            btn.setAttribute('accesskey','A');
+            btn.setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.accesskey'));
             btn.setAttribute('image','/xul/server/skin/media/images/down_arrow.gif');
             hbox.appendChild(btn);
             btn.addEventListener(
@@ -99,7 +150,7 @@ function my_init() {
                 if ( get_bool( g.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) {
                     var row = document.createElement('row'); rows.appendChild(row); row.setAttribute('ou_id',ou_ids[i]);
                     g.render_library_label(row,ou_ids[i]);
-                    g.render_volume_count_entry(row,ou_ids[i]);
+                    g.render_volume_count_entry( row, ou_ids[i] );
                 }
             } catch(E) {
                 g.error.sdump('D_ERROR',E);
@@ -151,17 +202,17 @@ g.render_volume_count_entry = function(row,ou_id) {
     setTimeout(
         function() {
             try {
-            if (g.copy_shortcut) {
-                JSAN.use('util.functional');
-                tb.value = util.functional.map_object_to_list(
-                    g.copy_shortcut[ou_id],
-                    function(o,i) {
-                        return g.copy_shortcut[ou_id][i];
-                    }
-                ).length
-                render_copy_count_entry({'target':tb});
-                tb.disabled = true;
-            }
+                if (g.copy_shortcut) {
+                    JSAN.use('util.functional');
+                    tb.value = util.functional.map_object_to_list(
+                        g.copy_shortcut[ou_id],
+                        function(o,i) {
+                            return g.copy_shortcut[ou_id][i];
+                        }
+                    ).length;
+                    render_copy_count_entry({'target':tb});
+                    tb.disabled = true;
+                }
             } catch(E) {
                 alert(E);
             }
@@ -181,93 +232,101 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
     x.setAttribute('value',$("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies')); x.setAttribute('style','font-weight: bold');
     x.setAttribute('size','3'); x.setAttribute('cols','3');
 
-
-    function handle_change(tb1,tb2,hb3) {
-        if (tb1.value == '') return;
-        if (isNaN( Number( tb2.value ) )) return;
-        if ( Number( tb2.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
+    function handle_change(call_number_column_textbox,number_of_copies_column_textbox,barcode_column_box) {
+        if (call_number_column_textbox.value == '') return;
+        if (isNaN( Number( number_of_copies_column_textbox.value ) )) return;
+        if ( Number( number_of_copies_column_textbox.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
             g.error.yns_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.render_volume_count_entry.message', [g_max_copies_that_can_be_added_at_a_time_per_volume]),
                 $("catStrings").getString('staff.cat.volume_copy_creator.render_volume_count_entry.title'),
                 $("catStrings").getString('staff.cat.volume_copy_creator.render_volume_count_entry.ok_label'),null,null,'');
             return;
         }
 
-        //if (tb1.disabled || tb2.disabled) return;
+        //if (call_number_column_textbox.disabled || number_of_copies_column_textbox.disabled) return;
 
-        //tb1.disabled = true;
-        //tb2.disabled = true;
+        //call_number_column_textbox.disabled = true;
+        //number_of_copies_column_textbox.disabled = true;
 
-        util.widgets.remove_children(hb3);
+        util.widgets.remove_children(barcode_column_box);
 
-        g.render_barcode_entry(hb3,tb1.value,Number(tb2.value),ou_id);
-        document.getElementById("Create").disabled = false;
+        g.render_barcode_entry(barcode_column_box,call_number_column_textbox.value,Number(number_of_copies_column_textbox.value),ou_id);
+        document.getElementById("EditThenCreate").disabled = false;
+        document.getElementById("CreateWithDefaults").disabled = false;
     }
 
-    function handle_change_tb1(ev) {
-        var _tb1 = ev.target;    
-        var _hb1 = _tb1.parentNode;
-        var _hb2 = _hb1.nextSibling;
-        var _tb2 = _hb2.firstChild;
-        var _hb3 = _hb2.nextSibling;
-        handle_change(_tb1,_tb2,_hb3);
+    function handle_change_call_number_column_textbox(ev) {
+        var _call_number_column_textbox = ev.target;    
+        var _call_number_column_box = _call_number_column_textbox.parentNode;
+        var _number_of_copies_column_box = _call_number_column_box.nextSibling;
+        var _number_of_copies_column_textbox = _number_of_copies_column_box.firstChild;
+        var _barcode_column_box = _number_of_copies_column_box.nextSibling;
+        handle_change(_call_number_column_textbox,_number_of_copies_column_textbox,_barcode_column_box);
     }
 
-    function handle_change_tb2(ev) {
-        var _tb2 = ev.target;    
-        var _hb2 = _tb2.parentNode;
-        var _hb1 = _hb2.previousSibling;
-        var _tb1 = _hb1.firstChild;
-        var _hb3 = _hb2.nextSibling;
-        handle_change(_tb1,_tb2,_hb3);
+    function handle_change_number_of_copies_column_textbox(ev) {
+        var _number_of_copies_column_textbox = ev.target;    
+        var _number_of_copies_column_box = _number_of_copies_column_textbox.parentNode;
+        var _call_number_column_box = _number_of_copies_column_box.previousSibling;
+        var _call_number_column_textbox = _call_number_column_box.firstChild;
+        var _barcode_column_box = _number_of_copies_column_box.nextSibling;
+        handle_change(_call_number_column_textbox,_number_of_copies_column_textbox,_barcode_column_box);
     }
 
     for (var i = 0; i < count; i++) {
         var r = document.createElement('row'); rows.appendChild(r);
-        var hb1 = document.createElement('vbox'); r.appendChild(hb1);
-        var hb2 = document.createElement('vbox'); r.appendChild(hb2);
-        var hb3 = document.createElement('vbox'); r.appendChild(hb3);
-        var tb1 = document.createElement('textbox'); hb1.appendChild(tb1);
-        tb1.setAttribute('rel_vert_pos','2');
-        tb1.setAttribute('ou_id',ou_id);
+        var call_number_column_box = document.createElement('vbox'); r.appendChild(call_number_column_box);
+        var number_of_copies_column_box = document.createElement('vbox'); r.appendChild(number_of_copies_column_box);
+        var barcode_column_box = document.createElement('vbox'); r.appendChild(barcode_column_box);
+        var call_number_column_textbox = document.createElement('textbox'); call_number_column_box.appendChild(call_number_column_textbox);
+        call_number_column_textbox.setAttribute('rel_vert_pos','2');
+        call_number_column_textbox.setAttribute('ou_id',ou_id);
         util.widgets.apply_vertical_tab_on_enter_handler( 
-            tb1, 
-            function() { handle_change_tb1({'target':tb1}); setTimeout(function(){util.widgets.vertical_tab(tb1);},0); }
+            call_number_column_textbox, 
+            function() { handle_change_call_number_column_textbox({'target':call_number_column_textbox}); setTimeout(function(){util.widgets.vertical_tab(call_number_column_textbox);},0); }
         );
-        var tb2 = document.createElement('textbox'); hb2.appendChild(tb2);
-        tb2.setAttribute('size','3'); tb2.setAttribute('cols','3');
-        tb2.setAttribute('rel_vert_pos','3');
-        tb2.setAttribute('ou_id',ou_id);
+        var number_of_copies_column_textbox = document.createElement('textbox'); number_of_copies_column_box.appendChild(number_of_copies_column_textbox);
+        number_of_copies_column_textbox.setAttribute('size','3'); number_of_copies_column_textbox.setAttribute('cols','3');
+        number_of_copies_column_textbox.setAttribute('rel_vert_pos','3');
+        number_of_copies_column_textbox.setAttribute('ou_id',ou_id);
         util.widgets.apply_vertical_tab_on_enter_handler( 
-            tb2, 
-            function() { handle_change_tb2({'target':tb2}); setTimeout(function(){util.widgets.vertical_tab(tb2);},0); }
+            number_of_copies_column_textbox, 
+            function() { handle_change_number_of_copies_column_textbox({'target':number_of_copies_column_textbox}); setTimeout(function(){util.widgets.vertical_tab(number_of_copies_column_textbox);},0); }
         );
 
-        tb1.addEventListener( 'change', handle_change_tb1, false);
-        tb1.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
-        tb2.addEventListener( 'change', handle_change_tb2, false);
-        tb2.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
-        if ( !g.last_focus ) { tb2.focus(); g.last_focus = tb2; }
+        call_number_column_textbox.addEventListener( 'change', handle_change_call_number_column_textbox, false);
+        call_number_column_textbox.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
+        number_of_copies_column_textbox.addEventListener( 'change', handle_change_number_of_copies_column_textbox, false);
+        number_of_copies_column_textbox.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
+        if ( !g.last_focus ) { number_of_copies_column_textbox.focus(); g.last_focus = number_of_copies_column_textbox; }
 
         setTimeout(
-            function(idx,tb){
+            function(idx,call_number_column_textbox,number_of_copies_column_textbox){
                 return function() {
                     try {
-                    JSAN.use('util.functional');
-                    if (g.copy_shortcut) {
-                        var label = util.functional.map_object_to_list(
-                            g.copy_shortcut[ou_id],
-                            function(o,i) {
-                                return i;
+                        JSAN.use('util.functional');
+                        if (g.copy_shortcut) {
+                            var label = util.functional.map_object_to_list(
+                                g.copy_shortcut[ou_id],
+                                function(o,i) {
+                                    return i;
+                                }
+                            )[idx];
+                            if (g.org_label_existing_copy_map[ou_id]) {
+                                var num_of_copies = g.org_label_existing_copy_map[ou_id][label].length;
+                                if (num_of_copies>0) {
+                                    number_of_copies_column_textbox.value = num_of_copies;
+                                    number_of_copies_column_textbox.disabled = true;
+                                }
                             }
-                        )[idx];
-                        tb.value = label; handle_change_tb1({'target':tb});
-                        tb.disabled = true;
-                    }
+                            call_number_column_textbox.value = label; 
+                            handle_change_call_number_column_textbox({'target':call_number_column_textbox});
+                            call_number_column_textbox.disabled = true;
+                        }
                     } catch(E) {
                         alert(E);
                     }
                 }
-            }(i,tb1),0
+            }(i,call_number_column_textbox,number_of_copies_column_textbox),0
         );
     }
 
@@ -277,7 +336,8 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 g.render_barcode_entry = function(node,callnumber,count,ou_id) {
     try {
         function ready_to_create(ev) {
-            document.getElementById("Create").disabled = false;
+            document.getElementById("EditThenCreate").disabled = false;
+            document.getElementById("CreateWithDefaults").disabled = false;
         }
 
         JSAN.use('util.barcode'); 
@@ -287,11 +347,16 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
             tb.setAttribute('ou_id',ou_id);
             tb.setAttribute('callnumber',callnumber);
             tb.setAttribute('rel_vert_pos','4');
+            if (g.org_label_existing_copy_map[ ou_id ]) {
+                tb.value = g.org_label_existing_copy_map[ ou_id ][ callnumber ][i].barcode();
+                tb.setAttribute('acp_id', g.org_label_existing_copy_map[ ou_id ][ callnumber ][i].id());
+                tb.select();
+                if (! g.first_focus) { g.first_focus = tb; }
+            }
             util.widgets.apply_vertical_tab_on_enter_handler( 
                 tb, 
                 function() { ready_to_create({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
             );
-            //tb.addEventListener('change',ready_to_create,false);
             tb.addEventListener('change', function(ev) {
                 var barcode = String( ev.target.value ).replace(/\s/g,'');
                 if (barcode != ev.target.value) ev.target.value = barcode;
@@ -305,6 +370,9 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
             }, false);
             tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
         }
+        
+        setTimeout( function() { if (g.first_focus) { g.first_focus.focus(); } }, 0 ); 
+
     } catch(E) {
         g.error.sdump('D_ERROR','g.render_barcode_entry: ' + E);
     }
@@ -312,7 +380,7 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 
 g.new_node_id = -1;
 
-g.stash_and_close = function() {
+g.stash_and_close = function(param) {
 
     try {
 
@@ -333,6 +401,7 @@ g.stash_and_close = function() {
         };
     
         for (var i = 0; i < barcodes.length; i++) {
+            var acp_id = barcodes[i].getAttribute('acp_id') || g.new_node_id--;
             var ou_id = barcodes[i].getAttribute('ou_id');
             var callnumber = barcodes[i].getAttribute('callnumber');
             var barcode = barcodes[i].value;
@@ -340,19 +409,41 @@ g.stash_and_close = function() {
             if (typeof volumes_hash[ou_id] == 'undefined') { volumes_hash[ou_id] = {} }
             if (typeof volumes_hash[ou_id][callnumber] == 'undefined') { volumes_hash[ou_id][callnumber] = [] }
 
-            if (barcode != '') volumes_hash[ou_id][callnumber].push( barcode );
+            if (barcode != '') volumes_hash[ou_id][callnumber].push( { 'barcode' : barcode, 'acp_id' : acp_id } );
         }
 
         var volumes = [];
         var copies = [];
         var volume_labels = {};
 
+        function new_copy(acp_id,ou_id,acn_id,barcode) {
+            var copy = new acp();
+            copy.id( acp_id );
+            copy.isnew('1');
+            copy.barcode( barcode );
+            copy.call_number( acn_id );
+            copy.circ_lib(ou_id);
+            /* FIXME -- use constants */
+            copy.deposit(0);
+            copy.price(0);
+            copy.deposit_amount(0);
+            copy.fine_level(2);
+            copy.loan_duration(2);
+            copy.location(1);
+            copy.status(5);
+            copy.circulate(get_db_true());
+            copy.holdable(get_db_true());
+            copy.opac_visible(get_db_true());
+            copy.ref(get_db_false());
+            return copy;
+        }
+
         for (var ou_id in volumes_hash) {
-            for (var cn in volumes_hash[ou_id]) {
+            for (var cn_label in volumes_hash[ou_id]) {
 
                 var acn_id = g.network.simple_request(
                     'FM_ACN_FIND_OR_CREATE',
-                    [ ses(), cn, g.doc_id, ou_id ]
+                    [ ses(), cn_label, g.doc_id, ou_id ]
                 );
 
                 if (typeof acn_id.ilsevent != 'undefined') {
@@ -360,27 +451,20 @@ g.stash_and_close = function() {
                     continue;
                 }
 
-                volume_labels[ acn_id ] = { 'label' : cn, 'owning_lib' : ou_id };
+                volume_labels[ acn_id ] = { 'label' : cn_label, 'owning_lib' : ou_id };
 
-                for (var i = 0; i < volumes_hash[ou_id][cn].length; i++) {
-                    var copy = new acp();
-                    copy.id( g.new_node_id-- );
-                    copy.isnew('1');
-                    copy.barcode( volumes_hash[ou_id][cn][i] );
-                    copy.call_number( acn_id );
-                    copy.circ_lib(ou_id);
-                    /* FIXME -- use constants */
-                    copy.deposit(0);
-                    copy.price(0);
-                    copy.deposit_amount(0);
-                    copy.fine_level(2);
-                    copy.loan_duration(2);
-                    copy.location(1);
-                    copy.status(0);
-                    copy.circulate(get_db_true());
-                    copy.holdable(get_db_true());
-                    copy.opac_visible(get_db_true());
-                    copy.ref(get_db_false());
+                for (var i = 0; i < volumes_hash[ou_id][cn_label].length; i++) {
+                    var barcode = volumes_hash[ou_id][cn_label][i].barcode;
+                    var acp_id = volumes_hash[ou_id][cn_label][i].acp_id;
+                    var copy;
+                    if (acp_id < 0) {
+                        copy = new_copy(acp_id,ou_id,acn_id,barcode);
+                    } else {
+                        copy = g.id_copy_map[ acp_id ];
+                        copy.barcode( barcode );
+                        copy.call_number( copy.call_number().id() );
+                        copy.ischanged('1');
+                    }
                     copies.push( copy );
                 }
             }
@@ -389,7 +473,20 @@ g.stash_and_close = function() {
         JSAN.use('util.window'); var win = new util.window();
         if (copies.length > 0) {
             JSAN.use('cat.util');
-            copies = cat.util.spawn_copy_editor( { 'edit' : 1, 'docid' : g.doc_id, 'copies' : copies });
+            if (param == 'edit') {
+                copies = cat.util.spawn_copy_editor( { 'edit' : true, 'docid' : g.doc_id, 'copies' : copies, 'caller_handles_update' : true });
+            }
+            if (typeof xul_param('update_copy') == 'function') {
+                xul_param('update_copy')(copies);
+            } else {
+                 var r = g.network.simple_request(
+                    'FM_ACP_FLESHED_BATCH_UPDATE',
+                    [ ses(),copies, true ]
+                );
+                if (typeof r.ilsevent != 'undefined') {
+                    g.error.standard_unexpected_error_alert('copy update',r);
+                }
+            }
             try {
                 //case 1706 /* ITEM_BARCODE_EXISTS */ :
                 if (copies && copies.length > 0 && $('print_labels').checked) {
@@ -406,9 +503,10 @@ g.stash_and_close = function() {
             } catch(E) {
                 g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.stash_and_close.tree_err2'),E);
             }
-    }
+        }
 
-        if (typeof window.refresh == 'function') window.refresh();
+        if (typeof window.refresh == 'function') { window.refresh(); }
+        if (typeof g.refresh == 'function') { g.refresh(); }
 
         window.close();
 

@@ -2509,8 +2509,6 @@
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "B">
 <!ENTITY staff.cat.volume_copy_creator.print_labels.label "Print Labels?">
 <!ENTITY staff.cat.volume_copy_creator.print_labels.accesskey "P">
-<!ENTITY staff.cat.volume_copy_creator.create.label "Edit then Create">
-<!ENTITY staff.cat.volume_copy_creator.create.accesskey "C">
 <!ENTITY staff.cat.volume_copy_creator.library_label.value "Library">
 <!ENTITY staff.cat.volume_copy_creator.num_of_volumes_label.value "# of volumes">
 <!ENTITY staff.cat.volume_editor.title "Volumes">

@@ -323,7 +323,7 @@ function AcqLiTable() {
                     // test should be "if 1 or more real (acp) copies exist
                     openils.Util.show(real_copies_link);
                     real_copies_link.onclick = function() {
-                        self.showRealCopies(li);
+                        self.showRealCopyEditUI(li);
                     }
                     return;
             }
@@ -1762,6 +1762,60 @@ function AcqLiTable() {
         );
     }
 
+    this.showRealCopyEditUI = function(li) {
+        copyList = [];
+        var self = this;
+        this.volCache = {};
+
+        this._fetchLineitem(li.id(), 
+            function(fullLi) {
+                li = self.liCache[li.id()] = fullLi;
+
+                self.pcrud.search(
+                    'acp', {
+                        id : li.lineitem_details().map(
+                            function(item) { return item.eg_copy_id() }
+                        )
+                    }, {
+                        async : true,
+                        oncomplete : function(r) {
+                            try {
+                                var r_list = openils.Util.readResponse( r );
+                                for (var i = 0; i < r_list.length; i++) {
+                                    var copy = r_list[i];
+                                    var volId = copy.call_number();
+                                    var volume = self.volCache[volId];
+                                    if(!volume) {
+                                        volume = self.volCache[volId] = self.pcrud.retrieve('acn', volId);
+                                    }
+                                    copy.call_number(volume);
+                                    copyList.push(copy);
+                                }
+                                if (xulG) {
+                                    // If we need to, we can pass in an update_copy function to handle the update instead of volume_item_creator
+                                    xulG.volume_item_creator( { 'existing_copies' : copyList } );
+                                }
+                            } catch(E) {
+                                alert('error in oncomplete: ' + E);
+                            }
+                        }
+                    }
+                );
+            }
+        );
+    }
+
+    
+    /*
+    this.saveRealCopies = function() {
+        progressDialog.show(true);
+        var list = this.realCopyList.filter(function(copy) { return copy.ischanged(); });
+        this.pcrud.update(list, {oncomplete: function() { 
+            progressDialog.hide();
+            self.show('list');
+        }});
+    }
+
     // grab the li-details for this lineitem, grab the linked copies and volumes, add them to the table
     this.showRealCopies = function(li) {
         while(this.realCopiesTbody.childNodes[0])
@@ -1861,13 +1915,6 @@ function AcqLiTable() {
         this.realCopiesTbody.appendChild(row);
         if(selectNode) selectNode.select();
     };
+    */
 
-    this.saveRealCopies = function() {
-        progressDialog.show(true);
-        var list = this.realCopyList.filter(function(copy) { return copy.ischanged(); });
-        this.pcrud.update(list, {oncomplete: function() { 
-            progressDialog.hide();
-            self.show('list');
-        }});
-    }
 }

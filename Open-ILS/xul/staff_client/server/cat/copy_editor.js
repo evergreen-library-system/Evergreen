@@ -116,21 +116,20 @@ function my_init() {
 
         if (g.copies.length > 0 && g.copies[0].id() < 0) {
             document.getElementById('copy_notes').setAttribute('hidden','true');
-            g.apply("status",5 /* In Process */);
             $('save').setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.create_copies'));
-        } else {
-            g.panes_and_field_names.left_pane = 
-                [
-                    [
-                        $('catStrings').getString('staff.cat.copy_editor.status'),
-                        { 
-                            render: 'typeof fm.status() == "object" ? fm.status().name() : g.data.hash.ccs[ fm.status() ].name()', 
-                            input: g.safe_to_edit_copy_status() ? 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id(), typeof my_constants.magical_statuses[obj.id()] != "undefined" ? true : false ]; } ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);' : undefined,
-                            //input: 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list( g.data.list.ccs, function(obj) { return typeof my_constants.magical_statuses[obj.id()] == "undefined"; } ), function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-                        }
-                    ]
-                ].concat(g.panes_and_field_names.left_pane);
+            $('save').setAttribute('accesskey', $('catStrings').getString('staff.cat.copy_editor.create_copies.accesskey'));
         }
+        g.panes_and_field_names.left_pane = 
+            [
+                [
+                    $('catStrings').getString('staff.cat.copy_editor.status'),
+                    { 
+                        render: 'typeof fm.status() == "object" ? fm.status().name() : g.data.hash.ccs[ fm.status() ].name()', 
+                        input: g.safe_to_edit_copy_status() ? 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id(), typeof my_constants.magical_statuses[obj.id()] != "undefined" ? true : false ]; } ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);' : undefined,
+                        //input: 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list( g.data.list.ccs, function(obj) { return typeof my_constants.magical_statuses[obj.id()] == "undefined"; } ), function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+                    }
+                ]
+            ].concat(g.panes_and_field_names.left_pane);
 
         if (g.copies.length != 1) {
             document.getElementById('copy_notes').setAttribute('hidden','true');
