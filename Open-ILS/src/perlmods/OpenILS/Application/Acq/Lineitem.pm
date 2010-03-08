@@ -9,6 +9,7 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::Acq::Financials;
 use OpenILS::Application::Cat::BibCommon;
 use OpenILS::Application::Cat::AssetCommon;
 my $U = 'OpenILS::Application::AppUtils';
@@ -246,7 +247,7 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Search definition', type => 'object'},
-            {desc => 'Optoins hash.  idlist=true', type => 'object'},
+            {desc => 'Options hash.  idlist=true', type => 'object'},
             {desc => 'List of lineitems', type => 'object/number'},
         ]
     }
@@ -267,6 +268,93 @@ sub lineitem_search {
             $conn->respond($res) unless $U->event_code($res);
         }
     }
+    return undef;
+}
+
+__PACKAGE__->register_method (
+    method        => 'lineitems_related_by_bib',
+    api_name    => 'open-ils.acq.lineitems_for_bib.by_bib_id',
+    stream      => 1,
+    signature => q/
+        Retrieves lineitems attached to same bib record, subject to the PO ordering agency.  This variant takes the bib id.
+        @param authtoken Login session key
+        @param bib_id Id for the pertinent bib record.
+        @param options Object for tweaking the selection criteria and fleshing options.
+    /
+);
+
+__PACKAGE__->register_method (
+    method        => 'lineitems_related_by_bib',
+    api_name    => 'open-ils.acq.lineitems_for_bib.by_lineitem_id',
+    stream      => 1,
+    signature => q/
+        Retrieves lineitems attached to same bib record, subject to the PO ordering agency.  This variant takes the id for any of the pertinent lineitems.
+        @param authtoken Login session key
+        @param bib_id Id for a pertinent lineitem.
+        @param options Object for tweaking the selection criteria and fleshing options.
+    /
+);
+
+sub lineitems_related_by_bib {
+    my($self, $conn, $auth, $id_value, $options) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $perm_orgs = $U->user_has_work_perm_at($e, 'VIEW_PURCHASE_ORDER', {descendants =>1}, $e->requestor->id);
+
+    my $id_field;
+    if ($self->api_name =~ /by_bib_id/) {
+        $id_field = 'eg_bib_id';
+    } else {
+        $id_field = 'id';
+    }
+
+    my $query = {
+        "select"=>{"jub"=>["id"]},
+        "from"=>{"jub"=>"acqpo"}, 
+        "where"=>{
+            $id_field=>$id_value,
+            "+acqpo"=>{
+                "ordering_agency"=>{
+                    "in"=>$perm_orgs
+                }
+            }
+        },
+        "order_by"=>[{"class"=>"jub", "field"=>"create_time", "direction"=>"desc"}]
+    };
+
+    if ($options && defined $options->{lineitem_state}) {
+        $query->{'where'}{'jub'}{'state'} = $options->{lineitem_state};
+    }
+
+    if ($options && defined $options->{po_state}) {
+        $query->{'where'}{'+acqpo'}{'state'} = $options->{po_state};
+    }
+
+    if ($options && defined $options->{order_by}) {
+        $query->{'order_by'} = $options->{order_by};
+    }
+
+    my $results = $e->json_query($query);
+    for my $result (@$results) {
+        my $lineitem = $e->retrieve_acq_lineitem([
+            $result->{id},
+            {}
+        ]);
+        if (! $lineitem) { next; }
+
+        my $po = OpenILS::Application::Acq::Financials::retrieve_purchase_order_impl->(
+            $e,
+            $lineitem->purchase_order(),
+            {flesh_lineitem_count=>1,flesh_price_summary=>1}
+        );
+
+        if ($e->allowed( ['CREATE_PURCHASE_ORDER','VIEW_PURCHASE_ORDER'], $po->ordering_agency() )) {
+            $lineitem->purchase_order( $po );
+            $conn->respond($lineitem);
+        }
+    }
+
     return undef;
 }
 
