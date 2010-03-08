@@ -831,7 +831,9 @@ CREATE TABLE acq.user_request (
     location            TEXT,
     pubdate             TEXT,
     mentioned           TEXT,
-    other_info          TEXT
+    other_info          TEXT,
+	cancel_reason       INT    REFERENCES acq.cancel_reason( id )
+	                           DEFERRABLE INITIALLY DEFERRED
 );
 
 

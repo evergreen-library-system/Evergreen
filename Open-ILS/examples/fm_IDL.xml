@@ -4386,6 +4386,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Mentioned In" name="mentioned" reporter:datatype="text" />
 			<field reporter:label="Other Info" name="other_info" reporter:datatype="text" />
 			<field reporter:label="Need Before Date" name="need_before" reporter:datatype="timestamp" />
+			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -4393,6 +4394,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 			<link field="eg_bib" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="request_type" reltype="has_a" key="id" map="" class="aurt"/>
+			<link field="cancel_reason" reltype="might_have" key="id" map="" class="acqcr"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -5136,7 +5138,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="lineitems" reltype="has_many" key="purchase_order" map="" class="jub"/>
 			<link field="notes" reltype="has_many" key="purchase_order" map="" class="acqpon"/>
 			<link field="ordering_agency" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
+			<link field="cancel_reason" reltype="might_have" key="id" map="" class="acqcr"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -5229,7 +5231,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="attributes" reltype="has_many" key="lineitem" map="" class="acqlia"/>
 			<link field="lineitem_details" reltype="has_many" key="lineitem" map="" class="acqlid"/>
 			<link field="lineitem_notes" reltype="has_many" key="lineitem" map="" class="acqlin"/>
-			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
+			<link field="cancel_reason" reltype="might_have" key="id" map="" class="acqcr"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER CREATE_PICKLIST VIEW_PICKLIST">
@@ -5357,7 +5359,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
-			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
+			<link field="cancel_reason" reltype="might_have" key="id" map="" class="acqcr"/>
 		</links>
 	</class>
 
