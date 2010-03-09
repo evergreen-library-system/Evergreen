@@ -144,7 +144,7 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( incumbent_xml TEXT, incoming_xml
 
     return $incumbent_xml unless ($incumbent_r && $incoming_r);
 
-    my @field_list = split(',' $field_spec);
+    my @field_list = split(',', $field_spec);
 
     my %fields;
     for my $f (@field_list) {
@@ -189,7 +189,7 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
     my $field_spec = shift;
     $field_spec =~ s/\s+//g;
 
-    my @field_list = split(',' $field_spec);
+    my @field_list = split(',', $field_spec);
 
     my %fields;
     for my $f (@field_list) {
