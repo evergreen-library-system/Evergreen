@@ -2507,6 +2507,8 @@
 <!ENTITY staff.cat.volume_copy_creator.label "Volume and Copy Creator">
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.label "Check Barcodes?">
 <!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "B">
+<!ENTITY staff.cat.volume_copy_creator.generate_barcodes.label "Auto-Generate Barcodes?">
+<!ENTITY staff.cat.volume_copy_creator.generate_barcodes.accesskey "G">
 <!ENTITY staff.cat.volume_copy_creator.print_labels.label "Print Labels?">
 <!ENTITY staff.cat.volume_copy_creator.print_labels.accesskey "P">
 <!ENTITY staff.cat.volume_copy_creator.library_label.value "Library">

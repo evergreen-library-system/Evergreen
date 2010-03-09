@@ -378,6 +378,31 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
     }
 }
 
+g.generate_barcodes = function() {
+    try {
+        var nodes = document.getElementsByAttribute('rel_vert_pos','4');
+        if (nodes.length < 1) { return; }
+        var first_barcode = nodes[0].value;
+
+        var barcodes = g.network.simple_request(
+            'AUTOGENERATE_BARCODES',
+            [ ses(), first_barcode, nodes.length - 1 ]
+        );
+
+        if (typeof barcodes.ilsevent != 'undefined') {
+            throw(barcodes);
+        }
+
+        for (var i = 0; i < barcodes.length; i++) {
+            nodes[i+1].value = barcodes[i];
+            nodes[i+1].select();
+        }
+
+    } catch(E) {
+        g.error.sdump('D_ERROR','g.generate_barcodes: ' + E);
+    }
+}
+
 g.new_node_id = -1;
 
 g.stash_and_close = function(param) {

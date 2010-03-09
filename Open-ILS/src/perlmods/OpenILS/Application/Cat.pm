@@ -337,6 +337,58 @@ sub biblio_record_marc_cn {
 	return \@res
 }
 
+__PACKAGE__->register_method(
+    method => 'autogen_barcodes',
+    api_name	=> "open-ils.cat.item.barcode.autogen",
+    signature => {
+        desc => 'Returns N generated barcodes following a specified barcode.',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Barcode which the sequence should follow from', type => 'string'},
+            {desc => 'Number of barcodes to generate', type => 'number'},
+            {desc => 'Options hash.  Currently you can pass in checkdigit : false to disable the use of checkdigits.'}
+        ],
+        return => {desc => 'Array of generated barcodes'}
+    }
+);
+
+sub autogen_barcodes {
+    my( $self, $client, $auth, $barcode, $num_of_barcodes, $options ) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('UPDATE_COPY', $e->requestor->ws_ou);
+    $options ||= {};
+
+    my @res;
+    for (my $i = 1; $i <= $num_of_barcodes; $i++) {
+        # default is to use checkdigits, so looking for an explicit false here
+        if (defined $$options{'checkdigit'} && ! $$options{'checkdigit'}) { 
+            push @res, $barcode + $i;
+        } else {
+            if ($barcode !~ /^\d{13,14}$/) {
+                push @res, $barcode + $i;
+            } else {
+                push @res, add_codabar_checkdigit($barcode + $i*10);
+            }
+        }
+    }
+    return \@res
+}
+
+# Codabar doesn't define a checkdigit algorithm, but this one is typically used by libraries.  gmcharlt++
+sub add_codabar_checkdigit {
+    my $barcode = shift;
+
+    return $barcode if $barcode !~ /^\d{13,14}$/;
+    $barcode = substr($barcode, 0, 13); # ignore 14th digit
+    my @digits = split //, $barcode;
+    my $total = 0;
+    $total += $digits[$_] foreach (1, 3, 5, 7, 9, 11);
+    $total += (2 * $digits[$_] >= 10) ? (2 * $digits[$_] - 9) : (2 * $digits[$_]) foreach (0, 2, 4, 6, 8, 10, 12);
+    my $remainder = $total % 10;
+    my $checkdigit = ($remainder == 0) ? $remainder : 10 - $remainder;
+    return $barcode . $checkdigit;
+}
 
 __PACKAGE__->register_method(
 	method	=> "orgs_for_title",

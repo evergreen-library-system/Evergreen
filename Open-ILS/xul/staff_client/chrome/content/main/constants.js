@@ -45,6 +45,7 @@ const api = {
     'AUTH_DELETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.session.delete' },
     'AUTH_WORKSTATION' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.workstation.register' },
     'AUTH_VERIFY_CREDENTIALS' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.verify_user_password' },
+    'AUTOGENERATE_BARCODES' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.item.barcode.autogen' },
     'BILL_PAY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment' },
     'BLOB_AU_PARTS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.retrieve.parts', 'cacheable' : true, 'ttl' : 120000 },
     'BLOB_MARC_CALLNUMBERS_RETRIEVE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.marc_cn.retrieve', 'secure' : false },
