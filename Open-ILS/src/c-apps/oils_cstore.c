@@ -5979,8 +5979,7 @@ static const char* get_primitive( osrfHash* field ) {
 				MODULENAME,
 				osrfHashGet( field, "name" )
 			);
-		else
-			s = "string";
+		s = "string";
 	}
 	return s;
 }
