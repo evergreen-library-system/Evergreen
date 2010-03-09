@@ -232,6 +232,7 @@ sub handler {
 
 
 			if ($holdings) {
+				$req->delete_field( $_ ) for ($req->field('852')); # remove any legacy 852s
         			my $cn_list = $bib->call_numbers;
         			if ($cn_list && @$cn_list) {
 
