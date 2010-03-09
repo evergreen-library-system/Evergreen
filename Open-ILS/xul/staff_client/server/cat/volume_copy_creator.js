@@ -384,6 +384,8 @@ g.generate_barcodes = function() {
         if (nodes.length < 1) { return; }
         var first_barcode = nodes[0].value;
 
+        if (! first_barcode) { return; }
+
         var barcodes = g.network.simple_request(
             'AUTOGENERATE_BARCODES',
             [ ses(), first_barcode, nodes.length - 1 ]
