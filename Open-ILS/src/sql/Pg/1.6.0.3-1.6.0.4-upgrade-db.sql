@@ -132,6 +132,18 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 			) credit ON xact.id = credit.xact
 	  ORDER BY debit.billing_ts, credit.payment_ts;
 
+/* BEFORE or AFTER trigger only! */
+CREATE OR REPLACE FUNCTION money.mat_summary_update () RETURNS TRIGGER AS $$
+BEGIN
+	UPDATE	money.materialized_billable_xact_summary
+	  SET	usr = NEW.usr,
+		xact_start = NEW.xact_start,
+		xact_finish = NEW.xact_finish
+	  WHERE	id = NEW.id;
+	RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
 -- And rebuild the materialized view that was built on money.billable_xact_summary
 TRUNCATE TABLE money.materialized_billable_xact_summary;
 INSERT INTO TABLE money.materialized_billable_xact_summary
