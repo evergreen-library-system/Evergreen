@@ -1255,7 +1255,7 @@ INSERT INTO permission.perm_list VALUES
     (362, 'MERGE_USERS', oils_i18n_gettext(362, 'Allows user records to be merged', 'ppl', 'description')),
     (363, 'ALLOW_ALT_TCN', oils_i18n_gettext(363, 'Allows staff to import a record using an alternate TCN to avoid conflicts', 'ppl', 'description')),
     (364, 'ADMIN_TRIGGER_EVENT_DEF', oils_i18n_gettext(364, 'Allow a user to administer trigger event definitions', 'ppl', 'description')),
-	(365, 'ADMIN_ACQ_CANCEL_CAUSE', oils_i18n_gettext(365, 'Allow a user to create/update/delete reasons for order cancellations', 'ppl', 'description')
+    (365, 'ADMIN_ACQ_CANCEL_CAUSE', oils_i18n_gettext(365, 'Allow a user to create/update/delete reasons for order cancellations', 'ppl', 'description')),
     (366, 'ADMIN_TRIGGER_CLEANUP', oils_i18n_gettext(366, 'Allow a user to create, delete, and update trigger cleanup entries', 'ppl', 'description')),
     (367, 'CREATE_TRIGGER_CLEANUP', oils_i18n_gettext(367, 'Allow a user to create trigger cleanup entries', 'ppl', 'description')),
     (368, 'DELETE_TRIGGER_CLEANUP', oils_i18n_gettext(368, 'Allow a user to delete trigger cleanup entries', 'ppl', 'description')),
