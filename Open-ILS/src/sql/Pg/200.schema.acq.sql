@@ -454,6 +454,7 @@ CREATE TABLE acq.lineitem (
 	claim_interval      INTERVAL,
 	cancel_reason       INT                         REFERENCES acq.cancel_reason( id )
                                                     DEFERRABLE INITIALLY DEFERRED,
+	estimated_unit_price NUMERIC,
     CONSTRAINT picklist_or_po CHECK (picklist IS NOT NULL OR purchase_order IS NOT NULL)
 );
 CREATE INDEX li_po_idx ON acq.lineitem (purchase_order);
