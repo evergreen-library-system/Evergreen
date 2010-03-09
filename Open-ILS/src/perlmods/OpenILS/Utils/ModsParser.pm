@@ -110,7 +110,7 @@ sub new { return bless( {}, shift() ); }
 
 sub get_field_value {
 
-	my( $self, $mods, $xpath ) = @_;
+	my( $self, $mods, $xpath, $type) = @_;
 
 	my @string;
 
@@ -126,6 +126,12 @@ sub get_field_value {
 			my @children = $value->childNodes();
 			my @child_text;
 			for my $child (@children) {
+				# MODS strips the punctuation from 245abc, which often
+				# results in "title subtitle" rather than "title : subtitle";
+				# this hack gets it back for us
+				if ($type eq 'title' && $child->nodeName =~ m/subTitle/) {
+					push(@child_text, " : "); 
+				}
 				next unless( $child->nodeType != 3 );
 
 				if($child->childNodes) {
@@ -194,7 +200,7 @@ sub modsdoc_to_values {
 		my $class = "title";
 		$data->{$class} = {};
 		for my $type(keys %{$xpathset->{$class}}) {
-			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type} );
+			my @value = $self->get_field_value( $mods, $xpathset->{$class}->{$type}, "title" );
 			for my $arr (@value) {
 				if( ref($arr) ) {
 					$data->{$class}->{$type} = shift @$arr;
@@ -207,7 +213,6 @@ sub modsdoc_to_values {
 					}
 
 					for my $t (@$arr) {
-						$data->{$class}->{$type} .= ' : ' if ($data->{$class}->{$type} =~ /\w\s*$/o);
 						$data->{$class}->{$type} .= " $t";
 					}
 				} else {
