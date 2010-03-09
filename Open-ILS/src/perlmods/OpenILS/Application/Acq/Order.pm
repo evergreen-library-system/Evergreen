@@ -207,8 +207,37 @@ sub create_lineitem {
     $li->$_($args{$_}) for keys %args;
     $li->clear_id;
     $mgr->add_li;
-    return $mgr->editor->create_acq_lineitem($li);
+    $mgr->editor->create_acq_lineitem($li) or return 0;
+    
+    unless($li->estimated_unit_price) {
+        # extract the price from the MARC data
+        my $price = get_li_price_from_attrs($li) or return $li;
+        $li->estimated_unit_price($price);
+        return update_lineitem($mgr, $li);
+    }
+
+    return $li;
 }
+
+sub get_li_price_from_attr {
+    my($e, $li) = @_;
+    my $attrs = $li->attributes || $e->search_acq_lineitem_attr({lineitem => $li->id});
+
+    for my $attr_type (qw/    
+            lineitem_local_attr_definition 
+            lineitem_prov_attr_definition 
+            lineitem_marc_attr_definition/) {
+
+        my ($attr) = grep {
+            $_->attr_name eq 'estimated_price' and 
+            $_->attr_type eq $attr_type } @$attrs;
+
+        return $attr->attr_value if $attr;
+    }
+
+    return undef;
+}
+
 
 sub update_lineitem {
     my($mgr, $li) = @_;
@@ -501,11 +530,6 @@ sub receive_lineitem_detail {
     $copy->editor($e->requestor->id);
     $e->update_asset_copy($copy) or return 0;
 
-    if($lid->fund_debit) {
-        $lid->fund_debit->encumbrance('f');
-        $e->update_acq_fund_debit($lid->fund_debit) or return 0;
-    }
-
     $mgr->add_lid;
 
     return 1 if $skip_complete_check;
@@ -540,11 +564,6 @@ sub rollback_receive_lineitem_detail {
     $copy->edit_date('now');
     $copy->editor($e->requestor->id);
     $e->update_asset_copy($copy) or return 0;
-
-    if($lid->fund_debit) {
-        $lid->fund_debit->encumbrance('t');
-        $e->update_acq_fund_debit($lid->fund_debit) or return 0;
-    }
 
     $mgr->add_lid;
     return $lid;
@@ -583,45 +602,13 @@ sub set_lineitem_attr {
     }
 }
 
-sub get_li_price {
-    my $li = shift;
-    my $attrs = $li->attributes;
-    my ($marc_estimated, $local_estimated, $local_actual, $prov_estimated, $prov_actual);
-
-    for my $attr (@$attrs) {
-        if($attr->attr_name eq 'estimated_price') {
-            $local_estimated = $attr->attr_value 
-                if $attr->attr_type eq 'lineitem_local_attr_definition';
-            $prov_estimated = $attr->attr_value 
-                if $attr->attr_type eq 'lineitem_prov_attr_definition';
-            $marc_estimated = $attr->attr_value
-                if $attr->attr_type eq 'lineitem_marc_attr_definition';
-
-        } elsif($attr->attr_name eq 'actual_price') {
-            $local_actual = $attr->attr_value     
-                if $attr->attr_type eq 'lineitem_local_attr_definition';
-            $prov_actual = $attr->attr_value 
-                if $attr->attr_type eq 'lineitem_prov_attr_definition';
-        }
-    }
-
-    return ($local_actual, 1) if $local_actual;
-    return ($prov_actual, 2) if $prov_actual;
-    return ($local_estimated, 1) if $local_estimated;
-    return ($prov_estimated, 2) if $prov_estimated;
-    return ($marc_estimated, 3);
-}
-
-
 # ----------------------------------------------------------------------------
 # Lineitem Debits
 # ----------------------------------------------------------------------------
 sub create_lineitem_debits {
-    my($mgr, $li, $price, $ptype) = @_; 
+    my($mgr, $li) = @_; 
 
-    ($price, $ptype) = get_li_price($li) unless $price;
-
-    unless($price) {
+    unless($li->estimated_unit_price) {
         $mgr->editor->event(OpenILS::Event->new('ACQ_LINEITEM_NO_PRICE', payload => $li->id));
         $mgr->editor->rollback;
         return 0;
@@ -647,7 +634,7 @@ sub create_lineitem_debits {
             }
         ]);
 
-        create_lineitem_detail_debit($mgr, $li, $lid, $price, $ptype) or return 0;
+        create_lineitem_detail_debit($mgr, $li, $lid) or return 0;
     }
 
     return 1;
@@ -656,9 +643,8 @@ sub create_lineitem_debits {
 
 # flesh li->provider
 # flesh lid->fund
-# ptype 1=local, 2=provider, 3=marc
 sub create_lineitem_detail_debit {
-    my($mgr, $li, $lid, $price, $ptype) = @_;
+    my($mgr, $li, $lid) = @_;
 
     my $li_id = ref($li) ? $li->id : $li;
 
@@ -680,19 +666,27 @@ sub create_lineitem_detail_debit {
         ]);
     }
 
-    my $ctype = $lid->fund->currency_type;
-    my $amount = $price;
+    my $amount = $li->estimated_unit_price;
+    if($li->provider->currency_type ne $lid->fund->currency_type) {
 
-    if($ptype == 2) { # price from vendor
-        $ctype = $li->provider->currency_type;
-        $amount = currency_conversion($mgr, $ctype, $lid->fund->currency_type, $price);
+        # At Fund debit creation time, translate into the currency of the fund
+        # TODO: org setting to disable automatic currency conversion at debit create time?
+
+        $amount = $mgr->editor->json_query({
+            from => [
+                'acq.exchange_ratio', 
+                $li->provider->currency_type, # source currency
+                $lid->fund->currency_type, # destination currency
+                $li->estimated_unit_price # source amount
+            ]
+        })->[0]->{value};
     }
 
     my $debit = create_fund_debit(
         $mgr, 
         fund => $lid->fund->id,
-        origin_amount => $price,
-        origin_currency_type => $ctype,
+        origin_amount => $li->estimated_unit_price,
+        origin_currency_type => $li->provider->currency_type,
         amount => $amount
     ) or return 0;
 
@@ -738,13 +732,6 @@ sub create_fund_debit {
     $debit->clear_id;
     $mgr->add_debit($debit->amount);
     return $mgr->editor->create_acq_fund_debit($debit);
-}
-
-sub currency_conversion {
-    my($mgr, $src_currency, $dest_currency, $amount) = @_;
-    my $result = $mgr->editor->json_query(
-        {from => ['acq.exchange_ratio', $src_currency, $dest_currency, $amount]});
-    return $result->[0]->{'acq.exchange_ratio'};
 }
 
 
@@ -1115,6 +1102,7 @@ sub upload_records {
     my $provider = $data->{provider};
     my $picklist = $data->{picklist};
     my $create_po = $data->{create_po};
+    my $activate_po = $data->{activate_po};
     my $ordering_agency = $data->{ordering_agency};
     my $create_assets = $data->{create_assets};
     my $po;
@@ -1196,7 +1184,7 @@ sub upload_records {
         $args{picklist} = $picklist->id if $picklist;
         if($po) {
             $args{purchase_order} = $po->id;
-            $args{state} = 'on-order';
+            $args{state} = 'order-pending';
         }
 
         my $li = create_lineitem($mgr, %args) or return $mgr->editor->die_event;
@@ -1209,6 +1197,9 @@ sub upload_records {
         push(@li_list, $li->id);
         $mgr->respond;
 	}
+
+    my $die_event = activate_purchase_order_impl($mgr, $po->id) if $po;;
+    return $die_event if $die_event;
 
 	$e->commit;
     unlink($filename);
@@ -1259,21 +1250,8 @@ sub import_lineitem_details {
         $idx++;
     }
 
-    # set the price attr so we'll know the source of the price
-    set_lineitem_attr(
-        $mgr, 
-        attr_name => 'estimated_price',
-        attr_type => 'lineitem_local_attr_definition',
-        attr_value => $price,
-        lineitem => $li->id
-    ) or return 0;
-
-    # if we're creating a purchase order, create the debits
-    if($li->purchase_order) {
-        create_lineitem_debits($mgr, $li, $price, 2) or return 0;
-        $mgr->respond;
-    }
-
+    $li->estimated_unit_price($price);
+    update_lineitem($mgr, $li) or return 0;
     return 1;
 }
 
@@ -1473,8 +1451,6 @@ sub create_purchase_order_api {
             $li->state('pending-order');
             update_lineitem($mgr, $li) or return $e->die_event;
             $mgr->respond;
-
-            create_lineitem_debits($mgr, $li) or return $e->die_event;
         }
     }
 
@@ -1838,24 +1814,29 @@ __PACKAGE__->register_method(
 );
 
 sub set_lineitem_price_api {
-    my($self, $conn, $auth, $li_id, $price, $currency) = @_;
+    my($self, $conn, $auth, $li_id, $price) = @_;
 
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
-    # XXX perms
+    my $li = $e->retrieve_acq_lineitem([
+        $li_id,
+        {   flesh => 1,
+            flesh_fields => {jub => ['purchase_order', 'picklist']}
+        }
+    ]) or return $e->die_event;
 
-    my $li = $e->retrieve_acq_lineitem($li_id) or return $e->die_event;
+    if($li->purchase_order) {
+        return $e->die_event unless 
+            $e->allowed('CREATE_PURCHASE_ORDER', $li->purchase_order->ordering_agency);
+    } else {
+        return $e->die_event unless 
+            $e->allowed('CREATE_PICKLIST', $li->picklist->org_unit);
+    }
 
-    # update the local attr for estimated price
-    set_lineitem_attr(
-        $mgr, 
-        attr_name => 'estimated_price',
-        attr_type => 'lineitem_local_attr_definition',
-        attr_value => $price,
-        lineitem => $li_id
-    ) or return $e->die_event;
+    $li->estimated_unit_price($price);
+    update_lineitem($mgr, $li) or return $e->die_event;
 
     my $lid_ids = $e->search_acq_lineitem_detail(
         {lineitem => $li_id, fund_debit => {'!=' => undef}}, 
@@ -1869,18 +1850,7 @@ sub set_lineitem_price_api {
             flesh => 1, flesh_fields => {acqlid => ['fund', 'fund_debit']}}
         ]);
 
-        # onless otherwise specified, assume currency of new price is same as currency type of the fund
-        $currency ||= $lid->fund->currency_type;
-        my $amount = $price;
-
-        if($lid->fund->currency_type ne $currency) {
-            $amount = currency_conversion($mgr, $currency, $lid->fund->currency_type, $price);
-        }
-        
-        $lid->fund_debit->origin_currency_type($currency);
-        $lid->fund_debit->origin_amount($price);
-        $lid->fund_debit->amount($amount);
-
+        $lid->fund_debit->amount($price);
         $e->update_acq_fund_debit($lid->fund_debit) or return $e->die_event;
         $mgr->add_lid;
         $mgr->respond;
@@ -2044,6 +2014,7 @@ sub activate_purchase_order {
 
     while( my $li = $e->search_acq_lineitem($query)->[0] ) {
         $li->state('on-order');
+        create_lineitem_debits($mgr, $li) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
         $mgr->post_process( sub { create_lineitem_status_events($mgr, $li->id, 'aur.ordered'); });
         $mgr->respond;

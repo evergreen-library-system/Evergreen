@@ -595,25 +595,6 @@ sub retrieve_all_currency_type {
     $conn->respond($_) for @{$e->retrieve_all_acq_currency_type()};
 }
 
-sub currency_conversion_impl {
-    my($src_currency, $dest_currency, $amount) = @_;
-    my $result = new_editor()->json_query({
-        select => {
-            acqct => [{
-                params => [$dest_currency, $amount],
-                transform => 'acq.exchange_ratio',
-                column => 'code',
-                alias => 'value'
-            }]
-        },
-        where => {code => $src_currency},
-        from => 'acqct'
-    });
-
-    return $result->[0]->{value};
-}
-
-
 __PACKAGE__->register_method(
 	method => 'create_lineitem_assets',
 	api_name	=> 'open-ils.acq.lineitem.assets.create',
@@ -733,137 +714,6 @@ sub create_purchase_order_impl {
 
     $e->create_acq_purchase_order($p_order) or return $e->die_event;
     return undef;
-}
-
-
-# returns (price, type), where type=1 is local, type=2 is provider, type=3 is marc
-sub get_li_price {
-    my $li = shift;
-    my $attrs = $li->attributes;
-    my ($marc_estimated, $local_estimated, $local_actual, $prov_estimated, $prov_actual);
-
-    for my $attr (@$attrs) {
-        if($attr->attr_name eq 'estimated_price') {
-            $local_estimated = $attr->attr_value 
-                if $attr->attr_type eq 'lineitem_local_attr_definition';
-            $prov_estimated = $attr->attr_value 
-                if $attr->attr_type eq 'lineitem_prov_attr_definition';
-            $marc_estimated = $attr->attr_value
-                if $attr->attr_type eq 'lineitem_marc_attr_definition';
-
-        } elsif($attr->attr_name eq 'actual_price') {
-            $local_actual = $attr->attr_value     
-                if $attr->attr_type eq 'lineitem_local_attr_definition';
-            $prov_actual = $attr->attr_value 
-                if $attr->attr_type eq 'lineitem_prov_attr_definition';
-        }
-    }
-
-    return ($local_actual, 1) if $local_actual;
-    return ($prov_actual, 2) if $prov_actual;
-    return ($local_estimated, 1) if $local_estimated;
-    return ($prov_estimated, 2) if $prov_estimated;
-    return ($marc_estimated, 3);
-}
-
-
-__PACKAGE__->register_method(
-	method => 'create_purchase_order_debits',
-	api_name	=> 'open-ils.acq.purchase_order.debits.create',
-	signature => {
-        desc => 'Creates debits associated with a PO',
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'purchase_order whose debits to create', type => 'number'},
-            {desc => 'arguments hash.  Options include: encumbrance=bool', type => 'object'},
-        ],
-        return => {desc => 'The total amount of all created debits, Event on error'}
-    }
-);
-
-sub create_purchase_order_debits {
-    my($self, $conn, $auth, $po_id, $args) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-    
-    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
-
-    my $li_ids = $e->search_acq_lineitem(
-        {purchase_order => $po_id},
-        {idlist => 1}
-    );
-
-    for my $li_id (@$li_ids) {
-        my $li = $e->retrieve_acq_lineitem([
-            $li_id,
-            {   flesh => 1,
-                flesh_fields => {jub => ['attributes']},
-            }
-        ]);
-
-        my ($total, $evt) = create_li_debit_impl($e, $li);
-        return $evt if $evt;
-    }
-    $e->commit;
-    return 1;
-}
-
-sub create_li_debit_impl {
-    my($e, $li, $args) = @_;
-    $args ||= {};
-
-    my ($price, $ptype) = get_li_price($li);
-
-    unless($price) {
-        $e->rollback;
-        return (undef, OpenILS::Event->new('ACQ_LINEITEM_NO_PRICE', payload => $li->id));
-    }
-
-    unless($li->provider) {
-        $e->rollback;
-        return (undef, OpenILS::Event->new('ACQ_LINEITEM_NO_PROVIDER', payload => $li->id));
-    }
-
-    my $lid_ids = $e->search_acq_lineitem_detail(
-        {lineitem => $li->id}, 
-        {idlist=>1}
-    );
-
-    my $total = 0;
-    for my $lid_id (@$lid_ids) {
-
-        my $lid = $e->retrieve_acq_lineitem_detail([
-            $lid_id,
-            {   flesh => 1, 
-                flesh_fields => {acqlid => ['fund']}
-            }
-        ]);
-
-        my $debit = Fieldmapper::acq::fund_debit->new;
-        $debit->fund($lid->fund->id);
-        $debit->origin_amount($price);
-
-        if($ptype == 2) { # price from vendor
-            $debit->origin_currency_type($li->provider->currency_type);
-            $debit->amount(currency_conversion_impl(
-                $li->provider->currency_type, $lid->fund->currency_type, $price));
-        } else {
-            $debit->origin_currency_type($lid->fund->currency_type);
-            $debit->amount($price);
-        }
-
-        $debit->encumbrance($args->{encumbrance});
-        $debit->debit_type('purchase');
-        $e->create_acq_fund_debit($debit) or return (undef, $e->die_event);
-
-        # point the lineitem detail at the fund debit object
-        $lid->fund_debit($debit->id);
-        $lid->fund($lid->fund->id);
-        $e->update_acq_lineitem_detail($lid) or return (undef, $e->die_event);
-        $total += $debit->amount;
-    }
-
-    return ($total);
 }
 
 
@@ -1005,6 +855,8 @@ sub po_perm_failure {
 
 sub build_price_summary {
     my ($e, $po_id) = @_;
+
+    # TODO: Add summary value for estimated amount (pre-encumber)
 
     # fetch the fund debits for this purchase order
     my $debits = $e->json_query({

@@ -254,10 +254,10 @@ function AcqLiTable() {
 
         // lineitem state
         nodeByName('li_state', row).innerHTML = li.state(); // TODO i18n state labels
+        
         // lineitem price
         var priceInput = dojo.query('[name=price]', row)[0];
-        var priceData = liWrapper.getPrice();
-        priceInput.value = (priceData) ? priceData.price : '';
+        priceInput.value = li.estimated_unit_price() || '';
         priceInput.onchange = function() { self.updateLiPrice(priceInput, li) };
 
         // show either "mark received" or "unreceive" as appropriate
@@ -505,11 +505,7 @@ function AcqLiTable() {
     this.updateLiPrice = function(input, li) {
 
         var price = input.value;
-        var liWrapper = new openils.acq.Lineitem({lineitem:li});
-        var oldPrice = liWrapper.getPrice() || null;
-
-        if(oldPrice) oldPrice = oldPrice.price;
-        if(price == oldPrice) return;
+        if(Number(price) == Number(li.estimated_unit_price())) return;
 
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.price.set'],

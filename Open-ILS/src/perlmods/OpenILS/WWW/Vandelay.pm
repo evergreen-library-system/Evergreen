@@ -69,6 +69,7 @@ sub spool_marc {
     my $provider = $cgi->param('provider') || '';
     my $picklist = $cgi->param('picklist') || '';
     my $create_po = $cgi->param('create_po') || '';
+    my $activate_po = $cgi->param('activate_po') || '';
     my $ordering_agency = $cgi->param('ordering_agency') || '';
     my $create_assets = $cgi->param('create_assets') || '';
 
