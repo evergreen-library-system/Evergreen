@@ -139,6 +139,12 @@ INSERT INTO TABLE money.materialized_billable_xact_summary
 
 COMMIT;
 
+-- Ability to import a record with a different TCN
+INSERT INTO permission.perm_list (code, description) VALUES ('ALLOW_ALT_TCN', 'Allows staff to import a record using an alternate TCN to avoid conflicts');
+
+-- Ability to merge users
+INSERT INTO permission.perm_list (code, description) VALUES ('MERGE_USERS', 'Allows user records to be merged');
+
 -- More trigger event definition permissions
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_CLEANUP', 'Allow a user to create, delete, and update trigger cleanup entries');
 INSERT INTO permission.perm_list (code, description) VALUES ('CREATE_TRIGGER_CLEANUP', 'Allow a user to create trigger cleanup entries');
@@ -174,5 +180,4 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 -- View trigger permissions are required at a consortial level for initial setup
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
     SELECT 10, id, 0, false FROM permission.perm_list WHERE code LIKE 'VIEW_TRIGGER%';
-
 
