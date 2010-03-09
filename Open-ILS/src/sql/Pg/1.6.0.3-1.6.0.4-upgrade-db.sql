@@ -493,7 +493,7 @@ INSERT INTO permission.perm_list (code, description) VALUES ('DELETE_TRIGGER_TEM
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_VALIDATOR', 'Allow a user to create, update, and delete trigger validators');
 INSERT INTO permission.perm_list (code, description) VALUES ('CREATE_TRIGGER_VALIDATOR', 'Allow a user to create trigger validators');
 INSERT INTO permission.perm_list (code, description) VALUES ('DELETE_TRIGGER_VALIDATOR', 'Allow a user to delete trigger validators');
-INSERT INTO permission.perm_list (code, description) VALUES ('UPDATE_TRIGGER_VALIDATOR', 'Allow a user to update trigger validators';
+INSERT INTO permission.perm_list (code, description) VALUES ('UPDATE_TRIGGER_VALIDATOR', 'Allow a user to update trigger validators');
 
 -- Add trigger administration permissions to the Local System Administrator group
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
