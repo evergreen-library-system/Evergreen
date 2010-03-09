@@ -1562,8 +1562,11 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (7, (SE
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (7, (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_FUND'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (7, (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_CURRENCY_TYPE'), 1, false);
 
+-- Ability to import a record with a different TCN
+INSERT INTO permission.perm_list (code, description) VALUES ('ALLOW_ALT_TCN', 'Allows staff to import a record using an alternate TCN to avoid conflicts');
+
 -- Ability to merge users
-INSERT INTO permission.perm_list (code) VALUES ('MERGE_USERS');
+INSERT INTO permission.perm_list (code, description) VALUES ('MERGE_USERS', 'Allows user records to be merged');
 
 -- Trigger event definition permissions
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_EVENT_DEF', 'Allow a user to administer trigger event definitions');
