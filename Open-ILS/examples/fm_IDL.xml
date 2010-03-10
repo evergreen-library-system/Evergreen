@@ -4385,7 +4385,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Publication Date" name="pubdate" reporter:datatype="text" />
 			<field reporter:label="Mentioned In" name="mentioned" reporter:datatype="text" />
 			<field reporter:label="Other Info" name="other_info" reporter:datatype="text" />
-			<field reporter:label="Need Before Date" name="need_before" reporter:datatype="timestamp" />
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link" />
 		</fields>
 		<links>
@@ -5091,7 +5090,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="acqcr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::cancel_reason" oils_persist:tablename="acq.cancel_reason" reporter:label="Cancel Reason">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.cancel_reason_id_seq">
-			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector='label'/>
 			<field reporter:label="Using Library" name="org_unit" reporter:datatype="org_unit"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
