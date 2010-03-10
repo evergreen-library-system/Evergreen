@@ -1,0 +1,34 @@
+[% WRAPPER 'default/base.tt2' %]
+[% ctx.page_title = 'Patron Requests' %]
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/user_request.js'> </script>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>[% ctx.page_title %]</div>
+        <div>
+        </div>
+    </div>
+    <div>
+        <span>Context Org Unit</span>
+        <select 
+            dojoType="openils.widget.OrgUnitFilteringSelect" 
+            jsId='contextOrgSelector'
+            searchAttr='shortname' 
+            labelAttr='shortname'> 
+        </select>
+    </div>
+    <table  jsId="rGrid"
+            dojoType="openils.widget.AutoGrid"
+            query="{id: '*'}"
+            defaultCellWidth='"auto"'
+            fmClass='aur'
+            editStyle='pane'
+            autoHeight='true'
+            suppressFields="['id']"
+            showPaginator='true'
+            showColumnPicker='true'
+            columnPickerPrefix='"acq.picklist.user_reqeust"'
+            editOnEnter='true'>
+    </table>
+</div>
+[% END %]
