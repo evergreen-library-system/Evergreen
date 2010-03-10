@@ -71,7 +71,7 @@ sub handler {
 
 	my $cgi = new CGI;
 	my $auth_ses = $cgi->cookie('ses') || $cgi->param('ses');
-	my $ws_ou = $cgi->cookie('ws_ou') || $cgi->param('ws_ou');
+	my $ws_ou = $apache->dir_config('OILSProxyLoginOU') || $cgi->cookie('ws_ou') || $cgi->param('ws_ou');
 
 	my $url = $cgi->url;
 
