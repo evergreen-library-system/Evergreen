@@ -4394,7 +4394,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 			<link field="eg_bib" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="request_type" reltype="has_a" key="id" map="" class="aurt"/>
-			<link field="cancel_reason" reltype="might_have" key="id" map="" class="acqcr"/>
+			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -5138,7 +5138,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="lineitems" reltype="has_many" key="purchase_order" map="" class="jub"/>
 			<link field="notes" reltype="has_many" key="purchase_order" map="" class="acqpon"/>
 			<link field="ordering_agency" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="cancel_reason" reltype="might_have" key="id" map="" class="acqcr"/>
+			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -6017,16 +6017,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
     </class>
 
     <class id="aufhl" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_loops" oils_persist:tablename="action.unfulfilled_hold_loops" oils_persist:readonly="true">
-		<oils_persist:source_definition>
-
-	    SELECT  u.hold,
-	            c.circ_lib,
-	            count(*)
-	      FROM  action.unfulfilled_hold_list u
-	            JOIN asset.copy c ON (c.id = u.current_copy)
-	      GROUP BY 1,2
-
-		</oils_persist:source_definition>
         <fields>
             <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
             <field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="link"/>
@@ -6039,14 +6029,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
     </class>
 
     <class id="aufhml" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_min_loop" oils_persist:tablename="action.unfulfilled_hold_min_loop" oils_persist:readonly="true">
-		<oils_persist:source_definition>
-
-	    SELECT  hold,
-	            min(count)
-	      FROM  action.unfulfilled_hold_loops
-	      GROUP BY 1
-
-		</oils_persist:source_definition>
         <fields>
             <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
             <field reporter:label="Min Loop" name="min" reporter:datatype="int"/>
@@ -6057,14 +6039,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
     </class>
 
     <class id="aufhil" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_innermost_loop" oils_persist:tablename="action.unfulfilled_hold_innermost_loop" oils_persist:readonly="true">
-		<oils_persist:source_definition>
-
-	    SELECT  DISTINCT l.*
-	      FROM  action.unfulfilled_hold_loops l
-	            JOIN action.unfulfilled_hold_min_loop m USING (hold)
-	      WHERE l.count = m.min
-
-		</oils_persist:source_definition>
         <fields>
             <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
             <field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="link"/>
@@ -6077,14 +6051,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
     </class>
 
     <class id="aufhmxl" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_max_loop" oils_persist:tablename="action.unfulfilled_hold_max_loop" oils_persist:readonly="true">
-		<oils_persist:source_definition>
-
-	    SELECT  hold,
-	            max(count)
-	      FROM  action.unfulfilled_hold_loops
-	      GROUP BY 1
-
-		</oils_persist:source_definition>
         <fields>
             <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
             <field reporter:label="Max Loop" name="max" reporter:datatype="int"/>
@@ -6094,7 +6060,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
     </class>
 
-    <class id="aufhol" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_outermost_loop" oils_persist:tablename="action.unfulfilled_hold_outermost_loop" oils_persist:readonly="true">
+    <class id="aufhol" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_outermost_loop" oils_persist:readonly="true">
 		<oils_persist:source_definition>
 
 	    SELECT  DISTINCT l.*
@@ -6181,7 +6147,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is Aggregate" name="is_aggregate" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="return_type" reltype="might_have" key="id" map="" class="qdt"/>
+			<link field="return_type" reltype="has_a" key="id" map="" class="qdt"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6220,12 +6186,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Cast Type" name="cast_type" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="left_operand" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="right_operand" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="function_id" reltype="might_have" key="id" map="" class="qfs"/>
-			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
-			<link field="cast_type" reltype="might_have" key="id" map="" class="qdt"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="right_operand" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="function_id" reltype="has_a" key="id" map="" class="qfs"/>
+			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
+			<link field="cast_type" reltype="has_a" key="id" map="" class="qdt"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6241,7 +6207,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
-			<link field="condition" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="condition" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="result" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">

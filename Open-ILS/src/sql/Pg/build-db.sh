@@ -106,6 +106,7 @@ ordered_file_list="
   110.hold_matrix.sql
 
   200.schema.acq.sql
+  201.acq.audit-functions.sql
   210.schema.serials.sql
 
   300.schema.staged_search.sql

@@ -473,6 +473,12 @@ CREATE OR REPLACE VIEW action.unfulfilled_hold_innermost_loop AS
             JOIN action.unfulfilled_hold_min_loop m USING (hold)
       WHERE l.count = m.min;
 
+CREATE VIEW action.unfulfilled_hold_max_loop AS
+    SELECT  hold,
+            max(count) AS max
+      FROM  action.unfulfilled_hold_loops
+      GROUP BY 1;
+
 
 -- represents a circ chain summary
 CREATE TYPE action.circ_chain_summary AS (
