@@ -825,10 +825,16 @@ function vlImportRecordQueue(type, queueId, noMatchOnly, onload) {
     if(type == 'auth')
         method = method.replace('bib', 'auth');
 
+    var options = {};
+    if(vlUploadQueueAutoOverlayExact.checked) {
+        options.auto_overlay_exact = true;
+        vlUploadQueueAutoOverlayExact.checked = false;
+    }
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
-            params: [authtoken, queueId],
+            params: [authtoken, queueId, options],
             onresponse: function(r) {
                 var resp = r.recv().content();
                 if(e = openils.Event.parse(resp))
@@ -864,8 +870,12 @@ function batchUpload() {
     currentType = dijit.byId('vl-record-type').getValue();
 
     var handleProcessSpool = function() {
-        if(vlUploadQueueAutoImport.checked) {
-            vlImportRecordQueue(currentType, currentQueueId, true,  
+        if(vlUploadQueueAutoImport.checked || vlUploadQueueAutoOverlayExact.checked) {
+
+            vlImportRecordQueue(
+                currentType, 
+                currentQueueId, 
+                vlUploadQueueAutoImport.checked,  
                 function() {
                     if(vlUploadQueueHoldingsImport.checked) {
                         vlImportHoldings(

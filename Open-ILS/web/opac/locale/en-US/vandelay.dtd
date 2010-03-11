@@ -2,6 +2,7 @@
 <!ENTITY vandelay.auth.attrs "Authority attributes">
 <!ENTITY vandelay.auth.records "Authority Records">
 <!ENTITY vandelay.auto.import.noncolliding "Auto-Import Non-Colliding Records">
+<!ENTITY vandelay.auto.import.auto_overlay_exact "Auto Merge/Overlay Exact Matches">
 <!ENTITY vandelay.auto.width "Auto Width">
 <!ENTITY vandelay.back.to.import.queue "Back To Import Queue">
 <!ENTITY vandelay.bib.attrs "Bibliographic attributes">
