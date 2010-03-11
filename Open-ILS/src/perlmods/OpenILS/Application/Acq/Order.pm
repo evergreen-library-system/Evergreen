@@ -2000,6 +2000,17 @@ sub activate_purchase_order {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+    my $die_event = activate_purchase_order_impl($mgr, $po_id);
+    return $die_event if $die_event;
+    $e->commit;
+    $conn->respond_complete(1);
+    $mgr->run_post_response_hooks;
+    return undef;
+}
+
+sub activate_purchase_order_impl {
+    my($mgr, $po_id) = @_;
+    my $e = $mgr->editor;
 
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
     return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
@@ -2020,9 +2031,6 @@ sub activate_purchase_order {
         $mgr->respond;
     }
 
-    $e->commit;
-    $conn->respond_complete(1);
-    $mgr->run_post_response_hooks;
     return undef;
 }
 
