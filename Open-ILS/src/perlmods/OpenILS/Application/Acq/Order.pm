@@ -2314,4 +2314,50 @@ sub update_user_request {
     return {complete => 1};
 }
 
+__PACKAGE__->register_method (
+    method      => 'new_user_request',
+    api_name    => 'open-ils.acq.user_request.create'
+);
+
+sub new_user_request {
+    my($self, $conn, $auth, $form_data) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    my $rid = $e->requestor->id;
+    my $target_user_fleshed;
+    if (! defined $$form_data{'usr'}) {
+        $$form_data{'usr'} = $rid;
+    }
+    if ($$form_data{'usr'} != $rid) {
+        # See if the requestor can place the request on behalf of a different user.
+        $target_user_fleshed = $e->retrieve_actor_user($$form_data{'usr'}) or return $e->die_event;
+        $e->allowed('user_request.create', $target_user_fleshed->home_ou) or return $e->die_event;
+    } else {
+        $target_user_fleshed = $e->requestor;
+        $e->allowed('CREATE_PURCHASE_REQUEST') or return $e->die_event;
+    }
+    if (! defined $$form_data{'pickup_lib'}) {
+        if ($target_user_fleshed->ws_ou) {
+            $$form_data{'pickup_lib'} = $target_user_fleshed->ws_ou;
+        } else {
+            $$form_data{'pickup_lib'} = $target_user_fleshed->home_ou;
+        }
+    }
+    if (! defined $$form_data{'request_type'}) {
+        $$form_data{'request_type'} = 1; # Books
+    }
+    my $aur_obj = new Fieldmapper::acq::user_request; 
+    $aur_obj->isnew(1);
+    $aur_obj->usr( $$form_data{'usr'} );
+    $aur_obj->request_date( 'now' );
+    for my $field ( keys %$form_data ) {
+        if (defined $$form_data{$field} and $field !~ /^(id|lineitem|eg_bib|request_date|cancel_reason)$/) {
+            $aur_obj->$field( $$form_data{$field} );
+        }
+    }
+
+    return ($e->create_acq_user_request($aur_obj) or $e->die_event);
+}
+
+
 1;
