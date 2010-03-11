@@ -361,7 +361,7 @@ sub request {
             $self->log(D,"running in substream mode");
             $val = [];
             while( my $resp = $req->recv(timeout => $self->timeout) ) {
-                push(@$val, $resp->content) if $resp->content;
+                push(@$val, $resp->content) if $resp->content and not $self->discard;
             }
 
         } else {
@@ -389,6 +389,16 @@ sub substream {
    my( $self, $bool ) = @_;
    $self->{substream} = $bool if defined $bool;
    return $self->{substream};
+}
+
+# -----------------------------------------------------------------------------
+# discard response data instead of returning it to the caller.  currently only 
+# works in conjunction with substream mode.  
+# -----------------------------------------------------------------------------
+sub discard {
+   my( $self, $bool ) = @_;
+   $self->{discard} = $bool if defined $bool;
+   return $self->{discard};
 }
 
 
@@ -661,6 +671,7 @@ sub runmethod {
 
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
     $self->timeout($$options{timeout});
+    $self->discard($$options{discard});
 
 	# remove any stale events
 	$self->clear_event;
@@ -791,6 +802,7 @@ sub json_query {
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
 
     $self->timeout($$options{timeout});
+    $self->discard($$options{discard});
 	$self->clear_event;
     my $obj;
     my $err;
