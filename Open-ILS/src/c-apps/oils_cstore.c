@@ -138,7 +138,7 @@ static int is_good_operator( const char* op );
 static void pop_query_frame( void );
 static void push_query_frame( void );
 static int add_query_core( const char* alias, const char* class_name );
-static ClassInfo* search_alias( const char* target );
+static inline ClassInfo* search_alias( const char* target );
 static ClassInfo* search_all_alias( const char* target );
 static ClassInfo* add_joined_class( const char* alias, const char* classname );
 static void clear_query_stack( void );
@@ -5085,7 +5085,6 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 	// XXX for now...
 	dbhandle = writehandle;
 
-	osrfHash* fields = osrfHashGet( class_meta, "fields" );
 	char* core_class = osrfHashGet( class_meta, "classname" );
 	char* pkey = osrfHashGet( class_meta, "primarykey" );
 
@@ -5156,13 +5155,13 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 		_tmp = jsonObjectGetKeyConst( query_hash, "flesh" );
 		if (_tmp) {
 			// Get the flesh depth
-			int x = (int) jsonObjectGetNumber(_tmp);
-			if (x == -1 || x > max_flesh_depth)
-				x = max_flesh_depth;
+			int flesh_depth = (int) jsonObjectGetNumber( _tmp );
+			if ( flesh_depth == -1 || flesh_depth > max_flesh_depth )
+				flesh_depth = max_flesh_depth;
 
 			// We need a non-zero flesh depth, and a list of fields to flesh
 			const jsonObject* temp_blob = jsonObjectGetKeyConst( query_hash, "flesh_fields" );
-			if ( temp_blob && x > 0 ) {
+			if ( temp_blob && flesh_depth > 0 ) {
 
 				jsonObject* flesh_blob = jsonObjectClone( temp_blob );
 				const jsonObject* flesh_fields = jsonObjectGetKeyConst( flesh_blob, core_class );
@@ -5170,6 +5169,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 				osrfStringArray* link_fields = NULL;
 				osrfHash* links = osrfHashGet( class_meta, "links" );
 
+				// Make an osrfStringArray of the names of fields to be fleshed
 				if (flesh_fields) {
 					if (flesh_fields->size == 1) {
 						const char* _t = jsonObjectGetString(
@@ -5189,6 +5189,9 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 					}
 				}
 
+				osrfHash* fields = osrfHashGet( class_meta, "fields" );
+
+				// Iterate over the JSON_ARRAY of rows
 				jsonObject* cur;
 				unsigned long res_idx = 0;
 				while ((cur = jsonObjectGetIndex( res_list, res_idx++ ) )) {
@@ -5196,32 +5199,31 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 					int i = 0;
 					const char* link_field;
 
+					// Iterate over the list of fleshable fields
 					while ( (link_field = osrfStringArrayGetString(link_fields, i++)) ) {
 
 						osrfLogDebug(OSRF_LOG_MARK, "Starting to flesh %s", link_field);
 
 						osrfHash* kid_link = osrfHashGet(links, link_field);
 						if (!kid_link)
-							continue;
+							continue;     // Not a link field; skip it
 
 						osrfHash* field = osrfHashGet(fields, link_field);
 						if (!field)
-							continue;
-
-						osrfHash* value_field = field;
+							continue;     // Not a field at all; skip it (IDL is ill-formed)
 
 						osrfHash* kid_idl = osrfHashGet(oilsIDL(), osrfHashGet(kid_link, "class"));
 						if (!kid_idl)
-							continue;
+							continue;   // The class it links to doesn't exist; skip it
 
-						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_many" ))) {
-							// has_many
-							value_field = osrfHashGet(
-								fields, osrfHashGet( class_meta, "primarykey" ) );
-						}
+						const char* reltype = osrfHashGet( kid_link, "reltype" );
+						if( !reltype )
+							continue;   // No reltype; skip it (IDL is ill-formed)
 
-						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) {
-							// might_have
+						osrfHash* value_field = field;
+
+						if (   !strcmp( reltype, "has_many" )
+							|| !strcmp( reltype, "might_have" ) ) { // has_many or might_have
 							value_field = osrfHashGet(
 								fields, osrfHashGet( class_meta, "primarykey" ) );
 						}
@@ -5252,8 +5254,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 						);
 
 						const char* search_key = jsonObjectGetString(
-							jsonObjectGetIndex(
-								cur,
+							jsonObjectGetIndex( cur,
 								atoi( osrfHashGet(value_field, "array_position") )
 							)
 						);
@@ -5273,10 +5274,11 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 							jsonNewObject( search_key )
 						);
 
-						// construct the rest of the query
+						// construct the rest of the query, mostly
+						// by copying pieces of the previous level of query
 						jsonObject* rest_of_query = jsonNewObjectType(JSON_HASH);
 						jsonObjectSetKey( rest_of_query, "flesh",
-							jsonNewNumberObject( (double)(x - 1 + link_map->size) )
+							jsonNewNumberObject( flesh_depth - 1 + link_map->size )
 						);
 
 						if (flesh_blob)
@@ -5295,6 +5297,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 							);
 						}
 
+						// do the query, recursively, to expand the fleshable field
 						jsonObject* kids = doFieldmapperSearch( ctx, kid_idl,
 							where_clause, rest_of_query, err);
 
@@ -5311,6 +5314,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 						osrfLogDebug(OSRF_LOG_MARK, "Search for %s return %d linked objects",
 							osrfHashGet(kid_link, "class"), kids->size);
 
+						// Traverse the result set
 						jsonObject* X = NULL;
 						if ( link_map->size > 0 && kids->size > 0 ) {
 							X = kids;
@@ -5378,7 +5382,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 							osrfHashGet( kid_link, "field" ) );
 						osrfLogDebug(OSRF_LOG_MARK, "%s", jsonObjectToJSON(cur));
 
-					}
+					} // end while loop traversing list of fleshable fields
 				} // end while loop traversing res_list
 				jsonObjectFree( flesh_blob );
 				osrfStringArrayFree(link_fields);
@@ -5979,6 +5983,7 @@ static const char* get_primitive( osrfHash* field ) {
 				MODULENAME,
 				osrfHashGet( field, "name" )
 			);
+
 		s = "string";
 	}
 	return s;
@@ -6102,28 +6107,34 @@ static int is_good_operator( const char* op ) {
 	return 1;
 }
 
-/* ----------------------------------------------------------------------------------
-The following machinery supports a stack of query frames for use by SELECT().
+/**
+	@name Query Frame Management
 
-A query frame caches information about one level of a SELECT query.  When we enter
-a subquery, we push another query frame onto the stack, and pop it off when we leave.
+	The following machinery supports a stack of query frames for use by SELECT().
 
-The query frame stores information about the core class, and about any joined classes
-in the FROM clause.
+	A query frame caches information about one level of a SELECT query.  When we enter
+	a subquery, we push another query frame onto the stack, and pop it off when we leave.
 
-The main purpose is to map table aliases to classes and tables, so that a query can
-join to the same table more than once.  A secondary goal is to reduce the number of
-lookups in the IDL by caching the results.
-----------------------------------------------------------------------------------*/
+	The query frame stores information about the core class, and about any joined classes
+	in the FROM clause.
+
+	The main purpose is to map table aliases to classes and tables, so that a query can
+	join to the same table more than once.  A secondary goal is to reduce the number of
+	lookups in the IDL by caching the results.
+*/
+/*@{*/
 
 #define STATIC_CLASS_INFO_COUNT 3
 
 static ClassInfo static_class_info[ STATIC_CLASS_INFO_COUNT ];
 
-/* ---------------------------------------------------------------------------
- Allocate a ClassInfo as raw memory.  Except for the in_use flag, we don't
- initialize it here.
- ---------------------------------------------------------------------------*/
+/**
+	@brief Allocate a ClassInfo as raw memory.
+	@return Pointer to the newly allocated ClassInfo.
+
+	Except for the in_use flag, which is used only by the allocation and deallocation
+	logic, we don't initialize the ClassInfo here.
+*/
 static ClassInfo* allocate_class_info( void ) {
 	// In order to reduce the number of mallocs and frees, we return a static
 	// instance of ClassInfo, if we can find one that we're not already using.
@@ -6143,9 +6154,10 @@ static ClassInfo* allocate_class_info( void ) {
 	return safe_malloc( sizeof( ClassInfo ) );
 }
 
-/* --------------------------------------------------------------------------
- Free any malloc'd memory owned by a ClassInfo; return it to a pristine state
----------------------------------------------------------------------------*/
+/**
+	@brief Free any malloc'd memory owned by a ClassInfo, returning it to a pristine state.
+	@param info Pointer to the ClassInfo to be cleared.
+*/
 static void clear_class_info( ClassInfo* info ) {
 	// Sanity check
 	if( ! info )
@@ -6165,9 +6177,10 @@ static void clear_class_info( ClassInfo* info ) {
 	info->next = NULL;
 }
 
-/* --------------------------------------------------------------------------
- Deallocate a ClassInfo and everything it owns
----------------------------------------------------------------------------*/
+/**
+	@brief Free a ClassInfo and everything it owns.
+	@param info Pointer to the ClassInfo to be freed.
+*/
 static void free_class_info( ClassInfo* info ) {
 	// Sanity check
 	if( ! info )
@@ -6190,9 +6203,17 @@ static void free_class_info( ClassInfo* info ) {
 	free( info );
 }
 
-/* --------------------------------------------------------------------------
- Populate an already-allocated ClassInfo.  Return 0 if successful, 1 if not.
----------------------------------------------------------------------------*/
+/**
+	@brief Populate an already-allocated ClassInfo.
+	@param info Pointer to the ClassInfo to be populated.
+	@param alias Alias for the class.  If it is NULL, or an empty string, use the class
+	name for an alias.
+	@param class Name of the class.
+	@return Zero if successful, or 1 if not.
+
+	Populate the ClassInfo with copies of the alias and class name, and with pointers to
+	the relevant portions of the IDL for the specified class.
+*/
 static int build_class_info( ClassInfo* info, const char* alias, const char* class ) {
 	// Sanity checks
 	if( ! info ){
@@ -6281,10 +6302,13 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 
 static QueryFrame static_frame[ STATIC_FRAME_COUNT ];
 
-/* ---------------------------------------------------------------------------
- Allocate a ClassInfo as raw memory.  Except for the in_use flag, we don't
- initialize it here.
- ---------------------------------------------------------------------------*/
+/**
+	@brief Allocate a QueryFrame as raw memory.
+	@return Pointer to the newly allocated QueryFrame.
+
+	Except for the in_use flag, which is used only by the allocation and deallocation
+	logic, we don't initialize the QueryFrame here.
+*/
 static QueryFrame* allocate_frame( void ) {
 	// In order to reduce the number of mallocs and frees, we return a static
 	// instance of QueryFrame, if we can find one that we're not already using.
@@ -6304,9 +6328,10 @@ static QueryFrame* allocate_frame( void ) {
 	return safe_malloc( sizeof( QueryFrame ) );
 }
 
-/* --------------------------------------------------------------------------
- Free a QueryFrame, and all the memory it owns.
----------------------------------------------------------------------------*/
+/**
+	@brief Free a QueryFrame, and all the memory it owns.
+	@param frame Pointer to the QueryFrame to be freed.
+*/
 static void free_query_frame( QueryFrame* frame ) {
 	// Sanity check
 	if( ! frame )
@@ -6340,10 +6365,12 @@ static void free_query_frame( QueryFrame* frame ) {
 	free( frame );
 }
 
-/* --------------------------------------------------------------------------
- Search a given QueryFrame for a specified alias.  If you find it, return
- a pointer to the corresponding ClassInfo.  Otherwise return NULL.
----------------------------------------------------------------------------*/
+/**
+	@brief Search a given QueryFrame for a specified alias.
+	@param frame Pointer to the QueryFrame to be searched.
+	@param target The alias for which to search.
+	@return Pointer to the ClassInfo for the specified alias, if found; otherwise NULL.
+*/
 static ClassInfo* search_alias_in_frame( QueryFrame* frame, const char* target ) {
 	if( ! frame || ! target ) {
 		return NULL;
@@ -6368,9 +6395,9 @@ static ClassInfo* search_alias_in_frame( QueryFrame* frame, const char* target )
 	return found_class;
 }
 
-/* --------------------------------------------------------------------------
- Push a new (blank) QueryFrame onto the stack.
----------------------------------------------------------------------------*/
+/**
+	@brief Push a new (blank) QueryFrame onto the stack.
+*/
 static void push_query_frame( void ) {
 	QueryFrame* frame = allocate_frame();
 	frame->join_list = NULL;
@@ -6384,9 +6411,9 @@ static void push_query_frame( void ) {
 	curr_query = frame;
 }
 
-/* --------------------------------------------------------------------------
- Pop a QueryFrame off the stack and destroy it
----------------------------------------------------------------------------*/
+/**
+	@brief Pop a QueryFrame off the stack and destroy it.
+*/
 static void pop_query_frame( void ) {
 	// Sanity check
 	if( ! curr_query )
@@ -6398,9 +6425,16 @@ static void pop_query_frame( void ) {
 	free_query_frame( popped );
 }
 
-/* --------------------------------------------------------------------------
- Populate the ClassInfo for the core class.  Return 0 if successful, 1 if not.
----------------------------------------------------------------------------*/
+/**
+	@brief Populate the ClassInfo for the core class.
+	@param alias Alias for the core class.  If it is NULL or an empty string, we use the
+	class name as an alias.
+	@param class_name Name of the core class.
+	@return Zero if successful, or 1 if not.
+
+	Populate the ClassInfo of the core class with copies of the alias and class name, and
+	with pointers to the relevant portions of the IDL for the core class.
+*/
 static int add_query_core( const char* alias, const char* class_name ) {
 
 	// Sanity checks
@@ -6425,19 +6459,20 @@ static int add_query_core( const char* alias, const char* class_name ) {
 	}
 }
 
-/* --------------------------------------------------------------------------
- Search the current QueryFrame for a specified alias.  If you find it,
- return a pointer to the corresponding ClassInfo.  Otherwise return NULL.
----------------------------------------------------------------------------*/
-static ClassInfo* search_alias( const char* target ) {
+/**
+	@brief Search the current QueryFrame for a specified alias.
+	@param target The alias for which to search.
+	@return A pointer to the corresponding ClassInfo, if found; otherwise NULL.
+*/
+static inline ClassInfo* search_alias( const char* target ) {
 	return search_alias_in_frame( curr_query, target );
 }
 
-/* --------------------------------------------------------------------------
- Search all levels of query for a specified alias, starting with the
- current query.  If you find it, return a pointer to the corresponding
- ClassInfo.  Otherwise return NULL.
----------------------------------------------------------------------------*/
+/**
+	@brief Search all levels of query for a specified alias, starting with the current query.
+	@param target The alias for which to search.
+	@return A pointer to the corresponding ClassInfo, if found; otherwise NULL.
+*/
 static ClassInfo* search_all_alias( const char* target ) {
 	ClassInfo* found_class = NULL;
 	QueryFrame* curr_frame = curr_query;
@@ -6452,9 +6487,13 @@ static ClassInfo* search_all_alias( const char* target ) {
 	return found_class;
 }
 
-/* --------------------------------------------------------------------------
- Add a class to the list of classes joined to the current query.
----------------------------------------------------------------------------*/
+/**
+	@brief Add a class to the list of classes joined to the current query.
+	@param alias Alias of the class to be added.  If it is NULL or an empty string, we use
+	the class name as an alias.
+	@param classname The name of the class to be added.
+	@return A pointer to the ClassInfo for the added class, if successful; otherwise NULL.
+*/
 static ClassInfo* add_joined_class( const char* alias, const char* classname ) {
 
 	if( ! classname || ! *classname ) {    // sanity check
@@ -6487,10 +6526,12 @@ static ClassInfo* add_joined_class( const char* alias, const char* classname ) {
 	return info;
 }
 
-/* --------------------------------------------------------------------------
- Destroy all nodes on the query stack.
----------------------------------------------------------------------------*/
+/**
+	@brief Destroy all nodes on the query stack.
+*/
 static void clear_query_stack( void ) {
 	while( curr_query )
 		pop_query_frame();
 }
+
+/*@}*/
