@@ -34,7 +34,7 @@ function retrieve_money_summaries() {
     try {
         JSAN.use('util.money');
         var robj = g.network.simple_request( 'BLOB_BALANCE_OWED_VIA_USERGROUP', [ ses(), g.patron.usrgroup() ]);
-        if (typeof robj.ils_event != 'undefined') { throw(robj); }
+        if (typeof robj.ilsevent != 'undefined') { throw(robj); }
 
         var sum = 0; /* in cents */
         g.group_owed = {};

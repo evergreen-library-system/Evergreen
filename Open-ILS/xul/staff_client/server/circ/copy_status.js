@@ -705,7 +705,7 @@ circ.copy_status.prototype = {
                                     if (! seen[volume_id]) {
                                         seen[volume_id] = 1;
                                         var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
-                                        if (volume && typeof volume.ils_event == 'undefined') {
+                                        if (volume && typeof volume.ilsevent == 'undefined') {
                                             volumes.push( volume );
                                         }
                                     }

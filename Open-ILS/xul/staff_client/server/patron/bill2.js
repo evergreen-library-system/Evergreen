@@ -760,7 +760,7 @@ function apply_payment() {
                 JSAN.use('patron.util'); 
                 patron.util.retrieve_au_via_id(ses(),g.patron_id, function(req) {
                     var au_obj = req.getResultObject();
-                    if (typeof au_obj.ils_event == 'undefined') {
+                    if (typeof au_obj.ilsevent == 'undefined') {
                         g.patron = au_obj;
                         $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
                     }

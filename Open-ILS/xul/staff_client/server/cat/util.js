@@ -211,7 +211,7 @@ cat.util.show_in_opac = function(selection_list) {
             if (!doc_id) {
                 var barcode = selection_list[i].barcode;
                 doc_id = network.simple_request('FM_BRE_ID_VIA_BARCODE',[barcode]);
-                if (typeof doc_id.ils_event != 'undefined' || doc_id == -1) {
+                if (typeof doc_id.ilsevent != 'undefined' || doc_id == -1) {
                     alert($("catStrings").getFormattedString('staff.cat.util.show_in_opac.unknown_barcode', [barcode]));
                     continue;
                 }

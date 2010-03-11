@@ -272,7 +272,7 @@ patron.summary.prototype = {
                                         try {
                                             JSAN.use('util.money');
                                             var robj = req.getResultObject();
-                                            if (typeof robj.ils_event != 'undefined') { throw(robj); }
+                                            if (typeof robj.ilsevent != 'undefined') { throw(robj); }
 
                                             var sum = 0; /* in cents */
                                             obj.group_owed = {};
