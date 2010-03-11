@@ -5190,6 +5190,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp" />
 			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
 			<field reporter:label="Vote Value" name="value" reporter:datatype="text" />
+			<field reporter:label="Vendor Public" name="vendor_public" reporter:datatype="bool" />
 		</fields>
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
@@ -5330,6 +5331,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
 			<field reporter:label="Note Value" name="value" reporter:datatype="text" />
 			<field reporter:label="Alert Text" name="alert_text" reporter:datatype="link" />
+			<field reporter:label="Vendor Public" name="vendor_public" reporter:datatype="bool" />
 		</fields>
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
@@ -6228,10 +6230,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="On Clause ID" name="on_clause" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
-			<link field="function_call" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="parent_relation" reltype="might_have" key="id" map="" class="qfr"/>
-			<link field="on_clause" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
+			<link field="function_call" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="parent_relation" reltype="has_a" key="id" map="" class="qfr"/>
+			<link field="on_clause" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6293,7 +6295,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6308,7 +6310,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Literal" name="literal" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6322,7 +6324,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>

@@ -430,7 +430,8 @@ CREATE TABLE acq.po_note (
 	editor		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
-	value		TEXT				NOT NULL
+	value		TEXT			NOT NULL,
+	vendor_public BOOLEAN       NOT NULL DEFAULT FALSE
 );
 CREATE INDEX po_note_po_idx ON acq.po_note (purchase_order);
 CREATE INDEX acq_po_note_creator_idx  ON acq.po_note ( creator );
@@ -482,7 +483,8 @@ CREATE TABLE acq.lineitem_note (
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	value		TEXT			NOT NULL,
 	alert_text	INT						 REFERENCES acq.lineitem_alert_text(id)
-										 DEFERRABLE INITIALLY DEFERRED
+										 DEFERRABLE INITIALLY DEFERRED,
+	vendor_public BOOLEAN       NOT NULL DEFAULT FALSE
 );
 CREATE INDEX li_note_li_idx ON acq.lineitem_note (lineitem);
 CREATE INDEX li_note_creator_idx  ON acq.lineitem_note ( creator );
