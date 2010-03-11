@@ -2166,6 +2166,7 @@ __PACKAGE__->register_method (
         Retrieve fleshed user requests and related data for a given user or users.
         @param authtoken Login session key
         @param owner Id or array of id's for the pertinent users.
+        @param options Allows one to override the query's 'order_by', 'limit', and 'offset'.  And the 'state' of the lineitem in the search.
     /
 );
 
@@ -2177,6 +2178,7 @@ __PACKAGE__->register_method (
         Retrieve fleshed user requests and related data for a given org unit or units.
         @param authtoken Login session key
         @param owner Id or array of id's for the pertinent org units.
+        @param options Allows one to override the query's 'order_by', 'limit', and 'offset'.  And the 'state' of the lineitem in the search.
     /
 );
 
@@ -2200,6 +2202,15 @@ sub user_requests {
         "order_by"=>[{"class"=>"aur", "field"=>"request_date", "direction"=>"desc"}]
     };
 
+    if ($options && defined $options->{'order_by'}) {
+        $query->{'order_by'} = $options->{'order_by'};        
+    }
+    if ($options && defined $options->{'limit'}) {
+        $query->{'limit'} = $options->{'limit'};        
+    }
+    if ($options && defined $options->{'offset'}) {
+        $query->{'offset'} = $options->{'offset'};        
+    }
     if ($options && defined $options->{'state'}) {
         $query->{'where'}->{'+jub'}->{'-or'}->[1]->{'state'} = $options->{'state'};        
     }
