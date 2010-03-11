@@ -3008,6 +3008,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
 <style>
     table td { padding:5px; border:1px solid #aaa;}
     table { width:95%; border-collapse:collapse; }
+    #vendor-notes { padding:5px; border:1px solid #aaa; }
 </style>
 <table id='vendor-table'>
   <tr>
@@ -3034,7 +3035,18 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
   </tr>
 </table>
 
-<br/><br/><br/>
+<br/><br/>
+<fieldset id='vendor-notes'>
+    <legend>Notes to the Vendor</legend>
+    <ul>
+    [% FOR note IN target.notes %]
+        [% IF note.vendor_public == 't' %]
+            <li>[% note.value %]</li>
+        [% END %]
+    [% END %]
+    </ul>
+</fieldset>
+<br/><br/>
 
 <table>
   <thead>
@@ -3045,6 +3057,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
       <th>Quantity</th>
       <th>Unit Price</th>
       <th>Line Total</th>
+      <th>Notes</th>
     </tr>
   </thead>
   <tbody>
@@ -3054,7 +3067,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
 
   <tr>
     [% count = li.lineitem_details.size %]
-    [% price = PROCESS get_li_attr attr_name = 'estimated_price' %]
+    [% price = li.estimated_unit_price %]
     [% litotal = (price * count) %]
     [% subtotal = subtotal + litotal %]
     [% isbn = PROCESS get_li_attr attr_name = 'isbn' %]
@@ -3066,6 +3079,15 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
     <td>[% count %]</td>
     <td>[% price %]</td>
     <td>[% litotal %]</td>
+    <td>
+        <ul>
+        [% FOR note IN li.lineitem_notes %]
+            [% IF note.vendor_public == 't' %]
+                <li>[% note.value %]</li>
+            [% END %]
+        [% END %]
+        </ul>
+    </td>
   </tr>
   [% END %]
   <tr>
@@ -3088,7 +3110,9 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (4, 'ordering_agency.mailing_address'),
     (4, 'ordering_agency.billing_address'),
     (4, 'provider.addresses'),
-    (4, 'lineitems.attributes');
+    (4, 'lineitems.attributes'),
+    (4, 'lineitems.lineitem_notes'),
+    (4, 'notes');
 
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, template)
