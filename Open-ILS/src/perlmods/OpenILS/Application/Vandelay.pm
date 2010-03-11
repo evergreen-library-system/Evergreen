@@ -199,8 +199,11 @@ sub process_spool {
 	my $self = shift;
 	my $client = shift;
 	my $auth = shift;
-	my $fingerprint = shift;
+	my $fingerprint = shift || '';
 	my $queue_id = shift;
+    my $purpose = shift;
+    my $filename = shift;
+    my $bib_source = shift;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
@@ -222,10 +225,12 @@ sub process_spool {
 
     my $cache = new OpenSRF::Utils::Cache();
 
-    my $data = $cache->get_cache('vandelay_import_spool_' . $fingerprint);
-	my $purpose = $data->{purpose};
-    my $filename = $data->{path};
-    my $bib_source = $data->{bib_source};
+    if($fingerprint) {
+        my $data = $cache->get_cache('vandelay_import_spool_' . $fingerprint);
+	    $purpose = $data->{purpose};
+        $filename = $data->{path};
+        $bib_source = $data->{bib_source};
+    }
 
     unless(-r $filename) {
         $logger->error("unable to read MARC file $filename");
@@ -247,7 +252,7 @@ sub process_spool {
 	my $r = -1;
 	while (try { $r = $batch->next } otherwise { $r = -1 }) {
 		if ($r == -1) {
-			$logger->warn("Proccessing of record $count in set $fingerprint failed.  Skipping this record");
+			$logger->warn("Proccessing of record $count in set $filename failed.  Skipping this record");
 			$count++;
 		}
 
@@ -275,7 +280,7 @@ sub process_spool {
 
 	$e->commit;
     unlink($filename);
-    $cache->delete_cache('vandelay_import_spool_' . $fingerprint);
+    $cache->delete_cache('vandelay_import_spool_' . $fingerprint) if $fingerprint;
 	return undef;
 }
 
