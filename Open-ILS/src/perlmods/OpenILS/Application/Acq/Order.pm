@@ -2356,7 +2356,11 @@ sub new_user_request {
         }
     }
 
-    return ($e->create_acq_user_request($aur_obj) or $e->die_event);
+    $aur_obj = $e->create_acq_user_request($aur_obj) or $e->die_event;
+
+    $e->commit;
+
+    return $aur_obj;
 }
 
 
