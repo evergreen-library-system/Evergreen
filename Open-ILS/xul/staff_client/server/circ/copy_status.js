@@ -695,119 +695,24 @@ circ.copy_status.prototype = {
                                 var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
                                 if (list.length == 0) { return; }
 
-                                var volume_hash = {}; var map_acn = {};
+                                var volumes = []; var seen = {};
 
                                 for (var i = 0; i < list.length; i++) {
                                     var volume_id = list[i];
                                     if (volume_id == -1) {
                                         continue; /* ignore magic pre-cat volume */
                                     }
-                                    if (! map_acn[volume_id]) {
-                                        map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
-                                        map_acn[ volume_id ].copies( [] );
+                                    if (! seen[volume_id]) {
+                                        seen[volume_id] = 1;
+                                        var volume = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ volume_id ]);
+                                        if (volume && typeof volume.ils_event == 'undefined') {
+                                            volumes.push( volume );
+                                        }
                                     }
-                                    var record_id = map_acn[ volume_id ].record();
-                                    if (!volume_hash[record_id]) {
-                                        volume_hash[record_id] = {};
-                                    }
-                                    volume_hash[record_id][volume_id] = 1;
                                 }
 
-                                for (var rec in volume_hash) {
+                                JSAN.use('cat.util'); cat.util.batch_edit_volumes( volumes );
 
-                                    list = [];
-                                    for (var v in volume_hash[rec]) {
-                                        list.push( map_acn[v] );
-                                    }
-
-                                    var edit = 0;
-                                    try {
-                                        edit = obj.network.request(
-                                            api.PERM_MULTI_ORG_CHECK.app,
-                                            api.PERM_MULTI_ORG_CHECK.method,
-                                            [ 
-                                                ses(), 
-                                                obj.data.list.au[0].id(), 
-                                                util.functional.map_list(
-                                                    list,
-                                                    function (o) {
-                                                        return o.owning_lib();
-                                                    }
-                                                ),
-                                                [ 'UPDATE_VOLUME' ]
-                                            ]
-                                        ).length == 0 ? 1 : 0;
-                                    } catch(E) {
-                                        obj.error.sdump('D_ERROR','batch permission check: ' + E);
-                                    }
-
-                                    if (edit==0) {
-                                        alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.perm_failure'));
-                                        return; // no read-only view for this interface
-                                    }
-
-                                    var title;
-                                    if (list.length == 1) {
-                                        title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.edit_volume.title', [rec]);
-                                    } else {
-                                        title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.edit_volumes.title', [rec]);
-                                    }
-
-                                    JSAN.use('util.window'); var win = new util.window();
-                                    //obj.data.volumes_temp = js2JSON( list );
-                                    //obj.data.stash('volumes_temp');
-                                    var my_xulG = win.open(
-                                        window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
-                                        title,
-                                        'chrome,modal,resizable',
-                                        { 'volumes' : JSON2js(js2JSON(list)) }
-                                    );
-
-                                    /* FIXME -- need to unique the temp space, and not rely on modalness of window */
-                                    //obj.data.stash_retrieve();
-                                    //var volumes = JSON2js( obj.data.volumes_temp );
-                                    if (typeof my_xulG.update_these_volumes == 'undefined') { return; }
-                                    var volumes = my_xulG.volumes;
-                                    if (!volumes) { return; }
-                                
-                                    volumes = util.functional.filter_list(
-                                        volumes,
-                                        function (o) {
-                                            return o.ischanged() == '1';
-                                        }
-                                    );
-
-                                    volumes = util.functional.map_list(
-                                        volumes,
-                                        function (o) {
-                                            o.record( rec ); // staff client 2 did not do this.  Does it matter?
-                                            return o;
-                                        }
-                                    );
-
-                                    if (volumes.length == 0) { return; }
-
-                                    try {
-                                        var r = obj.network.request(
-                                            api.FM_ACN_TREE_UPDATE.app,
-                                            api.FM_ACN_TREE_UPDATE.method,
-                                            [ ses(), volumes, false ]
-                                        );
-                                        if (typeof r.ilsevent != 'undefined') {
-                                            switch(Number(r.ilsevent)) {
-                                                case 1705 /* VOLUME_LABEL_EXISTS */ :
-                                                    alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.duplicate'));
-                                                    break;
-                                                default: throw(r);
-                                            }
-                                        } else {
-                                            alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.success'));
-                                        }
-                                    } catch(E) {
-                                        obj.error.standard_unexpected_error_alert('volume update error: ',E);
-                                    }
-
-                                }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('Copy Status -> Volume Edit',E);
                             }

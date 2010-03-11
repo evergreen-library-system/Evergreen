@@ -2516,7 +2516,11 @@
 <!ENTITY staff.cat.volume_editor.title "Volumes">
 <!ENTITY staff.cat.volume_editor.caption.label "Volume Editor">
 <!ENTITY staff.cat.volume_editor.modify.label "Modify">
+<!ENTITY staff.cat.volume_editor.modify.accesskey "M">
 <!ENTITY staff.cat.volume_editor.cancel.label "Cancel">
+<!ENTITY staff.cat.volume_editor.cancel.accesskey "C">
+<!ENTITY staff.cat.volume_editor.automerge.label "Auto-Merge on Volume Collision">
+<!ENTITY staff.cat.volume_editor.automerge.accesskey "A">
 <!ENTITY staff.cat.z3950.marc_import.label "MARC Import via Z39.50">
 <!ENTITY staff.cat.z3950.marc_import.accesskey "I">
 <!ENTITY staff.cat.z3950.service_credentials.label "Service and Credentials">

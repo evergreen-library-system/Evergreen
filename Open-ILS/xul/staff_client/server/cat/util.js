@@ -8,7 +8,7 @@ cat.util = {};
 cat.util.EXPORT_OK    = [ 
     'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
     'transfer_title_holds', 'mark_item_missing', 'mark_item_damaged', 'replace_barcode', 'fast_item_add', 
-    'make_bookable', 'edit_new_brsrc', 'edit_new_bresv'
+    'make_bookable', 'edit_new_brsrc', 'edit_new_bresv', 'batch_edit_volumes'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -623,6 +623,99 @@ cat.util.edit_new_bresv = function(booking_results) {
                 "staff.cat.copy_browser.make_bookable.newtab_failed"
             ) + E
         );
+    }
+}
+
+cat.util.batch_edit_volumes = function(fleshed_volumes) {
+    try {
+        if (!fleshed_volumes || fleshed_volumes.length < 1) { return false; }
+
+        JSAN.use('util.functional');
+        JSAN.use('util.network'); var net = new util.network();
+        JSAN.use('util.window'); var win = new util.window();
+
+        var can_edit = net.simple_request(
+            'PERM_MULTI_ORG_CHECK',
+            [
+                ses(),
+                ses('staff_id'),
+                util.functional.map_list(
+                    fleshed_volumes,
+                    function(v) {
+                        return v.owning_lib();
+                    }
+                ),
+                ['UPDATE_VOLUME']
+            ]
+        );
+        if (!can_edit) {
+            alert(document.getElementById('catStrings').getString('staff.cat.edit_volume.permission_error'));
+            return false;
+        }
+        var title;
+        if (fleshed_volumes.length == 1) {
+            title = document.getElementById('catStrings').getString('staff.cat.edit_volume.title');
+        } else {
+            title = document.getElementById('catStrings').getString('staff.cat.edit_volume.title.plural');
+        }
+
+        function clone_list(o) {
+            var list = JSON2js( js2JSON( o ) );
+            // now that it is safe to clear copies, let's do so, otherwise may get an error from volume edit method
+            for (var i = 0; i < list.length; i++) { list[i].copies( [] ); } 
+            return list;
+        }
+
+        var my_xulG = win.open(
+            xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
+            title,
+            'chrome,modal,resizable',
+            { 'volumes' : clone_list( fleshed_volumes ) }
+        );
+
+        if (typeof my_xulG.update_these_volumes == 'undefined') { return false; }
+
+        var volumes = util.functional.filter_list(
+            my_xulG.volumes,
+            function(v) {
+                return get_bool( v.ischanged() );
+            }
+        );
+
+        if (volumes.length < 1) { return false; }
+
+        var r = net.simple_request(
+            'FM_ACN_TREE_UPDATE',
+            [ ses(), volumes, false, { 'auto_merge_vols' : my_xulG.auto_merge } ],
+            null,
+            {
+                'title' : document.getElementById('catStrings').getString('staff.cat.edit_volumes.override.confirm'),
+                'overridable_events' : [
+                    1705 /* VOLUME_LABEL_EXISTS */
+                ],
+                'text' : {
+                    '1705' : function(r) {
+                        var payload_acn = util.functional.find_id_object_in_list( volumes, r.payload );
+                        return document.getElementById('catStrings').getFormattedString('staff.cat.edit_volumes.label_exists.details',[payload_acn.label()]);
+                    }
+                }
+            }
+        );
+        if (!r) { throw('Update method returned null or false.'); }
+        if (typeof r.ilsevent != 'undefined') {
+            if (r.ilsevent == 1705 /* VOLUME_LABEL_EXISTS */) {
+               /* not overriden, but otherwise handled, so ignore */
+                return false;
+            } else {
+                throw(r);
+            }
+        }
+
+        return true;
+
+    } catch(E) {
+        alert('Error in cat.util.batch_edit_volumes: ' + E);
+        return false;
     }
 }
 

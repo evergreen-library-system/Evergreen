@@ -516,7 +516,7 @@ cat.copy_browser.prototype = {
                             function() {
                                 try {
                                     JSAN.use('util.functional');
-                                    var list = util.functional.map_list(
+                                    var volumes = util.functional.map_list(
                                         util.functional.filter_list(
                                             obj.sel_list,
                                             function (o) {
@@ -527,102 +527,18 @@ cat.copy_browser.prototype = {
                                             return o.split(/_/)[1];
                                         }
                                     );
-                                    if (list.length == 0) return;
-
-                                    var edit = 0;
-                                    try {
-                                        edit = obj.network.request(
-                                            api.PERM_MULTI_ORG_CHECK.app,
-                                            api.PERM_MULTI_ORG_CHECK.method,
-                                            [ 
-                                                ses(), 
-                                                obj.data.list.au[0].id(), 
-                                                util.functional.map_list(
-                                                    list,
-                                                    function (o) {
-                                                        return obj.map_acn[ 'acn_' + o ].owning_lib();
-                                                    }
-                                                ),
-                                                [ 'UPDATE_VOLUME' ]
-                                            ]
-                                        ).length == 0 ? 1 : 0;
-                                    } catch(E) {
-                                        obj.error.sdump('D_ERROR','batch permission check: ' + E);
-                                    }
-
-                                    if (edit==0) {
-                                        alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.permission_error'));
-                                        return; // no read-only view for this interface
-                                    }
-
-                                    list = util.functional.map_list(
-                                        list,
+                                    volumes = util.functional.map_list(
+                                        volumes,
                                         function (o) {
                                             var my_acn = obj.map_acn['acn_' + o];
                                             return function(r){return r;}(my_acn);
                                         }
                                     );
 
-                                    var title;
-                                    if (list.length == 1) {
-                                        title = document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.title');
-                                    } else {
-                                        title = document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.title.plural');
+                                    JSAN.use('cat.util'); 
+                                    if ( cat.util.batch_edit_volumes( volumes ) ) {
+                                        obj.refresh_list();
                                     }
-
-                                    JSAN.use('util.window'); var win = new util.window();
-                                    //obj.data.volumes_temp = js2JSON( list );
-                                    //obj.data.stash('volumes_temp');
-                                    var my_xulG = win.open(
-                                        window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
-                                        title,
-                                        'chrome,modal,resizable',
-                                        { 'volumes' : JSON2js(js2JSON(list)) }
-                                    );
-
-                                    /* FIXME -- need to unique the temp space, and not rely on modalness of window */
-                                    //obj.data.stash_retrieve();
-                                    if (typeof my_xulG.update_these_volumes == 'undefined') { return; }
-                                    var volumes = my_xulG.volumes;
-                                    if (!volumes) return;
-                                
-                                    volumes = util.functional.filter_list(
-                                        volumes,
-                                        function (o) {
-                                            return o.ischanged() == '1';
-                                        }
-                                    );
-
-                                    volumes = util.functional.map_list(
-                                        volumes,
-                                        function (o) {
-                                            o.record( obj.docid ); // staff client 2 did not do this.  Does it matter?
-                                            return o;
-                                        }
-                                    );
-
-                                    if (volumes.length == 0) return;
-
-                                    try {
-                                        var r = obj.network.request(
-                                            api.FM_ACN_TREE_UPDATE.app,
-                                            api.FM_ACN_TREE_UPDATE.method,
-                                            [ ses(), volumes, true ]
-                                        );
-                                        if (typeof r.ilsevent != 'undefined') {
-                                            switch(Number(r.ilsevent)) {
-                                                case 1705 /* VOLUME_LABEL_EXISTS */ :
-                                                    alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.failed'));
-                                                    break;
-                                                default: throw(r);
-                                            }
-                                        } else {
-                                            alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.success'));
-                                        }
-                                    } catch(E) {
-                                        obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.error'),E);
-                                    }
-                                    obj.refresh_list();
 
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.exception'),E);

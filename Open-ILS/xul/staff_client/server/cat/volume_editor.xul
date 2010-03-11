@@ -46,8 +46,6 @@
 
                 JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-                JSAN.use('util.network'); g.network = new util.network();
-
                 JSAN.use('util.functional');
 
                 g.volumes = xul_param('volumes',{'stash_name':'volumes_temp','clear_xpcom':true,'modal_xulG':true}); //JSON2js( g.data.volumes_temp );
@@ -55,10 +53,13 @@
 
                 var rows = document.getElementById('rows');
 
+                var first_tb;
+
                 for (var i = 0; i < g.volumes.length; i++) {
                     var row = document.createElement('row'); rows.appendChild(row);
                     var lib_label = document.createElement('label'); row.appendChild(lib_label);
                     var tb = document.createElement('textbox'); row.appendChild(tb);
+                    if (!first_tb) { first_tb = tb; }
 
                     var lib_id = g.volumes[i].owning_lib();
                     var last_lib_seen;
@@ -71,6 +72,8 @@
                     tb.setAttribute('value',g.volumes[i].label());
                     tb.setAttribute('onchange','try { var v = g.volumes['+i+']; v.ischanged("1"); v.label( this.value ); } catch(E) { alert(E); }');
                 }
+
+                first_tb.select(); first_tb.focus();
 
             } catch(E) {
                 var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/volume_editor.xul', E]);
@@ -86,6 +89,7 @@
                 //g.data.stash('volumes_temp');
                 xulG.volumes = g.volumes;
                 xulG.update_these_volumes = 1;
+                xulG.auto_merge = document.getElementById('auto_merge').checked;
                 update_modal_xulG(xulG);
                 window.close();
             } catch(E) {
@@ -102,9 +106,13 @@
     <groupbox flex="1" style="overflow: auto">
         <caption id="caption" label="&staff.cat.volume_editor.caption.label;"/>
         <hbox>
-            <button label="&staff.cat.volume_editor.cancel.label;" oncommand="window.close();"/>
+            <button label="&staff.cat.volume_editor.cancel.label;" accesskey="&staff.cat.volume_editor.cancel.accesskey;" oncommand="window.close();"/>
             <spacer flex="1" />
-            <button label="&staff.cat.volume_editor.modify.label;" oncommand="g.stash_and_close();"/>
+            <button label="&staff.cat.volume_editor.modify.label;" accesskey="&staff.cat.volume_editor.modify.accesskey;" oncommand="g.stash_and_close();"/>
+        </hbox>
+        <hbox>
+            <spacer flex="1" />
+            <checkbox id="auto_merge" label="&staff.cat.volume_editor.automerge.label;" accesskey="&staff.cat.volume_editor.automerge.accesskey;" oils_persist="checked"/>
         </hbox>
         <grid flex="1">
             <columns> <column /> <column /> <column flex="1"/> </columns>
