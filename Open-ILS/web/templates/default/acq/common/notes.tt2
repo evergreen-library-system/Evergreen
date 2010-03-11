@@ -1,0 +1,62 @@
+[% note_table_for_lc = note_table_for | lower %]
+    <div id="acq-[% note_table_for_lc %]-notes-div" class="hidden">
+        <div class="acq-notes-menu-bar">
+            <table style="width:100%">
+                <tr>
+                    <td style="text-align:left;">
+                        <div dojoType="dijit.form.Button" id="acq-[% note_table_for_lc %]-notes-back-button">&#x2196; Return</div>
+                    </td>
+                    <td style="text-align:right;">
+                        <div dojoType="dijit.form.DropDownButton">
+                            <span>New Note</span>
+                            <div dojoType="dijit.TooltipDialog">
+                                <div class="acq-notes-note-row">
+                                    <div jsId="acq[% note_table_for %]CreateNoteText" dojoType="dijit.form.Textarea" style="height:5em; width:25em;" name="note"></div>
+                                    <div style="margin: 8px 0;">
+                                        <div dojoType="dijit.form.CheckBox" jsId="acq[% note_table_for %]CreateNoteVendorPublic" name="vendor_public" id="acq-[% note_table_for_lc %]-create-note-vendor-public"></div><label for="acq-[% note_table_for_lc %]-create-note-vendor-public">Note is vendor-public</label>
+                                    </div>
+                                </div>
+                                <button jsId="acq[% note_table_for %]CreateNoteSubmit" dojoType="dijit.form.Button" type="submit">Create</button>
+                            </div>
+                        </div>
+[% IF note_table_for == "Lit" %]
+                        <div dojoType="dijit.form.DropDownButton">
+                            <span>New Alert</span>
+                            <div dojoType="dijit.TooltipDialog">
+                                <div class="acq-notes-note-row">
+                                    <label for="acq-lit-alert-alert-text">Choose alert code &nbsp;&nbsp;</label>
+                                    <input id="acq-lit-alert-alert-text" jsId="acqLitAlertAlertText" dojoType="dijit.form.FilteringSelect" labelAttr="code" searchAttr="code" required="true" />
+                                </div>
+                                <div class="acq-notes-note-row">
+                                    <label for="acq-lit-alert-value">Additional comments</label>
+                                    <div jsId="acqLitAlertNoteValue" id="acq-lit-alert-value" dojoType="dijit.form.Textarea" name="value"></div>
+                                </div>
+                                <button jsId="acqLitCreateAlertSubmit" dojoType="dijit.form.Button" type="submit">Create</button>
+                            </div>
+                        </div>
+[% END %]
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <ol id="acq-[% note_table_for_lc %]-notes-tbody">
+            <li id="acq-[% note_table_for_lc %]-notes-row">
+                <table style="width:100%;" class="oils-generic-table">
+                    <tr>
+                        <td width="70%" align="left">
+                            <span name="vendor_public"></span>
+                            <span name="alert_code"></span>
+                            <span style="font-size:120%" name="value"></span>
+                        </td>
+                        <td align="right" style="padding-right:30px;">
+                            <span name="edit_time"></span>
+                            <span style="padding-left:4px;">
+                                <a name="delete" href="javascript:void(0);" style="color:red;">Delete</a>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+        </ol>
+    </div>

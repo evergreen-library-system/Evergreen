@@ -894,7 +894,11 @@ sub retrieve_purchase_order_impl {
     my($e, $po_id, $options) = @_;
 
     $options ||= {};
-    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->event;
+    my $po = $e->retrieve_acq_purchase_order(
+        $options->{"flesh_notes"} ? [
+            $po_id, {"flesh" => 1, "flesh_fields" => {"acqpo" => ["notes"]}}
+        ] : $po_id
+    ) or return $e->event;
 
     if($$options{flesh_lineitems}) {
 

@@ -13,6 +13,13 @@
                 <tr><td>Total Encumbered</td><td>$<span id='acq-po-view-total-enc'/></td></tr>
                 <tr><td>Total Spent</td><td>$<span id='acq-po-view-total-spent'/></td></tr>
                 <tr><td>Status</td><td><span id='acq-po-view-state'/></td></tr>
+                <tr>
+                    <td>Notes</td>
+                    <td>
+                        <a href="javascript:void(0);"
+                            id="acq-po-view-notes"></a>
+                    </td>
+                </tr>
                 <tr><td><a class='hidden' id='acq-po-activate' href='javascript:void(0);' onclick='activatePo()'>Activate Order</a></td></tr>
                 <tr><td><a class="hidden" id="acq-po-split" href="javascript:void(0);" onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">Split Order by Lineitems</a></td></tr>
             </table>
@@ -20,5 +27,7 @@
     </div>
     <script type="text/javascript">var poId = '[% ctx.page_args.0 %]';</script>
     [% INCLUDE 'default/acq/common/li_table.tt2' %]
+    [% note_table_for = "Po" %]
+    [% INCLUDE "default/acq/common/notes.tt2" %]
 </div>
 [% END %]

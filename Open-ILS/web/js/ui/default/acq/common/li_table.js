@@ -85,8 +85,6 @@ function AcqLiTable() {
     }
 
 
-    //dojo.byId('acq-lit-notes-new-button').onclick = function(){acqLitCreateLiNoteDialog.show();}
-
     dojo.byId('acq-lit-select-toggle').onclick = function(){self.toggleSelect()};
     dojo.byId('acq-lit-info-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-copies-back-button').onclick = function(){self.show('list')};
@@ -374,15 +372,20 @@ function AcqLiTable() {
             this.liNotesTbody.removeChild(this.liNotesTbody.childNodes[0]);
         this.show('notes');
 
-        acqLitCreateLiNoteSubmit.onClick = function() {
+        acqLitCreateNoteSubmit.onClick = function() {
             var value = acqLitCreateNoteText.attr('value');
             if(!value) return;
             var note = new fieldmapper.acqlin();
             note.isnew(true);
+            note.vendor_public(
+                Boolean(acqLitCreateNoteVendorPublic.attr('checked'))
+            );
             note.value(value);
             note.lineitem(li.id());
 
             self.updateLiNotes(li, note);
+            acqLitCreateNoteVendorPublic.attr("checked", false);
+            acqLitCreateNoteText.attr("value", "");
         }
 
         acqLitCreateAlertSubmit.onClick = function() {
@@ -428,6 +431,10 @@ function AcqLiTable() {
                 );
             }
         }
+
+        if (note.vendor_public() == "t")
+            nodeByName("vendor_public", row).innerHTML =
+                localeStrings.VENDOR_PUBLIC;
 
         nodeByName("delete", row).onclick = function() {
             note.isdeleted(true);

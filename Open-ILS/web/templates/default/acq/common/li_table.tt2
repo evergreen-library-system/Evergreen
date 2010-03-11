@@ -130,57 +130,8 @@
     </div>
 
     <!-- Lineitem notes table -->
-    <div id='acq-lit-notes-div' class='hidden'>
-
-        <div class='acq-lit-li-menu-bar'>
-            <table style='width:100%'>
-                <tr>
-                    <td style='text-align:left;'>
-                        <div dojoType='dijit.form.Button' id='acq-lit-notes-back-button'>&#x2196; Return</div>
-                    </td>
-                    <td style='text-align:right;'>
-                        <div dojoType="dijit.form.DropDownButton">
-                            <span>New Note</span>
-                            <div dojoType="dijit.TooltipDialog">
-                                <div class="acq-lit-note-row">
-                                    <div jsId='acqLitCreateNoteText' dojoType='dijit.form.Textarea' style='height:5em; width:25em;' name='note'></div>
-                                </div>
-                                <button jsId='acqLitCreateLiNoteSubmit' dojoType='dijit.form.Button' type="submit">Create</button>
-                            </div>
-                        </div>
-                        <div dojoType="dijit.form.DropDownButton">
-                            <span>New Alert</span>
-                            <div dojoType="dijit.TooltipDialog">
-                                <div class="acq-lit-note-row">
-                                    <label for="acq-lit-alert-alert-text">Choose alert code &nbsp;&nbsp;</label>
-                                    <input id="acq-lit-alert-alert-text" jsId="acqLitAlertAlertText" dojoType="dijit.form.FilteringSelect" labelAttr="code" searchAttr="code" required="true" />
-                                </div>
-                                <div class="acq-lit-note-row">
-                                    <label for="acq-lit-alert-value">Additional comments</label>
-                                    <div jsId="acqLitAlertNoteValue" id="acq-lit-alert-value" dojoType="dijit.form.Textarea" name="value"></div>
-                                </div>
-                                <button jsId="acqLitCreateAlertSubmit" dojoType="dijit.form.Button" type="submit">Create</button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <ol id='acq-lit-notes-tbody'>
-            <li id='acq-lit-notes-row'>
-                <table style='width:100%;' class='oils-generic-table'>
-                    <tr>
-                        <td width='70%' align='left'><span name="alert_code"></span><span style='font-size:120%' name='value'></span></td>
-                        <td align='right' style='padding-right:30px;'>
-                            <span name='edit_time'></span>
-                            <span style='padding-left:4px;'><a name='delete' href='javascript:void(0);' style='color:red;'>Delete</a></span>
-                        </td>
-                    </tr>
-                </div>
-            </li>
-        </ol>
-    </div>
+    [% note_table_for = "Lit" %]
+    [% INCLUDE "default/acq/common/notes.tt2" %]
 
     <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>

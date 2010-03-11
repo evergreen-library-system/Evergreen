@@ -26,5 +26,6 @@
     'DFA_TIP': "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}",
     'ITS_YOU': "You",
     'JUST_NOW': "Just now",
-    'EXPLAIN_DFA_MGMT': "Remove record of this distribution formula usage?"
+    'EXPLAIN_DFA_MGMT': "Remove record of this distribution formula usage?",
+    'VENDOR_PUBLIC': "VENDOR PUBLIC"
 }
