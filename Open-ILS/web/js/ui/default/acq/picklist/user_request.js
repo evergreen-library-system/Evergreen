@@ -32,10 +32,13 @@ function buildGrid() {
         {   order_by : {aur : 'request_date'},
             join : 'au' 
         },
-        {'+au' : {
-            home_ou : fieldmapper.aou.descendantNodeList(contextOrg).map(
-                function(item) { return item.id(); })
-        }}
+        {
+            cancel_reason : null,
+            '+au' : {
+                home_ou : fieldmapper.aou.descendantNodeList(contextOrg).map(
+                    function(item) { return item.id(); })
+            }
+        }
     );
 }
 
