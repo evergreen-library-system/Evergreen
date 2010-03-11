@@ -493,12 +493,48 @@ sub import_queue {
         $query->{id} = {'not in' => $matched_recs} if @$matched_recs;
     }
 
+    if($$options{auto_overlay_exact}) {
+        auto_overlay_exact($type, $q_id, $$options{merge_profile});
+    }
+
     my $search = ($type eq 'bib') ? 
         'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
     my $rec_ids = $e->$search($query, {idlist => 1});
     my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $options);
     return $err if $err;
     return {complete => 1};
+}
+
+sub auto_overlay_exact {
+    my $type = shift;
+    my $q_id = shift;
+    my $merge_profile = shift;
+
+    my $e = new_editor(xact => 1);
+
+    my $err;
+    try {  
+
+        $e->json_query(
+            {
+                from => [
+                    "vandelay.auto_overlay_${type}_queue", $q_id, $merge_profile
+                ]
+            },
+            {
+                substream => 1, 
+                discard => 1
+            }
+        );
+
+    } catch Error with {
+        $err = shift; 
+        $logger->error("vl: fatal error in auto-overlay: $err");
+        $e->rollback;
+    };
+
+    $e->commit unless $err;
+    return undef;
 }
 
 
