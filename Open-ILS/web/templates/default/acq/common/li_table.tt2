@@ -92,6 +92,7 @@
                         </table>
                     </td>
                     <td><a class='hidden' name='real_copies_link' href='javascript:void(0);'>Update&nbsp;Barcodes</a></td>
+                    <td><a class='hidden' name='holdings_maintenance_link' href='javascript:void(0);'>Holdings&nbsp;Maintenance</a></td>
                     <td><a name='receive_link' href='javascript:void(0);'>Mark&nbsp;Received</a><a name='unreceive_link' href='javascript:void(0);'>Un-Receive</a></td>
                     </td>
                     <td><a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>

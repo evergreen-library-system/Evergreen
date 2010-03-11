@@ -25,6 +25,7 @@ function my_init() {
         try { authtime = g.cgi.param('authtime') || xulG.authtime; } catch(E) { g.error.sdump('D_ERROR',E); }
         try { docid = g.cgi.param('docid') || xulG.docid; } catch(E) { g.error.sdump('D_ERROR',E); }
         try { opac_url = g.cgi.param('opac_url') || xulG.opac_url; } catch(E) { g.error.sdump('D_ERROR',E); }
+        try { g.view_override = g.cgi.param('default_view') || xulG.default_view; } catch(E) { g.error.sdump('D_ERROR',E); }
 
         JSAN.use('util.deck');
         top_pane = new util.deck('top_pane');

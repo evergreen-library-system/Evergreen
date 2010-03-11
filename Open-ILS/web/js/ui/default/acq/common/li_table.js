@@ -294,6 +294,7 @@ function AcqLiTable() {
         var recv_link = nodeByName("receive_link", row);
         var unrecv_link = nodeByName("unreceive_link", row);
         var real_copies_link = nodeByName("real_copies_link", row);
+        var holdings_maintenance_link = nodeByName("holdings_maintenance_link", row);
 
         /* handle row coloring for based on LI state */
         openils.Util.removeCSSClass(row, /^oils-acq-li-state-/);
@@ -325,6 +326,8 @@ function AcqLiTable() {
                     real_copies_link.onclick = function() {
                         self.showRealCopyEditUI(li);
                     }
+                    openils.Util.show(holdings_maintenance_link);
+                    holdings_maintenance_link.onclick = self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser' );
                     return;
             }
         }
@@ -600,20 +603,8 @@ function AcqLiTable() {
 
             if(openils.XUL.isXUL()) {
 
-                var makeRecTab = function() {
-				    xulG.new_tab(
-                        XUL_OPAC_WRAPPER,
-					    {tab_name: localeStrings.XUL_RECORD_DETAIL_PAGE, browser:false},
-					    {
-                            no_xulG : false, 
-                            show_nav_buttons : true, 
-                            show_print_button : true, 
-                            opac_url : xulG.url_prefix(xulG.urls.opac_rdetail + '?r=' + li.eg_bib_id())
-                        }
-                    );
-                }
                 link.setAttribute('href', 'javascript:void(0);');
-                link.onclick = makeRecTab;
+                link.onclick = this.generateMakeRecTab( li.eg_bib_id() );
 
             } else {
                 var href = link.getAttribute('href');
@@ -622,6 +613,22 @@ function AcqLiTable() {
             }
         } else {
             openils.Util.hide('acq-lit-info-cat-link');
+        }
+    };
+
+    this.generateMakeRecTab = function(bib_id,default_view) {
+        return function() {
+            xulG.new_tab(
+                XUL_OPAC_WRAPPER,
+                {tab_name: localeStrings.XUL_RECORD_DETAIL_PAGE, browser:false},
+                {
+                    no_xulG : false, 
+                    show_nav_buttons : true, 
+                    show_print_button : true, 
+                    opac_url : xulG.url_prefix(xulG.urls.opac_rdetail + '?r=' + bib_id),
+                    default_view : default_view
+                }
+            );
         }
     };
 
