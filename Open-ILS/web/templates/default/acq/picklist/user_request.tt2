@@ -27,7 +27,7 @@
             suppressFields="['id']"
             showPaginator='true'
             showColumnPicker='true'
-            columnPickerPrefix='"acq.picklist.user_reqeust"'
+            columnPickerPrefix='"acq.picklist.user_request"'
             editOnEnter='true'>
     </table>
 </div>
