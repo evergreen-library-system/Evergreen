@@ -109,7 +109,7 @@ sub handler {
 				-cookie=>$cgi->cookie(
 					-name=>'ses',
 					-value=>$auth_ses,
-					-path=>'/',-expires=>'+1h'
+					-path=>'/'
 				)
 			);
 			return Apache2::Const::REDIRECT;
