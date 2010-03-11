@@ -350,7 +350,8 @@ CREATE TABLE acq.purchase_order (
 	order_date		TIMESTAMP WITH TIME ZONE,
 	name			TEXT					NOT NULL,
 	cancel_reason   INT                     REFERENCES acq.cancel_reason( id )
-                                            DEFERRABLE INITIALLY DEFERRED
+                                            DEFERRABLE INITIALLY DEFERRED,
+	prepayment_required BOOLEAN NOT NULL DEFAULT FALSE
 );
 CREATE INDEX po_owner_idx ON acq.purchase_order (owner);
 CREATE INDEX po_provider_idx ON acq.purchase_order (provider);

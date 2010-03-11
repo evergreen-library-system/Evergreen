@@ -5145,6 +5145,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Order Date" name="order_date" reporter:datatype="timestamp" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" />
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link" />
+			<field reporter:label="Prepayment Required" name="prepayment_required" reporter:datatype="bool" />
 			<field reporter:label="Line Items" name="lineitems" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Line Item Count" name="lineitem_count" oils_persist:virtual="true" reporter:datatype="link" />
@@ -5189,6 +5190,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Order Date" name="order_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link"/>
+			<field reporter:label="Prepayment Required" name="prepayment_required" reporter:datatype="bool" />
 		</fields>
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="acqpo"/>
@@ -6363,9 +6365,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Cast Type" name="cast_type" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="left_operand" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="cast_type" reltype="might_have" key="id" map="" class="qdt"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="cast_type" reltype="has_a" key="id" map="" class="qdt"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6381,7 +6383,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Column Name" name="column_name" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6397,7 +6399,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
+			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6413,8 +6415,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Left Operand" name="left_operand" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="left_operand" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
