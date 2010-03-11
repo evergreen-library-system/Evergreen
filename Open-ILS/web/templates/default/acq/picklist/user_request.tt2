@@ -1,11 +1,13 @@
 [% WRAPPER 'default/base.tt2' %]
 [% ctx.page_title = 'Patron Requests' %]
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/user_request.js'> </script>
+<script>var reqId = '[% ctx.page_args.0 %]';</script>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>[% ctx.page_title %]</div>
         <div>
+            <!-- TODO: add reject-selection operation -->
         </div>
     </div>
     <div>
@@ -20,7 +22,8 @@
     <table  jsId="rGrid"
             dojoType="openils.widget.AutoGrid"
             query="{id: '*'}"
-            defaultCellWidth='"auto"'
+            suppressFields='["id", "usr", "pickup_lib", "holdable_formats", "phone_notify", "email_notify", "lineitem", "eg_bib", "max_fee", "cancel_reason"]'
+            fieldOrder='["title", "author", "isxn", "article_title", "article_pages", "request_type", "volume", "pubdate", "publisher", "location", "other_info", "mentioned"]'
             fmClass='aur'
             editStyle='pane'
             autoHeight='true'
@@ -29,6 +32,11 @@
             showColumnPicker='true'
             columnPickerPrefix='"acq.picklist.user_request"'
             editOnEnter='true'>
+            <thead>
+                <tr>
+                    <th field='title' get='getTitle' formatter='formatTitle'/>
+                </tr>
+            </thead>
     </table>
 </div>
 [% END %]
