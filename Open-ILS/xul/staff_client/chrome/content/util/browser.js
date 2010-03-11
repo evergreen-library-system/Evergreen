@@ -35,6 +35,14 @@ util.browser.prototype = {
                             ['command'],
                             function() { alert('Not Yet Implemented'); }
                         ],
+                        'cmd_debug' : [
+                            ['command'],
+                            function() {
+                                var curr_url = obj.get_content().location.href;
+                                var url = window.prompt('Original URL: ' + obj.url + '\nCurrent URL: ' + curr_url + '\nEnter new URL:',curr_url);
+                                if (url) { obj.get_content().location.href = url; }
+                            }
+                        ],
                         'cmd_print' : [
                             ['command'],
                             function() {

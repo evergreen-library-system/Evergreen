@@ -58,7 +58,7 @@
                     'url' : url,
                     'push_xulG' : push_xulG,
                     'alt_print' : alt_print,
-                    'debug_label' : 'debug',
+                    'debug_label' : 'debug'
                 };
                 if (typeof window.xulG == 'object' && typeof window.xulG.passthru_content_params == 'object') {
                     p.passthru_content_params = window.xulG.passthru_content_params;
@@ -99,6 +99,7 @@
     <commandset id="util_browser_cmds">
         <command id="cmd_broken" />
         <command id="cmd_print" />
+        <command id="cmd_debug" />
         <command id="cmd_back" label="&common.browser.backward.label;" accesskey="&common.browser.backward.accesskey;" />
         <command id="cmd_reload" label="&common.browser.reload.label;" accesskey="&common.browser.reload.accesskey;" />
         <command id="cmd_forward" label="&common.browser.forward.label;" accesskey="&common.browser.forward.accesskey;" />
@@ -110,7 +111,7 @@
             <button id="reload" command="cmd_reload" disabled="false" hidden="false"/>
             <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
             <spacer flex="1"/>
-            <label id="debug" value="Debug" disabled="true" onclick="var m = (this.getAttribute('tooltiptext')+'\n'); dump(m); alert(m);"/>
+            <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
             <button id="browser_print" label="Print Page" command="cmd_print" hidden="true"/>
         </hbox>
         <browser id="browser_browser" flex="1" type="content"/>
