@@ -248,6 +248,7 @@ sub process_spool {
 	my $batch = new MARC::Batch ($marctype, $filename);
 	$batch->strict_off;
 
+	my $response_scale = 10;
 	my $count = 0;
 	my $r = -1;
 	while (try { $r = $batch->next } otherwise { $r = -1 }) {
@@ -271,7 +272,8 @@ sub process_spool {
 			} else {
 				_add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
 			}
-			$client->respond($count) if (++$count % 10) == 0;
+			$client->respond($count) if (++$count % $response_scale) == 0;
+			$response_scale *= 10 if ($count == ($response_scale * 10));
 		} catch Error with {
 			my $error = shift;
 			$logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
