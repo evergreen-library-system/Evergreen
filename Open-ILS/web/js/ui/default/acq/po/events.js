@@ -150,6 +150,7 @@ function doSelected(method) {
                         if (typeof result.ilsevent != 'undefined') { throw(result); }
                     } catch(E) {
                         //dump('Error in acq/events.js, doSelected(), onresponse(): ' + E);
+                        throw(E);
                     }
                 },
                 onerror: function(r) {
