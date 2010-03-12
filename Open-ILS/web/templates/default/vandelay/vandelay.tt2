@@ -34,5 +34,9 @@
         class='hidden attr-editor-detail-content-pane content' title='&vandelay.edit.attrs;'>
     [% INCLUDE 'default/vandelay/inc/attrs.tt2' %]
 </div>
+<div dojoType="dijit.layout.ContentPane" layoutAlign='client' id='vl-profile-editor-div' class='hidden content'>
+    [% INCLUDE 'default/vandelay/inc/profiles.tt2' %]
+</div>
+
 
 [% END %]

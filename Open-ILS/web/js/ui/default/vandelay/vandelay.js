@@ -40,6 +40,8 @@ dojo.require('openils.Util');
 dojo.require('openils.MarcXPathParser');
 dojo.require('openils.widget.GridColumnPicker');
 dojo.require('openils.PermaCrud');
+dojo.require('openils.widget.OrgUnitFilteringSelect');
+dojo.require('openils.widget.AutoGrid');
 
 
 var globalDivs = [
@@ -52,7 +54,8 @@ var globalDivs = [
     'vl-queue-select-div',
     'vl-marc-upload-status-div',
     'vl-attr-editor-div',
-    'vl-marc-export-div'
+    'vl-marc-export-div',
+    'vl-profile-editor-div'
 ];
 
 var authtoken;
@@ -239,6 +242,7 @@ function displayGlobalDiv(id) {
     openils.Util.removeCSSClass(dojo.byId('vl-menu-marc-upload'), 'toolbar_selected');
     openils.Util.removeCSSClass(dojo.byId('vl-menu-queue-select'), 'toolbar_selected');
     openils.Util.removeCSSClass(dojo.byId('vl-menu-attr-editor'), 'toolbar_selected');
+    openils.Util.removeCSSClass(dojo.byId('vl-menu-profile-editor'), 'toolbar_selected');
 
     switch(id) {
         case 'vl-marc-export-div':
@@ -252,6 +256,9 @@ function displayGlobalDiv(id) {
             break;
         case 'vl-attr-editor-div':
             openils.Util.addCSSClass(dojo.byId('vl-menu-attr-editor'), 'toolbar_selected');
+            break;
+        case 'vl-profile-editor-div':
+            openils.Util.addCSSClass(dojo.byId('vl-menu-profile-editor'), 'toolbar_selected');
             break;
     }
 }
@@ -1219,3 +1226,38 @@ function looksLikeDerivedXpath(path) {
 // amazing xpath-util unit-tests
 if (!looksLikeDerivedXpath('//*[@tag="901"]/*[@code="c"]'))	alert('vandelay xpath-utility error');
 if ( looksLikeDerivedXpath('ba-boo-ba-boo!'))			alert('vandelay xpath-utility error');
+
+
+
+var profileContextOrg
+function vlShowProfileEditor() {
+    displayGlobalDiv('vl-profile-editor-div');
+    buildProfileGrid();
+
+    var connect = function() {
+        dojo.connect(profileContextOrgSelector, 'onChange',
+            function() {
+                profileContextOrg = this.attr('value');
+                pGrid.resetStore();
+                buildGrid();
+            }
+        );
+    };
+
+    new openils.User().buildPermOrgSelector(
+        '"ADMIN_MERGE_PROFILE', profileContextOrgSelector, null, connect);
+}
+
+function buildProfileGrid() {
+
+    if(profileContextOrg == null)
+        profileContextOrg = openils.User.user.ws_ou();
+
+    pGrid.loadAll( 
+        {order_by : {vmp : 'name'}}, 
+        {owner : fieldmapper.aou.fullPath(profileContextOrg, true)}
+    );
+}
+
+
+

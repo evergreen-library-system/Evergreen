@@ -24,6 +24,7 @@
 <!ENTITY vandelay.done "Done">
 <!ENTITY vandelay.edit.attributes "Edit Attributes">
 <!ENTITY vandelay.edit.attrs "Edit Attributes">
+<!ENTITY vandelay.edit.profiles "Edit Merge / Overlay Profiles">
 <!ENTITY vandelay.false "False">
 <!ENTITY vandelay.file.to.upload "File to Upload:">
 <!ENTITY vandelay.for.example "Example">
