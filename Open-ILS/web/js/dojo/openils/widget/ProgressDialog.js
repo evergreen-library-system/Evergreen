@@ -26,12 +26,24 @@ if(!dojo._hasResource['openils.widget.ProgressDialog']) {
                 this.progress.update.apply(this.progress, arguments);
             },
 
-            show : function(ind) {
+            show : function(ind, msg) {
                 if(ind || this.indeterminate) {
                     this.progress.indeterminate = true;
                     this.update();
                 } else {
                     this.progress.indeterminate = false;
+                }
+
+                if(msg) {
+                    if(!this.msgDiv) {
+                        this.msgDiv = dojo.create('div', {innerHTML : msg});
+                    }
+                    this.containerNode.insertBefore(this.msgDiv, this.progress.domNode);
+                } else {
+                    if(this.msgDiv) {
+                        this.containerNode.removeChild(this.msgDiv);
+                        this.msgDiv = null;
+                    }
                 }
                     
                 this.inherited(arguments);
