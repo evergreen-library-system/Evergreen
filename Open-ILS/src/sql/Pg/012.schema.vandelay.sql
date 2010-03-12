@@ -260,10 +260,10 @@ BEGIN
                 AND u.shortname = profile_tmpl_owner;
 
         IF profile.id IS NOT NULL THEN
-            add_rule := add_rule || COALESCE(profile.add_spec,'');
-            strip_rule := strip_rule || COALESCE(profile.strip_spec,'');
-            replace_rule := replace_rule || COALESCE(profile.replace_spec,'');
-            preserve_rule := preserve_rule || COALESCE(profile.preserve_spec,'');
+            add_rule := COALESCE(profile.add_spec,'');
+            strip_rule := COALESCE(profile.strip_spec,'');
+            replace_rule := COALESCE(profile.replace_spec,'');
+            preserve_rule := COALESCE(profile.preserve_spec,'');
         END IF;
     END IF;
 
@@ -272,37 +272,26 @@ BEGIN
     replace_rule := replace_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="r"]/text()',incoming_xml),''),'');
     preserve_rule := preserve_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="p"]/text()',incoming_xml),''),'');
 
-    output.add_rule := add_rule;
-    output.replace_rule := replace_rule;
-    output.strip_rule := strip_rule;
-    output.preserve_rule := preserve_rule;
+    output.add_rule := BTRIM(add_rule,',');
+    output.replace_rule := BTRIM(replace_rule,',');
+    output.strip_rule := BTRIM(strip_rule,',');
+    output.preserve_rule := BTRIM(preserve_rule,',');
 
     RETURN output;
 END;
 $_$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record ( import_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
+CREATE OR REPLACE FUNCTION vandelay.overlay_bib_record ( import_id BIGINT, eg_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
 DECLARE
     merge_profile   vandelay.merge_profile%ROWTYPE;
     dyn_profile     vandelay.compile_profile%ROWTYPE;
     source_marc     TEXT;
     target_marc     TEXT;
     eg_marc         TEXT;
-    eg_id           BIGINT;
     v_marc          TEXT;
     replace_rule    TEXT;
     match_count     INT;
 BEGIN
-    SELECT COUNT(*) INTO match_count FROM vandelay.bib_match WHERE queued_record = import_id;
-
-    IF match_count <> 1 THEN
-        RETURN FALSE;
-    END IF;
-
-    SELECT  m.eg_record INTO eg_id
-      FROM  vandelay.bib_match m
-      WHERE m.queued_record = import_id
-      LIMIT 1;
 
     SELECT  b.marc INTO eg_marc
       FROM  biblio.record_entry b
@@ -315,6 +304,7 @@ BEGIN
       LIMIT 1;
 
     IF eg_marc IS NULL OR v_marc IS NULL THEN
+        -- RAISE NOTICE 'no marc for vandelay or bib record';
         RETURN FALSE;
     END IF;
 
@@ -331,6 +321,7 @@ BEGIN
     END IF;
 
     IF dyn_profile.replace_rule <> '' AND dyn_profile.preserve_rule <> '' THEN
+        -- RAISE NOTICE 'both replace [%] and preserve [%] specified', dyn_profile.replace_rule, dyn_profile.preserve_rule;
         RETURN FALSE;
     END IF;
 
@@ -356,8 +347,35 @@ BEGIN
         RETURN TRUE;
     END IF;
 
+    -- RAISE NOTICE 'update of biblio.record_entry failed';
+
     RETURN FALSE;
 
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_record ( import_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
+DECLARE
+    eg_id           BIGINT;
+    match_count     INT;
+BEGIN
+    SELECT COUNT(*) INTO match_count FROM vandelay.bib_match WHERE queued_record = import_id;
+
+    IF match_count <> 1 THEN
+        -- RAISE NOTICE 'not an exact match';
+        RETURN FALSE;
+    END IF;
+
+    SELECT  m.eg_record INTO eg_id
+      FROM  vandelay.bib_match m
+      WHERE m.queued_record = import_id
+      LIMIT 1;
+
+    IF eg_id IS NULL THEN
+        RETURN FALSE;
+    END IF;
+
+    RETURN vandelay.overlay_bib_record( import_id, eg_id, merge_profile_id );
 END;
 $$ LANGUAGE PLPGSQL;
 
@@ -732,6 +750,8 @@ DECLARE
     id_value    TEXT;
     exact_id    BIGINT;
 BEGIN
+
+    DELETE FROM vandelay.bib_match WHERE queued_record = NEW.id;
 
     SELECT * INTO attr FROM vandelay.bib_attr_definition WHERE xpath = '//*[@tag="901"]/*[@code="c"]' ORDER BY id LIMIT 1;
 
