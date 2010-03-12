@@ -228,7 +228,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 
         var orgList = fieldmapper.aou.orgNodeTrail(fieldmapper.aou.findOrgUnit(orgId));
         orgList.pop(); // prevent dupes
-        orgList = orgList.concat(fieldmapper.aou.descendantNodeList(contextOrg))
+        orgList = orgList.concat(fieldmapper.aou.descendantNodeList(orgId))
 
         if(!asId) return orgList;
         return orgList.map( function(node) { return node.id(); } );
