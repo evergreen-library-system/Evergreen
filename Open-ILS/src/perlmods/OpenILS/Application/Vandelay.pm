@@ -283,7 +283,7 @@ sub process_spool {
 	$e->commit;
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $fingerprint) if $fingerprint;
-	return undef;
+	return $count;
 }
 
 __PACKAGE__->register_method(  
