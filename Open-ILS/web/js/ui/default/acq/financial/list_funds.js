@@ -113,8 +113,6 @@ function loadYearSelector() {
     );
 }
 
-<<<<<<< HEAD:Open-ILS/web/js/ui/default/acq/financial/list_funds.js
-=======
 function performRollover(args) {
     progressDialog.show(true, "Processing...");
 
