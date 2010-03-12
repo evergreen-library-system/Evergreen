@@ -267,13 +267,19 @@ sub process_spool {
 			$xml = $U->entityize($xml);
 			$xml =~ s/[\x00-\x1f]//go;
 
+            my $qrec;
 			if ($type eq 'bib') {
-				_add_bib_rec( $e, $xml, $queue_id, $purpose, $bib_source ) or return $e->die_event;
+				$qrec = _add_bib_rec( $e, $xml, $queue_id, $purpose, $bib_source ) or return $e->die_event;
 			} else {
-				_add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
+				$qrec = _add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
 			}
-			$client->respond($count) if (++$count % $response_scale) == 0;
-			$response_scale *= 10 if ($count == ($response_scale * 10));
+
+            if($self->api_name =~ /stream_results/ and $qrec) {
+			    $client->respond($qrec->id)
+            } else {
+			    $client->respond($count) if (++$count % $response_scale) == 0;
+			    $response_scale *= 10 if ($count == ($response_scale * 10));
+            }
 		} catch Error with {
 			my $error = shift;
 			$logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
@@ -301,6 +307,20 @@ __PACKAGE__->register_method(
 	record_type	=> 'auth'
 );                      
 
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.bib.process_spool.stream_results",
+	method		=> "process_spool",
+	api_level	=> 1,
+	argc		=> 3,
+	record_type	=> 'bib'
+);                      
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.vandelay.auth.process_spool.stream_results",
+	method		=> "process_spool",
+	api_level	=> 1,
+	argc		=> 3,
+	record_type	=> 'auth'
+);
 
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.vandelay.bib_queue.records.retrieve",
@@ -495,10 +515,6 @@ sub import_queue {
         $query->{id} = {'not in' => $matched_recs} if @$matched_recs;
     }
 
-    if($$options{auto_overlay_exact}) {
-        auto_overlay_exact($type, $q_id, $$options{merge_profile});
-    }
-
     my $search = ($type eq 'bib') ? 
         'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
     my $rec_ids = $e->$search($query, {idlist => 1});
@@ -506,39 +522,6 @@ sub import_queue {
     return $err if $err;
     return {complete => 1};
 }
-
-sub auto_overlay_exact {
-    my $type = shift;
-    my $q_id = shift;
-    my $merge_profile = shift;
-
-    my $e = new_editor(xact => 1);
-
-    my $err;
-    try {  
-
-        $e->json_query(
-            {
-                from => [
-                    "vandelay.auto_overlay_${type}_queue", $q_id, $merge_profile
-                ]
-            },
-            {
-                substream => 1, 
-                discard => 1
-            }
-        );
-
-    } catch Error with {
-        $err = shift; 
-        $logger->error("vl: fatal error in auto-overlay: $err");
-        $e->rollback;
-    };
-
-    $e->commit unless $err;
-    return undef;
-}
-
 
 # returns a list of queued record IDs for a given queue that 
 # have at least one entry in the match table
@@ -589,6 +572,9 @@ sub import_record_list_impl {
     my $count = 0;
     my %queues;
     my @ingest_queue;
+    my $auto_overlay_exact = $$args{auto_overlay_exact};
+    my $auto_overlay_1match = $$args{auto_overlay_1match};
+    my $merge_profile = $$args{merge_profile};
 
     my $ingest_ses = OpenSRF::AppSession->connect('open-ils.ingest');
 
@@ -601,7 +587,13 @@ sub import_record_list_impl {
 
         if($type eq 'bib') {
 
-            my $rec = $e->retrieve_vandelay_queued_bib_record($rec_id) ;
+            my $rec = $e->retrieve_vandelay_queued_bib_record([
+                $rec_id,
+                {   flesh => 1,
+                    flesh_fields => { vqbr => ['matches']},
+                }
+            ]);
+
             unless($rec) {
                 $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
                 $e->rollback;
@@ -616,33 +608,92 @@ sub import_record_list_impl {
             $queues{$rec->queue} = 1;
 
             my $record;
+            my $imported = 0;
+
             if(defined $overlay_target) {
-                $logger->info("vl: overlaying record $overlay_target");
-                $record = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
-                    $e, $overlay_target, $rec->marc); #$rec->bib_source
-            } else {
+                # Caller chose an explicit overlay target
+
+                my $res = $e->json_query(
+                    {
+                        from => [
+                            'vandelay.overlay_bib_record', 
+                            $rec->id, 
+                            $overlay_target, 
+                            $merge_profile
+                        ]
+                    }
+                )->[0];
+
+                $imported = 1 if $res->{overlay_bib_record} eq 't';
+
+            } elsif( scalar(@{$rec->matches}) == 1 ) {
+                
+                # matched against 1 record in the catalog
+
+                if($auto_overlay_1match) { 
+
+                    # caller says to overlay if there is exactly 1 match
+
+                    my $res = $e->json_query(
+                        {
+                            from => [
+                                'vandelay.overlay_bib_record', 
+                                $rec->id, 
+                                $rec->matches->[0]->eg_record,
+                                $merge_profile
+                            ]
+                        }
+                    )->[0];
+
+                    $imported = 1 if $res->{overlay_bib_record} eq 't';
+
+                } elsif($auto_overlay_exact) { 
+                    
+                    # caller says to overlay if there is an /exact/ match
+
+                    my $res = $e->json_query(
+                        {
+                            from => [
+                                'vandelay.auto_overlay_bib_record', 
+                                $rec->id, 
+                                $merge_profile
+                            ]
+                        }
+                    )->[0];
+
+                    $imported = 1 if $res->{auto_overlay_bib_record} eq 't';
+                }
+            }
+
+            unless($imported) {
+                
+                # No overlay / merge occured.  Do a traditional record import by creating a new bib record
+            
                 $logger->info("vl: importing new record");
-                $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-                    $e, $rec->marc); #$rec->bib_source
+                $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc); #$rec->bib_source
+
+                if($U->event_code($record)) {
+
+                    $e->event($record); 
+
+                } else {
+
+                    $rec->imported_as($record->id);
+                    $rec->import_time('now');
+                    $imported = 1 if $e->update_vandelay_queued_bib_record($rec);
+                }
             }
 
-            if($U->event_code($record)) {
-                $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $record});
+            if($imported) {
+
+                $e->commit;
+                $conn->respond({total => $total, progress => ++$count, imported => $rec_id});
+
+            } else {
+
                 $e->rollback;
-                next;
-            }
-            $rec->imported_as($record->id);
-            $rec->import_time('now');
-
-            unless($e->update_vandelay_queued_bib_record($rec)) {
                 $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
-                $e->rollback;
-                next;
             }
-
-            $e->commit;
-            # XXX handled by the db now
-            #push @ingest_queue, { req => $ingest_ses->request('open-ils.ingest.full.biblio.record', $record->id), rec_id => $record->id };
 
         } else { # authority
 
