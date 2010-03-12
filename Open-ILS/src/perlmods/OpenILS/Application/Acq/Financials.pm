@@ -1278,8 +1278,8 @@ sub process_fiscal_rollover {
             org => $org_ids,
             propagate => 't'
         }, {
-            limit => $$optoins{limit} || 20,
-            offset => $$optoins{offset} || 0,
+            limit => $$options{limit} || 20,
+            offset => $$options{offset} || 0,
         }
         ], 
         {idlist => 1}
