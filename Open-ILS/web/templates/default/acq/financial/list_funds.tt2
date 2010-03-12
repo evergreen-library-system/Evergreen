@@ -101,7 +101,7 @@
         </thead>
     </table>
 </div>
-<div dojoType='openils.widget.ProgressDialog' class='hidden' jsId='progressDialog'/>
+<div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>
 
 
 [% END %]
