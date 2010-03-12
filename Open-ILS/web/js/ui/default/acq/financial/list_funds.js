@@ -1,20 +1,21 @@
 dojo.require("dijit.Dialog");
 dojo.require("dijit.form.FilteringSelect");
 dojo.require('dijit.form.Button');
+dojo.require('dijit.TooltipDialog');
+dojo.require('dijit.form.DropDownButton');
+dojo.require('dijit.form.CheckBox');
 dojo.require('dojox.grid.DataGrid');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.acq.CurrencyType');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
+dojo.require('openils.User');
 dojo.require('openils.acq.Fund');
 dojo.require('openils.widget.AutoGrid');
+dojo.require('openils.widget.ProgressDialog');
 
-function getOrgInfo(rowIndex, item) {
-    if(!item) return ''; 
-    var owner = this.grid.store.getValue(item, 'org'); 
-    return fieldmapper.aou.findOrgUnit(owner).shortname();
-}
+var contextOrg;
 
 function getBalanceInfo(rowIndex, item) {
     if(!item) return '';
@@ -26,6 +27,20 @@ function getBalanceInfo(rowIndex, item) {
 }
 
 function initPage() {
+
+    var connect = function() {
+        dojo.connect(contextOrgSelector, 'onChange',
+            function() {
+                contextOrg = this.attr('value');
+                lfGrid.resetStore();
+                loadFundGrid(fundFilterYearSelect.attr('value'));
+            }
+        );
+    };
+
+    new openils.User().buildPermOrgSelector(
+        'ADMIN_ACQ_FUND', contextOrgSelector, null, connect);
+
     loadYearSelector();
     loadFundGrid();
 }
@@ -36,13 +51,16 @@ function loadFundGrid(year) {
     year = year || new Date().getFullYear().toString();
     lfGrid.dataLoader = function() { loadFundGrid(year); };
 
+    if(contextOrg == null)
+        contextOrg = openils.User.user.ws_ou();
+
     fieldmapper.standardRequest(
        [ 'open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
        {    async: true,
 
             params: [
                 openils.User.authtoken, 
-                {year:year}, 
+                {year : year, org : fieldmapper.aou.descendantNodeList(contextOrg, true)}, 
                 {
                     flesh_summary:1, 
                     limit: lfGrid.displayLimit,
@@ -90,6 +108,48 @@ function loadYearSelector() {
                         loadFundGrid(fundFilterYearSelect.attr('value'));
                     }
                 );
+            }
+        }
+    );
+}
+
+<<<<<<< HEAD:Open-ILS/web/js/ui/default/acq/financial/list_funds.js
+=======
+function performRollover(args) {
+    progressDialog.show(true, "Processing...");
+
+    var method = 'open-ils.acq.fiscal_rollover';
+
+    if(args.rollover[0] == 'on') {
+        method += '.combined';
+    } else {
+        method += '.propagate';
+    }
+        
+    if(args.dry_run[0] == 'on')
+        method += '.dry_run';
+
+    var responses = [];
+    fieldmapper.standardRequest(
+        ['open-ils.acq', method],
+        {
+            async : true,
+
+            params : [
+                openils.User.authtoken, 
+                fundFilterYearSelect.attr('value'),
+                contextOrg,
+                false, // TODO: checkbox in dialog
+            ],
+
+            onresponse : function(r) {
+                var resp = openils.Util.readResponse(r);
+                responses.push(resp);
+            }, 
+
+            oncomplete : function() {
+                alert(responses.length);
+                progressDialog.hide();
             }
         }
     );

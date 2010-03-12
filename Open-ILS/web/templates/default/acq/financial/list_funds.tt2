@@ -9,10 +9,77 @@
         <!-- TODO CSS -->
         <td style='text-align:left;font-size:130%;font-weight: bold;'>Funds</td>
         <td style='text-align:right;width:90%;'>
+
+            <span>
+                <span>Context Org Unit</span>
+                <select 
+                    dojoType="openils.widget.OrgUnitFilteringSelect" 
+                    jsId='contextOrgSelector'
+                    searchAttr='shortname' 
+                    labelAttr='shortname'> 
+                </select>
+            </span>
+
             Year <select dojoType='dijit.form.FilteringSelect'
                 jsId='fundFilterYearSelect' labelAttr='year' searchAttr='year'> </select>
+
             <button dojoType='dijit.form.Button' onClick='lfGrid.showCreateDialog()'>New Fund</button>
             <button dojoType='dijit.form.Button' onClick='lfGrid.deleteSelected()'>Delete Selected</button>
+
+            <div dojoType="dijit.form.DropDownButton">
+                <span>Fund Propagation &amp; Rollover</span>
+                <div dojoType="dijit.TooltipDialog" execute="performRollover(arguments[0]);">
+                    <table class='dijitTooltipTable'>
+                        <tr>
+                            <td colspan='2'>
+                                <div style='width:400px;border-bottom:2px solid #888'>
+                                Propagation creates new funds for the sugsequent fiscal year based on the 
+                                funds for the selected fiscal year.  Only funds with the propagate setting
+                                enabled will be affected.  No money or encumbrances are altered
+                                during this process. 
+                                <div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="rollover">Perform Fiscal Year Close-out Operation: </label></td>
+                            <td>
+                                <input dojoType="dijit.form.CheckBox" name="rollover"> </input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'>
+                                <div style='width:400px;border-bottom:2px solid #888'>
+                                The year end close out operation moves encumbrances from the selected fiscal
+                                year to the analogous funds in the subsequent fiscal year and it deactivates 
+                                funds for the selected fiscal year.  Additionally, for all funds that have 
+                                the "Rollver" setting enabled, this process will move all unspent money to 
+                                the analogous fund in the subsequent fiscal year.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="dry_run">Dry Run: </label></td>
+                            <td>
+                                <input dojoType="dijit.form.CheckBox" name="dry_run" checked='checked'> </input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'>
+                                <div style='width:400px;border-bottom:2px solid #888'>
+                                When Dry Run is selected, the system will generate a summary of 
+                                the changes that would occur during the selected operation(s).  
+                                No data will be changed.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='2' align='center'>
+                                <button dojoType=dijit.form.Button type="submit">Process</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div> 
         </td>
     </tr>
 </table>
@@ -34,5 +101,7 @@
         </thead>
     </table>
 </div>
+<div dojoType='openils.widget.ProgressDialog' class='hidden' jsId='progressDialog'/>
+
 
 [% END %]
