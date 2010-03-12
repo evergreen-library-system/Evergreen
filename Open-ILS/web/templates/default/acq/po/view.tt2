@@ -27,7 +27,6 @@
     </div>
     <script type="text/javascript">var poId = '[% ctx.page_args.0 %]';</script>
     [% INCLUDE 'default/acq/common/li_table.tt2' %]
-    [% note_table_for = "Po" %]
-    [% INCLUDE "default/acq/common/notes.tt2" %]
+    [% INCLUDE "default/acq/common/notes.tt2" which = "Po" %]
 </div>
 [% END %]

@@ -104,7 +104,7 @@ sub retrieve_lineitem_impl {
         push(@{$flesh->{flesh_fields}->{jub}}, 'attributes') if $$options{flesh_attrs};
     }
 
-    my $li = $e->retrieve_acq_lineitem([$li_id, $flesh]);
+    my $li = $e->retrieve_acq_lineitem([$li_id, $flesh]) or return $e->die_event;
 
     if($$options{flesh_li_details}) {
         my $ops = {
@@ -113,9 +113,12 @@ sub retrieve_lineitem_impl {
         };
         push(@{$ops->{flesh_fields}->{acqlid}}, 'fund') if $$options{flesh_fund};
         push(@{$ops->{flesh_fields}->{acqlid}}, 'fund_debit') if $$options{flesh_fund_debit};
-        my $details = $e->search_acq_lineitem_detail([{lineitem => $li_id}, $ops]);
-        $li->lineitem_details($details);
-        $li->item_count(scalar(@$details));
+        if (my $details = $e->search_acq_lineitem_detail([{lineitem => $li_id}, $ops])) {
+            $li->lineitem_details($details);
+            $li->item_count(scalar(@$details));
+        } else {
+            $li->lineitem_count(0);
+        }
     } else {
         my $details = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist=>1});
         $li->item_count(scalar(@$details));
@@ -295,6 +298,13 @@ __PACKAGE__->register_method (
     /
 );
 
+__PACKAGE__->register_method (
+    method        => 'lineitems_related_by_bib',
+    api_name    => 'open-ils.acq.lineitems_for_bib.by_lineitem_id.count',
+    stream      => 1,
+    signature => q/See open-ils.acq.lineitems_for_bib.by_lineitem_id. This version returns numbers of lineitems only (XXX may count lineitems we don't actually have permission to retrieve)/
+);
+
 sub lineitems_related_by_bib {
     my($self, $conn, $auth, $id_value, $options) = @_;
     my $e = new_editor(authtoken => $auth);
@@ -302,18 +312,17 @@ sub lineitems_related_by_bib {
 
     my $perm_orgs = $U->user_has_work_perm_at($e, 'VIEW_PURCHASE_ORDER', {descendants =>1}, $e->requestor->id);
 
-    my $id_field;
-    if ($self->api_name =~ /by_bib_id/) {
-        $id_field = 'eg_bib_id';
-    } else {
-        $id_field = 'id';
+    if ($self->api_name =~ /by_lineitem_id/) {
+        my $orig = retrieve_lineitem($self, $conn, $auth, $id_value) or
+            return $e->die_event;
+        $id_value = $orig->eg_bib_id;
     }
 
     my $query = {
         "select"=>{"jub"=>["id"]},
         "from"=>{"jub"=>"acqpo"}, 
         "where"=>{
-            $id_field=>$id_value,
+            "eg_bib_id"=>$id_value,
             "+acqpo"=>{
                 "ordering_agency"=>{
                     "in"=>$perm_orgs
@@ -336,22 +345,15 @@ sub lineitems_related_by_bib {
     }
 
     my $results = $e->json_query($query);
-    for my $result (@$results) {
-        my $lineitem = $e->retrieve_acq_lineitem([
-            $result->{id},
-            {}
-        ]);
-        if (! $lineitem) { next; }
-
-        my $po = OpenILS::Application::Acq::Financials::retrieve_purchase_order_impl->(
-            $e,
-            $lineitem->purchase_order(),
-            {flesh_lineitem_count=>1,flesh_price_summary=>1}
-        );
-
-        if ($e->allowed( ['CREATE_PURCHASE_ORDER','VIEW_PURCHASE_ORDER'], $po->ordering_agency() )) {
-            $lineitem->purchase_order( $po );
-            $conn->respond($lineitem);
+    if ($self->api_name =~ /count$/) {
+        return scalar(@$results);
+    } else {
+        for my $result (@$results) {
+            # retrieve_lineitem takes care of POs and PLs and also handles
+            # options like flesh_notes and permissions checking.
+            $conn->respond(
+                retrieve_lineitem($self, $conn, $auth, $result->{"id"}, $options)
+            );
         }
     }
 

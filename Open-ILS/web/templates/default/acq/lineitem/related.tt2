@@ -1,0 +1,17 @@
+[% WRAPPER "default/base.tt2" %]
+[% ctx.page_title = "Related Lineitems" %]
+<script src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/related.js"></script>
+<script type="text/javascript">var liId = "[% ctx.page_args.0 %]";</script>
+<h1>Related Lineitems</h1>
+<div id="acq-related-mini">
+    <ul id="acq-related-mini-display">
+        <li name="title"></li>
+        <li name="author"></li>
+    </ul>
+    <div dojoType="dijit.form.Button" id="acq-related-info-show-button">
+        Show details
+    </div>
+</div>
+[% INCLUDE "default/acq/common/detail.tt2" which = "Related" %]
+[% INCLUDE "default/acq/common/li_table.tt2" %]
+[% END %]

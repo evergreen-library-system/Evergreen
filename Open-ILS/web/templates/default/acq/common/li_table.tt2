@@ -107,31 +107,10 @@
     </div>
 
     <!-- Bib record / Lineitem details table -->
-    <div id='acq-lit-info-div' class='hidden'>
-        <div class='acq-lit-li-menu-bar'>
-            <div dojoType='dijit.form.Button' id='acq-lit-info-back-button'>&#x2196; Return</div>
-        </div>
-        <table>
-            <tbody id='acq-lit-info-tbody'>
-                <tr id='acq-lit-info-row'><td name='label'/><td name='value'/></tr>
-            </tbody>
-        </table>
-        <div style='margin-top:10px;' class='hidden' id='acq-lit-info-cat-link'>
-            View in the <a href='/opac/en-US/skin/default/xml/rdetail.xml?r='>Catalog</a>
-        </div>
-        <div style='margin-top:40px;'>
-            <h3 id='acq-lit-marc-order-record-label'>MARC Order Record</h3>
-            <h3 id='acq-lit-marc-real-record-label'>MARC ILS Record</h3>
-            <div>
-                <div dojoType='dijit.form.Button' jsId='acqLitEditOrderMarc' class='hidden'>Edit MARC Order Record</div>
-            </div>
-            <div id='acq-lit-marc-div' style='margin-top:20px;'> </div>
-        </div>
-    </div>
+    [% INCLUDE "default/acq/common/detail.tt2" which = "Lit" %]
 
     <!-- Lineitem notes table -->
-    [% note_table_for = "Lit" %]
-    [% INCLUDE "default/acq/common/notes.tt2" %]
+    [% INCLUDE "default/acq/common/notes.tt2" which = "Lit" %]
 
     <!-- Copies table -->
     <div id='acq-lit-li-details' class='hidden'>

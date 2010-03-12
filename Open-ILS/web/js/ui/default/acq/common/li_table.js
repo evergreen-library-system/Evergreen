@@ -39,6 +39,7 @@ function AcqLiTable() {
     this.liCache = {};
     this.plCache = {};
     this.poCache = {};
+    this.relCache = {};
     this.realDfaCache = {};
     this.virtDfaCounts = {};
     this.virtDfaId = -1;
@@ -96,6 +97,7 @@ function AcqLiTable() {
             self.tbody.removeChild(self.tbody.childNodes[0]);
         self.selectors = [];
         self.noteAcks = {};
+        self.relCache = {};
     };
     
     this.setNext = function(handler) {
@@ -535,6 +537,28 @@ function AcqLiTable() {
     }
 
     this.drawInfo = function(liId) {
+        if (!this.relCache[liId]) {
+            fieldmapper.standardRequest(
+                [
+                    "open-ils.acq",
+                    "open-ils.acq.lineitems_for_bib.by_lineitem_id.count"
+                ], {
+                    "async": true,
+                    "params": [openils.User.authtoken, liId],
+                    "onresponse": function(r) {
+                        self.relCache[liId] = openils.Util.readResponse(r);
+                        nodeByName(
+                            "related_number", dojo.byId("acq-lit-info-related")
+                        ).innerHTML = self.relCache[liId];
+                    }
+                }
+            );
+        } else {
+            nodeByName(
+                "related_number", dojo.byId("acq-lit-info-related")
+            ).innerHTML = this.relCache[liId];
+        }
+
         this.show('info');
         openils.acq.Lineitem.fetchAttrDefs(
             function() { 
@@ -588,23 +612,31 @@ function AcqLiTable() {
         while(this.infoTbody.childNodes[0])
             this.infoTbody.removeChild(this.infoTbody.childNodes[0]);
 
-        for(var i = 0; i < li.attributes().length; i++) {
-            var attr = li.attributes()[i];
-            var row = this.infoRow.cloneNode(true);
+        if (!this._isRelatedViewer) {
+            for(var i = 0; i < li.attributes().length; i++) {
+                var attr = li.attributes()[i];
+                var row = this.infoRow.cloneNode(true);
 
-            var type = attr.attr_type().replace(/lineitem_(.*)_attr_definition/, '$1');
-            var name = openils.acq.Lineitem.attrDefs[type].filter(
-                function(a) {
-                    return (a.code() == attr.attr_name());
-                }
-            ).pop().description();
+                var type = attr.attr_type().replace(/lineitem_(.*)_attr_definition/, '$1');
+                var name = openils.acq.Lineitem.attrDefs[type].filter(
+                    function(a) {
+                        return (a.code() == attr.attr_name());
+                    }
+                ).pop().description();
 
-            dojo.query('[name=label]', row)[0].appendChild(document.createTextNode(name));
-            dojo.query('[name=value]', row)[0].appendChild(document.createTextNode(attr.attr_value()));
-            this.infoTbody.appendChild(row);
+                dojo.query('[name=label]', row)[0].appendChild(document.createTextNode(name));
+                dojo.query('[name=value]', row)[0].appendChild(document.createTextNode(attr.attr_value()));
+                this.infoTbody.appendChild(row);
+            }
+
+            var rel_div = dojo.byId("acq-lit-info-related");
+            nodeByName("rel_link", rel_div).href =
+                "/eg/acq/lineitem/related/" + li.id();
+            openils.Util.show(rel_div);
         }
 
         if(li.eg_bib_id()) {
+
             openils.Util.show('acq-lit-info-cat-link');
             var link = dojo.byId('acq-lit-info-cat-link').getElementsByTagName('a')[0];
 
