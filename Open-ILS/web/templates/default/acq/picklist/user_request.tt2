@@ -3,40 +3,56 @@
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/user_request.js'> </script>
 <script>var reqId = '[% ctx.page_args.0 %]';</script>
 
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>[% ctx.page_title %]</div>
-        <div>
-            <!-- TODO: add reject-selection operation -->
+    <div dojoType="dijit.layout.StackContainer" id="stackContainer" doLayout="false">
+        <div dojoType="dijit.layout.ContentPane">
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+                <div>[% ctx.page_title %]</div>
+                <div>
+                    <button dojoType="dijit.form.Button" onClick="rGrid.setNoHoldSelected()">Set No Hold on Selected</button>
+                    <button dojoType="dijit.form.Button" onClick="rGrid.cancelSelected()">Cancel Selected</button>
+                </div>
+            </div>
+            <div>
+                <span>Context Org Unit</span>
+                <select 
+                    dojoType="openils.widget.OrgUnitFilteringSelect" 
+                    jsId='contextOrgSelector'
+                    searchAttr='shortname' 
+                    labelAttr='shortname'> 
+                </select>
+            </div>
+            <table  jsId="rGrid"
+                    dojoType="openils.widget.AutoGrid"
+                    query="{id: '*'}"
+                    suppressFields='["id", "usr", "pickup_lib", "holdable_formats", "phone_notify", "email_notify", "lineitem", "eg_bib", "max_fee", "cancel_reason"]'
+                    fieldOrder='["title", "author", "isxn", "article_title", "article_pages", "request_type", "volume", "pubdate", "publisher", "location", "other_info", "mentioned"]'
+                    fmClass='aur'
+                    editStyle='pane'
+                    autoHeight='true'
+                    autoWidth='true'
+                    suppressFields="['id']"
+                    showPaginator='true'
+                    showColumnPicker='true'
+                    columnPickerPrefix='"acq.picklist.user_request"'
+                    editOnEnter='true'>
+                    <thead>
+                        <tr>
+                            <th field='title' get='getTitle' formatter='formatTitle'/>
+                        </tr>
+                    </thead>
+            </table>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" style="height: 100%;">
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+                <div>Patron Request</div>
+                <div>
+                    <button dojoType="dijit.form.Button" onClick="location.href=oilsBasePath+'/acq/picklist/user_request'">[% ctx.page_title %]</button>
+                    <button dojoType="dijit.form.Button" onClick="addToPicklist()">Add to Picklist</button>
+                    <button dojoType="dijit.form.Button" onClick="setNoHold()">Set No Hold</button>
+                    <button dojoType="dijit.form.Button" onClick="cancelRequest()">Cancel Request with Reason</button>
+                </div>
+            </div>
+            <div id="detail_content_pane" />
         </div>
     </div>
-    <div>
-        <span>Context Org Unit</span>
-        <select 
-            dojoType="openils.widget.OrgUnitFilteringSelect" 
-            jsId='contextOrgSelector'
-            searchAttr='shortname' 
-            labelAttr='shortname'> 
-        </select>
-    </div>
-    <table  jsId="rGrid"
-            dojoType="openils.widget.AutoGrid"
-            query="{id: '*'}"
-            suppressFields='["id", "usr", "pickup_lib", "holdable_formats", "phone_notify", "email_notify", "lineitem", "eg_bib", "max_fee", "cancel_reason"]'
-            fieldOrder='["title", "author", "isxn", "article_title", "article_pages", "request_type", "volume", "pubdate", "publisher", "location", "other_info", "mentioned"]'
-            fmClass='aur'
-            editStyle='pane'
-            autoHeight='true'
-            suppressFields="['id']"
-            showPaginator='true'
-            showColumnPicker='true'
-            columnPickerPrefix='"acq.picklist.user_request"'
-            editOnEnter='true'>
-            <thead>
-                <tr>
-                    <th field='title' get='getTitle' formatter='formatTitle'/>
-                </tr>
-            </thead>
-    </table>
-</div>
 [% END %]
