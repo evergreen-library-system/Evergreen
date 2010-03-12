@@ -360,6 +360,14 @@ DECLARE
     match_count     INT;
     match_attr      vandelay.bib_attr_definition%ROWTYPE;
 BEGIN
+
+    PERFORM * FROM vandelay.queued_bib_record WHERE import_time IS NOT NULL AND id = import_id;
+
+    IF FOUND THEN
+        -- RAISE NOTICE 'already imported, cannot auto-overlay'
+        RETURN FALSE;
+    END IF;
+
     SELECT COUNT(*) INTO match_count FROM vandelay.bib_match WHERE queued_record = import_id;
 
     IF match_count <> 1 THEN
@@ -374,7 +382,7 @@ BEGIN
       WHERE m.queued_record = import_id;
 
     IF NOT (match_attr.xpath ~ '@tag="901"' AND match_attr.xpath ~ '@code="c"') THEN
-        -- RAISE NOTICE 'not a 901c match';
+        -- RAISE NOTICE 'not a 901c match: %', match_attr.xpath;
         RETURN FALSE;
     END IF;
 
@@ -758,6 +766,7 @@ $func$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION vandelay.match_bib_record ( ) RETURNS TRIGGER AS $func$
 DECLARE
     attr        RECORD;
+    attr_def    RECORD;
     eg_rec      RECORD;
     id_value    TEXT;
     exact_id    BIGINT;
@@ -765,13 +774,14 @@ BEGIN
 
     DELETE FROM vandelay.bib_match WHERE queued_record = NEW.id;
 
-    SELECT * INTO attr FROM vandelay.bib_attr_definition WHERE xpath = '//*[@tag="901"]/*[@code="c"]' ORDER BY id LIMIT 1;
+    SELECT * INTO attr_def FROM vandelay.bib_attr_definition WHERE xpath = '//*[@tag="901"]/*[@code="c"]' ORDER BY id LIMIT 1;
 
-    IF attr IS NOT NULL AND attr.id IS NOT NULL THEN
-        id_value := extract_marc_field('vandelay.queued_bib_record', NEW.id, attr.xpath, attr.remove);
+    IF attr_def IS NOT NULL AND attr_def.id IS NOT NULL THEN
+        id_value := extract_marc_field('vandelay.queued_bib_record', NEW.id, attr_def.xpath, attr_def.remove);
     
         IF id_value IS NOT NULL AND id_value <> '' AND id_value ~ $r$^\d+$$r$ THEN
             SELECT id INTO exact_id FROM biblio.record_entry WHERE id = id_value::BIGINT AND NOT deleted;
+            SELECT * INTO attr FROM vandelay.queued_bib_record_attr WHERE record = NEW.id and field = attr_def.id LIMIT 1;
             IF exact_id IS NOT NULL THEN
                 INSERT INTO vandelay.bib_match (field_type, matched_attr, queued_record, eg_record) VALUES ('id', attr.id, NEW.id, exact_id);
             END IF;
