@@ -205,11 +205,15 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 
     /** Given an org id, returns an array of org units including
      * the org for the ID provided and all descendant orgs */
-    fieldmapper.aou.descendantNodeList = function(orgId) {
+    fieldmapper.aou.descendantNodeList = function(orgId, asId) {
         var list = [];
         function addNode(node) {
             if(!node) return;
-            list.push(node);
+            if(asId) {
+                list.push(node.id());
+            } else {
+                list.push(node);
+            }
             var children = node.children();
             if(children) {
                 for(var i = 0; i < children.length; i++) 
