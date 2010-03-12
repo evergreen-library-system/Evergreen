@@ -349,7 +349,7 @@ sub set_circ_due_date {
 	$date = clense_ISO8601($date);
 
     if (!(interval_to_seconds($circ->duration) % 86400)) { # duration is divisible by days
-        my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
+        my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($circ->due_date));
         my $new_date = DateTime::Format::ISO8601->new->parse_datetime($date);
         $date = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
     }
