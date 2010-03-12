@@ -309,7 +309,7 @@ BEGIN
 
     -- Fail if we couldn't find the item 
     IF item_object.id IS NULL THEN
-        result.fail_part := 'no_user';
+        result.fail_part := 'no_item';
         result.success := FALSE;
         done := TRUE;
         RETURN NEXT result;
