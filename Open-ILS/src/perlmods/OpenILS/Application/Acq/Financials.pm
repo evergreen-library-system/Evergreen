@@ -1227,11 +1227,12 @@ __PACKAGE__->register_method (
 
 
 sub process_fiscal_rollover {
-    my( $self, $conn, $auth, $year, $org_id, $descendants ) = @_;
+    my( $self, $conn, $auth, $year, $org_id, $descendants, $options ) = @_;
 
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('ADMIN_FUND', $org_id);
+    $options ||= {};
 
     my $combined = ($self->api_name =~ /combined/); 
 
@@ -1271,12 +1272,16 @@ sub process_fiscal_rollover {
     }
 
     # Fetch all funds for the specified org units for the subsequent year
-    my $fund_ids = $e->search_acq_fund(
+    my $fund_ids = $e->search_acq_fund([
         {
             year => int($year) + 1, 
             org => $org_ids,
             propagate => 't'
-        }, 
+        }, {
+            limit => $$optoins{limit} || 20,
+            offset => $$optoins{offset} || 0,
+        }
+        ], 
         {idlist => 1}
     );
 
