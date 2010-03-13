@@ -537,26 +537,30 @@ function AcqLiTable() {
     }
 
     this.drawInfo = function(liId) {
-        if (!this.relCache[liId]) {
-            fieldmapper.standardRequest(
-                [
-                    "open-ils.acq",
-                    "open-ils.acq.lineitems_for_bib.by_lineitem_id.count"
-                ], {
-                    "async": true,
-                    "params": [openils.User.authtoken, liId],
-                    "onresponse": function(r) {
-                        self.relCache[liId] = openils.Util.readResponse(r);
-                        nodeByName(
-                            "related_number", dojo.byId("acq-lit-info-related")
-                        ).innerHTML = self.relCache[liId];
+        if (!this._isRelatedViewer) {
+            var d = dojo.byId("acq-lit-info-related");
+            if (!this.relCache[liId]) {
+                fieldmapper.standardRequest(
+                    [
+                        "open-ils.acq",
+                        "open-ils.acq.lineitems_for_bib.by_lineitem_id.count"
+                    ], {
+                        "async": true,
+                        "params": [openils.User.authtoken, liId],
+                        "onresponse": function(r) {
+                            self.relCache[liId] = openils.Util.readResponse(r);
+                            nodeByName("related_number", d).innerHTML =
+                                self.relCache[liId];
+                            openils.Util[
+                                self.relCache[liId] >1 ? "show" : "hide"
+                            ](d);
+                        }
                     }
-                }
-            );
-        } else {
-            nodeByName(
-                "related_number", dojo.byId("acq-lit-info-related")
-            ).innerHTML = this.relCache[liId];
+                );
+            } else {
+                nodeByName("related_number", d).innerHTML = this.relCache[liId];
+                openils.Util[this.relCache[liId] > 1 ? "show" : "hide"](d);
+            }
         }
 
         this.show('info');
@@ -629,10 +633,8 @@ function AcqLiTable() {
                 this.infoTbody.appendChild(row);
             }
 
-            var rel_div = dojo.byId("acq-lit-info-related");
-            nodeByName("rel_link", rel_div).href =
+            nodeByName("rel_link", dojo.byId("acq-lit-info-related")).href =
                 "/eg/acq/lineitem/related/" + li.id();
-            openils.Util.show(rel_div);
         }
 
         if(li.eg_bib_id()) {
