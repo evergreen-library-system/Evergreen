@@ -216,6 +216,8 @@ function uEditInsertCat( row, cat, idx ) {
 /* draw the surveys */
 function uEditDrawSurveys(surveys) {
 
+	patron.survey_responses([]); /* clear out all surveys up front */
+
 	var div = $('uedit_surveys');
 	var table = div.removeChild($('ue_survey_table'));
 	if( surveys.length == 0 ) unHideMe($('uedit_no_surveys'));
@@ -265,11 +267,11 @@ function uEditInsertSurveyQuestion( row, survey, question ) {
 
 	selector.onchange = function() {
 
-		/* remove any existing responses for this survey */
+		/* remove any existing responses for this question */
 		patron.survey_responses(
 			grep( patron.survey_responses(),
 				function(item) {
-					return (item.survey() != survey.id());
+					return (item.question() != row.getAttribute('question'));
 				}
 			)
 		);
