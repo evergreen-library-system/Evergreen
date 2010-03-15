@@ -644,7 +644,9 @@ DECLARE
     uri_map_id      INT;
 BEGIN
 
-    DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
+    IF TG_OP = 'UPDATE' THEN -- Clean out the cruft
+        DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
+    END IF;
 
     IF NEW.deleted IS TRUE THEN
         RETURN NEW; -- and we're done
@@ -756,42 +758,46 @@ BEGIN
 
     -- And, finally, metarecord mapping!
 
-    FOR tmp_mr IN SELECT  m.* FROM  metabib.metarecord m JOIN metabib.metarecord_source_map s ON (s.metarecord = m.id) WHERE s.source = NEW.id LOOP
+    PERORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_insert' AND enabled;
 
-        IF old_mr IS NULL AND NEW.fingerprint = tmp_mr.fingerprint THEN -- Find the first fingerprint-matching
-            old_mr := tmp_mr.id;
-        ELSE
-            SELECT COUNT(*) INTO source_count FROM metabib.metarecord_source_map WHERE metarecord = tmp_mr.id;
-            IF source_count = 0 THEN -- No other records
-                deleted_mrs := ARRAY_APPEND(deleted_mrs, tmp_mr.id);
-                DELETE FROM metabib.metarecord WHERE id = tmp_mr.id;
+    IF NOT FOUND OR TG_OP = 'UPDATE' THEN
+        FOR tmp_mr IN SELECT  m.* FROM  metabib.metarecord m JOIN metabib.metarecord_source_map s ON (s.metarecord = m.id) WHERE s.source = NEW.id LOOP
+    
+            IF old_mr IS NULL AND NEW.fingerprint = tmp_mr.fingerprint THEN -- Find the first fingerprint-matching
+                old_mr := tmp_mr.id;
+            ELSE
+                SELECT COUNT(*) INTO source_count FROM metabib.metarecord_source_map WHERE metarecord = tmp_mr.id;
+                IF source_count = 0 THEN -- No other records
+                    deleted_mrs := ARRAY_APPEND(deleted_mrs, tmp_mr.id);
+                    DELETE FROM metabib.metarecord WHERE id = tmp_mr.id;
+                END IF;
             END IF;
-        END IF;
-
-    END LOOP;
-
-    IF old_mr IS NULL THEN -- we found no suitable, preexisting MR based on old source maps
-        SELECT id INTO old_mr FROM metabib.metarecord WHERE fingerprint = NEW.fingerprint; -- is there one for our current fingerprint?
-        IF old_mr IS NULL THEN -- nope, create one and grab its id
-            INSERT INTO metabib.metarecord ( fingerprint, master_record ) VALUES ( NEW.fingerprint, NEW.id );
-            SELECT id INTO old_mr FROM metabib.metarecord WHERE fingerprint = NEW.fingerprint;
-        ELSE -- indeed there is. update it with a null cache and recalcualated master record
+    
+        END LOOP;
+    
+        IF old_mr IS NULL THEN -- we found no suitable, preexisting MR based on old source maps
+            SELECT id INTO old_mr FROM metabib.metarecord WHERE fingerprint = NEW.fingerprint; -- is there one for our current fingerprint?
+            IF old_mr IS NULL THEN -- nope, create one and grab its id
+                INSERT INTO metabib.metarecord ( fingerprint, master_record ) VALUES ( NEW.fingerprint, NEW.id );
+                SELECT id INTO old_mr FROM metabib.metarecord WHERE fingerprint = NEW.fingerprint;
+            ELSE -- indeed there is. update it with a null cache and recalcualated master record
+                UPDATE  metabib.metarecord
+                  SET   mods = NULL,
+                        master_record = ( SELECT id FROM biblio.record_entry WHERE fingerprint = NEW.fingerprint ORDER BY quality DESC LIMIT 1)
+                  WHERE id = old_mr;
+            END IF;
+        ELSE -- there was one we already attached to, update its mods cache and master_record
             UPDATE  metabib.metarecord
               SET   mods = NULL,
                     master_record = ( SELECT id FROM biblio.record_entry WHERE fingerprint = NEW.fingerprint ORDER BY quality DESC LIMIT 1)
               WHERE id = old_mr;
         END IF;
-    ELSE -- there was one we already attached to, update its mods cache and master_record
-        UPDATE  metabib.metarecord
-          SET   mods = NULL,
-                master_record = ( SELECT id FROM biblio.record_entry WHERE fingerprint = NEW.fingerprint ORDER BY quality DESC LIMIT 1)
-          WHERE id = old_mr;
+    
+        INSERT INTO metabib.metarecord_source_map (metarecord, source) VALUES (old_mr, NEW.id); -- new source mapping
+    
+        UPDATE action.hold_request SET target = old_mr WHERE target IN ( SELECT explode_array(deleted_mrs) ) AND hold_type = 'M'; -- if we had to delete any MRs above, make sure their holds are moved
     END IF;
-
-    INSERT INTO metabib.metarecord_source_map (metarecord, source) VALUES (old_mr, NEW.id); -- new source mapping
-
-    UPDATE action.hold_request SET target = old_mr WHERE target IN ( SELECT explode_array(deleted_mrs) ) AND hold_type = 'M'; -- if we had to delete any MRs above, make sure their holds are moved
-
+ 
     RETURN NEW;
 
 END;

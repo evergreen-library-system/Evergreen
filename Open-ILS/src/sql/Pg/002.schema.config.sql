@@ -46,12 +46,19 @@ COMMENT ON SCHEMA config IS $$
  */
 $$;
 
+CREATE TABLE config.internal_flag (
+    name    TEXT    PRIMARY KEY,
+    value   TEXT,
+    enabled BOOL    NOT NULL DEFAULT FALSE
+);
+INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.skip_on_insert');
+
 CREATE TABLE config.upgrade_log (
     version         TEXT    PRIMARY KEY,
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0196'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0197'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
