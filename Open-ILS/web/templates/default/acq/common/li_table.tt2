@@ -22,6 +22,7 @@
                                             <option mask='po' value='' disabled='disabled'>----PO----</option>
                                             <option mask='sr|pl' value='create_order'>Create Purchase Order</option>
                                             <option mask='po' value='create_assets'>Load Bibs and Items</option>
+                                            <option mask='po' value='cancel_lineitems'>Cancel Selected Lineitems</option>
                                             <option mask='po' value='receive_po'>Mark Purchase Order as Received</option>
                                             <option mask='po' value='rollback_receive_po'>Un-Receive Purchase Order</option>
                                             <option mask='po' value='print_po'>Print Purchase Order</option>
@@ -29,6 +30,10 @@
                                         <span id="acq-lit-export-attr-holder" class="hidden">
                                             <input dojoType="dijit.form.FilteringSelect" id="acq-lit-export-attr" jsId="acqLitExportAttrSelector" labelAttr="description" searchAttr="description" />
                                             <span dojoType="dijit.form.Button" jsId="acqLitExportAttrButton">Export List</span>
+                                        </span>
+                                        <span id="acq-lit-cancel-reason" class="hidden">
+                                            <span id="acq-lit-cancel-reason-selector"></span>
+                                            <span dojoType="dijit.form.Button" jsId="acqLitCancelLineitemsButton">Cancel Line Items</span>
                                         </span>
                                     </span>
                                     <span id='acq-lit-generic-progress' class='hidden'>
@@ -91,8 +96,7 @@
                             </tbody>
                         </table>
                     </td>
-                    <td><a class='hidden' name='real_copies_link' href='javascript:void(0);'>Update&nbsp;Barcodes</a></td>
-                    <td><a class='hidden' name='holdings_maintenance_link' href='javascript:void(0);'>Holdings&nbsp;Maintenance</a></td>
+                    <td><a class='hidden' name='real_copies_link' href='javascript:void(0);'>Update&nbsp;Barcodes</a>&nbsp;&nbsp;<a class='hidden' name='holdings_maintenance_link' href='javascript:void(0);'>Holdings&nbsp;Maintenance</a></td>
                     <td><a name='receive_link' href='javascript:void(0);'>Mark&nbsp;Received</a><a name='unreceive_link' href='javascript:void(0);'>Un-Receive</a></td>
                     </td>
                     <td><a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>
@@ -205,7 +209,7 @@
                     <td><div name='cn_label'/></td>
                     <td><div name='barcode'/></td>
                     <td><div name='note'/></td>
-                    <td><a href='javascript:void(0);' name='receive'>Mark&nbsp;Received</a><a href='javascript:void(0);' name='unreceive'>Un-Receive</a></td>
+                    <td><a href='javascript:void(0);' name='receive'>Mark&nbsp;Received</a><a href='javascript:void(0);' name='unreceive'>Un-Receive</a>&nbsp;<a href="javascript:void(0);" name='cancel'>Cancel</a><span class="hidden" name='cancel_reason'></span></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
                 </tr>
             </tbody>
@@ -346,6 +350,15 @@
                 </td>
             </tr>
         </table>
+    </div>
+
+    <div class="hidden">
+        <div dojoType="dijit.Dialog" jsId="lidCancelDialog">
+            <label for="acq-lit-lid-cancel-reason">Reason:</label>
+            <span id="acq-lit-lid-cancel-reason"></span>
+            <span dojoType="dijit.form.Button"
+                jsId="acqLidCancelButton">Cancel Copy</span>
+        </div>
     </div>
 
     <div dojoType="dijit.Dialog" jsId='acqLitChangeLiStateDialog'>

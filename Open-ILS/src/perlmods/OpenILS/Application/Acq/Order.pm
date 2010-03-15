@@ -2120,51 +2120,347 @@ sub split_purchase_order_by_lineitems {
 }
 
 
+sub not_cancelable {
+    my $o = shift;
+    (ref $o eq "HASH" and $o->{"textcode"} eq "ACQ_NOT_CANCELABLE");
+}
+
 __PACKAGE__->register_method(
-	method => 'cancel_lineitem_api',
-	api_name	=> 'open-ils.acq.lineitem.cancel',
+	method => "cancel_purchase_order_api",
+	api_name	=> "open-ils.acq.purchase_order.cancel",
+	signature => {
+        desc => q/Cancels an on-order purchase order/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "PO ID to cancel", type => "number"},
+            {desc => "Cancel reason ID", type => "number"}
+        ],
+        return => {desc => q/Object describing changed POs, LIs and LIDs
+            on success; Event on error./}
+    }
+);
+
+sub cancel_purchase_order_api {
+    my ($self, $conn, $auth, $po_id, $cancel_reason) = @_;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = new OpenILS::Application::Acq::BatchManager(
+        "editor" => $e, "conn" => $conn
+    );
+
+    $cancel_reason = $mgr->editor->retrieve_acq_cancel_reason($cancel_reason) or
+        return new OpenILS::Event(
+            "BAD_PARAMS", "note" => "Provide cancel reason ID"
+        );
+
+    my $result = cancel_purchase_order($mgr, $po_id, $cancel_reason) or
+        return $e->die_event;
+    if (not_cancelable($result)) { # event not from CStoreEditor
+        $e->rollback;
+        return $result;
+    } elsif ($result == -1) {
+        $e->rollback;
+        return new OpenILS::Event("ACQ_ALREADY_CANCELED");
+    }
+
+    $e->commit or return $e->die_event;
+
+    # XXX create purchase order status events?
+    return $result;
+}
+
+sub cancel_purchase_order {
+    my ($mgr, $po_id, $cancel_reason) = @_;
+
+    my $po = $mgr->editor->retrieve_acq_purchase_order($po_id) or return 0;
+
+    # XXX is "cancelled" a typo?  It's not correct US spelling, anyway.
+    # Depending on context, this may not warrant an event.
+    return -1 if $po->state eq "cancelled";
+
+    # But this always does.
+    return new OpenILS::Event(
+        "ACQ_NOT_CANCELABLE", "note" => "purchase_order $po_id"
+    ) unless ($po->state eq "on-order" or $po->state eq "pending");
+
+    return 0 unless
+        $mgr->editor->allowed("CREATE_PURCHASE_ORDER", $po->ordering_agency);
+
+    $po->state("cancelled");
+    $po->cancel_reason($cancel_reason);
+
+    my $li_ids = $mgr->editor->search_acq_lineitem(
+        {"purchase_order" => $po_id}, {"idlist" => 1}
+    );
+
+    my $result = {"li" => {}, "lid" => {}};
+    foreach my $li_id (@$li_ids) {
+        my $li_result = cancel_lineitem($mgr, $li_id, $cancel_reason)
+            or return 0;
+
+        next if $li_result == -1; # already canceled:skip.
+        return $li_result if not_cancelable($li_result); # not cancelable:stop.
+
+        # Merge in each LI result (there's only going to be
+        # one per call to cancel_lineitem).
+        my ($k, $v) = each %{$li_result->{"li"}};
+        $result->{"li"}->{$k} = $v;
+
+        # Merge in each LID result (there may be many per call to
+        # cancel_lineitem).
+        while (($k, $v) = each %{$li_result->{"lid"}}) {
+            $result->{"lid"}->{$k} = $v;
+        }
+    }
+
+    # TODO who/what/where/how do we indicate this change for electronic orders?
+    # TODO return changes to encumbered/spent
+    # TODO maybe cascade up from smaller object to container object if last
+    # smaller object in the container has been canceled?
+
+    update_purchase_order($mgr, $po) or return 0;
+    $result->{"po"} = {
+        $po_id => {"state" => $po->state, "cancel_reason" => $cancel_reason}
+    };
+    return $result;
+}
+
+
+__PACKAGE__->register_method(
+	method => "cancel_lineitem_api",
+	api_name	=> "open-ils.acq.lineitem.cancel",
 	signature => {
         desc => q/Cancels an on-order lineitem/,
         params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'Lineitem ID to cancel', type => 'number'},
-            {desc => 'Cancel Cause ID', type => 'number'}
+            {desc => "Authentication token", type => "string"},
+            {desc => "Lineitem ID to cancel", type => "number"},
+            {desc => "Cancel reason ID", type => "number"}
         ],
-        return => {desc => '1 on success, Event on error'}
+        return => {desc => q/Object describing changed LIs and LIDs on success;
+            Event on error./}
+    }
+);
+
+__PACKAGE__->register_method(
+	method => "cancel_lineitem_api",
+	api_name	=> "open-ils.acq.lineitem.cancel.batch",
+	signature => {
+        desc => q/Batched version of open-ils.acq.lineitem.cancel/,
+        return => {desc => q/Object describing changed LIs and LIDs on success;
+            Event on error./}
     }
 );
 
 sub cancel_lineitem_api {
-    my($self, $conn, $auth, $li_id, $cancel_cause) = @_;
+    my ($self, $conn, $auth, $li_id, $cancel_reason) = @_;
 
-    my $e = new_editor(xact=>1, authtoken=>$auth);
+    my $batched = $self->api_name =~ /\.batch/;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $auth);
     return $e->die_event unless $e->checkauth;
-    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+    my $mgr = new OpenILS::Application::Acq::BatchManager(
+        "editor" => $e, "conn" => $conn
+    );
 
-    my $li = $e->retrieve_acq_lineitem([$li_id, 
-        {flesh => 1, flesh_fields => {jub => [q/purchase_order/]}}]);
+    $cancel_reason = $mgr->editor->retrieve_acq_cancel_reason($cancel_reason) or
+        return new OpenILS::Event(
+            "BAD_PARAMS", "note" => "Provide cancel reason ID"
+        );
 
-    unless( $li->purchase_order and ($li->state eq 'on-order' or $li->state eq 'pending-order') ) {
-        $e->rollback;
-        return OpenILS::Event->new('BAD_PARAMS') 
+    my ($result, $maybe_event);
+
+    if ($batched) {
+        $result = {"li" => {}, "lid" => {}};
+        foreach my $one_li_id (@$li_id) {
+            my $one = cancel_lineitem($mgr, $one_li_id, $cancel_reason) or
+                return $e->die_event;
+            if (not_cancelable($one)) {
+                $maybe_event = $one;
+            } elsif ($result == -1) {
+                $maybe_event = new OpenILS::Event("ACQ_ALREADY_CANCELED");
+            } else {
+                my ($k, $v);
+                if ($one->{"li"}) {
+                    while (($k, $v) = each %{$one->{"li"}}) {
+                        $result->{"li"}->{$k} = $v;
+                    }
+                }
+                if ($one->{"lid"}) {
+                    while (($k, $v) = each %{$one->{"lid"}}) {
+                        $result->{"lid"}->{$k} = $v;
+                    }
+                }
+            }
+        }
+    } else {
+        $result = cancel_lineitem($mgr, $li_id, $cancel_reason) or
+            return $e->die_event;
+
+        if (not_cancelable($result)) {
+            $e->rollback;
+            return $result;
+        } elsif ($result == -1) {
+            $e->rollback;
+            return new OpenILS::Event("ACQ_ALREADY_CANCELED");
+        }
     }
 
-    return $e->die_event unless 
-        $e->allowed('CREATE_PURCHASE_ORDER', $li->purchase_order->ordering_agency);
+    if ($batched and not scalar keys %{$result->{"li"}}) {
+        $e->rollback;
+        return $maybe_event;
+    } else {
+        $e->commit or return $e->die_event;
+        # create_lineitem_status_events should handle array li_id ok
+        create_lineitem_status_events($mgr, $li_id, "aur.cancelled");
+        return $result;
+    }
+}
 
-    $li->state('cancelled');
+sub cancel_lineitem {
+    my ($mgr, $li_id, $cancel_reason) = @_;
+    my $li = $mgr->editor->retrieve_acq_lineitem([
+        $li_id, {"flesh" => 1, "flesh_fields" => {"jub" => ["purchase_order"]}}
+    ]) or return 0;
+
+    return 0 unless $mgr->editor->allowed(
+        "CREATE_PURCHASE_ORDER", $li->purchase_order->ordering_agency
+    );
+
+    # Depending on context, this may not warrant an event.
+    return -1 if $li->state eq "cancelled";
+
+    # But this always does.
+    return new OpenILS::Event(
+        "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id"
+    ) unless (
+        $li->purchase_order and (
+            $li->state eq "on-order" or $li->state eq "pending-order"
+        )
+    );
+
+    $li->state("cancelled");
+    $li->cancel_reason($cancel_reason);
+
+    my $lid_ids = $mgr->editor->search_acq_lineitem_detail(
+        {"lineitem" => $li_id}, {"idlist" => 1}
+    );
+
+    my $result = {"lid" => {}};
+    foreach my $lid_id (@$lid_ids) {
+        my $lid_result = cancel_lineitem_detail($mgr, $lid_id, $cancel_reason)
+            or return 0;
+
+        next if $lid_result == -1; # already canceled: just skip it.
+        return $lid_result if not_cancelable($lid_result); # not cxlable: stop.
+
+        # Merge in each LID result (there's only going to be one per call to
+        # cancel_lineitem_detail).
+        my ($k, $v) = each %{$lid_result->{"lid"}};
+        $result->{"lid"}->{$k} = $v;
+    }
 
     # TODO delete the associated fund debits?
-    # TODO add support for cancel reasons
     # TODO who/what/where/how do we indicate this change for electronic orders?
 
-    update_lineitem($mgr, $li) or return $e->die_event;
-    $e->commit;
-
-    $conn->respond_complete($li);
-    create_lineitem_status_events($mgr, $li_id, 'aur.cancelled');
-    return undef;
+    update_lineitem($mgr, $li) or return 0;
+    $result->{"li"} = {
+        $li_id => {
+            "state" => $li->state,
+            "cancel_reason" => $cancel_reason
+        }
+    };
+    return $result;
 }
+
+
+__PACKAGE__->register_method(
+	method => "cancel_lineitem_detail_api",
+	api_name	=> "open-ils.acq.lineitem_detail.cancel",
+	signature => {
+        desc => q/Cancels an on-order lineitem detail/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Lineitem detail ID to cancel", type => "number"},
+            {desc => "Cancel reason ID", type => "number"}
+        ],
+        return => {desc => q/Object describing changed LIDs on success;
+            Event on error./}
+    }
+);
+
+sub cancel_lineitem_detail_api {
+    my ($self, $conn, $auth, $lid_id, $cancel_reason) = @_;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = new OpenILS::Application::Acq::BatchManager(
+        "editor" => $e, "conn" => $conn
+    );
+
+    $cancel_reason = $mgr->editor->retrieve_acq_cancel_reason($cancel_reason) or
+        return new OpenILS::Event(
+            "BAD_PARAMS", "note" => "Provide cancel reason ID"
+        );
+
+    my $result = cancel_lineitem_detail($mgr, $lid_id, $cancel_reason) or
+        return $e->die_event;
+
+    if (not_cancelable($result)) {
+        $e->rollback;
+        return $result;
+    } elsif ($result == -1) {
+        $e->rollback;
+        return new OpenILS::Event("ACQ_ALREADY_CANCELED");
+    }
+
+    $e->commit or return $e->die_event;
+
+    # XXX create lineitem detail status events?
+    return $result;
+}
+
+sub cancel_lineitem_detail {
+    my ($mgr, $lid_id, $cancel_reason) = @_;
+    my $lid = $mgr->editor->retrieve_acq_lineitem_detail([
+        $lid_id, {
+            "flesh" => 2,
+            "flesh_fields" => {
+                "acqlid" => ["lineitem"], "jub" => ["purchase_order"]
+            }
+        }
+    ]) or return 0;
+
+    # Depending on context, this may not warrant an event.
+    return -1 if $lid->cancel_reason;
+
+    # But this always does.
+    return new OpenILS::Event(
+        "ACQ_NOT_CANCELABLE", "note" => "lineitem_detail $lid_id"
+    ) unless (
+        (not $lid->recv_time) and
+        $lid->lineitem and
+        $lid->lineitem->purchase_order and (
+            $lid->lineitem->state eq "on-order" or
+            $lid->lineitem->state eq "pending-order"
+        )
+    );
+
+    return 0 unless $mgr->editor->allowed(
+        "CREATE_PURCHASE_ORDER",
+        $lid->lineitem->purchase_order->ordering_agency
+    );
+
+    $lid->cancel_reason($cancel_reason);
+
+    # TODO who/what/where/how do we indicate this change for electronic orders?
+
+    # XXX LIDs don't have either an editor or a edit_time field. Should we
+    # update these on the LI when we alter an LID?
+    $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
+    return {"lid" => {$lid_id => {"cancel_reason" => $cancel_reason}}};
+}
+
 
 __PACKAGE__->register_method (
     method        => 'user_requests',

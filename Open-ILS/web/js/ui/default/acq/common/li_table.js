@@ -252,16 +252,13 @@ function AcqLiTable() {
         countNode.innerHTML = count;
         countNode.id = 'acq-lit-copy-count-label-' + li.id();
 
-        // lineitem state
-        nodeByName('li_state', row).innerHTML = li.state(); // TODO i18n state labels
-        
         // lineitem price
         var priceInput = dojo.query('[name=price]', row)[0];
         priceInput.value = li.estimated_unit_price() || '';
         priceInput.onchange = function() { self.updateLiPrice(priceInput, li) };
 
         // show either "mark received" or "unreceive" as appropriate
-        this.updateLiReceivedness(li, row);
+        this.updateLiState(li, row);
 
         if (!skip_final_placement) {
             self.tbody.appendChild(row);
@@ -287,7 +284,8 @@ function AcqLiTable() {
         nodeByName("notes_count", row).innerHTML = li.lineitem_notes().length;
     };
 
-    this.updateLiReceivedness = function(li, row) {
+    /* XXX NOT related to _updateLiState(). rethink */
+    this.updateLiState = function(li, row) {
         if (typeof(row) == "undefined")
             row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
 
@@ -295,6 +293,26 @@ function AcqLiTable() {
         var unrecv_link = nodeByName("unreceive_link", row);
         var real_copies_link = nodeByName("real_copies_link", row);
         var holdings_maintenance_link = nodeByName("holdings_maintenance_link", row);
+        var state_cell = nodeByName("li_state", row);
+
+        if (li.state() == "cancelled") {
+            var holds_state = dojo.create(
+                "span", {
+                    "style": "border-bottom: 1px dashed #000;",
+                    "innerHTML": li.state()
+                }, state_cell, "only"
+            );
+            new dijit.Tooltip(
+                {
+                    "label": "<em>" + li.cancel_reason().label() +
+                        "</em><br />" + li.cancel_reason().description(),
+                    "connectId": [holds_state]
+                }, dojo.create("span", null, state_cell, "last")
+            );
+        } else {
+            state_cell.innerHTML = li.state(); // TODO i18n state labels
+        }
+
 
         /* handle row coloring for based on LI state */
         openils.Util.removeCSSClass(row, /^oils-acq-li-state-/);
@@ -322,11 +340,11 @@ function AcqLiTable() {
                     };
                     // TODO we should allow editing before receipt, in which case the
                     // test should be "if 1 or more real (acp) copies exist
-                    openils.Util.show(real_copies_link);
+                    openils.Util.show(real_copies_link, "inline");
                     real_copies_link.onclick = function() {
                         self.showRealCopyEditUI(li);
                     }
-                    openils.Util.show(holdings_maintenance_link);
+                    openils.Util.show(holdings_maintenance_link, "inline");
                     holdings_maintenance_link.onclick = self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser' );
                     return;
             }
@@ -583,6 +601,7 @@ function AcqLiTable() {
 
                 params: [self.authtoken, liId, {
                     flesh_attrs: true,
+                    flesh_cancel_reason: true,
                     flesh_li_details: true,
                     flesh_fund_debit: true }],
 
@@ -1219,10 +1238,10 @@ function AcqLiTable() {
             }
         );
 
-        this.updateLidReceivedness(copy, row);
+        this.updateLidState(copy, row);
     };
 
-    this.updateLidReceivedness = function(copy, row) {
+    this.updateLidState = function(copy, row) {
         if (typeof(row) == "undefined") {
             row = dojo.query(
                 'tr[copy_id="' + copy.id() + '"]', this.copyTbody
@@ -1233,39 +1252,123 @@ function AcqLiTable() {
         var recv_link = nodeByName("receive", row);
         var unrecv_link = nodeByName("unreceive", row);
         var del_link = nodeByName("delete", row);
+        var cxl_link = nodeByName("cancel", row);
+        var cxl_reason_link = nodeByName("cancel_reason", row);
 
-        if (this.isPO) {
+        if (copy.cancel_reason()) {
             openils.Util.hide(del_link.parentNode);
+            openils.Util.hide(recv_link);
+            openils.Util.hide(unrecv_link);
+            openils.Util.hide(cxl_link);
 
-            /* Avoid showing (un)receive links for virtual copies */
+            /* XXX the following may leak memory in a long lived table: dijits may not get destroyed... not positive. revisit. */
+            var holds_reason = dojo.create(
+                "span", {
+                    "style": "border-bottom: 1px dashed #000;",
+                    "innerHTML": "Cancelled" /* XXX [sic] and i18n */
+                }, cxl_reason_link, "only"
+            );
+            new dijit.Tooltip(
+                {
+                    "label": "<em>" + copy.cancel_reason().label() +
+                        "</em><br />" + copy.cancel_reason().description(),
+                    "connectId": [holds_reason]
+                }, dojo.create("span", null, cxl_reason_link, "last")
+            );
+            openils.Util.show(cxl_reason_link, "inline");
+        } else if (this.isPO) {
+            openils.Util.hide(del_link.parentNode);
+            openils.Util.hide(cxl_reason_link);
+
+            /* Avoid showing (un)receive links, cancel links, for virt copies */
             if (copy.id() > 0) {
                 if(copy.recv_time()) {
+                    openils.Util.hide(cxl_link);
                     openils.Util.hide(recv_link);
-                    openils.Util.show(unrecv_link);
+                    openils.Util.show(unrecv_link, "inline");
                     unrecv_link.onclick = function() {
                         if (confirm(localeStrings.UNRECEIVE_LID))
                             self.issueReceive(copy, /* rollback */ true);
                     };
                 } else {
                     openils.Util.hide(unrecv_link);
-                    openils.Util.show(recv_link);
+                    openils.Util.show(recv_link, "inline");
+                    openils.Util.show(cxl_link, "inline");
                     recv_link.onclick = function() {
                         if (self.checkLiAlerts(copy.lineitem()))
                             self.issueReceive(copy);
                     };
+                    cxl_link.onclick = function() {
+                        self.cancelLid(copy.id());
+                    };
                 }
             } else {
+                openils.Util.hide(cxl_link);
                 openils.Util.hide(unrecv_link);
                 openils.Util.hide(recv_link);
             }
         } else {
             openils.Util.hide(unrecv_link);
             openils.Util.hide(recv_link);
+            openils.Util.hide(cxl_reason_link);
 
             del_link.onclick = function() { self.deleteCopy(row) };
             openils.Util.show(del_link.parentNode);
         }
     }
+
+    this.cancelLid = function(lid_id) {
+        lidCancelDialog._lid_id = lid_id;
+        openils.Util.show(lidCancelDialog.domNode.parentNode);
+        lidCancelDialog.show();
+        if (!lidCancelDialog._prepared) {
+            var widget = new openils.widget.AutoFieldWidget({
+                "fmField": "cancel_reason",
+                "fmClass": "acqlid",
+                "parentNode": dojo.byId("acq-lit-lid-cancel-reason"),
+                "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
+                "forceSync": true
+            });
+            widget.build(
+                function(w, ww) {
+                    acqLidCancelButton.onClick = function() {
+                        if (w.attr("value")) {
+                            if (confirm(localeStrings.LID_CANCEL_CONFIRM)) {
+                                self._cancelLid(
+                                    lidCancelDialog._lid_id,
+                                    w.attr("value")
+                                );
+                            }
+                            lidCancelDialog.hide();
+                        }
+                    };
+                    lidCancelDialog._prepared = true;
+                }
+            );
+        }
+    };
+
+    this._cancelLid = function(lid_id, reason) {
+        fieldmapper.standardRequest(
+            ["open-ils.acq", "open-ils.acq.lineitem_detail.cancel"], {
+                "params": [openils.User.authtoken, lid_id, reason],
+                "async": true,
+                "onresponse": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        if (r.lid) {
+                            for (var id in r.lid) {
+                                /* actually this should only iterate once */
+                                self.copyCache[id].cancel_reason(
+                                    r.lid[id].cancel_reason
+                                );
+                                self.updateLidState(self.copyCache[id]);
+                            }
+                        }
+                    }
+                }
+            }
+        );
+    };
 
     this._confirmAlert = function(li, lin) {
         return confirm(
@@ -1452,6 +1555,12 @@ function AcqLiTable() {
                     location.href = oilsBasePath + '/acq/picklist/brief_record?po=' + this.isPO;
                 else
                     location.href = oilsBasePath + '/acq/picklist/brief_record?pl=' + this.isPL;
+
+                break;
+
+            case "cancel_lineitems":
+                this.maybeCancelLineitems();
+                break;
         }
     }
 
@@ -1471,6 +1580,65 @@ function AcqLiTable() {
             }
         );
     }
+
+    this.maybeCancelLineitems = function() {
+        openils.Util.show("acq-lit-cancel-reason", "inline");
+        if (!acqLitCancelLineitemsButton._prepared) {
+            var widget = new openils.widget.AutoFieldWidget({
+                "fmField": "cancel_reason",
+                "fmClass": "jub",
+                "parentNode": dojo.byId("acq-lit-cancel-reason-selector"),
+                "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
+                "forceSync": true
+            });
+            widget.build(
+                function(w, ww) {
+                    acqLitCancelLineitemsButton.onClick = function() {
+                        if (w.attr("value")) {
+                            if (confirm(localeStrings.LI_CANCEL_CONFIRM)) {
+                                self._cancelLineitems(w.attr("value"));
+                            }
+                            openils.Util.hide("acq-lit-cancel-reason");
+                        }
+                    };
+                    acqLitCancelLineitemsButton._prepared = true;
+                }
+            );
+        }
+    };
+
+    this._cancelLineitems = function(reason) {
+        var id_list = this.getSelected().map(function(o) { return o.id(); });
+        fieldmapper.standardRequest(
+            ["open-ils.acq", "open-ils.acq.lineitem.cancel.batch"], {
+                "params": [openils.User.authtoken, id_list, reason],
+                "async": true,
+                "onresponse": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        if (r.li) {
+                            for (var id in r.li) {
+                                self.liCache[id].state(r.li[id].state);
+                                self.liCache[id].cancel_reason(
+                                    r.li[id].cancel_reason
+                                );
+                                self.updateLiState(self.liCache[id]);
+                            }
+                        }
+                        if (r.lid && self.copyCache) {
+                            for (var id in r.lid) {
+                                if (self.copyCache[id]) {
+                                    self.copyCache[id].cancel_reason(
+                                        r.lid[id].cancel_reason
+                                    );
+                                    self.updateLidState(self.copyCache[id]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+    };
 
     this.chooseExportAttr = function() {
         if (!acqLitExportAttrSelector._li_setup) {
@@ -1590,8 +1758,8 @@ function AcqLiTable() {
                 "params": [this.authtoken, obj.id()],
                 "onresponse": function(r) {
                     self.handleReceive(openils.Util.readResponse(r));
-                },
-                "oncomplete": function() { progressDialog.hide(); }
+                    progressDialog.hide();
+                }
             }
         );
     };
@@ -1605,7 +1773,7 @@ function AcqLiTable() {
                 for (var li_id in resp.li) {
                     for (var key in resp.li[li_id])
                         self.liCache[li_id][key](resp.li[li_id][key]);
-                    self.updateLiReceivedness(self.liCache[li_id]);
+                    self.updateLiState(self.liCache[li_id]);
                 }
             }
             if (resp.po) {
@@ -1616,7 +1784,7 @@ function AcqLiTable() {
                 for (var lid_id in resp.lid) {
                     for (var key in resp.lid[lid_id])
                         self.copyCache[lid_id][key](resp.lid[lid_id][key]);
-                    self.updateLidReceivedness(self.copyCache[lid_id]);
+                    self.updateLidState(self.copyCache[lid_id]);
                 }
             }
         }

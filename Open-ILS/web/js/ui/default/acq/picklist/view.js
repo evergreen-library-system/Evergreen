@@ -78,7 +78,7 @@ function loadLIs() {
         ['open-ils.acq', 'open-ils.acq.lineitem.picklist.retrieve'],
         {   async: true,
             params: [openils.User.authtoken, plId, 
-                {flesh_notes:true, flesh_attrs:true, clear_marc:true, offset:plOffset, limit:plLimit}],
+                {flesh_notes:true, flesh_cancel_reason:true, flesh_attrs:true, clear_marc:true, offset:plOffset, limit:plLimit}],
             onresponse: function(r) {
                 var li = openils.Util.readResponse(r);
                 if (li) { /* Not every response is an LI (for some reason) */

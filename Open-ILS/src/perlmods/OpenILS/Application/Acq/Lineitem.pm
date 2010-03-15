@@ -101,6 +101,9 @@ sub retrieve_lineitem_impl {
             push(@{$flesh->{flesh_fields}->{jub}}, 'lineitem_notes');
             $flesh->{flesh_fields}->{acqlin} = ['alert_text'];
         }
+        if($$options{"flesh_cancel_reason"}) {
+            push @{$flesh->{flesh_fields}->{jub}}, "cancel_reason";
+        }
         push(@{$flesh->{flesh_fields}->{jub}}, 'attributes') if $$options{flesh_attrs};
     }
 
@@ -109,7 +112,7 @@ sub retrieve_lineitem_impl {
     if($$options{flesh_li_details}) {
         my $ops = {
             flesh => 1,
-            flesh_fields => {acqlid => []}
+            flesh_fields => {acqlid => ["cancel_reason"]} #XXX cancel_reason? always? really?
         };
         push(@{$ops->{flesh_fields}->{acqlid}}, 'fund') if $$options{flesh_fund};
         push(@{$ops->{flesh_fields}->{acqlid}}, 'fund_debit') if $$options{flesh_fund_debit};

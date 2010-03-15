@@ -27,5 +27,10 @@
     'ITS_YOU': "You",
     'JUST_NOW': "Just now",
     'EXPLAIN_DFA_MGMT': "Remove record of this distribution formula usage?",
-    'VENDOR_PUBLIC': "VENDOR PUBLIC"
+    'VENDOR_PUBLIC': "VENDOR PUBLIC",
+    'PO_CANCEL_CONFIRM': "Are you SURE you want to cancel this purchase order?",
+    'LI_CANCEL_CONFIRM': "Are you SURE you want to cancel this line item?",
+    'LID_CANCEL_CONFIRM': "Are you SURE you want to cancel this copy?",
+    'CANCEL_REASON': "Cancel reason",
+    'CANCEL': "Cancel"
 }

@@ -127,6 +127,7 @@
     <command id="cmd_server_admin_copy_status"/>
     <command id="cmd_server_admin_marc_code"/>
     <command id="cmd_server_admin_billing_type"/>
+    <command id="cmd_server_admin_acq_cancel_reason"/>
     <command id="cmd_server_admin_acq_lineitem_alert"/>
     <command id="cmd_server_admin_z39_source"/>
     <command id="cmd_server_admin_circ_mod"/>
@@ -348,6 +349,7 @@
                 <menu id="main.menu.admin.server.acq" label="&staff.main.menu.admin.server_admin.acq.label;" accesskey="&staff.main.menu.admin.server_admin.acq.accesskey;">
                     <menupopup id="main.menu.admin.server.acq.popup">
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;" command="cmd_server_admin_acq_lineitem_alert"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.cancel_reason.label;" accesskey="&staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey;" command="cmd_server_admin_acq_cancel_reason"/>
                     </menupopup>
                 </menu>
                 <menu id="main.menu.admin.server.booking" label="&staff.main.menu.admin.server_admin.booking.label;" accesskey="&staff.main.menu.admin.server_admin.booking.accesskey;">

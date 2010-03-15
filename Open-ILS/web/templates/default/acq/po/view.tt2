@@ -14,6 +14,26 @@
                 <tr><td>Total Spent</td><td>$<span id='acq-po-view-total-spent'/></td></tr>
                 <tr><td>Status</td><td><span id='acq-po-view-state'/></td></tr>
                 <tr>
+                    <td id="acq-po-cancel-label"></td>
+                    <td>
+                        <span id="acq-po-view-cancel-reason"></span>
+                        <span id="acq-po-choose-cancel-reason" class="hidden">
+                            <span dojoType="dijit.form.DropDownButton">
+                                <span>Cancel order</span>
+                                <span dojoType="dijit.TooltipDialog">
+                                    <label for="acq-po-cancel-reason">
+                                        Reason:
+                                    </label>
+                                    <span id="acq-po-cancel-reason"></span>
+                                    <button jsId="acqPoCancelReasonSubmit"
+                                        dojoType="dijit.form.Button"
+                                        type="submit">Cancel order</button>
+                                </span>
+                            </span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
                     <td>Notes</td>
                     <td>
                         <a href="javascript:void(0);"

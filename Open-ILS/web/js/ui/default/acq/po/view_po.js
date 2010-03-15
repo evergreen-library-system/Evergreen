@@ -3,6 +3,7 @@ dojo.require('openils.User');
 dojo.require('openils.Util');
 dojo.require('openils.PermaCrud');
 
+var pcrud = new openils.PermaCrud();
 var PO = null;
 var liTable;
 var poNoteTable;
@@ -162,6 +163,82 @@ function updatePoState(po_info) {
     }
 }
 
+function cancellationUpdater(r) {
+    var r = openils.Util.readResponse(r);
+    if (r) {
+        if (r.po) updatePoState(r.po);
+        if (r.li) {
+            for (var id in r.li) {
+                liTable.liCache[id].state(r.li[id].state);
+                liTable.liCache[id].cancel_reason(r.li[id].cancel_reason);
+                liTable.updateLiState(liTable.liCache[id]);
+            }
+        }
+        if (r.lid && liTable.copyCache) {
+            for (var id in r.lid) {
+                if (liTable.copyCache[id]) {
+                    liTable.copyCache[id].cancel_reason(
+                        r.lid[id].cancel_reason
+                    );
+                    liTable.updateLidState(liTable.copyCache[id]);
+                }
+            }
+        }
+    }
+}
+
+function makeCancelWidget(node, labelnode) {
+    openils.Util.hide("acq-po-choose-cancel-reason");
+
+    if (PO.cancel_reason()) {
+        labelnode.innerHTML = localeStrings.CANCEL_REASON;
+        node.innerHTML = PO.cancel_reason().description() + " (" +
+            PO.cancel_reason().label() + ")";
+    } else if (["on-order", "pending"].indexOf(PO.state()) == -1) {
+        dojo.destroy(this.oldTip);
+        labelnode.innerHTML = "";
+        node.innerHTML = "";
+    } else {
+        dojo.destroy(this.oldTip);
+        labelnode.innerHTML = localeStrings.CANCEL;
+        node.innerHTML = "";
+        if (!acqPoCancelReasonSubmit._prepared) {
+            var widget = new openils.widget.AutoFieldWidget({
+                "fmField": "cancel_reason",
+                "fmClass": "acqpo",
+                "parentNode": dojo.byId("acq-po-cancel-reason"),
+                "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
+                "forceSync": true
+            });
+            widget.build(
+                function(w, ww) {
+                    acqPoCancelReasonSubmit.onClick = function() {
+                        if (w.attr("value")) {
+                            if (confirm(localeStrings.PO_CANCEL_CONFIRM)) {
+                                fieldmapper.standardRequest(
+                                    ["open-ils.acq",
+                                        "open-ils.acq.purchase_order.cancel"],
+                                    {
+                                        "params": [
+                                            openils.User.authtoken,
+                                            PO.id(), 
+                                            w.attr("value")
+                                        ],
+                                        "async": true,
+                                        "oncomplete": cancellationUpdater
+                                    }
+                                );
+                            }
+                        }
+                    };
+                    acqPoCancelReasonSubmit._prepared = true;
+                }
+            );
+        }
+        openils.Util.show("acq-po-choose-cancel-reason", "inline");
+    }
+}
+
 function renderPo() {
     dojo.byId("acq-po-view-id").innerHTML = PO.id();
     dojo.byId("acq-po-view-name").innerHTML = PO.name();
@@ -169,6 +246,10 @@ function renderPo() {
     dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered();
     dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent();
     dojo.byId("acq-po-view-state").innerHTML = PO.state(); // TODO i18n
+    makeCancelWidget(
+        dojo.byId("acq-po-view-cancel-reason"),
+        dojo.byId("acq-po-cancel-label")
+    );
     dojo.byId("acq-po-view-notes").innerHTML = PO.notes().length;
 
     if(PO.state() == "pending") {
@@ -208,7 +289,7 @@ function init() {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.search'],
         {   async: true,
-            params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh_notes:true}],
+params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh_notes:true, flesh_cancel_reason:true}],
             onresponse: function(r) {
                 liTable.show('list');
                 liTable.addLineitem(openils.Util.readResponse(r));
@@ -264,7 +345,6 @@ function updatePoName() {
     var value = prompt('Enter new purchase order name:', PO.name()); // TODO i18n
     if(!value || value == PO.name()) return;
     PO.name(value);
-    var pcrud = new openils.PermaCrud();
     pcrud.update(PO, {
         oncomplete : function(r, cudResults) {
             var stat = cudResults[0];

@@ -5406,7 +5406,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
-			<link field="cancel_reason" reltype="might_have" key="id" map="" class="acqcr"/>
+			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
 		</links>
 	</class>
 

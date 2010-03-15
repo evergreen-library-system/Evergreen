@@ -927,8 +927,12 @@
 		<desc xml:lang="en-US">The lineitem has no price</desc>
 	</event>
 
-
-
+	<event code='10101' textcode='ACQ_ALREADY_CANCELED'>
+		<desc xml:lang="en-US">The object is already canceled.</desc>
+	</event>
+	<event code='10102' textcode='ACQ_NOT_CANCELABLE'>
+		<desc xml:lang="en-US">The object is not in a cancelable state.</desc>
+	</event>
 
 	<!-- ================================================================ -->
 
