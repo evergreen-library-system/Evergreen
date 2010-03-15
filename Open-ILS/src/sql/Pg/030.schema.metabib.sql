@@ -758,7 +758,7 @@ BEGIN
 
     -- And, finally, metarecord mapping!
 
-    PERORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_insert' AND enabled;
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_insert' AND enabled;
 
     IF NOT FOUND OR TG_OP = 'UPDATE' THEN
         FOR tmp_mr IN SELECT  m.* FROM  metabib.metarecord m JOIN metabib.metarecord_source_map s ON (s.metarecord = m.id) WHERE s.source = NEW.id LOOP
