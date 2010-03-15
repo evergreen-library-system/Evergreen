@@ -42,7 +42,8 @@ function fetchLi() {
             "params": [openils.User.authtoken, liId, {
                 "flesh_attrs": true,
                 "flesh_li_details": true,
-                "flesh_fund_debit": true
+                "flesh_fund_debit": true,
+                "flesh_cancel_reason": true
             }],
             "oncomplete": function(r) {
                 drawLiInfo(openils.Util.readResponse(r));
@@ -66,7 +67,9 @@ function fetchRelated() {
         ["open-ils.acq", "open-ils.acq.lineitems_for_bib.by_lineitem_id"], {
             "async": true,
             "params": [openils.User.authtoken, liId, {
-                "flesh_attrs": true, "flesh_notes": true
+                "flesh_attrs": true,
+                "flesh_notes": true,
+                "flesh_cancel_reason": true
             }],
             "onresponse": function(r) {
                 var resp = openils.Util.readResponse(r);

@@ -296,19 +296,23 @@ function AcqLiTable() {
         var state_cell = nodeByName("li_state", row);
 
         if (li.state() == "cancelled") {
-            var holds_state = dojo.create(
-                "span", {
-                    "style": "border-bottom: 1px dashed #000;",
-                    "innerHTML": li.state()
-                }, state_cell, "only"
-            );
-            new dijit.Tooltip(
-                {
-                    "label": "<em>" + li.cancel_reason().label() +
-                        "</em><br />" + li.cancel_reason().description(),
-                    "connectId": [holds_state]
-                }, dojo.create("span", null, state_cell, "last")
-            );
+            if (typeof li.cancel_reason() == "object") {
+                var holds_state = dojo.create(
+                    "span", {
+                        "style": "border-bottom: 1px dashed #000;",
+                        "innerHTML": li.state()
+                    }, state_cell, "only"
+                );
+                new dijit.Tooltip(
+                    {
+                        "label": "<em>" + li.cancel_reason().label() +
+                            "</em><br />" + li.cancel_reason().description(),
+                        "connectId": [holds_state]
+                    }, dojo.create("span", null, state_cell, "last")
+                );
+            } else {
+                state_cell.innerHTML = li.state(); // TODO i18n state labels
+            }
         } else {
             state_cell.innerHTML = li.state(); // TODO i18n state labels
         }

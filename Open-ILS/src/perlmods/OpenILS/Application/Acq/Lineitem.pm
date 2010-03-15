@@ -309,23 +309,16 @@ __PACKAGE__->register_method (
 );
 
 sub lineitems_related_by_bib {
-    my($self, $conn, $auth, $id_value, $options) = @_;
+    my($self, $conn, $auth, $test_value, $options) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
 
     my $perm_orgs = $U->user_has_work_perm_at($e, 'VIEW_PURCHASE_ORDER', {descendants =>1}, $e->requestor->id);
 
-    if ($self->api_name =~ /by_lineitem_id/) {
-        my $orig = retrieve_lineitem($self, $conn, $auth, $id_value) or
-            return $e->die_event;
-        $id_value = $orig->eg_bib_id;
-    }
-
     my $query = {
         "select"=>{"jub"=>["id"]},
         "from"=>{"jub"=>"acqpo"}, 
         "where"=>{
-            "eg_bib_id"=>$id_value,
             "+acqpo"=>{
                 "ordering_agency"=>{
                     "in"=>$perm_orgs
@@ -334,6 +327,22 @@ sub lineitems_related_by_bib {
         },
         "order_by"=>[{"class"=>"jub", "field"=>"create_time", "direction"=>"desc"}]
     };
+
+    # Be sure we just return the original LI if no related bibs
+    if ($self->api_name =~ /by_lineitem_id/) {
+        my $orig = retrieve_lineitem($self, $conn, $auth, $test_value) or
+            return $e->die_event;
+        if ($test_value = $orig->eg_bib_id) {
+            $query->{"where"}->{"eg_bib_id"} = $test_value;
+        } else {
+            $query->{"where"}->{"id"} = $orig->id;
+        }
+    } elsif ($test_value) {
+        $query->{"where"}->{"eg_bib_id"} = $test_value;
+    } else {
+        $e->disconnect;
+        return new OpenILS::Event("BAD_PARAMS", "Null bib id");
+    }
 
     if ($options && defined $options->{lineitem_state}) {
         $query->{'where'}{'jub'}{'state'} = $options->{lineitem_state};

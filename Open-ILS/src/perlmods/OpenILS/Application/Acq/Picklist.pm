@@ -288,6 +288,7 @@ __PACKAGE__->register_method(
                 "flesh_attrs", additionaly return the list of flattened attributes
                 "clear_marc", discards the raw MARC data to reduce data size
                 "flesh_notes", flesh lineitem notes
+                "flesh_cancel_reason", flesh cancel_reason
                 /, 
                 type => 'hash'}
         ],
@@ -349,13 +350,14 @@ sub retrieve_pl_lineitem {
 
         my $entry;
         my $flesh = {};
-        if($$options{flesh_attrs} or $$options{flesh_notes}) {
+        if($$options{flesh_attrs} or $$options{flesh_notes} or $$options{flesh_cancel_reason}) {
             $flesh = {flesh => 2, flesh_fields => {jub => []}};
             if($$options{flesh_notes}) {
                 push(@{$flesh->{flesh_fields}->{jub}}, 'lineitem_notes');
                 $flesh->{flesh_fields}->{acqlin} = ['alert_text'];
             }
             push(@{$flesh->{flesh_fields}->{jub}}, 'attributes') if $$options{flesh_attrs};
+            push @{$flesh->{flesh_fields}->{jub}}, 'cancel_reason' if $$options{flesh_cancel_reason};
         }
 
         $entry = $e->retrieve_acq_lineitem([$id, $flesh]);
