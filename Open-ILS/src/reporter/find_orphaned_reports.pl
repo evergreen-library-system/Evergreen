@@ -7,7 +7,6 @@ use OpenSRF::Utils qw/:daemon/;
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
-use OpenILS::Reporter::SQLBuilder;
 use File::Find;
 
 my ($config, $du, $live, %seen) = ('SYSCONFDIR/opensrf_core.xml', 0, 0);
