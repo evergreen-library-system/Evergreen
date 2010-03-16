@@ -650,6 +650,73 @@ __PACKAGE__->register_method(
 	method          => 'find_usr_summary_surveys',
 );
 
+sub seconds_to_interval_hash {
+		my $interval = shift;
+		my $limit = shift || 's';
+		$limit =~ s/^(.)/$1/o;
+
+		my %ouptut;
+
+		my ($y,$ym,$M,$Mm,$w,$wm,$d,$dm,$h,$hm,$m,$mm,$s);
+		my ($year, $month, $week, $day, $hour, $minute, $second) =
+				('years','months','weeks','days', 'hours', 'minutes', 'seconds');
+
+		if ($y = int($interval / (60 * 60 * 24 * 365))) {
+				$output{$year} = $y;
+				$ym = $interval % (60 * 60 * 24 * 365);
+		} else {
+				$ym = $interval;
+		}
+		return %output if ($limit eq 'y');
+
+		if ($M = int($ym / ((60 * 60 * 24 * 365)/12))) {
+				$output{$month} = $M;
+				$Mm = $ym % ((60 * 60 * 24 * 365)/12);
+		} else {
+				$Mm = $ym;
+		}
+		return %output if ($limit eq 'M');
+
+		if ($w = int($Mm / 604800)) {
+				$output{$week} = $w;
+				$wm = $Mm % 604800;
+		} else {
+				$wm = $Mm;
+		}
+		return %output if ($limit eq 'w');
+
+		if ($d = int($wm / 86400)) {
+				$output{$day} = $d;
+				$dm = $wm % 86400;
+		} else {
+				$dm = $wm;
+		}
+		return %output if ($limit eq 'd');
+
+		if ($h = int($dm / 3600)) {
+				$output{$hour} = $h;
+				$hm = $dm % 3600;
+		} else {
+				$hm = $dm;
+		}
+		return %output if ($limit eq 'h');
+
+		if ($m = int($hm / 60)) {
+				$output{$minute} = $m;
+				$mm = $hm % 60;
+		} else {
+				$mm = $hm;
+		}
+		return %output if ($limit eq 'm');
+
+		if ($s = int($mm)) {
+				$output{$second} = $s;
+		} else {
+				$output{$second} = 0 unless (keys %output);
+		}
+		return %output;
+}
+
 
 sub generate_fines {
 	my $self = shift;
@@ -818,7 +885,12 @@ sub generate_fines {
 				}
 				
 				# XXX Use org time zone (or default to 'local') once we have the ou setting built for that
-				my $billing_ts = DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill, time_zone => 'local' );
+				my $billing_ts = DateTime->from_epoch( epoch => $last_fine, time_zone => 'local' );
+				my $current_bill_count = $bill;
+				while ( $current_bill_count ) {
+					$billing_ts->add( seconds_to_interval_hash( $fine_interval ) );
+					$current_bill_count--;
+				}
 
 				my $dow = $billing_ts->day_of_week_0();
 				my $dow_open = "dow_${dow}_open";
