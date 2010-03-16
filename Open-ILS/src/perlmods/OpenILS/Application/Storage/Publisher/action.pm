@@ -655,7 +655,7 @@ sub seconds_to_interval_hash {
 		my $limit = shift || 's';
 		$limit =~ s/^(.)/$1/o;
 
-		my %ouptut;
+		my %output;
 
 		my ($y,$ym,$M,$Mm,$w,$wm,$d,$dm,$h,$hm,$m,$mm,$s);
 		my ($year, $month, $week, $day, $hour, $minute, $second) =
