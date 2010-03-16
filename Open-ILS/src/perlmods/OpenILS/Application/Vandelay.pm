@@ -624,7 +624,7 @@ sub import_record_list_impl {
                     }
                 )->[0];
 
-                $imported = 1 if $res->{overlay_bib_record} eq 't';
+                $imported = 1 if $res->{'vandelay.overlay_bib_record'} eq 't';
 
             } elsif( scalar(@{$rec->matches}) == 1 ) {
                 
@@ -645,7 +645,7 @@ sub import_record_list_impl {
                         }
                     )->[0];
 
-                    $imported = 1 if $res->{overlay_bib_record} eq 't';
+                    $imported = 1 if $res->{'vandelay.overlay_bib_record'} eq 't';
 
                 } elsif($auto_overlay_exact) { 
                     
@@ -661,7 +661,7 @@ sub import_record_list_impl {
                         }
                     )->[0];
 
-                    $imported = 1 if $res->{auto_overlay_bib_record} eq 't';
+                    $imported = 1 if $res->{'vandelay.auto_overlay_bib_record'} eq 't';
                 }
             }
 
