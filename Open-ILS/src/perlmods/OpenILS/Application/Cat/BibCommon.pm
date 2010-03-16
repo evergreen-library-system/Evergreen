@@ -111,14 +111,34 @@ sub __make_marc_doc {
 	my $marcxml = XML::LibXML->new->parse_string($xml);
 	$marcxml->documentElement->setNamespace($MARC_NAMESPACE, "marc", 1 );
 	$marcxml->documentElement->setNamespace($MARC_NAMESPACE);
-	# remove empty control fields - at least one source of records adds ersatz blank 008s
-	# that become empty controlfield elements
-	foreach my $controlfield ($marcxml->documentElement->getElementsByTagNameNS($MARC_NAMESPACE, 'controlfield')) {
-		$controlfield->parentNode->removeChild($controlfield) unless $controlfield->hasChildNodes();
-	}
+	__remove_empty_marc_nodes($marcxml);
 	return $marcxml;
 }
 
+# remove empty control fields, subfields, and variable data fields, which
+# can creep in via less-than-correct imported MARC records or issues
+# with templates
+sub __remove_empty_marc_nodes {
+	my $marcxml = shift;
+
+	__remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS($MARC_NAMESPACE, 'controlfield');
+	__remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS($MARC_NAMESPACE, 'subfield');
+	__remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS($MARC_NAMESPACE, 'datafield');
+}
+
+sub __remove_if_childless {
+	my $node = shift;
+	my @children = $node->childNodes();
+	my $has_nonblank_children = 0;
+	# can do this more concisely by requiring XML::LibXML >= 1.70 and using nonBlankChildNodes()
+	foreach my $node ($node->childNodes()) {
+		if ($node->nodeType != XML::LibXML::XML_TEXT_NODE || $node->nodeValue !~ /^\s*$/) {
+			$has_nonblank_children = 1;
+			last;
+		}
+	}
+	$node->parentNode->removeChild($node) unless $has_nonblank_children;
+}
 
 sub _find_tcn_info { 
 	my $editor		= shift;
