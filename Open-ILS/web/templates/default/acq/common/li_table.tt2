@@ -110,8 +110,8 @@
         </table>
     </div>
 
-    <!-- Bib record / Lineitem details table -->
-    [% INCLUDE "default/acq/common/detail.tt2" which = "Lit" %]
+    <!-- Bib record / Lineitem info table -->
+    [% INCLUDE "default/acq/common/info.tt2" which = "Lit" %]
 
     <!-- Lineitem notes table -->
     [% INCLUDE "default/acq/common/notes.tt2" which = "Lit" %]

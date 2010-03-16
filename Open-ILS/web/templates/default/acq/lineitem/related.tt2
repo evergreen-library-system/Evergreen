@@ -12,6 +12,6 @@
         Show details
     </div>
 </div>
-[% INCLUDE "default/acq/common/detail.tt2" which = "Related" %]
+[% INCLUDE "default/acq/common/info.tt2" which = "Related" %]
 [% INCLUDE "default/acq/common/li_table.tt2" %]
 [% END %]
