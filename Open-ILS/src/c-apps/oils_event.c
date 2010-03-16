@@ -3,7 +3,10 @@
 #include <libxml/tree.h>
 #include "opensrf/osrf_settings.h"
 
+const char default_lang[] = "en-US";
+
 static void _oilsEventParseEvents();
+static const char* lookup_desc( const char* lang, const char* code );
 
 // The following two osrfHashes are created when we
 // create the first osrfEvent, and are never freed.
@@ -55,7 +58,7 @@ oilsEvent* oilsNewEvent( const char* file, int line, const char* event ) {
 	if(file)
 		evt->file = strdup(file);
 	else
-		evt->file = NULL;
+		evt->file = strdup( "" );
 
 	evt->line = line;
 	return evt;
@@ -204,19 +207,14 @@ jsonObject* oilsEventToJSON( oilsEvent* event ) {
 		return NULL;
 	}
 
-	// Search for the right language
-	char* lang = "en-US"; /* assume this for now */
-	char* desc = NULL;
-	osrfHash* h = osrfHashGet(_oilsEventDescriptions, lang);
-	if(h) {
-		// Within that language, search for the right message
-		osrfLogDebug(OSRF_LOG_MARK, "Loaded event lang hash for %s",lang);
-		desc = osrfHashGet(h, code);
-		osrfLogDebug(OSRF_LOG_MARK, "Found event description %s", desc);
-	}
+	// Look up the text message corresponding the code, preferably in the right language.
+	const char* lang = osrf_message_get_last_locale();
+	const char* desc = lookup_desc( lang, code );
+	if( !desc && strcmp( lang, default_lang ) )    // No luck?
+		desc = lookup_desc( default_lang, code );  // Try the default language
 
-	if(!desc)
-		desc = "";  // Not found?  Message defaults to empty string.
+	if( !desc )
+		desc = "";  // Not found?  Default to an empty string.
 
 	jsonObject* json = jsonNewObject(NULL);
 	jsonObjectSetKey( json, "ilsevent", jsonNewNumberObject(atoi(code)) );
@@ -224,8 +222,7 @@ jsonObject* oilsEventToJSON( oilsEvent* event ) {
 	jsonObjectSetKey( json, "desc", jsonNewObject(desc) );
 	jsonObjectSetKey( json, "pid", jsonNewNumberObject(getpid()) );
 
-	char buf[256];
-	memset(buf, '\0', sizeof(buf));
+	char buf[256] = "";
 	snprintf(buf, sizeof(buf), "%s:%d", event->file, event->line);
 	jsonObjectSetKey( json, "stacktrace", jsonNewObject(buf) );
 
@@ -243,6 +240,33 @@ jsonObject* oilsEventToJSON( oilsEvent* event ) {
 
 	event->json = json;
 	return json;
+}
+
+/**
+	@brief Lookup up the descriptive text, in a given language, for a given event code.
+	@param lang The language (a.k.a. locale) of the desired message.
+	@param code The numeric code for the event, as a string.
+	return The corresponding descriptive text if found, or NULL if not.
+
+	The lookup has two stages.  First we look up the language, and then within that
+	language we look up the code.
+*/
+static const char* lookup_desc( const char* lang, const char* code ) {
+	// Search for the right language
+	const char* desc = NULL;
+	osrfHash* lang_hash = osrfHashGet( _oilsEventDescriptions, lang );
+	if( lang_hash ) {
+		// Within that language, search for the right message
+		osrfLogDebug( OSRF_LOG_MARK, "Loaded event lang hash for %s", lang );
+		desc = osrfHashGet( lang_hash, code );
+	}
+
+	if( desc )
+		osrfLogDebug( OSRF_LOG_MARK, "Found event description %s", desc );
+	else
+		osrfLogDebug( OSRF_LOG_MARK, "Event description not found for code %s", code );
+
+	return desc;
 }
 
 /**
