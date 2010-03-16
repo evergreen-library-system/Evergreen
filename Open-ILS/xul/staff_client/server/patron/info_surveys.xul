@@ -62,20 +62,29 @@
             retrieve_surveys(); render_surveys();
         }
 
-        function retrieve_surveys() {
-            try {
-                var surveys = g.data.list.my_asv;
-                g.survey_responses = {};
-                for (var i = 0; i < surveys.length; i++) {
-                    var responses = g.network.simple_request(
-                        'FM_ASVR_RETRIEVE',
-                        [ ses(), surveys[i].id(), g.patron_id ]
-                    );
-                    g.survey_responses[ surveys[i].id() ] = responses;
-                }
-            } catch(E) {
-                g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.info_surveys.retrieve_surveys.failed'),E);
-            }
+		function retrieve_surveys() {
+			try {
+				var surveys = g.data.list.my_asv;
+				g.survey_responses = {};
+				for (var i = 0; i < surveys.length; i++) {
+					var responses = g.network.simple_request(
+						'FM_ASVR_RETRIEVE',
+						[ ses(), surveys[i].id(), g.patron_id ]
+					);
+					g.survey_responses[ surveys[i].id() ] = {};
+					for (var j = 0; j < responses.length; j++) {
+						if (! g.survey_responses[ responses[j].survey() ]) {
+							g.survey_responses[ responses[j].survey() ] = {};
+						}
+						if (! g.survey_responses[ responses[j].survey() ][ responses[j].question() ]) {
+							g.survey_responses[ responses[j].survey() ][ responses[j].question() ] = [];
+						}
+						g.survey_responses[ responses[j].survey() ][ responses[j].question() ].push( responses[j] );
+					}
+				}
+			} catch(E) {
+				g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.info_surveys.retrieve_surveys.failed'),E);
+			}
 
         }
 
@@ -95,31 +104,30 @@
         function render_surveys() {
             JSAN.use('util.widgets'); util.widgets.remove_children('surveys_panel');
             var sp = $('surveys_panel');
+			for (var survey_id in g.survey_responses) {
 
-            for (var i in g.survey_responses) {
-
-                /* template */
-                var asv_node = $('asv_template').cloneNode(true); sp.appendChild(asv_node); asv_node.hidden = false;
-                apply(asv_node,'id',g.data.hash.asv[i].id());
-                apply(asv_node,'description',g.data.hash.asv[i].description());
-                if (g.data.hash.asv[i].required()) {
-                    apply(asv_node, 'required', $("patronStrings").getString('staff.patron.info_surveys.render_surveys.required'));
-                } else {
-                    apply(asv_node, 'required', $("patronStrings").getString('staff.patron.info_surveys.render_surveys.not_required'));
-                }
-                if (g.data.hash.asv[i].opac()) {
-                    apply(asv_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.opac_visible'));
-                } else {
-                    apply(asv_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.not_opac_visible'));
-                }
+				/* template */
+				var asv_node = $('asv_template').cloneNode(true); sp.appendChild(asv_node); asv_node.hidden = false;
+				apply(asv_node,'id',g.data.hash.asv[survey_id].id());
+				apply(asv_node,'description',g.data.hash.asv[survey_id].description());
+				if (g.data.hash.asv[survey_id].required()) {
+					apply(asv_node, 'required', $("patronStrings").getString('staff.patron.info_surveys.render_surveys.required'));
+				} else {
+					apply(asv_node, 'required', $("patronStrings").getString('staff.patron.info_surveys.render_surveys.not_required'));
+				}
+				if (g.data.hash.asv[survey_id].opac()) {
+					apply(asv_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.opac_visible'));
+				} else {
+					apply(asv_node, 'opac', $("patronStrings").getString('staff.patron.info_stat_cats.render_stat_cats.not_opac_visible'));
+				}
 
                 var nl = asv_node.getElementsByAttribute('name','questions');
                 var question_placeholder;
                 if (nl.length>0) question_placeholder = nl[0];
                 if (question_placeholder) {
 
-                    var questions = g.data.hash.asv[i].questions();
-                    for (var j = 0; j < questions.length; j++) {
+					var questions = g.data.hash.asv[survey_id].questions();
+					for (var j = 0; j < questions.length; j++) {
 
                         /* template */
                         var asvq_node = $('asvq_template').cloneNode(true);
@@ -129,19 +137,20 @@
                         apply(asvq_node,'ordinal',j+1);
                         apply(asvq_node,'question',questions[j].question());
 
-                        var nl2 = asvq_node.getElementsByAttribute('name','answer');
-                        var answer_placeholder;
-                        if (nl2.length>0) answer_placeholder = nl2[0];
-                        if (answer_placeholder && g.survey_responses[i].length > 0) {
+						var nl2 = asvq_node.getElementsByAttribute('name','answer');
+						var answer_placeholder;
+						if (nl2.length>0) answer_placeholder = nl2[0];
+						if (answer_placeholder && g.survey_responses[survey_id]) {
 
                             /* template */
                             var asva_node = $('asva_template').cloneNode(true); answer_placeholder.appendChild(asva_node); asva_node.hidden = false;
 
-                            var last_response = g.survey_responses[i][ g.survey_responses[i].length - 1 ];
-                            var date = last_response.effective_date() ? last_response.effective_date() : last_response.answer_date();
-                            date = util.date.formatted_date( date, '%D' );
-                            var answer = util.functional.find_id_object_in_list( questions[j].answers(), last_response.answer() );
-
+							var question_responses = g.survey_responses[survey_id][ questions[j].id() ];
+							if (!question_responses || question_responses.length < 1) { continue; }
+							var last_response = question_responses[ question_responses.length - 1 ];
+							var date = last_response.effective_date() ? last_response.effective_date() : last_response.answer_date();
+							date = util.date.formatted_date( date, '%D' );
+							var answer = util.functional.find_id_object_in_list( questions[j].answers(), last_response.answer() );
                             apply(asva_node,'answer',answer.answer());
                             apply(asva_node,'date',date);
                         }
