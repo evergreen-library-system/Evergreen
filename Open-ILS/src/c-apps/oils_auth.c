@@ -23,6 +23,10 @@ static int _oilsAuthStaffTimeout = 0;
 static int _oilsAuthOverrideTimeout = 0;
 
 
+/**
+	@brief Initialize the application by registering functions for method calls.
+	@return Zero in all cases.
+*/
 int osrfAppInitialize() {
 
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing Auth Server...");
@@ -77,52 +81,72 @@ int osrfAppInitialize() {
 	return 0;
 }
 
+/**
+	@brief Dummy placeholder for initializing a server drone.
+
+	There is nothing to do, so do nothing.
+*/
 int osrfAppChildInit() {
 	return 0;
 }
 
+/**
+	@brief Implement the init method.
+	@param ctx The method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- username
+
+	Return to client: Intermediate authentication seed.
+
+	Combine the username with a timestamp and process ID, and take an md5 hash of the result.
+	Store the hash in memcache, with a key based on the username.  Then return the hash to
+	the client.
+
+	However: if the username includes one or more embedded blank spaces, return a dummy
+	hash without storing anything in memcache.  The dummy will never match a stored hash, so
+	any attempt to authenticate with it will fail.
+*/
 int oilsAuthInit( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
-	jsonObject* resp;
+	char* username  = jsonObjectToSimpleString( jsonObjectGetIndex(ctx->params, 0) );
+	if( username ) {
 
-	char* username  = NULL;
-	char* seed      = NULL;
-	char* md5seed   = NULL;
-	char* key       = NULL;
-
-	if( (username = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0))) ) {
+		jsonObject* resp;
 
 		if( strchr( username, ' ' ) ) {
 
-			/* spaces are not allowed */
-			resp = jsonNewObject("x");     /* 'x' will never be a valid seed */
-			osrfAppRespondComplete( ctx, resp );
+			// Embedded spaces are not allowed in a username.  Use "x" as a dummy
+			// seed.  It will never be a valid seed because 'x' is not a hex digit.
+			resp = jsonNewObject( "x" );
 
 		} else {
 
-			seed = va_list_to_string( "%d.%ld.%s", time(NULL), (long) getpid(), username );
-			key = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
+			// Build a key and a seed; store them in memcache.
+			char* key  = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
+			char* seed = md5sum( "%d.%ld.%s", (int) time(NULL), (long) getpid(), username );
+			osrfCachePutString( key, seed, 30 );
 
-			md5seed = md5sum(seed);
-			osrfCachePutString( key, md5seed, 30 );
+			osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", seed, key );
 
-			osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", md5seed, key );
+			// Build a returnable object containing the seed.
+			resp = jsonNewObject( seed );
 
-			resp = jsonNewObject(md5seed);
-			osrfAppRespondComplete( ctx, resp );
-
-			free(seed);
-			free(md5seed);
-			free(key);
+			free( seed );
+			free( key );
 		}
+
+		// Return the seed to the client.
+		osrfAppRespondComplete( ctx, resp );
 
 		jsonObjectFree(resp);
 		free(username);
 		return 0;
 	}
 
-	return -1;
+	return -1;  // Error: no username parameter
 }
 
 /**
