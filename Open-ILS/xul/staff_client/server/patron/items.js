@@ -224,11 +224,13 @@ patron.items.prototype = {
             }
             var r = window.confirm($("patronStrings").getString('staff.patron.items.items_renew_all.renew_items_in_list'));
             if (!r) return;
+            obj.list.select_all();
             function flesh_callback() {
                 try {
-                    obj.list.select_all();
-                    obj.items_renew(1,true);    
-                    setTimeout(function(){list.on_all_fleshed = null; /* obj.retrieve();*/ },0);
+                    setTimeout(function(){
+                        list.on_all_fleshed = null;
+                        obj.items_renew(1,true);    
+                    },0);
                 } catch(E) {
                     obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew_all.items_not_renewed', ['2']),E);
                 }
@@ -267,34 +269,30 @@ patron.items.prototype = {
                     l.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.items.items_renew.renewing',[bc]));
                     x.appendChild(l);
                 }
-                var renew = circ.util.renew_via_barcode( bc, obj.patron_id, 
-                    function(r) {
-                        try {
-                            if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
-                                l.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.items.items_renew.renewed',[bc]));
-                                obj.list_circ_map[ circ_id ].row.my.circ = r[0].payload.circ;
-                                obj.list_circ_map[ circ_id ].row.my.acp = r[0].payload.copy;
-                                obj.list_circ_map[ circ_id ].row.my.mvr = r[0].payload.record;
-                                // A renewed circ is a new circ, and has a new circ_id.
-                                obj.list_circ_map[ r[0].payload.circ.id() ] = obj.list_circ_map[ circ_id ];
-                            } else {
-                                var msg = $("patronStrings").getFormattedString('staff.patron.items.items_renew.not_renewed',[bc, r[0].textcode + r[0].desc]);
-                                l.setAttribute('value', msg);
-                                alert(msg);
-                            }
-                            count--;
-                            if (count == 0) {
-                                //if (window.confirm('Action completed. Refresh list?')) obj.retrieve();
-                                JSAN.use('util.widgets'); util.widgets.remove_children(x);
-                            }
-                            obj.refresh(circ_id);
-                        } catch(E) {
-                              obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew.err_in_renew_via_barcode',[bc]), E);
-                        }
-                    } 
-                );
+                var r = circ.util.renew_via_barcode( bc, obj.patron_id ); 
+                try {
+                    if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
+                        l.setAttribute('value', $("patronStrings").getFormattedString('staff.patron.items.items_renew.renewed',[bc]));
+                        obj.list_circ_map[ circ_id ].row.my.circ = r[0].payload.circ;
+                        obj.list_circ_map[ circ_id ].row.my.acp = r[0].payload.copy;
+                        obj.list_circ_map[ circ_id ].row.my.mvr = r[0].payload.record;
+                        // A renewed circ is a new circ, and has a new circ_id.
+                        obj.list_circ_map[ r[0].payload.circ.id() ] = obj.list_circ_map[ circ_id ];
+                    } else {
+                        var msg = $("patronStrings").getFormattedString('staff.patron.items.items_renew.not_renewed',[bc, r[0].textcode + r[0].desc]);
+                        l.setAttribute('value', msg);
+                        alert(msg);
+                    }
+                    count--;
+                    if (count == 0) {
+                        //if (window.confirm('Action completed. Refresh list?')) obj.retrieve();
+                        JSAN.use('util.widgets'); util.widgets.remove_children(x);
+                    }
+                    obj.refresh(circ_id);
+                } catch(E) {
+                      obj.error.standard_unexpected_error_alert($("patronStrings").getFormattedString('staff.patron.items.items_renew.err_in_renew_via_barcode',[bc]), E);
+                }
             }
-
             for (var i = 0; i < retrieve_ids.length; i++) {
                 try {
                     count++;
