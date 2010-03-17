@@ -232,6 +232,29 @@ function cpdDrawCopy(r) {
 			);
 		}
 
+		/* show the book now link */
+		l = $n(row, 'copy_reserve_link');
+		unHideMe(l);
+		l.onclick = function() {
+			// XXX FIXME this duplicates things in cat/util.js
+			// Also needs i18n
+			dojo.require("fieldmapper.Fieldmapper");
+			var r = fieldmapper.standardRequest(
+				["open-ils.booking",
+					"open-ils.booking.resources.create_from_copies"],
+				[G.user.session, [copy.id()]]
+			);
+			if (!r) {
+				alert("No response from server!");
+			} else if (r.ilsevent != undefined) {
+				alert("Error from server:\n" + js2JSON(r));
+			} else {
+				xulG.auth = {"session": {"key": G.user.session}};
+				xulG.bresv_interface_opts = {"booking_results": r};
+				location.href = "/eg/booking/reservation";
+			}
+		}
+
 		if( copy.age_protect() ) 
 			appendClear($n(row, 'age_protect_value'), text(copy.age_protect().name()));
 

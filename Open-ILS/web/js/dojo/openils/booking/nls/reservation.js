@@ -2,7 +2,12 @@
     'NO_BRT_RESULTS': "There are no bookable resource types registered.",
     'NO_TARG_DIV': "Could not find target div",
     'NO_BRA_RESULTS': "Couldn't retrieve booking resource attributes.",
-    'SELECT_A_BRSRC_THEN': "Select a resource from the big list above.",
+    'SELECT_A_BRSRC_THEN':
+        "You have clicked 'Reserve Selected', but nothing is selected!\n\n" +
+        "You must select a resource from the large box above.\n\n" +
+        "***  If resources that you would select are highlighted in RED, ***\n"+
+        "these items are not available during the requested time; if\n" +
+        "possible, choose another resource or change the reservation time.",
     'CREATE_BRESV_LOCAL_ERROR': "Exception trying to create reservation: ",
     'CREATE_BRESV_SERVER_ERROR': "Server error trying to create reservation: ",
     'CREATE_BRESV_SERVER_NO_RESPONSE':
@@ -10,11 +15,27 @@
     /* FIXME: Users aren't likely to be able to do anything with the following
      * message.  Figure out a way to do something more helpful.
      */
-    'CREATE_BRESV_OK_MISSING_TARGET': function(n, m) {
-        return "Created " + n + " reservation(s), but " + m + " of these " +
-            "couldn't target any resources.\n\n" +
+    'CREATE_BRESV_OK_MISSING_TARGET': function(n, m, d, c) {
+        var s = "Created " + n + " reservation(s), but " + m + " of these " +
+            "could not target any resources.\n\n";
+        var t;
+        if (d && d.length) {
+            var gram = d.length == 1 ?
+                ["A circulation blocks", ""] : ["Circulations block", "s"];
+            t = s + gram[0] + " the desired reservation(s), " +
+                "with due date" + gram[1] + ":\n";
+
+            for (var k in d) { t += "\t" + d[k] + "\n"; }
+        } else {
+            t = s +
             "This means that it won't be possible to fulfill some of these\n" +
             "reservations until a suitable resource becomes available.";
+        }
+        if (c) {
+            t +="\n\nSince the requested resource could not be targeted, " +
+                "this\nreservation will now be canceled.";
+        }
+        return t;
     },
     'CREATE_BRESV_OK': function(n) {
         return "Created " + n + " reservation" + (n == 1 ? "" : "s") + ".";
@@ -53,6 +74,10 @@
     'ON_FLY_ERROR':
         "Error attempting to make item a bookable resource:",
     'ANY': "ANY",
+    'ERROR_FETCHING_AOUS':
+        "Could not retrieve organizational unit settings.\n" +
+        "This is a non-fatal error, but you may wish to\n" +
+        "contact your system administrator.",
 
     'AUTO_choose_a_brt': "Choose a Bookable Resource Type",
     'AUTO_i_need_this_resource': "I need this resource...",
@@ -64,7 +89,7 @@
     'AUTO_ATTR_VALUE_reserve_brsrc': "Reserve Selected",
     'AUTO_ATTR_VALUE_reserve_brt': "Reserve Any",
     'AUTO_ATTR_VALUE_button_edit_existing': "Edit selected",
-    'AUTO_ATTR_VALUE_button_cancel_existing': "Cancel selcted",
+    'AUTO_ATTR_VALUE_button_cancel_existing': "Cancel selected",
     'AUTO_bresv_grid_type': "Type",
     'AUTO_bresv_grid_resource': "Resource",
     'AUTO_bresv_grid_start_time': "Start time",

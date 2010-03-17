@@ -365,7 +365,7 @@ patron.display.prototype = {
                             xulG.new_tab(
                                 "/eg/booking/reservation",
                                 {
-                                    "tab_name": offlineStrings.getString(
+                                    "tab_name": $("offlineStrings").getString(
                                         "menu.cmd_booking_reservation.tab"
                                     ),
                                     "browser": false
@@ -386,7 +386,7 @@ patron.display.prototype = {
                             xulG.new_tab(
                                 "/eg/booking/pickup",
                                 {
-                                    "tab_name": offlineStrings.getString(
+                                    "tab_name": $("offlineStrings").getString(
                                         "menu.cmd_booking_reservation_pickup.tab"
                                     ),
                                     "browser": false
@@ -407,7 +407,7 @@ patron.display.prototype = {
                             xulG.new_tab(
                                 "/eg/booking/return",
                                 {
-                                    "tab_name": offlineStrings.getString(
+                                    "tab_name": $("offlineStrings").getString(
                                         "menu.cmd_booking_reservation_return.tab"
                                     ),
                                     "browser": false

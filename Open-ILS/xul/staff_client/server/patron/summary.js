@@ -2,6 +2,7 @@ dump('entering patron.summary.js\n');
 
 function $(id) { return document.getElementById(id); }
 var patronStrings = $('patronStrings');
+var offlineStrings = $('offlineStrings');
 
 if (typeof patron == 'undefined') patron = {};
 patron.summary = function (params) {

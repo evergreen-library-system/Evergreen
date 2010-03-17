@@ -27,7 +27,8 @@
             autoHeight='true'
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['name', 'fine_interval', 'fine_amount',
-                'owner', 'catalog_item', 'transferable', 'record']"
+                'owner', 'catalog_item', 'transferable']"
+            suppressFields="['record']"
             query="{name: '*'}"
             defaultCellWidth='"auto"'
             fmClass='brt'

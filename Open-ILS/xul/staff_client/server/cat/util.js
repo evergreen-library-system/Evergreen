@@ -503,6 +503,7 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
 }
 
 cat.util.make_bookable = function(copy_ids) {
+    dojo.require("fieldmapper.Fieldmapper");
     var results = fieldmapper.standardRequest(
         ["open-ils.booking", "open-ils.booking.resources.create_from_copies"],
         [ses(), copy_ids]
@@ -529,7 +530,7 @@ cat.util.edit_new_brsrc = function(brsrc_list) {
             urls.XUL_BROWSER + "?url=" + window.escape(
                 xulG.url_prefix("/eg/conify/global/booking/resource")
             ), {
-                "tab_name": offlineStrings.getString(
+                "tab_name": $("offlineStrings").getString(
                     "menu.cmd_booking_resource.tab"
                  ),
                 "browser" : true
@@ -559,7 +560,7 @@ cat.util.edit_new_bresv = function(booking_results) {
         xulG.new_tab(
             xulG.url_prefix("/eg/booking/reservation"),
             {
-                "tab_name": offlineStrings.getString(
+                "tab_name": $("offlineStrings").getString(
                     "menu.cmd_booking_reservation.tab"
                  ),
                 "browser" : false

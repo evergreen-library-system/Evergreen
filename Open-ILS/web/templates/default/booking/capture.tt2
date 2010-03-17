@@ -1,7 +1,7 @@
 [% WRAPPER "default/base.tt2" %]
 <script src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/booking/capture.js"></script>
-<link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" />
+<link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" id="booking_stylesheet_link" />
 <script type="text/javascript">openils.Util.addOnLoad(my_init);</script>
 <div id="auto_l10n_start_here">
 <!-- XXX This interface will probably go away soon in favor of merging its
@@ -15,7 +15,7 @@ behavior into the regular checkin/process/capture interface. -->
             onclick="attempt_capture();" />
         <span id="result_display"></span>
     </form>
-    <div class="nice_vertical_padding" id="capture_display">
-    </div>
+    <div class="nice_vertical_padding" id="capture_info_top"></div>
+    <div class="nice_vertical_padding" id="capture_info_bottom"></div>
 </div>
 [% END %]

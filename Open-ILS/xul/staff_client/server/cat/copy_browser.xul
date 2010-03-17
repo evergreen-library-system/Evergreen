@@ -33,6 +33,12 @@ vim:noet:sw=4:ts=4:
     </script>
     <scripts id="openils_util_scripts"/>
 
+    <script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
+    <script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
+    <script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
+    <script>try { dojo.require('dojo.date.locale'); } catch(E) { alert(E); }</script>
+    <script>try { dojo.require('dojo.date.stamp'); } catch(E) { alert(E); }</script>
+
     <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
     <script type="text/javascript" src="/xul/server/cat/copy_browser.js"/>
     <script>
@@ -66,6 +72,7 @@ vim:noet:sw=4:ts=4:
     ]]>
     </script>
 
+    <messagecatalog id="offlineStrings" src="/xul/server/locale/<!--#echo var='locale'-->/offline.properties" />
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
