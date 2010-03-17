@@ -477,7 +477,7 @@ CREATE TABLE acq.lineitem_alert_text (
 
 CREATE TABLE acq.lineitem_note (
 	id		SERIAL				PRIMARY KEY,
-	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id) ON CASCADE DELETE DEFERRABLE INITIALLY DEFERRED,
+	lineitem	INT				NOT NULL REFERENCES acq.lineitem (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	creator		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	editor		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
@@ -493,7 +493,7 @@ CREATE INDEX li_note_editor_idx   ON acq.lineitem_note ( editor );
 
 CREATE TABLE acq.lineitem_detail (
     id          BIGSERIAL	PRIMARY KEY,
-    lineitem    INT         NOT NULL REFERENCES acq.lineitem (id) ON CASCADE DELETE DEFERRABLE INITIALLY DEFERRED,
+    lineitem    INT         NOT NULL REFERENCES acq.lineitem (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     fund        INT         REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
     fund_debit  INT         REFERENCES acq.fund_debit (id) DEFERRABLE INITIALLY DEFERRED,
     eg_copy_id  BIGINT      REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
@@ -547,7 +547,7 @@ CREATE TABLE acq.lineitem_local_attr_definition (
 CREATE TABLE acq.lineitem_attr (
 	id		BIGSERIAL	PRIMARY KEY,
 	definition	BIGINT		NOT NULL,
-	lineitem	BIGINT		NOT NULL REFERENCES acq.lineitem (id) ON CASCADE DELETE DEFERRABLE INITIALLY DEFERRED,
+	lineitem	BIGINT		NOT NULL REFERENCES acq.lineitem (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	attr_type	TEXT		NOT NULL,
 	attr_name	TEXT		NOT NULL,
 	attr_value	TEXT		NOT NULL
@@ -607,7 +607,7 @@ CREATE TABLE acq.distribution_formula_application (
     formula INT NOT NULL
         REFERENCES acq.distribution_formula(id) DEFERRABLE INITIALLY DEFERRED,
     lineitem INT NOT NULL
-        REFERENCES acq.lineitem(id) ON CASCADE DELETE DEFERRABLE INITIALLY DEFERRED
+        REFERENCES acq.lineitem(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE INDEX acqdfa_df_idx
