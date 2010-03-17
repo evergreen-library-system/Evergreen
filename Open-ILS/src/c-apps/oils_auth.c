@@ -91,7 +91,7 @@ int osrfAppChildInit() {
 }
 
 /**
-	@brief Implement the init method.
+	@brief Implement the "init" method.
 	@param ctx The method context.
 	@return Zero if successful, or -1 if not.
 
@@ -189,33 +189,61 @@ static int oilsAuthCheckLoginPerm(
 	Returns 0 otherwise
 	Returns -1 on error
 */
+/**
+	@brief Verify the password received from the client.
+	@param ctx The method context.
+	@param userObj An object from the database, representing the user.
+	@param password An obfuscated password received from the client.
+	@return 1 if the password is valid; 0 if it isn't; or -1 upon error.
+
+	(None of the so-called "passwords" used here are in plaintext.  All have been passed
+	through at least one layer of hashing to obfuscate them.)
+
+	Take the password from the user object.  Append it to the username seed from memcache,
+	as stored previously by a call to the init method.  Take an md5 hash of the result.
+	Then compare this hash to the password received from the client.
+
+	In order for the two to match, other than by dumb luck, the client had to construct
+	the password it passed in the same way.  That means it neded to know not only the
+	original password (either hashed or plaintext), but also the seed.  The latter requirement
+	means that the client process needs either to be the same process that called the init
+	method or to receive the seed from the process that did so.
+*/
 static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 		const jsonObject* userObj, const char* uname, const char* password ) {
 
-	int ret = 0;
-	char* realPassword = oilsFMGetString( userObj, "passwd" ); /**/
-	char* seed = osrfCacheGetString( "%s%s", OILS_AUTH_CACHE_PRFX, uname ); /**/
-
+	// Get the username seed, as stored previously in memcache by the init method
+	char* seed = osrfCacheGetString( "%s%s", OILS_AUTH_CACHE_PRFX, uname );
 	if(!seed) {
-		free(realPassword);
 		return osrfAppRequestRespondException( ctx->session,
 			ctx->request, "No authentication seed found. "
 			"open-ils.auth.authenticate.init must be called first");
 	}
 
+	// Get the hashed password from the user object
+	char* realPassword = oilsFMGetString( userObj, "passwd" );
+
 	osrfLogInternal(OSRF_LOG_MARK, "oilsAuth retrieved real password: [%s]", realPassword);
-	osrfLogDebug(OSRF_LOG_MARK,  "oilsAuth retrieved seed from cache: %s", seed );
+	osrfLogDebug(OSRF_LOG_MARK, "oilsAuth retrieved seed from cache: %s", seed );
+
+	// Concatenate them and take an MD5 hash of the result
 	char* maskedPw = md5sum( "%s%s", seed, realPassword );
+
 	free(realPassword);
 	free(seed);
 
-	if(!maskedPw)
-		return -1;
+	if( !maskedPw ) {
+		// This happens only if md5sum() runs out of memory
+		free( maskedPw );
+		return -1;  // md5sum() ran out of memory
+	}
 
 	osrfLogDebug(OSRF_LOG_MARK,  "oilsAuth generated masked password %s. "
 			"Testing against provided password %s", maskedPw, password );
 
-	if( !strcmp( maskedPw, password ) ) ret = 1;
+	int ret = 0;
+	if( !strcmp( maskedPw, password ) )
+		ret = 1;
 
 	free(maskedPw);
 
@@ -401,8 +429,8 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	const char* ws = (workstation) ? workstation : "";
 
-
-	if(!type) type = OILS_AUTH_STAFF;
+	if( !type )
+		 type = OILS_AUTH_STAFF;
 
 	if( !( (uname || barcode) && password) ) {
 		return osrfAppRequestRespondException( ctx->session, ctx->request,
@@ -412,6 +440,8 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	oilsEvent* response = NULL;
 	jsonObject* userObj = NULL;
 
+	// Fetch a row from the actor.usr table, by username if available,
+	// or by barcode if not.
 	if(uname) {
 		userObj = oilsUtilsFetchUserByUsername( uname );
 		if( userObj && JSON_NULL == userObj->type ) {
@@ -428,10 +458,10 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 				uname, (barcode ? barcode : "(none)"), ws );
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) );
 		oilsEventFree(response);
-		return 0;
+		return 0;           // No such user
 	}
 
-	/* first let's see if they have the right credentials */
+	// Such a user exists.  Now see if he or she has the right credentials.
 	int passOK = -1;
 	if(uname)
 		passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password );
@@ -443,7 +473,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		return passOK;
 	}
 
-	/* first see if their account is inactive */
+	// See if the account is active
 	char* active = oilsFMGetString(userObj, "active");
 	if( !oilsUtilsIsDBTrue(active) ) {
 		if( passOK )
