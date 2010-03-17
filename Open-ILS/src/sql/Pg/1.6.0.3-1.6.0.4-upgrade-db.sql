@@ -20,6 +20,9 @@ BEGIN;
 
 INSERT INTO config.upgrade_log(version) VALUES ('1.6.0.4');
 
+-- remove the metarecord link for "deleted" records
+CREATE OR REPLACE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD (UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id; DELETE FROM metabib.metarecord_source_map WHERE source = OLD.id);
+
 -- Match ingest fixes for leading / trailing whitespace on ISSNs and date ranges
 UPDATE metabib.real_full_rec
     SET value = TRIM(value)
