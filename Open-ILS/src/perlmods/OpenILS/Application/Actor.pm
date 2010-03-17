@@ -392,7 +392,7 @@ sub update_patron {
         $tses->request('open-ils.trigger.event.autocreate', 'au.update', $new_patron, $new_patron->home_ou);
     }
 
-	return flesh_user($new_patron->id(), new_editor(requestor => $user_obj));
+	return flesh_user($new_patron->id(), new_editor(requestor => $user_obj, xact => 1));
 }
 
 sub apply_invalid_addr_penalty {
