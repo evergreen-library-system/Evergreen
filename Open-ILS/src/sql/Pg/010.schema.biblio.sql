@@ -48,7 +48,7 @@ CREATE INDEX biblio_record_entry_edit_date_idx ON biblio.record_entry ( edit_dat
 CREATE INDEX biblio_record_entry_fp_idx ON biblio.record_entry ( fingerprint );
 CREATE UNIQUE INDEX biblio_record_unique_tcn ON biblio.record_entry (tcn_value) WHERE deleted IS FALSE;
 
-CREATE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id;
+CREATE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD (UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id; DELETE FROM metabib.metarecord_source_map WHERE source = OLD.id);
 
 
 CREATE TABLE biblio.record_note (
