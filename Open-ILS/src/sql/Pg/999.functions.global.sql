@@ -366,7 +366,6 @@ COMMENT ON FUNCTION actor.usr_merge(INT, INT, BOOLEAN, BOOLEAN, BOOLEAN) IS $$
 $$;
 
 
-
 CREATE OR REPLACE FUNCTION actor.usr_purge_data(
 	src_usr  IN INTEGER,
 	dest_usr IN INTEGER
@@ -419,6 +418,7 @@ BEGIN
 	UPDATE acq.purchase_order SET owner = dest_usr WHERE owner = src_usr;
 	UPDATE acq.purchase_order SET creator = dest_usr WHERE creator = src_usr;
 	UPDATE acq.purchase_order SET editor = dest_usr WHERE editor = src_usr;
+	UPDATE acq.claim_event SET creator = dest_usr WHERE creator = src_usr;
 
 	-- action.*
 	DELETE FROM action.circulation WHERE usr = src_usr;

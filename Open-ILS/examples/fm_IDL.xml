@@ -5971,6 +5971,67 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="acqclt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_type" oils_persist:tablename="acq.claim_type" reporter:label="Claim Type">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_type_id_seq">
+			<field reporter:label="Claim Type ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Code" name="code" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="acqclet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_event_type" oils_persist:tablename="acq.claim_event_type" reporter:label="Claim Event Type">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_event_type_id_seq">
+			<field reporter:label="Claim Event Type ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Code" name="code" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+			<field reporter:label="Library Initiated" name="library_initiated" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="acqcl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim" oils_persist:tablename="acq.claim" reporter:label="Claim">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_id_seq">
+			<field reporter:label="Claim ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Claim Type" name="type" reporter:datatype="link"/>
+			<field reporter:label="Lineitem Detail" name="lineitem_detail" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="type" reltype="has_a" key="id" map="" class="acqclt"/>
+			<link field="lineitem_detail" reltype="has_a" key="id" map="" class="acqlid"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="acqcle" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_event" oils_persist:tablename="acq.claim_event" reporter:label="Claim Event">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_event_id_seq">
+			<field reporter:label="Claim Event ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Claim Event Type" name="type" reporter:datatype="link"/>
+			<field reporter:label="Claim ID" name="claim" reporter:datatype="link"/>
+			<field reporter:label="Event Date" name="event_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="type" reltype="has_a" key="id" map="" class="acqclet"/>
+			<link field="claim" reltype="has_a" key="id" map="" class="acqcl"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
     <class id="stgu" controller="open-ils.cstore" oils_obj:fieldmapper="staging::user_stage" oils_persist:tablename="staging.user_stage" reporter:label="User Stage">
         <fields oils_persist:primary="row_id" oils_persist:sequence="staging.usr_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>

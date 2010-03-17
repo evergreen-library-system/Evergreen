@@ -2456,8 +2456,47 @@ FROM
                 fund
         ) AS c USING ( fund );
 
+CREATE TABLE acq.claim_type (
+	id             SERIAL           PRIMARY KEY,
+	org_unit       INT              NOT NULL REFERENCES actor.org_unit(id)
+	                                         DEFERRABLE INITIALLY DEFERRED,
+	code           TEXT             NOT NULL,
+	description    TEXT             NOT NULL,
+	CONSTRAINT claim_type_once_per_org UNIQUE ( org_unit, code )
+);
+
+CREATE TABLE acq.claim_event_type (
+	id             SERIAL           PRIMARY KEY,
+	org_unit       INT              NOT NULL REFERENCES actor.org_unit(id)
+	                                         DEFERRABLE INITIALLY DEFERRED,
+	code           TEXT             NOT NULL,
+	description    TEXT             NOT NULL,
+	library_initiated BOOL          NOT NULL DEFAULT FALSE,
+	CONSTRAINT event_type_once_per_org UNIQUE ( org_unit, code )
+);
+
+CREATE TABLE acq.claim (
+	id             SERIAL           PRIMARY KEY,
+	type           INT              NOT NULL REFERENCES acq.claim_type
+	                                         DEFERRABLE INITIALLY DEFERRED,
+	lineitem_detail BIGINT          NOT NULL REFERENCES acq.lineitem_detail
+	                                         DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE INDEX claim_lid_idx ON acq.claim( lineitem_detail );
+
+CREATE TABLE acq.claim_event (
+	id             BIGSERIAL        PRIMARY KEY,
+	type           INT              NOT NULL REFERENCES acq.claim_event_type
+	                                         DEFERRABLE INITIALLY DEFERRED,
+	claim          SERIAL           NOT NULL REFERENCES acq.claim
+	                                         DEFERRABLE INITIALLY DEFERRED,
+	event_date     TIMESTAMPTZ      NOT NULL DEFAULT now(),
+	creator        INT              NOT NULL REFERENCES actor.usr
+	                                         DEFERRABLE INITIALLY DEFERRED,
+	note           TEXT
+);
+
+CREATE INDEX claim_event_claim_date_idx ON acq.claim_event( claim, event_date );
+
 COMMIT;
-
-
-
-
