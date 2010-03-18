@@ -169,7 +169,7 @@ sub oils_login {
 
 	oils_event_die($response);
 
-	$authtime = $response->{payload}->{authtime};
+	$authtime  = $response->{payload}->{authtime};
 	$authtoken = $response->{payload}->{authtoken};
 	return $authtoken;
 }
@@ -181,7 +181,7 @@ sub oils_login {
 sub oils_logout {
 	$apputils->simplereq(
 		'open-ils.auth',
-		'open-ils.auth.session.delete', $authtoken );
+		'open-ils.auth.session.delete', (@_ ? shift : $authtoken) );
 }
 
 #----------------------------------------------------------------
@@ -198,7 +198,7 @@ sub oils_fetch_session {
 #----------------------------------------------------------------
 # var $response = simplereq( $service, $method, @params );
 #----------------------------------------------------------------
-sub simplereq { return $apputils->simplereq(@_); }
+sub simplereq    { return $apputils->simplereq(@_); }
 sub osrf_request { return $apputils->simplereq(@_); }
 
 1;
