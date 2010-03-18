@@ -970,6 +970,7 @@ sub do_copy_checks {
 }
 
 my $LEGACY_CIRC_EVENT_MAP = {
+    'no_item' => 'ITEM_NOT_CATALOGED',
     'actor.usr.barred' => 'PATRON_BARRED',
     'asset.copy.circulate' =>  'COPY_CIRC_NOT_ALLOWED',
     'asset.copy.status' => 'COPY_NOT_AVAILABLE',
@@ -1044,11 +1045,16 @@ sub run_indb_circ_test {
     my $dbfunc = ($self->is_renewal) ? 
         'action.item_user_renew_test' : 'action.item_user_circ_test';
 
+    if( $self->is_precat && $self->request_precat) {
+        $self->make_precat_copy;
+        return if $self->bail_out;
+    }
+
     my $results = $self->editor->json_query(
         {   from => [
                 $dbfunc,
                 $self->editor->requestor->ws_ou,
-                ($self->is_precat or $self->is_noncat) ? undef : $self->copy->id, 
+                ($self->is_noncat or ($self->is_precat and !$self->override)) ? undef : $self->copy->id, 
                 $self->patron->id,
             ]
         }
