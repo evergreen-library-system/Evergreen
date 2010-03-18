@@ -43,7 +43,7 @@ my %defaults = (
     'password=s'    => '',
     'tempdir=s'     => '',
     'nolockfile'    => 1,
-    'queue'         => 1,
+    'queue=i'       => 1,
     'noqueue'       => 0,
     'wait=i'        => 5,
 );
