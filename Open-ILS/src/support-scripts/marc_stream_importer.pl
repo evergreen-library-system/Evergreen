@@ -77,6 +77,7 @@ use MARC::Batch;
 use MARC::File::XML;
 use MARC::File::USMARC;
 use File::Basename qw/fileparse/;
+use Getopt::Long;
 
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::Cronscript;
@@ -112,24 +113,17 @@ WARNING
 print warning();
 # $0 = 'Evergreen MARC Stream Listener';
 
-sub process_request {
-    my $self = shift;
-    my $socket = $self->{server}->{client};
-    my $data = '';
-    my $buf;
+sub xml_import {
+    return $apputils->simplereq(
+        'open-ils.cat', 
+        'open-ils.cat.biblio.record.xml.import',
+        @_
+    );
+}
 
-    # Reading <STDIN> blocks until the client is closed.  Instead of waiting 
-    # for that, give each inbound record $wait_time seconds to fully arrive
-    # and pull the data directly from the socket
-    eval {
-        local $SIG{ALRM} = sub { die "alarm\n" }; 
-        do {
-            alarm $wait_time;
-            last unless $socket->sysread($buf, $bufsize);
-            $data .= $buf;
-        } while(1);
-        alarm 0;
-    };
+sub process_batch_data {
+    my $data = shift or $logger->error("process_batch_data called without any data");
+    $data or return;
 
     my $handle;
     open $handle, '<', \$data; 
@@ -151,40 +145,49 @@ sub process_request {
 
         last unless $rec;
 
-        my $resp = $apputils->simplereq(
-            'open-ils.cat', 
-            'open-ils.cat.biblio.record.xml.import',
-            $authtoken, 
-            $rec->as_xml_record, 
-            $bib_source
-        );
+        my $resp = xml_import($authtoken, $rec->as_xml_record, $bib_source);
 
         # has the session timed out?
-        if(oils_event_equals($resp, 'NO_SESSION')) {
-            set_auth_token();
-            my $resp = $apputils->simplereq(
-                'open-ils.cat', 
-                'open-ils.cat.biblio.record.xml.import',
-                $authtoken, 
-                $rec->as_xml_record, 
-                $bib_source
-            );
-            oils_event_die($resp);
-        } else {
-            oils_event_die($resp);
+        if (oils_event_equals($resp, 'NO_SESSION')) {
+            new_auth_token();
+            $resp = xml_import($authtoken, $rec->as_xml_record, $bib_source);   # try again w/ new token
         }
+        oils_event_die($resp);
     }
+    return $index;
+}
+
+sub process_request {
+    my $self = shift;
+    my $socket = $self->{server}->{client};
+    my $data = '';
+    my $buf;
+
+    # Reading <STDIN> blocks until the client is closed.  Instead of waiting 
+    # for that, give each inbound record $wait_time seconds to fully arrive
+    # and pull the data directly from the socket
+    eval {
+        local $SIG{ALRM} = sub { die "alarm\n" }; 
+        do {
+            alarm $wait_time;
+            last unless $socket->sysread($buf, $bufsize);
+            $data .= $buf;
+        } while(1);
+        alarm 0;
+    };
+    process_batch_data($data);
 }
 
 
 # the authtoken will timeout after the configured inactivity period.
 # When that happens, get a new one.
-sub set_auth_token {
+sub new_auth_token {
     $authtoken = oils_login($oils_username, $oils_password, 'staff') 
         or die "Unable to login to Evergreen";
+    return $authtoken;
 }
 
 osrf_connect($osrf_config);
-set_auth_token();
+new_auth_token();
 __PACKAGE__->run();
 
