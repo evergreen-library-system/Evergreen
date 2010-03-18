@@ -216,7 +216,7 @@ sub options_help {
     my $chunk = @_ ? shift : '';
     return <<HELP
 
-OPTIONS:
+COMMON OPTIONS:
     --osrf-config </path/to/config_file>  Default: $self->{default_opts_clean}->{'osrf-config'}
                  Specify OpenSRF core config file.
 
