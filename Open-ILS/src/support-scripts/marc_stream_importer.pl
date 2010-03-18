@@ -354,12 +354,14 @@ This script is a L<Net::Server::PreFork> instance for shoving records into Everg
 
 The only required option is --password
 
- --password =<eg_password>
- --user     =<eg_username>   default: admin
- --source   =<bib_source>    default: 1         Integer
- --merge    =<i>             default: 0
- --tempdir  =</temp/dir/>    default: from L<opensrf.conf> <open-ils.vandelay/app_settings/databases/importer>
- --source   =<i>             default: 1
+ --password         =<eg_password>
+ --user             =<eg_username>  default: admin
+ --source           =<bib_source>   default: 1         Integer
+ --merge-profile    =<i>            default: 0
+ --tempdir          =</temp/dir/>   default: from L<opensrf.conf> <open-ils.vandelay/app_settings/databases/importer>
+ --source           =<i>            default: 1
+ --import-by-queue  =<i>            default: 0
+
 
 =head2 Old style: --noqueue and associated options
 
