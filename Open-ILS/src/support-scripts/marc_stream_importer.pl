@@ -23,6 +23,7 @@ use MARC::File::USMARC;
 
 use Data::Dumper;
 use File::Basename qw/fileparse/;
+use File::Temp;
 use Getopt::Long qw(:DEFAULT GetOptionsFromArray);
 use Pod::Usage;
 
@@ -62,6 +63,7 @@ if (grep {$_ eq '--'} @ARGV) {
     }
 } else {
     @script_args = @ARGV;
+    @ARGV = ();
 }
 
 print "Calling MyGetOptions ",
@@ -72,6 +74,8 @@ my $real_opts = $o->MyGetOptions(\@script_args);
 $o->bootstrap;
 # GetOptionsFromArray(\@script_args, \%defaults, %defaults); # similar to
 
+$real_opts->{tempdir} ||= tempdir_setting();    # This doesn't go in defaults because it reads config, must come after bootstrap
+
 my $bufsize       = $real_opts->{buffsize};
 my $bib_source    = $real_opts->{source};
 my $osrf_config   = $real_opts->{'osrf-config'};
@@ -80,7 +84,7 @@ my $oils_password = $real_opts->{password};
 my $help          = $real_opts->{help};
 my $merge_profile = $real_opts->{merge_profile};
 my $queue_id      = $real_opts->{queue};
-my $tempdir       = $real_opts->{tempdir} || tempdir();
+my $tempdir       = $real_opts->{tempdir};
    $debug        += $real_opts->{debug};
 
 foreach (keys %$real_opts) {
@@ -117,9 +121,10 @@ print Dumper($real_opts);
 
 # SUBS
 
-sub tempdir {
-    return $apputils->simplereq( qw# opensrf.settings opensrf.settings.xpath.get
-        /opensrf/default/apps/open-ils.vandelay/app_settings/databases/importer # ) || '/tmp/foobar/';
+sub tempdir_setting {
+    my $ret = $apputils->simplereq( qw# opensrf.settings opensrf.settings.xpath.get
+        /opensrf/default/apps/open-ils.vandelay/app_settings/databases/importer # );
+    return $ret->[0] || '/tmp';
 }
 
 sub warning {
@@ -173,9 +178,9 @@ sub old_process_batch_data {
     return $index;
 }
 
-sub process_spool {     # (authtoken, queue_id, filename, bib_source)
+sub process_spool {     # filename
     $apputils->simplereq('open-ils.vandelay', 'open-ils.vandelay.bib.process_spool', $authtoken, undef,
-                         $queue_id, 'import', $filename, $bib_source );
+                         $queue_id, 'import', shift, $bib_source );
 }
 sub bib_queue_import {
     my $extra = {auto_overlay_exact => 1};
@@ -188,11 +193,15 @@ sub process_batch_data {
     my $data = shift or $logger->error("process_batch_data called without any data");
     $data or return;
 
-    my $resp = process_spool();
+    my ($handle, $tempfile) = File::Temp(DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
+    print $handle $data;
+    close $handle;
+       
+    my $resp = process_spool($tempfile);
 
     if (oils_event_equals($resp, 'NO_SESSION')) {  # has the session timed out?
         new_auth_token();
-        $resp = process_spool();                # try again w/ new token
+        $resp = process_spool($tempfile);                # try again w/ new token
     }
 
     $resp = bib_queue_import();
