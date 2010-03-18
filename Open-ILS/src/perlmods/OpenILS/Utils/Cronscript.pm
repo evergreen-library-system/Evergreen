@@ -24,7 +24,7 @@ package OpenILS::Utils::Cronscript;
 use strict;
 use warnings;
 
-use Getopt::Long;
+use Getopt::Long qw(:DEFAULT GetOptionsFromArray);
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::JSON;
@@ -94,32 +94,54 @@ sub fuzzykey {                      # when you know the hash you want from, but 
 #  (2) provides hashspace for the rest of the arbitrary options from the command-line
 #
 # TODO: allow more options to be passed here, maybe mimic Getopt::Long::GetOptions style
+#
+# If an arrayref argument is passed, then @ARGV will NOT be touched.
+# Instead, the array will be passed to GetOptionsFromArray.
+#
 
 sub MyGetOptions {
     my $self = shift;
+    my $arrayref = @_ ? shift : undef;
+    if ($arrayref and ref($arrayref) ne 'ARRAY') {
+        carp "MyGetOptions argument is not an array ref.  Expect GetOptionsFromArray to explode";
+    }
     $self->{got_options} and carp "MyGetOptions called after options were already retrieved previously";
     my @keys = sort {is_clean($b) <=> is_clean($a)} keys %{$self->{default_opts}};
     $debug and print "KEYS: ", join(", ", @keys), "\n";
     foreach (@keys) {
         my $clean = clean($_);
-        $self->{opts_clean}->{$clean} = $self->{default_opts_clean}->{$clean};  # prepopulate default
-        $self->{opts}->{$_} = \$self->{opts_clean}->{$clean};                   # pointer for GetOptions
+        my $place = $self->{default_opts_clean}->{$clean};
+        $self->{opts_clean}->{$clean} = $place;  # prepopulate default
+        # $self->{opts}->{$_} = $self->{opts_clean}->{$clean};                 # pointer for GetOptions
+        $self->{opts}->{$_} = sub {
+            my $opt = shift;
+            my $val = shift;
+            ref ( $self->{opts_clean}->{$opt} ) and ref($self->{opts_clean}->{$opt}) eq 'SCALAR'
+            and ${$self->{opts_clean}->{$opt}} = $val;  # set the referent's value
+            $self->{opts_clean}->{$opt} = $val;     # burn the map, stick the value there
+        };                 # pointer for GetOptions
     }
-    GetOptions($self->{opts}, @keys);
+    $arrayref  ? GetOptionsFromArray($arrayref, $self->{opts}, @keys)
+               : GetOptions(                    $self->{opts}, @keys) ;
+   
     foreach (@keys) {
         delete $self->{opts}->{$_};     # now remove the mappings from (1) so we just have (2)
     }
     $self->clean_mirror('opts');        # populate clean_opts w/ cleaned versions of (2), plus everything else
 
     print $self->help() and exit if $self->{opts_clean}->{help};
-    $debug and $OpenILS::Utils::Lockfile::debug = $debug;
+    $self->new_lockfile();
+    $self->{got_options}++;
+    return wantarray ? %{$self->{opts_clean}} : $self->{opts_clean};
+}
 
+sub new_lockfile {
+    my $self = shift;
+    $debug and $OpenILS::Utils::Lockfile::debug = $debug;
     unless ($self->{opts_clean}->{nolockfile} || $self->{default_opts_clean}->{nolockfile}) {
         $self->{lockfile_obj} = OpenILS::Utils::Lockfile->new($self->first_defined('lock-file'));
         $self->{lockfile}     = $self->{lockfile_obj}->filename;
     }
-    $self->{got_options}++;
-    return $self;
 }
 
 sub first_defined {
@@ -155,6 +177,11 @@ sub add_and_purge {
     my $val  = shift;
     my $clean = clean($key);
     my @others = grep {/$clean/ and $_ ne $key} keys %{$self->{default_opts}};
+    unless (@others) {
+        $debug and print "unique key $key => $val\n";
+        $self->{default_opts}->{$key} = $val;   # no purge, just add
+        return;
+    }
     foreach (@others) {
         $debug and print "variant of $key => $_\n";
         if ($key ne $clean) {    # if it is a dirtier key, delete the clean one
@@ -172,6 +199,7 @@ sub init {      # not INIT
 # TODO: check $opts is hashref; then check verbose/debug first.  maybe check negations e.g. "no-verbose" ?
     @extra_opts = keys %$opts;
     foreach (@extra_opts) {        # add any other keys w/ default values
+        $debug and print "init() adding option $_, default value: $opts->{$_}\n";
         $self->add_and_purge($_, $opts->{$_});
     }
     $self->clean_mirror;
@@ -179,7 +207,7 @@ sub init {      # not INIT
 }
 
 sub usage {
-    my $self = shift;
+    # my $self = shift;
     return "\nUSAGE: $0 [OPTIONS]";
 }
 
