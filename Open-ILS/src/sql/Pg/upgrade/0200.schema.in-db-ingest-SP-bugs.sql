@@ -59,6 +59,7 @@ BEGIN
     END LOOP;
 
 END;
+$func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION biblio.flatten_marc ( rid BIGINT ) RETURNS SETOF metabib.full_rec AS $func$
 DECLARE
