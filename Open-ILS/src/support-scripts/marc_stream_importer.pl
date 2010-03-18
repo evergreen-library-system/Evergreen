@@ -193,10 +193,11 @@ sub process_batch_data {
     my $data = shift or $logger->error("process_batch_data called without any data");
     $data or return;
 
-    my ($handle, $tempfile) = File::Temp->new(DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
+    my ($handle, $tempfile) = File::Temp->tempfile("$0_XXXX", DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
     print $handle $data;
     close $handle;
        
+    $logger->info("Calling process_spool on tempfile $tempfile (queue: $queue_id; source: $bib_source)");
     my $resp = process_spool($tempfile);
 
     if (oils_event_equals($resp, 'NO_SESSION')) {  # has the session timed out?
