@@ -35,11 +35,16 @@ my $debug = 0;
 
 my %defaults = (
     'buffsize=i'    => 4096,
-    'source=s'      => 1,
-    'osrf-config=s' => '/openils/conf/opensrf_core.xml',
+    'merge=i'       => 0,
+    'source=i'      => 1,
+#    'osrf-config=s' => '/openils/conf/opensrf_core.xml',
     'user=s'        => 'admin',
     'password=s'    => '',
+    'tempdir=s'     => '',
     'nolockfile'    => 1,
+    'queue'         => 1,
+    'noqueue'       => 0,
+    'wait=i'        => 5,
 );
 
 $OpenILS::Utils::Cronscript::debug=1 if $debug;
@@ -64,6 +69,7 @@ print "Calling MyGetOptions ",
     "\n" if $debug;
 
 my $real_opts = $o->MyGetOptions(\@script_args);
+$o->bootstrap;
 # GetOptionsFromArray(\@script_args, \%defaults, %defaults); # similar to
 
 my $bufsize       = $real_opts->{buffsize};
@@ -72,12 +78,15 @@ my $osrf_config   = $real_opts->{'osrf-config'};
 my $oils_username = $real_opts->{user};
 my $oils_password = $real_opts->{password};
 my $help          = $real_opts->{help};
+my $merge_profile = $real_opts->{merge_profile};
+my $queue_id      = $real_opts->{queue};
+my $tempdir       = $real_opts->{tempdir} || tempdir();
    $debug        += $real_opts->{debug};
 
 foreach (keys %$real_opts) {
     print("real_opt->{$_} = ", $real_opts->{$_}, "\n") if $real_opts->{debug} or $debug;
 }
-my $wait_time     = 5;
+my $wait_time     = $real_opts->{wait};
 my $authtoken     = '';
 
 # DEFAULTS for Net::Server
@@ -85,6 +94,8 @@ my $filename   = fileparse($0, '.pl');
 my $conf_file  = (-r "$filename.conf") ? "$filename.conf" : undef;
 # $conf_file is the Net::Server config for THIS script (not EG), if it exists and is readable
 
+
+# FEEDBACK
 
 pod2usage(1) if $help;
 unless ($oils_password) {
@@ -101,6 +112,16 @@ if ($debug) {
     }
 }
 
+print warning();
+print Dumper($real_opts);
+
+# SUBS
+
+sub tempdir {
+    return $apputils->simplereq( qw# opensrf.settings opensrf.settings.xpath.get
+        /opensrf/default/apps/open-ils.vandelay/app_settings/databases/importer # ) || '/tmp/foobar/';
+}
+
 sub warning {
     return <<WARNING;
 
@@ -110,10 +131,6 @@ access to the server+port can inject MARC records into the system.
 WARNING
 }
 
-print warning();
-print Dumper($real_opts);
-
-
 sub xml_import {
     return $apputils->simplereq(
         'open-ils.cat', 
@@ -122,7 +139,7 @@ sub xml_import {
     );
 }
 
-sub process_batch_data {
+sub old_process_batch_data {
     my $data = shift or $logger->error("process_batch_data called without any data");
     $data or return;
 
@@ -132,8 +149,7 @@ sub process_batch_data {
     $batch->strict_off;
 
     my $index = 0;
-    while(1) {
-
+    while (1) {
         my $rec;
         $index++;
 
@@ -143,8 +159,7 @@ sub process_batch_data {
             $logger->error("Failed parsing MARC record $index");
             next;
         }
-
-        last unless $rec;
+        last unless $rec;   # The only way out
 
         my $resp = xml_import($authtoken, $rec->as_xml_record, $bib_source);
 
@@ -156,6 +171,37 @@ sub process_batch_data {
         oils_event_die($resp);
     }
     return $index;
+}
+
+sub process_spool {     # (authtoken, queue_id, filename, bib_source)
+    $apputils->simplereq('open-ils.vandelay', 'open-ils.vandelay.bib.process_spool', $authtoken, undef,
+                         $queue_id, 'import', $filename, $bib_source );
+}
+sub bib_queue_import {
+    my $extra = {auto_overlay_exact => 1};
+    $extra->{merge_profile} = $merge_profile if $merge_profile;
+    $apputils->simplereq('open-ils.vandelay', 'open-ils.vandelay.bib_queue.import', $authtoken,
+                         $queue_id, $extra );
+}
+
+sub process_batch_data {
+    my $data = shift or $logger->error("process_batch_data called without any data");
+    $data or return;
+
+    my $resp = process_spool();
+
+    if (oils_event_equals($resp, 'NO_SESSION')) {  # has the session timed out?
+        new_auth_token();
+        $resp = process_spool();                # try again w/ new token
+    }
+
+    $resp = bib_queue_import();
+
+    if (oils_event_equals($resp, 'NO_SESSION')) {  # has the session timed out?
+        new_auth_token();
+        $resp = bib_queue_import();                # try again w/ new token
+    }
+    oils_event_die($resp);
 }
 
 sub process_request {   # The core Net::Server method
@@ -176,7 +222,11 @@ sub process_request {   # The core Net::Server method
         } while(1);
         alarm 0;
     };
-    process_batch_data($data);
+    if ($real_opts->{noqueue}) {
+        old_process_batch_data($data);
+    } else {
+        process_batch_data($data);
+    }
 }
 
 
@@ -192,7 +242,7 @@ sub new_auth_token {
 
 osrf_connect($osrf_config);
 new_auth_token();
-print "Calling Net::Server run ", (@ARGV ? "with options: " . join(' ', @ARGV) : ''), "\n";
+print "Calling Net::Server run ", (@ARGV ? "with command-line options: " . join(' ', @ARGV) : ''), "\n";
 __PACKAGE__->run(conf_file => $conf_file);
 
 __END__
@@ -203,22 +253,50 @@ marc_stream_importer.pl - Import MARC records via bare socket connection.
 
 =head1 SYNOPSIS
 
- ./marc_stream_importer.pl /openils/conf/opensrf_core.xml
-    --user=<eg_username>                       \
-    --pass=<eg_password> --source=<bib_source> \
-    -- --port=<port> --min_servers=2           \
-       --max_servers=20 --log_file=/openils/var/log/marc_net_importer.log &
+./marc_stream_importer.pl [common opts ...] [script opts ...] -- [Net::Server opts ...] &
 
-Note the extra -- to separate options for the script wrapper from options for the
-underlying Net::Server instance.  
+This script uses the EG common options from B<Cronscript>.  See --help output for those.
 
-Note: this script has to be run in the same directory as oils_header.pl
+Run C<perldoc marc_stream_importer.pl> for full documentation.
 
-Run perldoc marc_stream_importer.pl for more documentation.
+Note the extra C<--> to separate options for the script wrapper from options for the
+underlying L<Net::Server> options.  
+
+Note: this script has to be run in the same directory as B<oils_header.pl>.
+
+Typical execution will include a trailing C<&> to run in the background.
 
 =head1 DESCRIPTION
 
-This script is a Net::Server::PreFork instance for shoving records into Evergreen from a remote system.
+This script is a L<Net::Server::PreFork> instance for shoving records into Evergreen from a remote system.
+
+=head1 OPTIONS
+
+The only required option is --password
+
+ --password =<eg_password>
+ --user     =<eg_username>   default: admin
+ --source   =<bib_source>    default: 1         Integer
+ --merge    =<i>             default: 0
+ --tempdir  =</temp/dir/>    default: from L<opensrf.conf> <open-ils.vandelay/app_settings/databases/importer>
+ --source   =<i>             default: 1
+
+=head2 Old style: --noqueue and associated options
+
+To bypass vandelay queue processing and push directly into the database (as the old style)
+
+ --noqueue         default: OFF
+ --buffsize =<i>   default: 4096    Buffer size.  Only used by --noqueue
+ --wait     =<i>   default: 5       Seconds to read socket before processing.  Only used by --noqueue
+
+=head2 Net::Server Options
+
+By default, the script will use the Net::Server configuration file B<marc_stream_importer.conf>.  You can 
+override this by passing a filepath with the --conf_file option.
+
+Other Net::Server options include: --port=<port> --min_servers=<X> --max_servers=<Y> and --log_file=[path/to/file]
+
+See L<Net::Server> for a complete list.
 
 =head2 Configuration
 
@@ -245,9 +323,9 @@ or via the command line to restrict access as necessary.
 
 =head1 EXAMPLES
 
-./marc_stream_importer.pl /openils/conf/opensrf_core.xml \
+./marc_stream_importer.pl  \
     admin open-ils connexion --port 5555 --min_servers 2 \
-    --max_servers 20 --log_file /openils/var/log/marc_net_importer.log &
+    --max_servers=20 --log_file=/openils/var/log/marc_net_importer.log &
 
 =head1 SEE ALSO
 
@@ -257,6 +335,5 @@ L<Net::Server::PreFork>, L<marc_stream_importer.conf>
 
     Bill Erickson <erickson@esilibrary.com>
     Joe Atzberger <jatzberger@esilibrary.com>
-
 
 =cut
