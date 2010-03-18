@@ -28,15 +28,18 @@ use Getopt::Long qw(:DEFAULT GetOptionsFromArray);
 use Pod::Usage;
 
 use OpenSRF::Utils::Logger qw/$logger/;
+use OpenSRF::AppSession;
 use OpenILS::Utils::Cronscript;
 require 'oils_header.pl';
 use vars qw/$apputils/;
+
+my $vl_ses;
 
 my $debug = 0;
 
 my %defaults = (
     'buffsize=i'    => 4096,
-    'merge=i'       => 0,
+    'merge-profile=i' => 0,
     'source=i'      => 1,
 #    'osrf-config=s' => '/openils/conf/opensrf_core.xml',
     'user=s'        => 'admin',
@@ -46,6 +49,7 @@ my %defaults = (
     'queue=i'       => 1,
     'noqueue'       => 0,
     'wait=i'        => 5,
+    'import-by-queue' => 0
 );
 
 $OpenILS::Utils::Cronscript::debug=1 if $debug;
@@ -82,9 +86,10 @@ my $osrf_config   = $real_opts->{'osrf-config'};
 my $oils_username = $real_opts->{user};
 my $oils_password = $real_opts->{password};
 my $help          = $real_opts->{help};
-my $merge_profile = $real_opts->{merge_profile};
+my $merge_profile = $real_opts->{'merge-profile'};
 my $queue_id      = $real_opts->{queue};
 my $tempdir       = $real_opts->{tempdir};
+my $import_by_queue  = $real_opts->{'import-by-queue'};
    $debug        += $real_opts->{debug};
 
 foreach (keys %$real_opts) {
@@ -178,34 +183,102 @@ sub old_process_batch_data {
     return $index;
 }
 
-sub process_spool {     # filename
-    $apputils->simplereq('open-ils.vandelay', 'open-ils.vandelay.bib.process_spool', $authtoken, undef,
-                         $queue_id, 'import', shift, $bib_source );
+sub process_spool { # filename
+
+    my $marcfile = shift;
+    my @rec_ids;
+
+    if($import_by_queue) {
+
+        # don't collect the record IDs, just spool the queue
+
+        $apputils->simplereq(
+            'open-ils.vandelay', 
+            'open-ils.vandelay.bib.process_spool', 
+            $authtoken, 
+            undef, 
+            $queue_id, 
+            'import', 
+            $marcfile,
+            $bib_source 
+        );
+
+    } else {
+
+        # collect the newly queued record IDs for processing
+
+        my $req = $vl_ses->request(
+            'open-ils.vandelay.bib.process_spool.stream_results',
+            $authtoken, 
+            undef, # cache key not needed
+            $queue_id, 
+            'import', 
+            $marcfile, 
+            $bib_source 
+        );
+    
+        while(my $resp = $req->recv) {
+
+            if($req->failed) {
+                $logger->error("Error spooling MARC data: $resp");
+
+            } elsif($resp->content) {
+                push(@rec_ids, $resp->content);
+            }
+        }
+    }
+
+    return \@rec_ids;
 }
+
 sub bib_queue_import {
+    my $rec_ids = shift;
     my $extra = {auto_overlay_exact => 1};
     $extra->{merge_profile} = $merge_profile if $merge_profile;
-    $apputils->simplereq('open-ils.vandelay', 'open-ils.vandelay.bib_queue.import', $authtoken,
-                         $queue_id, $extra );
+
+    if($import_by_queue) {
+
+        $apputils->simplereq(
+            'open-ils.vandelay', 
+            'open-ils.vandelay.bib_queue.import', 
+            $authtoken, 
+            $queue_id, 
+            $extra 
+        );
+
+    } else {
+
+        # import explicit record IDs
+
+        $apputils->simplereq(
+            'open-ils.vandelay', 
+            'open-ils.vandelay.bib_record.list.import', 
+            $authtoken, 
+            $rec_ids, 
+            $extra 
+        );
+    }
 }
 
 sub process_batch_data {
     my $data = shift or $logger->error("process_batch_data called without any data");
     $data or return;
 
+    $vl_ses = OpenSRF::AppSession->create('open-ils.vandelay');
+
     my ($handle, $tempfile) = File::Temp->tempfile("$0_XXXX", DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
     print $handle $data;
     close $handle;
        
     $logger->info("Calling process_spool on tempfile $tempfile (queue: $queue_id; source: $bib_source)");
-    my $resp = process_spool($tempfile);
+    my $rec_ids = process_spool($tempfile);
 
-    if (oils_event_equals($resp, 'NO_SESSION')) {  # has the session timed out?
+    if (oils_event_equals($rec_ids, 'NO_SESSION')) {  # has the session timed out?
         new_auth_token();
-        $resp = process_spool($tempfile);                # try again w/ new token
+        $rec_ids = process_spool($tempfile);                # try again w/ new token
     }
 
-    $resp = bib_queue_import();
+    my $resp = bib_queue_import($rec_ids);
 
     if (oils_event_equals($resp, 'NO_SESSION')) {  # has the session timed out?
         new_auth_token();
@@ -225,11 +298,8 @@ sub process_request {   # The core Net::Server method
     # and pull the data directly from the socket
     eval {
         local $SIG{ALRM} = sub { die "alarm\n" }; 
-        do {
-            alarm $wait_time;
-            last unless $socket->sysread($buf, $bufsize);
-            $data .= $buf;
-        } while(1);
+        alarm $wait_time;
+        $data .= $buf while $socket->sysread($buf, $bufsize);
         alarm 0;
     };
     if ($real_opts->{noqueue}) {
