@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (C) 2008 Equinox Software, Inc.
+# Copyright (C) 2008-2010 Equinox Software, Inc.
 # Author: Bill Erickson <erickson@esilibrary.com>
 #
 # This program is free software; you can redistribute it and/or
