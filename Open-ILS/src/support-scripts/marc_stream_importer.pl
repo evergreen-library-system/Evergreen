@@ -12,36 +12,62 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-# ----------------------------------------------------------------------------
-# WARNING:  This script provides no security layer.  Any client that has 
-# access to the server+port can inject MARC records into the system.  
-# ----------------------------------------------------------------------------
+=head1 NAME
 
-# ----------------------------------------------------------------------------
-# marc_stream_importer.pl -- Import MARC records via bare socket connection
-#
-# Usage:
-# ./marc_stream_importer.pl /openils/conf/opensrf_core.xml \
-#   <eg_username> <eg_password> <bib_source> --port <port> --min_servers 2 \
-#   --max_servers 20 --log_file /openils/var/log/marc_net_importer.log &
-#
-# Note: this script has to be run in the same directory as $oils_header.pl
-# 
+marc_stream_importer.pl - Import MARC records via bare socket connection.
 
-# ----------------------------------------------------------------------------
-# To use this script with OCLC Connexion:
-#
-# Under Tools -> Options -> Export (tab)
-#   Create -> Choose Connection -> OK -> Leave translation at "None" 
-#       -> Create -> Create -> choose TCP/IP (internet) 
-#       -> Enter hostname and Port, leave 'Use Telnet Protocol' checked 
-#       -> Create/OK your way out of the dialogs
-#   Record Characteristics (button) -> Choose 'UTF-8 Unicode' for 
-#   the Character Set
-#
-# OCLC and Connexion are trademark/service marks of OCLC Online Computer 
-# Library Center, Inc.
-# ----------------------------------------------------------------------------
+=head1 SYNOPSIS
+
+./marc_stream_importer.pl /openils/conf/opensrf_core.xml \
+    <eg_username> <eg_password> <bib_source> --port <port> --min_servers 2 \
+    --max_servers 20 --log_file /openils/var/log/marc_net_importer.log &
+
+Note: this script has to be run in the same directory as oils_header.pl
+
+=head1 DESCRIPTION
+
+This script is a Net::Server::PreFork instance for shoving records into Evergreen from a remote system.
+
+=head2 Configuration
+
+=head3 OCLC Connexion
+
+To use this script with OCLC Connexion, configure the client as follows:
+
+Under Tools -> Options -> Export (tab)
+   Create -> Choose Connection -> OK -> Leave translation at "None" 
+       -> Create -> Create -> choose TCP/IP (internet) 
+       -> Enter hostname and Port, leave 'Use Telnet Protocol' checked 
+       -> Create/OK your way out of the dialogs
+   Record Characteristics (button) -> Choose 'UTF-8 Unicode' for the Character Set
+   
+
+OCLC and Connexion are trademark/service marks of OCLC Online Computer Library Center, Inc.
+
+=head1 CAVEATS
+
+WARNING: This script provides no inherent security layer.  Any client that has 
+access to the server+port can inject MARC records into the system.  
+Use the available options (like allow/deny) in the Net::Server config file 
+or via the command line to restrict access as necessary.
+
+=head1 EXAMPLES
+
+./marc_stream_importer.pl /openils/conf/opensrf_core.xml \
+    admin open-ils connexion --port 5555 --min_servers 2 \
+    --max_servers 20 --log_file /openils/var/log/marc_net_importer.log &
+
+=head1 SEE ALSO
+
+L<Net::Server::PreFork>, L<marc_stream_importer.conf>
+
+=head1 AUTHORS
+
+    Bill Erickson <erickson@esilibrary.com>
+    Joe Atzberger <jatzberger@esilibrary.com>
+
+
+=cut
 
 use strict; use warnings;
 use Net::Server::PreFork;
@@ -50,26 +76,41 @@ use MARC::Record;
 use MARC::Batch;
 use MARC::File::XML;
 use MARC::File::USMARC;
+use File::Basename qw/fileparse/;
+
 use OpenSRF::Utils::Logger qw/$logger/;
+use OpenILS::Utils::Cronscript;
 require 'oils_header.pl';
 use vars qw/$apputils/;
 
-my $bufsize = 4096;
-my $wait_time = 5;
-my $osrf_config = shift;
-my $oils_username = shift;
+# DEFAULTS
+my $bufsize       = 4096;
+my $wait_time     = 5;
+my $bib_source    = 'connexion';
+my $osrf_config   = '/openils/conf/opensrf_core.xml';
+my $oils_username = 'admin';
+
+# DEFAULTS for Net::Server
+my $filename   = fileparse($0, '.pl');
+my $conf_file  = (-r "$filename.conf") ? "$filename.conf" : undef;
+# $conf_file is the Net::Server config for THIS script (not EG), if it exists and is readable
+
+# $script->session('open-ils.cat') or die "No session created";
+
 my $oils_password = shift;
-my $bib_source = shift;
 my $authtoken;
 
-print <<WARNING;
+sub warning {
+    return <<WARNING;
 
 WARNING:  This script provides no security layer.  Any client that has 
 access to the server+port can inject MARC records into the system.  
 
 WARNING
+}
 
-$0 = 'Evergreen MARC Stream Listener';
+print warning();
+# $0 = 'Evergreen MARC Stream Listener';
 
 sub process_request {
     my $self = shift;
@@ -103,7 +144,7 @@ sub process_request {
 
         eval { $rec = $batch->next; };
 
-        if($@) {
+        if ($@) {
             $logger->error("Failed parsing MARC record $index");
             next;
         }
