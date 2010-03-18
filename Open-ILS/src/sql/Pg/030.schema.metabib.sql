@@ -263,7 +263,7 @@ BEGIN
 			IF raw_text IS NOT NULL THEN
 				raw_text := raw_text || joiner;
 			END IF;
-			raw_text := COALESCE(raw_text,'') || ARRAY_TO_STRING(oils_xpath( '//text()', xml_node ), ' ');
+			raw_text := COALESCE(raw_text,'') || ARRAY_TO_STRING(oils_xpath( '//text()', REGEXP_REPLACE(xml_node,'&(?!amp;)','&amp;','g')), ' ');
 		END LOOP;
 
 		CONTINUE WHEN raw_text IS NULL;
@@ -304,6 +304,8 @@ BEGIN
 		ELSE
 			output.value := field.value;
 		END IF;
+
+		CONTINUE WHEN output.value IS NULL;
 
 		RETURN NEXT output;
 	END LOOP;
