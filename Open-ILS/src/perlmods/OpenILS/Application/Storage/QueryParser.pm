@@ -525,8 +525,9 @@ sub decompose {
 
             my $class_node = $struct->classed_node($current_class);
             my $negator = ($atom =~ s/^-//o) ? '!' : '';
+            my $truncate = ($atom =~ s/\*$//o) ? '*' : '';
 
-            $class_node->add_fts_atom( $atom, prefix => $negator, node => $class_node );
+            $class_node->add_fts_atom( $atom, suffix => $truncate, prefix => $negator, node => $class_node );
             $struct->joiner( '&' );
 
             $_ = $after;
@@ -863,6 +864,12 @@ sub prefix {
     my $self = shift;
     return undef unless (ref $self);
     return $self->{prefix};
+}
+
+sub suffix {
+    my $self = shift;
+    return undef unless (ref $self);
+    return $self->{suffix};
 }
 
 #-------------------------------

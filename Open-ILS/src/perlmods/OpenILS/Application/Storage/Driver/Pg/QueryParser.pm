@@ -532,7 +532,14 @@ sub buildSQL {
         $sql = $n->{function}."($sql)";
     }
 
-    $sql = "to_tsquery('$classname'," . ($self->prefix ? "\$_$$\$" . $self->prefix . "\$_$$\$||" : '') . "'('||regexp_replace($sql,E'(?:\\\\s+|:)','&','g')||')')";
+    my $prefix = $self->prefix || '';
+    my $suffix = $self->suffix || '';
+
+    $prefix = "'$prefix' ||" if $prefix;
+    my $suffix_op = ":$suffix" if $suffix;
+    my $suffix_after = "|| '$suffix_op'" if $suffix;
+
+    $sql = "to_tsquery('$classname', $prefix '(' || regexp_replace($sql,E'(?:\\\\s+|:)','$suffix_op&','g') $suffix_after || ')')";
 
     return $self->sql($sql);
 }
