@@ -260,6 +260,7 @@ BEGIN
 
 		raw_text := NULL;
 		FOR xml_node IN SELECT x FROM explode_array(xml_node_list) AS x LOOP
+			CONTINUE WHEN xml_node !~ E'^\\s*<';
 			IF raw_text IS NOT NULL THEN
 				raw_text := raw_text || joiner;
 			END IF;
