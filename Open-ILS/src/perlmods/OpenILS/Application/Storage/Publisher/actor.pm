@@ -76,6 +76,8 @@ sub usr_breakdown_out {
 	my $client = shift;
 	my $usr = shift;
 
+	$self->method_lookup('open-ils.storage.transaction.begin')->run();
+
 	my $out_sql = <<"	SQL";
 			SELECT	id
 			  FROM	action.circulation
@@ -125,6 +127,8 @@ sub usr_breakdown_out {
 	SQL
 
 	my $lo = actor::user->db_Main->selectcol_arrayref($lo_sql, {}, $usr);
+
+	$self->method_lookup('open-ils.storage.transaction.rollback')->run();
 
 	if ($self->api_name =~/count$/o) {
 		return {	total	=> scalar(@$out) + scalar(@$od) + scalar(@$lost) + scalar(@$cl) + scalar(@$lo),
