@@ -390,31 +390,32 @@ static oilsEvent* oilsAuthVerifyWorkstation(
 
 
 
-/* see if the card used to login is marked as barred */
-static oilsEvent* oilsAuthCheckCard( const char* barcode ) {
-	if(!barcode) return NULL;
-	osrfLogDebug(OSRF_LOG_MARK, "Checking to see if barcode %s is active", barcode);
+/**
+	@brief Implement the "complete" method.
+	@param ctx The method context.
+	@return -1 upon error; zero if successful, and if a STATUS message has been sent to the
+	client to indicate completion; a positive integer if successful but no such STATUS
+	message has been sent.
 
-	jsonObject* params = jsonParseFmt("{\"barcode\":\"%s\"}", barcode);
-	jsonObject* card = oilsUtilsQuickReq(
-		"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
-	jsonObjectFree(params);
+	Method parameters:
+	- a hash with some combination of the following elements:
+		- "username"
+		- "barcode"
+		- "password" (hashed with the cached seed; not plaintext)
+		- "type"
+		- "org"
+		- "workstation"
 
-	char* active = oilsFMGetString(card, "active");
-	jsonObjectFree(card);
+	The password is required.  Either a username or a barcode must also be present.
 
-	oilsEvent* return_event = NULL;
-	if( ! oilsUtilsIsDBTrue(active) ) {
-		osrfLogInfo(OSRF_LOG_MARK, "barcode %s is not active, returning event", barcode);
-		return_event = oilsNewEvent(OSRF_LOG_MARK, "PATRON_CARD_INACTIVE");
-	}
+	Return to client: Intermediate authentication seed.
 
-	free(active);
-	return return_event;
-}
+	Validate the password, using the username if available, or the barcode if not.  The
+	user must be active, and not barred from logging on.  The barcode, if used for
+	authentication, must be active as well.  The workstation, if specified, must be valid.
 
-
-
+	Upon deciding whether to allow the logon, return a corresponding event to the client.
+*/
 int oilsAuthComplete( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
@@ -439,6 +440,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	oilsEvent* response = NULL;
 	jsonObject* userObj = NULL;
+	int card_active     = 1;      // boolean; assume active until proven otherwise
 
 	// Fetch a row from the actor.usr table, by username if available,
 	// or by barcode if not.
@@ -449,8 +451,32 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			userObj = NULL;         // username not found
 		}
 	}
-	else if(barcode)
-		 userObj = oilsUtilsFetchUserByBarcode( barcode );
+	else if(barcode) {
+		// Read from actor.card by barcode
+
+		osrfLogInfo( OSRF_LOG_MARK, "Fetching user by barcode %s", barcode );
+
+		jsonObject* params = jsonParseFmt("{\"barcode\":\"%s\"}", barcode);
+		jsonObject* card = oilsUtilsQuickReq(
+			"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
+		jsonObjectFree( params );
+
+		if( card ) {
+			// Determine whether the card is active
+			char* card_active_str = oilsFMGetString( card, "active" );
+			card_active = oilsUtilsIsDBTrue( card_active_str );
+			free( card_active_str );
+
+			// Look up the user who owns the card
+			char* userid = oilsFMGetString( card, "usr" );
+			jsonObjectFree( card );
+			params = jsonParseFmt( "[%s]", userid );
+			free( userid );
+			userObj = oilsUtilsQuickReq(
+					"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params );
+			jsonObjectFree( params );
+		}
+	}
 
 	if(!userObj) {
 		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
@@ -489,23 +515,25 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	}
 	free(active);
 
-	/* then see if the barcode they used is active */
-	if( barcode && ctx && userObj && (response = oilsAuthCheckCard( barcode )) ) {
-		osrfAppRespondComplete( ctx, oilsEventToJSON(response) );
-		oilsEventFree(response);
-		jsonObjectFree(userObj);
+	osrfLogInfo( OSRF_LOG_MARK, "Fetching card by barcode %s", barcode );
+
+	if( !card_active ) {
+		osrfLogInfo( OSRF_LOG_MARK, "barcode %s is not active, returning event", barcode );
+		response = oilsNewEvent( OSRF_LOG_MARK, "PATRON_CARD_INACTIVE" );
+		osrfAppRespondComplete( ctx, oilsEventToJSON( response ) );
+		oilsEventFree( response );
+		jsonObjectFree( userObj );
 		return 0;
 	}
 
 
-	/* check to see if the user is even allowed to login */
+	// See if the user is even allowed to log in
 	if( oilsAuthCheckLoginPerm( ctx, userObj, type ) == -1 ) {
 		jsonObjectFree(userObj);
 		return 0;
 	}
 
-
-	/* if a workstation is defined, flesh the user with the workstation info */
+	// If a workstation is defined, add the workstation info
 	if( workstation != NULL ) {
 		osrfLogDebug(OSRF_LOG_MARK, "Workstation is %s", workstation);
 		response = oilsAuthVerifyWorkstation( ctx, userObj, workstation );
@@ -517,7 +545,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		}
 
 	} else {
-		/* otherwise, use the home org as the workstation org on the user */
+		// Otherwise, use the home org as the workstation org on the user
 		char* orgid = oilsFMGetString(userObj, "home_ou");
 		oilsFMSetString(userObj, "ws_ou", orgid);
 		free(orgid);
