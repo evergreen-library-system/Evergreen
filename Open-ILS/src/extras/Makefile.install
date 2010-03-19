@@ -16,6 +16,8 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-intrepid
 # 	- or -
+# 	make -f Makefile.install ubuntu-karmic
+# 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
 # 	make -f Makefile.install rhel
@@ -175,6 +177,15 @@ PGSQL_SERVER_DEBS_83 = \
 	postgresql-plperl-8.3 \
 	postgresql-server-dev-8.3
 
+PGSQL_CLIENT_DEBS_84 = \
+	postgresql-client
+
+PGSQL_SERVER_DEBS_84 = \
+	postgresql \
+	postgresql-contrib-8.4 \
+	postgresql-plperl-8.4 \
+	postgresql-server-dev-8.4
+
 GENTOOS = \
     yaz\
     aspell-en\
@@ -239,8 +250,10 @@ rhel: centos
 
 ubuntu-hardy: hardy generic_ubuntu
 ubuntu-intrepid: intrepid generic_ubuntu
+ubuntu-karmic: karmic generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
 intrepid: install_pgsql_client_debs_83 install_extra_debs
+karmic: install_pgsql_client_debs_84 install_extra_debs
 generic_ubuntu: install_debs install debian_sys_config
 
 # - COMMON TARGETS ---------------------------------------------------------
