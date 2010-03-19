@@ -13,6 +13,7 @@ use OpenILS::Application::Storage::FTS;
 # the easy way to get to the logger...
 my $log = "OpenSRF::Utils::Logger";
 
+our $QParser;
 our $WRITE = 0;
 our $IGNORE_XACT_ID_FAILURE = 0;
 
@@ -24,9 +25,8 @@ sub initialize {
 
 	$log->debug('Initializing ' . __PACKAGE__ . '...', DEBUG);
 
-	my $driver = "OpenILS::Application::Storage::Driver::".
-		$conf->config_value( apps => 'open-ils.storage' => app_settings => databases => 'driver');
-
+	my $db_driver = $conf->config_value( apps => 'open-ils.storage' => app_settings => databases => 'driver');
+	my $driver = "OpenILS::Application::Storage::Driver::$db_driver";
 
 	$log->debug("Attempting to load $driver ...", DEBUG);
 
@@ -64,7 +64,17 @@ sub child_init {
 
 	if (OpenILS::Application::Storage::CDBI->db_Main()) {
 		$log->debug("Success initializing driver!", DEBUG);
-		return 1;
+
+        my $db_driver = $conf->config_value( apps => 'open-ils.storage' => app_settings => databases => 'driver');
+        $QParser = 'OpenILS::Application::Storage::Driver::'.$db_driver.'::QueryParser';
+        $QParser->use;
+
+        if($@) {
+    		$log->debug( "Can't load $QParser!  :  $@", ERROR );
+    		$log->error( "Can't load $QParser!  :  $@");
+        } else {
+		    return 1;
+        }
 	}
 
 	$log->debug("FAILURE initializing driver!", ERROR);
