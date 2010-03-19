@@ -2755,7 +2755,229 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 );
 
+sub query_parser_fts {
+    my $self = shift;
+    my $client = shift;
+    my %args = shift;
 
+
+    # grab the query parser and initialize it
+    my $parser = $OpenILS::Application::Storage::QParser;
+    if (!$parser->initialization_complete) {
+        my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
+        $parser->initialize(
+            config_metabib_field_index_norm_map =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                    { id => { "!=" => undef } },
+                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+                )->gather(1),
+            search_relevance_adjustment         =>
+                $cstore->request(
+                    'open-ils.cstore.direct.search.relevance_adjustment.search.atomic',
+                    { id => { "!=" => undef } }
+                )->gather(1),
+            config_metabib_field                =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.metabib_field.search.atomic',
+                    { id => { "!=" => undef } }
+                )->gather(1),
+        );
+
+        $cstore->disconnect;
+        die("Cannot initialize $parser!") unless ($parser->initialization_complete);
+    }
+
+
+    # populate the locale/language map
+    if (!$locale_map{COMPLETE}) {
+
+        my @locales = config::i18n_locale->search_where({ code => { '<>' => '' } });
+        for my $locale ( @locales ) {
+            $locale_map{$locale->code} = $locale->marc_code;
+        }
+        $locale_map{COMPLETE} = 1;
+
+    }
+
+
+    # set the locale-based default prefered location
+    $parser->default_preferred_language( $args{preferred_language} );
+    if (!$parser->default_preferred_language) {
+		my $ses_locale = $client->session ? $client->session->session_locale : '';
+        $parser->default_preferred_language( $locale_map{ $ses_locale } );
+    }
+    $parser->default_preferred_language(
+        OpenSRF::Utils::SettingsClient->new->config_value(
+            apps => 'open-ils.storage' => app_settings => 'default_preferred_language'
+        )
+    ) if (!$parser->default_preferred_language);
+
+
+    # set the global default language multiplier
+    $parser->default_preferred_language_multiplier($args{preferred_language_weight});
+    $parser->default_preferred_language_multiplier($args{preferred_language_multiplier});
+    $parser->default_preferred_language_multiplier(
+        OpenSRF::Utils::SettingsClient->new->config_value(
+            apps => 'open-ils.storage' => app_settings => 'default_preferred_language_weight'
+        )
+    ) if (!$parser->default_preferred_language_multiplier);
+
+
+    # I hope we have a query!
+	if (! scalar( keys %{$args{query}} )) {
+		die "No search arguments were passed to ".$self->api_name;
+	}
+
+
+    # remove bad chunks of the %args hash
+    for my $bad ( grep { /^_/ } keys(%args)) {
+        delete($args{$bad});
+    }
+
+
+    # parse the query and supply any query-level %arg-based defaults
+    # we expect, and make use of, query, superpage, superpage_size, debug and core_limit args
+    my $query = $parser->new( %args );
+
+
+    # gather the site, if one is specified, defaulting to the in-query version
+	my $ou = $args{org_unit};
+	if (my $filter = $query->parse_tree->find_filter('site')) {
+            $ou = $filter->args->[0] if (@{$filter->args});
+    }
+	$ou = actor::org_unit->search( { shortname => $ou } )->next->id if ($ou and $ou !~ /^\d+$/);
+
+
+    # gather lasso, as with $ou
+	my $lasso = $args{lasso};
+	if (my $filter = $query->parse_tree->find_filter('lasso')) {
+            $lasso = $filter->args->[0] if (@{$filter->args});
+    }
+	$lasso = actor::org_lasso->search( { name => $lasso } )->next->id if ($lasso and $lasso !~ /^\d+$/);
+    $lasso = -$lasso if ($lasso);
+
+
+#    # XXX once we have org_unit containers, we can make user-defined lassos .. WHEEE
+#    # gather user lasso, as with $ou and lasso
+#    my $mylasso = $args{my_lasso};
+#    if (my $filter = $query->parse_tree->find_filter('my_lasso')) {
+#            $mylasso = $filter->args->[0] if (@{$filter->args});
+#    }
+#    $mylasso = actor::org_unit->search( { name => $mylasso } )->next->id if ($mylasso and $mylasso !~ /^\d+$/);
+
+
+    # if we have a lasso, go with that, otherwise ... ou
+    $ou = $lasso if ($lasso);
+
+
+    # get the default $ou if we have nothing
+	$ou = actor::org_unit->search( { parent_ou => undef } )->next->id if (!$ou and !$lasso and !$mylasso);
+
+
+    # XXX when user lassos are here, check to make sure we don't have one -- it'll be passed in the depth, with an ou of 0
+    # gather the depth, if one is specified, defaulting to the in-query version
+	my $depth = $args{depth};
+	if (my $filter = $query->parse_tree->find_filter('depth')) {
+            $depth = $filter->args->[0] if (@{$filter->args});
+    }
+	$depth = actor::org_unit->search_where( [{ name => $depth },{ opac_label => $depth }], {limit => 1} )->next->id if ($depth and $depth !~ /^\d+$/);
+
+
+    # gather the limit or default to 10
+	my $limit = $args{limit} || 10;
+	if (my $filter = $query->parse_tree->find_filter('limit')) {
+            $limit = $filter->args->[0] if (@{$filter->args});
+    }
+
+
+    # gather the offset or default to 0
+	my $offset = $args{offset} || 0;
+	if (my $filter = $query->parse_tree->find_filter('offset')) {
+            $offset = $filter->args->[0] if (@{$filter->args});
+    }
+
+
+    # gather the estimation strategy or default to inclusion
+    my $estimation_strategy = $args{estimation_strategy} || 'inclusion';
+	if (my $filter = $query->parse_tree->find_filter('estimation_strategy')) {
+            $estimation_strategy = $filter->args->[0] if (@{$filter->args});
+    }
+
+
+    # gather statuses, and then forget those if we have an #available modifier
+    my @statuses;
+    if (my $filter = $query->parse_tree->find_filter('statuses')) {
+        @statuses = @{$filter->args} if (@{$filter->args});
+    }
+    @statuses = (0,7,12) if ($query->parse_tree->find_modifier('available'));
+
+
+    # gather locations
+    my @location;
+    if (my $filter = $query->parse_tree->find_filter('location')) {
+        @location = @{$filter->args} if (@{$filter->args});
+    }
+
+
+	my $param_search_ou = $ou;
+	my $param_depth = $depth; $param_depth = 'NULL' unless (defined($depth) and length($depth) > 0 );
+	my $param_core_query = $query->parse_tree->toSQL;
+	my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
+	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @location) . '}$$';
+	my $staff = ($self->api_name =~ /staff/ or $query->parse_tree->find_modifier('staff')) ? "'t'" : "'f'";
+
+	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
+        SELECT  *
+          FROM  search.query_parser_fts(
+                    $param_search_ou\:\:INT,
+                    $param_depth\:\:INT,
+                    $param_core_query\:\:TEXT,
+                    $param_statuses\:\:INT[],
+                    $param_locations\:\:INT[],
+                    $staff\:\:BOOL,
+                );
+    SQL
+
+    $sth->execute;
+
+    my $recs = $sth->fetchall_arrayref({});
+    my $summary_row = pop @$recs;
+
+    my $total = $$summary_row{total};
+    my $checked = $$summary_row{checked};
+    my $visible = $$summary_row{visible};
+    my $deleted = $$summary_row{deleted};
+    my $excluded = $$summary_row{excluded};
+
+    my $estimate = $visible;
+    if ( $total > $checked && $checked ) {
+
+        $$summary_row{hit_estimate} = FTS_paging_estimate($self, $client, $checked, $visible, $excluded, $deleted, $total);
+        $estimate = $$summary_row{estimated_hit_count} = $$summary_row{hit_estimate}{$estimation_strategy};
+
+    }
+
+    delete $$summary_row{id};
+    delete $$summary_row{rel};
+    delete $$summary_row{record};
+
+    $client->respond( $summary_row );
+
+	$log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $estimate.",DEBUG);
+
+	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+        delete $$rec{checked};
+        delete $$rec{visible};
+        delete $$rec{excluded};
+        delete $$rec{deleted};
+        delete $$rec{total};
+        $$rec{rel} = sprintf('%0.3f',$$rec{rel});
+
+		$client->respond( $rec );
+	}
+	return undef;
+}
 
 1;
 
