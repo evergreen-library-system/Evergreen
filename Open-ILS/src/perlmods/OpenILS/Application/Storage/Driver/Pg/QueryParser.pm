@@ -3,6 +3,27 @@ use OpenILS::Application::Storage::QueryParser;
 use base 'QueryParser';
 use OpenSRF::Utils::JSON;
 
+sub init {
+    my $class = shift;
+
+}
+
+sub default_preferred_language {
+    my $self = shift;
+    my $lang = shift;
+
+    $self->custom_data->{default_preferred_language} = $lang if ($lang);
+    return $self->custom_data->{default_preferred_language};
+}
+
+sub default_preferred_language_multiplier {
+    my $self = shift;
+    my $lang = shift;
+
+    $self->custom_data->{default_preferred_language_multiplier} = $lang if ($lang);
+    return $self->custom_data->{default_preferred_language_multiplier};
+}
+
 sub simple_plan {
     my $self = shift;
 
@@ -235,19 +256,27 @@ __PACKAGE__->add_search_filter( 'item_form' );
 __PACKAGE__->add_search_filter( 'lit_form' );
 __PACKAGE__->add_search_filter( 'location' );
 __PACKAGE__->add_search_filter( 'site' );
+__PACKAGE__->add_search_filter( 'lasso' );
+__PACKAGE__->add_search_filter( 'my_lasso' );
 __PACKAGE__->add_search_filter( 'depth' );
 __PACKAGE__->add_search_filter( 'sort' );
 __PACKAGE__->add_search_filter( 'language' );
 __PACKAGE__->add_search_filter( 'preferred_language' );
 __PACKAGE__->add_search_filter( 'preferred_language_weight' );
+__PACKAGE__->add_search_filter( 'preferred_language_multiplier' );
 __PACKAGE__->add_search_filter( 'statuses' );
 __PACKAGE__->add_search_filter( 'bib_level' );
 __PACKAGE__->add_search_filter( 'before' );
 __PACKAGE__->add_search_filter( 'after' );
+__PACKAGE__->add_search_filter( 'between' );
 __PACKAGE__->add_search_filter( 'during' );
+__PACKAGE__->add_search_filter( 'offset' );
+__PACKAGE__->add_search_filter( 'limit' );
 __PACKAGE__->add_search_filter( 'core_limit' );
 __PACKAGE__->add_search_filter( 'check_limit' );
 __PACKAGE__->add_search_filter( 'skip_check' );
+__PACKAGE__->add_search_filter( 'superpage' );
+__PACKAGE__->add_search_filter( 'superpage_size' );
 __PACKAGE__->add_search_filter( 'estimation_strategy' );
 
 __PACKAGE__->add_search_modifier( 'available' );
@@ -264,6 +293,28 @@ use base 'QueryParser::query_plan';
 
 sub toSQL {
     my $self = shift;
+
+    my %filters;
+    my ($format) = $self->find_filter('format');
+    if ($format) {
+        my ($t,$f) = split('-', $format->args->[0]);
+        $self->new_filter( item_type => [ split '', $t ] ) if ($t);
+        $self->new_filter( item_form => [ split '', $f ] ) if ($f);
+    }
+
+    for my $f ( qw/preferred_language preferred_language_multiplier preferred_language_weight core_limit check_limit skip_check superpage superpage_size/ ) {
+        my $col = $f;
+        $col = 'preferred_language_multiplier' if ($f eq 'preferred_language_weight');
+        my ($filter) = $self->find_filter($f);
+        if ($filter and @{$filter->args}) {
+            $filters{$col} = $filter->args->[0];
+        }
+    }
+
+    $self->QueryParser->superpage($filters{superpage}) if ($filters{superpage});
+    $self->QueryParser->superpage_size($filters{superpage_size}) if ($filters{superpage_size});
+    $self->QueryParser->core_limit($filters{core_limit}) if ($filters{core_limit});
+
     my $flat_plan = $self->flatten;
 
     # generate the relevance ranking
@@ -277,12 +328,12 @@ sub toSQL {
         $sort_filter = 'rel';
     }
 
-    my %filters;
-    my ($format) = $self->find_filter('format');
-    if ($format) {
-        my ($t,$f) = split('-', $format->args->[0]);
-        $self->new_filter( item_type => [ split '', $t ] ) if ($t);
-        $self->new_filter( item_form => [ split '', $f ] ) if ($f);
+    if (($filters{preferred_language} || $self->QueryParser->default_preferred_language) && ($filters{preferred_language_multiplier} || $self->QueryParser->default_preferred_language_multiplier)) {
+        $rel = "($rel) * CASE WHEN mrd.lang = \$_$$\$";
+        $rel .= $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language;
+        $rel .= "\$_$$\$ THEN ";
+        $rel .= $filters{preferred_language_multiplier} ? $filters{preferred_language_multiplier} : $self->QueryParser->default_preferred_language_multiplier;
+        $rel .= " ELSE 1 END";
     }
 
     for my $f ( qw/audience vr_format item_type item_form lit_form language bib_level/ ) {
@@ -352,16 +403,44 @@ sub toSQL {
         }
     }
 
-
     my $key = 'm.source';
     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord'} @{$self->modifiers});
 
-    my $sp_size = $self->QueryParser->superpage_size;
-    my $sp = $self->QueryParser->superpage;
+    my $sp_size = $self->QueryParser->superpage_size || 1000;
+    my $sp = $self->QueryParser->superpage || 1;
 
     my $offset = '';
     if ($sp > 1) {
         $offset = 'OFFSET ' . ($sp - 1) * $sp_size;
+    }
+
+    my ($before) = $self->find_filter('before');
+    my ($after) = $self->find_filter('after');
+    my ($during) = $self->find_filter('during');
+    my ($between) = $self->find_filter('between');
+
+    if ($before and @{$before->args} == 1) {
+        $before = "AND mrd.date1 <= \$_$$\$" . $before->args->[0] . "\$_$$\$";
+    } else {
+        $before = '';
+    }
+
+    if ($after and @{$after->args} == 1) {
+        $after = "AND mrd.date1 >= \$_$$\$" . $after->args->[0] . "\$_$$\$";
+    } else {
+        $after = '';
+    }
+
+    if ($during and @{$during->args} == 1) {
+        $during = "AND \$_$$\$" . $during->args->[0] . "\$_$$\$ BETWEEN mrd.date1 AND mrd.date2";
+    } else {
+        $during = '';
+    }
+
+    if ($between and @{$between->args} == 2) {
+        $between = "AND mrd.date1 BETWEEN \$_$$\$" . $between->args->[0] . "\$_$$\$ AND \$_$$\$" . $between->args->[1] . "\$_$$\$";
+    } else {
+        $between = '';
     }
 
     return <<SQL
@@ -374,6 +453,10 @@ SELECT  $key AS id,
         JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)
         $$flat_plan{from}
   WHERE 1=1
+        $before
+        $after
+        $during
+        $between
         $audience
         $vr_format
         $item_type
@@ -458,6 +541,7 @@ sub flatten {
                     }
                 }
 
+                my $core_limit = $self->QueryParser->core_limit || 25000;
                 $from .= "\n\t\tLIMIT " . $self->QueryParser->core_limit . "\n\t) AS " . $node->table_alias . ' ON (m.source = ' . $node->table_alias . ".source)";
                 $from .= "\n\tJOIN config.metabib_field AS ${talias}_weight ON (${talias}_weight.id = $talias.field)\n";
 
