@@ -404,7 +404,7 @@ sub toSQL {
     }
 
     my $key = 'm.source';
-    $key = 'm.metarecord' if (grep {$_->name eq 'metarecord'} @{$self->modifiers});
+    $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->modifiers});
 
     my ($before) = $self->find_filter('before');
     my ($after) = $self->find_filter('after');
