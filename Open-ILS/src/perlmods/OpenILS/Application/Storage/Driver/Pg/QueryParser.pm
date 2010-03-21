@@ -542,10 +542,14 @@ sub flatten {
                 }
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n\t\tLIMIT " . $self->QueryParser->core_limit . "\n\t) AS " . $node->table_alias . ' ON (m.source = ' . $node->table_alias . ".source)";
+                $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = $talias.source)";
                 $from .= "\n\tJOIN config.metabib_field AS ${talias}_weight ON (${talias}_weight.id = $talias.field)\n";
 
-                $where .= $node->table_alias . ".id IS NOT NULL ";
+                $where .= $talias . ".id IS NOT NULL ";
+                my $phrases = $node->phrases;
+                if (@$phrases) {
+                    $where .= ' AND (' . join(' AND ', map {"$talias.value ~ \$_$$\$$_\$_$$\$"} @$phrases) . ')';;
+                }
 
                 push @rank_list, $node_rank;
 
