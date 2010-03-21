@@ -2920,12 +2920,21 @@ sub query_parser_fts {
     }
 
 
+    my $param_limit = $self->QueryParser->superpage_size || 'NULL';
+    my $param_offset = 'NULL';
+
+    my $sp = $self->QueryParser->superpage || 1;
+    if ($sp > 1) {
+        $param_offset = ($sp - 1) * $sp_size;
+    }
+
 	my $param_search_ou = $ou;
 	my $param_depth = $depth; $param_depth = 'NULL' unless (defined($depth) and length($depth) > 0 );
 	my $param_core_query = $query->parse_tree->toSQL;
 	my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
 	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @location) . '}$$';
 	my $staff = ($self->api_name =~ /staff/ or $query->parse_tree->find_modifier('staff')) ? "'t'" : "'f'";
+	my $metarecord = ($self->api_name =~ /metabib/ or $query->parse_tree->find_modifier('metabib') or $query->parse_tree->find_modifier('metarecord')) ? "'t'" : "'f'";
 
 	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
         SELECT  *
@@ -2935,7 +2944,10 @@ sub query_parser_fts {
                     $param_core_query\:\:TEXT,
                     $param_statuses\:\:INT[],
                     $param_locations\:\:INT[],
+                    $param_offset\:\:INT,
+                    $param_limit\:\:INT,
                     $staff\:\:BOOL,
+                    $metarecord\:\:BOOL
                 );
     SQL
 
@@ -2961,6 +2973,12 @@ sub query_parser_fts {
     delete $$summary_row{id};
     delete $$summary_row{rel};
     delete $$summary_row{record};
+
+    if (defined($args{_simple_plan})) {
+        $$summary_row{complex_query} = $args{_simple_plan};
+    } else {
+        $$summary_row{complex_query} = $query->simple_plan ? 0 : 1;
+    }
 
     $client->respond( $summary_row );
 
