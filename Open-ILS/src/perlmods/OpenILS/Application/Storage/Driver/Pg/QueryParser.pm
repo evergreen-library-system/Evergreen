@@ -406,14 +406,6 @@ sub toSQL {
     my $key = 'm.source';
     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord'} @{$self->modifiers});
 
-    my $sp_size = $self->QueryParser->superpage_size || 1000;
-    my $sp = $self->QueryParser->superpage || 1;
-
-    my $offset = '';
-    if ($sp > 1) {
-        $offset = 'OFFSET ' . ($sp - 1) * $sp_size;
-    }
-
     my ($before) = $self->find_filter('before');
     my ($after) = $self->find_filter('after');
     my ($during) = $self->find_filter('during');
@@ -466,9 +458,7 @@ SELECT  $key AS id,
         $bib_level
         AND $$flat_plan{where}
   GROUP BY 1
-  ORDER BY 4 $desc, 5 DESC
-  LIMIT $sp_size
-  $offset
+  ORDER BY 4 $desc, 5 DESC, 3 DESC
 SQL
 
 }
@@ -545,11 +535,9 @@ sub flatten {
                 $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = $talias.source)";
                 $from .= "\n\tJOIN config.metabib_field AS ${talias}_weight ON (${talias}_weight.id = $talias.field)\n";
 
-                $where .= $talias . ".id IS NOT NULL ";
-                my $phrases = $node->phrases;
-                if (@$phrases) {
-                    $where .= ' AND (' . join(' AND ', map {"$talias.value ~ \$_$$\$$_\$_$$\$"} @$phrases) . ')';;
-                }
+                $where .= '(' . $talias . ".id IS NOT NULL";
+                $where .= ' AND ' . join(' AND ', map {"$talias.value ~* \$_$$\$$_\$_$$\$"} @{$node->phrases}) if (@{$node->phrases});
+                $where .= ')';
 
                 push @rank_list, $node_rank;
 
