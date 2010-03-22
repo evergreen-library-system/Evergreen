@@ -8,33 +8,33 @@
 #include "openils/oils_event.h"
 #include "openils/oils_utils.h"
 
-char* script		= NULL;
-char* authtoken	= NULL;
+char* script    = NULL;
+char* authtoken = NULL;
 
 static int do_request( char* request );
 static char* format_response( const jsonObject* o );
 
 int main( int argc, char* argv[] ) {
-	
+
 	int c;
-	char* username		= NULL;
-	char* password		= NULL;
-	char* config		= NULL;
-	char* context		= NULL;
-	char* idl_filename	= NULL;
-    char* hostname      = NULL;
+	char* username      = NULL;
+	char* password      = NULL;
+	char* config        = NULL;
+	char* context       = NULL;
+	char* idl_filename  = NULL;
+	char* hostname      = NULL;
 	char* request;
 
 	while( (c = getopt( argc, argv, "f:u:p:s:c:i:h:" )) != -1 ) {
 		switch(c) {
 			case '?': return -1;
-			case 'f': config		= strdup(optarg); break;
-			case 'c': context		= strdup(optarg); break;
-			case 'u': username	= strdup(optarg); break;
-			case 'p': password	= strdup(optarg); break;
-			case 's': script		= strdup(optarg); break;
-			case 'i': idl_filename		= strdup(optarg); break;
-            case 'h': hostname  = strdup(optarg); break;
+			case 'f': config        = strdup(optarg); break;
+			case 'c': context       = strdup(optarg); break;
+			case 'u': username      = strdup(optarg); break;
+			case 'p': password      = strdup(optarg); break;
+			case 's': script        = strdup(optarg); break;
+			case 'i': idl_filename  = strdup(optarg); break;
+			case 'h': hostname      = strdup(optarg); break;
 		}
 	}
 
@@ -44,22 +44,23 @@ int main( int argc, char* argv[] ) {
 	}
 
 	if( ! osrf_system_bootstrap_client(config, context) ) {
-		fprintf(stderr, "Unable to connect to OpenSRF network... [config:%s : context:%s]\n", config, context);
+		fprintf(stderr, "Unable to connect to OpenSRF network... [config:%s : context:%s]\n",
+			config, context);
 		return 1;
 	}
 
-    if(!idl_filename) {
-        if(!hostname) {
-		    fprintf(stderr, "We need an IDL file name or a settings server hostname...\n");
+	if(!idl_filename) {
+		if(!hostname) {
+			fprintf( stderr, "We need an IDL file name or a settings server hostname...\n");
 		    return 1;
-        }
-        osrf_settings_retrieve(hostname);
-    }
+		}
+		osrf_settings_retrieve(hostname);
+	}
 
-    if (!oilsInitIDL( idl_filename )) {
-        fprintf(stderr, "IDL file could not be loaded. Exiting...\n");
-        return -1;
-    }
+	if (!oilsInitIDL( idl_filename )) {
+		fprintf(stderr, "IDL file could not be loaded. Exiting...\n");
+		return -1;
+	}
 
 	printf("Connected to OpenSRF network...\n");
 
@@ -69,9 +70,10 @@ int main( int argc, char* argv[] ) {
 	}
 
 	while( (request=readline("oils# ")) ) {
-	   int retcode = do_request(request);
-	   free(request);
-	   if( retcode ) break;
+		int retcode = do_request(request);
+		free(request);
+		if( retcode )
+			break;
 	}
 
 	free(config);
@@ -91,12 +93,13 @@ static int do_request( char* request ) {
 	if(!strcasecmp(request, "exit") || !strcasecmp(request,"quit"))
 		return 1;
 
-	if(!strcmp(request,"")) return 0;
+	if(!strcmp(request,""))
+		return 0;
 
 	const char* service;
 	const char* method;
 	char* tmp = NULL;
-	
+
 	service = strtok_r(request, " ", &tmp);
 	method = strtok_r(NULL, " ", &tmp);
 
@@ -110,13 +113,13 @@ static int do_request( char* request ) {
 			params = jsonParse( buffer->buf );
 			buffer_free(buffer);
 		}
-		
+
 		osrfAppSession* session = osrfAppSessionClientInit(service);
 		int req_id = osrfAppSessionSendRequest( session, params, method, 1 );
 		osrfMessage* omsg;
 
 		while( (omsg = osrfAppSessionRequestRecv( session, req_id, 120 )) ) {
-			jsonObject* res = osrfMessageGetResult(omsg);
+			const jsonObject* res = osrfMessageGetResult(omsg);
 			char* data = format_response(res);
 			printf("%s\n", data);
 			free(data);
