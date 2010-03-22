@@ -655,6 +655,12 @@ BEGIN
         RETURN NEW; -- and we're done
     END IF;
 
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
+
+    IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
+        RETURN NEW;
+    END IF;
+
     IF TG_OP = 'UPDATE' THEN -- Clean out the cruft
         DELETE FROM metabib.title_field_entry WHERE source = NEW.id;
         DELETE FROM metabib.author_field_entry WHERE source = NEW.id;

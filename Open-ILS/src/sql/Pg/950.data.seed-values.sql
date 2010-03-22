@@ -1489,7 +1489,7 @@ INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (1,-1,0);
 INSERT INTO permission.usr_work_ou_map (usr, work_ou) VALUES (1, 1);
 
 --010.schema.biblio.sql:
-INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','AUTOGEN','-1','','FOO');
+INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','AUTOGEN','-1','<record xmlns="http://www.loc.gov/MARC21/slim"/>','FOO');
 
 --040.schema.asset.sql:
 INSERT INTO asset.copy_location (id, name,owning_lib) VALUES (1, oils_i18n_gettext(1, 'Stacks', 'acpl', 'name'),1);
