@@ -596,7 +596,7 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <notify_hold>
-                        <email>false</email> <!-- set to true for hold notice emails -->
+                        <email>true</email> <!-- set to false to disable hold notice emails -->
                     </notify_hold>
 
                     <!-- circulation policy scripts -->
