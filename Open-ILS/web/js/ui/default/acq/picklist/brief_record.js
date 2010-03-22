@@ -13,6 +13,7 @@ dojo.require('openils.CGI');
 var attrDefs = {};
 var paramPL = null;
 var paramPO = null;
+var paramUR = null; // User Request ID
 
 function drawBriefRecordForm(fields) {
 
@@ -21,6 +22,7 @@ function drawBriefRecordForm(fields) {
     var cgi = new openils.CGI();
     paramPL = cgi.param('pl');
     paramPO = cgi.param('po');
+    paramUR = cgi.param('ur');
     prepop = JSON2js(cgi.param('prepop'));
 
 
@@ -213,6 +215,17 @@ function compileBriefRecord(fields, editMarc) {
                 if(!id) return;
                 if(editMarc) {
                     // XXX load marc editor
+                } else if (paramUR) {
+                    // update User Request with Lineitem and reload request interface
+                    var pcrud = new openils.PermaCrud({ authtoken : openils.User.authtoken });
+                    var aur_obj = pcrud.retrieve('aur',paramUR);
+                    aur_obj.lineitem( id );
+                    pcrud.update( aur_obj, {
+                        'oncomplete' : function(r, cudResults) {
+                            // Goes back to the list view
+                            location.href = oilsBasePath + '/acq/picklist/user_request';
+                        }
+                    });
                 } else {
                     if(fields.picklist) 
                         location.href = oilsBasePath + '/acq/picklist/view/' + fields.picklist;

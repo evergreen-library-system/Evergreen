@@ -8,6 +8,7 @@ dojo.require("dijit.layout.StackContainer");
 dojo.require('openils.PermaCrud');
 
 var contextOrg;
+var aur_obj;
 
 function setup() {
 
@@ -22,7 +23,7 @@ function setup() {
 
 function drawRequest() {
     var pcrud = new openils.PermaCrud({ authtoken : openils.User.authtoken });
-    var aur_obj = pcrud.retrieve('aur',reqId);
+    aur_obj = pcrud.retrieve('aur',reqId);
 
     // hide the grid and the context selector
     dijit.byId('stackContainer').forward();
@@ -44,7 +45,13 @@ function drawRequest() {
 
 function addToPicklist() {
     // reqId
-    alert('stub');
+    location.href = oilsBasePath + "/acq/picklist/brief_record?ur=" + reqId + "&prepop=" + encodeURIComponent(js2JSON({
+        "1": aur_obj.title() || aur_obj.article_title() || aur_obj.volume(),
+        "2": aur_obj.author(),
+        "5": aur_obj.isxn(),
+        "9": aur_obj.publisher(),
+        "10": aur_obj.pubdate()
+    }));
 }
 
 function setNoHold() {
