@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0203'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0205'); -- miker
 
 CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
 DECLARE
