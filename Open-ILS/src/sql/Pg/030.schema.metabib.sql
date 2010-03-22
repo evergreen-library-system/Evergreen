@@ -264,7 +264,22 @@ BEGIN
 			IF raw_text IS NOT NULL THEN
 				raw_text := raw_text || joiner;
 			END IF;
-			raw_text := COALESCE(raw_text,'') || ARRAY_TO_STRING(oils_xpath( '//text()', REGEXP_REPLACE(xml_node,'&(?!amp;)','&amp;','g')), ' ');
+			raw_text := COALESCE(raw_text,'') || ARRAY_TO_STRING(
+				oils_xpath( '//text()',
+					REGEXP_REPLACE( -- This escapes all &s not followed by "amp;".  Data ise returned from oils_xpath (above) in UTF-8, not entity encoded
+						REGEXP_REPLACE( -- This escapes embeded <s
+							xml_node,
+							$re$(>[^<]+)(<)([^>]+<)$re$,
+							E'\\1&lt;\\3',
+							'g'
+						),
+						'&(?!amp;)',
+						'&amp;',
+						'g'
+					)
+				),
+				' '
+			);
 		END LOOP;
 
 		CONTINUE WHEN raw_text IS NULL;
@@ -647,18 +662,20 @@ DECLARE
     uri_map_id      INT;
 BEGIN
 
-    IF TG_OP = 'UPDATE' THEN -- Clean out the cruft
-        DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
-    END IF;
-
     IF NEW.deleted IS TRUE THEN
+        DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
         RETURN NEW; -- and we're done
     END IF;
 
-    PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
+    IF TG_OP = 'UPDATE' THEN -- re-ingest?
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
 
-    IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
-        RETURN NEW;
+        IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
+            RETURN NEW;
+        END IF;
+
+        DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
+
     END IF;
 
     IF TG_OP = 'UPDATE' THEN -- Clean out the cruft
