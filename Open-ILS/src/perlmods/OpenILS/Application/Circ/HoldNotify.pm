@@ -127,7 +127,7 @@ sub send_email_notify {
 
 	unless ($U->is_true($self->hold->email_notify)) {
       $self->editor->rollback;
-		$logger->info("hold_notify: not sending hold notification becaue email_notify is false");
+		$logger->info("hold_notify: not sending hold notification because email_notify is false");
 		return 0;
 	}
 
@@ -145,7 +145,7 @@ sub send_email_notify {
 
 	unless( $str ) {
       $self->editor->rollback;
-		$logger->error("hold_notify: No email notifiy template found - cannot notify");
+		$logger->error("hold_notify: No email notify template found - cannot notify");
 		return 0;
 	}
 
