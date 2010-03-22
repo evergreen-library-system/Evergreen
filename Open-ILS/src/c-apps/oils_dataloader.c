@@ -29,7 +29,8 @@ static const char* trans_id = NULL;
 
 int main (int argc, char **argv) {
 	if( argc < 4 ) {
-		fprintf( stderr, "Usage: %s <path_to_config_file> <config_context> <create|update|delete>\n", argv[0] );
+		fprintf( stderr,
+			"Usage: %s <path_to_config_file> <config_context> <create|update|delete>\n", argv[0] );
 		exit(0);
 	}
 
@@ -45,7 +46,8 @@ int main (int argc, char **argv) {
 	}
 
 	// connect to the network
-	osrfLogInfo(OSRF_LOG_MARK, "Launching data loader with config %s and config context %s", config, context );
+	osrfLogInfo(OSRF_LOG_MARK, "Launching data loader with config %s and config context %s",
+		config, context );
 	if (!osrfSystemBootstrapClientResc( config, context, APPNAME )) {
 		osrfLogError(OSRF_LOG_MARK, "Unable to bootstrap data loader!");
 		exit(1);
@@ -60,7 +62,7 @@ int main (int argc, char **argv) {
 		exit(1);
 	}
 
-	// Generate "create" method name for each 
+	// Generate "create" method name for each
 	osrfStringArray* classes = osrfHashKeys(idl);
 	int c_index = 0;
 	const char* classname;
@@ -123,7 +125,8 @@ int main (int argc, char **argv) {
 
 					if (!rollbackTransaction()) {
 						osrfAppSessionFree(session);
-						osrfLogError(OSRF_LOG_MARK, "An error occured while attempting to complete a transaction");
+						osrfLogError(OSRF_LOG_MARK,
+							"An error occured while attempting to complete a transaction");
 						return E_ROLLBACKERROR;
 					}
 
@@ -161,7 +164,8 @@ int main (int argc, char **argv) {
 static int commitTransaction () {
 	int ret = 1;
 	const jsonObject* data;
-	int req_id = osrfAppSessionSendRequest( session, NULL, "open-ils.cstore.transaction.commit", 1 );
+	int req_id = osrfAppSessionSendRequest( session, NULL,
+		"open-ils.cstore.transaction.commit", 1 );
 	osrfMessage* res = osrfAppSessionRequestRecv( session, req_id, 5 );
 	if ( (data = osrfMessageGetResult(res)) ) {
 		if(!(trans_id = jsonObjectGetString(data))) {
@@ -178,7 +182,8 @@ static int commitTransaction () {
 static int rollbackTransaction () {
 	int ret = 1;
 	const jsonObject* data;
-	int req_id = osrfAppSessionSendRequest( session, NULL, "open-ils.cstore.transaction.rollback", 1 );
+	int req_id = osrfAppSessionSendRequest( session, NULL,
+		"open-ils.cstore.transaction.rollback", 1 );
 	osrfMessage* res = osrfAppSessionRequestRecv( session, req_id, 5 );
 	if ( (data = osrfMessageGetResult(res)) ) {
 		if(!(trans_id = jsonObjectGetString(data))) {
@@ -194,8 +199,9 @@ static int rollbackTransaction () {
 
 static int startTransaction () {
 	int ret = 1;
-	jsonObject* data;
-	int req_id = osrfAppSessionSendRequest( session, NULL, "open-ils.cstore.transaction.begin", 1 );
+	const jsonObject* data;
+	int req_id = osrfAppSessionSendRequest( session, NULL,
+		"open-ils.cstore.transaction.begin", 1 );
 	osrfMessage* res = osrfAppSessionRequestRecv( session, req_id, 5 );
 	if ( (data = osrfMessageGetResult(res)) ) {
 		if(!(trans_id = jsonObjectToSimpleString(data))) {
@@ -214,7 +220,8 @@ static int sendCommand ( const char* json ) {
 	jsonObject* item = jsonParse(json);
 
 	if (!item->classname) {
-		osrfLogError(OSRF_LOG_MARK, "Data loader cannot handle unclassed objects.  Skipping [%s]!", json);
+		osrfLogError(OSRF_LOG_MARK,
+			"Data loader cannot handle unclassed objects.  Skipping [%s]!", json);
 		jsonObjectFree(item);
 		return 0;
 	}
@@ -228,7 +235,7 @@ static int sendCommand ( const char* json ) {
 	jsonObjectSetIndex( params, 0, item );
 	jsonObjectSetIndex( params, 1, jsonParse("{\"quiet\":\"true\"}") );
 
-	jsonObject* data;
+	const jsonObject* data;
 	int req_id = osrfAppSessionSendRequest( session, params, method_name, 1 );
 	jsonObjectFree(params);
 
