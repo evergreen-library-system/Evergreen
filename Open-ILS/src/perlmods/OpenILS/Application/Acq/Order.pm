@@ -1433,6 +1433,8 @@ sub create_purchase_order_api {
     my %pargs = (ordering_agency => $e->requestor->ws_ou); # default
     $pargs{provider} = $po->provider if $po->provider;
     $pargs{ordering_agency} = $po->ordering_agency if $po->ordering_agency;
+    $pargs{prepayment_required} = $po->prepayment_required
+        if $po->prepayment_required;
     $po = create_purchase_order($mgr, %pargs) or return $e->die_event;
 
     my $li_ids = $$args{lineitems};

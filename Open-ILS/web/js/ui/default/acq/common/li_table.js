@@ -68,8 +68,12 @@ function AcqLiTable() {
         });
 
     acqLitCreatePoSubmit.onClick = function() {
-        acqLitPoCreateDialog.hide();
-        self._createPO(acqLitPoCreateDialog.getValues());
+        if (self._confirmPoPrepaySituation()) {
+            acqLitPoCreateDialog.hide();
+            self._createPO(acqLitPoCreateDialog.getValues());
+        } else {
+            return false;
+        }
     }
 
     acqLitSavePlButton.onClick = function() {
@@ -456,7 +460,7 @@ function AcqLiTable() {
             }
         }
 
-        if (note.vendor_public() == "t")
+        if (openils.Util.isTrue(note.vendor_public()))
             nodeByName("vendor_public", row).innerHTML =
                 localeStrings.VENDOR_PUBLIC;
 
@@ -1485,6 +1489,25 @@ function AcqLiTable() {
         }
     }
 
+    this._updateCreatePoPrepayCheckbox = function(prepay) {
+        var prepay = openils.Util.isTrue(prepay);
+        this._prepayRequiredByVendor = prepay;
+        dijit.byId("acq-lit-po-prepay").attr("checked", prepay);
+    };
+
+    this._confirmPoPrepaySituation = function() {
+        var want_prepay = dijit.byId("acq-lit-po-prepay").attr("checked");
+        if (want_prepay != this._prepayRequiredByVendor) {
+            return confirm(
+                want_prepay ?
+                    localeStrings.VENDOR_SAYS_PREPAY_NOT_NEEDED :
+                    localeStrings.VENDOR_SAYS_PREPAY_NEEDED
+            );
+        } else {
+            return true;
+        }
+    };
+
     this.applySelectedLiAction = function(action) {
         var self = this;
         switch(action) {
@@ -1501,6 +1524,15 @@ function AcqLiTable() {
                         fmClass : 'acqpo',
                         searchFilter: {"active": "t"},
                         parentNode : dojo.byId('acq-lit-po-provider'),
+                        dijitArgs : {
+                            "onChange": function() {
+                                if (this.item) {
+                                    self._updateCreatePoPrepayCheckbox(
+                                        this.item.prepayment_required
+                                    );
+                                }
+                            }
+                        }
                     });
                     widget.build(
                         function(w) { self.createPoProviderSelector = w; }
@@ -1829,6 +1861,7 @@ function AcqLiTable() {
         var po = new fieldmapper.acqpo();
         po.provider(this.createPoProviderSelector.attr('value'));
         po.ordering_agency(this.createPoAgencySelector.attr('value'));
+        po.prepayment_required(fields.prepayment_required[0] ? true : false);
 
         var selected = this.getSelected( (fields.create_from == 'all') );
         if(selected.length == 0) return;

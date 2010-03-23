@@ -60,6 +60,7 @@
 .oils-acq-po-records-author-row td { padding-left: 30px; }
 .oils-acq-po-records-phys_desc-row td { padding-left: 30px; }
 .oils-acq-po-records-phys_desc-row {}
+.oils-acq-po-prepay { font-weight: bold; color: #c00; }
 
 #oils-acq-po-paging-block { width: 50%; text-align: left;}
 #oils-acq-po-actions-block { width: 50%; text-align: right;}

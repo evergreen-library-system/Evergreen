@@ -46,7 +46,7 @@ function AcqPoNoteTable() {
 
         nodeByName("value", row).innerHTML = note.value();
 
-        if (note.vendor_public() == "t")
+        if (openils.Util.isTrue(note.vendor_public()))
             nodeByName("vendor_public", row).innerHTML =
                 localeStrings.VENDOR_PUBLIC;
 
@@ -187,6 +187,16 @@ function cancellationUpdater(r) {
     }
 }
 
+function makePrepayWidget(node, prepay) {
+    if (prepay) {
+        openils.Util.addCSSClass(node, "oils-acq-po-prepay");
+        node.innerHTML = localeStrings.YES;
+    } else {
+        openils.Util.removeCSSClass(node, "oils-acq-po-prepay");
+        node.innerHTML = localeStrings.NO;
+    }
+}
+
 function makeCancelWidget(node, labelnode) {
     openils.Util.hide("acq-po-choose-cancel-reason");
 
@@ -246,6 +256,10 @@ function renderPo() {
     dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered();
     dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent();
     dojo.byId("acq-po-view-state").innerHTML = PO.state(); // TODO i18n
+    makePrepayWidget(
+        dojo.byId("acq-po-view-prepay"),
+        openils.Util.isTrue(PO.prepayment_required())
+    );
     makeCancelWidget(
         dojo.byId("acq-po-view-cancel-reason"),
         dojo.byId("acq-po-cancel-label")
@@ -299,6 +313,11 @@ params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh
 }
 
 function activatePo() {
+    if (
+        openils.Util.isTrue(PO.prepayment_required()) &&
+        !confirm(localeStrings.PREPAYMENT_REQUIRED_REMINDER)
+    ) return false;
+
     progressDialog.show(true);
     try {
         fieldmapper.standardRequest(

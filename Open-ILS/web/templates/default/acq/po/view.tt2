@@ -13,6 +13,7 @@
                 <tr><td>Total Encumbered</td><td>$<span id='acq-po-view-total-enc'/></td></tr>
                 <tr><td>Total Spent</td><td>$<span id='acq-po-view-total-spent'/></td></tr>
                 <tr><td>Status</td><td><span id='acq-po-view-state'/></td></tr>
+                <tr><td>Prepayment Required?</td><td><span id="acq-po-view-prepay"/></td></tr>
                 <tr>
                     <td id="acq-po-cancel-label"></td>
                     <td>
