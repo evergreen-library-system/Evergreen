@@ -1499,7 +1499,7 @@ sub reservation_targeter {
                     next;
                 }
 
-                my $copy = [ asset::copy->search( deleted => f, barcode => $res->barcode )]->[0];
+                my $copy = [ asset::copy->search( deleted => 'f', barcode => $res->barcode )]->[0];
 
                 unless ($copy) {
                     push @good_resources, $res;
@@ -1567,7 +1567,7 @@ sub reservation_targeter {
                     sort { $a->[0] <=> $b->[0] }
                     map  {
                         [   actor::org_unit_proximity->search_where(
-                                { from_org => $bresv->pickup_lib.'', to_org => $_=>owner.'' }
+                                { from_org => $bresv->pickup_lib.'', to_org => $_->owner.'' }
                             )->[0]->prox,
                             $_
                         ]
