@@ -2598,28 +2598,28 @@ sub staged_fts {
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.biblio.multiclass.staged.search_fts",
 	method		=> 'staged_fts',
-	api_level	=> 1,
+	api_level	=> 0,
 	stream		=> 1,
 	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.biblio.multiclass.staged.search_fts.staff",
 	method		=> 'staged_fts',
-	api_level	=> 1,
+	api_level	=> 0,
 	stream		=> 1,
 	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.metabib.multiclass.staged.search_fts",
 	method		=> 'staged_fts',
-	api_level	=> 1,
+	api_level	=> 0,
 	stream		=> 1,
 	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.metabib.multiclass.staged.search_fts.staff",
 	method		=> 'staged_fts',
-	api_level	=> 1,
+	api_level	=> 0,
 	stream		=> 1,
 	cachable	=> 1,
 );
@@ -2758,11 +2758,13 @@ __PACKAGE__->register_method(
 sub query_parser_fts {
     my $self = shift;
     my $client = shift;
-    my %args = shift;
+    my %args = @_;
 
 
     # grab the query parser and initialize it
     my $parser = $OpenILS::Application::Storage::QParser;
+    $parser->use;
+
     if (!$parser->initialization_complete) {
         my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
         $parser->initialize(
@@ -2825,11 +2827,12 @@ sub query_parser_fts {
 
 
     # I hope we have a query!
-	if (! scalar( keys %{$args{query}} )) {
-		die "No search arguments were passed to ".$self->api_name;
+	if (! $args{query} ) {
+		die "No query was passed to ".$self->api_name;
 	}
 
 
+    my $simple_plan = $args{_simple_plan};
     # remove bad chunks of the %args hash
     for my $bad ( grep { /^_/ } keys(%args)) {
         delete($args{$bad});
@@ -2838,12 +2841,11 @@ sub query_parser_fts {
 
     # parse the query and supply any query-level %arg-based defaults
     # we expect, and make use of, query, superpage, superpage_size, debug and core_limit args
-    my $query = $parser->new( %args );
-
+    my $query = $parser->new( %args )->parse;
 
     # gather the site, if one is specified, defaulting to the in-query version
 	my $ou = $args{org_unit};
-	if (my $filter = $query->parse_tree->find_filter('site')) {
+	if (my ($filter) = $query->parse_tree->find_filter('site')) {
             $ou = $filter->args->[0] if (@{$filter->args});
     }
 	$ou = actor::org_unit->search( { shortname => $ou } )->next->id if ($ou and $ou !~ /^\d+$/);
@@ -2851,7 +2853,7 @@ sub query_parser_fts {
 
     # gather lasso, as with $ou
 	my $lasso = $args{lasso};
-	if (my $filter = $query->parse_tree->find_filter('lasso')) {
+	if (my ($filter) = $query->parse_tree->find_filter('lasso')) {
             $lasso = $filter->args->[0] if (@{$filter->args});
     }
 	$lasso = actor::org_lasso->search( { name => $lasso } )->next->id if ($lasso and $lasso !~ /^\d+$/);
@@ -2861,7 +2863,7 @@ sub query_parser_fts {
 #    # XXX once we have org_unit containers, we can make user-defined lassos .. WHEEE
 #    # gather user lasso, as with $ou and lasso
 #    my $mylasso = $args{my_lasso};
-#    if (my $filter = $query->parse_tree->find_filter('my_lasso')) {
+#    if (my ($filter) = $query->parse_tree->find_filter('my_lasso')) {
 #            $mylasso = $filter->args->[0] if (@{$filter->args});
 #    }
 #    $mylasso = actor::org_unit->search( { name => $mylasso } )->next->id if ($mylasso and $mylasso !~ /^\d+$/);
@@ -2878,7 +2880,7 @@ sub query_parser_fts {
     # XXX when user lassos are here, check to make sure we don't have one -- it'll be passed in the depth, with an ou of 0
     # gather the depth, if one is specified, defaulting to the in-query version
 	my $depth = $args{depth};
-	if (my $filter = $query->parse_tree->find_filter('depth')) {
+	if (my ($filter) = $query->parse_tree->find_filter('depth')) {
             $depth = $filter->args->[0] if (@{$filter->args});
     }
 	$depth = actor::org_unit->search_where( [{ name => $depth },{ opac_label => $depth }], {limit => 1} )->next->id if ($depth and $depth !~ /^\d+$/);
@@ -2886,28 +2888,28 @@ sub query_parser_fts {
 
     # gather the limit or default to 10
 	my $limit = $args{limit} || 10;
-	if (my $filter = $query->parse_tree->find_filter('limit')) {
+	if (my ($filter) = $query->parse_tree->find_filter('limit')) {
             $limit = $filter->args->[0] if (@{$filter->args});
     }
 
 
     # gather the offset or default to 0
 	my $offset = $args{offset} || 0;
-	if (my $filter = $query->parse_tree->find_filter('offset')) {
+	if (my ($filter) = $query->parse_tree->find_filter('offset')) {
             $offset = $filter->args->[0] if (@{$filter->args});
     }
 
 
     # gather the estimation strategy or default to inclusion
     my $estimation_strategy = $args{estimation_strategy} || 'inclusion';
-	if (my $filter = $query->parse_tree->find_filter('estimation_strategy')) {
+	if (my ($filter) = $query->parse_tree->find_filter('estimation_strategy')) {
             $estimation_strategy = $filter->args->[0] if (@{$filter->args});
     }
 
 
     # gather statuses, and then forget those if we have an #available modifier
     my @statuses;
-    if (my $filter = $query->parse_tree->find_filter('statuses')) {
+    if (my ($filter) = $query->parse_tree->find_filter('statuses')) {
         @statuses = @{$filter->args} if (@{$filter->args});
     }
     @statuses = (0,7,12) if ($query->parse_tree->find_modifier('available'));
@@ -2915,22 +2917,22 @@ sub query_parser_fts {
 
     # gather locations
     my @location;
-    if (my $filter = $query->parse_tree->find_filter('location')) {
+    if (my ($filter) = $query->parse_tree->find_filter('locations')) {
         @location = @{$filter->args} if (@{$filter->args});
     }
 
 
-    my $param_limit = $self->QueryParser->superpage_size || 'NULL';
+    my $param_limit = $query->superpage_size || 'NULL';
     my $param_offset = 'NULL';
 
-    my $sp = $self->QueryParser->superpage || 1;
+    my $sp = $query->superpage || 1;
     if ($sp > 1) {
         $param_offset = ($sp - 1) * $sp_size;
     }
 
 	my $param_search_ou = $ou;
 	my $param_depth = $depth; $param_depth = 'NULL' unless (defined($depth) and length($depth) > 0 );
-	my $param_core_query = $query->parse_tree->toSQL;
+	my $param_core_query = "\$core_query_$$\$" . $query->parse_tree->toSQL . "\$core_query_$$\$";
 	my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
 	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @location) . '}$$';
 	my $staff = ($self->api_name =~ /staff/ or $query->parse_tree->find_modifier('staff')) ? "'t'" : "'f'";
@@ -2974,8 +2976,8 @@ sub query_parser_fts {
     delete $$summary_row{rel};
     delete $$summary_row{record};
 
-    if (defined($args{_simple_plan})) {
-        $$summary_row{complex_query} = $args{_simple_plan};
+    if (defined($simple_plan)) {
+        $$summary_row{complex_query} = $simple_plan ? 0 : 1;
     } else {
         $$summary_row{complex_query} = $query->simple_plan ? 0 : 1;
     }
@@ -2996,6 +2998,128 @@ sub query_parser_fts {
 	}
 	return undef;
 }
+
+sub query_parser_fts_wrapper {
+	my $self = shift;
+	my $client = shift;
+	my %args = @_;
+
+    # grab the query parser and initialize it
+    my $parser = $OpenILS::Application::Storage::QParser;
+    $parser->use;
+
+    if (!$parser->initialization_complete) {
+        my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
+        $parser->initialize(
+            config_metabib_field_index_norm_map =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                    { id => { "!=" => undef } },
+                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+                )->gather(1),
+            search_relevance_adjustment         =>
+                $cstore->request(
+                    'open-ils.cstore.direct.search.relevance_adjustment.search.atomic',
+                    { id => { "!=" => undef } }
+                )->gather(1),
+            config_metabib_field                =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.metabib_field.search.atomic',
+                    { id => { "!=" => undef } }
+                )->gather(1),
+        );
+
+        $cstore->disconnect;
+        die("Cannot initialize $parser!") unless ($parser->initialization_complete);
+    }
+
+	if (! scalar( keys %{$args{searches}} )) {
+		die "No search arguments were passed to ".$self->api_name;
+	}
+
+    my $base_query = '';
+    for my $sclass ( keys %{$args{searches}} ) {
+        $base_query .= " $sclass: $args{searches}{$sclass}{term}";
+    }
+
+    my $query = $base_query;
+
+
+    if (!$locale_map{COMPLETE}) {
+
+        my @locales = config::i18n_locale->search_where({ code => { '<>' => '' } });
+        for my $locale ( @locales ) {
+            $locale_map{$locale->code} = $locale->marc_code;
+        }
+        $locale_map{COMPLETE} = 1;
+
+    }
+
+
+    $query = "preferred_language($args{preferred_language}) $query" if ($args{preferred_language});
+    $query = "preferred_language_weight($args{preferred_language_weight}) $query" if ($args{preferred_language_weight});
+    $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
+    $query = "site($args{org_unit}) $query" if ($args{org_unit});
+    $query = "limit($args{limit}) $query" if ($args{limit});
+    $query = "offset($args{offset}) $query" if ($args{offset});
+    $query = "#available $query" if ($args{available});
+    $query = "#staff $query" if ($self->api_name =~ /staff/);
+
+
+	my (@between,@statuses,@locations,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
+
+	# XXX legacy format and item type support
+	if ($args{format}) {
+		my ($t, $f) = split '-', $args{format};
+		$args{item_type} = [ split '', $t ];
+		$args{item_form} = [ split '', $f ];
+	}
+
+    for my $filter ( qw/locations statuses between audience language lit_form item_form item_type bib_level vr_format/ ) {
+    	if (my $s = $args{$filter}) {
+    		$s = [$s] if (!ref($s));
+
+    		my @filter_list = @$s;
+
+            next if ($filter eq 'between' and scalar(@filter_list) != 2);
+            next if (@filter_list == 0);
+
+            my $filter_string = join ',', @filter_list;
+            $query = "$filter($filter_string) $query";
+	    }
+    }
+
+    return query_parser_fts($self, $client, query => $query, _simple_plan => $parser->new( query => $base_query )->parse->simple_plan );
+}
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.biblio.multiclass.staged.search_fts",
+	method		=> 'query_parser_fts_wrapper',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.biblio.multiclass.staged.search_fts.staff",
+	method		=> 'query_parser_fts_wrapper',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.metabib.multiclass.staged.search_fts",
+	method		=> 'query_parser_fts_wrapper',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.metabib.multiclass.staged.search_fts.staff",
+	method		=> 'query_parser_fts_wrapper',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+
 
 1;
 

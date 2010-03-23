@@ -129,7 +129,7 @@ sub initialize_field_id_map {
     my $cmf_list = shift;
 
     for my $cmf (@$cmf_list) {
-        $self->add_field_id_map( $cmf->field_class, $cmf->field, $cmf->id, $cmf->weight );
+        __PACKAGE__->add_field_id_map( $cmf->field_class, $cmf->name, $cmf->id, $cmf->weight );
     }
 
     return $self->field_id_map;
@@ -141,7 +141,7 @@ sub initialize_relevance_bumps {
 
     for my $sra (@$sra_list) {
         my $c = $self->field_class_by_id( $sra->field );
-        $self->add_relevance_bump( $c->{classname}, $c->{field}, $sra->bump_type, $sra->multiplier );
+        __PACKAGE__->add_relevance_bump( $c->{classname}, $c->{field}, $sra->bump_type, $sra->multiplier );
     }
 
     return $self->relevance_bumps;
@@ -153,7 +153,7 @@ sub initialize_normalizers {
 
     for my $cmfinm ( @$tree ) {
         my $field_info = $self->field_class_by_id( $cmfinm->field );
-        $self->add_query_normalizer( $field_info->{classname}, $field_info->{field}, $cmfinm->norm->func, OpenSRF::Utils::JSON->JSON2perl($cmfinm->params) );
+        __PACKAGE__->add_query_normalizer( $field_info->{classname}, $field_info->{field}, $cmfinm->norm->func, OpenSRF::Utils::JSON->JSON2perl($cmfinm->params) );
     }
 }
 
@@ -254,7 +254,7 @@ __PACKAGE__->add_search_filter( 'format' );
 __PACKAGE__->add_search_filter( 'item_type' );
 __PACKAGE__->add_search_filter( 'item_form' );
 __PACKAGE__->add_search_filter( 'lit_form' );
-__PACKAGE__->add_search_filter( 'location' );
+__PACKAGE__->add_search_filter( 'locations' );
 __PACKAGE__->add_search_filter( 'site' );
 __PACKAGE__->add_search_filter( 'lasso' );
 __PACKAGE__->add_search_filter( 'my_lasso' );

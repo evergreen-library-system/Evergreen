@@ -332,6 +332,8 @@ sub parse_tree {
 
 sub parse {
     my $self = shift;
+    my $pkg = ref($self) || $self;
+    warn " ** parse package is $pkg\n" if $self->debug;
     $self->parse_tree(
         $self->decompose(
             $self->query( shift() )
@@ -343,7 +345,9 @@ sub parse {
 
 sub decompose {
     my $self = shift;
-    my $pkg = ref($self) || $self;;
+    my $pkg = ref($self) || $self;
+
+    warn " ** decompose package is $pkg\n" if $self->debug;
 
     $_ = shift;
     my $current_class = shift || $self->default_search_class;
@@ -354,20 +358,21 @@ sub decompose {
     my $search_class_re = '^\s*(';
     my $first_class = 1;
 
-    for my $class ( keys %{$pkg->search_field_aliases} ) {
+    my %seen_classes;
+    for my $class ( keys %{$pkg->search_fields} ) {
 
-        for my $field ( keys %{$pkg->search_field_aliases->{$class}} ) {
+        for my $field ( @{$pkg->search_fields->{$class}} ) {
 
             for my $alias ( @{$pkg->search_field_aliases->{$class}{$field}} ) {
                 $alias = qr/$alias/;
                 s/\b$alias[:=]/$class\|$field:/g;
             }
-
-            $search_class_re .= '|' unless ($first_class);
-            $first_class = 0;
-
-            $search_class_re .= $class;
         }
+
+        $search_class_re .= '|' unless ($first_class);
+        $first_class = 0;
+        $search_class_re .= $class . '(?:\|\w+)*';
+        $seeen_class{$class} = 1;
     }
 
     for my $class ( keys %{$pkg->search_class_aliases} ) {
@@ -381,9 +386,12 @@ sub decompose {
         $search_class_re .= '|' unless ($first_class);
         $first_class = 0;
 
-        $search_class_re .= $class . '(?:\|\w+)*';
+        $search_class_re .= $class . '(?:\|\w+)*' if (!$seeen_class{$class});
+        $seeen_class{$class} = 1;
     }
     $search_class_re .= '):';
+
+    warn " ** Search class RE: $search_class_re\n" if $self->debug;
 
     my $required_re = $pkg->operator('required');
     $required_re = qr/^\s*\Q$required_re\E/;
