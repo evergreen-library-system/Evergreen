@@ -112,6 +112,7 @@
             <button id="reload" command="cmd_reload" disabled="false" hidden="false"/>
             <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
             <spacer flex="1"/>
+            <progressmeter id="throbber" mode="determined" flex="1"/>
             <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
             <button id="browser_print" label="Print Page" oldcommand="cmd_print" hidden="true"
                 oncommand="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (g.browser.alt_print) { JSAN.use('util.print'); var p = new util.print(); p.NSPrint(g.browser.get_content(),false,{}); } else { g.browser.get_content().print(); }"

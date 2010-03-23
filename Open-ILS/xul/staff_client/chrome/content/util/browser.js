@@ -231,6 +231,24 @@ util.browser.prototype = {
                         var s = obj.url + '\n' + obj.get_content().location.href + '\n';
                         const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
                         const nsIChannel = Components.interfaces.nsIChannel;
+                        ////// handle the throbber
+                        var throbber = document.getElementById('throbber');
+                        if (throbber) {
+                            var busy = false;
+                            if (!(stateFlags & nsIWebProgressListener.STATE_RESTORING)) {
+                                busy = true;
+                                throbber.setAttribute('mode','undetermined'); 
+                            }
+                            if (stateFlags & nsIWebProgressListener.STATE_STOP) {
+                                busy = false;
+                                setTimeout(
+                                    function() {
+                                        if (!busy) { throbber.setAttribute('mode','determined'); }
+                                    }, 2000
+                                );
+                            }
+                        }
+                        //////
                         if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
                         s += ('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
                         if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
@@ -279,6 +297,7 @@ util.browser.prototype = {
                             s += ('\tSTATE_STOP\n');
                         }
                         //obj.error.sdump('D_BROWSER',s);    
+                        if (throbber) { throbber.setAttribute('tooltiptext',s); }
                     } catch(E) {
                         obj.error.sdump('D_ERROR','util.browser.progresslistener.onstatechange: ' + (E));
                     }
