@@ -461,7 +461,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
 		jsonObjectFree( params );
 
-		if( card ) {
+		if( card && card->type != JSON_NULL ) {
 			// Determine whether the card is active
 			char* card_active_str = oilsFMGetString( card, "active" );
 			card_active = oilsUtilsIsDBTrue( card_active_str );
@@ -475,6 +475,11 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 			userObj = oilsUtilsQuickReq(
 					"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params );
 			jsonObjectFree( params );
+			if( userObj && JSON_NULL == userObj->type ) {
+				// user not found (shouldn't happen, due to foreign key)
+				jsonObjectFree( userObj );
+				userObj = NULL;
+			}
 		}
 	}
 
