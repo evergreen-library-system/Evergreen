@@ -85,7 +85,7 @@ bell:
 
 bundle:
 	@rm -f build/build.tar
-	@tar cf build.tar build/
+	@tar -c --exclude=server -f build.tar build/
 	@mv build.tar build/
 	@md5sum build/build.tar > build/build.tar.md5
 
