@@ -570,6 +570,12 @@ sub flatten {
         if (ref($node)) {
             if ($node->isa( 'QueryParser::query_plan::node' )) {
 
+                unless (@{$node->only_atoms}) {
+                    push @rank_list, '1';
+                    $where .= 'TRUE';
+                    next;
+                }
+
                 my $table = $node->table;
                 my $talias = $node->table_alias;
 

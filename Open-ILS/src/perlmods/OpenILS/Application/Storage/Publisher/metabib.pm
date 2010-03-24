@@ -2841,7 +2841,7 @@ sub query_parser_fts {
 
     # parse the query and supply any query-level %arg-based defaults
     # we expect, and make use of, query, superpage, superpage_size, debug and core_limit args
-    my $query = $parser->new( %args )->parse;
+    my $query = $parser->new( debug => 1, %args )->parse;
 
     # gather the site, if one is specified, defaulting to the in-query version
 	my $ou = $args{org_unit};
