@@ -1,4 +1,5 @@
-dojo.require("openils.Util");
+dojo.requireLocalization("openils.acq", "acq");
+var localeStrings = dojo.i18n.getLocalization("openils.acq", "acq");
 
 function load() {
     fieldmapper.standardRequest(
