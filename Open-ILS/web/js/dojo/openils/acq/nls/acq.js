@@ -31,6 +31,7 @@
     'PO_CANCEL_CONFIRM': "Are you SURE you want to cancel this purchase order?",
     'LI_CANCEL_CONFIRM': "Are you SURE you want to cancel this line item?",
     'LID_CANCEL_CONFIRM': "Are you SURE you want to cancel this copy?",
+    'UR_CANCEL_CONFIRM': "Are you SURE you want to cancel this user request?",
     'CANCEL_REASON': "Cancel reason",
     'CANCEL': "Cancel",
     'YES': "Yes",

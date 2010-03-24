@@ -2558,6 +2558,13 @@ __PACKAGE__->register_method (
     method      => 'update_user_request',
     api_name    => 'open-ils.acq.user_request.cancel.batch',
     stream      => 1,
+    signature => q/
+        If given a cancel reason, will update the request with that reason, otherwise, this will delete the request altogether.  The intention 
+        is for staff interfaces or processes to provide cancel reasons, and for patron interfaces to just delete the requests.
+        @param authtoken Login session key
+        @param ids Id or array of id's for the user requests to cancel.
+        @param cancel_reason Optional Cancel Reason Id.
+    /
 );
 __PACKAGE__->register_method (
     method      => 'update_user_request',
@@ -2566,7 +2573,7 @@ __PACKAGE__->register_method (
 );
 
 sub update_user_request {
-    my($self, $conn, $auth, $aur_ids) = @_;
+    my($self, $conn, $auth, $aur_ids, $cancel_reason) = @_;
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->die_event unless $e->checkauth;
     my $rid = $e->requestor->id;
@@ -2602,7 +2609,12 @@ sub update_user_request {
         }
 
         if($self->api_name =~ /cancel/) {
-            $e->delete_acq_user_request($aur_obj);
+            if ( $cancel_reason ) {
+                $aur_obj->cancel_reason( $cancel_reason );
+                $e->update_acq_user_request($aur_obj) or return $e->die_event;
+            } else {
+                $e->delete_acq_user_request($aur_obj);
+            }
         }
 
         $conn->respond({maximum => scalar(@$aur_ids), progress => $x++});

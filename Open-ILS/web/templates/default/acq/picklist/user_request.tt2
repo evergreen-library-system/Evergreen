@@ -8,10 +8,6 @@
         <div dojoType="dijit.layout.ContentPane">
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
                 <div>[% ctx.page_title %]</div>
-                <div>
-                    <button dojoType="dijit.form.Button" onClick="rGrid.setNoHoldSelected()">Set No Hold on Selected</button>
-                    <button dojoType="dijit.form.Button" onClick="rGrid.cancelSelected()">Cancel Selected</button>
-                </div>
             </div>
             <div>
                 <span>Context Org Unit</span>
@@ -50,7 +46,18 @@
                     <button dojoType="dijit.form.Button" onClick="location.href=oilsBasePath+'/acq/picklist/user_request'">[% ctx.page_title %]</button>
                     <button dojoType="dijit.form.Button" onClick="fooPicklist()"><span id="add_to_picklist">Add to Picklist</span><span id="view_picklist">View Picklist</span></button>
                     <button dojoType="dijit.form.Button" onClick="setNoHold()">Set No Hold</button>
-                    <button dojoType="dijit.form.Button" onClick="cancelRequest()">Cancel Request with Reason</button>
+                    <span dojoType="dijit.form.DropDownButton">
+                        <span>Cancel Request</span>
+                        <span dojoType="dijit.TooltipDialog">
+                            <label for="acq-ur-cancel-reason">
+                                Reason:
+                            </label>
+                            <span id="acq-ur-cancel-reason"></span>
+                            <button jsId="acqUrCancelReasonSubmit"
+                                dojoType="dijit.form.Button"
+                                type="submit">Cancel Request</button>
+                        </span>
+                    </span>
                 </div>
             </div>
             <div id="detail_content_pane" />

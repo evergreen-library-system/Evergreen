@@ -6,18 +6,17 @@ dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.widget.EditPane');
 dojo.require("dijit.layout.StackContainer");
 dojo.require('openils.PermaCrud');
+dojo.requireLocalization("openils.acq", "acq");
 
 var contextOrg;
 var aur_obj;
+var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 
 function setup() {
-
     if(reqId) {
         drawRequest();
     } else {
         drawList();
-        rGrid.cancelSelected = function() { doSelected('open-ils.acq.user_request.cancel.batch') };
-        rGrid.setNoHoldSelected = function() { doSelected('open-ils.acq.user_request.set_no_hold.batch') };
     }
 }
 
@@ -30,11 +29,11 @@ function drawRequest() {
 
     // toggle the View Picklist/Add to Picklist button label
     if (aur_obj.lineitem()) {
-        openils.Util.addCSSClass( document.getElementById('add_to_picklist'), 'hidden' );
-        openils.Util.removeCSSClass( document.getElementById('view_picklist'), 'hidden' );
+        openils.Util.show( 'add_to_picklist' );
+        openils.Util.hide( 'view_picklist' );
     } else {
-        openils.Util.addCSSClass( document.getElementById('view_picklist'), 'hidden' );
-        openils.Util.removeCSSClass( document.getElementById('add_to_picklist'), 'hidden' );
+        openils.Util.show( 'view_picklist' );
+        openils.Util.hide( 'add_to_picklist' );
     }
 
     // draw a detail page for a particular request
@@ -50,6 +49,53 @@ function drawRequest() {
 
     // including ability to add request to a picklist
     // and to "reject" it (aka apply a cancel reason)
+
+    dojo.byId("acq-ur-cancel-reason").innerHTML = '';
+    var widget = new openils.widget.AutoFieldWidget({
+        "fmField": "cancel_reason",
+        "fmClass": "aur",
+        "parentNode": dojo.byId("acq-ur-cancel-reason"),
+        "orgLimitPerms": ["CREATE_PURCHASE_REQUEST"],
+        "forceSync": true
+    });
+
+    widget.build(
+        function(w, ww) {
+            acqUrCancelReasonSubmit.onClick = function() {
+                if (w.attr("value")) {
+                    if (confirm( localeStrings.UR_CANCEL_CONFIRM )) {
+                        fieldmapper.standardRequest(
+                            [ 'open-ils.acq', 'open-ils.acq.user_request.cancel.batch' ],
+                            {   async: true,
+                                params: [openils.User.authtoken, [reqId], w.attr("value")],
+                                oncomplete: function(r) {
+                                    location.href = location.href; // kludge to reload the interface
+                                }
+                            }
+                        );
+                    }
+                }
+            };
+        }
+    );
+}
+
+function fooPicklist() {
+    if (aur_obj.lineitem()) {
+        viewPicklist();
+    } else {
+        addToPicklist();
+    }
+}
+
+function viewPicklist() {
+    var lineitem = fieldmapper.standardRequest(
+        [ 'open-ils.acq', 'open-ils.acq.lineitem.retrieve' ],
+        {
+            params: [openils.User.authtoken, aur_obj.lineitem()]
+        }
+    );
+    location.href = oilsBasePath + "/acq/picklist/view/" + lineitem.picklist();
 }
 
 function fooPicklist() {
@@ -85,19 +131,6 @@ function setNoHold() {
     // reqId, from detail view
     fieldmapper.standardRequest(
         [ 'open-ils.acq', 'open-ils.acq.user_request.set_no_hold.batch' ],
-        {   async: true,
-            params: [openils.User.authtoken, [reqId]],
-            oncomplete: function(r) {
-                drawRequest();
-            }
-        }
-    );
-}
-
-function cancelRequest() {
-    // reqId, from detail view
-    fieldmapper.standardRequest(
-        [ 'open-ils.acq', 'open-ils.acq.user_request.cancel.batch' ],
         {   async: true,
             params: [openils.User.authtoken, [reqId]],
             oncomplete: function(r) {
@@ -159,55 +192,6 @@ function buildGrid() {
             }
         }
     );
-}
-
-function doSelected(method) {
-    try {
-        var ids = [];
-        dojo.forEach(
-            rGrid.getSelectedItems(),
-            function(item) {
-                ids.push( rGrid.store.getValue(item,'id') );
-            }
-        );
-        fieldmapper.standardRequest(
-            [ 'open-ils.acq', method ],
-            {   async: true,
-                params: [openils.User.authtoken, ids],
-                onresponse: function(r) {
-                    try {
-                        var result = openils.Util.readResponse(r);
-                        if (typeof result.ilsevent != 'undefined') { throw(result); }
-                    } catch(E) {
-                        //dump('Error in acq/events.js, doSelected(), onresponse(): ' + E);
-                        throw(E);
-                    }
-                },
-                onerror: function(r) {
-                    try {
-                        var result = openils.Util.readResponse(r);
-                        throw(result);
-                    } catch(E) {
-                        //dump('Error in acq/events.js, doSelected(), onerror(): ' + E);
-                        throw(E);
-                    }
-                },
-                oncomplete: function(r) {
-                    try {
-                        var result = openils.Util.readResponse(r);
-                        rGrid.resetStore();
-                        buildGrid();
-                    } catch(E) {
-                        //dump('Error in acq/events.js, doSelected(), oncomplete(): ' + E);
-                        throw(E);
-                    }
-                }
-            }
-        );
-    } catch(E) {
-        //dump('Error in acq/events.js, doSelected(): ' + E);
-        throw(E);
-    }
 }
 
 openils.Util.addOnLoad(setup);
