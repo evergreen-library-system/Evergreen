@@ -745,7 +745,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="atevdef" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_definition" oils_persist:tablename="action_trigger.event_definition" reporter:label="Trigger Event Definition">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_definition_id_seq">
 			<field reporter:label="Definition ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Enabled" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Owning Library" name="owner"  reporter:datatype="org_unit"/>
 			<field reporter:label="Hook" name="hook"  reporter:datatype="link"/>
 			<field reporter:label="Validator" name="validator"  reporter:datatype="link"/>
