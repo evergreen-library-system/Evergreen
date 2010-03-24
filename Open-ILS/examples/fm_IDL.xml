@@ -5261,6 +5261,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Descriptive Attributes" name="attributes" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Line Item Details" name="lineitem_details" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Line Item Notes" name="lineitem_notes" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Distribution Formulas" name="distribution_formulas" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="selector" reltype="has_a" key="id" map="" class="au"/>
@@ -5274,6 +5275,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="lineitem_details" reltype="has_many" key="lineitem" map="" class="acqlid"/>
 			<link field="lineitem_notes" reltype="has_many" key="lineitem" map="" class="acqlin"/>
 			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
+			<link field="distribution_formulas" reltype="has_many" key="lineitem" map="" class="acqdfa"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER CREATE_PICKLIST VIEW_PICKLIST">
