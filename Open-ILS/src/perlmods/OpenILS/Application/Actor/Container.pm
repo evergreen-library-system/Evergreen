@@ -7,6 +7,10 @@ use Data::Dumper;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Cache;
+use Digest::MD5 qw(md5_hex);
+use OpenSRF::Utils::JSON;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -504,6 +508,100 @@ sub container_update {
 	return $stat;
 }
 
+
+
+__PACKAGE__->register_method(
+	method	=> "anon_cache",
+	api_name	=> "open-ils.actor.anon_cache.set_value",
+    signature => {
+        desc => q/
+            Sets a value in the anon web cache.  If the session key is
+            undefined, one will be automatically generated.
+        /,
+        params => [
+		    {desc => 'Session key', type => 'string'},
+            {
+                desc => q/Field name.  The name of the field in this cache session whose value to set/, 
+                type => 'string'
+            },
+            {
+                desc => q/The cached value.  This can be any type of object (hash, array, string, etc.)/,
+                type => 'any'
+            },
+        ],
+        return => {
+            desc => 'session key on success, undef on error',
+            type => 'string'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+	method	=> "anon_cache",
+	api_name	=> "open-ils.actor.anon_cache.get_value",
+    signature => {
+        desc => q/
+            Returns the cached data at the specified field within the specified cache session.
+        /,
+        params => [
+		    {desc => 'Session key', type => 'string'},
+            {
+                desc => q/Field name.  The name of the field in this cache session whose value to set/, 
+                type => 'string'
+            },
+        ],
+        return => {
+            desc => 'cached value on success, undef on error',
+            type => 'any'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+	method	=> "anon_cache",
+	api_name	=> "open-ils.actor.anon_cache.delete_session",
+    signature => {
+        desc => q/
+            Deletes a cache session.
+        /,
+        params => [
+		    {desc => 'Session key', type => 'string'},
+        ],
+        return => {
+            desc => 'Session key',
+            type => 'string'
+        }
+    }
+);
+
+sub anon_cache {
+    my($self, $conn, $ses_key, $field_key, $value) = @_;
+
+    my $sc = OpenSRF::Utils::SettingsClient->new;
+	my $cache = OpenSRF::Utils::Cache->new('global');
+    my $cache_timeout = $sc->config_value(cache => global => 'max_anon_cache_time') || 1800; # 30 minutes
+    my $cache_size = $sc->config_value(cache => global => 'max_anon_cache_size') || 102400; # 100k
+
+    if($self->api_name =~ /delete_session/) {
+
+       return $cache->delete_cache($ses_key); 
+
+    }  elsif( $self->api_name =~ /set_value/ ) {
+
+        $ses_key = md5_hex(time . rand($$)) unless $ses_key;
+        my $blob = $cache->get_cache($ses_key) || {};
+        $blob->{$field_key} = $value;
+        return undef if 
+            length(OpenSRF::Utils::JSON->perl2JSON($blob)) > $cache_size; # bytes, characters, whatever ;)
+        $cache->put_cache($ses_key, $blob, $cache_timeout);
+        return $ses_key;
+
+    } else {
+
+        my $blob = $cache->get_cache($ses_key) or return undef;
+        return $blob->{$field_key};
+    }
+}
 
 
 
