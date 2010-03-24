@@ -132,7 +132,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<!-- Actually in the DB -->
 	<class id="vmp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::merge_profile" oils_persist:tablename="vandelay.merge_profile" reporter:label="Bib Import Merge Profile">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.merge_profile_id_seq">
-			<field reporter:label="Field ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Field ID" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Add Specification" name="add_spec" reporter:datatype="text"/>
