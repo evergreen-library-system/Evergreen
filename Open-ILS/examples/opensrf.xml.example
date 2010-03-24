@@ -282,6 +282,15 @@ vim:et:ts=4:sw=4:
                 </servers>
                 <max_cache_time>86400</max_cache_time>
             </global>
+            <anon>
+                <!-- anonymous cache.  currently, primarily used for web session caching -->
+                <servers>
+                    <server>localhost:11211</server>
+                </servers>
+                <max_cache_time>1800</max_cache_time>
+                <!-- maximum size of a single cache entry / default = 100k-->
+                <max_cache_size>102400</max_cache_size>
+            </anon>
         </cache>
 
         <apps>

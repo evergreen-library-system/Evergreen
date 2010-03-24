@@ -578,9 +578,9 @@ sub anon_cache {
     my($self, $conn, $ses_key, $field_key, $value) = @_;
 
     my $sc = OpenSRF::Utils::SettingsClient->new;
-	my $cache = OpenSRF::Utils::Cache->new('global');
-    my $cache_timeout = $sc->config_value(cache => global => 'max_anon_cache_time') || 1800; # 30 minutes
-    my $cache_size = $sc->config_value(cache => global => 'max_anon_cache_size') || 102400; # 100k
+	my $cache = OpenSRF::Utils::Cache->new('anon');
+    my $cache_timeout = $sc->config_value(cache => anon => 'max_cache_time') || 1800; # 30 minutes
+    my $cache_size = $sc->config_value(cache => anon => 'max_cache_size') || 102400; # 100k
 
     if($self->api_name =~ /delete_session/) {
 
