@@ -2,6 +2,8 @@ package OpenILS::Application::Storage::Driver::Pg::QueryParser;
 use OpenILS::Application::Storage::QueryParser;
 use base 'QueryParser';
 use OpenSRF::Utils::JSON;
+use OpenILS::Application::AppUtils;
+my $U = 'OpenILS::Application::AppUtils';
 
 sub init {
     my $class = shift;
@@ -44,25 +46,25 @@ sub toSQL {
     return $self->parse_tree->toSQL;
 }
 
-sub field_id_map {
+sub facet_field_id_map {
     my $self = shift;
     my $map = shift;
 
-    $self->custom_data->{field_id_map} ||= {};
-    $self->custom_data->{field_id_map} = $map if ($map);
-    return $self->custom_data->{field_id_map};
+    $self->custom_data->{facet_field_id_map} ||= {};
+    $self->custom_data->{facet_field_id_map} = $map if ($map);
+    return $self->custom_data->{facet_field_id_map};
 }
 
-sub add_field_id_map {
+sub add_facet_field_id_map {
     my $self = shift;
     my $class = shift;
     my $field = shift;
     my $id = shift;
     my $weight = shift;
 
-    $self->add_search_field( $class => $field );
-    $self->field_id_map->{by_id}{$id} = { classname => $class, field => $field, weight => $weight };
-    $self->field_id_map->{by_class}{$class}{$field} = $id;
+    $self->add_facet_field( $class => $field );
+    $self->facet_field_id_map->{by_id}{$id} = { classname => $class, field => $field, weight => $weight };
+    $self->facet_field_id_map->{by_class}{$class}{$field} = $id;
 
     return {
         by_id => { $id => { classname => $class, field => $field, weight => $weight } },
@@ -70,14 +72,14 @@ sub add_field_id_map {
     };
 }
 
-sub field_class_by_id {
+sub facet_field_class_by_id {
     my $self = shift;
     my $id = shift;
 
-    return $self->field_id_map->{by_id}{$id};
+    return $self->facet_field_id_map->{by_id}{$id};
 }
 
-sub field_ids_by_class {
+sub facet_field_ids_by_class {
     my $self = shift;
     my $class = shift;
     my $field = shift;
@@ -85,10 +87,57 @@ sub field_ids_by_class {
     return undef unless ($class);
 
     if ($field) {
-        return [$self->field_id_map->{by_class}{$class}{$field}];
+        return [$self->facet_field_id_map->{by_class}{$class}{$field}];
     }
 
-    return [values( %{ $self->field_id_map->{by_class}{$class} } )];
+    return [values( %{ $self->facet_field_id_map->{by_class}{$class} } )];
+}
+
+sub search_field_id_map {
+    my $self = shift;
+    my $map = shift;
+
+    $self->custom_data->{search_field_id_map} ||= {};
+    $self->custom_data->{search_field_id_map} = $map if ($map);
+    return $self->custom_data->{search_field_id_map};
+}
+
+sub add_search_field_id_map {
+    my $self = shift;
+    my $class = shift;
+    my $field = shift;
+    my $id = shift;
+    my $weight = shift;
+
+    $self->add_search_field( $class => $field );
+    $self->search_field_id_map->{by_id}{$id} = { classname => $class, field => $field, weight => $weight };
+    $self->search_field_id_map->{by_class}{$class}{$field} = $id;
+
+    return {
+        by_id => { $id => { classname => $class, field => $field, weight => $weight } },
+        by_class => { $class => { $field => $id } }
+    };
+}
+
+sub search_field_class_by_id {
+    my $self = shift;
+    my $id = shift;
+
+    return $self->search_field_id_map->{by_id}{$id};
+}
+
+sub search_field_ids_by_class {
+    my $self = shift;
+    my $class = shift;
+    my $field = shift;
+
+    return undef unless ($class);
+
+    if ($field) {
+        return [$self->search_field_id_map->{by_class}{$class}{$field}];
+    }
+
+    return [values( %{ $self->search_field_id_map->{by_class}{$class} } )];
 }
 
 sub relevance_bumps {
@@ -124,15 +173,16 @@ sub add_relevance_bump {
 }
 
 
-sub initialize_field_id_map {
+sub initialize_search_field_id_map {
     my $self = shift;
     my $cmf_list = shift;
 
     for my $cmf (@$cmf_list) {
-        __PACKAGE__->add_field_id_map( $cmf->field_class, $cmf->name, $cmf->id, $cmf->weight );
+        __PACKAGE__->add_search_field_id_map( $cmf->field_class, $cmf->name, $cmf->id, $cmf->weight ) if ($U->is_true($cmf->search_field));
+        __PACKAGE__->add_facet_field_id_map( $cmf->field_class, $cmf->name, $cmf->id, $cmf->weight ) if ($U->is_true($cmf->facet_field));
     }
 
-    return $self->field_id_map;
+    return $self->search_field_id_map;
 }
 
 sub initialize_relevance_bumps {
@@ -140,7 +190,7 @@ sub initialize_relevance_bumps {
     my $sra_list = shift;
 
     for my $sra (@$sra_list) {
-        my $c = $self->field_class_by_id( $sra->field );
+        my $c = $self->search_field_class_by_id( $sra->field );
         __PACKAGE__->add_relevance_bump( $c->{classname}, $c->{field}, $sra->bump_type, $sra->multiplier );
     }
 
@@ -152,7 +202,7 @@ sub initialize_normalizers {
     my $tree = shift; # open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic { "id" : { "!=" : null } }, { "flesh" : 1, "flesh_fields" : { "cmfinm" : ["norm"] }, "order_by" : [{ "class" : "cmfinm", "field" : "pos" }] }
 
     for my $cmfinm ( @$tree ) {
-        my $field_info = $self->field_class_by_id( $cmfinm->field );
+        my $field_info = $self->search_field_class_by_id( $cmfinm->field );
         __PACKAGE__->add_query_normalizer( $field_info->{classname}, $field_info->{field}, $cmfinm->norm->func, OpenSRF::Utils::JSON->JSON2perl($cmfinm->params) );
     }
 }
@@ -168,7 +218,7 @@ sub initialize {
 
     return $_complete if ($_complete);
 
-    $self->initialize_field_id_map( $args{config_metabib_field} )
+    $self->initialize_search_field_id_map( $args{config_metabib_field} )
         if ($args{config_metabib_field});
 
     $self->initialize_relevance_bumps( $args{search_relevance_adjustment} )
@@ -188,43 +238,49 @@ sub initialize {
 
 sub TEST_SETUP {
     
-    __PACKAGE__->add_field_id_map( series => seriestitle => 1 => 1 );
+    __PACKAGE__->add_search_field_id_map( series => seriestitle => 1 => 1 );
+
+    __PACKAGE__->add_search_field_id_map( series => seriestitle => 1 => 1 );
     __PACKAGE__->add_relevance_bump( series => seriestitle => first_word => 1.5 );
     __PACKAGE__->add_relevance_bump( series => seriestitle => full_match => 20 );
     
-    __PACKAGE__->add_field_id_map( title => abbreviated => 2 => 1 );
+    __PACKAGE__->add_search_field_id_map( title => abbreviated => 2 => 1 );
     __PACKAGE__->add_relevance_bump( title => abbreviated => first_word => 1.5 );
     __PACKAGE__->add_relevance_bump( title => abbreviated => full_match => 20 );
     
-    __PACKAGE__->add_field_id_map( title => translated => 3 => 1 );
+    __PACKAGE__->add_search_field_id_map( title => translated => 3 => 1 );
     __PACKAGE__->add_relevance_bump( title => translated => first_word => 1.5 );
     __PACKAGE__->add_relevance_bump( title => translated => full_match => 20 );
     
-    __PACKAGE__->add_field_id_map( title => proper => 6 => 1 );
+    __PACKAGE__->add_search_field_id_map( title => proper => 6 => 1 );
     __PACKAGE__->add_query_normalizer( title => proper => 'naco_normalize' );
     __PACKAGE__->add_relevance_bump( title => proper => first_word => 1.5 );
     __PACKAGE__->add_relevance_bump( title => proper => full_match => 20 );
     __PACKAGE__->add_relevance_bump( title => proper => word_order => 10 );
     
-    __PACKAGE__->add_field_id_map( author => coporate => 7 => 1 );
+    __PACKAGE__->add_search_field_id_map( author => coporate => 7 => 1 );
     __PACKAGE__->add_relevance_bump( author => coporate => first_word => 1.5 );
     __PACKAGE__->add_relevance_bump( author => coporate => full_match => 20 );
     
-    __PACKAGE__->add_field_id_map( author => personal => 8 => 1 );
+    __PACKAGE__->add_facet_field_id_map( author => personal => 8 => 1 );
+
+    __PACKAGE__->add_search_field_id_map( author => personal => 8 => 1 );
     __PACKAGE__->add_relevance_bump( author => personal => first_word => 1.5 );
     __PACKAGE__->add_relevance_bump( author => personal => full_match => 20 );
     __PACKAGE__->add_query_normalizer( author => personal => 'naco_normalize' );
     __PACKAGE__->add_query_normalizer( author => personal => 'split_date_range' );
     
-    __PACKAGE__->add_field_id_map( subject => topic => 14 => 1 );
+    __PACKAGE__->add_facet_field_id_map( subject => topic => 14 => 1 );
+
+    __PACKAGE__->add_search_field_id_map( subject => topic => 14 => 1 );
     __PACKAGE__->add_relevance_bump( subject => topic => first_word => 1 );
     __PACKAGE__->add_relevance_bump( subject => topic => full_match => 1 );
     
-    __PACKAGE__->add_field_id_map( subject => complete => 16 => 1 );
+    __PACKAGE__->add_search_field_id_map( subject => complete => 16 => 1 );
     __PACKAGE__->add_relevance_bump( subject => complete => first_word => 1 );
     __PACKAGE__->add_relevance_bump( subject => complete => full_match => 1 );
     
-    __PACKAGE__->add_field_id_map( keyword => keyword => 15 => 1 );
+    __PACKAGE__->add_search_field_id_map( keyword => keyword => 15 => 1 );
     __PACKAGE__->add_relevance_bump( keyword => keyword => first_word => 1 );
     __PACKAGE__->add_relevance_bump( keyword => keyword => full_match => 1 );
     
@@ -506,7 +562,7 @@ sub flatten {
 
                 my $node_rank = $node->rank . " * ${talias}_weight.weight";
 
-                $from .= "\n\tLEFT JOIN (\n\t\tSELECT *\n\t\t  FROM $table\n\t\t  WHERE index_vector @@ (" .$node->tsquery . ')';
+                $from .= "\n\tLEFT JOIN (\n\t\tSELECT * /* search */\n\t\t  FROM $table\n\t\t  WHERE index_vector @@ (" .$node->tsquery . ')';
 
                 my @bump_fields;
                 if (@{$node->fields} > 0) {
@@ -541,6 +597,26 @@ sub flatten {
 
                 push @rank_list, $node_rank;
 
+            } elsif ($node->isa( 'QueryParser::query_plan::facet' )) {
+
+                my $table = $node->table;
+                my $talias = $node->table_alias;
+
+                $from .= "\n\tJOIN (\n\t\tSELECT * /* facet */\n\t\t  FROM $table\n\t\t  WHERE value IN (\$_$$\$" . join("\$_$$\$,\$_$$\$", @{$node->values}) . "\$_$$\$)".
+                         "\n\t\t\tAND field IN (SELECT id FROM config.metabib_field WHERE field_class = \$_$$\$". $node->classname ."\$_$$\$ AND facet_field";
+
+                if (@{$node->fields} > 0) {
+                    $from .= " AND name IN (";
+                    $from .= "\$_$$\$" . join("\$_$$\$,\$_$$\$", @{$node->fields}) . "\$_$$\$)";
+                }
+
+                $from .= ")";
+
+                my $core_limit = $self->QueryParser->core_limit || 25000;
+                $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = $talias.source)";
+
+                $where .= 'TRUE';
+
             } else {
                 my $subnode = $node->flatten;
 
@@ -563,6 +639,39 @@ sub flatten {
 #-------------------------------
 package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::filter;
 use base 'QueryParser::query_plan::filter';
+
+#-------------------------------
+package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::facet;
+use base 'QueryParser::query_plan::facet';
+
+sub classname {
+    my $self = shift;
+    my ($classname) = split '\|', $self->name;
+    return $classname;
+}
+
+sub table {
+    my $self = shift;
+    return 'metabib.' . $self->classname . '_field_entry';
+}
+
+sub fields {
+    my $self = shift;
+    my ($classname,@fields) = split '\|', $self->name;
+    return \@fields;
+}
+
+sub table_alias {
+    my $self = shift;
+
+    my $table_alias = "$self";
+    $table_alias =~ s/^.*\(0(x[0-9a-fA-F]+)\)$/$1/go;
+    $table_alias .= '_' . $self->name;
+    $table_alias =~ s/\|/_/go;
+
+    return $table_alias;
+}
+
 
 #-------------------------------
 package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::modifier;

@@ -14,6 +14,11 @@ our %parser_config = (
     }
 );
 
+sub facet_class_count {
+    my $self = shift;
+    return @{$self->facet_classes};
+}
+
 sub search_class_count {
     my $self = shift;
     return @{$self->search_classes};
@@ -106,6 +111,19 @@ sub add_search_modifier {
     return $modifier;
 }
 
+sub add_facet_class {
+    my $pkg = shift;
+    $pkg = ref($pkg) || $pkg;
+    my $class = shift;
+
+    return $class if (grep { $_ eq $class } @{$pkg->facet_classes});
+
+    push @{$pkg->facet_classes}, $class;
+    $pkg->facet_fields->{$class} = [];
+
+    return $class;
+}
+
 sub add_search_class {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
@@ -132,6 +150,16 @@ sub operator {
     $parser_config{$class}{operators}{$opname} = $op if ($op);
 
     return $parser_config{$class}{operators}{$opname};
+}
+
+sub facet_classes {
+    my $class = shift;
+    $class = ref($class) || $class;
+    my $classes = shift;
+
+    $parser_config{$class}{facet_classes} ||= [];
+    $parser_config{$class}{facet_classes} = $classes if (ref($classes) && @$classes);
+    return $parser_config{$class}{facet_classes};
 }
 
 sub search_classes {
@@ -188,6 +216,19 @@ sub default_search_class {
     return $QueryParser::parser_config{$pkg}{default_class};
 }
 
+sub remove_facet_class {
+    my $pkg = shift;
+    $pkg = ref($pkg) || $pkg;
+    my $class = shift;
+
+    return $class if (!grep { $_ eq $class } @{$pkg->facet_classes});
+
+    $pkg->facet_classes( [ grep { $_ ne $class } @{$pkg->facet_classes} ] );
+    delete $QueryParser::parser_config{$pkg}{facet_fields}{$class};
+
+    return $class;
+}
+
 sub remove_search_class {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
@@ -199,6 +240,29 @@ sub remove_search_class {
     delete $QueryParser::parser_config{$pkg}{fields}{$class};
 
     return $class;
+}
+
+sub add_facet_field {
+    my $pkg = shift;
+    $pkg = ref($pkg) || $pkg;
+    my $class = shift;
+    my $field = shift;
+
+    $pkg->add_facet_class( $class );
+
+    return { $class => $field }  if (grep { $_ eq $field } @{$pkg->facet_fields->{$class}});
+
+    push @{$pkg->facet_fields->{$class}}, $field;
+
+    return { $class => $field };
+}
+
+sub facet_fields {
+    my $class = shift;
+    $class = ref($class) || $class;
+
+    $parser_config{$class}{facet_fields} ||= {};
+    return $parser_config{$class}{facet_fields};
 }
 
 sub add_search_field {
@@ -267,6 +331,19 @@ sub search_field_aliases {
 
     $parser_config{$class}{field_alias_map} ||= {};
     return $parser_config{$class}{field_alias_map};
+}
+
+sub remove_facet_field {
+    my $pkg = shift;
+    $pkg = ref($pkg) || $pkg;
+    my $class = shift;
+    my $field = shift;
+
+    return { $class => $field }  if (!$pkg->facet_fields->{$class} || !grep { $_ eq $field } @{$pkg->facet_fields->{$class}});
+
+    $pkg->facet_fields->{$class} = [ grep { $_ ne $field } @{$pkg->facet_fields->{$class}} ];
+
+    return { $class => $field };
 }
 
 sub remove_search_field {
@@ -372,7 +449,7 @@ sub decompose {
         $search_class_re .= '|' unless ($first_class);
         $first_class = 0;
         $search_class_re .= $class . '(?:\|\w+)*';
-        $seeen_class{$class} = 1;
+        $seen_classes{$class} = 1;
     }
 
     for my $class ( keys %{$pkg->search_class_aliases} ) {
@@ -386,8 +463,8 @@ sub decompose {
         $search_class_re .= '|' unless ($first_class);
         $first_class = 0;
 
-        $search_class_re .= $class . '(?:\|\w+)*' if (!$seeen_class{$class});
-        $seeen_class{$class} = 1;
+        $search_class_re .= $class . '(?:\|\w+)*' if (!$seen_classes{$class});
+        $seen_classes{$class} = 1;
     }
     $search_class_re .= '):';
 
@@ -412,6 +489,9 @@ sub decompose {
 
 
     # Build the filter and modifier uber-regexps
+    my $facet_re = '^\s*((?:' . join( '|', @{$pkg->facet_classes}) . ')(?:\|\w+)*)\[(.+?)\]';
+    warn " Facet RE: $facet_re\n" if $self->debug;
+
     my $filter_re = '^\s*(' . join( '|', @{$pkg->filters}) . ')\(([^()]+)\)';
     my $filter_as_class_re = '^\s*(' . join( '|', @{$pkg->filters}) . '):\s*(\S+)';
 
@@ -494,6 +574,15 @@ sub decompose {
             $struct->joiner( '|' );
 
             $last_type = 'OR';
+        } elsif ($self->facet_class_count && /$facet_re/) { # changing current class
+            warn "Encountered facet: $1 => $2\n" if $self->debug;
+
+            my $facet = $1;
+            my $facet_value = [ split '\s*#\s*', $2 ];
+            $struct->new_facet( $facet => $facet_value );
+            $_ = $';
+
+            $last_type = '';
         } elsif ($self->search_class_count && /$search_class_re/) { # changing current class
             warn "Encountered class change: $1\n" if $self->debug;
 
@@ -613,6 +702,18 @@ sub new_node {
     return $node;
 }
 
+sub new_facet {
+    my $self = shift;
+    my $pkg = ref($self) || $self;
+    my $name = shift;
+    my $args = shift;
+
+    my $node = do{$pkg.'::facet'}->new( plan => $self, name => $name, 'values' => $args );
+    $self->add_node( $node );
+
+    return $node;
+}
+
 sub new_filter {
     my $self = shift;
     my $pkg = ref($self) || $self;
@@ -720,6 +821,24 @@ sub add_modifier {
     return $self if (grep {$$_ eq $$modifier} @{$self->{modifiers}});
 
     push(@{$self->{modifiers}}, $modifier);
+
+    return $self;
+}
+
+sub facets {
+    my $self = shift;
+    $self->{facets} ||= [];
+    return $self->{facets};
+}
+
+sub add_facet {
+    my $self = shift;
+    my $facet = shift;
+
+    $self->{facets} ||= [];
+    return $self if (grep {$_->name eq $facet->name} @{$self->{facets}});
+
+    push(@{$self->{facets}}, $facet);
 
     return $self;
 }
@@ -904,6 +1023,32 @@ sub name {
 sub args {
     my $self = shift;
     return $self->{args};
+}
+
+#-------------------------------
+package QueryParser::query_plan::facet;
+
+sub new {
+    my $pkg = shift;
+    $pkg = ref($pkg) || $pkg;
+    my %args = @_;
+
+    return bless \%args => $pkg;
+}
+
+sub plan {
+    my $self = shift;
+    return $self->{plan};
+}
+
+sub name {
+    my $self = shift;
+    return $self->{name};
+}
+
+sub values {
+    my $self = shift;
+    return $self->{'values'};
 }
 
 #-------------------------------
