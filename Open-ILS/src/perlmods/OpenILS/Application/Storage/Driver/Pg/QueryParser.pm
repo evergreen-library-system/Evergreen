@@ -397,10 +397,11 @@ sub toSQL {
     }
 
     if (($filters{preferred_language} || $self->QueryParser->default_preferred_language) && ($filters{preferred_language_multiplier} || $self->QueryParser->default_preferred_language_multiplier)) {
-        $rel = "($rel) * CASE WHEN mrd.lang = ". $self->QueryParser->quote_value( $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language ) . " THEN ";
+        $rel = "($rel * CASE WHEN FIRST(mrd.item_lang) = ". $self->QueryParser->quote_value( $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language ) . " THEN ";
         $rel .= $filters{preferred_language_multiplier} ? $filters{preferred_language_multiplier} : $self->QueryParser->default_preferred_language_multiplier;
-        $rel .= " ELSE 1 END";
+        $rel .= " ELSE 1 END)";
     }
+    $rel .= "::NUMERIC";
 
     for my $f ( qw/audience vr_format item_type item_form lit_form language bib_level/ ) {
         my $col = $f;
@@ -436,20 +437,20 @@ sub toSQL {
             my $default = $desc eq 'DESC' ? '       ' : 'zzzzzz';
             $rank = <<"            SQL";
 ( COALESCE( FIRST ((
-                SELECT  LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM E'\\\\d+'),'0')::INT + 1 ))
+                SELECT  frt.value
                   FROM  metabib.full_rec frt
                   WHERE frt.record = m.source
                     AND frt.tag = 'tnf'
                     AND frt.subfield = 'a'
                   LIMIT 1
-        )),'$default'))
+        )),'$default'))::TEXT
             SQL
         } elsif ($sort_filter eq 'pubdate') {
             $rank = "COALESCE( FIRST(NULLIF(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),'')), '0' )::INT";
         } elsif ($sort_filter eq 'create_date') {
-            $rank = "( FIRST (( SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )";
+            $rank = "( FIRST (( SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )::TIMESTAMPTZ";
         } elsif ($sort_filter eq 'edit_date') {
-            $rank = "( FIRST (( SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )";
+            $rank = "( FIRST (( SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )::TIMESTAMPTZ";
         } elsif ($sort_filter eq 'author') {
             my $default = $desc eq 'DESC' ? '       ' : 'zzzzzz';
             $rank = <<"            SQL"
@@ -461,7 +462,7 @@ sub toSQL {
                     AND fra.subfield = 'a'
                   ORDER BY fra.tag::text::int
                   LIMIT 1
-        )),'$default'))
+        )),'$default'))::TEXT
             SQL
         } else {
             # default to rel ranking

@@ -2802,30 +2802,6 @@ sub query_parser_fts {
 
     }
 
-
-    # set the locale-based default prefered location
-    $parser->default_preferred_language( $args{preferred_language} );
-    if (!$parser->default_preferred_language) {
-		my $ses_locale = $client->session ? $client->session->session_locale : '';
-        $parser->default_preferred_language( $locale_map{ $ses_locale } );
-    }
-    $parser->default_preferred_language(
-        OpenSRF::Utils::SettingsClient->new->config_value(
-            apps => 'open-ils.storage' => app_settings => 'default_preferred_language'
-        )
-    ) if (!$parser->default_preferred_language);
-
-
-    # set the global default language multiplier
-    $parser->default_preferred_language_multiplier($args{preferred_language_weight});
-    $parser->default_preferred_language_multiplier($args{preferred_language_multiplier});
-    $parser->default_preferred_language_multiplier(
-        OpenSRF::Utils::SettingsClient->new->config_value(
-            apps => 'open-ils.storage' => app_settings => 'default_preferred_language_weight'
-        )
-    ) if (!$parser->default_preferred_language_multiplier);
-
-
     # I hope we have a query!
 	if (! $args{query} ) {
 		die "No query was passed to ".$self->api_name;
@@ -2842,6 +2818,33 @@ sub query_parser_fts {
     # parse the query and supply any query-level %arg-based defaults
     # we expect, and make use of, query, superpage, superpage_size, debug and core_limit args
     my $query = $parser->new( %args )->parse;
+
+
+    # set the locale-based default prefered location
+    if (!$query->parse_tree->find_filter('preferred_language')) {
+        $parser->default_preferred_language( $args{preferred_language} );
+        if (!$parser->default_preferred_language) {
+		    my $ses_locale = $client->session ? $client->session->session_locale : '';
+            $parser->default_preferred_language( $locale_map{ $ses_locale } );
+        }
+        $parser->default_preferred_language(
+            OpenSRF::Utils::SettingsClient->new->config_value(
+                apps => 'open-ils.storage' => app_settings => 'default_preferred_language'
+            )
+        ) if (!$parser->default_preferred_language);
+    }
+
+
+    # set the global default language multiplier
+    if (!$query->parse_tree->find_filter('preferred_language_weight') and !$query->parse_tree->find_filter('preferred_language_multiplier')) {
+        $parser->default_preferred_language_multiplier($args{preferred_language_weight});
+        $parser->default_preferred_language_multiplier($args{preferred_language_multiplier});
+        $parser->default_preferred_language_multiplier(
+            OpenSRF::Utils::SettingsClient->new->config_value(
+                apps => 'open-ils.storage' => app_settings => 'default_preferred_language_weight'
+            )
+        ) if (!$parser->default_preferred_language_multiplier);
+    }
 
     # gather the site, if one is specified, defaulting to the in-query version
 	my $ou = $args{org_unit};
@@ -3055,9 +3058,10 @@ sub query_parser_fts_wrapper {
 
     }
 
+    my $base_plan = $parser->new( query => $base_query )->parse;
 
-    $query = "preferred_language($args{preferred_language}) $query" if ($args{preferred_language});
-    $query = "preferred_language_weight($args{preferred_language_weight}) $query" if ($args{preferred_language_weight});
+    $query = "preferred_language($args{preferred_language}) $query" if ($args{preferred_language} and !$base_plan->parse_tree->find_filter('preferred_language'));
+    $query = "preferred_language_weight($args{preferred_language_weight}) $query" if ($args{preferred_language_weight} and !$base_plan->parse_tree->find_filter('preferred_language_weight') and !$base_plan->parse_tree->find_filter('preferred_language_multiplier'));
     $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
     $query = "limit($args{limit}) $query" if ($args{limit});
