@@ -28,6 +28,15 @@ function drawRequest() {
     // hide the grid and the context selector
     dijit.byId('stackContainer').forward();
 
+    // toggle the View Picklist/Add to Picklist button label
+    if (aur_obj.lineitem()) {
+        openils.Util.addCSSClass( document.getElementById('add_to_picklist'), 'hidden' );
+        openils.Util.removeCSSClass( document.getElementById('view_picklist'), 'hidden' );
+    } else {
+        openils.Util.addCSSClass( document.getElementById('view_picklist'), 'hidden' );
+        openils.Util.removeCSSClass( document.getElementById('add_to_picklist'), 'hidden' );
+    }
+
     // draw a detail page for a particular request
     var div = document.getElementById('detail_content_pane');
     while (div.lastChild) { div.removeChild( div.lastChild ); }
@@ -43,8 +52,26 @@ function drawRequest() {
     // and to "reject" it (aka apply a cancel reason)
 }
 
+function fooPicklist() {
+    if (aur_obj.lineitem()) {
+        viewPicklist();
+    } else {
+        addToPicklist();
+    }
+}
+
+function viewPicklist() {
+    var lineitem = fieldmapper.standardRequest(
+        [ 'open-ils.acq', 'open-ils.acq.lineitem.retrieve' ],
+        {
+            params: [openils.User.authtoken, aur_obj.lineitem()]
+        }
+    );
+    location.href = oilsBasePath + "/acq/picklist/view/" + lineitem.picklist();
+}
+
 function addToPicklist() {
-    // reqId
+    // reqId, from detail view
     location.href = oilsBasePath + "/acq/picklist/brief_record?ur=" + reqId + "&prepop=" + encodeURIComponent(js2JSON({
         "1": aur_obj.title() || aur_obj.article_title() || aur_obj.volume(),
         "2": aur_obj.author(),
@@ -55,13 +82,29 @@ function addToPicklist() {
 }
 
 function setNoHold() {
-    // reqId
-    alert('stub');
+    // reqId, from detail view
+    fieldmapper.standardRequest(
+        [ 'open-ils.acq', 'open-ils.acq.user_request.set_no_hold.batch' ],
+        {   async: true,
+            params: [openils.User.authtoken, [reqId]],
+            oncomplete: function(r) {
+                drawRequest();
+            }
+        }
+    );
 }
 
 function cancelRequest() {
-    // reqId
-    alert('stub');
+    // reqId, from detail view
+    fieldmapper.standardRequest(
+        [ 'open-ils.acq', 'open-ils.acq.user_request.cancel.batch' ],
+        {   async: true,
+            params: [openils.User.authtoken, [reqId]],
+            oncomplete: function(r) {
+                drawRequest();
+            }
+        }
+    );
 }
 
 // format the title data as id:title
