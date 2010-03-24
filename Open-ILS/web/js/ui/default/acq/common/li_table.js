@@ -1128,6 +1128,7 @@ function AcqLiTable() {
                         fmClass : 'acqlid',
                         labelFormat : (field == 'fund') ? fundLabelFormat : null,
                         searchFormat : (field == 'fund') ? fundSearchFormat : null,
+                        searchFilter : (field == 'fund') ? {"active": "t"} : null,
                         parentNode : dojo.query('[name='+field+']', row)[0],
                         orgLimitPerms : ['CREATE_PICKLIST'],
                         dijitArgs : {required:false},
@@ -1225,6 +1226,9 @@ function AcqLiTable() {
                     fmField : field,
                     labelFormat : (field == 'fund') ? fundLabelFormat : null,
                     searchFormat : (field == 'fund') ? fundSearchFormat : null,
+                    searchFilter : (field == "fund" && copy.fund()) ?
+                        {"-or": {"active": "t", "id": copy.fund()}} : null,
+                    noCache: true,
                     fmClass : 'acqlid',
                     parentNode : dojo.query('[name='+field+']', row)[0],
                     orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],

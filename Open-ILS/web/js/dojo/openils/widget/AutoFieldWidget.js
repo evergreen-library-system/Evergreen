@@ -443,7 +443,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 self._widgetLoaded();
             };
 
-            if(this.cache[self.auth].list[linkClass]) {
+            if(!this.noCache && this.cache[self.auth].list[linkClass]) {
                 oncomplete();
 
             } else {
