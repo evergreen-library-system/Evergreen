@@ -5,6 +5,18 @@ use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
 
+sub quote_value {
+    my $self = shift;
+    my $value = shift;
+
+    if ($value =~ /^\d/) { # may have to use non-$ quoting
+        $value =~ s/'/''/g;
+        $value =~ s/\\/\\\\/g;
+        return "E'$value'";
+    }
+    return "\$_$$\$$value\$_$$\$";
+}
+
 sub init {
     my $class = shift;
 
@@ -385,9 +397,7 @@ sub toSQL {
     }
 
     if (($filters{preferred_language} || $self->QueryParser->default_preferred_language) && ($filters{preferred_language_multiplier} || $self->QueryParser->default_preferred_language_multiplier)) {
-        $rel = "($rel) * CASE WHEN mrd.lang = \$_$$\$";
-        $rel .= $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language;
-        $rel .= "\$_$$\$ THEN ";
+        $rel = "($rel) * CASE WHEN mrd.lang = ". $self->QueryParser->quote_value( $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language ) . " THEN ";
         $rel .= $filters{preferred_language_multiplier} ? $filters{preferred_language_multiplier} : $self->QueryParser->default_preferred_language_multiplier;
         $rel .= " ELSE 1 END";
     }
@@ -398,7 +408,7 @@ sub toSQL {
         $filters{$f} = '';
         my ($filter) = $self->find_filter($f);
         if ($filter) {
-            $filters{$f} = "AND mrd.$col in (\$_$$\$" . join("\$_$$\$,\$_$$\$",@{$filter->args}) . "\$_$$\$)";
+            $filters{$f} = "AND mrd.$col in (" . join(",",map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ")";
         }
     }
 
@@ -468,30 +478,30 @@ sub toSQL {
     my ($between) = $self->find_filter('between');
 
     if ($before and @{$before->args} == 1) {
-        $before = "AND mrd.date1 <= \$_$$\$" . $before->args->[0] . "\$_$$\$";
+        $before = "AND mrd.date1 <= " . $self->QueryParser->quote_value($before->args->[0]);
     } else {
         $before = '';
     }
 
     if ($after and @{$after->args} == 1) {
-        $after = "AND mrd.date1 >= \$_$$\$" . $after->args->[0] . "\$_$$\$";
+        $after = "AND mrd.date1 >= " . $self->QueryParser->quote_value($after->args->[0]);
     } else {
         $after = '';
     }
 
     if ($during and @{$during->args} == 1) {
-        $during = "AND \$_$$\$" . $during->args->[0] . "\$_$$\$ BETWEEN mrd.date1 AND mrd.date2";
+        $during = "AND " . $self->QueryParser->quote_value($during->args->[0]) . " BETWEEN mrd.date1 AND mrd.date2";
     } else {
         $during = '';
     }
 
     if ($between and @{$between->args} == 2) {
-        $between = "AND mrd.date1 BETWEEN \$_$$\$" . $between->args->[0] . "\$_$$\$ AND \$_$$\$" . $between->args->[1] . "\$_$$\$";
+        $between = "AND mrd.date1 BETWEEN " . $self->QueryParser->quote_value($between->args->[0]) . " AND " . $self->QueryParser->quote_value($between->args->[1]);
     } else {
         $between = '';
     }
 
-    return <<SQL
+    my $sql = <<SQL;
 SELECT  $key AS id,
         ARRAY_ACCUM(DISTINCT m.source) AS records,
         $rel AS rel,
@@ -517,6 +527,9 @@ SELECT  $key AS id,
   ORDER BY 4 $desc, 5 DESC, 3 DESC
 SQL
 
+    warn $sql if $self->QueryParser->debug;
+    return $sql;
+
 }
 
 
@@ -531,15 +544,15 @@ sub rel_bump {
 
     if ($bump eq 'first_word') {
         return "/* first_word */ CASE WHEN naco_normalize(".$node->table_alias.".value) ".
-                    "LIKE naco_normalize(\$_$$\$".$only_atoms->[0]->content."\$_$$\$) \|\| '\%' ".
+                    "LIKE naco_normalize(".$self->QueryParser->quote_value($only_atoms->[0]->content).") \|\| '\%' ".
                     "THEN $multiplier ELSE 1 END";
     } elsif ($bump eq 'full_match') {
         return "/* full_match */ CASE WHEN naco_normalize(".$node->table_alias.".value) ".
-                    "LIKE". join( '||\'%\'||', map { " naco_normalize(\$_$$\$".$_->content."\$_$$\$) " } @$only_atoms ) .
+                    "LIKE". join( '||\'%\'||', map { " naco_normalize(".$self->QueryParser->quote_value($_->content).") " } @$only_atoms ) .
                     "THEN $multiplier ELSE 1 END";
     } elsif ($bump eq 'word_order') {
         return "/* word_order */ CASE WHEN naco_normalize(".$node->table_alias.".value) ".
-                    "LIKE '\%'||". join( '||\'%\'||', map { " naco_normalize(\$_$$\$".$_->content."\$_$$\$) " } @$only_atoms ) . '||\'%\' '.
+                    "LIKE '\%'||". join( '||\'%\'||', map { " naco_normalize(".$self->QueryParser->quote_value($_->content).") " } @$only_atoms ) . '||\'%\' '.
                     "THEN $multiplier ELSE 1 END";
     }
 
@@ -567,8 +580,8 @@ sub flatten {
                 my @bump_fields;
                 if (@{$node->fields} > 0) {
                     @bump_fields = @{$node->fields};
-                    $from .= "\n\t\t\tAND field IN (SELECT id FROM config.metabib_field WHERE field_class = \$_$$\$". $node->classname ."\$_$$\$ AND name IN (";
-                    $from .= "\$_$$\$" . join("\$_$$\$,\$_$$\$", @{$node->fields}) . "\$_$$\$))";
+                    $from .= "\n\t\t\tAND field IN (SELECT id FROM config.metabib_field WHERE field_class = ". $self->QueryParser->quote_value($node->classname) ." AND name IN (";
+                    $from .= join(",", map { $self->QueryParser->quote_value($_) } @{$node->fields}) . "))";
 
                 } else {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
@@ -592,7 +605,7 @@ sub flatten {
                 $from .= "\n\tJOIN config.metabib_field AS ${talias}_weight ON (${talias}_weight.id = $talias.field)\n";
 
                 $where .= '(' . $talias . ".id IS NOT NULL";
-                $where .= ' AND ' . join(' AND ', map {"$talias.value ~* \$_$$\$$_\$_$$\$"} @{$node->phrases}) if (@{$node->phrases});
+                $where .= ' AND ' . join(' AND ', map {"$talias.value ~* ".$self->QueryParser->quote_value($_)} @{$node->phrases}) if (@{$node->phrases});
                 $where .= ')';
 
                 push @rank_list, $node_rank;
@@ -602,12 +615,12 @@ sub flatten {
                 my $table = $node->table;
                 my $talias = $node->table_alias;
 
-                $from .= "\n\tJOIN (\n\t\tSELECT * /* facet */\n\t\t  FROM $table\n\t\t  WHERE value IN (\$_$$\$" . join("\$_$$\$,\$_$$\$", @{$node->values}) . "\$_$$\$)".
-                         "\n\t\t\tAND field IN (SELECT id FROM config.metabib_field WHERE field_class = \$_$$\$". $node->classname ."\$_$$\$ AND facet_field";
+                $from .= "\n\tJOIN (\n\t\tSELECT * /* facet */\n\t\t  FROM $table\n\t\t  WHERE value IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")".
+                         "\n\t\t\tAND field IN (SELECT id FROM config.metabib_field WHERE field_class = ". $self->QueryParser->quote_value($node->classname) ." AND facet_field";
 
                 if (@{$node->fields} > 0) {
                     $from .= " AND name IN (";
-                    $from .= "\$_$$\$" . join("\$_$$\$,\$_$$\$", @{$node->fields}) . "\$_$$\$)";
+                    $from .= join(",", map { $self->QueryParser->quote_value($_) } @{$node->fields}) . ")";
                 }
 
                 $from .= ")";
@@ -710,10 +723,10 @@ sub buildSQL {
         }
     }
 
-    my $sql = "\$_$$\$" . $self->content . "\$_$$\$";;
+    my $sql = $self->node->plan->QueryParser->quote_value($self->content);
 
     for my $n ( @norm_list ) {
-        $sql = join(', ', $sql, map { "\$_$$\$" . $_ . "\$_$$\$" } @{ $n->{params} });
+        $sql = join(', ', $sql, map { $self->node->plan->QueryParser->quote_value($_) } @{ $n->{params} });
         $sql = $n->{function}."($sql)";
     }
 
