@@ -3,5 +3,6 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/worksheet.js"></script>
 <script type="text/javascript">var liId = "[% ctx.page_args.0 %]";</script>
 <h1>Lineitem Worksheet</h1>
+<br/>
 <div id="acq-worksheet-contents"></div>
 [% END %]
