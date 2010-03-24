@@ -263,21 +263,34 @@ sub bucket_create {
 __PACKAGE__->register_method(
 	method	=> "item_create",
 	api_name	=> "open-ils.actor.container.item.create",
-	notes		=> <<"	NOTES");
-		PARAMS(authtoken, class, item)
-	NOTES
+    signature => {
+        desc => q/
+            Adds one or more items to an existing container
+        /,
+        params => [
+		    {desc => 'Authentication token', type => 'string'},
+		    {desc => 'Container class.  Can be "copy", "callnumber", "biblio", or "user"', type => 'string'},
+		    {desc => 'Item or items.  Can either be a single container item object, or an array of them', type => 'object'},
+        ],
+        return => {
+            desc => 'The ID of the newly created item(s).  In batch context, an array of IDs is returned'
+        }
+    }
+);
+
 
 sub item_create {
 	my( $self, $client, $authtoken, $class, $item ) = @_;
 
 	my $e = new_editor(xact=>1, authtoken=>$authtoken);
-	return $e->event unless $e->checkauth;
+	return $e->die_event unless $e->checkauth;
+    my $items = (ref $item eq 'ARRAY') ? $item : [$item];
 
 	my ( $bucket, $evt ) = $apputils->fetch_container_e($e, $item->bucket, $class);
 	return $evt if $evt;
 
 	if( $bucket->owner ne $e->requestor->id ) {
-		return $e->event unless
+		return $e->die_event unless
 			$e->allowed('CREATE_CONTAINER_ITEM');
 
 	} else {
@@ -285,31 +298,37 @@ sub item_create {
 #			$e->allowed('CREATE_CONTAINER_ITEM'); # new perm here?
 	}
 		
-	$item->clear_id;
+    for my $one_item (@$items) {
 
-	my $stat;
-	if( $class eq 'copy' ) {
-		return $e->event unless
-			$stat = $e->create_container_copy_bucket_item($item);
-	}
+        $one_item->clear_id;
 
-	if( $class eq 'callnumber' ) {
-		return $e->event unless
-			$stat = $e->create_container_call_number_bucket_item($item);
-	}
+        my $stat;
+        if( $class eq 'copy' ) {
+            return $e->die_event unless
+                $stat = $e->create_container_copy_bucket_item($one_item);
+        }
 
-	if( $class eq 'biblio' ) {
-		return $e->event unless
-			$stat = $e->create_container_biblio_record_entry_bucket_item($item);
-	}
+        if( $class eq 'callnumber' ) {
+            return $e->die_event unless
+                $stat = $e->create_container_call_number_bucket_item($one_item);
+        }
 
-	if( $class eq 'user') {
-		return $e->event unless
-			$stat = $e->create_container_user_bucket_item($item);
-	}
+        if( $class eq 'biblio' ) {
+            return $e->die_event unless
+                $stat = $e->create_container_biblio_record_entry_bucket_item($one_item);
+        }
+
+        if( $class eq 'user') {
+            return $e->die_event unless
+                $stat = $e->create_container_user_bucket_item($one_item);
+        }
+    }
 
 	$e->commit;
-	return $stat->id;
+
+    # CStoreEeditor inserts the id (pkey) on newly created objects
+    return [ map { $_->id } @$items ] if ref $item eq 'ARRAY';
+	return $item->id; 
 }
 
 
