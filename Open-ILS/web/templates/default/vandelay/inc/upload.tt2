@@ -19,7 +19,7 @@
             </td>
             <td>&vandelay.add.existing.queue;</td>
             <td>
-                <select jsId='vlUploadQueueSelector' dojoType='dijit.form.FilteringSelect'>
+                <select jsId='vlUploadQueueSelector' dojoType='dijit.form.FilteringSelect' required='false'>
                 </select>
             </td>
         </tr>
@@ -33,6 +33,18 @@
             <td>&vandelay.auto.import.auto_overlay_exact;</td>
             <td colspan='4'>
                 <input jsId='vlUploadQueueAutoOverlayExact' dojoType='dijit.form.CheckBox'/>
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.auto.import.auto_overlay_1match;</td>
+            <td colspan='4'>
+                <input jsId='vlUploadQueueAutoOverlay1Match' dojoType='dijit.form.CheckBox'/>
+            </td>
+        </tr>
+        <tr>
+            <td>&vandelay.auto.import.merge_profile;</td>
+            <td colspan='4'>
+                <div jsId='vlUploadMergeProfile' dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
             </td>
         </tr>
         <tr>

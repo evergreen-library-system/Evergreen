@@ -146,7 +146,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="ADMIN_MERGE_PROFILE CREATE_MERGE_PROFILE" context_field="owner"/>
-				<retrieve permission="ADMIN_MERGE_PROFILE CREATE_MERGE_PROFILE UPDATE_MERGE_PROFILE DELETE_MERGE_PROFILE" context_field="owner"/>
+				<retrieve permission="ADMIN_MERGE_PROFILE CREATE_MERGE_PROFILE UPDATE_MERGE_PROFILE DELETE_MERGE_PROFILE VIEW_MERGE_PROFILE" context_field="owner"/>
 				<update permission="ADMIN_MERGE_PROFILE UPDATE_MERGE_PROFILE" context_field="owner"/>
 				<delete permission="ADMIN_MERGE_PROFILE DELETE_MERGE_PROFILE" context_field="owner"/>
 			</actions>

@@ -42,6 +42,7 @@ dojo.require('openils.widget.GridColumnPicker');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.widget.AutoGrid');
+dojo.require('openils.widget.AutoFieldWidget');
 
 
 var globalDivs = [
@@ -101,6 +102,12 @@ function vlInit() {
         if(initCount == initNeeded)
             runStartupCommands();
     }
+
+    var profiles = new openils.PermaCrud().retrieveAll('vmp');
+    vlUploadMergeProfile.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(profiles)});
+    vlUploadMergeProfile.labelAttr = 'name';
+    vlUploadMergeProfile.searchAttr = 'name';
+    vlUploadMergeProfile.startup();
 
     // Fetch the bib and authority attribute definitions 
     vlFetchBibAttrDefs(function () { checkInitDone(); });
@@ -838,6 +845,17 @@ function vlImportRecordQueue(type, queueId, noMatchOnly, onload) {
         vlUploadQueueAutoOverlayExact.checked = false;
     }
 
+    if(vlUploadQueueAutoOverlay1Match.checked) {
+        options.auto_overlay_1match = true;
+        vlUploadQueueAutoOverlay1Match.checked = false;
+    }
+
+    
+    var profile = vlUploadMergeProfile.attr('value');
+    if(profile != null && profile != '') {
+        options.merge_profile = profile;
+    }
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', method],
         {   async: true,
@@ -877,7 +895,7 @@ function batchUpload() {
     currentType = dijit.byId('vl-record-type').getValue();
 
     var handleProcessSpool = function() {
-        if(vlUploadQueueAutoImport.checked || vlUploadQueueAutoOverlayExact.checked) {
+        if(vlUploadQueueAutoImport.checked || vlUploadQueueAutoOverlayExact.checked || vlUploadQueueAutoOverlay1Match.checked) {
 
             vlImportRecordQueue(
                 currentType, 
