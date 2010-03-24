@@ -190,7 +190,7 @@ CREATE TABLE query.from_relation (
 	class_name       TEXT,
 	subquery         INT           REFERENCES query.stored_query,
 	function_call    INT           REFERENCES query.expression,
-	table_alias      TEXT          NOT NULL,
+	table_alias      TEXT,
 	parent_relation  INT           REFERENCES query.from_relation
 	                               ON DELETE CASCADE
 	                               DEFERRABLE INITIALLY DEFERRED,
@@ -203,7 +203,7 @@ CREATE TABLE query.from_relation (
 	                               DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT join_or_core CHECK (
 	    ( parent_relation IS NULL AND join_type IS NULL 
-	      AND on_clause IS NULL and table_alias IS NULL )
+	      AND on_clause IS NULL )
 	    OR
 	    ( parent_relation IS NOT NULL AND join_type IS NOT NULL
 	      AND on_clause IS NOT NULL )
