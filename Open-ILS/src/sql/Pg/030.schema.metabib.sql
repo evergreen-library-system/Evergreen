@@ -41,6 +41,8 @@ CREATE TRIGGER metabib_title_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('title');
 
 CREATE INDEX metabib_title_field_entry_index_vector_idx ON metabib.title_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_title_field_entry_value_idx ON metabib.title_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_title_field_entry_source_idx ON metabib.title_field_entry (source);
 
 
 CREATE TABLE metabib.author_field_entry (
@@ -55,6 +57,8 @@ CREATE TRIGGER metabib_author_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('author');
 
 CREATE INDEX metabib_author_field_entry_index_vector_idx ON metabib.author_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_author_field_entry_value_idx ON metabib.author_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_author_field_entry_source_idx ON metabib.author_field_entry (source);
 
 
 CREATE TABLE metabib.subject_field_entry (
@@ -69,6 +73,7 @@ CREATE TRIGGER metabib_subject_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('subject');
 
 CREATE INDEX metabib_subject_field_entry_index_vector_idx ON metabib.subject_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_subject_field_entry_value_idx ON metabib.subject_field_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_subject_field_entry_source_idx ON metabib.subject_field_entry (source);
 
 
@@ -84,6 +89,8 @@ CREATE TRIGGER metabib_keyword_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
 
 CREATE INDEX metabib_keyword_field_entry_index_vector_idx ON metabib.keyword_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_keyword_field_entry_value_idx ON metabib.keyword_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_keyword_field_entry_source_idx ON metabib.keyword_field_entry (source);
 
 
 CREATE TABLE metabib.series_field_entry (
@@ -98,6 +105,8 @@ CREATE TRIGGER metabib_series_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('series');
 
 CREATE INDEX metabib_series_field_entry_index_vector_idx ON metabib.series_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_series_field_entry_value_idx ON metabib.series_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_series_field_entry_source_idx ON metabib.series_field_entry (source);
 
 
 CREATE TABLE metabib.rec_descriptor (

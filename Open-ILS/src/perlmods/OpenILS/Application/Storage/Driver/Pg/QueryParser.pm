@@ -622,7 +622,7 @@ sub flatten {
                 my $table = $node->table;
                 my $talias = $node->table_alias;
 
-                $from .= "\n\tJOIN (\n\t\tSELECT * /* facet */\n\t\t  FROM $table\n\t\t  WHERE value IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")".
+                $from .= "\n\tJOIN (\n\t\tSELECT * /* facet */\n\t\t  FROM $table\n\t\t  WHERE SUBSTRING(value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")".
                          "\n\t\t\tAND field IN (SELECT id FROM config.metabib_field WHERE field_class = ". $self->QueryParser->quote_value($node->classname) ." AND facet_field";
 
                 if (@{$node->fields} > 0) {
