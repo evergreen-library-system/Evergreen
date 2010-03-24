@@ -149,6 +149,10 @@ label[for="attr_search_type_scalar"] { vertical-align: top; }
 .acq-lit-distrib-applied-row th { border-bottom: 1px #999 solid;padding-bottom: 4px;}
 .acq-lit-table-spacer { height:20px; }
 .acq-lit-row td[name="selector"] { width:1.5em; font-weight:bold; color:blue; font-size:110%;}
+span[name="worksheet"] { padding: 0 6px; }
+
+#acq-worksheet-contents thead th { font-weight: bold; background-color: #ccc; text-align: center; border-bottom: 1px #000 solid; border-right: 1px #000 solid; padding: 0 6px; }
+#acq-worksheet-contents tbody td { text-align: left; vertical-align: top; border: 1px #999 inset; padding: 0 2px; }
 
 .acq-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
 .acq-notes-note-row { margin: 6px 0; }

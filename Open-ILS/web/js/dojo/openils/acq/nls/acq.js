@@ -37,5 +37,6 @@
     'NO' : "No",
     'VENDOR_SAYS_PREPAY_NOT_NEEDED': "The selected vendor does not necessarily require prepayment, according\nto records. Require prepayment on this PO anyway?",
     'VENDOR_SAYS_PREPAY_NEEDED': "The selected vendor requires prepayment, according to records.\nProceed anyway without required prepayment on this PO?",
-    'PREPAYMENT_REQUIRED_REMINDER': "This PO requires prepayment.  Are you certain you're ready to activate it?"
+    'PREPAYMENT_REQUIRED_REMINDER': "This PO requires prepayment.  Are you certain you're ready to activate it?",
+    'LI_FORMAT_ERROR': "Unexpected error retrieving formatted lineitem information."
 }

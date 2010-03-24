@@ -205,6 +205,9 @@ function AcqLiTable() {
             dojo.query('[name=jacket]', row)[0].setAttribute('src', '/opac/extras/ac/jacket/small/' + isbn);
         }
 
+        nodeByName("worksheet_link", row).href =
+            "/eg/acq/lineitem/worksheet/" + li.id();
+
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
