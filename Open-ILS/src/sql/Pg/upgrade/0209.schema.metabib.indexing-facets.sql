@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0208');
+INSERT INTO config.upgrade_log (version) VALUES ('0209');
 
 CREATE INDEX metabib_title_field_entry_value_idx ON metabib.title_field_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_author_field_entry_value_idx ON metabib.author_field_entry (SUBSTRING(value,1,1024));
