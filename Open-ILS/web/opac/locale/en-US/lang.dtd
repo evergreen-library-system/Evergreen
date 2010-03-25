@@ -688,6 +688,8 @@
 <!ENTITY staff.main.menu.admin.server_admin.acq.accesskey "A">
 <!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.label "Line Item Alerts">
 <!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey "L">
+<!ENTITY staff.main.menu.admin.server_admin.acq.fund_tag.label "Fund Tags">
+<!ENTITY staff.main.menu.admin.server_admin.acq.fund_tag.accesskey "F">
 <!ENTITY staff.main.menu.admin.server_admin.acq.cancel_reason.label "Cancel Reasons">
 <!ENTITY staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey "C">
 

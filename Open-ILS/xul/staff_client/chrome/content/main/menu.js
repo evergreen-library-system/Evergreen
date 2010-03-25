@@ -623,6 +623,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/lineitem_alert'); }
             ],
+            'cmd_server_admin_acq_fund_tag' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/fund_tag'); }
+            ],
             'cmd_server_admin_acq_cancel_reason' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/cancel_reason'); }
