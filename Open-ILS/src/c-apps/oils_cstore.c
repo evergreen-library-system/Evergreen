@@ -11,6 +11,7 @@
 #include "opensrf/osrf_json.h"
 #include "opensrf/log.h"
 #include "openils/oils_utils.h"
+#include "openils/oils_constants.h"
 #include <dbi/dbi.h>
 
 #include <time.h>
@@ -79,6 +80,11 @@ struct QueryFrameStruct {
 	int in_use;            // boolean
 };
 
+#ifdef PCRUD
+static int timeout_needs_resetting;
+static time_t time_next_reset;
+#endif
+
 int osrfAppChildInit();
 int osrfAppInitialize();
 void osrfAppChildExit();
@@ -144,7 +150,7 @@ static ClassInfo* add_joined_class( const char* alias, const char* classname );
 static void clear_query_stack( void );
 
 #ifdef PCRUD
-static jsonObject* verifyUserPCRUD( osrfMethodContext* );
+static const jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
 static char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
@@ -171,14 +177,16 @@ void osrfAppChildExit() {
 	osrfLogDebug(OSRF_LOG_MARK, "Child is exiting, disconnecting from database...");
 
 	int same = 0;
-	if (writehandle == dbhandle) same = 1;
+	if (writehandle == dbhandle)
+		same = 1;
+
 	if (writehandle) {
 		dbi_conn_query(writehandle, "ROLLBACK;");
 		dbi_conn_close(writehandle);
 		writehandle = NULL;
 	}
 	if (dbhandle && !same)
-	dbi_conn_close(dbhandle);
+		dbi_conn_close(dbhandle);
 
 	// XXX add cleanup of readHandles whenever that gets used
 
@@ -494,7 +502,7 @@ int osrfAppChildInit() {
 	osrfLogDebug(OSRF_LOG_MARK, "Database driver [%s] seems OK", driver);
 
 	osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
-			"port=%s, user=%s, pw=%s, db=%s", MODULENAME, host, port, user, pw, db );
+			"port=%s, user=%s, db=%s", MODULENAME, host, port, user, db );
 
 	if(host) dbi_conn_set_option(writehandle, "host", host );
 	if(port) dbi_conn_set_option_numeric( writehandle, "port", atoi(port) );
@@ -688,18 +696,21 @@ void userDataFree( void* blob ) {
 	installing userDataFree() as a different callback) for the session to free that
 	osrfHash before terminating.
 
-	This function is a callback for freeing items in the osrfHash.  If the item has a key
-	of "xact_id", the item is a transaction id for a transaction that is still pending.
-	It is just a character string, so we free it.
+	This function is a callback for freeing items in the osrfHash.  Currently we store
+	two things:
+	- Transaction id of a pending transaction; a character string.  Key: "xact_id".
+	- Authkey; a character string.  Key: "authkey".
+	- User object from the authentication server; a jsonObject.  Key: "user_login".
 
-	Currently the transaction ID is the only thing that we store in this osrfHash.  If we
-	ever store anything else in it, we will need to revisit this function so that it will
-	free whatever else needs freeing (which may or may not be just a character string).
+	If we ever store anything else in userData, we will need to revisit this function so
+	that it will free whatever else needs freeing.
 */
 static void sessionDataFree( char* key, void* item ) {
-	if ( !strcmp(key,"xact_id") ) {
+	if ( !strcmp( key, "xact_id" )
+	     || !strcmp( key, "authkey" ) ) {
 		free( item );
-	}
+	} else if( !strcmp( key, "user_login" ) )
+		jsonObjectFree( (jsonObject*) item );
 }
 
 /**
@@ -712,17 +723,18 @@ static void setXactId( osrfMethodContext* ctx ) {
 	if( ctx && ctx->session ) {
 		osrfAppSession* session = ctx->session;
 
+		osrfHash* cache = session->userData;
+
 		// If the session doesn't already have a hash, create one.  Make sure
 		// that the application session frees the hash when it terminates.
-		if( NULL == session->userData ) {
-			session->userData = osrfNewHash();
-			osrfHashSetCallback( (osrfHash*) session->userData, &sessionDataFree );
+		if( NULL == cache ) {
+			session->userData = cache = osrfNewHash();
+			osrfHashSetCallback( cache, &sessionDataFree );
 			ctx->session->userDataFree = &userDataFree;
 		}
 
 		// Save the transaction id in the hash, with the key "xact_id"
-		osrfHashSet( (osrfHash*) session->userData, strdup( session->session_id ),
-					  "xact_id" );
+		osrfHashSet( cache, strdup( session->session_id ), "xact_id" );
 	}
 }
 
@@ -751,6 +763,166 @@ static inline void clearXactId( osrfMethodContext* ctx ) {
 }
 /*@}*/
 
+#ifdef PCRUD
+/**
+	@brief Save the user's login in the userData for the current application session.
+	@param ctx Pointer to the method context.
+	@param user_login Pointer to the user login object to be cached (we cache the original,
+	not a copy of it).
+
+	If @a user_login is NULL, remove the user login if one is already cached.
+*/
+static void setUserLogin( osrfMethodContext* ctx, jsonObject* user_login ) {
+	if( ctx && ctx->session ) {
+		osrfAppSession* session = ctx->session;
+
+		osrfHash* cache = session->userData;
+
+		// If the session doesn't already have a hash, create one.  Make sure
+		// that the application session frees the hash when it terminates.
+		if( NULL == cache ) {
+			session->userData = cache = osrfNewHash();
+			osrfHashSetCallback( cache, &sessionDataFree );
+			ctx->session->userDataFree = &userDataFree;
+		}
+
+		if( user_login )
+			osrfHashSet( cache, user_login, "user_login" );
+		else
+			osrfHashRemove( cache, "user_login" );
+	}
+}
+
+/**
+	@brief Get the user login object for the current application session, if any.
+	@param ctx Pointer to the method context.
+	@return Pointer to the user login object if found; otherwise NULL.
+
+	The user login object was returned from the authentication server, and then cached so
+	we don't have to call the authentication server again for the same user.
+*/
+static const jsonObject* getUserLogin( osrfMethodContext* ctx ) {
+	if( ctx && ctx->session && ctx->session->userData )
+		return osrfHashGet( (osrfHash*) ctx->session->userData, "user_login" );
+	else
+		return NULL;
+}
+
+/**
+	@brief Save a copy of an authkey in the userData of the current application session.
+	@param ctx Pointer to the method context.
+	@param authkey The authkey to be saved.
+
+	If @a authkey is NULL, remove the authkey if one is already cached.
+*/
+static void setAuthkey( osrfMethodContext* ctx, const char* authkey ) {
+	if( ctx && ctx->session && authkey ) {
+		osrfAppSession* session = ctx->session;
+		osrfHash* cache = session->userData;
+
+		// If the session doesn't already have a hash, create one.  Make sure
+		// that the application session frees the hash when it terminates.
+		if( NULL == cache ) {
+			session->userData = cache = osrfNewHash();
+			osrfHashSetCallback( cache, &sessionDataFree );
+			ctx->session->userDataFree = &userDataFree;
+		}
+
+		// Save the transaction id in the hash, with the key "xact_id"
+		if( authkey && *authkey )
+			osrfHashSet( cache, strdup( authkey ), "authkey" );
+		else
+			osrfHashRemove( cache, "authkey" );
+	}
+}
+
+/**
+	@brief Reset the login timeout.
+	@param authkey The authentication key for the current login session.
+	@param now The current time.
+	@return Zero if successful, or 1 if not.
+
+	Tell the authentication server to reset the timeout so that the login session won't
+	expire for a while longer.
+
+	We could dispense with the @a now parameter by calling time().  But we just called
+	time() in order to decide whether to reset the timeout, so we might as well reuse
+	the result instead of calling time() again.
+*/
+static int reset_timeout( const char* authkey, time_t now ) {
+	jsonObject* auth_object = jsonNewObject( authkey );
+
+	// Ask the authentication server to reset the timeout.  It returns an event
+	// indicating success or failure.
+	jsonObject* result = oilsUtilsQuickReq( "open-ils.auth",
+		"open-ils.auth.session.reset_timeout", auth_object );
+	jsonObjectFree(auth_object);
+
+	if( !result || result->type != JSON_HASH ) {
+		osrfLogError( OSRF_LOG_MARK,
+			 "Unexpected object type receieved from open-ils.auth.session.reset_timeout" );
+		jsonObjectFree( result );
+		return 1;       // Not the right sort of object returned
+	}
+
+	const jsonObject* ilsevent = jsonObjectGetKey( result, "ilsevent" );
+	if( !ilsevent || ilsevent->type != JSON_NUMBER ) {
+		osrfLogError( OSRF_LOG_MARK, "ilsevent is absent or malformed" );
+		jsonObjectFree( result );
+		return 1;    // Return code from method not available
+	}
+
+	if( jsonObjectGetNumber( ilsevent ) != 0.0 ){
+		const char* desc = jsonObjectGetString( jsonObjectGetKey( result, "desc" ) );
+		if( !desc )
+			desc = "(No reason available)";    // failsafe; shouldn't happen
+		osrfLogInfo( OSRF_LOG_MARK, "Failure to reset timeout: %s", desc );
+		jsonObjectFree( result );
+		return 1;
+	}
+
+	// Revise our local proxy for the timeout deadline
+	// by a smallish fraction of the timeout interval
+	const char* timeout = jsonObjectGetString( jsonObjectGetKey( result, "payload" ) );
+	if( !timeout )
+		timeout = "1";   // failsafe; shouldn't happen
+	time_next_reset = now + atoi( timeout ) / 15;
+
+	jsonObjectFree( result );
+	return 0;     // Successfully reset timeout
+}
+
+/**
+	@brief Get the authkey string for the current application session, if any.
+	@param ctx Pointer to the method context.
+	@return Pointer to the cached authkey if found; otherwise NULL.
+
+	If present, the authkey string was cached from a previous method call.
+*/
+static const char* getAuthkey( osrfMethodContext* ctx ) {
+	if( ctx && ctx->session && ctx->session->userData ) {
+		const char* authkey = osrfHashGet( (osrfHash*) ctx->session->userData, "authkey" );
+
+		// Possibly reset the authentication timeout to keep the login alive.  We do so
+		// no more than once per method call, and not at all if it has been only a short
+		// time since the last reset.
+
+		// Here we reset explicitly, if at all.  We also implicitly reset the timeout
+		// whenever we call the "open-ils.auth.session.retrieve" method.
+		if( timeout_needs_resetting ) {
+			time_t now = time( NULL );
+			if( now >= time_next_reset && reset_timeout( authkey, now ) )
+				authkey = NULL;    // timeout has apparently expired already
+		}
+
+		timeout_needs_resetting = 0;
+		return authkey;
+	}
+	else
+		return NULL;
+}
+#endif
+
 /**
 	@brief Implement the transaction.begin method.
 	@param ctx Pointer to the method context.
@@ -770,10 +942,10 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 	}
 
 #ifdef PCRUD
-	jsonObject* user = verifyUserPCRUD( ctx );
+	timeout_needs_resetting = 1;
+	const jsonObject* user = verifyUserPCRUD( ctx );
 	if (!user)
 		return -1;
-	jsonObjectFree(user);
 #endif
 
 	dbi_result result = dbi_conn_query(writehandle, "START TRANSACTION;");
@@ -812,11 +984,11 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 
 	int spNamePos = 0;
 #ifdef PCRUD
+	timeout_needs_resetting = 1;
 	spNamePos = 1;
-	jsonObject* user = verifyUserPCRUD( ctx );
+	const jsonObject* user = verifyUserPCRUD( ctx );
 	if (!user)
 		return -1;
-	jsonObjectFree(user);
 #endif
 
 	// Verify that a transaction is pending
@@ -876,11 +1048,11 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 
 	int spNamePos = 0;
 #ifdef PCRUD
+	timeout_needs_resetting = 1;
 	spNamePos = 1;
-	jsonObject* user = verifyUserPCRUD( ctx );
+	const jsonObject* user = verifyUserPCRUD( ctx );
 	if (!user)
 		return -1;
-	jsonObjectFree(user);
 #endif
 
 	// Verify that a transaction is pending
@@ -940,11 +1112,11 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 
 	int spNamePos = 0;
 #ifdef PCRUD
+	timeout_needs_resetting = 1;
 	spNamePos = 1;
-	jsonObject* user = verifyUserPCRUD( ctx );
+	const jsonObject* user = verifyUserPCRUD( ctx );
 	if (!user)
 		return -1;
-	jsonObjectFree(user);
 #endif
 
 	// Verify that a transaction is pending
@@ -1002,10 +1174,10 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 	}
 
 #ifdef PCRUD
-	jsonObject* user = verifyUserPCRUD( ctx );
+	timeout_needs_resetting = 1;
+	const jsonObject* user = verifyUserPCRUD( ctx );
 	if (!user)
 		return -1;
-	jsonObjectFree(user);
 #endif
 
 	// Verify that a transaction is pending
@@ -1050,10 +1222,10 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 	}
 
 #ifdef PCRUD
-	jsonObject* user = verifyUserPCRUD( ctx );
+	timeout_needs_resetting = 1;
+	const jsonObject* user = verifyUserPCRUD( ctx );
 	if (!user)
 		return -1;
-	jsonObjectFree(user);
 #endif
 
 	// Verify that a transaction is pending
@@ -1098,6 +1270,10 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 	int err = 0;                // to be returned to caller
 	jsonObject * obj = NULL;    // to be returned to client
+
+#ifdef PCRUD
+	timeout_needs_resetting = 1;
+#endif
 
 	// Get the method type so that we can branch on it
 	osrfHash* method_meta = (osrfHash*) ctx->method->userData;
@@ -1291,10 +1467,21 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 	@return If the user is logged in, a pointer to the user object from the authentication
 	server; otherwise NULL.
 */
-static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
+static const jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 
 	// Get the authkey (the first method parameter)
 	const char* auth = jsonObjectGetString( jsonObjectGetIndex( ctx->params, 0 ) );
+
+	// See if we have the same authkey, and a user object,
+	// locally cached from a previous call
+	const char* cached_authkey = getAuthkey( ctx );
+	if( cached_authkey && !strcmp( cached_authkey, auth ) ) {
+		const jsonObject* cached_user = getUserLogin( ctx );
+		if( cached_user )
+			return cached_user;
+	}
+
+	// We have no matching authentication data in the cache.  Authenticate from scratch.
 	jsonObject* auth_object = jsonNewObject(auth);
 
 	// Fetch the user object from the authentication server
@@ -1320,6 +1507,15 @@ static jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 		jsonObjectFree(user);
 		user = NULL;
 	}
+
+	setUserLogin( ctx, user );
+	setAuthkey( ctx, auth );
+
+	// Allow ourselves up to a second before we have to reset the login timeout.
+	// It would be nice to use some fraction of the timeout interval enforced by the
+	// authentication server, but that value is not readily available at this point.
+	// Instead, we use a conservative default interval.
+	time_next_reset = time( NULL ) + 1;
 
 	return user;
 }
@@ -1362,12 +1558,11 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		return 0;
 	}
 
-	jsonObject* user = verifyUserPCRUD( ctx );
+	const jsonObject* user = verifyUserPCRUD( ctx );
 	if (!user)
 		return 0;
 
 	int userid = atoi( oilsFMGetString( user, "id" ) );
-	jsonObjectFree(user);
 
 	osrfStringArray* permission = osrfHashGet(pcrud, "permission");
 	osrfStringArray* local_context = osrfHashGet(pcrud, "local_context");
@@ -5674,7 +5869,8 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 	if ( strcmp( get_primitive( osrfHashGet( osrfHashGet(meta, "fields"), pkey ) ), "number" ) )
 		dbi_conn_quote_string(writehandle, &id);
 
-	dbi_result result = dbi_conn_queryf(writehandle, "DELETE FROM %s WHERE %s = %s;", osrfHashGet(meta, "tablename"), pkey, id);
+	dbi_result result = dbi_conn_queryf(writehandle, "DELETE FROM %s WHERE %s = %s;",
+		osrfHashGet(meta, "tablename"), pkey, id);
 
 	if (!result) {
 		jsonObjectFree(obj);
