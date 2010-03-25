@@ -423,22 +423,19 @@ sub retrieve_holds {
             ]);
         }
     }
-	
-	if( ! $self->api_name =~ /id_list/ ) {
-		for my $hold ( @$holds ) {
-			$hold->transit(
-                $e->search_action_hold_transit_copy([
-					{hold => $hold->id},
-					{order_by => {ahtc => 'id desc'}, limit => 1}])->[0]
-			);
-		}
-	}
 
-	if( $self->api_name =~ /id_list/ ) {
-		return [ map { $_->id } @$holds ];
-	} else {
-		return $holds;
-	}
+    if( ! $self->api_name =~ /id_list/ ) {
+        for my $hold ( @$holds ) {
+            $hold->transit(
+                $e->search_action_hold_transit_copy([
+                    {hold => $hold->id},
+                    {order_by => {ahtc => 'id desc'}, limit => 1}])->[0]
+            );
+        }
+        return $holds;
+    }
+    # else id_list
+    return [ map { $_->id } @$holds ];
 }
 
 
@@ -501,18 +498,15 @@ sub retrieve_holds_by_pickup_lib {
 			fulfillment_time => undef,
 			cancel_time => undef
 		}, 
-		{ order_by => { ahr => "request_time" } });
+		{ order_by => { ahr => "request_time" } }
+    );
 
-
-	if( ! $self->api_name =~ /id_list/ ) {
-		flesh_hold_transits($holds);
-	}
-
-	if( $self->api_name =~ /id_list/ ) {
-		return [ map { $_->id } @$holds ];
-	} else {
-		return $holds;
-	}
+    if ( ! $self->api_name =~ /id_list/ ) {
+        flesh_hold_transits($holds);
+        return $holds;
+    }
+    # else id_list
+    return [ map { $_->id } @$holds ];
 }
 
 
