@@ -698,9 +698,12 @@ sub batch_update_hold {
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
-    my $count = ($hold_list) ? scalar(@$hold_list) : scalar(@$values_list);
+    my $count = ($hold_list) ? scalar(@$hold_list) : scalar(@$values_list);     # FIXME: we don't know for sure that we got $values_list.  we could have neither list.
     $hold_list   ||= [];
-    $values_list ||= [];
+    $values_list ||= [];      # FIXME: either move this above $count declaration, or send an event if both lists undef.  Probably the latter.
+
+# FIXME: Failing over to [] guarantees warnings for "Use of unitialized value" in update_hold_impl call.
+# FIXME: We should be sure we only call update_hold_impl with hold object OR hash, not both.
 
     for my $idx (0..$count-1) {
         $e->xact_begin;
@@ -710,7 +713,7 @@ sub batch_update_hold {
     }
 
     $e->disconnect;
-    return undef;
+    return undef;       # not in the register return type, assuming we should always have at least one list populated
 }
 
 sub update_hold_impl {
@@ -1530,15 +1533,14 @@ All key/value pairs are passed on to do_possibility_checks.
 # FIXME: specify proper usage/interaction of selection_ou and pickup_lib
 
 sub check_title_hold {
-	my( $self, $client, $authtoken, $params ) = @_;
+    my( $self, $client, $authtoken, $params ) = @_;
+    my $e = new_editor(authtoken=>$authtoken);
+    return $e->event unless $e->checkauth;
 
     my %params       = %$params;
     my $depth        = $params{depth}        || 0;
-    my $pickup_lib   = $params{pickup_lib};
-    my $selection_ou = $params{selection_ou} || $pickup_lib;
+    my $selection_ou = $params{selection_ou} || $params{pickup_lib};
 
-	my $e = new_editor(authtoken=>$authtoken);
-	return $e->event unless $e->checkauth;
 	my $patron = $e->retrieve_actor_user($params{patronid})
 		or return $e->event;
 
@@ -1606,28 +1608,28 @@ sub do_possibility_checks {
 
 	if( $hold_type eq OILS_HOLD_TYPE_COPY ) {
 
-		$copy = $e->retrieve_asset_copy($copyid) or return $e->event;
-		$volume = $e->retrieve_asset_call_number($copy->call_number)
-			or return $e->event;
-		$title = $e->retrieve_biblio_record_entry($volume->record)
-			or return $e->event;
-		return verify_copy_for_hold( 
-			$patron, $e->requestor, $title, $copy, $pickup_lib, $request_lib );
+        return $e->event unless $copy   = $e->retrieve_asset_copy($copyid);
+        return $e->event unless $volume = $e->retrieve_asset_call_number($copy->call_number);
+        return $e->event unless $title  = $e->retrieve_biblio_record_entry($volume->record);
+
+        return verify_copy_for_hold( 
+            $patron, $e->requestor, $title, $copy, $pickup_lib, $request_lib
+        );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_VOLUME ) {
 
-		$volume = $e->retrieve_asset_call_number($volid)
-			or return $e->event;
-		$title = $e->retrieve_biblio_record_entry($volume->record)
-			or return $e->event;
+		return $e->event unless $volume = $e->retrieve_asset_call_number($volid);
+		return $e->event unless $title  = $e->retrieve_biblio_record_entry($volume->record);
 
 		return _check_volume_hold_is_possible(
-			$volume, $title, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
+			$volume, $title, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+        );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_TITLE ) {
 
 		return _check_title_hold_is_possible(
-			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
+			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+        );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
@@ -1640,6 +1642,7 @@ sub do_possibility_checks {
 		}
 		return (0);	
 	}
+#   else { Unrecognized hold_type ! }   # FIXME: return error? or 0?
 }
 
 my %prox_cache;
