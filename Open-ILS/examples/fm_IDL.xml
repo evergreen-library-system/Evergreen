@@ -4490,13 +4490,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Email" name="email" reporter:datatype="text" />
 			<field reporter:label="Phone" name="phone" reporter:datatype="text" />
 			<field reporter:label="Fax Phone" name="fax_phone" reporter:datatype="text" />
-			<field reporter:label="Default Claim Interval" name="default_claim_interval" reporter:datatype="interval" />
+			<field reporter:label="Default Claim Policy" name="default_claim_policy" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
             <link field="addresses" reltype="has_many" map="" key="provider" class="acqpa"/>
             <link field="edi_default" reltype="has_a" map="" key="id" class="acqedi"/>
+            <link field="default_claim_policy" reltype="has_a" map="" key="id" class="acqclp"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -5254,7 +5255,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="State" name="state" reporter:datatype="text" />
 			<field reporter:label="Creator" name="creator" reporter:datatype="link" />
 			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
-			<field reporter:label="Claim Interval" name="claim_interval" reporter:datatype="interval" />
+			<field reporter:label="Claim Policy" name="claim_policy" reporter:datatype="link" />
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link" />
 			<field reporter:label="Estimated Unit Price" name="estimated_unit_price" reporter:datatype="money" />
 			<field reporter:label="Item Count" name="item_count" oils_persist:virtual="true" reporter:datatype="int" />
@@ -5276,6 +5277,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="lineitem_notes" reltype="has_many" key="lineitem" map="" class="acqlin"/>
 			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
 			<link field="distribution_formulas" reltype="has_many" key="lineitem" map="" class="acqdfa"/>
+			<link field="claim_policy" reltype="has_a" key="id" map="" class="acqclp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER CREATE_PICKLIST VIEW_PICKLIST">
