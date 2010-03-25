@@ -41,15 +41,15 @@ my $U = $apputils;
 
 
 __PACKAGE__->register_method(
-	method	=> "create_hold",
-	api_name	=> "open-ils.circ.holds.create",
-	notes		=> <<NOTE);
+    method   => "create_hold",
+    api_name => "open-ils.circ.holds.create",
+    notes    => <<NOTE);
 Create a new hold for an item.  From a permissions perspective, 
 the login session is used as the 'requestor' of the hold.  
 The hold recipient is determined by the 'usr' setting within
 the hold object.
 
-First we verify the requestion has holds request permissions.
+First we verify the requestor has holds request permissions.
 Then we verify that the recipient is allowed to make the given hold.
 If not, we see if the requestor has "override" capabilities.  If not,
 a permission exception is returned.  If permissions allow, we cycle
@@ -60,11 +60,10 @@ on a single title and said operation is attempted, a permission
 exception is returned
 NOTE
 
-
 __PACKAGE__->register_method(
-	method	=> "create_hold",
-	api_name	=> "open-ils.circ.holds.create.override",
-	signature	=> q/
+    method    => "create_hold",
+    api_name  => "open-ils.circ.holds.create.override",
+    signature => q/
 		If the recipient is not allowed to receive the requested hold,
 		call this method to attempt the override
 		@see open-ils.circ.holds.create
@@ -87,15 +86,15 @@ sub create_hold {
     if( $requestor->id ne $hold->usr ) {
         # Make sure the requestor is allowed to place holds for 
         # the recipient if they are not the same people
-        $recipient = $e->retrieve_actor_user($hold->usr) or return $e->event;
+        $recipient = $e->retrieve_actor_user($hold->usr)  or return $e->event;
         $e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->event;
     }
 
     # Now make sure the recipient is allowed to receive the specified hold
     my $pevt;
     my $porg = $recipient->home_ou;
-    my $rid = $e->requestor->id;
-    my $t = $hold->hold_type;
+    my $rid  = $e->requestor->id;
+    my $t    = $hold->hold_type;
 
     # See if a duplicate hold already exists
     my $sargs = {
@@ -262,17 +261,17 @@ sub _check_holds_perm {
 # tests if the given user is allowed to place holds on another's behalf
 sub _check_request_holds_perm {
 	my $user_id = shift;
-	my $org_id = shift;
-	if(my $evt = $apputils->check_perms(
+	my $org_id  = shift;
+	if (my $evt = $apputils->check_perms(
 		$user_id, $org_id, "REQUEST_HOLDS")) {
 		return $evt;
 	}
 }
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_holds_by_id",
-	api_name	=> "open-ils.circ.holds.retrieve_by_id",
-	notes		=> <<NOTE);
+    method   => "retrieve_holds_by_id",
+    api_name => "open-ils.circ.holds.retrieve_by_id",
+    notes    => <<NOTE);
 Retrieve the hold, with hold transits attached, for the specified id The login session is the requestor and if the requestor is
 different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
@@ -302,35 +301,34 @@ sub retrieve_holds_by_id {
 
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_holds",
-	api_name	=> "open-ils.circ.holds.retrieve",
-	notes		=> <<NOTE);
+    method   => "retrieve_holds",
+    api_name => "open-ils.circ.holds.retrieve",
+    notes    => <<NOTE);
 Retrieves all the holds, with hold transits attached, for the specified
 user id.  The login session is the requestor and if the requestor is
 different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_holds",
+    method        => "retrieve_holds",
     authoritative => 1,
-	api_name	=> "open-ils.circ.holds.id_list.retrieve",
-	notes		=> <<NOTE);
+    api_name      => "open-ils.circ.holds.id_list.retrieve",
+    notes         => <<NOTE);
 Retrieves all the hold ids for the specified
 user id.  The login session is the requestor and if the requestor is
 different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
 
-
 __PACKAGE__->register_method(
-	method	=> "retrieve_holds",
+    method        => "retrieve_holds",
     authoritative => 1,
-	api_name	=> "open-ils.circ.holds.canceled.retrieve",
+    api_name      => "open-ils.circ.holds.canceled.retrieve",
 );
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_holds",
+    method        => "retrieve_holds",
     authoritative => 1,
-	api_name	=> "open-ils.circ.holds.canceled.id_list.retrieve",
+    api_name      => "open-ils.circ.holds.canceled.id_list.retrieve",
 );
 
 
@@ -425,8 +423,9 @@ sub retrieve_holds {
 
 
 __PACKAGE__->register_method(
-   method => 'user_hold_count',
-   api_name => 'open-ils.circ.hold.user.count');
+    method   => 'user_hold_count',
+    api_name => 'open-ils.circ.hold.user.count'
+);
 
 sub user_hold_count {
    my( $self, $conn, $auth, $userid ) = @_;
@@ -453,17 +452,17 @@ sub __user_hold_count {
 
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_holds_by_pickup_lib",
-	api_name	=> "open-ils.circ.holds.retrieve_by_pickup_lib",
-	notes		=> <<NOTE);
+    method   => "retrieve_holds_by_pickup_lib",
+    api_name => "open-ils.circ.holds.retrieve_by_pickup_lib",
+    notes    => <<NOTE);
 Retrieves all the holds, with hold transits attached, for the specified
 pickup_ou id. 
 NOTE
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_holds_by_pickup_lib",
-	api_name	=> "open-ils.circ.holds.id_list.retrieve_by_pickup_lib",
-	notes		=> <<NOTE);
+    method   => "retrieve_holds_by_pickup_lib",
+    api_name => "open-ils.circ.holds.id_list.retrieve_by_pickup_lib",
+    notes    => <<NOTE);
 Retrieves all the hold ids for the specified
 pickup_ou id. 
 NOTE
@@ -500,8 +499,8 @@ sub retrieve_holds_by_pickup_lib {
 
 
 __PACKAGE__->register_method(
-	method	=> "uncancel_hold",
-	api_name	=> "open-ils.circ.hold.uncancel"
+    method   => "uncancel_hold",
+    api_name => "open-ils.circ.hold.uncancel"
 );
 
 sub uncancel_hold {
@@ -541,9 +540,9 @@ sub uncancel_hold {
 
 
 __PACKAGE__->register_method(
-	method	=> "cancel_hold",
-	api_name	=> "open-ils.circ.hold.cancel",
-	notes		=> <<"	NOTE");
+    method   => "cancel_hold",
+    api_name => "open-ils.circ.hold.cancel",
+    notes    => <<"	NOTE");
 	Cancels the specified hold.  The login session
 	is the requestor and if the requestor is different from the usr field
 	on the hold, the requestor must have CANCEL_HOLDS permissions.
@@ -624,19 +623,19 @@ sub delete_hold_copy_maps {
 
 
 __PACKAGE__->register_method(
-	method	=> "update_hold",
-	api_name	=> "open-ils.circ.hold.update",
-	notes		=> <<"	NOTE");
+    method   => "update_hold",
+    api_name => "open-ils.circ.hold.update",
+    notes    => <<"	NOTE");
 	Updates the specified hold.  The login session
 	is the requestor and if the requestor is different from the usr field
 	on the hold, the requestor must have UPDATE_HOLDS permissions.
 	NOTE
 
 __PACKAGE__->register_method(
-	method	=> "batch_update_hold",
-	api_name	=> "open-ils.circ.hold.update.batch",
-    stream => 1,
-	notes		=> <<"	NOTE");
+    method   => "batch_update_hold",
+    api_name => "open-ils.circ.hold.update.batch",
+    stream   => 1,
+    notes    => <<"	NOTE");
 	Updates the specified hold.  The login session
 	is the requestor and if the requestor is different from the usr field
 	on the hold, the requestor must have UPDATE_HOLDS permissions.
@@ -658,7 +657,7 @@ sub batch_update_hold {
     return $e->die_event unless $e->checkauth;
 
     my $count = ($hold_list) ? scalar(@$hold_list) : scalar(@$values_list);
-    $hold_list ||= [];
+    $hold_list   ||= [];
     $values_list ||= [];
 
     for my $idx (0..$count-1) {
@@ -796,9 +795,11 @@ sub update_hold_if_frozen {
         }
     }
 }
+
 __PACKAGE__->register_method(
-	method	=> "hold_note_CUD",
-	api_name	=> "open-ils.circ.hold_request.note.cud");
+    method   => "hold_note_CUD",
+    api_name => "open-ils.circ.hold_request.note.cud"
+);
 
 sub hold_note_CUD {
 	my($self, $conn, $auth, $note) = @_;
@@ -830,9 +831,9 @@ sub hold_note_CUD {
 
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_hold_status",
-	api_name	=> "open-ils.circ.hold.status.retrieve",
-	notes		=> <<"	NOTE");
+    method   => "retrieve_hold_status",
+    api_name => "open-ils.circ.hold.status.retrieve",
+    notes    => <<"NOTE");
 	Calculates the current status of the hold.
 	the requestor must have VIEW_HOLD permissions if the hold is for a user
 	other than the requestor.
@@ -842,7 +843,7 @@ __PACKAGE__->register_method(
 	Returns 3 for 'in transit'
 	Returns 4 for 'arrived'
 	Returns 5 for 'hold-shelf-delay'
-	NOTE
+NOTE
 
 sub retrieve_hold_status {
 	my($self, $client, $auth, $hold_id) = @_;
@@ -897,8 +898,8 @@ sub _hold_status {
 
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_hold_queue_stats",
-	api_name	=> "open-ils.circ.hold.queue_stats.retrieve",
+    method    => "retrieve_hold_queue_stats",
+    api_name  => "open-ils.circ.hold.queue_stats.retrieve",
     signature => {
         desc => q/
             Returns object with total_holds count, queue_position, potential_copies count, and status code
@@ -929,23 +930,22 @@ sub retrieve_hold_queue_status_impl {
 
         # fetch request_time since it's in the order_by and we're asking for distinct values
         select => {ahr => ['id', 'request_time']},
-
-        from => {
+        from   => {
             ahr => {
                 ahcm => {type => 'left'} # there may be no copy maps 
             }
         },
         order_by => {ahr => ['request_time']},
         distinct => 1,
-        where => {
+        where    => {
             '-or' => [
                 {
                     '+ahcm' => {
                         target_copy => {
                             in => {
                                 select => {ahcm => ['target_copy']},
-                                from => 'ahcm',
-                                where => {hold => $hold->id}
+                                from   => 'ahcm',
+                                where  => {hold => $hold->id}
                             } 
                         } 
                     }
@@ -953,7 +953,7 @@ sub retrieve_hold_queue_status_impl {
                 {
                     '+ahr' => {
                         hold_type => $hold->hold_type,
-                        target => $hold->target
+                        target    => $hold->target
                     }
                 }
             ]
@@ -978,11 +978,11 @@ sub retrieve_hold_queue_status_impl {
     my $estimated_wait = $qpos * ($default_hold_interval / $num_potentials) if $default_hold_interval;
 
     return {
-        total_holds => scalar(@$q_holds),
-        queue_position => $qpos,
+        total_holds      => scalar(@$q_holds),
+        queue_position   => $qpos,
         potential_copies => $num_potentials->{count},
-        status => _hold_status($e, $hold),
-        estimated_wait => int($estimated_wait)
+        status           => _hold_status( $e, $hold ),
+        estimated_wait   => int($estimated_wait)
     };
 }
 
@@ -1008,28 +1008,28 @@ sub fetch_related_holds {
 }
 
 
-__PACKAGE__->register_method (
-	method		=> "hold_pull_list",
-	api_name		=> "open-ils.circ.hold_pull_list.retrieve",
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => "hold_pull_list",
+    api_name  => "open-ils.circ.hold_pull_list.retrieve",
+    signature => q/
 		Returns a list of holds that need to be "pulled"
 		by a given location
 	/
 );
 
-__PACKAGE__->register_method (
-	method		=> "hold_pull_list",
-	api_name		=> "open-ils.circ.hold_pull_list.id_list.retrieve",
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => "hold_pull_list",
+    api_name  => "open-ils.circ.hold_pull_list.id_list.retrieve",
+    signature => q/
 		Returns a list of hold ID's that need to be "pulled"
 		by a given location
 	/
 );
 
-__PACKAGE__->register_method (
-	method		=> "hold_pull_list",
-	api_name		=> "open-ils.circ.hold_pull_list.retrieve.count",
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => "hold_pull_list",
+    api_name  => "open-ils.circ.hold_pull_list.retrieve.count",
+    signature => q/
 		Returns a list of holds that need to be "pulled"
 		by a given location
 	/
@@ -1068,11 +1068,11 @@ sub hold_pull_list {
 	}
 }
 
-__PACKAGE__->register_method (
-	method		=> 'fetch_hold_notify',
-	api_name		=> 'open-ils.circ.hold_notification.retrieve_by_hold',
+__PACKAGE__->register_method(
+    method        => 'fetch_hold_notify',
+    api_name      => 'open-ils.circ.hold_notification.retrieve_by_hold',
     authoritative => 1,
-	signature	=> q/ 
+    signature     => q/ 
 		Returns a list of hold notification objects based on hold id.
 		@param authtoken The loggin session key
 		@param holdid The id of the hold whose notifications we want to retrieve
@@ -1099,10 +1099,10 @@ sub fetch_hold_notify {
 }
 
 
-__PACKAGE__->register_method (
-	method		=> 'create_hold_notify',
-	api_name		=> 'open-ils.circ.hold_notification.create',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'create_hold_notify',
+    api_name  => 'open-ils.circ.hold_notification.create',
+    signature => q/
 		Creates a new hold notification object
 		@param authtoken The login session key
 		@param notification The hold notification object to create
@@ -1129,10 +1129,10 @@ sub create_hold_notify {
    return $note->id;
 }
 
-__PACKAGE__->register_method (
-	method		=> 'create_hold_note',
-	api_name		=> 'open-ils.circ.hold_note.create',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'create_hold_note',
+    api_name  => 'open-ils.circ.hold_note.create',
+    signature => q/
 		Creates a new hold request note object
 		@param authtoken The login session key
 		@param note The hold note object to create
@@ -1159,9 +1159,9 @@ sub create_hold_note {
 }
 
 __PACKAGE__->register_method(
-	method	=> 'reset_hold',
-	api_name	=> 'open-ils.circ.hold.reset',
-	signature	=> q/
+    method    => 'reset_hold',
+    api_name  => 'open-ils.circ.hold.reset',
+    signature => q/
 		Un-captures and un-targets a hold, essentially returning
 		it to the state it was in directly after it was placed,
 		then attempts to re-target the hold
@@ -1185,8 +1185,8 @@ sub reset_hold {
 
 
 __PACKAGE__->register_method(
-	method	=> 'reset_hold_batch',
-	api_name	=> 'open-ils.circ.hold.reset.batch'
+    method   => 'reset_hold_batch',
+    api_name => 'open-ils.circ.hold.reset.batch'
 );
 
 sub reset_hold_batch {
@@ -1265,9 +1265,9 @@ sub _reset_hold {
 
 
 __PACKAGE__->register_method(
-	method => 'fetch_open_title_holds',
-	api_name	=> 'open-ils.circ.open_holds.retrieve',
-	signature	=> q/
+    method    => 'fetch_open_title_holds',
+    api_name  => 'open-ils.circ.open_holds.retrieve',
+    signature => q/
 		Returns a list ids of un-fulfilled holds for a given title id
 		@param authtoken The login session key
 		@param id the id of the item whose holds we want to retrieve
@@ -1339,10 +1339,10 @@ sub flesh_hold_notices {
 
 
 __PACKAGE__->register_method(
-	method => 'fetch_captured_holds',
-	api_name	=> 'open-ils.circ.captured_holds.on_shelf.retrieve',
-    stream => 1,
-	signature	=> q/
+    method    => 'fetch_captured_holds',
+    api_name  => 'open-ils.circ.captured_holds.on_shelf.retrieve',
+    stream    => 1,
+    signature => q/
 		Returns a list of un-fulfilled holds for a given title id
 		@param authtoken The login session key
 		@param org The org id of the location in question
@@ -1350,10 +1350,10 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-	method => 'fetch_captured_holds',
-	api_name	=> 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve',
-    stream => 1,
-	signature	=> q/
+    method    => 'fetch_captured_holds',
+    api_name  => 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve',
+    stream    => 1,
+    signature => q/
 		Returns a list ids of un-fulfilled holds for a given title id
 		@param authtoken The login session key
 		@param org The org id of the location in question
@@ -1372,23 +1372,23 @@ sub fetch_captured_holds {
     my $hold_ids = $e->json_query(
         { 
             select => { ahr => ['id'] },
-            from => {
+            from   => {
                 ahr => {
                     acp => {
                         field => 'id',
-                        fkey => 'current_copy'
+                        fkey  => 'current_copy'
                     },
                 }
             }, 
             where => {
                 '+acp' => { status => OILS_COPY_STATUS_ON_HOLDS_SHELF },
                 '+ahr' => {
-                    capture_time		=> { "!=" => undef },
-                    current_copy		=> { "!=" => undef },
-                    fulfillment_time	=> undef,
-                    pickup_lib			=> $org,
-                    cancel_time			=> undef,
-                }
+                    capture_time     => { "!=" => undef },
+                    current_copy     => { "!=" => undef },
+                    fulfillment_time => undef,
+                    pickup_lib       => $org,
+                    cancel_time      => undef,
+                  }
             }
         },
     );
@@ -1413,10 +1413,11 @@ sub fetch_captured_holds {
 
     return undef;
 }
+
 __PACKAGE__->register_method(
-	method	=> "check_title_hold",
-	api_name	=> "open-ils.circ.title_hold.is_possible",
-	notes		=> q/
+    method   => "check_title_hold",
+    api_name => "open-ils.circ.title_hold.is_possible",
+    notes    => q/
 		Determines if a hold were to be placed by a given user,
 		whether or not said hold would have any potential copies
 		to fulfill it.
@@ -1425,19 +1426,20 @@ __PACKAGE__->register_method(
 			patronid  - the id of the hold recipient
 			titleid (brn) - the id of the title to be held
 			depth	- the hold range depth (defaults to 0)
-	/);
+	/
+);
 
 sub check_title_hold {
 	my( $self, $client, $authtoken, $params ) = @_;
 
-	my %params		= %$params;
-	my $titleid		= $params{titleid} ||"";
-	my $volid		= $params{volume_id};
-	my $copyid		= $params{copy_id};
-	my $mrid		= $params{mrid} ||"";
-	my $depth		= $params{depth} || 0;
-	my $pickup_lib	= $params{pickup_lib};
-	my $hold_type	= $params{hold_type} || 'T';
+    my %params       = %$params;
+    my $titleid      = $params{titleid}      || "";
+    my $volid        = $params{volume_id};
+    my $copyid       = $params{copy_id};
+    my $mrid         = $params{mrid}         || "";
+    my $depth        = $params{depth}        || 0;
+    my $pickup_lib   = $params{pickup_lib};
+    my $hold_type    = $params{hold_type}    || 'T';
     my $selection_ou = $params{selection_ou} || $pickup_lib;
 
 	my $e = new_editor(authtoken=>$authtoken);
@@ -1500,12 +1502,12 @@ sub check_title_hold {
 sub do_possibility_checks {
     my($e, $patron, $request_lib, $depth, %params) = @_;
 
-	my $titleid		= $params{titleid} ||"";
-	my $volid		= $params{volume_id};
-	my $copyid		= $params{copy_id};
-	my $mrid		= $params{mrid} ||"";
-	my $pickup_lib	= $params{pickup_lib};
-	my $hold_type	= $params{hold_type} || 'T';
+    my $titleid      = $params{titleid}      || "";
+    my $volid        = $params{volume_id};
+    my $copyid       = $params{copy_id};
+    my $mrid         = $params{mrid}         || "";
+    my $pickup_lib   = $params{pickup_lib};
+    my $hold_type    = $params{hold_type}    || 'T';
     my $selection_ou = $params{selection_ou} || $pickup_lib;
 
 
@@ -1577,7 +1579,7 @@ sub create_ranged_org_filter {
 
 
 sub _check_title_hold_is_possible {
-	my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+    my( $titleid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
    
     my $e = new_editor();
     my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
@@ -1586,21 +1588,21 @@ sub _check_title_hold_is_possible {
     my $copies = $e->json_query(
         { 
             select => { acp => ['id', 'circ_lib'] },
-            from => {
+              from => {
                 acp => {
                     acn => {
-                        field => 'id',
-                        fkey => 'call_number',
+                        field  => 'id',
+                        fkey   => 'call_number',
                         'join' => {
                             bre => {
-                                field => 'id',
+                                field  => 'id',
                                 filter => { id => $titleid },
-                                fkey => 'record'
+                                fkey   => 'record'
                             }
                         }
                     },
                     acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
-                    ccs => { field => 'id', filter => { holdable => 't'}, fkey => 'status' }
+                    ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   }
                 }
             }, 
             where => {
@@ -1609,16 +1611,16 @@ sub _check_title_hold_is_possible {
         }
     );
 
-   $logger->info("title possible found ".scalar(@$copies)." potential copies");
-   return (0) unless @$copies;
+    $logger->info("title possible found ".scalar(@$copies)." potential copies");
+    return (0) unless @$copies;
 
-   # -----------------------------------------------------------------------
-   # sort the copies into buckets based on their circ_lib proximity to 
-   # the patron's home_ou.  
-   # -----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # sort the copies into buckets based on their circ_lib proximity to 
+    # the patron's home_ou.  
+    # -----------------------------------------------------------------------
 
-   my $home_org = $patron->home_ou;
-   my $req_org = $request_lib->id;
+    my $home_org = $patron->home_ou;
+    my $req_org = $request_lib->id;
 
     $logger->info("prox cache $home_org " . $prox_cache{$home_org});
 
@@ -1627,14 +1629,14 @@ sub _check_title_hold_is_possible {
         unless $prox_cache{$home_org};
     my $home_prox = $prox_cache{$home_org};
 
-   my %buckets;
-   my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
-   push( @{$buckets{ $hash{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+    my %buckets;
+    my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
+    push( @{$buckets{ $hash{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
 
-   my @keys = sort { $a <=> $b } keys %buckets;
+    my @keys = sort { $a <=> $b } keys %buckets;
 
 
-   if( $home_org ne $req_org ) {
+    if( $home_org ne $req_org ) {
       # -----------------------------------------------------------------------
       # shove the copies close to the request_lib into the primary buckets 
       # directly before the farthest away copies.  That way, they are not 
@@ -1645,25 +1647,24 @@ sub _check_title_hold_is_possible {
             unless $prox_cache{$req_org};
         my $req_prox = $prox_cache{$req_org};
 
+        my %buckets2;
+        my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
+        push( @{$buckets2{ $hash2{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
 
-      my %buckets2;
-      my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
-      push( @{$buckets2{ $hash2{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+        my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
+        my $new_key = $highest_key - 0.5; # right before the farthest prox
+        my @keys2   = sort { $a <=> $b } keys %buckets2;
+        for my $key (@keys2) {
+            last if $key >= $highest_key;
+            push( @{$buckets{$new_key}}, $_ ) for @{$buckets2{$key}};
+        }
+    }
 
-      my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
-      my $new_key = $highest_key - 0.5; # right before the farthest prox
-      my @keys2 = sort { $a <=> $b } keys %buckets2;
-      for my $key (@keys2) {
-         last if $key >= $highest_key;
-         push( @{$buckets{$new_key}}, $_ ) for @{$buckets2{$key}};
-      }
-   }
+    @keys = sort { $a <=> $b } keys %buckets;
 
-   @keys = sort { $a <=> $b } keys %buckets;
-
-   my $title;
-   my %seen;
-   for my $key (@keys) {
+    my $title;
+    my %seen;
+    for my $key (@keys) {
       my @cps = @{$buckets{$key}};
 
       $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
@@ -1686,9 +1687,9 @@ sub _check_title_hold_is_possible {
 
         return @status if $status[0];
       }
-   }
+    }
 
-   return (0);
+    return (0);
 }
 
 
@@ -1735,19 +1736,20 @@ sub verify_copy_for_hold {
 
 sub find_nearest_permitted_hold {
 
-	my $class	= shift;
-	my $editor	= shift; # CStoreEditor object
-	my $copy		= shift; # copy to target
-	my $user		= shift; # staff 
-	my $check_only = shift; # do no updates, just see if the copy could fulfill a hold
-	my $evt		= OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND');
+    my $class  = shift;
+    my $editor = shift;     # CStoreEditor object
+    my $copy   = shift;     # copy to target
+    my $user   = shift;     # staff
+    my $check_only = shift; # do no updates, just see if the copy could fulfill a hold
+      
+    my $evt = OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND');
 
-	my $bc = $copy->barcode;
+    my $bc = $copy->barcode;
 
 	# find any existing holds that already target this copy
 	my $old_holds = $editor->search_action_hold_request(
 		{	current_copy => $copy->id, 
-			cancel_time => undef, 
+			cancel_time  => undef, 
 			capture_time => undef 
 		} 
 	);
@@ -1853,8 +1855,8 @@ sub find_nearest_permitted_hold {
 
 
 __PACKAGE__->register_method(
-	method => 'all_rec_holds',
-	api_name => 'open-ils.circ.holds.retrieve_all_from_title',
+    method   => 'all_rec_holds',
+    api_name => 'open-ils.circ.holds.retrieve_all_from_title',
 );
 
 sub all_rec_holds {
@@ -1919,9 +1921,9 @@ sub all_rec_holds {
 
 
 __PACKAGE__->register_method(
-	method => 'uber_hold',
+    method        => 'uber_hold',
     authoritative => 1,
-	api_name => 'open-ils.circ.hold.details.retrieve'
+    api_name      => 'open-ils.circ.hold.details.retrieve'
 );
 
 sub uber_hold {
@@ -1932,10 +1934,10 @@ sub uber_hold {
 }
 
 __PACKAGE__->register_method(
-	method => 'batch_uber_hold',
+    method        => 'batch_uber_hold',
     authoritative => 1,
-    stream => 1,
-	api_name => 'open-ils.circ.hold.details.batch.retrieve'
+    stream        => 1,
+    api_name      => 'open-ils.circ.hold.details.batch.retrieve'
 );
 
 sub batch_uber_hold {
@@ -1979,16 +1981,16 @@ sub uber_hold_impl {
 
     my $details = retrieve_hold_queue_status_impl($e, $hold);
 
-	return {
-		hold		=> $hold,
-		copy		=> $copy,
-		volume	=> $volume,
-		mvr		=> $mvr,
-		patron_first => $user->first_given_name,
-		patron_last  => $user->family_name,
-		patron_barcode => $card->barcode,
+    return {
+        hold           => $hold,
+        copy           => $copy,
+        volume         => $volume,
+        mvr            => $mvr,
+        patron_first   => $user->first_given_name,
+        patron_last    => $user->family_name,
+        patron_barcode => $card->barcode,
         %$details
-	};
+    };
 }
 
 
@@ -2041,9 +2043,9 @@ sub find_hold_mvr {
 
 
 __PACKAGE__->register_method(
-	method => 'clear_shelf_process',
-    stream => 1,
-	api_name => 'open-ils.circ.hold.clear_shelf.process',
+    method    => 'clear_shelf_process',
+    stream    => 1,
+    api_name  => 'open-ils.circ.hold.clear_shelf.process',
     signature => {
         desc => q/
             1. Find all holds that have expired on the holds shelf
@@ -2150,8 +2152,8 @@ sub clear_shelf_process {
 
 
 __PACKAGE__->register_method(
-	method => 'usr_hold_summary',
-	api_name => 'open-ils.circ.holds.user_summary',
+    method    => 'usr_hold_summary',
+    api_name  => 'open-ils.circ.holds.user_summary',
     signature => q/
         Returns a summary of holds statuses for a given user
     /
@@ -2180,8 +2182,8 @@ sub usr_hold_summary {
 
 
 __PACKAGE__->register_method(
-	method => 'hold_has_copy_at',
-	api_name => 'open-ils.circ.hold.has_copy_at',
+    method    => 'hold_has_copy_at',
+    api_name  => 'open-ils.circ.hold.has_copy_at',
     signature => q/
         Returns the ID of the found copy and name of the shelving location if there is
         an available copy at the specified org unit.  Returns empty hash otherwise.
@@ -2194,16 +2196,16 @@ sub hold_has_copy_at {
 	my $e = new_editor(authtoken=>$auth);
 	$e->checkauth or return $e->event;
 
-    my $hold_type = $$args{hold_type};
+    my $hold_type   = $$args{hold_type};
     my $hold_target = $$args{hold_target};
-    my $org_unit = $$args{org_unit};
+    my $org_unit    = $$args{org_unit};
 
     my $query = {
         select => {acp => ['id'], acpl => ['name']},
-        from => {
+        from   => {
             acp => {
                 acpl => {field => 'id', filter => { holdable => 't'}, fkey => 'location'},
-                ccs => {field => 'id', filter => { holdable => 't'}, fkey => 'status'}
+                ccs  => {field => 'id', filter => { holdable => 't'}, fkey => 'status'  }
             }
         },
         where => {'+acp' => { circulate => 't', deleted => 'f', holdable => 't', circ_lib => $org_unit}},
@@ -2221,13 +2223,13 @@ sub hold_has_copy_at {
     } elsif($hold_type eq 'T') {
 
         $query->{from}->{acp}->{acn} = {
-            field => 'id',
-            fkey => 'call_number',
+            field  => 'id',
+            fkey   => 'call_number',
             'join' => {
                 bre => {
-                    field => 'id',
+                    field  => 'id',
                     filter => {id => $hold_target},
-                    fkey => 'record'
+                    fkey   => 'record'
                 }
             }
         };
@@ -2236,15 +2238,15 @@ sub hold_has_copy_at {
 
         $query->{from}->{acp}->{acn} = {
             field => 'id',
-            fkey => 'call_number',
-            join => {
+            fkey  => 'call_number',
+            join  => {
                 bre => {
                     field => 'id',
-                    fkey => 'record',
-                    join => {
+                    fkey  => 'record',
+                    join  => {
                         mmrsm => {
-                            field => 'source',
-                            fkey => 'id',
+                            field  => 'source',
+                            fkey   => 'id',
                             filter => {metarecord => $hold_target},
                         }
                     }
@@ -2265,14 +2267,14 @@ sub hold_item_is_checked_out {
 
     my $query = {
         select => {acp => ['id']},
-        from => {acp => {}},
-        where => {
+        from   => {acp => {}},
+        where  => {
             '+acp' => {
                 id => {
                     in => { # copies for circs the user has checked out
                         select => {circ => ['target_copy']},
-                        from => 'circ',
-                        where => {
+                        from   => 'circ',
+                        where  => {
                             usr => $user_id,
                             checkin_time => undef,
                             '-or' => [
@@ -2298,13 +2300,13 @@ sub hold_item_is_checked_out {
     } elsif($hold_type eq 'T') {
 
         $query->{from}->{acp}->{acn} = {
-            field => 'id',
-            fkey => 'call_number',
+            field  => 'id',
+            fkey   => 'call_number',
             'join' => {
                 bre => {
-                    field => 'id',
+                    field  => 'id',
                     filter => {id => $hold_target},
-                    fkey => 'record'
+                    fkey   => 'record'
                 }
             }
         };
@@ -2334,15 +2336,15 @@ sub hold_item_is_checked_out {
 }
 
 __PACKAGE__->register_method(
-	method => 'change_hold_title',
-	api_name => 'open-ils.circ.hold.change_title',
+    method    => 'change_hold_title',
+    api_name  => 'open-ils.circ.hold.change_title',
     signature => {
         desc => q/
             Updates all title level holds targeting the specified bibs to point a new bib./,
         params => [
-            {desc => 'Authentication Token', type => 'string'},
-            {desc => 'New Target Bib Id', type => 'number'},
-            {desc => 'Old Target Bib Ids', type => 'array'},
+            { desc => 'Authentication Token', type => 'string' },
+            { desc => 'New Target Bib Id',    type => 'number' },
+            { desc => 'Old Target Bib Ids',   type => 'array'  },
         ],
         return => { desc => '1 on success' }
     }
@@ -2357,17 +2359,17 @@ sub change_hold_title {
     my $holds = $e->search_action_hold_request(
         [
             {
-                cancel_time => undef,
+                cancel_time      => undef,
                 fulfillment_time => undef,
-                hold_type => 'T',
-                target => $bib_ids
-            },{
-                flesh => 1, 
-                flesh_fields => {ahr => ['usr']}
+                hold_type        => 'T',
+                target           => $bib_ids
+            },
+            {
+                flesh        => 1,
+                flesh_fields => { ahr => ['usr'] }
             }
-        ], {
-            substream => 1
-        }
+        ],
+        { substream => 1 }
     );
 
     for my $hold (@$holds) {
