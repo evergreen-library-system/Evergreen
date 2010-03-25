@@ -29,11 +29,11 @@ function drawRequest() {
 
     // toggle the View Picklist/Add to Picklist button label
     if (aur_obj.lineitem()) {
-        openils.Util.show( 'add_to_picklist' );
-        openils.Util.hide( 'view_picklist' );
-    } else {
-        openils.Util.show( 'view_picklist' );
         openils.Util.hide( 'add_to_picklist' );
+        openils.Util.show( 'view_picklist' );
+    } else {
+        openils.Util.hide( 'view_picklist' );
+        openils.Util.show( 'add_to_picklist' );
     }
 
     // draw a detail page for a particular request
@@ -134,7 +134,7 @@ function setNoHold() {
         {   async: true,
             params: [openils.User.authtoken, [reqId]],
             oncomplete: function(r) {
-                drawRequest();
+                location.href = location.href; // kludge to reload the interface
             }
         }
     );
