@@ -265,17 +265,16 @@ sub ranged_ou_settings {
 
 
 __PACKAGE__->register_method(
-    api_name => 'open-ils.actor.ou_setting.ancestor_default',
-    method => 'ou_ancestor_setting',
+    api_name  => 'open-ils.actor.ou_setting.ancestor_default',
+    method    => 'ou_ancestor_setting',
     signature => {
-        desc => q/Get an org unit setting value as seen from your org unit.  IF AND ONLY IF
-        you provide an authentication token, this method will make sure that the given
-        user has permission to view that setting, if there is a permission associated
-        with the setting./,
+        desc => 'Get the org unit setting value associated with the setting name as seen from the specified org unit.  ' .
+                'IF AND ONLY IF an authentication token is provided, this method will make sure that the given '         .
+                'user has permission to view that setting, if there is a permission associated with the setting.'        ,
         params => [
-            {desc => 'org unit id', type => 'number'},
-            {desc => 'setting name', type => 'string'},
-            {desc => '(optional) authtoken', type => 'string'},
+            { desc => 'org unit id',          type => 'number' },
+            { desc => 'setting name',         type => 'string' },
+            { desc => 'authtoken (optional)', type => 'string' }
         ],
         return => {desc => 'A value for the org unit setting, or undef'}
     }
@@ -294,17 +293,16 @@ sub ou_ancestor_setting {
 }
 
 __PACKAGE__->register_method(
-    api_name => 'open-ils.actor.ou_setting.ancestor_default.batch',
-    method => 'ou_ancestor_setting_batch',
+    api_name  => 'open-ils.actor.ou_setting.ancestor_default.batch',
+    method    => 'ou_ancestor_setting_batch',
     signature => {
-        desc => q/Get org unit setting name => value pairs as seen from the specified org unit.
-        IF AND ONLY IF you provide an authentication token, this method will make sure
-        that the given user has permission to view that setting, if there is a
-        permission associated with the setting./,
+        desc => 'Get org unit setting name => value pairs for a list of names, as seen from the specified org unit.  ' .
+                'IF AND ONLY IF an authentication token is provided, this method will make sure that the given '       .
+                'user has permission to view that setting, if there is a permission associated with the setting.'      ,
         params => [
-            {desc => 'org unit id', type => 'number'},
-            {desc => 'setting name list', type => 'array'},
-            {desc => '(optional) authtoken', type => 'string'},
+            { desc => 'org unit id',          type => 'number' },
+            { desc => 'setting name list',    type => 'array'  },
+            { desc => 'authtoken (optional)', type => 'string' }
         ],
         return => {desc => 'A hash with name => value pairs for the org unit settings'}
     }
@@ -315,8 +313,6 @@ sub ou_ancestor_setting_batch {
     $values{$_} = $U->ou_ancestor_setting($orgid, $_, undef, $auth) for @$name_list;
     return \%values;
 }
-
-
 
 
 
