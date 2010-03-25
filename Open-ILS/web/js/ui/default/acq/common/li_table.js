@@ -1221,13 +1221,20 @@ function AcqLiTable() {
 
         dojo.forEach(liDetailFields,
             function(field) {
+                var searchFilter;
+                if (field == "fund") {
+                    searchFilter = (copy.fund() ?
+                        {"-or": {"active": "t", "id": copy.fund()}} :
+                        {"active" : "t"});
+                } else {
+                    searchFilter = null;
+                }
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,
                     fmField : field,
                     labelFormat : (field == 'fund') ? fundLabelFormat : null,
                     searchFormat : (field == 'fund') ? fundSearchFormat : null,
-                    searchFilter : (field == "fund" && copy.fund()) ?
-                        {"-or": {"active": "t", "id": copy.fund()}} : null,
+                    searchFilter : searchFilter,
                     noCache: true,
                     fmClass : 'acqlid',
                     parentNode : dojo.query('[name='+field+']', row)[0],
