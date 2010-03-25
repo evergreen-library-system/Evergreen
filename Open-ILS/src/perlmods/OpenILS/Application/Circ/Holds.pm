@@ -38,36 +38,44 @@ my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
 
-
-
 __PACKAGE__->register_method(
-    method   => "create_hold",
-    api_name => "open-ils.circ.holds.create",
-    notes    => <<NOTE);
-Create a new hold for an item.  From a permissions perspective, 
-the login session is used as the 'requestor' of the hold.  
-The hold recipient is determined by the 'usr' setting within
-the hold object.
-
-First we verify the requestor has holds request permissions.
-Then we verify that the recipient is allowed to make the given hold.
-If not, we see if the requestor has "override" capabilities.  If not,
-a permission exception is returned.  If permissions allow, we cycle
-through the set of holds objects and create.
-
-If the recipient does not have permission to place multiple holds
-on a single title and said operation is attempted, a permission
-exception is returned
-NOTE
+    method    => "create_hold",
+    api_name  => "open-ils.circ.holds.create",
+    signature => {
+        desc  => "Create a new hold for an item.  From a permissions perspective, " .
+                 "the login session is used as the 'requestor' of the hold. "       . 
+                 "The hold recipient is determined by the 'usr' setting within the hold object. ",
+        param => [
+           { desc => 'Hold object for hold to be created', type => 'object' }
+        ],
+        return => {
+            desc => 'Undef on success, -1 on missing arg, event (or ref to array of events) on error(s)',
+        },
+    },
+    notes => 'First we verify the requestor has holds request permissions.  '         .
+             'Then we verify that the recipient is allowed to make the given hold.  ' .
+             'If not, we see if the requestor has "override" capabilities.  If not, ' .
+             'a permission exception is returned.  If permissions allow, we cycle '   .
+             'through the set of holds objects and create.  '                         .
+             'If the recipient does not have permission to place multiple holds '     .
+             'on a single title and said operation is attempted, a permission '       .
+             'exception is returned'
+);
 
 __PACKAGE__->register_method(
     method    => "create_hold",
     api_name  => "open-ils.circ.holds.create.override",
-    signature => q/
-		If the recipient is not allowed to receive the requested hold,
-		call this method to attempt the override
-		@see open-ils.circ.holds.create
-	/
+    notes     => '@see open-ils.circ.holds.create',
+    signature => {
+        desc  => "If the recipient is not allowed to receive the requested hold, " .
+                 "call this method to attempt the override",
+        param => [
+           { desc => 'Hold object for hold to be created', type => 'object' }
+        ],
+        return => {
+            desc => 'Undef on success, -1 on missing arg, event (or ref to array of events) on error(s)',
+        },
+    }
 );
 
 sub create_hold {
@@ -91,7 +99,6 @@ sub create_hold {
     }
 
     # Now make sure the recipient is allowed to receive the specified hold
-    my $pevt;
     my $porg = $recipient->home_ou;
     my $rid  = $e->requestor->id;
     my $t    = $hold->hold_type;
@@ -113,29 +120,22 @@ sub create_hold {
     my $checked_out = hold_item_is_checked_out($e, $recipient->id, $hold->hold_type, $hold->target);
     push( @events, OpenILS::Event->new('HOLD_ITEM_CHECKED_OUT')) if $checked_out;
 
-    if( $t eq OILS_HOLD_TYPE_METARECORD ) 
-        { $pevt = $e->event unless $e->allowed('MR_HOLDS', $porg); }
-
-    if( $t eq OILS_HOLD_TYPE_TITLE ) 
-        { $pevt = $e->event unless $e->allowed('TITLE_HOLDS', $porg);  }
-
-    if( $t eq OILS_HOLD_TYPE_VOLUME ) 
-        { $pevt = $e->event unless $e->allowed('VOLUME_HOLDS', $porg); }
-
-    if( $t eq OILS_HOLD_TYPE_COPY ) 
-        { $pevt = $e->event unless $e->allowed('COPY_HOLDS', $porg); }
-
-    return $pevt if $pevt;
+    if ( $t eq OILS_HOLD_TYPE_METARECORD ) {
+        return $e->event unless $e->allowed('MR_HOLDS',     $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_TITLE ) {
+        return $e->event unless $e->allowed('TITLE_HOLDS',  $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_VOLUME ) {
+        return $e->event unless $e->allowed('VOLUME_HOLDS', $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_COPY ) {
+        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+    }
 
     if( @events ) {
-        if( $override ) {
-            for my $evt (@events) {
-                next unless $evt;
-                my $name = $evt->{textcode};
-                return $e->event unless $e->allowed("$name.override", $porg);
-            }
-        } else {
-            return \@events;
+        $override or return \@events;
+        for my $evt (@events) {
+            next unless $evt;
+            my $name = $evt->{textcode};
+            return $e->event unless $e->allowed("$name.override", $porg);
         }
     }
 
@@ -428,44 +428,42 @@ __PACKAGE__->register_method(
 );
 
 sub user_hold_count {
-   my( $self, $conn, $auth, $userid ) = @_;
-   my $e = new_editor(authtoken=>$auth);
-   return $e->event unless $e->checkauth;
-   my $patron = $e->retrieve_actor_user($userid)
+    my ( $self, $conn, $auth, $userid ) = @_;
+    my $e = new_editor( authtoken => $auth );
+    return $e->event unless $e->checkauth;
+    my $patron = $e->retrieve_actor_user($userid)
       or return $e->event;
-   return $e->event unless $e->allowed('VIEW_HOLD', $patron->home_ou);
-   return __user_hold_count($self, $e, $userid);
+    return $e->event unless $e->allowed( 'VIEW_HOLD', $patron->home_ou );
+    return __user_hold_count( $self, $e, $userid );
 }
 
 sub __user_hold_count {
-   my( $self, $e, $userid ) = @_;
-   my $holds = $e->search_action_hold_request(
-      {  usr =>  $userid , 
-         fulfillment_time => undef,
-         cancel_time => undef,
-      }, 
-      {idlist => 1}
-   );
+    my ( $self, $e, $userid ) = @_;
+    my $holds = $e->search_action_hold_request(
+        {
+            usr              => $userid,
+            fulfillment_time => undef,
+            cancel_time      => undef,
+        },
+        { idlist => 1 }
+    );
 
-   return scalar(@$holds);
+    return scalar(@$holds);
 }
 
 
 __PACKAGE__->register_method(
     method   => "retrieve_holds_by_pickup_lib",
     api_name => "open-ils.circ.holds.retrieve_by_pickup_lib",
-    notes    => <<NOTE);
-Retrieves all the holds, with hold transits attached, for the specified
-pickup_ou id. 
-NOTE
+    notes    => 
+      "Retrieves all the holds, with hold transits attached, for the specified pickup_ou id."
+);
 
 __PACKAGE__->register_method(
     method   => "retrieve_holds_by_pickup_lib",
     api_name => "open-ils.circ.holds.id_list.retrieve_by_pickup_lib",
-    notes    => <<NOTE);
-Retrieves all the hold ids for the specified
-pickup_ou id. 
-NOTE
+    notes    => "Retrieves all the hold ids for the specified pickup_ou id. "
+);
 
 sub retrieve_holds_by_pickup_lib {
 	my($self, $client, $login_session, $ou_id) = @_;
@@ -542,12 +540,10 @@ sub uncancel_hold {
 __PACKAGE__->register_method(
     method   => "cancel_hold",
     api_name => "open-ils.circ.hold.cancel",
-    notes    => <<"	NOTE");
-	Cancels the specified hold.  The login session
-	is the requestor and if the requestor is different from the usr field
-	on the hold, the requestor must have CANCEL_HOLDS permissions.
-	the hold may be either the hold object or the hold id
-	NOTE
+    notes    =>
+'Cancels the specified hold.  The login session is the requestor.  If the requestor is different from the usr field ' .
+'on the hold, the requestor must have CANCEL_HOLDS permissions. The hold may be either the hold object or the hold id'
+);
 
 sub cancel_hold {
 	my($self, $client, $auth, $holdid, $cause, $note) = @_;
@@ -609,7 +605,7 @@ sub cancel_hold {
 }
 
 sub delete_hold_copy_maps {
-	my $class = shift;
+	my $class  = shift;
 	my $editor = shift;
 	my $holdid = shift;
 
@@ -625,21 +621,19 @@ sub delete_hold_copy_maps {
 __PACKAGE__->register_method(
     method   => "update_hold",
     api_name => "open-ils.circ.hold.update",
-    notes    => <<"	NOTE");
-	Updates the specified hold.  The login session
-	is the requestor and if the requestor is different from the usr field
-	on the hold, the requestor must have UPDATE_HOLDS permissions.
-	NOTE
+    notes    => 'Updates the specified hold.  The login session is the requestor. ' .
+                'If the requestor is different from the usr field on the hold, '    .
+                'the requestor must have UPDATE_HOLDS permissions.'
+);
 
 __PACKAGE__->register_method(
     method   => "batch_update_hold",
     api_name => "open-ils.circ.hold.update.batch",
     stream   => 1,
-    notes    => <<"	NOTE");
-	Updates the specified hold.  The login session
-	is the requestor and if the requestor is different from the usr field
-	on the hold, the requestor must have UPDATE_HOLDS permissions.
-	NOTE
+    notes    => 'Updates the specified hold.  The login session is the requestor. ' .
+                'If the requestor is different from the usr field on the hold, '    .
+                'the requestor must have UPDATE_HOLDS permissions.'
+);
 
 sub update_hold {
 	my($self, $client, $auth, $hold, $values) = @_;
@@ -647,7 +641,7 @@ sub update_hold {
     return $e->die_event unless $e->checkauth;
     my $resp = update_hold_impl($self, $e, $hold, $values);
     return $resp if $U->event_code($resp);
-    $e->commit;
+    $e->commit;     # FIXME: update_hold_impl already does $e->commit  ??
     return $resp;
 }
 
@@ -829,21 +823,29 @@ sub hold_note_CUD {
 }
 
 
-
 __PACKAGE__->register_method(
-    method   => "retrieve_hold_status",
-    api_name => "open-ils.circ.hold.status.retrieve",
-    notes    => <<"NOTE");
-	Calculates the current status of the hold.
-	the requestor must have VIEW_HOLD permissions if the hold is for a user
-	other than the requestor.
-	Returns -1  on error (for now)
-	Returns 1 for 'waiting for copy to become available'
-	Returns 2 for 'waiting for copy capture'
-	Returns 3 for 'in transit'
-	Returns 4 for 'arrived'
-	Returns 5 for 'hold-shelf-delay'
-NOTE
+    method    => "retrieve_hold_status",
+    api_name  => "open-ils.circ.hold.status.retrieve",
+    signature => {
+        desc   => 'Calculates the current status of the hold. The requestor must have '      .
+                  'VIEW_HOLD permissions if the hold is for a user other than the requestor' ,
+        param  => [
+            { desc => 'Hold ID', type => 'number' }
+        ],
+        return => {
+            # type => 'number',     # event sometimes
+            desc => <<'END_OF_DESC'
+Returns event on error or:
+-1 on error (for now),
+ 1 for 'waiting for copy to become available',
+ 2 for 'waiting for copy capture',
+ 3 for 'in transit',
+ 4 for 'arrived',
+ 5 for 'hold-shelf-delay'
+END_OF_DESC
+        }
+    }
+);
 
 sub retrieve_hold_status {
 	my($self, $client, $auth, $hold_id) = @_;
@@ -883,16 +885,16 @@ sub _hold_status {
         # the interval is greater than now, consider the hold to be in the virtual 
         # "on its way to the holds shelf" status. Return 5.
 
-        my $transit = $e->search_action_hold_transit_copy({hold => $hold->id})->[0];
+        my $transit    = $e->search_action_hold_transit_copy({hold => $hold->id})->[0];
         my $start_time = ($transit) ? $transit->dest_recv_time : $hold->capture_time;
-        $start_time = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time));
-        my $end_time = $start_time->add(seconds => OpenSRF::Utils::interval_to_seconds($hs_wait_interval));
+        $start_time    = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time));
+        my $end_time   = $start_time->add(seconds => OpenSRF::Utils::interval_to_seconds($hs_wait_interval));
 
         return 5 if $end_time > DateTime->now;
         return 4;
     }
 
-	return -1;
+	return -1;  # error
 }
 
 
@@ -901,9 +903,7 @@ __PACKAGE__->register_method(
     method    => "retrieve_hold_queue_stats",
     api_name  => "open-ils.circ.hold.queue_stats.retrieve",
     signature => {
-        desc => q/
-            Returns object with total_holds count, queue_position, potential_copies count, and status code
-        /
+        desc => q/Returns object with total_holds count, queue_position, potential_copies count, and status code/,
     }
 );
 
