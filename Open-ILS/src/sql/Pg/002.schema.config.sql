@@ -59,7 +59,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0212'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0213'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -189,10 +189,16 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format, first_word)
         TRUE
     );
 
+CREATE TABLE config.metabib_class (
+    name    TEXT    PRIMARY KEY,
+    label   TEXT    NOT NULL UNIQUE
+);
+
 CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,
-	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword','series')),
+	field_class	TEXT	NOT NULL REFERENCES config.metabib_class (name),
 	name		TEXT	NOT NULL,
+	label		TEXT	NOT NULL,
 	xpath		TEXT	NOT NULL,
 	weight		INT	NOT NULL DEFAULT 1,
 	format		TEXT	NOT NULL DEFAULT 'mods33',
