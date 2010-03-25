@@ -45,7 +45,7 @@ __PACKAGE__->register_method(
         desc  => "Create a new hold for an item.  From a permissions perspective, " .
                  "the login session is used as the 'requestor' of the hold. "       . 
                  "The hold recipient is determined by the 'usr' setting within the hold object. ",
-        param => [
+        params => [
            { desc => 'Hold object for hold to be created', type => 'object' }
         ],
         return => {
