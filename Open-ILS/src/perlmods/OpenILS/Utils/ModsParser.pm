@@ -129,7 +129,7 @@ sub get_field_value {
 				# MODS strips the punctuation from 245abc, which often
 				# results in "title subtitle" rather than "title : subtitle";
 				# this hack gets it back for us
-				if ($type eq 'title' && $child->nodeName =~ m/subTitle/) {
+				if ($type && $type eq 'title' && $child->nodeName =~ m/subTitle/) {
 					push(@child_text, " : "); 
 				}
 				next unless( $child->nodeType != 3 );
