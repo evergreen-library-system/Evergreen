@@ -939,11 +939,12 @@ Suggested vendor fields:
 	vendor_identifier
 */
 
-CREATE OR REPLACE FUNCTION public.ingest_acq_marc ( ) RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION public.ingest_acq_marc ( ) RETURNS TRIGGER AS $function$
 DECLARE
 	value		TEXT;
 	atype		TEXT;
 	prov		INT;
+	pos 		INT;
 	adef		RECORD;
 	xpath_string	TEXT;
 BEGIN
@@ -965,12 +966,22 @@ BEGIN
 				SELECT xpath INTO xpath_string FROM acq.lineitem_generated_attr_definition WHERE id = adef.id;
 			END IF;
 
-			SELECT extract_acq_marc_field(id, xpath_string, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+            xpath_string := REGEXP_REPLACE(xpath_string,$re$//?text\(\)$$re$,'');
 
-			IF (value IS NOT NULL AND value <> '') THEN
-				INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
-					VALUES (NEW.id, adef.id, atype, adef.code, value);
-			END IF;
+            pos := 1;
+
+            LOOP
+    			SELECT extract_acq_marc_field(id, xpath_string || '[' || pos || ']', adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+
+    			IF (value IS NOT NULL AND value <> '') THEN
+	    			INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
+		    			VALUES (NEW.id, adef.id, atype, adef.code, value);
+                ELSE
+                    EXIT;
+			    END IF;
+
+                pos := pos + 1;
+            END LOOP;
 
 		END IF;
 
@@ -978,7 +989,7 @@ BEGIN
 
 	RETURN NULL;
 END;
-$$ LANGUAGE PLPGSQL;
+$function$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION public.cleanup_acq_marc ( ) RETURNS TRIGGER AS $$
 BEGIN
