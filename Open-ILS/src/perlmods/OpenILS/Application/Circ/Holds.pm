@@ -380,7 +380,7 @@ sub retrieve_holds {
         $holds = $e->search_action_hold_request([
             {   usr =>  $user_id , 
                 fulfillment_time => undef,
-                cancel_time => undef,
+                cancel_time      => undef,
             }, 
             {order_by => {ahr => "request_time"}}
         ]);
@@ -405,7 +405,7 @@ sub retrieve_holds {
             $holds = $e->search_action_hold_request([
                 {   usr =>  $user_id , 
                     fulfillment_time => undef,
-                    cancel_time => {'!=' => undef},
+                    cancel_time      => {'!=' => undef},
                 }, 
                 {order_by => {ahr => "cancel_time desc"}, limit => $cancel_count}
             ]);
@@ -419,7 +419,7 @@ sub retrieve_holds {
             $holds = $e->search_action_hold_request([
                 {   usr =>  $user_id , 
                     fulfillment_time => undef,
-                    cancel_time => {'>=' => $date},
+                    cancel_time      => {'>=' => $date},
                 }, 
                 {order_by => {ahr => "cancel_time desc"}}
             ]);
@@ -454,7 +454,7 @@ sub user_hold_count {
     my $e = new_editor( authtoken => $auth );
     return $e->event unless $e->checkauth;
     my $patron = $e->retrieve_actor_user($userid)
-      or return $e->event;
+        or return $e->event;
     return $e->event unless $e->allowed( 'VIEW_HOLD', $patron->home_ou );
     return __user_hold_count( $self, $e, $userid );
 }
@@ -488,12 +488,12 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_holds_by_pickup_lib {
-	my($self, $client, $login_session, $ou_id) = @_;
+    my ($self, $client, $login_session, $ou_id) = @_;
 
-	#FIXME -- put an appropriate permission check here
-	#my( $user, $target, $evt ) = $apputils->checkses_requestor(
-	#	$login_session, $user_id, 'VIEW_HOLD' );
-	#return $evt if $evt;
+    #FIXME -- put an appropriate permission check here
+    #my( $user, $target, $evt ) = $apputils->checkses_requestor(
+    #	$login_session, $user_id, 'VIEW_HOLD' );
+    #return $evt if $evt;
 
 	my $holds = $apputils->simplereq(
 		'open-ils.cstore',
@@ -841,7 +841,7 @@ sub update_hold_if_frozen {
     } else {
         if($U->is_true($orig_hold->frozen)) {
             $logger->info("Running targeter on activated hold ".$hold->id);
-	        $U->storagereq( 'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+            $U->storagereq( 'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
         }
     }
 }
@@ -950,7 +950,7 @@ sub _hold_status {
         return 4;
     }
 
-	return -1;  # error
+    return -1;  # error
 }
 
 
@@ -1132,7 +1132,7 @@ sub hold_pull_list {
 			$org, $limit, $offset ); 
 
         $logger->info("Grabbing pull list for org unit $org with $count items");
-        return $count
+        return $count;
 
     } elsif( $self->api_name =~ /id_list/ ) {
 		return $U->storagereq(
@@ -1151,11 +1151,11 @@ __PACKAGE__->register_method(
     api_name      => 'open-ils.circ.hold_notification.retrieve_by_hold',
     authoritative => 1,
     signature     => q/ 
-		Returns a list of hold notification objects based on hold id.
-		@param authtoken The loggin session key
-		@param holdid The id of the hold whose notifications we want to retrieve
-		@return An array of hold notification objects, event on error.
-	/
+Returns a list of hold notification objects based on hold id.
+@param authtoken The loggin session key
+@param holdid The id of the hold whose notifications we want to retrieve
+@return An array of hold notification objects, event on error.
+/
 );
 
 sub fetch_hold_notify {
@@ -1181,11 +1181,11 @@ __PACKAGE__->register_method(
     method    => 'create_hold_notify',
     api_name  => 'open-ils.circ.hold_notification.create',
     signature => q/
-		Creates a new hold notification object
-		@param authtoken The login session key
-		@param notification The hold notification object to create
-		@return ID of the new object on success, Event on error
-		/
+Creates a new hold notification object
+@param authtoken The login session key
+@param notification The hold notification object to create
+@return ID of the new object on success, Event on error
+/
 );
 
 sub create_hold_notify {
