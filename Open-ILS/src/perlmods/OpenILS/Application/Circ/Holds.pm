@@ -45,8 +45,9 @@ __PACKAGE__->register_method(
         desc  => "Create a new hold for an item.  From a permissions perspective, " .
                  "the login session is used as the 'requestor' of the hold. "       . 
                  "The hold recipient is determined by the 'usr' setting within the hold object. ",
-        params => [
-           { desc => 'Hold object for hold to be created', type => 'object' }
+        param => [
+            { desc => 'Authentication token',               type => 'string' },
+            { desc => 'Hold object for hold to be created', type => 'object' }
         ],
         return => {
             desc => 'Undef on success, -1 on missing arg, event (or ref to array of events) on error(s)',
@@ -70,6 +71,7 @@ __PACKAGE__->register_method(
         desc  => "If the recipient is not allowed to receive the requested hold, " .
                  "call this method to attempt the override",
         param => [
+           { desc => 'Authentication token',               type => 'string' },
            { desc => 'Hold object for hold to be created', type => 'object' }
         ],
         return => {
@@ -246,13 +248,23 @@ sub _check_request_holds_perm {
 	}
 }
 
+my $ses_is_req_note = 'The login session is the requestor.  If the requestor is different from the user, ' .
+                      'then the requestor must have VIEW_HOLD permissions';
+
 __PACKAGE__->register_method(
-    method   => "retrieve_holds_by_id",
-    api_name => "open-ils.circ.holds.retrieve_by_id",
-    notes    => <<NOTE);
-Retrieve the hold, with hold transits attached, for the specified id The login session is the requestor and if the requestor is
-different from the user, then the requestor must have VIEW_HOLD permissions.
-NOTE
+    method    => "retrieve_holds_by_id",
+    api_name  => "open-ils.circ.holds.retrieve_by_id",
+    signature => {
+        desc  => "Retrieve the hold, with hold transits attached, for the specified ID.  $ses_is_req_note",
+        param => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Hold ID',              type => 'number' }
+        ],
+        return => {
+            desc => 'Hold object with transits attached, event on error',
+        }
+    }
+);
 
 
 sub retrieve_holds_by_id {
@@ -279,34 +291,66 @@ sub retrieve_holds_by_id {
 
 
 __PACKAGE__->register_method(
-    method   => "retrieve_holds",
-    api_name => "open-ils.circ.holds.retrieve",
-    notes    => <<NOTE);
-Retrieves all the holds, with hold transits attached, for the specified
-user id.  The login session is the requestor and if the requestor is
-different from the user, then the requestor must have VIEW_HOLD permissions.
-NOTE
-
-__PACKAGE__->register_method(
-    method        => "retrieve_holds",
-    authoritative => 1,
-    api_name      => "open-ils.circ.holds.id_list.retrieve",
-    notes         => <<NOTE);
-Retrieves all the hold ids for the specified
-user id.  The login session is the requestor and if the requestor is
-different from the user, then the requestor must have VIEW_HOLD permissions.
-NOTE
-
-__PACKAGE__->register_method(
-    method        => "retrieve_holds",
-    authoritative => 1,
-    api_name      => "open-ils.circ.holds.canceled.retrieve",
+    method    => "retrieve_holds",
+    api_name  => "open-ils.circ.holds.retrieve",
+    signature => {
+        desc  => "Retrieves all the holds, with hold transits attached, for the specified user.  $ses_is_req_note",
+        param => [
+            { desc => 'Authentication token', type => 'string'  },
+            { desc => 'User ID',              type => 'integer' }
+        ],
+        return => {
+            desc => 'list of holds, event on error',
+        }
+   }
 );
 
 __PACKAGE__->register_method(
     method        => "retrieve_holds",
+    api_name      => "open-ils.circ.holds.id_list.retrieve",
     authoritative => 1,
+    signature     => {
+        desc  => "Retrieves all the hold IDs, for the specified user.  $ses_is_req_note",
+        param => [
+            { desc => 'Authentication token', type => 'string'  },
+            { desc => 'User ID',              type => 'integer' }
+        ],
+        return => {
+            desc => 'list of holds, event on error',
+        }
+   }
+);
+
+__PACKAGE__->register_method(
+    method        => "retrieve_holds",
+    api_name      => "open-ils.circ.holds.canceled.retrieve",
+    authoritative => 1,
+    signature     => {
+        desc  => "Retrieves all the cancelled holds for the specified user.  $ses_is_req_note",
+        param => [
+            { desc => 'Authentication token', type => 'string'  },
+            { desc => 'User ID',              type => 'integer' }
+        ],
+        return => {
+            desc => 'list of holds, event on error',
+        }
+   }
+);
+
+__PACKAGE__->register_method(
+    method        => "retrieve_holds",
     api_name      => "open-ils.circ.holds.canceled.id_list.retrieve",
+    authoritative => 1,
+    signature     => {
+        desc  => "Retrieves list of cancelled hold IDs for the specified user.  $ses_is_req_note",
+        param => [
+            { desc => 'Authentication token', type => 'string'  },
+            { desc => 'User ID',              type => 'integer' }
+        ],
+        return => {
+            desc => 'list of hold IDs, event on error',
+        }
+   }
 );
 
 
@@ -516,11 +560,21 @@ sub uncancel_hold {
 
 
 __PACKAGE__->register_method(
-    method   => "cancel_hold",
-    api_name => "open-ils.circ.hold.cancel",
-    notes    =>
-'Cancels the specified hold.  The login session is the requestor.  If the requestor is different from the usr field ' .
-'on the hold, the requestor must have CANCEL_HOLDS permissions. The hold may be either the hold object or the hold id'
+    method    => "cancel_hold",
+    api_name  => "open-ils.circ.hold.cancel",
+    signature => {
+        desc   => 'Cancels the specified hold.  The login session is the requestor.  If the requestor is different from the usr field ' .
+                  'on the hold, the requestor must have CANCEL_HOLDS permissions. The hold may be either the hold object or the hold id',
+        param  => [
+            {desc => 'Authentication token',  type => 'string'},
+            {desc => 'Hold ID',               type => 'number'},
+            {desc => 'Cause of Cancellation', type => 'string'},
+            {desc => 'Note',                  type => 'string'}
+        ],
+        return => {
+            desc => '1 on success, event on error'
+        }
+    }
 );
 
 sub cancel_hold {
@@ -596,21 +650,45 @@ sub delete_hold_copy_maps {
 }
 
 
+my $update_hold_desc = 'The login session is the requestor. '       .
+   'If the requestor is different from the usr field on the hold, ' .
+   'the requestor must have UPDATE_HOLDS permissions. '             .
+   'If supplying a hash of hold data, "id" must be included. '      .
+   'The hash is ignored if a hold object is supplied, '             .
+   'so you should supply only one kind of hold data argument.'      ;
+
 __PACKAGE__->register_method(
-    method   => "update_hold",
-    api_name => "open-ils.circ.hold.update",
-    notes    => 'Updates the specified hold.  The login session is the requestor. ' .
-                'If the requestor is different from the usr field on the hold, '    .
-                'the requestor must have UPDATE_HOLDS permissions.'
+    method    => "update_hold",
+    api_name  => "open-ils.circ.hold.update",
+    signature => {
+        desc  => "Updates the specified hold.  $update_hold_desc",
+        param => [
+            {desc => 'Authentication token',         type => 'string'},
+            {desc => 'Hold Object',                  type => 'object'},
+            {desc => 'Hash of values to be applied', type => 'object'}
+        ],
+        return => {
+            desc => 'Hold ID on success, event on error',
+            # type => 'number'
+        }
+    }
 );
 
 __PACKAGE__->register_method(
-    method   => "batch_update_hold",
-    api_name => "open-ils.circ.hold.update.batch",
-    stream   => 1,
-    notes    => 'Updates the specified hold.  The login session is the requestor. ' .
-                'If the requestor is different from the usr field on the hold, '    .
-                'the requestor must have UPDATE_HOLDS permissions.'
+    method    => "batch_update_hold",
+    api_name  => "open-ils.circ.hold.update.batch",
+    stream    => 1,
+    signature => {
+        desc  => "Updates the specified hold(s).  $update_hold_desc",
+        param => [
+            {desc => 'Authentication token',                    type => 'string'},
+            {desc => 'Array of hold obejcts',                   type => 'array' },
+            {desc => 'Array of hashes of values to be applied', type => 'array' }
+        ],
+        return => {
+            desc => 'Hold ID per success, event per error',
+        }
+    }
 );
 
 sub update_hold {
@@ -989,28 +1067,50 @@ sub fetch_related_holds {
 __PACKAGE__->register_method(
     method    => "hold_pull_list",
     api_name  => "open-ils.circ.hold_pull_list.retrieve",
-    signature => q/
-		Returns a list of holds that need to be "pulled"
-		by a given location
-	/
+    signature => {
+        desc  => 'Returns (reference to) a list of holds that need to be "pulled" by a given location. ' .
+                 'The location is determined by the login session.',
+        param => [
+            { desc => 'Limit (optional)',  type => 'number'},
+            { desc => 'Offset (optional)', type => 'number'},
+        ],
+        return => {
+            desc => 'reference to a list of holds, or event on failure',
+        }
+    }
 );
 
 __PACKAGE__->register_method(
     method    => "hold_pull_list",
     api_name  => "open-ils.circ.hold_pull_list.id_list.retrieve",
-    signature => q/
-		Returns a list of hold ID's that need to be "pulled"
-		by a given location
-	/
+    signature => {
+        desc  => 'Returns (reference to) a list of holds IDs that need to be "pulled" by a given location. ' .
+                 'The location is determined by the login session.',
+        param => [
+            { desc => 'Limit (optional)',  type => 'number'},
+            { desc => 'Offset (optional)', type => 'number'},
+        ],
+        return => {
+            desc => 'reference to a list of holds, or event on failure',
+        }
+    }
 );
 
 __PACKAGE__->register_method(
     method    => "hold_pull_list",
     api_name  => "open-ils.circ.hold_pull_list.retrieve.count",
-    signature => q/
-		Returns a list of holds that need to be "pulled"
-		by a given location
-	/
+    signature => {
+        desc  => 'Returns a count of holds that need to be "pulled" by a given location. ' .
+                 'The location is determined by the login session.',
+        param => [
+            { desc => 'Limit (optional)',  type => 'number'},
+            { desc => 'Offset (optional)', type => 'number'},
+        ],
+        return => {
+            desc => 'Holds count (integer), or event on failure',
+            # type => 'number'
+        }
+    }
 );
 
 
@@ -1392,20 +1492,50 @@ sub fetch_captured_holds {
     return undef;
 }
 
+
 __PACKAGE__->register_method(
-    method   => "check_title_hold",
-    api_name => "open-ils.circ.title_hold.is_possible",
-    notes    => q/
-		Determines if a hold were to be placed by a given user,
-		whether or not said hold would have any potential copies
-		to fulfill it.
-		@param authtoken The login session key
-		@param params A hash of named params including:
-			patronid  - the id of the hold recipient
-			titleid (brn) - the id of the title to be held
-			depth	- the hold range depth (defaults to 0)
-	/
+    method    => "check_title_hold",
+    api_name  => "open-ils.circ.title_hold.is_possible",
+    signature => {
+        desc  => 'Determines if a hold were to be placed by a given user, ' .
+             'whether or not said hold would have any potential copies to fulfill it.' .
+             'The named paramaters of the second argument include: ' .
+             'patronid, titleid, volume_id, copy_id, mrid, depth, pickup_lib, hold_type, selection_ou. ' .
+             'See perldoc ' . __PACKAGE__ . ' for more info on these fields.' , 
+        param => [
+            { desc => 'Authentication token',     type => 'string'},
+            { desc => 'Hash of named parameters', type => 'object'},
+        ],
+        return => {
+            desc => 'List of new message IDs (empty if none)',
+            type => 'array'
+        }
+    }
 );
+
+=head3 check_title_hold (token, hash)
+
+The named fields in the hash are: 
+
+ patronid     - ID of the hold recipient  (required)
+ depth        - hold range depth          (default 0)
+ pickup_lib   - destination for hold, fallback value for selection_ou
+ selection_ou - ID of org_unit establishing hard and soft hold boundary settings
+ titleid      - ID (BRN) of the title to be held, required for Title level hold
+ volume_id    - required for Volume level hold
+ copy_id      - required for Copy level hold
+ mrid         - required for Meta-record level hold
+ hold_type    - T,C,V or M for Title, Copy, Volume or Meta-record  (default "T")
+
+All key/value pairs are passed on to do_possibility_checks.
+
+=cut
+
+# FIXME: better params checking.  what other params are required, if any?
+# FIXME: 3 copies of values confusing: $x, $params->{x} and $params{x}
+# FIXME: for example, $depth gets a default value, but then $$params{depth} is still 
+# used in conditionals, where it may be undefined, causing a warning.
+# FIXME: specify proper usage/interaction of selection_ou and pickup_lib
 
 sub check_title_hold {
 	my( $self, $client, $authtoken, $params ) = @_;
