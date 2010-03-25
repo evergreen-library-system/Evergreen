@@ -389,8 +389,7 @@ sub retrieve_holds {
         # Fetch the canceled holds
 
         my $cancel_age;
-        my $cancel_count = 
-            $U->ou_ancestor_setting_value(
+        my $cancel_count = $U->ou_ancestor_setting_value(
                 $e->requestor->ws_ou, 'circ.holds.canceled.display_count', $e);
 
         unless($cancel_count) {
