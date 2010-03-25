@@ -1265,6 +1265,12 @@ sub ou_ancestor_setting_value {
 # that permission.  This means that if you call this method without an
 # authtoken param, you can get whatever org unit setting values you want.
 # API users beware.
+#
+# NOTE: If you supply an editor ($e) arg AND an auth token arg, the editor's
+# authtoken is checked, but the $auth arg is NOT checked.  To say that another
+# way, be sure NOT to pass an editor argument if you want your token checked.
+# Otherwise the auth arg is just a flag saying "check the editor".  
+
 sub ou_ancestor_setting {
     my( $self, $orgid, $name, $e, $auth ) = @_;
     $e = $e || OpenILS::Utils::CStoreEditor->new(
