@@ -1431,13 +1431,8 @@ sub check_title_hold {
 	my( $self, $client, $authtoken, $params ) = @_;
 
 	my %params		= %$params;
-	my $titleid		= $params{titleid} ||"";
-	my $volid		= $params{volume_id};
-	my $copyid		= $params{copy_id};
-	my $mrid		= $params{mrid} ||"";
 	my $depth		= $params{depth} || 0;
 	my $pickup_lib	= $params{pickup_lib};
-	my $hold_type	= $params{hold_type} || 'T';
     my $selection_ou = $params{selection_ou} || $pickup_lib;
 
 	my $e = new_editor(authtoken=>$authtoken);
@@ -1458,13 +1453,13 @@ sub check_title_hold {
     my $soft_boundary = $U->ou_ancestor_setting_value($selection_ou, OILS_SETTING_HOLD_SOFT_BOUNDARY);
     my $hard_boundary = $U->ou_ancestor_setting_value($selection_ou, OILS_SETTING_HOLD_HARD_BOUNDARY);
 
-    if(defined $soft_boundary and $$params{depth} < $soft_boundary) {
+    if(defined $soft_boundary and $depth < $soft_boundary) {
         # work up the tree and as soon as we find a potential copy, use that depth
         # also, make sure we don't go past the hard boundary if it exists
 
         # our min boundary is the greater of user-specified boundary or hard boundary
-        my $min_depth = (defined $hard_boundary and $hard_boundary > $$params{depth}) ?  
-            $hard_boundary : $$params{depth};
+        my $min_depth = (defined $hard_boundary and $hard_boundary > $depth) ?  
+            $hard_boundary : $depth;
 
         my $depth = $soft_boundary;
         while($depth >= $min_depth) {
@@ -1475,7 +1470,7 @@ sub check_title_hold {
         }
         return {success => 0};
 
-    } elsif(defined $hard_boundary and $$params{depth} < $hard_boundary) {
+    } elsif(defined $hard_boundary and $depth < $hard_boundary) {
         # there is no soft boundary, enforce the hard boundary if it exists
         $logger->info("performing hold possibility check with hard boundary $hard_boundary");
         my @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params);
