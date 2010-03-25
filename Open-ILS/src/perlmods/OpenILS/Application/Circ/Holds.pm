@@ -355,12 +355,11 @@ __PACKAGE__->register_method(
 
 
 sub retrieve_holds {
-	my($self, $client, $auth, $user_id, $options) = @_;
+    my ($self, $client, $auth, $user_id) = @_;
 
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     $user_id = $e->requestor->id unless defined $user_id;
-    $options ||= {};
 
     unless($user_id == $e->requestor->id) {
         my $user = $e->retrieve_actor_user($user_id) or return $e->event;
