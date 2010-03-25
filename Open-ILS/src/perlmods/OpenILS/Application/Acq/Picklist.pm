@@ -152,8 +152,8 @@ __PACKAGE__->register_method(
 	signature => {
         desc => 'Retrieves a picklist by name.  Owner is implied by the caller',
         params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'Picklist name to retrieve', type => 'strin'},
+            {desc => 'Authentication token',      type => 'string'},
+            {desc => 'Picklist name to retrieve', type => 'string'},
         ],
         return => {desc => 'Picklist object on success, null on not found'}
     }
