@@ -21,11 +21,14 @@
 
 #ifdef RSTORE
 #  define MODULENAME "open-ils.reporter-store"
+#  define ENFORCE_PCRUD 0
 #else
 #  ifdef PCRUD
 #    define MODULENAME "open-ils.pcrud"
+#    define ENFORCE_PCRUD 1
 #  else
 #    define MODULENAME "open-ils.cstore"
+#    define ENFORCE_PCRUD 0
 #  endif
 #endif
 
@@ -80,10 +83,8 @@ struct QueryFrameStruct {
 	int in_use;            // boolean
 };
 
-#ifdef PCRUD
 static int timeout_needs_resetting;
 static time_t time_next_reset;
-#endif
 
 int osrfAppChildInit();
 int osrfAppInitialize();
@@ -149,12 +150,13 @@ static ClassInfo* search_all_alias( const char* target );
 static ClassInfo* add_joined_class( const char* alias, const char* classname );
 static void clear_query_stack( void );
 
-#ifdef PCRUD
 static const jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
 static char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
-#endif
+
+static const int enforce_pcrud = ENFORCE_PCRUD;     // Boolean
+static const char modulename[] = MODULENAME;
 
 static int child_initialized = 0;   /* boolean */
 
@@ -246,13 +248,14 @@ int osrfAppInitialize() {
 		return 1; /* return non-zero to indicate error */
 
 	growing_buffer* method_name = buffer_init(64);
-#ifndef PCRUD
-	// Generic search thingy
-	buffer_add(method_name, MODULENAME);
-	buffer_add(method_name, ".json_query");
-	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+
+	if( ! enforce_pcrud ) {
+		// Generic search thingy (not for PCRUD)
+		buffer_add(method_name, MODULENAME);
+		buffer_add(method_name, ".json_query");
+		osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
 			"doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
-#endif
+	}
 
 	// first we register all the transaction and savepoint methods
 	buffer_reset(method_name);
@@ -336,14 +339,17 @@ int osrfAppInitialize() {
 			continue;
 		}
 
-#ifdef PCRUD
-		// For PCRUD, ignore classes with no permacrud attribute
-		osrfHash* idlClass_permacrud = osrfHashGet(idlClass, "permacrud");
-		if (!idlClass_permacrud) {
-			osrfLogDebug( OSRF_LOG_MARK, "Skipping class \"%s\"; no permacrud in IDL", classname );
-			continue;
+		osrfHash* idlClass_permacrud = NULL;
+		if( enforce_pcrud ) {
+			// For PCRUD, ignore classes with no permacrud section
+			idlClass_permacrud = osrfHashGet(idlClass, "permacrud");
+			if (!idlClass_permacrud) {
+				osrfLogDebug( OSRF_LOG_MARK, 
+					"Skipping class \"%s\"; no permacrud in IDL", classname );
+				continue;
+			}
 		}
-#endif
+
 		const char* readonly = osrfHashGet(idlClass, "readonly");
 
 		int i;
@@ -352,16 +358,16 @@ int osrfAppInitialize() {
 			osrfLogDebug(OSRF_LOG_MARK,
 				"Using files to build %s class methods for %s", method_type, classname);
 
-#ifdef PCRUD
-			// Treat "id_list" or "search" as forms of "retrieve"
-			const char* tmp_method = method_type;
-			if ( *tmp_method == 'i' || *tmp_method == 's') {  // "id_list" or "search"
-				tmp_method = "retrieve";
+			if( enforce_pcrud ) {
+				// Treat "id_list" or "search" as forms of "retrieve"
+				const char* tmp_method = method_type;
+				if ( *tmp_method == 'i' || *tmp_method == 's') {  // "id_list" or "search"
+					tmp_method = "retrieve";
+				}
+				// Skip this method if there is no permacrud entry for it
+				if (!osrfHashGet( idlClass_permacrud, tmp_method ))
+					continue;
 			}
-			// Skip this method if there is no permacrud entry for it
-			if (!osrfHashGet( idlClass_permacrud, tmp_method ))
-				continue;
-#endif
 
 			// No create, update, or delete methods for a readonly class
 			if ( str_is_true( readonly )
@@ -371,28 +377,28 @@ int osrfAppInitialize() {
 			buffer_reset( method_name );
 
 			// Build the method name
-#ifdef PCRUD
-			// For PCRUD: MODULENAME.method_type.classname
-			buffer_fadd(method_name, "%s.%s.%s", MODULENAME, method_type, classname);
-#else
-			// For non-PCRUD: MODULENAME.MODULENAME.direct.XXX.method_type
-			// where XXX is the fieldmapper name from the IDL, with every run of
-			// one or more consecutive colons replaced by a period.
-			char* st_tmp = NULL;
-			char* part = NULL;
-			char* _fm = strdup( idlClass_fieldmapper );
-			part = strtok_r(_fm, ":", &st_tmp);
+			if( enforce_pcrud ) {
+				// For PCRUD: MODULENAME.method_type.classname
+				buffer_fadd(method_name, "%s.%s.%s", modulename, method_type, classname);
+			} else {
+				// For non-PCRUD: MODULENAME.MODULENAME.direct.XXX.method_type
+				// where XXX is the fieldmapper name from the IDL, with every run of
+				// one or more consecutive colons replaced by a period.
+				char* st_tmp = NULL;
+				char* part = NULL;
+				char* _fm = strdup( idlClass_fieldmapper );
+				part = strtok_r(_fm, ":", &st_tmp);
 
-			buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
+				buffer_fadd(method_name, "%s.direct.%s", modulename, part);
 
-			while ((part = strtok_r(NULL, ":", &st_tmp))) {
+				while ((part = strtok_r(NULL, ":", &st_tmp))) {
+					OSRF_BUFFER_ADD_CHAR(method_name, '.');
+					OSRF_BUFFER_ADD(method_name, part);
+				}
 				OSRF_BUFFER_ADD_CHAR(method_name, '.');
-				OSRF_BUFFER_ADD(method_name, part);
+				OSRF_BUFFER_ADD(method_name, method_type);
+				free(_fm);
 			}
-			OSRF_BUFFER_ADD_CHAR(method_name, '.');
-			OSRF_BUFFER_ADD(method_name, method_type);
-			free(_fm);
-#endif
 
 			// For an id_list or search method we specify the OSRF_METHOD_STREAMING option.
 			// The consequence is that we implicitly create an atomic method in addition to
@@ -763,7 +769,6 @@ static inline void clearXactId( osrfMethodContext* ctx ) {
 }
 /*@}*/
 
-#ifdef PCRUD
 /**
 	@brief Save the user's login in the userData for the current application session.
 	@param ctx Pointer to the method context.
@@ -921,7 +926,6 @@ static const char* getAuthkey( osrfMethodContext* ctx ) {
 	else
 		return NULL;
 }
-#endif
 
 /**
 	@brief Implement the transaction.begin method.
@@ -941,12 +945,12 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-#ifdef PCRUD
-	timeout_needs_resetting = 1;
-	const jsonObject* user = verifyUserPCRUD( ctx );
-	if (!user)
-		return -1;
-#endif
+	if( enforce_pcrud ) {
+		timeout_needs_resetting = 1;
+		const jsonObject* user = verifyUserPCRUD( ctx );
+		if (!user)
+			return -1;
+	}
 
 	dbi_result result = dbi_conn_query(writehandle, "START TRANSACTION;");
 	if (!result) {
@@ -983,13 +987,13 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 	}
 
 	int spNamePos = 0;
-#ifdef PCRUD
-	timeout_needs_resetting = 1;
-	spNamePos = 1;
-	const jsonObject* user = verifyUserPCRUD( ctx );
-	if (!user)
-		return -1;
-#endif
+	if( enforce_pcrud ) {
+		spNamePos = 1;
+		timeout_needs_resetting = 1;
+		const jsonObject* user = verifyUserPCRUD( ctx );
+		if (!user)
+			return -1;
+	}
 
 	// Verify that a transaction is pending
 	const char* trans_id = getXactId( ctx );
@@ -1047,13 +1051,13 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 	}
 
 	int spNamePos = 0;
-#ifdef PCRUD
-	timeout_needs_resetting = 1;
-	spNamePos = 1;
-	const jsonObject* user = verifyUserPCRUD( ctx );
-	if (!user)
-		return -1;
-#endif
+	if( enforce_pcrud ) {
+		spNamePos = 1;
+		timeout_needs_resetting = 1;
+		const jsonObject* user = verifyUserPCRUD( ctx );
+		if (!user)
+			return -1;
+	}
 
 	// Verify that a transaction is pending
 	const char* trans_id = getXactId( ctx );
@@ -1111,13 +1115,13 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 	}
 
 	int spNamePos = 0;
-#ifdef PCRUD
-	timeout_needs_resetting = 1;
-	spNamePos = 1;
-	const jsonObject* user = verifyUserPCRUD( ctx );
-	if (!user)
-		return -1;
-#endif
+	if( enforce_pcrud ) {
+		spNamePos = 1;
+		timeout_needs_resetting = 1;
+		const jsonObject* user = verifyUserPCRUD( ctx );
+		if (!user)
+			return -1;
+	}
 
 	// Verify that a transaction is pending
 	const char* trans_id = getXactId( ctx );
@@ -1173,12 +1177,12 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-#ifdef PCRUD
-	timeout_needs_resetting = 1;
-	const jsonObject* user = verifyUserPCRUD( ctx );
-	if (!user)
-		return -1;
-#endif
+	if( enforce_pcrud ) {
+		timeout_needs_resetting = 1;
+		const jsonObject* user = verifyUserPCRUD( ctx );
+		if (!user)
+			return -1;
+	}
 
 	// Verify that a transaction is pending
 	const char* trans_id = getXactId( ctx );
@@ -1221,12 +1225,12 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-#ifdef PCRUD
-	timeout_needs_resetting = 1;
-	const jsonObject* user = verifyUserPCRUD( ctx );
-	if (!user)
-		return -1;
-#endif
+	if( enforce_pcrud ) {
+		timeout_needs_resetting = 1;
+		const jsonObject* user = verifyUserPCRUD( ctx );
+		if (!user)
+			return -1;
+	}
 
 	// Verify that a transaction is pending
 	const char* trans_id = getXactId( ctx );
@@ -1271,9 +1275,8 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	int err = 0;                // to be returned to caller
 	jsonObject * obj = NULL;    // to be returned to client
 
-#ifdef PCRUD
-	timeout_needs_resetting = 1;
-#endif
+	if( enforce_pcrud )
+		timeout_needs_resetting = 1;
 
 	// Get the method type so that we can branch on it
 	osrfHash* method_meta = (osrfHash*) ctx->method->userData;
@@ -1308,13 +1311,13 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		jsonObject* where_clause;
 		jsonObject* rest_of_query;
 
-#ifdef PCRUD
-		where_clause  = jsonObjectGetIndex( ctx->params, 1 );
-		rest_of_query = jsonObjectGetIndex( ctx->params, 2 );
-#else
-		where_clause  = jsonObjectGetIndex( ctx->params, 0 );
-		rest_of_query = jsonObjectGetIndex( ctx->params, 1 );
-#endif
+		if( enforce_pcrud ) {
+			where_clause  = jsonObjectGetIndex( ctx->params, 1 );
+			rest_of_query = jsonObjectGetIndex( ctx->params, 2 );
+		} else {
+			where_clause  = jsonObjectGetIndex( ctx->params, 0 );
+			rest_of_query = jsonObjectGetIndex( ctx->params, 1 );
+		}
 
 		// Do the query
 		osrfHash* class_obj = osrfHashGet( method_meta, "class" );
@@ -1327,10 +1330,8 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		jsonObject* cur = 0;
 		unsigned long res_idx = 0;
 		while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
-#ifdef PCRUD
-			if(!verifyObjectPCRUD(ctx, cur))
+			if( enforce_pcrud && !verifyObjectPCRUD(ctx, cur))
 				continue;
-#endif
 			osrfAppRespond( ctx, cur );
 		}
 		osrfAppRespondComplete( ctx, NULL );
@@ -1352,13 +1353,13 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		// We use the where clause without change.  But we need to massage the rest of the
 		// query, so we work with a copy of it instead of modifying the original.
 
-#ifdef PCRUD
-		where_clause  = jsonObjectGetIndex( ctx->params, 1 );
-		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 2 ) );
-#else
-		where_clause  = jsonObjectGetIndex( ctx->params, 0 );
-		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 1 ) );
-#endif
+		if( enforce_pcrud ) {
+			where_clause  = jsonObjectGetIndex( ctx->params, 1 );
+			rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 2 ) );
+		} else {
+			where_clause  = jsonObjectGetIndex( ctx->params, 0 );
+			rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 1 ) );
+		}
 
 		// Eliminate certain SQL clauses, if present
 		if ( rest_of_query ) {
@@ -1396,13 +1397,10 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		jsonObject* cur;
 		unsigned long res_idx = 0;
 		while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
-#ifdef PCRUD
-			if(!verifyObjectPCRUD(ctx, cur))
+			if( enforce_pcrud && !verifyObjectPCRUD(ctx, cur))
 				continue;
-#endif
 			osrfAppRespond( ctx,
-				oilsFMGetObject( cur, osrfHashGet( class_obj, "primarykey" ) )
-			);
+				oilsFMGetObject( cur, osrfHashGet( class_obj, "primarykey" ) ) );
 		}
 		osrfAppRespondComplete( ctx, NULL );
 
@@ -1451,15 +1449,11 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 		return 0;
 	}
 
-	int ret = 1;
-#ifdef PCRUD
-	ret = verifyObjectPCRUD( ctx, param );
-#endif
-
-	return ret;
+	if( enforce_pcrud )
+		return verifyObjectPCRUD( ctx, param );
+	else
+		return 1;
 }
-
-#ifdef PCRUD
 
 /**
 	@brief (PCRUD only) Verify that the user is properly logged in.
@@ -1971,19 +1965,21 @@ static jsonObject* single_hash( const char* key, const char* value ) {
 	jsonObjectSetKey( hash, key, jsonNewObject( value ) );
 	return hash;
 }
-#endif
 
 
 static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
-#ifdef PCRUD
-	jsonObject* target = jsonObjectGetIndex( ctx->params, 1 );
-	jsonObject* options = jsonObjectGetIndex( ctx->params, 2 );
-#else
-	jsonObject* target = jsonObjectGetIndex( ctx->params, 0 );
-	jsonObject* options = jsonObjectGetIndex( ctx->params, 1 );
-#endif
+	jsonObject* target = NULL;
+	jsonObject* options = NULL;
+
+	if( enforce_pcrud ) {
+		target = jsonObjectGetIndex( ctx->params, 1 );
+		options = jsonObjectGetIndex( ctx->params, 2 );
+	} else {
+		target = jsonObjectGetIndex( ctx->params, 0 );
+		options = jsonObjectGetIndex( ctx->params, 1 );
+	}
 
 	if (!verifyObjectClass(ctx, target)) {
 		*err = -1;
@@ -2234,10 +2230,10 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 	int id_pos = 0;
 	int order_pos = 1;
 
-#ifdef PCRUD
-	id_pos = 1;
-	order_pos = 2;
-#endif
+	if( enforce_pcrud ) {
+		id_pos = 1;
+		order_pos = 2;
+	}
 
 	// Get the class metadata
 	osrfHash* class_def = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
@@ -2273,24 +2269,24 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 	jsonObject* obj = jsonObjectExtractIndex( list, 0 );
 	jsonObjectFree( list );
 
-#ifdef PCRUD
-	if(!verifyObjectPCRUD(ctx, obj)) {
-		jsonObjectFree(obj);
-		*err = -1;
+	if( enforce_pcrud ) {
+		if(!verifyObjectPCRUD(ctx, obj)) {
+			jsonObjectFree(obj);
+			*err = -1;
 
-		growing_buffer* msg = buffer_init(128);
-		OSRF_BUFFER_ADD( msg, MODULENAME );
-		OSRF_BUFFER_ADD( msg, ": Insufficient permissions to retrieve object" );
+			growing_buffer* msg = buffer_init(128);
+			OSRF_BUFFER_ADD( msg, MODULENAME );
+			OSRF_BUFFER_ADD( msg, ": Insufficient permissions to retrieve object" );
 
-		char* m = buffer_release(msg);
-		osrfAppSessionStatus( ctx->session, OSRF_STATUS_NOTALLOWED, "osrfMethodException",
-				ctx->request, m );
+			char* m = buffer_release(msg);
+			osrfAppSessionStatus( ctx->session, OSRF_STATUS_NOTALLOWED, "osrfMethodException",
+					ctx->request, m );
 
-		free(m);
+			free(m);
 
-		return jsonNULL;
+			return jsonNULL;
+		}
 	}
-#endif
 
 	return obj;
 }
@@ -5592,11 +5588,12 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 static jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
-#ifdef PCRUD
-	jsonObject* target = jsonObjectGetIndex( ctx->params, 1 );
-#else
-	jsonObject* target = jsonObjectGetIndex( ctx->params, 0 );
-#endif
+
+	jsonObject* target = NULL;
+	if( enforce_pcrud )
+		target = jsonObjectGetIndex( ctx->params, 1 );
+	else
+		target = jsonObjectGetIndex( ctx->params, 0 );
 
 	if (!verifyObjectClass(ctx, target)) {
 		*err = -1;
@@ -5833,9 +5830,8 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 	char* pkey = osrfHashGet(meta, "primarykey");
 
 	int _obj_pos = 0;
-#ifdef PCRUD
+	if( enforce_pcrud )
 		_obj_pos = 1;
-#endif
 
 	char* id;
 	if (jsonObjectGetIndex(ctx->params, _obj_pos)->classname) {
@@ -5846,12 +5842,10 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 
 		id = oilsFMGetString( jsonObjectGetIndex(ctx->params, _obj_pos), pkey );
 	} else {
-#ifdef PCRUD
-		if (!verifyObjectPCRUD( ctx, NULL )) {
+		if( enforce_pcrud && !verifyObjectPCRUD( ctx, NULL )) {
 			*err = -1;
 			return jsonNULL;
 		}
-#endif
 		id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, _obj_pos));
 	}
 
