@@ -52,6 +52,7 @@ for my $h (@order) {
 
 my $count = 0;
 my $starttime = time;
+my $after_commit = '';
 while ( my $rec = <> ) {
 	next unless ($rec);
 
@@ -123,7 +124,7 @@ while ( my $rec = <> ) {
 for my $hint (@order) {
     next if (grep { $_ eq $hint} @auto);
     next unless ($fieldcache{$hint}{sequence});
-    $main_out->print("SELECT setval('$fieldcache{$hint}{sequence}'::TEXT, (SELECT MAX($fieldcache{$hint}{pkey}) FROM $fieldcache{$hint}{table}), TRUE);\n\n");
+    $after_commit .= "SELECT setval('$fieldcache{$hint}{sequence}'::TEXT, (SELECT MAX($fieldcache{$hint}{pkey}) FROM $fieldcache{$hint}{table}), TRUE);\n";
 }
 
 if (grep /^mfr$/, %out_files) {
@@ -132,5 +133,6 @@ if (grep /^mfr$/, %out_files) {
 }
 
 $main_out->print("COMMIT;\n\n") unless $nocommit;
+$main_out->print($after_commit);
 $main_out->close; 
 

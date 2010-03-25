@@ -87,6 +87,7 @@ binmode($output,'utf8');
 $output->print("SET CLIENT_ENCODING TO 'UNICODE';\n\n");
 $output->print("BEGIN;\n\n");
 
+my $after_commit = '';
 for my $h (@order) {
 	# continue if there was no data for this table
 	next unless ($fieldcache{$h});
@@ -125,9 +126,10 @@ for my $h (@order) {
 		$output->print("SELECT reporter.disable_materialized_simple_record_trigger();\n");
 	}
 
-	$output->print("SELECT setval('$fieldcache{$h}{sequence}'::TEXT, (SELECT MAX($fieldcache{$h}{pkey}) FROM $fieldcache{$h}{table}), TRUE);\n\n")
+	$after_commit .= "SELECT setval('$fieldcache{$h}{sequence}'::TEXT, (SELECT MAX($fieldcache{$h}{pkey}) FROM $fieldcache{$h}{table}), TRUE);\n";
 		if (!grep { $_ eq $h} @auto);
 }
 
 $output->print("COMMIT;\n\n") unless $nocommit;
+$output->print($after_commit);
 $output->close; 
