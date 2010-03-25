@@ -10,4 +10,6 @@ ALTER TABLE acq.acq_lineitem_history
 		REFERENCES acq.claim_policy
 		DEFERRABLE INITIALLY DEFERRED;
 
+SELECT acq.create_acq_lifecycle('acq', 'lineitem');
+
 COMMIT;
