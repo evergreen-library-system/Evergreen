@@ -171,16 +171,12 @@ sub __create_hold {
 	my( $user, $evt ) = $apputils->checkses($login_session);
 	return $evt if $evt;
 
-	my $holds;
-	if(ref($holds[0]) eq 'ARRAY') {
-		$holds = $holds[0];
-	} else { $holds = [ @holds ]; }
+	my $holdsref = (ref($holds[0]) eq 'ARRAY') ? $holds[0] : [ @holds ];
 
-	$logger->debug("Iterating over holds requests...");
+	$logger->debug("Iterating over " . scalar(@$holdsref) . " holds requests...");
 
-	for my $hold (@$holds) {
-
-		if(!$hold){next};
+	for my $hold (@$holdsref) {
+        $hold or next;
 		my $type = $hold->hold_type;
 
 		$logger->activity("User " . $user->id . 
@@ -190,22 +186,18 @@ sub __create_hold {
 		if($user->id ne $hold->usr) {
 			( $recipient, $evt ) = $apputils->fetch_user($hold->usr);
 			return $evt if $evt;
-
 		} else {
 			$recipient = $user;
 		}
 
-
-		my $perm = undef;
-
 		# am I allowed to place holds for this user?
 		if($hold->requestor ne $hold->usr) {
-			$perm = _check_request_holds_perm($user->id, $user->home_ou);
-			if($perm) { return $perm; }
+			my $perm = _check_request_holds_perm($user->id, $user->home_ou);
+            return $perm if $perm;
 		}
 
 		# is this user allowed to have holds of this type?
-		$perm = _check_holds_perm($type, $hold->requestor, $recipient->home_ou);
+		my $perm = _check_holds_perm($type, $hold->requestor, $recipient->home_ou);
         return $perm if $perm;
 
 		#enforce the fact that the login is the one requesting the hold
@@ -230,31 +222,17 @@ sub _check_holds_perm {
 	my($type, $user_id, $org_id) = @_;
 
 	my $evt;
-	if($type eq "M") {
-		if($evt = $apputils->check_perms(
-			$user_id, $org_id, "MR_HOLDS")) {
-			return $evt;
-		} 
-
+	if ($type eq "M") {
+		$evt = $apputils->check_perms($user_id, $org_id, "MR_HOLDS"    );
 	} elsif ($type eq "T") {
-		if($evt = $apputils->check_perms(
-			$user_id, $org_id, "TITLE_HOLDS")) {
-			return $evt;
-		}
-
+		$evt = $apputils->check_perms($user_id, $org_id, "TITLE_HOLDS" );
 	} elsif($type eq "V") {
-		if($evt = $apputils->check_perms(
-			$user_id, $org_id, "VOLUME_HOLDS")) {
-			return $evt;
-		}
-
+		$evt = $apputils->check_perms($user_id, $org_id, "VOLUME_HOLDS");
 	} elsif($type eq "C") {
-		if($evt = $apputils->check_perms(
-			$user_id, $org_id, "COPY_HOLDS")) {
-			return $evt;
-		}
+		$evt = $apputils->check_perms($user_id, $org_id, "COPY_HOLDS"  );
 	}
 
+    return $evt if $evt;
 	return undef;
 }
 
@@ -748,7 +726,7 @@ sub update_hold_impl {
 
 sub transit_hold {
     my($e, $orig_hold, $hold, $copy) = @_;
-    my $src = $orig_hold->pickup_lib;
+    my $src  = $orig_hold->pickup_lib;
     my $dest = $hold->pickup_lib;
 
     $logger->info("putting hold into transit on pickup_lib update");
@@ -1281,7 +1259,7 @@ sub fetch_open_title_holds {
 	return $e->event unless $e->checkauth;
 
 	$type ||= "T";
-	$org ||= $e->requestor->ws_ou;
+	$org  ||= $e->requestor->ws_ou;
 
 #	return $e->search_action_hold_request(
 #		{ target => $id, hold_type => $type, fulfillment_time => undef }, {idlist=>1});
@@ -1475,28 +1453,22 @@ sub check_title_hold {
             return {success => 1, depth => $depth, local_avail => $status[1]} if $status[0];
             $depth--;
         }
-        return {success => 0};
-
     } elsif(defined $hard_boundary and $$params{depth} < $hard_boundary) {
         # there is no soft boundary, enforce the hard boundary if it exists
         $logger->info("performing hold possibility check with hard boundary $hard_boundary");
         my @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params);
         if($status[0]) {
             return {success => 1, depth => $hard_boundary, local_avail => $status[1]}
-        } else {
-            return {success => 0};
         }
-
     } else {
         # no boundaries defined, fall back to user specifed boundary or no boundary
         $logger->info("performing hold possibility check with no boundary");
         my @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params);
         if($status[0]) {
             return {success => 1, depth => $hard_boundary, local_avail => $status[1]};
-        } else {
-            return {success => 0};
         }
     }
+    return {success => 0};
 }
 
 sub do_possibility_checks {
@@ -2072,10 +2044,10 @@ sub clear_shelf_process {
     # Find holds on the shelf that have been there too long
     my $hold_ids = $e->search_action_hold_request(
         {   shelf_expire_time => {'<' => 'now'},
-            pickup_lib => $org_id,
-            cancel_time => undef,
-            fulfillment_time => undef,
-            shelf_time => {'!=' => undef}
+            pickup_lib        => $org_id,
+            cancel_time       => undef,
+            fulfillment_time  => undef,
+            shelf_time        => {'!=' => undef}
         },
         { idlist => 1 }
     );
@@ -2170,7 +2142,7 @@ sub usr_hold_summary {
         {  
             usr =>  $user_id , 
             fulfillment_time => undef,
-            cancel_time => undef,
+            cancel_time      => undef,
         }
     );
 
