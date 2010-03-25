@@ -1463,18 +1463,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+
+	<class id="cmc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_class" oils_persist:tablename="config.metabib_class" reporter:label="Metabib Class">
+		<fields oils_persist:primary="name">
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Fields" name="fields" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="fields" reltype="has_many" key="name" map="" class="cmf"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_METABIB_CLASS" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_METABIB_CLASS" global_required="true"/>
+                <delete permission="DELETE_METABIB_CLASS" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="cmf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field" reporter:label="Metabib Field">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_field_id_seq">
-			<field name="field_class" />
-			<field name="id" reporter:datatype="id" />
-			<field name="name" reporter:datatype="text"/>
-			<field name="xpath" reporter:datatype="text"/>
-			<field name="weight" reporter:datatype="int" />
-			<field name="format" reporter:datatype="link"/>
-			<field name="search_field" reporter:datatype="bool" />
-			<field name="facet_field" reporter:datatype="bool" />
+			<field reporter:label="Class" name="field_class" reporter:datatype="link"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="XPath" name="xpath" reporter:datatype="text"/>
+			<field reporter:label="Weight" name="weight" reporter:datatype="int" />
+			<field reporter:label="Format" name="format" reporter:datatype="link"/>
+			<field reporter:label="Search Field" name="search_field" reporter:datatype="bool" />
+			<field reporter:label="Facet Field" name="facet_field" reporter:datatype="bool" />
 		</fields>
-		<links/>
+		<links>
+			<link field="field_class" reltype="has_a" key="name" map="" class="cmc"/>
+		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_METABIB_FIELD" global_required="true"/>
