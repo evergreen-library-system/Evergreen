@@ -13,6 +13,8 @@ var ftOwner;
 var ftList;
 
 function ftInit() {
+    pcrud = new openils.PermaCrud();
+
     new openils.User().buildPermOrgSelector(
         "ADMIN_ACQ_FUND_TAG",
         ftOwnerSelect,
@@ -22,7 +24,7 @@ function ftInit() {
                 ftOwnerSelect,
                 "onChange",
                 function() {
-                    ftOwner = this.getValue();
+                    ftOwner = fieldmapper.aou.findOrgUnit(this.attr("value"));
                     ftGrid.resetStore();
                     buildFtGrid();
                 }
@@ -32,12 +34,12 @@ function ftInit() {
 }
 
 function buildFtGrid() {
-    if (!pcrud) pcrud = new openils.PermaCrud();
-    if (!ftOwner) ftOwner = openils.User.user.ws_ou();
+    if (!ftOwner)
+        ftOwner = fieldmapper.aou.findOrgUnit(openils.User.user.ws_ou());
 
     pcrud.search(
         "acqft",
-        {"owner": fieldmapper.aou.fullPath(ftOwner, true /* asId */)},
+        {"owner": fieldmapper.aou.orgNodeTrail(ftOwner, true /* asId */)},
         {
             "async": true,
             "oncomplete": function(r) {

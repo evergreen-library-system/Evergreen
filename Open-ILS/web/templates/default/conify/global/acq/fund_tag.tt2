@@ -12,13 +12,12 @@
         </div>
     </div>
     <div class="oils-acq-basic-roomy">
-        <span>Owned by</span>
+        <span>Show tags available to</span>
         <select
             dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId="ftOwnerSelect"
             searchAttr="shortname" labelAttr="shortname">
         </select>
-        <span>or a descendant of the same:</span>
     </div>
     <table jsId="ftGrid"
         dojoType="openils.widget.AutoGrid"

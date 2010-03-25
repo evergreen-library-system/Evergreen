@@ -169,7 +169,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 		return org;
 	}
 
-	fieldmapper.aou.prototype.orgNodeTrail = function (node) {
+	fieldmapper.aou.prototype.orgNodeTrail = function(node, asId) {
 		if (!node) node = this;
 		if (!node) return [];
 
@@ -183,7 +183,9 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 				node = null;
 		}
 
-		return na.reverse();
+		na.reverse();
+		if (asId) return na.map(function(o) { return o.id(); });
+		else return na;
 	}
 	fieldmapper.aou.orgNodeTrail = fieldmapper.aou.prototype.orgNodeTrail;
 
