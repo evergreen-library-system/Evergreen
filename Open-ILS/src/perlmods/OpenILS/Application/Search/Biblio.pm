@@ -504,43 +504,63 @@ sub biblio_copy_to_mods {
 }
 
 
+=head3 open-ils.search.biblio.multiclass.query (arghash, query, docache)
+
+For arghash and docache, see B<open-ils.search.biblio.multiclass>.
+
+The query argument is a string, but built like a hash with key: value pairs.
+Recognized search keys include: 
+
+ keyword (kw) - search keyword(s) *
+ author  (au) - search author(s)  *
+ name    (au) - same as author    *
+ title   (ti) - search title      *
+ subject (su) - search subject    *
+ series  (se) - search series     *
+ lang - limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)
+ site - search at specified org unit, corresponds to actor.org_unit.shortname
+ sort - sort type (title, author, pubdate)
+ dir  - sort direction (asc, desc)
+ available - if set to anything other than "false" or "0", limits to available items
+
+* Searching keyword, author, title, subject, and series supports additional search 
+subclasses, specified with a "|".  For example, C<title|proper:gone with the wind>.
+
+For more, see B<config.metabib_field>.
+
+=cut
+
 __PACKAGE__->register_method(
-    api_name => 'open-ils.search.biblio.multiclass.query',
-    method => 'multiclass_query',
-    signature => q#
-        @param arghash @see open-ils.search.biblio.multiclass
-        @param query Raw human-readable query string.  
-            Recognized search keys include: 
-                keyword/kw - search keyword(s)
-                author/au/name - search author(s)
-                title/ti - search title
-                subject/su - search subject
-                series/se - search series
-                lang - limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)
-                site - search at specified org unit, corresponds to actor.org_unit.shortname
-                sort - sort type (title, author, pubdate)
-                dir - sort direction (asc, desc)
-                available - if set to anything other than "false" or "0", limits to available items
-
-                keyword, title, author, subject, and series support additional search 
-                subclasses, specified with a "|". For example, "title|proper:gone with the wind" 
-                For more, see config.metabib_field
-
-        @param docache @see open-ils.search.biblio.multiclass
-    #
+    api_name  => 'open-ils.search.biblio.multiclass.query',
+    method    => 'multiclass_query',
+    signature => {
+        desc   => 'Perform a search query',
+        param  => [
+            {name => 'arghash', desc => 'Arg hash (see open-ils.search.biblio.multiclass)',         type => 'object'},
+            {name => 'query',   desc => 'Raw human-readable query (see perldoc '. __PACKAGE__ .')', type => 'string'},
+            {name => 'docache', desc => 'Flag for caching (see open-ils.search.biblio.multiclass)', type => 'object'},
+        ],
+        return => {
+            desc => 'Search results from query, like: { "count" : $count, "ids" : [ [ $id, $relevancy, $total ], ...] }',
+            type => 'object',       # TODO: update as miker's new elements are included
+        }
+    }
 );
 __PACKAGE__->register_method(
-    api_name => 'open-ils.search.biblio.multiclass.query.staff',
-    method => 'multiclass_query',
-    signature => '@see open-ils.search.biblio.multiclass.query');
+    api_name  => 'open-ils.search.biblio.multiclass.query.staff',
+    method    => 'multiclass_query',
+    signature => '@see open-ils.search.biblio.multiclass.query'
+);
 __PACKAGE__->register_method(
-    api_name => 'open-ils.search.metabib.multiclass.query',
-    method => 'multiclass_query',
-    signature => '@see open-ils.search.biblio.multiclass.query');
+    api_name  => 'open-ils.search.metabib.multiclass.query',
+    method    => 'multiclass_query',
+    signature => '@see open-ils.search.biblio.multiclass.query'
+);
 __PACKAGE__->register_method(
-    api_name => 'open-ils.search.metabib.multiclass.query.staff',
-    method => 'multiclass_query',
-    signature => '@see open-ils.search.biblio.multiclass.query');
+    api_name  => 'open-ils.search.metabib.multiclass.query.staff',
+    method    => 'multiclass_query',
+    signature => '@see open-ils.search.biblio.multiclass.query'
+);
 
 sub multiclass_query {
     my($self, $conn, $arghash, $query, $docache) = @_;
@@ -737,9 +757,9 @@ sub cat_search_z_style_wrapper {
 # ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method		=> 'the_quest_for_knowledge',
-	api_name		=> 'open-ils.search.biblio.multiclass',
-	signature	=> q/
+    method    => 'the_quest_for_knowledge',
+    api_name  => 'open-ils.search.biblio.multiclass',
+    signature => q/
 		Performs a multi class biblio or metabib search
 		@param searchhash A search object layed out like so:
 			searches : { "$class" : "$value", ...}
@@ -756,17 +776,20 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-	method		=> 'the_quest_for_knowledge',
-	api_name		=> 'open-ils.search.biblio.multiclass.staff',
-	signature	=> q/@see open-ils.search.biblio.multiclass/);
+    method    => 'the_quest_for_knowledge',
+    api_name  => 'open-ils.search.biblio.multiclass.staff',
+    signature => q/@see open-ils.search.biblio.multiclass/
+);
 __PACKAGE__->register_method(
-	method		=> 'the_quest_for_knowledge',
-	api_name		=> 'open-ils.search.metabib.multiclass',
-	signature	=> q/@see open-ils.search.biblio.multiclass/);
+    method    => 'the_quest_for_knowledge',
+    api_name  => 'open-ils.search.metabib.multiclass',
+    signature => q/@see open-ils.search.biblio.multiclass/
+);
 __PACKAGE__->register_method(
-	method		=> 'the_quest_for_knowledge',
-	api_name		=> 'open-ils.search.metabib.multiclass.staff',
-	signature	=> q/@see open-ils.search.biblio.multiclass/);
+    method    => 'the_quest_for_knowledge',
+    api_name  => 'open-ils.search.metabib.multiclass.staff',
+    signature => q/@see open-ils.search.biblio.multiclass/
+);
 
 sub the_quest_for_knowledge {
 	my( $self, $conn, $searchhash, $docache ) = @_;
