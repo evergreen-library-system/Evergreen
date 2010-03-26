@@ -48,7 +48,13 @@
                     var key = base_key + attribute_list[j];
                     var value = prefs.prefHasUserValue(key) ? prefs.getCharPref(key) : null;
                     dump('persist_helper: retrieving key = ' + key + ' value = ' + value + ' for ' + nodes[i].nodeName + '\n');
-                    if (value) nodes[i].setAttribute( attribute_list[j], value );
+                    if (value) {
+                        if (nodes[i].nodeName == 'textbox') {
+                            nodes[i].value = value;
+                        } else {
+                            nodes[i].setAttribute( attribute_list[j], value );
+                        }
+                    }
                 }
                 if (nodes[i].nodeName == 'checkbox' && attribute_list.indexOf('checked') > -1) {
                     if (nodes[i].disabled == false && nodes[i].hidden == false) {
@@ -74,6 +80,26 @@
                                     dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for checkbox\n');
                                 } catch(E) {
                                     alert('Error in persist_helper(), checkbox command event listener: ' + E);
+                                }
+                            };
+                        }(base_key), 
+                        false
+                    );
+                }
+                if (nodes[i].nodeName == 'textbox' && attribute_list.indexOf('value') > -1) {
+                    nodes[i].addEventListener(
+                        'change',
+                        function(bk) {
+                            return function(ev) {
+                                try {
+                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                    var key = bk + 'value';
+                                    var value = ev.target.value;
+                                    ev.target.setAttribute( 'value', value );
+                                    prefs.setCharPref( key, value );
+                                    dump('persist_helper: setting key = ' +  key + ' value = ' + value + ' for textbox\n');
+                                } catch(E) {
+                                    alert('Error in persist_helper(), textbox change event listener: ' + E);
                                 }
                             };
                         }(base_key), 
