@@ -2564,8 +2564,14 @@ static char* searchFieldTransform (const char* class_alias, osrfHash* field, con
 			return NULL;
 		}
 
-		buffer_fadd( sql_buf, "%s(\"%s\".%s",
-			field_transform, class_alias, osrfHashGet(field, "name"));
+        if( obj_is_true( jsonObjectGetKeyConst( node, "distinct" ) ) ) {
+		    buffer_fadd( sql_buf, "%s(DISTINCT \"%s\".%s",
+                field_transform, class_alias, osrfHashGet(field, "name"));
+        } else {
+		    buffer_fadd( sql_buf, "%s(\"%s\".%s",
+                field_transform, class_alias, osrfHashGet(field, "name"));
+        }
+
 		const jsonObject* array = jsonObjectGetKeyConst( node, "params" );
 
 		if (array) {
