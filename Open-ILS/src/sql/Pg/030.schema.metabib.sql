@@ -41,7 +41,7 @@ CREATE TRIGGER metabib_title_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('title');
 
 CREATE INDEX metabib_title_field_entry_index_vector_idx ON metabib.title_field_entry USING GIST (index_vector);
-CREATE INDEX metabib_title_field_entry_value_idx ON metabib.title_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_title_field_entry_value_idx ON metabib.title_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_title_field_entry_source_idx ON metabib.title_field_entry (source);
 
 
@@ -57,7 +57,7 @@ CREATE TRIGGER metabib_author_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('author');
 
 CREATE INDEX metabib_author_field_entry_index_vector_idx ON metabib.author_field_entry USING GIST (index_vector);
-CREATE INDEX metabib_author_field_entry_value_idx ON metabib.author_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_author_field_entry_value_idx ON metabib.author_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_author_field_entry_source_idx ON metabib.author_field_entry (source);
 
 
@@ -73,7 +73,7 @@ CREATE TRIGGER metabib_subject_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('subject');
 
 CREATE INDEX metabib_subject_field_entry_index_vector_idx ON metabib.subject_field_entry USING GIST (index_vector);
-CREATE INDEX metabib_subject_field_entry_value_idx ON metabib.subject_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_subject_field_entry_value_idx ON metabib.subject_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_subject_field_entry_source_idx ON metabib.subject_field_entry (source);
 
 
@@ -89,7 +89,7 @@ CREATE TRIGGER metabib_keyword_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
 
 CREATE INDEX metabib_keyword_field_entry_index_vector_idx ON metabib.keyword_field_entry USING GIST (index_vector);
-CREATE INDEX metabib_keyword_field_entry_value_idx ON metabib.keyword_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_keyword_field_entry_value_idx ON metabib.keyword_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_keyword_field_entry_source_idx ON metabib.keyword_field_entry (source);
 
 
@@ -105,7 +105,7 @@ CREATE TRIGGER metabib_series_field_entry_fti_trigger
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('series');
 
 CREATE INDEX metabib_series_field_entry_index_vector_idx ON metabib.series_field_entry USING GIST (index_vector);
-CREATE INDEX metabib_series_field_entry_value_idx ON metabib.series_field_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_series_field_entry_value_idx ON metabib.series_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_series_field_entry_source_idx ON metabib.series_field_entry (source);
 
 
@@ -301,7 +301,7 @@ BEGIN
             IF idx.facet_field THEN
 
                 output_row.field_class = idx.field_class;
-                output_row.field = idx.id;
+                output_row.field = -1 *idx.id;
                 output_row.source = rid;
                 output_row.value = BTRIM(REGEXP_REPLACE(curr_text, E'\\s+', ' ', 'g'));
 
@@ -691,6 +691,8 @@ DECLARE
     uri_id          INT;
     uri_cn_id       INT;
     uri_map_id      INT;
+
+    ind_vector      TSVECTOR;
 BEGIN
 
     IF NEW.deleted IS TRUE THEN
@@ -726,21 +728,28 @@ BEGIN
 
     -- And now the indexing data
     FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( NEW.id ) LOOP
+        IF ind_data.field < 0 THEN
+            ind_vector = '';
+            ind_data.field = -1 * ind_data.field;
+        ELSE
+            ind_vector = NULL;
+        END IF;
+
         IF ind_data.field_class = 'title' THEN
-            INSERT INTO metabib.title_field_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
+            INSERT INTO metabib.title_field_entry (field, source, value, index_vector)
+                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
         ELSIF ind_data.field_class = 'author' THEN
-            INSERT INTO metabib.author_field_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
+            INSERT INTO metabib.author_field_entry (field, source, value, index_vector)
+                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
         ELSIF ind_data.field_class = 'subject' THEN
-            INSERT INTO metabib.subject_field_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
+            INSERT INTO metabib.subject_field_entry (field, source, value, index_vector)
+                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
         ELSIF ind_data.field_class = 'keyword' THEN
-            INSERT INTO metabib.keyword_field_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
+            INSERT INTO metabib.keyword_field_entry (field, source, value, index_vector)
+                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
         ELSIF ind_data.field_class = 'series' THEN
-            INSERT INTO metabib.series_field_entry (field, source, value)
-                VALUES (ind_data.field, ind_data.source, ind_data.value);
+            INSERT INTO metabib.series_field_entry (field, source, value, index_vector)
+                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
         END IF;
     END LOOP;
 
@@ -767,50 +776,54 @@ BEGIN
                 biblio.marc21_extract_fixed_field( NEW.id, 'Date2');
 
     -- On to URIs ...
-    uris := oils_xpath('//*[@tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]',NEW.marc);
-    IF ARRAY_UPPER(uris,1) > 0 THEN
-        FOR i IN 1 .. ARRAY_UPPER(uris, 1) LOOP
-            -- First we pull infot out of the 856
-            uri_xml     := uris[i];
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.skip_located_uri' AND enabled;
 
-            uri_href    := (oils_xpath('//*[@code="u"]/text()',uri_xml))[1];
-            CONTINUE WHEN uri_href IS NULL;
-
-            uri_label   := (oils_xpath('//*[@code="y"]/text()|//*[@code="3"]/text()|//*[@code="u"]/text()',uri_xml))[1];
-            CONTINUE WHEN uri_label IS NULL;
-
-            uri_owner   := (oils_xpath('//*[@code="9"]/text()|//*[@code="w"]/text()|//*[@code="n"]/text()',uri_xml))[1];
-            CONTINUE WHEN uri_owner IS NULL;
+    IF NOT FOUND OR TG_OP = 'INSERT' THEN
+        uris := oils_xpath('//*[@tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]',NEW.marc);
+        IF ARRAY_UPPER(uris,1) > 0 THEN
+            FOR i IN 1 .. ARRAY_UPPER(uris, 1) LOOP
+                -- First we pull infot out of the 856
+                uri_xml     := uris[i];
     
-            uri_use     := (oils_xpath('//*[@code="z"]/text()|//*[@code="2"]/text()|//*[@code="n"]/text()',uri_xml))[1];
-
-            uri_owner := REGEXP_REPLACE(uri_owner, $re$^.*?\((\w+)\).*$$re$, E'\\1');
+                uri_href    := (oils_xpath('//*[@code="u"]/text()',uri_xml))[1];
+                CONTINUE WHEN uri_href IS NULL;
     
-            SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = uri_owner;
-            CONTINUE WHEN NOT FOUND;
+                uri_label   := (oils_xpath('//*[@code="y"]/text()|//*[@code="3"]/text()|//*[@code="u"]/text()',uri_xml))[1];
+                CONTINUE WHEN uri_label IS NULL;
     
-            -- now we look for a matching uri
-            SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
-            IF NOT FOUND THEN -- create one
-                INSERT INTO asset.uri (label, href, use_restriction) VALUES (uri_label, uri_href, uri_use);
+                uri_owner   := (oils_xpath('//*[@code="9"]/text()|//*[@code="w"]/text()|//*[@code="n"]/text()',uri_xml))[1];
+                CONTINUE WHEN uri_owner IS NULL;
+        
+                uri_use     := (oils_xpath('//*[@code="z"]/text()|//*[@code="2"]/text()|//*[@code="n"]/text()',uri_xml))[1];
+    
+                uri_owner := REGEXP_REPLACE(uri_owner, $re$^.*?\((\w+)\).*$$re$, E'\\1');
+        
+                SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = uri_owner;
+                CONTINUE WHEN NOT FOUND;
+        
+                -- now we look for a matching uri
                 SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
-            END IF;
-    
-            -- we need a call number to link through
-            SELECT id INTO uri_cn_id FROM asset.call_number WHERE owning_lib = uri_owner_id AND record = NEW.id AND label = '##URI##' AND NOT deleted;
-            IF NOT FOUND THEN
-                INSERT INTO asset.call_number (owning_lib, record, create_date, edit_date, creator, editor, label)
-                    VALUES (uri_owner_id, NEW.id, 'now', 'now', NEW.editor, NEW.editor, '##URI##');
+                IF NOT FOUND THEN -- create one
+                    INSERT INTO asset.uri (label, href, use_restriction) VALUES (uri_label, uri_href, uri_use);
+                    SELECT id INTO uri_id FROM asset.uri WHERE label = uri_label AND href = uri_href AND use_restriction = uri_use AND active;
+                END IF;
+        
+                -- we need a call number to link through
                 SELECT id INTO uri_cn_id FROM asset.call_number WHERE owning_lib = uri_owner_id AND record = NEW.id AND label = '##URI##' AND NOT deleted;
-            END IF;
-    
-            -- now, link them if they're not already
-            SELECT id INTO uri_map_id FROM asset.uri_call_number_map WHERE call_number = uri_cn_id AND uri = uri_id;
-            IF NOT FOUND THEN
-                INSERT INTO asset.uri_call_number_map (call_number, uri) VALUES (uri_cn_id, uri_id);
-            END IF;
-    
-        END LOOP;
+                IF NOT FOUND THEN
+                    INSERT INTO asset.call_number (owning_lib, record, create_date, edit_date, creator, editor, label)
+                        VALUES (uri_owner_id, NEW.id, 'now', 'now', NEW.editor, NEW.editor, '##URI##');
+                    SELECT id INTO uri_cn_id FROM asset.call_number WHERE owning_lib = uri_owner_id AND record = NEW.id AND label = '##URI##' AND NOT deleted;
+                END IF;
+        
+                -- now, link them if they're not already
+                SELECT id INTO uri_map_id FROM asset.uri_call_number_map WHERE call_number = uri_cn_id AND uri = uri_id;
+                IF NOT FOUND THEN
+                    INSERT INTO asset.uri_call_number_map (call_number, uri) VALUES (uri_cn_id, uri_id);
+                END IF;
+        
+            END LOOP;
+        END IF;
     END IF;
 
     -- And, finally, metarecord mapping!

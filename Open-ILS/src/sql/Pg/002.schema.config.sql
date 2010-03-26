@@ -53,13 +53,14 @@ CREATE TABLE config.internal_flag (
 );
 INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.skip_on_insert');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.reingest.force_on_same_marc');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.reingest.skip_located_uri');
 
 CREATE TABLE config.upgrade_log (
     version         TEXT    PRIMARY KEY,
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0215'); -- Scott McKellar
+INSERT INTO config.upgrade_log (version) VALUES ('0216'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -729,6 +730,10 @@ DECLARE
         normalizer      RECORD;
         value           TEXT := '';
 BEGIN
+        IF NEW.index_vector = ''::tsvector THEN
+            RETURN NEW;
+        END IF;
+
         value := NEW.value;
 
         IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
