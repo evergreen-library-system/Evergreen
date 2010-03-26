@@ -10,6 +10,7 @@
 </script>
 
 <!-- load the page-specific JS -->
+<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/tag_manager.js"> </script>
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_fund.js'> </script>
 
 <div id='oils-acq-list-header' class='container'>
@@ -150,6 +151,27 @@
                     </table>     
                 </div> 
             </div> 
+        </div>
+        <div dojoType="dijit.layout.ContentPane" class="oils-acq-detail-content-pane" title="Tags">
+            <script type="dojo/connect" event="onShow">
+                tagManager.displayFund(fund);
+            </script>
+            <div id="oils-acq-tag-manager-display"></div>
+            <div id="oils-acq-tag-manager-add">
+                <div dojoType="dijit.form.DropDownButton">
+                    <span>Add Tag</span>
+                    <div dojoType="dijit.TooltipDialog">
+                        <select dojoType="dijit.form.FilteringSelect"
+                            jsId="tagSelector">
+                        </select>
+                        <button onclick="tagManager.addMapping(
+                            fund, new acqft().fromStoreItem(tagSelector.item)
+                        );" type="submit" dojoType="dijit.form.Button">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

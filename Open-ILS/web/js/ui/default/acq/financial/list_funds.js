@@ -43,6 +43,8 @@ function initPage() {
 
     loadYearSelector();
     loadFundGrid();
+
+    tagManager = new TagManager(lfGrid);
 }
 
 function loadFundGrid(year) {
@@ -154,4 +156,3 @@ function performRollover(args) {
 }
 
 openils.Util.addOnLoad(initPage);
-

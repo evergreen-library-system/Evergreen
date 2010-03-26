@@ -109,6 +109,15 @@
 }
 #oils-acq-metapo-summary td { text-align: right; }
 
+#oils-acq-tag-manager-display { padding: 8px 2px; }
+#oils-acq-tag-manager-add { padding: 8px 2px; border-top: 1px dotted #ccc; }
+.oils-acq-fund-tag {
+    border: 1px #666 dashed;
+    margin: 2px 8px;
+    padding: 4px;
+}
+.oils-acq-fund-tag A { margin-left: 10px; }
+
 /* li search page */
 h1.oils-acq-li-search { font-size: 150%;font-weight: bold;margin-bottom: 12px; }
 h2.oils-acq-li-search { font-size: 138%;font-weight: bold;margin-bottom: 11px; }

@@ -13,6 +13,7 @@ dojo.require('openils.User');
 dojo.require('openils.Util');
 
 var fund = null;
+var tagManager;
 
 function getSummaryInfo(rowIndex, item) {
     if(!item) return'';
@@ -68,7 +69,7 @@ function fetchFund() {
         {   async: true,
             params: [
                 openils.User.authtoken, fundID, 
-                {flesh_summary:1, flesh_allocations:1, flesh_debits:1} 
+                {flesh_summary:1, flesh_allocations:1, flesh_debits:1, flesh_tags:1} 
                 /* TODO grab allocations and debits only on as-needed basis */
             ],
             oncomplete: function(r) {
@@ -79,4 +80,10 @@ function fetchFund() {
     );
 }
 
-openils.Util.addOnLoad(fetchFund);
+function load() {
+    tagManager = new TagManager(dojo.byId("oils-acq-tag-manager-display"));
+    tagManager.prepareTagSelector(tagSelector);
+    fetchFund();
+}
+
+openils.Util.addOnLoad(load);

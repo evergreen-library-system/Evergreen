@@ -254,6 +254,10 @@ sub retrieve_fund {
     $options ||= {};
 
     my $flesh = {flesh => 2, flesh_fields => {acqf => []}};
+    if ($options->{"flesh_tags"}) {
+        push @{$flesh->{"flesh_fields"}->{"acqf"}}, "tags";
+        $flesh->{"flesh_fields"}->{"acqftm"} = ["tag"];
+    }
     push(@{$flesh->{flesh_fields}->{acqf}}, 'debits') if $$options{flesh_debits};
     push(@{$flesh->{flesh_fields}->{acqf}}, 'allocations') if $$options{flesh_allocations};
     push(@{$flesh->{flesh_fields}->{acqfa}}, 'funding_source') if $$options{flesh_allocation_sources};
