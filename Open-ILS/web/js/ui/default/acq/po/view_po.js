@@ -252,6 +252,7 @@ function makeCancelWidget(node, labelnode) {
 function renderPo() {
     dojo.byId("acq-po-view-id").innerHTML = PO.id();
     dojo.byId("acq-po-view-name").innerHTML = PO.name();
+    dojo.byId("acq-po-view-provider").innerHTML = PO.provider().name();
     dojo.byId("acq-po-view-total-li").innerHTML = PO.lineitem_count();
     dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered();
     dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent();
@@ -289,6 +290,7 @@ function init() {
         ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],
         {   async: true,
             params: [openils.User.authtoken, poId, {
+                "flesh_provider": true,
                 "flesh_price_summary": true,
                 "flesh_lineitem_count": true,
                 "flesh_notes": true

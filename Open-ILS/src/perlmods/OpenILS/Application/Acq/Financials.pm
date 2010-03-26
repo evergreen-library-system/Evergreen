@@ -902,6 +902,9 @@ sub retrieve_purchase_order_impl {
     if ($options->{"flesh_notes"}) {
         push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "notes";
     }
+    if ($options->{"flesh_provider"}) {
+        push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "provider";
+    }
     my $po = $e->retrieve_acq_purchase_order([$po_id, $flesh])
         or return $e->event;
 
