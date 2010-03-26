@@ -2464,28 +2464,44 @@ sub cancel_lineitem_detail {
 }
 
 
-__PACKAGE__->register_method (
-    method        => 'user_requests',
-    api_name    => 'open-ils.acq.user_request.retrieve.by_user_id',
-    stream      => 1,
-    signature => q/
-        Retrieve fleshed user requests and related data for a given user or users.
-        @param authtoken Login session key
-        @param owner Id or array of id's for the pertinent users.
-        @param options Allows one to override the query's 'order_by', 'limit', and 'offset'.  And the 'state' of the lineitem in the search.
-    /
+__PACKAGE__->register_method(
+    method    => 'user_requests',
+    api_name  => 'open-ils.acq.user_request.retrieve.by_user_id',
+    stream    => 1,
+    signature => {
+        desc  => 'Retrieve fleshed user requests and related data for a given user.',
+        param => [
+            { desc => 'Authentication token',      type => 'string' },
+            { desc => 'User ID of the owner, or array of IDs',      },
+            { desc => 'Options hash (optional) with any of the keys: order_by, limit, offset, state (of the lineitem)',
+              type => 'object'
+            }
+        ],
+        return => {
+            desc => 'Fleshed user requests and related data',
+            type => 'object'
+        }
+    }
 );
 
-__PACKAGE__->register_method (
-    method        => 'user_requests',
-    api_name    => 'open-ils.acq.user_request.retrieve.by_home_ou',
-    stream      => 1,
-    signature => q/
-        Retrieve fleshed user requests and related data for a given org unit or units.
-        @param authtoken Login session key
-        @param owner Id or array of id's for the pertinent org units.
-        @param options Allows one to override the query's 'order_by', 'limit', and 'offset'.  And the 'state' of the lineitem in the search.
-    /
+__PACKAGE__->register_method(
+    method    => 'user_requests',
+    api_name  => 'open-ils.acq.user_request.retrieve.by_home_ou',
+    stream    => 1,
+    signature => {
+        desc  => 'Retrieve fleshed user requests and related data for a given org unit or units.',
+        param => [
+            { desc => 'Authentication token',      type => 'string' },
+            { desc => 'Org unit ID, or array of IDs',               },
+            { desc => 'Options hash (optional) with any of the keys: order_by, limit, offset, state (of the lineitem)',
+              type => 'object'
+            }
+        ],
+        return => {
+            desc => 'Fleshed user requests and related data',
+            type => 'object'
+        }
+    }
 );
 
 sub user_requests {
@@ -2493,6 +2509,7 @@ sub user_requests {
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
     my $rid = $e->requestor->id;
+    $options ||= {};
 
     my $query = {
         "select"=>{"aur"=>["id"],"au"=>["home_ou", {column => 'id', alias => 'usr_id'} ]},
@@ -2508,16 +2525,10 @@ sub user_requests {
         "order_by"=>[{"class"=>"aur", "field"=>"request_date", "direction"=>"desc"}]
     };
 
-    if ($options && defined $options->{'order_by'}) {
-        $query->{'order_by'} = $options->{'order_by'};        
+    foreach (qw/ order_by limit offset /) {
+        $query->{$_} = $options->{$_} if defined $options->{$_};
     }
-    if ($options && defined $options->{'limit'}) {
-        $query->{'limit'} = $options->{'limit'};        
-    }
-    if ($options && defined $options->{'offset'}) {
-        $query->{'offset'} = $options->{'offset'};        
-    }
-    if ($options && defined $options->{'state'}) {
+    if (defined $options->{'state'}) {
         $query->{'where'}->{'+jub'}->{'-or'}->[1]->{'state'} = $options->{'state'};        
     }
 
@@ -2555,21 +2566,36 @@ sub user_requests {
 }
 
 __PACKAGE__->register_method (
-    method      => 'update_user_request',
-    api_name    => 'open-ils.acq.user_request.cancel.batch',
-    stream      => 1,
-    signature => q/
-        If given a cancel reason, will update the request with that reason, otherwise, this will delete the request altogether.  The intention 
-        is for staff interfaces or processes to provide cancel reasons, and for patron interfaces to just delete the requests.
-        @param authtoken Login session key
-        @param ids Id or array of id's for the user requests to cancel.
-        @param cancel_reason Optional Cancel Reason Id.
-    /
+    method    => 'update_user_request',
+    api_name  => 'open-ils.acq.user_request.cancel.batch',
+    stream    => 1,
+    signature => {
+        desc => 'If given a cancel reason, will update the request with that reason, otherwise, this will delete the request altogether.  The '    .
+                'intention is for staff interfaces or processes to provide cancel reasons, and for patron interfaces to just delete the requests.' ,
+        param => [
+            { desc => 'Authentication token',              type => 'string' },
+            { desc => 'ID or array of IDs for the user requests to cancel'  },
+            { desc => 'Cancel Reason ID (optional)',       type => 'string' }
+        ],
+        return => {
+            desc => 'progress object, event on error',
+        }
+    }
 );
 __PACKAGE__->register_method (
-    method      => 'update_user_request',
-    api_name    => 'open-ils.acq.user_request.set_no_hold.batch',
-    stream      => 1,
+    method    => 'update_user_request',
+    api_name  => 'open-ils.acq.user_request.set_no_hold.batch',
+    stream    => 1,
+    signature => {
+        desc  => 'Remove the hold from a user request or set of requests',
+        param => [
+            { desc => 'Authentication token',              type => 'string' },
+            { desc => 'ID or array of IDs for the user requests to modify'  }
+        ],
+        return => {
+            desc => 'progress object, event on error',
+        }
+    }
 );
 
 sub update_user_request {
@@ -2625,8 +2651,18 @@ sub update_user_request {
 }
 
 __PACKAGE__->register_method (
-    method      => 'new_user_request',
-    api_name    => 'open-ils.acq.user_request.create'
+    method    => 'new_user_request',
+    api_name  => 'open-ils.acq.user_request.create',
+    signature => {
+        desc   => 'Create a new user request object in the DB',
+        param  => [
+            { desc => 'Authentication token',   type => 'string' },
+            { desc => 'User request data hash', type => 'object' }
+        ],
+        return => {
+            desc => 'The created user request object, or event on error'
+        }
+    }
 );
 
 sub new_user_request {
