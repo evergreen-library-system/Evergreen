@@ -26,7 +26,7 @@
                     fmClass='aur'
                     editStyle='pane'
                     autoHeight='true'
-                    autoWidth='true'
+                    defaultCellWidth='"auto"'
                     suppressFields="['id']"
                     showPaginator='true'
                     showColumnPicker='true'
