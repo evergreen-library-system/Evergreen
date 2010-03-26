@@ -2018,6 +2018,7 @@ sub activate_purchase_order_impl {
     return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
 
     $po->state('on-order');
+    $po->order_date('now');
     update_purchase_order($mgr, $po) or return $e->die_event;
 
     my $query = [
