@@ -2090,6 +2090,55 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="metarecord" reltype="has_a" key="id" map="" class="mmr"/>
 		</links>
 	</class>
+	<class id="mfae" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::facet_entry" reporter:label="Combined Facet Entry View" oils_persist:readonly="true">
+		<oils_persist:source_definition>
+			SELECT * FROM (
+				SELECT * FROM metabib.author_field_entry
+						UNION ALL
+				SELECT * FROM metabib.keyword_field_entry
+						UNION ALL
+				SELECT * FROM metabib.title_field_entry
+						UNION ALL
+				SELECT * FROM metabib.subject_field_entry
+						UNION ALL
+				SELECT * FROM metabib.series_field_entry
+			)x
+			WHERE x.index_vector = ''
+		</oils_persist:source_definition>
+		<fields>
+			<field name="field" reporter:datatype="link"/>
+			<field name="id" reporter:datatype="id" />
+			<field name="source" reporter:datatype="link"/>
+			<field name="value"  reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+	</class>
+	<class id="mfe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::field_entry" reporter:label="Combined Field Entry View" oils_persist:readonly="true">
+		<oils_persist:source_definition>
+			SELECT * FROM metabib.author_field_entry
+						UNION ALL
+			SELECT * FROM metabib.keyword_field_entry
+						UNION ALL
+			SELECT * FROM metabib.title_field_entry
+						UNION ALL
+			SELECT * FROM metabib.subject_field_entry
+						UNION ALL
+			SELECT * FROM metabib.series_field_entry
+		</oils_persist:source_definition>
+		<fields>
+			<field name="field" reporter:datatype="link"/>
+			<field name="id" reporter:datatype="id" />
+			<field name="source" reporter:datatype="link"/>
+			<field name="value"  reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+	</class>
 	<class id="mkfe" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::keyword_field_entry" oils_persist:tablename="metabib.keyword_field_entry" reporter:label="Keyword Field Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.keyword_field_entry_id_seq">
 			<field name="field" reporter:datatype="link"/>

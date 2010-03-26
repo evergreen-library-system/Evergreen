@@ -940,6 +940,7 @@ sub staged_search {
 
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
+    my $facet_key = $key.'_facets';
     my $cache_data = $cache->get_cache($key) || {};
 
     # keep retrieving results until we find enough to 
@@ -950,6 +951,7 @@ sub staged_search {
     my $current_page_summary = {};
     my $global_summary = {checked => 0, visible => 0, excluded => 0, deleted => 0, total => 0};
     my $is_real_hit_count = 0;
+    my $new_ids = [];
 
     for($page = 0; $page < $max_superpages; $page++) {
 
@@ -993,6 +995,8 @@ sub staged_search {
             } else {
                 $results = [map {[$_->{id}, $_->{rel}, $_->{record}]} @$results];
             }
+
+            push @$new_ids, grep {defined($_)} map {$_->[0]} @$results;
 
             $results = [grep {defined $_->[0]} @$results];
             cache_staged_search_page($key, $page, $summary, $results) if $docache;
@@ -1054,13 +1058,17 @@ sub staged_search {
 		}
 	}
 
-    return {
+    $conn->respond_complete({
         count => $est_hit_count,
         core_limit => $search_hash->{core_limit},
         superpage_size => $search_hash->{check_limit},
         superpage_summary => $current_page_summary,
+        facet_key => $facet_key,
         ids => \@results
-    };
+    });
+
+    cache_facets($facet_key, $new_ids) if $docache;
+    return undef;
 }
 
 # creates a unique token to represent the query in the cache
@@ -1076,6 +1084,69 @@ sub search_cache_key {
     }
 	my $s = OpenSRF::Utils::JSON->perl2JSON(\@sorted);
 	return $pfx . md5_hex($method . $s);
+}
+
+sub retrieve_cached_facets {
+    my $self = shift;
+    my $client = shift;
+    my $key = shift;
+
+    return undef unless ($key =~ /_facets$/);
+
+    return $cache->get_cache($key) || {};
+}
+__PACKAGE__->register_method(
+	method	=> "retrieve_cached_facets",
+	api_name=> "open-ils.search.facet_cache.retrieve"
+);
+
+
+sub cache_facets {
+    # add facets for this search to the facet cache
+    my($key, $results) = @_;
+    my $data = $cache->get_cache($key);
+    $data ||= {};
+
+    return undef unless (@$results);
+
+    # The query we're constructing
+    #
+    # select  cmf.id,
+    #         mfae.value,
+    #         count(distinct mfae.source)
+    #   from  metabib.facet_entry mfae
+    #         join config.metabib_field cmf on (mfae.field = cmf.id)
+    #   where cmf.facet_field
+    #         and mfae.source in IDLIST
+    #   group by 1,2;
+
+    my $facets = $U->cstorereq( "open-ils.cstore.json_query.atomic",
+        {   select  => {
+                cmf  => [ 'id' ],
+                mfae => [ 
+                    'value',
+                    {
+                        transform => 'count',
+                        distinct => 1,
+                        column => 'source',
+                        alias => 'count',
+                        aggregate => 1
+                    }
+                ]
+            },
+            from    => { mfae => 'cmf' },
+            where   => { '+cmf'  => 'facet_field', '+mfae' => { source => $results } }
+        }
+    );
+
+    for my $facet (@$facets) {
+        next unless ($facet->{value});
+        $data->{$facet->{id}}->{$facet->{value}} += $facet->{count};
+    }
+
+    $logger->info("facet compilation: cached with key=$key");
+
+    $cache->put_cache($key, $data, $cache_timeout);
 }
 
 sub cache_staged_search_page {
