@@ -2787,7 +2787,7 @@ sub query_parser_fts {
             config_metabib_search_alias         =>
                 $cstore->request(
                     'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
-                    { id => { "!=" => undef } }
+                    { alias => { "!=" => undef } }
                 )->gather(1),
         );
 
@@ -3034,6 +3034,11 @@ sub query_parser_fts_wrapper {
                 $cstore->request(
                     'open-ils.cstore.direct.config.metabib_field.search.atomic',
                     { id => { "!=" => undef } }
+                )->gather(1),
+            config_metabib_search_alias         =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
+                    { alias => { "!=" => undef } }
                 )->gather(1),
         );
 
