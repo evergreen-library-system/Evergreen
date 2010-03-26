@@ -42,25 +42,25 @@ __PACKAGE__->register_method(
     method    => "create_hold",
     api_name  => "open-ils.circ.holds.create",
     signature => {
-        desc  => "Create a new hold for an item.  From a permissions perspective, " .
-                 "the login session is used as the 'requestor' of the hold. "       . 
-                 "The hold recipient is determined by the 'usr' setting within the hold object. ",
-        param => [
+        desc => "Create a new hold for an item.  From a permissions perspective, " .
+                "the login session is used as the 'requestor' of the hold.  "      . 
+                "The hold recipient is determined by the 'usr' setting within the hold object. " .
+                'First we verify the requestor has holds request permissions.  '         .
+                'Then we verify that the recipient is allowed to make the given hold.  ' .
+                'If not, we see if the requestor has "override" capabilities.  If not, ' .
+                'a permission exception is returned.  If permissions allow, we cycle '   .
+                'through the set of holds objects and create.  '                         .
+                'If the recipient does not have permission to place multiple holds '     .
+                'on a single title and said operation is attempted, a permission '       .
+                'exception is returned',
+        params => [
             { desc => 'Authentication token',               type => 'string' },
             { desc => 'Hold object for hold to be created', type => 'object' }
         ],
         return => {
             desc => 'Undef on success, -1 on missing arg, event (or ref to array of events) on error(s)',
         },
-    },
-    notes => 'First we verify the requestor has holds request permissions.  '         .
-             'Then we verify that the recipient is allowed to make the given hold.  ' .
-             'If not, we see if the requestor has "override" capabilities.  If not, ' .
-             'a permission exception is returned.  If permissions allow, we cycle '   .
-             'through the set of holds objects and create.  '                         .
-             'If the recipient does not have permission to place multiple holds '     .
-             'on a single title and said operation is attempted, a permission '       .
-             'exception is returned'
+    }
 );
 
 __PACKAGE__->register_method(
@@ -70,7 +70,7 @@ __PACKAGE__->register_method(
     signature => {
         desc  => "If the recipient is not allowed to receive the requested hold, " .
                  "call this method to attempt the override",
-        param => [
+        params => [
            { desc => 'Authentication token',               type => 'string' },
            { desc => 'Hold object for hold to be created', type => 'object' }
         ],
@@ -255,8 +255,8 @@ __PACKAGE__->register_method(
     method    => "retrieve_holds_by_id",
     api_name  => "open-ils.circ.holds.retrieve_by_id",
     signature => {
-        desc  => "Retrieve the hold, with hold transits attached, for the specified ID.  $ses_is_req_note",
-        param => [
+        desc   => "Retrieve the hold, with hold transits attached, for the specified ID.  $ses_is_req_note",
+        params => [
             { desc => 'Authentication token', type => 'string' },
             { desc => 'Hold ID',              type => 'number' }
         ],
@@ -294,8 +294,8 @@ __PACKAGE__->register_method(
     method    => "retrieve_holds",
     api_name  => "open-ils.circ.holds.retrieve",
     signature => {
-        desc  => "Retrieves all the holds, with hold transits attached, for the specified user.  $ses_is_req_note",
-        param => [
+        desc   => "Retrieves all the holds, with hold transits attached, for the specified user.  $ses_is_req_note",
+        params => [
             { desc => 'Authentication token', type => 'string'  },
             { desc => 'User ID',              type => 'integer' }
         ],
@@ -310,8 +310,8 @@ __PACKAGE__->register_method(
     api_name      => "open-ils.circ.holds.id_list.retrieve",
     authoritative => 1,
     signature     => {
-        desc  => "Retrieves all the hold IDs, for the specified user.  $ses_is_req_note",
-        param => [
+        desc   => "Retrieves all the hold IDs, for the specified user.  $ses_is_req_note",
+        params => [
             { desc => 'Authentication token', type => 'string'  },
             { desc => 'User ID',              type => 'integer' }
         ],
@@ -326,8 +326,8 @@ __PACKAGE__->register_method(
     api_name      => "open-ils.circ.holds.canceled.retrieve",
     authoritative => 1,
     signature     => {
-        desc  => "Retrieves all the cancelled holds for the specified user.  $ses_is_req_note",
-        param => [
+        desc   => "Retrieves all the cancelled holds for the specified user.  $ses_is_req_note",
+        params => [
             { desc => 'Authentication token', type => 'string'  },
             { desc => 'User ID',              type => 'integer' }
         ],
@@ -342,8 +342,8 @@ __PACKAGE__->register_method(
     api_name      => "open-ils.circ.holds.canceled.id_list.retrieve",
     authoritative => 1,
     signature     => {
-        desc  => "Retrieves list of cancelled hold IDs for the specified user.  $ses_is_req_note",
-        param => [
+        desc   => "Retrieves list of cancelled hold IDs for the specified user.  $ses_is_req_note",
+        params => [
             { desc => 'Authentication token', type => 'string'  },
             { desc => 'User ID',              type => 'integer' }
         ],
@@ -653,8 +653,8 @@ __PACKAGE__->register_method(
     method    => "update_hold",
     api_name  => "open-ils.circ.hold.update",
     signature => {
-        desc  => "Updates the specified hold.  $update_hold_desc",
-        param => [
+        desc   => "Updates the specified hold.  $update_hold_desc",
+        params => [
             {desc => 'Authentication token',         type => 'string'},
             {desc => 'Hold Object',                  type => 'object'},
             {desc => 'Hash of values to be applied', type => 'object'}
@@ -671,8 +671,8 @@ __PACKAGE__->register_method(
     api_name  => "open-ils.circ.hold.update.batch",
     stream    => 1,
     signature => {
-        desc  => "Updates the specified hold(s).  $update_hold_desc",
-        param => [
+        desc   => "Updates the specified hold(s).  $update_hold_desc",
+        params => [
             {desc => 'Authentication token',                    type => 'string'},
             {desc => 'Array of hold obejcts',                   type => 'array' },
             {desc => 'Array of hashes of values to be applied', type => 'array' }
@@ -1063,9 +1063,9 @@ __PACKAGE__->register_method(
     method    => "hold_pull_list",
     api_name  => "open-ils.circ.hold_pull_list.retrieve",
     signature => {
-        desc  => 'Returns (reference to) a list of holds that need to be "pulled" by a given location. ' .
-                 'The location is determined by the login session.',
-        param => [
+        desc   => 'Returns (reference to) a list of holds that need to be "pulled" by a given location. ' .
+                  'The location is determined by the login session.',
+        params => [
             { desc => 'Limit (optional)',  type => 'number'},
             { desc => 'Offset (optional)', type => 'number'},
         ],
@@ -1079,9 +1079,9 @@ __PACKAGE__->register_method(
     method    => "hold_pull_list",
     api_name  => "open-ils.circ.hold_pull_list.id_list.retrieve",
     signature => {
-        desc  => 'Returns (reference to) a list of holds IDs that need to be "pulled" by a given location. ' .
-                 'The location is determined by the login session.',
-        param => [
+        desc   => 'Returns (reference to) a list of holds IDs that need to be "pulled" by a given location. ' .
+                  'The location is determined by the login session.',
+        params => [
             { desc => 'Limit (optional)',  type => 'number'},
             { desc => 'Offset (optional)', type => 'number'},
         ],
@@ -1095,9 +1095,9 @@ __PACKAGE__->register_method(
     method    => "hold_pull_list",
     api_name  => "open-ils.circ.hold_pull_list.retrieve.count",
     signature => {
-        desc  => 'Returns a count of holds that need to be "pulled" by a given location. ' .
-                 'The location is determined by the login session.',
-        param => [
+        desc   => 'Returns a count of holds that need to be "pulled" by a given location. ' .
+                  'The location is determined by the login session.',
+        params => [
             { desc => 'Limit (optional)',  type => 'number'},
             { desc => 'Offset (optional)', type => 'number'},
         ],
@@ -1497,7 +1497,7 @@ __PACKAGE__->register_method(
              'The named paramaters of the second argument include: ' .
              'patronid, titleid, volume_id, copy_id, mrid, depth, pickup_lib, hold_type, selection_ou. ' .
              'See perldoc ' . __PACKAGE__ . ' for more info on these fields.' , 
-        param => [
+        params => [
             { desc => 'Authentication token',     type => 'string'},
             { desc => 'Hash of named parameters', type => 'object'},
         ],

@@ -2470,8 +2470,8 @@ __PACKAGE__->register_method(
     api_name  => 'open-ils.acq.user_request.retrieve.by_user_id',
     stream    => 1,
     signature => {
-        desc  => 'Retrieve fleshed user requests and related data for a given user.',
-        param => [
+        desc   => 'Retrieve fleshed user requests and related data for a given user.',
+        params => [
             { desc => 'Authentication token',      type => 'string' },
             { desc => 'User ID of the owner, or array of IDs',      },
             { desc => 'Options hash (optional) with any of the keys: order_by, limit, offset, state (of the lineitem)',
@@ -2490,8 +2490,8 @@ __PACKAGE__->register_method(
     api_name  => 'open-ils.acq.user_request.retrieve.by_home_ou',
     stream    => 1,
     signature => {
-        desc  => 'Retrieve fleshed user requests and related data for a given org unit or units.',
-        param => [
+        desc   => 'Retrieve fleshed user requests and related data for a given org unit or units.',
+        params => [
             { desc => 'Authentication token',      type => 'string' },
             { desc => 'Org unit ID, or array of IDs',               },
             { desc => 'Options hash (optional) with any of the keys: order_by, limit, offset, state (of the lineitem)',
@@ -2571,9 +2571,9 @@ __PACKAGE__->register_method (
     api_name  => 'open-ils.acq.user_request.cancel.batch',
     stream    => 1,
     signature => {
-        desc => 'If given a cancel reason, will update the request with that reason, otherwise, this will delete the request altogether.  The '    .
-                'intention is for staff interfaces or processes to provide cancel reasons, and for patron interfaces to just delete the requests.' ,
-        param => [
+        desc   => 'If given a cancel reason, will update the request with that reason, otherwise, this will delete the request altogether.  The '    .
+                  'intention is for staff interfaces or processes to provide cancel reasons, and for patron interfaces to just delete the requests.' ,
+        params => [
             { desc => 'Authentication token',              type => 'string' },
             { desc => 'ID or array of IDs for the user requests to cancel'  },
             { desc => 'Cancel Reason ID (optional)',       type => 'string' }
@@ -2588,8 +2588,8 @@ __PACKAGE__->register_method (
     api_name  => 'open-ils.acq.user_request.set_no_hold.batch',
     stream    => 1,
     signature => {
-        desc  => 'Remove the hold from a user request or set of requests',
-        param => [
+        desc   => 'Remove the hold from a user request or set of requests',
+        params => [
             { desc => 'Authentication token',              type => 'string' },
             { desc => 'ID or array of IDs for the user requests to modify'  }
         ],

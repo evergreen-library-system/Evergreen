@@ -58,10 +58,10 @@ __PACKAGE__->register_method(
 	method    => 'retrieve',
 	api_name  => 'open-ils.acq.edi.retrieve',
 	signature => {
-        desc  => 'Fetch incoming message(s) from EDI accounts.  ' .
-                 'Optional arguments to restrict to one vendor and/or a max number of messages.  ' .
-                 'Note that messages are not parsed or processed here, just fetched and translated.',
-        param => [
+        desc   => 'Fetch incoming message(s) from EDI accounts.  ' .
+                  'Optional arguments to restrict to one vendor and/or a max number of messages.  ' .
+                  'Note that messages are not parsed or processed here, just fetched and translated.',
+        params => [
             {desc => 'Authentication token',        type => 'string'},
             {desc => 'Vendor ID (undef for "all")', type => 'number'},
             {desc => 'Date Inactive Since',         type => 'string'},
