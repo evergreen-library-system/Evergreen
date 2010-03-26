@@ -14,6 +14,8 @@ dojo.require('openils.User');
 dojo.require('openils.acq.Fund');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.ProgressDialog');
+dojo.requireLocalization('openils.acq', 'acq');
+var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 
 var contextOrg;
 
@@ -49,6 +51,7 @@ function initPage() {
 
 function loadFundGrid(year) {
 
+    openils.Util.hide('acq-fund-list-rollover-summary');
     lfGrid.resetStore();
     year = year || new Date().getFullYear().toString();
     lfGrid.dataLoader = function() { loadFundGrid(year); };
@@ -116,6 +119,8 @@ function loadYearSelector() {
 }
 
 function performRollover(args) {
+
+    lfGrid.resetStore();
     progressDialog.show(true, "Processing...");
 
     var method = 'open-ils.acq.fiscal_rollover';
@@ -129,7 +134,9 @@ function performRollover(args) {
     if(args.dry_run[0] == 'on')
         method += '.dry_run';
 
-    var responses = [];
+    var count = 0;
+    var amount_rolled = 0;
+    var year = fundFilterYearSelect.attr('value'); // TODO alternate selector?
     fieldmapper.standardRequest(
         ['open-ils.acq', method],
         {
@@ -137,18 +144,46 @@ function performRollover(args) {
 
             params : [
                 openils.User.authtoken, 
-                fundFilterYearSelect.attr('value'),
+                year,
                 contextOrg,
                 false, // TODO: checkbox in dialog
             ],
 
             onresponse : function(r) {
                 var resp = openils.Util.readResponse(r);
-                responses.push(resp);
+                count += 1;
+                amount_rolled += resp.rollover_amount;
+                lfGrid.store.newItem(fieldmapper.acqf.toStoreItem(resp.fund));
             }, 
 
             oncomplete : function() {
-                alert(responses.length);
+                
+                var nextYear = Number(year) + 1;
+
+                dojo.byId('acq-fund-list-rollover-summary-header').innerHTML = 
+                    dojo.string.substitute(
+                        localeStrings.FUND_LIST_ROLLOVER_SUMMARY,
+                        [nextYear]
+                    );
+
+                dojo.byId('acq-fund-list-rollover-summary-funds').innerHTML = 
+                    dojo.string.substitute(
+                        localeStrings.FUND_LIST_ROLLOVER_SUMMARY_FUNDS,
+                        [nextYear, count]
+                    );
+
+                dojo.byId('acq-fund-list-rollover-summary-rollover-amount').innerHTML = 
+                    dojo.string.substitute(
+                        localeStrings.FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT,
+                        [nextYear, amount_rolled]
+                    );
+
+                if(!args.dry_run) {
+                    openils.Util.hide('acq-fund-list-rollover-summary-dry-run');
+                }
+                openils.Util.show('acq-fund-list-rollover-summary');
+
+
                 progressDialog.hide();
             }
         }

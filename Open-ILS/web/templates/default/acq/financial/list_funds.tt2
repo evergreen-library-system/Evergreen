@@ -110,6 +110,19 @@
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div style='width:98%; margin-top:20px;'>
+        <div id='acq-fund-list-rollover-summary' class='hidden' style='width:50%; margin-left:auto; margin-right:auto;text-align:center;border:1px solid #888;'>
+            <div id='acq-fund-list-rollover-summary-header'> </div>
+            <ul>
+                <li id='acq-fund-list-rollover-summary-dry-run'>These changes have <span class='oils-notify-text'>not</span> been committed yet.</li>
+                <li id='acq-fund-list-rollover-summary-funds'></li>
+                <li id='acq-fund-list-rollover-summary-rollover-amount'></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="lfGrid"
             autoHeight='true'
             dojoType="openils.widget.AutoGrid"

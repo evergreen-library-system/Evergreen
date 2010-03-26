@@ -43,5 +43,8 @@
     'FUND_NOT_YET_LOADED': "Fund not yet loaded. Try coming back to this display later.",
     'CONFIRM_DELETE_MAPPING': "Are you sure you want to remove this tag from this fund?",
     'COULD_NOT_CREATE_MAPPING': "Error tagging fund.",
-    'COULD_NOT_DELETE_MAPPING': "Error removing tag from fund."
+    'COULD_NOT_DELETE_MAPPING': "Error removing tag from fund.",
+    'FUND_LIST_ROLLOVER_SUMMARY' : 'Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}',
+    'FUND_LIST_ROLLOVER_SUMMARY_FUNDS' : '<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations',
+    'FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT' : '<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected locations'
 }
