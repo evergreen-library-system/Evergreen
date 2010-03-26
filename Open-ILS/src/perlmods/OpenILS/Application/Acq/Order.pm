@@ -2658,7 +2658,7 @@ __PACKAGE__->register_method (
         desc   => 'Create a new user request object in the DB',
         param  => [
             { desc => 'Authentication token',   type => 'string' },
-            { desc => 'User request data hash', type => 'object' }
+            { desc => 'User request data hash.  Hash keys match the fields for the "aur" object', type => 'object' }
         ],
         return => {
             desc => 'The created user request object, or event on error'
