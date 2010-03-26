@@ -107,6 +107,8 @@ int rollbackSavepoint ( osrfMethodContext* );
 int doJSONSearch ( osrfMethodContext* );
 
 int dispatchCRUDMethod ( osrfMethodContext* );
+static int doSearch( osrfMethodContext* ctx );
+static int doIdList( osrfMethodContext* ctx );
 static jsonObject* doCreate ( osrfMethodContext*, int* );
 static jsonObject* doRetrieve ( osrfMethodContext*, int* );
 static jsonObject* doUpdate ( osrfMethodContext*, int* );
@@ -1260,7 +1262,7 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 	@param ctx Pointer to the method context.
 	@return Zero if successful, or -1 if not.
 
-	Branch on the method type: create, retrieve, update, delete, search, and id_list.
+	Branch on the method type: create, retrieve, update, delete, search, or id_list.
 
 	The method parameters and the type of value returned to the client depend on the method
 	type.  However, for PCRUD methods, the first method parameter should always be an
@@ -1299,118 +1301,150 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		osrfAppRespondComplete( ctx, obj );
 	}
 	else if (!strcmp(methodtype, "search")) {
-
-		// Implement search method: return rows of the specified class that satisfy
-		// a specified WHERE clause.
-
-		// Method parameters:
-		// - authkey (PCRUD only)
-		// - WHERE clause, as jsonObject
-		// - Other SQL clause(s), as a JSON_HASH: joins, SELECT list, LIMIT, etc.
-
-		jsonObject* where_clause;
-		jsonObject* rest_of_query;
-
-		if( enforce_pcrud ) {
-			where_clause  = jsonObjectGetIndex( ctx->params, 1 );
-			rest_of_query = jsonObjectGetIndex( ctx->params, 2 );
-		} else {
-			where_clause  = jsonObjectGetIndex( ctx->params, 0 );
-			rest_of_query = jsonObjectGetIndex( ctx->params, 1 );
-		}
-
-		// Do the query
-		osrfHash* class_obj = osrfHashGet( method_meta, "class" );
-		obj = doFieldmapperSearch( ctx, class_obj, where_clause, rest_of_query, &err );
-
-		if(err)
-			return err;
-
-		// Return each row to the client (except that some may be suppressed by PCRUD)
-		jsonObject* cur = 0;
-		unsigned long res_idx = 0;
-		while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
-			if( enforce_pcrud && !verifyObjectPCRUD(ctx, cur))
-				continue;
-			osrfAppRespond( ctx, cur );
-		}
+		err = doSearch( ctx );
 		osrfAppRespondComplete( ctx, NULL );
-
 	} else if (!strcmp(methodtype, "id_list")) {
-
-		// Implement the id_list method.  Return the primary key values for all rows of the
-		// relevant class that satisfy a specified WHERE clause.  This method relies on the
-		// assumption that every class has a primary key consisting of a single column.
-
-		// Method parameters:
-		// - authkey (PCRUD only)
-		// - WHERE clause, as jsonObject
-		// - Other SQL clause(s), as a JSON_HASH: joins, LIMIT, etc.
-
-		jsonObject* where_clause;
-		jsonObject* rest_of_query;
-
-		// We use the where clause without change.  But we need to massage the rest of the
-		// query, so we work with a copy of it instead of modifying the original.
-
-		if( enforce_pcrud ) {
-			where_clause  = jsonObjectGetIndex( ctx->params, 1 );
-			rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 2 ) );
-		} else {
-			where_clause  = jsonObjectGetIndex( ctx->params, 0 );
-			rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 1 ) );
-		}
-
-		// Eliminate certain SQL clauses, if present
-		if ( rest_of_query ) {
-			jsonObjectRemoveKey( rest_of_query, "select" );
-			jsonObjectRemoveKey( rest_of_query, "no_i18n" );
-			jsonObjectRemoveKey( rest_of_query, "flesh" );
-			jsonObjectRemoveKey( rest_of_query, "flesh_columns" );
-		} else {
-			rest_of_query = jsonNewObjectType( JSON_HASH );
-		}
-
-		jsonObjectSetKey( rest_of_query, "no_i18n", jsonNewBoolObject( 1 ) );
-
-		// Get the class metadata
-		osrfHash* class_obj = osrfHashGet( method_meta, "class" );
-
-		// Build a SELECT list containing just the primary key,
-		// i.e. like { "classname":["keyname"] }
-		jsonObject* col_list_obj = jsonNewObjectType( JSON_ARRAY );
-		jsonObjectPush( col_list_obj,     // Load array with name of primary key
-			jsonNewObject( osrfHashGet( class_obj, "primarykey" ) ) );
-		jsonObject* select_clause = jsonNewObjectType( JSON_HASH );
-		jsonObjectSetKey( select_clause, osrfHashGet( class_obj, "classname" ), col_list_obj );
-
-		jsonObjectSetKey( rest_of_query, "select", select_clause );
-
-		// Do the query
-		obj = doFieldmapperSearch( ctx, class_obj, where_clause, rest_of_query, &err );
-
-		jsonObjectFree( rest_of_query );
-		if(err)
-			return err;
-
-		// Return each primary key value to the client
-		jsonObject* cur;
-		unsigned long res_idx = 0;
-		while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
-			if( enforce_pcrud && !verifyObjectPCRUD(ctx, cur))
-				continue;
-			osrfAppRespond( ctx,
-				oilsFMGetObject( cur, osrfHashGet( class_obj, "primarykey" ) ) );
-		}
+		err = doIdList( ctx );
 		osrfAppRespondComplete( ctx, NULL );
-
 	} else {
-		osrfAppRespondComplete( ctx, obj );      // should be unreachable...
+		osrfAppRespondComplete( ctx, NULL );      // should be unreachable...
 	}
 
 	jsonObjectFree(obj);
 
 	return err;
+}
+
+/**
+	@brief Implement the "search" method.
+	@param ctx Pointer to the method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- authkey (PCRUD only)
+	- WHERE clause, as jsonObject
+	- Other SQL clause(s), as a JSON_HASH: joins, SELECT list, LIMIT, etc.
+
+	Return to client: rows of the specified class that satisfy a specified WHERE clause.
+	Optionally flesh linked fields.
+*/
+static int doSearch( osrfMethodContext* ctx ) {
+
+	jsonObject* where_clause;
+	jsonObject* rest_of_query;
+
+	if( enforce_pcrud ) {
+		where_clause  = jsonObjectGetIndex( ctx->params, 1 );
+		rest_of_query = jsonObjectGetIndex( ctx->params, 2 );
+	} else {
+		where_clause  = jsonObjectGetIndex( ctx->params, 0 );
+		rest_of_query = jsonObjectGetIndex( ctx->params, 1 );
+	}
+
+	// Get the class metadata
+	osrfHash* method_meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class_meta = osrfHashGet( method_meta, "class" );
+
+	// Do the query
+	int err = 0;
+	jsonObject* obj = doFieldmapperSearch( ctx, class_meta, where_clause, rest_of_query, &err );
+	if( !obj )
+		return -1;
+
+	// Return each row to the client (except that some may be suppressed by PCRUD)
+	jsonObject* cur = 0;
+	unsigned long res_idx = 0;
+	while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
+		if( enforce_pcrud && !verifyObjectPCRUD(ctx, cur))
+			continue;
+		osrfAppRespond( ctx, cur );
+	}
+	jsonObjectFree( obj );
+
+	return 0;
+}
+
+/**
+	@brief Implement the "id_list" method.
+	@param ctx Pointer to the method context.
+	@param err Pointer through which to return an error code.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- authkey (PCRUD only)
+	- WHERE clause, as jsonObject
+	- Other SQL clause(s), as a JSON_HASH: joins, LIMIT, etc.
+
+	Return to client: The primary key values for all rows of the relevant class that
+	satisfy a specified WHERE clause.
+
+	This method relies on the assumption that every class has a primary key consisting of
+	a single column.
+*/
+static int doIdList( osrfMethodContext* ctx ) {
+	jsonObject* where_clause;
+	jsonObject* rest_of_query;
+
+	// We use the where clause without change.  But we need to massage the rest of the
+	// query, so we work with a copy of it instead of modifying the original.
+
+	if( enforce_pcrud ) {
+		where_clause  = jsonObjectGetIndex( ctx->params, 1 );
+		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 2 ) );
+	} else {
+		where_clause  = jsonObjectGetIndex( ctx->params, 0 );
+		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 1 ) );
+	}
+
+	// Eliminate certain SQL clauses, if present.
+	if ( rest_of_query ) {
+		jsonObjectRemoveKey( rest_of_query, "select" );
+		jsonObjectRemoveKey( rest_of_query, "no_i18n" );
+		jsonObjectRemoveKey( rest_of_query, "flesh" );
+		jsonObjectRemoveKey( rest_of_query, "flesh_columns" );
+	} else {
+		rest_of_query = jsonNewObjectType( JSON_HASH );
+	}
+
+	jsonObjectSetKey( rest_of_query, "no_i18n", jsonNewBoolObject( 1 ) );
+
+	// Get the class metadata
+	osrfHash* method_meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class_meta = osrfHashGet( method_meta, "class" );
+
+	// Build a SELECT list containing just the primary key,
+	// i.e. like { "classname":["keyname"] }
+	jsonObject* col_list_obj = jsonNewObjectType( JSON_ARRAY );
+
+	// Load array with name of primary key
+	jsonObjectPush( col_list_obj, jsonNewObject( osrfHashGet( class_meta, "primarykey" ) ) );
+	jsonObject* select_clause = jsonNewObjectType( JSON_HASH );
+	jsonObjectSetKey( select_clause, osrfHashGet( class_meta, "classname" ), col_list_obj );
+
+	jsonObjectSetKey( rest_of_query, "select", select_clause );
+
+	// Do the query
+	int err = 0;
+	jsonObject* obj =
+		doFieldmapperSearch( ctx, class_meta, where_clause, rest_of_query, &err );
+
+	jsonObjectFree( rest_of_query );
+	if( !obj )
+		return -1;
+
+	// Return each primary key value to the client
+	jsonObject* cur;
+	unsigned long res_idx = 0;
+	while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
+		if( enforce_pcrud && !verifyObjectPCRUD( ctx, cur ))
+			continue;        // Suppress due to lack of permission
+		else
+			osrfAppRespond( ctx, 
+				oilsFMGetObject( cur, osrfHashGet( class_meta, "primarykey" ) ) );
+	}
+	jsonObjectFree( obj );
+
+	return 0;
 }
 
 /**
@@ -5270,6 +5304,15 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 	return err;
 }
 
+// The last parameter, err, is used to report an error condition by updating an int owned by
+// the calling code.
+
+// In case of an error, we set *err to -1.  If there is no error, *err is left unchanged.
+// It is the responsibility of the calling code to initialize *err before the
+// call, so that it will be able to make sense of the result.
+
+// Note also that we return NULL if and only if we set *err to -1.  So the err parameter is
+// redundant anyway.
 static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class_meta,
 		jsonObject* where_hash, jsonObject* query_hash, int* err ) {
 
@@ -6199,21 +6242,20 @@ static const char* get_datatype( osrfHash* field ) {
 	return s;
 }
 
-/*
-If the input string is potentially a valid SQL identifier, return 1.
-Otherwise return 0.
+/**
+	@brief Determine whether a string is potentially a valid SQL identifier.
+	@param s The identifier to be tested.
+	@return 1 if the input string is potentially a valid SQL identifier, or 0 if not.
 
-Purpose: to prevent certain kinds of SQL injection.  To that end we
-don't necessarily need to follow all the rules exactly, such as requiring
-that the first character not be a digit.
+	Purpose: to prevent certain kinds of SQL injection.  To that end we don't necessarily
+	need to follow all the rules exactly, such as requiring that the first character not
+	be a digit.
 
-We allow leading and trailing white space.  In between, we do not allow
-punctuation (except for underscores and dollar signs), control
-characters, or embedded white space.
+	We allow leading and trailing white space.  In between, we do not allow punctuation
+	(except for underscores and dollar signs), control characters, or embedded white space.
 
-More pedantically we should allow quoted identifiers containing arbitrary
-characters, but for the foreseeable future such quoted identifiers are not
-likely to be an issue.
+	More pedantically we should allow quoted identifiers containing arbitrary characters, but
+	for the foreseeable future such quoted identifiers are not likely to be an issue.
 */
 static int is_identifier( const char* s) {
 	if( !s )
@@ -6258,20 +6300,19 @@ static int is_identifier( const char* s) {
 	return 1;
 }
 
-/*
-Determine whether to accept a character string as a comparison operator.
-Return 1 if it's good, or 0 if it's bad.
+/**
+	@brief Determine whether to accept a character string as a comparison operator.
+	@param op The candidate comparison operator.
+	@return 1 if the string is acceptable as a comparison operator, or 0 if not.
 
-We don't validate it for real.  We just make sure that it doesn't contain
-any semicolons or white space (with special exceptions for a few specific
-operators).   The idea is to block certain kinds of SQL injection.  If it
-has no semicolons or white space but it's still not a valid operator, then
-the database will complain.
+	We don't validate the operator for real.  We just make sure that it doesn't contain
+	any semicolons or white space (with special exceptions for a few specific operators).
+	The idea is to block certain kinds of SQL injection.  If it has no semicolons or white
+	space but it's still not a valid operator, then the database will complain.
 
-Another approach would be to compare the string against a short list of
-approved operators.  We don't do that because we want to allow custom
-operators like ">100*", which would be difficult or impossible to
-express otherwise in a JSON query.
+	Another approach would be to compare the string against a short list of approved operators.
+	We don't do that because we want to allow custom operators like ">100*", which at this
+	writing would be difficult or impossible to express otherwise in a JSON query.
 */
 static int is_good_operator( const char* op ) {
 	if( !op ) return 0;   // Sanity check
