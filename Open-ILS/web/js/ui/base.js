@@ -31,6 +31,7 @@ function oilsSetupUser() {
 }
 
 function oilsDoLogin() {
+    openils.Util.hide('oils-login-failed');
     var cgi = new openils.CGI();
     var workstation = cgi.param('ws') || dojo.cookie('ws');
     var user = new openils.User();
@@ -41,9 +42,14 @@ function oilsDoLogin() {
     };
     if(workstation) 
         args.workstation = workstation;
-    user.login(args);
-    dojo.cookie('ses', user.authtoken, {path : '/'});
-    location.href = location.href;
+
+    if(user.login(args)) {
+        dojo.cookie('ses', user.authtoken, {path : '/'});
+        location.href = location.href;
+    } else {
+        openils.Util.show('oils-login-failed');
+    }
+
     return false;
 }
 

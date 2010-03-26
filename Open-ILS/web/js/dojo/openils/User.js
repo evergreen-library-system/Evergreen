@@ -138,6 +138,10 @@ if(!dojo._hasResource["openils.User"]) {
                 var authReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.complete', loginInfo);
                 authReq.oncomplete = function(rr) {
                     var data = rr.recv().content();
+
+                    if(!data || !data.payload)
+                        throw new Error("Login Failed: " + js2JSON(data));
+
                     _u.authtoken = data.payload.authtoken;
 					if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
                     _u.authtime = data.payload.authtime;
@@ -180,6 +184,8 @@ if(!dojo._hasResource["openils.User"]) {
                 [loginInfo]
             );
 
+            if(!data || !data.payload) return false;
+
             _u.authtoken = data.payload.authtoken;
             if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
             _u.authtime = data.payload.authtime;
@@ -189,6 +195,8 @@ if(!dojo._hasResource["openils.User"]) {
                 dojo.require('dojo.cookie');
                 dojo.cookie(_u.authcookie, _u.authtoken, {path:'/'});
             }
+
+            return true;
         },
 
     
