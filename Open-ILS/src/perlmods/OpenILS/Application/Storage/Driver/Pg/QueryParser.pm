@@ -197,6 +197,22 @@ sub initialize_search_field_id_map {
     return $self->search_field_id_map;
 }
 
+sub initialize_aliases {
+    my $self = shift;
+    my $cmsa_list = shift;
+
+    for my $cmsa (@$cmsa_list) {
+        if (!$cmsa->field) {
+            __PACKAGE__->add_search_class_alias( $cmsa->field_class, $cmsa->alias );
+        } else {
+            my $c = $self->search_field_class_by_id( $cmsa->field );
+            __PACKAGE__->add_search_field_alias( $cmsa->field_class, $c->{field}, $cmsa->alias );
+        }
+    }
+
+    return $self->relevance_bumps;
+}
+
 sub initialize_relevance_bumps {
     my $self = shift;
     my $sra_list = shift;
@@ -233,6 +249,9 @@ sub initialize {
     $self->initialize_search_field_id_map( $args{config_metabib_field} )
         if ($args{config_metabib_field});
 
+    $self->initialize_aliases( $args{config_metabib_search_alias} )
+        if ($args{config_metabib_search_alias});
+
     $self->initialize_relevance_bumps( $args{search_relevance_adjustment} )
         if ($args{search_relevance_adjustment});
 
@@ -242,6 +261,7 @@ sub initialize {
     $_complete = 1 if (
         $args{config_metabib_field_index_norm_map} &&
         $args{search_relevance_adjustment} &&
+        $args{config_metabib_search_alias} &&
         $args{config_metabib_field}
     );
 

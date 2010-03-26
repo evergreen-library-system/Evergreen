@@ -1464,6 +1464,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="cmsa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_search_alias" oils_persist:tablename="config.metabib_search_alias" reporter:label="Metabib Search Alias">
+		<fields oils_persist:primary="alias">
+			<field reporter:label="Alias (RegExp)" name="alias" reporter:datatype="text"/>
+			<field reporter:label="Class" name="field_class" reporter:datatype="link"/>
+			<field reporter:label="Field" name="field" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="field_class" reltype="has_a" key="name" map="" class="cmc"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_METABIB_SEARCH_ALIAS" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_METABIB_SEARCH_ALIAS" global_required="true"/>
+                <delete permission="DELETE_METABIB_SEARCH_ALIAS" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="cmc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_class" oils_persist:tablename="config.metabib_class" reporter:label="Metabib Class">
 		<fields oils_persist:primary="name">
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>

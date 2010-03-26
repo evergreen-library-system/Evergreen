@@ -59,7 +59,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0214'); -- Scott McKellar
+INSERT INTO config.upgrade_log (version) VALUES ('0215'); -- Scott McKellar
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -232,6 +232,12 @@ COMMENT ON TABLE config.metabib_field IS $$
 $$;
 
 CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field (field_class, name);
+
+CREATE TABLE config.metabib_search_alias (
+    alias       TEXT    PRIMARY KEY,
+    field_class TEXT    NOT NULL REFERENCES config.metabib_class (name),
+    field       INT     REFERENCES config.metabib_field (id)
+);
 
 CREATE TABLE config.non_cataloged_type (
 	id		SERIAL		PRIMARY KEY,
