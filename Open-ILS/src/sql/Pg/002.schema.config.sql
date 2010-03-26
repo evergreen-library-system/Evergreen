@@ -60,7 +60,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0216'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0217'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -204,7 +204,8 @@ CREATE TABLE config.metabib_field (
 	weight		INT	NOT NULL DEFAULT 1,
 	format		TEXT	NOT NULL DEFAULT 'mods33',
 	search_field	BOOL	NOT NULL DEFAULT TRUE,
-	facet_field	BOOL	NOT NULL DEFAULT FALSE
+	facet_field	BOOL	NOT NULL DEFAULT FALSE,
+    facet_xpath TEXT
 );
 COMMENT ON TABLE config.metabib_field IS $$
 /*

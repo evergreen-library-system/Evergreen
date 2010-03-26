@@ -209,8 +209,6 @@ sub initialize_aliases {
             __PACKAGE__->add_search_field_alias( $cmsa->field_class, $c->{field}, $cmsa->alias );
         }
     }
-
-    return $self->relevance_bumps;
 }
 
 sub initialize_relevance_bumps {

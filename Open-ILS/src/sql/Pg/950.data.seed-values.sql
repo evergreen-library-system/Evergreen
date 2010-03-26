@@ -17,8 +17,9 @@ INSERT INTO config.metabib_class ( name, label ) VALUES ( 'author', oils_i18n_ge
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'subject', oils_i18n_gettext('subject', 'Subject', 'cmc', 'name') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'series', oils_i18n_gettext('series', 'Series', 'cmc', 'name') );
 
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (1, 'series', 'seriestitle', oils_i18n_gettext(1, 'Series Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:relatedItem[@type="series"]/mods32:titleInfo$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES 
+    (1, 'series', 'seriestitle', oils_i18n_gettext(1, 'Series Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:relatedItem[@type="series"]/mods32:titleInfo$$, TRUE );
+
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
     (2, 'title', 'abbreviated', oils_i18n_gettext(2, 'Abbreviated Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='abbreviated')]$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
@@ -29,22 +30,24 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (5, 'title', 'uniform', oils_i18n_gettext(5, 'Uniform Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and (@type='uniform')]$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
     (6, 'title', 'proper', oils_i18n_gettext(6, 'Title Proper', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:titleInfo[mods32:title and not (@type)]$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (7, 'author', 'corporate', oils_i18n_gettext(7, 'Corporate Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='corporate']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']]$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (8, 'author', 'personal', oils_i18n_gettext(8, 'Personal Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='personal']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']]$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (9, 'author', 'conference', oils_i18n_gettext(9, 'Conference Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']]$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (10, 'author', 'other', oils_i18n_gettext(10, 'Other Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='personal']/mods32:namePart[not(../mods32:role)]$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (11, 'subject', 'geographic', oils_i18n_gettext(11, 'Geographic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:geographic$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (12, 'subject', 'name', oils_i18n_gettext(12, 'Name Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:name$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (13, 'subject', 'temporal', oils_i18n_gettext(13, 'Temporal Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:temporal$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
-    (14, 'subject', 'topic', oils_i18n_gettext(14, 'Topic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:topic$$ );
+
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
+    (7, 'author', 'corporate', oils_i18n_gettext(7, 'Corporate Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='corporate' and mods32:role/mods32:roleTerm[text()='creator']]$$, $$*[local-name()='namePart']$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
+    (8, 'author', 'personal', oils_i18n_gettext(8, 'Personal Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='personal' and mods32:role/mods32:roleTerm[text()='creator']]$$, $$*[local-name()='namePart']$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
+    (9, 'author', 'conference', oils_i18n_gettext(9, 'Conference Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='conference' and mods32:role/mods32:roleTerm[text()='creator']]$$, $$*[local-name()='namePart']$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
+    (10, 'author', 'other', oils_i18n_gettext(10, 'Other Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='personal' and not(mods32:role)]$$, $$*[local-name()='namePart']$$, TRUE );
+
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES 
+    (11, 'subject', 'geographic', oils_i18n_gettext(11, 'Geographic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:geographic$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
+    (12, 'subject', 'name', oils_i18n_gettext(12, 'Name Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:name$$, $$*[local-name()='namePart']$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, x, facet_fieldpath ) VALUES 
+    (13, 'subject', 'temporal', oils_i18n_gettext(13, 'Temporal Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:temporal$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES 
+    (14, 'subject', 'topic', oils_i18n_gettext(14, 'Topic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:topic$$, TRUE );
 --INSERT INTO config.metabib_field ( id, field_class, name, format, xpath ) VALUES 
 --  ( id, field_class, name, xpath ) VALUES ( 'subject', 'genre', 'mods32', $$//mods32:mods/mods32:genre$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 

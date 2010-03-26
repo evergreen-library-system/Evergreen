@@ -240,6 +240,7 @@ DECLARE
     transformed_xml TEXT;
     xml_node    TEXT;
     xml_node_list   TEXT[];
+    facet_text  TEXT;
     raw_text    TEXT;
     curr_text   TEXT;
     joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
@@ -300,10 +301,16 @@ BEGIN
             -- insert raw node text for faceting
             IF idx.facet_field THEN
 
+                IF idx.facet_xpath IS NOT NULL AND idx.facet_xpath <> '' THEN
+                    facet_text := oils_xpath_string( idx.facet_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    facet_text := curr_text;
+                END IF;
+
                 output_row.field_class = idx.field_class;
-                output_row.field = -1 *idx.id;
+                output_row.field = -1 * idx.id;
                 output_row.source = rid;
-                output_row.value = BTRIM(REGEXP_REPLACE(curr_text, E'\\s+', ' ', 'g'));
+                output_row.value = BTRIM(REGEXP_REPLACE(facet_text, E'\\s+', ' ', 'g'));
 
                 RETURN NEXT output_row;
             END IF;
