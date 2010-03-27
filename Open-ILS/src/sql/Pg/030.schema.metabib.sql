@@ -129,8 +129,6 @@ CREATE TABLE metabib.rec_descriptor (
 	date2		TEXT
 );
 CREATE INDEX metabib_rec_descriptor_record_idx ON metabib.rec_descriptor (record);
-/* We may not need these...
-
 CREATE INDEX metabib_rec_descriptor_item_type_idx ON metabib.rec_descriptor (item_type);
 CREATE INDEX metabib_rec_descriptor_item_form_idx ON metabib.rec_descriptor (item_form);
 CREATE INDEX metabib_rec_descriptor_bib_level_idx ON metabib.rec_descriptor (bib_level);
@@ -143,8 +141,8 @@ CREATE INDEX metabib_rec_descriptor_cat_form_idx ON metabib.rec_descriptor (cat_
 CREATE INDEX metabib_rec_descriptor_pub_status_idx ON metabib.rec_descriptor (pub_status);
 CREATE INDEX metabib_rec_descriptor_item_lang_idx ON metabib.rec_descriptor (item_lang);
 CREATE INDEX metabib_rec_descriptor_vr_format_idx ON metabib.rec_descriptor (vr_format);
-
-*/
+CREATE INDEX metabib_rec_descriptor_date1_idx ON metabib.rec_descriptor (date1);
+CREATE INDEX metabib_rec_descriptor_dates_idx ON metabib.rec_descriptor (date1,date2);
 
 -- Use a sequence that matches previous version, for easier upgrading.
 CREATE SEQUENCE metabib.full_rec_id_seq;
