@@ -1380,6 +1380,7 @@ INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.patron.password.use_phone');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds');
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(1, oils_i18n_gettext(1, 'Users', 'pgt', 'name'), NULL, NULL, '3 years', FALSE, 'group_application.user');
