@@ -1392,6 +1392,7 @@ INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.patron.password.use_phone');
+INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds');
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
