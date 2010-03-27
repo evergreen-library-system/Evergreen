@@ -503,7 +503,9 @@ sub decompose {
 
     my $last_type = '';
     while (!$remainder) {
-        if (/$group_end_re/) { # end of an explicit group
+        if (/^\s*$/) { # end of an explicit group
+            last;
+        } elsif (/$group_end_re/) { # end of an explicit group
             warn "Encountered explicit group end\n" if $self->debug;
 
             $_ = $';
@@ -689,7 +691,7 @@ sub QueryParser {
 sub new {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;
-    my %args = (joiner => '&', @_);
+    my %args = (query => [], joiner => '&', @_);
 
     return bless \%args => $pkg;
 }
