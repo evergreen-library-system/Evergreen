@@ -1331,7 +1331,8 @@ INSERT INTO permission.perm_list VALUES
     (384, 'ADMIN_TRIGGER_VALIDATOR', oils_i18n_gettext(384, 'Allow a user to create, update, and delete trigger validators', 'ppl', 'description')),
     (385, 'CREATE_TRIGGER_VALIDATOR', oils_i18n_gettext(385, 'Allow a user to create trigger validators', 'ppl', 'description')),
     (386, 'DELETE_TRIGGER_VALIDATOR', oils_i18n_gettext(386, 'Allow a user to delete trigger validators', 'ppl', 'description')),
-    (387, 'UPDATE_TRIGGER_VALIDATOR', oils_i18n_gettext(387, 'Allow a user to update trigger validators', 'ppl', 'description'))
+    (387, 'UPDATE_TRIGGER_VALIDATOR', oils_i18n_gettext(387, 'Allow a user to update trigger validators', 'ppl', 'description')),
+    (388, 'UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds', oils_i18n_gettext(388, 'Allow a user to enable blocking of renews on items that could fulfill holds', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1930,7 +1931,12 @@ INSERT into config.org_unit_setting_type
 ( 'lib.courier_code',
     oils_i18n_gettext('lib.courier_code', 'Courier Code', 'coust', 'label'),
     oils_i18n_gettext('lib.courier_code', 'Courier Code for the library.  Available in transit slip templates as the %courier_code% macro.', 'coust', 'description'),
-    'string')
+    'string'),
+
+( 'circ.block_renews_for_holds',
+    oils_i18n_gettext('circ.block_renews_for_holds', 'Holds: Block Renewal of Items Needed for Holds', 'coust', 'label'),
+    oils_i18n_gettext('circ.block_renews_for_holds', 'When an item could fulfill a hold, do not allow the current patron to renew', 'coust', 'description'),
+    'bool' )
 ;
 
 -- Org_unit_setting_type(s) that need an fm_class:

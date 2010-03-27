@@ -1799,6 +1799,8 @@
 <!ENTITY staff.server.admin.org_settings.circ.reshelving_complete.interval.desc 'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"'>
 <!ENTITY staff.server.admin.org_settings.circ.hold_estimate_wait_interval "Holds: Estimated Wait (Days)">
 <!ENTITY staff.server.admin.org_settings.circ.hold_estimate_wait_interval.desc "When predicting the amount of time a patron will be waiting for a hold to be fulfilled,this is the default/average number of days to assume an item will be checked out.">
+<!ENTITY staff.server.admin.org_settings.circ.block_renews_for_holds "Holds: Block Renewal of Items Needed for Holds">
+<!ENTITY staff.server.admin.org_settings.circ.block_renews_for_holds.desc "When an item could fulfill a hold, do not allow the current patron to renew">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout "Selfcheck: Patron Login Timeout (in seconds)">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout.desc "Number of seconds of inactivity before the patron is logged out of the selfcheck interface">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event "Selfcheck: Pop-up alert for errors">

@@ -3019,6 +3019,14 @@ sub run_renew_permit {
 
     my $events = [];
 
+    if ($U->ou_ancestor_setting_value($self->circ_lib, 'circ.block_renews_for_holds')) {
+        my ($hold, undef, $retarget) = $holdcode->find_nearest_permitted_hold(
+                $self->editor, $self->copy, $self->editor->requestor, 1 );
+        if ($hold) {
+            push(@$events, 'COPY_NEEDED_FOR_HOLD');
+        }
+    }
+
     if(!$self->legacy_script_support) {
         my $results = $self->run_indb_circ_test;
         unless($self->circ_test_success) {
