@@ -3073,8 +3073,11 @@ sub query_parser_fts_wrapper {
 
     my $base_plan = $parser->new( query => $base_query )->parse;
 
-    $query = "preferred_language($args{preferred_language}) $query" if ($args{preferred_language} and !$base_plan->parse_tree->find_filter('preferred_language'));
-    $query = "preferred_language_weight($args{preferred_language_weight}) $query" if ($args{preferred_language_weight} and !$base_plan->parse_tree->find_filter('preferred_language_weight') and !$base_plan->parse_tree->find_filter('preferred_language_multiplier'));
+    $query = "preferred_language($args{preferred_language}) $query"
+        if ($args{preferred_language} and !$base_plan->parse_tree->find_filter('preferred_language'));
+    $query = "preferred_language_weight($args{preferred_language_weight}) $query"
+        if ($args{preferred_language_weight} and !$base_plan->parse_tree->find_filter('preferred_language_weight') and !$base_plan->parse_tree->find_filter('preferred_language_multiplier'));
+
     $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
     $query = "sort($args{sort}) $query" if ($args{sort});
@@ -3083,6 +3086,11 @@ sub query_parser_fts_wrapper {
     $query = "#available $query" if ($args{available});
     $query = "#descending $query" if ($args{sort_dir} && $args{sort_dir} =~ /^d/i);
     $query = "#staff $query" if ($self->api_name =~ /staff/);
+    $query = "before($args{before}) $query" if (defined($args{before}) and $args{before} =~ /^\d+$/);
+    $query = "after($args{after}) $query" if (defined($args{after}) and $args{after} =~ /^\d+$/);
+    $query = "during($args{during}) $query" if (defined($args{during}) and $args{during} =~ /^\d+$/);
+    $query = "between($args{between}[0],$args{between}[1]) $query"
+        if ( ref($args{between}) and @{$args{between}} == 2 and $args{between}[0] =~ /^\d+$/ and $args{between}[1] =~ /^\d+$/ );
 
 
 	my (@between,@statuses,@locations,@types,@forms,@lang,@aud,@lit_form,@vformats,@bib_level);
