@@ -465,7 +465,7 @@ sub toSQL {
             SQL
         } elsif ($sort_filter eq 'pubdate') {
             my $default = $desc eq 'DESC' ? '0' : '99999';
-            $rank = "COALESCE( FIRST(NULLIF(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),'0000')), '$default' )::INT";
+            $rank = "COALESCE( FIRST(NULLIF(LPAD(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),4,'0'),'0000')), '$default' )::INT";
         } elsif ($sort_filter eq 'create_date') {
             $rank = "( FIRST (( SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )::TIMESTAMPTZ";
         } elsif ($sort_filter eq 'edit_date') {
@@ -526,7 +526,7 @@ SELECT  $key AS id,
         ARRAY_ACCUM(DISTINCT m.source) AS records,
         $rel AS rel,
         $rank AS rank, 
-        COALESCE( FIRST(NULLIF(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),'')), '0' )::INT AS tie_break
+        COALESCE( FIRST(NULLIF(LPAD(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),4,'0'),'0000')), '0' )::INT AS tie_break
   FROM  metabib.metarecord_source_map m
         JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)
         $$flat_plan{from}
