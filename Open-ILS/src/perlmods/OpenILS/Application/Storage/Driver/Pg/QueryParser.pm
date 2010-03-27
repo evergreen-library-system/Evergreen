@@ -521,6 +521,8 @@ sub toSQL {
         $between = '';
     }
 
+    my $core_limit = $self->QueryParser->core_limit || 25000;
+
     my $sql = <<SQL;
 SELECT  $key AS id,
         ARRAY_ACCUM(DISTINCT m.source) AS records,
@@ -545,6 +547,7 @@ SELECT  $key AS id,
         AND $$flat_plan{where}
   GROUP BY 1
   ORDER BY 4 $desc, 5 DESC, 3 DESC
+  LIMIT $core_limit
 SQL
 
     warn $sql if $self->QueryParser->debug;
