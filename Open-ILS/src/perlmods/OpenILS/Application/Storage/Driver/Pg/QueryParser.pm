@@ -464,7 +464,8 @@ sub toSQL {
         )),'$default'))::TEXT
             SQL
         } elsif ($sort_filter eq 'pubdate') {
-            $rank = "COALESCE( FIRST(NULLIF(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),'')), '0' )::INT";
+            my $default = $desc eq 'DESC' ? '0' : '99999';
+            $rank = "COALESCE( FIRST(NULLIF(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),'0000')), '$default' )::INT";
         } elsif ($sort_filter eq 'create_date') {
             $rank = "( FIRST (( SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )::TIMESTAMPTZ";
         } elsif ($sort_filter eq 'edit_date') {
@@ -740,18 +741,23 @@ sub buildSQL {
 
     $fields = $self->node->plan->QueryParser->search_fields->{$classname} if (!@$fields);
 
-    my @norm_list;
+    my %norms;
+    my $pos = 0;
     for my $field (@$fields) {
         for my $nfield (keys %$normalizers) {
             for my $nizer ( @{$$normalizers{$nfield}} ) {
-                push(@norm_list, $nizer) if ($field eq $nfield && !(grep {$_ eq $nizer} @norm_list));
+                if ($field eq $nfield) {
+                    if (!exists($norms{$nizer->{function}})) {
+                        $norms{$nizer->{function}} = {p=>$pos++,n=>$nizer};
+                    }
+                }
             }
         }
     }
 
     my $sql = $self->node->plan->QueryParser->quote_value($self->content);
 
-    for my $n ( @norm_list ) {
+    for my $n ( map { $$_{n} } sort { $$a{p} <=> $$b{p} } values %norms ) {
         $sql = join(', ', $sql, map { $self->node->plan->QueryParser->quote_value($_) } @{ $n->{params} });
         $sql = $n->{function}."($sql)";
     }

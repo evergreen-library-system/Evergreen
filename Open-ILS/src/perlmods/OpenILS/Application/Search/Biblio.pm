@@ -581,7 +581,7 @@ sub multiclass_query {
     $query =~ s/name(:|\|)/author$1/og;
 
     $logger->debug("cleansed query string => $query");
-    my $search = $arghash->{searches} = {};
+    my $search = {};
 
     my $simple_class_re = qr/((?:\w+(?:\|\w+)?):[^:]+?)$/;
     my $class_list_re = qr/(?:keyword|title|author|subject|series)/;
@@ -648,17 +648,19 @@ sub multiclass_query {
     $query =~ s/^\s+//go;
     $query =~ s/\s+$//go;
 
+    my $type = $arghash->{default_class} || 'keyword';
+    $type = ($type eq '-') ? 'keyword' : $type;
+    $type = ($type !~ /^(title|author|keyword|subject|series)(?:\|\w+)?$/o) ? 'keyword' : $type;
+
     if($query) {
         # This is the front part of the string before any special tokens were
         # parsed OR colon-separated strings that do not denote a class.
         # Add this data to the default search class
-        my $type = $arghash->{default_class} || 'keyword';
-        $type = ($type eq '-') ? 'keyword' : $type;
-        $type = ($type !~ /^(title|author|keyword|subject|series)(?:\|\w+)?$/o) ? 'keyword' : $type;
         $search->{$type} =  {} unless $search->{$type};
         $search->{$type}->{term} =
             ($search->{$type}->{term}) ? $search->{$type}->{term} . " $query" : $query;
     }
+    my $real_search = $arghash->{searches} = { $type => { term => $orig_query } };
 
     # capture the original limit because the search method alters the limit internally
     my $ol = $arghash->{limit};
@@ -676,6 +678,8 @@ sub multiclass_query {
 
 	$method = $self->method_lookup($method);
     my ($data) = $method->run($arghash, $docache);
+
+    $arghash->{searches} = $search if (!$data->{complex_query});
 
     $arghash->{limit} = $ol if $ol;
     $data->{compiled_search} = $arghash;

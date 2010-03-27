@@ -3012,6 +3012,7 @@ sub query_parser_fts_wrapper {
 	my $client = shift;
 	my %args = @_;
 
+ 	$log->debug("Entering compatability wrapper function for old-style staged search", DEBUG);
     # grab the query parser and initialize it
     my $parser = $OpenILS::Application::Storage::QParser;
     $parser->use;
@@ -3050,13 +3051,15 @@ sub query_parser_fts_wrapper {
 		die "No search arguments were passed to ".$self->api_name;
 	}
 
+ 	$log->debug("Constructing QueryParser query from staged search hash ...", DEBUG);
     my $base_query = '';
     for my $sclass ( keys %{$args{searches}} ) {
+ 	    $log->debug(" --> staged search key: $sclass --> term: $args{searches}{$sclass}{term}", DEBUG);
         $base_query .= " $sclass: $args{searches}{$sclass}{term}";
     }
 
     my $query = $base_query;
-
+    $log->debug("Full base query: $base_query", DEBUG);
 
     if (!$locale_map{COMPLETE}) {
 
@@ -3074,9 +3077,11 @@ sub query_parser_fts_wrapper {
     $query = "preferred_language_weight($args{preferred_language_weight}) $query" if ($args{preferred_language_weight} and !$base_plan->parse_tree->find_filter('preferred_language_weight') and !$base_plan->parse_tree->find_filter('preferred_language_multiplier'));
     $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
+    $query = "sort($args{sort}) $query" if ($args{sort});
     $query = "limit($args{limit}) $query" if ($args{limit});
     $query = "offset($args{offset}) $query" if ($args{offset});
     $query = "#available $query" if ($args{available});
+    $query = "#descending $query" if ($args{sort_dir} && $args{sort_dir} =~ /^d/i);
     $query = "#staff $query" if ($self->api_name =~ /staff/);
 
 
@@ -3103,7 +3108,9 @@ sub query_parser_fts_wrapper {
 	    }
     }
 
-    return query_parser_fts($self, $client, query => $query, _simple_plan => $parser->new( query => $base_query )->parse->simple_plan );
+    $log->debug("Full QueryParser query: $query", DEBUG);
+
+    return query_parser_fts($self, $client, query => $query, _simple_plan => $base_plan->simple_plan );
 }
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.biblio.multiclass.staged.search_fts",
