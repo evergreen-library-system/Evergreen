@@ -2707,10 +2707,14 @@ sub retrieve_net_levels {
 	return $e->retrieve_all_config_net_access_level();
 }
 
-
+# Retain the old typo API name just in case
 __PACKAGE__->register_method(
 	method => 'fetch_org_by_shortname',
 	api_name => 'open-ils.actor.org_unit.retrieve_by_shorname',
+);
+__PACKAGE__->register_method(
+	method => 'fetch_org_by_shortname',
+	api_name => 'open-ils.actor.org_unit.retrieve_by_shortname',
 );
 sub fetch_org_by_shortname {
 	my( $self, $conn, $sname ) = @_;

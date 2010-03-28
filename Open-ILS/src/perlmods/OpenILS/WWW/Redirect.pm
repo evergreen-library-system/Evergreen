@@ -74,7 +74,7 @@ sub handler {
 		my $session = OpenSRF::AppSession->create("open-ils.actor");
 
 		my $org = $session->request(
-            'open-ils.actor.org_unit.retrieve_by_shorname',
+            'open-ils.actor.org_unit.retrieve_by_shortname',
 			 $shortname)->gather(1);
 
 		if($org) { $url .= "?ol=" . $org->id; }
