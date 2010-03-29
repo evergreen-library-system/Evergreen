@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('test'); -- phasefx
+INSERT INTO config.upgrade_log (version) VALUES ('0222'); -- phasefx
 
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
         'aur.created',
