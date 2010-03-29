@@ -72,6 +72,60 @@
             </table>
         </div>
     </div> 
+    <div dojoType="dijit.form.DropDownButton">
+        <span>Transfer Money</span>
+        <div jsId="xferDialog" dojoType="dijit.TooltipDialog">
+            <script type="dojo/connect" event="onOpen">
+                /* If something is selected (from a previous time that the
+                user popped open this dialog), unselect it. Wouldn't want to
+                accidentally encourage a transfer that the user didn't mean. */
+                xferManager.clearFundSelector();
+                xferManager.setFundName(fund);
+            </script>
+            <table id="oils-acq-fund-xfer-table">
+                <tr>
+                    <th>
+                        <label for="oils-acq-fund-xfer-o-amount">
+                            Amount to transfer from<br />
+                            <span id="oils-acq-fund-xfer-name-fund"></span>
+                        </label>
+                    </th>
+                    <td>
+                        <input dojoType="dijit.form.CurrencyTextBox"
+                            id="oils-acq-fund-xfer-o-amount"
+                            name="o_amount" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="oils-acq-fund-xfer-d-selector">
+                            Destination fund
+                        </label>
+                    </th>
+                    <td>
+                        <span id="oils-acq-fund-xfer-d-selector"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="oils-acq-fund-xfer-note">Note</label>
+                    </th>
+                    <td>
+                        <input dojoType="dijit.form.TextBox" name="note"
+                            id="oils-acq-fund-xfer-note" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="oils-acq-fund-xfer-submit-row">
+                        <button onclick="xferManager.submit();"
+                            dojoType="dijit.form.Button" type="submit">
+                            Transfer
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 
 

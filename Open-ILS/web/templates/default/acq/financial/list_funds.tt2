@@ -13,7 +13,7 @@
     }
 
     function formatName(value) {
-        if (!value) return "XXX"; // XXX
+        if (!value) return ""; // XXX
 
         var link = "<a href='/eg/acq/financial/view_fund/" +
             value.id + "'>" +
