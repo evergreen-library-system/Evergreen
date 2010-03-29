@@ -73,7 +73,6 @@ sub spellcheck {
     $class ||= 'default';
 
     my @conf_path = (apps => 'open-ils.search' => app_settings => spelling_dictionary => $class);
-    push(@conf_path, $class) if $class;
 
 	if( my $dict = $conf->config_value(@conf_path) ) {
 		$speller->set_option('master', $dict);
@@ -98,10 +97,6 @@ sub spellcheck {
 
             push(@trimmed, $sug);
         }
-
-        # remove alternate-cased duplicates and versions of the origin word
-        @suggestions = grep { lc($_) ne $word } @suggestions;
-        my %sugs = map { lc($_) => 1 } @suggestions;
 
 		push( @resp, 
 			{
