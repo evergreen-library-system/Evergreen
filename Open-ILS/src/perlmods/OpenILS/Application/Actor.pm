@@ -316,7 +316,16 @@ __PACKAGE__->register_method(
     method   => "update_patron",
     api_name => "open-ils.actor.patron.update",
     signature => {
-        desc   => 'Update an existing user, or create a new one.',
+        desc   => q/
+            Update an existing user, or create a new one.  Related objects,
+            like cards, addresses, survey responses, and stat cats, 
+            can be updated by attaching them to the user object in their
+            respective fields.  For examples, the billing address object
+            may be inserted into the 'billing_address' field, etc.  For each 
+            attached object, indicate if the object should be created, 
+            updated, or deleted using the built-in 'isnew', 'ischanged', 
+            and 'isdeleted' fields on the object.
+        /,
         params => [
             { desc => 'Authentication token', type => 'string' },
             { desc => 'Patron data object',   type => 'object' }
