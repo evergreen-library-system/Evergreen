@@ -37,10 +37,10 @@
             <div dojoType="dijit.form.DropDownButton">
                 <span>Fund Propagation &amp; Rollover</span>
                 <div dojoType="dijit.TooltipDialog" execute="performRollover(arguments[0]);">
-                    <table class='dijitTooltipTable'>
+                    <table class='dijitTooltipTable' id='oils-acq-rollover-tooltip-table'>
                         <tr>
                             <td colspan='2'>
-                                <div style='width:400px;border-bottom:2px solid #888'>
+                                <div style='width:400px;'>
                                 Propagation creates new funds for the sugsequent fiscal year based on the
                                 funds for the selected fiscal year.  Only funds with the propagate setting
                                 enabled will be affected.  No money or encumbrances are altered
@@ -56,7 +56,7 @@
                         </tr>
                         <tr>
                             <td colspan='2'>
-                                <div style='width:400px;border-bottom:2px solid #888'>
+                                <div style='width:400px;'>
                                 The year end close out operation moves encumbrances from the selected fiscal
                                 year to the analogous funds in the subsequent fiscal year and it deactivates
                                 funds for the selected fiscal year.  Additionally, for all funds that have
@@ -66,6 +66,14 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Context Org Unit:</td>
+                            <td><span id='oils-acq-rollover-ctxt-org'></span></td>
+                        </tr>
+                        <tr>
+                            <td>Include Funds for Descendant Org Units:</td>
+                            <td><input dojoType=dijit.form.CheckBox name='child_orgs'/></td>
+                        </tr>
+                        <tr>
                             <td><label for="dry_run">Dry Run: </label></td>
                             <td>
                                 <input dojoType="dijit.form.CheckBox" name="dry_run" checked='checked'> </input>
@@ -73,7 +81,7 @@
                         </tr>
                         <tr>
                             <td colspan='2'>
-                                <div style='width:400px;border-bottom:2px solid #888'>
+                                <div style='width:400px;'>
                                 When Dry Run is selected, the system will generate a summary of
                                 the changes that would occur during the selected operation(s).
                                 No data will be changed.
@@ -107,11 +115,13 @@
         labelAttr="year"
         searchAttr="year">
     </select>
+
+    <div dojoType='dijit.form.Button' jsId='refreshButton'>Refresh</div>
 </div>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <div style='width:98%; margin-top:20px;'>
-        <div id='acq-fund-list-rollover-summary' class='hidden' style='width:50%; margin-left:auto; margin-right:auto;text-align:center;border:1px solid #888;'>
+    <div id='acq-fund-list-rollover-summary-wrapper'>
+        <div id='acq-fund-list-rollover-summary' class='hidden'>
             <div id='acq-fund-list-rollover-summary-header'> </div>
             <ul>
                 <li id='acq-fund-list-rollover-summary-dry-run'>These changes have <span class='oils-notify-text'>not</span> been committed yet.</li>

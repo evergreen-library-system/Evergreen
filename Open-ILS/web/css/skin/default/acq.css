@@ -177,3 +177,17 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
 
 #acq-related-info-tbody td {padding:5px;}
 #acq-related-mini ul { list-style-type: square; }
+
+/* fiscal rollover ui */
+#oils-acq-rollover-tooltip-table td { border-bottom: 2px solid #888 }
+#acq-fund-list-rollover-summary-wrapper {
+    width:98%; 
+    margin-top:20px
+}
+#acq-fund-list-rollover-summary {
+    width:50%; 
+    margin-left:auto; 
+    margin-right:auto;
+    text-align:center;
+    border:1px solid #888;
+}

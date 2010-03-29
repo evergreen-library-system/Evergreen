@@ -11,13 +11,17 @@ dojo.require('openils.acq.CurrencyType');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
 dojo.require('openils.User');
+dojo.require('openils.CGI');
 dojo.require('openils.acq.Fund');
 dojo.require('openils.widget.AutoGrid');
 dojo.require('openils.widget.ProgressDialog');
+dojo.require('fieldmapper.OrgUtils');
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 
 var contextOrg;
+var rolloverResponses;
+var rolloverMode = false;
 
 function getBalanceInfo(rowIndex, item) {
     if(!item) return '';
@@ -30,34 +34,53 @@ function getBalanceInfo(rowIndex, item) {
 
 function initPage() {
 
+    contextOrg = openils.User.user.ws_ou();
+
     var connect = function() {
         dojo.connect(contextOrgSelector, 'onChange',
             function() {
                 contextOrg = this.attr('value');
-                lfGrid.resetStore();
-                loadFundGrid(fundFilterYearSelect.attr('value'));
+                dojo.byId('oils-acq-rollover-ctxt-org').innerHTML = 
+                    fieldmapper.aou.findOrgUnit(contextOrg).shortname();
+                rolloverMode = false;
+                gridDataLoader();
             }
         );
     };
 
+    dojo.connect(refreshButton, 'onClick', function() { rolloverMode = false; gridDataLoader(); });
+
     new openils.User().buildPermOrgSelector(
-        'ADMIN_ACQ_FUND', contextOrgSelector, null, connect);
+        'ADMIN_ACQ_FUND', contextOrgSelector, contextOrg, connect);
+
+    dojo.byId('oils-acq-rollover-ctxt-org').innerHTML = 
+        fieldmapper.aou.findOrgUnit(contextOrg).shortname();
 
     loadYearSelector();
-    loadFundGrid();
+    lfGrid.dataLoader = gridDataLoader;
+    loadFundGrid(new openils.CGI().param('year') || new Date().getFullYear().toString());
 
     tagManager = new TagManager(lfGrid);
+}
+
+function gridDataLoader() {
+    lfGrid.resetStore();
+    if(rolloverMode) {
+        var offset = lfGrid.displayOffset;
+        for(var i = offset; i < (offset + lfGrid.displayLimit - 1); i++) {
+            var fund = rolloverResponses[i];
+            if(!fund) break;
+            lfGrid.store.newItem(fieldmapper.acqf.toStoreItem(fund));
+        }
+    } else {
+        loadFundGrid();
+    }
 }
 
 function loadFundGrid(year) {
 
     openils.Util.hide('acq-fund-list-rollover-summary');
-    lfGrid.resetStore();
-    year = year || new Date().getFullYear().toString();
-    lfGrid.dataLoader = function() { loadFundGrid(year); };
-
-    if(contextOrg == null)
-        contextOrg = openils.User.user.ws_ou();
+    year = year || fundFilterYearSelect.attr('value');
 
     fieldmapper.standardRequest(
        [ 'open-ils.acq', 'open-ils.acq.fund.org.retrieve'],
@@ -101,7 +124,7 @@ function loadYearSelector() {
 
                 var yearStore = {identifier:'year', name:'year', items:yearList};
                 yearStore.items = yearStore.items.sort().reverse();
-                fundFilterYearSelect.store = new dojo.data.ItemFileReadStore({data:yearStore});
+                fundFilterYearSelect.store = new dojo.data.ItemFileWriteStore({data:yearStore});
 
                 // default to this year
                 fundFilterYearSelect.setValue(new Date().getFullYear().toString());
@@ -109,8 +132,9 @@ function loadYearSelector() {
                 dojo.connect(
                     fundFilterYearSelect, 
                     'onChange', 
-                    function() {
-                        loadFundGrid(fundFilterYearSelect.attr('value'));
+                    function() { 
+                        rolloverMode = false;
+                        gridDataLoader();
                     }
                 );
             }
@@ -120,8 +144,9 @@ function loadYearSelector() {
 
 function performRollover(args) {
 
-    lfGrid.resetStore();
+    rolloverMode = true;
     progressDialog.show(true, "Processing...");
+    rolloverResponses = [];
 
     var method = 'open-ils.acq.fiscal_rollover';
 
@@ -131,12 +156,13 @@ function performRollover(args) {
         method += '.propagate';
     }
         
-    if(args.dry_run[0] == 'on')
-        method += '.dry_run';
+    var dryRun = args.dry_run[0] == 'on';
+    if(dryRun) method += '.dry_run';
 
     var count = 0;
     var amount_rolled = 0;
     var year = fundFilterYearSelect.attr('value'); // TODO alternate selector?
+    
     fieldmapper.standardRequest(
         ['open-ils.acq', method],
         {
@@ -146,19 +172,26 @@ function performRollover(args) {
                 openils.User.authtoken, 
                 year,
                 contextOrg,
-                false, // TODO: checkbox in dialog
+                (args.child_orgs[0] == 'on')
             ],
 
             onresponse : function(r) {
                 var resp = openils.Util.readResponse(r);
+                rolloverResponses.push(resp.fund);
                 count += 1;
                 amount_rolled += resp.rollover_amount;
-                lfGrid.store.newItem(fieldmapper.acqf.toStoreItem(resp.fund));
             }, 
 
             oncomplete : function() {
                 
                 var nextYear = Number(year) + 1;
+                rolloverResponses = rolloverResponses.sort(
+                    function(a, b) {
+                        if(a.code() > b.code())
+                            return 1;
+                        return -1;
+                    }
+                )
 
                 dojo.byId('acq-fund-list-rollover-summary-header').innerHTML = 
                     dojo.string.substitute(
@@ -178,13 +211,23 @@ function performRollover(args) {
                         [nextYear, amount_rolled]
                     );
 
-                if(!args.dry_run) {
+                if(!dryRun) {
                     openils.Util.hide('acq-fund-list-rollover-summary-dry-run');
+                    
+                    // add the new year to the year selector if it's not already there
+                    fundFilterYearSelect.store.fetch({
+                        query : {year : nextYear}, 
+                        onComplete:
+                            function(list) {
+                                if(list && list.length > 0) return;
+                                fundFilterYearSelect.store.newItem({year : nextYear});
+                            }
+                    });
                 }
+
                 openils.Util.show('acq-fund-list-rollover-summary');
-
-
                 progressDialog.hide();
+                gridDataLoader();
             }
         }
     );
