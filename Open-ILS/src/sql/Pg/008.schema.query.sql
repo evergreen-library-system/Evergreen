@@ -34,8 +34,9 @@ CREATE TABLE  query.stored_query (
 	                             ( type IN ( 'SELECT', 'UNION', 'INTERSECT', 'EXCEPT' ) ),
 	use_all       BOOLEAN        NOT NULL DEFAULT FALSE,
 	use_distinct  BOOLEAN        NOT NULL DEFAULT FALSE,
-	from_clause   INT            NOT NULL , --REFERENCES query.from_clause
-	where_clause  INT            , --REFERENCES query.expression
+	from_clause   INT,           --REFERENCES query.from_clause
+	                             --DEFERRABLE INITIALLY DEFERRED,
+	where_clause  INT,           --REFERENCES query.expression
 	                             --DEFERRABLE INITIALLY DEFERRED,
 	having_clause INT            --REFERENCES query.expression
 	                             --DEFERRABLE INITIALLY DEFERRED
