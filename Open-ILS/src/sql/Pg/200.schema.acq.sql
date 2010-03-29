@@ -29,6 +29,36 @@ CREATE TABLE acq.exchange_rate (
 INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAN',1.2);
 INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','EUR',0.5);
 
+CREATE TABLE acq.claim_policy (
+	id              SERIAL       PRIMARY KEY,
+	org_unit        INT          NOT NULL REFERENCES actor.org_unit
+	                             DEFERRABLE INITIALLY DEFERRED,
+	name            TEXT         NOT NULL,
+	description     TEXT         NOT NULL,
+	CONSTRAINT name_once_per_org UNIQUE (org_unit, name)
+);
+
+CREATE TABLE acq.claim_event_type (
+	id             SERIAL           PRIMARY KEY,
+	org_unit       INT              NOT NULL REFERENCES actor.org_unit(id)
+	                                         DEFERRABLE INITIALLY DEFERRED,
+	code           TEXT             NOT NULL,
+	description    TEXT             NOT NULL,
+	library_initiated BOOL          NOT NULL DEFAULT FALSE,
+	CONSTRAINT event_type_once_per_org UNIQUE ( org_unit, code )
+);
+
+CREATE TABLE acq.claim_policy_action (
+	id              SERIAL       PRIMARY KEY,
+	claim_policy    INT          NOT NULL REFERENCES acq.claim_policy
+                                 ON DELETE CASCADE
+	                             DEFERRABLE INITIALLY DEFERRED,
+	action_interval INTERVAL     NOT NULL,
+	action          INT          NOT NULL REFERENCES acq.claim_event_type
+	                             DEFERRABLE INITIALLY DEFERRED,
+	CONSTRAINT action_sequence UNIQUE (claim_policy, action_interval)
+);
+
 CREATE TABLE acq.provider (
     id                  SERIAL  PRIMARY KEY,
     name                TEXT    NOT NULL,
@@ -2494,16 +2524,6 @@ CREATE TABLE acq.claim_type (
 	CONSTRAINT claim_type_once_per_org UNIQUE ( org_unit, code )
 );
 
-CREATE TABLE acq.claim_event_type (
-	id             SERIAL           PRIMARY KEY,
-	org_unit       INT              NOT NULL REFERENCES actor.org_unit(id)
-	                                         DEFERRABLE INITIALLY DEFERRED,
-	code           TEXT             NOT NULL,
-	description    TEXT             NOT NULL,
-	library_initiated BOOL          NOT NULL DEFAULT FALSE,
-	CONSTRAINT event_type_once_per_org UNIQUE ( org_unit, code )
-);
-
 CREATE TABLE acq.claim (
 	id             SERIAL           PRIMARY KEY,
 	type           INT              NOT NULL REFERENCES acq.claim_type
@@ -2527,25 +2547,5 @@ CREATE TABLE acq.claim_event (
 );
 
 CREATE INDEX claim_event_claim_date_idx ON acq.claim_event( claim, event_date );
-
-CREATE TABLE acq.claim_policy (
-	id              SERIAL       PRIMARY KEY,
-	org_unit        INT          NOT NULL REFERENCES actor.org_unit
-	                             DEFERRABLE INITIALLY DEFERRED,
-	name            TEXT         NOT NULL,
-	description     TEXT         NOT NULL,
-	CONSTRAINT name_once_per_org UNIQUE (org_unit, name)
-);
-
-CREATE TABLE acq.claim_policy_action (
-	id              SERIAL       PRIMARY KEY,
-	claim_policy    INT          NOT NULL REFERENCES acq.claim_policy
-                                 ON DELETE CASCADE
-	                             DEFERRABLE INITIALLY DEFERRED,
-	action_interval INTERVAL     NOT NULL,
-	action          INT          NOT NULL REFERENCES acq.claim_event_type
-	                             DEFERRABLE INITIALLY DEFERRED,
-	CONSTRAINT action_sequence UNIQUE (claim_policy, action_interval)
-);
 
 COMMIT;
