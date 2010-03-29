@@ -2639,6 +2639,7 @@ sub update_user_request {
             if ( $cancel_reason ) {
                 $aur_obj->cancel_reason( $cancel_reason );
                 $e->update_acq_user_request($aur_obj) or return $e->die_event;
+                create_user_request_events( [ $aur_obj ], 'aur.rejected' );
             } else {
                 $e->delete_acq_user_request($aur_obj);
             }
@@ -2707,7 +2708,24 @@ sub new_user_request {
 
     $e->commit;
 
+    create_user_request_events( [ $aur_obj ], 'aur.created' );
+
     return $aur_obj;
+}
+
+sub create_user_request_events {
+    my($user_reqs, $hook) = @_;
+
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->connect;
+
+    for my $user_req (@$user_reqs) {
+        my $req = $ses->request('open-ils.trigger.event.autocreate', $hook, $user_req, $user_req->usr->home_ou);
+        $req->recv;
+    }
+
+    $ses->disconnect;
+    return undef;
 }
 
 
