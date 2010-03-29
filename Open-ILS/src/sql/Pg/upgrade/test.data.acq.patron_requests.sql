@@ -2,22 +2,28 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('test'); -- phasefx
 
-INSERT INTO action_trigger.hook (
-        key,
-        core_type,
-        description,
-        passive
-    ) VALUES (
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
         'aur.created',
         'aur',
-        'A patron has made an acquisitions request.',
+        oils_i18n_gettext(
+            'aur.created',
+            'A patron has made an acquisitions request.',
+            'ath',
+            'description'
+        ),
         TRUE
     ), (
         'aur.rejected',
         'aur',
-        'A patron acquisition request has been rejected.',
+        oils_i18n_gettext(
+            'aur.rejected',
+            'A patron acquisition request has been rejected.',
+            'ath',
+            'description'
+        ),
         TRUE
-    );
+    )
+;
 
 INSERT INTO action_trigger.event_definition (
         id,
@@ -98,7 +104,6 @@ INSERT INTO action_trigger.environment (
         path
     ) VALUES 
         ( 18, 'usr' ),
-
         ( 19, 'usr' )
     ;
 

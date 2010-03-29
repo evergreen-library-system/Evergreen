@@ -2,38 +2,66 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0165'); -- phasefx
 
-INSERT INTO action_trigger.hook (
-        key,
-        core_type,
-        description,
-        passive
-    ) VALUES (
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
         'aur.ordered',
-        'aur',
-        'A patron acquisition request has been marked On-Order.',
+        'aur', 
+        oils_i18n_gettext(
+            'aur.ordered',
+            'aur.ordered',
+            'A patron acquisition request has been marked On-Order.',
+            'ath',
+            'description'
+        ), 
         TRUE
     ), (
-        'aur.received',
-        'aur',
-        'A patron acquisition request has been marked Received.',
+        'aur.received', 
+        'aur', 
+        oils_i18n_gettext(
+            'aur.received', 
+            'A patron acquisition request has been marked Received.',
+            'ath',
+            'description'
+        ),
         TRUE
     ), (
         'aur.cancelled',
         'aur',
-        'A patron acquisition request has been marked Cancelled.',
+        oils_i18n_gettext(
+            'aur.cancelled',
+            'A patron acquisition request has been marked Cancelled.',
+            'ath',
+            'description'
+        ),
         TRUE
-    );
+    )
+;
 
 INSERT INTO action_trigger.validator (module,description) VALUES (
         'Acq::UserRequestOrdered',
-        'Tests to see if the corresponding Line Item has a state of "on-order".'
+        oils_i18n_gettext(
+            'Acq::UserRequestOrdered',
+            'Tests to see if the corresponding Line Item has a state of "on-order".',
+            'atval',
+            'description'
+        )
     ), (
         'Acq::UserRequestReceived',
-        'Tests to see if the corresponding Line Item has a state of "received".'
+        oils_i18n_gettext(
+            'Acq::UserRequestReceived',
+            'Tests to see if the corresponding Line Item has a state of "received".'
+            'atval',
+            'description'
+        )
     ), (
         'Acq::UserRequestCancelled',
-        'Tests to see if the corresponding Line Item has a state of "cancelled".'
-    );
+        oils_i18n_gettext(
+            'Acq::UserRequestCancelled',
+            'Tests to see if the corresponding Line Item has a state of "cancelled".'
+            'atval',
+            'description'
+        )
+    )
+;
 
 INSERT INTO action_trigger.event_definition (
         id,
