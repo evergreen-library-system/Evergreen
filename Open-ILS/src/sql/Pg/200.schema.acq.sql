@@ -1871,7 +1871,9 @@ BEGIN
 				currency_type,
 				code,
 				rollover,
-				propagate
+				propagate,
+				balance_warning_percent,
+				balance_stop_percent
 			) VALUES (
 				old_fund.org,
 				old_fund.name,
@@ -1879,7 +1881,9 @@ BEGIN
 				old_fund.currency_type,
 				old_fund.code,
 				old_fund.rollover,
-				true
+				true,
+				old_fund.balance_warning_percent,
+				old_fund.balance_stop_percent
 			)
 			RETURNING id INTO new_id;
 		EXCEPTION
@@ -1948,7 +1952,9 @@ BEGIN
 				currency_type,
 				code,
 				rollover,
-				propagate
+				propagate,
+				balance_warning_percent,
+				balance_stop_percent
 			) VALUES (
 				old_fund.org,
 				old_fund.name,
@@ -1956,7 +1962,9 @@ BEGIN
 				old_fund.currency_type,
 				old_fund.code,
 				old_fund.rollover,
-				true
+				true,
+				old_fund.balance_warning_percent,
+				old_fund.balance_stop_percent
 			)
 			RETURNING id INTO new_id;
 		EXCEPTION
@@ -2050,7 +2058,9 @@ BEGIN
 				currency_type,
 				code,
 				rollover,
-				propagate
+				propagate,
+				balance_warning_percent,
+				balance_stop_percent
 			) VALUES (
 				roll_fund.org,
 				roll_fund.name,
@@ -2058,7 +2068,9 @@ BEGIN
 				roll_fund.currency_type,
 				roll_fund.code,
 				true,
-				true
+				true,
+				roll_fund.balance_warning_percent,
+				roll_fund.balance_stop_percent
 			)
 			RETURNING id INTO new_fund;
 		ELSE
@@ -2225,7 +2237,9 @@ BEGIN
 				currency_type,
 				code,
 				rollover,
-				propagate
+				propagate,
+				balance_warning_percent,
+				balance_stop_percent
 			) VALUES (
 				roll_fund.org,
 				roll_fund.name,
@@ -2233,7 +2247,9 @@ BEGIN
 				roll_fund.currency_type,
 				roll_fund.code,
 				true,
-				true
+				true,
+				roll_fund.balance_warning_percent,
+				roll_fund.balance_stop_percent
 			)
 			RETURNING id INTO new_fund;
 		ELSE
