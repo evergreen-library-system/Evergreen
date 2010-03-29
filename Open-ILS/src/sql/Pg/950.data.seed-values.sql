@@ -44,7 +44,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
     (11, 'subject', 'geographic', oils_i18n_gettext(11, 'Geographic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:geographic$$, TRUE );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field ) VALUES 
     (12, 'subject', 'name', oils_i18n_gettext(12, 'Name Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:name$$, $$*[local-name()='namePart']$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, x, facet_fieldpath ) VALUES 
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES 
     (13, 'subject', 'temporal', oils_i18n_gettext(13, 'Temporal Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:temporal$$, TRUE );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES 
     (14, 'subject', 'topic', oils_i18n_gettext(14, 'Topic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:topic$$, TRUE );
@@ -52,7 +52,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 --  ( id, field_class, name, xpath ) VALUES ( 'subject', 'genre', 'mods32', $$//mods32:mods/mods32:genre$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
     (15, 'keyword', 'keyword', oils_i18n_gettext(15, 'General Keywords', 'cmf', 'label'), 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */;
-INSERT INTO config.metabib_field (field_class, name, label, format, xpath ) VALUES
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
