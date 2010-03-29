@@ -47,28 +47,67 @@ sub child_init {
 
 __PACKAGE__->register_method(
 	method	=> "spellcheck",
-	api_name	=> "open-ils.search.spellcheck");
+	api_name	=> "open-ils.search.spellcheck",
+    signature => {
+        desc   => 'Returns alternate spelling suggestions',
+        param  => [
+            {name => 'phrase', desc => 'Word or phrase to return alternate spelling suggestions for', type => 'string'},
+            {name => 'Dictionary class', desc => 'Used to specify an alternate configured dictiony to use for suggestions', type => 'string'},
+        ],
+        return => {
+            desc => q/
+                Suggestions for each word in the phrase.  
+                [ { word : original_word, suggestions : [sug1, sug2, ...], found : 1 if the word was found in the dictionary, 0 otherwise }, ... ]
+            /,
+            type => 'array', 
+        }
+    }
+);
 
 my $speller = Text::Aspell->new();
 
 sub spellcheck {
-	my( $self, $client, $phrase ) = @_;
+	my( $self, $client, $phrase, $class ) = @_;
 
 	my $conf = OpenSRF::Utils::SettingsClient->new;
+    $class ||= 'default';
 
-	if( my $dict = $conf->config_value(
-			"apps", "open-ils.search", "app_settings", "spelling_dictionary")) {
+    my @conf_path = (apps => 'open-ils.search' => app_settings => spelling_dictionary => $class);
+    push(@conf_path, $class) if $class;
+
+	if( my $dict = $conf->config_value(@conf_path) ) {
 		$speller->set_option('master', $dict);
 		$logger->debug("spelling dictionary set to $dict");
 	}
 
 	my @resp;
 	return \@resp unless $phrase;
+
 	for my $word (split(/\s+/,$phrase) ) {
+
+        my @suggestions = $speller->suggest($word);
+        my @trimmed;
+
+        for my $sug (@suggestions) {
+
+            # suggestion matches alternate case of original word
+            next if lc($sug) eq lc($word); 
+
+            # suggestion matches alternate case of already suggested word
+            next if grep { lc($sug) eq lc($_) } @trimmed;
+
+            push(@trimmed, $sug);
+        }
+
+        # remove alternate-cased duplicates and versions of the origin word
+        @suggestions = grep { lc($_) ne $word } @suggestions;
+        my %sugs = map { lc($_) => 1 } @suggestions;
+
 		push( @resp, 
 			{
 				word => $word, 
-				suggestions => ($speller->check($word)) ? undef : [$speller->suggest($word)]
+				suggestions => (@trimmed) ? [@trimmed] : undef,
+                found => $speller->check($word)
 			} 
 		); 
 	}

@@ -390,6 +390,20 @@ vim:et:ts=4:sw=4:
                     <marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
                     <marc_html_xsl_slim>oilsMARC21slim2HTMLslim.xsl</marc_html_xsl_slim>
 
+                    <spelling_dictionary>
+                        <!-- 
+                            Optionally configure different dictionaries depending on search context.  
+                            If no dictionaries are defined, the default Aspell dictionary is used.
+                        -->
+                        <!--
+                        <default>LOCALSTATEDIR/data/default_dict.txt</default>
+                        <title>LOCALSTATEDIR/data/title_dict.txt</title>
+                        <author>LOCALSTATEDIR/data/author_dict.txt</author>
+                        <subject>LOCALSTATEDIR/data/subject_dict.txt</subject>
+                        <series>LOCALSTATEDIR/data/series_dict.txt</series>
+                        -->
+                    </spelling_dictionary>
+
                     <!-- Default to using staged search -->
                     <use_staged_search>true</use_staged_search>
 
