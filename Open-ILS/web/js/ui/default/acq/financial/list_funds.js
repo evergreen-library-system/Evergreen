@@ -59,8 +59,6 @@ function initPage() {
     loadYearSelector();
     lfGrid.dataLoader = gridDataLoader;
     loadFundGrid(new openils.CGI().param('year') || new Date().getFullYear().toString());
-
-    tagManager = new TagManager(lfGrid);
 }
 
 function gridDataLoader() {
