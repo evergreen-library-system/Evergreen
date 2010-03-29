@@ -2717,8 +2717,15 @@ sub create_user_request_events {
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
     $ses->connect;
 
+    my %cached_usr_home_ou = ();
     for my $user_req (@$user_reqs) {
-        my $req = $ses->request('open-ils.trigger.event.autocreate', $hook, $user_req, $user_req->usr->home_ou);
+        my $home_ou = $cached_usr_home_ou{$user_req->usr};
+        if (! $home_ou) {
+            my $user = $e->retrieve_actor_user($user_req->usr) or return $e->die_event;
+            $home_ou = $user->home_ou;
+            $cached_usr_home_ou{$user_req->usr} = $home_ou;
+        }
+        my $req = $ses->request('open-ils.trigger.event.autocreate', $hook, $user_req, $home_ou);
         $req->recv;
     }
 
