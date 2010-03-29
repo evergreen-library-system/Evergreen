@@ -111,24 +111,22 @@ sub update_user_setting {
 
 
 __PACKAGE__->register_method(
-	method	=> "set_ou_settings",
-	api_name	=> "open-ils.actor.org_unit.settings.update",
+    method    => "set_ou_settings",
+    api_name  => "open-ils.actor.org_unit.settings.update",
     signature => {
-        desc => q/
-            Updates the value for a given org unit setting.  The permission to update
-            an org unit setting is either the UPDATE_ORG_UNIT_SETTING_ALL, or a specific
-            permission specified in the update_perm column of the
-            config.org_unit_setting_type table's row corresponding to the setting being
-            changed./,
+        desc => "Updates the value for a given org unit setting.  The permission to update "          .
+                "an org unit setting is either the UPDATE_ORG_UNIT_SETTING_ALL, or a specific "       .
+                "permission specified in the update_perm column of the config.org_unit_setting_type " .
+                "table's row corresponding to the setting being changed." ,
         params => [
-		    {desc => 'authtoken', type => 'string'},
-            {desc => 'org unit id', type => 'number'},
-            {desc => q/Hash of setting name-value pairs/, type => 'hash'},
+            {desc => 'Authentication token',             type => 'string'},
+            {desc => 'Org unit ID',                      type => 'number'},
+            {desc => 'Hash of setting name-value pairs', type => 'object'}
         ],
         return => {desc => '1 on success, Event on error'}
     }
-
 );
+
 sub set_ou_settings {
 	my( $self, $client, $auth, $org_id, $settings ) = @_;
 
@@ -173,8 +171,8 @@ sub set_ou_settings {
 }
 
 __PACKAGE__->register_method(
-	method	=> "user_settings",
-	api_name	=> "open-ils.actor.patron.settings.retrieve",
+    method   => "user_settings",
+    api_name => "open-ils.actor.patron.settings.retrieve",
 );
 sub user_settings {
 	my( $self, $client, $auth, $user_id, $setting ) = @_;
@@ -210,19 +208,17 @@ sub user_settings {
 }
 
 
-
 __PACKAGE__->register_method(
-	method	=> "ranged_ou_settings",
-	api_name	=> "open-ils.actor.org_unit_setting.values.ranged.retrieve",
+    method    => "ranged_ou_settings",
+    api_name  => "open-ils.actor.org_unit_setting.values.ranged.retrieve",
     signature => {
-        desc => q/
-            Retrieves all org unit settings for the given org_id, up to whatever limit
-            is implied for retrieving OU settings by the authenticated users' permissions./,
+        desc   => "Retrieves all org unit settings for the given org_id, up to whatever limit " .
+                  "is implied for retrieving OU settings by the authenticated users' permissions.",
         params => [
-            {desc => 'authtoken', type => 'string'},
-            {desc => 'org unit id', type => 'number'},
+            {desc => 'Authentication token',   type => 'string'},
+            {desc => 'Org unit ID',            type => 'number'},
         ],
-        return => {desc => 'A hashref of "ranged" settings'}
+        return => {desc => 'A hashref of "ranged" settings, event on error'}
     }
 );
 sub ranged_ou_settings {
@@ -272,7 +268,7 @@ __PACKAGE__->register_method(
                 'IF AND ONLY IF an authentication token is provided, this method will make sure that the given '         .
                 'user has permission to view that setting, if there is a permission associated with the setting.'        ,
         params => [
-            { desc => 'org unit id',          type => 'number' },
+            { desc => 'Org unit ID',          type => 'number' },
             { desc => 'setting name',         type => 'string' },
             { desc => 'authtoken (optional)', type => 'string' }
         ],
@@ -300,7 +296,7 @@ __PACKAGE__->register_method(
                 'IF AND ONLY IF an authentication token is provided, this method will make sure that the given '       .
                 'user has permission to view that setting, if there is a permission associated with the setting.'      ,
         params => [
-            { desc => 'org unit id',          type => 'number' },
+            { desc => 'Org unit ID',          type => 'number' },
             { desc => 'setting name list',    type => 'array'  },
             { desc => 'authtoken (optional)', type => 'string' }
         ],
@@ -317,17 +313,24 @@ sub ou_ancestor_setting_batch {
 
 
 __PACKAGE__->register_method(
-	method	=> "update_patron",
-	api_name	=> "open-ils.actor.patron.update",);
+    method   => "update_patron",
+    api_name => "open-ils.actor.patron.update",
+    signature => {
+        desc   => 'Update an existing user, or create a new one.',
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Patron data object',   type => 'object' }
+        ],
+        return => {desc => 'A fleshed user object, event on error'}
+    }
+);
 
 sub update_patron {
 	my( $self, $client, $user_session, $patron ) = @_;
 
 	my $session = $apputils->start_db_session();
-	my $err = undef;
 
-	$logger->info("Creating new patron...") if $patron->isnew; 
-	$logger->info("Updating Patron: " . $patron->id) unless $patron->isnew;
+	$logger->info($patron->isnew ? "Creating new patron..." : "Updating Patron: " . $patron->id);
 
 	my( $user_obj, $evt ) = $U->checkses($user_session);
 	return $evt if $evt;
