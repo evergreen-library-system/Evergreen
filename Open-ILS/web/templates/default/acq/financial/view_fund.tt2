@@ -76,7 +76,7 @@
         <span>Transfer Money</span>
         <div jsId="xferDialog" dojoType="dijit.TooltipDialog">
             <script type="dojo/connect" event="onOpen">
-                /* If something is selected (from a previous time that the
+                /* If a fund is selected (from a previous time that the
                 user popped open this dialog), unselect it. Wouldn't want to
                 accidentally encourage a transfer that the user didn't mean. */
                 xferManager.clearFundSelector();
@@ -86,8 +86,10 @@
                 <tr>
                     <th>
                         <label for="oils-acq-fund-xfer-o-amount">
-                            Amount to transfer from<br />
-                            <span id="oils-acq-fund-xfer-name-fund"></span>
+                            Source amount<br />
+                            <em>Amount to transfer from<br />
+                                <span id="oils-acq-fund-xfer-name-fund"></span>
+                            </em>
                         </label>
                     </th>
                     <td>
@@ -104,6 +106,28 @@
                     </th>
                     <td>
                         <span id="oils-acq-fund-xfer-d-selector"></span>
+                    </td>
+                </tr>
+                <tr id="oils-acq-fund-xfer-dest-amount" class="hidden">
+                    <th>
+                        <label for="oils-acq-fund-xfer-d-selector">
+                            Destination amount
+                        </label>
+                    </th>
+                    <td>
+                        <div class="oils-acq-basic-roomy">
+                            <input id="oils-acq-fund-xfer-same-o-d"
+                                dojoType="dijit.form.CheckBox" checked="checked"
+                                value="1" name="same_o_d" />
+                            <label for="oils-acq-fund-xfer-same-o-d">
+                                Same as source amount?
+                            </label>
+                        </div>
+                        <div class="oils-acq-basic-roomy">
+                            <input id="oils-acq-fund-xfer-d-amount"
+                                dojoType="dijit.form.CurrencyTextBox"
+                                name="d_amount" disabled="disabled" />
+                        </div>
                     </td>
                 </tr>
                 <tr>

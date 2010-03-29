@@ -1332,7 +1332,8 @@ INSERT INTO permission.perm_list VALUES
     (385, 'CREATE_TRIGGER_VALIDATOR', oils_i18n_gettext(385, 'Allow a user to create trigger validators', 'ppl', 'description')),
     (386, 'DELETE_TRIGGER_VALIDATOR', oils_i18n_gettext(386, 'Allow a user to delete trigger validators', 'ppl', 'description')),
     (387, 'UPDATE_TRIGGER_VALIDATOR', oils_i18n_gettext(387, 'Allow a user to update trigger validators', 'ppl', 'description')),
-    (388, 'UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds', oils_i18n_gettext(388, 'Allow a user to enable blocking of renews on items that could fulfill holds', 'ppl', 'description'))
+    (388, 'UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds', oils_i18n_gettext(388, 'Allow a user to enable blocking of renews on items that could fulfill holds', 'ppl', 'description')),
+    (389, 'ACQ_XFER_MANUAL_DFUND_AMOUNT', oils_i18n_gettext(389, 'Allow a user to transfer different amounts of money out of one fund and into another', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);

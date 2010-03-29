@@ -117,9 +117,8 @@
     padding: 4px;
 }
 .oils-acq-fund-tag A { margin-left: 10px; }
-#oils-acq-fund-xfer-table th { vertical-align: top; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999; padding: 4px; }
-#oils-acq-fund-xfer-table td { padding-left: 24px; }
-#oils-acq-fund-xfer-name-fund { font-style: italic; }
+#oils-acq-fund-xfer-table th { border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999; padding: 4px; }
+#oils-acq-fund-xfer-table td { padding: 4px 4px 4px 24px; }
 #oils-acq-fund-xfer-submit-row { text-align: center; }
 
 /* li search page */

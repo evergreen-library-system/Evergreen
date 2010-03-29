@@ -429,6 +429,8 @@ sub transfer_money_between_funds {
             $ratio = @{$exchange_rate}[0]->{ratio};
         }
         $dfund_amount = $ofund_amount * $ratio;
+    } else {
+        return $e->die_event unless $e->allowed("ACQ_XFER_MANUAL_DFUND_AMOUNT");
     }
 
     $e->json_query({

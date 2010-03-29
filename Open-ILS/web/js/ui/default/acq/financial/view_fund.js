@@ -4,6 +4,7 @@ dojo.require('dijit.layout.TabContainer');
 dojo.require('dijit.layout.ContentPane');
 dojo.require('dojox.grid.DataGrid');
 dojo.require('dijit.form.CurrencyTextBox');
+dojo.require("dijit.form.CheckBox");
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require("fieldmapper.OrgUtils");
 dojo.require('openils.acq.Fund');
@@ -85,23 +86,43 @@ function fetchFund() {
 function TransferManager() {
     var self = this;
 
-    new openils.widget.AutoFieldWidget({
-        "fmField": "fund",
-        /* We're not really using LIDs here, we just need some class that has
-         * a fund field to take advantage of AutoFieldWidget's magic.
-         */
-        "fmClass": "acqlid",
-        "labelFormat": ["${0} (${1})", "code", "year"],
-        "searchFormat": ["${0} (${1})", "code", "year"],
-        "searchFilter": {"active": "t"}, /* consider making it possible to select inactive? */
-        "parentNode": dojo.byId("oils-acq-fund-xfer-d-selector"),
-        "orgLimitPerms": ["ADMIN_ACQ_FUND"], /* XXX is there a more appropriate permission for this? */
-        "dijitArgs": {"name": "d_fund"},
-        "forceSync": true
-    }).build(function(w, ww) { self.fundSelector = w; });
+    this._init = function() {
+        new openils.widget.AutoFieldWidget({
+            "fmField": "fund",
+            /* We're not really using LIDs here, we just need some class
+             * that has a fund field to take advantage of AutoFieldWidget's
+             * magic. */
+            "fmClass": "acqlid",
+            "labelFormat": ["${0} (${1})", "code", "year"],
+            "searchFormat": ["${0} (${1})", "code", "year"],
+            "searchFilter": {"active": "t"}, /* consider making it possible
+                                                to select inactive? */
+            "parentNode": dojo.byId("oils-acq-fund-xfer-d-selector"),
+            "orgLimitPerms": ["ADMIN_ACQ_FUND"], /* XXX is there a more
+                                                    appropriate permission
+                                                    for this? */
+            "dijitArgs": {
+                "onChange": function() {
+                    openils.Util[
+                        this.item.currency_type == fund.currency_type() ?
+                            "hide" : "show"
+                    ]("oils-acq-fund-xfer-dest-amount", "table-row");
+                }
+            },
+            "forceSync": true
+        }).build(function(w, ww) { self.fundSelector = w; });
+
+        dijit.byId("oils-acq-fund-xfer-same-o-d").onChange = function() {
+            dijit.byId("oils-acq-fund-xfer-d-amount").attr(
+                "disabled", this.attr("checked")
+            );
+        }
+    };
+
+    this._init();
 
     this.clearFundSelector = function() {
-        if (!this.fundSelector.attr("value"))
+        if (this.fundSelector.attr("value"))
             this.fundSelector.attr("value", "");
     };
 
@@ -112,7 +133,10 @@ function TransferManager() {
 
     this.submit = function() {
         var values = xferDialog.getValues();
-        if (values.d_fund == fund.id()) {
+        var dfund = this.fundSelector.item;
+        var dfund_id = typeof(dfund.id) == "object" ? dfund.id[0] : dfund.id;
+
+        if (dfund_id == fund.id()) {
             alert(localeStrings.FUND_XFER_SAME_SOURCE_AND_DEST);
             return false;
         }
@@ -121,8 +145,11 @@ function TransferManager() {
                 ["open-ils.acq", "open-ils.acq.funds.transfer_money"], {
                     "params": [
                         openils.User.authtoken,
-                        fund.id(), values.o_amount,
-                        values.d_fund, null,
+                        fund.id(),
+                        values.o_amount,
+                        dfund_id,
+                        (dfund.currency_type != fund.currency_type() &&
+                            values.same_o_d.length) ? null : values.d_amount,
                         values.note
                     ],
                     "async": true,
@@ -134,7 +161,6 @@ function TransferManager() {
                 }
             );
         }
-        return true;
     };
 }
 
