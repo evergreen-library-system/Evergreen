@@ -3340,7 +3340,6 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
         'aur', 
         oils_i18n_gettext(
             'aur.ordered',
-            'aur.ordered',
             'A patron acquisition request has been marked On-Order.',
             'ath',
             'description'
