@@ -48,7 +48,7 @@ INSERT INTO action_trigger.validator (module,description) VALUES (
         'Acq::UserRequestReceived',
         oils_i18n_gettext(
             'Acq::UserRequestReceived',
-            'Tests to see if the corresponding Line Item has a state of "received".'
+            'Tests to see if the corresponding Line Item has a state of "received".',
             'atval',
             'description'
         )
@@ -56,7 +56,7 @@ INSERT INTO action_trigger.validator (module,description) VALUES (
         'Acq::UserRequestCancelled',
         oils_i18n_gettext(
             'Acq::UserRequestCancelled',
-            'Tests to see if the corresponding Line Item has a state of "cancelled".'
+            'Tests to see if the corresponding Line Item has a state of "cancelled".',
             'atval',
             'description'
         )
