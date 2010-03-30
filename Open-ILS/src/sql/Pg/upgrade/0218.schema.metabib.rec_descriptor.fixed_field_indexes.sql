@@ -2,7 +2,6 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0218'); --miker
 
-CREATE INDEX metabib_rec_descriptor_record_idx ON metabib.rec_descriptor (record);
 CREATE INDEX metabib_rec_descriptor_item_type_idx ON metabib.rec_descriptor (item_type);
 CREATE INDEX metabib_rec_descriptor_item_form_idx ON metabib.rec_descriptor (item_form);
 CREATE INDEX metabib_rec_descriptor_bib_level_idx ON metabib.rec_descriptor (bib_level);
