@@ -126,7 +126,7 @@ for my $h (@order) {
 		$output->print("SELECT reporter.disable_materialized_simple_record_trigger();\n");
 	}
 
-	$after_commit .= "SELECT setval('$fieldcache{$h}{sequence}'::TEXT, (SELECT MAX($fieldcache{$h}{pkey}) FROM $fieldcache{$h}{table}), TRUE);\n";
+	$after_commit .= "SELECT setval('$fieldcache{$h}{sequence}'::TEXT, (SELECT MAX($fieldcache{$h}{pkey}) FROM $fieldcache{$h}{table}), TRUE);\n"
 		if (!grep { $_ eq $h} @auto);
 }
 
