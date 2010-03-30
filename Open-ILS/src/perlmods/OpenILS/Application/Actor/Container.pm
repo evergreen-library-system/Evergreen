@@ -618,6 +618,7 @@ sub anon_cache {
     } else {
 
         my $blob = $cache->get_cache($ses_key) or return undef;
+        return $blob if (!defined($field_key));
         return $blob->{$field_key};
     }
 }
