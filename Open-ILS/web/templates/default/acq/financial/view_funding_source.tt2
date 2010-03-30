@@ -1,14 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
-<script>
-    var fundingSourceID = [% ctx.page_args.0 %];
-    function getFund(rowIndex) {
-        data = fsAllocationGrid.model.getRow(rowIndex);
-        if(data) {
-            var fund = openils.acq.Fund.retrieve(data.fund);
-            return '<a href="[% ctx.base_path %]/acq/fund/view/'+fund.id()+'">'+fund.code()+'</a>';
-        }
-    }
-</script>
+<script> var fundingSourceID = [% ctx.page_args.0 %]; </script>
 
 <!-- load the page-specific JS -->
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_funding_source.js'> </script>
@@ -27,18 +18,13 @@
                 <tr>
                     <td><label for="amount">Amount: </label></td>
                     <td>
-                        <!-- XXX get currency from funding source ... -->
-                        <input dojoType="dijit.form.CurrencyTextBox" name="amount" currency='USD'> </input>
+                        <input dojoType="dijit.form.CurrencyTextBox" name="amount"> </input>
                     </td>
                 </tr>
                 <tr>
                     <td><label for="note">Note: </label></td>
                     <td>
                         <input dojoType="dijit.form.TextBox" name="note"> </input>
-                        <!-- XXX textarea makes more sense, but it's buggy in the dropdown dialog .. perhaps a height issue?
-                        <textarea dojoType='dijit.form.Textarea' name="note" style='min-height:6em'> 
-                        </textarea>
-                        -->
                     </td>
                 </tr>
                 <tr>
@@ -73,10 +59,10 @@
                 <tr>
                     <td><label for="amount">Amount: </label></td>
                     <td>
-                        <!-- XXX get currency from funding source ... -->
-                        <input dojoType="dijit.form.CurrencyTextBox" name="amount" currency='USD'> </input>
+                        <input dojoType="dijit.form.CurrencyTextBox" name="amount"> </input>
                     </td>
                 </tr>
+                <!-- Percent-based allocations are not supported.  Will implement or remove later.
                 <tr>
                     <td><label for="amount">Percent: </label></td>
                     <td>
@@ -88,6 +74,7 @@
                         </input>
                     </td>
                 </tr>
+                -->
                 <tr>
                     <td><label for="note">Note: </label></td>
                     <td>
@@ -106,6 +93,7 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">
+
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Summary" selected='true'>
             <script type='dojo/connect' event='onShow'>loadFSGrid();</script>
 
@@ -127,43 +115,56 @@
                     </table>     
                 </div> 
             </div>               
+        </div>
  
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Credits">
-            <script type='dojo/connect' event='onShow'>loadCreditGrid();
-            </script> 
+            <script type='dojo/connect' event='onShow'>loadCreditGrid(); </script> 
+
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
-                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
-                    <table jsId="fsCreditGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
-                        <thead> 
-                            <tr> 
-                                <th field="id">ID</th> 
-                                <th field="amount">Amount</th> 
-                                <th field="note" width='auto'>Note</th> 
-                            </tr> 
-                        </thead> 
-                    </table>     
-                </div> 
-            </div> 
-            
-        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Allocations">
-            <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script> 
-            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
-                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
-                    <table jsId="fsAllocationGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
-                        <thead> 
-                            <tr> 
-                                <th field="id">ID</th> 
-                                <th field="fund" get='getFund'>Fund</th> 
-                                <th field="amount">Amount</th> 
-                                <th field="percent">Percent</th> 
-                                <th field="allocator">Allocated By</th> 
-                                <th field="note" width='auto'>Note</th> 
-                            </tr> 
-                        </thead> 
-                    </table>     
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+
+                    <table 
+                        jsId="fsCreditGrid"
+                        autoHeight='true'
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['amount', 'effective_date', 'deadline_date', 'note']"
+                        suppressFields="['id', 'funding_source']"
+                        fmClass="acqfscred"
+                        query="{id: '*'}"
+                        showPaginator='true'>
+                    </table>
                 </div> 
             </div> 
         </div>
+
+        <!-- Fund Allocations -->
+        <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Allocations">
+            <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script>
+            
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client"> 
+
+                    <table 
+                        jsId="fsAllocationGrid" 
+                        autoHeight='true'
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['fund', 'amount', 'create_time', 'allocator', 'note']"
+                        suppressFields="['id', 'funding_source']"
+                        defaultCellWidth='"auto"'
+                        fmClass="acqfa"
+                        query="{id: '*'}"
+                        showPaginator='true'>
+
+                        <thead>
+                            <tr>
+                                <th field='fund' get='getFund' formatter='formatFund'/>
+                            </tr>
+                        </thead>
+                    </table>
+                </div> 
+            </div> 
+        </div>
+
     </div>
 </div>
 

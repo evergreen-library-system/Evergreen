@@ -4918,7 +4918,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="acqfscred" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::funding_source_credit" oils_persist:tablename="acq.funding_source_credit" reporter:label="Credit to Funding Source">
+	<class id="acqfscred" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source_credit" oils_persist:tablename="acq.funding_source_credit" reporter:label="Credit to Funding Source">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_credit_id_seq">
 			<field reporter:label="Credit ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Funding Source ID" name="funding_source" reporter:datatype="link" />
@@ -4930,6 +4930,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_FUNDING_SOURCE">
+                    <context link="funding_source" field="owner"/>
+                </create>
+				<retrieve permission="ADMIN_FUNDING_SOURCE">
+                    <context link="funding_source" field="owner"/>
+                </retrieve>
+				<update permission="ADMIN_FUNDING_SOURCE">
+                    <context link="funding_source" field="owner"/>
+                </update>
+				<delete permission="ADMIN_FUNDING_SOURCE">
+                    <context link="funding_source" field="owner"/>
+                </delete>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="acqofscred" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::ordered_funding_source_credit" oils_persist:tablename="acq.ordered_funding_source_credit" reporter:label="Ordered Funding Source Credit">
