@@ -82,7 +82,7 @@ sub build_tree_js {
             classlabel  => val($o->field_class->label)
         );
 
-        $pile .= $id.':{'.join(',' map { "$_:$hash{$_}" } keys %hash).'",';
+        $pile .= $hash{id}.':{'.join(',', map { "$_:$hash{$_}" } keys %hash).'",';
     }
 
     $pile =~ s/,$//; # remove trailing comma
