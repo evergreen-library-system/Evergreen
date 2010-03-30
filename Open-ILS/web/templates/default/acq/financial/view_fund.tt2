@@ -1,13 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
-<script>
-    var fundID = [% ctx.page_args.0 %]
-    function getFundingSource(rowIndex, item) {
-        if(!item) return ''; 
-        var fs_id = this.grid.store.getValue(item, 'funding_source');
-        var fs = openils.acq.FundingSource.retrieve(fs_id);
-        return '<a href="[% ctx.base_path %]/acq/funding_source/view/'+fs.id()+'">'+fs.name()+'</a>';
-    }
-</script>
+<script> var fundID = [% ctx.page_args.0 %] </script>
 
 <!-- load the page-specific JS -->
 <script src="[% ctx.media_prefix %]/js/ui/default/acq/common/tag_manager.js"> </script>
@@ -44,8 +36,7 @@
                 <tr>
                     <td><label for="amount">Amount: </label></td>
                     <td>
-                        <!-- XXX get currency from funding source ... -->
-                        <input dojoType="dijit.form.CurrencyTextBox" name="amount" currency='USD'> </input>
+                        <input dojoType="dijit.form.CurrencyTextBox" name="amount"> </input>
                     </td>
                 </tr>
 
@@ -205,6 +196,12 @@
                         fmClass="acqfa"
                         query="{id: '*'}"
                         showPaginator='true'>
+
+                        <thead>
+                            <tr>
+                                <th field='funding_source' get='getFundingSource' formatter='formatFundingSource'/>
+                            </tr>
+                        </thead>
                     </table>
                 </div> 
             </div> 

@@ -37,6 +37,20 @@ function getOrgInfo(rowIndex, item) {
 
 }
 
+
+function getFundingSource(rowIndex, item) {
+    if(item) {
+        var fsId = this.grid.store.getValue(item, 'funding_source');
+        return openils.acq.FundingSource.retrieve(fsId);
+    }
+}
+
+function formatFundingSource(fs) {
+    if(fs) {
+        return '<a href="' + oilsBasePath + '/acq/funding_source/view/'+fs.id()+'">'+fs.code()+'</a>';
+    }
+}
+
 function getXferDest(rowIndex, item) {
     if(!item) return '';
     var xfer_destination = this.grid.store.getValue(item, 'xfer_destination');
