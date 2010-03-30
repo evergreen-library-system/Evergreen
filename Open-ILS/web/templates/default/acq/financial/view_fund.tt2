@@ -2,10 +2,10 @@
 <script>
     var fundID = [% ctx.page_args.0 %]
     function getFundingSource(rowIndex, item) {
-    if(!item) return ''; 
-    var fs_id = this.grid.store.getValue(item, 'funding_source');
-    var fs = openils.acq.FundingSource.retrieve(fs_id);
-    return '<a href="[% ctx.base_path %]/acq/funding_source/view/'+fs.id()+'">'+fs.name()+'</a>';
+        if(!item) return ''; 
+        var fs_id = this.grid.store.getValue(item, 'funding_source');
+        var fs = openils.acq.FundingSource.retrieve(fs_id);
+        return '<a href="[% ctx.base_path %]/acq/funding_source/view/'+fs.id()+'">'+fs.name()+'</a>';
     }
 </script>
 
@@ -24,11 +24,12 @@
         <div dojoType="dijit.TooltipDialog" execute="createAllocation(arguments[0]);">
             <script type='dojo/connect' event='onOpen'>
                 openils.acq.FundingSource.createStore(
-                function(store) {
-                    fundingSourceSelector.store = 
-                    new dojo.data.ItemFileReadStore({data:store});
-                    fundingSourceSelector.setValue(store.items[0].code);
-                    }, 'MANAGE_FUNDING_SOURCE'
+                    function(store) {
+                        fundingSourceSelector.store = 
+                            new dojo.data.ItemFileReadStore({data:store});
+                            fundingSourceSelector.setValue(store.items[0].code);
+                    }, 
+                    'MANAGE_FUNDING_SOURCE'
                 );
             </script>
             <table class='dijitTooltipTable'>
@@ -47,6 +48,8 @@
                         <input dojoType="dijit.form.CurrencyTextBox" name="amount" currency='USD'> </input>
                     </td>
                 </tr>
+
+                <!-- Percent-based allocations are not supported.  Will implement or remove later.
                 <tr>
                     <td><label for="amount">Percent: </label></td>
                     <td>
@@ -58,6 +61,8 @@
                         </input>
                     </td>
                 </tr>
+                -->
+
                 <tr>
                     <td><label for="note">Note: </label></td>
                     <td>
@@ -155,6 +160,8 @@
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">
+
+        <!-- Fund Summary -->
         <div dojoType="dijit.layout.ContentPane" 
              class='oils-acq-detail-content-pane' title="Summary" selected='true'>
             
@@ -164,7 +171,7 @@
                         <thead> 
                             <tr> 
                                 <th field="id">ID</th> 
-                                <th field="name" width='auto'>Name</th> 
+                                <th field="name">Name</th> 
                                 <th field="code">Code</th> 
                                 <th field="currency_type">Currency Type</th> 
                                 <th field="org" get='getOrgInfo'>Owner</th> 
@@ -177,59 +184,54 @@
                             </tr> 
                         </thead> 
                     </table>     
-               
-            <!--
-            {name: 'Balance (Total - (Spent + Encumbrances))")}', get:getSummaryInfo},
-            {name: 'Amount Allocated to this Fund")}', get:getSummaryInfo},
-            {name: 'Spent Balance (Total - Spent)")}', get:getSummaryInfo},
-            {name: 'Total Debits (Spent + Encumbered)")}', get:getSummaryInfo},
-            -->
-
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+
+        <!-- Fund Allocations -->
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Allocations">
             <script type='dojo/connect' event='onShow'>loadAllocationGrid();</script>
             
             <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
-                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
-                    <table jsId="fundAllocationGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
-                        <thead> 
-                            <tr> 
-                                <th field="id">ID</th> 
-                                <th field="funding_source" get='getFundingSource'>Funding Source</th> 
-                                <th field="amount">Amount</th> 
-                                <th field="percent">Percent</th> 
-                                <th field="allocator">Allocated By</th> 
-                                <th field="note" width='auto'>Note</th> 
-                            </tr> 
-                        </thead> 
-                    </table>     
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client"> 
+
+                    <table 
+                        jsId="fundAllocationGrid" 
+                        autoHeight='true'
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['funding_source', 'amount', 'create_time', 'allocator', 'note']"
+                        suppressFields="['id', 'fund']"
+                        defaultCellWidth='"auto"'
+                        fmClass="acqfa"
+                        query="{id: '*'}"
+                        showPaginator='true'>
+                    </table>
                 </div> 
             </div> 
-
         </div>
+
+        <!--- Fund Debits -->
         <div dojoType="dijit.layout.ContentPane" class='oils-acq-detail-content-pane' title="Debits">
             <script type='dojo/connect' event='onShow'>loadDebitGrid();</script>
             
-            <div dojoType="dijit.layout.ContentPane" layoutAlign="top"> 
-                <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:600px;'> 
-                    <table jsId="fundDebitGrid" dojoType="dojox.grid.DataGrid" query="{id: '*'}" rowSelector='20px'> 
-                        <thead> 
-                            <tr> 
-                                <th field="id">ID</th> 
-                                <th field="origin_amount">Origin Amount</th> 
-                                <th field="origin_currency_type">Origin Currency Type</th> 
-                                <th field="amount">Amount</th> 
-                                <th field="encumbrance">Encumbrance</th> 
-                                <th field="debit_type">Debit Type</th>
-                                <th field="xfer_destination" get='getXferDestination'>Transfer Destination</th> 
-                            </tr> 
-                        </thead> 
-                    </table>     
+            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" style='height:600px;'> 
+                <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+
+                    <table 
+                        jsId="fundDebitGrid" 
+                        autoHeight='true'
+                        dojoType="openils.widget.AutoGrid"
+                        fieldOrder="['amount', 'encumbrance', 'debit_type', 'origin_amount', 'origin_currency_type']"
+                        suppressFields="['id', 'fund']"
+                        defaultCellWidth='"auto"'
+                        fmClass="acqfdeb"
+                        query="{id: '*'}"
+                        showPaginator='true'>
+                    </table>
                 </div> 
             </div> 
         </div>
+
         <div dojoType="dijit.layout.ContentPane" class="oils-acq-detail-content-pane" title="Tags">
             <script type="dojo/connect" event="onShow">
                 tagManager.displayFund(fund);

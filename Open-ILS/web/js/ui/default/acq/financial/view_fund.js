@@ -13,6 +13,7 @@ dojo.require('openils.Event');
 dojo.require('openils.User');
 dojo.require('openils.Util');
 dojo.require("openils.widget.AutoFieldWidget");
+dojo.require("openils.widget.AutoGrid");
 
 var fund = null;
 var tagManager;
@@ -25,7 +26,6 @@ function getSummaryInfo(rowIndex, item) {
 
 function createAllocation(fields) {
     fields.fund = fundID;
-    if(isNaN(fields.percent)) fields.percent = null;
     if(isNaN(fields.amount)) fields.amount = null;
     openils.acq.Fund.createAllocation(fields, 
         function(r){location.href = location.href;});
@@ -52,17 +52,13 @@ function loadFundGrid() {
 
 function loadAllocationGrid() {
     if(fundAllocationGrid.isLoaded) return;
-    var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fund.allocations())});
-    fundAllocationGrid.setStore(store);
-    fundAllocationGrid.render();
+    fundAllocationGrid.loadAll({order_by : {acqfa :  'create_time DESC'}});
     fundAllocationGrid.isLoaded = true;
 }
 
 function loadDebitGrid() {
     if(fundDebitGrid.isLoaded) return;
-    var store = new dojo.data.ItemFileReadStore({data:acqfa.toStoreData(fund.debits())});
-    fundDebitGrid.setStore(store);
-    fundDebitGrid.render();
+    fundDebitGrid.loadAll({order_by : {acqfdeb :  'create_time DESC'}});
     fundDebitGrid.isLoaded = true;
 }
 
@@ -72,8 +68,7 @@ function fetchFund() {
         {   async: true,
             params: [
                 openils.User.authtoken, fundID, 
-                {flesh_summary:1, flesh_allocations:1, flesh_debits:1, flesh_tags:1} 
-                /* TODO grab allocations and debits only on as-needed basis */
+                {flesh_summary:1, flesh_tags:1} 
             ],
             oncomplete: function(r) {
                 fund = r.recv().content();

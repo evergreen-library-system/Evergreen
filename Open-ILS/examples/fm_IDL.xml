@@ -4955,7 +4955,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Origin Amount" name="origin_amount" reporter:datatype="money" />
 			<field reporter:label="Origin Currency" name="origin_currency_type" reporter:datatype="link" />
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
-			<field reporter:label="Encumbrance" name="encumbrance" reporter:datatype="text" />
+			<field reporter:label="Encumbrance" name="encumbrance" reporter:datatype="bool" />
 			<field reporter:label="Debit Type" name="debit_type" reporter:datatype="text" />
 			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp" />
 		</fields>
