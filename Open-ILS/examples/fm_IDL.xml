@@ -4948,7 +4948,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="acqfdeb" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_debit" oils_persist:tablename="acq.fund_debit" reporter:label="Debit From Fund">
+	<class id="acqfdeb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_debit" oils_persist:tablename="acq.fund_debit" reporter:label="Debit From Fund">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_debit_id_seq">
 			<field reporter:label="Debit ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
@@ -4963,6 +4963,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="origin_currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_FUND">
+                    <context link="fund" field="org"/>
+                </create>
+				<retrieve permission="ADMIN_ACQ_FUND">
+                    <context link="fund" field="org"/>
+                </retrieve>
+				<update permission="ADMIN_ACQ_FUND">
+                    <context link="fund" field="org"/>
+                </update>
+				<delete permission="ADMIN_ACQ_FUND">
+                    <context link="fund" field="org"/>
+                </delete>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="acqf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund" oils_persist:tablename="acq.fund" reporter:label="Fund">
@@ -5140,7 +5156,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
-	<class id="acqfa" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_allocation" oils_persist:tablename="acq.fund_allocation" reporter:label="Fund Allocation">
+	<class id="acqfa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_allocation" oils_persist:tablename="acq.fund_allocation" reporter:label="Fund Allocation">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_allocation_id_seq">
 			<field reporter:label="Allocation ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Fund" name="fund" reporter:datatype="link" />
@@ -5155,6 +5171,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="funding_source" reltype="has_a" key="id" map="" class="acqfs"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_FUND">
+                    <context link="fund" field="org"/>
+                </create>
+				<retrieve permission="ADMIN_ACQ_FUND">
+                    <context link="fund" field="org"/>
+                </retrieve>
+				<update permission="ADMIN_ACQ_FUND">
+                    <context link="fund" field="org"/>
+                </update>
+				<delete permission="ADMIN_ACQ_FUND">
+                    <context link="fund" field="org"/>
+                </delete>
+			</actions>
+		</permacrud>
 	</class>
 
     <class id="acqfap" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_allocation_percent" oils_persist:tablename="acq.fund_allocation_percent" reporter:label="Fund Allocation Percent">
