@@ -38,6 +38,7 @@ autojsbinscripts = @srcdir@/extras/fieldmapper.pl \
  	 @srcdir@/extras/locale_html_options.pl \
  	 @srcdir@/extras/org_tree_js.pl \
 	 @srcdir@/extras/org_lasso_js.pl \
+	 @srcdir@/extras/facet_types_js.pl \
 	 @srcdir@/extras/org_tree_html_options.pl \
 	 @srcdir@/extras/org_tree_proximity.pl \
 	 @srcdir@/extras/autogen.sh \

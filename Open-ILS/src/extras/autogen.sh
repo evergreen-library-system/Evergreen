@@ -113,6 +113,10 @@ echo "Updating Search Groups";
 perl org_lasso_js.pl "$CONFIG" > "$JSDIR/OrgLasso.js";
 cp "$JSDIR/OrgLasso.js" "$FMDOJODIR/"
 
+echo "Updating Facet Definitions";
+perl facet_types_js.pl "$CONFIG" "$JSDIR" "FacetDefs.js";
+cp "$JSDIR/en-US/FacetDefs.js" "$FMDOJODIR/"
+
 if [ ! -z "$PROXIMITY" ]
 then
 	echo "Refreshing proximity of org units";

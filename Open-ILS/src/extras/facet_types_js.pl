@@ -77,12 +77,12 @@ sub build_tree_js {
         my %hash = (
             id          => $o->id,
             name        => val($o->name),
-            label       => $o->val($o->label),
+            label       => val($o->label),
             classname   => val($o->field_class->name),
             classlabel  => val($o->field_class->label)
         );
 
-        $pile .= $hash{id}.':{'.join(',', map { "$_:$hash{$_}" } keys %hash).'",';
+        $pile .= $hash{id}.':{'.join(',', map { "$_:$hash{$_}" } keys %hash).'},';
     }
 
     $pile =~ s/,$//; # remove trailing comma
