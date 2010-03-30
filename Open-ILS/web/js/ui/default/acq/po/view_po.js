@@ -1,3 +1,4 @@
+dojo.require("dojo.string");
 dojo.require('dijit.layout.ContentPane');
 dojo.require('openils.User');
 dojo.require('openils.Util');
@@ -281,7 +282,8 @@ function renderPo() {
     dojo.byId("acq-po-view-notes").innerHTML = PO.notes().length;
 
     if(PO.state() == "pending") {
-        openils.Util.show("acq-po-activate");
+        openils.Util.show("acq-po-activate", "table-row");
+        checkCouldActivatePo();
         if (PO.lineitem_count() > 1)
             openils.Util.show("acq-po-split");
     }
@@ -327,11 +329,74 @@ params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh
     );
 }
 
+function checkCouldActivatePo() {
+    var d = dojo.byId("acq-po-activate-checking");
+    var a = dojo.byId("acq-po-activate-link");
+    d.innerHTML = localeStrings.PO_CHECKING;
+    var warnings = [];
+    var stops = [];
+
+    fieldmapper.standardRequest(
+        ["open-ils.acq", "open-ils.acq.purchase_order.activate.dry_run"], {
+            "params": [openils.User.authtoken, PO.id()],
+            "async": true,
+            "onresponse": function(r) {
+                if ((r = openils.Util.readResponse(r, true /* eventOk */))) {
+                    if (typeof(r.textcode) != "undefined") {
+                        switch(r.textcode) {
+                            case "ACQ_FUND_EXCEEDS_STOP_PERCENT":
+                                stops.push(r);
+                                break;
+                            case "ACQ_FUND_EXCEEDS_WARN_PERCENT":
+                                warnings.push(r);
+                                break;
+                        }
+                    }
+                }
+            },
+            "oncomplete": function() {
+                /* XXX in the future, this might be tweaked to display info
+                 * about more than one stop or warning event from the ML. */
+                if (!(warnings.length || stops.length)) {
+                    d.innerHTML = localeStrings.PO_COULD_ACTIVATE;
+                    openils.Util.show(a, "inline");
+                } else {
+                    if (stops.length) {
+                        d.innerHTML =
+                            dojo.string.substitute(
+                                localeStrings.PO_STOP_BLOCKS_ACTIVATION, [
+                                    stops[0].payload.fund.code(),
+                                    stops[0].payload.fund.year()
+                                ]
+                            );
+                        openils.Util.hide(a);
+                    } else {
+                        PO._warning_hack = true;
+                        d.innerHTML =
+                            dojo.string.substitute(
+                                localeStrings.PO_WARNING_NO_BLOCK_ACTIVATION, [
+                                    warnings[0].payload.fund.code(),
+                                    warnings[0].payload.fund.year()
+                                ]
+                            );
+                        openils.Util.show(a, "inline");
+                    }
+                }
+            }
+        }
+    );
+}
+
 function activatePo() {
-    if (
-        openils.Util.isTrue(PO.prepayment_required()) &&
-        !confirm(localeStrings.PREPAYMENT_REQUIRED_REMINDER)
-    ) return false;
+    if (openils.Util.isTrue(PO.prepayment_required())) {
+        if (!confirm(localeStrings.PREPAYMENT_REQUIRED_REMINDER))
+            return false;
+    }
+
+    if (PO._warning_hack) {
+        if (!confirm(localeStrings.PO_FUND_WARNING_CONFIRM))
+            return false;
+    }
 
     progressDialog.show(true);
     try {

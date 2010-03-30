@@ -606,7 +606,7 @@ sub set_lineitem_attr {
 # Lineitem Debits
 # ----------------------------------------------------------------------------
 sub create_lineitem_debits {
-    my($mgr, $li) = @_; 
+    my ($mgr, $li, $dry_run) = @_; 
 
     unless($li->estimated_unit_price) {
         $mgr->editor->event(OpenILS::Event->new('ACQ_LINEITEM_NO_PRICE', payload => $li->id));
@@ -634,7 +634,7 @@ sub create_lineitem_debits {
             }
         ]);
 
-        create_lineitem_detail_debit($mgr, $li, $lid) or return 0;
+        create_lineitem_detail_debit($mgr, $li, $lid, $dry_run) or return 0;
     }
 
     return 1;
@@ -644,7 +644,7 @@ sub create_lineitem_debits {
 # flesh li->provider
 # flesh lid->fund
 sub create_lineitem_detail_debit {
-    my($mgr, $li, $lid) = @_;
+    my ($mgr, $li, $lid, $dry_run) = @_;
 
     my $li_id = ref($li) ? $li->id : $li;
 
@@ -684,6 +684,7 @@ sub create_lineitem_detail_debit {
 
     my $debit = create_fund_debit(
         $mgr, 
+        $dry_run,
         fund => $lid->fund->id,
         origin_amount => $li->estimated_unit_price,
         origin_currency_type => $li->provider->currency_type,
@@ -697,33 +698,65 @@ sub create_lineitem_detail_debit {
 }
 
 
+sub fund_exceeds_balance_stop_percent {
+    return fund_exceeds_balance_percent(
+        @_, "balance_stop_percent", "ACQ_FUND_EXCEEDS_STOP_PERCENT"
+    );
+}
+
+sub fund_exceeds_balance_warning_percent {
+    return fund_exceeds_balance_percent(
+        @_, "balance_warning_percent", "ACQ_FUND_EXCEEDS_WARN_PERCENT"
+    );
+}
+
+sub fund_exceeds_balance_percent {
+    my ($fund, $debit_amount, $e, $method_name, $event_name) = @_;
+
+    if ($fund->$method_name) {
+        my $balance =
+            $e->search_acq_fund_combined_balance({"fund" => $fund->id})->[0];
+        my $allocations =
+            $e->search_acq_fund_allocation_total({"fund" => $fund->id})->[0];
+
+        $balance = ($balance) ? $balance->amount : 0;
+        $allocations = ($allocations) ? $allocations->amount : 0;
+
+        if ( 
+            $allocations == 0 || # if no allocations were ever made, assume we have hit the stop percent
+            ((($balance - $debit_amount) / $allocations) * 100) <
+                $fund->$method_name
+        ) {
+                $e->event(
+                    new OpenILS::Event(
+                        $event_name, 
+                        "payload" => {
+                            "fund" => $fund,
+                            "debit_amount" => $debit_amount
+                        }
+                    )
+                );
+                return 1;
+        }
+    }
+    return 0;
+}
+
 # ----------------------------------------------------------------------------
 # Fund Debit
 # ----------------------------------------------------------------------------
 sub create_fund_debit {
-    my($mgr, %args) = @_;
+    my($mgr, $dry_run, %args) = @_;
 
     # Verify the fund is not being spent beyond the hard stop amount
     my $fund = $mgr->editor->retrieve_acq_fund($args{fund}) or return 0;
 
-    if($fund->balance_stop_percent) {
-
-        my $balance = $mgr->editor->search_acq_fund_combined_balance({fund => $fund->id})->[0];
-        my $allocations = $mgr->editor->search_acq_fund_allocation_total({fund => $fund->id})->[0];
-        $balance = ($balance) ? $balance->amount : 0;
-        $allocations = ($allocations) ? $allocations->amount : 0;
-
-        if( 
-            $allocations == 0 || # if no allocations were ever made, assume we have hit the stop percent
-            ( ( ( ($balance - $args{amount}) / $allocations ) * 100 ) < $fund->balance_stop_percent)) 
-        {
-                $mgr->editor->event(OpenILS::Event->new(
-                    'FUND_EXCEEDS_STOP_PERCENT', 
-                    payload => {fund => $fund->id, debit_amount => $args{amount}}
-                ));
-                return 0;
-        }
-    }
+    return 0 if
+        fund_exceeds_balance_stop_percent($fund, $args{"amount"}, $mgr->editor);
+    return 0 if
+        $dry_run and fund_exceeds_balance_warning_percent(
+            $fund, $args{"amount"}, $mgr->editor
+        );
 
     my $debit = Fieldmapper::acq::fund_debit->new;
     $debit->debit_type('purchase');
@@ -1984,6 +2017,11 @@ sub delete_picklist_api {
 
 __PACKAGE__->register_method(
 	method => 'activate_purchase_order',
+	api_name	=> 'open-ils.acq.purchase_order.activate.dry_run'
+);
+
+__PACKAGE__->register_method(
+	method => 'activate_purchase_order',
 	api_name	=> 'open-ils.acq.purchase_order.activate',
 	signature => {
         desc => q/Activates a purchase order.  This updates the status of the PO
@@ -1999,19 +2037,25 @@ __PACKAGE__->register_method(
 
 sub activate_purchase_order {
     my($self, $conn, $auth, $po_id) = @_;
+
+    my $dry_run = ($self->api_name =~ /\.dry_run/) ? 1 : 0;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
-    my $die_event = activate_purchase_order_impl($mgr, $po_id);
+    my $die_event = activate_purchase_order_impl($mgr, $po_id, $dry_run);
     return $die_event if $die_event;
-    $e->commit;
+    if ($dry_run) {
+        $e->rollback;
+    } else {
+        $e->commit;
+    }
     $conn->respond_complete(1);
     $mgr->run_post_response_hooks;
     return undef;
 }
 
 sub activate_purchase_order_impl {
-    my($mgr, $po_id) = @_;
+    my ($mgr, $po_id, $dry_run) = @_;
     my $e = $mgr->editor;
 
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
@@ -2028,7 +2072,7 @@ sub activate_purchase_order_impl {
 
     while( my $li = $e->search_acq_lineitem($query)->[0] ) {
         $li->state('on-order');
-        create_lineitem_debits($mgr, $li) or return $e->die_event;
+        create_lineitem_debits($mgr, $li, $dry_run) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
         $mgr->post_process( sub { create_lineitem_status_events($mgr, $li->id, 'aur.ordered'); });
         $mgr->respond;

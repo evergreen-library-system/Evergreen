@@ -42,7 +42,13 @@
                             id="acq-po-view-notes"></a>
                     </td>
                 </tr>
-                <tr><td><a class='hidden' id='acq-po-activate' href='javascript:void(0);' onclick='activatePo()'>Activate Order</a></td></tr>
+                <tr id="acq-po-activate" class="hidden">
+                    <td>Activatable?</td>
+                    <td>
+                        <span id="acq-po-activate-checking"></span>
+                        <a class="hidden" id="acq-po-activate-link" href="javascript:void(0);" onclick="activatePo()">Activate Order</a>
+                    </td>
+                </tr>
                 <tr><td><a class="hidden" id="acq-po-split" href="javascript:void(0);" onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">Split Order by Lineitems</a></td></tr>
             </table>
         </div>

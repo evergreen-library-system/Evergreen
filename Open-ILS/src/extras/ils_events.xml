@@ -651,6 +651,12 @@
 	<event code='1861' textcode='ACQ_PURCHASE_ORDER_TOO_LATE'>
 		<desc xml:lang='en-US'>The requested acq.purchase_order cannot be split because it has gone beyond the "pending" state</desc>
 	</event>
+	<event code='1862' textcode='ACQ_FUND_EXCEEDS_STOP_PERCENT'>
+		<desc xml:lang='en-US'>The requested acq.purchase_order cannot be activated because it would over-encumber a fund.</desc>
+	</event>
+	<event code='1863' textcode='ACQ_FUND_EXCEEDS_WARN_PERCENT'>
+		<desc xml:lang='en-US'>Activating the requested acq.purchase_order would encumber it beyond its warning level.</desc>
+	</event>
 	<event code='1870' textcode='ACQ_LINEITEM_DETAIL_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.lineitem_detail was not found</desc>
 	</event>
