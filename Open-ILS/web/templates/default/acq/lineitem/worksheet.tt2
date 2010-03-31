@@ -5,4 +5,7 @@
 <h1>Lineitem Worksheet</h1>
 <br/>
 <div id="acq-worksheet-contents"></div>
+<div class='hidden'>
+    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='Loading Worksheet...'/>
+</div>
 [% END %]
