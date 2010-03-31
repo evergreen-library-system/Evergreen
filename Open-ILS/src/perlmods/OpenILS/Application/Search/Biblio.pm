@@ -74,7 +74,7 @@ sub _records_to_mods {
 	while( my $resp = $request->recv ) {
 		my $content = $resp->content;
 		next if $content->id == OILS_PRECAT_RECORD;
-		my $u = OpenILS::Utils::ModsParser->new();
+		my $u = OpenILS::Utils::ModsParser->new();  # FIXME: we really need a new parser for each object?
 		$u->start_mods_batch( $content->marc );
 		my $mods = $u->finish_mods_batch();
 		$mods->doc_id($content->id());
@@ -87,35 +87,51 @@ sub _records_to_mods {
 }
 
 __PACKAGE__->register_method(
-	method	=> "record_id_to_mods",
-	api_name	=> "open-ils.search.biblio.record.mods.retrieve",
-	argc		=> 1, 
-	note		=> "Provide ID, we provide the mods"
+    method    => "record_id_to_mods",
+    api_name  => "open-ils.search.biblio.record.mods.retrieve",
+    argc      => 1,
+    signature => {
+        desc   => "Provide ID, we provide the MODS object with copy count.  " 
+                . "Note: this method does NOT take an array of IDs like mods_slim.retrieve",    # FIXME: do it here too
+        params => [
+            { desc => 'Record ID', type => 'number' }
+        ],
+        return => {
+            desc => 'MODS object', type => 'object'
+        }
+    }
 );
 
 # converts a record into a mods object with copy counts attached
 sub record_id_to_mods {
 
-	my( $self, $client, $org_id, $id ) = @_;
+    my( $self, $client, $org_id, $id ) = @_;
 
-	my $mods_list = _records_to_mods( $id );
-	my $mods_obj = $mods_list->[0];
-	my $cmethod = $self->method_lookup(
-			"open-ils.search.biblio.record.copy_count");
-	my ($count) = $cmethod->run($org_id, $id);
-	$mods_obj->copy_count($count);
+    my $mods_list = _records_to_mods( $id );
+    my $mods_obj  = $mods_list->[0];
+    my $cmethod   = $self->method_lookup("open-ils.search.biblio.record.copy_count");
+    my ($count)   = $cmethod->run($org_id, $id);
+    $mods_obj->copy_count($count);
 
-	return $mods_obj;
+    return $mods_obj;
 }
 
 
 
 __PACKAGE__->register_method(
-	method	=> "record_id_to_mods_slim",
+    method        => "record_id_to_mods_slim",
+    api_name      => "open-ils.search.biblio.record.mods_slim.retrieve",
+    argc          => 1,
     authoritative => 1,
-	api_name	=> "open-ils.search.biblio.record.mods_slim.retrieve",
-	argc		=> 1, 
-	note		=> "Provide ID, we provide the mods"
+    signature     => {
+        desc   => "Provide ID(s), we provide the MODS",
+        params => [
+            { desc => 'Record ID or array of IDs' }
+        ],
+        return => {
+            desc => 'MODS object(s), event on error'
+        }
+    }
 );
 
 # converts a record into a mods object with NO copy counts attached
@@ -127,7 +143,7 @@ sub record_id_to_mods_slim {
 		return _records_to_mods( @$id );
 	}
 	my $mods_list = _records_to_mods( $id );
-	my $mods_obj = $mods_list->[0];
+	my $mods_obj  = $mods_list->[0];
 	return OpenILS::Event->new('BIBLIO_RECORD_ENTRY_NOT_FOUND') unless $mods_obj;
 	return $mods_obj;
 }
@@ -135,9 +151,9 @@ sub record_id_to_mods_slim {
 
 
 __PACKAGE__->register_method(
-	method	=> "record_id_to_mods_slim_batch",
-	api_name	=> "open-ils.search.biblio.record.mods_slim.batch.retrieve",
-    stream => 1
+    method   => "record_id_to_mods_slim_batch",
+    api_name => "open-ils.search.biblio.record.mods_slim.batch.retrieve",
+    stream   => 1
 );
 sub record_id_to_mods_slim_batch {
 	my($self, $conn, $id_list) = @_;
@@ -148,24 +164,24 @@ sub record_id_to_mods_slim_batch {
 
 # Returns the number of copies attached to a record based on org location
 __PACKAGE__->register_method(
-	method	=> "record_id_to_copy_count",
-	api_name	=> "open-ils.search.biblio.record.copy_count",
+    method   => "record_id_to_copy_count",
+    api_name => "open-ils.search.biblio.record.copy_count",
 );
 
 __PACKAGE__->register_method(
-	method	=> "record_id_to_copy_count",
+    method        => "record_id_to_copy_count",
+    api_name      => "open-ils.search.biblio.record.copy_count.staff",
     authoritative => 1,
-	api_name	=> "open-ils.search.biblio.record.copy_count.staff",
 );
 
 __PACKAGE__->register_method(
-	method	=> "record_id_to_copy_count",
-	api_name	=> "open-ils.search.biblio.metarecord.copy_count",
+    method   => "record_id_to_copy_count",
+    api_name => "open-ils.search.biblio.metarecord.copy_count",
 );
 
 __PACKAGE__->register_method(
-	method	=> "record_id_to_copy_count",
-	api_name	=> "open-ils.search.biblio.metarecord.copy_count.staff",
+    method   => "record_id_to_copy_count",
+    api_name => "open-ils.search.biblio.metarecord.copy_count.staff",
 );
 sub record_id_to_copy_count {
 	my( $self, $client, $org_id, $record_id, $format ) = @_;
@@ -190,35 +206,34 @@ sub record_id_to_copy_count {
 }
 
 
-
-
 __PACKAGE__->register_method(
-	method	=> "biblio_search_tcn",
-	api_name	=> "open-ils.search.biblio.tcn",
-	argc		=> 3, 
-	note		=> "Retrieve a record by TCN",
+    method   => "biblio_search_tcn",
+    api_name => "open-ils.search.biblio.tcn",
+    argc     => 3,
+    note     => "Retrieve a record by TCN",
 );
 
 sub biblio_search_tcn {
 
-	my( $self, $client, $tcn, $include_deleted ) = @_;
+    my( $self, $client, $tcn, $include_deleted ) = @_;
 
     $tcn =~ s/^\s+|\s+$//og;
 
-	my $e = new_editor();
-   my $search = {tcn_value => $tcn};
-   $search->{deleted} = 'f' unless $include_deleted;
-	my $recs = $e->search_biblio_record_entry( $search, {idlist =>1} );
+    my $e = new_editor();
+    my $search = {tcn_value => $tcn};
+    $search->{deleted} = 'f' unless $include_deleted;
+    my $recs = $e->search_biblio_record_entry( $search, {idlist =>1} );
 	
-	return { count => scalar(@$recs), ids => $recs };
+    return { count => scalar(@$recs), ids => $recs };
 }
 
 
 # --------------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method	=> "biblio_barcode_to_copy",
-	api_name	=> "open-ils.search.asset.copy.find_by_barcode",);
+    method   => "biblio_barcode_to_copy",
+    api_name => "open-ils.search.asset.copy.find_by_barcode",
+);
 sub biblio_barcode_to_copy { 
 	my( $self, $client, $barcode ) = @_;
 	my( $copy, $evt ) = $U->fetch_copy_by_barcode($barcode);
@@ -227,8 +242,9 @@ sub biblio_barcode_to_copy {
 }
 
 __PACKAGE__->register_method(
-	method	=> "biblio_id_to_copy",
-	api_name	=> "open-ils.search.asset.copy.batch.retrieve",);
+    method   => "biblio_id_to_copy",
+    api_name => "open-ils.search.asset.copy.batch.retrieve",
+);
 sub biblio_id_to_copy { 
 	my( $self, $client, $ids ) = @_;
 	$logger->info("Fetching copies @$ids");
@@ -304,8 +320,9 @@ sub biblio_id_to_uris {
 
 
 __PACKAGE__->register_method(
-	method	=> "copy_retrieve", 
-	api_name	=> "open-ils.search.asset.copy.retrieve",);
+    method   => "copy_retrieve",
+    api_name => "open-ils.search.asset.copy.retrieve",
+);
 sub copy_retrieve {
 	my( $self, $client, $cid ) = @_;
 	my( $copy, $evt ) = $U->fetch_copy($cid);
@@ -314,8 +331,9 @@ sub copy_retrieve {
 }
 
 __PACKAGE__->register_method(
-	method	=> "volume_retrieve", 
-	api_name	=> "open-ils.search.asset.call_number.retrieve");
+    method   => "volume_retrieve",
+    api_name => "open-ils.search.asset.call_number.retrieve"
+);
 sub volume_retrieve {
 	my( $self, $client, $vid ) = @_;
 	my $e = new_editor();
@@ -324,9 +342,10 @@ sub volume_retrieve {
 }
 
 __PACKAGE__->register_method(
-	method	=> "fleshed_copy_retrieve_batch",
+    method        => "fleshed_copy_retrieve_batch",
+    api_name      => "open-ils.search.asset.copy.fleshed.batch.retrieve",
     authoritative => 1,
-	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve");
+);
 
 sub fleshed_copy_retrieve_batch { 
 	my( $self, $client, $ids ) = @_;
@@ -341,8 +360,9 @@ sub fleshed_copy_retrieve_batch {
 
 
 __PACKAGE__->register_method(
-	method	=> "fleshed_copy_retrieve",
-	api_name	=> "open-ils.search.asset.copy.fleshed.retrieve",);
+    method   => "fleshed_copy_retrieve",
+    api_name => "open-ils.search.asset.copy.fleshed.retrieve",
+);
 
 sub fleshed_copy_retrieve { 
 	my( $self, $client, $id ) = @_;
@@ -352,10 +372,9 @@ sub fleshed_copy_retrieve {
 }
 
 
-
 __PACKAGE__->register_method(
-	method => 'fleshed_by_barcode',
-	api_name	=> "open-ils.search.asset.copy.fleshed2.find_by_barcode",
+    method        => 'fleshed_by_barcode',
+    api_name      => "open-ils.search.asset.copy.fleshed2.find_by_barcode",
     authoritative => 1,
 );
 sub fleshed_by_barcode {
@@ -369,8 +388,8 @@ sub fleshed_by_barcode {
 
 
 __PACKAGE__->register_method(
-	method	=> "fleshed_copy_retrieve2",
-	api_name	=> "open-ils.search.asset.copy.fleshed2.retrieve",
+    method        => "fleshed_copy_retrieve2",
+    api_name      => "open-ils.search.asset.copy.fleshed2.retrieve",
     authoritative => 1,
 );
 
@@ -380,13 +399,15 @@ sub fleshed_copy_retrieve2 {
 	my $copy = $e->retrieve_asset_copy(
 		[
 			$id,
-			{ 
-				flesh				=> 2,
-				flesh_fields	=> { 
-					acp => [ qw/ location status stat_cat_entry_copy_maps notes age_protect / ],
-					ascecm => [ qw/ stat_cat stat_cat_entry / ],
-				}
-			}
+            {
+                flesh        => 2,
+                flesh_fields => {
+                    acp => [
+                        qw/ location status stat_cat_entry_copy_maps notes age_protect /
+                    ],
+                    ascecm => [qw/ stat_cat stat_cat_entry /],
+                }
+            }
 		]
 	) or return $e->event;
 
@@ -412,8 +433,8 @@ sub fleshed_copy_retrieve2 {
 
 
 __PACKAGE__->register_method(
-	method => 'flesh_copy_custom',
-	api_name => 'open-ils.search.asset.copy.fleshed.custom',
+    method        => 'flesh_copy_custom',
+    api_name      => 'open-ils.search.asset.copy.fleshed.custom',
     authoritative => 1,
 );
 
@@ -435,13 +456,9 @@ sub flesh_copy_custom {
 }
 
 
-
-
-
-
 __PACKAGE__->register_method(
-	method	=> "biblio_barcode_to_title",
-	api_name	=> "open-ils.search.biblio.find_by_barcode",
+    method   => "biblio_barcode_to_title",
+    api_name => "open-ils.search.biblio.find_by_barcode",
 );
 
 sub biblio_barcode_to_title {
@@ -456,9 +473,18 @@ sub biblio_barcode_to_title {
 }
 
 __PACKAGE__->register_method(
-    method => 'title_id_by_item_barcode',
-    api_name => 'open-ils.search.bib_id.by_barcode',
+    method        => 'title_id_by_item_barcode',
+    api_name      => 'open-ils.search.bib_id.by_barcode',
     authoritative => 1,
+    signature => { 
+        desc   => 'Retrieve copy object with fleshed record, given the barcode',
+        params => [
+            { desc => 'Item barcode', type => 'string' }
+        ],
+        return => {
+            desc => 'Asset copy object with fleshed record and callnumber, or event on error or null set'
+        }
+    }
 );
 
 sub title_id_by_item_barcode {
@@ -483,8 +509,8 @@ sub title_id_by_item_barcode {
 
 
 __PACKAGE__->register_method(
-	method	=> "biblio_copy_to_mods",
-	api_name	=> "open-ils.search.biblio.copy.mods.retrieve",
+    method   => "biblio_copy_to_mods",
+    api_name => "open-ils.search.biblio.copy.mods.retrieve",
 );
 
 # takes a copy object and returns it fleshed mods object
@@ -503,6 +529,14 @@ sub biblio_copy_to_mods {
 	return $mods;
 }
 
+
+=head1 NAME
+
+OpenILS::Application::Search::Biblio
+
+=head1 DESCRIPTION
+
+=head2 API METHODS
 
 =head3 open-ils.search.biblio.multiclass.query (arghash, query, docache)
 
@@ -530,12 +564,17 @@ For more, see B<config.metabib_field>.
 
 =cut
 
+foreach (qw/open-ils.search.biblio.multiclass.query
+            open-ils.search.biblio.multiclass.query.staff
+            open-ils.search.metabib.multiclass.query
+            open-ils.search.metabib.multiclass.query.staff/)
+{
 __PACKAGE__->register_method(
-    api_name  => 'open-ils.search.biblio.multiclass.query',
+    api_name  => $_,
     method    => 'multiclass_query',
     signature => {
-        desc   => 'Perform a search query',
-        param  => [
+        desc   => 'Perform a search query.  The .staff version of the call includes otherwise hidden hits.',
+        params => [
             {name => 'arghash', desc => 'Arg hash (see open-ils.search.biblio.multiclass)',         type => 'object'},
             {name => 'query',   desc => 'Raw human-readable query (see perldoc '. __PACKAGE__ .')', type => 'string'},
             {name => 'docache', desc => 'Flag for caching (see open-ils.search.biblio.multiclass)', type => 'object'},
@@ -546,21 +585,7 @@ __PACKAGE__->register_method(
         }
     }
 );
-__PACKAGE__->register_method(
-    api_name  => 'open-ils.search.biblio.multiclass.query.staff',
-    method    => 'multiclass_query',
-    signature => '@see open-ils.search.biblio.multiclass.query'
-);
-__PACKAGE__->register_method(
-    api_name  => 'open-ils.search.metabib.multiclass.query',
-    method    => 'multiclass_query',
-    signature => '@see open-ils.search.biblio.multiclass.query'
-);
-__PACKAGE__->register_method(
-    api_name  => 'open-ils.search.metabib.multiclass.query.staff',
-    method    => 'multiclass_query',
-    signature => '@see open-ils.search.biblio.multiclass.query'
-);
+}
 
 sub multiclass_query {
     my($self, $conn, $arghash, $query, $docache) = @_;
@@ -583,8 +608,8 @@ sub multiclass_query {
     $logger->debug("cleansed query string => $query");
     my $search = {};
 
-    my $simple_class_re = qr/((?:\w+(?:\|\w+)?):[^:]+?)$/;
-    my $class_list_re = qr/(?:keyword|title|author|subject|series)/;
+    my $simple_class_re  = qr/((?:\w+(?:\|\w+)?):[^:]+?)$/;
+    my $class_list_re    = qr/(?:keyword|title|author|subject|series)/;
     my $modifier_list_re = qr/(?:site|dir|sort|lang|available)/;
 
     my $tmp_value = '';
@@ -592,7 +617,7 @@ sub multiclass_query {
 
         my $qpart = $1;
         my $where = index($qpart,':');
-        my $type = substr($qpart, 0, $where++);
+        my $type  = substr($qpart, 0, $where++);
         my $value = substr($qpart, $where);
 
         if ($type !~ /^(?:$class_list_re|$modifier_list_re)/o) {
@@ -691,16 +716,18 @@ sub multiclass_query {
 }
 
 __PACKAGE__->register_method(
-	method		=> 'cat_search_z_style_wrapper',
-	api_name	=> 'open-ils.search.biblio.zstyle',
-	stream		=> 1,
-	signature	=> q/@see open-ils.search.biblio.multiclass/);
+    method    => 'cat_search_z_style_wrapper',
+    api_name  => 'open-ils.search.biblio.zstyle',
+    stream    => 1,
+    signature => q/@see open-ils.search.biblio.multiclass/
+);
 
 __PACKAGE__->register_method(
-	method		=> 'cat_search_z_style_wrapper',
-	api_name	=> 'open-ils.search.biblio.zstyle.staff',
-	stream		=> 1,
-	signature	=> q/@see open-ils.search.biblio.multiclass/);
+    method    => 'cat_search_z_style_wrapper',
+    api_name  => 'open-ils.search.biblio.zstyle.staff',
+    stream    => 1,
+    signature => q/@see open-ils.search.biblio.multiclass/
+);
 
 sub cat_search_z_style_wrapper {
 	my $self = shift;
@@ -718,8 +745,8 @@ sub cat_search_z_style_wrapper {
 	my $result = { service => 'native-evergreen-catalog', records => [] };
 	my $searchhash = { limit => $$args{limit}, offset => $$args{offset}, org_unit => $ou->id };
 
-	$$searchhash{searches}{title}{term} = $$args{search}{title} if $$args{search}{title};
-	$$searchhash{searches}{author}{term} = $$args{search}{author} if $$args{search}{author};
+	$$searchhash{searches}{title}{term}   = $$args{search}{title}   if $$args{search}{title};
+	$$searchhash{searches}{author}{term}  = $$args{search}{author}  if $$args{search}{author};
 	$$searchhash{searches}{subject}{term} = $$args{search}{subject} if $$args{search}{subject};
 	$$searchhash{searches}{keyword}{term} = $$args{search}{keyword} if $$args{search}{keyword};
 
@@ -763,26 +790,63 @@ sub cat_search_z_style_wrapper {
 __PACKAGE__->register_method(
     method    => 'the_quest_for_knowledge',
     api_name  => 'open-ils.search.biblio.multiclass',
-    signature => q/
-		Performs a multi class biblio or metabib search
-		@param searchhash A search object layed out like so:
-			searches : { "$class" : "$value", ...}
-			org_unit : The org id to focus the search at
-			depth		: The org depth
-			limit		: The search limit
-			offset	: The search offset
-			format	: The MARC format
-			sort		: What field to sort the results on [ author | title | pubdate ]
-			sort_dir	: What direction do we sort? [ asc | desc ]
-		@return An object of the form 
-			{ "count" : $count, "ids" : [ [ $id, $relevancy, $total ], ...] }
-	/
+    signature => {
+        desc => "Performs a multi class biblio or metabib search",
+        params => [
+            {
+                desc => "A search hash with keys: "
+                      . "searches, org_unit, depth, limit, offset, format, sort, sort_dir.  "
+                      . "See perldoc " . __PACKAGE__ . " for more detail",
+                type => 'object',
+            },
+            {
+                desc => "A flag to enable/disable searching and saving results in cache (default OFF)",
+                type => 'string',
+            }
+        ],
+        return => {
+            desc => 'An object of the form: '
+                  . '{ "count" : $count, "ids" : [ [ $id, $relevancy, $total ], ...] }',
+        }
+    }
 );
+
+=head3 open-ils.search.biblio.multiclass (search-hash, docache)
+
+The search-hash argument can have the following elements:
+
+    searches: { "$class" : "$value", ...}           [REQUIRED]
+    org_unit: The org id to focus the search at
+    depth   : The org depth     
+    limit   : The search limit      default: 10
+    offset  : The search offset     default:  0
+    format  : The MARC format
+    sort    : What field to sort the results on? [ author | title | pubdate ]
+    sort_dir: What direction do we sort? [ asc | desc ]
+
+The searches element is required, must have a hashref value, and the hashref must contain at least one 
+of the following classes as a key:
+
+    title
+    author
+    subject
+    series
+    keyword
+
+The value paired with a key is the associated search string.
+
+The docache argument enables/disables searching and saving results in cache (default OFF).
+
+The return object, if successful, will look like:
+
+    { "count" : $count, "ids" : [ [ $id, $relevancy, $total ], ...] }
+
+=cut
 
 __PACKAGE__->register_method(
     method    => 'the_quest_for_knowledge',
     api_name  => 'open-ils.search.biblio.multiclass.staff',
-    signature => q/@see open-ils.search.biblio.multiclass/
+    signature => q/The .staff search includes hidden bibs, hidden items and bibs with no items.  Otherwise, @see open-ils.search.biblio.multiclass/
 );
 __PACKAGE__->register_method(
     method    => 'the_quest_for_knowledge',
@@ -792,7 +856,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
     method    => 'the_quest_for_knowledge',
     api_name  => 'open-ils.search.metabib.multiclass.staff',
-    signature => q/@see open-ils.search.biblio.multiclass/
+    signature => q/The .staff search includes hidden bibs, hidden items and bibs with no items.  Otherwise, @see open-ils.search.biblio.multiclass/
 );
 
 sub the_quest_for_knowledge {
@@ -810,21 +874,19 @@ sub the_quest_for_knowledge {
 		$method =~ s/biblio/metabib/o;
 	}
 
-
-	my $offset	= $searchhash->{offset} || 0;
-	my $limit	= $searchhash->{limit} || 10;
-	my $end		= $offset + $limit - 1;
-
 	# do some simple sanity checking
 	if(!$searchhash->{searches} or
 		( !grep { /^(?:title|author|subject|series|keyword)/ } keys %{$searchhash->{searches}} ) ) {
 		return { count => 0 };
 	}
 
+    my $offset = $searchhash->{offset} ||  0;   # user value or default in local var now
+    my $limit  = $searchhash->{limit}  || 10;   # user value or default in local var now
+    my $end    = $offset + $limit - 1;
 
 	my $maxlimit = 5000;
-	$searchhash->{offset}	= 0;
-	$searchhash->{limit}		= $maxlimit;
+    $searchhash->{offset} = 0;                  # possible user value overwritten in hash
+    $searchhash->{limit}  = $maxlimit;          # possible user value overwritten in hash
 
 	return { count => 0 } if $offset > $maxlimit;
 
@@ -855,7 +917,7 @@ sub the_quest_for_knowledge {
         $trim = 1;
 
 	} else { 
-		$docache = 0; 
+		$docache = 0;   # results came FROM cache, so we don't write back
 	}
 
 	return {count => 0} unless ($result && $$result[0]);
@@ -887,20 +949,45 @@ sub the_quest_for_knowledge {
 
 
 __PACKAGE__->register_method(
-	method		=> 'staged_search',
-	api_name	=> 'open-ils.search.biblio.multiclass.staged');
+    method    => 'staged_search',
+    api_name  => 'open-ils.search.biblio.multiclass.staged',
+    signature => {
+        desc   => 'Staged search filters out unavailable items.  This means that it relies on an estimation strategy for determining ' .
+                  'how big a "raw" search result chunk (i.e. a "superpage") to obtain prior to filtering.  See "estimation_strategy" in your SRF config.',
+        params => [
+            {
+                desc => "A search hash with keys: "
+                      . "searches, limit, offset.  The others are optional, but the 'searches' key/value pair is required, with the value being a hashref.  "
+                      . "See perldoc " . __PACKAGE__ . " for more detail",
+                type => 'object',
+            },
+            {
+                desc => "A flag to enable/disable searching and saving results in cache, including facets (default OFF)",
+                type => 'string',
+            }
+        ],
+        return => {
+            desc => 'Hash with keys: count, core_limit, superpage_size, superpage_summary, facet_key, ids.  '
+                  . 'The superpage_summary value is a hashref that includes keys: estimated_hit_count, visible.',
+            type => 'object',
+        }
+    }
+);
 __PACKAGE__->register_method(
-	method		=> 'staged_search',
-	api_name	=> 'open-ils.search.biblio.multiclass.staged.staff',
-	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+    method    => 'staged_search',
+    api_name  => 'open-ils.search.biblio.multiclass.staged.staff',
+    signature => q/The .staff search includes hidden bibs, hidden items and bibs with no items.  Otherwise, @see open-ils.search.biblio.multiclass.staged/
+);
 __PACKAGE__->register_method(
-	method		=> 'staged_search',
-	api_name	=> 'open-ils.search.metabib.multiclass.staged',
-	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+    method    => 'staged_search',
+    api_name  => 'open-ils.search.metabib.multiclass.staged',
+    signature => q/@see open-ils.search.biblio.multiclass.staged/
+);
 __PACKAGE__->register_method(
-	method		=> 'staged_search',
-	api_name	=> 'open-ils.search.metabib.multiclass.staged.staff',
-	signature	=> q/@see open-ils.search.biblio.multiclass.staged/);
+    method    => 'staged_search',
+    api_name  => 'open-ils.search.metabib.multiclass.staged.staff',
+    signature => q/The .staff search includes hidden bibs, hidden items and bibs with no items.  Otherwise, @see open-ils.search.biblio.multiclass.staged/
+);
 
 sub staged_search {
 	my($self, $conn, $search_hash, $docache) = @_;
@@ -918,10 +1005,10 @@ sub staged_search {
         scalar( keys %{$search_hash->{searches}} ));
 
     my $search_duration;
-    my $user_offset = $search_hash->{offset} || 0; # user-specified offset
-    my $user_limit = $search_hash->{limit} || 10;
-    $user_offset = ($user_offset >= 0) ? $user_offset : 0;
-    $user_limit = ($user_limit >= 0) ? $user_limit : 10;
+    my $user_offset = $search_hash->{offset} ||  0; # user-specified offset
+    my $user_limit  = $search_hash->{limit}  || 10;
+    $user_offset = ($user_offset >= 0) ? $user_offset :  0;
+    $user_limit  = ($user_limit  >= 0) ? $user_limit  : 10;
 
 
     # we're grabbing results on a per-superpage basis, which means the 
@@ -932,7 +1019,7 @@ sub staged_search {
     # force a well-known check_limit
     $search_hash->{check_limit} = $superpage_size; 
     # restrict total tested to superpage size * number of superpages
-    $search_hash->{core_limit} = $superpage_size * $max_superpages;
+    $search_hash->{core_limit}  = $superpage_size * $max_superpages;
 
     # Set the configured estimation strategy, defaults to 'inclusion'.
 	my $estimation_strategy = OpenSRF::Utils::SettingsClient
@@ -1019,10 +1106,9 @@ sub staged_search {
             $summary->{estimated_hit_count}." : visible=".$summary->{visible}.", checked=".$summary->{checked});
 
 		if (defined($summary->{estimated_hit_count})) {
-			$global_summary->{checked} += $summary->{checked};
-			$global_summary->{visible} += $summary->{visible};
-			$global_summary->{excluded} += $summary->{excluded};
-			$global_summary->{deleted} += $summary->{deleted};
+            foreach (qw/ checked visible excluded deleted /) {
+                $global_summary->{$_} += $summary->{$_};
+            }
 			$global_summary->{total} = $summary->{total};
 		}
 
@@ -1061,14 +1147,16 @@ sub staged_search {
 		}
 	}
 
-    $conn->respond_complete({
-        count => $est_hit_count,
-        core_limit => $search_hash->{core_limit},
-        superpage_size => $search_hash->{check_limit},
-        superpage_summary => $current_page_summary,
-        facet_key => $facet_key,
-        ids => \@results
-    });
+    $conn->respond_complete(
+        {
+            count             => $est_hit_count,
+            core_limit        => $search_hash->{core_limit},
+            superpage_size    => $search_hash->{check_limit},
+            superpage_summary => $current_page_summary,
+            facet_key         => $facet_key,
+            ids               => \@results
+        }
+    );
 
     cache_facets($facet_key, $new_ids) if $docache;
     return undef;
@@ -1081,26 +1169,27 @@ sub search_cache_key {
 	my @sorted;
     for my $key (sort keys %$search_hash) {
 	    push(@sorted, ($key => $$search_hash{$key})) 
-            unless $key eq 'limit' or 
-                $key eq 'offset' or 
-                $key eq 'skip_check';
+            unless $key eq 'limit'  or 
+                   $key eq 'offset' or 
+                   $key eq 'skip_check';
     }
 	my $s = OpenSRF::Utils::JSON->perl2JSON(\@sorted);
 	return $pfx . md5_hex($method . $s);
 }
 
 sub retrieve_cached_facets {
-    my $self = shift;
+    my $self   = shift;
     my $client = shift;
-    my $key = shift;
+    my $key    = shift;
 
-    return undef unless ($key =~ /_facets$/);
+    return undef unless ($key and $key =~ /_facets$/);
 
     return $cache->get_cache($key) || {};
 }
+
 __PACKAGE__->register_method(
-	method	=> "retrieve_cached_facets",
-	api_name=> "open-ils.search.facet_cache.retrieve"
+    method   => "retrieve_cached_facets",
+    api_name => "open-ils.search.facet_cache.retrieve"
 );
 
 
@@ -1209,17 +1298,14 @@ sub put_cache {
 }
 
 
-
-
-
-
 __PACKAGE__->register_method(
-	method	=> "biblio_mrid_to_modsbatch_batch",
-	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.batch.retrieve");
+    method   => "biblio_mrid_to_modsbatch_batch",
+    api_name => "open-ils.search.biblio.metarecord.mods_slim.batch.retrieve"
+);
 
 sub biblio_mrid_to_modsbatch_batch {
 	my( $self, $client, $mrids) = @_;
-	warn "Performing mrid_to_modsbatch_batch...";
+	# warn "Performing mrid_to_modsbatch_batch..."; # unconditional warn
 	my @mods;
 	my $method = $self->method_lookup("open-ils.search.biblio.metarecord.mods_slim.retrieve");
 	for my $id (@$mrids) {
@@ -1231,40 +1317,44 @@ sub biblio_mrid_to_modsbatch_batch {
 }
 
 
-__PACKAGE__->register_method(
-	method	=> "biblio_mrid_to_modsbatch",
-	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve",
-	notes		=> <<"	NOTES");
-	Returns the mvr associated with a given metarecod. If none exists, 
-	it is created.
-	NOTES
-
-__PACKAGE__->register_method(
-	method	=> "biblio_mrid_to_modsbatch",
-	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.retrieve.staff",
-	notes		=> <<"	NOTES");
-	Returns the mvr associated with a given metarecod. If none exists, 
-	it is created.
-	NOTES
+foreach (qw /open-ils.search.biblio.metarecord.mods_slim.retrieve
+             open-ils.search.biblio.metarecord.mods_slim.retrieve.staff/)
+    {
+    __PACKAGE__->register_method(
+        method    => "biblio_mrid_to_modsbatch",
+        api_name  => $_,
+        signature => {
+            desc   => "Returns the mvr associated with a given metarecod. If none exists, it is created.  "
+                    . "As usual, the .staff version of this method will include otherwise hidden records.",
+            params => [
+                { desc => 'Metarecord ID', type => 'number' },
+                { desc => '(Optional) Search filters hash with possible keys: format, org, depth', type => 'object' }
+            ],
+            return => {
+                desc => 'MVR Object, event on error',
+            }
+        }
+    );
+}
 
 sub biblio_mrid_to_modsbatch {
 	my( $self, $client, $mrid, $args) = @_;
 
-	warn "Grabbing mvr for $mrid\n";
+	# warn "Grabbing mvr for $mrid\n";    # unconditional warn
 
 	my ($mr, $evt) = _grab_metarecord($mrid);
 	return $evt unless $mr;
 
-	my $mvr = biblio_mrid_check_mvr($self, $client, $mr);
-	$mvr = biblio_mrid_make_modsbatch( $self, $client, $mr ) unless $mvr;
+	my $mvr = biblio_mrid_check_mvr($self, $client, $mr) ||
+              biblio_mrid_make_modsbatch($self, $client, $mr);
 
 	return $mvr unless ref($args);	
 
 	# Here we find the lead record appropriate for the given filters 
 	# and use that for the title and author of the metarecord
-	my $format	= $$args{format};
-	my $org		= $$args{org};
-	my $depth	= $$args{depth};
+    my $format = $$args{format};
+    my $org    = $$args{org};
+    my $depth  = $$args{depth};
 
 	return $mvr unless $format or $org or $depth;
 
@@ -1275,8 +1365,8 @@ sub biblio_mrid_to_modsbatch {
 
 	if( my $mods = $U->record_to_mvr($rec) ) {
 
-		$mvr->title($mods->title);
-		$mvr->title($mods->author);
+        $mvr->title( $mods->title );
+        $mvr->author($mods->author);
 		$logger->debug("mods_slim updating title and ".
 			"author in mvr with ".$mods->title." : ".$mods->author);
 	}
@@ -1294,12 +1384,11 @@ sub _mr_to_mvr {
 # checks to see if a metarecord has mods, if so returns true;
 
 __PACKAGE__->register_method(
-	method	=> "biblio_mrid_check_mvr",
-	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.check",
-	notes		=> <<"	NOTES");
-	Takes a metarecord ID or a metarecord object and returns true
-	if the metarecord already has an mvr associated with it.
-	NOTES
+    method   => "biblio_mrid_check_mvr",
+    api_name => "open-ils.search.biblio.metarecord.mods_slim.check",
+    notes    => "Takes a metarecord ID or a metarecord object and returns true "
+              . "if the metarecord already has an mvr associated with it."
+);
 
 sub biblio_mrid_check_mvr {
 	my( $self, $client, $mrid ) = @_;
@@ -1310,7 +1399,7 @@ sub biblio_mrid_check_mvr {
 	else { ($mr, $evt) = _grab_metarecord($mrid); }
 	return $evt if $evt;
 
-	warn "Checking mvr for mr " . $mr->id . "\n";
+	# warn "Checking mvr for mr " . $mr->id . "\n";   # unconditional warn
 
 	return _mr_to_mvr($mr) if $mr->mods();
 	return undef;
@@ -1326,13 +1415,12 @@ sub _grab_metarecord {
 
 
 __PACKAGE__->register_method(
-	method	=> "biblio_mrid_make_modsbatch",
-	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.create",
-	notes		=> <<"	NOTES");
-	Takes either a metarecord ID or a metarecord object.
-	Forces the creations of an mvr for the given metarecord.
-	The created mvr is returned.
-	NOTES
+    method   => "biblio_mrid_make_modsbatch",
+    api_name => "open-ils.search.biblio.metarecord.mods_slim.create",
+    notes    => "Takes either a metarecord ID or a metarecord object. "
+              . "Forces the creations of an mvr for the given metarecord. "
+              . "The created mvr is returned."
+);
 
 sub biblio_mrid_make_modsbatch {
 	my( $self, $client, $mrid ) = @_;
@@ -1401,26 +1489,36 @@ sub biblio_mrid_make_modsbatch {
 }
 
 
-
-
 # converts a mr id into a list of record ids
 
-__PACKAGE__->register_method(
-	method	=> "biblio_mrid_to_record_ids",
-	api_name	=> "open-ils.search.biblio.metarecord_to_records",
-);
-
-__PACKAGE__->register_method(
-	method	=> "biblio_mrid_to_record_ids",
-	api_name	=> "open-ils.search.biblio.metarecord_to_records.staff",
-);
+foreach (qw/open-ils.search.biblio.metarecord_to_records
+            open-ils.search.biblio.metarecord_to_records.staff/)
+{
+    __PACKAGE__->register_method(
+        method    => "biblio_mrid_to_record_ids",
+        api_name  => $_,
+        signature => {
+            desc   => "Fetch record IDs corresponding to a meta-record ID, with optional search filters. "
+                    . "As usual, the .staff version of this method will include otherwise hidden records.",
+            params => [
+                { desc => 'Metarecord ID', type => 'number' },
+                { desc => '(Optional) Search filters hash with possible keys: format, org, depth', type => 'object' }
+            ],
+            return => {
+                desc => 'Results object like {count => $i, ids =>[...]}',
+                type => 'object'
+            }
+            
+        }
+    );
+}
 
 sub biblio_mrid_to_record_ids {
 	my( $self, $client, $mrid, $args ) = @_;
 
-	my $format	= $$args{format};
-	my $org		= $$args{org};
-	my $depth	= $$args{depth};
+    my $format = $$args{format};
+    my $org    = $$args{org};
+    my $depth  = $$args{depth};
 
 	my $method = "open-ils.storage.ordered.metabib.metarecord.records.atomic";
 	$method =~ s/atomic/staff\.atomic/o if $self->api_name =~ /staff/o; 
@@ -1431,15 +1529,18 @@ sub biblio_mrid_to_record_ids {
 
 
 __PACKAGE__->register_method(
-	method	=> "biblio_record_to_marc_html",
-	api_name	=> "open-ils.search.biblio.record.html" );
+    method   => "biblio_record_to_marc_html",
+    api_name => "open-ils.search.biblio.record.html"
+);
 
 __PACKAGE__->register_method(
-	method	=> "biblio_record_to_marc_html",
-	api_name	=> "open-ils.search.authority.to_html" );
+    method   => "biblio_record_to_marc_html",
+    api_name => "open-ils.search.authority.to_html"
+);
 
+# Persistent parsers and setting objects
 my $parser = XML::LibXML->new();
-my $xslt = XML::LibXSLT->new();
+my $xslt   = XML::LibXSLT->new();
 my $marc_sheet;
 my $slim_marc_sheet;
 my $settings_client = OpenSRF::Utils::SettingsClient->new();
@@ -1494,8 +1595,9 @@ sub biblio_record_to_marc_html {
 
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_all_copy_statuses",
-	api_name	=> "open-ils.search.config.copy_status.retrieve.all" );
+    method   => "retrieve_all_copy_statuses",
+    api_name => "open-ils.search.config.copy_status.retrieve.all"
+);
 
 sub retrieve_all_copy_statuses {
 	my( $self, $client ) = @_;
@@ -1504,12 +1606,14 @@ sub retrieve_all_copy_statuses {
 
 
 __PACKAGE__->register_method(
-	method	=> "copy_counts_per_org",
-	api_name	=> "open-ils.search.biblio.copy_counts.retrieve");
+    method   => "copy_counts_per_org",
+    api_name => "open-ils.search.biblio.copy_counts.retrieve"
+);
 
 __PACKAGE__->register_method(
-	method	=> "copy_counts_per_org",
-	api_name	=> "open-ils.search.biblio.copy_counts.retrieve.staff");
+    method   => "copy_counts_per_org",
+    api_name => "open-ils.search.biblio.copy_counts.retrieve.staff"
+);
 
 sub copy_counts_per_org {
 	my( $self, $client, $record_id ) = @_;
@@ -1528,19 +1632,18 @@ sub copy_counts_per_org {
 
 
 __PACKAGE__->register_method(
-	method		=> "copy_count_summary",
-	api_name	=> "open-ils.search.biblio.copy_counts.summary.retrieve",
-	notes 		=> <<"	NOTES");
-	returns an array of these:
-		[ org_id, callnumber_label, <status1_count>, <status2_count>,...]
-		where statusx is a copy status name.  the statuses are sorted
-		by id.
-	NOTES
+    method   => "copy_count_summary",
+    api_name => "open-ils.search.biblio.copy_counts.summary.retrieve",
+    notes    => "returns an array of these: "
+              . "[ org_id, callnumber_label, <status1_count>, <status2_count>,...] "
+              . "where statusx is a copy status name.  The statuses are sorted by ID.",
+);
+		
 
 sub copy_count_summary {
 	my( $self, $client, $rid, $org, $depth ) = @_;
-	$org ||= 1;
-	$depth ||= 0;
+    $org   ||= 1;
+    $depth ||= 0;
     my $data = $U->storagereq(
 		'open-ils.storage.biblio.record_entry.status_copy_count.atomic', $rid, $org, $depth );
 
@@ -1548,19 +1651,17 @@ sub copy_count_summary {
 }
 
 __PACKAGE__->register_method(
-	method		=> "copy_location_count_summary",
-	api_name	=> "open-ils.search.biblio.copy_location_counts.summary.retrieve",
-	notes 		=> <<"	NOTES");
-	returns an array of these:
-		[ org_id, callnumber_label, copy_location, <status1_count>, <status2_count>,...]
-		where statusx is a copy status name.  the statuses are sorted
-		by id.
-	NOTES
+    method   => "copy_location_count_summary",
+    api_name => "open-ils.search.biblio.copy_location_counts.summary.retrieve",
+    notes    => "returns an array of these: "
+              . "[ org_id, callnumber_label, copy_location, <status1_count>, <status2_count>,...] "
+              . "where statusx is a copy status name.  The statuses are sorted by ID.",
+);
 
 sub copy_location_count_summary {
-	my( $self, $client, $rid, $org, $depth ) = @_;
-	$org ||= 1;
-	$depth ||= 0;
+    my( $self, $client, $rid, $org, $depth ) = @_;
+    $org   ||= 1;
+    $depth ||= 0;
     my $data = $U->storagereq(
 		'open-ils.storage.biblio.record_entry.status_copy_location_count.atomic', $rid, $org, $depth );
 
@@ -1568,19 +1669,17 @@ sub copy_location_count_summary {
 }
 
 __PACKAGE__->register_method(
-	method		=> "copy_count_location_summary",
-	api_name	=> "open-ils.search.biblio.copy_counts.location.summary.retrieve",
-	notes 		=> <<"	NOTES");
-	returns an array of these:
-		[ org_id, callnumber_label, <status1_count>, <status2_count>,...]
-		where statusx is a copy status name.  the statuses are sorted
-		by id.
-	NOTES
+    method   => "copy_count_location_summary",
+    api_name => "open-ils.search.biblio.copy_counts.location.summary.retrieve",
+    notes    => "returns an array of these: "
+              . "[ org_id, callnumber_label, <status1_count>, <status2_count>,...] "
+              . "where statusx is a copy status name.  The statuses are sorted by ID."
+);
 
 sub copy_count_location_summary {
-	my( $self, $client, $rid, $org, $depth ) = @_;
-	$org ||= 1;
-	$depth ||= 0;
+    my( $self, $client, $rid, $org, $depth ) = @_;
+    $org   ||= 1;
+    $depth ||= 0;
     my $data = $U->storagereq(
         'open-ils.storage.biblio.record_entry.status_copy_location_count.atomic', $rid, $org, $depth );
     return [ sort { $a->[1] cmp $b->[1] } @$data ];
@@ -1588,19 +1687,89 @@ sub copy_count_location_summary {
 
 
 __PACKAGE__->register_method(
-	method		=> "marc_search",
-	api_name	=> "open-ils.search.biblio.marc.staff");
+    method   => "marc_search",
+    api_name => "open-ils.search.biblio.marc.staff",
+);
 
 __PACKAGE__->register_method(
-	method		=> "marc_search",
-	api_name	=> "open-ils.search.biblio.marc",
-	notes 		=> <<"	NOTES");
-		Example:
-		open-ils.storage.biblio.full_rec.multi_search.atomic 
-		{ "searches": [{"term":"harry","restrict": [{"tag":245,"subfield":"a"}]}], "org_unit": 1,
-        "limit":5,"sort":"author","item_type":"g"}
-	NOTES
+    method   => "marc_search",
+    api_name => "open-ils.search.biblio.marc",
+    signature => {
+        desc   => 'Fetch biblio IDs based on MARC record criteria',
+        params => [
+            {
+                desc => 'Search hash with possible elements: searches, limit, offset, sort, sort_dir.  (required).  ' .
+                        'See perldoc ' . __PACKAGE__ . ' for more detail.',
+                type => 'object'
+            },
+            {desc => 'limit (optional)',  type => 'number'},
+            {desc => 'offset (optional)', type => 'number'}
+        ],
+        return => {
+            desc => 'Results object like: { "count": $i, "ids": [...] }',
+            type => 'object'
+        }
+    }
+);
 
+=head3 open-ils.search.biblio.marc (arghash, limit, offset)
+
+As elsewhere the arghash is the required argument, and must be a hashref.  The keys are:
+
+    searches: complex query object  (required)
+    org_unit: The org ID to focus the search at
+    depth   : The org depth     
+    limit   : integer search limit      default: 10
+    offset  : integer search offset     default:  0
+    sort    : What field to sort the results on? [ author | title | pubdate ]
+    sort_dir: In what direction do we sort? [ asc | desc ]
+
+Additional keys to refine search criteria:
+
+    audience : Audience
+    language : Language (code)
+    lit_form : Literary form
+    item_form: Item form
+    item_type: Item type
+    format   : The MARC format
+
+Please note that the specific strings to be used in the "addtional keys" will be entirely
+dependent on your loaded data.  
+
+All keys except "searches" are optional.
+The "searches" value must be an arrayref of hashref elements, including keys "term" and "restrict".  
+
+For example, an arg hash might look like:
+
+    $arghash = {
+        searches => [
+            {
+                term     => "harry",
+                restrict => [
+                    {
+                        tag => 245,
+                        subfield => "a"
+                    }
+                    # ...
+                ]
+            }
+            # ...
+        ],
+        org_unit  => 1,
+        limit     => 5,
+        sort      => "author",
+        item_type => "g"
+    }
+
+The arghash is eventually passed to the SRF call:
+L<open-ils.storage.biblio.full_rec.multi_search[.staff].atomic>
+
+Presently, search uses the cache unconditionally.
+
+=cut
+
+# FIXME: that example above isn't actually tested.
+# TODO: docache option?
 sub marc_search {
 	my( $self, $conn, $args, $limit, $offset ) = @_;
 
@@ -1608,8 +1777,8 @@ sub marc_search {
 	$method .= ".staff" if $self->api_name =~ /staff/;
 	$method .= ".atomic";
 
-	$limit ||= 10;
-	$offset ||= 0;
+    $limit  ||= 10;     # FIXME: what about $args->{limit} ?
+    $offset ||=  0;     # FIXME: what about $args->{offset} ?
 
 	my @search;
 	push( @search, ($_ => $$args{$_}) ) for (sort keys %$args);
@@ -1636,22 +1805,30 @@ sub marc_search {
 
 
 __PACKAGE__->register_method(
-	method	=> "biblio_search_isbn",
-	api_name	=> "open-ils.search.biblio.isbn",
+    method    => "biblio_search_isbn",
+    api_name  => "open-ils.search.biblio.isbn",
+    signature => {
+        desc   => 'Retrieve biblio IDs for a given ISBN',
+        params => [
+            {desc => 'ISBN', type => 'string'}  # or number maybe?  How normalized is our storage data?
+        ],
+        return => {
+            desc => 'Results object like: { "count": $i, "ids": [...] }',
+            type => 'object'
+        }
+    }
 );
 
 sub biblio_search_isbn { 
 	my( $self, $client, $isbn ) = @_;
 	$logger->debug("Searching ISBN $isbn");
-	my $e = new_editor();
-	my $recs = $U->storagereq(
-		'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn );
+	my $recs = $U->storagereq('open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn);
 	return { ids => $recs, count => scalar(@$recs) };
 }
 
 __PACKAGE__->register_method(
-	method	=> "biblio_search_isbn_batch",
-	api_name	=> "open-ils.search.biblio.isbn_list",
+    method   => "biblio_search_isbn_batch",
+    api_name => "open-ils.search.biblio.isbn_list",
 );
 
 sub biblio_search_isbn_batch { 
@@ -1672,8 +1849,18 @@ sub biblio_search_isbn_batch {
 }
 
 __PACKAGE__->register_method(
-	method	=> "biblio_search_issn",
-	api_name	=> "open-ils.search.biblio.issn",
+    method   => "biblio_search_issn",
+    api_name => "open-ils.search.biblio.issn",
+    signature => {
+        desc   => 'Retrieve biblio IDs for a given ISSN',
+        params => [
+            {desc => 'ISBN', type => 'string'}
+        ],
+        return => {
+            desc => 'Results object like: { "count": $i, "ids": [...] }',
+            type => 'object'
+        }
+    }
 );
 
 sub biblio_search_issn { 
@@ -1687,11 +1874,9 @@ sub biblio_search_issn {
 }
 
 
-
-
 __PACKAGE__->register_method(
-	method	=> "fetch_mods_by_copy",
-	api_name	=> "open-ils.search.biblio.mods_from_copy",
+    method   => "fetch_mods_by_copy",
+    api_name => "open-ils.search.biblio.mods_from_copy",
 );
 
 sub fetch_mods_by_copy {
@@ -1707,22 +1892,22 @@ sub fetch_mods_by_copy {
 # -------------------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method	=> "cn_browse",
-	api_name	=> "open-ils.search.callnumber.browse.target",
-	notes		=> "Starts a callnumber browse"
-	);
+    method   => "cn_browse",
+    api_name => "open-ils.search.callnumber.browse.target",
+    notes    => "Starts a callnumber browse"
+);
 
 __PACKAGE__->register_method(
-	method	=> "cn_browse",
-	api_name	=> "open-ils.search.callnumber.browse.page_up",
-	notes		=> "Returns the previous page of callnumbers", 
-	);
+    method   => "cn_browse",
+    api_name => "open-ils.search.callnumber.browse.page_up",
+    notes    => "Returns the previous page of callnumbers",
+);
 
 __PACKAGE__->register_method(
-	method	=> "cn_browse",
-	api_name	=> "open-ils.search.callnumber.browse.page_down",
-	notes		=> "Returns the next page of callnumbers", 
-	);
+    method   => "cn_browse",
+    api_name => "open-ils.search.callnumber.browse.page_down",
+    notes    => "Returns the next page of callnumbers",
+);
 
 
 # RETURNS array of arrays like so: label, owning_lib, record, id
@@ -1742,11 +1927,11 @@ sub cn_browse {
 # -------------------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => "fetch_cn",
+    method        => "fetch_cn",
+    api_name      => "open-ils.search.callnumber.retrieve",
     authoritative => 1,
-	api_name => "open-ils.search.callnumber.retrieve",
-	notes		=> "retrieves a callnumber based on ID",
-	);
+    notes         => "retrieves a callnumber based on ID",
+);
 
 sub fetch_cn {
 	my( $self, $client, $id ) = @_;
@@ -1755,13 +1940,13 @@ sub fetch_cn {
 	return $cn;
 }
 
-__PACKAGE__->register_method (
-	method		=> "fetch_copy_by_cn",
-	api_name		=> 'open-ils.search.copies_by_call_number.retrieve',
-	signature	=> q/
-		Returns an array of copy id's by callnumber id
-		@param cnid The callnumber id
-		@return An array of copy ids
+__PACKAGE__->register_method(
+    method    => "fetch_copy_by_cn",
+    api_name  => 'open-ils.search.copies_by_call_number.retrieve',
+    signature => q/
+		Returns an array of copy ID's by callnumber ID
+		@param cnid The callnumber ID
+		@return An array of copy IDs
 	/
 );
 
@@ -1772,10 +1957,10 @@ sub fetch_copy_by_cn {
 		{ call_number => $cnid, deleted => 'f' } );
 }
 
-__PACKAGE__->register_method (
-	method		=> 'fetch_cn_by_info',
-	api_name		=> 'open-ils.search.call_number.retrieve_by_info',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'fetch_cn_by_info',
+    api_name  => 'open-ils.search.call_number.retrieve_by_info',
+    signature => q/
 		@param label The callnumber label
 		@param record The record the cn is attached to
 		@param org The owning library of the cn
@@ -1792,24 +1977,27 @@ sub fetch_cn_by_info {
 }
 
 
-		
 
-
-__PACKAGE__->register_method (
-	method => 'bib_extras',
-	api_name => 'open-ils.search.biblio.lit_form_map.retrieve.all');
-__PACKAGE__->register_method (
-	method => 'bib_extras',
-	api_name => 'open-ils.search.biblio.item_form_map.retrieve.all');
-__PACKAGE__->register_method (
-	method => 'bib_extras',
-	api_name => 'open-ils.search.biblio.item_type_map.retrieve.all');
-__PACKAGE__->register_method (
-	method => 'bib_extras',
-	api_name => 'open-ils.search.biblio.bib_level_map.retrieve.all');
-__PACKAGE__->register_method (
-	method => 'bib_extras',
-	api_name => 'open-ils.search.biblio.audience_map.retrieve.all');
+__PACKAGE__->register_method(
+    method   => 'bib_extras',
+    api_name => 'open-ils.search.biblio.lit_form_map.retrieve.all'
+);
+__PACKAGE__->register_method(
+    method   => 'bib_extras',
+    api_name => 'open-ils.search.biblio.item_form_map.retrieve.all'
+);
+__PACKAGE__->register_method(
+    method   => 'bib_extras',
+    api_name => 'open-ils.search.biblio.item_type_map.retrieve.all'
+);
+__PACKAGE__->register_method(
+    method   => 'bib_extras',
+    api_name => 'open-ils.search.biblio.bib_level_map.retrieve.all'
+);
+__PACKAGE__->register_method(
+    method   => 'bib_extras',
+    api_name => 'open-ils.search.biblio.audience_map.retrieve.all'
+);
 
 sub bib_extras {
 	my $self = shift;
@@ -1837,34 +2025,40 @@ sub bib_extras {
 
 
 __PACKAGE__->register_method(
-	method	=> 'fetch_slim_record',
-	api_name	=> 'open-ils.search.biblio.record_entry.slim.retrieve',
-	signature=> q/
-		Returns a biblio.record_entry without the attached marcxml
-	/
+    method    => 'fetch_slim_record',
+    api_name  => 'open-ils.search.biblio.record_entry.slim.retrieve',
+    signature => {
+        desc   => "Retrieves one or more biblio.record_entry without the attached marcxml",
+        params => [
+            { desc => 'Array of Record IDs', type => 'array' }
+        ],
+        return => { 
+            desc => 'Array of biblio records, event on error'
+        }
+    }
 );
 
 sub fetch_slim_record {
-	my( $self, $conn, $ids ) = @_;
+    my( $self, $conn, $ids ) = @_;
 
-	#my $editor = OpenILS::Utils::Editor->new;
-	my $editor = new_editor();
+#my $editor = OpenILS::Utils::Editor->new;
+    my $editor = new_editor();
 	my @res;
-	for( @$ids ) {
-		return $editor->event unless
-			my $r = $editor->retrieve_biblio_record_entry($_);
-		$r->clear_marc;
-		push(@res, $r);
-	}
-	return \@res;
+    for( @$ids ) {
+        return $editor->event unless
+            my $r = $editor->retrieve_biblio_record_entry($_);
+        $r->clear_marc;
+        push(@res, $r);
+    }
+    return \@res;
 }
 
 
 
 __PACKAGE__->register_method(
-	method => 'rec_to_mr_rec_descriptors',
-	api_name	=> 'open-ils.search.metabib.record_to_descriptors',
-	signature	=> q/
+    method    => 'rec_to_mr_rec_descriptors',
+    api_name  => 'open-ils.search.metabib.record_to_descriptors',
+    signature => q/
 		specialized method...
 		Given a biblio record id or a metarecord id, 
 		this returns a list of metabib.record_descriptor
@@ -1876,11 +2070,11 @@ __PACKAGE__->register_method(
 sub rec_to_mr_rec_descriptors {
 	my( $self, $conn, $args ) = @_;
 
-	my $rec = $$args{record};
-	my $mrec	= $$args{metarecord};
-	my $item_forms = $$args{item_forms};
-	my $item_types	= $$args{item_types};
-	my $item_lang	= $$args{item_lang};
+    my $rec        = $$args{record};
+    my $mrec       = $$args{metarecord};
+    my $item_forms = $$args{item_forms};
+    my $item_types = $$args{item_types};
+    my $item_lang  = $$args{item_lang};
 
 	my $e = new_editor();
 	my $recs;
@@ -1898,7 +2092,7 @@ sub rec_to_mr_rec_descriptors {
 	my $search = { record => \@recs };
 	$search->{item_form} = $item_forms if $item_forms and @$item_forms;
 	$search->{item_type} = $item_types if $item_types and @$item_types;
-	$search->{item_lang} = $item_lang if $item_lang;
+	$search->{item_lang} = $item_lang  if $item_lang;
 
 	my $desc = $e->search_metabib_record_descriptor($search);
 
@@ -1907,8 +2101,8 @@ sub rec_to_mr_rec_descriptors {
 
 
 __PACKAGE__->register_method(
-	method => 'fetch_age_protect',
-	api_name => 'open-ils.search.copy.age_protect.retrieve.all',
+    method   => 'fetch_age_protect',
+    api_name => 'open-ils.search.copy.age_protect.retrieve.all',
 );
 
 sub fetch_age_protect {
@@ -1917,13 +2111,13 @@ sub fetch_age_protect {
 
 
 __PACKAGE__->register_method(
-	method => 'copies_by_cn_label',
-	api_name => 'open-ils.search.asset.copy.retrieve_by_cn_label',
+    method   => 'copies_by_cn_label',
+    api_name => 'open-ils.search.asset.copy.retrieve_by_cn_label',
 );
 
 __PACKAGE__->register_method(
-	method => 'copies_by_cn_label',
-	api_name => 'open-ils.search.asset.copy.retrieve_by_cn_label.staff',
+    method   => 'copies_by_cn_label',
+    api_name => 'open-ils.search.asset.copy.retrieve_by_cn_label.staff',
 );
 
 sub copies_by_cn_label {
@@ -1949,7 +2143,5 @@ sub copies_by_cn_label {
 }
 
 
-
 1;
-
 

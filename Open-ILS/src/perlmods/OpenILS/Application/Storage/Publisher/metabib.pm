@@ -415,25 +415,24 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_multi_search_full_rec {
-	my $self = shift;
-	my $client = shift;
+    my $self   = shift;
+    my $client = shift;
+    my %args   = @_;
 
-	my %args = @_;	
-	my $class_join = $args{class_join} || 'AND';
-	my $limit = $args{limit} || 100;
-	my $offset = $args{offset} || 0;
-	my $sort = $args{'sort'};
-	my $sort_dir = $args{sort_dir} || 'DESC';
+    my $class_join = $args{class_join} || 'AND';
+    my $limit      = $args{limit}      || 100;
+    my $offset     = $args{offset}     || 0;
+    my $sort       = $args{'sort'};
+    my $sort_dir   = $args{sort_dir}   || 'DESC';
 
 	my @binds;
 	my @selects;
 
 	for my $arg (@{ $args{searches} }) {
-		my $term = $$arg{term};
+		my $term     = $$arg{term};
 		my $limiters = $$arg{restrict};
 
-		my ($index_col) = metabib::full_rec->columns('FTS');
-		$index_col ||= 'value';
+		my ($index_col)  = metabib::full_rec->columns('FTS') || 'value';
 		my $search_table = metabib::full_rec->table;
 
 		my $fts = OpenILS::Application::Storage::FTS->compile('default' => $term, 'value',"$index_col");
@@ -480,8 +479,8 @@ sub biblio_multi_search_full_rec {
 
 	if ($self->api_name =~ /staff/o) {
 		$copies_visible = '';
-		$has_copies = '' if ($ou_type == 0);
-		$has_vols = '' if ($ou_type == 0);
+		$has_copies     = '' if ($ou_type == 0);
+		$has_vols       = '' if ($ou_type == 0);
 	}
 
 	my ($t_filter, $f_filter) = ('','');
@@ -1428,17 +1427,17 @@ my $_cdbi = {	title	=> "metabib::title_field_entry",
 
 # XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
 sub postfilter_search_multi_class_fts {
-	my $self = shift;
-	my $client = shift;
-	my %args = @_;
+    my $self   = shift;
+    my $client = shift;
+    my %args   = @_;
 	
-	my $sort = $args{'sort'};
-	my $sort_dir = $args{sort_dir} || 'DESC';
-	my $ou = $args{org_unit};
-	my $ou_type = $args{depth};
-	my $limit = $args{limit} || 10;;
-	my $visibility_limit = $args{visibility_limit} || 5000;;
-	my $offset = $args{offset} || 0;
+    my $sort             = $args{'sort'};
+    my $sort_dir         = $args{sort_dir} || 'DESC';
+    my $ou               = $args{org_unit};
+    my $ou_type          = $args{depth};
+    my $limit            = $args{limit}  || 10;
+    my $offset           = $args{offset} ||  0;
+    my $visibility_limit = $args{visibility_limit} || 5000;
 
 	if (!$ou) {
 		$ou = actor::org_unit->search( { parent_ou => undef } )->next->id;
@@ -1454,16 +1453,16 @@ sub postfilter_search_multi_class_fts {
 
 	my $outer_limit = 1000;
 
-	my $limit_clause = '';
+	my $limit_clause  = '';
 	my $offset_clause = '';
 
-	$limit_clause = "LIMIT $outer_limit";
+	$limit_clause  = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
 	my ($avail_filter,@types,@forms,@lang,@aud,@lit_form,@vformats) = ('');
-	my ($t_filter, $f_filter, $v_filter) = ('','','');
-	my ($a_filter, $l_filter, $lf_filter) = ('','','');
-	my ($ot_filter, $of_filter, $ov_filter) = ('','','');
+	my ($t_filter,   $f_filter,   $v_filter) = ('','','');
+	my ($a_filter,   $l_filter,  $lf_filter) = ('','','');
+	my ($ot_filter, $of_filter,  $ov_filter) = ('','','');
 	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
 
 	if ($args{available}) {
@@ -1474,7 +1473,7 @@ sub postfilter_search_multi_class_fts {
 		$a = [$a] if (!ref($a));
 		@aud = @$a;
 			
-		$a_filter = ' AND rd.audience IN ('.join(',',map{'?'}@aud).')';
+		$a_filter  = ' AND  rd.audience IN ('.join(',',map{'?'}@aud).')';
 		$oa_filter = ' AND ord.audience IN ('.join(',',map{'?'}@aud).')';
 	}
 
@@ -1482,7 +1481,7 @@ sub postfilter_search_multi_class_fts {
 		$l = [$l] if (!ref($l));
 		@lang = @$l;
 
-		$l_filter = ' AND rd.item_lang IN ('.join(',',map{'?'}@lang).')';
+		$l_filter  = ' AND  rd.item_lang IN ('.join(',',map{'?'}@lang).')';
 		$ol_filter = ' AND ord.item_lang IN ('.join(',',map{'?'}@lang).')';
 	}
 
@@ -1490,7 +1489,7 @@ sub postfilter_search_multi_class_fts {
 		$f = [$f] if (!ref($f));
 		@lit_form = @$f;
 
-		$lf_filter = ' AND rd.lit_form IN ('.join(',',map{'?'}@lit_form).')';
+		$lf_filter  = ' AND  rd.lit_form IN ('.join(',',map{'?'}@lit_form).')';
 		$olf_filter = ' AND ord.lit_form IN ('.join(',',map{'?'}@lit_form).')';
 	}
 
@@ -1498,7 +1497,7 @@ sub postfilter_search_multi_class_fts {
 		$f = [$f] if (!ref($f));
 		@forms = @$f;
 
-		$f_filter = ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		$f_filter  = ' AND  rd.item_form IN ('.join(',',map{'?'}@forms).')';
 		$of_filter = ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
 	}
 
@@ -1506,7 +1505,7 @@ sub postfilter_search_multi_class_fts {
 		$t = [$t] if (!ref($t));
 		@types = @$t;
 
-		$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		$t_filter  = ' AND  rd.item_type IN ('.join(',',map{'?'}@types).')';
 		$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
 	}
 
@@ -1514,7 +1513,7 @@ sub postfilter_search_multi_class_fts {
 		$v = [$v] if (!ref($v));
 		@vformats = @$v;
 
-		$v_filter = ' AND rd.vr_format IN ('.join(',',map{'?'}@vformats).')';
+		$v_filter  = ' AND  rd.vr_format IN ('.join(',',map{'?'}@vformats).')';
 		$ov_filter = ' AND ord.vr_format IN ('.join(',',map{'?'}@vformats).')';
 	}
 
@@ -1525,12 +1524,12 @@ sub postfilter_search_multi_class_fts {
 		@types = split '', $t;
 		@forms = split '', $f;
 		if (@types) {
-			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+			$t_filter  = ' AND  rd.item_type IN ('.join(',',map{'?'}@types).')';
 			$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
 		}
 
 		if (@forms) {
-			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+			$f_filter  .= ' AND  rd.item_form IN ('.join(',',map{'?'}@forms).')';
 			$of_filter .= ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
 		}
 	}
@@ -1541,10 +1540,10 @@ sub postfilter_search_multi_class_fts {
 				"actor.org_unit_descendants($ou, $ou_type)" :
 				"actor.org_unit_descendants($ou)";
 
-	my $search_table_list = '';
-	my $fts_list = '';
-	my $join_table_list = '';
-	my @rank_list;
+    my $search_table_list = '';
+    my $fts_list          = '';
+    my $join_table_list   = '';
+    my @rank_list;
 
 	my $field_table = config::metabib_field->table;
 
@@ -1592,7 +1591,7 @@ sub postfilter_search_multi_class_fts {
 
 		my %bonus = ();
 		$bonus{'keyword'} = [ { "CASE WHEN $search_group_name.value LIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
-		$bonus{'author'} = [ { "CASE WHEN $search_group_name.value ILIKE ? THEN 10 ELSE 1 END" => $first_word } ];
+		$bonus{'author'}  = [ { "CASE WHEN $search_group_name.value ILIKE ? THEN 10 ELSE 1 END" => $first_word } ];
 
 		$bonus{'series'} = [
 			{ "CASE WHEN $search_group_name.value LIKE ? THEN 1.5 ELSE 1 END" => $first_word },
@@ -1925,14 +1924,14 @@ sub biblio_search_multi_class_fts {
 	my $client = shift;
 	my %args = @_;
 	
-	my $sort = $args{'sort'};
-	my $sort_dir = $args{sort_dir} || 'DESC';
-	my $ou = $args{org_unit};
-	my $ou_type = $args{depth};
-	my $limit = $args{limit} || 10;
-	my $pref_lang = $args{prefered_language} || 'eng';
-	my $visibility_limit = $args{visibility_limit} || 5000;
-	my $offset = $args{offset} || 0;
+    my $sort             = $args{'sort'};
+    my $sort_dir         = $args{sort_dir} || 'DESC';
+    my $ou               = $args{org_unit};
+    my $ou_type          = $args{depth};
+    my $limit            = $args{limit}  || 10;
+    my $offset           = $args{offset} ||  0;
+    my $pref_lang        = $args{prefered_language} || 'eng';
+    my $visibility_limit = $args{visibility_limit}  || 5000;
 
 	if (!$ou) {
 		$ou = actor::org_unit->search( { parent_ou => undef } )->next->id;
@@ -1944,16 +1943,16 @@ sub biblio_search_multi_class_fts {
 
 	my $outer_limit = 1000;
 
-	my $limit_clause = '';
+	my $limit_clause  = '';
 	my $offset_clause = '';
 
-	$limit_clause = "LIMIT $outer_limit";
+	$limit_clause  = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
 	my ($avail_filter,@types,@forms,@lang,@aud,@lit_form,@vformats) = ('');
-	my ($t_filter, $f_filter, $v_filter) = ('','','');
-	my ($a_filter, $l_filter, $lf_filter) = ('','','');
-	my ($ot_filter, $of_filter, $ov_filter) = ('','','');
+	my ($t_filter,   $f_filter,   $v_filter) = ('','','');
+	my ($a_filter,   $l_filter,  $lf_filter) = ('','','');
+	my ($ot_filter, $of_filter,  $ov_filter) = ('','','');
 	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
 
 	if ($args{available}) {
@@ -1964,7 +1963,7 @@ sub biblio_search_multi_class_fts {
 		$a = [$a] if (!ref($a));
 		@aud = @$a;
 			
-		$a_filter = ' AND rd.audience IN ('.join(',',map{'?'}@aud).')';
+		$a_filter  = ' AND rd.audience  IN ('.join(',',map{'?'}@aud).')';
 		$oa_filter = ' AND ord.audience IN ('.join(',',map{'?'}@aud).')';
 	}
 
@@ -1972,7 +1971,7 @@ sub biblio_search_multi_class_fts {
 		$l = [$l] if (!ref($l));
 		@lang = @$l;
 
-		$l_filter = ' AND rd.item_lang IN ('.join(',',map{'?'}@lang).')';
+		$l_filter  = ' AND rd.item_lang  IN ('.join(',',map{'?'}@lang).')';
 		$ol_filter = ' AND ord.item_lang IN ('.join(',',map{'?'}@lang).')';
 	}
 
@@ -1980,7 +1979,7 @@ sub biblio_search_multi_class_fts {
 		$f = [$f] if (!ref($f));
 		@lit_form = @$f;
 
-		$lf_filter = ' AND rd.lit_form IN ('.join(',',map{'?'}@lit_form).')';
+		$lf_filter  = ' AND rd.lit_form  IN ('.join(',',map{'?'}@lit_form).')';
 		$olf_filter = ' AND ord.lit_form IN ('.join(',',map{'?'}@lit_form).')';
 	}
 
@@ -1988,7 +1987,7 @@ sub biblio_search_multi_class_fts {
 		$f = [$f] if (!ref($f));
 		@forms = @$f;
 
-		$f_filter = ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		$f_filter  = ' AND rd.item_form  IN ('.join(',',map{'?'}@forms).')';
 		$of_filter = ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
 	}
 
@@ -1996,7 +1995,7 @@ sub biblio_search_multi_class_fts {
 		$t = [$t] if (!ref($t));
 		@types = @$t;
 
-		$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		$t_filter  = ' AND rd.item_type  IN ('.join(',',map{'?'}@types).')';
 		$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
 	}
 
@@ -2004,7 +2003,7 @@ sub biblio_search_multi_class_fts {
 		$v = [$v] if (!ref($v));
 		@vformats = @$v;
 
-		$v_filter = ' AND rd.vr_format IN ('.join(',',map{'?'}@vformats).')';
+		$v_filter  = ' AND rd.vr_format  IN ('.join(',',map{'?'}@vformats).')';
 		$ov_filter = ' AND ord.vr_format IN ('.join(',',map{'?'}@vformats).')';
 	}
 
@@ -2014,12 +2013,12 @@ sub biblio_search_multi_class_fts {
 		@types = split '', $t;
 		@forms = split '', $f;
 		if (@types) {
-			$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+			$t_filter  = ' AND rd.item_type  IN ('.join(',',map{'?'}@types).')';
 			$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
 		}
 
 		if (@forms) {
-			$f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+			$f_filter  .= ' AND rd.item_form  IN ('.join(',',map{'?'}@forms).')';
 			$of_filter .= ' AND ord.item_form IN ('.join(',',map{'?'}@forms).')';
 		}
 	}
@@ -2080,7 +2079,7 @@ sub biblio_search_multi_class_fts {
 
 		my %bonus = ();
 		$bonus{'subject'} = [];
-		$bonus{'author'} = [ { "CASE WHEN $search_group_name.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word } ];
+		$bonus{'author'}  = [ { "CASE WHEN $search_group_name.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word } ];
 
 		$bonus{'keyword'} = [ { "CASE WHEN $search_group_name.value ILIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
 
@@ -2092,11 +2091,11 @@ sub biblio_search_multi_class_fts {
 		$bonus{'title'} = [ @{ $bonus{'series'} }, @{ $bonus{'keyword'} } ];
 
 		if ($pref_lang) {
-			push @{ $bonus{'title'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
-			push @{ $bonus{'author'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
+			push @{ $bonus{'title'}   }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
+			push @{ $bonus{'author'}  }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
 			push @{ $bonus{'subject'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
 			push @{ $bonus{'keyword'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
-			push @{ $bonus{'series'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
+			push @{ $bonus{'series'}  }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
 		}
 
 		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
@@ -2310,9 +2309,6 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 	cachable	=> 1,
 );
-
-
-
 __PACKAGE__->register_method(
 	api_name	=> "open-ils.storage.biblio.multiclass.search_fts",
 	method		=> 'biblio_search_multi_class_fts',
@@ -2335,9 +2331,9 @@ my $default_preferred_language_weight;
 
 # XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".
 sub staged_fts {
-	my $self = shift;
-	my $client = shift;
-	my %args = @_;
+    my $self   = shift;
+    my $client = shift;
+    my %args   = @_;
 
     if (!$locale_map{COMPLETE}) {
 
@@ -2372,9 +2368,9 @@ sub staged_fts {
     # inclusion, exclusion, delete_adjusted_inclusion, delete_adjusted_exclusion
     my $estimation_strategy = $args{estimation_strategy} || 'inclusion';
 
-	my $ou = $args{org_unit};
-	my $limit = $args{limit} || 10;
-	my $offset = $args{offset} || 0;
+    my $ou     = $args{org_unit};
+    my $limit  = $args{limit}  || 10;
+    my $offset = $args{offset} ||  0;
 
 	if (!$ou) {
 		$ou = actor::org_unit->search( { parent_ou => undef } )->next->id;
@@ -2485,10 +2481,10 @@ sub staged_fts {
         );
 		$fts->sql_where_clause; # this builds the ranks for us
 
-		my @fts_ranks = $fts->fts_rank;
+		my @fts_ranks   = $fts->fts_rank;
 		my @fts_queries = $fts->fts_query;
 		my @phrases = map { lc($_) } $fts->phrases;
-		my @words = map { lc($_) } $fts->words;
+		my @words   = map { lc($_) } $fts->words;
 
         $stored_proc_search_args{$search_group} = {
             fts_rank    => \@fts_ranks,
@@ -2502,17 +2498,17 @@ sub staged_fts {
 	my $param_search_ou = $ou;
 	my $param_depth = $args{depth}; $param_depth = 'NULL' unless (defined($param_depth) and length($param_depth) > 0 );
 	my $param_searches = OpenSRF::Utils::JSON->perl2JSON( \%stored_proc_search_args ); $param_searches =~ s/\$//go; $param_searches = '$$'.$param_searches.'$$';
-	my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
-	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @locations) . '}$$';
-	my $param_audience = '$${' . join(',', map { s/\$//go; "\"$_\"" } @aud) . '}$$';
-	my $param_language = '$${' . join(',', map { s/\$//go; "\"$_\""} @lang) . '}$$';
-	my $param_lit_form = '$${' . join(',', map { s/\$//go; "\"$_\"" } @lit_form) . '}$$';
-	my $param_types = '$${' . join(',', map { s/\$//go; "\"$_\""} @types) . '}$$';
-	my $param_forms = '$${' . join(',', map { s/\$//go; "\"$_\""} @forms) . '}$$';
-	my $param_vformats = '$${' . join(',', map { s/\$//go; "\"$_\"" } @vformats) . '}$$';
+	my $param_statuses  = '$${' . join(',', map { s/\$//go; "\"$_\"" } @statuses ) . '}$$';
+	my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\"" } @locations) . '}$$';
+	my $param_audience  = '$${' . join(',', map { s/\$//go; "\"$_\"" } @aud      ) . '}$$';
+	my $param_language  = '$${' . join(',', map { s/\$//go; "\"$_\"" } @lang     ) . '}$$';
+	my $param_lit_form  = '$${' . join(',', map { s/\$//go; "\"$_\"" } @lit_form ) . '}$$';
+	my $param_types     = '$${' . join(',', map { s/\$//go; "\"$_\"" } @types    ) . '}$$';
+	my $param_forms     = '$${' . join(',', map { s/\$//go; "\"$_\"" } @forms    ) . '}$$';
+	my $param_vformats  = '$${' . join(',', map { s/\$//go; "\"$_\"" } @vformats ) . '}$$';
     my $param_bib_level = '$${' . join(',', map { s/\$//go; "\"$_\"" } @bib_level) . '}$$';
 	my $param_before = $args{before}; $param_before = 'NULL' unless (defined($param_before) and length($param_before) > 0 );
-	my $param_after = $args{after}; $param_after = 'NULL' unless (defined($param_after) and length($param_after) > 0 );
+	my $param_after  = $args{after} ; $param_after  = 'NULL' unless (defined($param_after ) and length($param_after ) > 0 );
 	my $param_during = $args{during}; $param_during = 'NULL' unless (defined($param_during) and length($param_during) > 0 );
     my $param_between = '$${"' . join('","', map { int($_) } @between) . '"}$$';
 	my $param_pref_lang = $args{preferred_language}; $param_pref_lang =~ s/\$//go; $param_pref_lang = '$$'.$param_pref_lang.'$$';
@@ -2521,9 +2517,9 @@ sub staged_fts {
 	my $param_sort_desc = defined($args{sort_dir}) && $args{sort_dir} =~ /^d/io ? "'t'" : "'f'";
 	my $metarecord = $self->api_name =~ /metabib/o ? "'t'" : "'f'";
 	my $staff = $self->api_name =~ /staff/o ? "'t'" : "'f'";
-    my $param_rel_limit = $args{core_limit}; $param_rel_limit ||= 'NULL';
+    my $param_rel_limit = $args{core_limit};  $param_rel_limit ||= 'NULL';
     my $param_chk_limit = $args{check_limit}; $param_chk_limit ||= 'NULL';
-    my $param_skip_chk = $args{skip_check}; $param_skip_chk ||= 'NULL';
+    my $param_skip_chk  = $args{skip_check};  $param_skip_chk  ||= 'NULL';
 
 	my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
         SELECT  *
@@ -2561,10 +2557,10 @@ sub staged_fts {
     my $recs = $sth->fetchall_arrayref({});
     my $summary_row = pop @$recs;
 
-    my $total = $$summary_row{total};
-    my $checked = $$summary_row{checked};
-    my $visible = $$summary_row{visible};
-    my $deleted = $$summary_row{deleted};
+    my $total    = $$summary_row{total};
+    my $checked  = $$summary_row{checked};
+    my $visible  = $$summary_row{visible};
+    my $deleted  = $$summary_row{deleted};
     my $excluded = $$summary_row{excluded};
 
     my $estimate = $visible;
@@ -2625,14 +2621,14 @@ __PACKAGE__->register_method(
 );
 
 sub FTS_paging_estimate {
-	my $self = shift;
-	my $client = shift;
+    my $self   = shift;
+    my $client = shift;
 
-    my $checked = shift;
-    my $visible = shift;
+    my $checked  = shift;
+    my $visible  = shift;
     my $excluded = shift;
-    my $deleted = shift;
-    my $total = shift;
+    my $deleted  = shift;
+    my $total    = shift;
 
     my $deleted_ratio = $deleted / $checked;
     my $delete_adjusted_total = $total - ( $total * $deleted_ratio );
@@ -2698,13 +2694,13 @@ __PACKAGE__->register_method(
 
 
 sub xref_count {
-	my $self = shift;
-	my $client = shift;
-	my $args = shift;
+    my $self   = shift;
+    my $client = shift;
+    my $args   = shift;
 
-	my $term = $$args{term};
-	my $limit = $$args{max} || 1;
-	my $min = $$args{min} || 1;
+    my $term  = $$args{term};
+    my $limit = $$args{max} || 1;
+    my $min   = $$args{min} || 1;
 	my @classes = @{$$args{class}};
 
 	$limit = $min if ($min > $limit);
@@ -2715,8 +2711,8 @@ sub xref_count {
 
 	my %matches;
 	my $bre_table = biblio::record_entry->table;
-	my $cn_table = asset::call_number->table;
-	my $cp_table = asset::copy->table;
+	my $cn_table  = asset::call_number->table;
+	my $cp_table  = asset::copy->table;
 
 	for my $search_class ( @classes ) {
 
@@ -2750,9 +2746,9 @@ sub xref_count {
 	return \%matches;
 }
 __PACKAGE__->register_method(
-	api_name	=> "open-ils.storage.search.xref",
-	method		=> 'xref_count',
-	api_level	=> 1,
+    api_name  => "open-ils.storage.search.xref",
+    method    => 'xref_count',
+    api_level => 1,
 );
 
 sub query_parser_fts {
@@ -2981,10 +2977,10 @@ sub query_parser_fts {
     my $recs = $sth->fetchall_arrayref({});
     my $summary_row = pop @$recs;
 
-    my $total = $$summary_row{total};
-    my $checked = $$summary_row{checked};
-    my $visible = $$summary_row{visible};
-    my $deleted = $$summary_row{deleted};
+    my $total    = $$summary_row{total};
+    my $checked  = $$summary_row{checked};
+    my $visible  = $$summary_row{visible};
+    my $deleted  = $$summary_row{deleted};
     my $excluded = $$summary_row{excluded};
 
     my $estimate = $visible;
