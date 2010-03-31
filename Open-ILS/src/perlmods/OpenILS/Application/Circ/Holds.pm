@@ -2276,10 +2276,31 @@ sub usr_hold_summary {
 __PACKAGE__->register_method(
     method    => 'hold_has_copy_at',
     api_name  => 'open-ils.circ.hold.has_copy_at',
-    signature => q/
-        Returns the ID of the found copy and name of the shelving location if there is
-        an available copy at the specified org unit.  Returns empty hash otherwise.
-    /
+    signature => {
+        desc => q/
+            Returns the ID of the found copy and name of the shelving location if there is
+            an available copy at the specified org unit.  Returns empty hash otherwise.
+            The anticipated use for this method is to determine whether an item is
+            available at the library where the user is placing the hold (or, alternatively, 
+            at the pickup library) to encourage bypassing the hold placement and just 
+            checking out the item.
+        /,
+        params => {
+            { desc => 'Authentication Token', type => 'string' },
+            { desc => q/
+                    Method Arguments.  Options include:
+                    hold_type  : the hold type code (T, V, C, M, ...)
+                    hold_target : the identifier of the hold target object
+                    org_unit : org unit ID
+                /, 
+                type => 'object' 
+            },
+        },
+        return => { 
+            desc => q/{ "copy" : copy_id, "location" : location_name }/,
+            type => 'object' 
+        }
+    }
 );
 
 sub hold_has_copy_at {
