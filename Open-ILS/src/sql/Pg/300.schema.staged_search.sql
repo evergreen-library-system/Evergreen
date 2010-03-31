@@ -654,6 +654,7 @@ CREATE OR REPLACE FUNCTION search.query_parser_fts (
     param_statuses  INT[],
     param_locations INT[],
     param_offset    INT,
+    param_check     INT,
     param_limit     INT,
     metarecord      BOOL,
     staff           BOOL
@@ -664,6 +665,7 @@ DECLARE
     current_res         search.search_result%ROWTYPE;
     search_org_list     INT[];
 
+    check_limit         INT;
     core_limit          INT;
     core_offset         INT;
     tmp_int             INT;
@@ -680,8 +682,9 @@ DECLARE
 
 BEGIN
 
+    check_limit := COALESCE( param_check, 1000 );
+    core_limit  := COALESCE( param_limit, 25000 );
     core_offset := COALESCE( param_offset, 0 );
-    core_limit := COALESCE( param_limit, 1000 );
 
     -- core_skip_chk := COALESCE( param_skip_chk, 1 );
 
@@ -703,12 +706,13 @@ BEGIN
 
         FETCH core_cursor INTO core_result;
         EXIT WHEN NOT FOUND;
+        EXIT WHEN total_count >= core_limit;
 
         total_count := total_count + 1;
-        CONTINUE WHEN (total_count - 1 < core_offset);
+
+        CONTINUE WHEN total_count NOT BETWEEN  core_offset + 1 AND check_limit + core_offset;
 
         check_count := check_count + 1;
-        CONTINUE WHEN (check_count > core_limit);
 
         PERFORM 1 FROM biblio.record_entry b WHERE NOT b.deleted AND b.id IN ( SELECT * FROM search.explode_array( core_result.records ) );
         IF NOT FOUND THEN

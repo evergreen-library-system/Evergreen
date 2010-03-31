@@ -2895,15 +2895,21 @@ sub query_parser_fts {
 
 
     # gather the limit or default to 10
-	my $limit = $args{limit} || 10;
+	my $limit = $args{check_limit} || 'NULL';
 	if (my ($filter) = $query->parse_tree->find_filter('limit')) {
+            $limit = $filter->args->[0] if (@{$filter->args});
+    }
+	if (my ($filter) = $query->parse_tree->find_filter('check_limit')) {
             $limit = $filter->args->[0] if (@{$filter->args});
     }
 
 
     # gather the offset or default to 0
-	my $offset = $args{offset} || 0;
+	my $offset = $args{skip_check} || $args{offset} || 0;
 	if (my ($filter) = $query->parse_tree->find_filter('offset')) {
+            $offset = $filter->args->[0] if (@{$filter->args});
+    }
+	if (my ($filter) = $query->parse_tree->find_filter('skip_check')) {
             $offset = $filter->args->[0] if (@{$filter->args});
     }
 
@@ -2912,6 +2918,13 @@ sub query_parser_fts {
     my $estimation_strategy = $args{estimation_strategy} || 'inclusion';
 	if (my ($filter) = $query->parse_tree->find_filter('estimation_strategy')) {
             $estimation_strategy = $filter->args->[0] if (@{$filter->args});
+    }
+
+
+    # gather the estimation strategy or default to inclusion
+    my $core_limit = $args{core_limit};
+	if (my ($filter) = $query->parse_tree->find_filter('core_limit')) {
+            $core_limit = $filter->args->[0] if (@{$filter->args});
     }
 
 
@@ -2930,8 +2943,9 @@ sub query_parser_fts {
     }
 
 
-    my $param_limit = $query->superpage_size || 'NULL';
-    my $param_offset = 'NULL';
+    my $param_check = $limit || $query->superpage_size || 'NULL';
+    my $param_offset = $offset || 'NULL';
+    my $param_limit = $core_limit || 'NULL';
 
     my $sp = $query->superpage || 1;
     if ($sp > 1) {
@@ -2955,6 +2969,7 @@ sub query_parser_fts {
                     $param_statuses\:\:INT[],
                     $param_locations\:\:INT[],
                     $param_offset\:\:INT,
+                    $param_check\:\:INT,
                     $param_limit\:\:INT,
                     $staff\:\:BOOL,
                     $metarecord\:\:BOOL
@@ -2994,7 +3009,7 @@ sub query_parser_fts {
 
 	$log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $estimate.",DEBUG);
 
-	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
+	for my $rec (@$recs) {
         delete $$rec{checked};
         delete $$rec{visible};
         delete $$rec{excluded};
@@ -3082,6 +3097,9 @@ sub query_parser_fts_wrapper {
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
     $query = "sort($args{sort}) $query" if ($args{sort});
     $query = "limit($args{limit}) $query" if ($args{limit});
+    $query = "core_limit($args{core_limit}) $query" if ($args{core_limit});
+    $query = "skip_check($args{skip_check}) $query" if ($args{skip_check});
+    $query = "superpage($args{superpage}) $query" if ($args{superpage});
     $query = "offset($args{offset}) $query" if ($args{offset});
     $query = "#available $query" if ($args{available});
     $query = "#descending $query" if ($args{sort_dir} && $args{sort_dir} =~ /^d/i);

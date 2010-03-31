@@ -978,7 +978,7 @@ sub staged_search {
             my $start = time;
             $results = $U->storagereq($method, %$search_hash);
             $search_duration = time - $start;
-            $logger->info("staged search: DB call took $search_duration seconds");
+            $logger->info("staged search: DB call took $search_duration seconds and returned ".scalar(@$results)." rows, including summary");
             $summary = shift(@$results);
 
             unless($summary) {
@@ -1001,7 +1001,6 @@ sub staged_search {
             }
 
             push @$new_ids, grep {defined($_)} map {$_->[0]} @$results;
-
             $results = [grep {defined $_->[0]} @$results];
             cache_staged_search_page($key, $page, $summary, $results) if $docache;
         }
