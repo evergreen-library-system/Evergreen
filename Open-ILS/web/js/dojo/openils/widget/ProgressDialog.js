@@ -13,6 +13,7 @@ if(!dojo._hasResource['openils.widget.ProgressDialog']) {
         [dijit.Dialog],
         {
             indeterminate : false,
+            message : '',
 
             startup : function() {
                 this.inherited(arguments);
@@ -34,7 +35,7 @@ if(!dojo._hasResource['openils.widget.ProgressDialog']) {
                     this.progress.indeterminate = false;
                 }
 
-                if(msg) {
+                if(msg || (msg = this.message) ) {
                     if(!this.msgDiv) {
                         this.msgDiv = dojo.create('div', {innerHTML : msg});
                     }
