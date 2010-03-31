@@ -698,20 +698,54 @@ sub create_lineitem_detail_debit {
 }
 
 
-sub fund_exceeds_balance_stop_percent {
-    return fund_exceeds_balance_percent(
-        @_, "balance_stop_percent", "ACQ_FUND_EXCEEDS_STOP_PERCENT"
-    );
-}
+__PACKAGE__->register_method(
+	"method" => "fund_exceeds_balance_percent_api",
+	"api_name" => "open-ils.acq.fund.check_balance_percentages",
+	"signature" => {
+        "desc" => q/Determine whether a given fund exceeds its defined
+            "balance stop and warning percentages"/,
+        "params" => [
+            {"desc" => "Authentication token", "type" => "string"},
+            {"desc" => "Fund ID", "type" => "number"},
+            {"desc" => "Theoretical debit amount (optional)",
+                "type" => "number"}
+        ],
+        "return" => {"desc" => q/An array of two values, for stop and warning,
+            in that order: 1 if fund exceeds that balance percentage, else 0/}
+    }
+);
 
-sub fund_exceeds_balance_warning_percent {
-    return fund_exceeds_balance_percent(
-        @_, "balance_warning_percent", "ACQ_FUND_EXCEEDS_WARN_PERCENT"
-    );
+sub fund_exceeds_balance_percent_api {
+    my ($self, $conn, $auth, $fund_id, $debit_amount) = @_;
+
+    $debit_amount ||= 0;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed("VIEW_FUND", $fund->org);
+
+    my $result = [
+        fund_exceeds_balance_percent($fund, $debit_amount, $e, "stop"),
+        fund_exceeds_balance_percent($fund, $debit_amount, $e, "warning")
+    ];
+
+    $e->disconnect;
+    return $result;
 }
 
 sub fund_exceeds_balance_percent {
-    my ($fund, $debit_amount, $e, $method_name, $event_name) = @_;
+    my ($fund, $debit_amount, $e, $which) = @_;
+
+    my ($method_name, $event_name) = @{{
+        "warning" => [
+            "balance_warning_percent", "ACQ_FUND_EXCEEDS_WARN_PERCENT"
+        ],
+        "stop" => [
+            "balance_stop_percent", "ACQ_FUND_EXCEEDS_STOP_PERCENT"
+        ]
+    }->{$which}};
 
     if ($fund->$method_name) {
         my $balance =
@@ -752,10 +786,12 @@ sub create_fund_debit {
     my $fund = $mgr->editor->retrieve_acq_fund($args{fund}) or return 0;
 
     return 0 if
-        fund_exceeds_balance_stop_percent($fund, $args{"amount"}, $mgr->editor);
+        fund_exceeds_balance_percent(
+            $fund, $args{"amount"}, $mgr->editor, "stop"
+        );
     return 0 if
-        $dry_run and fund_exceeds_balance_warning_percent(
-            $fund, $args{"amount"}, $mgr->editor
+        $dry_run and fund_exceeds_balance_percent(
+            $fund, $args{"amount"}, $mgr->editor, "warning"
         );
 
     my $debit = Fieldmapper::acq::fund_debit->new;

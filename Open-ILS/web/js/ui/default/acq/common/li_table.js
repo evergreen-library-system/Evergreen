@@ -22,7 +22,9 @@ var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 const XUL_OPAC_WRAPPER = 'chrome://open_ils_staff_client/content/cat/opac.xul';
 var li_exportable_attrs = ["issn", "isbn", "upc"];
 
-var fundLabelFormat = ['${0} (${1})', 'code', 'year'];
+var fundLabelFormat = [
+    '<span class="fund_${0}">${1} (${2})</span>', 'id', 'code', 'year'
+];
 var fundSearchFormat = ['${0} (${1})', 'code', 'year'];
 
 function nodeByName(name, context) {
@@ -32,6 +34,10 @@ function nodeByName(name, context) {
 
 var liDetailBatchFields = ['fund', 'owning_lib', 'location', 'collection_code', 'circ_modifier', 'cn_label'];
 var liDetailFields = liDetailBatchFields.concat(['barcode', 'note']);
+var fundStyles = {
+    "stop": "color: #c00; font-weight: bold;",
+    "warning": "color: #c93;"
+};
 
 function AcqLiTable() {
 
@@ -40,6 +46,8 @@ function AcqLiTable() {
     this.plCache = {};
     this.poCache = {};
     this.relCache = {};
+    this.haveFundClass = {}
+    this.fundBalanceState = {};
     this.realDfaCache = {};
     this.virtDfaCounts = {};
     this.virtDfaId = -1;
@@ -1131,14 +1139,27 @@ function AcqLiTable() {
                         searchFilter : (field == 'fund') ? {"active": "t"} : null,
                         parentNode : dojo.query('[name='+field+']', row)[0],
                         orgLimitPerms : ['CREATE_PICKLIST'],
-                        dijitArgs : {required:false},
+                        dijitArgs : {
+                            "required": false,
+                            "labelType": (field == "fund") ? "html" : null
+                        },
+                        noCache: (field == "fund"),
                         forceSync : true
                     });
                     widget.build(
                         function(w, ww) {
+                            if (field == "fund" && w.store)
+                                self._ensureCSSFundClasses(w.store);
                             self.copyBatchWidgets[field] = w;
                         }
                     );
+                    if (field == "fund") {
+                        dojo.connect(
+                            widget.widget, "onChange", function(val) {
+                                self._updateFundSelectorStyle(widget, val);
+                            }
+                        );
+                    }
                 }
             }
         );
@@ -1234,8 +1255,9 @@ function AcqLiTable() {
                     fmField : field,
                     labelFormat : (field == 'fund') ? fundLabelFormat : null,
                     searchFormat : (field == 'fund') ? fundSearchFormat : null,
+                    dijitArgs: {"labelType": (field == 'fund') ? "html" : null},
                     searchFilter : searchFilter,
-                    noCache: true,
+                    noCache: (field == "fund"),
                     fmClass : 'acqlid',
                     parentNode : dojo.query('[name='+field+']', row)[0],
                     orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
@@ -1244,13 +1266,18 @@ function AcqLiTable() {
                 widget.build(
                     // make sure we capture the value from any async widgets
                     function(w, ww) { 
+                        if (field == "fund" && w.store)
+                            self._ensureCSSFundClasses(w.store);
                         copy[field](ww.getFormattedValue()) 
                         self.copyWidgetCache[copy.id()][field] = w;
                     }
                 );
                 dojo.connect(widget.widget, 'onChange', 
                     function(val) { 
-                        if(copy.isnew() || val != copy[field]()) {
+                        if (field == "fund")
+                            self._updateFundSelectorStyle(widget, val);
+
+                        if (copy.isnew() || val != copy[field]()) {
                             // prevent setting ischanged() automatically on widget load for existing copies
                             copy[field](widget.getFormattedValue()) 
                             copy.ischanged(true);
@@ -1261,6 +1288,55 @@ function AcqLiTable() {
         );
 
         this.updateLidState(copy, row);
+    };
+
+    this._ensureCSSFundClass = function(id) {
+        if (!this.fundStyleSheet) {
+            dojo.create(
+                "style", {"type": "text/css"},
+                document.getElementsByTagName("head")[0], "last"
+            );
+            this.fundStyleSheet = document.styleSheets[
+                document.styleSheets.length - 1
+            ];
+        }
+
+        var cn = "fund_" + id;
+        if (!this.haveFundClass[cn]) {
+            fieldmapper.standardRequest(
+                ["open-ils.acq", "open-ils.acq.fund.check_balance_percentages"],
+                {
+                    "params": [openils.User.authtoken, id],
+                    "async": true,
+                    "oncomplete": function(r) {
+                        r = openils.Util.readResponse(r);
+                        self.fundBalanceState[id] = r;
+                        var style = "";
+                        if (r[0] /* stop */)
+                            style = fundStyles.stop;
+                        else if (r[1] /* warning */)
+                            style = fundStyles.warning;
+                        self.fundStyleSheet.insertRule(
+                            "." + cn + " { " + style + " }",
+                            self.fundStyleSheet.cssRules.length
+                        );
+                        self.haveFundClass[cn] = true;
+                    }
+                }
+            );
+        }
+    };
+
+    this._ensureCSSFundClasses = function(store) {
+        store.fetch({
+            "query": {"id": "*"},
+            "onItem": function(o) { self._ensureCSSFundClass(o.id[0]); }
+        });
+    };
+
+    this._updateFundSelectorStyle = function(widget, fund_id) {
+        openils.Util.removeCSSClass(widget.widget.domNode, /fund_\d+/);
+        openils.Util.addCSSClass(widget.widget.domNode, "fund_" + fund_id);
     };
 
     this.updateLidState = function(copy, row) {
@@ -1444,6 +1520,28 @@ function AcqLiTable() {
         return L;
     }
 
+    this.confirmBreachedCopyFunds = function(copies) {
+        var stop = 0, warning = 0;
+        copies.forEach(
+            function(o) {
+                if (o.fund()) {
+                    var state = self.fundBalanceState[o.fund()];
+                    if (state[0] /* stop */)
+                        stop++;
+                    else if (state[1] /* warning */)
+                        warning++;
+                }
+            }
+        );
+
+        if (stop) {
+            return confirm(localeStrings.CONFIRM_FUNDS_AT_STOP);
+        } else if (warning) {
+            return confirm(localeStrings.CONFIRM_FUNDS_AT_WARNING);
+        }
+        return true;
+    };
+
     this.saveCopyChanges = function(liId) {
         var self = this;
         var copies = [];
@@ -1459,14 +1557,17 @@ function AcqLiTable() {
             }
         }
 
-        if (typeof(this._copy_count_cb) == "function") {
-            this._copy_count_cb(liId, total);
-        }
 
         dojo.byId('acq-lit-copy-count-label-' + liId).innerHTML = total;
 
 
         if (copies.length > 0) {
+            if (!this.confirmBreachedCopyFunds(copies))
+                return;
+
+            if (typeof(this._copy_count_cb) == "function")
+                this._copy_count_cb(liId, total);
+
             openils.Util.show("acq-lit-update-copies-progress");
             fieldmapper.standardRequest(
                 ['open-ils.acq', 'open-ils.acq.lineitem_detail.cud.batch'],
