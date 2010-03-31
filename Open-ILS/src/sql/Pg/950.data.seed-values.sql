@@ -1333,7 +1333,8 @@ INSERT INTO permission.perm_list VALUES
     (386, 'DELETE_TRIGGER_VALIDATOR', oils_i18n_gettext(386, 'Allow a user to delete trigger validators', 'ppl', 'description')),
     (387, 'UPDATE_TRIGGER_VALIDATOR', oils_i18n_gettext(387, 'Allow a user to update trigger validators', 'ppl', 'description')),
     (388, 'UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds', oils_i18n_gettext(388, 'Allow a user to enable blocking of renews on items that could fulfill holds', 'ppl', 'description')),
-    (389, 'ACQ_XFER_MANUAL_DFUND_AMOUNT', oils_i18n_gettext(389, 'Allow a user to transfer different amounts of money out of one fund and into another', 'ppl', 'description'))
+    (389, 'ACQ_XFER_MANUAL_DFUND_AMOUNT', oils_i18n_gettext(389, 'Allow a user to transfer different amounts of money out of one fund and into another', 'ppl', 'description')),
+    (390, 'OVERRIDE_HOLD_HAS_LOCAL_COPY', oils_i18n_gettext( 390, 'Allow a user to override the circ.holds.hold_has_copy_at.block setting', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -4357,4 +4358,18 @@ INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
     1, 1, 'invalid_isbn', oils_i18n_gettext( 1, 'ISBN is unrecognizable', 'acqcr', 'label' ));
 INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
     2, 1, 'postpone', oils_i18n_gettext( 2, 'Title has been postponed', 'acqcr', 'label' ));
+
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
+    VALUES (
+        'circ.holds.hold_has_copy_at.alert',
+        oils_i18n_gettext('circ.holds.hold_has_copy_at.alert', 'Holds: Has Local Copy Alert', 'coust', 'label'),
+        oils_i18n_gettext('circ.holds.hold_has_copy_at.alert', 'If there is an available copy at the requesting library that could fulfill a hold during hold placement time, alert the patron', 'coust', 'description'),
+        'bool'
+    ),(
+        'circ.holds.hold_has_copy_at.block',
+        oils_i18n_gettext('circ.holds.hold_has_copy_at.block', 'Holds: Has Local Copy Block', 'coust', 'label'),
+        oils_i18n_gettext('circ.holds.hold_has_copy_at.block', 'If there is an available copy at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed', 'coust', 'description'),
+        'bool'
+    );
 
