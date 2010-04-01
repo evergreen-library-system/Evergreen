@@ -2456,15 +2456,17 @@ sub cancel_lineitem {
     }
 
     # attempt to delete the gathered copies (this will also handle volume deletion, bib deletion, and attempt hold retargeting)
-    my $cat_service = OpenSRF::AppSession->create('open-ils.cat');
-    $cat_service->connect;
-    my $cat_req = $cat_service->request('open-ils.cat.asset.copy.fleshed.batch.update', $mgr->editor->authtoken, $copies);
-    my $cat_result  = $cat_req->recv;
-    $cat_service->disconnect;
-    if (!$cat_result or $cat_result->content != 1) { # failed to delete copies
-        return new OpenILS::Event(
-            "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id", "payload" => $cat_result
-        );
+    if (scalar(@$copies)>0) {
+        my $cat_service = OpenSRF::AppSession->create('open-ils.cat');
+        $cat_service->connect;
+        my $cat_req = $cat_service->request('open-ils.cat.asset.copy.fleshed.batch.update', $mgr->editor->authtoken, $copies);
+        my $cat_result  = $cat_req->recv;
+        $cat_service->disconnect;
+        if (!$cat_result or $cat_result->content != 1) { # failed to delete copies
+            return new OpenILS::Event(
+                "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id", "payload" => $cat_result
+            );
+        }
     }
 
     # TODO delete the associated fund debits?
