@@ -2455,7 +2455,9 @@ sub cancel_lineitem {
         $result->{"lid"}->{$k} = $v;
     }
 
-    # attempt to delete the gathered copies (this will also handle volume deletion, bib deletion, and attempt hold retargeting)
+    # Attempt to delete the gathered copies (this will also handle volume deletion, bib deletion, and attempt hold retargeting)
+    # FIXME: one problem here is that if the transaction for cancel_lineitem gets rolled back later, these copies will remain deleted
+    # Another edge case, if we have a bib but not copies, are we supposed to delete the bib?
     if (scalar(@$copies)>0) {
         my $cat_service = OpenSRF::AppSession->create('open-ils.cat');
         $cat_service->connect;
@@ -2466,6 +2468,38 @@ sub cancel_lineitem {
             return new OpenILS::Event(
                 "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id", "payload" => $cat_result
             );
+        }
+    }
+
+    # if we have a bib, check to see whether it has been deleted.  if so, cancel any active holds targeting that bib
+    if ($li->eg_bib_id) {
+        my $bib = $mgr->editor->retrieve_biblio_record_entry($li->eg_bib_id) or return new OpenILS::Event(
+            "ACQ_NOT_CANCELABLE", "note" => "Could not retrieve bib " . $li->eg_bib_id . " for lineitem $li_id"
+        );
+        if ($U->is_true($bib->deleted)) {
+            my $holds = $mgr->editor->search_action_hold_request(
+                {   cancel_time => undef,
+                    fulfillment_time => undef,
+                    target => $li->eg_bib_id
+                }
+            );
+
+            for my $hold (@$holds) {
+
+                $logger->info("Cancelling hold ".$hold->id.
+                    " due to acq lineitem cancellation.");
+
+                $hold->cancel_time('now');
+                $hold->cancel_cause(5); # 'Staff forced'--we may want a new hold cancel cause reason for this
+                $hold->cancel_note('Corresponding Acquistion Lineitem/Purchase Order was cancelled.');
+                unless($mgr->editor->update_action_hold_request($hold)) {
+                    my $evt = $mgr->editor->event;
+                    $logger->error("Error updating hold ". $evt->textcode .":". $evt->desc .":". $evt->stacktrace);
+                    return new OpenILS::Event(
+                        "ACQ_NOT_CANCELABLE", "note" => "Could not cancel hold " . $hold->id . " for lineitem $li_id", "payload" => $evt
+                    );
+                }
+            }
         }
     }
 
