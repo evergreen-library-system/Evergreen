@@ -86,7 +86,7 @@ $func$ LANGUAGE 'sql' STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$
         SELECT SUBSTRING( $1 FROM $_$^\S+$_$);
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize_keep_comma( TEXT ) RETURNS TEXT AS $func$
         SELECT public.naco_normalize($1,'a');
@@ -94,23 +94,23 @@ $func$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.normalize_space( TEXT ) RETURNS TEXT AS $$
     SELECT regexp_replace(regexp_replace(regexp_replace($1, E'\\n', ' ', 'g'), E'(?:^\\s+)|(\\s+$)', '', 'g'), E'\\s+', ' ', 'g');
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.remove_commas( TEXT ) RETURNS TEXT AS $$
     SELECT regexp_replace($1, ',', '', 'g');
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.remove_whitespace( TEXT ) RETURNS TEXT AS $$
     SELECT regexp_replace(normalize_space($1), E'\\s+', '', 'g');
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.lowercase( TEXT ) RETURNS TEXT AS $$
     return lc(shift);
-$$ LANGUAGE PLPERLU;
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.uppercase( TEXT ) RETURNS TEXT AS $$
     return uc(shift);
-$$ LANGUAGE PLPERLU;
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.remove_diacritics( TEXT ) RETURNS TEXT AS $$
     use Unicode::Normalize;
@@ -119,7 +119,7 @@ CREATE OR REPLACE FUNCTION public.remove_diacritics( TEXT ) RETURNS TEXT AS $$
     $x =~ s/\pM+//go;
     return $x;
 
-$$ LANGUAGE PLPERLU;
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.entityize( TEXT ) RETURNS TEXT AS $$
     use Unicode::Normalize;
@@ -128,7 +128,7 @@ CREATE OR REPLACE FUNCTION public.entityize( TEXT ) RETURNS TEXT AS $$
     $x =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
     return $x;
 
-$$ LANGUAGE PLPERLU;
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	my $txt = shift;
@@ -244,7 +244,7 @@ BEGIN
     END LOOP;
     RETURN;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql STABLE;
 
 COMMENT ON FUNCTION actor.org_unit_ancestor_setting( TEXT, INT) IS $$
 /**

@@ -1,46 +1,77 @@
-/*
- * Copyright (C) 2004-2008  Georgia Public Library Service
- * Copyright (C) 2008  Equinox Software, Inc.
- * Mike Rylander <miker@esilibrary.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- */
-
-
 BEGIN;
 
-/*
-CREATE OR REPLACE FUNCTION oils_xml_transform ( TEXT, TEXT ) RETURNS TEXT AS $_$
-	SELECT	CASE	WHEN (SELECT COUNT(*) FROM config.xml_transform WHERE name = $2 AND xslt = '---') > 0 THEN $1
-			ELSE xslt_process($1, (SELECT xslt FROM config.xml_transform WHERE name = $2))
-		END;
-$_$ LANGUAGE SQL STRICT IMMUTABLE;
+INSERT INTO config.upgrade_log (version) VALUES ('0226');
 
-CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT, TEXT ) RETURNS TEXT AS $$
-    SELECT regexp_replace(array_to_string( array_accum( output ),' ' ),$4,'','g') FROM oils_xpath_table('id', 'marc', $1, $3, 'id='||$2)x(id INT, output TEXT);
-$$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$
+        SELECT SUBSTRING( $1 FROM $_$^\S+$_$);
+$$ LANGUAGE SQL STRICT IMMUTABLE;
 
-*/
+CREATE OR REPLACE FUNCTION public.normalize_space( TEXT ) RETURNS TEXT AS $$
+    SELECT regexp_replace(regexp_replace(regexp_replace($1, E'\\n', ' ', 'g'), E'(?:^\\s+)|(\\s+$)', '', 'g'), E'\\s+', ' ', 'g');
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.remove_commas( TEXT ) RETURNS TEXT AS $$
+    SELECT regexp_replace($1, ',', '', 'g');
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.remove_whitespace( TEXT ) RETURNS TEXT AS $$
+    SELECT regexp_replace(normalize_space($1), E'\\s+', '', 'g');
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.lowercase( TEXT ) RETURNS TEXT AS $$
+    return lc(shift);
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.uppercase( TEXT ) RETURNS TEXT AS $$
+    return uc(shift);
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.remove_diacritics( TEXT ) RETURNS TEXT AS $$
+    use Unicode::Normalize;
+
+    my $x = NFD(shift);
+    $x =~ s/\pM+//go;
+    return $x;
+
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.entityize( TEXT ) RETURNS TEXT AS $$
+    use Unicode::Normalize;
+
+    my $x = NFC(shift);
+    $x =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+    return $x;
+
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting( setting_name TEXT, org_id INT ) RETURNS SETOF actor.org_unit_setting AS $$
+DECLARE
+    setting RECORD;
+    cur_org INT;
+BEGIN
+    cur_org := org_id;
+    LOOP
+        SELECT INTO setting * FROM actor.org_unit_setting WHERE org_unit = cur_org AND name = setting_name;
+        IF FOUND THEN
+            RETURN NEXT setting;
+        END IF;
+        SELECT INTO cur_org parent_ou FROM actor.org_unit WHERE id = cur_org;
+        EXIT WHEN cur_org IS NULL;
+    END LOOP;
+    RETURN;
+END;
+$$ LANGUAGE plpgsql STABLE;
 
 CREATE FUNCTION version_specific_xpath () RETURNS TEXT AS $wrapper_function$
 DECLARE
     out_text TEXT;
 BEGIN
-    
+
     IF REGEXP_REPLACE(VERSION(),E'^.+?(\\d+\\.\\d+).*?$',E'\\1')::FLOAT < 8.3 THEN
         out_text := 'Creating XPath functions that work like the native XPATH function in 8.3+';
-        
+
         EXECUTE $create_82_funcs$
-                        
+
 CREATE OR REPLACE FUNCTION oils_xpath ( xpath TEXT, xml TEXT, ns ANYARRAY ) RETURNS TEXT[] AS $func$
 DECLARE
     node_text   TEXT;
@@ -158,7 +189,6 @@ $wrapper_function$ LANGUAGE PLPGSQL;
 SELECT version_specific_xpath();
 DROP FUNCTION version_specific_xpath();
 
-
 CREATE OR REPLACE FUNCTION oils_xpath_string ( TEXT, TEXT, TEXT, ANYARRAY ) RETURNS TEXT AS $func$
     SELECT  ARRAY_TO_STRING(
                 oils_xpath(
@@ -241,7 +271,6 @@ SELECT * FROM (
 END;
 $func$ LANGUAGE PLPGSQL IMMUTABLE;
 
-
 CREATE OR REPLACE FUNCTION extract_marc_field ( TEXT, BIGINT, TEXT, TEXT ) RETURNS TEXT AS $$
 DECLARE
     query TEXT;
@@ -272,8 +301,6 @@ CREATE OR REPLACE FUNCTION extract_marc_field ( TEXT, BIGINT, TEXT ) RETURNS TEX
     SELECT extract_marc_field($1,$2,$3,'');
 $$ LANGUAGE SQL IMMUTABLE;
 
-
-
 CREATE OR REPLACE FUNCTION oils_i18n_xlate ( keytable TEXT, keyclass TEXT, keycol TEXT, identcol TEXT, keyvalue TEXT, raw_locale TEXT ) RETURNS TEXT AS $func$
 DECLARE
     locale      TEXT := REGEXP_REPLACE( REGEXP_REPLACE( raw_locale, E'[;, ].+$', '' ), E'_', '-', 'g' );
@@ -301,7 +328,7 @@ BEGIN
 
     -- Fall back to the string we passed in in the first place
     IF NOT FOUND THEN
-	EXECUTE
+    EXECUTE
             'SELECT ' ||
                 keycol ||
             ' FROM ' || keytable ||
@@ -313,16 +340,6 @@ BEGIN
     RETURN result.string;
 END;
 $func$ LANGUAGE PLPGSQL STABLE;
-
--- Functions for marking translatable strings in SQL statements
--- Parameters are: primary key, string, class hint, property
-CREATE OR REPLACE FUNCTION oils_i18n_gettext( INT, TEXT, TEXT, TEXT ) RETURNS TEXT AS $$
-    SELECT $2;
-$$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION oils_i18n_gettext( TEXT, TEXT, TEXT, TEXT ) RETURNS TEXT AS $$
-    SELECT $2;
-$$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION is_json (TEXT) RETURNS BOOL AS $func$
     use JSON::XS;
