@@ -1485,17 +1485,22 @@ sub check_user_perms4 {
 }
 
 
-
-
 __PACKAGE__->register_method(
-	method	=> "user_fines_summary",
-	api_name	=> "open-ils.actor.user.fines.summary",
+    method        => "user_fines_summary",
+    api_name      => "open-ils.actor.user.fines.summary",
     authoritative => 1,
-	notes		=> <<"	NOTES");
-	Returns a short summary of the users total open fines, excluding voided fines
-	Params are login_session, user_id
-	Returns a 'mous' object.
-	NOTES
+    signature     => {
+        desc   => 'Returns a short summary of the users total open fines, '  .
+                  'excluding voided fines Params are login_session, user_id' ,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'User ID',              type => 'string'}  # number?
+        ],
+        return => {
+            desc => "a 'mous' object, event on error",
+        }
+    }
+);
 
 sub user_fines_summary {
 	my( $self, $client, $auth, $user_id ) = @_;

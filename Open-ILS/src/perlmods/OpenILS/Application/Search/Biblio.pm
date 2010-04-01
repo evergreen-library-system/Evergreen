@@ -209,8 +209,19 @@ sub record_id_to_copy_count {
 __PACKAGE__->register_method(
     method   => "biblio_search_tcn",
     api_name => "open-ils.search.biblio.tcn",
-    argc     => 3,
-    note     => "Retrieve a record by TCN",
+    argc     => 1,
+    signature => {
+        desc   => "Retrieve related record ID(s) given a TCN",
+        params => [
+            { desc => 'TCN', type => 'string' },
+            { desc => 'Flag indicating to include deleted records', type => 'string' }
+        ],
+        return => {
+            desc => 'Results object like: { "count": $i, "ids": [...] }',
+            type => 'object'
+        }
+    }
+
 );
 
 sub biblio_search_tcn {
@@ -320,14 +331,24 @@ sub biblio_id_to_uris {
 
 
 __PACKAGE__->register_method(
-    method   => "copy_retrieve",
-    api_name => "open-ils.search.asset.copy.retrieve",
+    method    => "copy_retrieve",
+    api_name  => "open-ils.search.asset.copy.retrieve",
+    argc      => 1,
+    signature => {
+        desc   => 'Retrieve a copy object based on the Copy ID',
+        params => [
+            { desc => 'Copy ID', type => 'number'}
+        ],
+        return => {
+            desc => 'Copy object, event on error'
+        }
+    }
 );
+
 sub copy_retrieve {
 	my( $self, $client, $cid ) = @_;
 	my( $copy, $evt ) = $U->fetch_copy($cid);
-	return $evt if $evt;
-	return $copy;
+	return $evt || $copy;
 }
 
 __PACKAGE__->register_method(
@@ -367,8 +388,7 @@ __PACKAGE__->register_method(
 sub fleshed_copy_retrieve { 
 	my( $self, $client, $id ) = @_;
 	my( $c, $e) = $U->fetch_fleshed_copy($id);
-	return $e if $e;
-	return $c;
+	return $e || $c;
 }
 
 
@@ -750,11 +770,11 @@ sub cat_search_z_style_wrapper {
 	$$searchhash{searches}{subject}{term} = $$args{search}{subject} if $$args{search}{subject};
 	$$searchhash{searches}{keyword}{term} = $$args{search}{keyword} if $$args{search}{keyword};
 
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{tcn} if $$args{search}{tcn};
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{isbn} if $$args{search}{isbn};
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{issn} if $$args{search}{issn};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{tcn}       if $$args{search}{tcn};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{isbn}      if $$args{search}{isbn};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{issn}      if $$args{search}{issn};
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{publisher} if $$args{search}{publisher};
-	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate} if $$args{search}{pubdate};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate}   if $$args{search}{pubdate};
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
 
 	my $list = the_quest_for_knowledge( $self, $client, $searchhash );
@@ -1686,19 +1706,18 @@ sub copy_count_location_summary {
 }
 
 
+foreach (qw/open-ils.search.biblio.marc
+            open-ils.search.biblio.marc.staff/)
+{
 __PACKAGE__->register_method(
-    method   => "marc_search",
-    api_name => "open-ils.search.biblio.marc.staff",
-);
-
-__PACKAGE__->register_method(
-    method   => "marc_search",
-    api_name => "open-ils.search.biblio.marc",
+    method    => "marc_search",
+    api_name  => $_,
     signature => {
-        desc   => 'Fetch biblio IDs based on MARC record criteria',
+        desc   => 'Fetch biblio IDs based on MARC record criteria.  '
+                . 'As usual, the .staff version of the search includes otherwise hidden records',
         params => [
             {
-                desc => 'Search hash with possible elements: searches, limit, offset, sort, sort_dir.  (required).  ' .
+                desc => 'Search hash (required) with possible elements: searches, limit, offset, sort, sort_dir. ' .
                         'See perldoc ' . __PACKAGE__ . ' for more detail.',
                 type => 'object'
             },
@@ -1711,6 +1730,7 @@ __PACKAGE__->register_method(
         }
     }
 );
+}
 
 =head3 open-ils.search.biblio.marc (arghash, limit, offset)
 
@@ -1875,8 +1895,18 @@ sub biblio_search_issn {
 
 
 __PACKAGE__->register_method(
-    method   => "fetch_mods_by_copy",
-    api_name => "open-ils.search.biblio.mods_from_copy",
+    method    => "fetch_mods_by_copy",
+    api_name  => "open-ils.search.biblio.mods_from_copy",
+    argc      => 1,
+    signature => {
+        desc    => 'Retrieve MODS record given an attached copy ID',
+        params  => [
+            { desc => 'Copy ID', type => 'number' }
+        ],
+        returns => {
+            desc => 'MODS record, event on error or uncataloged item'
+        }
+    }
 );
 
 sub fetch_mods_by_copy {
@@ -1886,7 +1916,6 @@ sub fetch_mods_by_copy {
 	return OpenILS::Event->new('ITEM_NOT_CATALOGED') unless $record->marc;
 	return $apputils->record_to_mvr($record);
 }
-
 
 
 # -------------------------------------------------------------------------------------
