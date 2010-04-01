@@ -2469,20 +2469,25 @@ sub cancel_lineitem {
         $result->{"lid"}->{$k} = $v;
     }
 
-    # Attempt to delete the gathered copies (this will also handle volume deletion, bib deletion, and attempt hold retargeting)
-    # FIXME: one problem here is that if the transaction for cancel_lineitem gets rolled back later, these copies will remain deleted
+    # Attempt to delete the gathered copies (this will also handle volume deletion and bib deletion)
     # Another edge case, if we have a bib but not copies, are we supposed to delete the bib?
     if (scalar(@$copies)>0) {
-        my $cat_service = OpenSRF::AppSession->create('open-ils.cat');
-        $cat_service->connect;
-        my $cat_req = $cat_service->request('open-ils.cat.asset.copy.fleshed.batch.update', $mgr->editor->authtoken, $copies);
-        my $cat_result  = $cat_req->recv;
-        $cat_service->disconnect;
-        if (!$cat_result or $cat_result->content != 1) { # failed to delete copies
+        my $override = 0;
+        my $delete_stats = undef;
+        my $retarget_holds = [];
+        my $cat_evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
+            $mgr->editor, $override, undef, $copies, $delete_stats, $retarget_holds);
+
+        if( $cat_evt ) {
+            $logger->info("fleshed copy update failed with event: ".OpenSRF::Utils::JSON->perl2JSON($cat_evt));
             return new OpenILS::Event(
-                "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id", "payload" => $cat_result
+                "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id", "payload" => $cat_evt
             );
         }
+
+        # We can't do the following and stay within the same transaction, but that's okay, the hold targeter will pick these up later.
+        #my $ses = OpenSRF::AppSession->create('open-ils.circ');
+        #$ses->request('open-ils.circ.hold.reset.batch', $auth, $retarget_holds);
     }
 
     # if we have a bib, check to see whether it has been deleted.  if so, cancel any active holds targeting that bib
