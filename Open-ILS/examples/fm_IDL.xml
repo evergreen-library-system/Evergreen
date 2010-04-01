@@ -7079,6 +7079,67 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
+	<class id="acrlid" controller="open-ils.cstore" oils_obj:fieldmapper="acq::claim_ready_lineitem_detail" oils_persist:readonly="true" reporter:label="Claim Ready Lineitem Details">
+		<oils_persist:source_definition>
+
+            SELECT
+                po.ordering_agency AS ordering_agency,
+                po.id AS purchase_order,
+                li.id AS lineitem,
+                lid.id AS lineitem_detail,
+                cpa.id AS claim_policy_action
+            FROM
+                acq.lineitem_detail lid
+                JOIN acq.lineitem li ON (li.id = lid.lineitem)
+                JOIN acq.purchase_order po ON (po.id = li.purchase_order)
+                JOIN acq.claim_policy cp ON (li.claim_policy = cp.id)
+                JOIN acq.claim_policy_action cpa ON (
+                    cpa.claim_policy = cp.id
+
+                    -- we only care about claim policy actions whose claim
+                    -- interval we'd reached or exceeded
+                    AND (NOW() - cpa.action_interval) &gt; po.order_date
+
+                    -- filter out all claim policy actions where claim events
+                    -- have occurred on or after the action's action_interval
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM
+                            acq.claim_event evt
+                            JOIN acq.claim claim ON (
+                                claim.id = evt.claim
+                                AND claim.lineitem_detail = lid.id
+                            )
+                        WHERE
+                            evt.event_date &gt;= (po.order_date + cpa.action_interval)
+                    )
+                )
+            WHERE
+                lid.cancel_reason IS NULL
+                AND li.cancel_reason IS NULL -- belt/suspenders
+                AND po.cancel_reason IS NULL -- belt/suspenders
+                AND lid.recv_time IS NULL
+                AND po.state = 'on-order'
+            ORDER BY 1, 2, 3, 4, 5
+
+		</oils_persist:source_definition>
+		<fields>
+			<field reporter:label="Ordering Agency" name="ordering_agency" reporter:datatype="link"/>
+			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link"/>
+			<field reporter:label="Lineitem" name="lineitem" reporter:datatype="link"/>
+			<field reporter:label="Lineitem Detail" name="lineitem_detail" reporter:datatype="link"/>
+			<field reporter:label="Claim Policy Action" name="claim_policy_action" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="ordering_agency" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+			<link field="lineitem_detail" reltype="has_a" key="id" map="" class="acqlid"/>
+			<link field="claim_policy_action" reltype="has_a" key="id" map="" class="acqclpa"/>
+		</links>
+	</class>
+
+
 	<class id="iatc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::intersystem_transit_copy" oils_persist:readonly="true" reporter:core="true" reporter:label="Inter-system Copy Transit">
 		<oils_persist:source_definition>
 
