@@ -46,20 +46,27 @@ sub child_init {
 # ------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method	=> "spellcheck",
-	api_name	=> "open-ils.search.spellcheck",
+    method    => "spellcheck",
+    api_name  => "open-ils.search.spellcheck",
     signature => {
-        desc   => 'Returns alternate spelling suggestions',
-        param  => [
-            {name => 'phrase', desc => 'Word or phrase to return alternate spelling suggestions for', type => 'string'},
-            {name => 'Dictionary class', desc => 'Used to specify an alternate configured dictiony to use for suggestions', type => 'string'},
+        desc  => 'Returns alternate spelling suggestions',
+        param => [
+            {
+                name => 'phrase',
+                desc => 'Word or phrase to return alternate spelling suggestions for',
+                type => 'string'
+            },
+            {
+                name => 'Dictionary class',
+                desc => 'Alternate configured dictionary to use (optional)',
+                type => 'string'
+            },
         ],
         return => {
-            desc => q/
-                Suggestions for each word in the phrase.  
-                [ { word : original_word, suggestions : [sug1, sug2, ...], found : 1 if the word was found in the dictionary, 0 otherwise }, ... ]
-            /,
-            type => 'array', 
+            desc => 'Array with a suggestions hash for each word in the phrase, like: '
+                  . q# [{ word: original_word, suggestions: [sug1, sug2, ...], found: 1 }, ... ] #
+                  . 'The "found" value will be 1 if the word was found in the dictionary, 0 otherwise.',
+            type => 'array',
         }
     }
 );
@@ -68,6 +75,8 @@ my $speller = Text::Aspell->new();
 
 sub spellcheck {
 	my( $self, $client, $phrase, $class ) = @_;
+
+    return [] unless $phrase;   # nothing to check, abort.
 
 	my $conf = OpenSRF::Utils::SettingsClient->new;
     $class ||= 'default';
@@ -80,7 +89,6 @@ sub spellcheck {
 	}
 
 	my @resp;
-	return \@resp unless $phrase;
 
 	for my $word (split(/\s+/,$phrase) ) {
 

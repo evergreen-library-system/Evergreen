@@ -40,10 +40,10 @@ sub open_noncat_circs {
 	return action::non_cataloged_circulation->db_Main->selectcol_arrayref($sql, {}, $user);
 }
 __PACKAGE__->register_method(
-	api_name        => 'open-ils.storage.action.open_non_cataloged_circulation.user',
-	api_level       => 1,
-	argc		=> 1,
-	method          => 'open_noncat_circs',
+    api_name  => 'open-ils.storage.action.open_non_cataloged_circulation.user',
+    method    => 'open_noncat_circs',
+    api_level => 1,
+    argc      => 1,
 );
 
 

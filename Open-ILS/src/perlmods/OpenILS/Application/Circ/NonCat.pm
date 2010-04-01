@@ -57,16 +57,17 @@ sub create_non_cat_circ {
 
 
 __PACKAGE__->register_method(
-	method	=> "create_noncat_type",
-	api_name	=> "open-ils.circ.non_cat_type.create",
-	notes		=> q/
+    method   => "create_noncat_type",
+    api_name => "open-ils.circ.non_cat_type.create",
+    notes    => q/
 		Creates a new non cataloged item type
 		@param authtoken The login session key
 		@param name The name of the new type
 		@param orgId The location where the type will live
 		@return The type object on success and the corresponding
 		event on failure
-	/);
+	/
+);
 
 sub create_noncat_type {
 	my( $self, $client, $authtoken, $name, $orgId, $interval, $inhouse ) = @_;
@@ -97,17 +98,17 @@ sub create_noncat_type {
 }
 
 
-
 __PACKAGE__->register_method(
-	method	=> "update_noncat_type",
-	api_name	=> "open-ils.circ.non_cat_type.update",
-	notes		=> q/
+    method   => "update_noncat_type",
+    api_name => "open-ils.circ.non_cat_type.update",
+    notes    => q/
 		Updates a non-cataloged type object
 		@param authtoken The login session key
 		@param type The updated type object
 		@return The result of the DB update call unless a preceeding event occurs, 
 			in which case the event will be returned
-	/);
+	/
+);
 
 sub update_noncat_type {
 	my( $self, $client, $authtoken, $type ) = @_;
@@ -128,33 +129,45 @@ sub update_noncat_type {
 }
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_noncat_types_all",
-	api_name	=> "open-ils.circ.non_cat_types.retrieve.all",
-	notes		=> q/
-		Retrieves the non-cat types at the requested location as well
-		as those above and below the requested location in the org tree
-		@param orgId The base location at which to retrieve the type objects
-		@param depth Optional parameter to limit the depth of the tree
-		@return An array of non cat type objects or an event if an error occurs
-	/);
+    method    => "retrieve_noncat_types_all",
+    api_name  => "open-ils.circ.non_cat_types.retrieve.all",
+    signature => {
+        desc   => 'Retrieves the non-cat types at the requested location as well '
+                . 'as those above and below it in the org tree',
+        params => [
+            { name => 'orgId', desc => 'Org unit ID of the base location',   type => 'number' },
+            { name => 'depth', desc => 'Depth limit of the tree (optional)', type => 'number' }
+        ],
+        return => {
+            desc => 'Array of non-cat objects, event on error'
+        },
+    }
+);
 
 sub retrieve_noncat_types_all {
-	my( $self, $client, $orgId, $depth ) = @_;
-	my $meth = 'open-ils.storage.ranged.config.non_cataloged_type.retrieve.atomic';
-	my $svc = 'open-ils.storage';
-	return $U->simplereq($svc, $meth, $orgId, $depth) if defined($depth);
-	return $U->simplereq($svc, $meth, $orgId);
+    my( $self, $client, $orgId, $depth ) = @_;
+    my $meth = 'open-ils.storage.ranged.config.non_cataloged_type.retrieve.atomic';
+    my $svc  = 'open-ils.storage';
+    return $U->simplereq($svc, $meth, $orgId, $depth) if defined($depth);
+    return $U->simplereq($svc, $meth, $orgId);
 }
 
 
-
 __PACKAGE__->register_method(
-	method		=> 'fetch_noncat',
-	api_name		=> 'open-ils.circ.non_cataloged_circulation.retrieve',
-	signature	=> q/
-	/
+    method    => 'fetch_noncat',
+    api_name  => 'open-ils.circ.non_cataloged_circulation.retrieve',
+    signature => {
+        desc   => 'Retrieve a circulation on a non cataloged item for a given Circ ID.  If the operator is not the '
+                . 'patron owner of the circ, the VIEW_CIRCULATIONS permission is required',
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Circulation ID',       type => 'number' }
+        ],
+        return => {
+            desc => 'Circulation object, event on error',
+        },
+    }
 );
-
 
 sub fetch_noncat {
 	my( $self, $conn, $auth, $circid ) = @_;
@@ -194,17 +207,21 @@ sub noncat_due_date {
 
 
 __PACKAGE__->register_method(
-	method => 'fetch_open_noncats',
+    method        => 'fetch_open_noncats',
     authoritative => 1,
-	api_name	=> 'open-ils.circ.open_non_cataloged_circulation.user',
-	signature => q/
-		Returns an id-list of non-cataloged circulations that are considered
-		open as of now.  a circ is open if circ time + circ duration 
-		(based on type) is > than now.
-		@param auth auth key
-		@param userid user to retrieve non-cat circs for 
-			defaults to the session user
-	/
+    api_name      => 'open-ils.circ.open_non_cataloged_circulation.user',
+    signature     => {
+        desca   => 'For a given user, returns an id-list of non-cataloged circulations that are considered open as of now.  ' .
+		           'A circ is open if circ time + circ duration (based on type) is > than now.  If trying to view the circs ' .
+                   'of another user, the VIEW_CIRCULATIONS permission is required',
+		params => [
+            { desc => 'Authentication token',                            type => 'string' },
+            { desc => 'UserID (optional: defaults to the session user)', type => 'number' }
+		],
+        return => {
+            desc => 'Array of non-cataloged circ IDs, event on error'
+        },
+    }
 );
 
 sub fetch_open_noncats {
@@ -221,8 +238,8 @@ sub fetch_open_noncats {
 
 
 __PACKAGE__->register_method(
-	method	=> 'delete_noncat',
-	api_name	=> 'open-ils.circ.non_cataloged_type.delete',
+    method   => 'delete_noncat',
+    api_name => 'open-ils.circ.non_cataloged_type.delete',
 );
 sub delete_noncat {
 	my( $self, $conn, $auth, $typeid ) = @_;
@@ -241,7 +258,6 @@ sub delete_noncat {
 	$e->commit;
 	return 1;
 }
-
 
 
 1;

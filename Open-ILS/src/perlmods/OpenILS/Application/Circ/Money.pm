@@ -447,7 +447,7 @@ sub fetch_reservation {
 }
 
 __PACKAGE__->register_method(
-    method => 'fetch_grocery',
+    method   => 'fetch_grocery',
     api_name => 'open-ils.circ.money.grocery.retrieve'
 );
 sub fetch_grocery {
@@ -462,13 +462,21 @@ sub fetch_grocery {
 
 
 __PACKAGE__->register_method(
-    method    => "billing_items",
+    method        => "billing_items",
+    api_name      => "open-ils.circ.money.billing.retrieve.all",
     authoritative => 1,
-    api_name    => "open-ils.circ.money.billing.retrieve.all",
-    notes        =><<"    NOTE");
-    Returns a list of billing items for the given transaction.
-    PARAMS( login, transaction_id )
-    NOTE
+    signature     => {
+        desc   => 'Returns a list of billing items for the given transaction ID.  ' .
+                  'If the operator is not the owner of the transaction, the VIEW_TRANSACTION permission is required.',
+        params => [
+            { desc => 'Authentication token', type => 'string'},
+            { desc => 'Transaction ID',       type => 'number'}
+        ],
+        return => {
+            desc => 'Transaction object, event on error'
+        },
+    }
+);
 
 sub billing_items {
     my( $self, $client, $login, $transid ) = @_;
@@ -491,9 +499,9 @@ sub billing_items {
 
 
 __PACKAGE__->register_method(
-    method    => "billing_items_create",
-    api_name    => "open-ils.circ.money.billing.create",
-    notes        =><<"    NOTE");
+    method   => "billing_items_create",
+    api_name => "open-ils.circ.money.billing.create",
+    notes    => <<"    NOTE");
     Creates a new billing line item
     PARAMS( login, bill_object (mb) )
     NOTE
