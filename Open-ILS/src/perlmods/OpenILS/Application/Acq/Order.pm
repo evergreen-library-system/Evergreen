@@ -2403,7 +2403,7 @@ sub cancel_lineitem_api {
 sub cancel_lineitem {
     my ($mgr, $li_id, $cancel_reason) = @_;
     my $li = $mgr->editor->retrieve_acq_lineitem([
-        $li_id, {"flesh" => 1, "flesh_fields" => {"jub" => ["purchase_order"]}}
+        $li_id, {flesh => 1, flesh_fields => {jub => ['purchase_order']}}
     ]) or return 0;
 
     return 0 unless $mgr->editor->allowed(
@@ -2427,12 +2427,12 @@ sub cancel_lineitem {
     $li->state("cancelled");
     $li->cancel_reason($cancel_reason);
 
-    my $lids = $mgr->editor->search_acq_lineitem_detail({
+    my $lids = $mgr->editor->search_acq_lineitem_detail([{
         "lineitem" => $li_id
     }, {
         flesh => 1,
         flesh_fields => { acqlid => ['eg_copy_id'] }
-    });
+    }]);
 
     my $result = {"lid" => {}};
     my $copies = [];
@@ -2455,7 +2455,7 @@ sub cancel_lineitem {
         $result->{"lid"}->{$k} = $v;
     }
 
-    # attempt to delete the gathered copies (will this may handle volume deletion and do hold retargeting for us?)
+    # attempt to delete the gathered copies (this will also handle volume deletion, bib deletion, and attempt hold retargeting)
     my $cat_service = OpenSRF::AppSession->create('open-ils.cat');
     $cat_service->connect;
     my $cat_req = $cat_service->request('open-ils.cat.asset.copy.fleshed.batch.update', $mgr->editor->authtoken, $copies);
