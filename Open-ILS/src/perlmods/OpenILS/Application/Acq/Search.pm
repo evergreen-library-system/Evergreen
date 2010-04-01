@@ -49,31 +49,30 @@ sub prepare_acqlia_search_and {
 
     my @phrases = ();
     foreach my $unit (@{$acqlia}) {
-        my $something = 0;
         my $subquery = {
             "select" => {"acqlia" => ["id"]},
             "from" => "acqlia",
             "where" => {"-and" => [{"lineitem" => {"=" => {"+jub" => "id"}}}]}
         };
 
-        while (my ($k, $v) = each %$unit) {
-            my $point = $subquery->{"where"}->{"-and"};
-            if ($k !~ /^__/) {
-                push @$point, {"definition" => $k};
-                $something++;
+        my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
+        my $point = $subquery->{"where"}->{"-and"};
+        my $term_clause;
 
-                if ($unit->{"__fuzzy"} and not ref $v) {
-                    push @$point, {"attr_value" => {"ilike" => "%" . $v . "%"}};
-                } elsif ($unit->{"__between"} and could_be_range($v)) {
-                    push @$point, {"attr_value" => {"between" => $v}};
-                } elsif (check_1d_max($v)) {
-                    push @$point, {"attr_value" => $v};
-                } else {
-                    $something--;
-                }
-            }
+        push @$point, {"definition" => $k};
+
+        if ($fuzzy and not ref $v) {
+            push @$point, {"attr_value" => {"ilike" => "%" . $v . "%"}};
+        } elsif ($between and could_be_range($v)) {
+            push @$point, {"attr_value" => {"between" => $v}};
+        } elsif (check_1d_max($v)) {
+            push @$point, {"attr_value" => $v};
+        } else {
+            next;
         }
-        push @phrases, {"-exists" => $subquery} if $something;
+
+        my $operator = $not ? "-not-exists" : "-exists";
+        push @phrases, {$operator => $subquery};
     }
     @phrases;
 }
@@ -85,25 +84,30 @@ sub prepare_acqlia_search_or {
     my $result = {"+acqlia" => {"-or" => $point}};
 
     foreach my $unit (@$acqlia) {
-        my ($k, $v, $fuzzy, $between) = breakdown_term($unit);
+        my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
+        my $term_clause;
         if ($fuzzy and not ref $v) {
-            push @$point, {
+            $term_clause = {
                 "-and" => {
                     "definition" => $k,
                     "attr_value" => {"ilike" => "%" . $v . "%"}
                 }
             };
         } elsif ($between and could_be_range($v)) {
-            push @$point, {
+            $term_clause = {
                 "-and" => {
                     "definition" => $k, "attr_value" => {"between" => $v}
                 }
             };
         } elsif (check_1d_max($v)) {
-            push @$point, {
+            $term_clause = {
                 "-and" => {"definition" => $k, "attr_value" => $v}
             };
+        } else {
+            next;
         }
+
+        push @$point, $not ? {"-not" => $term_clause} : $term_clause;
     }
     $result;
 }
@@ -115,7 +119,8 @@ sub breakdown_term {
     (
         $key, $term->{$key},
         $term->{"__fuzzy"} ? 1 : 0,
-        $term->{"__between"} ? 1 : 0
+        $term->{"__between"} ? 1 : 0,
+        $term->{"__not"} ? 1 : 0
     );
 }
 
@@ -201,14 +206,19 @@ sub prepare_terms {
         my $clause = [];
         $outer_clause->{$conj} = [] unless $outer_clause->{$conj};
         foreach my $unit (@{$terms->{$class}}) {
-            my ($k, $v, $fuzzy, $between) = breakdown_term($unit);
+            my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
+            my $term_clause;
             if ($fuzzy and not ref $v) {
-                push @$clause, {$k => {"ilike" => "%" . $v . "%"}};
+                $term_clause = {$k => {"ilike" => "%" . $v . "%"}};
             } elsif ($between and could_be_range($v)) {
-                push @$clause, {$k => {"between" => $v}};
+                $term_clause = {$k => {"between" => $v}};
             } elsif (check_1d_max($v)) {
-                push @$clause, {$k => $v};
+                $term_clause = {$k => $v};
+            } else {
+                next;
             }
+
+            push @$clause, $not ? {"-not" => $term_clause} : $term_clause;
         }
         push @{$outer_clause->{$conj}}, {"+" . $class => $clause};
     }
@@ -318,12 +328,12 @@ sub unified_search {
         "from" => {
             "jub" => {
                 "acqpo" => {
-                    "type" => "full",
+                    "type" => "left",
                     "field" => "id",
                     "fkey" => "purchase_order"
                 },
                 "acqpl" => {
-                    "type" => "full",
+                    "type" => "left",
                     "field" => "id",
                     "fkey" => "picklist"
                 }
