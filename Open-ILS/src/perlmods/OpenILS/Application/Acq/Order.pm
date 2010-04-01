@@ -2519,17 +2519,13 @@ sub cancel_lineitem {
                     $mgr->{post_commit} = [];
                 }
                 push @{ $mgr->{post_commit} }, sub {
-                    my $trigger_ses = OpenSRF::AppSession->create('open-ils.trigger');
-                    $trigger_ses->connect;
                     my $home_ou = $cached_usr_home_ou{$hold->usr};
                     if (! $home_ou) {
                         my $user = $mgr->editor->retrieve_actor_user($hold->usr); # FIXME: how do we want to handle failures here?
                         $home_ou = $user->home_ou;
                         $cached_usr_home_ou{$hold->usr} = $home_ou;
                     }
-                    my $trigger_req = $trigger_ses->request('open-ils.trigger.event.autocreate', 'hold_request.cancel.cancelled_order', $hold, $home_ou);
-                    $trigger_req->recv;
-                    $trigger_ses->disconnect;
+                    $U->create_events_for_hook('hold_request.cancel.cancelled_order', $hold, $home_ou);
                 };
             }
         }
