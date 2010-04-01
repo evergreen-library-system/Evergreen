@@ -47,6 +47,7 @@ ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_editor_fkey FOR
 
 ALTER TABLE biblio.record_entry ADD CONSTRAINT biblio_record_entry_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE biblio.record_entry ADD CONSTRAINT biblio_record_entry_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE biblio.record_entry ADD CONSTRAINT biblio_record_entry_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE metabib.metarecord ADD CONSTRAINT metabib_metarecord_master_record_fkey FOREIGN KEY (master_record) REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED;
 

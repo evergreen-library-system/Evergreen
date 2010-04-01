@@ -1702,6 +1702,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Record Source" name="source" reporter:datatype="link"/>
 			<field reporter:label="TCN Source" name="tcn_source"  reporter:datatype="text"/>
 			<field reporter:label="TCN Value" name="tcn_value"  reporter:datatype="text"/>
+			<field reporter:label="Owner" name="owner"  reporter:datatype="org_unit"/>
+			<field reporter:label="Share Depth" name="share_depth"  reporter:datatype="int"/>
 			<field reporter:label="Metarecord" name="metarecord" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Language Code" name="language" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Non-MARC Record Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -1714,6 +1716,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Simple Record Extracts " name="simple_record" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="simple_record" reltype="might_have" key="id" map="" class="rmsr"/>

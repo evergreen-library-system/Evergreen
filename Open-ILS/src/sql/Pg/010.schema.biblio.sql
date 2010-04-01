@@ -39,7 +39,9 @@ CREATE TABLE biblio.record_entry (
 	tcn_source	TEXT		NOT NULL DEFAULT 'AUTOGEN',
 	tcn_value	TEXT		NOT NULL DEFAULT biblio.next_autogen_tcn_value(),
 	marc		TEXT		NOT NULL,
-	last_xact_id	TEXT		NOT NULL
+	last_xact_id	TEXT		NOT NULL,
+    owner       INT,
+    share_depth INT
 );
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_create_date_idx ON biblio.record_entry ( create_date );
