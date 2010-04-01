@@ -1641,31 +1641,15 @@ sub user_transactions {
 		$login_session, $user_id, 'VIEW_USER_TRANSACTIONS' );
 	return $evt if $evt;
 
-	my $api = $self->api_name();
-	my $trans;
-	my @xact;
+    my $api = $self->api_name();
 
-	if(defined($type)) { @xact = (xact_type =>  $type); 
+    my ($trans) = $self->method_lookup(
+        'open-ils.actor.user.transactions.history.still_open')
+      ->run( $login_session, $user_id, $type );
 
-	} else { @xact = (); }
-
-	($trans) = $self
-		->method_lookup('open-ils.actor.user.transactions.history.still_open')
-		->run($login_session => $user_id => $type);
-
-
-	if($api =~ /have_charge/o) {
-
-		$trans = [ grep { int($_->total_owed * 100) > 0 } @$trans ];
-
-	} elsif($api =~ /have_balance/o) {
-
-		$trans = [ grep { int($_->balance_owed * 100) != 0 } @$trans ];
-	} else {
-
-		$trans = [ grep { int($_->total_owed * 100) > 0 } @$trans ];
-
-	}
+    $trans = ($api =~ /have_balance/o) ?
+            [ grep { int($_->balance_owed * 100) != 0 } @$trans ] : 
+            [ grep { int($_->total_owed   * 100)  > 0 } @$trans ] ;
 
 	if($api =~ /total/o) { 
 		my $total = 0.0;
@@ -1677,8 +1661,8 @@ sub user_transactions {
 		return $total;
 	}
 
-	if($api =~ /count/o) { return scalar @$trans; }
-	if($api !~ /fleshed/o) { return $trans; }
+    ($api =~ /count/o  ) and return scalar @$trans;
+    ($api !~ /fleshed/o) and return $trans;
 
 	my @resp;
 	for my $t (@$trans) {
@@ -1863,17 +1847,15 @@ sub checkedout_count {
 
 	my $parser = DateTime::Format::ISO8601->new;
 
-	my (@out,@overdue);
+	my $overdue = 0;
 	for my $c (@$circs) {
 		my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->due_date ) );
-		my $due = $due_dt->epoch;
-
-		if ($due < DateTime->today->epoch) {
-			push @overdue, $c;
+		if ($due_dt->epoch < DateTime->today->epoch) {
+			$overdue++;
 		}
 	}
 
-	return { total => scalar(@$circs), overdue => scalar(@overdue) };
+	return { total => scalar(@$circs), overdue => $overdue };
 }
 
 
