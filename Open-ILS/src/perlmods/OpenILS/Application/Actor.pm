@@ -1524,39 +1524,38 @@ sub user_fines_summary {
 
 
 
-
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions",
-	notes		=> <<"	NOTES");
+    method   => "user_transactions",
+    api_name => "open-ils.actor.user.transactions",
+    notes    => <<"	NOTES");
 	Returns a list of open user transactions (mbts objects);
 	Params are login_session, user_id
 	Optional third parameter is the transactions type.  defaults to all
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.have_charge",
-	notes		=> <<"	NOTES");
+    method   => "user_transactions",
+    api_name => "open-ils.actor.user.transactions.have_charge",
+    notes    => <<"	NOTES");
 	Returns a list of all open user transactions (mbts objects) that have an initial charge
 	Params are login_session, user_id
 	Optional third parameter is the transactions type.  defaults to all
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.have_balance",
+    method        => "user_transactions",
+    api_name      => "open-ils.actor.user.transactions.have_balance",
     authoritative => 1,
-	notes		=> <<"	NOTES");
+    notes         => <<"	NOTES");
 	Returns a list of all open user transactions (mbts objects) that have a balance
 	Params are login_session, user_id
 	Optional third parameter is the transactions type.  defaults to all
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.fleshed",
-	notes		=> <<"	NOTES");
+    method   => "user_transactions",
+    api_name => "open-ils.actor.user.transactions.fleshed",
+    notes    => <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transactions (mbts objects), circ is the attached circluation, and title
 	is the title the circ points to
@@ -1565,9 +1564,9 @@ __PACKAGE__->register_method(
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.have_charge.fleshed",
-	notes		=> <<"	NOTES");
+    method   => "user_transactions",
+    api_name => "open-ils.actor.user.transactions.have_charge.fleshed",
+    notes    => <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transactions that has an initial charge (mbts objects), circ is the 
 	attached circluation, and title is the title the circ points to
@@ -1576,10 +1575,10 @@ __PACKAGE__->register_method(
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.have_balance.fleshed",
+    method        => "user_transactions",
+    api_name      => "open-ils.actor.user.transactions.have_balance.fleshed",
     authoritative => 1,
-	notes		=> <<"	NOTES");
+    notes         => <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transaction that has a balance (mbts objects), circ is the attached 
 	circluation, and title is the title the circ points to
@@ -1588,9 +1587,9 @@ __PACKAGE__->register_method(
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.count",
-	notes		=> <<"	NOTES");
+    method   => "user_transactions",
+    api_name => "open-ils.actor.user.transactions.count",
+    notes    => <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transactions (mbts objects), circ is the attached circluation, and title
 	is the title the circ points to
@@ -1599,9 +1598,9 @@ __PACKAGE__->register_method(
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.have_charge.count",
-	notes		=> <<"	NOTES");
+    method   => "user_transactions",
+    api_name => "open-ils.actor.user.transactions.have_charge.count",
+    notes    => <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transactions that has an initial charge (mbts objects), circ is the 
 	attached circluation, and title is the title the circ points to
@@ -1610,10 +1609,10 @@ __PACKAGE__->register_method(
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.have_balance.count",
+    method        => "user_transactions",
+    api_name      => "open-ils.actor.user.transactions.have_balance.count",
     authoritative => 1,
-	notes		=> <<"	NOTES");
+    notes         => <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transaction that has a balance (mbts objects), circ is the attached 
 	circluation, and title is the title the circ points to
@@ -1622,10 +1621,10 @@ __PACKAGE__->register_method(
 	NOTES
 
 __PACKAGE__->register_method(
-	method	=> "user_transactions",
-	api_name	=> "open-ils.actor.user.transactions.have_balance.total",
+    method        => "user_transactions",
+    api_name      => "open-ils.actor.user.transactions.have_balance.total",
     authoritative => 1,
-	notes		=> <<"	NOTES");
+    notes         => <<"	NOTES");
 	Returns an object/hash of transaction, circ, title where transaction = an open 
 	user transaction that has a balance (mbts objects), circ is the attached 
 	circluation, and title is the title the circ points to
@@ -1717,19 +1716,19 @@ sub user_transactions {
 
 
 __PACKAGE__->register_method(
-	method	=> "user_transaction_retrieve",
-	api_name	=> "open-ils.actor.user.transaction.fleshed.retrieve",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
-	Returns a fleshed transaction record
-	NOTES
+    method   => "user_transaction_retrieve",
+    api_name => "open-ils.actor.user.transaction.fleshed.retrieve",
+    argc     => 1,
+    notes    => "Returns a fleshed transaction record"
+);
+
 __PACKAGE__->register_method(
-	method	=> "user_transaction_retrieve",
-	api_name	=> "open-ils.actor.user.transaction.retrieve",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
-	Returns a transaction record
-	NOTES
+    method   => "user_transaction_retrieve",
+    api_name => "open-ils.actor.user.transaction.retrieve",
+    argc     => 1,
+    notes    => "Returns a transaction record"
+);
+
 sub user_transaction_retrieve {
 	my( $self, $client, $login_session, $bill_id ) = @_;
 
@@ -1795,13 +1794,13 @@ sub user_transaction_retrieve {
 
 
 __PACKAGE__->register_method(
-	method	=> "hold_request_count",
-	api_name	=> "open-ils.actor.user.hold_requests.count",
+    method        => "hold_request_count",
+    api_name      => "open-ils.actor.user.hold_requests.count",
     authoritative => 1,
-	argc		=> 1,
-	notes		=> <<"	NOTES");
-	Returns hold ready/total counts
-	NOTES
+    argc          => 1,
+    notes         => 'Returns hold ready/total counts'
+);
+	
 sub hold_request_count {
 	my( $self, $client, $login_session, $userid ) = @_;
 
@@ -1840,12 +1839,12 @@ sub hold_request_count {
 
 
 __PACKAGE__->register_method(
-	method	=> "checkedout_count",
-	api_name	=> "open-ils.actor.user.checked_out.count__",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
-	Returns a transaction record
-	NOTES
+    method   => "checkedout_count",
+    api_name => "open-ils.actor.user.checked_out.count__",
+    argc     => 1,
+    notes    => "Returns a transaction record"
+);
+	
 
 # XXX Deprecate Me
 sub checkedout_count {
@@ -1879,11 +1878,11 @@ sub checkedout_count {
 
 
 __PACKAGE__->register_method(
-	method		=> "checked_out",
-	api_name		=> "open-ils.actor.user.checked_out",
+    method        => "checked_out",
+    api_name      => "open-ils.actor.user.checked_out",
     authoritative => 1,
-	argc			=> 2,
-	signature	=> q/
+    argc          => 2,
+	signature     => q/
 		Returns a structure of circulations objects sorted by
 		out, overdue, lost, claims_returned, long_overdue.
 		A list of IDs are returned of each type.
@@ -1897,11 +1896,11 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-	method		=> "checked_out",
-	api_name		=> "open-ils.actor.user.checked_out.count",
+    method        => "checked_out",
+    api_name      => "open-ils.actor.user.checked_out.count",
     authoritative => 1,
-	argc			=> 2,
-	signature	=> q/@see open-ils.actor.user.checked_out/
+    argc          => 2,
+    signature     => q/@see open-ils.actor.user.checked_out/
 );
 
 sub checked_out {
@@ -2015,12 +2014,13 @@ sub _checked_out_WHAT {
 
 
 __PACKAGE__->register_method(
-	method		=> "checked_in_with_fines",
-	api_name		=> "open-ils.actor.user.checked_in_with_fines",
+    method        => "checked_in_with_fines",
+    api_name      => "open-ils.actor.user.checked_in_with_fines",
     authoritative => 1,
-	argc			=> 2,
-	signature	=> q/@see open-ils.actor.user.checked_out/
+    argc          => 2,
+    signature     => q/@see open-ils.actor.user.checked_out/
 );
+
 sub checked_in_with_fines {
 	my( $self, $conn, $auth, $userid ) = @_;
 
@@ -2057,100 +2057,95 @@ sub checked_in_with_fines {
 
 
 
-
-
-
-
-
-
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    method   => "user_transaction_history",
+    api_name => "open-ils.actor.user.transactions.history",
+    argc     => 1,
+    notes    => <<"	NOTES");
 	Returns a list of billable transactions for a user, optionally by type
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.have_charge",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    method   => "user_transaction_history",
+    api_name => "open-ils.actor.user.transactions.history.have_charge",
+    argc     => 1,
+    notes    => <<"	NOTES");
 	Returns a list of billable transactions for a user that have an initial charge, optionally by type
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.have_balance",
+    method        => "user_transaction_history",
+    api_name      => "open-ils.actor.user.transactions.history.have_balance",
     authoritative => 1,
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    argc          => 1,
+    notes         => <<"	NOTES");
 	Returns a list of billable transactions for a user that have a balance, optionally by type
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.still_open",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    method   => "user_transaction_history",
+    api_name => "open-ils.actor.user.transactions.history.still_open",
+    argc     => 1,
+    notes    => <<"	NOTES");
 	Returns a list of billable transactions for a user that are not finished
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.have_bill",
+    method        => "user_transaction_history",
+    api_name      => "open-ils.actor.user.transactions.history.have_bill",
     authoritative => 1,
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    argc          => 1,
+    notes         => <<"	NOTES");
 	Returns a list of billable transactions for a user that has billings
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.ids",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    method   => "user_transaction_history",
+    api_name => "open-ils.actor.user.transactions.history.ids",
+    argc     => 1,
+    notes    => <<"	NOTES");
 	Returns a list of billable transaction ids for a user, optionally by type
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.have_charge.ids",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    method   => "user_transaction_history",
+    api_name => "open-ils.actor.user.transactions.history.have_charge.ids",
+    argc     => 1,
+    notes    => <<"	NOTES");
 	Returns a list of billable transaction ids for a user that have an initial charge, optionally by type
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.have_balance.ids",
+    method   => "user_transaction_history",
+    api_name => "open-ils.actor.user.transactions.history.have_balance.ids",
     authoritative => 1,
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    argc          => 1,
+    notes         => <<"	NOTES");
 	Returns a list of billable transaction ids for a user that have a balance, optionally by type
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.still_open.ids",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    method   => "user_transaction_history",
+    api_name => "open-ils.actor.user.transactions.history.still_open.ids",
+    argc     => 1,
+    notes    => <<"	NOTES");
 	Returns a list of billable transaction ids for a user that are not finished
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.have_bill.ids",
+    method        => "user_transaction_history",
+    api_name      => "open-ils.actor.user.transactions.history.have_bill.ids",
     authoritative => 1,
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    argc          => 1,
+    notes         => <<"	NOTES");
 	Returns a list of billable transaction ids for a user that has billings
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.have_bill_or_payment",
+    method   => "user_transaction_history",
+    api_name => "open-ils.actor.user.transactions.history.have_bill_or_payment",
     authoritative => 1,
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    argc          => 1,
+    notes         => <<"	NOTES");
 	Returns a list of billable transactions for a user that has non-zero-sum billings or at least 1 payment
 	NOTES
 __PACKAGE__->register_method(
-	method	=> "user_transaction_history",
-	api_name	=> "open-ils.actor.user.transactions.history.have_bill_or_payment.ids",
+    method => "user_transaction_history",
+    api_name =>
+      "open-ils.actor.user.transactions.history.have_bill_or_payment.ids",
     authoritative => 1,
-	argc		=> 1,
-	notes		=> <<"	NOTES");
+    argc          => 1,
+    notes         => <<"	NOTES");
 	Returns a list of billable transaction ids for a user that has non-zero-sum billings or at least 1 payment
 	NOTES
 
@@ -2217,12 +2212,12 @@ sub user_transaction_history {
 
 
 __PACKAGE__->register_method(
-	method	=> "user_perms",
-	api_name	=> "open-ils.actor.permissions.user_perms.retrieve",
-	argc		=> 1,
-	notes		=> <<"	NOTES");
-	Returns a list of permissions
-	NOTES
+    method   => "user_perms",
+    api_name => "open-ils.actor.permissions.user_perms.retrieve",
+    argc     => 1,
+    notes    => "Returns a list of permissions"
+);
+	
 sub user_perms {
 	my( $self, $client, $authtoken, $user ) = @_;
 
@@ -2242,11 +2237,10 @@ sub user_perms {
 }
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_perms",
-	api_name	=> "open-ils.actor.permissions.retrieve",
-	notes		=> <<"	NOTES");
-	Returns a list of permissions
-	NOTES
+    method   => "retrieve_perms",
+    api_name => "open-ils.actor.permissions.retrieve",
+    notes    => "Returns a list of permissions"
+);
 sub retrieve_perms {
 	my( $self, $client ) = @_;
 	return $apputils->simple_scalar_request(
@@ -2257,11 +2251,10 @@ sub retrieve_perms {
 }
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_groups",
-	api_name	=> "open-ils.actor.groups.retrieve",
-	notes		=> <<"	NOTES");
-	Returns a list of user groupss
-	NOTES
+    method   => "retrieve_groups",
+    api_name => "open-ils.actor.groups.retrieve",
+    notes    => "Returns a list of user groups"
+);
 sub retrieve_groups {
 	my( $self, $client ) = @_;
 	return new_editor()->retrieve_all_permission_grp_tree();
@@ -2284,11 +2277,11 @@ sub retrieve_org_address {
 }
 
 __PACKAGE__->register_method(
-	method	=> "retrieve_groups_tree",
-	api_name	=> "open-ils.actor.groups.tree.retrieve",
-	notes		=> <<"	NOTES");
-	Returns a list of user groups
-	NOTES
+    method   => "retrieve_groups_tree",
+    api_name => "open-ils.actor.groups.tree.retrieve",
+    notes    => "Returns a list of user groups"
+);
+	
 sub retrieve_groups_tree {
 	my( $self, $client ) = @_;
 	return new_editor()->search_permission_grp_tree(
@@ -2305,12 +2298,11 @@ sub retrieve_groups_tree {
 
 
 __PACKAGE__->register_method(
-	method	=> "add_user_to_groups",
-	api_name	=> "open-ils.actor.user.set_groups",
-	notes		=> <<"	NOTES");
-	Adds a user to one or more permission groups
-	NOTES
-
+    method   => "add_user_to_groups",
+    api_name => "open-ils.actor.user.set_groups",
+    notes    => "Adds a user to one or more permission groups"
+);
+	
 sub add_user_to_groups {
 	my( $self, $client, $authtoken, $userid, $groups ) = @_;
 
@@ -2340,11 +2332,10 @@ sub add_user_to_groups {
 }
 
 __PACKAGE__->register_method(
-	method	=> "get_user_perm_groups",
-	api_name	=> "open-ils.actor.user.get_groups",
-	notes		=> <<"	NOTES");
-	Retrieve a user's permission groups.
-	NOTES
+    method   => "get_user_perm_groups",
+    api_name => "open-ils.actor.user.get_groups",
+    notes    => "Retrieve a user's permission groups."
+);
 
 
 sub get_user_perm_groups {
@@ -2361,18 +2352,16 @@ sub get_user_perm_groups {
 
 
 __PACKAGE__->register_method(
-	method	=> "get_user_work_ous",
-	api_name	=> "open-ils.actor.user.get_work_ous",
-	notes		=> <<"	NOTES");
-	Retrieve a user's work org units.
-	NOTES
-__PACKAGE__->register_method(
-	method	=> "get_user_work_ous",
-	api_name	=> "open-ils.actor.user.get_work_ous.ids",
-	notes		=> <<"	NOTES");
-	Retrieve a user's work org units.
-	NOTES
+    method   => "get_user_work_ous",
+    api_name => "open-ils.actor.user.get_work_ous",
+    notes    => "Retrieve a user's work org units."
+);
 
+__PACKAGE__->register_method(
+    method   => "get_user_work_ous",
+    api_name => "open-ils.actor.user.get_work_ous.ids",
+    notes    => "Retrieve a user's work org units."
+);
 
 sub get_user_work_ous {
 	my( $self, $client, $auth, $userid ) = @_;
@@ -2395,23 +2384,24 @@ sub get_user_work_ous {
 
 
 
+__PACKAGE__->register_method(
+    method    => 'register_workstation',
+    api_name  => 'open-ils.actor.workstation.register.override',
+    signature => q/@see open-ils.actor.workstation.register/
+);
 
-__PACKAGE__->register_method (
-	method		=> 'register_workstation',
-	api_name		=> 'open-ils.actor.workstation.register.override',
-	signature	=> q/@see open-ils.actor.workstation.register/);
-
-__PACKAGE__->register_method (
-	method		=> 'register_workstation',
-	api_name		=> 'open-ils.actor.workstation.register',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'register_workstation',
+    api_name  => 'open-ils.actor.workstation.register',
+    signature => q/
 		Registers a new workstion in the system
 		@param authtoken The login session key
 		@param name The name of the workstation id
 		@param owner The org unit that owns this workstation
 		@return The workstation id on success, WORKSTATION_NAME_EXISTS
 		if the name is already in use.
-	/);
+	/
+);
 
 sub register_workstation {
 	my( $self, $conn, $authtoken, $name, $owner ) = @_;
@@ -2461,14 +2451,15 @@ sub register_workstation {
 	return $ws->id; # note: editor sets the id on the new object for us
 }
 
-__PACKAGE__->register_method (
-	method		=> 'workstation_list',
-	api_name		=> 'open-ils.actor.workstation.list',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'workstation_list',
+    api_name  => 'open-ils.actor.workstation.list',
+    signature => q/
 		Returns a list of workstations registered at the given location
 		@param authtoken The login session key
 		@param ids A list of org_unit.id's for the workstation owners
-	/);
+	/
+);
 
 sub workstation_list {
 	my( $self, $conn, $authtoken, @orgs ) = @_;
@@ -2486,16 +2477,11 @@ sub workstation_list {
 }
 
 
-
-
-
-
-
-__PACKAGE__->register_method (
-	method		=> 'fetch_patron_note',
-	api_name		=> 'open-ils.actor.note.retrieve.all',
+__PACKAGE__->register_method(
+    method        => 'fetch_patron_note',
+    api_name      => 'open-ils.actor.note.retrieve.all',
     authoritative => 1,
-	signature	=> q/
+    signature     => q/
 		Returns a list of notes for a given user
 		Requestor must have VIEW_USER permission if pub==false and
 		@param authtoken The login session key
@@ -2533,10 +2519,10 @@ sub fetch_patron_note {
 		'open-ils.cstore.direct.actor.usr_note.search.atomic', { usr => $patronid } );
 }
 
-__PACKAGE__->register_method (
-	method		=> 'create_user_note',
-	api_name		=> 'open-ils.actor.note.create',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'create_user_note',
+    api_name  => 'open-ils.actor.note.create',
+    signature => q/
 		Creates a new note for the given user
 		@param authtoken The login session key
 		@param note The note object
@@ -2560,10 +2546,10 @@ sub create_user_note {
 }
 
 
-__PACKAGE__->register_method (
-	method		=> 'delete_user_note',
-	api_name		=> 'open-ils.actor.note.delete',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'delete_user_note',
+    api_name  => 'open-ils.actor.note.delete',
+    signature => q/
 		Deletes a note for the given user
 		@param authtoken The login session key
 		@param noteid The note id
@@ -2587,10 +2573,10 @@ sub delete_user_note {
 }
 
 
-__PACKAGE__->register_method (
-	method		=> 'update_user_note',
-	api_name		=> 'open-ils.actor.note.update',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'update_user_note',
+    api_name  => 'open-ils.actor.note.update',
+    signature => q/
 		@param authtoken The login session key
 		@param note The note
 	/
@@ -2612,11 +2598,10 @@ sub update_user_note {
 
 
 
-
-__PACKAGE__->register_method (
-	method		=> 'create_closed_date',
-	api_name	=> 'open-ils.actor.org_unit.closed_date.create',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'create_closed_date',
+    api_name  => 'open-ils.actor.org_unit.closed_date.create',
+    signature => q/
 		Creates a new closing entry for the given org_unit
 		@param authtoken The login session key
 		@param note The closed_date object
@@ -2640,10 +2625,10 @@ sub create_closed_date {
 }
 
 
-__PACKAGE__->register_method (
-	method		=> 'delete_closed_date',
-	api_name	=> 'open-ils.actor.org_unit.closed_date.delete',
-	signature	=> q/
+__PACKAGE__->register_method(
+    method    => 'delete_closed_date',
+    api_name  => 'open-ils.actor.org_unit.closed_date.delete',
+    signature => q/
 		Deletes a closing entry for the given org_unit
 		@param authtoken The login session key
 		@param noteid The close_date id
@@ -2672,11 +2657,9 @@ sub delete_closed_date {
 
 
 __PACKAGE__->register_method(
-	method => 'usrname_exists',
-	api_name	=> 'open-ils.actor.username.exists',
-	signature => q/
-		Returns 1 if the requested username exists, returns 0 otherwise
-	/
+    method    => 'usrname_exists',
+    api_name  => 'open-ils.actor.username.exists',
+    signature => 'Returns 1 if the requested username exists, returns 0 otherwise'
 );
 
 sub usrname_exists {
@@ -2689,12 +2672,10 @@ sub usrname_exists {
 }
 
 __PACKAGE__->register_method(
-	method => 'barcode_exists',
-	api_name	=> 'open-ils.actor.barcode.exists',
+    method        => 'barcode_exists',
+    api_name      => 'open-ils.actor.barcode.exists',
     authoritative => 1,
-	signature => q/
-		Returns 1 if the requested barcode exists, returns 0 otherwise
-	/
+    signature     => 'Returns 1 if the requested barcode exists, returns 0 otherwise'
 );
 
 sub barcode_exists {
@@ -2713,8 +2694,8 @@ sub barcode_exists {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_net_levels',
-	api_name	=> 'open-ils.actor.net_access_level.retrieve.all',
+    method   => 'retrieve_net_levels',
+    api_name => 'open-ils.actor.net_access_level.retrieve.all',
 );
 
 sub retrieve_net_levels {
@@ -2726,12 +2707,12 @@ sub retrieve_net_levels {
 
 # Retain the old typo API name just in case
 __PACKAGE__->register_method(
-	method => 'fetch_org_by_shortname',
-	api_name => 'open-ils.actor.org_unit.retrieve_by_shorname',
+    method   => 'fetch_org_by_shortname',
+    api_name => 'open-ils.actor.org_unit.retrieve_by_shorname',
 );
 __PACKAGE__->register_method(
-	method => 'fetch_org_by_shortname',
-	api_name => 'open-ils.actor.org_unit.retrieve_by_shortname',
+    method   => 'fetch_org_by_shortname',
+    api_name => 'open-ils.actor.org_unit.retrieve_by_shortname',
 );
 sub fetch_org_by_shortname {
 	my( $self, $conn, $sname ) = @_;
@@ -2743,8 +2724,8 @@ sub fetch_org_by_shortname {
 
 
 __PACKAGE__->register_method(
-	method => 'session_home_lib',
-	api_name => 'open-ils.actor.session.home_lib',
+    method   => 'session_home_lib',
+    api_name => 'open-ils.actor.session.home_lib',
 );
 
 sub session_home_lib {
@@ -2756,9 +2737,9 @@ sub session_home_lib {
 }
 
 __PACKAGE__->register_method(
-	method => 'session_safe_token',
-	api_name => 'open-ils.actor.session.safe_token',
-	signature => q/
+    method    => 'session_safe_token',
+    api_name  => 'open-ils.actor.session.safe_token',
+    signature => q/
 		Returns a hashed session ID that is safe for export to the world.
 		This safe token will expire after 1 hour of non-use.
 		@param auth Active authentication token
@@ -2788,9 +2769,9 @@ sub session_safe_token {
 
 
 __PACKAGE__->register_method(
-	method => 'safe_token_home_lib',
-	api_name => 'open-ils.actor.safe_token.home_lib.shortname',
-	signature => q/
+    method    => 'safe_token_home_lib',
+    api_name  => 'open-ils.actor.safe_token.home_lib.shortname',
+    signature => q/
 		Returns the home library shortname from the session
 		asscociated with a safe token from generated by
 		open-ils.actor.session.safe_token.
@@ -2808,8 +2789,8 @@ sub safe_token_home_lib {
 
 
 __PACKAGE__->register_method(
-	method => 'slim_tree',
-	api_name	=> "open-ils.actor.org_tree.slim_hash.retrieve",
+    method   => 'slim_tree',
+    api_name => "open-ils.actor.org_tree.slim_hash.retrieve",
 );
 sub slim_tree {
 	my $tree = new_editor()->search_actor_org_unit( 
@@ -2847,8 +2828,9 @@ sub trim_tree {
 
 
 __PACKAGE__->register_method(
-	method	=> "update_penalties",
-	api_name	=> "open-ils.actor.user.penalties.update");
+    method   => "update_penalties",
+    api_name => "open-ils.actor.user.penalties.update"
+);
 
 sub update_penalties {
 	my($self, $conn, $auth, $user_id) = @_;
@@ -2864,8 +2846,9 @@ sub update_penalties {
 
 
 __PACKAGE__->register_method(
-	method	=> "apply_penalty",
-	api_name	=> "open-ils.actor.user.penalty.apply");
+    method   => "apply_penalty",
+    api_name => "open-ils.actor.user.penalty.apply"
+);
 
 sub apply_penalty {
 	my($self, $conn, $auth, $penalty) = @_;
@@ -2892,8 +2875,9 @@ sub apply_penalty {
 }
 
 __PACKAGE__->register_method(
-	method	=> "remove_penalty",
-	api_name	=> "open-ils.actor.user.penalty.remove");
+    method   => "remove_penalty",
+    api_name => "open-ils.actor.user.penalty.remove"
+);
 
 sub remove_penalty {
 	my($self, $conn, $auth, $penalty) = @_;
@@ -2908,8 +2892,9 @@ sub remove_penalty {
 }
 
 __PACKAGE__->register_method(
-	method	=> "update_penalty_note",
-	api_name	=> "open-ils.actor.user.penalty.note.update");
+    method   => "update_penalty_note",
+    api_name => "open-ils.actor.user.penalty.note.update"
+);
 
 sub update_penalty_note {
 	my($self, $conn, $auth, $penalty_ids, $note) = @_;
@@ -2930,9 +2915,9 @@ sub update_penalty_note {
 }
 
 __PACKAGE__->register_method(
-	method => "ranged_penalty_thresholds",
-	api_name => "open-ils.actor.grp_penalty_threshold.ranged.retrieve",
-    stream => 1
+    method   => "ranged_penalty_thresholds",
+    api_name => "open-ils.actor.grp_penalty_threshold.ranged.retrieve",
+    stream   => 1
 );
 
 sub ranged_penalty_thresholds {
@@ -2951,9 +2936,10 @@ sub ranged_penalty_thresholds {
 
 
 __PACKAGE__->register_method(
-	method	=> "user_retrieve_fleshed_by_id",
+    method        => "user_retrieve_fleshed_by_id",
     authoritative => 1,
-	api_name	=> "open-ils.actor.user.fleshed.retrieve",);
+    api_name      => "open-ils.actor.user.fleshed.retrieve",
+);
 
 sub user_retrieve_fleshed_by_id {
 	my( $self, $client, $auth, $user_id, $fields ) = @_;
@@ -3045,8 +3031,9 @@ sub new_flesh_user {
 
 
 __PACKAGE__->register_method(
-	method	=> "user_retrieve_parts",
-	api_name	=> "open-ils.actor.user.retrieve.parts",);
+    method   => "user_retrieve_parts",
+    api_name => "open-ils.actor.user.retrieve.parts",
+);
 
 sub user_retrieve_parts {
 	my( $self, $client, $auth, $user_id, $fields ) = @_;
@@ -3064,11 +3051,10 @@ sub user_retrieve_parts {
 
 
 __PACKAGE__->register_method(
-    method => 'user_opt_in_enabled',
-    api_name => 'open-ils.actor.user.org_unit_opt_in.enabled',
-    signature => q/
-        @return 1 if user opt-in is globally enabled, 0 otherwise.
-    /);
+    method    => 'user_opt_in_enabled',
+    api_name  => 'open-ils.actor.user.org_unit_opt_in.enabled',
+    signature => '@return 1 if user opt-in is globally enabled, 0 otherwise.'
+);
 
 sub user_opt_in_enabled {
     my($self, $conn) = @_;
@@ -3079,13 +3065,14 @@ sub user_opt_in_enabled {
     
 
 __PACKAGE__->register_method(
-    method => 'user_opt_in_at_org',
-    api_name => 'open-ils.actor.user.org_unit_opt_in.check',
+    method    => 'user_opt_in_at_org',
+    api_name  => 'open-ils.actor.user.org_unit_opt_in.check',
     signature => q/
         @param $auth The auth token
         @param user_id The ID of the user to test
         @return 1 if the user has opted in at the specified org,
-            event on error, and 0 otherwise. /);
+            event on error, and 0 otherwise. /
+);
 sub user_opt_in_at_org {
     my($self, $conn, $auth, $user_id) = @_;
 
@@ -3110,12 +3097,13 @@ sub user_opt_in_at_org {
 }
 
 __PACKAGE__->register_method(
-    method => 'create_user_opt_in_at_org',
-    api_name => 'open-ils.actor.user.org_unit_opt_in.create',
+    method    => 'create_user_opt_in_at_org',
+    api_name  => 'open-ils.actor.user.org_unit_opt_in.create',
     signature => q/
         @param $auth The auth token
         @param user_id The ID of the user to test
-        @return The ID of the newly created object, event on error./);
+        @return The ID of the newly created object, event on error./
+);
 
 sub create_user_opt_in_at_org {
     my($self, $conn, $auth, $user_id) = @_;
