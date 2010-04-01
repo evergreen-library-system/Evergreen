@@ -1359,6 +1359,16 @@ main.menu.prototype = {
         var url = obj.url_prefix( urls.XUL_COPY_VOLUME_BROWSE );
         obj.new_tab(url,params || {}, content_params);
     },
+    'get_new_session' : function(params) {
+        var obj = this;
+        if (!params) { params = {}; }
+        JSAN.use('util.network'); var net = new util.network();
+        var result = net.get_new_session(null,{'url_prefix':obj.url_prefix},!params.operator_change);
+        if (typeof params.callback == 'function') {
+            return params.callback( result, ses(), ses('authtime') );
+        }
+        return result;
+    },
     'set_tab' : function(url,params,content_params) {
         var obj = this;
         if (!url) url = '/xul/server/';
@@ -1378,6 +1388,7 @@ main.menu.prototype = {
         content_params.new_patron_tab = function(a,b) { return obj.new_patron_tab(a,b); };
         content_params.set_patron_tab = function(a,b) { return obj.set_patron_tab(a,b); };
         content_params.volume_item_creator = function(a) { return obj.volume_item_creator(a); };
+        content_params.get_new_session = function(a) { return obj.get_new_session(a); };
         content_params.holdings_maintenance_tab = function(a,b,c) { return obj.holdings_maintenance_tab(a,b,c); };
         content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
         content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };

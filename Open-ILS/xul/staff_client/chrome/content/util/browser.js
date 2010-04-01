@@ -147,6 +147,7 @@ util.browser.prototype = {
             cw.xulG.new_patron_tab = window.xulG.new_patron_tab;
             cw.xulG.set_patron_tab = window.xulG.set_patron_tab;
             cw.xulG.volume_item_creator = window.xulG.volume_item_creator;
+            cw.xulG.get_new_session = window.xulG.get_new_session;
             cw.xulG.holdings_maintenance_tab = window.xulG.holdings_maintenance_tab;
             cw.xulG.url_prefix = window.xulG.url_prefix;
             cw.xulG.urls = window.urls;
