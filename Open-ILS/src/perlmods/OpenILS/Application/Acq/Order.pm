@@ -2417,22 +2417,34 @@ sub cancel_lineitem {
     return new OpenILS::Event(
         "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id"
     ) unless (
-        $li->purchase_order and (
-            $li->state eq "on-order" or $li->state eq "pending-order"
+        (! $li->purchase_order) or (
+            $li->purchase_order and (
+                $li->state eq "on-order" or $li->state eq "pending-order"
+            )
         )
     );
 
     $li->state("cancelled");
     $li->cancel_reason($cancel_reason);
 
-    my $lid_ids = $mgr->editor->search_acq_lineitem_detail(
-        {"lineitem" => $li_id}, {"idlist" => 1}
-    );
+    my $lids = $mgr->editor->search_acq_lineitem_detail({
+        "lineitem" => $li_id
+    }, {
+        flesh => 1,
+        flesh_fields => { acqlid => ['eg_copy_id'] }
+    });
 
     my $result = {"lid" => {}};
-    foreach my $lid_id (@$lid_ids) {
-        my $lid_result = cancel_lineitem_detail($mgr, $lid_id, $cancel_reason)
+    my $copies = [];
+    foreach my $lid (@$lids) {
+        my $lid_result = cancel_lineitem_detail($mgr, $lid->id, $cancel_reason)
             or return 0;
+
+        # gathering any real copies for deletion
+        if ($lid->eg_copy_id) {
+            $lid->eg_copy_id->isdeleted('t');
+            push @$copies, $lid->eg_copy_id;
+        }
 
         next if $lid_result == -1; # already canceled: just skip it.
         return $lid_result if not_cancelable($lid_result); # not cxlable: stop.
@@ -2441,6 +2453,18 @@ sub cancel_lineitem {
         # cancel_lineitem_detail).
         my ($k, $v) = each %{$lid_result->{"lid"}};
         $result->{"lid"}->{$k} = $v;
+    }
+
+    # attempt to delete the gathered copies (will this may handle volume deletion and do hold retargeting for us?)
+    my $cat_service = OpenSRF::AppSession->create('open-ils.cat');
+    $cat_service->connect;
+    my $cat_req = $cat_service->request('open-ils.cat.asset.copy.fleshed.batch.update', $mgr->editor->authtoken, $copies);
+    my $cat_result  = $cat_req->recv;
+    $cat_service->disconnect;
+    if ($cat_result != 1) { # failed to delete copies
+        return new OpenILS::Event(
+            "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id", "payload" => $cat_result
+        );
     }
 
     # TODO delete the associated fund debits?
@@ -2521,18 +2545,21 @@ sub cancel_lineitem_detail {
     return new OpenILS::Event(
         "ACQ_NOT_CANCELABLE", "note" => "lineitem_detail $lid_id"
     ) unless (
-        (not $lid->recv_time) and
-        $lid->lineitem and
-        $lid->lineitem->purchase_order and (
-            $lid->lineitem->state eq "on-order" or
-            $lid->lineitem->state eq "pending-order"
+        (! $lid->lineitem->purchase_order) or
+        (
+            (not $lid->recv_time) and
+            $lid->lineitem and
+            $lid->lineitem->purchase_order and (
+                $lid->lineitem->state eq "on-order" or
+                $lid->lineitem->state eq "pending-order"
+            )
         )
     );
 
     return 0 unless $mgr->editor->allowed(
         "CREATE_PURCHASE_ORDER",
         $lid->lineitem->purchase_order->ordering_agency
-    );
+    ) or (! $lid->lineitem->purchase_order);
 
     $lid->cancel_reason($cancel_reason);
 

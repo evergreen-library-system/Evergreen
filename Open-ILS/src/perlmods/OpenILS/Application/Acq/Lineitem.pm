@@ -152,69 +152,6 @@ sub retrieve_lineitem_impl {
 }
 
 __PACKAGE__->register_method(
-	method => 'cancel_lineitem',
-	api_name	=> 'open-ils.acq.lineitem.cancel',
-	signature => {
-        desc => 'Cancels a lineitem, any of its detail entries and corresponding copies and call numbers, and potentially related holds (if the bib becomes empty).',
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem ID to cancel', type => 'number'},
-        ],
-        return => {desc => '1 on success, Event on error'}
-    }
-);
-
-sub cancel_lineitem {
-    my($self, $conn, $auth, $li_id, $cancel_reason) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-
-    $cancel_reason = $e->retrieve_acq_cancel_reason($cancel_reason);
-    if (!$cancel_reason) {
-        $e->rollback;
-        return new OpenILS::Event(
-            "BAD_PARAMS", 
-            "note" => "Provide cancel reason ID" # let client handle I18N for such events?
-        );
-    }
-
-    my $li = $e->retrieve_acq_lineitem($li_id)
-        or return $e->die_event;
-    $li->cancel_reason( $cancel_reason);
-
-    # cancel the attached lineitem_details and gather corresponding copies
-    my $lids = $e->search_acq_lineitem_detail({
-        lineitem => $li_id
-    }, {
-        flesh => 1,
-        flesh_fields => { acqlid => ['eg_copy_id'] }
-    });
-
-    my $copies = [];
-    for my $lid (@$lids) {
-        $lid->cancel_reason( $cancel_reason );
-        $e->update_acq_lineitem_detail( $lid );
-        $lid->eg_copy_id->isdeleted('t');
-        push @$copies, $lid->eg_copy_id;
-    }
-
-    # attempt to delete the gathered copies (will this may handle volume deletion and do hold retargeting for us?)
-    my $cat = OpenSRF::AppSession->create('open-ils.cat');
-    $cat->connect;
-    my $req = $cat->request('open-ils.cat.asset.copy.fleshed.batch.update', $auth, $copies);
-    my $result = $req->recv;
-    $cat->disconnect;
-    if ($result != 1) { # failed to delete copies
-        $e->rollback;
-        return $result;
-    }
-
-    $e->update_acq_lineitem($li) or return $e->die_event;
-    $e->commit;
-    return 0;
-}
-
-__PACKAGE__->register_method(
 	method => 'delete_lineitem',
 	api_name	=> 'open-ils.acq.lineitem.delete',
 	signature => {
