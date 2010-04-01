@@ -2461,7 +2461,7 @@ sub cancel_lineitem {
     my $cat_req = $cat_service->request('open-ils.cat.asset.copy.fleshed.batch.update', $mgr->editor->authtoken, $copies);
     my $cat_result  = $cat_req->recv;
     $cat_service->disconnect;
-    if ($cat_result != 1) { # failed to delete copies
+    if (!$cat_result or $cat_result->content != 1) { # failed to delete copies
         return new OpenILS::Event(
             "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id", "payload" => $cat_result
         );
