@@ -2250,6 +2250,13 @@ sub cancel_purchase_order_api {
     $e->commit or return $e->die_event;
 
     # XXX create purchase order status events?
+
+    if ($mgr->{post_commit}) {
+        foreach my $func (@{$mgr->{post_commit}}) {
+            $func->();
+        }
+    }
+
     return $result;
 }
 
@@ -2396,6 +2403,13 @@ sub cancel_lineitem_api {
         $e->commit or return $e->die_event;
         # create_lineitem_status_events should handle array li_id ok
         create_lineitem_status_events($mgr, $li_id, "aur.cancelled");
+
+        if ($mgr->{post_commit}) {
+            foreach my $func (@{$mgr->{post_commit}}) {
+                $func->();
+            }
+        }
+
         return $result;
     }
 }
@@ -2484,6 +2498,8 @@ sub cancel_lineitem {
                 }
             );
 
+            my %cached_usr_home_ou = ();
+
             for my $hold (@$holds) {
 
                 $logger->info("Cancelling hold ".$hold->id.
@@ -2499,6 +2515,22 @@ sub cancel_lineitem {
                         "ACQ_NOT_CANCELABLE", "note" => "Could not cancel hold " . $hold->id . " for lineitem $li_id", "payload" => $evt
                     );
                 }
+                if (! defined $mgr->{post_commit}) { # we need a mechanism for creating trigger events, but only if the transaction gets committed
+                    $mgr->{post_commit} = [];
+                }
+                push @{ $mgr->{post_commit} }, sub {
+                    my $trigger_ses = OpenSRF::AppSession->create('open-ils.trigger');
+                    $trigger_ses->connect;
+                    my $home_ou = $cached_usr_home_ou{$hold->usr};
+                    if (! $home_ou) {
+                        my $user = $mgr->editor->retrieve_actor_user($hold->usr); # FIXME: how do we want to handle failures here?
+                        $home_ou = $user->home_ou;
+                        $cached_usr_home_ou{$hold->usr} = $home_ou;
+                    }
+                    my $trigger_req = $trigger_ses->request('open-ils.trigger.event.autocreate', 'hold_request.cancel.cancelled_order', $hold, $home_ou);
+                    $trigger_req->recv;
+                    $trigger_ses->disconnect;
+                };
             }
         }
     }
