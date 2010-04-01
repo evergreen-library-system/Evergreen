@@ -211,7 +211,7 @@ sub create_lineitem {
     
     unless($li->estimated_unit_price) {
         # extract the price from the MARC data
-        my $price = get_li_price_from_attrs($li) or return $li;
+        my $price = get_li_price_from_attr($mgr->editor, $li) or return $li;
         $li->estimated_unit_price($price);
         return update_lineitem($mgr, $li);
     }

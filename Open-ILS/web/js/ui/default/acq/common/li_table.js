@@ -562,6 +562,7 @@ function AcqLiTable() {
                 params : [this.authtoken, li.id(), price],
                 oncomplete : function(r) {
                     openils.Util.readResponse(r);
+                    li.estimated_unit_price(price); // update local copy
                 }
             }
         );
