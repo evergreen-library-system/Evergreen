@@ -5,6 +5,7 @@ var onlyrecord = {};
 var table;
 var mresultPreCache = 200;
 var searchTimer;
+var resultFacetKey;
 
 attachEvt("common", "unload", mresultUnload);
 attachEvt("common", "run", mresultDoSearch);
@@ -44,9 +45,9 @@ function mresultCollectAdvIds() {
 	resultCollectSearchIds(false, SEARCH_MRS_QUERY, mresultHandleMRIds ); 
 }
 
-
 function mresultHandleMRIds(r) {
 	var res = r.getResultObject();
+    resultFacetKey = result.facet_key;
     resultCompiledSearch = res.compiled_search;
     cookieManager.write(COOKIE_SEARCH, js2JSON(res.compiled_search), -1);
 	if(res.count != null) {

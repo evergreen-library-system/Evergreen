@@ -2,6 +2,7 @@ var records = new Array();
 var table;
 var rowtemplate;
 var rresultLimit = 200;
+var resultFacetKey;
 
 var rresultIsPaged = false;
 
@@ -318,6 +319,7 @@ function rresultFilterSearchResults(r) {
 			ids.push(result.ids[i][0]);
 	}
 
+    resultFacetKey = result.facet_key;
     resultCompiledSearch = result.compiled_search;
     cookieManager.write(COOKIE_SEARCH, js2JSON(result.compiled_search), -1);
 	_rresultHandleIds( ids, result.count );
