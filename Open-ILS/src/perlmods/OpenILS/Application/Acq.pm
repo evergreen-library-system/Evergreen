@@ -9,5 +9,6 @@ use OpenILS::Application::Acq::Lineitem;
 use OpenILS::Application::Acq::Order;
 use OpenILS::Application::Acq::EDI;
 use OpenILS::Application::Acq::Search;
+use OpenILS::Application::Acq::Claims;
 
 1;
