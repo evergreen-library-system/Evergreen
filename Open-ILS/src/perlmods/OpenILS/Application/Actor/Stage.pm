@@ -63,7 +63,7 @@ sub create_user_stage {
     $e->commit;
     $conn->respond_complete($uname);
 
-    $U->create_trigger_event('stgu.create', $user, $user->home_ou);
+    $U->create_events_for_hook('stgu.create', $user, $user->home_ou);
     return undef;
 }
 
