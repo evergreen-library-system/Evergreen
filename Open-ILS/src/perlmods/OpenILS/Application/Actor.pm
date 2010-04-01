@@ -1523,115 +1523,75 @@ sub user_fines_summary {
 }
 
 
+##### a small consolidation of related method registrations
+my $common_params = [
+    { desc => 'Authentication token', type => 'string' },
+    { desc => 'User ID',              type => 'string' },
+    { desc => 'Transactions type (optional, defaults to all)', type => 'string' },
+];
+my %methods = (
+    'open-ils.actor.user.transactions'                      => '',
+    'open-ils.actor.user.transactions.fleshed'              => '',
+    'open-ils.actor.user.transactions.have_charge'          => ' that have an initial charge',
+    'open-ils.actor.user.transactions.have_charge.fleshed'  => ' that have an initial charge',
+    'open-ils.actor.user.transactions.have_balance'         => ' that have an outstanding balance',
+    'open-ils.actor.user.transactions.have_balance.fleshed' => ' that have an outstanding balance',
+);
 
-__PACKAGE__->register_method(
-    method   => "user_transactions",
-    api_name => "open-ils.actor.user.transactions",
-    notes    => <<"	NOTES");
-	Returns a list of open user transactions (mbts objects);
-	Params are login_session, user_id
-	Optional third parameter is the transactions type.  defaults to all
-	NOTES
+foreach (keys %methods) {
+    my %args = (
+        method    => "user_transactions",
+        api_name  => $_,
+        signature => {
+            desc   => 'For a given user, retrieve a list of '
+                    . (/\.fleshed/ ? 'fleshed ' : '')
+                    . 'transactions' . $methods{$_}
+                    . ' optionally limited to transactions of a given type.',
+            params => $common_params,
+            return => {
+                desc => "List of objects, or event on error.  Each object is a hash containing: transaction, circ, record. "
+                      . 'These represent the relevant (mbts) transaction, attached circulation and title pointed to in the circ, respectively.',
+            }
+        }
+    );
+    /\.have_balance/ and $args{authoritative} = 1;     # FIXME: I don't know why have_charge isn't authoritative
+    __PACKAGE__->register_method(%args);
+}
 
-__PACKAGE__->register_method(
-    method   => "user_transactions",
-    api_name => "open-ils.actor.user.transactions.have_charge",
-    notes    => <<"	NOTES");
-	Returns a list of all open user transactions (mbts objects) that have an initial charge
-	Params are login_session, user_id
-	Optional third parameter is the transactions type.  defaults to all
-	NOTES
+# Now for the counts
+%methods = (
+    'open-ils.actor.user.transactions.count'              => '',
+    'open-ils.actor.user.transactions.have_charge.count'  => ' that have an initial charge',
+    'open-ils.actor.user.transactions.have_balance.count' => ' that have an outstanding balance',
+);
 
-__PACKAGE__->register_method(
-    method        => "user_transactions",
-    api_name      => "open-ils.actor.user.transactions.have_balance",
-    authoritative => 1,
-    notes         => <<"	NOTES");
-	Returns a list of all open user transactions (mbts objects) that have a balance
-	Params are login_session, user_id
-	Optional third parameter is the transactions type.  defaults to all
-	NOTES
-
-__PACKAGE__->register_method(
-    method   => "user_transactions",
-    api_name => "open-ils.actor.user.transactions.fleshed",
-    notes    => <<"	NOTES");
-	Returns an object/hash of transaction, circ, title where transaction = an open 
-	user transactions (mbts objects), circ is the attached circluation, and title
-	is the title the circ points to
-	Params are login_session, user_id
-	Optional third parameter is the transactions type.  defaults to all
-	NOTES
-
-__PACKAGE__->register_method(
-    method   => "user_transactions",
-    api_name => "open-ils.actor.user.transactions.have_charge.fleshed",
-    notes    => <<"	NOTES");
-	Returns an object/hash of transaction, circ, title where transaction = an open 
-	user transactions that has an initial charge (mbts objects), circ is the 
-	attached circluation, and title is the title the circ points to
-	Params are login_session, user_id
-	Optional third parameter is the transactions type.  defaults to all
-	NOTES
-
-__PACKAGE__->register_method(
-    method        => "user_transactions",
-    api_name      => "open-ils.actor.user.transactions.have_balance.fleshed",
-    authoritative => 1,
-    notes         => <<"	NOTES");
-	Returns an object/hash of transaction, circ, title where transaction = an open 
-	user transaction that has a balance (mbts objects), circ is the attached 
-	circluation, and title is the title the circ points to
-	Params are login_session, user_id
-	Optional third parameter is the transaction type.  defaults to all
-	NOTES
-
-__PACKAGE__->register_method(
-    method   => "user_transactions",
-    api_name => "open-ils.actor.user.transactions.count",
-    notes    => <<"	NOTES");
-	Returns an object/hash of transaction, circ, title where transaction = an open 
-	user transactions (mbts objects), circ is the attached circluation, and title
-	is the title the circ points to
-	Params are login_session, user_id
-	Optional third parameter is the transactions type.  defaults to all
-	NOTES
-
-__PACKAGE__->register_method(
-    method   => "user_transactions",
-    api_name => "open-ils.actor.user.transactions.have_charge.count",
-    notes    => <<"	NOTES");
-	Returns an object/hash of transaction, circ, title where transaction = an open 
-	user transactions that has an initial charge (mbts objects), circ is the 
-	attached circluation, and title is the title the circ points to
-	Params are login_session, user_id
-	Optional third parameter is the transactions type.  defaults to all
-	NOTES
-
-__PACKAGE__->register_method(
-    method        => "user_transactions",
-    api_name      => "open-ils.actor.user.transactions.have_balance.count",
-    authoritative => 1,
-    notes         => <<"	NOTES");
-	Returns an object/hash of transaction, circ, title where transaction = an open 
-	user transaction that has a balance (mbts objects), circ is the attached 
-	circluation, and title is the title the circ points to
-	Params are login_session, user_id
-	Optional third parameter is the transaction type.  defaults to all
-	NOTES
+foreach (keys %methods) {
+    my %args = (
+        method    => "user_transactions",
+        api_name  => $_,
+        signature => {
+            desc   => 'For a given user, retrieve a count of open '
+                    . 'transactions' . $methods{$_}
+                    . ' optionally limited to transactions of a given type.',
+            params => $common_params,
+            return => { desc => "Integer count of transactions, or event on error" }
+        }
+    );
+    /\.have_balance/ and $args{authoritative} = 1;     # FIXME: I don't know why have_charge isn't authoritative
+    __PACKAGE__->register_method(%args);
+}
 
 __PACKAGE__->register_method(
     method        => "user_transactions",
     api_name      => "open-ils.actor.user.transactions.have_balance.total",
     authoritative => 1,
-    notes         => <<"	NOTES");
-	Returns an object/hash of transaction, circ, title where transaction = an open 
-	user transaction that has a balance (mbts objects), circ is the attached 
-	circluation, and title is the title the circ points to
-	Params are login_session, user_id
-	Optional third parameter is the transaction type.  defaults to all
-	NOTES
-
+    signature     => {
+        desc   => 'For a given user, retrieve the total balance owed for open transactions,'
+                . ' optionally limited to transactions of a given type.',
+        params => $common_params,
+        return => { desc => "Decimal balance value, or event on error" }
+    }
+);
 
 
 sub user_transactions {
@@ -1823,10 +1783,20 @@ sub hold_request_count {
 
 
 __PACKAGE__->register_method(
-    method   => "checkedout_count",
-    api_name => "open-ils.actor.user.checked_out.count__",
-    argc     => 1,
-    notes    => "Returns a transaction record"
+    method    => "checkedout_count",
+    api_name  => "open-ils.actor.user.checked_out.count__",
+    argc      => 1,
+    signature => {
+        desc => "[DEPRECATED] For a given user, returns the total number of items checked out, "
+              . ' and the total number of items overdue',
+        params => [
+            { desc => 'Authentication Token', type => 'string'},
+            { desc => 'User ID',              type => 'string'},
+        ],
+        return => {
+            desc => 'Counts of total checked out and overdue, like { total => $i, overdue => $j }',
+        },
+    }
 );
 	
 
@@ -1864,17 +1834,20 @@ __PACKAGE__->register_method(
     api_name      => "open-ils.actor.user.checked_out",
     authoritative => 1,
     argc          => 2,
-	signature     => q/
-		Returns a structure of circulations objects sorted by
-		out, overdue, lost, claims_returned, long_overdue.
-		A list of IDs are returned of each type.
-		lost, long_overdue, and claims_returned circ will not
-		be "finished" (there is an outstanding balance or some 
-		other pending action on the circ). 
-
-		The .count method also includes a 'total' field which 
-		sums all "open" circs
-	/
+	signature     => {
+        desc => "For a given user, returns a structure of circulations objects sorted by out, overdue, lost, claims_returned, long_overdue. "
+              . "A list of IDs are returned of each type.  Circs marked lost, long_overdue, and claims_returned will not be 'finished' "
+              . "(i.e., outstanding balance or some other pending action on the circ). "
+              . "The .count method also includes a 'total' field which sums all open circs.",
+        params => [
+            { desc => 'Authentication Token', type => 'string'},
+            { desc => 'User ID',              type => 'string'},
+        ],
+        return => {
+            desc => 'Returns event on error, or an object with ID lists, like: '
+                  . '{"out":[12552,451232], "claims_returned":[], "long_overdue":[23421] "overdue":[], "lost":[]}'
+        },
+    }
 );
 
 __PACKAGE__->register_method(
