@@ -4276,6 +4276,7 @@ $$
                 <th>Barcode</th>
                 <th>Call Number</th>
                 <th>Fund</th>
+                <th>Shelving Location</th>
                 <th>Recd.</th>
                 <th>Notes</th>
             </tr>
@@ -4297,6 +4298,7 @@ $$
                 <td style='padding:5px;'>[% IF copy.barcode   %]<span class="barcode"  >[% detail.barcode   %]</span>[% END %]</td>
                 <td style='padding:5px;'>[% IF cn_label %]<span class="cn_label" >[% cn_label  %]</span>[% END %]</td>
                 <td style='padding:5px;'>[% IF detail.fund %]<span class="fund">[% detail.fund.code %] ([% detail.fund.year %])</span>[% END %]</td>
+                <td style='padding:5px;'>[% copy.location.name %]</td>
                 <td style='padding:5px;'>[% IF detail.recv_time %]<span class="recv_time">[% detail.recv_time %]</span>[% END %]</td>
                 <td style='padding:5px;'>[% detail.note %]</td>
             </tr>
@@ -4310,9 +4312,16 @@ $$
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES
     ( 14, 'attributes' ),
+    ( 14, 'lineitem_notes' ),
+    ( 14, 'lineitem_notes.alert_text' ),
+    ( 14, 'distribution_formulas.formula' ),
     ( 14, 'lineitem_details' ),
     ( 14, 'lineitem_details.owning_lib' ),
-    ( 14, 'lineitem_notes' )
+    ( 14, 'lineitem_details.fund' ),
+    ( 14, 'lineitem_details.location' ),
+    ( 14, 'lineitem_details.eg_copy_id' ),
+    ( 14, 'lineitem_details.eg_copy_id.call_number' ),
+    ( 14, 'lineitem_details.eg_copy_id.location' )
 ;
 
 INSERT INTO action_trigger.environment ( event_def, path) VALUES
