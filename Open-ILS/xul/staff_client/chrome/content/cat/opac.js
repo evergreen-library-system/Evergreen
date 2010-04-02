@@ -297,6 +297,20 @@ function set_opac() {
             },
             'url_prefix' : xulG.url_prefix,
         };
+        content_params.new_tab = xulG.new_tab;
+        content_params.set_tab = xulG.set_tab;
+        content_params.close_tab = xulG.close_tab;
+        content_params.new_patron_tab = xulG.new_patron_tab;
+        content_params.set_patron_tab = xulG.set_patron_tab;
+        content_params.volume_item_creator = xulG.volume_item_creator;
+        content_params.get_new_session = xulG.get_new_session;
+        content_params.holdings_maintenance_tab = xulG.holdings_maintenance_tab;
+        content_params.set_tab_name = xulG.set_tab_name;
+        content_params.open_chrome_window = xulG.open_chrome_window;
+        content_params.url_prefix = xulG.url_prefix;
+        content_params.network_meter = xulG.network_meter;
+        content_params.set_statusbar = xulG.set_statusbar;
+
         if (opac_url) { content_params.url = opac_url; } else { content_params.url = xulG.url_prefix( urls.browser ); }
         browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
         /* // Remember to use the REMOTE_BROWSER if we ever try to move this to remote xul again
