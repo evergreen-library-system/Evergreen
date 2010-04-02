@@ -3663,6 +3663,22 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype) VA
     'bool'
 );
 
+-- 0227.data.org-setting-acq.holds.allow_holds_from_purchase_request.sql
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'acq.holds.allow_holds_from_purchase_request',
+        oils_i18n_gettext(
+            'acq.holds.allow_holds_from_purchase_request', 
+            'Allows patrons to create automatic holds from purchase requests.', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'acq.holds.allow_holds_from_purchase_request', 
+            'Allows patrons to create automatic holds from purchase requests.', 
+            'coust', 
+            'description'),
+        'bool'
+);
+
 -- Hold cancel action/trigger hooks
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
