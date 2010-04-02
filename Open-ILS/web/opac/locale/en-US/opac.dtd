@@ -414,6 +414,7 @@ Please see a librarian to renew your account.">
 <!ENTITY opac.search.books "Books">
 <!ENTITY opac.search.allFormats "All Formats">
 <!ENTITY opac.search.largePrint "Large Print Books">
+<!ENTITY opac.search.ebook "E-Books">
 <!ENTITY opac.search.audioBooks "Audiobooks">
 <!ENTITY opac.search.videoRecordings "Video Recordings">
 <!ENTITY opac.search.music "Music">

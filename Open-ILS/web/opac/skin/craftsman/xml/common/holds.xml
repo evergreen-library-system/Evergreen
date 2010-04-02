@@ -183,6 +183,7 @@
 						<select id='hold_alt_form_selector' multiple='multiple' style='width: 14em;'>
 							<option value='at'	class='hide_me'>&opac.search.books;</option>
 							<option value='at-d' class='hide_me'>&opac.search.largePrint;</option>
+							<option value='at-s' class='hide_me'>&opac.search.ebook;</option>
 							<option value='i'		class='hide_me'>&opac.search.audioBooks;</option>
 							<option value='g'		class='hide_me'>&opac.search.videoRecordings;</option>
 							<option value='j'		class='hide_me'>&opac.search.music;</option>
