@@ -127,6 +127,7 @@ function load_item() {
         set("call_number", '');
         set("circ_as_type", '');
         set("copy_circ_lib" , '');
+        set_tooltip("copy_circ_lib" , '');
         set("circ_modifier", '');
         set("circulate", '');
         set("copy_number", '');
@@ -166,7 +167,8 @@ function load_item() {
             set("barcode", details.copy.barcode()); 
             set("call_number", details.copy.call_number()); 
             set("circ_as_type", details.copy.circ_as_type()); 
-            set("copy_circ_lib" , details.copy.circ_lib()); 
+            set("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().shortname() : data.hash.aou[ details.copy.circ_lib() ].shortname()); 
+            set_tooltip("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().name() : data.hash.aou[ details.copy.circ_lib() ].name()); 
             set("circ_modifier", details.copy.circ_modifier()); 
             set("circulate", details.copy.circulate()); 
             set("copy_number", details.copy.copy_number()); 
@@ -229,6 +231,7 @@ function load_item() {
         set("volume_id", '');
         set("label", '');
         set("owning_lib" , '');
+        set_tooltip("owning_lib" , '');
         set("record", '');
         set("notes", '');
         set("uri_maps", '');
@@ -243,7 +246,8 @@ function load_item() {
             set("volume_editor", details.volume.editor()); 
             set("volume_id", details.volume.id()); 
             set("label", details.volume.label()); 
-            set("owning_lib" , details.volume.owning_lib()); 
+            set("owning_lib" , typeof details.volume.owning_lib() == 'object' ? details.volume.owning_lib().shortname() : data.hash.aou[ details.volume.owning_lib() ].shortname()); 
+            set_tooltip("owning_lib" , typeof details.volume.owning_lib() == 'object' ? details.volume.owning_lib().name() : data.hash.aou[ details.volume.owning_lib() ].name()); 
             set("record", details.volume.record()); 
             set("notes", details.volume.notes()); 
             set("uri_maps", details.volume.uri_maps()); 
@@ -275,11 +279,13 @@ function load_item() {
         }
 
         set("checkin_lib", '');
+        set_tooltip("checkin_lib", '');
         set("checkin_workstation",""); 
         set("checkin_staff", '');
         set("checkin_time", '');
         set("checkin_scan_time", '');
         set("circ_circ_lib" , '');
+        set_tooltip("circ_circ_lib" , '');
         set("circ_staff", '');
         set("desk_renewal", '');
         set("due_date", '');
@@ -313,6 +319,7 @@ function load_item() {
 
         if (details.circ) {
             try { set("checkin_lib", typeof details.circ.checkin_lib() == 'object' ? details.circ.checkin_lib().shortname() : data.hash.aou[ details.circ.checkin_lib() ].shortname() );  } catch(E) {};
+            try { set_tooltip("checkin_lib", typeof details.circ.checkin_lib() == 'object' ? details.circ.checkin_lib().name() : data.hash.aou[ details.circ.checkin_lib() ].name() );  } catch(E) {};
             if (details.circ.checkin_workstation()) {
                 set("checkin_workstation", details.circ.checkin_workstation().name()); 
             }
@@ -320,6 +327,7 @@ function load_item() {
             set("checkin_time", util.date.formatted_date( details.circ.checkin_time(), '%{localized}' )); 
             set("checkin_scan_time", util.date.formatted_date( details.circ.checkin_scan_time(), '%{localized}' )); 
             try { set("circ_circ_lib" , typeof details.circ.circ_lib() == 'object' ? details.circ.circ_lib().shortname() : data.hash.aou[ details.circ.circ_lib() ].shortname() );  } catch(E) {};
+            try { set_tooltip("circ_circ_lib" , typeof details.circ.circ_lib() == 'object' ? details.circ.circ_lib().name() : data.hash.aou[ details.circ.circ_lib() ].name() );  } catch(E) {};
             set("circ_staff", details.circ.circ_staff()); 
             set("desk_renewal", details.circ.desk_renewal()); 
             set("due_date", util.date.formatted_date( details.circ.due_date(), '%{localized}' )); 
@@ -432,6 +440,7 @@ function load_item() {
         set("email_notify", '');
         set("expire_time", '');
         set("fulfillment_lib", '');
+        set_tooltip("fulfillment_lib", '');
         set("fulfillment_staff", '');
         set("fulfillment_time", '');
         set("hold_type", '');
@@ -439,12 +448,15 @@ function load_item() {
         set("hold_id", '');
         set("phone_notify", '');
         set("pickup_lib", '');
+        set_tooltip("pickup_lib", '');
         set("prev_check_time", '');
         set("request_lib", '');
+        set_tooltip("request_lib", '');
         set("request_time", '');
         set("requestor", '');
         set("selection_depth", '');
         set("selection_ou", '');
+        set_tooltip("selection_ou", '');
         set("target", '');
         set("usr", '');
         set("cancel_time", '');
@@ -468,6 +480,7 @@ function load_item() {
             set("email_notify", details.hold.email_notify()); 
             set("expire_time", util.date.formatted_date( details.hold.expire_time(), '%{localized}' )); 
             try { set("fulfillment_lib" , typeof details.hold.fulfillment_lib() == 'object' ? details.hold.fulfillment_lib().shortname() : data.hash.aou[ details.hold.fulfillment_lib() ].shortname() );  } catch(E) {}
+            try { set_tooltip("fulfillment_lib" , typeof details.hold.fulfillment_lib() == 'object' ? details.hold.fulfillment_lib().name() : data.hash.aou[ details.hold.fulfillment_lib() ].name() );  } catch(E) {}
             set("fulfillment_staff", details.hold.fulfillment_staff()); 
             set("fulfillment_time", util.date.formatted_date( details.hold.fulfillment_time(), '%{localized}' )); 
             set("hold_type", details.hold.hold_type()); 
@@ -475,12 +488,15 @@ function load_item() {
             set("hold_id", details.hold.id()); 
             set("phone_notify", details.hold.phone_notify()); 
             try { set("pickup_lib" , typeof details.hold.pickup_lib() == 'object' ? details.hold.pickup_lib().shortname() : data.hash.aou[ details.hold.pickup_lib() ].shortname() );  } catch(E) {}
+            try { set_tooltip("pickup_lib" , typeof details.hold.pickup_lib() == 'object' ? details.hold.pickup_lib().name() : data.hash.aou[ details.hold.pickup_lib() ].name() );  } catch(E) {}
             set("prev_check_time", util.date.formatted_date( details.hold.prev_check_time(), '%{localized}' )); 
             try { set("request_lib" , typeof details.hold.request_lib() == 'object' ? details.hold.request_lib().shortname() : data.hash.aou[ details.hold.request_lib() ].shortname() ); } catch(E) {}
+            try { set_tooltip("request_lib" , typeof details.hold.request_lib() == 'object' ? details.hold.request_lib().name() : data.hash.aou[ details.hold.request_lib() ].name() ); } catch(E) {}
             set("request_time", util.date.formatted_date( details.hold.request_time(), '%{localized}' )); 
             set("requestor", details.hold.requestor()); 
             set("selection_depth", details.hold.selection_depth()); 
             set("selection_ou" , typeof details.hold.selection_ou() == 'object' ? details.hold.selection_ou().shortname() : data.hash.aou[ details.hold.selection_ou() ].shortname() ); 
+            set_tooltip("selection_ou" , typeof details.hold.selection_ou() == 'object' ? details.hold.selection_ou().name() : data.hash.aou[ details.hold.selection_ou() ].name() ); 
             set("target", details.hold.target()); 
             set("usr", details.hold.usr()); 
             set("cancel_time", util.date.formatted_date( details.hold.cancel_time(), '%{localized}' )); 
