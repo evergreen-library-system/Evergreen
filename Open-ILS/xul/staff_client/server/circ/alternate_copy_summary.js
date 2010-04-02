@@ -13,6 +13,7 @@ function my_init() {
 
         JSAN.use('util.network'); network = new util.network();
         JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
+        JSAN.use('util.date');
 
         // timeout so xulG gets a chance to get pushed in
         setTimeout(
@@ -169,15 +170,15 @@ function load_item() {
             set("circ_modifier", details.copy.circ_modifier()); 
             set("circulate", details.copy.circulate()); 
             set("copy_number", details.copy.copy_number()); 
-            set("copy_create_date", details.copy.create_date()); 
-            set("status_changed_time", details.copy.status_changed_time()); 
+            set("copy_create_date", util.date.formatted_date( details.copy.create_date(), '%{localized}' )); 
+            set("status_changed_time", util.date.formatted_date( details.copy.status_changed_time(), '%{localized}' )); 
             set("copy_creator", details.copy.creator()); 
             set("deleted", details.copy.deleted()); 
             set("deposit", details.copy.deposit()); 
             set("deposit_amount", details.copy.deposit_amount()); 
             set("dummy_author", details.copy.dummy_author()); 
             set("dummy_title", details.copy.dummy_title()); 
-            set("copy_edit_date", details.copy.edit_date()); 
+            set("copy_edit_date", util.date.formatted_date( details.copy.edit_date(), '%{localized}' )); 
             set("copy_editor", details.copy.editor()); 
             set("fine_level", details.copy.fine_level()); 
             set("holdable", details.copy.holdable()); 
@@ -235,10 +236,10 @@ function load_item() {
 
         if (details.volume) {
             set("copies", details.volume.copies()); 
-            set("volume_create_date", details.volume.create_date()); 
+            set("volume_create_date", util.date.formatted_date( details.volume.create_date(), '%{localized}' )); 
             set("volume_creator", details.volume.creator()); 
             set("deleted", details.volume.deleted()); 
-            set("volume_edit_date", details.volume.edit_date()); 
+            set("volume_edit_date", util.date.formatted_date( details.volume.edit_date(), '%{localized}' )); 
             set("volume_editor", details.volume.editor()); 
             set("volume_id", details.volume.id()); 
             set("label", details.volume.label()); 
@@ -263,12 +264,12 @@ function load_item() {
         if (details.transit) {
             set("copy_status", details.transit.copy_status()); 
             set("dest", details.transit.dest()); 
-            set("dest_recv_time", details.transit.dest_recv_time()); 
+            set("dest_recv_time", util.date.formatted_date( details.transit.dest_recv_time(), '%{localized}' )); 
             set("transit_id", details.transit.id()); 
             set("persistant_transfer", details.transit.persistant_transfer()); 
             set("prev_hop", details.transit.prev_hop()); 
             set("source", details.transit.source()); 
-            set("source_send_time", details.transit.source_send_time()); 
+            set("source_send_time", util.date.formatted_date( details.transit.source_send_time(), '%{localized}' )); 
             set("target_copy", details.transit.target_copy()); 
             set("hold_transit_copy", details.transit.hold_transit_copy()); 
         }
@@ -316,12 +317,12 @@ function load_item() {
                 set("checkin_workstation", details.circ.checkin_workstation().name()); 
             }
             set("checkin_staff", details.circ.checkin_staff()); 
-            set("checkin_time", details.circ.checkin_time()); 
-            set("checkin_scan_time", details.circ.checkin_scan_time()); 
+            set("checkin_time", util.date.formatted_date( details.circ.checkin_time(), '%{localized}' )); 
+            set("checkin_scan_time", util.date.formatted_date( details.circ.checkin_scan_time(), '%{localized}' )); 
             try { set("circ_circ_lib" , typeof details.circ.circ_lib() == 'object' ? details.circ.circ_lib().shortname() : data.hash.aou[ details.circ.circ_lib() ].shortname() );  } catch(E) {};
             set("circ_staff", details.circ.circ_staff()); 
             set("desk_renewal", details.circ.desk_renewal()); 
-            set("due_date", details.circ.due_date()); 
+            set("due_date", util.date.formatted_date( details.circ.due_date(), '%{localized}' )); 
             set("duration", details.circ.duration()); 
             set("fine_interval", details.circ.fine_interval()); 
             set("circ_id", details.circ.id()); 
@@ -332,12 +333,12 @@ function load_item() {
             set("recurring_fine", details.circ.recurring_fine()); 
             set("renewal_remaining", details.circ.renewal_remaining()); 
             set("stop_fines", details.circ.stop_fines()); 
-            set("stop_fines_time", details.circ.stop_fines_time()); 
+            set("stop_fines_time", util.date.formatted_date( details.circ.stop_fines_time(), '%{localized}' )); 
             set("target_copy", details.circ.target_copy()); 
             set("usr", details.circ.usr()); 
-            set("xact_finish", details.circ.xact_finish()); 
-            set("xact_start", details.circ.xact_start()); 
-            set("create_time", details.circ.create_time()); 
+            set("xact_finish", util.date.formatted_date( details.circ.xact_finish(), '%{localized}' )); 
+            set("xact_start", util.date.formatted_date( details.circ.xact_start(), '%{localized}' )); 
+            set("create_time", util.date.formatted_date( details.circ.create_time(), '%{localized}' )); 
             set("workstation", details.circ.workstation()); 
             if (get_bool(details.circ.opac_renewal())||get_bool(details.circ.phone_renewal())||get_bool(details.circ.desk_renewal())) {
                 set("renewal_workstation", (typeof details.circ.workstation() == 'object' && details.circ.workstation() != null) ? details.circ.workstation().name() : details.circ.workstation() ); 
@@ -462,35 +463,35 @@ function load_item() {
         if (details.hold) {
             set("status", details.hold.status()); 
             set("transit", details.hold.transit()); 
-            set("capture_time", details.hold.capture_time()); 
+            set("capture_time", util.date.formatted_date( details.hold.capture_time(), '%{localized}' )); 
             set("current_copy", details.hold.current_copy()); 
             set("email_notify", details.hold.email_notify()); 
-            set("expire_time", details.hold.expire_time()); 
+            set("expire_time", util.date.formatted_date( details.hold.expire_time(), '%{localized}' )); 
             try { set("fulfillment_lib" , typeof details.hold.fulfillment_lib() == 'object' ? details.hold.fulfillment_lib().shortname() : data.hash.aou[ details.hold.fulfillment_lib() ].shortname() );  } catch(E) {}
             set("fulfillment_staff", details.hold.fulfillment_staff()); 
-            set("fulfillment_time", details.hold.fulfillment_time()); 
+            set("fulfillment_time", util.date.formatted_date( details.hold.fulfillment_time(), '%{localized}' )); 
             set("hold_type", details.hold.hold_type()); 
             set("holdable_formats", details.hold.holdable_formats()); 
             set("hold_id", details.hold.id()); 
             set("phone_notify", details.hold.phone_notify()); 
             try { set("pickup_lib" , typeof details.hold.pickup_lib() == 'object' ? details.hold.pickup_lib().shortname() : data.hash.aou[ details.hold.pickup_lib() ].shortname() );  } catch(E) {}
-            set("prev_check_time", details.hold.prev_check_time()); 
+            set("prev_check_time", util.date.formatted_date( details.hold.prev_check_time(), '%{localized}' )); 
             try { set("request_lib" , typeof details.hold.request_lib() == 'object' ? details.hold.request_lib().shortname() : data.hash.aou[ details.hold.request_lib() ].shortname() ); } catch(E) {}
-            set("request_time", details.hold.request_time()); 
+            set("request_time", util.date.formatted_date( details.hold.request_time(), '%{localized}' )); 
             set("requestor", details.hold.requestor()); 
             set("selection_depth", details.hold.selection_depth()); 
             set("selection_ou" , typeof details.hold.selection_ou() == 'object' ? details.hold.selection_ou().shortname() : data.hash.aou[ details.hold.selection_ou() ].shortname() ); 
             set("target", details.hold.target()); 
             set("usr", details.hold.usr()); 
-            set("cancel_time", details.hold.cancel_time()); 
-            set("notify_time", details.hold.notify_time()); 
+            set("cancel_time", util.date.formatted_date( details.hold.cancel_time(), '%{localized}' )); 
+            set("notify_time", util.date.formatted_date( details.hold.notify_time(), '%{localized}' )); 
             set("notify_count", details.hold.notify_count()); 
             set("notifications", details.hold.notifications()); 
             set("bib_rec", details.hold.bib_rec()); 
             set("eligible_copies", details.hold.eligible_copies()); 
             set("frozen", details.hold.frozen()); 
-            set("thaw_date", details.hold.thaw_date()); 
-            set("shelf_time", details.hold.shelf_time()); 
+            set("thaw_date", util.date.formatted_date( details.hold.thaw_date(), '%{localized}' )); 
+            set("shelf_time", util.date.formatted_date( details.hold.shelf_time(), '%{localized}' )); 
             set("cancel_cause", details.hold.cancel_cause()); 
             set("cancel_note", details.hold.cancel_note()); 
             set("notes", details.hold.notes()); 
