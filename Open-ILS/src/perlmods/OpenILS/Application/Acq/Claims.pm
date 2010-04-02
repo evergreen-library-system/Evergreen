@@ -153,7 +153,7 @@ sub claim_item {
     }
 
     $e->commit;
-    $conn->respond($claim_events->{events});
+    $conn->respond_complete($claim_events->{events});
 
     # create related A/T events
     $U->create_events_for_hook('claim_event.created', $_->[0], $_->[1]) for @{$claim_events->{trigger_stuff}};
