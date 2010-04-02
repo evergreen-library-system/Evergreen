@@ -146,6 +146,7 @@ function load_item() {
         set("copy_id", '');
         set("loan_duration", '');
         set("location", '');
+        set_tooltip("location", '');
         set("renewal_type", '');
         set("opac_visible", '');
         set("price", '');
@@ -186,7 +187,17 @@ function load_item() {
             set("holdable", details.copy.holdable()); 
             set("copy_id", details.copy.id()); 
             set("loan_duration", details.copy.loan_duration()); 
-            set("location", details.copy.location()); 
+            var copy_location = typeof details.copy.location() == 'object' ? details.copy.location() : data.lookup('acpl',details.copy.location());
+                set("location", copy_location.name());
+                set_tooltip("location", document.getElementById('circStrings').getFormattedString( 
+                    'staff.circ.copy_details.location_tooltip',
+                    [
+                        get_localized_bool( copy_location.circulate() ), 
+                        get_localized_bool( copy_location.holdable() ), 
+                        get_localized_bool( copy_location.hold_verify() ), 
+                        get_localized_bool( copy_location.opac_visible() )
+                    ]
+                ));
             set("opac_visible", details.copy.opac_visible()); 
             set("price", details.copy.price()); 
             set("ref", details.copy.ref()); 
