@@ -3581,7 +3581,7 @@ From: [%- params.sender_email || default_sender %]
 Subject: Acquisition Request Notification
 
 Dear [% user.family_name %], [% user.first_given_name %]
-Our records indicate the following acquisition request has been rejected for this reason: .
+Our records indicate the following acquisition request has been rejected for this reason: [% cancel_reason %]
 
 Title: [% title %]
 [% IF author %]Author: [% author %][% END %]
@@ -3610,7 +3610,8 @@ INSERT INTO action_trigger.environment (
         ( 17, 'usr' ),
 
         ( 18, 'usr' ),
-        ( 19, 'usr' )
+        ( 19, 'usr' ),
+        ( 19, 'cancel_reason' )
     ;
 
 SELECT SETVAL('action_trigger.event_definition_id_seq'::TEXT, 100);
