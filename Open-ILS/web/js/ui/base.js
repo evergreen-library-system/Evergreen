@@ -6,6 +6,7 @@ dojo.require('openils.User');
 dojo.require('openils.CGI');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
+dojo.require('openils.XUL');
 
 function oilsSetupUser() {
     var cgi = new openils.CGI();
@@ -17,11 +18,17 @@ function oilsSetupUser() {
         dojo.cookie('ses', openils.User.authtoken, {expires:-1, path:'/'}); // remove the cookie
         openils.User.authtoken = null;
         dojo.addOnLoad(function(){
-            oilsLoginDialog.show(); 
-            var func = function(){ oilsDoLogin(); };
-            openils.Util.registerEnterHandler(dojo.byId('oils-login-username'), func);
-            openils.Util.registerEnterHandler(dojo.byId('oils-login-password'), func);
-            dojo.byId('oils-login-workstation').innerHTML = workstation || '';
+            if(openils.XUL.isXUL()) {
+                // let XUL handle the login dialog
+                openils.XUL.getNewSession( function() { location.href = location.href } );
+            } else {
+                // in web-only mode, use the dojo login dialog
+                oilsLoginDialog.show(); 
+                var func = function(){ oilsDoLogin(); };
+                openils.Util.registerEnterHandler(dojo.byId('oils-login-username'), func);
+                openils.Util.registerEnterHandler(dojo.byId('oils-login-password'), func);
+                dojo.byId('oils-login-workstation').innerHTML = workstation || '';
+            }
         });
         return;
     }
@@ -44,7 +51,7 @@ function oilsDoLogin() {
         args.workstation = workstation;
 
     if(user.login(args)) {
-        dojo.cookie('ses', user.authtoken, {path : '/'});
+        dojo.cookie('ses', user.authtoken, {path : oilsBasePath});
         location.href = location.href;
     } else {
         openils.Util.show('oils-login-failed');

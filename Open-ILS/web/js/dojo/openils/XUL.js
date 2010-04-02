@@ -33,6 +33,13 @@ if(!dojo._hasResource["openils.XUL"]) {
         xulG.new_tab(path, tabInfo, options);
     }
 
+    /**
+     * @return bool True if a new session was successfully created, false otherwise.
+     */
+    openils.XUL.getNewSession = function(callback) {
+        return xulG.get_new_session({callback : callback});
+    }
+
     /** 
      * This can be used by privileged Firefox in addition to XUL.
      * To use use in Firefox directly, set signed.applets.codebase_principal_support to true in about:config
