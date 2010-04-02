@@ -548,9 +548,27 @@ function grabUser(ses, force) {
 	request.send(true);
 	var user = request.result();
 
-	if(!user) {
-		doLogout();
-		return false; /* unable to grab the session */
+	if(!user || user.textcode == 'NO_SESSION') {
+
+        if(isXUL()) {
+            dojo.require('openils.XUL');
+            openils.XUL.getNewSession( 
+                function(success, authtoken) { 
+                    if(success) {
+                        ses = authtoken;
+                        var request = new Request(FETCH_SESSION, ses, 1);
+                        request.request.alertEvent = false;
+                        request.send(true);
+                        user = request.result();
+                    }
+                }
+            );
+        }
+
+	    if(!user || user.textcode == 'NO_SESSION') {
+		    doLogout();
+		    return false; /* unable to grab the session */
+        }
 	}
 
 	if( !(typeof user == 'object' && user._isfieldmapper) ) {
