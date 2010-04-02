@@ -358,6 +358,11 @@
         if (a) return true; else return false;
     }
 
+    function get_localized_bool(a) {
+        var Strings = $('offlineStrings') || $('commonStrings');
+        return get_bool(a) ? Strings.getString('common.yes') : Strings.getString('common.no');
+    }
+
     function get_db_true() {
         return 't';
     }
