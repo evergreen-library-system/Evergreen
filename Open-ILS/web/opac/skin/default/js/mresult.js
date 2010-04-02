@@ -47,7 +47,7 @@ function mresultCollectAdvIds() {
 
 function mresultHandleMRIds(r) {
 	var res = r.getResultObject();
-    resultFacetKey = result.facet_key;
+    resultFacetKey = res.facet_key;
     resultCompiledSearch = res.compiled_search;
     cookieManager.write(COOKIE_SEARCH, js2JSON(res.compiled_search), -1);
 	if(res.count != null) {
