@@ -269,7 +269,7 @@ int osrfAppInitialize() {
 	buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".transaction.commit");
-	osrfAppRegisterMethod( MODULENAME, OSRF_BUFFER_C_STR(method_name),
+	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR(method_name),
 			"commitTransaction", "", 0, 0 );
 
 	buffer_reset(method_name);
@@ -2474,7 +2474,7 @@ static char* searchINPredicate (const char* class_alias, osrfHash* field,
 static char* searchValueTransform( const jsonObject* array ) {
 
 	if( array->size < 1 ) {
-		osrfLogError(OSRF_LOG_MARK, "%s: Empty array for value transform", MODULENAME);
+		osrfLogError( OSRF_LOG_MARK, "%s: Empty array for value transform", modulename );
 		return NULL;
 	}
 
@@ -2482,7 +2482,7 @@ static char* searchValueTransform( const jsonObject* array ) {
 	jsonObject* func_item = jsonObjectGetIndex( array, 0 );
 	if( func_item->type != JSON_STRING ) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error: expected function name, found %s",
-			MODULENAME, json_type( func_item->type ) );
+			modulename, json_type( func_item->type ) );
 		return NULL;
 	}
 
@@ -2508,7 +2508,7 @@ static char* searchValueTransform( const jsonObject* array ) {
 				OSRF_BUFFER_ADD( sql_buf, val );
 				free(val);
 			} else {
-				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", modulename, val);
 				buffer_free(sql_buf);
 				free(val);
 				return NULL;
@@ -2525,7 +2525,7 @@ static char* searchFunctionPredicate (const char* class_alias, osrfHash* field,
 		const jsonObject* node, const char* op) {
 
 	if( ! is_good_operator( op ) ) {
-		osrfLogError( OSRF_LOG_MARK, "%s: Invalid operator [%s]", MODULENAME, op );
+		osrfLogError( OSRF_LOG_MARK, "%s: Invalid operator [%s]", modulename, op );
 		return NULL;
 	}
 
@@ -2562,7 +2562,7 @@ static char* searchFieldTransform (const char* class_alias, osrfHash* field, con
 	if(transform_subcolumn) {
 		if( ! is_identifier( transform_subcolumn ) ) {
 			osrfLogError( OSRF_LOG_MARK, "%s: Invalid subfield name: \"%s\"\n",
-					MODULENAME, transform_subcolumn );
+					modulename, transform_subcolumn );
 			buffer_free( sql_buf );
 			return NULL;
 		}
@@ -2573,7 +2573,7 @@ static char* searchFieldTransform (const char* class_alias, osrfHash* field, con
 
 		if( ! is_identifier( field_transform ) ) {
 			osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
-					MODULENAME, field_transform );
+					modulename, field_transform );
 			buffer_free( sql_buf );
 			return NULL;
 		}
@@ -2592,7 +2592,7 @@ static char* searchFieldTransform (const char* class_alias, osrfHash* field, con
 			if( array->type != JSON_ARRAY ) {
 				osrfLogError( OSRF_LOG_MARK,
 					"%s: Expected JSON_ARRAY for function params; found %s",
-					MODULENAME, json_type( array->type ) );
+					modulename, json_type( array->type ) );
 				buffer_free( sql_buf );
 				return NULL;
 			}
@@ -2609,7 +2609,7 @@ static char* searchFieldTransform (const char* class_alias, osrfHash* field, con
 					OSRF_BUFFER_ADD( sql_buf, val );
 				} else {
 					osrfLogError( OSRF_LOG_MARK,
-							"%s: Error quoting key string [%s]", MODULENAME, val);
+							"%s: Error quoting key string [%s]", modulename, val);
 					free(val);
 					buffer_free(sql_buf);
 					return NULL;
@@ -2634,7 +2634,7 @@ static char* searchFieldTransformPredicate( const ClassInfo* class_info, osrfHas
 		const jsonObject* node, const char* op ) {
 
 	if( ! is_good_operator( op ) ) {
-		osrfLogError(OSRF_LOG_MARK, "%s: Error: Invalid operator %s", MODULENAME, op);
+		osrfLogError(OSRF_LOG_MARK, "%s: Error: Invalid operator %s", modulename, op);
 		return NULL;
 	}
 
@@ -2649,7 +2649,7 @@ static char* searchFieldTransformPredicate( const ClassInfo* class_info, osrfHas
 		value = searchWHERE( node, class_info, AND_OP_JOIN, NULL );
 		if( !value ) {
 			osrfLogError( OSRF_LOG_MARK, "%s: Error building condition for field transform",
-				MODULENAME );
+				modulename );
 			free(field_transform);
 			return NULL;
 		}
@@ -2657,16 +2657,16 @@ static char* searchFieldTransformPredicate( const ClassInfo* class_info, osrfHas
 	} else if ( value_obj->type == JSON_ARRAY ) {
 		value = searchValueTransform( value_obj );
 		if( !value ) {
-			osrfLogError(OSRF_LOG_MARK,
-				"%s: Error building value transform for field transform", MODULENAME);
+			osrfLogError( OSRF_LOG_MARK,
+				"%s: Error building value transform for field transform", modulename );
 			free( field_transform );
 			return NULL;
 		}
 	} else if ( value_obj->type == JSON_HASH ) {
 		value = searchWHERE( value_obj, class_info, AND_OP_JOIN, NULL );
 		if( !value ) {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error building predicate for field transform",
-				MODULENAME);
+			osrfLogError( OSRF_LOG_MARK, "%s: Error building predicate for field transform",
+				modulename );
 			free(field_transform);
 			return NULL;
 		}
@@ -2675,12 +2675,12 @@ static char* searchFieldTransformPredicate( const ClassInfo* class_info, osrfHas
 		value = jsonNumberToDBString( field, value_obj );
 	} else if ( value_obj->type == JSON_NULL ) {
 		osrfLogError( OSRF_LOG_MARK,
-			"%s: Error building predicate for field transform: null value", MODULENAME );
+			"%s: Error building predicate for field transform: null value", modulename );
 		free(field_transform);
 		return NULL;
 	} else if ( value_obj->type == JSON_BOOL ) {
 		osrfLogError( OSRF_LOG_MARK,
-			"%s: Error building predicate for field transform: boolean value", MODULENAME );
+			"%s: Error building predicate for field transform: boolean value", modulename );
 		free(field_transform);
 		return NULL;
 	} else {
@@ -2690,7 +2690,7 @@ static char* searchFieldTransformPredicate( const ClassInfo* class_info, osrfHas
 			value = jsonObjectToSimpleString( value_obj );
 			if ( !dbi_conn_quote_string(dbhandle, &value) ) {
 				osrfLogError( OSRF_LOG_MARK, "%s: Error quoting key string [%s]",
-					MODULENAME, value);
+					modulename, value );
 				free(value);
 				free(field_transform);
 				return NULL;
@@ -2730,7 +2730,7 @@ static char* searchSimplePredicate (const char* op, const char* class_alias,
 		osrfHash* field, const jsonObject* node) {
 
 	if( ! is_good_operator( op ) ) {
-		osrfLogError( OSRF_LOG_MARK, "%s: Invalid operator [%s]", MODULENAME, op );
+		osrfLogError( OSRF_LOG_MARK, "%s: Invalid operator [%s]", modulename, op );
 		return NULL;
 	}
 
@@ -2752,7 +2752,7 @@ static char* searchSimplePredicate (const char* op, const char* class_alias,
 			// Value is not numeric; enclose it in quotes
 			if ( !dbi_conn_quote_string( dbhandle, &val ) ) {
 				osrfLogError( OSRF_LOG_MARK, "%s: Error quoting key string [%s]",
-					MODULENAME, val );
+					modulename, val );
 				free( val );
 				return NULL;
 			}
@@ -2782,11 +2782,11 @@ static char* searchBETWEENPredicate (const char* class_alias,
 	const jsonObject* y_node = jsonObjectGetIndex( node, 1 );
 
 	if( NULL == y_node ) {
-		osrfLogError( OSRF_LOG_MARK, "%s: Not enough operands for BETWEEN operator", MODULENAME );
+		osrfLogError( OSRF_LOG_MARK, "%s: Not enough operands for BETWEEN operator", modulename );
 		return NULL;
 	}
 	else if( NULL != jsonObjectGetIndex( node, 2 ) ) {
-		osrfLogError( OSRF_LOG_MARK, "%s: Too many operands for BETWEEN operator", MODULENAME );
+		osrfLogError( OSRF_LOG_MARK, "%s: Too many operands for BETWEEN operator", modulename );
 		return NULL;
 	}
 
@@ -2801,8 +2801,8 @@ static char* searchBETWEENPredicate (const char* class_alias,
 		x_string = jsonObjectToSimpleString(x_node);
 		y_string = jsonObjectToSimpleString(y_node);
 		if ( !(dbi_conn_quote_string(dbhandle, &x_string) && dbi_conn_quote_string(dbhandle, &y_string)) ) {
-			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key strings [%s] and [%s]",
-					MODULENAME, x_string, y_string);
+			osrfLogError( OSRF_LOG_MARK, "%s: Error quoting key strings [%s] and [%s]",
+					modulename, x_string, y_string );
 			free(x_string);
 			free(y_string);
 			return NULL;
@@ -2828,14 +2828,14 @@ static char* searchPredicate ( const ClassInfo* class_info, osrfHash* field,
 		jsonIterator* pred_itr = jsonNewIterator( node );
 		if( !jsonIteratorHasNext( pred_itr ) ) {
 			osrfLogError( OSRF_LOG_MARK, "%s: Empty predicate for field \"%s\"",
-					MODULENAME, osrfHashGet(field, "name") );
+					modulename, osrfHashGet(field, "name" ));
 		} else {
 			jsonObject* pred_node = jsonIteratorNext( pred_itr );
 
 			// Verify that there are no additional predicates
 			if( jsonIteratorHasNext( pred_itr ) ) {
 				osrfLogError( OSRF_LOG_MARK, "%s: Multiple predicates for field \"%s\"",
-						MODULENAME, osrfHashGet(field, "name") );
+						modulename, osrfHashGet(field, "name" ));
 			} else if ( !(strcasecmp( pred_itr->key,"between" )) )
 				pred = searchBETWEENPredicate( class_info->alias, field, pred_node );
 			else if ( !(strcasecmp( pred_itr->key,"in" ))
@@ -2916,7 +2916,7 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: JOIN failed; expected JSON object type not found",
-			MODULENAME
+			modulename
 		);
 		return NULL;
 	}
@@ -2939,7 +2939,7 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s: JOIN failed.  Class \"%s\" not resolved in IDL",
-				MODULENAME,
+				modulename,
 				search_itr->key
 			);
 			jsonIteratorFree( search_itr );
@@ -2970,7 +2970,7 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: JOIN failed.  No link defined from %s.%s to %s",
-					MODULENAME,
+					modulename,
 					class,
 					field,
 					leftclass
@@ -2999,7 +2999,7 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: JOIN failed.  No link defined from %s.%s to %s",
-					MODULENAME,
+					modulename,
 					leftclass,
 					fkey,
 					class
@@ -3064,7 +3064,7 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: JOIN failed.  No link defined between %s and %s",
-					MODULENAME,
+					modulename,
 					leftclass,
 					class
 				);
@@ -3114,7 +3114,7 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: JOIN failed.  Invalid conditional expression.",
-					MODULENAME
+					modulename
 				);
 				jsonIteratorFree( search_itr );
 				buffer_free( join_buf );
@@ -3135,7 +3135,7 @@ static char* searchJOIN ( const jsonObject* join_hash, const ClassInfo* left_inf
 				OSRF_BUFFER_ADD( join_buf, jpred );
 				free(jpred);
 			} else {
-				osrfLogError(  OSRF_LOG_MARK, "%s: Invalid nested join.", MODULENAME );
+				osrfLogError(  OSRF_LOG_MARK, "%s: Invalid nested join.", modulename );
 				jsonIteratorFree( search_itr );
 				buffer_free( join_buf );
 				if( freeable_hash )
@@ -3177,7 +3177,7 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 		OSRF_LOG_MARK,
 		"%s: Entering searchWHERE; search_hash addr = %p, meta addr = %p, "
 		"opjoin_type = %d, ctx addr = %p",
-		MODULENAME,
+		modulename,
 		search_hash,
 		class_info->class_def,
 		opjoin_type,
@@ -3191,12 +3191,12 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 	int first = 1;
 	if ( search_hash->type == JSON_ARRAY ) {
 		osrfLogDebug( OSRF_LOG_MARK,
-			"%s: In WHERE clause, condition type is JSON_ARRAY", MODULENAME );
+		  "%s: In WHERE clause, condition type is JSON_ARRAY", modulename );
 		if( 0 == search_hash->size ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s: Invalid predicate structure: empty JSON array",
-				MODULENAME
+				modulename
 			);
 			buffer_free( sql_buf );
 			return NULL;
@@ -3225,13 +3225,13 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 
 	} else if ( search_hash->type == JSON_HASH ) {
 		osrfLogDebug( OSRF_LOG_MARK,
-			"%s: In WHERE clause, condition type is JSON_HASH", MODULENAME );
+			"%s: In WHERE clause, condition type is JSON_HASH", modulename );
 		jsonIterator* search_itr = jsonNewIterator( search_hash );
 		if( !jsonIteratorHasNext( search_itr ) ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s: Invalid predicate structure: empty JSON object",
-				MODULENAME
+				modulename
 			);
 			jsonIteratorFree( search_itr );
 			buffer_free( sql_buf );
@@ -3258,7 +3258,7 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 					osrfLogError(
 							 OSRF_LOG_MARK,
 							"%s: Invalid table alias \"%s\" in WHERE clause",
-							MODULENAME,
+							modulename,
 							search_itr->key + 1
 					);
 					jsonIteratorFree( search_itr );
@@ -3274,7 +3274,7 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 							OSRF_LOG_MARK,
 							"%s: Invalid column name \"%s\" in WHERE clause "
 							"for table alias \"%s\"",
-							MODULENAME,
+							modulename,
 							fieldname,
 							alias_info->alias
 						);
@@ -3351,7 +3351,7 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 					osrfLogError(
 							 OSRF_LOG_MARK,
 							"%s: Invalid operator \"%s\" in WHERE clause",
-							MODULENAME,
+							modulename,
 							search_itr->key
 					);
 					jsonIteratorFree( search_itr );
@@ -3370,7 +3370,7 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 					osrfLogError(
 						OSRF_LOG_MARK,
 						"%s: Attempt to reference non-existent column \"%s\" on %s (%s)",
-						MODULENAME,
+						modulename,
 						search_itr->key,
 						table ? table : "?",
 						class ? class : "?"
@@ -3399,7 +3399,7 @@ static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo* class
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Invalid predicate structure: %s",
-			MODULENAME,
+			modulename,
 			predicate_string
 		);
 		buffer_free(sql_buf);
@@ -3422,7 +3422,7 @@ static jsonObject* defaultSelectList( const char* table_alias ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Can't build default SELECT clause for \"%s\"; no such table alias",
-			MODULENAME,
+			modulename,
 			table_alias
 		);
 		return NULL;
@@ -3481,7 +3481,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 			osrfLogWarning(
 				OSRF_LOG_MARK,
 				"%s: ORDER BY not supported for UNION, INTERSECT, or EXCEPT",
-				MODULENAME
+				modulename
 			);
 			order_obj = curr_obj;
 		} else if( ! strcmp( "alias", query_itr->key ) ) {
@@ -3505,7 +3505,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s: Unexpected entry for \"%s\" in%squery",
-				MODULENAME,
+				modulename,
 				query_itr->key,
 				op
 			);
@@ -3528,7 +3528,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Expected UNION, INTERSECT, or EXCEPT operator not found",
-			MODULENAME
+			modulename
 		);
 		return NULL;        // should be impossible...
 	} else if( op_count > 1 ) {
@@ -3543,7 +3543,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Found more than one of UNION, INTERSECT, and EXCEPT in same query",
-			MODULENAME
+			modulename
 		);
 		return NULL;
 	} if( query_array->type != JSON_ARRAY ) {
@@ -3558,7 +3558,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Expected JSON_ARRAY of queries for%soperator; found %s",
-			MODULENAME,
+			modulename,
 			op,
 			json_type( query_array->type )
 		);
@@ -3575,7 +3575,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s:%srequires multiple queries as operands",
-			MODULENAME,
+			modulename,
 			op
 		);
 		return NULL;
@@ -3591,7 +3591,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s:EXCEPT operator has too many queries as operands",
-			MODULENAME
+			modulename
 		);
 		return NULL;
 	} else if( order_obj && ! alias ) {
@@ -3606,7 +3606,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s:ORDER BY requires an alias for a UNION, INTERSECT, or EXCEPT",
-			MODULENAME
+			modulename
 		);
 		return NULL;
 	}
@@ -3636,7 +3636,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s: Malformed query under%s -- expected JSON_HASH, found %s",
-				MODULENAME,
+				modulename,
 				op,
 				json_type( query->type )
 			);
@@ -3657,7 +3657,7 @@ static char* doCombo( osrfMethodContext* ctx, jsonObject* combo, int flags ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s: Error building query under%s",
-				MODULENAME,
+				modulename,
 				op
 			);
 			buffer_free( sql );
@@ -3690,7 +3690,7 @@ char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags ) {
 				ctx->request,
 				"Malformed query; no query object"
 			);
-		osrfLogError( OSRF_LOG_MARK, "%s: Null pointer to query object", MODULENAME );
+		osrfLogError( OSRF_LOG_MARK, "%s: Null pointer to query object", modulename );
 		return NULL;
 	} else if( query->type != JSON_HASH ) {
 		if( ctx )
@@ -3704,7 +3704,7 @@ char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Query object is %s instead of JSON_HASH",
-			MODULENAME,
+			modulename,
 			json_type( query->type )
 		);
 		return NULL;
@@ -3772,7 +3772,7 @@ char* SELECT (
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: FROM clause is missing or empty",
-			MODULENAME
+			modulename
 		);
 		if( ctx )
 			osrfAppSessionStatus(
@@ -3819,7 +3819,7 @@ char* SELECT (
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s: Malformed FROM clause: extra entry in JSON_HASH",
-				MODULENAME
+				modulename
 			);
 			if( ctx )
 				osrfAppSessionStatus(
@@ -3858,7 +3858,7 @@ char* SELECT (
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: FROM clause is unexpected JSON type: %s",
-			MODULENAME,
+			modulename,
 			json_type( join_hash->type )
 		);
 		if( ctx )
@@ -3920,7 +3920,7 @@ char* SELECT (
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s: Expected JSON_HASH for SELECT clause; found %s",
-			MODULENAME,
+			modulename,
 			json_type( selhash->type )
 		);
 
@@ -4005,7 +4005,7 @@ char* SELECT (
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: SELECT clause references class not in FROM clause: \"%s\"",
-					MODULENAME,
+					modulename,
 					cname
 				);
 				if( ctx )
@@ -4029,7 +4029,7 @@ char* SELECT (
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: Malformed SELECT list for class \"%s\"; not an array",
-					MODULENAME,
+					modulename,
 					cname
 				);
 				if( ctx )
@@ -4060,7 +4060,7 @@ char* SELECT (
 				osrfLogWarning(
 					OSRF_LOG_MARK,
 					"%s: No columns selected from \"%s\"",
-					MODULENAME,
+					modulename,
 					cname
 				);
 			}
@@ -4088,7 +4088,7 @@ char* SELECT (
 						osrfLogError(
 							OSRF_LOG_MARK,
 							"%s: Selected column \"%s\" not defined in IDL for class \"%s\"",
-							MODULENAME,
+							modulename,
 							col_name,
 							cname
 						);
@@ -4112,7 +4112,7 @@ char* SELECT (
 						osrfLogError(
 							OSRF_LOG_MARK,
 							"%s: Selected column \"%s\" for class \"%s\" is virtual",
-							MODULENAME,
+							modulename,
 							col_name,
 							cname
 						);
@@ -4167,7 +4167,7 @@ char* SELECT (
 						osrfLogError(
 							OSRF_LOG_MARK,
 							"%s: Selected column \"%s\" is not defined in IDL for class \"%s\"",
-							MODULENAME,
+							modulename,
 							col_name,
 							cname
 						);
@@ -4191,7 +4191,7 @@ char* SELECT (
 						osrfLogError(
 							OSRF_LOG_MARK,
 							"%s: Selected column \"%s\" is virtual for class \"%s\"",
-							MODULENAME,
+							modulename,
 							col_name,
 							cname
 						);
@@ -4272,7 +4272,7 @@ char* SELECT (
 					osrfLogError(
 						OSRF_LOG_MARK,
 						"%s: Selected item is unexpected JSON type: %s",
-						MODULENAME,
+						modulename,
 						json_type( selfield->type )
 					);
 					if( ctx )
@@ -4351,7 +4351,7 @@ char* SELECT (
 	// if we try to build a default SELECT clause from a non-core table.
 
 	if( ! *col_list ) {
-		osrfLogError(OSRF_LOG_MARK, "%s: SELECT clause is empty", MODULENAME );
+		osrfLogError( OSRF_LOG_MARK, "%s: SELECT clause is empty", modulename );
 		if (ctx)
 			osrfAppSessionStatus(
 				ctx->session,
@@ -4472,7 +4472,7 @@ char* SELECT (
 				if( JSON_HASH != order_spec->type ) {
 					osrfLogError(OSRF_LOG_MARK,
 						 "%s: Malformed field specification in ORDER BY clause; expected JSON_HASH, found %s",
-						MODULENAME, json_type( order_spec->type ) );
+						modulename, json_type( order_spec->type ) );
 					if( ctx )
 						osrfAppSessionStatus(
 							 ctx->session,
@@ -4504,7 +4504,7 @@ char* SELECT (
 					osrfLogError( OSRF_LOG_MARK,
 						"%s: Missing class or field name in field specification "
 						"of ORDER BY clause",
-						MODULENAME );
+						modulename );
 					if( ctx )
 						osrfAppSessionStatus(
 							ctx->session,
@@ -4525,7 +4525,7 @@ char* SELECT (
 				ClassInfo* order_class_info = search_alias( class_alias );
 				if( ! order_class_info ) {
 					osrfLogError(OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
-							"not in FROM clause", MODULENAME, class_alias );
+							"not in FROM clause", modulename, class_alias );
 					if( ctx )
 						osrfAppSessionStatus(
 							ctx->session,
@@ -4547,7 +4547,7 @@ char* SELECT (
 				if( !field_def ) {
 					osrfLogError( OSRF_LOG_MARK,
 						"%s: Invalid field \"%s\".%s referenced in ORDER BY clause",
-						MODULENAME, class_alias, field );
+						modulename, class_alias, field );
 					if( ctx )
 						osrfAppSessionStatus(
 							ctx->session,
@@ -4565,7 +4565,7 @@ char* SELECT (
 					return NULL;
 				} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
 					osrfLogError(OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
-								 MODULENAME, field );
+								 modulename, field );
 					if( ctx )
 						osrfAppSessionStatus(
 							ctx->session,
@@ -4630,7 +4630,7 @@ char* SELECT (
 				if( ! order_class_info ) {
 					osrfLogError(OSRF_LOG_MARK,
 						"%s: Invalid class \"%s\" referenced in ORDER BY clause",
-						MODULENAME, class_itr->key );
+						modulename, class_itr->key );
 					if( ctx )
 						osrfAppSessionStatus(
 							ctx->session,
@@ -4664,14 +4664,15 @@ char* SELECT (
 						if( !field_def ) {
 							osrfLogError( OSRF_LOG_MARK,
 								"%s: Invalid field \"%s\" in ORDER BY clause",
-								MODULENAME, order_itr->key );
+								modulename, order_itr->key );
 							if( ctx )
 								osrfAppSessionStatus(
 									ctx->session,
 									OSRF_STATUS_INTERNALSERVERERROR,
 									"osrfMethodException",
 									ctx->request,
-									"Invalid field in ORDER BY clause -- see error log for more details"
+									"Invalid field in ORDER BY clause -- "
+									"see error log for more details"
 								);
 							jsonIteratorFree( order_itr );
 							jsonIteratorFree( class_itr );
@@ -4685,7 +4686,7 @@ char* SELECT (
 						} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
 							osrfLogError( OSRF_LOG_MARK,
 								"%s: Virtual field \"%s\" in ORDER BY clause",
-								MODULENAME, order_itr->key );
+								modulename, order_itr->key );
 							if( ctx )
 								osrfAppSessionStatus(
 									ctx->session,
@@ -4752,7 +4753,7 @@ char* SELECT (
 						} else if ( JSON_NULL == onode->type || JSON_ARRAY == onode->type ) {
 							osrfLogError( OSRF_LOG_MARK,
 								"%s: Expected JSON_STRING in ORDER BY clause; found %s",
-								MODULENAME, json_type( onode->type ) );
+								modulename, json_type( onode->type ) );
 							if( ctx )
 								osrfAppSessionStatus(
 									ctx->session,
@@ -4808,7 +4809,7 @@ char* SELECT (
 						if( !field_def ) {
 							osrfLogError( OSRF_LOG_MARK,
 									"%s: Invalid field \"%s\" in ORDER BY clause",
-									MODULENAME, _f );
+									modulename, _f );
 							if( ctx )
 								osrfAppSessionStatus(
 									ctx->session,
@@ -4829,7 +4830,7 @@ char* SELECT (
 						} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
 							osrfLogError( OSRF_LOG_MARK,
 								"%s: Virtual field \"%s\" in ORDER BY clause",
-								MODULENAME, _f );
+								modulename, _f );
 							if( ctx )
 								osrfAppSessionStatus(
 									ctx->session,
@@ -4860,9 +4861,9 @@ char* SELECT (
 
 				// IT'S THE OOOOOOOOOOOLD STYLE!
 				} else {
-					osrfLogError(OSRF_LOG_MARK,
+					osrfLogError( OSRF_LOG_MARK,
 						"%s: Possible SQL injection attempt; direct order by is not allowed",
-						MODULENAME);
+						modulename );
 					if (ctx) {
 						osrfAppSessionStatus(
 							ctx->session,
@@ -4887,7 +4888,7 @@ char* SELECT (
 		} else {
 			osrfLogError(OSRF_LOG_MARK,
 				"%s: Malformed ORDER BY clause; expected JSON_HASH or JSON_ARRAY, found %s",
-				MODULENAME, json_type( order_hash->type ) );
+				modulename, json_type( order_hash->type ) );
 			if( ctx )
 				osrfAppSessionStatus(
 					ctx->session,
@@ -5092,8 +5093,8 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 		free(join_clause);
 	}
 
-	osrfLogDebug(OSRF_LOG_MARK, "%s pre-predicate SQL =  %s",
-				 MODULENAME, OSRF_BUFFER_C_STR(sql_buf));
+	osrfLogDebug( OSRF_LOG_MARK, "%s pre-predicate SQL =  %s",
+				  modulename, OSRF_BUFFER_C_STR( sql_buf ));
 
 	OSRF_BUFFER_ADD(sql_buf, " WHERE ");
 
@@ -5283,7 +5284,7 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 		return err;
 	}
 
-	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
+	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", modulename, sql);
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 
 	if(result) {
@@ -5300,7 +5301,7 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 			} while (dbi_result_next_row(result));
 
 		} else {
-			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
+			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", modulename, sql);
 		}
 
 		osrfAppRespondComplete( ctx, NULL );
@@ -5310,7 +5311,7 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 
 	} else {
 		err = -1;
-		osrfLogError(OSRF_LOG_MARK, "%s: Error with query [%s]", MODULENAME, sql);
+		osrfLogError(OSRF_LOG_MARK, "%s: Error with query [%s]", modulename, sql);
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -5351,12 +5352,12 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 		return NULL;
 	}
 
-	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
+	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", modulename, sql);
 
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 	if( NULL == result ) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]",
-			MODULENAME, osrfHashGet( class_meta, "fieldmapper" ), sql);
+			modulename, osrfHashGet( class_meta, "fieldmapper" ), sql);
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -5397,7 +5398,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* class
 
 	} else {
 		osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s",
-			MODULENAME, sql );
+			modulename, sql );
 	}
 
 	/* clean up the query */
@@ -5715,7 +5716,7 @@ static int doUpdate(osrfMethodContext* ctx ) {
 	osrfLogDebug(
 		OSRF_LOG_MARK,
 		"%s updating %s object with %s = %s",
-		MODULENAME,
+		modulename,
 		osrfHashGet(meta, "fieldmapper"),
 		pkey,
 		id
@@ -5787,7 +5788,7 @@ static int doUpdate(osrfMethodContext* ctx ) {
 					buffer_fadd( sql, " %s = %s", field_name, value );
 				} else {
 					osrfLogError(OSRF_LOG_MARK, "%s: Error quoting string [%s]",
-						MODULENAME, value);
+						modulename, value);
 					osrfAppSessionStatus(
 						ctx->session,
 						OSRF_STATUS_INTERNALSERVERERROR,
@@ -5814,7 +5815,7 @@ static int doUpdate(osrfMethodContext* ctx ) {
 					OSRF_BUFFER_ADD_CHAR( sql, ',' );
 				buffer_fadd( sql, " %s = %s", field_name, value );
 			} else {
-				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting string [%s]", MODULENAME, value);
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting string [%s]", modulename, value);
 				osrfAppSessionStatus(
 					ctx->session,
 					OSRF_STATUS_INTERNALSERVERERROR,
@@ -5845,7 +5846,7 @@ static int doUpdate(osrfMethodContext* ctx ) {
 	buffer_fadd( sql, " WHERE %s = %s;", pkey, id );
 
 	char* query = buffer_release(sql);
-	osrfLogDebug(OSRF_LOG_MARK, "%s: Update SQL [%s]", MODULENAME, query);
+	osrfLogDebug(OSRF_LOG_MARK, "%s: Update SQL [%s]", modulename, query);
 
 	dbi_result result = dbi_conn_query(dbhandle, query);
 	free(query);
@@ -5856,7 +5857,7 @@ static int doUpdate(osrfMethodContext* ctx ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s ERROR updating %s object with %s = %s",
-			MODULENAME,
+			modulename,
 			osrfHashGet(meta, "fieldmapper"),
 			pkey,
 			id
@@ -5933,7 +5934,7 @@ static int doDelete( osrfMethodContext* ctx ) {
 	osrfLogDebug(
 		OSRF_LOG_MARK,
 		"%s deleting %s object with %s = %s",
-		MODULENAME,
+		modulename,
 		osrfHashGet(meta, "fieldmapper"),
 		pkey,
 		id
@@ -5953,7 +5954,7 @@ static int doDelete( osrfMethodContext* ctx ) {
 		osrfLogError(
 			OSRF_LOG_MARK,
 			"%s ERROR deleting %s object with %s = %s",
-			MODULENAME,
+			modulename,
 			osrfHashGet(meta, "fieldmapper"),
 			pkey,
 			id
@@ -6253,7 +6254,7 @@ static const char* get_primitive( osrfHash* field ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s ERROR No \"datatype\" attribute for field \"%s\"",
-				MODULENAME,
+				modulename,
 				osrfHashGet( field, "name" )
 			);
 
@@ -6273,7 +6274,7 @@ static const char* get_datatype( osrfHash* field ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
 				"%s ERROR No \"datatype\" attribute for field \"%s\"",
-				MODULENAME,
+				modulename,
 				osrfHashGet( field, "name" )
 			);
 		else
@@ -6489,7 +6490,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	// Sanity checks
 	if( ! info ){
 		osrfLogError( OSRF_LOG_MARK,
-					  "%s ERROR: No ClassInfo available to populate", MODULENAME );
+					  "%s ERROR: No ClassInfo available to populate", modulename );
 		info->alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
@@ -6497,7 +6498,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 
 	if( ! class ) {
 		osrfLogError( OSRF_LOG_MARK,
-					  "%s ERROR: No class name provided for lookup", MODULENAME );
+					  "%s ERROR: No class name provided for lookup", modulename );
 		info->alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
@@ -6511,13 +6512,13 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	osrfHash* class_def = osrfHashGet( oilsIDL(), class );
 	if( ! class_def ) {
 		osrfLogError( OSRF_LOG_MARK,
-					  "%s ERROR: Class %s not defined in IDL", MODULENAME, class );
+					  "%s ERROR: Class %s not defined in IDL", modulename, class );
 		info->alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
 	} else if( str_is_true( osrfHashGet( class_def, "virtual" ) ) ) {
 		osrfLogError( OSRF_LOG_MARK,
-					  "%s ERROR: Class %s is defined as virtual", MODULENAME, class );
+					  "%s ERROR: Class %s is defined as virtual", modulename, class );
 		info->alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
@@ -6526,7 +6527,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	osrfHash* links = osrfHashGet( class_def, "links" );
 	if( ! links ) {
 		osrfLogError( OSRF_LOG_MARK,
-					  "%s ERROR: No links defined in IDL for class %s", MODULENAME, class );
+					  "%s ERROR: No links defined in IDL for class %s", modulename, class );
 		info->alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
@@ -6535,7 +6536,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	osrfHash* fields = osrfHashGet( class_def, "fields" );
 	if( ! fields ) {
 		osrfLogError( OSRF_LOG_MARK,
-					  "%s ERROR: No fields defined in IDL for class %s", MODULENAME, class );
+					  "%s ERROR: No fields defined in IDL for class %s", modulename, class );
 		info->alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
@@ -6711,12 +6712,12 @@ static int add_query_core( const char* alias, const char* class_name ) {
 	// Sanity checks
 	if( ! curr_query ) {
 		osrfLogError( OSRF_LOG_MARK,
-					  "%s ERROR: No QueryFrame available for class %s", MODULENAME, class_name );
+					  "%s ERROR: No QueryFrame available for class %s", modulename, class_name );
 		return 1;
 	} else if( curr_query->core.alias ) {
 		osrfLogError( OSRF_LOG_MARK,
 					  "%s ERROR: Core class %s already populated as %s",
-					  MODULENAME, curr_query->core.class_name, curr_query->core.alias );
+					  modulename, curr_query->core.class_name, curr_query->core.alias );
 		return 1;
 	}
 
@@ -6725,7 +6726,7 @@ static int add_query_core( const char* alias, const char* class_name ) {
 		return 0;
 	else {
 		osrfLogError( OSRF_LOG_MARK,
-					  "%s ERROR: Unable to look up core class %s", MODULENAME, class_name );
+					  "%s ERROR: Unable to look up core class %s", modulename, class_name );
 		return 1;
 	}
 }
@@ -6779,7 +6780,7 @@ static ClassInfo* add_joined_class( const char* alias, const char* classname ) {
 	if( conflict ) {
 		osrfLogError( OSRF_LOG_MARK,
 					  "%s ERROR: Table alias \"%s\" conflicts with class \"%s\"",
-					  MODULENAME, alias, conflict->class_name );
+					  modulename, alias, conflict->class_name );
 		return NULL;
 	}
 
