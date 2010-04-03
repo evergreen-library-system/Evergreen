@@ -483,6 +483,7 @@ Please see a librarian to renew your account.">
 <!--	================================================================= 
 	Rdetail
 	================================================================= -->
+<!ENTITY rdetail.actions.orders "Show / Create Orders">
 <!ENTITY rdetail.print "print these details">
 <!ENTITY rdetail.cn.barcode "Barcode">
 <!ENTITY rdetail.cn.location "Location">

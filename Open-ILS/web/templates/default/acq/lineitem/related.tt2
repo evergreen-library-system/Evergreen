@@ -1,16 +1,62 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "Related Lineitems" %]
 <script src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/related.js"></script>
-<script type="text/javascript">var liId = "[% ctx.page_args.0 %]";</script>
+<script type="text/javascript">var targetId = "[% ctx.page_args.0 %]";</script>
 <h1>Related Lineitems</h1>
 <div id="acq-related-mini">
+    <script>
+        function iterateSubfields(item) {
+            var out = '';
+            var list = dojo.query('subfield', item);
+            for (var i = 0; i < list.length; i++) {
+                out += dojox.data.dom.textContent(list[i]) + ' ';
+            }
+            return out;
+        }
+    </script>
     <ul id="acq-related-mini-display">
-        <li name="title"></li>
-        <li name="author"></li>
+        <li>
+            <div type='opac/slot-data' query='datafield[tag=245]'>
+                <script type='opac/slot-format'>return iterateSubfields(item)</script>
+            </div>
+        </li>
+        <li>
+            <div type='opac/slot-data' query='datafield[tag=100] subfield[code=a]'/>
+        </li>
+        <li>
+            <div type='opac/slot-data' query='datafield[tag=020]'>
+                <script type='opac/slot-format'>return iterateSubfields(item)</script>
+            </div> 
+            <div type='opac/slot-data' query='datafield[tag=024]'>
+                <script type='opac/slot-format'>return iterateSubfields(item)</script>
+            </div> 
+            <div type='opac/slot-data' query='datafield[tag=022]'>
+                <script type='opac/slot-format'>return iterateSubfields(item)</script>
+            </div>
+        </li>
+        <li>
+            <div type='opac/slot-data' query='datafield[tag=260] subfield[code=c]'/>
+        </li>
     </ul>
-    <div dojoType="dijit.form.Button" id="acq-related-info-show-button">
-        Show details
+    <div dojoType="dijit.form.DropDownButton">
+        <span>Create New Lineitem For This Record</span>
+        <div dojoType="dijit.TooltipDialog"  execute="addLi(arguments[0]);">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Add To Selection List</td>
+                        <td style='padding-left:10px;'><div name='picklist' jsId='plSelector' dojoType='dijit.form.FilteringSelect'/></td>
+                    </tr>
+                    <tr>
+                        <td colspan='2' style='align:center'>
+                            <button dojoType="dijit.form.Button" type="submit">Create</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
 </div>
 [% INCLUDE "default/acq/common/info.tt2" which = "Related" %]
 [% INCLUDE "default/acq/common/li_table.tt2" %]

@@ -149,6 +149,9 @@ function rdetailDraw() {
 	G.evt.result.recordReceived = [];
 	G.evt.result.copyCountsReceived = [];
 	G.evt.result.allRecordsReceived = [];
+
+    if(isXUL()) 
+        unHideMe($('rdetail_show_orders'));
 }
 
 function rdetailGetPageIds() {
@@ -1058,3 +1061,8 @@ function rdetailGBPViewerLoadCallback() {
 	GBPViewer.load('ISBN:' + cleanISBN(record.isbn()) );
 
 }
+
+function rdetailViewOrders() {
+    location.href = STAFF_WEB_BASE_PATH + '/acq/lineitem/related/' + record.doc_id() + '?target=bib';
+}
+

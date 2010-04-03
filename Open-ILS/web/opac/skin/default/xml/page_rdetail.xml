@@ -63,6 +63,9 @@
 							<option disabled='disabled'>&rdetail.bookbag.add;</option>
 							<option disabled='disabled'>--------------</option>
 							<option value='new_bookbag' onclick='rdetailNewBookbag();'>&rdetail.bookbag.create;</option>
+							<option disabled='disabled'>--------------</option>
+                            <!-- TODO: i18n, hide when non-xul -->
+							<option id='rdetail_show_orders' class='hide_me' value='view_orders' onclick='rdetailViewOrders();'>&rdetail.actions.orders;</option>
 						</select>
 					</span>
 

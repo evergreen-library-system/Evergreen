@@ -5,6 +5,8 @@ var SHOW_MR_DEFAULT = false; /* true if we show metarecords by default */
 //var DO_AUTHORITY_LOOKUPS = false;
 var DO_AUTHORITY_LOOKUPS = true;
 
+var STAFF_WEB_BASE_PATH = '/eg'; // root of the web-based staff interfaces
+
 /* URL param names */
 var PARAM_TERM			= "t";			/* search term */
 var PARAM_STYPE		= "tp";			/* search type */
