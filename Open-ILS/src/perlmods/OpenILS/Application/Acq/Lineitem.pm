@@ -315,13 +315,12 @@ sub lineitems_related_by_bib {
 
     my $query = {
         "select"=>{"jub"=>["id"]},
-        "from"=>{"jub"=>"acqpo"}, 
+        "from"=>{"jub" => {"acqpo" => {type => 'left'}, "acqpl" => {type => 'left'}}}, 
         "where"=>{
-            "+acqpo"=>{
-                "ordering_agency"=>{
-                    "in"=>$perm_orgs
-                }
-            }
+            '-or' => [
+                { "+acqpo"=>{ "ordering_agency" => $perm_orgs } },
+                { '+acqpl' => { org_unit => $perm_orgs } }
+            ]
         },
         "order_by"=>[{"class"=>"jub", "field"=>"create_time", "direction"=>"desc"}]
     };
