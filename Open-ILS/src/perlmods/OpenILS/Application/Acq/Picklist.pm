@@ -340,7 +340,9 @@ sub retrieve_pl_lineitem {
     my $entries = $e->json_query($PL_ENTRY_JSON_QUERY);
 
     my @ids;
-    push(@ids, $_->{id}) for @$entries;
+    for my $entry (@$entries) {
+        push(@ids, $entry->{id}) unless grep { $_ eq $entry->{id} } @ids;
+    }
 
     for my $id (@ids) {
         if($$options{idlist}) {
