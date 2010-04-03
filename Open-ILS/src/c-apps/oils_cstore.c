@@ -157,9 +157,6 @@ static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
 static char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
 
-static const int enforce_pcrud = ENFORCE_PCRUD;     // Boolean
-static const char modulename[] = MODULENAME;
-
 static int child_initialized = 0;   /* boolean */
 
 static dbi_conn writehandle; /* our MASTER db connection */
@@ -171,6 +168,18 @@ static int max_flesh_depth = 100;
 // The following points to the top of a stack of QueryFrames.  It's a little
 // confusing because the top level of the query is at the bottom of the stack.
 static QueryFrame* curr_query = NULL;
+
+//----------------------------------
+
+int oilsExtendIDL( void );
+
+static dbi_conn writehandle; /* our MASTER db connection */
+static dbi_conn dbhandle; /* our CURRENT db connection */
+//static osrfHash * readHandles;
+
+static const int enforce_pcrud = ENFORCE_PCRUD;     // Boolean
+static const char modulename[] = MODULENAME;
+
 
 /**
 	@brief Disconnect from the database.
@@ -540,6 +549,26 @@ int osrfAppChildInit() {
 
 	osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", modulename );
 
+	// Add datatypes from database to the fields in the IDL
+	if( oilsExtendIDL() ) {
+		osrfLogError( OSRF_LOG_MARK, "Error extending the IDL" );
+		return -1;
+	}
+	else
+		return 0;
+}
+
+/**
+	@brief Add datatypes from the database to the fields in the IDL.
+	@return Zero if successful, or 1 upon error.
+
+	For each relevant class in the IDL: ask the database for the datatype of every field.
+	In particular, determine which fields are text fields and which fields are numeric
+	fields, so that we know whether to enclose their values in quotes.
+
+	At this writing this function does not detect any errors, so it always returns zero.
+*/
+int oilsExtendIDL( void ) {
 	osrfHashIterator* class_itr = osrfNewHashIterator( oilsIDL() );
 	osrfHash* class = NULL;
 	growing_buffer* query_buf = buffer_init( 64 );
