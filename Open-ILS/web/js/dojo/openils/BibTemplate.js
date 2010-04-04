@@ -25,30 +25,39 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
             this.root = kwargs.root;
             this.record = kwargs.record;
             this.org_unit = kwargs.org_unit || '-';
+
+            this.mode = 'biblio-record_entry';
+            this.default_datatype = 'marcxml-uris';
+            if (kwargs.metarecord) {
+                this.record = kwargs.metarecord;
+                this.mode = 'metabib-metarecord';
+                this.default_datatype = 'mods';
+            }
         },
 
         render : function() {
             var all_slots = dojo.query('*[type^=opac/slot-data]', this.root);
+            var default_datatype = this.default_datatype;
         
             var slots = {};
             dojo.forEach(all_slots, function(s){
                 // marcxml-uris does not include copies, which avoids timeouts
                 // with bib records that have hundreds or thousands of copies
-                var datatype = 'marcxml-uris';
+                var current_datatype = default_datatype;
         
                 if (s.getAttribute('type').indexOf('+') > -1) 
-                    datatype = s.getAttribute('type').split('+').reverse()[0];
+                    current_datatype = s.getAttribute('type').split('+').reverse()[0];
         
-                if (!slots[datatype]) slots[datatype] = [];
-                slots[datatype].push(s);
+                if (!slots[current_datatype]) slots[current_datatype] = [];
+                slots[current_datatype].push(s);
             });
         
             for (var datatype in slots) {
 
-                (function (slot_list,dtype,rec,org) {
+                (function (slot_list,dtype,mode,rec,org) {
 
                     dojo.xhrGet({
-                        url: '/opac/extras/unapi?id=tag:opac:biblio-record_entry/' + rec + '/' + org + '&format=' + datatype,
+                        url: '/opac/extras/unapi?id=tag:opac:' + mode + '/' + rec + '/' + org + '&format=' + dtype,
                         handleAs: 'xml',
                         load: function (bib) {
 
@@ -76,7 +85,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                        }
                     });
 
-                })(slots[datatype],datatype,this.record,this.org_unit);
+                })(slots[datatype],datatype,this.mode,this.record,this.org_unit);
             
             }
 
