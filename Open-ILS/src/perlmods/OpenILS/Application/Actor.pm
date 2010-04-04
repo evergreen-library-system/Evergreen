@@ -34,6 +34,8 @@ use OpenILS::Application::Actor::Friends;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
 
+use UUID::Tiny qw/:std/;
+
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
 	OpenILS::Application::Actor::UserGroups->initialize();
@@ -3343,6 +3345,186 @@ sub update_events {
     return {complete => 1};
 }
 
+__PACKAGE__->register_method(
+	method	=> "request_password_reset",
+	api_name	=> "open-ils.actor.patron.password_reset.request",
+	signature	=> {
+        params => [
+            { desc => 'user_id_type', type => 'string' },
+            { desc => 'user_id', type => 'string' },
+        ]
+    },
+);
+sub request_password_reset {
+    my($self, $conn, $user_id_type, $user_id) = @_;
+
+    # Check to see if password reset requests are already being throttled:
+    # 0. Check cache to see if we're in throttle mode (avoid hitting database)
+
+    my $e = new_editor(xact => 1);
+    my $user;
+
+    # Get the user, if any, depending on the input value
+    if ($user_id_type eq 'username') {
+        $user = $e->search_actor_user({usrname => $user_id})->[0];
+        if (!$user) {
+            $e->die_event;
+            return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
+        }
+    } elsif ($user_id_type eq 'barcode') {
+        my $card = $e->search_actor_card([
+            {barcode => $user_id},
+            {flesh => 1, flesh_fields => {ac => ['usr']}}])->[0];
+        if (!$card) { 
+            $e->die_event;
+            return OpenILS::Event->new('ACTOR_USER_NOT_FOUND');
+        }
+        $user = $card->usr;
+    }
+
+    # If the user doesn't have an email address, we can't help them
+    if (!$user->email) {
+        $e->die_event;
+        return OpenILS::Event->new('PATRON_NO_EMAIL_ADDRESS');
+    }
+    _reset_password_request($conn, $e, $user);
+}
+
+# Once we have the user, we can issue the password reset request
+# XXX Add a wrapper method that accepts barcode + email input
+sub _reset_password_request {
+    my ($conn, $e, $user) = @_;
+
+    # 1. Get throttle threshold and time-to-live from OU_settings
+    my $aupr_throttle = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_throttle') || 1000;
+    my $aupr_ttl = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_time_to_live') || 24*60*60;
+
+    my $threshold_time = DateTime->now(time_zone => 'local')->subtract(seconds => $aupr_ttl)->iso8601();
+
+    # 2. Get time of last request and number of active requests (num_active)
+    # we use the weird test of usr = -1000 to generate a FALSE condition
+    my $active_requests = $e->json_query({
+        from => 'aupr',
+        select => {
+            aupr => [
+                {
+                    column => 'uuid',
+                    transform => 'COUNT'
+                }
+            ]
+        },
+        where => {
+            has_been_reset => { '=' => { 'usr' => { '=' => -1000 } } },
+            request_time => { '>' => $threshold_time }
+        }
+    });
+
+    # 3. if (num_active > throttle_threshold) and (now - last_request < 1 minute)
+    #      ... delay - set cache - return event correspondingly ...
+    # 
+    # Otherwise, go ahead and try to get the user.
+ 
+    # Check the number of active requests for this user
+    $active_requests = $e->json_query({
+        from => 'aupr',
+        select => {
+            aupr => [
+                {
+                    column => 'usr',
+                    transform => 'COUNT'
+                }
+            ]
+        },
+        where => {
+            usr => { '=' => $user->id },
+            has_been_reset => { '=' => { 'usr' => { '=' => -1000 } } },
+            request_time => { '>' => $threshold_time }
+        }
+    });
+
+    $logger->info("User " . $user->id . " has " . $active_requests->[0]->{'usr'} . " active password reset requests.");
+
+    # if less than or equal to per-user threshold, proceed; otherwise, return event
+    my $aupr_per_user_limit = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_per_user_limit') || 3;
+    if ($active_requests->[0]->{'usr'} > $aupr_per_user_limit) {
+        $e->die_event;
+        return OpenILS::Event->new('PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS');
+    }
+
+    # Create the aupr object and insert into the database
+    my $reset_request = Fieldmapper::actor::usr_password_reset->new;
+    my $uuid = create_uuid_as_string(UUID_V4);
+    $reset_request->uuid($uuid);
+    $reset_request->usr($user->id);
+
+    my $aupr = $e->create_actor_usr_password_reset($reset_request) or return $e->die_event;
+    $e->commit;
+
+    # Create an event to notify user of the URL to reset their password
+
+    # Can we stuff this in the user_data param for trigger autocreate?
+    my $hostname = $U->ou_ancestor_setting_value($user->home_ou, 'lib.hostname') || 'localhost';
+
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->request('open-ils.trigger.event.autocreate', 'password.reset_request', $aupr, $user->home_ou);
+
+    # Trunk only
+    # $U->create_trigger_event('password.reset_request', $aupr, $user->home_ou);
+
+    return 1;
+}
+
+__PACKAGE__->register_method(
+	method	=> "commit_password_reset",
+	api_name	=> "open-ils.actor.patron.password_reset.commit",
+	signature	=> {
+        params => [
+            { desc => 'uuid', type => 'string' },
+            { desc => 'password', type => 'string' },
+        ]
+    },
+);
+sub commit_password_reset {
+    my($self, $conn, $uuid, $password) = @_;
+
+    # Check to see if password reset requests are already being throttled:
+    # 0. Check cache to see if we're in throttle mode (avoid hitting database)
+
+    my $e = new_editor(xact => 1);
+
+    my $aupr = $e->search_actor_usr_password_reset({
+        uuid => $uuid,
+        has_been_reset => 0
+        
+    });
+
+    if (!$aupr->[0]) {
+        $e->die_event;
+        return OpenILS::Event->new('PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST');
+    }
+    my $user_id = $aupr->[0]->usr;
+    my $user = $e->retrieve_actor_user($user_id);
+
+    # Ensure we're still within the TTL for the request
+    my $aupr_ttl = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_time_to_live') || 24*60*60;
+    my $threshold_time = DateTime->now(time_zone => 'local')->subtract(seconds => $aupr_ttl);
+    my $request_time = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($aupr->[0]->request_time));
+    if ($request_time < $threshold_time) {
+        $e->die_event;
+        return OpenILS::Event->new('PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST');
+    }
+
+    # All is well; update the password
+    $user->passwd($password);
+    $e->update_actor_user($user);
+
+    # And flag that this password reset request has been honoured
+    $aupr->[0]->has_been_reset('t');
+    $e->update_actor_usr_password_reset($aupr->[0]);
+    $e->commit;
+
+    return 1;
+}
 
 1;
 

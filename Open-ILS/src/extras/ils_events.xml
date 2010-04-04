@@ -590,6 +590,12 @@
 		<desc xml:lang='en-US'>The requested config_circ_matrix_ruleset_not_found was not found</desc>
 	</event>
 
+    <event code='1700' textcode='PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS'>
+        <desc xml:lang='en-US'>There are too many active password reset request sessions for this patron.</desc>
+    </event>
+    <event code='1701' textcode='PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST'>
+        <desc xml:lang='en-US'>The user attempted to update their password using a stale or inactive password reset request session.</desc>
+    </event>
 
 	<event code='1841' textcode='ACQ_PICKLIST_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.picklist was not found</desc>
