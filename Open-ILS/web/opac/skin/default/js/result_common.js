@@ -493,7 +493,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 						unHideMe(l_cn_list);
 						new openils.BibTemplate({
 							root : l_cn_list,
-							record : onlyrec,
+							record : '' + onlyrec + '[10]',
 							org_unit : here.shortname()
 						}).render();
 					}, 0
@@ -536,7 +536,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 					unHideMe(l_cn_list);
 					new openils.BibTemplate({
 						root : l_cn_list,
-						record : onlyrec,
+						record : '' + onlyrec + '[10]',
 						org_unit : here.shortname()
 					}).render();
 				}, 0

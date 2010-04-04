@@ -326,14 +326,15 @@ sub unapi {
 	my $format = $cgi->param('format');
 	my $flesh_feed = parse_feed_type($format);
 	(my $base_format = $format) =~ s/(-full|-uris)$//o;
-	my ($id,$type,$command,$lib) = ('','','');
+	my ($id,$type,$command,$lib,$paging) = ('','','');
 
 	if (!$format) {
 		my $body = "Content-type: application/xml; charset=utf-8\n\n";
 	
-		if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+)(?:/(.+))$}o) {
+		if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+?)(?:\[([^\]]+)\])?(?:/(.+))?}o) {
 			$id = $2;
-			$lib = uc($3);
+			$paging = $3;
+			$lib = uc($4);
 			$type = 'record';
 			$type = 'metarecord' if ($1 =~ /^m/o);
 
@@ -418,9 +419,10 @@ sub unapi {
 		return Apache2::Const::OK;
 	}
 
-	if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+)(?:/(.+))?}o) {
+	if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+?)(?:\[([^\]]+)\])?(?:/(.+))?}o) {
 		$id = $2;
-		$lib = uc($3);
+		$paging = $3;
+		$lib = uc($4);
 		$type = 'record';
 		$type = 'metarecord' if ($1 =~ /^metabib/o);
 		$type = 'isbn' if ($1 =~ /^isbn/o);
@@ -431,6 +433,12 @@ sub unapi {
 		$command = 'retrieve';
 		$command = 'browse' if ($type eq 'call_number');
 	}
+
+    if ($paging) {
+        $paging = [split ',', $paging];
+    } else {
+        $paging = [];
+    }
 
 	if (!$lib || $lib eq '-') {
 	 	$lib = $actor->request(
@@ -506,7 +514,8 @@ sub unapi {
 			$format => [ $id ],
 			$base,
 			$lib,
-			$flesh_feed
+			$flesh_feed,
+            $paging
 		);
 
 		if (!$feed->count) {
@@ -543,10 +552,12 @@ sub unapi {
 		push @params, $lib;
 		if ($format !~ /-full$/o) {
 			push @params, 1;
-		}
+		} else {
+			push @params, 0;
+        }
 	}
 
-	my $req = $supercat->request($method,@params);
+	my $req = $supercat->request($method,@params,$paging);
 	my $data = $req->gather();
 
 	if ($req->failed || !$data) {
@@ -1283,6 +1294,8 @@ sub create_record_feed {
 	my $flesh = shift;
 	$flesh = 1 if (!defined($flesh));
 
+	my $paging = shift;
+
 	my $cgi = new CGI;
 	my $base = $cgi->url;
 	my $host = $cgi->virtual_host || $cgi->server_name;
@@ -1323,7 +1336,7 @@ sub create_record_feed {
 
 		$xml = '';
 		if ($lib && ($type eq 'marcxml' || $type eq 'atom') &&  $flesh) {
-			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, ($flesh_feed eq "uris") ? 1 : 0 );
+			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, ($flesh_feed eq "uris") ? 1 : 0, $paging );
 			while ( !$r->complete ) {
 				$xml .= join('', map {$_->content} $r->recv);
 			}

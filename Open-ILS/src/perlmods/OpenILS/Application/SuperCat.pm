@@ -904,28 +904,28 @@ sub basic_record_holdings {
 	return \%holdings;
 }
 
-__PACKAGE__->register_method(
-	method    => 'new_record_holdings',
-	api_name  => 'open-ils.supercat.record.holdings_xml.retrieve',
-	api_level => 1,
-	argc      => 1,
-	stream    => 1,
-	signature =>
-		{ desc     => <<"		  DESC",
-Returns the XML representation of the requested bibliographic record's holdings
-		  DESC
-		  params   =>
-		  	[
-				{ name => 'bibId',
-				  desc => 'An OpenILS biblio::record_entry id',
-				  type => 'number' },
-			],
-		  'return' =>
-		  	{ desc => 'Stream of bib record holdings hierarchy in XML',
-			  type => 'string' }
-		}
-);
-
+#__PACKAGE__->register_method(
+#	method    => 'new_record_holdings',
+#	api_name  => 'open-ils.supercat.record.holdings_xml.retrieve',
+#	api_level => 1,
+#	argc      => 1,
+#	stream    => 1,
+#	signature =>
+#		{ desc     => <<"		  DESC",
+#Returns the XML representation of the requested bibliographic record's holdings
+#		  DESC
+#		  params   =>
+#		  	[
+#				{ name => 'bibId',
+#				  desc => 'An OpenILS biblio::record_entry id',
+#				  type => 'number' },
+#			],
+#		  'return' =>
+#		  	{ desc => 'Stream of bib record holdings hierarchy in XML',
+#			  type => 'string' }
+#		}
+#);
+#
 
 sub new_record_holdings {
 	my $self = shift;
@@ -933,22 +933,13 @@ sub new_record_holdings {
 	my $bib = shift;
 	my $ou = shift;
 	my $hide_copies = shift;
+	my $paging = shift;
+
+    $paging = [-1,0] if (!$paging or !ref($paging) or @$paging == 0);
+    my $limit = $$paging[0];
+    my $offset = $$paging[1] || 0;
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
-
-	my $tree = $_storage->request(
-		"open-ils.cstore.direct.biblio.record_entry.retrieve",
-		$bib,
-		{ flesh		=> 5,
-		  flesh_fields	=> {
-					bre	=> [qw/call_numbers/],
-		  			acn	=> [qw/copies owning_lib uri_maps/],
-		  			auricnm	=> [qw/uri/],
-					acp	=> [qw/location status circ_lib stat_cat_entries notes/],
-					asce	=> [qw/stat_cat/],
-				}
-		}
-	)->gather(1);
 
 	my $o_search = { shortname => uc($ou) };
 	if (!$ou || $ou eq '-') {
@@ -965,42 +956,54 @@ sub new_record_holdings {
 
 	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
 
-	$logger->debug("Searching for holdings at orgs [".join(',',@ou_ids)."], based on $ou");
+	$logger->info("Searching for holdings at orgs [".join(',',@ou_ids)."], based on $ou");
+
+	my $cns = $_storage->request(
+		"open-ils.cstore.direct.asset.call_number.search.atomic",
+		{ record  => $bib,
+          deleted => 'f',
+          '-or'   => [
+            { owning_lib => \@ou_ids },
+            { '-exists'  =>
+                { from  => 'acp',
+                  where =>
+                    { call_number => { '=' => {'+acn'=>'id'} },
+                      deleted => 'f',
+                      circ_lib => \@ou_ids
+                  }
+                }
+            }
+          ]
+        },
+		{ flesh		=> 5,
+		  flesh_fields	=> {
+		  			acn	=> [qw/copies owning_lib uri_maps/],
+		  			auricnm	=> [qw/uri/],
+					acp	=> [qw/circ_lib location status stat_cat_entries notes/],
+					asce	=> [qw/stat_cat/],
+				},
+          ( $limit > -1 ? ( limit  => $limit  ) : () ),
+          ( $offset     ? ( offset => $offset ) : () ),
+          order_by  => { acn => { label => {} } }
+		}
+	)->gather(1);
 
 	my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
 	$year += 1900;
 	$month += 1;
 
 	$client->respond("<volumes xmlns='http://open-ils.org/spec/holdings/v1'>\n");
-
-	for my $cn (@{$tree->call_numbers}) {
-		next unless ( $cn->deleted eq 'f' || $cn->deleted == 0 );
-
-		my $found = 0;
-		for my $c (@{$cn->copies}) {
-			next unless grep {$c->circ_lib->id == $_} @ou_ids;
-			next unless ( $c->deleted eq 'f' || $c->deleted == 0 );
-			$found = 1;
-			last;
-		}
-
-		if (!$found && ref($cn->uri_maps) && @{$cn->uri_maps}) {
-			$found = 1 if (grep {$cn->owning_lib->id == $_} @ou_ids);
-		}
-		next unless $found;
+    
+	for my $cn (@$cns) {
+		next unless (@{$cn->copies} > 0 or (ref($cn->uri_maps) and @{$cn->uri_maps}));
 
 		# We don't want O:A:S:unAPI::acn to return the record, we've got that already
-		my $holdings_args = { no_record => 1 };
 		# In the context of BibTemplate, copies aren't necessary because we pull those
 		# in a separate call
-		if ($hide_copies) {
-			$holdings_args->{no_copies} = 1;
-		}
-
         $client->respond(
             OpenILS::Application::SuperCat::unAPI::acn
                 ->new( $cn )
-                ->as_xml( $holdings_args )
+                ->as_xml( {no_record => 1, no_copies => $hide_copies} )
         );
 	}
 
@@ -1027,6 +1030,9 @@ Returns the XML representation of the requested bibliographic record's holdings
 				{ name => 'hideCopies',
 				  desc => 'Flag that prevents the inclusion of copies in the returned holdings',
 				  type => 'boolean' },
+				{ name => 'paging',
+				  desc => 'Arry of limit and offset for holdings paging',
+				  type => 'array' },
 			],
 		  'return' =>
 		  	{ desc => 'Stream of bib record holdings hierarchy in XML',
