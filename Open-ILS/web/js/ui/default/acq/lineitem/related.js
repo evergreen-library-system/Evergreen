@@ -24,7 +24,6 @@ function fetchLi() {
             }],
             "oncomplete": function(r) {
                 fetchBib();
-                drawLiInfo(openils.Util.readResponse(r));
             }
         }
     );
