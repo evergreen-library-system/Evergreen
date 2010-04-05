@@ -704,7 +704,7 @@ sub retrieve_uri {
 	my $self = shift;
 	my $client = shift;
 	my $cpid = shift;
-	my $args = shift;
+	my $args = shift || {};
 
     return OpenILS::Application::SuperCat::unAPI
         ->new(OpenSRF::AppSession
@@ -747,7 +747,7 @@ sub retrieve_copy {
 	my $self = shift;
 	my $client = shift;
 	my $cpid = shift;
-	my $args = shift;
+	my $args = shift || {};
 
     return OpenILS::Application::SuperCat::unAPI
         ->new(OpenSRF::AppSession
@@ -790,7 +790,7 @@ sub retrieve_callnumber {
 	my $self = shift;
 	my $client = shift;
 	my $cnid = shift;
-	my $args = shift;
+	my $args = shift || {};
 
     return OpenILS::Application::SuperCat::unAPI
         ->new(OpenSRF::AppSession
@@ -932,7 +932,7 @@ sub new_record_holdings {
 	my $client = shift;
 	my $bib = shift;
 	my $ou = shift;
-	my $hide_copies = shift;
+	my $flesh = shift;
 	my $paging = shift;
 
     $paging = [-1,0] if (!$paging or !ref($paging) or @$paging == 0);
@@ -958,22 +958,38 @@ sub new_record_holdings {
 
 	$logger->info("Searching for holdings at orgs [".join(',',@ou_ids)."], based on $ou");
 
+    my %subselect = ( '-or' => [
+        { owning_lib => \@ou_ids },
+        { '-exists'  =>
+            { from  => 'acp',
+              where => {
+                call_number => { '=' => {'+acn'=>'id'} },
+                deleted => 'f',
+                circ_lib => \@ou_ids
+              }
+            }
+        }
+    ]);
+
+    if ($flesh and $flesh eq 'uris') {
+        %subselect = (
+            owning_lib => \@ou_ids,
+            '-exists'  => {
+                from  => { auricnm => 'auri' },
+                where => {
+                    call_number => { '=' => {'+acn'=>'id'} },
+                    '+auri' => { active => 't' }
+                }
+            }
+        );
+    }
+
+
 	my $cns = $_storage->request(
 		"open-ils.cstore.direct.asset.call_number.search.atomic",
 		{ record  => $bib,
           deleted => 'f',
-          '-or'   => [
-            { owning_lib => \@ou_ids },
-            { '-exists'  =>
-                { from  => 'acp',
-                  where =>
-                    { call_number => { '=' => {'+acn'=>'id'} },
-                      deleted => 'f',
-                      circ_lib => \@ou_ids
-                  }
-                }
-            }
-          ]
+          %subselect
         },
 		{ flesh		=> 5,
 		  flesh_fields	=> {
@@ -1003,7 +1019,7 @@ sub new_record_holdings {
         $client->respond(
             OpenILS::Application::SuperCat::unAPI::acn
                 ->new( $cn )
-                ->as_xml( {no_record => 1, no_copies => $hide_copies} )
+                ->as_xml( {no_record => 1, no_copies => ($flesh ? 0 : 1)} )
         );
 	}
 

@@ -547,17 +547,9 @@ sub unapi {
 
 	my $method = "open-ils.supercat.$type.$base_format.$command";
 	my @params = ($id);
+	push @params, $lib, $flesh_feed, $paging if ($base_format eq 'holdings_xml');
 
-	if ($base_format eq 'holdings_xml') {
-		push @params, $lib;
-		if ($format !~ /-full$/o) {
-			push @params, 1;
-		} else {
-			push @params, 0;
-        }
-	}
-
-	my $req = $supercat->request($method,@params,$paging);
+	my $req = $supercat->request($method,@params);
 	my $data = $req->gather();
 
 	if ($req->failed || !$data) {
@@ -1336,7 +1328,7 @@ sub create_record_feed {
 
 		$xml = '';
 		if ($lib && ($type eq 'marcxml' || $type eq 'atom') &&  $flesh) {
-			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, ($flesh_feed eq "uris") ? 1 : 0, $paging );
+			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, $flesh_feed, $paging );
 			while ( !$r->complete ) {
 				$xml .= join('', map {$_->content} $r->recv);
 			}
