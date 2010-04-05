@@ -889,15 +889,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="acqim" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_method" oils_persist:tablename="acq.invoice_method" reporter:label="Invoice Method used by Vendor" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id"/>
-			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Label" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_INVOICE_METHOD" global_required="true"/>
+                <create permission="ADMIN_INVOICE_METHOD CREATE_INVOICE_METHOD" global_required="true"/>
                 <retrieve/>
-                <update permission="UPDATE_INVOICE_METHOD" global_required="true"/>
-                <delete permission="DELETE_INVOICE_METHOD" global_required="true"/>
+                <update permission="ADMIN_INVOICE_METHOD UPDATE_INVOICE_METHOD" global_required="true"/>
+                <delete permission="ADMIN_INVOICE_METHOD DELETE_INVOICE_METHOD" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
@@ -4629,22 +4629,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
 			<field reporter:label="Shipper" name="shipper" reporter:datatype="link"/>
 			<field reporter:label="Receive Date/Time" name="recv_date" reporter:datatype="timestamp" />
-			<field reporter:label="Receive Method" name="receive_method" reporter:datatype="link" />
-			<field reporter:label="Invoice Type" name="invoice_type" reporter:datatype="text" />
+			<field reporter:label="Receive Method" name="recv_method" reporter:datatype="link" />
+			<field reporter:label="Invoice Type" name="inv_type" reporter:datatype="text" />
 			<field reporter:label="Vendor Invoice ID" name="inv_ident" reporter:datatype="text" />
 		</fields>
 		<links>
 			<link field="receiver" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 			<link field="shipper" reltype="has_a" key="id" map="" class="acqpro"/>
-			<link field="receive_method" reltype="has_a" key="id" map="" class="acqim"/>
+			<link field="recv_method" reltype="has_a" key="code" map="" class="acqim"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create   permission="ADMIN_INVOICE" context_field="receiver"/>
-                <retrieve permission="ADMIN_INVOICE" context_field="receiver"/>
-                <update   permission="ADMIN_INVOICE" context_field="receiver"/>
-                <delete   permission="ADMIN_INVOICE" context_field="receiver"/>
+                <create   permission="CREATE_INVOICE" context_field="receiver"/>
+                <retrieve permission="CREATE_INVOICE VIEW_INVOICE" context_field="receiver"/>
+                <update   permission="CREATE_INVOICE" context_field="receiver"/>
+                <delete   permission="CREATE_INVOICE" context_field="receiver"/>
             </actions>
         </permacrud>
 	</class>
