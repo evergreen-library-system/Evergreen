@@ -10,5 +10,6 @@ use OpenILS::Application::Acq::Order;
 use OpenILS::Application::Acq::EDI;
 use OpenILS::Application::Acq::Search;
 use OpenILS::Application::Acq::Claims;
+use OpenILS::Application::Acq::Invoice;
 
 1;
