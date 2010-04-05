@@ -3097,6 +3097,7 @@ sub query_parser_fts_wrapper {
     $query = "skip_check($args{skip_check}) $query" if ($args{skip_check});
     $query = "superpage($args{superpage}) $query" if ($args{superpage});
     $query = "offset($args{offset}) $query" if ($args{offset});
+    $query = "#metarecord $query" if ($self->api_name =~ /metabib/);
     $query = "#available $query" if ($args{available});
     $query = "#descending $query" if ($args{sort_dir} && $args{sort_dir} =~ /^d/i);
     $query = "#staff $query" if ($self->api_name =~ /staff/);

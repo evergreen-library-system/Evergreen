@@ -482,7 +482,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 			pic.parentNode.setAttribute("href", buildOPACLink(args));
 			title_link.setAttribute("href", buildOPACLink(args));
 			title_link.appendChild(text(normalize(truncate(rec.title(), 65))));
-			
+
 			var here = findOrgUnit(getLocation());
 			if (findOrgType(here.ou_type()).can_have_vols()) { // show the callnumber list
 				dojo.require('openils.BibTemplate');
@@ -510,6 +510,10 @@ function resultDisplayRecord(rec, pos, is_mr) {
 			args[PARAM_MRID] = rec.doc_id();
 			pic.parentNode.setAttribute("href", buildOPACLink(args));
 		}
+
+		unHideMe($n(r,'place_hold_span'));
+		$n(r,'place_hold_link').setAttribute(
+			'href','javascript:holdsDrawEditor({record:"'+rec.doc_id()+'",type:"M"});');
 
 	} else {
 		buildunAPISpan($n(r,'unapi'), 'biblio-record_entry', rec.doc_id());

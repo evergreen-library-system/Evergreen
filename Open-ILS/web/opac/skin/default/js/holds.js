@@ -281,7 +281,18 @@ function _h_set_rec_descriptors(args, doneCallback) {
 
 	// grab the list of record desciptors attached to this records metarecord 
 	if( ! args.recordDescriptors )  {
-		var params = { record: args.record };
+		var params = {};
+
+        if (args.type == 'M') {
+    		if( !args.metarecord && args.record) {
+                params.metarecord = args.metarecord = args.record;
+                delete(args.record);
+	    	} else {
+		    		params = { metarecord : args.metarecordObject.doc_id() };
+    		}
+        } else {
+    		params = { record: args.record };
+        }
 
 		if( ! args.record ) {
 			if( args.metarecord )
@@ -294,11 +305,11 @@ function _h_set_rec_descriptors(args, doneCallback) {
 		req.callback(
 			function(r) {
 				var data = r.getResultObject();
-				args.recordDescriptors = data.descriptors;
-				args.metarecord = data.metarecord;
+				holdArgs.recordDescriptors = args.recordDescriptors = data.descriptors;
+				holdArgs.metarecord = args.metarecord = data.metarecord;
 				if( args.type == 'M' && ! args.metarecordObject) 
-					args.metarecordObject = findRecord(args.metarecord, 'M');	
-				 
+					holdArgs.metarecordObject = args.metarecordObject = findRecord(args.metarecord, 'M');	
+
 				if(doneCallback) doneCallback(args);
 			}
 		);
@@ -425,7 +436,30 @@ function __holdsDrawWindow() {
 	}
 
 	if( holdArgs.type == 'M' ) {
-		var data = holdsParseMRFormats(holdArgs.editHold.holdable_formats());
+		var mr_formats;
+		if(holdArgs.editHold){
+			mr_formats = holdArgs.editHold.holdable_formats();
+		}else{
+			mr_formats = ''; // collect the item_type()s from all holdArgs.recordDescriptors
+			for(var desc in holdArgs.recordDescriptors){
+                if (!holdArgs.recordDescriptors[desc].item_type()) continue;
+				mr_formats += holdArgs.recordDescriptors[desc].item_type();
+			}
+
+            var first_form = 1;
+			for(var desc in holdArgs.recordDescriptors){
+                if (!holdArgs.recordDescriptors[desc].item_form()) continue;
+                if (first_form) {
+                    mr_formats += '-';
+                    first_form = 0;
+                }
+				mr_formats += holdArgs.recordDescriptors[desc].item_form();
+			}
+
+
+		}
+		
+		var data = holdsParseMRFormats(mr_formats);
 		mods_formats = data.mods_formats;
 		formats = data.formats;
 	}
@@ -533,13 +567,20 @@ function holdsSetFormatSelector() {
 	var avail_formats	= data.avail_formats;
 	var sel_formats	= data.sel_formats;
 	holdArgs.language = data.lang;
+	if( type=='M'){		
+		hideMe($('holds_alt_formats_row_extras'));
+		unHideMe($('holds_alt_formats_row'));	
+	}else{
+		unHideMe($('holds_alt_formats_row_extras'));
+	}
 
-	unHideMe($('holds_alt_formats_row_extras'));
 	var selector = $('hold_alt_form_selector');
 
 	for( var i = 0; i < avail_formats.length; i++ ) {
 		var form = avail_formats[i];
-		unHideMe(findSelectorOptByValue(selector, form));
+		var opt = findSelectorOptByValue(selector,form);
+		if(type=='M') opt.selected=true;
+		unHideMe(opt);
 	}
 }
 
@@ -555,7 +596,15 @@ function holdsGetFormats() {
 	var rec	= holdArgs.record;
 	var mrec = holdArgs.metarecord;
 
-	if( type == 'T' ) {
+	for( var i = 0; i < desc.length; i++ ) {
+		var d = desc[i];
+		if( type == 'T' && d.item_lang() != lang ) continue;
+		formats.push( _t_f_2_format(d.item_type(), d.item_form()));
+	}
+
+	formats = uniquify(formats);
+
+	if( type == 'T') {
 
 		for( var i = 0; i < desc.length; i++ ) {
 			var d = desc[i];
@@ -566,15 +615,13 @@ function holdsGetFormats() {
 				break;
 			}
 		}
-	}
+	} else if( type =='M') {
 
-	for( var i = 0; i < desc.length; i++ ) {
-		var d = desc[i];
-		if( d.item_lang() != lang ) continue;
-		formats.push( _t_f_2_format(d.item_type(), d.item_form()));
+        // All available formats are selected by default in MR holds
+		for( var i = 0; i < formats.length; i++ ) {
+			sformats.push(formats[i]);
+		}
 	}
-
-	formats = uniquify(formats);
 
 	return {
 		lang : lang,
@@ -586,6 +633,7 @@ function holdsGetFormats() {
 
 
 function _t_f_2_format(type, form) {
+	if( (type == 'a' || type == 't') && form == 's' ) return 'at-s';
 	if( form == 'd' ) return 'at-d';
 	return (type == 'a' || type == 't') ? 'at' : 
 		( type == 'i' || type == 'g' || type == 'j' ) ? type : null;
@@ -603,14 +651,16 @@ function holdsSetSelectedFormats() {
 
 	var fstring = "";
 
-	if( contains(vals, 'at-d') ) {
-		if( contains(vals, 'at') )
+	if( contains(vals, 'at-d') || contains(vals, 'at-s')) {
+		if( contains(vals, 'at') ) {
 			fstring = 'at';
-		else 
+		} else if (contains(vals, 'at-s') && contains(vals, 'at-d')) {
+			fstring = 'at-sd';
+		} else if (!contains(vals, 'at-s')) {
 			fstring = 'at-d';
 	} else {
-		if( contains(vals, 'at') )
-			fstring = 'at';
+			fstring = 'at-s';
+		}
 	}
 
 	for( var i = 0; i < vals.length; i++ ) {
@@ -634,6 +684,7 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 
 	var args = { 
 		titleid : holdArgs.record,
+		mrid : holdArgs.record,
 		volume_id : holdArgs.volume,
 		copy_id : holdArgs.copy,
 		hold_type : holdArgs.type,

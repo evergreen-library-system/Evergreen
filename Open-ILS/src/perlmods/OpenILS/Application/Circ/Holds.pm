@@ -1644,7 +1644,7 @@ sub do_possibility_checks {
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
-		my $maps = $e->search_metabib_source_map({metarecord=>$mrid});
+		my $maps = $e->search_metabib_metarecord_source_map({metarecord=>$mrid});
 		my @recs = map { $_->source } @$maps;
 		for my $rec (@recs) {
             my @status = _check_title_hold_is_possible(

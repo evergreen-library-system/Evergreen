@@ -108,7 +108,7 @@ XUL="$INSTALL/var/web/xul";
 [ ! -d "$OSRF"    ]   && die_msg "OpenSRF Source Directory '$OSRF' does not exist!";
 which sudo >/dev/null || die_msg "sudo not installed (or in PATH)";
 
-[ -d "${ILS}/.svn" ] || [ -d "${ILS}/.git" ] || die_msg "Evergreen Source Directory '$ILS' is not a SVN or git repo";
+[ -d "${ILS}/.svn" ] || [ -d "${ILS}/.git" ] || [ -d ${ILS}/.bzr ] || die_msg "Evergreen Source Directory '$ILS' is not a SVN, bzr or git repo";
 
 if [ ! -z "$OPT_TEST" ] ; then
     feedback;
