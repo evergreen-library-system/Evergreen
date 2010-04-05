@@ -331,7 +331,7 @@ sub unapi {
 	if (!$format) {
 		my $body = "Content-type: application/xml; charset=utf-8\n\n";
 	
-		if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+?)(?:\[([^\]]+)\])?(?:/(.+))?}o) {
+		if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
 			$id = $2;
 			$paging = $3;
 			$lib = uc($4);
@@ -419,7 +419,7 @@ sub unapi {
 		return Apache2::Const::OK;
 	}
 
-	if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+?)(?:\[([^\]]+)\])?(?:/(.+))?}o) {
+	if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
 		$id = $2;
 		$paging = $3;
 		$lib = uc($4);
