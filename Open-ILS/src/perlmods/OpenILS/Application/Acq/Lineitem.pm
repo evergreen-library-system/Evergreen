@@ -136,6 +136,9 @@ sub retrieve_lineitem_impl {
             return $e->event unless
                 $e->allowed('VIEW_PURCHASE_ORDER', undef, $purchase_order);
         }
+
+        $li->purchase_order($purchase_order) if $$options{flesh_po};
+
     } elsif($li->picklist) {
         my $picklist = $e->retrieve_acq_picklist($li->picklist)
             or return $e->event;
@@ -144,6 +147,8 @@ sub retrieve_lineitem_impl {
             return $e->event unless 
                 $e->allowed('VIEW_PICKLIST', undef, $picklist);
         }
+
+        $li->picklist($picklist) if $$options{flesh_pl};
     }
 
     $li->clear_marc if $$options{clear_marc};
