@@ -3402,7 +3402,6 @@ sub _reset_password_request {
     my $threshold_time = DateTime->now(time_zone => 'local')->subtract(seconds => $aupr_ttl)->iso8601();
 
     # 2. Get time of last request and number of active requests (num_active)
-    # we use the weird test of usr = -1000 to generate a FALSE condition
     my $active_requests = $e->json_query({
         from => 'aupr',
         select => {
@@ -3414,14 +3413,16 @@ sub _reset_password_request {
             ]
         },
         where => {
-            has_been_reset => { '=' => { 'usr' => { '=' => -1000 } } },
+            has_been_reset => { '=' => 'f' } },
             request_time => { '>' => $threshold_time }
         }
     });
 
     # 3. if (num_active > throttle_threshold) and (now - last_request < 1 minute)
     #      ... delay - set cache - return event correspondingly ...
-    # 
+
+    # TODO Check to see if the user is in a password-reset-restricted group
+
     # Otherwise, go ahead and try to get the user.
  
     # Check the number of active requests for this user
@@ -3437,7 +3438,7 @@ sub _reset_password_request {
         },
         where => {
             usr => { '=' => $user->id },
-            has_been_reset => { '=' => { 'usr' => { '=' => -1000 } } },
+            has_been_reset => { '=' => 'f' },
             request_time => { '>' => $threshold_time }
         }
     });
@@ -3495,7 +3496,6 @@ sub commit_password_reset {
     my $aupr = $e->search_actor_usr_password_reset({
         uuid => $uuid,
         has_been_reset => 0
-        
     });
 
     if (!$aupr->[0]) {
@@ -3507,12 +3507,13 @@ sub commit_password_reset {
 
     # Ensure we're still within the TTL for the request
     my $aupr_ttl = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_time_to_live') || 24*60*60;
-    my $threshold_time = DateTime->now(time_zone => 'local')->subtract(seconds => $aupr_ttl);
-    my $request_time = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($aupr->[0]->request_time));
-    if ($request_time < $threshold_time) {
+    my $threshold = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($aupr->[0]->request_time))->add(seconds => $aupr_ttl);
+    if ($threshold > DateTime->now(time_zone => 'local')) {
         $e->die_event;
         return OpenILS::Event->new('PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST');
     }
+
+    # TODO Check complexity of password against OU-defined regex
 
     # All is well; update the password
     $user->passwd($password);
@@ -3527,4 +3528,3 @@ sub commit_password_reset {
 }
 
 1;
-
