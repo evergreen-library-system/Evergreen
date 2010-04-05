@@ -17,6 +17,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             onCancel : null, // cancel callback
             hideActionButtons : false,
             fieldDocs : null,
+            existingTable : null,
+            suppressFields : null,
 
             constructor : function(args) {
                 this.fieldList = [];
@@ -40,9 +42,12 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 this.fieldDocs = pcrud.search('fdoc', {fm_class:this.fmClass});
                 */
 
-                var table = this.table = document.createElement('table');
+                var table = this.existingTable;
+                if(!table) {
+                    var table = this.table = document.createElement('table');
+                    this.domNode.appendChild(table);
+                }
                 var tbody = document.createElement('tbody');
-                this.domNode.appendChild(table);
                 table.appendChild(tbody);
 
                 this.limitPerms = [];
@@ -62,6 +67,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual || field.nonIdl) continue;
 
+                    if(this.suppressFields && this.suppressFields.indexOf(field.name) > -1)
+                        continue;
 
                     if(field.name == this.fmIDL.pkey && this.mode == 'create' && this.fmIDL.pkey_sequence)
                         continue; /* don't show auto-generated fields on create */
