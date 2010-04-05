@@ -590,12 +590,49 @@
 		<desc xml:lang='en-US'>The requested config_circ_matrix_ruleset_not_found was not found</desc>
 	</event>
 
-    <event code='1700' textcode='PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS'>
-        <desc xml:lang='en-US'>There are too many active password reset request sessions for this patron.</desc>
-    </event>
-    <event code='1701' textcode='PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST'>
-        <desc xml:lang='en-US'>The user attempted to update their password using a stale or inactive password reset request session.</desc>
-    </event>
+
+	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
+		<desc xml:lang="en-US"> The non-cataloged type object already exists </desc>
+	</event>
+	<event code='1701' textcode='COPY_LOCATION_EXISTS'>
+		<desc xml:lang="en-US"> The copy location object already exists </desc>
+	</event>
+	<event code='1702' textcode='OPEN_CIRCULATION_EXISTS'>
+		<desc xml:lang="en-US"> There is an open circulation on the requested item </desc>
+	</event>
+	<event code='1703' textcode='WORKSTATION_NAME_EXISTS'>
+		<desc xml:lang="en-US"> A workstation with that name already exists </desc>
+	</event>
+	<event code='1704' textcode='TCN_EXISTS'>
+		<desc xml:lang="en-US">A record already exists with the requested TCN value</desc>
+	</event>
+	<event code='1705' textcode='VOLUME_LABEL_EXISTS'>
+		<desc xml:lang="en-US">A volume with the same label, title and owning library exists</desc>
+	</event>
+	<event code='1706' textcode='ITEM_BARCODE_EXISTS'>
+		<desc xml:lang="en-US">An item with the same barcode exists</desc>
+	</event>
+	<event code='1707' textcode='HOLD_EXISTS'>
+		<desc xml:lang="en-US">User already has an open hold on the selected item</desc>
+	</event>
+	<event code='1708' textcode='MONEY_COLLECTIONS_TRACKER_EXISTS'>
+		<desc xml:lang="en-US">A duplicate money.collections_tracker object already exists in the database</desc>
+	</event>
+	<event code='1709' textcode='MAX_HOLDS'>
+		<desc xml:lang="en-US">User has reached the maximum number of holds</desc>
+	</event>
+	<event code='1710' textcode='CONTAINER_EXISTS'>
+		<desc xml:lang="en-US">User has already created a bucket with the requested name</desc>
+	</event>
+	<event code='1711' textcode='BIB_QUEUE_EXISTS'>
+		<desc xml:lang="en-US">A bib record queue with the same name already exists</desc>
+	</event>
+	<event code='1712' textcode='AUTH_QUEUE_EXISTS'>
+		<desc xml:lang="en-US">An authority record queue with the same name already exists</desc>
+	</event>
+	<event code='1713' textcode='SURVEY_RESPONSES_EXIST'>
+		<desc xml:lang="en-US">Responses to this survey exist</desc>
+	</event>
 
 	<event code='1841' textcode='ACQ_PICKLIST_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.picklist was not found</desc>
@@ -684,51 +721,6 @@
 	<event code='1881' textcode='PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested permission_grp_penalty_threshold was not found</desc>
 	</event>
-
-
-	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
-		<desc xml:lang="en-US"> The non-cataloged type object already exists </desc>
-	</event>
-	<event code='1701' textcode='COPY_LOCATION_EXISTS'>
-		<desc xml:lang="en-US"> The copy location object already exists </desc>
-	</event>
-	<event code='1702' textcode='OPEN_CIRCULATION_EXISTS'>
-		<desc xml:lang="en-US"> There is an open circulation on the requested item </desc>
-	</event>
-	<event code='1703' textcode='WORKSTATION_NAME_EXISTS'>
-		<desc xml:lang="en-US"> A workstation with that name already exists </desc>
-	</event>
-	<event code='1704' textcode='TCN_EXISTS'>
-		<desc xml:lang="en-US">A record already exists with the requested TCN value</desc>
-	</event>
-	<event code='1705' textcode='VOLUME_LABEL_EXISTS'>
-		<desc xml:lang="en-US">A volume with the same label, title and owning library exists</desc>
-	</event>
-	<event code='1706' textcode='ITEM_BARCODE_EXISTS'>
-		<desc xml:lang="en-US">An item with the same barcode exists</desc>
-	</event>
-	<event code='1707' textcode='HOLD_EXISTS'>
-		<desc xml:lang="en-US">User already has an open hold on the selected item</desc>
-	</event>
-	<event code='1708' textcode='MONEY_COLLECTIONS_TRACKER_EXISTS'>
-		<desc xml:lang="en-US">A duplicate money.collections_tracker object already exists in the database</desc>
-	</event>
-	<event code='1709' textcode='MAX_HOLDS'>
-		<desc xml:lang="en-US">User has reached the maximum number of holds</desc>
-	</event>
-	<event code='1710' textcode='CONTAINER_EXISTS'>
-		<desc xml:lang="en-US">User has already created a bucket with the requested name</desc>
-	</event>
-	<event code='1711' textcode='BIB_QUEUE_EXISTS'>
-		<desc xml:lang="en-US">A bib record queue with the same name already exists</desc>
-	</event>
-	<event code='1712' textcode='AUTH_QUEUE_EXISTS'>
-		<desc xml:lang="en-US">An authority record queue with the same name already exists</desc>
-	</event>
-	<event code='1713' textcode='SURVEY_RESPONSES_EXIST'>
-		<desc xml:lang="en-US">Responses to this survey exist</desc>
-	</event>
-
 
 	<event code='2000' textcode='BAD_PARAMS'>
 		<desc xml:lang="en-US">Invalid parameters were encountered in a method</desc>
@@ -835,6 +827,13 @@
 	<event code="7024" textcode="HOLD_RESERVATION_CONFLICT">
 		<desc xml:lang="en-US">Both a hold and a reservation exist for this item; staff intervention is required to resolve the conflict.</desc>
 	</event>
+    <event code='7025' textcode='PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS'>
+        <desc xml:lang='en-US'>There are too many active password reset request sessions for this patron.</desc>
+    </event>
+    <event code='7026' textcode='PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST'>
+        <desc xml:lang='en-US'>The user attempted to update their password using a stale or inactive password reset request session.</desc>
+    </event>
+
 
 	<!-- ================================================================ -->
 
