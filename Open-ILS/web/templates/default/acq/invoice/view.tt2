@@ -1,0 +1,18 @@
+[% WRAPPER 'default/base.tt2' %]
+[% ctx.page_title = 'Invoice' %]
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/common.js'> </script>
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/view.js'> </script>
+<script type="text/javascript">var invoiceId = '[% ctx.page_args.0 %]';</script>
+<div dojoType="dijit.layout.ContentPane" style="height:100%">
+
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+        <div> Invoice </div>
+        <div> </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div id='acq-view-invoice-div'/>
+    </div>
+
+</div>
+[% END %]
