@@ -873,7 +873,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="aiit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_item_type" oils_persist:tablename="acq.invoice_item_type" reporter:label="Non-bibliographic Invoice Item Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id"/>
-			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Label" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -4632,12 +4632,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Receive Method" name="recv_method" reporter:datatype="link" />
 			<field reporter:label="Invoice Type" name="inv_type" reporter:datatype="text" />
 			<field reporter:label="Vendor Invoice ID" name="inv_ident" reporter:datatype="text" />
+			<field reporter:label="Invoice Entries" name="entries" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Invoice Items" name="items" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="receiver" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 			<link field="shipper" reltype="has_a" key="id" map="" class="acqpro"/>
 			<link field="recv_method" reltype="has_a" key="code" map="" class="acqim"/>
+			<link field="entries" reltype="has_many" key="invoice" map="" class="acqie"/>
+			<link field="items" reltype="has_many" key="invoice" map="" class="acqii"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -4702,6 +4706,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
 			<link field="fund_debit" reltype="has_a" key="id" map="" class="acqfdeb"/>
+			<link field="inv_item_type" reltype="has_a" key="code" map="" class="aiit"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
