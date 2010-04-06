@@ -182,13 +182,19 @@ sub prepare_au_terms {
                     $links->{$attr}->{"class"} eq "au") {
                     push @joins, [$plain_hint, $attr, $join_num];
                     my $au_term = gen_au_term($value, $join_num);
-                    $au_term = {"-not" => $au_term} if $nots--;
+                    if ($nots > 0) {
+                        $au_term = {"-not" => $au_term};
+                        $nots--;
+                    }
                     push @new_outer_terms, $au_term;
                     $join_num++;
                     delete $hint_unit->{$hint};
                 }
             }
-            $hint_unit = {"-not" => $hint_unit} if $nots--;
+            if ($nots > 0) {
+                $hint_unit = {"-not" => $hint_unit};
+                $nots--;
+            }
             push @new_outer_terms, $hint_unit if scalar keys %$hint_unit;
         }
         $terms->{$conj} = [ @new_outer_terms ];
