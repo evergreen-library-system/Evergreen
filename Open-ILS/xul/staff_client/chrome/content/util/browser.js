@@ -233,18 +233,18 @@ util.browser.prototype = {
                         const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
                         const nsIChannel = Components.interfaces.nsIChannel;
                         ////// handle the throbber
-                        var throbber = document.getElementById('throbber');
+                        var throbber = xulG.page_meter;
                         if (throbber) {
                             var busy = false;
                             if (!(stateFlags & nsIWebProgressListener.STATE_RESTORING)) {
                                 busy = true;
-                                throbber.setAttribute('mode','undetermined'); 
+                                throbber.on();
                             }
                             if (stateFlags & nsIWebProgressListener.STATE_STOP) {
                                 busy = false;
                                 setTimeout(
                                     function() {
-                                        if (!busy) { throbber.setAttribute('mode','determined'); }
+                                        if (!busy) { throbber.off(); }
                                     }, 2000
                                 );
                             }
@@ -298,7 +298,7 @@ util.browser.prototype = {
                             s += ('\tSTATE_STOP\n');
                         }
                         //obj.error.sdump('D_BROWSER',s);    
-                        if (throbber) { throbber.setAttribute('tooltiptext',s); }
+                        if (throbber) { throbber.tooltip(s); }
                     } catch(E) {
                         obj.error.sdump('D_ERROR','util.browser.progresslistener.onstatechange: ' + (E));
                     }

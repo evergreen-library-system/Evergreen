@@ -64,6 +64,8 @@ main.menu.prototype = {
         if (! network_meter) {
             var x = document.getElementById('network_progress');
             if (x) x.setAttribute('hidden','true');
+            var y = document.getElementById('page_progress');
+            if (y) y.setAttribute('hidden','true');
         }
 
         function open_conify_page(path, labelKey) {
@@ -483,6 +485,16 @@ main.menu.prototype = {
                 function() {
                     var x = document.getElementById('main_toolbar');
                     if (x) x.hidden = ! x.hidden;
+                }
+            ],
+
+            'cmd_toggle_meters' : [
+                ['oncommand'],
+                function() {
+                    var x = document.getElementById('network_progress');
+                    if (x) x.hidden = ! x.hidden;
+                    var y = document.getElementById('page_progress');
+                    if (y) y.hidden = ! y.hidden;
                 }
             ],
 
@@ -1277,6 +1289,22 @@ main.menu.prototype = {
         }
     },
 
+    'page_meter' : {
+        'node' : document.getElementById('page_progress'),
+        'on' : function() {
+            document.getElementById('page_progress').setAttribute('mode','undetermined');
+        },
+        'off' : function() {
+            document.getElementById('page_progress').setAttribute('mode','determined');
+        },
+        'tooltip' : function(text) {
+            if (text || text == '') {
+                document.getElementById('page_progress').setAttribute('tooltiptext',text);
+            }
+            return document.getElementById('page_progress').getAttribute('tooltiptext');
+        }
+    },
+
     'network_meter' : {
         'inc' : function(app,method) {
             try {
@@ -1398,6 +1426,7 @@ main.menu.prototype = {
         content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
         content_params.url_prefix = function(url) { return obj.url_prefix(url); };
         content_params.network_meter = obj.network_meter;
+        content_params.page_meter = obj.page_meter;
         content_params.set_statusbar = function(slot,text) {
             var e = document.getElementById('statusbarpanel'+slot);
             if (e) { e.setAttribute('label',text); }

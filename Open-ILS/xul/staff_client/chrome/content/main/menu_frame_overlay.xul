@@ -47,7 +47,8 @@
         <statusbarpanel id="statusbarpanel4"/>
         <statusbarpanel id="statusbarpanel5"/>
         <spacer flex="1" />
-        <progressmeter id="network_progress" flex="1" mode="determined" value="0" tooltip="network_progress_tip"/>
+        <progressmeter id="network_progress" flex="0" mode="determined" value="0" tooltip="network_progress_tip"/>
+        <progressmeter id="page_progress" flex="0" mode="determined" value="0" />
         <statusbarpanel />
     </statusbar>
     <tooltip id="network_progress_tip" noautohide="true">

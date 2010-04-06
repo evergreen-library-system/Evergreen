@@ -309,6 +309,7 @@ function set_opac() {
         content_params.open_chrome_window = xulG.open_chrome_window;
         content_params.url_prefix = xulG.url_prefix;
         content_params.network_meter = xulG.network_meter;
+        content_params.page_meter = xulG.page_meter;
         content_params.set_statusbar = xulG.set_statusbar;
 
         if (opac_url) { content_params.url = opac_url; } else { content_params.url = xulG.url_prefix( urls.browser ); }

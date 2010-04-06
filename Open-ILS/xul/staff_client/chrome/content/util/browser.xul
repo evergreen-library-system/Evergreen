@@ -111,7 +111,6 @@
             <button id="reload" command="cmd_reload" disabled="false" hidden="false"/>
             <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
             <spacer flex="1"/>
-            <progressmeter id="throbber" mode="determined" flex="1"/>
             <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
             <button id="browser_print" label="Print Page" command="cmd_print" hidden="true"/>
         </hbox>

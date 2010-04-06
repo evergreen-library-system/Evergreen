@@ -57,6 +57,7 @@
     <command id="cmd_download_patrons" />
     <command id="cmd_local_admin" />
     <command id="cmd_toggle_buttonbar" />
+    <command id="cmd_toggle_meters" />
 
     <command id="cmd_extension_manager"/>
     <command id="cmd_theme_manager"/>
@@ -373,6 +374,7 @@
         <menuseparator />
         <menuitem label="&staff.main.menu.admin.user_edit.label;" accesskey="&staff.main.menu.admin.user_edit.accesskey;" command="cmd_adv_user_edit"/>
         <menuitem label="&staff.main.menu.admin.toggle_buttonbar.label;" accesskey="&staff.main.menu.admin.toggle_buttonbar.accesskey;" command="cmd_toggle_buttonbar"/>
+        <menuitem label="&staff.main.menu.admin.toggle_meters.label;" accesskey="&staff.main.menu.admin.toggle_meters.accesskey;" command="cmd_toggle_meters"/>
         <menuseparator />
         <menu id="main.menu.admin.sub" accesskey="&staff.main.menu.admin.developer.accesskey;" label="&staff.main.menu.admin.developer.label;">
             <menupopup id="main.menu.admin.sub.popup">

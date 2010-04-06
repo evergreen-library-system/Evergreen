@@ -739,6 +739,8 @@
 <!ENTITY staff.main.menu.admin.ping "Ping Server">
 <!ENTITY staff.main.menu.admin.toggle_buttonbar.accesskey "B">
 <!ENTITY staff.main.menu.admin.toggle_buttonbar.label "Toggle Button Bar">
+<!ENTITY staff.main.menu.admin.toggle_meters.accesskey "M">
+<!ENTITY staff.main.menu.admin.toggle_meters.label "Toggle Activity Meters">
 <!ENTITY staff.main.menu.cat.accesskey "g">
 <!ENTITY staff.main.menu.cat.add_bib.key "B">
 <!ENTITY staff.main.menu.cat.add_bib.label "Add Bib Record">
