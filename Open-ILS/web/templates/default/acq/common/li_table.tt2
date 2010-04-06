@@ -58,12 +58,11 @@
                 <tr>
                     <td><span><a id='acq-lit-select-toggle' href='javascript:void(0);'>&#x2713</a></span></td>
                     <td>Line Items</td>
-                    <td></td>
-                    <td></td>
                     <td>Items</td>
                     <td>Notes</td>
+                    <td>Actions</td>
                     <td>Status</td>
-                    <td>Price</td>
+                    <td>Estimated Price</td>
                 </tr>
             </tbody>
             <tbody id='acq-lit-tbody'>
@@ -97,12 +96,21 @@
                             </tbody>
                         </table>
                     </td>
-                    <td><a class='hidden' name='real_copies_link' href='javascript:void(0);'>Update&nbsp;Barcodes</a>&nbsp;&nbsp;<a class='hidden' name='holdings_maintenance_link' href='javascript:void(0);'>Holdings&nbsp;Maintenance</a></td>
-                    <td><a name='receive_link' href='javascript:void(0);'>Mark&nbsp;Received</a><a name='unreceive_link' href='javascript:void(0);'>Un-Receive</a></td>
-                    </td>
                     <td><a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>
                     <td>
                         <a name='noteslink' href='javascript:void(0);'>Notes(<span name='notes_count'>0</span>)</a><span name="notes_alert_flag"></span>
+                    </td>
+                    <td>
+                        <select name='actions'>
+                            <option name='action_none'>-- Actions --</option>
+                            <option name='action_mark_recv' disabled='disabled'>Mark Received</option>
+                            <option name='action_mark_unrecv' disabled='disabled'>Un-Receive</option>
+                            <option name='action_update_barcodes' disabled='disabled'>Update Barcodes</option>
+                            <option name='action_holdings_maint' disabled='disabled'>Holdings Maint.</option>
+                            <option name='action_new_invoice' disabled='disabled'>New Invoice</option>
+                            <option name='action_link_invoice' disabled='disabled'>Link to Invoice</option>
+                            <option name='action_view_invoice' disabled='disabled'>View Invoice(s)</option>
+                        </select>
                     </td>
                     <td><span name='li_state'></span></td>
                     <td><input type='text' size='8' name='price'/></td>

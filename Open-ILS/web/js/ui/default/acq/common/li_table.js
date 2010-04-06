@@ -304,10 +304,15 @@ function AcqLiTable() {
         if (typeof(row) == "undefined")
             row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
 
-        var recv_link = nodeByName("receive_link", row);
-        var unrecv_link = nodeByName("unreceive_link", row);
-        var real_copies_link = nodeByName("real_copies_link", row);
-        var holdings_maintenance_link = nodeByName("holdings_maintenance_link", row);
+        var actReceive = nodeByName("action_mark_recv", row);
+        var actUnRecv = nodeByName("action_mark_unrecv", row);
+        var actUpdateBarcodes = nodeByName("action_update_barcodes", row);
+        var actHoldingsMaint = nodeByName("action_holdings_maint", row);
+
+        var actNewInvoice = nodeByName('action_new_invoice', row);
+        var actLinkInvoice = nodeByName('action_link_invoice', row);
+        var actViewInvoice = nodeByName('action_view_invoice', row);
+
         var state_cell = nodeByName("li_state", row);
 
         if (li.state() == "cancelled") {
@@ -342,36 +347,50 @@ function AcqLiTable() {
             var self = this;
             switch(li.state()) {
                 case "on-order":
-                    openils.Util.hide(real_copies_link);
-                    openils.Util.hide(unrecv_link);
-                    openils.Util.show(recv_link, "inline");
-                    recv_link.onclick = function() {
+                    actReceive.disabled = false;
+                    actReceive.onclick = function() {
                         if (self.checkLiAlerts(li.id()))
                             self.issueReceive(li);
+                        nodeByName("action_none", row).selected = true;
                     };
                     return;
                 case "received":
-                    openils.Util.hide(recv_link);
-                    openils.Util.show(unrecv_link, "inline");
-                    unrecv_link.onclick = function() {
+                    actUnRecv.disabled = false;
+                    actUnRecv.onclick = function() {
                         if (confirm(localeStrings.UNRECEIVE_LI))
                             self.issueReceive(li, /* rollback */ true);
+                        nodeByName("action_none", row).selected = true;
                     };
                     // TODO we should allow editing before receipt, in which case the
                     // test should be "if 1 or more real (acp) copies exist
-                    openils.Util.show(real_copies_link, "inline");
-                    real_copies_link.onclick = function() {
+                    actUpdateBarcodes.disabled = false;
+                    actUpdateBarcodes.onclick = function() {
                         self.showRealCopyEditUI(li);
+                        nodeByName("action_none", row).selected = true;
                     }
-                    openils.Util.show(holdings_maintenance_link, "inline");
-                    holdings_maintenance_link.onclick = self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser' );
+                    actHoldingsMaint.disabled = false;
+                    actHoldingsMaint.onclick = self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row );
+
+                    actNewInvoice.disabled = false;
+                    actLinkInvoice.disabled = false;
+                    actViewInvoice.disabled = false;
+
+                    actNewInvoice.onclick = function() {
+                        location.href = oilsBasePath + '/acq/invoice/attach?create=1&attach_li=' + li.id();
+                        nodeByName("action_none", row).selected = true;
+                    };
+                    actLinkInvoice.onclick = function() {
+                        // TODO: show inv #/vendor entry then relocate to invoice attach page
+                        nodeByName("action_none", row).selected = true;
+                    };
+                    actViewInvoice.onclick = function() {
+                        // TODO: go to invoice search page, with lineitem filter = li.id()
+                        nodeByName("action_none", row).selected = true;
+                    };
+
                     return;
             }
         }
-
-        openils.Util.hide(recv_link);
-        openils.Util.hide(unrecv_link);
-        openils.Util.hide(real_copies_link);
     };
 
 
@@ -696,7 +715,7 @@ function AcqLiTable() {
         }
     };
 
-    this.generateMakeRecTab = function(bib_id,default_view) {
+    this.generateMakeRecTab = function(bib_id,default_view, row) {
         return function() {
             xulG.new_tab(
                 XUL_OPAC_WRAPPER,
@@ -709,6 +728,8 @@ function AcqLiTable() {
                     default_view : default_view
                 }
             );
+
+            if(row) nodeByName("action_none", row).selected = true;
         }
     };
 
