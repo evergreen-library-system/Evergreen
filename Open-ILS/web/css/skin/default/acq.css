@@ -195,9 +195,24 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
     border:1px solid #888;
 }
 
-
 /* INVOICING */
 #oils-acq-invoice-table td { padding: 5px; }
 #acq-invoice-new-msg { font-weight: bold; margin: 10px;}
 #acq-invoice-li-details { padding: 10px; font-weight: bold; border: 1px solid #888; margin: 10px; }
 #acq-invoice-create { margin: 10px; }
+#acq-unified-heading { margin-bottom: 10px; }
+#acq-unified-heading-actual { float: left; width: 50%; font-size: 120%; font-weight: bold; }
+#acq-unified-heading-controls { float: right; width: 50%; text-align: right; }
+#acq-unified-form { margin-bottom: 10px; border-bottom: 1px dashed #666; padding-bottom: 10px; }
+#acq-unified-form > div { margin: 6px 0; }
+option[disabled="disabled"] { font-style: italic; }
+#acq-unified-terms-table { width: 100%; }
+#acq-unified-terms-table td { padding: 4px 0; }
+#acq-unified-add-term { padding-bottom: 20px; }
+.acq-unified-option-header { padding-left: 12px; }
+.acq-unified-option-regular { padding-left: 24px; }
+.acq-unified-terms-selector { width: 20%; }
+.acq-unified-terms-widget { width: 60%; }
+.acq-unified-terms-match { width: 15%; }
+.acq-unified-terms-remove { width: 5%; text-align: right; }
+.acq-unified-remover { color: #c00; }

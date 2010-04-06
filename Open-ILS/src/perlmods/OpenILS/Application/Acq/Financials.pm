@@ -899,19 +899,23 @@ sub build_price_summary {
 sub retrieve_purchase_order_impl {
     my($e, $po_id, $options) = @_;
 
-    # let's just always flesh this if it's there. what the hey.
-    my $flesh = {
-        "flesh" => 1, "flesh_fields" => {"acqpo" => ["cancel_reason"]}
-    };
+    my $flesh = {"flesh" => 1, "flesh_fields" => {"acqpo" => []}};
 
     $options ||= {};
+    unless ($options->{"no_flesh_cancel_reason"}) {
+        push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "cancel_reason";
+    }
     if ($options->{"flesh_notes"}) {
         push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "notes";
     }
     if ($options->{"flesh_provider"}) {
         push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "provider";
     }
-    my $po = $e->retrieve_acq_purchase_order([$po_id, $flesh])
+
+    my $args = (@{$flesh->{"flesh_fields"}->{"acqpo"}}) ?
+        [$po_id, $flesh] : $po_id;
+
+    my $po = $e->retrieve_acq_purchase_order($args)
         or return $e->event;
 
     if($$options{flesh_lineitems}) {

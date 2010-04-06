@@ -691,6 +691,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('acq/picklist/bib_search', 'menu.cmd_acq_bib_search.tab'); }
             ],
+            'cmd_acq_unified_search' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/search/unified', 'menu.cmd_acq_unified_search.tab'); }
+            ],
             'cmd_acq_li_search' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/lineitem/search', 'menu.cmd_acq_li_search.tab'); }

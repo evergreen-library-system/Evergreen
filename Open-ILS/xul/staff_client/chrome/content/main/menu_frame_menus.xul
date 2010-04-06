@@ -83,6 +83,7 @@
     <command id="cmd_acq_user_requests" />
     <command id="cmd_acq_bib_search" />
     <command id="cmd_acq_li_search" />
+    <command id="cmd_acq_unified_search" />
     <command id="cmd_acq_new_brief_record" />
     <command id="cmd_acq_view_fund" />
     <command id="cmd_acq_view_funding_source" />
@@ -253,13 +254,14 @@
 <!-- The Acquisitions menu on the main menu -->
 <menu id="main.menu.acq" label="&staff.main.menu.acq.label;" accesskey="&staff.main.menu.acq.accesskey;">
     <menupopup id="main.menu.acq.popup">
-        <menuitem label="&staff.main.menu.acq.picklist.label;" accesskey="&staff.main.menu.acq.picklist.accesskey;" command="cmd_acq_view_picklist"/>
+        <menuitem label="&staff.main.menu.acq.unified_search.label;" accesskey="&staff.main.menu.acq.unified_search.accesskey;" command="cmd_acq_unified_search"/>
         <menuitem label="&staff.main.menu.acq.bib_search.label;" accesskey="&staff.main.menu.acq.bib_search.accesskey;" command="cmd_acq_bib_search"/>
         <menuitem label="&staff.main.menu.acq.li_search.label;" accesskey="&staff.main.menu.acq.li_search.accesskey;" command="cmd_acq_li_search"/>
+        <menuitem label="&staff.main.menu.acq.po.label;" accesskey="&staff.main.menu.acq.po.accesskey;" command="cmd_acq_view_po" />
+        <menuitem label="&staff.main.menu.acq.picklist.label;" accesskey="&staff.main.menu.acq.picklist.accesskey;" command="cmd_acq_view_picklist"/>
+        <menuseparator />
         <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>
         <menuitem label="&staff.main.menu.acq.brief_record.label;" accesskey="&staff.main.menu.acq.brief_record.accesskey;" command="cmd_acq_new_brief_record"/>
-        <menuseparator />
-        <menuitem label="&staff.main.menu.acq.po.label;" accesskey="&staff.main.menu.acq.po.accesskey;" command="cmd_acq_view_po" />
         <menuitem label="&staff.main.menu.acq.po_events.label;" accesskey="&staff.main.menu.acq.po_events.accesskey;" command="cmd_acq_view_po_events" />
         <menuitem label="&staff.main.menu.acq.user_requests.label;" accesskey="&staff.main.menu.acq.user_requests.accesskey;" command="cmd_acq_user_requests" />
         <menuseparator />

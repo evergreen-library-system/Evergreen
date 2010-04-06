@@ -156,37 +156,39 @@ sub gen_au_term {
 # alias, given names and family name.
 sub prepare_au_terms {
     my ($terms, $join_num) = @_;
+
     my @joins = ();
+    my $nots = 0;
     $join_num ||= 0;
 
     foreach my $conj (qw/-and -or/) {
         next unless exists $terms->{$conj};
 
         my @new_outer_terms = ();
-        foreach my $hint_unit (@{$terms->{$conj}}) {
+        HINT_UNIT: foreach my $hint_unit (@{$terms->{$conj}}) {
             my $hint = (keys %$hint_unit)[0];
             (my $plain_hint = $hint) =~ y/+//d;
+            if ($hint eq "-not") {
+                $hint_unit = $hint_unit->{$hint};
+                $nots++;
+                redo HINT_UNIT;
+            }
 
             if (my $links = get_fm_links_by_hint($plain_hint) and
                 $plain_hint ne "acqlia") {
                 my @new_terms = ();
-                foreach my $pair (@{$hint_unit->{$hint}}) {
-                    my ($attr, $value) = breakdown_term($pair);
-                    if ($links->{$attr} and
-                        $links->{$attr}->{"class"} eq "au") {
-                        push @joins, [$plain_hint, $attr, $join_num];
-                        push @new_outer_terms, gen_au_term($value, $join_num);
-                        $join_num++;
-                    } else {
-                        push @new_terms, $pair;
-                    }
-                }
-                if (@new_terms) {
-                    $hint_unit->{$hint} = [ @new_terms ];
-                } else {
+                my ($attr, $value) = breakdown_term($hint_unit->{$hint});
+                if ($links->{$attr} and
+                    $links->{$attr}->{"class"} eq "au") {
+                    push @joins, [$plain_hint, $attr, $join_num];
+                    my $au_term = gen_au_term($value, $join_num);
+                    $au_term = {"-not" => $au_term} if $nots--;
+                    push @new_outer_terms, $au_term;
+                    $join_num++;
                     delete $hint_unit->{$hint};
                 }
             }
+            $hint_unit = {"-not" => $hint_unit} if $nots--;
             push @new_outer_terms, $hint_unit if scalar keys %$hint_unit;
         }
         $terms->{$conj} = [ @new_outer_terms ];
@@ -203,7 +205,6 @@ sub prepare_terms {
     foreach my $class (qw/acqpo acqpl jub/) {
         next if not exists $terms->{$class};
 
-        my $clause = [];
         $outer_clause->{$conj} = [] unless $outer_clause->{$conj};
         foreach my $unit (@{$terms->{$class}}) {
             my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
@@ -218,9 +219,10 @@ sub prepare_terms {
                 next;
             }
 
-            push @$clause, $not ? {"-not" => $term_clause} : $term_clause;
+            my $clause = {"+" . $class => $term_clause};
+            $clause = {"-not" => $clause} if $not;
+            push @{$outer_clause->{$conj}}, $clause;
         }
-        push @{$outer_clause->{$conj}}, {"+" . $class => $clause};
     }
 
     if ($terms->{"acqlia"}) {
@@ -328,12 +330,12 @@ sub unified_search {
         "from" => {
             "jub" => {
                 "acqpo" => {
-                    "type" => "left",
+                    "type" => "full",
                     "field" => "id",
                     "fkey" => "purchase_order"
                 },
                 "acqpl" => {
-                    "type" => "left",
+                    "type" => "full",
                     "field" => "id",
                     "fkey" => "picklist"
                 }
@@ -352,6 +354,9 @@ sub unified_search {
         };
     };
 
+    # TODO find instances of fields of type "timestamp" and massage the
+    # comparison to match search input (which is only at date precision,
+    # not timestamp).
     my $offset = add_au_joins($query->{"from"}, prepare_au_terms($and_terms));
     add_au_joins($query->{"from"}, prepare_au_terms($or_terms, $offset));
 
@@ -369,7 +374,16 @@ sub unified_search {
     }
 
     my $results = $e->json_query($query) or return $e->die_event;
-    $conn->respond($retriever->($e, $_->{"id"}, $options)) foreach (@$results);
+    if ($options->{"id_list"}) {
+        foreach (@$results) {
+            $conn->respond($_->{"id"}) if $_->{"id"};
+        }
+    } else {
+        foreach (@$results) {
+            $conn->respond($retriever->($e, $_->{"id"}, $options))
+                if $_->{"id"};
+        }
+    }
     $e->disconnect;
     undef;
 }

@@ -57,4 +57,5 @@
     'CONFIRM_FUNDS_AT_STOP': "One or more of the selected funds has a balance below its stop level.\nYou may not be able to activate purchase orders incorporating these copies.\nContinue?",
     'CONFIRM_FUNDS_AT_WARNING': "One or more of the selected funds has a balance below its warning level.\nContinue?",
     'INVOICE_ITEM_DETAILS' : "${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID: ${4} <br/> PO: ${5} <br/> Order Date: ${6}",
+    'UNNAMED': "Unnamed"
 }
