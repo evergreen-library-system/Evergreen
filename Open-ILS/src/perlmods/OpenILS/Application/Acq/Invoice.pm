@@ -109,10 +109,11 @@ sub fetch_invice_impl {
     return $e->retrieve_acq_invoice([
         $invoice_id,
         {
-            flesh => 3,
+            flesh => 4,
             flesh_fields => {
                 acqinv => ['entries', 'items'],
                 acqie => ['lineitem', 'purchase_order'],
+                acqii => ['fund_debit'],
                 jub => ['attributes']
             }
         }
