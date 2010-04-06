@@ -14,6 +14,7 @@ function my_init() {
         JSAN.use('util.network'); network = new util.network();
         JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.stash_retrieve();
         JSAN.use('util.date');
+        JSAN.use('cat.util');
 
         // timeout so xulG gets a chance to get pushed in
         setTimeout(
@@ -73,53 +74,7 @@ function load_item() {
         }
 
         if (typeof bib_brief_overlay == 'function') bib_brief_overlay( { 'mvr' : details.mvr, 'acp' : details.copy } );
-/*
-        set('title', '');
-        set('author', '');
-        set('doc_id', '');
-        set('doc_type', '');
-        set('pubdate', '');
-        set('isbn', '');
-        set('publisher', '');
-        set('tcn', '');
-        set('subject', '');
-        set('types_of_resource', '');
-        set('call_numbers', '');
-        set('edition', '');
-        set('online_loc', '');
-        set('synopsis', '');
-        set('physical_description', '');
-        set('toc', '');
-        set('copy_count', '');
-        set('series', '');
-        set('serials', '');
 
-        if (details.mvr) {
-            set('title',details.mvr.title()); 
-            set('author',details.mvr.author());
-            set('doc_id', details.mvr.doc_id());
-            set('doc_type', details.mvr.doc_type());
-            set('pubdate', details.mvr.pubdate());
-            set('isbn',details.mvr.isbn());
-            set('publisher', details.mvr.publisher());
-            set('tcn', details.mvr.tcn());
-            set('subject', details.mvr.subject());
-            set('types_of_resource', details.mvr.types_of_resource());
-            set('call_numbers', details.mvr.call_numbers());
-            set('edition', details.mvr.edition());
-            set('online_loc', details.mvr.online_loc());
-            set('synopsis', details.mvr.synopsis());
-            set('physical_description', details.mvr.physical_description());
-            set('toc', details.mvr.toc());
-            set('copy_count', details.mvr.copy_count());
-            set('series', details.mvr.series());
-            set('serials', details.mvr.serials());
-        } else {
-            set('title',details.copy.dummy_title());
-            set('author',details.copy.dummy_author()); 
-            set('isbn',details.copy.dummy_isbn());
-        }
-*/
         set("stat_cat_entries", '');
         set("age_protect", '');
         set("alert_message", '');
@@ -151,7 +106,8 @@ function load_item() {
         set("opac_visible", '');
         set("price", '');
         set("ref", '');
-        set("status", '');
+        set("copy_status", '');
+        set_tooltip("copy_status", '');
         set("notes", '');
         set("stat_cat_entry_copy_maps", '');
         set("circulations", '');
@@ -166,12 +122,19 @@ function load_item() {
             set("age_protect", details.copy.age_protect()); 
             set("alert_message", details.copy.alert_message()); 
             set("barcode", details.copy.barcode()); 
-            set("call_number", details.copy.call_number()); 
+            if (typeof details.copy.call_number() == 'object') {
+                set("call_number", details.copy.call_number().label()); 
+            } else {
+                network.simple_request('FM_ACN_RETRIEVE.authoritative',[details.copy.call_number()], function(req) {
+                    var acn_obj = req.getResultObject();
+                    set("call_number", acn_obj.label());
+                });
+            }
             set("circ_as_type", details.copy.circ_as_type()); 
             set("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().shortname() : data.hash.aou[ details.copy.circ_lib() ].shortname()); 
             set_tooltip("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().name() : data.hash.aou[ details.copy.circ_lib() ].name()); 
             set("circ_modifier", details.copy.circ_modifier()); 
-            set("circulate", details.copy.circulate()); 
+            set("circulate", get_localized_bool( details.copy.circulate() )); 
             set("copy_number", details.copy.copy_number()); 
             set("copy_create_date", util.date.formatted_date( details.copy.create_date(), '%{localized}' )); 
             set("status_changed_time", util.date.formatted_date( details.copy.status_changed_time(), '%{localized}' )); 
@@ -183,10 +146,10 @@ function load_item() {
             set("dummy_title", details.copy.dummy_title()); 
             set("copy_edit_date", util.date.formatted_date( details.copy.edit_date(), '%{localized}' )); 
             set("copy_editor", details.copy.editor()); 
-            set("fine_level", details.copy.fine_level()); 
-            set("holdable", details.copy.holdable()); 
+            set("fine_level", cat.util.render_fine_level( details.copy.fine_level() )); 
+            set("holdable", get_localized_bool( details.copy.holdable() )); 
             set("copy_id", details.copy.id()); 
-            set("loan_duration", details.copy.loan_duration()); 
+            set("loan_duration", cat.util.render_loan_duration( details.copy.loan_duration() )); 
             var copy_location = typeof details.copy.location() == 'object' ? details.copy.location() : data.lookup('acpl',details.copy.location());
                 set("location", copy_location.name());
                 set_tooltip("location", document.getElementById('circStrings').getFormattedString( 
@@ -198,10 +161,18 @@ function load_item() {
                         get_localized_bool( copy_location.opac_visible() )
                     ]
                 ));
-            set("opac_visible", details.copy.opac_visible()); 
+            set("opac_visible", get_localized_bool( details.copy.opac_visible() )); 
             set("price", details.copy.price()); 
-            set("ref", details.copy.ref()); 
-            set("status", details.copy.status()); 
+            set("ref", get_localized_bool( details.copy.ref() )); 
+            var copy_status = typeof details.copy.status() == 'object' ? details.copy.status() : data.hash.ccs[ details.copy.status() ];
+                set("copy_status", copy_status.name() );
+                set_tooltip("copy_status", document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.copy_details.copy_status_tooltip',
+                    [
+                        get_localized_bool( copy_status.opac_visible() ), 
+                        get_localized_bool( copy_status.holdable() ) 
+                    ]
+                ));
             set("notes", details.copy.notes()); 
             set("stat_cat_entry_copy_maps", details.copy.stat_cat_entry_copy_maps()); 
             set("circulations", details.copy.circulations()); 
@@ -265,7 +236,8 @@ function load_item() {
             set("uris", details.volume.uris()); 
         }
 
-        set("copy_status", '');
+        set("transit_copy_status", '');
+        set_tooltip("transit_copy_status", '');
         set("dest", '');
         set("dest_recv_time", '');
         set("transit_id", '');
@@ -277,7 +249,15 @@ function load_item() {
         set("hold_transit_copy", '');
 
         if (details.transit) {
-            set("copy_status", details.transit.copy_status()); 
+            var transit_copy_status = typeof details.transit.copy_status() == 'object' ? details.transit.copy_status() : data.hash.ccs[ details.transit.copy_status() ];
+                set("transit_copy_status", transit_copy_status.name() );
+                set_tooltip("transit_copy_status", document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.copy_details.copy_status_tooltip',
+                    [
+                        get_localized_bool( transit_copy_status.opac_visible() ), 
+                        get_localized_bool( transit_copy_status.holdable() ) 
+                    ]
+                ));
             set("dest", details.transit.dest()); 
             set("dest_recv_time", util.date.formatted_date( details.transit.dest_recv_time(), '%{localized}' )); 
             set("transit_id", details.transit.id()); 
@@ -361,10 +341,15 @@ function load_item() {
             set("workstation", details.circ.workstation()); 
             if (get_bool(details.circ.opac_renewal())||get_bool(details.circ.phone_renewal())||get_bool(details.circ.desk_renewal())) {
                 set("renewal_workstation", (typeof details.circ.workstation() == 'object' && details.circ.workstation() != null) ? details.circ.workstation().name() : details.circ.workstation() ); 
-                network.simple_request('FM_CIRC_CHAIN', [ses(), details.circ.id() ], function(req) { // Tiny race condition between details.circ and circs[circs.length-1] here, but meh :)
+                network.simple_request('FM_CIRC_CHAIN_SUMMARY', [ses(), details.circ.id() ], function(req) {
                     try {
-                        var circs = req.getResultObject();
-                        set("checkout_workstation", (typeof circs[0].workstation() == 'object' && circs[0].workstation() != null) ? circs[0].workstation().name() : circs[0].workstation() );
+                        var summary = req.getResultObject();
+                        set("checkout_workstation", summary.checkout_workstation());
+                        set("renewal_workstation", summary.last_renewal_workstation());
+                        set("checkin_workstation", summary.last_checkin_workstation());
+                        set("stop_fines", summary.last_stop_fines());
+                        set("stop_fines_time", util.date.formatted_date( summary.last_stop_fines_time(), '%{localized}' )); 
+                        set("renewal_time", util.date.formatted_date( summary.last_renewal_time(), '%{localized}' )); 
                     } catch(E) {
                         alert('Error in alternate_copy_summary.js, FM_CIRC_CHAIN: ' + E);
                     }
@@ -444,7 +429,7 @@ function load_item() {
             }
         }
 
-        set("status", '');
+        set("hold_status", '');
         set("transit", '');
         set("capture_time", '');
         set("current_copy", '');
@@ -484,7 +469,7 @@ function load_item() {
         set("notes", '');
 
         if (details.hold) {
-            set("status", details.hold.status()); 
+            set("hold_status", details.hold.status()); 
             set("transit", details.hold.transit()); 
             set("capture_time", util.date.formatted_date( details.hold.capture_time(), '%{localized}' )); 
             set("current_copy", details.hold.current_copy()); 

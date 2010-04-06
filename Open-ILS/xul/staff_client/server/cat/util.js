@@ -8,7 +8,8 @@ cat.util = {};
 cat.util.EXPORT_OK    = [ 
     'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
     'transfer_title_holds', 'mark_item_missing', 'mark_item_damaged', 'replace_barcode', 'fast_item_add', 
-    'make_bookable', 'edit_new_brsrc', 'edit_new_bresv', 'batch_edit_volumes'
+    'make_bookable', 'edit_new_brsrc', 'edit_new_bresv', 'batch_edit_volumes', 'render_fine_level',
+    'render_loan_duration'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -717,6 +718,25 @@ cat.util.batch_edit_volumes = function(fleshed_volumes) {
         alert('Error in cat.util.batch_edit_volumes: ' + E);
         return false;
     }
+}
+
+cat.util.render_fine_level = function(value) {
+    var text;
+    switch(Number(value)){
+        case 1: text = document.getElementById("catStrings").getString("staff.cat.copy_editor.field.fine_level.low"); break;
+        case 2: text = document.getElementById("catStrings").getString("staff.cat.copy_editor.field.fine_level.normal"); break;
+        case 3: text = document.getElementById("catStrings").getString("staff.cat.copy_editor.field.fine_level.high"); break; 
+    }
+    return text;
+}
+cat.util.render_loan_duration = function(value) {
+    var text;
+    switch(Number(value)){
+        case 1: text = document.getElementById("catStrings").getString("staff.cat.copy_editor.field.loan_duration.short"); break;
+        case 2: text = document.getElementById("catStrings").getString("staff.cat.copy_editor.field.loan_duration.normal"); break;
+        case 3: text = document.getElementById("catStrings").getString("staff.cat.copy_editor.field.loan_duration.extended"); break;
+    }
+    return text;
 }
 
 dump('exiting cat/util.js\n');
