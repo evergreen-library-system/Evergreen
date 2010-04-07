@@ -2,7 +2,8 @@ dojo.require('dojo.date.stamp');
 dojo.require('openils.User');
 dojo.require('openils.widget.EditPane');
 
-function drawInvoicePane(parentNode, inv) {
+function drawInvoicePane(parentNode, inv, args) {
+    args = args || {};
 
     var override;
     if(!inv) {
@@ -11,6 +12,10 @@ function drawInvoicePane(parentNode, inv) {
             receiver : {widgetValue : openils.User.user.ws_ou()},
             recv_method : {widgetValue : 'PPR'}
         };
+    }
+
+    for(var field in args) {
+        override[field] = {widgetValue : args[field]};
     }
 
     var pane = new openils.widget.EditPane({
@@ -26,7 +31,8 @@ function drawInvoicePane(parentNode, inv) {
             'inv_type', 
             'provider', 
             'shipper'
-        ]
+        ],
+        suppressFields : ['id']
     });
 
     pane.startup();

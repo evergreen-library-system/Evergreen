@@ -197,6 +197,8 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
 
 /* INVOICING */
 #oils-acq-invoice-table td { padding: 5px; }
+.oils-acq-invoice-table td { padding: 5px; vertical-align: bottom;}
+.oils-acq-invoice-table thead td { font-weight: bold; background: #e0e0e0;}
 #acq-invoice-new-msg { font-weight: bold; margin: 10px;}
 #acq-invoice-li-details { padding: 10px; font-weight: bold; border: 1px solid #888; margin: 10px; }
 #acq-invoice-create { margin: 10px; }

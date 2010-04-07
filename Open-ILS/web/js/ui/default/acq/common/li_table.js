@@ -376,7 +376,7 @@ function AcqLiTable() {
                     actViewInvoice.disabled = false;
 
                     actNewInvoice.onclick = function() {
-                        location.href = oilsBasePath + '/acq/invoice/attach?create=1&attach_li=' + li.id();
+                        location.href = oilsBasePath + '/acq/invoice/view?create=1&attach_li=' + li.id();
                         nodeByName("action_none", row).selected = true;
                     };
                     actLinkInvoice.onclick = function() {

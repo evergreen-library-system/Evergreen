@@ -287,6 +287,11 @@ function renderPo() {
         if (PO.lineitem_count() > 1)
             openils.Util.show("acq-po-split");
     }
+
+    dojo.byId('acq-po-create-invoice-link').onclick = 
+        function() {
+            location.href = oilsBasePath + '/acq/invoice/view?create=1&attach_po=' + poId;
+        };
 }
 
 

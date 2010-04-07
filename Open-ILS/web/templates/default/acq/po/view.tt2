@@ -50,10 +50,12 @@
                     </td>
                 </tr>
                 <tr><td><a class="hidden" id="acq-po-split" href="javascript:void(0);" onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">Split Order by Lineitems</a></td></tr>
-                <tr id='acq-po-invoices'> <!-- TODO: hidden until applicable -->
-                    <td>Invoice(s)</td>
+                <tr id='acq-po-view-invoices'> <!-- TODO: hidden until applicable -->
+                    <td>Invoicing</td>
                     <td>
-                        <a href="javascript:void(0);" id="acq-po-view-invoices">(0)</a>
+                        <a href="javascript:void(0);" id="acq-po-view-invoice-link">View Invoices(0)</a> / 
+                        <a href="javascript:void(0);" id="acq-po-create-invoice-link">Create Invoice</a> / 
+                        <a href="javascript:void(0);" id="acq-po-link-invoice-link">Link Invoice</a>
                     </td>
                 </tr>
             </table>

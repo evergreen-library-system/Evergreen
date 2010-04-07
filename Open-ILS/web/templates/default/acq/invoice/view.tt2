@@ -1,5 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
-[% ctx.page_title = 'Invoice' %]
+[% ctx.page_title = 'Invoicing' %]
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/common.js'> </script>
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/view.js'> </script>
 <script type="text/javascript">var invoiceId = '[% ctx.page_args.0 %]';</script>
@@ -12,6 +12,100 @@
 
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <div id='acq-view-invoice-div'/>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <table class='oils-acq-invoice-table'>
+            <thead/>
+            <tbody>
+                <tr>
+                    <td colspan='0'>
+                        <h3>Bibliographic Items</h3>
+                    </td>
+                </tr>
+            </tbody>
+            <!-- acq.invoice_entry -->
+            <thead>
+                <td>ISBN/UPC/ISSN</td>
+                <td>Title</td>
+                <td>Author</td>
+                <td># Items Invoiced / # Received</td>
+                <td>Amount Billed</td>
+                <td>Detach</td>
+            </thead>
+            <tbody id='acq-invoice-entry-tbody'>
+                <tr id='acq-invoice-entry-template'>
+                    <td><div name='idents'/></td>
+                    <td>
+                        <span name='title'></span> 
+                        <span name='purchase_order_span' class='hidden'>
+                            (PO: <a href='javascript:void(0);' name='purchase_order'></a>)
+                        </span>
+                    </td>
+                    <td><div name='author'/></td>
+                    <td nowrap='nowrap'>
+                        <span name='inv_item_count'></span>&nbsp;/&nbsp;<span name='phys_item_count'></span>
+                    </td>
+                    <td><div name='cost_billed'/></td>
+                    <td><a href='javascript:void(0);' name='detach'>Detach</a></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td  style='margin-top:15px;' colspan='0'>
+                        <h3>Taxes, Fees, Misc.</h3>
+                    </td>
+                </tr>
+            </tbody>
+            <!-- acq.invoice_item -->
+            <thead>
+                <td>Charge Type</td>
+                <td>Title / Description (optional)</td>
+                <td>Author (optional)</td>
+                <td>Fund</td>
+                <td>Amount Billed</td>
+                <td>Delete</td>
+            </thead>
+            <tbody id='acq-invoice-item-tbody'>
+                <tr id='acq-invoice-item-template'>
+                    <td><div name='inv_item_type'/></td>
+                    <td><div name='title'/></td>
+                    <td><div name='author'/></td>
+                    <td><div name='fund'/></td>
+                    <td><div name='cost_billed'/></td>
+                    <td><a href='javascript:void(0);' name='delete'>Delete</a></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan='0'>
+                        <a href='javascript:void(0);' id='acq-invoice-new-item'>Add Invoice Item...</a>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td style='margin-top:15px;' colspan='0'> 
+                        <h3> </h3>
+                    </td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <td colspan='4'/>
+                    <td>Total Amount</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan='4' style='text-align:right;'>
+                        <button dojoType='dijit.form.Button' jsId='invoiceSaveButton'>Save &amp; Continue</button>
+                        <button dojoType='dijit.form.Button' jsId='invoiceProcessButton'>Process Invoice</button>
+                    </td>
+                    <td><div id='acq-invoice-total-invoiced'/></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
