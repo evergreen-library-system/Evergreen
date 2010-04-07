@@ -3518,41 +3518,10 @@ sub commit_password_reset {
     my $pw_regex = $U->ou_ancestor_setting_value($user->home_ou, 'global.password_regex');
 
     my $is_strong = 'false';
-    if (!$pw_regex) {
-        # Use the default set of checks
-        if ((length($password) < 7)
-                or ($password !~ m/.*\d+.*/)
-                or ($password !~ m/.*[A-Za-z]+.*/)) {
-            # Still false!
-        } else {
-            $is_strong = 'true';
-        }
+    if ($pw_regex) {
+       $is_strong = check_password_strength_javascript($password, $pw_regex);
     } else {
-        # The password regex is for JavaScript, so we have to use SpiderMonkey to eval it
-        my $js = JavaScript::SpiderMonkey->new();
-        $js->init();
-        $js->property_by_path('pw.is_strong', 'false');
-        $js->property_by_path('pw.password', $password);
-        $js->property_by_path('pw.regex', $pw_regex || 'blank');
-
-        my $pw_script = << 'PWCHECK';
-            if (pw.regex != 'blank') {
-                if (pw.password.match(new RegExp(pwregex))) {
-                    pw.is_strong = 'true';
-                }
-            } else {
-                } while(0);
-            }
-PWCHECK
-
-        my $rc = $js->eval($pw_script);
-        if (!$rc) {
-            $logger->error("Error interpreting JavaScript while checking password strength: %s", $@);
-        }
-
-        # Get the value of a property set in JS
-        $is_strong = $js->property_get('pw.is_strong');
-        $js->destroy();
+       $is_strong = check_password_strength_default($password);
     }
 
     if ($is_strong eq 'false') {
@@ -3570,6 +3539,47 @@ PWCHECK
     $e->commit;
 
     return 1;
+}
+
+sub check_password_strength_default {
+    my $password = shift;
+    # Use the default set of checks
+    if ( (length($password) < 7) or 
+            ($password !~ m/.*\d+.*/) or 
+            ($password !~ m/.*[A-Za-z]+.*/)
+       ) {
+        return 'false';
+    }
+    return 'true';
+}
+
+sub check_password_strength_javascript {
+    my ($password, $pw_regex) = @_;
+
+    # The password regex is for JavaScript, so we have to use SpiderMonkey to eval it
+    my $js = JavaScript::SpiderMonkey->new();
+    $js->init();
+    $js->property_by_path('pw.is_strong', 'false');
+    $js->property_by_path('pw.password', $password);
+    $js->property_by_path('pw.regex', $pw_regex);
+
+    my $pw_script = << 'PWCHECK';
+        if (pw.password.match(new RegExp(pw.regex))) {
+            pw.is_strong = 'true';
+        }
+PWCHECK
+
+    my $rc = $js->eval($pw_script);
+    if (!$rc) {
+        $logger->error("Error interpreting JavaScript while checking password strength");
+        $logger->error($@);
+    }
+
+    # Get the value of a property set in JS
+    my $result = $js->property_get('pw.is_strong');
+    $js->destroy();
+
+    return $result;
 }
 
 1;
