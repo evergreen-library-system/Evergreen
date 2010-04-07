@@ -584,6 +584,7 @@ function holdsSetFormatSelector() {
 	for( var i = 0; i < avail_formats.length; i++ ) {
 		var form = avail_formats[i];
 		var opt = findFormatSelectorOptByParts(selector,form);
+        if (!opt) continue;
 		if(type=='M') opt.selected=true;
 		unHideMe(opt);
 	}
@@ -595,7 +596,7 @@ function findFormatSelectorOptByParts( sel, val ) {
         var opt = sel.options[i];
         var oval = opt.value;
         var oparts = oval.split('-');
-        if( oparts[0].indexOf(parts[0]) > -1 && ((!oparts[1] && !parts[1]) || (oparts[1].indexOf(parts[1]) > -1)) ) return opt;
+        if( oparts[0].indexOf(parts[0]) > -1 && (!parts[1] || oparts[1].indexOf(parts[1]) > -1) ) return opt;
     }
     return null;
 }
@@ -650,8 +651,7 @@ function holdsGetFormats() {
 function _t_f_2_format(type, form) {
 	if( (type == 'a' || type == 't') && form == 's' ) return 'at-s';
 	if( form == 'd' ) return 'at-d';
-	return (type == 'a' || type == 't') ? 'at' : 
-		( type == 'i' || type == 'g' || type == 'j' ) ? type : null;
+	return (type == 'a' || type == 't') ? 'at' : type;
 }
 
 function holdsSetSelectedFormats() {
