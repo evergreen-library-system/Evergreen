@@ -349,6 +349,28 @@ main.menu.prototype = {
             'cmd_patron_register' : [
                 ['oncommand'],
                 function() {
+
+                    function log_registration(p) {
+                        try {
+                            obj.error.work_log(
+                                document.getElementById('offlineStrings').getFormattedString(
+                                    'staff.circ.work_log_patron_registration.message',
+                                    [
+                                        ses('staff_usrname'),
+                                        p.family_name(),
+                                        p.card().barcode()
+                                    ]
+                                ), {
+                                    'au_id' : p.id(),
+                                    'au_family_name' : p.family_name(),
+                                    'au_barcode' : p.card().barcode()
+                                }
+                            );
+                        } catch(E) {
+                            obj.error.sdump('D_ERROR','Error with work_logging in menu.js, cmd_patron_register:' + E);
+                        }
+                    }
+
                     function spawn_editor(p) {
                         var url = urls.XUL_PATRON_EDIT;
                         var param_count = 0;
@@ -366,6 +388,7 @@ main.menu.prototype = {
                                 'passthru_content_params' : {
                                     'spawn_search' : function(s) { obj.spawn_search(s); },
                                     'spawn_editor' : spawn_editor,
+                                    'on_save' : function(p) { log_registration(p); }
                                 }
                             }
                         );
@@ -384,6 +407,7 @@ main.menu.prototype = {
                                 'ses' : ses(),
                                 'spawn_search' : function(s) { obj.spawn_search(s); },
                                 'spawn_editor' : spawn_editor,
+                                'on_save' : function(p) { log_registration(p); }
                             }
                         }
                     );

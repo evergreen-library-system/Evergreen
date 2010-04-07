@@ -2208,6 +2208,28 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
             try {
                 var check = req.getResultObject();
                 var r = circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check);
+                try {
+                    error.work_log(
+                        document.getElementById('circStrings').getFormattedString(
+                            'staff.circ.work_log_checkin_attempt.' + r.what_happened + '.message',
+                            [
+                                ses('staff_usrname'),
+                                r.payload.patron ? r.payload.patron.family_name() : '',
+                                r.payload.patron ? r.payload.patron.card().barcode() : '',
+                                r.payload.copy ? r.payload.copy.barcode() : '',
+                                r.route_to ? r.route_to : ''
+                            ]
+                        ), {
+                            'au_id' : r.payload.patron ? r.payload.patron.id() : '',
+                            'au_family_name' : r.payload.patron ? r.payload.patron.family_name() : '',
+                            'au_barcode' : r.payload.patron ? r.payload.patron.card().barcode() : '',
+                            'acp_barcode' : r.payload.copy ? r.payload.copy.barcode() : ''
+                        }
+                    );
+                } catch(E) {
+                    error.sdump('D_ERROR','Error with work_logging in server/circ/checkout.js, _checkout:' + E);
+                }
+
                 if (typeof params.checkin_result == 'function') {
                     try { params.checkin_result(r); } catch(E) { error.sdump('D_ERROR','params.checkin_result() = ' + E); };
                 }
@@ -2351,6 +2373,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             }
             if (check.ilsevent == 3 /* NO_CHANGE */) {
                 //msg = 'This item is already checked in.\n';
+                check.what_happened = 'no_change';
                 if (document.getElementById('no_change_label')) {
                     var m = document.getElementById('no_change_label').getAttribute('value');
                     document.getElementById('no_change_label').setAttribute('value', m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.item_checked_in', [params.barcode]) + '  ');
@@ -2358,6 +2381,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 }
             }
             if (check.ilsevent == 1202 /* ITEM_NOT_CATALOGED */ && check.copy.status() != 11) {
+                check.what_happened = 'error';
                 var copy_status = (data.hash.ccs[ check.copy.status() ] ? data.hash.ccs[ check.copy.status() ].name() : check.copy.status().name() );
                 var err_msg = document.getElementById('commonStrings').getString('common.error');
                 err_msg += '\nFIXME --';
@@ -2369,6 +2393,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             switch(Number(check.copy.status())) {
                 case 0: /* AVAILABLE */
                 case 7: /* RESHELVING */
+                    check.what_happened = 'success';
                     if (msg) {
                         print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
                         print_data.route_to = check.route_to;
@@ -2377,9 +2402,11 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     }
                 break;
                 case 8: /* ON HOLDS SHELF */
+                    check.what_happened = 'hold_shelf';
                     check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.hold_shelf');
                     if (check.payload.hold) {
                         if (check.payload.hold.pickup_lib() != data.list.au[0].ws_ou()) {
+                            check.what_happened = 'error';
                             var err_msg = document.getElementById('commonStrings').getString('common.error');
                             err_msg += '\nFIXME: ';
                             err_msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_error');
@@ -2407,6 +2434,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             msg += '\n';
                         }
                     } else {
+                        check.what_happened = 'error';
                         var err_msg = document.getElementById('commonStrings').getString('common.error');
                         err_msg += '\nFIXME: ';
                         err_msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_status_error');
@@ -2551,6 +2579,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     }
                 break;
                 case 6: /* IN TRANSIT */
+                    check.what_happened = 'error';
                     check.route_to = 'TRANSIT SHELF??';
                     print_data.route_to;
                     var err_msg = document.getElementById('commonStrings').getString('common.error');
@@ -2559,6 +2588,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     msg += err_msg;
                 break;
                 case 11: /* CATALOGING */
+                    check.what_happened = 'cataloging';
                     check.route_to = 'CATALOGING';
                     print_data.route_to;
                     if (document.getElementById('do_not_alert_on_precat')) {
@@ -2579,6 +2609,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     }
                 break;
                 default:
+                    check.what_happened = 'error';
                     msg += document.getElementById('commonStrings').getString('common.error');
                     var copy_status = data.hash.ccs[check.copy.status()] ? data.hash.ccs[check.copy.status()].name() : check.copy.status().name();
                     msg += '\n';
@@ -2602,6 +2633,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             }
         } else /* ROUTE_ITEM */ if (check.ilsevent == 7000) {
 
+            check.what_happened = 'transit';
             var lib = data.hash.aou[ check.org ];
             check.route_to = lib.shortname();
             print_data.route_to = check.route_to;
@@ -2658,6 +2690,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             msg += '\n';
             JSAN.use('util.date');
             if (check.payload.hold) {
+                check.what_happened = 'transit_for_hold';
                 JSAN.use('patron.util');
                 var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
                 print_data.user = au_obj;
@@ -2782,6 +2815,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 
         } else /* ASSET_COPY_NOT_FOUND */ if (check.ilsevent == 1502) {
 
+            check.what_happened = 'not_found';
             check.route_to = 'CATALOGING';
             var mis_scan_msg = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [params.barcode]);
             error.yns_alert(
@@ -2800,6 +2834,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 
         } else /* HOLD_CAPTURE_DELAYED */ if (check.ilsevent == 7019) {
 
+            check.what_happened = 'hold_capture_delayed';
             var rv = 0;
             msg += document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.description');
             rv = error.yns_alert_formatted(
@@ -2816,6 +2851,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             return circ.util.checkin_via_barcode(session,params,backdate,auto_print,false);
 
         } else /* NETWORK TIMEOUT */ if (check.ilsevent == -1) {
+            check.what_happened = 'error';
             error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.suggest_offline'));
         } else {
 

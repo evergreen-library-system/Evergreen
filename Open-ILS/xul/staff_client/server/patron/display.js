@@ -244,7 +244,11 @@ patron.display.prototype = {
                                                 'url_prefix' : xulG.url_prefix,
                                                 'new_tab' : xulG.new_tab,
                                                 'new_patron_tab' : xulG.new_patron_tab,
-                                                'params' : p
+                                                'params' : p,
+                                                'on_save' : function(p_obj) {
+                                                    JSAN.use('patron.util');
+                                                    patron.util.work_log_patron_edit(p_obj);
+                                                }
                                             }
                                         }
                                     );
@@ -267,6 +271,8 @@ patron.display.prototype = {
                                         },
                                         'on_save' : function(p) {
                                             try {
+                                                JSAN.use('patron.util'); 
+                                                patron.util.work_log_patron_edit(p);
                                                 if (obj.barcode) obj.barcode = p.card().barcode();
                                                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                                 //obj.summary_window.g.summary.retrieve();

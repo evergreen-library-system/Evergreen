@@ -6,7 +6,7 @@ patron.util = {};
 patron.util.EXPORT_OK    = [ 
     'columns', 'mbts_columns', 'mb_columns', 'mp_columns', /*'std_map_row_to_column',*/ 'std_map_row_to_columns',
     'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id',
-    'merge', 'ausp_columns', 'format_name'
+    'merge', 'ausp_columns', 'format_name', 'work_log_patron_edit'
 ];
 patron.util.EXPORT_TAGS    = { ':all' : patron.util.EXPORT_OK };
 
@@ -819,5 +819,30 @@ patron.util.format_name = function(patron_obj) {
         ( patron_obj.suffix() ? patron_obj.suffix() : ''); 
     return patron_name;
 }
+
+patron.util.work_log_patron_edit = function(p) {
+    var error;
+    try {
+        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+        JSAN.use('util.error'); error = new util.error();
+        error.work_log(
+            document.getElementById('patronStrings').getFormattedString(
+                'staff.circ.work_log_patron_edit.message',
+                [
+                    ses('staff_usrname'),
+                    p.family_name(),
+                    p.card().barcode()
+                ]
+            ), {
+                'au_id' : p.id(),
+                'au_family_name' : p.family_name(),
+                'au_barcode' : p.card().barcode()
+            }
+        );
+    } catch(E) {
+        error.sdump('D_ERROR','Error with work_logging in menu.js, cmd_patron_register:' + E);
+    }
+}
+
 
 dump('exiting patron/util.js\n');

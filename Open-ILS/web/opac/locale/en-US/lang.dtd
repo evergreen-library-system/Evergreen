@@ -178,8 +178,8 @@
 <!ENTITY staff.admin.survey.save_question.label "Save this Question">
 <!ENTITY staff.admin.survey.staff_client.label "Staff Client:">
 <!ENTITY staff.admin.survey.start.label "Start:">
-<!ENTITY staff.admin.work_log.list1.header "Most Recent Staff Actions">
-<!ENTITY staff.admin.work_log.list2.header "Most Recently Affected Patrons and Last Action for each">
+<!ENTITY staff.admin.work_log.list1.header "Most Recently Logged Staff Actions">
+<!ENTITY staff.admin.work_log.list2.header "Most Recently Affected Patrons for Logged Staff Actions and Last Action for each">
 <!ENTITY staff.admin.work_log.refresh_btn.label "Refresh">
 <!ENTITY staff.admin.work_log.refresh_btn.accesskey "">
 <!ENTITY staff.admin.work_log.list1.retrieve_item_btn.label "Retrieve Item">

@@ -159,7 +159,7 @@ function spawn_editor(p,func) {
                 'url_prefix' : xulG.url_prefix,
                 'new_tab' : xulG.new_tab,
                 'new_patron_tab' : xulG.new_patron_tab,
-                'on_save' : function() { if (typeof func == 'function') { func(); } },
+                'on_save' : function(p) { patron.util.work_log_patron_edit(p); if (typeof func == 'function') { func(p); } },
                 'params' : p
             }
         }

@@ -327,7 +327,7 @@ function clone_patron() {
                         'clone' : g.sel_list[i],
                         'spawn_search' : spawn_search,
                         'spawn_editor' : spawn_editor,
-                        'on_save' : function() { refresh(); },
+                        'on_save' : function(p) { patron.util.work_log_patron_edit(p); refresh(); },
                         'url_prefix' : xulG.url_prefix,
                         'new_tab' : xulG.new_tab,
                     },
@@ -346,7 +346,7 @@ function spawn_editor(p) {
     var passthru = {
         'spawn_search' : spawn_search,
         'spawn_editor' : spawn_editor,
-        'on_save' : function() { refresh(); },
+        'on_save' : function(p) { patron.util.work_log_patron_edit(p); refresh(); },
         'url_prefix' : xulG.url_prefix,
         'new_tab' : xulG.new_tab,
     };
