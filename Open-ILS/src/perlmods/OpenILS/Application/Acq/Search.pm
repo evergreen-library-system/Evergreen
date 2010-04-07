@@ -44,6 +44,8 @@ sub could_be_range {
     0;
 }
 
+sub castdate { +{"=" => {"transform" => "date", "value" => $_[0]}}; }
+
 sub prepare_acqlia_search_and {
     my ($acqlia) = @_;
 
@@ -55,6 +57,7 @@ sub prepare_acqlia_search_and {
             "where" => {"-and" => [{"lineitem" => {"=" => {"+jub" => "id"}}}]}
         };
 
+        # castdate not supported for acqlia fields: they're all type text
         my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
         my $point = $subquery->{"where"}->{"-and"};
         my $term_clause;
@@ -84,6 +87,7 @@ sub prepare_acqlia_search_or {
     my $result = {"+acqlia" => {"-or" => $point}};
 
     foreach my $unit (@$acqlia) {
+        # castdate not supported for acqlia fields: they're all type text
         my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
         my $term_clause;
         if ($fuzzy and not ref $v) {
@@ -120,7 +124,8 @@ sub breakdown_term {
         $key, $term->{$key},
         $term->{"__fuzzy"} ? 1 : 0,
         $term->{"__between"} ? 1 : 0,
-        $term->{"__not"} ? 1 : 0
+        $term->{"__not"} ? 1 : 0,
+        $term->{"__castdate"} ? 1 : 0
     );
 }
 
@@ -208,13 +213,16 @@ sub prepare_terms {
 
         $outer_clause->{$conj} = [] unless $outer_clause->{$conj};
         foreach my $unit (@{$terms->{$class}}) {
-            my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
+            my ($k, $v, $fuzzy, $between, $not, $castdate) =
+                breakdown_term($unit);
+
             my $term_clause;
             if ($fuzzy and not ref $v) {
                 $term_clause = {$k => {"ilike" => "%" . $v . "%"}};
             } elsif ($between and could_be_range($v)) {
                 $term_clause = {$k => {"between" => $v}};
             } elsif (check_1d_max($v)) {
+                $v = castdate($v) if $castdate;
                 $term_clause = {$k => $v};
             } else {
                 next;

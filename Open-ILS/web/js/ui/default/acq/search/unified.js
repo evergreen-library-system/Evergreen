@@ -1,3 +1,4 @@
+dojo.require("dojo.date.stamp");
 dojo.require("openils.widget.AutoGrid");
 dojo.require("openils.widget.AutoWidget");
 dojo.require("openils.PermaCrud");
@@ -276,17 +277,26 @@ function TermManager() {
                 this._match_how(id).getValue().split(",").filter(Boolean);
 
             var value;
-            try {
-                value = this.widgets[id].attr("value");
-            } catch (E) {
+            if (typeof(this.widgets[id].declaredClass) != "undefined") {
+                if (this.widgets[id].declaredClass.match(/Date/)) {
+                    value =
+                        dojo.date.stamp.toISOString(this.widgets[id].value).
+                            split("T")[0];
+                } else {
+                    value = this.widgets[id].attr("value");
+                }
+            } else {
                 value = this.widgets[id].value;
             }
 
             if (!so[hint])
                 so[hint] = [];
+
             var unit = {};
-            match_how.forEach(function(key) { unit[key] = true; });
             unit[attr] = value;
+            match_how.forEach(function(key) { unit[key] = true; });
+            if (this.terms[hint][attr].datatype == "timestamp")
+                unit.__castdate = true;
 
             so[hint].push(unit);
         }
