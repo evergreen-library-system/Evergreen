@@ -811,7 +811,8 @@ CREATE TABLE acq.invoice_entry (
 
 CREATE TABLE acq.invoice_item_type (
     code    TEXT    PRIMARY KEY,
-    name    TEXT    NOT NULL -- i18n-ize
+    name    TEXT    NOT NULL,  -- i18n-ize
+	prorate BOOL    NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib items/etc
