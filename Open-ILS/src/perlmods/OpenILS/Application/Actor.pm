@@ -3413,7 +3413,7 @@ sub _reset_password_request {
             ]
         },
         where => {
-            has_been_reset => { '=' => 'f' } },
+            has_been_reset => { '=' => 'f' },
             request_time => { '>' => $threshold_time }
         }
     });
