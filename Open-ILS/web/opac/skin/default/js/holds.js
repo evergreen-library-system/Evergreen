@@ -684,7 +684,7 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 
 	var args = { 
 		titleid : holdArgs.record,
-		mrid : holdArgs.record,
+		mrid : holdArgs.metarecord,
 		volume_id : holdArgs.volume,
 		copy_id : holdArgs.copy,
 		hold_type : holdArgs.type,

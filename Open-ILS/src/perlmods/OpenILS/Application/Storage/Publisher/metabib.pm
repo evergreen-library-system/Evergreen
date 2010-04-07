@@ -2967,8 +2967,8 @@ sub query_parser_fts {
                     $param_offset\:\:INT,
                     $param_check\:\:INT,
                     $param_limit\:\:INT,
-                    $staff\:\:BOOL,
-                    $metarecord\:\:BOOL
+                    $metarecord\:\:BOOL,
+                    $staff\:\:BOOL
                 );
     SQL
 
