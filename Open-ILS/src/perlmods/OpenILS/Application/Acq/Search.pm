@@ -135,25 +135,20 @@ sub get_fm_links_by_hint {
 sub gen_au_term {
     my ($value, $n) = @_;
     +{
-        "-or" => {
-            "+au$n" => {
-                "-or" => {
-                    "usrname" => $value,
-                    "alias" => $value,
-                    "first_given_name" => $value,
-                    "second_given_name" => $value,
-                    "family_name" => $value
-                }
-            },
-            "+ac$n" => {"barcode" => $value}
-        }
+        "-or" => [
+            {"+au$n" => {"usrname" => $value}},
+            {"+au$n" => {"first_given_name" => $value}},
+            {"+au$n" => {"second_given_name" => $value}},
+            {"+au$n" => {"family_name" => $value}},
+            {"+ac$n" => {"barcode" => $value}}
+        ]
     };
 }
 
 # go through the terms hash, find keys that correspond to fields links
 # to actor.usr, and rewrite the search as one that searches not by
 # actor.usr.id but by any of these user properties: card barcode, username,
-# alias, given names and family name.
+# given names and family name.
 sub prepare_au_terms {
     my ($terms, $join_num) = @_;
 
