@@ -825,7 +825,9 @@ CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib i
     author          TEXT,
     note            TEXT,
     cost_billed     NUMERIC(8,2),
-    actual_cost     NUMERIC(8,2)
+    actual_cost     NUMERIC(8,2),
+	fund            INT         REFERENCES acq.fund (id)
+	                            DEFERRABLE INITIALLY DEFERRED
 );
 
 -- Patron requests

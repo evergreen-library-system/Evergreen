@@ -4702,12 +4702,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Note" name="note" reporter:datatype="text" />
 			<field reporter:label="Cost Billed" name="cost_billed" reporter:datatype="money" />
 			<field reporter:label="Actual Cost" name="actual_cost" reporter:datatype="money" />
+			<field reporter:label="Fund" name="fund" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
 			<link field="fund_debit" reltype="has_a" key="id" map="" class="acqfdeb"/>
 			<link field="inv_item_type" reltype="has_a" key="code" map="" class="aiit"/>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
