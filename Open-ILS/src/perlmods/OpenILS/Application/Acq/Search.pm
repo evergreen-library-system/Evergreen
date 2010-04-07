@@ -10,6 +10,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Acq::Lineitem;
 use OpenILS::Application::Acq::Financials;
 use OpenILS::Application::Acq::Picklist;
+use OpenILS::Application::Acq::Invoice;
 
 my %RETRIEVERS = (
     "lineitem" =>
@@ -18,7 +19,10 @@ my %RETRIEVERS = (
         \&{"OpenILS::Application::Acq::Picklist::retrieve_picklist_impl"},
     "purchase_order" => \&{
         "OpenILS::Application::Acq::Financials::retrieve_purchase_order_impl"
-    }
+    },
+    "invoice" => \&{
+        "OpenILS::Application::Acq::Invoice::fetch_invoice_impl"
+    },
 );
 
 sub F { $Fieldmapper::fieldmap->{"Fieldmapper::" . $_[0]}; }
@@ -208,7 +212,7 @@ sub prepare_terms {
     my $conj = $is_and ? "-and" : "-or";
     my $outer_clause = {};
 
-    foreach my $class (qw/acqpo acqpl jub/) {
+    foreach my $class (qw/acqpo acqpl acqinv jub/) {
         next if not exists $terms->{$class};
 
         $outer_clause->{$conj} = [] unless $outer_clause->{$conj};
@@ -250,7 +254,14 @@ sub add_au_joins {
     my $n = 0;
     foreach my $join (@_) {
         my ($hint, $attr, $num) = @$join;
-        my $start = $hint eq "jub" ? $from->{$hint} : $from->{"jub"}->{$hint};
+        my $start;
+        if ($hint eq "jub") {
+            $start = $from->{$hint};
+        } elsif ($hint eq "acqinv") {
+            $start = $from->{"jub"}->{"acqie"}->{"join"}->{$hint};
+        } else {
+            $start = $from->{"jub"}->{$hint};
+        }
         my $clause = {
             "class" => "au",
             "type" => "left",
@@ -318,6 +329,17 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => "unified_search",
+    api_name  => "open-ils.acq.invoice.unified_search",
+    stream    => 1,
+    signature => {
+        desc   => q/Returns invoices lists based on flexible search terms.
+            See open-ils.acq.lineitem.unified_search/,
+        return => {desc => "A stream of invoices on success, Event on failure"}
+    }
+);
+
 sub unified_search {
     my ($self, $conn, $auth, $and_terms, $or_terms, $conj, $options) = @_;
     $options ||= {};
@@ -347,6 +369,18 @@ sub unified_search {
                     "type" => "full",
                     "field" => "id",
                     "fkey" => "picklist"
+                },
+                "acqie" => {
+                    "type" => "full",
+                    "field" => "lineitem",
+                    "fkey" => "id",
+                    "join" => {
+                        "acqinv" => {
+                            "type" => "full",
+                            "fkey" => "invoice",
+                            "field" => "id"
+                        }
+                    }
                 }
             }
         },
@@ -363,9 +397,6 @@ sub unified_search {
         };
     };
 
-    # TODO find instances of fields of type "timestamp" and massage the
-    # comparison to match search input (which is only at date precision,
-    # not timestamp).
     my $offset = add_au_joins($query->{"from"}, prepare_au_terms($and_terms));
     add_au_joins($query->{"from"}, prepare_au_terms($or_terms, $offset));
 

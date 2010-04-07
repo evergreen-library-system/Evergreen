@@ -15,6 +15,16 @@
         }
     }
 
+    function getInvIdent(rowIndex, item) {
+        if (item) {
+            return {
+                "inv_ident": this.grid.store.getValue(item, "inv_ident") ||
+                    this.grid.store.getValue(item, "id"),
+                "id": this.grid.store.getValue(item, "id")
+            };
+        }
+    }
+
     function getPlOwnerName(rowIndex, item) {
         try {
             return resultManager.plCache[this.grid.store.getValue(item, "id")].
@@ -35,6 +45,13 @@
         if (pl) {
             return "<a href='" + oilsBasePath + "/acq/picklist/view/" +
                 pl.id + "'>" + pl.name + "</a>";
+        }
+    }
+
+    function formatInvIdent(inv) {
+        if (inv) {
+            return "<a href='" + oilsBasePath + "/acq/invoice/view/" +
+                inv.id + "'>" + inv.inv_ident + "</a>";
         }
     }
 </script>
@@ -64,6 +81,7 @@
                 </option>
                 <option value="picklist">pick lists</option>
                 <option value="purchase_order">purchase orders</option>
+                <option value="invoice">invoices</option>
             </select>
             <label for="acq-unified-conjunction">matching</label>
             <select id="acq-unified-conjunction">
@@ -152,6 +170,24 @@
                     </th>
                     <th field="owner" get="getPlOwnerName">Owner</th>
                     <th field="entry_count">Entry Count</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="acq-unified-results-invoice" class="hidden">
+        <table
+            id="acq-unified-inv-grid"
+            autoHeight="true"
+            dojoType="openils.widget.AutoGrid"
+            query="{id: '*'}"
+            fieldOrder="['inv_ident', 'receiver', 'provider', 'shipper']"
+            defaultCellWidth="'auto'"
+            showPaginator="true"
+            fmClass="acqinv">
+            <thead>
+                <tr>
+                    <th field="inv_ident" get="getInvIdent"
+                        formatter="formatInvIdent">Vendor Invoice ID</th>
                 </tr>
             </thead>
         </table>

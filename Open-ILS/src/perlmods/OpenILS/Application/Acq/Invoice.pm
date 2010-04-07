@@ -70,7 +70,7 @@ sub build_invoice_api {
         }
     }
 
-    $invoice = fetch_invice_impl($e, $invoice->id);
+    $invoice = fetch_invoice_impl($e, $invoice->id);
     $e->commit;
 
     return $invoice;
@@ -90,34 +90,37 @@ __PACKAGE__->register_method(
 );
 
 
-sub fetch_invice_api {
-    my($self, $conn, $auth, $invoice_id) = @_;
+sub fetch_invoice_api {
+    my($self, $conn, $auth, $invoice_id, $options) = @_;
 
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
 
-    my $invoice = fetch_invoice_impl($e, $invoice_id) or return $e->event;
+    my $invoice = fetch_invoice_impl($e, $invoice_id, $options) or
+        return $e->event;
     return $e->event unless $e->allowed(['VIEW_INVOICE', 'CREATE_INVOICE'], $invoice->receiver);
 
     return $invoice;
 }
 
-sub fetch_invice_impl {
-    my $e = shift;
-    my $invoice_id = shift;
+sub fetch_invoice_impl {
+    my ($e, $invoice_id, $options) = @_;
 
-    return $e->retrieve_acq_invoice([
+    $options ||= {};
+
+    my $args = $options->{"no_flesh_misc"} ? $invoice_id : [
         $invoice_id,
         {
-            flesh => 4,
-            flesh_fields => {
-                acqinv => ['entries', 'items'],
-                acqie => ['lineitem', 'purchase_order'],
-                acqii => ['fund_debit'],
-                jub => ['attributes']
+            "flesh" => 4,
+            "flesh_fields" => {
+                "acqinv" => ["entries", "items"],
+                "acqie" => ["lineitem", "purchase_order"],
+                "acqii" => ["fund_debit"],
+                "jub" => ["attributes"]
             }
         }
-    ]);
+    ];
+    return $e->retrieve_acq_invoice($args);
 }
 
 

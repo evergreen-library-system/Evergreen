@@ -150,7 +150,7 @@ function TermManager() {
     var self = this;
 
     this.terms = {};
-    ["jub", "acqpl", "acqpo"].forEach(
+    ["jub", "acqpl", "acqpo", "acqinv"].forEach(
         function(hint) {
             var o = {};
             o.__label = fieldmapper.IDL.fmclasses[hint].label;
@@ -309,14 +309,16 @@ function TermManager() {
  * layer, and it chooses which ML method to call as well as what widgets to use
  * to display the results.
  */
-function ResultManager(liTable, poGrid, plGrid) {
+function ResultManager(liTable, poGrid, plGrid, invGrid) {
     var self = this;
 
     this.liTable = liTable;
     this.poGrid = poGrid;
     this.plGrid = plGrid;
+    this.invGrid = invGrid;
     this.poCache = {};
     this.plCache = {};
+    this.invCache = {};
 
     this.result_types = {
         "lineitem": {
@@ -349,6 +351,15 @@ function ResultManager(liTable, poGrid, plGrid) {
                 self.plCache = {};
             }
         },
+        "invoice": {
+            "search_options": {
+                "no_flesh_misc": true
+            },
+            "revealer": function() {
+                self.invGrid.resetStore();
+                self.invCache = {};
+            }
+        },
         "no_results": {
             "revealer": function() { alert(localeStrings.NO_RESULTS); }
         }
@@ -368,12 +379,21 @@ function ResultManager(liTable, poGrid, plGrid) {
         this.plGrid.store.newItem(acqpl.toStoreItem(pl));
     };
 
+    this._add_invoice = function(inv) {
+        this.invCache[inv.id()] = inv;
+        this.invGrid.store.newItem(acqinv.toStoreItem(inv));
+    };
+
     this._finish_purchase_order = function() {
         this.poGrid.hideLoadProgressIndicator();
     };
 
     this._finish_picklist = function() {
         this.plGrid.hideLoadProgressIndicator();
+    };
+
+    this._finish_invoice = function() {
+        this.invGrid.hideLoadProgressIndicator();
     };
 
     this.add = function(which, what) {
@@ -448,7 +468,8 @@ openils.Util.addOnLoad(
         resultManager = new ResultManager(
             new AcqLiTable(),
             dijit.byId("acq-unified-po-grid"),
-            dijit.byId("acq-unified-pl-grid")
+            dijit.byId("acq-unified-pl-grid"),
+            dijit.byId("acq-unified-inv-grid")
         );
         openils.Util.show("acq-unified-body");
     }
