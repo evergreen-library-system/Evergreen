@@ -576,14 +576,29 @@ function holdsSetFormatSelector() {
 
 	var selector = $('hold_alt_form_selector');
 
+    for( var i = 0; i < selector.options.length; i++ ) {
+        if (selector.options[i].className.indexOf('hide_me') == -1)
+            hideMe(selector.options[i]);
+    }
+
 	for( var i = 0; i < avail_formats.length; i++ ) {
 		var form = avail_formats[i];
-		var opt = findSelectorOptByValue(selector,form);
+		var opt = findFormatSelectorOptByParts(selector,form);
 		if(type=='M') opt.selected=true;
 		unHideMe(opt);
 	}
 }
 
+function findFormatSelectorOptByParts( sel, val ) {
+    var parts = val.split('-');
+    for( var i = 0; i < sel.options.length; i++ ) {
+        var opt = sel.options[i];
+        var oval = opt.value;
+        var oparts = oval.split('-');
+        if( oparts[0].indexOf(parts[0]) > -1 && ((!oparts[1] && !parts[1]) || (oparts[1].indexOf(parts[1]) > -1)) ) return opt;
+    }
+    return null;
+}
 
 function holdsGetFormats() {
 
