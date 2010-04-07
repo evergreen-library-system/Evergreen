@@ -99,14 +99,14 @@
             <tbody>
                 <tr>
                     <td colspan='4' style='text-align:right;'>
-                        <button dojoType='dijit.form.Button' jsId='invoiceSaveButton'>Save &amp; Continue</button>
-                        <button dojoType='dijit.form.Button' jsId='invoiceProcessButton'>Process Invoice</button>
+                        <button dojoType='dijit.form.Button' onclick='saveChanges();'>Save &amp; Continue</button>
+                        <button dojoType='dijit.form.Button' onclick='processInvoice();'>Process Invoice</button>
                     </td>
                     <td><div id='acq-invoice-total-invoiced'/></td>
                 </tr>
             </tbody>
         </table>
     </div>
-
 </div>
+<div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>
 [% END %]

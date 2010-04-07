@@ -9,6 +9,7 @@ dojo.require('openils.CGI');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.EditPane');
 dojo.require('openils.widget.AutoFieldWidget');
+dojo.require('openils.widget.ProgressDialog');
 
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
@@ -27,6 +28,8 @@ var entryTemplate;
 var totalAmountBox;
 var invoicePane;
 var itemTypes;
+var virtualId = -1;
+var widgetRegistry = {acqie : {}, acqii : {}};
 
 function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
@@ -64,10 +67,13 @@ function renderInvoice() {
     }
 
     dojo.byId('acq-invoice-new-item').onclick = function() {
-        addInvoiceItem(new fieldmapper.acqii()); 
+        var item = new fieldmapper.acqii();
+        item.id(virtualId--);
+        item.isnew(true);
+        addInvoiceItem(item);
     }
 
-    addToTotal(0);
+    updateTotalCost();
 
     if(invoice) {
         dojo.forEach(
@@ -109,8 +115,10 @@ function doAttachLi() {
                 }
 
                 var entry = new fieldmapper.acqie();
+                entry.id(virtualId--);
                 entry.isnew(true);
                 entry.lineitem(lineitem);
+                entry.purchase_order(lineitem.purchase_order());
                 addInvoiceEntry(entry);
             }
         }
@@ -137,8 +145,11 @@ function doAttachPo() {
                 dojo.forEach(po.lineitems(), 
                     function(lineitem) {
                         var entry = new fieldmapper.acqie();
+                        entry.id(virtualId--);
                         entry.isnew(true);
                         entry.lineitem(lineitem);
+                        entry.purchase_order(po);
+                        lineitem.purchase_order(po);
                         addInvoiceEntry(entry);
                     }
                 );
@@ -147,17 +158,39 @@ function doAttachPo() {
     );
 }
 
-function addToTotal(amount) {
-
-    var oldTotal = 0;
-    if(totalAmountBox) {
-        oldTotal = totalAmountBox.attr('value');
-    } else {
+function updateTotalCost() {
+    var total = 0;    
+    if(!totalAmountBox) {
         totalAmountBox = new dijit.form.CurrencyTextBox(
             {style : 'width: 5em'}, dojo.byId('acq-invoice-total-invoiced'));
     }
+    for(var id in widgetRegistry.acqii) 
+        if(!widgetRegistry.acqii[id]._object.isdeleted())
+            total += widgetRegistry.acqii[id].cost_billed.getFormattedValue();
+    for(var id in widgetRegistry.acqie) 
+        if(!widgetRegistry.acqie[id]._object.isdeleted())
+            total += widgetRegistry.acqie[id].cost_billed.getFormattedValue();
+    totalAmountBox.attr('value', total);
+}
 
-    totalAmountBox.attr('value', Number(oldTotal + amount));
+
+function registerWidget(obj, field, widget, callback) {
+    var blob = widgetRegistry[obj.classname];
+    if(!blob[obj.id()]) 
+        blob[obj.id()] = {_object : obj};
+    blob[obj.id()][field] = widget;
+    widget.build(
+        function(w, ww) {
+            dojo.connect(w, 'onChange', 
+                function(newVal) { 
+                    obj.ischanged(true); 
+                    updateTotalCost();
+                }
+            );
+            if(callback) callback(w, ww);
+        }
+    );
+    return widget;
 }
 
 function addInvoiceItem(item) {
@@ -169,46 +202,58 @@ function addInvoiceItem(item) {
     var row = itemTemplate.cloneNode(true);
     var itemType = itemTypes.filter(function(t) { return (t.code() == item.inv_item_type()) })[0];
 
-    new dijit.form.TextBox({}, nodeByName('title', row));
-    new dijit.form.TextBox({}, nodeByName('author', row));
-    new dijit.form.CurrencyTextBox({required : true, style : 'width: 5em'}, nodeByName('cost_billed', row));
+    dojo.forEach(
+        ['title', 'author', 'cost_billed'], 
+        function(field) {
+            registerWidget(
+                item,
+                field,
+                new openils.widget.AutoFieldWidget({
+                    fmClass : 'acqii',
+                    fmObject : item,
+                    fmField : field,
+                    dijitArgs : (field == 'cost_billed') ? {required : true, style : 'width: 5em'} : null,
+                    parentNode : nodeByName(field, row)
+                })
+            )
+        }
+    );
 
 
-    var fundDebit = item.fund_debit();
-    var fundFilter = {active : 't'};
-    if(fundDebit) {
-        
-        // If a fund debit exists, this item has been "applied" to the invoice
-        fundFilter = {'-or' : [{id : fundDebit.fund()}, fundFilter]}
-
-    } else {
-
-        fundDebit = new fieldmapper.acqfdeb();
-        //new dijit.form.CheckBox({}, nodeByName('prorate', row));
-    }
-
+    /* ----------- fund -------------- */
     var itemType = itemTypes.filter(function(t) { return (t.code() == item.inv_item_type()) })[0];
 
-    var fundWidget = new openils.widget.AutoFieldWidget({
-        fmObject : fundDebit,
+    var fundArgs = {
+        fmClass : 'acqii',
+        fmObject : item,
         fmField : 'fund',
         labelFormat : fundLabelFormat,
         searchFormat : fundSearchFormat,
-        searchFilter : fundFilter,
-        dijitArgs : 
-            (!item.fund_debit() && itemType && openils.Util.isTrue(itemType.prorate())) ? 
-                {disabled : true} : {},
         parentNode : nodeByName('fund', row)
-    });
-    fundWidget.build();
+    }
 
+    if(item.fund_debit()) {
+        fundArgs.readOnly = true;
+    } else {
+        fundArgs.searchFilter = {active : 't'}
+        if(itemType && openils.Util.isTrue(itemType.prorate()))
+            fundArgs.disabled = true;
+    }
 
-    new openils.widget.AutoFieldWidget({
-        fmObject : item,
-        fmField : 'inv_item_type',
-        parentNode : nodeByName('inv_item_type', row),
-        dijitArgs : {required : true}
-    }).build(
+    var fundWidget = new openils.widget.AutoFieldWidget(fundArgs);
+    registerWidget(item, 'fund', fundWidget);
+
+    /* ---------- inv_item_type ------------- */
+
+    registerWidget(
+        item,
+        'inv_item_type',
+        new openils.widget.AutoFieldWidget({
+            fmObject : item,
+            fmField : 'inv_item_type',
+            parentNode : nodeByName('inv_item_type', row),
+            dijitArgs : {required : true}
+        }),
         function(w, ww) {
             // When the inv_item_type is set to prorate=true, don't allow the user the edit the fund
             // since this charge will be prorated against (potentially) multiple funds
@@ -216,6 +261,7 @@ function addInvoiceItem(item) {
                 function() {
                     if(!item.fund_debit()) {
                         var itemType = itemTypes.filter(function(t) { return (t.code() == w.attr('value')) })[0];
+                        if(!itemType) return;
                         if(openils.Util.isTrue(itemType.prorate())) {
                             fundWidget.widget.attr('disabled', true);
                             fundWidget.widget.attr('value', '');
@@ -229,11 +275,23 @@ function addInvoiceItem(item) {
     );
 
     nodeByName('delete', row).onclick = function() {
-        // TODO: confirm, etc.
+        var cost = widgetRegistry.acqii[item.id()].cost_billed.getFormattedValue();
+        var msg = dojo.string.substitute(
+            localeStrings.INVOICE_CONFIRM_ITEM_DELETE, [
+                cost,
+                widgetRegistry.acqii[item.id()].inv_item_type.getFormattedValue()
+            ]
+        );
+        if(!confirm(msg)) return;
         itemTbody.removeChild(row);
+        item.isdeleted(true);
+        if(item.isnew())
+            delete widgetRegistry.acqii[item.id()];
+        updateTotalCost();
     }
 
     itemTbody.appendChild(row);
+    updateTotalCost();
 }
 
 function addInvoiceEntry(entry) {
@@ -259,32 +317,53 @@ function addInvoiceEntry(entry) {
     nodeByName('author', row).innerHTML = liMarcAttr(lineitem, 'author');
     nodeByName('idents', row).innerHTML = idents.join(',');
 
-    if(entry.purchase_order()) {
+    var po = entry.purchase_order();
+    if(po) {
         openils.Util.show(nodeByName('purchase_order_span', row), 'inline');
-        nodeByName('purchase_order', row).innerHTML = entry.purchase_order().name();
+        nodeByName('purchase_order', row).innerHTML = po.name();
         nodeByName('purchase_order', row).onclick = function() {
-            location.href = oilsBasePath + '/acq/po/view/ ' + entry.purchase_order().id();
+            location.href = oilsBasePath + '/acq/po/view/ ' + po.id();
         }
     }
 
-    new dijit.form.NumberTextBox(
-        {value : entry.inv_item_count(), required : true, constraints : {min: 0}, style : 'width:5em'}, 
-        nodeByName('inv_item_count', row));
-
-    new dijit.form.NumberTextBox(
-        {value : entry.phys_item_count(), required : true, constraints : {min: 0}, style : 'width:5em'}, 
-        nodeByName('phys_item_count', row));
-
-    new dijit.form.CurrencyTextBox(
-        {value : entry.cost_billed(), required : true, style : 'width: 5em'}, 
-        nodeByName('cost_billed', row));
+    dojo.forEach(
+        ['inv_item_count', 'phys_item_count', 'cost_billed'],
+        function(field) {
+            registerWidget(
+                entry, 
+                field,
+                new openils.widget.AutoFieldWidget({
+                    fmObject : entry,
+                    fmClass : 'acqie',
+                    fmField : field,
+                    dijitArgs : {required : true, constraints : {min: 0}, style : 'width:5em'}, 
+                    parentNode : nodeByName(field, row)
+                })
+            );
+        }
+    );
 
     nodeByName('detach', row).onclick = function() {
-        // TODO: confirm, etc.
+        var cost = widgetRegistry.acqie[entry.id()].cost_billed.getFormattedValue();
+        var msg = dojo.string.substitute(
+            localeStrings.INVOICE_CONFIRM_ENTRY_DETACH, [
+                cost || 0,
+                liMarcAttr(lineitem, 'title'),
+                liMarcAttr(lineitem, 'author'),
+                idents.join(',')
+            ]
+        );
+        if(!confirm(msg)) return;
         entryTbody.removeChild(row);
+        entry.isdeleted(true);
+        if(entry.isnew())
+            delete widgetRegistry.acqie[entry.id()];
+        updateTotalCost();
     }
 
+
     entryTbody.appendChild(row);
+    updateTotalCost();
 }
 
 function liMarcAttr(lineitem, name) {
@@ -297,6 +376,81 @@ function liMarcAttr(lineitem, name) {
         } 
     )[0];
     return (attr) ? attr.attr_value() : '';
+}
+
+function saveChanges() {
+    
+    progressDialog.show(true);
+
+    var updateItems = [];
+    for(var id in widgetRegistry.acqii) {
+        var reg = widgetRegistry.acqii[id];
+        var item = reg._object;
+        if(item.ischanged() || item.isnew() || item.isdeleted()) {
+            updateItems.push(item);
+            if(item.isnew()) item.id(null);
+            for(var field in reg) {
+                if(field != '_object')
+                    item[field]( reg[field].getFormattedValue() );
+            }
+            
+            // unflesh
+            if(item.purchase_order() != null && typeof item.purchase_order() == 'object')
+                item.purchase_order( item.purchase_order().id() );
+        }
+    }
+
+    var updateEntries = [];
+    for(var id in widgetRegistry.acqie) {
+        var reg = widgetRegistry.acqie[id];
+        var entry = reg._object;
+        if(entry.ischanged() || entry.isnew() || entry.isdeleted()) {
+            entry.lineitem(entry.lineitem().id());
+            entry.purchase_order(entry.purchase_order().id());
+            updateEntries.push(entry);
+            if(entry.isnew()) entry.id(null);
+
+            for(var field in reg) {
+                if(field != '_object')
+                    entry[field]( reg[field].getFormattedValue() );
+            }
+            
+            // unflesh
+            dojo.forEach(['purchase_order', 'lineitem'],
+                function(field) {
+                    if(entry[field]() != null && typeof entry[field]() == 'object')
+                        entry[field]( entry[field]().id() );
+                }
+            );
+        }
+    }
+
+    if(!invoice) {
+        invoice = new fieldmapper.acqinv();
+        invoice.isnew(true);
+    } else {
+        invoice.ischanged(true); // for now, just always update
+    }
+
+    dojo.forEach(invoicePane.fieldList, 
+        function(field) {
+            invoice[field.name]( field.widget.getFormattedValue() );
+        }
+    );
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.invoice.update'],
+        {
+            params : [openils.User.authtoken, invoice, updateEntries, updateItems],
+            oncomplete : function(r) {
+                progressDialog.hide();
+                var invoice = openils.Util.readResponse(r);
+                if(invoice) {
+                    location.href = oilsBasePath + '/acq/invoice/view/' + invoice.id();
+                }
+            }
+        }
+    );
 }
 
 
