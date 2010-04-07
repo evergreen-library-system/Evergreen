@@ -35,6 +35,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
 
 use UUID::Tiny qw/:std/;
+use JavaScript::SpiderMonkey;
 
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
@@ -3513,7 +3514,51 @@ sub commit_password_reset {
         return OpenILS::Event->new('PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST');
     }
 
-    # TODO Check complexity of password against OU-defined regex
+    # Check complexity of password against OU-defined regex
+    my $pw_regex = $U->ou_ancestor_setting_value($user->home_ou, 'global.password_regex');
+
+    my $is_strong = 'false';
+    if (!$pw_regex) {
+        # Use the default set of checks
+        if ((length($password) < 7)
+                or ($password !~ m/.*\d+.*/)
+                or ($password !~ m/.*[A-Za-z]+.*/)) {
+            # Still false!
+        } else {
+            $is_strong = 'true';
+        }
+    } else {
+        # The password regex is for JavaScript, so we have to use SpiderMonkey to eval it
+        my $js = JavaScript::SpiderMonkey->new();
+        $js->init();
+        $js->property_by_path('pw.is_strong', 'false');
+        $js->property_by_path('pw.password', $password);
+        $js->property_by_path('pw.regex', $pw_regex || 'blank');
+
+        my $pw_script = << 'PWCHECK';
+            if (pw.regex != 'blank') {
+                if (pw.password.match(new RegExp(pwregex))) {
+                    pw.is_strong = 'true';
+                }
+            } else {
+                } while(0);
+            }
+PWCHECK
+
+        my $rc = $js->eval($pw_script);
+        if (!$rc) {
+            $logger->error("Error interpreting JavaScript while checking password strength: %s", $@);
+        }
+
+        # Get the value of a property set in JS
+        $is_strong = $js->property_get('pw.is_strong');
+        $js->destroy();
+    }
+
+    if ($is_strong eq 'false') {
+        $e->die_event;
+        return OpenILS::Event->new('PATRON_PASSWORD_WAS_NOT_STRONG');
+    }
 
     # All is well; update the password
     $user->passwd($password);
