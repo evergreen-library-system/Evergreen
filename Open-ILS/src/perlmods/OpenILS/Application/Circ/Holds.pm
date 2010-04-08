@@ -2234,7 +2234,7 @@ sub clear_shelf_process {
     $e->commit;
 
     # tell the client we're done
-    $client->resopnd_complete;
+    $client->respond_complete;
 
     # fire off the hold cancelation trigger
     my $trigger = OpenSRF::AppSession->connect('open-ils.trigger');
