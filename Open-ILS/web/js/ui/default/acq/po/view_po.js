@@ -292,6 +292,13 @@ function renderPo() {
         function() {
             location.href = oilsBasePath + '/acq/invoice/view?create=1&attach_po=' + poId;
         };
+
+    dojo.byId("acq-po-view-invoice-link").onclick =
+        function() {
+            location.href = oilsBasePath + "/acq/search/unified?so=" +
+                base64Encode({"jub":[{"purchase_order": PO.id()}]}) +
+                "&rt=invoice";
+        };
 }
 
 

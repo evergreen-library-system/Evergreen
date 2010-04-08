@@ -1,17 +1,29 @@
 dojo.require("dojo.date.stamp");
+dojo.require("dojox.encoding.base64");
 dojo.require("openils.widget.AutoGrid");
 dojo.require("openils.widget.AutoWidget");
 dojo.require("openils.PermaCrud");
-dojo.require("openils.Util");
 
 var termSelectorFactory;
 var termManager;
 var resultManager;
+var uriManager;
 var pcrud = new openils.PermaCrud();
+var cgi = new openils.CGI();
 
-/* typing save: add getValue() to all HTML <select> elements */
+/* typing save: add {get,set}Value() to all HTML <select> elements */
 HTMLSelectElement.prototype.getValue = function() {
     return this.options[this.selectedIndex].value;
+}
+
+/* only sets the selected value if such an option is actually available */
+HTMLSelectElement.prototype.setValue = function(s) {
+    for (var i = 0; i < this.options.length; i++) {
+        if (s == this.options[i].value && !this.options[i].disabled) {
+            this.selectedIndex = i;
+            break;
+        }
+    }
 }
 
 /* quickly find elements by the value of a "name" attribute */
@@ -206,7 +218,7 @@ function TermManager() {
             field_map[term.field]["class"];
     };
 
-    this.updateRowWidget = function(id) {
+    this.updateRowWidget = function(id, value) {
         var where = nodeByName("widget", this._row(id));
 
         delete this.widgets[id];
@@ -235,11 +247,51 @@ function TermManager() {
                 var inequalities = (term.datatype == "timestamp");
                 self.matchHowAllow(id, "__gte", inequalities);
                 self.matchHowAllow(id, "__lte", inequalities);
+
+                if (value) {
+                    if (typeof(w.attr) == "function")
+                        w.attr("value", value);
+                    else
+                        w.value = value;
+                }
             }
         );
     };
 
-    this.addRow = function() {
+    /* this method is particularly kludgy... puts back together a string
+     * based on object properties that might arrive in indeterminate order. */
+    this._term_reverse_match_how = function(term) {
+        /* only two-key combination we use */
+        if (term.__not && term.__fuzzy)
+            return "__not,__fuzzy";
+
+        /* only other possibilities are single-key or no key */
+        for (var key in term) {
+            if (/^__/.test(key))
+                return key;
+        }
+
+        return null;
+    };
+
+
+    this._term_reverse_selector_field = function(term) {
+        for (var key in term) {
+            if (!/^__/.test(key))
+                return key;
+        }
+        return null;
+    };
+
+    this._term_reverse_selector_value = function(term) {
+        for (var key in term) {
+            if (!/^__/.test(key))
+                return term[key];
+        }
+        return null;
+    };
+
+    this.addRow = function(term, hint) {
         var uniq = (this.rowId)++;
 
         var row = dojo.clone(this.template);
@@ -260,11 +312,29 @@ function TermManager() {
         nodeByName("remove", row).appendChild(this.removerButton(uniq));
 
         dojo.place(row, "acq-unified-terms-tbody", "last");
+
+        if (term && hint) {
+            var field = hint + ":" + this._term_reverse_selector_field(term);
+            selector.setValue(field);
+            this.updateRowWidget(uniq, this._term_reverse_selector_value(term));
+
+            var match_how_value = this._term_reverse_match_how(term);
+            if (match_how_value)
+                match_how.setValue(match_how_value);
+        }
     }
 
     this.removeRow = function(id) {
         delete this.widgets[id];
         dojo.destroy(this._row(id));
+    };
+
+    this.reflect = function(search_object) {
+        for (var hint in search_object) {
+            search_object[hint].forEach(
+                function(term) { self.addRow(term, hint); }
+            );
+        }
     };
 
     this.buildSearchObject = function() {
@@ -421,7 +491,14 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
         this.result_types[which].revealer();
     };
 
-    this.search = function(search_obj) {
+    this.go = function(search_object) {
+        location.href = oilsBasePath + "/acq/search/unified?" +
+            "so=" + base64Encode(search_object) +
+            "&rt=" + dojo.byId("acq-unified-result-type").getValue() +
+            "&c=" + dojo.byId("acq-unified-conjunction").getValue();
+    };
+
+    this.search = function(search_object) {
         var count_results = 0;
         var result_type = dojo.byId("acq-unified-result-type").getValue();
         var conjunction = dojo.byId("acq-unified-conjunction").getValue();
@@ -436,7 +513,7 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
             this.result_types[result_type].search_options
         ];
 
-        params[conjunction == "and" ? 1 : 2] = search_obj;
+        params[conjunction == "and" ? 1 : 2] = search_object;
 
         fieldmapper.standardRequest(
             ["open-ils.acq", method_name], {
@@ -460,21 +537,41 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
     }
 }
 
-/* The rest of the functions below handle the relatively unorganized
- * miscellany of the search interface.
- */
+function URIManager() {
+    var self = this;
+
+    this.search_object = cgi.param("so");
+    if (this.search_object)
+        this.search_object = base64Decode(this.search_object);
+
+    this.result_type = cgi.param("rt");
+    if (this.result_type)
+        dojo.byId("acq-unified-result-type").setValue(this.result_type);
+
+    this.conjunction = cgi.param("c");
+    if (this.conjunction)
+        dojo.byId("acq-unified-conjunction").setValue(this.conjunction);
+}
 
 /* onload */
 openils.Util.addOnLoad(
     function() {
         termManager = new TermManager();
-        termManager.addRow();
         resultManager = new ResultManager(
             new AcqLiTable(),
             dijit.byId("acq-unified-po-grid"),
             dijit.byId("acq-unified-pl-grid"),
             dijit.byId("acq-unified-inv-grid")
         );
+
         openils.Util.show("acq-unified-body");
+
+        uriManager = new URIManager();
+        if (uriManager.search_object) {
+            termManager.reflect(uriManager.search_object);
+            resultManager.search(uriManager.search_object);
+        } else {
+            termManager.addRow();
+        }
     }
 );

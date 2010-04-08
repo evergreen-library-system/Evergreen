@@ -1,4 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"> </script>
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/po/view_po.js'> </script>
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div>

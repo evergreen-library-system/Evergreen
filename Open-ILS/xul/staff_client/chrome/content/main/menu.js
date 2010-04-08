@@ -703,6 +703,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/booking/resource_attr_map'); }
             ],
+            'cmd_acq_create_invoice' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/invoice/view?create=1', 'menu.cmd_acq_create_invoice.tab'); }
+            ],
             'cmd_acq_view_picklist' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/picklist/list', 'menu.cmd_acq_view_picklist.tab'); }

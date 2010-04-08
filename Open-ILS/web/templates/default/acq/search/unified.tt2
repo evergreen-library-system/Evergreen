@@ -1,5 +1,7 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "Acquisitions Search" %]
+<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js">
+</script>
 <script src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js">
 </script>
 <script>
@@ -129,7 +131,7 @@
         </div>
         <div>
             <button
-                onclick="resultManager.search(termManager.buildSearchObject())">
+                onclick="resultManager.go(termManager.buildSearchObject())">
                 Search
             </button>
         </div>
