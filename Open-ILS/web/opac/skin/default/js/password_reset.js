@@ -45,7 +45,8 @@ dojo.addOnLoad(function() {
 
 function passwordSubmission( msg ) {
     var responseDialog = new dijit.Dialog({
-        title: opac_strings.PWD_RESET_RESPONSE_TITLE
+        title: opac_strings.PWD_RESET_RESPONSE_TITLE,
+        style: "width: 35em"
     });
     responseDialog.startup();
     var requestStatusDiv = dojo.create("div", { style: "width: 30em" });
@@ -63,7 +64,8 @@ function passwordSubmission( msg ) {
 function createResetDialog() {
     var pwResetFormDlg = new dijit.Dialog({
         id: "pwResetFormDlg",
-        title: opac_strings.PWD_RESET_FORM_TITLE
+        title: opac_strings.PWD_RESET_FORM_TITLE,
+        style: "width: 35em"
     });
     pwResetFormDlg.startup();
 
@@ -71,7 +73,8 @@ function createResetDialog() {
     var pwResetFormDiv = dojo.create("form", { id: "requestReset", style: "width: 30em", method: "post", action: "/opac/password/en-US" });
     dojo.create("p", { innerHTML: opac_strings.PWD_RESET_SUBMIT_PROMPT }, pwResetFormDiv);
     var pwResetFormTable = dojo.create("table", null, pwResetFormDiv);
-    var pwResetFormRow = dojo.create("tr", null, pwResetFormTable);
+    var pwResetFormTbody = dojo.create("tbody", null, pwResetFormTable);
+    var pwResetFormRow = dojo.create("tr", null, pwResetFormTbody);
     var pwResetFormCell = dojo.create("td", null, pwResetFormRow);
     var pwResetFormLabel = dojo.create("label", null, pwResetFormCell);
     dojo.attr(pwResetFormCell, { innerHTML: opac_strings.BARCODE_PROMPT });
@@ -79,7 +82,7 @@ function createResetDialog() {
     var barcodeText = new dijit.form.TextBox({
         name: "barcode"
     }).placeAt(pwResetFormCell);
-    pwResetFormRow = dojo.create("tr", {}, pwResetFormTable);
+    pwResetFormRow = dojo.create("tr", {}, pwResetFormTbody);
     pwResetFormCell = dojo.create("td", {}, pwResetFormRow);
     dojo.attr(pwResetFormCell, { innerHTML: opac_strings.USERNAME_PROMPT });
     pwResetFormCell = dojo.create("td", {}, pwResetFormRow);
