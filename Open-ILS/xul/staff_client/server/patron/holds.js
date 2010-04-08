@@ -1219,6 +1219,7 @@ patron.holds.prototype = {
         switch(obj.hold_interface_type) {
             case 'shelf':
                 obj.render_lib_menus({'pickup_lib':true});
+                if (x_lib_filter_checkbox) x_lib_filter_checkbox.checked = true;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = false;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
             break;
