@@ -785,6 +785,11 @@ CREATE TABLE acq.invoice_method (
     name    TEXT    NOT NULL -- i18n-ize
 );
 
+CREATE TABLE acq.invoice_payment_method (
+    code    TEXT    PRIMARY KEY,
+    name    TEXT    NOT NULL -- i18n-ize
+);
+
 CREATE TABLE acq.invoice (
     id          SERIAL      PRIMARY KEY,
     receiver    INT         NOT NULL REFERENCES actor.org_unit (id),
@@ -793,7 +798,11 @@ CREATE TABLE acq.invoice (
     recv_date   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     recv_method TEXT        NOT NULL REFERENCES acq.invoice_method (code) DEFAULT 'EDI',
     inv_type    TEXT,       -- A "type" field is desired, but no idea what goes here
-    inv_ident   TEXT        NOT NULL -- vendor-supplied invoice id/number
+    inv_ident   TEXT        NOT NULL, -- vendor-supplied invoice id/number
+	payment_auth TEXT,
+	payment_method TEXT     REFERENCES acq.invoice_payment_method (code)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	note        TEXT
 );
 
 CREATE TABLE acq.invoice_entry (
