@@ -11,7 +11,7 @@
 		config.ids.login.cancel		= "login_cancel_button";
 		config.ids.altcanvas.login			= config.ids.login.box;
 	</script>
-	<script type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/password-reset.js'></script>
+	<script type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/password_reset.js'></script>
 
 	<br/>
 

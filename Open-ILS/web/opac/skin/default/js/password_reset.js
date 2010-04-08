@@ -38,7 +38,7 @@ dojo.addOnLoad(function() {
         var deferred = dojo.xhrPost(xhrArgs);
         pwResetFormDlg.attr("content", opac_strings.PWD_RESET_SUBMIT_STATUS);
     });
-    dojo.place("<tr><td colspan='2' align='center'><a class='classic_link' id='pwResetLink' onClick='dijit.byId(\"pwResetFormDlg\").show();'</a></td></tr>", "login_table_body");
+    dojo.place("<tr><td colspan='2' align='center'><a class='classic_link' id='pwResetLink' onClick='dijit.byId(\"pwResetFormDlg\").show();'</a></td></tr>", "login_tbody");
     dojo.query("#pwResetLink").attr("innerHTML", opac_strings.PWD_RESET_FORGOT_PROMPT);
 
 });
@@ -74,28 +74,28 @@ function createResetDialog() {
     var pwResetFormRow = dojo.create("tr", null, pwResetFormTable);
     var pwResetFormCell = dojo.create("td", null, pwResetFormRow);
     var pwResetFormLabel = dojo.create("label", null, pwResetFormCell);
-    dojo.attr(formCell, { innerHTML: opac_strings.BARCODE_PROMPT });
+    dojo.attr(pwResetFormCell, { innerHTML: opac_strings.BARCODE_PROMPT });
     pwResetFormCell = dojo.create("td", null, pwResetFormRow);
     var barcodeText = new dijit.form.TextBox({
         name: "barcode"
-    }).placeAt(formCell);
+    }).placeAt(pwResetFormCell);
     pwResetFormRow = dojo.create("tr", {}, pwResetFormTable);
     pwResetFormCell = dojo.create("td", {}, pwResetFormRow);
-    dojo.attr(formCell, { innerHTML: opac_strings.USERNAME_PROMPT });
+    dojo.attr(pwResetFormCell, { innerHTML: opac_strings.USERNAME_PROMPT });
     pwResetFormCell = dojo.create("td", {}, pwResetFormRow);
     var usernameText = new dijit.form.TextBox({
         name: "username"
-    }).placeAt(formCell);
+    }).placeAt(pwResetFormCell);
     var submitButton = new dijit.form.Button({
         id: "submitButton",
         type: "submit",
         label: opac_strings.SUBMIT_BUTTON_LABEL
-    }).placeAt(formDiv);
+    }).placeAt(pwResetFormDiv);
     var cancelButton = new dijit.form.Button({
         id: "cancelButton",
         type: "cancel",
         label: opac_strings.CANCEL_BUTTON_LABEL
-    }).placeAt(formDiv);
+    }).placeAt(pwResetFormDiv);
 
     // Set the content of the Dialog to the pwResetForm
     pwResetFormDlg.attr("content", pwResetFormDiv);
