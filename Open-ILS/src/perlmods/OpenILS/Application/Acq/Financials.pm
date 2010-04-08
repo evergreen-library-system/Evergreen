@@ -920,13 +920,15 @@ sub retrieve_purchase_order_impl {
 
     if($$options{flesh_lineitems}) {
 
+        my $flesh_fields = { jub => ['attributes'] };
+        $flesh_fields->{jub}->[1] = 'lineitem_details' if $$options{flesh_lineitem_details};
+        $flesh_fields->{acqlid} = ['fund_debit'] if $$options{flesh_fund_debit};
+
         my $items = $e->search_acq_lineitem([
             {purchase_order => $po_id},
             {
-                flesh => 1,
-                flesh_fields => {
-                    jub => ['attributes']
-                },
+                flesh => 3,
+                flesh_fields => $flesh_fields,
                 limit => $$options{li_limit} || 50,
                 offset => $$options{li_offset} || 0,
                 order_by => {jub => $$options{li_order_by} || 'create_time'}
