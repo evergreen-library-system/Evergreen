@@ -36,7 +36,6 @@ dojo.addOnLoad(function() {
             }
         }
         var deferred = dojo.xhrPost(xhrArgs);
-        pwResetFormDlg.attr("content", opac_strings.PWD_RESET_SUBMIT_STATUS);
     });
     dojo.place("<tr><td colspan='2' align='center'><a class='classic_link' id='pwResetLink' onClick='dijit.byId(\"pwResetFormDlg\").show();'</a></td></tr>", "login_tbody");
     dojo.query("#pwResetLink").attr("innerHTML", opac_strings.PWD_RESET_FORGOT_PROMPT);
