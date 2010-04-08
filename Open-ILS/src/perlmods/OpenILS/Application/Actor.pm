@@ -3515,10 +3515,10 @@ sub commit_password_reset {
 
     # Check complexity of password against OU-defined regex
     my $pw_regex = $U->ou_ancestor_setting_value($user->home_ou, 'global.password_regex');
-    $pw_regex = OpenSRF::Util::JSON->JSON2perl($pw_regex);
 
     my $is_strong = 0;
     if ($pw_regex) {
+       ($pw_regex = OpenSRF::Util::JSON->JSON2perl($pw_regex)) =~ s/\\u([0-9a-fA-F]{4})/\\x{$1}/gs;
        $is_strong = check_password_strength_custom($password, $pw_regex);
     } else {
        $is_strong = check_password_strength_default($password);
