@@ -35,7 +35,6 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
 
 use UUID::Tiny qw/:std/;
-use JavaScript::SpiderMonkey;
 
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
@@ -3516,15 +3515,16 @@ sub commit_password_reset {
 
     # Check complexity of password against OU-defined regex
     my $pw_regex = $U->ou_ancestor_setting_value($user->home_ou, 'global.password_regex');
+    $pw_regex = OpenSRF::Util::JSON->JSON2perl($pw_regex);
 
-    my $is_strong = 'false';
+    my $is_strong = 0;
     if ($pw_regex) {
-       $is_strong = check_password_strength_javascript($password, $pw_regex);
+       $is_strong = check_password_strength_custom($password, $pw_regex);
     } else {
        $is_strong = check_password_strength_default($password);
     }
 
-    if ($is_strong eq 'false') {
+    if (!$is_strong) {
         $e->die_event;
         return OpenILS::Event->new('PATRON_PASSWORD_WAS_NOT_STRONG');
     }
@@ -3548,38 +3548,19 @@ sub check_password_strength_default {
             ($password !~ m/.*\d+.*/) or 
             ($password !~ m/.*[A-Za-z]+.*/)
        ) {
-        return 'false';
+        return 0;
     }
-    return 'true';
+    return 1;
 }
 
-sub check_password_strength_javascript {
+sub check_password_strength_custom {
     my ($password, $pw_regex) = @_;
 
-    # The password regex is for JavaScript, so we have to use SpiderMonkey to eval it
-    my $js = JavaScript::SpiderMonkey->new();
-    $js->init();
-    $js->property_by_path('pw.is_strong', 'false');
-    $js->property_by_path('pw.password', $password);
-    $js->property_by_path('pw.regex', $pw_regex);
-
-    my $pw_script = << 'PWCHECK';
-        if (pw.password.match(new RegExp(pw.regex))) {
-            pw.is_strong = 'true';
-        }
-PWCHECK
-
-    my $rc = $js->eval($pw_script);
-    if (!$rc) {
-        $logger->error("Error interpreting JavaScript while checking password strength");
-        $logger->error($@);
+    $pw_regex = qr/$pw_regex/;
+    if ($password !~  /$pw_regex/) {
+        return 0;
     }
-
-    # Get the value of a property set in JS
-    my $result = $js->property_get('pw.is_strong');
-    $js->destroy();
-
-    return $result;
+    return 1;
 }
 
 1;
