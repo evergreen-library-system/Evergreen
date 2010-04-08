@@ -1,5 +1,5 @@
 /**
-	@file oils_cstore.c
+	@file oils_rstore.c
 	@brief As a server, perform database operations at the request of clients.
 */
 
@@ -20,7 +20,7 @@ static dbi_conn dbhandle; /* our CURRENT db connection */
 static int max_flesh_depth = 100;
 
 static const int enforce_pcrud = 0;     // Boolean
-static const char modulename[] = "open-ils.cstore";
+static const char modulename[] = "open-ils.reporter-store";
 
 /**
 	@brief Disconnect from the database.
@@ -90,7 +90,7 @@ void osrfAppChildExit() {
 */
 int osrfAppInitialize() {
 
-	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
+	osrfLogInfo(OSRF_LOG_MARK, "Initializing the RStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
 	if (!oilsIDLInit( osrf_settings_host_value("/IDL") ))

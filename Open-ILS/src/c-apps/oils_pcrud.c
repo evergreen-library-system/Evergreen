@@ -1,6 +1,9 @@
 /**
-	@file oils_cstore.c
+	@file oils_pcrud.c
 	@brief As a server, perform database operations at the request of clients.
+
+	This server is similar to the cstore and reporter-store servers,
+	except that it enforces a permissions scheme.
 */
 
 #include <stdlib.h>
@@ -19,8 +22,8 @@ static dbi_conn dbhandle; /* our CURRENT db connection */
 
 static int max_flesh_depth = 100;
 
-static const int enforce_pcrud = 0;     // Boolean
-static const char modulename[] = "open-ils.cstore";
+static const int enforce_pcrud = 1;     // Boolean
+static const char modulename[] = "open-ils.pcrud";
 
 /**
 	@brief Disconnect from the database.
@@ -60,11 +63,11 @@ void osrfAppChildExit() {
 
 	The name of the application is given by the MODULENAME macro, whose value depends on
 	conditional compilation.  The method names also incorporate MODULENAME, followed by a
-	dot, as a prefix.
+	dot, as a prefix.  Some methods are registered or not registered depending on whether
+	the IDL includes permacrud entries for the class and method.
 
 	The general-purpose methods are as follows (minus their MODULENAME prefixes):
 
-	- json_query
 	- transaction.begin
 	- transaction.commit
 	- transaction.rollback
@@ -81,16 +84,15 @@ void osrfAppChildExit() {
 	- search    (atomic and non-atomic versions)
 	- id_list   (atomic and non-atomic versions)
 
-	The full method names follow the pattern "MODULENAME.direct.XXX.method_type", where XXX
-	is the fieldmapper name from the IDL, with every run of one or more consecutive colons
-	replaced by a period.  In addition, the names of atomic methods have a suffix of ".atomic".
+	The full method names follow the pattern "MODULENAME.method_type.classname".
+	In addition, the names of atomic methods have a suffix of ".atomic".
 
 	This function is called when the registering the application, and is executed by the
 	listener before spawning the drones.
 */
 int osrfAppInitialize() {
 
-	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
+	osrfLogInfo(OSRF_LOG_MARK, "Initializing the PCRUD Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
 	if (!oilsIDLInit( osrf_settings_host_value("/IDL") ))
@@ -99,12 +101,6 @@ int osrfAppInitialize() {
 	oilsSetSQLOptions( modulename, enforce_pcrud );
 
 	growing_buffer* method_name = buffer_init(64);
-
-	// Generic search thingy
-	buffer_add( method_name, modulename );
-	buffer_add( method_name, ".json_query" );
-	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-		"doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 
 	// first we register all the transaction and savepoint methods
 	buffer_reset(method_name);
@@ -188,13 +184,32 @@ int osrfAppInitialize() {
 			continue;
 		}
 
-		const char* readonly = osrfHashGet(idlClass, "readonly");
+		osrfHash* idlClass_permacrud = NULL;
+
+		// Ignore classes with no permacrud section
+		idlClass_permacrud = osrfHashGet( idlClass, "permacrud" );
+		if( !idlClass_permacrud ) {
+			osrfLogDebug( OSRF_LOG_MARK,
+				"Skipping class \"%s\"; no permacrud in IDL", classname );
+			continue;
+		}
+
+		const char* readonly = osrfHashGet( idlClass, "readonly" );
 
 		int i;
 		for( i = 0; i < global_method_count; ++i ) {  // for each global method
 			const char* method_type = global_method[ i ];
 			osrfLogDebug(OSRF_LOG_MARK,
 				"Using files to build %s class methods for %s", method_type, classname);
+
+			// Treat "id_list" or "search" as forms of "retrieve"
+			const char* tmp_method = method_type;
+			if ( *tmp_method == 'i' || *tmp_method == 's') {  // "id_list" or "search"
+				tmp_method = "retrieve";
+			}
+			// Skip this method if there is no permacrud entry for it
+			if (!osrfHashGet( idlClass_permacrud, tmp_method ))
+				continue;
 
 			// No create, update, or delete methods for a readonly class
 			if ( str_is_true( readonly )
@@ -203,23 +218,8 @@ int osrfAppInitialize() {
 
 			buffer_reset( method_name );
 
-			// Build the method name: MODULENAME.MODULENAME.direct.XXX.method_type
-			// where XXX is the fieldmapper name from the IDL, with every run of
-			// one or more consecutive colons replaced by a period.
-			char* st_tmp = NULL;
-			char* part = NULL;
-			char* _fm = strdup( idlClass_fieldmapper );
-			part = strtok_r(_fm, ":", &st_tmp);
-
-			buffer_fadd(method_name, "%s.direct.%s", modulename, part);
-
-			while ((part = strtok_r(NULL, ":", &st_tmp))) {
-				OSRF_BUFFER_ADD_CHAR(method_name, '.');
-				OSRF_BUFFER_ADD(method_name, part);
-			}
-			OSRF_BUFFER_ADD_CHAR(method_name, '.');
-			OSRF_BUFFER_ADD(method_name, method_type);
-			free(_fm);
+			// Build the method name: MODULENAME.method_type.classname
+			buffer_fadd(method_name, "%s.%s.%s", modulename, method_type, classname);
 
 			// For an id_list or search method we specify the OSRF_METHOD_STREAMING option.
 			// The consequence is that we implicitly create an atomic method in addition to
@@ -337,7 +337,7 @@ int osrfAppChildInit() {
 	Branch on the method type: create, retrieve, update, delete, search, or id_list.
 
 	The method parameters and the type of value returned to the client depend on the method
-	type.
+	type.  However, for all PCRUD methods, the first method parameter is an authkey.
 */
 int dispatchCRUDMethod( osrfMethodContext* ctx ) {
 

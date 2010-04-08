@@ -35,25 +35,21 @@ Scott McKellar <scott@esilibrary.com>
 	usual mangling by the shell.  In most cases it will be sufficient
 	to enclose it in single quotes, but of course any single quotes
 	embedded within the query will need to be escaped.
- */
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <opensrf/utils.h>
-#include <opensrf/osrf_json.h>
-#include <opensrf/osrf_application.h>
-#include <opensrf/osrf_app_session.h>
-#include <openils/oils_idl.h>
 #include <dbi/dbi.h>
+#include "opensrf/utils.h"
+#include "opensrf/osrf_json.h"
+#include "opensrf/osrf_application.h"
+#include "opensrf/osrf_app_session.h"
+#include "openils/oils_idl.h"
+#include "openils/oils_sql.h"
 
-#define DISABLE_I18N	2
+#define DISABLE_I18N    2
 #define SELECT_DISTINCT 1
-
-// Prototypes for two functions in oils_cstore.c, which
-// are not defined in any header
-char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
-void set_cstore_dbi_conn( dbi_conn conn );
 
 static int obj_is_true( const jsonObject* obj );
 static int test_json_query( const char* json_query );
@@ -124,7 +120,7 @@ int main( int argc, char* argv[] ) {
 		if( optind < argc )
 			fprintf( stderr, "Extra parameter(s) ignored\n" );
 		loaded_json = load_query( query_file_name );
-		if( !loaded_json ) 
+		if( !loaded_json )
 			return EXIT_FAILURE;
 		json_query = loaded_json;
 	} else {                  // No file?  Use command line parameter
@@ -148,7 +144,7 @@ int main( int argc, char* argv[] ) {
 		printf( "Unable to load database driver\n" );
 		return EXIT_FAILURE;
 	};
-	
+
 	dbi_conn conn = dbi_conn_new( "pgsql" );  // change string if ever necessary
 	if( !conn ) {
 		printf( "Unable to establish dbi connection\n" );
@@ -156,7 +152,7 @@ int main( int argc, char* argv[] ) {
 		return EXIT_FAILURE;
 	}
 
-	set_cstore_dbi_conn( conn );
+	oilsSetDBConnection( conn );
 
 	// The foregoing is an inelegant kludge.  The true, proper, and uniquely
 	// correct thing to do is to load the system settings and then call
@@ -181,7 +177,7 @@ static int test_json_query( const char* json_query ) {
 		fprintf( stderr, "Invalid JSON\n" );
 		return -1;
 	}
-	
+
 	int flags = 0;
 
 	if ( obj_is_true( jsonObjectGetKey( hash, "distinct" ) ) )
@@ -255,7 +251,7 @@ static char* load_query( const char* filename ) {
 	char buf[ BUFSIZ + 1 ];
 	growing_buffer* gb = buffer_init( sizeof( buf ) );
 
-    while( ( num_read = fread( buf, 1, sizeof( buf ) - 1, fp ) ) ) {
+	while( ( num_read = fread( buf, 1, sizeof( buf ) - 1, fp ) ) ) {
 		buf[ num_read ] = '\0';
 		buffer_add( gb, buf );
 	}
