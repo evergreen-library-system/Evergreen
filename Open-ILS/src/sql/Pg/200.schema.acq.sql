@@ -815,7 +815,8 @@ CREATE TABLE acq.invoice_entry (
     note            TEXT,
     billed_per_item BOOL,
     cost_billed     NUMERIC(8,2),
-    actual_cost     NUMERIC(8,2)
+    actual_cost     NUMERIC(8,2),
+	amount_paid     NUMERIC (8,2)
 );
 
 CREATE TABLE acq.invoice_item_type (
@@ -836,7 +837,8 @@ CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib i
     cost_billed     NUMERIC(8,2),
     actual_cost     NUMERIC(8,2),
 	fund            INT         REFERENCES acq.fund (id)
-	                            DEFERRABLE INITIALLY DEFERRED
+	                            DEFERRABLE INITIALLY DEFERRED,
+	amount_paid     NUMERIC (8,2)
 );
 
 -- Patron requests
