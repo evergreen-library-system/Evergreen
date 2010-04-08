@@ -1503,6 +1503,14 @@ circ.util.hold_columns = function(modify,params) {
 
     var c = [
         {
+            'id' : 'post_clear_shelf_action',
+            'flex' : 1, 'primary' : false, 'hidden' : true, 'editable' : false, 
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_post_clear_shelf_action.label'),
+            'render' : function(my) { 
+                return my.post_clear_shelf_action ? document.getElementById('circStrings').getString('staff.circ.utils.hold_post_clear_shelf_action.' + my.post_clear_shelf_action) : '';
+            }
+        },
+        {
             'persist' : 'hidden width ordinal',
             'id' : 'cancel_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_cancel_time'),

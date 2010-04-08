@@ -21,6 +21,9 @@ patron.holds.prototype = {
 
     'filter_lib' : null,
 
+    'expired' : false,
+    'post_clear_shelf_hold_action_map' : {},
+
     'retrieve_ids' : [],
 
     'holds_map' : {},
@@ -55,7 +58,8 @@ patron.holds.prototype = {
                 'notify_count' : { 'hidden' : false },
                 'cancel_cause' : { 'hidden' : ! ( obj.data.hash.aous['circ.holds.canceled.display_count'] || obj.data.hash.aous['circ.holds.canceled.display_age'] ) },
                 'cancel_note' : { 'hidden' :  ! ( obj.data.hash.aous['circ.holds.canceled.display_count'] || obj.data.hash.aous['circ.holds.canceled.display_age'] ) },
-                'cancel_time' : { 'hidden' :  ! ( obj.data.hash.aous['circ.holds.canceled.display_count'] || obj.data.hash.aous['circ.holds.canceled.display_age'] ) }
+                'cancel_time' : { 'hidden' :  ! ( obj.data.hash.aous['circ.holds.canceled.display_count'] || obj.data.hash.aous['circ.holds.canceled.display_age'] ) },
+                'post_clear_shelf_action' : { 'hidden' : obj.shelf ? false : true }
             }
         );
 
@@ -102,7 +106,7 @@ patron.holds.prototype = {
                                     params.row_node.setAttribute('retrieve_id',
                                         js2JSON({
                                             'copy_id':copy_id,
-                                                                                        'barcode':row.my.acp ? row.my.acp.barcode() : null,
+                                            'barcode':row.my.acp ? row.my.acp.barcode() : null,
                                             'id':row.my.ahr.id(),
                                             'type':row.my.ahr.hold_type(),
                                             'target':row.my.ahr.target(),
@@ -1158,6 +1162,56 @@ patron.holds.prototype = {
                             ev.target.setAttribute('checked',ev.target.checked);
                         }
                     ],
+                    'cmd_view_expired_onshelf_holds' : [
+                        ['command'],
+                        function(ev) {
+                            var x = document.getElementById('expired_checkbox'); // can't trust ev.explicitOriginalTarget, sometimes gives a "button"
+                            obj.expired = x.checked;
+                            obj.controller.view.cmd_clear_expired_onshelf_holds.setAttribute('disabled', !obj.expired);
+                            obj.clear_and_retrieve();
+                        }
+                    ],
+                    'cmd_clear_expired_onshelf_holds' : [
+                        ['command'],
+                        function(ev) {
+                            try {
+                                // I could put this with the "retrieval" methods, but since it has side effects, seems cleaner to invoke it here
+                                var robj = obj.network.simple_request( 'CLEAR_HOLD_SHELF', [ ses(), obj.filter_lib || obj.data.list.au[0].ws_ou() ] );
+                                if (robj == null) { robj = []; }
+                                if (typeof robj.ilsevent != 'undefined') { throw(robj); }
+                                if (typeof robj.length == 'undefined') { robj = [ robj ]; }
+
+                                // Disable anything such as filters that can have us accidentally lose these non-repeatable results
+                                var x_lib_filter_checkbox = document.getElementById('lib_filter_checkbox');
+                                if (x_lib_filter_checkbox) { x_lib_filter_checkbox.checked = false; }
+                                var x_lib_type_menu = document.getElementById('lib_type_menu');
+                                if (x_lib_type_menu) { x_lib_type_menu.disabled = true; }
+                                var x_lib_menu_placeholder = document.getElementById('lib_menu_placeholder');
+                                if (x_lib_menu_placeholder) { x_lib_menu_placeholder.firstChild.disabled = true; }
+                                obj.controller.view.cmd_view_expired_onshelf_holds.setAttribute('disabled', 'true');
+                                obj.controller.view.cmd_clear_expired_onshelf_holds.setAttribute('disabled', 'true');
+
+                                // id's in xulG.holds will prevent the normal retrieval method from firing
+                                JSAN.use('util.functional');
+                                xulG.holds = util.functional.map_list(
+                                    robj.sort(function(a,b) {
+                                        if (a.action > b.action) { return 1; }
+                                        if (a.action < b.action) { return -1; }
+                                        return 0;
+                                    }),
+                                    function (element, idx) {
+                                        obj.post_clear_shelf_hold_action_map[ element.hold_id ] = element.action; // necessary side-effect
+                                        return element.hold_id;
+                                    }
+                                );
+                                obj.clear_and_retrieve();
+                            } catch(E) {
+                                if (E.ilsevent == 5000 /* PERM_FAILURE */ ) { return; /* handled by network.js */ }
+                                obj.error.standard_unexpected_error_alert('Error in holds.js, cmd_clear_expired_onshelf_holds', E);
+                            }
+                        }
+                    ],
+
                     'cmd_search_opac' : [
                         ['command'],
                         function(ev) {
@@ -1216,12 +1270,15 @@ patron.holds.prototype = {
         var x_lib_menu_placeholder = document.getElementById('lib_menu_placeholder');
         var x_lib_filter_checkbox = document.getElementById('lib_filter_checkbox');
         var x_show_cancelled_deck = document.getElementById('show_cancelled_deck');
+        var x_clear_shelf_widgets = document.getElementById('clear_shelf_widgets');
+        var x_expired_checkbox = document.getElementById('expired_checkbox');
         switch(obj.hold_interface_type) {
             case 'shelf':
                 obj.render_lib_menus({'pickup_lib':true});
                 if (x_lib_filter_checkbox) x_lib_filter_checkbox.checked = true;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = false;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
+                if (x_clear_shelf_widgets) x_clear_shelf_widgets.hidden = false;
             break;
             case 'pull' :
                 if (x_fetch_more) x_fetch_more.hidden = false;
@@ -1343,7 +1400,11 @@ patron.holds.prototype = {
                     obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
                 break;
                 case 'shelf' :
-                    method = 'FM_AHR_ID_LIST_ONSHELF_RETRIEVE';
+                    if (obj.expired) {
+                        method = 'FM_AHR_ID_LIST_EXPIRED_ONSHELF_RETRIEVE';
+                    } else {
+                        method = 'FM_AHR_ID_LIST_ONSHELF_RETRIEVE';
+                    }
                     params.push( obj.filter_lib || obj.data.list.au[0].ws_ou() );
                     obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
                 break;
@@ -1411,7 +1472,8 @@ patron.holds.prototype = {
                     {
                         'row' : {
                             'my' : {
-                                'hold_id' : hold_id
+                                'hold_id' : hold_id,
+                                'post_clear_shelf_action' : obj.post_clear_shelf_hold_action_map[ hold_id ]
                             }
                         }
                     }
