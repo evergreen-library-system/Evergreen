@@ -1,0 +1,104 @@
+dojo.require('dojo.parser');
+dojo.require('dijit.Dialog');
+dojo.require('dijit.form.Button');
+dojo.require('dijit.form.TextBox');
+
+dojo.requireLocalization("openils.opac", "opac");
+opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
+
+dojo.addOnLoad(function() {
+
+    // Create the password reset dialog
+    var pwResetFormDlg = createResetDialog();
+    dojo.parser.parse();
+
+    // Connect the buttons to submit / cancel events that override
+    // the default actions associated with the buttons to do
+    // pleasing Ajax things
+    dojo.connect(dijit.byId("cancelButton"), "onClick", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        pwResetFormDlg.hide();
+    });
+    dojo.connect(dijit.byId("submitButton"), "onClick", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var xhrArgs = {
+            form: dojo.byId("requestReset"),
+            handleAs: "text",
+            load: function(data) {
+                pwResetFormDlg.hide();
+                passwordSubmission(opac_strings.PWD_RESET_SUBMIT_SUCCESS);
+            },
+            error: function(error) {
+                pwResetFormDlg.hide();
+                passwordSubmission(opac_strings.PWD_RESET_SUBMIT_ERROR);
+            }
+        }
+        var deferred = dojo.xhrPost(xhrArgs);
+        pwResetFormDlg.attr("content", opac_strings.PWD_RESET_SUBMIT_STATUS);
+    });
+    dojo.place("<tr><td colspan='2' align='center'><a class='classic_link' id='pwResetLink' onClick='dijit.byId(\"pwResetFormDlg\").show();'</a></td></tr>", "login_table_body");
+    dojo.query("#pwResetLink").attr("innerHTML", opac_strings.PWD_RESET_FORGOT_PROMPT);
+
+});
+
+function passwordSubmission( msg ) {
+    var responseDialog = new dijit.Dialog({
+        title: opac_strings.PWD_RESET_RESPONSE_TITLE
+    });
+    responseDialog.startup();
+    var requestStatusDiv = dojo.create("div", { style: "width: 30em" });
+    var requestStatusMsg = dojo.create("div", { innerHTML: msg }, requestStatusDiv);
+    var okButton = new dijit.form.Button({
+        id: "okButton",
+        type: "submit",
+        label: opac_strings.OK
+    }).placeAt(requestStatusDiv);
+    responseDialog.attr("content", requestStatusDiv);
+    responseDialog.show();
+    dojo.connect(dijit.byId("okButton"), "onClick", responseDialog, "hide");
+}
+
+function createResetDialog() {
+    var pwResetFormDlg = new dijit.Dialog({
+        id: "pwResetFormDlg",
+        title: opac_strings.PWD_RESET_FORM_TITLE
+    });
+    pwResetFormDlg.startup();
+
+    // Instantiate the form
+    var pwResetFormDiv = dojo.create("form", { id: "requestReset", style: "width: 30em", method: "post", action: "/opac/password/en-US" });
+    dojo.create("p", { innerHTML: opac_strings.PWD_RESET_SUBMIT_PROMPT }, pwResetFormDiv);
+    var pwResetFormTable = dojo.create("table", null, pwResetFormDiv);
+    var pwResetFormRow = dojo.create("tr", null, pwResetFormTable);
+    var pwResetFormCell = dojo.create("td", null, pwResetFormRow);
+    var pwResetFormLabel = dojo.create("label", null, pwResetFormCell);
+    dojo.attr(formCell, { innerHTML: opac_strings.BARCODE_PROMPT });
+    pwResetFormCell = dojo.create("td", null, pwResetFormRow);
+    var barcodeText = new dijit.form.TextBox({
+        name: "barcode"
+    }).placeAt(formCell);
+    pwResetFormRow = dojo.create("tr", {}, pwResetFormTable);
+    pwResetFormCell = dojo.create("td", {}, pwResetFormRow);
+    dojo.attr(formCell, { innerHTML: opac_strings.USERNAME_PROMPT });
+    pwResetFormCell = dojo.create("td", {}, pwResetFormRow);
+    var usernameText = new dijit.form.TextBox({
+        name: "username"
+    }).placeAt(formCell);
+    var submitButton = new dijit.form.Button({
+        id: "submitButton",
+        type: "submit",
+        label: opac_strings.SUBMIT_BUTTON_LABEL
+    }).placeAt(formDiv);
+    var cancelButton = new dijit.form.Button({
+        id: "cancelButton",
+        type: "cancel",
+        label: opac_strings.CANCEL_BUTTON_LABEL
+    }).placeAt(formDiv);
+
+    // Set the content of the Dialog to the pwResetForm
+    pwResetFormDlg.attr("content", pwResetFormDiv);
+    return pwResetFormDlg;
+}
+
