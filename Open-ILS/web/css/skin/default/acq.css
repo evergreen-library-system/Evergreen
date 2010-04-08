@@ -218,3 +218,6 @@ option[disabled="disabled"] { font-style: italic; }
 .acq-unified-terms-match { width: 15%; }
 .acq-unified-terms-remove { width: 5%; text-align: right; }
 .acq-unified-remover { color: #c00; }
+.acq-inoice-item-extra-info { padding-left: 10px; }
+.acq-inoice-item-info { font-weight: bold; }
+.acq-invoice-row td { border-bottom: 1px solid #e0e0e0; }

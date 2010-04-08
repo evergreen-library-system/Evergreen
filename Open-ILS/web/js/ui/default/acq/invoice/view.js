@@ -104,6 +104,8 @@ function doAttachLi() {
                 clear_marc : true,
                 flesh_attrs : true,
                 flesh_po : true,
+                flesh_li_details : true,
+                flesh_fund_debit : true
             }],
             oncomplete: function(r) { 
                 lineitem = openils.Util.readResponse(r);
@@ -131,7 +133,9 @@ function doAttachPo() {
         {   async: true,
             params: [openils.User.authtoken, attachPo, {
                 flesh_lineitems : true,
-                clear_marc : true
+                clear_marc : true,
+                flesh_lineitem_details : true,
+                flesh_fund_debit : true
             }],
             oncomplete: function(r) {
                 var po = openils.Util.readResponse(r);
@@ -313,22 +317,43 @@ function addInvoiceEntry(entry) {
     if(liMarcAttr(lineitem, 'upc')) idents.push(liMarcAttr(lineitem, 'upc'));
     if(liMarcAttr(lineitem, 'issn')) idents.push(liMarcAttr(lineitem, 'issn'));
 
-    nodeByName('title', row).innerHTML = liMarcAttr(lineitem, 'title');
-    nodeByName('author', row).innerHTML = liMarcAttr(lineitem, 'author');
-    nodeByName('idents', row).innerHTML = idents.join(',');
+    var lids = lineitem.lineitem_details();
+    var numOrdered = lids.length;
+    var numReceived = lids.filter(function(lid) { return (lid.recv_time() != null) }).length;
+    var numInvoiced = lids.filter(function(lid) { return !openils.Util.isTrue(lid.fund_debit().encumbrance()) }).length;
 
+    var poName = '';
+    var poId = '';
     var po = entry.purchase_order();
     if(po) {
-        openils.Util.show(nodeByName('purchase_order_span', row), 'inline');
-        nodeByName('purchase_order', row).innerHTML = po.name();
-        nodeByName('purchase_order', row).onclick = function() {
-            location.href = oilsBasePath + '/acq/po/view/ ' + po.id();
-        }
+        poName = po.name();
+        poId = po.id();
     }
+
+    nodeByName('title_details', row).innerHTML = 
+        dojo.string.substitute(
+            localeStrings.INVOICE_TITLE_DETAILS, [
+                liMarcAttr(lineitem, 'title'),
+                liMarcAttr(lineitem, 'author'),
+                idents.join(','),
+                numOrdered,
+                numReceived,
+                Number(lineitem.estimated_unit_price()).toFixed(2),
+                (Number(lineitem.estimated_unit_price()) * numOrdered).toFixed(2),
+                numInvoiced,
+                lineitem.id(),
+                oilsBasePath,
+                poId,
+                poName
+            ]
+        );
+
 
     dojo.forEach(
         ['inv_item_count', 'phys_item_count', 'cost_billed'],
         function(field) {
+            var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:5em'};
+            if(entry.isnew() && field == 'phys_item_count') dijitArgs.value = numReceived;
             registerWidget(
                 entry, 
                 field,
@@ -336,7 +361,7 @@ function addInvoiceEntry(entry) {
                     fmObject : entry,
                     fmClass : 'acqie',
                     fmField : field,
-                    dijitArgs : {required : true, constraints : {min: 0}, style : 'width:5em'}, 
+                    dijitArgs : dijitArgs,
                     parentNode : nodeByName(field, row)
                 })
             );
@@ -360,7 +385,6 @@ function addInvoiceEntry(entry) {
             delete widgetRegistry.acqie[entry.id()];
         updateTotalCost();
     }
-
 
     entryTbody.appendChild(row);
     updateTotalCost();
@@ -451,6 +475,25 @@ function saveChanges() {
             }
         }
     );
+}
+
+function processInvoice() {
+    progressDialog.show(true);
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.invoice.process'],
+        {
+            params : [openils.User.authtoken, invoice.id()],
+            oncomplete : function(r) {
+                progressDialog.hide();
+                var invoice = openils.Util.readResponse(r);
+                if(invoice) {
+                    location.href = oilsBasePath + '/acq/invoice/view/' + invoice.id();
+                }
+            }
+        }
+    );
+
 }
 
 

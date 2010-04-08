@@ -26,23 +26,16 @@
             </tbody>
             <!-- acq.invoice_entry -->
             <thead>
-                <td>ISBN/UPC/ISSN</td>
-                <td>Title</td>
-                <td>Author</td>
+                <td colspan='3'>Title Details</td>
                 <td># Items Invoiced / # Received</td>
                 <td>Amount Billed</td>
                 <td>Detach</td>
             </thead>
             <tbody id='acq-invoice-entry-tbody'>
-                <tr id='acq-invoice-entry-template'>
-                    <td><div name='idents'/></td>
-                    <td>
-                        <span name='title'></span> 
-                        <span name='purchase_order_span' class='hidden'>
-                            (PO: <a href='javascript:void(0);' name='purchase_order'></a>)
-                        </span>
+                <tr id='acq-invoice-entry-template' class='acq-invoice-row'>
+                    <td colspan='3'>
+                        <div name='title_details'></div>
                     </td>
-                    <td><div name='author'/></td>
                     <td nowrap='nowrap'>
                         <span name='inv_item_count'></span>&nbsp;/&nbsp;<span name='phys_item_count'></span>
                     </td>
@@ -67,7 +60,7 @@
                 <td>Delete</td>
             </thead>
             <tbody id='acq-invoice-item-tbody'>
-                <tr id='acq-invoice-item-template'>
+                <tr id='acq-invoice-item-template' class='acq-invoice-row acq-invoice-item-row'>
                     <td><div name='inv_item_type'/></td>
                     <td><div name='title'/></td>
                     <td><div name='author'/></td>
