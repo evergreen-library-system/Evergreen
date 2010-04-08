@@ -10,7 +10,7 @@
     "PWD_RESET_SUBMIT_STATUS": "Sending request...",
     "PWD_RESET_FORGOT_PROMPT": "Forgot your password?",
     "PWD_RESET_FORM_TITLE": "Request password reset",
-    "PWD_RESET_SUBMIT_PROMPT": "To begin the password reset process, enter either your barcode or user name in the following pwResetForm and click 'Submit'",
+    "PWD_RESET_SUBMIT_PROMPT": "To begin the password reset process, enter either your barcode or user name in the form below and click 'Submit'",
 	"CREATE_MFHD": "Add MFHD Record",
 	"CREATED_MFHD_RECORD": "Created MFHD record for ${0}",
 	"DELETE_MFHD": "Delete Record",
