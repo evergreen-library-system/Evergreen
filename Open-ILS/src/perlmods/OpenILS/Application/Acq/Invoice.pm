@@ -116,12 +116,13 @@ sub fetch_invoice_impl {
     my $args = $options->{"no_flesh_misc"} ? $invoice_id : [
         $invoice_id,
         {
-            "flesh" => 4,
+            "flesh" => 6,
             "flesh_fields" => {
                 "acqinv" => ["entries", "items"],
                 "acqie" => ["lineitem", "purchase_order"],
                 "acqii" => ["fund_debit"],
-                "jub" => ["attributes"]
+                "jub" => ["attributes", "lineitem_details"],
+                "acqlid" => ["fund_debit"]
             }
         }
     ];
