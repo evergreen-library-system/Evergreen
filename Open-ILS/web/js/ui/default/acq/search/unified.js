@@ -231,6 +231,10 @@ function TermManager() {
                         can_do_fuzzy = false;
                 }
                 self.matchHowAllow(id, "__fuzzy", can_do_fuzzy);
+
+                var inequalities = (term.datatype == "timestamp");
+                self.matchHowAllow(id, "__gte", inequalities);
+                self.matchHowAllow(id, "__lte", inequalities);
             }
         );
     };

@@ -102,13 +102,17 @@
                         <td name="match"
                             class="acq-unified-terms-match">
                             <select>
-                                <option value="">matches exactly</option>
-                                <option value="__not">
-                                    does NOT match exactly
-                                </option>
+                                <option value="">is</option>
+                                <option value="__not">is NOT</option>
                                 <option value="__fuzzy">contains</option>
                                 <option value="__not,__fuzzy">
                                     does NOT contain
+                                </option>
+                                <option value="__lte">
+                                    is on or BEFORE
+                                </option>
+                                <option value="__gte">
+                                    is on or AFTER
                                 </option>
                             </select>
                         </td>

@@ -48,7 +48,15 @@ sub could_be_range {
     0;
 }
 
-sub castdate { +{"=" => {"transform" => "date", "value" => $_[0]}}; }
+sub castdate {
+    my ($value, $gte, $lte) = @_;
+
+    my $op = "=";
+    $op = ">=" if $gte;
+    $op = "<=" if $lte;
+
+    +{$op => {"transform" => "date", "value" => $value}};
+}
 
 sub prepare_acqlia_search_and {
     my ($acqlia) = @_;
@@ -129,7 +137,9 @@ sub breakdown_term {
         $term->{"__fuzzy"} ? 1 : 0,
         $term->{"__between"} ? 1 : 0,
         $term->{"__not"} ? 1 : 0,
-        $term->{"__castdate"} ? 1 : 0
+        $term->{"__castdate"} ? 1 : 0,
+        $term->{"__gte"} ? 1 : 0,
+        $term->{"__lte"} ? 1 : 0
     );
 }
 
@@ -217,7 +227,7 @@ sub prepare_terms {
 
         $outer_clause->{$conj} = [] unless $outer_clause->{$conj};
         foreach my $unit (@{$terms->{$class}}) {
-            my ($k, $v, $fuzzy, $between, $not, $castdate) =
+            my ($k, $v, $fuzzy, $between, $not, $castdate, $gte, $lte) =
                 breakdown_term($unit);
 
             my $term_clause;
@@ -226,7 +236,7 @@ sub prepare_terms {
             } elsif ($between and could_be_range($v)) {
                 $term_clause = {$k => {"between" => $v}};
             } elsif (check_1d_max($v)) {
-                $v = castdate($v) if $castdate;
+                $v = castdate($v, $gte, $lte) if $castdate;
                 $term_clause = {$k => $v};
             } else {
                 next;
