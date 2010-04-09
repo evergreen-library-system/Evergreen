@@ -3409,6 +3409,10 @@ sub _reset_password_request {
                 {
                     column => 'uuid',
                     transform => 'COUNT'
+                },
+                {
+                    column => 'request_time',
+                    transform => 'MAX'
                 }
             ]
         },
@@ -3418,8 +3422,16 @@ sub _reset_password_request {
         }
     });
 
+    my $last_request = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($active_requests->[0]->{'request_time'}));
+    my $now = DateTime::Format::ISO8601->new();
+
     # 3. if (num_active > throttle_threshold) and (now - last_request < 1 minute)
-    #      ... delay - set cache - return event correspondingly ...
+    if (($active_requests->[0]->{'usr'} > $aupr_throttle) &&
+        ($last_request->add_duration('1 minute') > $now)) {
+        $cache->put_cache('open-ils.actor.password.throttle', DateTime::Format::ISO8601->new(), 60);
+        $e->die_event;
+        return OpenILS::Event->new('PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS');
+    }
 
     # TODO Check to see if the user is in a password-reset-restricted group
 
@@ -3490,6 +3502,11 @@ sub commit_password_reset {
 
     # Check to see if password reset requests are already being throttled:
     # 0. Check cache to see if we're in throttle mode (avoid hitting database)
+    $cache ||= OpenSRF::Utils::Cache->new("global", 0);
+    my $throttle = $cache->get_cache('open-ils.actor.password.throttle') || undef;
+    if ($throttle) {
+        return OpenILS::Event->new('PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST');
+    }
 
     my $e = new_editor(xact => 1);
 
