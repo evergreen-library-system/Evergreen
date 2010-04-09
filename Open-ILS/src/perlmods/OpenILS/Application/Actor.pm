@@ -3535,10 +3535,11 @@ sub commit_password_reset {
 
     my $is_strong = 0;
     if ($pw_regex) {
-       ($pw_regex = OpenSRF::Util::JSON->JSON2perl($pw_regex)) =~ s/\\u([0-9a-fA-F]{4})/\\x{$1}/gs;
-       $is_strong = check_password_strength_custom($password, $pw_regex);
+        # Calling JSON2perl on the $pw_regex causes failure, even before the fancy Unicode regex
+        # ($pw_regex = OpenSRF::Utils::JSON->JSON2perl($pw_regex)) =~ s/\\u([0-9a-fA-F]{4})/\\x{$1}/gs;
+        $is_strong = check_password_strength_custom($password, $pw_regex);
     } else {
-       $is_strong = check_password_strength_default($password);
+        $is_strong = check_password_strength_default($password);
     }
 
     if (!$is_strong) {
