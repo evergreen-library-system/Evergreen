@@ -152,6 +152,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
         },
 
         search : function ( fm_class /* Fieldmapper class hint */, search /* Fieldmapper query object */, opts /* Option hash */) {
+            var return_type = 'search';
             if(!opts) opts = {};
             var order_by = {};
             if (opts.order_by) order_by.order_by = opts.order_by;
@@ -159,8 +160,9 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (opts.limit) order_by.limit = opts.limit;
             if (opts.offset) order_by.offset = opts.offset;
             if (opts.join) order_by.join = opts.join;
+            if (opts.id_list) return_type = 'id_list';
 
-            var method = 'open-ils.pcrud.search.' + fm_class;
+            var method = 'open-ils.pcrud.' + return_type + '.' + fm_class;
             if(!opts.streaming) method += '.atomic';
 
             var req_hash = dojo.mixin(
