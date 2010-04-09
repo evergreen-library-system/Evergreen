@@ -164,31 +164,56 @@ function doAttachPo() {
 }
 
 function updateTotalCost() {
-    var total = 0;    
+
+    var totalCost = 0;    
     if(!totalInvoicedBox) {
         totalInvoicedBox = new dijit.form.CurrencyTextBox(
             {style : 'width: 5em'}, dojo.byId('acq-invoice-total-invoiced'));
     }
     for(var id in widgetRegistry.acqii) 
         if(!widgetRegistry.acqii[id]._object.isdeleted())
-            total += widgetRegistry.acqii[id].cost_billed.getFormattedValue();
+            totalCost += widgetRegistry.acqii[id].cost_billed.getFormattedValue();
     for(var id in widgetRegistry.acqie) 
         if(!widgetRegistry.acqie[id]._object.isdeleted())
-            total += widgetRegistry.acqie[id].cost_billed.getFormattedValue();
-    totalInvoicedBox.attr('value', total);
+            totalCost += widgetRegistry.acqie[id].cost_billed.getFormattedValue();
+    totalInvoicedBox.attr('value', totalCost);
 
-    total = 0;    
+    totalPaid = 0;    
     if(!totalPaidBox) {
         totalPaidBox = new dijit.form.CurrencyTextBox(
             {style : 'width: 5em'}, dojo.byId('acq-invoice-total-paid'));
     }
     for(var id in widgetRegistry.acqii) 
         if(!widgetRegistry.acqii[id]._object.isdeleted())
-            total += widgetRegistry.acqii[id].amount_paid.getFormattedValue();
+            totalPaid += widgetRegistry.acqii[id].amount_paid.getFormattedValue();
     for(var id in widgetRegistry.acqie) 
         if(!widgetRegistry.acqie[id]._object.isdeleted())
-            total += widgetRegistry.acqie[id].amount_paid.getFormattedValue();
-    totalPaidBox.attr('value', total);
+            totalPaid += widgetRegistry.acqie[id].amount_paid.getFormattedValue();
+    totalPaidBox.attr('value', totalPaid);
+
+    var buttonsDisabled = false;
+    if(totalPaid > totalCost || totalPaid < 0) {
+        openils.Util.addCSSClass(totalPaidBox.domNode, 'acq-invoice-invalid-amount');
+        invoiceSaveButton.attr('disabled', true);
+        invoiceProrateButton.attr('disabled', true);
+        buttonsDisabled = true;
+    } else {
+        openils.Util.removeCSSClass(totalPaidBox.domNode, 'acq-invoice-invalid-amount');
+        invoiceSaveButton.attr('disabled', false);
+        invoiceProrateButton.attr('disabled', false);
+    }
+
+    if(totalCost < 0) {
+        openils.Util.addCSSClass(totalInvoicedBox.domNode, 'acq-invoice-invalid-amount');
+        invoiceSaveButton.attr('disabled', true);
+        invoiceProrateButton.attr('disabled', true);
+    } else {
+        openils.Util.removeCSSClass(totalInvoicedBox.domNode, 'acq-invoice-invalid-amount');
+        if(!buttonsDisabled) {
+            invoiceSaveButton.attr('disabled', false);
+            invoiceProrateButton.attr('disabled', false);
+        }
+    }
 }
 
 
