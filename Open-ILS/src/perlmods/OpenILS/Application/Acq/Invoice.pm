@@ -214,7 +214,8 @@ sub find_entry_debits {
     $query->{where}->{'+acqfdeb'}->{amount} = $amount if $amount;
 
     my $debits = $e->json_query($query);
-    return $e->search_acq_fund_debit({id => [map { $_->{id} } @$debits]});
+    my $debit_ids = [map { $_->{id} } @$debits];
+    return (@$debit_ids) ? $e->search_acq_fund_debit({id => $debit_ids}) : [];
 }
 
 
@@ -264,7 +265,7 @@ sub fetch_invoice_impl {
         }
     ];
 
-    my $invoice = $e->retrieve_acq_invoice($args);
+    my $invoice = $e->retrieve_acq_invoice($args) or return $e->die_event;
     return $invoice if $options->{no_flesh_misc} or $options->{keep_li_marc};
 
     $_->lineitem->clear_marc for @{$invoice->entries};
