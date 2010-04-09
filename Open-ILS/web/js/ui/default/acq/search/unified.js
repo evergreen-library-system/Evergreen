@@ -299,14 +299,18 @@ function TermManager() {
 
         var selector = this.selectorFactory.make(uniq);
         dojo.attr(
-            selector,
-            "onchange",
-            function() { self.updateRowWidget(uniq); }
+            selector, "onchange", function() { self.updateRowWidget(uniq); }
         );
 
         var match_how = dojo.query("select", nodeByName("match", row))[0];
         dojo.attr(match_how, "id", "term-match-" + uniq);
         dojo.attr(match_how, "selectedIndex", 0);
+        dojo.attr(
+            match_how, "onchange",
+            function() {
+                if (self.widgets[uniq]) self.widgets[uniq].focus();
+            }
+        );
 
         nodeByName("selector", row).appendChild(selector);
         nodeByName("remove", row).appendChild(this.removerButton(uniq));
@@ -564,14 +568,15 @@ openils.Util.addOnLoad(
             dijit.byId("acq-unified-inv-grid")
         );
 
-        openils.Util.show("acq-unified-body");
-
         uriManager = new URIManager();
         if (uriManager.search_object) {
+            hideForm();
+            openils.Util.show("acq-unified-body");
             termManager.reflect(uriManager.search_object);
             resultManager.search(uriManager.search_object);
         } else {
             termManager.addRow();
+            openils.Util.show("acq-unified-body");
         }
     }
 );

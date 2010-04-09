@@ -61,5 +61,6 @@
     'INVOICE_CONFIRM_ENTRY_DETACH' : "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?",
     'INVOICE_TITLE_DETAILS' : "<div class='acq-inoice-item-info'>${0}, by ${1} (${2})</div><div class='acq-inoice-item-extra-info'><a style='padding-right: 10px;' href='${9}/acq/po/view/${10}'>PO: ${11}</a>${3} Ordered, ${4} Received, ${7} Invoiced</div><div class='acq-inoice-item-extra-info'> Estimated Cost Per Item $${5} / Total Estimated Cost $${6}</div>",
     'INVOICE_CONFIRM_PRORATE' : "Prorate charges?\n\nAny subsequent changes to the invoice that would affect prorated amounts should be resolved manually.",
-    'UNNAMED': "Unnamed"
+    'UNNAMED': "Unnamed",
+    'NO_FIND_INVOICE': "Could not find that invoice.\nNote that the Invoice # field is case-sensitive."
 }

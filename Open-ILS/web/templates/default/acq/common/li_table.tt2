@@ -1,3 +1,4 @@
+<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"> </script>
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
 <div id='acq-lit-table-container'>
     <div id='acq-lit-table-div' class='hidden'>
@@ -156,12 +157,12 @@
         <table id='acq-lit-li-details-table'>
             <tbody style='background-color:#ddd;'>
                 <tr id='acq-lit-li-details-batch-row'>
-                    <td><div name='owning_lib'/></td>
-                    <td><div name='location'/></td>
-                    <td><div name='collection_code'/></td>
-                    <td><div name='fund'/></td>
-                    <td><div name='circ_modifier'/></td>
-                    <td><div name='cn_label'/></td>
+                    <td><div name='owning_lib'></div></td>
+                    <td><div name='location'></div></td>
+                    <td><div name='collection_code'></div></td>
+                    <td><div name='fund'></div></td>
+                    <td><div name='circ_modifier'></div></td>
+                    <td><div name='cn_label'></div></td>
                     <td colspan='3' style='text-align:left;'>
                         <div dojoType='dijit.form.Button' jsId='acqLitBatchUpdateCopies'>Batch Update</div>
                     </td>
@@ -210,14 +211,14 @@
             </tbody>
             <tbody id='acq-lit-li-details-tbody' class='oils-generic-table'>
                 <tr id='acq-lit-li-details-row'>
-                    <td><div name='owning_lib'/></td>
-                    <td><div name='location'/></td>
-                    <td><div name='collection_code'/></td>
-                    <td><div name='fund'/></td>
-                    <td><div name='circ_modifier'/></td>
-                    <td><div name='cn_label'/></td>
-                    <td><div name='barcode'/></td>
-                    <td><div name='note'/></td>
+                    <td><div name='owning_lib'></div></td>
+                    <td><div name='location'></div></td>
+                    <td><div name='collection_code'></div></td>
+                    <td><div name='fund'></div></td>
+                    <td><div name='circ_modifier'></div></td>
+                    <td><div name='cn_label'></div></td>
+                    <td><div name='barcode'></div></td>
+                    <td><div name='note'></div></td>
                     <td><a href='javascript:void(0);' name='receive'>Mark&nbsp;Received</a><a href='javascript:void(0);' name='unreceive'>Un-Receive</a>&nbsp;<a href="javascript:void(0);" name='cancel'>Cancel</a><span class="hidden" name='cancel_reason'></span></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
                 </tr>
@@ -258,14 +259,18 @@
             </tbody>
             <tbody id='acq-lit-real-copies-tbody' class='oils-generic-table'>
                 <tr id='acq-lit-real-copies-row'>
-                    <td><div name='owning_lib'/></td>
-                    <td><div name='location'/></td>
-                    <td><div name='circ_modifier'/></td>
-                    <td><div name='label'/></td>
-                    <td><div name='barcode'/></td>
+                    <td><div name='owning_lib'></div></td>
+                    <td><div name='location'></div></td>
+                    <td><div name='circ_modifier'></div></td>
+                    <td><div name='label'></div></td>
+                    <td><div name='barcode'></div></td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div jsId="acqLitLinkInvoiceDialog" dojoType="dijit.Dialog">
+        [% INCLUDE "default/acq/common/inv_dialog.tt2" which = "li" %]
     </div>
 
     <div class='hidden' id='acq-lit-progress-numbers'>
@@ -304,11 +309,11 @@
             <table class='oils-generic-table'>
                 <tr>
                     <td>Ordering Agency</td>
-                    <td><div name='ordering_agency' id='acq-lit-po-agency'/></td>
+                    <td><div name='ordering_agency' id='acq-lit-po-agency'></div></td>
                 </tr>
                 <tr>
                     <td>Provider</td>
-                    <td><div name='provider' id='acq-lit-po-provider'/></td>
+                    <td><div name='provider' id='acq-lit-po-provider'></div></td>
                 </tr>
                 <tr>
                     <td>Prepayment Required</td>
@@ -395,7 +400,7 @@
 
 
     <div class='hidden'>
-        <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>
+        <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'></div>
     </div>
 
 </div>

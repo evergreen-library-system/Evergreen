@@ -802,7 +802,8 @@ CREATE TABLE acq.invoice (
 	payment_auth TEXT,
 	payment_method TEXT     REFERENCES acq.invoice_payment_method (code)
 	                        DEFERRABLE INITIALLY DEFERRED,
-	note        TEXT
+	note        TEXT,
+    CONSTRAINT  inv_ident_once_per_provider UNIQUE(provider, inv_ident)
 );
 
 CREATE TABLE acq.invoice_entry (

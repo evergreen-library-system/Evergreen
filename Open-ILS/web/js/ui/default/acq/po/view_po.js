@@ -1,13 +1,12 @@
 dojo.require("dojo.string");
 dojo.require('dijit.layout.ContentPane');
-dojo.require('openils.User');
-dojo.require('openils.Util');
 dojo.require('openils.PermaCrud');
 
 var pcrud = new openils.PermaCrud();
 var PO = null;
 var liTable;
 var poNoteTable;
+var invoiceLinkDialogManager;
 
 function AcqPoNoteTable() {
     var self = this;
@@ -260,6 +259,44 @@ function makeCancelWidget(node, labelnode) {
     }
 }
 
+function prepareInvoiceFeatures() {
+    /* show the count of related invoices on the "view invoices" button */
+    fieldmapper.standardRequest(
+        ["open-ils.acq", "open-ils.acq.invoice.unified_search.atomic"], {
+            "params": [
+                openils.User.authtoken,
+                {"acqpo":[{"id": PO.id()}]},
+                null,
+                null,
+                {"id_list": true}
+            ],
+            "async": true,
+            "oncomplete": function(r) {
+                dojo.byId("acq-po-view-invoice-count").innerHTML =
+                    openils.Util.readResponse(r).length;
+            }
+        }
+    );
+
+    /* view invoices button */
+    dijit.byId("acq-po-view-invoice-link").onClick = function() {
+        location.href = oilsBasePath + "/acq/search/unified?so=" +
+            base64Encode({"jub":[{"purchase_order": PO.id()}]}) +
+            "&rt=invoice";
+    };
+
+    /* create invoice button */
+    dijit.byId("acq-po-create-invoice-link").onClick = function() {
+        location.href = oilsBasePath +
+            "/acq/invoice/view?create=1&attach_po=" + PO.id();
+    };
+
+    if (!invoiceLinkDialogManager)
+        invoiceLinkDialogManager = new InvoiceLinkDialogManager("po", PO);
+
+    openils.Util.show("acq-po-view-invoices", "table-row");
+}
+
 function renderPo() {
     dojo.byId("acq-po-view-id").innerHTML = PO.id();
     dojo.byId("acq-po-view-name").innerHTML = PO.name();
@@ -288,17 +325,7 @@ function renderPo() {
             openils.Util.show("acq-po-split");
     }
 
-    dojo.byId('acq-po-create-invoice-link').onclick = 
-        function() {
-            location.href = oilsBasePath + '/acq/invoice/view?create=1&attach_po=' + poId;
-        };
-
-    dojo.byId("acq-po-view-invoice-link").onclick =
-        function() {
-            location.href = oilsBasePath + "/acq/search/unified?so=" +
-                base64Encode({"jub":[{"purchase_order": PO.id()}]}) +
-                "&rt=invoice";
-        };
+    prepareInvoiceFeatures();
 }
 
 

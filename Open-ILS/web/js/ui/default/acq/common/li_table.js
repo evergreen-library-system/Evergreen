@@ -6,8 +6,6 @@ dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Textarea');
 dojo.require('dijit.Tooltip');
 dojo.require('dijit.ProgressBar');
-dojo.require('openils.User');
-dojo.require('openils.Util');
 dojo.require('openils.acq.Lineitem');
 dojo.require('openils.acq.PO');
 dojo.require('openils.acq.Picklist');
@@ -15,7 +13,6 @@ dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.PermaCrud');
-dojo.require('openils.XUL');
 
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
@@ -68,6 +65,7 @@ function AcqLiTable() {
     this.realCopiesTbody = dojo.byId('acq-lit-real-copies-tbody');
     this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
     this._copy_fields_for_acqdf = ['owning_lib', 'location'];
+    this.invoiceLinkDialogManager = new InvoiceLinkDialogManager("li");
 
     dojo.connect(acqLitLiActionsSelector, 'onChange', 
         function() { 
@@ -380,11 +378,15 @@ function AcqLiTable() {
                         nodeByName("action_none", row).selected = true;
                     };
                     actLinkInvoice.onclick = function() {
-                        // TODO: show inv #/vendor entry then relocate to invoice attach page
+                        self.invoiceLinkDialogManager.target = li;
+                        acqLitLinkInvoiceDialog.show();
                         nodeByName("action_none", row).selected = true;
                     };
                     actViewInvoice.onclick = function() {
-                        // TODO: go to invoice search page, with lineitem filter = li.id()
+                        location.href = oilsBasePath +
+                            "/acq/search/unified?so=" +
+                            base64Encode({"jub":[{"id": li.id()}]}) +
+                            "&rt=invoice";
                         nodeByName("action_none", row).selected = true;
                     };
 

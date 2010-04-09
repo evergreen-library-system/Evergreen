@@ -87,8 +87,8 @@
             </select>
             <label for="acq-unified-conjunction">matching</label>
             <select id="acq-unified-conjunction">
-                <option value="or">any</option>
                 <option value="and">all</option>
+                <option value="or">any</option>
             </select>
             <label for="acq-unified-conjunction">
                 of the following terms:

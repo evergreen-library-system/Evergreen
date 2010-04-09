@@ -735,10 +735,6 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('acq/search/unified', 'menu.cmd_acq_unified_search.tab'); }
             ],
-            'cmd_acq_li_search' : [
-                ['oncommand'],
-                function() { open_eg_web_page('acq/lineitem/search', 'menu.cmd_acq_li_search.tab'); }
-            ],
             'cmd_acq_new_brief_record' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/picklist/brief_record', 'menu.cmd_acq_new_brief_record.tab'); }

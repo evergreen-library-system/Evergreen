@@ -51,12 +51,26 @@
                     </td>
                 </tr>
                 <tr><td><a class="hidden" id="acq-po-split" href="javascript:void(0);" onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">Split Order by Lineitems</a></td></tr>
-                <tr id='acq-po-view-invoices'> <!-- TODO: hidden until applicable -->
+                <tr id="acq-po-view-invoices" class="hidden"><!-- TODO: only reveal when really applicable -->
                     <td>Invoicing</td>
                     <td>
-                        <a href="javascript:void(0);" id="acq-po-view-invoice-link">View Invoices</a> / 
-                        <a href="javascript:void(0);" id="acq-po-create-invoice-link">Create Invoice</a> / 
-                        <a href="javascript:void(0);" id="acq-po-link-invoice-link">Link Invoice</a>
+                        <button dojoType="dijit.form.Button"
+                            id="acq-po-view-invoice-link">
+                            View Invoices
+                            (<span id="acq-po-view-invoice-count"></span>)
+                        </button> &nbsp;
+                        <button dojoType="dijit.form.Button"
+                            id="acq-po-create-invoice-link">
+                            Create Invoice
+                        </button> &nbsp;
+                        <button dojoType="dijit.form.DropDownButton">
+                            <span>Link Invoice</span>
+                            <div dojoType="dijit.TooltipDialog"
+                                id="acq-po-link-invoice">
+                                [% INCLUDE "default/acq/common/inv_dialog.tt2"
+                                    which = "po" %]
+                            </div>
+                        </button>
                     </td>
                 </tr>
             </table>

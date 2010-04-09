@@ -222,4 +222,4 @@ option[disabled="disabled"] { font-style: italic; }
 .acq-inoice-item-info { font-weight: bold; }
 .acq-invoice-row td { border-bottom: 1px solid #e0e0e0; }
 .acq-invoice-invalid-amount input { color: red; font-weight: bold; }
-
+.acq-link-invoice-dialog td,.acq-link-invoice-dialog th {padding-top: 10px;}
