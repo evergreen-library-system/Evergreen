@@ -37,5 +37,11 @@ SELECT auditor.create_auditor ( 'asset', 'copy' );
 CREATE INDEX aud_asset_cp_hist_creator_idx        ON auditor.asset_copy_history ( creator );
 CREATE INDEX aud_asset_cp_hist_editor_idx         ON auditor.asset_copy_history ( editor );
 
+SELECT auditor.create_auditor ( 'acq', 'invoice' );
+
+SELECT auditor.create_auditor ( 'acq', 'invoice_item' );
+
+SELECT auditor.create_auditor ( 'acq', 'invoice_entry' );
+
 COMMIT;
 
