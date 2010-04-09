@@ -168,7 +168,7 @@ function updateTotalCost() {
     var totalCost = 0;    
     if(!totalInvoicedBox) {
         totalInvoicedBox = new dijit.form.CurrencyTextBox(
-            {style : 'width: 5em'}, dojo.byId('acq-invoice-total-invoiced'));
+            {style : 'width: 6em'}, dojo.byId('acq-invoice-total-invoiced'));
     }
     for(var id in widgetRegistry.acqii) 
         if(!widgetRegistry.acqii[id]._object.isdeleted())
@@ -181,7 +181,7 @@ function updateTotalCost() {
     totalPaid = 0;    
     if(!totalPaidBox) {
         totalPaidBox = new dijit.form.CurrencyTextBox(
-            {style : 'width: 5em'}, dojo.byId('acq-invoice-total-paid'));
+            {style : 'width: 6em'}, dojo.byId('acq-invoice-total-paid'));
     }
     for(var id in widgetRegistry.acqii) 
         if(!widgetRegistry.acqii[id]._object.isdeleted())
@@ -255,7 +255,7 @@ function addInvoiceItem(item) {
                     fmClass : 'acqii',
                     fmObject : item,
                     fmField : field,
-                    dijitArgs : (field == 'cost_billed' || field == 'amount_paid') ? {required : true, style : 'width: 5em'} : null,
+                    dijitArgs : (field == 'cost_billed' || field == 'amount_paid') ? {required : true, style : 'width: 6em'} : null,
                     parentNode : nodeByName(field, row)
                 })
             )
@@ -389,7 +389,7 @@ function addInvoiceEntry(entry) {
     dojo.forEach(
         ['inv_item_count', 'phys_item_count', 'cost_billed', 'amount_paid'],
         function(field) {
-            var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:5em'};
+            var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:6em'};
             if(entry.isnew() && field == 'phys_item_count') dijitArgs.value = numReceived;
             registerWidget(
                 entry, 
@@ -508,7 +508,7 @@ function saveChanges(doProrate) {
                 var invoice = openils.Util.readResponse(r);
                 if(invoice) {
                     if(doProrate)
-                        return prorateInvoice();
+                        return prorateInvoice(invoice);
                     location.href = oilsBasePath + '/acq/invoice/view/' + invoice.id();
                 }
             }
@@ -516,7 +516,7 @@ function saveChanges(doProrate) {
     );
 }
 
-function prorateInvoice() {
+function prorateInvoice(invoice) {
     if(!confirm(localeStrings.INVOICE_CONFIRM_PRORATE)) return;
     progressDialog.show(true);
 
