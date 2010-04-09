@@ -622,15 +622,17 @@ sub decompose {
             my $atom = $1;
             my $after = $';
 
-            my $class_node = $struct->classed_node($current_class);
+            $_ = $after;
+            $last_type = '';
+
             my $negator = ($atom =~ s/^-//o) ? '!' : '';
             my $truncate = ($atom =~ s/\*$//o) ? '*' : '';
 
-            $class_node->add_fts_atom( $atom, suffix => $truncate, prefix => $negator, node => $class_node );
-            $struct->joiner( '&' );
-
-            $_ = $after;
-            $last_type = '';
+            if (!grep { $atom eq $_ } ('&','|')) { # throw away & and |, not allowed in tsquery, and not really useful anyway
+                my $class_node = $struct->classed_node($current_class);
+                $class_node->add_fts_atom( $atom, suffix => $truncate, prefix => $negator, node => $class_node );
+                $struct->joiner( '&' );
+            }
         } 
 
         last unless ($_);
