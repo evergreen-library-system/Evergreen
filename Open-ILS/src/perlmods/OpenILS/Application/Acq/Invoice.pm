@@ -30,6 +30,7 @@ sub build_invoice_api {
 
     my $e = new_editor(xact => 1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    my $evt;
 
     if(ref $invoice) {
         if($invoice->isnew) {
@@ -52,13 +53,29 @@ sub build_invoice_api {
     if($entries) {
         for my $entry (@$entries) {
             $entry->invoice($invoice->id);
+
             if($entry->isnew) {
+
                 $e->create_acq_invoice_entry($entry) or return $e->die_event;
+                return $evt if $evt = update_entry_debits($e, $entry);
+
             } elsif($entry->isdeleted) {
-                # TODO set encumbrance=true for related fund_debit and revert back to estimated price
+
+                return $evt if $evt = rollback_entry_debits($e, $entry); 
                 $e->delete_acq_invoice_entry($entry) or return $e->die_event;
+
             } elsif($entry->ischanged) {
-                # TODO: update the related fund_debit
+
+                my $orig_entry = $e->retrieve_acq_invoice_entry($entry->id) or return $e->die_event;
+
+                if($orig_entry->amount_paid != $entry->amount_paid or 
+                        $entry->phys_item_count != $orig_entry->phys_item_count) {
+
+                    return $evt if $evt = rollback_entry_debits($e, $orig_entry); 
+                    return $evt if $evt = update_entry_debits($e, $entry);
+
+                }
+
                 $e->update_acq_invoice_entry($entry) or return $e->die_event;
             }
         }
@@ -67,17 +84,46 @@ sub build_invoice_api {
     if($items) {
         for my $item (@$items) {
             $item->invoice($invoice->id);
+
             if($item->isnew) {
+
                 $e->create_acq_invoice_item($item) or return $e->die_event;
-            } elsif($item->isdeleted) {
-                if($item->fund_debit) {
-                    $e->delete_acq_fund_debit(
-                        $e->retrieve_acq_fund_debit($item->fund_debit)
-                    ) or return $e->die_event;
+
+                # future: cache item types
+                my $item_type = $e->retrieve_acq_invoice_item_type(
+                    $item->inv_item_type) or return $e->die_event;
+
+                # prorated items are handled separately
+                unless($U->is_true($item_type->prorate)) {
+                    my $debit = Fieldmapper::acq::fund_debit->new;
+                    $debit->fund($item->fund);
+                    $debit->amount($item->amount_paid);
+                    $debit->origin_amount($item->amount_paid);
+                    $debit->origin_currency_type($e->retrieve_acq_fund($item->fund)->currency_type); # future: cache funds locally
+                    $debit->encumbrance('f');
+                    $debit->debit_type('direct_charge');
+                    $e->create_acq_fund_debit($debit) or return $e->die_event;
+
+                    $item->fund_debit($debit->id);
+                    $e->update_acq_invoice_item($item) or return $e->die_event;
                 }
+
+            } elsif($item->isdeleted) {
+
                 $e->delete_acq_invoice_item($item) or return $e->die_event;
+
+                # kill the debit
+                $e->delete_acq_fund_debit(
+                    $e->retrieve_acq_fund_debit($item->fund_debit)
+                ) or return $e->die_event;
+
+
             } elsif($item->ischanged) {
-                # TODO: update related fund debit
+
+                my $debit = $e->retrieve_acq_fund_debit($item->fund_debit) or return $e->die_event;
+                $debit->amount($item->amount_paid);
+                $debit->fund($item->fund);
+                $e->update_acq_fund_debit($debit) or return $e->die_event;
                 $e->update_acq_invoice_item($item) or return $e->die_event;
             }
         }
@@ -88,6 +134,89 @@ sub build_invoice_api {
 
     return $invoice;
 }
+
+
+sub rollback_entry_debits {
+    my($e, $entry) = @_;
+    my $debits = find_entry_debits($e, $entry, 'f', entry_amount_per_item($entry));
+    my $lineitem = $e->retrieve_acq_lineitem($entry->lineitem) or return $e->die_event;
+
+    for my $debit (@$debits) {
+
+        # revert to the original estimated amount re-encumber
+        $debit->encumbrance('t');
+        $debit->amount($lineitem->estimated_unit_price());
+        $e->update_acq_fund_debit($debit) or return $e->die_event;
+    }
+
+    return undef;
+}
+
+sub update_entry_debits {
+    my($e, $entry) = @_;
+
+    my $debits = find_entry_debits($e, $entry, 't');
+    return undef unless @$debits;
+
+    if($entry->phys_item_count > @$debits) {
+        $e->rollback;
+        # We can't invoice for more items than we have debits for
+        return OpenILS::Event->new(
+            'ACQ_INVOICE_ENTRY_COUNT_EXCEEDS_DEBITS', 
+            payload => {entry => $entry->id});
+    }
+
+    for my $debit (@$debits) {
+        $debit->amount(entry_amount_per_item($entry));
+        $debit->encumbrance('f');
+        $e->update_acq_fund_debit($debit) or return $e->die_event;
+    }
+
+    return undef;
+}
+
+
+sub entry_amount_per_item {
+    my $entry = shift;
+    return $entry->amount_paid if $U->is_true($entry->billed_per_item);
+    return $entry->amount_paid / $entry->phys_item_count;
+}
+
+
+# there is no direct link between invoice_entry and fund debits.
+# when we need to retrieve the related debits, we have to do some searching
+sub find_entry_debits {
+    my($e, $entry, $encumbrance, $amount) = @_;
+
+    my $query = {
+        select => {acqfdeb => ['id']},
+        from => {
+            acqfdeb => {
+                acqlid => {
+                    filter => {cancel_reason => undef, recv_time => {'!=' => undef}},
+                    join => {
+                        jub =>  {
+                            join => {
+                                acqie => {
+                                    filter => {id => $entry->id}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        where => {'+acqfdeb' => {encumbrance => $encumbrance}},
+        order_by => {'acqlid' => ['recv_time']},
+        limit => $entry->phys_item_count
+    };
+
+    $query->{where}->{'+acqfdeb'}->{amount} = $amount if $amount;
+
+    my $debits = $e->json_query($query);
+    return $e->search_acq_fund_debit({id => [map { $_->{id} } @$debits]});
+}
+
 
 __PACKAGE__->register_method(
 	method => 'build_invoice_api',
@@ -143,12 +272,10 @@ sub fetch_invoice_impl {
 }
 
 __PACKAGE__->register_method(
-	method => 'process_invoice',
-	api_name	=> 'open-ils.acq.invoice.process',
+	method => 'prorate_invoice',
+	api_name	=> 'open-ils.acq.invoice.apply_prorate',
 	signature => {
         desc => q/
-            Process an invoice.  This updates the related fund debits by applying the now known cost
-            and sets the encumbrance flag to false.  It creates new debits for ad-hoc expenditures (invoice_item's).
             For all invoice items that have the prorate flag set to true, this will create the necessary 
             additional invoice_item's to prorate the cost across all affected funds by percent spent for each fund.
         /,
@@ -161,7 +288,7 @@ __PACKAGE__->register_method(
 );
 
 
-sub process_invoice {
+sub prorate_invoice {
     my($self, $conn, $auth, $invoice_id) = @_;
 
     my $e = new_editor(xact => 1, authtoken=>$auth);
@@ -170,148 +297,104 @@ sub process_invoice {
     my $invoice = fetch_invoice_impl($e, $invoice_id) or return $e->die_event;
     return $e->die_event unless $e->allowed('CREATE_INVOICE', $invoice->receiver);
 
+    my @lid_debits;
+    push(@lid_debits, @{find_entry_debits($e, $_, 'f', entry_amount_per_item($_))}) for @{$invoice->entries};
+
     my %fund_totals;
-
-    for my $entry (@{$invoice->entries}) {
-        
-        my $debits = $e->json_query({
-            select => {acqfdeb => ['id']},
-            from => {
-                acqfdeb => {
-                    acqlid => {
-                        filter => {cancel_reason => undef, recv_time => {'!=' => undef}},
-                        join => {
-                            jub =>  {
-                                join => {
-                                    acqie => {
-                                        filter => {id => $entry->id}
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            where => {'+acqfdeb' => {encumbrance => 't'}},
-            order_by => {'acqlid' => ['recv_time']},
-            limit => $entry->phys_item_count
-        });
-
-        next unless @$debits;
-
-        if($entry->phys_item_count > @$debits) {
-            $e->rollback;
-            # We can't invoice for more items than we have debits for
-            return OpenILS::Event->new(
-                'ACQ_INVOICE_ENTRY_COUNT_EXCEEDS_DEBITS', payload => {entry => $entry->id});
-        }
-
-        my $item_cost = $entry->cost_billed;
-        unless($U->is_true($entry->billed_per_item)) {
-            # cost billed is for the whole set of items.  Get the
-            # per-item cost by dividing the total cost by total invoiced
-            $item_cost = $item_cost / $entry->inv_item_count;
-        }
-
-        for my $debit_id (map { $_->{id} } @$debits) {
-            my $debit = $e->retrieve_acq_fund_debit($debit_id);
-            $debit->amount($item_cost);
-            $debit->encumbrance('f');
-            $e->update_acq_fund_debit($debit) or return $e->die_event;
-            $fund_totals{$debit->fund} ||= 0;
-            $fund_totals{$debit->fund} += $item_cost;
-        }
+    my $total_entry_paid = 0;
+    for my $debit (@lid_debits) {
+        $fund_totals{$debit->fund} = 0 unless $fund_totals{$debit->fund};
+        $fund_totals{$debit->fund} += $debit->amount;
+        $total_entry_paid += $debit->amount;
     }
 
-    my $total_entry_cost = 0;
-    $total_entry_cost += $fund_totals{$_} for keys %fund_totals;
-
-    $logger->info("invoice: total bib cost for invoice = $total_entry_cost");
+    $logger->info("invoice: prorating against invoice amount $total_entry_paid");
 
     for my $item (@{$invoice->items}) {
 
+        next if $item->fund_debit; # item has already been processed
+
         # future: cache item types locally
         my $item_type = $e->retrieve_acq_invoice_item_type($item->inv_item_type) or return $e->die_event;
-        
-        if($U->is_true($item_type->prorate)) {
+        next unless $U->is_true($item_type->prorate);
 
-            # Charge prorated across applicable funds
-            my $full_item_cost = $item->cost_billed;
-            my $first_round = 1;
-            my $largest_debit;
-            my $total_debited = 0;
+        # Prorate charges across applicable funds
+        my $full_item_paid = $item->amount_paid; # total amount paid for this item before splitting
+        my $full_item_cost = $item->cost_billed; # total amount invoiced for this item before splitting
+        my $first_round = 1;
+        my $largest_debit;
+        my $largest_item;
+        my $total_debited = 0;
+        my $total_costed = 0;
 
-            for my $fund_id (keys %fund_totals) {
+        for my $fund_id (keys %fund_totals) {
 
-                my $spent_for_fund = $fund_totals{$fund_id};
-                next unless $spent_for_fund > 0;
+            my $spent_for_fund = $fund_totals{$fund_id};
+            next unless $spent_for_fund > 0;
 
-                my $prorated_amount = ($spent_for_fund / $total_entry_cost) * $full_item_cost;
-                $logger->info("invoice: attaching prorated amount $prorated_amount to fund $fund_id for invoice $invoice_id");
-
-                my $debit = Fieldmapper::acq::fund_debit->new;
-                $debit->fund($fund_id);
-                $debit->amount($prorated_amount);
-                $debit->origin_amount($prorated_amount);
-                $debit->origin_currency_type($e->retrieve_acq_fund($fund_id)->currency_type); # future: cache funds locally
-                $debit->encumbrance('f');
-                $debit->debit_type('prorated_charge');
-                $e->create_acq_fund_debit($debit) or return $e->die_event;
-                $total_debited += $prorated_amount;
-                $largest_debit = $debit if !$largest_debit or $debit->amount > $largest_debit->amount;
-
-                if($first_round) {
-
-                    # re-purpose the original invoice_item for the first prorated amount
-                    $item->fund_debit($debit->id);
-                    $item->cost_billed($prorated_amount);
-                    $e->update_acq_invoice_item($item) or return $e->die_event;
-
-                } else {
-
-                    # for subsequent prorated amounts, create a new invoice_item
-                    my $new_item = $item->clone;
-                    $new_item->clear_id;
-                    $new_item->fund_debit($debit->id);
-                    $new_item->cost_billed($prorated_amount);
-                    $e->create_acq_invoice_item($new_item) or return $e->die_event;
-                }
-
-                $first_round = 0;
-            }
-
-            # make sure the percentages didn't leave a small sliver of money over/under-debited
-            if($total_debited != $full_item_cost) {
-                $logger->info("invoice: found prorate descrepency. total_debited=$total_debited; total_cost=$full_item_cost; difference ". ($full_item_cost - $total_debited));
-                # tweak the largest debit to smooth out the difference
-                $largest_debit = $e->retrieve_acq_fund_debit($largest_debit); # get latest copy
-                $largest_debit->amount( $largest_debit->amount + ($full_item_cost - $total_debited) );
-                $largest_debit->origin_amount($largest_debit->amount);
-                $e->update_acq_fund_debit($largest_debit) or return $e->die_event;
-            }
-
-        } else { # not prorated
-            
-            # Direct charge against a fund
-
-            next if $item->fund_debit; 
-
-            unless($item->fund) {
-                $e->rollback;
-                return OpenILS::Event->new('ACQ_INVOICE_ITEM_REQUIRES_FUND', payload => {item => $item->id});
-            }
+            my $prorated_amount = ($spent_for_fund / $total_entry_paid) * $full_item_paid;
+            my $prorated_cost = ($spent_for_fund / $total_entry_paid) * $full_item_cost;
+            $logger->info("invoice: attaching prorated amount $prorated_amount to fund $fund_id for invoice $invoice_id");
 
             my $debit = Fieldmapper::acq::fund_debit->new;
-            $debit->fund($item->fund);
-            $debit->amount($item->cost_billed);
-            $debit->origin_amount($item->cost_billed);
-            $debit->origin_currency_type($e->retrieve_acq_fund($item->fund)->currency_type); # future: cache funds locally
+            $debit->fund($fund_id);
+            $debit->amount($prorated_amount);
+            $debit->origin_amount($prorated_amount);
+            $debit->origin_currency_type($e->retrieve_acq_fund($fund_id)->currency_type); # future: cache funds locally
             $debit->encumbrance('f');
-            $debit->debit_type('direct_charge');
+            $debit->debit_type('prorated_charge');
+
             $e->create_acq_fund_debit($debit) or return $e->die_event;
 
-            $item->fund_debit($debit->id);
-            $e->update_acq_invoice_item($item) or return $e->die_event;
+            $total_debited += $prorated_amount;
+            $total_costed += $prorated_cost;
+            $largest_debit = $debit if !$largest_debit or $prorated_amount > $largest_debit->amount;
+
+            if($first_round) {
+
+                # re-purpose the original invoice_item for the first prorated amount
+                $item->fund($fund_id);
+                $item->fund_debit($debit->id);
+                $item->amount_paid($prorated_amount);
+                $item->cost_billed($prorated_cost);
+                $e->update_acq_invoice_item($item) or return $e->die_event;
+                $largest_item = $item if !$largest_item or $prorated_amount > $largest_item->amount_paid;
+
+            } else {
+
+                # for subsequent prorated amounts, create a new invoice_item
+                my $new_item = $item->clone;
+                $new_item->clear_id;
+                $new_item->fund($fund_id);
+                $new_item->fund_debit($debit->id);
+                $new_item->amount_paid($prorated_amount);
+                $new_item->cost_billed($prorated_cost);
+                $e->create_acq_invoice_item($new_item) or return $e->die_event;
+                $largest_item = $new_item if !$largest_item or $prorated_amount > $largest_item->amount_paid;
+            }
+
+            $first_round = 0;
+        }
+
+        # make sure the percentages didn't leave a small sliver of money over/under-debited
+        # if so, tweak the largest debit to smooth out the difference
+        if($total_debited != $full_item_paid or $total_costed != $full_item_cost) {
+            
+            my $paid_diff = $full_item_paid - $total_debited;
+            my $cost_diff = $full_item_cost - $total_debited;
+            $logger->info("invoice: repairing prorate descrepency of paid:$paid_diff and cost:$cost_diff");
+            my $new_paid = $largest_item->amount + $paid_diff;
+            my $new_cost = $largest_item->cost_billed + $cost_diff;
+
+            $largest_debit = $e->retrieve_acq_fund_debit($largest_debit->id); # get latest copy
+            $largest_debit->amount($new_paid);
+            $e->update_acq_fund_debit($largest_debit) or return $e->die_event;
+
+            $largest_item = $e->retrieve_acq_invoice_item($largest_item->id); # get latest copy
+            $largest_item->amount_paid($new_paid);
+            $largest_item->cost_billed($new_cost);
+
+            $e->update_acq_invoice_item($largest_item) or return $e->die_event;
         }
     }
 
@@ -319,7 +402,6 @@ sub process_invoice {
     $e->commit;
 
     return $invoice;
-
 }
 
 
