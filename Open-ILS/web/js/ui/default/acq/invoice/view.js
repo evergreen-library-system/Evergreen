@@ -25,7 +25,8 @@ var invoice;
 var itemTbody;
 var itemTemplate;
 var entryTemplate;
-var totalAmountBox;
+var totalInvoicedBox;
+var totalPaidBox;
 var invoicePane;
 var itemTypes;
 var virtualId = -1;
@@ -164,8 +165,8 @@ function doAttachPo() {
 
 function updateTotalCost() {
     var total = 0;    
-    if(!totalAmountBox) {
-        totalAmountBox = new dijit.form.CurrencyTextBox(
+    if(!totalInvoicedBox) {
+        totalInvoicedBox = new dijit.form.CurrencyTextBox(
             {style : 'width: 5em'}, dojo.byId('acq-invoice-total-invoiced'));
     }
     for(var id in widgetRegistry.acqii) 
@@ -174,7 +175,20 @@ function updateTotalCost() {
     for(var id in widgetRegistry.acqie) 
         if(!widgetRegistry.acqie[id]._object.isdeleted())
             total += widgetRegistry.acqie[id].cost_billed.getFormattedValue();
-    totalAmountBox.attr('value', total);
+    totalInvoicedBox.attr('value', total);
+
+    total = 0;    
+    if(!totalPaidBox) {
+        totalPaidBox = new dijit.form.CurrencyTextBox(
+            {style : 'width: 5em'}, dojo.byId('acq-invoice-total-paid'));
+    }
+    for(var id in widgetRegistry.acqii) 
+        if(!widgetRegistry.acqii[id]._object.isdeleted())
+            total += widgetRegistry.acqii[id].amount_paid.getFormattedValue();
+    for(var id in widgetRegistry.acqie) 
+        if(!widgetRegistry.acqie[id]._object.isdeleted())
+            total += widgetRegistry.acqie[id].amount_paid.getFormattedValue();
+    totalPaidBox.attr('value', total);
 }
 
 
@@ -207,7 +221,7 @@ function addInvoiceItem(item) {
     var itemType = itemTypes.filter(function(t) { return (t.code() == item.inv_item_type()) })[0];
 
     dojo.forEach(
-        ['title', 'author', 'cost_billed'], 
+        ['title', 'author', 'cost_billed', 'amount_paid'], 
         function(field) {
             registerWidget(
                 item,
@@ -216,7 +230,7 @@ function addInvoiceItem(item) {
                     fmClass : 'acqii',
                     fmObject : item,
                     fmField : field,
-                    dijitArgs : (field == 'cost_billed') ? {required : true, style : 'width: 5em'} : null,
+                    dijitArgs : (field == 'cost_billed' || field == 'amount_paid') ? {required : true, style : 'width: 5em'} : null,
                     parentNode : nodeByName(field, row)
                 })
             )
@@ -225,8 +239,6 @@ function addInvoiceItem(item) {
 
 
     /* ----------- fund -------------- */
-    var itemType = itemTypes.filter(function(t) { return (t.code() == item.inv_item_type()) })[0];
-
     var fundArgs = {
         fmClass : 'acqii',
         fmObject : item,
@@ -237,11 +249,11 @@ function addInvoiceItem(item) {
     }
 
     if(item.fund_debit()) {
-        fundArgs.readOnly = true;
+        fundArgs.searchFilter = {'-or' : [{active : 't'}, {id : item.fund()}]};
     } else {
         fundArgs.searchFilter = {active : 't'}
         if(itemType && openils.Util.isTrue(itemType.prorate()))
-            fundArgs.disabled = true;
+            fundArgs.dijitArgs = {disabled : true};
     }
 
     var fundWidget = new openils.widget.AutoFieldWidget(fundArgs);
@@ -350,7 +362,7 @@ function addInvoiceEntry(entry) {
 
 
     dojo.forEach(
-        ['inv_item_count', 'phys_item_count', 'cost_billed'],
+        ['inv_item_count', 'phys_item_count', 'cost_billed', 'amount_paid'],
         function(field) {
             var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:5em'};
             if(entry.isnew() && field == 'phys_item_count') dijitArgs.value = numReceived;
@@ -402,7 +414,7 @@ function liMarcAttr(lineitem, name) {
     return (attr) ? attr.attr_value() : '';
 }
 
-function saveChanges() {
+function saveChanges(doProrate) {
     
     progressDialog.show(true);
 
@@ -470,6 +482,8 @@ function saveChanges() {
                 progressDialog.hide();
                 var invoice = openils.Util.readResponse(r);
                 if(invoice) {
+                    if(doProrate)
+                        return prorateInvoice();
                     location.href = oilsBasePath + '/acq/invoice/view/' + invoice.id();
                 }
             }
@@ -477,11 +491,12 @@ function saveChanges() {
     );
 }
 
-function processInvoice() {
+function prorateInvoice() {
+    if(!confirm(localeStrings.INVOICE_CONFIRM_PRORATE)) return;
     progressDialog.show(true);
 
     fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.invoice.process'],
+        ['open-ils.acq', 'open-ils.acq.invoice.apply_prorate'],
         {
             params : [openils.User.authtoken, invoice.id()],
             oncomplete : function(r) {

@@ -27,19 +27,22 @@
             <!-- acq.invoice_entry -->
             <thead>
                 <td colspan='3'>Title Details</td>
-                <td># Items Invoiced / # Received</td>
+                <td># Invoiced / # Received</td>
                 <td>Amount Billed</td>
+                <td>Amount Paid</td>
                 <td>Detach</td>
             </thead>
             <tbody id='acq-invoice-entry-tbody'>
                 <tr id='acq-invoice-entry-template' class='acq-invoice-row'>
                     <td colspan='3'>
                         <div name='title_details'></div>
+                        <div name='note'></div>
                     </td>
                     <td nowrap='nowrap'>
                         <span name='inv_item_count'></span>&nbsp;/&nbsp;<span name='phys_item_count'></span>
                     </td>
                     <td><div name='cost_billed'/></td>
+                    <td><div name='amount_paid'/></td>
                     <td><a href='javascript:void(0);' name='detach'>Detach</a></td>
                 </tr>
             </tbody>
@@ -57,6 +60,7 @@
                 <td>Author (optional)</td>
                 <td>Fund</td>
                 <td>Amount Billed</td>
+                <td>Amount Paid</td>
                 <td>Delete</td>
             </thead>
             <tbody id='acq-invoice-item-tbody'>
@@ -66,13 +70,14 @@
                     <td><div name='author'/></td>
                     <td><div name='fund'/></td>
                     <td><div name='cost_billed'/></td>
+                    <td><div name='amount_paid'/></td>
                     <td><a href='javascript:void(0);' name='delete'>Delete</a></td>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
                     <td colspan='0'>
-                        <a href='javascript:void(0);' id='acq-invoice-new-item'>Add Invoice Item...</a>
+                        <a href='javascript:void(0);' id='acq-invoice-new-item'>Add Charge...</a>
                     </td>
                 </tr>
             </tbody>
@@ -86,16 +91,18 @@
             <thead>
                 <tr>
                     <td colspan='4'/>
-                    <td>Total Amount</td>
+                    <td>Total Invoiced</td>
+                    <td>Total Paid</td>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td colspan='4' style='text-align:right;'>
-                        <button dojoType='dijit.form.Button' onclick='saveChanges();'>Save &amp; Continue</button>
-                        <button dojoType='dijit.form.Button' onclick='processInvoice();'>Process Invoice</button>
+                        <button dojoType='dijit.form.Button' onclick='saveChanges();'>Save Changes</button>
+                        <button dojoType='dijit.form.Button' onclick='saveChanges(true);'>Save &amp; Prorate Charges</button>
                     </td>
                     <td><div id='acq-invoice-total-invoiced'/></td>
+                    <td><div id='acq-invoice-total-paid'/></td>
                 </tr>
             </tbody>
         </table>
