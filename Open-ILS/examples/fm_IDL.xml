@@ -326,9 +326,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<actions>
 				<create permission="CREATE_BIB_IMPORT_FIELD_DEF" global_required="true"/>
                 <retrieve/>
-                <!--
-				<retrieve permission="CREATE_BIB_IMPORT_IMPORT_FIELD_DEF UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF DELETE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
-                -->
 				<update permission="UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 				<delete permission="DELETE_BIB_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 			</actions>
@@ -442,9 +439,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<actions>
 				<create permission="CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
                 <retrieve/>
-                <!--
-				<retrieve permission="CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
-                -->
 				<update permission="UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 				<delete permission="DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF" global_required="true"/>
 			</actions>
@@ -912,7 +906,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_COPY_BTYPE" global_required="true"/>
-                <retrieve permission="CREATE_COPY_BTYPE UPDATE_COPY_BTYPE DELETE_COPY_BTYPE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_COPY_BTYPE" global_required="true"/>
                 <delete permission="DELETE_COPY_BTYPE" global_required="true"/>
             </actions>
@@ -928,7 +922,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_CN_BTYPE" global_required="true"/>
-                <retrieve permission="CREATE_CN_BTYPE UPDATE_CN_BTYPE DELETE_CN_BTYPE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_CN_BTYPE" global_required="true"/>
                 <delete permission="DELETE_CN_BTYPE" global_required="true"/>
             </actions>
@@ -944,7 +938,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_BIB_BTYPE" global_required="true"/>
-                <retrieve permission="CREATE_BIB_BTYPE UPDATE_BIB_BTYPE DELETE_BIB_BTYPE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_BIB_BTYPE" global_required="true"/>
                 <delete permission="DELETE_BIB_BTYPE" global_required="true"/>
             </actions>
@@ -960,7 +954,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_USER_BTYPE" global_required="true"/>
-                <retrieve permission="CREATE_USER_BTYPE UPDATE_USER_BTYPE DELETE_USER_BTYPE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_USER_BTYPE" global_required="true"/>
                 <delete permission="DELETE_USER_BTYPE" global_required="true"/>
             </actions>
@@ -1414,7 +1408,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
@@ -1557,7 +1551,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
@@ -2275,7 +2269,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_COPY_STATUS" global_required="true"/>
-                <retrieve permission="CREATE_COPY_STATUS UPDATE_COPY_STATUS DELETE_COPY_STATUS" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_COPY_STATUS" global_required="true"/>
                 <delete permission="DELETE_COPY_STATUS" global_required="true"/>
             </actions>
@@ -2375,7 +2369,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_AUTHORITY_RECORD_NOTE" global_required='true'/>
-                <retrieve permission="VIEW_AUTHORITY_RECORD_NOTES" global_required='true'/>
+                <retrieve/>
                 <update permission="UPDATE_AUTHORITY_RECORD_NOTE" global_required='true'/>
                 <delete permission="DELETE_AUTHORITY_RECORD_NOTE" global_required='true'/>
             </actions>
@@ -2766,7 +2760,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="ADMIN_BOOKING_RESERVATION" global_required='true'/>
-				<retrieve />
+				<retrieve permission="STAFF_LOGIN" global_required='true'/>
 				<update permission="ADMIN_BOOKING_RESERVATION" global_required='true'/>
 				<delete permission="ADMIN_BOOKING_RESERVATION" global_required='true'/>
 			</actions>
@@ -2786,7 +2780,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP" global_required='true'/>
-				<retrieve />
+				<retrieve permission="STAFF_LOGIN" global_required='true'/>
 				<update permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP" global_required='true'/>
 				<delete permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP" global_required='true'/>
 			</actions>
@@ -3071,7 +3065,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
@@ -3536,7 +3530,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_ORG_TYPE" global_required="true"/>
-                <retrieve permission="CREATE_ORG_UNIT UPDATE_ORG_UNIT DELETE_ORG_UNIT" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_ORG_TYPE" global_required="true"/>
                 <delete permission="DELETE_ORG_TYPE" global_required="true"/>
             </actions>
@@ -3695,7 +3689,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_MARC_CODE" global_required="true"/>
-                <retrieve permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_MARC_CODE" global_required="true"/>
                 <delete permission="DELETE_MARC_CODE" global_required="true"/>
             </actions>
@@ -4437,7 +4431,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_LOCALE" global_required="true"/>
-                <retrieve permission="CREATE_LOCALE UPDATE_LOCALE DELETE_LOCALE" global_required="true"/>
+                <retrieve/>
                 <update permission="UPDATE_LOCALE" global_required="true"/>
                 <delete permission="DELETE_LOCALE" global_required="true"/>
             </actions>
