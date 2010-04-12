@@ -998,9 +998,12 @@ sub run_patron_permit_scripts {
 
         my $results = $self->run_indb_circ_test;
         unless($self->circ_test_success) {
-            push(@allevents, OpenILS::Event->new(
-                $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}
-                )) for @$results;
+            # no_item result is OK during noncat checkout
+            unless(@$results == 1 && $results->[0]->{fail_part} eq 'no_item' and $self->is_noncat) {
+                push(@allevents, OpenILS::Event->new(
+                    $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}
+                    )) for @$results;
+            }
         }
 
     } else {
