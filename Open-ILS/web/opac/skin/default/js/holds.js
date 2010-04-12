@@ -818,8 +818,9 @@ function holdsBuildHoldFromWindow() {
     if($('holds_frozen_chkbox').checked) {
         hold.frozen('t');
         unHideMe($('hold_frozen_thaw_row'));
-        thawDate = dojo.date.stamp.toISOString(dijit.byId('holds_frozen_thaw_input').getValue());
+        var thawDate = dijit.byId('holds_frozen_thaw_input').attr('value');
         if(thawDate) {
+            thawDate = dojo.date.stamp.toISOString(thawDate);
             thawDate = holdsVerifyThawDate(thawDate); 
             if(thawDate) 
                 hold.thaw_date(thawDate);
