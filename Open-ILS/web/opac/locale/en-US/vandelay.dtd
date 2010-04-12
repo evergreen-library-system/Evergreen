@@ -45,12 +45,12 @@
 <!ENTITY vandelay.marc.file.upload "Evergreen MARC File Upload">
 <!ENTITY vandelay.marc.record "MARC Record">
 <!ENTITY vandelay.matches "Matches">
-<!ENTITY vandelay.next.page "Next Page">
+<!ENTITY vandelay.next.page "Next Page &#187;">
 <!ENTITY vandelay.overlay.selected.record "Overlay selected record with imported record">
 <!ENTITY vandelay.overlay.target "Overlay Target">
 <!ENTITY vandelay.page "Page">
 <!ENTITY vandelay.powered.by.evergreen "Powered by Evergreen!">
-<!ENTITY vandelay.prev.page "Previous Page">
+<!ENTITY vandelay.prev.page "&#171; Previous Page">
 <!ENTITY vandelay.processing "Processing... ">
 <!ENTITY vandelay.queue "Queue">
 <!ENTITY vandelay.queue.type "Queue Type">

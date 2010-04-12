@@ -502,7 +502,9 @@ Please see a librarian to renew your account.">
 <!ENTITY rdetail.result "Result"> <!-- Result # &common.of; # -->
 <!ENTITY rdetail.start "Start">
 <!ENTITY rdetail.page.previous "Previous page">
+<!ENTITY rdetail.page.previous.short "&#171;">
 <!ENTITY rdetail.page.next "Next page">
+<!ENTITY rdetail.page.next.short "&#187;">
 <!ENTITY rdetail.page.last "Last results page">
 <!ENTITY rdetail.end "End">
 <!ENTITY rdetail.more "More Actions...">
