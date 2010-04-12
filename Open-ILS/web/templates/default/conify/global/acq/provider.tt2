@@ -29,6 +29,19 @@ function formatName(inDatum) {
     }
 }
 
+function getInvIdent(rowIndex, item) {
+    if (!item) return {};
+    return {
+        "id": this.grid.store.getValue(item, "id"),
+        "name": this.grid.store.getValue(item, "inv_ident")
+    };
+}
+
+function formatInvIdent(o) {
+    return "<a href='" + oilsBasePath + "/acq/invoice/view/" + o.id + "'>" +
+        o.name + "</a>";
+}
+
 function getProviderName(rowIndex, item) {
     if(!item) return '';
     var name = this.grid.store.getValue(item, 'name');
@@ -192,6 +205,24 @@ function formatName(value) {
                     query="{id: '*'}"
                     fmClass='acqphsm'
                     editOnEnter='true'>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title="Invoices" id="tab-invoice">
+        <big class="oils-acq-basic-roomy"><strong>Invoices</strong></big>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style="height:400px">
+            <table jsId="invListGrid"
+                dojoType="openils.widget.AutoGrid"
+                fieldOrder="['inv_ident', 'receiver', 'shipper']"
+                suppressFields="['id', 'provider']"
+                query="{id: '*'}"
+                fmClass="acqinv">
+                <thead>
+                    <tr>
+                        <th field="inv_ident" get="getInvIdent" formatter="formatInvIdent" />
+                    <tr>
+                </thead>
             </table>
         </div>
     </div>

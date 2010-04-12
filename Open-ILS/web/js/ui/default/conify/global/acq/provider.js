@@ -85,6 +85,13 @@ function drawProviderSummary(child) {
             phsListGrid.resetStore();
             phsListGrid.loadAll({order_by:{acqphsm : 'provider'}}, {provider : providerId});
             break;
+        case "tab-invoice":
+            invListGrid.resetStore();
+            invListGrid.loadAll(
+                {"order_by": {"acqinv": "provider"}},
+                {"provider": providerId}
+            );
+            break;
         default:
             paListGrid.overrideEditWidgets.provider = new
                 dijit.form.TextBox({disabled: 'true', value: providerId});
