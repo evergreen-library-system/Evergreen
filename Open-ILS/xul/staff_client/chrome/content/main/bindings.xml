@@ -5,6 +5,113 @@
    xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    xmlns:xbl="http://www.mozilla.org/xbl">
 
+    <binding id="help">
+        <resources/>
+
+        <content>
+            <!-- FIXME: I18N -->
+            <xul:button label="Help" accesskey="H" xbl:inherits="label,accesskey" />
+        </content>
+
+        <implementation>
+
+            <constructor>
+                <![CDATA[
+                try {
+                    // This widget will try to load help content from various static and dynamic URL's, stopping at the
+                    // first one that it finds.  Given an example location.href of '/xul/server/patron/display.xul' and
+                    // a @src of 'foo.html', it will check these URL's in this order:
+                    //
+                    // foo.html (if @foo not set, then custom_help.html)
+                    // /xul/server/patron/display.xul.help.html
+                    // /xul/server/patron/help.html
+                    // /xul/server/help.html
+                    // /xul/help.html
+                    // /help.html
+
+                    this.addEventListener( 'command', function(ev) { this._open_window(); }, false);
+                } catch(E) {
+                    alert('Error constructing help widget in bindings.xml: ' + E);
+                    throw(E);
+                }
+                ]]>
+            </constructor>
+
+            <property name="src">
+                <getter>
+                    <![CDATA[
+                    try {
+                        return this.getAttribute('src');
+                    } catch(E) {
+                        alert('Error getting @src in help widget in bindings.xml: ' + E);
+                        throw(E);
+                    }
+                    ]]>
+                </getter>
+                <setter>
+                    <![CDATA[
+                    try {
+                        this.setAttribute('src',val);
+                        return val;
+                    } catch(E) {
+                        alert('Error setting @src in help widget in bindings.xml: ' + E);
+                        throw(E);
+                    }
+                    ]]>
+                </setter>
+            </property>
+
+            <method name="_open_window">
+                <body>
+                    <![CDATA[
+                    try {
+                            var x = new XMLHttpRequest();
+                            x.open("HEAD",this.src || 'custom_help.html',false);
+                            x.send(null);
+                            if (x.status == 200) {
+                                window.open((this.src || 'custom_help.html')+'?id='+this.id,this.getAttribute('label'),'resizable,scrollbars');
+                            } else {
+                                var pathname = location.pathname;
+                                x.open("HEAD",pathname + '.help.html',false);
+                                x.send(null);
+                                if (x.status == 200) {
+                                    window.open(pathname+'.help.html?id='+this.id,this.getAttribute('label'),'resizable,scrollbars');
+                                } else {
+                                    var pathparts = pathname.split('/');
+                                    var url; 
+                                    for (var i = pathparts.length - 2; i>0 && x.status != 200; i--) {
+                                        url = '';
+                                        for ( j = 1; j <= i; j++ ) { url += '/' + pathparts[j]; };
+                                        url = url + '/help.html';
+                                        x.open("HEAD",url,false);
+                                        x.send(null);
+                                    }
+                                    if (x.status == 200) {
+                                        window.open(url+'?id='+this.id,this.getAttribute('label'),'resizable,scrollbars');
+                                    } else {
+                                        x.open("HEAD","/help.html",false);
+                                        x.send(null);
+                                        if (x.status == 200) {
+                                            window.open('/help.html?id='+this.id,this.getAttribute('label'),'resizable,scrollbars');
+                                        } else {
+                                            /* FIXME - I18N */
+                                            alert('No Help Found');
+                                        }
+                                    }
+                                }
+                            }
+                    } catch(E) {
+                        alert('Error opening window in help widget in bindings.xml: ' + E);
+                        throw(E);
+                    }
+                    ]]>
+                </body>
+            </method>
+
+        </implementation>
+    </binding>
+
+
 	<binding id="messagecatalog">
 		<resources/>
 

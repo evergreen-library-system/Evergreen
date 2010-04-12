@@ -3,6 +3,7 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
+help { -moz-binding: url('/xul/server/main/bindings.xml#help'); }
 messagecatalog { -moz-binding: url('/xul/server/main/bindings.xml#messagecatalog'); }
 .shrinkable_groupbox { font-weight: bold; -moz-binding: url('/xul/server/main/bindings.xml#caption'); }
 
