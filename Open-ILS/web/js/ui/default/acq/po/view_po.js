@@ -305,8 +305,8 @@ function renderPo() {
         PO.provider()
     );
     dojo.byId("acq-po-view-total-li").innerHTML = PO.lineitem_count();
-    dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered();
-    dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent();
+    dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered().toFixed(2);
+    dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent().toFixed(2);
     dojo.byId("acq-po-view-state").innerHTML = PO.state(); // TODO i18n
     makePrepayWidget(
         dojo.byId("acq-po-view-prepay"),
@@ -356,13 +356,20 @@ function init() {
         }
     );
 
+    var totalEstimated = 0;
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.search'],
         {   async: true,
 params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh_notes:true, flesh_cancel_reason:true}],
             onresponse: function(r) {
                 liTable.show('list');
-                liTable.addLineitem(openils.Util.readResponse(r));
+                var li = openils.Util.readResponse(r);
+                totalEstimated += (Number(li.item_count() || 0) * Number(li.estimated_unit_price() || 0));
+                liTable.addLineitem(li);
+            },
+
+            oncomplete : function() {
+                dojo.byId("acq-po-view-total-estimated").innerHTML = totalEstimated.toFixed(2);
             }
         }
     );
