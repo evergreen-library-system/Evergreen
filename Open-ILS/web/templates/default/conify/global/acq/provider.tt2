@@ -217,6 +217,7 @@ function formatName(value) {
                 fieldOrder="['inv_ident', 'receiver', 'shipper']"
                 suppressFields="['id', 'provider']"
                 query="{id: '*'}"
+                showPaginator='true'
                 fmClass="acqinv">
                 <thead>
                     <tr>

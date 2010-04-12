@@ -76,19 +76,19 @@ function drawProviderSummary(child) {
             padListGrid.overrideEditWidgets.provider = new
                 dijit.form.TextBox({disabled: 'true', value: providerId});
             padListGrid.resetStore();
-            padListGrid.loadAll({order_by:{acqlipad : 'provider'}}, {provider : providerId});
+            padListGrid.loadAll({order_by:{acqlipad : 'code'}}, {provider : providerId});
             break;
         case 'tab-hold': 
             phsListGrid.overrideEditWidgets.provider = new
                 dijit.form.TextBox({disabled: 'true', value: providerId});
             phsListGrid.overrideEditWidgets.name = name;
             phsListGrid.resetStore();
-            phsListGrid.loadAll({order_by:{acqphsm : 'provider'}}, {provider : providerId});
+            phsListGrid.loadAll({order_by:{acqphsm : 'name'}}, {provider : providerId});
             break;
         case "tab-invoice":
             invListGrid.resetStore();
             invListGrid.loadAll(
-                {"order_by": {"acqinv": "provider"}},
+                {"order_by": {"acqinv": "recv_date DESC"}},
                 {"provider": providerId}
             );
             break;
