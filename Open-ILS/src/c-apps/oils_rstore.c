@@ -17,8 +17,6 @@ static dbi_conn writehandle; /* our MASTER db connection */
 static dbi_conn dbhandle; /* our CURRENT db connection */
 //static osrfHash * readHandles;
 
-static int max_flesh_depth = 100;
-
 static const int enforce_pcrud = 0;     // Boolean
 static const char modulename[] = "open-ils.reporter-store";
 
@@ -93,10 +91,20 @@ int osrfAppInitialize() {
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the RStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
-	if (!oilsIDLInit( osrf_settings_host_value("/IDL") ))
+	if ( !oilsIDLInit( osrf_settings_host_value( "/IDL" )))
 		return 1; /* return non-zero to indicate error */
 
-	oilsSetSQLOptions( modulename, enforce_pcrud );
+	char* md = osrf_settings_host_value(
+		"/apps/%s/app_settings/max_query_recursion", modulename );
+	int max_flesh_depth = 100;
+	if( md )
+		max_flesh_depth = atoi( md );
+	if( max_flesh_depth < 0 )
+		max_flesh_depth = 1;
+	else if( max_flesh_depth > 1000 )
+		max_flesh_depth = 1000;
+
+	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth );
 
 	growing_buffer* method_name = buffer_init(64);
 
@@ -276,8 +284,6 @@ int osrfAppChildInit() {
 	char* port   = osrf_settings_host_value("/apps/%s/app_settings/database/port", modulename );
 	char* db     = osrf_settings_host_value("/apps/%s/app_settings/database/db", modulename );
 	char* pw     = osrf_settings_host_value("/apps/%s/app_settings/database/pw", modulename );
-	char* md     = osrf_settings_host_value("/apps/%s/app_settings/max_query_recursion",
-			modulename );
 
 	osrfLogDebug(OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver);
 	writehandle = dbi_conn_new(driver);
@@ -296,10 +302,6 @@ int osrfAppChildInit() {
 	if(user) dbi_conn_set_option(writehandle, "username", user);
 	if(pw)   dbi_conn_set_option(writehandle, "password", pw );
 	if(db)   dbi_conn_set_option(writehandle, "dbname", db );
-
-	if(md)                     max_flesh_depth = atoi(md);
-	if(max_flesh_depth < 0)    max_flesh_depth = 1;
-	if(max_flesh_depth > 1000) max_flesh_depth = 1000;
 
 	free(user);
 	free(host);

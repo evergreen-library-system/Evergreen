@@ -153,7 +153,7 @@ static char* modulename = NULL;
 	Here we use the server name in messages to identify which kind of server issued them.
 	We use do_crud as a boolean to control whether or not to enforce the permissions scheme.
 */
-void oilsSetSQLOptions( const char* module_name, int do_pcrud ) {
+void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth ) {
 	if( !module_name )
 		module_name = "open-ils.cstore";   // bulletproofing with a default
 
@@ -161,8 +161,8 @@ void oilsSetSQLOptions( const char* module_name, int do_pcrud ) {
 		free( modulename );
 
 	modulename = strdup( module_name );
-
 	enforce_pcrud = do_pcrud;
+	max_flesh_depth = flesh_depth;
 }
 
 /**
