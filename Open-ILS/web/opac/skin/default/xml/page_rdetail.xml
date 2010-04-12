@@ -28,10 +28,10 @@
 						<a class='np_nav_link classic_link hide_me' id='np_start'
 							href='javascript:rdetailStart();' title="&rdetail.page.results;">&rdetail.start;</a>
 						<a class='np_nav_link classic_link hide_me' id='np_prev'
-							href='javascript:rdetailPrev();' title='&rdetail.page.previous;'>&lt;&lt;</a>
+							href='javascript:rdetailPrev();' title='&rdetail.page.previous;'>&rdetail.page.previous.short;</a>
 						<span> </span>
 						<a  class='np_nav_link classic_link hide_me' id='np_next'
-							href='javascript:rdetailNext();' title='&rdetail.page.next;'>&gt;&gt;</a>
+							href='javascript:rdetailNext();' title='&rdetail.page.next;'>&rdetail.page.next.short;</a>
 						<a class='np_nav_link classic_link hide_me' id='np_end'
 							href='javascript:rdetailEnd();' title="&rdetail.page.last;">&rdetail.end;</a>
 					</span>

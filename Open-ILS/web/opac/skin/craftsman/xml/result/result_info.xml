@@ -20,12 +20,12 @@
 							style='padding-left: 40px;' >
 						<a class='search_page_nav_link' id='search_home_link' 
 							title="&rdetail.page.results;">&rdetail.start;</a><a class='search_page_nav_link' 
-								id='prev_link' title='&rdetail.page.previous;'>&#171;</a>
+								id='prev_link' title='&rdetail.page.previous;'>&rdetail.page.previous.short;</a>
 	
 						<span class='search_page_nav_link' id='page_numbers'> </span>
 	
 						<a  class='search_page_nav_link' id='next_link' 
-							title='&rdetail.page.next;'>&#187;</a>
+							title='&rdetail.page.next;'>&rdetail.page.next.short;</a>
 							<!--
 							<a class='search_page_nav_link' 
 								id='end_link' title="&rdetail.page.last;">&rdetail.end;</a>
