@@ -24,15 +24,15 @@ __PACKAGE__->register_method(
 		/);
 
 sub cl_retrieve_all {
-	my( $self, $client, $orgId ) = @_;
+	my( $self, $client, $org_id ) = @_;
 
-	if(!$orgId) {
+	if(!$org_id) {
 		my $otree = $U->get_org_tree();
-		$orgId = $otree->id;
+		$org_id = $otree->id;
 	}
 
     return new_editor()->search_asset_copy_location({
-        owning_lib => $U->get_org_full_path($org_id);
+        owning_lib => $U->get_org_full_path($org_id)
     });
 }
 
