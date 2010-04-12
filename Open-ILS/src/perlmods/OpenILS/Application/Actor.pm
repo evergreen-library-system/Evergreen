@@ -1504,22 +1504,17 @@ __PACKAGE__->register_method(
 
 sub user_fines_summary {
 	my( $self, $client, $auth, $user_id ) = @_;
+
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	my $user = $e->retrieve_actor_user($user_id)
-		or return $e->event;
 
 	if( $user_id ne $e->requestor->id ) {
+	    my $user = $e->retrieve_actor_user($user_id) or return $e->event;
 		return $e->event unless 
 			$e->allowed('VIEW_USER_FINES_SUMMARY', $user->home_ou);
 	}
-	
-	# run this inside a transaction to prevent replication delay errors
-	my $ses = $U->start_db_session();
-	my $s = $ses->request(
-		'open-ils.storage.money.open_user_summary.search', $user_id )->gather(1);
-	$U->rollback_db_session($ses);
-	return $s;
+
+    return $e->search_money_open_user_summary({usr => $user_id});
 }
 
 

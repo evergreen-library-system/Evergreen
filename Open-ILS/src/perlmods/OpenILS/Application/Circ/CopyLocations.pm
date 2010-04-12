@@ -31,9 +31,9 @@ sub cl_retrieve_all {
 		$orgId = $otree->id;
 	}
 
-	$logger->debug("Fetching ranged copy location set for org $orgId");
-	return $U->storagereq(
-		'open-ils.storage.ranged.asset.copy_location.retrieve.atomic', $orgId);
+    return new_editor()->search_asset_copy_location({
+        owning_lib => $U->get_org_full_path($org_id);
+    });
 }
 
 __PACKAGE__->register_method(
