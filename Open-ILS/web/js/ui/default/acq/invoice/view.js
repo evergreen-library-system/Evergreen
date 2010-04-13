@@ -27,6 +27,7 @@ var itemTemplate;
 var entryTemplate;
 var totalInvoicedBox;
 var totalPaidBox;
+var balanceOwedBox;
 var invoicePane;
 var itemTypes;
 var virtualId = -1;
@@ -214,6 +215,12 @@ function updateTotalCost() {
             invoiceProrateButton.attr('disabled', false);
         }
     }
+
+    if(!balanceOwedBox) {
+        balanceOwedBox = new dijit.form.CurrencyTextBox(
+            {style : 'width: 6em'}, dojo.byId('acq-invoice-balance-owed'));
+    }
+    balanceOwedBox.attr('value', (totalCost - totalPaid));
 }
 
 
