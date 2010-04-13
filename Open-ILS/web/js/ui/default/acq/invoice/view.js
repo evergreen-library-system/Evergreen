@@ -167,10 +167,6 @@ function doAttachPo() {
 function updateTotalCost() {
 
     var totalCost = 0;    
-    if(!totalInvoicedBox) {
-        totalInvoicedBox = new dijit.form.CurrencyTextBox(
-            {style : 'width: 6em'}, dojo.byId('acq-invoice-total-invoiced'));
-    }
     for(var id in widgetRegistry.acqii) 
         if(!widgetRegistry.acqii[id]._object.isdeleted())
             totalCost += widgetRegistry.acqii[id].cost_billed.getFormattedValue();
@@ -180,10 +176,6 @@ function updateTotalCost() {
     totalInvoicedBox.attr('value', totalCost);
 
     totalPaid = 0;    
-    if(!totalPaidBox) {
-        totalPaidBox = new dijit.form.CurrencyTextBox(
-            {style : 'width: 6em'}, dojo.byId('acq-invoice-total-paid'));
-    }
     for(var id in widgetRegistry.acqii) 
         if(!widgetRegistry.acqii[id]._object.isdeleted())
             totalPaid += widgetRegistry.acqii[id].amount_paid.getFormattedValue();
@@ -216,10 +208,6 @@ function updateTotalCost() {
         }
     }
 
-    if(!balanceOwedBox) {
-        balanceOwedBox = new dijit.form.CurrencyTextBox(
-            {style : 'width: 6em'}, dojo.byId('acq-invoice-balance-owed'));
-    }
     balanceOwedBox.attr('value', (totalCost - totalPaid));
 }
 
