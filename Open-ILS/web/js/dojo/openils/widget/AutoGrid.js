@@ -25,6 +25,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             columnPickerPrefix : null,
             displayLimit : 15,
             displayOffset : 0,
+            requiredFields : null,
             showPaginator : false,
             showLoadFilter : false,
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
@@ -379,6 +380,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     overrideWidgetClass : this.overrideEditWidgetClass,
                     overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
+                    requiredFields : this.requiredFields,
                     onPostSubmit : function() {
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
@@ -418,6 +420,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     overrideWidgetClass : this.overrideEditWidgetClass,
                     overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
+                    requiredFields : this.requiredFields,
                     onPostSubmit : function(req, cudResults) {
                         var fmObject = cudResults[0];
                         if(grid.onPostCreate)

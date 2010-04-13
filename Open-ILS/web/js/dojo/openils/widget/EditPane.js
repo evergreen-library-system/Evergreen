@@ -19,6 +19,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             fieldDocs : null,
             existingTable : null,
             suppressFields : null,
+            requiredFields : null,
 
             constructor : function(args) {
                 this.fieldList = [];
@@ -113,6 +114,11 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                             disableWidgetTest : this.disableWidgetTest
                         }
                     );
+
+                    if(this.requiredFields && this.requiredFields.indexOf(field.name) >= 0) {
+                        if(!args.dijitArgs) args.dijitArgs = {};
+                        args.dijitArgs.required = true;
+                    }
 
                     var widget = new openils.widget.AutoFieldWidget(args);
 

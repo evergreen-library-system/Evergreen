@@ -501,6 +501,15 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
             if(this.onload)
                 this.onload(this.widget, this);
+
+            if(this.dijitArgs && this.dijitArgs.required) {
+                // a required dijit is not given any styling to indicate the value
+                // is invalid until the user has focused the widget then left it with
+                // invalid data.  This change tells dojo to pretend this focusing has 
+                // already happened so we can style required widgets during page render.
+                this.widget._hasBeenBlurred = true;
+                this.widget.validate();
+            }
         },
 
         _buildOrgSelector : function() {
