@@ -202,6 +202,12 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
 #acq-invoice-new-msg { font-weight: bold; margin: 10px;}
 #acq-invoice-li-details { padding: 10px; font-weight: bold; border: 1px solid #888; margin: 10px; }
 #acq-invoice-create { margin: 10px; }
+.acq-inoice-item-extra-info { padding-left: 10px; }
+.acq-inoice-item-info { font-weight: bold; }
+.acq-invoice-row td { border-bottom: 1px solid #e0e0e0; }
+.acq-invoice-invalid-amount input { color: red; font-weight: bold; }
+.acq-link-invoice-dialog td,.acq-link-invoice-dialog th {padding-top: 10px;}
+
 #acq-unified-heading { margin-bottom: 10px; }
 #acq-unified-heading-actual { float: left; width: 50%; font-size: 120%; font-weight: bold; }
 #acq-unified-heading-controls { float: right; width: 50%; text-align: right; }
@@ -218,8 +224,3 @@ option[disabled="disabled"] { font-style: italic; }
 .acq-unified-terms-match { width: 15%; }
 .acq-unified-terms-remove { width: 5%; text-align: right; }
 .acq-unified-remover { color: #c00; }
-.acq-inoice-item-extra-info { padding-left: 10px; }
-.acq-inoice-item-info { font-weight: bold; }
-.acq-invoice-row td { border-bottom: 1px solid #e0e0e0; }
-.acq-invoice-invalid-amount input { color: red; font-weight: bold; }
-.acq-link-invoice-dialog td,.acq-link-invoice-dialog th {padding-top: 10px;}

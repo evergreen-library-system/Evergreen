@@ -106,15 +106,21 @@
                             <select>
                                 <option value="">is</option>
                                 <option value="__not">is NOT</option>
-                                <option value="__fuzzy">contains</option>
-                                <option value="__not,__fuzzy">
+                                <option value="__fuzzy" disabled="disabled">
+                                    contains
+                                </option>
+                                <option value="__not,__fuzzy"
+                                    disabled="disabled">
                                     does NOT contain
                                 </option>
-                                <option value="__lte">
+                                <option value="__lte" disabled="disabled">
                                     is on or BEFORE
                                 </option>
-                                <option value="__gte">
+                                <option value="__gte" disabled="disabled">
                                     is on or AFTER
+                                </option>
+                                <option value="__in" disabled="disabled">
+                                    matches a term from a file
                                 </option>
                             </select>
                         </td>

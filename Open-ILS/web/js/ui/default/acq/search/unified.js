@@ -2,6 +2,7 @@ dojo.require("dojo.date.stamp");
 dojo.require("dojox.encoding.base64");
 dojo.require("openils.widget.AutoGrid");
 dojo.require("openils.widget.AutoWidget");
+dojo.require("openils.widget.XULTermLoader");
 dojo.require("openils.PermaCrud");
 
 var termSelectorFactory;
@@ -19,7 +20,7 @@ HTMLSelectElement.prototype.getValue = function() {
 /* only sets the selected value if such an option is actually available */
 HTMLSelectElement.prototype.setValue = function(s) {
     for (var i = 0; i < this.options.length; i++) {
-        if (s == this.options[i].value && !this.options[i].disabled) {
+        if (s == this.options[i].value) {
             this.selectedIndex = i;
             break;
         }
@@ -88,26 +89,47 @@ function TermSelectorFactory(terms) {
                 "datatype": self.terms[parts[0]][parts[1]].datatype
             };
         },
-        "makeWidget": function(parentNode, wStore, callback) {
+        "makeWidget": function(parentNode, wStore, matchHow, value, callback) {
             var term = this.getTerm();
             var widgetKey = this.uniq;
-            if (term.hint == "acqlia") {
+            if (matchHow.getValue() == "__in") {
+                new openils.widget.XULTermLoader({
+                    "parentNode": parentNode
+                }).build(
+                    function(w) {
+                        wStore[widgetKey] = w;
+                        if (typeof(callback) == "function")
+                            callback(term, widgetKey);
+                        if (typeof(value) != "undefined")
+                            w.attr("value", value);
+                        /* I would love for the following call not to be
+                         * necessary, so that updating the value of the dijit
+                         * would lead to this automatically, but I can't yet
+                         * figure out the correct way to do this in Dojo.
+                         */
+                        w.updateCount();
+                    }
+                );
+            } else if (term.hint == "acqlia") {
                 wStore[widgetKey] = dojo.create(
                     "input", {"type": "text"}, parentNode, "only"
                 );
+                if (typeof(value) != "undefined")
+                    wStore[widgetKey].attr("value", value);
                 wStore[widgetKey].focus();
                 if (typeof(callback) == "function")
                     callback(term, widgetKey);
             } else {
-                var widget = new openils.widget.AutoFieldWidget({
+                new openils.widget.AutoFieldWidget({
                     "fmClass": term.hint,
                     "fmField": term.field,
                     "noDisablePkey": true,
                     "parentNode": dojo.create("span", null, parentNode, "only")
-                });
-                widget.build(
+                }).build(
                     function(w) {
                         wStore[widgetKey] = w;
+                        if (typeof(value) != "undefined")
+                            w.attr("value", value);
                         w.focus();
                         if (typeof(callback) == "function")
                             callback(term, widgetKey);
@@ -199,6 +221,40 @@ function TermManager() {
     this._selector = function(id) { return dojo.byId("term-" + id); };
     this._match_how = function(id) { return dojo.byId("term-match-" + id); };
 
+    this._updateMatchHowForField = function(term, key) {
+        /* NOTE important to use self, not this, in this function.
+         *
+         * Based on the selected field (its datatype and the kind of widget
+         * that AutoFieldWidget provides for it) we update the possible
+         * choices in the mach_how selector.
+         */
+        var w = self.widgets[key];
+        var can_do_fuzzy, can_do_in;
+        if (term.datatype == "id") {
+            can_do_fuzzy = false;
+            can_do_in = true;
+        } else if (term.datatype == "link") {
+            can_do_fuzzy = (self.getLinkTarget(term) == "au");
+            can_do_in = false; /* XXX might revise later */
+        } else if (typeof(w.declaredClass) != "undefined") {
+            can_do_fuzzy = can_do_in =
+                Boolean(w.declaredClass.match(/form\.Text/));
+        } else {
+            var type = dojo.attr(w, "type");
+            if (type)
+                can_do_fuzzy = can_do_in = (type == "text");
+            else
+                can_do_fuzzy = can_do_in = false;
+        }
+
+        self.matchHowAllow(key, "__fuzzy", can_do_fuzzy);
+        self.matchHowAllow(key, "__in", can_do_in);
+
+        var inequalities = (term.datatype == "timestamp");
+        self.matchHowAllow(key, "__gte", inequalities);
+        self.matchHowAllow(key, "__lte", inequalities);
+    };
+
     this.removerButton = function(n) {
         return dojo.create("button", {
             "innerHTML": "X",
@@ -225,36 +281,8 @@ function TermManager() {
         dojo.empty(where);
 
         this._selector(id).makeWidget(
-            where, this.widgets,
-            function(term, key) {
-                var w = self.widgets[key];
-                var can_do_fuzzy;
-                if (term.datatype == "id") {
-                    can_do_fuzzy = false;
-                } else if (term.datatype == "link") {
-                    can_do_fuzzy = (self.getLinkTarget(term) == "au");
-                } else if (typeof(w.declaredClass) != "undefined") {
-                    can_do_fuzzy = Boolean(w.declaredClass.match(/form\.Text/));
-                } else {
-                    var type = dojo.attr(w, "type");
-                    if (type)
-                        can_do_fuzzy = (type == "text");
-                    else
-                        can_do_fuzzy = false;
-                }
-                self.matchHowAllow(id, "__fuzzy", can_do_fuzzy);
-
-                var inequalities = (term.datatype == "timestamp");
-                self.matchHowAllow(id, "__gte", inequalities);
-                self.matchHowAllow(id, "__lte", inequalities);
-
-                if (value) {
-                    if (typeof(w.attr) == "function")
-                        w.attr("value", value);
-                    else
-                        w.value = value;
-                }
-            }
+            where, this.widgets, this._match_how(id), value,
+            this._updateMatchHowForField
         );
     };
 
@@ -308,6 +336,13 @@ function TermManager() {
         dojo.attr(
             match_how, "onchange",
             function() {
+                if (this.getValue() == "__in") {
+                    self.updateRowWidget(uniq);
+                    this.was_in = true;
+                } else if (this.was_in) {
+                    self.updateRowWidget(uniq);
+                    this.was_in = false;
+                }
                 if (self.widgets[uniq]) self.widgets[uniq].focus();
             }
         );
@@ -320,11 +355,13 @@ function TermManager() {
         if (term && hint) {
             var field = hint + ":" + this._term_reverse_selector_field(term);
             selector.setValue(field);
-            this.updateRowWidget(uniq, this._term_reverse_selector_value(term));
 
             var match_how_value = this._term_reverse_match_how(term);
             if (match_how_value)
                 match_how.setValue(match_how_value);
+
+            this.updateRowWidget(uniq, this._term_reverse_selector_value(term));
+
         }
     }
 
