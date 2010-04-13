@@ -22,12 +22,19 @@
                     // first one that it finds.  Given an example location.href of '/xul/server/patron/display.xul' and
                     // a @src of 'foo.html', it will check these URL's in this order:
                     //
-                    // foo.html (if @foo not set, then custom_help.html)
+                    // foo.html
+                    // /xul/server/patron/display.xul.custom_help.html
                     // /xul/server/patron/display.xul.help.html
+                    // /xul/server/patron/custom_help.html
                     // /xul/server/patron/help.html
+                    // /xul/server/custom_help.html
                     // /xul/server/help.html
+                    // /xul/custom_help.html
                     // /xul/help.html
+                    // /custom_help.html
                     // /help.html
+                    //
+                    // If @pathname is specified, it will override the value from location.href
 
                     this.addEventListener( 'command', function(ev) { this._open_window(); }, false);
                 } catch(E) {
@@ -37,65 +44,60 @@
                 ]]>
             </constructor>
 
-            <property name="src">
-                <getter>
-                    <![CDATA[
-                    try {
-                        return this.getAttribute('src');
-                    } catch(E) {
-                        alert('Error getting @src in help widget in bindings.xml: ' + E);
-                        throw(E);
-                    }
-                    ]]>
-                </getter>
-                <setter>
-                    <![CDATA[
-                    try {
-                        this.setAttribute('src',val);
-                        return val;
-                    } catch(E) {
-                        alert('Error setting @src in help widget in bindings.xml: ' + E);
-                        throw(E);
-                    }
-                    ]]>
-                </setter>
-            </property>
-
             <method name="_open_window">
                 <body>
                     <![CDATA[
                     try {
-                            var x = new XMLHttpRequest();
-                            x.open("HEAD",this.src || 'custom_help.html',false);
-                            x.send(null);
-                            if (x.status == 200) {
-                                window.open((this.src || 'custom_help.html')+'?id='+this.id,this.getAttribute('label'),'resizable,scrollbars');
-                            } else {
-                                var pathname = location.pathname;
-                                x.open("HEAD",pathname + '.help.html',false);
+
+                            var obj = this;
+
+                            function test_url(loc) {
+                                if (!loc) { return false; }
+                                var x = new XMLHttpRequest();
+                                x.open("HEAD",loc,false);
                                 x.send(null);
-                                if (x.status == 200) {
-                                    window.open(pathname+'.help.html?id='+this.id,this.getAttribute('label'),'resizable,scrollbars');
+                                return x.status == 200;
+                            }
+
+                            function open_url(loc) {
+                                window.open(loc+'?id='+obj.id,obj.getAttribute('label'),'resizable,scrollbars');
+                            }
+
+                            if (test_url(this.src)) {
+                                open_url(this.src);
+                            } else {
+                                var pathname = obj.getAttribute('pathname') || location.pathname;
+                                if (test_url(pathname + '.custom_help.html')) {
+                                    open_url(pathname + '.custom_help.html');
                                 } else {
-                                    var pathparts = pathname.split('/');
-                                    var url; 
-                                    for (var i = pathparts.length - 2; i>0 && x.status != 200; i--) {
-                                        url = '';
-                                        for ( j = 1; j <= i; j++ ) { url += '/' + pathparts[j]; };
-                                        url = url + '/help.html';
-                                        x.open("HEAD",url,false);
-                                        x.send(null);
-                                    }
-                                    if (x.status == 200) {
-                                        window.open(url+'?id='+this.id,this.getAttribute('label'),'resizable,scrollbars');
+                                    if (test_url(pathname + '.help.html')) {
+                                        open_url(pathname + '.help.html');
                                     } else {
-                                        x.open("HEAD","/help.html",false);
-                                        x.send(null);
-                                        if (x.status == 200) {
-                                            window.open('/help.html?id='+this.id,this.getAttribute('label'),'resizable,scrollbars');
+                                        var pathparts = pathname.split('/');
+                                        var base_url; var url; var test_result;
+                                        for (var i = pathparts.length - 2; i>0 && !test_result; i--) {
+                                            base_url = ''; url = '';
+                                            for ( j = 1; j <= i; j++ ) { base_url += '/' + pathparts[j]; };
+                                            url = base_url + '/custom_help.html';
+                                            test_result = test_url(url);
+                                            if (!test_result) {
+                                                url = base_url + '/help.html';
+                                                test_result = test_url(url);
+                                            }
+                                        }
+                                        if (test_result) {
+                                            open_url(url);
                                         } else {
-                                            /* FIXME - I18N */
-                                            alert('No Help Found');
+                                            if (test_url("/custom_help.html")) {
+                                                open_url("/custom_help.html");
+                                            } else {
+                                                if (test_url("/help.html")) {
+                                                    open_url("/help.html");
+                                                } else {
+                                                    /* FIXME - I18N */
+                                                    alert('No Help Found');
+                                                }
+                                            }
                                         }
                                     }
                                 }
