@@ -4619,10 +4619,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="acqipm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::invoice_payment_method" oils_persist:tablename="acq.invoice_payment_method" reporter:label="Invoice Payment Method">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Code" name="code" reporter:datatype="id"/>
+			<field reporter:label="Code" name="code" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 		</fields>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_INVOICE_PAYMENT_METHOD" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_INVOICE_PAYMENT_METHOD" global_required="true"/>
+                <delete permission="ADMIN_INVOICE_PAYMENT_METHOD" global_required="true"/>
+            </actions>
 		</permacrud>
 	</class>
 
