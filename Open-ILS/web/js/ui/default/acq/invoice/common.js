@@ -24,6 +24,12 @@ function drawInvoicePane(parentNode, inv, args) {
         mode : (inv) ? 'edit' : 'create',
         hideActionButtons : true,
         overrideWidgetArgs : override,
+        requiredFields : [
+            'inv_ident', 
+            'recv_date', 
+            'provider', 
+            'shipper'
+        ],
         fieldOrder : [
             'inv_ident', 
             'recv_date', 
