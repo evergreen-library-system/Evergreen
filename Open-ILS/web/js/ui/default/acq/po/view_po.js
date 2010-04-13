@@ -190,7 +190,7 @@ function cancellationUpdater(r) {
 function makeProviderLink(node, provider) {
     return dojo.create(
         "a", {
-            "href": "/eg/conify/global/acq/provider/" + provider.id(),
+            "href": oilsBasePath + "/conify/global/acq/provider/" + provider.id(),
             "innerHTML": provider.name() + " (" + provider.code() + ")",
         },
         node,
@@ -474,7 +474,7 @@ function splitPo() {
                 oncomplete : function() {
                     progressDialog.hide();
                     if (list) {
-                        location.href = oilsBasePath + '/eg/acq/po/search/' +
+                        location.href = oilsBasePath + '/acq/po/search/' +
                             list.join(",");
                     }
                 }

@@ -212,7 +212,7 @@ function AcqLiTable() {
         }
 
         nodeByName("worksheet_link", row).href =
-            "/eg/acq/lineitem/worksheet/" + li.id();
+            oilsBasePath + "/acq/lineitem/worksheet/" + li.id();
 
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
@@ -694,7 +694,7 @@ function AcqLiTable() {
 
         if (!this._isRelatedViewer) {
             nodeByName("rel_link", dojo.byId("acq-lit-info-related")).href =
-                "/eg/acq/lineitem/related/" + li.id();
+                oilsBasePath + "/acq/lineitem/related/" + li.id();
         }
 
         if(li.eg_bib_id()) {
@@ -2024,7 +2024,7 @@ function AcqLiTable() {
                     var resp = openils.Util.readResponse(r);
                     self._updateProgressNumbers(resp);
                     if(resp.complete) 
-                        location.href = oilsBasePath + '/eg/acq/po/view/' + resp.purchase_order.id();
+                        location.href = oilsBasePath + '/acq/po/view/' + resp.purchase_order.id();
                 }
             }
         );
@@ -2092,7 +2092,7 @@ function AcqLiTable() {
                 function(id) {
                     self._updateLiList(id, selected, 0, 
                         function(){
-                            location.href = oilsBasePath + '/eg/acq/picklist/view/' + id;
+                            location.href = oilsBasePath + '/acq/picklist/view/' + id;
                         });
                 }
             );
@@ -2100,7 +2100,7 @@ function AcqLiTable() {
             // update lineitems to use an existing picklist
             self._updateLiList(values.existing_pl, selected, 0, 
                 function(){
-                    location.href = oilsBasePath + '/eg/acq/picklist/view/' + values.existing_pl;
+                    location.href = oilsBasePath + '/acq/picklist/view/' + values.existing_pl;
                 });
         }
     }

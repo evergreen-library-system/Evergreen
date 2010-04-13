@@ -49,7 +49,7 @@ function drawSurvey(svyId) {
 }
 
 function cancelEdit(){
-    document.location.href = "/eg/conify/global/action/survey";
+    document.location.href = oilsBasePath + "/conify/global/action/survey";
 }
 
 function endSurvey(svyId) {

@@ -151,7 +151,7 @@ function svCreate(args) {
                          svGrid.store.newItem(asv.toStoreItem(obj));
                          svSurveyDialog.hide();
                          svId = obj.id();
-                         document.location.href = "/eg/conify/global/action/survey/edit/"+svId;
+                         document.location.href = oilsBasePath + "/conify/global/action/survey/edit/"+svId;
                      }
                  }
                  );

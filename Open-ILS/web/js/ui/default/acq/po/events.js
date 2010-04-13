@@ -222,7 +222,7 @@ function buildEventGrid() {
 function format_po_link(value) {
     if (value) {
         // FIXME -- how do you escape the value from .name() ?
-        return '<a href="/eg/acq/po/view/' + value + '">' + po_map[ value ].name() + '</a>';
+        return '<a href="' + oilsBasePath + '/acq/po/view/' + value + '">' + po_map[ value ].name() + '</a>';
     }
 }
 
