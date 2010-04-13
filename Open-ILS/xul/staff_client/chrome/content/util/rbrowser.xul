@@ -99,7 +99,7 @@
 
     <commandset id="util_browser_cmds">
         <command id="cmd_broken" />
-        <command id="cmd_print" />
+        <command id="cmd_print" label="&common.browser.print.label;" accesskey="&common.browser.print.accesskey;" />
         <command id="cmd_debug" />
         <command id="cmd_back" label="&common.browser.backward.label;" accesskey="&common.browser.backward.accesskey;" />
         <command id="cmd_reload" label="&common.browser.reload.label;" accesskey="&common.browser.reload.accesskey;" />
@@ -113,9 +113,14 @@
             <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
             <spacer flex="1"/>
             <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
-            <button id="browser_print" label="Print Page" oldcommand="cmd_print" hidden="true"
+            <button id="browser_print"
+                label="&common.browser.print.label;" 
+                accesskey="&common.browser.print.accesskey;" 
+                hidden="true"
+                oldcommand="cmd_print"
                 oncommand="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (g.browser.alt_print) { JSAN.use('util.print'); var p = new util.print(); p.NSPrint(g.browser.get_content(),false,{}); } else { g.browser.get_content().print(); }"
             />
+            <help id="help_btn" label="&common.browser.help.label;" accesskey="&common.browser.help.accesskey;" />
         </hbox>
         <browser id="browser_browser" flex="1" type="content"/>
     </vbox>

@@ -58,6 +58,10 @@
 <!ENTITY common.browser.backward.accesskey "B">
 <!ENTITY common.browser.reload.label "Reload">
 <!ENTITY common.browser.reload.accesskey "l">
+<!ENTITY common.browser.print.label "Print Page">
+<!ENTITY common.browser.print.accesskey "P">
+<!ENTITY common.browser.help.label "Help">
+<!ENTITY common.browser.help.accesskey "H">
 
 <!ENTITY common.textbox.cut "Cut">
 <!ENTITY common.textbox.copy "Copy">

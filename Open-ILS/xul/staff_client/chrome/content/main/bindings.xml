@@ -34,7 +34,10 @@
                     // /custom_help.html
                     // /help.html
                     //
-                    // If @pathname is specified, it will override the value from location.href
+                    // If @pathname is specified, it will override the value from location.pathname
+                    // If @hostname is specified, it will override the value from location.hostname
+                    // If @port is specified, it will override the value from location.port
+                    // If @protocol is specified, it will override the value from location.protocol
 
                     this.addEventListener( 'command', function(ev) { this._open_window(); }, false);
                 } catch(E) {
@@ -50,23 +53,30 @@
                     try {
 
                             var obj = this;
+                            var protocol = obj.getAttribute('protocol') || location.protocol;
+                            var hostname = obj.getAttribute('hostname') || location.hostname;
+                            var port = obj.getAttribute('port') || location.port;
+                            var pathname = obj.getAttribute('pathname') || location.pathname;
 
                             function test_url(loc) {
-                                if (!loc) { return false; }
+                                if (loc == '/' || !loc) { return false; }
                                 var x = new XMLHttpRequest();
-                                x.open("HEAD",loc,false);
+                                var url = protocol + '//' + hostname + ( port ? ':' + port : '' ) + loc;
+                                dump('help widget: testing <'+url+'>\n');
+                                x.open("HEAD", url, false);
                                 x.send(null);
                                 return x.status == 200;
                             }
 
                             function open_url(loc) {
-                                window.open(loc+'?id='+obj.id,obj.getAttribute('label'),'resizable,scrollbars');
+                                var url = protocol + '//' + hostname + ( port ? ':' + port : '' ) + loc +'?id='+obj.id;
+                                dump('help widget: opening <'+url+'>\n');
+                                window.open(url, obj.getAttribute('label'), 'resizable,scrollbars');
                             }
 
-                            if (test_url(this.src)) {
-                                open_url(this.src);
+                            if (test_url('/'+this.getAttribute('src'))) {
+                                open_url('/'+this.getAttribute('src'));
                             } else {
-                                var pathname = obj.getAttribute('pathname') || location.pathname;
                                 if (test_url(pathname + '.custom_help.html')) {
                                     open_url(pathname + '.custom_help.html');
                                 } else {

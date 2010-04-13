@@ -98,7 +98,7 @@
 
     <commandset id="util_browser_cmds">
         <command id="cmd_broken" />
-        <command id="cmd_print" />
+        <command id="cmd_print" label="&common.browser.print.label;" accesskey="&common.browser.print.accesskey;" />
         <command id="cmd_debug" />
         <command id="cmd_back" label="&common.browser.backward.label;" accesskey="&common.browser.backward.accesskey;" />
         <command id="cmd_reload" label="&common.browser.reload.label;" accesskey="&common.browser.reload.accesskey;" />
@@ -112,7 +112,8 @@
             <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
             <spacer flex="1"/>
             <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
-            <button id="browser_print" label="Print Page" command="cmd_print" hidden="true"/>
+            <button id="browser_print" command="cmd_print" hidden="true"/>
+            <help id="help_btn" label="&common.browser.help.label;" accesskey="&common.browser.help.accesskey;" />
         </hbox>
         <browser id="browser_browser" flex="1" type="content"/>
     </vbox>

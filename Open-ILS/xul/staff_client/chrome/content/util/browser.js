@@ -211,8 +211,20 @@ util.browser.prototype = {
         } catch(E) {
             s += E + '\n';
         }
-
         //this.error.sdump('D_BROWSER',s);
+
+        // Let's also update @protocol, @hostname, @port, and @pathname on the <help> widget
+        var help_btn = document.getElementById('help_btn');
+        if (help_btn) {
+            try {
+                help_btn.setAttribute('protocol', obj.get_content().location.protocol);
+                help_btn.setAttribute('hostname', obj.get_content().location.hostname);
+                help_btn.setAttribute('port', obj.get_content().location.port);
+                help_btn.setAttribute('pathname', obj.get_content().location.pathname);
+            } catch(E) {
+                dump('Error in browser.js, setting location on help widget: ' + E);
+            }
+        }
     },
 
     'buildProgressListener' : function() {
