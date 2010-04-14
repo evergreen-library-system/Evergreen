@@ -1883,7 +1883,7 @@ sub find_nearest_permitted_hold {
 
 	# search for what should be the best holds for this copy to fulfill
 	my $best_holds = $U->storagereq(
-		"open-ils.storage.action.hold_request.nearest_hold.atomic",
+        "open-ils.storage.action.hold_request.nearest_hold.atomic", 
 		$user->ws_ou, $copy->id, 10, $hold_stall_interval );
 
 	unless(@$best_holds) {
@@ -2217,7 +2217,7 @@ sub clear_shelf_process {
 
         my $copy = $hold->current_copy;
 
-        if($copy_status) {
+        if($copy_status or $copy_status == 0) {
             # if a clear-shelf copy status is defined, update the copy
             $copy->status($copy_status);
             $copy->edit_date('now');
@@ -2225,49 +2225,58 @@ sub clear_shelf_process {
             $e->update_asset_copy($copy) or return $e->die_event;
         }
 
-        my ($alt_hold) = __PACKAGE__->find_nearest_permitted_hold($e, $copy, $e->requestor, 1);
-
-        if($alt_hold) {
-
-            # copy is needed for a hold
-            $client->respond({action => 'hold', copy => $copy, hold_id => $hold->id});
-
-        } elsif($copy->circ_lib != $e->requestor->ws_ou) {
-
-            # copy needs to transit
-            $client->respond({action => 'transit', copy => $copy, hold_id => $hold->id});
-
-        } else {
-
-            # copy needs to go back to the shelf
-            $client->respond({action => 'shelf', copy => $copy, hold_id => $hold->id});
-        }
-
         push(@holds, $hold);
     }
 
-    $e->commit;
+    if ($e->commit) {
 
-    # tell the client we're done
-    $client->respond_complete;
+        for my $hold (@holds) {
 
-    # fire off the hold cancelation trigger
-    my $trigger = OpenSRF::AppSession->connect('open-ils.trigger');
+            my $copy = $hold->current_copy;
 
-    for my $hold (@holds) {
+            my ($alt_hold) = __PACKAGE__->find_nearest_permitted_hold($e, $copy, $e->requestor, 1);
 
-        my $req = $trigger->request(
-            'open-ils.trigger.event.autocreate', 
-            'hold_request.cancel.expire_holds_shelf', 
-            $hold, $org_id);
+            if($alt_hold) {
 
-        # wait for response so don't flood the service
-        $req->recv;
+                # copy is needed for a hold
+                $client->respond({action => 'hold', copy => $copy, hold_id => $hold->id});
+
+            } elsif($copy->circ_lib != $e->requestor->ws_ou) {
+
+                # copy needs to transit
+                $client->respond({action => 'transit', copy => $copy, hold_id => $hold->id});
+
+            } else {
+
+                # copy needs to go back to the shelf
+                $client->respond({action => 'shelf', copy => $copy, hold_id => $hold->id});
+            }
+        }
+
+        # tell the client we're done
+        $client->respond_complete;
+
+        # fire off the hold cancelation trigger
+        my $trigger = OpenSRF::AppSession->connect('open-ils.trigger');
+
+        for my $hold (@holds) {
+
+            my $req = $trigger->request(
+                'open-ils.trigger.event.autocreate', 
+                'hold_request.cancel.expire_holds_shelf', 
+                $hold, $org_id);
+
+            # wait for response so don't flood the service
+            $req->recv;
+        }
+
+        $trigger->disconnect;
+
+    } else {
+        # tell the client we're done
+        $client->respond_complete;
     }
-
-    $trigger->disconnect;
 }
-
 
 __PACKAGE__->register_method(
     method    => 'usr_hold_summary',
