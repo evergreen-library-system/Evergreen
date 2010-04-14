@@ -3422,15 +3422,18 @@ sub _reset_password_request {
         }
     });
 
-    my $last_request = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($active_requests->[0]->{'request_time'}));
-    my $now = DateTime::Format::ISO8601->new();
+    # Guard against no active requests
+    if ($active_requests->[0]->{'request_time'}) {
+        my $last_request = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($active_requests->[0]->{'request_time'}));
+        my $now = DateTime::Format::ISO8601->new();
 
-    # 3. if (num_active > throttle_threshold) and (now - last_request < 1 minute)
-    if (($active_requests->[0]->{'usr'} > $aupr_throttle) &&
-        ($last_request->add_duration('1 minute') > $now)) {
-        $cache->put_cache('open-ils.actor.password.throttle', DateTime::Format::ISO8601->new(), 60);
-        $e->die_event;
-        return OpenILS::Event->new('PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS');
+        # 3. if (num_active > throttle_threshold) and (now - last_request < 1 minute)
+        if (($active_requests->[0]->{'usr'} > $aupr_throttle) &&
+            ($last_request->add_duration('1 minute') > $now)) {
+            $cache->put_cache('open-ils.actor.password.throttle', DateTime::Format::ISO8601->new(), 60);
+            $e->die_event;
+            return OpenILS::Event->new('PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS');
+        }
     }
 
     # TODO Check to see if the user is in a password-reset-restricted group
