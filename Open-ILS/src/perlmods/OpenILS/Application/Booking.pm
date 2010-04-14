@@ -778,22 +778,37 @@ sub could_capture {
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed("CAPTURE_RESERVATION");
 
+    my $dt_parser = new DateTime::Format::ISO8601;
+    my $now = now DateTime; # sic
     my $res = get_uncaptured_bresv_for_brsrc($e, {"barcode" => $barcode});
+
     if ($res and keys %$res) {
         my $id;
         while ((undef, $id) = each %$res) {
-            $client->respond(
-                $e->retrieve_booking_reservation([
-                    $id, {
-                        "flesh" => 1, "flesh_fields" => {
-                            "bresv" => [qw(
-                                usr target_resource_type
-                                target_resource current_resource
-                            )]
-                        }
+            my $bresv = $e->retrieve_booking_reservation([
+                $id, {
+                    "flesh" => 1, "flesh_fields" => {
+                        "bresv" => [qw(
+                            usr target_resource_type
+                            target_resource current_resource
+                        )]
                     }
-                ])
+                }
+            ]);
+            my $elbow_room = interval_to_seconds(
+                $bresv->target_resource_type->elbow_room ||
+                $U->ou_ancestor_setting_value(
+                    $bresv->pickup_lib,
+                    "circ.booking_reservation.default_elbow_room"
+                ) ||
+                "0 seconds"
             );
+            my $start_time = $dt_parser->parse_datetime(
+                clense_ISO8601($bresv->start_time)
+            );
+
+            $client->respond($bresv) if
+                $now >= $start_time->subtract("seconds" => $elbow_room);
         }
     }
     $e->disconnect;
