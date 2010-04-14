@@ -88,6 +88,7 @@ function createResetDialog() {
     var usernameText = new dijit.form.TextBox({
         name: "username"
     }).placeAt(pwResetFormCell);
+    dojo.create("br", null, pwResetFormDiv);
     var submitButton = new dijit.form.Button({
         id: "submitButton",
         type: "submit",
