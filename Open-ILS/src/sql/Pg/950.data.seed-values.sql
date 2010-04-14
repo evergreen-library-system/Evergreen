@@ -1941,6 +1941,22 @@ INSERT into config.org_unit_setting_type
     'bool' )
 ;
 
+-- 0234.data.org-setting-ui.circ.suppress_checkin_popups.sql
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'ui.circ.suppress_checkin_popups',
+        oils_i18n_gettext(
+            'ui.circ.suppress_checkin_popups', 
+            'Suppress popup-dialogs during check-in.', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'ui.circ.suppress_checkin_popups', 
+            'Suppress popup-dialogs during check-in.', 
+            'coust', 
+            'description'),
+        'bool'
+);
+
 -- Org_unit_setting_type(s) that need an fm_class:
 INSERT into config.org_unit_setting_type
 ( name, label, description, datatype, fm_class ) VALUES
