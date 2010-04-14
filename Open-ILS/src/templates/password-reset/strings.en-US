@@ -1,3 +1,4 @@
+BUTTON_SUBMIT=Submit
 REQUEST_TITLE=Library system password reset request form
 IDENTIFY_YOURSELF=Please enter your user name or barcode to identify your library account and request a password reset.
 REQUEST_SUCCESS=Your user name or barcode has been submitted for a password reset. If a matching account with an email address is found, you will soon receive an email at that address with further instructions for resetting your password.
