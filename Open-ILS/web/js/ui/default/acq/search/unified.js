@@ -89,7 +89,9 @@ function TermSelectorFactory(terms) {
                 "datatype": self.terms[parts[0]][parts[1]].datatype
             };
         },
-        "makeWidget": function(parentNode, wStore, matchHow, value, callback) {
+        "makeWidget": function(
+            parentNode, wStore, matchHow, value, noFocus, callback
+        ) {
             var term = this.getTerm();
             var widgetKey = this.uniq;
             if (matchHow.getValue() == "__in") {
@@ -116,7 +118,8 @@ function TermSelectorFactory(terms) {
                 );
                 if (typeof(value) != "undefined")
                     wStore[widgetKey].value = value;
-                wStore[widgetKey].focus();
+                if (!noFocus)
+                    wStore[widgetKey].focus();
                 if (typeof(callback) == "function")
                     callback(term, widgetKey);
             } else {
@@ -130,7 +133,8 @@ function TermSelectorFactory(terms) {
                         wStore[widgetKey] = w;
                         if (typeof(value) != "undefined")
                             w.attr("value", value);
-                        w.focus();
+                        if (!noFocus)
+                            w.focus();
                         if (typeof(callback) == "function")
                             callback(term, widgetKey);
                     }
@@ -274,14 +278,14 @@ function TermManager() {
             field_map[term.field]["class"];
     };
 
-    this.updateRowWidget = function(id, value) {
+    this.updateRowWidget = function(id, value, noFocus) {
         var where = nodeByName("widget", this._row(id));
 
         delete this.widgets[id];
         dojo.empty(where);
 
         this._selector(id).makeWidget(
-            where, this.widgets, this._match_how(id), value,
+            where, this.widgets, this._match_how(id), value, noFocus,
             this._updateMatchHowForField
         );
     };
@@ -353,14 +357,18 @@ function TermManager() {
         dojo.place(row, "acq-unified-terms-tbody", "last");
 
         if (term && hint) {
-            var field = hint + ":" + this._term_reverse_selector_field(term);
+            var attr = this._term_reverse_selector_field(term);
+            var field = hint + ":" + attr;
             selector.setValue(field);
 
             var match_how_value = this._term_reverse_match_how(term);
             if (match_how_value)
                 match_how.setValue(match_how_value);
 
-            this.updateRowWidget(uniq, this._term_reverse_selector_value(term));
+            var value = this._term_reverse_selector_value(term);
+            if (this.terms[hint][attr].datatype == "timestamp")
+                value = dojo.date.stamp.fromISOString(value);
+            this.updateRowWidget(uniq, value, /* noFocus */ true);
 
         }
     }
