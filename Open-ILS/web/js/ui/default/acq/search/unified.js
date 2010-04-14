@@ -115,7 +115,7 @@ function TermSelectorFactory(terms) {
                     "input", {"type": "text"}, parentNode, "only"
                 );
                 if (typeof(value) != "undefined")
-                    wStore[widgetKey].attr("value", value);
+                    wStore[widgetKey].value = value;
                 wStore[widgetKey].focus();
                 if (typeof(callback) == "function")
                     callback(term, widgetKey);
