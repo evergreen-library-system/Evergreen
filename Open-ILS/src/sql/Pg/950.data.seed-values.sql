@@ -3958,14 +3958,6 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, f
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES ( 
-        'circ.holds.clear_shelf.no_capture_holds',
-        oils_i18n_gettext('circ.holds.clear_shelf.no_capture_holds', 'Holds: Bypass hold capture during clear shelf process', 'coust', 'label'),
-        oils_i18n_gettext('circ.holds.clear_shelf.no_capture_holds', 'During the clear shelf process, avoid capturing new holds on cleared items.', 'coust', 'description'),
-        'bool'
-    );
-
-INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES ( 
         'circ.selfcheck.workstation_required',
         oils_i18n_gettext('circ.selfcheck.workstation_required', 'Selfcheck: Workstation Required', 'coust', 'label'),
         oils_i18n_gettext('circ.selfcheck.workstation_required', 'All selfcheck stations must use a workstation', 'coust', 'description'),
