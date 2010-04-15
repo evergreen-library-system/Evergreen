@@ -416,8 +416,34 @@ util.network.prototype = {
         var obj = this;
         try {
             if (!override_params.text) override_params.text = {};
+            if (!override_params.auto_override_these_events) override_params.auto_override_these_events = [];
             function override(r) {
                 try {
+                    // test to see if we can suppress this dialog and auto-override
+                    var auto_override = false;
+                    if (override_params.auto_override_these_events.length > 0) {
+                        auto_override = true;
+                        for (var i = 0; i < r.length; i++) {
+                            if ( 
+                                (r[i].ilsevent != 'undefined') && 
+                                (
+                                    (override_params.auto_override_these_events.indexOf( r[i].ilsevent == null ? null : Number(r[i].ilsevent) ) != -1) ||
+                                    (override_params.auto_override_these_events.indexOf( r[i].textcode ) != -1) 
+                                )
+                            ) {
+                                // so far so good
+                            } else {
+                                // showstopper
+                                auto_override = false;
+                            }
+                        }
+                    }
+                    if (auto_override) {
+                        obj.sound.bad();
+                        req = obj._request(app,name + '.override',params);
+                        return req;
+                    }
+
                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
                     obj.sound.bad();
                     var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 

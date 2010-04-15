@@ -2253,6 +2253,8 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
             }
         }
 
+        var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
+
         var check = network.request(
             api.CHECKIN_VIA_BARCODE.app,
             api.CHECKIN_VIA_BARCODE.method,
@@ -2260,6 +2262,19 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
             async ? checkin_callback : null,
             {
                 'title' : document.getElementById('circStrings').getString('staff.circ.utils.checkin.override'),
+                'auto_override_these_events' : suppress_popups ? [
+                    null /* custom event */,
+                    1203 /* COPY_BAD_STATUS */,
+                    1213 /* PATRON_BARRED */,
+                    1217 /* PATRON_INACTIVE */,
+                    1224 /* PATRON_ACCOUNT_EXPIRED */,
+                    1234 /* ITEM_DEPOSIT_PAID */,
+                    7009 /* CIRC_CLAIMS_RETURNED */,
+                    7010 /* COPY_ALERT_MESSAGE */,
+                    7011 /* COPY_STATUS_LOST */,
+                    7012 /* COPY_STATUS_MISSING */,
+                    7013 /* PATRON_EXCEEDS_FINES */
+                ] : [],
                 'overridable_events' : [
                     null /* custom event */,
                     1203 /* COPY_BAD_STATUS */,
@@ -2271,7 +2286,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
                     7010 /* COPY_ALERT_MESSAGE */,
                     7011 /* COPY_STATUS_LOST */,
                     7012 /* COPY_STATUS_MISSING */,
-                    7013 /* PATRON_EXCEEDS_FINES */,
+                    7013 /* PATRON_EXCEEDS_FINES */
                 ],
                 'text' : {
                     '1203' : function(r) {
@@ -2307,6 +2322,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
         JSAN.use('util.network'); var network = new util.network();
         JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
         JSAN.use('util.date');
+        JSAN.use('util.sound'); var sound = new util.sound();
 
         error.sdump('D_DEBUG','check = ' + error.pretty_print( js2JSON( check ) ) );
 
@@ -2526,11 +2542,14 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         msg += '\n';
                     }
                     var rv = 0;
-                    var no_print_prompting = data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+                    var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
+                    if (suppress_popups) {
+                        rv = auto_print ? 0 : -1; auto_print = true; // skip dialog and PRINT or DO NOT PRINT based on Auto-Print checkbox
+                    }
+                    var x = data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+                    var no_print_prompting = x ? ( x.indexOf( "Hold Slip" ) > -1) : false;
                     if (no_print_prompting) {
-                        if (no_print_prompting.indexOf( "Hold Slip" ) > -1) {
-                            rv = -1; auto_print = true; // DO NOT PRINT and skip dialog
-                        }
+                        rv = -1; auto_print = true; // DO NOT PRINT and skip dialog
                     }
                     print_data.slip_date = util.date.formatted_date(new Date(),'%F');
                     print_data.slip_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.slip_date', [print_data.slip_date]);
@@ -2548,6 +2567,11 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
                             '/xul/server/skin/media/images/turtle.gif'
                         );
+                    } else {
+                        if (suppress_popups && !no_print_prompting) {
+                            // FIXME: Add SFX and/or GFX
+                            sound.circ_bad();
+                        }
                     }
                     if (rv == 0) {
                         try {
@@ -2599,15 +2623,17 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     check.what_happened = 'cataloging';
                     check.route_to = 'CATALOGING';
                     print_data.route_to;
-                    if (document.getElementById('do_not_alert_on_precat')) {
-                        var x = document.getElementById('do_not_alert_on_precat');
-                        if (x.getAttribute('checked') != 'true') {
-                            print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
-                            msg += print_data.route_to_msg;
-                        }
-                    } else {
+                    var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
+                    var x = document.getElementById('do_not_alert_on_precat');
+                    var do_not_alert_on_precats = x ? ( x.getAttribute('checked') == 'true' ) : false;
+                    if ( !suppress_popups && !do_not_alert_on_precats ) {
                         print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
                         msg += print_data.route_to_msg;
+                    } else {
+                        if (suppress_popups && !do_not_alert_on_precats) {
+                            // FIXME: add SFX and/or GFX
+                            sound.circ_bad();
+                        }
                     }
                     if (document.getElementById('no_change_label')) {
                         var m = document.getElementById('no_change_label').getAttribute('value');
@@ -2763,11 +2789,14 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 msg += '\n';
             }
             var rv = 0;
-            var no_print_prompting = data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+            var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
+            if (suppress_popups) {
+                rv = auto_print ? 0 : -1; auto_print = true; // skip dialog and PRINT or DO NOT PRINT based on Auto-Print checkbox
+            }
+            var x = data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
+            var no_print_prompting = x ? (x.indexOf( check.payload.hold ? "Hold/Transit Slip" : "Transit Slip" ) > -1) : false;
             if (no_print_prompting) {
-                if (no_print_prompting.indexOf( check.payload.hold ? "Hold/Transit Slip" : "Transit Slip" ) > -1) {
-                    rv = -1; auto_print = true; // DO NOT PRINT and skip dialog
-                }
+                rv = -1; auto_print = true; // DO NOT PRINT and skip dialog
             }
             print_data.slip_date = util.date.formatted_date(new Date(),'%F');
             print_data.slip_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.slip_date', [print_data.slip_date]);
@@ -2784,6 +2813,11 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
                     '/xul/server/skin/media/images/turtle.gif'
                 );
+            } else {
+                if (suppress_popups && !no_print_prompting) {
+                    // FIXME: add SFX and/or GFX
+                    sound.circ_bad();
+                }
             }
             if (rv == 0) {
                 try {
@@ -2826,14 +2860,20 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             check.what_happened = 'not_found';
             check.route_to = 'CATALOGING';
             var mis_scan_msg = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [params.barcode]);
-            error.yns_alert(
-                mis_scan_msg,
-                document.getElementById('circStrings').getString('staff.circ.alert'),
-                null,
-                document.getElementById('circStrings').getString('staff.circ.utils.msg.ok'),
-                null,
-                document.getElementById('circStrings').getString('staff.circ.confirm.msg')
-            );
+            var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
+            if (!suppress_popups) {
+                error.yns_alert(
+                    mis_scan_msg,
+                    document.getElementById('circStrings').getString('staff.circ.alert'),
+                    null,
+                    document.getElementById('circStrings').getString('staff.circ.utils.msg.ok'),
+                    null,
+                    document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+                );
+            } else {
+                // FIXME: add SFX and/or GFX
+                sound.circ_bad();
+            }
             if (document.getElementById('no_change_label')) {
                 var m = document.getElementById('no_change_label').getAttribute('value');
                 document.getElementById('no_change_label').setAttribute('value',m + mis_scan_msg + '  ');
@@ -2845,15 +2885,21 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             check.what_happened = 'hold_capture_delayed';
             var rv = 0;
             msg += document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.description');
-            rv = error.yns_alert_formatted(
-                msg,
-                document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.titlebar'),
-                document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.prompt_for_nocapture'),
-                document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.prompt_for_capture'),
-                null,
-                document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
-                '/xul/server/skin/media/images/stop_sign.png'
-            );
+            var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popupst'];
+            if (!suppress_popups) {
+                rv = error.yns_alert_formatted(
+                    msg,
+                    document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.titlebar'),
+                    document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.prompt_for_nocapture'),
+                    document.getElementById('circStrings').getString('staff.circ.utils.hold_capture_delayed.prompt_for_capture'),
+                    null,
+                    document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
+                    '/xul/server/skin/media/images/stop_sign.png'
+                );
+            } else {
+                // FIXME: add SFX and/or GFX
+                sound.circ_bad();
+            }
             params.capture = rv == 0 ? 'nocapture' : 'capture';
 
             return circ.util.checkin_via_barcode(session,params,backdate,auto_print,false);

@@ -6,12 +6,12 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
         'ui.circ.suppress_checkin_popups',
         oils_i18n_gettext(
             'ui.circ.suppress_checkin_popups', 
-            'Suppress popup-dialogs during check-in.', 
+            'Circ: Suppress popup-dialogs during check-in.', 
             'coust', 
             'label'),
         oils_i18n_gettext(
             'ui.circ.suppress_checkin_popups', 
-            'Suppress popup-dialogs during check-in.', 
+            'Circ: Suppress popup-dialogs during check-in.', 
             'coust', 
             'description'),
         'bool'
