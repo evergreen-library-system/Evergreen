@@ -25,6 +25,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
             this.root = kwargs.root;
             this.record = kwargs.record;
             this.org_unit = kwargs.org_unit || '-';
+            this.locale = kwargs.locale || 'en-US';
 
             this.mode = 'biblio-record_entry';
             this.default_datatype = 'marcxml-uris';
@@ -57,7 +58,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                 (function (slot_list,dtype,mode,rec,org) {
 
                     dojo.xhrGet({
-                        url: '/opac/extras/unapi?id=tag:opac:' + mode + '/' + rec + '/' + org + '&format=' + dtype,
+                        url: '/opac/extras/unapi?id=tag:opac:' + mode + '/' + rec + '/' + org + '&format=' + dtype + '&locale=' + this.locale,
                         handleAs: 'xml',
                         load: function (bib) {
 
