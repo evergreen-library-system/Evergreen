@@ -323,6 +323,9 @@ sub unapi {
 	my $skin = $cgi->param('skin') || 'default';
 	my $locale = $cgi->param('locale') || 'en-US';
 
+	# Enable localized results of copy status, etc
+	$supercat->session_locale($locale);
+
 	my $format = $cgi->param('format');
 	my $flesh_feed = parse_feed_type($format);
 	(my $base_format = $format) =~ s/(-full|-uris)$//o;
@@ -606,6 +609,9 @@ sub supercat {
 
 	my $skin = $cgi->param('skin') || 'default';
 	my $locale = $cgi->param('locale') || 'en-US';
+
+	# Enable localized results of copy status, etc
+	$supercat->session_locale($locale);
 	
 	if ( $path =~ m{^/formats(?:/([^\/]+))?$}o ) {
 		print "Content-type: application/xml; charset=utf-8\n";
@@ -844,6 +850,9 @@ sub bookbag_feed {
 	my $locale = $cgi->param('locale') || 'en-US';
 	my $org = $cgi->param('searchOrg');
 
+	# Enable localized results of copy status, etc
+	$supercat->session_locale($locale);
+
 	my $org_unit = get_ou($org);
 	my $scope = "l=" . $org_unit->[0]->id . "&";
 
@@ -925,6 +934,9 @@ sub changes_feed {
 	my $skin = $cgi->param('skin') || 'default';
 	my $locale = $cgi->param('locale') || 'en-US';
 	my $org = $cgi->param('searchOrg');
+
+	# Enable localized results of copy status, etc
+	$supercat->session_locale($locale);
 
 	my $org_unit = get_ou($org);
 	my $scope = "l=" . $org_unit->[0]->id . "&";
