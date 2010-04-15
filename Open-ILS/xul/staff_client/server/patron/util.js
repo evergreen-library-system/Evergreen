@@ -753,6 +753,8 @@ patron.util.merge = function(record_ids) {
     try {
         netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
         JSAN.use('util.error'); error = new util.error();
+        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+        var horizontal_interface = String( data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
         var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
         top_xml += '<description>' + $("patronStrings").getString('staff.patron.usr_buckets.merge_records.merge_lead') + '</description>';
         top_xml += '<hbox>';
@@ -762,24 +764,47 @@ patron.util.merge = function(record_ids) {
                 + $("patronStrings").getString('staff.patron.usr_buckets.merge_records.cancel_button.accesskey') +'" name="fancy_cancel"/></hbox></vbox>';
 
         var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
-        xml += '<table><tr valign="top">';
-        for (var i = 0; i < record_ids.length; i++) {
+        xml += '<table>';
+
+        function table_cell_with_lead_button(id) {
+            var xml = '';
             xml += '<td><input value="' + $("patronStrings").getString('staff.patron.usr_buckets.merge_records.lead')
-            xml += '" id="record_' + record_ids[i] + '" type="radio" name="lead"';
+            xml += '" id="record_' + id + '" type="radio" name="lead"';
             xml += ' onclick="' + "try { var x = $('lead'); x.setAttribute('value',";
-            xml += record_ids[i] + '); x.disabled = false; } catch(E) { alert(E); }">';
-            xml += '</input>' + $("patronStrings").getFormattedString('staff.patron.usr_buckets.merge_records.lead_record_number',[record_ids[i]]) + '</td>';
+            xml += id + '); x.disabled = false; } catch(E) { alert(E); }">';
+            xml += '</input>' + $("patronStrings").getFormattedString('staff.patron.usr_buckets.merge_records.lead_record_number',[id]) + '</td>';
+            return xml;
         }
-        xml += '</tr><tr valign="top">';
+
+        var iframe_css;
+        if (!horizontal_interface) {
+            xml += '<tr valign="top">';
+            for (var i = 0; i < record_ids.length; i++) {
+                xml += table_cell_with_lead_button( record_ids[i] );
+            }
+            xml += '</tr><tr valign="top">';
+            iframe_css = 'min-height: 1000px; min-width: 300px;';
+        } else {
+            iframe_css = 'min-height: 200px; min-width: 1000px;';
+        }
         for (var i = 0; i < record_ids.length; i++) {
-            xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px" flex="1" src="' + urls.XUL_PATRON_SUMMARY; 
+            if (horizontal_interface) {
+                xml += '<tr valign="top">' + table_cell_with_lead_button( record_ids[i] );
+            }
+            xml += '<td nowrap="nowrap"><iframe style="' + iframe_css + '" flex="1" src="' + urls.XUL_PATRON_SUMMARY; 
             xml += '?id=' + record_ids[i] + '&amp;show_name=1"/></td>';
+            if (horizontal_interface) {
+                xml += '</tr>';
+            }
         }
-        xml += '</tr></table></form>';
+        if (!horizontal_interface) {
+            xml += '</tr>';
+        }
+        xml += '</table></form>';
         JSAN.use('util.window'); var win = new util.window();
         var fancy_prompt_data = win.open(
             urls.XUL_FANCY_PROMPT,
-            'fancy_prompt', 'chrome,resizable,modal,width=750,height=500',
+            'fancy_prompt', 'chrome,resizable,modal,width=1000,height=700',
             {
                 'top_xml' : top_xml, 'xml' : xml, 'title' : $("patronStrings").getString('staff.patron.usr_buckets.merge_records.fancy_prompt_title')
             }
