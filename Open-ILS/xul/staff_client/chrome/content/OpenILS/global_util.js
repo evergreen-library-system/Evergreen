@@ -66,8 +66,14 @@
         }
     }
 
-    function persist_helper() {
+    function persist_helper(base_key_suffix) {
         try {
+            if (base_key_suffix) {
+                base_key_suffix = base_key_suffix.replace(/[^A-Za-z]/g,'_') + '_';
+            } else {
+                base_key_suffix = '';
+            }
+
             function gen_event_handler(etype,node) {
                 return function(ev) {
                     try {
@@ -90,7 +96,7 @@
                             target = ev.target;
                         }
                         var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
-                        var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + target.getAttribute('id')).replace('/','_','g') + '_';
+                        var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + target.getAttribute('id')).replace('/','_','g') + '_' + base_key_suffix;
                         var attribute_list = target.getAttribute('oils_persist').split(' ');
                         dump('on_oils_persist: <<< ' + target.nodeName + '.id = ' + target.id + '\t' + bk + '\n');
                         for (var j = 0; j < attribute_list.length; j++) {
@@ -126,7 +132,7 @@
             var nodes = document.getElementsByAttribute('oils_persist','*');
             for (var i = 0; i < nodes.length; i++) {
                 var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
-                var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + nodes[i].getAttribute('id')).replace('/','_','g') + '_';
+                var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + nodes[i].getAttribute('id')).replace('/','_','g') + '_' + base_key_suffix;
                 var attribute_list = nodes[i].getAttribute('oils_persist').split(' ');
                 dump('persist_helper: >>> ' + nodes[i].nodeName + '.id = ' + nodes[i].id + '\t' + base_key + '\n');
                 for (var j = 0; j < attribute_list.length; j++) {
