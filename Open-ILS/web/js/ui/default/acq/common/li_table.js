@@ -220,6 +220,15 @@ function AcqLiTable() {
 
         this.updateLiNotesCount(li, row);
 
+        if (li.claim_policy()) {
+            var actViewInvoice = nodeByName("action_view_claim_policy", row);
+            actViewInvoice.disabled = false;
+            actViewInvoice.onclick = function() {
+                location.href = oilsBasePath + "/conify/global/acq/claim_policy/" +
+                    li.claim_policy();
+            };
+        }
+
         // show which PO this lineitem is a member of
         if(li.purchase_order() && !this.isPO) {
             var po = 

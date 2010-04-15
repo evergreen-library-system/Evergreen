@@ -77,6 +77,7 @@
                                     <td style='width:70%;font-weight:bold;'>
                                         <a attr='title' href='javascript:void(0);'></a>
                                         <span name="worksheet">(<a name="worksheet_link" href="javascript:void(0);">&#x270D;</a>)</span>
+                                        <span name="claim_policy" class="hidden">(Claim Policy: <a name="claim_policy_link" href="javascript:void(0);"></a>)</span>
                                         <span name='pl' class='hidden'>(<a name='pl_link' href='javascript:void(0);'></a>)</span>
                                         <span name='po' class='hidden'>(<a name='po_link' href='javascript:void(0);'>PO</a>)</span>
                                     </td>
@@ -111,6 +112,7 @@
                             <option name='action_new_invoice' disabled='disabled'>New Invoice</option>
                             <option name='action_link_invoice' disabled='disabled'>Link to Invoice</option>
                             <option name='action_view_invoice' disabled='disabled'>View Invoice(s)</option>
+                            <option name='action_view_claim_policy' disabled='disabled'>View Claim Policy</option>
                         </select>
                     </td>
                     <td><span name='li_state'></span></td>

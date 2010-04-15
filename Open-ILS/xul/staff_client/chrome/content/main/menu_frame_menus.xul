@@ -133,6 +133,10 @@
     <command id="cmd_server_admin_acq_cancel_reason"/>
     <command id="cmd_server_admin_acq_lineitem_alert"/>
     <command id="cmd_server_admin_acq_fund_tag"/>
+    <command id="cmd_server_admin_acq_claim_type"/>
+    <command id="cmd_server_admin_acq_claim_event_type"/>
+    <command id="cmd_server_admin_acq_claim_policy"/>
+    <command id="cmd_server_admin_acq_claim_policy_action"/>
     <command id="cmd_server_admin_z39_source"/>
     <command id="cmd_server_admin_circ_mod"/>
     <command id="cmd_server_admin_org_unit_setting_type"/>
@@ -357,6 +361,11 @@
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;" command="cmd_server_admin_acq_lineitem_alert"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.fund_tag.label;" accesskey="&staff.main.menu.admin.server_admin.acq.fund_tag.accesskey;" command="cmd_server_admin_acq_fund_tag"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.cancel_reason.label;" accesskey="&staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey;" command="cmd_server_admin_acq_cancel_reason"/>
+                        <menuseparator />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_type.accesskey;" command="cmd_server_admin_acq_claim_type"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_event_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey;" command="cmd_server_admin_acq_claim_event_type"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy.accesskey;" command="cmd_server_admin_acq_claim_policy"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy_action.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey;" command="cmd_server_admin_acq_claim_policy_action"/>
                     </menupopup>
                 </menu>
                 <menu id="main.menu.admin.server.booking" label="&staff.main.menu.admin.server_admin.booking.label;" accesskey="&staff.main.menu.admin.server_admin.booking.accesskey;">

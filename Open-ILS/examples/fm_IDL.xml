@@ -6156,12 +6156,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_CLAIM_TYPE" context_field="org_unit"/>
+				<retrieve permission="ADMIN_ACQ_CLAIM_TYPE ADMIN_ACQ_CLAIM VIEW_CLAIM MANAGE_CLAIM" context_field="org_unit"/>
+				<update permission="ADMIN_ACQ_CLAIM_TYPE" context_field="org_unit"/>
+				<delete permission="ADMIN_ACQ_CLAIM_TYPE" context_field="org_unit"/>
+			</actions>
 		</permacrud>
 	</class>
 
 	<class id="acqclet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_event_type" oils_persist:tablename="acq.claim_event_type" reporter:label="Claim Event Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_event_type_id_seq">
-			<field reporter:label="Claim Event Type ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Claim Event Type ID" name="id" reporter:datatype="id" reporter:selector="code" />
 			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
 			<field reporter:label="Code" name="code" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
@@ -6171,6 +6177,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ACQ_CLAIM_EVENT_TYPE" context_field="org_unit"/>
+				<retrieve permission="ADMIN_ACQ_CLAIM_EVENT_TYPE ADMIN_ACQ_CLAIM VIEW_CLAIM MANAGE_CLAIM" context_field="org_unit"/>
+				<update permission="ADMIN_ACQ_CLAIM_EVENT_TYPE" context_field="org_unit"/>
+				<delete permission="ADMIN_ACQ_CLAIM_EVENT_TYPE" context_field="org_unit"/>
+			</actions>
 		</permacrud>
 	</class>
 
@@ -6231,7 +6243,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="action"/>
 			<field reporter:label="Claim Policy ID" name="claim_policy" reporter:datatype="link"/>
 			<field reporter:label="Action Interval" name="action_interval" reporter:datatype="interval"/>
-			<field reporter:label="Action" name="action" reporter:datatype="link"/>
+			<field reporter:label="Action (Event Type)" name="action" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="claim_policy" reltype="has_a" key="id" map="" class="acqclp"/>

@@ -696,6 +696,14 @@
 <!ENTITY staff.main.menu.admin.server_admin.acq.fund_tag.accesskey "F">
 <!ENTITY staff.main.menu.admin.server_admin.acq.cancel_reason.label "Cancel Reasons">
 <!ENTITY staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey "C">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_type.label "Claim Types">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_type.accesskey "T">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_event_type.label "Claim Event Types">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey "E">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy.label "Claim Policies">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy.accesskey "P">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy_action.label "Claim Policy Actions">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey "A">
 
 <!ENTITY staff.main.menu.admin.server_admin.booking.label "Booking">
 <!ENTITY staff.main.menu.admin.server_admin.booking.accesskey "B">

@@ -667,6 +667,22 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/cancel_reason'); }
             ],
+            'cmd_server_admin_acq_claim_type' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/claim_type'); }
+            ],
+            'cmd_server_admin_acq_claim_event_type' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/claim_event_type'); }
+            ],
+            'cmd_server_admin_acq_claim_policy' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/claim_policy'); }
+            ],
+            'cmd_server_admin_acq_claim_policy_action' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/claim_policy_action'); }
+            ],
             'cmd_server_admin_z39_source' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/z3950_source'); }
