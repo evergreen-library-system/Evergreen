@@ -198,7 +198,7 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
 /* INVOICING */
 #oils-acq-invoice-table td { padding: 5px; }
 .oils-acq-invoice-table td { padding: 5px; vertical-align: bottom;}
-.oils-acq-invoice-table thead td { font-weight: bold; background: #e0e0e0;}
+.oils-acq-invoice-table thead th { font-weight: bold; background: #e0e0e0;}
 #acq-invoice-new-msg { font-weight: bold; margin: 10px;}
 #acq-invoice-li-details { padding: 10px; font-weight: bold; border: 1px solid #888; margin: 10px; }
 #acq-invoice-create { margin: 10px; }
@@ -207,6 +207,8 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
 .acq-invoice-row td { border-bottom: 1px solid #e0e0e0; }
 .acq-invoice-invalid-amount input { color: red; font-weight: bold; }
 .acq-link-invoice-dialog td,.acq-link-invoice-dialog th {padding-top: 10px;}
+.acq-invoice-paid-col {background : #E0E0E0; text-align: center;}
+.acq-invoice-center-col { text-align: center; }
 
 #acq-unified-heading { margin-bottom: 10px; }
 #acq-unified-heading-actual { float: left; width: 50%; font-size: 120%; font-weight: bold; }

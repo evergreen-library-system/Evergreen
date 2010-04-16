@@ -108,4 +108,9 @@ table { border-collapse: collapse; }
 
 .oils-progress-dialog { width: 300px; }
 
-
+.openils-widget-editpane-ro-name-cell {
+    font-weight: bold;
+}
+.openils-widget-editpane-ro-value-cell {
+    text-decoration: underline;
+}

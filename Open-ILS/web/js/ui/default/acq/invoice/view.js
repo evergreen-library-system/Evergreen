@@ -77,6 +77,24 @@ function renderInvoice() {
 
     updateTotalCost();
 
+    if(invoice && openils.Util.isTrue(invoice.complete())) {
+
+        dojo.forEach( // hide widgets that should not be visible for a completed invoice
+            dojo.query('.hide-complete'), 
+            function(node) { openils.Util.hide(node); }
+        );
+
+        new openils.User().getPermOrgList(
+            'ACQ_INVOICE_REOPEN', 
+            function (orgs) {
+                if(orgs.indexOf(invoice.receiver()) >= 0)
+                    openils.Util.show('acq-invoice-reopen-button-wrapper', 'inline');
+            }, 
+            true, 
+            true
+        );
+    }
+
     if(invoice) {
         dojo.forEach(
             invoice.items(),
@@ -169,22 +187,23 @@ function updateTotalCost() {
     var totalCost = 0;    
     for(var id in widgetRegistry.acqii) 
         if(!widgetRegistry.acqii[id]._object.isdeleted())
-            totalCost += widgetRegistry.acqii[id].cost_billed.getFormattedValue();
+            totalCost += Number(widgetRegistry.acqii[id].cost_billed.getFormattedValue());
     for(var id in widgetRegistry.acqie) 
         if(!widgetRegistry.acqie[id]._object.isdeleted())
-            totalCost += widgetRegistry.acqie[id].cost_billed.getFormattedValue();
+            totalCost += Number(widgetRegistry.acqie[id].cost_billed.getFormattedValue());
     totalInvoicedBox.attr('value', totalCost);
 
     totalPaid = 0;    
     for(var id in widgetRegistry.acqii) 
         if(!widgetRegistry.acqii[id]._object.isdeleted())
-            totalPaid += widgetRegistry.acqii[id].amount_paid.getFormattedValue();
+            totalPaid += Number(widgetRegistry.acqii[id].amount_paid.getFormattedValue());
     for(var id in widgetRegistry.acqie) 
         if(!widgetRegistry.acqie[id]._object.isdeleted())
-            totalPaid += widgetRegistry.acqie[id].amount_paid.getFormattedValue();
+            totalPaid += Number(widgetRegistry.acqie[id].amount_paid.getFormattedValue());
     totalPaidBox.attr('value', totalPaid);
 
     var buttonsDisabled = false;
+
     if(totalPaid > totalCost || totalPaid < 0) {
         openils.Util.addCSSClass(totalPaidBox.domNode, 'acq-invoice-invalid-amount');
         invoiceSaveButton.attr('disabled', true);
@@ -206,6 +225,12 @@ function updateTotalCost() {
             invoiceSaveButton.attr('disabled', false);
             invoiceProrateButton.attr('disabled', false);
         }
+    }
+
+    if(totalPaid == totalCost) { // XXX: too rigid?
+        invoiceCloseButton.attr('disabled', false);
+    } else {
+        invoiceCloseButton.attr('disabled', true);
     }
 
     balanceOwedBox.attr('value', (totalCost - totalPaid));
@@ -243,6 +268,13 @@ function addInvoiceItem(item) {
     dojo.forEach(
         ['title', 'author', 'cost_billed', 'amount_paid'], 
         function(field) {
+            
+            var args;
+            if(field == 'title' || field == 'author') {
+                args = {style : 'width:10em'};
+            } else if(field == 'cost_billed' || field == 'amount_paid') {
+                args = {required : true, style : 'width: 6em'};
+            }
             registerWidget(
                 item,
                 field,
@@ -250,7 +282,8 @@ function addInvoiceItem(item) {
                     fmClass : 'acqii',
                     fmObject : item,
                     fmField : field,
-                    dijitArgs : (field == 'cost_billed' || field == 'amount_paid') ? {required : true, style : 'width: 6em'} : null,
+                    readOnly : invoice && openils.Util.isTrue(invoice.complete()),
+                    dijitArgs : args,
                     parentNode : nodeByName(field, row)
                 })
             )
@@ -265,6 +298,7 @@ function addInvoiceItem(item) {
         fmField : 'fund',
         labelFormat : fundLabelFormat,
         searchFormat : fundSearchFormat,
+        readOnly : invoice && openils.Util.isTrue(invoice.complete()),
         parentNode : nodeByName('fund', row)
     }
 
@@ -288,6 +322,7 @@ function addInvoiceItem(item) {
             fmObject : item,
             fmField : 'inv_item_type',
             parentNode : nodeByName('inv_item_type', row),
+            readOnly : invoice && openils.Util.isTrue(invoice.complete()),
             dijitArgs : {required : true}
         }),
         function(w, ww) {
@@ -331,6 +366,11 @@ function addInvoiceItem(item) {
 }
 
 function addInvoiceEntry(entry) {
+
+    openils.Util.removeCSSClass(dojo.byId('acq-invoice-entry-header'), 'hidden');
+    openils.Util.removeCSSClass(dojo.byId('acq-invoice-entry-thead'), 'hidden');
+    openils.Util.removeCSSClass(dojo.byId('acq-invoice-entry-tbody'), 'hidden');
+
     entryTbody = dojo.byId('acq-invoice-entry-tbody');
     if(entryTemplate == null) {
         entryTemplate = entryTbody.removeChild(dojo.byId('acq-invoice-entry-template'));
@@ -394,6 +434,7 @@ function addInvoiceEntry(entry) {
                     fmClass : 'acqie',
                     fmField : field,
                     dijitArgs : dijitArgs,
+                    readOnly : invoice && openils.Util.isTrue(invoice.complete()),
                     parentNode : nodeByName(field, row)
                 })
             );
@@ -434,65 +475,75 @@ function liMarcAttr(lineitem, name) {
     return (attr) ? attr.attr_value() : '';
 }
 
-function saveChanges(doProrate) {
+function saveChanges(doProrate, doClose, doReopen) {
     
     progressDialog.show(true);
 
-    var updateItems = [];
-    for(var id in widgetRegistry.acqii) {
-        var reg = widgetRegistry.acqii[id];
-        var item = reg._object;
-        if(item.ischanged() || item.isnew() || item.isdeleted()) {
-            updateItems.push(item);
-            if(item.isnew()) item.id(null);
-            for(var field in reg) {
-                if(field != '_object')
-                    item[field]( reg[field].getFormattedValue() );
-            }
-            
-            // unflesh
-            if(item.purchase_order() != null && typeof item.purchase_order() == 'object')
-                item.purchase_order( item.purchase_order().id() );
-        }
-    }
+    if(doReopen) {
+        invoice.complete('f');
 
-    var updateEntries = [];
-    for(var id in widgetRegistry.acqie) {
-        var reg = widgetRegistry.acqie[id];
-        var entry = reg._object;
-        if(entry.ischanged() || entry.isnew() || entry.isdeleted()) {
-            entry.lineitem(entry.lineitem().id());
-            entry.purchase_order(entry.purchase_order().id());
-            updateEntries.push(entry);
-            if(entry.isnew()) entry.id(null);
-
-            for(var field in reg) {
-                if(field != '_object')
-                    entry[field]( reg[field].getFormattedValue() );
-            }
-            
-            // unflesh
-            dojo.forEach(['purchase_order', 'lineitem'],
-                function(field) {
-                    if(entry[field]() != null && typeof entry[field]() == 'object')
-                        entry[field]( entry[field]().id() );
-                }
-            );
-        }
-    }
-
-    if(!invoice) {
-        invoice = new fieldmapper.acqinv();
-        invoice.isnew(true);
     } else {
-        invoice.ischanged(true); // for now, just always update
-    }
 
-    dojo.forEach(invoicePane.fieldList, 
-        function(field) {
-            invoice[field.name]( field.widget.getFormattedValue() );
+
+        var updateItems = [];
+        for(var id in widgetRegistry.acqii) {
+            var reg = widgetRegistry.acqii[id];
+            var item = reg._object;
+            if(item.ischanged() || item.isnew() || item.isdeleted()) {
+                updateItems.push(item);
+                if(item.isnew()) item.id(null);
+                for(var field in reg) {
+                    if(field != '_object')
+                        item[field]( reg[field].getFormattedValue() );
+                }
+                
+                // unflesh
+                if(item.purchase_order() != null && typeof item.purchase_order() == 'object')
+                    item.purchase_order( item.purchase_order().id() );
+            }
         }
-    );
+
+        var updateEntries = [];
+        for(var id in widgetRegistry.acqie) {
+            var reg = widgetRegistry.acqie[id];
+            var entry = reg._object;
+            if(entry.ischanged() || entry.isnew() || entry.isdeleted()) {
+                entry.lineitem(entry.lineitem().id());
+                entry.purchase_order(entry.purchase_order().id());
+                updateEntries.push(entry);
+                if(entry.isnew()) entry.id(null);
+
+                for(var field in reg) {
+                    if(field != '_object')
+                        entry[field]( reg[field].getFormattedValue() );
+                }
+                
+                // unflesh
+                dojo.forEach(['purchase_order', 'lineitem'],
+                    function(field) {
+                        if(entry[field]() != null && typeof entry[field]() == 'object')
+                            entry[field]( entry[field]().id() );
+                    }
+                );
+            }
+        }
+
+        if(!invoice) {
+            invoice = new fieldmapper.acqinv();
+            invoice.isnew(true);
+        } else {
+            invoice.ischanged(true); // for now, just always update
+        }
+
+        dojo.forEach(invoicePane.fieldList, 
+            function(field) {
+                invoice[field.name]( field.widget.getFormattedValue() );
+            }
+        );
+
+        if(doClose) 
+            invoice.complete('t');
+    }
 
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.invoice.update'],

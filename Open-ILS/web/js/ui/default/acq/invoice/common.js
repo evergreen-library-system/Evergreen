@@ -20,10 +20,12 @@ function drawInvoicePane(parentNode, inv, args) {
 
     var pane = new openils.widget.EditPane({
         fmObject : inv,
+        paneStackCount : 2,
         fmClass : 'acqinv',
         mode : (inv) ? 'edit' : 'create',
         hideActionButtons : true,
         overrideWidgetArgs : override,
+        readOnly : (inv) && openils.Util.isTrue(inv.complete()),
         requiredFields : [
             'inv_ident', 
             'recv_date', 
@@ -38,7 +40,7 @@ function drawInvoicePane(parentNode, inv, args) {
             'provider', 
             'shipper'
         ],
-        suppressFields : ['id']
+        suppressFields : ['id', 'complete']
     });
 
     pane.startup();
