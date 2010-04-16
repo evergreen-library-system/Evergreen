@@ -20,6 +20,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             existingTable : null,
             suppressFields : null,
             requiredFields : null,
+            paneStackCount : 1, // how many fields to add to each row, for compressing display
 
             constructor : function(args) {
                 this.fieldList = [];
@@ -64,6 +65,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 if(!this.overrideWidgetArgs)
                     this.overrideWidgetArgs = {};
 
+                var idx = 0;
+                var currentRow;
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
                     if(!field || field.virtual || field.nonIdl) continue;
@@ -74,12 +77,25 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     if(field.name == this.fmIDL.pkey && this.mode == 'create' && this.fmIDL.pkey_sequence)
                         continue; /* don't show auto-generated fields on create */
 
-                    var row = document.createElement('tr');
+                    if((idx++ % this.paneStackCount) == 0 || !currentRow) {
+                        // time to start a new row
+                        currentRow = document.createElement('tr');
+                        tbody.appendChild(currentRow);
+                    }
+
                     //var docTd = document.createElement('td');
                     var nameTd = document.createElement('td');
                     var valTd = document.createElement('td');
                     var valSpan = document.createElement('span');
                     valTd.appendChild(valSpan);
+                    dojo.addClass(nameTd, 'openils-widget-editpane-name-cell');
+                    dojo.addClass(valTd, 'openils-widget-editpane-value-cell');
+
+                    if(this.readOnly) {
+                        dojo.addClass(nameTd, 'openils-widget-editpane-ro-name-cell');
+                        dojo.addClass(valTd, 'openils-widget-editpane-ro-value-cell');
+                    }
+
 
                     /*
                     if(this.fieldDocs[field]) {
@@ -91,11 +107,10 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     */
 
                     nameTd.appendChild(document.createTextNode(field.label));
-                    row.setAttribute('fmfield', field.name);
-                    //row.appendChild(docTd);
-                    row.appendChild(nameTd);
-                    row.appendChild(valTd);
-                    tbody.appendChild(row);
+                    currentRow.setAttribute('fmfield', field.name);
+                    //currentRow.appendChild(docTd);
+                    currentRow.appendChild(nameTd);
+                    currentRow.appendChild(valTd);
                     //dojo.addClass(docTd, 'oils-fm-edit-pane-help');
 
                     if(!this.overrideWidgetArgs[field.name])
