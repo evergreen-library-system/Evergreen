@@ -1656,7 +1656,7 @@ sub sru_search {
 			'open-ils.search.biblio.multiclass.query' => {offset => $offset, limit => $limit} => $search_string => 1
 		)->gather(1);
 
-        my $bre = $supercat->request( 'open-ils.supercat.record.object.retrieve' => [ map { $_->[0] } @{$recs->{ids}} ] )->gather(1);
+		my $bre = $supercat->request( 'open-ils.supercat.record.object.retrieve' => [ map { $_->[0] } @{$recs->{ids}} ] )->gather(1);
 
 		foreach my $record (@$bre) {
 			my $marcxml = $record->marc;
@@ -1666,6 +1666,13 @@ sub sru_search {
 			if ($holdings) {
 				my $bib_holdings = $supercat->request('open-ils.supercat.record.basic_holdings.retrieve', $record->id, $shortname || '-')->gather(1);
 				my $marc = MARC::Record->new_from_xml($marcxml, 'UTF8', 'XML');
+
+				# Force record leader to 'a' as our data is always UTF8
+				# Avoids marc8_to_utf8 from being invoked with horrible results
+				# on the off-chance the record leader isn't correct
+				my $ldr = $marc->leader;
+				substr($ldr, 9, 1, 'a');
+				$marc->leader($ldr);
 
 				# Expects the record ID in the 001
 				$marc->delete_field($_) for ($marc->field('001'));
@@ -1714,9 +1721,9 @@ sub sru_search {
 			);
 		}
 
-        $resp->numberOfRecords($recs->{count});
+		$resp->numberOfRecords($recs->{count});
 
-    } elsif ( $resp->type eq 'explain' ) {
+	} elsif ( $resp->type eq 'explain' ) {
 		if (!$ex_doc) {
 			my $host = $cgi->virtual_host || $cgi->server_name;
 
@@ -1781,9 +1788,9 @@ sub sru_search {
 		);
 	}
 
-   	print $cgi->header( -type => 'application/xml' );
-   	print $U->entityize($resp->asXML) . "\n";
-    return Apache2::Const::OK;
+	print $cgi->header( -type => 'application/xml' );
+	print $U->entityize($resp->asXML) . "\n";
+	return Apache2::Const::OK;
 }
 
 
