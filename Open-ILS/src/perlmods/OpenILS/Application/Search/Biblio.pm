@@ -1178,7 +1178,8 @@ sub staged_search {
         }
     );
 
-    cache_facets($facet_key, $new_ids) if $docache;
+    cache_facets($facet_key, $new_ids, ($self->api_name =~ /metabib/) ? 1 : 0) if $docache;
+
     return undef;
 }
 
@@ -1215,7 +1216,7 @@ __PACKAGE__->register_method(
 
 sub cache_facets {
     # add facets for this search to the facet cache
-    my($key, $results) = @_;
+    my($key, $results, $metabib) = @_;
     my $data = $cache->get_cache($key);
     $data ||= {};
 
@@ -1232,6 +1233,14 @@ sub cache_facets {
     #         and mfae.source in IDLIST
     #   group by 1,2;
 
+    if ($metabib) {
+        $results = {
+            select => { mmrsm => [ 'source' ] },
+            from   => 'mmrsm',
+            where  => { metarecord => $results }
+        };
+    }
+
     my $facets = $U->cstorereq( "open-ils.cstore.json_query.atomic",
         {   select  => {
                 cmf  => [ 'id' ],
@@ -1247,7 +1256,7 @@ sub cache_facets {
                 ]
             },
             from    => { mfae => 'cmf' },
-            where   => { '+cmf'  => 'facet_field', '+mfae' => { source => $results } }
+            where   => { '+cmf'  => 'facet_field', '+mfae' => { source => { in => $results } } }
         }
     );
 
