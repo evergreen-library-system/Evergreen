@@ -803,6 +803,7 @@ CREATE TABLE acq.invoice (
 	payment_method TEXT     REFERENCES acq.invoice_payment_method (code)
 	                        DEFERRABLE INITIALLY DEFERRED,
 	note        TEXT,
+    complete    BOOL        NOT NULL DEFAULT FALSE,
     CONSTRAINT  inv_ident_once_per_provider UNIQUE(provider, inv_ident)
 );
 
