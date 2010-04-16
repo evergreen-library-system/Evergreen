@@ -1791,7 +1791,8 @@ sub sru_search {
 					)
 				);
 
-				$marcxml = $marc->as_xml_record();
+				# Ensure the data is encoded as UTF8 before we hand it off
+				$marcxml = encode_utf8($marc->as_xml_record());
 				$marcxml =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
 
 			}
