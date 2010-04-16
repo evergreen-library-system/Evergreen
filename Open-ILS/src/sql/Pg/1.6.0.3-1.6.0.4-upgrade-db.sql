@@ -91,7 +91,11 @@ SELECT	r.id,
   GROUP BY 1,2,3,4,5,6,8,9;
 
 -- Now rebuild the materialized simple record table that was built on reporter.old_super_simple_record
+-- If you're using Slony, delete instead of truncate!
+
+--DELETE FROM materialized.simple_record;
 TRUNCATE TABLE materialized.simple_record;
+
 INSERT INTO materialized.simple_record
     SELECT * FROM reporter.old_super_simple_record;
 
@@ -689,6 +693,7 @@ INSERT INTO permission.perm_list (code, description) VALUES ('ALLOW_ALT_TCN', 'A
 INSERT INTO permission.perm_list (code, description) VALUES ('MERGE_USERS', 'Allows user records to be merged');
 
 -- More trigger event definition permissions
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_EVENT_DEF', 'Allow a user to administer trigger event definitions');
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_CLEANUP', 'Allow a user to create, delete, and update trigger cleanup entries');
 INSERT INTO permission.perm_list (code, description) VALUES ('CREATE_TRIGGER_CLEANUP', 'Allow a user to create trigger cleanup entries');
 INSERT INTO permission.perm_list (code, description) VALUES ('DELETE_TRIGGER_CLEANUP', 'Allow a user to delete trigger cleanup entries');
