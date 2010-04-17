@@ -1226,37 +1226,37 @@ sub cache_facets {
     #
     # select  cmf.id,
     #         mfae.value,
-    #         count(distinct mfae.source)
+    #         count(distinct mmrsm.appropriate-id-field )
     #   from  metabib.facet_entry mfae
     #         join config.metabib_field cmf on (mfae.field = cmf.id)
+    #         join metabib.metarecord_sourc_map mmrsm on (mfae.source = mmrsm.source)
     #   where cmf.facet_field
-    #         and mfae.source in IDLIST
+    #         and mmrsm.appropriate-id-field in IDLIST
     #   group by 1,2;
 
-    if ($metabib) {
-        $results = {
-            select => { mmrsm => [ 'source' ] },
-            from   => 'mmrsm',
-            where  => { metarecord => $results }
-        };
-    }
-
+    my $count_field = $metabib ? 'metarecord' : 'source';
     my $facets = $U->cstorereq( "open-ils.cstore.json_query.atomic",
         {   select  => {
                 cmf  => [ 'id' ],
-                mfae => [ 
-                    'value',
-                    {
-                        transform => 'count',
-                        distinct => 1,
-                        column => 'source',
-                        alias => 'count',
-                        aggregate => 1
-                    }
-                ]
+                mfae => [ 'value' ],
+                mmrsm => [{
+                    transform => 'count',
+                    distinct => 1,
+                    column => $count_field,
+                    alias => 'count',
+                    aggregate => 1
+                }]
             },
-            from    => { mfae => 'cmf' },
-            where   => { '+cmf'  => 'facet_field', '+mfae' => { source => { in => $results } } }
+            from    => {
+                mfae => {
+                    cmf   => { field => 'id',     fkey => 'field'  },
+                    mmrsm => { field => 'source', fkey => 'source' }
+                }
+            },
+            where   => {
+                '+cmf'   => 'facet_field',
+                '+mmrsm' => { $count_field => $results }
+            }
         }
     );
 
