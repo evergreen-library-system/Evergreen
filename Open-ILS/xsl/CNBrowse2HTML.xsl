@@ -71,10 +71,10 @@
       <xsl:choose>
         <xsl:when test="substring-before($isbnraw,' ')">
           <xsl:variable name="isbntrimmed"><xsl:value-of select="substring-before($isbnraw,' ')"/></xsl:variable>
-          <xsl:value-of select="concat('/opac/extras/jacket/small/',$isbntrimmed)"/>
+          <xsl:value-of select="concat('/opac/extras/ac/jacket/small/',$isbntrimmed)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat('/opac/extras/jacket/small/',$isbnraw)"/>
+          <xsl:value-of select="concat('/opac/extras/ac/jacket/small/',$isbnraw)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:attribute>
