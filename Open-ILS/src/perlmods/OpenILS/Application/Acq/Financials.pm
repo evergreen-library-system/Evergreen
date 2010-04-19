@@ -942,6 +942,9 @@ sub retrieve_purchase_order_impl {
         $po->lineitems($items);
         $po->lineitem_count(scalar(@$items));
 
+    } elsif( $$options{flesh_lineitem_ids} ) {
+        $po->lineitems($e->search_acq_lineitem({purchase_order => $po_id}, {idlist => 1}));
+
     } elsif( $$options{flesh_lineitem_count} ) {
 
         my $items = $e->search_acq_lineitem({purchase_order => $po_id}, {idlist=>1});

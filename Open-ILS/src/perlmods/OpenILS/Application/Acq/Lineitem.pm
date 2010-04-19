@@ -92,69 +92,61 @@ sub retrieve_lineitem_impl {
     my ($e, $li_id, $options) = @_;
     $options ||= {};
 
-    # XXX finer grained perms...
-
-    my $flesh = {};
-    if($$options{flesh_attrs} or $$options{flesh_notes}) {
-        $flesh = {flesh => 2, flesh_fields => {jub => []}};
-        if($$options{flesh_notes}) {
-            push(@{$flesh->{flesh_fields}->{jub}}, 'lineitem_notes');
-            $flesh->{flesh_fields}->{acqlin} = ['alert_text'];
+    my $flesh = {
+        flesh => 3,
+        flesh_fields => {
+            jub => ['purchase_order', 'picklist'], # needed for permission check
+            acqlid => [],
+            acqlin => []
         }
-        if($$options{"flesh_cancel_reason"}) {
-            push @{$flesh->{flesh_fields}->{jub}}, "cancel_reason";
-        }
-        push(@{$flesh->{flesh_fields}->{jub}}, 'attributes') if $$options{flesh_attrs};
-    }
+    };
 
-    my $li = $e->retrieve_acq_lineitem([$li_id, $flesh]) or return $e->die_event;
+    my $fields = $flesh->{flesh_fields};
+
+    push(@{$fields->{jub}}, 'attributes') if $$options{flesh_attrs};
+    push(@{$fields->{jub}}, 'lineitem_notes') if $$options{flesh_notes};
+    push(@{$fields->{acqlin}}, 'alert_text') if $$options{flesh_notes};
+    push(@{$fields->{jub}}, 'order_summary') if $$options{flesh_order_summary};
+    push(@{$fields->{acqlin}}, 'cancel_reason') if $$options{flesh_cancel_reason};
 
     if($$options{flesh_li_details}) {
-        my $ops = {
-            flesh => 1,
-            flesh_fields => {acqlid => ["cancel_reason"]} #XXX cancel_reason? always? really?
-        };
-        push(@{$ops->{flesh_fields}->{acqlid}}, 'fund') if $$options{flesh_fund};
-        push(@{$ops->{flesh_fields}->{acqlid}}, 'fund_debit') if $$options{flesh_fund_debit};
-        if (my $details = $e->search_acq_lineitem_detail([{lineitem => $li_id}, $ops])) {
-            $li->lineitem_details($details);
-            $li->item_count(scalar(@$details));
-        } else {
-            $li->lineitem_count(0);
-        }
+        push(@{$fields->{jub}}, 'lineitem_details');
+        push(@{$fields->{acqlid}}, 'fund') if $$options{flesh_fund};
+        push(@{$fields->{acqlid}}, 'fund_debit') if $$options{flesh_fund_debit};
+        push(@{$fields->{acqlid}}, 'cancel_reason') if $$options{flesh_cancel_reason};
+    }
+
+    if($$options{clear_marc}) { # avoid fetching marc blob
+        my @fields = grep { $_ ne 'marc' } Fieldmapper::acq::lineitem->new->real_fields;
+        $flesh->{select} = {jub => [@fields]};
+    }
+
+    my $li = $e->retrieve_acq_lineitem([$li_id, $flesh]) or return $e->event;
+
+    # collect the # of lids
+    if($$options{flesh_li_details}) {
+        $li->item_count(scalar(@{$li->lineitem_details}));
     } else {
         my $details = $e->search_acq_lineitem_detail({lineitem => $li_id}, {idlist=>1});
         $li->item_count(scalar(@$details));
     }
 
-    if($li->purchase_order) {
-        my $purchase_order =
-            $e->retrieve_acq_purchase_order($li->purchase_order)
-                or return $e->event;
+    return $e->event unless (
+        $li->purchase_order and 
+            $e->allowed(['VIEW_PURCHASE_ORDER', 'CREATE_PURCHASE_ORDER'], 
+                $li->purchase_order->ordering_agency, $li->purchase_order)
+    ) or (
+        $li->picklist and !$li->purchase_order and # user doesn't have view_po perms
+            $e->allowed(['VIEW_PICKLIST', 'CREATE_PICKLIST'], 
+                $li->picklist->org_unit, $li->picklist)
+    );
 
-        if($purchase_order->owner != $e->requestor->id) {
-            return $e->event unless
-                $e->allowed('VIEW_PURCHASE_ORDER', undef, $purchase_order);
-        }
-
-        $li->purchase_order($purchase_order) if $$options{flesh_po};
-
-    } elsif($li->picklist) {
-        my $picklist = $e->retrieve_acq_picklist($li->picklist)
-            or return $e->event;
-    
-        if($picklist->owner != $e->requestor->id) {
-            return $e->event unless 
-                $e->allowed('VIEW_PICKLIST', undef, $picklist);
-        }
-
-        $li->picklist($picklist) if $$options{flesh_pl};
-    }
-
-    $li->clear_marc if $$options{clear_marc};
-
+    $li->clear_purchase_order unless $$options{flesh_po};
+    $li->clear_picklist unless $$options{flesh_pl};
     return $li;
 }
+
+
 
 __PACKAGE__->register_method(
 	method => 'delete_lineitem',

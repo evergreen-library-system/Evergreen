@@ -257,19 +257,12 @@ sub fetch_invoice_impl {
             "flesh" => 6,
             "flesh_fields" => {
                 "acqinv" => ["entries", "items"],
-                "acqie" => ["lineitem", "purchase_order"],
                 "acqii" => ["fund_debit"],
-                "jub" => ["attributes", "lineitem_details"],
-                "acqlid" => ["fund_debit"]
             }
         }
     ];
 
-    my $invoice = $e->retrieve_acq_invoice($args) or return $e->die_event;
-    return $invoice if $options->{no_flesh_misc} or $options->{keep_li_marc};
-
-    $_->lineitem->clear_marc for @{$invoice->entries};
-    return $invoice;
+    return $e->retrieve_acq_invoice($args);
 }
 
 __PACKAGE__->register_method(

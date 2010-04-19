@@ -59,7 +59,13 @@
     'INVOICE_ITEM_DETAILS' : "${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID: ${4} <br/> PO: ${5} <br/> Order Date: ${6}",
     'INVOICE_CONFIRM_ITEM_DELETE' : "Remove this $${0} '${1}' charge from the invoice?",
     'INVOICE_CONFIRM_ENTRY_DETACH' : "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?",
-    'INVOICE_TITLE_DETAILS' : "<div class='acq-inoice-item-info'>${0}, by ${1} (${2})</div><div class='acq-inoice-item-extra-info'><a style='padding-right: 10px;' href='${9}/acq/po/view/${10}'>PO: ${11}</a>${3} Ordered, ${4} Received, ${7} Invoiced</div><div class='acq-inoice-item-extra-info'> Estimated Cost Per Item $${5} / Total Estimated Cost $${6}</div>",
+    'LINEITEM_SUMMARY' : "<div class='acq-lineitem-summary'>${0}, by ${1} (${2})</div>" +
+        "<div class='acq-lineitem-summary-extra'>" +
+            "${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled</div>" +
+        "<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>" +
+        "<div class='acq-lineitem-summary-extra'>" +
+            "<a style='padding-right: 10px;' href='${11}/acq/po/view/${12}'>PO: ${13}</a>" +
+            "<a style='padding-right: 10px;' href='${11}/acq/picklist/view/${14}'>SL: ${15}</a></div>",
     'INVOICE_CONFIRM_PRORATE' : "Prorate charges?\n\nAny subsequent changes to the invoice that would affect prorated amounts should be resolved manually.",
     'UNNAMED': "Unnamed",
     'NO_FIND_INVOICE': "Could not find that invoice.\nNote that the Invoice # field is case-sensitive."

@@ -17,14 +17,15 @@
 if(!dojo._hasResource['openils.acq.Lineitem']) {
 dojo._hasResource['openils.acq.Lineitem'] = true;
 dojo.provide('openils.acq.Lineitem');
-
 dojo.require('dojo.data.ItemFileWriteStore');
-dojo.require('dojox.grid.Grid');
-dojo.require('dojox.grid.compat._data.model');
 dojo.require('fieldmapper.dojoData');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
+
+dojo.requireLocalization('openils.acq', 'acq');
+var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
+
 
 /** Declare the Lineitem class with dojo */
 dojo.declare('openils.acq.Lineitem', null, {
@@ -102,6 +103,71 @@ dojo.declare('openils.acq.Lineitem', null, {
 	return this.lineitem.id();
     },
 });
+
+openils.acq.Lineitem.identDisplayFields = ['isbn', 'upc', 'issn'];
+openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
+
+    // below are the args needed for rendering the basic summary template
+    args = dojo.mixin(args || {}, {
+        clear_marc : true, 
+        flesh_attrs : true,
+        flesh_po : true,
+        flesh_pl : true,
+        flesh_order_summary : true
+    });
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.lineitem.retrieve'],
+        {
+            params : [ openils.User.authtoken, liId, args ],
+
+            oncomplete : function(r) {
+                var lineitem = openils.Util.readResponse(r);
+                if(!lineitem) return;
+
+                var wrapper = new openils.acq.Lineitem({lineitem : lineitem});
+                var type = 'lineitem_marc_attr_definition';
+
+                var idents = [];
+                dojo.forEach(
+                    openils.acq.Lineitem.identDisplayFields,
+                    function(ident) { 
+                        if(attr = wrapper.findAttr(ident, type))
+                            idents.push(attr)
+                    }
+                );
+
+                var po = lineitem.purchase_order();
+                var li = lineitem.picklist();
+
+                var displayString = dojo.string.substitute(
+                    localeStrings.LINEITEM_SUMMARY, [
+                        wrapper.findAttr('title', type) || '',
+                        wrapper.findAttr('author', type) || '',
+                        idents.join(',') || '',
+                        lineitem.order_summary().item_count() || '0',
+                        lineitem.order_summary().recv_count() || '0',
+                        Number(lineitem.estimated_unit_price()).toFixed(2) | '',
+                        lineitem.order_summary().estimated_amount() || '0.00',
+                        lineitem.order_summary().invoice_count() || '0',
+                        lineitem.order_summary().claim_count() || '0',
+                        lineitem.order_summary().cancel_count() || '0',
+                        lineitem.id(),
+                        oilsBasePath,
+                        (po) ? po.id() : '',
+                        (po) ? po.name() : '',
+                        (li) ? li.id() : '',
+                        (li) ? li.name() : '',
+                        lineitem.order_summary().encumbrance_amount() || '0.00',
+                        lineitem.order_summary().paid_amount() || '0.00',
+                    ]
+                );
+
+                callback(lineitem, displayString);
+            }
+        }
+    );
+}
 
 openils.acq.Lineitem.attrDefs = null;
 

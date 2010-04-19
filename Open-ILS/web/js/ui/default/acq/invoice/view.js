@@ -10,6 +10,7 @@ dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.EditPane');
 dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('openils.widget.ProgressDialog');
+dojo.require('openils.acq.Lineitem');
 
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
@@ -117,46 +118,24 @@ function renderInvoice() {
 
 function doAttachLi() {
 
-    fieldmapper.standardRequest(
-        ["open-ils.acq", "open-ils.acq.lineitem.retrieve"], {
-            async: true,
-            params: [openils.User.authtoken, attachLi, {
-                clear_marc : true,
-                flesh_attrs : true,
-                flesh_po : true,
-                flesh_li_details : true,
-                flesh_fund_debit : true
-            }],
-            oncomplete: function(r) { 
-                lineitem = openils.Util.readResponse(r);
-
-                if(cgi.param('create')) {
-                    // render the invoice using some seed data from the Lineitem
-                    var invoiceArgs = {provider : lineitem.provider(), shipper : lineitem.provider()}; 
-                    invoicePane = drawInvoicePane(dojo.byId('acq-view-invoice-div'), null, invoiceArgs);
-                }
-
-                var entry = new fieldmapper.acqie();
-                entry.id(virtualId--);
-                entry.isnew(true);
-                entry.lineitem(lineitem);
-                entry.purchase_order(lineitem.purchase_order());
-                addInvoiceEntry(entry);
-            }
-        }
-    );
+    //var invoiceArgs = {provider : lineitem.provider(), shipper : lineitem.provider()}; 
+    if(cgi.param('create')) {
+        var invoiceArgs = {};
+        invoicePane = drawInvoicePane(dojo.byId('acq-view-invoice-div'), null, invoiceArgs);
+    }
+    var entry = new fieldmapper.acqie();
+    entry.id(virtualId--);
+    entry.isnew(true);
+    entry.lineitem(attachLi);
+    addInvoiceEntry(entry);
 }
 
 function doAttachPo() {
+
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],
         {   async: true,
-            params: [openils.User.authtoken, attachPo, {
-                flesh_lineitems : true,
-                clear_marc : true,
-                flesh_lineitem_details : true,
-                flesh_fund_debit : true
-            }],
+            params: [openils.User.authtoken, attachPo, {flesh_lineitem_ids : true}],
             oncomplete: function(r) {
                 var po = openils.Util.readResponse(r);
 
@@ -173,7 +152,6 @@ function doAttachPo() {
                         entry.isnew(true);
                         entry.lineitem(lineitem);
                         entry.purchase_order(po);
-                        lineitem.purchase_order(po);
                         addInvoiceEntry(entry);
                     }
                 );
@@ -376,50 +354,21 @@ function addInvoiceEntry(entry) {
         entryTemplate = entryTbody.removeChild(dojo.byId('acq-invoice-entry-template'));
     }
 
-    if(dojo.query('[lineitem=' + entry.lineitem().id() +']', entryTbody)[0])
+    if(dojo.query('[lineitem=' + entry.lineitem() +']', entryTbody)[0])
         // Is it ever valid to have multiple entries for 1 lineitem in a single invoice?
         return;
 
     var row = entryTemplate.cloneNode(true);
-    row.setAttribute('lineitem', entry.lineitem().id());
-    var lineitem = entry.lineitem();
+    row.setAttribute('lineitem', entry.lineitem());
 
-    var idents = [];
-    if(liMarcAttr(lineitem, 'isbn')) idents.push(liMarcAttr(lineitem, 'isbn'));
-    if(liMarcAttr(lineitem, 'upc')) idents.push(liMarcAttr(lineitem, 'upc'));
-    if(liMarcAttr(lineitem, 'issn')) idents.push(liMarcAttr(lineitem, 'issn'));
-
-    var lids = lineitem.lineitem_details();
-    var numOrdered = lids.length;
-    var numReceived = lids.filter(function(lid) { return (lid.recv_time() != null) }).length;
-    var numInvoiced = lids.filter(function(lid) { return !openils.Util.isTrue(lid.fund_debit().encumbrance()) }).length;
-
-    var poName = '';
-    var poId = '';
-    var po = entry.purchase_order();
-    if(po) {
-        poName = po.name();
-        poId = po.id();
-    }
-
-    nodeByName('title_details', row).innerHTML = 
-        dojo.string.substitute(
-            localeStrings.INVOICE_TITLE_DETAILS, [
-                liMarcAttr(lineitem, 'title'),
-                liMarcAttr(lineitem, 'author'),
-                idents.join(','),
-                numOrdered,
-                numReceived,
-                Number(lineitem.estimated_unit_price()).toFixed(2),
-                (Number(lineitem.estimated_unit_price()) * numOrdered).toFixed(2),
-                numInvoiced,
-                lineitem.id(),
-                oilsBasePath,
-                poId,
-                poName
-            ]
-        );
-
+    openils.acq.Lineitem.fetchAndRender(
+        entry.lineitem(), {}, 
+        function(li, html) { 
+            entry.lineitem(li);
+            entry.purchase_order(li.purchase_order());
+            nodeByName('title_details', row).innerHTML = html;
+        }
+    );
 
     dojo.forEach(
         ['inv_item_count', 'phys_item_count', 'cost_billed', 'amount_paid'],
@@ -579,9 +528,7 @@ function prorateInvoice(invoice) {
             }
         }
     );
-
 }
-
 
 
 openils.Util.addOnLoad(init);
