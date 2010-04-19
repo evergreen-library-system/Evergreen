@@ -1,5 +1,16 @@
 dump('Loading constants.js\n');
 
+/* to override these locally (with remote xul), create a server/skin/custom.js file containing lines like
+
+    urls['AUDIO_good'] = '/xul/server/skin/media/custom/good.wav';
+
+    urls['opac'] = '/opac/' + LOCALE + '/skin/mylib/xml/advanced.xml?nps=1';
+    urls['opac_rdetail'] = '/opac/' + LOCALE + '/skin/mylib/xml/rdetail.xml';
+    urls['opac_rresult'] = '/opac/' + LOCALE + '/skin/mylib/xml/rresult.xml';
+    urls['browser'] = '/opac/' + LOCALE + '/skin/mylib/xml/advanced.xml?nps=1';
+
+*/
+
 /* Get locale from preferences */
 var LOCALE = '';
 try {
@@ -25,7 +36,7 @@ const MODE_EXCL     = 0x80;
 const PERMS_FILE      = 0644;
 const PERMS_DIR      = 0755;
 
-const my_constants = {
+var my_constants = {
     'magical_statuses' : {
         '1' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | Checked out    | t */
         '3' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | Lost           | f */
@@ -34,7 +45,7 @@ const my_constants = {
     }
 }
 
-const api = {
+var api = {
     'PCRUD_XACT_BEGIN' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.transaction.begin' },
     'PCRUD_XACT_COMMIT' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.transaction.commit' },
     'PCRUD_XACT_ROLLBACK' : { 'app' : 'open-ils.pcrud', 'method' : 'open-ils.pcrud.transaction.rollback' },
@@ -292,7 +303,7 @@ const api = {
     'USER_ORG_UNIT_OPT_IN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.create' }
 }
 
-const urls = {
+var urls = {
 
     'opac' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
     'opac_rdetail' : '/opac/' + LOCALE + '/skin/default/xml/rdetail.xml',
