@@ -79,7 +79,7 @@
                     <td class='acq-invoice-center-col'><div name='fund'/></td>
                     <td class='acq-invoice-center-col' class='acq-invoice-billed-col'><div name='cost_billed'/></td>
                     <td class='acq-invoice-paid-col'><div name='amount_paid'/></td>
-                    <td class='acq-invoice-center-col' class='hide-complete acq-invoice-balance-col'><a href='javascript:void(0);' name='delete'>Delete</a></td>
+                    <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='delete'>Delete</a></td>
                 </tr>
             </tbody>
             <tbody class='hide-complete'>
