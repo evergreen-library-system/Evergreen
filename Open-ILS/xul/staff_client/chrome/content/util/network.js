@@ -133,6 +133,7 @@ util.network.prototype = {
                                 + (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) 
                                 + '\n\nOriginal Request:\n\n' 
                                 + 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
+                            obj.play_sounds( request );
                             req = obj.rerequest_on_session_timeout(app,name,params,req,override_params,_params);
                             req = obj.rerequest_on_perm_failure(app,name,params,req,override_params,_params);
                             if (override_params) {
@@ -177,6 +178,7 @@ util.network.prototype = {
                     + obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) 
                     + '\n\nOriginal Request:\n\n' 
                     + 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
+                obj.play_sounds( request );
                 request = obj.rerequest_on_session_timeout(app,name,params,request,override_params,_params);
                 request = obj.rerequest_on_perm_failure(app,name,params,request,override_params,_params);
                 if (override_params) {
@@ -359,7 +361,7 @@ util.network.prototype = {
         try {
             var obj = this;
             var robj = obj.get_result(req);
-            if (robj != null && robj.ilsevent && robj.ilsevent == 1001) {
+            if (robj != null && robj.ilsevent && robj.ilsevent == 1001 /* NO_SESSION */) {
 
                 if (obj.get_new_session(name,undefined,true)) {
                     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
@@ -547,6 +549,27 @@ util.network.prototype = {
             return output;
         } catch(E) {
             alert(E);
+        }
+    },
+
+    'play_sounds' : function(req) {
+        var obj = this;
+        try {
+            var result = req.getResultObject();
+            if (result == null) { return; }
+            if (typeof result.textcode != 'undefined') {
+                obj.sound.event( result );
+            } else {
+                if (typeof result.length != 'undefined') {
+                    for (var i = 0; i < result.length; i++) {
+                        if (typeof result[i].textcode != 'undefined') {
+                            obj.sound.event( result[i] );
+                        }
+                    }
+                }
+            }
+        } catch(E) {
+            dump('Error in network.js, play_sounds() : ' + E + '\n');
         }
     }
 }

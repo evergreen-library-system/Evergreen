@@ -313,11 +313,12 @@ var urls = {
     'fieldmapper' : '/opac/common/js/fmall.js',
     'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
 
-    'AUDIO_GOOD_SOUND' : '/xul/server/skin/media/audio/bonus.wav',
-    'AUDIO_BAD_SOUND' : '/xul/server/skin/media/audio/question.wav',
-    'AUDIO_HORRIBLE_SOUND' : '/xul/server/skin/media/audio/redalert.wav',
-    'AUDIO_CIRC_GOOD_SOUND' : '/xul/server/skin/media/audio/toggled.wav',
-    'AUDIO_CIRC_BAD_SOUND' : '/xul/server/skin/media/audio/question.wav',
+    'AUDIO_good' : '/xul/server/skin/media/audio/bonus.wav',
+    'AUDIO_bad' : '/xul/server/skin/media/audio/question.wav',
+    'AUDIO_horrible' : '/xul/server/skin/media/audio/redalert.wav',
+    'AUDIO_circ_good' : '/xul/server/skin/media/audio/toggled.wav',
+    'AUDIO_circ_bad' : '/xul/server/skin/media/audio/question.wav',
+    'AUDIO_event_ASSET_COPY_NOT_FOUND' : '/xul/server/skin/media/audio/redalert.wav',
 
     'XUL_AUTH_SIMPLE' : '/xul/server/main/simple_auth.xul',
     'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
