@@ -13,6 +13,7 @@
         <script>try { dojo.require('dojo.date.locale'); } catch(E) { alert(E); }</script>
         <script>try { dojo.require('dojo.date.stamp'); } catch(E) { alert(E); }</script>
         <script type="text/javascript" src="/xul/server/main/constants.js" />
+        <script type="text/javascript" src="/xul/server/skin/custom.js" />
         <script type="text/javascript" src="/xul/server/OpenILS/data.js" />
         <script type="text/javascript" src="/xul/server/util/barcode.js" />
         <script type="text/javascript" src="/xul/server/util/browser.js" />

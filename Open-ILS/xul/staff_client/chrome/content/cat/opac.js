@@ -19,6 +19,15 @@ function my_init() {
         JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
         XML_HTTP_SERVER = g.data.server_unadorned;
 
+        // Pull in local customizations
+        var r = new XMLHttpRequest();
+        r.open("GET", xulG.url_prefix('/xul/server/skin/custom.js'), false);
+        r.send(null);
+        if (r.status == 200) {
+            dump('Evaluating /xul/server/skin/custom.js\n');
+            eval( r.responseText );
+        }
+
         JSAN.use('util.network'); g.network = new util.network();
 
         g.cgi = new CGI();

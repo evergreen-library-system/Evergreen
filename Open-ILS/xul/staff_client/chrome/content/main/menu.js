@@ -50,6 +50,15 @@ main.menu.prototype = {
 
         urls.remote = params['server'];
 
+        // Pull in local customizations
+        var r = new XMLHttpRequest();
+        r.open("GET", url_prefix('/xul/server/skin/custom.js'), false);
+        r.send(null);
+        if (r.status == 200) {
+            dump('Evaluating /xul/server/skin/custom.js\n');
+            eval( r.responseText );
+        }
+
         var obj = this;
 
         JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
