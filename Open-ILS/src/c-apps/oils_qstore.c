@@ -13,6 +13,19 @@
 #include "opensrf/osrf_application.h"
 #include "openils/oils_utils.h"
 #include "openils/oils_sql.h"
+#include "openils/oils_buildq.h"
+
+/**
+	@brief Information about a previously prepared query.
+
+	We store an osrfHash of CachedQueries in the userData area of the application session,
+	keyed on query token.  That way we can fetch what a previous call to the prepare method
+	has prepared.
+*/
+typedef struct {
+	StoredQ*    query;
+	jsonObject* bind_map;
+} CachedQuery;
 
 static dbi_conn dbhandle; /* our db connection */
 
@@ -21,6 +34,11 @@ static const char modulename[] = "open-ils.qstore";
 int doPrepare( osrfMethodContext* ctx );
 int doExecute( osrfMethodContext* ctx );
 int doSql( osrfMethodContext* ctx );
+
+static const char* save_query( osrfMethodContext* ctx, StoredQ* query, jsonObject* bind_map );
+static void free_cached_query( char* key, void* data );
+static void userDataFree( void* blob );
+static CachedQuery* search_token( osrfMethodContext* ctx, const char* token );
 
 /**
 	@brief Disconnect from the database.
@@ -63,7 +81,13 @@ int osrfAppInitialize() {
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".prepare" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-			"doBuild", "", 1, 0 );
+			"doPrepare", "", 1, 0 );
+
+	buffer_reset( method_name );
+	OSRF_BUFFER_ADD( method_name, modulename );
+	OSRF_BUFFER_ADD( method_name, ".bind_param" );
+	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
+			"doBindParam", "", 2, 0 );
 
 	buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
@@ -148,6 +172,19 @@ int osrfAppChildInit() {
 		return 0;
 }
 
+/**
+	@brief Load a specified query from the database query tables.
+	@param ctx Pointer to the current method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- query id (key of query.stored_query table)
+
+	Returns: a character string serving as a token for future references to the query.
+
+	NB: the method return type is temporary.  Eventually this method will return both a token
+	and a list of bind variables.
+*/
 int doPrepare( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -161,6 +198,7 @@ int doPrepare( osrfMethodContext* ctx ) {
 			ctx->request, "Invalid parameter; query id must be a number" );
 		return -1;
 	}
+
 	int query_id = atoi( jsonObjectGetString( query_id_obj ));
 	if( query_id <= 0 ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
@@ -169,6 +207,42 @@ int doPrepare( osrfMethodContext* ctx ) {
 	}
 
 	osrfLogInfo( OSRF_LOG_MARK, "Building query for id # %d", query_id );
+
+	// To do: prepare query
+	StoredQ* query = NULL;
+	jsonObject* bind_map = NULL;
+	const char* token = save_query( ctx, query, bind_map );
+
+	osrfLogInfo( OSRF_LOG_MARK, "Token for query id # %d is \"%s\"", query_id, token );
+
+	osrfAppRespondComplete( ctx, jsonNewObject( token ));
+	return 0;
+}
+
+int doBindParam( osrfMethodContext* ctx ) {
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
+
+	// Get the query token from a method parameter
+	const jsonObject* token_obj = jsonObjectGetIndex( ctx->params, 0 );
+	if( token_obj->type != JSON_STRING ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Invalid parameter; query token must be a string" );
+		return -1;
+	}
+	const char* token = jsonObjectGetString( token_obj );
+
+	// Look up the query token in the session-level userData
+	CachedQuery* query = search_token( ctx, token );
+	if( !query ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+							  ctx->request, "Invalid query token" );
+		return -1;
+	}
+
+	osrfLogInfo( OSRF_LOG_MARK, "Binding parameter(s) for token %s", token );
 
 	osrfAppRespondComplete( ctx, jsonNewObject( "build method not yet implemented" ));
 	return 0;
@@ -184,16 +258,16 @@ int doExecute( osrfMethodContext* ctx ) {
 	const jsonObject* token_obj = jsonObjectGetIndex( ctx->params, 0 );
 	if( token_obj->type != JSON_STRING ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
-			ctx->request, "Invalid parameter; query id must be a string" );
+			ctx->request, "Invalid parameter; query token must be a string" );
 		return -1;
 	}
 	const char* token = jsonObjectGetString( token_obj );
 
-	// Get the list of bind variables, if there is one
-	jsonObject* bind_map = jsonObjectGetIndex( ctx->params, 1 );
-	if( bind_map && bind_map->type != JSON_HASH ) {
+	// Look up the query token in the session-level userData
+	CachedQuery* query = search_token( ctx, token );
+	if( !query ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
-			ctx->request, "Invalid parameter; bind map must be a JSON object" );
+			ctx->request, "Invalid query token" );
 		return -1;
 	}
 
@@ -213,16 +287,16 @@ int doSql( osrfMethodContext* ctx ) {
 	const jsonObject* token_obj = jsonObjectGetIndex( ctx->params, 0 );
 	if( token_obj->type != JSON_STRING ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
-			ctx->request, "Invalid parameter; query id must be a string" );
+			ctx->request, "Invalid parameter; query token must be a string" );
 		return -1;
 	}
 	const char* token = jsonObjectGetString( token_obj );
 
-	// Get the list of bind variables, if there is one
-	jsonObject* bind_map = jsonObjectGetIndex( ctx->params, 1 );
-	if( bind_map && bind_map->type != JSON_HASH ) {
+	// Look up the query token in the session-level userData
+	CachedQuery* query = search_token( ctx, token );
+	if( !query ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
-			ctx->request, "Invalid parameter; bind map must be a JSON object" );
+			ctx->request, "Invalid query token" );
 		return -1;
 	}
 
@@ -230,4 +304,63 @@ int doSql( osrfMethodContext* ctx ) {
 
 	osrfAppRespondComplete( ctx, jsonNewObject( "sql method not yet implemented" ));
 	return 0;
+}
+
+static const char* save_query( osrfMethodContext* ctx, StoredQ* query, jsonObject* bind_map ) {
+
+	CachedQuery* cached_query = safe_malloc( sizeof( CachedQuery ));
+	cached_query->query       = query;
+	cached_query->bind_map    = bind_map;
+
+	// Get the cache.  If we don't have one yet, make one.
+	osrfHash* cache = ctx->session->userData;
+	if( !cache ) {
+		cache = osrfNewHash();
+		osrfHashSetCallback( cache, free_cached_query );
+		ctx->session->userData = cache;
+		ctx->session->userDataFree = userDataFree;  // arrange to free it at end of session
+	}
+
+	// Create a token string to be used as a key
+	static unsigned int token_count = 0;
+	char* token = va_list_to_string(
+		"%u_%ld_%ld", ++token_count, (long) time( NULL ), (long) getpid() );
+
+	osrfHashSet( cache, cached_query, token );
+	return token;
+}
+
+/**
+	@brief Free a CachedQuery
+	@param Pointer to the CachedQuery to be freed.
+*/
+static void free_cached_query( char* key, void* data ) {
+	if( data ) {
+		CachedQuery* cached_query = data;
+		//storedQFree( cached_query->query );
+		if( cached_query->bind_map )
+			jsonObjectFree( cached_query->bind_map );
+	}
+}
+
+/**
+	@brief Callback for freeing session-level userData.
+	@param blob Opaque pointer t userData.
+*/
+static void userDataFree( void* blob ) {
+	osrfHashFree( (osrfHash*) blob );
+}
+
+/**
+	@brief Search for the cached query corresponding to a given token.
+	@param ctx Pointer to the current method context.
+	@param token Token string from a previous call to the prepare method.
+	@return A pointer to the cached query, if found, or NULL if not.
+*/
+static CachedQuery* search_token( osrfMethodContext* ctx, const char* token ) {
+	if( ctx && ctx->session->userData && token ) {
+		osrfHash* cache = ctx->session->userData;
+		return osrfHashGet( cache, token );
+	} else
+		return NULL;
 }
