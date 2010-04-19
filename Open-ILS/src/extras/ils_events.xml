@@ -779,6 +779,16 @@
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc xml:lang="en-US">Permission Denied</desc>
 	</event>
+    <event code='7025' textcode='PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS'>
+        <desc xml:lang='en-US'>There are too many active password reset request sessions for this patron.</desc>
+    </event>
+    <event code='7026' textcode='PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST'>
+        <desc xml:lang='en-US'>The user attempted to update their password using a stale or inactive password reset request session.</desc>
+    </event>
+    <event code='7027' textcode='PATRON_PASSWORD_WAS_NOT_STRONG'>
+        <desc xml:lang='en-US'>The user attempted to set their password to a weak value.</desc>
+    </event>
+
 
 	<!-- ================================================================ -->
 	<!-- CIRC EVENTS -->

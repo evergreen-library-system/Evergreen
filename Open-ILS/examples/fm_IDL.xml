@@ -1222,6 +1222,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
+	<class id="aupr" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_password_reset" oils_persist:tablename="actor.usr_password_reset" reporter:label="User password reset requests">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_password_reset_id_seq">
+			<field reporter:label="Request ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="UUID" name="uuid" reporter:datatype="text"/>
+			<field reporter:label="User" name="usr" reporter:datatype="link"/>
+			<field reporter:label="Request Time" name="request_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Was Reset?" name="has_been_reset" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" class="au"/>
+		</links>
+	</class>
 	<class id="aus" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting" reporter:label="User Setting">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_setting_id_seq">
 			<field reporter:label="Setting ID" name="id" reporter:datatype="id" />

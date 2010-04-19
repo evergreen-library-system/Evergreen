@@ -170,6 +170,7 @@ ilscore-install:
 	$(MKDIR_P) $(TEMPLATEDIR)
 	cp -r @srcdir@/perlmods/* $(perldir)
 	cp -r @srcdir@/templates/marc $(TEMPLATEDIR)
+	cp -r @srcdir@/templates/password-reset $(TEMPLATEDIR)
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@libdir@/perl5/OpenILS/WWW/Web.pm'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@libdir@/perl5/OpenILS/WWW/Method.pm'
 	@echo "Installing string templates to $(TEMPLATEDIR)"

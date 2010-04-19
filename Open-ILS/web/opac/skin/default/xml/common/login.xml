@@ -11,6 +11,7 @@
 		config.ids.login.cancel		= "login_cancel_button";
 		config.ids.altcanvas.login			= config.ids.login.box;
 	</script>
+	<script type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/password_reset.js'></script>
 
 	<br/>
 
@@ -21,7 +22,7 @@
 	<br/>
 
 	<table id='login_table' class='data_grid' style='margin-left: 20px;' width='95%'>
-		<tbody>
+		<tbody id='login_tbody'>
 			<tr>
 				<td><span class='login_text'>&login.username;</span></td>
 				<td>

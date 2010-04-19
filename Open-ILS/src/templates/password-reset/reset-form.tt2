@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>[% title %]</title>
+</head>
+<body>
+  <h1>[% title %]</h1>
+<p class='[% status.style %]'>[% status.msg %]</p>
+<form method="post" action="[% uri %]">
+    <div>
+        <label for="pwd1">[% password_prompt %] </label><input type="password" name="pwd1"/></br>
+        <label for="pwd2">[% password_prompt2 %]  </label><input type="password" name="pwd2"/></br>
+    </div>
+</form>
+</body>
+</html>
+<html>
+<head>
+  <title>[% title %]</title>
+</head>
+<body>
+  <h1>[% title %]</h1>
+<p class='[% status.style %]'>[% status.msg %]</p>
+<form method="post" action="[% uri %]">
+    <div>
+        <label for="pwd1">[% password_prompt %] </label><input type="password" name="pwd1"/></br>
+        <label for="pwd2">[% password_prompt2 %]  </label><input type="password" name="pwd2"/></br>
+    </div>
+</form>
+</body>
+</html>

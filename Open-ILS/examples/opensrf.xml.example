@@ -19,6 +19,7 @@ vim:et:ts=4:sw=4:
             <xsl>LOCALSTATEDIR/xsl</xsl>
             <script>LOCALSTATEDIR</script>
             <script_lib>LOCALSTATEDIR</script_lib>
+            <templates>LOCALSTATEDIR/templates</templates>
         </dirs>
 
         <!-- global data visibility settings -->
