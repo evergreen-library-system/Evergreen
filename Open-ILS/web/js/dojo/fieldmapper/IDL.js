@@ -48,7 +48,6 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     }
                 });
             }
-
             dojo.require('fieldmapper.Fieldmapper'); 
 
             if (classlist && classlist.length)
@@ -72,13 +71,13 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     fields  : fieldData.list,
                     field_map : fieldData.map,
                     name    : node.getAttribute('id'),
-                    //table   : node.getAttributeNS(this.NS_PERSIST, 'tablename'),
-                    //core    : node.getAttributeNS(this.NS_REPORTS, 'core'),
-                    label   : node.getAttributeNS(this.NS_REPORTS, 'label'),
-                    restrict_primary   : node.getAttributeNS(this.NS_PERSIST, 'restrict_primary'),
-                    virtual : (node.getAttributeNS(this.NS_PERSIST, 'virtual') == 'true'),
-                    pkey    : fields.getAttributeNS(this.NS_PERSIST, 'primary'),
-                    pkey_sequence : fields.getAttributeNS(this.NS_PERSIST, 'sequence')
+                    //table   : fieldmapper._getAttributeNS(node,this.NS_PERSIST, 'tablename'),
+                    //core    : fieldmapper._getAttributeNS(node,this.NS_REPORTS, 'core'),
+                    label   : fieldmapper._getAttributeNS(node,this.NS_REPORTS, 'label'),
+                    restrict_primary   : fieldmapper._getAttributeNS(node,this.NS_PERSIST, 'restrict_primary'),
+                    virtual : (fieldmapper._getAttributeNS(node,this.NS_PERSIST, 'virtual') == 'true'),
+                    pkey    : fieldmapper._getAttributeNS(fields,this.NS_PERSIST, 'primary'),
+                    pkey_sequence : fieldmapper._getAttributeNS(fields,this.NS_PERSIST, 'sequence')
                 };
 
                 var permacrud = node.getElementsByTagName('permacrud')[0];
@@ -138,13 +137,13 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 var obj = {
                     field : field,
                     name	: name,
-                    label : field.getAttributeNS(this.NS_REPORTS,'label'),
-                    datatype : field.getAttributeNS(this.NS_REPORTS,'datatype'),
-                    primitive : field.getAttributeNS(this.NS_PERSIST,'primitive'),
-                    selector : field.getAttributeNS(this.NS_REPORTS,'selector'),
+                    label : fieldmapper._getAttributeNS(field,this.NS_REPORTS,'label'),
+                    datatype : fieldmapper._getAttributeNS(field,this.NS_REPORTS,'datatype'),
+                    primitive : fieldmapper._getAttributeNS(field,this.NS_PERSIST,'primitive'),
+                    selector : fieldmapper._getAttributeNS(field,this.NS_REPORTS,'selector'),
                     array_position : position++,
                     type	: 'field',
-                    virtual : (fields[i].getAttributeNS(this.NS_PERSIST, 'virtual') == 'true') 
+                    virtual : (fieldmapper._getAttributeNS(fields[i],this.NS_PERSIST, 'virtual') == 'true') 
                 };
 
                 obj.label = obj.label || obj.name;
@@ -188,6 +187,11 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
         }
 
     });
+
+    fieldmapper._getAttributeNS = function (node,ns,attr) {
+        if (node.getAttributeNS) return node.getAttributeNS(ns,attr);
+        return node.getAttribute(attr);
+    };
 
     window.fmclasses = {};
     fieldmapper.IDL.load = function (list) { if (!list) list = []; return new fieldmapper.IDL(list); };
