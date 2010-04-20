@@ -23,8 +23,8 @@
 	has prepared.
 */
 typedef struct {
-	StoredQ*    query;
-	jsonObject* bind_map;
+	BuildSQLState* state;
+	StoredQ*       query;
 } CachedQuery;
 
 static dbi_conn dbhandle; /* our db connection */
@@ -35,7 +35,8 @@ int doPrepare( osrfMethodContext* ctx );
 int doExecute( osrfMethodContext* ctx );
 int doSql( osrfMethodContext* ctx );
 
-static const char* save_query( osrfMethodContext* ctx, StoredQ* query, jsonObject* bind_map );
+static const char* save_query( 
+	osrfMethodContext* ctx, BuildSQLState* state, StoredQ* query );
 static void free_cached_query( char* key, void* data );
 static void userDataFree( void* blob );
 static CachedQuery* search_token( osrfMethodContext* ctx, const char* token );
@@ -206,12 +207,18 @@ int doPrepare( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	osrfLogInfo( OSRF_LOG_MARK, "Building query for id # %d", query_id );
+	osrfLogInfo( OSRF_LOG_MARK, "Loading query for id # %d", query_id );
 
-	// To do: prepare query
-	StoredQ* query = NULL;
-	jsonObject* bind_map = NULL;
-	const char* token = save_query( ctx, query, bind_map );
+	BuildSQLState* state = buildSQLStateNew( dbhandle );
+	StoredQ* query = getStoredQuery( state, query_id );
+	if( state->error ) {
+		osrfLogWarning( OSRF_LOG_MARK, "Unable to load stored query # %d", query_id );
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Unable to load stored query" );
+		return -1;
+	}
+
+	const char* token = save_query( ctx, state, query );
 
 	osrfLogInfo( OSRF_LOG_MARK, "Token for query id # %d is \"%s\"", query_id, token );
 
@@ -301,16 +308,37 @@ int doSql( osrfMethodContext* ctx ) {
 	}
 
 	osrfLogInfo( OSRF_LOG_MARK, "Returning SQL for token \"%s\"", token );
+	if( query->state->error ) {
+		osrfLogWarning( OSRF_LOG_MARK, "No valid prepared query available for query id # %d",
+			query->query->id );
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "No valid prepared query available" );
+		return -1;
+	} else if( buildSQL( query->state, query->query )) {
+		osrfLogWarning( OSRF_LOG_MARK, "Unable to build SQL statement for query id # %d",
+			query->query->id );
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Unable to build SQL statement" );
+		return -1;
+	}
 
-	osrfAppRespondComplete( ctx, jsonNewObject( "sql method not yet implemented" ));
+	osrfAppRespondComplete( ctx, jsonNewObject( OSRF_BUFFER_C_STR( query->state->sql )));
 	return 0;
 }
 
-static const char* save_query( osrfMethodContext* ctx, StoredQ* query, jsonObject* bind_map ) {
+/**
+	@brief Save a query in session-level userData for reference in future method calls.
+	@param ctx Pointer to the current method context.
+	@param state Pointer to the state of the query.
+	@param query Pointer to the abstract representation of the query.
+	@return Pointer to an identifying token to be returned to the client.
+*/
+static const char* save_query( 
+	osrfMethodContext* ctx, BuildSQLState* state, StoredQ* query ) {
 
 	CachedQuery* cached_query = safe_malloc( sizeof( CachedQuery ));
+	cached_query->state       = state;
 	cached_query->query       = query;
-	cached_query->bind_map    = bind_map;
 
 	// Get the cache.  If we don't have one yet, make one.
 	osrfHash* cache = ctx->session->userData;
@@ -337,9 +365,8 @@ static const char* save_query( osrfMethodContext* ctx, StoredQ* query, jsonObjec
 static void free_cached_query( char* key, void* data ) {
 	if( data ) {
 		CachedQuery* cached_query = data;
-		//storedQFree( cached_query->query );
-		if( cached_query->bind_map )
-			jsonObjectFree( cached_query->bind_map );
+		buildSQLStateFree( cached_query->state );
+		storedQFree( cached_query->query );
 	}
 }
 

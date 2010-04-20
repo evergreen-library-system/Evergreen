@@ -31,7 +31,7 @@ oils_cstore_la_SOURCES = oils_cstore.c oils_sql.c
 oils_cstore_la_LDFLAGS = $(AM_LDFLAGS) -loils_idl -ldbi -ldbdpgsql -loils_utils -module
 oils_cstore_la_DEPENDENCIES = liboils_idl.la liboils_idl.la
 
-oils_qstore_la_SOURCES = oils_qstore.c oils_sql.c
+oils_qstore_la_SOURCES = oils_qstore.c oils_sql.c oils_storedq.c oils_buildq.c buildSQL.c
 oils_qstore_la_LDFLAGS = $(AM_LDFLAGS) -loils_idl -ldbi -ldbdpgsql -loils_utils -module
 oils_qstore_la_DEPENDENCIES = liboils_idl.la liboils_idl.la
 
