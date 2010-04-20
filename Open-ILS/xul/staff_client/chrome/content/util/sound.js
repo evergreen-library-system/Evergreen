@@ -4,17 +4,24 @@ if (typeof util == 'undefined') util = {};
 util.sound = function () {
 
     try {
+
+        /* We're going to turn this guy into a singleton, at least for a given window, and look for it in xulG */
+        if (! window.xulG) { window.xulG = {}; }
+        if (window.xulG._sound) { return window.xulG._sound; }
+
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var SOUNDContractID = "@mozilla.org/sound;1";
         var SOUNDIID        = Components.interfaces.nsISound;
         this.SOUND          = Components.classes[SOUNDContractID].createInstance(SOUNDIID);
         this.SOUND.init(); // not necessary, but helps avoid delays?
 
-    } catch(E) {
-        dump('util.sound constructor: ' + E + '\n');
-    }
+        window.xulG._sound = this;
+        return this;
 
-    return this;
+    } catch(E) {
+        dump('error in util.sound constructor: ' + E + '\n');
+        return this;
+    }
 };
 
 util.sound.prototype = {

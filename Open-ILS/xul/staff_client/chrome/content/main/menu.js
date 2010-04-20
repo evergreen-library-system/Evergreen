@@ -10,6 +10,7 @@ main.menu = function () {
     offlineStrings = document.getElementById('offlineStrings');
     JSAN.use('util.error'); this.error = new util.error();
     JSAN.use('util.window'); this.window = new util.window();
+    JSAN.use('util.sound'); this.sound = new util.sound();
 
     this.w = window;
     var x = document.getElementById('network_progress');
@@ -1481,6 +1482,7 @@ main.menu.prototype = {
             if (e) { e.setAttribute('label',text); }
         };
         content_params.chrome_xulG = xulG;
+        content_params._sound = xulG._sound;
         if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
         
         var frame;
