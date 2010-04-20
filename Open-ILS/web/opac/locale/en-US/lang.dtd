@@ -825,6 +825,8 @@
 <!ENTITY staff.main.menu.acq.currency_type.accesskey "C">
 <!ENTITY staff.main.menu.acq.exchange_rate.label "Exchange Rates">
 <!ENTITY staff.main.menu.acq.exchange_rate.accesskey "X">
+<!ENTITY staff.main.menu.acq.claim_eligible.label "Claim-Eligible Items">
+<!ENTITY staff.main.menu.acq.claim_eligible.accesskey "M">
 
 <!ENTITY staff.main.menu.booking.label "Booking">
 <!ENTITY staff.main.menu.booking.accesskey "B">

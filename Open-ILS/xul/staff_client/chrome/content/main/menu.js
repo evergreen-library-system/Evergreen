@@ -788,6 +788,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/distribution_formula', 'menu.cmd_acq_view_distrib_formula.tab'); }
             ],
+            'cmd_acq_claim_eligible' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/financial/claim_eligible', 'menu.cmd_acq_claim_eligible.tab'); }
+            ],
             'cmd_booking_reservation' : [
                 ['oncommand'],
                 function() {

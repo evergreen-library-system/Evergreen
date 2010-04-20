@@ -15,7 +15,7 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.acq.claim.eligible.lineitem_detail',
     stream => 1,
 	signature => {
-        desc => q/Locates lineitem_detail's that are eligible for claiming/,
+        desc => q/Locates lineitem_details that are eligible for claiming/,
         params => [
             {desc => 'Authentication token', type => 'string'},
             {   desc => q/
@@ -24,6 +24,7 @@ __PACKAGE__->register_method(
                     lineitem
                     lineitem_detail
                     claim_policy_action
+                    ordering_agency
                 /, 
                 type => 'object'
             },
@@ -77,6 +78,30 @@ sub claim_ready_items {
 }
 
 __PACKAGE__->register_method(
+    method => "claim_item",
+    api_name => "open-ils.acq.claim.lineitem",
+    stream => 1,
+    signature => {
+        desc => q/Initiates a claim for a lineitem/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Lineitem ID", type => "number"},
+            {desc => q/Claim (acqcl) ID.  If defined, attach new claim
+                events to this existing claim object/, type => "number"},
+            {desc => q/Claim Type (acqclt) ID.  If defined (and no claim is
+                defined), create a new claim with this type/, type => "number"},
+            {desc => "Note for the claim event", type => "string"},
+            {desc => q/Optional: Claim Policy Actions.  If not present,
+                claim events for all eligible claim policy actions will be
+                created.  This is an array of acqclpa IDs./,
+                type => "array"},
+        ],
+        return => {desc => "The claim events on success, Event on error",
+            type => "object", class => "acrlid"}
+    }
+);
+
+__PACKAGE__->register_method(
 	method => 'claim_item',
 	api_name	=> 'open-ils.acq.claim.lineitem_detail',
     stream => 1,
@@ -87,6 +112,7 @@ __PACKAGE__->register_method(
             {desc => 'Lineitem Detail ID', type => 'number'},
             {desc => 'Claim (acqcl) ID.  If defined, attach new claim events to this existing claim object', type => 'number'},
             {desc => 'Claim Type (acqclt) ID.  If defined (and no claim is defined), create a new claim with this type', type => 'number'},
+            {desc => "Note for the claim event", type => "string"},
             {   desc => q/
                 
                     Optional: Claim Policy Actions.  If not present, claim events 
@@ -109,7 +135,7 @@ sub claim_item {
     my $claim_type_id = shift;
     my $note = shift;
     my $policy_actions = shift;
-    my $only_eligible = shift;
+#   my $only_eligible = shift; # so far unused
 
     my $e = new_editor(xact => 1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
@@ -120,6 +146,13 @@ sub claim_item {
     my $claim_events = {
         events => [],
         trigger_stuff => []
+    };
+
+    my $lid_flesh = {
+        "flesh" => 2,
+        "flesh_fields" => {
+            "acqlid" => ["lineitem"], "jub" => ["purchase_order"],
+        }
     };
 
     if($claim_id) {
@@ -133,30 +166,36 @@ sub claim_item {
 
     if($self->api_name =~ /claim.lineitem_detail/) {
 
-        my $lid = $e->retrieve_acq_lineitem_detail([
-            $object_id,
-            {
-                flesh => 2,
-                flesh_fields => {
-                    acqlid => ['lineitem'],
-                    jub => ['purchase_order'],
-                }
-            }
-        ]) or return $e->die_event;
+        my $lid = $e->retrieve_acq_lineitem_detail([$object_id, $lid_flesh]) or
+            return $e->die_event;
         return $evt if 
             $evt = claim_lineitem_detail(
                 $e, $lid, $claim, $claim_type, $policy_actions, $note, $claim_events); 
 
     } elsif($self->api_name =~ /claim.lineitem/) {
+        my $lids = $e->search_acq_lineitem_detail([
+            {"lineitem" => $object_id, "cancel_reason" => undef},
+            $lid_flesh
+        ]) or return $e->die_event;
 
-        # TODO: add support for claiming from a lineitem
+        foreach my $lid (@$lids) {
+            return $evt if
+                $evt = claim_lineitem_detail(
+                    $e, $lid, $claim, $claim_type, $policy_actions,
+                    $note, $claim_events
+                );
+        }
     }
 
     $e->commit;
-    $conn->respond_complete($claim_events->{events});
 
     # create related A/T events
     $U->create_events_for_hook('claim_event.created', $_->[0], $_->[1]) for @{$claim_events->{trigger_stuff}};
+
+    # do voucher rendering and return result
+    $conn->respond($U->fire_object_event(
+        undef, "format.acqcle.html", $_->[0], $_->[1], "print-on-demand"
+    )) foreach @{$claim_events->{trigger_stuff}};
     return undef;
 }
 

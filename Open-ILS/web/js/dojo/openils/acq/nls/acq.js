@@ -68,5 +68,8 @@
             "<a style='padding-right: 10px;' href='${11}/acq/picklist/view/${14}'>SL: ${15}</a></div>",
     'INVOICE_CONFIRM_PRORATE' : "Prorate charges?\n\nAny subsequent changes to the invoice that would affect prorated amounts should be resolved manually.",
     'UNNAMED': "Unnamed",
-    'NO_FIND_INVOICE': "Could not find that invoice.\nNote that the Invoice # field is case-sensitive."
+    'NO_FIND_INVOICE': "Could not find that invoice.\nNote that the Invoice # field is case-sensitive.",
+    'NO_LI_TO_CLAIM': "You have not selected any lineitems to claim.",
+    'CLAIM_VOUCHERS': "Claim Vouchers",
+    'PRINT': "Print"
 }

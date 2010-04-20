@@ -122,10 +122,10 @@
 #oils-acq-fund-xfer-submit-row { text-align: center; }
 
 /* li search page */
-h1.oils-acq-li-search { font-size: 150%;font-weight: bold;margin-bottom: 12px; }
-h2.oils-acq-li-search { font-size: 138%;font-weight: bold;margin-bottom: 11px; }
-h3.oils-acq-li-search { font-size: 125%;font-weight: bold;margin-bottom: 10px; }
-h4.oils-acq-li-search { font-size: 112%;font-weight: bold;margin-bottom: 9px; }
+h1 { font-size: 150%;font-weight: bold;margin-bottom: 12px; }
+h2 { font-size: 138%;font-weight: bold;margin-bottom: 11px; }
+h3 { font-size: 125%;font-weight: bold;margin-bottom: 10px; }
+h4 { font-size: 112%;font-weight: bold;margin-bottom: 9px; }
 #oils-acq-li-search-form-holder {border-bottom: 2px #666 inset; margin: 6px 0;}
 .oils-acq-li-search-form-row { margin: 6px 0; }
 input.oils-acq-li-search { margin: 0 12px; }
@@ -229,3 +229,8 @@ option[disabled="disabled"] { font-style: italic; }
 .acq-unified-terms-match { width: 15%; }
 .acq-unified-terms-remove { width: 5%; text-align: right; }
 .acq-unified-remover { color: #c00; }
+
+#acq-eligible-li-table { margin: 10px 0; }
+#acq-eligible-li-table th { background-color: #ccc; border: 1px #333 inset; font-weight: bold; padding: 6px; }
+#acq-eligible-li-table td { padding: 2px 6px; border: 1px #333 inset; }
+#acq-eligible-li-table div[name="lid_link_holder"] { margin-left: 10px; }

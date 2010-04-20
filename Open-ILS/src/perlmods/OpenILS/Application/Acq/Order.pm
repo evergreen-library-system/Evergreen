@@ -761,16 +761,16 @@ sub fund_exceeds_balance_percent {
             ((($balance - $debit_amount) / $allocations) * 100) <
                 $fund->$method_name
         ) {
-                $e->event(
-                    new OpenILS::Event(
-                        $event_name, 
-                        "payload" => {
-                            "fund" => $fund,
-                            "debit_amount" => $debit_amount
-                        }
-                    )
-                );
-                return 1;
+            $logger->info("fund would hit a limit: " . $fund->id . ", $balance, $debit_amount, $allocations, $method_name");
+            $e->event(
+                new OpenILS::Event(
+                    $event_name,
+                    "payload" => {
+                        "fund" => $fund, "debit_amount" => $debit_amount
+                    }
+                )
+            );
+            return 1;
         }
     }
     return 0;
@@ -2079,7 +2079,7 @@ sub activate_purchase_order {
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
     my $die_event = activate_purchase_order_impl($mgr, $po_id, $dry_run);
-    return $die_event if $die_event;
+    return $e->die_event if $die_event;
     if ($dry_run) {
         $e->rollback;
     } else {

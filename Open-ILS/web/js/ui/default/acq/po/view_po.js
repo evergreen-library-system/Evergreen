@@ -444,20 +444,22 @@ function activatePo() {
             return false;
     }
 
+    var want_refresh = false;
     progressDialog.show(true);
-    try {
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.purchase_order.activate'],
-            {   async: true,
-                params: [openils.User.authtoken, PO.id()],
-                oncomplete : function() {
+    fieldmapper.standardRequest(
+        ["open-ils.acq", "open-ils.acq.purchase_order.activate"], {
+            "async": true,
+            "params": [openils.User.authtoken, PO.id()],
+            "onresponse": function(r) {
+                want_refresh = Boolean(openils.Util.readResponse(r));
+            },
+            "oncomplete": function() {
+                progressDialog.hide();
+                if (want_refresh)
                     location.href = location.href;
-                }
             }
-        );
-    } catch(E) {
-        progressDialog.hide();
-    }
+        }
+    );
 }
 
 function splitPo() {

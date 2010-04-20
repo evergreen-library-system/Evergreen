@@ -92,6 +92,7 @@
     <command id="cmd_acq_view_currency_type" />
     <command id="cmd_acq_view_exchange_rate" />
     <command id="cmd_acq_view_distrib_formula" />
+    <command id="cmd_acq_claim_eligible" />
 
     <command id="cmd_booking_reservation" />
     <command id="cmd_booking_pull_list" />
@@ -276,6 +277,7 @@
         <menuitem label="&staff.main.menu.acq.currency_type.label;" accesskey="&staff.main.menu.acq.currency_type.accesskey;" command="cmd_acq_view_currency_type" />
         <menuitem label="&staff.main.menu.acq.exchange_rate.label;" accesskey="&staff.main.menu.acq.exchange_rate.accesskey;" command="cmd_acq_view_exchange_rate" />
         <menuitem label="&staff.main.menu.acq.distrib_formula.label;" accesskey="&staff.main.menu.acq.distrib_formula.accesskey;" command="cmd_acq_view_distrib_formula" />
+        <menuitem label="&staff.main.menu.acq.claim_eligible.label;" accesskey="&staff.main.menu.acq.claim_eligible.accesskey;" command="cmd_acq_claim_eligible" />
     </menupopup>
 </menu>
 
