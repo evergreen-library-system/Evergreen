@@ -4,6 +4,10 @@ if (typeof OpenILS == 'undefined') OpenILS = {};
 OpenILS.data = function () {
 
     try {
+        /* We're going to turn this guy into a singleton, at least for a given window, and look for it in xulG */
+        if (! window.xulG) { window.xulG = {}; }
+        if (window.xulG._data) { return window.xulG._data; }
+
         JSAN.use('util.error'); this.error = new util.error();
         JSAN.use('util.network'); this.network = new util.network();
     } catch(E) {
@@ -11,6 +15,7 @@ OpenILS.data = function () {
         throw(E);
     }
 
+    window.xulG._data = this;
     return this;
 }
 
@@ -230,10 +235,6 @@ OpenILS.data.prototype = {
             for (var i in dc) {
                 this.error.sdump('D_DATA_RETRIEVE','Retrieving ' + i + ' : ' + dc[i] + '\n');
                 this[i] = dc[i];
-            }
-            if (typeof this.on_complete == 'function') {
-
-                this.on_complete();
             }
         } catch(E) {
             this.error.sdump('D_ERROR','Error in OpenILS.data._debug_stash(): ' + js2JSON(E) );

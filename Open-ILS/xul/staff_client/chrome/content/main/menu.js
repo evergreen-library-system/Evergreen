@@ -11,6 +11,7 @@ main.menu = function () {
     JSAN.use('util.error'); this.error = new util.error();
     JSAN.use('util.window'); this.window = new util.window();
     JSAN.use('util.sound'); this.sound = new util.sound();
+    JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 
     this.w = window;
     var x = document.getElementById('network_progress');
@@ -61,8 +62,6 @@ main.menu.prototype = {
         }
 
         var obj = this;
-
-        JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
         var button_bar = String( obj.data.hash.aous['ui.general.button_bar'] ) == 'true';
         if (button_bar) {
@@ -1483,6 +1482,7 @@ main.menu.prototype = {
         };
         content_params.chrome_xulG = xulG;
         content_params._sound = xulG._sound;
+        content_params._data = xulG._data;
         if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
         
         var frame;

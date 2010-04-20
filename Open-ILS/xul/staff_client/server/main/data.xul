@@ -204,7 +204,7 @@
             g.data.on_complete = function () {
 
                 try {
-
+                    g.data.on_complete = null;
                     g.data.stash('list','hash','tree','temp');
 
                     g.data._debug_stash();
