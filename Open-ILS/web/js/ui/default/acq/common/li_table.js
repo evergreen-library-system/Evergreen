@@ -188,6 +188,42 @@ function AcqLiTable() {
         td.appendChild(document.createTextNode(val));
     };
 
+    this.setClaimPolicyControl = function(li, row) {
+        if (!self.claimPolicyPicker) {
+            self.claimPolicyPicker = true; /* prevents a race condition */
+            new openils.widget.AutoFieldWidget({
+                "parentNode": "acq-lit-li-claim-policy",
+                "fmClass": "acqclp",
+                "selfReference": true,
+                "dijitArgs": {"required": true}
+            }).build(function(w) { self.claimPolicyPicker = w; });
+        }
+
+        if (typeof(row) == "undefined")
+            row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
+
+        var actViewPolicy = nodeByName("action_view_claim_policy", row);
+        if (li.claim_policy())
+            actViewPolicy.innerHTML = localeStrings.CHANGE_CLAIM_POLICY;
+
+        if (!actViewPolicy.onclick) {
+            actViewPolicy.onclick = function() {
+                if (li.claim_policy())
+                    self.claimPolicyPicker.attr("value", li.claim_policy());
+                liClaimPolicyDialog.show();
+                liClaimPolicySave.onClick = function() {
+                    self.changeClaimPolicy(
+                        [li], self.claimPolicyPicker.attr("value"),
+                        function() {
+                            self.setClaimPolicyControl(li, row);
+                            liClaimPolicyDialog.hide();
+                        }
+                    );
+                }
+            };
+        }
+    };
+
     /**
      * Inserts a single lineitem into the growing table of lineitems
      * @param {Object} li The lineitem object to insert
@@ -220,14 +256,7 @@ function AcqLiTable() {
 
         this.updateLiNotesCount(li, row);
 
-        if (li.claim_policy()) {
-            var actViewInvoice = nodeByName("action_view_claim_policy", row);
-            actViewInvoice.disabled = false;
-            actViewInvoice.onclick = function() {
-                location.href = oilsBasePath + "/conify/global/acq/claim_policy/" +
-                    li.claim_policy();
-            };
-        }
+        this.setClaimPolicyControl(li, row);
 
         // show which PO this lineitem is a member of
         if(li.purchase_order() && !this.isPO) {
@@ -1745,8 +1774,42 @@ function AcqLiTable() {
             case "cancel_lineitems":
                 this.maybeCancelLineitems();
                 break;
+
+            case "change_claim_policy":
+                var li_list = this.getSelected();
+                this.claimPolicyPicker.attr("value", null);
+                liClaimPolicyDialog.show();
+                liClaimPolicySave.onClick = function() {
+                    self.changeClaimPolicy(
+                        li_list,
+                        self.claimPolicyPicker.attr("value"),
+                        function() {
+                            li_list.forEach(
+                                function(li) { self.setClaimPolicyControl(li); }
+                            );
+                            liClaimPolicyDialog.hide();
+                        }
+                    )
+                };
+                break;
         }
     }
+
+    this.changeClaimPolicy = function(li_list, value, callback) {
+        li_list.forEach(
+            function(li) { li.claim_policy(value); }
+        );
+        fieldmapper.standardRequest(
+            ["open-ils.acq", "open-ils.acq.lineitem.update"], {
+                "params": [openils.User.authtoken, li_list],
+                "async": true,
+                "oncomplete": function(r) {
+                    r = openils.Util.readResponse(r);
+                    if (callback) callback(r);
+                }
+            }
+        );
+    };
 
     this.createAssets = function() {
         if(!this.isPO) return;

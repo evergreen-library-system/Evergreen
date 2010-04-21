@@ -141,8 +141,14 @@ sub retrieve_lineitem_impl {
                 $li->picklist->org_unit, $li->picklist)
     );
 
-    $li->clear_purchase_order unless $$options{flesh_po};
-    $li->clear_picklist unless $$options{flesh_pl};
+    unless ($$options{flesh_po}) {
+        $li->purchase_order(
+            $li->purchase_order ? $li->purchase_order->id : undef
+        );
+    }
+    unless ($$options{flesh_pl}) {
+        $li->picklist($li->picklist ? $li->picklist->id : undef);
+    }
     return $li;
 }
 
@@ -200,7 +206,7 @@ __PACKAGE__->register_method(
 	method => 'update_lineitem',
 	api_name	=> 'open-ils.acq.lineitem.update',
 	signature => {
-        desc => 'Update a lineitem',
+        desc => 'Update one or many lineitems',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'lineitem object update', type => 'object'}
@@ -213,8 +219,13 @@ sub update_lineitem {
     my($self, $conn, $auth, $li) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    my $evt = update_lineitem_impl($e, $li);
-    return $evt if $evt;
+
+    $li = [$li] unless ref $li eq "ARRAY";
+    foreach (@$li) {
+        my $evt = update_lineitem_impl($e, $_);
+        return $evt if $evt;
+    }
+
     $e->commit;
     return 1;
 }
@@ -230,8 +241,7 @@ sub update_lineitem_impl {
     ]) or return $e->die_event;
 
     # the marc may have been cleared on retrieval...
-    $li->marc($e->retrieve_acq_lineitem($li->id)->marc)
-        unless $li->marc;
+    $li->marc($orig_li->marc) unless $li->marc;
 
     $li->editor($e->requestor->id);
     $li->edit_time('now');

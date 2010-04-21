@@ -71,5 +71,7 @@
     'NO_FIND_INVOICE': "Could not find that invoice.\nNote that the Invoice # field is case-sensitive.",
     'NO_LI_TO_CLAIM': "You have not selected any lineitems to claim.",
     'CLAIM_VOUCHERS': "Claim Vouchers",
-    'PRINT': "Print"
+    'PRINT': "Print",
+    'ATTACH_CLAIM_POLICY': "Attach claim policy",
+    'CHANGE_CLAIM_POLICY': "Change claim policy"
 }

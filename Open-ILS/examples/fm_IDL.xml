@@ -5464,10 +5464,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="order_summary" reltype="might_have" key="lineitem" map="" class="acqlisum"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-            <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER CREATE_PICKLIST VIEW_PICKLIST">
-                <context link="purchase_order" field="ordering_agency"/>
-                <context link="picklist" field="org_unit"/>
-            </retrieve>
+			<actions>
+				<retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER CREATE_PICKLIST VIEW_PICKLIST">
+					<context link="purchase_order" field="ordering_agency"/>
+					<context link="picklist" field="org_unit"/>
+				</retrieve>
+			</actions>
 		</permacrud>
 	</class>
 
@@ -5508,10 +5510,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="claim_policy" reltype="has_a" key="id" map="" class="acqclp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-            <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
-                <context link="purchase_order" field="ordering_agency"/>
-                <context link="picklist" field="org_unit"/>
-            </retrieve>
+			<actions>
+				<retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
+					<context link="purchase_order" field="ordering_agency"/>
+					<context link="picklist" field="org_unit"/>
+				</retrieve>
+			</actions>
 		</permacrud>
 	</class>
 
