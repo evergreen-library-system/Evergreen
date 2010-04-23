@@ -49,6 +49,7 @@ function AcqLiTable() {
     this.virtDfaCounts = {};
     this.virtDfaId = -1;
     this.dfeOffset = 0;
+    this.claimEligibleLidByLi = {};
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
     this.selectors = [];
@@ -66,6 +67,9 @@ function AcqLiTable() {
     this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
     this._copy_fields_for_acqdf = ['owning_lib', 'location'];
     this.invoiceLinkDialogManager = new InvoiceLinkDialogManager("li");
+    this.claimDialog = new ClaimDialogManager(
+        liClaimDialog, finalClaimDialog, this.claimEligibleLidByLi
+    );
 
     dojo.connect(acqLitLiActionsSelector, 'onChange', 
         function() { 
@@ -254,6 +258,16 @@ function AcqLiTable() {
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
+        /* XXX note how checkClaimEligibility() is getting called once per LI
+         * when in some use cases we should be able to do that job with one
+         * call per PO or per PL or whatever... */
+        this._fetchLineitem(
+            li.id(), function(full) {
+                self.liCache[full.id()] = full;
+                self.checkClaimEligibility(full, row);
+            }
+        );
+
         this.updateLiNotesCount(li, row);
 
         this.setClaimPolicyControl(li, row);
@@ -317,6 +331,49 @@ function AcqLiTable() {
         } else {
             return row;
         }
+    };
+
+    this._liCountClaims = function(li) {
+        var total = 0;
+        for (var i = 0; i < li.lineitem_details().length; i++)
+            total += li.lineitem_details()[i].claims().length;
+        return total;
+    };
+
+    this.reconsiderClaimControl = function(li, row) {
+        var option = nodeByName("action_manage_claims", row);
+        var eligible = this.claimEligibleLidByLi[li.id()].length;
+        var count = this._liCountClaims(li);
+
+        option.disabled = !(count || eligible);
+
+        /* of course I'd rather just populate a <span> element inside the
+         * option element, but it seems you can't actually have any elements
+         * inside option elements */
+        option.innerHTML = option.innerHTML.replace(
+            /(^.+)(.*)( existing.+$)/, "$1" + String(count) + "$3"
+        );
+        option.onclick = function() { self.claimDialog.show(li); };
+    };
+
+    this.checkClaimEligibility = function(li, row) {
+        this.claimEligibleLidByLi[li.id()] = [];
+        fieldmapper.standardRequest(
+            ["open-ils.acq", "open-ils.acq.claim.eligible.lineitem_detail"], {
+                "params": [openils.User.authtoken, {"lineitem": li.id()}],
+                "async": true,
+                "onresponse": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        self.claimEligibleLidByLi[li.id()].push(
+                            r.lineitem_detail()
+                        );
+                    }
+                },
+                "oncomplete": function() {
+                    self.reconsiderClaimControl(li, row);
+                }
+            }
+        );
     };
 
     this.updateLiNotesCount = function(li, row) {

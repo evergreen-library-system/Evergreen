@@ -1,0 +1,39 @@
+<div style="width: 300px; height: 300px; overflow: auto;">
+    <script
+        src="[% ctx.media_prefix %]/js/ui/default/acq/common/claim_dialog.js">
+    </script>
+    <div><big>Claims</big></div>
+    <div>Against item:
+        <span id="acq-lit-li-claim-dia-li-title"></span>
+        (<span id="acq-lit-li-claim-dia-li-id"></span>)
+    </div>
+    <div id="acq-lit-li-claim-dia-show" class="hidden">
+        <ul id="acq-lit-li-claim-dia-lid-list">
+            <li name="lid">
+                <span name="barcode"></span> /
+                <span name="recvd"></span>
+                <ul name="claims">
+                    <li name="claim">
+                        <span name="type"></span>
+                        <a name="voucher"
+                            href="javascript:void(0);">Show Voucher</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div id="acq-lit-li-claim-dia-initiate" class="hidden">
+        <hr />
+        <div><big>Initiate New Claims</big></div>
+        <div id="acq-lit-li-claim-dia-lid-list-init">
+            <div name="lid_to_claim">
+                <input type="checkbox" name="claimable_lid" />
+                <label name="claimable_lid_label">
+                    <span name="barcode"></span> /
+                    <span name="recvd"></span>
+                </label>
+            </div>
+        </div>
+        <button id="acq-lit-li-claim-dia-claim">Claim selected</button>
+    </div>
+</div>

@@ -96,8 +96,10 @@ __PACKAGE__->register_method(
                 created.  This is an array of acqclpa IDs./,
                 type => "array"},
         ],
-        return => {desc => "The claim events on success, Event on error",
-            type => "object", class => "acrlid"}
+        return => {
+            desc => "The claim voucher events on success, Event on error",
+            type => "object", class => "acrlid"
+        }
     }
 );
 
@@ -122,7 +124,10 @@ __PACKAGE__->register_method(
                 type => 'array'
             },
         ],
-        return => {desc => 'The claim events on success, Event on error', type => 'object', class => 'acrlid'}
+        return => {
+            desc => "The claim voucher events on success, Event on error",
+            type => "object", class => "acrlid"
+        }
     }
 );
 
@@ -165,12 +170,17 @@ sub claim_item {
     }
 
     if($self->api_name =~ /claim.lineitem_detail/) {
-
-        my $lid = $e->retrieve_acq_lineitem_detail([$object_id, $lid_flesh]) or
-            return $e->die_event;
-        return $evt if 
-            $evt = claim_lineitem_detail(
-                $e, $lid, $claim, $claim_type, $policy_actions, $note, $claim_events); 
+        my $lids = $e->search_acq_lineitem_detail([
+            {"id" => $object_id, "cancel_reason" => undef},
+            $lid_flesh
+        ]) or return $e->die_event;
+        foreach my $lid (@$lids) {
+            return $evt if
+                $evt = claim_lineitem_detail(
+                    $e, $lid, $claim, $claim_type, $policy_actions,
+                    $note, $claim_events
+                );
+        }
 
     } elsif($self->api_name =~ /claim.lineitem/) {
         my $lids = $e->search_acq_lineitem_detail([

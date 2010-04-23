@@ -4,6 +4,9 @@
 <script
     src="[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_eligible.js">
 </script>
+<script
+    src="[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js">
+</script>
 <div>
     <h1>Items Eligible For Claiming</h1>
     <div class="oils-acq-basic-roomy">
@@ -14,6 +17,9 @@
             labelAttr="shortname"></select>
         <span dojoType="openils.widget.ProgressDialog"
             jsId="progressDialog"></span>
+    </div>
+    <div class="oils-acq-basic-roomy">
+        <button name="claim_submit">Claim selected items</button>
     </div>
     <table id="acq-eligible-li-table">
         <thead>
@@ -43,12 +49,13 @@
             </tr>
         </tbody>
     </table>
-    <div id="acq-eligible-claim-controls" class="hidden">
-        <label for="acq-eligible-claim-type">Claim type:</label>
-        <span id="acq-eligible-claim-type"></span>
-        <label for="acq-eligible-claim-note">Note:</label>
-        <input dojoType="dijit.form.TextBox" id="acq-eligible-claim-note" />
-        <button onclick="eligibleLiTable.claim();">Claim selected items</button>
+    <div class="oils-acq-basic-roomy">
+        <button name="claim_submit">Claim selected items</button>
+    </div>
+</div>
+<div class="hidden">
+    <div dojoType="dijit.Dialog" jsId="finalClaimDialog">
+        [% INCLUDE "default/acq/common/final_claim_dialog.tt2" %]
     </div>
 </div>
 [% END %]

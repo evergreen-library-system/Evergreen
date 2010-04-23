@@ -70,8 +70,10 @@
     'UNNAMED': "Unnamed",
     'NO_FIND_INVOICE': "Could not find that invoice.\nNote that the Invoice # field is case-sensitive.",
     'NO_LI_TO_CLAIM': "You have not selected any lineitems to claim.",
-    'CLAIM_VOUCHERS': "Claim Vouchers",
-    'PRINT': "Print",
-    'ATTACH_CLAIM_POLICY': "Attach claim policy",
-    'CHANGE_CLAIM_POLICY': "Change claim policy"
+    'NO_LID_TO_CLAIM': "You have not selected any lineitem details to claim.",
+    'CHANGE_CLAIM_POLICY': "Change claim policy",
+    'CANCELED': "Canceled",
+    'RECVD': "Recv'd",
+    'NOT_RECVD': "Not recv'd",
+    'PRINT': "Print"
 }

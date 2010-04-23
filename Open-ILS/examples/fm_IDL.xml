@@ -5590,6 +5590,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Note" name="note" reporter:datatype="text" />
 			<field reporter:label="Collection Code" name="collection_code" reporter:datatype="text" />
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link" />
+			<field reporter:label="Claims" name="claims" reporter:datatype="link" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
@@ -5600,6 +5601,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
+			<link field="claims" reltype="has_many" key="lineitem_detail" map="" class="acqcl"/>
 		</links>
 	</class>
 

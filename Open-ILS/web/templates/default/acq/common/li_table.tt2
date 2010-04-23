@@ -1,5 +1,6 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"> </script>
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
+<script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js'> </script>
 <div id='acq-lit-table-container'>
     <div id='acq-lit-table-div' class='hidden'>
 
@@ -113,6 +114,7 @@
                             <option name='action_link_invoice' disabled='disabled'>Link to Invoice</option>
                             <option name='action_view_invoice' disabled='disabled'>View Invoice(s)</option>
                             <option name='action_view_claim_policy'>Apply Claim Policy</option>
+                            <option name='action_manage_claims' disabled='disabled'>Manage Claims ( existing)</option>
                         </select>
                     </td>
                     <td><span name='li_state'></span></td>
@@ -380,10 +382,16 @@
                 jsId="acqLidCancelButton">Cancel Copy</span>
         </div>
         <div dojoType="dijit.Dialog" jsId="liClaimPolicyDialog">
-                <label for="acq-lit-li-claim-policy">Claim policy:</label>
-                <span id="acq-lit-li-claim-policy"></span> &nbsp;
-                <span dojoType="dijit.form.Button"
-                    jsId="liClaimPolicySave">Save</span>
+            <label for="acq-lit-li-claim-policy">Claim policy:</label>
+            <span id="acq-lit-li-claim-policy"></span> &nbsp;
+            <span dojoType="dijit.form.Button"
+                jsId="liClaimPolicySave">Save</span>
+        </div>
+        <div dojoType="dijit.Dialog" jsId="liClaimDialog">
+            [% INCLUDE "default/acq/common/claim_dialog.tt2" %]
+        </div>
+        <div dojoType="dijit.Dialog" jsId="finalClaimDialog">
+            [% INCLUDE "default/acq/common/final_claim_dialog.tt2" %]
         </div>
     </div>
 

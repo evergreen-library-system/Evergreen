@@ -53,6 +53,22 @@ function EligibleLiTable(filter) {
         }
     );
 
+    dojo.byId("acq-eligible-claim-submit").onclick = function() {
+        finalClaimDialog.hide();
+        self.claim(self.getSelected());
+    };
+
+    dojo.query("button[name='claim_submit']").forEach(
+        function(button) {
+            button.onclick = function() {
+                if (self.getSelected().length)
+                    finalClaimDialog.show();
+                else
+                    alert(localeStrings.NO_LI_TO_CLAIM);
+            };
+        }
+    );
+
     this.showEmpty = function() {
         dojo.place(dojo.clone(this.emptyTemplate), this.tBody, "only");
         openils.Util.hide("acq-eligible-claim-controls");
@@ -147,29 +163,19 @@ function EligibleLiTable(filter) {
     this.resetVoucher = function() { this.voucherWin = null; };
 
     this.addToVoucher = function(contents) {
-        if (!this.voucherWin) {
-            this.voucherWin = window.open(
-                "", "", "resizable,width=800,height=600,scrollbars=1"
-            );
-            this.voucherWin.document.title = localeStrings.CLAIM_VOUCHERS;
-            this.voucherWin.document.body.innerHTML = (
-                "<button onclick='window.print();'>" +
-                localeStrings.PRINT +
-                "</button><hr /><div id='main'></div>"
-            );
-        }
-        dojo.byId("main", this.voucherWin.document).innerHTML += (
-            contents + "<hr />"
-        );
+        if (!this.voucherWin)
+            this.voucherWin = openClaimVoucherWindow();
+        dojo.byId("main", this.voucherWin.document).innerHTML +=
+            (contents + "<hr />");
     };
 
-    this.claim = function() {
-        var lineitems = this.getSelected();
-        if (!lineitems.length) {
-            alert(localeStrings.NO_LI_TO_CLAIM);
-            return;
-        }
+    this.finishVoucher = function() {
+        var print_btn = dojo.byId("print", this.voucherWin.document);
+        print_btn.disabled = false;
+        print_btn.innerHTML = localeStrings.PRINT;
+    };
 
+    this.claim = function(lineitems) {
         progressDialog.show(true);
         self.resetVoucher();
 
@@ -192,6 +198,8 @@ function EligibleLiTable(filter) {
                     );
                     if (!nodeByName("selector", self.tBody)) // emptiness test
                         self.showEmpty();
+
+                    self.finishVoucher();
                     progressDialog.hide();
                 }
             }

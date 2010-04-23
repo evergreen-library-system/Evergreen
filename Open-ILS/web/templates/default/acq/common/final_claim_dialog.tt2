@@ -1,0 +1,8 @@
+<div id="acq-eligible-claim-controls">
+    <label for="acq-eligible-claim-type">Claim type:</label>
+    <span id="acq-eligible-claim-type"></span>
+    <label for="acq-eligible-claim-note">Note:</label>
+    <input dojoType="dijit.form.TextBox" id="acq-eligible-claim-note" />
+    <button id="acq-eligible-claim-submit">Claim</button>
+</div>
+

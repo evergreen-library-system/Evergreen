@@ -131,6 +131,19 @@ sub retrieve_lineitem_impl {
         $li->item_count(scalar(@$details));
     }
 
+    # attach claims to LIDs
+    if($$options{flesh_li_details}) {
+        foreach (@{$li->lineitem_details}) {
+            $_->claims(
+                $e->search_acq_claim([
+                    {"lineitem_detail", $_->id}, {
+                        "flesh" => 1, "flesh_fields" => {"acqcl" => ["type"]}
+                    }
+                ])
+            );
+        }
+    }
+
     return $e->event unless (
         $li->purchase_order and 
             $e->allowed(['VIEW_PURCHASE_ORDER', 'CREATE_PURCHASE_ORDER'], 
