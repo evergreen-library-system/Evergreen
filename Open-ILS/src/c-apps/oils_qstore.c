@@ -102,6 +102,12 @@ int osrfAppInitialize() {
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 			"doSql", "", 1, OSRF_METHOD_STREAMING );
 
+	buffer_reset( method_name );
+	OSRF_BUFFER_ADD( method_name, modulename );
+	OSRF_BUFFER_ADD( method_name, ".finish" );
+	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
+			"doFinish", "", 1, 0 );
+
 	return 0;
 }
 
@@ -323,6 +329,31 @@ int doSql( osrfMethodContext* ctx ) {
 	}
 
 	osrfAppRespondComplete( ctx, jsonNewObject( OSRF_BUFFER_C_STR( query->state->sql )));
+	return 0;
+}
+
+int doFinish( osrfMethodContext* ctx ) {
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
+
+	// Get the query token.
+	const jsonObject* token_obj = jsonObjectGetIndex( ctx->params, 0 );
+	if( token_obj->type != JSON_STRING ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+							  ctx->request, "Invalid parameter; query token must be a string" );
+		return -1;
+	}
+	const char* token = jsonObjectGetString( token_obj );
+
+	// Delete the corresponding entry from the cache.  If there is no cache, or no such entry,
+	// just ignore the problem and report success.
+	osrfHash* cache = ctx->session->userData;
+	if( cache )
+		osrfHashRemove( cache, token );
+
+	osrfAppRespondComplete( ctx, NULL );
 	return 0;
 }
 
