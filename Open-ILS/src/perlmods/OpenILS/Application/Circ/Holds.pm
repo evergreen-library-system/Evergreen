@@ -965,7 +965,27 @@ __PACKAGE__->register_method(
     method    => "retrieve_hold_queue_stats",
     api_name  => "open-ils.circ.hold.queue_stats.retrieve",
     signature => {
-        desc => q/Returns object with total_holds count, queue_position, potential_copies count, and status code/,
+        desc   => 'Returns summary data about the state of a hold',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'Hold ID', type => 'number'},
+        ],
+        return => {
+            desc => q/Summary object with keys: 
+                total_holds : total holds in queue
+                queue_position : current queue position
+                potential_copies : number of potential copies for this hold
+                estimated_wait : estimated wait time in days
+                status : hold status  
+                     -1 => error or unexpected state,
+                     1 => 'waiting for copy to become available',
+                     2 => 'waiting for copy capture',
+                     3 => 'in transit',
+                     4 => 'arrived',
+                     5 => 'hold-shelf-delay'
+            /,
+            type => 'object'
+        }
     }
 );
 
