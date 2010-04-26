@@ -568,6 +568,7 @@ circ.checkout.prototype = {
     'checkout' : function(params) {
         var obj = this;
 
+        JSAN.use('util.date');
         if (document.getElementById('checkout_duedate_checkbox').checked) {
             if (! obj.check_date(obj.controller.view.checkout_duedate_datepicker)) return;
             var tp = document.getElementById('checkout_duedate_timepicker');
@@ -578,7 +579,6 @@ circ.checkout.prototype = {
             tp_date.setMonth( dp_date.getMonth() );
             tp_date.setDate( dp_date.getDate() );
 
-            JSAN.use('util.date');
             params.due_date = util.date.formatted_date(tp_date,'%{iso8601}');
         }
 
@@ -853,11 +853,11 @@ circ.checkout.prototype = {
 
                             if (! stop_checkout ) {
 
-                                var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
+                                var due_date = my_circ.due_date() ? util.date.formatted_date( my_circ.due_date(), '%F' ) : null;
                                 JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
                                 if (due_date) {
                                     if (today > due_date) {
-                                        msg += (document.getElementById('circStrings').getFormattedString('staff.circ.checkout.item_due', [due_date]) + '\n');
+                                        msg += (document.getElementById('circStrings').getFormattedString('staff.circ.checkout.item_due', [ util.date.formatted_date( my_circ.due_date(), '%{localized}' ) ]) + '\n');
                                     }
                                 }
 

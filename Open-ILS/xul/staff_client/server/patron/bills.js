@@ -8,6 +8,7 @@ patron.bills = function (params) {
     var obj = this;
     try { JSAN.use('util.error'); obj.error = new util.error(); } catch(E) { alert(E); }
     try { JSAN.use('util.network'); obj.network = new util.network(); } catch(E) { alert(E); }
+    JSAN.use('util.date');
     try { 
         obj.OpenILS = {}; JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'}); 
         obj.data = obj.OpenILS.data;
@@ -744,7 +745,7 @@ patron.bills.prototype = {
                             label_r1_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_xact_start_label'));
                             var label_r1_2 = document.createElement('label');
                             row1.appendChild( label_r1_2 );
-                            label_r1_2.setAttribute('value',mobts.xact_start().toString().substr(0,10));
+                            label_r1_2.setAttribute('value',util.date.formatted_date(mobts.xact_start(),'%{localized}'));
                         var row2 = document.createElement('row');
                         rows.appendChild( row2 );
                             var label_r2_1 = document.createElement('label');
@@ -752,7 +753,7 @@ patron.bills.prototype = {
                             label_r2_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_xact_finish_label'));
                             var label_r2_2 = document.createElement('label');
                             row2.appendChild( label_r2_2 );
-                            try { label_r2_2.setAttribute('value',mobts.xact_finish().toString().substr(0,10));
+                            try { label_r2_2.setAttribute('value',util.date.formatted_date(mobts.xact_finish(),'%{localized}'));
                             } catch(E) {}
 
                 return grid;

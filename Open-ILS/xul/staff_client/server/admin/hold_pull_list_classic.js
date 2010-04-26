@@ -17,6 +17,7 @@ function pullListInit() {
     JSAN.errorLevel = "die"; // none, warn, or die
     JSAN.addRepository('/xul/server/');
     JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+    JSAN.use('util.date');
 
     fetchUser();
     $('pl_user').appendChild(text(USER.usrname()));
@@ -102,7 +103,7 @@ function pullListDrawCopy( tbody, row, hold, idx, copy ) {
     $n(row, 'copy_number').appendChild(text(copy.copy_number()));
     try {
         if (copy.age_protect()) {
-            $n(row, 'age_protect').appendChild(text( (copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() )) + ' (' + copy.create_date().substr(0,10) + ')' ));    
+            $n(row, 'age_protect').appendChild(text( (copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() )) + ' (' + util.date.formatted_date( copy.create_date(), '%{localized_date}' ) + ')' ));    
             unHideMe($n(row, 'age_protect_span'));
         }
     } catch(E) { alert(E); }

@@ -55,15 +55,15 @@
                     try {
                         var r_circ = req.getResultObject();
                         $('circ_lib').value = r_circ.circ_lib() ? g.data.hash.aou[ r_circ.circ_lib() ].shortname() : '';
-                        $('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,16).replace(/T/,' ') : '';
-                        $('due_date').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+                        $('xact_start').value = r_circ.xact_start() ? util.date.formatted_date( r_circ.xact_start(), '%{localized}' ) : '';
+                        $('due_date').value = r_circ.due_date() ? util.date.formatted_date( r_circ.due_date(), '%{localized}' ) : '';
                         $('circ_lib').setAttribute('tooltiptext', document.getElementById('circStrings').getFormattedString('staff.circ.circ_brief.staff_out_id', [r_circ.circ_staff()]) );
                         $('checkin_lib').value = r_circ.checkin_lib() ? g.data.hash.aou[ r_circ.checkin_lib() ].shortname() : '';
-                        $('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,16).replace(/T/,' ') : '';
+                        $('checkin_time').value = r_circ.checkin_time() ? util.date.formatted_date( r_circ.checkin_time(), '%{localized}' ) : '';
                         $('checkin_lib').setAttribute('tooltiptext', document.getElementById('circStrings').getFormattedString('staff.circ.circ_brief.staff_in_id', [r_circ.checkin_staff()]) );
                         $('id').value = r_circ.id() ? r_circ.id() : '';
                         $('stop_fines').value = r_circ.stop_fines() ? r_circ.stop_fines() : '';
-                        $('stop_fines_time').value = r_circ.stop_fines_time() ? r_circ.stop_fines_time().toString().substr(0,16).replace(/T/,' ') : '';
+                        $('stop_fines_time').value = r_circ.stop_fines_time() ? util.date.formatted_date( r_circ.stop_fines_time(), '%{localized}' ) : '';
                         var r = '';
                         if (get_bool( r_circ.desk_renewal() ) ) r += 'DESK ';
                         if (get_bool(r_circ.opac_renewal() ) ) r += 'OPAC ';

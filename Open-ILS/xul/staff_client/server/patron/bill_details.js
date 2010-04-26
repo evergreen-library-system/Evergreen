@@ -21,8 +21,8 @@ function retrieve_mbts() {
                 g.mbts = req.getResultObject();
                 $('mbts_id').value = g.mbts.id();
                 $('mbts_xact_type').value = g.mbts.xact_type();
-                $('mbts_xact_start').value = g.mbts.xact_start().toString().substr(0,19);
-                $('mbts_xact_finish').value = g.mbts.xact_finish() ? g.mbts.xact_finish().toString().substr(0,19) : '';
+                $('mbts_xact_start').value = util.date.formatted_date( g.mbts.xact_start(), '%{localized}' );
+                $('mbts_xact_finish').value = g.mbts.xact_finish() ? util.date.formatted_date( g.mbts.xact_finish(), '%{localized}' ) : '';
                 $('mbts_total_owed').value = g.mbts.total_owed() ? util.money.sanitize( g.mbts.total_owed() ) : '';
                 $('mbts_total_paid').value = g.mbts.total_paid() ? util.money.sanitize( g.mbts.total_paid() ) : '';
                 $('mbts_balance_owed').value = g.mbts.balance_owed() ? util.money.sanitize( g.mbts.balance_owed() ) : '';
@@ -76,9 +76,9 @@ function retrieve_circ() {
                 $('checked_out_label').hidden = false;
                 $('due_label').hidden = false;
                 $('checked_in_label').hidden = false;
-                $('checked_out').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
-                $('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
-                $('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+                $('checked_out').value = r_circ.xact_start() ? util.date.formatted_date( r_circ.xact_start(), '%{localized}' ) : '';
+                $('checked_in').value = r_circ.checkin_time() ? util.date.formatted_date( r_circ.checkin_time(), '%{localized}' ) : '';
+                $('due').value = r_circ.due_date() ? util.date.formatted_date( r_circ.due_date(), '%{localized}' ) : '';
                 $('billing_location').value = g.data.hash.aou[ r_circ.circ_lib() ].shortname() + ' : ' + g.data.hash.aou[ r_circ.circ_lib() ].name();
                 var r = '';
                 if (get_bool( r_circ.desk_renewal() ) ) r += 'DESK ';

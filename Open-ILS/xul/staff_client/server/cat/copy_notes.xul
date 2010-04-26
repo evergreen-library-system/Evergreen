@@ -97,7 +97,7 @@
 
                 /* template */
                 var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
-                apply(node,'create_date',g.notes[i].create_date().toString().substr(0,10));
+                apply(node,'create_date', util.date.formatted_date( g.notes[i].create_date(), '%{localized}' ));
                 util.widgets.apply(node,'name','create_date',
                     function(n) {
                         n.setAttribute(
@@ -125,7 +125,7 @@
                             'command',
                             function(id){ return function() { 
                                 var r = g.error.yns_alert(
-                                    $('catStrings').getFormattedString('staff.cat.copy_notes.delete_note.prompt.msg', [g.notes[id].title(), g.notes[id].create_date().toString().substr(0,10)]),
+                                    $('catStrings').getFormattedString('staff.cat.copy_notes.delete_note.prompt.msg', [g.notes[id].title(), util.date.formatted_date( g.notes[id].create_date(), '%{localized}')]),
                                     $('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.title'),
                                     $('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.yes'),
                                     $('catStrings').getString('staff.cat.copy_notes.delete_note.prompt.no'),
@@ -181,7 +181,7 @@
                     note.title( fancy_prompt_data.title );
                     if (fancy_prompt_data.initials) {
                         fancy_prompt_data.note = fancy_prompt_data.note 
-                            + $("commonStrings").getFormattedString('staff.initials.format',[fancy_prompt_data.initials,util.date.formatted_date(new Date(),'%F'), ses('ws_ou_shortname')]);
+                            + $("commonStrings").getFormattedString('staff.initials.format',[fancy_prompt_data.initials,util.date.formatted_date(new Date(),'%{localized_date}'), ses('ws_ou_shortname')]);
                     }
                     note.value( fancy_prompt_data.note );
                     note.pub( get_bool( fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );

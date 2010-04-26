@@ -321,7 +321,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
     var error;
     try {
         JSAN.use('util.error'); error = new util.error();
-        JSAN.use('util.functional');
+        JSAN.use('util.functional'); JSAN.use('util.date');
         JSAN.use('util.network'); var network = new util.network();
         var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
         if (typeof copies.ilsevent != 'undefined') throw(copies);
@@ -357,7 +357,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
                             my_circ = my_circ[0];
                             if (typeof my_circ != 'undefined') {
                                 if (! my_circ.checkin_time() ) {
-                                    var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
+                                    var due_date = my_circ.due_date() ? util.date.formatted_date( my_circ.due_date(), '%F' ) : null;
                                     var auto_checkin = String( data.hash.aous['circ.auto_checkin_on_mark_damage'] ) == 'true';
                                     /* short-circuit this behavior.  We don't want to mark an item damaged and still have it circulating.  At least for now.  Wait until someone asks for it. */
                                     auto_checkin = true; 
@@ -367,7 +367,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
                                     var msg = $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.item_circulating_to_patron', [ 
                                         copies[i].barcode(),
                                         patron_name,
-                                        my_circ.due_date().substr(0,10)]); // FIXME: need to replace date handling
+                                        util.date.formatted_date( my_circ.due_date(), '%{localized}' )]);
                                     JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
                                     var r2 = auto_checkin ? 1 : error.yns_alert(
                                         msg,
@@ -404,7 +404,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
                                         $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.charge_patron_prompt.message', [  
                                             copies[i].barcode(),  
                                             patron_name,  
-                                            circ_obj.checkin_time().substr(0,10), // FIXME: need to replace with something better 
+                                            util.date.formatted_date( circ_obj.checkin_time(), '%{localized}' ),
                                             util.money.sanitize(robj.payload.charge) ]), 
                                         $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.title'), 
                                         $("catStrings").getString('staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label'), 

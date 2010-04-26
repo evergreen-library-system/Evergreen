@@ -9,7 +9,7 @@ patron.summary = function (params) {
     JSAN.use('util.error'); this.error = new util.error();
     JSAN.use('util.window'); this.window = new util.window();
     JSAN.use('util.network'); this.network = new util.network();
-    JSAN.use('util.widgets');
+    JSAN.use('util.widgets'); JSAN.use('util.date');
     this.w = window;
 }
 
@@ -511,7 +511,7 @@ patron.summary.prototype = {
                                 util.widgets.set_text(e,
                                     patronStrings.getString('staff.patron.summary.expires_on') + ' ' + (
                                         obj.patron.expire_date() ?
-                                        obj.patron.expire_date().substr(0,10) :
+                                        util.date.formatted_date( obj.patron.expire_date(), '%{localized_date}' ) :
                                         patronStrings.getString('staff.patron.field.unset') 
                                     )
                                 );
@@ -536,7 +536,7 @@ patron.summary.prototype = {
                                 if ( obscure_dob && hide_value == 'true' ) {
                                     e.setAttribute( 'hidden_value',
                                         obj.patron.dob() ?
-                                        obj.patron.dob().substr(0,10) :
+                                        util.date.formatted_date( obj.patron.dob(), '%{localized_date}' ) :
                                         patronStrings.getString('staff.patron.field.unset') 
                                     );
                                     util.widgets.set_text(e,
@@ -545,7 +545,7 @@ patron.summary.prototype = {
                                 } else {
                                     util.widgets.set_text(e,
                                         obj.patron.dob() ?
-                                        obj.patron.dob().substr(0,10) :
+                                        util.date.formatted_date( obj.patron.dob(), '%{localized_date}' ) :
                                         patronStrings.getString('staff.patron.field.unset') 
                                     );
                                     e.setAttribute( 'hidden_value',

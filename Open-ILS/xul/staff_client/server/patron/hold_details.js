@@ -174,7 +174,7 @@ function render_notifications() {
         );
         apply(node,'method',g.notifications[i].method() ? g.notifications[i].method() : '');
         apply(node,'note',g.notifications[i].note() ? g.notifications[i].note() : '');
-        apply(node,'notify_time',g.notifications[i].notify_time() ? g.notifications[i].notify_time().toString().substr(0,10) : '');
+        apply(node,'notify_time',g.notifications[i].notify_time() ? util.date.formatted_date( g.notifications[i].notify_time(), '%{localized}' ) : '');
     }
 
 }
@@ -197,7 +197,6 @@ function render_notes() {
         );
         apply(node,'title',g.notes[i].title() ? g.notes[i].title() : '');
         apply(node,'note',g.notes[i].body() ? g.notes[i].body() : '');
-        //apply(node,'create_date',g.notes[i].create_date() ? g.notes[i].create_date().toString().substr(0,10) : ''); // FIXME -- need to rework date display more intelligently
         apply(node,'pub',get_bool( g.notes[i].pub() ) ? $("patronStrings").getString('staff.patron.hold_notes.public') : $("patronStrings").getString('staff.patron.hold_notes.private') )
         apply(node,'slip',get_bool( g.notes[i].slip() ) ? $("patronStrings").getString('staff.patron.hold_notes.print_on_slip') : $("patronStrings").getString('staff.patron.hold_notes.no_print_on_slip') )
         apply(node,'staff',get_bool( g.notes[i].staff() ) ? $("patronStrings").getString('staff.patron.hold_notes.by_staff') : $("patronStrings").getString('staff.patron.hold_notes.by_patron') )

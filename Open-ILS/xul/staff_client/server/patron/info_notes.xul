@@ -103,7 +103,7 @@
 
                 /* template */
                 var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
-                apply(node,'create_date',g.notes[i].create_date().toString().substr(0,10));
+                apply(node,'create_date',util.date.formatted_date(g.notes[i].create_date(),'%{localized}'));
                 util.widgets.apply(node,'name','create_date',
                     function(n){n.setAttribute("tooltiptext", $("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.tooltiptext', [g.notes[i].id(), g.notes[i].creator()]));}
                 );
@@ -130,7 +130,7 @@
                     function(id){ 
                         return function() { 
                             var r = g.error.yns_alert(
-                                $("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.delete_note_message',[g.notes[id].title(), g.notes[id].create_date().toString().substr(0,10)]),
+                                $("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.delete_note_message',[g.notes[id].title(), util.date.formatted_date(g.notes[id].create_date(),'%{localized}')]),
                                 $("patronStrings").getString('staff.patron.info_notes.render_notes.delete_note_title'),
                                 $("commonStrings").getString('common.yes'),
                                 $("commonStrings").getString('common.no'),
@@ -169,7 +169,7 @@
                                         patron.util.format_name( patron_obj ) + ' : ' 
                                     + patron_obj.card().barcode() + '</p>'
                                     + '<p><b>"' + g.notes[id].title() + '"</b>'
-                                    + $("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.created_on', [g.notes[id].create_date().toString().substr(0,10), staff_obj[0], g.data.hash.aou[ staff_obj[3] ].shortname()]) 
+                                    + $("patronStrings").getFormattedString('staff.patron.info_notes.render_notes.created_on', [util.date.formatted_date(g.notes[id].create_date(),'%{localized}'), staff_obj[0], g.data.hash.aou[ staff_obj[3] ].shortname()]) 
                                     + '</p><p>'
                                     + g.notes[id].value()
                                     + '</p><hr/>'
