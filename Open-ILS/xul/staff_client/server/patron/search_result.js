@@ -99,10 +99,7 @@ patron.search_result.prototype = {
                         ['command'],
                         function() {
                             try {
-                                var p = { 
-                                    'template' : 'patron'
-                                };
-                                obj.list.print( p );
+                                obj.list.dump_csv_to_printer();
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.search_result.init.search_print'),E);
                             }
