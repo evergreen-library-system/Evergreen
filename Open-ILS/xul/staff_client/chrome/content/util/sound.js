@@ -1,20 +1,31 @@
 dump('entering util/sound.js\n');
 
 if (typeof util == 'undefined') util = {};
-util.sound = function (interval) {
+util.sound = function (params) {
 
     try {
 
+        if (!params) { params = {}; }
+
+        this.sig = (new Date()).getMinutes() + ':' + (new Date()).getSeconds() + '.' + (new Date()).getMilliseconds()/1000;
+        if (params.sig) { this.sig += ' ' + params.sig; }
+
         /* We're going to turn this guy into a singleton, at least for a given window, and look for it in xulG */
         if (! window.xulG) { window.xulG = {}; }
-        if (window.xulG._sound) { return window.xulG._sound; }
+        if (window.xulG._sound) { 
+            dump('SOUND('+this.sig+'): reusing sound from ' + window.xulG._sound.origin + '('+xulG._sound.sig+') for ' + location.pathname + '\n');
+            return window.xulG._sound; 
+        } else {
+            dump('SOUND('+this.sig+'): instantiating new sound for ' + location.pathname + '\n');
+        }
 
         /* So we can queue up sounds and put a pause between them instead of having them trample over each other */
         /* Limitation: interval only gets set once for a singleton */
-        if (interval) {
+        if (params.interval) {
             this._queue = true;
-            this._funcs = [];
-            JSAN.use('util.exec'); this._exec = new util.exec(); this._exec.timer( this._funcs, interval || 500 );
+            this._funcs = params.queue || [];
+            JSAN.use('util.exec'); this._exec = new util.exec(); var intervalId = this._exec.timer( this._funcs, params.interval );
+            dump('SOUND('+this.sig+'): starting timer with intervalId = ' + intervalId + '\n');
         }
 
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -60,12 +71,16 @@ util.sound.prototype = {
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
             var url2 = obj.xp_url_init( data.server + url );
-            dump('SOUND: file = ' + url + '\n');
             if (typeof data.no_sound == 'undefined' || data.no_sound == false || data.no_sound == 'false') {
 
                 if (obj._queue) {
-                    obj._funcs.push( function() { obj.SOUND.play( url2 ); } );
+                    dump('SOUND('+obj.sig+'): queueing file = ' + url + '\n');
+                    obj._funcs.push( function() { 
+                        dump('SOUND('+obj.sig+'): playing file = ' + url + '\n');
+                        obj.SOUND.play( url2 ); 
+                    } );
                 } else {
+                    dump('SOUND('+obj.sig+'): playing file = ' + url + '\n');
                     obj.SOUND.play( url2 );
                 }
             }
@@ -79,37 +94,37 @@ util.sound.prototype = {
 
     'event' : function event(evt) {
         var key = 'AUDIO_' + arguments.callee.name + '_' + evt.textcode;
-        dump('SOUND: key = ' + key + '\n');
+        dump('SOUND('+this.sig+'): key = ' + key + '\n');
         this.play_url( urls[key] );
     },
 
     'good' : function good(e){
         var key = 'AUDIO_' + arguments.callee.name;
-        dump('SOUND: key = ' + key + '\n');
+        dump('SOUND('+this.sig+'): key = ' + key + '\n');
         this.play_url( urls[key] );
     },
 
     'bad' : function bad(e){
         var key = 'AUDIO_' + arguments.callee.name;
-        dump('SOUND: key = ' + key + '\n');
+        dump('SOUND('+this.sig+'): key = ' + key + '\n');
         this.play_url( urls[key] );
     },
 
     'horrible' : function horrible(e){
         var key = 'AUDIO_' + arguments.callee.name;
-        dump('SOUND: key = ' + key + '\n');
+        dump('SOUND('+this.sig+'): key = ' + key + '\n');
         this.play_url( urls[key] );
     },
 
     'circ_good' : function circ_good(e){
         var key = 'AUDIO_' + arguments.callee.name;
-        dump('SOUND: key = ' + key + '\n');
+        dump('SOUND('+this.sig+'): key = ' + key + '\n');
         this.play_url( urls[key] );
     },
 
     'circ_bad' : function circ_bad(e){
         var key = 'AUDIO_' + arguments.callee.name;
-        dump('SOUND: key = ' + key + '\n');
+        dump('SOUND('+this.sig+'): key = ' + key + '\n');
         this.play_url( urls[key] );
     }
 }
