@@ -230,6 +230,7 @@
                         + '?server='+window.escape(xulG.url),
                         'main'+xulG.window.window_name_increment(),'chrome,resizable'
                     );
+                    delete xulG['_sound']; // This came from util.error but I want menu.js to have its own
                     mframe.xulG = xulG; // This is the xulG from main.js, with auth, url, and window
                 } catch(E) {
                     alert(E);
