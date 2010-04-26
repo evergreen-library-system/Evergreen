@@ -230,6 +230,7 @@ option[disabled="disabled"] { font-style: italic; }
 .acq-unified-terms-match { width: 15%; }
 .acq-unified-terms-remove { width: 5%; text-align: right; }
 .acq-unified-remover { color: #c00; }
+.acq-unified-result-specific-controls { margin-bottom: 8px; }
 
 #acq-eligible-li-table { margin: 10px 0; }
 #acq-eligible-li-table th { background-color: #ccc; border: 1px #333 inset; font-weight: bold; padding: 6px; }

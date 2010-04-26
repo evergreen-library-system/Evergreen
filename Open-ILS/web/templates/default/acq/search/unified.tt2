@@ -5,8 +5,9 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js">
 </script>
 <script>
-    /* The only functions in this <script> element are for
-     * formatting/getting fields for autogrids. */
+    /* The functions in this <script> element are for formatting/getting
+        fields for autogrids, and doing misc operations on specific
+        result types. General unified search code is in unified.js. */
     function getName(rowIndex, item) {
         if (item) {
             return {
@@ -56,6 +57,45 @@
                 inv.id + "'>" + inv.inv_ident + "</a>";
         }
     }
+
+    /* XXX consider separate per-result-type .js files to separate functions
+     * like these into */
+    function printInvoiceVouchers() {
+        var inv_ids = dijit.byId("acq-unified-inv-grid").
+            getSelectedItems().map(function(o) {return o.id[0];});
+
+        /* XXX this business about opening a window and populating its
+         * body should be wrapped up in a simple dijit or something.
+         * consolidate with claim_voucher.js maybe. */
+        if (inv_ids.length) {
+            var win = null;
+            fieldmapper.standardRequest(
+                ["open-ils.acq", "open-ils.acq.invoice.print.html"], {
+                    "params": [openils.User.authtoken, inv_ids],
+                    "async": true,
+                    "onresponse": function(r) {
+                        if (r = openils.Util.readResponse(r)) {
+                            if (!win) {
+                                win = window.open(
+                                    "", "", "resizable,width=800," +
+                                    "height=600,scrollbars=1"
+                                );
+                                win.document.title = localeStrings.INVOICES;
+                                win.document.body.innerHTML =
+                                    "<style type='text/css'>.acq-invoice-" +
+                                    "voucher {page-break-after:always;}" +
+                                    "</style>\n";
+                            }
+                            win.document.body.innerHTML +=
+                                r.template_output().data();
+                        }
+                    },
+                    "oncomplete": function() { win.print(); }
+                }
+            );
+        }
+    }
+
 </script>
 <!-- later: "[% ctx.page_args.0 %]" -->
 <div id="acq-unified-body" class="hidden">
@@ -187,6 +227,11 @@
         </table>
     </div>
     <div id="acq-unified-results-invoice" class="hidden">
+        <div class="acq-unified-result-specific-controls">
+            <button onclick="printInvoiceVouchers();">
+                Print Selected Invoices
+            </button>
+        </div>
         <table
             id="acq-unified-inv-grid"
             autoHeight="true"

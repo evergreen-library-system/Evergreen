@@ -75,5 +75,6 @@
     'CANCELED': "Canceled",
     'RECVD': "Recv'd",
     'NOT_RECVD': "Not recv'd",
-    'PRINT': "Print"
+    'PRINT': "Print",
+    'INVOICES': "Invoices"
 }

@@ -399,4 +399,49 @@ sub prorate_invoice {
 }
 
 
+__PACKAGE__->register_method(
+    method      => "print_html_invoice",
+    api_name    => "open-ils.acq.invoice.print.html",
+    stream      => 1,
+    signature   => {
+        desc    => "Retrieve printable HTML vouchers for each given invoice",
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Invoice ID or a list of them", type => "mixed"},
+        ],
+        return => {
+            desc => q{One A/T event containing a printable HTML voucher for
+                each given invoice},
+            type => "object", class => "atev"}
+    }
+);
+
+
+sub print_html_invoice {
+    my ($self, $conn, $auth, $id_list) = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    $id_list = [$id_list] unless ref $id_list;
+
+    my $invoices = $e->search_acq_invoice({"id" => $id_list}) or
+        return $e->die_event;
+
+    foreach my $invoice (@$invoices) {
+        return $e->die_event unless
+            $e->allowed("VIEW_INVOICE", $invoice->receiver);
+
+        $conn->respond(
+            $U->fire_object_event(
+                undef, "format.acqinv.html", $invoice, $invoice->receiver,
+                "print-on-demand"
+            )
+        );
+    }
+
+    $e->disconnect;
+    undef;
+}
+
 1;
