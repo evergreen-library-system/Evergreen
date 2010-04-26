@@ -1537,17 +1537,14 @@ sub retrieve_prev_circ_chain {
         my $target_copy = $$first_circ{'target_copy'};
         my $usr = $$first_circ{'usr'};
         my $last_circ_from_prev_chain = $e->json_query({
-            'select' => {
-                'circ' => [{
-                    'column' => 'id',
-                    'transform' => 'max'
-                }]
-            },
+            'select' => { 'circ' => ['id'] },
             'from' => 'circ', 
             'where' => {
                 target_copy => $target_copy,
-                id => { '<' => $$first_circ{'id'} }
-            }
+                xact_start => { '<' => $$first_circ{'xact_start'} }
+            },
+            'order_by' => [{ 'class'=>'circ', 'field'=>'xact_start', 'direction'=>'desc' }],
+            'limit' => 1
         })->[0];
         return undef unless $last_circ_from_prev_chain;
         return undef unless $$last_circ_from_prev_chain{'id'};
@@ -1562,17 +1559,14 @@ sub retrieve_prev_circ_chain {
         my $first_circ = $e->json_query({from => ['action.circ_chain', $circ_id]})->[0];
         my $target_copy = $$first_circ{'target_copy'};
         my $last_circ_from_prev_chain = $e->json_query({
-            'select' => {
-                'circ' => [{
-                    'column' => 'id',
-                    'transform' => 'max'
-                }]
-            },
+            'select' => { 'circ' => ['id'] },
             'from' => 'circ', 
             'where' => {
                 target_copy => $target_copy,
-                id => { '<' => $$first_circ{'id'} }
-            }
+                xact_start => { '<' => $$first_circ{'xact_start'} }
+            },
+            'order_by' => [{ 'class'=>'circ', 'field'=>'xact_start', 'direction'=>'desc' }],
+            'limit' => 1
         })->[0];
         return undef unless $last_circ_from_prev_chain;
         return undef unless $$last_circ_from_prev_chain{'id'};
