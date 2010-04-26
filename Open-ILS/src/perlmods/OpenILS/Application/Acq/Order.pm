@@ -2634,9 +2634,25 @@ sub cancel_lineitem_detail {
 
     # TODO who/what/where/how do we indicate this change for electronic orders?
 
+    my $debit_id = $lid->fund_debit;
+    $lid->clear_fund_debit;
+
     # XXX LIDs don't have either an editor or a edit_time field. Should we
     # update these on the LI when we alter an LID?
     $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
+
+    if($debit_id) {
+        # item is cancelled.  Remove the fund debit.
+        my $debit = $mgr->editor->retrieve_acq_fund_debit($lid->fund_debit);
+        if (!$U->is_true($debit->encumbrance)) {
+            $mgr->editor->rollback;
+            return OpenILS::Event->new('ACQ_NOT_CANCELABLE', 
+                note => "Debit is marked as paid: $debit_id");
+        }
+        $mgr->editor->delete_acq_fund_debit($debit) or return $mgr->editor->die_event;
+        $lid->clear_fund_debit;
+    }
+
     return {"lid" => {$lid_id => {"cancel_reason" => $cancel_reason}}};
 }
 
