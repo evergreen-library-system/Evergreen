@@ -19,7 +19,7 @@ function draw() {
                 oncomplete : function(r) {
                     provider = openils.Util.readResponse(r);
                     console.log('provider is' + js2JSON(provider));
-                    var pane = new openils.widget.EditPane({fmObject:provider}, dojo.byId('provider-summary-pane'));
+                    var pane = new openils.widget.EditPane({fmObject:provider, paneStackCount:2}, dojo.byId('provider-summary-pane'));
                     pane.startup();
                     console.log("pane started");
                     dojo.connect(providerTabs, 'selectChild', drawProviderSummary);                        
