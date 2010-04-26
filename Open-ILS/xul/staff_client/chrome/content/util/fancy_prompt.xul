@@ -98,6 +98,11 @@
                     if (focus_element) focus_element.focus();
                 }
 
+                var snd = xul_param('sound',{'modal_xulG':true});
+                if (snd) {
+                    try { JSAN.use('util.sound'); var sound = new util.sound(); sound[ snd ](); } catch(E) { alert(E); }
+                }
+
                 JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
                 xulG.fancy_status = 'incomplete';
                 var key = location.pathname + location.search + location.hash;

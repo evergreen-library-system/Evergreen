@@ -447,7 +447,6 @@ util.network.prototype = {
                     }
 
                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-                    obj.sound.bad();
                     var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
                         '<groupbox><caption label="' + offlineStrings.getString('network.override.exceptions') + '"/>' + 
                         '<grid><columns><column/><column/></columns><rows>';
@@ -474,7 +473,7 @@ util.network.prototype = {
                         //+ '?xml_in_stash=temp_override_xml'
                         //+ '&title=' + window.escape(override_params.title),
                         'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-                        { 'xml' : xml, 'title' : override_params.title }
+                        { 'xml' : xml, 'title' : override_params.title, 'sound' : 'bad' }
                     );
                     if (fancy_prompt_data.fancy_status == 'complete') {
                         req = obj._request(app,name + '.override',params);

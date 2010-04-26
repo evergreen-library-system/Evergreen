@@ -18,7 +18,10 @@ util.error = function () {
 
         this.OpenILS = {};
 
-        JSAN.use('util.sound'); this.sound = new util.sound();
+        // Only use sounds if the context window has already created a sound object
+        if (typeof xulG != 'undefined' && xulG._sound) {
+            this.sound = xulG._sound;
+        }
 
     } catch(E) {
         alert('Error in util.error constructor: ' + E);
@@ -340,9 +343,6 @@ util.error.prototype = {
         dump('yns_alert:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 
-        this.sound.bad();
-
-
         //FIXME - is that good enough of an escape job?
         s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -374,7 +374,7 @@ util.error.prototype = {
         if (typeof xulG != 'undefined') if (typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
         JSAN.use('util.window'); var win = new util.window();
         var fancy_prompt_data = win.open(
-            url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500', { 'xml' : xml, 'title' : title }
+            url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500', { 'xml' : xml, 'title' : title, 'sound' : 'bad' }
         );
         if (fancy_prompt_data.fancy_status == 'complete') {
             switch(fancy_prompt_data.fancy_submit) {
@@ -417,9 +417,6 @@ util.error.prototype = {
         dump('yns_alert_formatted:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 
-        this.sound.bad();
-
-
         //FIXME - is that good enough of an escape job?
         s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -451,7 +448,7 @@ util.error.prototype = {
         if (typeof xulG != 'undefined') if (typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
         JSAN.use('util.window'); var win = new util.window();
         var fancy_prompt_data = win.open(
-            url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500', { 'xml' : xml, 'title' : title }
+            url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500', { 'xml' : xml, 'title' : title, 'sound' : 'bad' }
         );
         if (fancy_prompt_data.fancy_status == 'complete') {
             switch(fancy_prompt_data.fancy_submit) {
@@ -486,7 +483,7 @@ util.error.prototype = {
         dump('yns_alert_original:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-        this.sound.bad();
+        if (this.sound) { this.sound.bad(); }
 
         // get a reference to the prompt service component.
         var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
