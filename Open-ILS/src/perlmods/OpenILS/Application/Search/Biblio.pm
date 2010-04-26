@@ -166,28 +166,96 @@ sub record_id_to_mods_slim_batch {
 __PACKAGE__->register_method(
     method   => "record_id_to_copy_count",
     api_name => "open-ils.search.biblio.record.copy_count",
+    signature => {
+        desc => q/Returns a copy summary for the given record for the context org
+            unit and all ancestor org units/,
+        params => [
+            {desc => 'Context org unit id', type => 'number'},
+            {desc => 'Record ID', type => 'number'}
+        ],
+        return => {
+            desc => q/summary object per org unit in the set, where the set
+                includes the context org unit and all parent org units.  
+                Object includes the keys "transcendant", "count", "org_unit", "depth", 
+                "unshadow", "available".  Each is a count, except "org_unit" which is 
+                the context org unit and "depth" which is the depth of the context org unit
+            /,
+            type => 'array'
+        }
+    }
 );
 
 __PACKAGE__->register_method(
     method        => "record_id_to_copy_count",
     api_name      => "open-ils.search.biblio.record.copy_count.staff",
     authoritative => 1,
+    signature => {
+        desc => q/Returns a copy summary for the given record for the context org
+            unit and all ancestor org units/,
+        params => [
+            {desc => 'Context org unit id', type => 'number'},
+            {desc => 'Record ID', type => 'number'}
+        ],
+        return => {
+            desc => q/summary object per org unit in the set, where the set
+                includes the context org unit and all parent org units.  
+                Object includes the keys "transcendant", "count", "org_unit", "depth", 
+                "unshadow", "available".  Each is a count, except "org_unit" which is 
+                the context org unit and "depth" which is the depth of the context org unit
+            /,
+            type => 'array'
+        }
+    }
 );
 
 __PACKAGE__->register_method(
     method   => "record_id_to_copy_count",
     api_name => "open-ils.search.biblio.metarecord.copy_count",
+    signature => {
+        desc => q/Returns a copy summary for the given record for the context org
+            unit and all ancestor org units/,
+        params => [
+            {desc => 'Context org unit id', type => 'number'},
+            {desc => 'Record ID', type => 'number'}
+        ],
+        return => {
+            desc => q/summary object per org unit in the set, where the set
+                includes the context org unit and all parent org units.  
+                Object includes the keys "transcendant", "count", "org_unit", "depth", 
+                "unshadow", "available".  Each is a count, except "org_unit" which is 
+                the context org unit and "depth" which is the depth of the context org unit
+            /,
+            type => 'array'
+        }
+    }
 );
 
 __PACKAGE__->register_method(
     method   => "record_id_to_copy_count",
     api_name => "open-ils.search.biblio.metarecord.copy_count.staff",
+    signature => {
+        desc => q/Returns a copy summary for the given record for the context org
+            unit and all ancestor org units/,
+        params => [
+            {desc => 'Context org unit id', type => 'number'},
+            {desc => 'Record ID', type => 'number'}
+        ],
+        return => {
+            desc => q/summary object per org unit in the set, where the set
+                includes the context org unit and all parent org units.  
+                Object includes the keys "transcendant", "count", "org_unit", "depth", 
+                "unshadow", "available".  Each is a count, except "org_unit" which is 
+                the context org unit and "depth" which is the depth of the context org unit
+            /,
+            type => 'array'
+        }
+    }
 );
+
 sub record_id_to_copy_count {
-	my( $self, $client, $org_id, $record_id, $format ) = @_;
+	my( $self, $client, $org_id, $record_id ) = @_;
 
 	return [] unless $record_id;
-	$format = undef if (!$format or $format eq 'all');
 
 	my $method = "open-ils.storage.biblio.record_entry.copy_count.atomic";
 	my $key = "record";
@@ -199,8 +267,7 @@ sub record_id_to_copy_count {
 
 	$method =~ s/atomic/staff\.atomic/og if($self->api_name =~ /staff/ );
 
-	my $count = $U->storagereq( $method, 
-		org_unit => $org_id, $key => $record_id, format => $format );
+	my $count = $U->storagereq($method, org_unit => $org_id, $key => $record_id);
 
 	return [ sort { $a->{depth} <=> $b->{depth} } @$count ];
 }
