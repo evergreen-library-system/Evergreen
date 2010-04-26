@@ -18,6 +18,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editOnEnter : false, 
             defaultCellWidth : null,
             editStyle : 'dialog',
+            editReadOnly : false,
             suppressFields : null,
             hideSelector : false,
             selectorWidth : '1.5',
@@ -376,6 +377,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 var pane = new openils.widget.EditPane({
                     fmObject:fmObject,
+                    hideActionButtons : this.editReadOnly,
                     overrideWidgets : this.overrideEditWidgets,
                     overrideWidgetClass : this.overrideEditWidgetClass,
                     overrideWidgetArgs : this.overrideWidgetArgs,

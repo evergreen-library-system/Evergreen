@@ -5270,9 +5270,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
     </class>
 
-	<class id="acqpl" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::picklist" oils_persist:tablename="acq.picklist" reporter:label="Pick List">
+	<class id="acqpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::picklist" oils_persist:tablename="acq.picklist" reporter:label="Pick List">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_id_seq">
-			<field reporter:label="Picklist ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Picklist ID" name="id" reporter:datatype="id" reporter:selector='name' />
 			<field reporter:label="Owner" name="owner" reporter:datatype="link" />
 			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" />
@@ -5290,6 +5290,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="entries" reltype="has_many" key="picklist" map="" class="jub"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="CREATE_PICKLIST VIEW_PICKLIST" context_field="org_unit"/>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="acqcr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::cancel_reason" oils_persist:tablename="acq.cancel_reason" reporter:label="Cancel Reason">
@@ -5314,7 +5319,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="acqpo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::purchase_order" oils_persist:tablename="acq.purchase_order" reporter:label="Purchase Order">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.purchase_order_id_seq">
-			<field reporter:label="Purchase Order ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Purchase Order ID" name="id" reporter:datatype="id" reporter:selector='name'/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="link" />
 			<field reporter:label="Creation Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp" />
@@ -5383,7 +5388,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-            <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER" context_field="ordering_agency"/>
+            <actions>
+                <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER" context_field="ordering_agency"/>
+            </actions>
 		</permacrud>
 	</class>
 
@@ -5491,7 +5498,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="MARC" name="marc" reporter:datatype="text"/>
 			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" reporter:datatype="link"/>
 			<field reporter:label="Source Label" name="source_label" reporter:datatype="text"/>
-			<field reporter:label="Item Count" name="item_count" reporter:datatype="int"/>
 			<field reporter:label="State" name="state" reporter:datatype="text"/>
 			<field reporter:label="Claim Policy" name="claim_policy" reporter:datatype="link"/>
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link"/>
