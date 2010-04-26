@@ -3934,4 +3934,61 @@ sub check_password_strength_custom {
     return 1;
 }
 
+
+
+__PACKAGE__->register_method(
+    method    => "event_def_opt_in_settings",
+    api_name  => "open-ils.actor.event_def.opt_in.settings",
+    stream => 1,
+    signature => {
+        desc   => 'Streams the set of "cust" objects that are used as opt-in settings for event definitions',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { 
+                desc => 'Org Unit ID.  (optional).  If no org ID is present, the home_ou of the requesting user is used', 
+                type => 'number'
+            },
+        ],
+        return => {
+            desc => q/set of "cust" objects that are used as opt-in settings for event definitions at the specified org unit/,
+            type => 'object',
+            class => 'cust'
+        }
+    }
+);
+
+sub event_def_opt_in_settings {
+    my($self, $conn, $auth, $org_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    if(defined $org_id and $org_id != $e->requestor->home_ou) {
+        return $e->event unless 
+            $e->allowed(['VIEW_USER_SETTING_TYPE', 'ADMIN_USER_SETTING_TYPE'], $org_id);
+    } else {
+        $org_id = $e->requestor->home_ou;
+    }
+
+    # find all config.user_setting_type's related to event_defs for the requested org unit
+    my $types = $e->json_query({
+        select => {cust => ['name']}, 
+        from => {atevdef => 'cust'}, 
+        where => {
+            '+atevdef' => {
+                owner => $U->get_org_ancestors($org_id), # context org plus parents
+                active => 't'
+            }
+        }
+    });
+
+    if(@$types) {
+        $conn->respond($_) for 
+            @{$e->search_config_usr_setting_type({name => [map {$_->{name}} @$types]})};
+    }
+
+    return undef;
+}
+
+
+
 1;
