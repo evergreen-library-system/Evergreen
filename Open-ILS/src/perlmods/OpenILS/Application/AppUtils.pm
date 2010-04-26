@@ -276,7 +276,7 @@ sub build_org_tree {
 			$org->ou_type( $org_typelist_hash->{$org->ou_type()});
 		}
 
-		next unless (defined($org->parent_ou));
+        next if (!defined($org->parent_ou) || $org->parent_ou eq "");
 
 		my ($parent) = grep { $_->id == $org->parent_ou } @list;
 		next unless $parent;
