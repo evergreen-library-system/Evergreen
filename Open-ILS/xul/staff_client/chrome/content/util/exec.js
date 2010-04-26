@@ -2,9 +2,17 @@ dump('entering util/exec.js\n');
 
 if (typeof util == 'undefined') var util = {};
 util.exec = function(chunk_size) {
-    //JSAN.use('util.error'); this.error = new util.error();
+    var obj = this;
 
     this.chunk_size = chunk_size || 1;
+    obj.clear_timer = function() {
+        try {
+            if (typeof obj.debug != 'undefined' && obj.debug) { dump('EXEC: Clearing interval with id = ' + obj._intervalId + '\n'); }
+            window.clearInterval(obj._intervalId);
+        } catch(E) {
+            alert('Error in clear_timer: ' + E);
+        }
+    }
 
     return this;
 };
@@ -13,8 +21,14 @@ util.exec.prototype = {
     // This will create a timer that polls the specified array and shifts off functions to execute
     'timer' : function(funcs,interval) {
         var obj = this;
+
+        if (obj._intervalId) {
+            obj.clear_timer();
+            window.removeEventListener('unload',obj.clear_timer,false); 
+        }
         var intervalId = window.setInterval(
             function() {
+                if (typeof obj.debug != 'undefined' && obj.debug) { dump('EXEC: ' + location.pathname + ': Running interval with id = ' + intervalId + '\n'); }
                 var i = obj.chunk_size;
                 while (funcs.length > 0 && i > 0) {
                     funcs.shift()(); i--;
@@ -22,7 +36,9 @@ util.exec.prototype = {
             },
             interval
         );
-        window.addEventListener('unload',function() { window.clearInterval(intervalId); },false);
+        obj._intervalId  = intervalId;
+        window.addEventListener('unload',obj.clear_timer,false); 
+        return intervalId;
     },
     // This executes a series of functions, but tries to give other events/functions a chance to
     // execute between each one.
@@ -53,26 +69,30 @@ util.exec.prototype = {
                     for (var i = 0; (i < args.length && i < obj.chunk_size) ; i++) {
                         try {
                             if (typeof args[i] == 'function') {
+                                dump('EXEC: executing queued function.   intervalId = ' + obj._intervalId + '\n');
+                                if (obj.debug) {
+                                    dump('EXEC: function = ' + args[i] + '\n');
+                                }
                                 args[i]();
                             } else {
                                 alert('FIXME -- typeof args['+i+'] == ' + typeof args[i]);
                             }
                         } catch(E) {
-                            dump('util.exec.chain error: ' + js2JSON(E) + '\n');
+                            dump('EXEC: util.exec.chain error: ' + js2JSON(E) + '\n');
                             var keep_going = false;
                             if (typeof obj.on_error == 'function') {
                                 keep_going = obj.on_error(E);
                             }
                             if (keep_going) {
-                                dump('chain not broken\n');
+                                if (typeof obj.debug != 'undefined' && obj.debug) { dump('EXEC: chain not broken\n'); }
                                 try {
                                     if (args.length > 1 ) obj.chain( args.slice(1) );
 
                                 } catch(E) {
-                                    dump('another error: ' + js2JSON(E) + '\n');
+                                    if (typeof obj.debug != 'undefined' && obj.debug) { dump('EXEC: another error: ' + js2JSON(E) + '\n'); }
                                 }
                             } else {
-                                dump('chain broken\n');
+                                if (typeof obj.debug != 'undefined' && obj.debug) { dump('EXEC: chain broken\n'); }
                                 return;
                             }
                         }
