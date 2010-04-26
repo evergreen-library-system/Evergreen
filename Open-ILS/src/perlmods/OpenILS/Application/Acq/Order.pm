@@ -2643,14 +2643,13 @@ sub cancel_lineitem_detail {
 
     if($debit_id) {
         # item is cancelled.  Remove the fund debit.
-        my $debit = $mgr->editor->retrieve_acq_fund_debit($lid->fund_debit);
+        my $debit = $mgr->editor->retrieve_acq_fund_debit($debit_id);
         if (!$U->is_true($debit->encumbrance)) {
             $mgr->editor->rollback;
             return OpenILS::Event->new('ACQ_NOT_CANCELABLE', 
                 note => "Debit is marked as paid: $debit_id");
         }
         $mgr->editor->delete_acq_fund_debit($debit) or return $mgr->editor->die_event;
-        $lid->clear_fund_debit;
     }
 
     return {"lid" => {$lid_id => {"cancel_reason" => $cancel_reason}}};
