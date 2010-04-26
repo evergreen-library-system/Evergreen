@@ -1,7 +1,7 @@
 dump('entering util/sound.js\n');
 
 if (typeof util == 'undefined') util = {};
-util.sound = function () {
+util.sound = function (interval) {
 
     try {
 
@@ -9,11 +9,21 @@ util.sound = function () {
         if (! window.xulG) { window.xulG = {}; }
         if (window.xulG._sound) { return window.xulG._sound; }
 
+        /* So we can queue up sounds and put a pause between them instead of having them trample over each other */
+        /* Limitation: interval only gets set once for a singleton */
+        if (interval) {
+            this._queue = true;
+            this._funcs = [];
+            JSAN.use('util.exec'); this._exec = new util.exec(); this._exec.timer( this._funcs, interval || 500 );
+        }
+
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var SOUNDContractID = "@mozilla.org/sound;1";
         var SOUNDIID        = Components.interfaces.nsISound;
         this.SOUND          = Components.classes[SOUNDContractID].createInstance(SOUNDIID);
         this.SOUND.init(); // not necessary, but helps avoid delays?
+
+        this.origin = location.pathname;
 
         window.xulG._sound = this;
         return this;
@@ -51,7 +61,14 @@ util.sound.prototype = {
             JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
             var url2 = obj.xp_url_init( data.server + url );
             dump('SOUND: file = ' + url + '\n');
-            if (typeof data.no_sound == 'undefined' || data.no_sound == false || data.no_sound == 'false') obj.SOUND.play( url2 );
+            if (typeof data.no_sound == 'undefined' || data.no_sound == false || data.no_sound == 'false') {
+
+                if (obj._queue) {
+                    obj._funcs.push( function() { obj.SOUND.play( url2 ); } );
+                } else {
+                    obj.SOUND.play( url2 );
+                }
+            }
         } catch(E) {
             try { if (data.no_sound == 'undefined' || data.no_sound == false || data.no_sound == 'false') obj.SOUND.beep(); } catch(F) { 
                 dump('beep(): ' + F + '\n');
