@@ -473,7 +473,7 @@ util.network.prototype = {
                         //+ '?xml_in_stash=temp_override_xml'
                         //+ '&title=' + window.escape(override_params.title),
                         'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-                        { 'xml' : xml, 'title' : override_params.title, 'sound' : 'bad' }
+                        { 'xml' : xml, 'title' : override_params.title, 'sound' : 'bad', 'sound_object' : obj.sound }
                     );
                     if (fancy_prompt_data.fancy_status == 'complete') {
                         req = obj._request(app,name + '.override',params);

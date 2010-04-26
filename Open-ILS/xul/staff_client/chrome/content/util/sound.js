@@ -12,7 +12,7 @@ util.sound = function (params) {
 
         /* We're going to turn this guy into a singleton, at least for a given window, and look for it in xulG */
         if (! window.xulG) { window.xulG = {}; }
-        if (window.xulG._sound) { 
+        if (window.xulG._sound && !params.reuse_queue_from_this_snd_obj) { 
             dump('SOUND('+this.sig+'): reusing sound from ' + window.xulG._sound.origin + '('+xulG._sound.sig+') for ' + location.pathname + '\n');
             return window.xulG._sound; 
         } else {
@@ -21,10 +21,14 @@ util.sound = function (params) {
 
         /* So we can queue up sounds and put a pause between them instead of having them trample over each other */
         /* Limitation: interval only gets set once for a singleton */
-        if (params.interval) {
+        if (params.interval || params.reuse_queue_from_this_snd_obj) {
             this._queue = true;
-            this._funcs = params.queue || [];
-            JSAN.use('util.exec'); this._exec = new util.exec(); var intervalId = this._exec.timer( this._funcs, params.interval );
+            if (params.reuse_queue_from_this_snd_obj) {
+                this._funcs = params.reuse_queue_from_this_snd_obj._funcs || [];
+            } else {
+                this._funcs = [];
+            }
+            JSAN.use('util.exec'); this._exec = new util.exec(); var intervalId = this._exec.timer( this._funcs, params.interval || 500 );
             dump('SOUND('+this.sig+'): starting timer with intervalId = ' + intervalId + '\n');
         }
 
