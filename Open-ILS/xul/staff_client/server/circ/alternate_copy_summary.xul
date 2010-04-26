@@ -51,13 +51,13 @@
 
         <tabbox flex="1">
             <tabs>
-                <tab label="&staff.circ.alternate_copy_summary.Quick_Summary.label;" />
-                <tab label="&staff.circ.alternate_copy_summary.Circulation_History.label;" />
-                <tab label="&staff.circ.alternate_copy_summary.Holds_Transit.label;" />
-                <tab label="&staff.circ.alternate_copy_summary.Cataloging_Info.label;" />
+                <tab label="&staff.circ.alternate_copy_summary.Quick_Summary.label;" accesskey="&staff.circ.alternate_copy_summary.Quick_Summary.accesskey;" />
+                <tab label="&staff.circ.alternate_copy_summary.Circulation_History.label;" accesskey="&staff.circ.alternate_copy_summary.Circulation_History.accesskey;" />
+                <tab label="&staff.circ.alternate_copy_summary.Holds_Transit.label;" accesskey="&staff.circ.alternate_copy_summary.Holds_Transit.accesskey;" />
+                <tab label="&staff.circ.alternate_copy_summary.Cataloging_Info.label;" accesskey="&staff.circ.alternate_copy_summary.Cataloging_Info.accesskey;" />
             </tabs>
             <tabpanels flex="1">
-                <tabpanel orient="vertical">
+                <tabpanel orient="vertical"><!-- Quick Summary -->
                     <grid id="grid1" flex="0">
                         <columns>
                             <column id="g1column1"/>
@@ -188,9 +188,95 @@
                         </rows>
                     </grid>
                 </tabpanel>
-                <tabpanel />
-                <tabpanel />
-                <tabpanel>
+                <tabpanel><!-- Circulation History -->
+                    <grid>
+                        <columns>
+                            <column/>
+                            <column/>
+                            <column flex="1"/>
+                            <column/>
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <label class="header1" value="&staff.circ.alternate_copy_summary.Previous_Circ_Group.label;" />
+                                <spacer />
+                                <spacer />
+                                <label class="header1" value="&staff.circ.alternate_copy_summary.Most_Recent_Circ_Group.label;" />
+                                <spacer />
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Patron_Name.label;" />
+                                <button id="prev_patron_name" name="prev_patron_name" readonly="true" />
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Patron_Name.label;" />
+                                <button id="patron_name" name="patron_name" readonly="true" />
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs_for_circ_chain.label;" />
+                                <textbox name="prev_num_circs" readonly="true"  context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Total_Circs_for_circ_chain.label;" />
+                                <textbox name="num_circs" readonly="true"  context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Date.label;" />
+                                <textbox name="prev_xact_start" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Date.label;" />
+                                <textbox name="xact_start" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Workstation.label;" />
+                                <textbox name="prev_checkout_workstation" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkout_Workstation.label;" />
+                                <textbox name="checkout_workstation" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Time.label;" />
+                                <textbox name="prev_renewal_time" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Time.label;" />
+                                <textbox name="renewal_time" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Workstation.label;" />
+                                <textbox name="prev_renewal_workstation" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Renewal_Workstation.label;" />
+                                <textbox name="renewal_workstation" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Stop_Fines.label;" />
+                                <textbox name="prev_stop_fines" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Stop_Fines.label;" />
+                                <textbox name="stop_fines" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Stop_Fines_Time.label;" />
+                                <textbox name="prev_stop_fines_time" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Stop_Fines_Time.label;" />
+                                <textbox name="stop_fines_time" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
+                                <textbox name="prev_last_checkin_time" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Time.label;" />
+                                <textbox name="last_checkin_time" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
+                                <textbox name="prev_last_checkin_scan_time" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Scan_Time.label;" />
+                                <textbox name="last_checkin_scan_time" readonly="true" context="clipboard"/>
+                            </row><row>
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Workstation.label;" />
+                                <textbox name="prev_checkin_workstation" readonly="true" context="clipboard"/>
+                                <spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Checkin_Workstation.label;" />
+                                <textbox name="checkin_workstation" readonly="true" context="clipboard"/>
+                            </row>
+                        </rows>
+                    </grid>
+                </tabpanel>
+                <tabpanel><!-- Hold/Transit -->
+                </tabpanel>
+                <tabpanel><!-- Cataloging Info -->
                     <deck id="cat_deck" flex="1"/>
                 </tabpanel>
             </tabpanels>

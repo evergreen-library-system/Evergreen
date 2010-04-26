@@ -16,6 +16,29 @@ function my_init() {
         JSAN.use('util.date');
         JSAN.use('cat.util');
 
+        var x = document.getElementById('patron_name');
+        if (x) {
+            x.addEventListener(
+                'command',
+                function(ev) {
+                    var usr = ev.target.getAttribute('data');
+                    if (usr) { window.xulG.new_patron_tab( {}, { 'id' : usr } ); }
+                },
+                false
+            );
+        }
+        var y = document.getElementById('prev_patron_name');
+        if (y) {
+            y.addEventListener(
+                'command',
+                function(ev) {
+                    var usr = ev.target.getAttribute('data');
+                    if (usr) { window.xulG.new_patron_tab( {}, { 'id' : usr } ); }
+                },
+                false
+            );
+        }
+
         // timeout so xulG gets a chance to get pushed in
         setTimeout(
             function () { xulG.from_item_details_new = false; load_item(); },
@@ -27,14 +50,26 @@ function my_init() {
     }
 }
 
-function set(name,value) { 
+function set(name,value,data) { 
+    if (typeof value == 'undefined' || typeof value == 'null') { return; }
     var nodes = document.getElementsByAttribute('name',name); 
     for (var i = 0; i < nodes.length; i++) {
-        nodes[i].setAttribute('value',value); nodes[i].value = value; 
+        if (nodes[i].nodeName == 'button') {
+            nodes[i].setAttribute('label',value);
+            if (data) {
+                nodes[i].setAttribute('data',data); 
+            } else {
+                nodes[i].setAttribute('data',''); 
+            }
+        } else {
+            nodes[i].setAttribute('value',value);
+        }
+        nodes[i].value = value; 
     }
 }
 
 function set_tooltip(name,value) { 
+    if (typeof value == 'undefined' || typeof value == 'null') { return; }
     var nodes = document.getElementsByAttribute('name',name); 
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].setAttribute('tooltiptext',value);
@@ -294,7 +329,7 @@ function load_item() {
         set("stop_fines", '');
         set("stop_fines_time", '');
         set("target_copy", '');
-        set("usr", '');
+        set("circ_usr", '');
         set("xact_finish", '');
         set("xact_start", '');
         set("create_time", '');
@@ -307,6 +342,19 @@ function load_item() {
         set("circ_type", '');
         set("billing_total", '');
         set("payment_total", '');
+        set("patron_name", '');
+        set("prev_patron_name", '');
+        set("prev_num_circs", '');
+        set("prev_num_renewals", '');
+        set("prev_xact_start", '');
+        set("prev_checkout_workstation", '');
+        set("prev_renewal_time", '');
+        set("prev_stop_fines", '');
+        set("prev_stop_fines_time", '');
+        set("prev_renewal_workstation", '');
+        set("prev_checkin_workstation", '');
+        set("prev_last_checkin_time", '');
+        set("prev_last_checkin_scan_time", '');
 
         if (details.circ) {
             try { set("checkin_lib", typeof details.circ.checkin_lib() == 'object' ? details.circ.checkin_lib().shortname() : data.hash.aou[ details.circ.checkin_lib() ].shortname() );  } catch(E) {};
@@ -334,7 +382,16 @@ function load_item() {
             set("stop_fines", details.circ.stop_fines()); 
             set("stop_fines_time", util.date.formatted_date( details.circ.stop_fines_time(), '%{localized}' )); 
             set("target_copy", details.circ.target_copy()); 
-            set("usr", details.circ.usr()); 
+            set("circ_usr", details.circ.usr()); 
+            network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), details.circ.usr() ], function(preq) {
+                var r_au = preq.getResultObject();
+                JSAN.use('patron.util');
+                set(
+                    'patron_name', 
+                    patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode(),
+                    details.circ.usr()
+                );
+            });
             set("xact_finish", util.date.formatted_date( details.circ.xact_finish(), '%{localized}' )); 
             set("xact_start", util.date.formatted_date( details.circ.xact_start(), '%{localized}' )); 
             set("create_time", util.date.formatted_date( details.circ.create_time(), '%{localized}' )); 
@@ -344,12 +401,17 @@ function load_item() {
                 network.simple_request('FM_CIRC_CHAIN_SUMMARY', [ses(), details.circ.id() ], function(req) {
                     try {
                         var summary = req.getResultObject();
+                        set("num_circs", summary.num_circs());
+                        set("num_renewals", Number(summary.num_circs()) - 1);
+                        set("xact_start", util.date.formatted_date( summary.start_time(), '%{localized}' )); 
                         set("checkout_workstation", summary.checkout_workstation());
-                        set("renewal_workstation", summary.last_renewal_workstation());
-                        set("checkin_workstation", summary.last_checkin_workstation());
+                        set("renewal_time", util.date.formatted_date( summary.last_renewal_time(), '%{localized}' )); 
                         set("stop_fines", summary.last_stop_fines());
                         set("stop_fines_time", util.date.formatted_date( summary.last_stop_fines_time(), '%{localized}' )); 
-                        set("renewal_time", util.date.formatted_date( summary.last_renewal_time(), '%{localized}' )); 
+                        set("renewal_workstation", summary.last_renewal_workstation());
+                        set("checkin_workstation", summary.last_checkin_workstation());
+                        set("last_checkin_time", util.date.formatted_date( summary.last_checkin_time(), '%{localized}' )); 
+                        set("last_checkin_scan_time", util.date.formatted_date( summary.last_checkin_scan_time(), '%{localized}' )); 
                     } catch(E) {
                         alert('Error in alternate_copy_summary.js, FM_CIRC_CHAIN: ' + E);
                     }
@@ -357,6 +419,35 @@ function load_item() {
             } else {
                 set("checkout_workstation", (typeof details.circ.workstation() == 'object' && details.circ.workstation() != null) ? details.circ.workstation().name() : details.circ.workstation() );
             }
+            network.simple_request('FM_CIRC_PREV_CHAIN_SUMMARY', [ses(), details.circ.id() ], function(req) {
+                try {
+                    var robj = req.getResultObject();
+                    if (!robj || typeof robj == 'null') { return; }
+                    var summary = robj['summary'];
+                    network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), robj['usr'] ], function(preq) {
+                        var r_au = preq.getResultObject();
+                        JSAN.use('patron.util');
+                        set(
+                            'prev_patron_name', 
+                            patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode(),
+                            robj['usr']
+                        );
+                    });
+                    set("prev_num_circs", summary.num_circs());
+                    set("prev_num_renewals", Number(summary.num_circs()) - 1);
+                    set("prev_xact_start", util.date.formatted_date( summary.start_time(), '%{localized}' )); 
+                    set("prev_checkout_workstation", summary.checkout_workstation());
+                    set("prev_renewal_time", util.date.formatted_date( summary.last_renewal_time(), '%{localized}' )); 
+                    set("prev_stop_fines", summary.last_stop_fines());
+                    set("prev_stop_fines_time", util.date.formatted_date( summary.last_stop_fines_time(), '%{localized}' )); 
+                    set("prev_renewal_workstation", summary.last_renewal_workstation());
+                    set("prev_checkin_workstation", summary.last_checkin_workstation());
+                    set("prev_last_checkin_time", util.date.formatted_date( summary.last_checkin_time(), '%{localized}' )); 
+                    set("prev_last_checkin_scan_time", util.date.formatted_date( summary.last_checkin_scan_time(), '%{localized}' )); 
+                } catch(E) {
+                    alert('Error in alternate_copy_summary.js, FM_CIRC_PREV_CHAIN: ' + E);
+                }
+            });
             set("billings", details.circ.billings()); 
             set("payments", details.circ.payments()); 
             set("billable_transaction", details.circ.billable_transaction()); 
@@ -454,7 +545,7 @@ function load_item() {
         set("selection_ou", '');
         set_tooltip("selection_ou", '');
         set("target", '');
-        set("usr", '');
+        set("hold_usr", '');
         set("cancel_time", '');
         set("notify_time", '');
         set("notify_count", '');
@@ -494,7 +585,7 @@ function load_item() {
             set("selection_ou" , typeof details.hold.selection_ou() == 'object' ? details.hold.selection_ou().shortname() : data.hash.aou[ details.hold.selection_ou() ].shortname() ); 
             set_tooltip("selection_ou" , typeof details.hold.selection_ou() == 'object' ? details.hold.selection_ou().name() : data.hash.aou[ details.hold.selection_ou() ].name() ); 
             set("target", details.hold.target()); 
-            set("usr", details.hold.usr()); 
+            set("hold_usr", details.hold.usr()); 
             set("cancel_time", util.date.formatted_date( details.hold.cancel_time(), '%{localized}' )); 
             set("notify_time", util.date.formatted_date( details.hold.notify_time(), '%{localized}' )); 
             set("notify_count", details.hold.notify_count()); 

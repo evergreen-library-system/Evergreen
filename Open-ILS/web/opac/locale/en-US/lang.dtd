@@ -3163,6 +3163,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Barcode.label "Barcode">
 <!ENTITY staff.circ.alternate_copy_summary.Call_Number.label "Call Number">
 <!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info.label "Cataloging Info">
+<!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info.accesskey "I">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Scan_Time.label "Checkin Scan Time">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Time.label "Checkin Time">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Workstation.label "Checkin Workstation">
@@ -3171,6 +3172,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Circ_Modifier.label "Circ Modifier">
 <!ENTITY staff.circ.alternate_copy_summary.Circulate.label "Circulate">
 <!ENTITY staff.circ.alternate_copy_summary.Circulation_History.label "Circulation History">
+<!ENTITY staff.circ.alternate_copy_summary.Circulation_History.accesskey "H">
 <!ENTITY staff.circ.alternate_copy_summary.Copy_ID.label "Copy ID">
 <!ENTITY staff.circ.alternate_copy_summary.Copy_Location.label "Copy Location">
 <!ENTITY staff.circ.alternate_copy_summary.Renewal_Type.label "Renewal Type">
@@ -3181,24 +3183,33 @@
 <!ENTITY staff.circ.alternate_copy_summary.Holdable.label "Holdable">
 <!ENTITY staff.circ.alternate_copy_summary.Hold_Shelf_Location.label "Hold Shelf Location">
 <!ENTITY staff.circ.alternate_copy_summary.Holds_Transit.label "Holds/Transit">
+<!ENTITY staff.circ.alternate_copy_summary.Holds_Transit.accesskey "">
 <!ENTITY staff.circ.alternate_copy_summary.ISBN.label "ISBN">
 <!ENTITY staff.circ.alternate_copy_summary.Loan_Duration.label "Loan Duration">
 <!ENTITY staff.circ.alternate_copy_summary.Fine_Level.label "Fine Level">
+<!ENTITY staff.circ.alternate_copy_summary.Most_Recent_Circ_Group.label "Most Recent Circ Group">
 <!ENTITY staff.circ.alternate_copy_summary.OPAC_Visible.label "OPAC Visible">
 <!ENTITY staff.circ.alternate_copy_summary.Owning_Library.label "Owning Library">
+<!ENTITY staff.circ.alternate_copy_summary.Patron_Name.label "Patron">
 <!ENTITY staff.circ.alternate_copy_summary.Price.label "Price">
+<!ENTITY staff.circ.alternate_copy_summary.Previous_Circ_Group.label "Previous Circ Group">
 <!ENTITY staff.circ.alternate_copy_summary.Pub_Date.label "Pub Date">
 <!ENTITY staff.circ.alternate_copy_summary.Publisher.label "Publisher">
 <!ENTITY staff.circ.alternate_copy_summary.Quick_Summary.label "Quick Summary">
+<!ENTITY staff.circ.alternate_copy_summary.Quick_Summary.accesskey "Q">
 <!ENTITY staff.circ.alternate_copy_summary.Reference.label "Reference">
 <!ENTITY staff.circ.alternate_copy_summary.Remaining_Renewals.label "Remaining Renewals">
+<!ENTITY staff.circ.alternate_copy_summary.Renewal_Time.label "Last Renewed On">
 <!ENTITY staff.circ.alternate_copy_summary.Renewal_Workstation.label "Renewal Workstation">
 <!ENTITY staff.circ.alternate_copy_summary.Rolling_Counter.label "Rolling Counter">
 <!ENTITY staff.circ.alternate_copy_summary.Status.label "Status">
+<!ENTITY staff.circ.alternate_copy_summary.Stop_Fines.label "Stop Fines Reason">
+<!ENTITY staff.circ.alternate_copy_summary.Stop_Fines_Time.label "Stop Fines Time">
 <!ENTITY staff.circ.alternate_copy_summary.TCN.label "TCN">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Current_Year.label "Total Circs - Current Year">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs.label "Total Circs">
 <!ENTITY staff.circ.alternate_copy_summary.Total_Circs___Prev_Year.label "Total Circs - Prev Year">
+<!ENTITY staff.circ.alternate_copy_summary.Total_Circs_for_circ_chain.label "Total Circs">
 <!ENTITY staff.circ.alternate_copy_summary.Duration_Rule.label "Duration Rule">
 <!ENTITY staff.circ.alternate_copy_summary.Recurring_Fine_Rule.label "Recurring Fine Rule">
 <!ENTITY staff.circ.alternate_copy_summary.Max_Fine_Rule.label "Max Fine Rule">
