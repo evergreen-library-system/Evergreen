@@ -2550,4 +2550,134 @@ sub change_hold_title {
 }
 
 
+__PACKAGE__->register_method(
+    method    => 'rec_hold_count',
+    api_name  => 'open-ils.circ.bre.holds.count',
+    signature => {
+        desc => q/Returns the total number of holds that target the 
+            selected bib record or its associated copies and call_numbers/,
+        params => [
+            { desc => 'Bib ID', type => 'number' },
+        ],
+        return => {desc => 'Hold count', type => 'number'}
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => 'rec_hold_count',
+    api_name  => 'open-ils.circ.mmr.holds.count',
+    signature => {
+        desc => q/Returns the total number of holds that target the 
+            selected metarecord or its associated copies, call_numbers, and bib records/,
+        params => [
+            { desc => 'Metarecord ID', type => 'number' },
+        ],
+        return => {desc => 'Hold count', type => 'number'}
+    }
+);
+
+sub rec_hold_count {
+    my($self, $conn, $target_id) = @_;
+
+
+    my $mmr_join = {
+        mmrsm => {
+            field => 'id',
+            fkey => 'source',
+            filter => {metarecord => $target_id}
+        }
+    };
+
+    my $bre_join = {
+        bre => {
+            field => 'id',
+            filter => { id => $target_id },
+            fkey => 'record'
+        }
+    };
+
+    if($self->api_name =~ /mmr/) {
+        delete $bre_join->{bre}->{filter};
+        $bre_join->{bre}->{join} = $mmr_join;
+    }
+
+    my $cn_join = {
+        acn => {
+            field => 'id',
+            fkey => 'call_number',
+            join => $bre_join
+        }
+    };
+
+    my $query = {
+        select => {ahr => [{column => 'id', transform => 'count', alias => 'count'}]},
+        from => 'ahr',
+        where => {
+            '+ahr' => {
+                cancel_time => undef, 
+                fulfillment_time => undef,
+                '-or' => [
+                    {
+                        '-and' => {
+                            hold_type => 'C',
+                            target => {
+                                in => {
+                                    select => {acp => ['id']},
+                                    from => { acp => $cn_join }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        '-and' => {
+                            hold_type => 'V',
+                            target => {
+                                in => {
+                                    select => {acn => ['id']},
+                                    from => {acn => $bre_join}
+                                }
+                            }
+                        }
+                    },
+                    {
+                        '-and' => {
+                            hold_type => 'T',
+                            target => $target_id
+                        }
+                    }
+                ]
+            }
+        }
+    };
+
+    if($self->api_name =~ /mmr/) {
+        $query->{where}->{'+ahr'}->{'-or'}->[2] = {
+            '-and' => {
+                hold_type => 'T',
+                target => {
+                    in => {
+                        select => {bre => ['id']},
+                        from => {bre => $mmr_join}
+                    }
+                }
+            }
+        };
+
+        $query->{where}->{'+ahr'}->{'-or'}->[3] = {
+            '-and' => {
+                hold_type => 'M',
+                target => $target_id
+            }
+        };
+    }
+
+
+    return new_editor()->json_query($query)->[0]->{count};
+}
+
+
+
+
+
+
 1;
