@@ -22,6 +22,8 @@ dojo.require('fieldmapper.dojoData');
 dojo.require('openils.User');
 dojo.require('openils.Event');
 dojo.require('openils.Util');
+dojo.require('dojo.date.stamp');
+dojo.require('dojo.date.locale');
 
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
@@ -139,6 +141,11 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
 
                 var po = lineitem.purchase_order();
                 var li = lineitem.picklist();
+                var orderDate = '';
+                if(po) {
+                    var date = dojo.date.stamp.fromISOString(po.order_date());
+                    orderDate = dojo.date.locale.format(date, {selector:'date'});
+                }
 
                 var displayString = dojo.string.substitute(
                     localeStrings.LINEITEM_SUMMARY, [
@@ -160,6 +167,7 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
                         (li) ? li.name() : '',
                         lineitem.order_summary().encumbrance_amount() || '0.00',
                         lineitem.order_summary().paid_amount() || '0.00',
+                        orderDate
                     ]
                 );
 

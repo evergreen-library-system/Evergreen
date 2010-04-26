@@ -64,8 +64,8 @@
             "${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled</div>" +
         "<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>" +
         "<div class='acq-lineitem-summary-extra'>" +
-            "<a style='padding-right: 10px;' href='${11}/acq/po/view/${12}'>PO: ${13}</a>" +
-            "<a style='padding-right: 10px;' href='${11}/acq/picklist/view/${14}'>SL: ${15}</a></div>",
+            "<a style='padding-right: 10px;' href='${11}/acq/po/view/${12}'>PO#${13} ${18}</a>" +
+            "<a style='padding-right: 10px;' href='${11}/acq/picklist/view/${14}'>${15}</a></div>",
     'INVOICE_CONFIRM_PRORATE' : "Prorate charges?\n\nAny subsequent changes to the invoice that would affect prorated amounts should be resolved manually.",
     'UNNAMED': "Unnamed",
     'NO_FIND_INVOICE': "Could not find that invoice.\nNote that the Invoice # field is case-sensitive.",
