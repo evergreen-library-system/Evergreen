@@ -1458,13 +1458,13 @@ __PACKAGE__->register_method(
 	method	=> "retrieve_circ_chain",
 	api_name	=> "open-ils.circ.renewal_chain.retrieve_by_circ.summary",
 	signature => {
-        desc => q/Given a circulation, this returns all circulation objects
+        desc => q/Given a circulation, this returns a summary of the circulation objects
                 that are part of the same chain of renewals./,
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Circ ID', type => 'number'},
         ],
-        return => {desc => q/List of circ objects, orderd by oldest circ first/}
+        return => {desc => q/Circulation Chain Summary/}
     }
 );
 
@@ -1495,6 +1495,99 @@ sub retrieve_circ_chain {
 
     return undef;
 }
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_prev_circ_chain",
+	api_name	=> "open-ils.circ.prev_renewal_chain.retrieve_by_circ",
+    stream => 1,
+	signature => {
+        desc => q/Given a circulation, this returns all circulation objects
+                that are part of the previous chain of renewals./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Circ ID', type => 'number'},
+        ],
+        return => {desc => q/List of circ objects, orderd by oldest circ first/}
+    }
+);
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_prev_circ_chain",
+	api_name	=> "open-ils.circ.prev_renewal_chain.retrieve_by_circ.summary",
+	signature => {
+        desc => q/Given a circulation, this returns a summary of the circulation objects
+                that are part of the previous chain of renewals./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Circ ID', type => 'number'},
+        ],
+        return => {desc => q/Object containing Circulation Chain Summary and User Id/}
+    }
+);
+
+sub retrieve_prev_circ_chain {
+    my($self, $conn, $auth, $circ_id) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+
+    if($self->api_name =~ /summary/) {
+        my $first_circ = $e->json_query({from => ['action.circ_chain', $circ_id]})->[0];
+        my $target_copy = $$first_circ{'target_copy'};
+        my $usr = $$first_circ{'usr'};
+        my $last_circ_from_prev_chain = $e->json_query({
+            'select' => {
+                'circ' => [{
+                    'column' => 'id',
+                    'transform' => 'max'
+                }]
+            },
+            'from' => 'circ', 
+            'where' => {
+                target_copy => $target_copy,
+                id => { '<' => $$first_circ{'id'} }
+            }
+        })->[0];
+        return undef unless $last_circ_from_prev_chain;
+        return undef unless $$last_circ_from_prev_chain{'id'};
+        my $sum = $e->json_query({from => ['action.summarize_circ_chain', $$last_circ_from_prev_chain{'id'}]})->[0];
+        return undef unless $sum;
+        my $obj = Fieldmapper::action::circ_chain_summary->new;
+        $obj->$_($sum->{$_}) for keys %$sum;
+        return { 'summary' => $obj, 'usr' => $usr };
+
+    } else {
+
+        my $first_circ = $e->json_query({from => ['action.circ_chain', $circ_id]})->[0];
+        my $target_copy = $$first_circ{'target_copy'};
+        my $last_circ_from_prev_chain = $e->json_query({
+            'select' => {
+                'circ' => [{
+                    'column' => 'id',
+                    'transform' => 'max'
+                }]
+            },
+            'from' => 'circ', 
+            'where' => {
+                target_copy => $target_copy,
+                id => { '<' => $$first_circ{'id'} }
+            }
+        })->[0];
+        return undef unless $last_circ_from_prev_chain;
+        return undef unless $$last_circ_from_prev_chain{'id'};
+        my $chain = $e->json_query({from => ['action.circ_chain', $$last_circ_from_prev_chain{'id'}]});
+
+        for my $circ_info (@$chain) {
+            my $circ = Fieldmapper::action::circulation->new;
+            $circ->$_($circ_info->{$_}) for keys %$circ_info;
+            $conn->respond($circ);
+        }
+    }
+
+    return undef;
+}
+
 
 
 
