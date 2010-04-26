@@ -93,10 +93,21 @@ util.date.formatted_date = function (orig_date,format) {
     var s = format;
     if (s == '') { s = '%F %H:%M'; }
     if (typeof window.dojo != 'undefined') {
+        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
         dojo.require('dojo.date.locale');
         dojo.require('dojo.date.stamp');
-        s = s.replace( /%\{localized\}/g, dojo.date.locale.format( _date ) );
-        s = s.replace( /%\{localized_date\}/g, dojo.date.locale.format( _date, { 'selector' : 'date' } ) );
+        var dojo_format = {};
+        var dojo_format2 = { 'selector' : 'date' };
+        if (data.hash.aous['format.date']) {
+            dojo_format['datePattern'] = data.hash.aous['format.date'];
+            dojo_format2['datePattern'] = data.hash.aous['format.date'];
+        }
+        if (data.hash.aous['format.time']) {
+            dojo_format['timePattern'] = data.hash.aous['format.time'];
+            dojo_format2['timePattern'] = data.hash.aous['format.time'];
+        }
+        s = s.replace( /%\{localized\}/g, dojo.date.locale.format( _date, dojo_format ) );
+        s = s.replace( /%\{localized_date\}/g, dojo.date.locale.format( _date, dojo_format2 ) );
         s = s.replace( /%\{iso8601\}/g, dojo.date.stamp.toISOString( _date ) );
     }
     s = s.replace( /%m/g, mm );
