@@ -5,6 +5,7 @@
 		config.ids.login = {};
 		config.css.login = {};
 		config.ids.login.box			= "login_box";
+		config.ids.login.tbody			= "login_tbody";
 		config.ids.login.username	= "login_username";
 		config.ids.login.password	= "login_password";
 		config.ids.login.button		= "login_button";
