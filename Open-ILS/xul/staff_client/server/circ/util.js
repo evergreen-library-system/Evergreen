@@ -3150,4 +3150,33 @@ circ.util.batch_hold_update = function ( hold_ids, field_changes, params ) {
     }
 };
 
+circ.util.find_acq_po = function(session, copy_id) {
+    dojo.require("openils.Util");
+    fieldmapper.standardRequest(
+        ["open-ils.acq", "open-ils.acq.lineitem.retrieve.by_copy_id"], {
+            "params": [session, copy_id, {"clear_marc": true}],
+            "onresponse": function(r) {
+                if (r = openils.Util.readResponse(r)) {
+                    if (r.purchase_order()) {
+                        /* XXX would prefer to use browser.xul to wrap this so
+                         * that we get back/forward/reload buttons, but that
+                         * doesn't work in this context. need to find out why.
+                         */
+                        xulG.new_tab(
+                            urls.EG_ACQ_PO_VIEW +
+                                "/" + r.purchase_order() + "/" + r.id(),
+                            {}, {}
+                        );
+                    } else {
+                        /* unlikely: got an LI with no PO */
+                        alert(dojo.byId("circStrings").getFormattedString(
+                            "staff.circ.utils.find_acq_po.no_po", [r.id()]
+                        ));
+                    }
+                }
+            }
+        }
+    );
+};
+
 dump('exiting circ/util.js\n');

@@ -114,6 +114,7 @@
         <command id="cmd_alt_view" />
         <command id="cmd_triggered_events" />
         <command id="save_columns" />
+        <command id="cmd_find_acq_po" disabled="true"/>
         <command id="cmd_create_brt" disabled="true"/>
         <command id="cmd_book_item_now" disabled="true"/>
         <command id="sel_copy_details" disabled="true"/>

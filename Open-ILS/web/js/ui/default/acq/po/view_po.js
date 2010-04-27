@@ -370,6 +370,7 @@ params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh
 
             oncomplete : function() {
                 dojo.byId("acq-po-view-total-estimated").innerHTML = totalEstimated.toFixed(2);
+                if (liFocus) liTable.drawCopies(liFocus);
             }
         }
     );

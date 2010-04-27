@@ -2027,6 +2027,8 @@
 <!ENTITY staff.circ.copy_status_overlay.cmd_book_item_now.accesskey "N">
 <!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.label "Make Item Bookable">
 <!ENTITY staff.circ.copy_status_overlay.cmd_create_brt.accesskey "K">
+<!ENTITY staff.circ.copy_status_overlay.cmd_find_acq_po.label "Find Originating Acquisition">
+<!ENTITY staff.circ.copy_status_overlay.cmd_find_acq_po.accesskey "F">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.label "Edit Item Attributes">
 <!ENTITY staff.circ.copy_status_overlay.sel_edit.accesskey "E">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.label "Mark Item Damaged">

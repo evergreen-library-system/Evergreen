@@ -958,4 +958,44 @@ sub ranged_line_item_alert_text {
 }
 
 
+__PACKAGE__->register_method(
+    method => "retrieve_lineitem_by_copy_id",
+    api_name => "open-ils.acq.lineitem.retrieve.by_copy_id",
+    signature => {
+        desc => q/Manage lineitem notes/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Evergreen internal copy ID", type => "number"},
+            {desc => "Hash of options (see open-ils.acq.lineitem.retrieve",
+                type => "object"}
+        ],
+        return => {
+            desc => "Lineitem associated with given copy",
+            type => "object", class => "jub"
+        }
+    }
+);
+
+sub retrieve_lineitem_by_copy_id {
+    my ($self, $conn, $auth, $object_id, $options) = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $result = $e->json_query({
+        "select" => {"acqlid" => ["lineitem"]},
+        "from" => "acqlid",
+        "where" => {"eg_copy_id" => $object_id}
+    })->[0] or do {
+        $e->disconnect;
+        return new OpenILS::Event("ACQ_LINEITEM_NOT_FOUND");
+    };
+
+    my $li = retrieve_lineitem_impl($e, $result->{"lineitem"}, $options) or
+        return $e->die_event;
+
+    $e->disconnect;
+    return $li;
+}
+
 1;

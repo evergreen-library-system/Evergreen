@@ -416,5 +416,6 @@ var urls = {
     'CONIFY' : '/conify/' + LOCALE + '/global',
     'EG_WEB_BASE' : '/eg',
     'XUL_LOCAL_ADMIN_BASE' : '/xul/server/admin',
-    'XUL_REPORTS' : '/reports/oils_rpt.xhtml'
+    'XUL_REPORTS' : '/reports/oils_rpt.xhtml',
+    'EG_ACQ_PO_VIEW' : '/eg/acq/po/view'
 }
