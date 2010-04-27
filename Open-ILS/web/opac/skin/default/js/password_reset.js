@@ -15,12 +15,14 @@ dojo.addOnLoad(function() {
     // Connect the buttons to submit / cancel events that override
     // the default actions associated with the buttons to do
     // pleasing Ajax things
-    dojo.connect(dijit.byId("cancelButton"), "onClick", function(event) {
+    dojo.connect(dijit.byId("pwCancel"), "onClick", function(event) {
         event.preventDefault();
         event.stopPropagation();
         pwResetFormDlg.hide();
+        dijit.byId('pwUsername').attr('value', null);
+        dijit.byId('pwBarcode').attr('value', null);
     });
-    dojo.connect(dijit.byId("submitButton"), "onClick", function(event) {
+    dojo.connect(dijit.byId("pwSubmit"), "onClick", function(event) {
         event.preventDefault();
         event.stopPropagation();
         var xhrArgs = {
@@ -29,6 +31,8 @@ dojo.addOnLoad(function() {
             load: function(data) {
                 pwResetFormDlg.hide();
                 passwordSubmission(opac_strings.PWD_RESET_SUBMIT_SUCCESS);
+                dijit.byId('pwUsername').attr('value', null);
+                dijit.byId('pwBarcode').attr('value', null);
             },
             error: function(error) {
                 pwResetFormDlg.hide();
@@ -79,6 +83,7 @@ function createResetDialog() {
     dojo.attr(pwResetFormCell, { innerHTML: opac_strings.BARCODE_PROMPT });
     pwResetFormCell = dojo.create("td", null, pwResetFormRow);
     var barcodeText = new dijit.form.TextBox({
+        id: "pwBarcode",
         name: "barcode"
     }).placeAt(pwResetFormCell);
     pwResetFormRow = dojo.create("tr", {}, pwResetFormTbody);
@@ -86,16 +91,17 @@ function createResetDialog() {
     dojo.attr(pwResetFormCell, { innerHTML: opac_strings.USERNAME_PROMPT });
     pwResetFormCell = dojo.create("td", {}, pwResetFormRow);
     var usernameText = new dijit.form.TextBox({
+        id: "pwUsername",
         name: "username"
     }).placeAt(pwResetFormCell);
     dojo.create("br", null, pwResetFormDiv);
     var submitButton = new dijit.form.Button({
-        id: "submitButton",
+        id: "pwSubmit",
         type: "submit",
         label: opac_strings.SUBMIT_BUTTON_LABEL
     }).placeAt(pwResetFormDiv);
     var cancelButton = new dijit.form.Button({
-        id: "cancelButton",
+        id: "pwCancel",
         type: "cancel",
         label: opac_strings.CANCEL_BUTTON_LABEL
     }).placeAt(pwResetFormDiv);
