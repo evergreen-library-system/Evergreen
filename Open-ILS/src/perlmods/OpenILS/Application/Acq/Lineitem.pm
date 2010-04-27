@@ -618,9 +618,12 @@ sub lineitem_search_ident {
 
 
 
+
+# this call duplicates a call in Order.pm and makes references to subs that don't exist.  
+# TODO: Verify then remove.
 __PACKAGE__->register_method(
 	method => 'lineitem_detail_CUD_batch',
-	api_name => 'open-ils.acq.lineitem_detail.cud.batch',
+	api_name => 'open-ils.acq.lineitem_detail.cud.batch_',
     stream => 1,
 	signature => {
         desc => q/Creates a new purchase order line item detail.  

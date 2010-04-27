@@ -127,4 +127,21 @@
     </div>
 </div>
 <div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/>
+<div jsId='extraItemsDialog' dojoType="dijit.Dialog" title="Extra Items">
+    <div dojoType="dijit.layout.ContentPane" style='text-align:center;'>
+        <div id='acq-invoice-extra-copies-message'></div>
+        <br/>
+        Select a fund for the new items: <div id='acq-invoice-extra-copies-fund'></div>
+        <br/><br/>
+        <!--
+        <span id='acq-invoice-extra-copies-add-msg'></span>
+        <input dojoType='dijit.form.CheckBox' jsId='extraCopiesInCatalogCheckbox'></input>
+        -->
+        <br/><br/>
+        <span style='padding-right: 10px;'>
+            <button dojoType='dijit.form.Button' jsId='extraCopiesCancel'>Cancel</button>
+        </span>
+        <button dojoType='dijit.form.Button' jsId='extraCopiesGo'>Continue</button>
+    </div>
+</div>
 [% END %]

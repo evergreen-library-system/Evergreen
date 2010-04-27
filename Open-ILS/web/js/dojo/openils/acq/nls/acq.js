@@ -67,6 +67,9 @@
             "<a style='padding-right: 10px;' href='${11}/acq/po/view/${12}'>PO#${13} ${18}</a>" +
             "<a style='padding-right: 10px;' href='${11}/acq/picklist/view/${14}'>${15}</a></div>",
     'INVOICE_CONFIRM_PRORATE' : "Prorate charges?\n\nAny subsequent changes to the invoice that would affect prorated amounts should be resolved manually.",
+    'INVOICE_EXTRA_COPIES' : "You are invoicing <b>${0}</b> more copies than originally ordered.  <br/>The order will be updated to reflect the additional copies" +
+        "<br/><br/>After saving the invoice, you may finish editing and importing the new copies from the lineitem details page.",
+    //'INVOICE_EXTRA_COPIES_CATALOG' : "Add <b>${0}</b> new copies to the catalog?",
     'UNNAMED': "Unnamed",
     'NO_FIND_INVOICE': "Could not find that invoice.\nNote that the Invoice # field is case-sensitive.",
     'NO_LI_TO_CLAIM': "You have not selected any lineitems to claim.",

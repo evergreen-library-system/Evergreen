@@ -644,7 +644,7 @@ sub create_lineitem_debits {
 # flesh li->provider
 # flesh lid->fund
 sub create_lineitem_detail_debit {
-    my ($mgr, $li, $lid, $dry_run) = @_;
+    my ($mgr, $li, $lid, $dry_run, $no_translate) = @_;
 
     my $li_id = ref($li) ? $li->id : $li;
 
@@ -667,7 +667,7 @@ sub create_lineitem_detail_debit {
     }
 
     my $amount = $li->estimated_unit_price;
-    if($li->provider->currency_type ne $lid->fund->currency_type) {
+    if($li->provider->currency_type ne $lid->fund->currency_type and !$no_translate) {
 
         # At Fund debit creation time, translate into the currency of the fund
         # TODO: org setting to disable automatic currency conversion at debit create time?
@@ -1034,7 +1034,7 @@ sub create_copy {
     $copy->isnew(1);
     $copy->loan_duration(2);
     $copy->fine_level(2);
-    $copy->status(OILS_COPY_STATUS_ON_ORDER);
+    $copy->status(($lid->recv_time) ? OILS_COPY_STATUS_IN_PROCESS : OILS_COPY_STATUS_ON_ORDER);
     $copy->barcode($lid->barcode);
     $copy->location($lid->location);
     $copy->call_number($volume->id);
@@ -1546,30 +1546,39 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'List of lineitem_details to create', type => 'array'},
+            {desc => 'Create Debits.  Used for creating post-po-asset-creation debits', type => 'bool'},
         ],
         return => {desc => 'Streaming response of current position in the array'}
     }
 );
 
 sub lineitem_detail_CUD_batch {
-    my($self, $conn, $auth, $li_details) = @_;
+    my($self, $conn, $auth, $li_details, $create_debits) = @_;
 
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
-    # XXX perms
-
     $mgr->total(scalar(@$li_details));
     
+    my $li;
     my %li_cache;
+    my $evt;
 
     for my $lid (@$li_details) {
 
-        my $li = $li_cache{$lid->lineitem} || $e->retrieve_acq_lineitem($lid->lineitem);
+        unless($li = $li_cache{$lid->lineitem}) {
+            ($li, $evt) = fetch_and_check_li($e, $lid->lineitem, 'write');
+            return $evt if $evt;
+        }
 
         if($lid->isnew) {
-            create_lineitem_detail($mgr, %{$lid->to_bare_hash}) or return $e->die_event;
+            $lid = create_lineitem_detail($mgr, %{$lid->to_bare_hash}) or return $e->die_event;
+            if($create_debits) {
+                $li->provider($e->retrieve_acq_provider($li->provider)) or return $e->die_event;
+                $lid->fund($e->retrieve_acq_fund($lid->fund)) or return $e->die_event;
+                create_lineitem_detail_debit($mgr, $li, $lid, 0, 1) or return $e->die_event;
+            }
 
         } elsif($lid->ischanged) {
             $e->update_acq_lineitem_detail($lid) or return $e->die_event;
@@ -1891,20 +1900,8 @@ sub set_lineitem_price_api {
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
 
-    my $li = $e->retrieve_acq_lineitem([
-        $li_id,
-        {   flesh => 1,
-            flesh_fields => {jub => ['purchase_order', 'picklist']}
-        }
-    ]) or return $e->die_event;
-
-    if($li->purchase_order) {
-        return $e->die_event unless 
-            $e->allowed('CREATE_PURCHASE_ORDER', $li->purchase_order->ordering_agency);
-    } else {
-        return $e->die_event unless 
-            $e->allowed('CREATE_PICKLIST', $li->picklist->org_unit);
-    }
+    my ($li, $evt) = fetch_and_check_li($e, $li_id, 'write');
+    return $evt if $evt;
 
     $li->estimated_unit_price($price);
     update_lineitem($mgr, $li) or return $e->die_event;
@@ -2975,5 +2972,32 @@ sub po_note_CUD_batch {
 
     $e->commit and $conn->respond_complete or return $e->die_event;
 }
+
+
+# retrieves a lineitem, fleshes its PO and PL, checks perms
+sub fetch_and_check_li {
+    my $e = shift;
+    my $li_id = shift;
+    my $perm_mode = shift || 'read';
+
+    my $li = $e->retrieve_acq_lineitem([
+        $li_id,
+        {   flesh => 1,
+            flesh_fields => {jub => ['purchase_order', 'picklist']}
+        }
+    ]) or return $e->die_event;
+
+    if(my $po = $li->purchase_order) {
+        my $perms = ($perm_mode eq 'read') ? 'VIEW_PURCHASE_ORDER' : 'CREATE_PURCHASE_ORDER';
+        return ($li, $e->die_event) unless $e->allowed($perms, $po->ordering_agency);
+
+    } elsif(my $li = $li->picklist) {
+        my $perms = ($perm_mode eq 'read') ? 'VIEW_PICKLIST' : 'CREATE_PICKLIST';
+        return ($li, $e->die_event) unless $e->allowed($perms, $li->picklist->org_unit);
+    }
+
+    return ($li);
+}
+
 
 1;

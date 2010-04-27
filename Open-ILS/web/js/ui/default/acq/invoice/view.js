@@ -32,6 +32,8 @@ var balanceOwedBox;
 var invoicePane;
 var itemTypes;
 var virtualId = -1;
+var extraCopies = {};
+var extraCopiesFund;
 var widgetRegistry = {acqie : {}, acqii : {}};
 
 function nodeByName(name, context) {
@@ -60,6 +62,16 @@ function init() {
             }
         );
     }
+
+    extraCopiesFund = new openils.widget.AutoFieldWidget({
+        fmField : 'fund',
+        fmClass : 'acqlid',
+        searchFilter : {active : 't'},
+        labelFormat : fundLabelFormat,
+        searchFormat : fundSearchFormat,
+        parentNode : dojo.byId('acq-invoice-extra-copies-fund')
+    });
+    extraCopiesFund.build();
 }
 
 function renderInvoice() {
@@ -385,7 +397,22 @@ function addInvoiceEntry(entry) {
                     dijitArgs : dijitArgs,
                     readOnly : invoice && openils.Util.isTrue(invoice.complete()),
                     parentNode : nodeByName(field, row)
-                })
+                }),
+                function(w) {    
+                    if(field == 'phys_item_count') {
+                        dojo.connect(w, 'onChange', 
+                            function() {
+                                // staff entered a higher number in the receive field than was originally ordered
+                                if(Number(this.attr('value')) > entry.lineitem().item_count()) {
+                                    storeExtraCopies(
+                                        entry.lineitem().id(), 
+                                        Number(this.attr('value')) - entry.lineitem().item_count()
+                                    );
+                                }
+                            }
+                        )
+                    }
+                }
             );
         }
     );
@@ -425,6 +452,14 @@ function liMarcAttr(lineitem, name) {
 }
 
 function saveChanges(doProrate, doClose, doReopen) {
+    createExtraCopies(
+        function() {
+            saveChangesPartTwo(doProrate, doClose, doReopen);
+        }
+    );
+}
+
+function saveChangesPartTwo(doProrate, doClose, doReopen) {
     
     progressDialog.show(true);
 
@@ -528,6 +563,66 @@ function prorateInvoice(invoice) {
             }
         }
     );
+}
+
+function storeExtraCopies(liId, numExtra) {
+
+    dojo.byId('acq-invoice-extra-copies-message').innerHTML = 
+        dojo.string.substitute(
+            localeStrings.INVOICE_EXTRA_COPIES, [numExtra]);
+
+    var addCopyHandler;
+    addCopyHandler = dojo.connect(
+        extraCopiesGo, 
+        'onClick',
+        function() {
+            extraCopies[liId] = {
+                numExtra : numExtra, 
+                fund : extraCopiesFund.widget.attr('value')
+            }
+            extraItemsDialog.hide();
+            dojo.disconnect(addCopyHandler);
+        }
+    );
+
+    dojo.connect(
+       extraCopiesCancel, 
+       'onClick',
+       function() { extraItemsDialog.hide() }
+    );
+
+    extraItemsDialog.show();
+}
+
+function createExtraCopies(oncomplete) {
+
+    var lids = [];
+    for(var liId in extraCopies) {
+        var data = extraCopies[liId];
+        for(var i = 0; i < data.numExtra; i++) {
+            var lid = new fieldmapper.acqlid();
+            lid.isnew(true);
+            lid.lineitem(liId);
+            lid.fund(data.fund);
+            lid.recv_time('now');
+            lids.push(lid);
+        }
+    }
+
+    if(lids.length == 0) 
+        return oncomplete();
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.lineitem_detail.cud.batch'],
+        {
+            params : [openils.User.authtoken, lids, true],
+            oncomplete : function(r) {
+                if(openils.Util.readResponse(r))
+                    oncomplete();
+            }
+        }
+    );
+
 }
 
 
