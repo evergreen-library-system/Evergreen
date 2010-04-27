@@ -5426,6 +5426,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="acqpoi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::po_item" oils_persist:tablename="acq.po_item" reporter:label="Purchase Order Item">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.po_item_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link"/>
+			<field reporter:label="Fund Debit" name="fund_debit" reporter:datatype="link"/>
+			<field reporter:label="Invoice Item Type" name="inv_item_type" reporter:datatype="link"/>
+			<field reporter:label="Title" name="title" reporter:datatype="text"/>
+			<field reporter:label="Author" name="author" reporter:datatype="text"/>
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+			<field reporter:label="Estimated Cost" name="estimated_cost" reporter:datatype="money"/>
+			<field reporter:label="Fund" name="fund" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
+			<link field="fund_debit" reltype="has_a" key="id" map="" class="acqfdeb"/>
+			<link field="inv_item_type" reltype="has_a" key="code" map="" class="aiit"/>
+			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="jub" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::lineitem" oils_persist:tablename="acq.lineitem" reporter:label="Line Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_id_seq">
 			<field reporter:label="Lineitem ID" name="id" reporter:datatype="id" />
