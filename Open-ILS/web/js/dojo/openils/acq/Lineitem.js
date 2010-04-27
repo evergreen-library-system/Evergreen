@@ -144,7 +144,9 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
                 var orderDate = '';
                 if(po) {
                     var date = dojo.date.stamp.fromISOString(po.order_date());
-                    orderDate = dojo.date.locale.format(date, {selector:'date'});
+                    if(date) {
+                        orderDate = dojo.date.locale.format(date, {selector:'date'});
+                    }
                 }
 
                 var displayString = dojo.string.substitute(
