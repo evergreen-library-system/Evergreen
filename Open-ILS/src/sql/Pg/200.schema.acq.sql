@@ -828,22 +828,6 @@ CREATE TABLE acq.invoice_item_type (
 	prorate BOOL    NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib items/etc
-    id              SERIAL      PRIMARY KEY,
-    invoice         INT         NOT NULL REFERENCES acq.invoice (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    purchase_order  INT         REFERENCES acq.purchase_order (id) ON UPDATE CASCADE ON DELETE SET NULL,
-    fund_debit      INT         REFERENCES acq.fund_debit (id),
-    inv_item_type   TEXT        NOT NULL REFERENCES acq.invoice_item_type (code),
-    title           TEXT,
-    author          TEXT,
-    note            TEXT,
-    cost_billed     NUMERIC(8,2),
-    actual_cost     NUMERIC(8,2),
-	fund            INT         REFERENCES acq.fund (id)
-	                            DEFERRABLE INITIALLY DEFERRED,
-	amount_paid     NUMERIC (8,2)
-);
-
 CREATE TABLE acq.po_item (
 	id              SERIAL      PRIMARY KEY,
 	purchase_order  INT         REFERENCES acq.purchase_order (id)
@@ -859,6 +843,24 @@ CREATE TABLE acq.po_item (
 	note            TEXT,
 	estimated_cost  NUMERIC(8,2),
 	fund            INT         REFERENCES acq.fund (id)
+	                            DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib items/etc
+    id              SERIAL      PRIMARY KEY,
+    invoice         INT         NOT NULL REFERENCES acq.invoice (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    purchase_order  INT         REFERENCES acq.purchase_order (id) ON UPDATE CASCADE ON DELETE SET NULL,
+    fund_debit      INT         REFERENCES acq.fund_debit (id),
+    inv_item_type   TEXT        NOT NULL REFERENCES acq.invoice_item_type (code),
+    title           TEXT,
+    author          TEXT,
+    note            TEXT,
+    cost_billed     NUMERIC(8,2),
+    actual_cost     NUMERIC(8,2),
+	fund            INT         REFERENCES acq.fund (id)
+	                            DEFERRABLE INITIALLY DEFERRED,
+	amount_paid     NUMERIC (8,2),
+	po_item         INT         REFERENCES acq.po_item (id)
 	                            DEFERRABLE INITIALLY DEFERRED
 );
 
