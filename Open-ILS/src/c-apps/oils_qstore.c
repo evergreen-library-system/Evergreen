@@ -285,8 +285,35 @@ int doExecute( osrfMethodContext* ctx ) {
 	}
 
 	osrfLogInfo( OSRF_LOG_MARK, "Executing query for token \"%s\"", token );
+	if( query->state->error ) {
+		osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( query->state,
+			"No valid prepared query available for query id # %d", query->query->id ));
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+							  ctx->request, "No valid prepared query available" );
+		return -1;
+	} else if( buildSQL( query->state, query->query )) {
+		osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( query->state,
+			"Unable to build SQL statement for query id # %d", query->query->id ));
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Unable to build SQL statement" );
+		return -1;
+	}
 
-	osrfAppRespondComplete( ctx, jsonNewObject( "execute method not yet implemented" ));
+	jsonObject* row = oilsFirstRow( query->state );
+	while( row ) {
+		osrfAppRespond( ctx, row );
+		row = oilsNextRow( query->state );
+	}
+
+	if( query->state->error ) {
+		osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( query->state,
+			"Unable to execute SQL statement for query id # %d", query->query->id ));
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Unable to execute SQL statement" );
+		return -1;
+	}
+
+	osrfAppRespondComplete( ctx, NULL );
 	return 0;
 }
 
@@ -315,14 +342,14 @@ int doSql( osrfMethodContext* ctx ) {
 
 	osrfLogInfo( OSRF_LOG_MARK, "Returning SQL for token \"%s\"", token );
 	if( query->state->error ) {
-		osrfLogWarning( OSRF_LOG_MARK, "No valid prepared query available for query id # %d",
-			query->query->id );
+		osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( query->state,
+			"No valid prepared query available for query id # %d", query->query->id ));
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
 			ctx->request, "No valid prepared query available" );
 		return -1;
 	} else if( buildSQL( query->state, query->query )) {
-		osrfLogWarning( OSRF_LOG_MARK, "Unable to build SQL statement for query id # %d",
-			query->query->id );
+		osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( query->state,
+			"Unable to build SQL statement for query id # %d", query->query->id ));
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
 			ctx->request, "Unable to build SQL statement" );
 		return -1;
@@ -332,6 +359,16 @@ int doSql( osrfMethodContext* ctx ) {
 	return 0;
 }
 
+/**
+	@brief Discard a previously stored query, as identified by a token.
+	@param ctx Pointer to the current method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- query token, as previously returned by the .prepare method.
+
+	Returns: Nothing.
+*/
 int doFinish( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );

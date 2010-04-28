@@ -6,6 +6,8 @@
 #ifndef OILS_BUILDQ_H
 #define OILS_BUILDQ_H
 
+#include "opensrf/osrf_json.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -37,20 +39,21 @@ typedef struct IdNode_ IdNode;
 /**
 	@brief Stores various things related to the construction of an SQL query.
 	
-	This struct carries around various bits and scraps of context for constructing an SQL
-	query.  It also provides a way for buildSQLQuery() to return more than one kind of thing
-	to its caller.  In particular it can return a status code, a list of error messages, and
-	(if there is no error) an SQL string.
+	This struct carries around various bits and scraps of context for constructing and
+	executing an SQL query.  It also provides a way for buildSQLQuery() to return more than
+	one kind of thing to its caller.  In particular it can return a status code, a list of
+	error messages, and (if there is no error) an SQL string.
 */
 struct BuildSQLState_ {
 	dbi_conn dbhandle;            /**< Handle for the database connection */
+	dbi_result result;            /**< Reference to current row or result set */
 	int error;                    /**< Boolean; true if an error has occurred */
 	osrfStringArray* error_msgs;  /**< Descriptions of errors, if any */
 	growing_buffer* sql;          /**< To hold the constructed query */
 	IdNode* query_stack;          /**< For avoiding infinite recursion of nested queries */
 	IdNode* expr_stack;           /**< For avoiding infinite recursion of nested expressions */
 	IdNode* from_stack;           /**< For avoiding infinite recursion of from clauses */
-	int indent;                   /**< For prettifying output: level of indentation */
+	int indent;                   /**< For prettifying SQL output: level of indentation */
 };
 
 typedef enum {
@@ -188,6 +191,12 @@ void storedQCleanup( void );
 int buildSQL( BuildSQLState* state, StoredQ* query );
 
 void oilsStoredQSetVerbose( void );
+
+jsonObject* oilsExecSql( BuildSQLState* state );
+
+jsonObject* oilsFirstRow( BuildSQLState* state );
+
+jsonObject* oilsNextRow( BuildSQLState* state );
 
 #ifdef __cplusplus
 }
