@@ -68,6 +68,8 @@ function SelfCheckManager() {
         this.mockCheckout.payload.circ.parent_circ(1);
         this.mockCheckout.payload.circ.due_date('2012-12-21');
     }
+
+    this.initPrinter();
 }
 
 
