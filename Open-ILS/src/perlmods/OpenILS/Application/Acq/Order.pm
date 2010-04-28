@@ -2114,6 +2114,22 @@ sub activate_purchase_order_impl {
         $mgr->respond;
     }
 
+    for my $po_item (@{$e->search_acq_po_item({purchase_order => $po_id})}) {
+
+        my $debit = create_fund_debit(
+            $mgr, 
+            $dry_run, 
+            debit_type => 'direct_charge', # to match invoicing
+            origin_amount => $po_item->estimated_cost,
+            origin_currency_type => $e->retrieve_acq_fund($po_item->fund)->currency_type,
+            amount => $po_item->estimated_cost,
+            fund => $po_item->fund
+        ) or return $e->die_event;
+        $po_item->fund_debit($debit->id);
+        $e->update_acq_po_item($po_item) or return $e->die_event;
+        $mgr->respond;
+    }
+
     return undef;
 }
 
@@ -2991,9 +3007,9 @@ sub fetch_and_check_li {
         my $perms = ($perm_mode eq 'read') ? 'VIEW_PURCHASE_ORDER' : 'CREATE_PURCHASE_ORDER';
         return ($li, $e->die_event) unless $e->allowed($perms, $po->ordering_agency);
 
-    } elsif(my $li = $li->picklist) {
+    } elsif(my $pl = $li->picklist) {
         my $perms = ($perm_mode eq 'read') ? 'VIEW_PICKLIST' : 'CREATE_PICKLIST';
-        return ($li, $e->die_event) unless $e->allowed($perms, $li->picklist->org_unit);
+        return ($li, $e->die_event) unless $e->allowed($perms, $pl->org_unit);
     }
 
     return ($li);

@@ -5340,6 +5340,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Line Item Count" name="lineitem_count" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Amount Encumbered" name="amount_encumbered" oils_persist:virtual="true" reporter:datatype="float" />
 			<field reporter:label="Amount Spent" name="amount_spent" oils_persist:virtual="true" reporter:datatype="float" />
+			<field reporter:label="PO Items" name="po_items" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
@@ -5348,6 +5349,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="default_fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 			<link field="lineitems" reltype="has_many" key="purchase_order" map="" class="jub"/>
+			<link field="po_items" reltype="has_many" key="purchase_order" map="" class="acqpoi"/>
 			<link field="notes" reltype="has_many" key="purchase_order" map="" class="acqpon"/>
 			<link field="ordering_agency" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
@@ -5414,18 +5416,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-            <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
-                <context link="purchase_order" field="ordering_agency"/>
-            </retrieve>
-            <create permission="CREATE_PURCHASE_ORDER">
-                <context link="purchase_order" field="ordering_agency"/>
-            </create>
-            <update permission="CREATE_PURCHASE_ORDER">
-                <context link="purchase_order" field="ordering_agency"/>
-            </update>
-            <delete permission="CREATE_PURCHASE_ORDER">
-                <context link="purchase_order" field="ordering_agency"/>
-            </delete>
+            <actions>
+                <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </retrieve>
+                <create permission="CREATE_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </create>
+                <update permission="CREATE_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </update>
+                <delete permission="CREATE_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </delete>
+            </actions>
 		</permacrud>
 	</class>
 
@@ -5448,6 +5452,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </retrieve>
+                <create permission="CREATE_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </create>
+                <update permission="CREATE_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </update>
+                <delete permission="CREATE_PURCHASE_ORDER">
+                    <context link="purchase_order" field="ordering_agency"/>
+                </delete>
+            </actions>
 		</permacrud>
 	</class>
 

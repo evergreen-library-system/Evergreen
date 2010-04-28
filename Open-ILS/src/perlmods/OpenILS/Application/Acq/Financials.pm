@@ -825,7 +825,8 @@ __PACKAGE__->register_method(
                 clear_marc, to clear the MARC data from the lineitem (for reduced bandwidth)
                 li_limit : number of lineitems to return if fleshing line items;
                 li_offset : lineitem offset if fleshing line items
-                li_order_by : lineitem sort definition if fleshing line items
+                li_order_by : lineitem sort definition if fleshing line items,
+                flesh_po_items : po_item objects
                 /,
                                      type => 'hash'}
                                    ],
@@ -884,6 +885,15 @@ sub build_price_summary {
         "where" => {"+acqpo" => {"id" => $po_id}}
     });
 
+    # add any debits for non-bib po_items
+    push(@$debits, @{
+        $e->json_query({
+            "select" => {"acqfdeb" => [qw/encumbrance amount/]},
+            "from" => {acqpoi => 'acqfdeb'},
+            "where" => {"+acqpoi" => {"purchase_order" => $po_id}}
+        })
+    });
+
     my ($enc, $spent) = (0, 0);
     for my $deb (@$debits) {
         if($U->is_true($deb->{encumbrance})) {
@@ -911,6 +921,8 @@ sub retrieve_purchase_order_impl {
     if ($options->{"flesh_provider"}) {
         push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "provider";
     }
+
+    push (@{$flesh->{flesh_fields}->{acqpo}}, 'po_items') if $options->{flesh_po_items};
 
     my $args = (@{$flesh->{"flesh_fields"}->{"acqpo"}}) ?
         [$po_id, $flesh] : $po_id;

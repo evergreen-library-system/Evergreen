@@ -146,9 +146,11 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
 
                 if(po) {
                     liLink = oilsBasePath + '/acq/po/view/' + po.id() + '/' + lineitem.id();
-                    var date = dojo.date.stamp.fromISOString(po.order_date());
-                    if(date) {
-                        orderDate = dojo.date.locale.format(date, {selector:'date'});
+                    if(po.order_date()) {
+                        var date = dojo.date.stamp.fromISOString(po.order_date());
+                        if(date) {
+                            orderDate = dojo.date.locale.format(date, {selector:'date'});
+                        }
                     }
                 }
 

@@ -1373,6 +1373,21 @@ function AcqLiTable() {
                 } else {
                     searchFilter = null;
                 }
+
+                var readOnly = false;
+                
+                // TODO: Add support for changing the owning_lib after real copies have been made.  
+                // owning_lib is order data as much as its item data
+                if(copy.eg_copy_id() && ['owning_lib', 'location', 'circ_modifier', 'cn_label', 'barcode'].indexOf(field) >= 0) {
+                    readOnly = true;
+                }
+
+                // TODO: add support for changing the fund after debits have been created
+                // Note: invoicing allows the change
+                if(copy.fund_debit() && field == 'fund') {
+                    readOnly = true;
+                }
+
                 var widget = new openils.widget.AutoFieldWidget({
                     fmObject : copy,
                     fmField : field,
@@ -1384,7 +1399,7 @@ function AcqLiTable() {
                     fmClass : 'acqlid',
                     parentNode : dojo.query('[name='+field+']', row)[0],
                     orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
-                    readOnly : Boolean(copy.eg_copy_id())
+                    readOnly : readOnly,
                 });
                 widget.build(
                     // make sure we capture the value from any async widgets
@@ -2325,117 +2340,4 @@ function AcqLiTable() {
             }
         );
     }
-
-    
-    /*
-    this.saveRealCopies = function() {
-        progressDialog.show(true);
-        var list = this.realCopyList.filter(function(copy) { return copy.ischanged(); });
-        this.pcrud.update(list, {oncomplete: function() { 
-            progressDialog.hide();
-            self.show('list');
-        }});
-    }
-
-    // grab the li-details for this lineitem, grab the linked copies and volumes, add them to the table
-    this.showRealCopies = function(li) {
-        while(this.realCopiesTbody.childNodes[0])
-            this.realCopiesTbody.removeChild(this.realCopiesTbody.childNodes[0]);
-        this.show('real-copies');
-
-        this.realCopyList = [];
-        this.volCache = {};
-        var tabIndex = 1000;
-        var self = this;
-
-        acqLitSaveRealCopies.onClick = function() {
-            self.saveRealCopies();
-        }
-
-        this._fetchLineitem(li.id(), 
-            function(fullLi) {
-                li = self.liCache[li.id()] = fullLi;
-
-                self.pcrud.search(
-                    'acp', {
-                        id : li.lineitem_details().map(
-                            function(item) { return item.eg_copy_id() }
-                        )
-                    }, {
-                        async : true,
-                        streaming : true,
-                        onresponse : function(r) {
-                            var copy = openils.Util.readResponse(r);
-                            var volId = copy.call_number();
-                            var volume = self.volCache[volId];
-                            if(!volume) {
-                                volume = self.volCache[volId] = self.pcrud.retrieve('acn', volId);
-                            }
-                            self.addRealCopy(volume, copy, tabIndex++);
-                        }
-                    }
-                );
-            }
-        );
-    }
-
-    this.addRealCopy = function(volume, copy, tabIndex) {
-        var row = this.realCopiesRow.cloneNode(true);
-        this.realCopyList.push(copy);
-
-        var selectNode;
-        dojo.forEach(
-            ['owning_lib', 'location', 'circ_modifier', 'label', 'barcode'],
-
-            function(field) {
-                var isvol = (field == 'owning_lib' || field == 'label');
-                var widget = new openils.widget.AutoFieldWidget({
-                    fmField : field,
-                    fmObject : isvol ? volume : copy,
-                    parentNode : nodeByName(field, row),
-                    readOnly : (field != 'barcode'),
-                });
-
-                var widgetDrawn = null;
-
-                if(field == 'barcode') {
-
-                    widgetDrawn = function(w, ww) {
-                        var node = w.domNode;
-                        node.setAttribute('tabindex', ''+tabIndex);
-
-                        // on enter, select the next barcode input
-                        dojo.connect(w, 'onKeyDown',
-                            function(e) {
-                                if(e.keyCode == dojo.keys.ENTER) {
-                                    var ti = node.getAttribute('tabindex');
-                                    var nextNode = dojo.query('[tabindex=' + String(Number(ti) + 1) + ']', self.realCopiesTbody)[0];
-                                    if(nextNode) nextNode.select();
-                                }
-                            }
-                        );
-
-                        dojo.connect(w, 'onChange', 
-                            function(val) { 
-                                if(!val || val == copy.barcode()) return;
-                                copy.ischanged(true);
-                                copy.barcode(val);
-                            }
-                        );
-
-
-                        if(self.realCopiesTbody.getElementsByTagName('TR').length == 0)
-                            selectNode = node;
-                    }
-                }
-
-                widget.build(widgetDrawn);
-            }
-        );
-
-        this.realCopiesTbody.appendChild(row);
-        if(selectNode) selectNode.select();
-    };
-    */
-
 }

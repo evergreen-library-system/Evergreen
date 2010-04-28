@@ -95,14 +95,26 @@ sub build_invoice_api {
 
                 # prorated items are handled separately
                 unless($U->is_true($item_type->prorate)) {
-                    my $debit = Fieldmapper::acq::fund_debit->new;
+                    my $debit;
+                    if($item->po_item) {
+                        my $po_item = $e->retrieve_acq_po_item($item->po_item) or return $e->die_event;
+                        $debit = $e->retrieve_acq_fund_debit($po_item->fund_debit) or return $e->die_event;
+                    } else {
+                        $debit = Fieldmapper::acq::fund_debit->new;
+                        $debit->isnew(1);
+                    }
                     $debit->fund($item->fund);
                     $debit->amount($item->amount_paid);
                     $debit->origin_amount($item->amount_paid);
                     $debit->origin_currency_type($e->retrieve_acq_fund($item->fund)->currency_type); # future: cache funds locally
                     $debit->encumbrance('f');
                     $debit->debit_type('direct_charge');
-                    $e->create_acq_fund_debit($debit) or return $e->die_event;
+
+                    if($debit->isnew) {
+                        $e->create_acq_fund_debit($debit) or return $e->die_event;
+                    } else {
+                        $e->update_acq_fund_debit($debit) or return $e->die_event;
+                    }
 
                     $item->fund_debit($debit->id);
                     $e->update_acq_invoice_item($item) or return $e->die_event;
@@ -112,10 +124,19 @@ sub build_invoice_api {
 
                 $e->delete_acq_invoice_item($item) or return $e->die_event;
 
-                # kill the debit
-                $e->delete_acq_fund_debit(
-                    $e->retrieve_acq_fund_debit($item->fund_debit)
-                ) or return $e->die_event;
+                if($item->po_item and $e->retrieve_acq_po_item($item->po_item)->fund_debit == $item->fund_debit) {
+                    # the debit is attached to the po_item.  instead of deleting it, roll it back 
+                    # to being an encumbrance.  Note: a prorated invoice_item that points to a po_item 
+                    # could point to a different fund_debit.  We can't go back in time to collect all the
+                    # prorated invoice_items (nor is the caller asking us too), so when that happens, 
+                    # just delete the extraneous debit (in the else block).
+                    my $debit = $e->retrieve_acq_fund_debit($item->fund_debit);
+                    $debit->encumbrance('t');
+                    $e->update_acq_fund_debit($debit) or return $e->die_event;
+                } else {
+                    $e->delete_acq_fund_debit($e->retrieve_acq_fund_debit($item->fund_debit))
+                        or return $e->die_event;
+                }
 
 
             } elsif($item->ischanged) {
@@ -257,7 +278,7 @@ sub fetch_invoice_impl {
             "flesh" => 6,
             "flesh_fields" => {
                 "acqinv" => ["entries", "items"],
-                "acqii" => ["fund_debit"],
+                "acqii" => ["fund_debit", "purchase_order", "po_item"]
             }
         }
     ];
@@ -330,7 +351,16 @@ sub prorate_invoice {
             my $prorated_cost = ($spent_for_fund / $total_entry_paid) * $full_item_cost;
             $logger->info("invoice: attaching prorated amount $prorated_amount to fund $fund_id for invoice $invoice_id");
 
-            my $debit = Fieldmapper::acq::fund_debit->new;
+            my $debit;
+            if($first_round and $item->po_item) {
+                # if this item is the result of a PO item, repurpose the original debit
+                # for the first chunk of the prorated amount
+                $debit = $e->retrieve_acq_fund_debit($item->po_item->fund_debit);
+            } else {
+                $debit = Fieldmapper::acq::fund_debit->new;
+                $debit->isnew(1);
+            }
+
             $debit->fund($fund_id);
             $debit->amount($prorated_amount);
             $debit->origin_amount($prorated_amount);
@@ -338,7 +368,11 @@ sub prorate_invoice {
             $debit->encumbrance('f');
             $debit->debit_type('prorated_charge');
 
-            $e->create_acq_fund_debit($debit) or return $e->die_event;
+            if($debit->isnew) {
+                $e->create_acq_fund_debit($debit) or return $e->die_event;
+            } else {
+                $e->update_acq_fund_debit($debit) or return $e->die_event;
+            }
 
             $total_debited += $prorated_amount;
             $total_costed += $prorated_cost;

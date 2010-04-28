@@ -148,7 +148,10 @@ function doAttachPo() {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.purchase_order.retrieve'],
         {   async: true,
-            params: [openils.User.authtoken, attachPo, {flesh_lineitem_ids : true}],
+            params: [
+                openils.User.authtoken, attachPo, 
+                {flesh_lineitem_ids : true, flesh_po_items : true}
+            ],
             oncomplete: function(r) {
                 var po = openils.Util.readResponse(r);
 
@@ -166,6 +169,22 @@ function doAttachPo() {
                         entry.lineitem(lineitem);
                         entry.purchase_order(po);
                         addInvoiceEntry(entry);
+                    }
+                );
+
+                dojo.forEach(po.po_items(),
+                    function(poItem) {
+                        var item = new fieldmapper.acqii();
+                        item.id(virtualId--);
+                        item.isnew(true);
+                        item.fund(poItem.fund());
+                        item.title(poItem.title());
+                        item.author(poItem.author());
+                        item.note(poItem.note());
+                        item.inv_item_type(poItem.inv_item_type());
+                        item.purchase_order(po);
+                        item.po_item(poItem);
+                        addInvoiceItem(item);
                     }
                 );
             }
@@ -262,7 +281,7 @@ function addInvoiceItem(item) {
             
             var args;
             if(field == 'title' || field == 'author') {
-                args = {style : 'width:10em'};
+                //args = {style : 'width:10em'};
             } else if(field == 'cost_billed' || field == 'amount_paid') {
                 args = {required : true, style : 'width: 6em'};
             }
@@ -307,35 +326,58 @@ function addInvoiceItem(item) {
 
     /* ---------- inv_item_type ------------- */
 
-    registerWidget(
-        item,
-        'inv_item_type',
-        new openils.widget.AutoFieldWidget({
-            fmObject : item,
-            fmField : 'inv_item_type',
-            parentNode : nodeByName('inv_item_type', row),
-            readOnly : invoice && openils.Util.isTrue(invoice.complete()),
-            dijitArgs : {required : true}
-        }),
-        function(w, ww) {
-            // When the inv_item_type is set to prorate=true, don't allow the user the edit the fund
-            // since this charge will be prorated against (potentially) multiple funds
-            dojo.connect(w, 'onChange', 
-                function() {
-                    if(!item.fund_debit()) {
-                        var itemType = itemTypes.filter(function(t) { return (t.code() == w.attr('value')) })[0];
-                        if(!itemType) return;
-                        if(openils.Util.isTrue(itemType.prorate())) {
-                            fundWidget.widget.attr('disabled', true);
-                            fundWidget.widget.attr('value', '');
-                        } else {
-                            fundWidget.widget.attr('disabled', false);
+    if(item.po_item()) {
+
+        // read-only item view for items that were the result of a po-item
+        var po = item.purchase_order();
+        var po_item = item.po_item();
+        var node = nodeByName('inv_item_type', row);
+        var itemType = itemTypes.filter(function(t) { return (t.code() == item.inv_item_type()) })[0];
+
+        node.innerHTML = dojo.string.substitute(
+            localeStrings.INVOICE_ITEM_PO_DETAILS, 
+            [ 
+                itemType.name(),
+                oilsBasePath, 
+                po.id(), 
+                po.name(), 
+                dojo.date.locale.format(dojo.date.stamp.fromISOString(po.order_date()), {selector:'date'}),
+                po_item.estimated_cost() 
+            ]
+        );
+
+    } else {
+
+        registerWidget(
+            item,
+            'inv_item_type',
+            new openils.widget.AutoFieldWidget({
+                fmObject : item,
+                fmField : 'inv_item_type',
+                parentNode : nodeByName('inv_item_type', row),
+                readOnly : invoice && openils.Util.isTrue(invoice.complete()),
+                dijitArgs : {required : true}
+            }),
+            function(w, ww) {
+                // When the inv_item_type is set to prorate=true, don't allow the user the edit the fund
+                // since this charge will be prorated against (potentially) multiple funds
+                dojo.connect(w, 'onChange', 
+                    function() {
+                        if(!item.fund_debit()) {
+                            var itemType = itemTypes.filter(function(t) { return (t.code() == w.attr('value')) })[0];
+                            if(!itemType) return;
+                            if(openils.Util.isTrue(itemType.prorate())) {
+                                fundWidget.widget.attr('disabled', true);
+                                fundWidget.widget.attr('value', '');
+                            } else {
+                                fundWidget.widget.attr('disabled', false);
+                            }
                         }
                     }
-                }
-            );
-        }
-    );
+                );
+            }
+        );
+    }
 
     nodeByName('delete', row).onclick = function() {
         var cost = widgetRegistry.acqii[item.id()].cost_billed.getFormattedValue();
@@ -387,8 +429,12 @@ function addInvoiceEntry(entry) {
                 function(field) {
                     var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:6em'};
                     if(entry.isnew() && field == 'phys_item_count') {
-                        // by default, attempt to pay for all received and as-of-yet-un-invoiced items
-                        dijitArgs.value = (Number(li.order_summary().recv_count()) - Number(li.order_summary().invoice_count())) || 0;
+                        // by default, attempt to pay for all non-canceled and as-of-yet-un-invoiced items
+                        var count = Number(li.order_summary().item_count() || 0) - 
+                                    Number(li.order_summary().cancel_count() || 0) -
+                                    Number(li.order_summary().invoice_count() || 0);
+                        if(count < 0) count = 0;
+                        dijitArgs.value = count;
                     }
                     registerWidget(
                         entry, 

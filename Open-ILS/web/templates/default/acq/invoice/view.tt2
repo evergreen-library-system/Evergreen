@@ -28,8 +28,7 @@
             <thead id='acq-invoice-entry-thead' class='hidden'>
                 <tr>
                     <th colspan='2'>Title Details</th>
-                    <th class='acq-invoice-center-col'># Invoiced</th>
-                    <th class='acq-invoice-center-col'># Paid</th>
+                    <th class='acq-invoice-center-col'>#&nbsp;Invoiced&nbsp;/&nbsp;#&nbsp;Paid</th>
                     <th class='acq-invoice-center-col'>Billed</th>
                     <th class='acq-invoice-paid-col'>Paid</th>
                     <th class='acq-invoice-center-col hide-complete'>Detach</th>
@@ -42,11 +41,7 @@
                         <div name='note'></div>
                     </td>
                     <td class='acq-invoice-center-col'>
-                        <span name='inv_item_count'></span>
-                    </td>
-                    <td class='acq-invoice-center-col'>
-                        <span name='phys_item_count'></span>
-                    </td>
+                        <span name='inv_item_count'></span>&nbsp;/&nbsp;<span name='phys_item_count'></span>
                     <td class='acq-invoice-billed-col'><div name='cost_billed'/></td>
                     <td class='acq-invoice-paid-col'><div name='amount_paid'/></td>
                     <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='detach'>Detach</a></td>
@@ -55,7 +50,7 @@
             <tbody>
                 <tr>
                     <td  style='margin-top:15px;' colspan='0'>
-                        <h3>Taxes, Fees, Misc.</h3>
+                        <h3>Direct Charges, Taxes, Fees, etc.</h3>
                     </td>
                 </tr>
             </tbody>
@@ -63,9 +58,8 @@
             <thead>
                 <tr>
                     <th>Charge Type</th>
-                    <th>Title/Description</th>
-                    <th>Author</th>
                     <th class='acq-invoice-center-col'>Fund</th>
+                    <th>Title/Description</th>
                     <th class='acq-invoice-center-col'>Billed</th>
                     <th class='acq-invoice-paid-col'>Paid</th>
                     <th class='acq-invoice-center-col hide-complete'>Delete</th>
@@ -74,9 +68,8 @@
             <tbody id='acq-invoice-item-tbody'>
                 <tr id='acq-invoice-item-template' class='acq-invoice-row acq-invoice-item-row'>
                     <td><div name='inv_item_type'/></td>
-                    <td><div name='title'/></td>
-                    <td><div name='author'/></td>
                     <td class='acq-invoice-center-col'><div name='fund'/></td>
+                    <td><div name='title'/></td>
                     <td class='acq-invoice-center-col' class='acq-invoice-billed-col'><div name='cost_billed'/></td>
                     <td class='acq-invoice-paid-col'><div name='amount_paid'/></td>
                     <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='delete'>Delete</a></td>

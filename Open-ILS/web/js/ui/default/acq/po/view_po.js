@@ -364,6 +364,7 @@ params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh
             onresponse: function(r) {
                 liTable.show('list');
                 var li = openils.Util.readResponse(r);
+                // TODO: Add po_item's to total estimated amount
                 totalEstimated += (Number(li.item_count() || 0) * Number(li.estimated_unit_price() || 0));
                 liTable.addLineitem(li);
             },
