@@ -15,37 +15,15 @@
 static jsonObject* get_row( BuildSQLState* state );
 static jsonObject* get_date_column( dbi_result result, int col_idx );
 
-jsonObject* oilsExecSql( BuildSQLState* state ) {
+/**
+	@brief Execute the current SQL statement and return the first row.
+	@param state Pointer to the query-building context.
+	@return Pointer to a newly-allocated jsonObject representing the row, if there is one; or
+		NULL if there isn't.
 
-	if( !state )
-		return NULL;
-
-	// Execute the query
-	dbi_result result = dbi_conn_query( state->dbhandle, OSRF_BUFFER_C_STR( state->sql ));
-	if( !result ) {
-		state->error = 1;
-		const char* msg;
-		(void) dbi_conn_error( state->dbhandle, &msg );
-		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
-			"Unable to execute query: %s",msg ? msg : "No description available" ));
-		return NULL;
-	}
-
-	if( !dbi_result_first_row( result ) )
-		return NULL;         // No rows returned
-
-	jsonObject* result_set = jsonNewObjectType( JSON_ARRAY );
-
-	do {
-		jsonObject* row = get_row( state );
-		if( row )
-			jsonObjectPush( result_set, row );
-	} while( dbi_result_next_row( result ));
-
-	dbi_result_free( result );
-	return result_set;
-}
-
+	The returned row is a JSON_ARRAY of column values, of which each is a JSON_STRING,
+	JSON_NUMBER, or JSON_NULL.
+*/
 jsonObject* oilsFirstRow( BuildSQLState* state ) {
 
 	if( !state )
@@ -75,6 +53,15 @@ jsonObject* oilsFirstRow( BuildSQLState* state ) {
 	}
 }
 
+/**
+	@brief Return the next row from a previously executed SQL statement.
+	@param state Pointer to the query-building context.
+	@return Pointer to a newly-allocated jsonObject representing the row, if there is one; or
+		NULL if there isn't.
+
+	The returned row is a JSON_ARRAY of column values, of which each is a JSON_STRING,
+	JSON_NUMBER, or JSON_NULL.
+*/
 jsonObject* oilsNextRow( BuildSQLState* state ) {
 
 	if( !state || !state->result )
@@ -90,6 +77,11 @@ jsonObject* oilsNextRow( BuildSQLState* state ) {
 	}
 }
 
+/**
+	@brief Construct a JSON representation of a returned row.
+	@param state Pointer to the query-building context.
+	@return Pointer to a newly-allocated jsonObject representing the row.
+*/
 static jsonObject* get_row( BuildSQLState* state  ) {
 	unsigned int col_count = dbi_result_get_numfields( state->result );
 	jsonObject* row = jsonNewObjectType( JSON_ARRAY );
@@ -130,7 +122,7 @@ static jsonObject* get_row( BuildSQLState* state  ) {
 				break;
 			}
 			default :
-				osrfLogError( OSRF_LOG_MARK, 
+				osrfLogError( OSRF_LOG_MARK,
 					"Unrecognized column type %d; column set to null", type );
 				col_value = jsonNewObjectType( JSON_NULL );
 				break;
@@ -147,7 +139,7 @@ static jsonObject* get_row( BuildSQLState* state  ) {
 	@param col_idx Column number (starting with 1) within the row.
 	@return Pointer to a newly-allocated JSON_STRING containing a formatted date string.
 
-	The calling code is responsible for freeing the returned jsonObject by calling 
+	The calling code is responsible for freeing the returned jsonObject by calling
 	jsonObjectFree().
 */
 static jsonObject* get_date_column( dbi_result result, int col_idx ) {

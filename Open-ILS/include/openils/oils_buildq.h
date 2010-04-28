@@ -192,8 +192,6 @@ int buildSQL( BuildSQLState* state, StoredQ* query );
 
 void oilsStoredQSetVerbose( void );
 
-jsonObject* oilsExecSql( BuildSQLState* state );
-
 jsonObject* oilsFirstRow( BuildSQLState* state );
 
 jsonObject* oilsNextRow( BuildSQLState* state );
