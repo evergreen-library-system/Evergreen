@@ -646,6 +646,9 @@ sub create_lineitem_debits {
 sub create_lineitem_detail_debit {
     my ($mgr, $li, $lid, $dry_run, $no_translate) = @_;
 
+    # don't create the debit if one already exists
+    return $mgr->editor->retrieve_acq_fund_debit($lid->fund_debit) if $lid->fund_debit;
+
     my $li_id = ref($li) ? $li->id : $li;
 
     unless(ref $li and ref $li->provider) {
@@ -2275,7 +2278,7 @@ sub cancel_purchase_order {
         $mgr->editor->allowed("CREATE_PURCHASE_ORDER", $po->ordering_agency);
 
     $po->state("cancelled");
-    $po->cancel_reason($cancel_reason);
+    $po->cancel_reason($cancel_reason->id);
 
     my $li_ids = $mgr->editor->search_acq_lineitem(
         {"purchase_order" => $po_id}, {"idlist" => 1}
@@ -2436,7 +2439,7 @@ sub cancel_lineitem {
     );
 
     $li->state("cancelled");
-    $li->cancel_reason($cancel_reason);
+    $li->cancel_reason($cancel_reason->id);
 
     my $lids = $mgr->editor->search_acq_lineitem_detail([{
         "lineitem" => $li_id
@@ -2469,7 +2472,7 @@ sub cancel_lineitem {
     # Attempt to delete the gathered copies (this will also handle volume deletion and bib deletion)
     # Another edge case, if we have a bib but not copies, are we supposed to delete the bib?
     if (scalar(@$copies)>0) {
-        my $override = 0;
+        my $override = 1;
         my $delete_stats = undef;
         my $retarget_holds = [];
         my $cat_evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
@@ -2532,9 +2535,6 @@ sub cancel_lineitem {
             }
         }
     }
-
-    # TODO delete the associated fund debits?
-    # TODO who/what/where/how do we indicate this change for electronic orders?
 
     update_lineitem($mgr, $li) or return 0;
     $result->{"li"} = {
@@ -2627,27 +2627,27 @@ sub cancel_lineitem_detail {
         $lid->lineitem->purchase_order->ordering_agency
     ) or (! $lid->lineitem->purchase_order);
 
-    $lid->cancel_reason($cancel_reason);
+    $lid->cancel_reason($cancel_reason->id);
 
-    # TODO who/what/where/how do we indicate this change for electronic orders?
+    unless($U->is_true($cancel_reason->keep_debits)) {
+        my $debit_id = $lid->fund_debit;
+        $lid->clear_fund_debit;
 
-    my $debit_id = $lid->fund_debit;
-    $lid->clear_fund_debit;
+        if($debit_id) {
+            # item is cancelled.  Remove the fund debit.
+            my $debit = $mgr->editor->retrieve_acq_fund_debit($debit_id);
+            if (!$U->is_true($debit->encumbrance)) {
+                $mgr->editor->rollback;
+                return OpenILS::Event->new('ACQ_NOT_CANCELABLE', 
+                    note => "Debit is marked as paid: $debit_id");
+            }
+            $mgr->editor->delete_acq_fund_debit($debit) or return $mgr->editor->die_event;
+        }
+    }
 
     # XXX LIDs don't have either an editor or a edit_time field. Should we
     # update these on the LI when we alter an LID?
     $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
-
-    if($debit_id) {
-        # item is cancelled.  Remove the fund debit.
-        my $debit = $mgr->editor->retrieve_acq_fund_debit($debit_id);
-        if (!$U->is_true($debit->encumbrance)) {
-            $mgr->editor->rollback;
-            return OpenILS::Event->new('ACQ_NOT_CANCELABLE', 
-                note => "Debit is marked as paid: $debit_id");
-        }
-        $mgr->editor->delete_acq_fund_debit($debit) or return $mgr->editor->die_event;
-    }
 
     return {"lid" => {$lid_id => {"cancel_reason" => $cancel_reason}}};
 }

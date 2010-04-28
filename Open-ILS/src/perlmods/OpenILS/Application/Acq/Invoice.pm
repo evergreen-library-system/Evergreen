@@ -179,6 +179,7 @@ sub update_entry_debits {
 sub entry_amount_per_item {
     my $entry = shift;
     return $entry->amount_paid if $U->is_true($entry->billed_per_item);
+    return 0 if $entry->phys_item_count == 0;
     return $entry->amount_paid / $entry->phys_item_count;
 }
 
@@ -193,7 +194,6 @@ sub find_entry_debits {
         from => {
             acqfdeb => {
                 acqlid => {
-                    filter => {cancel_reason => undef, recv_time => {'!=' => undef}},
                     join => {
                         jub =>  {
                             join => {
@@ -207,7 +207,7 @@ sub find_entry_debits {
             }
         },
         where => {'+acqfdeb' => {encumbrance => $encumbrance}},
-        order_by => {'acqlid' => ['recv_time']},
+        order_by => {'acqlid' => ['recv_time']}, # un-received items will sort to the end
         limit => $entry->phys_item_count
     };
 

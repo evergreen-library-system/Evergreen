@@ -349,7 +349,9 @@ function AcqLiTable() {
 
         /* of course I'd rather just populate a <span> element inside the
          * option element, but it seems you can't actually have any elements
-         * inside option elements */
+         * inside option elements 
+         * TODO: move to dojo/i18n
+         * */
         option.innerHTML = option.innerHTML.replace(
             /(^.+)(.*)( existing.+$)/, "$1" + String(count) + "$3"
         );
@@ -438,6 +440,28 @@ function AcqLiTable() {
         /* handle links that appear/disappear based on whether LI is received */
         if (this.isPO) {
             var self = this;
+
+            actNewInvoice.onclick = function() {
+                location.href = oilsBasePath + '/acq/invoice/view?create=1&attach_li=' + li.id();
+                nodeByName("action_none", row).selected = true;
+            };
+            actLinkInvoice.onclick = function() {
+                self.invoiceLinkDialogManager.target = li;
+                acqLitLinkInvoiceDialog.show();
+                nodeByName("action_none", row).selected = true;
+            };
+            actViewInvoice.onclick = function() {
+                location.href = oilsBasePath +
+                    "/acq/search/unified?so=" +
+                    base64Encode({"jub":[{"id": li.id()}]}) +
+                    "&rt=invoice";
+                nodeByName("action_none", row).selected = true;
+            };
+
+            actNewInvoice.disabled = false;
+            actLinkInvoice.disabled = false;
+            actViewInvoice.disabled = false;
+
             switch(li.state()) {
                 case "on-order":
                     actReceive.disabled = false;
@@ -447,6 +471,7 @@ function AcqLiTable() {
                         nodeByName("action_none", row).selected = true;
                     };
                     return;
+
                 case "received":
                     actUnRecv.disabled = false;
                     actUnRecv.onclick = function() {
@@ -463,27 +488,6 @@ function AcqLiTable() {
                     }
                     actHoldingsMaint.disabled = false;
                     actHoldingsMaint.onclick = self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row );
-
-                    actNewInvoice.disabled = false;
-                    actLinkInvoice.disabled = false;
-                    actViewInvoice.disabled = false;
-
-                    actNewInvoice.onclick = function() {
-                        location.href = oilsBasePath + '/acq/invoice/view?create=1&attach_li=' + li.id();
-                        nodeByName("action_none", row).selected = true;
-                    };
-                    actLinkInvoice.onclick = function() {
-                        self.invoiceLinkDialogManager.target = li;
-                        acqLitLinkInvoiceDialog.show();
-                        nodeByName("action_none", row).selected = true;
-                    };
-                    actViewInvoice.onclick = function() {
-                        location.href = oilsBasePath +
-                            "/acq/search/unified?so=" +
-                            base64Encode({"jub":[{"id": li.id()}]}) +
-                            "&rt=invoice";
-                        nodeByName("action_none", row).selected = true;
-                    };
 
                     return;
             }

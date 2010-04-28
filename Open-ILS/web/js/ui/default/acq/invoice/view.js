@@ -69,6 +69,7 @@ function init() {
         searchFilter : {active : 't'},
         labelFormat : fundLabelFormat,
         searchFormat : fundSearchFormat,
+        dijitArgs : {required : true},
         parentNode : dojo.byId('acq-invoice-extra-copies-fund')
     });
     extraCopiesFund.build();
@@ -289,6 +290,7 @@ function addInvoiceItem(item) {
         labelFormat : fundLabelFormat,
         searchFormat : fundSearchFormat,
         readOnly : invoice && openils.Util.isTrue(invoice.complete()),
+        dijitArgs : {required : true},
         parentNode : nodeByName('fund', row)
     }
 
@@ -379,39 +381,42 @@ function addInvoiceEntry(entry) {
             entry.lineitem(li);
             entry.purchase_order(li.purchase_order());
             nodeByName('title_details', row).innerHTML = html;
-        }
-    );
 
-    dojo.forEach(
-        ['inv_item_count', 'phys_item_count', 'cost_billed', 'amount_paid'],
-        function(field) {
-            var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:6em'};
-            if(entry.isnew() && field == 'phys_item_count') dijitArgs.value = numReceived;
-            registerWidget(
-                entry, 
-                field,
-                new openils.widget.AutoFieldWidget({
-                    fmObject : entry,
-                    fmClass : 'acqie',
-                    fmField : field,
-                    dijitArgs : dijitArgs,
-                    readOnly : invoice && openils.Util.isTrue(invoice.complete()),
-                    parentNode : nodeByName(field, row)
-                }),
-                function(w) {    
-                    if(field == 'phys_item_count') {
-                        dojo.connect(w, 'onChange', 
-                            function() {
-                                // staff entered a higher number in the receive field than was originally ordered
-                                if(Number(this.attr('value')) > entry.lineitem().item_count()) {
-                                    storeExtraCopies(
-                                        entry.lineitem().id(), 
-                                        Number(this.attr('value')) - entry.lineitem().item_count()
-                                    );
-                                }
-                            }
-                        )
+            dojo.forEach(
+                ['inv_item_count', 'phys_item_count', 'cost_billed', 'amount_paid'],
+                function(field) {
+                    var dijitArgs = {required : true, constraints : {min: 0}, style : 'width:6em'};
+                    if(entry.isnew() && field == 'phys_item_count') {
+                        // by default, attempt to pay for all received and as-of-yet-un-invoiced items
+                        dijitArgs.value = (Number(li.order_summary().recv_count()) - Number(li.order_summary().invoice_count())) || 0;
                     }
+                    registerWidget(
+                        entry, 
+                        field,
+                        new openils.widget.AutoFieldWidget({
+                            fmObject : entry,
+                            fmClass : 'acqie',
+                            fmField : field,
+                            dijitArgs : dijitArgs,
+                            readOnly : invoice && openils.Util.isTrue(invoice.complete()),
+                            parentNode : nodeByName(field, row)
+                        }),
+                        function(w) {    
+                            if(field == 'phys_item_count') {
+                                dojo.connect(w, 'onChange', 
+                                    function() {
+                                        // staff entered a higher number in the receive field than was originally ordered
+                                        // taking into account already invoiced items
+                                        var extra = Number(this.attr('value')) - 
+                                            (Number(entry.lineitem().item_count()) - Number(entry.lineitem().order_summary().invoice_count()));
+                                        if(extra > 0) {
+                                            storeExtraCopies(entry, extra);
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    );
                 }
             );
         }
@@ -565,7 +570,7 @@ function prorateInvoice(invoice) {
     );
 }
 
-function storeExtraCopies(liId, numExtra) {
+function storeExtraCopies(entry, numExtra) {
 
     dojo.byId('acq-invoice-extra-copies-message').innerHTML = 
         dojo.string.substitute(
@@ -576,7 +581,7 @@ function storeExtraCopies(liId, numExtra) {
         extraCopiesGo, 
         'onClick',
         function() {
-            extraCopies[liId] = {
+            extraCopies[entry.lineitem().id()] = {
                 numExtra : numExtra, 
                 fund : extraCopiesFund.widget.attr('value')
             }
@@ -586,9 +591,12 @@ function storeExtraCopies(liId, numExtra) {
     );
 
     dojo.connect(
-       extraCopiesCancel, 
-       'onClick',
-       function() { extraItemsDialog.hide() }
+        extraCopiesCancel, 
+        'onClick',
+        function() { 
+            widgetRegistry.acqie[entry.id()].phys_item_count.widget.attr('value', '');
+            extraItemsDialog.hide() 
+        }
     );
 
     extraItemsDialog.show();
