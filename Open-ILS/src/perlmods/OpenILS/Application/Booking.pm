@@ -523,8 +523,15 @@ sub reservation_list_by_filters {
         $query->{where}->{target_resource_type} = $filters->{type};
     }
 
+    $query->{where}->{"-and"} = [];
     if ($filters->{resource}) {
-        $query->{where}->{target_resource} = $filters->{resource};
+#       $query->{where}->{target_resource} = $filters->{resource};
+        push @{$query->{where}->{"-and"}}, {
+            "-or" => {
+                "target_resource" => $filters->{resource},
+                "current_resource" => $filters->{resource}
+            }
+        };
     }
 
     if ($filters->{attribute_values}) {
@@ -543,13 +550,21 @@ sub reservation_list_by_filters {
     }
 
     if ($filters->{search_start} || $filters->{search_end}) {
-        $query->{where}->{'-or'} = {};
+        my $or = {};
 
-        $query->{where}->{'-or'}->{start_time} = { 'between' => [ $filters->{search_start}, $filters->{search_end} ] }
-                if ($filters->{search_start});
+        $or->{start_time} =
+            {'between' => [ $filters->{search_start}, $filters->{search_end}]}
+                if $filters->{search_start};
 
-        $query->{where}->{'-or'}->{end_time} = { 'between' => [ $filters->{search_start}, $filters->{search_end} ] }
-                if ($filters->{search_end});
+        $or->{end_time} =
+            {'between' =>[$filters->{search_start}, $filters->{search_end}]}
+                if $filters->{search_end};
+
+        push @{$query->{where}->{"-and"}}, {"-or" => $or};
+    }
+
+    if (not scalar @{$query->{"where"}->{"-and"}}) {
+        delete $query->{"where"}->{"-and"};
     }
 
     my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
@@ -807,8 +822,11 @@ sub could_capture {
                 clense_ISO8601($bresv->start_time)
             );
 
-            $client->respond($bresv) if
-                $now >= $start_time->subtract("seconds" => $elbow_room);
+            if ($now >= $start_time->subtract("seconds" => $elbow_room)) {
+                $client->respond($bresv);
+            } else {
+                $logger->info("not within elbow room: $elbow_room, else would have returned bresv " . $bresv->id);
+            }
         }
     }
     $e->disconnect;
@@ -1001,6 +1019,7 @@ sub capture_reservation {
     ];
 
     if ($here != $reservation->pickup_lib) {
+        $logger->info("resource isn't at the reservation's pickup lib...");
         return new OpenILS::Event(
             "RESERVATION_CAPTURE_FAILED",
             "payload" => {"captured" => 0, "fail_cause" => "not-transferable"}
@@ -1034,7 +1053,7 @@ sub capture_reservation {
                     return new OpenILS::Event(
                         "OPEN_CIRCULATION_EXISTS",
                         "payload" => {"captured" => 0, "copy" => $copy}
-                    ) if $copy->status == 1;
+                    ) if $copy->status == 1 and not $no_update_copy;
 
                     $ret->{"mvr"} = get_mvr($copy->call_number->record);
                     if ($no_update_copy) {
@@ -1049,13 +1068,14 @@ sub capture_reservation {
 
         $ret->{"transit"} = $transit;
     } elsif ($U->is_true($reservation->current_resource->type->catalog_item)) {
+        $logger->info("resource is a catalog item...");
         my $copy = $e->search_asset_copy($search_acp_like_this)->[0];
 
         if ($copy) {
             return new OpenILS::Event(
                 "OPEN_CIRCULATION_EXISTS",
                 "payload" => {"captured" => 0, "copy" => $copy}
-            ) if $copy->status == 1;
+            ) if $copy->status == 1 and not $no_update_copy;
 
             $ret->{"mvr"} = get_mvr($copy->call_number->record);
             if ($no_update_copy) {
