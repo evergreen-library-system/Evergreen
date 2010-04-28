@@ -359,6 +359,7 @@ CREATE TABLE acq.cancel_reason (
                                         DEFERRABLE INITIALLY DEFERRED,
         label         TEXT              NOT NULL,
         description   TEXT              NOT NULL,
+		keep_debits   BOOL              NOT NULL DEFAULT FALSE,
         CONSTRAINT acq_cancel_reason_one_per_org_unit UNIQUE( org_unit, label )
 );
 

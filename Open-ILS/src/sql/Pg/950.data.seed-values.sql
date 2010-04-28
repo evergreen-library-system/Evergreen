@@ -4683,7 +4683,9 @@ INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
     1, 1, 'invalid_isbn', oils_i18n_gettext( 1, 'ISBN is unrecognizable', 'acqcr', 'label' ));
 INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
     2, 1, 'postpone', oils_i18n_gettext( 2, 'Title has been postponed', 'acqcr', 'label' ));
-
+INSERT INTO acq.cancel_reason ( id, org_unit, label, description, keep_debits ) VALUES (
+    3, 1, 'delivered_but_lost',
+	oils_i18n_gettext( 2, 'Delivered but not received; presumed lost', 'acqcr', 'label' ), TRUE );
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
