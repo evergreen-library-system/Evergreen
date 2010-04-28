@@ -35,7 +35,7 @@ int doPrepare( osrfMethodContext* ctx );
 int doExecute( osrfMethodContext* ctx );
 int doSql( osrfMethodContext* ctx );
 
-static const char* save_query( 
+static const char* save_query(
 	osrfMethodContext* ctx, BuildSQLState* state, StoredQ* query );
 static void free_cached_query( char* key, void* data );
 static void userDataFree( void* blob );
@@ -108,6 +108,12 @@ int osrfAppInitialize() {
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 			"doFinish", "", 1, 0 );
 
+	buffer_reset( method_name );
+	OSRF_BUFFER_ADD( method_name, modulename );
+	OSRF_BUFFER_ADD( method_name, ".messages" );
+	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
+			"doMessages", "", 1, 0 );
+
 	return 0;
 }
 
@@ -146,7 +152,7 @@ int osrfAppChildInit() {
 			"port=%s, user=%s, db=%s", modulename, host, port, user, db );
 
 	if( host ) dbi_conn_set_option( dbhandle, "host", host );
-	if( port ) dbi_conn_set_option_numeric( dbhandle, "port", atoi( port ) );
+	if( port ) dbi_conn_set_option_numeric( dbhandle, "port", atoi( port ));
 	if( user ) dbi_conn_set_option( dbhandle, "username", user );
 	if( pw )   dbi_conn_set_option( dbhandle, "password", pw );
 	if( db )   dbi_conn_set_option( dbhandle, "dbname", db );
@@ -171,11 +177,11 @@ int osrfAppChildInit() {
 	osrfLogInfo( OSRF_LOG_MARK, "%s successfully connected to the database", modulename );
 
 	// Add datatypes from database to the fields in the IDL
-	if( oilsExtendIDL() ) {
-		osrfLogError( OSRF_LOG_MARK, "Error extending the IDL" );
-		return -1;
-	}
-	else
+	//if( oilsExtendIDL() ) {
+	//	osrfLogError( OSRF_LOG_MARK, "Error extending the IDL" );
+	//	return -1;
+	//}
+	//else
 		return 0;
 }
 
@@ -261,6 +267,16 @@ int doBindParam( osrfMethodContext* ctx ) {
 	return 0;
 }
 
+/**
+	@brief Execute an SQL query and return a result set.
+	@param ctx Pointer to the current method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- query token, as previously returned by the .prepare method.
+
+	Returns: A series of responses, each of them a row represented as an array of column values.
+*/
 int doExecute( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -317,6 +333,16 @@ int doExecute( osrfMethodContext* ctx ) {
 	return 0;
 }
 
+/**
+	@brief Construct an SQL query, but without executing it.
+	@param ctx Pointer to the current method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- query token, as previously returned by the .prepare method.
+
+	Returns: A string containing an SQL query..
+*/
 int doSql( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -356,6 +382,54 @@ int doSql( osrfMethodContext* ctx ) {
 	}
 
 	osrfAppRespondComplete( ctx, jsonNewObject( OSRF_BUFFER_C_STR( query->state->sql )));
+	return 0;
+}
+
+/**
+	@brief Return a list of previously generated error messages for a specified query.
+	@param ctx Pointer to the current method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- query token, as previously returned by the .prepare method.
+
+	Returns: A (possibly empty) array of strings, each one an error message generated during
+	previous operations in connection with the specified query.
+*/
+int doMessages( osrfMethodContext* ctx ) {
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
+
+	// Get the query token from a method parameter
+	const jsonObject* token_obj = jsonObjectGetIndex( ctx->params, 0 );
+	if( token_obj->type != JSON_STRING ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Invalid parameter; query token must be a string" );
+		return -1;
+	}
+	const char* token = jsonObjectGetString( token_obj );
+
+	// Look up the query token in the session-level userData
+	CachedQuery* query = search_token( ctx, token );
+	if( !query ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Invalid query token" );
+		return -1;
+	}
+
+	osrfLogInfo( OSRF_LOG_MARK, "Returning messages for token %s", token );
+
+	jsonObject* msgs = jsonNewObjectType( JSON_ARRAY );
+	const osrfStringArray* error_msgs = query->state->error_msgs;
+	int i;
+	for( i = 0; i < error_msgs->size; ++i ) {
+		jsonObject* msg = jsonNewObject( osrfStringArrayGetString( error_msgs, i ));
+		jsonObjectPush( msgs, msg );
+	}
+
+	osrfAppRespondComplete( ctx, msgs );
 	return 0;
 }
 
@@ -401,7 +475,7 @@ int doFinish( osrfMethodContext* ctx ) {
 	@param query Pointer to the abstract representation of the query.
 	@return Pointer to an identifying token to be returned to the client.
 */
-static const char* save_query( 
+static const char* save_query(
 	osrfMethodContext* ctx, BuildSQLState* state, StoredQ* query ) {
 
 	CachedQuery* cached_query = safe_malloc( sizeof( CachedQuery ));
