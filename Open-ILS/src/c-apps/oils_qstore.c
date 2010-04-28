@@ -126,63 +126,23 @@ int osrfAppInitialize() {
 
 	This function is called by a server drone shortly after it is spawned by the listener.
 */
-int osrfAppChildInit() {
+int osrfAppChildInit( void ) {
 
-	osrfLogDebug( OSRF_LOG_MARK, "Attempting to initialize libdbi..." );
-	dbi_initialize( NULL );
-	osrfLogDebug( OSRF_LOG_MARK, "... libdbi initialized." );
-
-	char* driver = osrf_settings_host_value( "/apps/%s/app_settings/driver", modulename );
-	char* user   = osrf_settings_host_value( "/apps/%s/app_settings/database/user", modulename );
-	char* host   = osrf_settings_host_value( "/apps/%s/app_settings/database/host", modulename );
-	char* port   = osrf_settings_host_value( "/apps/%s/app_settings/database/port", modulename );
-	char* db     = osrf_settings_host_value( "/apps/%s/app_settings/database/db", modulename );
-	char* pw     = osrf_settings_host_value( "/apps/%s/app_settings/database/pw", modulename );
-
-	osrfLogDebug( OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver );
-	dbhandle = dbi_conn_new( driver );
-
-	if( !dbhandle ) {
-		osrfLogError( OSRF_LOG_MARK, "Error loading database driver [%s]", driver );
+	dbhandle = oilsConnectDB( modulename );
+	if( !dbhandle )
 		return -1;
-	}
-	osrfLogDebug( OSRF_LOG_MARK, "Database driver [%s] seems OK", driver );
+	else {
+		oilsSetDBConnection( dbhandle );
+		osrfLogInfo( OSRF_LOG_MARK, "%s successfully connected to the database", modulename );
 
-	osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
-			"port=%s, user=%s, db=%s", modulename, host, port, user, db );
-
-	if( host ) dbi_conn_set_option( dbhandle, "host", host );
-	if( port ) dbi_conn_set_option_numeric( dbhandle, "port", atoi( port ));
-	if( user ) dbi_conn_set_option( dbhandle, "username", user );
-	if( pw )   dbi_conn_set_option( dbhandle, "password", pw );
-	if( db )   dbi_conn_set_option( dbhandle, "dbname", db );
-
-	free( user );
-	free( host );
-	free( port );
-	free( db );
-	free( pw );
-
-	const char* err;
-	if( dbi_conn_connect( dbhandle ) < 0 ) {
-		sleep( 1 );
-		if( dbi_conn_connect( dbhandle ) < 0 ) {
-			dbi_conn_error( dbhandle, &err );
-			osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", err );
-			return -1;
-		}
-	}
-
-	oilsSetDBConnection( dbhandle );
-	osrfLogInfo( OSRF_LOG_MARK, "%s successfully connected to the database", modulename );
-
-	// Add datatypes from database to the fields in the IDL
-	//if( oilsExtendIDL() ) {
-	//	osrfLogError( OSRF_LOG_MARK, "Error extending the IDL" );
-	//	return -1;
-	//}
-	//else
+		// Apply datatypes from database to the fields in the IDL
+		//if( oilsExtendIDL() ) {
+		//	osrfLogError( OSRF_LOG_MARK, "Error extending the IDL" );
+		//	return -1;
+		//}
+		//else
 		return 0;
+	}
 }
 
 /**

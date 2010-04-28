@@ -26,6 +26,7 @@ GNU General Public License for more details.
 extern "C" {
 #endif
 
+dbi_conn oilsConnectDB( const char* mod_name );
 void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth );
 void oilsSetDBConnection( dbi_conn conn );
 int oilsExtendIDL( void );

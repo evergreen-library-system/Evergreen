@@ -138,6 +138,65 @@ static int enforce_pcrud = 0;     // Boolean
 static char* modulename = NULL;
 
 /**
+	@brief Connect to the database.
+	@return A database connection if successful, or NULL if not.
+ */
+dbi_conn oilsConnectDB( const char* mod_name ) {
+
+	osrfLogDebug( OSRF_LOG_MARK, "Attempting to initialize libdbi..." );
+	if( dbi_initialize( NULL ) == -1 ) {
+		osrfLogError( OSRF_LOG_MARK, "Unable to initialize libdbi" );
+		return NULL;
+	} else
+		osrfLogDebug( OSRF_LOG_MARK, "... libdbi initialized." );
+
+	char* driver = osrf_settings_host_value( "/apps/%s/app_settings/driver", mod_name );
+	char* user   = osrf_settings_host_value( "/apps/%s/app_settings/database/user", mod_name );
+	char* host   = osrf_settings_host_value( "/apps/%s/app_settings/database/host", mod_name );
+	char* port   = osrf_settings_host_value( "/apps/%s/app_settings/database/port", mod_name );
+	char* db     = osrf_settings_host_value( "/apps/%s/app_settings/database/db", mod_name );
+	char* pw     = osrf_settings_host_value( "/apps/%s/app_settings/database/pw", mod_name );
+
+	osrfLogDebug( OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver );
+	dbi_conn handle = dbi_conn_new( driver );
+
+	if( !handle ) {
+		osrfLogError( OSRF_LOG_MARK, "Error loading database driver [%s]", driver );
+		return NULL;
+	}
+	osrfLogDebug( OSRF_LOG_MARK, "Database driver [%s] seems OK", driver );
+
+	osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
+		"port=%s, user=%s, db=%s", mod_name, host, port, user, db );
+
+	if( host ) dbi_conn_set_option( handle, "host", host );
+	if( port ) dbi_conn_set_option_numeric( handle, "port", atoi( port ));
+	if( user ) dbi_conn_set_option( handle, "username", user );
+	if( pw )   dbi_conn_set_option( handle, "password", pw );
+	if( db )   dbi_conn_set_option( handle, "dbname", db );
+
+	free( user );
+	free( host );
+	free( port );
+	free( db );
+	free( pw );
+
+	if( dbi_conn_connect( handle ) < 0 ) {
+		sleep( 1 );
+		if( dbi_conn_connect( handle ) < 0 ) {
+			const char* errmsg;
+			dbi_conn_error( handle, &errmsg );
+			osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", errmsg );
+			return NULL;
+		}
+	}
+
+	osrfLogInfo( OSRF_LOG_MARK, "%s successfully connected to the database", mod_name );
+
+	return handle;
+}
+
+/**
 	@brief Select some options.
 	@param module_name: Name of the server.
 	@param do_pcrud: Boolean.  True if we are to enforce PCRUD permissions.
