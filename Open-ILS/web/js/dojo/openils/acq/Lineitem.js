@@ -140,9 +140,12 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
                 );
 
                 var po = lineitem.purchase_order();
-                var li = lineitem.picklist();
+                var pl = lineitem.picklist();
                 var orderDate = '';
+                var liLink = '';
+
                 if(po) {
+                    liLink = oilsBasePath + '/acq/po/view/' + po.id() + '/' + lineitem.id();
                     var date = dojo.date.stamp.fromISOString(po.order_date());
                     if(date) {
                         orderDate = dojo.date.locale.format(date, {selector:'date'});
@@ -165,11 +168,12 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
                         oilsBasePath,
                         (po) ? po.id() : '',
                         (po) ? po.name() : '',
-                        (li) ? li.id() : '',
-                        (li) ? li.name() : '',
+                        (pl) ? pl.id() : '',
+                        (pl) ? pl.name() : '',
                         lineitem.order_summary().encumbrance_amount() || '0.00',
                         lineitem.order_summary().paid_amount() || '0.00',
-                        orderDate
+                        orderDate,
+                        liLink
                     ]
                 );
 
