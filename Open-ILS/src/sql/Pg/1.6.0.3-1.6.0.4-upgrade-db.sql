@@ -152,8 +152,11 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 -- And rebuild the materialized view that was built on money.billable_xact_summary
+-- If you're using Slony, delete instead of truncate!
+
+-- DELETE FROM money.materialized_billable_xact_summary;
 TRUNCATE TABLE money.materialized_billable_xact_summary;
-INSERT INTO TABLE money.materialized_billable_xact_summary
+INSERT INTO money.materialized_billable_xact_summary
 	SELECT * FROM money.billable_xact_summary;
 
 -- Updated in-db circ and functions which return a matchpoint whenever possible, for override
