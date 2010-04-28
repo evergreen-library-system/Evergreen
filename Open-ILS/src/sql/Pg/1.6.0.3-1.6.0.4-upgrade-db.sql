@@ -93,10 +93,10 @@ SELECT	r.id,
 -- Now rebuild the materialized simple record table that was built on reporter.old_super_simple_record
 -- If you're using Slony, delete instead of truncate!
 
---DELETE FROM materialized.simple_record;
-TRUNCATE TABLE materialized.simple_record;
+--DELETE FROM reporter.materialized_simple_record;
+TRUNCATE TABLE reporter.materialized_simple_record;
 
-INSERT INTO materialized.simple_record
+INSERT INTO reporter.materialized_simple_record 
     SELECT * FROM reporter.old_super_simple_record;
 
 -- Replace the billable transaction summary view with one that is more cautious about NULL values
