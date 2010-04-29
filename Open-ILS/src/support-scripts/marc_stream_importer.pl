@@ -29,6 +29,7 @@ use Pod::Usage;
 
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::AppSession;
+use OpenSRF::EX qw/:try/;
 use OpenILS::Utils::Cronscript;
 require 'oils_header.pl';
 use vars qw/$apputils/;
@@ -236,10 +237,13 @@ sub bib_queue_import {
     my $extra = {auto_overlay_exact => 1};
     $extra->{merge_profile} = $merge_profile if $merge_profile;
 
-    if($import_by_queue) {
+    my $req;
+    my @cleanup_recs;
 
-        $apputils->simplereq(
-            'open-ils.vandelay', 
+    if($import_by_queue) {
+        # import by queue
+
+        $req = $vl_ses->request(
             'open-ils.vandelay.bib_queue.import', 
             $authtoken, 
             $queue_id, 
@@ -247,16 +251,39 @@ sub bib_queue_import {
         );
 
     } else {
-
         # import explicit record IDs
 
-        $apputils->simplereq(
-            'open-ils.vandelay', 
+        $req = $vl_ses->request(
             'open-ils.vandelay.bib_record.list.import', 
             $authtoken, 
             $rec_ids, 
             $extra 
         );
+    }
+
+    # collect the successfully imported vandelay records
+    while(my $resp = $req->recv) {
+         if($req->failed) {
+            $logger->error("Error importing MARC data: $resp");
+
+        } elsif(my $data = $resp->content) {
+            push(@cleanup_recs, $data->{imported}) unless $data->{err_event};
+        }
+    }
+
+    # clean up the successfully imported vandelay records to prevent queue bloat
+    foreach (@cleanup_recs) {
+
+        try { 
+            $apputils->simplereq(
+                'open-ils.pcrud',
+                'open-ils.pcrud.delete.vqbr',
+                $authtoken, $_);
+
+        } catch Error with {
+            my $err = shift;
+            $logger->error("Error deleteing queued bib record $_: $err");
+        };
     }
 }
 
