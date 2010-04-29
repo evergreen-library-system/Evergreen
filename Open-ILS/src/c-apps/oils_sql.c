@@ -98,7 +98,6 @@ char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonOb
 
 void userDataFree( void* );
 static void sessionDataFree( char*, void* );
-static char* getRelation( osrfHash* );
 static int obj_is_true( const jsonObject* obj );
 static const char* json_type( int code );
 static const char* get_primitive( osrfHash* field );
@@ -243,15 +242,15 @@ void oilsSetDBConnection( dbi_conn conn ) {
 	In some cases the IDL defines a class, not with a table name or a view name, but with
 	a SELECT statement, which may be used as a subquery.
 */
-static char* getRelation( osrfHash* class ) {
+char* oilsGetRelation( osrfHash* classdef ) {
 
 	char* source_def = NULL;
-	const char* tabledef = osrfHashGet( class, "tablename" );
+	const char* tabledef = osrfHashGet( classdef, "tablename" );
 
 	if( tabledef ) {
 		source_def = strdup( tabledef );   // Return the name of a table or view
 	} else {
-		tabledef = osrfHashGet( class, "source_definition" );
+		tabledef = osrfHashGet( classdef, "source_definition" );
 		if( tabledef ) {
 			// Return a subquery, enclosed in parentheses
 			source_def = safe_malloc( strlen( tabledef ) + 3 );
@@ -260,7 +259,7 @@ static char* getRelation( osrfHash* class ) {
 			strcat( source_def, ")" );
 		} else {
 			// Not found: return an error
-			const char* classname = osrfHashGet( class, "classname" );
+			const char* classname = osrfHashGet( classdef, "classname" );
 			if( !classname )
 				classname = "???";
 			osrfLogError(
@@ -301,7 +300,7 @@ int oilsExtendIDL( void ) {
 			continue;
 		}
 
-		char* tabledef = getRelation( class );
+		char* tabledef = oilsGetRelation( class );
 		if( !tabledef )
 			continue;   // No such relation -- a query of it would be doomed to failure
 
@@ -2039,10 +2038,25 @@ int doRetrieve( osrfMethodContext* ctx ) {
 	return 0;
 }
 
+/**
+	@brief Translate a numeric value to a string representation for the database.
+	@param field Pointer to the IDL field definition.
+	@param value Pointer to a jsonObject holding the value of a field.
+	@return Pointer to a newly allocated string.
+
+	The input object is typically a JSON_NUMBER, but it may be a JSON_STRING as long as
+	its contents are numeric.  A non-numeric string is likely to result in invalid SQL,
+	or (what is worse) valid SQL that is wrong.
+
+	If the datatype of the receiving field is not numeric, wrap the value in quotes.
+
+	The calling code is responsible for freeing the resulting string by calling free().
+*/
 static char* jsonNumberToDBString( osrfHash* field, const jsonObject* value ) {
 	growing_buffer* val_buf = buffer_init( 32 );
 	const char* numtype = get_datatype( field );
 
+	// For historical reasons the following contains cruft that could be cleaned up.
 	if( !strncmp( numtype, "INT", 3 ) ) {
 		if( value->type == JSON_NUMBER )
 			//buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
@@ -2059,7 +2073,7 @@ static char* jsonNumberToDBString( osrfHash* field, const jsonObject* value ) {
 		}
 
 	} else {
-		// Presumably this was really intended ot be a string, so quote it
+		// Presumably this was really intended to be a string, so quote it
 		char* str = jsonObjectToSimpleString( value );
 		if( dbi_conn_quote_string( dbhandle, &str )) {
 			OSRF_BUFFER_ADD( val_buf, str );
@@ -4768,7 +4782,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 	jsonIteratorFree( class_itr );
 
 	char* col_list = buffer_release( select_buf );
-	char* table = getRelation( meta );
+	char* table = oilsGetRelation( meta );
 	if( !table )
 		table = strdup( "(null)" );
 
@@ -6247,7 +6261,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 		return 1;
 	}
 
-	char* source_def = getRelation( class_def );
+	char* source_def = oilsGetRelation( class_def );
 	if( ! source_def )
 		return 1;
 

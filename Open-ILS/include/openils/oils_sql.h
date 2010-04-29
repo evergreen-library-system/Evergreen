@@ -33,6 +33,8 @@ int oilsExtendIDL( void );
 int str_is_true( const char* str );
 char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
 
+char* oilsGetRelation( osrfHash* classdef );
+
 int beginTransaction ( osrfMethodContext* );
 int commitTransaction ( osrfMethodContext* );
 int rollbackTransaction ( osrfMethodContext* );
