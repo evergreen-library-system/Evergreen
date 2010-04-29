@@ -117,8 +117,7 @@
             <label for="acq-unified-result-type">Search for</label>
             <select id="acq-unified-result-type">
                 <option value="lineitem">line items</option>
-                <option value="lineitem_and_bib" disabled="disabled">
-                    <!-- XXX not yet implemented -->
+                <option value="lineitem_and_bib">
                     line items &amp; catalog records
                 </option>
                 <option value="picklist">pick lists</option>

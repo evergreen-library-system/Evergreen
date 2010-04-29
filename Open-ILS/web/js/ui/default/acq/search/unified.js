@@ -11,6 +11,7 @@ var resultManager;
 var uriManager;
 var pcrud = new openils.PermaCrud();
 var cgi = new openils.CGI();
+var keys = openils.Util.objectProperties;
 
 /* typing save: add {get,set}Value() to all HTML <select> elements */
 HTMLSelectElement.prototype.getValue = function() {
@@ -53,6 +54,7 @@ function revealForm() {
 function TermSelectorFactory(terms) {
     var self = this;
     this.terms = terms;
+    this.onlyBibFriendly = false;
 
     this.template = dojo.create("select");
     this.template.appendChild(
@@ -82,12 +84,29 @@ function TermSelectorFactory(terms) {
         /* Important: within the following functions, "this" refers to one
          * HTMLSelect object, and "self" refers to the TermSelectorFactory. */
         "getTerm": function() {
-            var parts = this.getValue().split(":");
-            return {
-                "hint": parts[0],
-                "field": parts[1],
-                "datatype": self.terms[parts[0]][parts[1]].datatype
-            };
+            return this.valueToTerm(this.getValue());
+        },
+        "valueToTerm": function(value) {
+            var parts = value.split(":");
+            return dojo.mixin(
+                self.terms[parts[0]][parts[1]],
+                {"hint": parts[0], "field": parts[1]}
+            );
+        },
+        "onlyBibFriendly": function(yes) {
+            if (yes) {
+                for (var i = 0; i < this.options.length; i++) {
+                    if (this.options[i].value) {
+                        var term = this.valueToTerm(this.options[i].value);
+                        this.options[i].disabled = !term.bib_friendly;
+                    }
+                }
+            } else {
+                for (var i = 0; i < this.options.length; i++) {
+                    if (this.options[i].value)
+                        this.options[i].disabled = false;
+                }
+            }
         },
         "makeWidget": function(
             parentNode, wStore, matchHow, value, noFocus, callback
@@ -171,6 +190,8 @@ function TermSelectorFactory(terms) {
         dojo.attr(node, "id", "term-" + n);
         for (var name in selectorMethods)
             node[name] = selectorMethods[name];
+        if (this.onlyBibFriendly)
+            node.onlyBibFriendly(true);
         return node;
     };
 }
@@ -187,6 +208,7 @@ function TermSelectorFactory(terms) {
 function TermManager() {
     var self = this;
 
+    this.bibFriendlyAttrNames = ["author", "title", "isbn", "issn", "upc"];
     this.terms = {};
     ["jub", "acqpl", "acqpo", "acqinv"].forEach(
         function(hint) {
@@ -208,8 +230,13 @@ function TermManager() {
     this.terms.acqlia = {"__label": fieldmapper.IDL.fmclasses.acqlia.label};
     pcrud.retrieveAll("acqliad", {"order_by": {"acqliad": "id"}}).forEach(
         function(def) {
-            self.terms.acqlia[def.id()] =
-                {"label": def.description(), "datatype": "text"}
+            var o = {
+                "label": def.description(),
+                "datatype": "text",
+                "bib_friendly":
+                    (self.bibFriendlyAttrNames.indexOf(def.code()) >= 0)
+            };
+            self.terms.acqlia[def.id()] = o;
         }
     );
 
@@ -218,8 +245,14 @@ function TermManager() {
         removeChild(dojo.byId("acq-unified-terms-row-tmpl"));
     dojo.attr(this.template, "id");
 
+    this.lastResultType = null;
+
     this.rowId = 0;
     this.widgets = {};
+
+    dojo.byId("acq-unified-result-type").onchange = function() {
+        self.resultTypeChange(this.getValue());
+    };
 
     this._row = function(id) { return dojo.byId("term-row-" + id); };
     this._selector = function(id) { return dojo.byId("term-" + id); };
@@ -288,6 +321,44 @@ function TermManager() {
             where, this.widgets, this._match_how(id), value, noFocus,
             this._updateMatchHowForField
         );
+    };
+
+    this.resultTypeChange = function(resultType) {
+        if (
+            this.lastResultType == "lineitem_and_bib" &&
+            resultType != "lineitem_and_bib"
+        ) {
+            /* Re-enable all non-bib-friendly fields in all search term
+             * field selectors. */
+            keys(this.widgets).forEach(
+                function(id) { self._selector(id).onlyBibFriendly(false); }
+            );
+            /* Tell the selector factory to create new search term field
+             * selectors with all fields, not just bib-friendly ones. */
+            this.selectorFactory.onlyBibFriendly = false;
+        } else if (
+            this.lastResultType != "lineitem_and_bib" &&
+            resultType == "lineitem_and_bib"
+        ) {
+            /* Remove all search term rows set to non-bib-friendly fields. */
+            keys(this.widgets).forEach(
+                function(id) {
+                    var term = self._selector(id).getTerm();
+                    if (!self.terms[term.hint][term.field].bib_friendly) {
+                        self.removeRow(id);
+                    }
+                }
+            );
+            /* Disable all non-bib-friendly fields in all remaining search term
+             * field selectors. */
+            keys(this.widgets).forEach(
+                function(id) { self._selector(id).onlyBibFriendly(true); }
+            );
+            /* Tell the selector factory to create new search term field
+             * selectors with only bib friendly options. */
+            this.selectorFactory.onlyBibFriendly = true;
+        }
+        this.lastResultType = resultType;
     };
 
     /* this method is particularly kludgy... puts back together a string
@@ -390,12 +461,9 @@ function TermManager() {
         var so = {};
 
         for (var id in this.widgets) {
-            var attr_parts = this._selector(id).getValue().split(":");
-            if (attr_parts.length != 2)
-                continue;
+            var [hint, attr] = this._selector(id).getValue().split(":");
+            if (!(hint && attr)) continue;
 
-            var hint = attr_parts[0];
-            var attr = attr_parts[1];
             var match_how =
                 this._match_how(id).getValue().split(",").filter(Boolean);
 
@@ -552,10 +620,12 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
         var result_type = dojo.byId("acq-unified-result-type").getValue();
         var conjunction = dojo.byId("acq-unified-conjunction").getValue();
 
-        /* XXX TODO when result_type can be "lineitem_and_bib" there may be a
-         * totally different ML method to call; not sure how that will work
-         * yet. */
         var method_name = "open-ils.acq." + result_type + ".unified_search";
+        /* Except for building the API method name that we want to call,
+         * we want to treat lineitem_and_bib the same way as lineitem from
+         * here forward. */
+        result_type = result_type.replace(/_and_bib/, "");
+
         var params = [
             openils.User.authtoken,
             null, null, null,
