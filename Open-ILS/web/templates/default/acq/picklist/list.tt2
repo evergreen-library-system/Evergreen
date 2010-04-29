@@ -88,6 +88,7 @@
             query="{id: '*'}"
             defaultCellWidth='"auto"'
             fmClass='acqpl'
+            showPaginator='true'
             editOnEnter='true'>
         <thead>
             <tr>

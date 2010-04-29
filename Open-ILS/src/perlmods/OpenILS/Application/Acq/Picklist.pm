@@ -193,11 +193,18 @@ sub retrieve_user_picklist {
     my($self, $conn, $auth, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
+    $options ||= {};
 
     # don't grab the PL with name == "", because that is the designated temporary picklist
     my $list = $e->search_acq_picklist([
-            {owner=>$e->requestor->id, name=>{'!='=>''}},
-            {order_by => {acqpl => 'name'}}
+            {
+                owner=>$e->requestor->id, 
+                name=>{'!='=>''}
+            }, {
+                order_by => {acqpl => 'name'},
+                limit => $$options{limit} || 10,
+                offset => $$options{offset} || 0,
+            }
         ],
         {idlist=>1}
     );

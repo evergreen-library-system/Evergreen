@@ -15,8 +15,12 @@ var listAll = false;
 var plCache = {};
 
 function loadGrid() {
-
     dojo.connect(plMergeDialog, 'onOpen', function(){loadLeadPlSelector();});
+    plListGrid.dataLoader = gridDataLoader;    
+    gridDataLoader();    
+}
+
+function gridDataLoader() {
 
     var method = 'open-ils.acq.picklist.user.retrieve';
     if(listAll)
@@ -25,13 +29,25 @@ function loadGrid() {
     fieldmapper.standardRequest(
         ['open-ils.acq', method],
         {   async: true,
-            params: [openils.User.authtoken, {flesh_lineitem_count:1, flesh_owner:1}],
+            params: [
+                openils.User.authtoken, 
+                {
+                    flesh_lineitem_count:1, 
+                    flesh_owner:1,
+                    offset : plListGrid.displayOffset,
+                    limit : plListGrid.displayLimit,
+                }
+            ],
             onresponse : function(r) {
                 var pl = openils.Util.readResponse(r);
-                if(!pl) return;
-                plCache[pl.id()] = pl;
-                plListGrid.store.newItem(acqpl.toStoreItem(pl));
+                if(pl) {
+                    plCache[pl.id()] = pl;
+                    plListGrid.store.newItem(acqpl.toStoreItem(pl));
+                }
             }, 
+            oncomplete : function() {
+                plListGrid.hideLoadProgressIndicator();
+            }
         }
     );
 }
