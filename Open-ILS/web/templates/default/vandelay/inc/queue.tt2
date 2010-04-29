@@ -14,6 +14,48 @@
 
 <br/>
 
+<div jsId='queueItemsImportDialog' dojoType="dijit.Dialog" title="Import Items">
+    <div dojoType="dijit.layout.ContentPane">
+        <table class='form_table'>
+            <tbody>
+                <tr>
+                    <td>&vandelay.auto.import.noncolliding;</td>
+                    <td colspan='4'>
+                        <input jsId='vlUploadQueueAutoImport2' dojoType='dijit.form.CheckBox'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.auto_overlay_exact;</td>
+                    <td colspan='4'>
+                        <input jsId='vlUploadQueueAutoOverlayExact2' dojoType='dijit.form.CheckBox'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.auto_overlay_1match;</td>
+                    <td colspan='4'>
+                        <input jsId='vlUploadQueueAutoOverlay1Match2' dojoType='dijit.form.CheckBox'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&vandelay.auto.import.merge_profile;</td>
+                    <td colspan='4'>
+                        <div jsId='vlUploadMergeProfile2' 
+                            dojoType='dijit.form.FilteringSelect' required='false' labelAttr='name' searchAttr='name'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button dojoType='dijit.form.Button' jsId='queueItemsImportCancelButton'>Cancel</button>
+                    </td>
+                    <td>
+                        <button dojoType='dijit.form.Button' jsId='queueItemsImportGoButton'>Import</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <!-- queue grid navigation row -->
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
 
@@ -30,8 +72,8 @@
                     var sel = dojo.byId('vl-queue-actions-selector');
                     sel.onchange = function(evt) {
                         switch(openils.Util.selectorValue(evt.target)) {
-                            case 'import': vlImportSelectedRecords(); break;;
-                            case 'import_all': vlImportAllRecords(); break;;
+                            case 'import': vlHandleQueueItemsAction('import'); break;;
+                            case 'import_all': vlHandleQueueItemsAction('import_all'); break;;
                             case 'delete_queue': 
                                 if(confirm('&vandelay.sure.to.delete.queue;')) {
                                     vlDeleteQueue(currentType, currentQueueId, 

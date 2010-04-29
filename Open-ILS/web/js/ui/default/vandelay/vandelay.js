@@ -109,6 +109,12 @@ function vlInit() {
     vlUploadMergeProfile.searchAttr = 'name';
     vlUploadMergeProfile.startup();
 
+    vlUploadMergeProfile2.store = new dojo.data.ItemFileReadStore({data:fieldmapper.vmp.toStoreData(profiles)});
+    vlUploadMergeProfile2.labelAttr = 'name';
+    vlUploadMergeProfile2.searchAttr = 'name';
+    vlUploadMergeProfile2.startup();
+
+
     // Fetch the bib and authority attribute definitions 
     vlFetchBibAttrDefs(function () { checkInitDone(); });
     vlFetchAuthAttrDefs(function () { checkInitDone(); });
@@ -793,6 +799,49 @@ function vlFetchQueueSummary(qId, type, onload) {
         }
     );
 }
+
+function vlHandleQueueItemsAction(action) {
+
+    dojo.connect(
+        queueItemsImportCancelButton, 
+        'onClick', 
+        function() {
+            queueItemsImportDialog.hide();
+        }
+    );
+
+    dojo.connect(
+        queueItemsImportGoButton,
+        'onClick', 
+        function() {
+            queueItemsImportDialog.hide();
+
+            // hack to set the widgets the import funcs will be looking at.  Reset them below.
+            vlUploadQueueAutoImport.attr('value',  vlUploadQueueAutoImport2.attr('value'));
+            vlUploadQueueAutoOverlayExact.attr('value',  vlUploadQueueAutoOverlayExact2.attr('value'));
+            vlUploadQueueAutoOverlay1Match.attr('value',  vlUploadQueueAutoOverlay1Match2.attr('value'));
+            vlUploadMergeProfile.attr('value',  vlUploadMergeProfile2.attr('value'));
+
+            if(action == 'import') {
+                vlImportSelectedRecords();
+            } else if(action == 'import_all') {
+                vlImportAllRecords();
+            }
+            
+            // reset the widgets to prevent accidental future actions
+            vlUploadQueueAutoImport.attr('value',  false);
+            vlUploadQueueAutoImport2.attr('value', false);
+            vlUploadQueueAutoOverlayExact.attr('value', false);
+            vlUploadQueueAutoOverlayExact2.attr('value', false);
+            vlUploadQueueAutoOverlay1Match.attr('value', false);
+            vlUploadQueueAutoOverlay1Match2.attr('value', false);
+            vlUploadMergeProfile.attr('value', '');
+            vlUploadMergeProfile2.attr('value', '');
+        }
+    );
+
+    queueItemsImportDialog.show();
+}
     
 
 function vlImportSelectedRecords() {
@@ -808,10 +857,27 @@ function vlImportSelectedRecords() {
         }
     }
 
+    var options = {overlay_map : currentOverlayRecordsMap};
+
+    if(vlUploadQueueAutoOverlayExact.checked) {
+        options.auto_overlay_exact = true;
+        vlUploadQueueAutoOverlayExact.checked = false;
+    }
+
+    if(vlUploadQueueAutoOverlay1Match.checked) {
+        options.auto_overlay_1match = true;
+        vlUploadQueueAutoOverlay1Match.checked = false;
+    }
+    
+    var profile = vlUploadMergeProfile.attr('value');
+    if(profile != null && profile != '') {
+        options.merge_profile = profile;
+    }
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+currentType+'_record.list.import'],
         {   async: true,
-            params: [authtoken, records, {overlay_map:currentOverlayRecordsMap}],
+            params: [authtoken, records, options],
             onresponse: function(r) {
                 var resp = r.recv().content();
                 if(e = openils.Event.parse(resp))
@@ -849,7 +915,6 @@ function vlImportRecordQueue(type, queueId, noMatchOnly, onload) {
         options.auto_overlay_1match = true;
         vlUploadQueueAutoOverlay1Match.checked = false;
     }
-
     
     var profile = vlUploadMergeProfile.attr('value');
     if(profile != null && profile != '') {
