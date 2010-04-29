@@ -119,6 +119,14 @@ StoredQ* getStoredQuery( BuildSQLState* state, int query_id ) {
 	return sq;
 }
 
+/**
+	@brief Construct a StoredQ.
+	@param Pointer to the query-building context.
+	@param result Database cursor positioned at a row in query.stored_query.
+	@return Pointer to a newly constructed StoredQ, if successful, or NULL if not.
+
+	The calling code is responsible for freeing the StoredQ by calling storedQFree().
+*/
 static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 
 	// Get the column values from the result
@@ -319,6 +327,14 @@ static QSeq* loadChildQueries( BuildSQLState* state, int parent_id, const char* 
 	return child_list;
 }
 
+/**
+	@brief Construct a QSeq.
+	@param Pointer to the query-building context.
+	@param result Database cursor positioned at a row in query.query_sequence.
+	@return Pointer to a newly constructed QSeq, if successful, or NULL if not.
+
+	The calling code is responsible for freeing QSeqs by calling freeQSeqList().
+*/
 static QSeq* constructQSeq( BuildSQLState* state, dbi_result result ) {
 	int id = dbi_result_get_int_idx( result, 1 );
 	int parent_query_id = dbi_result_get_int_idx( result, 2 );
@@ -367,7 +383,7 @@ static void freeQSeqList( QSeq* seq ) {
 			seq = NULL;
 		}
 	}
-	
+
 	free_qseq_list = first;
 }
 
@@ -462,6 +478,14 @@ static FromRelation* getFromRelation( BuildSQLState* state, int id ) {
 	return fr;
 }
 
+/**
+	@brief Construct a FromRelation.
+	@param Pointer to the query-building context.
+	@param result Database cursor positioned at a row in query.from_relation.
+	@return Pointer to a newly constructed FromRelation, if successful, or NULL if not.
+
+	The calling code is responsible for freeing FromRelations by calling joinListFree().
+*/
 static FromRelation* constructFromRelation( BuildSQLState* state, dbi_result result ) {
 	// Get the column values from the result
 	int id                  = dbi_result_get_int_idx( result, 1 );
@@ -744,6 +768,14 @@ static SelectItem* getSelectList( BuildSQLState* state, int query_id ) {
 	return select_list;
 }
 
+/**
+	@brief Construct a SelectItem.
+	@param Pointer to the query-building context.
+	@param result Database cursor positioned at a row in query.select_item.
+	@return Pointer to a newly constructed SelectItem, if successful, or NULL if not.
+
+	The calling code is responsible for freeing the SelectItems by calling selectListFree().
+*/
 static SelectItem* constructSelectItem( BuildSQLState* state, dbi_result result ) {
 
 	// Get the column values
@@ -847,6 +879,14 @@ static Expression* getExpression( BuildSQLState* state, int id ) {
 	return exp;
 }
 
+/**
+	@brief Construct an Expression.
+	@param Pointer to the query-building context.
+	@param result Database cursor positioned at a row in query.expression.
+	@return Pointer to a newly constructed Expression, if successful, or NULL if not.
+
+	The calling code is responsible for freeing the Expression by calling expressionFree().
+*/
 static Expression* constructExpression( BuildSQLState* state, dbi_result result ) {
 
 	int id = dbi_result_get_int_idx( result, 1 );
@@ -1102,6 +1142,14 @@ static void expressionFree( Expression* exp ) {
 	}
 }
 
+/**
+	@brief Build a list of ORDER BY items as a linked list of OrderItems.
+	@param state Pointer to the query-building context.
+	@param query_id ID for the query to which the ORDER BY belongs.
+	@return Pointer to the first node in a linked list of OrderItems.
+
+	The calling code is responsible for freeing the list by calling orderItemListFree().
+*/
 static OrderItem* getOrderByList( BuildSQLState* state, int query_id ) {
 	OrderItem* ord_list = NULL;
 
@@ -1141,6 +1189,14 @@ static OrderItem* getOrderByList( BuildSQLState* state, int query_id ) {
 	return ord_list;
 }
 
+/**
+	@brief Construct an OrderItem.
+	@param Pointer to the query-building context.
+	@param result Database cursor positioned at a row in query.order_by_item.
+	@return Pointer to a newly constructed OrderItem, if successful, or NULL if not.
+
+	The calling code is responsible for freeing the OrderItems by calling orderItemListFree().
+*/
 static OrderItem* constructOrderItem( BuildSQLState* state, dbi_result result ) {
 	int id                   = dbi_result_get_int_idx( result, 1 );
 	int stored_query_id      = dbi_result_get_int_idx( result, 2 );
@@ -1197,6 +1253,70 @@ static void orderItemListFree( OrderItem* ord ) {
 
 	// Transfer the entire list to the free list
 	free_order_item_list = first;
+}
+
+/**
+	@brief Build a list of column names for a specified query.
+	@param state Pointer to the query-building context.
+	@param query Pointer to the specified query.
+	@return Pointer to a newly-allocated JSON_ARRAY of column names.
+
+	In the resulting array, each entry is either a JSON_STRING or (when no column name is
+	available) a JSON_NULL.
+
+	The calling code is responsible for freeing the list by calling jsonObjectFree().
+*/
+jsonObject* oilsGetColNames( BuildSQLState* state, StoredQ* query ) {
+	if( !state || !query )
+		return NULL;
+
+	// Save the outermost query id for possible use in an error message
+	int id = query->id;
+
+	// Find the first SELECT, from which we will take the column names
+	while( query->type != QT_SELECT ) {
+		QSeq* child_list = query->child_list;
+		if( !child_list ) {
+			query = NULL;
+			break;
+		} else
+			query = child_list->child_query;
+	}
+
+	if( !query ) {
+		state->error = 1;
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to find first SELECT in query # %d", id ));
+		return NULL;
+	}
+
+	// Get the SELECT list for the first SELECT
+	SelectItem* col = query->select_list;
+	if( !col ) {
+		state->error = 1;
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"First SELECT in query # %d has empty SELECT list", id ));
+			return NULL;
+	}
+
+	jsonObject* col_list = jsonNewObjectType( JSON_ARRAY );
+
+	// Traverse the list, adding an entry for each
+	do {
+		const char* alias = NULL;
+		if( col->column_alias )
+			alias = col->column_alias;
+		else {
+			Expression* expression = col->expression;
+			if( expression && EXP_COLUMN == expression->type && expression->column_name )
+				alias = expression->column_name;
+		}
+
+		jsonObjectPush( col_list, jsonNewObject( alias ) );
+		col = col->next;
+	} while( col );
+
+	return col_list;
 }
 
 /**
@@ -1352,6 +1472,13 @@ static int oils_result_get_bool_idx( dbi_result result, int i ) {
 		return 0;
 }
 
+/**
+	@brief Enable verbose messages.
+
+	The messages are written to standard output, which for a server is /dev/null.  Hence this
+	option is useful only for a non-server.  It is intended only as a convenience for
+	development and debugging.
+*/
 void oilsStoredQSetVerbose( void ) {
 	verbose = 1;
 }

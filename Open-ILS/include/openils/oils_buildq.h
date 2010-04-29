@@ -182,6 +182,8 @@ const char* sqlAddMsg( BuildSQLState* state, const char* msg, ... );
 
 StoredQ* getStoredQuery( BuildSQLState* state, int query_id );
 
+jsonObject* oilsGetColNames( BuildSQLState* state, StoredQ* query );
+
 void pop_id( IdNode** stack );
 
 void storedQFree( StoredQ* sq );

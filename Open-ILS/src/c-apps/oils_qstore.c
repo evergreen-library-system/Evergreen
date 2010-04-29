@@ -86,6 +86,12 @@ int osrfAppInitialize() {
 
 	buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
+	OSRF_BUFFER_ADD( method_name, ".columns" );
+	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
+						   "doColumns", "", 1, 0 );
+
+	buffer_reset( method_name );
+	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".bind_param" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 			"doBindParam", "", 2, 0 );
@@ -196,6 +202,52 @@ int doPrepare( osrfMethodContext* ctx ) {
 
 	osrfAppRespondComplete( ctx, jsonNewObject( token ));
 	return 0;
+}
+
+/**
+	@brief Execute an SQL query and return a result set.
+	@param ctx Pointer to the current method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- query token, as previously returned by the .prepare method.
+
+	Returns: An array of column names; unavailable names are represented as nulls.
+*/
+int doColumns( osrfMethodContext* ctx ) {
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
+
+	// Get the query token from a method parameter
+	const jsonObject* token_obj = jsonObjectGetIndex( ctx->params, 0 );
+	if( token_obj->type != JSON_STRING ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Invalid parameter; query token must be a string" );
+		return -1;
+	}
+	const char* token = jsonObjectGetString( token_obj );
+
+	// Look up the query token in the session-level userData
+	CachedQuery* query = search_token( ctx, token );
+	if( !query ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Invalid query token" );
+		return -1;
+	}
+
+	osrfLogInfo( OSRF_LOG_MARK, "Listing column names for token %s", token );
+	
+	jsonObject* col_list = oilsGetColNames( query->state, query->query );
+	if( query->state->error ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Unable to get column names" );
+		return -1;
+	} else {
+		osrfAppRespondComplete( ctx, col_list );
+		return 0;
+	}
 }
 
 int doBindParam( osrfMethodContext* ctx ) {
