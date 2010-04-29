@@ -135,7 +135,7 @@ sub update_copy_stat_entries {
 
 
 sub update_copy {
-	my($class, $editor, $override, $vol, $copy, $retarget_holds) = @_;
+	my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib) = @_;
 
 	my $evt;
 	my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
@@ -155,7 +155,7 @@ sub update_copy {
     $class->check_hold_retarget($editor, $copy, $orig_copy, $retarget_holds);
 
 	return $editor->event unless $editor->update_asset_copy($copy);
-	return $class->remove_empty_objects($editor, $override, $orig_vol);
+	return $class->remove_empty_objects($editor, $override, $orig_vol, $force_delete_empty_bib);
 }
 
 sub check_hold_retarget {
@@ -192,7 +192,7 @@ sub check_hold_retarget {
 
 # this does the actual work
 sub update_fleshed_copies {
-	my($class, $editor, $override, $vol, $copies, $delete_stats, $retarget_holds) = @_;
+	my($class, $editor, $override, $vol, $copies, $delete_stats, $retarget_holds, $force_delete_empty_bib) = @_;
 
 	my $evt;
 	my $fetchvol = ($vol) ? 0 : 1;
@@ -225,7 +225,7 @@ sub update_fleshed_copies {
 		$copy->clear_stat_cat_entries;
 
 		if( $copy->isdeleted ) {
-			$evt = $class->delete_copy($editor, $override, $vol, $copy, $retarget_holds);
+			$evt = $class->delete_copy($editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib);
 			return $evt if $evt;
 
 		} elsif( $copy->isnew ) {
@@ -234,7 +234,7 @@ sub update_fleshed_copies {
 
 		} elsif( $copy->ischanged ) {
 
-			$evt = $class->update_copy( $editor, $override, $vol, $copy, $retarget_holds );
+			$evt = $class->update_copy( $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib);
 			return $evt if $evt;
 		}
 
@@ -250,7 +250,7 @@ sub update_fleshed_copies {
 
 
 sub delete_copy {
-	my($class, $editor, $override, $vol, $copy, $retarget_holds ) = @_;
+	my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib) = @_;
 
    return $editor->event unless 
       $editor->allowed('DELETE_COPY', $class->copy_perm_org($vol, $copy));
@@ -283,7 +283,7 @@ sub delete_copy {
 
     $class->check_hold_retarget($editor, $copy, undef, $retarget_holds);
 
-	return $class->remove_empty_objects($editor, $override, $vol);
+	return $class->remove_empty_objects($editor, $override, $vol, $force_delete_empty_bib);
 }
 
 
@@ -397,7 +397,7 @@ sub create_copy_note {
 
 
 sub remove_empty_objects {
-	my($class, $editor, $override, $vol) = @_; 
+	my($class, $editor, $override, $vol, $force_delete_empty_bib) = @_; 
 
     my $koe = $U->ou_ancestor_setting_value(
         $editor->requestor->ws_ou, 'cat.bib.keep_on_empty', $editor);
@@ -415,10 +415,10 @@ sub remove_empty_objects {
         }
 
         return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) 
-            if $aoe and not $override;
+            if $aoe and not $override and not $force_delete_empty_bib;
 
-        unless($koe) {
-            # delete the bib record if the keep-on-empty setting is not set
+        unless($koe and not $force_delete_empty_bib) {
+            # delete the bib record if the keep-on-empty setting is not set (and we're not otherwise forcing things, say through acq settings)
             my $evt = OpenILS::Application::Cat::BibCommon->delete_rec($editor, $vol->record);
             return $evt if $evt;
         }

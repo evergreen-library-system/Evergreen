@@ -514,7 +514,7 @@ sub fleshed_copy_update {
 	my $override = $self->api_name =~ /override/;
     my $retarget_holds = [];
 	$evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
-        $editor, $override, undef, $copies, $delete_stats, $retarget_holds);
+        $editor, $override, undef, $copies, $delete_stats, $retarget_holds, undef);
 
 	if( $evt ) { 
 		$logger->info("fleshed copy update failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
@@ -646,7 +646,7 @@ sub fleshed_volume_update {
 		if( $copies and @$copies and !$vol->isdeleted ) {
 			$_->call_number($vol->id) for @$copies;
 			$evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
-                $editor, $override, $vol, $copies, $delete_stats, $retarget_holds);
+                $editor, $override, $vol, $copies, $delete_stats, $retarget_holds, undef);
 			return $evt if $evt;
 		}
 	}

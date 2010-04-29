@@ -2486,13 +2486,15 @@ sub cancel_lineitem {
     }
 
     # Attempt to delete the gathered copies (this will also handle volume deletion and bib deletion)
-    # Another edge case, if we have a bib but not copies, are we supposed to delete the bib?
+    # Delete empty bibs according org unit setting
+    my $force_delete_empty_bib = $U->ou_ancestor_setting_value(
+        $mgr->editor->requestor->ws_ou, 'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel', $mgr->editor);
     if (scalar(@$copies)>0) {
         my $override = 1;
         my $delete_stats = undef;
         my $retarget_holds = [];
         my $cat_evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
-            $mgr->editor, $override, undef, $copies, $delete_stats, $retarget_holds);
+            $mgr->editor, $override, undef, $copies, $delete_stats, $retarget_holds,$force_delete_empty_bib);
 
         if( $cat_evt ) {
             $logger->info("fleshed copy update failed with event: ".OpenSRF::Utils::JSON->perl2JSON($cat_evt));
