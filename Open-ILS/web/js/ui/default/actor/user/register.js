@@ -82,6 +82,7 @@ function load() {
         if(orgSettings[k])
             orgSettings[k] = orgSettings[k].value;
 
+    uEditUsePhonePw = orgSettings['patron.password.use_phone'];
     uEditFetchUserSettings(userId);
 
     if(userId) {
@@ -387,6 +388,9 @@ function fleshFMRow(row, fmcls, args) {
     var wclass = row.getAttribute('wclass');
     var wstyle = row.getAttribute('wstyle');
     var wconstraints = row.getAttribute('wconstraints');
+
+    var isPasswd2 = (fmfield == 'passwd2');
+    if(isPasswd2) fmfield = 'passwd';
     var fieldIdl = fieldmapper.IDL.fmclasses[fmcls].field_map[fmfield];
     if(!args) args = {};
 
@@ -438,6 +442,10 @@ function fleshFMRow(row, fmcls, args) {
         disabled : disabled
     };
 
+    // TODO RSN: Add Setting!
+    if(fmcls == 'au' && fmfield == 'dob')
+        dijitArgs.popupClass = "";
+
     var value = row.getAttribute('wvalue');
     if(value !== null)
         dijitArgs.value = value;
@@ -454,10 +462,14 @@ function fleshFMRow(row, fmcls, args) {
         parentNode : span,
         widgetClass : wclass,
         dijitArgs : dijitArgs,
+        orgDefaultsToWs : true,
         orgLimitPerms : ['UPDATE_USER'],
     });
 
     widget.build();
+
+    // now put it back before we register the widget
+    if(isPasswd2) fmfield = 'passwd2';
 
     widget._wtype = fmcls;
     widget._fmfield = fmfield;
@@ -588,6 +600,19 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                 return;
 
             case 'day_phone':
+                // if configured, use the last for digits of the day phone number as the password
+                if(uEditUsePhonePw && patron.isnew()) {
+                    dojo.connect(widget.widget, 'onChange',
+                        function(newVal) {
+                            if(newVal && newVal.length >= 4) {
+                                var pw1 = findWidget('au', 'passwd').widget;
+                                var pw2 = findWidget('au', 'passwd2').widget;
+                                pw1.attr('value', newVal.substring(newVal.length - 4));
+                                pw2.attr('value', newVal.substring(newVal.length - 4));
+                            }
+                        }
+                    );
+                }
             case 'evening_phone':
             case 'other_phone':
                 dojo.connect(widget.widget, 'onChange',
@@ -808,7 +833,8 @@ function _uEditSave(doClone) {
 
         switch(w._wtype) {
             case 'au':
-                patron[w._fmfield](val);
+                if(w._fmfield != 'passwd2')
+                    patron[w._fmfield](val);
                 break;
 
             case 'ac':
