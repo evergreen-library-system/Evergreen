@@ -2001,6 +2001,22 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
         'string'
 );
 
+-- 0247.data.org-setting-cat.bib.delete_on_no_copy_via_acq_lineitem_cancel.sql
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel',
+        oils_i18n_gettext(
+            'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel',
+            'CAT: Delete bib if all copies are deleted via Acquisitions lineitem cancellation.', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'cat.bib.delete_on_no_copy_via_acq_lineitem_cancel',
+            'CAT: Delete bib if all copies are deleted via Acquisitions lineitem cancellation.', 
+            'coust', 
+            'description'),
+        'bool'
+);
+
 -- Org_unit_setting_type(s) that need an fm_class:
 INSERT into config.org_unit_setting_type
 ( name, label, description, datatype, fm_class ) VALUES
