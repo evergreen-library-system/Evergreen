@@ -312,6 +312,7 @@ __PACKAGE__->register_method(
 	method		=> "process_spool",
 	api_level	=> 1,
 	argc		=> 3,
+    stream      => 1,
 	record_type	=> 'bib'
 );                      
 __PACKAGE__->register_method(  
@@ -319,6 +320,7 @@ __PACKAGE__->register_method(
 	method		=> "process_spool",
 	api_level	=> 1,
 	argc		=> 3,
+    stream      => 1,
 	record_type	=> 'auth'
 );
 
