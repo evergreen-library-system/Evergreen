@@ -51,6 +51,14 @@ util.error.prototype = {
             + e + '\n-----------------------------------------\n' );
     },
 
+    'obj_dump' : function(s,dobj) {
+        var o = 'typeof ' + dobj + ' = ' + typeof dobj + '\n';
+        for (var i in dobj) {
+            o += i + '\t' + typeof dobj[i] + '\n';
+        }
+        this.sdump(s,o);
+    },
+
     'sdump_levels' : {
 
         'D_NONE' : false, 
