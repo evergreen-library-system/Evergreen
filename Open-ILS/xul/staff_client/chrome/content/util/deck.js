@@ -113,6 +113,14 @@ util.deck.prototype = {
 
     /* FIXME -- consider all the browser stuff broken.. very weird behavior in new_browser */
 
+    'get_iframe' : function() {
+        return this.node.childNodes[ this.node.selectedIndex ];
+    },
+
+    'get_contentWindow' : function() {
+        return get_contentWindow( this.get_iframe() );
+    },
+
     'set_browser' : function (url,params,content_params) {
         this.error.sdump('D_TRACE','util.deck.set_browser: url = ' + url);
         var idx = this.find_index(url);
