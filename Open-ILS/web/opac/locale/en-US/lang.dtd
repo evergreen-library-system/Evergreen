@@ -819,6 +819,8 @@
 <!ENTITY staff.main.menu.acq.funding_source.accesskey "S">
 <!ENTITY staff.main.menu.acq.provider.label "Providers">
 <!ENTITY staff.main.menu.acq.provider.accesskey "V">
+<!ENTITY staff.main.menu.acq.edi_account.label "EDI Accounts">
+<!ENTITY staff.main.menu.acq.edi_account.accesskey "A">
 <!ENTITY staff.main.menu.acq.distrib_formula.label "Distribution Formulas">
 <!ENTITY staff.main.menu.acq.distrib_formula.accesskey "D">
 <!ENTITY staff.main.menu.acq.currency_type.label "Currency Types">

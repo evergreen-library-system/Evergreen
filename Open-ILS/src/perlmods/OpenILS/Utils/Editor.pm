@@ -27,10 +27,10 @@ sub new_editor { return OpenILS::Utils::Editor->new(@_); }
 # These need to be auto-generated
 # -----------------------------------------------------------------------------
 my %PERMS = (
-	'biblio.record_entry'	=> { update => 'UPDATE_MARC' },
-	'asset.copy'				=> { update => 'UPDATE_COPY'},
-	'asset.call_number'		=> { update => 'UPDATE_VOLUME'},
-	'action.circulation'		=> { retrieve => 'VIEW_CIRCULATIONS'},
+    'biblio.record_entry' => { update   => 'UPDATE_MARC'       },
+    'asset.copy'          => { update   => 'UPDATE_COPY'       },
+    'asset.call_number'   => { update   => 'UPDATE_VOLUME'     },
+    'action.circulation'  => { retrieve => 'VIEW_CIRCULATIONS' },
 );
 
 use constant E => 'error';

@@ -1,2 +1,2 @@
-#!BINDIR/srfsh
+#!/openils/bin/srfsh
 request open-ils.cstore open-ils.cstore.json_query {"from":["container.clear_all_expired_circ_history_items"]}

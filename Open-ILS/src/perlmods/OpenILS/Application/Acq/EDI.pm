@@ -10,10 +10,14 @@ use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::Utils::JSON;
 
+use OpenILS::Application::Acq::Lineitem;
 use OpenILS::Utils::RemoteAccount;
 use OpenILS::Utils::CStoreEditor q/new_editor/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Acq::EDI::Translator;
+
+use Business::EDI;
+use Business::EDI::Segment::BGM;
 
 use Data::Dumper;
 our $verbose = 0;
@@ -111,7 +115,7 @@ sub retrieve_core {
             $e->create_acq_edi_message($incoming);
             $e->xact_commit;
             __PACKAGE__->record_activity($account, $e);
-            __PACKAGE__->process_jedi($incoming, $e);
+            __PACKAGE__->process_jedi($incoming, $server, $e);
 #           $server->delete(remote_file => $_);   # delete remote copies of saved message
             push @return, $incoming->id;
         }
@@ -317,43 +321,185 @@ sub jedi2perl {
     my ($class, $jedi) = @_;
     $jedi or return;
     my $msg = OpenSRF::Utils::JSON->JSON2perl( $jedi );
-    open (FOO, ">>/tmp/joe_jedi_dump.txt");
+    open (FOO, ">>/tmp/JSON2perl_dump.txt");
     print FOO Dumper($msg), "\n\n";
     close FOO;
     $logger->warn("Dumped JSON2perl to /tmp/JSON2perl_dump.txt");
     return $msg;
 }
 
-# ->process_jedi($message, $e)
+# ->process_jedi($message, $server, $e)
 sub process_jedi {
     my $class    = shift;
     my $message  = shift or return;
+    my $server   = shift || {};  # context
     my $jedi     = ref($message) ? $message->jedi : $message;  # If we got an object, it's an edi_message.  A string is the jedi content itself.
     unless ($jedi) {
         $logger->warn("EDI process_jedi missing required argument (edi_message object with jedi or jedi scalar)!");
         return;
     }
+    my $e = @_ ? shift : new_editor();
     my $perl = __PACKAGE__->jedi2perl($jedi);
     if (ref($message) and not $perl) {
-        my $e = @_ ? shift : new_editor();
-        $message->error(($message->error || '') . " JSON2perl FAILED to convert jedi");
+        $message->error(($message->error || '') . " JSON2perl (jedi2perl) FAILED to convert jedi");
         $message->error_time('NOW');
         $e->xact_begin;
         $e->udpate_acq_edi_message($message) or $logger->warn("EDI update_acq_edi_message failed! $!");
         $e->xact_commit;
+        return;
     }
-    # __PACKAGE__->process_eval_msg(__PACKAGE__->jedi2perl($jedi), @_);
-    return $perl;   # TODO process perl
+    if (! $perl->{body}) {
+        $logger->warn("EDI interchange body not found!");
+        return;
+    } 
+    if (! $perl->{body}->[0]) {
+        $logger->warn("EDI interchange body not a populated arrayref!");
+        return;
+    }
+
+# Crazy data structure.  Most of the arrays will be 1 element... we think.
+# JEDI looks like:
+# {'body' => [{'ORDERS' => [['UNH',{'0062' => '4635','S009' => {'0057' => 'EAN008','0051' => 'UN','0052' => 'D','0065' => 'ORDERS', ...
+# 
+# So you might access it like:
+#   $obj->{body}->[0]->{ORDERS}->[0]->[0] eq 'UNH'
+
+    $logger->info("EDI interchange body has " . scalar(@{$perl->{body}}) . " messages(s)");
+    my @li;
+    my $i = 0;
+    foreach my $part (@{$perl->{body}}) {
+        $i++;
+        unless (ref $part and scalar keys %$part) {
+            $logger->warn("EDI interchange message $i lacks structure.  Skipping it.");
+            next;
+        }
+        foreach my $key (keys %$part) {
+            unless ($key eq 'ORDRSP') {     # We only do one type for now.  TODO: other types here
+                $logger->warn("EDI interchange message $i contains unhandled type '$key'.  Ignoring.");
+                next;
+            }
+            my @li_chunk = __PACKAGE__->parse_ordrsp($part->{$key}, $server, $e);
+            $logger->info("EDI $key parsing returned " . scalar(@li_chunk) . " line items");
+            push @li, @li_chunk;
+        }
+    }
+    return \@li, $perl;   # TODO process perl
 }
 
-sub process_eval_msg {
-    my ($class, $msg, $e) = @_;
-    $msg or return;
+
+=head2 ->parse_ordrsp($segments, $server, $e)
+
+Returns array of lineitems.
+
+=cut
+
+# TODO: Build Business::EDI::Message::ORDRSP object instead
+# TODO: Convert access to methods, not reaching inside the data/object like $segbody->{S009}->{'0065'}
+
+sub parse_ordrsp {
+    my ($class, $segments, $server, $e, $test) = @_;    # test not implemented
     $e ||= new_editor();
-## Do all the hard work.
-#   ID the message type
-#   Find PO references
-#   update POs & lineitems(?)
+    my $type = 'ORDRSP';
+    $logger->info("EDI " . scalar(@$segments) . " segments in $type message");
+    my (@lins, $bgm);
+    foreach my $segment (@$segments) {  # Prepass: catch the conditions that might cause us to bail
+        my ($tag, $segbody, @extra) = @$segment;
+        unless ($tag    ) {$logger->warn("EDI empty segment received"     ); next;}
+        unless ($segbody) {$logger->warn("EDI segment '$tag' missing body"); next;}
+        @extra and $logger->warn("EDI extra data (" . scalar(@extra) . " elements) found after pseudohash pair for $tag");
+        if ($tag eq 'UNH') {
+            unless ($segbody->{S009}->{'0065'} and $segbody->{S009}->{'0065'} eq $type) {
+                $logger->error("EDI $tag/S009/0065 ('" . ($segbody->{S009}->{'0065'} || '') . "') conflict w/ message type $type\.  Aborting");
+                return;
+            }
+            unless ($segbody->{S009}->{'0051'} and $segbody->{S009}->{'0051'} eq 'UN') {
+                $logger->warn("EDI $tag/S009/0051 does not designate 'UN' as controlling agency.  Will attempt to process anyway");
+            }
+        } elsif ($tag eq 'BGM') {
+            $bgm = Business::EDI::Segment::BGM->new($segbody);
+            $bgm->seg4343 or $logger->warn(sprintf "EDI $tag/4343 Response Type Code '%s' unrecognized", ($segbody->{4343} || ''));
+            $logger->info(sprintf "EDI $tag/4343 response type: %s - %s (%s)", $bgm->seg4343->value, $bgm->seg4343->label, $bgm->seg4343->desc);
+            my $fcn = $bgm->seg1225;
+            unless ($fcn) {
+                $logger->error(sprintf "EDI $tag/1225 Message Function Code '%s' unrecognized.  Aborting", ($segbody->{1225} || ''));
+                return;
+            }
+        }
+    }
+    my @ignored;
+    foreach my $segment (@$segments) {  # The main pass
+        my ($tag, $segbody, @extra) = @$segment;
+        next unless ($tag and $segbody);    # warnings above
+        if ($tag eq 'LIN') {
+            my @chunks = @{$segbody->{SG26}};
+            my $count = scalar(@chunks);
+            $logger->debug("EDI LIN/SG26 has $count chunks");
+# CHUNK:
+# ["RFF", {
+#   "C506": {
+#      "1153": "LI",
+#      "1154": "4639/1"
+#   }
+# }]
+            foreach (@chunks) {
+                my $label = $_->[0];
+                my $body  = $_->[1];
+                # $label eq 'QTY' and push @qtys, $body;
+                $label eq 'RFF' or next;
+                my $obj;
+                unless ($obj = Business::EDI::Segment::RFF->new($body)) {   # assignment, not comparison
+                    $logger->error("EDI $tag/$label failed to convert to an object");
+                }
+                $obj->seg1153 and $obj->seg1153->value eq 'LI' or $logger->warn("EDI $tag/$label object unexpected 1153 value (not 'LI')");
+                __PACKAGE__->update_li($obj->seg1154->value, $segbody, $server, $e);
+            }
+            push @lins, \@chunks;
+        } elsif ($tag ne 'UNH' and $tag ne 'BGM') {
+            push @ignored, $tag;
+        }
+    }
+    @ignored and $logger->debug("EDI: ignoring " . scalar(@ignored) . " segment(s): " . join(', ', @ignored));
+    return @lins;
+}
+
+=head2 ->update_li($lineitem_id, $lineitem_object, [$server, $editor])
+
+Updates:
+ acq.lineitem.estimated_unit_price, 
+ acq.lineitem.state (dependent on mapping codes), 
+ acq.lineitem.expected_recv_time, 
+ acq.lineitem.edit_time (consequently)
+
+=cut
+
+sub update_li {
+    my ($class, $id, $object, $server, $e) = @_;
+    $e ||= new_editor();
+    $id =~ s#^.*\/##;   # Temporary fix for mbklein's testdata
+    print STDERR "Here we would retrieve/update lineitem $id\n";
+    my $li = OpenILS::Application::Acq::Lineitem::retrieve_lineitem_impl($e, $id); # Could send {options}
+    if (! $li or ref($li) ne 'Fieldmapper::acq::lineitem') {
+        $logger->error("EDI failed to retrieve lineitem by id '$id'");
+        return;
+    }
+    unless ((! $server) or (! $server->provider)) {
+        if ($server->provider != $li->provider) {
+            # links go both ways: acq.provider.edi_default and acq.edi_account.provider
+            $logger->info("EDI acct provider (" . $server->provider. ") doesn't match lineitem provider("
+                            . $li->provider . ").  Checking acq.provider.edi_default...");
+            my $provider = $e->retrieve_acq_provider($li->provider);
+            if ($provider->edi_default != $server->id) {
+                $logger->error(sprintf "EDI provider/acct %s/%s (%s) is blocked from updating lineitem $id belonging to provider/edi_default %s/%s",
+                                $server->provider, $server->id, $server->label, $li->provider, $provider->edi_default);
+                return;
+            }
+        }
+    }
+    return; # TODO: actual updates
+    $e->xact_begin;
+    $e->update_acq_lineitem($li) or $logger->warn("EDI: in update_li, update_acq_lineitem FAILED");
+    $e->xact_commit;
+    # print STDERR "Lineitem to update: ", Dumper($li);
 }
 
 1;

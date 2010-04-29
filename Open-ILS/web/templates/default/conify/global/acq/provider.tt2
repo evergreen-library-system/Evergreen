@@ -1,33 +1,8 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/provider.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/provider.js'> </script>
 
 <script type="text/javascript"> 
     var providerId = '[% ctx.page_args.0 %]';
-
-
-
-function formatName(inDatum) {
-    switch (inDatum) {
-    case 'owning_lib':
-        return 'Owning Library';
-    case 'quantity':
-        return 'Quantity';
-    case 'call_number':
-        return 'Call Number';
-    case 'fund_code':
-        return 'Fund Code';
-    case 'local_note':
-        return 'Local Note';
-    case 'price':
-        return 'Price';
-    case 'circ_modifier':
-        return 'Circulation Modifier';
-    case 'copy_location':
-        return 'Copy Location';
-    case 'collection_code':
-        return 'Collection Code';
-    }
-}
 
 function getInvIdent(rowIndex, item) {
     if (!item) return {};

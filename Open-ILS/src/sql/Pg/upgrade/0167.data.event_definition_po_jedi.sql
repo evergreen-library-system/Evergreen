@@ -73,7 +73,7 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
   ((SELECT id FROM action_trigger.event_definition WHERE name='PO JEDI'), 'provider');
 
 -- The environment insert has to happen here because it relies on subquerying the user-editable field "name" to
--- provide the FK.  Outside of this tranasaction, we cannot be sure the user hasn't changed the name to something else.
+-- provide the FK.  Outside of this transaction, we cannot be sure the user hasn't changed the name to something else.
 
 COMMIT;
 

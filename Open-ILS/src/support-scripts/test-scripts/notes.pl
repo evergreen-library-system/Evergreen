@@ -7,7 +7,7 @@ use Data::Dumper;
 use OpenSRF::Utils::JSON;
 
 #-----------------------------------------------------------------------------
-# Does a checkout, renew, and checkin 
+# Creates, retrieves and deletes notes
 #-----------------------------------------------------------------------------
 
 err("usage: $0 <config> <username> <password> <patronid> <title> <text>") unless $ARGV[5];

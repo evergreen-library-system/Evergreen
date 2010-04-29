@@ -8,6 +8,8 @@ use Net::uFTP;
 use Net::SSH2;      # because uFTP doesn't handle SSH keys (yet?)
 use File::Temp;
 use File::Basename;
+use File::Spec;
+use Text::Glob qw( match_glob glob_to_regex );
 # use Error;
 
 $Data::Dumper::Indent = 0;
@@ -305,6 +307,21 @@ sub ls {
     return $self->ls_uftp(@targets);
 }
 
+# Checks if the filename part of a pathname has one or more glob characters
+# We split out the filename portion of the path
+# Detect glob or no glob.
+# return: regex for matching filenames
+sub glob_parse {
+    my $self = shift;
+    my $path = shift or return;
+    my ($vol, $dir, $file) = File::Spec->splitpath($path); # we don't care about attempted globs in mid-filepath
+    $file =~ /\*/ and return (File::Spec->catdir($vol, $dir), glob_to_regex($file));
+    $file =~ /\?/ and return (File::Spec->catdir($vol, $dir), glob_to_regex($file));
+    $logger->debug("No glob detected in '$path'");
+    return;
+}
+
+
 # Internal Mechanics
 
 sub _ssh2 {
@@ -314,7 +331,7 @@ sub _ssh2 {
 
     my $ssh2 = Net::SSH2->new();
     unless($ssh2->connect($self->remote_host)) {
-        $logger->warn($self->error("SSH2 connect FAILED: $!" . join(" ", $ssh2->error)));
+        $logger->warn($self->error("SSH2 connect FAILED: $! " . join(" ", $ssh2->error)));
         return;     # we cannot connect
     }
 
@@ -397,7 +414,7 @@ sub get_ssh2 {
     }
     
     $logger->info("*** get args: " . Dumper(\@_));
-    $logger->info("*** attempting get (" . join(", ", map {$_ =~ /\S/ ? $_ : '*Object'} map {$_ || '*Object'} @_) . ") with ssh keys");
+    $logger->info("*** attempting get (" . join(", ", map {$_ =~ /\S/ ? $_ : '*Object'} map {defined($_) ? $_ : '*Object'} @_) . ") with ssh keys");
     my $ssh2 = $self->_ssh2($keys) or return;
     my $res;
     if ($res = $ssh2->scp_get( @_ )) {
@@ -427,9 +444,10 @@ sub ls_ssh2_full {
     my @list = ();
     foreach my $target (@targets) {
         my ($dir, $file);
-        $dir = $sftp->opendir($target);
+        my ($dirpath, $regex) = $self->glob_parse($target);
+        $dir = $sftp->opendir($dirpath || $target);     # Try to open it like a directory
         unless ($dir) {
-            $file = $sftp->stat($target);
+            $file = $sftp->stat($target);   # Otherwise, check it like a file
             if ($file) {
                 $file->{slash_path} = $self->_slash_path($target, $file->{name});     # it was a file, not a dir.  That's OK.
                 push @list, $file;
@@ -438,11 +456,17 @@ sub ls_ssh2_full {
             }
             next;
         }
+        my @pool = ();
         while ($file = $dir->read()) {
             $file->{slash_path} = $self->_slash_path($target, $file->{name});
-            push @list, $file;
-            # foreach (sort keys %$line) { printf "   %20s => %s\n", $_, $line->{$_}; }
+            push @pool, $file;
         }
+        if ($regex) {
+            my $count = scalar(@pool);
+            @pool = grep {$_->{name} =~ /$regex/} @pool;
+            $logger->info("Glob regex($regex) matches " . scalar(@pool) . " of $count files"); 
+        }
+        push @list, @pool;
     }
     return @list;
 
@@ -516,10 +540,16 @@ sub ls_uftp {
     my @list;
     foreach (@_) {
         my @part;
-        eval { @part = $ftp->ls($_) };
+        my ($dirpath, $regex) = $self->glob_parse($_);
+        eval { @part = $ftp->ls($dirpath || $_) };
         if ($@) {
             $logger->error($self->_error("ls from",  $self->remote_host, "failed with error: $@"));
             next;
+        }
+        if ($regex) {
+            my $count = scalar(@part);
+            @part = grep {/$regex/} @part;
+            $logger->info("Glob regex($regex) matches " . scalar(@part) . " of $count files"); 
         }
         push @list, @part;
     }

@@ -70,11 +70,14 @@ __PACKAGE__->register_method(
 	signature => {
         desc => 'Retrieves a lineitem',
         params => [
-            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Authentication token',    type => 'string'},
             {desc => 'lineitem ID to retrieve', type => 'number'},
-            {options => q/Hash of options, including 
-                "flesh_attrs", which fleshes the attributes; 
-                "flesh_li_details", which fleshes the order details objects/, type => 'hash'},
+            {options => q/Hash of options, including:
+flesh_attrs         : for attributes,
+flesh_notes         : for notes,
+flesh_cancel_reason : for cancel reason,
+flesh_li_details    : for order details objects,
+clear_marc          : to clear marcxml from lineitem/, type => 'hash'},
         ],
         return => {desc => 'lineitem object on success, Event on error'}
     }
@@ -269,10 +272,10 @@ __PACKAGE__->register_method(
 	signature => {
         desc => 'Searches lineitems',
         params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'Search definition', type => 'object'},
+            {desc => 'Authentication token',       type => 'string'},
+            {desc => 'Search definition',          type => 'object'},
             {desc => 'Options hash.  idlist=true', type => 'object'},
-            {desc => 'List of lineitems', type => 'object/number'},
+            {desc => 'List of lineitems',          type => 'object/number'},
         ]
     }
 );
@@ -296,9 +299,9 @@ sub lineitem_search {
 }
 
 __PACKAGE__->register_method (
-    method        => 'lineitems_related_by_bib',
-    api_name    => 'open-ils.acq.lineitems_for_bib.by_bib_id',
-    stream      => 1,
+    method    => 'lineitems_related_by_bib',
+    api_name  => 'open-ils.acq.lineitems_for_bib.by_bib_id',
+    stream    => 1,
     signature => q/
         Retrieves lineitems attached to same bib record, subject to the PO ordering agency.  This variant takes the bib id.
         @param authtoken Login session key
@@ -308,9 +311,9 @@ __PACKAGE__->register_method (
 );
 
 __PACKAGE__->register_method (
-    method        => 'lineitems_related_by_bib',
-    api_name    => 'open-ils.acq.lineitems_for_bib.by_lineitem_id',
-    stream      => 1,
+    method    => 'lineitems_related_by_bib',
+    api_name  => 'open-ils.acq.lineitems_for_bib.by_lineitem_id',
+    stream    => 1,
     signature => q/
         Retrieves lineitems attached to same bib record, subject to the PO ordering agency.  This variant takes the id for any of the pertinent lineitems.
         @param authtoken Login session key
@@ -320,9 +323,9 @@ __PACKAGE__->register_method (
 );
 
 __PACKAGE__->register_method (
-    method        => 'lineitems_related_by_bib',
-    api_name    => 'open-ils.acq.lineitems_for_bib.by_lineitem_id.count',
-    stream      => 1,
+    method    => 'lineitems_related_by_bib',
+    api_name  => 'open-ils.acq.lineitems_for_bib.by_lineitem_id.count',
+    stream    => 1,
     signature => q/See open-ils.acq.lineitems_for_bib.by_lineitem_id. This version returns numbers of lineitems only (XXX may count lineitems we don't actually have permission to retrieve)/
 );
 
@@ -391,11 +394,11 @@ sub lineitems_related_by_bib {
 
 
 __PACKAGE__->register_method(
-    method => "lineitem_search_by_attributes",
-    api_name => "open-ils.acq.lineitem.search.by_attributes",
-    stream => 1,
+    method    => "lineitem_search_by_attributes",
+    api_name  => "open-ils.acq.lineitem.search.by_attributes",
+    stream    => 1,
     signature => {
-        desc => "Performs a search against lineitem_attrs",
+        desc   => "Performs a search against lineitem_attrs",
         params => [
             {desc => "Authentication token", type => "string"},
             {   desc => q/
@@ -419,11 +422,11 @@ Options hash:
 );
 
 __PACKAGE__->register_method(
-    method => "lineitem_search_by_attributes",
-    api_name => "open-ils.acq.lineitem.search.by_attributes.ident",
-    stream => 1,
+    method    => "lineitem_search_by_attributes",
+    api_name  => "open-ils.acq.lineitem.search.by_attributes.ident",
+    stream    => 1,
     signature => {
-        desc => "Performs a search against lineitem_attrs where ident is true.".
+        desc => "Performs a search against lineitem_attrs where ident is true.  ".
             "See open-ils.acq.lineitem.search.by_attributes for params."
     }
 );
@@ -519,9 +522,9 @@ sub lineitem_search_by_attributes {
 
 
 __PACKAGE__->register_method(
-	method => 'lineitem_search_ident',
-	api_name => 'open-ils.acq.lineitem.search.ident',
-    stream => 1,
+	method    => 'lineitem_search_ident',
+	api_name  => 'open-ils.acq.lineitem.search.ident',
+    stream    => 1,
 	signature => {
         desc => 'Performs a search against lineitem_attrs where ident is true',
         params => [
@@ -546,20 +549,20 @@ __PACKAGE__->register_method(
 );
 
 my $LI_ATTR_SEARCH = {
-    select => {acqlia => ['lineitem']},
-    from => {
+    select => { acqlia => ['lineitem'] },
+    from   => {
         acqlia => {
             acqliad => {
                 field => 'id',
-                fkey => 'definition'
+                fkey  => 'definition'
             },
             jub => {
                 field => 'id',
-                fkey => 'lineitem',
-                join => {
+                fkey  => 'lineitem',
+                join  => {
                     acqpo => {
                         field => 'id',
-                        fkey => 'purchase_order'
+                        fkey  => 'purchase_order'
                     }
                 }
             }
@@ -622,9 +625,9 @@ sub lineitem_search_ident {
 # this call duplicates a call in Order.pm and makes references to subs that don't exist.  
 # TODO: Verify then remove.
 __PACKAGE__->register_method(
-	method => 'lineitem_detail_CUD_batch',
-	api_name => 'open-ils.acq.lineitem_detail.cud.batch_',
-    stream => 1,
+	method    => 'lineitem_detail_CUD_batch',
+	api_name  => 'open-ils.acq.lineitem_detail.cud.batch_',
+    stream    => 1,
 	signature => {
         desc => q/Creates a new purchase order line item detail.  
             Additionally creates the associated fund_debit/,
@@ -718,15 +721,15 @@ sub update_li_edit_time {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_lineitem_detail',
-	api_name	=> 'open-ils.acq.lineitem_detail.retrieve',
-	signature => {
-        desc => q/Updates a lineitem detail/,
+    method    => 'retrieve_lineitem_detail',
+    api_name  => 'open-ils.acq.lineitem_detail.retrieve',
+    signature => {
+        desc   => q/Updates a lineitem detail/,
         params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'id of lineitem_detail to retrieve', type => 'number'},
+            { desc => 'Authentication token',              type => 'string' },
+            { desc => 'id of lineitem_detail to retrieve', type => 'number' },
         ],
-        return => {desc => 'object on success, Event on failure'}
+        return => { desc => 'object on success, Event on failure' }
     }
 );
 sub retrieve_lineitem_detail {
@@ -748,17 +751,16 @@ sub retrieve_lineitem_detail {
 }
 
 
-
 __PACKAGE__->register_method(
-	method => 'approve_lineitem',
-	api_name	=> 'open-ils.acq.lineitem.approve',
-	signature => {
-        desc => 'Mark a lineitem as approved',
+    method    => 'approve_lineitem',
+    api_name  => 'open-ils.acq.lineitem.approve',
+    signature => {
+        desc   => 'Mark a lineitem as approved',
         params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem ID', type => 'number'}
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'lineitem ID',          type => 'number' }
         ],
-        return => {desc => '1 on success, Event on error'}
+        return => { desc => '1 on success, Event on error' }
     }
 );
 sub approve_lineitem {
@@ -797,32 +799,32 @@ sub approve_lineitem {
 
 
 __PACKAGE__->register_method(
-	method => 'set_lineitem_attr',
-	api_name	=> 'open-ils.acq.lineitem_usr_attr.set',
-	signature => {
-        desc => 'Sets a lineitem_usr_attr value',
+    method    => 'set_lineitem_attr',
+    api_name  => 'open-ils.acq.lineitem_usr_attr.set',
+    signature => {
+        desc   => 'Sets a lineitem_usr_attr value',
         params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'Lineitem ID', type => 'number'},
-            {desc => 'Attr name', type => 'string'},
-            {desc => 'Attr value', type => 'string'}
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Lineitem ID',          type => 'number' },
+            { desc => 'Attr name',            type => 'string' },
+            { desc => 'Attr value',           type => 'string' }
         ],
-        return => {desc => '1 on success, Event on error'}
+        return => { desc => '1 on success, Event on error' }
     }
 );
 
 __PACKAGE__->register_method(
-	method => 'set_lineitem_attr',
-	api_name	=> 'open-ils.acq.lineitem_local_attr.set',
-	signature => {
-        desc => 'Sets a lineitem_local_attr value',
+    method    => 'set_lineitem_attr',
+    api_name  => 'open-ils.acq.lineitem_local_attr.set',
+    signature => {
+        desc   => 'Sets a lineitem_local_attr value',
         params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'Lineitem ID', type => 'number'},
-            {desc => 'Attr name', type => 'string'},
-            {desc => 'Attr value', type => 'string'}
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Lineitem ID',          type => 'number' },
+            { desc => 'Attr name',            type => 'string' },
+            { desc => 'Attr value',           type => 'string' }
         ],
-        return => {desc => 'ID of the attr object on success, Event on error'}
+        return => { desc => 'ID of the attr object on success, Event on error' }
     }
 );
 
@@ -865,14 +867,12 @@ sub set_lineitem_attr {
 }
 
 __PACKAGE__->register_method(
-	method => 'get_lineitem_attr_defs',
-	api_name	=> 'open-ils.acq.lineitem_attr_definition.retrieve.all',
-	signature => {
-        desc => 'Retrieve lineitem attr definitions',
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-        ],
-        return => {desc => 'List of attr definitions'}
+    method    => 'get_lineitem_attr_defs',
+    api_name  => 'open-ils.acq.lineitem_attr_definition.retrieve.all',
+    signature => {
+        desc   => 'Retrieve lineitem attr definitions',
+        params => [ { desc => 'Authentication token', type => 'string' }, ],
+        return => { desc => 'List of attr definitions' }
     }
 );
 
@@ -890,16 +890,17 @@ sub get_lineitem_attr_defs {
 
 
 __PACKAGE__->register_method(
-	method => 'lineitem_note_CUD_batch',
-	api_name => 'open-ils.acq.lineitem_note.cud.batch',
-    stream => 1,
-	signature => {
-        desc => q/Manage lineitem notes/,
+    method    => 'lineitem_note_CUD_batch',
+    api_name  => 'open-ils.acq.lineitem_note.cud.batch',
+    stream    => 1,
+    signature => {
+        desc   => q/Manage lineitem notes/,
         params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'List of lineitem_notes to manage', type => 'array'},
+            { desc => 'Authentication token',             type => 'string' },
+            { desc => 'List of lineitem_notes to manage', type => 'array'  },
         ],
-        return => {desc => 'Streaming response of current position in the array'}
+        return =>
+          { desc => 'Streaming response of current position in the array' }
     }
 );
 
@@ -946,7 +947,7 @@ sub lineitem_note_CUD_batch {
 
 __PACKAGE__->register_method(
     method => 'ranged_line_item_alert_text',
-    api_name => 'open-ils.acq.line_item_alert_text.ranged.retrieve.all');
+    api_name => 'open-ils.acq.line_item_alert_text.ranged.retrieve.all');   # TODO: signature
 
 sub ranged_line_item_alert_text {
     my($self, $conn, $auth, $org_id, $depth) = @_;

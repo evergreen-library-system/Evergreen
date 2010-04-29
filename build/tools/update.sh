@@ -183,3 +183,4 @@ sleep 2;
 cd $INSTALL/bin; ./autogen.sh ../conf/opensrf_core.xml;
 sudo /etc/init.d/apache2 start;
 
+echo $'done\a'  # \a = Bell character for beep

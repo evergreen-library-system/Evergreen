@@ -2,7 +2,7 @@
 # Copyright (C) 2008 Niles Ingalls 
 # Niles Ingalls <nilesi@zionsville.lib.in.us>
 # Bill Erickson <erickson@esilibrary.com>
-# Joe Atzberger <atz@esilibrary.com>
+# Joe Atzberger <jatzberger@esilibrary.com>
 # Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
 #
 # This program is free software; you can redistribute it and/or

@@ -230,6 +230,7 @@ DEB_APACHE_DISMODS = \
 # Chronically unpackaged CPAN modules
 CPAN_MODULES = \
     Business::CreditCard::Object \
+    Business::EDI \
     Net::uFTP \
     Net::Z3950::Simple2ZOOM \
     UUID::Tiny \

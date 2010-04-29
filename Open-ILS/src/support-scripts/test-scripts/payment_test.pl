@@ -32,7 +32,7 @@ Transaction data:
 
 Example:
 
-$0  --login=seller_1254418209_biz_api1.esilibrary.com \\
+$0  --login=seller_1254418209_biz_api1.example.org \\
     --password=1254618222 \\
     --signature=AiPC9xjkCyDFQXbSkoZcgqH3hpacAVPVw5GcZgNKVA9SGKcbrqLuhLks \\
     --amount=32.75 \\

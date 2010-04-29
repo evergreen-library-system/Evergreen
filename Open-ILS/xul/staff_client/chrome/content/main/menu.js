@@ -778,6 +778,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/provider', 'menu.cmd_acq_view_provider.tab'); }
             ],
+            'cmd_acq_view_edi_account' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/edi_account', 'menu.cmd_acq_view_edi_account.tab'); }
+            ],
             'cmd_acq_view_currency_type' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/currency_type/list', 'menu.cmd_acq_view_currency_type.tab'); }

@@ -31,6 +31,7 @@ use OpenSRF::Utils::JSON;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::Lockfile;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 
 use File::Basename qw/fileparse/;
 
@@ -268,4 +269,103 @@ sub bootstrap {
     };
 }
 
+sub editor_init {
+    my $self = shift or return;
+    OpenILS::Utils::CStoreEditor::init();   # no return value to check
+    $self->{editor_inited} = 1;
+}
+
+sub editor {
+    my $self = shift or return;
+    $self->{bootstrapped}  or $self->bootstrap();
+    $self->{editor_inited} or $self->editor_init();
+    return new_editor(@_);
+}
+
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+OpenILS::Utils::Cronscript - Consolidated options handling for any script (not just cron, really)
+
+=head1 SYNOPSIS
+
+    use OpenILS::Utils::Cronscript;
+
+    my %defaults = (
+        'min=i'      => 0,          # keys are Getopt::Long style options
+        'max=i'      => 999,        # values are default values
+        'user=s'     => 'admin',
+        'password=s' => '',
+        'nolockfile' => 1,
+    };
+
+    my $core = OpenILS::Utils::Cronscript->new(\%defaults);
+    my $opts = $core->MyGetOptions();   # options now in, e.g.: $opts->{max}
+    $ocre->bootstrap;
+
+Or if you don't need any additional options and just want to get a session going:
+    
+    use OpenILS::Utils::Cronscript;
+    my $session = OpenILS::Utils::Cronscript->new()->session('open-ils.acq');
+
+=head1 DESCRIPTION
+
+There are a few main problems when writing a new script for Evergreen. 
+
+=head2 Initialization
+
+The runtime 
+environment for the application requires a lot of initialization, but during normal operation it
+has already occured (when Evergreen was started).  So most of the EG code never has to deal with 
+this problem, but standalone scripts do.  The timing and sequence of requisite events is important and not obvious.
+
+=head2 Common Options, Consistent Options
+
+We need several common options for each script that accesses the database or
+uses EG data objects and methods.  Logically, these options often deal with initialization.  They
+should take the B<exact> same form(s) for each script and should not be 
+dependent on the local author to copy and paste them from some reference source.  We really don't want to encourage (let alone force)
+admins to use C<--config>, C<--osrf-confg>, C<-c>, and C<@ARGV[2]> for the same purpose in different scripts, with different
+default handling, help descriptions and error messages (or lack thereof).
+
+This suggests broader problem of UI consistency and uniformity, also partially addressed by this module.
+
+=head2 Lockfiles
+
+A lockfile is necessary for a script that wants to prevent possible simultaneous execution.  For example, consider a script 
+that is scheduled to run frequently, but that experiences occasional high load: you wouldn't want crontab to start running
+it again if the first instance had not yet finished.  
+
+But the code for creating, writing to, checking for, reading and cleaning up a lockfile for the script bloats what might otherwise be a terse 
+method call.  Conscript handles lockfile generation and removal automatically.
+
+=head1 OPTIONS
+
+The common options (and default values) are:
+
+    'lock-file=s'   => OpenILS::Utils::Lockfile::default_filename,
+    'osrf-config=s' => '/openils/conf/opensrf_core.xml',
+    'debug'         => 0,
+    'verbose+'      => 0,
+    'help'          => 0,
+
+=head1 TODO 
+
+More docs here.
+
+=head1 SEE ALSO
+
+    Getopt::Long
+    OpenILS::Utils::Lockfile
+    oils_header.pl
+
+=head1 AUTHOR
+
+Joe Atzberger <jatzberger@esilibrary.com>
+
+=cut
+

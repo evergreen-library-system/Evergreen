@@ -13,12 +13,12 @@
     onload="try { my_init(); font_helper(); } catch(E) { dump(E+'\n'); alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
-        <scripts id="openils_util_scripts"/>
+    <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+    <scripts id="openils_util_scripts"/>
 
     <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 
-    <script>
+    <script type="text/javascript">
     <![CDATA[
         var tree;
         var mw = {
