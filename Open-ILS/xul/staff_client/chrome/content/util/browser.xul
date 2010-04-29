@@ -93,6 +93,15 @@
             }
         }
 
+        function default_focus() {
+            try {
+                dump('entering browser.xul, default_focus()\n');
+                g.browser.updateNavButtons();
+            } catch(E) {
+                dump('Error in browser.xul, default_focus(): ' + E + '\n');
+            }
+        }
+
     ]]>
     </script>
 
@@ -113,7 +122,6 @@
             <spacer flex="1"/>
             <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
             <button id="browser_print" command="cmd_print" hidden="true"/>
-            <help id="help_btn" label="&common.browser.help.label;" accesskey="&common.browser.help.accesskey;" />
         </hbox>
         <browser id="browser_browser" flex="1" type="content"/>
     </vbox>

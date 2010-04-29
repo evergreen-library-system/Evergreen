@@ -28,6 +28,8 @@ function my_init() {
             eval( r.responseText );
         }
 
+        window.help_context_set_locally = true;
+
         JSAN.use('util.network'); g.network = new util.network();
 
         g.cgi = new CGI();
@@ -46,6 +48,40 @@ function my_init() {
         var err_msg = document.getElementById("offlineStrings").getFormattedString("common.exception", ["cat/opac.xul", E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
         alert(err_msg);
+    }
+}
+
+function default_focus() {
+    opac_wrapper_set_help_context(); 
+}
+
+function opac_wrapper_set_help_context() {
+    try {
+        dump('Entering opac.js, opac_wrapper_set_help_context\n');
+        var cw = bottom_pane.get_contentWindow(); 
+        if (cw && typeof cw['location'] != 'undefined') {
+            if (typeof cw.help_context_set_locally == 'undefined') {
+                var help_params = {
+                    'protocol' : cw.location.protocol,
+                    'hostname' : cw.location.hostname,
+                    'port' : cw.location.port,
+                    'pathname' : cw.location.pathname,
+                    'src' : ''
+                };
+                xulG.set_help_context(help_params);
+            } else {
+                dump('\tcw.help_context_set_locally = ' + cw.help_context_set_locally + '\n');
+                if (typeof cw.default_focus == 'function') {
+                    cw.default_focus();
+                }
+            }
+        } else {
+            dump('opac.js: problem in opac_wrapper_set_help_context(): bottom_pane = ' + bottom_pane + ' cw = ' + cw + '\n');
+            dump('\tcw.location = ' + cw.location + '\n');
+        }
+    } catch(E) {
+        // We can expect some errors here if this called before the DOM is ready.  Easiest to just trap and ignore
+        dump('Error in opac.js, opac_wrapper_set_help_context(): ' + E + '\n');
     }
 }
 
@@ -75,6 +111,8 @@ function set_marc_view() {
     } else {
         bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
     }
+    opac_wrapper_set_help_context(); 
+    bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
 function set_marc_edit() {
@@ -201,6 +239,8 @@ function set_marc_edit() {
     } else {
         bottom_pane.set_iframe( a,b,c );
     }
+    opac_wrapper_set_help_context(); 
+    bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
 function set_copy_browser() {
@@ -211,6 +251,8 @@ function set_copy_browser() {
     } else {
         bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
     }
+    opac_wrapper_set_help_context(); 
+    bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
 function set_hold_browser() {
@@ -221,6 +263,8 @@ function set_hold_browser() {
     } else {
         bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
     }
+    opac_wrapper_set_help_context(); 
+    bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
 function set_opac() {
@@ -320,6 +364,7 @@ function set_opac() {
         content_params.network_meter = xulG.network_meter;
         content_params.page_meter = xulG.page_meter;
         content_params.set_statusbar = xulG.set_statusbar;
+        content_params.set_help_context = xulG.set_help_context;
 
         if (opac_url) { content_params.url = opac_url; } else { content_params.url = xulG.url_prefix( urls.browser ); }
         browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
@@ -329,12 +374,31 @@ function set_opac() {
     } catch(E) {
         g.error.sdump('D_ERROR','set_opac: ' + E);
     }
+    opac_wrapper_set_help_context(); 
+    bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
 function bib_in_new_tab() {
     try {
         var url = browser_frame.contentWindow.g.browser.controller.view.browser_browser.contentWindow.wrappedJSObject.location.href;
         var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : url };
+        content_params.url_prefix = xulG.url_prefix;
+        content_params.new_tab = xulG.new_tab;
+        content_params.set_tab = xulG.set_tab;
+        content_params.close_tab = xulG.close_tab;
+        content_params.new_patron_tab = xulG.new_patron_tab;
+        content_params.set_patron_tab = xulG.set_patron_tab;
+        content_params.volume_item_creator = xulG.volume_item_creator;
+        content_params.get_new_session = xulG.get_new_session;
+        content_params.holdings_maintenance_tab = xulG.holdings_maintenance_tab;
+        content_params.set_tab_name = xulG.set_tab_name;
+        content_params.open_chrome_window = xulG.open_chrome_window;
+        content_params.url_prefix = xulG.url_prefix;
+        content_params.network_meter = xulG.network_meter;
+        content_params.page_meter = xulG.page_meter;
+        content_params.set_statusbar = xulG.set_statusbar;
+        content_params.set_help_context = xulG.set_help_context;
+
         xulG.new_tab(xulG.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
     } catch(E) {
         g.error.sdump('D_ERROR',E);
@@ -488,6 +552,7 @@ function refresh_display(id) {
             case 'opac' :
             default: set_opac(); break;
         }
+        opac_wrapper_set_help_context(); 
     } catch(E) {
         g.error.standard_unexpected_error_alert('in refresh_display',E);
     }

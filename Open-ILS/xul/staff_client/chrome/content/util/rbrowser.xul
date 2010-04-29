@@ -96,6 +96,15 @@
             }
         }
 
+        function default_focus() {
+            try {
+                dump('entering rbrowser.xul, default_focus()\n');
+                g.browser.updateNavButtons();
+            } catch(E) {
+                dump('Error in rbrowser.xul, default_focus(): ' + E + '\n');
+            }
+        }
+
     ]]>
     </script>
 
@@ -122,7 +131,6 @@
                 oldcommand="cmd_print"
                 oncommand="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (g.browser.alt_print) { JSAN.use('util.print'); var p = new util.print(); p.NSPrint(g.browser.get_content(),false,{}); } else { g.browser.get_content().print(); }"
             />
-            <help id="help_btn" label="&common.browser.help.label;" accesskey="&common.browser.help.accesskey;" />
         </hbox>
         <browser id="browser_browser" flex="1" type="content"/>
     </vbox>

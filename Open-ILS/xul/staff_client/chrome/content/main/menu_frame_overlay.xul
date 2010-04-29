@@ -81,9 +81,7 @@
         <menu id="main.menu.booking" />
         <spacer flex="1" />
         <menu id="main.menu.admin" />
-        <!--
         <menu id="main.menu.help" />
-        -->
     </menubar>
     <toolbar id="main_toolbar" hidden="true">
         <toolbarbutton id="tb_checkout" 

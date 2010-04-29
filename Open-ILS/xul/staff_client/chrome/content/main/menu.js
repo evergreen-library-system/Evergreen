@@ -1218,18 +1218,25 @@ main.menu.prototype = {
                 function(p) {
                     return function() {
                         try {
-                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                if (p
-                                    && p.firstChild 
-                                    && ( p.firstChild.nodeName == 'iframe' || p.firstChild.nodeName == 'browser' )
-                                    && p.firstChild.contentWindow 
-                                ) {
-                                    if (typeof p.firstChild.contentWindow.default_focus == 'function') {
-                                        p.firstChild.contentWindow.default_focus();
-                                    } else {
-                                        //p.firstChild.contentWindow.firstChild.focus();
-                                    }
+                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                            if (p
+                                && p.firstChild 
+                                && ( p.firstChild.nodeName == 'iframe' || p.firstChild.nodeName == 'browser' )
+                                && p.firstChild.contentWindow 
+                            ) {
+                                var cw = p.firstChild.contentWindow;
+                                var help_params = {
+                                    'protocol' : cw.location.protocol,
+                                    'hostname' : cw.location.hostname,
+                                    'port' : cw.location.port,
+                                    'pathname' : cw.location.pathname,
+                                    'src' : ''
+                                };
+                                obj.set_help_context(help_params);
+                                if (typeof cw.default_focus == 'function') {
+                                    cw.default_focus();
                                 }
+                            }
                         } catch(E) {
                             obj.error.sdump('D_ERROR','init_tab_focus_handler: ' + js2JSON(E));
                         }
@@ -1456,6 +1463,20 @@ main.menu.prototype = {
         }
         return result;
     },
+    'set_help_context' : function(params) {
+        var obj = this;
+        if (!params) { params = {}; }
+        if (params.protocol == 'chrome:') { return; } /* not supported */
+        var help_btn = document.getElementById('help_btn');
+        if (help_btn) {
+            dump('set_help_context: ' + js2JSON(params) + '\n');
+            if (params.protocol) { help_btn.setAttribute('protocol', params.protocol); }
+            if (params.hostname) { help_btn.setAttribute('hostname', params.hostname);  }
+            if (params.port) { help_btn.setAttribute('port', params.port);  }
+            if (params.pathname) { help_btn.setAttribute('pathname', params.pathname); }
+            if (params.src) { help_btn.setAttribute('src', params.src); }
+        }
+    },
     'set_tab' : function(url,params,content_params) {
         var obj = this;
         if (!url) url = '/xul/server/';
@@ -1478,6 +1499,7 @@ main.menu.prototype = {
         content_params.get_new_session = function(a) { return obj.get_new_session(a); };
         content_params.holdings_maintenance_tab = function(a,b,c) { return obj.holdings_maintenance_tab(a,b,c); };
         content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
+        content_params.set_help_context = function(params) { return obj.set_help_context(params); };
         content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
         content_params.url_prefix = function(url) { return obj.url_prefix(url); };
         content_params.network_meter = obj.network_meter;
@@ -1529,6 +1551,28 @@ main.menu.prototype = {
                     if (typeof cw.wrappedJSObject != 'undefined') cw = cw.wrappedJSObject;
                     cw.IAMXUL = true;
                     cw.xulG = content_params;
+                    cw.addEventListener(
+                        'load',
+                        function() {
+                            try {
+                                if (typeof cw.help_context_set_locally == 'undefined') {
+                                    var help_params = {
+                                        'protocol' : cw.location.protocol,
+                                        'hostname' : cw.location.hostname,
+                                        'port' : cw.location.port,
+                                        'pathname' : cw.location.pathname,
+                                        'src' : ''
+                                    };
+                                    obj.set_help_context(help_params);
+                                } else if (typeof cw.default_focus == 'function') {
+                                    cw.default_focus();
+                                }
+                            } catch(E) {
+                                obj.error.sdump('D_ERROR', 'main.menu, set_tab, onload: ' + E);
+                            }
+                        },
+                        false
+                    );
                 } catch(E) {
                     this.error.sdump('D_ERROR', 'main.menu: ' + E);
                 }

@@ -951,6 +951,8 @@
 <!ENTITY staff.main.menu.file.save.label "Save Session">
 <!ENTITY staff.main.menu.help.accesskey "H">
 <!ENTITY staff.main.menu.help.label "Help">
+<!ENTITY staff.main.menu.help.active_tab.accesskey "A">
+<!ENTITY staff.main.menu.help.active_tab.label "For Active Tab">
 <!ENTITY staff.main.menu.quit "Quit Program">
 <!ENTITY staff.main.menu.quit.accesskey "Q">
 <!ENTITY staff.main.menu.replace_barcode.label "Replace Barcode">

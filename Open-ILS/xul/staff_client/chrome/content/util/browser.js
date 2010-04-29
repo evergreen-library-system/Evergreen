@@ -113,6 +113,8 @@ util.browser.prototype = {
             obj.controller.view.browser_browser.setAttribute('src',obj.url);
             //dump('browser url = ' + obj.url + '\n');
 
+            window.help_context_set_locally = true;
+
         } catch(E) {
             this.error.sdump('D_ERROR','util.browser.init: ' + E + '\n');
         }
@@ -214,16 +216,21 @@ util.browser.prototype = {
         //this.error.sdump('D_BROWSER',s);
 
         // Let's also update @protocol, @hostname, @port, and @pathname on the <help> widget
-        var help_btn = document.getElementById('help_btn');
-        if (help_btn) {
+        if (xulG.set_help_context) {
             try {
-                help_btn.setAttribute('protocol', obj.get_content().location.protocol);
-                help_btn.setAttribute('hostname', obj.get_content().location.hostname);
-                help_btn.setAttribute('port', obj.get_content().location.port);
-                help_btn.setAttribute('pathname', obj.get_content().location.pathname);
+                var help_params = {
+                    'protocol' : obj.get_content().location.protocol,
+                    'hostname' : obj.get_content().location.hostname,
+                    'port' : obj.get_content().location.port,
+                    'pathname' : obj.get_content().location.pathname,
+                    'src' : ''
+                };
+                xulG.set_help_context(help_params);
             } catch(E) {
                 dump('Error in browser.js, setting location on help widget: ' + E);
             }
+        } else {
+            dump(location.href + ': browser.js, updateNavButtons, xulG = ' + xulG + ' xulG.set_help_context = ' + xulG.set_help_context + '\n');
         }
     },
 

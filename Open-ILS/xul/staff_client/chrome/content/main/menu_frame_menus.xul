@@ -307,7 +307,12 @@
 <!-- The Help menu on the main menu -->
 <menu id="main.menu.help" label="&staff.main.menu.help.label;" accesskey="&staff.main.menu.help.accesskey;">
     <menupopup id="main.menu.help.popup">
-        <menuitem label="stub" />
+        <!-- kludge -->
+        <menuitem
+            label="&staff.main.menu.help.active_tab.label;" 
+            accesskey="&staff.main.menu.help.active_tab.accesskey;" 
+            oncommand="try { this.nextSibling.doCommand(); } catch(E) { alert(E); }" />
+        <help id="help_btn" hidden="true" />
     </menupopup>
 </menu>
 
