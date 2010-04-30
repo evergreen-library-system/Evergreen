@@ -274,53 +274,11 @@ int osrfAppInitialize() {
 */
 int osrfAppChildInit() {
 
-	osrfLogDebug(OSRF_LOG_MARK, "Attempting to initialize libdbi...");
-	dbi_initialize(NULL);
-	osrfLogDebug(OSRF_LOG_MARK, "... libdbi initialized.");
-
-	char* driver = osrf_settings_host_value("/apps/%s/app_settings/driver", modulename );
-	char* user   = osrf_settings_host_value("/apps/%s/app_settings/database/user", modulename );
-	char* host   = osrf_settings_host_value("/apps/%s/app_settings/database/host", modulename );
-	char* port   = osrf_settings_host_value("/apps/%s/app_settings/database/port", modulename );
-	char* db     = osrf_settings_host_value("/apps/%s/app_settings/database/db", modulename );
-	char* pw     = osrf_settings_host_value("/apps/%s/app_settings/database/pw", modulename );
-
-	osrfLogDebug(OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver);
-	writehandle = dbi_conn_new(driver);
-
-	if(!writehandle) {
-		osrfLogError(OSRF_LOG_MARK, "Error loading database driver [%s]", driver);
+	writehandle = oilsConnectDB( modulename );
+	if( !writehandle )
 		return -1;
-	}
-	osrfLogDebug(OSRF_LOG_MARK, "Database driver [%s] seems OK", driver);
-
-	osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
-			"port=%s, user=%s, db=%s", modulename, host, port, user, db );
-
-	if(host) dbi_conn_set_option(writehandle, "host", host );
-	if(port) dbi_conn_set_option_numeric( writehandle, "port", atoi(port) );
-	if(user) dbi_conn_set_option(writehandle, "username", user);
-	if(pw)   dbi_conn_set_option(writehandle, "password", pw );
-	if(db)   dbi_conn_set_option(writehandle, "dbname", db );
-
-	free(user);
-	free(host);
-	free(port);
-	free(db);
-	free(pw);
-
-	const char* err;
-	if (dbi_conn_connect(writehandle) < 0) {
-		sleep(1);
-		if (dbi_conn_connect(writehandle) < 0) {
-			dbi_conn_error(writehandle, &err);
-			osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", err);
-			return -1;
-		}
-	}
 
 	oilsSetDBConnection( writehandle );
-	osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", modulename );
 
 	// Add datatypes from database to the fields in the IDL
 	if( oilsExtendIDL() ) {
