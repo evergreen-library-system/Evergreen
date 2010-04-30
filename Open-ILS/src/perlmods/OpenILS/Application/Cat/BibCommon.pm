@@ -78,7 +78,10 @@ sub biblio_record_xml_import {
 
 	my( $evt, $tcn, $tcn_source, $marcdoc );
 
-	if( $auto_tcn ) {
+    my $use_id = $e->retrieve_config_global_flag('cat.bib.use_id_for_tcn');
+    $use_id = ($use_id and $U->is_true($use_id->enabled));
+
+	if( $auto_tcn or $use_id ) {
 		# auto_tcn forces a blank TCN value so the DB will have to generate one for us
 		$marcdoc = __make_marc_doc($xml);
 	} else {
@@ -101,8 +104,27 @@ sub biblio_record_xml_import {
 	$record->marc($U->entityize($marcdoc->documentElement->toString));
 
     $record = $e->create_biblio_record_entry($record) or return $e->die_event;
-	$logger->info("marc create/import created new record ".$record->id);
 
+    if($use_id) {
+        my $existing = $e->search_biblio_record_entry(
+            {   
+                tcn_value => $record->id,
+                deleted => 'f'
+            }, { 
+                idlist => 1 
+            }
+        );
+
+        if(@$existing) {
+            # leave the auto-generated tcn_value in place
+            $logger->warn("Collision using internal ID as tcn_value for record " . $record->id);
+        } else {
+            $record->tcn_value($record->id);
+            $e->update_biblio_record_entry($record) or return $e->die_event;
+        }
+    }
+
+	$logger->info("marc create/import created new record ".$record->id);
 	return $record;
 }
 
