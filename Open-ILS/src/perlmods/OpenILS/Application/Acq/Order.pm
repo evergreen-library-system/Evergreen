@@ -1555,17 +1555,33 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+	method => 'lineitem_detail_CUD_batch',
+	api_name => 'open-ils.acq.lineitem_detail.cud.batch.dry_run',
+    stream => 1,
+    signature => { 
+        desc => q/
+            Dry run version of open-ils.acq.lineitem_detail.cud.batch.
+            In dry_run mode, updated fund_debit's the exceed the warning
+            percent return an event.  
+        /
+    }
+);
+
+
 sub lineitem_detail_CUD_batch {
     my($self, $conn, $auth, $li_details, $create_debits) = @_;
 
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+    my $dry_run = ($self->api_name =~ /dry_run/o);
 
     $mgr->total(scalar(@$li_details));
     
     my $li;
     my %li_cache;
+    my $fund_cache = {};
     my $evt;
 
     for my $lid (@$li_details) {
@@ -1584,7 +1600,7 @@ sub lineitem_detail_CUD_batch {
             }
 
         } elsif($lid->ischanged) {
-            $e->update_acq_lineitem_detail($lid) or return $e->die_event;
+            return $evt if $evt = handle_changed_lid($e, $lid, $dry_run, $fund_cache);
 
         } elsif($lid->isdeleted) {
             delete_lineitem_detail($mgr, $lid) or return $e->die_event;
@@ -1596,6 +1612,32 @@ sub lineitem_detail_CUD_batch {
 
     $e->commit;
     return $mgr->respond_complete;
+}
+
+sub handle_changed_lid {
+    my($e, $lid, $dry_run, $fund_cache) = @_;
+
+    my $orig_lid = $e->retrieve_acq_lineitem_detail($lid->id) or return $e->die_event;
+
+    # updating the fund, so update the debit
+    if($orig_lid->fund_debit and $orig_lid->fund != $lid->fund) {
+
+        my $debit = $e->retrieve_acq_fund_debit($orig_lid->fund_debit);
+        my $new_fund = $$fund_cache{$lid->fund} = 
+            $$fund_cache{$lid->fund} || $e->retrieve_acq_fund($lid->fund);
+
+        # check the thresholds
+        return $e->die_event if
+            fund_exceeds_balance_percent($new_fund, $debit->amount, $e, "stop");
+        return $e->die_event if $dry_run and 
+            fund_exceeds_balance_percent($new_fund, $debit->amount, $e, "warning");
+
+        $debit->fund($new_fund->id);
+        $e->update_acq_fund_debit($debit) or return $e->die_event;
+    }
+
+    $e->update_acq_lineitem_detail($lid) or return $e->die_event;
+    return undef;
 }
 
 
