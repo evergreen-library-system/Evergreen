@@ -146,11 +146,11 @@
                                 <option value="">is</option>
                                 <option value="__not">is NOT</option>
                                 <option value="__fuzzy" disabled="disabled">
-                                    contains
+                                    contains the term
                                 </option>
                                 <option value="__not,__fuzzy"
                                     disabled="disabled">
-                                    does NOT contain
+                                    does NOT contain the term
                                 </option>
                                 <option value="__lte" disabled="disabled">
                                     is on or BEFORE

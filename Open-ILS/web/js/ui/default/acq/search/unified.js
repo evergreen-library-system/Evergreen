@@ -11,7 +11,6 @@ var resultManager;
 var uriManager;
 var pcrud = new openils.PermaCrud();
 var cgi = new openils.CGI();
-var keys = openils.Util.objectProperties;
 
 /* typing save: add {get,set}Value() to all HTML <select> elements */
 HTMLSelectElement.prototype.getValue = function() {
@@ -88,6 +87,7 @@ function TermSelectorFactory(terms) {
         },
         "valueToTerm": function(value) {
             var parts = value.split(":");
+            if (!parts || parts.length != 2) return null;
             return dojo.mixin(
                 self.terms[parts[0]][parts[1]],
                 {"hint": parts[0], "field": parts[1]}
@@ -208,7 +208,14 @@ function TermSelectorFactory(terms) {
 function TermManager() {
     var self = this;
 
-    this.bibFriendlyAttrNames = ["author", "title", "isbn", "issn", "upc"];
+    /* All the keys in this object are bib-search-friendly attributes, but the
+     * boolean values indicate whether they should be searched by their
+     * field name as such, or simply mapped to "keyword". */
+    this.bibFriendlyAttrNames = {
+        "author": true, "title": true,
+        "isbn": false, "issn": false, "upc": false
+    };
+
     this.terms = {};
     ["jub", "acqpl", "acqpo", "acqinv"].forEach(
         function(hint) {
@@ -230,13 +237,16 @@ function TermManager() {
     this.terms.acqlia = {"__label": fieldmapper.IDL.fmclasses.acqlia.label};
     pcrud.retrieveAll("acqliad", {"order_by": {"acqliad": "id"}}).forEach(
         function(def) {
-            var o = {
+            self.terms.acqlia[def.id()] = {
                 "label": def.description(),
                 "datatype": "text",
                 "bib_friendly":
-                    (self.bibFriendlyAttrNames.indexOf(def.code()) >= 0)
+                    (typeof(self.bibFriendlyAttrNames[def.code()]) !=
+                        "undefined"),
+                "bib_attr_name":
+                    self.bibFriendlyAttrNames[def.code()] ?
+                        def.code() : "keyword"
             };
-            self.terms.acqlia[def.id()] = o;
         }
     );
 
@@ -252,6 +262,11 @@ function TermManager() {
 
     dojo.byId("acq-unified-result-type").onchange = function() {
         self.resultTypeChange(this.getValue());
+    };
+
+    this.allRowIds = function() {
+        return dojo.query("tr[id^='term-row-']", "acq-unified-terms-tbody").
+            map(function(o) { return o.id.match(/^term-row-(\d+)$/)[1]; });
     };
 
     this._row = function(id) { return dojo.byId("term-row-" + id); };
@@ -330,33 +345,40 @@ function TermManager() {
         ) {
             /* Re-enable all non-bib-friendly fields in all search term
              * field selectors. */
-            keys(this.widgets).forEach(
+            this.allRowIds().forEach(
                 function(id) { self._selector(id).onlyBibFriendly(false); }
             );
             /* Tell the selector factory to create new search term field
              * selectors with all fields, not just bib-friendly ones. */
             this.selectorFactory.onlyBibFriendly = false;
+            /* Allow either "any" or "all" searching. */
+            dojo.byId("acq-unified-conjunction").options[1].disabled = false;
         } else if (
             this.lastResultType != "lineitem_and_bib" &&
             resultType == "lineitem_and_bib"
         ) {
             /* Remove all search term rows set to non-bib-friendly fields. */
-            keys(this.widgets).forEach(
+            this.allRowIds().forEach(
                 function(id) {
                     var term = self._selector(id).getTerm();
-                    if (!self.terms[term.hint][term.field].bib_friendly) {
+                    if (!term ||
+                        !self.terms[term.hint][term.field].bib_friendly) {
                         self.removeRow(id);
                     }
                 }
             );
             /* Disable all non-bib-friendly fields in all remaining search term
              * field selectors. */
-            keys(this.widgets).forEach(
+            this.allRowIds().forEach(
                 function(id) { self._selector(id).onlyBibFriendly(true); }
             );
             /* Tell the selector factory to create new search term field
              * selectors with only bib friendly options. */
             this.selectorFactory.onlyBibFriendly = true;
+            /* Force an "any" search; I'm not sure we can do "all"
+             * searches yet. */
+            dojo.byId("acq-unified-conjunction").selectedIndex = 0;
+            dojo.byId("acq-unified-conjunction").options[1].disabled = true;
         }
         this.lastResultType = resultType;
     };
@@ -493,6 +515,21 @@ function TermManager() {
         }
         return so;
     };
+
+    this.buildBibSearchString = function() {
+        var sso = {};
+        for (var id in this.widgets) {
+            var term = this._selector(id).getTerm();
+            var attr = term.bib_attr_name;
+
+            if (!sso[attr]) sso[attr] = [];
+            sso[attr].push(this.widgets[id].value);
+        }
+        var ssa = [];
+        for (var attr in sso)
+            ssa.push(attr + ": " + sso[attr].join(" || "));
+        return ssa.join(" || ");
+    };
 }
 
 /* The result manager is used primarily when the users submits a search.  It
@@ -615,16 +652,31 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
             "&c=" + dojo.byId("acq-unified-conjunction").getValue();
     };
 
-    this.search = function(search_object) {
+    this.search = function(search_object, bib_search_string) {
         var count_results = 0;
+        var tasks = 1;
+        var bibs_too = false;
         var result_type = dojo.byId("acq-unified-result-type").getValue();
         var conjunction = dojo.byId("acq-unified-conjunction").getValue();
+
+        /* lineitem_and_bib: a special case */
+        if (result_type == "lineitem_and_bib") {
+            result_type = "lineitem";
+            tasks++;
+            bibs_too = true;
+        }
+
+        function result_completion() {
+            if (!count_results)
+                self.show("no_results");
+            else
+                self.finish(result_type);
+        }
 
         var method_name = "open-ils.acq." + result_type + ".unified_search";
         /* Except for building the API method name that we want to call,
          * we want to treat lineitem_and_bib the same way as lineitem from
          * here forward. */
-        result_type = result_type.replace(/_and_bib/, "");
 
         var params = [
             openils.User.authtoken,
@@ -646,13 +698,34 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
                     }
                 },
                 "oncomplete": function() {
-                    if (!count_results)
-                        self.show("no_results");
-                    else
-                        self.finish(result_type);
+                    if (tasks > 1) tasks--;
+                    else result_completion();
                 }
             }
         );
+
+        if (bibs_too) {
+            fieldmapper.standardRequest(
+                ["open-ils.acq", "open-ils.acq.biblio.wrapped_search"], {
+                    "params": [
+                        openils.User.authtoken,
+                        bib_search_string,
+                        this.result_types.lineitem.search_options
+                    ],
+                    "async": true,
+                    "onresponse": function(r) {
+                        if (r = openils.Util.readResponse(r)) {
+                            if (!count_results++) self.show("lineitem");
+                            self.add("lineitem", r);
+                        }
+                    },
+                    "oncomplete": function() {
+                        if (tasks > 1) tasks--;
+                        else result_completion();
+                    }
+                }
+            );
+        }
     }
 }
 
@@ -664,8 +737,10 @@ function URIManager() {
         this.search_object = base64Decode(this.search_object);
 
     this.result_type = cgi.param("rt");
-    if (this.result_type)
+    if (this.result_type) {
         dojo.byId("acq-unified-result-type").setValue(this.result_type);
+        dojo.byId("acq-unified-result-type").onchange();
+    }
 
     this.conjunction = cgi.param("c");
     if (this.conjunction)
@@ -688,7 +763,9 @@ openils.Util.addOnLoad(
             hideForm();
             openils.Util.show("acq-unified-body");
             termManager.reflect(uriManager.search_object);
-            resultManager.search(uriManager.search_object);
+            resultManager.search(
+                uriManager.search_object, termManager.buildBibSearchString()
+            );
         } else {
             termManager.addRow();
             openils.Util.show("acq-unified-body");

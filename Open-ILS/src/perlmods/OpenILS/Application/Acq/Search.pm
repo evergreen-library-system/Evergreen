@@ -11,6 +11,7 @@ use OpenILS::Application::Acq::Lineitem;
 use OpenILS::Application::Acq::Financials;
 use OpenILS::Application::Acq::Picklist;
 use OpenILS::Application::Acq::Invoice;
+use OpenILS::Application::Acq::Order;
 
 my %RETRIEVERS = (
     "lineitem" =>
@@ -364,10 +365,7 @@ sub unified_search {
     my $hint = F("acq::$ret_type")->{"hint"};
 
     my $query = {
-        "select" => {
-            $hint =>
-                [{"column" => "id", "transform" => "distinct"}]
-        },
+        "select" => {$hint => [{"column" => "id", "transform" => "distinct"}]},
         "from" => {
             "jub" => {
                 "acqpo" => {
@@ -394,11 +392,17 @@ sub unified_search {
                 }
             }
         },
-        "order_by" => { $hint => {"id" => {}}},
+        "order_by" => {$hint => {"id" => {}}},
         "offset" => ($options->{"offset"} || 0)
     };
 
     $query->{"limit"} = $options->{"limit"} if $options->{"limit"};
+
+    # XXX for the future? but it doesn't quite work as is.
+#    # Remove anything in temporary picklists from search results.
+#    $and_terms ||= {};
+#    $and_terms->{"acqpl"} ||= [];
+#    push @{$and_terms->{"acqpl"}}, {"name" => "", "__not" => 1};
 
     $and_terms = prepare_terms($and_terms, 1);
     $or_terms = prepare_terms($or_terms, 0) and do {
@@ -425,17 +429,82 @@ sub unified_search {
 
     my $results = $e->json_query($query) or return $e->die_event;
     if ($options->{"id_list"}) {
-        foreach (@$results) {
-            $conn->respond($_->{"id"}) if $_->{"id"};
-        }
+        $conn->respond($_->{"id"}) foreach (grep { $_->{"id"} } @$results);
     } else {
-        foreach (@$results) {
-            $conn->respond($retriever->($e, $_->{"id"}, $options))
-                if $_->{"id"};
+        $conn->respond($retriever->($e, $_->{"id"}, $options))
+            foreach (grep { $_->{"id"} } @$results);
+    }
+
+    $e->disconnect;
+    $conn->respond_complete;
+}
+
+__PACKAGE__->register_method(
+    method    => "bib_search",
+    api_name  => "open-ils.acq.biblio.wrapped_search",
+    stream    => 1,
+    signature => {
+        desc   => q/Returns new lineitems for each matching bib record/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "search string", type => "string"},
+            {desc => "search options", type => "object"}
+        ],
+        return => {desc => "A stream of LIs on success, Event on failure"}
+    }
+);
+
+# This is very similar to zsearch() in Order.pm
+sub bib_search {
+    my ($self, $conn, $auth, $search, $options) = @_;
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("CREATE_PICKLIST");
+
+    my $mgr = new OpenILS::Application::Acq::BatchManager(
+        "editor" => $e, "conn" => $conn
+    );
+
+    $options ||= {};
+    $options->{"limit"} ||= 10;
+
+    my $ses = create OpenSRF::AppSession("open-ils.search");
+    my $req = $ses->request(
+        "open-ils.search.biblio.multiclass.query.staff", $options, $search
+    );
+
+    my $count = 0;
+    my $picklist;
+    while (my $resp = $req->recv("timeout" => 60)) {
+        $picklist = OpenILS::Application::Acq::Order::zsearch_build_pl(
+            $mgr, undef # XXX could have per-user name for temp picklist here?
+        ) unless $count++;
+
+        my $result = $resp->content;
+
+        # The result object contains a whole heck of a lot more information
+        # than just bib IDs, so maybe we could tell the client something
+        # useful (progress meter at least) in the future...
+        foreach my $id (@{$result->{"ids"}}) {
+            $id = $id->[0];
+            $conn->respond(
+                $RETRIEVERS{"lineitem"}->(
+                    $e, OpenILS::Application::Acq::Order::create_lineitem(
+                        $mgr,
+                        "picklist" => $picklist->id,
+                        "source_label" => $resp->content->{"service"},
+                        "marc" => $e->retrieve_biblio_record_entry($id)->marc,
+                        "eg_bib_id" => $id
+                    )->id, $options
+                )
+            );
         }
     }
-    $e->disconnect;
-    undef;
+
+    $ses->disconnect;
+    $e->commit;
+    $conn->respond_complete;
 }
 
 1;
