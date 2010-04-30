@@ -2,7 +2,7 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0167');
 
-INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) VALUES (true, 1, 'PO JEDI', 'format.po.jedi', 'NOOP_True', 'ProcessTemplate', NULL, NULL, '00:05:00', NULL, NULL,
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) VALUES (23, true, 1, 'PO JEDI', 'format.po.jedi', 'NOOP_True', 'ProcessTemplate', NULL, NULL, '00:05:00', NULL, NULL,
 $$[%- USE date -%]
 [%# start JEDI document -%]
 [%- BLOCK big_block -%]
@@ -66,11 +66,11 @@ SA = supplier’s article number
 
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES 
-  ((SELECT id FROM action_trigger.event_definition WHERE name='PO JEDI'), 'lineitems.attributes'), 
-  ((SELECT id FROM action_trigger.event_definition WHERE name='PO JEDI'), 'lineitems.lineitem_details'), 
-  ((SELECT id FROM action_trigger.event_definition WHERE name='PO JEDI'), 'lineitems.lineitem_notes'), 
-  ((SELECT id FROM action_trigger.event_definition WHERE name='PO JEDI'), 'ordering_agency.mailing_address'), 
-  ((SELECT id FROM action_trigger.event_definition WHERE name='PO JEDI'), 'provider');
+  (23, 'lineitems.attributes'), 
+  (23, 'lineitems.lineitem_details'), 
+  (23, 'lineitems.lineitem_notes'), 
+  (23, 'ordering_agency.mailing_address'), 
+  (23, 'provider');
 
 -- The environment insert has to happen here because it relies on subquerying the user-editable field "name" to
 -- provide the FK.  Outside of this transaction, we cannot be sure the user hasn't changed the name to something else.

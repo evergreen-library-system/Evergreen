@@ -2,7 +2,7 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0246');
 
-UPDATE action_trigger.event_definition SET template = 
+UPDATE action_trigger.event_definition SET id=23, template = 
 $$[%- USE date -%]
 [%# start JEDI document -%]
 [%- BLOCK big_block -%]
@@ -53,10 +53,10 @@ $$[%- USE date -%]
 [% END %]
 [% tempo = PROCESS big_block; helpers.escape_json(tempo) %]
 $$
-WHERE name='PO JEDI';
-
+WHERE name='PO JEDI' or id=23;  -- bring updated DB in line w/ baseline DB
+                                -- nobody but devs will have the old 100+ id, and only atz put it in use
 INSERT INTO action_trigger.environment (event_def, path) VALUES 
-  ((SELECT id FROM action_trigger.event_definition WHERE name='PO JEDI'), 'provider.edi_default');
+  (23, 'provider.edi_default');
 
 -- Hope they haven't changed the name...
 
