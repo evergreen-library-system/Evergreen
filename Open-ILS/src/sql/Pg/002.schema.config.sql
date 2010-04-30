@@ -55,12 +55,17 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.skip_
 INSERT INTO config.internal_flag (name) VALUES ('ingest.reingest.force_on_same_marc');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.reingest.skip_located_uri');
 
+CREATE TABLE config.global_flag (
+    label   TEXT    NOT NULL
+) INHERITS config.internal_flag;
+ALTER TABLE config.global_flag ADD PRIMARY KEY (name);
+
 CREATE TABLE config.upgrade_log (
     version         TEXT    PRIMARY KEY,
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0247'); -- phasefx
+INSERT INTO config.upgrade_log (version) VALUES ('0248'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

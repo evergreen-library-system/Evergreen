@@ -506,6 +506,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
+    <class id="cgf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::global_flag" oils_persist:tablename="config.global_flag" reporter:label="Global Flags and Settings" oils_persist:field_safe="true">
+        <fields oils_persist:primary="name">
+            <field reporter:label="Name" name="name" reporter:datatype="text"/>
+            <field reporter:label="Label" name="label"  reporter:datatype="text" oils_persist:i18n="true"/>
+            <field reporter:label="Value" name="value"  reporter:datatype="text"/>
+            <field reporter:label="Enabled" name="enabled"  reporter:datatype="bool"/>
+        </fields>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="ADMIN_GLOBAL_FLAG" global_required="true"/>
+                <retrieve permission="ADMIN_GLOBAL_FLAG" global_required="true"/>
+                <update   permission="ADMIN_GLOBAL_FLAG" global_required="true"/>
+                <delete   permission="ADMIN_GLOBAL_FLAG" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
+
     <class id="cin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::index_normalizer" oils_persist:tablename="config.index_normalizer" reporter:label="Indexing Normalizer" oils_persist:field_safe="true">
         <fields oils_persist:primary="id">
             <field reporter:label="ID" name="id" reporter:datatype="id"/>
