@@ -9,9 +9,12 @@
 #include <dbi/dbi.h>
 #include "opensrf/utils.h"
 #include "opensrf/string_array.h"
+#include "opensrf/osrf_application.h"
+#include "openils/oils_idl.h"
+#include "openils/oils_sql.h"
 #include "openils/oils_buildq.h"
 
-static void buildQuery( BuildSQLState* state, StoredQ* query );
+static void build_Query( BuildSQLState* state, StoredQ* query );
 static void buildCombo( BuildSQLState* state, StoredQ* query, const char* type_str );
 static void buildSelect( BuildSQLState* state, StoredQ* query );
 static void buildFrom( BuildSQLState* state, FromRelation* core_from );
@@ -30,13 +33,13 @@ static inline void decr_indent( BuildSQLState* state );
 	@param query Pointer to the query to be built.
 	@return Zero if successful, or 1 if not.
 
-	Clear the output buffer, call buildQuery() to do the work, and add a closing semicolon.
+	Clear the output buffer, call build_Query() to do the work, and add a closing semicolon.
 */
 int buildSQL( BuildSQLState* state, StoredQ* query ) {
 	state->error  = 0;
 	buffer_reset( state->sql );
 	state->indent = 0;
-	buildQuery( state, query );
+	build_Query( state, query );
 	if( ! state->error ) {
 		// Remove the trailing space, if there is one, and add a semicolon.
 		char c = buffer_chomp( state->sql );
@@ -54,7 +57,7 @@ int buildSQL( BuildSQLState* state, StoredQ* query ) {
 
 	Look at the query type and branch to the corresponding routine.
 */
-static void buildQuery( BuildSQLState* state, StoredQ* query ) {
+static void build_Query( BuildSQLState* state, StoredQ* query ) {
 	if( buffer_length( state->sql ))
 		add_newline( state );
 
@@ -99,7 +102,7 @@ static void buildCombo( BuildSQLState* state, StoredQ* query, const char* type_s
 
 	// Traverse the list of child queries
 	while( seq ) {
-		buildQuery( state, seq->child_query );
+		build_Query( state, seq->child_query );
 		if( state->error ) {
 			sqlAddMsg( state, "Unable to build child query # %d within %s query %d",
 				seq->child_query->id, type_str, query->id );
@@ -196,23 +199,31 @@ static void buildFrom( BuildSQLState* state, FromRelation* core_from ) {
 	add_newline( state );
 
 	switch( core_from->type ) {
-		case FRT_RELATION :
-			if( ! core_from->table_name ) {
-				// To do: if class is available, look up table name
-				// or source_definition in the IDL
-				sqlAddMsg( state, "No table or view name available for core relation # %d",
-					core_from->id );
-				state->error = 1;
-				return;
+		case FRT_RELATION : {
+			char* relation = core_from->table_name;
+			if( !relation ) {
+				if( !core_from->class_name ) {
+					sqlAddMsg( state, "No relation specified for core relation # %d",
+						core_from->id );
+					state->error = 1;
+					return;
+				}
+
+				// Look up table name, view name, or source_definition in the IDL
+				osrfHash* class_hash = osrfHashGet( oilsIDL(), core_from->class_name );
+				relation = oilsGetRelation( class_hash );
 			}
 
 			// Add table or view
-			buffer_add( state->sql, core_from->table_name );
+			buffer_add( state->sql, relation );
+			if( !core_from->table_name )
+				free( relation );   // In this case we strdup'd it, must free it
 			break;
+		}
 		case FRT_SUBQUERY :
 			buffer_add_char( state->sql, '(' );
 			incr_indent( state );
-			buildQuery( state, core_from->subquery );
+			build_Query( state, core_from->subquery );
 			decr_indent( state );
 			add_newline( state );
 			buffer_add_char( state->sql, ')' );
@@ -300,7 +311,7 @@ static void buildJoin( BuildSQLState* state, FromRelation* join ) {
 			}
 			buffer_add_char( state->sql, '(' );
 			incr_indent( state );
-			buildQuery( state, join->subquery );
+			build_Query( state, join->subquery );
 			decr_indent( state );
 			add_newline( state );
 			buffer_add_char( state->sql, ')' );
@@ -457,7 +468,7 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			} else {
 				buffer_add( state->sql, "EXISTS (" );
 				incr_indent( state );
-				buildQuery( state, expr->subquery );
+				build_Query( state, expr->subquery );
 				decr_indent( state );
 				add_newline( state );
 				buffer_add_char( state->sql, ')' );
@@ -475,7 +486,7 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 					if( expr->subquery ) {
 						buffer_add( state->sql, " IN (" );
 						incr_indent( state );
-						buildQuery( state, expr->subquery );
+						build_Query( state, expr->subquery );
 						decr_indent( state );
 						add_newline( state );
 						buffer_add_char( state->sql, ')' );
@@ -540,7 +551,7 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			if( expr->subquery ) {
 				buffer_add_char( state->sql, '(' );
 				incr_indent( state );
-				buildQuery( state, expr->subquery );
+				build_Query( state, expr->subquery );
 				decr_indent( state );
 				add_newline( state );
 				buffer_add_char( state->sql, ')' );
