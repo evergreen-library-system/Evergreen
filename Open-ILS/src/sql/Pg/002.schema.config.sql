@@ -57,7 +57,7 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.reingest.skip_located_ur
 
 CREATE TABLE config.global_flag (
     label   TEXT    NOT NULL
-) INHERITS config.internal_flag;
+) INHERITS (config.internal_flag);
 ALTER TABLE config.global_flag ADD PRIMARY KEY (name);
 
 CREATE TABLE config.upgrade_log (
