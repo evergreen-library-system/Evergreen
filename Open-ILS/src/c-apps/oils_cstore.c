@@ -25,7 +25,7 @@ static const char modulename[] = "open-ils.cstore";
 
 	This function is called when the server drone is about to terminate.
 */
-void osrfAppChildExit() {
+void osrfAppChildExit( void ) {
 	osrfLogDebug(OSRF_LOG_MARK, "Child is exiting, disconnecting from database...");
 
 	int same = 0;
@@ -86,14 +86,27 @@ void osrfAppChildExit() {
 	This function is called when the registering the application, and is executed by the
 	listener before spawning the drones.
 */
-int osrfAppInitialize() {
+int osrfAppInitialize( void ) {
 
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
+	// Load the IDL into memory
 	if ( !oilsIDLInit( osrf_settings_host_value( "/IDL" )))
 		return 1; /* return non-zero to indicate error */
 
+	// Open the database temporarily.  Look up the datatypes of all
+	// the non-virtual fields and record them with the IDL data.
+	dbi_conn handle = oilsConnectDB( modulename );
+	if( !handle )
+		return -1;
+	else if( oilsExtendIDL( handle )) {
+		osrfLogError( OSRF_LOG_MARK, "Error extending the IDL" );
+		return -1;
+	}
+	dbi_conn_close( handle );
+
+	// Get the maximum flesh depth from the settings
 	char* md = osrf_settings_host_value(
 		"/apps/%s/app_settings/max_query_recursion", modulename );
 	int max_flesh_depth = 100;
@@ -106,6 +119,7 @@ int osrfAppInitialize() {
 
 	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth );
 
+	// Now register all the methods
 	growing_buffer* method_name = buffer_init(64);
 
 	// Generic search thingy
@@ -114,7 +128,7 @@ int osrfAppInitialize() {
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
 		"doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 
-	// first we register all the transaction and savepoint methods
+	// Next we register all the transaction and savepoint methods
 	buffer_reset(method_name);
 	OSRF_BUFFER_ADD(method_name, modulename );
 	OSRF_BUFFER_ADD(method_name, ".transaction.begin");
@@ -267,12 +281,11 @@ int osrfAppInitialize() {
 	@brief Initialize a server drone.
 	@return Zero if successful, -1 if not.
 
-	Connect to the database.  For each non-virtual class in the IDL, execute a dummy "SELECT * "
-	query to get the datatype of each column.  Record the datatypes in the loaded IDL.
+	Connect to the database.
 
 	This function is called by a server drone shortly after it is spawned by the listener.
 */
-int osrfAppChildInit() {
+int osrfAppChildInit( void ) {
 
 	writehandle = oilsConnectDB( modulename );
 	if( !writehandle )
@@ -280,13 +293,7 @@ int osrfAppChildInit() {
 
 	oilsSetDBConnection( writehandle );
 
-	// Add datatypes from database to the fields in the IDL
-	if( oilsExtendIDL() ) {
-		osrfLogError( OSRF_LOG_MARK, "Error extending the IDL" );
-		return -1;
-	}
-	else
-		return 0;
+	return 0;
 }
 
 /**

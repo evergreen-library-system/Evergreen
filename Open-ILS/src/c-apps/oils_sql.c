@@ -276,18 +276,18 @@ char* oilsGetRelation( osrfHash* classdef ) {
 
 /**
 	@brief Add datatypes from the database to the fields in the IDL.
+	@param handle Handle for a database connection
 	@return Zero if successful, or 1 upon error.
 
 	For each relevant class in the IDL: ask the database for the datatype of every field.
 	In particular, determine which fields are text fields and which fields are numeric
 	fields, so that we know whether to enclose their values in quotes.
-
-	At this writing this function does not detect any errors, so it always returns zero.
 */
-int oilsExtendIDL( void ) {
+int oilsExtendIDL( dbi_conn handle ) {
 	osrfHashIterator* class_itr = osrfNewHashIterator( oilsIDL() );
 	osrfHash* class = NULL;
 	growing_buffer* query_buf = buffer_init( 64 );
+	int results_found = 0;   // boolean
 
 	// For each class in the IDL...
 	while( (class = osrfHashIteratorNext( class_itr ) ) ) {
@@ -312,9 +312,10 @@ int oilsExtendIDL( void ) {
 		osrfLogDebug( OSRF_LOG_MARK, "%s Investigatory SQL = %s",
 				modulename, OSRF_BUFFER_C_STR( query_buf ) );
 
-		dbi_result result = dbi_conn_query( writehandle, OSRF_BUFFER_C_STR( query_buf ) );
+		dbi_result result = dbi_conn_query( handle, OSRF_BUFFER_C_STR( query_buf ) );
 		if( result ) {
 
+			results_found = 1;
 			int columnIndex = 1;
 			const char* columnName;
 			while( (columnName = dbi_result_get_field_name(result, columnIndex)) ) {
@@ -391,7 +392,14 @@ int oilsExtendIDL( void ) {
 	buffer_free( query_buf );
 	osrfHashIteratorFree( class_itr );
 	child_initialized = 1;
-	return 0;
+
+	if( !results_found ) {
+		osrfLogError( OSRF_LOG_MARK,
+			"No results found for any class -- bad database connection?" );
+		return 1;
+	}
+	else
+		return 0;
 }
 
 /**
