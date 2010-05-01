@@ -20,6 +20,8 @@ util.list = function (id) {
 
     JSAN.use('util.error'); this.error = new util.error();
 
+    JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.stash_retrieve();
+
     return this;
 };
 
@@ -218,9 +220,13 @@ util.list.prototype = {
 
     'save_columns' : function (params) {
         var obj = this;
-        switch (this.node.nodeName) {
-            case 'tree' : this._save_columns_tree(params); break;
-            default: throw('NYI: Need .save_columns() for ' + this.node.nodeName); break;
+        if (obj.data.hash.aous['gui.disable_local_save_columns']) {
+            alert(document.getElementById('offlineStrings').getString('list.column_save_disabled'));
+        } else {
+            switch (this.node.nodeName) {
+                case 'tree' : this._save_columns_tree(params); break;
+                default: throw('NYI: Need .save_columns() for ' + this.node.nodeName); break;
+            }
         }
     },
 
@@ -271,10 +277,26 @@ util.list.prototype = {
                 return;
             }
 
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-            JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.escape(id));
-            if (file._file.exists()) {
-                var my_cols = file.get_object(); file.close();
+            var my_cols;
+            if (! obj.data.hash.aous['gui.disable_local_save_columns']) {
+                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.escape(id));
+                if (file._file.exists()) {
+                    my_cols = file.get_object(); file.close();
+                }
+            }
+            /* local file will trump remote file if allowed, so save ourselves an http request if this is the case */
+            if (obj.data.hash.aous['url.remote_column_settings'] && ! my_cols ) {
+                var x = new XMLHttpRequest();
+                var url = obj.data.hash.aous['url.remote_column_settings'] + '/tree_columns_for_' + window.escape(id);
+                x.open("GET", url, false);
+                x.send(null);
+                if (x.status == 200) {
+                    my_cols = JSON2js( x.responseText );
+                }
+            }
+
+            if (my_cols) {
                 var nl = obj.node.getElementsByTagName('treecol');
                 for (var i = 0; i < nl.length; i++) {
                     var col = nl[i];
@@ -1285,7 +1307,7 @@ util.list.prototype = {
     '_print_tree' : function(params) {
         var obj = this;
         try {
-            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+            var data = obj.data; data.stash_retrieve();
             if (!params.staff && data.list.au && data.list.au[0]) {
                 params.staff = data.list.au[0];
             }
@@ -1347,8 +1369,8 @@ util.list.prototype = {
         try {
             var obj = this;
             var dump = obj.dump_selected_with_keys({'skip_hidden_columns':true,'labels_instead_of_ids':true});
-            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-            data.list_clipboard = dump; data.stash('list_clipboard');
+            obj.data.stash_retrieve();
+            obj.data.list_clipboard = dump; obj.data.stash('list_clipboard');
             JSAN.use('util.window'); var win = new util.window();
             win.open(urls.XUL_LIST_CLIPBOARD,'list_clipboard','chrome,resizable,modal');
             window.focus(); // sometimes the main window will lower after a clipboard action
@@ -1527,6 +1549,9 @@ util.list.prototype = {
             mi.setAttribute('id',obj.node.id + '_save_columns');
             mi.setAttribute('label',document.getElementById('offlineStrings').getString('list.actions.save_column_configuration.label'));
             mi.setAttribute('accesskey',document.getElementById('offlineStrings').getString('list.actions.save_column_configuration.accesskey'));
+            if (obj.data.hash.aous['gui.disable_local_save_columns']) {
+                mi.setAttribute('disabled','true');
+            }
             mp.appendChild(mi);
             return btn;
         } catch(E) {
@@ -1642,7 +1667,7 @@ util.list.prototype = {
             if (typeof fieldmapper.IDL.fmclasses == 'undefined') { throw 'fieldmapper.IDL.fmclasses undefined'; }
             if (typeof fieldmapper.IDL.fmclasses[hint] == 'undefined') { throw 'fieldmapper.IDL.fmclasses.' + hint + ' undefined'; }
             var my_class = fieldmapper.IDL.fmclasses[hint]; 
-            JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+            var data = obj.data; data.stash_retrieve();
 
             function col_def(my_field) {
                 var col_id = hint + '_' + my_field.name;
