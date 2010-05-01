@@ -5,9 +5,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>JavaScript Shell 1.4</title>
 
+<script type="text/javascript" src="/xul/server/main/JSAN.js" />
+<script type="text/javascript" src="/xul/server/main/constants.js" />
+<script type="text/javascript" src="/xul/server/OpenILS/global_util.js" />
+<script type="text/javascript" src="/xul/server/OpenILS/data.js" />
+<script type="text/javascript" src="/xul/server/util/network.js" />
+<script type="text/javascript" src="/xul/server/util/error.js" />
 <script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
 <script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
-<script>try { dojo.require('fieldmapper.AutoIDL'); } catch(E) { alert(E); }</script>
+<script>
+    try {
+        dojo.require('fieldmapper.AutoIDL'); 
+        JSAN.addRepository('/xul/server/');
+        JSAN.use('util.error'); var error = new util.error();
+        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+        JSAN.use('util.network'); var network = new util.network();
+    } catch(E) { 
+        alert(E); 
+    }
+</script>
 
 <script type="text/javascript" src="shell.js"></script>
 
