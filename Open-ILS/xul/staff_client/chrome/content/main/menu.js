@@ -564,6 +564,12 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_admin_page('printer_settings.html', 'menu.cmd_local_admin_printer.tab', true); }
             ],
+            'cmd_local_admin_do_not_auto_attempt_print_setting' : [
+                ['oncommand'],
+                function() { 
+                    obj.set_tab(obj.url_prefix(urls.XUL_DO_NOT_AUTO_ATTEMPT_PRINT_SETTING),{'tab_name':offlineStrings.getString('menu.cmd_local_admin_do_not_auto_attempt_print_setting.tab')},{});
+                }
+            ],
             'cmd_local_admin_closed_dates' : [
                 ['oncommand'],
                 function() { open_admin_page('closed_dates.xhtml', 'menu.cmd_local_admin_closed_dates.tab', true); }

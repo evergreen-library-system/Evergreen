@@ -152,6 +152,7 @@ var api = {
     'FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.actor.org_unit.retrieve_by_title.authoritative', 'secure' : false },
     'FM_AOUS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit_setting.values.ranged.retrieve' },
     'FM_AOUS_SPECIFIC_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.ou_setting.ancestor_default' },
+    'FM_AOUS_UPDATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit.settings.update' },
     'FM_AOUT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_types.retrieve', 'secure' : false },
     'FM_ASC_BATCH_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.asset.retrieve.batch', 'secure' : false },
     'FM_ASC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.asset.retrieve.all', 'secure' : false },
@@ -345,6 +346,7 @@ var urls = {
     'XUL_DEBUG_FILTER_CONSOLE' : '/xul/server/util/filter_console.xul',
     'XUL_DEBUG_SHELL' : '/xul/server/util/shell.html',
     'XUL_DEBUG_XULEDITOR' : '/xul/server/util/xuledit.xul',
+    'XUL_DO_NOT_AUTO_ATTEMPT_PRINT_SETTING' : '/xul/server/admin/do_not_auto_attempt_print_setting.xul',
     'XUL_FANCY_PROMPT' : '/xul/server/util/fancy_prompt.xul',
     'XUL_HOLD_CAPTURE' : '/xul/server/circ/hold_capture.xul',
     /*'XUL_HOLD_PULL_LIST' : '/xul/server/admin/hold_pull_list.xhtml',*/

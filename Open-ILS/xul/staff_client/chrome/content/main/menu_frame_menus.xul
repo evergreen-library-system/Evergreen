@@ -105,6 +105,9 @@
     <!-- local admin menu commands -->
     <command id="cmd_local_admin_fonts_and_sounds"/>
     <command id="cmd_local_admin_printer"/>
+    <command id="cmd_local_admin_do_not_auto_attempt_print_setting"
+        label="&staff.server.admin.index.do_not_auto_attempt_print_setting.label;" 
+        accesskey="&staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey;"/>
     <command id="cmd_local_admin_closed_dates"/>
     <command id="cmd_local_admin_copy_locations"/>
     <command id="cmd_local_admin_lib_settings"/>
@@ -344,6 +347,7 @@
                 <menuitem label="&staff.main.menu.admin.local_admin.patrons_due_refunds.label;" accesskey="&staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey;" command="cmd_local_admin_patrons_due_refunds"/>
                 <menuitem label="&staff.server.admin.index.printer;" command="cmd_local_admin_printer"/>
                 <menuitem label="&staff.main.menu.admin.template_edit.label;" accesskey="&staff.main.menu.admin.template_edit.accesskey;" command="cmd_print_list_template_edit"/>
+                <menuitem command="cmd_local_admin_do_not_auto_attempt_print_setting"/>
                 <menuitem label="&staff.server.admin.index.reports;" command="cmd_local_admin_reports"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.standing_penalty.label;" command="cmd_local_admin_standing_penalty"/>
                 <menuitem label="&staff.server.admin.index.statistical_categories;" command="cmd_local_admin_stat_cats"/>

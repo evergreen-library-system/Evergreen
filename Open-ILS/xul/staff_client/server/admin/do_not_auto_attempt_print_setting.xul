@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="main_test_win" 
+    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
+    <scripts id="openils_util_scripts"/>
+
+    <messagecatalog id="adminStrings" src='/xul/server/locale/<!--#echo var="locale"-->/admin.properties'/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="do_not_auto_attempt_print_setting.js"/>
+
+    <groupbox flex="0">
+        <caption id="caption"/>
+        <vbox id="desc"/>
+    </groupbox>
+    <groupbox flex="0">
+        <caption label="&staff.server.admin.do_not_auto_attempt_print_setting.current_inherited_setting.caption;"/>
+        <vbox id="current"/>
+    </groupbox>
+    <groupbox flex="0">
+        <caption label="&staff.server.admin.do_not_auto_attempt_print_setting.new_setting.caption;"/>
+        <label value="&staff.server.admin.do_not_auto_attempt_print_setting.receipt_slip_type.prompt;"/>
+        <vbox>
+            <checkbox id="checkout" label="&staff.server.admin.do_not_auto_attempt_print_setting.checkout;" />
+            <checkbox id="bill_pay" label="&staff.server.admin.do_not_auto_attempt_print_setting.bill_pay;" />
+            <checkbox id="hold_slip" label="&staff.server.admin.do_not_auto_attempt_print_setting.hold_slip;" />
+            <checkbox id="transit_slip" label="&staff.server.admin.do_not_auto_attempt_print_setting.transit_slip;" />
+            <checkbox id="hold_transit_slip" label="&staff.server.admin.do_not_auto_attempt_print_setting.hold_transit_slip;" />
+        </vbox>
+        <label value="&staff.server.admin.do_not_auto_attempt_print_setting.library_selector.prompt;"/>
+        <hbox id="menu"/>
+        <hbox><spacer flex="1"/><button id="apply" disabled="true" label="&staff.server.admin.org_unit_settings.update_setting;" accesskey=""/></hbox>
+    </groupbox>
+
+</window>
+

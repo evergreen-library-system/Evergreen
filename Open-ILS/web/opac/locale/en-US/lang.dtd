@@ -1545,6 +1545,15 @@
 <!ENTITY staff.z39_50.search_class.tcn "Accession #">
 <!ENTITY staff.z39_50.search_class.title "Title">
 <!ENTITY staff.z39_50_import_interface_label "Z39.50 Import">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.current_inherited_setting.caption "Current/Inherited Setting">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.new_setting.caption "New Setting">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.receipt_slip_type.prompt "Disable auto-print attempts for these receipt/slip types:">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.library_selector.prompt "For this library and descendants:">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.checkout "Checkout Receipt">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.bill_pay "Bill Pay Receipt">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.hold_slip "Hold Slip">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.transit_slip "Transit Slip">
+<!ENTITY staff.server.admin.do_not_auto_attempt_print_setting.hold_transit_slip "Hold/Transit Slip">
 <!ENTITY staff.server.admin.org_unit_settings.title "Organization Unit Settings">
 <!ENTITY staff.server.admin.org_unit_settings.context "Context Location">
 <!ENTITY staff.server.admin.org_unit_settings.uninherited " * Indicates the setting is not inherited from the parent org unit at run time">
@@ -1757,6 +1766,8 @@
 <!ENTITY staff.server.admin.index.maintenance_reports "Maintenance Reports">
 <!ENTITY staff.server.admin.index.fonts_and_sounds "Global Font and Sound Settings">
 <!ENTITY staff.server.admin.index.printer "Printer Settings Editor">
+<!ENTITY staff.server.admin.index.do_not_auto_attempt_print_setting.label "'Do Not Attempt Auto-Print' Setting">
+<!ENTITY staff.server.admin.index.do_not_auto_attempt_print_setting.accesskey "">
 <!ENTITY staff.server.admin.index.closed_dates "Closed Dates Editor">
 <!ENTITY staff.server.admin.index.copy_locations "Copy Locations Editor">
 <!ENTITY staff.server.admin.index.library_settings "Library Settings Editor">
