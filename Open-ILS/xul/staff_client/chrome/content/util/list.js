@@ -1662,10 +1662,9 @@ util.list.prototype = {
                     def.render = function(my) { return my[hint][my_field.name](); }
                 }
                 if (my_field.datatype == 'timestamp') {
-                    dojo.require('dojo.date.locale');
-                    dojo.require('dojo.date.stamp');
+                    JSAN.use('util.date');
                     def.render = function(my) {
-                        return dojo.date.locale.format( dojo.date.stamp.fromISOString(my[hint][my_field.name]()) );
+                        return util.date.formatted_date( my[hint][my_field.name](), '%{localized}' );
                     }
                 }
                 if (my_field.datatype == 'org_unit') {

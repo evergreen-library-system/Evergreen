@@ -92,7 +92,8 @@ function init_list() {
                     },
                     {
                         'id' : 'last_billing_activity', 'label' : 'Last Billing Activity', 'sort_type' : 'date', 'render' : function(my) { 
-                            return dojo.date.locale.format( dojo.date.stamp.fromISOString(my.last_billing_activity) );
+                            JSAN.use('util.date');
+                            return util.date.formatted_date( my.last_billing_activity, '%{localized}' );
                         }
                     }
                 ]),
