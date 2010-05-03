@@ -361,13 +361,19 @@ sub retrieve_holds {
     return $e->event unless $e->checkauth;
     $user_id = $e->requestor->id unless defined $user_id;
 
+    my $notes_filter = {staff => 'f'};
+    my $user = $e->retrieve_actor_user($user_id) or return $e->event;
     unless($user_id == $e->requestor->id) {
-        my $user = $e->retrieve_actor_user($user_id) or return $e->event;
-        unless($e->allowed('VIEW_HOLD', $user->home_ou)) {
+        if($e->allowed('VIEW_HOLD', $user->home_ou)) {
+            $notes_filter = {staff => 't'}
+        } else {
             my $allowed = OpenILS::Application::Actor::Friends->friend_perm_allowed(
                 $e, $user_id, $e->requestor->id, 'hold.view');
             return $e->event unless $allowed;
         }
+    } else {
+        # staff member looking at his/her own holds can see staff and non-staff notes
+        $notes_filter = {} if $e->allowed('VIEW_HOLD', $user->home_ou);
     }
 
     my $holds;
@@ -424,8 +430,9 @@ sub retrieve_holds {
         }
     }
 
-    if( ! $self->api_name =~ /id_list/ ) {
+    if( $self->api_name !~ /id_list/ ) {
         for my $hold ( @$holds ) {
+            $hold->notes($e->search_action_hold_request_note({hold => $hold->id, %$notes_filter}));
             $hold->transit(
                 $e->search_action_hold_transit_copy([
                     {hold => $hold->id},
@@ -2104,6 +2111,15 @@ sub uber_hold_impl {
     if($hold->usr->id ne $e->requestor->id) {
         # A user is allowed to see his/her own holds
 	    $e->allowed('VIEW_HOLD') or return $e->event;
+        $hold->notes( # filter out any non-staff ("private") notes
+            [ grep { !$U->is_true($_->staff) } @{$hold->notes} ] );
+
+    } else {
+        # caller is asking for own hold, but may not have permission to view staff notes
+	    unless($e->allowed('VIEW_HOLD')) {
+            $hold->notes( # filter out any staff notes
+                [ grep { $U->is_true($_->staff) } @{$hold->notes} ] );
+        }
     }
 
 	my $user = $hold->usr;
