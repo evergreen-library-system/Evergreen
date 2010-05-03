@@ -436,7 +436,7 @@ sub unified_search {
     }
 
     $e->disconnect;
-    $conn->respond_complete;
+    undef;
 }
 
 __PACKAGE__->register_method(
@@ -504,7 +504,7 @@ sub bib_search {
 
     $ses->disconnect;
     $e->commit;
-    $conn->respond_complete;
+    undef;
 }
 
 1;

@@ -114,7 +114,7 @@
                             <option name='action_link_invoice' disabled='disabled'>Link to Invoice</option>
                             <option name='action_view_invoice' disabled='disabled'>View Invoice(s)</option>
                             <option name='action_view_claim_policy'>Apply Claim Policy</option>
-                            <option name='action_manage_claims' disabled='disabled'>Claims ( existing)</option>
+                            <option name='action_manage_claims' disabled='disabled'>Claims</option>
                         </select>
                     </td>
                     <td><span name='li_state'></span></td>
@@ -223,7 +223,7 @@
                     <td><div name='cn_label'></div></td>
                     <td><div name='barcode'></div></td>
                     <td><div name='note'></div></td>
-                    <td><a href='javascript:void(0);' name='receive'>Mark&nbsp;Received</a><a href='javascript:void(0);' name='unreceive'>Un-Receive</a>&nbsp;<a href="javascript:void(0);" name='cancel'>Cancel</a><span class="hidden" name='cancel_reason'></span></td>
+                    <td><a href="javascript:void(0);" name="receive">Mark&nbsp;Received</a><a href="javascript:void(0);" name="unreceive">Un-Receive</a>&nbsp;<a href="javascript:void(0);" name="cancel">Cancel</a><span class="hidden" name="cancel_reason"></span>&nbsp;<a href="javascript:void(0);" name="claim">Claim</a></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
                 </tr>
             </tbody>

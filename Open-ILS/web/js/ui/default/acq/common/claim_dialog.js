@@ -1,4 +1,6 @@
-function ClaimDialogManager(dialog, finalDialog, eligibleLidByLi) {
+function ClaimDialogManager(
+    dialog, finalDialog, eligibleLidByLi, claimCallback
+) {
     var self = this;
 
     this.anyLids = false;
@@ -8,6 +10,7 @@ function ClaimDialogManager(dialog, finalDialog, eligibleLidByLi) {
     this.dialog = dialog;
     this.finalDialog = finalDialog;
     this.eligibleLidByLi = eligibleLidByLi;
+    this.claimCallback = claimCallback;
 
     this.showingList = dojo.byId("acq-lit-li-claim-dia-lid-list");
     this.eligibleList = dojo.byId("acq-lit-li-claim-dia-lid-list-init");
@@ -47,6 +50,7 @@ function ClaimDialogManager(dialog, finalDialog, eligibleLidByLi) {
 
     this.reset = function(li) {
         this.anyLids = false;
+        this.anyEligible = false;
         this.showingLidNodes = {};
 
         openils.Util.hide("acq-lit-li-claim-dia-initiate");
@@ -56,15 +60,17 @@ function ClaimDialogManager(dialog, finalDialog, eligibleLidByLi) {
         dojo.empty(this.eligibleList);
     };
 
-    this.show = function(li) {
+    this.show = function(li, preselected) {
         this.reset();
-        this.prepare(li);
+        this.prepare(li, preselected);
         this.dialog.show();
     };
 
     this.hide = function() { this.dialog.hide(); };
 
-    this.prepare = function(li) {
+    this.prepare = function(li, preselected) {
+        this.workingLi = li;
+
         dojo.byId("acq-lit-li-claim-dia-li-title").innerHTML =
             li.attributes().filter(
                 function(o) { return Boolean(o.attr_name() == "title"); }
@@ -77,7 +83,7 @@ function ClaimDialogManager(dialog, finalDialog, eligibleLidByLi) {
                     function(claim) { self.addClaim(lid, claim); }
                 );
                 if (self.eligibleLidByLi[li.id()].indexOf(lid.id()) != -1) {
-                    self.addEligible(lid);
+                    self.addEligible(lid, preselected == lid.id());
                 }
             }
         );
@@ -144,21 +150,20 @@ function ClaimDialogManager(dialog, finalDialog, eligibleLidByLi) {
         );
     };
 
-    this.addEligible = function(lid) {
+    this.addEligible = function(lid, preselect) {
         if (!this.anyEligible)
             openils.Util.show("acq-lit-li-claim-dia-initiate");
         this.anyEligible = true;
 
         var eligibleNode = dojo.clone(this.eligibleTemplate);
-        nodeByName("claimable_lid", eligibleNode).value = lid.id();
-        dojo.attr(
-            nodeByName("claimable_lid", eligibleNode),
-            "id", "claim-lid-" + lid.id()
-        );
-        dojo.attr(
-            nodeByName("claimable_lid_label", eligibleNode),
-            "for", "claim-lid-" + lid.id()
-        );
+        var checkbox = nodeByName("claimable_lid", eligibleNode);
+
+        checkbox.value = lid.id();
+        dojo.attr(checkbox, "id", "claim-lid-" + lid.id());
+        dojo.attr(checkbox, "for", "claim-lid-" + lid.id());
+        if (preselect)
+            dojo.attr(checkbox, "checked", true);
+
         nodeByName("barcode", eligibleNode).innerHTML = lid.barcode();
         nodeByName("recvd", eligibleNode).innerHTML = this._reprReceived(lid);
 
@@ -199,6 +204,7 @@ function ClaimDialogManager(dialog, finalDialog, eligibleLidByLi) {
                     dojo.byId("print", win.document).innerHTML =
                         localeStrings.PRINT;
                     dojo.byId("print", win.document).disabled = false;
+                    self.claimCallback(self.workingLi);
                 }
             }
         );

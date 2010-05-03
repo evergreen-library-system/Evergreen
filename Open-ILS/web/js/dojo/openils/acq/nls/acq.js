@@ -79,5 +79,6 @@
     'RECVD': "Recv'd",
     'NOT_RECVD': "Not recv'd",
     'PRINT': "Print",
-    'INVOICES': "Invoices"
+    'INVOICES': "Invoices",
+    'NUM_CLAIMS_EXISTING': "Claims (${0} existing)"
 }

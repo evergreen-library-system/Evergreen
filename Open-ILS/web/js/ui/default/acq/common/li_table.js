@@ -50,6 +50,7 @@ function AcqLiTable() {
     this.virtDfaId = -1;
     this.dfeOffset = 0;
     this.claimEligibleLidByLi = {};
+    this.claimEligibleLid = {};
     this.toggleState = false;
     this.tbody = dojo.byId('acq-lit-tbody');
     this.selectors = [];
@@ -68,7 +69,10 @@ function AcqLiTable() {
     this._copy_fields_for_acqdf = ['owning_lib', 'location'];
     this.invoiceLinkDialogManager = new InvoiceLinkDialogManager("li");
     this.claimDialog = new ClaimDialogManager(
-        liClaimDialog, finalClaimDialog, this.claimEligibleLidByLi
+        liClaimDialog, finalClaimDialog, this.claimEligibleLidByLi,
+        function(li) {    /* callback that fires when claims are made */
+            self.fetchClaimInfo(li.id(), /* force update */ true);
+        }
     );
 
     dojo.connect(acqLitLiActionsSelector, 'onChange', 
@@ -203,8 +207,7 @@ function AcqLiTable() {
             }).build(function(w) { self.claimPolicyPicker = w; });
         }
 
-        if (typeof(row) == "undefined")
-            row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
+        if (!row) row = this._findLiRow(li);
 
         var actViewPolicy = nodeByName("action_view_claim_policy", row);
         if (li.claim_policy())
@@ -227,6 +230,15 @@ function AcqLiTable() {
             };
         }
     };
+
+    this.fetchClaimInfo = function(liId, force, callback, row) {
+        this._fetchLineitem(
+            liId, function(full) {
+                self.liCache[full.id()] = full;
+                self.checkClaimEligibility(full, callback, row);
+            }, force
+        );
+    }
 
     /**
      * Inserts a single lineitem into the growing table of lineitems
@@ -258,15 +270,7 @@ function AcqLiTable() {
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
-        /* XXX note how checkClaimEligibility() is getting called once per LI
-         * when in some use cases we should be able to do that job with one
-         * call per PO or per PL or whatever... */
-        this._fetchLineitem(
-            li.id(), function(full) {
-                self.liCache[full.id()] = full;
-                self.checkClaimEligibility(full, row);
-            }
-        );
+        this.fetchClaimInfo(li.id(), false, null, row);
 
         this.updateLiNotesCount(li, row);
 
@@ -340,26 +344,45 @@ function AcqLiTable() {
         return total;
     };
 
+    this._findLiRow = function(li) {
+        return dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
+    };
+
     this.reconsiderClaimControl = function(li, row) {
         var option = nodeByName("action_manage_claims", row);
         var eligible = this.claimEligibleLidByLi[li.id()].length;
         var count = this._liCountClaims(li);
+        if (!row) row = this._findLiRow(li);
 
         option.disabled = !(count || eligible);
-
-        /* of course I'd rather just populate a <span> element inside the
-         * option element, but it seems you can't actually have any elements
-         * inside option elements 
-         * TODO: move to dojo/i18n
-         * */
-        option.innerHTML = option.innerHTML.replace(
-            /(^.+)(.*)( existing.+$)/, "$1" + String(count) + "$3"
-        );
+        option.innerHTML =
+            dojo.string.substitute(localeStrings.NUM_CLAIMS_EXISTING, [count]);
         option.onclick = function() { self.claimDialog.show(li); };
     };
 
-    this.checkClaimEligibility = function(li, row) {
+    this.clearEligibility = function(li) {
         this.claimEligibleLidByLi[li.id()] = [];
+
+        if (li.lineitem_details()) {
+            li.lineitem_details().forEach(
+                function(lid) { delete self.claimEligibleLid[lid.id()]; }
+            );
+        }
+
+        if (this.copyCache) {
+            var to_del = [];
+            for (var k in this.copyCache) {
+                if (this.copyCache[k].lineitem() == li.id())
+                    to_del.push(k);
+            }
+            to_del.forEach(
+                function(k) { delete self.claimEligibleLid[k]; }
+            );
+        }
+    };
+
+    this.checkClaimEligibility = function(li, callback, row) {
+        this.clearEligibility(li);
         fieldmapper.standardRequest(
             ["open-ils.acq", "open-ils.acq.claim.eligible.lineitem_detail"], {
                 "params": [openils.User.authtoken, {"lineitem": li.id()}],
@@ -369,18 +392,20 @@ function AcqLiTable() {
                         self.claimEligibleLidByLi[li.id()].push(
                             r.lineitem_detail()
                         );
+                        self.claimEligibleLid[r.lineitem_detail()] = true;
                     }
                 },
                 "oncomplete": function() {
                     self.reconsiderClaimControl(li, row);
+                    if (typeof(callback) == "function")
+                        callback();
                 }
             }
         );
     };
 
     this.updateLiNotesCount = function(li, row) {
-        if (typeof(row) == "undefined")
-            row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
+        if (!row) row = this._findLiRow(li);
 
         var has_notes = (li.lineitem_notes().filter(
                 function(o) { return Boolean (o.alert_text()); }
@@ -396,8 +421,7 @@ function AcqLiTable() {
 
     /* XXX NOT related to _updateLiState(). rethink */
     this.updateLiState = function(li, row) {
-        if (typeof(row) == "undefined")
-            row = dojo.query('tr[li="' + li.id() + '"]', "acq-lit-tbody")[0];
+        if (!row) row = this._findLiRow(li);
 
         var actReceive = nodeByName("action_mark_recv", row);
         var actUnRecv = nodeByName("action_mark_unrecv", row);
@@ -729,10 +753,10 @@ function AcqLiTable() {
         );
     };
 
-    this._fetchLineitem = function(liId, handler) {
+    this._fetchLineitem = function(liId, handler, force) {
 
         var li = this.liCache[liId];
-        if(li && li.marc() && li.lineitem_details())
+        if(li && li.marc() && li.lineitem_details() && !force)
             return handler(li);
         
         fieldmapper.standardRequest(
@@ -743,6 +767,7 @@ function AcqLiTable() {
                     flesh_attrs: true,
                     flesh_cancel_reason: true,
                     flesh_li_details: true,
+                    flesh_notes: true,
                     flesh_fund_debit: true }],
 
                 oncomplete: function(r) {
@@ -1489,6 +1514,7 @@ function AcqLiTable() {
         var unrecv_link = nodeByName("unreceive", row);
         var del_link = nodeByName("delete", row);
         var cxl_link = nodeByName("cancel", row);
+        var claim_link = nodeByName("claim", row);
         var cxl_reason_link = nodeByName("cancel_reason", row);
 
         if (copy.cancel_reason()) {
@@ -1496,6 +1522,7 @@ function AcqLiTable() {
             openils.Util.hide(recv_link);
             openils.Util.hide(unrecv_link);
             openils.Util.hide(cxl_link);
+            openils.Util.hide(claim_link);
 
             /* XXX the following may leak memory in a long lived table: dijits may not get destroyed... not positive. revisit. */
             var holds_reason = dojo.create(
@@ -1513,14 +1540,20 @@ function AcqLiTable() {
             );
             openils.Util.show(cxl_reason_link, "inline");
         } else if (this.isPO) {
+            /* Only using this in one place so far, but may want it for better
+             * decisions on when to display certain controls. */
+            var li_state = this.liCache[copy.lineitem()].state();
+
             openils.Util.hide(del_link.parentNode);
             openils.Util.hide(cxl_reason_link);
 
             /* Avoid showing (un)receive links, cancel links, for virt copies */
             if (copy.id() > 0) {
-                if(copy.recv_time()) {
+                if (copy.recv_time()) {
                     openils.Util.hide(cxl_link);
                     openils.Util.hide(recv_link);
+                    openils.Util.hide(claim_link);
+
                     openils.Util.show(unrecv_link, "inline");
                     unrecv_link.onclick = function() {
                         if (confirm(localeStrings.UNRECEIVE_LID))
@@ -1528,7 +1561,21 @@ function AcqLiTable() {
                     };
                 } else {
                     openils.Util.hide(unrecv_link);
-                    openils.Util.show(recv_link, "inline");
+
+                    if (this.claimEligibleLid[copy.id()]) {
+                        openils.Util.show(claim_link, "inline");
+                        claim_link.onclick = function() {
+                            self.claimDialog.show(
+                                self.liCache[copy.lineitem()], copy.id()
+                            );
+                        };
+                    } else {
+                        openils.Util.hide(claim_link);
+                    }
+
+                    openils.Util[li_state == "on-order" ? "show" : "hide"](
+                        recv_link, "inline"
+                    );
                     openils.Util.show(cxl_link, "inline");
                     recv_link.onclick = function() {
                         if (self.checkLiAlerts(copy.lineitem()))
@@ -1542,11 +1589,13 @@ function AcqLiTable() {
                 openils.Util.hide(cxl_link);
                 openils.Util.hide(unrecv_link);
                 openils.Util.hide(recv_link);
+                openils.Util.hide(claim_link);
             }
         } else {
             openils.Util.hide(unrecv_link);
             openils.Util.hide(recv_link);
             openils.Util.hide(cxl_reason_link);
+            openils.Util.hide(claim_link);
 
             del_link.onclick = function() { self.deleteCopy(row) };
             openils.Util.show(del_link.parentNode);
@@ -2080,8 +2129,14 @@ function AcqLiTable() {
                 "async": true,
                 "params": [this.authtoken, obj.id()],
                 "onresponse": function(r) {
-                    self.handleReceive(openils.Util.readResponse(r));
-                    progressDialog.hide();
+                    if (r = openils.Util.readResponse(r)) {
+                        self.fetchClaimInfo(
+                            part == "lineitem" ? obj.id() : obj.lineitem(),
+                            /* force */ true,
+                            function() { self.handleReceive(r); }
+                        );
+                        progressDialog.hide();
+                    }
                 }
             }
         );
