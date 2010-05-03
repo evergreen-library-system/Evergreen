@@ -248,5 +248,85 @@ sub claim_lineitem_detail {
 }
 
 
+__PACKAGE__->register_method(
+    method => "get_claim_voucher_by_lid",
+    api_name => "open-ils.acq.claim.voucher.by_lineitem_detail",
+    stream => 1,
+    signature => {
+        desc => q/Retrieve existing claim vouchers by lineitem detail ID/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Lineitem detail ID", type => "number"}
+        ],
+        return => {
+            desc => "Claim ready data", type => "object", class => "atev"
+        }
+    }
+);
+
+sub get_claim_voucher_by_lid {
+    my ($self, $conn, $auth, $lid_id) = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $lid = $e->retrieve_acq_lineitem_detail([
+        $lid_id, {
+            "flesh" => 2,
+            "flesh_fields" => {
+                "acqlid" => ["lineitem"], "jub" => ["purchase_order"]
+            }
+        }
+    ]);
+
+    return $e->die_event unless $e->allowed(
+        "VIEW_PURCHASE_ORDER", $lid->lineitem->purchase_order->ordering_agency
+    );
+
+    my $id_list = $e->json_query({
+        "select" => {"atev" => ["id"]},
+        "from" => {
+            "atev" => {
+                "atevdef" => {"field" => "id", "fkey" => "event_def"},
+                "acqcle" => {
+                    "field" => "id", "fkey" => "target",
+                    "join" => {
+                        "acqcl" => {
+                            "field" => "id", "fkey" => "claim",
+                            "join" => {
+                                "acqlid" => {
+                                    "fkey" => "lineitem_detail",
+                                    "field" => "id"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "where" => {
+            "-and" => {
+                "+atevdef" => {"hook" => "format.acqcle.html"},
+                "+acqlid" => {"id" => $lid_id}
+            }
+        }
+    }) or return $e->die_event;
+
+    if ($id_list && @$id_list) {
+        foreach (@$id_list) {
+            $conn->respond(
+                $e->retrieve_action_trigger_event([
+                    $_->{"id"}, {
+                        "flesh" => 1,
+                        "flesh_fields" => {"atev" => ["template_output"]}
+                    }
+                ])
+            );
+        }
+    }
+
+    $e->disconnect;
+    undef;
+}
 
 1;

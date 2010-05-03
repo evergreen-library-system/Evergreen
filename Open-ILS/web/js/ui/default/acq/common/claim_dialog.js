@@ -116,15 +116,10 @@ function ClaimDialogManager(
         var claimNode = dojo.clone(this.showingClaimTemplate);
         nodeByName("type", claimNode).innerHTML = claim.type().code();
         nodeByName("voucher", claimNode).onclick = function() {
-            alert("unimplemented"); // XXX
-            // TODO For some reason, the format.acqcle.html events that get
-            // fired by claim_item() in Claims.pm don't stick around in
-            // the database.  Must find out why and fix this before writing
-            // the ML method that the following code would call.
-            /*
             var win;
             fieldmapper.standardRequest(
-                ["open-ils.acq", "open-ils.acq.claim.get_format_events"], {
+                ["open-ils.acq",
+                    "open-ils.acq.claim.voucher.by_lineitem_detail"], {
                     "params": [openils.User.authtoken, lid.id()],
                     "async": true,
                     "onresponse": function(r) {
@@ -133,7 +128,7 @@ function ClaimDialogManager(
                                 win = openClaimVoucherWindow();
                         }
                         dojo.byId("main", win.document).innerHTML +=
-                            (contents + "<hr />");
+                            (r.template_output().data() + "<hr />");
                     },
                     "oncomplete": function() {
                         var print_button = dojo.byId("print", win.document);
@@ -142,7 +137,6 @@ function ClaimDialogManager(
                     }
                 }
             );
-            */
         };
 
         dojo.place(
