@@ -931,15 +931,15 @@ sub _create_perm_maps {
 
 
 __PACKAGE__->register_method(
-	method	=> "set_user_work_ous",
-	api_name	=> "open-ils.actor.user.work_ous.update",
+    method   => "set_user_work_ous",
+    api_name => "open-ils.actor.user.work_ous.update",
 );
 
 sub set_user_work_ous {
-	my $self = shift;
-	my $client = shift;
-	my $ses = shift;
-	my $maps = shift;
+    my $self   = shift;
+    my $client = shift;
+    my $ses    = shift;
+    my $maps   = shift;
 
 	my( $requestor, $evt ) = $apputils->checksesperm( $ses, 'ASSIGN_WORK_ORG_UNIT' );
 	return $evt if $evt;
@@ -971,8 +971,8 @@ sub set_user_work_ous {
 
 
 __PACKAGE__->register_method(
-	method	=> "set_user_perms",
-	api_name	=> "open-ils.actor.user.permissions.update",
+    method   => "set_user_perms",
+    api_name => "open-ils.actor.user.permissions.update",
 );
 
 sub set_user_perms {
@@ -1053,9 +1053,10 @@ sub user_retrieve_by_barcode {
 
 
 __PACKAGE__->register_method(
-	method	=> "get_user_by_id",
+    method        => "get_user_by_id",
     authoritative => 1,
-	api_name	=> "open-ils.actor.user.retrieve",);
+    api_name      => "open-ils.actor.user.retrieve",
+);
 
 sub get_user_by_id {
 	my ($self, $client, $auth, $id) = @_;
@@ -1068,20 +1069,18 @@ sub get_user_by_id {
 }
 
 
-
 __PACKAGE__->register_method(
-	method	=> "get_org_types",
-	api_name	=> "open-ils.actor.org_types.retrieve",);
-
+    method   => "get_org_types",
+    api_name => "open-ils.actor.org_types.retrieve",
+);
 sub get_org_types {
     return $U->get_org_types();
 }
 
 
-
 __PACKAGE__->register_method(
-	method	=> "get_user_ident_types",
-	api_name	=> "open-ils.actor.user.ident_types.retrieve",
+    method   => "get_user_ident_types",
+    api_name => "open-ils.actor.user.ident_types.retrieve",
 );
 my $ident_types;
 sub get_user_ident_types {
@@ -1091,11 +1090,9 @@ sub get_user_ident_types {
 }
 
 
-
-
 __PACKAGE__->register_method(
-	method	=> "get_org_unit",
-	api_name	=> "open-ils.actor.org_unit.retrieve",
+    method   => "get_org_unit",
+    api_name => "open-ils.actor.org_unit.retrieve",
 );
 
 sub get_org_unit {
@@ -1111,8 +1108,8 @@ sub get_org_unit {
 }
 
 __PACKAGE__->register_method(
-	method	=> "search_org_unit",
-	api_name	=> "open-ils.actor.org_unit_list.search",
+    method   => "search_org_unit",
+    api_name => "open-ils.actor.org_unit_list.search",
 );
 
 sub search_org_unit {
@@ -1208,10 +1205,9 @@ sub get_standings {
 }
 
 
-
 __PACKAGE__->register_method(
-	method	=> "get_my_org_path",
-	api_name	=> "open-ils.actor.org_unit.full_path.retrieve"
+    method   => "get_my_org_path",
+    api_name => "open-ils.actor.org_unit.full_path.retrieve"
 );
 
 sub get_my_org_path {
@@ -1228,8 +1224,9 @@ sub get_my_org_path {
 
 
 __PACKAGE__->register_method(
-	method	=> "patron_adv_search",
-	api_name	=> "open-ils.actor.patron.search.advanced" );
+    method   => "patron_adv_search",
+    api_name => "open-ils.actor.patron.search.advanced"
+);
 sub patron_adv_search {
 	my( $self, $client, $auth, $search_hash, 
         $search_limit, $search_sort, $include_inactive, $search_depth ) = @_;
@@ -1244,17 +1241,44 @@ sub patron_adv_search {
 
 
 __PACKAGE__->register_method(
-	method	=> "update_passwd",
-    authoritative => 1,
-	api_name	=> "open-ils.actor.user.password.update");
+    method    => "update_passwd",
+    api_name  => "open-ils.actor.user.password.update",
+    signature => {
+        desc   => "Update the operator's password", 
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'New password',         type => 'string' },
+            { desc => 'Current password',     type => 'string' }
+        ],
+        return => {desc => '1 on success, Event on error or incorrect current password'}
+    }
+);
 
 __PACKAGE__->register_method(
-	method	=> "update_passwd",
-	api_name	=> "open-ils.actor.user.username.update");
+    method    => "update_passwd",
+    api_name  => "open-ils.actor.user.username.update",
+    signature => {
+        desc   => "Update the operator's username", 
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'New username',         type => 'string' }
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
 
 __PACKAGE__->register_method(
-	method	=> "update_passwd",
-	api_name	=> "open-ils.actor.user.email.update");
+    method    => "update_passwd",
+    api_name  => "open-ils.actor.user.email.update",
+    signature => {
+        desc   => "Update the operator's email address", 
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'New email address',    type => 'string' }
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
 
 sub update_passwd {
     my( $self, $conn, $auth, $new_val, $orig_pw ) = @_;
@@ -1297,11 +1321,10 @@ sub update_passwd {
 
 
 
-
 __PACKAGE__->register_method(
-	method	=> "check_user_perms",
-	api_name	=> "open-ils.actor.user.perm.check",
-	notes		=> <<"	NOTES");
+    method   => "check_user_perms",
+    api_name => "open-ils.actor.user.perm.check",
+    notes    => <<"	NOTES");
 	Takes a login session, user id, an org id, and an array of perm type strings.  For each
 	perm type, if the user does *not* have the given permission it is added
 	to a list which is returned from the method.  If all permissions
@@ -2619,7 +2642,16 @@ sub delete_closed_date {
 __PACKAGE__->register_method(
     method    => 'usrname_exists',
     api_name  => 'open-ils.actor.username.exists',
-    signature => 'Returns 1 if the requested username exists, returns 0 otherwise'
+    signature => {
+        desc  => 'Check if a username is already taken (by an undeleted patron)',
+        param => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Username',             type => 'string'}
+        ],
+        return => {
+            desc => 'id of existing user if username exists, undef otherwise.  Event on error'
+        },
+    }
 );
 
 sub usrname_exists {
