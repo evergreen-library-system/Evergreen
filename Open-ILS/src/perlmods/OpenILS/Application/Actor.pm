@@ -1525,6 +1525,7 @@ my $common_params = [
     { desc => 'Authentication token', type => 'string' },
     { desc => 'User ID',              type => 'string' },
     { desc => 'Transactions type (optional, defaults to all)', type => 'string' },
+    { desc => 'Options hash.  May contain limit and offset for paged results.', type => 'object' },
 ];
 my %methods = (
     'open-ils.actor.user.transactions'                      => '',
@@ -1592,7 +1593,8 @@ __PACKAGE__->register_method(
 
 
 sub user_transactions {
-	my( $self, $client, $login_session, $user_id, $type ) = @_;
+	my( $self, $client, $login_session, $user_id, $type, $options ) = @_;
+    $options ||= {};
 
 	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
 		$login_session, $user_id, 'VIEW_USER_TRANSACTIONS' );
@@ -1600,13 +1602,13 @@ sub user_transactions {
 
     my $api = $self->api_name();
 
+    my $filter = ($api =~ /have_balance/o) ?
+        { 'balance_owed' => { '<>' => 0 } }:
+        { 'total_owed' => { '>' => 0 } };
+
     my ($trans) = $self->method_lookup(
         'open-ils.actor.user.transactions.history.still_open')
-      ->run( $login_session, $user_id, $type );
-
-    $trans = ($api =~ /have_balance/o) ?
-            [ grep { int($_->balance_owed * 100) != 0 } @$trans ] : 
-            [ grep { int($_->total_owed   * 100)  > 0 } @$trans ] ;
+      ->run( $login_session, $user_id, $type, $filter, $options );
 
 	if($api =~ /total/o) { 
 		my $total = 0.0;
@@ -2104,8 +2106,9 @@ __PACKAGE__->register_method(
 
 
 sub user_transaction_history {
-	my( $self, $conn, $auth, $userid, $type, $filter ) = @_;
+	my( $self, $conn, $auth, $userid, $type, $filter, $options ) = @_;
     $filter ||= {};
+    $options ||= {};
 
 	# run inside of a transaction to prevent replication delays
 	my $e = new_editor(authtoken=>$auth);
@@ -2119,40 +2122,45 @@ sub user_transaction_history {
 	my $api = $self->api_name;
 	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history.still_open$/);
 
-    my $mbts = $e->search_money_billable_transaction_summary(
-        [ 
-            { usr => $userid, @xact_finish, %$filter },
-            { order_by => { mbt => 'xact_start DESC' } }
-        ]
-    );
-
 	if(defined($type)) {
-		@$mbts = grep { $_->xact_type eq $type } @$mbts;
+		$filter->{'xact_type'} = $type;
 	}
 
 	if($api =~ /have_bill_or_payment/o) {
 
         # transactions that have a non-zero sum across all billings or at least 1 payment
-		@$mbts = grep { 
-            int($_->balance_owed * 100) != 0 ||
-            defined($_->last_payment_ts) } @$mbts;
+        $filter->{'-or'} = {
+            'balance_owed' => { '<>' => 0 },
+            'last_payment_ts' => { '<>' => undef }
+        };
 
     } elsif( $api =~ /have_balance/o) {
 
         # transactions that have a non-zero overall balance
-		@$mbts = grep { int($_->balance_owed * 100) != 0 } @$mbts;
+        $filter->{'balance_owed'} = { '<>' => 0 };
 
 	} elsif( $api =~ /have_charge/o) {
 
         # transactions that have at least 1 billing, regardless of whether it was voided
-		@$mbts = grep { defined($_->last_billing_ts) } @$mbts;
+        $filter->{'last_billing_ts'} = { '<>' => undef };
 
 	} elsif( $api =~ /have_bill/o) {
 
         # transactions that have non-zero sum across all billings.  This will exclude
         # xacts where all billings have been voided
-		@$mbts = grep { int($_->total_owed * 100) != 0 } @$mbts;
+        $filter->{'total_owed'} = { '<>' => 0 };
 	}
+
+    my $options_clause = { order_by => { mbt => 'xact_start DESC' } };
+    $options_clause->{'limit'} = $options->{'limit'} if $options->{'limit'}; 
+    $options_clause->{'offset'} = $options->{'offset'} if $options->{'offset'}; 
+
+    my $mbts = $e->search_money_billable_transaction_summary(
+        [ 
+            { usr => $userid, @xact_finish, %$filter },
+            $options_clause
+        ]
+    );
 
     if ($api =~ /\.ids/) {
     	return [map {$_->id} @$mbts];
