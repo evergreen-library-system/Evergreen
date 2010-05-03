@@ -100,7 +100,13 @@
 					-->
 					<option name='msg64_summary_datatype' value='barcode' />
 				</options>
+
 				<scripts>
+                    <!-- 
+                        When legacy script support is disabled, the <script> configuration
+                        is ignored.  The SIP server pulls item configuration information
+                        from the database instead (config.circ_modifier).
+                    -->
 					<path>LOCALSTATEDIR/</path>
                     <path>LOCALSTATEDIR/catalog/</path>
 					<item_config>circ/circ_item_config.js</item_config>

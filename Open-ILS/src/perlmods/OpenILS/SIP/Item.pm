@@ -79,33 +79,56 @@ sub run_attr_script {
 	return 1 if $self->{ran_script};
 	$self->{ran_script} = 1;
 
-	my $config = OpenILS::SIP->config();
-	my $path = $config->{implementation_config}->{scripts}->{path};
-	my $item_config_script = $config->{implementation_config}->{scripts}->{item_config};
 
-	$path = ref($path) eq 'ARRAY' ? $path : [$path];
+    if($self->{osrf_config}->config_value(
+        apps => 'open-ils.circ' => app_settings => 'legacy_script_support')) {
 
-	syslog('LOG_DEBUG', "OILS: Script path = $path, Item config script = $item_config_script");
 
-	my $runner = 
-		OpenILS::Application::Circ::ScriptBuilder->build(
-			{
-				copy => $self->{copy},
-				editor => OpenILS::SIP->editor(),
-			}
-		);
+        my $config = OpenILS::SIP->config();
+        my $path = $config->{implementation_config}->{scripts}->{path};
+        my $item_config_script = $config->{implementation_config}->{scripts}->{item_config};
 
-	$runner->add_path($_) for @$path;
-	$runner->load($item_config_script);
+        $path = ref($path) eq 'ARRAY' ? $path : [$path];
 
-	unless( $self->{item_config_result} = $runner->run ) {
-		$runner->cleanup;
-		warn "Item config script [$path : $item_config_script] failed to run: $@\n";
-		syslog('LOG_ERR', "OILS: Item config script [$path : $item_config_script] failed to run: $@");
-		return undef;
-	}
+        syslog('LOG_DEBUG', "OILS: Script path = $path, Item config script = $item_config_script");
 
-	$runner->cleanup;
+        my $runner = 
+            OpenILS::Application::Circ::ScriptBuilder->build(
+                {
+                    copy => $self->{copy},
+                    editor => OpenILS::SIP->editor(),
+                }
+            );
+
+        $runner->add_path($_) for @$path;
+        $runner->load($item_config_script);
+
+        unless( $self->{item_config_result} = $runner->run ) {
+            $runner->cleanup;
+            warn "Item config script [$path : $item_config_script] failed to run: $@\n";
+            syslog('LOG_ERR', "OILS: Item config script [$path : $item_config_script] failed to run: $@");
+            return undef;
+        }
+
+        $runner->cleanup;
+
+    } else {
+
+        # use the in-db circ modifier configuration 
+        my $config = {magneticMedia => 'f', SIPMediaType => '001'};
+        my $mod = $self->{copy}->circ_modifier;
+
+        if($mod) {
+            my $mod_obj = OpenILS::SIP->editor()->search_config_circ_modifier($mod);
+            if($mod_obj) {
+                $config->{magneticMedia} = $mod_obj->magnetic_media;
+                $config->{SIPMediaType} = $mod_obj->sip2_media_type;
+            }
+        }
+
+        $self->{item_config_result} = $config;
+    }
+
 	return 1;
 }
 
