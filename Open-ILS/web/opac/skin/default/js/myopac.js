@@ -1099,7 +1099,7 @@ function myOPACUpdateEmail() {
 	var req = new Request(UPDATE_EMAIL, G.user.session, email );
 	req.send(true);
 	if(req.result()) {
-		G.user.usrname(email);
+		G.user.email(email);
 		hideMe($('myopac_update_email_row'));
 		userShown = false;
 		alertId('myopac_email_success');
