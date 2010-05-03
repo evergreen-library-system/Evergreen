@@ -39,6 +39,10 @@ sub new {
         my ($key, $val) = @$subfield;
 
         if ($key =~ /[a-m]/) {
+            if (exists($self->{_mfhdh_FIELDS}->{$key})) {
+                carp("Duplicate, non-repeatable subfield '$key' found, ignoring");
+                next;
+            }
             if ($self->{_mfhdh_COMPRESSED}) {
                 $self->{_mfhdh_FIELDS}->{$key}{HOLDINGS} = [split(/\-/, $val)];
             } else {
@@ -466,33 +470,79 @@ sub validate {
 # Replace a single holding with it's next prediction
 # and return itself
 #
-# If the holding is compressed, the range is expanded
-#
 sub increment {
     my $self = shift;
 
     if ($self->is_open_ended) {
         carp "Holding is open-ended, cannot increment";
         return $self;
+    } elsif ($self->is_compressed) {
+        carp "Incrementing a compressed holding is deprecated, use extend instead";
+        return $self->extend;
     }
 
     my $next = $self->next();
 
-    if ($self->is_compressed) {    # expand range
-        foreach my $key (keys %{$next}) {
-            my @values = @{$self->field_values($key)};
-            $values[1] = $next->{$key};
-            $self->fields->{$key}{HOLDINGS} = \@values;
-            $next->{$key} = join('-', @values);
-        }
-    } else {
-        foreach my $key (keys %{$next}) {
-            $self->fields->{$key}{HOLDINGS}[0] = $next->{$key};
-        }
+    foreach my $key (keys %{$next}) {
+        $self->fields->{$key}{HOLDINGS}[0] = $next->{$key};
     }
 
     $self->seqno($self->seqno + 1);
     $self->update(%{$next});    # update underlying subfields
+    return $self;
+}
+
+#
+# Extends a holding (compressing if needed) to include the next
+# prediction and returns itself
+#
+sub extend {
+    my $self = shift;
+
+    if ($self->is_open_ended) {
+        carp "Holding is open-ended, cannot extend";
+        return $self;
+    }
+
+    my $next = $self->next();
+
+    if (!$self->is_compressed) {
+        $self->is_compressed(1);  # add compressed state
+    }
+
+    foreach my $key (keys %{$next}) {
+        my @values = @{$self->field_values($key)};
+        $values[1] = $next->{$key};
+        $self->fields->{$key}{HOLDINGS} = \@values;
+        $next->{$key} = join('-', @values);
+    }
+
+    $self->update(%{$next});    # update underlying subfields
+    return $self;
+}
+
+#
+# Turns a compressed holding into the singular form of the first member
+# in the range
+#
+sub compressed_to_first {
+    my $self = shift;
+
+    if (!$self->is_compressed) {
+        carp "Holding not compressed, cannot convert to first member";
+        return $self;
+    }
+
+    my %changes;
+    foreach my $key (keys %{$self->fields}) {
+        my @values = @{$self->field_values($key)};
+        $self->fields->{$key}{HOLDINGS} = [$values[0]];
+        $changes{$key} = $values[0];
+    }
+
+    $self->update(%changes);    # update underlying subfields
+    $self->is_compressed(0);    # remove compressed state
+
     return $self;
 }
 
@@ -627,4 +677,117 @@ sub _uncombine {
     my @parts = split('/', $combo);
     return $parts[$pos];
 }
+
+#
+# Overload string comparison operators
+#
+# We are not overloading '<=>' because '==' is used liberally in MARC::Record
+# to compare field identity (i.e. is this the same exact Field object?), not value
+#
+# Other string operators are auto-generated from 'cmp'
+#
+# Please note that this comparison is based on what the holding represents,
+# not whether it is strictly identical (e.g. the seqno and link may vary)
+#
+use overload ('cmp' => \&_compare,
+              'fallback' => 1);
+sub _compare {
+    my ($holding_1, $holding_2) = @_;
+
+    # TODO: this needs some more consideration
+    # fall back to 'built-in' comparison
+    if (!UNIVERSAL::isa($holding_2, ref $holding_1)) {
+        if (defined $holding_2) {
+            carp("Use of non-holding in holding comparison operation");
+            return ( "$holding_1" cmp "$holding_2" );
+        } else {
+            carp("Use of undefined value in holding comparison operation");
+            return 1; # similar to built-in, something is "greater than" nothing
+        }
+    }
+
+    # special cases for compressed holdings
+    my ($holding_1_first, $holding_1_last, $holding_2_first, $holding_2_last, $found_compressed);
+    # 0 for no compressed, 1 for first compressed, 2 for second compressed, 3 for both compressed
+    $found_compressed = 0; 
+    if ($holding_1->is_compressed) {
+        $holding_1_last = $holding_1->clone->compressed_to_last;
+        $found_compressed += 1;
+    } else {
+        $holding_1_first = $holding_1;
+        $holding_1_last = $holding_1;
+    }
+    if ($holding_2->is_compressed) {
+        $holding_2_first = $holding_2->clone->compressed_to_first;
+        $found_compressed += 2;
+    } else {
+        $holding_2_first = $holding_2;
+        $holding_2_last = $holding_2;
+    }
+
+    if ($found_compressed) {
+        my $cmp = ($holding_1_last cmp $holding_2_first); # 1 ends before 2 starts
+        if ($cmp == -1) {
+            return -1; # 1 is fully lt
+        } elsif ($cmp == 0) {
+            carp("Overlapping holdings in comparison, lt and gt based on start value only");
+            return -1;
+        } else { # check the opposite, 2 ends before 1 starts
+            # clone is expensive, wait until we need it (here)
+            if (!defined($holding_2_last)) {
+                $holding_2_last = $holding_2->clone->compressed_to_last;
+            }
+            if (!defined($holding_1_first)) {
+                $holding_1_first = $holding_1->clone->compressed_to_first;
+            }
+            $cmp = ($holding_2_last cmp $holding_1_first);
+            if ($cmp == -1) {
+                return 1; # 1 is fully gt
+            } elsif ($cmp == 0) {
+                carp("Overlapping holdings in comparison, lt and gt based on start value only");
+                return 1;
+            } else {
+                $cmp = ($holding_1_first cmp $holding_2_first);
+                if (!$cmp) { # they are not equal
+                    carp("Overlapping holdings in comparison, lt and gt based on start value only");
+                    return $cmp;
+                } elsif ($found_compressed == 1) {
+                    carp("Compressed holding found with start equal to non-compressed holding");
+                    return 1; # compressed (first holding) is 'greater than' non-compressed
+                } elsif ($found_compressed == 2) {
+                    carp("Compressed holding found with start equal to non-compressed holding");
+                    return -1; # compressed (second holding) is 'greater than' non-compressed
+                } else { # both holdings compressed, check for full equality
+                    $cmp = ($holding_1_last cmp $holding_2_last);
+                    if (!$cmp) { # they are not equal
+                        carp("Compressed holdings in comparison have equal starts, lt and gt based on end value only");
+                        return $cmp;
+                    } else {
+                        return 0; # both are compressed, both ends are equal
+                    }
+                }
+            }
+        }
+    }
+
+    # start doing the actual comparison
+    my $result;
+    foreach my $key ('a'..'f') {
+        if (defined($holding_1->field_values($key))) {
+            if (!defined($holding_2->field_values($key))) {
+                return 1; # more details equals 'greater' (?)
+            } else {
+                $result = $holding_1->field_values($key)->[0] <=> $holding_2->field_values($key)->[0];
+            }
+        } elsif (defined($holding_2->field_values($key))) {
+            return -1; # more details equals 'greater' (?)
+        }
+
+        return $result if $result;
+    }
+
+    # got through, return 0 for equal
+    return 0;
+}
+
 1;
