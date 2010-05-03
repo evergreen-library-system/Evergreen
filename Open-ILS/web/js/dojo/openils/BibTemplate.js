@@ -31,6 +31,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
             this.record = kwargs.record;
             this.org_unit = kwargs.org_unit || '-';
             this.depth = kwargs.depth;
+            this.sync = kwargs.sync == true;
             this.locale = kwargs.locale || OpenSRF.locale || 'en-US';
 
             this.mode = 'biblio-record_entry';
@@ -43,6 +44,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         },
 
         render : function() {
+
             var all_slots = dojo.query('*[type^=opac/slot-data]', this.root);
             var default_datatype = this.default_datatype;
         
@@ -65,7 +67,6 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         
             for (var datatype in slots) {
 
-                //(function (slot_list,dtype,mode,rec,org) {
                 (function (args) {
                     var BT = args.renderer;
 
@@ -87,6 +88,8 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                     dojo.xhrGet({
                         url: '/opac/extras/unapi?id=' + uri + '&format=' + args.dtype + '&locale=' + BT.locale,
                         handleAs: 'xml',
+                        sync: BT.sync,
+                        preventCache: true,
                         load: function (bib) {
 
                             dojo.forEach(args.slot_list, function (slot) {
@@ -99,7 +102,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     bib
                                 );
 
-                                if (item_limit) item_list = item_list.splice(parseInt(item_offset),parseInt(item_limit));
+                                if (parseInt(item_limit)) item_list = item_list.splice(parseInt(item_offset),parseInt(item_limit));
                                 if (!item_list.length) return;
 
                                 var templated = slot.getAttribute('templated') == 'true';
@@ -112,7 +115,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     ).orphan().forEach(function(x) {
                                         dojo.setObject(
                                             x.getAttribute('name'),
-                                            (new Function( 'item_list', 'BT', 'slotXML', unescape(x.innerHTML) ))(item_list,BT,bib),
+                                            (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(x.innerHTML) ))(item_list,BT,bib,slot),
                                             template_values
                                         );
                                     });
@@ -121,11 +124,11 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                 }
 
                                 var handler_node = dojo.query( '*[type=opac/slot-format]', slot )[0];
-                                if (handler_node) slot_handler = new Function('item_list', 'BT', 'slotXML', 'item', dojox.data.dom.textContent(handler_node) || handler_node.innerHTML);
-                                else slot_handler = new Function('item_list', 'BT', 'slotXML', 'item','return dojox.data.dom.textContent(item) || item.innerHTML;');
+                                if (handler_node) slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item', dojox.data.dom.textContent(handler_node) || handler_node.innerHTML);
+                                else slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item','return dojox.data.dom.textContent(item) || item.innerHTML;');
             
                                 if (item_list.length) {
-                                    var content = dojo.map(item_list, dojo.partial(slot_handler,item_list,BT,bib)).join(joiner);
+                                    var content = dojo.map(item_list, dojo.partial(slot_handler,item_list,BT,bib,slot)).join(joiner);
                                     if (templated) handler_node.parentNode.replaceChild( dojo.doc.createTextNode( content ), handler_node );
                                     else slot.innerHTML = content;
                                 }
@@ -141,6 +144,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
             }
 
             return true;
+
         }
     });
 
