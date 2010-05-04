@@ -1,0 +1,34 @@
+<div id="acq-po-item-table" class="hidden">
+    <h3>Direct Charges, Taxes, Fees, etc.</h3>
+    <table>
+        <thead id="acq-po-item-table-headings">
+            <tr>
+                <th>Charge Type</th>
+                <th>Fund</th>
+                <th>Title/Description</th>
+                <th>Author</th>
+                <th>Note</th>
+                <th>Estimated Cost</th>
+                <th><!-- Delete --></th>
+            </tr>
+        </thead>
+        <tbody id="acq-po-item-table-items">
+            <tr>
+                <td name="inv_item_type" em="12"></td>
+                <td name="fund" em="10"></td>
+                <td name="title" em="12"></td>
+                <td name="author" em="8"></td>
+                <td name="note" em="12"></td>
+                <td name="estimated_cost" em="8"></td>
+                <td><button name="delete">X</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="acq-po-item-table-i-am-empty" class="hidden">
+        <em>There are no miscellanea attached to this purchase order.</em>
+    </div>
+    <div id="acq-po-item-table-controls">
+        <button id="acq-po-item-table-new-charge">New Charge</button> &nbsp;
+        <button id="acq-po-item-table-save-new">Save New Charges</button>
+    </div>
+</div>

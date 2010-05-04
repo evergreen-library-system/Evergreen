@@ -5,6 +5,7 @@ dojo.require('openils.PermaCrud');
 var pcrud = new openils.PermaCrud();
 var PO = null;
 var liTable;
+var poItemTable;
 var poNoteTable;
 var invoiceLinkDialogManager;
 
@@ -145,10 +146,12 @@ function AcqPoNoteTable() {
     this.hide = function() {
         openils.Util.hide("acq-po-notes-div");
         liTable.show("list");
+        poItemTable.show();
     };
 
     this.show = function() {
         liTable.hide();
+        poItemTable.hide();
         self.drawPoNotes();
         openils.Util.show("acq-po-notes-div");
     };
@@ -325,6 +328,13 @@ function renderPo() {
             openils.Util.show("acq-po-split");
     }
 
+    // XXX we probably don't *always* need to do this...
+    poItemTable.reset();
+    PO.po_items().forEach(
+        function(po_item) { poItemTable.addItem(po_item); }
+    );
+    poItemTable.show();
+
     prepareInvoiceFeatures();
 }
 
@@ -347,10 +357,15 @@ function init() {
                 "flesh_provider": true,
                 "flesh_price_summary": true,
                 "flesh_lineitem_count": true,
-                "flesh_notes": true
+                "flesh_notes": true,
+                "flesh_po_items": true
             }],
             oncomplete: function(r) {
                 PO = openils.Util.readResponse(r); /* save PO globally */
+
+                /* po item table */
+                poItemTable = new PoItemTable(PO, pcrud);
+
                 renderPo();
             }
         }

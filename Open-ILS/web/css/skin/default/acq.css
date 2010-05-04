@@ -236,3 +236,9 @@ option[disabled="disabled"] { font-style: italic; }
 #acq-eligible-li-table th { background-color: #ccc; border: 1px #333 inset; font-weight: bold; padding: 6px; }
 #acq-eligible-li-table td { padding: 2px 6px; border: 1px #333 inset; }
 #acq-eligible-li-table div[name="lid_link_holder"] { margin-left: 10px; }
+
+#acq-po-item-table th { font-weight: bold; padding: 2px 6px; }
+#acq-po-item-table-items tr td { padding: 2px 6px; }
+#acq-po-item-table-items tr td button[name="delete"] { color: #c00; }
+#acq-po-item-table-items tr { margin: 6px 0; }
+#acq-po-item-table-controls { margin-top: 8px; }
