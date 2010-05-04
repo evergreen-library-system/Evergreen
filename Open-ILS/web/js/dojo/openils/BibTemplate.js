@@ -45,7 +45,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
 
         subsetNL : function (old_nl, start, end) {
             var new_nl = new dojo.NodeList();
-            for (var i = start; i < end && i < old_nl.length - 1; i++) {
+            for (var i = start; i < end && i < old_nl.length; i++) {
                 new_nl.push(old_nl[i]);
             }
             return new_nl;
