@@ -602,19 +602,25 @@ sub flatten {
                 my $table = $node->table;
                 my $talias = $node->table_alias;
 
-                my $node_rank = $node->rank . " * ${talias}_weight.weight";
+                my $node_rank = $node->rank . " * ${talias}.weight";
 
-                $from .= "\n\tLEFT JOIN (\n\t\tSELECT * /* search */\n\t\t  FROM $table\n\t\t  WHERE index_vector @@ (" .$node->tsquery . ')';
+                my $core_limit = $self->QueryParser->core_limit || 25000;
+                $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight /* search */\n\t\t  FROM  $table AS fe";
+                $from .= "\n\t\t\tJOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
+                $from .= "\n\t\t  WHERE fe.index_vector @@ (" .$node->tsquery . ')';
 
                 my @bump_fields;
                 if (@{$node->fields} > 0) {
                     @bump_fields = @{$node->fields};
-                    $from .= "\n\t\t\tAND field IN (SELECT id FROM config.metabib_field WHERE field_class = ". $self->QueryParser->quote_value($node->classname) ." AND name IN (";
-                    $from .= join(",", map { $self->QueryParser->quote_value($_) } @{$node->fields}) . "))";
+                    $from .= "\n\t\t\tAND fe_weight.field_class = ". $self->QueryParser->quote_value($node->classname) ." AND fe_weight.name IN (";
+                    $from .= join(",", map { $self->QueryParser->quote_value($_) } @{$node->fields}) . ")";
 
                 } else {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
+
+                $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = $talias.source)";
+
 
                 my %used_bumps;
                 for my $field ( @bump_fields ) {
@@ -628,10 +634,6 @@ sub flatten {
                         $node_rank .= "\n\t\t\t\t * " . $bump_case if ($bump_case);
                     }
                 }
-
-                my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = $talias.source)";
-                $from .= "\n\tJOIN config.metabib_field AS ${talias}_weight ON (${talias}_weight.id = $talias.field)\n";
 
                 $where .= '(' . $talias . ".id IS NOT NULL";
                 $where .= ' AND ' . join(' AND ', map {"$talias.value ~* ".$self->QueryParser->quote_value($_)} @{$node->phrases}) if (@{$node->phrases});
