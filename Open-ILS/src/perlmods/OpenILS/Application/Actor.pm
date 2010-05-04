@@ -2033,100 +2033,52 @@ sub checked_in_with_fines {
 }
 
 
+sub _sigmaker {
+    my ($api, $desc, $auth) = @_;
+    $desc = $desc ? (" " . $desc) : '';
+    my $ids = ($api =~ /ids$/) ? 1 : 0;
+    my @sig = (
+        argc      => 1,
+        method    => "user_transaction_history",
+        api_name  => "open-ils.actor.user.transactions.$api",
+        signature => {
+            desc   => "For a given User ID, returns a list of billable transaction" .
+                      ($ids ? " id" : '') .
+                      "s$desc, optionally filtered by type and/or fields in money.billable_xact_summary.  " .
+                      "The VIEW_USER_TRANSACTIONS permission is required to view another user's transactions",
+            params => [
+                {desc => 'Authentication token',        type => 'string'},
+                {desc => 'User ID',                     type => 'number'},
+                {desc => 'Transaction type (optional)', type => 'number'},
+                {desc => 'Hash of Billable Transaction Summary filters (optional)', type => 'object'}
+            ],
+            return => {
+                desc => 'List of transaction' . ($ids ? " id" : '') . 's, Event on error'
+            },
+        }
+    );
+    $auth and push @sig, (authoritative => 1);
+    return @sig;
+}
 
-__PACKAGE__->register_method(
-    method   => "user_transaction_history",
-    api_name => "open-ils.actor.user.transactions.history",
-    argc     => 1,
-    notes    => <<"	NOTES");
-	Returns a list of billable transactions for a user, optionally by type
-	NOTES
-__PACKAGE__->register_method(
-    method   => "user_transaction_history",
-    api_name => "open-ils.actor.user.transactions.history.have_charge",
-    argc     => 1,
-    notes    => <<"	NOTES");
-	Returns a list of billable transactions for a user that have an initial charge, optionally by type
-	NOTES
-__PACKAGE__->register_method(
-    method        => "user_transaction_history",
-    api_name      => "open-ils.actor.user.transactions.history.have_balance",
-    authoritative => 1,
-    argc          => 1,
-    notes         => <<"	NOTES");
-	Returns a list of billable transactions for a user that have a balance, optionally by type
-	NOTES
-__PACKAGE__->register_method(
-    method   => "user_transaction_history",
-    api_name => "open-ils.actor.user.transactions.history.still_open",
-    argc     => 1,
-    notes    => <<"	NOTES");
-	Returns a list of billable transactions for a user that are not finished
-	NOTES
-__PACKAGE__->register_method(
-    method        => "user_transaction_history",
-    api_name      => "open-ils.actor.user.transactions.history.have_bill",
-    authoritative => 1,
-    argc          => 1,
-    notes         => <<"	NOTES");
-	Returns a list of billable transactions for a user that has billings
-	NOTES
-__PACKAGE__->register_method(
-    method   => "user_transaction_history",
-    api_name => "open-ils.actor.user.transactions.history.ids",
-    argc     => 1,
-    notes    => <<"	NOTES");
-	Returns a list of billable transaction ids for a user, optionally by type
-	NOTES
-__PACKAGE__->register_method(
-    method   => "user_transaction_history",
-    api_name => "open-ils.actor.user.transactions.history.have_charge.ids",
-    argc     => 1,
-    notes    => <<"	NOTES");
-	Returns a list of billable transaction ids for a user that have an initial charge, optionally by type
-	NOTES
-__PACKAGE__->register_method(
-    method   => "user_transaction_history",
-    api_name => "open-ils.actor.user.transactions.history.have_balance.ids",
-    authoritative => 1,
-    argc          => 1,
-    notes         => <<"	NOTES");
-	Returns a list of billable transaction ids for a user that have a balance, optionally by type
-	NOTES
-__PACKAGE__->register_method(
-    method   => "user_transaction_history",
-    api_name => "open-ils.actor.user.transactions.history.still_open.ids",
-    argc     => 1,
-    notes    => <<"	NOTES");
-	Returns a list of billable transaction ids for a user that are not finished
-	NOTES
-__PACKAGE__->register_method(
-    method        => "user_transaction_history",
-    api_name      => "open-ils.actor.user.transactions.history.have_bill.ids",
-    authoritative => 1,
-    argc          => 1,
-    notes         => <<"	NOTES");
-	Returns a list of billable transaction ids for a user that has billings
-	NOTES
-__PACKAGE__->register_method(
-    method   => "user_transaction_history",
-    api_name => "open-ils.actor.user.transactions.history.have_bill_or_payment",
-    authoritative => 1,
-    argc          => 1,
-    notes         => <<"	NOTES");
-	Returns a list of billable transactions for a user that has non-zero-sum billings or at least 1 payment
-	NOTES
-__PACKAGE__->register_method(
-    method => "user_transaction_history",
-    api_name =>
-      "open-ils.actor.user.transactions.history.have_bill_or_payment.ids",
-    authoritative => 1,
-    argc          => 1,
-    notes         => <<"	NOTES");
-	Returns a list of billable transaction ids for a user that has non-zero-sum billings or at least 1 payment
-	NOTES
-
-
+my %hist_methods = (
+    'history'             => '',
+    'history.have_charge' => 'that have an initial charge',
+    'history.still_open'  => 'that are not finished',
+);
+my %auth_hist_methods = (
+    'history.have_balance'         => 'that have a balance',
+    'history.have_bill'            => 'that have billings',
+    'history.have_bill_or_payment' => 'that have non-zero-sum billings or at least 1 payment',
+);
+foreach (keys %hist_methods) {
+    __PACKAGE__->register_method(_sigmaker($_,       $hist_methods{$_}));
+    __PACKAGE__->register_method(_sigmaker("$_.ids", $hist_methods{$_}));
+}
+foreach (keys %auth_hist_methods) {
+    __PACKAGE__->register_method(_sigmaker($_,       $auth_hist_methods{$_}, 1));
+    __PACKAGE__->register_method(_sigmaker("$_.ids", $auth_hist_methods{$_}, 1));
+}
 
 sub user_transaction_history {
 	my( $self, $conn, $auth, $userid, $type, $filter, $options ) = @_;
@@ -2137,13 +2089,12 @@ sub user_transaction_history {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->die_event unless $e->checkauth;
 
-	if( $e->requestor->id ne $userid ) {
-		return $e->die_event 
-			unless $e->allowed('VIEW_USER_TRANSACTIONS');
+	if ($e->requestor->id ne $userid) {
+        return $e->die_event unless $e->allowed('VIEW_USER_TRANSACTIONS');
 	}
 
 	my $api = $self->api_name;
-	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history.still_open$/);
+	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history\.still_open$/);     # What about history.still_open.ids?
 
 	if(defined($type)) {
 		$filter->{'xact_type'} = $type;
@@ -2167,7 +2118,7 @@ sub user_transaction_history {
         # transactions that have at least 1 billing, regardless of whether it was voided
         $filter->{'last_billing_ts'} = { '<>' => undef };
 
-	} elsif( $api =~ /have_bill/o) {
+	} elsif( $api =~ /have_bill/o) {    # needs to be an elsif, or we double-match have_bill_or_payment!
 
         # transactions that have non-zero sum across all billings.  This will exclude
         # xacts where all billings have been voided
