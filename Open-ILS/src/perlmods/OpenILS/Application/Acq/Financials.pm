@@ -849,6 +849,8 @@ sub retrieve_purchase_order {
 
         $conn->respond($rv);
     }
+
+    return undef;
 }
 
 
