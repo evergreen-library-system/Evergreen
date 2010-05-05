@@ -447,6 +447,8 @@ CREATE OR REPLACE FUNCTION vandelay.overlay_bib_record ( import_id BIGINT, eg_id
 DECLARE
     merge_profile   vandelay.merge_profile%ROWTYPE;
     dyn_profile     vandelay.compile_profile%ROWTYPE;
+    editor_string   TEXT;
+    editor_id       INT;
     source_marc     TEXT;
     target_marc     TEXT;
     eg_marc         TEXT;
@@ -506,6 +508,21 @@ BEGIN
           SET   imported_as = eg_id,
                 import_time = NOW()
           WHERE id = import_id;
+
+        editor_string := (oils_xpath('//*[@tag="905"]/*[@code="u"]/text()',v_marc))[1];
+
+        IF editor_string IS NOT NULL AND editor_string <> '' THEN
+            SELECT usr INTO editor_id FROM actor.card WHERE barcode = editor_string;
+
+            IF editor_id IS NULL THEN
+                SELECT id INTO editor_id FROM actor.usr WHERE usrname = editor_string;
+            END IF;
+
+            IF editor_id IS NOT NULL THEN
+                UPDATE biblio.record_entry SET editor = editor_id WHERE id = eg_id;
+            END IF;
+        END IF;
+
         RETURN TRUE;
     END IF;
 
