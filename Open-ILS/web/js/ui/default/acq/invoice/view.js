@@ -333,6 +333,8 @@ function addInvoiceItem(item) {
         var po_item = item.po_item();
         var node = nodeByName('inv_item_type', row);
         var itemType = itemTypes.filter(function(t) { return (t.code() == item.inv_item_type()) })[0];
+        orderDate = (!po.order_date()) ? '' : 
+                dojo.date.locale.format(dojo.date.stamp.fromISOString(po.order_date()), {selector:'date'});
 
         node.innerHTML = dojo.string.substitute(
             localeStrings.INVOICE_ITEM_PO_DETAILS, 
@@ -341,7 +343,7 @@ function addInvoiceItem(item) {
                 oilsBasePath, 
                 po.id(), 
                 po.name(), 
-                dojo.date.locale.format(dojo.date.stamp.fromISOString(po.order_date()), {selector:'date'}),
+                orderDate,
                 po_item.estimated_cost() 
             ]
         );
