@@ -168,12 +168,27 @@ static void buildSelect( BuildSQLState* state, StoredQ* query ) {
 			state->error = 1;
 			return;
 		}
-		//else
-			//buffer_add_char( state->sql, ' ' );
 		decr_indent( state );
 	}
 
-	// Build WHERE clause, if there is one
+	// To do: build GROUP BY clause, if there is one
+
+	// Build HAVING clause, if there is one
+	if( query->having_clause ) {
+		add_newline( state );
+		buffer_add( state->sql, "HAVING" );
+		incr_indent( state );
+		add_newline( state );
+		buildExpression( state, query->having_clause );
+		if( state->error ) {
+			sqlAddMsg( state, "Unable to build HAVING clause for query # %d", query->id );
+			state->error = 1;
+			return;
+		}
+		decr_indent( state );
+	}
+
+	// Build ORDER BY clause, if there is one
 	if( query->order_by_list ) {
 		buildOrderBy( state, query->order_by_list );
 		if( state->error ) {
@@ -182,7 +197,11 @@ static void buildSelect( BuildSQLState* state, StoredQ* query ) {
 			return;
 		}
 	}
-	
+
+	// To do: Build LIMIT clause, if there is one
+
+	// To do: Build OFFSET clause, if there is one
+
 	state->error = 0;
 }
 
@@ -335,7 +354,7 @@ static void buildJoin( BuildSQLState* state, FromRelation* join ) {
 		buffer_add( state->sql, effective_alias );
 		buffer_add_char( state->sql, '\"' );
 	}
-	
+
 	if( join->on_clause ) {
 		incr_indent( state );
 		add_newline( state );
@@ -356,7 +375,7 @@ static void buildJoin( BuildSQLState* state, FromRelation* join ) {
 }
 
 static void buildSelectList( BuildSQLState* state, SelectItem* item ) {
-	
+
 	int first = 1;
 	while( item ) {
 		if( !first )
@@ -428,10 +447,16 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 
 	switch( expr->type ) {
 		case EXP_BETWEEN :
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
 			sqlAddMsg( state, "BETWEEN expressions not yet supported" );
 			state->error = 1;
 			break;
 		case EXP_BOOL :
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
 			if( expr->literal ) {
 				buffer_add( state->sql, expr->literal );
 				buffer_add_char( state->sql, ' ' );
@@ -439,14 +464,20 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 				buffer_add( state->sql, "FALSE " );
 			break;
 		case EXP_CASE :
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
 			sqlAddMsg( state, "CASE expressions not yet supported" );
 			state->error = 1;
 			break;
-			case EXP_CAST :                   // Type cast
+		case EXP_CAST :                   // Type cast
 			sqlAddMsg( state, "Cast expressions not yet supported" );
 			state->error = 1;
 			break;
 		case EXP_COLUMN :                 // Table column
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
 			if( expr->table_alias ) {
 				buffer_add_char( state->sql, '\"' );
 				buffer_add( state->sql, expr->table_alias );
@@ -466,6 +497,9 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 					"No subquery found for EXIST expression # %d", expr->id ));
 				state->error = 1;
 			} else {
+				if( expr->negate )
+					buffer_add( state->sql, "NOT " );
+
 				buffer_add( state->sql, "EXISTS (" );
 				incr_indent( state );
 				build_Query( state, expr->subquery );
@@ -475,14 +509,23 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			}
 			break;
 		case EXP_FIELD :
+			sqlAddMsg( state, "Field expressions not yet supported" );
+			state->error = 1;
+			break;
 		case EXP_FUNCTION :
-			sqlAddMsg( state, "Expression type not yet supported" );
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
+			sqlAddMsg( state, "Function expressions not yet supported" );
 			state->error = 1;
 			break;
 		case EXP_IN :
 			if( expr->left_operand ) {
 				buildExpression( state, expr->left_operand );
 				if( !state->error ) {
+					if( expr->negate )
+						buffer_add( state->sql, "NOT " );
+
 					if( expr->subquery ) {
 						buffer_add( state->sql, " IN (" );
 						incr_indent( state );
@@ -497,13 +540,10 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 				}
 			}
 			break;
-		case EXP_NOT_BETWEEN :
-		case EXP_NOT_EXIST :
-		case EXP_NOT_IN :
-			sqlAddMsg( state, "Expression type not yet supported" );
-			state->error = 1;
-			break;
 		case EXP_NULL :
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
 			buffer_add( state->sql, "NULL" );
 			break;
 		case EXP_NUMBER :                    // Numeric literal
@@ -516,6 +556,9 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			}
 			break;
 		case EXP_OPERATOR :
+			if( expr->negate )
+				buffer_add( state->sql, "NOT (" );
+
 			if( expr->left_operand ) {
 				buildExpression( state, expr->left_operand );
 				if( state->error ) {
@@ -535,6 +578,10 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 					break;
 				}
 			}
+
+			if( expr->negate )
+				buffer_add_char( state->sql, ')' );
+
 			break;
 		case EXP_STRING :                     // String literal
 			if( !expr->literal ) {
@@ -548,6 +595,9 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			}
 			break;
 		case EXP_SUBQUERY :
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
 			if( expr->subquery ) {
 				buffer_add_char( state->sql, '(' );
 				incr_indent( state );
@@ -562,7 +612,7 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			}
 			break;
 	}
-	
+
 	if( expr->parenthesize )
 		buffer_add_char( state->sql, ')' );
 }

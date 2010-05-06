@@ -225,18 +225,34 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 		}
 	}
 
+	Expression* having_clause = NULL;
+	if( having_clause_id != -1 ) {
+		having_clause = getExpression( state, having_clause_id );
+		if( ! having_clause ) {
+			// shouldn't happen due to foreign key constraint
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to fetch HAVING expression for query id = %d", id ));
+			expressionFree( where_clause );
+			freeQSeqList( child_list );
+			fromRelationFree( from_clause );
+			selectListFree( select_list );
+			return NULL;
+		}
+	}
+
 	// Get the ORDER BY clause, if there is one
 	OrderItem* order_by_list = getOrderByList( state, id );
 	if( state->error ) {
 		osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to load ORDER BY clause for query %d", id ));
+		expressionFree( having_clause );
 		expressionFree( where_clause );
 		freeQSeqList( child_list );
 		fromRelationFree( from_clause );
 		selectListFree( select_list );
 		return NULL;
 	}
-	
+
 	// Allocate a StoredQ: from the free list if possible, from the heap if necessary
 
 	StoredQ* sq;
@@ -257,6 +273,7 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 	sq->where_clause = where_clause;
 	sq->select_list = select_list;
 	sq->child_list = child_list;
+	sq->having_clause = having_clause;
 	sq->order_by_list = order_by_list;
 
 	return sq;
@@ -407,6 +424,8 @@ void storedQFree( StoredQ* sq ) {
 			orderItemListFree( sq->order_by_list );
 			sq->order_by_list = NULL;
 		}
+		if( sq->having_clause )
+			expressionFree( sq->having_clause );
 
 		// Stick the empty husk on the free list for potential reuse
 		sq->next = free_storedq_list;
@@ -851,8 +870,8 @@ static Expression* getExpression( BuildSQLState* state, int id ) {
 
 		Expression* exp = NULL;
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
-		"SELECT id, type, parenthesize, parent_expr, seq_no, literal, table_alias, "
-		"column_name, left_operand, operator, right_operand, function_id, subquery, cast_type "
+		"SELECT id, type, parenthesize, parent_expr, seq_no, literal, table_alias, column_name, "
+		"left_operand, operator, right_operand, function_id, subquery, cast_type, negate "
 		"FROM query.expression WHERE id = %d;", id );
 	if( result ) {
 		if( dbi_result_first_row( result ) ) {
@@ -911,12 +930,6 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		type = EXP_FUNCTION;
 	else if( !strcmp( type_str, "xin" ))
 		type = EXP_IN;
-	else if( !strcmp( type_str, "xnbet" ))
-		type = EXP_NOT_BETWEEN;
-	else if( !strcmp( type_str, "xnex" ))
-		type = EXP_NOT_EXIST;
-	else if( !strcmp( type_str, "xnin" ))
-		type = EXP_NOT_IN;
 	else if( !strcmp( type_str, "xnull" ))
 		type = EXP_NULL;
 	else if( !strcmp( type_str, "xnum" ))
@@ -974,6 +987,8 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		cast_type_id = -1;
 	else
 		cast_type_id = dbi_result_get_int_idx( result, 14 );
+
+	int negate = oils_result_get_bool_idx( result, 15 );
 
 	Expression* left_operand = NULL;
 	Expression* right_operand = NULL;
@@ -1104,6 +1119,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	exp->subquery_id = subquery_id;
 	exp->subquery = subquery;
 	exp->cast_type_id = subquery_id;
+	exp->negate = negate;
 
 	return exp;
 }

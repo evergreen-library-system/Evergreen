@@ -73,6 +73,7 @@ struct StoredQ_ {
 	Expression*   where_clause;
 	SelectItem*   select_list;
 	QSeq*         child_list;
+	Expression*   having_clause;
 	OrderItem*    order_by_list;
 };
 
@@ -127,9 +128,6 @@ typedef enum {
 	EXP_FIELD,
 	EXP_FUNCTION,
 	EXP_IN,
-	EXP_NOT_BETWEEN,
-	EXP_NOT_EXIST,
-	EXP_NOT_IN,
 	EXP_NULL,
 	EXP_NUMBER,
 	EXP_OPERATOR,
@@ -154,6 +152,7 @@ struct Expression_ {
 	int         subquery_id;
 	StoredQ*    subquery;
 	int         cast_type_id;
+	int         negate;             // Boolean
 };
 
 struct QSeq_ {
