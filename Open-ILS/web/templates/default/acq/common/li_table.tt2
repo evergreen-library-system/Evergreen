@@ -21,6 +21,7 @@
                                             <option mask='*'  value='delete_selected'>Delete Selected Items</option>
                                             <option mask='*'  value='add_brief_record'>Add Brief Record</option>
                                             <option mask='*'  value='export_attr_list'>Export Single Attribute List</option>
+                                            <option mask='*'  value='batch_apply_funds'>Apply Funds to Selected Items</option>
                                             <option mask='po' value='' disabled='disabled'>----PO----</option>
                                             <option mask='sr|pl' value='create_order'>Create Purchase Order</option>
                                             <option mask='po' value='create_assets'>Load Bibs and Items</option>
@@ -394,6 +395,27 @@
         </div>
         <div dojoType="dijit.Dialog" jsId="finalClaimDialog">
             [% INCLUDE "default/acq/common/final_claim_dialog.tt2" %]
+        </div>
+        <div dojoType="dijit.Dialog" jsId="batchFundUpdateDialog" title="Batch Update Funds">
+            <div>
+                This will update the fund for all copies attached to these lineitems.<br/>
+                This will also update any existing encumbered or spent debits.
+            </div>
+            <br/>
+            <table class='oils-generic-table'>
+                <tr>
+                    <td>
+                        <span>Select a new fund:</span>
+                    </td>
+                    <td>
+                        <div id='acq-lit-batch-fund-selector'></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><button dojoType='dijit.form.Button' jsId='batchFundUpdateCancel'>Cancel</button></td>
+                    <td><button dojoType='dijit.form.Button' jsId='batchFundUpdateSubmit'>Submit</button></td>
+                </tr>
+            </table>
         </div>
     </div>
 

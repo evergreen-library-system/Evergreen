@@ -1539,8 +1539,42 @@ sub create_purchase_order_api {
 }
 
 
+
 __PACKAGE__->register_method(
-	method => 'lineitem_detail_CUD_batch',
+	method => 'update_lineitem_fund_batch',
+	api_name => 'open-ils.acq.lineitem.fund.update.batch',
+    stream => 1,
+    signature => { 
+        desc => q/
+            Given a set of lineitem IDS, updates the fund for all attached
+            lineitem details
+        /
+    }
+);
+
+sub update_lineitem_fund_batch {
+    my($self, $conn, $auth, $li_ids, $fund_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
+    for my $li_id (@$li_ids) {
+        my ($li, $evt) = fetch_and_check_li($e, $li_id, 'write');
+        return $evt if $evt;
+        my $li_details = $e->search_acq_lineitem_detail({lineitem => $li_id});
+        $_->fund($fund_id) and $_->ischanged(1) for @$li_details;
+        $evt = lineitem_detail_CUD_batch($mgr, $li_details);
+        return $evt if $evt;
+        $mgr->add_li;
+        $mgr->respond;
+    }
+    $e->commit;
+    return $mgr->respond_complete;
+}
+
+
+
+__PACKAGE__->register_method(
+	method => 'lineitem_detail_CUD_batch_api',
 	api_name => 'open-ils.acq.lineitem_detail.cud.batch',
     stream => 1,
 	signature => {
@@ -1556,7 +1590,7 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-	method => 'lineitem_detail_CUD_batch',
+	method => 'lineitem_detail_CUD_batch_api',
 	api_name => 'open-ils.acq.lineitem_detail.cud.batch.dry_run',
     stream => 1,
     signature => { 
@@ -1569,15 +1603,24 @@ __PACKAGE__->register_method(
 );
 
 
-sub lineitem_detail_CUD_batch {
+sub lineitem_detail_CUD_batch_api {
     my($self, $conn, $auth, $li_details, $create_debits) = @_;
-
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $mgr = OpenILS::Application::Acq::BatchManager->new(editor => $e, conn => $conn);
     my $dry_run = ($self->api_name =~ /dry_run/o);
+    my $evt = lineitem_detail_CUD_batch($mgr, $li_details, $create_debits, $dry_run);
+    return $evt if $evt;
+    $e->commit;
+    return $mgr->respond_complete;
+}
+
+
+sub lineitem_detail_CUD_batch {
+    my($mgr, $li_details, $create_debits, $dry_run) = @_;
 
     $mgr->total(scalar(@$li_details));
+    my $e = $mgr->editor;
     
     my $li;
     my %li_cache;
@@ -1610,8 +1653,7 @@ sub lineitem_detail_CUD_batch {
         $li_cache{$lid->lineitem} = $li;
     }
 
-    $e->commit;
-    return $mgr->respond_complete;
+    return undef;
 }
 
 sub handle_changed_lid {

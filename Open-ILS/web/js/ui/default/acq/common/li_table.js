@@ -1895,6 +1895,10 @@ function AcqLiTable() {
                 this.chooseExportAttr();
                 break;
 
+            case 'batch_apply_funds':
+                this.applyBatchLiFunds();
+                break;
+
             case 'add_brief_record':
                 if(this.isPO)
                     location.href = oilsBasePath + '/acq/picklist/brief_record?po=' + this.isPO;
@@ -1925,7 +1929,7 @@ function AcqLiTable() {
                 };
                 break;
         }
-    }
+    };
 
     this.changeClaimPolicy = function(li_list, value, callback) {
         li_list.forEach(
@@ -2236,6 +2240,56 @@ function AcqLiTable() {
                     if(resp.complete) 
                         location.href = oilsBasePath + '/acq/po/view/' + resp.purchase_order.id();
                 }
+            }
+        );
+    }
+
+    this.batchFundWidget = null;
+
+    this.applyBatchLiFunds = function() {
+
+        var liIds = this.getSelected().map(function(li) { return li.id(); });
+        if(liIds.length == 0) return; // warn?
+
+        var self = this;
+        batchFundUpdateDialog.show();
+
+        if(!this.batchFundWidget) {
+            this.batchFundWidget = new openils.widget.AutoFieldWidget({
+                fmClass : 'acqf',
+                selfReference : true,
+                labelFormat : fundLabelFormat,
+                searchFormat : fundSearchFormat,
+                searchFilter : {"active": "t"},
+                parentNode : dojo.byId('acq-lit-batch-fund-selector'),
+                orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
+                dijitArgs : { "required": true, "labelType": "html" },
+                forceSync : true
+            });
+            this.batchFundWidget.build();
+        }
+
+        dojo.connect(batchFundUpdateCancel, 'onClick', function() { batchFundUpdateDialog.hide(); });
+        dojo.connect(batchFundUpdateSubmit, 'onClick', 
+            function() { 
+
+                // TODO: call .dry_run first to test thresholds
+                fieldmapper.standardRequest(
+                    ['open-ils.acq', 'open-ils.acq.lineitem.fund.update.batch'],
+                    {
+                        params : [
+                            openils.User.authtoken, 
+                            liIds,
+                            self.batchFundWidget.widget.attr('value')
+                        ],
+                        oncomplete : function(r) {
+                            var resp = openils.Util.readResponse(r);
+                            if(resp) {
+                                location.href = location.href;
+                            }
+                        }
+                    }
+                )
             }
         );
     }
