@@ -432,6 +432,9 @@ function AcqLiTable() {
         var actLinkInvoice = nodeByName('action_link_invoice', row);
         var actViewInvoice = nodeByName('action_view_invoice', row);
 
+        nodeByName('action_view_history', row).onclick = 
+            function() { location.href = oilsBasePath + '/acq/lineitem/history/' + li.id(); };
+
         var state_cell = nodeByName("li_state", row);
 
         if (li.state() == "cancelled") {
@@ -1870,6 +1873,10 @@ function AcqLiTable() {
 
             case 'print_po':
                 this.printPO();
+                break;
+
+            case 'po_history':
+                location.href = oilsBasePath + '/acq/po/history/' + this.isPO;
                 break;
 
             case 'receive_po':
