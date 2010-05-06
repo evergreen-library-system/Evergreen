@@ -4,6 +4,7 @@ use base "OpenILS::Application";
 use strict;
 use warnings;
 
+use OpenSRF::AppSession;
 use OpenILS::Event;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::Fieldmapper;
@@ -476,34 +477,39 @@ sub bib_search {
 
     my $count = 0;
     my $picklist;
+    my @li_ids = ();
     while (my $resp = $req->recv("timeout" => 60)) {
         $picklist = OpenILS::Application::Acq::Order::zsearch_build_pl(
             $mgr, undef # XXX could have per-user name for temp picklist here?
         ) unless $count++;
 
         my $result = $resp->content;
+        next if not ref $result;
 
         # The result object contains a whole heck of a lot more information
         # than just bib IDs, so maybe we could tell the client something
         # useful (progress meter at least) in the future...
-        foreach my $id (@{$result->{"ids"}}) {
-            $id = $id->[0];
-            $conn->respond(
-                $RETRIEVERS{"lineitem"}->(
-                    $e, OpenILS::Application::Acq::Order::create_lineitem(
-                        $mgr,
-                        "picklist" => $picklist->id,
-                        "source_label" => $resp->content->{"service"},
-                        "marc" => $e->retrieve_biblio_record_entry($id)->marc,
-                        "eg_bib_id" => $id
-                    )->id, $options
-                )
-            );
-        }
+        push @li_ids, map {
+            my $bib = $_->[0];
+            OpenILS::Application::Acq::Order::create_lineitem(
+                $mgr,
+                "picklist" => $picklist->id,
+                "source_label" => "native-evergreen-catalog",
+                "marc" => $e->retrieve_biblio_record_entry($bib)->marc,
+                "eg_bib_id" => $bib
+            )->id;
+        } (@{$result->{"ids"}});
     }
 
-    $ses->disconnect;
     $e->commit;
+    $ses->disconnect;
+
+    # new editor, no transaction needed this time
+    $e = new_editor("authtoken" => $auth) or return $e->die_event;
+    return $e->die_event unless $e->checkauth;
+    $conn->respond($RETRIEVERS{"lineitem"}->($e, $_, $options)) foreach @li_ids;
+    $e->disconnect;
+
     undef;
 }
 

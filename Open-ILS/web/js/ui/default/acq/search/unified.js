@@ -82,9 +82,7 @@ function TermSelectorFactory(terms) {
     var selectorMethods = {
         /* Important: within the following functions, "this" refers to one
          * HTMLSelect object, and "self" refers to the TermSelectorFactory. */
-        "getTerm": function() {
-            return this.valueToTerm(this.getValue());
-        },
+        "getTerm": function() { return this.valueToTerm(this.getValue()); },
         "valueToTerm": function(value) {
             var parts = value.split(":");
             if (!parts || parts.length != 2) return null;
@@ -315,9 +313,10 @@ function TermManager() {
         });
     };
 
-    this.matchHowAllow = function(id, what, which) {
+    this.matchHowAllow = function(where, what, which, exact) {
         dojo.query(
-            "option[value*='" + what + "']", this._match_how(id)
+            "option[value" + (exact ? "" : "*") + "='" + what + "']",
+            typeof(where) == "object" ? where : this._match_how(where)
         ).forEach(function(o) { o.disabled = !which; });
     };
 
@@ -346,13 +345,15 @@ function TermManager() {
             /* Re-enable all non-bib-friendly fields in all search term
              * field selectors. */
             this.allRowIds().forEach(
-                function(id) { self._selector(id).onlyBibFriendly(false); }
+                function(id) {
+                    self._selector(id).onlyBibFriendly(false);
+                    self.matchHowAllow(id, "", true, /* exact */ true);
+                    self.matchHowAllow(id, "__not", true, /* exact */ true);
+                }
             );
             /* Tell the selector factory to create new search term field
              * selectors with all fields, not just bib-friendly ones. */
             this.selectorFactory.onlyBibFriendly = false;
-            /* Allow either "any" or "all" searching. */
-            dojo.byId("acq-unified-conjunction").options[1].disabled = false;
         } else if (
             this.lastResultType != "lineitem_and_bib" &&
             resultType == "lineitem_and_bib"
@@ -370,15 +371,15 @@ function TermManager() {
             /* Disable all non-bib-friendly fields in all remaining search term
              * field selectors. */
             this.allRowIds().forEach(
-                function(id) { self._selector(id).onlyBibFriendly(true); }
+                function(id) {
+                    self._selector(id).onlyBibFriendly(true);
+                    self.matchHowAllow(id, "", false, /* exact */ true);
+                    self.matchHowAllow(id, "__not", false, /* exact */ true);
+                }
             );
             /* Tell the selector factory to create new search term field
              * selectors with only bib friendly options. */
             this.selectorFactory.onlyBibFriendly = true;
-            /* Force an "any" search; I'm not sure we can do "all"
-             * searches yet. */
-            dojo.byId("acq-unified-conjunction").selectedIndex = 0;
-            dojo.byId("acq-unified-conjunction").options[1].disabled = true;
         }
         this.lastResultType = resultType;
     };
@@ -443,6 +444,19 @@ function TermManager() {
                 if (self.widgets[uniq]) self.widgets[uniq].focus();
             }
         );
+
+        /* Kind of inelegant; could be improved: this section turns off
+         * match-type options that don't apply to bib searching. */
+        this.matchHowAllow(
+            match_how, "",
+            !this.selectorFactory.onlyBibFriendly, /* exact */ true
+        );
+        this.matchHowAllow(
+            match_how, "__not",
+            !this.selectorFactory.onlyBibFriendly, /* exact */ true
+        );
+        if (this.selectorFactory.onlyBibFriendly)
+            match_how.setValue("__fuzzy");
 
         nodeByName("selector", row).appendChild(selector);
         nodeByName("remove", row).appendChild(this.removerButton(uniq));
@@ -517,18 +531,31 @@ function TermManager() {
     };
 
     this.buildBibSearchString = function() {
+        var conj = {"and": " ", "or": " || "}[
+            dojo.byId("acq-unified-conjunction").getValue()
+        ];
+
         var sso = {};
+        /* Notice that below we use conj in two places and a constant " || "
+         * in one. That constant " || " is applied for the "file of terms"
+         * search term type, which is in itself always an or search. */
         for (var id in this.widgets) {
             var term = this._selector(id).getTerm();
             var attr = term.bib_attr_name;
+            var match_how = this._match_how(id).getValue();
+            var widget = this.widgets[id];
 
             if (!sso[attr]) sso[attr] = [];
-            sso[attr].push(this.widgets[id].value);
+            sso[attr].push(
+                (match_how.indexOf("__not") == -1 ? "" : "-") +
+                (typeof(widget.attr) == "function" ?
+                    widget.attr("value").join(" || ") : widget.value)
+            );
         }
         var ssa = [];
         for (var attr in sso)
-            ssa.push(attr + ": " + sso[attr].join(" || "));
-        return ssa.join(" || ");
+            ssa.push(attr + ": " + sso[attr].join(conj));
+        return ssa.join(conj);
     };
 }
 
@@ -654,7 +681,6 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
 
     this.search = function(search_object, bib_search_string) {
         var count_results = 0;
-        var tasks = 1;
         var bibs_too = false;
         var result_type = dojo.byId("acq-unified-result-type").getValue();
         var conjunction = dojo.byId("acq-unified-conjunction").getValue();
@@ -662,15 +688,12 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
         /* lineitem_and_bib: a special case */
         if (result_type == "lineitem_and_bib") {
             result_type = "lineitem";
-            tasks++;
             bibs_too = true;
         }
 
         function result_completion() {
-            if (!count_results)
-                self.show("no_results");
-            else
-                self.finish(result_type);
+            if (!count_results) self.show("no_results");
+            else self.finish(result_type);
         }
 
         var method_name = "open-ils.acq." + result_type + ".unified_search";
@@ -698,34 +721,34 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
                     }
                 },
                 "oncomplete": function() {
-                    if (tasks > 1) tasks--;
-                    else result_completion();
+                    if (bibs_too) {
+                        fieldmapper.standardRequest(
+                            ["open-ils.acq",
+                                "open-ils.acq.biblio.wrapped_search"], {
+                                "params": [
+                                    openils.User.authtoken,
+                                    bib_search_string,
+                                    self.result_types.lineitem.search_options
+                                ],
+                                "async": true,
+                                "onresponse": function(r) {
+                                    if (r = openils.Util.readResponse(r)) {
+                                        if (!count_results++)
+                                            self.show("lineitem");
+                                        self.add("lineitem", r);
+                                    }
+                                },
+                                "oncomplete": function() {
+                                    result_completion();
+                                }
+                            }
+                        );
+                    } else {
+                        result_completion();
+                    }
                 }
             }
         );
-
-        if (bibs_too) {
-            fieldmapper.standardRequest(
-                ["open-ils.acq", "open-ils.acq.biblio.wrapped_search"], {
-                    "params": [
-                        openils.User.authtoken,
-                        bib_search_string,
-                        this.result_types.lineitem.search_options
-                    ],
-                    "async": true,
-                    "onresponse": function(r) {
-                        if (r = openils.Util.readResponse(r)) {
-                            if (!count_results++) self.show("lineitem");
-                            self.add("lineitem", r);
-                        }
-                    },
-                    "oncomplete": function() {
-                        if (tasks > 1) tasks--;
-                        else result_completion();
-                    }
-                }
-            );
-        }
     }
 }
 
