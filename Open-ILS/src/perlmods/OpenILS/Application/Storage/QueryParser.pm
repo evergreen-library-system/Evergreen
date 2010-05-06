@@ -586,13 +586,19 @@ sub decompose {
 
             $last_type = '';
         } elsif ($self->search_class_count && /$search_class_re/) { # changing current class
+
+            if ($last_type eq 'CLASS') {
+                $struct->remove_last_node( $current_class );
+                warn "Encountered class change with no searches!\n" if $self->debug;
+            }
+
             warn "Encountered class change: $1\n" if $self->debug;
 
             $current_class = $1;
             $struct->classed_node( $current_class );
             $_ = $';
 
-            $last_type = '';
+            $last_type = 'CLASS';
         } elsif (/^\s*"([^"]+)"/) { # phrase, always anded
             warn "Encountered phrase: $1\n" if $self->debug;
 
@@ -774,6 +780,16 @@ sub classed_node {
     }
 
     return $node;
+}
+
+sub remove_last_node {
+    my $self = shift;
+    my $requested_class = shift;
+
+    my $old = pop(@{$self->query_nodes});
+    pop(@{$self->query_nodes}) if (@{$self->query_nodes});
+
+    return $old;
 }
 
 sub query_nodes {

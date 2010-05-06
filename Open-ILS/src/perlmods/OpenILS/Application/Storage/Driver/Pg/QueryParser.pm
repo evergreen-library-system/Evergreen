@@ -376,6 +376,8 @@ __PACKAGE__->add_search_modifier( 'staff' );
 #-------------------------------
 package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan;
 use base 'QueryParser::query_plan';
+use OpenSRF::Utils::Logger qw($logger);
+use Data::Dumper;
 
 sub toSQL {
     my $self = shift;
@@ -400,6 +402,8 @@ sub toSQL {
     $self->QueryParser->superpage($filters{superpage}) if ($filters{superpage});
     $self->QueryParser->superpage_size($filters{superpage_size}) if ($filters{superpage_size});
     $self->QueryParser->core_limit($filters{core_limit}) if ($filters{core_limit});
+
+    $logger->debug("Query plan:\n".Dumper($self));
 
     my $flat_plan = $self->flatten;
 
@@ -586,7 +590,7 @@ sub flatten {
     my $self = shift;
 
     my $from = shift || '';
-    my $where = shift || '';
+    my $where = shift || '(';
 
     my @rank_list;
     for my $node ( @{$self->query_nodes} ) {
@@ -676,7 +680,7 @@ sub flatten {
         }
     }
 
-    return { rank_list => \@rank_list, from => $from, where => $where };
+    return { rank_list => \@rank_list, from => $from, where => $where.')' };
 
 }
 
