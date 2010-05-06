@@ -6594,6 +6594,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Function ID" name="function_id" reporter:datatype="link"/>
 			<field reporter:label="Subquery" name="subquery" reporter:datatype="link"/>
 			<field reporter:label="Cast Type" name="cast_type" reporter:datatype="link"/>
+			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
@@ -6823,52 +6824,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xin" oils_persist:tablename="query.expr_xin" reporter:label="In Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
-			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
-			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
-			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
-			<field reporter:label="Subquery" name="subquery" reporter:datatype="link"/>
-		</fields>
-		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
-		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
-	</class>
-
-	<class id="xnbet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xnbet" oils_persist:tablename="query.expr_xnbet" reporter:label="Not Between Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
-			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
-			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
-			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
-		</fields>
-		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
-	</class>
-
-	<class id="xnex" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xnex" oils_persist:tablename="query.expr_xnex" reporter:label="Not Exists Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
-			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
-			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
-			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
-			<field reporter:label="Subquery" name="subquery" reporter:datatype="link"/>
-		</fields>
-		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
-		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-		</permacrud>
-	</class>
-
-	<class id="xnin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xnin" oils_persist:tablename="query.expr_xnin" reporter:label="Not In Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>

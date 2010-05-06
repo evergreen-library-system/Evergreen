@@ -123,9 +123,6 @@ CREATE TABLE query.expression (
 									'xfld',    -- field
 									'xfunc',   -- function
 									'xin',     -- in
-									'xnbet',   -- not between
-	                             	'xnex',    -- not exists
-									'xnin',    -- not in
 	                             	'xnull',   -- null
 									'xnum',    -- number
 									'xop',     -- operator
@@ -150,7 +147,8 @@ CREATE TABLE query.expression (
 	subquery      INT           REFERENCES query.stored_query
 	                            DEFERRABLE INITIALLY DEFERRED,
 	cast_type     INT           REFERENCES query.datatype
-	                            DEFERRABLE INITIALLY DEFERRED
+	                            DEFERRABLE INITIALLY DEFERRED,
+	negate        BOOL          NOT NULL DEFAULT FALSE
 );
 
 CREATE UNIQUE INDEX query_expr_parent_seq
@@ -714,152 +712,6 @@ CREATE OR REPLACE RULE query_expr_xin_update_rule AS
 
 CREATE OR REPLACE RULE query_expr_xin_delete_rule AS
     ON DELETE TO query.expr_xin
-    DO INSTEAD
-    DELETE FROM query.expression WHERE id = OLD.id;
-
--- Create updatable view for NOT BETWEEN expressions
-
-CREATE OR REPLACE VIEW query.expr_xnbet AS
-    SELECT
-		id,
-		parenthesize,
-		parent_expr,
-		seq_no
-    FROM
-        query.expression
-    WHERE
-        type = 'xnbet';
-
-CREATE OR REPLACE RULE query_expr_xnbet_insert_rule AS
-    ON INSERT TO query.expr_xnbet
-    DO INSTEAD
-    INSERT INTO query.expression (
-		id,
-		type,
-		parenthesize,
-		parent_expr,
-		seq_no
-    ) VALUES (
-        COALESCE(NEW.id, NEXTVAL('query.expression_id_seq'::REGCLASS)),
-        'xnbet',
-        COALESCE(NEW.parenthesize, FALSE),
-        NEW.parent_expr,
-        COALESCE(NEW.seq_no, 1)
-    );
-
-CREATE OR REPLACE RULE query_expr_xnbet_update_rule AS
-    ON UPDATE TO query.expr_xnbet
-    DO INSTEAD
-    UPDATE query.expression SET
-        id = NEW.id,
-        parenthesize = NEW.parenthesize,
-        parent_expr = NEW.parent_expr,
-        seq_no = NEW.seq_no
-    WHERE
-        id = OLD.id;
-
-CREATE OR REPLACE RULE query_expr_xnbet_delete_rule AS
-    ON DELETE TO query.expr_xnbet
-    DO INSTEAD
-    DELETE FROM query.expression WHERE id = OLD.id;
-
--- Create updatable view for NOT EXISTS expressions
-
-CREATE OR REPLACE VIEW query.expr_xnex AS
-    SELECT
-		id,
-		parenthesize,
-		parent_expr,
-		seq_no,
-		subquery
-    FROM
-        query.expression
-    WHERE
-        type = 'xnex';
-
-CREATE OR REPLACE RULE query_expr_xnex_insert_rule AS
-    ON INSERT TO query.expr_xnex
-    DO INSTEAD
-    INSERT INTO query.expression (
-		id,
-		type,
-		parenthesize,
-		parent_expr,
-		seq_no,
-		subquery
-    ) VALUES (
-        COALESCE(NEW.id, NEXTVAL('query.expression_id_seq'::REGCLASS)),
-        'xnex',
-        COALESCE(NEW.parenthesize, FALSE),
-        NEW.parent_expr,
-        COALESCE(NEW.seq_no, 1),
-		NEW.subquery
-    );
-
-CREATE OR REPLACE RULE query_expr_xnex_update_rule AS
-    ON UPDATE TO query.expr_xnex
-    DO INSTEAD
-    UPDATE query.expression SET
-        id = NEW.id,
-        parenthesize = NEW.parenthesize,
-        parent_expr = NEW.parent_expr,
-        seq_no = NEW.seq_no,
-		subquery = NEW.subquery
-    WHERE
-        id = OLD.id;
-
-CREATE OR REPLACE RULE query_expr_xnex_delete_rule AS
-    ON DELETE TO query.expr_xnex
-    DO INSTEAD
-    DELETE FROM query.expression WHERE id = OLD.id;
-
--- Create updatable view for NOT IN expressions
-
-CREATE OR REPLACE VIEW query.expr_xnin AS
-    SELECT
-		id,
-		parenthesize,
-		parent_expr,
-		seq_no,
-		subquery
-    FROM
-        query.expression
-    WHERE
-        type = 'xnin';
-
-CREATE OR REPLACE RULE query_expr_xnin_insert_rule AS
-    ON INSERT TO query.expr_xnin
-    DO INSTEAD
-    INSERT INTO query.expression (
-		id,
-		type,
-		parenthesize,
-		parent_expr,
-		seq_no,
-		subquery
-    ) VALUES (
-        COALESCE(NEW.id, NEXTVAL('query.expression_id_seq'::REGCLASS)),
-        'xnin',
-        COALESCE(NEW.parenthesize, FALSE),
-        NEW.parent_expr,
-        COALESCE(NEW.seq_no, 1),
-		NEW.subquery
-    );
-
-CREATE OR REPLACE RULE query_expr_xnin_update_rule AS
-    ON UPDATE TO query.expr_xnin
-    DO INSTEAD
-    UPDATE query.expression SET
-        id = NEW.id,
-        parenthesize = NEW.parenthesize,
-        parent_expr = NEW.parent_expr,
-        seq_no = NEW.seq_no,
-		subquery = NEW.subquery
-    WHERE
-        id = OLD.id;
-
-CREATE OR REPLACE RULE query_expr_xnin_delete_rule AS
-    ON DELETE TO query.expr_xnin
     DO INSTEAD
     DELETE FROM query.expression WHERE id = OLD.id;
 
