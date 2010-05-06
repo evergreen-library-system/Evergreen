@@ -555,7 +555,7 @@ function TermManager() {
         var ssa = [];
         for (var attr in sso)
             ssa.push(attr + ": " + sso[attr].join(conj));
-        return ssa.join(conj);
+        return "(" + ssa.join(conj) + ")";
     };
 }
 
