@@ -3158,14 +3158,17 @@ circ.util.find_acq_po = function(session, copy_id) {
             "onresponse": function(r) {
                 if (r = openils.Util.readResponse(r)) {
                     if (r.purchase_order()) {
-                        /* XXX would prefer to use browser.xul to wrap this so
-                         * that we get back/forward/reload buttons, but that
-                         * doesn't work in this context. need to find out why.
-                         */
-                        xulG.new_tab(
-                            urls.EG_ACQ_PO_VIEW +
-                                "/" + r.purchase_order() + "/" + r.id(),
-                            {}, {}
+                        var url = urls.XUL_BROWSER + "?url=" +
+                            xulG.url_prefix(
+                                escape(urls.EG_ACQ_PO_VIEW +
+                                    "/" + r.purchase_order() + "/" + r.id())
+                            );
+                        window.xulG.new_tab(
+                            url, {"browser": true}, {
+                                "no_xulG": false,
+                                "show_print_button": false,
+                                "show_nav_buttons": true
+                            }
                         );
                     } else {
                         /* unlikely: got an LI with no PO */
