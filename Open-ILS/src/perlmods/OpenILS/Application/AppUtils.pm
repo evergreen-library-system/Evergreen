@@ -940,17 +940,6 @@ sub fetch_open_circulation {
     return ($circ, $e->event);
 }
 
-sub fetch_all_open_circulation {
-	my( $self, $cid ) = @_;
-	my $evt;
-	$self->logmark;
-	my $circ = $self->cstorereq(
-		'open-ils.cstore.direct.action.open_circulation.search',
-		{ target_copy => $cid, xact_finish => undef } );
-	$evt = OpenILS::Event->new('ACTION_CIRCULATION_NOT_FOUND') unless $circ;	
-	return ($circ, $evt);
-}
-
 my $copy_statuses;
 sub copy_status_from_name {
 	my( $self, $name ) = @_;
