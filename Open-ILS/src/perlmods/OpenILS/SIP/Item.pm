@@ -11,6 +11,7 @@ use Data::Dumper;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils qw/:datetime/;
 use DateTime::Format::ISO8601;
+use OpenSRF::Utils::SettingsClient;
 my $U = 'OpenILS::Application::AppUtils';
 
 my %item_db;
@@ -71,6 +72,17 @@ sub new {
 
 	syslog("LOG_DEBUG", "OILS: Item('$item_id'): found with title '%s'", $self->title_id);
 
+    my $config = OpenILS::SIP->config();
+
+    if( defined $config->{implementation_config}->{legacy_script_support} ) {
+        $self->{legacy_script_support} = 
+            ($config->{implementation_config}->{legacy_script_support} =~ /true/io);
+    } else {
+        $self->{legacy_script_support} = 
+            OpenSRF::Utils::SettingsClient->new->config_value(
+                apps => 'open-ils.circ' => app_settings => 'legacy_script_support')
+    }
+
 	return $self;
 }
 
@@ -79,10 +91,7 @@ sub run_attr_script {
 	return 1 if $self->{ran_script};
 	$self->{ran_script} = 1;
 
-
-    if($self->{osrf_config}->config_value(
-        apps => 'open-ils.circ' => app_settings => 'legacy_script_support')) {
-
+    if($self->{legacy_script_support}){
 
         my $config = OpenILS::SIP->config();
         my $path = $config->{implementation_config}->{scripts}->{path};
@@ -126,7 +135,7 @@ sub run_attr_script {
             }
         }
 
-        $self->{item_config_result} = $config;
+        $self->{item_config_result} = { item_config => $config };
     }
 
 	return 1;
