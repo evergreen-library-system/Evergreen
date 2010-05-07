@@ -928,13 +928,16 @@ sub logmark {
 # takes a copy id 
 sub fetch_open_circulation {
 	my( $self, $cid ) = @_;
-	my $evt;
 	$self->logmark;
-	my $circ = $self->cstorereq(
-		'open-ils.cstore.direct.action.open_circulation.search',
-		{ target_copy => $cid, stop_fines_time => undef } );
-	$evt = OpenILS::Event->new('ACTION_CIRCULATION_NOT_FOUND') unless $circ;	
-	return ($circ, $evt);
+
+	my $e = OpenILS::Utils::CStoreEditor->new;
+    my $circ = $e->search_action_circulation({
+        target_copy => $cid, 
+        stop_fines_time => undef, 
+        checkin_time => undef
+    })->[0];
+    
+    return ($circ, $e->event);
 }
 
 sub fetch_all_open_circulation {
