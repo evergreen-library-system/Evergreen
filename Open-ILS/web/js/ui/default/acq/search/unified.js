@@ -288,7 +288,7 @@ function TermManager() {
             can_do_in = false; /* XXX might revise later */
         } else if (typeof(w.declaredClass) != "undefined") {
             can_do_fuzzy = can_do_in =
-                Boolean(w.declaredClass.match(/form\.Text/));
+                Boolean(w.declaredClass.match(/form\.Text|XULT/));
         } else {
             var type = dojo.attr(w, "type");
             if (type)
@@ -362,7 +362,7 @@ function TermManager() {
             this.allRowIds().forEach(
                 function(id) {
                     var term = self._selector(id).getTerm();
-                    if (!term ||
+                    if (term &&
                         !self.terms[term.hint][term.field].bib_friendly) {
                         self.removeRow(id);
                     }
@@ -568,6 +568,8 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
     var self = this;
 
     this.liTable = liTable;
+    this.liTable.isUni = true;
+
     this.poGrid = poGrid;
     this.plGrid = plGrid;
     this.invGrid = invGrid;

@@ -84,7 +84,8 @@ if (!dojo._hasResource["openils.widget.XULTermLoader"]) {
                 }
             },
             "parseUnimaginatively": function(data) {
-                return data.split(/[\n, ]/).filter(
+                if (!data) return [];
+                else return data.split(/[\n, ]/).filter(
                     function(o) { return o.length > 0; }
                 );
             }

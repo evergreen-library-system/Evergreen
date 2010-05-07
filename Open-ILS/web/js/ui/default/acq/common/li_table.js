@@ -298,14 +298,17 @@ function AcqLiTable() {
         }
 
         // show which picklist this lineitem is a member of
-        if(li.picklist() && (this.isPO || this.isMeta)) {
+        if(li.picklist() && (this.isPO || this.isMeta || this.isUni)) {
             var pl = 
                 this.plCache[li.picklist()] = 
                 this.plCache[li.picklist()] || 
                 fieldmapper.standardRequest(
                     ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
                     {params: [this.authtoken, li.picklist()]});
-            if(pl) {
+            if (pl) {
+                if (pl.name() == "")
+                    openils.Util.show(nodeByName("bib_origin", row), "inline");
+
                 openils.Util.show(nodeByName('pl', row), 'inline');
                 var link = nodeByName('pl_link', row);
                 link.setAttribute('href', oilsBasePath + '/acq/picklist/view/' + li.picklist());
