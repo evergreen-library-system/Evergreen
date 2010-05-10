@@ -272,19 +272,25 @@ sub bib_queue_import {
     }
 
     # clean up the successfully imported vandelay records to prevent queue bloat
+    my $pcrud = OpenSRF::AppSession->create('open-ils.pcrud');
+    $pcrud->connect;
+    $pcrud->request('open-ils.pcrud.transaction.begin', $authtoken);
+    my $err;
+
     foreach (@cleanup_recs) {
 
         try { 
-            $apputils->simplereq(
-                'open-ils.pcrud',
-                'open-ils.pcrud.delete.vqbr',
-                $authtoken, $_);
+
+            $pcrud->request('open-ils.pcrud.delete.vqbr', $authtoken, $_);
 
         } catch Error with {
-            my $err = shift;
+            $err = shift;
             $logger->error("Error deleteing queued bib record $_: $err");
         };
     }
+
+    $pcrud->request('open-ils.pcrud.transaction.commit', $authtoken) unless $err;
+    $pcrud->disconnect;
 }
 
 sub process_batch_data {
