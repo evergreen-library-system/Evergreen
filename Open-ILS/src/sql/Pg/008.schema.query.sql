@@ -110,6 +110,15 @@ CREATE TABLE query.function_param_def (
 	CONSTRAINT qfpd_function_param_seq UNIQUE (function_id, seq_no)
 );
 
+CREATE TABLE query.bind_variable (
+	name          TEXT             PRIMARY KEY,
+	type          TEXT             NOT NULL
+		                           CONSTRAINT bind_variable_type CHECK
+		                           ( type in ( 'string', 'number', 'string_list', 'number_list' )),
+	description   TEXT             NOT NULL,
+	default_value TEXT             -- to be encoded in JSON
+);
+
 CREATE TABLE query.expression (
 	id            SERIAL        PRIMARY KEY,
 	type          TEXT          NOT NULL CONSTRAINT predicate_type CHECK

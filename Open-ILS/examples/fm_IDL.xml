@@ -6578,6 +6578,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="qbv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::bind_variable" oils_persist:tablename="query.bind_variable" reporter:label="Bind Variable">
+		<fields oils_persist:primary="name">
+			<field reporter:label="Name" name="name" reporter:datatype="id"/>
+			<field reporter:label="Type" name="type" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+			<field reporter:label="Default Value" name="default_value" reporter:datatype="text"/>
+		</fields>
+		<links>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="qxp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expression" oils_persist:tablename="query.expression" reporter:label="Expression">
 		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
