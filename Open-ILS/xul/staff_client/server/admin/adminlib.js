@@ -30,7 +30,7 @@ function fetchUser(session) {
 function fetchFleshedUser(id, callback) {
     if(id == null) return null;
     var req = new Request(
-        'open-ils.actor:open-ils.actor.user.fleshed.retrieve', SESSION, id );
+        'open-ils.actor:open-ils.actor.user.fleshed.retrieve.authoritative', SESSION, id );
 
     if( callback ) {
         req.callback( function(r){callback(r.getResultObject());} );
