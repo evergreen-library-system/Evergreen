@@ -121,9 +121,10 @@ CREATE TABLE query.bind_variable (
 
 CREATE TABLE query.expression (
 	id            SERIAL        PRIMARY KEY,
-	type          TEXT          NOT NULL CONSTRAINT predicate_type CHECK
+	type          TEXT          NOT NULL CONSTRAINT expression_type CHECK
 	                            ( type IN (
 	                             	'xbet',    -- between
+									'xbind',   -- bind variable
 									'xbool',   -- boolean
 	                             	'xcase',   -- case
 									'xcast',   -- cast
@@ -157,7 +158,9 @@ CREATE TABLE query.expression (
 	                            DEFERRABLE INITIALLY DEFERRED,
 	cast_type     INT           REFERENCES query.datatype
 	                            DEFERRABLE INITIALLY DEFERRED,
-	negate        BOOL          NOT NULL DEFAULT FALSE
+	negate        BOOL          NOT NULL DEFAULT FALSE,
+	bind_variable TEXT          REFERENCES query.bind_variable
+	                            DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE UNIQUE INDEX query_expr_parent_seq

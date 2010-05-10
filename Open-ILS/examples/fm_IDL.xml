@@ -6608,6 +6608,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Subquery" name="subquery" reporter:datatype="link"/>
 			<field reporter:label="Cast Type" name="cast_type" reporter:datatype="link"/>
 			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
+			<field reporter:label="Bind Variable" name="bind_variable" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
@@ -6616,6 +6617,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="function_id" reltype="has_a" key="id" map="" class="qfs"/>
 			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
 			<link field="cast_type" reltype="has_a" key="id" map="" class="qdt"/>
+			<link field="bind_variable" reltype="has_a" key="name" map="" class="qbv"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
