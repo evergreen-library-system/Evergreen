@@ -694,7 +694,7 @@ patron.summary.prototype = {
 							);
 						} else if (obj.id && obj.id != 'null') {
 							robj = obj.network.simple_request(
-								'FM_AU_FLESHED_RETRIEVE_VIA_ID',
+								'FM_AU_FLESHED_RETRIEVE_VIA_ID.authoritative',
 								[ ses(), obj.id ]
 							);
 						} else {
