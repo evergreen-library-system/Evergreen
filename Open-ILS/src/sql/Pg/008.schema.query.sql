@@ -116,7 +116,8 @@ CREATE TABLE query.bind_variable (
 		                           CONSTRAINT bind_variable_type CHECK
 		                           ( type in ( 'string', 'number', 'string_list', 'number_list' )),
 	description   TEXT             NOT NULL,
-	default_value TEXT             -- to be encoded in JSON
+	default_value TEXT,            -- to be encoded in JSON
+	label         TEXT             NOT NULL
 );
 
 CREATE TABLE query.expression (

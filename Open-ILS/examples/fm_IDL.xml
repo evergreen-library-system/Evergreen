@@ -6581,9 +6581,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="qbv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::bind_variable" oils_persist:tablename="query.bind_variable" reporter:label="Bind Variable">
 		<fields oils_persist:primary="name">
 			<field reporter:label="Name" name="name" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Type" name="type" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
 			<field reporter:label="Default Value" name="default_value" reporter:datatype="text"/>
+			<field reporter:label="Actual Value" name="actual_value" oils_persist:virtual="true" reporter:datatype="text"/>
 		</fields>
 		<links>
 		</links>
