@@ -157,6 +157,7 @@ CREATE TABLE asset.stat_cat_entry_copy_map (
 	owning_copy	BIGINT		NOT NULL,
 	CONSTRAINT sce_once_per_copy UNIQUE (owning_copy,stat_cat)
 );
+CREATE INDEX scecm_owning_copy_idx ON asset.stat_cat_entry_copy_map(owning_copy);
 
 CREATE TABLE asset.copy_note (
 	id		BIGSERIAL			PRIMARY KEY,
