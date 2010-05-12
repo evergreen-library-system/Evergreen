@@ -274,14 +274,14 @@ sub bib_queue_import {
     # clean up the successfully imported vandelay records to prevent queue bloat
     my $pcrud = OpenSRF::AppSession->create('open-ils.pcrud');
     $pcrud->connect;
-    $pcrud->request('open-ils.pcrud.transaction.begin', $authtoken);
+    $pcrud->request('open-ils.pcrud.transaction.begin', $authtoken)->recv;
     my $err;
 
     foreach (@cleanup_recs) {
 
         try { 
 
-            $pcrud->request('open-ils.pcrud.delete.vqbr', $authtoken, $_);
+            $pcrud->request('open-ils.pcrud.delete.vqbr', $authtoken, $_)->recv;
 
         } catch Error with {
             $err = shift;
@@ -289,7 +289,7 @@ sub bib_queue_import {
         };
     }
 
-    $pcrud->request('open-ils.pcrud.transaction.commit', $authtoken) unless $err;
+    $pcrud->request('open-ils.pcrud.transaction.commit', $authtoken)->recv unless $err;
     $pcrud->disconnect;
 }
 
