@@ -231,7 +231,7 @@
                     var lw = Number($('lw').value) || 8; var ll = Number($('ll').value) || 9; /* spine label width and length */
                     var plw = Number($('plw').value) || 28; var pll = Number($('pll').value) || 9; /* pocket label width and length */
                     var html = "<html><head>";
-                    html += "<link type='text/css' rel='stylesheet' href='/xul/server/skin/print.css'></link>"
+                    html += "<link type='text/css' rel='stylesheet' href='" + xulG.url_prefix('/xul/server/skin/print.css') + "'></link>"
                     html += "<link type='text/css' rel='stylesheet' href='data:text/css,pre{font-size:" + pt + "pt;}'></link>";
                     html += "<title>Spine Labels</title></head><body>\n";
                     var nl = document.getElementsByAttribute('name','template');
@@ -267,29 +267,18 @@
                         }
                     }
                     html += '</body></html>';
-                    JSAN.use('util.window'); var win = new util.window();
-                    var loc = ( urls.XUL_REMOTE_BROWSER );
-                    //+ '?url=' + window.escape('about:blank') + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
-                    var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
-                    w.xulG = { 
-                        'url' : 'about:blank',
-                        'show_print_button' : 1,
-                        'alternate_print' : 1,
-                        'no_xulG' : 1,
-                        'title' : $("catStrings").getString('staff.cat.spine_labels.preview.title'),
-                        'on_url_load' : function(b) { 
-                            try { 
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-                                if (typeof w.xulG.written == 'undefined') {
-                                    w.xulG.written = true;
-                                    w.g.browser.get_content().document.write(html);
-                                    w.g.browser.get_content().document.close();
-                                }
-                            } catch(E) {
-                                alert(E);
-                            }
+                    var loc = ( urls.XUL_BROWSER );
+                    xulG.new_tab(
+                        loc,
+                        {
+                            'tab_name' : $("catStrings").getString('staff.cat.spine_labels.preview.title')
+                        },
+                        { 
+                            'url' : 'data:text/html,'+html,
+                            'show_print_button' : 1,
+                            'no_xulG' : 1
                         }
-                    };
+                    );
             } catch(E) {
                 g.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.spine_labels.preview.std_unexpected_err'),E);
             }
