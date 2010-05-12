@@ -141,6 +141,7 @@ util.print.prototype = {
 
     'template_sub' : function( msg, cols, params ) {
         try {
+            var obj = this;
             if (!msg) { dump('template sub called with empty string\n'); return; }
             JSAN.use('util.date');
             var s = msg; var b;
