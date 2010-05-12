@@ -760,6 +760,33 @@ CREATE TABLE acq.edi_account (      -- similar tables can extend remote_account 
 -- We need a UNIQUE constraint here also, to support the FK from acq.provider.edi_default
 ALTER TABLE acq.edi_account ADD CONSTRAINT acq_edi_account_id_unique UNIQUE (id);
 
+CREATE TABLE acq.edi_message (
+    id               SERIAL          PRIMARY KEY,
+    account          INTEGER         REFERENCES acq.edi_account(id)
+                                     DEFERRABLE INITIALLY DEFERRED,
+    remote_file      TEXT,
+    create_time      TIMESTAMPTZ     NOT NULL DEFAULT now(),
+    translate_time   TIMESTAMPTZ,
+    process_time     TIMESTAMPTZ,
+    error_time       TIMESTAMPTZ,
+    status           TEXT            NOT NULL DEFAULT 'new'
+                                     CONSTRAINT status_value CHECK
+                                     ( status IN (
+                                        'new',          -- needs to be translated
+                                        'translated',   -- needs to be processed
+                                        'trans_error',  -- error in translation step
+                                        'processed',    -- needs to have remote_file deleted
+                                        'proc_error',   -- error in processing step
+                                        'delete_error', -- error in deletion
+                                        'complete'      -- done
+                                     )),
+    edi              TEXT,
+    jedi             TEXT,
+    error            TEXT,
+    purchase_order   INT             REFERENCES acq.purchase_order
+                                     DEFERRABLE INITIALLY DEFERRED;
+);
+
 -- Note below that the primary key is NOT a SERIAL type.  We will periodically truncate and rebuild
 -- the table, assigning ids programmatically instead of using a sequence.
 CREATE TABLE acq.debit_attribution (

@@ -5848,9 +5848,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="edi"              reporter:datatype="text"      reporter:label="EDI Message Body"/>
 			<field name="jedi"             reporter:datatype="text"      reporter:label="JEDI Message Body"/>
 			<field name="error"            reporter:datatype="text"      reporter:label="Error"/>
+			<field name="purchase_order"   reporter:datatype="link"      reporter:label="Purchase Order"/>
 		</fields>
 		<links>
 			<link field="account" reltype="has_a" key="id" map="" class="acqedi"/>
+			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
