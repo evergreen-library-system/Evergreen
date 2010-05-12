@@ -281,7 +281,17 @@ util.browser.prototype = {
                                 if (typeof obj.on_url_load == 'function') {
                                     try {
                                         obj.error.sdump('D_TRACE','calling on_url_load');
-                                        obj.on_url_load( obj.controller.view.browser_browser );
+                                        var helpers = {
+                                            'doc_write' : function(html) {
+                                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                                obj.get_content().document.write(html);
+                                            },
+                                            'doc_close' : function() {
+                                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                                obj.get_content().document.close();
+                                            }
+                                        }
+                                        obj.on_url_load( obj.controller.view.browser_browser, obj, helpers );
                                     } catch(E) {
                                         obj.error.sdump('D_ERROR','on_url_load: ' + E );
                                     }
