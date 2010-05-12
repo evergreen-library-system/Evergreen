@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use OpenSRF::AppSession;
+use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Event;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::Fieldmapper;
@@ -455,9 +456,24 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => "bib_search",
+    api_name  => "open-ils.acq.biblio.create_by_id",
+    stream    => 1,
+    signature => {
+        desc   => q/Returns new lineitems for each matching bib record/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "list of bib IDs", type => "array"},
+            {desc => "options (for lineitem fleshing)", type => "object"}
+        ],
+        return => {desc => "A stream of LIs on success, Event on failure"}
+    }
+);
+
 # This is very similar to zsearch() in Order.pm
 sub bib_search {
-    my ($self, $conn, $auth, $search, $options) = @_;
+    my ($self, $conn, $auth, $search, $opts) = @_;
 
     my $e = new_editor("authtoken" => $auth, "xact" => 1);
     return $e->die_event unless $e->checkauth;
@@ -467,47 +483,101 @@ sub bib_search {
         "editor" => $e, "conn" => $conn
     );
 
-    $options ||= {};
-    $options->{"limit"} ||= 10;
+    $opts ||= {};
 
-    my $ses = create OpenSRF::AppSession("open-ils.search");
-    my $req = $ses->request(
-        "open-ils.search.biblio.multiclass.query.staff", $options, $search
-    );
-
-    my $count = 0;
     my $picklist;
     my @li_ids = ();
-    while (my $resp = $req->recv("timeout" => 60)) {
-        $picklist = OpenILS::Application::Acq::Order::zsearch_build_pl(
-            $mgr, undef # XXX could have per-user name for temp picklist here?
-        ) unless $count++;
+    if ($self->api_name =~ /create_by_id/) {
+        $search = [ sort @$search ]; # for consitency
+        my $bibs = $e->search_biblio_record_entry(
+            {"id" => $search}, {"order_by" => {"bre" => ["id"]}}
+        ) or return $e->die_event;
 
-        my $result = $resp->content;
-        next if not ref $result;
+        if ($opts->{"reuse_picklist"}) {
+            $picklist = $e->retrieve_acq_picklist($opts->{"reuse_picklist"}) or
+                return $e->die_event;
+            return $e->die_event unless
+                $e->allowed("UPDATE_PICKLIST", $picklist->org_unit);
 
-        # The result object contains a whole heck of a lot more information
-        # than just bib IDs, so maybe we could tell the client something
-        # useful (progress meter at least) in the future...
+            # If we're reusing an existing picklist, we don't need to
+            # create new lineitems for any bib records for which we already
+
+            my $already_have = $e->search_acq_lineitem({
+                "picklist" => $picklist->id,
+                "eg_bib_id" => [ map { $_->id } @$bibs ]
+            }) or return $e->die_event;
+         
+            # So in that case we a) save the lineitem id's of the relevant
+            # items that already exist so that we can return those items later,
+            # and b) remove the bib id's in question from our list of bib
+            # id's to lineitemize.
+            if (@$already_have) {
+                push @li_ids, $_->id foreach (@$already_have);
+                my @new_bibs = ();
+                foreach my $bib (@$bibs) {
+                    push @new_bibs, $bib unless
+                        grep { $_->eg_bib_id == $bib->id } @$already_have;
+                }
+                $bibs = [ @new_bibs ];
+            }
+        } else {
+            $picklist =
+                OpenILS::Application::Acq::Order::zsearch_build_pl($mgr, undef);
+        }
+
+        $conn->respond($picklist->id);
+
         push @li_ids, map {
-            my $bib = $_->[0];
             OpenILS::Application::Acq::Order::create_lineitem(
                 $mgr,
                 "picklist" => $picklist->id,
                 "source_label" => "native-evergreen-catalog",
-                "marc" => $e->retrieve_biblio_record_entry($bib)->marc,
-                "eg_bib_id" => $bib
+                "marc" => $_->marc,
+                "eg_bib_id" => $_->id
             )->id;
-        } (@{$result->{"ids"}});
+        } (@$bibs);
+    } else {
+        $opts->{"limit"} ||= 10;
+
+        my $ses = create OpenSRF::AppSession("open-ils.search");
+        my $req = $ses->request(
+            "open-ils.search.biblio.multiclass.query.staff", $opts, $search
+        );
+
+        my $count = 0;
+        while (my $resp = $req->recv("timeout" => 60)) {
+            $picklist = OpenILS::Application::Acq::Order::zsearch_build_pl(
+                $mgr, undef
+            ) unless $count++;
+
+            my $result = $resp->content;
+            next if not ref $result;
+
+            # The result object contains a whole heck of a lot more information
+            # than just bib IDs, so maybe we could tell the client something
+            # useful (progress meter at least) in the future...
+            push @li_ids, map {
+                my $bib = $_->[0];
+                OpenILS::Application::Acq::Order::create_lineitem(
+                    $mgr,
+                    "picklist" => $picklist->id,
+                    "source_label" => "native-evergreen-catalog",
+                    "marc" => $e->retrieve_biblio_record_entry($bib)->marc,
+                    "eg_bib_id" => $bib
+                )->id;
+            } (@{$result->{"ids"}});
+        }
+        $ses->disconnect;
     }
 
     $e->commit;
-    $ses->disconnect;
+
+    $logger->info("created @li_ids new lineitems for picklist $picklist");
 
     # new editor, no transaction needed this time
     $e = new_editor("authtoken" => $auth) or return $e->die_event;
     return $e->die_event unless $e->checkauth;
-    $conn->respond($RETRIEVERS{"lineitem"}->($e, $_, $options)) foreach @li_ids;
+    $conn->respond($RETRIEVERS{"lineitem"}->($e, $_, $opts)) foreach @li_ids;
     $e->disconnect;
 
     undef;

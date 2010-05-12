@@ -1,0 +1,17 @@
+<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/li_table_pager.js">
+</script>
+<div id="acq-litpager-controls">
+    <button id="acq-litpager-controls-prev" disabled="disabled">
+        &laquo; Prev
+    </button>
+    <span id="acq-litpager-controls-batch-range" class="hidden">
+        <span id="acq-litpager-controls-batch-start"></span> &mdash;
+        <span id="acq-litpager-controls-batch-end"></span>
+        <span id="acq-litpager-controls-total-holder" class="hidden">
+            of <span id="acq-litpager-controls-total"></span>
+        </span>
+    </span>
+    <button id="acq-litpager-controls-next" disabled="disabled">
+        Next &raquo;
+    </button>
+</div>

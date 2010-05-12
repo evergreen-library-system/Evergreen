@@ -801,6 +801,8 @@
 <!ENTITY staff.main.menu.acq.picklist.accesskey "L">
 <!ENTITY staff.main.menu.acq.bib_search.label "Title Search">
 <!ENTITY staff.main.menu.acq.bib_search.accesskey "T">
+<!ENTITY staff.main.menu.acq.from_bib.label "Import Catalog Records by ID">
+<!ENTITY staff.main.menu.acq.from_bib.accesskey "I">
 <!ENTITY staff.main.menu.acq.unified_search.label "Acquisitions Search">
 <!ENTITY staff.main.menu.acq.unified_search.accesskey "A">
 <!ENTITY staff.main.menu.acq.brief_record.label "New Brief Record">

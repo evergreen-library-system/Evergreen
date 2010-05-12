@@ -80,5 +80,6 @@
     'NOT_RECVD': "Not recv'd",
     'PRINT': "Print",
     'INVOICES': "Invoices",
-    'NUM_CLAIMS_EXISTING': "Claims (${0} existing)"
+    'NUM_CLAIMS_EXISTING': "Claims (${0} existing)",
+    'LOAD_TERMS_FIRST': "You can't retrieve records until you've loaded a CSV file\nwith bibliographic IDs in the first column."
 }

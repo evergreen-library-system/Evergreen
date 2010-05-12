@@ -243,3 +243,5 @@ span[name="bib_origin"] img { vertical-align: middle; }
 #acq-po-item-table-items tr td button[name="delete"] { color: #c00; }
 #acq-po-item-table-items tr { margin: 6px 0; }
 #acq-po-item-table-controls { margin-top: 8px; }
+
+#acq-litpager-controls[disabled="true"] { color: #ccc; }
