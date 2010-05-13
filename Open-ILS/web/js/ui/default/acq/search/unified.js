@@ -546,10 +546,14 @@ function TermManager() {
             var widget = this.widgets[id];
 
             if (!sso[attr]) sso[attr] = [];
+            var  value = (
+                typeof(widget.attr) == "function" ?
+                    widget.attr("value") : widget.value
+            );
+            if (typeof(value) != "string")
+                value = value.join(" || ");
             sso[attr].push(
-                (match_how.indexOf("__not") == -1 ? "" : "-") +
-                (typeof(widget.attr) == "function" ?
-                    widget.attr("value").join(" || ") : widget.value)
+                (match_how.indexOf("__not") == -1 ? "" : "-") + value
             );
         }
         var ssa = [];
@@ -681,16 +685,16 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
             "&c=" + dojo.byId("acq-unified-conjunction").getValue();
     };
 
-    this.search = function(search_object, bib_search_string) {
+    this.search = function(search_object, termManager) {
         var count_results = 0;
-        var bibs_too = false;
+        var bib_search_string = null;
         var result_type = dojo.byId("acq-unified-result-type").getValue();
         var conjunction = dojo.byId("acq-unified-conjunction").getValue();
 
         /* lineitem_and_bib: a special case */
         if (result_type == "lineitem_and_bib") {
             result_type = "lineitem";
-            bibs_too = true;
+            bib_search_string = termManager.buildBibSearchString();
         }
 
         function result_completion() {
@@ -723,7 +727,7 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
                     }
                 },
                 "oncomplete": function() {
-                    if (bibs_too) {
+                    if (bib_search_string) {
                         fieldmapper.standardRequest(
                             ["open-ils.acq",
                                 "open-ils.acq.biblio.wrapped_search"], {
@@ -788,9 +792,7 @@ openils.Util.addOnLoad(
             hideForm();
             openils.Util.show("acq-unified-body");
             termManager.reflect(uriManager.search_object);
-            resultManager.search(
-                uriManager.search_object, termManager.buildBibSearchString()
-            );
+            resultManager.search(uriManager.search_object, termManager);
         } else {
             termManager.addRow();
             openils.Util.show("acq-unified-body");
