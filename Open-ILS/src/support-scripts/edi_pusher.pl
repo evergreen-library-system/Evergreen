@@ -32,9 +32,12 @@ INIT {
 
 my %opts = (
     'quiet' => 0,
+    'max-batch-size=i' => -1
 );
 
-OpenILS::Utils::Cronscript->new()->session('open-ils.acq') or die "No session created";
+my $cs = OpenILS::Utils::Cronscript->new(\%opts);
+$cs->session('open-ils.acq') or die "No session created";
+
 OpenILS::Utils::CStoreEditor::init();
 
 sub editor {
@@ -43,26 +46,63 @@ sub editor {
 }
 
 my $e = editor();
-my $hook = 'format.po.jedi';
-my $defs = $e->search_action_trigger_event_definition({hook => $hook});
+my $hook = 'acqpo.activated';
+my $defs = $e->search_action_trigger_event_definition({
+    hook => $hook, 
+    reactor => 'GeneratePurchaseOrderJEDI',
+    active => 't'
+});
+
 # print Dumper($defs);
 print "\nHook '$hook' is used in ", scalar(@$defs), " event definition(s):\n";
 
 $Data::Dumper::Indent = 1;
+my $remaining = $cs->first_defined('max-batch-size');
 foreach my $def (@$defs) {
+    last if $remaining == 0;
     printf "%3s - '%s'\n", $def->id, $def->name;
-    my $events = $e->search_action_trigger_event([
-        {event_def => $def->id},
-        {flesh => 1, flesh_fields => { atev => ['template_output'] }}
-    ]);
+
+    # give me all completed JEDI events that link to purchase_orders 
+    # that have not already been delivered to the vendor
+    my $query = {
+        select => {atev => ['id']},
+        from => 'atev',
+        where => {
+            event_def => $def->id,
+            state => 'complete',
+            target => {
+                in => {
+                    select => {acqpo => ['id']},
+                    from => 'acqpo',
+                    where => {
+                        id => {
+                            'not in' => {
+                                select => {acqedim => ['purchase_order']},
+                                from => 'acqedim',
+                                where => {purchase_order => {'!=' => undef}}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        order_by => {atev => 'add_time'}
+    };
+
+    $query->{limit} = $remaining if $remaining > 0;
+
+    my $events = $e->json_query($query);
+    $remaining -= scalar(@$events);
+
     print "Event definition ", $def->id, " has ", scalar(@$events), " event(s)\n";
     foreach (@$events) {
+        my $event = $e->retrieve_action_trigger_event($_);
         my $message = Fieldmapper::acq::edi_message->new;
         $message->create_time('NOW');   # will need this later when we try to update from the object
-        print "Event ", $_->id, " targets PO ", $_->target, ":\n";  # target is an opaque identifier, so we cannot flesh it
-        print Dumper($_), "\n";
+        print "Event ", $event->id, " targets PO ", $event->target, ":\n";  # target is an opaque identifier, so we cannot flesh it
+        print Dumper($event), "\n";
         my $target = $e->retrieve_acq_purchase_order([              # instead we retrieve it separately
-            $_->target, {
+            $event->target, {
                 flesh => 2,
                 flesh_fields => {
                     acqpo  => ['provider'],
@@ -71,12 +111,14 @@ foreach my $def (@$defs) {
             }
         ]);
 
+        $message->purchase_order($target->id);
+
         $debug and print "Target: ", Dumper($target), "\n";
         my $logstr = sprintf "provider %s (%s)", $target->provider->id, $target->provider->name;
         unless ($target->provider->edi_default and $message->account($target->provider->edi_default->id)) {
             printf STDERR "ERROR: No edi_default account found for $logstr.  File will not be sent!\n";
         }
-        $message->jedi($_->template_output()->data);
+        $message->jedi($event->template_output()->data);
         print "\ntarget->provider->edi_default->id: ", $target->provider->edi_default->id, "\n";
         print "\nNow calling attempt_translation\n\n";
         unless (OpenILS::Application::Acq::EDI->attempt_translation($message, 1)) {

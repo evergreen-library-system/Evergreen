@@ -4689,7 +4689,32 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 INSERT INTO action_trigger.environment ( event_def, path) VALUES
     ( 13, 'open_billable_transactions_summary.circulation' );
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) VALUES (23, true, 1, 'PO JEDI', 'format.po.jedi', 'NOOP_True', 'ProcessTemplate', NULL, NULL, '00:05:00', NULL, NULL,
+
+INSERT INTO action_trigger.validator (module, description) 
+    VALUES (
+        'Acq::PurchaseOrderEDIRequired',
+        oils_i18n_gettext(
+            'Acq::PurchaseOrderEDIRequired',
+            'Purchase order is delivered via EDI',
+            'atval',
+            'description'
+        )
+    );
+
+INSERT INTO action_trigger.reactor (module, description)
+    VALUES (
+        'GeneratePurchaseOrderJEDI',
+        oils_i18n_gettext(
+            'GeneratePurchaseOrderJEDI',
+            'Creates purchase order JEDI (JSON EDI) for subsequent EDI processing',
+            'atreact',
+            'description'
+        )
+    );
+
+
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) 
+    VALUES (23, true, 1, 'PO JEDI', 'acqpo.activated', 'Acq::PurchaseOrderEDIRequired', 'GeneratePurchaseOrderJEDI', NULL, NULL, '00:05:00', NULL, NULL,
 $$[%- USE date -%]
 [%# start JEDI document -%]
 [%- BLOCK big_block -%]

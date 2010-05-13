@@ -48,7 +48,7 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('pen
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('penalty.PATRON_EXCEEDS_OVERDUE_COUNT','ausp','Patron has exceeded allowed overdue count',TRUE);
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('penalty.PATRON_EXCEEDS_CHECKOUT_COUNT','ausp','Patron has exceeded allowed checkout count',TRUE);
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('penalty.PATRON_EXCEEDS_COLLECTIONS_WARNING','ausp','Patron has exceeded maximum fine amount for collections department warning',TRUE);
-INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.jedi','acqpo','Formats a Purchase Order as a JEDI document',TRUE);
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('acqpo.activated','acqpo','Purchase order was activated',FALSE);
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.html','acqpo','Formats a Purchase Order as an HTML document',TRUE);
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES ('format.po.pdf','acqpo','Formats a Purchase Order as a PDF document',TRUE);
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('damaged','acp','Item marked damaged');
