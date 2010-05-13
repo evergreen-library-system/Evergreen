@@ -7079,7 +7079,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Delete Date/Time" name="copy_delete_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Delete Date/Time" name="last_delete_date" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
@@ -7104,7 +7104,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             --     COALESCE( z.copy_hold_ratio, 0 ) AS "hold_copy_ratio"
             -- FROM (
                 SELECT
-                    y.bre AS "bib_id",
+                    y.bre AS "id",
                     COALESCE( x.copy_count, 0 ) AS "copy_count",
                     y.hold_count AS "hold_count",
                     (y.hold_count::REAL / (CASE WHEN x.copy_count = 0 OR x.copy_count IS NULL THEN 0.1 ELSE x.copy_count::REAL END)) AS "hold_copy_ratio"
@@ -7137,7 +7137,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                 --     FROM biblio.record_entry
                 --     WHERE NOT deleted
                 -- )bre ON (z.bib_id = bre.id)
-                ;
+                
 
 		</oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
