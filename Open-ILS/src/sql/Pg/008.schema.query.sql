@@ -382,7 +382,7 @@ CREATE OR REPLACE VIEW query.expr_xbind AS
 		parenthesize,
 		parent_expr,
 		seq_no,
-		bind_value
+		bind_variable
     FROM
         query.expression
     WHERE
