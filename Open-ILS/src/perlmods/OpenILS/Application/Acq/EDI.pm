@@ -264,9 +264,10 @@ sub field_map {
         $args{remote_path} = $vendor->in_dir;    # override "path" with "in_dir"
     }
     my $host = $args{remote_host} || '';
-    ($host =~ /^(S?FTP):/i    and $args{type} = uc($1)) or
-    ($host =~ /^(SSH|SCP):/i  and $args{type} = 'SCP' ) ;
-     $host =~ /:(\d+)$/       and $args{port} = $1;
+    ($host =~ s/^(S?FTP)://i    and $args{type} = uc($1)) or
+    ($host =~ s/^(SSH|SCP)://i  and $args{type} = 'SCP' ) ;
+     $host =~ s/:(\d+)$//       and $args{port} = $1;
+     ($args{remote_host} = $host) =~ s#/+##;
     $verbose and $logger->warn("field_map: " . Dumper(\%args));
     return %args;
 }

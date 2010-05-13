@@ -498,8 +498,9 @@ sub _uftp {
         $self->{$_} or last;
         push @login_args, $self->{$_};
     }
-    eval { $ftp->login(@login_args) };
-    if ($@) {
+    my $login_ok = 0;
+    eval { $login_ok = $ftp->login(@login_args) };
+    if ($@ or !$login_ok) {
         $logger->error($self->_error("failed login to", $self->remote_host,  "w/ args(" . join(',', @login_args) . ") : $@"));
         return;
     }

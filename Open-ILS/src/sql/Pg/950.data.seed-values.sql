@@ -4737,7 +4737,7 @@ $$[%- USE date -%]
                 {"id-qualifier":"SA","id":"[% li.id %]"},
                 {"id-qualifier":"IB","id":"[% helpers.get_li_attr('isbn', li.attributes) %]"}
             ],
-            "price":[% helpers.get_li_attr('estimated_price', '', li.attributes) %],
+            "price":[% li.estimated_unit_price || '0.00' %],
             "desc":[
                 {"BTI":"[% helpers.get_li_attr('title',     '', li.attributes) %]"}, 
                 {"BPU":"[% helpers.get_li_attr('publisher', '', li.attributes) %]"},
