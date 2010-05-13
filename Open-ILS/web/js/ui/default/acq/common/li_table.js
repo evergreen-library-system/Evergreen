@@ -110,12 +110,14 @@ function AcqLiTable() {
     dojo.byId('acq-lit-notes-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-real-copies-back-button').onclick = function(){self.show('list')};
 
-    this.reset = function() {
+    this.reset = function(keep_selectors) {
         while(self.tbody.childNodes[0])
             self.tbody.removeChild(self.tbody.childNodes[0]);
-        self.selectors = [];
         self.noteAcks = {};
         self.relCache = {};
+
+        if (!keep_selectors)
+            self.selectors = [];
     };
     
     this.setNext = function(handler) {
@@ -182,13 +184,16 @@ function AcqLiTable() {
     /** @param all If true, assume all are selected */
     this.getSelected = function(all) {
         var selected = [];
+        var indices = {};   /* use to uniqify. needed in paging situations. */
         dojo.forEach(self.selectors, 
             function(i) { 
                 if(i.checked || all)
-                    selected.push(self.liCache[i.parentNode.parentNode.getAttribute('li')]);
+                    indices[i.parentNode.parentNode.getAttribute('li')] = true;
             }
         );
-        return selected;
+        return openils.Util.objectProperties(indices).map(
+            function(liId) { return self.liCache[liId]; }
+        );
     };
 
     this.setRowAttr = function(td, liWrapper, field, type) {

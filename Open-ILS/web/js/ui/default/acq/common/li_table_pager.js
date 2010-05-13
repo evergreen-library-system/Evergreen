@@ -21,7 +21,7 @@ function LiTablePager() {
         [this.batch, this.total] = this.fetcher(this.offset, this.limit);
 
         if (this.batch.length) {
-            this.liTable.reset();
+            this.liTable.reset(/* keep_selectors */ true);
             this.liTable.show("list");
             this.batch.forEach(function(li) { self.liTable.addLineitem(li); });
         }
