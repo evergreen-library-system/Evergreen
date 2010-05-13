@@ -45,7 +45,8 @@ function removeReportAtom (args) {
 
 function getSourceDefinition(class) {
 	var class_obj = getIDLClass(class);
-	return class_obj.getAttributeNS(persistNS,'tablename') || '(' + class_obj.getElementsByTagNameNS(persistNS,'source_definition')[0].nodeValue + ')';
+	return class_obj.getAttributeNS(persistNS,'tablename') || 
+        '(' + class_obj.getElementsByTagNameNS(persistNS,'source_definition')[0].textContent + ')';
 }
 
 function addReportAtoms () {
