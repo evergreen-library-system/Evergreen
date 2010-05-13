@@ -784,7 +784,7 @@ CREATE TABLE acq.edi_message (
     jedi             TEXT,
     error            TEXT,
     purchase_order   INT             REFERENCES acq.purchase_order
-                                     DEFERRABLE INITIALLY DEFERRED;
+                                     DEFERRABLE INITIALLY DEFERRED
 );
 
 -- Note below that the primary key is NOT a SERIAL type.  We will periodically truncate and rebuild
