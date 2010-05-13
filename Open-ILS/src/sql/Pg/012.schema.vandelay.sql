@@ -311,7 +311,6 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
     my $target_xml = shift;
     my $source_xml = shift;
     my $field_spec = shift;
-    $field_spec =~ s/\s+//sg;
 
     my $target_r = MARC::Record->new_from_xml( $target_xml );
     my $source_r = MARC::Record->new_from_xml( $source_xml );
@@ -322,8 +321,23 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
 
     my %fields;
     for my $f (@field_list) {
-        if ($f =~ /^(.{3})(.*)$/) {
-            $fields{$1} = [ split('', $2) ];
+        $f =~ s/^\s*//; $f =~ s/\s*$//;
+        if ($f =~ /^(.{3})(\w*)(?:\[([^]]*)\])?$/) {
+            my $field = $1;
+            $field =~ s/\s+//;
+            my $sf = $2;
+            $sf =~ s/\s+//;
+            my $match = $3;
+            $match =~ s/^\s*//; $match =~ s/\s*$//;
+            $fields{$field} = { sf => [ split('', $sf) ] };
+            if ($match) {
+                my ($msf,$mre) = split('~', $match);
+                if (length($msf) > 0 and length($mre) > 0) {
+                    $msf =~ s/^\s*//; $msf =~ s/\s*$//;
+                    $mre =~ s/^\s*//; $mre =~ s/\s*$//;
+                    $fields{$field}{match} = { sf => $msf, re => qr/$mre/ };
+                }
+            }
         }
     }
 
@@ -331,6 +345,9 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
         if ( @{$fields{$f}} ) {
             for my $from_field ($source_r->field( $f )) {
                 for my $to_field ($target_r->field( $f )) {
+                    if (exists($fields{$f}{match})) {
+                        next unless (grep { $_ =~ $field{$f}{match}{re} } $to_field->subfield($field{$f}{match}{sf}));
+                    }
                     my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}};
                     $to_field->add_subfields( @new_sf );
                 }
@@ -361,22 +378,41 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
     return $xml unless ($r);
 
     my $field_spec = shift;
-    $field_spec =~ s/\s+//sg;
-
     my @field_list = split(',', $field_spec);
 
     my %fields;
     for my $f (@field_list) {
-        if ($f =~ /^(.{3})(.*)$/) {
-            $fields{$1} = [ split('', $2) ];
+        $f =~ s/^\s*//; $f =~ s/\s*$//;
+        if ($f =~ /^(.{3})(\w*)(?:\[([^]]*)\])?$/) {
+            my $field = $1;
+            $field =~ s/\s+//;
+            my $sf = $2;
+            $sf =~ s/\s+//;
+            my $match = $3;
+            $match =~ s/^\s*//; $match =~ s/\s*$//;
+            $fields{$field} = { sf => [ split('', $sf) ] };
+            if ($match) {
+                my ($msf,$mre) = split('~', $match);
+                if (length($msf) > 0 and length($mre) > 0) {
+                    $msf =~ s/^\s*//; $msf =~ s/\s*$//;
+                    $mre =~ s/^\s*//; $mre =~ s/\s*$//;
+                    $fields{$field}{match} = { sf => $msf, re => qr/$mre/ };
+                }
+            }
         }
     }
 
     for my $f ( keys %fields) {
-        if ( @{$fields{$f}} ) {
-            $_->delete_subfield(code => $fields{$f}) for ($r->field( $f ));
-        } else {
-            $r->delete_field( $_ ) for ( $r->field( $f ) );
+        for my $to_field ($r->field( $f )) {
+            if (exists($fields{$f}{match})) {
+                next unless (grep { $_ =~ $field{$f}{match}{re} } $to_field->subfield($field{$f}{match}{sf}));
+            }
+
+            if ( @{$fields{$f}} ) {
+                $to_field->delete_subfield(code => $fields{$f}{sf});
+            } else {
+                $r->delete_field( $to_field );
+            }
         }
     }
 
@@ -443,7 +479,7 @@ BEGIN
 END;
 $_$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION vandelay.overlay_bib_record ( import_id BIGINT, eg_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
+CREATE OR REPLACE FUNCTION vandelay.template_overlay_bib_record ( v_marc TEXT, eg_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
 DECLARE
     merge_profile   vandelay.merge_profile%ROWTYPE;
     dyn_profile     vandelay.compile_profile%ROWTYPE;
@@ -452,7 +488,6 @@ DECLARE
     source_marc     TEXT;
     target_marc     TEXT;
     eg_marc         TEXT;
-    v_marc          TEXT;
     replace_rule    TEXT;
     match_count     INT;
 BEGIN
@@ -462,13 +497,8 @@ BEGIN
             JOIN vandelay.bib_match m ON (m.eg_record = b.id AND m.queued_record = import_id)
       LIMIT 1;
 
-    SELECT  q.marc INTO v_marc
-      FROM  vandelay.queued_record q
-            JOIN vandelay.bib_match m ON (m.queued_record = q.id AND q.id = import_id)
-      LIMIT 1;
-
     IF eg_marc IS NULL OR v_marc IS NULL THEN
-        -- RAISE NOTICE 'no marc for vandelay or bib record';
+        -- RAISE NOTICE 'no marc for template or bib record';
         RETURN FALSE;
     END IF;
 
@@ -503,7 +533,45 @@ BEGIN
       SET   marc = vandelay.merge_record_xml( target_marc, source_marc, dyn_profile.add_rule, replace_rule, dyn_profile.strip_rule )
       WHERE id = eg_id;
 
-    IF FOUND THEN
+    IF NOT FOUND THEN
+        -- RAISE NOTICE 'update of biblio.record_entry failed';
+        RETURN FALSE;
+    END IF;
+
+    RETURN TRUE;
+
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.template_overlay_bib_record ( v_marc TEXT, eg_id BIGINT) RETURNS BOOL AS $$
+    SELECT vandelay.template_overlay_bib_record( $1, $2, NULL);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION vandelay.overlay_bib_record ( import_id BIGINT, eg_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
+DECLARE
+    merge_profile   vandelay.merge_profile%ROWTYPE;
+    dyn_profile     vandelay.compile_profile%ROWTYPE;
+    editor_string   TEXT;
+    editor_id       INT;
+    source_marc     TEXT;
+    target_marc     TEXT;
+    eg_marc         TEXT;
+    v_marc          TEXT;
+    replace_rule    TEXT;
+    match_count     INT;
+BEGIN
+
+    SELECT  q.marc INTO v_marc
+      FROM  vandelay.queued_record q
+            JOIN vandelay.bib_match m ON (m.queued_record = q.id AND q.id = import_id)
+      LIMIT 1;
+
+    IF v_marc IS NULL THEN
+        -- RAISE NOTICE 'no marc for vandelay or bib record';
+        RETURN FALSE;
+    END IF;
+
+    IF vandelay.template_overlay_bib_record( v_marc, eg_id, merge_profile_id) THEN
         UPDATE  vandelay.queued_bib_record
           SET   imported_as = eg_id,
                 import_time = NOW()
@@ -581,13 +649,11 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION vandelay.auto_overlay_bib_queue ( queue_id BIGINT, merge_profile_id INT ) RETURNS SETOF BIGINT AS $$
 DECLARE
     queued_record   vandelay.queued_bib_record%ROWTYPE;
-    success         BOOL;
 BEGIN
 
     FOR queued_record IN SELECT * FROM vandelay.queued_bib_record WHERE queue = queue_id AND import_time IS NULL LOOP
-        success := vandelay.auto_overlay_bib_record( queued_record.id, merge_profile_id );
 
-        IF success THEN
+        IF vandelay.auto_overlay_bib_record( queued_record.id, merge_profile_id ) THEN
             RETURN NEXT queued_record.id;
         END IF;
 
@@ -1226,13 +1292,11 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION vandelay.auto_overlay_authority_queue ( queue_id BIGINT, merge_profile_id INT ) RETURNS SETOF BIGINT AS $$
 DECLARE
     queued_record   vandelay.queued_authority_record%ROWTYPE;
-    success         BOOL;
 BEGIN
 
     FOR queued_record IN SELECT * FROM vandelay.queued_authority_record WHERE queue = queue_id AND import_time IS NULL LOOP
-        success := vandelay.auto_overlay_authority_record( queued_record.id, merge_profile_id );
 
-        IF success THEN
+        IF vandelay.auto_overlay_authority_record( queued_record.id, merge_profile_id ) THEN
             RETURN NEXT queued_record.id;
         END IF;
 
