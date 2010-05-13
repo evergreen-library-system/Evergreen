@@ -25,6 +25,7 @@ use OpenILS::Utils::Cronscript;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Acq::EDI;
+use OpenSRF::Utils::Logger q/$logger/;
 
 INIT {
     $debug = 1;
@@ -86,7 +87,7 @@ foreach my $def (@$defs) {
                 }
             }
         },
-        order_by => {atev => 'add_time'}
+        order_by => {atev => ['add_time']}
     };
 
     $query->{limit} = $remaining if $remaining > 0;
@@ -96,7 +97,12 @@ foreach my $def (@$defs) {
 
     print "Event definition ", $def->id, " has ", scalar(@$events), " event(s)\n";
     foreach (@$events) {
-        my $event = $e->retrieve_action_trigger_event($_);
+
+        my $event = $e->retrieve_action_trigger_event([
+            $_->{id}, 
+            {flesh => 1, flesh_fields => {atev => ['template_output']}}
+        ]);
+
         my $message = Fieldmapper::acq::edi_message->new;
         $message->create_time('NOW');   # will need this later when we try to update from the object
         print "Event ", $event->id, " targets PO ", $event->target, ":\n";  # target is an opaque identifier, so we cannot flesh it

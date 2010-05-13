@@ -2215,7 +2215,7 @@ sub activate_purchase_order_impl {
     }
 
     # tell the world we activated a PO
-    $U->create_events_for_hook('acqpo.activate', $po, $po->ordering_agency);
+    $U->create_events_for_hook('acqpo.activated', $po, $po->ordering_agency);
 
     return undef;
 }
