@@ -26,6 +26,8 @@ function gridDataLoader() {
     if(listAll)
         method = method.replace(/user/, 'user.all');
 
+    plListGrid.showLoadProgressIndicator();
+
     fieldmapper.standardRequest(
         ['open-ils.acq', method],
         {   async: true,
