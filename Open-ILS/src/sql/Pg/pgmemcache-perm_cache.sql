@@ -4,8 +4,8 @@ BEGIN;
  * Use pgmemcache and memcached to increase the speed of permission tests
  * ----------------------------------------------------------------------
  *
- * This set of fuctions allows the use of memcached as a caching mechanism for
- * permission checks.  It is transparent an optional.  If memcache is not set
+ * This set of functions allows the use of memcached as a caching mechanism for
+ * permission checks.  It is transparent and optional.  If memcache is not set
  * up, either by not running or the lack of the pgmemcache postgres addon,
  * then the default, existing behaviour is preserved and live database queries
  * are used to test all permissions.
@@ -21,7 +21,7 @@ BEGIN;
  *
  *
  * On postgres 8.3 and later, pgmemcache 2.x is required.  In this new
- * pgmemecache the server configuration is controlled from within the
+ * pgmemcache the server configuration is controlled from within the
  * postgresql.conf file via user-defined variables read by the pgmemcache
  * intialization routines.  Please see the README for pgmemcache at
  *
@@ -30,7 +30,7 @@ BEGIN;
  * or in the release tarball that was installed for details on configuration.
  *
  *
- * TODO: Make the cache timout configurable via a global setting for EG 2.0
+ * TODO: Make the cache timeout configurable via a global setting for EG 2.0
  *
  */
 
