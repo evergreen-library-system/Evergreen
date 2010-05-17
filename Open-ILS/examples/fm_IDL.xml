@@ -5850,6 +5850,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="jedi"             reporter:datatype="text"      reporter:label="JEDI Message Body"/>
 			<field name="error"            reporter:datatype="text"      reporter:label="Error"/>
 			<field name="purchase_order"   reporter:datatype="link"      reporter:label="Purchase Order"/>
+			<field name="message_type"     reporter:datatype="text"      reporter:label="Message Type"/>
 		</fields>
 		<links>
 			<link field="account" reltype="has_a" key="id" map="" class="acqedi"/>

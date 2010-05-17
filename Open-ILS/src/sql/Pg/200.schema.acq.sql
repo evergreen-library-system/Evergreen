@@ -778,13 +778,22 @@ CREATE TABLE acq.edi_message (
                                         'processed',    -- needs to have remote_file deleted
                                         'proc_error',   -- error in processing step
                                         'delete_error', -- error in deletion
+										'retry',        -- need to retry
                                         'complete'      -- done
                                      )),
     edi              TEXT,
     jedi             TEXT,
     error            TEXT,
     purchase_order   INT             REFERENCES acq.purchase_order
-                                     DEFERRABLE INITIALLY DEFERRED
+                                     DEFERRABLE INITIALLY DEFERRED,
+	message_type     TEXT            NOT NULL CONSTRAINT valid_type CHECK
+	                                 ( status IN (
+									     'ORDERS',
+									     'ORDRSP',
+									     'INVOIC',
+									     'OSTENQ',
+									     'OSTRPT'
+									 ))
 );
 
 -- Note below that the primary key is NOT a SERIAL type.  We will periodically truncate and rebuild
