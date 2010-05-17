@@ -64,7 +64,7 @@ foreach my $def (@$defs) {
     printf "%3s - '%s'\n", $def->id, $def->name;
 
     # give me all completed JEDI events that link to purchase_orders 
-    # that have not already been delivered to the vendor
+    # that have no delivery attempts or are in the retry state
     my $query = {
         select => {atev => ['id']},
         from => 'atev',
@@ -72,17 +72,12 @@ foreach my $def (@$defs) {
             event_def => $def->id,
             state => 'complete',
             target => {
-                in => {
-                    select => {acqpo => ['id']},
-                    from => 'acqpo',
+                'not in' => {
+                    select => {acqedim => ['purchase_order']},
+                    from => 'acqedim',
                     where => {
-                        id => {
-                            'not in' => {
-                                select => {acqedim => ['purchase_order']},
-                                from => 'acqedim',
-                                where => {purchase_order => {'!=' => undef}}
-                            }
-                        }
+                        message_type => 'ORDERS',
+                        status => {'!=' => 'retry'}
                     }
                 }
             }
@@ -93,6 +88,12 @@ foreach my $def (@$defs) {
     $query->{limit} = $remaining if $remaining > 0;
 
     my $events = $e->json_query($query);
+
+    if(!$events) {
+        $logger->error("error querying JEDI events for event definition $def->id");
+        next;
+    }
+
     $remaining -= scalar(@$events);
 
     print "Event definition ", $def->id, " has ", scalar(@$events), " event(s)\n";
@@ -103,10 +104,7 @@ foreach my $def (@$defs) {
             {flesh => 1, flesh_fields => {atev => ['template_output']}}
         ]);
 
-        my $message = Fieldmapper::acq::edi_message->new;
-        $message->create_time('NOW');   # will need this later when we try to update from the object
-        print "Event ", $event->id, " targets PO ", $event->target, ":\n";  # target is an opaque identifier, so we cannot flesh it
-        print Dumper($event), "\n";
+
         my $target = $e->retrieve_acq_purchase_order([              # instead we retrieve it separately
             $event->target, {
                 flesh => 2,
@@ -117,25 +115,52 @@ foreach my $def (@$defs) {
             }
         ]);
 
-        $message->purchase_order($target->id);
+        # this may be a retry attempt.  if so, reuse the original edi_message
+        my $message = $e->search_acq_edi_message({
+            purchase_order => $target->id,
+            message_type => 'ORDERS', 
+            status => 'retry'
+        })->[0];
 
-        $debug and print "Target: ", Dumper($target), "\n";
+        if(!$message) {
+            $message = Fieldmapper::acq::edi_message->new;
+            $message->create_time('NOW');   # will need this later when we try to update from the object
+            $message->purchase_order($target->id);
+            $message->message_type('ORDERS');
+            $message->isnew(1);
+        }
+
         my $logstr = sprintf "provider %s (%s)", $target->provider->id, $target->provider->name;
         unless ($target->provider->edi_default and $message->account($target->provider->edi_default->id)) {
             printf STDERR "ERROR: No edi_default account found for $logstr.  File will not be sent!\n";
         }
+
         $message->jedi($event->template_output()->data);
+
         print "\ntarget->provider->edi_default->id: ", $target->provider->edi_default->id, "\n";
         print "\nNow calling attempt_translation\n\n";
+
         unless (OpenILS::Application::Acq::EDI->attempt_translation($message, 1)) {
             print STDERR "ERROR: attempt_translation failed, skipping message\n";
             next;
             # The premise here is that if the translator failed, it is better to try again later from a "fresh" fetched file
             # than to add a cascade of failing inscrutable copies of the same message(s) to our DB.  
         }
+
         print "Writing new message + translation to DB\n";
+
         $e->xact_begin;
-        $e->create_acq_edi_message($message) or warn "create_acq_edi_message failed!  $!";
+        if($message->isnew) {
+            unless($e->create_acq_edi_message($message)) {
+                $logger->error("Error creating acq.edi_message for PO ".$target->id.' : '.$e->die_event);
+                next;
+            }
+        } else {
+            unless($e->update_acq_edi_message($message)) {
+                $logger->error("Error updating acq.edi_message for PO ".$target->id.' : '.$e->die_event);
+                next;
+            }
+        }
         $e->xact_commit;
 
         print "Calling send_core(...)\n";
