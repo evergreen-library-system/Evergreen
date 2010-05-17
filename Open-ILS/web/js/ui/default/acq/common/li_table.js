@@ -1437,25 +1437,31 @@ function AcqLiTable() {
                     orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
                     readOnly : readOnly,
                 });
+
                 widget.build(
                     // make sure we capture the value from any async widgets
                     function(w, ww) { 
+
                         if (field == "fund" && w.store)
                             self._ensureCSSFundClasses(w.store);
-                        copy[field](ww.getFormattedValue()) 
-                        self.copyWidgetCache[copy.id()][field] = w;
-                    }
-                );
-                dojo.connect(widget.widget, 'onChange', 
-                    function(val) { 
-                        if (field == "fund")
-                            self._updateFundSelectorStyle(widget, val);
 
-                        if (copy.isnew() || val != copy[field]()) {
-                            // prevent setting ischanged() automatically on widget load for existing copies
-                            copy[field](widget.getFormattedValue()) 
-                            copy.ischanged(true);
-                        }
+                        if(!readOnly) 
+                            copy[field](ww.getFormattedValue()) 
+
+                        self.copyWidgetCache[copy.id()][field] = w;
+
+                        dojo.connect(w, 'onChange', 
+                            function(val) { 
+                                if (field == "fund")
+                                    self._updateFundSelectorStyle(widget, val);
+
+                                if (!readOnly && (copy.isnew() || val != copy[field]())) {
+                                    // prevent setting ischanged() automatically on widget load for existing copies
+                                    copy[field](widget.getFormattedValue()) 
+                                    copy.ischanged(true);
+                                }
+                            }
+                        );
                     }
                 );
             }
