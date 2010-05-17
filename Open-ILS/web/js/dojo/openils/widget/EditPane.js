@@ -36,7 +36,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 this.inherited(arguments);
                 this.initAutoEnv();
                 if(this.readOnly)
-                    this.hideActionButtons = true;
+                    this.hideSaveButton = true;
 
                 // grab any field-level docs
                 /*
@@ -173,6 +173,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     label:'Cancel', // XXX
                     onClick : this.onCancel
                 }, cancelSpan);
+
+                if(this.hideSaveButton) return;
 
                 new dijit.form.Button({
                     label:'Save',  // XXX

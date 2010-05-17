@@ -45,6 +45,13 @@
                             id="acq-po-view-notes"></a>
                     </td>
                 </tr>
+                <tr>
+                    <td>EDI Messages</td>
+                    <td>
+                        <a href="javascript:void(0);"
+                            id="acq-po-view-edi-messages"></a>
+                    </td>
+                </tr>
                 <tr id="acq-po-activate" class="hidden">
                     <td>Activatable?</td>
                     <td>

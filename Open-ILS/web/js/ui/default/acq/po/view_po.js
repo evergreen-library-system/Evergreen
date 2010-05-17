@@ -390,6 +390,25 @@ params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh
             }
         }
     );
+
+    pcrud.search(
+        'acqedim', 
+        {purchase_order : poId}, 
+        {
+            order_by : {acqedim : 'create_time'},
+            oncomplete : function(r) {
+                var resp = openils.Util.readResponse(r);
+                // TODO: I18n
+                if(resp) {
+                    dojo.byId('acq-po-view-edi-messages').innerHTML = '(' + resp.length + ')';
+                    dojo.byId('acq-po-view-edi-messages').setAttribute('href', oilsBasePath + '/acq/po/edi_messages/' + poId);
+                } else {
+                    dojo.byId('acq-po-view-edi-messages').innerHTML = '0';
+                    dojo.byId('acq-po-view-edi-messages').setAttribute('href', '');
+                }
+            }
+        }
+    );
 }
 
 function checkCouldActivatePo() {

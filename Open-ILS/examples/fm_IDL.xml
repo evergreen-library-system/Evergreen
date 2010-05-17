@@ -5801,7 +5801,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="acqedi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::edi_account" oils_persist:tablename="acq.edi_account" reporter:label="EDI Account">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.remote_account_id_seq"><!-- edi_account inherits from config.remote_account, hence the seq -->
-			<field name="id"            reporter:datatype="id"        reporter:label="EDI Account ID"/>
+			<field name="id"            reporter:datatype="id"        reporter:label="EDI Account ID" reporter:selector="label"/>
 			<field name="label"         reporter:datatype="text"      reporter:label="Label"/>
 			<field name="host"          reporter:datatype="text"      reporter:label="Host"/>
 			<field name="username"      reporter:datatype="text"      reporter:label="Username"/>
