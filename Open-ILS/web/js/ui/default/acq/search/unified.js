@@ -568,11 +568,11 @@ function TermManager() {
  * layer, and it chooses which ML method to call as well as what widgets to use
  * to display the results.
  */
-function ResultManager(liTable, poGrid, plGrid, invGrid) {
+function ResultManager(liPager, poGrid, plGrid, invGrid) {
     var self = this;
 
-    this.liTable = liTable;
-    this.liTable.isUni = true;
+    this.liPager = liPager;
+    this.liPager.liTable.isUni = true;
 
     this.poGrid = poGrid;
     this.plGrid = plGrid;
@@ -589,9 +589,19 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
                 "flesh_notes": true
             },
             "revealer": function() {
-                self.liTable.reset();
-                self.liTable.show("list");
-            }
+                self.liPager.show();
+                progressDialog.show(true);
+            },
+            "finisher": function() {
+                self.liPager.batch_length = self.count_results;
+                self.liPager.relabelControls();
+                self.liPager.enableControls(true);
+                progressDialog.hide();
+            },
+            "adder": function(li) {
+                self.liPager.liTable.addLineitem(li);
+            },
+            "interface": self.liPager
         },
         "purchase_order": {
             "search_options": {
@@ -599,8 +609,17 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
             },
             "revealer": function() {
                 self.poGrid.resetStore();
+                self.poGrid.showLoadProgressIndicator();
                 self.poCache = {};
-            }
+            },
+            "finisher": function() {
+                self.poGrid.hideLoadProgressIndicator();
+            },
+            "adder": function(po) {
+                self.poCache[po.id()] = po;
+                self.poGrid.store.newItem(acqpo.toStoreItem(po));
+            },
+            "interface": self.poGrid
         },
         "picklist": {
             "search_options": {
@@ -609,62 +628,71 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
             },
             "revealer": function() {
                 self.plGrid.resetStore();
+                self.plGrid.showLoadProgressIndicator();
                 self.plCache = {};
-            }
+            },
+            "finisher": function() {
+                self.plGrid.hideLoadProgressIndicator();
+            },
+            "adder": function(pl) {
+                self.plCache[pl.id()] = pl;
+                self.plGrid.store.newItem(acqpl.toStoreItem(pl));
+            },
+            "interface": self.plGrid
         },
         "invoice": {
             "search_options": {
                 "no_flesh_misc": true
             },
+            "finisher": function() {
+                self.invGrid.hideLoadProgressIndicator();
+            },
             "revealer": function() {
                 self.invGrid.resetStore();
                 self.invCache = {};
-            }
+            },
+            "adder": function(inv) {
+                self.invCache[inv.id()] = inv;
+                self.invGrid.store.newItem(acqinv.toStoreItem(inv));
+            },
+            "interface": self.invGrid
         },
         "no_results": {
             "revealer": function() { alert(localeStrings.NO_RESULTS); }
         }
     };
 
-    this._add_lineitem = function(li) {
-        this.liTable.addLineitem(li);
-    };
+    this._dataLoader = function() {
+        /* This function must contain references to "self" only, not "this." */
+        var grid = self.result_types[self.result_type].interface;
+        self.count_results = 0;
+        self.params[4].offset = grid.displayOffset;
+        self.params[4].limit = grid.displayLimit;
 
-    this._add_purchase_order = function(po) {
-        this.poCache[po.id()] = po;
-        this.poGrid.store.newItem(acqpo.toStoreItem(po));
-    };
-
-    this._add_picklist = function(pl) {
-        this.plCache[pl.id()] = pl;
-        this.plGrid.store.newItem(acqpl.toStoreItem(pl));
-    };
-
-    this._add_invoice = function(inv) {
-        this.invCache[inv.id()] = inv;
-        this.invGrid.store.newItem(acqinv.toStoreItem(inv));
-    };
-
-    this._finish_purchase_order = function() {
-        this.poGrid.hideLoadProgressIndicator();
-    };
-
-    this._finish_picklist = function() {
-        this.plGrid.hideLoadProgressIndicator();
-    };
-
-    this._finish_invoice = function() {
-        this.invGrid.hideLoadProgressIndicator();
+        fieldmapper.standardRequest(
+            ["open-ils.acq", self.method_name], {
+                "params": self.params,
+                "async": true,
+                "onresponse": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        if (!self.count_results++)
+                            self.show(self.result_type);
+                        self.add(self.result_type, r);
+                    }
+                },
+                "oncomplete": function() { self.resultsComplete(); }
+            }
+        );
     };
 
     this.add = function(which, what) {
-        var name = "_add_" + which;
-        if (this[name]) this[name](what);
+        var f = this.result_types[which].adder;
+        if (f) f(what);
     };
 
     this.finish = function(which) {
-        var name = "_finish_" + which;
-        if (this[name]) this[name]();
+        var f = this.result_types[which].finisher;
+        if (f) f();
     };
 
     this.show = function(which) {
@@ -678,6 +706,12 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
         this.result_types[which].revealer();
     };
 
+    this.resultsComplete = function() {
+        if (!this.count_results)
+            this.show("no_results");
+        else this.finish(this.result_type);
+    };
+
     this.go = function(search_object) {
         location.href = oilsBasePath + "/acq/search/unified?" +
             "so=" + base64Encode(search_object) +
@@ -686,76 +720,56 @@ function ResultManager(liTable, poGrid, plGrid, invGrid) {
     };
 
     this.search = function(search_object, termManager) {
-        var count_results = 0;
         var bib_search_string = null;
-        var result_type = dojo.byId("acq-unified-result-type").getValue();
-        var conjunction = dojo.byId("acq-unified-conjunction").getValue();
+        this.count_results = 0;
+        this.result_type = dojo.byId("acq-unified-result-type").getValue();
 
         /* lineitem_and_bib: a special case */
-        if (result_type == "lineitem_and_bib") {
-            result_type = "lineitem";
+        if (this.result_type == "lineitem_and_bib") {
+            this.result_type = "lineitem";
             bib_search_string = termManager.buildBibSearchString();
         }
 
-        function result_completion() {
-            if (!count_results) self.show("no_results");
-            else self.finish(result_type);
-        }
-
-        var method_name = "open-ils.acq." + result_type + ".unified_search";
+        this.method_name = "open-ils.acq." + this.result_type +
+            ".unified_search";
         /* Except for building the API method name that we want to call,
          * we want to treat lineitem_and_bib the same way as lineitem from
          * here forward. */
 
-        var params = [
+        this.params = [
             openils.User.authtoken,
             null, null, null,
-            this.result_types[result_type].search_options
+            this.result_types[this.result_type].search_options
         ];
 
-        params[conjunction == "and" ? 1 : 2] = search_object;
+        this.params[
+            dojo.byId("acq-unified-conjunction").getValue() == "and" ? 1 : 2
+        ] = search_object;
 
-        fieldmapper.standardRequest(
-            ["open-ils.acq", method_name], {
-                "params": params,
-                "async": true,
-                "onresponse": function(r) {
-                    if (r = openils.Util.readResponse(r)) {
-                        if (!count_results++)
-                            self.show(result_type);
-                        self.add(result_type, r);
-                    }
-                },
-                "oncomplete": function() {
-                    if (bib_search_string) {
-                        fieldmapper.standardRequest(
-                            ["open-ils.acq",
-                                "open-ils.acq.biblio.wrapped_search"], {
-                                "params": [
-                                    openils.User.authtoken,
-                                    bib_search_string,
-                                    self.result_types.lineitem.search_options
-                                ],
-                                "async": true,
-                                "onresponse": function(r) {
-                                    if (r = openils.Util.readResponse(r)) {
-                                        if (!count_results++)
-                                            self.show("lineitem");
-                                        self.add("lineitem", r);
-                                    }
-                                },
-                                "oncomplete": function() {
-                                    result_completion();
-                                }
-                            }
-                        );
-                    } else {
-                        result_completion();
+        var interface = this.result_types[this.result_type].interface;
+        interface.dataLoader = this._dataLoader;
+
+        if (bib_search_string) {
+            /* Have the ML do the bib search first, which incidentally has the
+             * side effect of creating line items that will show up when
+             * we do the LI part of the search (so we don't actually want
+             * to display these results directly). */
+            fieldmapper.standardRequest(
+                ["open-ils.acq", "open-ils.acq.biblio.wrapped_search.atomic"], {
+                    "params": [
+                        openils.User.authtoken, bib_search_string, {
+                            "clear_marc": true
+                        }
+                    ],
+                    "onresponse": function(r) {
+                        r = openils.Util.readResponse(r, false, true);
                     }
                 }
-            }
-        );
-    }
+            );
+        }
+
+        interface.dataLoader();
+    };
 }
 
 function URIManager() {
@@ -781,7 +795,7 @@ openils.Util.addOnLoad(
     function() {
         termManager = new TermManager();
         resultManager = new ResultManager(
-            new AcqLiTable(),
+            new LiTablePager(null, new AcqLiTable()),
             dijit.byId("acq-unified-po-grid"),
             dijit.byId("acq-unified-pl-grid"),
             dijit.byId("acq-unified-inv-grid")

@@ -6,18 +6,20 @@ var liTable = null;
 var pager = null;
 var usingPl = null;
 
-function fetchRecords(offset, limit) {
+function fetchRecords() {
     var data = termLoader.attr("value");
-    var results = [];
-    var total = data.length;
-    if (offset < 0 || offset >= data.length) return [results, total];
+    var result_count = 0;
+    pager.total = data.length;
 
     progressDialog.show(true);
-    /* notice this call is synchronous */
     fieldmapper.standardRequest(
         ["open-ils.acq", "open-ils.acq.biblio.create_by_id"], {
             "params": [
-                openils.User.authtoken, data.slice(offset, offset + limit), {
+                openils.User.authtoken,
+                data.slice(
+                    pager.displayOffset,
+                    pager.displayOffset + pager.displayLimit
+                ), {
                     "flesh_attrs": true,
                     "flesh_cancel_reason": true,
                     "flesh_notes": true,
@@ -26,11 +28,13 @@ function fetchRecords(offset, limit) {
             ],
             "onresponse": function(r) {
                 if (r = openils.Util.readResponse(r)) {
-                    if (typeof(r) != "object")
+                    if (typeof(r) != "object") {
                         usingPl = r;
-                    else if (r.classname && r.classname == "jub")
-                        results.push(r);
-                    /* XXX the ML method is buggy and sometimes responds with
+                    } else if (r.classname && r.classname == "jub") {
+                        result_count++;
+                        liTable.addLineitem(r);
+                    }
+                    /* The ML method is buggy and sometimes responds with
                      * more objects that we don't want, hence the specific
                      * conditionals above that don't necesarily consume all
                      * responses. */
@@ -38,8 +42,8 @@ function fetchRecords(offset, limit) {
             }
         }
     );
+    pager.batch_length = result_count;
     progressDialog.hide();
-    return [results, total];
 }
 
 function beginSearch() {

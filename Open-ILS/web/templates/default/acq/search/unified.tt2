@@ -252,6 +252,7 @@
         There are no results from your search.
     </div>
     <div id="acq-unified-results-lineitem" class="hidden">
+        [% INCLUDE "default/acq/common/li_table_pager.tt2" %]
         [% INCLUDE "default/acq/common/li_table.tt2" %]
     </div>
 </div>
