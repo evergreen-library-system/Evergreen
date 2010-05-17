@@ -288,10 +288,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 return false;
             var lclass = linkInfo.linkClass;
 
-            if(lclass == 'aou') {
-                this.widgetValue = fieldmapper.aou.findOrgUnit(this.widgetValue).shortname();
-                return;
-            }
+            if(lclass == 'aou') 
+                return false;
 
             // first try the store cache
             var self = this;
@@ -299,12 +297,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 var store = this.cache[this.auth].list[lclass];
                 var query = {};
                 query[linkInfo.vfield.name] = ''+this.widgetValue;
+                var found = false;
                 store.fetch({query:query, onComplete:
                     function(list) {
-                        self.widgetValue = store.getValue(list[0], linkInfo.vfield.selector);
+                        if(list[0]) {
+                            self.widgetValue = store.getValue(list[0], linkInfo.vfield.selector);
+                            found = true;
+                        }
                     }
                 });
-                return;
+
+                if(found) return;
             }
 
             // then try the single object cache
