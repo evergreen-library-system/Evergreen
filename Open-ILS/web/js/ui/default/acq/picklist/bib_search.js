@@ -25,6 +25,8 @@ var liTable;
 
 function drawForm() {
     liTable = new AcqLiTable();
+    liTable.skipInitialEligibilityCheck = true;
+
     fieldmapper.standardRequest(
         ['open-ils.search', 'open-ils.search.z3950.retrieve_services'], 
         {   async: true,
@@ -116,7 +118,7 @@ function doSearch(values) {
         ['open-ils.acq', 'open-ils.acq.picklist.search.z3950'],
         {   async: true,
             params: [user.authtoken, search, null, {respond_li:1, flesh_attrs:1, clear_marc:1}],
-            onresponse: handleResult,
+            onresponse: handleResult
         }
     );
 }
@@ -132,12 +134,11 @@ function handleResult(r) {
     liTable.show('list');
     dojo.style(dojo.byId('oils-acq-pl-search-results'), 'display', 'block');
     var tbody = dojo.byId('plist-tbody');
-    if(result.lineitem) 
+    if(result.lineitem)
         liTable.addLineitem(result.lineitem);
     if(result.complete) // hide the loading image
         dojo.style('oils-acq-pl-loading','display', 'none');
 }
-
 
 function showDiv(div) {
     var divs = [

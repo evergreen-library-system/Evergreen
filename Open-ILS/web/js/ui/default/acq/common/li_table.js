@@ -67,6 +67,7 @@ function AcqLiTable() {
     this.realCopiesTbody = dojo.byId('acq-lit-real-copies-tbody');
     this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
     this._copy_fields_for_acqdf = ['owning_lib', 'location'];
+    this.skipInitialEligibilityCheck = false;
     this.invoiceLinkDialogManager = new InvoiceLinkDialogManager("li");
     this.claimDialog = new ClaimDialogManager(
         liClaimDialog, finalClaimDialog, this.claimEligibleLidByLi,
@@ -275,7 +276,8 @@ function AcqLiTable() {
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
-        this.fetchClaimInfo(li.id(), false, null, row);
+        if (!this.skipInitialEligibilityCheck)
+            this.fetchClaimInfo(li.id(), false, null, row);
 
         this.updateLiNotesCount(li, row);
 
