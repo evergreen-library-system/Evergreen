@@ -787,7 +787,7 @@ CREATE TABLE acq.edi_message (
     purchase_order   INT             REFERENCES acq.purchase_order
                                      DEFERRABLE INITIALLY DEFERRED,
 	message_type     TEXT            NOT NULL CONSTRAINT valid_type CHECK
-	                                 ( status IN (
+	                                 ( message_type IN (
 									     'ORDERS',
 									     'ORDRSP',
 									     'INVOIC',
