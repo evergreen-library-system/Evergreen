@@ -29,6 +29,22 @@ CREATE TABLE metabib.metarecord (
 CREATE INDEX metabib_metarecord_master_record_idx ON metabib.metarecord (master_record);
 CREATE INDEX metabib_metarecord_fingerprint_idx ON metabib.metarecord (fingerprint);
 
+CREATE TABLE metabib.identifier_field_entry (
+	id		BIGSERIAL	PRIMARY KEY,
+	source		BIGINT		NOT NULL,
+	field		INT		NOT NULL,
+	value		TEXT		NOT NULL,
+	index_vector	tsvector	NOT NULL
+);
+CREATE TRIGGER metabib_identifier_field_entry_fti_trigger
+	BEFORE UPDATE OR INSERT ON metabib.identifier_field_entry
+	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
+
+CREATE INDEX metabib_identifier_field_entry_index_vector_idx ON metabib.identifier_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_identifier_field_entry_value_idx ON metabib.identifier_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
+CREATE INDEX metabib_identifier_field_entry_source_idx ON metabib.identifier_field_entry (source);
+
+
 CREATE TABLE metabib.title_field_entry (
 	id		BIGSERIAL	PRIMARY KEY,
 	source		BIGINT		NOT NULL,

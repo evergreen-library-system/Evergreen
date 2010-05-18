@@ -506,6 +506,15 @@
 	#-------------------------------------------------------------------------------
 
 	#-------------------------------------------------------------------------------
+	package metabib::identifier_field_entry;
+
+	metabib::identifier_field_entry->table( 'metabib.identifier_field_entry' );
+	metabib::identifier_field_entry->sequence( 'metabib.identifier_field_entry_id_seq' );
+	metabib::identifier_field_entry->columns( 'FTS' => 'index_vector' );
+
+	#-------------------------------------------------------------------------------
+
+	#-------------------------------------------------------------------------------
 	package metabib::title_field_entry;
 
 	metabib::title_field_entry->table( 'metabib.title_field_entry' );

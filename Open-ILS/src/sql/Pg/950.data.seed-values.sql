@@ -11,6 +11,7 @@ INSERT INTO config.standing (id, value) VALUES (1, oils_i18n_gettext(1, 'Good', 
 INSERT INTO config.standing (id, value) VALUES (2, oils_i18n_gettext(2, 'Barred', 'cst', 'value'));
 SELECT SETVAL('config.standing_id_seq'::TEXT, 100);
 
+INSERT INTO config.metabib_class ( name, label ) VALUES ( 'identifier', oils_i18n_gettext('identifier', 'Identifier', 'cmc', 'name') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'keyword', oils_i18n_gettext('keyword', 'Keyword', 'cmc', 'name') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'title', oils_i18n_gettext('title', 'Title', 'cmc', 'name') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'author', oils_i18n_gettext('author', 'Author', 'cmc', 'name') );
@@ -54,16 +55,42 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (15, 'keyword', 'keyword', oils_i18n_gettext(15, 'General Keywords', 'cmf', 'label'), 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */;
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
+
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="001"]/text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (18, 'identifier', 'isbn', oils_i18n_gettext(18, 'ISBN', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="020"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (19, 'identifier', 'issn', oils_i18n_gettext(19, 'ISSN', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="022"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (20, 'identifier', 'upc', oils_i18n_gettext(20, 'UPC', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="1"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (21, 'identifier', 'ismn', oils_i18n_gettext(21, 'ISMN', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="2"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (22, 'identifier', 'ean', oils_i18n_gettext(22, 'EAN', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="3"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (23, 'identifier', 'isrc', oils_i18n_gettext(23, 'ISRC', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="0"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="4"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
+    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="099"]//text()$$, TRUE );
+
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('kw','keyword');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('eg.keyword','keyword');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('dc.publisher','keyword');
-INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('dc.identifier','keyword');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('bib.subjecttitle','keyword');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('bib.genre','keyword');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('bib.edition','keyword');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('srw.serverchoice','keyword');
+
+INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('id','identifier');
+INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('dc.identifier','identifier');
+INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('eg.isbn','identifier', 18);
+INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('eg.issn','identifier', 19);
+INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('eg.upc','identifier', 20);
+INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('eg.callnumber','identifier', 25);
 
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('au','author');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('name','author');

@@ -209,7 +209,7 @@ sub rw_biblio_ingest_single_object {
     $cstore->request( 'open-ils.cstore.direct.metabib.record_descriptor.create' => $blob->{descriptor} )->gather(1);
 
     # deal with classed fields...
-    for my $class ( qw/title author subject keyword series/ ) {
+    for my $class ( qw/title author subject keyword series identifier/ ) {
         $tmp = $cstore->request(
             "open-ils.cstore.direct.metabib.${class}_field_entry.id_list.atomic",
             { source => $bib->id }

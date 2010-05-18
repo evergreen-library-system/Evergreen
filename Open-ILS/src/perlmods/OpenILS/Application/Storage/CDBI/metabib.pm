@@ -13,6 +13,15 @@ metabib::metarecord->columns( Primary => qw/id/ );
 metabib::metarecord->columns( Essential => qw/fingerprint master_record mods/ );
 
 #-------------------------------------------------------------------------------
+package metabib::identifier_field_entry;
+use base qw/metabib/;
+
+metabib::identifier_field_entry->table( 'metabib_identifier_field_entry' );
+metabib::identifier_field_entry->columns( Primary => qw/id/ );
+metabib::identifier_field_entry->columns( Essential => qw/field value source/ );
+
+
+#-------------------------------------------------------------------------------
 package metabib::title_field_entry;
 use base qw/metabib/;
 

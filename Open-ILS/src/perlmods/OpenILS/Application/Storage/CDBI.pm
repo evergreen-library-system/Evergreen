@@ -538,6 +538,9 @@ sub modify_from_fieldmapper {
 	
 	metabib::title_field_entry->has_a( source => 'biblio::record_entry' );
 	metabib::title_field_entry->has_a( field => 'config::metabib_field' );
+
+	metabib::identifier_field_entry->has_a( source => 'biblio::record_entry' );
+	metabib::identifier_field_entry->has_a( field => 'config::metabib_field' );
 	
 	metabib::author_field_entry->has_a( source => 'biblio::record_entry' );
 	metabib::author_field_entry->has_a( field => 'config::metabib_field' );
@@ -616,6 +619,7 @@ sub modify_from_fieldmapper {
 	biblio::record_entry->has_many( call_numbers => 'asset::call_number' );
 	biblio::record_entry->has_many( full_record_entries => 'metabib::full_rec' );
 	biblio::record_entry->has_many( title_field_entries => 'metabib::title_field_entry' );
+	biblio::record_entry->has_many( identifier_field_entries => 'metabib::identifier_field_entry' );
 	biblio::record_entry->has_many( author_field_entries => 'metabib::author_field_entry' );
 	biblio::record_entry->has_many( subject_field_entries => 'metabib::subject_field_entry' );
 	biblio::record_entry->has_many( keyword_field_entries => 'metabib::keyword_field_entry' );

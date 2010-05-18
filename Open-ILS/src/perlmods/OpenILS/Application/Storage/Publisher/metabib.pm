@@ -880,7 +880,7 @@ sub search_class_fts {
 	return undef;
 }
 
-for my $class ( qw/title author subject keyword series/ ) {
+for my $class ( qw/title author subject keyword series identifier/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord",
 		method		=> 'search_class_fts',
@@ -1028,7 +1028,7 @@ sub search_class_fts_count {
 	return $recs;
 
 }
-for my $class ( qw/title author subject keyword series/ ) {
+for my $class ( qw/title author subject keyword series identifier/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.search_fts.metarecord_count",
 		method		=> 'search_class_fts_count',
@@ -1149,7 +1149,11 @@ sub postfilter_search_class_fts {
 	my @fts_ranks = $fts->fts_rank;
 
 	my %bonus = ();
-	$bonus{'metabib::keyword_field_entry'} = [ { 'CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END' => $SQLstring } ];
+	$bonus{'metabib::identifier_field_entry'} =
+        $bonus{'metabib::keyword_field_entry'} = [
+            { 'CASE WHEN f.value ILIKE ? THEN 1.2 ELSE 1 END' => $SQLstring }
+        ];
+
 	$bonus{'metabib::title_field_entry'} =
 		$bonus{'metabib::series_field_entry'} = [
 			{ 'CASE WHEN f.value ILIKE ? THEN 1.5 ELSE 1 END' => $first_word },
@@ -1397,7 +1401,7 @@ sub postfilter_search_class_fts {
 	return undef;
 }
 
-for my $class ( qw/title author subject keyword series/ ) {
+for my $class ( qw/title author subject keyword series identifier/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.metabib.$class.post_filter.search_fts.metarecord",
 		method		=> 'postfilter_search_class_fts',
@@ -1423,6 +1427,7 @@ my $_cdbi = {	title	=> "metabib::title_field_entry",
 		subject	=> "metabib::subject_field_entry",
 		keyword	=> "metabib::keyword_field_entry",
 		series	=> "metabib::series_field_entry",
+		identifier	=> "metabib::identifier_field_entry",
 };
 
 # XXX factored most of the PG dependant stuff out of here... need to find a way to do "dependants".

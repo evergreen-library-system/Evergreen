@@ -1734,6 +1734,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Indexed Keyword Field Entries" name="keyword_field_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Indexed Subject Field Entries" name="subject_field_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Indexed Title Field Entries" name="title_field_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Indexed Identifier Field Entries" name="identifier_field_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Indexed Author Field Entries" name="author_field_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Indexed Series Field Entries" name="series_field_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Flattened MARC Fields " name="full_record_entries" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -1751,6 +1752,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="language" reltype="might_have" key="record" map="item_lang" class="mrd"/>
 			<link field="subject_field_entries" reltype="has_many" key="source" map="" class="msfe"/>
 			<link field="title_field_entries" reltype="has_many" key="source" map="" class="mtfe"/>
+			<link field="identifier_field_entries" reltype="has_many" key="source" map="" class="mife"/>
 			<link field="notes" reltype="has_many" key="record" map="" class="bren"/>
 			<link field="author_field_entries" reltype="has_many" key="source" map="" class="mafe"/>
 			<link field="series_field_entries" reltype="has_many" key="source" map="" class="msefe"/>
@@ -2124,6 +2126,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 						UNION ALL
 				SELECT * FROM metabib.keyword_field_entry
 						UNION ALL
+				SELECT * FROM metabib.identifier_field_entry
+						UNION ALL
 				SELECT * FROM metabib.title_field_entry
 						UNION ALL
 				SELECT * FROM metabib.subject_field_entry
@@ -2148,6 +2152,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			SELECT * FROM metabib.author_field_entry
 						UNION ALL
 			SELECT * FROM metabib.keyword_field_entry
+						UNION ALL
+			SELECT * FROM metabib.identifier_field_entry
 						UNION ALL
 			SELECT * FROM metabib.title_field_entry
 						UNION ALL
@@ -4042,6 +4048,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
 			<link field="current_copy" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="mife" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::identifier_field_entry" oils_persist:tablename="metabib.identifier_field_entry" reporter:label="Identifier Field Entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.identifier_field_entry_id_seq">
+			<field name="field" reporter:datatype="link"/>
+			<field name="id" reporter:datatype="id" />
+			<field name="source" reporter:datatype="link"/>
+			<field name="value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
 	<class id="mtfe" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::title_field_entry" oils_persist:tablename="metabib.title_field_entry" reporter:label="Title Field Entry">

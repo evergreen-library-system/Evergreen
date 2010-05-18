@@ -202,7 +202,7 @@ sub find_see_from_controlled {
 	}
 	return undef;
 }
-for my $class ( qw/title author subject keyword series/ ) {
+for my $class ( qw/title author subject keyword series identifier/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.authority.$class.see_from.controlled",
 		method		=> 'find_see_from_controlled',
@@ -233,7 +233,7 @@ sub find_see_also_from_controlled {
 	}
 	return undef;
 }
-for my $class ( qw/title author subject keyword series/ ) {
+for my $class ( qw/title author subject keyword series identifier/ ) {
 	__PACKAGE__->register_method(
 		api_name	=> "open-ils.storage.authority.$class.see_also_from.controlled",
 		method		=> 'find_see_also_from_controlled',

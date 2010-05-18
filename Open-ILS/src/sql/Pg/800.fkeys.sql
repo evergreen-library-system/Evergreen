@@ -54,6 +54,9 @@ ALTER TABLE metabib.metarecord ADD CONSTRAINT metabib_metarecord_master_record_f
 ALTER TABLE metabib.title_field_entry ADD CONSTRAINT metabib_title_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE metabib.title_field_entry ADD CONSTRAINT metabib_title_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE metabib.identifier_field_entry ADD CONSTRAINT metabib_identifier_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE metabib.identifier_field_entry ADD CONSTRAINT metabib_identifier_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
 ALTER TABLE metabib.author_field_entry ADD CONSTRAINT metabib_author_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE metabib.author_field_entry ADD CONSTRAINT metabib_author_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
@@ -62,6 +65,9 @@ ALTER TABLE metabib.subject_field_entry ADD CONSTRAINT metabib_subject_field_ent
 
 ALTER TABLE metabib.keyword_field_entry ADD CONSTRAINT metabib_keyword_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE metabib.keyword_field_entry ADD CONSTRAINT metabib_keyword_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE metabib.series_field_entry ADD CONSTRAINT metabib_series_field_entry_source_pkey FOREIGN KEY (source) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE metabib.series_field_entry ADD CONSTRAINT metabib_series_field_entry_field_pkey FOREIGN KEY (field) REFERENCES config.metabib_field (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE metabib.rec_descriptor ADD CONSTRAINT metabib_rec_descriptor_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
