@@ -14,6 +14,7 @@
 
 static jsonObject* get_row( BuildSQLState* state );
 static jsonObject* get_date_column( dbi_result result, int col_idx );
+static int values_missing( BuildSQLState* state );
 
 /**
 	@brief Execute the current SQL statement and return the first row.
@@ -28,6 +29,14 @@ jsonObject* oilsFirstRow( BuildSQLState* state ) {
 
 	if( !state )
 		return NULL;
+
+	// Make sure all the bind variables have values for them
+	if( !state->values_required && values_missing( state )) {
+		state->error = 1;
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to execute query: values not available for all bind variables\n" ));
+		return NULL;
+	}
 
 	if( state->result )
 		dbi_result_free( state->result );
@@ -161,4 +170,29 @@ static jsonObject* get_date_column( dbi_result result, int col_idx ) {
 	}
 
 	return jsonNewObject( timestring );
+}
+
+/**
+	@brief Determine whether all bind variables have values supplied for them.
+	@param state Pointer to the query-building context.
+	@return The number of bind variables with no available value.
+*/
+static int values_missing( BuildSQLState* state ) {
+	if( !state->bindvar_list || osrfHashGetCount( state->bindvar_list ) == 0 )
+		return 0;   // Nothing to count
+
+	int count = 0;
+	osrfHashIterator* iter = osrfNewHashIterator( state->bindvar_list );
+
+	BindVar* bind = NULL;
+	while(( bind = osrfHashIteratorNext( iter ))) {
+		if( !bind->actual_value && !bind->default_value ) {
+			sqlAddMsg( state, "No value for bind value \"%s\", with label \"%s\"",
+				bind->name, bind->label );
+			++count;
+		}
+	}
+
+	osrfHashIteratorFree( iter );
+	return count;
 }
