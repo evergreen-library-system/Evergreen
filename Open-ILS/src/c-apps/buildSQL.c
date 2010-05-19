@@ -31,6 +31,48 @@ static inline void incr_indent( BuildSQLState* state );
 static inline void decr_indent( BuildSQLState* state );
 
 /**
+	@brief Apply values to bind variables, overriding the defaults, if any.
+	@param state Pointer to the query-building context.
+	@param bindings A JSON_HASH of values.
+	@return 0 if successful, or 1 if not.
+
+	The @a bindings parameter must be a JSON_HASH.  The keys are the names of bind variables.
+	The values are the corresponding values for the variables.
+*/
+int oilsApplyBindValues( BuildSQLState* state, jsonObject* bindings ) {
+	if( !state ) {
+		osrfLogError( OSRF_LOG_MARK, "NULL pointer to state" );
+		return 1;
+	} else if( !bindings ) {
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Internal error: No pointer to bindings" ));
+		return 1;
+	} else if( bindings->type != JSON_HASH ) {
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Internal error: bindings parameter is not a JSON_HASH" ));
+		return 1;
+	}
+
+	int rc = 0;
+	jsonObject* value = NULL;
+	jsonIterator* iter = jsonNewIterator( bindings );
+	while(( value = jsonIteratorNext( iter ))) {
+		const char* var_name = iter->key;
+		BindVar* bind = osrfHashGet( state->bindvar_list, var_name );
+		if( bind ) {
+			;
+		} else {
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Can't assign value to bind variable \"%s\": no such variable", var_name ));
+			rc = 1;
+		}
+	}
+	jsonIteratorFree( iter );
+
+	return rc;
+}
+
+/**
 	@brief Build an SQL query.
 	@param state Pointer to the query-building context.
 	@param query Pointer to the query to be built.

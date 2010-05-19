@@ -211,7 +211,7 @@ int doPrepare( osrfMethodContext* ctx ) {
 }
 
 /**
-	@brief Execute an SQL query and return a result set.
+	@brief Return a list of column names for the SELECT list.
 	@param ctx Pointer to the current method context.
 	@return Zero if successful, or -1 if not.
 
@@ -275,14 +275,44 @@ int doBindParam( osrfMethodContext* ctx ) {
 	CachedQuery* query = search_token( ctx, token );
 	if( !query ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
-							  ctx->request, "Invalid query token" );
+			ctx->request, "Invalid query token" );
 		return -1;
 	}
 
 	osrfLogInfo( OSRF_LOG_MARK, "Binding parameter(s) for token %s", token );
 
-	osrfAppRespondComplete( ctx, jsonNewObject( "build method not yet implemented" ));
-	return 0;
+	jsonObject* bindings = jsonObjectGetIndex( ctx->params, 1 );
+	if( !bindings ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "No parameter provided for bind variable values" );
+		return -1;
+	} else if( bindings->type != JSON_HASH ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Invalid parameter for bind variable values: not a hash" );
+		return -1;
+	}
+
+	if( 0 == bindings->size ) {
+		// No values to assign; we're done.
+		osrfAppRespondComplete( ctx, NULL );
+		return 0;
+	}
+
+	osrfHash* bindvar_list = query->state->bindvar_list;
+	if( !bindvar_list || osrfHashGetCount( bindvar_list ) == 0 ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "There are no bind variables to which to assign values" );
+		return -1;
+	}
+
+	if( oilsApplyBindValues( query->state, bindings )) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Unable to apply values to bind variables" );
+		return -1;
+	} else {
+		osrfAppRespondComplete( ctx, NULL );
+		return 0;
+	}
 }
 
 /**
