@@ -85,7 +85,7 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT ) RETURNS TEXT AS $func$
 $func$ LANGUAGE 'sql' STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$
-        SELECT SUBSTRING( $1 FROM $_$^\S+$_$);
+        SELECT COALESCE(SUBSTRING( $1 FROM $_$^\S+$_$), '');
 $$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize_keep_comma( TEXT ) RETURNS TEXT AS $func$
