@@ -23,14 +23,18 @@
 */
 BuildSQLState* buildSQLStateNew( dbi_conn dbhandle ) {
 
-	BuildSQLState* state = safe_malloc( sizeof( BuildSQLState ) );
-	state->dbhandle    = dbhandle;
-	state->error       = 0;
-	state->error_msgs  = osrfNewStringArray( 16 );
-	state->sql         = buffer_init( 128 );
-	state->query_stack = NULL;
-	state->expr_stack  = NULL;
-	state->indent      = 0;
+	BuildSQLState* state   = safe_malloc( sizeof( BuildSQLState ) );
+	state->dbhandle        = dbhandle;
+	state->result          = NULL;
+	state->error           = 0;
+	state->error_msgs      = osrfNewStringArray( 16 );
+	state->sql             = buffer_init( 128 );
+	state->bindvar_list    = NULL;  // Don't build it until we need it
+	state->query_stack     = NULL;
+	state->expr_stack      = NULL;
+	state->indent          = 0;
+	state->defaults_usable = 0;
+	state->values_required = 0;
 
 	return state;
 }
@@ -53,8 +57,14 @@ const char* sqlAddMsg( BuildSQLState* state, const char* msg, ... ) {
 void buildSQLStateFree( BuildSQLState* state ){
 	
 	if( state ) {
+		if( state->result ) {
+			dbi_result_free( state->result );
+			state->result = NULL;
+		}
 		osrfStringArrayFree( state->error_msgs );
 		buffer_free( state->sql );
+		if( state->bindvar_list )
+			osrfHashFree( state->bindvar_list );
 		while( state->query_stack )
 			pop_id( &state->query_stack );
 		while( state->expr_stack )

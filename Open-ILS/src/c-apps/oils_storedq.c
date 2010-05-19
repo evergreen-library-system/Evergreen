@@ -9,6 +9,7 @@
 #include "opensrf/utils.h"
 #include "opensrf/log.h"
 #include "opensrf/string_array.h"
+#include "opensrf/osrf_hash.h"
 #include "openils/oils_buildq.h"
 
 #define PRINT if( verbose ) printf
@@ -36,6 +37,10 @@ static SelectItem* getSelectList( BuildSQLState* state, int query_id );
 static SelectItem* constructSelectItem( BuildSQLState* state, dbi_result result );
 static void selectListFree( SelectItem* sel );
 
+static BindVar* getBindVar( BuildSQLState* state, const char* name );
+static BindVar* constructBindVar( BuildSQLState* state, dbi_result result );
+static void bindVarFree( char* name, void* p );
+
 static Expression* getExpression( BuildSQLState* state, int id );
 static Expression* constructExpression( BuildSQLState* state, dbi_result result );
 static void expressionFree( Expression* exp );
@@ -52,6 +57,7 @@ static const IdNode* searchIdStack( const IdNode* stack, int id, const char* ali
 static StoredQ* free_storedq_list = NULL;
 static FromRelation* free_from_relation_list = NULL;
 static SelectItem* free_select_item_list = NULL;
+static BindVar* free_bindvar_list = NULL;
 static Expression* free_expression_list = NULL;
 static IdNode* free_id_node_list = NULL;
 static QSeq* free_qseq_list = NULL;
@@ -221,6 +227,7 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 			freeQSeqList( child_list );
 			fromRelationFree( from_clause );
 			selectListFree( select_list );
+			state->error = 1;
 			return NULL;
 		}
 	}
@@ -236,6 +243,7 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 			freeQSeqList( child_list );
 			fromRelationFree( from_clause );
 			selectListFree( select_list );
+			state->error = 1;
 			return NULL;
 		}
 	}
@@ -613,6 +621,7 @@ static FromRelation* constructFromRelation( BuildSQLState* state, dbi_result res
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 				"Unable to load ON condition for FROM relation # %d", id ));
 			joinListFree( join_list );
+			state->error = 1;
 			return NULL;
 		}
 		else
@@ -810,6 +819,7 @@ static SelectItem* constructSelectItem( BuildSQLState* state, dbi_result result 
 	if( !expression ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to fetch expression for id = %d", expression_id ));
+		state->error = 1;
 		return NULL;
 	};
 
@@ -833,6 +843,13 @@ static SelectItem* constructSelectItem( BuildSQLState* state, dbi_result result 
 	return sel;
 }
 
+/**
+	@brief Free a list of SelectItems.
+	@param sel Pointer to the first item in the list to be freed.
+
+	Free the column alias and expression owned by each item.  Put the entire list into a free
+	list of SelectItems.
+*/
 static void selectListFree( SelectItem* sel ) {
 	if( !sel )
 		return;    // Nothing to free
@@ -855,6 +872,152 @@ static void selectListFree( SelectItem* sel ) {
 	free_select_item_list = first;
 }
 
+/**
+	@brief Given the name of a bind variable, build a corresponding BindVar.
+	@param state Pointer to the query-building context.
+	@param name Name of the bind variable.
+	@return Pointer to the newly-built BindVar.
+
+	Since the same bind variable may appear multiple times, we load it only once for the
+	entire query, and reference the one copy wherever needed.
+*/
+static BindVar* getBindVar( BuildSQLState* state, const char* name ) {
+	BindVar* bind = NULL;
+	if( state->bindvar_list ) {
+		bind = osrfHashGet( state->bindvar_list, name );
+		if( bind )
+			return bind;   // Already loaded it...
+	}
+
+	// Load a BindVar from the Database.
+	dbi_result result = dbi_conn_queryf( state->dbhandle,
+		"SELECT name, type, description, default_value, label "
+		"FROM query.bind_variable WHERE name = \'%s\';", name );
+	if( result ) {
+		if( dbi_result_first_row( result ) ) {
+			bind = constructBindVar( state, result );
+			if( bind ) {
+				PRINT( "Got a bind variable for %s\n", name );
+			} else 
+				osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to load bind variable \"%s\"", name ));
+		} else {
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"No bind variable found with name \"%s\"", name ));
+		}
+	} else {
+		const char* msg;
+		int errnum = dbi_conn_error( state->dbhandle, &msg );
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to query query.bind_variable table for \"%s\": #%d %s",
+			name, errnum, msg ? msg : "No description available" ));
+	}
+
+	if( bind ) {
+		// Add the new bind variable to the list
+		if( !state->bindvar_list ) {
+			// Don't have a list yet?  Start one.
+			state->bindvar_list = osrfNewHash();
+			osrfHashSetCallback( state->bindvar_list, bindVarFree );
+		}
+		osrfHashSet( state->bindvar_list, bind, name );
+	} else
+		state->error = 1;
+
+	return bind;
+}
+
+/**
+	@brief Construct a BindVar to represent a bind variable.
+	@param Pointer to the query-building context.
+	@param result Database cursor positioned at a row in query.bind_variable.
+	@return Pointer to a newly constructed BindVar, if successful, or NULL if not.
+
+	The calling code is responsible for freeing the BindVar by calling bindVarFree().
+*/
+static BindVar* constructBindVar( BuildSQLState* state, dbi_result result ) {
+
+	const char* name = dbi_result_get_string_idx( result, 1 );
+
+	const char* type_str = dbi_result_get_string_idx( result, 2 );
+	BindVarType type;
+	if( !strcmp( type_str, "string" ))
+		type = BIND_STR;
+	else if( !strcmp( type_str, "number" ))
+		type = BIND_NUM;
+	else if( !strcmp( type_str, "string_list" ))
+		type = BIND_STR_LIST;
+	else if( !strcmp( type_str, "number_list" ))
+		type = BIND_NUM_LIST;;
+
+	const char* description = dbi_result_get_string_idx( result, 3 );
+
+	// The default value is encoded as JSON.  Translate it into a jsonObject.
+	const char* default_value_str = dbi_result_get_string_idx( result, 4 );
+	jsonObject* default_value = NULL;
+	if( default_value_str ) {
+		default_value = jsonParse( default_value_str );
+		if( !default_value ) {
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to parse JSON string for default value of bind variable \"%s\"",
+				name ));
+			state->error = 1;
+			return NULL;
+		}
+	}
+
+	const char* label = dbi_result_get_string_idx( result, 5 );
+
+	// Allocate a BindVar: from the free list if possible, from the heap if necessary
+	BindVar* bind = NULL;
+	if( free_bindvar_list ) {
+		bind = free_bindvar_list;
+		free_bindvar_list = free_bindvar_list->next;
+	} else
+		bind = safe_malloc( sizeof( BindVar ) );
+
+	bind->next = NULL;
+	bind->name = strdup( name );
+	bind->label = strdup( label );
+	bind->type = type;
+	bind->description = strdup( description );
+	bind->default_value = default_value;
+	bind->actual_value = NULL;
+
+	return bind;
+}
+
+/**
+	@brief Deallocate a BindVar.
+	@param key Pointer to the bind variable name (not used).
+	@param p Pointer to the BindVar to be deallocated, cast to a void pointer.
+
+	Free the strings and jsonObjects owned by the BindVar, and put the BindVar itself into a
+	free list.
+
+	This function is a callback installed in an osrfHash; hence the peculiar signature.
+*/
+static void bindVarFree( char* key, void* p ) {
+	if( p ) {
+		BindVar* bind = p;
+		free( bind->name );
+		free( bind->label );
+		free( bind->description );
+		if( bind->default_value ) {
+			jsonObjectFree( bind->default_value );
+			bind->default_value = NULL;
+		}
+		if( bind->actual_value ) {
+			jsonObjectFree( bind->actual_value );
+			bind->actual_value = NULL;
+		}
+
+		// Prepend to free list
+		bind->next = free_bindvar_list;
+		free_bindvar_list = bind;
+	}
+}
+
 static Expression* getExpression( BuildSQLState* state, int id ) {
 	
 	// Check the stack to see if the current expression is nested inside itself.  If it is,
@@ -868,10 +1031,11 @@ static Expression* getExpression( BuildSQLState* state, int id ) {
 	} else
 		push_id( &state->expr_stack, id, NULL );
 
-		Expression* exp = NULL;
+	Expression* exp = NULL;
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
 		"SELECT id, type, parenthesize, parent_expr, seq_no, literal, table_alias, column_name, "
-		"left_operand, operator, right_operand, function_id, subquery, cast_type, negate "
+		"left_operand, operator, right_operand, function_id, subquery, cast_type, negate, "
+		"bind_variable "
 		"FROM query.expression WHERE id = %d;", id );
 	if( result ) {
 		if( dbi_result_first_row( result ) ) {
@@ -914,6 +1078,8 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	ExprType type;
 	if( !strcmp( type_str, "xbet" ))
 		type = EXP_BETWEEN;
+	else if( !strcmp( type_str, "xbind" ))
+		type = EXP_BIND;
 	else if( !strcmp( type_str, "xbool" ))
 		type = EXP_BOOL;
 	else if( !strcmp( type_str, "xcase" ))
@@ -989,10 +1155,12 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		cast_type_id = dbi_result_get_int_idx( result, 14 );
 
 	int negate = oils_result_get_bool_idx( result, 15 );
+	const char* bind_variable = dbi_result_get_string_idx( result, 16 );
 
 	Expression* left_operand = NULL;
 	Expression* right_operand = NULL;
 	StoredQ* subquery = NULL;
+	BindVar* bind = NULL;
 
 	if( EXP_OPERATOR == type ) {
 		// Load left and/or right operands
@@ -1092,6 +1260,25 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 			}
 			PRINT( "\tExpression is subquery %d\n", subquery_id );
 		}
+	} else if( EXP_BIND == type ) {
+		if( bind_variable ) {
+			// To do: Build a BindVar
+			bind = getBindVar( state, bind_variable );
+			if( ! bind ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to load bind variable \"%s\" for expression # %d",
+					bind_variable, id ));
+				state->error = 1;
+				return NULL;
+			}
+			PRINT( "\tBind variable is \"%s\"\n", bind_variable );
+		} else {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"No variable specified for bind variable expression # %d",
+			bind_variable, id ));
+			state->error = 1;
+			return NULL;
+		}
 	}
 
 	// Allocate an Expression: from the free list if possible, from the heap if necessary
@@ -1120,6 +1307,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	exp->subquery = subquery;
 	exp->cast_type_id = subquery_id;
 	exp->negate = negate;
+	exp->bind = bind;
 
 	return exp;
 }
@@ -1152,7 +1340,10 @@ static void expressionFree( Expression* exp ) {
 			storedQFree( exp->subquery );
 			exp->subquery = NULL;
 		}
+		// We don't free the bind member here because the Expression doesn't own it;
+		// the bindvar_list hash owns it, so that multiple Expressions can reference it.
 
+		// Prepend to the free list
 		exp->next = free_expression_list;
 		free_expression_list = exp;
 	}
@@ -1225,6 +1416,7 @@ static OrderItem* constructOrderItem( BuildSQLState* state, dbi_result result ) 
 	if( !expression ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to fetch ORDER BY expression for id = %d", expression_id ));
+		state->error = 1;
 		return NULL;
 	};
 
@@ -1469,6 +1661,14 @@ void storedQCleanup( void ) {
 		free_order_item_list = ord->next;
 		free( ord );
 		ord = free_order_item_list;
+	}
+
+	// Free all the nodes in the bind variable free list
+	BindVar* bind = free_bindvar_list;
+	while( bind ) {
+		free_bindvar_list = bind->next;
+		free( bind );
+		bind = free_bindvar_list;
 	}
 }
 

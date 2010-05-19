@@ -9,6 +9,7 @@
 #include <dbi/dbi.h>
 #include "opensrf/utils.h"
 #include "opensrf/string_array.h"
+#include "opensrf/osrf_hash.h"
 #include "opensrf/osrf_application.h"
 #include "openils/oils_idl.h"
 #include "openils/oils_sql.h"
@@ -22,6 +23,8 @@ static void buildJoin( BuildSQLState* state, FromRelation* join );
 static void buildSelectList( BuildSQLState* state, SelectItem* item );
 static void buildOrderBy( BuildSQLState* state, OrderItem* ord_list );
 static void buildExpression( BuildSQLState* state, Expression* expr );
+static void buildBindVar( BuildSQLState* state, BindVar* bind );
+static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* obj );
 
 static void add_newline( BuildSQLState* state );
 static inline void incr_indent( BuildSQLState* state );
@@ -171,9 +174,9 @@ static void buildSelect( BuildSQLState* state, StoredQ* query ) {
 		decr_indent( state );
 	}
 
-	// To do: build GROUP BY clause, if there is one
+    // To do: build GROUP BY clause, if there is one
 
-	// Build HAVING clause, if there is one
+    // Build HAVING clause, if there is one
 	if( query->having_clause ) {
 		add_newline( state );
 		buffer_add( state->sql, "HAVING" );
@@ -187,7 +190,7 @@ static void buildSelect( BuildSQLState* state, StoredQ* query ) {
 		}
 		decr_indent( state );
 	}
-
+	
 	// Build ORDER BY clause, if there is one
 	if( query->order_by_list ) {
 		buildOrderBy( state, query->order_by_list );
@@ -453,6 +456,14 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			sqlAddMsg( state, "BETWEEN expressions not yet supported" );
 			state->error = 1;
 			break;
+		case EXP_BIND :
+			if( !expr->bind ) {     // Sanity check
+				osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Internal error: no variable for bind variable expression" ));
+				state->error = 1;
+			} else
+				buildBindVar( state, expr->bind );
+			break;
 		case EXP_BOOL :
 			if( expr->negate )
 				buffer_add( state->sql, "NOT " );
@@ -471,6 +482,9 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			state->error = 1;
 			break;
 		case EXP_CAST :                   // Type cast
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
 			sqlAddMsg( state, "Cast expressions not yet supported" );
 			state->error = 1;
 			break;
@@ -509,6 +523,9 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 			}
 			break;
 		case EXP_FIELD :
+			if( expr->negate )
+				buffer_add( state->sql, "NOT " );
+
 			sqlAddMsg( state, "Field expressions not yet supported" );
 			state->error = 1;
 			break;
@@ -589,6 +606,7 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 					"Internal error: No string value in string expression # %d", expr->id ));
 					state->error = 1;
 			} else {
+				// To do: escape special characters in the string
 				buffer_add_char( state->sql, '\'' );
 				buffer_add( state->sql, expr->literal );
 				buffer_add_char( state->sql, '\'' );
@@ -615,6 +633,141 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 
 	if( expr->parenthesize )
 		buffer_add_char( state->sql, ')' );
+}
+
+/**
+	@brief Add the value of a bind variable to an SQL statement.
+	@param state Pointer to the query-building context.
+	@param bind Pointer to the bind variable whose value is to be added to the SQL.
+
+	The value may be a null, a scalar, or an array of nulls and/or scalars, depending on
+	the type of the bind variable.
+*/
+static void buildBindVar( BuildSQLState* state, BindVar* bind ) {
+
+	// Decide where to get the value, if any
+	const jsonObject* value = NULL;
+	if( bind->actual_value )
+		value = bind->actual_value;
+	else if( bind->default_value ) {
+		if( state->defaults_usable )
+			value = bind->default_value;
+		else {
+			sqlAddMsg( state, "No confirmed value available for bind variable \"%s\"",
+				bind->name );
+			state->error = 1;
+			return;
+		}
+	} else if( state->values_required ) {
+		sqlAddMsg( state, "No value available for bind variable \"%s\"", bind->name );
+		state->error = 1;
+		return;
+	} else {
+		// No value available, and that's okay.  Emit the name of the bind variable.
+		buffer_add_char( state->sql, ':' );
+		buffer_add( state->sql, bind->name );
+		return;
+	}
+
+	// If we get to this point, we know that a value is available.  Carry on.
+
+	int numeric = 0;       // Boolean
+	if( BIND_NUM == bind->type || BIND_NUM_LIST == bind->type )
+		numeric = 1;
+
+	// Emit the value
+	switch( bind->type ) {
+		case BIND_STR :
+		case BIND_NUM :
+			buildScalar( state, numeric, value );
+			break;
+		case BIND_STR_LIST :
+		case BIND_NUM_LIST :
+			if( JSON_ARRAY == value->type ) {
+				// Iterate over array, emit each value
+				int first = 1;   // Boolean
+				unsigned long max = value->size;
+				unsigned long i = 0;
+				while( i < max ) {
+					if( first )
+						first = 0;
+					else
+						buffer_add( state->sql, ", " );
+
+					buildScalar( state, numeric, jsonObjectGetIndex( value, i ));
+					++i;
+				}
+			} else {
+				osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Invalid value for bind variable; expected a list of values" ));
+				state->error = 1;
+			}
+			break;
+		default :
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Internal error: invalid type for bind variable" ));
+			state->error = 1;
+			break;
+	}
+
+	if( state->error )
+		osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to emit value of bind variable \"%s\"", bind->name ));
+}
+
+/**
+	@brief Add a number or quoted string to an SQL statement.
+	@param state Pointer to the query-building context.
+	@param numeric Boolean; true if the value is expected to be a number
+	@param obj Pointer to the jsonObject whose value is to be added to the SQL.
+*/
+static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* obj ) {
+	switch( obj->type ) {
+		case JSON_HASH :
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Internal error: hash value for bind variable" ));
+			state->error = 1;
+			break;
+		case JSON_ARRAY :
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Internal error: array value for bind variable" ));
+			state->error = 1;
+			break;
+		case JSON_STRING :
+			if( numeric ) {
+				sqlAddMsg( state,
+					"Invalid value for bind variable: expected a string, found a number" );
+				state->error = 1;
+			} else {
+				// To do: escape special characters in the string
+				buffer_add_char( state->sql, '\'' );
+				buffer_add( state->sql, jsonObjectGetString( obj ));
+				buffer_add_char( state->sql, '\'' );
+			}
+			break;
+		case JSON_NUMBER :
+			if( numeric ) {
+				buffer_add( state->sql, jsonObjectGetString( obj ));
+			} else {
+				sqlAddMsg( state,
+					"Invalid value for bind variable: expected a number, found a string" );
+				state->error = 1;
+			}
+			break;
+		case JSON_NULL :
+			buffer_add( state->sql, "NULL" );
+			break;
+		case JSON_BOOL :
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Internal error: boolean value for bind variable" ));
+			state->error = 1;
+			break;
+		default :
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Internal error: corrupted value for bind variable" ));
+			state->error = 1;
+			break;
+	}
 }
 
 static void add_newline( BuildSQLState* state ) {

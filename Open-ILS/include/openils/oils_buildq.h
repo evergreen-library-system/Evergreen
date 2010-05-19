@@ -21,6 +21,9 @@ typedef struct FromRelation_ FromRelation;
 struct SelectItem_;
 typedef struct SelectItem_ SelectItem;
 
+struct BindVar_;
+typedef struct BindVar_ BindVar;
+
 struct Expression_;
 typedef struct Expression_ Expression;
 
@@ -50,10 +53,15 @@ struct BuildSQLState_ {
 	int error;                    /**< Boolean; true if an error has occurred */
 	osrfStringArray* error_msgs;  /**< Descriptions of errors, if any */
 	growing_buffer* sql;          /**< To hold the constructed query */
+	osrfHash* bindvar_list;       /**< List of bind variables used by this query, each with
+	                                   a pointer to the corresponding BindVar. */
 	IdNode* query_stack;          /**< For avoiding infinite recursion of nested queries */
 	IdNode* expr_stack;           /**< For avoiding infinite recursion of nested expressions */
 	IdNode* from_stack;           /**< For avoiding infinite recursion of from clauses */
 	int indent;                   /**< For prettifying SQL output: level of indentation */
+	int defaults_usable;          /**< Boolean; if true, we can use unconfirmed default
+	                                   values for bind variables */
+	int values_required;          /**< Boolean: if true, we need values for a bind variables */
 };
 
 typedef enum {
@@ -119,7 +127,25 @@ struct SelectItem_ {
 };
 
 typedef enum {
+	BIND_STR,
+	BIND_NUM,
+	BIND_STR_LIST,
+	BIND_NUM_LIST
+} BindVarType;
+
+struct BindVar_ {
+	BindVar*    next;
+	char*       name;
+	char*       label;
+	BindVarType type;
+	char*       description;
+	jsonObject* default_value;
+	jsonObject* actual_value;
+};
+
+typedef enum {
 	EXP_BETWEEN,
+	EXP_BIND,
 	EXP_BOOL,
 	EXP_CASE,
 	EXP_CAST,
@@ -153,6 +179,7 @@ struct Expression_ {
 	StoredQ*    subquery;
 	int         cast_type_id;
 	int         negate;             // Boolean
+	BindVar*    bind;
 };
 
 struct QSeq_ {

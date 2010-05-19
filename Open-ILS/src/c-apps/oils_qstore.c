@@ -77,6 +77,10 @@ int osrfAppInitialize() {
 	if ( !oilsIDLInit( osrf_settings_host_value( "/IDL" )))
 		return 1; /* return non-zero to indicate error */
 
+	// Set the SQL options.  Here the second and third parameters are irrelevant, but we need
+	// to set the module name for use in error messages.
+	oilsSetSQLOptions( modulename, 0, 100 );
+
 	growing_buffer* method_name = buffer_init( 64 );
 
 	OSRF_BUFFER_ADD( method_name, modulename );
@@ -188,6 +192,8 @@ int doPrepare( osrfMethodContext* ctx ) {
 	osrfLogInfo( OSRF_LOG_MARK, "Loading query for id # %d", query_id );
 
 	BuildSQLState* state = buildSQLStateNew( dbhandle );
+	state->defaults_usable = 1;
+	state->values_required = 0;
 	StoredQ* query = getStoredQuery( state, query_id );
 	if( state->error ) {
 		osrfLogWarning( OSRF_LOG_MARK, "Unable to load stored query # %d", query_id );
