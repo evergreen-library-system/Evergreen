@@ -65,7 +65,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0266'); -- Scott McKellar
+INSERT INTO config.upgrade_log (version) VALUES ('0267'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -711,6 +711,10 @@ $func$ LANGUAGE SQL STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.split_date_range( TEXT ) RETURNS TEXT AS $func$
         SELECT REGEXP_REPLACE( $1, E'(\\d{4})-(\\d{4})', E'\\1 \\2', 'g' );
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.translate_isbn1013( TEXT ) RETURNS TEXT AS $func$
+        SELECT isbn FROM (SELECT isn_weak(true), $1 || ' ' || REPLACE( CASE WHEN length($1) = 10 THEN isbn13($1)::TEXT WHEN length($1) = 13 THEN isbn($1)::TEXT ELSE '' END, '-', '') AS isbn)x;
 $func$ LANGUAGE SQL STRICT IMMUTABLE;
 
 -- And ... a table in which to register them

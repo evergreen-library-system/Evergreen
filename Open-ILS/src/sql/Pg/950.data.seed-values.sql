@@ -56,24 +56,24 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
 
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="001"]/text()$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (18, 'identifier', 'isbn', oils_i18n_gettext(18, 'ISBN', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="020"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (19, 'identifier', 'issn', oils_i18n_gettext(19, 'ISSN', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="022"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (20, 'identifier', 'upc', oils_i18n_gettext(20, 'UPC', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="1"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (21, 'identifier', 'ismn', oils_i18n_gettext(21, 'ISMN', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="2"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (22, 'identifier', 'ean', oils_i18n_gettext(22, 'EAN', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="3"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (23, 'identifier', 'isrc', oils_i18n_gettext(23, 'ISRC', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="0"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="024" and ind1="4"]/marcxml:subfield[code="a" or code="z"]/text()$$, TRUE );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
-    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="099"]//text()$$, TRUE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marc', $$//marc:controlfield[@tag='001']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (18, 'identifier', 'isbn', oils_i18n_gettext(18, 'ISBN', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='020']/marc:subfield[@code='a' or @code='z']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (19, 'identifier', 'issn', oils_i18n_gettext(19, 'ISSN', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='022']/marc:subfield[@code='a' or @code='z']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (20, 'identifier', 'upc', oils_i18n_gettext(20, 'UPC', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='1']/marc:subfield[@code='a' or @code='z']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (21, 'identifier', 'ismn', oils_i18n_gettext(21, 'ISMN', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='2']/marc:subfield[@code='a' or @code='z']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (22, 'identifier', 'ean', oils_i18n_gettext(22, 'EAN', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='3']/marc:subfield[@code='a' or @code='z']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (23, 'identifier', 'isrc', oils_i18n_gettext(23, 'ISRC', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='0']/marc:subfield[@code='a' or @code='z']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='4']/marc:subfield[@code='a' or @code='z']$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='099']//text()$$ );
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
@@ -4168,14 +4168,65 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 	0
 );
 
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'ISBN 10/13 conversion',
+	'Translate ISBN10 to ISBN13 and vice versa.',
+	'translate_isbn1013',
+	0
+);
+
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Replace',
+	'Replace all occurances of first parameter in the string with the second parameter.',
+	'replace',
+	2
+);
+
 -- make use of the index normalizers
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
-	SELECT	m.id,
-		i.id
-	  FROM	config.metabib_field m,
-		config.index_normalizer i
-	  WHERE	i.func IN ('naco_normalize','split_date_range');
+    SELECT  m.id,
+            i.id
+      FROM  config.metabib_field m,
+        config.index_normalizer i
+      WHERE i.func IN ('naco_normalize','split_date_range')
+            AND m.id NOT IN (19);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
+    SELECT  m.id,
+            i.id,
+            1
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func IN ('first_word')
+            AND m.id IN (18);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
+    SELECT  m.id,
+            i.id,
+            2
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func IN ('translate_isbn1013')
+            AND m.id IN (18);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
+    SELECT  m.id,
+            i.id,
+            $$['-','']$$
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func IN ('replace')
+            AND m.id IN (19);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
+    SELECT  m.id,
+            i.id,
+            $$[' ','']$$
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func IN ('replace')
+            AND m.id IN (19);
 
 -- claims returned mark item missing 
 INSERT INTO

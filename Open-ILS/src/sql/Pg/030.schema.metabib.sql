@@ -714,6 +714,8 @@ DECLARE
     uri_map_id      INT;
 
     ind_vector      TSVECTOR;
+
+    fclass          RECORD;
 BEGIN
 
     IF NEW.deleted IS TRUE THEN
@@ -733,11 +735,10 @@ BEGIN
     END IF;
 
     IF TG_OP = 'UPDATE' THEN -- Clean out the cruft
-        DELETE FROM metabib.title_field_entry WHERE source = NEW.id;
-        DELETE FROM metabib.author_field_entry WHERE source = NEW.id;
-        DELETE FROM metabib.subject_field_entry WHERE source = NEW.id;
-        DELETE FROM metabib.keyword_field_entry WHERE source = NEW.id;
-        DELETE FROM metabib.series_field_entry WHERE source = NEW.id;
+        FOR fclass IN SELECT * FROM config.metabib_class LOOP
+            -- RAISE NOTICE 'Emptying out %', fclass.name;
+            EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || NEW.id;
+        END LOOP;
         DELETE FROM metabib.full_rec WHERE record = NEW.id;
         DELETE FROM metabib.rec_descriptor WHERE record = NEW.id;
 
@@ -756,22 +757,14 @@ BEGIN
             ind_vector = NULL;
         END IF;
 
-        IF ind_data.field_class = 'title' THEN
-            INSERT INTO metabib.title_field_entry (field, source, value, index_vector)
-                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
-        ELSIF ind_data.field_class = 'author' THEN
-            INSERT INTO metabib.author_field_entry (field, source, value, index_vector)
-                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
-        ELSIF ind_data.field_class = 'subject' THEN
-            INSERT INTO metabib.subject_field_entry (field, source, value, index_vector)
-                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
-        ELSIF ind_data.field_class = 'keyword' THEN
-            INSERT INTO metabib.keyword_field_entry (field, source, value, index_vector)
-                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
-        ELSIF ind_data.field_class = 'series' THEN
-            INSERT INTO metabib.series_field_entry (field, source, value, index_vector)
-                VALUES (ind_data.field, ind_data.source, ind_data.value, ind_vector);
-        END IF;
+        EXECUTE $$
+            INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value, index_vector)
+                VALUES ($$ ||
+                    quote_literal(ind_data.field) || $$, $$ ||
+                    quote_literal(ind_data.source) || $$, $$ ||
+                    quote_literal(ind_data.value) || $$, $$ ||
+                    COALESCE(quote_literal(ind_vector),'NULL'::TEXT) ||
+                $$);$$;
     END LOOP;
 
     -- Then, the rec_descriptor
