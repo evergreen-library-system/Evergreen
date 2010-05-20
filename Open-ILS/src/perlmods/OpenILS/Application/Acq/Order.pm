@@ -1293,6 +1293,7 @@ sub import_lineitem_details {
     $org_path = [ reverse (@$org_path) ];
     my $price;
 
+
     my $idx = 1;
     while(1) {
         # create a lineitem detail for each copy in the data
@@ -1303,7 +1304,9 @@ sub import_lineitem_details {
 
         # this takes the price of the last copy and uses it as the lineitem price
         # need to determine if a given record would include different prices for the same item
-        $price = $$compiled{price};
+        $price = $$compiled{estimated_price};
+
+        last unless $$compiled{quantity};
 
         for(1..$$compiled{quantity}) {
             my $lid = create_lineitem_detail($mgr, 
@@ -1346,43 +1349,40 @@ sub extract_lineitem_detail_data {
         return 0;
     };
 
-    $compiled{quantity} ||= 1;
-
     # ---------------------------------------------------------------------
     # Fund
-    my $code = $compiled{fund_code};
-    return $killme->('no fund code provided') unless $code;
+    if(my $code = $compiled{fund_code}) {
 
-    my $fund = $mgr->cache($base_org, "fund.$code");
-    unless($fund) {
-        # search up the org tree for the most appropriate fund
-        for my $org (@$org_path) {
-            $fund = $mgr->editor->search_acq_fund(
-                {org => $org, code => $code, year => DateTime->now->year}, {idlist => 1})->[0];
-            last if $fund;
+        my $fund = $mgr->cache($base_org, "fund.$code");
+        unless($fund) {
+            # search up the org tree for the most appropriate fund
+            for my $org (@$org_path) {
+                $fund = $mgr->editor->search_acq_fund(
+                    {org => $org, code => $code, year => DateTime->now->year}, {idlist => 1})->[0];
+                last if $fund;
+            }
         }
+        return $killme->("no fund with code $code at orgs [@$org_path]") unless $fund;
+        $compiled{fund} = $fund;
+        $mgr->cache($base_org, "fund.$code", $fund);
     }
-    return $killme->("no fund with code $code at orgs [@$org_path]") unless $fund;
-    $compiled{fund} = $fund;
-    $mgr->cache($base_org, "fund.$code", $fund);
 
 
     # ---------------------------------------------------------------------
     # Owning lib
-    my $sn = $compiled{owning_lib};
-    return $killme->('no owning_lib defined') unless $sn;
-    my $org_id = 
-        $mgr->cache($base_org, "orgsn.$sn") ||
+    if(my $sn = $compiled{owning_lib}) {
+        my $org_id = $mgr->cache($base_org, "orgsn.$sn") ||
             $mgr->editor->search_actor_org_unit({shortname => $sn}, {idlist => 1})->[0];
-    return $killme->("invalid owning_lib defined: $sn") unless $org_id;
-    $compiled{owning_lib} = $org_id;
-    $mgr->cache($$org_path[0], "orgsn.$sn", $org_id);
+        return $killme->("invalid owning_lib defined: $sn") unless $org_id;
+        $compiled{owning_lib} = $org_id;
+        $mgr->cache($$org_path[0], "orgsn.$sn", $org_id);
+    }
 
 
     # ---------------------------------------------------------------------
     # Circ Modifier
+    my $code = $compiled{circ_modifier};
     my $mod;
-    $code = $compiled{circ_modifier};
 
     if($code) {
 
@@ -1393,17 +1393,15 @@ sub extract_lineitem_detail_data {
 
     } else {
         # try the default
-        $mod = get_default_circ_modifier($mgr, $base_org)
-            or return $killme->('no circ_modifier defined');
+        $mod = get_default_circ_modifier($mgr, $base_org);
     }
 
-    $compiled{circ_modifier} = $mod;
+    $compiled{circ_modifier} = $mod if $mod;
 
 
     # ---------------------------------------------------------------------
     # Shelving Location
-    my $name = $compiled{copy_location};
-    if($name) {
+    if( my $name = $compiled{copy_location}) {
         my $loc = $mgr->cache($base_org, "copy_loc.$name");
         unless($loc) {
             for my $org (@$org_path) {
