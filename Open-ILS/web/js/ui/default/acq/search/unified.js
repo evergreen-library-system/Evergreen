@@ -554,7 +554,7 @@ function TermManager() {
             if (!sso[attr]) sso[attr] = [];
             var  value = (
                 typeof(widget.attr) == "function" ?
-                    widget.getFormattedValue() : widget.value
+                    widget.attr("value") : widget.value
             );
             if (typeof(value) != "string")
                 value = value.join(" || ");
