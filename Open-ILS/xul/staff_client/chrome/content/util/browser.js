@@ -55,7 +55,7 @@ util.browser.prototype = {
                                         print_params.msg = obj.html_source;
                                     }
                                     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-                                    if (data.print_strategy == 'webBrowserPrint') {
+                                    if (data.print_strategy == 'webBrowserPrint' || !data.print_strategy) {
                                         // Override the print strategy temporarily in this context
                                         print_params.print_strategy = 'window.print';
                                     }
