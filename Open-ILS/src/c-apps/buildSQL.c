@@ -31,6 +31,78 @@ static inline void incr_indent( BuildSQLState* state );
 static inline void decr_indent( BuildSQLState* state );
 
 /**
+	@brief Create a jsonObject representing the current list of bind variables.
+	@param bindvar_list Pointer to the bindvar_list member of a BuildSQLState.
+	@return Pointer to the newly created jsonObject.
+
+	The returned jsonObject is a (possibly empty) JSON_HASH, keyed on the names of the bind
+	variables.  The data for each is another level of JSON_HASH with a fixed set of tags:
+	- "label"
+	- "type"
+	- "description"
+	- "default_value" (as a jsonObject)
+	- "actual_value" (as a jsonObject)
+
+	Any non-existent values are represented as JSON_NULLs.
+
+	The calling code is responsible for freeing the returned jsonOjbect by calling
+	jsonObjectFree().
+*/
+jsonObject* oilsBindVarList( osrfHash* bindvar_list ) {
+	jsonObject* list = jsonNewObjectType( JSON_HASH );
+
+	if( bindvar_list && osrfHashGetCount( bindvar_list )) {
+		// Traverse our internal list of bind variables
+		BindVar* bind = NULL;
+		osrfHashIterator* iter = osrfNewHashIterator( bindvar_list );
+		while(( bind = osrfHashIteratorNext( iter ))) {
+			// Create an hash to represent the bind variable
+			jsonObject* bind_obj = jsonNewObjectType( JSON_HASH );
+
+			// Add an entry for each attribute
+			jsonObject* attr = jsonNewObject( bind->label );
+			jsonObjectSetKey( bind_obj, "label", attr );
+
+			const char* type = NULL;
+			switch( bind->type ) {
+				case BIND_STR :
+					type = "string";
+					break;
+				case BIND_NUM :
+					type = "number";
+					break;
+				case BIND_STR_LIST :
+					type = "string_list";
+					break;
+				case BIND_NUM_LIST :
+					type = "number_list";
+					break;
+				default :
+					type = "(invalid)";
+					break;
+			}
+			attr = jsonNewObject( type );
+			jsonObjectSetKey( bind_obj, "type", attr );
+
+			attr = jsonNewObject( bind->description );
+			jsonObjectSetKey( bind_obj, "description", attr );
+
+			attr = jsonObjectClone( bind->default_value );
+			jsonObjectSetKey( bind_obj, "default_value", attr );
+
+			attr = jsonObjectClone( bind->actual_value );
+			jsonObjectSetKey( bind_obj, "actual_value", attr );
+
+			// Add the bind variable to the list
+			jsonObjectSetKey( list, osrfHashIteratorKey( iter ), bind_obj );
+		}
+		osrfHashIteratorFree( iter );
+	}
+
+	return list;
+}
+
+/**
 	@brief Apply values to bind variables, overriding the defaults, if any.
 	@param state Pointer to the query-building context.
 	@param bindings A JSON_HASH of values.
@@ -60,7 +132,10 @@ int oilsApplyBindValues( BuildSQLState* state, jsonObject* bindings ) {
 		const char* var_name = iter->key;
 		BindVar* bind = osrfHashGet( state->bindvar_list, var_name );
 		if( bind ) {
-			;
+			// Apply or replace the value for the specified variable
+			if( bind->actual_value )
+				jsonObjectFree( bind->actual_value );
+			bind->actual_value = jsonObjectClone( value );
 		} else {
 			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 				"Can't assign value to bind variable \"%s\": no such variable", var_name ));
@@ -216,9 +291,9 @@ static void buildSelect( BuildSQLState* state, StoredQ* query ) {
 		decr_indent( state );
 	}
 
-    // To do: build GROUP BY clause, if there is one
+	// To do: build GROUP BY clause, if there is one
 
-    // Build HAVING clause, if there is one
+	// Build HAVING clause, if there is one
 	if( query->having_clause ) {
 		add_newline( state );
 		buffer_add( state->sql, "HAVING" );
@@ -232,7 +307,7 @@ static void buildSelect( BuildSQLState* state, StoredQ* query ) {
 		}
 		decr_indent( state );
 	}
-	
+
 	// Build ORDER BY clause, if there is one
 	if( query->order_by_list ) {
 		buildOrderBy( state, query->order_by_list );

@@ -86,43 +86,49 @@ int osrfAppInitialize() {
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".prepare" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-			"doPrepare", "", 1, 0 );
+		"doPrepare", "", 1, 0 );
 
 	buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".columns" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-						   "doColumns", "", 1, 0 );
+		"doColumns", "", 1, 0 );
+
+	buffer_reset( method_name );
+	OSRF_BUFFER_ADD( method_name, modulename );
+	OSRF_BUFFER_ADD( method_name, ".param_list" );
+	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
+		"doParamList", "", 1, 0 );
 
 	buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".bind_param" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-			"doBindParam", "", 2, 0 );
+		"doBindParam", "", 2, 0 );
 
 	buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".execute" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-			"doExecute", "", 1, OSRF_METHOD_STREAMING );
+		"doExecute", "", 1, OSRF_METHOD_STREAMING );
 
 	buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".sql" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-			"doSql", "", 1, OSRF_METHOD_STREAMING );
+		"doSql", "", 1, OSRF_METHOD_STREAMING );
 
 	buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".finish" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-			"doFinish", "", 1, 0 );
+		"doFinish", "", 1, 0 );
 
 	buffer_reset( method_name );
 	OSRF_BUFFER_ADD( method_name, modulename );
 	OSRF_BUFFER_ADD( method_name, ".messages" );
 	osrfAppRegisterMethod( modulename, OSRF_BUFFER_C_STR( method_name ),
-			"doMessages", "", 1, 0 );
+		"doMessages", "", 1, 0 );
 
 	return 0;
 }
@@ -256,6 +262,46 @@ int doColumns( osrfMethodContext* ctx ) {
 	}
 }
 
+int doParamList( osrfMethodContext* ctx ) {
+	if(osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
+		return -1;
+	}
+
+	// Get the query token from a method parameter
+	const jsonObject* token_obj = jsonObjectGetIndex( ctx->params, 0 );
+	if( token_obj->type != JSON_STRING ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Invalid parameter; query token must be a string" );
+		return -1;
+	}
+	const char* token = jsonObjectGetString( token_obj );
+
+	// Look up the query token in the session-level userData
+	CachedQuery* query = search_token( ctx, token );
+	if( !query ) {
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
+			ctx->request, "Invalid query token" );
+		return -1;
+	}
+
+	osrfLogInfo( OSRF_LOG_MARK, "Returning list of bind variables for token %s", token );
+
+	osrfAppRespondComplete( ctx, oilsBindVarList( query->state->bindvar_list ) );
+	return 0;
+}
+
+/**
+	@brief Implement the bind_param method.
+	@param ctx Pointer to the current method context.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- query token, as previously returned by the .prepare method.
+	- hash of bind variable values, keyed on bind variable names.
+
+	Returns: Nothing.
+*/
 int doBindParam( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );

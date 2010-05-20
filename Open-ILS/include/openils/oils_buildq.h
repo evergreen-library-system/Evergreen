@@ -224,6 +224,10 @@ jsonObject* oilsFirstRow( BuildSQLState* state );
 
 jsonObject* oilsNextRow( BuildSQLState* state );
 
+jsonObject* oilsBindVarList( osrfHash* bindvar_list );
+
+int oilsApplyBindValues( BuildSQLState* state, jsonObject* bindings );
+
 #ifdef __cplusplus
 }
 #endif
