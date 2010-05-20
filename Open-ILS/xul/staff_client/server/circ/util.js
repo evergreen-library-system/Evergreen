@@ -991,8 +991,15 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
-                try {  return my.mvr.title(); }
-                catch(E) { return my.acp.dummy_title(); }
+                if (my.mvr) {
+                    if (my.mvr.doc_id() == -1) {
+                        return my.acp.dummy_title();
+                    } else {
+                        return my.mvr.title();
+                    }
+                } else {
+                    return my.acp.dummy_title();
+                }
             }
         },
         {
@@ -1004,8 +1011,15 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
-                try { return my.mvr.author(); }
-                catch(E) { return my.acp.dummy_author(); }
+                if (my.mvr) {
+                    if (my.mvr.doc_id() == -1) {
+                        return my.acp.dummy_author();
+                    } else {
+                        return my.mvr.author();
+                    }
+                } else {
+                    return my.acp.dummy_author();
+                }
             }
         },
         {
@@ -1027,8 +1041,15 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { 
-                try { return my.mvr.isbn(); }
-                catch(E) { return my.acp.dummy_isbn(); }
+                if (my.mvr) {
+                    if (my.mvr.doc_id() == -1) {
+                        return my.acp.dummy_isbn();
+                    } else {
+                        return my.mvr.isbn();
+                    }
+                } else {
+                    return my.acp.dummy_isbn();
+                }
             }
         },
         {
