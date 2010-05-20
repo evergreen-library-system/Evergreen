@@ -243,7 +243,7 @@
 
                         for (var j = 0; j < volume.copies().length; j++) {
                             var copy = volume.copies()[j];
-                            if (i == 0) {
+                            if (i == 0 && j == 0) {
                                 html += '<pre class="first_pre">\n';
                             } else {
                                 html += '<pre class="not_first_pre">\n';
