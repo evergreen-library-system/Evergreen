@@ -148,8 +148,12 @@ function TermSelectorFactory(terms) {
                 }).build(
                     function(w) {
                         wStore[widgetKey] = w;
-                        if (typeof(value) != "undefined")
-                            w.attr("value", value);
+                        if (typeof(value) != "undefined") {
+                            if (w.declaredClass.match(/Check/))
+                                w.attr("checked", value == "t");
+                            else
+                                w.attr("value", value);
+                        }
                         if (!noFocus)
                             w.focus();
                         if (typeof(callback) == "function")
@@ -511,6 +515,8 @@ function TermManager() {
                             split("T")[0];
                 } else {
                     value = this.widgets[id].attr("value");
+                    if (this.widgets[id].declaredClass.match(/Check/))
+                        value = (value == "on") ? "t" : "f";
                 }
             } else {
                 value = this.widgets[id].value;
@@ -548,7 +554,7 @@ function TermManager() {
             if (!sso[attr]) sso[attr] = [];
             var  value = (
                 typeof(widget.attr) == "function" ?
-                    widget.attr("value") : widget.value
+                    widget.getFormattedValue() : widget.value
             );
             if (typeof(value) != "string")
                 value = value.join(" || ");
