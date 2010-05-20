@@ -371,7 +371,7 @@ patron.util.columns = function(modify,params) {
 
     var c = [
         {
-            'persist' : 'hidden width ordinal', 'id' : 'barcode', 'label' : commonStrings.getString('staff.card_barcode_label'), 'flex' : 1, 
+            'persist' : 'hidden width ordinal', 'id' : 'au_barcode', 'label' : commonStrings.getString('staff.card_barcode_label'), 'flex' : 1, 
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return my.au.card().barcode(); }
         },
         { 

@@ -40,7 +40,7 @@ patron.search_result.prototype = {
             },
             {
                 'except_these' : [
-                    'barcode',
+                    'au_barcode',
                 ]
             }
         );
