@@ -263,7 +263,7 @@
                                 }
                                 html += '\n';
                             }
-                            html += '</pre>\n';
+                            html += '</pre hex="0C">\n';
                         }
                     }
                     html += '</body></html>';
@@ -274,7 +274,8 @@
                             'tab_name' : $("catStrings").getString('staff.cat.spine_labels.preview.title')
                         },
                         { 
-                            'url' : 'data:text/html,'+html,
+                            'url' : 'data:text/html;charset=utf-8,'+window.escape(html),
+                            'html_source' : html,
                             'show_print_button' : 1,
                             'no_xulG' : 1
                         }

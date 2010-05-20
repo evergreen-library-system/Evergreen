@@ -11,6 +11,8 @@ function my_init() {
 
         JSAN.use('util.print'); g.print = new util.print();
 
+        g.prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+
         /*
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         g.PSSVC = Components.classes["@mozilla.org/gfx/printsettings-service;1"].getService(Components.interfaces.nsIPrintSettingsService);
@@ -39,12 +41,25 @@ g.printer_settings = function() {
 
 g.set_print_strategy = function(which) {
     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+    if (which == 'custom.print') {
+        var key = 'oils.printer.external.cmd';
+        var has_key = g.prefs.prefHasUserValue(key);
+        var value = has_key ? g.prefs.getCharPref(key) : '';
+        var cmd = window.prompt(
+            document.getElementById('offlineStrings').getString('printing.prompt_for_external_print_cmd'),
+            value
+        );
+        if (!cmd) { return; }
+        g.prefs.setCharPref(key,cmd);
+    }
     JSAN.use('util.file'); var file = new util.file('print_strategy');
     file.write_content( 'truncate', String( which ) );
     file.close();
     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
     data.print_strategy = which; data.stash('print_strategy');
-    alert('Print strategy (' + which + ') saved to file system.');
+    alert(
+        document.getElementById('offlineStrings').getFormattedString('printing.print_strategy_saved',[which])
+    );
 }
 
 g.save_settings = function() { g.print.save_settings(); }

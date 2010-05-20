@@ -11,6 +11,11 @@ util.print = function () {
     JSAN.use('util.functional');
     JSAN.use('util.file');
 
+    var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+    var key = 'oils.printer.external.cmd';
+    var has_key = prefs.prefHasUserValue(key);
+    this.oils_printer_external_cmd = has_key ? prefs.getCharPref(key) : '';
+
     return this;
 };
 
@@ -20,7 +25,9 @@ util.print.prototype = {
         try {
             var obj = this; obj.data.init({'via':'stash'});
             if (!obj.data.last_print) {
-                alert('Nothing to re-print');
+                alert(
+                    document.getElementById('offlineStrings').getString('printing.nothing_to_reprint')
+                );
                 return;
             }
             var msg = obj.data.last_print.msg;
@@ -31,9 +38,48 @@ util.print.prototype = {
         }
     },
 
+    'html2txt' : function(html) {
+        JSAN.use('util.text');
+        //dump('html2txt, before:\n' + html + '\n');
+        var lines = html.split(/\n/);
+        var new_lines = [];
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            if (line) {
+                // This undoes the util.text.preserve_string_in_html call that spine_label.js does
+                line = util.text.reverse_preserve_string_in_html(line);
+                // This looks for @hex attributes containing 2-digit hex codes, and converts them into real characters
+                line = line.replace(/(<.+?)hex=['"](.+?)['"](.*?>)/gi, function(str,p1,p2,p3,offset,s) {
+                    var raw_chars = '';
+                    var hex_chars = p2.match(/[0-9,a-f,A-F][0-9,a-f,A-F]/g);
+                    for (var j = 0; j < hex_chars.length; j++) {
+                        raw_chars += String.fromCharCode( parseInt(hex_chars[j],16) );
+                    }
+                    return p1 + p3 + raw_chars;
+                });
+                line = line.replace(/<head.*?>.*?<\/head>/gi, '');
+                line = line.replace(/<br.*?>/gi,'\r\n');
+                line = line.replace(/<table.*?>/gi,'');
+                line = line.replace(/<tr.*?>/gi,'');
+                line = line.replace(/<hr.*?>/gi,'\r\n');
+                line = line.replace(/<p.*?>/gi,'');
+                line = line.replace(/<block.*?>/gi,'');
+                line = line.replace(/<li.*?>/gi,' * ');
+                line = line.replace(/<.+?>/gi,'');
+                if (line) { new_lines.push(line); }
+            } else {
+                new_lines.push(line);
+            }
+        }
+        var new_html = new_lines.join('\n');
+        //dump('html2txt, after:\n' + new_html + '\nhtml2txt, done.\n');
+        return new_html;
+    },
+
     'simple' : function(msg,params) {
         try {
             if (!params) params = {};
+            params.msg = msg;
 
             var obj = this;
 
@@ -60,15 +106,18 @@ util.print.prototype = {
 
                 switch(params.print_strategy || obj.data.print_strategy) {
                     case 'dos.print':
+                        params.dos_print = true;
+                    case 'custom.print':
                         /* FIXME - this it a kludge.. we're going to sidestep window-based html rendering for printing */
                         /* I'm using regexps to mangle the html receipt templates; it'd be nice to use xsl but the */
-                        /* templates aren't guaranteed to be valid xml */
+                        /* templates aren't guaranteed to be valid xml.  The unadulterated msg is still preserved in */
+                        /* params */
                         if (content_type=='text/html') {
-                            w = msg.replace(/<br.*?>/gi,'\r\n').replace(/<table.*?>/gi,'\r\n').replace(/<tr.*?>/gi,'\r\n').replace(/<hr.*?>/gi,'\r\n').replace(/<p.*?>/gi,'\r\n').replace(/<block.*?>/gi,'\r\n').replace(/<li.*?>/gi,'\r\n * ').replace(/<.+?>/gi,'');
+                            w = obj.html2txt(msg);
                         } else {
                             w = msg;
                         }
-                        if (! params.no_form_feed) { w = w + '\r\n\r\n\r\n\r\n\r\n\r\n\f'; }
+                        if (! params.no_form_feed) { w = w + '\f'; }
                         obj.NSPrint(w, silent, params);
                         return;
                     break;
@@ -246,14 +295,24 @@ util.print.prototype = {
 
             if (params.print_strategy || obj.data.print_strategy) {
 
+dump('params.print_strategy = ' + params.print_strategy + ' || obj.data.print_strategy = ' + obj.data.print_strategy + ' => ' + ( params.print_strategy || obj.data.print_strategy ) + '\n');
                 switch(params.print_strategy || obj.data.print_strategy) {
                     case 'dos.print':
+                    case 'custom.print':
                         if (typeof w != 'string') {
-                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                            w.getSelection().selectAllChildren(w.document.firstChild);
-                            w = w.getSelection().toString();
+                            try {
+                                var temp_w = params.msg || w.document.firstChild.innerHTML;
+                                if (!params.msg) { params.msg = temp_w; }
+                                if (typeof temp_w != 'string') { throw(temp_w); }
+                                w = obj.html2txt(temp_w);
+                            } catch(E) {
+                                dump('util.print: Could not use w.document.firstChild.innerHTML with ' + w + ': ' + E + '\n');
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                w.getSelection().selectAllChildren(w.document.firstChild);
+                                w = w.getSelection().toString();
+                            }
                         }
-                        obj._NSPrint_dos_print(w,silent,params);
+                        obj._NSPrint_custom_print(w,silent,params);
                     break;    
                     case 'window.print':
                         w.print();
@@ -279,28 +338,34 @@ util.print.prototype = {
 
     },
 
-    '_NSPrint_dos_print' : function(w,silent,params) {
+    '_NSPrint_custom_print' : function(w,silent,params) {
         var obj = this;
         try {
 
-            /* OLD way: This is a kludge/workaround.  webBrowserPrint doesn't always work.  So we're going to let
-                the html window handle our receipt template rendering, and then force a selection of all
-                the text nodes and dump that to a file, for printing through a dos utility */
-
-            /* NEW way: we just pass in the text */
-
             var text = w;
+            var html = params.msg || w;
 
-            var file = new util.file('receipt.txt');
-            file.write_content('truncate',text); 
-            var path = file._file.path;
-            file.close();
+            var txt_file = new util.file('receipt.txt');
+            txt_file.write_content('truncate',text); 
+            var text_path = '"' + txt_file._file.path + '"';
+            txt_file.close();
+
+            var html_file = new util.file('receipt.html');
+            html_file.write_content('truncate',html); 
+            var html_path = '"' + html_file._file.path + '"';
+            html_file.close();
             
+            var cmd = params.dos_print ?
+                'copy ' + text_path + ' lpt1 /b\n'
+                : obj.oils_printer_external_cmd.replace('%receipt.txt%',text_path).replace('%receipt.html%',html_path)
+            ;
+
             file = new util.file('receipt.bat');
-            file.write_content('truncate+exec','#!/bin/sh\ncopy "' + path + '" lpt1 /b\nlpr ' + path + '\n');
+            file.write_content('truncate+exec',cmd);
             file.close();
             file = new util.file('receipt.bat');
 
+            dump('print exec: ' + cmd + '\n');
             var process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
             process.init(file._file);
 
@@ -312,7 +377,7 @@ util.print.prototype = {
 
         } catch (e) {
             //alert('Probably not printing: ' + e);
-            this.error.sdump('D_ERROR','_NSPrint_dos_print PRINT EXCEPTION: ' + js2JSON(e) + '\n');
+            this.error.sdump('D_ERROR','_NSPrint_custom_print PRINT EXCEPTION: ' + js2JSON(e) + '\n');
         }
     },
 

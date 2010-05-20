@@ -21,7 +21,7 @@ util.browser.prototype = {
 
             obj.url = params['url'];
             obj.push_xulG = params['push_xulG'];
-            obj.alt_print = params['alt_print'];
+            obj.html_source = params['html_source'];
             obj.browser_id = params['browser_id'];
             obj.debug_label = params['debug_label'];
             obj.passthru_content_params = params['passthru_content_params'];
@@ -46,12 +46,22 @@ util.browser.prototype = {
                         'cmd_print' : [
                             ['command'],
                             function() {
-                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                if (obj.alt_print) {
+                                try {
+                                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                    var content = obj.get_content();
                                     JSAN.use('util.print'); var p = new util.print();
-                                    p.NSPrint(obj.get_content(),false,{});
-                                } else {
-                                    obj.get_content().print();
+                                    var print_params = {};
+                                    if (obj.html_source) {
+                                        print_params.msg = obj.html_source;
+                                    }
+                                    JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+                                    if (data.print_strategy == 'webBrowserPrint') {
+                                        // Override the print strategy temporarily in this context
+                                        print_params.print_strategy = 'window.print';
+                                    }
+                                    p.NSPrint(content,false,print_params);
+                                } catch(E) {
+                                    alert('browser.js, cmd_print exception: ' + E);
                                 }
                             }
                         ],

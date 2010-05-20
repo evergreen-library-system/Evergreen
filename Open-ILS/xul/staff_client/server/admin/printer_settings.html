@@ -1,5 +1,16 @@
-<html><head>
+<?xml version='1.0' encoding="UTF-8"?>
 
+<!DOCTYPE html PUBLIC
+    "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style type='text/css'>
+        .messagecatalog { -moz-binding: url( /xul/server/main/bindings.xml#messagecatalog ) }
+    </style>
     <script type="text/javascript" src="/opac/common/js/utils.js"></script>
     <script type="text/javascript" src="/opac/common/js/CGI.js"></script>
     <script type="text/javascript" src="/opac/common/js/md5.js"></script>
@@ -15,15 +26,24 @@
     <script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
     <script type="text/javascript" src="printer_settings.js"></script>
 </head><body onload="try { my_init(); } catch(E) { alert(E); }" style="background: white;">
-    <h1>Normal Settings</h1>
+    <div class="messagecatalog" id="offlineStrings" src="/xul/server/locale/<!--#echo var='locale'-->/offline.properties" />
+    <h1>&staff.printing.normal_settings.header;</h1>
     <iframe id="sample" src="printer_settings.txt"></iframe><br />
-    <button onclick="try { g.printer_settings(); } catch(E) { alert(E); }">Set Default Printer and Print Test Page</button>
-    <button onclick="try { g.page_settings(); } catch(E) { alert(E); }">Page Settings</button><br />
-    <h1>Advanced Settings</h1>
-    <button onclick="try { g.set_print_strategy('webBrowserPrint'); } catch(E) { alert(E); }">Use default print strategy (Mozilla Print)</button>
-    <button onclick="try { g.set_print_strategy('dos.print'); } catch(E) { alert(E); }">Use alternate print strategy (DOS LPT1 Print)</button>
+    <button onclick="try { g.printer_settings(); } catch(E) { alert(E); }">&staff.printing.set_default;</button>
+    <button onclick="try { g.page_settings(); } catch(E) { alert(E); }">&staff.printing.page_settings;</button><br />
+    <h1>&staff.printing.advanced_settings.header;</h1>
+    <button onclick="try { g.set_print_strategy('webBrowserPrint'); } catch(E) { alert(E); }">&staff.printing.advanced.mozilla_print;</button>
+    <button onclick="try { g.set_print_strategy('dos.print'); } catch(E) { alert(E); }">&staff.printing.advanced.dos_print;</button>
+    <button onclick="try { g.set_print_strategy('custom.print'); } catch(E) { alert(E); }">&staff.printing.advanced.custom_print;</button>
     <p>
-        <b>Warning:</b> The alternate (DOS LPT1) print strategy will ignore the printer settings made in the "Normal Settings" section.  In Windows, you must map your printer to the LPT1 port, under Start Menu -&gt; Printers and Faxes -&gt; your printer -&gt; right-click, Properties -&gt; Ports.  Also, HTML styling such as different font weights and sizes will be lost when using the DOS LPT1 print.  Data is sent to the printer as simple text in this case.
+        <dl>
+            <dt><b>&staff.printing.advanced.dos_print.warning.header;</b></dt>
+            <dd>&staff.printing.advanced.dos_print.warning.text;</dd>
+            <dt><b>&staff.printing.advanced.custom_print.warning.header;</b></dt>
+            <dd>&staff.printing.advanced.custom_print.warning.text;</dd>
+            <dt><b>&staff.printing.advanced.html_templates.warning.header;</b></dt>
+            <dd>&staff.printing.advanced.html_templates.warning.text;</dd>
+        </dl>
     </p>
 </body></html>
 
