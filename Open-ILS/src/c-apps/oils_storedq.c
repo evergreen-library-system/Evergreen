@@ -392,6 +392,12 @@ static QSeq* constructQSeq( BuildSQLState* state, dbi_result result ) {
 	return seq;
 }
 
+/**
+	@brief Free a list of QSeq's.
+	@param seq Pointer to the first in a linked list of QSeq's to be freed.
+
+	Each QSeq goes onto a free list for potential reuse.
+*/
 static void freeQSeqList( QSeq* seq ) {
 	if( !seq )
 		return;
@@ -1018,6 +1024,12 @@ static void bindVarFree( char* key, void* p ) {
 	}
 }
 
+/**
+	@brief Given an id for a row in query.expression, build an Expression struct.
+	@param Pointer to the query-building context.
+	@param id ID of a row in query.expression.
+	@return Pointer to a newly-created Expression if successful, or NULL if not.
+*/
 static Expression* getExpression( BuildSQLState* state, int id ) {
 	
 	// Check the stack to see if the current expression is nested inside itself.  If it is,
@@ -1096,6 +1108,8 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		type = EXP_FUNCTION;
 	else if( !strcmp( type_str, "xin" ))
 		type = EXP_IN;
+	else if( !strcmp( type_str, "xisnull" ))
+		type = EXP_ISNULL;
 	else if( !strcmp( type_str, "xnull" ))
 		type = EXP_NULL;
 	else if( !strcmp( type_str, "xnum" ))
@@ -1218,6 +1232,23 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 			if( !subquery ) {
 				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 					"Unable to load subquery for IN expression # %d", id ));
+				state->error = 1;
+				return NULL;
+			}
+		}
+	} else if( EXP_ISNULL == type ) {
+		if( -1 == left_operand_id ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Expression # %d IS NULL has no left operand", id ));
+			state->error = 1;
+			return NULL;
+		}
+
+		if( left_operand_id != -1 ) {
+			left_operand = getExpression( state, left_operand_id );
+			if( !left_operand ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to get left operand in expression # %d", id ));
 				state->error = 1;
 				return NULL;
 			}
@@ -1481,8 +1512,9 @@ jsonObject* oilsGetColNames( BuildSQLState* state, StoredQ* query ) {
 	// Save the outermost query id for possible use in an error message
 	int id = query->id;
 
-	// Find the first SELECT, from which we will take the column names
 	while( query->type != QT_SELECT ) {
+		// If the query is a UNION, INTERSECT, or EXCEPT, there must be a SELECT in
+		// there somewhere.  Find the first one, and use the SELECT list from that.
 		QSeq* child_list = query->child_list;
 		if( !child_list ) {
 			query = NULL;

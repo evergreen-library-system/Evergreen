@@ -674,6 +674,21 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 				}
 			}
 			break;
+		case EXP_ISNULL :
+			if( expr->left_operand ) {
+				buildExpression( state, expr->left_operand );
+				if( state->error ) {
+					sqlAddMsg( state, "Unable to emit left operand in IS NULL expression # %d",
+						expr->id );
+					break;
+				}
+			}
+
+			if( expr->negate )
+				buffer_add( state->sql, " IS NOT NULL" );
+			else
+				buffer_add( state->sql, " IS NULL" );
+			break;
 		case EXP_NULL :
 			if( expr->negate )
 				buffer_add( state->sql, "NOT " );
