@@ -29,6 +29,7 @@ INSERT INTO pg_ts_cfg VALUES ('title', 'default','C');
 INSERT INTO pg_ts_cfg VALUES ('author', 'default','C');
 INSERT INTO pg_ts_cfg VALUES ('subject', 'default','C');
 INSERT INTO pg_ts_cfg VALUES ('keyword', 'default','C');
+INSERT INTO pg_ts_cfg VALUES ('identifier', 'default','C');
 INSERT INTO pg_ts_cfg VALUES ('series', 'default','C');
 
 INSERT INTO pg_ts_dict VALUES ('en_stem_nostop', 'snb_en_init(internal)', '', 'snb_lexize(internal,internal,integer)', 'English Stemmer. Snowball. No stop words.');
@@ -92,6 +93,26 @@ INSERT INTO pg_ts_cfgmap VALUES ('subject', 'uint', '{simple}');
 INSERT INTO pg_ts_cfgmap VALUES ('subject', 'lword', '{en_stem_nostop}');
 INSERT INTO pg_ts_cfgmap VALUES ('subject', 'lpart_hword', '{en_stem_nostop}');
 INSERT INTO pg_ts_cfgmap VALUES ('subject', 'lhword', '{en_stem_nostop}');
+
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'nlword', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'word', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'email', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'url', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'host', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'sfloat', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'version', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'part_hword', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'nlpart_hword', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'hword', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'nlhword', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'uri', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'file', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'float', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'int', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'uint', '{simple}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'lword', '{en_stem_nostop}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'lpart_hword', '{en_stem_nostop}');
+INSERT INTO pg_ts_cfgmap VALUES ('identifier', 'lhword', '{en_stem_nostop}');
 
 INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'nlword', '{simple}');
 INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'word', '{simple}');
