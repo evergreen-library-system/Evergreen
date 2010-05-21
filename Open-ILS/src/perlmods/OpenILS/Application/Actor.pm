@@ -1539,7 +1539,7 @@ sub user_fines_summary {
 			$e->allowed('VIEW_USER_FINES_SUMMARY', $user->home_ou);
 	}
 
-    return $e->search_money_open_user_summary({usr => $user_id});
+    return $e->search_money_open_user_summary({usr => $user_id})->[0];
 }
 
 
