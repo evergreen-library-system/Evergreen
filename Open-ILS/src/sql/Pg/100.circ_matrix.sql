@@ -15,7 +15,8 @@ CREATE TABLE config.circ_modifier (
     name            TEXT    UNIQUE NOT NULL,
     description        TEXT    NOT NULL,
     sip2_media_type    TEXT    NOT NULL,
-    magnetic_media    BOOL    NOT NULL DEFAULT TRUE
+    magnetic_media     BOOL    NOT NULL DEFAULT TRUE,
+    avg_wait_time      INTERVAL
 );
 
 /*

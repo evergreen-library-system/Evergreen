@@ -869,6 +869,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="SIP2 Media Type" name="sip2_media_type" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Magnetic Media" name="magnetic_media" reporter:datatype="bool"/>
+			<field reporter:label="Average Wait Time" name="avg_wait_time" reporter:datatype="interval"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
