@@ -27,7 +27,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             displayLimit : 15,
             displayOffset : 0,
             requiredFields : null,
-            showPaginator : false,
+            hidePaginator : false,
             showLoadFilter : false,
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
 
@@ -76,7 +76,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     );
                 }
 
-                if(this.showPaginator) {
+                if(!this.hidePaginator) {
                     var self = this;
                     this.paginator = new dijit.layout.ContentPane();
 
