@@ -23,6 +23,7 @@ function byName(name, ctxt) {
 }
 
 function buildEditPaneAdditions(editPane) {
+    if(!editPane.fmObject) return; 
     var node = circModEditor.cloneNode(true);
     var tableTmpl = node.removeChild(byName('circ-mod-group-table', node));
     circModGroupTables = [];
