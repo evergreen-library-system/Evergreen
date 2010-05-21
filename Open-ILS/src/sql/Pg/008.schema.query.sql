@@ -134,7 +134,7 @@ CREATE TABLE query.expression (
 									'xfld',    -- field
 									'xfunc',   -- function
 									'xin',     -- in
-									'xisnull'  -- is null
+									'xisnull', -- is null
 	                             	'xnull',   -- null
 									'xnum',    -- number
 									'xop',     -- operator
