@@ -51,8 +51,8 @@
 									<a id='rdetail_place_hold'>&opac.holds.placeHold;</a>
 								</span>
 							</li>
-							<li class='hide_me'>
-								<span class='selectBox' id='rdetail_more_actions'>
+							<li class='hide_me' id='rdetail_more_actions'>
+								<span class='selectBox'>
 									<select id='rdetail_more_actions_selector' style='max-width: 11em;'>
 										<option value='start'>&rdetail.more;</option>
 										<option disabled='disabled'>--------------</option>
