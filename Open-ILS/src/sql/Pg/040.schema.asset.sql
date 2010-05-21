@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA asset CASCADE;
+DROP SCHEMA IF EXISTS asset CASCADE;
 
 BEGIN;
 

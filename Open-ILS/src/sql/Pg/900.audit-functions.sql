@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA auditor CASCADE;
+DROP SCHEMA IF EXISTS auditor CASCADE;
 
 BEGIN;
 

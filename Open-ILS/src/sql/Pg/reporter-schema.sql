@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA reporter CASCADE;
+DROP SCHEMA IF EXISTS reporter CASCADE;
 
 BEGIN;
 

@@ -16,7 +16,7 @@
  */
 
 
-DROP SCHEMA permission CASCADE;
+DROP SCHEMA IF EXISTS permission CASCADE;
 
 BEGIN;
 CREATE SCHEMA permission;

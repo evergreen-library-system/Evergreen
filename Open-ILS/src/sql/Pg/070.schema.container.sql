@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA container CASCADE;
+DROP SCHEMA IF EXISTS container CASCADE;
 
 BEGIN;
 CREATE SCHEMA container;

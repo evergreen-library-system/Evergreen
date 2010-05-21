@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA money CASCADE;
+DROP SCHEMA IF EXISTS money CASCADE;
 
 BEGIN;
 

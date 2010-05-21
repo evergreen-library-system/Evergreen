@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA action CASCADE;
+DROP SCHEMA IF EXISTS action CASCADE;
 
 BEGIN;
 

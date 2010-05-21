@@ -158,7 +158,7 @@ $$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 
 COMMIT;
 
-DROP SCHEMA search CASCADE;
+DROP SCHEMA IF EXISTS search CASCADE;
 BEGIN;
 
 -------------------------------------------------------------------

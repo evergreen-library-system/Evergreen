@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA biblio CASCADE;
+DROP SCHEMA IF EXISTS biblio CASCADE;
 
 BEGIN;
 CREATE SCHEMA biblio;

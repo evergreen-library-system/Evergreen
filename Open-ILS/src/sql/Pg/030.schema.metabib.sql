@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA metabib CASCADE;
+DROP SCHEMA IF EXISTS metabib CASCADE;
 
 BEGIN;
 CREATE SCHEMA metabib;

@@ -16,7 +16,7 @@
  */
 
 
-DROP SCHEMA offline CASCADE;
+DROP SCHEMA IF EXISTS offline CASCADE;
 
 BEGIN;
 

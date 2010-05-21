@@ -14,7 +14,7 @@
  *
  */
 
-DROP SCHEMA extend_reporter CASCADE;
+DROP SCHEMA IF EXISTS extend_reporter CASCADE;
 
 BEGIN;
 

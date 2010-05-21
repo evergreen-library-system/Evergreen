@@ -15,7 +15,7 @@
  *
  */
 
-DROP SCHEMA authority CASCADE;
+DROP SCHEMA IF EXISTS authority CASCADE;
 
 BEGIN;
 CREATE SCHEMA authority;
