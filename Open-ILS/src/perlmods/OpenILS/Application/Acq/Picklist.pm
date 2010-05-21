@@ -198,10 +198,10 @@ sub retrieve_user_picklist {
     # don't grab the PL with name == "", because that is the designated temporary picklist
     my $list = $e->search_acq_picklist([
             {
-                owner=>$e->requestor->id, 
-                name=>{'!='=>''}
+                owner => $e->requestor->id, 
+                name => {'!=' => ''}
             }, {
-                order_by => {acqpl => 'name'},
+                order_by => $$options{order_by} || {acqpl => 'edit_time DESC'},
                 limit => $$options{limit} || 10,
                 offset => $$options{offset} || 0,
             }
