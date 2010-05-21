@@ -111,6 +111,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (opts.select) order_by.select = opts.select;
             if (opts.limit) order_by.limit = opts.limit;
             if (opts.offset) order_by.offset = opts.offset;
+            if (opts.join) order_by.join = opts.join;
             
             var method = 'open-ils.pcrud.search.' + fm_class;
             if(!opts.streaming) method += '.atomic';
@@ -151,14 +152,17 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
         },
 
         search : function ( fm_class /* Fieldmapper class hint */, search /* Fieldmapper query object */, opts /* Option hash */) {
+            var return_type = 'search';
             if(!opts) opts = {};
             var order_by = {};
             if (opts.order_by) order_by.order_by = opts.order_by;
             if (opts.select) order_by.select = opts.select;
             if (opts.limit) order_by.limit = opts.limit;
             if (opts.offset) order_by.offset = opts.offset;
+            if (opts.join) order_by.join = opts.join;
+            if (opts.id_list) return_type = 'id_list';
 
-            var method = 'open-ils.pcrud.search.' + fm_class;
+            var method = 'open-ils.pcrud.' + return_type + '.' + fm_class;
             if(!opts.streaming) method += '.atomic';
 
             var req_hash = dojo.mixin(
@@ -323,13 +327,15 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             return obj_list;
         },
 
+	/* 
+	 * 'delete' is a reserved keyword in JavaScript and can't be used
+	 * in browsers like IE or Chrome, so we define a safe synonym
+     * NOTE: delete() is now removed -- use eliminate instead
+
         delete : function ( list, opts ) {
             return this._CUD( 'delete', list, opts );
         },
 
-	/* 
-	 * 'delete' is a reserved keyword in JavaScript and can't be used
-	 * in browsers like IE or Chrome, so we define a safe synonym
 	 */
         eliminate: function ( list, opts ) {
             return this._CUD( 'delete', list, opts );

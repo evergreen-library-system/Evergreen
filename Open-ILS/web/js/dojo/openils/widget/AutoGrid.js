@@ -18,6 +18,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editOnEnter : false, 
             defaultCellWidth : null,
             editStyle : 'dialog',
+            editReadOnly : false,
             suppressFields : null,
             hideSelector : false,
             selectorWidth : '1.5',
@@ -25,6 +26,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             columnPickerPrefix : null,
             displayLimit : 15,
             displayOffset : 0,
+            requiredFields : null,
             showPaginator : false,
             showLoadFilter : false,
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
@@ -58,6 +60,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 this.overrideEditWidgets = {};
                 this.overrideEditWidgetClass = {};
+                this.overrideWidgetArgs = {};
 
                 if(this.editOnEnter) 
                     this._applyEditOnEnter();
@@ -317,7 +320,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 dojo.forEach(items,
                     function(item) {
                         var fmObject = new fieldmapper[self.fmClass]().fromStoreItem(item);
-                        new openils.PermaCrud()['delete'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
+                        new openils.PermaCrud()['eliminate'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
                     }
                 );
             },
@@ -370,12 +373,17 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var grid = this;
                 var fmObject = new fieldmapper[this.fmClass]().fromStoreItem(storeItem);
                 var idents = grid.store.getIdentityAttributes();
+                var self = this;
 
                 var pane = new openils.widget.EditPane({
                     fmObject:fmObject,
+                    hideSaveButton : this.editReadOnly,
+                    readOnly : this.editReadOnly,
                     overrideWidgets : this.overrideEditWidgets,
                     overrideWidgetClass : this.overrideEditWidgetClass,
+                    overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
+                    requiredFields : this.requiredFields,
                     onPostSubmit : function() {
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
@@ -413,9 +421,11 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     fmClass : this.fmClass,
                     overrideWidgets : this.overrideEditWidgets,
                     overrideWidgetClass : this.overrideEditWidgetClass,
+                    overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
-                    onPostSubmit : function(r) {
-                        var fmObject = openils.Util.readResponse(r);
+                    requiredFields : this.requiredFields,
+                    onPostSubmit : function(req, cudResults) {
+                        var fmObject = cudResults[0];
                         if(grid.onPostCreate)
                             grid.onPostCreate(fmObject);
                         if(fmObject) 

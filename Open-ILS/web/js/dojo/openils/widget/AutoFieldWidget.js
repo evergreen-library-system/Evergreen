@@ -22,6 +22,28 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *  orgLimitPerms -- If this field defines a set of org units and an orgLimitPerms 
          *      is defined, the code will limit the org units in the set to those
          *      allowed by the permission
+         *  orgDefaultsToWs -- If this is an org unit field and the widget has no value,
+         *      set the value equal to the users's workstation org unit.  Othwerwise, leave it null
+         *  selfReference -- The primary purpose of an AutoFieldWidget is to render the value
+         *      or widget for a field on an object (that may or may not link to another object).
+         *      selfReference allows you to sidestep the indirection and create a selector widget
+         *      based purely on an fmClass.  To get a dropdown of all of the 'abc'
+         *      objects, pass in {selfReference : true, fmClass : 'abc'}.  
+         *  labelFormat -- For widgets that are displayed as remote object filtering selects,
+         *      this provides a mechanism for overriding the label format in the filtering select.
+         *      It must be an array, whose first value is a format string, compliant with
+         *      dojo.string.substitute.  The remaining array items are the arguments to the format
+         *      represented as field names on the remote linked object.
+         *      E.g.
+         *      labelFormat : [ '${0} (${1})', 'obj_field_1', 'obj_field_2' ]
+         *      Note: this does not control the final display value.  Only values in the drop-down.
+         *      See searchFormat for controlling the display value
+         *  searchFormat -- This format controls the structure of the search attribute which
+         *      controls the text used during type-ahead searching and the displayed value in 
+         *      the filtering select.  See labelFormat for the structure.  
+         *  dataLoader : Bypass the default PermaCrud linked data fetcher and use this function instead.
+         *      Function arguments are (link class name, search filter, callback)
+         *      The fetched objects should be passed to the callback as an array
          */
         constructor : function(args) {
             for(var k in args)
@@ -33,16 +55,32 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
             this.suppressLinkedFields = args.suppressLinkedFields || [];
 
-            if(!this.idlField) {
-                this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
-                var fields = this.fmIDL.fields;
-                for(var f in fields) 
-                    if(fields[f].name == this.fmField)
-                        this.idlField = fields[f];
+            if(this.selfReference) {
+                this.fmField = fieldmapper.IDL.fmclasses[this.fmClass].pkey;
+                
+                // create a mock-up of the idlField object.  
+                this.idlField = {
+                    datatype : 'link',
+                    'class' : this.fmClass,
+                    reltype : 'has_a',
+                    key : this.fmField,
+                    name : this.fmField
+                };
+
+            } else {
+
+                if(!this.idlField) {
+                    this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+                    var fields = this.fmIDL.fields;
+                    for(var f in fields) 
+                        if(fields[f].name == this.fmField)
+                            this.idlField = fields[f];
+                }
             }
 
             if(!this.idlField) 
-                throw new Error("AutoFieldWidget could not determine which field to render.  We need more information. fmClass=" + 
+                throw new Error("AutoFieldWidget could not determine which " +
+                    "field to render.  We need more information. fmClass=" + 
                     this.fmClass + ' fmField=' + this.fmField + ' fmObject=' + js2JSON(this.fmObject));
 
             this.auth = openils.User.authtoken;
@@ -59,14 +97,21 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var value = this.baseWidgetValue();
             switch(this.idlField.datatype) {
                 case 'bool':
-                    return (value) ? 't' : 'f'
+                    switch(value) {
+                        case 'true': return 't';
+                        case 'on': return 't';
+                        case 'false' : return 'f';
+                        case 'unset' : return null;
+                        case true : return 't';
+                        default: return 'f';
+                    }
                 case 'timestamp':
                     if(!value) return null;
                     return dojo.date.stamp.toISOString(value);
                 case 'int':
                 case 'float':
                 case 'money':
-                    if(isNaN(value)) value = 0;
+                    if(isNaN(value)) value = null;
                 default:
                     return (value === '') ? null : value;
             }
@@ -85,9 +130,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var value = this.widgetValue;
             switch(this.idlField.datatype) {
                 case 'bool':
-                    return (openils.Util.isTrue(value)) ? 
-                        openils.widget.AutoFieldWidget.localeStrings.TRUE : 
-                        openils.widget.AutoFieldWidget.localeStrings.FALSE;
+                    switch(value) {
+                        case 't': 
+                        case 'true': 
+                            return openils.widget.AutoFieldWidget.localeStrings.TRUE; 
+                        case 'f' : 
+                        case 'false' : 
+                            return openils.widget.AutoFieldWidget.localeStrings.FALSE;
+                        case 'unset' : return openils.widget.AutoFieldWidget.localeStrings.UNSET;
+                        case true : return openils.widget.AutoFieldWidget.localeStrings.TRUE; 
+                        default: return openils.widget.AutoFieldWidget.localeStrings.FALSE;
+                    }
                 case 'timestamp':
                     if (!value) return '';
                     dojo.require('dojo.date.locale');
@@ -109,10 +162,15 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
         build : function(onload) {
 
+            if(this.widgetValue == null)
+                this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
+
             if(this.widget) {
                 // core widget provided for us, attach and move on
                 if(this.parentNode) // may already be in the "right" place
                     this.parentNode.appendChild(this.widget.domNode);
+                if(this.widget.attr('value') == null)
+                    this._widgetLoaded();
                 return;
             }
             
@@ -120,8 +178,6 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 this.parentNode = dojo.create('div');
 
             this.onload = onload;
-            if(this.widgetValue == null)
-                this.widgetValue = (this.fmObject) ? this.fmObject[this.idlField.name]() : null;
 
             if(this.readOnly) {
                 dojo.require('dijit.layout.ContentPane');
@@ -171,9 +227,30 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         break;
 
                     case 'bool':
-                        dojo.require('dijit.form.CheckBox');
-                        this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
-                        this.widgetValue = openils.Util.isTrue(this.widgetValue);
+                        if(this.ternary) {
+                            dojo.require('dijit.form.FilteringSelect');
+                            var store = new dojo.data.ItemFileReadStore({
+                                data:{
+                                    identifier : 'value',
+                                    items:[
+                                        {label : openils.widget.AutoFieldWidget.localeStrings.UNSET, value : 'unset'},
+                                        {label : openils.widget.AutoFieldWidget.localeStrings.TRUE, value : 'true'},
+                                        {label : openils.widget.AutoFieldWidget.localeStrings.FALSE, value : 'false'}
+                                    ]
+                                }
+                            });
+                            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
+                            this.widget.searchAttr = this.widget.labelAttr = 'label';
+                            this.widget.valueAttr = 'value';
+                            this.widget.store = store;
+                            this.widget.startup();
+                            this.widgetValue = (this.widgetValue === null) ? 'unset' : 
+                                (openils.Util.isTrue(this.widgetValue)) ? 'true' : 'false';
+                        } else {
+                            dojo.require('dijit.form.CheckBox');
+                            this.widget = new dijit.form.CheckBox(this.dijitArgs, this.parentNode);
+                            this.widgetValue = openils.Util.isTrue(this.widgetValue);
+                        }
                         break;
 
                     case 'link':
@@ -211,10 +288,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 return false;
             var lclass = linkInfo.linkClass;
 
-            if(lclass == 'aou') {
-                this.widgetValue = fieldmapper.aou.findOrgUnit(this.widgetValue).shortname();
-                return;
-            }
+            if(lclass == 'aou') 
+                return false;
 
             // first try the store cache
             var self = this;
@@ -222,12 +297,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 var store = this.cache[this.auth].list[lclass];
                 var query = {};
                 query[linkInfo.vfield.name] = ''+this.widgetValue;
+                var found = false;
                 store.fetch({query:query, onComplete:
                     function(list) {
-                        self.widgetValue = store.getValue(list[0], linkInfo.vfield.selector);
+                        if(list[0]) {
+                            self.widgetValue = store.getValue(list[0], linkInfo.vfield.selector);
+                            found = true;
+                        }
                     }
                 });
-                return;
+
+                if(found) return;
             }
 
             // then try the single object cache
@@ -284,6 +364,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         },
 
         _buildLinkSelector : function() {
+            var self = this;
             var selectorInfo = this._getLinkSelector();
             if(!selectorInfo) return false;
 
@@ -307,30 +388,90 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
             this.widget.valueAttr = vfield.name;
 
-            var self = this;
             var oncomplete = function(list) {
+
+                if(self.labelFormat) 
+                    self.widget.labelAttr = '_label';
+
+                if(self.searchFormat)
+                    self.widget.searchAttr = '_search';
+
+                function formatString(item, formatList) {
+
+                    try {
+
+                        // formatList[1..*] are names of fields.  Pull the field
+                        // values from each object to determine the values for string substitution
+                        var values = [];
+                        var format = formatList[0];
+                        for(var i = 1; i< formatList.length; i++) 
+                            values.push(item[formatList[i]]);
+
+                        return dojo.string.substitute(format, values);
+
+                    } catch(E) {
+                        throw new Error(
+                            "openils.widget.AutoFieldWidget: Invalid formatList ["+formatList+"] : "+E);
+                    }
+
+                }
+
                 if(list) {
-                    self.widget.store = 
-                        new dojo.data.ItemFileReadStore({data:fieldmapper[linkClass].toStoreData(list)});
+                    var storeData = {data:fieldmapper[linkClass].toStoreData(list)};
+
+                    if(self.labelFormat) {
+                        dojo.forEach(storeData.data.items, 
+                            function(item) {
+                                item._label = formatString(item, self.labelFormat);
+                            }
+                        );
+                    }
+
+                    if(self.searchFormat) {
+                        dojo.forEach(storeData.data.items, 
+                            function(item) {
+                                item._search = formatString(item, self.searchFormat);
+                            }
+                        );
+                    }
+
+                    self.widget.store = new dojo.data.ItemFileReadStore(storeData);
                     self.cache[self.auth].list[linkClass] = self.widget.store;
+
                 } else {
                     self.widget.store = self.cache[self.auth].list[linkClass];
                 }
+
                 self.widget.startup();
                 self._widgetLoaded();
             };
 
-            if(this.cache[self.auth].list[linkClass]) {
+            if(!this.noCache && this.cache[self.auth].list[linkClass]) {
                 oncomplete();
 
             } else {
-                new openils.PermaCrud().retrieveAll(linkClass, {   
-                    async : !this.forceSync,
-                    oncomplete : function(r) {
-                        var list = openils.Util.readResponse(r, false, true);
-                        oncomplete(list);
+
+                if(this.dataLoader) {
+
+                    // caller provided an external function for retrieving the data
+                    this.dataLoader(linkClass, this.searchFilter, oncomplete);
+
+                } else {
+
+                    var _cb = function(r) {
+                        oncomplete(openils.Util.readResponse(r, false, true));
+                    };
+
+                    if (this.searchFilter) {
+                        new openils.PermaCrud().search(linkClass, this.searchFilter, {
+                            async : !this.forceSync, oncomplete : _cb
+                        });
+                    } else {
+                        new openils.PermaCrud().retrieveAll(linkClass, {
+                            async : !this.forceSync, oncomplete : _cb
+                        });
                     }
-                });
+                }
             }
 
             return true;
@@ -356,13 +497,22 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             } else {
 
                 this.baseWidgetValue(this.widgetValue);
-                if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence)
+                if(this.idlField.name == this.fmIDL.pkey && this.fmIDL.pkey_sequence && (!this.selfReference && !this.noDisablePkey))
                     this.widget.attr('disabled', true); 
                 if(this.disableWidgetTest && this.disableWidgetTest(this.idlField.name, this.fmObject))
                     this.widget.attr('disabled', true); 
             }
             if(this.onload)
                 this.onload(this.widget, this);
+
+            if(!this.readOnly && this.dijitArgs && this.dijitArgs.required) {
+                // a required dijit is not given any styling to indicate the value
+                // is invalid until the user has focused the widget then left it with
+                // invalid data.  This change tells dojo to pretend this focusing has 
+                // already happened so we can style required widgets during page render.
+                this.widget._hasBeenBlurred = true;
+                this.widget.validate();
+            }
         },
 
         _buildOrgSelector : function() {
@@ -374,7 +524,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget.parentField = 'parent_ou';
             var user = new openils.User();
 
-            if(this.widgetValue == null) 
+            if(this.widgetValue == null && this.orgDefaultsToWs) 
                 this.widgetValue = user.user.ws_ou();
             
             // if we have a limit perm, find the relevent orgs (async)
