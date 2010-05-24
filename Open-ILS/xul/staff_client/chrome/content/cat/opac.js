@@ -4,6 +4,7 @@ var marc_view_reset = true;
 var marc_edit_reset = true;
 var copy_browser_reset = true;
 var hold_browser_reset = true;
+var acq_orders_reset = true;
 
 function $(id) { return document.getElementById(id); }
 
@@ -262,6 +263,19 @@ function set_hold_browser() {
         hold_browser_reset = false;
     } else {
         bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
+    }
+    opac_wrapper_set_help_context(); 
+    bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
+}
+
+function set_acq_orders() {
+    g.view = 'acq_orders';
+    var url = xulG.url_prefix( '/acq/lineitem/related/' ) + window.escape(docid) + '?target=bib';
+    if (acq_orders_reset) {
+        bottom_pane.reset_iframe(url,{},xulG);
+        acq_orders_reset = false;
+    } else {
+        bottom_pane.set_iframe(url,{},xulG);
     }
     opac_wrapper_set_help_context(); 
     bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
@@ -527,6 +541,7 @@ function refresh_display(id) {
         marc_edit_reset = true;
         copy_browser_reset = true;
         hold_browser_reset = true;
+        acq_orders_reset = true;
         while(top_pane.node.lastChild) top_pane.node.removeChild( top_pane.node.lastChild );
         var children = bottom_pane.node.childNodes;
         for (var i = 0; i < children.length; i++) {
@@ -549,6 +564,7 @@ function refresh_display(id) {
             case 'marc_edit' : set_marc_edit(); break;
             case 'copy_browser' : set_copy_browser(); break;
             case 'hold_browser' : set_hold_browser(); break;
+            case 'acq_orders' : set_acq_orders(); break;
             case 'opac' :
             default: set_opac(); break;
         }

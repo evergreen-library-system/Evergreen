@@ -1062,7 +1062,3 @@ function rdetailGBPViewerLoadCallback() {
 
 }
 
-function rdetailViewOrders() {
-    location.href = STAFF_WEB_BASE_PATH + '/acq/lineitem/related/' + record.doc_id() + '?target=bib';
-}
-
