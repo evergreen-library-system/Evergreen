@@ -1,4 +1,6 @@
-<div id='oils-selfck-cc-payment-summary'> </div>
+<div id='oils-selfck-cc-payment-summary'>
+    Total amount to pay: $<span></span>
+</div>
 <table id='oils-selfck-cc-payment-table'>
     <tbody>
         <tr>
