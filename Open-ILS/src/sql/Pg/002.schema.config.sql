@@ -65,7 +65,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0274'); -- Scott McKellar
+INSERT INTO config.upgrade_log (version) VALUES ('0275'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -652,9 +652,15 @@ CREATE TABLE config.billing_type (
     CONSTRAINT billing_type_once_per_lib UNIQUE (name, owner)
 );
 
+CREATE TABLE config.settings_group (
+    name    TEXT PRIMARY KEY,
+    label   TEXT UNIQUE NOT NULL -- I18N
+);
+
 CREATE TABLE config.org_unit_setting_type (
     name            TEXT    PRIMARY KEY,
     label           TEXT    UNIQUE NOT NULL,
+    grp             TEXT    REFERENCES config.settings_group (name),
     description     TEXT,
     datatype        TEXT    NOT NULL DEFAULT 'string',
     fm_class        TEXT,
@@ -680,6 +686,7 @@ CREATE TABLE config.usr_setting_type (
     opac_visible BOOL NOT NULL DEFAULT FALSE,
     label TEXT UNIQUE NOT NULL,
     description TEXT,
+    grp             TEXT    REFERENCES config.settings_group (name),
     datatype TEXT NOT NULL DEFAULT 'string',
     fm_class TEXT,
 

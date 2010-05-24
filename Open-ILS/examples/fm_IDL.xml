@@ -1964,6 +1964,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 
+	<class id="csg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::settings_group" oils_persist:tablename="config.settings_group" reporter:label="Settings Group">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:datatype="text"/>
+			<field name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_USER_SETTING_GROUP" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_USER_SETTING_GROUP" global_required="true"/>
+				<delete permission="ADMIN_USER_SETTING_GROUP" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
 	<class id="cust" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_setting_type" oils_persist:tablename="config.usr_setting_type" reporter:label="User Setting Type">
 		<fields oils_persist:primary="name">
 			<field name="name" reporter:datatype="text"/>
@@ -1971,9 +1986,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="description" reporter:datatype="text"/>
 			<field name="datatype" reporter:datatype="text"/>
 			<field name="fm_class" reporter:datatype="text"/>
+			<field name="grp" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="name" reltype="has_many" key="name" map="" class="aus"/>
+			<link field="grp" reltype="has_a" key="name" map="" class="csg"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -1993,11 +2010,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="view_perm" reporter:datatype="link"/>
 			<field name="update_perm" reporter:datatype="link"/>
 			<field name="fm_class" reporter:datatype="text"/>
+			<field name="grp" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="name" reltype="has_many" key="name" map="" class="aous"/>
 			<link field="view_perm" reltype="has_a" key="id" map="" class="ppl"/>
 			<link field="update_perm" reltype="has_a" key="id" map="" class="ppl"/>
+			<link field="grp" reltype="has_a" key="name" map="" class="csg"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
