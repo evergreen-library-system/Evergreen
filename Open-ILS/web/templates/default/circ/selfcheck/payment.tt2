@@ -8,6 +8,10 @@
             <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCNumber' required='true'/></td>
         </tr>
         <tr>
+            <td>CVV #</td>
+            <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckCCCVV' required='true'/></td>
+        </tr>
+        <tr>
             <td>Exipration Month</td>
             <td>
                 <select dojoType='dijit.form.FilteringSelect' jsId='oilsSelfckCCMonth' required='true'>

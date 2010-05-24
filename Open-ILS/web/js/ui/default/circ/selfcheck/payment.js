@@ -21,6 +21,7 @@ proto.drawPayFinesPage = function(patron, onPaymentSubmit) {
     dojo.query("span", "oils-selfck-cc-payment-summary")[0].innerHTML = total;
 
     oilsSelfckCCNumber.attr('value', '');
+    oilsSelfckCCCVV.attr('value', '');
     oilsSelfckCCMonth.attr('value', '01');
     oilsSelfckCCYear.attr('value', new Date().getFullYear());
     oilsSelfckCCFName.attr('value', patron.first_given_name());
@@ -74,6 +75,7 @@ proto.sendCCPayment = function(onPaymentSubmit) {
         cc_args : {
             where_process : 1,
             number : oilsSelfckCCNumber.attr('value'),
+            cvv2 : oilsSelfckCCCVV.attr('value'),
             expire_year : oilsSelfckCCYear.attr('value'),
             expire_month : oilsSelfckCCMonth.attr('value'),
             billing_first : oilsSelfckCCFName.attr('value'),
