@@ -1716,10 +1716,15 @@ INSERT into config.org_unit_setting_type
   'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"',
   'interval' ),
 
-( 'circ.hold_estimate_wait_interval',
-  'Holds: Estimated Wait (Days)',
-  'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the default/average number of days to assume an item will be checked out.',
-  'integer' ),
+( 'circ.holds.default_estimated_wait_interval',
+  'Holds: Default Estimated Wait',
+  'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the default estimated length of time to assume an item will be checked out.',
+  'interval' ),
+
+( 'circ.holds.min_estimated_wait_interval',
+  'Holds: Minimum Estimated Wait',
+  'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out.',
+  'interval' ),
 
 ( 'circ.selfcheck.patron_login_timeout',
   'Selfcheck: Patron Login Timeout (in seconds)',
