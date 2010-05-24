@@ -1000,9 +1000,7 @@ sub run_patron_permit_scripts {
         unless($self->circ_test_success) {
             # no_item result is OK during noncat checkout
             unless(@$results == 1 && $results->[0]->{fail_part} eq 'no_item' and $self->is_noncat) {
-                push(@allevents, OpenILS::Event->new(
-                    $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}
-                    )) for @$results;
+                push @allevents, $self->matrix_test_result_events;
             }
         }
 
@@ -1039,6 +1037,22 @@ sub run_patron_permit_scripts {
     $logger->info("circulator: permit_patron script returned events: @allevents") if @allevents;
 
     $self->push_events(@allevents);
+}
+
+sub matrix_test_result_codes {
+    my $self = shift;
+    map { $_->{"fail_part"} } @{$self->matrix_test_result};
+}
+
+sub matrix_test_result_events {
+    my $self = shift;
+    map {
+        my $event = new OpenILS::Event(
+            $LEGACY_CIRC_EVENT_MAP->{$_->{"fail_part"}} || $_->{"fail_part"}
+        );
+        $event->{"payload"} = {"fail_part" => $_->{"fail_part"}};
+        $event;
+    } (@{$self->matrix_test_result});
 }
 
 sub run_indb_circ_test {
@@ -1098,11 +1112,8 @@ sub do_inspect {
     };
 
     unless($self->circ_test_success) {
-        push(@{$results->{failure_codes}}, 
-            $_->{fail_part}) for @{$self->matrix_test_result};
-        push(@{$results->{failure_events}}, 
-            $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}) 
-                for @{$self->matrix_test_result};
+        $results->{"failure_codes"} = [ $self->matrix_test_result_codes ];
+        $results->{"failure_events"} = [ $self->matrix_test_result_events ];
     }
 
     if($self->circ_matrix_matchpoint) {
@@ -1187,11 +1198,8 @@ sub run_copy_permit_scripts {
 
     if(!$self->legacy_script_support) {
         my $results = $self->run_indb_circ_test;
-        unless($self->circ_test_success) {
-            push(@allevents, OpenILS::Event->new(
-                $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}
-                )) for @$results;
-        }
+        push @allevents, $self->matrix_test_result_events
+            unless $self->circ_test_success;
     } else {
     
        # ---------------------------------------------------------------------
@@ -3020,22 +3028,17 @@ sub have_event {
 sub run_renew_permit {
     my $self = shift;
 
-    my $events = [];
-
     if ($U->ou_ancestor_setting_value($self->circ_lib, 'circ.block_renews_for_holds')) {
         my ($hold, undef, $retarget) = $holdcode->find_nearest_permitted_hold(
-                $self->editor, $self->copy, $self->editor->requestor, 1 );
-        if ($hold) {
-            push(@$events, 'COPY_NEEDED_FOR_HOLD');
-        }
+            $self->editor, $self->copy, $self->editor->requestor, 1
+        );
+        $self->push_events(new OpenILS::Event("COPY_NEEDED_FOR_HOLD")) if $hold;
     }
 
     if(!$self->legacy_script_support) {
         my $results = $self->run_indb_circ_test;
-        unless($self->circ_test_success) {
-            push(@$events, $LEGACY_CIRC_EVENT_MAP->{$_->{fail_part}} || $_->{fail_part}) for @$results;
-        }
-
+        $self->push_events($self->matrix_test_result_events)
+            unless $self->circ_test_success;
     } else {
 
         my $runner = $self->script_runner;
@@ -3043,14 +3046,19 @@ sub run_renew_permit {
         $runner->load($self->circ_permit_renew);
         my $result = $runner->run or 
             throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
-        $events = $result->{events};
+        if ($result->{"events"}) {
+            $self->push_events(
+                map { new OpenILS::Event($_) } @{$result->{"events"}}
+            );
+            $logger->activity(
+                "circulator: circ_permit_renew for user " .
+                $self->patron->id . " returned " .
+                scalar(@{$result->{"events"}}) . " event(s)"
+            );
+        }
+
         $self->mk_script_runner;
     }
-
-    $logger->activity("circulator: circ_permit_renew for user ".
-      $self->patron->id." returned events: @$events") if @$events;
-
-    $self->push_events(OpenILS::Event->new($_)) for @$events;
 
     $logger->debug("circulator: re-creating script runner to be safe");
 }
