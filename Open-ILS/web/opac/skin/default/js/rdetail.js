@@ -133,7 +133,7 @@ function rdetailDraw() {
 		req.send();
 		if (isXUL()) {
 			var here = findOrgUnit(getLocation());
-			dojo.place("<div id='mfhd_ad_menu></div>", "rdetail_details_table", "after");
+			dojo.place("<div id='mfhd_ad_menu'></div>", "rdetail_details_table", "after");
 			var mfhd_add = new dijit.Menu({style:"float: right;"});
 			new dijit.MenuItem({onClick:function(){
 				var req = new Request(CREATE_MFHD_RECORD, G.user.session, 1, here.id(), getRid());
