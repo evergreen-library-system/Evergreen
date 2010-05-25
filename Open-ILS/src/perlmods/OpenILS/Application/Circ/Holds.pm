@@ -1055,21 +1055,50 @@ sub retrieve_hold_queue_status_impl {
         $qpos++;
     }
 
-    # total count of potential copies
-    my $num_potentials = $e->json_query({
-        select => {ahcm => [{column => 'id', transform => 'count', alias => 'count'}]},
-        from => 'ahcm',
-        where => {hold => $hold->id}
-    })->[0];
+    my $hold_data = $e->json_query({
+        select => {
+            ccm => [
+                {column => 'code', transform => 'count', aggregate => 1, alias => 'count'}, 
+                {column =>'avg_wait_time'}
+            ]
+        }, 
+        from => {ahcm => {acp => {join => 'ccm'}}}, 
+        where => {'+ahcm' => {hold => $hold->id}}
+    });
 
     my $user_org = $e->json_query({select => {au => ['home_ou']}, from => 'au', where => {id => $hold->usr}})->[0]->{home_ou};
-    my $default_hold_interval = $U->ou_ancestor_setting_value($user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL);
-    my $estimated_wait = $qpos * ($default_hold_interval / $num_potentials) if $default_hold_interval;
+
+    my $default_wait = $U->ou_ancestor_setting_value($user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL);
+    my $min_wait = $U->ou_ancestor_setting_value($user_org, 'circ.holds.min_estimated_wait_interval');
+    $min_wait = OpenSRF::Utils::interval_to_seconds($min_wait || '0 seconds');
+    $default_wait ||= '0 seconds';
+
+    # Estimated wait time is the average wait time across the set 
+    # of potential copies, divided by the number of potential copies
+    # times the queue position.  
+
+    my $combined_secs = 0;
+    my $num_potentials = 0;
+
+    for my $wait_data (@$hold_data) {
+        my $count += $wait_data->{count};
+        $combined_secs += $count * 
+            OpenSRF::Utils::interval_to_seconds($wait_data->{avg_wait_time} || $default_wait);
+        $num_potentials += $count;
+    }
+
+    my $estimated_wait = -1;
+
+    if($num_potentials) {
+        my $avg_wait = $combined_secs / $num_potentials;
+        $estimated_wait = $qpos * ($avg_wait / $num_potentials);
+        $estimated_wait = $min_wait if $estimated_wait < $min_wait and $estimated_wait != -1;
+    }
 
     return {
         total_holds      => scalar(@$q_holds),
         queue_position   => $qpos,
-        potential_copies => $num_potentials->{count},
+        potential_copies => $num_potentials,
         status           => _hold_status( $e, $hold ),
         estimated_wait   => int($estimated_wait)
     };
