@@ -11,7 +11,17 @@ WHERE name = 'circ.hold_estimate_wait_interval';
 
 UPDATE actor.org_unit_setting SET
 	name = 'circ.holds.default_estimated_wait_interval',
-	value = value || ' days'
+	--
+	-- The value column should be JSON.  The old value should be a number,
+	-- but it may or may not be quoted.  The following CASE behaves
+	-- differently depending on whether value is quoted.  It is simplistic,
+	-- and will be defeated by leading or trailing white space, or various
+	-- malformations.
+	--
+	value = CASE WHEN SUBSTR( value, 1, 1 ) = '"'
+				THEN '"' || SUBSTR( value, 2, LENGTH(value) - 2 ) || ' days"'
+				ELSE '"' || value || ' days"'
+			END
 WHERE name = 'circ.hold_estimate_wait_interval';
 
 INSERT INTO config.org_unit_setting_type (
