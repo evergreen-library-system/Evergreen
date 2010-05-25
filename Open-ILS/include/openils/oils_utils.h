@@ -26,26 +26,10 @@ extern "C" {
  */
 osrfHash* oilsInitIDL( const char* idl_filename );
 
-/**
-  Returns the string value for field 'field' in the given object.
-  This method calls jsonObjectToSimpleString so numbers will be
-  returned as strings.
-  @param object The object to inspect
-  @param field The field whose value is requsted
-  @return The string at the given position, if none exists, 
-  then NULL is returned.  The caller must free the returned string
-  */
+const char* oilsFMGetStringConst( const jsonObject* object, const char* field );
+
 char* oilsFMGetString( const jsonObject* object, const char* field );
 
-
-/**
-  Returns the jsonObject found at the specified field in the
-  given object.
-  @param object The object to inspect
-  @param field The field whose value is requsted
-  @return The found object or NULL if none exists.  Do NOT free the 
-  returned object.
-  */
 const jsonObject* oilsFMGetObject( const jsonObject* object, const char* field );
 
 /**

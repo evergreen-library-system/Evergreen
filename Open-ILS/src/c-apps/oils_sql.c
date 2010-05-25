@@ -114,7 +114,7 @@ static void clear_query_stack( void );
 
 static const jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
-static char* org_tree_root( osrfMethodContext* ctx );
+static const char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
 
 static int child_initialized = 0;   /* boolean */
@@ -1302,7 +1302,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	if( !user )
 		return 0;    // Not logged in?  No access.
 
-	int userid = atoi( oilsFMGetString( user, "id" ) );
+	int userid = atoi( oilsFMGetStringConst( user, "id" ) );
 
 	// Get a list of permissions from the permacrud entry.
 	osrfStringArray* permission = osrfHashGet( pcrud, "permission" );
@@ -1325,7 +1325,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	osrfStringArray* context_org_array = osrfNewStringArray( 1 );
 
 	int err = 0;
-	char* pkey_value = NULL;
+	const char* pkey_value = NULL;
 	if( str_is_true( osrfHashGet(pcrud, "global_required") ) ) {
 		// If the global_required attribute is present and true, then the only owning
 		// org unit is the root org unit, i.e. the one with no parent.
@@ -1333,7 +1333,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 				"global-level permissions required, fetching top of the org tree" );
 
 		// check for perm at top of org tree
-		char* org_tree_root_id = org_tree_root( ctx );
+		const char* org_tree_root_id = org_tree_root( ctx );
 		if( org_tree_root_id ) {
 			osrfStringArrayAdd( context_org_array, org_tree_root_id );
 			osrfLogDebug( OSRF_LOG_MARK, "top of the org tree is %s", org_tree_root_id );
@@ -1357,13 +1357,13 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		jsonObject *param = NULL;
 
 		if( obj->classname ) {
-			pkey_value = oilsFMGetString( obj, pkey );
+			pkey_value = oilsFMGetStringConst( obj, pkey );
 			if( !fetch )
 				param = jsonObjectClone( obj );
 			osrfLogDebug( OSRF_LOG_MARK, "Object supplied, using primary key value of %s",
 					pkey_value );
 		} else {
-			pkey_value = jsonObjectToSimpleString( obj );
+			pkey_value = jsonObjectGetString( obj );
 			fetch = 1;
 			osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value "
 					"of %s and retrieving from the database", pkey_value );
@@ -1404,9 +1404,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 			);
 
 			free( m );
-			if( pkey_value )
-				free( pkey_value );
-
 			return 0;
 		}
 
@@ -1419,7 +1416,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 			int i = 0;
 			const char* lcontext = NULL;
 			while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
-				osrfStringArrayAdd( context_org_array, oilsFMGetString( param, lcontext ) );
+				osrfStringArrayAdd( context_org_array, oilsFMGetStringConst( param, lcontext ));
 				osrfLogDebug(
 					OSRF_LOG_MARK,
 					"adding class-local field %s (value: %s) to the context org list",
@@ -1548,7 +1545,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 					osrfStringArray* ctx_array = osrfHashGet( fcontext, "context" );
 					while ( (foreign_field = osrfStringArrayGetString( ctx_array, j++ )) ) {
 						osrfStringArrayAdd( context_org_array,
-								oilsFMGetString( _fparam, foreign_field ) );
+							oilsFMGetStringConst( _fparam, foreign_field ));
 						osrfLogDebug(
 							OSRF_LOG_MARK,
 							"adding foreign class %s field %s (value: %s) to the context org list",
@@ -1584,7 +1581,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		while( (context_org = osrfStringArrayGetString( context_org_array, j++ )) ) {
 			dbi_result result;
 
-			if(  pkey_value ) {
+			if( pkey_value ) {
 				osrfLogDebug(
 					OSRF_LOG_MARK,
 					"Checking object permission [%s] for user %d "
@@ -1683,8 +1680,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 			break;
 	}
 
-	if( pkey_value )
-		free(pkey_value);
 	osrfStringArrayFree( context_org_array );
 
 	return OK;
@@ -1702,7 +1697,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 	The calling code is responsible for freeing the returned string.
 */
-static char* org_tree_root( osrfMethodContext* ctx ) {
+static const char* org_tree_root( osrfMethodContext* ctx ) {
 
 	static char cached_root_id[ 32 ] = "";  // extravagantly large buffer
 	static time_t last_lookup_time = 0;
@@ -1740,13 +1735,12 @@ static char* org_tree_root( osrfMethodContext* ctx ) {
 		return NULL;
 	}
 
-	char* root_org_unit_id = oilsFMGetString( tree_top, "id" );
+	const char* root_org_unit_id = oilsFMGetStringConst( tree_top, "id" );
 	osrfLogDebug( OSRF_LOG_MARK, "Top of the org tree is %s", root_org_unit_id );
 
-	jsonObjectFree( result );
-
 	strcpy( cached_root_id, root_org_unit_id );
-	return root_org_unit_id;
+	jsonObjectFree( result );
+	return cached_root_id;
 }
 
 /**
