@@ -1250,23 +1250,32 @@ static const jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 	return user;
 }
 
+/**
+	@brief For PCRUD: Determine whether the current user may access the current row.
+	@param ctx Pointer to the method context.
+	@param obj Pointer to the row being potentially accessed.
+	@return 1 if access is permitted, or 0 if it isn't.
+
+	The @a obj parameter points to a JSON_HASH of column values, keyed on column name.
+*/
 static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) {
 
 	dbhandle = writehandle;
 
+	// Figure out what class and method are involved
 	osrfHash* method_metadata = (osrfHash*) ctx->method->userData;
 	osrfHash* class = osrfHashGet( method_metadata, "class" );
 	const char* method_type = osrfHashGet( method_metadata, "methodtype" );
-	int fetch = 0;
 
+	int fetch = 0;
 	if( *method_type == 's' || *method_type == 'i' ) {
 		method_type = "retrieve"; // search and id_list are equivalent to retrieve for this
 	} else if( *method_type == 'u' || *method_type == 'd' ) {
 		fetch = 1; // MUST go to the db for the object for update and delete
 	}
 
+	// Get the appropriate permacrud entry from the IDL, depending on method type
 	osrfHash* pcrud = osrfHashGet( osrfHashGet( class, "permacrud" ), method_type );
-
 	if( !pcrud ) {
 		// No permacrud for this method type on this class
 
@@ -1288,21 +1297,38 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		return 0;
 	}
 
+	// Get the user id, and make sure the user is logged in
 	const jsonObject* user = verifyUserPCRUD( ctx );
 	if( !user )
-		return 0;
+		return 0;    // Not logged in?  No access.
 
 	int userid = atoi( oilsFMGetString( user, "id" ) );
 
+	// Get a list of permissions from the permacrud entry.
 	osrfStringArray* permission = osrfHashGet( pcrud, "permission" );
+
+	// Build a list of org units that own the row.  This is fairly convoluted because there
+	// are several different ways that an org unit may own the row, as defined by the
+	// permacrud entry.
+
+	// Local context means that the row includes a foreign key pointing to actor.org_unit,
+	// identifying an owning org_unit..
 	osrfStringArray* local_context = osrfHashGet( pcrud, "local_context" );
+
+	// Foreign context adds a layer of indirection.  The row points to some other row that
+	// an org unit may own.  The "jump" attribute, if present, adds another layer of
+	// indirection.
 	osrfHash* foreign_context = osrfHashGet( pcrud, "foreign_context" );
 
+	// The following string array stores the list of org units.  (We don't have a thingie
+	// for storing lists of integers, so we fake it with a list of strings.)
 	osrfStringArray* context_org_array = osrfNewStringArray( 1 );
 
 	int err = 0;
 	char* pkey_value = NULL;
 	if( str_is_true( osrfHashGet(pcrud, "global_required") ) ) {
+		// If the global_required attribute is present and true, then the only owning
+		// org unit is the root org unit, i.e. the one with no parent.
 		osrfLogDebug( OSRF_LOG_MARK,
 				"global-level permissions required, fetching top of the org tree" );
 
@@ -1317,6 +1343,14 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		}
 
 	} else {
+		// If the global_required attribute is absent or false, then we look for
+		// local and/or foreign context.  In order to find the relevant foreign
+		// keys, we must either read the relevant row from the database, or look at
+		// the image of the row that we already have in memory.
+
+		// (Herein lies a bug.  Even if we have an image of the row in memory, that
+		// image may not include the foreign key column(s) that we need.)
+
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, "
 				"fetching context org ids" );
 	    const char* pkey = osrfHashGet( class, "primarykey" );
@@ -1336,6 +1370,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		}
 
 		if( fetch ) {
+			// Fetch the row so that we can look at the foreign key(s)
 			jsonObject* _tmp_params = single_hash( pkey, pkey_value );
 			jsonObject* _list = doFieldmapperSearch( ctx, class, _tmp_params, NULL, &err );
 			jsonObjectFree( _tmp_params );
@@ -1345,6 +1380,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		}
 
 		if( !param ) {
+			// The row doesn't exist.  Complain, and deny access.
 			osrfLogDebug( OSRF_LOG_MARK,
 					"Object not found in the database with primary key %s of %s",
 					pkey, pkey_value );
@@ -1374,7 +1410,10 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 			return 0;
 		}
 
-		if( local_context->size > 0 ) {
+		if( local_context && local_context->size > 0 ) {
+			// The IDL provides a list of column names for the foreign keys denoting
+			// local context.  Look up the value of each one, and add it to the
+			// list of org units.
 			osrfLogDebug( OSRF_LOG_MARK, "%d class-local context field(s) specified",
 					local_context->size );
 			int i = 0;
@@ -1396,9 +1435,13 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 			if( class_count > 0 ) {
 
+				// The IDL provides a list of foreign key columns pointing to rows that
+				// an org unit may own.  Follow each link, identify the owning org unit,
+				// and add it to the list.
 				osrfHash* fcontext = NULL;
 				osrfHashIterator* class_itr = osrfNewHashIterator( foreign_context );
-				while( (fcontext = osrfHashIteratorNext( class_itr ) ) ) {
+				while( (fcontext = osrfHashIteratorNext( class_itr )) ) {
+					// For each linked class...
 					const char* class_name = osrfHashIteratorKey( class_itr );
 					osrfHash* fcontext = osrfHashGet( foreign_context, class_name );
 
@@ -1409,30 +1452,42 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 						class_name
 					);
 
+					// Get the name of the key field in the foreign table
 					char* foreign_pkey = osrfHashGet( fcontext, "field" );
+
+					// Get the value of the foreign key pointing to the foreign table
 					char* foreign_pkey_value =
-							oilsFMGetString( param, osrfHashGet(  fcontext, "fkey" ));
+							oilsFMGetString( param, osrfHashGet( fcontext, "fkey" ));
 
+					// Look up the row to which the foreign key points
 					jsonObject* _tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
-
 					jsonObject* _list = doFieldmapperSearch(
 						ctx, osrfHashGet( oilsIDL(), class_name ), _tmp_params, NULL, &err );
 
-					jsonObject* _fparam = jsonObjectClone( jsonObjectGetIndex( _list, 0 ));
+					jsonObject* _fparam = NULL;
+					if( _list && JSON_ARRAY == _list->type && _list->size > 0 )
+						_fparam = jsonObjectExtractIndex( _list, 0 );
+
 					jsonObjectFree( _tmp_params );
 					jsonObjectFree( _list );
+
+					// At this point _fparam either points to the row identified by the
+					// foreign key, or it's NULL (no such row found).
 
 					osrfStringArray* jump_list = osrfHashGet( fcontext, "jump" );
 
 					if( _fparam && jump_list ) {
+						// Follow another level of indirection to find one or more owners
 						const char* flink = NULL;
 						int k = 0;
 						while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
-							free( foreign_pkey_value );
+							// For each entry in the jump list.  Each entry is the name of a
+							// foreign key colum in the foreign table.
 
 							osrfHash* foreign_link_hash =
 									oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
 
+							free( foreign_pkey_value );
 							foreign_pkey_value = oilsFMGetString( _fparam, flink );
 							foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
 
@@ -1447,7 +1502,10 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 								&err
 							);
 
-							_fparam = jsonObjectClone( jsonObjectGetIndex( _list, 0 ));
+							jsonObjectFree( _fparam );
+							_fparam = NULL;
+							if( _list && JSON_ARRAY == _list->type && _list->size > 0 )
+								_fparam = jsonObjectExtractIndex( _list, 0 );
 							jsonObjectFree( _tmp_params );
 							jsonObjectFree( _list );
 						}
@@ -1483,10 +1541,12 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 					free( foreign_pkey_value );
 
+					// Examine each context column of the foreign row,
+					// and add its value to the list of org units.
 					int j = 0;
 					const char* foreign_field = NULL;
-					while ( (foreign_field = osrfStringArrayGetString(
-							 osrfHashGet(fcontext,"context" ), j++ )) ) {
+					osrfStringArray* ctx_array = osrfHashGet( fcontext, "context" );
+					while ( (foreign_field = osrfStringArrayGetString( ctx_array, j++ )) ) {
 						osrfStringArrayAdd( context_org_array,
 								oilsFMGetString( _fparam, foreign_field ) );
 						osrfLogDebug(
