@@ -11,6 +11,12 @@ while (my $openurl = <>) {
 		kw => '',
 		au => '',
 		ti => '',
+        searchOrg => '',
+        searchSort => '',
+        searchSortDir => '',
+        searchLang => '',
+        startIndex => '',
+        count => '',
 	);
 
 	for (@parts) {
@@ -20,6 +26,18 @@ while (my $openurl = <>) {
 			$params{ti} .= $1 . ' ';
 		} elsif (/^e?is.n=(.*)$/o) {
 			$params{kw} .= $1 . ' ';
+		} elsif (/^searchSort=(.*)$/o) {
+			$params{searchSort} = $1;
+		} elsif (/^searchSortDir=(.*)$/o) {
+			$params{searchSortDir} = $1;
+		} elsif (/^searchLang=(.*)$/o) {
+			$params{searchLang} = $1;
+		} elsif (/^startIndex=(.*)$/o) {
+			$params{startIndex} = $1;
+		} elsif (/^count=(.*)$/o) {
+			$params{count} = $1;
+		} elsif (/^searchOrg=(.*)$/o) {
+			$params{searchOrg} = $1;
 		} elsif (/^[^=]+=(.*)$/o) {
 			$params{kw} .= $1 . ' ';
 		}
