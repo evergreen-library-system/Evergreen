@@ -80,7 +80,7 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 				item_data.push( obj );
 			}
 
-			for (var j = 0; _find_root && j < _find_root.length; j++) {
+			for (var j in _find_root) {
 				_find_root[j]['_top'] = 'true';
 				if (!_find_root[j][params.parent])
 					_find_root[j]['_trueRoot'] = 'true';
