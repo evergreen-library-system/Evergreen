@@ -21,7 +21,7 @@ DROP SCHEMA serial CASCADE;
 
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.0');
+INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.0-GOLD');
  
 CREATE TABLE config.standing_penalty (
 	id		SERIAL	PRIMARY KEY,
@@ -1100,6 +1100,18 @@ CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON action.circulation FOR EAC
 CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_update ();
 CREATE TRIGGER mat_summary_remove_tgr AFTER DELETE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_delete ();
 
+CREATE OR REPLACE FUNCTION action.push_circ_due_time () RETURNS TRIGGER AS $$
+BEGIN
+    IF (EXTRACT(EPOCH FROM NEW.duration)::INT % EXTRACT(EPOCH FROM '1 day'::INTERVAL)::INT) = 0 THEN
+        NEW.due_date = (NEW.due_date::DATE + '1 day'::INTERVAL - '1 second'::INTERVAL)::TIMESTAMPTZ;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER push_due_date_tgr BEFORE INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
+
 CREATE OR REPLACE VIEW action.billable_circulations AS
  	SELECT	*
  	  FROM	action.circulation
@@ -1353,7 +1365,7 @@ BEGIN
           FROM  action.circulation circ
             JOIN asset.copy cp ON (cp.id = circ.target_copy)
           WHERE circ.usr = match_user
-               AND circ_lib IN ( SELECT * FROM explode_array(context_org_list) )
+               AND circ.circ_lib IN ( SELECT * FROM explode_array(context_org_list) )
             AND circ.checkin_time IS NULL
             AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
             AND cp.circ_modifier IN (SELECT circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = out_by_circ_mod.id);
@@ -3251,6 +3263,7 @@ CREATE TABLE action_trigger.event_definition (
     cleanup_success TEXT        REFERENCES action_trigger.cleanup (module) DEFERRABLE INITIALLY DEFERRED,
     cleanup_failure TEXT        REFERENCES action_trigger.cleanup (module) DEFERRABLE INITIALLY DEFERRED,
     delay           INTERVAL    NOT NULL DEFAULT '5 minutes',
+    max_delay       INTERVAL,
     delay_field     TEXT,                 -- for instance, xact_start on a circ hook ... look for fields on hook.core_type where datatype=timestamp? If not set, delay from now()
     group_field     TEXT,                 -- field from this.hook.core_type to batch event targets together on, fed into reactor a group at a time.
     template        TEXT,                 -- the TT block.  will have an 'environment' hash (or array of hashes, grouped events) built up by validator and collector(s), which can be modified.
@@ -4056,16 +4069,19 @@ INSERT INTO permission.perm_list (code) VALUES ('VIEW_ACQ_FUNDING_SOURCE');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.password_regex');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold');
 INSERT INTO permission.perm_list (code) VALUES ('UPDATE_ORG_UNIT_SETTING.patron.password.use_phone');
+INSERT INTO permission.perm_list (code, description) VALUES ('UPDATE_RECORD', 'Allow a user to update and undelete bibliographic records');
 
 INSERT INTO permission.grp_tree (name, parent, description, perm_interval, usergroup, application_perm) VALUES ('Acquisitions', 3, NULL, '3 years', TRUE, 'group_application.user.staff.acq');
 INSERT INTO permission.grp_tree (name, parent, description, perm_interval, usergroup, application_perm) VALUES ('Acquisitions Administrators', (SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), NULL, '3 years', TRUE, 'group_application.user.staff.acq_admin');
 
 -- You can't log into the staff client without this
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_BILLING_TYPE'), 0, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (3, (SELECT id FROM permission.perm_list WHERE code = 'VIEW_ORG_SETTINGS'), 1, false);
 -- MFHD permissions are necessary for serials work; add to the default catalogers group
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MFHD_RECORD'), 1, false);
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
-INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
 
 -- Add basic acquisitions permissions to the Acquisitions group
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES ((SELECT id FROM permission.grp_tree WHERE name = 'Acquisitions'), (SELECT id FROM permission.perm_list WHERE code = 'GENERAL_ACQ'), 1, false);
