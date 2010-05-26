@@ -139,7 +139,7 @@ static char* modulename = NULL;
 /**
 	@brief Connect to the database.
 	@return A database connection if successful, or NULL if not.
- */
+*/
 dbi_conn oilsConnectDB( const char* mod_name ) {
 
 	osrfLogDebug( OSRF_LOG_MARK, "Attempting to initialize libdbi..." );
@@ -1267,7 +1267,14 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	osrfHash* class = osrfHashGet( method_metadata, "class" );
 	const char* method_type = osrfHashGet( method_metadata, "methodtype" );
 
-	int fetch = 0;
+	// Set fetch to 1 in all cases, meaning that for local or foreign contexts we will
+	// always do another lookup of the current row, even if we already have a row image,
+	// because the row image in hand may not include the foreign key(s) that we need.
+
+	// This is a quick fix with a bludgeon.  There are ways to avoid the extra lookup,
+	// but they aren't implemented yet.
+	//int fetch = 0;
+	int fetch = 1;
 	if( *method_type == 's' || *method_type == 'i' ) {
 		method_type = "retrieve"; // search and id_list are equivalent to retrieve for this
 	} else if( *method_type == 'u' || *method_type == 'd' ) {
@@ -1409,20 +1416,23 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 		if( local_context && local_context->size > 0 ) {
 			// The IDL provides a list of column names for the foreign keys denoting
-			// local context.  Look up the value of each one, and add it to the
-			// list of org units.
+			// local context.  Look up the value of each one, and if it isn't null,
+			// add it to the list of org units.
 			osrfLogDebug( OSRF_LOG_MARK, "%d class-local context field(s) specified",
 					local_context->size );
 			int i = 0;
 			const char* lcontext = NULL;
 			while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
-				osrfStringArrayAdd( context_org_array, oilsFMGetStringConst( param, lcontext ));
-				osrfLogDebug(
-					OSRF_LOG_MARK,
-					"adding class-local field %s (value: %s) to the context org list",
-					lcontext,
-					osrfStringArrayGetString( context_org_array, context_org_array->size - 1 )
-				);
+				const char* fkey_value = oilsFMGetStringConst( param, lcontext );
+				if( fkey_value ) {    // if not null
+					osrfStringArrayAdd( context_org_array, fkey_value );
+					osrfLogDebug(
+						OSRF_LOG_MARK,
+						"adding class-local field %s (value: %s) to the context org list",
+						lcontext,
+						osrfStringArrayGetString( context_org_array, context_org_array->size - 1 )
+					);
+				}
 			}
 		}
 
@@ -1455,6 +1465,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 					// Get the value of the foreign key pointing to the foreign table
 					char* foreign_pkey_value =
 							oilsFMGetString( param, osrfHashGet( fcontext, "fkey" ));
+					if( !foreign_pkey_value )
+						continue;    // Foreign key value is null; skip it
 
 					// Look up the row to which the foreign key points
 					jsonObject* _tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
@@ -1516,7 +1528,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 							"%s: no object found with primary key %s of %s",
 							modulename,
 							foreign_pkey,
-							foreign_pkey_value
+							foreign_pkey_value ? foreign_pkey_value : "(null)"
 						);
 
 						char* m = buffer_release( msg );
