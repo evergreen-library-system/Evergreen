@@ -73,6 +73,7 @@ function load() {
     }
 
     orgSettings = fieldmapper.aou.fetchOrgSettingBatch(staff.ws_ou(), [
+        'global.password_regex',
         'global.juvenile_age_threshold',
         'patron.password.use_phone',
         'ui.patron.default_inet_access_level',
@@ -441,6 +442,12 @@ function fleshFMRow(row, fmcls, args) {
         constraints : (wconstraints) ? eval('('+wconstraints+')') : {}, // the ()'s prevent Invalid Label errors with eval
         disabled : disabled
     };
+
+    if(fmcls == 'au' && fmfield == 'passwd') {
+        if (orgSettings['global.password_regex']) {
+            dijitArgs.regExp = orgSettings['global.password_regex'];
+        }
+    }
 
     // TODO RSN: Add Setting!
     if(fmcls == 'au' && fmfield == 'dob')
