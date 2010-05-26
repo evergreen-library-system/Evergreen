@@ -925,6 +925,8 @@ BEGIN
     
     END IF;
 
+    RETURN;
+
 END;
 $$ LANGUAGE PLPGSQL;
 

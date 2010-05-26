@@ -38,7 +38,7 @@ CREATE TABLE metabib.identifier_field_entry (
 );
 CREATE TRIGGER metabib_identifier_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.identifier_field_entry
-	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
+	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('identifier');
 
 CREATE INDEX metabib_identifier_field_entry_index_vector_idx ON metabib.identifier_field_entry USING GIST (index_vector);
 CREATE INDEX metabib_identifier_field_entry_value_idx ON metabib.identifier_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;

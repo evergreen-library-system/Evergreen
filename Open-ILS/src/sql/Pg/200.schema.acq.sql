@@ -100,7 +100,7 @@ CREATE TABLE acq.provider_address (
 	state		TEXT	NOT NULL,
 	country		TEXT	NOT NULL,
 	post_code	TEXT	NOT NULL,
-	fax_phone	TEXT	NOT NULL
+	fax_phone	TEXT
 );
 
 CREATE TABLE acq.provider_contact (
@@ -754,7 +754,8 @@ CREATE TABLE acq.fiscal_year (
 
 CREATE TABLE acq.edi_account (      -- similar tables can extend remote_account for other parts of EG
     provider    INT     NOT NULL REFERENCES acq.provider          (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    in_dir      TEXT    -- incoming messages dir (probably different than config.remote_account.path, the outgoing dir)
+    in_dir      TEXT,   -- incoming messages dir (probably different than config.remote_account.path, the outgoing dir)
+    vendcode    TEXT
 ) INHERITS (config.remote_account);
 
 -- We need a UNIQUE constraint here also, to support the FK from acq.provider.edi_default
@@ -786,7 +787,7 @@ CREATE TABLE acq.edi_message (
     error            TEXT,
     purchase_order   INT             REFERENCES acq.purchase_order
                                      DEFERRABLE INITIALLY DEFERRED,
-	message_type     TEXT            NOT NULL CONSTRAINT valid_type CHECK
+	message_type     TEXT            NOT NULL CONSTRAINT valid_message_type CHECK
 	                                 ( message_type IN (
 									     'ORDERS',
 									     'ORDRSP',
