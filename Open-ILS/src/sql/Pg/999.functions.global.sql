@@ -222,6 +222,7 @@ BEGIN
 
     -- acq.*
     UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
+	UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
 
 	-- transfer picklists the same way we transfer buckets (see above)
 	FOR picklist_row in
