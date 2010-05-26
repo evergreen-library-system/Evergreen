@@ -22,28 +22,34 @@ use OpenSRF::Utils::JSON;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 
-my $opt_lockfile = '/tmp/action-trigger-LOCK';
-my $opt_osrf_config = '/openils/conf/opensrf_core.xml';
+# DEFAULT values
+
+my $opt_lockfile      = '/tmp/action-trigger-LOCK';
+my $opt_osrf_config   = '/openils/conf/opensrf_core.xml';
 my $opt_custom_filter = '/openils/conf/action_trigger_filters.json';
-my $opt_max_sleep = 3600;  # default to 1 hour
-my $opt_run_pending = 0;
-my $opt_debug_stdout = 0;
-my $opt_help = 0;
+my $opt_max_sleep     = 3600;  # default to 1 hour
+my $opt_run_pending   = 0;
+my $opt_debug_stdout  = 0;
+my $opt_help          = 0;
+my $opt_verbose;
 my $opt_hooks;
 my $opt_process_hooks = 0;
-my $opt_granularity = undef;
+my $opt_granularity   = undef;
+
+(-f $opt_custom_filter) or undef($opt_custom_filter);   # discard default if no file exists
 
 GetOptions(
-    'osrf-config=s' => \$opt_osrf_config,
-    'run-pending' => \$opt_run_pending,
-    'hooks=s' => \$opt_hooks,
-    'granularity=s' => \$opt_granularity,
-    'process-hooks' => \$opt_process_hooks,
-    'max-sleep' => \$opt_max_sleep,
-    'debug-stdout' => \$opt_debug_stdout,
+    'max-sleep'        => \$opt_max_sleep,
+    'osrf-config=s'    => \$opt_osrf_config,
+    'run-pending'      => \$opt_run_pending,
+    'hooks=s'          => \$opt_hooks,
+    'granularity=s'    => \$opt_granularity,
+    'process-hooks'    => \$opt_process_hooks,
+    'debug-stdout'     => \$opt_debug_stdout,
     'custom-filters=s' => \$opt_custom_filter,
-    'lock-file=s' => \$opt_lockfile,
-    'help' => \$opt_help,
+    'lock-file=s'      => \$opt_lockfile,
+    'verbose'          => \$opt_verbose,
+    'help'             => \$opt_help,
 );
 
 my $max_sleep = $opt_max_sleep;
@@ -128,14 +134,17 @@ HELP
 
 # create events for the specified hooks using the configured filters and context orgs
 sub process_hooks {
+    $opt_verbose and print "process_hooks: " . ($opt_process_hooks ? '(start)' : 'SKIPPING') . "\n";
     return unless $opt_process_hooks;
 
     my @hooks = ($opt_hooks) ? split(',', $opt_hooks) : keys(%$hook_handlers);
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
 
     for my $hook (@hooks) {
-    
-        my $config = $$hook_handlers{$hook} or next;
+        my $config = $$hook_handlers{$hook};
+        $opt_verbose and print "process_hooks: $hook " . ($config ? ($opt_granularity || '') : ' NO HANDLER') . "\n";
+        $config or next;
+
         my $method = 'open-ils.trigger.passive.event.autocreate.batch';
         $method =~ s/passive/active/ if $config->{active};
         
@@ -149,6 +158,8 @@ sub process_hooks {
 }
 
 sub run_pending {
+    $opt_verbose and print "run_pending: " .
+        ($opt_run_pending ? ($opt_granularity || 'ALL granularity') : 'SKIPPING') . "\n";
     return unless $opt_run_pending;
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
     my $req = $ses->request('open-ils.trigger.event.run_all_pending' => $opt_granularity);
@@ -202,4 +213,3 @@ if (-e $opt_lockfile) {
     close LF;
     unlink $opt_lockfile if ($contents == $$);
 }
-

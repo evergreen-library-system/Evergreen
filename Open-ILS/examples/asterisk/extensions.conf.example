@@ -1,0 +1,41 @@
+; Sample Asterisk configuration
+; To use, include this dialplan in your extensions.conf file and dialplan reload.
+; Note the explicitly numbered line sequences.  This makes it hard to edit or
+; and new lines.  Remember to preserve sequentiality and Goto integrity.
+;
+;
+;
+; First the ${ ... } variables and functions are evaluated and substituted.
+; Then the  $[ ... ] expressions are evaluated and substituted.
+
+[overdue-test]
+exten => s,1,Verbose(titlestring: ${titlestring})
+exten => s,n,Answer()
+; exten => s,n,Set(LOOP=${IF($[foo${x} = "foo"]?1:0${LOOP})})   ;  [${foo${LOOP} = "foo"}?1:0${LOOP}])  ; Buggy trinary ops
+exten => s,n,Set(LOOP=0${LOOP})                 ; Default will be zero if undefined
+exten => s,n,Verbose(LOOP top: ${LOOP})
+exten => s,n,Goto(10)
+exten => s,10,Wait(1)                           ; The beginning of loop.
+exten => s,11,Playback(sample-greeting)
+exten => s,12,SayDigits(${items})
+exten => s,13,GotoIf($[0${items} > 1]?20:30)    ; spaces are important here
+exten => s,20,Playback(sample-overdue-plural)
+exten => s,21,Festival(Your items titles are)
+exten => s,22,Goto(40)
+exten => s,30,Playback(sample-overdue-singular)
+exten => s,31,Festival(The title is)
+exten => s,32,Goto(40)
+exten => s,40,Wait(1)
+exten => s,41,Festival(${titlestring})
+exten => s,42,Wait(1)
+;exten => s,43,Festival(Return these items or else.)
+exten => s,43,Playback(sample-thanks)
+exten => s,44,Set(LOOP=$[${LOOP}-1])            ; LOOP decrements
+exten => s,45,Verbose(LOOP bottom: ${LOOP})
+exten => s,46,GotoIf($[0${LOOP} >= 0]?10:48)    ; spaces are important here, we loop on zero because we already did decrement
+; exten => s,47,Verbose(REASON: ${REASON})
+exten => s,48,Hangup()
+
+exten => failed,1,Verbose(FAILED REASON: ${REASON})
+exten => failed,n,Verbose(CALLFILENAME: ${CALLFILENAME})
+

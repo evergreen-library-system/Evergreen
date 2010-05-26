@@ -54,6 +54,39 @@ vim:et:ts=4:sw=4:
         <smtp_server>localhost</smtp_server>
         <sender_address>evergreen@localhost</sender_address>
 
+        <!-- global telephony (asterisk) settings -->
+        <telephony>
+            <!-- replace all values below when telephony server is configured -->
+            <enabled>0</enabled>
+            <driver>SIP</driver>    <!-- SIP (default) or multi -->
+            <channels>              <!-- explicit list of channels used if multi -->
+                                    <!-- A channel specifies technology/resource -->
+                <channel>Zap/1</channel>
+                <channel>Zap/2</channel>
+                <channel>IAX/user:secret@widgets.biz</channel>
+            </channels>
+            <host>localhost</host>
+            <port>10080</port>
+            <user>evergreen</user>
+            <pw>evergreen</pw>
+            <!--
+                The overall composition of callfiles is determined by the
+                relevant template, but this section can be invoked for callfile
+                configs common to all outbound calls.
+                callfile_lines will be inserted into ALL generated callfiles
+                after the Channel line.  This content mat be overridden
+                (in whole) by the org unit setting callfile_lines.
+                Warning: Invalid syntax may break ALL outbound calls.
+            -->
+            <!-- <callfile_lines>
+                MaxRetries: 3
+                RetryTime: 60
+                WaitTime: 30
+                Archive: 1
+                Extension: 10
+            </callfile_lines> -->
+        </telephony>
+
         <!-- Overdue notices -->
         <overdue>
 

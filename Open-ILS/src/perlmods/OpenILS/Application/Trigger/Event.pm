@@ -466,7 +466,10 @@ sub _object_by_path {
 
     my $obj = $context->$step(); 
 
-    $logger->debug("_object_by_path(): meth=$meth, obj=$obj, multi=$multi, step=$step, lfield=$lfield");
+    $logger->debug(
+        sprintf "_object_by_path(): meth=%s, obj=%s, multi=%s, step=%s, lfield=%s",
+        map {defined($_)? $_ : ''} ($meth,  $obj,   $multi,   $step,   $lfield)
+    );
 
     if (!ref $obj) {
         $obj = $ed->$meth( 

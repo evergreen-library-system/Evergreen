@@ -490,6 +490,7 @@ sub create_batch_events {
             $event->event_def( $def->id );
             $event->run_time( $run_time );
             $event->user_data( OpenSRF::Utils::JSON->perl2JSON($user_data) ) if (defined($user_data));
+            $event->granularity($granularity) if (defined $granularity);
 
             $editor->create_action_trigger_event( $event );
 
