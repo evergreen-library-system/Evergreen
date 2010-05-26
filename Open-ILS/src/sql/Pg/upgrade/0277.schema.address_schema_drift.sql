@@ -41,9 +41,9 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 -- Use the identifier search class tsconfig
-DROP TRIGGER metabib_identifier_field_entry_fti_trigger ON identifier_field_entry;
+DROP TRIGGER metabib_identifier_field_entry_fti_trigger ON metabib.identifier_field_entry;
 CREATE TRIGGER metabib_identifier_field_entry_fti_trigger
-    BEFORE INSERT OR UPDATE ON identifier_field_entry
+    BEFORE INSERT OR UPDATE ON metabib.identifier_field_entry
     FOR EACH ROW
     EXECUTE PROCEDURE public.oils_tsearch2('identifier');
 
