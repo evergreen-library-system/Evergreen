@@ -71,12 +71,9 @@ my $hook_handlers = {
 };
 
 if ($opt_custom_filter) {
-    if (open FILTERS, $opt_custom_filter) {
-        $hook_handlers = OpenSRF::Utils::JSON->JSON2perl(join('',(<FILTERS>)));
-        close FILTERS;
-    } else {
-        die "Cannot read filter file '$opt_custom_filter'";
-    }
+    open FILTERS, $opt_custom_filter or die "Cannot read custom filters at $opt_custom_filter";
+    $hook_handlers = OpenSRF::Utils::JSON->JSON2perl(join('',(<FILTERS>)));
+    close FILTERS;
 }
 
 sub help {
@@ -149,10 +146,8 @@ sub process_hooks {
         $method =~ s/passive/active/ if $config->{active};
         
         my $req = $ses->request($method, $hook, $config->{context_org}, $config->{filter}, $opt_granularity);
-        while(my $resp = $req->recv(timeout => 1800)) {
-            if($opt_debug_stdout) {
-                print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
-            }
+        while (my $resp = $req->recv(timeout => 1800)) {
+            $opt_debug_stdout and print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
         }
     }
 }
@@ -165,7 +160,7 @@ sub run_pending {
     my $req = $ses->request('open-ils.trigger.event.run_all_pending' => $opt_granularity);
 
     my $check_lockfile = 1;
-    while(my $resp = $req->recv(timeout => 7200)) {
+    while (my $resp = $req->recv(timeout => 7200)) {
         if ($check_lockfile && -e $opt_lockfile) {
             open LF, $opt_lockfile;
             my $contents = <LF>;
@@ -173,9 +168,7 @@ sub run_pending {
             unlink $opt_lockfile if ($contents == $$);
             $check_lockfile = 0;
         }
-        if($opt_debug_stdout) {
-            print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
-        }
+        $opt_debug_stdout and print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
     }
 }
 
