@@ -689,6 +689,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.usr_setting_type "User Setting Types">
+<!ENTITY staff.main.menu.admin.server_admin.conify.global_flag.label "Global Flags">
 
 <!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions">
 <!ENTITY staff.main.menu.admin.server_admin.acq.accesskey "A">

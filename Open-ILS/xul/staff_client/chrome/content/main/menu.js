@@ -708,6 +708,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/circ_modifier'); }
             ],
+            'cmd_server_admin_global_flag' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/global_flag'); }
+            ],
             'cmd_server_admin_org_unit_setting_type' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/org_unit_setting_type'); }
