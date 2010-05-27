@@ -91,12 +91,6 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     dojo.addClass(nameTd, 'openils-widget-editpane-name-cell');
                     dojo.addClass(valTd, 'openils-widget-editpane-value-cell');
 
-                    if(this.readOnly) {
-                        dojo.addClass(nameTd, 'openils-widget-editpane-ro-name-cell');
-                        dojo.addClass(valTd, 'openils-widget-editpane-ro-value-cell');
-                    }
-
-
                     /*
                     if(this.fieldDocs[field]) {
                         var helpLink = dojo.create('a');
@@ -117,7 +111,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                         this.overrideWidgetArgs[field.name] = {};
 
                     var args = dojo.mixin(
-                        this.overrideWidgetArgs[field.name], {
+                        {   // defaults
                             idlField : field, 
                             fmObject : this.fmObject,
                             fmClass : this.fmClass,
@@ -127,8 +121,14 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                             widget : this.overrideWidgets[field.name],
                             widgetClass : this.overrideWidgetClass[field.name],
                             disableWidgetTest : this.disableWidgetTest
-                        }
+                        },
+                        this.overrideWidgetArgs[field.name] // per-field overrides
                     );
+
+                    if(args.readOnly) {
+                        dojo.addClass(nameTd, 'openils-widget-editpane-ro-name-cell');
+                        dojo.addClass(valTd, 'openils-widget-editpane-ro-value-cell');
+                    }
 
                     if(this.requiredFields && this.requiredFields.indexOf(field.name) >= 0) {
                         if(!args.dijitArgs) args.dijitArgs = {};
