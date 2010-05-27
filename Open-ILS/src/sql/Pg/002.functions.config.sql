@@ -324,12 +324,22 @@ CREATE OR REPLACE FUNCTION oils_i18n_gettext( TEXT, TEXT, TEXT, TEXT ) RETURNS T
     SELECT $2;
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION is_json (TEXT) RETURNS BOOL AS $func$
+CREATE OR REPLACE FUNCTION is_json( TEXT ) RETURNS BOOL AS $f$
     use JSON::XS;
     my $json = shift();
-    eval { decode_json( $json ) };
+    eval { JSON::XS->new->allow_nonref->decode( $json ) };
     return $@ ? 0 : 1;
-$func$ LANGUAGE PLPERLU IMMUTABLE;
+$f$ LANGUAGE PLPERLU;
+
+-- turn a JSON scalar into an SQL TEXT value
+CREATE OR REPLACE FUNCTION oils_json_to_text( TEXT ) RETURNS TEXT AS $f$
+    use JSON::XS;
+    my $json = shift();
+    my $txt;
+    eval { $txt = JSON::XS->new->allow_nonref->decode( $json ) };
+    return undef if ($@);
+    return $txt
+$f$ LANGUAGE PLPERLU;
 
 COMMIT;
 

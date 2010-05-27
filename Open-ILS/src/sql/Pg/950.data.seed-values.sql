@@ -4968,4 +4968,30 @@ INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
     );
 
 
+INSERT INTO config.global_flag (name,label,enabled)
+    VALUES (
+        'history.circ.retention_age',
+        oils_i18n_gettext('history.circ.retention_age', 'Historical Circulation Retention Age', 'cgf', 'label'),
+        TRUE
+    ),(
+        'history.circ.retention_count',
+        oils_i18n_gettext('history.circ.retention_count', 'Historical Circulations per Copy', 'cgf', 'label'),
+        TRUE
+    );
+
+INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
+    VALUES (
+        'history.circ.retention_age',
+        TRUE,
+        oils_i18n_gettext('history.circ.retention_age','Historical Circulation Retention Age','cust','label'),
+        oils_i18n_gettext('history.circ.retention_age','Historical Circulation Retention Age','cust','description'),
+        'interval'
+    ),(
+        'history.circ.retention_start',
+        FALSE,
+        oils_i18n_gettext('history.circ.retention_start','Historical Circulation Retention Start Date','cust','label'),
+        oils_i18n_gettext('history.circ.retention_start','Historical Circulation Retention Start Date','cust','description'),
+        'date'
+    );
+
 
