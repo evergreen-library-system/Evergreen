@@ -1448,7 +1448,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 				osrfHash* fcontext = NULL;
 				osrfHashIterator* class_itr = osrfNewHashIterator( foreign_context );
 				while( (fcontext = osrfHashIteratorNext( class_itr )) ) {
-					// For each linked class...
+					// For each class to which a foreign key points:
 					const char* class_name = osrfHashIteratorKey( class_itr );
 					osrfHash* fcontext = osrfHashGet( foreign_context, class_name );
 
@@ -1460,7 +1460,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 					);
 
 					// Get the name of the key field in the foreign table
-					char* foreign_pkey = osrfHashGet( fcontext, "field" );
+					const char* foreign_pkey = osrfHashGet( fcontext, "field" );
 
 					// Get the value of the foreign key pointing to the foreign table
 					char* foreign_pkey_value =
@@ -1485,48 +1485,68 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 					osrfStringArray* jump_list = osrfHashGet( fcontext, "jump" );
 
-					if( _fparam && jump_list ) {
-						// Follow another level of indirection to find one or more owners
+					const char* bad_class = NULL;  // For noting failed lookups
+					if( ! _fparam )
+						bad_class = class_name;    // Referenced row not found
+					else if( jump_list ) {
+						// Follow a chain of rows, linked by foreign keys, to find an owner
 						const char* flink = NULL;
 						int k = 0;
 						while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
-							// For each entry in the jump list.  Each entry is the name of a
-							// foreign key colum in the foreign table.
+							// For each entry in the jump list.  Each entry (i.e. flink) is
+							// the name of a foreign key column in the current row.
 
+							// From the IDL, get the linkage information for the next jump
 							osrfHash* foreign_link_hash =
 									oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
 
-							free( foreign_pkey_value );
-							foreign_pkey_value = oilsFMGetString( _fparam, flink );
+							// Get the class metadata for the class
+							// to which the foreign key points
+							osrfHash* foreign_class_meta = osrfHashGet( oilsIDL(),
+									osrfHashGet( foreign_link_hash, "class" ));
+
+							// Get the name of the referenced key of that class
 							foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
 
+							// Get the value of the foreign key pointing to that class
+							free( foreign_pkey_value );
+							foreign_pkey_value = oilsFMGetString( _fparam, flink );
+							if( !foreign_pkey_value )
+								break;    // Foreign key is null; quit looking
+
+							// Build a WHERE clause for the lookup
 							_tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
 
-							_list = doFieldmapperSearch(
-								ctx,
-								osrfHashGet( oilsIDL(),
-										osrfHashGet( foreign_link_hash, "class" ) ),
-								_tmp_params,
-								NULL,
-								&err
-							);
+							// Do the lookup
+							_list = doFieldmapperSearch( ctx, foreign_class_meta,
+									_tmp_params, NULL, &err );
 
+							// Get the resulting row
 							jsonObjectFree( _fparam );
-							_fparam = NULL;
 							if( _list && JSON_ARRAY == _list->type && _list->size > 0 )
 								_fparam = jsonObjectExtractIndex( _list, 0 );
+							else {
+								// Referenced row not found
+								_fparam = NULL;
+								bad_class = osrfHashGet( foreign_link_hash, "class" );
+							}
+
 							jsonObjectFree( _tmp_params );
 							jsonObjectFree( _list );
 						}
 					}
 
-					if( !_fparam ) {
+					if( bad_class ) {
 
+						// We had a foreign key pointing to such-and-such a row, but then
+						// we couldn't fetch that row.  The data in the database are in an
+						// inconsistent state; the database itself may even be corrupted.
 						growing_buffer* msg = buffer_init( 128 );
 						buffer_fadd(
 							msg,
-							"%s: no object found with primary key %s of %s",
+							"%s: no object of class %s found with primary key %s of %s",
 							modulename,
+							bad_class,
 							foreign_pkey,
 							foreign_pkey_value ? foreign_pkey_value : "(null)"
 						);
@@ -1550,25 +1570,27 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 					free( foreign_pkey_value );
 
-					// Examine each context column of the foreign row,
-					// and add its value to the list of org units.
-					int j = 0;
-					const char* foreign_field = NULL;
-					osrfStringArray* ctx_array = osrfHashGet( fcontext, "context" );
-					while ( (foreign_field = osrfStringArrayGetString( ctx_array, j++ )) ) {
-						osrfStringArrayAdd( context_org_array,
-							oilsFMGetStringConst( _fparam, foreign_field ));
-						osrfLogDebug(
-							OSRF_LOG_MARK,
-							"adding foreign class %s field %s (value: %s) to the context org list",
-							class_name,
-							foreign_field,
-							osrfStringArrayGetString(
+					if( _fparam ) {
+						// Examine each context column of the foreign row,
+						// and add its value to the list of org units.
+						int j = 0;
+						const char* foreign_field = NULL;
+						osrfStringArray* ctx_array = osrfHashGet( fcontext, "context" );
+						while ( (foreign_field = osrfStringArrayGetString( ctx_array, j++ )) ) {
+							osrfStringArrayAdd( context_org_array,
+								oilsFMGetStringConst( _fparam, foreign_field ));
+							osrfLogDebug( OSRF_LOG_MARK,
+								"adding foreign class %s field %s (value: %s) "
+									"to the context org	 list",
+								class_name,
+								foreign_field,
+								osrfStringArrayGetString(
 									context_org_array, context_org_array->size - 1 )
-						);
-					}
+							);
+						}
 
-					jsonObjectFree( _fparam );
+						jsonObjectFree( _fparam );
+					}
 				}
 
 				osrfHashIteratorFree( class_itr );
@@ -1587,6 +1609,10 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		OK = 1;
 	}
 
+	// For every combination of permission and context org unit: call a stored procedure
+	// to determine if the user has this permission in the context of this org unit.
+	// If the answer is yes at any point, then we're done, and the user has permission.
+	// In other words permissions are additive.
 	int i = 0;
 	while( (perm = osrfStringArrayGetString(permission, i++)) ) {
 		int j = 0;
