@@ -1,5 +1,11 @@
 <tbody id='uedit-tbody'>
-    <tr fmclass='ac' fmfield='barcode' required='required'/>
+    <tr fmclass='ac' fmfield='barcode' required='required'>
+        <td/><td/><td/>
+        <td><button dojoType='dijit.form.Button' jsId='replaceBarcode'>Replace Barcode</button></td>
+        <td id='uedit-all-barcodes' class='hidden'>
+            <button dojoType='dijit.form.Button' jsId='allCards'>See All</button>
+        </td>
+    </tr>
     <tr fmclass='au' fmfield='usrname' required='required'/>
     <tr fmclass='au' fmfield='passwd' required='required'/>
     <tr fmclass='au' fmfield='passwd2' required='required'><td/><td>Verify Password</td><td/></tr>

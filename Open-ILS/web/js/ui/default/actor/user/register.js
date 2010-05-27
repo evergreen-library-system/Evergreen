@@ -42,6 +42,7 @@ var cloneUser;
 var cloneUserObj;
 var stageUser;
 var optInSettings;
+var allCardsTemplate;
 
 
 if(!window.xulG) var xulG = null;
@@ -123,6 +124,66 @@ function load() {
     loadSurveys();
     checkClaimsReturnCountPerm();
     checkClaimsNoCheckoutCountPerm();
+
+    dojo.connect(replaceBarcode, 'onClick', replaceCardHandler);
+    dojo.connect(allCards, 'onClick', drawAllCards);
+    if(patron.cards().length > 1)
+        dojo.removeClass(dojo.byId('uedit-all-barcodes'), 'hidden');
+}
+
+
+function drawAllCards() {
+
+    var tbody = dojo.byId('uedit-all-cards-tbody');
+    if(!allCardsTemplate) {
+        allCardsTemplate = tbody.removeChild(dojo.byId('uedit-all-cards-tr-template'));
+    } else {
+        while(tbody.childNodes[0])
+            tbody.removeChild(tbody.childNodes[0]);
+    }
+
+    var first = true;
+    dojo.forEach(
+        [patron.card()].concat(patron.cards()), // grab the main card first
+        function(card) {
+            if(!first) {
+                if(card.id() == patron.card().id())
+                    return;
+            }
+            var row = allCardsTemplate.cloneNode(true);
+            getByName(row, 'barcode').innerHTML = card.barcode();
+            getByName(row, 'active').appendChild(
+                openils.Util.isTrue(card.active()) ? 
+                    dojo.byId('true').cloneNode(true) :
+                    dojo.byId('false').cloneNode(true)
+            ); 
+
+            tbody.appendChild(row);
+            first = false;
+        }
+    );
+
+    allCardsDialog.show();
+}
+
+/**
+ * Mark the current card inactive, create a new primary card
+ */
+function replaceCardHandler() {
+    var input = findWidget('ac', 'barcode');
+    input.widget.attr('value', null);
+    
+    // pull old car off the cards list so we don't have a dupe sitting in there
+    var old = patron.cards().filter(function(c){return (c.id() == patron.card().id())})[0];
+    old.active('f');
+    old.ischanged(1);
+
+    var newc = new fieldmapper.ac();
+    newc.id(uEditCardVirtId--);
+    newc.isnew(1);
+    newc.active('t');
+    patron.card(newc);
+    patron.cards().push(newc);
 }
 
 
@@ -797,7 +858,7 @@ function uEditNewPatron() {
     patron.isnew(1);
     patron.id(-1);
     card = new ac();
-    card.id(uEditCardVirtId);
+    card.id(uEditCardVirtId--);
     card.isnew(1);
     patron.active(1);
     patron.card(card);
