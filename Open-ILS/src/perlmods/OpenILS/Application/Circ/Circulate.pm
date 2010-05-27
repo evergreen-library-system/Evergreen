@@ -3064,6 +3064,10 @@ sub run_renew_permit {
 }
 
 
+# XXX: The primary mechanism for storing circ history is now handled
+# by tracking real circulation objects instead of bibs in a bucket.
+# However, this code is disabled by default and could be useful 
+# some day, so may as well leave it for now.
 sub append_reading_list {
     my $self = shift;
 
@@ -3073,16 +3077,14 @@ sub append_reading_list {
         $self->copy and 
         !$self->is_noncat;
 
-    my $e = new_editor(xact => 1, requestor => $self->editor->requestor);
 
     # verify history is globally enabled and uses the bucket mechanism
     my $htype = OpenSRF::Utils::SettingsClient->new->config_value(
         apps => 'open-ils.circ' => app_settings => 'checkout_history_mechanism');
 
-    unless($htype eq 'bucket') {
-        $e->rollback;
-        return undef;
-    }
+    return undef unless $htype and $htype eq 'bucket';
+
+    my $e = new_editor(xact => 1, requestor => $self->editor->requestor);
 
     # verify the patron wants to retain the hisory
 	my $setting = $e->search_actor_user_setting(
@@ -3130,12 +3132,9 @@ sub append_reading_list {
 sub make_trigger_events {
     my $self = shift;
     return unless $self->circ;
-    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    $ses->request('open-ils.trigger.event.autocreate', 'checkout', $self->circ, $self->circ_lib) if $self->is_checkout;
-    $ses->request('open-ils.trigger.event.autocreate', 'checkin', $self->circ, $self->circ_lib) if $self->is_checkin;
-    $ses->request('open-ils.trigger.event.autocreate', 'renewal',  $self->circ, $self->circ_lib) if $self->is_renewal;
-
-    # ignore response
+    $U->create_events_for_hook('checkout', $self->circ, $self->circ_lib) if $self->is_checkout;
+    $U->create_events_for_hook('checkin', $self->circ, $self->circ_lib) if $self->is_checkin;
+    $U->create_events_for_hook('renewal',  $self->circ, $self->circ_lib) if $self->is_renewal;
 }
 
 
