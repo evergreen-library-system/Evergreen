@@ -18,6 +18,7 @@
     'WORKSTATION_REQUIRED' : 'A workstation is required to log in to selfcheck.  You can set the  workstation name with URL param "ws".  \n\nWould you like to register a new workstation for this self-check interface?',
     'WORKSTATION_EXISTS' : 'This workstation has already been registered.  Would you like to use it for this self-check station?',
     'CC_PAYABLE_BALANCE' : 'Total amount to pay: \$${0}',
-    'TOTAL_FINES_SELECTED' : 'Selected total: \$${0}'
+    'TOTAL_FINES_SELECTED' : 'Selected total: \$${0}',
+    'WELCOME_BANNER' : 'Welcome, ${0}'
 }
 

@@ -293,7 +293,8 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
     } else {
 
         this.handleAlert('', false, 'login-success');
-        dojo.byId('oils-selfck-user-banner').innerHTML = 'Welcome, ' + this.patron.first_given_name(); // TODO i18n
+        dojo.byId('oils-selfck-user-banner').innerHTML = 
+            dojo.string.substitute(localeStrings.WELCOME_BANNER, [this.patron.usrname()]);
         this.drawCircPage();
     }
 }
