@@ -395,7 +395,7 @@ params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh
         'acqedim', 
         {purchase_order : poId}, 
         {
-            order_by : {acqedim : 'create_time'},
+            id_list : true,
             oncomplete : function(r) {
                 var resp = openils.Util.readResponse(r);
                 // TODO: I18n
