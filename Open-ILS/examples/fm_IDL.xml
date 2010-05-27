@@ -6864,7 +6864,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -6899,8 +6899,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="function_id" reltype="might_have" key="id" map="" class="qfs"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="function_id" reltype="has_a" key="id" map="" class="qfs"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6917,9 +6917,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="left_operand" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6935,8 +6935,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="left_operand" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6951,7 +6951,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6966,7 +6966,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Literal" name="literal" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -6984,9 +6984,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="left_operand" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="right_operand" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="left_operand" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="right_operand" reltype="has_a" key="id" map="" class="qxp"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="xser" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xser" oils_persist:tablename="query.expr_xser" reporter:label="Operator Expression">
+		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
+			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
+			<field reporter:label="Operator" name="operator" reporter:datatype="text"/>
+			<field reporter:label="Negate?" name="negate" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -7001,7 +7017,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Literal" name="literal" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -7016,8 +7032,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Subquery" name="subquery" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="parent_expr" reltype="might_have" key="id" map="" class="qxp"/>
-			<link field="subquery" reltype="might_have" key="id" map="" class="qsq"/>
+			<link field="parent_expr" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="subquery" reltype="has_a" key="id" map="" class="qsq"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
