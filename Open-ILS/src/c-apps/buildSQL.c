@@ -15,15 +15,16 @@
 #include "openils/oils_sql.h"
 #include "openils/oils_buildq.h"
 
-static void build_Query( BuildSQLState* state, StoredQ* query );
-static void buildCombo( BuildSQLState* state, StoredQ* query, const char* type_str );
-static void buildSelect( BuildSQLState* state, StoredQ* query );
-static void buildFrom( BuildSQLState* state, FromRelation* core_from );
-static void buildJoin( BuildSQLState* state, FromRelation* join );
-static void buildSelectList( BuildSQLState* state, SelectItem* item );
-static void buildOrderBy( BuildSQLState* state, OrderItem* ord_list );
-static void buildExpression( BuildSQLState* state, Expression* expr );
-static void buildBindVar( BuildSQLState* state, BindVar* bind );
+static void build_Query( BuildSQLState* state, const StoredQ* query );
+static void buildCombo( BuildSQLState* state, const StoredQ* query, const char* type_str );
+static void buildSelect( BuildSQLState* state, const StoredQ* query );
+static void buildFrom( BuildSQLState* state, const FromRelation* core_from );
+static void buildJoin( BuildSQLState* state, const FromRelation* join );
+static void buildSelectList( BuildSQLState* state, const SelectItem* item );
+static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list );
+static void buildExpression( BuildSQLState* state, const Expression* expr );
+static void buildSeries( BuildSQLState* state, const Expression* subexp_list, const char* op );
+static void buildBindVar( BuildSQLState* state, const BindVar* bind );
 static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* obj );
 
 static void add_newline( BuildSQLState* state );
@@ -111,7 +112,7 @@ jsonObject* oilsBindVarList( osrfHash* bindvar_list ) {
 	The @a bindings parameter must be a JSON_HASH.  The keys are the names of bind variables.
 	The values are the corresponding values for the variables.
 */
-int oilsApplyBindValues( BuildSQLState* state, jsonObject* bindings ) {
+int oilsApplyBindValues( BuildSQLState* state, const jsonObject* bindings ) {
 	if( !state ) {
 		osrfLogError( OSRF_LOG_MARK, "NULL pointer to state" );
 		return 1;
@@ -155,7 +156,7 @@ int oilsApplyBindValues( BuildSQLState* state, jsonObject* bindings ) {
 
 	Clear the output buffer, call build_Query() to do the work, and add a closing semicolon.
 */
-int buildSQL( BuildSQLState* state, StoredQ* query ) {
+int buildSQL( BuildSQLState* state, const StoredQ* query ) {
 	state->error  = 0;
 	buffer_reset( state->sql );
 	state->indent = 0;
@@ -177,7 +178,7 @@ int buildSQL( BuildSQLState* state, StoredQ* query ) {
 
 	Look at the query type and branch to the corresponding routine.
 */
-static void build_Query( BuildSQLState* state, StoredQ* query ) {
+static void build_Query( BuildSQLState* state, const StoredQ* query ) {
 	if( buffer_length( state->sql ))
 		add_newline( state );
 
@@ -209,7 +210,7 @@ static void build_Query( BuildSQLState* state, StoredQ* query ) {
 	@param query Pointer to the query to be built.
 	@param type_str The query type, as a string.
 */
-static void buildCombo( BuildSQLState* state, StoredQ* query, const char* type_str ) {
+static void buildCombo( BuildSQLState* state, const StoredQ* query, const char* type_str ) {
 
 	QSeq* seq = query->child_list;
 	if( !seq ) {
@@ -246,7 +247,7 @@ static void buildCombo( BuildSQLState* state, StoredQ* query, const char* type_s
 	@param state Pointer to the query-building context.
 	@param query Pointer to the StoredQ structure that represents the query.
 */
-static void buildSelect( BuildSQLState* state, StoredQ* query ) {
+static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 
 	FromRelation* from_clause = query->from_clause;
 	if( !from_clause ) {
@@ -330,7 +331,7 @@ static void buildSelect( BuildSQLState* state, StoredQ* query ) {
 	@param Pointer to the query-building context.
 	@param Pointer to the StoredQ query to which the FROM clause belongs.
 */
-static void buildFrom( BuildSQLState* state, FromRelation* core_from ) {
+static void buildFrom( BuildSQLState* state, const FromRelation* core_from ) {
 
 	add_newline( state );
 	buffer_add( state->sql, "FROM" );
@@ -401,7 +402,7 @@ static void buildFrom( BuildSQLState* state, FromRelation* core_from ) {
 	decr_indent( state );
 }
 
-static void buildJoin( BuildSQLState* state, FromRelation* join ) {
+static void buildJoin( BuildSQLState* state, const FromRelation* join ) {
 	add_newline( state );
 	switch( join->join_type ) {
 		case JT_NONE :
@@ -494,7 +495,12 @@ static void buildJoin( BuildSQLState* state, FromRelation* join ) {
 	}
 }
 
-static void buildSelectList( BuildSQLState* state, SelectItem* item ) {
+/**
+	@brief Build a SELECT list.
+	@param state Pointer to the query-building context.
+	@param item Pointer to the first in a linked list of SELECT items.
+*/
+static void buildSelectList( BuildSQLState* state, const SelectItem* item ) {
 
 	int first = 1;
 	while( item ) {
@@ -524,7 +530,7 @@ static void buildSelectList( BuildSQLState* state, SelectItem* item ) {
 	@param state Pointer to the query-building context.
 	@param ord_list Pointer to the first node in a linked list of OrderItems.
 */
-static void buildOrderBy( BuildSQLState* state, OrderItem* ord_list ) {
+static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list ) {
 	add_newline( state );
 	buffer_add( state->sql, "ORDER BY" );
 	incr_indent( state );
@@ -554,7 +560,7 @@ static void buildOrderBy( BuildSQLState* state, OrderItem* ord_list ) {
 	@param state Pointer to the query-building context.
 	@param expr Pointer to the Expression representing the expression to be built.
 */
-static void buildExpression( BuildSQLState* state, Expression* expr ) {
+static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 	if( !expr ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Internal error: NULL pointer to Expression" ));
@@ -732,6 +738,19 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 				buffer_add_char( state->sql, ')' );
 
 			break;
+		case EXP_SERIES :
+			if( expr->negate )
+				buffer_add( state->sql, "NOT (" );
+
+			buildSeries( state, expr->subexp_list, expr->op );
+			if( state->error ) {
+				sqlAddMsg( state, "Unable to build series expression using operator \"%s\"",
+					expr->op ? expr->op : "," );
+			}
+			if( expr->negate )
+				buffer_add_char( state->sql, ')' );
+
+			break;
 		case EXP_STRING :                     // String literal
 			if( !expr->literal ) {
 				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -768,6 +787,52 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 }
 
 /**
+	@brief Build a series of expressions separated by a specified operator, or by commas.
+	@param state Pointer to the query-building context.
+	@param subexp_list Pointer to the first Expression in a linked list.
+	@param op Pointer to the operator, or NULL for commas.
+
+	If the operator is AND or OR (in upper, lower, or mixed case), the second and all
+	subsequent operators will begin on a new line.
+*/
+static void buildSeries( BuildSQLState* state, const Expression* subexp_list, const char* op ) {
+
+	int comma = 0;             // Boolean; true if separator is a comma
+	int newline_needed = 0;    // Boolean; true if operator is AND or OR
+
+	if( !op ) {
+		op = ",";
+		comma = 1;
+	} else if( !strcmp( op, "," ))
+		comma = 1;
+	else if( !strcasecmp( op, "AND" ) || !strcasecmp( op, "OR" ))
+		newline_needed = 1;
+
+	int first = 1;               // Boolean; true for first item in list
+	while( subexp_list ) {
+		if( first )
+			first = 0;   // No separator needed yet
+		else {
+			// Insert a separator
+			if( comma )
+				buffer_add( state->sql, ", " );
+			else {
+				if( newline_needed )
+					add_newline( state );
+				else
+					buffer_add_char( state->sql, ' ' );
+
+				buffer_add( state->sql, op );
+				buffer_add_char( state->sql, ' ' );
+			}
+		}
+
+		buildExpression( state, subexp_list );
+		subexp_list = subexp_list->next;
+	}
+}
+
+/**
 	@brief Add the value of a bind variable to an SQL statement.
 	@param state Pointer to the query-building context.
 	@param bind Pointer to the bind variable whose value is to be added to the SQL.
@@ -775,7 +840,7 @@ static void buildExpression( BuildSQLState* state, Expression* expr ) {
 	The value may be a null, a scalar, or an array of nulls and/or scalars, depending on
 	the type of the bind variable.
 */
-static void buildBindVar( BuildSQLState* state, BindVar* bind ) {
+static void buildBindVar( BuildSQLState* state, const BindVar* bind ) {
 
 	// Decide where to get the value, if any
 	const jsonObject* value = NULL;
@@ -902,6 +967,10 @@ static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* ob
 	}
 }
 
+/**
+	@brief Start a new line in the output, with the current level of indentation.
+	@param state Pointer to the query-building context.
+*/
 static void add_newline( BuildSQLState* state ) {
 	buffer_add_char( state->sql, '\n' );
 
@@ -917,10 +986,18 @@ static void add_newline( BuildSQLState* state ) {
 	}
 }
 
+/**
+	@brief Increase the degree of indentation.
+	@param state Pointer to the query-building context.
+*/
 static inline void incr_indent( BuildSQLState* state ) {
 	++state->indent;
 }
 
+/**
+	@brief Reduce the degree of indentation.
+	@param state Pointer to the query-building context.
+*/
 static inline void decr_indent( BuildSQLState* state ) {
 	if( state->indent )
 		--state->indent;

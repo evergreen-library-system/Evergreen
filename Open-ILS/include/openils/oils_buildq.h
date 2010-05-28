@@ -158,6 +158,7 @@ typedef enum {
 	EXP_NULL,
 	EXP_NUMBER,
 	EXP_OPERATOR,
+    EXP_SERIES,
 	EXP_STRING,
 	EXP_SUBQUERY
 } ExprType;
@@ -181,6 +182,7 @@ struct Expression_ {
 	int         cast_type_id;
 	int         negate;             // Boolean
 	BindVar*    bind;
+	Expression* subexp_list;        // Linked list of subexpressions
 };
 
 struct QSeq_ {
@@ -217,7 +219,7 @@ void storedQFree( StoredQ* sq );
 
 void storedQCleanup( void );
 
-int buildSQL( BuildSQLState* state, StoredQ* query );
+int buildSQL( BuildSQLState* state, const StoredQ* query );
 
 void oilsStoredQSetVerbose( void );
 
@@ -227,7 +229,7 @@ jsonObject* oilsNextRow( BuildSQLState* state );
 
 jsonObject* oilsBindVarList( osrfHash* bindvar_list );
 
-int oilsApplyBindValues( BuildSQLState* state, jsonObject* bindings );
+int oilsApplyBindValues( BuildSQLState* state, const jsonObject* bindings );
 
 #ifdef __cplusplus
 }

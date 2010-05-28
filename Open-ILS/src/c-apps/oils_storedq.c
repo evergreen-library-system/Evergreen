@@ -43,7 +43,9 @@ static void bindVarFree( char* name, void* p );
 
 static Expression* getExpression( BuildSQLState* state, int id );
 static Expression* constructExpression( BuildSQLState* state, dbi_result result );
+static void expressionListFree( Expression* exp );
 static void expressionFree( Expression* exp );
+static Expression* getExpressionList( BuildSQLState* state, int id );
 
 static OrderItem* getOrderByList( BuildSQLState* state, int query_id );
 static OrderItem* constructOrderItem( BuildSQLState* state, dbi_result result );
@@ -119,6 +121,7 @@ StoredQ* getStoredQuery( BuildSQLState* state, int query_id ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state, 
 			"Unable to query query.stored_query table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
+		state->error = 1;
 	}
 
 	pop_id( &state->query_stack );
@@ -503,6 +506,7 @@ static FromRelation* getFromRelation( BuildSQLState* state, int id ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to query query.from_relation table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
+		state->error = 1;
 	}
 
 	if( fr )
@@ -709,6 +713,7 @@ static FromRelation* getJoinList( BuildSQLState* state, int id ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to query query.from_relation table for join list: #%d %s",
 			errnum, msg ? msg : "No description available" ));
+		state->error = 1;
 	}
 
 	return join_list;
@@ -795,8 +800,9 @@ static SelectItem* getSelectList( BuildSQLState* state, int query_id ) {
 		const char* msg;
 		int errnum = dbi_conn_error( state->dbhandle, &msg );
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
-					  "Unable to query query.select_list table: #%d %s",
-					  errnum, msg ? msg : "No description available" ));
+			"Unable to query query.select_list table: #%d %s",
+			errnum, msg ? msg : "No description available" ));
+		state->error = 1;
 	}
 
 	return select_list;
@@ -917,6 +923,7 @@ static BindVar* getBindVar( BuildSQLState* state, const char* name ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to query query.bind_variable table for \"%s\": #%d %s",
 			name, errnum, msg ? msg : "No description available" ));
+		state->error = 1;
 	}
 
 	if( bind ) {
@@ -1068,6 +1075,7 @@ static Expression* getExpression( BuildSQLState* state, int id ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to query query.expression table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
+		state->error = 1;
 	}
 
 	pop_id( &state->expr_stack );
@@ -1116,6 +1124,8 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		type = EXP_NUMBER;
 	else if( !strcmp( type_str, "xop" ))
 		type = EXP_OPERATOR;
+	else if( !strcmp( type_str, "xser" ))
+		type = EXP_SERIES;
 	else if( !strcmp( type_str, "xstr" ))
 		type = EXP_STRING;
 	else if( !strcmp( type_str, "xsubq" ))
@@ -1175,6 +1185,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	Expression* right_operand = NULL;
 	StoredQ* subquery = NULL;
 	BindVar* bind = NULL;
+	Expression* subexp_list = NULL;
 
 	if( EXP_OPERATOR == type ) {
 		// Load left and/or right operands
@@ -1268,6 +1279,14 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				return NULL;
 			}
 		}
+	} else if( EXP_SERIES == type ) {
+		subexp_list = getExpressionList( state, id );
+		if( state->error ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to get subexpressions for expression series using operator \"%s\"",
+					operator ? operator : "," ));
+			return NULL;
+		}
 	} else if( EXP_SUBQUERY == type ) {
 		if( -1 == subquery_id ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1339,15 +1358,29 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	exp->cast_type_id = subquery_id;
 	exp->negate = negate;
 	exp->bind = bind;
+	exp->subexp_list = subexp_list;
 
 	return exp;
+}
+
+/**
+	@brief Free all the Expressions in a linked list of Expressions.
+	@param exp Pointer to the first Expression in the list.
+*/
+static void expressionListFree( Expression* exp ) {
+	while( exp ) {
+		Expression* next = exp->next;
+		expressionFree( exp );
+		exp = next;
+	}
 }
 
 /**
 	@brief Deallocate an Expression.
 	@param exp Pointer to the Expression to be deallocated.
 
-	Free the strings owned by the Expression.  Put the Expressions itself into a free list.
+	Free the strings owned by the Expression.  Put the Expression itself, and any
+	subexpressions that it owns, into a free list.
 */
 static void expressionFree( Expression* exp ) {
 	if( exp ) {
@@ -1371,13 +1404,70 @@ static void expressionFree( Expression* exp ) {
 			storedQFree( exp->subquery );
 			exp->subquery = NULL;
 		}
+
 		// We don't free the bind member here because the Expression doesn't own it;
 		// the bindvar_list hash owns it, so that multiple Expressions can reference it.
+
+		if( exp->subexp_list ) {
+			// Free the linked list of subexpressions
+			expressionListFree( exp->subexp_list );
+			exp->subexp_list = NULL;
+		}
 
 		// Prepend to the free list
 		exp->next = free_expression_list;
 		free_expression_list = exp;
 	}
+}
+
+/**
+	@brief Build a list of subexpressions.
+	@param state Pointer to the query-building context.
+	@param id ID of the parent Expression.
+	@return A pointer to the first in a linked list of Expressions, if there are any; or
+		NULL if there aren't any, or in case of an error.
+*/
+static Expression* getExpressionList( BuildSQLState* state, int id ) {
+	Expression* exp_list = NULL;
+	
+	// The ORDER BY is in descending order so that we can build the list by adding to
+	// the head, and it will wind up in the right order.
+	dbi_result result = dbi_conn_queryf( state->dbhandle,
+		"SELECT id, type, parenthesize, parent_expr, seq_no, literal, table_alias, column_name, "
+		"left_operand, operator, right_operand, function_id, subquery, cast_type, negate, "
+		"bind_variable "
+		"FROM query.expression WHERE parent_expr = %d "
+		"ORDER BY seq_no desc;", id );
+
+	if( result ) {
+		if( dbi_result_first_row( result ) ) {
+			while( 1 ) {
+				Expression* exp = constructExpression( state, result );
+				if( exp ) {
+					PRINT( "Found a subexpression\n" );
+					exp->next = exp_list;
+					exp_list  = exp;
+				} else {
+					osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+						"Unable to build subexpression list for expression id #%d", id ));
+					expressionListFree( exp_list );
+					exp_list = NULL;
+					break;
+				}
+				if( !dbi_result_next_row( result ) )
+					break;
+			};
+		}
+	} else {
+		const char* msg;
+		int errnum = dbi_conn_error( state->dbhandle, &msg );
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to query query.expression table for expression list: #%d %s",
+			errnum, msg ? msg : "No description available" ));
+		state->error = 1;
+	}
+
+	return exp_list;
 }
 
 /**
@@ -1422,6 +1512,7 @@ static OrderItem* getOrderByList( BuildSQLState* state, int query_id ) {
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to query query.order_by_list table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
+		state->error = 1;
 	}
 
 	return ord_list;
