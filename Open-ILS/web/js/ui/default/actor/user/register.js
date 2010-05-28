@@ -613,6 +613,36 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
     if(fmcls == 'au') {
         switch(fmfield) {
 
+            case 'usrname':
+                dojo.connect(widget.widget, 'onChange', 
+                    function() {
+                        var input = findWidget('au', 'usrname');
+                        var usrname = input.widget.attr('value');
+
+                        if(!usrname) {
+                            dojo.addClass(dojo.byId('uedit-dupe-username-warning'), 'hidden');
+                            return;
+                        }
+
+                        fieldmapper.standardRequest(
+                            ['open-ils.actor', 'open-ils.actor.username.exists'],
+                            {
+                                params: [openils.User.authtoken, usrname],
+                                oncomplete : function(r) {
+                                    var res = openils.Util.readResponse(r);
+                                    if(res) {
+                                        dojo.removeClass(dojo.byId('uedit-dupe-username-warning'), 'hidden');
+                                    } else {
+                                        dojo.addClass(dojo.byId('uedit-dupe-username-warning'), 'hidden');
+                                    }
+                                }
+                            }
+                        );
+                    }   
+                );
+
+                return;
+
             case 'profile': // when the profile changes, update the expire date
                 dojo.connect(widget.widget, 'onChange', 
                     function() {

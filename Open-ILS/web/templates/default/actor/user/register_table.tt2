@@ -6,7 +6,14 @@
             <button dojoType='dijit.form.Button' jsId='allCards'>See All</button>
         </td>
     </tr>
-    <tr fmclass='au' fmfield='usrname' required='required'/>
+    <tr fmclass='au' fmfield='usrname' required='required'>
+        <td/><td/><td/>
+        <td>
+            <span id='uedit-dupe-username-warning' style='color:red; font-weight:bold' class='hidden'>
+                Username is already in use
+            </span>
+        </td>
+    </tr>
     <tr fmclass='au' fmfield='passwd' required='required'/>
     <tr fmclass='au' fmfield='passwd2' required='required'><td/><td>Verify Password</td><td/></tr>
     <tr fmclass='au' fmfield='first_given_name' required='required'/>
