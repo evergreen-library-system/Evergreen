@@ -4002,6 +4002,41 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
     method    => "user_visible_circs",
+    api_name  => "open-ils.actor.history.circ.visible.print",
+    stream => 1,
+    signature => {
+        desc   => 'Returns printable output for the set of opt-in visible circulations',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
+            { desc => 'Options hash.  Supported fields are "limit" and "offset"', type => 'object' },
+        ],
+        return => {
+            desc => q/An action_trigger.event object or error event./,
+            type => 'object',
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "user_visible_circs",
+    api_name  => "open-ils.actor.history.circ.visible.email",
+    stream => 1,
+    signature => {
+        desc   => 'Emails the set of opt-in visible circulations to the requestor',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
+            { desc => 'Options hash.  Supported fields are "limit" and "offset"', type => 'object' },
+        ],
+        return => {
+            desc => q/undef, or event on error/
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "user_visible_circs",
     api_name  => "open-ils.actor.history.hold.visible",
     stream => 1,
     signature => {
@@ -4018,11 +4053,47 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => "user_visible_circs",
+    api_name  => "open-ils.actor.history.hold.visible.print",
+    stream => 1,
+    signature => {
+        desc   => 'Returns printable output for the set of opt-in visible holds',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
+            { desc => 'Options hash.  Supported fields are "limit" and "offset"', type => 'object' },
+        ],
+        return => {
+            desc => q/An action_trigger.event object or error event./,
+            type => 'object',
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "user_visible_circs",
+    api_name  => "open-ils.actor.history.hold.visible.email",
+    stream => 1,
+    signature => {
+        desc   => 'Emails the set of opt-in visible holds to the requestor',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
+            { desc => 'Options hash.  Supported fields are "limit" and "offset"', type => 'object' },
+        ],
+        return => {
+            desc => q/undef, or event on error/
+        }
+    }
+);
 
 sub user_visible_circs {
     my($self, $conn, $auth, $user_id, $options) = @_;
 
     my $is_hold = ($self->api_name =~ /hold/);
+    my $for_print = ($self->api_name =~ /print/);
+    my $for_email = ($self->api_name =~ /email/);
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
 
@@ -4049,15 +4120,64 @@ sub user_visible_circs {
         # "transform":"action.usr_visible_circs"}]}, "where":{"id":10}, "from":"au"}
     });
 
-    foreach (@$data) {
-        my $id = $_->{id};
+    return undef unless @$data;
+
+    if ($for_print) {
+
+        # collect the batch of objects
+
         if($is_hold) {
-            $conn->respond({hold => $e->retrieve_action_hold_request($id)});
+
+            my $hold_list = $e->search_action_hold_request({id => [map { $_->{id} } @$data]});
+            return $U->fire_object_event(undef, 'ahr.format.history.print', $hold_list, $$hold_list[0]->request_lib);
+
         } else {
-            $conn->respond({
-                circ => $e->retrieve_action_circulation($id),
-                summary => $U->create_circ_chain_summary($e, $id)
-            });
+
+            my $circ_list = $e->search_action_circulation({id => [map { $_->{id} } @$data]});
+            return $U->fire_object_event(undef, 'circ.format.history.print', $circ_list, $$circ_list[0]->circ_lib);
+        }
+
+    } elsif ($for_email) {
+
+        $conn->respond_complete(1) if $for_email;  # no sense in waiting
+
+        foreach (@$data) {
+
+            my $id = $_->{id};
+
+            if($is_hold) {
+
+                my $hold = $e->retrieve_action_hold_request($id);
+                $U->create_events_for_hook('ahr.format.history.email', $hold, $hold->request_lib, 1);
+                # events will be fired from action_trigger_runner
+
+            } else {
+
+                my $circ = $e->retrieve_action_circulation($id);
+                $U->create_events_for_hook('circ.format.history.email', $circ, $circ->circ_lib, 1);
+                # events will be fired from action_trigger_runner
+            }
+        }
+
+    } else { # just give me the data please
+
+        foreach (@$data) {
+
+            my $id = $_->{id};
+
+            if($is_hold) {
+
+                my $hold = $e->retrieve_action_hold_request($id);
+                $conn->respond({hold => $hold});
+
+            } else {
+
+                my $circ = $e->retrieve_action_circulation($id);
+                $conn->respond({
+                    circ => $circ,
+                    summary => $U->create_circ_chain_summary($e, $id)
+                });
+            }
         }
     }
 
