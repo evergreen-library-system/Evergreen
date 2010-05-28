@@ -1667,9 +1667,12 @@ sub fire_object_event {
 
 
 sub create_events_for_hook {
-    my($self, $hook, $obj, $org_id) = @_;
+    my($self, $hook, $obj, $org_id, $wait) = @_;
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    $ses->request('open-ils.trigger.event.autocreate', $hook, $obj, $org_id);
+    my $req = $ses->request('open-ils.trigger.event.autocreate', $hook, $obj, $org_id);
+    return undef unless $wait;
+    my $resp = $req->recv;
+    return $resp->content if $resp;
 }
 
 sub create_uuid_string {
