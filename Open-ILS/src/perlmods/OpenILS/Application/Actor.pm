@@ -3981,5 +3981,89 @@ sub event_def_opt_in_settings {
 }
 
 
+__PACKAGE__->register_method(
+    method    => "user_visible_circs",
+    api_name  => "open-ils.actor.history.circ.visible",
+    stream => 1,
+    signature => {
+        desc   => 'Returns the set of opt-in visible circulations accompanied by circulation chain summaries',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
+            { desc => 'Options hash.  Supported fields are "limit" and "offset"', type => 'object' },
+        ],
+        return => {
+            desc => q/An object with 2 fields: circulation and summary.  
+                circulation is the "circ" object.   summary is the related "accs" object/,
+            type => 'object',
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "user_visible_circs",
+    api_name  => "open-ils.actor.history.hold.visible",
+    stream => 1,
+    signature => {
+        desc   => 'Returns the set of opt-in visible holds',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
+            { desc => 'Options hash.  Supported fields are "limit" and "offset"', type => 'object' },
+        ],
+        return => {
+            desc => q/An object with 1 field: "hold"/,
+            type => 'object',
+        }
+    }
+);
+
+
+sub user_visible_circs {
+    my($self, $conn, $auth, $user_id, $options) = @_;
+
+    my $is_hold = ($self->api_name =~ /hold/);
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    $user_id ||= $e->requestor->id;
+    $options ||= {};
+    $options->{limit} ||= 50;
+    $options->{offset} ||= 0;
+
+    if($user_id != $e->requestor->id) {
+        my $perm = ($is_hold) ? 'VIEW_HOLD' : 'VIEW_CIRCULATIONS';
+        my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+        return $e->event unless $e->allowed($perm, $user->home_ou);
+    }
+
+    my $db_func = ($is_hold) ? 'action.usr_visible_holds' : 'action.usr_visible_circs';
+
+    my $data = $e->json_query({
+        from => [$db_func, $user_id],
+        limit => $$options{limit},
+        offset => $$options{offset}
+
+        # TODO: I only want IDs. code below didn't get me there
+        # {"select":{"au":[{"column":"id", "result_field":"id", 
+        # "transform":"action.usr_visible_circs"}]}, "where":{"id":10}, "from":"au"}
+    });
+
+    foreach (@$data) {
+        my $id = $_->{id};
+        if($is_hold) {
+            $conn->respond({hold => $e->retrieve_action_hold_request($id)});
+        } else {
+            $conn->respond({
+                circ => $e->retrieve_action_circulation($id),
+                summary => $U->create_circ_chain_summary($e, $id)
+            });
+        }
+    }
+
+    return undef;
+}
+
+
 
 1;

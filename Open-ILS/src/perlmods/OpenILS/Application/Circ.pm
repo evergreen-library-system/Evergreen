@@ -1476,11 +1476,7 @@ sub retrieve_circ_chain {
 	return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
 
     if($self->api_name =~ /summary/) {
-        my $sum = $e->json_query({from => ['action.summarize_circ_chain', $circ_id]})->[0];
-        return undef unless $sum;
-        my $obj = Fieldmapper::action::circ_chain_summary->new;
-        $obj->$_($sum->{$_}) for keys %$sum;
-        return $obj;
+        return $U->create_circ_chain_summary($e, $circ_id);
 
     } else {
 
