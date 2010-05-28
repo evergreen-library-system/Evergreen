@@ -665,17 +665,24 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 				if( !state->error ) {
 					if( expr->negate )
 						buffer_add( state->sql, "NOT " );
+					buffer_add( state->sql, " IN (" );
 
 					if( expr->subquery ) {
-						buffer_add( state->sql, " IN (" );
 						incr_indent( state );
 						build_Query( state, expr->subquery );
-						decr_indent( state );
-						add_newline( state );
-						buffer_add_char( state->sql, ')' );
+						if( state->error )
+							sqlAddMsg( state, "Unable to build subquery for IN condition" );
+						else {
+							decr_indent( state );
+							add_newline( state );
+							buffer_add_char( state->sql, ')' );
+						}
 					} else {
-						sqlAddMsg( state, "IN lists not yet supported" );
-						state->error = 1;
+						buildSeries( state, expr->subexp_list, expr->op );
+						if( state->error )
+							sqlAddMsg( state, "Unable to build IN list" );
+						else
+							buffer_add_char( state->sql, ')' );
 					}
 				}
 			}

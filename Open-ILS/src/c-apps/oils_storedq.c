@@ -1187,7 +1187,26 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	BindVar* bind = NULL;
 	Expression* subexp_list = NULL;
 
-	if( EXP_OPERATOR == type ) {
+	if( EXP_BIND == type ) {
+		if( bind_variable ) {
+			// To do: Build a BindVar
+			bind = getBindVar( state, bind_variable );
+			if( ! bind ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+								"Unable to load bind variable \"%s\" for expression # %d",
+		bind_variable, id ));
+				state->error = 1;
+				return NULL;
+			}
+			PRINT( "\tBind variable is \"%s\"\n", bind_variable );
+		} else {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+							"No variable specified for bind variable expression # %d",
+	   bind_variable, id ));
+			state->error = 1;
+			return NULL;
+		}
+	} else if( EXP_OPERATOR == type ) {
 		// Load left and/or right operands
 		if( -1 == left_operand_id && -1 == right_operand_id ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1233,12 +1252,20 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		}
 
 		if( -1 == subquery_id ) {
-			// To do: load IN list of subexpressions
-			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-				"IN lists not yet supported for expression # %d", id ));
-			state->error = 1;
-			return NULL;
+			// Load an IN list of subexpressions
+			subexp_list = getExpressionList( state, id );
+			if( state->error ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to get subexpressions for IN list" ));
+				return NULL;
+			} else if( !subexp_list ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"IN list is empty in expression # %d", id ));
+				state->error = 1;
+				return NULL;
+			}
 		} else {
+			// Load a subquery
 			subquery = getStoredQuery( state, subquery_id );
 			if( !subquery ) {
 				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1286,7 +1313,13 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				"Unable to get subexpressions for expression series using operator \"%s\"",
 					operator ? operator : "," ));
 			return NULL;
+		} else if( !subexp_list ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Series expression is empty in expression # %d", id ));
+			state->error = 1;
+			return NULL;
 		}
+
 	} else if( EXP_SUBQUERY == type ) {
 		if( -1 == subquery_id ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1309,25 +1342,6 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				return NULL;
 			}
 			PRINT( "\tExpression is subquery %d\n", subquery_id );
-		}
-	} else if( EXP_BIND == type ) {
-		if( bind_variable ) {
-			// To do: Build a BindVar
-			bind = getBindVar( state, bind_variable );
-			if( ! bind ) {
-				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-					"Unable to load bind variable \"%s\" for expression # %d",
-					bind_variable, id ));
-				state->error = 1;
-				return NULL;
-			}
-			PRINT( "\tBind variable is \"%s\"\n", bind_variable );
-		} else {
-			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-				"No variable specified for bind variable expression # %d",
-			bind_variable, id ));
-			state->error = 1;
-			return NULL;
 		}
 	}
 
