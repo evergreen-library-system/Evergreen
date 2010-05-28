@@ -584,18 +584,18 @@ DECLARE
     usr_view_start  actor.usr_setting%ROWTYPE;
 BEGIN
     SELECT * INTO usr_view_age FROM actor.usr_setting WHERE usr = usr_id AND name = 'history.circ.retention_age';
-    SELECT * INTO usr_view_start FROM actor.usr_setting WHERE usr = usr_id AND name = 'history.circ.retention_start_date';
+    SELECT * INTO usr_view_start FROM actor.usr_setting WHERE usr = usr_id AND name = 'history.circ.retention_start';
 
     IF usr_view_age.value IS NOT NULL AND usr_view_start.value IS NOT NULL THEN
         -- User opted in and supplied a retention age
-        IF oils_json_to_string(usr_view_age.value)::INTERVAL > AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ) THEN
-            view_age := AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ);
+        IF oils_json_to_text(usr_view_age.value)::INTERVAL > AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ) THEN
+            view_age := AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ);
         ELSE
-            view_age := oils_json_to_string(usr_view_age.value)::INTERVAL;
+            view_age := oils_json_to_text(usr_view_age.value)::INTERVAL;
         END IF;
     ELSIF usr_view_start.value IS NOT NULL THEN
         -- User opted in
-        view_age := AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ);
+        view_age := AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ);
     ELSE
         -- User did not opt in
         RETURN;
@@ -644,13 +644,13 @@ BEGIN
     END IF;
 
     IF usr_view_age.value IS NOT NULL THEN
-        view_age := oils_json_to_string(usr_view_age.value)::INTERVAL;
+        view_age := oils_json_to_text(usr_view_age.value)::INTERVAL;
     ELSE
         view_age := '2000 years'::INTERVAL;
     END IF;
 
     IF usr_view_count.value IS NOT NULL THEN
-        view_count := oils_json_to_string(usr_view_count.value)::INT;
+        view_count := oils_json_to_text(usr_view_count.value)::INT;
     ELSE
         view_count := 1000;
     END IF;
@@ -735,16 +735,16 @@ BEGIN
             SELECT * INTO usr_keep_age FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_age';
 
             usr_keep_start.value := NULL;
-            SELECT * INTO usr_keep_start FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_start_date';
+            SELECT * INTO usr_keep_start FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_start';
 
             IF usr_keep_age.value IS NOT NULL AND usr_keep_start.value IS NOT NULL THEN
-                IF oils_json_to_string(usr_keep_age.value)::INTERVAL > AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ) THEN
-                    keep_age := AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ);
+                IF oils_json_to_text(usr_keep_age.value)::INTERVAL > AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ) THEN
+                    keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
                 ELSE
-                    keep_age := oils_json_to_string(usr_keep_age.value)::INTERVAL;
+                    keep_age := oils_json_to_text(usr_keep_age.value)::INTERVAL;
                 END IF;
             ELSIF usr_keep_start.value IS NOT NULL THEN
-                keep_age := AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ);
+                keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
             ELSE
                 keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTEVAL );
             END IF;
