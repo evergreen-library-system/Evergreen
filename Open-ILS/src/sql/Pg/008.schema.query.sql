@@ -306,7 +306,7 @@ CREATE OR REPLACE RULE query_expr_xbet_insert_rule AS
         COALESCE(NEW.parenthesize, FALSE),
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xbet_update_rule AS
@@ -323,56 +323,6 @@ CREATE OR REPLACE RULE query_expr_xbet_update_rule AS
 
 CREATE OR REPLACE RULE query_expr_xbet_delete_rule AS
     ON DELETE TO query.expr_xbet
-    DO INSTEAD
-    DELETE FROM query.expression WHERE id = OLD.id;
-
--- Create updatable view for bind variable expressions
-
-CREATE OR REPLACE VIEW query.expr_xbind AS
-    SELECT
-		id,
-		parenthesize,
-		parent_expr,
-		seq_no,
-		bind_variable
-    FROM
-        query.expression
-    WHERE
-        type = 'xbind';
-
-CREATE OR REPLACE RULE query_expr_xbind_insert_rule AS
-    ON INSERT TO query.expr_xbind
-    DO INSTEAD
-    INSERT INTO query.expression (
-		id,
-		type,
-		parenthesize,
-		parent_expr,
-		seq_no,
-		bind_variable
-    ) VALUES (
-        COALESCE(NEW.id, NEXTVAL('query.expression_id_seq'::REGCLASS)),
-        'xbind',
-        COALESCE(NEW.parenthesize, FALSE),
-        NEW.parent_expr,
-        COALESCE(NEW.seq_no, 1),
-		NEW.bind_variable
-    );
-
-CREATE OR REPLACE RULE query_expr_xbind_update_rule AS
-    ON UPDATE TO query.expr_xbind
-    DO INSTEAD
-    UPDATE query.expression SET
-        id = NEW.id,
-        parenthesize = NEW.parenthesize,
-        parent_expr = NEW.parent_expr,
-        seq_no = NEW.seq_no,
-		bind_variable = NEW.bind_variable
-    WHERE
-        id = OLD.id;
-
-CREATE OR REPLACE RULE query_expr_xbind_delete_rule AS
-    ON DELETE TO query.expr_xbind
     DO INSTEAD
     DELETE FROM query.expression WHERE id = OLD.id;
 
@@ -459,7 +409,7 @@ CREATE OR REPLACE RULE query_expr_xbool_insert_rule AS
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
         NEW.literal,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xbool_update_rule AS
@@ -510,7 +460,7 @@ CREATE OR REPLACE RULE query_expr_xcase_insert_rule AS
         COALESCE(NEW.parenthesize, FALSE),
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xcase_update_rule AS
@@ -566,7 +516,7 @@ CREATE OR REPLACE RULE query_expr_xcast_insert_rule AS
         COALESCE(NEW.seq_no, 1),
 		NEW.left_operand,
 		NEW.cast_type,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xcast_update_rule AS
@@ -624,7 +574,7 @@ CREATE OR REPLACE RULE query_expr_xcol_insert_rule AS
         COALESCE(NEW.seq_no, 1),
 		NEW.table_alias,
 		NEW.column_name,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xcol_update_rule AS
@@ -679,7 +629,7 @@ CREATE OR REPLACE RULE query_expr_xex_insert_rule AS
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
 		NEW.subquery,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xex_update_rule AS
@@ -736,7 +686,7 @@ CREATE OR REPLACE RULE query_expr_xfld_insert_rule AS
         COALESCE(NEW.seq_no, 1),
 		NEW.column_name,
 		NEW.left_operand,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xfld_update_rule AS
@@ -791,7 +741,7 @@ CREATE OR REPLACE RULE query_expr_xfunc_insert_rule AS
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
 		NEW.function_id,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xfunc_update_rule AS
@@ -848,7 +798,7 @@ CREATE OR REPLACE RULE query_expr_xin_insert_rule AS
         COALESCE(NEW.seq_no, 1),
 		NEW.left_operand,
 		NEW.subquery,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xin_update_rule AS
@@ -903,7 +853,7 @@ CREATE OR REPLACE RULE query_expr_xisnull_insert_rule AS
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
 		NEW.left_operand,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xisnull_update_rule AS
@@ -954,7 +904,7 @@ CREATE OR REPLACE RULE query_expr_xnull_insert_rule AS
         COALESCE(NEW.parenthesize, FALSE),
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xnull_update_rule AS
@@ -1063,7 +1013,7 @@ CREATE OR REPLACE RULE query_expr_xop_insert_rule AS
 		NEW.left_operand,
 		NEW.operator,
 		NEW.right_operand,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xop_update_rule AS
@@ -1120,7 +1070,7 @@ CREATE OR REPLACE RULE query_expr_xser_insert_rule AS
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
 		NEW.operator,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xser_update_rule AS
@@ -1224,7 +1174,7 @@ CREATE OR REPLACE RULE query_expr_xsubq_insert_rule AS
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
 		NEW.subquery,
-		NEW.negate
+		COALESCE(NEW.negate, false)
     );
 
 CREATE OR REPLACE RULE query_expr_xsubq_update_rule AS
