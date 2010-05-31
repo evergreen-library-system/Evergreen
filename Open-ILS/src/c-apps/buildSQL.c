@@ -577,8 +577,31 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			if( expr->negate )
 				buffer_add( state->sql, "NOT " );
 
-			sqlAddMsg( state, "BETWEEN expressions not yet supported" );
-			state->error = 1;
+			buildExpression( state, expr->left_operand );
+			if( state->error ) {
+				sqlAddMsg( state, "Unable to emit left operand in BETWEEN expression # %d",
+					expr->id );
+				break;
+			}
+
+			buffer_add( state->sql, " BETWEEN " );
+
+			buildExpression( state, expr->subexp_list );
+			if( state->error ) {
+				sqlAddMsg( state, "Unable to emit lower limit in BETWEEN expression # %d",
+					expr->id );
+				break;
+			}
+
+			buffer_add( state->sql, " AND " );
+
+			buildExpression( state, expr->subexp_list->next );
+			if( state->error ) {
+				sqlAddMsg( state, "Unable to emit upper limit in BETWEEN expression # %d",
+					expr->id );
+				break;
+			}
+
 			break;
 		case EXP_BIND :
 			if( !expr->bind ) {     // Sanity check

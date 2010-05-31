@@ -1195,7 +1195,53 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	BindVar* bind = NULL;
 	Expression* subexp_list = NULL;
 
-	if( EXP_BIND == type ) {
+	if( EXP_BETWEEN == type ) {
+		// Get the left operand
+		if( -1 == left_operand_id ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"No left operand defined for BETWEEN expression # %d", id ));
+			state->error = 1;
+			return NULL;
+		} else {
+			left_operand = getExpression( state, left_operand_id );
+			if( !left_operand ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to get left operand in BETWEEN expression # %d", id ));
+				state->error = 1;
+				return NULL;
+			}
+		}
+
+		// Get the end points of the BETWEEN range
+		subexp_list = getExpressionList( state, id );
+		if( state->error ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to get subexpressions for BETWEEN expression # %d", id ));
+			expressionFree( left_operand );
+			return NULL;
+		} else if( !subexp_list ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"BETWEEN range is empty in expression # %d", id ));
+			state->error = 1;
+			expressionFree( left_operand );
+			return NULL;
+		} else if( !subexp_list->next ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"BETWEEN range has only one end point in expression # %d", id ));
+			state->error = 1;
+			expressionListFree( subexp_list );
+			expressionFree( left_operand );
+			return NULL;
+		} else if( subexp_list->next->next ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"BETWEEN range has more than two subexpressions in expression # %d", id ));
+			state->error = 1;
+			expressionListFree( subexp_list );
+			expressionFree( left_operand );
+			return NULL;
+		}
+
+	} else if( EXP_BIND == type ) {
 		if( bind_variable ) {
 			// To do: Build a BindVar
 			bind = getBindVar( state, bind_variable );
@@ -1221,6 +1267,22 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 					"Unable to get right operand in expression # %d", id ));
 				state->error = 1;
 				expressionFree( left_operand );
+				return NULL;
+			}
+		}
+
+	} else if( EXP_EXIST == type ) {
+		if( -1 == subquery_id ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Internal error: No subquery found for EXIST expression # %d", id ));
+			state->error = 1;
+			return NULL;
+		} else {
+			subquery = getStoredQuery( state, subquery_id );
+			if( !subquery ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to load subquery for EXIST expression # %d", id ));
+				state->error = 1;
 				return NULL;
 			}
 		}
@@ -1293,21 +1355,6 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 			if( !left_operand ) {
 				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 					"Unable to get left operand in expression # %d", id ));
-				state->error = 1;
-				return NULL;
-			}
-		}
-	} else if( EXP_EXIST == type ) {
-		if( -1 == subquery_id ) {
-			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-				"Internal error: No subquery found for EXIST expression # %d", id ));
-			state->error = 1;
-			return NULL;
-		} else {
-			subquery = getStoredQuery( state, subquery_id );
-			if( !subquery ) {
-				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-					"Unable to load subquery for EXIST expression # %d", id ));
 				state->error = 1;
 				return NULL;
 			}
