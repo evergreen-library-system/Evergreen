@@ -23,6 +23,7 @@ static void buildJoin( BuildSQLState* state, const FromRelation* join );
 static void buildSelectList( BuildSQLState* state, const SelectItem* item );
 static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list );
 static void buildExpression( BuildSQLState* state, const Expression* expr );
+static void buildFunction( BuildSQLState* state, const Expression* exp );
 static void buildSeries( BuildSQLState* state, const Expression* subexp_list, const char* op );
 static void buildBindVar( BuildSQLState* state, const BindVar* bind );
 static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* obj );
@@ -653,11 +654,7 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			state->error = 1;
 			break;
 		case EXP_FUNCTION :
-			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
-
-			sqlAddMsg( state, "Function expressions not yet supported" );
-			state->error = 1;
+			buildFunction( state, expr );
 			break;
 		case EXP_IN :
 			if( expr->left_operand ) {
@@ -678,7 +675,7 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 							buffer_add_char( state->sql, ')' );
 						}
 					} else {
-						buildSeries( state, expr->subexp_list, expr->op );
+						buildSeries( state, expr->subexp_list, NULL );
 						if( state->error )
 							sqlAddMsg( state, "Unable to build IN list" );
 						else
@@ -794,6 +791,29 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 }
 
 /**
+	@brief Build a function call.
+	@param state Pointer to the query-building context.
+	@param exp Pointer to an Expression representing a function call.
+
+	This function does not currently accommodate certain functions with idiosyncratic
+	syntax, such as the absence of parentheses, or the use of certain keywords in
+	in the parameter list.
+*/
+static void buildFunction( BuildSQLState* state, const Expression* expr ) {
+	if( expr->negate )
+		buffer_add( state->sql, "NOT " );
+
+	// We rely on the input side to ensure that the function name is available
+	buffer_add( state->sql, expr->function_name );
+	buffer_add_char( state->sql, '(' );
+
+	// Add the parameters, if any
+	buildSeries( state, expr->subexp_list, NULL );
+
+	buffer_add_char( state->sql, ')' );
+}
+
+/**
 	@brief Build a series of expressions separated by a specified operator, or by commas.
 	@param state Pointer to the query-building context.
 	@param subexp_list Pointer to the first Expression in a linked list.
@@ -803,6 +823,9 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 	subsequent operators will begin on a new line.
 */
 static void buildSeries( BuildSQLState* state, const Expression* subexp_list, const char* op ) {
+
+	if( !subexp_list)
+		return;                // List is empty
 
 	int comma = 0;             // Boolean; true if separator is a comma
 	int newline_needed = 0;    // Boolean; true if operator is AND or OR

@@ -176,13 +176,16 @@ struct Expression_ {
 	Expression* left_operand;
 	char*       op;
 	Expression* right_operand;
-	int         function_id;
 	int         subquery_id;
 	StoredQ*    subquery;
 	int         cast_type_id;
 	int         negate;             // Boolean
 	BindVar*    bind;
 	Expression* subexp_list;        // Linked list of subexpressions
+	// The next two columns come, not from query.expression,
+	// but from query.function_sig:
+	char*       function_name;
+	int         is_aggregate;       // Boolean
 };
 
 struct QSeq_ {

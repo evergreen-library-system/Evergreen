@@ -450,6 +450,15 @@ void storedQFree( StoredQ* sq ) {
 	}
 }
 
+/**
+	@brief Given an id from query.from_relation, load a FromRelation.
+	@param state Pointer the the query-building context.
+	@param id Id of the FromRelation.
+	@return Pointer to a newly-created FromRelation if successful, or NULL if not.
+
+	The calling code is responsible for freeing the new FromRelation by calling
+	fromRelationFree().
+*/
 static FromRelation* getFromRelation( BuildSQLState* state, int id ) {
 	FromRelation* fr = NULL;
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
@@ -1052,10 +1061,13 @@ static Expression* getExpression( BuildSQLState* state, int id ) {
 
 	Expression* exp = NULL;
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
-		"SELECT id, type, parenthesize, parent_expr, seq_no, literal, table_alias, column_name, "
-		"left_operand, operator, right_operand, function_id, subquery, cast_type, negate, "
-		"bind_variable "
-		"FROM query.expression WHERE id = %d;", id );
+		"SELECT exp.id, exp.type, exp.parenthesize, exp.parent_expr, exp.seq_no, "
+		"exp.literal, exp.table_alias, exp.column_name, exp.left_operand, exp.operator, "
+		"exp.right_operand, exp.subquery, exp.cast_type, exp.negate, exp.bind_variable, "
+		"func.function_name, COALESCE(func.is_aggregate, false) "
+		"FROM query.expression AS exp LEFT JOIN query.function_sig AS func "
+		"ON (exp.function_id = func.id) "
+		"WHERE exp.id = %d;", id );
 	if( result ) {
 		if( dbi_result_first_row( result ) ) {
 			exp = constructExpression( state, result );
@@ -1160,26 +1172,22 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	else
 		right_operand_id = dbi_result_get_int_idx( result, 11 );
 
-	int function_id;
-	if( dbi_result_field_is_null_idx( result, 12 ))
-		function_id = -1;
-	else
-		function_id = dbi_result_get_int_idx( result, 12 );
-
 	int subquery_id;
-	if( dbi_result_field_is_null_idx( result, 13 ))
+	if( dbi_result_field_is_null_idx( result, 12 ))
 		subquery_id = -1;
 	else
-		subquery_id = dbi_result_get_int_idx( result, 13 );
+		subquery_id = dbi_result_get_int_idx( result, 12 );
 
 	int cast_type_id;
-	if( dbi_result_field_is_null_idx( result, 14 ))
+	if( dbi_result_field_is_null_idx( result, 13 ))
 		cast_type_id = -1;
 	else
-		cast_type_id = dbi_result_get_int_idx( result, 14 );
+		cast_type_id = dbi_result_get_int_idx( result, 13 );
 
-	int negate = oils_result_get_bool_idx( result, 15 );
-	const char* bind_variable = dbi_result_get_string_idx( result, 16 );
+	int negate = oils_result_get_bool_idx( result, 14 );
+	const char* bind_variable = dbi_result_get_string_idx( result, 15 );
+	const char* function_name = dbi_result_get_string_idx( result, 16 );
+	int is_aggregate = oils_result_get_bool_idx( result, 17 );
 
 	Expression* left_operand = NULL;
 	Expression* right_operand = NULL;
@@ -1206,25 +1214,6 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 			state->error = 1;
 			return NULL;
 		}
-	} else if( EXP_OPERATOR == type ) {
-		// Load left and/or right operands
-		if( -1 == left_operand_id && -1 == right_operand_id ) {
-			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-				"Expression # %d is an operator with no operands", id ));
-			state->error = 1;
-			return NULL;
-		}
-
-		if( left_operand_id != -1 ) {
-			left_operand = getExpression( state, left_operand_id );
-			if( !left_operand ) {
-				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-					"Unable to get left operand in expression # %d", id ));
-				state->error = 1;
-				return NULL;
-			}
-		}
-
 		if( right_operand_id != -1 ) {
 			right_operand = getExpression( state, right_operand_id );
 			if( !right_operand ) {
@@ -1235,6 +1224,22 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				return NULL;
 			}
 		}
+
+	} else if( EXP_FUNCTION == type ) {
+		if( !function_name ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Function call expression # %d provides no function name", id ));
+			state->error = 1;
+			return NULL;
+		} else {
+			subexp_list = getExpressionList( state, id );
+			if( state->error ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to get parameter list for function expression # %d", id ));
+				return NULL;
+			}
+		}
+
 	} else if( EXP_IN == type ) {
 		if( -1 == left_operand_id ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1274,6 +1279,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				return NULL;
 			}
 		}
+
 	} else if( EXP_ISNULL == type ) {
 		if( -1 == left_operand_id ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1306,6 +1312,44 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				return NULL;
 			}
 		}
+
+	} else if( EXP_NUMBER == type ) {
+		if( !literal ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Numeric expression # %d provides no numeric value", id ));
+			state->error = 1;
+			return NULL;
+		}
+
+	} else if( EXP_OPERATOR == type ) {
+		// Load left and/or right operands
+		if( -1 == left_operand_id && -1 == right_operand_id ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Expression # %d is an operator with no operands", id ));
+			state->error = 1;
+			return NULL;
+		}
+
+		if( left_operand_id != -1 ) {
+			left_operand = getExpression( state, left_operand_id );
+			if( !left_operand ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to get left operand in expression # %d", id ));
+				state->error = 1;
+				return NULL;
+			}
+		}
+
+		if( right_operand_id != -1 ) {
+			right_operand = getExpression( state, right_operand_id );
+			if( !right_operand ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+								"Unable to get right operand in expression # %d", id ));
+				state->error = 1;
+				return NULL;
+			}
+		}
+
 	} else if( EXP_SERIES == type ) {
 		subexp_list = getExpressionList( state, id );
 		if( state->error ) {
@@ -1316,6 +1360,14 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		} else if( !subexp_list ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 				"Series expression is empty in expression # %d", id ));
+			state->error = 1;
+			return NULL;
+		}
+
+	} else if( EXP_STRING == type ) {
+		if( !literal ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"String expression # %d provides no string value", id ));
 			state->error = 1;
 			return NULL;
 		}
@@ -1366,13 +1418,14 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	exp->left_operand = left_operand;
 	exp->op = operator ? strdup( operator ) : NULL;
 	exp->right_operand = right_operand;
-	exp->function_id = function_id;
 	exp->subquery_id = subquery_id;
 	exp->subquery = subquery;
 	exp->cast_type_id = subquery_id;
 	exp->negate = negate;
 	exp->bind = bind;
 	exp->subexp_list = subexp_list;
+	exp->function_name = function_name ? strdup( function_name ) : NULL;
+	exp->is_aggregate = is_aggregate;
 
 	return exp;
 }
@@ -1428,6 +1481,11 @@ static void expressionFree( Expression* exp ) {
 			exp->subexp_list = NULL;
 		}
 
+		if( exp->function_name ) {
+			free( exp->function_name );
+			exp->function_name = NULL;
+		}
+
 		// Prepend to the free list
 		exp->next = free_expression_list;
 		free_expression_list = exp;
@@ -1447,11 +1505,14 @@ static Expression* getExpressionList( BuildSQLState* state, int id ) {
 	// The ORDER BY is in descending order so that we can build the list by adding to
 	// the head, and it will wind up in the right order.
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
-		"SELECT id, type, parenthesize, parent_expr, seq_no, literal, table_alias, column_name, "
-		"left_operand, operator, right_operand, function_id, subquery, cast_type, negate, "
-		"bind_variable "
-		"FROM query.expression WHERE parent_expr = %d "
-		"ORDER BY seq_no desc;", id );
+		"SELECT exp.id, exp.type, exp.parenthesize, exp.parent_expr, exp.seq_no, "
+		"exp.literal, exp.table_alias, exp.column_name, exp.left_operand, exp.operator, "
+		"exp.right_operand, exp.subquery, exp.cast_type, exp.negate, exp.bind_variable, "
+		"func.function_name, COALESCE(func.is_aggregate, false) "
+		"FROM query.expression AS exp LEFT JOIN query.function_sig AS func "
+		"ON (exp.function_id = func.id) "
+		"WHERE exp.parent_expr = %d "
+		"ORDER BY exp.seq_no desc;", id );
 
 	if( result ) {
 		if( dbi_result_first_row( result ) ) {
