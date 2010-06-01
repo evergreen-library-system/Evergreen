@@ -4118,6 +4118,8 @@ sub user_visible_circs {
         # TODO: I only want IDs. code below didn't get me there
         # {"select":{"au":[{"column":"id", "result_field":"id", 
         # "transform":"action.usr_visible_circs"}]}, "where":{"id":10}, "from":"au"}
+    },{
+        substream => 1
     });
 
     return undef unless @$data;
