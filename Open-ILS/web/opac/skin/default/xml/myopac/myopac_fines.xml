@@ -17,14 +17,7 @@
 			<tr id='myopac_fines_summary_row' class='hide_me'>
 				<td id='myopac_fines_summary_total' >&common.currency;</td>
 				<td id='myopac_fines_summary_paid' >&common.currency;</td>
-					 <td style="color:red;font-weight: bold;">
-						&common.currency;<span
-							id="myopac_fines_summary_balance"></span>
-						<span class="hide_me" id="myopac_fines_payment"> &nbsp;
-							[ <a id="myopac_fines_payment_link" href="javascript:void(0);">Pay this online</a>
-							<a id="myopac_fines_payment_cancel_link" href="javascript:void(0);" class="hide_me">Cancel payment</a> ]
-					</span>
-				</td>
+				<td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>&common.currency;</td>
 			</tr>
 		</tbody>
 	</table>
@@ -37,7 +30,6 @@
 	</div>
 	-->
 
-	<div id="myopac_payment_div"></div>
 
 	<!-- Table for circulation transactions only -->
 	<div id='myopac_circ_trans_div' class='hide_me'>
