@@ -232,10 +232,15 @@ sub indb_hold_permit {
     return [OpenILS::Event->new('NO_POLICY_MATCHPOINT')] unless @$results;
     return [] if $U->is_true($results->[0]->{success});
 
-    my @events;
-    push(@events, OpenILS::Event->new(
-        $LEGACY_HOLD_EVENT_MAP->{$_->{fail_part}})) for @$results;
-    return \@events;
+    return [
+        map {
+            my $event = new OpenILS::Event(
+                $LEGACY_HOLD_EVENT_MAP->{$_->{"fail_part"}} || $_->{"fail_part"}
+            );
+            $event->{"payload"} = {"fail_part" => $_->{"fail_part"}};
+            $event;
+        } @$results
+    ];
 }
 
 
