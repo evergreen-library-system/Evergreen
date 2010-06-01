@@ -623,30 +623,37 @@ DECLARE
     view_count      INT;
     usr_view_count  actor.usr_setting%ROWTYPE;
     usr_view_age    actor.usr_setting%ROWTYPE;
+    usr_view_start  actor.usr_setting%ROWTYPE;
 BEGIN
     SELECT * INTO usr_view_count FROM actor.usr_setting WHERE usr = usr_id AND name = 'history.hold.retention_count';
     SELECT * INTO usr_view_age FROM actor.usr_setting WHERE usr = usr_id AND name = 'history.hold.retention_age';
+    SELECT * INTO usr_view_start FROM actor.usr_setting WHERE usr = usr_id AND name = 'history.hold.retention_start';
 
-    IF usr_view_count.value IS NULL AND usr_view_age.value IS NULL THEN
-        -- Only show "open" holds
-        FOR h IN
-            SELECT  *
-              FROM  action.hold_request
-              WHERE usr = usr_id
-                    AND fulfillment_time IS NULL
-                    AND cancel_time IS NULL
-              ORDER BY xact_start
-        LOOP
-            RETURN NEXT h;
-        END LOOP;
+    FOR h IN
+        SELECT  *
+          FROM  action.hold_request
+          WHERE usr = usr_id
+                AND fulfillment_time IS NULL
+                AND cancel_time IS NULL
+          ORDER BY request_time DESC
+    LOOP
+        RETURN NEXT h;
+    END LOOP;
 
+    IF usr_view_start.value IS NULL THEN
         RETURN;
     END IF;
 
     IF usr_view_age.value IS NOT NULL THEN
-        view_age := oils_json_to_text(usr_view_age.value)::INTERVAL;
+        -- User opted in and supplied a retention age
+        IF oils_json_to_string(usr_view_age.value)::INTERVAL > AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ) THEN
+            view_age := AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ);
+        ELSE
+            view_age := oils_json_to_string(usr_view_age.value)::INTERVAL;
+        END IF;
     ELSE
-        view_age := '2000 years'::INTERVAL;
+        -- User opted in
+        view_age := AGE(NOW(), oils_json_to_string(usr_view_start.value)::TIMESTAMPTZ);
     END IF;
 
     IF usr_view_count.value IS NOT NULL THEN
@@ -655,20 +662,14 @@ BEGIN
         view_count := 1000;
     END IF;
 
-    -- Else, show those /and/ some fulfilled/canceled holds
+    -- show some fulfilled/canceled holds
     FOR h IN
-        SELECT  *
-          FROM  action.hold_request
-          WHERE usr = usr_id
-                AND fulfillment_time IS NULL
-                AND cancel_time IS NULL
-                    UNION ALL
         SELECT  *
           FROM  action.hold_request
           WHERE usr = usr_id
                 AND ( fulfillment_time IS NOT NULL OR cancel_time IS NOT NULL )
                 AND request_time > NOW() - view_age
-          ORDER BY request_time
+          ORDER BY request_time DESC
           LIMIT view_count
     LOOP
         RETURN NEXT h;

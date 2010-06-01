@@ -5191,6 +5191,12 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
         oils_i18n_gettext('history.hold.retention_age','Historical Hold Retention Age','cust','description'),
         'interval'
     ),(
+        'history.hold.retention_start',
+        TRUE,
+        oils_i18n_gettext('history.hold.retention_start','Historical Hold Retention Start Date','cust','label'),
+        oils_i18n_gettext('history.hold.retention_start','Historical Hold Retention Start Date','cust','description'),
+        'interval'
+    ),(
         'history.hold.retention_count',
         TRUE,
         oils_i18n_gettext('history.hold.retention_count','Historical Hold Retention Count','cust','label'),
