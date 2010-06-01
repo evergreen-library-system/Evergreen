@@ -15,7 +15,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 # --------------------------------------------------------------------
-package OpenILS::Application::CreditCard;
+package OpenILS::Application::Circ::CreditCard;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
@@ -79,36 +79,32 @@ sub get_processor_settings {
     };
 }
 
-__PACKAGE__->register_method(
-    method    => 'process_payment',
-    api_name  => 'open-ils.credit.process',
-    signature => {
-        desc   => 'Process a payment via a supported processor (AuthorizeNet, Paypal)',
-        params => [
-            { desc => q/Hash of arguments with these keys:
-                patron_id: Not a barcode, but a patron's internal ID
-                       ou: Org unit where transaction happens
-                processor: Payment processor to use (AuthorizeNet, PayPal, etc)
-                       cc: credit card number
-                     cvv2: 3 or 4 digits from back of card
-                   amount: transaction value
-                   action: optional (default: Normal Authorization)
-               first_name: optional (default: patron's first_given_name field)
-                last_name: optional (default: patron's family_name field)
-                  address: optional (default: patron's street1 field + street2)
-                     city: optional (default: patron's city field)
-                    state: optional (default: patron's state field)
-                      zip: optional (default: patron's zip field)
-                  country: optional (some processor APIs: 2 letter code.)
-              description: optional
-                /, type => 'hash' }
-        ],
-        return => { desc => 'Hash of status information', type =>'hash' }
-    }
-);
+#    signature => {
+#        desc   => 'Process a payment via a supported processor (AuthorizeNet, Paypal)',
+#        params => [
+#            { desc => q/Hash of arguments with these keys:
+#                patron_id: Not a barcode, but a patron's internal ID
+#                       ou: Org unit where transaction happens
+#                processor: Payment processor to use (AuthorizeNet, PayPal, etc)
+#                       cc: credit card number
+#                     cvv2: 3 or 4 digits from back of card
+#                   amount: transaction value
+#                   action: optional (default: Normal Authorization)
+#               first_name: optional (default: patron's first_given_name field)
+#                last_name: optional (default: patron's family_name field)
+#                  address: optional (default: patron's street1 field + street2)
+#                     city: optional (default: patron's city field)
+#                    state: optional (default: patron's state field)
+#                      zip: optional (default: patron's zip field)
+#                  country: optional (some processor APIs: 2 letter code.)
+#              description: optional
+#                /, type => 'hash' }
+#        ],
+#        return => { desc => 'Hash of status information', type =>'hash' }
+#    }
 
 sub process_payment {
-    my ($self, $client, $argshash) = @_; # $client is unused in this sub
+    my ($argshash) = @_;
 
     # Confirm some required arguments.
     return OpenILS::Event->new('BAD_PARAMS')

@@ -65,7 +65,36 @@ __PACKAGE__->register_method(
                     ], 
                 }/, type => 'hash'
             },
-        ]
+        ],
+        "return" => {
+            "desc" =>
+                q{1 on success, event on failure.  Event possibilities include:
+                BAD_PARAMS
+                    (Bad parameters were given to this API method itself.
+                    See note field.)
+                CREDIT_PROCESSOR_NOT_SPECIFIED
+                    (Evergreen has not been set up to process CC payments)
+                CREDIT_PROCESSOR_NOT_ALLOWED
+                    (Evergreen has been incorrectly setup for CC payments)
+                CREDIT_PROCESSOR_NOT_ENABLED
+                    (Evergreen has been set up for CC payments, but an admin
+                    has not explicitly enabled them)
+                CREDIT_PROCESSOR_BAD_PARAMS
+                    (Evergreen has been incorrectly setup for CC payments;
+                    specifically, the login and/or password for the CC
+                    processor weren't provided)
+                CREDIT_PROCESSOR_DECLINED_TRANSACTION
+                    (We contacted the CC processor to attempt the charge, but
+                    they declined it.  See the statusText field for their
+                    message.)
+                CREDIT_PROCESSOR_SUCCESS_WO_RECORD
+                    (A payment was processed successfully, but couldn't be
+                    recorded in Evergreen.  This is bad bad bad, as it means
+                    somebody made a payment but isn't getting credit for it.
+                    See note field for more info.)
+},
+            "type" => "number"
+        }
     }
 );
 sub make_payments {
@@ -201,10 +230,8 @@ sub make_payments {
         if ($cc_args->{where_process} == 1) {
             return OpenILS::Event->new('BAD_PARAMS', note => 'Need CC number')
                 if not $cc_args->{number};
-            my $response = $apputils->simplereq(
-                'open-ils.credit',
-                'open-ils.credit.process',
-                {
+            my $response =
+                OpenILS::Application::Circ::CreditCard::process_payment({
                     "desc" => $cc_args->{note},
                     "amount" => $total_paid,
                     "patron_id" => $user_id,
@@ -221,10 +248,13 @@ sub make_payments {
                     "city" => $cc_args->{billing_city},
                     "state" => $cc_args->{billing_state},
                     "zip" => $cc_args->{billing_zip},
-                }
-            );
+                });
 
             if (exists $response->{ilsevent}) {
+                $logger->info(
+                    "event response from process_payment(): " .
+                    $response->{"textcode"}
+                );
                 return $response;
             }
             if ($response->{statusCode} != 200) {

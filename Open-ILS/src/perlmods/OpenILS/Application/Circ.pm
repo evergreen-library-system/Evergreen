@@ -8,6 +8,7 @@ use OpenILS::Application::Circ::Survey;
 use OpenILS::Application::Circ::StatCat;
 use OpenILS::Application::Circ::Holds;
 use OpenILS::Application::Circ::HoldNotify;
+use OpenILS::Application::Circ::CreditCard;
 use OpenILS::Application::Circ::Money;
 use OpenILS::Application::Circ::NonCat;
 use OpenILS::Application::Circ::CopyLocations;
