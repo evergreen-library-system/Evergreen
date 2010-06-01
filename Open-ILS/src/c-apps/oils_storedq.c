@@ -118,7 +118,7 @@ StoredQ* getStoredQuery( BuildSQLState* state, int query_id ) {
 	} else {
 		const char* msg;
 		int errnum = dbi_conn_error( state->dbhandle, &msg );
-		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state, 
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to query query.stored_query table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
@@ -302,7 +302,7 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 */
 static QSeq* loadChildQueries( BuildSQLState* state, int parent_id, const char* type_str ) {
 	QSeq* child_list = NULL;
-	
+
 	// The ORDER BY is in descending order so that we can build the list by adding to
 	// the head, and it will wind up in the right order.
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
@@ -687,7 +687,7 @@ static FromRelation* constructFromRelation( BuildSQLState* state, dbi_result res
 */
 static FromRelation* getJoinList( BuildSQLState* state, int id ) {
 	FromRelation* join_list = NULL;
-	
+
 	// The ORDER BY is in descending order so that we can build the list by adding to
 	// the head, and it will wind up in the right order.
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
@@ -771,6 +771,11 @@ static void fromRelationFree( FromRelation* fr ) {
 	}
 }
 
+/**
+	@brief Build a SELECT list for a given query ID.
+	@param state Pointer to the query-building context.
+	@param query_id ID of the query to which the SELECT list belongs.
+*/
 static SelectItem* getSelectList( BuildSQLState* state, int query_id ) {
 	SelectItem* select_list = NULL;
 
@@ -834,7 +839,7 @@ static SelectItem* constructSelectItem( BuildSQLState* state, dbi_result result 
 	int expression_id        = dbi_result_get_int_idx( result, 4 );
 	const char* column_alias = dbi_result_get_string_idx( result, 5 );
 	int grouped_by           = oils_result_get_bool_idx( result, 6 );
-	
+
 	// Construct an Expression
 	Expression* expression = getExpression( state, expression_id );
 	if( !expression ) {
@@ -919,7 +924,7 @@ static BindVar* getBindVar( BuildSQLState* state, const char* name ) {
 			bind = constructBindVar( state, result );
 			if( bind ) {
 				PRINT( "Got a bind variable for %s\n", name );
-			} else 
+			} else
 				osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 					"Unable to load bind variable \"%s\"", name ));
 		} else {
@@ -1047,7 +1052,7 @@ static void bindVarFree( char* key, void* p ) {
 	@return Pointer to a newly-created Expression if successful, or NULL if not.
 */
 static Expression* getExpression( BuildSQLState* state, int id ) {
-	
+
 	// Check the stack to see if the current expression is nested inside itself.  If it is,
 	// then abort in order to avoid infinite recursion.  If it isn't, then add it to the
 	// stack.  (Make sure to pop it off the stack before returning.)
@@ -1064,7 +1069,7 @@ static Expression* getExpression( BuildSQLState* state, int id ) {
 		"SELECT exp.id, exp.type, exp.parenthesize, exp.parent_expr, exp.seq_no, "
 		"exp.literal, exp.table_alias, exp.column_name, exp.left_operand, exp.operator, "
 		"exp.right_operand, exp.subquery, exp.cast_type, exp.negate, exp.bind_variable, "
-		"func.function_name, COALESCE(func.is_aggregate, false) "
+		"func.function_name "
 		"FROM query.expression AS exp LEFT JOIN query.function_sig AS func "
 		"ON (exp.function_id = func.id) "
 		"WHERE exp.id = %d;", id );
@@ -1077,7 +1082,7 @@ static Expression* getExpression( BuildSQLState* state, int id ) {
 				PRINT( "\ttype = %d\n", exp->type );
 				PRINT( "\tparenthesize = %d\n", exp->parenthesize );
 				PRINT( "\tcolumn_name = %s\n", exp->column_name ? exp->column_name : "(none)" );
-			} else 
+			} else
 				osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 					"Unable to construct an Expression for id = %d", id ));
 		}
@@ -1106,7 +1111,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 
 	int id = dbi_result_get_int_idx( result, 1 );
 	const char* type_str = dbi_result_get_string_idx( result, 2 );
-	
+
 	ExprType type;
 	if( !strcmp( type_str, "xbet" ))
 		type = EXP_BETWEEN;
@@ -1152,7 +1157,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		parent_expr_id = -1;
 	else
 		parent_expr_id = dbi_result_get_int_idx( result, 4 );
-	
+
 	int seq_no = dbi_result_get_int_idx( result, 5 );
 	const char* literal = dbi_result_get_string_idx( result, 6 );
 	const char* table_alias = dbi_result_get_string_idx( result, 7 );
@@ -1187,7 +1192,6 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	int negate = oils_result_get_bool_idx( result, 14 );
 	const char* bind_variable = dbi_result_get_string_idx( result, 15 );
 	const char* function_name = dbi_result_get_string_idx( result, 16 );
-	int is_aggregate = oils_result_get_bool_idx( result, 17 );
 
 	Expression* left_operand = NULL;
 	Expression* right_operand = NULL;
@@ -1472,7 +1476,6 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	exp->bind = bind;
 	exp->subexp_list = subexp_list;
 	exp->function_name = function_name ? strdup( function_name ) : NULL;
-	exp->is_aggregate = is_aggregate;
 
 	return exp;
 }
@@ -1548,14 +1551,14 @@ static void expressionFree( Expression* exp ) {
 */
 static Expression* getExpressionList( BuildSQLState* state, int id ) {
 	Expression* exp_list = NULL;
-	
+
 	// The ORDER BY is in descending order so that we can build the list by adding to
 	// the head, and it will wind up in the right order.
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
 		"SELECT exp.id, exp.type, exp.parenthesize, exp.parent_expr, exp.seq_no, "
 		"exp.literal, exp.table_alias, exp.column_name, exp.left_operand, exp.operator, "
 		"exp.right_operand, exp.subquery, exp.cast_type, exp.negate, exp.bind_variable, "
-		"func.function_name, COALESCE(func.is_aggregate, false) "
+		"func.function_name "
 		"FROM query.expression AS exp LEFT JOIN query.function_sig AS func "
 		"ON (exp.function_id = func.id) "
 		"WHERE exp.parent_expr = %d "
@@ -1796,7 +1799,7 @@ static void push_id( IdNode** stack, int id, const char* alias ) {
 			node->alias = strdup( alias );
 		else
 			node->alias = NULL;
-		
+
 		// Reseat the stack
 		*stack = node;
 	}

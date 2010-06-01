@@ -21,6 +21,7 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query );
 static void buildFrom( BuildSQLState* state, const FromRelation* core_from );
 static void buildJoin( BuildSQLState* state, const FromRelation* join );
 static void buildSelectList( BuildSQLState* state, const SelectItem* item );
+static void buildGroupBy( BuildSQLState* state, const SelectItem* sel_list );
 static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list );
 static void buildExpression( BuildSQLState* state, const Expression* expr );
 static void buildFunction( BuildSQLState* state, const Expression* exp );
@@ -293,7 +294,8 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 		decr_indent( state );
 	}
 
-	// To do: build GROUP BY clause, if there is one
+	// Build GROUP BY clause, if there is one
+	buildGroupBy( state, query->select_list );
 
 	// Build HAVING clause, if there is one
 	if( query->having_clause ) {
@@ -403,6 +405,11 @@ static void buildFrom( BuildSQLState* state, const FromRelation* core_from ) {
 	decr_indent( state );
 }
 
+/**
+	@brief Add a JOIN clause.
+	@param state Pointer to the query-building context.
+	@param join Pointer to the FromRelation representing the JOIN to be added.
+*/
 static void buildJoin( BuildSQLState* state, const FromRelation* join ) {
 	add_newline( state );
 	switch( join->join_type ) {
@@ -524,6 +531,35 @@ static void buildSelectList( BuildSQLState* state, const SelectItem* item ) {
 		item = item->next;
 	};
 	buffer_add_char( state->sql, ' ' );
+}
+
+/**
+	@brief Add a GROUP BY clause, if there is one, to the current query.
+	@param state Pointer to the query-building context.
+	@param sel_list Pointer to the first node in a linked list of SelectItems
+
+	We reference the GROUP BY items by number, not by repeating the expressions.
+*/
+static void buildGroupBy( BuildSQLState* state, const SelectItem* sel_list ) {
+	int seq = 0;       // Sequence number of current SelectItem
+	int first = 1;     // Boolean: true for the first GROUPed BY item
+	while( sel_list ) {
+		++seq;
+
+		if( sel_list->grouped_by ) {
+			if( first ) {
+				add_newline( state );
+				buffer_add( state->sql, "GROUP BY " );
+				first = 0;
+			}
+			else
+				buffer_add( state->sql, ", " );
+
+			buffer_fadd( state->sql, "%d", seq );
+		}
+
+		sel_list = sel_list->next;
+	}
 }
 
 /**
