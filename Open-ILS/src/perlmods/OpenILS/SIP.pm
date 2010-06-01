@@ -78,15 +78,7 @@ sub to_bool {
 }
 
 sub editor {
-	return $editor 
-		if $editor and $editor->{session}
-		and $editor->session->connected;
 	return $editor = make_editor();
-}
-
-sub reset_editor {
-	$editor = undef;
-	return editor();
 }
 
 sub config {
@@ -95,17 +87,11 @@ sub config {
 
 
 # Creates the global editor object
+my $cstore_init = 1; # call init on first use
 sub make_editor {
-	require OpenILS::Utils::CStoreEditor;
-	my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
-	# gnarly cstore hack to re-gen autogen methods after IDL is loaded
-	if(!UNIVERSAL::can($e, 'search_actor_card')) {
-		syslog("LOG_WARNING", "OILS: Reloading CStoreEditor...");
-		delete $INC{'OpenILS/Utils/CStoreEditor.pm'};
-		require OpenILS::Utils::CStoreEditor;
-		$e = OpenILS::Utils::CStoreEditor->new(xact =>1);
-	}
-	return $e;
+    OpenILS::Utils::CStoreEditor::init() if $cstore_init;
+    $cstore_init = 0;
+	return OpenILS::Utils::CStoreEditor->new;
 }
 
 =head2 clean_text(scalar)
