@@ -103,7 +103,10 @@ SelfCheckManager.prototype.init = function() {
         'oils-selfck-pay-fines-link' : function() {
             self.goToTab("payment");
             self.drawPayFinesPage(
-                self.patron, function() {
+                self.patron,
+                self.getSelectedFinesTotal(),
+                self.getSelectedFineTransactions(),
+                function() {
                     self.updateFinesSummary();
                     self.drawFinesPage();
                 }
@@ -142,6 +145,31 @@ SelfCheckManager.prototype.init = function() {
     }
 }
 
+
+SelfCheckManager.prototype.getSelectedFinesTotal = function() {
+    var total = 0;
+    dojo.forEach(
+        dojo.query("[name=selector]", this.finesTbody),
+        function(input) {
+            if(input.checked)
+                total += Number(input.getAttribute("balance_owed"));
+        }
+    );
+    return total.toFixed(2);
+};
+
+SelfCheckManager.prototype.getSelectedFineTransactions = function() {
+    return dojo.query("[name=selector]", this.finesTbody).
+        filter(function (o) { return o.checked }).
+        map(
+            function (o) {
+                return [
+                    o.getAttribute("xact"),
+                    Number(o.getAttribute("balance_owed")).toFixed(2)
+                ];
+            }
+        );
+};
 
 /**
  * Registers a new workstion

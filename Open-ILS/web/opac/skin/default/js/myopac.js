@@ -10,6 +10,7 @@ var holdStatusCache = {};
 var allowPendingAddr = false;
 var myopacEnableRefWorks = false;
 var myopacRefWorksHost = 'http://www.refworks.com';
+var paymentForm = new PaymentForm();
 
 
 function clearNodes( node, keepArray ) {
@@ -567,13 +568,52 @@ function _myOPACShowFines(r) {
 		balance	= _finesFormatNumber(summary.balance_owed());
 
 		var req = new Request(FETCH_TRANSACTIONS, G.user.session, G.user.id() );
-		req.callback(myOPACShowTransactions);
+		req.callback(function(r) { myOPACShowTransactions(r, balance); });
 		req.send();
 	}
 
 	$('myopac_fines_summary_total').appendChild(text(total));
 	$('myopac_fines_summary_paid').appendChild(text(paid));
-	$('myopac_fines_summary_balance').appendChild(text(balance));
+	$("myopac_fines_summary_balance").appendChild(text(balance));
+
+}
+
+function preparePaymentForm(balance, transactions) {
+	if (Number(balance) > 0) {
+		var cxl_link = $("myopac_fines_payment_cancel_link");
+		var pay_link = $("myopac_fines_payment_link");
+
+		cxl_link.onclick = function() {
+			hideMe(cxl_link);
+			unHideMe(pay_link);
+			unHideMe($("myopac_circ_trans_div"));
+			$("myopac_payment_div").innerHTML = "";
+		};
+		pay_link.onclick = function() {
+			dojo.xhrGet({
+				"url": "/eg/circ/selfcheck/payment",
+				"load": function(resp) {
+					hideMe($("myopac_circ_trans_div"));
+					$("myopac_payment_div").innerHTML = resp;
+					dojo.parser.parse($("myopac_payment_div"));
+					paymentForm.drawPayFinesPage(
+						G.user, balance, dojo.map(
+							transactions, function(t) {
+								return [t.id(), Number(t.balance_owed()).toFixed(2)];
+							}
+						),
+						function() { alert("Payment registered"); /* LFW XXX */ }
+					);
+					hideMe(pay_link);
+					unHideMe(cxl_link);
+				},
+				"error": function(e) {
+					alert("Error preparing payment form: " + e); // XXX i18n; user-friendliness
+				}
+			});
+		};
+		unHideMe($("myopac_fines_payment"));
+	}
 }
 
 function _finesFormatNumber(num) {
@@ -600,11 +640,12 @@ function _trimSeconds(time) {
     return d.iso8601Format('YMDHM',null,true,true);
 }
 
-function myOPACShowTransactions(r) {
+function myOPACShowTransactions(r, balance) {
 
 	if(myopacGenericTransTemplate || myopacCircTransTemplate) return;
 
 	var transactions = r.getResultObject();
+	var payment_xacts = [];
 
 	for( var idx in transactions ) {
 
@@ -618,12 +659,16 @@ function myOPACShowTransactions(r) {
 		else if(trans.xact_type() == 'grocery' ) 
 			myopacShowGenericTransaction( trans );
 
+		payment_xacts.push(trans);
+
 /*      XXX need to copy circulation output function here
 		else if(trans.xact_type() == 'reservation' ) 
 			myopacShowReservationTransaction( trans );
 */
 
 	}
+
+	preparePaymentForm(balance, payment_xacts);
 }
 
 var myopacGenericTransTemplate;

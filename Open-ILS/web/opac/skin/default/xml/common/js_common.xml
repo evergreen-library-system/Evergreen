@@ -57,15 +57,20 @@
 
 	<script type="text/javascript" src='/js/dojo/dojo/dojo.js'></script>
 	<script type="text/javascript" src='/js/dojo/dojo/openils_dojo.js'></script>
-    <script type="text/javascript" src='/js/dojo/opensrf/opensrf.js'></script>
+	<script type="text/javascript" src='/js/dojo/opensrf/opensrf.js'></script>
+	<script type="text/javascript" src="/js/ui/default/circ/selfcheck/payment.js"></script>
 
 	<script language="javascript" type="text/javascript">
 		dojo.addOnLoad(init);
 		dojo.require("dijit._Calendar");
 		dojo.require("dijit.form.DateTextBox");
+		dojo.require("dijit.form.NumberSpinner");
+		dojo.require("dijit.form.CheckBox");
+		dojo.require("dijit.form.TextBox");
 		dojo.require("dijit.form.FilteringSelect");
 		dojo.require("dojo.date.locale");
 		dojo.require("dojo.date.stamp");
 		dojo.require("dojo.parser");
 		dojo.require("openils.I18N");
+		dojo.require("openils.Util");
 	</script>

@@ -1,22 +1,10 @@
-var proto = (
-    (typeof(SelfCheckManager) == "undefined") ?
-        (function PaymentForm() {}) : SelfCheckManager
-).prototype;
+function PaymentForm() {}
+var proto = (typeof(SelfCheckManager) == "undefined" ?
+    PaymentForm : SelfCheckManager).prototype;
 
-proto.drawPayFinesPage = function(patron, onPaymentSubmit) {
-    if (!this.finesTBody)
-        this.finesTBody = dojo.byId("oils-selfck-fines-tbody");
-
-    // find the total selected amount
-    var total = 0;
-    dojo.forEach(
-        dojo.query('[name=selector]', this.finesTbody),
-        function(input) {
-            if(input.checked)
-                total += Number(input.getAttribute('balance_owed'));
-        }
-    );
-    total = total.toFixed(2);
+proto.drawPayFinesPage = function(patron, total, xacts, onPaymentSubmit) {
+    if (typeof(this.authtoken) == "undefined")
+        this.authtoken = patron.session;
 
     dojo.query("span", "oils-selfck-cc-payment-summary")[0].innerHTML = total;
 
@@ -26,9 +14,29 @@ proto.drawPayFinesPage = function(patron, onPaymentSubmit) {
     oilsSelfckCCYear.attr('value', new Date().getFullYear());
     oilsSelfckCCFName.attr('value', patron.first_given_name());
     oilsSelfckCCLName.attr('value', patron.family_name());
+
     var addr = patron.billing_address() || patron.mailing_address();
 
-    if(addr) {
+    if (typeof(addr) != "object") {
+        /* still don't have usable address? try getting better user object. */
+        fieldmapper.standardRequest(
+            ["open-ils.actor", "open-ils.actor.user.fleshed.retrieve"], {
+                "params": [
+                    patron.session, patron.id(), [
+                        "billing_address", "mailing_address"
+                    ]
+                ],
+                "async": false,
+                "oncomplete": function(r) {
+                    var usr = openils.Util.readResponse(r);
+                    if (usr)
+                        addr = usr.billing_address() || usr.mailing_address();
+                }
+            }
+        );
+    }
+
+    if (addr) {
         oilsSelfckCCStreet.attr('value', addr.street1()+' '+addr.street2());
         oilsSelfckCCCity.attr('value', addr.city());
         oilsSelfckCCState.attr('value', addr.state());
@@ -54,8 +62,12 @@ proto.drawPayFinesPage = function(patron, onPaymentSubmit) {
     var self = this;
     dojo.connect(oilsSelfckCCSubmit, 'onClick',
         function() {
-            progressDialog.show(true);
-            self.sendCCPayment(onPaymentSubmit);
+            /* XXX better to replace this check on progressDialog with some
+             * kind of passed-in function to support different use cases */
+            if (typeof(progressDialog) != "undefined")
+                progressDialog.show(true);
+
+            self.sendCCPayment(patron, xacts, onPaymentSubmit);
         }
     );
 }
@@ -66,12 +78,12 @@ proto.drawPayFinesPage = function(patron, onPaymentSubmit) {
 // remote locations that dissalow credit card payments.
 // TODO add per-transaction blocks for orgs that do not support CC payments
 
-proto.sendCCPayment = function(onPaymentSubmit) {
+proto.sendCCPayment = function(patron, xacts, onPaymentSubmit) {
 
     var args = {
-        userid : this.patron.id(),
+        userid : patron.id(),
         payment_type : 'credit_card_payment',
-        payments : [],
+        payments : xacts,
         cc_args : {
             where_process : 1,
             number : oilsSelfckCCNumber.attr('value'),
@@ -87,31 +99,14 @@ proto.sendCCPayment = function(onPaymentSubmit) {
         }
     }
 
-
-    // find the selected transactions
-    dojo.forEach(
-        dojo.query('[name=selector]', this.finesTbody),
-        function(input) {
-            if(input.checked) {
-                args.payments.push([
-                    input.getAttribute('xact'),
-                    Number(input.getAttribute('balance_owed')).toFixed(2)
-                ]);
-            }
-        }
-    );
-
-
     var resp = fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.money.payment'],
         {params : [this.authtoken, args]}
     );
 
-    progressDialog.hide();
+    if (typeof(progressDialog) != "undefined")
+        progressDialog.hide();
 
-    var evt = openils.Event.parse(resp);
-    if (evt)
-        alert(evt);
-    else if (typeof(onPaymentSubmit) == "function")
-        onPaymentSubmit();
+    if (typeof(onPaymentSubmit) == "function")
+        onPaymentSubmit(resp);
 }
