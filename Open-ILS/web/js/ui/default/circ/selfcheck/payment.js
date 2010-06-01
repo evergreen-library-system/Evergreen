@@ -107,6 +107,10 @@ proto.sendCCPayment = function(patron, xacts, onPaymentSubmit) {
     if (typeof(progressDialog) != "undefined")
         progressDialog.hide();
 
-    if (typeof(onPaymentSubmit) == "function")
+    if (typeof(onPaymentSubmit) == "function") {
         onPaymentSubmit(resp);
+    } else {
+        var evt = openils.Event.parse(resp);
+        if (evt) alert(evt);
+    }
 }
