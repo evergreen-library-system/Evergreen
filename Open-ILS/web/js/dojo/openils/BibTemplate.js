@@ -17,7 +17,7 @@
 if(!dojo._hasResource["openils.BibTemplate"]) {
 
     dojo.require('DojoSRF');
-    dojo.require('dojox.data.dom');
+    dojo.require('dojox.xml.parser');
     dojo.require('dojo.string');
     dojo._hasResource["openils.BibTemplate"] = true;
     dojo.provide("openils.BibTemplate");
@@ -49,6 +49,15 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                 new_nl.push(old_nl[i]);
             }
             return new_nl;
+        },
+
+        textContent : function (node) {
+            var content = '';
+            if (node) {
+                if(window.ActiveXObject) content = node.text;
+                else content = node.textContent;
+            }
+            return content;
         },
 
         render : function() {
@@ -122,25 +131,25 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     var templated = slot.getAttribute('templated') == 'true';
                                     if (debug) alert('BibTemplate debug -- slot ' + (templated ? 'is' : 'is not') + ' templated');
                                     if (templated) {
+                                        if (debug) alert('BibTemplate debug -- slot template innerHTML:\n' + slot.innerHTML);
                                         var template_values = {};
 
                                         dojo.query(
                                             '*[type=opac/template-value]',
                                             slot
                                         ).orphan().forEach(function(x) {
-                                            dojo.setObject(
-                                                x.getAttribute('name'),
-                                                (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(x.innerHTML) ))(item_list,BT,bib,slot),
-                                                template_values
-                                            );
+                                            var name = x.getAttribute('name');
+                                            var value = (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(x.innerHTML) ))(item_list,BT,bib,slot);
+                                            if (name && (value || value == '')) template_values[name] = value;
                                         });
-    
+
+                                        if (debug) alert('BibTemplate debug -- template values:\n' + dojo.toJson( template_values ));
                                         slot.innerHTML = dojo.string.substitute( unescape(slot.innerHTML), template_values );
                                     }
 
                                     var handler_node = dojo.query( '*[type=opac/slot-format]', slot )[0];
-                                    if (handler_node) slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item', dojox.data.dom.textContent(handler_node) || handler_node.innerHTML);
-                                    else slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item','return dojox.data.dom.textContent(item) || item.innerHTML;');
+                                    if (handler_node) slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item', dojox.xml.parser.textContent(handler_node) || handler_node.innerHTML);
+                                    else slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item','return dojox.xml.parser.textContent(item) || item.innerHTML;');
 
                                     if (item_list.length) {
                                         var content = dojo.map(item_list, dojo.partial(slot_handler,item_list,BT,bib,slot)).join(joiner);

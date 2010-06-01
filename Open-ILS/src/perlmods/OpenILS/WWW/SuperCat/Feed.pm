@@ -426,7 +426,7 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 
 sub new {
 	my $class = shift;
-	my $self = $class->SUPER::build('<mods:modsCollection version="3.0" xmlns:mods="http://www.loc.gov/mods/"/>');
+	my $self = $class->SUPER::build('<modsCollection version="3.0" xmlns="http://www.loc.gov/mods/" xmlns:mods="http://www.loc.gov/mods/"/>');
 	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/mods:modsCollection';
 	return $self;
@@ -456,15 +456,15 @@ sub link {
 	if ($type eq 'unapi' || $type eq 'opac') {
 		$self->_create_node(
 			'mods:mods',
-			'http://www.loc.gov/mods/',
-			'mods:relatedItem',
+            undef,
+			'relatedItem',
 			undef,
 			{ type => 'otherFormat', id => 'link-'.$linkid }
 		);
 		$self->_create_node(
-			"mods:mods/mods:relatedItem[\@id='link-$linkid']",
-			'http://www.loc.gov/mods/',
-			'mods:recordIdentifier',
+			"mods:mods/relatedItem[\@id='link-$linkid']",
+            undef,
+			'recordIdentifier',
 			$id
 		);
 		$linkid++;
@@ -478,7 +478,7 @@ use base 'OpenILS::WWW::SuperCat::Feed::mods';
 
 sub new {
 	my $class = shift;
-	my $self = $class->SUPER::build('<mods:modsCollection version="3.0" xmlns:mods="http://www.loc.gov/mods/v3"/>');
+	my $self = $class->SUPER::build('<modsCollection version="3.0" xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3"/>');
 	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/mods:modsCollection';
 	return $self;
@@ -506,15 +506,15 @@ sub link {
 	if ($type eq 'unapi' || $type eq 'opac') {
 		$self->_create_node(
 			'mods:mods',
-			'http://www.loc.gov/mods/v3',
-			'mods:relatedItem',
+			undef,
+			'relatedItem',
 			undef,
 			{ type => 'otherFormat', id => 'link-'.$linkid }
 		);
 		$self->_create_node(
-			"mods:mods/mods:relatedItem[\@id='link-$linkid']",
-			'http://www.loc.gov/mods/v3',
-			'mods:recordIdentifier',
+			"mods:mods/relatedItem[\@id='link-$linkid']",
+			undef,
+			'recordIdentifier',
 			$id
 		);
 		$linkid++;
@@ -529,7 +529,7 @@ use base 'OpenILS::WWW::SuperCat::Feed::mods3';
 
 sub new {
 	my $class = shift;
-	my $self = $class->SUPER::build('<mods:modsCollection version="3.2" xmlns:mods="http://www.loc.gov/mods/v3"/>');
+	my $self = $class->SUPER::build('<modsCollection version="3.2" xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3"/>');
 	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/mods:modsCollection';
 	return $self;
@@ -545,7 +545,7 @@ use base 'OpenILS::WWW::SuperCat::Feed::mods3';
 
 sub new {
 	my $class = shift;
-	my $self = $class->SUPER::build('<mods:modsCollection version="3.3" xmlns:mods="http://www.loc.gov/mods/v3"/>');
+	my $self = $class->SUPER::build('<modsCollection version="3.3" xmlns="http://www.loc.gov/mods/v3" xmlns:mods="http://www.loc.gov/mods/v3"/>');
 	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/mods:modsCollection';
 	return $self;
@@ -562,7 +562,7 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 
 sub new {
 	my $class = shift;
-	my $self = $class->SUPER::build('<marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim"/>');
+	my $self = $class->SUPER::build('<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns:marc="http://www.loc.gov/MARC21/slim"/>');
 	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/marc:collection';
 	return $self;
