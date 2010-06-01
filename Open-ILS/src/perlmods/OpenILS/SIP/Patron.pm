@@ -509,17 +509,20 @@ sub unavail_holds {
 sub block {
 	my ($self, $card_retained, $blocked_card_msg) = @_;
 
+    my $e = $self->{editor};
 	my $u = $self->{user};
-	my $e = $self->{editor} = OpenILS::SIP->reset_editor();
 
 	syslog('LOG_INFO', "OILS: Blocking user %s", $u->card->barcode );
 
 	return $self if $u->card->active eq 'f';
 
+    # connect and start a new transaction
+    $e->xact_begin;
+
 	$u->card->active('f');
 	if( ! $e->update_actor_card($u->card) ) {
 		syslog('LOG_ERR', "OILS: Block card update failed: %s", $e->event->{textcode});
-		$e->xact_rollback;
+		$e->rollback; # rollback + disconnect
 		return $self;
 	}
 
@@ -532,15 +535,14 @@ sub block {
 
 	if( ! $e->update_actor_user($u) ) {
 		syslog('LOG_ERR', "OILS: Block: patron alert update failed: %s", $e->event->{textcode});
-		$e->xact_rollback;
+		$e->rollback; # rollback + disconnect
 		return $self;
 	}
 
 	# stay in synch
 	$self->{user}->alert_message( $note );
 
-	$e->commit; # commits and resets
-	$self->{editor} = OpenILS::SIP->reset_editor();
+	$e->commit; # commits and disconnects
 	return $self;
 }
 

@@ -361,7 +361,7 @@ sub request {
             $self->log(D,"running in substream mode");
             $val = [];
             while( my $resp = $req->recv(timeout => $self->timeout) ) {
-                push(@$val, $resp->content) if $resp->content;
+                push(@$val, $resp->content) if $resp->content and not $self->discard;
             }
 
         } else {
@@ -389,6 +389,16 @@ sub substream {
    my( $self, $bool ) = @_;
    $self->{substream} = $bool if defined $bool;
    return $self->{substream};
+}
+
+# -----------------------------------------------------------------------------
+# discard response data instead of returning it to the caller.  currently only 
+# works in conjunction with substream mode.  
+# -----------------------------------------------------------------------------
+sub discard {
+   my( $self, $bool ) = @_;
+   $self->{discard} = $bool if defined $bool;
+   return $self->{discard};
 }
 
 
@@ -661,6 +671,7 @@ sub runmethod {
 
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
     $self->timeout($$options{timeout});
+    $self->discard($$options{discard});
 
 	# remove any stale events
 	$self->clear_event;
@@ -767,46 +778,21 @@ sub __fm2meth {
 # -------------------------------------------------------------
 # Load up the methods from the FM classes
 # -------------------------------------------------------------
-my $map = $Fieldmapper::fieldmap;
-for my $object (keys %$map) {
-	my $obj = __fm2meth($object,'_');
-	my $type = __fm2meth($object, '.');
 
-	my $update = "update_$obj";
-	my $updatef = 
-		"sub $update {return shift()->runmethod('update', '$type', \@_);}";
-	eval $updatef;
-
-	my $retrieve = "retrieve_$obj";
-	my $retrievef = 
-		"sub $retrieve {return shift()->runmethod('retrieve', '$type', \@_);}";
-	eval $retrievef;
-
-	my $search = "search_$obj";
-	my $searchf = 
-		"sub $search {return shift()->runmethod('search', '$type', \@_);}";
-	eval $searchf;
-
-	my $create = "create_$obj";
-	my $createf = 
-		"sub $create {return shift()->runmethod('create', '$type', \@_);}";
-	eval $createf;
-
-	my $delete = "delete_$obj";
-	my $deletef = 
-		"sub $delete {return shift()->runmethod('delete', '$type', \@_);}";
-	eval $deletef;
-
-	my $bretrieve = "batch_retrieve_$obj";
-	my $bretrievef = 
-		"sub $bretrieve {return shift()->runmethod('batch_retrieve', '$type', \@_);}";
-	eval $bretrievef;
-
-	my $retrieveall = "retrieve_all_$obj";
-	my $retrieveallf = 
-		"sub $retrieveall {return shift()->runmethod('retrieve_all', '$type', \@_);}";
-	eval $retrieveallf;
+sub init {
+    no warnings;    #  Here we potentially redefine subs via eval
+    my $map = $Fieldmapper::fieldmap;
+    for my $object (keys %$map) {
+        my $obj  = __fm2meth($object, '_');
+        my $type = __fm2meth($object, '.');
+        foreach my $command (qw/ update retrieve search create delete batch_retrieve retrieve_all /) {
+            eval "sub ${command}_$obj {return shift()->runmethod('$command', '$type', \@_);}\n";
+        }
+        # TODO: performance test against concatenating a big string of all the subs and eval'ing only ONCE.
+    }
 }
+
+init();  # Add very many subs to this namespace
 
 sub json_query {
     my( $self, $arg, $options ) = @_;
@@ -816,6 +802,7 @@ sub json_query {
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
 
     $self->timeout($$options{timeout});
+    $self->discard($$options{discard});
 	$self->clear_event;
     my $obj;
     my $err;
