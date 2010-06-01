@@ -154,11 +154,11 @@ sub format_date {
  	my $minute = $time[1];
  	my $second = $time[0];
   
- 	$date = sprintf("%04d-%02d-%02d", $year, $mon, $day);
-  
- 	# Due dates need time of day as well
+	$date = sprintf("%04d%02d%02d", $year, $mon, $day);
+
+ 	# Due dates need hyphen separators and time of day as well
  	if ($type eq 'due') {
- 		$date .= sprintf(" %02d:%02d:%02d", $hour, $minute, $second);
+ 		$date = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $year, $mon, $day, $hour, $minute, $second);
  	}
 
 	syslog('LOG_DEBUG', "OILS: formatted date [type=$type]: $date");
