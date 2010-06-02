@@ -141,6 +141,8 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     // XXX This is now deprecated in preference to fieldmapper.AutoIDL
     if ( !(fieldmapper.IDL && fieldmapper.IDL.loaded) ) {
 
+        fieldmapper.cmsa.Identifier = 'alias';
+        fieldmapper.cmc.Identifier = 'name';
     	fieldmapper.i18n_l.Identifier = 'code';
     	fieldmapper.ccpbt.Identifier = 'code';
     	fieldmapper.ccnbt.Identifier = 'code';
