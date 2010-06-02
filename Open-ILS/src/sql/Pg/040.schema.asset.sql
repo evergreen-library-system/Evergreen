@@ -216,6 +216,47 @@ CREATE TABLE asset.call_number_note (
 );
 CREATE INDEX asset_call_number_note_creator_idx ON asset.call_number_note ( creator );
 
+CREATE TABLE asset.copy_template (
+	id             SERIAL   PRIMARY KEY,
+	owning_lib     INT      NOT NULL
+	                        REFERENCES actor.org_unit (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	creator        BIGINT   NOT NULL
+	                        REFERENCES actor.usr (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	editor         BIGINT   NOT NULL
+	                        REFERENCES actor.usr (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	create_date    TIMESTAMP WITH TIME ZONE    DEFAULT NOW(),
+	edit_date      TIMESTAMP WITH TIME ZONE    DEFAULT NOW(),
+	name           TEXT     NOT NULL,
+	-- columns above this point are attributes of the template itself
+	-- columns after this point are attributes of the copy this template modifies/creates
+	circ_lib       INT      REFERENCES actor.org_unit (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	status         INT      REFERENCES config.copy_status (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	location       INT      REFERENCES asset.copy_location (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	loan_duration  INT      CONSTRAINT valid_loan_duration CHECK (
+	                            loan_duration IS NULL OR loan_duration IN (1,2,3)),
+	fine_level     INT      CONSTRAINT valid_fine_level CHECK (
+	                            fine_level IS NULL OR loan_duration IN (1,2,3)),
+	age_protect    INT,
+	circulate      BOOL,
+	deposit        BOOL,
+	ref            BOOL,
+	holdable       BOOL,
+	deposit_amount NUMERIC(6,2),
+	price          NUMERIC(8,2),
+	circ_modifier  TEXT,
+	circ_as_type   TEXT,
+	alert_message  TEXT,
+	opac_visible   BOOL,
+	floating       BOOL,
+	mint_condition BOOL
+);
+
 CREATE VIEW stats.fleshed_copy AS 
         SELECT  cp.*,
 		CAST(cp.create_date AS DATE) AS create_date_day,

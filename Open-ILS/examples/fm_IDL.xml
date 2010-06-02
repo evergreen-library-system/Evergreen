@@ -3010,76 +3010,236 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
+
 	<class id="ssub" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription" reporter:label="Subscription">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_id_seq">
-			<field reporter:label="Is Active" name="active" reporter:datatype="bool"/>
-			<field reporter:label="Call Number" name="call_number" reporter:datatype="link"/>
-			<field reporter:label="URI" name="uri" reporter:datatype="link"/>
-			<field reporter:label="Start date" name="start_date" reporter:datatype="timestamp"/>
-			<field reporter:label="End date" name="end_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Id" name="id" reporter:datatype="id"/>
+			<field reporter:label="Start Date" name="start_date" reporter:datatype="timestamp"/>
+			<field reporter:label="End Date" name="end_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Record Entry" name="record_entry" reporter:datatype="link"/>
+			<field reporter:label="Expected Date Offset" name="expected_date_offset" reporter:datatype="interval"/>
 		</fields>
 		<links>
-			<link field="call_number" reltype="might_have" key="id" map="" class="acn"/>
-			<link field="uri" reltype="might_have" key="id" map="" class="auri"/>
+			<link field="record_entry" reltype="has_a" key="id" map="" class="sre"/>
 		</links>
 	</class>
-	<class id="sbu" controller="open-ils.cstore" oils_obj:fieldmapper="serial::binding_unit" oils_persist:tablename="serial.binding_unit" reporter:label="Binding Unit">
-		<fields oils_persist:primary="id" oils_persist:sequence="serial.binding_unit_id_seq">
-			<field reporter:label="Is Active" name="active" reporter:datatype="bool"/>
+
+	<class id="sd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::distribution" oils_persist:tablename="serial.distribution" reporter:label="Distribution">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.distribution_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Subscription" name="subscription" reporter:datatype="link"/>
-			<field reporter:label="Label" name="label" />
+			<field reporter:label="Holding Lib" name="holding_lib" reporter:datatype="link"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Receive Call Number" name="receive_call_number" reporter:datatype="link"/>
+			<field reporter:label="Receive Unit Template" name="receive_unit_template" reporter:datatype="link"/>
+			<field reporter:label="Bind Call Number" name="bind_call_number" reporter:datatype="link"/>
+			<field reporter:label="Bind Unit Template" name="bind_unit_template" reporter:datatype="link"/>
+			<field reporter:label="Unit Label Base" name="unit_label_base" reporter:datatype="text"/>
+			<field reporter:label="Unit Label Suffix" name="unit_label_suffix" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+			<link field="holding_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="receive_call_number" reltype="has_a" key="id" map="" class="acn"/>
+			<link field="receive_unit_template" reltype="has_a" key="id" map="" class="act"/>
+			<link field="bind_call_number" reltype="has_a" key="id" map="" class="acn"/>
+			<link field="bind_unit_template" reltype="has_a" key="id" map="" class="act"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
 	</class>
+
+	<class id="ss" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::stream" oils_persist:tablename="serial.stream" reporter:label="Stream">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.stream_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Distribution" name="distribution" reporter:datatype="link"/>
+			<field reporter:label="Routing Label" name="routing_label" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="distribution" reltype="has_a" key="id" map="" class="sd"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="srlu" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::routing_list_user" oils_persist:tablename="serial.routing_list_user" reporter:label="Routing List User">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.routing_list_user_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Stream" name="stream" reporter:datatype="link"/>
+			<field reporter:label="Position" name="pos" reporter:datatype="int"/>
+			<field reporter:label="Reader" name="reader" reporter:datatype="link"/>
+			<field reporter:label="Department" name="department" reporter:datatype="text"/>
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="stream" reltype="has_a" key="id" map="" class="ss"/>
+			<link field="reader" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="siss" controller="open-ils.cstore" oils_obj:fieldmapper="serial::issuance" oils_persist:tablename="serial.issuance" reporter:label="Issuance">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.issuance_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="subscription" reporter:datatype="link"/>
-			<field name="target_copy" reporter:datatype="link"/>
-			<field name="location" reporter:datatype="link"/>
-			<field name="binding_unit" reporter:datatype="link"/>
-			<field name="label" />
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Editor" name="editor" reporter:datatype="link"/>
+			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Edit Date" name="edit_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Subscription" name="subscription" reporter:datatype="link"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Date Published" name="date_published" reporter:datatype="timestamp"/>
+			<field reporter:label="Holding Code" name="holding_code" reporter:datatype="text"/>
+			<field reporter:label="Holding Type" name="holding_type" reporter:datatype="text"/>
+			<field reporter:label="Holding Link ID" name="holding_link_id" reporter:datatype="int"/>
 		</fields>
 		<links>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
-			<link field="target_copy" reltype="might_have" key="id" map="" class="acp"/>
-			<link field="location" reltype="might_have" key="id" map="" class="acpl"/>
-			<link field="binding_unit" reltype="might_have" key="id" map="" class="sbu"/>
 		</links>
 	</class>
+
+	<class id="su" controller="open-ils.cstore" oils_obj:fieldmapper="serial::unit" oils_persist:tablename="serial.unit" reporter:label="Unit">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field reporter:label="Age Hold Protection" name="age_protect" reporter:datatype="link"/>
+            <field reporter:label="Alert Message" name="alert_message" reporter:datatype="text"/>
+            <field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
+            <field reporter:label="Call Number/Volume" name="call_number" reporter:datatype="link"/>
+            <field reporter:label="Circulation Type (MARC)" name="circ_as_type" reporter:datatype="text"/>
+            <field reporter:label="Circulating Library" name="circ_lib"  reporter:datatype="org_unit"/>
+            <field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="link"/>
+            <field reporter:label="Can Circulate" name="circulate" reporter:datatype="bool"/>
+            <field reporter:label="Copy Number on Volume" name="copy_number" reporter:datatype="text"/>
+            <field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
+            <field reporter:label="Creating User" name="creator" reporter:datatype="link"/>
+            <field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
+            <field reporter:label="Dummy ISBN" name="dummy_isbn" reporter:datatype="text"/>
+            <field reporter:label="Is Deposit Required" name="deposit" reporter:datatype="bool"/>
+            <field reporter:label="Deposit Amount" name="deposit_amount" reporter:datatype="money" />
+            <field reporter:label="Precat Dummy Author" name="dummy_author" reporter:datatype="text"/>
+            <field reporter:label="Precat Dummy Title" name="dummy_title" reporter:datatype="text"/>
+            <field reporter:label="Last Edit Date/Time" name="edit_date" reporter:datatype="timestamp"/>
+            <field reporter:label="Last Editing User" name="editor" reporter:datatype="link"/>
+            <field reporter:label="Fine Level" name="fine_level" reporter:datatype="int"/>
+            <field reporter:label="Is Holdable" name="holdable" reporter:datatype="bool" />
+            <field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="int"/>
+            <field reporter:label="Shelving Location" name="location" reporter:datatype="link"/>
+            <field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool" />
+            <field reporter:label="Price" name="price" reporter:datatype="money" />
+            <field reporter:label="Is Reference" name="ref" reporter:datatype="bool"/>
+            <field reporter:label="Copy Status" name="status" reporter:datatype="link"/>
+            <field reporter:label="Copy Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
+            <field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
+            <field reporter:label="Is Floating" name="floating" reporter:datatype="bool"/>
+            <field reporter:label="Copy Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field reporter:label="Total Circulations" name="total_circ_count" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field reporter:label="Holds" name="holds" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Label Sort Key" name="label_sort_key" reporter:datatype="text"/>
+			<field reporter:label="Contents" name="contents" reporter:datatype="text"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+		</fields>
+		<links>
+            <link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
+            <link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
+            <link field="location" reltype="has_a" key="id" map="" class="acpl"/>
+            <link field="editor" reltype="has_a" key="id" map="" class="au"/>
+            <link field="creator" reltype="has_a" key="id" map="" class="au"/>
+            <link field="status" reltype="has_a" key="id" map="" class="ccs"/>
+            <link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="holds" reltype="has_many" key="target_copy" map="hold" class="ahcm"/>
+            <link field="stat_cat_entry_copy_maps" reltype="has_many" key="owning_copy" map="" class="ascecm"/>
+            <link field="notes" reltype="has_many" key="owning_copy" map="" class="acpn"/>
+            <link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
+            <link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
+            <link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
+            <link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="si" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::item" oils_persist:tablename="serial.item" reporter:label="Item">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.item_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Editor" name="editor" reporter:datatype="link"/>
+			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Edit Date" name="edit_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Issuance" name="issuance" reporter:datatype="link"/>
+			<field reporter:label="Stream" name="stream" reporter:datatype="link"/>
+			<field reporter:label="Unit" name="unit" reporter:datatype="link"/>
+			<field reporter:label="URI" name="uri" reporter:datatype="link"/>
+			<field reporter:label="Date Expected" name="date_expected" reporter:datatype="timestamp"/>
+			<field reporter:label="Date Received" name="date_received" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="issuance" reltype="has_a" key="id" map="" class="siss"/>
+			<link field="stream" reltype="has_a" key="id" map="" class="ss"/>
+			<link field="unit" reltype="has_a" key="id" map="" class="su"/>
+			<link field="uri" reltype="has_a" key="id" map="" class="auri"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="sin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::item_note" oils_persist:tablename="serial.item_note" reporter:label="Item Note">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.item_note_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Item" name="item" reporter:datatype="link"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Public?" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Title" name="title" reporter:datatype="text"/>
+			<field reporter:label="Vale" name="value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="item" reltype="has_a" key="id" map="" class="si"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="sbsum" controller="open-ils.cstore" oils_obj:fieldmapper="serial::bib_summary" oils_persist:tablename="serial.bib_summary" reporter:label="Bib Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.bib_summary_id_seq">
 			<field name="id" reporter:datatype="id" />
-			<field name="subscription" reporter:datatype="link"/>
+			<field name="distribution" reporter:datatype="link"/>
 			<field name="generated_coverage" reporter:datatype="text"/>
 			<field name="textual_holdings" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+			<link field="distribution" reltype="has_a" key="id" map="" class="sd"/>
 		</links>
 	</class>
+
 	<class id="sssum" controller="open-ils.cstore" oils_obj:fieldmapper="serial::sup_summary" oils_persist:tablename="serial.sup_summary" reporter:label="Supplemental Issue Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.sup_summary_id_seq">
 			<field name="id" reporter:datatype="id" />
-			<field name="subscription" reporter:datatype="link"/>
+			<field name="distribution" reporter:datatype="link"/>
 			<field name="generated_coverage" reporter:datatype="text"/>
 			<field name="textual_holdings" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+			<link field="distribution" reltype="has_a" key="id" map="" class="sd"/>
 		</links>
 	</class>
+
 	<class id="sisum" controller="open-ils.cstore" oils_obj:fieldmapper="serial::index_summary" oils_persist:tablename="serial.index_summary" reporter:label="Index Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.index_summary_id_seq">
 			<field name="id" reporter:datatype="id" />
-			<field name="subscription" reporter:datatype="link"/>
+			<field name="distribution" reporter:datatype="link"/>
 			<field name="generated_coverage" reporter:datatype="text"/>
 			<field name="textual_holdings" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+			<link field="distribution" reltype="has_a" key="id" map="" class="sd"/>
 		</links>
 	</class>
 
@@ -3944,6 +4104,45 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+
+	<class id="act" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_template" oils_persist:tablename="asset.copy_template" reporter:label="Asset Copy Template">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_template_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Owning Lib" name="owning_lib" reporter:datatype="link"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Editor" name="editor" reporter:datatype="link"/>
+			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Edit Date" name="edit_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Circ Lib" name="circ_lib" reporter:datatype="link"/>
+			<field reporter:label="Status" name="status" reporter:datatype="int"/>
+			<field reporter:label="Location" name="location" reporter:datatype="int"/>
+			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="int"/>
+			<field reporter:label="Fine Level" name="fine_level" reporter:datatype="int"/>
+			<field reporter:label="Age Protect" name="age_protect" reporter:datatype="int"/>
+			<field reporter:label="Circulate?" name="circulate" reporter:datatype="bool"/>
+			<field reporter:label="Deposit?" name="deposit" reporter:datatype="bool"/>
+			<field reporter:label="Reference?" name="ref" reporter:datatype="bool"/>
+			<field reporter:label="Holdable?" name="holdable" reporter:datatype="bool"/>
+			<field reporter:label="Deposit Amount" name="deposit_amount" reporter:datatype="money"/>
+			<field reporter:label="Price" name="price" reporter:datatype="money"/>
+			<field reporter:label="Circ Modifier" name="circ_modifier" reporter:datatype="text"/>
+			<field reporter:label="Circ As Type" name="circ_as_type" reporter:datatype="text"/>
+			<field reporter:label="Alert Message" name="alert_message" reporter:datatype="text"/>
+			<field reporter:label="OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
+			<field reporter:label="Floating?" name="floating" reporter:datatype="bool"/>
+			<field reporter:label="Mint Condition?" name="mint_condition" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="crahp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_age_hold_protect_id_seq">
 			<field reporter:label="Item Age" name="age" reporter:datatype="interval"/>

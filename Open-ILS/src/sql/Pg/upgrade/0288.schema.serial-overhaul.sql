@@ -1,30 +1,63 @@
+-- The following DROP statements are outside of the transaction.
+-- That way if one of the tables doesn't exist, the DROP will
+-- fail but the rest of the script can still run.
 
+DROP TABLE serial.bib_summary CASCADE;
 
-DROP SCHEMA IF EXISTS serial CASCADE;
+DROP TABLE serial.index_summary CASCADE;
+
+DROP TABLE serial.sup_summary CASCADE;
+
+DROP TABLE serial.issuance CASCADE;
+
+DROP TABLE serial.binding_unit CASCADE;
+
+DROP TABLE serial.subscription CASCADE;
 
 BEGIN;
 
-CREATE SCHEMA serial;
+INSERT INTO config.upgrade_log (version) VALUES ('0288'); -- Scott McKellar
 
-CREATE TABLE serial.record_entry (
-	id		BIGSERIAL	PRIMARY KEY,
-	record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-	owning_lib	INT		NOT NULL DEFAULT 1 REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
-	creator		INT		NOT NULL DEFAULT 1,
-	editor		INT		NOT NULL DEFAULT 1,
-	source		INT,
-	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
-	edit_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
-	active		BOOL		NOT NULL DEFAULT TRUE,
-	deleted		BOOL		NOT NULL DEFAULT FALSE,
-	marc		TEXT		NOT NULL,
-	last_xact_id	TEXT		NOT NULL
+CREATE TABLE asset.copy_template (
+	id             SERIAL   PRIMARY KEY,
+	owning_lib     INT      NOT NULL
+	                        REFERENCES actor.org_unit (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	creator        BIGINT   NOT NULL
+	                        REFERENCES actor.usr (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	editor         BIGINT   NOT NULL
+	                        REFERENCES actor.usr (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	create_date    TIMESTAMP WITH TIME ZONE    DEFAULT NOW(),
+	edit_date      TIMESTAMP WITH TIME ZONE    DEFAULT NOW(),
+	name           TEXT     NOT NULL,
+	-- columns above this point are attributes of the template itself
+	-- columns after this point are attributes of the copy this template modifies/creates
+	circ_lib       INT      REFERENCES actor.org_unit (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	status         INT      REFERENCES config.copy_status (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	location       INT      REFERENCES asset.copy_location (id)
+	                        DEFERRABLE INITIALLY DEFERRED,
+	loan_duration  INT      CONSTRAINT valid_loan_duration CHECK (
+	                            loan_duration IS NULL OR loan_duration IN (1,2,3)),
+	fine_level     INT      CONSTRAINT valid_fine_level CHECK (
+	                            fine_level IS NULL OR loan_duration IN (1,2,3)),
+	age_protect    INT,
+	circulate      BOOL,
+	deposit        BOOL,
+	ref            BOOL,
+	holdable       BOOL,
+	deposit_amount NUMERIC(6,2),
+	price          NUMERIC(8,2),
+	circ_modifier  TEXT,
+	circ_as_type   TEXT,
+	alert_message  TEXT,
+	opac_visible   BOOL,
+	floating       BOOL,
+	mint_condition BOOL
 );
-CREATE INDEX serial_record_entry_creator_idx ON serial.record_entry ( creator );
-CREATE INDEX serial_record_entry_editor_idx ON serial.record_entry ( editor );
-CREATE INDEX serial_record_entry_owning_lib_idx ON serial.record_entry ( owning_lib, deleted );
-
-CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD UPDATE serial.record_entry SET deleted = true WHERE old.id = serial.record_entry.id;
 
 CREATE TABLE serial.subscription (
 	id                     SERIAL       PRIMARY KEY,
