@@ -30,20 +30,3 @@
   dojo.require("dijit.form.ValidationTextBox");
 </script>
 </html>
-<html>
-<head>
-  <title>[% i18n.REQUEST_TITLE %]</title>
-</head>
-<body>
-  <h1>[% i18n.REQUEST_TITLE %]</h1>
-<p class='[% status.style %]'>[% status.msg %]</p>
-<form method="post" action="[% uri %]">
-    <div>
-        <label for="barcode">[% i18n.BARCODE_PROMPT %] </label><input type="text" name="barcode"/></br>
-        <label for="username">[% i18n.USERNAME_PROMPT %]  </label><input type="text" name="username"/></br>
-        <!--<label for="email">[% i18n.EMAIL_PROMPT %]  </label><input type="text" name="email"/></br>-->
-        <input type="submit"/>
-    </div>
-</form>
-</body>
-</html>
