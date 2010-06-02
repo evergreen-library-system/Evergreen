@@ -93,7 +93,7 @@ sub load_fields {
 				  position => $array_position,
 				};
 
-			$$fieldmap{$fm}{fields}{ $name }{validate} = qr/$valudate/ if (defined($validate));
+			$$fieldmap{$fm}{fields}{ $name }{validate} = qr/$validate/ if (defined($validate));
 
 			# The selector attribute, if present at all, attaches to only one
 			# of the fields in a given class.  So if we see it, we store it at
@@ -310,6 +310,21 @@ sub Table {
 sub Controller {
 	my $self = shift;
 	return $$fieldmap{$self->class_name}{controller};
+}
+
+sub RequiredField {
+	my $self = shift;
+	my $f = shift;
+    return undef unless ($f);
+	return $$fieldmap{$self->class_name}{fields}{$f}{required};
+}
+
+sub ValidateField {
+	my $self = shift;
+	my $f = shift;
+    return undef unless ($f);
+	return 1 if (!exists($$fieldmap{$self->class_name}{fields}{$f}{validate}));
+	return $self->$f =~ $$fieldmap{$self->class_name}{fields}{$f}{validate};
 }
 
 sub class_name {
