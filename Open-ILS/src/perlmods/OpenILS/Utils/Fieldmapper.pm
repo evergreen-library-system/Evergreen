@@ -79,6 +79,8 @@ sub load_fields {
 			
 			my $name     = get_attribute( $attribute_list, 'name' );
 			next if( $name eq 'isnew' || $name eq 'ischanged' || $name eq 'isdeleted' );
+			my $required  = get_attribute( $attribute_list, 'oils_obj:required' );
+			my $validate  = get_attribute( $attribute_list, 'oils_obj:validate' );
 			my $virtual  = get_attribute( $attribute_list, 'oils_persist:virtual' );
 			if( ! defined( $virtual ) ) {
 				$virtual = "false";
@@ -87,8 +89,11 @@ sub load_fields {
 
 			$$fieldmap{$fm}{fields}{ $name } =
 				{ virtual => ( $virtual eq 'true' ) ? 1 : 0,
+				  required => ( $required eq 'true' ) ? 1 : 0,
 				  position => $array_position,
 				};
+
+			$$fieldmap{$fm}{fields}{ $name }{validate} = qr/$valudate/ if (defined($validate));
 
 			# The selector attribute, if present at all, attaches to only one
 			# of the fields in a given class.  So if we see it, we store it at

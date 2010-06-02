@@ -76,9 +76,13 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     label   : fieldmapper._getAttributeNS(node,this.NS_REPORTS, 'label'),
                     restrict_primary   : fieldmapper._getAttributeNS(node,this.NS_PERSIST, 'restrict_primary'),
                     virtual : (fieldmapper._getAttributeNS(node,this.NS_PERSIST, 'virtual') == 'true'),
+                    required : (fieldmapper._getAttributeNS(node,this.NS_OBJ, 'required') == 'true'),
                     pkey    : fieldmapper._getAttributeNS(fields,this.NS_PERSIST, 'primary'),
                     pkey_sequence : fieldmapper._getAttributeNS(fields,this.NS_PERSIST, 'sequence')
                 };
+
+		var valid = fieldmapper._getAttributeNS(node,this.NS_OBJ, 'validate');
+		if (valid) obj.validate = new RegExp( valid );
 
                 var permacrud = node.getElementsByTagName('permacrud')[0];
                 if(permacrud) {

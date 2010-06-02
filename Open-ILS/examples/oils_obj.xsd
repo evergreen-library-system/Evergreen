@@ -28,6 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  attributeFormDefault="unqualified"
 >
 
+<xs:attribute name="required"/>
+<xs:attribute name="validate"/>
 <xs:attribute name="array_position" type="xs:nonNegativeInteger"/>
 <xs:attribute name="fieldmapper"/>
 
