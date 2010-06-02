@@ -55,14 +55,14 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
         },
 
         _parse : function(xmlNode) {
-            var classes = xmlNode.getElementsByTagName('class');
+            var classes = dojo.query('class',xmlNode);
             if (!fieldmapper.IDL || !fieldmapper.IDL.fmclasses)
                 fieldmapper.IDL.fmclasses = {};
 
             for(var i = 0; i < classes.length; i++) {
                 var node = classes[i];
                 var id = node.getAttribute('id');
-                var fields = node.getElementsByTagName('fields')[0];
+                var fields = dojo.query('fields',node)[0];
                 window.fmclasses[id] = [];
                 
                 var fieldData = this._parseFields(node, id);
@@ -84,13 +84,13 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 var valid = fieldmapper._getAttributeNS(node,this.NS_OBJ, 'validate');
                 if (valid) obj.validate = new RegExp( valid.replace(/\\/g, '\\\\') );
 
-                var permacrud = node.getElementsByTagName('permacrud')[0];
+                var permacrud = dojo.query('permacrud',node)[0];
                 if(permacrud) {
                     var actions = ['create', 'retrieve', 'update', 'delete'];
                     obj.permacrud = {};
                     for(var idx in actions) {
                         var action = actions[idx];
-                        var pnode = permacrud.getElementsByTagName(action)[0];
+                        var pnode = dojo.query(action,permacrud)[0];
                         if(pnode) {
                             var permString = pnode.getAttribute('permission');
                             var permList = null;
@@ -122,11 +122,11 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
             var data = [];
             var map = {};
     
-            var fields = node.getElementsByTagName('fields')[0];
-            fields = fields.getElementsByTagName('field');
+            var fields = dojo.query('fields',node)[0];
+            fields = dojo.query('field',fields);
     
-            var links = node.getElementsByTagName('links')[0];
-            if( links ) links = links.getElementsByTagName('link');
+            var links = dojo.query('links',node)[0];
+            if( links ) links = dojo.query('link',links);
             else links = [];
     
     
