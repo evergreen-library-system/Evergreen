@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book xml:id="evergreen" xmlns="http://docbook.org/ns/docbook"
+      xmlns:xi="http://www.w3.org/2001/XInclude" version="5" xml:lang="EN"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+      <info>
+            <title>Evergreen 1.6 Documentation</title>
+ 		<subtitle>Draft Version</subtitle>
+		
+
+         
+        
+        <copyright>
+                  <year>2010</year>
+                  <holder>Evergreen Community</holder>
+		
+            </copyright>
+                 <legalnotice>
+                  <para><link xlink:title="Creative Commons license"
+                              xlink:href="http://creativecommons.org/licenses/by-sa/3.0/">  
+				 <inlinemediaobject>
+                                    <imageobject>
+                                          <imagedata scalefit="0"
+                                                fileref="http://i.creativecommons.org/l/by-sa/3.0/80x15.png"
+                                          />
+                                    </imageobject>
+                              </inlinemediaobject>    
+                  </link></para>
+                    <para>This document was updated <?dbtimestamp format="Y-m-d"?>.</para>    
+               </legalnotice>
+      </info>  
+            
+<part xml:id="intro">
+            <info>
+                  <title>Introduction</title>
+            </info>
+ </part>
+
+<part xml:id="catalog">
+            <info>
+                  <title>Public Access Catalog</title>
+            </info>
+ </part>
+
+<part xml:id="core_tasks">
+            <info>
+                  <title>Core Staff Tasks</title>
+            </info>
+ </part>
+
+
+
+
+
+<part xml:id="admin">
+            <info>
+                  <title>Administration</title>
+            </info>
+ <xi:include href="admin/serveradministration.xml"/>
+ <xi:include href="admin/AdminMisc.xml"/>
+ <xi:include href="admin/Upgrading-Evergreen_1.6.xml"/>
+ <xi:include href="admin/troubleshooting.xml"/>
+</part>
+
+<part xml:id="software_integration">
+            <info>
+                  <title>Third Party System Integration</title>
+            </info>
+</part>
+ <part xml:id="Development">
+            <info>
+                  <title>Development</title>
+            </info>
+</part>
+<part xml:id="Appendices">
+            <info>
+                  <title>Appendices</title>
+            </info>
+</part>
+
+</book>

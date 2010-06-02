@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
+		<title>Troubleshooting System Errors</title>
+		<para>If you have Evergreen installed and are encountering systematic errors, here is the steps to find the 
+		cause and solution to most problems. These instructions assume standard locations and file names for Evergreen
+		installations, and may also include commands for specific Linux distributions.</para>
+		<procedure>
+			<title>Systematic Evergreen Restart to isolate Errors</title>
+			<step>
+				<para>Stop Apache:</para>
+				<screen>/etc/init.d/apache2 stop</screen>
+				<para>or</para>
+				<screen>apache2ctl stop</screen>
+			</step>
+			<step>
+				<para>Stop OpenSRF:</para>
+				<screen>osrf_ctl.sh -l -a stop_all</screen>
+				<para>You should get either output resembling this:</para>
+				<screen>Stopping OpenSRF C process 12515...</screen>
+				<screen>Stopping OpenSRF C process 12520...</screen>
+				<screen>Stopping OpenSRF C process 12526...</screen>
+				<screen>Stopping OpenSRF Perl process 12471...</screen>
+				<screen>Stopping OpenSRF Router process 12466...</screen>
+				<para>Or, if services have already been stopped, output maay look like this:</para>
+				<screen>OpenSRF C not running</screen>
+				<screen>OpenSRF Perl not running</screen>
+				<screen>OpenSRF Router not running</screen>
+				<para>Occasionally osrf_ctl.sh fails to kill OpenSRF processes, so we should check to make 
+				sure that none are still running with the command:</para>
+				<screen>ps -aef | grep OpenSRF</screen>
+				<para>You should manually kill any OpenSRF processes.</para>
+				<para>If you were unable to stop OpenSRF with the above methods, you could also try this 
+				command:</para>
+				<screen>rm –R /openils/var/run/*.pid</screen>
+				<para>This will remove the temporary OpenSRF process files from the run directory which may 
+				have been left over from a previous system boot cycle.</para>
+			</step>
+			<step>
+				<para>Restart Ejabberd and Memcached with the following commands:</para>
+				<screen>sudo /etc/init.d/ejabberd restart</screen>
+				<screen>sudo /etc/init.d/memcached restart</screen>
+			</step>
+			<step>	
+				<para>Start the OpenSRF router and check for errors</para>
+				<screen>/openils/bin/osrf_ctl.sh -l -a start_router</screen>
+				<para>If the router started correctly, output will be:</para>
+				<screen>Starting OpenSRF Router</screen>
+				<para>If router does not start correcltly, you should check the router error log files 
+				for error information.</para>
+				<para>Evergreen 1.6 uses two routers, a public one and a private one, with two different 
+				logfiles:</para>
+				<para><filename >/openils/var/log/private.router.log</filename></para>
+				<para><filename >/openils/var/log/public.router.log</filename></para>
+				<para>A quick way to find error information in the logs is with the grep command.</para>
+					<screen>grep ERR /openils/var/log/*router.log</screen>
+				<para>As a final sanity check, look for router processes using the process status 
+				command:</para>
+				<screen>ps -aef | grep Router</screen>
+			</step>
+			<step>
+				<para>Start the OpenSRF perl services and check for errors</para>
+				<screen>/openils/bin/osrf_ctl.sh -l -a start_perl</screen>
+				<para>You should see the following output:</para>
+				<screen>Starting OpenSRF Perl</screen>
+				<screen>* starting all services for norcrossfx.norcross.esi</screen>
+				<screen>* starting servivce pid=7484 opensrf.settings</screen>
+				<screen>* starting servivce pid=7493 open-ils.cat</screen>
+				<screen>* starting servivce pid=7495 open-ils.supercat</screen>
+				<screen>* starting servivce pid=7497 open-ils.search</screen>
+				<screen>* starting servivce pid=7499 open-ils.circ</screen>
+				<screen>* starting servivce pid=7501 open-ils.actor</screen>
+				<screen>* starting servivce pid=7502 open-ils.storage</screen>
+				<screen>* starting servivce pid=7509 open-ils.penalty</screen>
+				<screen>* starting servivce pid=7512 open-ils.collections</screen>
+				<screen>* starting servivce pid=7514 open-ils.ingest</screen>
+				<screen>* starting servivce pid=7517 open-ils.permacrud</screen>
+				<screen>* starting servivce pid=7522 open-ils.fielder</screen>
+				<screen>* starting servivce pid=7527 open-ils.vandelay</screen>
+				<screen>* starting servivce pid=7516 open-ils.reporter</screen>
+				<para>If the perl services do not start correclty or you receive errors, search for errors 
+				in the following log files:</para>
+				<screen>/openils/var/log/router.log</screen>
+				<screen>/openils/var/log/osrfsys.log</screen>
+				<para>At this point you can use the <command>grep</command> command to find errors in 
+				any of the Evrgreen log files:</para>
+				<screen>grep ERR /openils/var/log/*.log</screen>
+				<para>As a final sanity check, look for OpenSRF processes:</para>
+				<screen>ps -aef | grep -i opensrf</screen>
+			</step>
+			<step>
+				<para>Start the OpenSRF C services and check for errors:</para>
+				<screen>/openils/bin/osrf_ctl.sh -l -a start_c</screen>
+				<para>And output should be:</para>
+				<para>Starting OpenSRF C (host=localhost)</para>
+				<para>If the <emphasis>c</emphasis> service does not start, check for errors by grepping 
+				the log files for errors:</para>
+				<screen>grep ERR /openils/var/log/*.log</screen>
+				<para>Check for OpenSRF processes:</para>
+				<screen>ps -aef | grep -i opensrf</screen>
+			</step>
+			<step>
+				<para>Smoke test with autogen.sh</para>
+				<para>The Autogen tool will take some dynamic information from the database and generate 
+				static Javascript files for use by the OPAC and staff client. It is also able to refresh 
+				the proximity map between libraries for the purpose of efficiently routing hold 
+				requests.</para>
+				<para>As user opensrf, you invoke Autogen with the command:</para>
+				<screen>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</screen>
+				<para>If Autogen completes successfully, the output will be:</para>
+				<screen>Updating fieldmapper</screen>
+				<screen>Updating web_fieldmapper</screen>
+				<screen>Updating OrgTree</screen>
+				<screen>removing OrgTree from the cache...</screen>
+				<screen>Updating OrgTree HTML</screen>
+				<screen>Updating locales selection HTML</screen>
+				<screen>Updating Search Groups</screen>
+				<screen>Refreshing proximity of org units</screen>
+				<screen>Successfully updated the organization proximity</screen>
+				<screen>Done</screen>
+				<para>If Autogen does not complete its task and you recieve errors, use 
+				<command>grep</command> to find errors in the log files:</para>  
+				<screen>grep ERR /openils/var/log/*.log</screen>
+			</step>
+			<step>
+				<para>Connect to Evergreen using the srfsh command-line OpenSRF client</para>
+				<screen>/openils/bin/srfsh</screen>
+				<note>
+					<para>In order for you to connect using <command>srfsh</command>, you will need to 
+					have set up the .srfsh.xml configuration file in your home directory as as 
+					described in the installation chapter.</para>
+				</note> 
+				<para>You will then see the <emphasis>srfsh</emphasis> prompt:</para>
+				<screen>srfsh#</screen>
+				<para>At the srfsh prompt, enter this command:</para>
+				<screen>login admin open-ils</screen>
+				<para>You should the request verification:</para>
+				<screen>Received Data: "6f63ff5542da1fead4431c6c280efc75"</screen>
+				<screen>------------------------------------</screen>
+				<screen>Request Completed Successfully</screen>
+				<screen>Request Time in seconds: 0.018414</screen>
+				<screen>------------------------------------</screen>
+				<screen></screen>
+				<screen>Received Data: {</screen>
+				<screen>"ilsevent":0,</screen>
+				<screen>"textcode":"SUCCESS",</screen>
+				<screen>"desc":" ",</screen>
+				<screen>"pid":7793,</screen>
+				<screen>"stacktrace":"oils_auth.c:312",</screen>
+				<screen>"payload":{</screen>
+				<screen>"authtoken":"28804ebf99508496e2a4d2593aaa930e",</screen>
+				<screen> "authtime":420.000000</screen>
+				<screen>}</screen>
+				<screen>}</screen>
+				<screen></screen>
+				<screen>------------------------------------</screen>
+				<screen>Request Completed Successfully</screen>
+				<screen> Request Time in seconds: 0.552430</screen>
+				<screen>------------------------------------</screen>
+				<screen> Login Session: 28804.  Session timeout: 420.000</screen>
+				<screen>srfsh#</screen>        
+				<para>If you encounter errors or if you are unable to connect, you should consult the 
+				<filename>srfsh.log</filename> file. The location of this file is configured in your 
+				<filename>.srfsh.xml</filename> configuration file and is 
+				<filename>/openils/var/log/srfsh.log</filename> by default.</para>
+				<para>Pressing 
+					<keycombo>
+						<keycap>Ctrl</keycap>
+						<keycap>D</keycap>
+					</keycombo>
+				or entering <quote>exit</quote> will terminate srfsh.</para>
+			</step>
+			<step>
+				<para>Start <application>Apache</application> and check for errors:</para>
+				<screen>/etc/init.d/apache2 start</screen>
+				<para>or</para>
+				<screen>apache2ctl start</screen>
+				<para>You should see output:</para>
+				<screen>* Starting web server apache2</screen>
+				<screen>...done.</screen>
+				<para>the Apache OpenSRF modules write to the 
+				<filename>/openils/var/log/gateway.log</filename></para>
+				<para>However, you should check all of the log files for errors:</para>
+				<screen>grep ERR /openils/var/log/*.log</screen>
+				<para>Another place to check for erros is the <application>Apache</application> error logs
+				generally located in in the <filename class="directory">/var/log/Apapche2</filename> 
+				directory</para>
+				<para>If you encounter errors with Apache, a common source of potential problems are the 
+				Evergreen site configuration files <filename>/etc/apache2/eg_vhost.conf</filename> and 
+				<filename>/etc/apache2/sites-available/eg.conf</filename></para>
+			</step>
+			<step>
+				<para>Try to authenticate with the staff client</para>
+			</step>
+			<step>
+				<para>Try to authenticate with the OPAC</para>
+			</step>	
+		</procedure>	
+</chapter>
