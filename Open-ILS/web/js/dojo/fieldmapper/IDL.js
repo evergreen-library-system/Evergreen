@@ -81,8 +81,8 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     pkey_sequence : fieldmapper._getAttributeNS(fields,this.NS_PERSIST, 'sequence')
                 };
 
-		var valid = fieldmapper._getAttributeNS(node,this.NS_OBJ, 'validate');
-		if (valid) obj.validate = new RegExp( valid );
+                var valid = fieldmapper._getAttributeNS(node,this.NS_OBJ, 'validate');
+                if (valid) obj.validate = new RegExp( valid.replace(/\\/g, '\\\\') );
 
                 var permacrud = node.getElementsByTagName('permacrud')[0];
                 if(permacrud) {

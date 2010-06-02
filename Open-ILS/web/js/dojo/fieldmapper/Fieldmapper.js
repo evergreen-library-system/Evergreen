@@ -69,7 +69,26 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 				}
 			}
 			return obj;
-		}
+		},
+
+        RequiredField : function (f) {
+            if (!f) return;
+            if (fieldmapper.IDL && fieldmapper.IDL.loaded)
+                return this.Structure.fields[f].required;
+            return;
+        },
+
+        ValidateField : function (f) {
+            if (!f) return;
+            if (fieldmapper.IDL && fieldmapper.IDL.loaded) {
+                if (this.Structure.fields[f] && this.Structure.fields[f].validate) {
+                    return this.Structure.fields[f].validate.test(this[f]());
+                }
+                return true;
+            }
+            return;
+        }
+            
 
  
 /*
