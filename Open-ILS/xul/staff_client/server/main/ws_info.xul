@@ -99,7 +99,7 @@
             g.my_libs_ou_hash = {};
             g.my_deduped_libs = [];
             for (var i = 0; i < g.my_libs.length; i++) {
-                if (! defined g.my_libs_shortname_hash[ g.my_libs[i].id() ]) {
+                if (typeof g.my_libs_shortname_hash[ g.my_libs[i].id() ] == 'undefined') {
                     g.my_libs_shortname_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
                     g.my_libs_ou_hash[ g.my_libs[i].id() ] = function(o){return o;}(g.my_libs[i]);
                     g.my_deduped_libs.push( g.my_libs[i] );
