@@ -97,4 +97,6 @@ ALTER TABLE action.circulation ADD CONSTRAINT action_circulation_target_copy_fke
 
 ALTER TABLE config.billing_type ADD CONSTRAINT config_billing_type_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
+CREATE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD (UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id; DELETE FROM metabib.metarecord_source_map WHERE source = OLD.id);
+
 COMMIT;
