@@ -16,7 +16,7 @@
 			<procedure>
 				<step>
 					<para>As <emphasis>root</emphasis>, stop the <application>Apache</application> 
-					web server.</para>
+					web server<indexterm><primary>web server</primary><secondary>Apache</secondary></indexterm>.</para>
 				</step>
 				<step>
 					<para>As the <emphasis>opensrf</emphasis> user, stop all 
@@ -35,7 +35,7 @@
 			</procedure>
 		</step>
 		<step>
-			<para>Upgrade OpenSRF to 1.2</para>
+			<para>Upgrade OpenSRF<indexterm><primary>OpenSRF</primary></indexterm> to 1.2</para>
 			<procedure>
 				<step>
 					<para>As the opensrf user, download and extract the source files for OpenSRF 
@@ -57,13 +57,13 @@
 					for your distribution:</para>
 					<itemizedlist>
 						<listitem>
-							<para><emphasis>debian-etch</emphasis> for Debian Etch (4.0)</para>
+							<para><emphasis>debian-etch</emphasis> for Debian Etch (4.0)<indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm></para>
 						</listitem>
 						<listitem>
 							<para><emphasis>debian-lenny</emphasis> for Debian Lenny (5.0)</para>
 						</listitem>
 						<listitem>
-						<para><emphasis>ubuntu-hardy</emphasis> for Ubuntu Hardy Heron (8.04)</para>
+						<para><emphasis>ubuntu-hardy</emphasis> for Ubuntu Hardy Heron (8.04)<indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm></para>
 						</listitem>
 						<listitem>
 							<para><emphasis>ubuntu-intrepid</emphasis> for Ubuntu Intrepid Ibex 
@@ -81,7 +81,8 @@
 					<screen>make -f src/extras/Makefile.install <emphasis>[distribution]</emphasis>
 					</screen>
 					<para>This will install a number of packages required by OpenSRF on your system, 
-					including some Perl modules from CPAN. You can say “no” to the initial CPAN 
+					including some Perl modules from CPAN<indexterm><primary>programming language</primary><secondary>Perl</secondary><tertiary>CPAN</tertiary>
+</indexterm>. You can say “no” to the initial CPAN 
 					configuration prompt to allow it to automatically configure itself to download 
 					and install Perl modules from CPAN. The CPAN installer will ask you a number of 
 					times whether it should install prerequisite modules - say “yes”.</para>
@@ -89,7 +90,9 @@
 				<step>	
 					<para>As the opensrf user, configure and compile OpenSRF:</para> 
 					<note>You can include the –enable-python and –enable-java configure options if 
-					you want to include support for Python and Java, respectively.</note>
+					you want to include support for Python<indexterm><primary>programming language</primary><secondary>Python</secondary>
+</indexterm> and Java<indexterm><primary>programming language</primary><secondary>Java</secondary>
+</indexterm>, respectively.</note>
 					<screen>cd /home/opensrf/OpenSRF-1.2.2</screen>
 					<screen>./configure --prefix=/openils --sysconfdir=/openils/conf</screen>
 					<screen>make</screen>

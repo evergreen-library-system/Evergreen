@@ -4,15 +4,17 @@
       xmlns:xlink="http://www.w3.org/1999/xlink">
       <info>
             <title>Evergreen 1.6 Documentation</title>
- 		<subtitle>Draft Version</subtitle>
-		
-
-         
-        
-        <copyright>
+ 		<subtitle>Draft Version
+<para><imageobject><imagedata scalefit="0" fileref="media/evergreen_logo.gif"/>
+                                    </imageobject></para>
+</subtitle>
+ls
+<copyright>
                   <year>2010</year>
                   <holder>Evergreen Community</holder>
-		
+		<inlinemediaobject>
+                                    
+                              </inlinemediaobject>    
             </copyright>
                  <legalnotice>
                   <para><link xlink:title="Creative Commons license"
@@ -75,6 +77,8 @@
             <info>
                   <title>Appendices</title>
             </info>
+<xi:include href="appendices/bookindex.xml"/>
+
 </part>
 
 </book>
