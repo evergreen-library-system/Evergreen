@@ -107,20 +107,18 @@ sub reset_password {
 
     # In case non-matching passwords slip through our funky Web interface
     if ($password_1 and $password_2 and ($password_1 ne $password_2)) {
-        $apache->status(Apache2::Const::DECLINED);
         $ctx->{'status'} = {
             style => 'error',
             msg => $ctx->{'i18n'}{'NO_MATCH'}
         };
         $tt->process('password-reset/reset-form.tt2', $ctx)
             || die $tt->error();
-        return Apache2::Const::OK;
+        return Apache2::Const::DECLINED;
     }
 
     if ($password_1 and $password_2 and ($password_1 eq $password_2)) {
         my $response = $actor->request('open-ils.actor.patron.password_reset.commit', $uuid, $password_1)->gather();
         if (ref($response) && $response->{'textcode'}) {
-            $apache->status(Apache2::Const::DECLINED);
 
             if ($response->{'textcode'} eq 'PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST') {
                 $ctx->{'status'} = { 
@@ -138,7 +136,7 @@ sub reset_password {
             }
             $tt->process('password-reset/reset-form.tt2', $ctx)
                 || die $tt->error();
-            return Apache2::Const::OK;
+            return Apache2::Const::DECLINED;
         }
         $ctx->{'status'} = { 
             style => 'success',
@@ -175,7 +173,6 @@ sub request_password_reset {
     my $email = $cgi->param('email');
 
     if (!($barcode or $username or $email)) {
-        $apache->status(Apache2::Const::OK);
         $ctx->{'status'} = {
             style => 'plain',
             msg => $ctx->{'i18n'}{'IDENTIFY_YOURSELF'}
@@ -185,7 +182,6 @@ sub request_password_reset {
         return Apache2::Const::OK;
     } elsif ($barcode) {
         my $response = $actor->request('open-ils.actor.patron.password_reset.request', 'barcode', $barcode)->gather();
-        $apache->status(Apache2::Const::OK);
         $ctx->{'status'} = {
             style => 'plain',
             msg => $ctx->{'i18n'}{'REQUEST_SUCCESS'}
@@ -196,7 +192,6 @@ sub request_password_reset {
         return Apache2::Const::OK;
     } elsif ($username) {
         my $response = $actor->request('open-ils.actor.patron.password_reset.request', 'username', $username)->gather();
-        $apache->status(Apache2::Const::OK);
         $ctx->{'status'} = {
             style => 'plain',
             msg => $ctx->{'i18n'}{'REQUEST_SUCCESS'}
