@@ -322,7 +322,7 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
 
         this.handleAlert('', false, 'login-success');
         dojo.byId('oils-selfck-user-banner').innerHTML = 
-            dojo.string.substitute(localeStrings.WELCOME_BANNER, [this.patron.usrname()]);
+            dojo.string.substitute(localeStrings.WELCOME_BANNER, [this.patron.first_given_name()]);
         this.drawCircPage();
     }
 }
