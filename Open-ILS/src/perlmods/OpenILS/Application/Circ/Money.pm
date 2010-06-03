@@ -421,6 +421,83 @@ sub retrieve_payments2 {
     return \@payments;
 }
 
+__PACKAGE__->register_method(
+    method    => "format_payment_receipt",
+    api_name  => "open-ils.circ.money.payment_receipt.print",
+    signature => {
+        desc   => 'Returns a printable receipt for the specified payments',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'Payment ID or array of payment IDs', type => 'number' },
+        ],
+        return => {
+            desc => q/An action_trigger.event object or error event./,
+            type => 'object',
+        }
+    }
+);
+__PACKAGE__->register_method(
+    method    => "format_payment_receipt",
+    api_name  => "open-ils.circ.money.payment_receipt.email",
+    signature => {
+        desc   => 'Emails a receipt for the specified payments to the user associated with the first payment',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'Payment ID or array of payment IDs', type => 'number' },
+        ],
+        return => {
+            desc => q/Undefined on success, otherwise an error event./,
+            type => 'object',
+        }
+    }
+);
+
+sub format_payment_receipt {
+    my($self, $conn, $auth, $mp_id) = @_;
+
+    my $mp_ids;
+    if (ref $mp_id ne 'ARRAY') {
+        $mp_ids = [ $mp_id ];
+    } else {
+        $mp_ids = $mp_id;
+    }
+
+    my $for_print = ($self->api_name =~ /print/);
+    my $for_email = ($self->api_name =~ /email/);
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $payments = [];
+    for my $id (@$mp_ids) {
+
+        my $payment = $e->retrieve_money_payment([
+            $id,
+            {   flesh => 2,
+                flesh_fields => {
+                    mp => ['xact'],
+                    mbt => ['usr']
+                }
+            }
+        ]) or return OpenILS::Event->new('MP_NOT_FOUND');
+
+        return $e->event unless $e->allowed('VIEW_TRANSACTION', $payment->xact->usr->home_ou); 
+
+        push @$payments, $payment;
+    }
+
+    if ($for_print) {
+
+        return $U->fire_object_event(undef, 'money.format.payment_receipt.print', $payments, $$payments[0]->xact->usr->home_ou);
+
+    } elsif ($for_email) {
+
+        for my $p (@$payments) {
+            $U->create_events_for_hook('money.format.payment_receipt.email', $p, $p->xact->usr->home_ou, 1);
+        }
+    }
+
+    return undef;
+}
 
 __PACKAGE__->register_method(
     method    => "create_grocery_bill",
