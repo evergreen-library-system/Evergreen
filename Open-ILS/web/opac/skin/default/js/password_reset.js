@@ -73,7 +73,7 @@ function createResetDialog() {
     pwResetFormDlg.startup();
 
     // Instantiate the form
-    var pwResetFormDiv = dojo.create("form", { id: "requestReset", style: "width: 30em", method: "post", action: "/opac/password/en-US" });
+    var pwResetFormDiv = dojo.create("form", { id: "requestReset", style: "width: 30em", method: "post", action: "/opac/password/en-US/" });
     dojo.create("p", { innerHTML: opac_strings.PWD_RESET_SUBMIT_PROMPT }, pwResetFormDiv);
     var pwResetFormTable = dojo.create("table", null, pwResetFormDiv);
     var pwResetFormTbody = dojo.create("tbody", null, pwResetFormTable);
