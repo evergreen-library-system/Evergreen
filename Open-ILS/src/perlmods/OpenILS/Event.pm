@@ -23,7 +23,7 @@ sub new {
 	_load_events() unless $events;
 
 	throw OpenSRF::EX ("Bad event name: $event") unless $event;
-	my $e = $events->{$event};
+	my $e = $events->{$event} || '';
 
 	my( $m, $f, $l ) = caller(0);
 	my( $mm, $ff, $ll ) = caller(1);
@@ -44,7 +44,7 @@ sub new {
 		ilsevent		=> $e, 
 		textcode		=> $event, 
 		stacktrace	=> "$f:$l $ff:$ll $fff:$lll", 
-		desc			=> $descs->{$lang}->{$e || ''} || '',
+		desc			=> $descs->{$lang}->{$e} || '',
 		servertime	=> $t,
 		pid			=> $$, %params };
 }
