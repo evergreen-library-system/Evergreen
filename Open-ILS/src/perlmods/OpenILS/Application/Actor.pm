@@ -3696,12 +3696,13 @@ __PACKAGE__->register_method(
         params => [
             { desc => 'user_id_type', type => 'string' },
             { desc => 'user_id', type => 'string' },
+            { desc => 'optional (based on library setting) matching email address for authorizing request', type => 'string' },
         ],
         return => {desc => '1 on success, Event on error'}
     }
 );
 sub request_password_reset {
-    my($self, $conn, $user_id_type, $user_id) = @_;
+    my($self, $conn, $user_id_type, $user_id, $email) = @_;
 
     # Check to see if password reset requests are already being throttled:
     # 0. Check cache to see if we're in throttle mode (avoid hitting database)
@@ -3726,12 +3727,20 @@ sub request_password_reset {
         }
         $user = $card->usr;
     }
-
+    
     # If the user doesn't have an email address, we can't help them
     if (!$user->email) {
         $e->die_event;
         return OpenILS::Event->new('PATRON_NO_EMAIL_ADDRESS');
     }
+    
+    my $email_must_match = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_requires_matching_email');
+    if ($email_must_match) {
+        if ($user->email ne $email) {
+            return OpenILS::Event->new('EMAIL_VERIFICATION_FAILED');
+        }
+    }
+
     _reset_password_request($conn, $e, $user);
 }
 

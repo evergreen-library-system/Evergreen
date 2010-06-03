@@ -2079,6 +2079,22 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
         'bool'
 );
 
+-- 0290.data.org-setting-password-reset-request.sql
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'circ.password_reset_request_requires_matching_email',
+        oils_i18n_gettext(
+            'circ.password_reset_request_requires_matching_email',
+            'Circulation: Require matching email address for password reset requests', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'circ.password_reset_request_requires_matching_email',
+            'Circulation: Require matching email address for password reset requests', 
+            'coust', 
+            'description'),
+        'bool'
+);
+
 -- Org_unit_setting_type(s) that need an fm_class:
 INSERT into config.org_unit_setting_type
 ( name, label, description, datatype, fm_class ) VALUES
