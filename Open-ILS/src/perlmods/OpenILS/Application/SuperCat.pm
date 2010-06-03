@@ -678,7 +678,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested authority record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
@@ -693,7 +693,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested authority record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
@@ -708,7 +708,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested authority record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
@@ -723,7 +723,7 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested authority record ids held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
@@ -795,7 +795,7 @@ __PACKAGE__->register_method(
 	argc      => 1,
 	signature =>
 		{ desc     => <<"		  DESC",
-Returns a list of the requested org-scoped record ids held
+Returns a list of the requested authority record ids held
 		  DESC
 		  params   =>
 		  	[
