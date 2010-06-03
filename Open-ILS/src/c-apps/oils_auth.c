@@ -14,13 +14,17 @@
 #define OILS_AUTH_OPAC "opac"
 #define OILS_AUTH_STAFF "staff"
 #define OILS_AUTH_TEMP "temp"
+#define OILS_AUTH_PERSISTENT "persistent"
+
+// Default time for extending a persistent session: ten minutes
+#define DEFAULT_RESET_INTERVAL 10 * 60
 
 int osrfAppInitialize();
 int osrfAppChildInit();
 
-static int _oilsAuthOPACTimeout = 0;
-static int _oilsAuthStaffTimeout = 0;
-static int _oilsAuthOverrideTimeout = 0;
+static long _oilsAuthOPACTimeout = 0;
+static long _oilsAuthStaffTimeout = 0;
+static long _oilsAuthOverrideTimeout = 0;
 
 
 /**
@@ -258,7 +262,7 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	setting for the home org unit of the user logging in
 	3. If that setting is not defined, we use the configured defaults
 */
-static double oilsAuthGetTimeout( const jsonObject* userObj, const char* type, double orgloc ) {
+static long oilsAuthGetTimeout( const jsonObject* userObj, const char* type, int orgloc ) {
 
 	if(!_oilsAuthOPACTimeout) { /* Load the default timeouts */
 
@@ -266,29 +270,30 @@ static double oilsAuthGetTimeout( const jsonObject* userObj, const char* type, d
 
 		value_obj = osrf_settings_host_value_object(
 			"/apps/open-ils.auth/app_settings/default_timeout/opac" );
-		_oilsAuthOPACTimeout = jsonObjectGetNumber(value_obj);
+		_oilsAuthOPACTimeout = (long) jsonObjectGetNumber(value_obj);
 		jsonObjectFree(value_obj);
 
 		value_obj = osrf_settings_host_value_object(
 			"/apps/open-ils.auth/app_settings/default_timeout/staff" );
-		_oilsAuthStaffTimeout = jsonObjectGetNumber(value_obj);
+		_oilsAuthStaffTimeout = (long) jsonObjectGetNumber(value_obj);
 		jsonObjectFree(value_obj);
 
 		value_obj = osrf_settings_host_value_object(
 				"/apps/open-ils.auth/app_settings/default_timeout/temp" );
-		_oilsAuthOverrideTimeout = jsonObjectGetNumber(value_obj);
+		_oilsAuthOverrideTimeout = (long) jsonObjectGetNumber(value_obj);
 		jsonObjectFree(value_obj);
 
 
 		osrfLogInfo(OSRF_LOG_MARK,
-				"Set default auth timeouts: opac => %d : staff => %d : temp => %d",
+				"Set default auth timeouts: opac => %ld : staff => %ld : temp => %ld",
 				_oilsAuthOPACTimeout, _oilsAuthStaffTimeout, _oilsAuthOverrideTimeout );
 	}
 
 	char* setting = NULL;
 
-	double home_ou = jsonObjectGetNumber( oilsFMGetObject( userObj, "home_ou" ) );
-	if(orgloc < 1) orgloc = (int) home_ou;
+	int home_ou = (int) jsonObjectGetNumber( oilsFMGetObject( userObj, "home_ou" ));
+	if(orgloc < 1)
+		orgloc = home_ou;
 
 	if(!strcmp(type, OILS_AUTH_OPAC))
 		setting = OILS_ORG_SETTING_OPAC_TIMEOUT;
@@ -303,16 +308,19 @@ static double oilsAuthGetTimeout( const jsonObject* userObj, const char* type, d
 		if( orgloc != home_ou ) {
 			osrfLogDebug(OSRF_LOG_MARK, "Auth timeout not defined for org %d, "
 								"trying home_ou %d", orgloc, home_ou );
-			timeout = oilsUtilsFetchOrgSetting( (int) home_ou, setting );
+			timeout = oilsUtilsFetchOrgSetting( home_ou, setting );
 		}
 		if(!timeout) {
-			if(!strcmp(type, OILS_AUTH_STAFF)) return _oilsAuthStaffTimeout;
-			if(!strcmp(type, OILS_AUTH_TEMP)) return _oilsAuthOverrideTimeout;
-			return _oilsAuthOPACTimeout;
+			if( !strcmp(type, OILS_AUTH_STAFF ))
+				return _oilsAuthStaffTimeout;
+			else if( !strcmp( type, OILS_AUTH_TEMP ))
+				return _oilsAuthOverrideTimeout;
+			else
+				return _oilsAuthOPACTimeout;
 		}
 	}
 
-	double t = atof(timeout);
+	long t = (long) atof(timeout);
 	free(timeout);
 	return t ;
 }
@@ -325,11 +333,11 @@ static double oilsAuthGetTimeout( const jsonObject* userObj, const char* type, d
 	Event must be freed
 */
 static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
-		const char* type, double orgloc, const char* workstation ) {
+		const char* type, int orgloc, const char* workstation ) {
 
 	oilsEvent* response;
 
-	double timeout;
+	long timeout;
 	char* wsorg = jsonObjectToSimpleString(oilsFMGetObject(userObj, "ws_ou"));
 	if(wsorg) { /* if there is a workstation, use it for the timeout */
 		osrfLogDebug( OSRF_LOG_MARK,
@@ -341,7 +349,7 @@ static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
 				"Auth session trying org from param [%d] for auth timeout", orgloc );
 		timeout = oilsAuthGetTimeout( userObj, type, orgloc );
 	}
-	osrfLogDebug(OSRF_LOG_MARK, "Auth session timeout for %s: %f", uname, timeout );
+	osrfLogDebug(OSRF_LOG_MARK, "Auth session timeout for %s: %ld", uname, timeout );
 
 	char* string = va_list_to_string(
 			"%d.%ld.%s", (long) getpid(), time(NULL), uname );
@@ -354,14 +362,14 @@ static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
 		"successful login: username=%s, authtoken=%s, workstation=%s", uname, authToken, ws );
 
 	oilsFMSetString( userObj, "passwd", "" );
-	jsonObject* cacheObj = jsonParseFmt("{\"authtime\": %f}", timeout);
+	jsonObject* cacheObj = jsonParseFmt( "{\"authtime\": %ld}", timeout );
 	jsonObjectSetKey( cacheObj, "userobj", jsonObjectClone(userObj));
 
-	osrfCachePutObject( authKey, cacheObj, timeout );
+	osrfCachePutObject( authKey, cacheObj, (time_t) timeout );
 	jsonObjectFree(cacheObj);
 	osrfLogInternal(OSRF_LOG_MARK, "oilsAuthHandleLoginOK(): Placed user object into cache");
 	jsonObject* payload = jsonParseFmt(
-		"{ \"authtoken\": \"%s\", \"authtime\": %f }", authToken, timeout );
+		"{ \"authtoken\": \"%s\", \"authtime\": %ld }", authToken, timeout );
 
 	response = oilsNewEvent2( OSRF_LOG_MARK, OILS_EVENT_SUCCESS, payload );
 	free(string); free(authToken); free(authKey);
@@ -424,7 +432,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	const char* uname       = jsonObjectGetString(jsonObjectGetKeyConst(args, "username"));
 	const char* password    = jsonObjectGetString(jsonObjectGetKeyConst(args, "password"));
 	const char* type        = jsonObjectGetString(jsonObjectGetKeyConst(args, "type"));
-	double orgloc           = jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org"));
+	int orgloc        = (int) jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org"));
 	const char* workstation = jsonObjectGetString(jsonObjectGetKeyConst(args, "workstation"));
 	const char* barcode     = jsonObjectGetString(jsonObjectGetKeyConst(args, "barcode"));
 
@@ -609,7 +617,7 @@ static oilsEvent*  _oilsAuthResetTimeout( const char* authToken ) {
 	if(!authToken) return NULL;
 
 	oilsEvent* evt = NULL;
-	double timeout;
+	time_t timeout;
 
 	osrfLogDebug(OSRF_LOG_MARK, "Resetting auth timeout for session %s", authToken);
 	char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken );
@@ -620,10 +628,38 @@ static oilsEvent*  _oilsAuthResetTimeout( const char* authToken ) {
 		evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
 
 	} else {
+		// Determine a new timeout value
+		jsonObject* endtime_obj = jsonObjectGetKey( cacheObj, "endtime" );
+		if( endtime_obj ) {
+			// Extend the current endtime by a fixed amount
+			time_t endtime = (time_t) jsonObjectGetNumber( endtime_obj );
+			int reset_interval = DEFAULT_RESET_INTERVAL;
+			jsonObject* reset_interval_obj = jsonObjectGetKey( cacheObj, "reset_interval" );
+			if( reset_interval_obj ) {
+				reset_interval = (int) jsonObjectGetNumber( reset_interval_obj );
+				if( reset_interval <= 0 )
+					reset_interval = DEFAULT_RESET_INTERVAL;
+			}
 
-		timeout = jsonObjectGetNumber( jsonObjectGetKeyConst( cacheObj, "authtime"));
-		osrfCacheSetExpire( timeout, key );
-		jsonObject* payload = jsonNewNumberObject(timeout);
+			time_t now = time( NULL );
+			time_t new_endtime = now + reset_interval;
+			if( new_endtime > endtime ) {
+				// Keep the session alive a little longer
+				jsonObjectSetNumber( endtime_obj, (double) new_endtime );
+				timeout = reset_interval;
+				osrfCachePutObject( key, cacheObj, timeout );
+			} else {
+				// The session isn't close to expiring, so don't reset anything.
+				// Just report the time remaining.
+				timeout = endtime - now;
+			}
+		} else {
+			// Reapply the existing timeout from the current time
+			timeout = (time_t) jsonObjectGetNumber( jsonObjectGetKeyConst( cacheObj, "authtime"));
+			osrfCachePutObject( key, cacheObj, timeout );
+		}
+
+		jsonObject* payload = jsonNewNumberObject( (double) timeout );
 		evt = oilsNewEvent2(OSRF_LOG_MARK, OILS_EVENT_SUCCESS, payload);
 		jsonObjectFree(payload);
 		jsonObjectFree(cacheObj);
@@ -652,20 +688,24 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 
 	if( authToken ){
 
+		// Reset the timeout to keep the session alive
 		evt = _oilsAuthResetTimeout(authToken);
 
 		if( evt && strcmp(evt->event, OILS_EVENT_SUCCESS) ) {
-			osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
+			osrfAppRespondComplete( ctx, oilsEventToJSON( evt ));    // can't reset timeout
 
 		} else {
 
+			// Retrieve the cached session object
 			osrfLogDebug(OSRF_LOG_MARK, "Retrieving auth session: %s", authToken);
 			char* key = va_list_to_string("%s%s", OILS_AUTH_CACHE_PRFX, authToken );
 			cacheObj = osrfCacheGetObject( key );
 			if(cacheObj) {
+				// Return a copy of the cached user object
 				osrfAppRespondComplete( ctx, jsonObjectGetKeyConst( cacheObj, "userobj"));
 				jsonObjectFree(cacheObj);
 			} else {
+				// Auth token is invalid or expired
 				oilsEvent* evt2 = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
 				osrfAppRespondComplete( ctx, oilsEventToJSON(evt2) ); /* should be event.. */
 				oilsEventFree(evt2);
@@ -675,6 +715,7 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 
 	} else {
 
+		// No session
 		evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
 		osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
 	}
