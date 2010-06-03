@@ -101,9 +101,13 @@
 
             g.my_libs_shortname_hash = {};
             g.my_libs_ou_hash = {};
+            g.my_deduped_libs = [];
             for (var i = 0; i < g.my_libs.length; i++) {
-                g.my_libs_shortname_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
-                g.my_libs_ou_hash[ g.my_libs[i].id() ] = function(o){return o;}(g.my_libs[i]);
+                if (typeof g.my_libs_shortname_hash[ g.my_libs[i].id() ] == 'undefined') {
+                    g.my_libs_shortname_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
+                    g.my_libs_ou_hash[ g.my_libs[i].id() ] = function(o){return o;}(g.my_libs[i]);
+                    g.my_deduped_libs.push( g.my_libs[i] );
+                }
             }
 
             g.tb = document.getElementById('wsname');
@@ -122,13 +126,22 @@
             util.widgets.remove_children( x );
 
             var default_lib = g.my_lib; 
-            if ( !get_bool( g.aout_hash[ g.my_libs_ou_hash[ default_lib ].ou_type() ].can_have_users() ) ) {
+            try {
+                if (typeof g.my_libs_ou_hash[ default_lib ] == 'undefined') {
+                    default_lib = null;
+                } else {
+                    if ( !get_bool( g.aout_hash[ g.my_libs_ou_hash[ default_lib ].ou_type() ].can_have_users() ) ) {
+                        default_lib = null;
+                    }
+                }
+            } catch(E) {
+                dump('Error in ws_info.xul, render_menulist(): ' + E + '\n');
                 default_lib = null;
             }
 
             g.ml = util.widgets.make_menulist( 
                 util.functional.map_list( 
-                    util.fm_utils.flatten_ou_branch( g.my_libs_tree ),
+                    g.my_deduped_libs,
                     function(obj) { 
                         if (!default_lib) {
                             if ( get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ) default_lib = obj.id();
