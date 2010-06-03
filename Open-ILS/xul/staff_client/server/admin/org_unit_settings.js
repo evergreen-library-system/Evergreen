@@ -14,12 +14,14 @@ dojo.require('openils.Event');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoFieldWidget');
+dojo.require('openils.widget.ProgressDialog');
 
 var authtoken;
 var contextOrg;
 var user;
 var workOrgs;
 var osSettings = {};
+var ouSettingValues = {};
 var osEditAutoWidget;
 
 function osInit(data) {
@@ -47,23 +49,33 @@ function osInit(data) {
 }
 dojo.addOnLoad(osInit);
 
-function osDraw() {
-    var types = new openils.PermaCrud({authtoken:authtoken}).retrieveAll('coust');
+function osDraw(specific_setting) {
+    progressDialog.show(true, "Processing..."); /* FIXME: I18N */
 
-    dojo.forEach(types, 
-        function(type) {
-            osSettings[type.name()] = {
-                label : type.label(),
-                desc : type.description(),
-                type : type.datatype(),
-                fm_class : type.fm_class()
-            }
-        }
-    );
-    
     var names = [];
-    for(var key in osSettings)
-        names.push(key);
+    if (specific_setting) {
+
+        for(var key in specific_setting)
+            names.push(key);
+
+    } else {
+
+        var types = new openils.PermaCrud({authtoken:authtoken}).retrieveAll('coust');
+
+        dojo.forEach(types, 
+            function(type) {
+                osSettings[type.name()] = {
+                    label : type.label(),
+                    desc : type.description(),
+                    type : type.datatype(),
+                    fm_class : type.fm_class()
+                }
+            }
+        );
+        
+        for(var key in osSettings)
+            names.push(key);
+    }
 
     fieldmapper.standardRequest(
         [   'open-ils.actor', 
@@ -74,7 +86,10 @@ function osDraw() {
                 var data = r.recv().content();
                 if(e = openils.Event.parse(data))
                     return alert(e);
-                osLoadGrid(data);
+                for(var key in data)
+                    ouSettingValues[key] = data[key];
+                osLoadGrid(ouSettingValues);
+                progressDialog.hide();
             }
         }
     );
@@ -303,7 +318,7 @@ function osEditSetting(deleteMe) {
                 var res = r.recv().content();
                 if(e = openils.Event.parse(res))
                     return alert(e);
-                osDraw();
+                osDraw(obj);
             }
         }
     );
