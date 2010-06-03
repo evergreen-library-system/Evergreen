@@ -1,3 +1,4 @@
+
 /* */
 
 detachAllEvt('common', 'run');
@@ -123,9 +124,33 @@ function rdetailDraw() {
 	if(getLocation() == globalOrgTree.id())
 		hideMe(G.ui.rdetail.cp_info_all);
 
-	var req = new Request(FETCH_RMODS, getRid());
-	req.callback(_rdetailDraw);
-	req.send();
+    if(getRid()) {
+
+	    var req = new Request(FETCH_RMODS, getRid());
+	    req.callback(_rdetailDraw);
+	    req.send();
+
+    } else { // No record ID was specified
+
+       // If we have an ISBN in the URL, let's try to find that record
+       // This allows direct linking by ISBN.
+       // Note, this uses the first record it finds
+       if(getRtype() == RTYPE_ISBN) { 
+            var req = new Request(FETCH_ADV_ISBN_RIDS, getAdvTerm() );
+            req.callback(
+                function(r) {
+                    var blob = r.getResultObject();
+                    if(blob && blob.count > 0) 
+                        RID = blob.ids[0]; 
+                    var req2 = new Request(FETCH_RMODS, getRid());
+                    req2.callback(_rdetailDraw);
+                    req2.send();
+                }
+            );
+            req.send();
+        }
+    }
+
 
 	if (rdetailDisplaySerialHoldings) {
 		var req = new Request(FETCH_MFHD_SUMMARY, getRid());
