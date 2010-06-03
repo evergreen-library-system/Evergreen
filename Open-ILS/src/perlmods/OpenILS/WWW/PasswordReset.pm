@@ -113,7 +113,7 @@ sub reset_password {
         };
         $tt->process('password-reset/reset-form.tt2', $ctx)
             || die $tt->error();
-        return Apache2::Const::DECLINED;
+        return Apache2::Const::OK;
     }
 
     if ($password_1 and $password_2 and ($password_1 eq $password_2)) {
@@ -136,7 +136,7 @@ sub reset_password {
             }
             $tt->process('password-reset/reset-form.tt2', $ctx)
                 || die $tt->error();
-            return Apache2::Const::DECLINED;
+            return Apache2::Const::OK;
         }
         $ctx->{'status'} = { 
             style => 'success',
