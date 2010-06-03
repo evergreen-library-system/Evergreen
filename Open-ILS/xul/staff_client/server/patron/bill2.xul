@@ -204,9 +204,9 @@
                         </row>
                         <row>
                             <label id="total_label" value="&staff.patron.bill_interface.total.label;" control="total_owed" class="emphasis1"/>
-                            <hbox><textbox id="total_owed" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="tb_total_owed" readonly="true" context="clipboard" size="6"/></hbox>
                             <hbox><textbox id="total_billed" readonly="true" context="clipboard" size="6"/></hbox>
-                            <hbox><textbox id="total_paid" readonly="true" context="clipboard" size="6"/></hbox>
+                            <hbox><textbox id="tb_total_paid" readonly="true" context="clipboard" size="6"/></hbox>
                         </row>
                         <row>
                             <label id="checked_label" value="&staff.patron.bill_interface.checked.label;" control="checked_owed" class="emphasis2"/>

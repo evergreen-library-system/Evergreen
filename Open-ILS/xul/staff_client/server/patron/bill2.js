@@ -292,14 +292,14 @@ function tally_all() {
         for (var i = 0; i < retrieve_ids.length; i++) {
             var bill = g.bill_map[retrieve_ids[i]];
             if (!bill) {
-                $('checked_owed').setAttribute('value', '???');
+                $('checked_owed').value = '???';
                 $('checked_owed2').setAttribute('value', '???');
-                $('checked_billed').setAttribute('value', '???');
-                $('checked_paid').setAttribute('value', '???');
-                $('total_owed').setAttribute('value', '???');
+                $('checked_billed').value = '???';
+                $('checked_paid').value = '???';
+                $('tb_total_owed').value = '???';
                 $('total_owed2').setAttribute('value', '???');
-                $('total_billed').setAttribute('value', '???');
-                $('total_paid').setAttribute('value', '???');
+                $('total_billed').value = '???';
+                $('tb_total_paid').value = '???';
                 $('refunds_owed').setAttribute('value', '???');
                 return;
             }
@@ -316,13 +316,13 @@ function tally_all() {
                 checked_balance += bo;
             }
         }
-        $('checked_billed').setAttribute('value', util.money.cents_as_dollars( checked_billed ) );
-        $('checked_paid').setAttribute('value', util.money.cents_as_dollars( checked_paid ) );
-        $('checked_owed').setAttribute('value', util.money.cents_as_dollars( checked_balance ) );
+        $('checked_billed').value = util.money.cents_as_dollars( checked_billed );
+        $('checked_paid').value = util.money.cents_as_dollars( checked_paid );
+        $('checked_owed').value = util.money.cents_as_dollars( checked_balance );
         $('checked_owed2').setAttribute('value', util.money.cents_as_dollars( checked_balance ) );
-        $('total_billed').setAttribute('value', util.money.cents_as_dollars( total_billed ) );
-        $('total_paid').setAttribute('value', util.money.cents_as_dollars( total_paid ) );
-        $('total_owed').setAttribute('value', util.money.cents_as_dollars( total_balance ) );
+        $('total_billed').value = util.money.cents_as_dollars( total_billed );
+        $('tb_total_paid').value = util.money.cents_as_dollars( total_paid );
+        $('tb_total_owed').value = util.money.cents_as_dollars( total_balance );
         $('total_owed2').setAttribute('value', util.money.cents_as_dollars( total_balance ) );
         $('refunds_owed').setAttribute('value', util.money.cents_as_dollars( Math.abs( refunds_owed ) ) );
         // tally_selected();
@@ -823,14 +823,14 @@ function pay(payment_blob) {
             );
         }
         g.previous_summary = {
-            original_balance : $('total_owed').value,
+            original_balance : $('tb_total_owed').value,
             voided_balance : $('currently_voided').value,
             payment_received : $('payment').value,
             payment_applied : $('pending_payment').value,
             change_given : $('convert_change_to_credit').checked ? 0 : $('pending_change').value,
             credit_given : $('convert_change_to_credit').checked ? $('pending_change').value : 0,
             new_balance : util.money.cents_as_dollars( 
-                util.money.dollars_float_to_cents_integer( $('total_owed').value ) - 
+                util.money.dollars_float_to_cents_integer( $('tb_total_owed').value ) - 
                 util.money.dollars_float_to_cents_integer( $('pending_payment').value )
             ),
             payment_type : $('payment_type').getAttribute('label'),
