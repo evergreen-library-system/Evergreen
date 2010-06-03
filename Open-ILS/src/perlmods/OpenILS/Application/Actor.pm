@@ -3877,8 +3877,9 @@ sub commit_password_reset {
     # Ensure we're still within the TTL for the request
     my $aupr_ttl = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_time_to_live') || 24*60*60;
     my $threshold = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($aupr->[0]->request_time))->add(seconds => $aupr_ttl);
-    if ($threshold > DateTime->now(time_zone => 'local')) {
+    if ($threshold < DateTime->now(time_zone => 'local')) {
         $e->die_event;
+        $logger->info("Password reset request needed to be submitted before $threshold");
         return OpenILS::Event->new('PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST');
     }
 
