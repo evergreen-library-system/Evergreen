@@ -9,6 +9,8 @@
 <!ENTITY common.date_helper.3_days 'Today + 3 days'>
 <!ENTITY common.date_helper.7_days 'Today + 7 days'>
 <!ENTITY common.date_helper.14_days 'Today + 14 days'>
+<!ENTITY common.date_helper.21_days 'Today + 21 days'>
+<!ENTITY common.date_helper.28_days 'Today + 28 days'>
 <!ENTITY common.date_helper.30_days 'Today + 30 days'>
 <!ENTITY common.due_date.description 'Enter the item due date:'>
 <!ENTITY common.enter.label "Enter">

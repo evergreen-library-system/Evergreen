@@ -68,6 +68,8 @@
                             <menuitem label="&common.date_helper.3_days;" value="3"/>
                             <menuitem label="&common.date_helper.7_days;" value="7"/>
                             <menuitem label="&common.date_helper.14_days;" value="14"/>
+                            <menuitem label="&common.date_helper.21_days;" value="21"/>
+                            <menuitem label="&common.date_helper.28_days;" value="28"/>
                             <menuitem label="&common.date_helper.30_days;" value="30"/>
                         </menupopup>
                     </menulist>
