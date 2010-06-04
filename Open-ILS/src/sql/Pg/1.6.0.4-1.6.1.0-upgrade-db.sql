@@ -712,22 +712,29 @@ CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
       GROUP BY 1,2,3,4,5,15
       ORDER BY MAX(debit.billing_ts), MAX(credit.payment_ts);
 
+COMMIT;
+
 INSERT INTO config.copy_status (id,name) VALUES (15,oils_i18n_gettext(15, 'On reservation shelf', 'ccs', 'name'));
 
-INSERT INTO permission.perm_list VALUES
-    (351, 'HOLD_LOCAL_AVAIL_OVERRIDE', oils_i18n_gettext(351, 'Allow a user to place a hold despite the availability of a local copy', 'ppl', 'description')),
-    (352, 'ADMIN_BOOKING_RESOURCE', oils_i18n_gettext(352, 'Enables the user to create/update/delete booking resources', 'ppl', 'description')),
-    (353, 'ADMIN_BOOKING_RESOURCE_TYPE', oils_i18n_gettext(353, 'Enables the user to create/update/delete booking resource types', 'ppl', 'description')),
-    (354, 'ADMIN_BOOKING_RESOURCE_ATTR', oils_i18n_gettext(354, 'Enables the user to create/update/delete booking resource attributes', 'ppl', 'description')),
-    (355, 'ADMIN_BOOKING_RESOURCE_ATTR_MAP', oils_i18n_gettext(355, 'Enables the user to create/update/delete booking resource attribute maps', 'ppl', 'description')),
-    (356, 'ADMIN_BOOKING_RESOURCE_ATTR_VALUE', oils_i18n_gettext(356, 'Enables the user to create/update/delete booking resource attribute values', 'ppl', 'description')),
-    (357, 'ADMIN_BOOKING_RESERVATION', oils_i18n_gettext(357, 'Enables the user to create/update/delete booking reservations', 'ppl', 'description')),
-    (358, 'ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP', oils_i18n_gettext(358, 'Enables the user to create/update/delete booking reservation attribute value maps', 'ppl', 'description')),
-    (359, 'HOLD_ITEM_CHECKED_OUT.override', oils_i18n_gettext(359, 'Allows a user to place a hold on an item that they already have checked out', 'ppl', 'description')),
-    (360, 'RETRIEVE_RESERVATION_PULL_LIST', oils_i18n_gettext(360, 'Allows a user to retrieve a booking reservation pull list', 'ppl', 'description')),
-    (361, 'CAPTURE_RESERVATION', oils_i18n_gettext(361, 'Allows a user to capture booking reservations', 'ppl', 'description'));
+-- Put the sequence back inside the protected range
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list WHERE id < 1000));
 
-SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
+INSERT INTO permission.perm_list (code, description) VALUES ('HOLD_LOCAL_AVAIL_OVERRIDE', 'Allow a user to place a hold despite the availability of a local copy');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_BOOKING_RESOURCE', 'Enables the user to create/update/delete booking resources');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_BOOKING_RESOURCE_TYPE', 'Enables the user to create/update/delete booking resource types');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_BOOKING_RESOURCE_ATTR', 'Enables the user to create/update/delete booking resource attributes');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_BOOKING_RESOURCE_ATTR_MAP', 'Enables the user to create/update/delete booking resource attribute maps');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_BOOKING_RESOURCE_ATTR_VALUE', 'Enables the user to create/update/delete booking resource attribute values');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_BOOKING_RESERVATION', 'Enables the user to create/update/delete booking reservations');
+INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP', 'Enables the user to create/update/delete booking reservation attribute value maps');
+INSERT INTO permission.perm_list (code, description) VALUES ('HOLD_ITEM_CHECKED_OUT.override', 'Allows a user to place a hold on an item that they already have checked out');
+INSERT INTO permission.perm_list (code, description) VALUES ('RETRIEVE_RESERVATION_PULL_LIST', 'Allows a user to retrieve a booking reservation pull list');
+INSERT INTO permission.perm_list (code, description) VALUES ('CAPTURE_RESERVATION', 'Allows a user to capture booking reservations');
+
+-- and now, move it back out
+CREATE FUNCTION bigger (INT,INT) RETURNS INT AS $$ SELECT CASE WHEN $1 > $2 THEN $1 ELSE $2 END; $$ LANGUAGE SQL;
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, bigger((SELECT MAX(id) FROM permission.perm_list),1000));
+DROP FUNCTION bigger (INT,INT);
 
 -- Pinned via 1.6.0 insert
 UPDATE action_trigger.event_definition SET delay_field = 'shelf_time' WHERE id = 5;
@@ -752,8 +759,6 @@ SELECT  r.id,
     LEFT JOIN metabib.full_rec isbn ON (r.id = isbn.record AND isbn.tag IN ('024', '020') AND isbn.subfield IN ('a','z'))
     LEFT JOIN metabib.full_rec issn ON (r.id = issn.record AND issn.tag = '022' AND issn.subfield = 'a')
   GROUP BY 1,2,3,4,5,6;
-
-COMMIT;
 
 
 
