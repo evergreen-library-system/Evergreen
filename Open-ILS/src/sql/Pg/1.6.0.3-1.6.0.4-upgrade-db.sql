@@ -94,9 +94,9 @@ SELECT	r.id,
 -- If you're using Slony, delete instead of truncate!
 
 --DELETE FROM materialized.simple_record;
-TRUNCATE TABLE materialized.simple_record;
+TRUNCATE TABLE reporter.materialized_simple_record;
 
-INSERT INTO materialized.simple_record
+INSERT INTO reporter.materialized_simple_record
     SELECT * FROM reporter.old_super_simple_record;
 
 -- Replace the billable transaction summary view with one that is more cautious about NULL values
@@ -153,7 +153,7 @@ $$ LANGUAGE PLPGSQL;
 
 -- And rebuild the materialized view that was built on money.billable_xact_summary
 TRUNCATE TABLE money.materialized_billable_xact_summary;
-INSERT INTO TABLE money.materialized_billable_xact_summary
+INSERT INTO money.materialized_billable_xact_summary
 	SELECT * FROM money.billable_xact_summary;
 
 -- Updated in-db circ and functions which return a matchpoint whenever possible, for override
