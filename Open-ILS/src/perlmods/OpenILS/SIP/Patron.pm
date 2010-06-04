@@ -35,15 +35,23 @@ my $INET_PRIVS;
 # OpenILS::SIP::Patron->new(    usr => $id);       
 
 sub new {
-    my ($class, $patron_id) = @_;
+    my $class = shift;
+    my $key   = (@_ > 1) ? shift : 'barcode';  # if we have multiple args, the first is the key index (default barcode)
+    my $patron_id = shift;
+
+    if ($key ne 'usr' and $key ne 'barcode') {
+        syslog("LOG_ERROR", "Patron (card) lookup requested by illegeal key '$key'");
+        return;
+    }
+
     my $type = ref($class) || $class;
     my $self = {};
 
-	syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s): searching...", $patron_id);
+    syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): searching...", $key, $patron_id);
 
-	my $e = OpenILS::SIP->editor();
+    my $e = OpenILS::SIP->editor();
 
-	my $c = $e->search_actor_card({barcode => $patron_id}, {idlist=>1});
+    my $c = $e->search_actor_card({$key => $patron_id}, {idlist=>1});
 	my $user;
 
 	if( @$c ) {
@@ -73,21 +81,22 @@ sub new {
 		$user = (@$user) ? $$user[0] : undef;
 	 }
 
-	 if(!$user) {
-		syslog("LOG_WARNING", "OILS: Unable to find patron %s", $patron_id);
-		return undef;
-	 }
+    if(!$user) {
+        syslog("LOG_WARNING", "OILS: Unable to find patron %s => %s", $key, $patron_id);
+        return undef;
+    }
 
+    $self->{editor} = $e;
     $self->{user}   = $user;
-    $self->{id}     = $patron_id;
-    $self->{editor}	= $e;
+    $self->{id}     = ($key eq 'barcode') ? $patron_id : $user->card->barcode;   # The barcode IS the ID to SIP.  
+    # We give back the passed barcode if the key was indeed a barcode, just to be safe.  Otherwise pull it from the card.
 
-	syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s): found patron : barred=%s, card:active=%s", 
-		$patron_id, $self->{user}->barred, $self->{user}->card->active );
+    syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): found patron : barred=%s, card:active=%s", 
+        $key, $patron_id, $user->barred, $user->card->active );
 
 
-	bless $self, $type;
-	return $self;
+    bless $self, $type;
+    return $self;
 }
 
 sub id {
@@ -520,8 +529,7 @@ sub block {
 
 	return $self if $u->card->active eq 'f';
 
-    # connect and start a new transaction
-    $e->xact_begin;
+    $e->xact_begin;    # connect and start a new transaction
 
 	$u->card->active('f');
 	if( ! $e->update_actor_card($u->card) ) {
@@ -552,21 +560,23 @@ sub block {
 
 # Testing purposes only
 sub enable {
-    my ($self, $card_retained, $blocked_card_msg) = @_;
+    my ($self, $card_retained) = @_;
     $self->{screen_msg} = "All privileges restored.";
 
-# Un-mark card as inactive, grep out the patron alert
+    # Un-mark card as inactive, grep out the patron alert
+    my $e = $self->{editor};
     my $u = $self->{user};
-    my $e = $self->{editor} = OpenILS::SIP->reset_editor();
 
     syslog('LOG_INFO', "OILS: Unblocking user %s", $u->card->barcode );
 
     return $self if $u->card->active eq 't';
 
+    $e->xact_begin;    # connect and start a new transaction
+
     $u->card->active('t');
     if( ! $e->update_actor_card($u->card) ) {
         syslog('LOG_ERR', "OILS: Unblock card update failed: %s", $e->event->{textcode});
-        $e->xact_rollback;
+        $e->rollback; # rollback + disconnect
         return $self;
     }
 
@@ -580,15 +590,14 @@ sub enable {
 
     if( ! $e->update_actor_user($u) ) {
         syslog('LOG_ERR', "OILS: Unblock: patron alert update failed: %s", $e->event->{textcode});
-        $e->xact_rollback;
+        $e->rollback; # rollback + disconnect
         return $self;
     }
 
     # stay in synch
     $self->{user}->alert_message( $note );
 
-    $e->commit; # commits and resets
-    $self->{editor} = OpenILS::SIP->reset_editor();
+    $e->commit; # commits and disconnects
     return $self;
 }
 

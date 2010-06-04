@@ -2,6 +2,7 @@ package OpenILS::SIP::Item;
 use strict; use warnings;
 
 use Sys::Syslog qw(syslog);
+use Carp;
 
 use OpenILS::SIP;
 use OpenILS::SIP::Transaction;
@@ -15,6 +16,61 @@ use OpenSRF::Utils::SettingsClient;
 my $U = 'OpenILS::Application::AppUtils';
 
 my %item_db;
+
+# 0 means read-only
+# 1 means read/write    Actually, gloves are off.  Set what you like.
+
+my %fields = (
+    id => 0,
+    #   sip_media_type      => 0,
+    sip_item_properties => 0,
+    #   magnetic_media      => 0,
+    permanent_location => 0,
+    current_location   => 0,
+#   print_line         => 1,
+#   screen_msg         => 1,
+#   itemnumber         => 0,
+#   biblionumber       => 0,
+    hold               => 0,
+    hold_patron_bcode  => 0,
+    hold_patron_name   => 0,
+    barcode            => 0,
+    onloan             => 0,
+    collection_code    => 0,
+    destination_loc    => 0,
+    call_number        => 0,
+    enumchron          => 0,
+    location           => 0,
+    author             => 0,
+    title              => 0,
+    copy               => 0,
+    volume             => 0,
+    record             => 0,
+    mods               => 0,
+);
+
+our $AUTOLOAD;
+sub DESTROY { } # keeps AUTOLOAD from catching inherent DESTROY calls
+
+sub AUTOLOAD {
+    my $self = shift;
+    my $class = ref($self) or croak "$self is not an object";
+    my $name = $AUTOLOAD;
+
+    $name =~ s/.*://;
+
+    unless (exists $fields{$name}) {
+        croak "Cannot access '$name' field of class '$class'";
+    }
+
+    if (@_) {
+        # $fields{$name} or croak "Field '$name' of class '$class' is READ ONLY.";  # nah, go ahead
+        return $self->{$name} = shift;
+    } else {
+        return $self->{$name};
+    }
+}
+
 
 sub new {
     my ($class, $item_id) = @_;
@@ -139,12 +195,16 @@ sub run_attr_script {
 	return 1;
 }
 
+sub magnetic_media {
+    my $self = shift;
+    $self->magnetic(@_);
+}
 sub magnetic {
     my $self = shift;
     return 0 unless $self->run_attr_script;
     my $mag = $self->{item_config_result}->{item_config}->{magneticMedia};
     syslog('LOG_DEBUG', "OILS: magnetic = $mag");
-    return ($mag and $mag eq 't') ? 1 : 0;
+    return ($mag and $mag =~ /t(rue)?/io) ? 1 : 0;
 }
 
 sub sip_media_type {
@@ -155,31 +215,10 @@ sub sip_media_type {
     return ($media) ? $media : '001';
 }
 
-sub sip_item_properties {
-    my $self = shift;
-    return "";
-}
-
-sub status_update {     # FIXME: this looks unimplemented
-    my ($self, $props) = @_;
-    my $status = OpenILS::SIP::Transaction->new;
-    $self->{sip_item_properties} = $props;
-    $status->{ok} = 1;
-    return $status;
-}
-
-
-sub id {
-    my $self = shift;
-    return $self->{id};
-}
-
 sub title_id {
     my $self = shift;
     my $t =  ($self->{mods}) ? $self->{mods}->title : $self->{copy}->dummy_title;
-    $t = OpenILS::SIP::clean_text($t);
-
-    return $t;
+    return OpenILS::SIP::clean_text($t);
 }
 
 sub permanent_location {
@@ -232,7 +271,7 @@ sub sip_fee_type {
     return '01';    # FIXME? 01-09 enumerated in spec.  We just use O1-other/unknown.
 }
 
-sub fee {
+sub fee {           # TODO
     my $self = shift;
     return 0;
 }
@@ -253,7 +292,7 @@ sub hold_queue {
     return [];
 }
 
-sub hold_queue_position {
+sub hold_queue_position {       # TODO
     my ($self, $patron_id) = @_;
     return 1;
 }
@@ -281,12 +320,12 @@ sub due_date {
     return $due;
 }
 
-sub recall_date {
+sub recall_date {       # TODO
     my $self = shift;
     return 0;
 }
 
-sub hold_pickup_date {
+sub hold_pickup_date {  # TODO
     my $self = shift;
     return 0;
 }

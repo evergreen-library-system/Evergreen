@@ -131,6 +131,15 @@ sub clean_text {
     return $text;
 }
 
+sub shortname_from_id {
+    my $id = shift or return;
+    return editor()->search_actor_org_unit({id => $id})->[0]->shortname;
+}
+sub patron_barcode_from_id {
+    my $id = shift or return;
+    return editor()->search_actor_card({ usr => $id, active => 't' })->[0]->barcode;
+}
+
 sub format_date {
 	my $class = shift;
 	my $date = shift;
@@ -330,29 +339,28 @@ sub checkout {
 
 
 sub checkin {
-	my ($self, $item_id, $trans_date, $return_date,
-	$current_loc, $item_props, $cancel) = @_;
+	my ($self, $item_id, $inst_id, $trans_date, $return_date,
+        $current_loc, $item_props, $cancel) = @_;
 
 	$self->verify_session;
 
-	syslog('LOG_DEBUG', "OILS: OpenILS::Checkin on item=$item_id");
+	syslog('LOG_DEBUG', "OILS: OpenILS::Checkin of item=$item_id (to $inst_id)");
 	
-    my $patron;
     my $xact = OpenILS::SIP::Transaction::Checkin->new(authtoken => $self->{authtoken});
-    my $item = $self->find_item($item_id);
+    my $item = OpenILS::SIP::Item->new($item_id);
 
-	$xact->item($item);
+    unless ( $xact->item($item) ) {
+        $xact->ok(0);
+        # $circ->alert(1); $circ->alert_type(99);
+        $xact->screen_msg("Invalid Item Barcode: '$item_id'");
+        syslog('LOG_INFO', "OILS: Checkin failed.  " . $xact->screen_msg() );
+        return $xact;
+    }
 
-	if(!$xact->item) {
-		$xact->screen_msg("Invalid item barcode: $item_id");
-		$xact->ok(0);
-		return $xact;
-	}
-
-	$xact->do_checkin( $trans_date, $return_date, $current_loc, $item_props );
+	$xact->do_checkin( $inst_id, $trans_date, $return_date, $current_loc, $item_props );
 	
 	if ($xact->ok) {
-        $xact->patron($patron = $self->find_patron($item->{patron}));
+        $xact->patron($self->find_patron($item->{patron}));
         delete $item->{patron};
         delete $item->{due_date};
         syslog('LOG_INFO', "OILS: Checkin succeeded");
