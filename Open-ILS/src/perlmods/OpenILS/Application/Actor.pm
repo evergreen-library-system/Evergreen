@@ -4168,13 +4168,13 @@ sub user_visible_circs {
             if($is_hold) {
 
                 my $hold = $e->retrieve_action_hold_request($id);
-                $U->create_events_for_hook('ahr.format.history.email', $hold, $hold->request_lib, 1);
+                $U->create_events_for_hook('ahr.format.history.email', $hold, $hold->request_lib, undef, undef, 1);
                 # events will be fired from action_trigger_runner
 
             } else {
 
                 my $circ = $e->retrieve_action_circulation($id);
-                $U->create_events_for_hook('circ.format.history.email', $circ, $circ->circ_lib, 1);
+                $U->create_events_for_hook('circ.format.history.email', $circ, $circ->circ_lib, undef, undef, 1);
                 # events will be fired from action_trigger_runner
             }
         }

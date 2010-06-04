@@ -492,7 +492,7 @@ sub format_payment_receipt {
     } elsif ($for_email) {
 
         for my $p (@$payments) {
-            $U->create_events_for_hook('money.format.payment_receipt.email', $p, $p->xact->usr->home_ou, 1);
+            $U->create_events_for_hook('money.format.payment_receipt.email', $p, $p->xact->usr->home_ou, undef, undef, 1);
         }
     }
 
