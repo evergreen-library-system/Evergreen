@@ -1116,3 +1116,18 @@ CREATE TRIGGER fingerprint_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FO
 CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.indexing_ingest_or_delete ();
 CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
 
+-- Utility routines, callable via cstore
+
+CREATE OR REPLACE FUNCTION config.interval_to_seconds( interval_val INTERVAL )
+RETURNS INTEGER AS $$
+BEGIN
+	RETURN EXTRACT( EPOCH FROM interval_val );
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION config.interval_to_seconds( interval_string TEXT )
+RETURNS INTEGER AS $$
+BEGIN
+	RETURN config.interval_to_seconds( interval_string::INTERVAL );
+END;
+$$ LANGUAGE plpgsql;
