@@ -1252,7 +1252,7 @@ sub new_hold_copy_targeter {
 			$$prox_list[0] =
 			[
 				grep {
-					$_->circ_lib == $hold->pickup_lib
+					''.$_->circ_lib eq ''.$hold->pickup_lib
 				} @good_copies
 			];
 
@@ -1270,7 +1270,7 @@ sub new_hold_copy_targeter {
 				)->gather(1);
 
 				if (defined($max_loops)) {
-					my %circ_lib_map =  map { $_->circ_lib => 1 } @$all_copies;
+					my %circ_lib_map =  map { (''.$_->circ_lib => 1) } @$all_copies;
 					my $circ_lib_list = [keys %circ_lib_map];
 	
 					my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
@@ -1291,7 +1291,7 @@ sub new_hold_copy_targeter {
 					my $exclude_list = $cstore->request(
 						'open-ils.cstore.json_query.atomic',
 						{ distinct => 1,
-						  select => { aufhol => [circ_lib] },
+						  select => { aufhol => ['circ_lib'] },
 						  from => 'aufhol',
 						  where => { hold => $hold->id}
 						}
@@ -1321,7 +1321,7 @@ sub new_hold_copy_targeter {
 						# We haven't exceeded max_loops yet
 						my @keeper_copies;
 						for my $cp ( @$all_copies ) {
-							push (@keeper_copies, $cp) if ( grep { $_ eq $cp->circ_lib } @keepers );
+							push (@keeper_copies, $cp) if ( grep { $_ eq ''.$cp->circ_lib } @keepers );
 						}
 					} else {
 						# We have, and should remove potentials and cancel the hold
