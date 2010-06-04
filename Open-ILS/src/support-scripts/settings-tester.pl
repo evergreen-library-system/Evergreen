@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+#FIXME: use Test::More or any kind of Test module instead of eval/die if
+
 BEGIN {
 	eval "use OpenSRF::Utils::Config;";
 	die "Please ensure that /openils/lib/perl5 is in your PERL5LIB environment variable.

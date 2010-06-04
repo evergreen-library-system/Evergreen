@@ -7,7 +7,7 @@ use OpenSRF::Utils::Logger;
 my $logger = "OpenSRF::Utils::Logger";
 
 
-# Creates a new Event object.  
+# Returns a new Event data hash (not a blessed object)
 # The first param is the event name
 # Following the first param is an optional hash of params:
 #		perm => the name of the permission error for permimssion errors
@@ -16,37 +16,38 @@ my $logger = "OpenSRF::Utils::Logger";
 
 
 my $events = undef;
-my $descs = undef;
+my $descs  = undef;
 
 sub new {
-	my( $class, $event, %params ) = @_;
-	_load_events() unless $events;
+    my( $class, $event, %params ) = @_;
+    _load_events() unless $events;
 
-	throw OpenSRF::EX ("Bad event name: $event") unless $event;
-	my $e = $events->{$event} || '';
+    throw OpenSRF::EX ("Bad event name: $event") unless $event;
+    my $e = $events->{$event} || '';
 
-	my( $m, $f, $l ) = caller(0);
-	my( $mm, $ff, $ll ) = caller(1);
-	my( $mmm, $fff, $lll ) = caller(2);
+    my(   $m,   $f,   $l ) = caller(0);
+    my(  $mm,  $ff,  $ll ) = caller(1);
+    my( $mmm, $fff, $lll ) = caller(2);
 
-	$f  ||= "";
-	$l  ||= "";
-	$ff ||= "";
-	$ll ||= "";
-	$fff ||= "";
-	$lll ||= "";
+    $f   ||= "";
+    $l   ||= "";
+    $ff  ||= "";
+    $ll  ||= "";
+    $fff ||= "";
+    $lll ||= "";
 
-	my $lang = 'en-US'; # assume english for now
+    my $lang = 'en-US'; # assume english for now
 
-	my $t = CORE::localtime();
+    my $t = CORE::localtime();
 
-	return { 
-		ilsevent		=> $e, 
-		textcode		=> $event, 
-		stacktrace	=> "$f:$l $ff:$ll $fff:$lll", 
-		desc			=> $descs->{$lang}->{$e} || '',
-		servertime	=> $t,
-		pid			=> $$, %params };
+    return { 
+        ilsevent   => $e, 
+        textcode   => $event, 
+        stacktrace => "$f:$l $ff:$ll $fff:$lll", 
+        desc       => $descs->{$lang}->{$e || ''} || '',
+        servertime => $t,
+        pid        => $$, %params
+    };
 }
 
 sub _load_events {
@@ -84,8 +85,6 @@ sub _load_events {
 		$descs->{$lang}->{$code} = $d->textContent;
 	}
 }
-
-
 
 
 1;

@@ -7,7 +7,7 @@ use OpenILS::SIP;
 use OpenILS::SIP::Transaction;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::ScriptBuilder;
-use Data::Dumper;
+# use Data::Dumper;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils qw/:datetime/;
 use DateTime::Format::ISO8601;
@@ -21,12 +21,12 @@ sub new {
     my $type = ref($class) || $class;
     my $self = bless( {}, $type );
 
-	syslog('LOG_DEBUG', "OILS: Loading item $item_id...");
-	return undef unless $item_id;
+    syslog('LOG_DEBUG', "OILS: Loading item $item_id...");
+    return undef unless $item_id;
 
-	my $e = OpenILS::SIP->editor();
+    my $e = OpenILS::SIP->editor();
 
-	my $copy = $e->search_asset_copy(
+    my $copy = $e->search_asset_copy(
 		[
 			{ barcode => $item_id, deleted => 'f' },
 			{
@@ -37,10 +37,10 @@ sub new {
 				}
 			}
 		]
-	);
+    );
 
 
-	$copy = $$copy[0];
+    $copy = $copy->[0];
 
 	if(!$copy) {
 		syslog("LOG_DEBUG", "OILS: Item '%s' : not found", $item_id);
@@ -57,20 +57,20 @@ sub new {
 			]
 		);
 
-		my $bc = ($user) ? $user->card->barcode : "";
-		$self->{patron} = $bc;
-		$self->{patron_object} = $user;
+        my $bc = ($user) ? $user->card->barcode : "";
+        $self->{patron} = $bc;
+        $self->{patron_object} = $user;
 
-		syslog('LOG_DEBUG', "OILS: Open circulation exists on $item_id : user = $bc");
-	}
+        syslog('LOG_DEBUG', "OILS: Open circulation exists on $item_id : user = $bc");
+    }
 
-	$self->{id}			= $item_id;
-	$self->{copy}		= $copy;
-	$self->{volume}	= $copy->call_number;
-	$self->{record}	= $copy->call_number->record;
-	$self->{mods}		= $U->record_to_mvr($self->{record}) if $self->{record}->marc;
+    $self->{id}     = $item_id;
+    $self->{copy}   = $copy;
+    $self->{volume} = $copy->call_number;
+    $self->{record} = $copy->call_number->record;
+    $self->{mods}   = $U->record_to_mvr($self->{record}) if $self->{record}->marc;
 
-	syslog("LOG_DEBUG", "OILS: Item('$item_id'): found with title '%s'", $self->title_id);
+    syslog("LOG_DEBUG", "OILS: Item('$item_id'): found with title '%s'", $self->title_id);
 
     my $config = OpenILS::SIP->config();
 
@@ -83,7 +83,7 @@ sub new {
                 apps => 'open-ils.circ' => app_settings => 'legacy_script_support')
     }
 
-	return $self;
+    return $self;
 }
 
 sub run_attr_script {
@@ -94,28 +94,26 @@ sub run_attr_script {
     if($self->{legacy_script_support}){
 
         my $config = OpenILS::SIP->config();
-        my $path = $config->{implementation_config}->{scripts}->{path};
+        my $path               = $config->{implementation_config}->{scripts}->{path};
         my $item_config_script = $config->{implementation_config}->{scripts}->{item_config};
 
         $path = ref($path) eq 'ARRAY' ? $path : [$path];
+        my $path_str = join(", ", @$path);
 
-        syslog('LOG_DEBUG', "OILS: Script path = $path, Item config script = $item_config_script");
+        syslog('LOG_DEBUG', "OILS: Script path = [$path_str], Item config script = $item_config_script");
 
-        my $runner = 
-            OpenILS::Application::Circ::ScriptBuilder->build(
-                {
-                    copy => $self->{copy},
-                    editor => OpenILS::SIP->editor(),
-                }
-            );
+        my $runner = OpenILS::Application::Circ::ScriptBuilder->build({
+            copy   => $self->{copy},
+            editor => OpenILS::SIP->editor(),
+        });
 
         $runner->add_path($_) for @$path;
         $runner->load($item_config_script);
 
-        unless( $self->{item_config_result} = $runner->run ) {
+        unless( $self->{item_config_result} = $runner->run ) {      # assignment, not comparison
             $runner->cleanup;
-            warn "Item config script [$path : $item_config_script] failed to run: $@\n";
-            syslog('LOG_ERR', "OILS: Item config script [$path : $item_config_script] failed to run: $@");
+            warn "Item config script [$path_str : $item_config_script] failed to run: $@\n";
+            syslog('LOG_ERR', "OILS: Item config script [$path_str : $item_config_script] failed to run: $@");
             return undef;
         }
 
@@ -124,14 +122,14 @@ sub run_attr_script {
     } else {
 
         # use the in-db circ modifier configuration 
-        my $config = {magneticMedia => 'f', SIPMediaType => '001'};
+        my $config = {magneticMedia => 'f', SIPMediaType => '001'};     # defaults
         my $mod = $self->{copy}->circ_modifier;
 
         if($mod) {
             my $mod_obj = OpenILS::SIP->editor()->search_config_circ_modifier($mod);
             if($mod_obj) {
                 $config->{magneticMedia} = $mod_obj->magnetic_media;
-                $config->{SIPMediaType} = $mod_obj->sip2_media_type;
+                $config->{SIPMediaType}  = $mod_obj->sip2_media_type;
             }
         }
 
@@ -143,26 +141,26 @@ sub run_attr_script {
 
 sub magnetic {
     my $self = shift;
-	 return 0 unless $self->run_attr_script;
-	 my $mag = $self->{item_config_result}->{item_config}->{magneticMedia};
-	 syslog('LOG_DEBUG', "OILS: magnetic = $mag");
-	 return ($mag and $mag eq 't') ? 1 : 0;
+    return 0 unless $self->run_attr_script;
+    my $mag = $self->{item_config_result}->{item_config}->{magneticMedia};
+    syslog('LOG_DEBUG', "OILS: magnetic = $mag");
+    return ($mag and $mag eq 't') ? 1 : 0;
 }
 
 sub sip_media_type {
     my $self = shift;
-	 return 0 unless $self->run_attr_script;
-	 my $media = $self->{item_config_result}->{item_config}->{SIPMediaType};
-	 syslog('LOG_DEBUG', "OILS: media type = $media");
-	 return ($media) ? $media : '001';
+    return 0 unless $self->run_attr_script;
+    my $media = $self->{item_config_result}->{item_config}->{SIPMediaType};
+    syslog('LOG_DEBUG', "OILS: media type = $media");
+    return ($media) ? $media : '001';
 }
 
 sub sip_item_properties {
     my $self = shift;
-	 return "";
+    return "";
 }
 
-sub status_update {
+sub status_update {     # FIXME: this looks unimplemented
     my ($self, $props) = @_;
     my $status = OpenILS::SIP::Transaction->new;
     $self->{sip_item_properties} = $props;
@@ -210,33 +208,33 @@ sub current_location {
 # 12 Lost
 # 13 Missing 
 sub sip_circulation_status {
-	my $self = shift;
-	my $stat = $self->{copy}->status->id;
+    my $self = shift;
+    my $stat = $self->{copy}->status->id;
 
-	return '02' if $stat == OILS_COPY_STATUS_ON_ORDER;
-	return '03' if $stat == OILS_COPY_STATUS_AVAILABLE;
-	return '04' if $stat == OILS_COPY_STATUS_CHECKED_OUT;
-	return '06' if $stat == OILS_COPY_STATUS_IN_PROCESS;
-	return '08' if $stat == OILS_COPY_STATUS_ON_HOLDS_SHELF;
-	return '09' if $stat == OILS_COPY_STATUS_RESHELVING;
-	return '10' if $stat == OILS_COPY_STATUS_IN_TRANSIT;
-	return '12' if $stat == OILS_COPY_STATUS_LOST;
-	return '13' if $stat == OILS_COPY_STATUS_MISSING;
-		
-	return 01;
+    return '02' if $stat == OILS_COPY_STATUS_ON_ORDER;
+    return '03' if $stat == OILS_COPY_STATUS_AVAILABLE;
+    return '04' if $stat == OILS_COPY_STATUS_CHECKED_OUT;
+    return '06' if $stat == OILS_COPY_STATUS_IN_PROCESS;
+    return '08' if $stat == OILS_COPY_STATUS_ON_HOLDS_SHELF;
+    return '09' if $stat == OILS_COPY_STATUS_RESHELVING;
+    return '10' if $stat == OILS_COPY_STATUS_IN_TRANSIT;
+    return '12' if $stat == OILS_COPY_STATUS_LOST;
+    return '13' if $stat == OILS_COPY_STATUS_MISSING;
+        
+    return 01;
 }
 
 sub sip_security_marker {
-    return '02';
+    return '02';    # FIXME? 00-other; 01-None; 02-Tattle-Tape Security Strip (3M); 03-Whisper Tape (3M)
 }
 
 sub sip_fee_type {
-    return '01';
+    return '01';    # FIXME? 01-09 enumerated in spec.  We just use O1-other/unknown.
 }
 
 sub fee {
     my $self = shift;
-	 return 0;
+    return 0;
 }
 
 
@@ -252,35 +250,35 @@ sub owner {
 
 sub hold_queue {
     my $self = shift;
-	 return [];
+    return [];
 }
 
 sub hold_queue_position {
     my ($self, $patron_id) = @_;
-	 return 1;
+    return 1;
 }
 
 sub due_date {
-	my $self = shift;
+    my $self = shift;
 
-	# this should force correct circ fetching
-	require OpenILS::Utils::CStoreEditor;
-	my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
-	#my $e = OpenILS::SIP->editor();
+    # this should force correct circ fetching
+    require OpenILS::Utils::CStoreEditor;
+    my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
+    #my $e = OpenILS::SIP->editor();
 
-	my $circ = $e->search_action_circulation(
-		{ target_copy => $self->{copy}->id, checkin_time => undef } )->[0];
+    my $circ = $e->search_action_circulation(
+        { target_copy => $self->{copy}->id, checkin_time => undef } )->[0];
 
-	$e->rollback;
+    $e->rollback;
 
-	if( !$circ ) {
-		syslog('LOG_INFO', "OILS: No open circ found for copy");
-		return 0;
-	}
+    if( !$circ ) {
+        syslog('LOG_INFO', "OILS: No open circ found for copy");
+        return 0;
+    }
 
-	my $due = OpenILS::SIP->format_date($circ->due_date, 'due');
-	syslog('LOG_DEBUG', "OILS: Found item due date = $due");
-	return $due;
+    my $due = OpenILS::SIP->format_date($circ->due_date, 'due');
+    syslog('LOG_DEBUG', "OILS: Found item due date = $due");
+    return $due;
 }
 
 sub recall_date {
@@ -290,7 +288,7 @@ sub recall_date {
 
 sub hold_pickup_date {
     my $self = shift;
-	 return 0;
+    return 0;
 }
 
 # message to display on console
@@ -302,8 +300,8 @@ sub screen_msg {
 
 # reciept printer
 sub print_line {
-     my $self = shift;
-     return OpenILS::SIP::clean_text($self->{print_line}) || '';
+    my $self = shift;
+    return OpenILS::SIP::clean_text($self->{print_line}) || '';
 }
 
 
@@ -313,14 +311,14 @@ sub print_line {
 # OR
 # 2) It's checked out to the patron and there's no hold queue
 sub available {
-	my ($self, $for_patron) = @_;
+    my ($self, $for_patron) = @_;
 
-	my $stat = $self->{copy}->status->id;
-	return 1 if 
-		$stat == OILS_COPY_STATUS_AVAILABLE or
-		$stat == OILS_COPY_STATUS_RESHELVING;
-	
-	return 0;
+    my $stat = $self->{copy}->status->id;
+    return 1 if 
+        $stat == OILS_COPY_STATUS_AVAILABLE or
+        $stat == OILS_COPY_STATUS_RESHELVING;
+
+    return 0;
 }
 
 

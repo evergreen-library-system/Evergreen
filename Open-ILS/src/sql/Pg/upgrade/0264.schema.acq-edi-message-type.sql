@@ -8,6 +8,9 @@ INSERT INTO config.upgrade_log (version) VALUES ('0264'); -- Scott McKellar
 -- initialize it with something if the table is not empty.  The initial
 -- value, 'ORDERS', may not always be appropriate.  Massage as needed.
 
+-- For example, if you have already processed responses, this fixes them:
+-- update acq.edi_message set message_type='ORDRSP' where edi LIKE '%ORDRSP%';
+
 ALTER TABLE acq.edi_message
 	ADD COLUMN message_type TEXT;
 

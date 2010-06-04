@@ -13,20 +13,20 @@ use OpenILS::SIP::Msg qw/:const/;
 
 
 my %fields = (
-	      ok            => 0,
-	      patron        => undef,
-	      item          => undef,
-	      desensitize   => 0,
-	      alert         => '',
-	      transation_id => undef,
-	      sip_fee_type  => '01', # Other/Unknown
-	      fee_amount    => undef,
-	      sip_currency  => 'CAD',
-	      screen_msg    => '',
-	      print_line    => '',
-			editor			=> undef,
-			authtoken		=> '',
-	      );
+      ok            => 0,
+      patron        => undef,
+      item          => undef,
+      desensitize   => 0,
+      alert         => '',
+      transation_id => undef,
+      sip_fee_type  => '01', # Other/Unknown
+      fee_amount    => undef,
+      sip_currency  => 'CAD',
+      screen_msg    => '',
+      print_line    => '',
+      editor        => undef,
+      authtoken     => '',
+);
 
 our $AUTOLOAD;
 

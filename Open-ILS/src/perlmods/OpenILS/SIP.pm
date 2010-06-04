@@ -41,12 +41,12 @@ sub new {
 	syslog("LOG_DEBUG", "OILS: new ILS '%s'", $institution->{id});
 	$self->{institution} = $institution;
 
-	my $bsconfig = $institution->{implementation_config}->{bootstrap};
+	my $bsconfig     = $institution->{implementation_config}->{bootstrap};
 	$target_encoding = $institution->{implementation_config}->{encoding} || 'ascii';
 
 	syslog('LOG_DEBUG', "OILS: loading bootstrap config: $bsconfig");
 	
-	local $/ = "\n";
+	local $/ = "\n";    # why?
 	OpenSRF::System->bootstrap_client(config_file => $bsconfig);
 	syslog('LOG_DEBUG', "OILS: bootstrap loaded..");
 
@@ -70,11 +70,6 @@ sub verify_session {
 	return 1 unless $U->event_code($ses);
 	syslog('LOG_INFO', "OILS: Logging back after session timeout as user ".$self->{login}->{id});
 	return $self->login( $self->{login}->{id}, $self->{login}->{password} );
-}
-
-sub to_bool {
-	my $val = shift;
-	return ($val and $val =~ /true/io);
 }
 
 sub editor {
@@ -147,10 +142,10 @@ sub format_date {
 		parse_datetime(OpenSRF::Utils::cleanse_ISO8601($date));
 	my @time = localtime($date->epoch);
 
-	my $year = $time[5]+1900;
-	my $mon = $time[4]+1;
-	my $day = $time[3];
- 	my $hour = $time[2];
+	my $year   = $time[5]+1900;
+	my $mon    = $time[4]+1;
+	my $day    = $time[3];
+	my $hour   = $time[2];
  	my $minute = $time[1];
  	my $second = $time[0];
   
@@ -211,7 +206,12 @@ sub find_item {
 
 sub institution {
     my $self = shift;
-    return $self->{institution}->{id};
+    return $self->{institution}->{id};  # consider making this return the whole institution
+}
+
+sub institution_id {
+    my $self = shift;
+    return $self->{institution}->{id};  # then use this for just the ID
 }
 
 sub supports {
@@ -222,12 +222,21 @@ sub supports {
 }
 
 sub check_inst_id {
-	my ($self, $id, $whence) = @_;
-	if ($id ne $self->{institution}->{id}) {
-		syslog("LOG_WARNING", 
-			"OILS: %s: received institution '%s', expected '%s'",
-			$whence, $id, $self->{institution}->{id});
-	}
+    my ($self, $id, $whence) = @_;
+    if ($id ne $self->{institution}->{id}) {
+        syslog("LOG_WARNING", "OILS: %s: received institution '%s', expected '%s'", $whence, $id, $self->{institution}->{id});
+        # Just an FYI check, we don't expect the user to change location from that in SIPconfig.xml
+    }
+}
+
+
+sub to_bool {
+    my $bool = shift;
+    # If it's defined, and matches a true sort of string, or is
+    # a non-zero number, then it's true.
+    defined($bool) or return;                   # false
+    ($bool =~ /true|y|yes/i) and return 1;      # true
+    return ($bool =~ /^\d+$/ and $bool != 0);   # true for non-zero numbers, false otherwise
 }
 
 sub checkout_ok {
@@ -236,7 +245,6 @@ sub checkout_ok {
 
 sub checkin_ok {
 	return to_bool($config->{policy}->{checkin});
-    return 0;
 }
 
 sub renew_ok {
@@ -267,13 +275,13 @@ sub checkout {
 	$sc_renew = 0;
 
 	$self->verify_session;
-	
+
 	syslog('LOG_DEBUG', "OILS: OpenILS::Checkout attempt: patron=$patron_id, item=$item_id");
-	
-	my $xact		= OpenILS::SIP::Transaction::Checkout->new( authtoken => $self->{authtoken} );
-	my $patron	= $self->find_patron($patron_id);
-	my $item		= $self->find_item($item_id);
-	
+
+    my $xact   = OpenILS::SIP::Transaction::Checkout->new( authtoken => $self->{authtoken} );
+    my $patron = $self->find_patron($patron_id);
+    my $item   = $self->find_item($item_id);
+
 	$xact->patron($patron);
 	$xact->item($item);
 
@@ -332,9 +340,9 @@ sub checkin {
 
 	syslog('LOG_DEBUG', "OILS: OpenILS::Checkin on item=$item_id");
 	
-	my $patron;
-	my $xact		= OpenILS::SIP::Transaction::Checkin->new(authtoken => $self->{authtoken});
-	my $item		= $self->find_item($item_id);
+    my $patron;
+    my $xact = OpenILS::SIP::Transaction::Checkin->new(authtoken => $self->{authtoken});
+    my $item = $self->find_item($item_id);
 
 	$xact->item($item);
 
@@ -347,24 +355,23 @@ sub checkin {
 	$xact->do_checkin( $trans_date, $return_date, $current_loc, $item_props );
 	
 	if ($xact->ok) {
-
-		$xact->patron($patron = $self->find_patron($item->{patron}));
-		delete $item->{patron};
-		delete $item->{due_date};
-		syslog('LOG_INFO', "OILS: Checkin succeeded");
-		#editor()->commit;
-
-	} else {
-
-		#editor()->xact_rollback;
-		syslog('LOG_WARNING', "OILS: Checkin failed");
-	}
+        $xact->patron($patron = $self->find_patron($item->{patron}));
+        delete $item->{patron};
+        delete $item->{due_date};
+        syslog('LOG_INFO', "OILS: Checkin succeeded");
+        #editor()->commit;
+    } else {
+        #editor()->xact_rollback;
+        syslog('LOG_WARNING', "OILS: Checkin failed");
+    }
 	# END TRANSACTION
 
 	return $xact;
 }
 
-## If the ILS caches patron information, this lets it free it up
+## If the ILS caches patron information, this lets it free it up.
+## Also, this could be used for centrally logging session duration.
+## We don't do anything with it.
 sub end_patron_session {
     my ($self, $patron_id) = @_;
     return (1, 'Thank you for using OpenILS!', '');

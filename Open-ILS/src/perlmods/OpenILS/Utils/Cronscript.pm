@@ -305,7 +305,7 @@ OpenILS::Utils::Cronscript - Consolidated options handling for any script (not j
 
     my $core = OpenILS::Utils::Cronscript->new(\%defaults);
     my $opts = $core->MyGetOptions();   # options now in, e.g.: $opts->{max}
-    $ocre->bootstrap;
+    $core->bootstrap;
 
 Or if you don't need any additional options and just want to get a session going:
     

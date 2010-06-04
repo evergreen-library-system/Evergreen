@@ -29,6 +29,11 @@ our (@ISA, @EXPORT_OK);
 
 my $INET_PRIVS;
 
+#
+# OpenILS::SIP::Patron->new($barcode);
+# OpenILS::SIP::Patron->new(barcode => $barcode);   # same as above
+# OpenILS::SIP::Patron->new(    usr => $id);       
+
 sub new {
     my ($class, $patron_id) = @_;
     my $type = ref($class) || $class;
@@ -73,9 +78,9 @@ sub new {
 		return undef;
 	 }
 
-	$self->{user}		= $user;
-	$self->{id}			= $patron_id;
-	$self->{editor}	= $e;
+	$self->{user}   = $user;
+	$self->{id}     = $patron_id;
+	$self->{editor} = $e;
 
 	syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s): found patron : barred=%s, card:active=%s", 
 		$patron_id, $self->{user}->barred, $self->{user}->card->active );
@@ -118,10 +123,8 @@ sub __addr_string {
 
 sub address {
 	my $self = shift;
-	my $u = $self->{user};
-	my $addr = $u->billing_address;
-	$addr = $u->mailing_address unless $addr;
-	my $str = __addr_string($addr);
+	my $u    = $self->{user};
+	my $str  = __addr_string($u->billing_address || $u->mailing_address);
 	syslog('LOG_DEBUG', "OILS: Patron address: $str");
 	return $str;
 }
@@ -265,19 +268,19 @@ sub too_many_overdue {
 # not completely sure what this means
 sub too_many_renewal {
     my $self = shift;
-	return 0;
+    return 0;
 }
 
 # not relevant, handled by fines/fees
 sub too_many_claim_return {
     my $self = shift;
-	return 0;
+    return 0;
 }
 
 # not relevant, handled by fines/fees
 sub too_many_lost {
     my $self = shift;
-	return 0;
+    return 0;
 }
 
 sub excessive_fines {
@@ -495,7 +498,7 @@ sub fine_items {
 # not currently supported
 sub recall_items {
     my ($self, $start, $end) = @_;
-	 return [];
+    return [];
 }
 
 sub unavail_holds {
@@ -567,13 +570,13 @@ sub charge_denied {
 }
 
 sub inet_privileges {
-	my( $self ) = @_;
-	my $e = OpenILS::SIP->editor();
-	$INET_PRIVS = $e->retrieve_all_config_net_access_level() unless $INET_PRIVS;
-	my ($level) = grep { $_->id eq $self->{user}->net_access_level } @$INET_PRIVS;
-	my $name = OpenILS::SIP::clean_text($level->name);
-	syslog('LOG_DEBUG', "OILS: Patron inet_privs = $name");
-	return $name;
+    my( $self ) = @_;
+    my $e = OpenILS::SIP->editor();
+    $INET_PRIVS = $e->retrieve_all_config_net_access_level() unless $INET_PRIVS;
+    my ($level) = grep { $_->id eq $self->{user}->net_access_level } @$INET_PRIVS;
+    my $name = OpenILS::SIP::clean_text($level->name);
+    syslog('LOG_DEBUG', "OILS: Patron inet_privs = $name");
+    return $name;
 }
 
 
