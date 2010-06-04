@@ -128,15 +128,19 @@ sub new {
 
     syslog("LOG_DEBUG", "OILS: Item('$item_id'): found with title '%s'", $self->title_id);
 
-    my $config = OpenILS::SIP->config();
+    my $config = OpenILS::SIP->config();    # FIXME : will not always match!
 
-    if( defined $config->{implementation_config}->{legacy_script_support} ) {
-        $self->{legacy_script_support} = 
-            ($config->{implementation_config}->{legacy_script_support} =~ /true/io);
+    my $legacy = $config->{implementation_config}->{legacy_script_support} || undef;
+    if( defined $legacy ) {
+        $self->{legacy_script_support} = ($legacy =~ /t(rue)?/io) ? 1 : 0;
+        syslog("LOG_DEBUG", "legacy_script_support is set in SIP config: " . $self->{legacy_script_support});
     } else {
-        $self->{legacy_script_support} = 
-            OpenSRF::Utils::SettingsClient->new->config_value(
-                apps => 'open-ils.circ' => app_settings => 'legacy_script_support')
+        my $lss = OpenSRF::Utils::SettingsClient->new->config_value(
+            apps         => 'open-ils.circ',
+            app_settings => 'legacy_script_support'
+        );
+        $self->{legacy_script_support} = ($lss =~ /t(rue)?/io) ? 1 : 0;
+        syslog("LOG_DEBUG", "legacy_script_support is set in SRF config: " . $self->{legacy_script_support});
     }
 
     return $self;
@@ -149,6 +153,7 @@ sub run_attr_script {
 
     if($self->{legacy_script_support}){
 
+        syslog('LOG_DEBUG', "Legacy script support is ON");
         my $config = OpenILS::SIP->config();
         my $path               = $config->{implementation_config}->{scripts}->{path};
         my $item_config_script = $config->{implementation_config}->{scripts}->{item_config};
@@ -202,7 +207,7 @@ sub magnetic_media {
 sub magnetic {
     my $self = shift;
     return 0 unless $self->run_attr_script;
-    my $mag = $self->{item_config_result}->{item_config}->{magneticMedia};
+    my $mag = $self->{item_config_result}->{item_config}->{magneticMedia} || '';
     syslog('LOG_DEBUG', "OILS: magnetic = $mag");
     return ($mag and $mag =~ /t(rue)?/io) ? 1 : 0;
 }
@@ -210,7 +215,7 @@ sub magnetic {
 sub sip_media_type {
     my $self = shift;
     return 0 unless $self->run_attr_script;
-    my $media = $self->{item_config_result}->{item_config}->{SIPMediaType};
+    my $media = $self->{item_config_result}->{item_config}->{SIPMediaType} || '';
     syslog('LOG_DEBUG', "OILS: media type = $media");
     return ($media) ? $media : '001';
 }

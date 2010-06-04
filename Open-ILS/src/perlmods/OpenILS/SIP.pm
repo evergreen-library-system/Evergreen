@@ -583,7 +583,7 @@ sub renew {
 
 	if(!$trans->item) {
 		if( $title_id ) {
-			$trans->screen_msg("Item Id renewal not supported.");
+			$trans->screen_msg("Title ID renewal not supported.  Use item barcode.");
 		} else {
 			$trans->screen_msg("Invalid item barcode.");
 		}

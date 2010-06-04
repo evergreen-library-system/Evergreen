@@ -121,13 +121,20 @@ sub home_library {
 sub __addr_string {
     my $addr = shift;
     return "" unless $addr;
-    return OpenILS::SIP::clean_text($addr->street1 .' '. 
-        $addr->street2 .' '.
-        $addr->city .' '.
-        $addr->county .' '.
-        $addr->state .' '.
-        $addr->country .' '.
-        $addr->post_code);
+    my $return = OpenILS::SIP::clean_text(
+        join( ' ', map {$_ || ''} (
+            $addr->street1,
+            $addr->street2,
+            $addr->city . ',',
+            $addr->county,
+            $addr->state,
+            $addr->country,
+            $addr->post_code
+            )
+        )
+    );
+    $return =~ s/\s+/ /sg;     # Compress any run of of whitespace to one space
+    return $return;
 }
 
 sub address {
