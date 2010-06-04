@@ -147,7 +147,7 @@ CREATE INDEX circ_all_usr_idx       ON action.circulation ( usr );
 CREATE INDEX circ_circ_staff_idx    ON action.circulation ( circ_staff );
 CREATE INDEX circ_checkin_staff_idx ON action.circulation ( checkin_staff );
 CREATE UNIQUE INDEX circ_parent_idx ON action.circulation ( parent_circ ) WHERE parent_circ IS NOT NULL;
-
+CREATE UNIQUE INDEX only_one_concurrent_checkout_per_copy ON action.circulation(target_copy) WHERE checkin_time IS NULL;
 
 CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_create ('circulation');
 CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_update ();
