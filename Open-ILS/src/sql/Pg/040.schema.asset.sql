@@ -80,7 +80,7 @@ CREATE TABLE asset.copy (
 	status_changed_time TIMESTAMP WITH TIME ZONE,
 	mint_condition      BOOL        NOT NULL DEFAULT TRUE
 );
-CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted IS FALSE;
+CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_creator_idx  ON asset.copy ( creator );
@@ -194,7 +194,7 @@ CREATE INDEX asset_call_number_creator_idx ON asset.call_number (creator);
 CREATE INDEX asset_call_number_editor_idx ON asset.call_number (editor);
 CREATE INDEX asset_call_number_dewey_idx ON asset.call_number (public.call_number_dewey(label));
 CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (upper(label),id,owning_lib);
-CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label) WHERE deleted IS FALSE;
+CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id;
 
 CREATE TABLE asset.uri_call_number_map (
