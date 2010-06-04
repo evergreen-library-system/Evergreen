@@ -36,11 +36,10 @@ sub do_renew {
 		{ barcode => $self->item->id, patron_barcode => $self->patron->id });
 
 	if( my $code = $U->event_code($resp) ) {
-		my $txt = $resp->{textcode};
-		syslog('LOG_INFO', "OILS: Renewal failed with event $code : $txt");
+		syslog('LOG_INFO', "OILS: Renewal failed with event $code : " . $resp->{textcode});
 		$self->renewal_ok(0);
 		$self->ok(0);
-		return 0;
+		return $self;
 	}
 
 	$self->item->{due_date} = $resp->{payload}->{circ}->due_date;

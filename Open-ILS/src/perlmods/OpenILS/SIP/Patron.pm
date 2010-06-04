@@ -78,9 +78,9 @@ sub new {
 		return undef;
 	 }
 
-	$self->{user}   = $user;
-	$self->{id}     = $patron_id;
-	$self->{editor} = $e;
+    $self->{user}   = $user;
+    $self->{id}     = $patron_id;
+    $self->{editor}	= $e;
 
 	syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s): found patron : barred=%s, card:active=%s", 
 		$patron_id, $self->{user}->barred, $self->{user}->card->active );
@@ -159,14 +159,14 @@ sub language {
 # How much more detail do we need to check here?
 sub charge_ok {
     my $self = shift;
-	 my $u = $self->{user};
-	 return (($u->barred eq 'f') and ($u->card->active eq 't'));
+    my $u = $self->{user};
+    return (($u->barred eq 'f') and ($u->card->active eq 't'));
 }
 
 # How much more detail do we need to check here?
 sub renew_ok {
     my $self = shift;
-	 return $self->charge_ok;
+    return $self->charge_ok;
 }
 
 sub recall_ok {
@@ -176,13 +176,13 @@ sub recall_ok {
 
 sub hold_ok {
     my $self = shift;
-	 return $self->charge_ok;
+    return $self->charge_ok;
 }
 
 # return true if the card provided is marked as lost
 sub card_lost {
     my $self = shift;
-	 return $self->{user}->card->active eq 'f';
+    return $self->{user}->card->active eq 'f';
 }
 
 sub recall_overdue {
@@ -511,6 +511,7 @@ sub unavail_holds {
 
 sub block {
 	my ($self, $card_retained, $blocked_card_msg) = @_;
+    $blocked_card_msg ||= '';
 
     my $e = $self->{editor};
 	my $u = $self->{user};
@@ -532,8 +533,8 @@ sub block {
 	# retrieve the un-fleshed user object for update
 	$u = $e->retrieve_actor_user($u->id);
 	my $note = OpenILS::SIP::clean_text($u->alert_message) || "";
-	$note = "CARD BLOCKED BY SELF-CHECK MACHINE\n$note"; # XXX Config option
-
+	$note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n$note"; # XXX Config option
+    $note =~ s/\s*$//;  # kill trailng whitespace
 	$u->alert_message($note);
 
 	if( ! $e->update_actor_user($u) ) {
@@ -551,9 +552,43 @@ sub block {
 
 # Testing purposes only
 sub enable {
-    my $self = shift;
-	 # Un-mark card as inactive, grep out the patron alert
+    my ($self, $card_retained, $blocked_card_msg) = @_;
     $self->{screen_msg} = "All privileges restored.";
+
+# Un-mark card as inactive, grep out the patron alert
+    my $u = $self->{user};
+    my $e = $self->{editor} = OpenILS::SIP->reset_editor();
+
+    syslog('LOG_INFO', "OILS: Unblocking user %s", $u->card->barcode );
+
+    return $self if $u->card->active eq 't';
+
+    $u->card->active('t');
+    if( ! $e->update_actor_card($u->card) ) {
+        syslog('LOG_ERR', "OILS: Unblock card update failed: %s", $e->event->{textcode});
+        $e->xact_rollback;
+        return $self;
+    }
+
+    # retrieve the un-fleshed user object for update
+    $u = $e->retrieve_actor_user($u->id);
+    my $note = OpenILS::SIP::clean_text($u->alert_message) || "";
+    $note =~ s#<sip>.*</sip>##;
+    $note =~ s/^\s*//;  # kill leading whitespace
+    $note =~ s/\s*$//;  # kill trailng whitespace
+    $u->alert_message($note);
+
+    if( ! $e->update_actor_user($u) ) {
+        syslog('LOG_ERR', "OILS: Unblock: patron alert update failed: %s", $e->event->{textcode});
+        $e->xact_rollback;
+        return $self;
+    }
+
+    # stay in synch
+    $self->{user}->alert_message( $note );
+
+    $e->commit; # commits and resets
+    $self->{editor} = OpenILS::SIP->reset_editor();
     return $self;
 }
 

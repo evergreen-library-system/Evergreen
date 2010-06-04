@@ -40,12 +40,12 @@ sub initialize {
     $logger->error( "Missing circ script(s)" ) 
         unless( $p and $c and $d and $f and $m and $pr );
 
-    $scripts{circ_permit_patron}    = $p;
-    $scripts{circ_permit_copy}      = $c;
-    $scripts{circ_duration}         = $d;
-    $scripts{circ_recurring_fines}= $f;
-    $scripts{circ_max_fines}        = $m;
-    $scripts{circ_permit_renew} = $pr;
+    $scripts{circ_permit_patron}   = $p;
+    $scripts{circ_permit_copy}     = $c;
+    $scripts{circ_duration}        = $d;
+    $scripts{circ_recurring_fines} = $f;
+    $scripts{circ_max_fines}       = $m;
+    $scripts{circ_permit_renew}    = $pr;
 
     $logger->debug(
         "circulator: Loaded rules scripts for circ: " .
@@ -120,15 +120,15 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-    method  => "run_method",
-    api_name    => "open-ils.circ.checkin.override",
-    signature   => q/@see open-ils.circ.checkin/
+    method    => "run_method",
+    api_name  => "open-ils.circ.checkin.override",
+    signature => q/@see open-ils.circ.checkin/
 );
 
 __PACKAGE__->register_method(
-    method  => "run_method",
-    api_name    => "open-ils.circ.renew.override",
-    signature   => q/@see open-ils.circ.renew/,
+    method    => "run_method",
+    api_name  => "open-ils.circ.renew.override",
+    signature => q/@see open-ils.circ.renew/,
 );
 
 
@@ -144,27 +144,26 @@ __PACKAGE__->register_method(
     NOTES
 
 __PACKAGE__->register_method(
-    method  => "run_method",
-    api_name    => "open-ils.circ.checkout.full");
-__PACKAGE__->register_method(
-    method  => "run_method",
-    api_name    => "open-ils.circ.checkout.full.override");
-
-__PACKAGE__->register_method(
-    method  => "run_method",
-    api_name    => "open-ils.circ.reservation.pickup");
-__PACKAGE__->register_method(
-    method  => "run_method",
-    api_name    => "open-ils.circ.reservation.return");
-
-__PACKAGE__->register_method(
-    method  => "run_method",
-    api_name    => "open-ils.circ.checkout.inspect",
-    desc => q/
-        Returns the circ matrix test result and, on success, the rule set and matrix test object
-    /
+    method   => "run_method",
+    api_name => "open-ils.circ.checkout.full"
 );
-
+__PACKAGE__->register_method(
+    method   => "run_method",
+    api_name => "open-ils.circ.checkout.full.override"
+);
+__PACKAGE__->register_method(
+    method   => "run_method",
+    api_name => "open-ils.circ.reservation.pickup"
+);
+__PACKAGE__->register_method(
+    method   => "run_method",
+    api_name => "open-ils.circ.reservation.return"
+);
+__PACKAGE__->register_method(
+    method   => "run_method",
+    api_name => "open-ils.circ.checkout.inspect",
+    desc     => q/Returns the circ matrix test result and, on success, the rule set and matrix test object/
+);
 
 
 sub run_method {
@@ -197,7 +196,7 @@ sub run_method {
             if ($transit) { # yes! unwrap it.
 
                 my $reservation = $circulator->editor->retrieve_booking_reservation( $transit->reservation );
-                my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
+                my $res_type    = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
 
                 if ($U->is_true($res_type->catalog_item)) { # is there a copy to be had here?
                     if (my $copy = $circulator->editor->search_asset_copy({ barcode => $bc, deleted => 'f' })->[0]) { # got a copy
@@ -338,7 +337,7 @@ sub run_method {
         # Log the events
         my @e = @{$circulator->events};
         push( @ee, $_->{textcode} ) for @e;
-        $logger->info("circulator: bailing out with events: @ee");
+        $logger->info("circulator: bailing out with events: " . (join ", ", @ee));
 
         $circulator->editor->rollback;
 
@@ -502,6 +501,7 @@ my @AUTOLOAD_FIELDS = qw/
     opac_renewal
     phone_renewal
     desk_renewal
+    sip_renewal
     retarget
     matrix_test_result
     circ_matrix_matchpoint
@@ -568,7 +568,7 @@ sub new {
 
     # if this is a renewal, default to desk_renewal
     $self->desk_renewal(1) unless 
-        $self->opac_renewal or $self->phone_renewal;
+        $self->opac_renewal or $self->phone_renewal or $self->sip_renewal;
 
     $self->capture('') unless $self->capture;
 
@@ -2847,10 +2847,6 @@ sub check_checkin_copy_status {
     my $self = shift;
    my $copy = $self->copy;
 
-   my $islost     = 0;
-   my $ismissing  = 0;
-   my $evt        = undef;
-
    my $status = $U->copy_status($copy->status)->id;
 
    return undef
@@ -3133,7 +3129,7 @@ sub make_trigger_events {
     my $self = shift;
     return unless $self->circ;
     $U->create_events_for_hook('checkout', $self->circ, $self->circ_lib) if $self->is_checkout;
-    $U->create_events_for_hook('checkin', $self->circ, $self->circ_lib) if $self->is_checkin;
+    $U->create_events_for_hook('checkin',  $self->circ, $self->circ_lib) if $self->is_checkin;
     $U->create_events_for_hook('renewal',  $self->circ, $self->circ_lib) if $self->is_renewal;
 }
 

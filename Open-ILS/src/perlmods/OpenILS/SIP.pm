@@ -26,7 +26,7 @@ my $U = 'OpenILS::Application::AppUtils';
 
 my $editor;
 my $config;
-my $target_encoding;
+my $target_encoding;    # FIXME: this is configured at the institution level. 
 
 use Digest::MD5 qw(md5_hex);
 
@@ -176,7 +176,7 @@ sub login {
 		{	
 			username => $username, 
 			password => md5_hex($seed . md5_hex($password)), 
-			type		=> 'opac',
+			type     => 'opac',
 		}
 	);
 
@@ -286,7 +286,7 @@ sub checkout {
 	$xact->item($item);
 
 	if (!$patron) {
-		$xact->screen_msg("Invalid Patron");
+		$xact->screen_msg("Invalid Patron Barcode '$patron_id'");
 		return $xact;
 	}
 
@@ -296,7 +296,7 @@ sub checkout {
 	}
 
 	if( !$item ) {
-		$xact->screen_msg("Invalid Item");
+		$xact->screen_msg("Invalid Item Barcode: '$item_id'");
 		return $xact;
 	}
 
@@ -316,13 +316,10 @@ sub checkout {
 	$xact->desensitize(!$item->magnetic);
 
 	if( $xact->ok ) {
-
 		#editor()->commit;
 		syslog("LOG_DEBUG", "OILS: OpenILS::Checkout: " .
 			"patron %s checkout %s succeeded", $patron_id, $item_id);
-
 	} else {
-
 		#editor()->xact_rollback;
 		syslog("LOG_DEBUG", "OILS: OpenILS::Checkout: " .
 			"patron %s checkout %s FAILED, rolling back xact...", $patron_id, $item_id);
@@ -364,7 +361,6 @@ sub checkin {
         #editor()->xact_rollback;
         syslog('LOG_WARNING', "OILS: Checkin failed");
     }
-	# END TRANSACTION
 
 	return $xact;
 }
@@ -374,7 +370,7 @@ sub checkin {
 ## We don't do anything with it.
 sub end_patron_session {
     my ($self, $patron_id) = @_;
-    return (1, 'Thank you for using OpenILS!', '');
+    return (1, 'Thank you!', '');
 }
 
 
