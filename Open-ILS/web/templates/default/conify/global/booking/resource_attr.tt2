@@ -1,39 +1,31 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Resource Attributes' %]
-
 <script type ="text/javascript">
     dojo.require('dijit.form.FilteringSelect');
     dojo.require('openils.widget.AutoGrid');
 
     openils.Util.addOnLoad(
         function() {
-            ustGrid.loadAll({order_by:{bra : 'name'}});
+            braGrid.loadAll({order_by:{bra : 'name'}}, {"id": {"!=": null}});
         }
     );
 </script>
-
-
-
-<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>Resource Attributes</div>
-    <div>
-        <button dojoType='dijit.form.Button' onClick='ustGrid.showCreateDialog()'>New Resource Attribute</button>
-        <button dojoType='dijit.form.Button' onClick='ustGrid.deleteSelected()'>Delete Selected</button>
-    </div>
-</div>
-
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-    <table  jsId="ustGrid"
-            autoHeight='true'
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
+        <div>Resource Attributes</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='braGrid.showCreateDialog()'>New Resource Attribute</button>
+            <button dojoType='dijit.form.Button' onClick='braGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <table  jsId="braGrid"
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['name', 'fine_interval', 'fine_amount',
-                'owner', 'catalog_item', 'transferable', 'record']"
-            query="{name: '*'}"
-            defaultCellWidth='"auto"'
+            fieldOrder="['name', 'owner', 'resource_type', 'required']"
+            query="{id: '*'}"
             fmClass='bra'
             showPaginator='true'
             editOnEnter='true'>
     </table>
- </div>
+</div>
 
 [% END %]
