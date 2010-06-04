@@ -1688,6 +1688,96 @@ sub biblio_record_to_marc_html {
 	return $html->documentElement->toString();
 }
 
+__PACKAGE__->register_method(
+    method    => "format_biblio_record_entry",
+    api_name  => "open-ils.search.biblio.record.print",
+    signature => {
+        desc   => 'Returns a printable version of the specified bib record',
+        params => [
+            { desc => 'Biblio record entry ID or array of IDs', type => 'number' },
+        ],
+        return => {
+            desc => q/An action_trigger.event object or error event./,
+            type => 'object',
+        }
+    }
+);
+__PACKAGE__->register_method(
+    method    => "format_biblio_record_entry",
+    api_name  => "open-ils.search.biblio.record.email",
+    signature => {
+        desc   => 'Emails an A/T templated version of the specified bib records to the authorized user',
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'Biblio record entry ID or array of IDs', type => 'number' },
+        ],
+        return => {
+            desc => q/Undefined on success, otherwise an error event./,
+            type => 'object',
+        }
+    }
+);
+
+sub format_biblio_record_entry {
+    my($self, $conn, $arg1, $arg2) = @_;
+
+    my $for_print = ($self->api_name =~ /print/);
+    my $for_email = ($self->api_name =~ /email/);
+
+    my $e; my $auth; my $bib_id; my $context_org;
+
+    if ($for_print) {
+        $bib_id = $arg1;
+        $context_org = $arg2 || $U->fetch_org_tree->id;
+        $e = new_editor(xact => 1);
+    } elsif ($for_email) {
+        $auth = $arg1;
+        $bib_id = $arg2;
+        $e = new_editor(authtoken => $auth, xact => 1);
+        return $e->die_event unless $e->checkauth;
+        $context_org = $e->requestor->home_ou;
+    }
+
+    my $bib_ids;
+    if (ref $bib_id ne 'ARRAY') {
+        $bib_ids = [ $bib_id ];
+    } else {
+        $bib_ids = $bib_id;
+    }
+
+    my $bucket = Fieldmapper::container::biblio_record_entry_bucket->new;
+    $bucket->btype('temp');
+    $bucket->name('format_biblio_record_entry ' . $U->create_uuid_string);
+    if ($for_email) {
+        $bucket->owner($e->requestor) 
+    } else {
+        $bucket->owner(1);
+    }
+    my $bucket_obj = $e->create_container_biblio_record_entry_bucket($bucket);
+
+    for my $id (@$bib_ids) {
+
+        my $bib = $e->retrieve_biblio_record_entry([$id]) or return $e->die_event;
+
+        my $bucket_entry = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+        $bucket_entry->target_biblio_record_entry($bib);
+        $bucket_entry->bucket($bucket_obj->id);
+        $e->create_container_biblio_record_entry_bucket_item($bucket_entry);
+    }
+
+    $e->commit;
+
+    if ($for_print) {
+
+        return $U->fire_object_event(undef, 'biblio.format.record_entry.print', [ $bucket ], $context_org);
+
+    } elsif ($for_email) {
+
+        $U->create_events_for_hook('biblio.format.record_entry.email', $bucket, $context_org, undef, undef, 1);
+    }
+
+    return undef;
+}
 
 
 __PACKAGE__->register_method(
