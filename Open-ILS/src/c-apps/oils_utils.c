@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include "openils/oils_utils.h"
 #include "openils/oils_idl.h"
 
@@ -367,4 +368,84 @@ jsonObject* oilsUtilsFetchWorkstationByName( const char* name ) {
 		"open-ils.cstore.direct.actor.workstation.search", p);
 	jsonObjectFree(p);
 	return r;
+}
+
+/**
+	@brief Convert a string to a number representing a time interval in seconds.
+	@param interval Pointer to string, e.g. "420" or "2 weeks".
+	@return If successful, the number of seconds that the string represents; otherwise -1.
+
+	If the string is all digits (apart from any leading or trailing white space), convert
+	it directly.  Otherwise pass it to PostgreSQL for translation.
+
+	The result is the same as if we were to pass every string to PostgreSQL, except that,
+	depending on the value of LONG_MAX, we return values for some strings that represent
+	intervals too long for PostgreSQL to represent (i.e. more than 2147483647 seconds).
+
+	WARNING: a valid interval of -1 second will be indistinguishable from an error.  If
+	such an interval is a plausible possibility, don't use this function.
+*/
+long oilsUtilsIntervalToSeconds( const char* s ) {
+
+	if( !s ) {
+		osrfLogWarning( OSRF_LOG_MARK, "String to be converted is NULL" );
+		return -1;
+	}
+
+	// Skip leading white space
+	while( isspace( (unsigned char) *s ))
+		++s;
+
+	if( '\0' == *s ) {
+		osrfLogWarning( OSRF_LOG_MARK, "String to be converted is empty or all white space" );
+		return -1;
+	}
+
+	// See if the string is a raw number, i.e. all digits
+	// (apart from any leading or trailing white space)
+
+	const char* p = s;   // For traversing and examining the remaining string
+	if( isdigit( (unsigned char) *p )) {
+		// Looks like a number so far...skip over the digits
+		do {
+			++p;
+		} while( isdigit( (unsigned char) *p ));
+		// Skip over any following white space
+		while( isspace( (unsigned char) *p ))
+			++p;
+		if( '\0' == *p ) {
+			// This string is a raw number.  Convert it directly.
+			long n = strtol( s, NULL, 10 );
+			if( LONG_MAX == n ) {
+				// numeric overflow
+				osrfLogWarning( OSRF_LOG_MARK,
+					"String \"%s\"represents a number too big for a long", s );
+				return -1;
+			} else
+				return n;
+		}
+	}
+
+	// If we get to this point, the string is not all digits.  Pass it to PostgreSQL.
+
+	// Build the query
+	jsonObject* query_obj = jsonParseFmt(
+		"{\"from\":[\"config.interval_to_seconds\",\"%s\"]}", s );
+
+	// Execute the query
+	jsonObject* result = oilsUtilsCStoreReq(
+		"open-ils.cstore.json_query", query_obj );
+	jsonObjectFree( query_obj );
+
+	// Get the results
+	jsonObject* seconds_obj = jsonObjectGetKey( result, "config.interval_to_seconds" );
+	long seconds = -1;
+	if( seconds_obj && JSON_NUMBER == seconds_obj->type )
+		seconds = (long) jsonObjectGetNumber( seconds_obj );
+	else
+		osrfLogError( OSRF_LOG_MARK,
+			"Error calling json_query to convert \"%s\" to seconds", s );
+
+	jsonObjectFree( result );
+	return seconds;
 }

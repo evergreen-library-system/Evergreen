@@ -102,6 +102,8 @@ jsonObject* oilsUtilsFetchWorkstationByName( const char* name );
 
 int oilsUtilsIsDBTrue( const char* val );
 
+long oilsUtilsIntervalToSeconds( const char* interval );
+
 #ifdef __cplusplus
 }
 #endif
