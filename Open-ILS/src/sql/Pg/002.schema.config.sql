@@ -65,7 +65,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0295'); -- gmcharlt
+INSERT INTO config.upgrade_log (version) VALUES ('0296'); -- gmcharlt
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -207,7 +207,7 @@ CREATE TABLE config.metabib_field (
 	label		TEXT	NOT NULL,
 	xpath		TEXT	NOT NULL,
 	weight		INT	NOT NULL DEFAULT 1,
-	format		TEXT	NOT NULL DEFAULT 'mods33',
+	format		TEXT	NOT NULL REFERENCES config.xml_transform (name) DEFAULT 'mods33',
 	search_field	BOOL	NOT NULL DEFAULT TRUE,
 	facet_field	BOOL	NOT NULL DEFAULT FALSE,
     facet_xpath TEXT
