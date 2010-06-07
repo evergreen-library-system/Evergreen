@@ -309,12 +309,23 @@ function create_bresv(resource_list) {
             }
         } else {
             var missing;
-            alert((missing = check_bresv_targeting(results)) ?
-                localeStrings.CREATE_BRESV_OK_MISSING_TARGET(
-                    results.length, missing
-                ) :
-                localeStrings.CREATE_BRESV_OK(results.length)
+            if (missing = check_bresv_targeting(results)) {
+                alert(dojo.string.substitute(
+                    localeStrings.CREATE_BRESV_OK_MISSING_TARGET,
+                    [results.length, missing]
+                ));
+            } else {
+                if (results.length == 1) {
+                    alert(dojo.string.substitute(
+                        localeStrings.CREATE_BRESV_OK(results.length)
+                    ));
+                } else {
+                    alert(dojo.string.substitute(
+                        localeStrings.CREATE_BRESV_OK_PLURAL(results.length)
+                    ));
+                }
             );
+            }
             update_brsrc_list();
             update_bresv_grid();
         }
@@ -448,7 +459,15 @@ function cancel_reservations(bresv_id_list) {
     } else if (is_ils_event(result)) {
         alert(my_ils_error(localeStrings.CXL_BRESV_FAILURE2, result));
     } else {
-        alert(localeStrings.CXL_BRESV_SUCCESS(result.length));
+        if (result.length == 1) {
+            alert(dojo.string.substitute(
+                localeStrings.CXL_BRESV_SUCCESS, [result.length]
+            ));
+        } else {
+            alert(dojo.string.substitute(
+                localeStrings.CXL_BRESV_SUCCESS_PLURAL, [result.length]
+            ));
+        }
     }
 }
 
