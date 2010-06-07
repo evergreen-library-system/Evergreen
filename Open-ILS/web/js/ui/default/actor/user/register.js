@@ -23,7 +23,7 @@ var pcrud;
 var fmClasses = ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva'];
 var fieldDoc = {};
 var statCats;
-var statCatTempate;
+var statCatTemplate;
 var surveys;
 var staff;
 var patron;
