@@ -1661,6 +1661,8 @@
 <!ENTITY staff.server.admin.org_settings.circ.password_reset_request_per_user_limit.desc "When a user has more than this number of concurrently active self-serve password reset requests for their account, prevent the user from creating any new self-serve password reset requests until the number of active requests for the user drops back below this number.">
 <!ENTITY staff.server.admin.org_settings.circ.password_reset_request_throttle "Circulation: Maximum concurrently active self-serve password reset requests">
 <!ENTITY staff.server.admin.org_settings.circ.password_reset_request_throttle.desc "Prevent the creation of new self-serve password reset requests until the number of active requests drops back below this number.">
+<!ENTITY staff.server.admin.org_settings.circ.booking_reservation.default_elbow_room "Booking: Elbow room">
+<!ENTITY staff.server.admin.org_settings.circ.booking_reservation.default_elbow_room.desc "Booking: Elbow room specifies how far in the future you must make a reservation on an item if that item will have to transit to reach its pickup location.  It secondarily defines how soon a reservation on a given item must start before the check-in process will opportunistically capture it for the reservation shelf.">
 <!ENTITY staff.server.admin.org_settings.circ.charge_on_damaged "Charge item price when marked damaged">
 <!ENTITY staff.server.admin.org_settings.circ.charge_on_damaged.desc "Charge item price when marked damaged">
 <!ENTITY staff.server.admin.org_settings.circ.damaged_item_processing_fee "Charge processing fee for damaged items">

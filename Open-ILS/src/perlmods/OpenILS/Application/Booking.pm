@@ -818,19 +818,27 @@ sub could_capture {
                 ) ||
                 "0 seconds"
             );
-            my $start_time = $dt_parser->parse_datetime(
-                clense_ISO8601($bresv->start_time)
-            );
 
-            if ($now >= $start_time->subtract("seconds" => $elbow_room)) {
+            unless ($elbow_room) {
                 $client->respond($bresv);
             } else {
-                $logger->info("not within elbow room: $elbow_room, else would have returned bresv " . $bresv->id);
+                my $start_time = $dt_parser->parse_datetime(
+                    clense_ISO8601($bresv->start_time)
+                );
+
+                if ($now >= $start_time->subtract("seconds" => $elbow_room)) {
+                    $client->respond($bresv);
+                } else {
+                    $logger->info(
+                        "not within elbow room: $elbow_room, " .
+                        "else would have returned bresv " . $bresv->id
+                    );
+                }
             }
         }
     }
     $e->disconnect;
-    $client->respond_complete;
+    undef;
 }
 __PACKAGE__->register_method(
     method   => "could_capture",

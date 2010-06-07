@@ -716,6 +716,17 @@ COMMIT;
 
 INSERT INTO config.copy_status (id,name) VALUES (15,oils_i18n_gettext(15, 'On reservation shelf', 'ccs', 'name'));
 
+-- In booking, elbow room defines:
+--  a) how far in the future you must make a reservation on a given item if
+--      that item will have to transit somewhere to fulfill the reservation.
+--  b) how soon a reservation must be starting for the reserved item to
+--      be op-captured by the checkin interface.
+INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES (
+    (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
+    'circ.booking_reservation.default_elbow_room',
+    '"1 day"'
+);
+
 -- Put the sequence back inside the protected range
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, (SELECT MAX(id) FROM permission.perm_list WHERE id < 1000));
 
