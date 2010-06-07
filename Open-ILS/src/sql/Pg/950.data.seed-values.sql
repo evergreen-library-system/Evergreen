@@ -4234,7 +4234,7 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
 INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
     SELECT  m.id,
             i.id,
-            $$['-','']$$
+            $$["-",""]$$
       FROM  config.metabib_field m,
             config.index_normalizer i
       WHERE i.func IN ('replace')
@@ -4243,7 +4243,7 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
 INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
     SELECT  m.id,
             i.id,
-            $$[' ','']$$
+            $$[" ",""]$$
       FROM  config.metabib_field m,
             config.index_normalizer i
       WHERE i.func IN ('replace')
