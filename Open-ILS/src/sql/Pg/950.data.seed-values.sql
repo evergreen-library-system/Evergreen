@@ -57,23 +57,23 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marc', $$//marc:controlfield[@tag='001']$$ );
+    (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marc:controlfield[@tag='001']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (18, 'identifier', 'isbn', oils_i18n_gettext(18, 'ISBN', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='020']/marc:subfield[@code='a' or @code='z']$$ );
+    (18, 'identifier', 'isbn', oils_i18n_gettext(18, 'ISBN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='020']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (19, 'identifier', 'issn', oils_i18n_gettext(19, 'ISSN', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='022']/marc:subfield[@code='a' or @code='z']$$ );
+    (19, 'identifier', 'issn', oils_i18n_gettext(19, 'ISSN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='022']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (20, 'identifier', 'upc', oils_i18n_gettext(20, 'UPC', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='1']/marc:subfield[@code='a' or @code='z']$$ );
+    (20, 'identifier', 'upc', oils_i18n_gettext(20, 'UPC', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and ind1='1']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (21, 'identifier', 'ismn', oils_i18n_gettext(21, 'ISMN', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='2']/marc:subfield[@code='a' or @code='z']$$ );
+    (21, 'identifier', 'ismn', oils_i18n_gettext(21, 'ISMN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and ind1='2']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (22, 'identifier', 'ean', oils_i18n_gettext(22, 'EAN', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='3']/marc:subfield[@code='a' or @code='z']$$ );
+    (22, 'identifier', 'ean', oils_i18n_gettext(22, 'EAN', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and ind1='3']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (23, 'identifier', 'isrc', oils_i18n_gettext(23, 'ISRC', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='0']/marc:subfield[@code='a' or @code='z']$$ );
+    (23, 'identifier', 'isrc', oils_i18n_gettext(23, 'ISRC', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and ind1='0']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='024' and ind1='4']/marc:subfield[@code='a' or @code='z']$$ );
+    (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and ind1='4']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marc', $$//marc:datafield[@tag='099']//text()$$ );
+    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='099']//text()$$ );
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
