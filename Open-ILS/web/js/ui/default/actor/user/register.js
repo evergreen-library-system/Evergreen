@@ -601,9 +601,25 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
         if(fmfield == 'barcode') {
             dojo.connect(widget.widget, 'onChange',
                 function() {
-                    var un = findWidget('au', 'usrname');
-                    if(!un.widget.attr('value'))
-                        un.widget.attr('value', this.attr('value'));
+                    var barcode = this.attr('value');
+                    dojo.addClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
+                    fieldmapper.standardRequest(
+                        ['open-ils.actor', 'open-ils.actor.barcode.exists'],
+                        {
+                            params: [openils.User.authtoken, barcode],
+                            oncomplete : function(r) {
+                                var res = openils.Util.readResponse(r);
+                                if(res) {
+                                    dojo.removeClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
+                                } else {
+                                    dojo.addClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
+                                    var un = findWidget('au', 'usrname');
+                                    if(!un.widget.attr('value'))
+                                        un.widget.attr('value', barcode);
+                                }
+                            }
+                        }
+                    );
                 }
             );
             return;
