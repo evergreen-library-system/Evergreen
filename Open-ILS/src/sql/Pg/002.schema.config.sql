@@ -65,7 +65,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0296'); -- gmcharlt
+INSERT INTO config.upgrade_log (version) VALUES ('0297'); -- Scott McKellar
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

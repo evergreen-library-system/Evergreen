@@ -17,7 +17,7 @@ CREATE TABLE serial.record_entry (
 	edit_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
 	active		BOOL		NOT NULL DEFAULT TRUE,
 	deleted		BOOL		NOT NULL DEFAULT FALSE,
-	marc		TEXT		NOT NULL,
+	marc		TEXT,
 	last_xact_id	TEXT		NOT NULL
 );
 CREATE INDEX serial_record_entry_creator_idx ON serial.record_entry ( creator );
@@ -25,6 +25,31 @@ CREATE INDEX serial_record_entry_editor_idx ON serial.record_entry ( editor );
 CREATE INDEX serial_record_entry_owning_lib_idx ON serial.record_entry ( owning_lib, deleted );
 
 CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD UPDATE serial.record_entry SET deleted = true WHERE old.id = serial.record_entry.id;
+
+CREATE TABLE serial.caption_and_pattern (
+	id           SERIAL       PRIMARY KEY,
+	record       BIGINT       NOT NULL
+	                          REFERENCES serial.record_entry (id)
+	                          ON DELETE CASCADE
+	                          DEFERRABLE INITIALLY DEFERRED,
+	type         TEXT         NOT NULL
+	                          CONSTRAINT cap_type CHECK ( type in
+	                          ( 'basic', 'supplement', 'index' )),
+	create_time  TIMESTAMPTZ  NOT NULL DEFAULT now(),
+	active       BOOL         NOT NULL DEFAULT FALSE,
+	pattern_code TEXT         NOT NULL,       -- must contain JSON
+	enum_1       TEXT,
+	enum_2       TEXT,
+	enum_3       TEXT,
+	enum_4       TEXT,
+	enum_5       TEXT,
+	enum_6       TEXT,
+	chron_1      TEXT,
+	chron_2      TEXT,
+	chron_3      TEXT,
+	chron_4      TEXT,
+	chron_5      TEXT
+);
 
 CREATE TABLE serial.subscription (
 	id                     SERIAL       PRIMARY KEY,

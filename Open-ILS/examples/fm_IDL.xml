@@ -3011,6 +3011,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="sercap" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::caption_and_pattern" oils_persist:tablename="serial.caption_and_pattern" reporter:label="Caption and Pattern">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.caption_and_pattern_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Record" name="record" reporter:datatype="link"/>
+			<field reporter:label="Type" name="type" reporter:datatype="text"/>
+			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Pattern Code" name="pattern_code" reporter:datatype="text"/>
+			<field reporter:label="Enum 1" name="enum_1" reporter:datatype="text"/>
+			<field reporter:label="Enum 2" name="enum_2" reporter:datatype="text"/>
+			<field reporter:label="Enum 3" name="enum_3" reporter:datatype="text"/>
+			<field reporter:label="Enum 4" name="enum_4" reporter:datatype="text"/>
+			<field reporter:label="Enum 5" name="enum_5" reporter:datatype="text"/>
+			<field reporter:label="Enum 6" name="enum_6" reporter:datatype="text"/>
+			<field reporter:label="Chron 1" name="chron_1" reporter:datatype="text"/>
+			<field reporter:label="Chron 2" name="chron_2" reporter:datatype="text"/>
+			<field reporter:label="Chron 3" name="chron_3" reporter:datatype="text"/>
+			<field reporter:label="Chron 4" name="chron_4" reporter:datatype="text"/>
+			<field reporter:label="Chron 5" name="chron_5" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="sre"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="ssub" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription" reporter:label="Subscription">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_id_seq">
 			<field reporter:label="Id" name="id" reporter:datatype="id"/>
