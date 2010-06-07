@@ -609,7 +609,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                             params: [openils.User.authtoken, barcode],
                             oncomplete : function(r) {
                                 var res = openils.Util.readResponse(r);
-                                if(res) {
+                                if(res == '1') {
                                     dojo.removeClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
                                 } else {
                                     dojo.addClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
