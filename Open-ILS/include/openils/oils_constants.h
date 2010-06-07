@@ -9,7 +9,7 @@ extern "C" {
 #define OILS_ORG_SETTING_OPAC_TIMEOUT "auth.opac_timeout"
 #define OILS_ORG_SETTING_STAFF_TIMEOUT "auth.staff_timeout"
 #define OILS_ORG_SETTING_TEMP_TIMEOUT "auth.temp_timeout"
-
+#define OILS_ORG_SETTING_PERSIST_TIMEOUT "auth.persistent_login_interval"
 
 /* Events ------------------------------------------------------ */
 #define OILS_EVENT_SUCCESS "SUCCESS"

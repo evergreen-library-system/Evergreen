@@ -14,7 +14,7 @@
 #define OILS_AUTH_OPAC "opac"
 #define OILS_AUTH_STAFF "staff"
 #define OILS_AUTH_TEMP "temp"
-#define OILS_AUTH_PERSISTENT "persistent"
+#define OILS_AUTH_PERSIST "persist"
 
 // Default time for extending a persistent session: ten minutes
 #define DEFAULT_RESET_INTERVAL 10 * 60
@@ -25,6 +25,7 @@ int osrfAppChildInit();
 static long _oilsAuthOPACTimeout = 0;
 static long _oilsAuthStaffTimeout = 0;
 static long _oilsAuthOverrideTimeout = 0;
+static long _oilsAuthPersistTimeout = 0;
 
 
 /**
@@ -177,6 +178,9 @@ static int oilsAuthCheckLoginPerm(
 	} else if(!strcasecmp(type, OILS_AUTH_TEMP)) {
 		char* permissions[] = { "STAFF_LOGIN" };
 		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
+	} else if(!strcasecmp(type, OILS_AUTH_PERSIST)) {
+		char* permissions[] = { "PERSISTENT_LOGIN" };
+		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
 	}
 
 	if(perm) {
@@ -255,12 +259,23 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 }
 
 /**
-	Calculates the login timeout
-	1. If orgloc is 1 or greater and has a timeout specified as an
-	org unit setting, it is used
-	2. If orgloc is not valid, we check the org unit auth timeout
-	setting for the home org unit of the user logging in
-	3. If that setting is not defined, we use the configured defaults
+	@brief Determine the login timeout.
+	@param userObj Pointer to an object describing the user.
+	@param type Pointer to one of four possible character strings identifying the login type.
+	@param orgloc Org unit to use for settings lookups (negative or zero means unspecified)
+	@return The length of the timeout, in seconds.
+
+	The default timeout value comes from the configuration file, and depends on the
+	login type.
+
+	The default may be overridden by a corresponding org unit setting.  The @a orgloc
+	parameter says what org unit to use for the lookup.  If @a orgloc <= 0, or if the
+	lookup for @a orgloc yields no result, we look up the setting for the user's home org unit
+	instead (except that if it's the same as @a orgloc we don't bother repeating the lookup).
+
+	Whether defined in the config file or in an org unit setting, a timeout value may be
+	expressed as a raw number (i.e. all digits, possibly with leading and/or trailing white
+	space) or as an interval string to be translated into seconds by PostgreSQL.
 */
 static long oilsAuthGetTimeout( const jsonObject* userObj, const char* type, int orgloc ) {
 
@@ -270,59 +285,101 @@ static long oilsAuthGetTimeout( const jsonObject* userObj, const char* type, int
 
 		value_obj = osrf_settings_host_value_object(
 			"/apps/open-ils.auth/app_settings/default_timeout/opac" );
-		_oilsAuthOPACTimeout = (long) jsonObjectGetNumber(value_obj);
+		_oilsAuthOPACTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
 		jsonObjectFree(value_obj);
+		if( -1 == _oilsAuthOPACTimeout ) {
+			osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for OPAC logins" );
+			_oilsAuthOPACTimeout = 0;
+		}
 
 		value_obj = osrf_settings_host_value_object(
 			"/apps/open-ils.auth/app_settings/default_timeout/staff" );
-		_oilsAuthStaffTimeout = (long) jsonObjectGetNumber(value_obj);
+		_oilsAuthStaffTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
 		jsonObjectFree(value_obj);
+		if( -1 == _oilsAuthStaffTimeout ) {
+			osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for staff logins" );
+			_oilsAuthStaffTimeout = 0;
+		}
 
 		value_obj = osrf_settings_host_value_object(
-				"/apps/open-ils.auth/app_settings/default_timeout/temp" );
-		_oilsAuthOverrideTimeout = (long) jsonObjectGetNumber(value_obj);
+			"/apps/open-ils.auth/app_settings/default_timeout/temp" );
+		_oilsAuthOverrideTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
 		jsonObjectFree(value_obj);
+		if( -1 == _oilsAuthOverrideTimeout ) {
+			osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for temp logins" );
+			_oilsAuthOverrideTimeout = 0;
+		}
 
+		value_obj = osrf_settings_host_value_object(
+			"/apps/open-ils.auth/app_settings/default_timeout/persist" );
+		_oilsAuthPersistTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
+		jsonObjectFree(value_obj);
+		if( -1 == _oilsAuthPersistTimeout ) {
+			osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for persist logins" );
+			_oilsAuthPersistTimeout = 0;
+		}
 
-		osrfLogInfo(OSRF_LOG_MARK,
-				"Set default auth timeouts: opac => %ld : staff => %ld : temp => %ld",
-				_oilsAuthOPACTimeout, _oilsAuthStaffTimeout, _oilsAuthOverrideTimeout );
+		osrfLogInfo(OSRF_LOG_MARK, "Set default auth timeouts: "
+			"opac => %ld : staff => %ld : temp => %ld : persist => %ld",
+			_oilsAuthOPACTimeout, _oilsAuthStaffTimeout,
+			_oilsAuthOverrideTimeout, _oilsAuthPersistTimeout );
 	}
-
-	char* setting = NULL;
 
 	int home_ou = (int) jsonObjectGetNumber( oilsFMGetObject( userObj, "home_ou" ));
 	if(orgloc < 1)
 		orgloc = home_ou;
 
-	if(!strcmp(type, OILS_AUTH_OPAC))
+	char* setting = NULL;
+	long default_timeout = 0;
+
+	if( !strcmp( type, OILS_AUTH_OPAC )) {
 		setting = OILS_ORG_SETTING_OPAC_TIMEOUT;
-	else if(!strcmp(type, OILS_AUTH_STAFF))
+		default_timeout = _oilsAuthOPACTimeout;
+	} else if( !strcmp( type, OILS_AUTH_STAFF )) {
 		setting = OILS_ORG_SETTING_STAFF_TIMEOUT;
-	else if(!strcmp(type, OILS_AUTH_TEMP))
+		default_timeout = _oilsAuthStaffTimeout;
+	} else if( !strcmp( type, OILS_AUTH_TEMP )) {
 		setting = OILS_ORG_SETTING_TEMP_TIMEOUT;
+		default_timeout = _oilsAuthOverrideTimeout;
+	} else if( !strcmp( type, OILS_AUTH_PERSIST )) {
+		setting = OILS_ORG_SETTING_PERSIST_TIMEOUT;
+		default_timeout = _oilsAuthPersistTimeout;
+	}
 
+	// Get the org unit setting, if there is one.
 	char* timeout = oilsUtilsFetchOrgSetting( orgloc, setting );
-
 	if(!timeout) {
 		if( orgloc != home_ou ) {
 			osrfLogDebug(OSRF_LOG_MARK, "Auth timeout not defined for org %d, "
-								"trying home_ou %d", orgloc, home_ou );
+				"trying home_ou %d", orgloc, home_ou );
 			timeout = oilsUtilsFetchOrgSetting( home_ou, setting );
-		}
-		if(!timeout) {
-			if( !strcmp(type, OILS_AUTH_STAFF ))
-				return _oilsAuthStaffTimeout;
-			else if( !strcmp( type, OILS_AUTH_TEMP ))
-				return _oilsAuthOverrideTimeout;
-			else
-				return _oilsAuthOPACTimeout;
 		}
 	}
 
-	long t = (long) atof(timeout);
+	if(!timeout)
+		return default_timeout;   // No override from org unit setting
+
+	// Translate the org unit setting to a number
+	long t;
+	if( !*timeout ) {
+		osrfLogWarning( OSRF_LOG_MARK,
+			"Timeout org unit setting is an empty string for %s login; using default",
+			timeout, type );
+		t = default_timeout;
+	} else {
+		// Treat timeout string as an interval, and convert it to seconds
+		t = oilsUtilsIntervalToSeconds( timeout );
+		if( -1 == t ) {
+			// Unable to convert; possibly an invalid interval string
+			osrfLogError( OSRF_LOG_MARK,
+				"Unable to convert timeout interval \"%s\" for %s login; using default",
+				timeout, type );
+			t = default_timeout;
+		}
+	}
+
 	free(timeout);
-	return t ;
+	return t;
 }
 
 /*
@@ -364,6 +421,19 @@ static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
 	oilsFMSetString( userObj, "passwd", "" );
 	jsonObject* cacheObj = jsonParseFmt( "{\"authtime\": %ld}", timeout );
 	jsonObjectSetKey( cacheObj, "userobj", jsonObjectClone(userObj));
+
+	if( !strcmp( type, OILS_AUTH_PERSIST )) {
+		// Add entries for endtime and reset_interval, so that we can gracefully
+		// extend the session a bit if the user is active toward the end of the 
+		// timeout originally specified.
+		time_t endtime = time( NULL ) + timeout;
+		jsonObjectSetKey( cacheObj, "endtime", jsonNewNumberObject( (double) endtime ) );
+
+		// Reset interval is hard-coded for now, but if we ever want to make it
+		// configurable, this is the place to do it:
+		jsonObjectSetKey( cacheObj, "reset_interval",
+			jsonNewNumberObject( (double) DEFAULT_RESET_INTERVAL ));
+	}
 
 	osrfCachePutObject( authKey, cacheObj, (time_t) timeout );
 	jsonObjectFree(cacheObj);

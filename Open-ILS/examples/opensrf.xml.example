@@ -395,6 +395,7 @@ vim:et:ts=4:sw=4:
                         <opac>420</opac>
                         <staff>7200</staff>
                         <temp>300</temp>
+						<persist>2 weeks</persist>
                     </default_timeout>
                 </app_settings>
             </open-ils.auth>
