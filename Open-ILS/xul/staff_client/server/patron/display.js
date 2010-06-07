@@ -218,7 +218,7 @@ patron.display.prototype = {
                                 obj.reset_nav_styling('cmd_patron_edit');
 
                                 function spawn_search(s) {
-                                    obj.error.sdump('D_TRACE', $("commonStrings").getFormattedString('staff.patron.display.cmd_patron_edit.edit_search', [js2JSON(s)]) ); 
+                                    obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s)); 
                                     obj.OpenILS.data.stash_retrieve();
                                     xulG.new_patron_tab( {}, { 'doit' : 1, 'query' : js2JSON(s) } );
                                 }
