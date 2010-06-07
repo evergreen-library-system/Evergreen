@@ -6,15 +6,9 @@
     "CREATE_BRESV_LOCAL_ERROR": "Exception trying to create reservation: ",
     "CREATE_BRESV_SERVER_ERROR": "Server error trying to create reservation: ",
     "CREATE_BRESV_SERVER_NO_RESPONSE": "No response from server after trying to create reservation.",
-    "CREATE_BRESV_OK_MISSING_TARGET": function(n, m) {
-        return "Created " + n + " reservation(s), but " + m + " of these " +
-            "couldn't target any resources.\n\n" +
-            "This means that it won't be possible to fulfill some of these\n" +
-            "reservations until a suitable resource becomes available.";
-    },
-    "CREATE_BRESV_OK": function(n) {
-        return "Created " + n + " reservation" + (n == 1 ? "" : "s") + ".";
-    },
+    "CREATE_BRESV_OK_MISSING_TARGET": "Created ${0} reservation(s), but ${1} of these couldn't target any resources.\n\nThis means that it won't be possible to fulfill some of these\nreservations until a suitable resource becomes available.",
+    "CREATE_BRESV_OK": "Created ${0} reservation.",
+    "CREATE_BRESV_OK_PLURAL": "Created ${0} reservations",
     "WHERES_THE_BARCODE": "Enter a patron's barcode to make a reservation.",
     "ACTOR_CARD_NOT_FOUND": "Patron barcode not found. Please try again.",
     "GET_BRESV_LIST_ERR": "Error while retrieving reservation list: ",
@@ -25,9 +19,8 @@
     "HERE_ARE_EXISTING_BRESV": "Existing reservations for",
     "NO_EXISTING_BRESV": "This user has no existing reservations at this time.",
     "NO_USABLE_BRSRC": "No reservable resources.  Adjust start and end time\nuntil a resource is available for reservation.",
-    "CXL_BRESV_SUCCESS": function(n) {
-        return ("Canceled " + n + " reservation" + (n == 1 ? "" : "s") + ".");
-    },
+    "CXL_BRESV_SUCCESS": "Canceled ${0} reservation.",
+    "CXL_BRESV_SUCCESS_PLURAL": "Canceled ${0} reservations",
     "CXL_BRESV_FAILURE": "Error canceling reservations; server silent.",
     "CXL_BRESV_FAILURE2": "Error canceling reservations:\n",
     "CXL_BRESV_SELECT_SOMETHING": "You have not selected any reservations to cancel.",
